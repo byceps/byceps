@@ -17,6 +17,7 @@ from .util.l10n import set_locale
 
 BLUEPRINT_NAMES = [
     ('core', '/core'),
+    ('contentpage', '/contentpages'),
     ('user', '/users'),
 ]
 
