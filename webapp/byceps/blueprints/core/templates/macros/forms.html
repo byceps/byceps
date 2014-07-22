@@ -1,0 +1,34 @@
+{% macro form_fieldset() -%}
+  <fieldset>
+    <ol>
+{{ caller() }}
+    </ol>
+  </fieldset>
+{%- endmacro %}
+
+{%- macro form_field(field, note=None) -%}
+      <li>{{ field.label }}{{ field(**kwargs) -}}{% if note %} {{ note|safe }}{% endif %}
+        {%- if field.errors %}
+        <ol class="errors">
+          {%- for error in field.errors %}
+          <li>Fehler: {{ error }}</li>
+          {%- endfor %}
+        </ol>
+        {%- endif -%}
+      </li>
+{%- endmacro %}
+
+{# A form field with just a submit button. #}
+{% macro form_buttons(label, cancel=False, cancel_url=None) -%}
+  {% call form_submit_content(label) %}
+    {%- if cancel or cancel_url %} oder <a class="cancel"{% if cancel_url %} href="{{ cancel_url }}"{% endif %}>abbrechen</a>{% endif -%}
+  {% endcall %}
+{%- endmacro %}
+
+{# A form field with a submit button and content. #}
+{% macro form_buttons_content(label) -%}
+  <fieldset class="buttons">
+    <button type="submit">{{ label }}</button>
+    {{ caller() }}
+  </fieldset>
+{%- endmacro %}

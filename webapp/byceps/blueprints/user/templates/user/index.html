@@ -1,0 +1,32 @@
+{% extends 'layout/base.html' %}
+{% from 'macros/datetime.html' import render_datetime %}
+{% set current_page = 'user.index' %}
+{% set title = 'Benutzer' %}
+
+{% block body %}
+
+  <h1>{{ title }}</h1>
+
+  <table class="index">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Erstellt</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for user in users|sort(attribute='created_at', reverse=True) %}
+      <tr>
+        <td><a href="{{ url_for('.view', id=user.id) }}">{{ user.name }}</a></td>
+        <td>{{ render_datetime(user.created_at) }}</td>
+      </tr>
+      {%- endfor %}
+      <tr>
+    </tbody>
+  </table>
+
+  <ol class="actions">
+    <li><a href="{{ url_for('.create_form') }}">Benutzerkonto erstellen</a></li>
+  </ol>
+
+{%- endblock body %}

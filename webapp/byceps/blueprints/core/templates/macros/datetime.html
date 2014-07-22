@@ -1,0 +1,15 @@
+{%- macro render_date(d) -%}
+  {{ _time_element(d|format_date_iso, d|format_date_short) }}
+{%- endmacro %}
+
+{%- macro render_datetime(dt) -%}
+  {{ _time_element(dt|format_datetime_iso, dt|format_datetime_short) }}
+{%- endmacro %}
+
+{%- macro render_time(t) -%}
+  {{ _time_element(t|format_datetime_iso, t|format_time) }}
+{%- endmacro %}
+
+{%- macro _time_element(value, label) -%}
+  <time datetime="{{ value }}">{{ label }}</time>
+{%- endmacro %}

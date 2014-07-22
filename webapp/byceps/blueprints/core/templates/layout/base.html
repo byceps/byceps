@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    {%- block head %}
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" media="screen" href="{{ url_for('core.static', filename='style/style.css') }}"/>
+    <title>{% if title %}{{ title.replace(' - ', ' &middot; ')|safe }} &middot; {% endif %}BYCEPS</title>
+    <script src="{{ url_for('core.static', filename='behavior/jquery.js') }}"></script>
+    <script src="{{ url_for('user.static', filename='behavior/logout.js') }}"></script>
+    <!--[if lt IE 9]>
+    <script src="{{ url_for('core.static', filename='behavior/html5shiv.js') }}"></script>
+    <script src="{{ url_for('core.static', filename='behavior/rem.js') }}"></script>
+    <![endif]-->
+    {%- endblock head %}
+  </head>
+  <body>
+
+    <div id="page">
+
+{# Necessary to make the variable available to the included header template. #}
+{% set current_page = current_page|default %}
+{% include 'layout/header.html' %}
+
+      <main role="main">
+
+{%- for category, message in get_flashed_messages(with_categories=True) %}
+  <p class="notification-{{ category }}">{{ message }}</p>
+{%- endfor %}
+
+{% block body %}{% endblock %}
+
+      </main>
+
+      <footer>
+        BYCEPS
+        &middot;
+        Copyright &copy; 2006-2014 Jochen &quot;Y0Gi&quot; Kupperschmidt
+      </footer>
+
+    </div><!-- /#page -->
+
+  </body>
+</html>

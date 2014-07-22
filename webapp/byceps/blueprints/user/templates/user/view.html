@@ -1,0 +1,16 @@
+{% extends 'layout/base.html' %}
+{% set current_page = 'user.view' %}
+{% set title = 'Benutzer - %s'|format(user.name) %}
+
+{% block body %}
+
+  <h1>{{ title }}</h1>
+
+  <table>
+    <tr>
+      <th>Benutzername</th>
+      <td>{{ user.name }}</td>
+    </tr>
+  </table>
+
+{%- endblock body %}

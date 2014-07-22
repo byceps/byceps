@@ -1,0 +1,9 @@
+# Python 3 bytecode
+__pycache__
+
+# virtual environment
+webapp/venv
+
+# test-related
+.tox
+*.egg-info

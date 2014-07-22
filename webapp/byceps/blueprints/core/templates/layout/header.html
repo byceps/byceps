@@ -1,0 +1,20 @@
+      <header id="header">
+
+          <nav class="top">
+            <ol>
+              {% if g.current_user.is_active() -%}
+              Angemeldet als: <strong>{{ g.current_user.name }}</strong>
+              (<a id="logout" href="{{ url_for('user.logout', _method='POST') }}">Logout</a>)
+              {%- else -%}
+              <li><a href="{{ url_for('user.login_form') }}">Login</a></li>
+              {%- endif %}
+            </ol>
+          </nav>
+
+          <nav class="main">
+            <ol>
+              <li{% if 'user' is is_current_page(current_page) %} class="current"{% endif %}><a href="{{ url_for('user.index') }}">Benutzer</a></li>
+            </ol>
+          </nav>
+
+      </header>

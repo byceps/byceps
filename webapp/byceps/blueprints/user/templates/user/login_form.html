@@ -1,0 +1,27 @@
+{% extends 'layout/base.html' %}
+{% from 'macros/forms.html' import form_buttons_content, form_fieldset, form_field %}
+{% set current_page = 'user.login' %}
+{% set title = 'Einloggen' %}
+
+{% block head %}
+  {{ super() }}
+    <script src="{{ url_for('.static', filename='behavior/login.js') }}"></script>
+{% endblock head %}
+
+{% block body %}
+
+  <h1>{{ title }}</h1>
+
+  <form action="{{ url_for('.login') }}" method="post" id="login">
+    {%- call form_fieldset() %}
+      {{ form_field(form.name, maxlength=40, required='required') }}
+      {{ form_field(form.password, type='password', maxlength=40, required='required') }}
+    {%- endcall %}
+
+    <p id="login-failed" class="notification-error" style="display: none; margin-top: 1em;">Die Anmeldung ist fehlgeschlagen.</p>
+
+    {% call form_buttons_content('Einloggen') %}
+    {% endcall %}
+  </form>
+
+{%- endblock body %}
