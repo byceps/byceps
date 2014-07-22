@@ -1,5 +1,5 @@
 {% extends 'layout/base.html' %}
-{% from 'macros/forms.html' import form_buttons_content, form_fieldset, form_field %}
+{% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
 {% set current_page = 'user.create' %}
 {% set title = 'Benutzerkonto anlegen' %}
 
@@ -14,8 +14,7 @@
       {{ form_field(form.password, type='password', maxlength=40, required='required') }}
     {%- endcall %}
 
-    {% call form_buttons_content('Anlegen') %}
-    {% endcall %}
+    {{ form_buttons('Anlegen') }}
   </form>
 
 {%- endblock body %}

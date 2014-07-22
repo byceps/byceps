@@ -18,17 +18,10 @@
       </li>
 {%- endmacro %}
 
-{# A form field with just a submit button. #}
-{% macro form_buttons(label, cancel=False, cancel_url=None) -%}
-  {% call form_submit_content(label) %}
-    {%- if cancel or cancel_url %} oder <a class="cancel"{% if cancel_url %} href="{{ cancel_url }}"{% endif %}>abbrechen</a>{% endif -%}
-  {% endcall %}
-{%- endmacro %}
-
-{# A form field with a submit button and content. #}
-{% macro form_buttons_content(label) -%}
+{# A field set with a submit button. #}
+{% macro form_buttons(label, cancel_url=None) -%}
   <fieldset class="buttons">
     <button type="submit">{{ label }}</button>
-    {{ caller() }}
+    {%- if cancel_url %} oder <a class="cancel" href="{{ cancel_url }}">abbrechen</a>{% endif -%}
   </fieldset>
 {%- endmacro %}
