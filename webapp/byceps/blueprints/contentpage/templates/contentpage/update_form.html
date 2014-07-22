@@ -1,0 +1,20 @@
+{% extends 'layout/base.html' %}
+{% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
+{% set current_page = 'contentpage.update' %}
+{% set title = 'Inhaltsseite bearbeiten' %}
+
+{% block body %}
+
+  <h1>{{ title }}</h1>
+
+  <form action="{{ url_for('.update', id=page.id) }}" method="post">
+    {% call form_fieldset() %}
+      {{ form_field(form.name, maxlength=40, required='required', readonly='readonly', autofocus='autofocus') }}
+      {{ form_field(form.url, maxlength=40, required='required', readonly='readonly') }}
+      {{ form_field(form.body, cols=40, rows=10, required='required') }}
+    {% endcall %}
+
+    {{ form_buttons('Speichern', cancel_url=url_for('.index')) }}
+  </form>
+
+{%- endblock body %}

@@ -10,18 +10,17 @@ byceps.blueprints.contentpage.views
 import sys
 import warnings
 
-from flask import abort, redirect, render_template, request, url_for
+from flask import abort, g, redirect, render_template, request, url_for
 from jinja2 import FunctionLoader, TemplateNotFound
 from jinja2.sandbox import ImmutableSandboxedEnvironment
-from werkzeug.routing import BuildError
 
 from ...database import db
-from ...util.framework import create_blueprint, flash_error, flash_success
+from ...util.framework import create_blueprint, flash_error, flash_success, \
+    get_blueprint_views_module
 from ...util.templating import templated
 
-from .forms import UpdateForm
-from .models import collect_all_content_page_ids, ContentPage, \
-    ContentPageReference
+from .forms import CreateForm, UpdateForm
+from .models import ContentPage
 
 
 blueprint = create_blueprint('contentpage', __name__)
@@ -30,24 +29,21 @@ blueprint = create_blueprint('contentpage', __name__)
 @blueprint.route('/')
 @templated
 def index():
-    """List users."""
-    ids = collect_all_content_page_ids()
-    references = list(generate_references(ids))
-    return {'references': references}
+    """List pages."""
+    pages = ContentPage.query.all()
+    return {'pages': pages}
 
 
-def generate_references(ids):
-    for id in ids:
-        view_url = generate_view_url_for(id)
-        update_url = url_for('.update_form', id=id)
-        yield ContentPageReference(id, view_url, update_url)
-
-
-def generate_view_url_for(id):
-    try:
-        return url_for(id)
-    except BuildError:
-        return None
+def add_urls_for_pages():
+    blueprint_name = 'contentpage'
+    pages = ContentPage.query.all()
+    for page in pages:
+        # Copy the value into the closure.
+        views_module = get_blueprint_views_module(blueprint_name)
+        view_func = getattr(views_module, 'view')
+        #view_func = lambda endpoint=endpoint: view(page.name)
+        endpoint = '{}.{}'.format(blueprint_name, page.name)
+        app.add_url_rule(page.url, endpoint=endpoint, view_func=view_func)
 
 
 @blueprint.route('/<id>')
@@ -68,7 +64,7 @@ def view(id):
     except Exception as e:
         print('Error in content page markup:', e, file=sys.stderr)
         context = {
-            'message': e.message,
+            'message': str(e),
         }
         return render_template('contentpage/error.html', **context), 500
 
@@ -113,10 +109,37 @@ def _extract_metadata(template):
     return title, current_page
 
 
+@blueprint.route('/create')
+@templated
+def create_form():
+    """Show form to create a page."""
+    form = CreateForm()
+    return {
+        'form': form,
+    }
+
+
+@blueprint.route('/', methods=['POST'])
+def create():
+    """Create a page."""
+    form = CreateForm(request.form)
+
+    page = ContentPage(
+        creator=g.current_user,
+        name=form.name.data,
+        url=form.url.data,
+        body=form.body.data)
+    db.session.add(page)
+    db.session.commit()
+
+    flash_success('Die Seite "{}" wurden angelegt.', page.name)
+    return redirect(url_for('.index'))
+
+
 @blueprint.route('/<id>/update')
 @templated
 def update_form(id):
-    """Show form to update a content page."""
+    """Show form to update a page."""
     page = find_page(id)
     form = UpdateForm(obj=page)
     return {
@@ -127,15 +150,15 @@ def update_form(id):
 
 @blueprint.route('/<id>', methods=['POST'])
 def update(id):
-    """Update a content page."""
+    """Update a page."""
     page = find_page(id)
 
     form = UpdateForm(request.form)
     page.body = form.body.data
     db.session.commit()
 
-    flash_success('Die Änderungen wurden übernommen.')
-    return redirect(url_for(id))
+    flash_success('Die Seite "{}" wurden aktualisiert.', page.name)
+    return redirect(url_for('.view', id=page.id))
 
 
 def find_page(id):

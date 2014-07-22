@@ -1,0 +1,51 @@
+{% extends 'layout/base.html' %}
+{% from 'macros/datetime.html' import render_datetime %}
+{% set current_page = 'contentpage.index' %}
+{% set title = 'Inhaltsseiten' %}
+
+{% block body %}
+
+  <h1>{{ title }}</h1>
+
+  <table class="index" style="width: 100%;">
+    <thead>
+      <tr>
+        <th>Bezeichner</th>
+        <th>URL-Pfad</th>
+        <th>Letzte Änderung</th>
+        <th>durch</th>
+        <th colspan="3">Aktionen</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for page in pages|sort(attribute='created_at', reverse=True) %}
+        <tr>
+          <td>{{ page.name }}</td>
+          <td>{{ page.url }}</td>
+          <td style="white-space: nowrap;">{{ render_datetime(page.created_at) }}</td>
+          <td><a href="{{ page.creator.id }}">{{ page.creator.name }}</a></td>
+          {%- if page.generate_url() is not none %}
+          <td>
+            <a href="{{ page.generate_url() }}" class="action"><span class="icon-view"></span> ansehen</a>
+          </td>
+          {%- else %}
+          <td>
+            <span class="action hidden"><span class="icon-view"></span> ansehen</span>
+          </td>
+          <td>
+            <a href="{{ url_for('.view', id=page.id) }}" class="action"><span class="icon-view"></span> Fallback</a>
+          </td>
+          {%- endif %}
+          <td>
+            <a href="{{ url_for('.update_form', id=page.id) }}" class="action"><span class="icon-edit"></span> bearbeiten</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <ol class="actions">
+    <li><a href="{{ url_for('.create_form') }}">Neue Seite anlegen</a></li>
+  </ol>
+
+{%- endblock body %}

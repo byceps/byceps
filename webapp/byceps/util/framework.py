@@ -46,9 +46,16 @@ def register_blueprint(app, name, url_prefix):
     'blueprints' sub-package and to contain a blueprint instance named
     'blueprint'.
     """
-    module = import_module('byceps.blueprints.{}.views'.format(name))
+    module = get_blueprint_views_module(name)
     blueprint = getattr(module, 'blueprint')
     app.register_blueprint(blueprint, url_prefix=url_prefix)
+
+
+def get_blueprint_views_module(name):
+    """Import and return the 'views' module located in the specified
+    blueprint package.
+    """
+    return import_module('byceps.blueprints.{}.views'.format(name))
 
 
 # -------------------------------------------------------------------- #

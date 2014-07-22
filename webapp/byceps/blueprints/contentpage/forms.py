@@ -10,6 +10,11 @@ byceps.blueprints.contentpage.forms
 from wtforms import Form, TextAreaField, TextField
 
 
-class UpdateForm(Form):
-    id = TextField('ID')
+class CreateForm(Form):
+    name = TextField('Interner Name')
+    url = TextField('URL-Pfad')
     body = TextAreaField('Text')
+
+
+class UpdateForm(CreateForm):
+    pass

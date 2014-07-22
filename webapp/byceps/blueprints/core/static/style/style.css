@@ -230,3 +230,10 @@ table.index td {
 #page > footer:hover {
   opacity: 1;
 }
+
+
+/* misc */
+
+.hidden {
+  opacity: 0.5;
+}

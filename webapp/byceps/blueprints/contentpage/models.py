@@ -7,35 +7,40 @@ byceps.blueprints.contentpage.models
 :Copyright: 2006-2014 Jochen Kupperschmidt
 """
 
-from collections import namedtuple
-from operator import itemgetter
+from datetime import datetime
 
-from ...database import db
+from flask import url_for
+from werkzeug.routing import BuildError
+
+from ...database import db, generate_uuid
 from ...util.instances import ReprBuilder
 
-from .models import User
+from ..user.models import User
 
 
 class ContentPage(db.Model):
     """A content page."""
     __tablename__ = 'content_pages'
 
-    id = db.Column(db.Unicode(40), primary_key=True)
-    url = db.Column(db.Unicode(40), unique=True)
+    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
+    creator = db.relationship(User)
+    name = db.Column(db.Unicode(40))
+    url = db.Column(db.Unicode(40))
     body = db.Column(db.UnicodeText)
+
+    def generate_url(self):
+        try:
+            return url_for(self.url)
+        except BuildError:
+            return None
 
     def __repr__(self):
         return ReprBuilder(self) \
             .add('id') \
+            .add('created_at') \
+            .add('creator') \
+            .add('name') \
             .add('url') \
             .build()
-
-
-
-ContentPageReference = namedtuple(
-    'ContentPageReference', 'id view_url update_url')
-
-
-def collect_all_content_page_ids():
-    content_pages = db.session.query(ContentPage.id).distinct().all()
-    return frozenset(map(itemgetter(0), content_pages))
