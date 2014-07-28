@@ -11,6 +11,7 @@
     {% call form_fieldset() %}
       {{ form_field(form.name, maxlength=40, required='required', readonly='readonly', autofocus='autofocus') }}
       {{ form_field(form.url, maxlength=40, required='required', readonly='readonly') }}
+      {{ form_field(form.title, maxlength=80, required='required') }}
       {{ form_field(form.body, cols=40, rows=10, required='required') }}
     {% endcall %}
 

@@ -21,7 +21,7 @@ from ...util.framework import create_blueprint, flash_error, flash_success, \
 from ...util.templating import templated
 
 from .forms import CreateForm, UpdateForm
-from .models import ContentPage
+from .models import ContentPage, ContentPageVersion
 
 
 blueprint = create_blueprint('contentpage', __name__)
@@ -106,20 +106,13 @@ def _create_env(load_func):
 
 
 def _load_template_by_name(name):
-    page = ContentPage.query \
-        .filter_by(name=name) \
-        .order_by(ContentPage.created_at.desc()) \
-        .first()
-
-    if page is not None:
-        return page.body
+    page = find_page(name)
+    return page.get_latest_version().body
 
 
 def _load_template_by_version(id):
-    page = ContentPage.query.get(id)
-
-    if page is not None:
-        return page.body
+    version = ContentPageVersion.query.get_or_404(id)
+    return version.body
 
 
 def _extract_metadata(id, template):
@@ -137,14 +130,9 @@ def _extract_metadata(id, template):
 @blueprint.route('/<name>/history')
 @templated
 def history(name):
-    versions = ContentPage.query \
-        .filter_by(name=name) \
-        .order_by(ContentPage.created_at.desc()) \
-        .all()
-    if not versions:
-        abort(404)
+    page = find_page(name)
+    versions = page.get_versions()
 
-    page = versions[0]
     return {
         'name': page.name,
         'url': page.url,
@@ -168,23 +156,35 @@ def create():
     form = CreateForm(request.form)
 
     page = ContentPage(
-        creator=g.current_user,
         name=form.name.data,
-        url=form.url.data,
-        body=form.body.data)
+        url=form.url.data)
     db.session.add(page)
+
+    version = ContentPageVersion(
+        page=page,
+        creator=g.current_user,
+        title=form.title.data,
+        body=form.body.data)
+    db.session.add(version)
+
     db.session.commit()
 
-    flash_success('Die Seite "{}" wurden angelegt.', page.name)
-    return redirect(url_for('.index'))
+    flash_success('Die Seite "{}" wurde angelegt.', page.name)
+    return redirect(url_for('.view_version', id=version.id))
 
 
 @blueprint.route('/<name>/update')
 @templated
 def update_form(name):
     """Show form to update a page."""
-    page = find_page_by_name(name)
-    form = UpdateForm(obj=page)
+    page = find_page(name)
+    latest_version = page.get_latest_version()
+
+    form = UpdateForm(
+        obj=page,
+        title=latest_version.title,
+        body=latest_version.body)
+
     return {
         'form': form,
         'page': page,
@@ -196,19 +196,19 @@ def update(name):
     """Update a page."""
     form = UpdateForm(request.form)
 
-    original_page = find_page_by_name(name)
+    page = find_page(name)
 
-    page = ContentPage(
+    version = ContentPageVersion(
+        page=page,
         creator=g.current_user,
-        name=original_page.name,
-        url=original_page.url,
+        title=form.title.data,
         body=form.body.data)
-    db.session.add(page)
+    db.session.add(version)
     db.session.commit()
 
     flash_success('Die Seite "{}" wurde aktualisiert.', page.name)
-    return redirect(url_for('.view_version', id=page.id))
+    return redirect(url_for('.view_version', id=version.id))
 
 
-def find_page_by_name(name):
-    return ContentPage.query.filter_by(name=name).first_or_404()
+def find_page(name):
+    return ContentPage.query.get_or_404(name)

@@ -18,12 +18,13 @@
       </tr>
     </thead>
     <tbody>
-      {% for page in pages|sort(attribute='created_at', reverse=True) %}
+      {%- for page in pages|sort(attribute='name') %}
+        {%- set latest_version = page.get_latest_version() %}
         <tr>
           <td>{{ page.name }}</td>
           <td>{{ page.url }}</td>
-          <td style="white-space: nowrap;">{{ render_datetime(page.created_at) }}</td>
-          <td><a href="{{ page.creator.id }}">{{ page.creator.name }}</a></td>
+          <td style="white-space: nowrap;"><a href="{{ url_for('.history', name=page.name) }}" title="Änderungshistorie ansehen">{{ render_datetime(latest_version.created_at) }}</a></td>
+          <td><a href="{{ latest_version.creator.id }}">{{ latest_version.creator.name }}</a></td>
           {%- set page_mounted_url = page.generate_url() %}
           {%- if page_mounted_url is not none %}
           <td colspan="2">
@@ -34,14 +35,14 @@
             <span class="action hidden"><span class="icon-view"></span> ansehen</span>
           </td>
           <td>
-            <a href="{{ url_for('.view_version', id=page.id) }}" class="action"><span class="icon-view"></span> Fallback</a>
+            <a href="{{ url_for('.view_version', id=latest_version.id) }}" class="action"><span class="icon-view"></span> Fallback</a>
           </td>
           {%- endif %}
           <td>
             <a href="{{ url_for('.update_form', name=page.name) }}" class="action"><span class="icon-edit"></span> bearbeiten</a>
           </td>
         </tr>
-      {% endfor %}
+      {%- endfor %}
     </tbody>
   </table>
 
