@@ -1,0 +1,48 @@
+@font-face {
+  font-family: "FontAwesome";
+  src: url("fonts/fontawesome-webfont.eot?v=4.1.0");
+  src: url("fonts/fontawesome-webfont.eot?#iefix&v=4.1.0") format("embedded-opentype"), url("fonts/fontawesome-webfont.woff?v=4.1.0") format("woff"), url("fonts/fontawesome-webfont.ttf?v=4.1.0") format("truetype"), url("fonts/fontawesome-webfont.svg?v=4.1.0#fontawesomeregular") format("svg");
+  font-style: normal;
+  font-weight: normal;
+}
+
+[class^="icon-"],
+[class*=" icon-"] {
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  *margin-right: 0.3em;
+  text-decoration: inherit;
+}
+
+[class^="icon-"]:before,
+[class*=" icon-"]:before {
+  display: inline-block;
+  speak: none;
+  text-decoration: inherit;
+}
+
+/* makes sure icons active on rollover in links */
+a [class^="icon-"],
+a [class*=" icon-"] {
+  display: inline-block;
+}
+
+li [class^="icon-"],
+li [class*=" icon-"] {
+  display: inline-block;
+  text-align: center;
+  width: 1.25em;
+}
+
+.icon-add:before            { content: "\f067"; }
+.icon-archived:before       { content: "\f187"; }
+.icon-arrow-up:before       { content: "\f062"; }
+.icon-edit:before           { content: "\f040"; }
+.icon-external-link:before  { content: "\f08e"; }
+.icon-delete:before         { content: "\2718"; }
+.icon-pending:before        { content: "\f017"; }
+.icon-published:before      { content: "\f06e"; }
+.icon-update:before         { content: "\f021"; }
+.icon-view:before           { content: "\f06e"; }

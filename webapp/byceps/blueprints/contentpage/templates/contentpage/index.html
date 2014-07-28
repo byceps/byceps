@@ -48,7 +48,7 @@
 
   {%- if ContentPagePermission.create in g.current_user.permissions %}
   <ol class="actions">
-    <li><a href="{{ url_for('.create_form') }}">Neue Seite anlegen</a></li>
+    <li><a href="{{ url_for('.create_form') }}"><span class="icon-add"></span> Neue Seite anlegen</a></li>
   </ol>
   {%- endif %}
 
