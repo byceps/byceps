@@ -13,12 +13,19 @@ from ...database import db
 from ...util.framework import create_blueprint, flash_success
 from ...util.templating import templated
 
+from ..authorization.decorators import permission_required
+from ..authorization.registry import permission_registry
+
+from .authorization import ContentPagePermission
 from .forms import CreateForm, UpdateForm
 from .models import ContentPage, ContentPageVersion
 from .templating import render_page
 
 
 blueprint = create_blueprint('contentpage', __name__)
+
+
+permission_registry.register_enum('content_page', ContentPagePermission)
 
 
 def add_routes_for_pages(app):
@@ -33,6 +40,7 @@ def add_routes_for_pages(app):
 
 
 @blueprint.route('/')
+@permission_required(ContentPagePermission.list)
 @templated
 def index():
     """List pages."""
@@ -47,6 +55,7 @@ def view_latest_by_name(name):
 
 
 @blueprint.route('/versions/<id>')
+@permission_required(ContentPagePermission.view_history)
 def view_version(id):
     """Show the page with the given id."""
     version = find_version(id)
@@ -54,6 +63,7 @@ def view_version(id):
 
 
 @blueprint.route('/<name>/history')
+@permission_required(ContentPagePermission.view_history)
 @templated
 def history(name):
     page = find_page(name)
@@ -67,6 +77,7 @@ def history(name):
 
 
 @blueprint.route('/create')
+@permission_required(ContentPagePermission.create)
 @templated
 def create_form():
     """Show form to create a page."""
@@ -77,6 +88,7 @@ def create_form():
 
 
 @blueprint.route('/', methods=['POST'])
+@permission_required(ContentPagePermission.create)
 def create():
     """Create a page."""
     form = CreateForm(request.form)
@@ -105,6 +117,7 @@ def create():
 
 
 @blueprint.route('/<name>/update')
+@permission_required(ContentPagePermission.update)
 @templated
 def update_form(name):
     """Show form to update a page."""
@@ -123,6 +136,7 @@ def update_form(name):
 
 
 @blueprint.route('/<name>', methods=['POST'])
+@permission_required(ContentPagePermission.update)
 def update(name):
     """Update a page."""
     form = UpdateForm(request.form)
