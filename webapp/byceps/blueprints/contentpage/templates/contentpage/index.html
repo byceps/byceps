@@ -10,7 +10,7 @@
   <table class="index" style="width: 100%;">
     <thead>
       <tr>
-        <th>Bezeichner</th>
+        <th>Name</th>
         <th>URL-Pfad</th>
         <th>Letzte Änderung</th>
         <th>durch</th>
@@ -23,7 +23,13 @@
         <tr>
           <td>{{ page.name }}</td>
           <td>{{ page.url }}</td>
-          <td style="white-space: nowrap;"><a href="{{ url_for('.history', name=page.name) }}" title="Änderungshistorie ansehen">{{ render_datetime(latest_version.created_at) }}</a></td>
+          <td style="white-space: nowrap;">
+            {%- if ContentPagePermission.view_history in g.current_user.permissions %}
+            <a href="{{ url_for('.history', name=page.name) }}" title="Änderungshistorie ansehen">{{ render_datetime(latest_version.created_at) }}</a>
+            {%- else %}
+            {{ render_datetime(latest_version.created_at) }}
+            {%- endif %}
+          </td>
           <td><a href="{{ latest_version.creator.id }}">{{ latest_version.creator.name }}</a></td>
           {%- set page_mounted_url = page.generate_url() %}
           {%- if page_mounted_url is not none %}
@@ -39,7 +45,9 @@
           </td>
           {%- endif %}
           <td>
+            {%- if ContentPagePermission.update in g.current_user.permissions %}
             <a href="{{ url_for('.update_form', name=page.name) }}" class="action"><span class="icon-edit"></span> bearbeiten</a>
+            {%- endif %}
           </td>
         </tr>
       {%- endfor %}
