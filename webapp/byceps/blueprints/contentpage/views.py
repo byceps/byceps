@@ -42,23 +42,15 @@ def index():
 
 def view_latest_by_name(name):
     """Show the latest version of the page with the given name."""
-    return render_page(name, _load_template_by_name)
+    page = find_page(name)
+    return render_page(page)
 
 
 @blueprint.route('/versions/<id>')
 def view_version(id):
     """Show the page with the given id."""
-    return render_page(id, _load_template_by_version)
-
-
-def _load_template_by_name(name):
-    page = find_page(name)
-    return page.get_latest_version().body
-
-
-def _load_template_by_version(id):
-    version = ContentPageVersion.query.get_or_404(id)
-    return version.body
+    version = find_version(id)
+    return render_page(version.page)
 
 
 @blueprint.route('/<name>/history')
@@ -151,3 +143,7 @@ def update(name):
 
 def find_page(name):
     return ContentPage.query.get_or_404(name)
+
+
+def find_version(id):
+    return ContentPageVersion.query.get_or_404(id)
