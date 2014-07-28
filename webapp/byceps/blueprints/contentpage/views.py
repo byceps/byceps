@@ -16,8 +16,7 @@ from jinja2 import FunctionLoader, TemplateNotFound
 from jinja2.sandbox import ImmutableSandboxedEnvironment
 
 from ...database import db
-from ...util.framework import create_blueprint, flash_error, flash_success, \
-    get_blueprint_views_module
+from ...util.framework import create_blueprint, flash_error, flash_success
 from ...util.templating import templated
 
 from .forms import CreateForm, UpdateForm
