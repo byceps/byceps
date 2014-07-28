@@ -7,20 +7,15 @@ byceps.blueprints.contentpage.views
 :Copyright: 2006-2014 Jochen Kupperschmidt
 """
 
-import sys
-import traceback
-import warnings
-
-from flask import abort, g, redirect, render_template, request, url_for
-from jinja2 import FunctionLoader, TemplateNotFound
-from jinja2.sandbox import ImmutableSandboxedEnvironment
+from flask import abort, g, redirect, request, url_for
 
 from ...database import db
-from ...util.framework import create_blueprint, flash_error, flash_success
+from ...util.framework import create_blueprint, flash_success
 from ...util.templating import templated
 
 from .forms import CreateForm, UpdateForm
 from .models import ContentPage, ContentPageVersion
+from .templating import render_page
 
 
 blueprint = create_blueprint('contentpage', __name__)
@@ -47,61 +42,13 @@ def index():
 
 def view_latest_by_name(name):
     """Show the latest version of the page with the given name."""
-    try:
-        template = _create_env(load_func=_load_template_by_name).get_template(name)
-        title, current_page = _extract_metadata(name, template)
-        body = template.render()
-        context = {
-            'title': title,
-            'current_page': current_page,
-            'body': body,
-        }
-        return render_template('contentpage/view.html', **context)
-    except TemplateNotFound:
-        abort(404)
-    except Exception as e:
-        print('Error in content page markup:', e, file=sys.stderr)
-        traceback.print_exc()
-        context = {
-            'message': str(e),
-        }
-        return render_template('contentpage/error.html', **context), 500
+    return render_page(name, _load_template_by_name)
 
 
 @blueprint.route('/versions/<id>')
 def view_version(id):
     """Show the page with the given id."""
-    try:
-        template = _create_env(load_func=_load_template_by_version).get_template(id)
-        title, current_page = _extract_metadata(id, template)
-        body = template.render()
-        context = {
-            'title': title,
-            'current_page': current_page,
-            'body': body,
-        }
-        return render_template('contentpage/view.html', **context)
-    except TemplateNotFound:
-        abort(404)
-    except Exception as e:
-        print('Error in content page markup:', e, file=sys.stderr)
-        traceback.print_exc()
-        context = {
-            'message': str(e),
-        }
-        return render_template('contentpage/error.html', **context), 500
-
-
-def _create_env(load_func):
-    loader = FunctionLoader(load_func)
-    env = ImmutableSandboxedEnvironment(
-        loader=loader,
-        autoescape=True,
-        trim_blocks=True)
-
-    env.globals['url_for'] = url_for
-
-    return env
+    return render_page(id, _load_template_by_version)
 
 
 def _load_template_by_name(name):
@@ -112,18 +59,6 @@ def _load_template_by_name(name):
 def _load_template_by_version(id):
     version = ContentPageVersion.query.get_or_404(id)
     return version.body
-
-
-def _extract_metadata(id, template):
-    try:
-        title = template.module.title
-        current_page = template.module.current_page
-    except AttributeError:
-        warnings.warn(
-            'No title and/or current page set for page "{}".'.format(id))
-        title = ''
-        current_page = None
-    return title, current_page
 
 
 @blueprint.route('/<name>/history')
