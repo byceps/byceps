@@ -155,9 +155,14 @@ def create():
     """Create a page."""
     form = CreateForm(request.form)
 
+    name = form.name.data.strip()
+    url = form.url.data.strip()
+    if not url.startswith('/'):
+        abort(400, 'URL path must start with a slash.')
+
     page = ContentPage(
-        name=form.name.data,
-        url=form.url.data)
+        name=name,
+        url=url)
     db.session.add(page)
 
     version = ContentPageVersion(
