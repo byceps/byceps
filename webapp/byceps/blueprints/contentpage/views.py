@@ -8,6 +8,7 @@ byceps.blueprints.contentpage.views
 """
 
 import sys
+import traceback
 import warnings
 
 from flask import abort, g, redirect, render_template, request, url_for
@@ -61,6 +62,7 @@ def view_latest_by_name(name):
         abort(404)
     except Exception as e:
         print('Error in content page markup:', e, file=sys.stderr)
+        traceback.print_exc()
         context = {
             'message': str(e),
         }
@@ -84,6 +86,7 @@ def view_version(id):
         abort(404)
     except Exception as e:
         print('Error in content page markup:', e, file=sys.stderr)
+        traceback.print_exc()
         context = {
             'message': str(e),
         }
