@@ -218,6 +218,10 @@ table.index td {
   padding: 0.5em 0.5em 0.5em 0;
 }
 
+table.wide {
+  width: 100%;
+}
+
 
 /* footer */
 
