@@ -8,8 +8,10 @@ byceps.blueprints.user.views
 """
 
 from datetime import datetime
+from itertools import chain
 from uuid import UUID
 
+from sqlalchemy.ext.associationproxy import association_proxy
 from werkzeug.security import generate_password_hash as _generate_password_hash
 
 from ...database import db, generate_uuid
@@ -32,6 +34,14 @@ class AnonymousUser(object):
     def is_active(self):
         return False
 
+    @property
+    def roles(self):
+        return frozenset()
+
+    @property
+    def permissions(self):
+        return frozenset()
+
     def __repr__(self):
         return ReprBuilder(self) \
             .add_with_lookup('id') \
@@ -48,6 +58,8 @@ class User(db.Model):
     email_address = db.Column(db.Unicode(80), unique=True)
     password_hash = db.Column(db.Unicode(66))
     is_enabled = db.Column(db.Boolean, default=False)
+
+    roles = association_proxy('user_roles', 'role')
 
     @classmethod
     def create(cls, name, email_address, password):
@@ -77,6 +89,11 @@ class User(db.Model):
 
     def is_active(self):
         return self.is_enabled
+
+    @property
+    def permissions(self):
+        return frozenset(
+            chain.from_iterable(role.permissions for role in self.roles))
 
     def __repr__(self):
         return ReprBuilder(self) \
