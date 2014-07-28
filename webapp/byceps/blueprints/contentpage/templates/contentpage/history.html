@@ -21,17 +21,25 @@
   <table class="index" style="width: 100%;">
     <thead>
       <tr>
+        <th></th>
         <th>geändert</th>
         <th>durch</th>
       </tr>
     </thead>
     <tbody>
-      {% for version in versions %}
+      {%- for version in versions %}
         <tr>
+          <td>
+            {%- if loop.first -%}
+            <span class="icon-published" title="öffentlich"></span>
+            {%- else -%}
+            <span class="icon-archived" title="archiviert"></span>
+            {%- endif -%}
+          </td>
           <td style="white-space: nowrap;"><a href="{{ url_for('.view_version', id=version.id) }}">{{ render_datetime(version.created_at) }}</a></td>
           <td><a href="{{ version.creator.id }}">{{ version.creator.name }}</a></td>
         </tr>
-      {% endfor %}
+      {%- endfor %}
     </tbody>
   </table>
 
