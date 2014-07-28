@@ -41,9 +41,13 @@ def create_app(config_module_name):
 
     dateformat.register_template_filters(app)
 
-    # Add URLs for content pages (which are defined in the database).
-    from .blueprints.contentpage.views import add_urls_for_pages
-    with app.app_context():
-        add_urls_for_pages(app)
+    register_content_pages_routes(app)
 
     return app
+
+
+def register_content_pages_routes(app):
+    """Add URL routes for content pages (which are defined in the database)."""
+    from .blueprints.contentpage.views import add_routes_for_pages
+    with app.app_context():
+        add_routes_for_pages(app)

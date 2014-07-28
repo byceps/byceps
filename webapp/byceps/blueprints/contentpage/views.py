@@ -34,7 +34,7 @@ def index():
     return {'pages': pages}
 
 
-def add_urls_for_pages(app):
+def add_routes_for_pages(app):
     """Register routes for pages with the application."""
     blueprint_name = 'contentpage'
     pages = ContentPage.query.all()
