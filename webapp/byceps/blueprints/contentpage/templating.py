@@ -36,7 +36,8 @@ def get_page_context(name, load_func):
     """Return the page context to insert into the outer template."""
     template = create_env(load_func).get_template(name)
 
-    title, current_page = extract_metadata(name, template)
+    current_page = extract_variable(template, 'current_page')
+    title = extract_variable(template, 'title')
     body = template.render()
 
     return {
@@ -61,14 +62,11 @@ def create_env(load_func):
     return env
 
 
-def extract_metadata(id, template):
-    """Extract variables from a template."""
+def extract_variable(template, name):
+    """Try to extract a variable's value from the template, or return
+    `None` if the variable is not defined.
+    """
     try:
-        title = template.module.title
-        current_page = template.module.current_page
+        return getattr(template.module, name)
     except AttributeError:
-        warnings.warn(
-            'No title and/or current page set for page "{}".'.format(id))
-        title = ''
-        current_page = None
-    return title, current_page
+        return None
