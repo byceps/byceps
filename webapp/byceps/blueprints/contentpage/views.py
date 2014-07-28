@@ -30,13 +30,17 @@ permission_registry.register_enum('content_page', ContentPagePermission)
 
 def add_routes_for_pages(app):
     """Register routes for pages with the application."""
-    blueprint_name = 'contentpage'
     pages = ContentPage.query.all()
     for page in pages:
-        endpoint = '{}.{}'.format(blueprint_name, page.name)
-        view_func = view_latest_by_name
-        defaults = {'name': page.name}
-        app.add_url_rule(page.url, endpoint, view_func, defaults=defaults)
+        add_route_for_page(app, page)
+
+
+def add_route_for_page(app, page):
+    """Register a route for the page."""
+    endpoint = '{}.{}'.format(blueprint.name, page.name)
+    view_func = view_latest_by_name
+    defaults = {'name': page.name}
+    app.add_url_rule(page.url, endpoint, view_func, defaults=defaults)
 
 
 @blueprint.route('/')
