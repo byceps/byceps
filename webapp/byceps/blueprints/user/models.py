@@ -33,7 +33,9 @@ class AnonymousUser(object):
         return False
 
     def __repr__(self):
-        return '<{}(id={})>'.format('AnonymousUser', self.id)
+        return ReprBuilder(self) \
+            .add_with_lookup('id') \
+            .build()
 
 
 class User(db.Model):
@@ -78,10 +80,10 @@ class User(db.Model):
 
     def __repr__(self):
         return ReprBuilder(self) \
-            .add('id') \
-            .add('name') \
-            .add('email_address') \
-            .add('is_enabled') \
+            .add_with_lookup('id') \
+            .add_with_lookup('name') \
+            .add_with_lookup('email_address') \
+            .add_with_lookup('is_enabled') \
             .build()
 
 

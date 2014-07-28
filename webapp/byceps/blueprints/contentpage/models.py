@@ -39,9 +39,9 @@ class ContentPage(db.Model):
 
     def __repr__(self):
         return ReprBuilder(self) \
-            .add('id') \
-            .add('created_at') \
-            .add('creator') \
-            .add('name') \
-            .add('url') \
+            .add_with_lookup('id') \
+            .add_with_lookup('created_at') \
+            .add_with_lookup('creator') \
+            .add_with_lookup('name') \
+            .add_with_lookup('url') \
             .build()
