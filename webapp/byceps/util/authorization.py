@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-byceps.util.auth
-~~~~~~~~~~~~~~~~
-
-Authorization utilities.
+byceps.util.authorization
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2014 Jochen Kupperschmidt
 """
