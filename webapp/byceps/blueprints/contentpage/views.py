@@ -26,14 +26,6 @@ from .models import ContentPage
 blueprint = create_blueprint('contentpage', __name__)
 
 
-@blueprint.route('/')
-@templated
-def index():
-    """List pages."""
-    pages = ContentPage.query.all()
-    return {'pages': pages}
-
-
 def add_routes_for_pages(app):
     """Register routes for pages with the application."""
     blueprint_name = 'contentpage'
@@ -43,6 +35,14 @@ def add_routes_for_pages(app):
         view_func = view_latest_by_name
         defaults = {'name': page.name}
         app.add_url_rule(page.url, endpoint, view_func, defaults=defaults)
+
+
+@blueprint.route('/')
+@templated
+def index():
+    """List pages."""
+    pages = ContentPage.query.all()
+    return {'pages': pages}
 
 
 def view_latest_by_name(name):
