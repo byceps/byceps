@@ -15,13 +15,13 @@ from flask import abort, render_template, url_for
 from jinja2 import FunctionLoader, TemplateNotFound
 from jinja2.sandbox import ImmutableSandboxedEnvironment
 
-from .models import ContentPage
 
-
-def render_page(page):
-    """Render the page, or an error page if that fails."""
+def render_page(version):
+    """Render the given version of the page, or an error page if that
+    fails.
+    """
     try:
-        context = get_page_context(page)
+        context = get_page_context(version)
         return render_template('contentpage/view.html', **context)
     except TemplateNotFound:
         abort(404)
@@ -34,12 +34,12 @@ def render_page(page):
         return render_template('contentpage/error.html', **context), 500
 
 
-def get_page_context(page):
+def get_page_context(version):
     """Return the page context to insert into the outer template."""
-    template = create_env().get_template(page.name)
+    template = load_template(version)
 
     current_page = extract_variable(template, 'current_page')
-    title = page.get_latest_version().title
+    title = version.title
     body = template.render()
 
     return {
@@ -49,25 +49,25 @@ def get_page_context(page):
     }
 
 
+def load_template(version):
+    """Load the template from the page version's body."""
+    env = create_env()
+    return env.from_string(version.body)
+
+
 def create_env():
     """Create a sandboxed environment that uses the given function to
     load templates.
     """
-    loader = FunctionLoader(load_template)
+    dummy_loader = FunctionLoader(lambda name: None)
     env = ImmutableSandboxedEnvironment(
-        loader=loader,
+        loader=dummy_loader,
         autoescape=True,
         trim_blocks=True)
 
     env.globals['url_for'] = url_for
 
     return env
-
-
-def load_template(name):
-    """Return the body of the page's latest version."""
-    page = ContentPage.query.get_or_404(name)
-    return page.get_latest_version().body
 
 
 def extract_variable(template, name):

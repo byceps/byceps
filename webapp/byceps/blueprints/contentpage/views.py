@@ -43,14 +43,14 @@ def index():
 def view_latest_by_name(name):
     """Show the latest version of the page with the given name."""
     page = find_page(name)
-    return render_page(page)
+    return render_page(page.get_latest_version())
 
 
 @blueprint.route('/versions/<id>')
 def view_version(id):
     """Show the page with the given id."""
     version = find_version(id)
-    return render_page(version.page)
+    return render_page(version)
 
 
 @blueprint.route('/<name>/history')
