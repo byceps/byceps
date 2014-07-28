@@ -43,6 +43,7 @@ def create_app(config_module_name):
 
     # Add URLs for content pages (which are defined in the database).
     from .blueprints.contentpage.views import add_urls_for_pages
-    app.before_first_request(add_urls_for_pages)
+    with app.app_context():
+        add_urls_for_pages(app)
 
     return app

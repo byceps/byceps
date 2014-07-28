@@ -24,16 +24,17 @@
           <td>{{ page.url }}</td>
           <td style="white-space: nowrap;">{{ render_datetime(page.created_at) }}</td>
           <td><a href="{{ page.creator.id }}">{{ page.creator.name }}</a></td>
-          {%- if page.generate_url() is not none %}
-          <td>
-            <a href="{{ page.generate_url() }}" class="action"><span class="icon-view"></span> ansehen</a>
+          {%- set page_mounted_url = page.generate_url() %}
+          {%- if page_mounted_url is not none %}
+          <td colspan="2">
+            <a href="{{ page_mounted_url }}" class="action"><span class="icon-view"></span> ansehen</a>
           </td>
           {%- else %}
           <td>
             <span class="action hidden"><span class="icon-view"></span> ansehen</span>
           </td>
           <td>
-            <a href="{{ url_for('.view', id=page.id) }}" class="action"><span class="icon-view"></span> Fallback</a>
+            <a href="{{ url_for('.view_version', id=page.id) }}" class="action"><span class="icon-view"></span> Fallback</a>
           </td>
           {%- endif %}
           <td>

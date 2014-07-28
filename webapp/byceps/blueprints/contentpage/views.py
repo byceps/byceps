@@ -34,24 +34,22 @@ def index():
     return {'pages': pages}
 
 
-def add_urls_for_pages():
+def add_urls_for_pages(app):
+    """Register routes for pages with the application."""
     blueprint_name = 'contentpage'
     pages = ContentPage.query.all()
     for page in pages:
-        # Copy the value into the closure.
-        views_module = get_blueprint_views_module(blueprint_name)
-        view_func = getattr(views_module, 'view')
-        #view_func = lambda endpoint=endpoint: view(page.name)
         endpoint = '{}.{}'.format(blueprint_name, page.name)
-        app.add_url_rule(page.url, endpoint=endpoint, view_func=view_func)
+        view_func = view_latest_by_name
+        defaults = {'name': page.name}
+        app.add_url_rule(page.url, endpoint, view_func, defaults=defaults)
 
 
-@blueprint.route('/<id>')
-def view(id):
-    """Show the page."""
+def view_latest_by_name(name):
+    """Show the latest version of the page with the given name."""
     try:
-        template = _create_env().get_template(id)
-        title, current_page = _extract_metadata(template)
+        template = _create_env(load_func=_load_template_by_name).get_template(name)
+        title, current_page = _extract_metadata(name, template)
         body = template.render()
         context = {
             'title': title,
@@ -69,9 +67,33 @@ def view(id):
         return render_template('contentpage/error.html', **context), 500
 
 
-def _create_env():
+@blueprint.route('/versions/<id>')
+def view_version(id):
+    """Show the page with the given id."""
+    try:
+        template = _create_env(load_func=_load_template_by_version).get_template(id)
+        title, current_page = _extract_metadata(id, template)
+        body = template.render()
+        context = {
+            'title': title,
+            'current_page': current_page,
+            'body': body,
+        }
+        return render_template('contentpage/view.html', **context)
+    except TemplateNotFound:
+        abort(404)
+    except Exception as e:
+        print('Error in content page markup:', e, file=sys.stderr)
+        context = {
+            'message': str(e),
+        }
+        return render_template('contentpage/error.html', **context), 500
+
+
+def _create_env(load_func):
+    loader = FunctionLoader(load_func)
     env = ImmutableSandboxedEnvironment(
-        loader=_loader,
+        loader=loader,
         autoescape=True,
         trim_blocks=True)
 
@@ -80,24 +102,24 @@ def _create_env():
     return env
 
 
-def _load_template(name):
-    content_page = _fetch_latest_content_page(name)
-    if content_page is None:
-        return None
-    return content_page.body
-
-
-_loader = FunctionLoader(_load_template)
-
-
-def _fetch_latest_content_page(id):
-    return ContentPage.query \
-        .filter_by(id=id) \
+def _load_template_by_name(name):
+    page = ContentPage.query \
+        .filter_by(name=name) \
         .order_by(ContentPage.created_at.desc()) \
         .first()
 
+    if page is not None:
+        return page.body
 
-def _extract_metadata(template):
+
+def _load_template_by_version(id):
+    page = ContentPage.query.get(id)
+
+    if page is not None:
+        return page.body
+
+
+def _extract_metadata(id, template):
     try:
         title = template.module.title
         current_page = template.module.current_page
@@ -158,7 +180,7 @@ def update(id):
     db.session.commit()
 
     flash_success('Die Seite "{}" wurden aktualisiert.', page.name)
-    return redirect(url_for('.view', id=page.id))
+    return redirect(url_for('.view_version', id=page.id))
 
 
 def find_page(id):

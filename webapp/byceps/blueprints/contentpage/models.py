@@ -32,7 +32,8 @@ class ContentPage(db.Model):
 
     def generate_url(self):
         try:
-            return url_for(self.url)
+            name = 'contentpage.{}'.format(self.name)
+            return url_for(name)
         except BuildError:
             return None
 
