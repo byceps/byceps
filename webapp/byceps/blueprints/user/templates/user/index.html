@@ -12,6 +12,7 @@
       <tr>
         <th>Name</th>
         <th>Erstellt</th>
+        <th>aktiv</th>
       </tr>
     </thead>
     <tbody>
@@ -19,6 +20,7 @@
       <tr>
         <td><a href="{{ url_for('.view', id=user.id) }}">{{ user.name }}</a></td>
         <td>{{ render_datetime(user.created_at) }}</td>
+        <td><span class="icon-{{ 'enabled' if user.is_enabled else 'disabled' }}"></span></td>
       </tr>
       {%- endfor %}
       <tr>
