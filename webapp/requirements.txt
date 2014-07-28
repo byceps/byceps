@@ -2,9 +2,9 @@ Flask >= 0.10.1
 Flask-Script >= 2.0.5
 Jinja2 >= 2.7.3
 Werkzeug >= 0.9.6
-WTForms >= 2.0
+WTForms >= 2.0.1
 
 # data persistence
 Flask-SQLAlchemy >= 1.0
-pg8000 >= 1.9.11
-SQLAlchemy >= 0.9.6
+pg8000 >= 1.9.13
+SQLAlchemy >= 0.9.7
