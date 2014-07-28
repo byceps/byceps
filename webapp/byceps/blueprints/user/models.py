@@ -9,6 +9,7 @@ byceps.blueprints.user.views
 
 from datetime import datetime
 from itertools import chain
+from operator import attrgetter
 from uuid import UUID
 
 from sqlalchemy.ext.associationproxy import association_proxy
@@ -92,8 +93,9 @@ class User(db.Model):
 
     @property
     def permissions(self):
-        return frozenset(
+        models = frozenset(
             chain.from_iterable(role.permissions for role in self.roles))
+        return frozenset(map(attrgetter('enum_member'), models))
 
     def __repr__(self):
         return ReprBuilder(self) \
