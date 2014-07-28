@@ -38,7 +38,7 @@
           </td>
           {%- endif %}
           <td>
-            <a href="{{ url_for('.update_form', id=page.id) }}" class="action"><span class="icon-edit"></span> bearbeiten</a>
+            <a href="{{ url_for('.update_form', name=page.name) }}" class="action"><span class="icon-edit"></span> bearbeiten</a>
           </td>
         </tr>
       {% endfor %}

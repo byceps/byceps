@@ -1,0 +1,38 @@
+{% extends 'layout/base.html' %}
+{% from 'macros/datetime.html' import render_datetime %}
+{% set current_page = 'contentpage.history' %}
+{% set title = 'Versionshistorie' %}
+
+{% block body %}
+
+  <h1>{{ title }}</h1>
+
+  <table>
+    <tr>
+      <th>Name</th>
+      <td>{{ name }}</td>
+    </tr>
+    <tr>
+      <th>URL</th>
+      <td>{{ url }}</td>
+    </tr>
+  </table>
+
+  <table class="index" style="width: 100%;">
+    <thead>
+      <tr>
+        <th>geändert</th>
+        <th>durch</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for page in versions %}
+        <tr>
+          <td style="white-space: nowrap;"><a href="{{ url_for('.view_version', id=page.id) }}">{{ render_datetime(page.created_at) }}</a></td>
+          <td><a href="{{ page.creator.id }}">{{ page.creator.name }}</a></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+{%- endblock body %}

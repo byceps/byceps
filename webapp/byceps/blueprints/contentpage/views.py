@@ -131,6 +131,24 @@ def _extract_metadata(id, template):
     return title, current_page
 
 
+@blueprint.route('/<name>/history')
+@templated
+def history(name):
+    versions = ContentPage.query \
+        .filter_by(name=name) \
+        .order_by(ContentPage.created_at.desc()) \
+        .all()
+    if not versions:
+        abort(404)
+
+    page = versions[0]
+    return {
+        'name': page.name,
+        'url': page.url,
+        'versions': versions,
+    }
+
+
 @blueprint.route('/create')
 @templated
 def create_form():
@@ -158,11 +176,11 @@ def create():
     return redirect(url_for('.index'))
 
 
-@blueprint.route('/<id>/update')
+@blueprint.route('/<name>/update')
 @templated
-def update_form(id):
+def update_form(name):
     """Show form to update a page."""
-    page = find_page(id)
+    page = find_page_by_name(name)
     form = UpdateForm(obj=page)
     return {
         'form': form,
@@ -170,18 +188,24 @@ def update_form(id):
     }
 
 
-@blueprint.route('/<id>', methods=['POST'])
-def update(id):
+@blueprint.route('/<name>', methods=['POST'])
+def update(name):
     """Update a page."""
-    page = find_page(id)
-
     form = UpdateForm(request.form)
-    page.body = form.body.data
+
+    original_page = find_page_by_name(name)
+
+    page = ContentPage(
+        creator=g.current_user,
+        name=original_page.name,
+        url=original_page.url,
+        body=form.body.data)
+    db.session.add(page)
     db.session.commit()
 
-    flash_success('Die Seite "{}" wurden aktualisiert.', page.name)
+    flash_success('Die Seite "{}" wurde aktualisiert.', page.name)
     return redirect(url_for('.view_version', id=page.id))
 
 
-def find_page(id):
-    return ContentPage.query.filter_by(id=id).first_or_404()
+def find_page_by_name(name):
+    return ContentPage.query.filter_by(name=name).first_or_404()
