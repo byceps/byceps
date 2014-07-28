@@ -7,7 +7,7 @@ byceps.blueprints.contentpage.views
 :Copyright: 2006-2014 Jochen Kupperschmidt
 """
 
-from flask import abort, g, redirect, request, url_for
+from flask import abort, current_app, g, redirect, request, url_for
 
 from ...database import db
 from ...util.framework import create_blueprint, flash_success
@@ -28,19 +28,19 @@ blueprint = create_blueprint('contentpage', __name__)
 permission_registry.register_enum('content_page', ContentPagePermission)
 
 
-def add_routes_for_pages(app):
+def add_routes_for_pages():
     """Register routes for pages with the application."""
     pages = ContentPage.query.all()
     for page in pages:
-        add_route_for_page(app, page)
+        add_route_for_page(page)
 
 
-def add_route_for_page(app, page):
+def add_route_for_page(page):
     """Register a route for the page."""
     endpoint = '{}.{}'.format(blueprint.name, page.name)
     view_func = view_latest_by_name
     defaults = {'name': page.name}
-    app.add_url_rule(page.url, endpoint, view_func, defaults=defaults)
+    current_app.add_url_rule(page.url, endpoint, view_func, defaults=defaults)
 
 
 @blueprint.route('/')

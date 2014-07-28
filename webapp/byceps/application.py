@@ -51,4 +51,4 @@ def register_content_pages_routes(app):
     """Add URL routes for content pages (which are defined in the database)."""
     from .blueprints.contentpage.views import add_routes_for_pages
     with app.app_context():
-        add_routes_for_pages(app)
+        add_routes_for_pages()
