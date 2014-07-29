@@ -153,7 +153,7 @@ class User(db.Model):
         if not self.has_avatar_image:
             return None
 
-        path = current_app.config['PATH_USER_IMAGES']
+        path = current_app.config['PATH_USER_AVATAR_IMAGES']
         filename = self.avatar_image_filename
         return path / filename
 
