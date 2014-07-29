@@ -23,9 +23,6 @@ from .models import GUEST_USER_ID, User
 
 
 
-SESSION_KEY_USER_ID = 'user_id'
-
-
 blueprint = create_blueprint('user', __name__)
 
 
@@ -117,7 +114,7 @@ def login():
         abort(403)
 
     # Authorization succeeded.
-    update_session_as_logged_in(user)
+    UserSession.start(user)
     flash_success('Erfolgreich eingeloggt als {}.', user.name)
 
 
@@ -125,23 +122,14 @@ def login():
 @respond_no_content
 def logout():
     """Log out user by deleting the corresponding cookie."""
-    update_session_as_logged_out()
+    UserSession.end()
     flash_success('Erfolgreich ausgeloggt.')
 
 
 def determine_current_user():
     """Retrieve the current user, falling back to the anonymous user."""
-    user_id = get_user_id_from_session()
+    user_id = UserSession.get_user_id()
     return User.load(user_id)
-
-
-def get_user_id_from_session():
-    user_id = session.get(SESSION_KEY_USER_ID)
-    if user_id is not None:
-        try:
-            return UUID(user_id)
-        except ValueError:
-            pass
 
 
 def is_user_authorized(user, password):
@@ -160,12 +148,30 @@ def is_user_authorized(user, password):
     return True
 
 
-def update_session_as_logged_in(user):
-    session[SESSION_KEY_USER_ID] = str(user.id)
-    session.permanent = True
+class UserSession(object):
 
+    KEY = 'user_id'
 
-def update_session_as_logged_out():
-    """Delete the session cookie."""
-    session.pop(SESSION_KEY_USER_ID, None)
-    session.permanent = False
+    @classmethod
+    def start(cls, user):
+        """End the user's session by deleting the session cookie."""
+        session[cls.KEY] = str(user.id)
+        session.permanent = True
+
+    @classmethod
+    def end(cls):
+        """End the user's session by deleting the session cookie."""
+        session.pop(cls.KEY, None)
+        session.permanent = False
+
+    @classmethod
+    def get_user_id(cls):
+        """Return the ID of the current user."""
+        user_id = session.get(cls.KEY)
+        if user_id is None:
+            return None
+
+        try:
+            return UUID(user_id)
+        except ValueError:
+            return None
