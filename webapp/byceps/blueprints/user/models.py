@@ -10,8 +10,10 @@ byceps.blueprints.user.models
 from datetime import datetime
 from itertools import chain
 from operator import attrgetter
+from pathlib import Path
 from uuid import UUID
 
+from flask import current_app
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
 from werkzeug.security import check_password_hash, \
@@ -132,6 +134,10 @@ class User(db.Model):
             self.avatar_image_type,
         }
 
+    def set_avatar_image(self, created_at, image_type):
+        self.avatar_image_created_at = created_at
+        self.avatar_image_type = image_type
+
     @hybrid_property
     def avatar_image_type(self):
         type_str = self._avatar_image_type
@@ -141,6 +147,22 @@ class User(db.Model):
     @avatar_image_type.setter
     def avatar_image_type(self, type_):
         self._avatar_image_type = type_.name if type_ is not None else None
+
+    @property
+    def avatar_image_path(self):
+        if not self.has_avatar_image:
+            return None
+
+        path = current_app.config['PATH_USER_IMAGES']
+        filename = self.avatar_image_filename
+        return path / filename
+
+    @property
+    def avatar_image_filename(self):
+        timestamp = self.avatar_image_created_at.strftime('%s')
+        name_without_suffix = '{}_{}'.format(self.id, timestamp)
+        suffix = '.' + self.avatar_image_type.name
+        return Path(name_without_suffix).with_suffix(suffix)
 
     def __repr__(self):
         return ReprBuilder(self) \

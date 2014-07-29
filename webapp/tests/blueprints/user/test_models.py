@@ -1,12 +1,16 @@
 # -*- coding: utf-8 -*-
 
 from datetime import datetime
+from pathlib import Path
 from unittest import TestCase
+from uuid import UUID
 
 from nose2.tools import params
 
 from byceps.blueprints.user.models import User
 from byceps.util.image import ImageType
+
+from tests import AbstractAppTestCase
 
 
 NOW = datetime.now()
@@ -50,3 +54,23 @@ class AvatarImageTestCase(TestCase):
         self.user.avatar_image_type = image_type
 
         self.assertEquals(self.user._avatar_image_type, expected)
+
+
+class AvatarImagePathTestCase(AbstractAppTestCase):
+
+    def setUp(self):
+        super(AvatarImagePathTestCase, self).setUp()
+
+        user_id = UUID('2e17cb15-d763-4f93-882a-371296a3c63f')
+        self.user = User(id=user_id)
+
+    def test_path(self):
+        expected = Path(
+            '/var/data/avatars/2e17cb15-d763-4f93-882a-371296a3c63f_1406637810.jpeg')
+
+        created_at = datetime(2014, 7, 29, 14, 43, 30, 196165)
+        self.user.set_avatar_image(created_at, ImageType.jpeg)
+
+        with self.app.app_context():
+            self.app.config['PATH_USER_IMAGES'] = Path('/var/data/avatars')
+            self.assertEquals(self.user.avatar_image_path, expected)
