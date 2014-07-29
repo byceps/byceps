@@ -42,7 +42,8 @@ def create_app(config_module_name):
 
     dateformat.register_template_filters(app)
 
-    register_content_pages_routes(app)
+    if not app.testing:
+        register_content_pages_routes(app)
 
     return app
 

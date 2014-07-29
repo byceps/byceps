@@ -8,5 +8,5 @@ TESTING = True
 
 LOCALE = 'de_DE.UTF-8'
 
-SQLALCHEMY_DATABASE_URI = 'sqlite://'
+SQLALCHEMY_DATABASE_URI = 'postgresql+pg8000://byceps_test:test@127.0.0.1/byceps_test'
 SQLALCHEMY_ECHO = False
