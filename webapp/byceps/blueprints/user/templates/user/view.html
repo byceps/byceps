@@ -1,4 +1,5 @@
 {% extends 'layout/base.html' %}
+{% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
 {% set current_page = 'user.view' %}
 {% set title = 'Benutzer - %s'|format(user.screen_name) %}
 
@@ -12,5 +13,16 @@
       <td>{{ user.screen_name }}</td>
     </tr>
   </table>
+
+  {%- if user.has_avatar_image %}
+  <h2>Avatarbild</h2>
+  <div style="max-height: 640px; max-width: 640px; overflow: auto;"><img src="{{ url_for('.avatar_image', filename=user.avatar_image_filename) }}" alt="Avatarbild"/></div>
+  {%- endif %}
+
+  {%- if g.current_user == user %}
+  <ol class="actions">
+    <li><a href="{{ url_for('.avatar_image_form', id=g.current_user.id) }}"><span class="icon-edit"></span> Avatar hochladen</a></li>
+  </ol>
+  {%- endif %}
 
 {%- endblock body %}

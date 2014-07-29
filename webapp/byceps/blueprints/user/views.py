@@ -13,11 +13,13 @@ from flask import abort, g, redirect, request, session, url_for
 
 from ...database import db
 from ...util.framework import create_blueprint, flash_error, flash_success
+from ...util.image import guess_type as guess_image_type
 from ...util.templating import templated
+from ...util import upload
 from ...util.views import respond_no_content
 
-from .forms import CreateForm, LoginForm
-from .models import GUEST_USER_ID, User
+from .forms import AvatarImageUpdateForm, CreateForm, LoginForm
+from .models import User
 
 
 blueprint = create_blueprint('user', __name__)
@@ -77,6 +79,59 @@ def create():
     flash_success('Das Benutzerkonto für "{}" wurde angelegt.',
                   user.screen_name)
     return redirect(url_for('.view', id=user.id))
+
+
+@blueprint.route('/<id>/avatar/update')
+@templated
+def avatar_image_form(id):
+    user = find_user_by_id(id)
+    form = AvatarImageUpdateForm()
+    return {
+        'user': user,
+        'form': form,
+    }
+
+
+# Route to generate avatar image URLs.
+blueprint.add_url_rule(
+    '/avatars/<filename>',
+    endpoint='avatar_image',
+    methods=['GET'],
+    build_only=True)
+
+
+@blueprint.route('/<id>/avatar', methods=['POST'])
+def avatar_image(id):
+    user = find_user_by_id(id)
+
+    form = AvatarImageUpdateForm(request.form)
+
+    image = request.files.get('image')
+    if not image or not image.filename:
+        abort(400, 'No file to upload has been specified.')
+
+    #ensure_dimensions(image)  # TODO
+    image_type = determine_image_type(image)
+    user.set_avatar_image(datetime.now(), image_type)
+
+    try:
+        upload.store(image.stream, user.avatar_image_path)
+    except FileExistsError:
+        # Werkzeug implements no default response for code 409.
+        ##abort(409, 'File already exists, not overwriting.')
+        abort(500, 'File already exists, not overwriting.')
+
+    db.session.commit()
+
+    return redirect(url_for('.view', id=user.id))
+
+
+def determine_image_type(image):
+    image_type = guess_image_type(image.stream)
+    if image_type is None:
+        abort(400, 'Only GIF, JPEG and PNG images are allowed.')
+    image.stream.seek(0)
+    return image_type
 
 
 @blueprint.route('/login')
