@@ -25,7 +25,10 @@
       <main role="main">
 
 {%- for category, message in get_flashed_messages(with_categories=True) %}
-  <p class="notification-{{ category }}">{{ message }}</p>
+  <p class="notification-{{ category }}">
+    {%- if category in 'error', 'success' %}<span class="icon-{{ category }}"></span> {% endif -%}
+    {{- message -}}
+  </p>
 {%- endfor %}
 
 {% block body %}{% endblock %}

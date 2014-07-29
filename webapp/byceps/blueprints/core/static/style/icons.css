@@ -42,9 +42,11 @@ li [class*=" icon-"] {
 .icon-disabled:before       { content: "\f05e"; }
 .icon-edit:before           { content: "\f040"; }
 .icon-enabled:before        { content: "\f00c"; }
+.icon-error:before          { content: "\f071"; }
 .icon-external-link:before  { content: "\f08e"; }
 .icon-delete:before         { content: "\2718"; }
 .icon-pending:before        { content: "\f017"; }
 .icon-published:before      { content: "\f06e"; }
+.icon-success:before        { content: "\f00c"; }
 .icon-update:before         { content: "\f021"; }
 .icon-view:before           { content: "\f06e"; }
