@@ -1,6 +1,6 @@
 {% extends 'layout/base.html' %}
 {% set current_page = 'user.view' %}
-{% set title = 'Benutzer - %s'|format(user.name) %}
+{% set title = 'Benutzer - %s'|format(user.screen_name) %}
 
 {% block body %}
 
@@ -9,7 +9,7 @@
   <table>
     <tr>
       <th>Benutzername</th>
-      <td>{{ user.name }}</td>
+      <td>{{ user.screen_name }}</td>
     </tr>
   </table>
 

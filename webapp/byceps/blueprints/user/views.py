@@ -21,7 +21,6 @@ from .forms import CreateForm, LoginForm
 from .models import GUEST_USER_ID, User
 
 
-
 blueprint = create_blueprint('user', __name__)
 
 
@@ -46,6 +45,7 @@ def view(id):
         uuid = UUID(id)
     except ValueError:
         abort(404)
+
     user = User.query.get_or_404(uuid)
     return {'user': user}
 
@@ -65,11 +65,11 @@ def create():
     if not form.validate():
         return create_form(form)
 
-    name = form.name.data
+    screen_name = form.screen_name.data
     email_address = form.email_address.data
     password = form.password.data
 
-    user = User.create(name, email_address, password)
+    user = User.create(screen_name, email_address, password)
     db.session.add(user)
 
     try:
@@ -77,10 +77,11 @@ def create():
     except Exception as e:
         db.session.rollback()
         flash_error('Das Benutzerkonto für "{}" konnte nicht angelegt werden.',
-                    user.name)
+                    user.screen_name)
         return create_form(form)
 
-    flash_success('Das Benutzerkonto für "{}" wurde angelegt.', user.name)
+    flash_success('Das Benutzerkonto für "{}" wurde angelegt.',
+                  user.screen_name)
     return redirect(url_for('.view', id=user.id))
 
 
@@ -101,20 +102,20 @@ def login():
 
     form = LoginForm(request.form)
 
-    name = form.name.data
+    screen_name = form.screen_name.data
     password = form.password.data
-    if not all([name, password]):
+    if not all([screen_name, password]):
         abort(403)
 
     # Verify credentials.
-    user = User.authenticate(name, password)
+    user = User.authenticate(screen_name, password)
     if user is None:
         # Authentication failed.
         abort(403)
 
     # Authorization succeeded.
     UserSession.start(user)
-    flash_success('Erfolgreich eingeloggt als {}.', user.name)
+    flash_success('Erfolgreich eingeloggt als {}.', user.screen_name)
 
 
 @blueprint.route('/logout', methods=['POST'])
