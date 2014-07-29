@@ -11,7 +11,6 @@ from datetime import datetime
 from uuid import UUID
 
 from flask import abort, g, redirect, request, session, url_for
-from werkzeug.security import check_password_hash
 
 from ...database import db
 from ...util.framework import create_blueprint, flash_error, flash_success
@@ -131,7 +130,7 @@ def is_user_authorized(user, password):
         # Unknown user name.
         return False
 
-    if not check_password_hash(user.password_hash, password):
+    if not user.check_password(password):
         # Invalid password.
         return False
 

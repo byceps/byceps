@@ -13,7 +13,8 @@ from operator import attrgetter
 from uuid import UUID
 
 from sqlalchemy.ext.associationproxy import association_proxy
-from werkzeug.security import generate_password_hash as _generate_password_hash
+from werkzeug.security import check_password_hash, \
+    generate_password_hash as _generate_password_hash
 
 from ...database import db, generate_uuid
 from ...util.instances import ReprBuilder
@@ -96,6 +97,12 @@ class User(db.Model):
         models = frozenset(
             chain.from_iterable(role.permissions for role in self.roles))
         return frozenset(map(attrgetter('enum_member'), models))
+
+    def check_password(self, password):
+        """Return `True` if the given password matches the user's hashed
+        password; `False` otherwise.
+        """
+        return check_password_hash(self.password_hash, password)
 
     def __repr__(self):
         return ReprBuilder(self) \
