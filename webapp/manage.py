@@ -11,6 +11,7 @@ Run the application, take administrative action.
 """
 
 from flask.ext.script import Manager
+from werkzeug.wsgi import SharedDataMiddleware
 
 from byceps.application import create_app
 from byceps.database import db
@@ -20,6 +21,12 @@ CONFIG_NAME = 'development'
 
 
 app = create_app(CONFIG_NAME)
+
+if app.debug:
+    exports = {
+        '/users/avatars': str(app.config['PATH_USER_AVATAR_IMAGES']),
+    }
+    app.wsgi_app = SharedDataMiddleware(app.wsgi_app, exports)
 
 manager = Manager(app)
 
