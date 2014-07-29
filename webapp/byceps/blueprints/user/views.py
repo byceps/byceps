@@ -107,8 +107,8 @@ def login():
         abort(403)
 
     # Verify credentials.
-    user = User.query.filter_by(name=name).first()
-    if not is_user_authorized(user, password):
+    user = User.authenticate(name, password)
+    if user is None:
         # Authentication failed.
         abort(403)
 
@@ -123,22 +123,6 @@ def logout():
     """Log out user by deleting the corresponding cookie."""
     UserSession.end()
     flash_success('Erfolgreich ausgeloggt.')
-
-
-def is_user_authorized(user, password):
-    if user is None:
-        # Unknown user name.
-        return False
-
-    if not user.check_password(password):
-        # Invalid password.
-        return False
-
-    if not user.is_active():
-        # User is disabled.
-        return False
-
-    return True
 
 
 class UserSession(object):

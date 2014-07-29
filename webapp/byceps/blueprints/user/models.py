@@ -75,6 +75,29 @@ class User(db.Model):
         return user
 
     @classmethod
+    def authenticate(cls, name, password):
+        """Try to authenticate the user.
+
+        Return the associated user object on success, or `None` on
+        failure.
+        """
+        user = cls.query.filter_by(name=name).first()
+
+        if user is None:
+            # User name is unknown.
+            return
+
+        if not check_password_hash(user.password_hash, password):
+            # Password does not match.
+            return
+
+        if not user.is_active():
+            # User account is disabled.
+            return
+
+        return user
+
+    @classmethod
     def load(cls, id):
         """Load user with the given ID."""
         if id is None:
@@ -97,12 +120,6 @@ class User(db.Model):
         models = frozenset(
             chain.from_iterable(role.permissions for role in self.roles))
         return frozenset(map(attrgetter('enum_member'), models))
-
-    def check_password(self, password):
-        """Return `True` if the given password matches the user's hashed
-        password; `False` otherwise.
-        """
-        return check_password_hash(self.password_hash, password)
 
     def __repr__(self):
         return ReprBuilder(self) \
