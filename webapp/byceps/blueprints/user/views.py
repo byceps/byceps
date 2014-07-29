@@ -8,7 +8,6 @@ byceps.blueprints.user.views
 """
 
 from datetime import datetime
-from uuid import UUID
 
 from flask import abort, g, redirect, request, session, url_for
 
@@ -41,12 +40,7 @@ def index():
 @templated
 def view(id):
     """Show a user's profile."""
-    try:
-        uuid = UUID(id)
-    except ValueError:
-        abort(404)
-
-    user = User.query.get_or_404(uuid)
+    user = find_user_by_id(id)
     return {'user': user}
 
 
@@ -126,6 +120,10 @@ def logout():
     flash_success('Erfolgreich ausgeloggt.')
 
 
+def find_user_by_id(id):
+    return User.query.get_or_404(id)
+
+
 class UserSession(object):
 
     KEY = 'user_id'
@@ -150,8 +148,4 @@ class UserSession(object):
     @classmethod
     def get_user_id(cls):
         """Return the current user's ID, or `None` if not available."""
-        user_id = session.get(cls.KEY)
-        try:
-            return UUID(user_id)
-        except (TypeError, ValueError):
-            return None
+        return session.get(cls.KEY)
