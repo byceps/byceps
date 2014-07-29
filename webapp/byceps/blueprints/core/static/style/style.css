@@ -72,9 +72,15 @@ body {
 /* layout */
 
 #page {
-  margin: 0 auto;
-  padding: 15px;
-  width: 640px;
+  background-color: #ffffff;
+  border: #cccccc solid 1px;
+  -moz-border-radius: 15px;
+  -webkit-border-radius: 15px;
+  border-radius: 15px;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+  margin: 40px auto 0 auto;
+  padding: 20px 40px;
+  width: 720px;
 }
 
 
@@ -155,6 +161,7 @@ ol.actions li {
 .actions a {
   background-color: #dddddd;
   border: #cccccc solid 1px;
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.25);
   color: #333333;
   display: inline-block;
   margin-right: 0.25em;
@@ -166,6 +173,7 @@ ol.actions li {
 .action:hover,
 .actions:hover a {
   background-color: #666666;
+  box-shadow: none;
   color: #f4f4f4;
 }
 
@@ -225,13 +233,13 @@ table.wide {
 
 /* footer */
 
-#page > footer {
+#footer {
   font-size: 0.9rem;
-  margin-top: 40px;
-  opacity: 0.75;
+  opacity: 0.5;
+  padding: 20px 0;
   text-align: center;
 }
-#page > footer:hover {
+#footer:hover {
   opacity: 1;
 }
 
