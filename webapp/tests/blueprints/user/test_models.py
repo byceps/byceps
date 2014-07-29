@@ -35,7 +35,7 @@ class AvatarImageTestCase(TestCase):
         ('jpeg', ImageType.jpeg),
         ('png' , ImageType.png ),
     )
-    def test_get_avatar_image_type(self, database_value, expected):
+    def test_hybrid_image_type_getter(self, database_value, expected):
         self.user._avatar_image_type = database_value
 
         self.assertEquals(self.user.avatar_image_type, expected)
@@ -46,7 +46,7 @@ class AvatarImageTestCase(TestCase):
         (ImageType.jpeg, 'jpeg'),
         (ImageType.png , 'png' ),
     )
-    def test_set_avatar_image_type(self, image_type, expected):
+    def test_hybrid_image_type_setter(self, image_type, expected):
         self.user.avatar_image_type = image_type
 
         self.assertEquals(self.user._avatar_image_type, expected)
