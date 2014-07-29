@@ -28,7 +28,7 @@ blueprint = create_blueprint('user', __name__)
 
 @blueprint.before_app_request
 def before_request():
-    g.current_user = determine_current_user()
+    g.current_user = UserSession.get_user()
 
 
 @blueprint.route('/')
@@ -126,12 +126,6 @@ def logout():
     flash_success('Erfolgreich ausgeloggt.')
 
 
-def determine_current_user():
-    """Retrieve the current user, falling back to the anonymous user."""
-    user_id = UserSession.get_user_id()
-    return User.load(user_id)
-
-
 def is_user_authorized(user, password):
     if user is None:
         # Unknown user name.
@@ -165,13 +159,15 @@ class UserSession(object):
         session.permanent = False
 
     @classmethod
-    def get_user_id(cls):
-        """Return the ID of the current user."""
-        user_id = session.get(cls.KEY)
-        if user_id is None:
-            return None
+    def get_user(cls):
+        """Return the current user, falling back to the anonymous user."""
+        return User.load(cls.get_user_id())
 
+    @classmethod
+    def get_user_id(cls):
+        """Return the current user's ID, or `None` if not available."""
+        user_id = session.get(cls.KEY)
         try:
             return UUID(user_id)
-        except ValueError:
+        except (TypeError, ValueError):
             return None
