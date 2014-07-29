@@ -4,7 +4,7 @@
 byceps.blueprints.authorization.decorators
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:copyright: 2006-2014 Jochen Kupperschmidt
+:Copyright: 2006-2014 Jochen Kupperschmidt
 """
 
 from functools import wraps

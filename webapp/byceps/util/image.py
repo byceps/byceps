@@ -4,7 +4,7 @@
 byceps.util.image
 ~~~~~~~~~~~~~~~~~
 
-:copyright: 2006-2014 Jochen Kupperschmidt
+:Copyright: 2006-2014 Jochen Kupperschmidt
 """
 
 from collections import namedtuple
