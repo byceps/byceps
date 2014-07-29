@@ -13,10 +13,12 @@ from operator import attrgetter
 from uuid import UUID
 
 from sqlalchemy.ext.associationproxy import association_proxy
+from sqlalchemy.ext.hybrid import hybrid_property
 from werkzeug.security import check_password_hash, \
     generate_password_hash as _generate_password_hash
 
 from ...database import db, generate_uuid
+from ...util.image import ImageType
 from ...util.instances import ReprBuilder
 
 
@@ -60,6 +62,8 @@ class User(db.Model):
     email_address = db.Column(db.Unicode(80), unique=True)
     password_hash = db.Column(db.Unicode(66))
     is_enabled = db.Column(db.Boolean, default=False)
+    avatar_image_created_at = db.Column(db.DateTime)
+    _avatar_image_type = db.Column(db.Unicode(4))
 
     roles = association_proxy('user_roles', 'role')
 
@@ -121,12 +125,30 @@ class User(db.Model):
             chain.from_iterable(role.permissions for role in self.roles))
         return frozenset(map(attrgetter('enum_member'), models))
 
+    @property
+    def has_avatar_image(self):
+        return None not in {
+            self.avatar_image_created_at,
+            self.avatar_image_type,
+        }
+
+    @hybrid_property
+    def avatar_image_type(self):
+        type_str = self._avatar_image_type
+        if type_str is not None:
+            return ImageType[type_str]
+
+    @avatar_image_type.setter
+    def avatar_image_type(self, type_):
+        self._avatar_image_type = type_.name if type_ is not None else None
+
     def __repr__(self):
         return ReprBuilder(self) \
             .add_with_lookup('id') \
             .add_with_lookup('screen_name') \
             .add_with_lookup('email_address') \
             .add_with_lookup('is_enabled') \
+            .add_with_lookup('has_avatar_image') \
             .build()
 
 
