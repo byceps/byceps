@@ -37,7 +37,7 @@
             {%- endif -%}
           </td>
           <td style="white-space: nowrap;"><a href="{{ url_for('.view_version', id=version.id) }}">{{ render_datetime(version.created_at) }}</a></td>
-          <td><a href="{{ version.creator.id }}">{{ version.creator.name }}</a></td>
+          <td><a href="{{ version.creator.id }}">{{ version.creator.screen_name }}</a></td>
         </tr>
       {%- endfor %}
     </tbody>
