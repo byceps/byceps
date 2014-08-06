@@ -23,13 +23,12 @@ class ContentPage(db.Model):
     """A content page."""
     __tablename__ = 'content_pages'
 
-    name = db.Column(db.Unicode(40), primary_key=True)
-    url = db.Column(db.Unicode(40), unique=True)
+    id = db.Column(db.Unicode(40), primary_key=True)
+    url_path = db.Column(db.Unicode(40))
 
     def generate_url(self):
         try:
-            name = 'contentpage.{}'.format(self.name)
-            return url_for(name)
+            return url_for('contentpage.{}'.format(self.id))
         except BuildError:
             return None
 
@@ -48,8 +47,8 @@ class ContentPage(db.Model):
 
     def __repr__(self):
         return ReprBuilder(self) \
-            .add_with_lookup('name') \
-            .add_with_lookup('url') \
+            .add_with_lookup('id') \
+            .add_with_lookup('url_path') \
             .build()
 
 
@@ -58,7 +57,7 @@ class ContentPageVersion(db.Model):
     __tablename__ = 'content_page_versions'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    page_name = db.Column(db.Unicode(40), db.ForeignKey('content_pages.name'))
+    page_id = db.Column(db.Unicode(40), db.ForeignKey('content_pages.id'))
     page = db.relationship(ContentPage, backref='versions')
     created_at = db.Column(db.DateTime, default=datetime.now)
     creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'))

@@ -37,10 +37,11 @@ def add_routes_for_pages():
 
 def add_route_for_page(page):
     """Register a route for the page."""
-    endpoint = '{}.{}'.format(blueprint.name, page.name)
-    view_func = view_latest_by_name
-    defaults = {'name': page.name}
-    current_app.add_url_rule(page.url, endpoint, view_func, defaults=defaults)
+    endpoint = '{}.{}'.format(blueprint.name, page.id)
+    view_func = view_latest_by_id
+    defaults = {'id': page.id}
+    current_app.add_url_rule(page.url_path, endpoint, view_func,
+                             defaults=defaults)
 
 
 @blueprint.route('/')
@@ -52,9 +53,9 @@ def index():
     return {'pages': pages}
 
 
-def view_latest_by_name(name):
-    """Show the latest version of the page with the given name."""
-    page = find_page(name)
+def view_latest_by_id(id):
+    """Show the latest version of the page with the given ID."""
+    page = find_page(id)
     return render_page(page.get_latest_version())
 
 
@@ -66,16 +67,16 @@ def view_version(id):
     return render_page(version)
 
 
-@blueprint.route('/<name>/history')
+@blueprint.route('/<id>/history')
 @permission_required(ContentPagePermission.view_history)
 @templated
-def history(name):
-    page = find_page(name)
+def history(id):
+    page = find_page(id)
     versions = page.get_versions()
 
     return {
-        'name': page.name,
-        'url': page.url,
+        'id': page.id,
+        'url_path': page.url_path,
         'versions': versions,
     }
 
@@ -97,14 +98,14 @@ def create():
     """Create a page."""
     form = CreateForm(request.form)
 
-    name = form.name.data.strip()
-    url = form.url.data.strip()
-    if not url.startswith('/'):
+    id = form.id.data.strip()
+    url_path = form.url_path.data.strip()
+    if not url_path.startswith('/'):
         abort(400, 'URL path must start with a slash.')
 
     page = ContentPage(
-        name=name,
-        url=url)
+        id=id,
+        url_path=url_path)
     db.session.add(page)
 
     version = ContentPageVersion(
@@ -116,16 +117,16 @@ def create():
 
     db.session.commit()
 
-    flash_success('Die Seite "{}" wurde angelegt.', page.name)
+    flash_success('Die Seite "{}" wurde angelegt.', page.id)
     return redirect(url_for('.view_version', id=version.id))
 
 
-@blueprint.route('/<name>/update')
+@blueprint.route('/<id>/update')
 @permission_required(ContentPagePermission.update)
 @templated
-def update_form(name):
+def update_form(id):
     """Show form to update a page."""
-    page = find_page(name)
+    page = find_page(id)
     latest_version = page.get_latest_version()
 
     form = UpdateForm(
@@ -139,13 +140,13 @@ def update_form(name):
     }
 
 
-@blueprint.route('/<name>', methods=['POST'])
+@blueprint.route('/<id>', methods=['POST'])
 @permission_required(ContentPagePermission.update)
-def update(name):
+def update(id):
     """Update a page."""
     form = UpdateForm(request.form)
 
-    page = find_page(name)
+    page = find_page(id)
 
     version = ContentPageVersion(
         page=page,
@@ -155,12 +156,12 @@ def update(name):
     db.session.add(version)
     db.session.commit()
 
-    flash_success('Die Seite "{}" wurde aktualisiert.', page.name)
+    flash_success('Die Seite "{}" wurde aktualisiert.', page.id)
     return redirect(url_for('.view_version', id=version.id))
 
 
-def find_page(name):
-    return ContentPage.query.get_or_404(name)
+def find_page(id):
+    return ContentPage.query.get_or_404(id)
 
 
 def find_version(id):

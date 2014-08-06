@@ -10,7 +10,7 @@
   <table class="index wide">
     <thead>
       <tr>
-        <th>Name</th>
+        <th>Bezeichner</th>
         <th>URL-Pfad</th>
         <th>Letzte Änderung</th>
         <th>durch</th>
@@ -18,14 +18,14 @@
       </tr>
     </thead>
     <tbody>
-      {%- for page in pages|sort(attribute='name') %}
+      {%- for page in pages|sort(attribute='id') %}
         {%- set latest_version = page.get_latest_version() %}
         <tr>
-          <td>{{ page.name }}</td>
-          <td>{{ page.url }}</td>
+          <td>{{ page.id }}</td>
+          <td>{{ page.url_path }}</td>
           <td style="white-space: nowrap;">
             {%- if ContentPagePermission.view_history in g.current_user.permissions %}
-            <a href="{{ url_for('.history', name=page.name) }}" title="Änderungshistorie ansehen">{{ render_datetime(latest_version.created_at) }}</a>
+            <a href="{{ url_for('.history', id=page.id) }}" title="Änderungshistorie ansehen">{{ render_datetime(latest_version.created_at) }}</a>
             {%- else %}
             {{ render_datetime(latest_version.created_at) }}
             {%- endif %}
@@ -46,7 +46,7 @@
           {%- endif %}
           <td>
             {%- if ContentPagePermission.update in g.current_user.permissions %}
-            <a href="{{ url_for('.update_form', name=page.name) }}" class="action"><span class="icon-edit"></span> bearbeiten</a>
+            <a href="{{ url_for('.update_form', id=page.id) }}" class="action"><span class="icon-edit"></span> bearbeiten</a>
             {%- endif %}
           </td>
         </tr>
