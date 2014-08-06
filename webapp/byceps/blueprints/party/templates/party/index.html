@@ -1,0 +1,32 @@
+{% extends 'layout/base.html' %}
+{% from 'macros/datetime.html' import render_datetime %}
+{% set current_page = 'party.index' %}
+{% set title = 'Parties' %}
+
+{% block body %}
+
+  <h1>{{ title }}</h1>
+
+  <table class="index wide">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Beginn</th>
+        <th>Ende</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for party in parties|sort(attribute='starts_at', reverse=True) %}
+      <tr{% if party.is_over %} class="hidden"{% endif %}>
+        <td>{{ party.id }}</td>
+        <td>{{ party.title }}</td>
+        <td>{{ render_datetime(party.starts_at) }}</td>
+        <td>{{ render_datetime(party.ends_at) }}</td>
+      </tr>
+      {%- endfor %}
+      <tr>
+    </tbody>
+  </table>
+
+{%- endblock body %}
