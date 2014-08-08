@@ -15,7 +15,6 @@ from ...util.templating import templated
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
-from ..party.models import Party
 
 from .authorization import ContentPagePermission
 from .forms import CreateForm, UpdateForm
@@ -46,13 +45,6 @@ def add_route_for_page(page):
         endpoint,
         view_func=view_latest_by_name,
         defaults=defaults)
-
-
-@blueprint.before_app_request
-def before_request():
-    g.party = Party.query.get(current_app.party_id)
-    if g.party is None:
-        raise Exception('Unknown party "{}".'.format(party_id))
 
 
 @blueprint.route('/')
