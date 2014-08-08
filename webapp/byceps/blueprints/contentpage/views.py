@@ -40,7 +40,7 @@ def index():
 def view_latest_by_name(name):
     """Show the latest version of the page with the given name."""
     page = ContentPage.query \
-        .for_current_party(name) \
+        .for_current_party() \
         .filter_by(name=name) \
         .one()
     return render_page(page.get_latest_version())
