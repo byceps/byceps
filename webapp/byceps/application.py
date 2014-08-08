@@ -10,6 +10,7 @@ byceps.application
 from flask import Flask, g
 import jinja2
 
+from .blueprints.contentpage.init import add_routes_for_content_pages
 from .database import db
 from .util import dateformat
 from .util.framework import load_config, register_blueprint
@@ -51,7 +52,7 @@ def create_app(config_module_name, *, initialize=True):
     if initialize:
         with app.app_context():
             app.party_id = get_current_party_id(app)
-            register_content_pages_routes()
+            add_routes_for_content_pages()
 
     return app
 
@@ -63,9 +64,3 @@ def get_current_party_id(app):
         raise Exception('No party configured.')
 
     return party_id
-
-
-def register_content_pages_routes():
-    """Add URL routes for content pages (which are defined in the database)."""
-    from .blueprints.contentpage.views import add_routes_for_pages
-    add_routes_for_pages()
