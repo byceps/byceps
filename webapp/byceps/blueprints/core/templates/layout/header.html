@@ -13,9 +13,9 @@
 
           <nav class="main">
             <ol>
-              <li{% if 'user' is is_current_page(current_page) %} class="current"{% endif %}><a href="{{ url_for('user_admin.index') }}">Benutzer</a></li>
-              <li{% if 'party' is is_current_page(current_page) %} class="current"{% endif %}><a href="{{ url_for('party_admin.index') }}">Parties</a></li>
-              <li{% if 'contentpage' is is_current_page(current_page) %} class="current"{% endif %}><a href="{{ url_for('contentpage_admin.index') }}">Seiten</a></li>
+              {%- for item in navigation_items %}
+              <li{% if item.id is is_current_page(current_page) %} class="current"{% endif %}><a href="{{ url_for(item.endpoint) }}">{{ item.label }}</a></li>
+              {%- endfor %}
             </ol>
           </nav>
 

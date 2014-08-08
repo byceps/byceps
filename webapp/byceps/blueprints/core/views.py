@@ -9,6 +9,7 @@ byceps.blueprints.core.views
 
 from flask import render_template
 
+from ...navigation import navigation
 from ...util.framework import create_blueprint
 
 
@@ -23,6 +24,13 @@ def forbidden(error):
 @blueprint.app_errorhandler(404)
 def not_found(error):
     return render_template('error/not_found.html'), 404
+
+
+@blueprint.app_context_processor
+def inject_navigation():
+    return {
+        'navigation_items': navigation.get_items(),
+    }
 
 
 @blueprint.app_template_test()
