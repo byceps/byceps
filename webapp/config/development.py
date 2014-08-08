@@ -13,3 +13,5 @@ SQLALCHEMY_ECHO = False
 
 PATH_DATA = Path('./data')
 PATH_USER_AVATAR_IMAGES = PATH_DATA / 'users/avatars'
+
+PARTY = 'lanresort-2014'

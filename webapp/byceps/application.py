@@ -7,8 +7,9 @@ byceps.application
 :Copyright: 2006-2014 Jochen Kupperschmidt
 """
 
-from flask import Flask
+from flask import Flask, g
 
+from .blueprints.party.models import Party
 from .database import db
 from .util import dateformat
 from .util.framework import load_config, register_blueprint
@@ -25,7 +26,7 @@ BLUEPRINT_NAMES = [
 ]
 
 
-def create_app(config_module_name):
+def create_app(config_module_name, *, initialize=True):
     """Create the actual Flask application."""
     app = Flask(__name__)
 
@@ -44,14 +45,28 @@ def create_app(config_module_name):
 
     dateformat.register_template_filters(app)
 
-    if not app.testing:
-        register_content_pages_routes(app)
+    if initialize:
+        with app.app_context():
+            g.party = get_current_party(app)
+            register_content_pages_routes()
 
     return app
 
 
-def register_content_pages_routes(app):
+def get_current_party(app):
+    """Determine the current party from the configuration."""
+    party_id = app.config.get('PARTY')
+    if party_id is None:
+        raise Exception('No party configured.')
+
+    party = Party.query.get(party_id)
+    if party is None:
+        raise Exception('Unknown party "{}".'.format(party_id))
+
+    return party
+
+
+def register_content_pages_routes():
     """Add URL routes for content pages (which are defined in the database)."""
     from .blueprints.contentpage.views import add_routes_for_pages
-    with app.app_context():
-        add_routes_for_pages()
+    add_routes_for_pages()
