@@ -30,7 +30,7 @@
       {%- for version in versions %}
         <tr>
           <td>
-            {%- if loop.first -%}
+            {%- if version == page.get_latest_version() -%}
             <span class="icon-published" title="öffentlich"></span>
             {%- else -%}
             <span class="icon-archived" title="archiviert"></span>
