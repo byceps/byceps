@@ -72,12 +72,8 @@ def view_version(id):
 @templated
 def history(id):
     page = find_page(id)
-    versions = page.get_versions()
-
     return {
-        'id': page.id,
-        'url_path': page.url_path,
-        'versions': versions,
+        'page': page,
     }
 
 

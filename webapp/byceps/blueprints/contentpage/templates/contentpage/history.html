@@ -10,11 +10,11 @@
   <table>
     <tr>
       <th>Bezeichner</th>
-      <td>{{ id }}</td>
+      <td>{{ page.id }}</td>
     </tr>
     <tr>
       <th>URL</th>
-      <td>{{ url_path }}</td>
+      <td>{{ page.url_path }}</td>
     </tr>
   </table>
 
@@ -27,7 +27,7 @@
       </tr>
     </thead>
     <tbody>
-      {%- for version in versions %}
+      {%- for version in page.get_versions() %}
         <tr>
           <td>
             {%- if version == page.get_latest_version() -%}
