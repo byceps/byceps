@@ -30,14 +30,6 @@ def before_request():
     g.current_user = UserSession.get_user()
 
 
-@blueprint.route('/')
-@templated
-def index():
-    """List users."""
-    users = User.query.all()
-    return {'users': users}
-
-
 @blueprint.route('/<id>')
 @templated
 def view(id):
