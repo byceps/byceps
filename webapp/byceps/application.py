@@ -47,23 +47,19 @@ def create_app(config_module_name, *, initialize=True):
 
     if initialize:
         with app.app_context():
-            g.party = get_current_party(app)
+            app.party_id = get_current_party_id(app)
             register_content_pages_routes()
 
     return app
 
 
-def get_current_party(app):
+def get_current_party_id(app):
     """Determine the current party from the configuration."""
     party_id = app.config.get('PARTY')
     if party_id is None:
         raise Exception('No party configured.')
 
-    party = Party.query.get(party_id)
-    if party is None:
-        raise Exception('Unknown party "{}".'.format(party_id))
-
-    return party
+    return party_id
 
 
 def register_content_pages_routes():

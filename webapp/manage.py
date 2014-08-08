@@ -20,7 +20,7 @@ from byceps.database import db
 CONFIG_NAME = 'development'
 
 
-app = create_app(CONFIG_NAME)
+app = create_app(CONFIG_NAME, initialize=True)
 
 if app.debug:
     exports = {
