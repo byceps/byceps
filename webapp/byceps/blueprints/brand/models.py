@@ -8,6 +8,7 @@ byceps.blueprints.brand.models
 """
 
 from ...database import db
+from ...util.instances import ReprBuilder
 
 
 class Brand(db.Model):

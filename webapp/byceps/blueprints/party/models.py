@@ -10,6 +10,7 @@ byceps.blueprints.party.models
 from datetime import datetime
 
 from ...database import db
+from ...util.instances import ReprBuilder
 
 from ..brand.models import Brand
 
