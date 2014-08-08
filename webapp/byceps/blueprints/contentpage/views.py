@@ -15,6 +15,7 @@ from ...util.templating import templated
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
+from ..party.models import Party
 
 from .authorization import ContentPagePermission
 from .forms import CreateForm, UpdateForm
@@ -30,18 +31,28 @@ permission_registry.register_enum('content_page', ContentPagePermission)
 
 def add_routes_for_pages():
     """Register routes for pages with the application."""
-    pages = ContentPage.query.all()
+    party_id = current_app.party_id
+    pages = ContentPage.query.for_party_with_id(party_id).all()
     for page in pages:
         add_route_for_page(page)
 
 
 def add_route_for_page(page):
     """Register a route for the page."""
-    endpoint = '{}.{}'.format(blueprint.name, page.id)
-    view_func = view_latest_by_id
-    defaults = {'id': page.id}
-    current_app.add_url_rule(page.url_path, endpoint, view_func,
-                             defaults=defaults)
+    endpoint = '{}.{}'.format(blueprint.name, page.name)
+    defaults = {'name': page.name}
+    current_app.add_url_rule(
+        page.url_path,
+        endpoint,
+        view_func=view_latest_by_name,
+        defaults=defaults)
+
+
+@blueprint.before_app_request
+def before_request():
+    g.party = Party.query.get(current_app.party_id)
+    if g.party is None:
+        raise Exception('Unknown party "{}".'.format(party_id))
 
 
 @blueprint.route('/')
@@ -49,13 +60,16 @@ def add_route_for_page(page):
 @templated
 def index():
     """List pages."""
-    pages = ContentPage.query.all()
+    pages = ContentPage.query.for_current_party().all()
     return {'pages': pages}
 
 
-def view_latest_by_id(id):
-    """Show the latest version of the page with the given ID."""
-    page = find_page(id)
+def view_latest_by_name(name):
+    """Show the latest version of the page with the given name."""
+    page = ContentPage.query \
+        .for_current_party(name) \
+        .filter_by(name=name) \
+        .one()
     return render_page(page.get_latest_version())
 
 
@@ -71,7 +85,7 @@ def view_version(id):
 @permission_required(ContentPagePermission.view_history)
 @templated
 def history(id):
-    page = find_page(id)
+    page = find_page_by_id(id)
     return {
         'page': page,
     }
@@ -94,13 +108,14 @@ def create():
     """Create a page."""
     form = CreateForm(request.form)
 
-    id = form.id.data.strip()
+    name = form.name.data.strip()
     url_path = form.url_path.data.strip()
     if not url_path.startswith('/'):
         abort(400, 'URL path must start with a slash.')
 
     page = ContentPage(
-        id=id,
+        name=name,
+        party=g.party,
         url_path=url_path)
     db.session.add(page)
 
@@ -113,7 +128,7 @@ def create():
 
     db.session.commit()
 
-    flash_success('Die Seite "{}" wurde angelegt.', page.id)
+    flash_success('Die Seite "{}" wurde angelegt.', page.name)
     return redirect(url_for('.view_version', id=version.id))
 
 
@@ -122,7 +137,7 @@ def create():
 @templated
 def update_form(id):
     """Show form to update a page."""
-    page = find_page(id)
+    page = find_page_by_id(id)
     latest_version = page.get_latest_version()
 
     form = UpdateForm(
@@ -142,7 +157,7 @@ def update(id):
     """Update a page."""
     form = UpdateForm(request.form)
 
-    page = find_page(id)
+    page = find_page_by_id(id)
 
     version = ContentPageVersion(
         page=page,
@@ -152,11 +167,11 @@ def update(id):
     db.session.add(version)
     db.session.commit()
 
-    flash_success('Die Seite "{}" wurde aktualisiert.', page.id)
+    flash_success('Die Seite "{}" wurde aktualisiert.', page.name)
     return redirect(url_for('.view_version', id=version.id))
 
 
-def find_page(id):
+def find_page_by_id(id):
     return ContentPage.query.get_or_404(id)
 
 

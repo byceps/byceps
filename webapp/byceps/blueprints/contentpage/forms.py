@@ -11,7 +11,7 @@ from wtforms import Form, TextAreaField, TextField
 
 
 class CreateForm(Form):
-    id = TextField('Bezeichner')
+    name = TextField('Bezeichner')
     url_path = TextField('URL-Pfad')
     title = TextField('Titel')
     body = TextAreaField('Text')
