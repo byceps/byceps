@@ -10,7 +10,6 @@ byceps.application
 from flask import Flask, g
 import jinja2
 
-from .blueprints.party.models import Party
 from .database import db
 from .util import dateformat
 from .util.framework import load_config, register_blueprint
