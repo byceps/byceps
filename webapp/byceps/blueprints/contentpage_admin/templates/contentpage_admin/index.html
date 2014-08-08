@@ -24,7 +24,7 @@
           <td>{{ page.id }}</td>
           <td>{{ page.url_path }}</td>
           <td style="white-space: nowrap;">
-            {%- if ContentPagePermission.view_history in g.current_user.permissions %}
+            {%- if g.current_user.has_permission(ContentPagePermission.view_history) %}
             <a href="{{ url_for('.history', id=page.id) }}" title="Änderungshistorie ansehen">{{ render_datetime(latest_version.created_at) }}</a>
             {%- else %}
             {{ render_datetime(latest_version.created_at) }}
@@ -45,7 +45,7 @@
           </td>
           {%- endif %}
           <td>
-            {%- if ContentPagePermission.update in g.current_user.permissions %}
+            {%- if g.current_user.has_permission(ContentPagePermission.update) %}
             <a href="{{ url_for('.update_form', id=page.id) }}" class="action"><span class="icon-edit"></span> bearbeiten</a>
             {%- endif %}
           </td>
@@ -54,7 +54,7 @@
     </tbody>
   </table>
 
-  {%- if ContentPagePermission.create in g.current_user.permissions %}
+  {%- if g.current_user.has_permission(ContentPagePermission.create) %}
   <ol class="actions">
     <li><a href="{{ url_for('.create_form') }}"><span class="icon-add"></span> Neue Seite anlegen</a></li>
   </ol>

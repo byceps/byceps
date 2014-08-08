@@ -48,6 +48,9 @@ class AnonymousUser(object):
     def permissions(self):
         return frozenset()
 
+    def has_permission(self, permission):
+        return False
+
     def __repr__(self):
         return ReprBuilder(self) \
             .add_with_lookup('id') \
@@ -126,6 +129,9 @@ class User(db.Model):
         models = frozenset(
             chain.from_iterable(role.permissions for role in self.roles))
         return frozenset(map(attrgetter('enum_member'), models))
+
+    def has_permission(self, permission):
+        return permission in self.permissions
 
     @property
     def has_avatar_image(self):
