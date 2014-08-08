@@ -30,7 +30,7 @@
             {{ render_datetime(latest_version.created_at) }}
             {%- endif %}
           </td>
-          <td><a href="{{ latest_version.creator.id }}">{{ latest_version.creator.screen_name }}</a></td>
+          <td><a href="{{ url_for('user.view', id=latest_version.creator.id) }}">{{ latest_version.creator.screen_name }}</a></td>
           {%- set page_mounted_url = page.generate_url() %}
           {%- if page_mounted_url is not none %}
           <td colspan="2">
