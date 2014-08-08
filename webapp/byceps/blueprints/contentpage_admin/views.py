@@ -14,14 +14,18 @@ from ...util.framework import create_blueprint, flash_success
 from ...util.templating import templated
 
 from ..authorization.decorators import permission_required
-from ..contentpage.authorization import ContentPagePermission
+from ..authorization.registry import permission_registry
 from ..contentpage.models import ContentPage, ContentPageVersion
 from ..contentpage.templating import render_page
 
+from .authorization import ContentPagePermission
 from .forms import CreateForm, UpdateForm
 
 
 blueprint = create_blueprint('contentpage_admin', __name__)
+
+
+permission_registry.register_enum('content_page', ContentPagePermission)
 
 
 @blueprint.route('/')

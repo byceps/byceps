@@ -9,17 +9,11 @@ byceps.blueprints.contentpage.views
 
 from ...util.framework import create_blueprint
 
-from ..authorization.registry import permission_registry
-
-from .authorization import ContentPagePermission
 from .models import ContentPage
 from .templating import render_page
 
 
 blueprint = create_blueprint('contentpage', __name__)
-
-
-permission_registry.register_enum('content_page', ContentPagePermission)
 
 
 def view_latest_by_name(name):
