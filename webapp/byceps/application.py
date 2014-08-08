@@ -22,6 +22,7 @@ BLUEPRINT_NAMES = [
     ('core', '/core'),
     ('brand', '/brands'),
     ('contentpage', '/contentpages'),
+    ('contentpage_admin', '/contentpages'),
     ('party', '/parties'),
     ('user', '/users'),
 ]
