@@ -8,6 +8,7 @@ byceps.application
 """
 
 from flask import Flask, g
+import jinja2
 
 from .blueprints.party.models import Party
 from .database import db
@@ -32,6 +33,9 @@ def create_app(config_module_name, *, initialize=True):
 
     # Load configuration from file.
     load_config(app, config_module_name)
+
+    # Throw an exception when an undefined name is referenced in a template.
+    app.jinja_env.undefined = jinja2.StrictUndefined
 
     # Set the locale.
     set_locale(app.config['LOCALE'])  # Fail if not configured.
