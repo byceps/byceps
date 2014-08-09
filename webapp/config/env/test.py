@@ -1,4 +1,5 @@
 from datetime import timedelta
+from pathlib import Path
 
 
 DEBUG = False
@@ -10,3 +11,6 @@ LOCALE = 'de_DE.UTF-8'
 
 SQLALCHEMY_DATABASE_URI = 'postgresql+pg8000://byceps_test:test@127.0.0.1/byceps_test'
 SQLALCHEMY_ECHO = False
+
+PATH_DATA = Path('./data')
+PATH_USER_AVATAR_IMAGES = PATH_DATA / 'users/avatars'
