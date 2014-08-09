@@ -1,0 +1,28 @@
+{% extends 'layout/base.html' %}
+{% from 'macros/datetime.html' import render_datetime %}
+{% set current_page = 'orgateam.index' %}
+{% set title = 'Orgateams' %}
+
+{% block body %}
+
+  <h1>{{ title }}</h1>
+
+  <table class="index wide">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for team in teams|sort(attribute='title') %}
+      <tr>
+        <td>{{ team.id }}</td>
+        <td>{{ team.title }}</td>
+      </tr>
+      {%- endfor %}
+      <tr>
+    </tbody>
+  </table>
+
+{%- endblock body %}
