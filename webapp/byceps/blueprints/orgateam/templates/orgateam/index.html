@@ -12,6 +12,7 @@
       <tr>
         <th>ID</th>
         <th>Name</th>
+        <th>Mitglieder</th>
       </tr>
     </thead>
     <tbody>
@@ -19,6 +20,7 @@
       <tr>
         <td>{{ team.id }}</td>
         <td>{{ team.title }}</td>
+        <td>{{ team.members|length }}</td>
       </tr>
       {%- endfor %}
       <tr>

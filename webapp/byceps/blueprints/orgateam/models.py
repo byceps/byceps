@@ -22,12 +22,13 @@ class OrgaTeam(db.Model):
     id = db.Column(db.Unicode(40), primary_key=True)
     title = db.Column(db.Unicode(40), unique=True)
 
-    users = association_proxy('associated_users', 'user')
+    members = association_proxy('associated_users', 'user')
 
     def __repr__(self):
         return ReprBuilder(self) \
             .add_with_lookup('id') \
             .add_with_lookup('title') \
+            .add_custom('{:d} members'.format(len(self.members))) \
             .build()
 
 
@@ -36,9 +37,9 @@ class OrgaTeamUser(db.Model):
     __tablename__ = 'orga_team_users'
 
     orga_team_id = db.Column(db.Unicode(40), db.ForeignKey('orga_teams.id'), primary_key=True)
-    orga_team = db.relationship(OrgaTeam, collection_class=set)
+    orga_team = db.relationship(OrgaTeam, collection_class=set, backref='associated_users')
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
-    user = db.relationship(User, backref='associated_users', collection_class=set)
+    user = db.relationship(User, collection_class=set)
 
     def __repr__(self):
         return ReprBuilder(self) \
