@@ -17,10 +17,10 @@ from byceps.application import create_app
 from byceps.database import db
 
 
-CONFIG_NAME = 'development'
+ENVIRONMENT = 'development'
 
 
-app = create_app(CONFIG_NAME, initialize=True)
+app = create_app(ENVIRONMENT, initialize=True)
 
 if app.debug:
     exports = {

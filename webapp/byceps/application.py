@@ -30,12 +30,11 @@ BLUEPRINT_NAMES = [
 ]
 
 
-def create_app(config_module_name, *, initialize=True):
+def create_app(environment_name, *, initialize=True):
     """Create the actual Flask application."""
     app = Flask(__name__)
 
-    # Load configuration from file.
-    load_config(app, config_module_name)
+    load_config(app, environment_name)
 
     # Throw an exception when an undefined name is referenced in a template.
     app.jinja_env.undefined = jinja2.StrictUndefined

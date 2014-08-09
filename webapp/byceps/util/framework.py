@@ -18,12 +18,14 @@ from flask import Blueprint, flash
 # configuration
 
 
-def load_config(app, module_name):
-    """Load the configuration from the specified module.
+def load_config(app, environment_name):
+    """Load the configuration for the specified environment from the
+    corresponding module.
 
-    The module is expected to be located in the 'config' sub-package.
+    The module is expected to be located in the 'config/env'
+    sub-package.
     """
-    module_path = 'config.{}'.format(module_name)
+    module_path = 'config.env.{}'.format(environment_name)
     app.config.from_object(module_path)
 
 
