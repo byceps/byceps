@@ -7,10 +7,14 @@ byceps.blueprints.core.views
 :Copyright: 2006-2014 Jochen Kupperschmidt
 """
 
+from importlib import import_module
+
 from flask import render_template
 
-from ...navigation import navigation
 from ...util.framework import create_blueprint
+
+
+navigation_module = import_module('config.navigation')
 
 
 blueprint = create_blueprint('core', __name__)
@@ -26,10 +30,11 @@ def not_found(error):
     return render_template('error/not_found.html'), 404
 
 
+
 @blueprint.app_context_processor
 def inject_navigation():
     return {
-        'navigation_items': navigation.get_items(),
+        'navigation_items': navigation_module.navigation.get_items(),
     }
 
 

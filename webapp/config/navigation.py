@@ -1,16 +1,9 @@
 # -*- coding: utf-8 -*-
 
-"""
-byceps.navigation
-~~~~~~~~~~~~~~~~~
-
-:Copyright: 2006-2014 Jochen Kupperschmidt
-"""
-
-from .blueprints.contentpage_admin.authorization import ContentPagePermission
-from .blueprints.party_admin.authorization import PartyPermission
-from .blueprints.user_admin.authorization import UserPermission
-from .util.navigation import Navigation, NavigationItem
+from byceps.blueprints.contentpage_admin.authorization import ContentPagePermission
+from byceps.blueprints.party_admin.authorization import PartyPermission
+from byceps.blueprints.user_admin.authorization import UserPermission
+from byceps.util.navigation import Navigation, NavigationItem
 
 
 navigation = Navigation()
