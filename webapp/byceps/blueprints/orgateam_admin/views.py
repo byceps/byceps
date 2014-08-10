@@ -11,11 +11,16 @@ from ...util.framework import create_blueprint
 from ...util.templating import templated
 
 from ..authorization.decorators import permission_required
+from ..authorization.registry import permission_registry
 from ..orga.models import OrgaTeam
-from ..orgateam.authorization import OrgaTeamPermission
+
+from .authorization import OrgaTeamPermission
 
 
 blueprint = create_blueprint('orgateam_admin', __name__)
+
+
+permission_registry.register_enum('orga_team', OrgaTeamPermission)
 
 
 @blueprint.route('/')

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from byceps.blueprints.contentpage_admin.authorization import ContentPagePermission
-from byceps.blueprints.orgateam.authorization import OrgaTeamPermission
+from byceps.blueprints.orgateam_admin.authorization import OrgaTeamPermission
 from byceps.blueprints.party_admin.authorization import PartyPermission
 from byceps.blueprints.user_admin.authorization import UserPermission
 from byceps.util.navigation import Navigation, NavigationItem

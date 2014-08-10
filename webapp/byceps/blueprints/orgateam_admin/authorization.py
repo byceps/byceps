@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-byceps.blueprints.orgateam.authorization
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.orgateam_admin.authorization
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2014 Jochen Kupperschmidt
 """
