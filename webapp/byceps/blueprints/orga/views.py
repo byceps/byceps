@@ -10,7 +10,7 @@ byceps.blueprints.orga.views
 from ...util.framework import create_blueprint
 from ...util.templating import templated
 
-from ..orgateam.models import get_orgas
+from .models import get_orgas
 
 
 blueprint = create_blueprint('orga', __name__)

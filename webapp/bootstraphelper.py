@@ -4,7 +4,7 @@
 from byceps.blueprints.authorization.models import Permission, Role, \
     RolePermission, UserRole
 from byceps.blueprints.brand.models import Brand
-from byceps.blueprints.orgateam.models import OrgaTeam
+from byceps.blueprints.orga.models import OrgaTeam
 from byceps.database import db
 
 

@@ -11,8 +11,8 @@ from ...util.framework import create_blueprint
 from ...util.templating import templated
 
 from ..authorization.decorators import permission_required
+from ..orga.models import OrgaTeam
 from ..orgateam.authorization import OrgaTeamPermission
-from ..orgateam.models import OrgaTeam
 
 
 blueprint = create_blueprint('orgateam_admin', __name__)

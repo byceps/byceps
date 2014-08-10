@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-byceps.blueprints.orgateam.models
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.orga.models
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2014 Jochen Kupperschmidt
 """
