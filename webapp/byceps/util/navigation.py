@@ -40,6 +40,10 @@ class Navigation(object):
 
     def get_items(self):
         def current_user_has_permission(item):
-            return g.current_user.has_permission(item.required_permission)
+            required_permission = item.required_permission
+            if required_permission is None:
+                return True
+
+            return g.current_user.has_permission(required_permission)
 
         return list(filter(current_user_has_permission, self.items))
