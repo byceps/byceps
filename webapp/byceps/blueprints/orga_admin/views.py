@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-byceps.blueprints.orgateam_admin.views
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.orga_admin.views
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2014 Jochen Kupperschmidt
 """
@@ -17,7 +17,7 @@ from ..orga.models import OrgaTeam
 from .authorization import OrgaTeamPermission
 
 
-blueprint = create_blueprint('orgateam_admin', __name__)
+blueprint = create_blueprint('orga_admin', __name__)
 
 
 permission_registry.register_enum('orga_team', OrgaTeamPermission)

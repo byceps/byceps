@@ -24,7 +24,7 @@ BLUEPRINT_NAMES = [
     ('contentpage', '/contentpages'),
     ('contentpage_admin', '/contentpages'),
     ('orga', '/orgas'),
-    ('orgateam_admin', '/orgateams'),
+    ('orga_admin', '/orgas/admin'),
     ('party', '/parties'),
     ('party_admin', '/parties'),
     ('user', '/users'),
