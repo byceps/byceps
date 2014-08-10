@@ -13,3 +13,4 @@ navigation.add_item('party_admin.index', 'Parties', id='party', required_permiss
 navigation.add_item('contentpage_admin.index', 'Seiten', id='contentpage', required_permission=ContentPagePermission.list)
 navigation.add_item('orga_admin.index', 'Orgateams', id='orgateam', required_permission=OrgaTeamPermission.list)
 navigation.add_item('orga.index', 'Orgas', id='orga')
+navigation.add_item('seating.index', 'Sitzplan', id='seating')

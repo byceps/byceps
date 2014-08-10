@@ -1,0 +1,18 @@
+ol.seats li {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+}
+ol.seats a {
+  background-color: #00aa00;
+  border: #333333 solid 1px;
+  display: block;
+  height: 17px;
+  margin: 1px;
+  width: 17px;
+}
+ol.seats a:hover {
+  height: 19px;
+  margin: 0;
+  width: 19px;
+}

@@ -27,6 +27,7 @@ BLUEPRINT_NAMES = [
     ('orga_admin', '/orgas/admin'),
     ('party', '/parties'),
     ('party_admin', '/parties'),
+    ('seating', '/seating'),
     ('user', '/users'),
     ('user_admin', '/users'),
 ]

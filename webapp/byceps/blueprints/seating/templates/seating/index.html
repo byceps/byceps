@@ -1,0 +1,16 @@
+{% extends 'layout/base.html' %}
+{% set current_page = 'seating.index' %}
+{% set title = 'Sitzplan' %}
+
+{% block body %}
+
+  <h1>{{ title }}</h1>
+
+  <h2>Bereiche</h2>
+  <ul>
+    {%- for area in areas|sort(attribute='title') %}
+    <li><a href="{{ url_for('seating.view_area', id=area.id) }}">{{ area.title }}</a></li>
+    {%- endfor %}
+  </ul>
+
+{%- endblock body %}

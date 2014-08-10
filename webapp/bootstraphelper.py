@@ -1,12 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from itertools import count, islice
+
 from byceps.blueprints.authorization.models import Permission, Role, \
     RolePermission, UserRole
 from byceps.blueprints.brand.models import Brand
 from byceps.blueprints.orga.models import OrgaTeam, \
     Membership as OrgaTeamMembership
 from byceps.blueprints.party.models import Party
+from byceps.blueprints.seating.models import Area as SeatingArea, Point, Seat
 from byceps.blueprints.user.models import User
 from byceps.database import db
 
@@ -30,6 +33,14 @@ def add_all_to_database(f):
             db.session.add(entity)
         return entities
     return decorated
+
+
+# -------------------------------------------------------------------- #
+# utils
+
+
+def generate_positive_numbers(n):
+    return islice(count(1), n)
 
 
 # -------------------------------------------------------------------- #
@@ -112,3 +123,15 @@ def create_user(screen_name, email_address, password, *, enabled=False):
 
 def get_user(screen_name):
     return User.query.filter_by(screen_name=screen_name).one()
+
+
+@add_to_database
+def create_seating_area(party, title):
+    return SeatingArea(party=party, title=title)
+
+
+@add_to_database
+def create_seat(area, coord_x, coord_y):
+    seat = Seat(area=area)
+    seat.coords = Point(x=coord_x, y=coord_y)
+    return seat
