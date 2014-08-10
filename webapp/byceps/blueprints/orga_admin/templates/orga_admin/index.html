@@ -11,6 +11,7 @@
       <tr>
         <th>ID</th>
         <th>Name</th>
+        <th>Mitgliederzahl</th>
         <th>Mitglieder</th>
       </tr>
     </thead>
@@ -20,6 +21,13 @@
         <td>{{ team.id }}</td>
         <td>{{ team.title }}</td>
         <td>{{ team.members|length }}</td>
+        <td>
+          <ul style="margin: 0 0 0 1em; padding: 0;">
+          {%- for orga in team.members|sort(attribute='screen_name') %}
+            <li><a href="{{ url_for('user.view', id=orga.id) }}">{{ orga.screen_name }}</a></li>
+          {%- endfor %}
+          </ul>
+        </td>
       </tr>
       {%- endfor %}
       <tr>
