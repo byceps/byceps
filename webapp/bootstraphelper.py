@@ -9,7 +9,8 @@ from byceps.blueprints.brand.models import Brand
 from byceps.blueprints.orga.models import OrgaTeam, \
     Membership as OrgaTeamMembership
 from byceps.blueprints.party.models import Party
-from byceps.blueprints.seating.models import Area as SeatingArea, Point, Seat
+from byceps.blueprints.seating.models import Area as SeatingArea, \
+    Category as SeatingCategory, Point, Seat
 from byceps.blueprints.user.models import User
 from byceps.database import db
 
@@ -131,7 +132,12 @@ def create_seating_area(party, title):
 
 
 @add_to_database
-def create_seat(area, coord_x, coord_y):
-    seat = Seat(area=area)
+def create_seat_category(party, title):
+    return SeatingCategory(party=party, title=title)
+
+
+@add_to_database
+def create_seat(area, coord_x, coord_y, category):
+    seat = Seat(area=area, category=category)
     seat.coords = Point(x=coord_x, y=coord_y)
     return seat

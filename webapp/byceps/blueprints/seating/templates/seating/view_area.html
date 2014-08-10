@@ -13,7 +13,7 @@
 
   <ol class="seats">
     {%- for seat in area.seats|sort(attribute='coords') -%}
-    <li><a href="#" title="{{ '(%d, %d)'|format(*seat.coords) }}"></a></li>
+    <li><a href="#" title="{{ '(%d, %d) / Kategorie: %s'|format(seat.coords.x, seat.coords.y, seat.category.title) }}"></a></li>
     {%- endfor %}
   </ol>
 

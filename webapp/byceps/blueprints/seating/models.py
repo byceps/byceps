@@ -30,6 +30,8 @@ class AreaQuery(BaseQuery):
 class Area(db.Model):
     """A spatial representation of seats in one part of the party
     location.
+
+    Seats can belong to different categories.
     """
     __tablename__ = 'seating_areas'
     __table_args__ = (
@@ -42,6 +44,35 @@ class Area(db.Model):
     party = db.relationship(Party, backref='seating_areas')
     title = db.Column(db.Unicode(40))
 
+    def __repr__(self):
+        return ReprBuilder(self) \
+            .add_with_lookup('id') \
+            .add_with_lookup('party') \
+            .add_with_lookup('title') \
+            .build()
+
+
+class Category(db.Model):
+    """A seat's category which may (indirectly) indicate its price and
+    features.
+    """
+    __tablename__ = 'seat_categories'
+    __table_args__ = (
+        db.UniqueConstraint('party_id', 'title'),
+    )
+
+    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    party_id = db.Column(db.Unicode(20), db.ForeignKey('parties.id'))
+    party = db.relationship(Party, backref='seat_categories')
+    title = db.Column(db.Unicode(40))
+
+    def __repr__(self):
+        return ReprBuilder(self) \
+            .add_with_lookup('id') \
+            .add_with_lookup('party') \
+            .add_with_lookup('title') \
+            .build()
+
 
 class Seat(db.Model):
     """A seat."""
@@ -52,6 +83,8 @@ class Seat(db.Model):
     area = db.relationship(Area, backref='seats')
     coord_x = db.Column(db.Integer)
     coord_y = db.Column(db.Integer)
+    category_id = db.Column(db.Uuid, db.ForeignKey('seat_categories.id'))
+    category = db.relationship(Category, backref='seats')
 
     @hybrid_property
     def coords(self):
@@ -67,4 +100,5 @@ class Seat(db.Model):
             .add_with_lookup('id') \
             .add_with_lookup('area') \
             .add_with_lookup('coords') \
+            .add_with_lookup('category') \
             .build()
