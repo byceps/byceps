@@ -12,3 +12,4 @@ navigation.add_item('user_admin.index', 'Benutzer', id='user', required_permissi
 navigation.add_item('party_admin.index', 'Parties', id='party', required_permission=PartyPermission.list)
 navigation.add_item('contentpage_admin.index', 'Seiten', id='contentpage', required_permission=ContentPagePermission.list)
 navigation.add_item('orgateam_admin.index', 'Orgateams', id='orgateam', required_permission=OrgaTeamPermission.list)
+navigation.add_item('orga.index', 'Orgas', id='orga')

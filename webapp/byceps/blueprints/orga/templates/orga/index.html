@@ -1,6 +1,6 @@
 {% extends 'layout/base.html' %}
-{% set current_page = 'orgateam.index' %}
-{% set title = 'Orgateams' %}
+{% set current_page = 'orga.index' %}
+{% set title = 'Orgas' %}
 
 {% block body %}
 
@@ -9,17 +9,13 @@
   <table class="index wide">
     <thead>
       <tr>
-        <th>ID</th>
         <th>Name</th>
-        <th>Mitglieder</th>
       </tr>
     </thead>
     <tbody>
-      {%- for team in teams|sort(attribute='title') %}
+      {%- for orga in orgas|sort(attribute='screen_name') %}
       <tr>
-        <td>{{ team.id }}</td>
-        <td>{{ team.title }}</td>
-        <td>{{ team.members|length }}</td>
+        <td>{{ orga.screen_name }}</td>
       </tr>
       {%- endfor %}
       <tr>

@@ -32,9 +32,9 @@ class OrgaTeam(db.Model):
             .build()
 
 
-class OrgaTeamUser(db.Model):
-    """The assignment of a user to an orga team."""
-    __tablename__ = 'orga_team_users'
+class Membership(db.Model):
+    """The assignment of a user to an organizer team."""
+    __tablename__ = 'orga_team_memberships'
 
     orga_team_id = db.Column(db.Unicode(40), db.ForeignKey('orga_teams.id'), primary_key=True)
     orga_team = db.relationship(OrgaTeam, collection_class=set, backref='associated_users')
@@ -46,3 +46,9 @@ class OrgaTeamUser(db.Model):
             .add_with_lookup('orga_team') \
             .add_with_lookup('user') \
             .build()
+
+
+def get_orgas():
+    memberships = Membership.query.all()
+    for m in memberships:
+        yield m.user
