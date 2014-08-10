@@ -15,7 +15,7 @@
     <tbody>
       {%- for orga in orgas|sort(attribute='screen_name') %}
       <tr>
-        <td>{{ orga.screen_name }}</td>
+        <td><a href="{{ url_for('user.view', id=orga.id) }}">{{ orga.screen_name }}</a></td>
       </tr>
       {%- endfor %}
       <tr>
