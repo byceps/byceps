@@ -4,7 +4,10 @@
 from byceps.blueprints.authorization.models import Permission, Role, \
     RolePermission, UserRole
 from byceps.blueprints.brand.models import Brand
-from byceps.blueprints.orga.models import OrgaTeam
+from byceps.blueprints.orga.models import OrgaTeam, \
+    Membership as OrgaTeamMembership
+from byceps.blueprints.party.models import Party
+from byceps.blueprints.user.models import User
 from byceps.database import db
 
 
@@ -39,8 +42,21 @@ def create_brand(id, title):
 
 
 @add_to_database
+def create_party(**kwargs):
+    return Party(**kwargs)
+
+
+def get_party(id):
+    return Party.query.get(id)
+
+
+@add_to_database
 def create_role(id):
     return Role(id=id)
+
+
+def get_role(id):
+    return Role.query.get(id)
 
 
 @add_all_to_database
@@ -80,3 +96,19 @@ def add_role_to_user(role, user):
 @add_to_database
 def create_orga_team(id, title):
     return OrgaTeam(id=id, title=title)
+
+
+@add_to_database
+def assign_user_to_orga_team(user, orga_team):
+    return OrgaTeamMembership(orga_team=orga_team, user=user)
+
+
+@add_to_database
+def create_user(screen_name, email_address, password, *, enabled=False):
+    user = User.create(screen_name, email_address, password)
+    user.is_enabled = enabled
+    return user
+
+
+def get_user(screen_name):
+    return User.query.filter_by(screen_name=screen_name).one()
