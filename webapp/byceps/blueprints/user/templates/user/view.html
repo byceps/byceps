@@ -12,6 +12,12 @@
       <th>Benutzername</th>
       <td>{{ user.screen_name }}</td>
     </tr>
+    {%- if user.orga_team %}
+    <tr>
+      <th>Orga-Team</th>
+      <td>{{ user.orga_team.title}}</td>
+    </tr>
+    {%- endif %}
   </table>
 
   {%- if user.has_avatar_image %}

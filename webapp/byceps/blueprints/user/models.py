@@ -170,6 +170,19 @@ class User(db.Model):
         suffix = '.' + self.avatar_image_type.name
         return Path(name_without_suffix).with_suffix(suffix)
 
+    @property
+    def orga_team(self):
+        memberships_for_current_party = list(filter(
+            lambda m: m.belongs_to_current_party,
+            self.orga_team_memberships))
+
+        if len(memberships_for_current_party) > 2:
+            raise Exception(
+                'A user must only be part of one orga team per party.')
+
+        if memberships_for_current_party:
+            return memberships_for_current_party[0].orga_team
+
     def __repr__(self):
         return ReprBuilder(self) \
             .add_with_lookup('id') \

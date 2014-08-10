@@ -30,10 +30,7 @@ class OrgaTeam(db.Model):
 
     @property
     def members_for_current_party(self):
-        def belongs_to_current_party(membership):
-            return membership.party == g.party
-
-        current_party_memberships = filter(belongs_to_current_party,
+        current_party_memberships = filter(lambda m: m.belongs_to_current_party,
                                            self.memberships)
         return list(map(attrgetter('user'), current_party_memberships))
 
@@ -65,7 +62,11 @@ class Membership(db.Model):
     party_id = db.Column(db.Unicode(20), db.ForeignKey('parties.id'))
     party = db.relationship(Party)
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
-    user = db.relationship(User, collection_class=set)
+    user = db.relationship(User, collection_class=set, backref='orga_team_memberships')
+
+    @property
+    def belongs_to_current_party(self):
+        return self.party == g.party
 
     def __repr__(self):
         return ReprBuilder(self) \
