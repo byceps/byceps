@@ -10,7 +10,7 @@ byceps.blueprints.orga.views
 from ...util.framework import create_blueprint
 from ...util.templating import templated
 
-from .models import get_orgas
+from .models import get_orgas_for_current_party
 
 
 blueprint = create_blueprint('orga', __name__)
@@ -20,5 +20,5 @@ blueprint = create_blueprint('orga', __name__)
 @templated
 def index():
     """List organizers."""
-    orgas = list(get_orgas())
+    orgas = list(get_orgas_for_current_party())
     return {'orgas': orgas}

@@ -99,8 +99,8 @@ def create_orga_team(id, title):
 
 
 @add_to_database
-def assign_user_to_orga_team(user, orga_team):
-    return OrgaTeamMembership(orga_team=orga_team, user=user)
+def assign_user_to_orga_team(user, orga_team, party):
+    return OrgaTeamMembership(orga_team=orga_team, party=party, user=user)
 
 
 @add_to_database

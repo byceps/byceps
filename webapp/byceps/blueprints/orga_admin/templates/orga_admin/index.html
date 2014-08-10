@@ -20,10 +20,10 @@
       <tr>
         <td>{{ team.id }}</td>
         <td>{{ team.title }}</td>
-        <td>{{ team.members|length }}</td>
+        <td>{{ team.members_for_current_party|length }}</td>
         <td>
-          <ul style="margin: 0 0 0 1em; padding: 0;">
-          {%- for orga in team.members|sort(attribute='screen_name') %}
+          <ul style="list-style: none; margin: 0; padding: 0;">
+          {%- for orga in team.members_for_current_party|sort(attribute='screen_name') %}
             <li><a href="{{ url_for('user.view', id=orga.id) }}">{{ orga.screen_name }}</a></li>
           {%- endfor %}
           </ul>
