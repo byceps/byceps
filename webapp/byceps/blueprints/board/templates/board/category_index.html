@@ -1,0 +1,36 @@
+{% extends 'layout/base.html' %}
+{% from 'macros/datetime.html' import render_datetime %}
+{% set current_page = 'board.category_index' %}
+{% set title = 'Forum' %}
+
+{% block body %}
+
+  <h1>{{ title }}</h1>
+
+  <table class="index wide">
+    <thead>
+      <tr>
+        <th>Kategorie</th>
+        <th style="text-align: center;">Themen</th>
+        <th style="text-align: center;">Beiträge</th>
+        <th>Letzter Beitrag</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for category in categories|sort(attribute='position') %}
+      <tr>
+        <td><a href="{{ url_for('.category_view', id=category.id) }}">{{ category.title }}</a></td>
+        <td style="text-align: center;">{{ category.topic_count }}</td>
+        <td style="text-align: center;">{{ category.posting_count }}</td>
+        <td>
+          {% if category.latest_posting_updated_at and category.latest_posting_author %}
+            {{ render_datetime(category.latest_posting_updated_at) }} von {{ category.latest_posting_author.screen_name }}
+          {% endif %}
+        </td>
+      </tr>
+      {%- endfor %}
+      <tr>
+    </tbody>
+  </table>
+
+{%- endblock body %}

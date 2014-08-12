@@ -53,6 +53,10 @@ def create_brand(id, title):
     return Brand(id=id, title=title)
 
 
+def get_brand(id):
+    return Brand.query.get(id)
+
+
 @add_to_database
 def create_party(**kwargs):
     return Party(**kwargs)

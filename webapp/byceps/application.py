@@ -19,10 +19,11 @@ from .util.l10n import set_locale
 
 BLUEPRINT_NAMES = [
     ('authorization', '/authorization'),
-    ('core', '/core'),
+    ('board', '/board'),
     ('brand', '/brands'),
     ('contentpage', '/contentpages'),
     ('contentpage_admin', '/contentpages'),
+    ('core', '/core'),
     ('orga', '/orgas'),
     ('orga_admin', '/orgas/admin'),
     ('party', '/parties'),
