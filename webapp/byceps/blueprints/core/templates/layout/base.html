@@ -18,9 +18,11 @@
 
     <div id="page">
 
+{% include 'layout/header.html' %}
+
 {# Necessary to make the variable available to the included header template. #}
 {% set current_page = current_page|default %}
-{% include 'layout/header.html' %}
+{% include 'layout/navigation.html' %}
 
       <main role="main">
 
