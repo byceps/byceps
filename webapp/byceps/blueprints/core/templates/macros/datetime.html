@@ -1,9 +1,13 @@
-{%- macro render_date(d) -%}
-  {{ _time_element(d|format_date_iso, d|format_date_short) }}
+{%- macro render_date(d, smart=True) -%}
+  {{ _time_element(d|format_date_iso, d|format_date_short(smart=smart)) }}
 {%- endmacro %}
 
-{%- macro render_datetime(dt) -%}
-  {{ _time_element(dt|format_datetime_iso, dt|format_datetime_short) }}
+{%- macro render_datetime(dt, smart=True) -%}
+  {{ _time_element(dt|format_datetime_iso, dt|format_datetime_short(smart=smart)) }}
+{%- endmacro %}
+
+{%- macro render_datetime_long(dt, smart=True) -%}
+  {{ _time_element(dt|format_datetime_iso, dt|format_datetime_long(smart=smart)) }}
 {%- endmacro %}
 
 {%- macro render_time(t) -%}

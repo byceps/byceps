@@ -16,8 +16,10 @@ def register_template_filters(app):
     """Make functions available as template filters."""
     app.add_template_filter(format_date_iso)
     app.add_template_filter(format_date_short)
+    app.add_template_filter(format_date_long)
     app.add_template_filter(format_datetime_iso)
     app.add_template_filter(format_datetime_short)
+    app.add_template_filter(format_datetime_long)
     app.add_template_filter(format_time)
 
 
@@ -39,11 +41,11 @@ def format_date_iso(d):
     return d.strftime('%Y-%m-%d')
 
 
-def format_date_short(d, smart=True):
+def format_date_short(d, *, smart=True):
     return (smart and format_day_smart(d)) or d.strftime('%d.%m.%Y')
 
 
-def format_date_long(d, smart=True):
+def format_date_long(d, *, smart=True):
     return (smart and format_day_smart(d)) or d.strftime('%A, %d. %B %Y')
 
 
@@ -51,12 +53,16 @@ def format_datetime_iso(dt):
     return dt.strftime('%Y-%m-%dT%H:%M:%S')
 
 
-def format_datetime_short(dt):
-    return '{}, {}'.format(format_date_short(dt.date()), format_time(dt.time()))
+def format_datetime_short(dt, *, smart=True):
+    return '{}, {}'.format(
+        format_date_short(dt.date(), smart=smart),
+        format_time(dt.time()))
 
 
-def format_datetime_long(dt):
-    return '{}, {}'.format(format_date_long(dt.date()), format_time(dt.time()))
+def format_datetime_long(dt, *, smart=True):
+    return '{}, {}'.format(
+        format_date_long(dt.date(), smart=smart),
+        format_time(dt.time()))
 
 
 def format_time(t):
