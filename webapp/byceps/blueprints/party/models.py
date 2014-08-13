@@ -25,6 +25,7 @@ class Party(db.Model):
     title = db.Column(db.Unicode(40), unique=True)
     starts_at = db.Column(db.DateTime)
     ends_at = db.Column(db.DateTime)
+    is_archived = db.Column(db.Boolean, default=False)
 
     @property
     def is_over(self):
@@ -38,4 +39,5 @@ class Party(db.Model):
             .add_with_lookup('title') \
             .add_with_lookup('starts_at') \
             .add_with_lookup('ends_at') \
+            .add_with_lookup('is_archived') \
             .build()

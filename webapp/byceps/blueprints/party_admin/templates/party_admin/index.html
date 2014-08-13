@@ -20,7 +20,10 @@
       {%- for party in parties|sort(attribute='starts_at', reverse=True) %}
       <tr{% if party.is_over %} class="hidden"{% endif %}>
         <td>{{ party.id }}</td>
-        <td>{{ party.title }}</td>
+        <td>
+          {%- if party.is_archived %}<span class="icon-archived" title="archiviert"></span> {% endif %}
+          {{- party.title -}}
+        </td>
         <td>{{ render_datetime(party.starts_at) }}</td>
         <td>{{ render_datetime(party.ends_at) }}</td>
       </tr>
