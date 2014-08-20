@@ -14,3 +14,4 @@ navigation.add_item('snippet_admin.index', 'Snippets', id='snippet', required_pe
 navigation.add_item('orga_admin.index', 'Orgateams', id='orgateam', required_permission=OrgaTeamPermission.list)
 navigation.add_item('orga.index', 'Orgas', id='orga')
 navigation.add_item('seating.index', 'Sitzplan', id='seating')
+navigation.add_item('board.category_index', 'Forum', id='board')
