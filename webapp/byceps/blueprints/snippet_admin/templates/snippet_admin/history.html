@@ -1,6 +1,6 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/datetime.html' import render_datetime %}
-{% set current_page = 'contentpage.history' %}
+{% set current_page = 'snippet.history' %}
 {% set title = 'Versionshistorie' %}
 
 {% block body %}
@@ -10,11 +10,11 @@
   <table>
     <tr>
       <th>Bezeichner</th>
-      <td>{{ page.id }}</td>
+      <td>{{ snippet.id }}</td>
     </tr>
     <tr>
       <th>URL</th>
-      <td>{{ page.url_path }}</td>
+      <td>{{ snippet.url_path }}</td>
     </tr>
   </table>
 
@@ -27,10 +27,10 @@
       </tr>
     </thead>
     <tbody>
-      {%- for version in page.get_versions() %}
+      {%- for version in snippet.get_versions() %}
         <tr>
           <td>
-            {%- if version == page.get_latest_version() -%}
+            {%- if version == snippet.get_latest_version() -%}
             <span class="icon-published" title="öffentlich"></span>
             {%- else -%}
             <span class="icon-archived" title="archiviert"></span>

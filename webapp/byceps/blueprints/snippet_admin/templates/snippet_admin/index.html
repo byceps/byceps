@@ -1,7 +1,7 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/datetime.html' import render_datetime %}
-{% set current_page = 'contentpage.index' %}
-{% set title = 'Inhaltsseiten' %}
+{% set current_page = 'snippet.index' %}
+{% set title = 'Snippets' %}
 
 {% block body %}
 
@@ -18,23 +18,23 @@
       </tr>
     </thead>
     <tbody>
-      {%- for page in pages|sort(attribute='id') %}
-        {%- set latest_version = page.get_latest_version() %}
+      {%- for snippet in snippets|sort(attribute='id') %}
+        {%- set latest_version = snippet.get_latest_version() %}
         <tr>
-          <td>{{ page.id }}</td>
-          <td>{{ page.url_path }}</td>
+          <td>{{ snippet.id }}</td>
+          <td>{{ snippet.url_path }}</td>
           <td style="white-space: nowrap;">
-            {%- if g.current_user.has_permission(ContentPagePermission.view_history) %}
-            <a href="{{ url_for('.history', id=page.id) }}" title="Änderungshistorie ansehen">{{ render_datetime(latest_version.created_at) }}</a>
+            {%- if g.current_user.has_permission(SnippetPermission.view_history) %}
+            <a href="{{ url_for('.history', id=snippet.id) }}" title="Änderungshistorie ansehen">{{ render_datetime(latest_version.created_at) }}</a>
             {%- else %}
             {{ render_datetime(latest_version.created_at) }}
             {%- endif %}
           </td>
           <td><a href="{{ url_for('user.view', id=latest_version.creator.id) }}">{{ latest_version.creator.screen_name }}</a></td>
-          {%- set page_mounted_url = page.generate_url() %}
-          {%- if page_mounted_url is not none %}
+          {%- set snippet_mounted_url = snippet.generate_url() %}
+          {%- if snippet_mounted_url is not none %}
           <td colspan="2">
-            <a href="{{ page_mounted_url }}" class="action"><span class="icon-view"></span> ansehen</a>
+            <a href="{{ snippet_mounted_url }}" class="action"><span class="icon-view"></span> ansehen</a>
           </td>
           {%- else %}
           <td>
@@ -45,8 +45,8 @@
           </td>
           {%- endif %}
           <td>
-            {%- if g.current_user.has_permission(ContentPagePermission.update) %}
-            <a href="{{ url_for('.update_form', id=page.id) }}" class="action"><span class="icon-edit"></span> bearbeiten</a>
+            {%- if g.current_user.has_permission(SnippetPermission.update) %}
+            <a href="{{ url_for('.update_form', id=snippet.id) }}" class="action"><span class="icon-edit"></span> bearbeiten</a>
             {%- endif %}
           </td>
         </tr>
@@ -54,9 +54,9 @@
     </tbody>
   </table>
 
-  {%- if g.current_user.has_permission(ContentPagePermission.create) %}
+  {%- if g.current_user.has_permission(SnippetPermission.create) %}
   <ol class="actions">
-    <li><a href="{{ url_for('.create_form') }}"><span class="icon-add"></span> Neue Seite anlegen</a></li>
+    <li><a href="{{ url_for('.create_form') }}"><span class="icon-add"></span> Neues Snippet anlegen</a></li>
   </ol>
   {%- endif %}
 

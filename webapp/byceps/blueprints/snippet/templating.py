@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-byceps.blueprints.contentpage.templating
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.snippet.templating
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2014 Jochen Kupperschmidt
 """
@@ -16,26 +16,26 @@ from jinja2 import FunctionLoader, TemplateNotFound
 from jinja2.sandbox import ImmutableSandboxedEnvironment
 
 
-def render_page(version):
-    """Render the given version of the page, or an error page if that
-    fails.
+def render_snippet(version):
+    """Render the given version of the snippet, or an error page if
+    that fails.
     """
     try:
-        context = get_page_context(version)
-        return render_template('contentpage/view.html', **context)
+        context = get_snippet_context(version)
+        return render_template('snippet/view.html', **context)
     except TemplateNotFound:
         abort(404)
     except Exception as e:
-        print('Error in content page markup:', e, file=sys.stderr)
+        print('Error in snippet markup:', e, file=sys.stderr)
         traceback.print_exc()
         context = {
             'message': str(e),
         }
-        return render_template('contentpage/error.html', **context), 500
+        return render_template('snippet/error.html', **context), 500
 
 
-def get_page_context(version):
-    """Return the page context to insert into the outer template."""
+def get_snippet_context(version):
+    """Return the snippet context to insert into the outer template."""
     template = load_template(version)
 
     current_page = extract_variable(template, 'current_page')
@@ -50,7 +50,7 @@ def get_page_context(version):
 
 
 def load_template(version):
-    """Load the template from the page version's body."""
+    """Load the template from the snippet version's body."""
     env = create_env()
     return env.from_string(version.body)
 

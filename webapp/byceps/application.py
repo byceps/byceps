@@ -10,7 +10,7 @@ byceps.application
 from flask import Flask, g
 import jinja2
 
-from .blueprints.contentpage.init import add_routes_for_content_pages
+from .blueprints.snippet.init import add_routes_for_snippets
 from .database import db
 from .util import dateformat
 from .util.framework import load_config, register_blueprint
@@ -21,14 +21,14 @@ BLUEPRINT_NAMES = [
     ('authorization', '/authorization'),
     ('board', '/board'),
     ('brand', '/brands'),
-    ('contentpage', '/contentpages'),
-    ('contentpage_admin', '/contentpages'),
     ('core', '/core'),
     ('orga', '/orgas'),
     ('orga_admin', '/orgas/admin'),
     ('party', None),
     ('party_admin', '/parties'),
     ('seating', '/seating'),
+    ('snippet', '/snippets'),
+    ('snippet_admin', '/snippets'),
     ('user', '/users'),
     ('user_admin', '/users'),
 ]
@@ -58,7 +58,7 @@ def create_app(environment_name, *, initialize=True):
     if initialize:
         with app.app_context():
             app.party_id = get_current_party_id(app)
-            add_routes_for_content_pages()
+            add_routes_for_snippets()
 
     return app
 

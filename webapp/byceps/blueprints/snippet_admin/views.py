@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-byceps.blueprints.contentpage_admin.views
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.snippet_admin.views
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2014 Jochen Kupperschmidt
 """
@@ -15,51 +15,51 @@ from ...util.templating import templated
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
-from ..contentpage.models import ContentPage, ContentPageVersion
-from ..contentpage.templating import render_page
+from ..snippet.models import Snippet, SnippetVersion
+from ..snippet.templating import render_snippet
 
-from .authorization import ContentPagePermission
+from .authorization import SnippetPermission
 from .forms import CreateForm, UpdateForm
 
 
-blueprint = create_blueprint('contentpage_admin', __name__)
+blueprint = create_blueprint('snippet_admin', __name__)
 
 
-permission_registry.register_enum('content_page', ContentPagePermission)
+permission_registry.register_enum('snippet', SnippetPermission)
 
 
 @blueprint.route('/')
-@permission_required(ContentPagePermission.list)
+@permission_required(SnippetPermission.list)
 @templated
 def index():
-    """List pages."""
-    pages = ContentPage.query.for_current_party().all()
-    return {'pages': pages}
+    """List snippets."""
+    snippets = Snippet.query.for_current_party().all()
+    return {'snippets': snippets}
 
 
 @blueprint.route('/versions/<id>')
-@permission_required(ContentPagePermission.view_history)
+@permission_required(SnippetPermission.view_history)
 def view_version(id):
-    """Show the page with the given id."""
+    """Show the snippet with the given id."""
     version = find_version(id)
-    return render_page(version)
+    return render_snippet(version)
 
 
 @blueprint.route('/<id>/history')
-@permission_required(ContentPagePermission.view_history)
+@permission_required(SnippetPermission.view_history)
 @templated
 def history(id):
-    page = find_page_by_id(id)
+    snippet = find_snippet_by_id(id)
     return {
-        'page': page,
+        'snippet': snippet,
     }
 
 
 @blueprint.route('/create')
-@permission_required(ContentPagePermission.create)
+@permission_required(SnippetPermission.create)
 @templated
 def create_form():
-    """Show form to create a page."""
+    """Show form to create a snippet."""
     form = CreateForm()
     return {
         'form': form,
@@ -67,9 +67,9 @@ def create_form():
 
 
 @blueprint.route('/', methods=['POST'])
-@permission_required(ContentPagePermission.create)
+@permission_required(SnippetPermission.create)
 def create():
-    """Create a page."""
+    """Create a snippet."""
     form = CreateForm(request.form)
 
     name = form.name.data.strip()
@@ -77,14 +77,14 @@ def create():
     if not url_path.startswith('/'):
         abort(400, 'URL path must start with a slash.')
 
-    page = ContentPage(
+    snippet = Snippet(
         name=name,
         party=g.party,
         url_path=url_path)
-    db.session.add(page)
+    db.session.add(snippet)
 
-    version = ContentPageVersion(
-        page=page,
+    version = SnippetVersion(
+        snippet=snippet,
         creator=g.current_user,
         title=form.title.data,
         body=form.body.data)
@@ -92,52 +92,52 @@ def create():
 
     db.session.commit()
 
-    flash_success('Die Seite "{}" wurde angelegt.', page.name)
+    flash_success('Das Snippet "{}" wurde angelegt.', snippet.name)
     return redirect(url_for('.view_version', id=version.id))
 
 
 @blueprint.route('/<id>/update')
-@permission_required(ContentPagePermission.update)
+@permission_required(SnippetPermission.update)
 @templated
 def update_form(id):
-    """Show form to update a page."""
-    page = find_page_by_id(id)
-    latest_version = page.get_latest_version()
+    """Show form to update a snippet."""
+    snippet = find_snippet_by_id(id)
+    latest_version = snippet.get_latest_version()
 
     form = UpdateForm(
-        obj=page,
+        obj=snippet,
         title=latest_version.title,
         body=latest_version.body)
 
     return {
         'form': form,
-        'page': page,
+        'snippet': snippet,
     }
 
 
 @blueprint.route('/<id>', methods=['POST'])
-@permission_required(ContentPagePermission.update)
+@permission_required(SnippetPermission.update)
 def update(id):
-    """Update a page."""
+    """Update a snippet."""
     form = UpdateForm(request.form)
 
-    page = find_page_by_id(id)
+    snippet = find_snippet_by_id(id)
 
-    version = ContentPageVersion(
-        page=page,
+    version = SnippetVersion(
+        snippet=snippet,
         creator=g.current_user,
         title=form.title.data,
         body=form.body.data)
     db.session.add(version)
     db.session.commit()
 
-    flash_success('Die Seite "{}" wurde aktualisiert.', page.name)
+    flash_success('Das Snippet "{}" wurde aktualisiert.', snippet.name)
     return redirect(url_for('.view_version', id=version.id))
 
 
-def find_page_by_id(id):
-    return ContentPage.query.get_or_404(id)
+def find_snippet_by_id(id):
+    return Snippet.query.get_or_404(id)
 
 
 def find_version(id):
-    return ContentPageVersion.query.get_or_404(id)
+    return SnippetVersion.query.get_or_404(id)

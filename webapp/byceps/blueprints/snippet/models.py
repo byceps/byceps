@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-byceps.blueprints.contentpage.models
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.snippet.models
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2014 Jochen Kupperschmidt
 """
@@ -20,7 +20,7 @@ from ..party.models import Party
 from ..user.models import User
 
 
-class ContentPageQuery(BaseQuery):
+class BelongsToPartyQuery(BaseQuery):
 
     def for_current_party(self):
         return self.for_party(g.party)
@@ -32,14 +32,14 @@ class ContentPageQuery(BaseQuery):
         return self.filter_by(party_id=party_id)
 
 
-class ContentPage(db.Model):
-    """A content page."""
-    __tablename__ = 'content_pages'
+class Snippet(db.Model):
+    """A snippet."""
+    __tablename__ = 'snippets'
     __table_args__ = (
         db.UniqueConstraint('party_id', 'name'),
         db.UniqueConstraint('party_id', 'url_path'),
     )
-    query_class = ContentPageQuery
+    query_class = BelongsToPartyQuery
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     party_id = db.Column(db.Unicode(20), db.ForeignKey('parties.id'))
@@ -49,14 +49,14 @@ class ContentPage(db.Model):
 
     def generate_url(self):
         try:
-            return url_for('contentpage.{}'.format(self.name))
+            return url_for('snippet.{}'.format(self.name))
         except BuildError:
             return None
 
     def get_latest_version(self):
         """Return the most recent version.
 
-        A page is excepted to have at least one version (the initial
+        A snippet is excepted to have at least one version (the initial
         one).
         """
         return self.get_versions()[0]
@@ -75,13 +75,13 @@ class ContentPage(db.Model):
             .build()
 
 
-class ContentPageVersion(db.Model):
-    """A snapshot of a content page at a certain time."""
-    __tablename__ = 'content_page_versions'
+class SnippetVersion(db.Model):
+    """A snapshot of a snippet at a certain time."""
+    __tablename__ = 'snippet_versions'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    page_id = db.Column(db.Uuid, db.ForeignKey('content_pages.id'))
-    page = db.relationship(ContentPage, backref='versions')
+    snippet_id = db.Column(db.Uuid, db.ForeignKey('snippets.id'))
+    snippet = db.relationship(Snippet, backref='versions')
     created_at = db.Column(db.DateTime, default=datetime.now)
     creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
     creator = db.relationship(User)
@@ -91,7 +91,7 @@ class ContentPageVersion(db.Model):
     def __repr__(self):
         return ReprBuilder(self) \
             .add_with_lookup('id') \
-            .add_with_lookup('page') \
+            .add_with_lookup('snippet') \
             .add_with_lookup('created_at') \
             .add_with_lookup('creator') \
             .add_with_lookup('title') \

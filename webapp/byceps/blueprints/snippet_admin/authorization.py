@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-byceps.blueprints.contentpage_admin.authorization
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.snippet_admin.authorization
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2014 Jochen Kupperschmidt
 """
@@ -10,7 +10,7 @@ byceps.blueprints.contentpage_admin.authorization
 from byceps.util.authorization import create_permission_enum
 
 
-ContentPagePermission = create_permission_enum('ContentPage', [
+SnippetPermission = create_permission_enum('Snippet', [
     'list',
     'create',
     'update',
