@@ -1,5 +1,6 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/datetime.html' import render_datetime %}
+{% from 'macros/user.html' import render_user_link %}
 {% set current_page = 'snippet.index' %}
 {% set title = 'Snippets' %}
 
@@ -30,7 +31,7 @@
             {{ render_datetime(latest_version.created_at) }}
             {%- endif %}
           </td>
-          <td><a href="{{ url_for('user.view', id=latest_version.creator.id) }}">{{ latest_version.creator.screen_name }}</a></td>
+          <td>{{ render_user_link(latest_version.creator) }}</td>
           {%- set snippet_mounted_url = snippet.generate_url() %}
           {%- if snippet_mounted_url is not none %}
           <td colspan="2">

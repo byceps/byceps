@@ -1,5 +1,6 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/datetime.html' import render_datetime %}
+{% from 'macros/user.html' import render_user_link %}
 {% set current_page = 'board.category_index' %}
 {% set title = 'Forum' %}
 
@@ -24,7 +25,7 @@
         <td style="text-align: center;">{{ category.posting_count }}</td>
         <td>
           {% if category.latest_posting_updated_at and category.latest_posting_author %}
-            {{ render_datetime(category.latest_posting_updated_at) }} von {{ category.latest_posting_author.screen_name }}
+            {{ render_datetime(category.latest_posting_updated_at) }} von {{ render_user_link(category.latest_posting_author) }}
           {% endif %}
         </td>
       </tr>

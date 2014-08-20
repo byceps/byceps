@@ -1,5 +1,6 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/datetime.html' import render_datetime %}
+{% from 'macros/user.html' import render_user_link %}
 {% set current_page = 'user.index' %}
 {% set title = 'Benutzer' %}
 
@@ -18,7 +19,7 @@
     <tbody>
       {%- for user in users|sort(attribute='created_at', reverse=True) %}
       <tr>
-        <td><a href="{{ url_for('user.view', id=user.id) }}">{{ user.screen_name }}</a></td>
+        <td>{{ render_user_link(user) }}</td>
         <td>{{ render_datetime(user.created_at) }}</td>
         <td><span class="icon-{{ 'enabled' if user.is_enabled else 'disabled' }}"></span></td>
       </tr>

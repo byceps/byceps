@@ -1,5 +1,6 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/datetime.html' import render_datetime %}
+{% from 'macros/user.html' import render_user_link %}
 {% set current_page = 'snippet.history' %}
 {% set title = 'Versionshistorie' %}
 
@@ -37,7 +38,7 @@
             {%- endif -%}
           </td>
           <td style="white-space: nowrap;"><a href="{{ url_for('.view_version', id=version.id) }}">{{ render_datetime(version.created_at) }}</a></td>
-          <td><a href="{{ url_for('user.view', id=version.creator.id) }}">{{ version.creator.screen_name }}</a></td>
+          <td>{{ render_user_link(version.creator) }}</td>
         </tr>
       {%- endfor %}
     </tbody>

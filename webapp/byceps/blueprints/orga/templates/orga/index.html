@@ -1,4 +1,5 @@
 {% extends 'layout/base.html' %}
+{% from 'macros/user.html' import render_user_link %}
 {% set current_page = 'orga.index' %}
 {% set title = 'Orgas' %}
 
@@ -15,7 +16,7 @@
     <tbody>
       {%- for orga in orgas|sort(attribute='screen_name') %}
       <tr>
-        <td><a href="{{ url_for('user.view', id=orga.id) }}">{{ orga.screen_name }}</a></td>
+        <td>{{ render_user_link(orga) }}</td>
       </tr>
       {%- endfor %}
       <tr>
