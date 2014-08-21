@@ -28,5 +28,5 @@ def category_index():
 @templated
 def category_view(id):
     """List latest topics in the category."""
-    category = Category.query.get(id, g.party.brand)
+    category = Category.query.get(id)
     return {'category': category}

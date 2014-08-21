@@ -11,7 +11,7 @@ from datetime import datetime
 
 from flask import g
 
-from ...database import BaseQuery, db
+from ...database import BaseQuery, db, generate_uuid
 from ...util.instances import ReprBuilder
 
 from ..brand.models import Brand
@@ -33,8 +33,8 @@ class Category(db.Model):
     )
     query_class = CategoryQuery
 
-    id = db.Column(db.Unicode(40), primary_key=True)
-    brand_id = db.Column(db.Unicode(20), db.ForeignKey('brands.id'), primary_key=True)
+    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    brand_id = db.Column(db.Unicode(20), db.ForeignKey('brands.id'))
     brand = db.relationship(Brand)
     position = db.Column(db.Integer, nullable=False)
     title = db.Column(db.Unicode(40), nullable=False)
