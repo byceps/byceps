@@ -50,3 +50,45 @@ class Category(db.Model):
             .add_with_lookup('brand') \
             .add_with_lookup('title') \
             .build()
+
+
+class Topic(db.Model):
+    """A topic."""
+    __tablename__ = 'board_topics'
+
+    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    category_id = db.Column(db.Uuid, db.ForeignKey('board_categories.id'))
+    category = db.relationship(Category, backref='topics')
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    author_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
+    author = db.relationship(User, foreign_keys=[author_id])
+    title = db.Column(db.Unicode(80))
+    is_sticky = db.Column(db.Boolean, default=False)
+    is_locked = db.Column(db.Boolean, default=False)
+    posting_count = db.Column(db.Integer, default=0)
+    last_updated_at = db.Column(db.DateTime, default=datetime.now())
+    last_author_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
+    last_author = db.relationship(User, foreign_keys=[last_author_id])
+
+    @property
+    def is_new(self):
+        return True # TODO
+
+    @property
+    def reply_count(self):
+        return self.posting_count - 1
+
+    def __repr__(self):
+        builder = ReprBuilder(self) \
+            .add_with_lookup('id') \
+            .add('category', self.category.title) \
+            .add('author', self.author.screen_name) \
+            .add_with_lookup('title')
+
+        if self.is_sticky:
+            builder.add_custom('sticky')
+
+        if self.is_locked:
+            builder.add_custom('locked')
+
+        return builder.build()

@@ -30,3 +30,11 @@ def category_view(id):
     """List latest topics in the category."""
     category = Category.query.get(id)
     return {'category': category}
+
+
+@blueprint.route('/topics/<id>')
+@templated
+def topic_view(id):
+    """List postings for the topic."""
+    topic = Topic.query.get(id)
+    return {'topic': topic}
