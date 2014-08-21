@@ -119,7 +119,7 @@ Create a database user named 'byceps':
 
 .. code:: sh
 
-    postgres@host$ createuser -P -e byceps
+    postgres@host$ createuser --echo --pwprompt byceps
 
 You should be prompted to enter a password. Do that.
 
@@ -127,7 +127,7 @@ Create a schema, also named 'byceps':
 
 .. code:: sh
 
-    postgres@host$ createdb -T template0 -E UTF8 byceps
+    postgres@host$ createdb --encoding=UTF8 --template=template0 --owner byceps byceps
 
 
 Testing
