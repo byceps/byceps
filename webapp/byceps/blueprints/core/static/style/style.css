@@ -247,6 +247,7 @@ table.wide {
 /* footer */
 
 #footer {
+  clear: both;
   display: block;
   font-size: 0.9rem;
   opacity: 0.5;
