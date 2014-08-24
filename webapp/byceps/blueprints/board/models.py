@@ -92,3 +92,32 @@ class Topic(db.Model):
             builder.add_custom('locked')
 
         return builder.build()
+
+
+class Posting(db.Model):
+    """A posting."""
+    __tablename__ = 'board_postings'
+
+    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    topic_id = db.Column(db.Uuid, db.ForeignKey('board_topics.id'))
+    topic = db.relationship(Topic, backref='postings')
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    author_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
+    author = db.relationship(User, foreign_keys=[author_id])
+    body = db.Column(db.UnicodeText)
+    is_blocked = db.Column(db.Boolean, default=False)
+    last_edited_at = db.Column(db.DateTime, default=datetime.now())
+    last_editor_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
+    last_editor = db.relationship(User, foreign_keys=[last_editor_id])
+    edit_count = db.Column(db.Integer, default=0)
+
+    def __repr__(self):
+        builder = ReprBuilder(self) \
+            .add_with_lookup('id') \
+            .add('topic', self.topic.title) \
+            .add('author', self.author.screen_name)
+
+        if self.is_blocked:
+            builder.add_custom('blocked')
+
+        return builder.build()
