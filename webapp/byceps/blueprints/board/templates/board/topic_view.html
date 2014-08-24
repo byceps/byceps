@@ -1,0 +1,34 @@
+{% extends 'layout/base.html' %}
+{% from 'macros/datetime.html' import render_datetime %}
+{% from 'macros/user.html' import render_user_link %}
+{% set current_page = 'board.topic_view' %}
+{% set title = 'Forum - %s'|format(topic.title) %}
+
+{% block body %}
+
+  <h1>{{ topic.title }}</h1>
+
+  {%- for posting in topic.postings %}
+    <article id="posting-{{ posting.id }}">
+      <aside>
+        <div class="author">{{ render_user_link(posting.author) }}</div>
+        {{ render_datetime(posting.created_at) }}
+      </aside>
+      <div class="body">
+{{ posting.body }}
+      </div>
+      {%- if posting.edit_count %}
+      <footer>
+        <p><small style="border-top: 1px;">{{ posting.edit_count }} mal bearbeitet, zuletzt am {{ render_date_time(posting.last_edited_at) }} von {{ render_user_link(posting.last_author) }}</small></p>
+      </footer>
+      {%- endif %}
+    </article>
+  {%- endfor %}
+
+  {%- if g.current_user.has_permission(BoardPostingPermission.create) %}
+  <ol class="actions">
+    <li><a href="{{ url_for('.create_form', topic=topic.id) }}"><span class="icon-add"></span> Antworten</a></li>
+  </ol>
+  {%- endif %}
+
+{%- endblock body %}
