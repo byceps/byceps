@@ -40,9 +40,23 @@ class Category(db.Model):
     title = db.Column(db.Unicode(40), nullable=False)
     topic_count = db.Column(db.Integer, default=0, nullable=False)
     posting_count = db.Column(db.Integer, default=0, nullable=False)
-    latest_posting_updated_at = db.Column(db.DateTime)
-    latest_posting_author_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
-    latest_posting_author = db.relationship(User)
+    last_posting_updated_at = db.Column(db.DateTime)
+    last_posting_author_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
+    last_posting_author = db.relationship(User)
+
+    def refresh(self):
+        """Update the count and latest fields."""
+        topic_count = Topic.query.filter_by(category=self).count()
+        posting_query = Posting.query.join(Topic).filter_by(category=self)
+        posting_count = posting_query.count()
+        last_posting = posting_query.order_by(Posting.created_at.desc()).first()
+
+        self.topic_count = topic_count
+        self.posting_count = posting_count
+        self.last_posting_updated_at = last_posting.created_at if last_posting else None
+        self.last_posting_author = last_posting.author if last_posting else None
+
+        db.session.commit()
 
     def __repr__(self):
         return ReprBuilder(self) \
@@ -77,6 +91,18 @@ class Topic(db.Model):
     @property
     def reply_count(self):
         return self.posting_count - 1
+
+    def refresh(self):
+        """Update the count and latest fields.""" # TODO
+        posting_count = Posting.query.filter_by(topic=self).count()
+        last_posting = Posting.query.filter_by(topic=self).order_by(Posting.created_at.desc()).first()
+
+        self.posting_count = posting_count
+        if last_posting:
+            self.last_updated_at = last_posting.created_at
+            self.last_author = last_posting.author
+
+        db.session.commit()
 
     def __repr__(self):
         builder = ReprBuilder(self) \

@@ -24,8 +24,8 @@
         <td style="text-align: center;">{{ category.topic_count }}</td>
         <td style="text-align: center;">{{ category.posting_count }}</td>
         <td>
-          {% if category.latest_posting_updated_at and category.latest_posting_author %}
-            {{ render_datetime(category.latest_posting_updated_at) }} von {{ render_user_link(category.latest_posting_author) }}
+          {% if category.last_posting_updated_at and category.last_posting_author %}
+            {{ render_datetime(category.last_posting_updated_at) }} von {{ render_user_link(category.last_posting_author) }}
           {% endif %}
         </td>
       </tr>
