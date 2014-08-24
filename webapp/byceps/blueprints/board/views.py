@@ -35,7 +35,7 @@ def category_index():
 @templated
 def category_view(id):
     """List latest topics in the category."""
-    category = Category.query.get(id)
+    category = Category.query.get_or_404(id)
     return {'category': category}
 
 
@@ -43,5 +43,5 @@ def category_view(id):
 @templated
 def topic_view(id):
     """List postings for the topic."""
-    topic = Topic.query.get(id)
+    topic = Topic.query.get_or_404(id)
     return {'topic': topic}
