@@ -10,10 +10,17 @@ byceps.blueprints.board.views
 from ...util.framework import create_blueprint
 from ...util.templating import templated
 
-from .models import Category
+from ..authorization.registry import permission_registry
+
+from .authorization import BoardPostingPermission, BoardTopicPermission
+from .models import Category, Topic
 
 
 blueprint = create_blueprint('board', __name__)
+
+
+permission_registry.register_enum('board_topic', BoardTopicPermission)
+permission_registry.register_enum('board_posting', BoardPostingPermission)
 
 
 @blueprint.route('/categories')
