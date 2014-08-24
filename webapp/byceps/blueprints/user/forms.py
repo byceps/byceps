@@ -8,7 +8,7 @@ byceps.blueprints.user.forms
 """
 
 from wtforms import FileField, Form, PasswordField, TextField
-from wtforms.validators import Required, ValidationError
+from wtforms.validators import Required
 
 
 class CreateForm(Form):
