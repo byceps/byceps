@@ -77,13 +77,8 @@ def get_role(id):
 
 @add_all_to_database
 def create_permissions(key, enum):
-    return list(get_permission_entities_for_enum(key, enum))
-
-
-def get_permission_entities_for_enum(key, enum):
-    for member_name in enum.__members__:
-        id = '{}.{}'.format(key, member_name)
-        yield Permission(id=id)
+    enum_members = iter(enum)
+    return list(map(Permission.from_enum_member, enum_members))
 
 
 def add_permissions_to_role(permissions, role):

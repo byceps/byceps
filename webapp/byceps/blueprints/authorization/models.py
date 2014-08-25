@@ -26,6 +26,12 @@ class Permission(db.Model):
 
     id = db.Column(db.Unicode(40), primary_key=True)
 
+    @classmethod
+    def from_enum_member(cls, enum_member):
+        key = enum_member.__class__.__key__
+        id = '{}.{}'.format(key, enum_member.name)
+        return cls(id=id)
+
     @property
     def enum_member(self):
         return permission_registry.get_enum_member(self)
