@@ -45,7 +45,7 @@ class Category(db.Model):
     last_posting_author_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
     last_posting_author = db.relationship(User)
 
-    def refresh(self):
+    def aggregate(self):
         """Update the count and latest fields."""
         topic_count = Topic.query.filter_by(category=self).count()
         posting_query = Posting.query.join(Topic).filter_by(category=self)
@@ -99,7 +99,7 @@ class Topic(db.Model):
     def reply_count(self):
         return self.posting_count - 1
 
-    def refresh(self):
+    def aggregate(self):
         """Update the count and latest fields.""" # TODO
         posting_count = Posting.query.filter_by(topic=self).count()
         last_posting = Posting.query.filter_by(topic=self).order_by(Posting.created_at.desc()).first()

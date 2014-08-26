@@ -88,6 +88,9 @@ def topic_create(category_id):
     db.session.add(posting)
     db.session.commit()
 
+    topic.aggregate()
+    category.aggregate()
+
     flash_success('Das Thema wurde hinzugefügt.')
     return redirect_to('.topic_view', id=topic.id)
 
@@ -118,6 +121,8 @@ def posting_create(topic_id):
     posting = Posting(topic, author, body)
     db.session.add(posting)
     db.session.commit()
+
+    topic.aggregate()
 
     flash_success('Deine Antwort wurde hinzugefügt.')
     return redirect_to('.topic_view', id=topic.id)
