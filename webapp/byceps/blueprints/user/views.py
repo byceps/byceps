@@ -9,14 +9,14 @@ byceps.blueprints.user.views
 
 from datetime import datetime
 
-from flask import abort, g, redirect, request, session, url_for
+from flask import abort, g, request, session
 
 from ...database import db
 from ...util.framework import create_blueprint, flash_error, flash_success
 from ...util.image import guess_type as guess_image_type
 from ...util.templating import templated
 from ...util import upload
-from ...util.views import respond_no_content
+from ...util.views import redirect_to, respond_no_content
 
 from .forms import AvatarImageUpdateForm, CreateForm, LoginForm
 from .models import User
@@ -70,7 +70,7 @@ def create():
 
     flash_success('Das Benutzerkonto für "{}" wurde angelegt.',
                   user.screen_name)
-    return redirect(url_for('.view', id=user.id))
+    return redirect_to('.view', id=user.id)
 
 
 @blueprint.route('/<id>/avatar/update')
@@ -115,7 +115,7 @@ def avatar_image(id):
 
     db.session.commit()
 
-    return redirect(url_for('.view', id=user.id))
+    return redirect_to('.view', id=user.id)
 
 
 def determine_image_type(image):

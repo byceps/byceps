@@ -11,7 +11,7 @@ View utilities.
 
 from functools import wraps
 
-from flask import jsonify, Response
+from flask import jsonify, redirect, Response, url_for
 
 
 def jsonified(f):
@@ -46,3 +46,7 @@ def respond_no_content(f):
         headers = f(*args, **kwargs)
         return Response(status=204, headers=headers)
     return wrapper
+
+
+def redirect_to(endpoint, **values):
+    return redirect(url_for(endpoint, **values))

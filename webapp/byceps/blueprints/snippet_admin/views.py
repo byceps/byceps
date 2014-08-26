@@ -7,11 +7,12 @@ byceps.blueprints.snippet_admin.views
 :Copyright: 2006-2014 Jochen Kupperschmidt
 """
 
-from flask import abort, g, redirect, request, url_for
+from flask import abort, g, request
 
 from ...database import db
 from ...util.framework import create_blueprint, flash_success
 from ...util.templating import templated
+from ...util.views import redirect_to
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
@@ -93,7 +94,7 @@ def create():
     db.session.commit()
 
     flash_success('Das Snippet "{}" wurde angelegt.', snippet.name)
-    return redirect(url_for('.view_version', id=version.id))
+    return redirect_to('.view_version', id=version.id)
 
 
 @blueprint.route('/<id>/update')
@@ -132,7 +133,7 @@ def update(id):
     db.session.commit()
 
     flash_success('Das Snippet "{}" wurde aktualisiert.', snippet.name)
-    return redirect(url_for('.view_version', id=version.id))
+    return redirect_to('.view_version', id=version.id)
 
 
 def find_snippet_by_id(id):
