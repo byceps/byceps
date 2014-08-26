@@ -20,7 +20,10 @@
     <tbody>
       {%- for category in categories|sort(attribute='position') %}
       <tr>
-        <td><a href="{{ url_for('.category_view', id=category.id) }}">{{ category.title }}</a></td>
+        <td>
+          <a href="{{ url_for('.category_view', id=category.id) }}">{{ category.title }}</a>
+          <div>{{ category.description }}</div>
+        </td>
         <td style="text-align: center;">{{ category.topic_count }}</td>
         <td style="text-align: center;">{{ category.posting_count }}</td>
         <td>
