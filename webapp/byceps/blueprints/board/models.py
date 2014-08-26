@@ -86,6 +86,11 @@ class Topic(db.Model):
     last_author_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
     last_author = db.relationship(User, foreign_keys=[last_author_id])
 
+    def __init__(self, category, author, title):
+        self.category = category
+        self.author = author
+        self.title = title
+
     @property
     def is_new(self):
         return True # TODO

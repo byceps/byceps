@@ -19,7 +19,7 @@ from ..authorization.registry import permission_registry
 
 from .authorization import BoardPostingPermission, BoardTopicPermission
 from .formatting import render_html
-from .forms import PostingCreateForm
+from .forms import PostingCreateForm, TopicCreateForm
 from .models import Category, Posting, Topic
 
 
@@ -55,6 +55,41 @@ def topic_view(id):
     """List postings for the topic."""
     topic = Topic.query.get_or_404(id)
     return {'topic': topic}
+
+
+@blueprint.route('/categories/<category_id>/create')
+@permission_required(BoardTopicPermission.create)
+@templated
+def topic_create_form(category_id, errorneous_form=None):
+    """Show a form to create a topic in the category."""
+    category = Category.query.get_or_404(category_id)
+    form = errorneous_form if errorneous_form else TopicCreateForm()
+    return {
+        'category': category,
+        'form': form,
+    }
+
+
+@blueprint.route('/categories/<category_id>/create', methods=['POST'])
+@permission_required(BoardTopicPermission.create)
+def topic_create(category_id):
+    """Create a topic in the category."""
+    form = TopicCreateForm(request.form)
+
+    category = Category.query.get_or_404(category_id)
+    author = g.current_user
+    title = form.title.data.strip()
+    body = form.body.data.strip()
+
+    topic = Topic(category, author, title)
+    posting = Posting(topic, author, body)
+
+    db.session.add(topic)
+    db.session.add(posting)
+    db.session.commit()
+
+    flash_success('Das Thema wurde hinzugefügt.')
+    return redirect_to('.topic_view', id=topic.id)
 
 
 @blueprint.route('/topics/<topic_id>/create')
