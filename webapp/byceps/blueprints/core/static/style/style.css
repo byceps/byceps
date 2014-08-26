@@ -244,6 +244,47 @@ table.wide {
 }
 
 
+/* board */
+
+.board-postings {
+  border-bottom: #cccccc solid 1px;
+}
+
+.board-postings article {
+  border-top: #cccccc solid 1px;
+  margin: 0 0 20px 0;
+  padding: 10px 0 0 0;
+}
+
+.board-postings aside,
+.board-postings .body {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.board-postings aside {
+  margin-right: 4px;
+  width: 120px;
+}
+
+.board-postings aside .author {
+  font-weight: bold;
+}
+
+.board-postings aside .avatar {
+  border: #cccccc solid 1px;
+  display: block;
+  height: 150px;
+  margin: 0.25rem 0;
+  width: 110px;
+}
+
+.board-postings aside time {
+  display: block;
+  font-size: 0.8rem;
+}
+
+
 /* footer */
 
 #footer {

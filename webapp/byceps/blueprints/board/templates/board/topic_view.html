@@ -8,11 +8,13 @@
 
   <h1>{{ topic.title }}</h1>
 
+  <div class="board-postings">
   {%- for posting in topic.postings %}
     <article id="posting-{{ posting.id }}">
       <aside>
         <div class="author">{{ render_user_link(posting.author) }}</div>
-        {{ render_datetime(posting.created_at) }}
+        <div class="avatar"></div>
+        {{ render_datetime(posting.created_at)|replace(', ', '<br/>'|safe) }}
       </aside>
       <div class="body">
 {{ posting.body|bbcode|safe }}
@@ -24,6 +26,7 @@
       {%- endif %}
     </article>
   {%- endfor %}
+  </div>
 
   <ol class="actions">
   {%- if g.current_user.has_permission(BoardPostingPermission.create) %}
