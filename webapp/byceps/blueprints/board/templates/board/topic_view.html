@@ -25,10 +25,12 @@
     </article>
   {%- endfor %}
 
-  {%- if g.current_user.has_permission(BoardPostingPermission.create) %}
   <ol class="actions">
-    <li><a href="{{ url_for('.create_form', topic=topic.id) }}"><span class="icon-add"></span> Antworten</a></li>
-  </ol>
+  {%- if g.current_user.has_permission(BoardPostingPermission.create) %}
+    <li><a href="{{ url_for('.posting_create_form', topic_id=topic.id) }}"><span class="icon-add"></span> Antworten</a></li>
+  {%- else %}
+    <li><span class="action hidden"><span class="icon-add"></span> Antworten</span></li>
   {%- endif %}
+  </ol>
 
 {%- endblock body %}

@@ -142,6 +142,11 @@ class Posting(db.Model):
     last_editor = db.relationship(User, foreign_keys=[last_editor_id])
     edit_count = db.Column(db.Integer, default=0)
 
+    def __init__(self, topic, author, body):
+        self.topic = topic
+        self.author = author
+        self.body = body
+
     def __repr__(self):
         builder = ReprBuilder(self) \
             .add_with_lookup('id') \
