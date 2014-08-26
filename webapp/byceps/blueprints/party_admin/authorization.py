@@ -10,6 +10,6 @@ byceps.blueprints.party_admin.authorization
 from byceps.util.authorization import create_permission_enum
 
 
-PartyPermission = create_permission_enum('Party', [
+PartyPermission = create_permission_enum('party', [
     'list',
 ])

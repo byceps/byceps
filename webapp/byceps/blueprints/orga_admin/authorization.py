@@ -10,6 +10,6 @@ byceps.blueprints.orga_admin.authorization
 from byceps.util.authorization import create_permission_enum
 
 
-OrgaTeamPermission = create_permission_enum('OrgaTeam', [
+OrgaTeamPermission = create_permission_enum('orga_team', [
     'list',
 ])

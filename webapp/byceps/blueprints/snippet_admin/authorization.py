@@ -10,7 +10,7 @@ byceps.blueprints.snippet_admin.authorization
 from byceps.util.authorization import create_permission_enum
 
 
-SnippetPermission = create_permission_enum('Snippet', [
+SnippetPermission = create_permission_enum('snippet', [
     'list',
     'create',
     'update',

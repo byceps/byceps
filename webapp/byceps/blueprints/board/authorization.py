@@ -10,7 +10,7 @@ byceps.blueprints.board.authorization
 from byceps.util.authorization import create_permission_enum
 
 
-BoardTopicPermission = create_permission_enum('BoardTopic', [
+BoardTopicPermission = create_permission_enum('board_topic', [
     'create',
     'hide',
     'lock',
@@ -18,7 +18,7 @@ BoardTopicPermission = create_permission_enum('BoardTopic', [
 ])
 
 
-BoardPostingPermission = create_permission_enum('BoardPosting', [
+BoardPostingPermission = create_permission_enum('board_posting', [
     'create',
     'update',
     'hide',
