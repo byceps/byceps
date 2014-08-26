@@ -13,9 +13,9 @@ class PermissionRegistry(object):
     def __init__(self):
         self.enums = {}
 
-    def register_enum(self, key, permission_enum):
+    def register_enum(self, permission_enum):
         """Add an enum to the registry."""
-        self.enums[key] = permission_enum
+        self.enums[permission_enum.__key__] = permission_enum
 
     def get_enums(self):
         """Return the registered enums."""

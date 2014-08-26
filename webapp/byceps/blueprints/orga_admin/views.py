@@ -20,7 +20,7 @@ from .authorization import OrgaTeamPermission
 blueprint = create_blueprint('orga_admin', __name__)
 
 
-permission_registry.register_enum('orga_team', OrgaTeamPermission)
+permission_registry.register_enum(OrgaTeamPermission)
 
 
 @blueprint.route('/')

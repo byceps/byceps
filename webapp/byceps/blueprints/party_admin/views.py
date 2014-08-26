@@ -20,7 +20,7 @@ from .authorization import PartyPermission
 blueprint = create_blueprint('party_admin', __name__)
 
 
-permission_registry.register_enum('party', PartyPermission)
+permission_registry.register_enum(PartyPermission)
 
 
 @blueprint.route('/')

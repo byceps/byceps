@@ -19,8 +19,8 @@ from .models import Category, Topic
 blueprint = create_blueprint('board', __name__)
 
 
-permission_registry.register_enum('board_topic', BoardTopicPermission)
-permission_registry.register_enum('board_posting', BoardPostingPermission)
+permission_registry.register_enum(BoardTopicPermission)
+permission_registry.register_enum(BoardPostingPermission)
 
 
 @blueprint.route('/categories')

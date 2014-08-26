@@ -20,7 +20,7 @@ from .authorization import UserPermission
 blueprint = create_blueprint('user_admin', __name__)
 
 
-permission_registry.register_enum('user', UserPermission)
+permission_registry.register_enum(UserPermission)
 
 
 @blueprint.route('/')

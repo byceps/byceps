@@ -11,7 +11,7 @@ class PermissionRegistryTestCase(TestCase):
 
     def setUp(self):
         self.registry = PermissionRegistry()
-        self.registry.register_enum('item', ItemPermission)
+        self.registry.register_enum(ItemPermission)
 
     def test_lookup_of_existing_enum_member(self):
         permission = create_permission('item.create')

@@ -25,7 +25,7 @@ from .forms import CreateForm, UpdateForm
 blueprint = create_blueprint('snippet_admin', __name__)
 
 
-permission_registry.register_enum('snippet', SnippetPermission)
+permission_registry.register_enum(SnippetPermission)
 
 
 @blueprint.route('/')
