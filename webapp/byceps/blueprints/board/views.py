@@ -18,6 +18,7 @@ from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 
 from .authorization import BoardPostingPermission, BoardTopicPermission
+from .formatting import render_html
 from .forms import PostingCreateForm
 from .models import Category, Posting, Topic
 
@@ -27,6 +28,9 @@ blueprint = create_blueprint('board', __name__)
 
 permission_registry.register_enum(BoardTopicPermission)
 permission_registry.register_enum(BoardPostingPermission)
+
+
+blueprint.add_app_template_filter(render_html, 'bbcode')
 
 
 @blueprint.route('/categories')

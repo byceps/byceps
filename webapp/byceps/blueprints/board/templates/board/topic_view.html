@@ -15,7 +15,7 @@
         {{ render_datetime(posting.created_at) }}
       </aside>
       <div class="body">
-{{ posting.body }}
+{{ posting.body|bbcode|safe }}
       </div>
       {%- if posting.edit_count %}
       <footer>

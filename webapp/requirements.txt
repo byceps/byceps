@@ -9,4 +9,5 @@ Flask-SQLAlchemy >= 1.0
 pg8000 >= 1.9.13
 SQLAlchemy >= 0.9.7
 
+bbcode >= 1.0.16
 Pillow >= 2.5.1
