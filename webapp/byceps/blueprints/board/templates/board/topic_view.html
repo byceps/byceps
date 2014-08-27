@@ -14,11 +14,13 @@
 
   <div class="board-postings">
   {%- for posting in topic.postings %}
-    <article id="posting-{{ posting.id }}">
+    <article id="posting-{{ posting.id }}" {%- if posting.hidden %} class="hidden"{% endif %}>
       <aside>
         <div class="author">{{ render_user_link(posting.author) }}</div>
         <div class="avatar"></div>
         {{ render_datetime(posting.created_at)|replace(', ', '<br/>'|safe) }}
+
+        {%- if posting.hidden %}<p><span class="icon-hidden" title="versteckt (durch {{ posting.hidden_by.screen_name }})"></span> versteckt</p>{% endif %}
 
         {%- if g.current_user.has_permission(BoardPostingPermission.hide) %}
         <p><a href="{{ url_for('.posting_flags_form', id=posting.id) }}" class="action icon-edit"> verwalten</a></p>
