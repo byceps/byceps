@@ -1,12 +1,7 @@
       <header id="header">
 
-          <nav class="top">
-            {% if g.current_user.is_active() -%}
-            Angemeldet als: <strong>{{ g.current_user.screen_name }}</strong>
-            (<a id="logout" href="{{ url_for('user.logout', _method='POST') }}">Logout</a>)
-            {%- else -%}
-            <a href="{{ url_for('user.login_form') }}">Login</a>
-            {%- endif %}
-          </nav>
+        <nav class="top">
+{% include 'user/_login_status.html' %}
+        </nav>
 
       </header>
