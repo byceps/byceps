@@ -1,15 +1,13 @@
 $(function() {
 
-  // Hide a topic.
   confirmed_post_on_click('a#topic-hide', 'Thema verstecken?');
-
-  // Un-hide a topic.
   confirmed_delete_on_click('a#topic-unhide', 'Thema wieder anzeigen?');
+  confirmed_post_on_click('a#topic-lock', 'Thema schließen?');
+  confirmed_delete_on_click('a#topic-unlock', 'Thema wieder öffnen?');
+  confirmed_post_on_click('a#topic-pin', 'Thema anpinnen?');
+  confirmed_delete_on_click('a#topic-unpin', 'Thema wieder lösen?');
 
-  // Hide a posting.
   confirmed_post_on_click('a#posting-hide', 'Beitrag verstecken?');
-
-  // Un-hide a posting.
   confirmed_delete_on_click('a#posting-unhide', 'Beitrag wieder anzeigen?');
 
   /* utilities */

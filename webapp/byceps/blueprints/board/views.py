@@ -145,6 +145,68 @@ def topic_unhide(id):
     return url_for('.category_view', id=topic.category.id, _anchor=anchor)
 
 
+@blueprint.route('/topics/<id>/flags/locked', methods=['POST'])
+@permission_required(BoardTopicPermission.lock)
+@respond_no_content_with_location
+def topic_lock(id):
+    """Lock a topic."""
+    topic = Topic.query.get_or_404(id)
+    topic.locked = True
+    topic.locked_by = g.current_user
+    db.session.commit()
+
+    flash_success('Das Thema "{}" wurde geschlossen.'.format(topic.title))
+    anchor = 'topic-{}'.format(topic.id)
+    return url_for('.category_view', id=topic.category.id, _anchor=anchor)
+
+
+@blueprint.route('/topics/<id>/flags/locked', methods=['DELETE'])
+@permission_required(BoardTopicPermission.lock)
+@respond_no_content_with_location
+def topic_unlock(id):
+    """Unlock a topic."""
+    topic = Topic.query.get_or_404(id)
+    topic.locked = False
+    topic.locked_by = None
+    db.session.commit()
+
+    flash_success(
+        'Das Thema "{}" wurde wieder geöffnet.'.format(topic.title))
+    anchor = 'topic-{}'.format(topic.id)
+    return url_for('.category_view', id=topic.category.id, _anchor=anchor)
+
+
+@blueprint.route('/topics/<id>/flags/pinned', methods=['POST'])
+@permission_required(BoardTopicPermission.pin)
+@respond_no_content_with_location
+def topic_pin(id):
+    """Pin a topic."""
+    topic = Topic.query.get_or_404(id)
+    topic.pinned = True
+    topic.pinned_by = g.current_user
+    db.session.commit()
+
+    flash_success('Das Thema "{}" wurde angepinnt.'.format(topic.title))
+    anchor = 'topic-{}'.format(topic.id)
+    return url_for('.category_view', id=topic.category.id, _anchor=anchor)
+
+
+@blueprint.route('/topics/<id>/flags/pinned', methods=['DELETE'])
+@permission_required(BoardTopicPermission.pin)
+@respond_no_content_with_location
+def topic_unpin(id):
+    """Unpin a topic."""
+    topic = Topic.query.get_or_404(id)
+    topic.pinned = False
+    topic.pinned_by = None
+    db.session.commit()
+
+    flash_success(
+        'Das Thema "{}" wurde wieder gelöst.'.format(topic.title))
+    anchor = 'topic-{}'.format(topic.id)
+    return url_for('.category_view', id=topic.category.id, _anchor=anchor)
+
+
 # -------------------------------------------------------------------- #
 # posting
 

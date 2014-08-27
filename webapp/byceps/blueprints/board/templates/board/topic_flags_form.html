@@ -14,7 +14,6 @@
   <h1>{{ title }}</h1>
 
   <h2>Sichtbarkeit</h2>
-
   <p>Das Thema "{{ topic.title }}" von {{ render_user_link(topic.author) }} ist {% if topic.hidden %}<strong>versteckt</strong> (durch {{ topic.hidden_by.screen_name }}){% else %}<strong>sichtbar</strong>{% endif %}.</p>
   <ol class="actions">
   {%- if topic.hidden %}
@@ -23,6 +22,30 @@
   {%- else %}
     <li><a id="topic-hide" href="{{ url_for('.topic_hide', id=topic.id) }}"><span class="icon-disabled"></span> verstecken</a></li>
     <li><span class="action hidden"><span class="icon-view"></span> sichtbar machen</span></li>
+  {%- endif %}
+  </ol>
+
+  <h2>Schreibsperre</h2>
+  <p>Das Thema "{{ topic.title }}" von {{ render_user_link(topic.author) }} ist {% if topic.locked %}<strong>geschlossen</strong> (durch {{ topic.locked_by.screen_name }}){% else %}<strong>offen</strong>{% endif %}.</p>
+  <ol class="actions">
+  {%- if topic.locked %}
+    <li><span class="action hidden"><span class="icon-disabled"></span> schließen</span></li>
+    <li><a id="topic-unlock" href="{{ url_for('.topic_unlock', id=topic.id) }}"><span class="icon-view"></span> öffnen</a></li>
+  {%- else %}
+    <li><a id="topic-lock" href="{{ url_for('.topic_lock', id=topic.id) }}"><span class="icon-disabled"></span> schließen</a></li>
+    <li><span class="action hidden"><span class="icon-view"></span> öffnen</span></li>
+  {%- endif %}
+  </ol>
+
+  <h2>Anheften</h2>
+  <p>Das Thema "{{ topic.title }}" von {{ render_user_link(topic.author) }} ist {% if topic.pinned %}<strong>angepinnt</strong> (durch {{ topic.pinned_by.screen_name }}){% else %}<strong>nicht angepinnt</strong>{% endif %}.</p>
+  <ol class="actions">
+  {%- if topic.pinned %}
+    <li><span class="action hidden"><span class="icon-disabled"></span> anpinnen</span></li>
+    <li><a id="topic-unpin" href="{{ url_for('.topic_unpin', id=topic.id) }}"><span class="icon-view"></span> lösen</a></li>
+  {%- else %}
+    <li><a id="topic-pin" href="{{ url_for('.topic_pin', id=topic.id) }}"><span class="icon-disabled"></span> anpinnen</a></li>
+    <li><span class="action hidden"><span class="icon-view"></span> lösen</span></li>
   {%- endif %}
   </ol>
 
