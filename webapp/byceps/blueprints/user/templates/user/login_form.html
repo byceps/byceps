@@ -3,10 +3,10 @@
 {% set current_page = 'user.login' %}
 {% set title = 'Einloggen' %}
 
-{% block head %}
+{% block head -%}
   {{ super() }}
     <script src="{{ url_for('.static', filename='behavior/login.js') }}"></script>
-{% endblock head %}
+{%- endblock head %}
 
 {% block body %}
 

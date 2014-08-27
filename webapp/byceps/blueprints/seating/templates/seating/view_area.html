@@ -2,10 +2,10 @@
 {% set current_page = 'seating.view_area' %}
 {% set title = 'Sitzplan - %s'|format(area.title) %}
 
-{% block head %}
+{% block head -%}
   {{ super() }}
     <link rel="stylesheet" media="screen" href="{{ url_for('.static', filename='style/seating.css') }}"/>
-{% endblock head %}
+{%- endblock head %}
 
 {% block body %}
 
