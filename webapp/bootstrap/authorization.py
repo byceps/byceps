@@ -23,7 +23,7 @@ def create_roles_and_permissions():
         BoardPostingPermission.hide,
         BoardTopicPermission.hide,
         BoardTopicPermission.lock,
-        BoardTopicPermission.stick,
+        BoardTopicPermission.pin,
     ])
     create_role_with_permissions_from_enum('orga_team_admin', OrgaTeamPermission)
     create_role_with_permissions_from_enum('party_admin', PartyPermission)

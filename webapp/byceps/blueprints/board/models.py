@@ -78,13 +78,13 @@ class Topic(db.Model):
     author_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
     author = db.relationship(User, foreign_keys=[author_id])
     title = db.Column(db.Unicode(80))
-    is_hidden = db.Column(db.Boolean, default=False)
-    is_locked = db.Column(db.Boolean, default=False)
-    is_sticky = db.Column(db.Boolean, default=False)
     posting_count = db.Column(db.Integer, default=0)
     last_updated_at = db.Column(db.DateTime, default=datetime.now())
     last_author_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
     last_author = db.relationship(User, foreign_keys=[last_author_id])
+    hidden = db.Column(db.Boolean, default=False)
+    locked = db.Column(db.Boolean, default=False)
+    pinned = db.Column(db.Boolean, default=False)
 
     def __init__(self, category, author, title):
         self.category = category
@@ -92,7 +92,7 @@ class Topic(db.Model):
         self.title = title
 
     @property
-    def is_new(self):
+    def new(self):
         return True # TODO
 
     @property
@@ -118,14 +118,14 @@ class Topic(db.Model):
             .add('author', self.author.screen_name) \
             .add_with_lookup('title')
 
-        if self.is_hidden:
+        if self.hidden:
             builder.add_custom('hidden')
 
-        if self.is_locked:
+        if self.locked:
             builder.add_custom('locked')
 
-        if self.is_sticky:
-            builder.add_custom('sticky')
+        if self.pinned:
+            builder.add_custom('pinned')
 
         return builder.build()
 
@@ -141,11 +141,11 @@ class Posting(db.Model):
     author_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
     author = db.relationship(User, foreign_keys=[author_id])
     body = db.Column(db.UnicodeText)
-    is_hidden = db.Column(db.Boolean, default=False)
     last_edited_at = db.Column(db.DateTime, default=datetime.now())
     last_editor_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
     last_editor = db.relationship(User, foreign_keys=[last_editor_id])
     edit_count = db.Column(db.Integer, default=0)
+    hidden = db.Column(db.Boolean, default=False)
 
     def __init__(self, topic, author, body):
         self.topic = topic
@@ -158,7 +158,7 @@ class Posting(db.Model):
             .add('topic', self.topic.title) \
             .add('author', self.author.screen_name)
 
-        if self.is_hidden:
+        if self.hidden:
             builder.add_custom('hidden')
 
         return builder.build()

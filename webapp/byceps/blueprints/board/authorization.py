@@ -14,7 +14,7 @@ BoardTopicPermission = create_permission_enum('board_topic', [
     'create',
     'hide',
     'lock',
-    'stick',
+    'pin',
 ])
 
 
