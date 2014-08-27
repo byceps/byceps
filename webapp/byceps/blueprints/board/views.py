@@ -10,7 +10,7 @@ byceps.blueprints.board.views
 from flask import g, request, url_for
 
 from ...database import db
-from ...util.framework import create_blueprint, flash_success
+from ...util.framework import create_blueprint, flash_error, flash_success
 from ...util.templating import templated
 from ...util.views import redirect_to, respond_no_content_with_location
 
@@ -233,6 +233,12 @@ def posting_create(topic_id):
     topic = Topic.query.get_or_404(topic_id)
     author = g.current_user
     body = form.body.data.strip()
+
+    if topic.locked:
+        flash_error(
+            'Das Thema ist geschlossen. '
+            'Es können keine Beiträge mehr hinzugefügt werden.')
+        return redirect_to('.topic_view', id=topic.id)
 
     posting = Posting(topic, author, body)
     db.session.add(posting)
