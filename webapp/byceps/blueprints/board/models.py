@@ -83,8 +83,14 @@ class Topic(db.Model):
     last_author_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
     last_author = db.relationship(User, foreign_keys=[last_author_id])
     hidden = db.Column(db.Boolean, default=False)
+    hidden_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
+    hidden_by = db.relationship(User, foreign_keys=[hidden_by_id])
     locked = db.Column(db.Boolean, default=False)
+    locked_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
+    locked_by = db.relationship(User, foreign_keys=[locked_by_id])
     pinned = db.Column(db.Boolean, default=False)
+    pinned_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
+    pinned_by = db.relationship(User, foreign_keys=[pinned_by_id])
 
     def __init__(self, category, author, title):
         self.category = category
@@ -119,13 +125,13 @@ class Topic(db.Model):
             .add_with_lookup('title')
 
         if self.hidden:
-            builder.add_custom('hidden')
+            builder.add_custom('hidden by {}'.format(self.hidden_by.screen_name))
 
         if self.locked:
-            builder.add_custom('locked')
+            builder.add_custom('locked by {}'.format(self.locked_by.screen_name))
 
         if self.pinned:
-            builder.add_custom('pinned')
+            builder.add_custom('pinned by {}'.format(self.pinned_by.screen_name))
 
         return builder.build()
 
@@ -146,6 +152,8 @@ class Posting(db.Model):
     last_editor = db.relationship(User, foreign_keys=[last_editor_id])
     edit_count = db.Column(db.Integer, default=0)
     hidden = db.Column(db.Boolean, default=False)
+    hidden_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
+    hidden_by = db.relationship(User, foreign_keys=[hidden_by_id])
 
     def __init__(self, topic, author, body):
         self.topic = topic
@@ -159,6 +167,6 @@ class Posting(db.Model):
             .add('author', self.author.screen_name)
 
         if self.hidden:
-            builder.add_custom('hidden')
+            builder.add_custom('hidden by {}'.format(self.hidden_by.screen_name))
 
         return builder.build()

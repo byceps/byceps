@@ -21,8 +21,8 @@
       {%- for topic in category.topics %}
       <tr>
         <td>
-          {%- if topic.pinned %}<span class="icon-pin" title="angeheftet"></span> {% endif -%}
-          {%- if topic.locked %}<span class="icon-lock" title="geschlossen"></span> {% endif -%}
+          {%- if topic.pinned %}<span class="icon-pin" title="angeheftet (durch {{ topic.pinned_by.screen_name }})"></span> {% endif -%}
+          {%- if topic.locked %}<span class="icon-lock" title="geschlossen (durch {{ topic.locked_by.screen_name }})"></span> {% endif -%}
           {%- if topic.new %}<span class="icon-new" title="neu"></span> {% endif -%}
           <a href="{{ url_for('.topic_view', id=topic.id) }}">{{ topic.title }}</a>
         </td>
