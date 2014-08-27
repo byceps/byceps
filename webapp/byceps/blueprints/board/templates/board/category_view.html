@@ -19,10 +19,11 @@
     </thead>
     <tbody>
       {%- for topic in category.topics %}
-      <tr id="topic-{{ topic.id }}">
+      <tr id="topic-{{ topic.id }}"{% if topic.hidden %} class="hidden"{% endif %}>
         <td>
-          {%- if topic.pinned %}<span class="icon-pin" title="angeheftet (durch {{ topic.pinned_by.screen_name }})"></span> {% endif -%}
+          {%- if topic.hidden %}<span class="icon-hidden" title="versteckt (durch {{ topic.hidden_by.screen_name }})"></span> {% endif -%}
           {%- if topic.locked %}<span class="icon-lock" title="geschlossen (durch {{ topic.locked_by.screen_name }})"></span> {% endif -%}
+          {%- if topic.pinned %}<span class="icon-pin" title="angeheftet (durch {{ topic.pinned_by.screen_name }})"></span> {% endif -%}
           {%- if topic.new %}<span class="icon-new" title="neu"></span> {% endif -%}
           <a href="{{ url_for('.topic_view', id=topic.id) }}">{{ topic.title }}</a>
         </td>
