@@ -150,6 +150,9 @@ p[class|=notification] {
   margin: 0 0 10px 0;
   padding: 0.3em 15px;
 }
+p[class|=notification]:first-child {
+  margin-top: 25px;
+}
 p.notification-error {
   background-color: #ff9999;
   border-color: #ff1a1a;
