@@ -15,6 +15,10 @@
         <div class="author">{{ render_user_link(posting.author) }}</div>
         <div class="avatar"></div>
         {{ render_datetime(posting.created_at)|replace(', ', '<br/>'|safe) }}
+
+        {%- if g.current_user.has_permission(BoardPostingPermission.hide) %}
+        <p><a href="{{ url_for('.posting_flags_form', id=posting.id) }}" class="action icon-edit"> verwalten</a></p>
+        {%- endif %}
       </aside>
       <div class="body">
 {{ posting.body|bbcode|safe }}

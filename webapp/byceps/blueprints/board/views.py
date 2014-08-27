@@ -7,12 +7,12 @@ byceps.blueprints.board.views
 :Copyright: 2006-2014 Jochen Kupperschmidt
 """
 
-from flask import g, request
+from flask import g, request, url_for
 
 from ...database import db
 from ...util.framework import create_blueprint, flash_success
 from ...util.templating import templated
-from ...util.views import redirect_to
+from ...util.views import redirect_to, respond_no_content_with_location
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
@@ -33,6 +33,10 @@ permission_registry.register_enum(BoardPostingPermission)
 blueprint.add_app_template_filter(render_html, 'bbcode')
 
 
+# -------------------------------------------------------------------- #
+# category
+
+
 @blueprint.route('/categories')
 @templated
 def category_index():
@@ -47,6 +51,10 @@ def category_view(id):
     """List latest topics in the category."""
     category = Category.query.get_or_404(id)
     return {'category': category}
+
+
+# -------------------------------------------------------------------- #
+# topic
 
 
 @blueprint.route('/topics/<id>')
@@ -95,6 +103,10 @@ def topic_create(category_id):
     return redirect_to('.topic_view', id=topic.id)
 
 
+# -------------------------------------------------------------------- #
+# posting
+
+
 @blueprint.route('/topics/<topic_id>/create')
 @permission_required(BoardPostingPermission.create)
 @templated
@@ -126,3 +138,44 @@ def posting_create(topic_id):
 
     flash_success('Deine Antwort wurde hinzugefügt.')
     return redirect_to('.topic_view', id=topic.id)
+
+
+@blueprint.route('/postings/<id>/flags')
+@permission_required(BoardPostingPermission.hide)
+@templated
+def posting_flags_form(id):
+    """Show a form to change the posting's flags."""
+    posting = Posting.query.get_or_404(id)
+    return {
+        'posting': posting,
+    }
+
+
+@blueprint.route('/postings/<id>/flags/hidden', methods=['POST'])
+@permission_required(BoardPostingPermission.hide)
+@respond_no_content_with_location
+def posting_hide(id):
+    """Hide a posting."""
+    posting = Posting.query.get_or_404(id)
+    posting.hidden = True
+    posting.hidden_by = g.current_user
+    db.session.commit()
+
+    flash_success('Der Beitrag wurde versteckt.')
+    anchor = 'posting-{}'.format(posting.id)
+    return url_for('.topic_view', id=posting.topic.id, _anchor=anchor)
+
+
+@blueprint.route('/postings/<id>/flags/hidden', methods=['DELETE'])
+@permission_required(BoardPostingPermission.hide)
+@respond_no_content_with_location
+def posting_unhide(id):
+    """Un-hide a posting."""
+    posting = Posting.query.get_or_404(id)
+    posting.hidden = False
+    posting.hidden_by = None
+    db.session.commit()
+
+    flash_success('Der Beitrag wurde wieder sichtbar gemacht.')
+    anchor = 'posting-{}'.format(posting.id)
+    return url_for('.topic_view', id=posting.topic.id, _anchor=anchor)

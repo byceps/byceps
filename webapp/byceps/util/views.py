@@ -39,11 +39,21 @@ def respond_created(f):
 def respond_no_content(f):
     """Send a ``204 No Content`` response.
 
-    Optionally, a list of header may be returned by the decorated callable.
+    Optionally, a list of headers may be returned by the decorated callable.
     """
     @wraps(f)
     def wrapper(*args, **kwargs):
         headers = f(*args, **kwargs)
+        return Response(status=204, headers=headers)
+    return wrapper
+
+
+def respond_no_content_with_location(f):
+    """Send a ``204 No Content`` response with a 'Location' header."""
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        location_url = f(*args, **kwargs)
+        headers = [('Location', location_url)]
         return Response(status=204, headers=headers)
     return wrapper
 
