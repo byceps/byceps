@@ -1,8 +1,8 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/forms.html' import form_buttons %}
 {% from 'macros/user.html' import render_user_link %}
-{% set current_page = 'board.posting_flags' %}
-{% set title = 'Beitrag verwalten' %}
+{% set current_page = 'board.topic_flags' %}
+{% set title = 'Thema verwalten' %}
 
 {% block head -%}
   {{ super() }}
@@ -15,13 +15,13 @@
 
   <h2>Sichtbarkeit</h2>
 
-  <p>Dieser Beitrag von {{ render_user_link(posting.author) }} ist {% if posting.hidden %}<strong>versteckt</strong> (durch {{ posting.hidden_by.screen_name }}){% else %}<strong>sichtbar</strong>{% endif %}.</p>
+  <p>Das Thema "{{ topic.title }}" von {{ render_user_link(topic.author) }} ist {% if topic.hidden %}<strong>versteckt</strong> (durch {{ topic.hidden_by.screen_name }}){% else %}<strong>sichtbar</strong>{% endif %}.</p>
   <ol class="actions">
-  {%- if posting.hidden %}
+  {%- if topic.hidden %}
     <li><span class="action hidden"><span class="icon-disabled"></span> verstecken</span></li>
-    <li><a id="posting-unhide" href="{{ url_for('.posting_unhide', id=posting.id) }}"><span class="icon-view"></span> sichtbar machen</a></li>
+    <li><a id="topic-unhide" href="{{ url_for('.topic_unhide', id=topic.id) }}"><span class="icon-view"></span> sichtbar machen</a></li>
   {%- else %}
-    <li><a id="posting-hide" href="{{ url_for('.posting_hide', id=posting.id) }}"><span class="icon-disabled"></span> verstecken</a></li>
+    <li><a id="topic-hide" href="{{ url_for('.topic_hide', id=topic.id) }}"><span class="icon-disabled"></span> verstecken</a></li>
     <li><span class="action hidden"><span class="icon-view"></span> sichtbar machen</span></li>
   {%- endif %}
   </ol>

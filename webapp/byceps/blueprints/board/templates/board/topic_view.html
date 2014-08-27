@@ -8,6 +8,10 @@
 
   <h1>{{ topic.title }}</h1>
 
+  {%- if g.current_user.has_any_permission(BoardTopicPermission.hide, BoardTopicPermission.lock, BoardTopicPermission.pin) %}
+  <p><a href="{{ url_for('.topic_flags_form', id=topic.id) }}" class="action icon-edit"> verwalten</a></p>
+  {%- endif %}
+
   <div class="board-postings">
   {%- for posting in topic.postings %}
     <article id="posting-{{ posting.id }}">

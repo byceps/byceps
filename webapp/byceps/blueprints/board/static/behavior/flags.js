@@ -1,5 +1,11 @@
 $(function() {
 
+  // Hide a topic.
+  confirmed_post_on_click('a#topic-hide', 'Thema verstecken?');
+
+  // Un-hide a topic.
+  confirmed_delete_on_click('a#topic-unhide', 'Thema wieder anzeigen?');
+
   // Hide a posting.
   confirmed_post_on_click('a#posting-hide', 'Beitrag verstecken?');
 

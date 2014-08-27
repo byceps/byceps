@@ -103,6 +103,48 @@ def topic_create(category_id):
     return redirect_to('.topic_view', id=topic.id)
 
 
+@blueprint.route('/topics/<id>/flags')
+@permission_required(BoardTopicPermission.hide)
+@templated
+def topic_flags_form(id):
+    """Show a form to change the topic's flags."""
+    topic = Topic.query.get_or_404(id)
+    return {
+        'topic': topic,
+    }
+
+
+@blueprint.route('/topics/<id>/flags/hidden', methods=['POST'])
+@permission_required(BoardTopicPermission.hide)
+@respond_no_content_with_location
+def topic_hide(id):
+    """Hide a topic."""
+    topic = Topic.query.get_or_404(id)
+    topic.hidden = True
+    topic.hidden_by = g.current_user
+    db.session.commit()
+
+    flash_success('Das Thema "{}" wurde versteckt.'.format(topic.title))
+    anchor = 'topic-{}'.format(topic.id)
+    return url_for('.category_view', id=topic.category.id, _anchor=anchor)
+
+
+@blueprint.route('/topics/<id>/flags/hidden', methods=['DELETE'])
+@permission_required(BoardTopicPermission.hide)
+@respond_no_content_with_location
+def topic_unhide(id):
+    """Un-hide a topic."""
+    topic = Topic.query.get_or_404(id)
+    topic.hidden = False
+    topic.hidden_by = None
+    db.session.commit()
+
+    flash_success(
+        'Das Thema "{}" wurde wieder sichtbar gemacht.'.format(topic.title))
+    anchor = 'topic-{}'.format(topic.id)
+    return url_for('.category_view', id=topic.category.id, _anchor=anchor)
+
+
 # -------------------------------------------------------------------- #
 # posting
 

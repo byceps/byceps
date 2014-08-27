@@ -19,7 +19,7 @@
     </thead>
     <tbody>
       {%- for topic in category.topics %}
-      <tr>
+      <tr id="topic-{{ topic.id }}">
         <td>
           {%- if topic.pinned %}<span class="icon-pin" title="angeheftet (durch {{ topic.pinned_by.screen_name }})"></span> {% endif -%}
           {%- if topic.locked %}<span class="icon-lock" title="geschlossen (durch {{ topic.locked_by.screen_name }})"></span> {% endif -%}

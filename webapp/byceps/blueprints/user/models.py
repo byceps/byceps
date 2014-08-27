@@ -51,6 +51,9 @@ class AnonymousUser(object):
     def has_permission(self, permission):
         return False
 
+    def has_any_permission(self, permission):
+        return False
+
     def __repr__(self):
         return ReprBuilder(self) \
             .add_with_lookup('id') \
@@ -132,6 +135,9 @@ class User(db.Model):
 
     def has_permission(self, permission):
         return permission in self.permissions
+
+    def has_any_permission(self, *permissions):
+        return any(map(self.has_permission, permissions))
 
     @property
     def has_avatar_image(self):
