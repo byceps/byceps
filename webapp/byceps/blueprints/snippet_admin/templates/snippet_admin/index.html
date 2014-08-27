@@ -26,7 +26,7 @@
           <td>{{ snippet.url_path }}</td>
           <td style="white-space: nowrap;">
             {%- if g.current_user.has_permission(SnippetPermission.view_history) %}
-            <a href="{{ url_for('.history', id=snippet.id) }}" title="Änderungshistorie ansehen">{{ render_datetime(latest_version.created_at) }}</a>
+            <span class="icon-history"></span> <a href="{{ url_for('.history', id=snippet.id) }}" title="Änderungshistorie ansehen">{{ render_datetime(latest_version.created_at) }}</a>
             {%- else %}
             {{ render_datetime(latest_version.created_at) }}
             {%- endif %}

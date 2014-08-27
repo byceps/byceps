@@ -37,15 +37,17 @@ li [class*=" icon-"] {
 }
 
 .icon-add:before            { content: "\f067"; }
+.icon-administrate:before   { content: "\f0ad"; }
 .icon-archived:before       { content: "\f187"; }
 .icon-arrow-up:before       { content: "\f062"; }
-.icon-delete:before         { content: "\2718"; }
+.icon-delete:before         { content: "\f1f8"; }
 .icon-disabled:before       { content: "\f05e"; }
 .icon-edit:before           { content: "\f040"; }
 .icon-enabled:before        { content: "\f00c"; }
 .icon-error:before          { content: "\f071"; }
 .icon-external-link:before  { content: "\f08e"; }
 .icon-hidden:before         { content: "\f070"; }
+.icon-history:before        { content: "\f1da"; }
 .icon-lock:before           { content: "\f023"; }
 .icon-new:before            { content: "\f069"; }
 .icon-pending:before        { content: "\f017"; }
