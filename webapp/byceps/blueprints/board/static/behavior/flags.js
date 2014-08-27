@@ -1,47 +1,45 @@
 $(function() {
 
   // Hide a posting.
-  $('a#posting-hide').click(function() {
-    if (confirm('Beitrag verstecken?')) {
-      var request_url = $(this).attr('href');
-      post_and_redirect(request_url);
-    };
-    return false;
-  });
+  confirmed_post_on_click('a#posting-hide', 'Beitrag verstecken?');
 
   // Un-hide a posting.
-  $('a#posting-unhide').click(function() {
-    if (confirm('Beitrag wieder anzeigen?')) {
-      var request_url = $(this).attr('href');
-      delete_and_redirect(request_url);
-    };
-    return false;
-  });
+  confirmed_delete_on_click('a#posting-unhide', 'Beitrag wieder anzeigen?');
 
   /* utilities */
 
-  function post_and_redirect(request_url) {
-    ajax_and_redirect('POST', request_url);
+  function confirmed_post_on_click(selector, confirmation_label) {
+    _confirmed_request_on_click(selector, confirmation_label, 'POST');
   }
 
-  function delete_and_redirect(request_url) {
-    ajax_and_redirect('DELETE', request_url);
+  function confirmed_delete_on_click(selector, confirmation_label) {
+    _confirmed_request_on_click(selector, confirmation_label, 'DELETE');
   }
 
-  function ajax_and_redirect(method, request_url) {
+  function _confirmed_request_on_click(selector, confirmation_label, method) {
+    $(selector).click(function() {
+      if (confirm(confirmation_label)) {
+        var request_url = $(this).attr('href');
+        _ajax_and_redirect(method, request_url);
+      };
+      return false;
+    });
+  }
+
+  function _ajax_and_redirect(method, request_url) {
     $.ajax({
       type: method,
       url: request_url,
       complete: function(xhr, text_status) {
         if (text_status == 'nocontent') {
-          var redirect_url = get_location(xhr);
+          var redirect_url = _get_location(xhr);
           location.href = redirect_url;
         }
       }
     });
   }
 
-  function get_location(xhr) {
+  function _get_location(xhr) {
     return xhr.getResponseHeader('Location');
   }
 
