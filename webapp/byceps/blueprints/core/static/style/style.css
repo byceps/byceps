@@ -142,6 +142,7 @@ nav.main .current a {
 
 p[class|=notification] {
   background-color: #dddddd;
+  border-radius: 3px;
   border-style: solid;
   border-width: 1px;
   box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.25);
@@ -179,7 +180,7 @@ ol.actions li {
 .actions a {
   background-color: #dddddd;
   border: #cccccc solid 1px;
-  border-radius: 7px;
+  border-radius: 3px;
   box-shadow: 0 0 1px rgba(0, 0, 0, 0.25);
   color: #333333;
   display: inline-block;
@@ -210,6 +211,23 @@ fieldset.buttons {
 button {
   font-weight: bold;
   padding: 0.25em 0.75em;
+}
+
+form li.error {
+  background-color: #ff9999;
+  border: #ff1a1a solid 1px;
+  border-radius: 3px;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.25);
+  font-size: 0.8rem;
+  margin: 4px -8px;
+  padding: 4px 8px;
+}
+form li.error .errors li {
+  font-size: 0.75rem;
+  margin-top: 0.2rem;
+}
+form li.error .errors li span {
+  font-style: italic;
 }
 
 

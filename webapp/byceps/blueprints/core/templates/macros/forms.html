@@ -7,15 +7,33 @@
 {%- endmacro %}
 
 {%- macro form_field(field, note=None) -%}
-      <li>{{ field.label }}{{ field(**kwargs) -}}{% if note %} {{ note|safe }}{% endif %}
+  {%- call _row(field) %}
+        {{- field.label }}{{ field(**kwargs) }}
+        {%- if note %} {{ note|safe }}{% endif %}
+  {%- endcall %}
+{%- endmacro %}
+
+{%- macro form_field_checkbox(field, label) -%}
+  {%- call _row(field) %}
+        {{- field }} {{ field.label(label) }}
+  {%- endcall %}
+{%- endmacro %}
+
+{%- macro _row(field) -%}
+      <li{% if field.errors %} class="error"{% endif %}>
+{{- caller() -}}
+        {{- _errors(field) -}}
+      </li>
+{%- endmacro %}
+
+{%- macro _errors(field) -%}
         {%- if field.errors %}
         <ol class="errors">
           {%- for error in field.errors %}
-          <li>Fehler: {{ error }}</li>
+          <li><strong>Fehler:</strong> <span>{{ error }}</span></li>
           {%- endfor %}
         </ol>
         {%- endif -%}
-      </li>
 {%- endmacro %}
 
 {# A field set with a submit button. #}
