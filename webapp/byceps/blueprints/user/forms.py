@@ -8,16 +8,16 @@ byceps.blueprints.user.forms
 """
 
 from wtforms import BooleanField, FileField, PasswordField, StringField
-from wtforms.validators import Required
+from wtforms.validators import DataRequired
 
 from ...util.l10n import LocalizedForm
 
 
 class CreateForm(LocalizedForm):
-    screen_name = StringField('Benutzername', validators=[Required()])
-    email_address = StringField('E-Mail-Adresse', validators=[Required()])
-    password = PasswordField('Passwort', validators=[Required()])
-    consent_to_terms = BooleanField('AGB', validators=[Required()])
+    screen_name = StringField('Benutzername', validators=[DataRequired()])
+    email_address = StringField('E-Mail-Adresse', validators=[DataRequired()])
+    password = PasswordField('Passwort', validators=[DataRequired()])
+    consent_to_terms = BooleanField('AGB', validators=[DataRequired()])
 
 
 class AvatarImageUpdateForm(LocalizedForm):
@@ -25,5 +25,5 @@ class AvatarImageUpdateForm(LocalizedForm):
 
 
 class LoginForm(LocalizedForm):
-    screen_name = StringField('Benutzername', validators=[Required()])
-    password = PasswordField('Passwort', validators=[Required()])
+    screen_name = StringField('Benutzername', validators=[DataRequired()])
+    password = PasswordField('Passwort', validators=[DataRequired()])

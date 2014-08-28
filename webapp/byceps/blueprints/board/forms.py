@@ -8,14 +8,14 @@ byceps.blueprints.board.forms
 """
 
 from wtforms import StringField, TextAreaField
-from wtforms.validators import Required
+from wtforms.validators import DataRequired
 
 from ...util.l10n import LocalizedForm
 
 
 class PostingCreateForm(LocalizedForm):
-    body = TextAreaField('Text', validators=[Required()])
+    body = TextAreaField('Text', validators=[DataRequired()])
 
 
 class TopicCreateForm(PostingCreateForm):
-    title = StringField('Titel', validators=[Required()])
+    title = StringField('Titel', validators=[DataRequired()])
