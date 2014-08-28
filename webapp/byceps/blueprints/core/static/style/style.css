@@ -360,6 +360,10 @@ nav.board-breadcrumbs li:last-child {
 
 /* misc */
 
+main img {
+  max-width: 100%;
+}
+
 .hidden {
   opacity: 0.5;
 }
