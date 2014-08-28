@@ -11,6 +11,10 @@ from byceps.blueprints.user.models import User
 from .util import add_to_database
 
 
+# -------------------------------------------------------------------- #
+# brands
+
+
 @add_to_database
 def create_brand(id, title):
     return Brand(id=id, title=title)
@@ -20,6 +24,10 @@ def get_brand(id):
     return Brand.query.get(id)
 
 
+# -------------------------------------------------------------------- #
+# parties
+
+
 @add_to_database
 def create_party(**kwargs):
     return Party(**kwargs)
@@ -27,6 +35,25 @@ def create_party(**kwargs):
 
 def get_party(id):
     return Party.query.get(id)
+
+
+# -------------------------------------------------------------------- #
+# users
+
+
+@add_to_database
+def create_user(screen_name, email_address, password, *, enabled=False):
+    user = User.create(screen_name, email_address, password)
+    user.is_enabled = enabled
+    return user
+
+
+def get_user(screen_name):
+    return User.query.filter_by(screen_name=screen_name).one()
+
+
+# -------------------------------------------------------------------- #
+# orga teams
 
 
 @add_to_database
@@ -39,15 +66,8 @@ def assign_user_to_orga_team(user, orga_team, party):
     return OrgaTeamMembership(orga_team=orga_team, party=party, user=user)
 
 
-@add_to_database
-def create_user(screen_name, email_address, password, *, enabled=False):
-    user = User.create(screen_name, email_address, password)
-    user.is_enabled = enabled
-    return user
-
-
-def get_user(screen_name):
-    return User.query.filter_by(screen_name=screen_name).one()
+# -------------------------------------------------------------------- #
+# seating
 
 
 @add_to_database
