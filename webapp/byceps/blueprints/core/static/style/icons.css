@@ -48,6 +48,7 @@ li [class*=" icon-"] {
 .icon-external-link:before  { content: "\f08e"; }
 .icon-hidden:before         { content: "\f070"; }
 .icon-history:before        { content: "\f1da"; }
+.icon-info:before           { content: "\f05a"; }
 .icon-lock:before           { content: "\f023"; }
 .icon-new:before            { content: "\f069"; }
 .icon-pending:before        { content: "\f017"; }

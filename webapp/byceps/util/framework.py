@@ -69,6 +69,11 @@ def flash_error(message, *args):
     return _flash(message, *args, category='error')
 
 
+def flash_notice(message, *args):
+    """Flash a generally informational message."""
+    return _flash(message, *args, category='info')
+
+
 def flash_success(message, *args):
     """Flash a message describing a successful action."""
     return _flash(message, *args, category='success')
