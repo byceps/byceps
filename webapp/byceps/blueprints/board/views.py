@@ -77,6 +77,9 @@ def topic_view(id):
 
     topic.mark_as_viewed()
 
+    if topic.hidden:
+        flash_notice('Das Thema ist versteckt.')
+
     if topic.locked:
         flash_notice(
             'Das Thema ist geschlossen. '
