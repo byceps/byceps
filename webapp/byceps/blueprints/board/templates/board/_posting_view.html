@@ -4,7 +4,7 @@
 <article id="posting-{{ posting.id }}" {%- if posting.hidden %} class="hidden"{% endif %}>
   <aside>
     <div class="creator">{{ render_user_link(posting.creator) }}</div>
-    <div class="avatar"></div>
+    <div class="avatar"><img src="{{ url_for('user.avatar_image', filename=posting.creator.avatar_image_filename) }}" alt="Avatarbild"/></div>
     {{ render_datetime(posting.created_at)|replace(', ', '<br/>'|safe) }}
 
     {%- if posting.hidden %}<p title="versteckt (durch {{ posting.hidden_by.screen_name }})"><span class="icon-hidden"></span> versteckt</p>{% endif %}
