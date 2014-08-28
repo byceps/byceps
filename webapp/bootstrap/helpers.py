@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from byceps.blueprints.brand.models import Brand
-from byceps.blueprints.orga.models import OrgaTeam, \
+from byceps.blueprints.orga.models import OrgaFlag, OrgaTeam, \
     Membership as OrgaTeamMembership
 from byceps.blueprints.party.models import Party
 from byceps.blueprints.seating.models import Area as SeatingArea, \
@@ -56,6 +56,11 @@ def get_user(screen_name):
 
 # -------------------------------------------------------------------- #
 # orga teams
+
+
+@add_to_database
+def promote_orga(brand, user):
+    return OrgaFlag(brand=brand, user=user)
 
 
 @add_to_database

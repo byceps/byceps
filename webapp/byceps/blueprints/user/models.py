@@ -13,7 +13,7 @@ from operator import attrgetter
 from pathlib import Path
 from uuid import UUID
 
-from flask import current_app
+from flask import current_app, g
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
 from werkzeug.security import check_password_hash, \
@@ -52,6 +52,9 @@ class AnonymousUser(object):
         return False
 
     def has_any_permission(self, *permissions):
+        return False
+
+    def is_orga(self):
         return False
 
     def __repr__(self):
@@ -175,6 +178,10 @@ class User(db.Model):
         name_without_suffix = '{}_{}'.format(self.id, timestamp)
         suffix = '.' + self.avatar_image_type.name
         return Path(name_without_suffix).with_suffix(suffix)
+
+    @property
+    def is_orga(self):
+        return any(flag.brand == g.party.brand for flag in self.orga_flags)
 
     @property
     def orga_team(self):

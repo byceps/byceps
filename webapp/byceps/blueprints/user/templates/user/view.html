@@ -10,7 +10,7 @@
   <table>
     <tr>
       <th>Benutzername</th>
-      <td>{{ user.screen_name }}</td>
+      <td>{{ user.screen_name }}{% if user.is_orga %} [<strong>Orga</strong>]{% endif%}</td>
     </tr>
     {%- if user.orga_team %}
     <tr>

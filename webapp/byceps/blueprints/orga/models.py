@@ -15,8 +15,25 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from ...database import BaseQuery, db, generate_uuid
 from ...util.instances import ReprBuilder
 
+from ..brand.models import Brand
 from ..party.models import Party
 from ..user.models import User
+
+
+class OrgaFlag(db.Model):
+    """A user's organizer status for a single brand."""
+    __tablename__ = 'orga_flags'
+
+    brand_id = db.Column(db.Unicode(20), db.ForeignKey('brands.id'), primary_key=True)
+    brand = db.relationship(Brand)
+    user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
+    user = db.relationship(User, backref='orga_flags')
+
+    def __repr__(self):
+        return ReprBuilder(self) \
+            .add('brand', self.brand.title) \
+            .add('user', self.user.screen_name) \
+            .build()
 
 
 class OrgaTeam(db.Model):
