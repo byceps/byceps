@@ -71,8 +71,14 @@ class Consent(db.Model):
     _context = db.Column('context', db.Unicode(20), primary_key=True)
 
     @classmethod
-    def create(cls, user, version, context):
-        consent = cls(user=user, version=version, context=context)
+    def create(cls, user, context):
+        version = Version.query.get_current()
+
+        consent = cls(user=user, version=version)
+        consent.context = context
+
+        db.session.add(consent)
+        db.session.commit()
 
     @hybrid_property
     def context(self):

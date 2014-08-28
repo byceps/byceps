@@ -18,6 +18,8 @@ from ...util.templating import templated
 from ...util import upload
 from ...util.views import redirect_to, respond_no_content
 
+from ..terms.models import Consent, ConsentContext
+
 from .forms import AvatarImageUpdateForm, CreateForm, LoginForm
 from .models import User
 
@@ -56,6 +58,7 @@ def create():
     screen_name = form.screen_name.data
     email_address = form.email_address.data
     password = form.password.data
+    consent_to_terms = form.consent_to_terms.data
 
     user = User.create(screen_name, email_address, password)
     db.session.add(user)
@@ -67,6 +70,8 @@ def create():
         flash_error('Das Benutzerkonto für "{}" konnte nicht angelegt werden.',
                     user.screen_name)
         return create_form(form)
+
+    Consent.create(user, ConsentContext.account_creation)
 
     flash_success('Das Benutzerkonto für "{}" wurde angelegt.',
                   user.screen_name)
