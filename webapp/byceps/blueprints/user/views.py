@@ -13,7 +13,8 @@ from flask import abort, g, request, session
 
 from ...database import db
 from ...util.framework import create_blueprint, flash_error, flash_success
-from ...util.image import guess_type as guess_image_type
+from ...util.image import Dimensions, guess_type as guess_image_type, \
+    read_dimensions
 from ...util.templating import templated
 from ...util import upload
 from ...util.views import redirect_to, respond_no_content
@@ -107,9 +108,10 @@ def avatar_image(id):
     if not image or not image.filename:
         abort(400, 'No file to upload has been specified.')
 
-    #ensure_dimensions(image)  # TODO
     image_type = determine_image_type(image)
     user.set_avatar_image(datetime.now(), image_type)
+
+    ensure_dimensions(image)
 
     try:
         upload.store(image.stream, user.avatar_image_path)
@@ -127,8 +129,19 @@ def determine_image_type(image):
     image_type = guess_image_type(image.stream)
     if image_type is None:
         abort(400, 'Only GIF, JPEG and PNG images are allowed.')
+
     image.stream.seek(0)
     return image_type
+
+
+def ensure_dimensions(image):
+    required_dimensions = Dimensions(110, 150)
+    actual_dimensions = read_dimensions(image.stream)
+    image.stream.seek(0)
+    if actual_dimensions != required_dimensions:
+        abort(400,
+              'Image width and height must be exactly {0.width:d} x {0.height:d} pixels.'
+              .format(required_dimensions))
 
 
 @blueprint.route('/login')
