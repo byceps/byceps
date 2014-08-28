@@ -32,7 +32,7 @@ GUEST_USER_ID = UUID('00000000-0000-0000-0000-000000000000')
 class AnonymousUser(object):
 
     id = GUEST_USER_ID
-    is_enabled = False
+    enabled = False
 
     def is_anonymous(self):
         return True
@@ -72,7 +72,7 @@ class User(db.Model):
     screen_name = db.Column(db.Unicode(40), unique=True)
     email_address = db.Column(db.Unicode(80), unique=True)
     password_hash = db.Column(db.Unicode(66))
-    is_enabled = db.Column(db.Boolean, default=False)
+    enabled = db.Column(db.Boolean, default=False)
     avatar_image_created_at = db.Column(db.DateTime)
     _avatar_image_type = db.Column(db.Unicode(4))
 
@@ -119,7 +119,7 @@ class User(db.Model):
             return AnonymousUser()
 
         user = cls.query.get(id)
-        if (user is None) or not user.is_enabled:
+        if (user is None) or not user.enabled:
             return AnonymousUser()
 
         return user
@@ -128,7 +128,7 @@ class User(db.Model):
         return False
 
     def is_active(self):
-        return self.is_enabled
+        return self.enabled
 
     @property
     def permissions(self):
@@ -201,7 +201,7 @@ class User(db.Model):
             .add_with_lookup('id') \
             .add_with_lookup('screen_name') \
             .add_with_lookup('email_address') \
-            .add_with_lookup('is_enabled') \
+            .add_with_lookup('enabled') \
             .add_with_lookup('has_avatar_image') \
             .build()
 

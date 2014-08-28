@@ -21,7 +21,7 @@
       <tr>
         <td>{{ render_user_link(user) }}</td>
         <td>{{ render_datetime(user.created_at) }}</td>
-        <td><span class="icon-{{ 'enabled' if user.is_enabled else 'disabled' }}"></span></td>
+        <td><span class="icon-{{ 'enabled' if user.enabled else 'disabled' }}"></span></td>
       </tr>
       {%- endfor %}
       <tr>
