@@ -78,7 +78,15 @@ def topic_view(id):
             'Das Thema ist geschlossen. '
             'Es können keine Beiträge mehr hinzugefügt werden.')
 
-    return {'topic': topic}
+    postings = Posting.query \
+        .filter_by(topic=topic) \
+        .order_by(Posting.created_at.asc()) \
+        .all()
+
+    return {
+        'topic': topic,
+        'postings': postings,
+    }
 
 
 @blueprint.route('/categories/<category_id>/create')
