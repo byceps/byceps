@@ -87,11 +87,11 @@ main {
 #sidebar {
   float: left;
   padding: 12px 0;
-  width: 140px;
+  width: 160px;
 }
 
 main {
-  margin-left: 160px;
+  margin-left: 180px;
   padding: 15px 40px 40px 40px;
 }
 
@@ -319,7 +319,7 @@ nav.board-breadcrumbs li:last-child {
   width: 120px;
 }
 .board-postings .body {
-  width: 550px;
+  width: 530px;
 }
 
 .board-postings aside .creator {
