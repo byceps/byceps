@@ -8,7 +8,6 @@ byceps.blueprints.snippet.models
 """
 
 from datetime import datetime
-from operator import attrgetter
 
 from flask import g, url_for
 from werkzeug.routing import BuildError
@@ -59,12 +58,11 @@ class Snippet(db.Model):
         A snippet is excepted to have at least one version (the initial
         one).
         """
-        return self.get_versions()[0]
+        return SnippetVersion.query.for_snippet(self).latest_first().first()
 
     def get_versions(self):
         """Return all versions, sorted from most recent to oldest."""
-        return list(
-            sorted(self.versions, key=attrgetter('created_at'), reverse=True))
+        return SnippetVersion.query.for_snippet(self).latest_first().all()
 
     def __repr__(self):
         return ReprBuilder(self) \
@@ -75,13 +73,23 @@ class Snippet(db.Model):
             .build()
 
 
+class SnippetVersionQuery(BelongsToPartyQuery):
+
+    def for_snippet(self, snippet):
+        return self.filter_by(snippet=snippet)
+
+    def latest_first(self):
+        return self.order_by(SnippetVersion.created_at.desc())
+
+
 class SnippetVersion(db.Model):
     """A snapshot of a snippet at a certain time."""
     __tablename__ = 'snippet_versions'
+    query_class = SnippetVersionQuery
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     snippet_id = db.Column(db.Uuid, db.ForeignKey('snippets.id'))
-    snippet = db.relationship(Snippet, backref='versions')
+    snippet = db.relationship(Snippet)
     created_at = db.Column(db.DateTime, default=datetime.now)
     creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
     creator = db.relationship(User)
