@@ -1,0 +1,24 @@
+{%- from 'macros/datetime.html' import render_datetime %}
+{%- from 'macros/user.html' import render_user_link %}
+
+<article id="posting-{{ posting.id }}" {%- if posting.hidden %} class="hidden"{% endif %}>
+  <aside>
+    <div class="author">{{ render_user_link(posting.author) }}</div>
+    <div class="avatar"></div>
+    {{ render_datetime(posting.created_at)|replace(', ', '<br/>'|safe) }}
+
+    {%- if posting.hidden %}<p><span class="icon-hidden" title="versteckt (durch {{ posting.hidden_by.screen_name }})"></span> versteckt</p>{% endif %}
+
+    {%- if g.current_user.has_permission(BoardPostingPermission.hide) %}
+    <p><a href="{{ url_for('.posting_flags_form', id=posting.id) }}" class="action icon-administrate" title="Beitrag verwalten"> verwalten</a></p>
+    {%- endif %}
+  </aside>
+  <div class="body">
+{{ posting.body|bbcode|safe }}
+  </div>
+  {%- if posting.edit_count %}
+  <footer>
+    <p><small style="border-top: 1px;">{{ posting.edit_count }} mal bearbeitet, zuletzt am {{ render_date_time(posting.last_edited_at) }} von {{ render_user_link(posting.last_author) }}</small></p>
+  </footer>
+  {%- endif %}
+</article>
