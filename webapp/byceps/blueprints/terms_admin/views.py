@@ -12,7 +12,7 @@ from ...util.templating import templated
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
-from ..terms.models import TermsVersion
+from ..terms.models import Version
 
 from .authorization import TermsPermission
 
@@ -28,5 +28,5 @@ permission_registry.register_enum(TermsPermission)
 @templated
 def index():
     """List terms versions."""
-    versions = TermsVersion.query.all()
+    versions = Version.query.all()
     return {'versions': versions}

@@ -6,7 +6,7 @@ from byceps.blueprints.orga.models import OrgaTeam, \
 from byceps.blueprints.party.models import Party
 from byceps.blueprints.seating.models import Area as SeatingArea, \
     Category as SeatingCategory, Point, Seat
-from byceps.blueprints.terms.models import TermsVersion
+from byceps.blueprints.terms.models import Version as TermsVersion
 from byceps.blueprints.user.models import User
 
 from .util import add_to_database

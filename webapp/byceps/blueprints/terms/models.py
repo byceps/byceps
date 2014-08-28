@@ -19,22 +19,22 @@ from ..brand.models import Brand
 from ..user.models import User
 
 
-class TermsVersionQuery(BaseQuery):
+class VersionQuery(BaseQuery):
 
     def for_current_brand(self):
         return self.filter_by(brand=g.party.brand)
 
     def latest_first(self):
-        return self.order_by(TermsVersion.created_at.desc())
+        return self.order_by(Version.created_at.desc())
 
     def get_current(self):
         return self.for_current_brand().latest_first().first()
 
 
-class TermsVersion(db.Model):
+class Version(db.Model):
     """A specific version of a specific brand's terms and conditions."""
     __tablename__ = 'terms_versions'
-    query_class = TermsVersionQuery
+    query_class = VersionQuery
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     brand_id = db.Column(db.Unicode(20), db.ForeignKey('brands.id'))
