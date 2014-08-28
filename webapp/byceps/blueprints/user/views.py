@@ -122,6 +122,7 @@ def avatar_image(id):
 
     db.session.commit()
 
+    flash_success('Das Avatarbild wurde aktualisiert.', icon='upload')
     return redirect_to('.view', id=user.id)
 
 
