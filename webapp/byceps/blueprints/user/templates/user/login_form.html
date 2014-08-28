@@ -1,7 +1,7 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/forms.html' import form_buttons, form_fieldset, form_field %}
 {% set current_page = 'user.login' %}
-{% set title = 'Einloggen' %}
+{% set title = 'Anmelden' %}
 
 {% block head -%}
   {{ super() }}
@@ -20,7 +20,7 @@
 
     <p id="login-failed" class="notification-error" style="display: none; margin-top: 1em;">Die Anmeldung ist fehlgeschlagen.</p>
 
-    {{ form_buttons('Einloggen') }}
+    {{ form_buttons('Anmelden') }}
   </form>
 
 {%- endblock body %}
