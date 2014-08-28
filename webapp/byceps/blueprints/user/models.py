@@ -51,7 +51,7 @@ class AnonymousUser(object):
     def has_permission(self, permission):
         return False
 
-    def has_any_permission(self, permission):
+    def has_any_permission(self, *permissions):
         return False
 
     def __repr__(self):
