@@ -59,6 +59,17 @@ class Category(db.Model):
 
         db.session.commit()
 
+    def contains_unseen_postings(self):
+        if self.last_posting_updated_at is None:
+            return False
+
+        last_view = LastCategoryView.find(g.current_user, self)
+
+        if last_view is None:
+            return True
+
+        return self.last_posting_updated_at > last_view.occured_at
+
     def mark_as_viewed(self):
         LastCategoryView.update(g.current_user, self)
 
@@ -112,15 +123,11 @@ class Topic(db.Model):
         return topic
 
     @property
-    def new(self):
-        return True # TODO
-
-    @property
     def reply_count(self):
         return self.posting_count - 1
 
     def aggregate(self):
-        """Update the count and latest fields.""" # TODO
+        """Update the count and latest fields."""
         posting_count = Posting.query.filter_by(topic=self).count()
         last_posting = Posting.query.filter_by(topic=self).order_by(Posting.created_at.desc()).first()
 
@@ -132,6 +139,14 @@ class Topic(db.Model):
         db.session.commit()
 
         self.category.aggregate()
+
+    def contains_unseen_postings(self):
+        last_view = LastTopicView.find(g.current_user, self)
+
+        if last_view is None:
+            return True
+
+        return self.last_updated_at > last_view.occured_at
 
     def mark_as_viewed(self):
         LastTopicView.update(g.current_user, self)
@@ -214,6 +229,9 @@ class LastCategoryView(db.Model):
 
     @classmethod
     def find(cls, user, category):
+        if user.is_anonymous():
+            return
+
         return cls.query.filter_by(user=user, category=category).first()
 
     @classmethod
@@ -242,6 +260,9 @@ class LastTopicView(db.Model):
 
     @classmethod
     def find(cls, user, topic):
+        if user.is_anonymous():
+            return
+
         return cls.query.filter_by(user=user, topic=topic).first()
 
     @classmethod
