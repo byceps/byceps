@@ -18,4 +18,6 @@
     {{ form_buttons('Anmelden') }}
   </form>
 
+  <p>Du hast noch keinen Benutzerzugang? Dann <a href="{{ url_for('.create_form') }}">registriere dich</a>!</p>
+
 {%- endblock body %}
