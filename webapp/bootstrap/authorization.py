@@ -7,6 +7,7 @@ from byceps.blueprints.board.authorization import BoardPostingPermission, \
 from byceps.blueprints.orga_admin.authorization import OrgaTeamPermission
 from byceps.blueprints.party_admin.authorization import PartyPermission
 from byceps.blueprints.snippet_admin.authorization import SnippetPermission
+from byceps.blueprints.terms_admin.authorization import TermsPermission
 from byceps.blueprints.user_admin.authorization import UserPermission
 from byceps.database import db
 
@@ -28,6 +29,7 @@ def create_roles_and_permissions():
     create_role_with_permissions_from_enum('orga_team_admin', OrgaTeamPermission)
     create_role_with_permissions_from_enum('party_admin', PartyPermission)
     create_role_with_permissions_from_enum('snippet_editor', SnippetPermission)
+    create_role_with_permissions_from_enum('terms_editor', TermsPermission)
     create_role_with_permissions_from_enum('user_admin', UserPermission)
 
     db.session.commit()
