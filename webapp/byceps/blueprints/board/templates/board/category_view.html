@@ -6,7 +6,12 @@
 
 {% block body %}
 
-  <h1>{{ title }}</h1>
+  <nav class="board-breadcrumbs">
+    <ol>
+      <li><a href="{{ url_for('.category_index') }}">Forum</a></li>
+      <li>{{ category.title }}</li>
+    </ol>
+  </nav>
 
   <table class="index wide">
     <thead>

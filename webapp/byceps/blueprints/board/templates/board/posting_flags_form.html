@@ -12,7 +12,14 @@
 
 {% block body %}
 
-  <h1>{{ title }}</h1>
+  <nav class="board-breadcrumbs">
+    <ol>
+      <li><a href="{{ url_for('.category_index') }}">Forum</a></li>
+      <li><a href="{{ url_for('.category_view', id=posting.topic.category.id) }}">{{ posting.topic.category.title }}</a></li>
+      <li><a href="{{ url_for('.topic_view', id=posting.topic.id) }}">{{ posting.topic.title }}</a></li>
+      <li>{{ title }}</li>
+    </ol>
+  </nav>
 
   <h2>Sichtbarkeit</h2>
 

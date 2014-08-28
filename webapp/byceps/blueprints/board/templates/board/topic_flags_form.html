@@ -12,7 +12,14 @@
 
 {% block body %}
 
-  <h1>{{ title }}</h1>
+  <nav class="board-breadcrumbs">
+    <ol>
+      <li><a href="{{ url_for('.category_index') }}">Forum</a></li>
+      <li><a href="{{ url_for('.category_view', id=topic.category.id) }}">{{ topic.category.title }}</a></li>
+      <li><a href="{{ url_for('.topic_view', id=topic.id) }}">{{ topic.title }}</a></li>
+      <li>{{ title }}</li>
+    </ol>
+  </nav>
 
   <h2>Sichtbarkeit</h2>
   <p>Das Thema "{{ topic.title }}" von {{ render_user_link(topic.creator) }} ist {% if topic.hidden %}<strong>versteckt</strong> ({{ render_datetime(topic.hidden_at) }} durch {{ topic.hidden_by.screen_name }}){% else %}<strong>sichtbar</strong>{% endif %}.</p>

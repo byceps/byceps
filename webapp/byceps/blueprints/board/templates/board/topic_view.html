@@ -4,7 +4,13 @@
 
 {% block body %}
 
-  <h1>{{ topic.title }}</h1>
+  <nav class="board-breadcrumbs">
+    <ol>
+      <li><a href="{{ url_for('.category_index') }}">Forum</a></li>
+      <li><a href="{{ url_for('.category_view', id=topic.category.id) }}">{{ topic.category.title }}</a></li>
+      <li>{{ topic.title }}</li>
+    </ol>
+  </nav>
 
   {%- if g.current_user.has_any_permission(BoardTopicPermission.hide, BoardTopicPermission.lock, BoardTopicPermission.pin) %}
   <p style="text-align: right;"><a href="{{ url_for('.topic_flags_form', id=topic.id) }}" class="action" title="Thema verwalten"><span class="icon-administrate"></span> verwalten</a></p>
