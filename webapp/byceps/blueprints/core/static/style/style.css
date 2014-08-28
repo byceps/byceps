@@ -268,10 +268,12 @@ table.wide {
   display: inline-block;
   vertical-align: top;
 }
-
 .board-postings aside {
   margin-right: 4px;
   width: 120px;
+}
+.board-postings .body {
+  width: 550px;
 }
 
 .board-postings aside .author {
