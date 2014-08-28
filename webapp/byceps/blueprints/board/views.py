@@ -10,7 +10,8 @@ byceps.blueprints.board.views
 from flask import g, request, url_for
 
 from ...database import db
-from ...util.framework import create_blueprint, flash_error, flash_success
+from ...util.framework import create_blueprint, flash_error, flash_notice, \
+    flash_success
 from ...util.templating import templated
 from ...util.views import redirect_to, respond_no_content_with_location
 
@@ -62,6 +63,12 @@ def category_view(id):
 def topic_view(id):
     """List postings for the topic."""
     topic = Topic.query.get_or_404(id)
+
+    if topic.locked:
+        flash_notice(
+            'Das Thema ist geschlossen. '
+            'Es können keine Beiträge mehr hinzugefügt werden.')
+
     return {'topic': topic}
 
 
