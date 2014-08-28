@@ -7,7 +7,7 @@ byceps.blueprints.board.forms
 :Copyright: 2006-2014 Jochen Kupperschmidt
 """
 
-from wtforms import TextAreaField, TextField
+from wtforms import StringField, TextAreaField
 from wtforms.validators import Required
 
 from ...util.l10n import LocalizedForm
@@ -18,4 +18,4 @@ class PostingCreateForm(LocalizedForm):
 
 
 class TopicCreateForm(PostingCreateForm):
-    title = TextField('Titel', validators=[Required()])
+    title = StringField('Titel', validators=[Required()])
