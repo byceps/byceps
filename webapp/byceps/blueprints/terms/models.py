@@ -8,9 +8,11 @@ byceps.blueprints.terms.models
 """
 
 from datetime import datetime
+from enum import Enum
 from operator import attrgetter
 
 from flask import g
+from sqlalchemy.ext.hybrid import hybrid_property
 
 from ...database import BaseQuery, db, generate_uuid
 from ...util.instances import ReprBuilder
@@ -50,3 +52,33 @@ class Version(db.Model):
             .add('brand', self.brand_id) \
             .add_with_lookup('created_at') \
             .build()
+
+
+ConsentContext = Enum('ConsentContext', ['account_creation'])
+
+
+class Consent(db.Model):
+    """A user's consent to a specific version of a brand's terms and
+    conditions.
+    """
+    __tablename__ = 'terms_consents'
+
+    user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
+    user = db.relationship(User)
+    version_id = db.Column(db.Uuid, db.ForeignKey('terms_versions.id'), primary_key=True)
+    version = db.relationship(Version)
+    expressed_at = db.Column(db.DateTime, default=datetime.now, primary_key=True)
+    _context = db.Column('context', db.Unicode(20), primary_key=True)
+
+    @classmethod
+    def create(cls, user, version, context):
+        consent = cls(user=user, version=version, context=context)
+
+    @hybrid_property
+    def context(self):
+        return ConsentContext[self._context]
+
+    @context.setter
+    def context(self, context):
+        assert context is not None
+        self._context = context.name
