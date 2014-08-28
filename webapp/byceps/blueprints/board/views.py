@@ -52,6 +52,8 @@ def category_view(id):
     """List latest topics in the category."""
     category = Category.query.get_or_404(id)
 
+    category.mark_as_viewed()
+
     topics = Topic.query \
         .filter_by(category=category) \
         .order_by(Topic.pinned.desc(), Topic.last_updated_at.desc()) \
@@ -72,6 +74,8 @@ def category_view(id):
 def topic_view(id):
     """List postings for the topic."""
     topic = Topic.query.get_or_404(id)
+
+    topic.mark_as_viewed()
 
     if topic.locked:
         flash_notice(

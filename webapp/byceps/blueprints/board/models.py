@@ -59,6 +59,9 @@ class Category(db.Model):
 
         db.session.commit()
 
+    def mark_as_viewed(self):
+        LastCategoryView.update(g.current_user, self)
+
     def __repr__(self):
         return ReprBuilder(self) \
             .add_with_lookup('id') \
@@ -130,6 +133,9 @@ class Topic(db.Model):
 
         self.category.aggregate()
 
+    def mark_as_viewed(self):
+        LastTopicView.update(g.current_user, self)
+
     def __repr__(self):
         builder = ReprBuilder(self) \
             .add_with_lookup('id') \
@@ -194,3 +200,59 @@ class Posting(db.Model):
             builder.add_custom('hidden by {}'.format(self.hidden_by.screen_name))
 
         return builder.build()
+
+
+class LastCategoryView(db.Model):
+    """The last time a user looked into specific category."""
+    __tablename__ = 'board_categories_lastviews'
+
+    user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
+    user = db.relationship(User, foreign_keys=[user_id])
+    category_id = db.Column(db.Uuid, db.ForeignKey('board_categories.id'), primary_key=True)
+    category = db.relationship(Category)
+    occured_at = db.Column(db.DateTime, nullable=False)
+
+    @classmethod
+    def find(cls, user, category):
+        return cls.query.filter_by(user=user, category=category).first()
+
+    @classmethod
+    def update(cls, user, category):
+        if user.is_anonymous():
+            return
+
+        last_view = cls.find(user, category)
+        if last_view is None:
+            last_view = cls(user=user, category=category)
+            db.session.add(last_view)
+
+        last_view.occured_at = datetime.now()
+        db.session.commit()
+
+
+class LastTopicView(db.Model):
+    """The last time a user looked into specific topic."""
+    __tablename__ = 'board_topics_lastviews'
+
+    user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
+    user = db.relationship(User, foreign_keys=[user_id])
+    topic_id = db.Column(db.Uuid, db.ForeignKey('board_topics.id'), primary_key=True)
+    topic = db.relationship(Topic)
+    occured_at = db.Column(db.DateTime, nullable=False)
+
+    @classmethod
+    def find(cls, user, topic):
+        return cls.query.filter_by(user=user, topic=topic).first()
+
+    @classmethod
+    def update(cls, user, topic):
+        if user.is_anonymous():
+            return
+
+        last_view = cls.find(user, topic)
+        if last_view is None:
+            last_view = cls(user=user, topic=topic)
+            db.session.add(last_view)
+
+        last_view.occured_at = datetime.now()
+        db.session.commit()
