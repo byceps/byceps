@@ -1,6 +1,3 @@
-{%- for category, message in get_flashed_messages(with_categories=True) %}
-  <p class="notification-{{ category }}">
-    {%- if category in 'error', 'info', 'success' %}<span class="icon-{{ category }}"></span> {% endif -%}
-    {{- message -}}
-  </p>
+{%- for text, category, icon in get_flashed_messages() %}
+  <p class="notification-{{ category }}"><span class="icon-{{ icon if icon is not none else category }}"></span> {{ text }}</p>
 {%- endfor %}

@@ -9,6 +9,7 @@ Framework utilities.
 :Copyright: 2006-2014 Jochen Kupperschmidt
 """
 
+from collections import namedtuple
 from importlib import import_module
 
 from flask import Blueprint, flash
@@ -64,20 +65,27 @@ def get_blueprint_views_module(name):
 # message flashing
 
 
-def flash_error(message, *args):
+FlashMessage = namedtuple('FlashMessage', ['text', 'category', 'icon'])
+
+
+def flash_error(message, *args, icon=None):
     """Flash a message indicating an error."""
-    return _flash(message, *args, category='error')
+    return _flash(message, *args, category='error', icon=icon)
 
 
-def flash_notice(message, *args):
+def flash_notice(message, *args, icon=None):
     """Flash a generally informational message."""
-    return _flash(message, *args, category='info')
+    return _flash(message, *args, category='info', icon=icon)
 
 
-def flash_success(message, *args):
+def flash_success(message, *args, icon=None):
     """Flash a message describing a successful action."""
-    return _flash(message, *args, category='success')
+    return _flash(message, *args, category='success', icon=icon)
 
 
-def _flash(message, *args, category=None):
-    return flash(message.format(*args), category=category)
+def _flash(message, *args, category=None, icon=None):
+    text = message.format(*args)
+
+    flash_message = FlashMessage(text, category, icon)
+
+    return flash(flash_message)

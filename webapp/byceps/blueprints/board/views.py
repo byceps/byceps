@@ -78,12 +78,13 @@ def topic_view(id):
     topic.mark_as_viewed()
 
     if topic.hidden:
-        flash_notice('Das Thema ist versteckt.')
+        flash_notice('Das Thema ist versteckt.', icon='hidden')
 
     if topic.locked:
         flash_notice(
             'Das Thema ist geschlossen. '
-            'Es können keine Beiträge mehr hinzugefügt werden.')
+            'Es können keine Beiträge mehr hinzugefügt werden.',
+            icon='lock')
 
     postings = Posting.query \
         .filter_by(topic=topic) \
@@ -123,7 +124,7 @@ def topic_create(category_id):
 
     topic = Topic.create(category, author, title, body)
 
-    flash_success('Das Thema wurde hinzugefügt.')
+    flash_success('Das Thema "{}" wurde hinzugefügt.', topic.title)
     return redirect_to('.topic_view', id=topic.id)
 
 
@@ -148,7 +149,7 @@ def topic_hide(id):
     topic.hidden_by = g.current_user
     db.session.commit()
 
-    flash_success('Das Thema "{}" wurde versteckt.'.format(topic.title))
+    flash_success('Das Thema "{}" wurde versteckt.', topic.title, icon='hidden')
     anchor = 'topic-{}'.format(topic.id)
     return url_for('.category_view', id=topic.category.id, _anchor=anchor)
 
@@ -164,7 +165,7 @@ def topic_unhide(id):
     db.session.commit()
 
     flash_success(
-        'Das Thema "{}" wurde wieder sichtbar gemacht.'.format(topic.title))
+        'Das Thema "{}" wurde wieder sichtbar gemacht.', topic.title, icon='view')
     anchor = 'topic-{}'.format(topic.id)
     return url_for('.category_view', id=topic.category.id, _anchor=anchor)
 
@@ -179,7 +180,7 @@ def topic_lock(id):
     topic.locked_by = g.current_user
     db.session.commit()
 
-    flash_success('Das Thema "{}" wurde geschlossen.'.format(topic.title))
+    flash_success('Das Thema "{}" wurde geschlossen.', topic.title, icon='lock')
     anchor = 'topic-{}'.format(topic.id)
     return url_for('.category_view', id=topic.category.id, _anchor=anchor)
 
@@ -194,8 +195,8 @@ def topic_unlock(id):
     topic.locked_by = None
     db.session.commit()
 
-    flash_success(
-        'Das Thema "{}" wurde wieder geöffnet.'.format(topic.title))
+    flash_success('Das Thema "{}" wurde wieder geöffnet.', topic.title,
+                  icon='unlock')
     anchor = 'topic-{}'.format(topic.id)
     return url_for('.category_view', id=topic.category.id, _anchor=anchor)
 
@@ -210,7 +211,7 @@ def topic_pin(id):
     topic.pinned_by = g.current_user
     db.session.commit()
 
-    flash_success('Das Thema "{}" wurde angepinnt.'.format(topic.title))
+    flash_success('Das Thema "{}" wurde angepinnt.', topic.title, icon='pin')
     anchor = 'topic-{}'.format(topic.id)
     return url_for('.category_view', id=topic.category.id, _anchor=anchor)
 
@@ -225,8 +226,7 @@ def topic_unpin(id):
     topic.pinned_by = None
     db.session.commit()
 
-    flash_success(
-        'Das Thema "{}" wurde wieder gelöst.'.format(topic.title))
+    flash_success('Das Thema "{}" wurde wieder gelöst.', topic.title)
     anchor = 'topic-{}'.format(topic.id)
     return url_for('.category_view', id=topic.category.id, _anchor=anchor)
 
@@ -261,7 +261,8 @@ def posting_create(topic_id):
     if topic.locked:
         flash_error(
             'Das Thema ist geschlossen. '
-            'Es können keine Beiträge mehr hinzugefügt werden.')
+            'Es können keine Beiträge mehr hinzugefügt werden.',
+            icon='lock')
         return redirect_to('.topic_view', id=topic.id)
 
     posting = Posting.create(topic, author, body)
@@ -291,7 +292,7 @@ def posting_hide(id):
     posting.hidden_by = g.current_user
     db.session.commit()
 
-    flash_success('Der Beitrag wurde versteckt.')
+    flash_success('Der Beitrag wurde versteckt.', icon='hidden')
     anchor = 'posting-{}'.format(posting.id)
     return url_for('.topic_view', id=posting.topic.id, _anchor=anchor)
 
@@ -306,6 +307,6 @@ def posting_unhide(id):
     posting.hidden_by = None
     db.session.commit()
 
-    flash_success('Der Beitrag wurde wieder sichtbar gemacht.')
+    flash_success('Der Beitrag wurde wieder sichtbar gemacht.', icon='view')
     anchor = 'posting-{}'.format(posting.id)
     return url_for('.topic_view', id=posting.topic.id, _anchor=anchor)
