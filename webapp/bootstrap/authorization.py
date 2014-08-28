@@ -19,6 +19,11 @@ def create_roles_and_permissions():
         BoardPostingPermission.create,
         BoardPostingPermission.update,
         BoardTopicPermission.create,
+        BoardTopicPermission.update,
+    ])
+    create_role_with_permissions_from_enum_members('board_orga', [
+        BoardPostingPermission.view_hidden,
+        BoardTopicPermission.view_hidden
     ])
     create_role_with_permissions_from_enum_members('board_moderator', [
         BoardPostingPermission.hide,

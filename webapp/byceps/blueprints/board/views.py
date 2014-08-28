@@ -73,7 +73,7 @@ def category_view(id):
 @templated
 def topic_view(id):
     """List postings for the topic."""
-    topic = Topic.query.get_or_404(id)
+    topic = Topic.query.only_visible().with_id_or_404(id)
 
     topic.mark_as_viewed()
 
@@ -84,6 +84,7 @@ def topic_view(id):
 
     postings = Posting.query \
         .filter_by(topic=topic) \
+        .only_visible() \
         .order_by(Posting.created_at.asc()) \
         .all()
 

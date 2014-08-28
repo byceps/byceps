@@ -17,6 +17,8 @@ from ...util.instances import ReprBuilder
 from ..brand.models import Brand
 from ..user.models import User
 
+from .authorization import BoardPostingPermission, BoardTopicPermission
+
 
 class CategoryQuery(BaseQuery):
 
@@ -81,13 +83,27 @@ class Category(db.Model):
             .build()
 
 
+class TopicQuery(BaseQuery):
+
+    def only_visible(self):
+        """Only return topics the current user may see."""
+        if not g.current_user.has_permission(BoardTopicPermission.view_hidden):
+            return self.filter_by(hidden=False)
+
+        return self
+
+    def with_id_or_404(self, id):
+        return self.filter_by(id=id).first_or_404()
+
+
 class Topic(db.Model):
     """A topic."""
     __tablename__ = 'board_topics'
+    query_class = TopicQuery
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     category_id = db.Column(db.Uuid, db.ForeignKey('board_categories.id'))
-    category = db.relationship(Category, backref='topics')
+    category = db.relationship(Category)
     created_at = db.Column(db.DateTime, default=datetime.now)
     author_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
     author = db.relationship(User, foreign_keys=[author_id])
@@ -170,13 +186,24 @@ class Topic(db.Model):
         return builder.build()
 
 
+class PostingQuery(BaseQuery):
+
+    def only_visible(self):
+        """Only return postings the current user may see."""
+        if not g.current_user.has_permission(BoardPostingPermission.view_hidden):
+            return self.filter_by(hidden=False)
+
+        return self
+
+
 class Posting(db.Model):
     """A posting."""
     __tablename__ = 'board_postings'
+    query_class = PostingQuery
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     topic_id = db.Column(db.Uuid, db.ForeignKey('board_topics.id'))
-    topic = db.relationship(Topic, backref='postings')
+    topic = db.relationship(Topic)
     created_at = db.Column(db.DateTime, default=datetime.now)
     author_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
     author = db.relationship(User, foreign_keys=[author_id])
