@@ -7,21 +7,23 @@ byceps.blueprints.user.forms
 :Copyright: 2006-2014 Jochen Kupperschmidt
 """
 
-from wtforms import BooleanField, FileField, Form, PasswordField, TextField
+from wtforms import BooleanField, FileField, PasswordField, TextField
 from wtforms.validators import Required
 
+from ...util.l10n import LocalizedForm
 
-class CreateForm(Form):
+
+class CreateForm(LocalizedForm):
     screen_name = TextField('Benutzername', validators=[Required()])
     email_address = TextField('E-Mail-Adresse', validators=[Required()])
     password = PasswordField('Passwort', validators=[Required()])
     consent_to_terms = BooleanField('AGB', validators=[Required()])
 
 
-class AvatarImageUpdateForm(Form):
+class AvatarImageUpdateForm(LocalizedForm):
     image = FileField('Bilddatei')
 
 
-class LoginForm(Form):
+class LoginForm(LocalizedForm):
     screen_name = TextField('Benutzername', validators=[Required()])
     password = PasswordField('Passwort', validators=[Required()])
