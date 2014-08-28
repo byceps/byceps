@@ -83,12 +83,15 @@ class Topic(db.Model):
     last_author_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
     last_author = db.relationship(User, foreign_keys=[last_author_id])
     hidden = db.Column(db.Boolean, default=False)
+    hidden_at = db.Column(db.DateTime, default=datetime.now())
     hidden_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
     hidden_by = db.relationship(User, foreign_keys=[hidden_by_id])
     locked = db.Column(db.Boolean, default=False)
+    locked_at = db.Column(db.DateTime, default=datetime.now())
     locked_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
     locked_by = db.relationship(User, foreign_keys=[locked_by_id])
     pinned = db.Column(db.Boolean, default=False)
+    pinned_at = db.Column(db.DateTime, default=datetime.now())
     pinned_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
     pinned_by = db.relationship(User, foreign_keys=[pinned_by_id])
 
@@ -162,6 +165,7 @@ class Posting(db.Model):
     last_editor = db.relationship(User, foreign_keys=[last_editor_id])
     edit_count = db.Column(db.Integer, default=0)
     hidden = db.Column(db.Boolean, default=False)
+    hidden_at = db.Column(db.DateTime, default=datetime.now())
     hidden_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
     hidden_by = db.relationship(User, foreign_keys=[hidden_by_id])
 

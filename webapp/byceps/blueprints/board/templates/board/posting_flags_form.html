@@ -1,4 +1,5 @@
 {% extends 'layout/base.html' %}
+{% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/forms.html' import form_buttons %}
 {% from 'macros/user.html' import render_user_link %}
 {% set current_page = 'board.posting_flags' %}
@@ -15,7 +16,7 @@
 
   <h2>Sichtbarkeit</h2>
 
-  <p>Dieser Beitrag von {{ render_user_link(posting.author) }} ist {% if posting.hidden %}<strong>versteckt</strong> (durch {{ posting.hidden_by.screen_name }}){% else %}<strong>sichtbar</strong>{% endif %}.</p>
+  <p>Dieser Beitrag von {{ render_user_link(posting.author) }} ist {% if posting.hidden %}<strong>versteckt</strong> (am {{ render_datetime(posting.hidden_at) }} durch {{ posting.hidden_by.screen_name }}){% else %}<strong>sichtbar</strong>{% endif %}.</p>
   <ol class="actions">
   {%- if posting.hidden %}
     <li><span class="action hidden"><span class="icon-disabled"></span> verstecken</span></li>

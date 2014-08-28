@@ -1,4 +1,5 @@
 {% extends 'layout/base.html' %}
+{% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/forms.html' import form_buttons %}
 {% from 'macros/user.html' import render_user_link %}
 {% set current_page = 'board.topic_flags' %}
@@ -14,7 +15,7 @@
   <h1>{{ title }}</h1>
 
   <h2>Sichtbarkeit</h2>
-  <p>Das Thema "{{ topic.title }}" von {{ render_user_link(topic.author) }} ist {% if topic.hidden %}<strong>versteckt</strong> (durch {{ topic.hidden_by.screen_name }}){% else %}<strong>sichtbar</strong>{% endif %}.</p>
+  <p>Das Thema "{{ topic.title }}" von {{ render_user_link(topic.author) }} ist {% if topic.hidden %}<strong>versteckt</strong> ({{ render_datetime(topic.hidden_at) }} durch {{ topic.hidden_by.screen_name }}){% else %}<strong>sichtbar</strong>{% endif %}.</p>
   <ol class="actions">
   {%- if topic.hidden %}
     <li><span class="action hidden"><span class="icon-disabled"></span> verstecken</span></li>
@@ -26,7 +27,7 @@
   </ol>
 
   <h2>Schreibsperre</h2>
-  <p>Das Thema "{{ topic.title }}" von {{ render_user_link(topic.author) }} ist {% if topic.locked %}<strong>geschlossen</strong> (durch {{ topic.locked_by.screen_name }}){% else %}<strong>offen</strong>{% endif %}.</p>
+  <p>Das Thema "{{ topic.title }}" von {{ render_user_link(topic.author) }} ist {% if topic.locked %}<strong>geschlossen</strong> ({{ render_datetime(topic.locked_at) }} durch {{ topic.locked_by.screen_name }}){% else %}<strong>offen</strong>{% endif %}.</p>
   <ol class="actions">
   {%- if topic.locked %}
     <li><span class="action hidden"><span class="icon-disabled"></span> schließen</span></li>
@@ -38,7 +39,7 @@
   </ol>
 
   <h2>Anheften</h2>
-  <p>Das Thema "{{ topic.title }}" von {{ render_user_link(topic.author) }} ist {% if topic.pinned %}<strong>angepinnt</strong> (durch {{ topic.pinned_by.screen_name }}){% else %}<strong>nicht angepinnt</strong>{% endif %}.</p>
+  <p>Das Thema "{{ topic.title }}" von {{ render_user_link(topic.author) }} ist {% if topic.pinned %}<strong>angepinnt</strong> ({{ render_datetime(topic.pinned_at) }} durch {{ topic.pinned_by.screen_name }}){% else %}<strong>nicht angepinnt</strong>{% endif %}.</p>
   <ol class="actions">
   {%- if topic.pinned %}
     <li><span class="action hidden"><span class="icon-disabled"></span> anpinnen</span></li>
