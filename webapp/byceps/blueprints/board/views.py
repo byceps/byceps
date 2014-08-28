@@ -96,11 +96,7 @@ def topic_create(category_id):
     title = form.title.data.strip()
     body = form.body.data.strip()
 
-    topic = Topic(category, author, title)
-    posting = Posting(topic, author, body)
-
-    db.session.add(topic)
-    db.session.add(posting)
+    topic = Topic.create(category, author, title, body)
     db.session.commit()
 
     topic.aggregate()
