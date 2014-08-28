@@ -327,14 +327,7 @@ nav.board-breadcrumbs li:last-child {
 }
 
 .board-postings aside .avatar {
-  display: block;
-  max-height: 150px;
   margin: 0.25rem 0;
-  overflow: hidden;
-  max-width: 110px;
-}
-.board-postings aside .avatar img {
-  border: #cccccc solid 1px;
 }
 
 .board-postings aside time {
@@ -366,4 +359,16 @@ main img {
 
 .hidden {
   opacity: 0.5;
+}
+
+.avatar {
+  display: block;
+  height: 152px;
+  max-height: 152px;
+  max-width: 112px;
+  overflow: hidden;
+  width: 112px;
+}
+.avatar img {
+  border: #cccccc solid 1px;
 }

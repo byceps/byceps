@@ -22,7 +22,7 @@
 
   {%- if user.has_avatar_image %}
   <h2>Avatarbild</h2>
-  <div style="max-height: 640px; max-width: 640px; overflow: auto;"><img src="{{ url_for('.avatar_image', filename=user.avatar_image_filename) }}" alt="Avatarbild"/></div>
+  <div class="avatar"><img src="{{ url_for('.avatar_image', filename=user.avatar_image_filename) }}" alt="Avatarbild"/></div>
   {%- endif %}
 
   {%- if g.current_user == user %}
