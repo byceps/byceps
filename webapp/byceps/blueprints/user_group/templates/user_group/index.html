@@ -1,0 +1,40 @@
+{% extends 'layout/base.html' %}
+{% from 'macros/datetime.html' import render_datetime %}
+{% from 'macros/user.html' import render_user_link %}
+{% set current_page = 'user_group.index' %}
+{% set title = 'Benutzergruppen' %}
+
+{% block body %}
+
+  <h1>{{ title }}</h1>
+
+  <table class="index wide">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th style="text-align: center;">Mitglieder</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for group in groups|sort(attribute='title') %}
+      <tr>
+        <td>
+          <strong>{{ group.title }}</strong>
+          {%- if group.description is not none %}
+          <div class="details">{{ group.description }}</div>
+          {%- endif %}
+        </td>
+        <td style="text-align: center;">{{ group.member_count }}</td>
+      </tr>
+      {%- endfor %}
+      <tr>
+    </tbody>
+  </table>
+
+  {%- if g.current_user.is_active %}
+  <ol class="actions">
+    <li><a href="{{ url_for('.create_form') }}"><span class="icon-add"></span> Neues Gruppe erstellen</a></li>
+  </ol>
+  {%- endif %}
+
+{%- endblock body %}

@@ -33,6 +33,7 @@ BLUEPRINT_NAMES = [
     ('terms_admin', '/terms/admin'),
     ('user', '/users'),
     ('user_admin', '/users'),
+    ('user_group', '/user_groups'),
 ]
 
 

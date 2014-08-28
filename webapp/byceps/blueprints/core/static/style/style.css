@@ -265,18 +265,18 @@ table.index td {
   padding: 0.5em 0.5em 0.5em 0;
 }
 
+table.index .details {
+  display: block;
+  font-size: 0.75rem;
+  margin-top: 0.2rem;
+}
+
 table.wide {
   width: 100%;
 }
 
 
 /* board */
-
-table.board .details {
-  display: block;
-  font-size: 0.75rem;
-  margin-top: 0.2rem;
-}
 
 .board-postings {
   border-bottom: #cccccc solid 1px;

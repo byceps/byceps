@@ -8,6 +8,7 @@ from byceps.blueprints.seating.models import Area as SeatingArea, \
     Category as SeatingCategory, Point, Seat
 from byceps.blueprints.terms.models import Version as TermsVersion
 from byceps.blueprints.user.models import User
+from byceps.blueprints.user_group.models import UserGroup
 
 from .util import add_to_database
 
@@ -65,6 +66,15 @@ def create_orga_team(id, title):
 @add_to_database
 def assign_user_to_orga_team(user, orga_team, party):
     return OrgaTeamMembership(orga_team=orga_team, party=party, user=user)
+
+
+# -------------------------------------------------------------------- #
+# user groups
+
+
+@add_to_database
+def create_user_group(creator, title, description=None):
+    return UserGroup(creator, title, description)
 
 
 # -------------------------------------------------------------------- #
