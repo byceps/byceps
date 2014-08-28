@@ -99,6 +99,9 @@ class Topic(db.Model):
 
         db.session.add(topic)
         db.session.add(posting)
+        db.session.commit()
+
+        topic.aggregate()
 
         return topic
 
@@ -121,6 +124,8 @@ class Topic(db.Model):
             self.last_author = last_posting.author
 
         db.session.commit()
+
+        self.category.aggregate()
 
     def __repr__(self):
         builder = ReprBuilder(self) \
@@ -159,6 +164,16 @@ class Posting(db.Model):
     hidden = db.Column(db.Boolean, default=False)
     hidden_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
     hidden_by = db.relationship(User, foreign_keys=[hidden_by_id])
+
+    @classmethod
+    def create(cls, topic, author, body):
+        posting = Posting(topic, author, body)
+        db.session.add(topic)
+        db.session.commit()
+
+        topic.aggregate()
+
+        return posting
 
     def __init__(self, topic, author, body):
         self.topic = topic

@@ -97,10 +97,6 @@ def topic_create(category_id):
     body = form.body.data.strip()
 
     topic = Topic.create(category, author, title, body)
-    db.session.commit()
-
-    topic.aggregate()
-    category.aggregate()
 
     flash_success('Das Thema wurde hinzugefügt.')
     return redirect_to('.topic_view', id=topic.id)
@@ -243,11 +239,7 @@ def posting_create(topic_id):
             'Es können keine Beiträge mehr hinzugefügt werden.')
         return redirect_to('.topic_view', id=topic.id)
 
-    posting = Posting(topic, author, body)
-    db.session.add(posting)
-    db.session.commit()
-
-    topic.aggregate()
+    posting = Posting.create(topic, author, body)
 
     flash_success('Deine Antwort wurde hinzugefügt.')
     return redirect_to('.topic_view', id=topic.id)
