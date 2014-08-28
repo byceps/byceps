@@ -8,7 +8,7 @@
 
   <h1>{{ title }}</h1>
 
-  <table class="index wide">
+  <table class="index wide board">
     <thead>
       <tr>
         <th>Kategorie</th>
@@ -23,7 +23,7 @@
         <td>
           <a href="{{ url_for('.category_view', id=category.id) }}">{{ category.title }}</a>
           {%- if category.contains_unseen_postings() %} <span class="icon-new" title="neu"></span>{% endif %}
-          <div>{{ category.description }}</div>
+          <div class="details">{{ category.description }}</div>
         </td>
         <td style="text-align: center;">{{ category.topic_count }}</td>
         <td style="text-align: center;">{{ category.posting_count }}</td>

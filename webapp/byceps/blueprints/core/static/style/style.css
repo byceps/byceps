@@ -272,6 +272,12 @@ table.wide {
 
 /* board */
 
+table.board .details {
+  display: block;
+  font-size: 0.75rem;
+  margin-top: 0.2rem;
+}
+
 .board-postings {
   border-bottom: #cccccc solid 1px;
 }
