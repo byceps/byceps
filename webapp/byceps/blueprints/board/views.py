@@ -51,7 +51,16 @@ def category_index():
 def category_view(id):
     """List latest topics in the category."""
     category = Category.query.get_or_404(id)
-    return {'category': category}
+
+    topics = Topic.query \
+        .filter_by(category=category) \
+        .order_by(Topic.pinned.desc(), Topic.last_updated_at.desc()) \
+        .all()
+
+    return {
+        'category': category,
+        'topics': topics,
+    }
 
 
 # -------------------------------------------------------------------- #
