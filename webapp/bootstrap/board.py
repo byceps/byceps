@@ -21,4 +21,4 @@ def create_topic(category, author, title, body):
 
 @add_to_database
 def create_posting(topic, author, body):
-    return Posting(topic, author, body)
+    return Posting.create(topic, author, body)
