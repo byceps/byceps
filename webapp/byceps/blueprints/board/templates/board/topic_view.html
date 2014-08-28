@@ -7,7 +7,7 @@
   <h1>{{ topic.title }}</h1>
 
   {%- if g.current_user.has_any_permission(BoardTopicPermission.hide, BoardTopicPermission.lock, BoardTopicPermission.pin) %}
-  <p><a href="{{ url_for('.topic_flags_form', id=topic.id) }}" class="action icon-administrate" title="Thema verwalten"> verwalten</a></p>
+  <p style="text-align: right;"><a href="{{ url_for('.topic_flags_form', id=topic.id) }}" class="action" title="Thema verwalten"><span class="icon-administrate"></span> verwalten</a></p>
   {%- endif %}
 
   <div class="board-postings">
@@ -16,12 +16,14 @@
   {%- endfor %}
   </div>
 
-  <ol class="actions">
-  {%- if not topic.locked and g.current_user.has_permission(BoardPostingPermission.create) %}
-    <li><a href="{{ url_for('.posting_create_form', topic_id=topic.id) }}"><span class="icon-add"></span> Antworten</a></li>
-  {%- else %}
-    <li><span class="action hidden"><span class="icon-add"></span> Antworten</span></li>
-  {%- endif %}
-  </ol>
+  <div style="text-align: right;">
+    <ol class="actions">
+    {%- if not topic.locked and g.current_user.has_permission(BoardPostingPermission.create) %}
+      <li><a href="{{ url_for('.posting_create_form', topic_id=topic.id) }}"><span class="icon-add"></span> Antworten</a></li>
+    {%- else %}
+      <li><span class="action hidden"><span class="icon-add"></span> Antworten</span></li>
+    {%- endif %}
+    </ol>
+  </div>
 
 {%- endblock body %}

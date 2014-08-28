@@ -7,10 +7,10 @@
     <div class="avatar"></div>
     {{ render_datetime(posting.created_at)|replace(', ', '<br/>'|safe) }}
 
-    {%- if posting.hidden %}<p><span class="icon-hidden" title="versteckt (durch {{ posting.hidden_by.screen_name }})"></span> versteckt</p>{% endif %}
+    {%- if posting.hidden %}<p title="versteckt (durch {{ posting.hidden_by.screen_name }})"><span class="icon-hidden"></span> versteckt</p>{% endif %}
 
     {%- if g.current_user.has_permission(BoardPostingPermission.hide) %}
-    <p><a href="{{ url_for('.posting_flags_form', id=posting.id) }}" class="action icon-administrate" title="Beitrag verwalten"> verwalten</a></p>
+    <p><a href="{{ url_for('.posting_flags_form', id=posting.id) }}" class="action" title="Beitrag verwalten"><span class="icon-administrate"></span> verwalten</a></p>
     {%- endif %}
   </aside>
   <div class="body">
