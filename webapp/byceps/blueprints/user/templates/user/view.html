@@ -27,7 +27,7 @@
 
   {%- if g.current_user == user %}
   <ol class="actions">
-    <li><a href="{{ url_for('.avatar_image_form', id=g.current_user.id) }}"><span class="icon-edit"></span> Avatar hochladen</a></li>
+    <li><a href="{{ url_for('.avatar_image_form', id=g.current_user.id) }}"><span class="icon-upload"></span> Avatar hochladen</a></li>
   </ol>
   {%- endif %}
 

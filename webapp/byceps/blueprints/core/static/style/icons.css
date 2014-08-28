@@ -56,4 +56,5 @@ li [class*=" icon-"] {
 .icon-published:before      { content: "\f06e"; }
 .icon-success:before        { content: "\f00c"; }
 .icon-update:before         { content: "\f021"; }
+.icon-upload:before         { content: "\f093"; }
 .icon-view:before           { content: "\f06e"; }

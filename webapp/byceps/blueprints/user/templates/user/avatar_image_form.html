@@ -12,7 +12,7 @@
       {{ form_field(form.image, maxlength=500000, accept='image/*', required='required') }}
     {%- endcall %}
 
-    {{ form_buttons('Bild hochladen') }}
+    {{ form_buttons('<span class="icon-upload"></span> Bild hochladen'|safe) }}
   </form>
 
 {%- endblock body %}
