@@ -27,9 +27,9 @@
           <a href="{{ url_for('.topic_view', id=topic.id) }}">{{ topic.title }}</a>
           {%- if topic.contains_unseen_postings() %} <span class="icon-new" title="neu"></span>{% endif -%}
         </td>
-        <td>{{ render_user_link(topic.author) }}</td>
+        <td>{{ render_user_link(topic.creator) }}</td>
         <td style="text-align: center;">{{ topic.reply_count }}</td>
-        <td>{{ render_datetime(topic.last_updated_at) }} von {{ render_user_link(topic.last_author) }}</td>
+        <td>{{ render_datetime(topic.last_updated_at) }} von {{ render_user_link(topic.last_updated_by) }}</td>
       </tr>
       {%- endfor %}
       <tr>

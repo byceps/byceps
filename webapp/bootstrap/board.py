@@ -15,10 +15,10 @@ def get_first_category(brand):
 
 
 @add_to_database
-def create_topic(category, author, title, body):
-    return Topic.create(category, author, title, body)
+def create_topic(category, creator, title, body):
+    return Topic.create(category, creator, title, body)
 
 
 @add_to_database
-def create_posting(topic, author, body):
-    return Posting.create(topic, author, body)
+def create_posting(topic, creator, body):
+    return Posting.create(topic, creator, body)

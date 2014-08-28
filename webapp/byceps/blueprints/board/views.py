@@ -118,11 +118,11 @@ def topic_create(category_id):
     form = TopicCreateForm(request.form)
 
     category = Category.query.get_or_404(category_id)
-    author = g.current_user
+    creator = g.current_user
     title = form.title.data.strip()
     body = form.body.data.strip()
 
-    topic = Topic.create(category, author, title, body)
+    topic = Topic.create(category, creator, title, body)
 
     flash_success('Das Thema "{}" wurde hinzugefügt.', topic.title)
     return redirect_to('.topic_view', id=topic.id)
@@ -255,7 +255,7 @@ def posting_create(topic_id):
     form = PostingCreateForm(request.form)
 
     topic = Topic.query.get_or_404(topic_id)
-    author = g.current_user
+    creator = g.current_user
     body = form.body.data.strip()
 
     if topic.locked:
@@ -265,7 +265,7 @@ def posting_create(topic_id):
             icon='lock')
         return redirect_to('.topic_view', id=topic.id)
 
-    posting = Posting.create(topic, author, body)
+    posting = Posting.create(topic, creator, body)
 
     flash_success('Deine Antwort wurde hinzugefügt.')
     return redirect_to('.topic_view', id=topic.id)

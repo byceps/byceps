@@ -44,8 +44,8 @@ class Category(db.Model):
     topic_count = db.Column(db.Integer, default=0)
     posting_count = db.Column(db.Integer, default=0)
     last_posting_updated_at = db.Column(db.DateTime)
-    last_posting_author_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
-    last_posting_author = db.relationship(User)
+    last_posting_updated_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
+    last_posting_updated_by = db.relationship(User)
 
     def aggregate(self):
         """Update the count and latest fields."""
@@ -57,7 +57,7 @@ class Category(db.Model):
         self.topic_count = topic_count
         self.posting_count = posting_count
         self.last_posting_updated_at = last_posting.created_at if last_posting else None
-        self.last_posting_author = last_posting.author if last_posting else None
+        self.last_posting_updated_by = last_posting.creator if last_posting else None
 
         db.session.commit()
 
@@ -105,13 +105,13 @@ class Topic(db.Model):
     category_id = db.Column(db.Uuid, db.ForeignKey('board_categories.id'))
     category = db.relationship(Category)
     created_at = db.Column(db.DateTime, default=datetime.now)
-    author_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
-    author = db.relationship(User, foreign_keys=[author_id])
+    creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
+    creator = db.relationship(User, foreign_keys=[creator_id])
     title = db.Column(db.Unicode(80))
     posting_count = db.Column(db.Integer, default=0)
     last_updated_at = db.Column(db.DateTime, default=datetime.now())
-    last_author_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
-    last_author = db.relationship(User, foreign_keys=[last_author_id])
+    last_updated_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
+    last_updated_by = db.relationship(User, foreign_keys=[last_updated_by_id])
     hidden = db.Column(db.Boolean, default=False)
     hidden_at = db.Column(db.DateTime, default=datetime.now())
     hidden_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
@@ -126,9 +126,9 @@ class Topic(db.Model):
     pinned_by = db.relationship(User, foreign_keys=[pinned_by_id])
 
     @classmethod
-    def create(cls, category, author, title, body):
-        topic = Topic(category=category, author=author, title=title)
-        posting = Posting(topic, author, body)
+    def create(cls, category, creator, title, body):
+        topic = Topic(category=category, creator=creator, title=title)
+        posting = Posting(topic, creator, body)
 
         db.session.add(topic)
         db.session.add(posting)
@@ -150,7 +150,7 @@ class Topic(db.Model):
         self.posting_count = posting_count
         if last_posting:
             self.last_updated_at = last_posting.created_at
-            self.last_author = last_posting.author
+            self.last_updated_by = last_posting.creator
 
         db.session.commit()
 
@@ -171,7 +171,7 @@ class Topic(db.Model):
         builder = ReprBuilder(self) \
             .add_with_lookup('id') \
             .add('category', self.category.title) \
-            .add('author', self.author.screen_name) \
+            .add('creator', self.creator.screen_name) \
             .add_with_lookup('title')
 
         if self.hidden:
@@ -205,8 +205,8 @@ class Posting(db.Model):
     topic_id = db.Column(db.Uuid, db.ForeignKey('board_topics.id'))
     topic = db.relationship(Topic)
     created_at = db.Column(db.DateTime, default=datetime.now)
-    author_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
-    author = db.relationship(User, foreign_keys=[author_id])
+    creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
+    creator = db.relationship(User, foreign_keys=[creator_id])
     body = db.Column(db.UnicodeText)
     last_edited_at = db.Column(db.DateTime, default=datetime.now())
     last_editor_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
@@ -218,8 +218,8 @@ class Posting(db.Model):
     hidden_by = db.relationship(User, foreign_keys=[hidden_by_id])
 
     @classmethod
-    def create(cls, topic, author, body):
-        posting = Posting(topic, author, body)
+    def create(cls, topic, creator, body):
+        posting = Posting(topic, creator, body)
         db.session.add(topic)
         db.session.commit()
 
@@ -227,16 +227,16 @@ class Posting(db.Model):
 
         return posting
 
-    def __init__(self, topic, author, body):
+    def __init__(self, topic, creator, body):
         self.topic = topic
-        self.author = author
+        self.creator = creator
         self.body = body
 
     def __repr__(self):
         builder = ReprBuilder(self) \
             .add_with_lookup('id') \
             .add('topic', self.topic.title) \
-            .add('author', self.author.screen_name)
+            .add('creator', self.creator.screen_name)
 
         if self.hidden:
             builder.add_custom('hidden by {}'.format(self.hidden_by.screen_name))
