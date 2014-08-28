@@ -6,6 +6,7 @@ from byceps.blueprints.orga.models import OrgaFlag, OrgaTeam, \
 from byceps.blueprints.party.models import Party
 from byceps.blueprints.seating.models import Area as SeatingArea, \
     Category as SeatingCategory, Point, Seat
+from byceps.blueprints.snippet.models import Snippet, SnippetVersion
 from byceps.blueprints.terms.models import Version as TermsVersion
 from byceps.blueprints.user.models import User
 from byceps.blueprints.user_group.models import UserGroup
@@ -80,6 +81,20 @@ def assign_user_to_orga_team(user, orga_team, party):
 @add_to_database
 def create_user_group(creator, title, description=None):
     return UserGroup(creator, title, description)
+
+
+# -------------------------------------------------------------------- #
+# snippets
+
+
+@add_to_database
+def create_snippet(party, name, url_path):
+    return Snippet(party=party, name=name, url_path=url_path)
+
+
+@add_to_database
+def create_snippet_version(snippet, creator, title, body):
+    return SnippetVersion(snippet=snippet, creator=creator, title=title, body=body)
 
 
 # -------------------------------------------------------------------- #
