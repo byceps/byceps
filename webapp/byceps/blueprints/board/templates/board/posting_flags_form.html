@@ -26,10 +26,10 @@
   <p>Dieser Beitrag von {{ render_user_link(posting.creator) }} ist {% if posting.hidden %}<strong>versteckt</strong> (am {{ render_datetime(posting.hidden_at) }} durch {{ posting.hidden_by.screen_name }}){% else %}<strong>sichtbar</strong>{% endif %}.</p>
   <ol class="actions">
   {%- if posting.hidden %}
-    <li><span class="action hidden"><span class="icon-disabled"></span> verstecken</span></li>
+    <li><span class="action hidden"><span class="icon-hidden"></span> verstecken</span></li>
     <li><a id="posting-unhide" href="{{ url_for('.posting_unhide', id=posting.id) }}"><span class="icon-view"></span> sichtbar machen</a></li>
   {%- else %}
-    <li><a id="posting-hide" href="{{ url_for('.posting_hide', id=posting.id) }}"><span class="icon-disabled"></span> verstecken</a></li>
+    <li><a id="posting-hide" href="{{ url_for('.posting_hide', id=posting.id) }}"><span class="icon-hidden"></span> verstecken</a></li>
     <li><span class="action hidden"><span class="icon-view"></span> sichtbar machen</span></li>
   {%- endif %}
   </ol>
