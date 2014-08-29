@@ -1,3 +1,7 @@
 {% macro render_user_link(user) -%}
 <a href="{{ url_for('user.view', id=user.id) }}">{{ user.screen_name }}</a>
 {%- endmacro %}
+
+{% macro render_user_avatar(user) -%}
+<div class="avatar"><img src="{{ url_for('user.avatar_image', filename=user.avatar_image_filename) }}" alt="Avatarbild von {{ user.screen_name }}"/></div>
+{%- endmacro %}
