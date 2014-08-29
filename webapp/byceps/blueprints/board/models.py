@@ -220,7 +220,7 @@ class Posting(db.Model):
     @classmethod
     def create(cls, topic, creator, body):
         posting = Posting(topic, creator, body)
-        db.session.add(topic)
+        db.session.add(posting)
         db.session.commit()
 
         topic.aggregate()
