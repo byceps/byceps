@@ -54,6 +54,10 @@ class AnonymousUser(object):
     def has_any_permission(self, *permissions):
         return False
 
+    @property
+    def has_avatar_image(self):
+        return False
+
     def is_orga(self):
         return False
 
