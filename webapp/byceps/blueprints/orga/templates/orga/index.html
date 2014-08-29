@@ -16,7 +16,7 @@
     <tbody>
       {%- for orga in orgas|sort(attribute='screen_name') %}
       <tr>
-        <td>{{ render_user_link(orga) }}</td>
+        <td><strong>{{ render_user_link(orga) }}</strong></td>
       </tr>
       {%- endfor %}
       <tr>

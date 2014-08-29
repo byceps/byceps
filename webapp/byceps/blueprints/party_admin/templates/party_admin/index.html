@@ -21,8 +21,8 @@
       <tr{% if party.is_over %} class="hidden"{% endif %}>
         <td>{{ party.id }}</td>
         <td>
-          {%- if party.is_archived %}<span class="icon-archived" title="archiviert"></span> {% endif %}
-          {{- party.title -}}
+          {%- if party.is_archived %}<span class="icon-archived" title="archiviert"></span> {% endif -%}
+          <strong>{{ party.title }}</strong>
         </td>
         <td>{{ render_datetime(party.starts_at) }}</td>
         <td>{{ render_datetime(party.ends_at) }}</td>
