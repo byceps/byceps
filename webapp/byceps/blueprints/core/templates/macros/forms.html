@@ -7,15 +7,17 @@
 {%- endmacro %}
 
 {%- macro form_field(field, note=None) -%}
+  {%- set kwargs2 = kwargs %}
   {%- call _row(field) %}
-        {{- field.label }}{{ field(**kwargs) }}
+        {{- field.label }}{{ field(**kwargs2) }}
         {%- if note %} {{ note|safe }}{% endif %}
   {%- endcall %}
 {%- endmacro %}
 
 {%- macro form_field_checkbox(field, label) -%}
+  {%- set kwargs2 = kwargs %}
   {%- call _row(field) %}
-        {{- field }} {{ field.label(label) }}
+        {{- field(**kwargs2) }} {{ field.label(label) }}
   {%- endcall %}
 {%- endmacro %}
 
