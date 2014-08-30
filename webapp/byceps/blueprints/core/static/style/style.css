@@ -179,7 +179,9 @@ ol.actions li {
 .action,
 .actions a {
   background-color: #dddddd;
-  border: #cccccc solid 1px;
+  border-color: #cccccc;
+  border-style: solid;
+  border-width: 1px;
   border-radius: 3px;
   box-shadow: 0 0 1px rgba(0, 0, 0, 0.25);
   color: #333333;
@@ -191,9 +193,9 @@ ol.actions li {
   white-space: nowrap;
 }
 .actions a:hover {
-  background-color: #666666;
-  box-shadow: none;
-  color: #f4f4f4;
+  background-color: #999999;
+  border-color: #666666;
+  color: #ffffff;
 }
 .action.disabled {
   cursor: not-allowed;
