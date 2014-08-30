@@ -12,6 +12,7 @@
     <thead>
       <tr>
         <th>Name</th>
+        <th>Ersteller</th>
         <th style="text-align: center;">Mitglieder</th>
       </tr>
     </thead>
@@ -24,6 +25,7 @@
           <div class="details">{{ group.description }}</div>
           {%- endif %}
         </td>
+        <td>{{ render_user_link(group.creator) }}</td>
         <td style="text-align: center;">{{ group.member_count }}</td>
       </tr>
       {%- endfor %}
