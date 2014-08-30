@@ -191,7 +191,7 @@ ol.actions li {
   white-space: nowrap;
 }
 .action:hover,
-.actions:hover a {
+.actions a:hover {
   background-color: #666666;
   box-shadow: none;
   color: #f4f4f4;
