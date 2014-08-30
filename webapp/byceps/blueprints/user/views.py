@@ -9,7 +9,7 @@ byceps.blueprints.user.views
 
 from datetime import datetime
 
-from flask import abort, g, request, session
+from flask import abort, g, request, session, url_for
 
 from ...database import db
 from ...util.framework import create_blueprint, flash_error, flash_success
@@ -23,7 +23,7 @@ from ..authorization.models import Role
 from ..terms.models import Consent, ConsentContext
 
 from .forms import AvatarImageUpdateForm, CreateForm, LoginForm
-from .models import User
+from .models import User, VerificationToken, VerificationTokenPurpose
 
 
 blueprint = create_blueprint('user', __name__)
@@ -65,6 +65,10 @@ def create():
     user = User.create(screen_name, email_address, password)
     db.session.add(user)
 
+    verification_token = VerificationToken(
+        user, VerificationTokenPurpose.email_address_confirmation)
+    db.session.add(verification_token)
+
     terms_consent = Consent(user, ConsentContext.account_creation)
     db.session.add(terms_consent)
 
@@ -81,9 +85,36 @@ def create():
 
     db.session.commit()
 
+    # TODO: Send the URL via email instead of flashing it.
+    confirmation_url = url_for('.confirm_email_address',
+                               user_id=user.id,
+                               token=verification_token.token,
+                               _external=True)
+    flash_success('Bestätigungs-URL: {}', confirmation_url)
+
     flash_success('Das Benutzerkonto für "{}" wurde angelegt.',
                   user.screen_name)
     return redirect_to('.view', id=user.id)
+
+
+@blueprint.route('/<user_id>/confirm_email_address/<token>')
+def confirm_email_address(user_id, token):
+    """Confirm the user's e-mail address."""
+    user = find_user_by_id(user_id)
+    verification_token = VerificationToken.find(
+        token, user, VerificationTokenPurpose.email_address_confirmation)
+
+    if verification_token is None:
+        abort(404)
+
+    user.enabled = True
+    db.session.delete(verification_token)
+    db.session.commit()
+
+    flash_success(
+        'Die E-Mail-Adresse wurde bestätigt. Das Benutzerkonto "{}" ist nun aktiv.',
+        user.screen_name)
+    return redirect_to('.login_form')
 
 
 @blueprint.route('/<id>/avatar/update')

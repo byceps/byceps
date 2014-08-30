@@ -8,6 +8,7 @@ byceps.blueprints.user.models
 """
 
 from datetime import datetime
+from enum import Enum
 from itertools import chain
 from operator import attrgetter
 from pathlib import Path
@@ -248,3 +249,41 @@ def normalize_email_address(email_address):
 def generate_password_hash(password):
     """Generate a salted hash for the password."""
     return _generate_password_hash(password, method=PASSWORD_HASH_METHOD)
+
+
+VerificationTokenPurpose = Enum(
+    'VerificationTokenPurpose',
+    ['email_address_confirmation', 'password_reset'])
+
+
+class VerificationToken(db.Model):
+    """A private token to authenticate as a certain user for a certain
+    action.
+    """
+    __tablename__ = 'user_verification_tokens'
+
+    token = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
+    user = db.relationship(User)
+    _purpose = db.Column('purpose', db.Unicode(40), nullable=False)
+
+    @classmethod
+    def find(cls, token, user, purpose):
+        return cls.query \
+            .filter_by(token=token) \
+            .filter_by(user=user) \
+            .filter_by(_purpose=purpose.name) \
+            .first()
+
+    def __init__(self, user, purpose):
+        self.user = user
+        self.purpose = purpose
+
+    @hybrid_property
+    def purpose(self):
+        return VerificationTokenPurpose[self._purpose]
+
+    @purpose.setter
+    def purpose(self, purpose):
+        assert purpose is not None
+        self._purpose = purpose.name
