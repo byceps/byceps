@@ -72,6 +72,9 @@ def create():
     terms_consent = Consent(user, ConsentContext.account_creation)
     db.session.add(terms_consent)
 
+    board_user_role = Role.query.get('board_user')
+    user.roles.add(board_user_role)
+
     try:
         db.session.commit()
     except Exception as e:
@@ -79,9 +82,6 @@ def create():
         flash_error('Das Benutzerkonto für "{}" konnte nicht angelegt werden.',
                     user.screen_name)
         return create_form(form)
-
-    board_user_role = Role.query.get('board_user')
-    user.roles.add(board_user_role)
 
     db.session.commit()
 
