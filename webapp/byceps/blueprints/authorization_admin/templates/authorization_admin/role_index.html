@@ -1,0 +1,33 @@
+{% extends 'layout/base.html' %}
+{% set current_page = 'authorization' %}
+{% set title = 'Rollen' %}
+
+{% block body %}
+
+  <h1>{{ title }}</h1>
+
+  <table class="index wide">
+    <thead>
+      <tr>
+        <th>Bezeichner</th>
+        <th>zugewiesene Rechte</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for role in roles|sort(attribute='id') %}
+      <tr>
+        <td>{{ role.id }}</td>
+        <td>
+          <ol>
+          {%- for permission in role.permissions|sort(attribute='id') %}
+            <li>{{ permission.id }}</li>
+          {%- endfor %}
+          </ol>
+        </td>
+      </tr>
+      {%- endfor %}
+      <tr>
+    </tbody>
+  </table>
+
+{%- endblock body %}

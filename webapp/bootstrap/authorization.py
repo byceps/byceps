@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from byceps.blueprints.authorization.models import Permission, Role, \
-    RolePermission, UserRole
+from byceps.blueprints.authorization.models import Permission as DbPermission, \
+    Role, RolePermission as DbRolePermission, UserRole
+from byceps.blueprints.authorization_admin.authorization import RolePermission
 from byceps.blueprints.board.authorization import BoardPostingPermission, \
     BoardTopicPermission
 from byceps.blueprints.orga_admin.authorization import OrgaTeamPermission
@@ -15,6 +16,7 @@ from .util import add_all_to_database, add_to_database
 
 
 def create_roles_and_permissions():
+    create_role_with_permissions_from_enum('authorization_admin', RolePermission)
     create_role_with_permissions_from_enum_members('board_user', [
         BoardPostingPermission.create,
         BoardPostingPermission.update,
@@ -65,7 +67,7 @@ def get_role(id):
 
 @add_all_to_database
 def create_permissions_from_enum_members(enum_members):
-    return list(map(Permission.from_enum_member, enum_members))
+    return list(map(DbPermission.from_enum_member, enum_members))
 
 
 def add_permissions_to_role(permissions, role):
@@ -76,7 +78,7 @@ def add_permissions_to_role(permissions, role):
 def add_permission_to_role(permission, role):
     # FIXME
     #role.permissions.append(permission)
-    role_permission = RolePermission(role=role, permission=permission)
+    role_permission = DbRolePermission(role=role, permission=permission)
     role.role_permissions.append(role_permission)
 
 

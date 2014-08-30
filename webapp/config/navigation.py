@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from byceps.blueprints.authorization_admin.authorization import RolePermission
 from byceps.blueprints.orga_admin.authorization import OrgaTeamPermission
 from byceps.blueprints.party_admin.authorization import PartyPermission
 from byceps.blueprints.snippet_admin.authorization import SnippetPermission
@@ -9,6 +10,7 @@ from byceps.util.navigation import Navigation, NavigationItem
 
 
 navigation = Navigation()
+navigation.add_item('authorization_admin.role_index', 'Rollen', id='role', required_permission=RolePermission.list)
 navigation.add_item('user_admin.index', 'Benutzer', id='user', required_permission=UserPermission.list)
 navigation.add_item('party_admin.index', 'Parties', id='party', required_permission=PartyPermission.list)
 navigation.add_item('snippet_admin.index', 'Snippets', id='snippet', required_permission=SnippetPermission.list)
