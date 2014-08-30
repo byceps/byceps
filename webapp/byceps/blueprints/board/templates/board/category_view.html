@@ -30,7 +30,7 @@
           {%- if topic.locked %}<span class="icon-lock" title="geschlossen (durch {{ topic.locked_by.screen_name }})"></span> {% endif -%}
           {%- if topic.pinned %}<span class="icon-pin" title="angeheftet (durch {{ topic.pinned_by.screen_name }})"></span> {% endif -%}
           <a href="{{ url_for('.topic_view', id=topic.id) }}">{{ topic.title }}</a>
-          {%- if topic.contains_unseen_postings() %} <span class="icon-new" title="neu"></span>{% endif -%}
+          {%- if topic.contains_unseen_postings() %} <span class="tag">neu</span>{% endif -%}
         </td>
         <td>{{ render_user_link(topic.creator) }}</td>
         <td style="text-align: center;">{{ topic.reply_count }}</td>

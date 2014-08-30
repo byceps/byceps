@@ -365,6 +365,17 @@ main img {
   cursor: help;
 }
 
+.tag {
+  background-color: orange;
+  border-radius: 3px;
+  color: #ffffff;
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: bold;
+  line-height: 1.3em;
+  padding: 0 0.5em;
+}
+
 .avatar {
   display: block;
   height: 152px;
