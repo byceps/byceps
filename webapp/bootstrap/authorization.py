@@ -16,28 +16,63 @@ from .util import add_all_to_database, add_to_database
 
 
 def create_roles_and_permissions():
-    create_role_with_permissions_from_enum('authorization_admin', RolePermission)
-    create_role_with_permissions_from_enum_members('board_user', [
-        BoardPostingPermission.create,
-        BoardPostingPermission.update,
-        BoardTopicPermission.create,
-        BoardTopicPermission.update,
-    ])
-    create_role_with_permissions_from_enum_members('board_orga', [
-        BoardPostingPermission.view_hidden,
-        BoardTopicPermission.view_hidden
-    ])
-    create_role_with_permissions_from_enum_members('board_moderator', [
-        BoardPostingPermission.hide,
-        BoardTopicPermission.hide,
-        BoardTopicPermission.lock,
-        BoardTopicPermission.pin,
-    ])
-    create_role_with_permissions_from_enum('orga_team_admin', OrgaTeamPermission)
-    create_role_with_permissions_from_enum('party_admin', PartyPermission)
-    create_role_with_permissions_from_enum('snippet_editor', SnippetPermission)
-    create_role_with_permissions_from_enum('terms_editor', TermsPermission)
-    create_role_with_permissions_from_enum('user_admin', UserPermission)
+    create_role_with_permissions_from_enum(
+        'authorization_admin',
+        'Rechte und Rollen verwalten',
+        RolePermission)
+
+    create_role_with_permissions_from_enum_members(
+        'board_user',
+        'im Forum schreiben',
+        [
+            BoardPostingPermission.create,
+            BoardPostingPermission.update,
+            BoardTopicPermission.create,
+            BoardTopicPermission.update,
+        ])
+
+    create_role_with_permissions_from_enum_members(
+        'board_orga',
+        'versteckte Themen und Beiträge im Forum lesen',
+        [
+            BoardPostingPermission.view_hidden,
+            BoardTopicPermission.view_hidden
+        ])
+
+    create_role_with_permissions_from_enum_members(
+        'board_moderator',
+        'Forum moderieren',
+        [
+            BoardPostingPermission.hide,
+            BoardTopicPermission.hide,
+            BoardTopicPermission.lock,
+            BoardTopicPermission.pin,
+        ])
+
+    create_role_with_permissions_from_enum(
+        'orga_team_admin',
+        'Orgateams verwalten',
+        OrgaTeamPermission)
+
+    create_role_with_permissions_from_enum(
+        'party_admin',
+        'Parties verwalten',
+        PartyPermission)
+
+    create_role_with_permissions_from_enum(
+        'snippet_editor',
+        'Snippets verwalten',
+        SnippetPermission)
+
+    create_role_with_permissions_from_enum(
+        'terms_editor',
+        'AGB verwalten',
+        TermsPermission)
+
+    create_role_with_permissions_from_enum(
+        'user_admin',
+        'Benutzer verwalten',
+        UserPermission)
 
     db.session.commit()
 
@@ -46,19 +81,19 @@ def create_roles_and_permissions():
 # helpers
 
 
-def create_role_with_permissions_from_enum(role_name, permission_enum):
-    return create_role_with_permissions_from_enum_members(role_name, iter(permission_enum))
+def create_role_with_permissions_from_enum(role_id, role_title, permission_enum):
+    return create_role_with_permissions_from_enum_members(role_id, role_title, iter(permission_enum))
 
 
-def create_role_with_permissions_from_enum_members(role_name, permission_enum_members):
-    role = create_role(role_name)
+def create_role_with_permissions_from_enum_members(role_id, role_title, permission_enum_members):
+    role = create_role(role_id, role_title)
     permissions = create_permissions_from_enum_members(permission_enum_members)
     add_permissions_to_role(permissions, role)
 
 
 @add_to_database
-def create_role(id):
-    return Role(id=id)
+def create_role(id, title):
+    return Role(id=id, title=title)
 
 
 def get_role(id):

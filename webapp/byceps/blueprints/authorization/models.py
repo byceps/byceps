@@ -25,6 +25,7 @@ class Permission(db.Model):
     __tablename__ = 'permissions'
 
     id = db.Column(db.Unicode(40), primary_key=True)
+    title = db.Column(db.Unicode(80), unique=True)
 
     @classmethod
     def from_enum_member(cls, enum_member):
@@ -39,6 +40,7 @@ class Permission(db.Model):
     def __repr__(self):
         return ReprBuilder(self) \
             .add_with_lookup('id') \
+            .add_with_lookup('title') \
             .build()
 
 
@@ -52,12 +54,14 @@ class Role(db.Model):
     __tablename__ = 'roles'
 
     id = db.Column(db.Unicode(40), primary_key=True)
+    title = db.Column(db.Unicode(80), unique=True)
 
     permissions = association_proxy('role_permissions', 'permission')
 
     def __repr__(self):
         return ReprBuilder(self) \
             .add_with_lookup('id') \
+            .add_with_lookup('title') \
             .build()
 
 
