@@ -19,6 +19,7 @@ from ...util.templating import templated
 from ...util import upload
 from ...util.views import redirect_to, respond_no_content
 
+from ..authorization.models import Role
 from ..terms.models import Consent, ConsentContext
 
 from .forms import AvatarImageUpdateForm, CreateForm, LoginForm
@@ -74,6 +75,9 @@ def create():
         flash_error('Das Benutzerkonto für "{}" konnte nicht angelegt werden.',
                     user.screen_name)
         return create_form(form)
+
+    board_user_role = Role.query.get('board_user')
+    user.roles.add(board_user_role)
 
     db.session.commit()
 
