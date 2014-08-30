@@ -42,12 +42,14 @@
     </tbody>
   </table>
 
-  <ol class="actions">
-  {%- if g.current_user.has_permission(BoardTopicPermission.create) %}
-    <li><a href="{{ url_for('.topic_create_form', category_id=category.id) }}"><span class="icon-add"></span> Thema hinzufügen</a></li>
-  {%- else %}
-    <li><span class="action disabled"><span class="icon-add"></span> Thema hinzufügen</span></li>
-  {%- endif %}
-  </ol>
+  <div style="text-align: right;">
+    <ol class="actions">
+    {%- if g.current_user.has_permission(BoardTopicPermission.create) %}
+      <li><a href="{{ url_for('.topic_create_form', category_id=category.id) }}"><span class="icon-add"></span> Thema hinzufügen</a></li>
+    {%- else %}
+      <li><span class="action disabled"><span class="icon-add"></span> Thema hinzufügen</span></li>
+    {%- endif %}
+    </ol>
+  </div>
 
 {%- endblock body %}

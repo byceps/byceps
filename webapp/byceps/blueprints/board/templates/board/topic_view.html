@@ -13,7 +13,11 @@
   </nav>
 
   {%- if g.current_user.has_any_permission(BoardTopicPermission.hide, BoardTopicPermission.lock, BoardTopicPermission.pin) %}
-  <p style="text-align: right;"><a href="{{ url_for('.topic_flags_form', id=topic.id) }}" class="action" title="Thema verwalten"><span class="icon-administrate"></span> verwalten</a></p>
+  <div style="text-align: right;">
+    <ol class="actions">
+        <a href="{{ url_for('.topic_flags_form', id=topic.id) }}" title="Thema verwalten"><span class="icon-administrate"></span> verwalten</a></p>
+    </ol>
+  </div>
   {%- endif %}
 
   <div class="board-postings">
