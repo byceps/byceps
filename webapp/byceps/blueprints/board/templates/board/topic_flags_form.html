@@ -25,11 +25,11 @@
   <p>Das Thema "{{ topic.title }}" von {{ render_user_link(topic.creator) }} ist {% if topic.hidden %}<strong>versteckt</strong> ({{ render_datetime(topic.hidden_at) }} durch {{ topic.hidden_by.screen_name }}){% else %}<strong>sichtbar</strong>{% endif %}.</p>
   <ol class="actions">
   {%- if topic.hidden %}
-    <li><span class="action hidden"><span class="icon-hidden"></span> verstecken</span></li>
+    <li><span class="action disabled"><span class="icon-hidden"></span> verstecken</span></li>
     <li><a id="topic-unhide" href="{{ url_for('.topic_unhide', id=topic.id) }}"><span class="icon-view"></span> sichtbar machen</a></li>
   {%- else %}
     <li><a id="topic-hide" href="{{ url_for('.topic_hide', id=topic.id) }}"><span class="icon-hidden"></span> verstecken</a></li>
-    <li><span class="action hidden"><span class="icon-view"></span> sichtbar machen</span></li>
+    <li><span class="action disabled"><span class="icon-view"></span> sichtbar machen</span></li>
   {%- endif %}
   </ol>
 
@@ -37,11 +37,11 @@
   <p>Das Thema "{{ topic.title }}" von {{ render_user_link(topic.creator) }} ist {% if topic.locked %}<strong>geschlossen</strong> ({{ render_datetime(topic.locked_at) }} durch {{ topic.locked_by.screen_name }}){% else %}<strong>offen</strong>{% endif %}.</p>
   <ol class="actions">
   {%- if topic.locked %}
-    <li><span class="action hidden"><span class="icon-lock"></span> schließen</span></li>
+    <li><span class="action disabled"><span class="icon-lock"></span> schließen</span></li>
     <li><a id="topic-unlock" href="{{ url_for('.topic_unlock', id=topic.id) }}"><span class="icon-unlock"></span> öffnen</a></li>
   {%- else %}
     <li><a id="topic-lock" href="{{ url_for('.topic_lock', id=topic.id) }}"><span class="icon-lock"></span> schließen</a></li>
-    <li><span class="action hidden"><span class="icon-unlock"></span> öffnen</span></li>
+    <li><span class="action disabled"><span class="icon-unlock"></span> öffnen</span></li>
   {%- endif %}
   </ol>
 
@@ -49,11 +49,11 @@
   <p>Das Thema "{{ topic.title }}" von {{ render_user_link(topic.creator) }} ist {% if topic.pinned %}<strong>angepinnt</strong> ({{ render_datetime(topic.pinned_at) }} durch {{ topic.pinned_by.screen_name }}){% else %}<strong>nicht angepinnt</strong>{% endif %}.</p>
   <ol class="actions">
   {%- if topic.pinned %}
-    <li><span class="action hidden"><span class="icon-pin"></span> anpinnen</span></li>
+    <li><span class="action disabled"><span class="icon-pin"></span> anpinnen</span></li>
     <li><a id="topic-unpin" href="{{ url_for('.topic_unpin', id=topic.id) }}"><span class="icon-sorted"></span> lösen</a></li>
   {%- else %}
     <li><a id="topic-pin" href="{{ url_for('.topic_pin', id=topic.id) }}"><span class="icon-pin"></span> anpinnen</a></li>
-    <li><span class="action hidden"><span class="icon-sorted"></span> lösen</span></li>
+    <li><span class="action disabled"><span class="icon-sorted"></span> lösen</span></li>
   {%- endif %}
   </ol>
 

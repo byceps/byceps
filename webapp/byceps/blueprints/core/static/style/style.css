@@ -190,11 +190,14 @@ ol.actions li {
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
   white-space: nowrap;
 }
-.action:hover,
 .actions a:hover {
   background-color: #666666;
   box-shadow: none;
   color: #f4f4f4;
+}
+.action.disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
 }
 
 

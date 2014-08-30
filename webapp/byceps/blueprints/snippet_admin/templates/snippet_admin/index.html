@@ -39,7 +39,7 @@
           </td>
           {%- else %}
           <td>
-            <span class="action hidden"><span class="icon-view"></span> ansehen</span>
+            <span class="action disabled"><span class="icon-view"></span> ansehen</span>
           </td>
           <td>
             <a href="{{ url_for('.view_version', id=latest_version.id) }}" class="action"><span class="icon-view"></span> Fallback</a>
