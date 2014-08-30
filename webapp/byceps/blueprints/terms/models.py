@@ -70,15 +70,10 @@ class Consent(db.Model):
     expressed_at = db.Column(db.DateTime, default=datetime.now, primary_key=True)
     _context = db.Column('context', db.Unicode(20), primary_key=True)
 
-    @classmethod
-    def create(cls, user, context):
-        version = Version.query.get_current()
-
-        consent = cls(user=user, version=version)
-        consent.context = context
-
-        db.session.add(consent)
-        db.session.commit()
+    def __init__(self, user, context):
+        self.user = user
+        self.version = Version.query.get_current()
+        self.context = context
 
     @hybrid_property
     def context(self):

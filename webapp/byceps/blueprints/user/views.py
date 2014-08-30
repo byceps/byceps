@@ -64,6 +64,9 @@ def create():
     user = User.create(screen_name, email_address, password)
     db.session.add(user)
 
+    terms_consent = Consent(user, ConsentContext.account_creation)
+    db.session.add(terms_consent)
+
     try:
         db.session.commit()
     except Exception as e:
@@ -72,7 +75,7 @@ def create():
                     user.screen_name)
         return create_form(form)
 
-    Consent.create(user, ConsentContext.account_creation)
+    db.session.commit()
 
     flash_success('Das Benutzerkonto für "{}" wurde angelegt.',
                   user.screen_name)
