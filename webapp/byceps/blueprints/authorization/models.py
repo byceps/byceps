@@ -74,6 +74,9 @@ class RolePermission(db.Model):
     permission_id = db.Column(db.Unicode(40), db.ForeignKey('permissions.id'), primary_key=True)
     permission = db.relationship(Permission, collection_class=set)
 
+    def __init__(self, permission):
+        self.permission = permission
+
     def __repr__(self):
         return ReprBuilder(self) \
             .add_with_lookup('role') \
@@ -86,9 +89,14 @@ class UserRole(db.Model):
     __tablename__ = 'user_roles'
 
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
-    user = db.relationship(User, backref='user_roles', collection_class=set)
+    user = db.relationship(User,
+                           backref=db.backref('user_roles', collection_class=set),
+                           collection_class=set)
     role_id = db.Column(db.Unicode(40), db.ForeignKey('roles.id'), primary_key=True)
     role = db.relationship(Role, collection_class=set)
+
+    def __init__(self, role):
+        self.role = role
 
     def __repr__(self):
         return ReprBuilder(self) \
