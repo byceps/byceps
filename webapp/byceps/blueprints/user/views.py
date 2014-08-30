@@ -143,13 +143,13 @@ def determine_image_type(image):
 
 
 def ensure_dimensions(image):
-    required_dimensions = Dimensions(110, 150)
+    maximum_dimensions = Dimensions(110, 150)
     actual_dimensions = read_dimensions(image.stream)
     image.stream.seek(0)
-    if actual_dimensions != required_dimensions:
+    if actual_dimensions > maximum_dimensions:
         abort(400,
-              'Image width and height must be exactly {0.width:d} x {0.height:d} pixels.'
-              .format(required_dimensions))
+              'Image width and height must not exceed {0.width:d} x {0.height:d} pixels.'
+              .format(maximum_dimensions))
 
 
 @blueprint.route('/login')
