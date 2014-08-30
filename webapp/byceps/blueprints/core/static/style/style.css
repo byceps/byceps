@@ -361,6 +361,10 @@ main img {
   opacity: 0.5;
 }
 
+[class^="icon-"][title] {
+  cursor: help;
+}
+
 .avatar {
   display: block;
   height: 152px;
