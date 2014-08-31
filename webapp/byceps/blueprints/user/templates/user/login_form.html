@@ -7,17 +7,19 @@
 
   <h1>{{ title }}</h1>
 
-  <form action="{{ url_for('.login') }}" method="post" id="login">
-    {%- call form_fieldset() %}
-      {{ form_field(form.screen_name, maxlength=40, required='required', autofocus='autofocus') }}
-      {{ form_field(form.password, type='password', maxlength=40, required='required') }}
-    {%- endcall %}
+  {%- if not logged_in %}
+    <form action="{{ url_for('.login') }}" method="post" id="login">
+      {%- call form_fieldset() %}
+        {{ form_field(form.screen_name, maxlength=40, required='required', autofocus='autofocus') }}
+        {{ form_field(form.password, type='password', maxlength=40, required='required') }}
+      {%- endcall %}
 
-    <p id="login-failed" class="notification-error" style="display: none; margin-top: 1em;">Die Anmeldung ist fehlgeschlagen.</p>
+      <p id="login-failed" class="notification-error" style="display: none; margin-top: 1em;">Die Anmeldung ist fehlgeschlagen.</p>
 
-    {{ form_buttons('Anmelden') }}
-  </form>
+      {{ form_buttons('Anmelden') }}
+    </form>
 
-  <p>Du hast noch keinen Benutzerzugang? Dann <a href="{{ url_for('.create_form') }}">registriere dich</a>!</p>
+    <p>Du hast noch keinen Benutzerzugang? Dann <a href="{{ url_for('.create_form') }}">registriere dich</a>!</p>
+  {%- endif %}
 
 {%- endblock body %}

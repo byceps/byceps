@@ -187,8 +187,15 @@ def ensure_dimensions(image):
 @templated
 def login_form():
     """Show login form."""
+    logged_in = g.current_user.is_active()
+    if logged_in:
+        flash_error('Du bist bereits als Benutzer "{}" angemeldet.', g.current_user.screen_name)
+
     form = LoginForm()
-    return {'form': form}
+    return {
+        'logged_in': logged_in,
+        'form': form,
+    }
 
 
 @blueprint.route('/login', methods=['POST'])
