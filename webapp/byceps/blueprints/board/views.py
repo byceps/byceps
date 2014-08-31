@@ -46,18 +46,21 @@ def category_index():
     return {'categories': categories}
 
 
-@blueprint.route('/categories/<id>')
+@blueprint.route('/categories/<id>', defaults={'page': 1})
+@blueprint.route('/categories/<id>/pages/<int:page>')
 @templated
-def category_view(id):
+def category_view(id, page):
     """List latest topics in the category."""
     category = Category.query.get_or_404(id)
 
     category.mark_as_viewed()
 
+    topics_per_page = int(current_app.config['BOARD_TOPICS_PER_PAGE'])
+
     topics = Topic.query \
         .filter_by(category=category) \
         .order_by(Topic.pinned.desc(), Topic.last_updated_at.desc()) \
-        .all()
+        .paginate(page, topics_per_page)
 
     return {
         'category': category,
