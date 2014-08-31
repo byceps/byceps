@@ -80,6 +80,7 @@ class User(db.Model):
     enabled = db.Column(db.Boolean, default=False)
     avatar_image_created_at = db.Column(db.DateTime)
     _avatar_image_type = db.Column(db.Unicode(4))
+    legacy_id = db.Column(db.Integer)
 
     roles = association_proxy('user_roles', 'role')
 

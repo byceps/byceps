@@ -11,8 +11,10 @@
   <table class="index wide">
     <thead>
       <tr>
-        <th>Name</th>
+        <th>Handle</th>
+        <th>voller Name</th>
         <th>Erstellt</th>
+        <th>Legacy ID</th>
         <th>aktiv</th>
       </tr>
     </thead>
@@ -20,7 +22,9 @@
       {%- for user in users|sort(attribute='created_at', reverse=True) %}
       <tr>
         <td>{{ render_user_link(user) }}</td>
+        <td>{% if user.detail.full_name %}{{ user.detail.full_name }}{% endif %}</td>
         <td>{{ render_datetime(user.created_at) }}</td>
+        <td>{% if user.legacy_id %}{{ user.legacy_id }}{% endif %}</td>
         <td><span class="icon-{{ 'enabled' if user.enabled else 'disabled' }}"></span></td>
       </tr>
       {%- endfor %}
