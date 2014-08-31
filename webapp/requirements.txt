@@ -10,4 +10,4 @@ pg8000 >= 1.10.0
 SQLAlchemy >= 0.9.7
 
 bbcode >= 1.0.16
-Pillow >= 2.5.1
+Pillow >= 2.5.3
