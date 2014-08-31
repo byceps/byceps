@@ -108,17 +108,20 @@ def create():
 
 
 def is_screen_name_already_assigned(screen_name):
-    return do_users_matching_filter_exist(screen_name=screen_name)
+    return do_users_matching_filter_exist(User.screen_name, screen_name)
 
 
 def is_email_address_already_assigned(email_address):
-    return do_users_matching_filter_exist(email_address=email_address)
+    return do_users_matching_filter_exist(User.email_address, email_address)
 
 
-def do_users_matching_filter_exist(filter_by_kwargs):
-    """Return `True` if any users match the filter."""
+def do_users_matching_filter_exist(model_attribute, search_value):
+    """Return `True` if any users match the filter.
+
+    Comparison is done case-insensitively.
+    """
     user_count = User.query \
-        .filter_by(filter_by_kwargs) \
+        .filter(db.func.lower(model_attribute) == search_value.lower()) \
         .count()
     return user_count > 0
 
