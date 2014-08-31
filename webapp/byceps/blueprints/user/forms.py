@@ -17,7 +17,7 @@ from ...util.l10n import LocalizedForm
 
 
 GERMAN_CHARS = 'äöüß'
-SPECIAL_CHARS = '!$%&()*,-./:<=>?[]_'
+SPECIAL_CHARS = '!$&*-./<=>?[]_'
 VALID_SCREEN_NAME_CHARS = frozenset(chain(
     ascii_letters, digits, GERMAN_CHARS, SPECIAL_CHARS))
 
