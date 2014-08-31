@@ -13,8 +13,8 @@ from flask import abort, g, request, session, url_for
 
 from ...database import db
 from ...util.framework import create_blueprint, flash_error, flash_success
-from ...util.image import Dimensions, guess_type as guess_image_type, \
-    read_dimensions
+from ...util.image import create_thumbnail, Dimensions, \
+    guess_type as guess_image_type, read_dimensions
 from ...util.templating import templated
 from ...util import upload
 from ...util.views import redirect_to, respond_no_content
@@ -24,6 +24,9 @@ from ..terms.models import Consent, ConsentContext
 
 from .forms import AvatarImageUpdateForm, CreateForm, LoginForm
 from .models import User, VerificationToken, VerificationTokenPurpose
+
+
+MAXIMUM_AVATAR_IMAGE_DIMENSIONS = Dimensions(110, 150)
 
 
 blueprint = create_blueprint('user', __name__)
@@ -175,13 +178,17 @@ def avatar_image(id):
     if not image or not image.filename:
         abort(400, 'No file to upload has been specified.')
 
-    image_type = determine_image_type(image)
+    stream = image.stream
+
+    image_type = determine_image_type(stream)
     user.set_avatar_image(datetime.now(), image_type)
 
-    ensure_dimensions(image)
+    if is_image_too_large(stream):
+        stream = create_thumbnail(
+            stream, image_type.name, MAXIMUM_AVATAR_IMAGE_DIMENSIONS)
 
     try:
-        upload.store(image.stream, user.avatar_image_path)
+        upload.store(stream, user.avatar_image_path)
     except FileExistsError:
         # Werkzeug implements no default response for code 409.
         ##abort(409, 'File already exists, not overwriting.')
@@ -193,23 +200,19 @@ def avatar_image(id):
     return redirect_to('.view', id=user.id)
 
 
-def determine_image_type(image):
-    image_type = guess_image_type(image.stream)
+def determine_image_type(stream):
+    image_type = guess_image_type(stream)
     if image_type is None:
         abort(400, 'Only GIF, JPEG and PNG images are allowed.')
 
-    image.stream.seek(0)
+    stream.seek(0)
     return image_type
 
 
-def ensure_dimensions(image):
-    maximum_dimensions = Dimensions(110, 150)
-    actual_dimensions = read_dimensions(image.stream)
-    image.stream.seek(0)
-    if actual_dimensions > maximum_dimensions:
-        abort(400,
-              'Image width and height must not exceed {0.width:d} x {0.height:d} pixels.'
-              .format(maximum_dimensions))
+def is_image_too_large(stream):
+    actual_dimensions = read_dimensions(stream)
+    stream.seek(0)
+    return actual_dimensions > MAXIMUM_AVATAR_IMAGE_DIMENSIONS
 
 
 @blueprint.route('/login')
