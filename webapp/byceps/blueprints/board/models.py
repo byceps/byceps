@@ -142,6 +142,11 @@ class Topic(db.Model):
     def reply_count(self):
         return self.posting_count - 1
 
+    @property
+    def anchor(self):
+        """Return the URL anchor for this topic."""
+        return 'topic-{}'.format(self.id)
+
     def aggregate(self):
         """Update the count and latest fields."""
         posting_count = Posting.query.filter_by(topic=self).count()
@@ -231,6 +236,11 @@ class Posting(db.Model):
         self.topic = topic
         self.creator = creator
         self.body = body
+
+    @property
+    def anchor(self):
+        """Return the URL anchor for this posting."""
+        return 'posting-{}'.format(self.id)
 
     def __repr__(self):
         builder = ReprBuilder(self) \

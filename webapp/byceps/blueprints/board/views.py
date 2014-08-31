@@ -156,8 +156,7 @@ def topic_hide(id):
     db.session.commit()
 
     flash_success('Das Thema "{}" wurde versteckt.', topic.title, icon='hidden')
-    anchor = 'topic-{}'.format(topic.id)
-    return url_for('.category_view', id=topic.category.id, _anchor=anchor)
+    return url_for('.category_view', id=topic.category.id, _anchor=topic.anchor)
 
 
 @blueprint.route('/topics/<id>/flags/hidden', methods=['DELETE'])
@@ -172,8 +171,7 @@ def topic_unhide(id):
 
     flash_success(
         'Das Thema "{}" wurde wieder sichtbar gemacht.', topic.title, icon='view')
-    anchor = 'topic-{}'.format(topic.id)
-    return url_for('.category_view', id=topic.category.id, _anchor=anchor)
+    return url_for('.category_view', id=topic.category.id, _anchor=topic.anchor)
 
 
 @blueprint.route('/topics/<id>/flags/locked', methods=['POST'])
@@ -187,8 +185,7 @@ def topic_lock(id):
     db.session.commit()
 
     flash_success('Das Thema "{}" wurde geschlossen.', topic.title, icon='lock')
-    anchor = 'topic-{}'.format(topic.id)
-    return url_for('.category_view', id=topic.category.id, _anchor=anchor)
+    return url_for('.category_view', id=topic.category.id, _anchor=topic.anchor)
 
 
 @blueprint.route('/topics/<id>/flags/locked', methods=['DELETE'])
@@ -203,8 +200,7 @@ def topic_unlock(id):
 
     flash_success('Das Thema "{}" wurde wieder geöffnet.', topic.title,
                   icon='unlock')
-    anchor = 'topic-{}'.format(topic.id)
-    return url_for('.category_view', id=topic.category.id, _anchor=anchor)
+    return url_for('.category_view', id=topic.category.id, _anchor=topic.anchor)
 
 
 @blueprint.route('/topics/<id>/flags/pinned', methods=['POST'])
@@ -218,8 +214,7 @@ def topic_pin(id):
     db.session.commit()
 
     flash_success('Das Thema "{}" wurde angepinnt.', topic.title, icon='pin')
-    anchor = 'topic-{}'.format(topic.id)
-    return url_for('.category_view', id=topic.category.id, _anchor=anchor)
+    return url_for('.category_view', id=topic.category.id, _anchor=topic.anchor)
 
 
 @blueprint.route('/topics/<id>/flags/pinned', methods=['DELETE'])
@@ -233,8 +228,7 @@ def topic_unpin(id):
     db.session.commit()
 
     flash_success('Das Thema "{}" wurde wieder gelöst.', topic.title)
-    anchor = 'topic-{}'.format(topic.id)
-    return url_for('.category_view', id=topic.category.id, _anchor=anchor)
+    return url_for('.category_view', id=topic.category.id, _anchor=topic.anchor)
 
 
 # -------------------------------------------------------------------- #
@@ -299,8 +293,7 @@ def posting_hide(id):
     db.session.commit()
 
     flash_success('Der Beitrag wurde versteckt.', icon='hidden')
-    anchor = 'posting-{}'.format(posting.id)
-    return url_for('.topic_view', id=posting.topic.id, _anchor=anchor)
+    return url_for('.topic_view', id=posting.topic.id, _anchor=posting.anchor)
 
 
 @blueprint.route('/postings/<id>/flags/hidden', methods=['DELETE'])
@@ -314,5 +307,4 @@ def posting_unhide(id):
     db.session.commit()
 
     flash_success('Der Beitrag wurde wieder sichtbar gemacht.', icon='view')
-    anchor = 'posting-{}'.format(posting.id)
-    return url_for('.topic_view', id=posting.topic.id, _anchor=anchor)
+    return url_for('.topic_view', id=posting.topic.id, _anchor=posting.anchor)
