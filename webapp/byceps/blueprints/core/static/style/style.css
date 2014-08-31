@@ -108,6 +108,7 @@ nav.top {
 /* sidebar */
 
 #sidebar section {
+  margin-bottom: 20px;
   padding: 12px 0;
 }
 #sidebar section h1 {

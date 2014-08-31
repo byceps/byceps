@@ -9,16 +9,20 @@ from byceps.blueprints.user_admin.authorization import UserPermission
 from byceps.util.navigation import Navigation, NavigationItem
 
 
-navigation = Navigation('Informationen')
-navigation.add_item('authorization_admin.role_index', 'Rollen', id='role', required_permission=RolePermission.list)
-navigation.add_item('user_admin.index', 'Benutzer', id='user', required_permission=UserPermission.list)
-navigation.add_item('party_admin.index', 'Parties', id='party', required_permission=PartyPermission.list)
-navigation.add_item('snippet_admin.index', 'Snippets', id='snippet', required_permission=SnippetPermission.list)
-navigation.add_item('terms_admin.index', 'AGB', id='terms', required_permission=TermsPermission.list)
-navigation.add_item('orga_admin.index', 'Orgateams', id='orgateam', required_permission=OrgaTeamPermission.list)
-navigation.add_item('orga.index', 'Orgas', id='orga')
-navigation.add_item('user_group.index', 'Benutzergruppen', id='user_group')
-navigation.add_item('seating.index', 'Sitzplan', id='seating')
-navigation.add_item('board.category_index', 'Forum', id='board')
+info = Navigation('Informationen')
+info.add_item('party.info', 'Partydetails', id='party')
+info.add_item('orga.index', 'Orgas', id='orga')
+info.add_item('user_group.index', 'Benutzergruppen', id='user_group')
+info.add_item('seating.index', 'Sitzplan', id='seating')
+info.add_item('terms.view_current', 'AGB', id='terms')
+info.add_item('board.category_index', 'Forum', id='board')
 
-blocks = [navigation]
+admin = Navigation('Verwaltung')
+admin.add_item('authorization_admin.role_index', 'Rollen', id='authorization_admin', required_permission=RolePermission.list)
+admin.add_item('party_admin.index', 'Parties', id='party_admin', required_permission=PartyPermission.list)
+admin.add_item('snippet_admin.index', 'Snippets', id='snippet_admin', required_permission=SnippetPermission.list)
+admin.add_item('terms_admin.index', 'AGB', id='terms_admin', required_permission=TermsPermission.list)
+admin.add_item('user_admin.index', 'Benutzer', id='user_admin', required_permission=UserPermission.list)
+admin.add_item('orga_admin.index', 'Orgateams', id='orga_admin', required_permission=OrgaTeamPermission.list)
+
+blocks = [info, admin]
