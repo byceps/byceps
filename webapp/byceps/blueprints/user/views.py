@@ -149,6 +149,16 @@ def confirm_email_address(user_id, token):
     return redirect_to('.login_form')
 
 
+@blueprint.route('/me')
+@templated
+def view_myself():
+    user = g.current_user
+    if not user.is_active():
+        abort(404)
+
+    return {'user': user}
+
+
 @blueprint.route('/<id>/avatar/update')
 @templated
 def avatar_image_form(id):

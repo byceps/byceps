@@ -1,6 +1,6 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
-{%- from 'macros/user.html' import render_user_avatar %}
+{% from 'macros/user.html' import render_user_avatar %}
 {% set current_page = 'user.view' %}
 {% set title = 'Benutzer - %s'|format(user.screen_name) %}
 

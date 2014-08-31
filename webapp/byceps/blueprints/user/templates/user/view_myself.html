@@ -1,0 +1,48 @@
+{% extends 'layout/base.html' %}
+{% from 'macros/datetime.html' import render_datetime %}
+{% from 'macros/user.html' import render_user_avatar %}
+{% set current_page = 'user' %}
+{% set title = 'Meine Daten' %}
+
+{% block body %}
+
+  <h1>{{ title }}</h1>
+
+  <table class="index">
+    <tr>
+      <th>Erstellt</th>
+      <td>{{ render_datetime(user.created_at) }}</td>
+    </tr>
+    <tr>
+      <th>Benutzername</th>
+      <td>{{ user.screen_name }}</td>
+    </tr>
+    <tr>
+      <th>E-Mail-Adresse</th>
+      <td>{{ user.email_address }}</td>
+    </tr>
+    <tr>
+      <th>Voller Name</th>
+      <td>{% if user.detail.full_name %}{{ user.detail.full_name }}{% endif %}</td>
+    </tr>
+    <tr>
+      <th>Anschrift</th>
+      <td>
+        {%- if user.detail.street %}{{ user.detail.street }}<br/>{% endif -%}
+        {%- if user.detail.zip_code %}{{ user.detail.zip_code }}{% endif -%}
+        {%- if user.detail.city %}{{ user.detail.city }}{% endif -%}
+      </td>
+    </tr>
+    <tr>
+      <th>Avatar</th>
+      <td>
+      {%- if user.has_avatar_image -%}
+        {{ render_user_avatar(user) }}
+      {%- else -%}
+        <em>nicht hinterlegt</em>
+      {%- endif -%}
+      </td>
+    </tr>
+  </table>
+
+{%- endblock body %}
