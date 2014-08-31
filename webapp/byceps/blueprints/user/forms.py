@@ -27,3 +27,4 @@ class AvatarImageUpdateForm(LocalizedForm):
 class LoginForm(LocalizedForm):
     screen_name = StringField('Benutzername', validators=[DataRequired()])
     password = PasswordField('Passwort', validators=[DataRequired()])
+    permanent = BooleanField()

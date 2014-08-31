@@ -209,6 +209,7 @@ def login():
 
     screen_name = form.screen_name.data
     password = form.password.data
+    permanent = form.permanent.data
     if not all([screen_name, password]):
         abort(403)
 
@@ -219,7 +220,7 @@ def login():
         abort(403)
 
     # Authorization succeeded.
-    UserSession.start(user)
+    UserSession.start(user, permanent=permanent)
     flash_success('Erfolgreich eingeloggt als {}.', user.screen_name)
 
 
@@ -240,10 +241,10 @@ class UserSession(object):
     KEY = 'user_id'
 
     @classmethod
-    def start(cls, user):
+    def start(cls, user, *, permanent=False):
         """End the user's session by deleting the session cookie."""
         session[cls.KEY] = str(user.id)
-        session.permanent = True
+        session.permanent = permanent
 
     @classmethod
     def end(cls):
