@@ -62,6 +62,22 @@ def create():
     password = form.password.data
     consent_to_terms = form.consent_to_terms.data
 
+    email_address_already_assigned = User.query \
+        .filter_by(email_address=email_address) \
+        .first() is not None
+    if email_address_already_assigned:
+        flash_error(
+            'Diese E-Mail-Adresse ist bereits einem Benutzerkonto zugeordnet.')
+        return create_form(form)
+
+    screen_name_already_assigned = User.query \
+        .filter_by(screen_name=screen_name) \
+        .first() is not None
+    if screen_name_already_assigned:
+        flash_error(
+            'Dieser Benutzername ist bereits einem Benutzerkonto zugeordnet.')
+        return create_form(form)
+
     user = User.create(screen_name, email_address, password)
     db.session.add(user)
 
