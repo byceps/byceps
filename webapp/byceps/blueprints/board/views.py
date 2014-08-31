@@ -7,7 +7,7 @@ byceps.blueprints.board.views
 :Copyright: 2006-2014 Jochen Kupperschmidt
 """
 
-from flask import g, request, url_for
+from flask import current_app, g, request, url_for
 
 from ...database import db
 from ...util.framework import create_blueprint, flash_error, flash_notice, \
@@ -69,9 +69,10 @@ def category_view(id):
 # topic
 
 
-@blueprint.route('/topics/<id>')
+@blueprint.route('/topics/<id>', defaults={'page': 1})
+@blueprint.route('/topics/<id>/pages/<int:page>')
 @templated
-def topic_view(id):
+def topic_view(id, page):
     """List postings for the topic."""
     topic = Topic.query.only_visible().with_id_or_404(id)
 
@@ -86,11 +87,13 @@ def topic_view(id):
             'Es können keine Beiträge mehr hinzugefügt werden.',
             icon='lock')
 
+    postings_per_page = int(current_app.config['BOARD_POSTINGS_PER_PAGE'])
+
     postings = Posting.query \
         .filter_by(topic=topic) \
         .only_visible() \
         .order_by(Posting.created_at.asc()) \
-        .all()
+        .paginate(page, postings_per_page)
 
     return {
         'topic': topic,

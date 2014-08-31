@@ -1,4 +1,5 @@
 {% extends 'layout/base.html' %}
+{% from 'macros/pagination.html' import render_pagination_nav %}
 {% set current_page = 'board.topic_view' %}
 {% set title = 'Forum - %s'|format(topic.title) %}
 
@@ -20,11 +21,15 @@
   </div>
   {%- endif %}
 
+{{ render_pagination_nav(postings, 'board.topic_view', {'id': topic.id}) }}
+
   <div class="board-postings">
-  {%- for posting in postings %}
+  {%- for posting in postings.items %}
 {%- include 'board/_posting_view.html' %}
   {%- endfor %}
   </div>
+
+{{ render_pagination_nav(postings, 'board.topic_view', {'id': topic.id}) }}
 
   <div style="text-align: right;">
     <ol class="actions">

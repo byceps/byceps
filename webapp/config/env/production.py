@@ -17,3 +17,5 @@ PATH_DATA = Path('./data')
 PATH_USER_AVATAR_IMAGES = PATH_DATA / 'users/avatars'
 
 PARTY = 'lanresort-2014'
+
+BOARD_POSTINGS_PER_PAGE = 10
