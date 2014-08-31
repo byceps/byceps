@@ -1,10 +1,10 @@
       <aside id="sidebar">
 
         <section>
-          <h1>Informationen</h1>
+          <h1>{{ navigation.title }}</h1>
           <nav class="main">
             <ol>
-              {%- for item in navigation_items %}
+              {%- for item in navigation.get_items() %}
               <li{% if item.id is is_current_page(current_page) %} class="current"{% endif %}><a href="{{ url_for(item.endpoint) }}">{{ item.label }}</a></li>
               {%- endfor %}
             </ol>

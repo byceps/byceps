@@ -26,7 +26,8 @@ class Navigation(object):
     The order of items is the order in which they are added.
     """
 
-    def __init__(self):
+    def __init__(self, title):
+        self.title = title
         self.items = []
 
     def add_item(self, endpoint, label, *, id=None, required_permission=None):

@@ -9,7 +9,7 @@ from byceps.blueprints.user_admin.authorization import UserPermission
 from byceps.util.navigation import Navigation, NavigationItem
 
 
-navigation = Navigation()
+navigation = Navigation('Informationen')
 navigation.add_item('authorization_admin.role_index', 'Rollen', id='role', required_permission=RolePermission.list)
 navigation.add_item('user_admin.index', 'Benutzer', id='user', required_permission=UserPermission.list)
 navigation.add_item('party_admin.index', 'Parties', id='party', required_permission=PartyPermission.list)
