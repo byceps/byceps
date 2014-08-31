@@ -58,7 +58,7 @@ def create():
         return create_form(form)
 
     screen_name = form.screen_name.data
-    email_address = form.email_address.data
+    email_address = form.email_address.data.lower()
     password = form.password.data
     consent_to_terms = form.consent_to_terms.data
 
