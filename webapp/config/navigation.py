@@ -20,3 +20,5 @@ navigation.add_item('orga.index', 'Orgas', id='orga')
 navigation.add_item('user_group.index', 'Benutzergruppen', id='user_group')
 navigation.add_item('seating.index', 'Sitzplan', id='seating')
 navigation.add_item('board.category_index', 'Forum', id='board')
+
+blocks = [navigation]

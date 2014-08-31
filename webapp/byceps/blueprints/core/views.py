@@ -33,7 +33,7 @@ def not_found(error):
 @blueprint.app_context_processor
 def inject_navigation():
     return {
-        'navigation': navigation_module.navigation,
+        'navigation_blocks': navigation_module.blocks,
     }
 
 
