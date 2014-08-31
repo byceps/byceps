@@ -62,18 +62,12 @@ def create():
     password = form.password.data
     consent_to_terms = form.consent_to_terms.data
 
-    screen_name_already_assigned = User.query \
-        .filter_by(screen_name=screen_name) \
-        .first() is not None
-    if screen_name_already_assigned:
+    if is_screen_name_already_assigned(screen_name):
         flash_error(
             'Dieser Benutzername ist bereits einem Benutzerkonto zugeordnet.')
         return create_form(form)
 
-    email_address_already_assigned = User.query \
-        .filter_by(email_address=email_address) \
-        .first() is not None
-    if email_address_already_assigned:
+    if is_email_address_already_assigned(email_address):
         flash_error(
             'Diese E-Mail-Adresse ist bereits einem Benutzerkonto zugeordnet.')
         return create_form(form)
@@ -111,6 +105,22 @@ def create():
     flash_success('Das Benutzerkonto für "{}" wurde angelegt.',
                   user.screen_name)
     return redirect_to('.view', id=user.id)
+
+
+def is_screen_name_already_assigned(screen_name):
+    return do_users_matching_filter_exist(screen_name=screen_name)
+
+
+def is_email_address_already_assigned(email_address):
+    return do_users_matching_filter_exist(email_address=email_address)
+
+
+def do_users_matching_filter_exist(filter_by_kwargs):
+    """Return `True` if any users match the filter."""
+    user_count = User.query \
+        .filter_by(filter_by_kwargs) \
+        .count()
+    return user_count > 0
 
 
 @blueprint.route('/<user_id>/confirm_email_address/<token>')
