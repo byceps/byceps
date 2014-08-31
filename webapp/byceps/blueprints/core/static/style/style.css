@@ -281,6 +281,41 @@ table.wide {
 }
 
 
+/* pagination */
+
+nav.pagination {
+  font-size: 0.9rem;
+  margin: 0.5em 0;
+  text-align: left;
+}
+
+nav.pagination ol {
+  display: inline-block;
+}
+
+nav.pagination li {
+  display: inline;
+  line-height: 1.7em;
+  margin: 0;
+  padding: 0;
+}
+
+nav.pagination li a,
+nav.pagination li.current {
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+  width: 1.5em;
+}
+
+nav.pagination li a:hover,
+nav.pagination li.current {
+  background-color: #dddddd;
+  border-radius: 3px;
+  font-weight: bold;
+}
+
+
 /* board */
 
 nav.board-breadcrumbs {

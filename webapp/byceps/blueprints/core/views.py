@@ -30,12 +30,24 @@ def not_found(error):
     return render_template('error/not_found.html'), 404
 
 
-
 @blueprint.app_context_processor
 def inject_navigation():
     return {
         'navigation_items': navigation_module.navigation.get_items(),
     }
+
+
+@blueprint.app_template_global()
+def add_page_arg(args, page):
+    """Add the 'page' value.
+
+    Used for pagination.
+    """
+    if args is None:
+        args = {}
+
+    args['page'] = page
+    return args
 
 
 @blueprint.app_template_test()

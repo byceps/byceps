@@ -1,0 +1,26 @@
+{% macro render_pagination_nav(pagination, endpoint, url_args=None, show_label=True) %}
+  {%- if pagination.pages > 1 %}
+    <nav class="pagination">
+      {% if show_label %}Seiten: {% endif %}
+      <ol>
+      {%- if pagination.has_prev %}
+        <li class="next"><a href="{{ url_for(endpoint, **add_page_arg(url_args, pagination.prev_num)) }}">&laquo;</a></li>
+      {%- endif %}
+      {%- for page in pagination.iter_pages() %}
+        {%- if page %}
+          {%- if page != pagination.page %}
+        <li><a href="{{ url_for(endpoint, **add_page_arg(url_args, page)) }}">{{ page }}</a></li>
+          {%- else %}
+        <li class="current">{{ page }}</li>
+          {%- endif %}
+        {%- else %}
+        <li>…</li>
+        {%- endif %}
+      {%- endfor %}
+      {%- if pagination.has_next %}
+        <li class="previous"><a href="{{ url_for(endpoint, **add_page_arg(url_args, pagination.next_num)) }}">&raquo;</a></li>
+      {%- endif %}
+      </ol>
+    </nav>
+  {%- endif %}
+{% endmacro %}
