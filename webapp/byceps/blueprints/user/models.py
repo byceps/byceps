@@ -222,6 +222,10 @@ class UserDetail(db.Model):
     last_name = db.Column(db.Unicode(40))
     full_name = db.column_property(
         (first_names + ' ' + last_name).label('full_name'))
+    zip_code = db.Column(db.Unicode(5))
+    city = db.Column(db.Unicode(40))
+    street = db.Column(db.Unicode(40))
+    internal_comment =  db.Column(db.Unicode(200))
 
     def __repr__(self):
         return ReprBuilder(self) \
