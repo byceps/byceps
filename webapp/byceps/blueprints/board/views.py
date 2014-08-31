@@ -268,7 +268,7 @@ def posting_create(topic_id):
     posting = Posting.create(topic, creator, body)
 
     flash_success('Deine Antwort wurde hinzugefügt.')
-    return redirect_to('.topic_view', id=topic.id)
+    return redirect_to('.topic_view', id=topic.id, page=topic.page_count)
 
 
 @blueprint.route('/postings/<id>/flags')

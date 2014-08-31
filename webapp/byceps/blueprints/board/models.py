@@ -9,7 +9,7 @@ byceps.blueprints.board.models
 
 from datetime import datetime
 
-from flask import g
+from flask import current_app, g
 
 from ...database import BaseQuery, db, generate_uuid
 from ...util.instances import ReprBuilder
@@ -141,6 +141,17 @@ class Topic(db.Model):
     @property
     def reply_count(self):
         return self.posting_count - 1
+
+    @property
+    def page_count(self):
+        """Return the number of pages this topic spans."""
+        postings_per_page = int(current_app.config['BOARD_POSTINGS_PER_PAGE'])
+        full_page_count, remaining_postings = divmod(self.posting_count,
+                                                     postings_per_page)
+        if remaining_postings > 0:
+            return full_page_count + 1
+        else:
+            return full_page_count
 
     @property
     def anchor(self):
