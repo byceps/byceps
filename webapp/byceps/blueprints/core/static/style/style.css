@@ -76,7 +76,7 @@ body {
   width: 920px;
 }
 
-#sidebar,
+#sidebar section,
 main {
   background-color: #ffffff;
   border: #cccccc solid 1px;
@@ -86,7 +86,6 @@ main {
 
 #sidebar {
   float: left;
-  padding: 12px 0;
   width: 160px;
 }
 
@@ -103,6 +102,20 @@ nav.top {
   margin-bottom: 0.5em;
   margin-right: 1em;
   text-align: right;
+}
+
+
+/* sidebar */
+
+#sidebar section {
+  padding: 12px 0;
+}
+#sidebar section h1 {
+  border-bottom: #cccccc solid 1px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin: 0 0 10px 0;
+  padding: 0 15px 10px 15px;
 }
 
 
