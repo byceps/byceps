@@ -189,7 +189,7 @@ class User(db.Model):
         return any(flag.brand == g.party.brand for flag in self.orga_flags)
 
     @property
-    def orga_team(self):
+    def orga_team_membership_for_current_party(self):
         memberships_for_current_party = list(filter(
             lambda m: m.belongs_to_current_party,
             self.orga_team_memberships))
@@ -199,7 +199,7 @@ class User(db.Model):
                 'A user must only be part of one orga team per party.')
 
         if memberships_for_current_party:
-            return memberships_for_current_party[0].orga_team
+            return memberships_for_current_party[0]
 
     def __repr__(self):
         return ReprBuilder(self) \

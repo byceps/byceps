@@ -13,10 +13,11 @@
       <th>Benutzername</th>
       <td>{{ user.screen_name }}{% if user.is_orga %} [<strong>Orga</strong>]{% endif%}</td>
     </tr>
-    {%- if user.orga_team %}
+    {%- set orga_team_membership = user.orga_team_membership_for_current_party %}
+    {%- if orga_team_membership %}
     <tr>
       <th>Orga-Team</th>
-      <td>{{ user.orga_team.title}}</td>
+      <td>{{ orga_team_membership.orga_team.title}}{% if orga_team_membership.duties %} ({{ orga_team_membership.duties }}){% endif %}</td>
     </tr>
     {%- endif %}
   </table>

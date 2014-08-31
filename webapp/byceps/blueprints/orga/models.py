@@ -7,8 +7,6 @@ byceps.blueprints.orga.models
 :Copyright: 2006-2014 Jochen Kupperschmidt
 """
 
-from operator import attrgetter
-
 from flask import g
 from sqlalchemy.ext.associationproxy import association_proxy
 
@@ -46,10 +44,8 @@ class OrgaTeam(db.Model):
     members = association_proxy('memberships', 'user')
 
     @property
-    def members_for_current_party(self):
-        current_party_memberships = filter(lambda m: m.belongs_to_current_party,
-                                           self.memberships)
-        return list(map(attrgetter('user'), current_party_memberships))
+    def memberships_for_current_party(self):
+        return filter(lambda m: m.belongs_to_current_party, self.memberships)
 
     def __repr__(self):
         return ReprBuilder(self) \
@@ -80,6 +76,7 @@ class Membership(db.Model):
     party = db.relationship(Party)
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
     user = db.relationship(User, collection_class=set, backref='orga_team_memberships')
+    duties = db.Column(db.Unicode(40))
 
     @property
     def belongs_to_current_party(self):
