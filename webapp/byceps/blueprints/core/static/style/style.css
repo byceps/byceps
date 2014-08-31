@@ -276,12 +276,13 @@ table.index {
 table.index tbody {
   line-height: 1.2em;
 }
-table.index td {
+table.index tbody th,
+table.index tbody td {
   border-top: #cccccc solid 1px;
 }
 table.index th,
 table.index td {
-  padding: 0.5em 0.5em 0.5em 0;
+  padding: 0.5rem 1rem 0.5rem 0;
 }
 
 table.index .details {
