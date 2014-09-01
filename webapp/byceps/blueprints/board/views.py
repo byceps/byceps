@@ -59,6 +59,7 @@ def category_view(id, page):
 
     topics = Topic.query \
         .filter_by(category=category) \
+        .only_visible() \
         .order_by(Topic.pinned.desc(), Topic.last_updated_at.desc()) \
         .paginate(page, topics_per_page)
 
