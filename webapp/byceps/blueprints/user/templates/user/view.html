@@ -24,7 +24,7 @@
 
   {%- if user.has_avatar_image %}
   <h2>Avatarbild</h2>
-  {{ render_user_avatar(user) }}
+  <div>{{ render_user_avatar(user) }}</div>
   {%- endif %}
 
   {%- if g.current_user == user %}

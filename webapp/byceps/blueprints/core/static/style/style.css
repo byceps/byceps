@@ -432,7 +432,7 @@ main img {
 }
 
 .avatar {
-  display: block;
+  display: inline-block;
   height: 152px;
   max-height: 152px;
   max-width: 112px;
