@@ -5,8 +5,7 @@
 {% set current_page = 'board' %}
 {% set title = 'Thema verwalten' %}
 
-{% block head -%}
-  {{ super() }}
+{% block head %}
     <script src="{{ url_for('.static', filename='behavior/flags.js') }}"></script>
 {%- endblock head %}
 
