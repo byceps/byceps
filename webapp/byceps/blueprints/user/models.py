@@ -60,7 +60,11 @@ class AnonymousUser(object):
         return False
 
     @property
-    def is_orga(self):
+    def is_orga_for_any_brand(self):
+        return False
+
+    @property
+    def is_orga_for_current_brand(self):
         return False
 
     def __repr__(self):
@@ -187,7 +191,11 @@ class User(db.Model):
         return Path(name_without_suffix).with_suffix(suffix)
 
     @property
-    def is_orga(self):
+    def is_orga_for_any_brand(self):
+        return bool(self.orga_flags)
+
+    @property
+    def is_orga_for_current_brand(self):
         return any(flag.brand == g.party.brand for flag in self.orga_flags)
 
     @property

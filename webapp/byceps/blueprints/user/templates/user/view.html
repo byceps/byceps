@@ -11,7 +11,7 @@
   <table>
     <tr>
       <th>Benutzername</th>
-      <td>{{ user.screen_name }}{% if user.is_orga %} [<strong>Orga</strong>]{% endif%}</td>
+      <td>{{ user.screen_name }}{% if user.is_orga_for_current_brand %} [<strong>Orga</strong>]{% endif%}</td>
     </tr>
     {%- set orga_team_membership = user.orga_team_membership_for_current_party %}
     {%- if orga_team_membership %}
