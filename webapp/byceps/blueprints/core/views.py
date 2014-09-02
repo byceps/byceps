@@ -9,12 +9,15 @@ byceps.blueprints.core.views
 
 from importlib import import_module
 
-from flask import render_template
+from flask import current_app, render_template
 
+from ...config import SiteMode
 from ...util.framework import create_blueprint
 
 
-navigation_module = import_module('config.navigation')
+navigation_modules = {
+    mode: import_module('config.navigation_{}'.format(mode.name))
+    for mode in SiteMode}
 
 
 blueprint = create_blueprint('core', __name__)
@@ -32,8 +35,10 @@ def not_found(error):
 
 @blueprint.app_context_processor
 def inject_navigation():
+    mode = current_app.extensions['byceps']['mode']
+    navigation_module = navigation_modules[mode]
     return {
-        'navigation_blocks': navigation_module.blocks,
+        'navigation_blocks': navigation_module.get_blocks(),
     }
 
 

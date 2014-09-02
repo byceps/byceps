@@ -11,6 +11,7 @@ from flask import Flask, g
 import jinja2
 
 from .blueprints.snippet.init import add_routes_for_snippets
+from .config import SiteMode
 from .database import db
 from .util import dateformat
 from .util.framework import load_config, register_blueprint
@@ -53,6 +54,11 @@ def create_app(environment_name, *, initialize=True):
     # Initialize database.
     db.init_app(app)
 
+    mode = get_site_mode(app)
+    app.extensions['byceps'] = {
+        'mode': mode,
+    }
+
     # Import and register blueprints.
     for name, url_prefix in BLUEPRINT_NAMES:
         register_blueprint(app, name, url_prefix)
@@ -65,6 +71,18 @@ def create_app(environment_name, *, initialize=True):
             add_routes_for_snippets()
 
     return app
+
+
+def get_site_mode(app):
+    """Return the mode the site should run in."""
+    value = app.config.get('MODE')
+    if value is None:
+        raise Exception('No site mode configured.')
+
+    try:
+        return SiteMode[value]
+    except KeyError:
+        raise Exception('Invalid site mode "{}" configured.'.format(value))
 
 
 def get_current_party_id(app):
