@@ -180,6 +180,17 @@ p.notification-success {
 }
 
 
+/* headings */
+
+h1 {
+  font-size: 2rem;
+}
+h2 {
+  font-size: 1.4rem;
+  margin-top: 2rem;
+}
+
+
 /* actions */
 
 ol.actions {

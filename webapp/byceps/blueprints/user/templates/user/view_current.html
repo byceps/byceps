@@ -8,6 +8,7 @@
 
   <h1>{{ title }}</h1>
 
+  <h2>Benutzerkonto</h2>
   <table class="index">
     <tr>
       <th>Erstellt</th>
@@ -22,6 +23,23 @@
       <td>{{ user.email_address }}</td>
     </tr>
     <tr>
+      <th>Avatar</th>
+      <td>
+      {%- if user.has_avatar_image -%}
+        {{ render_user_avatar(user) }}
+      {%- else -%}
+        <em>nicht hinterlegt</em>
+      {%- endif -%}
+      </td>
+    </tr>
+  </table>
+  <ol class="actions">
+    <li><a href="{{ url_for('.view', id=user.id) }}"><span class="icon-view"></span> öffentliches Profil ansehen</a></li>
+  </ol>
+
+  <h2>Persönliche Daten</h2>
+  <table class="index">
+    <tr>
       <th>Voller Name</th>
       <td>{% if user.detail.full_name %}{{ user.detail.full_name }}{% endif %}</td>
     </tr>
@@ -31,16 +49,6 @@
         {%- if user.detail.street %}{{ user.detail.street }}<br/>{% endif -%}
         {%- if user.detail.zip_code %}{{ user.detail.zip_code }}{% endif -%}
         {%- if user.detail.city %}{{ user.detail.city }}{% endif -%}
-      </td>
-    </tr>
-    <tr>
-      <th>Avatar</th>
-      <td>
-      {%- if user.has_avatar_image -%}
-        {{ render_user_avatar(user) }}
-      {%- else -%}
-        <em>nicht hinterlegt</em>
-      {%- endif -%}
       </td>
     </tr>
   </table>
