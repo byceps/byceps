@@ -152,20 +152,16 @@ def confirm_email_address(user_id, token):
 @blueprint.route('/me')
 @templated
 def view_current():
-    user = g.current_user
-    if not user.is_active():
-        abort(404)
-
+    user = get_current_user_or_404()
     return {'user': user}
 
 
-@blueprint.route('/<id>/avatar/update')
+@blueprint.route('/me/avatar/update')
 @templated
-def avatar_image_form(id):
-    user = find_user_by_id(id)
+def avatar_image_form():
+    get_current_user_or_404()
     form = AvatarImageUpdateForm()
     return {
-        'user': user,
         'form': form,
     }
 
@@ -178,9 +174,9 @@ blueprint.add_url_rule(
     build_only=True)
 
 
-@blueprint.route('/<id>/avatar', methods=['POST'])
-def avatar_image(id):
-    user = find_user_by_id(id)
+@blueprint.route('/me/avatar', methods=['POST'])
+def avatar_image():
+    user = get_current_user_or_404()
 
     form = AvatarImageUpdateForm(request.form)
 
@@ -276,6 +272,14 @@ def logout():
 
 def find_user_by_id(id):
     return User.query.get_or_404(id)
+
+
+def get_current_user_or_404():
+    user = g.current_user
+    if not user.is_active():
+        abort(404)
+
+    return user
 
 
 class UserSession(object):
