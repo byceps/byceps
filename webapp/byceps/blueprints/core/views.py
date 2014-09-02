@@ -11,6 +11,7 @@ from importlib import import_module
 
 from flask import current_app, render_template
 
+from ... import config
 from ...config import SiteMode
 from ...util.framework import create_blueprint
 
@@ -35,8 +36,7 @@ def not_found(error):
 
 @blueprint.app_context_processor
 def inject_navigation():
-    mode = current_app.extensions['byceps']['mode']
-    navigation_module = navigation_modules[mode]
+    navigation_module = navigation_modules[config.get_site_mode()]
     return {
         'navigation_blocks': navigation_module.get_blocks(),
     }

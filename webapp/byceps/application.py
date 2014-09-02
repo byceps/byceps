@@ -11,6 +11,7 @@ from flask import Flask, g
 import jinja2
 
 from .blueprints.snippet.init import add_routes_for_snippets
+from . import config
 from .config import SiteMode
 from .database import db
 from .util import dateformat
@@ -54,12 +55,9 @@ def create_app(environment_name, *, initialize=True):
     # Initialize database.
     db.init_app(app)
 
-    mode = get_site_mode(app)
-    app.extensions['byceps'] = {
-        'mode': mode,
-    }
+    config.init_app(app)
 
-    register_blueprints(app, mode)
+    register_blueprints(app)
 
     dateformat.register_template_filters(app)
 
@@ -71,20 +69,10 @@ def create_app(environment_name, *, initialize=True):
     return app
 
 
-def get_site_mode(app):
-    """Return the mode the site should run in."""
-    value = app.config.get('MODE')
-    if value is None:
-        raise Exception('No site mode configured.')
-
-    try:
-        return SiteMode[value]
-    except KeyError:
-        raise Exception('Invalid site mode "{}" configured.'.format(value))
-
-
-def register_blueprints(app, current_mode):
+def register_blueprints(app):
     """Register the blueprints that are relevant for the current mode."""
+    current_mode = config.get_site_mode(app)
+
     for name, url_prefix, mode in BLUEPRINTS:
         if mode is None or mode == current_mode:
             register_blueprint(app, name, url_prefix)
