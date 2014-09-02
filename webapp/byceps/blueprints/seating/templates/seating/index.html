@@ -9,7 +9,7 @@
   <h2>Bereiche</h2>
   <ul>
     {%- for area in areas|sort(attribute='title') %}
-    <li><a href="{{ url_for('seating.view_area', id=area.id) }}">{{ area.title }}</a></li>
+    <li><a href="{{ url_for('seating.view_area', slug=area.slug) }}">{{ area.title }}</a></li>
     {%- endfor %}
   </ul>
 

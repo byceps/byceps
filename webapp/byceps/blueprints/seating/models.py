@@ -35,6 +35,7 @@ class Area(db.Model):
     """
     __tablename__ = 'seating_areas'
     __table_args__ = (
+        db.UniqueConstraint('party_id', 'slug'),
         db.UniqueConstraint('party_id', 'title'),
     )
     query_class = AreaQuery
@@ -42,12 +43,14 @@ class Area(db.Model):
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     party_id = db.Column(db.Unicode(20), db.ForeignKey('parties.id'))
     party = db.relationship(Party, backref='seating_areas')
+    slug = db.Column(db.Unicode(40))
     title = db.Column(db.Unicode(40))
 
     def __repr__(self):
         return ReprBuilder(self) \
             .add_with_lookup('id') \
             .add_with_lookup('party') \
+            .add_with_lookup('slug') \
             .add_with_lookup('title') \
             .build()
 

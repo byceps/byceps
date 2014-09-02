@@ -24,9 +24,9 @@ def index():
     return {'areas': areas}
 
 
-@blueprint.route('/areas/<id>')
+@blueprint.route('/areas/<slug>')
 @templated
-def view_area(id):
+def view_area(slug):
     """View area."""
-    area = Area.query.get_or_404(id)
+    area = Area.query.for_current_party().filter_by(slug=slug).first_or_404()
     return {'area': area}
