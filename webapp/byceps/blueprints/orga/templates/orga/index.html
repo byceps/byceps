@@ -12,14 +12,15 @@
       justify-content: center;
     }
     .orga-overview li {
-      font-size: 0.8rem;
-      margin: 0 0 2rem 0;
+      font-size: 0.9rem;
+      margin: 1rem 0;
       padding: 0;
       text-align: center;
       width: 200px;
     }
     .orga-overview li p {
-      margin: 0.5rem 0 0 0;
+      line-height: 1.3rem;
+      margin: 0.3rem 0 0 0;
       padding: 0;
     }
   </style>
@@ -36,13 +37,12 @@
         {{ render_user_avatar(user) }}
       </div>
       <p>
-        {{ user.detail.first_names }}
-        &quot;{{ user.screen_name }}&quot;
-        {{ user.detail.last_name }}
+        <strong>{{ user.screen_name }}</strong><br/>
+        {{ user.detail.first_names }} {{ user.detail.last_name }}
         {%- set orga_team_membership = user.orga_team_membership_for_current_party %}
         {%- if orga_team_membership %}
         <br/>
-        Team {{ orga_team_membership.orga_team.title}}
+        Team: {{ orga_team_membership.orga_team.title}}
         {%- if orga_team_membership.duties %} ({{ orga_team_membership.duties }}){% endif %}
         {%- endif %}
       </p>
