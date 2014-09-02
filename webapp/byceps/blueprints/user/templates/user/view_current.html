@@ -33,12 +33,12 @@
         {{ render_user_avatar(user) }}
       {%- else -%}
         <em>nicht hinterlegt</em>
-        {%- if g.current_user == user %}
+      {%- endif -%}
+      {%- if g.current_user == user %}
         <ol class="actions" style="display: block; margin: 0.5rem 0 0 0;">
           <li><a href="{{ url_for('.avatar_image_form') }}"><span class="icon-upload"></span> Avatar hochladen</a></li>
         </ol>
-        {%- endif %}
-      {%- endif -%}
+      {%- endif %}
       </td>
     </tr>
   </table>
