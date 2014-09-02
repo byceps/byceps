@@ -8,6 +8,10 @@
 
   <h1>{{ title }}</h1>
 
+  <ol class="actions" style="margin: 0;">
+    <li><a href="{{ url_for('.view', id=user.id) }}"><span class="icon-view"></span> öffentliches Profil ansehen</a></li>
+  </ol>
+
   <h2>Benutzerkonto</h2>
   <table class="index">
     <tr>
@@ -29,13 +33,15 @@
         {{ render_user_avatar(user) }}
       {%- else -%}
         <em>nicht hinterlegt</em>
+        {%- if g.current_user == user %}
+        <ol class="actions" style="display: block; margin: 0.5rem 0 0 0;">
+          <li><a href="{{ url_for('.avatar_image_form', id=g.current_user.id) }}"><span class="icon-upload"></span> Avatar hochladen</a></li>
+        </ol>
+        {%- endif %}
       {%- endif -%}
       </td>
     </tr>
   </table>
-  <ol class="actions">
-    <li><a href="{{ url_for('.view', id=user.id) }}"><span class="icon-view"></span> öffentliches Profil ansehen</a></li>
-  </ol>
 
   <h2>Persönliche Daten</h2>
   <table class="index">
