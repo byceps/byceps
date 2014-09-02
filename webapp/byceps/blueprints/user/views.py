@@ -151,7 +151,7 @@ def confirm_email_address(user_id, token):
 
 @blueprint.route('/me')
 @templated
-def view_myself():
+def view_current():
     user = g.current_user
     if not user.is_active():
         abort(404)
