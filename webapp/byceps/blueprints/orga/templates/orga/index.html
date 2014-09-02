@@ -37,12 +37,15 @@
         {{ render_user_avatar(user) }}
       </div>
       <p>
-        <strong>{{ user.screen_name }}</strong><br/>
-        {{ user.detail.first_names }} {{ user.detail.last_name }}
+        <strong>{{ user.screen_name }}</strong>
+        {%- if user.detail.full_name %}
+        <br/>
+        {{ user.detail.full_name }}
+        {%- endif %}
         {%- set orga_team_membership = user.orga_team_membership_for_current_party %}
         {%- if orga_team_membership %}
         <br/>
-        Team: {{ orga_team_membership.orga_team.title}}
+        Team: {{ orga_team_membership.orga_team.title }}
         {%- if orga_team_membership.duties %} ({{ orga_team_membership.duties }}){% endif %}
         {%- endif %}
       </p>
