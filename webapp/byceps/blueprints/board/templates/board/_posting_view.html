@@ -1,3 +1,4 @@
+{%- from 'macros/board.html' import render_flag_new %}
 {%- from 'macros/datetime.html' import render_datetime %}
 {%- from 'macros/user.html' import render_user_avatar, render_user_link %}
 
@@ -6,6 +7,7 @@
     <div class="creator">{{ render_user_link(posting.creator) }}</div>
     {{ render_user_avatar(posting.creator) }}
     {{ render_datetime(posting.created_at)|replace(', ', '<br/>'|safe) }}
+    {%- if posting.unseen %} {{ render_flag_new() }}{% endif %}
 
     {%- if posting.hidden %}<p title="versteckt (durch {{ posting.hidden_by.screen_name }})"><span class="icon-hidden"></span> versteckt</p>{% endif %}
 

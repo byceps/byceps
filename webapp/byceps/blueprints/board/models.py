@@ -173,12 +173,17 @@ class Topic(db.Model):
         self.category.aggregate()
 
     def contains_unseen_postings(self):
+        """Return `True` if the topic contains postings created after
+        the last time the current user viewed it.
+        """
+        last_viewed_at = self.last_viewed_at
+        return last_viewed_at is None \
+            or self.last_updated_at > last_viewed_at
+
+    @property
+    def last_viewed_at(self):
         last_view = LastTopicView.find(g.current_user, self)
-
-        if last_view is None:
-            return True
-
-        return self.last_updated_at > last_view.occured_at
+        return last_view.occured_at if last_view is not None else None
 
     def mark_as_viewed(self):
         LastTopicView.update(g.current_user, self)
@@ -295,6 +300,13 @@ class LastCategoryView(db.Model):
         last_view.occured_at = datetime.now()
         db.session.commit()
 
+    def __repr__(self):
+        return ReprBuilder(self) \
+            .add('user', self.user.screen_name) \
+            .add('category', self.category.title) \
+            .add_with_lookup('occured_at') \
+            .build()
+
 
 class LastTopicView(db.Model):
     """The last time a user looked into specific topic."""
@@ -325,3 +337,10 @@ class LastTopicView(db.Model):
 
         last_view.occured_at = datetime.now()
         db.session.commit()
+
+    def __repr__(self):
+        return ReprBuilder(self) \
+            .add('user', self.user.screen_name) \
+            .add('topic', self.topic.title) \
+            .add_with_lookup('occured_at') \
+            .build()

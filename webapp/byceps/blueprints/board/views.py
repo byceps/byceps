@@ -80,6 +80,12 @@ def topic_view(id, page):
     """List postings for the topic."""
     topic = Topic.query.only_visible().with_id_or_404(id)
 
+    # Copy last view timestamp for later use to compare postings
+    # against it.
+    last_viewed_at = topic.last_viewed_at
+
+    # Mark as viewed before aborting so a user can itself remove the
+    # 'new' tag from a locked topic.
     topic.mark_as_viewed()
 
     if topic.hidden:
@@ -99,10 +105,26 @@ def topic_view(id, page):
         .order_by(Posting.created_at.asc()) \
         .paginate(page, postings_per_page)
 
+    add_unseen_flag_to_postings(postings.items, last_viewed_at)
+
     return {
         'topic': topic,
         'postings': postings,
     }
+
+
+def add_unseen_flag_to_postings(postings, last_viewed_at):
+    """Add the attribute 'unseen' to each posting."""
+    def unseen(posting):
+        # Don't display the author's own posting as new to him/her.
+        if posting.creator == g.current_user:
+            return False
+
+        return last_viewed_at is None \
+            or posting.created_at > last_viewed_at
+
+    for posting in postings:
+        posting.unseen = unseen(posting)
 
 
 @blueprint.route('/categories/<category_id>/create')
