@@ -18,24 +18,24 @@ from .util.framework import load_config, register_blueprint
 from .util.l10n import set_locale
 
 
-BLUEPRINT_NAMES = [
-    ('authorization',       '/authorization'),
-    ('authorization_admin', '/admin/authorization'),
-    ('board',               '/board'),
-    ('brand',               None),
-    ('core',                '/core'),
-    ('orga',                '/orgas'),
-    ('orga_admin',          '/admin/orgas'),
-    ('party',               None),
-    ('party_admin',         '/admin/parties'),
-    ('seating',             '/seating'),
-    ('snippet',             '/snippets'),
-    ('snippet_admin',       '/admin/snippets'),
-    ('terms',               '/terms'),
-    ('terms_admin',         '/admin/terms'),
-    ('user',                '/users'),
-    ('user_admin',          '/admin/users'),
-    ('user_group',          '/user_groups'),
+BLUEPRINTS = [
+    ('authorization',       '/authorization',       None          ),
+    ('authorization_admin', '/admin/authorization', SiteMode.admin),
+    ('board',               '/board',               None          ),
+    ('brand',               None,                   None          ),
+    ('core',                '/core',                None          ),
+    ('orga',                '/orgas',               None          ),
+    ('orga_admin',          '/admin/orgas',         SiteMode.admin),
+    ('party',               None,                   None          ),
+    ('party_admin',         '/admin/parties',       SiteMode.admin),
+    ('seating',             '/seating',             None          ),
+    ('snippet',             '/snippets',            None          ),
+    ('snippet_admin',       '/admin/snippets',      SiteMode.admin),
+    ('terms',               '/terms',               None          ),
+    ('terms_admin',         '/admin/terms',         SiteMode.admin),
+    ('user',                '/users',               None          ),
+    ('user_admin',          '/admin/users',         SiteMode.admin),
+    ('user_group',          '/user_groups',         None          ),
 ]
 
 
@@ -59,9 +59,7 @@ def create_app(environment_name, *, initialize=True):
         'mode': mode,
     }
 
-    # Import and register blueprints.
-    for name, url_prefix in BLUEPRINT_NAMES:
-        register_blueprint(app, name, url_prefix)
+    register_blueprints(app, mode)
 
     dateformat.register_template_filters(app)
 
@@ -83,6 +81,13 @@ def get_site_mode(app):
         return SiteMode[value]
     except KeyError:
         raise Exception('Invalid site mode "{}" configured.'.format(value))
+
+
+def register_blueprints(app, current_mode):
+    """Register the blueprints that are relevant for the current mode."""
+    for name, url_prefix, mode in BLUEPRINTS:
+        if mode is None or mode == current_mode:
+            register_blueprint(app, name, url_prefix)
 
 
 def get_current_party_id(app):
