@@ -16,12 +16,18 @@ from ...config import SiteMode
 from ...util.framework import create_blueprint
 
 
-navigation_modules = {
-    mode: import_module('config.navigation_{}'.format(mode.name))
-    for mode in SiteMode}
-
-
 blueprint = create_blueprint('core', __name__)
+
+
+def _get_navigation_blocks(site_mode):
+    """Import navigation module for the given mode and return the blocks."""
+    module_name = 'config.navigation_{}'.format(site_mode.name)
+    module = import_module(module_name)
+    return module.get_blocks()
+
+
+NAVIGATION_BLOCKS_BY_SITE_MODE \
+    = {mode: _get_navigation_blocks(mode) for mode in SiteMode}
 
 
 @blueprint.app_errorhandler(403)
@@ -36,9 +42,9 @@ def not_found(error):
 
 @blueprint.app_context_processor
 def inject_navigation():
-    navigation_module = navigation_modules[config.get_site_mode()]
+    navigation_blocks = NAVIGATION_BLOCKS_BY_SITE_MODE[config.get_site_mode()]
     return {
-        'navigation_blocks': navigation_module.get_blocks(),
+        'navigation_blocks': navigation_blocks,
     }
 
 
