@@ -59,6 +59,7 @@ class AnonymousUser(object):
     def has_avatar_image(self):
         return False
 
+    @property
     def is_orga(self):
         return False
 
