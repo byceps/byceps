@@ -62,6 +62,13 @@ class Category(db.Model):
         db.session.commit()
 
     def contains_unseen_postings(self):
+        """Return `True` if the category contains postings created after
+        the last time the current user viewed it.
+        """
+        # Don't display as new to a guest.
+        if g.current_user.is_anonymous:
+            return False
+
         if self.last_posting_updated_at is None:
             return False
 
@@ -176,6 +183,10 @@ class Topic(db.Model):
         """Return `True` if the topic contains postings created after
         the last time the current user viewed it.
         """
+        # Don't display as new to a guest.
+        if g.current_user.is_anonymous:
+            return False
+
         last_viewed_at = self.last_viewed_at
         return last_viewed_at is None \
             or self.last_updated_at > last_viewed_at

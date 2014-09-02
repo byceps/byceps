@@ -123,6 +123,11 @@ def add_unseen_flag_to_postings(postings, last_viewed_at):
         return last_viewed_at is None \
             or posting.created_at > last_viewed_at
 
+    # Don't display any posting as new to a guest.
+    if g.current_user.is_anonymous:
+        def unseen(posting):
+            return False
+
     for posting in postings:
         posting.unseen = unseen(posting)
 
