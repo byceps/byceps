@@ -26,7 +26,7 @@
       {%- for category in categories|sort(attribute='position') %}
       <tr>
         <td>
-          <strong><a href="{{ url_for('.category_view', id=category.id) }}">{{ category.title }}</a></strong>
+          <strong><a href="{{ url_for('.category_view', slug=category.slug) }}">{{ category.title }}</a></strong>
           {%- if category.contains_unseen_postings() %} {{ render_flag_new() }}{% endif %}
           <div class="details">{{ category.description }}</div>
         </td>

@@ -30,8 +30,9 @@ class Category(db.Model):
     """A category for topics."""
     __tablename__ = 'board_categories'
     __table_args__ = (
-        db.UniqueConstraint('brand_id', 'title'),
         db.UniqueConstraint('brand_id', 'position'),
+        db.UniqueConstraint('brand_id', 'slug'),
+        db.UniqueConstraint('brand_id', 'title'),
     )
     query_class = CategoryQuery
 
@@ -39,6 +40,7 @@ class Category(db.Model):
     brand_id = db.Column(db.Unicode(20), db.ForeignKey('brands.id'))
     brand = db.relationship(Brand)
     position = db.Column(db.Integer, nullable=False)
+    slug = db.Column(db.Unicode(40), nullable=False)
     title = db.Column(db.Unicode(40), nullable=False)
     description = db.Column(db.Unicode(80))
     topic_count = db.Column(db.Integer, default=0)
@@ -86,6 +88,7 @@ class Category(db.Model):
         return ReprBuilder(self) \
             .add_with_lookup('id') \
             .add_with_lookup('brand') \
+            .add_with_lookup('slug') \
             .add_with_lookup('title') \
             .build()
 

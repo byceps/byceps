@@ -15,7 +15,7 @@
 
     <p><small><a href="http://de.wikipedia.org/wiki/BBCode" target="_blank">BBCode</a> wird unterstützt.</small></p>
 
-    {{ form_buttons('Hinzufügen', cancel_url=url_for('.category_view', id=category.id)) }}
+    {{ form_buttons('Hinzufügen', cancel_url=url_for('.category_view', slug=category.slug)) }}
   </form>
 
 {%- endblock body %}

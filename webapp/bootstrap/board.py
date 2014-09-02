@@ -6,8 +6,9 @@ from .util import add_to_database
 
 
 @add_to_database
-def create_category(brand, position, title, description):
-    return Category(brand=brand, position=position, title=title, description=description)
+def create_category(brand, position, slug, title, description):
+    return Category(brand=brand, position=position, slug=slug, title=title,
+                    description=description)
 
 
 def get_first_category(brand):

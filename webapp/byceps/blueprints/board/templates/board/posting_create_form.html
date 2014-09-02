@@ -8,7 +8,7 @@
   <nav class="board-breadcrumbs">
     <ol>
       <li><a href="{{ url_for('.category_index') }}">Forum</a></li>
-      <li><a href="{{ url_for('.category_view', id=topic.category.id) }}">{{ topic.category.title }}</a></li>
+      <li><a href="{{ url_for('.category_view', slug=topic.category.slug) }}">{{ topic.category.title }}</a></li>
       <li><a href="{{ url_for('.topic_view', id=topic.id) }}">{{ topic.title }}</a></li>
       <li>{{ title }}</li>
     </ol>
