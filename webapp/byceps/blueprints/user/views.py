@@ -108,11 +108,7 @@ def create():
 
     db.session.commit()
 
-    confirmation_url = url_for('.confirm_email_address',
-                               user_id=user.id,
-                               token=verification_token.token,
-                               _external=True)
-    send_email_address_confirmation_email(confirmation_url)
+    send_email_address_confirmation_email(user, verification_token)
 
     flash_success('Das Benutzerkonto für "{}" wurde angelegt.',
                   user.screen_name)
