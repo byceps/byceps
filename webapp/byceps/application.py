@@ -9,6 +9,7 @@ byceps.application
 
 from flask import Flask, g
 import jinja2
+from pathlib import Path
 
 from .blueprints.snippet.init import add_routes_for_snippets
 from . import config
@@ -68,6 +69,11 @@ def create_app(environment_name, *, initialize=True):
         with app.app_context():
             app.party_id = get_current_party_id(app)
             add_routes_for_snippets()
+
+            if config.get_site_mode().is_public():
+                # Incorporate template overrides for the current party.
+                app.template_folder = str(Path('party_template_overrides') \
+                                    / app.party_id)
 
     return app
 
