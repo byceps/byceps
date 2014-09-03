@@ -1,16 +1,12 @@
-      <aside id="sidebar">
-
-        {%- for block in navigation_blocks %}
-        <section>
-          <h1>{{ block.title }}</h1>
-          <nav class="main">
-            <ol>
-              {%- for item in block.get_items() %}
-              <li{% if item.id is is_current_page(current_page) %} class="current"{% endif %}><a href="{{ url_for(item.endpoint) }}">{{ item.label }}</a></li>
-              {%- endfor %}
-            </ol>
-          </nav>
-        </section>
-        {%- endfor %}
-
-      </aside>
+{%- for block in navigation_blocks %}
+<section>
+  <h1>{{ block.title }}</h1>
+  <nav class="main">
+    <ol>
+      {%- for item in block.get_items() %}
+      <li{% if item.id is is_current_page(current_page) %} class="current"{% endif %}><a href="{{ url_for(item.endpoint) }}">{{ item.label }}</a></li>
+      {%- endfor %}
+    </ol>
+  </nav>
+</section>
+{%- endfor %}

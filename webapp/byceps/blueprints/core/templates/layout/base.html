@@ -18,18 +18,19 @@
 
     <div id="page">
 
+      <header id="header">
 {% include 'layout/header.html' %}
+      </header>
 
-{# Necessary to make the variable available to the included header template. #}
-{% set current_page = current_page|default %}
-{% include 'layout/navigation.html' %}
+      <aside id="sidebar">
+{#- Necessary to make the variable available to the included header template. #}
+{%- set current_page = current_page|default %}
+{%- include 'layout/navigation.html' %}
+      </aside>
 
       <main role="main">
-
-{% include 'layout/notifications.html' %}
-
-{% block body %}{% endblock %}
-
+{%- include 'layout/notifications.html' %}
+{%- block body %}{% endblock %}
       </main>
 
     </div><!-- /#page -->
