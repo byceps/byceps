@@ -27,6 +27,7 @@ class CreateForm(LocalizedForm):
     email_address = StringField('E-Mail-Adresse', validators=[DataRequired()])
     password = PasswordField('Passwort', validators=[DataRequired()])
     consent_to_terms = BooleanField('AGB', validators=[DataRequired()])
+    subscribe_to_newsletter = BooleanField('Newsletter')
 
     def validate_screen_name(form, field):
         if not all(map(VALID_SCREEN_NAME_CHARS.__contains__, field.data)):

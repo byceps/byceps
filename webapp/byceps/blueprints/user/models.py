@@ -24,6 +24,8 @@ from ...database import db, generate_uuid
 from ...util.image import ImageType
 from ...util.instances import ReprBuilder
 
+from ..brand.models import Brand
+
 
 PASSWORD_HASH_METHOD = 'pbkdf2:sha1'
 
@@ -301,3 +303,36 @@ class VerificationToken(db.Model):
     def purpose(self, purpose):
         assert purpose is not None
         self._purpose = purpose.name
+
+
+NewsletterSubscriptionState = Enum(
+    'NewsletterSubscriptionState',
+    ['requested', 'declined'])
+
+
+class NewsletterSubscription(db.Model):
+    """A user's declaration that he/she wants or does not want to receive the
+    newsletter for this brand.
+    """
+    __tablename__ = 'newsletter_subscriptions'
+
+    user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
+    user = db.relationship(User)
+    brand_id = db.Column(db.Unicode(20), db.ForeignKey('brands.id'), primary_key=True)
+    brand = db.relationship(Brand)
+    expressed_at = db.Column(db.DateTime, default=datetime.now, primary_key=True)
+    _state = db.Column('state', db.Unicode(20), nullable=False)
+
+    def __init__(self, user, state):
+        self.user = user
+        self.brand = g.party.brand
+        self.state = state
+
+    @hybrid_property
+    def state(self):
+        return NewsletterSubscriptionState[self._state]
+
+    @state.setter
+    def state(self, state):
+        assert state is not None
+        self._state = state.name

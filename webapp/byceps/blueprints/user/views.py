@@ -24,7 +24,8 @@ from ..authorization.models import Role
 from ..terms.models import Consent, ConsentContext
 
 from .forms import AvatarImageUpdateForm, CreateForm, LoginForm
-from .models import User, VerificationToken, VerificationTokenPurpose
+from .models import NewsletterSubscription, NewsletterSubscriptionState, User, \
+    VerificationToken, VerificationTokenPurpose
 
 
 MAXIMUM_AVATAR_IMAGE_DIMENSIONS = Dimensions(110, 150)
@@ -65,6 +66,7 @@ def create():
     email_address = form.email_address.data.lower()
     password = form.password.data
     consent_to_terms = form.consent_to_terms.data
+    subscribe_to_newsletter = form.subscribe_to_newsletter.data
 
     if is_screen_name_already_assigned(screen_name):
         flash_error(
@@ -85,6 +87,12 @@ def create():
 
     terms_consent = Consent(user, ConsentContext.account_creation)
     db.session.add(terms_consent)
+
+    newsletter_subscription_state = NewsletterSubscriptionState.requested \
+        if subscribe_to_newsletter \
+        else NewsletterSubscriptionState.declined
+    newsletter_subscription = NewsletterSubscription(user, newsletter_subscription_state)
+    db.session.add(newsletter_subscription)
 
     board_user_role = Role.query.get('board_user')
     user.roles.add(board_user_role)
