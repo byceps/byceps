@@ -1,6 +1,5 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/datetime.html' import render_datetime %}
-{% from 'macros/user.html' import render_user_link %}
 {% set current_page = 'user_admin' %}
 {% set title = 'Benutzer' %}
 
@@ -21,7 +20,7 @@
     <tbody>
       {%- for user in users|sort(attribute='created_at', reverse=True) %}
       <tr>
-        <td>{{ render_user_link(user) }}</td>
+        <td><strong>{{ user.screen_name }}</strong></td>
         <td>{% if user.detail.full_name %}{{ user.detail.full_name }}{% endif %}</td>
         <td>{{ render_datetime(user.created_at) }}</td>
         <td>{% if user.legacy_id %}{{ user.legacy_id }}{% endif %}</td>
