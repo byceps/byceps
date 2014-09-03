@@ -21,3 +21,7 @@ PARTY = 'lanresort-2014'
 
 BOARD_TOPICS_PER_PAGE = 10
 BOARD_POSTINGS_PER_PAGE = 10
+
+MAIL_DEBUG = False
+MAIL_DEFAULT_SENDER = 'LANresort <noreply@lanresort.de>'
+MAIL_SUPPRESS_SEND = Falses
