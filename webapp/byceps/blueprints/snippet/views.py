@@ -18,6 +18,8 @@ blueprint = create_blueprint('snippet', __name__)
 
 def view_latest_by_name(name):
     """Show the latest version of the snippet with the given name."""
+    # TODO: Fetch snippet via mountpoint
+    # endpoint suffix != snippet name
     snippet = Snippet.query \
         .for_current_party() \
         .filter_by(name=name) \

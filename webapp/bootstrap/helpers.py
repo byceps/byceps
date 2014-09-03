@@ -6,7 +6,8 @@ from byceps.blueprints.orga.models import OrgaFlag, OrgaTeam, \
 from byceps.blueprints.party.models import Party
 from byceps.blueprints.seating.models import Area as SeatingArea, \
     Category as SeatingCategory, Point, Seat
-from byceps.blueprints.snippet.models import Snippet, SnippetVersion
+from byceps.blueprints.snippet.models import Snippet, SnippetVersion, \
+    Mountpoint as SnippetMountpoint
 from byceps.blueprints.terms.models import Version as TermsVersion
 from byceps.blueprints.user.models import User
 from byceps.blueprints.user_group.models import UserGroup
@@ -91,13 +92,18 @@ def create_user_group(creator, title, description=None):
 
 
 @add_to_database
-def create_snippet(party, name, url_path):
-    return Snippet(party=party, name=name, url_path=url_path)
+def create_snippet(party, name):
+    return Snippet(party=party, name=name)
 
 
 @add_to_database
 def create_snippet_version(snippet, creator, title, body):
     return SnippetVersion(snippet=snippet, creator=creator, title=title, body=body)
+
+
+@add_to_database
+def mount_snippet(snippet, endpoint_suffix, url_path):
+    return SnippetMountpoint(snippet=snippet, endpoint_suffix=endpoint_suffix, url_path=url_path)
 
 
 # -------------------------------------------------------------------- #

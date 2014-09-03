@@ -36,7 +36,6 @@ class Snippet(db.Model):
     __tablename__ = 'snippets'
     __table_args__ = (
         db.UniqueConstraint('party_id', 'name'),
-        db.UniqueConstraint('party_id', 'url_path'),
     )
     query_class = BelongsToPartyQuery
 
@@ -44,13 +43,6 @@ class Snippet(db.Model):
     party_id = db.Column(db.Unicode(20), db.ForeignKey('parties.id'))
     party = db.relationship(Party)
     name = db.Column(db.Unicode(40))
-    url_path = db.Column(db.Unicode(40))
-
-    def generate_url(self):
-        try:
-            return url_for('snippet.{}'.format(self.name))
-        except BuildError:
-            return None
 
     def get_latest_version(self):
         """Return the most recent version.
@@ -69,7 +61,6 @@ class Snippet(db.Model):
             .add_with_lookup('id') \
             .add('party', self.party_id) \
             .add_with_lookup('name') \
-            .add_with_lookup('url_path') \
             .build()
 
 
@@ -93,7 +84,6 @@ class SnippetVersion(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.now)
     creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
     creator = db.relationship(User)
-    title = db.Column(db.Unicode(80))
     body = db.Column(db.UnicodeText)
 
     def __repr__(self):
@@ -102,6 +92,43 @@ class SnippetVersion(db.Model):
             .add_with_lookup('snippet') \
             .add_with_lookup('created_at') \
             .add_with_lookup('creator') \
-            .add_with_lookup('title') \
             .add('body length', len(self.body)) \
+            .build()
+
+
+class MountpointQuery(BelongsToPartyQuery):
+
+    def for_party_with_id(self, party_id):
+        return self.join(Snippet).filter_by(party_id=party_id)
+
+
+class Mountpoint(db.Model):
+    """The exposition of a snippet at a certain URL path."""
+    __tablename__ = 'snippet_routes'
+    __table_args__ = (
+        db.UniqueConstraint('snippet_id', 'endpoint_suffix'),
+        db.UniqueConstraint('snippet_id', 'url_path'),
+    )
+    query_class = MountpointQuery
+
+    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    snippet_id = db.Column(db.Uuid, db.ForeignKey('snippets.id'))
+    snippet = db.relationship(Snippet)
+    endpoint_suffix = db.Column(db.Unicode(40))
+    url_path = db.Column(db.Unicode(40))
+    title = db.Column(db.Unicode(80))
+
+    def generate_url(self):
+        try:
+            return url_for('snippet.{}'.format(self.endpoint_suffix))
+        except BuildError:
+            return None
+
+    def __repr__(self):
+        return ReprBuilder(self) \
+            .add_with_lookup('id') \
+            .add_with_lookup('snippet') \
+            .add_with_lookup('endpoint_suffix') \
+            .add_with_lookup('url_path') \
+            .add_with_lookup('title') \
             .build()
