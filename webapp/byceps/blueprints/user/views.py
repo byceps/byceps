@@ -136,7 +136,6 @@ def do_users_matching_filter_exist(model_attribute, search_value):
 
 def send_email_address_confirmation_email(user, verification_token):
     confirmation_url = url_for('.confirm_email_address',
-                               user_id=user.id,
                                token=verification_token.token,
                                _external=True)
 
