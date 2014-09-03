@@ -16,6 +16,7 @@ from ...util.views import redirect_to
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
+from ..party.models import Party
 from ..snippet.models import Snippet, SnippetVersion
 from ..snippet.templating import render_snippet
 
@@ -33,9 +34,22 @@ permission_registry.register_enum(SnippetPermission)
 @permission_required(SnippetPermission.list)
 @templated
 def index():
-    """List snippets."""
-    snippets = Snippet.query.for_current_party().all()
-    return {'snippets': snippets}
+    """List parties to choose from."""
+    parties = Party.query.all()
+    return {'parties': parties}
+
+
+@blueprint.route('/<party_id>')
+@permission_required(SnippetPermission.list)
+@templated
+def index_for_party(party_id):
+    """List snippets for that party."""
+    party = Party.query.get_or_404(party_id)
+    snippets = Snippet.query.for_party(party).all()
+    return {
+        'party': party,
+        'snippets': snippets,
+    }
 
 
 @blueprint.route('/versions/<id>')
