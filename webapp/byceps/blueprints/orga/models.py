@@ -43,6 +43,9 @@ class OrgaTeam(db.Model):
 
     members = association_proxy('memberships', 'user')
 
+    def memberships_for_party(self, party):
+        return filter(lambda m: m.party == party, self.memberships)
+
     @property
     def memberships_for_current_party(self):
         return filter(lambda m: m.belongs_to_current_party, self.memberships)

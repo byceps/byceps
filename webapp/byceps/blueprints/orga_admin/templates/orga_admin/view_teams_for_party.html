@@ -1,0 +1,44 @@
+{% extends 'layout/base.html' %}
+{% from 'macros/user.html' import render_user_link %}
+{% set current_page = 'orga_admin' %}
+{% set title = 'Orgateams' %}
+
+{% block body %}
+
+  <h1>{{ title }}</h1>
+
+  <p><strong>Party:</strong> {{ party.title }}
+
+  <table class="index wide">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Mitgliederzahl</th>
+        <th>Mitglieder (Aufgabe)</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for team in teams|sort(attribute='title') %}
+      {%- set memberships = team.memberships_for_party(party)|list %}
+      <tr>
+        <td>{{ team.id }}</td>
+        <td><strong>{{ team.title }}</strong></td>
+        <td>{{ memberships|length }}</td>
+        <td>
+          <ul style="list-style: none; margin: 0; padding: 0;">
+          {%- for membership in memberships|sort(attribute='user.screen_name') %}
+            <li>
+              {{- render_user_link(membership.user) -}}
+              {%- if membership.duties %} ({{ membership.duties }}){% endif -%}
+            </li>
+          {%- endfor %}
+          </ul>
+        </td>
+      </tr>
+      {%- endfor %}
+      <tr>
+    </tbody>
+  </table>
+
+{%- endblock body %}
