@@ -15,7 +15,7 @@ from flask.ext.sqlalchemy import BaseQuery, SQLAlchemy
 from sqlalchemy.dialects.postgresql import UUID
 
 
-db = SQLAlchemy()
+db = SQLAlchemy(session_options={'autoflush': False})
 
 
 db.Uuid = UUID
