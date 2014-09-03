@@ -34,7 +34,11 @@
     {%- for user in orgas|sort(attribute='screen_name') %}
     <li>
       <div>
+        {%- if user.has_avatar_image %}
         {{ render_user_avatar(user) }}
+        {%- else %}
+        <div class="avatar"></div>
+        {%- endif %}
       </div>
       <p>
         <strong>{{ user.screen_name }}</strong>
