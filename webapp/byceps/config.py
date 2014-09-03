@@ -17,6 +17,8 @@ KEY_SITE_MODE = 'site_mode'
 
 
 SiteMode = Enum('SiteMode', ['public', 'admin'])
+SiteMode.is_admin = lambda self: self == SiteMode.admin
+SiteMode.is_public = lambda self: self == SiteMode.public
 
 
 def init_app(app):

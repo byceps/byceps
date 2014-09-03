@@ -11,7 +11,7 @@ from datetime import datetime
 
 from flask import abort, g, request, session, url_for
 
-from ...config import get_site_mode, SiteMode
+from ...config import get_site_mode
 from ...database import db
 from ...mail import mail
 from ...util.framework import create_blueprint, flash_error, flash_success
@@ -280,7 +280,7 @@ def login():
         # Authentication failed.
         abort(403)
 
-    if get_site_mode() == SiteMode.admin and not user.is_orga_for_any_brand:
+    if get_site_mode().is_admin() and not user.is_orga_for_any_brand:
         # Authenticated user must be an orga to be allowed to enter the
         # admin area but isn't.
         abort(403)
