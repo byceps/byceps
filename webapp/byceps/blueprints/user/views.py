@@ -143,7 +143,7 @@ def send_email_address_confirmation_email(user, verification_token):
     subject = 'Bestätigung deiner E-Mail-Adresse'
     body = (
         'Hallo {0.screen_name},\n\n'
-        'bitte bestätige deine E-Mail-Adresse indem du diese URL abrufst: {1}'
+        'bitte bestaetige deine E-Mail-Adresse indem du diese URL abrufst: {1}'
     ).format(user, confirmation_url)
     recipients = [user.email_address]
 
