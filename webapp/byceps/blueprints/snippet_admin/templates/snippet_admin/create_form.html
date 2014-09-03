@@ -12,7 +12,7 @@
       {{ form_field(form.name, maxlength=40, required='required', autofocus='autofocus') }}
       {{ form_field(form.url_path, maxlength=40, required='required') }}
       {{ form_field(form.title, maxlength=80, required='required') }}
-      {{ form_field(form.body, cols=40, rows=10, required='required') }}
+      {{ form_field(form.body, required='required') }}
     {% endcall %}
 
     {{ form_buttons('Speichern', cancel_url=url_for('.index')) }}

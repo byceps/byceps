@@ -230,6 +230,39 @@ ol.actions li {
 
 /* forms */
 
+fieldset li {
+  margin: 0;
+  padding: 0.2rem 0;
+}
+
+label {
+  display: inline-block;
+  font-weight: bold;
+  vertical-align: top;
+  width: 130px;
+}
+.checkbox label {
+  font-weight: normal;
+  padding-top: 0.1rem;
+  width: auto;
+}
+.checkbox {
+  padding: 0.3rem 0 0 128px;
+}
+
+fieldset input,
+fieldset textarea {
+  width: 528px;
+}
+fieldset input[type='checkbox'],
+fieldset input[size] {
+  width: auto;
+}
+fieldset textarea {
+  height: 40em;
+  resize: vertical;
+}
+
 fieldset.buttons {
   background-color: #e8e8e8;
   border-color: #cccccc;

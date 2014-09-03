@@ -17,7 +17,9 @@
 {%- macro form_field_checkbox(field, label) -%}
   {%- set kwargs2 = kwargs %}
   {%- call _row(field) %}
+      <div class="checkbox">
         {{- field(**kwargs2) }} {{ field.label(label) }}
+      </div>
   {%- endcall %}
 {%- endmacro %}
 

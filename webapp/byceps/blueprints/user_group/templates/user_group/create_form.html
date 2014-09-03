@@ -9,8 +9,8 @@
 
   <form action="{{ url_for('.create') }}" method="post">
     {% call form_fieldset() %}
-      {{ form_field(form.title, maxlength=40, autofocus='autofocus') }}
-      {{ form_field(form.description, cols=40, rows=8, maxlength=200) }}
+      {{ form_field(form.title, maxlength=40, required='required', autofocus='autofocus') }}
+      {{ form_field(form.description, maxlength=200, required='required') }}
     {% endcall %}
 
     {{ form_buttons('Erstellen', cancel_url=url_for('.index')) }}

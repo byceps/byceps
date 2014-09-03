@@ -9,7 +9,7 @@
 
   <form action="{{ url_for('.create') }}" method="post">
     {%- call form_fieldset() %}
-      {{ form_field(form.screen_name, maxlength=40, autofocus='autofocus') }}
+      {{ form_field(form.screen_name, maxlength=40, required='required', autofocus='autofocus') }}
       {{ form_field(form.email_address, type='email', maxlength=80, required='required') }}
       {{ form_field(form.password, type='password', maxlength=40, required='required') }}
       {%- set consent_to_terms_label = 'Ich akzeptiere die <a href="%s" target="_blank">Allgemeinen Geschäftsbedingungen</a>.'|format(url_for('terms.view_current')) %}
