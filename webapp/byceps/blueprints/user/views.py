@@ -13,6 +13,7 @@ from flask import abort, g, request, session, url_for
 
 from ...config import get_site_mode, SiteMode
 from ...database import db
+from ...mail import mail
 from ...util.framework import create_blueprint, flash_error, flash_success
 from ...util.image import create_thumbnail, Dimensions, \
     guess_type as guess_image_type, read_dimensions
@@ -107,12 +108,11 @@ def create():
 
     db.session.commit()
 
-    # TODO: Send the URL via email instead of flashing it.
     confirmation_url = url_for('.confirm_email_address',
                                user_id=user.id,
                                token=verification_token.token,
                                _external=True)
-    flash_success('Bestätigungs-URL: {}', confirmation_url)
+    send_email_address_confirmation_email(confirmation_url)
 
     flash_success('Das Benutzerkonto für "{}" wurde angelegt.',
                   user.screen_name)
@@ -136,6 +136,22 @@ def do_users_matching_filter_exist(model_attribute, search_value):
         .filter(db.func.lower(model_attribute) == search_value.lower()) \
         .count()
     return user_count > 0
+
+
+def send_email_address_confirmation_email(user, verification_token):
+    confirmation_url = url_for('.confirm_email_address',
+                               user_id=user.id,
+                               token=verification_token.token,
+                               _external=True)
+
+    text = (
+        'Hallo {0.screen_name},\n\n'
+        'bitte bestätige deine E-Mail-Adresse indem du diese URL abrufst: {1}'
+    ).format(user, confirmation_url))
+
+    recipients = [user.email_address]
+
+    mail.send_message(text, recipients=recipients)
 
 
 @blueprint.route('/<user_id>/confirm_email_address/<token>')
