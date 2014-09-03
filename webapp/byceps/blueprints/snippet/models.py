@@ -84,6 +84,7 @@ class SnippetVersion(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.now)
     creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
     creator = db.relationship(User)
+    title = db.Column(db.Unicode(80))
     body = db.Column(db.UnicodeText)
 
     def __repr__(self):
@@ -92,6 +93,7 @@ class SnippetVersion(db.Model):
             .add_with_lookup('snippet') \
             .add_with_lookup('created_at') \
             .add_with_lookup('creator') \
+            .add_with_lookup('title') \
             .add('body length', len(self.body)) \
             .build()
 
@@ -116,7 +118,6 @@ class Mountpoint(db.Model):
     snippet = db.relationship(Snippet)
     endpoint_suffix = db.Column(db.Unicode(40))
     url_path = db.Column(db.Unicode(40))
-    title = db.Column(db.Unicode(80))
 
     def generate_url(self):
         try:
@@ -130,5 +131,4 @@ class Mountpoint(db.Model):
             .add_with_lookup('snippet') \
             .add_with_lookup('endpoint_suffix') \
             .add_with_lookup('url_path') \
-            .add_with_lookup('title') \
             .build()
