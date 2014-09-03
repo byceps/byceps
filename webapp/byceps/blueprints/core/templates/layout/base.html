@@ -23,9 +23,7 @@
       </header>
 
       <aside id="sidebar">
-{#- Necessary to make the variable available to the included header template. #}
-{%- set current_page = current_page|default %}
-{%- include 'layout/_navigation.html' %}
+{%- include 'layout/_sidebar.html' %}
       </aside>
 
       <main role="main">
