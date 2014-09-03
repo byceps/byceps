@@ -140,11 +140,11 @@ def send_email_address_confirmation_email(user, verification_token):
                                token=verification_token.token,
                                _external=True)
 
-    subject = 'Bestätigung deiner E-Mail-Adresse'
+    subject = '{0.screen_name}, bitte bestätige deine E-Mail-Adresse'.format(user)
     body = (
         'Hallo {0.screen_name},\n\n'
         'bitte bestaetige deine E-Mail-Adresse indem du diese URL abrufst: {1}'
-    ).format(user, confirmation_url)
+    ).format(user, confirmation_url).encode('ascii', errors='replace')
     recipients = [user.email_address]
 
     mail.send_message(subject=subject, body=body, recipients=recipients)
