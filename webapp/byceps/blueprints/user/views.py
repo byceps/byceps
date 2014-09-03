@@ -150,16 +150,18 @@ def send_email_address_confirmation_email(user, verification_token):
     mail.send_message(subject=subject, body=body, recipients=recipients)
 
 
-@blueprint.route('/<user_id>/confirm_email_address/<token>')
-def confirm_email_address(user_id, token):
-    """Confirm the user's e-mail address."""
-    user = find_user_by_id(user_id)
+@blueprint.route('/email_address_confirmations/<token>')
+def confirm_email_address(token):
+    """Confirm e-mail address of the user account assigned with the
+    verification token.
+    """
     verification_token = VerificationToken.find(
-        token, user, VerificationTokenPurpose.email_address_confirmation)
+        token, VerificationTokenPurpose.email_address_confirmation)
 
     if verification_token is None:
         abort(404)
 
+    user = verification_token.user
     user.enabled = True
     db.session.delete(verification_token)
     db.session.commit()

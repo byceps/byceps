@@ -284,10 +284,9 @@ class VerificationToken(db.Model):
     _purpose = db.Column('purpose', db.Unicode(40), nullable=False)
 
     @classmethod
-    def find(cls, token, user, purpose):
+    def find(cls, token, purpose):
         return cls.query \
             .filter_by(token=token) \
-            .filter_by(user=user) \
             .filter_by(_purpose=purpose.name) \
             .first()
 
