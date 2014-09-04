@@ -1,0 +1,3 @@
+{% macro render_navigation_item(item, current_page) -%}
+<li{% if item.id is is_current_page(current_page) %} class="current"{% endif %}><a href="{{ url_for(item.endpoint) }}">{{ item.label }}</a></li>
+{%- endmacro %}
