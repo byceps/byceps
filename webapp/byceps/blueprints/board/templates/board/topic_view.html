@@ -33,12 +33,16 @@
 
   <div style="text-align: right;">
     <ol class="actions">
-    {%- if not topic.locked and g.current_user.has_permission(BoardPostingPermission.create) %}
+    {%- set current_user_may_reply = (not topic.locked and g.current_user.has_permission(BoardPostingPermission.create)) %}
+    {%- if current_user_may_reply %}
       <li><a href="{{ url_for('.posting_create_form', topic_id=topic.id) }}"><span class="icon-add"></span> Antworten</a></li>
     {%- else %}
       <li><span class="action disabled"><span class="icon-add"></span> Antworten</span></li>
     {%- endif %}
     </ol>
+    {%- if not current_user_may_reply %}
+    <p><small>Du musst <a href="{{ url_for('user.login_form') }}">angemeldet</a> sein um antworten zu können.</small></p>
+    {%- endif %}
   </div>
 
 {%- endblock body %}
