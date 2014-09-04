@@ -15,8 +15,10 @@ from flask import abort, render_template, url_for
 from jinja2 import FunctionLoader, TemplateNotFound
 from jinja2.sandbox import ImmutableSandboxedEnvironment
 
+from .models import Snippet
 
-def render_snippet(version):
+
+def render_snippet_as_page(version):
     """Render the given version of the snippet, or an error page if
     that fails.
     """
@@ -47,6 +49,16 @@ def get_snippet_context(version):
         'current_page': current_page,
         'body': body,
     }
+
+
+def render_snippet_as_partial(name):
+    """Render the latest version of the snippet with the given name and
+    return the result.
+    """
+    snippet = Snippet.query.for_current_party().filter_by(name=name).one()
+    version = snippet.get_latest_version()
+    template = load_template(version)
+    return template.render()
 
 
 def load_template(version):

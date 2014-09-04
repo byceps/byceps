@@ -10,21 +10,13 @@ byceps.blueprints.snippet.views
 from ...util.framework import create_blueprint
 
 from .models import Snippet
-from .templating import load_template, render_snippet
+from .templating import load_template, render_snippet_as_page, \
+    render_snippet_as_partial
 
 
 blueprint = create_blueprint('snippet', __name__)
 
-
-@blueprint.app_template_global('render_snippet')
-def render_snippet_as_partial(name):
-    """Render the latest version of the snippet with the given name and
-    return the result.
-    """
-    snippet = Snippet.query.for_current_party().filter_by(name=name).one()
-    version = snippet.get_latest_version()
-    template = load_template(version)
-    return template.render()
+blueprint.add_app_template_global(render_snippet_as_partial, 'render_snippet')
 
 
 def view_latest_by_name(name):
@@ -35,4 +27,4 @@ def view_latest_by_name(name):
         .for_current_party() \
         .filter_by(name=name) \
         .one()
-    return render_snippet(snippet.get_latest_version())
+    return render_snippet_as_page(snippet.get_latest_version())

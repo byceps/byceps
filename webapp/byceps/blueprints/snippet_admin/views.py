@@ -18,7 +18,7 @@ from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 from ..party.models import Party
 from ..snippet.models import Mountpoint, Snippet, SnippetVersion
-from ..snippet.templating import render_snippet
+from ..snippet.templating import render_snippet_as_page
 
 from .authorization import SnippetPermission
 from .forms import MountpointCreateForm, MountpointUpdateForm, \
@@ -60,7 +60,7 @@ def index_for_party(party_id):
 def view_version(id):
     """Show the snippet with the given id."""
     version = find_version(id)
-    return render_snippet(version)
+    return render_snippet_as_page(version)
 
 
 @blueprint.route('/<id>/history')
