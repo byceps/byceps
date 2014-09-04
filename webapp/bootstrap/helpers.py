@@ -78,6 +78,10 @@ def assign_user_to_orga_team(user, orga_team, party, *, duties=None):
     return membership
 
 
+def get_orga_team(id):
+    return OrgaTeam.query.get(id)
+
+
 # -------------------------------------------------------------------- #
 # user groups
 
