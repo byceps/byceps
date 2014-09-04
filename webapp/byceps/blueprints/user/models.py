@@ -37,9 +37,11 @@ class AnonymousUser(object):
     id = GUEST_USER_ID
     enabled = False
 
+    @property
     def is_anonymous(self):
         return True
 
+    @property
     def is_active(self):
         return False
 
@@ -119,7 +121,7 @@ class User(db.Model):
             # Password does not match.
             return
 
-        if not user.is_active():
+        if not user.is_active:
             # User account is disabled.
             return
 
@@ -137,9 +139,11 @@ class User(db.Model):
 
         return user
 
+    @property
     def is_anonymous(self):
         return False
 
+    @property
     def is_active(self):
         return self.enabled
 

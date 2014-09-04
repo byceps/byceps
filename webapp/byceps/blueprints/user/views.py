@@ -274,7 +274,7 @@ def is_image_too_large(stream):
 @templated
 def login_form():
     """Show login form."""
-    logged_in = g.current_user.is_active()
+    logged_in = g.current_user.is_active
     if logged_in:
         flash_error('Du bist bereits als Benutzer "{}" angemeldet.', g.current_user.screen_name)
 
@@ -289,7 +289,7 @@ def login_form():
 @respond_no_content
 def login():
     """Allow the user to authenticate with e-mail address and password."""
-    if g.current_user.is_active():
+    if g.current_user.is_active:
         return
 
     form = LoginForm(request.form)
@@ -330,7 +330,7 @@ def find_user_by_id(id):
 
 def get_current_user_or_404():
     user = g.current_user
-    if not user.is_active():
+    if not user.is_active:
         abort(404)
 
     return user

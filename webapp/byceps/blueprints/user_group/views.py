@@ -33,7 +33,7 @@ def index():
 @templated
 def create_form(errorneous_form=None):
     """Show a form to create a group."""
-    if not g.current_user.is_active():
+    if not g.current_user.is_active:
         flash_error(
             'Du musst angemeldet sein um eine Benutzergruppe erstellen zu können.')
         return redirect_to('.index')
@@ -45,7 +45,7 @@ def create_form(errorneous_form=None):
 @blueprint.route('/', methods=['POST'])
 def create():
     """Create a group."""
-    if not g.current_user.is_active():
+    if not g.current_user.is_active:
         flash_error(
             'Du musst angemeldet sein um eine Benutzergruppe erstellen zu können.')
         return redirect_to('.index')

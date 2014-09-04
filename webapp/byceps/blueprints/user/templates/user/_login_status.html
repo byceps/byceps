@@ -1,4 +1,4 @@
-{% if g.current_user.is_active() -%}
+{% if g.current_user.is_active -%}
   Angemeldet als: <strong><a href="{{ url_for('user.view_current') }}">{{ g.current_user.screen_name }}</a></strong> (<a id="logout" href="{{ url_for('user.logout', _method='POST') }}">abmelden</a>)
 {%- else -%}
   <a href="{{ url_for('user.login_form') }}">Anmelden</a>

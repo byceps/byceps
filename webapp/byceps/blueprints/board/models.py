@@ -68,7 +68,7 @@ class Category(db.Model):
         the last time the current user viewed it.
         """
         # Don't display as new to a guest.
-        if g.current_user.is_anonymous():
+        if g.current_user.is_anonymous:
             return False
 
         if self.last_posting_updated_at is None:
@@ -187,7 +187,7 @@ class Topic(db.Model):
         the last time the current user viewed it.
         """
         # Don't display as new to a guest.
-        if g.current_user.is_anonymous():
+        if g.current_user.is_anonymous:
             return False
 
         last_viewed_at = self.last_viewed_at
@@ -296,14 +296,14 @@ class LastCategoryView(db.Model):
 
     @classmethod
     def find(cls, user, category):
-        if user.is_anonymous():
+        if user.is_anonymous:
             return
 
         return cls.query.filter_by(user=user, category=category).first()
 
     @classmethod
     def update(cls, user, category):
-        if user.is_anonymous():
+        if user.is_anonymous:
             return
 
         last_view = cls.find(user, category)
@@ -334,14 +334,14 @@ class LastTopicView(db.Model):
 
     @classmethod
     def find(cls, user, topic):
-        if user.is_anonymous():
+        if user.is_anonymous:
             return
 
         return cls.query.filter_by(user=user, topic=topic).first()
 
     @classmethod
     def update(cls, user, topic):
-        if user.is_anonymous():
+        if user.is_anonymous:
             return
 
         last_view = cls.find(user, topic)
