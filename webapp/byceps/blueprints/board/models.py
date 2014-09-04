@@ -68,7 +68,7 @@ class Category(db.Model):
         the last time the current user viewed it.
         """
         # Don't display as new to a guest.
-        if g.current_user.is_anonymous:
+        if g.current_user.is_anonymous():
             return False
 
         if self.last_posting_updated_at is None:
@@ -187,7 +187,7 @@ class Topic(db.Model):
         the last time the current user viewed it.
         """
         # Don't display as new to a guest.
-        if g.current_user.is_anonymous:
+        if g.current_user.is_anonymous():
             return False
 
         last_viewed_at = self.last_viewed_at
