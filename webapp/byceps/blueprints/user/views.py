@@ -110,8 +110,12 @@ def create():
 
     send_email_address_confirmation_email(user, verification_token)
 
-    flash_success('Das Benutzerkonto für "{}" wurde angelegt.',
-                  user.screen_name)
+    flash_success(
+        'Das Benutzerkonto für "{}" wurde angelegt. '
+        'Bevor du dich damit anmelden kannst muss zunächst der Link in '
+        'der an die angegebene Adresse verschickte E-Mail besucht werden.'
+        ,
+        user.screen_name)
     return redirect_to('.view', id=user.id)
 
 
