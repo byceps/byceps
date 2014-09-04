@@ -77,6 +77,7 @@ def create_env():
         autoescape=True,
         trim_blocks=True)
 
+    env.globals['render_snippet'] = render_snippet_as_partial
     env.globals['url_for'] = url_for
 
     return env
