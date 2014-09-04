@@ -49,7 +49,7 @@
         {%- set orga_team_membership = user.orga_team_membership_for_current_party %}
         {%- if orga_team_membership %}
         <br/>
-        Team: {{ orga_team_membership.orga_team.title }}
+        {{ orga_team_membership.orga_team.title }}
         {%- if orga_team_membership.duties %} ({{ orga_team_membership.duties }}){% endif %}
         {%- endif %}
       </p>
