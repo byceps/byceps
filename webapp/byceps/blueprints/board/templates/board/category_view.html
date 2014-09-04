@@ -46,17 +46,17 @@
 {{ render_pagination_nav(topics, 'board.category_view', {'id': category.id}) }}
 
   <div style="text-align: right;">
+    {%- set current_user_may_create_topic =  g.current_user.has_permission(BoardTopicPermission.create) %}
+    {%- if not current_user_may_create_topic %}
+    <small style="margin-right: 1em;">Du musst <a href="{{ url_for('user.login_form') }}">angemeldet</a> sein um Themen hinzufügen zu können.</small>
+    {%- endif %}
     <ol class="actions">
-    {%- current_user_may_create_topic =  g.current_user.has_permission(BoardTopicPermission.create) %}
     {%- if current_user_may_create_topic %}
       <li><a href="{{ url_for('.topic_create_form', category_id=category.id) }}"><span class="icon-add"></span> Thema hinzufügen</a></li>
     {%- else %}
       <li><span class="action disabled"><span class="icon-add"></span> Thema hinzufügen</span></li>
     {%- endif %}
     </ol>
-    {%- if not current_user_may_create_topic %}
-    <p><small>Du musst <a href="{{ url_for('user.login_form') }}">angemeldet</a> sein um Themen hinzufügen zu können.</small></p>
-    {%- endif %}
   </div>
 
 {%- endblock body %}
