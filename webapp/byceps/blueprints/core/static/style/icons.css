@@ -46,6 +46,7 @@ li [class*=" icon-"] {
 .icon-enabled:before        { content: "\f00c"; }
 .icon-error:before          { content: "\f071"; }
 .icon-external-link:before  { content: "\f08e"; }
+.icon-facebook:before       { content: "\f09a"; }
 .icon-hidden:before         { content: "\f070"; }
 .icon-history:before        { content: "\f1da"; }
 .icon-info:before           { content: "\f05a"; }
@@ -56,6 +57,7 @@ li [class*=" icon-"] {
 .icon-published:before      { content: "\f06e"; }
 .icon-sorted:before         { content: "\f0dc"; }
 .icon-success:before        { content: "\f00c"; }
+.icon-twitter:before        { content: "\f099"; }
 .icon-unlock:before         { content: "\f09c"; }
 .icon-update:before         { content: "\f021"; }
 .icon-upload:before         { content: "\f093"; }
