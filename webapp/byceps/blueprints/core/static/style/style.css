@@ -262,7 +262,7 @@ fieldset input[size] {
   width: auto;
 }
 fieldset textarea {
-  height: 40em;
+  height: 20rem;
   resize: vertical;
 }
 
