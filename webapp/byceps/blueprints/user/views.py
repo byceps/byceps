@@ -24,7 +24,7 @@ from ...util.views import redirect_to, respond_no_content
 from ..authorization.models import Role
 from ..terms.models import Consent, ConsentContext
 
-from .forms import AvatarImageUpdateForm, LoginForm, UserCreateForm
+from .forms import AvatarImageUpdateForm, DetailsForm, LoginForm, UserCreateForm
 from .models import NewsletterSubscription, NewsletterSubscriptionState, User, \
     VerificationToken, VerificationTokenPurpose
 
@@ -176,6 +176,29 @@ def confirm_email_address(token):
 def view_current():
     user = get_current_user_or_404()
     return {'user': user}
+
+
+@blueprint.route('/me/details')
+@templated
+def update_details_form(errorneous_form=None):
+    """Show a form to update the current user's details."""
+    user = get_current_user_or_404()
+    form = errorneous_form if errorneous_form else DetailsForm(obj=user.detail)
+    return {'form': form}
+
+
+@blueprint.route('/me/details', methods=['POST'])
+def update_details():
+    """Update the current user's details."""
+    user = get_current_user_or_404()
+    form = DetailsForm(request.form)
+
+    user.detail.first_names = form.first_names.data.strip()
+    user.detail.last_name = form.last_name.data.strip()
+    db.session.commit()
+
+    flash_success('Deine Daten wurden gespeichert.')
+    return redirect_to('.view_current')
 
 
 @blueprint.route('/me/avatar/update')

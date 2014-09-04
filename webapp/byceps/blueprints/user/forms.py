@@ -36,6 +36,11 @@ class UserCreateForm(LocalizedForm):
                 ' Ziffern und diese Sonderzeichen: {}'.format(SPECIAL_CHARS))
 
 
+class DetailsForm(LocalizedForm):
+    first_names = StringField('Vorname(n)')
+    last_name = StringField('Nachname')
+
+
 class AvatarImageUpdateForm(LocalizedForm):
     image = FileField('Bilddatei')
 

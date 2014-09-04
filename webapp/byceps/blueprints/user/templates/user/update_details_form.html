@@ -1,0 +1,19 @@
+{% extends 'layout/base.html' %}
+{% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
+{% set current_page = 'user' %}
+{% set title = 'Meine Daten bearbeiten' %}
+
+{% block body %}
+
+  <h1>{{ title }}</h1>
+
+  <form action="{{ url_for('.update_details') }}" method="post">
+    {%- call form_fieldset() %}
+      {{ form_field(form.first_names, maxlength=40, autofocus='autofocus') }}
+      {{ form_field(form.last_name, maxlength=40) }}
+    {%- endcall %}
+
+    {{ form_buttons('Speichern', cancel_url=url_for('.view_current')) }}
+  </form>
+
+{%- endblock body %}
