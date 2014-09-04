@@ -21,7 +21,7 @@ def render_snippet_as_partial(name):
     """Render the latest version of the snippet with the given name and
     return the result.
     """
-    snippet = Snippet.query.for_current_party.filter_by(name=name).one()
+    snippet = Snippet.query.for_current_party().filter_by(name=name).one()
     version = snippet.get_latest_version()
     template = load_template(version)
     return template.render()
