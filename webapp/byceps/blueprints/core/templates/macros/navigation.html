@@ -1,3 +1,7 @@
-{% macro render_navigation_item(item, current_page) -%}
+{% macro render_navigation_item_from_item(item, current_page) -%}
 <li{% if item.id is is_current_page(current_page) %} class="current"{% endif %}><a href="{{ url_for(item.endpoint) }}">{{ item.label }}</a></li>
+{%- endmacro %}
+
+{% macro render_navigation_item(url, label, id=None, current_page=None) -%}
+<li{% if id is not none and is is_current_page(current_page) %} class="current"{% endif %}><a href="{{ url }}">{{ label }}</a></li>
 {%- endmacro %}
