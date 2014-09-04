@@ -17,11 +17,12 @@ from ...util.views import redirect_to
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 from ..party.models import Party
-from ..snippet.models import Snippet, SnippetVersion
+from ..snippet.models import Mountpoint, Snippet, SnippetVersion
 from ..snippet.templating import render_snippet
 
 from .authorization import SnippetPermission
-from .forms import CreateForm, UpdateForm
+from .forms import MountpointCreateForm, MountpointUpdateForm, \
+    SnippetCreateForm, SnippetUpdateForm
 
 
 blueprint = create_blueprint('snippet_admin', __name__)
@@ -46,9 +47,11 @@ def index_for_party(party_id):
     """List snippets for that party."""
     party = Party.query.get_or_404(party_id)
     snippets = Snippet.query.for_party(party).all()
+    mountpoints = Mountpoint.query.for_party(party).all()
     return {
         'party': party,
         'snippets': snippets,
+        'mountpoints': mountpoints,
     }
 
 
@@ -70,39 +73,36 @@ def history(id):
     }
 
 
-@blueprint.route('/create')
+@blueprint.route('/for_party/<party_id>/create')
 @permission_required(SnippetPermission.create)
 @templated
-def create_form():
+def create_snippet_form(party_id):
     """Show form to create a snippet."""
-    form = CreateForm()
+    party = Party.query.get_or_404(party_id)
+    form = SnippetCreateForm()
     return {
+        'party': party,
         'form': form,
     }
 
 
-@blueprint.route('/', methods=['POST'])
+@blueprint.route('/for_party/<party_id>', methods=['POST'])
 @permission_required(SnippetPermission.create)
-def create():
+def create_snippet(party_id):
     """Create a snippet."""
-    form = CreateForm(request.form)
+    party = Party.query.get_or_404(party_id)
+    form = SnippetCreateForm(request.form)
 
-    name = form.name.data.strip()
-    url_path = form.url_path.data.strip()
-    if not url_path.startswith('/'):
-        abort(400, 'URL path must start with a slash.')
+    name = form.name.data.strip().lower()
 
-    snippet = Snippet(
-        name=name,
-        party=g.party,
-        url_path=url_path)
+    snippet = Snippet(name=name, party=party)
     db.session.add(snippet)
 
     version = SnippetVersion(
         snippet=snippet,
         creator=g.current_user,
-        title=form.title.data,
-        body=form.body.data)
+        title=form.title.data.strip(),
+        body=form.body.data.strip())
     db.session.add(version)
 
     db.session.commit()
@@ -111,17 +111,17 @@ def create():
     return redirect_to('.view_version', id=version.id)
 
 
-@blueprint.route('/<id>/update')
+@blueprint.route('/snippets/<id>/update')
 @permission_required(SnippetPermission.update)
 @templated
-def update_form(id):
+def update_snippet_form(id):
     """Show form to update a snippet."""
     snippet = find_snippet_by_id(id)
     latest_version = snippet.get_latest_version()
 
-    form = UpdateForm(
+    form = SnippetUpdateForm(
         obj=snippet,
-        title=latest_version.title,
+        title=latest_version.title.strip(),
         body=latest_version.body)
 
     return {
@@ -130,24 +130,64 @@ def update_form(id):
     }
 
 
-@blueprint.route('/<id>', methods=['POST'])
+@blueprint.route('/snippets/<id>', methods=['POST'])
 @permission_required(SnippetPermission.update)
-def update(id):
+def update_snippet(id):
     """Update a snippet."""
-    form = UpdateForm(request.form)
+    form = SnippetUpdateForm(request.form)
 
     snippet = find_snippet_by_id(id)
 
     version = SnippetVersion(
         snippet=snippet,
         creator=g.current_user,
-        title=form.title.data,
-        body=form.body.data)
+        title=form.title.data.strip(),
+        body=form.body.data.strip())
     db.session.add(version)
     db.session.commit()
 
     flash_success('Das Snippet "{}" wurde aktualisiert.', snippet.name)
     return redirect_to('.view_version', id=version.id)
+
+
+@blueprint.route('/mointpoints/for_party/<party_id>/create')
+@permission_required(SnippetPermission.create)
+@templated
+def create_mountpoint_form(party_id):
+    """Show form to create a mountpoint."""
+    party = Party.query.get_or_404(party_id)
+    form = MountpointCreateForm()
+    return {
+        'party': party,
+        'form': form,
+    }
+
+
+@blueprint.route('/mountpoints/for_party/<party_id>', methods=['POST'])
+@permission_required(SnippetPermission.create)
+def create_mountpoint(party_id):
+    """Create a mountpoint."""
+    party = Party.query.get_or_404(party_id)
+    form = MountpointCreateForm(request.form)
+
+    endpoint_suffix = form.endpoint_suffix.data.strip()
+    url_path = form.url_path.data.strip()
+    if not url_path.startswith('/'):
+        abort(400, 'URL path must start with a slash.')
+
+    snippet_name = form.snippet_name.data.strip().lower()
+    snippet = Snippet.query.filter_by(name=snippet_name).one()
+
+    mountpoint = Mountpoint(
+        endpoint_suffix=endpoint_suffix,
+        url_path=url_path,
+        snippet=snippet)
+    db.session.add(mountpoint)
+    db.session.commit()
+
+    flash_success('Der Mountpoint für "{}" wurde angelegt.',
+                  mountpoint.url_path)
+    return redirect_to('.index_for_party', party_id=party.id)
 
 
 def find_snippet_by_id(id):

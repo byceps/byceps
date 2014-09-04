@@ -12,12 +12,21 @@ from wtforms import StringField, TextAreaField
 from ...util.l10n import LocalizedForm
 
 
-class CreateForm(LocalizedForm):
-    name = StringField('Bezeichner')
+class MountpointCreateForm(LocalizedForm):
+    endpoint_suffix = StringField('Bezeichner')
     url_path = StringField('URL-Pfad')
+    snippet_name = StringField('Snippet-Name')
+
+
+class MountpointUpdateForm(MountpointCreateForm):
+    pass
+
+
+class SnippetCreateForm(LocalizedForm):
+    name = StringField('Bezeichner')
     title = StringField('Titel')
     body = TextAreaField('Text')
 
 
-class UpdateForm(CreateForm):
+class SnippetUpdateForm(SnippetCreateForm):
     pass

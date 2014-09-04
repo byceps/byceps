@@ -40,9 +40,9 @@ class Snippet(db.Model):
     query_class = BelongsToPartyQuery
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    party_id = db.Column(db.Unicode(20), db.ForeignKey('parties.id'))
+    party_id = db.Column(db.Unicode(20), db.ForeignKey('parties.id'), nullable=False)
     party = db.relationship(Party)
-    name = db.Column(db.Unicode(40))
+    name = db.Column(db.Unicode(40), nullable=False)
 
     def get_latest_version(self):
         """Return the most recent version.
@@ -114,10 +114,10 @@ class Mountpoint(db.Model):
     query_class = MountpointQuery
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    snippet_id = db.Column(db.Uuid, db.ForeignKey('snippets.id'))
-    snippet = db.relationship(Snippet)
     endpoint_suffix = db.Column(db.Unicode(40))
     url_path = db.Column(db.Unicode(40))
+    snippet_id = db.Column(db.Uuid, db.ForeignKey('snippets.id'))
+    snippet = db.relationship(Snippet)
 
     def generate_url(self):
         try:
@@ -128,7 +128,7 @@ class Mountpoint(db.Model):
     def __repr__(self):
         return ReprBuilder(self) \
             .add_with_lookup('id') \
-            .add_with_lookup('snippet') \
             .add_with_lookup('endpoint_suffix') \
             .add_with_lookup('url_path') \
+            .add_with_lookup('snippet') \
             .build()

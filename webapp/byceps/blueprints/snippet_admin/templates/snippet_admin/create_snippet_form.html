@@ -1,21 +1,20 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
 {% set current_page = 'snippet_admin' %}
-{% set title = 'Snippet bearbeiten' %}
+{% set title = 'Snippet erstellen' %}
 
 {% block body %}
 
   <h1>{{ title }}</h1>
 
-  <form action="{{ url_for('.update', id=snippet.id) }}" method="post">
+  <form action="{{ url_for('.create_snippet', party_id=party.id) }}" method="post">
     {% call form_fieldset() %}
-      {{ form_field(form.name, maxlength=40, required='required', readonly='readonly', autofocus='autofocus') }}
-      {{ form_field(form.url_path, maxlength=40, required='required', readonly='readonly') }}
+      {{ form_field(form.name, maxlength=40, required='required', autofocus='autofocus') }}
       {{ form_field(form.title, maxlength=80, required='required') }}
       {{ form_field(form.body, required='required') }}
     {% endcall %}
 
-    {{ form_buttons('Speichern', cancel_url=url_for('.index')) }}
+    {{ form_buttons('Speichern', cancel_url=url_for('.index_for_party', party_id=party.id)) }}
   </form>
 
 {%- endblock body %}

@@ -6,60 +6,77 @@
 
 {% block body %}
 
-  <h1>{{ title }}</h1>
-
   <p><strong>Party:</strong> {{ party.title }}
+
+  <h1>Snippets</h1>
 
   <table class="index wide">
     <thead>
       <tr>
-        <th>Bezeichner</th>
-        <th>URL-Pfad</th>
+        <th>ID</th>
+        <th>Name</th>
         <th>Letzte Änderung</th>
         <th>durch</th>
         <th colspan="3">Aktionen</th>
       </tr>
     </thead>
     <tbody>
-      {%- for snippet in snippets|sort(attribute='id') %}
-        {%- set latest_version = snippet.get_latest_version() %}
-        <tr>
-          <td>{{ snippet.id }}</td>
-          <td>{{ snippet.url_path }}</td>
-          <td style="white-space: nowrap;">
-            {%- if g.current_user.has_permission(SnippetPermission.view_history) %}
-            <span class="icon-history"></span> <a href="{{ url_for('.history', id=snippet.id) }}" title="Änderungshistorie ansehen">{{ render_datetime(latest_version.created_at) }}</a>
-            {%- else %}
-            {{ render_datetime(latest_version.created_at) }}
-            {%- endif %}
-          </td>
-          <td>{{ render_user_link(latest_version.creator) }}</td>
-          {%- set snippet_mounted_url = snippet.generate_url() %}
-          {%- if snippet_mounted_url is not none %}
-          <td colspan="2">
-            <a href="{{ snippet_mounted_url }}" class="action"><span class="icon-view"></span> ansehen</a>
-          </td>
+    {%- for snippet in snippets|sort(attribute='id') %}
+      {%- set latest_version = snippet.get_latest_version() %}
+      <tr>
+        <td>{{ snippet.id }}</td>
+        <td>{{ snippet.name }}</td>
+        <td style="white-space: nowrap;">
+          {%- if g.current_user.has_permission(SnippetPermission.view_history) %}
+          <span class="icon-history"></span> <a href="{{ url_for('.history', id=snippet.id) }}" title="Änderungshistorie ansehen">{{ render_datetime(latest_version.created_at) }}</a>
           {%- else %}
-          <td>
-            <span class="action disabled"><span class="icon-view"></span> ansehen</span>
-          </td>
-          <td>
-            <a href="{{ url_for('.view_version', id=latest_version.id) }}" class="action"><span class="icon-view"></span> Fallback</a>
-          </td>
+          {{ render_datetime(latest_version.created_at) }}
           {%- endif %}
-          <td>
-            {%- if g.current_user.has_permission(SnippetPermission.update) %}
-            <a href="{{ url_for('.update_form', id=snippet.id) }}" class="action"><span class="icon-edit"></span> bearbeiten</a>
-            {%- endif %}
-          </td>
-        </tr>
-      {%- endfor %}
+        </td>
+        <td>{{ render_user_link(latest_version.creator) }}</td>
+        <td><a href="{{ url_for('.view_version', id=latest_version.id) }}" class="action"><span class="icon-view"></span> ansehen</a></td>
+        <td>
+          {%- if g.current_user.has_permission(SnippetPermission.update) %}
+          <a href="{{ url_for('.update_snippet_form', id=snippet.id) }}" class="action"><span class="icon-edit"></span> bearbeiten</a>
+          {%- endif %}
+        </td>
+      </tr>
+    {%- endfor %}
     </tbody>
   </table>
 
   {%- if g.current_user.has_permission(SnippetPermission.create) %}
   <ol class="actions">
-    <li><a href="{{ url_for('.create_form') }}"><span class="icon-add"></span> Neues Snippet anlegen</a></li>
+    <li><a href="{{ url_for('.create_snippet_form', party_id=party.id) }}"><span class="icon-add"></span> Snippet erstellen</a></li>
+  </ol>
+  {%- endif %}
+
+  <h1>Mountpoints</h1>
+
+  <table class="index wide">
+    <thead>
+      <tr>
+        <th>Bezeichner</th>
+        <th>Endpoint-Name</th>
+        <th>URL-Pfad</th>
+        <th>Snippet</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for mountpoint in mountpoints|sort(attribute='id') %}
+      <tr>
+        <td>{{ mountpoint.id }}</td>
+        <td>{{ mountpoint.endpoint_suffix }}</td>
+        <td>{{ mountpoint.url_path }}</td>
+        <td>{{ mountpoint.snippet.name }}</td>
+      </tr>
+    {%- endfor %}
+    </tbody>
+  </table>
+
+  {%- if g.current_user.has_permission(SnippetPermission.create) %}
+  <ol class="actions">
+    <li><a href="{{ url_for('.create_mountpoint_form', party_id=party.id) }}"><span class="icon-add"></span> Mountpoint erstellen</a></li>
   </ol>
   {%- endif %}
 
