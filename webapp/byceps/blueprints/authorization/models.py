@@ -22,7 +22,7 @@ class Permission(db.Model):
 
     Can be assigned to one or more roles.
     """
-    __tablename__ = 'permissions'
+    __tablename__ = 'auth_permissions'
 
     id = db.Column(db.Unicode(40), primary_key=True)
     title = db.Column(db.Unicode(80), unique=True)
@@ -51,7 +51,7 @@ class Role(db.Model):
 
     Can be assigned to a user.
     """
-    __tablename__ = 'roles'
+    __tablename__ = 'auth_roles'
 
     id = db.Column(db.Unicode(40), primary_key=True)
     title = db.Column(db.Unicode(80), unique=True)
@@ -67,11 +67,11 @@ class Role(db.Model):
 
 class RolePermission(db.Model):
     """The assignment of a permission to a role."""
-    __tablename__ = 'role_permissions'
+    __tablename__ = 'auth_role_permissions'
 
-    role_id = db.Column(db.Unicode(40), db.ForeignKey('roles.id'), primary_key=True)
+    role_id = db.Column(db.Unicode(40), db.ForeignKey('auth_roles.id'), primary_key=True)
     role = db.relationship(Role, backref='role_permissions', collection_class=set)
-    permission_id = db.Column(db.Unicode(40), db.ForeignKey('permissions.id'), primary_key=True)
+    permission_id = db.Column(db.Unicode(40), db.ForeignKey('auth_permissions.id'), primary_key=True)
     permission = db.relationship(Permission, collection_class=set)
 
     def __init__(self, permission):
@@ -86,13 +86,13 @@ class RolePermission(db.Model):
 
 class UserRole(db.Model):
     """The assignment of a role to a user."""
-    __tablename__ = 'user_roles'
+    __tablename__ = 'auth_user_roles'
 
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
     user = db.relationship(User,
                            backref=db.backref('user_roles', collection_class=set),
                            collection_class=set)
-    role_id = db.Column(db.Unicode(40), db.ForeignKey('roles.id'), primary_key=True)
+    role_id = db.Column(db.Unicode(40), db.ForeignKey('auth_roles.id'), primary_key=True)
     role = db.relationship(Role, collection_class=set)
 
     def __init__(self, role):
