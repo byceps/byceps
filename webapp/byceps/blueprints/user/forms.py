@@ -22,7 +22,7 @@ VALID_SCREEN_NAME_CHARS = frozenset(chain(
     ascii_letters, digits, GERMAN_CHARS, SPECIAL_CHARS))
 
 
-class CreateForm(LocalizedForm):
+class UserCreateForm(LocalizedForm):
     screen_name = StringField('Benutzername', validators=[DataRequired()])
     email_address = StringField('E-Mail-Adresse', validators=[DataRequired()])
     password = PasswordField('Passwort', validators=[DataRequired()])

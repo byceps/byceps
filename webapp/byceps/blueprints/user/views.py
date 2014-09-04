@@ -24,7 +24,7 @@ from ...util.views import redirect_to, respond_no_content
 from ..authorization.models import Role
 from ..terms.models import Consent, ConsentContext
 
-from .forms import AvatarImageUpdateForm, CreateForm, LoginForm
+from .forms import AvatarImageUpdateForm, LoginForm, UserCreateForm
 from .models import NewsletterSubscription, NewsletterSubscriptionState, User, \
     VerificationToken, VerificationTokenPurpose
 
@@ -52,14 +52,14 @@ def view(id):
 @templated
 def create_form(errorneous_form=None):
     """Show a form to create a user."""
-    form = errorneous_form if errorneous_form else CreateForm()
+    form = errorneous_form if errorneous_form else UserCreateForm()
     return {'form': form}
 
 
 @blueprint.route('/', methods=['POST'])
 def create():
     """Create a user."""
-    form = CreateForm(request.form)
+    form = UserCreateForm(request.form)
     if not form.validate():
         return create_form(form)
 
