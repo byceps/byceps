@@ -106,7 +106,7 @@ class MountpointQuery(BelongsToPartyQuery):
 
 class Mountpoint(db.Model):
     """The exposition of a snippet at a certain URL path."""
-    __tablename__ = 'snippet_routes'
+    __tablename__ = 'snippet_mountpoints'
     __table_args__ = (
         db.UniqueConstraint('snippet_id', 'endpoint_suffix'),
         db.UniqueConstraint('snippet_id', 'url_path'),
