@@ -67,10 +67,11 @@ def create_app(environment_name, *, initialize=True):
 
     if initialize:
         with app.app_context():
-            app.party_id = get_current_party_id(app)
-            add_routes_for_snippets()
-
             if config.get_site_mode().is_public():
+                # Mount snippets.
+                app.party_id = config.get_current_party_id()
+                add_routes_for_snippets()
+
                 # Incorporate template overrides for the current party.
                 app.template_folder = str(Path('party_template_overrides') \
                                     / app.party_id)
@@ -85,12 +86,3 @@ def register_blueprints(app):
     for name, url_prefix, mode in BLUEPRINTS:
         if mode is None or mode == current_mode:
             register_blueprint(app, name, url_prefix)
-
-
-def get_current_party_id(app):
-    """Determine the current party from the configuration."""
-    party_id = app.config.get('PARTY')
-    if party_id is None:
-        raise Exception('No party configured.')
-
-    return party_id
