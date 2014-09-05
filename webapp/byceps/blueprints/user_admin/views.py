@@ -23,10 +23,14 @@ blueprint = create_blueprint('user_admin', __name__)
 permission_registry.register_enum(UserPermission)
 
 
-@blueprint.route('/')
+@blueprint.route('/', defaults={'page': 1})
+@blueprint.route('/pages/<int:page>')
 @permission_required(UserPermission.list)
 @templated
-def index():
+def index(page):
     """List users."""
-    users = User.query.all()
+    per_page = 20
+    users = User.query \
+        .order_by(User.created_at.desc()) \
+        .paginate(page, per_page)
     return {'users': users}

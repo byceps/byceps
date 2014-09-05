@@ -1,5 +1,6 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/datetime.html' import render_datetime %}
+{% from 'macros/pagination.html' import render_pagination_nav %}
 {% set current_page = 'user_admin' %}
 {% set title = 'Benutzer' %}
 
@@ -18,7 +19,7 @@
       </tr>
     </thead>
     <tbody>
-      {%- for user in users|sort(attribute='created_at', reverse=True) %}
+      {%- for user in users.items %}
       <tr>
         <td><strong>{{ user.screen_name }}</strong></td>
         <td>{% if user.detail.full_name %}{{ user.detail.full_name }}{% endif %}</td>
@@ -30,6 +31,8 @@
       <tr>
     </tbody>
   </table>
+
+{{ render_pagination_nav(users, '.index') }}
 
   <ol class="actions">
     <li><a href="{{ url_for('user.create_form') }}"><span class="icon-add"></span> Benutzerkonto erstellen</a></li>
