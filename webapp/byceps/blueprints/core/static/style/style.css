@@ -307,11 +307,12 @@ td {
   text-align: left;
   vertical-align: top;
 }
-th {
+
+table.index th {
   font-size: 0.8rem;
   font-weight: bold;
 }
-td {
+table.index td {
   font-size: 0.9rem;
 }
 
