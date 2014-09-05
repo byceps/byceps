@@ -13,7 +13,6 @@
   <table class="index wide">
     <thead>
       <tr>
-        <th>ID</th>
         <th>Name</th>
         <th>Letzte Änderung</th>
         <th>durch</th>
@@ -21,10 +20,9 @@
       </tr>
     </thead>
     <tbody>
-    {%- for snippet in snippets|sort(attribute='id') %}
+    {%- for snippet in snippets|sort(attribute='name') %}
       {%- set latest_version = snippet.get_latest_version() %}
       <tr>
-        <td>{{ snippet.id }}</td>
         <td>{{ snippet.name }}</td>
         <td style="white-space: nowrap;">
           {%- if g.current_user.has_permission(SnippetPermission.view_history) %}
@@ -51,23 +49,21 @@
   </ol>
   {%- endif %}
 
-  <h1>Mountpoints</h1>
+  <h2>Mountpoints</h2>
 
   <table class="index wide">
     <thead>
       <tr>
-        <th>Bezeichner</th>
-        <th>Endpoint-Name</th>
         <th>URL-Pfad</th>
+        <th>Endpoint-Name</th>
         <th>Snippet</th>
       </tr>
     </thead>
     <tbody>
-      {%- for mountpoint in mountpoints|sort(attribute='id') %}
+      {%- for mountpoint in mountpoints|sort(attribute='url_path') %}
       <tr>
-        <td>{{ mountpoint.id }}</td>
-        <td>{{ mountpoint.endpoint_suffix }}</td>
         <td>{{ mountpoint.url_path }}</td>
+        <td>{{ mountpoint.endpoint_suffix }}</td>
         <td>{{ mountpoint.snippet.name }}</td>
       </tr>
     {%- endfor %}
