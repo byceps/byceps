@@ -21,7 +21,7 @@
     <tbody>
       {%- for user in users.items %}
       <tr>
-        <td><strong>{{ user.screen_name }}</strong></td>
+        <td><a href="{{ url_for('.view', id=user.id) }}">{{ user.screen_name }}</a></td>
         <td>{% if user.detail.full_name %}{{ user.detail.full_name }}{% endif %}</td>
         <td>{{ render_datetime(user.created_at) }}</td>
         <td>{% if user.legacy_id %}{{ user.legacy_id }}{% endif %}</td>

@@ -34,3 +34,11 @@ def index(page):
         .order_by(User.created_at.desc()) \
         .paginate(page, per_page)
     return {'users': users}
+
+
+@blueprint.route('/<id>')
+@templated
+def view(id):
+    """Show a user's interal profile."""
+    user = User.query.get_or_404(id)
+    return {'user': user}
