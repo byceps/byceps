@@ -39,9 +39,9 @@
     {%- endif %}
     <ol class="actions">
     {%- if current_user_may_reply %}
-      <li><a href="{{ url_for('.posting_create_form', topic_id=topic.id) }}">{{ render_icon('add') }} Antworten</a></li>
+      <li><a href="{{ url_for('.posting_create_form', topic_id=topic.id) }}">{{ render_icon('reply') }} Antworten</a></li>
     {%- else %}
-      <li><span class="action disabled">{{ render_icon('add') }} Antworten</span></li>
+      <li><span class="action disabled">{{ render_icon('reply') }} Antworten</span></li>
     {%- endif %}
     </ol>
   </div>
