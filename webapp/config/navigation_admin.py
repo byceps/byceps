@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from byceps.blueprints.authorization_admin.authorization import RolePermission
+from byceps.blueprints.newsletter_admin.authorization import NewsletterPermission
 from byceps.blueprints.orga_admin.authorization import OrgaTeamPermission
 from byceps.blueprints.party_admin.authorization import PartyPermission
 from byceps.blueprints.snippet_admin.authorization import SnippetPermission
@@ -16,6 +17,7 @@ admin.add_item('snippet_admin.index', 'Snippets', id='snippet_admin', required_p
 admin.add_item('terms_admin.index', 'AGB', id='terms_admin', required_permission=TermsPermission.list)
 admin.add_item('user_admin.index', 'Benutzer', id='user_admin', required_permission=UserPermission.list)
 admin.add_item('orga_admin.index', 'Orgateams', id='orga_admin', required_permission=OrgaTeamPermission.list)
+admin.add_item('newsletter_admin.index', 'Newsletter', id='newsletter_admin', required_permission=NewsletterPermission.view_stats)
 
 
 def get_blocks():

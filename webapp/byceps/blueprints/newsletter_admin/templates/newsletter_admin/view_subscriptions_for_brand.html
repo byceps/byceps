@@ -1,0 +1,65 @@
+{% extends 'layout/base.html' %}
+{% from 'macros/icons.html' import render_icon %}
+{% set current_page = 'newsletter_admin' %}
+{% set title = 'Newsletter - Bestellstatus ({})'.format(brand.title) %}
+
+{% block head %}
+    <style>
+      .stats {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 2rem;
+      }
+      .stats li {
+        font-weight: bold;
+        text-align: center;
+      }
+      .stats .number,
+      .stats .description {
+        display: block;
+      }
+      .stats .number {
+        font-size: 5rem;
+        margin-bottom: -1rem;
+      }
+    </style>
+{%- endblock head %}
+
+{% block body %}
+
+  <h1>{{ title }}</h1>
+
+  <ol class="stats">
+    <li style="color: #00aa00;">
+      <span class="number">{{ totals[State.requested] }}</span>
+      <span class="description">{{ render_icon('enabled') }} angefordert</span>
+    </li>
+    <li style="color: #cc0000;">
+      <span class="number">{{ totals[State.declined] }}</span>
+      <span class="description">{{ render_icon('disabled') }} abgelehnt</span>
+    </li>
+    <li>
+      <span class="number">{{ totals['total'] }}</span>
+      <span class="description">&sum; gesamt</span>
+    </li>
+  </ol>
+
+  <table class="index">
+    <thead>
+      <tr>
+        <th>Benutzer</th>
+        <th>Bestellstatus</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for user, state in subscriptions %}
+      <tr>
+        <td><a href="{{ url_for('user_admin.view', id=user.id) }}">{{ user.screen_name }}</a></td>
+        <td>{{ render_icon('enabled' if state == State.requested else 'disabled') }}</td>
+      </tr>
+      {%- endfor %}
+      <tr>
+    </tbody>
+  </table>
+
+{%- endblock body %}
