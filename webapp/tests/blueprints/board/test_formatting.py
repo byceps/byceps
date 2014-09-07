@@ -32,6 +32,11 @@ class RenderBbcodeTestCase(TestCase):
         expected = 'before <a href="http://example.com/index.html"><img src="http://example.com/image.png"/></a> after'
         self.assert_rendered_html(text, expected)
 
+    def test_quote_without_source(self):
+        text = '[quote]All your base are belong to us.[/quote]'
+        expected = '<blockquote>All your base are belong to us.</blockquote>'
+        self.assert_rendered_html(text, expected)
+
     def assert_rendered_html(self, text, expected):
         actual = render_html(text)
         self.assertEqual(actual, expected)
