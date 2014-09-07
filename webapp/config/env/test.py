@@ -17,3 +17,4 @@ PATH_DATA = Path('./data')
 PATH_USER_AVATAR_IMAGES = PATH_DATA / 'users/avatars'
 
 MODE = 'public'
+PARTY = 'acme-2014'
