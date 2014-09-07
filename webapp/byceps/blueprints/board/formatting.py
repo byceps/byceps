@@ -19,4 +19,14 @@ def render_html(value):
         return '<img src="{}"/>'.format(value)
     parser.add_formatter('img', render_image, replace_links=False)
 
+    # Render quotes with optional author.
+    def render_quote(name, value, options, parent, context):
+        source = ''
+        if 'quote' in options:
+            author = options['quote']
+            source = '<footer><cite>{}</cite></footer>'.format(author)
+        return '<blockquote>{}{}</blockquote>'.format(value, source)
+    parser.add_formatter('quote', render_quote, strip=True,
+                         swallow_trailing_newline=True)
+
     return parser.format(value)

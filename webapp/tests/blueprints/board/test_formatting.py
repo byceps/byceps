@@ -37,6 +37,11 @@ class RenderBbcodeTestCase(TestCase):
         expected = '<blockquote>All your base are belong to us.</blockquote>'
         self.assert_rendered_html(text, expected)
 
+    def test_quote_with_source(self):
+        text = '[quote="CATS"]All your base are belong to us.[/quote]'
+        expected = '<blockquote>All your base are belong to us.<footer><cite>CATS</cite></footer></blockquote>'
+        self.assert_rendered_html(text, expected)
+
     def assert_rendered_html(self, text, expected):
         actual = render_html(text)
         self.assertEqual(actual, expected)
