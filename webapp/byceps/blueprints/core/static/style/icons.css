@@ -56,6 +56,7 @@ li [class*=" icon-"] {
 .icon-pending:before        { content: "\f017"; }
 .icon-pin:before            { content: "\f08d"; }
 .icon-published:before      { content: "\f06e"; }
+.icon-quote:before          { content: "\f10d"; }
 .icon-sorted:before         { content: "\f0dc"; }
 .icon-success:before        { content: "\f00c"; }
 .icon-twitter:before        { content: "\f099"; }

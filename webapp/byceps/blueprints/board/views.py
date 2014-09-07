@@ -273,10 +273,29 @@ def posting_create_form(topic_id, errorneous_form=None):
     """Show a form to create a posting to the topic."""
     topic = Topic.query.get_or_404(topic_id)
     form = errorneous_form if errorneous_form else PostingCreateForm()
+
+    quoted_posting_bbcode = quote_posting_as_bbcode()
+    if quoted_posting_bbcode:
+        form.body.data = quoted_posting_bbcode
+
     return {
         'topic': topic,
         'form': form,
     }
+
+
+def quote_posting_as_bbcode():
+    posting_id = request.args.get('quote', type=str)
+    if not posting_id:
+        return
+
+    posting = Posting.query.get(posting_id)
+    if posting is None:
+        flash_error('Der zu zitierende Beitrag wurde nicht gefunden.')
+        return
+
+    return '[quote author="{}"]{}[/quote]'.format(
+        posting.creator.screen_name, posting.body)
 
 
 @blueprint.route('/topics/<topic_id>/create', methods=['POST'])
