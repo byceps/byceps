@@ -1,5 +1,6 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/forms.html' import form_buttons, form_fieldset, form_field %}
+{% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'board' %}
 {% set title = 'Beitrag hinzufügen' %}
 
@@ -10,7 +11,7 @@
       <li><a href="{{ url_for('.category_index') }}">Forum</a></li>
       <li><a href="{{ url_for('.category_view', slug=topic.category.slug) }}">{{ topic.category.title }}</a></li>
       <li><a href="{{ url_for('.topic_view', id=topic.id) }}">{{ topic.title }}</a></li>
-      <li>{{ title }}</li>
+      <li>{{ render_icon('reply') }} {{ title }}</li>
     </ol>
   </nav>
 

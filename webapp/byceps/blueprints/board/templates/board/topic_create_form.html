@@ -1,5 +1,6 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/forms.html' import form_buttons, form_fieldset, form_field %}
+{% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'board' %}
 {% set title = 'Thema hinzufügen' %}
 
@@ -9,7 +10,7 @@
     <ol>
       <li><a href="{{ url_for('.category_index') }}">Forum</a></li>
       <li><a href="{{ url_for('.category_view', slug=category.slug) }}">{{ category.title }}</a></li>
-      <li>{{ title }}</li>
+      <li>{{ render_icon('add') }} {{ title }}</li>
     </ol>
   </nav>
 
