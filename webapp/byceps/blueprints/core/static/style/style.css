@@ -438,6 +438,21 @@ nav.board-breadcrumbs li:last-child {
   font-size: 0.8rem;
 }
 
+.board-postings .quote-intro {
+  font-style: italic;
+  margin: 0 0 0.2rem 0;
+  padding: 0;
+}
+.board-postings .quote-intro cite {
+  font-weight: bold;
+}
+.board-postings blockquote {
+  background-color: #eeeeee;
+  border: #cccccc solid 1px;
+  margin: 0 2rem;
+  padding: 0.5rem;
+}
+
 
 /* footer */
 
