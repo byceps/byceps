@@ -1,7 +1,7 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
-{% from 'macros/user.html' import render_user_link %}
+{% from 'macros/user_admin.html' import render_user_admin_link %}
 {% set current_page = 'snippet_admin' %}
 {% set title = 'Snippets' %}
 
@@ -32,7 +32,7 @@
           {{ render_datetime(latest_version.created_at) }}
           {%- endif %}
         </td>
-        <td>{{ render_user_link(latest_version.creator) }}</td>
+        <td>{{ render_user_admin_link(latest_version.creator) }}</td>
         <td><a href="{{ url_for('.view_version', id=latest_version.id) }}" class="action">{{ render_icon('view') }} ansehen</a></td>
         <td>
           {%- if g.current_user.has_permission(SnippetPermission.update) %}

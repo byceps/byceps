@@ -2,6 +2,7 @@
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
+{% from 'macros/user_admin.html' import render_user_admin_link %}
 {% set current_page = 'user_admin' %}
 {% set title = 'Benutzer' %}
 
@@ -22,7 +23,7 @@
     <tbody>
       {%- for user in users.items %}
       <tr>
-        <td><a href="{{ url_for('.view', id=user.id) }}">{{ user.screen_name }}</a></td>
+        <td>{{ render_user_admin_link(user) }}</td>
         <td>{% if user.detail.full_name %}{{ user.detail.full_name }}{% endif %}</td>
         <td>{{ render_datetime(user.created_at) }}</td>
         <td>{% if user.legacy_id %}{{ user.legacy_id }}{% endif %}</td>

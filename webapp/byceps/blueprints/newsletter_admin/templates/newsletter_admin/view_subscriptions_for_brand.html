@@ -1,5 +1,6 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/icons.html' import render_icon %}
+{% from 'macros/user_admin.html' import render_user_admin_link %}
 {% set current_page = 'newsletter_admin' %}
 {% set title = 'Newsletter - Bestellstatus ({})'.format(brand.title) %}
 
@@ -54,7 +55,7 @@
     <tbody>
       {%- for user, state in subscriptions %}
       <tr>
-        <td><a href="{{ url_for('user_admin.view', id=user.id) }}">{{ user.screen_name }}</a></td>
+        <td>{{ render_user_admin_link(user) }}</td>
         <td>{{ render_icon('enabled' if state == State.requested else 'disabled') }}</td>
       </tr>
       {%- endfor %}
