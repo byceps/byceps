@@ -22,11 +22,11 @@ from ...util import upload
 from ...util.views import redirect_to, respond_no_content
 
 from ..authorization.models import Role
+from ..newsletter.models import NewsletterSubscription, NewsletterSubscriptionState
 from ..terms.models import Consent, ConsentContext
 
 from .forms import AvatarImageUpdateForm, DetailsForm, LoginForm, UserCreateForm
-from .models import NewsletterSubscription, NewsletterSubscriptionState, User, \
-    VerificationToken, VerificationTokenPurpose
+from .models import User, VerificationToken, VerificationTokenPurpose
 
 
 MAXIMUM_AVATAR_IMAGE_DIMENSIONS = Dimensions(110, 150)
