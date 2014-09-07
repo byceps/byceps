@@ -33,6 +33,10 @@
       <th>Avatar</th>
       <td><span class="icon-{{ 'enabled' if user.has_avatar_image else 'disabled' }}"></span></td>
     </tr>
+    <tr>
+      <th>Orga</th>
+      <td><span class="icon-{{ 'enabled' if user.is_orga else 'disabled' }}"></span></td>
+    </tr>
   </table>
 
   <h2>Persönliche Daten</h2>
