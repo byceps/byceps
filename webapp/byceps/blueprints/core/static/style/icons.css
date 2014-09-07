@@ -39,7 +39,8 @@ li [class*=" icon-"] {
 .icon-add:before            { content: "\f067"; }
 .icon-administrate:before   { content: "\f0ad"; }
 .icon-archived:before       { content: "\f187"; }
-.icon-arrow-up:before       { content: "\f062"; }
+.icon-arrow-left:before     { content: "\f060"; }
+.icon-arrow-right:before    { content: "\f061"; }
 .icon-delete:before         { content: "\f1f8"; }
 .icon-disabled:before       { content: "\f05e"; }
 .icon-edit:before           { content: "\f040"; }
