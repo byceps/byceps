@@ -41,4 +41,8 @@ def index(page):
 def view(id):
     """Show a user's interal profile."""
     user = User.query.get_or_404(id)
+
+    # Fake it (as no current party is defined in admin mode).
+    user.is_orga_for_current_brand = user.is_orga
+
     return {'user': user}
