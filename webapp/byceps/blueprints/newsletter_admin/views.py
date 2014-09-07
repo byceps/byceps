@@ -26,7 +26,7 @@ permission_registry.register_enum(NewsletterPermission)
 
 
 @blueprint.route('/')
-@permission_required(NewsletterPermission.view_stats)
+@permission_required(NewsletterPermission.view_subscriptions)
 @templated
 def index():
     """List brands to choose from."""
@@ -35,7 +35,7 @@ def index():
 
 
 @blueprint.route('/subscriptions/<brand_id>')
-@permission_required(NewsletterPermission.view_stats)
+@permission_required(NewsletterPermission.view_subscriptions)
 @templated
 def view_subscriptions_for_brand(brand_id):
     """Show user subscriptions for that brand."""
