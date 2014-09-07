@@ -1,5 +1,6 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/datetime.html' import render_datetime %}
+{% from 'macros/icons.html' import render_icon %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
 {% set current_page = 'user_admin' %}
 {% set title = 'Benutzer' %}
@@ -25,7 +26,7 @@
         <td>{% if user.detail.full_name %}{{ user.detail.full_name }}{% endif %}</td>
         <td>{{ render_datetime(user.created_at) }}</td>
         <td>{% if user.legacy_id %}{{ user.legacy_id }}{% endif %}</td>
-        <td><span class="icon-{{ 'enabled' if user.enabled else 'disabled' }}"></span></td>
+        <td>{{ render_icon('enabled' if user.enabled else 'disabled') }}</td>
       </tr>
       {%- endfor %}
       <tr>

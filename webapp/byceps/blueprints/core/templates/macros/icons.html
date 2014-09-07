@@ -1,0 +1,3 @@
+{% macro render_icon(name, title=None) -%}
+<span class="icon-{{ name }}"{% if title is not none %} title="{{ title }}"{% endif %}></span>
+{%- endmacro %}

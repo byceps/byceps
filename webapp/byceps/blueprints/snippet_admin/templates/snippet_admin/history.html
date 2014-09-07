@@ -1,5 +1,6 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/datetime.html' import render_datetime %}
+{% from 'macros/icons.html' import render_icon %}
 {% from 'macros/user.html' import render_user_link %}
 {% set current_page = 'snippet_admin' %}
 {% set title = 'Versionshistorie' %}
@@ -28,9 +29,9 @@
         <tr>
           <td>
             {%- if version == snippet.get_latest_version() -%}
-            <span class="icon-published" title="öffentlich"></span>
+            {{ render_icon('published', title='öffentlich') }}
             {%- else -%}
-            <span class="icon-archived" title="archiviert"></span>
+            {{ render_icon('archived', title='archiviert') }}
             {%- endif -%}
           </td>
           <td style="white-space: nowrap;"><a href="{{ url_for('.view_version', id=version.id) }}">{{ render_datetime(version.created_at) }}</a></td>

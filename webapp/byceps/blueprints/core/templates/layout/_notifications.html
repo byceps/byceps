@@ -1,3 +1,4 @@
+{%- from 'macros/icons.html' import render_icon %}
 {%- for text, category, icon in get_flashed_messages() %}
-  <p class="notification-{{ category }}"><span class="icon-{{ icon if icon is not none else category }}"></span> {{ text }}</p>
+  <p class="notification-{{ category }}">{{ render_icon(icon if icon is not none else category) }} {{ text }}</p>
 {%- endfor %}

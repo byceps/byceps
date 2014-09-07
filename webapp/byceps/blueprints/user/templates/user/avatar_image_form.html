@@ -1,5 +1,6 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
+{% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'user.avatar_image_update' %}
 {% set title = 'Avatar hochladen' %}
 
@@ -12,7 +13,7 @@
       {{ form_field(form.image, maxlength=500000, accept='image/*', required='required') }}
     {%- endcall %}
 
-    {{ form_buttons('<span class="icon-upload"></span> Bild hochladen'|safe) }}
+    {{ form_buttons('%s Bild hochladen'|format(render_icon('upload'))|safe) }}
   </form>
 
 {%- endblock body %}

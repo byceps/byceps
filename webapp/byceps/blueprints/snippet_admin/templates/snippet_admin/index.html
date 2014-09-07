@@ -1,4 +1,5 @@
 {% extends 'layout/base.html' %}
+{% from 'macros/icons.html' import render_icon %}
 {% from 'macros/user.html' import render_user_link %}
 {% set current_page = 'snippets' %}
 {% set title = 'Snippets - Party wählen' %}
@@ -10,7 +11,7 @@
   <ul>
     {%- for party in parties|sort(attribute='starts_at', reverse=True) %}
     <li{% if party.is_archived %} class="hidden"{% endif %}>
-      {%- if party.is_archived %}<span class="icon-archived" title="archiviert"></span> {% endif -%}
+      {%- if party.is_archived %}{{ render_icon('archived', title='archiviert') }} {% endif -%}
       <a href="{{ url_for('.index_for_party', party_id=party.id) }}">{{ party.title }}</a></li>
     {%- endfor %}
   </ul>

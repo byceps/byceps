@@ -1,5 +1,6 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/datetime.html' import render_datetime %}
+{% from 'macros/icons.html' import render_icon %}
 {% from 'macros/user.html' import render_user_link %}
 {% set current_page = 'user_group' %}
 {% set title = 'Benutzergruppen' %}
@@ -35,7 +36,7 @@
 
   {%- if g.current_user.is_active %}
   <ol class="actions">
-    <li><a href="{{ url_for('.create_form') }}"><span class="icon-add"></span> Gruppe erstellen</a></li>
+    <li><a href="{{ url_for('.create_form') }}">{{ render_icon('add') }} Gruppe erstellen</a></li>
   </ol>
   {%- endif %}
 

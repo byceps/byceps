@@ -1,4 +1,5 @@
 {% extends 'layout/base.html' %}
+{% from 'macros/icons.html' import render_icon %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
 {% set current_page = 'board' %}
 {% set title = 'Forum - %s'|format(topic.title) %}
@@ -16,7 +17,7 @@
   {%- if g.current_user.has_any_permission(BoardTopicPermission.hide, BoardTopicPermission.lock, BoardTopicPermission.pin) %}
   <div style="text-align: right;">
     <ol class="actions">
-        <a href="{{ url_for('.topic_flags_form', id=topic.id) }}" title="Thema verwalten"><span class="icon-administrate"></span> verwalten</a></p>
+        <a href="{{ url_for('.topic_flags_form', id=topic.id) }}" title="Thema verwalten">{{ render_icon('administrate') }} verwalten</a></p>
     </ol>
   </div>
   {%- endif %}
@@ -38,9 +39,9 @@
     {%- endif %}
     <ol class="actions">
     {%- if current_user_may_reply %}
-      <li><a href="{{ url_for('.posting_create_form', topic_id=topic.id) }}"><span class="icon-add"></span> Antworten</a></li>
+      <li><a href="{{ url_for('.posting_create_form', topic_id=topic.id) }}">{{ render_icon('add') }} Antworten</a></li>
     {%- else %}
-      <li><span class="action disabled"><span class="icon-add"></span> Antworten</span></li>
+      <li><span class="action disabled">{{ render_icon('add') }} Antworten</span></li>
     {%- endif %}
     </ol>
   </div>

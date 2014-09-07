@@ -1,5 +1,6 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/datetime.html' import render_datetime %}
+{% from 'macros/icons.html' import render_icon %}
 {% from 'macros/user.html' import render_user_avatar %}
 {% set current_page = 'user' %}
 {% set title = 'Meine Daten' %}
@@ -9,7 +10,7 @@
   <h1>{{ title }}</h1>
 
   <ol class="actions" style="margin: 0;">
-    <li><a href="{{ url_for('.view', id=user.id) }}"><span class="icon-view"></span> öffentliches Profil ansehen</a></li>
+    <li><a href="{{ url_for('.view', id=user.id) }}">{{ render_icon('view') }} öffentliches Profil ansehen</a></li>
   </ol>
 
   <h2>Benutzerkonto</h2>
@@ -36,7 +37,7 @@
       {%- endif -%}
       {%- if g.current_user == user %}
         <ol class="actions" style="display: block; margin: 0.5rem 0 0 0;">
-          <li><a href="{{ url_for('.avatar_image_form') }}"><span class="icon-upload"></span> Avatar hochladen</a></li>
+          <li><a href="{{ url_for('.avatar_image_form') }}">{{ render_icon('upload') }} Avatar hochladen</a></li>
         </ol>
       {%- endif %}
       </td>
@@ -45,7 +46,7 @@
 
   <h2>Persönliche Daten</h2>
   <ol class="actions" style="margin: 0;">
-    <li><a href="{{ url_for('.update_details_form') }}"><span class="icon-edit"></span> Persönliche Daten bearbeiten</a></li>
+    <li><a href="{{ url_for('.update_details_form') }}">{{ render_icon('edit') }} Persönliche Daten bearbeiten</a></li>
   </ol>
   <table class="index">
     <tr>
