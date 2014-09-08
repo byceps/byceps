@@ -16,12 +16,13 @@
       {%- if not topic.locked and g.current_user.has_permission(BoardPostingPermission.create) %}
       <li><a href="{{ url_for('.posting_create_form', topic_id=topic.id, quote=posting.id) }}" title="diesen Beitrag zitieren">{{ render_icon('quote') }} Zitieren</a></li>
       {%- endif %}
-      {%- if posting == posting.topic.get_body_posting() %}
-        {%- if not topic.locked and g.current_user.has_permission(BoardTopicPermission.update) %}
+      {%- set topic_body_posting = posting.topic.get_body_posting() %}
+      {%- if posting == topic_body_posting %}
+        {%- if not topic.locked and g.current_user == posting.topic.creator and g.current_user.has_permission(BoardTopicPermission.update) %}
       <li><a href="{{ url_for('.topic_update_form', id=topic.id) }}" title="dieses Thema bearbeiten">{{ render_icon('edit') }} Bearbeiten</a></li>
         {%- endif %}
       {%- else %}
-        {%- if not topic.locked and g.current_user.has_permission(BoardPostingPermission.update) %}
+        {%- if not topic.locked and g.current_user == posting.creator and g.current_user.has_permission(BoardPostingPermission.update) %}
       <li><a href="{{ url_for('.posting_update_form', id=posting.id) }}" title="diesen Beitrag bearbeiten">{{ render_icon('edit') }} Bearbeiten</a></li>
         {%- endif %}
       {%- endif %}
