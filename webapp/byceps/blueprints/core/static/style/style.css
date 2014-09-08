@@ -418,11 +418,13 @@ nav.board-breadcrumbs li:last-child {
   vertical-align: top;
 }
 .board-postings aside {
+  font-size: 0.9rem;
   margin-right: 4px;
-  width: 120px;
+  width: 130px;
 }
 .board-postings .body {
-  width: 528px;
+  font-size: 1rem;
+  width: 520px;
 }
 .board-postings footer {
   font-size: 0.75rem;
@@ -434,8 +436,9 @@ nav.board-breadcrumbs li:last-child {
   font-weight: bold;
 }
 
+.board-postings aside .creator,
 .board-postings aside .avatar {
-  margin: 0.25rem 0;
+  margin-bottom: 0.25rem;
 }
 
 .board-postings aside time {
