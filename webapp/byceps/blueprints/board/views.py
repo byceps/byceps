@@ -20,7 +20,8 @@ from ..authorization.registry import permission_registry
 
 from .authorization import BoardPostingPermission, BoardTopicPermission
 from .formatting import render_html
-from .forms import PostingCreateForm, PostingUpdateForm, TopicCreateForm
+from .forms import PostingCreateForm, PostingUpdateForm, TopicCreateForm, \
+    TopicUpdateForm
 from .models import Category, Posting, Topic
 
 
@@ -163,6 +164,71 @@ def topic_create(category_id):
 
     flash_success('Das Thema "{}" wurde hinzugefügt.', topic.title)
     return redirect_to('.topic_view', id=topic.id)
+
+
+@blueprint.route('/topics/<id>/update')
+@permission_required(BoardTopicPermission.update)
+@templated
+def topic_update_form(id):
+    """Show form to update a topic."""
+    topic = Topic.query.get_or_404(id)
+    url = url_for('.topic_view', id=topic.id)
+
+    if topic.creator != g.current_user:
+        flash_error('Du bist nicht der Autor dieses Themas, '
+                    'deshalb darfst du es nicht bearbeiten.')
+        return redirect(url)
+
+    if topic.locked:
+        flash_error(
+            'Das Thema darf nicht bearbeitet werden weil es gesperrt ist.')
+        return redirect(url)
+
+    if topic.hidden:
+        flash_error('Das Thema darf nicht bearbeitet werden.')
+        return redirect(url)
+
+    posting = topic.get_body_posting()
+    form = TopicUpdateForm(obj=topic, body=posting.body)
+
+    return {
+        'form': form,
+        'topic': topic,
+    }
+
+
+@blueprint.route('/topics/<id>', methods=['POST'])
+@permission_required(BoardTopicPermission.update)
+def topic_update(id):
+    """Update a topic."""
+    topic = Topic.query.get_or_404(id)
+    url = url_for('.topic_view', id=topic.id)
+
+    if topic.creator != g.current_user:
+        flash_error('Du bist nicht der Autor dieses Themas, '
+                    'deshalb darfst du es nicht bearbeiten.')
+        return redirect(url)
+
+    if topic.locked:
+        flash_error(
+            'Das Thema darf nicht bearbeitet werden weil es gesperrt ist.')
+        return redirect(url)
+
+    if topic.hidden:
+        flash_error('Das Thema darf nicht bearbeitet werden.')
+        return redirect(url)
+
+    form = TopicUpdateForm(request.form)
+
+    topic.title = form.title.data.strip()
+    posting = topic.get_body_posting()
+    posting.body = form.body.data.strip()
+    posting.last_edited_by = g.current_user
+    posting.edit_count += 1
+    db.session.commit()
+
+    flash_success('Das Thema "{}" wurde aktualisiert.', topic.title)
+    return redirect(url)
 
 
 @blueprint.route('/topics/<id>/flags')

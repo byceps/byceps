@@ -168,6 +168,12 @@ class Topic(db.Model):
         """Return the URL anchor for this topic."""
         return 'topic-{}'.format(self.id)
 
+    def get_body_posting(self):
+        """Return the posting that stores the body of this topic's
+        opening posting.
+        """
+        return sorted(self.postings, key=lambda p: p.created_at)[0]
+
     def aggregate(self):
         """Update the count and latest fields."""
         posting_count = Posting.query.filter_by(topic=self).count()
@@ -238,7 +244,7 @@ class Posting(db.Model):
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     topic_id = db.Column(db.Uuid, db.ForeignKey('board_topics.id'))
-    topic = db.relationship(Topic)
+    topic = db.relationship(Topic, backref='postings')
     created_at = db.Column(db.DateTime, default=datetime.now)
     creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
     creator = db.relationship(User, foreign_keys=[creator_id])

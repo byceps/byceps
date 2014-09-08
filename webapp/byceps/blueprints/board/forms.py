@@ -23,3 +23,7 @@ class PostingUpdateForm(PostingCreateForm):
 
 class TopicCreateForm(PostingCreateForm):
     title = StringField('Titel', validators=[DataRequired()])
+
+
+class TopicUpdateForm(TopicCreateForm):
+    pass
