@@ -1,0 +1,28 @@
+{% extends 'layout/base.html' %}
+{% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
+{% from 'macros/icons.html' import render_icon %}
+{% set current_page = 'board' %}
+{% set title = 'Beitrag bearbeiten' %}
+
+{% block body %}
+
+  <nav class="board-breadcrumbs">
+    <ol>
+      <li><a href="{{ url_for('.category_index') }}">Forum</a></li>
+      <li><a href="{{ url_for('.category_view', slug=posting.topic.category.slug) }}">{{ posting.topic.category.title }}</a></li>
+      <li><a href="{{ url_for('.topic_view', id=posting.topic.id) }}">{{ posting.topic.title }}</a></li>
+      <li>{{ render_icon('edit') }} {{ title }}</li>
+    </ol>
+  </nav>
+
+  <form action="{{ url_for('.posting_update', id=posting.id) }}" method="post">
+    {% call form_fieldset() %}
+      {{ form_field(form.body, required='required', autofocus='autofocus') }}
+    {% endcall %}
+
+    <p><small><a href="http://de.wikipedia.org/wiki/BBCode" target="_blank">BBCode</a> wird unterstützt.</small></p>
+
+    {{ form_buttons('Speichern', cancel_url=url_for('.topic_view', id=posting.topic.id)) }}
+  </form>
+
+{%- endblock body %}
