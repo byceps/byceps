@@ -7,7 +7,7 @@ byceps.blueprints.board.views
 :Copyright: 2006-2014 Jochen Kupperschmidt
 """
 
-from flask import current_app, g, request, url_for
+from flask import current_app, g, redirect, request, url_for
 
 from ...database import db
 from ...util.framework import create_blueprint, flash_error, flash_notice, \
@@ -20,7 +20,7 @@ from ..authorization.registry import permission_registry
 
 from .authorization import BoardPostingPermission, BoardTopicPermission
 from .formatting import render_html
-from .forms import PostingCreateForm, TopicCreateForm
+from .forms import PostingCreateForm, PostingUpdateForm, TopicCreateForm
 from .models import Category, Posting, Topic
 
 
@@ -322,6 +322,70 @@ def posting_create(topic_id):
                        id=topic.id,
                        page=topic.page_count,
                        _anchor=posting.anchor)
+
+
+@blueprint.route('/postings/<id>/update')
+@permission_required(BoardPostingPermission.update)
+@templated
+def posting_update_form(id):
+    """Show form to update a posting."""
+    posting = Posting.query.get_or_404(id)
+    url = url_for('.topic_view', id=posting.topic.id, _anchor=posting.anchor)
+
+    if posting.creator != g.current_user:
+        flash_error('Du bist nicht der Autor dieses Beitrags, '
+                    'deshalb darfst du ihn nicht bearbeiten.')
+        return redirect(url)
+
+    if posting.topic.locked:
+        flash_error(
+            'Der Beitrag darf nicht bearbeitet werden weil das Thema, '
+            'zu dem dieser Beitrag gehört, gesperrt ist.')
+        return redirect(url)
+
+    if posting.topic.hidden or posting.hidden:
+        flash_error('Der Beitrag darf nicht bearbeitet werden.')
+        return redirect(url)
+
+    form = PostingUpdateForm(obj=posting)
+
+    return {
+        'form': form,
+        'posting': posting,
+    }
+
+
+@blueprint.route('/postings/<id>', methods=['POST'])
+@permission_required(BoardPostingPermission.update)
+def posting_update(id):
+    """Update a posting."""
+    posting = Posting.query.get_or_404(id)
+    url = url_for('.topic_view', id=posting.topic.id, _anchor=posting.anchor)
+
+    if posting.creator != g.current_user:
+        flash_error('Du bist nicht der Autor dieses Beitrags, '
+                    'deshalb darfst du ihn nicht bearbeiten.')
+        return redirect(url)
+
+    if posting.topic.locked:
+        flash_error(
+            'Der Beitrag darf nicht bearbeitet werden weil das Thema, '
+            'zu dem dieser Beitrag gehört, gesperrt ist.')
+        return redirect(url)
+
+    if posting.topic.hidden or posting.hidden:
+        flash_error('Der Beitrag darf nicht bearbeitet werden.')
+        return redirect(url)
+
+    form = PostingUpdateForm(request.form)
+
+    posting.body = form.body.data.strip()
+    posting.last_edited_by = g.current_user
+    posting.edit_count += 1
+    db.session.commit()
+
+    flash_success('Der Beitrag wurde aktualisiert.')
+    return redirect(url)
 
 
 @blueprint.route('/postings/<id>/flags')

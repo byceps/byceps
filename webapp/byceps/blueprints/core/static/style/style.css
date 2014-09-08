@@ -424,6 +424,11 @@ nav.board-breadcrumbs li:last-child {
 .board-postings .body {
   width: 528px;
 }
+.board-postings footer {
+  font-size: 0.75rem;
+  margin-top: 1rem;
+  text-align: right;
+}
 
 .board-postings aside .creator {
   font-weight: bold;

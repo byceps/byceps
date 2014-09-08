@@ -17,5 +17,9 @@ class PostingCreateForm(LocalizedForm):
     body = TextAreaField('Text', validators=[DataRequired()])
 
 
+class PostingUpdateForm(PostingCreateForm):
+    pass
+
+
 class TopicCreateForm(PostingCreateForm):
     title = StringField('Titel', validators=[DataRequired()])
