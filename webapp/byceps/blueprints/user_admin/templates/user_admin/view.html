@@ -1,5 +1,6 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/datetime.html' import render_datetime %}
+{% from 'macros/icons.html' import render_icon %}
 {% from 'macros/user.html' import render_user_avatar %}
 {% set current_page = 'user_admin' %}
 {% set title = 'Benutzer - %s'|format(user.screen_name) %}
@@ -27,15 +28,15 @@
     </tr>
     <tr>
       <th>Aktiviert</th>
-      <td><span class="icon-{{ 'enabled' if user.enabled else 'disabled' }}"></span></td>
+      <td>{{ render_icon('enabled' if user.enabled else 'disabled') }}</td>
     </tr>
     <tr>
       <th>Avatar</th>
-      <td><span class="icon-{{ 'enabled' if user.has_avatar_image else 'disabled' }}"></span></td>
+      <td>{{ render_icon('enabled' if user.has_avatar_image else 'disabled') }}</td>
     </tr>
     <tr>
       <th>Orga</th>
-      <td><span class="icon-{{ 'enabled' if user.is_orga_for_any_brand else 'disabled' }}"></span></td>
+      <td>{{ render_icon('enabled' if user.is_orga_for_any_brand else 'disabled') }}</td>
     </tr>
   </table>
 
