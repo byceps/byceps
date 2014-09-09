@@ -208,6 +208,7 @@ def update_details():
 @blueprint.route('/me/avatar/update')
 @templated
 def update_avatar_image_form():
+    """Show a form to update the current user's avatar image."""
     get_current_user_or_404()
     form = AvatarImageUpdateForm()
     return {
@@ -225,6 +226,7 @@ blueprint.add_url_rule(
 
 @blueprint.route('/me/avatar', methods=['POST'])
 def update_avatar_image():
+    """Update the current user's avatar image."""
     user = get_current_user_or_404()
 
     form = AvatarImageUpdateForm(request.form)
@@ -268,6 +270,19 @@ def is_image_too_large(stream):
     actual_dimensions = read_dimensions(stream)
     stream.seek(0)
     return actual_dimensions > MAXIMUM_AVATAR_IMAGE_DIMENSIONS
+
+
+@blueprint.route('/me/avatar', methods=['DELETE'])
+@respond_no_content
+def delete_avatar_image():
+    """Remove the current user's avatar image."""
+    user = get_current_user_or_404()
+
+    user.remove_avatar_image()
+    db.session.commit()
+
+    flash_success('Das Avatarbild wurde entfernt.')
+    return [('Location', url_for('.view_current'))]
 
 
 @blueprint.route('/login')

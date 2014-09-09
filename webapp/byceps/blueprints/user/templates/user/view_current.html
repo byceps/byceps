@@ -38,6 +38,9 @@
       {%- if g.current_user == user %}
         <ol class="actions" style="display: block; margin: 0.5rem 0 0 0;">
           <li><a href="{{ url_for('.update_avatar_image_form') }}">{{ render_icon('upload') }} Avatar hochladen</a></li>
+          {%- if user.has_avatar_image -%}
+          <li><a id="avatar-delete" href="{{ url_for('.delete_avatar_image', _method='DELETE') }}">{{ render_icon('delete') }} Avatar entfernen</a></li>
+          {%- endif %}
         </ol>
       {%- endif %}
       </td>

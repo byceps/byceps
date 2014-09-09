@@ -168,6 +168,10 @@ class User(db.Model):
         self.avatar_image_created_at = created_at
         self.avatar_image_type = image_type
 
+    def remove_avatar_image(self):
+        self.avatar_image_created_at = None
+        self.avatar_image_type = None
+
     @hybrid_property
     def avatar_image_type(self):
         type_str = self._avatar_image_type
