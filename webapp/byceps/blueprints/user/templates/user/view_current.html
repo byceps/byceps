@@ -37,7 +37,7 @@
       {%- endif -%}
       {%- if g.current_user == user %}
         <ol class="actions" style="display: block; margin: 0.5rem 0 0 0;">
-          <li><a href="{{ url_for('.avatar_image_form') }}">{{ render_icon('upload') }} Avatar hochladen</a></li>
+          <li><a href="{{ url_for('.update_avatar_image_form') }}">{{ render_icon('upload') }} Avatar hochladen</a></li>
         </ol>
       {%- endif %}
       </td>

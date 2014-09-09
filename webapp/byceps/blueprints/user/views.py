@@ -207,7 +207,7 @@ def update_details():
 
 @blueprint.route('/me/avatar/update')
 @templated
-def avatar_image_form():
+def update_avatar_image_form():
     get_current_user_or_404()
     form = AvatarImageUpdateForm()
     return {
@@ -224,7 +224,7 @@ blueprint.add_url_rule(
 
 
 @blueprint.route('/me/avatar', methods=['POST'])
-def avatar_image():
+def update_avatar_image():
     user = get_current_user_or_404()
 
     form = AvatarImageUpdateForm(request.form)
