@@ -62,10 +62,17 @@ address {
 
 /* basic */
 
+html {
+  height: 100%;
+}
 body {
   background-color: #f4f4f4;
+  border-color: #cc0000;
+  border-style: solid;
+  border-width: 2px 0;
   color: #333333;
   font-family: sans-serif;
+  min-height: 100%;
 }
 
 
