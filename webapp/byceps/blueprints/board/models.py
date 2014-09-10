@@ -249,7 +249,7 @@ class Posting(db.Model):
     creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
     creator = db.relationship(User, foreign_keys=[creator_id])
     body = db.Column(db.UnicodeText)
-    last_edited_at = db.Column(db.DateTime, default=datetime.now())
+    last_edited_at = db.Column(db.DateTime)
     last_edited_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
     last_edited_by = db.relationship(User, foreign_keys=[last_edited_by_id])
     edit_count = db.Column(db.Integer, default=0)

@@ -223,6 +223,7 @@ def topic_update(id):
     topic.title = form.title.data.strip()
     posting = topic.get_body_posting()
     posting.body = form.body.data.strip()
+    posting.last_edited_at = datetime.now()
     posting.last_edited_by = g.current_user
     posting.edit_count += 1
     db.session.commit()
@@ -446,6 +447,7 @@ def posting_update(id):
     form = PostingUpdateForm(request.form)
 
     posting.body = form.body.data.strip()
+    posting.last_edited_at = datetime.now()
     posting.last_edited_by = g.current_user
     posting.edit_count += 1
     db.session.commit()
