@@ -148,6 +148,14 @@ class Topic(db.Model):
 
         return topic
 
+    def update(self, title, body):
+        self.title = title.strip()
+
+        posting = self.get_body_posting()
+        posting.update(body, commit=False)
+
+        db.session.commit()
+
     @property
     def reply_count(self):
         return self.posting_count - 1
@@ -267,6 +275,15 @@ class Posting(db.Model):
         topic.aggregate()
 
         return posting
+
+    def update(self, body, *, commit=True):
+        self.body = body.strip()
+        self.last_edited_at = datetime.now()
+        self.last_edited_by = g.current_user
+        self.edit_count += 1
+
+        if commit:
+            db.session.commit()
 
     def __init__(self, topic, creator, body):
         self.topic = topic
