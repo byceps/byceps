@@ -9,6 +9,6 @@ Flask-SQLAlchemy >= 1.0
 pg8000 >= 1.10.0
 SQLAlchemy >= 0.9.7
 
-bbcode >= 1.0.18
+bbcode >= 1.0.19
 Flask-Mail >= 0.9.0
 Pillow >= 2.5.3
