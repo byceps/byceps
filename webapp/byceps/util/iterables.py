@@ -19,3 +19,14 @@ def find(iterable, predicate):
     for elem in iterable:
         if predicate(elem):
             return elem
+
+
+def index_of(iterable, predicate):
+    """Return the (0-based) index of the first element in the iterable
+    that matches the predicate.
+
+    If none does, return ``None``.
+    """
+    for i, elem in enumerate(iterable):
+        if predicate(elem):
+            return i
