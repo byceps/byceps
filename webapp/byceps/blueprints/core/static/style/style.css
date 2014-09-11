@@ -454,6 +454,7 @@ nav.board-breadcrumbs li:last-child {
 }
 
 .board-postings .quote-intro {
+  font-size: 0.8rem;
   font-style: italic;
   margin: 0 0 0.2rem 0;
   padding: 0;
