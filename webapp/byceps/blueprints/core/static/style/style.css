@@ -418,6 +418,9 @@ nav.board-breadcrumbs li:last-child {
   margin: 0;
   padding: 10px 0;
 }
+.board-postings article:target {
+  background-color: #ffeebb;
+}
 
 .board-postings aside,
 .board-postings .body {
