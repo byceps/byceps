@@ -415,8 +415,8 @@ nav.board-breadcrumbs li:last-child {
 
 .board-postings article {
   border-top: #cccccc solid 1px;
-  margin: 0 0 20px 0;
-  padding: 10px 0 0 0;
+  margin: 0;
+  padding: 10px 0;
 }
 
 .board-postings aside,
@@ -437,6 +437,10 @@ nav.board-breadcrumbs li:last-child {
   font-size: 0.75rem;
   margin-top: 1rem;
   text-align: right;
+}
+.board-postings footer p {
+  margin: 0;
+  padding: 0;
 }
 
 .board-postings aside .creator {
