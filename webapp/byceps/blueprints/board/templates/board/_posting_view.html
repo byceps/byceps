@@ -8,7 +8,7 @@
     <div class="creator">{{ render_user_link(posting.creator) }}</div>
     {{ render_user_avatar(posting.creator) }}
     {{ render_datetime(posting.created_at)|replace(', ', '<br/>'|safe) }}
-    {%- if posting.unseen %} {{ render_flag_new() }}{% endif %}
+    {%- if posting.unseen %}<div>{{ render_flag_new() }}</div>{% endif %}
 
     {%- if posting.hidden %}<p title="versteckt (durch {{ posting.hidden_by.screen_name }})">{{ render_icon('hidden') }} versteckt</p>{% endif %}
 
