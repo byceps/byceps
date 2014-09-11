@@ -13,6 +13,7 @@ from flask import current_app, g
 
 from ...database import BaseQuery, db, generate_uuid
 from ...util.instances import ReprBuilder
+from ...util.iterables import index_of
 
 from ..brand.models import Brand
 from ..user.models import User
@@ -301,6 +302,21 @@ class Posting(db.Model):
         self.topic = topic
         self.creator = creator
         self.body = body
+
+    def calculate_page_number(self):
+        """Return the number of the page this posting should appear on."""
+        topic_postings = Posting.query \
+            .for_topic(self.topic) \
+            .only_visible() \
+            .earliest_to_latest() \
+            .all()
+
+        index = index_of(topic_postings, lambda p: p == self)
+        if index is None:
+            return  # Shouldn't happen.
+
+        per_page = int(current_app.config['BOARD_POSTINGS_PER_PAGE'])
+        return divmod(index, per_page)[0] + 1
 
     @property
     def anchor(self):

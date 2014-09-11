@@ -421,7 +421,9 @@ def posting_update_form(id):
 def posting_update(id):
     """Update a posting."""
     posting = Posting.query.get_or_404(id)
-    url = url_for('.topic_view', id=posting.topic.id, _anchor=posting.anchor)
+
+    page = posting.calculate_page_number()
+    url = url_for('.topic_view', id=posting.topic.id, page=page, _anchor=posting.anchor)
 
     if posting.creator != g.current_user:
         flash_error('Du bist nicht der Autor dieses Beitrags, '
