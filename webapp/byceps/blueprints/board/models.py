@@ -54,7 +54,7 @@ class Category(db.Model):
         topic_count = Topic.query.filter_by(category=self).count()
         posting_query = Posting.query.join(Topic).filter_by(category=self)
         posting_count = posting_query.count()
-        last_posting = posting_query.order_by(Posting.created_at.desc()).first()
+        last_posting = posting_query.latest_to_earliest().first()
 
         self.topic_count = topic_count
         self.posting_count = posting_count
@@ -184,8 +184,8 @@ class Topic(db.Model):
 
     def aggregate(self):
         """Update the count and latest fields."""
-        posting_count = Posting.query.filter_by(topic=self).count()
-        last_posting = Posting.query.filter_by(topic=self).order_by(Posting.created_at.desc()).first()
+        posting_count = Posting.query.for_topic(self).count()
+        last_posting = Posting.query.for_topic(self).latest_to_earliest().first()
 
         self.posting_count = posting_count
         if last_posting:
@@ -237,12 +237,21 @@ class Topic(db.Model):
 
 class PostingQuery(BaseQuery):
 
+    def for_topic(self, topic):
+        return self.filter_by(topic=topic)
+
     def only_visible(self):
         """Only return postings the current user may see."""
         if not g.current_user.has_permission(BoardPostingPermission.view_hidden):
             return self.filter_by(hidden=False)
 
         return self
+
+    def earliest_to_latest(self):
+        return self.order_by(Posting.created_at.asc())
+
+    def latest_to_earliest(self):
+        return self.order_by(Posting.created_at.desc())
 
 
 class Posting(db.Model):

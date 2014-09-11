@@ -104,9 +104,9 @@ def topic_view(id, page):
     postings_per_page = int(current_app.config['BOARD_POSTINGS_PER_PAGE'])
 
     postings = Posting.query \
-        .filter_by(topic=topic) \
+        .for_topic(topic) \
         .only_visible() \
-        .order_by(Posting.created_at.asc()) \
+        .earliest_to_latest() \
         .paginate(page, postings_per_page)
 
     add_unseen_flag_to_postings(postings.items, last_viewed_at)
