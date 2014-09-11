@@ -501,12 +501,14 @@ main img {
 .tag {
   background-color: orange;
   border-radius: 3px;
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.15);
   color: #ffffff;
   display: inline-block;
   font-size: 0.7rem;
   font-weight: bold;
   line-height: 1.3em;
   padding: 0 0.4em;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.15);
 }
 
 .avatar {
