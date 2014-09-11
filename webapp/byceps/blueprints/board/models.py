@@ -51,7 +51,7 @@ class Category(db.Model):
 
     def aggregate(self):
         """Update the count and latest fields."""
-        topic_count = Topic.query.filter_by(category=self).count()
+        topic_count = Topic.query.for_category(self).count()
         posting_query = Posting.query.join(Topic).filter_by(category=self)
         posting_count = posting_query.count()
         last_posting = posting_query.latest_to_earliest().first()
@@ -94,6 +94,9 @@ class Category(db.Model):
 
 
 class TopicQuery(BaseQuery):
+
+    def for_category(self, category):
+        return self.filter_by(category=category)
 
     def only_visible(self):
         """Only return topics the current user may see."""

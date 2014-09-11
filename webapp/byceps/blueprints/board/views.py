@@ -62,7 +62,7 @@ def category_view(slug, page):
     topics_per_page = int(current_app.config['BOARD_TOPICS_PER_PAGE'])
 
     topics = Topic.query \
-        .filter_by(category=category) \
+        .for_category(category) \
         .only_visible() \
         .order_by(Topic.pinned.desc(), Topic.last_updated_at.desc()) \
         .paginate(page, topics_per_page)
