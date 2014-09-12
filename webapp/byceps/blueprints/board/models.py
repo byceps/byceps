@@ -175,6 +175,31 @@ class Topic(db.Model):
         else:
             return full_page_count
 
+    def get_default_posting_to_jump_to(self, last_viewed_at):
+        """Return the posting to show by default, and the page it's on."""
+        if g.current_user.is_anonymous:
+            # All postings are potentially new to a guest, so start on
+            # the first page.
+            return None
+
+        if last_viewed_at is None:
+            # This topic is completely new to the current user, so
+            # start on the first page.
+            return None
+
+        first_new_posting = Posting.query \
+            .for_topic(self) \
+            .only_visible() \
+            .earliest_to_latest() \
+            .filter(Posting.created_at > last_viewed_at) \
+            .first()
+
+        if first_new_posting is None:
+            # Current user has seen all postings so far, so show the last one.
+            return self.get_latest_posting()
+
+        return first_new_posting
+
     @property
     def anchor(self):
         """Return the URL anchor for this topic."""
@@ -186,15 +211,19 @@ class Topic(db.Model):
         """
         return sorted(self.postings, key=lambda p: p.created_at)[0]
 
+    def get_latest_posting(self):
+        """Return the most recent posting in this topic."""
+        return Posting.query.for_topic(self).latest_to_earliest().first()
+
     def aggregate(self):
         """Update the count and latest fields."""
         posting_count = Posting.query.for_topic(self).count()
-        last_posting = Posting.query.for_topic(self).latest_to_earliest().first()
+        latest_posting = self.get_latest_posting()
 
         self.posting_count = posting_count
         if last_posting:
-            self.last_updated_at = last_posting.created_at
-            self.last_updated_by = last_posting.creator
+            self.last_updated_at = latest_posting.created_at
+            self.last_updated_by = latest_posting.creator
 
         db.session.commit()
 

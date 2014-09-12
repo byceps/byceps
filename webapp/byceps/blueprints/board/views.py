@@ -77,7 +77,7 @@ def category_view(slug, page):
 # topic
 
 
-@blueprint.route('/topics/<id>', defaults={'page': 1})
+@blueprint.route('/topics/<id>', defaults={'page': 0})
 @blueprint.route('/topics/<id>/pages/<int:page>')
 @templated
 def topic_view(id, page):
@@ -102,6 +102,18 @@ def topic_view(id, page):
             icon='lock')
 
     postings_per_page = int(current_app.config['BOARD_POSTINGS_PER_PAGE'])
+    if page == 0:
+        posting = topic.get_default_posting_to_jump_to(last_viewed_at)
+        if posting is None:
+            page = 1
+        else:
+            page = posting.calculate_page_number()
+            # Jump to a specific posting. This requires a redirect.
+            url = url_for('.topic_view',
+                          id=topic.id,
+                          page=page,
+                          _anchor=posting.anchor)
+            return redirect(url, code=307)
 
     postings = Posting.query \
         .for_topic(topic) \
