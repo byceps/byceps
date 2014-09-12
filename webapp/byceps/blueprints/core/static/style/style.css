@@ -473,7 +473,7 @@ nav.board-breadcrumbs li:last-child {
 .board-postings blockquote {
   background-color: #eeeeee;
   border: #cccccc solid 1px;
-  margin: 0 2rem;
+  margin: 0 0 0 1rem;
   padding: 0.5rem;
 }
 
