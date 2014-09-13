@@ -179,7 +179,12 @@ def confirm_email_address(token):
 @templated
 def view_current():
     user = get_current_user_or_404()
-    return {'user': user}
+    newsletter_subscription_state = NewsletterSubscription.get_state_for_user(user)
+    return {
+        'user': user,
+        'newsletter_subscription_state': newsletter_subscription_state,
+        'NewsletterSubscriptionState': NewsletterSubscriptionState,
+    }
 
 
 @blueprint.route('/me/details')

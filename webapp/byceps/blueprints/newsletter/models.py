@@ -59,3 +59,16 @@ class NewsletterSubscription(db.Model):
             .add_with_lookup('expressed_at') \
             .add('state', self.state.name) \
             .build()
+
+    @classmethod
+    def get_state_for_user(cls, user):
+        """Return the user's current subscription state."""
+        current_subscription = cls.query \
+            .filter_by(user=user) \
+            .order_by(cls.expressed_at.desc()) \
+            .first()
+
+        if current_subscription is None:
+            return NewsletterSubscriptionState.declined
+
+        return current_subscription.state

@@ -66,4 +66,17 @@
     </tr>
   </table>
 
+  <h2>Newsletter-Abonnement</h2>
+  <table class="index">
+    <tr>
+      <th>Status</th>
+      <td>
+        {%- if newsletter_subscription_state == NewsletterSubscriptionState.requested -%}
+        {{ render_icon('enabled') }} abonniert
+        {%- else -%}
+        {{ render_icon('disabled') }} nicht abonniert
+        {%- endif -%}
+    </tr>
+  </table>
+
 {%- endblock body %}
