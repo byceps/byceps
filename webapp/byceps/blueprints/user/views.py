@@ -184,7 +184,7 @@ def view_current():
 
 @blueprint.route('/me/details')
 @templated
-def update_details_form(errorneous_form=None):
+def details_update_form(errorneous_form=None):
     """Show a form to update the current user's details."""
     user = get_current_user_or_404()
     form = errorneous_form if errorneous_form else DetailsForm(obj=user.detail)
@@ -192,7 +192,7 @@ def update_details_form(errorneous_form=None):
 
 
 @blueprint.route('/me/details', methods=['POST'])
-def update_details():
+def details_update():
     """Update the current user's details."""
     user = get_current_user_or_404()
     form = DetailsForm(request.form)
@@ -207,7 +207,7 @@ def update_details():
 
 @blueprint.route('/me/avatar/update')
 @templated
-def update_avatar_image_form():
+def avatar_image_update_form():
     """Show a form to update the current user's avatar image."""
     get_current_user_or_404()
     form = AvatarImageUpdateForm()
@@ -225,7 +225,7 @@ blueprint.add_url_rule(
 
 
 @blueprint.route('/me/avatar', methods=['POST'])
-def update_avatar_image():
+def avatar_image_update():
     """Update the current user's avatar image."""
     user = get_current_user_or_404()
 

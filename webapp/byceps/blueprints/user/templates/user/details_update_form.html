@@ -7,7 +7,7 @@
 
   <h1>{{ title }}</h1>
 
-  <form action="{{ url_for('.update_details') }}" method="post">
+  <form action="{{ url_for('.details_update') }}" method="post">
     {%- call form_fieldset() %}
       {{ form_field(form.first_names, maxlength=40, autofocus='autofocus') }}
       {{ form_field(form.last_name, maxlength=40) }}
