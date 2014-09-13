@@ -41,6 +41,9 @@ li [class*=" icon-"] {
 .icon-archived:before       { content: "\f187"; }
 .icon-arrow-left:before     { content: "\f060"; }
 .icon-arrow-right:before    { content: "\f061"; }
+.icon-bullhorn:before       { content: "\f0a1"; }
+.icon-cost:before           { content: "\f153"; }
+.icon-date:before           { content: "\f073"; }
 .icon-delete:before         { content: "\f1f8"; }
 .icon-disabled:before       { content: "\f05e"; }
 .icon-edit:before           { content: "\f040"; }
@@ -48,14 +51,21 @@ li [class*=" icon-"] {
 .icon-error:before          { content: "\f071"; }
 .icon-external-link:before  { content: "\f08e"; }
 .icon-facebook:before       { content: "\f09a"; }
+.icon-facility:before       { content: "\f015"; }
+.icon-food:before           { content: "\f0f5"; }
 .icon-hidden:before         { content: "\f070"; }
 .icon-history:before        { content: "\f1da"; }
+.icon-important:before      { content: "\f12a"; }
 .icon-info:before           { content: "\f05a"; }
+.icon-internet:before       { content: "\f0ac"; }
 .icon-irc:before            { content: "\f086"; }
+.icon-location:before       { content: "\f041"; }
 .icon-lock:before           { content: "\f023"; }
 .icon-log-in:before         { content: "\f090"; }
 .icon-log-out:before        { content: "\f08b"; }
+.icon-network:before        { content: "\f0e8"; }
 .icon-new:before            { content: "\f069"; }
+.icon-parking:before        { content: "\f1b9"; }
 .icon-pending:before        { content: "\f017"; }
 .icon-pin:before            { content: "\f08d"; }
 .icon-published:before      { content: "\f06e"; }
@@ -68,4 +78,5 @@ li [class*=" icon-"] {
 .icon-update:before         { content: "\f021"; }
 .icon-upload:before         { content: "\f093"; }
 .icon-user:before           { content: "\f007"; }
+.icon-users:before          { content: "\f0c0"; }
 .icon-view:before           { content: "\f06e"; }
