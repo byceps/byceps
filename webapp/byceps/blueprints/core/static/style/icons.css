@@ -53,6 +53,8 @@ li [class*=" icon-"] {
 .icon-info:before           { content: "\f05a"; }
 .icon-irc:before            { content: "\f086"; }
 .icon-lock:before           { content: "\f023"; }
+.icon-log-in:before         { content: "\f090"; }
+.icon-log-out:before        { content: "\f08b"; }
 .icon-new:before            { content: "\f069"; }
 .icon-pending:before        { content: "\f017"; }
 .icon-pin:before            { content: "\f08d"; }
@@ -65,4 +67,5 @@ li [class*=" icon-"] {
 .icon-unlock:before         { content: "\f09c"; }
 .icon-update:before         { content: "\f021"; }
 .icon-upload:before         { content: "\f093"; }
+.icon-user:before           { content: "\f007"; }
 .icon-view:before           { content: "\f06e"; }
