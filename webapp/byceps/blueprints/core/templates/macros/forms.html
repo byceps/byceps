@@ -23,6 +23,17 @@
   {%- endcall %}
 {%- endmacro %}
 
+{%- macro form_fields_radio(field) -%}
+  {%- set kwargs2 = kwargs %}
+  {%- for subfield in field %}
+      <div class="radio">
+    {%- call _row(field) %}
+      {{- subfield(**kwargs2) }} {{ subfield.label }}
+    {%- endcall %}
+      </div>
+  {%- endfor %}
+{%- endmacro %}
+
 {%- macro _row(field) -%}
       <li{% if field.errors %} class="error"{% endif %}>
 {{- caller() -}}

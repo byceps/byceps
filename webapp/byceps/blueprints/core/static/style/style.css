@@ -251,12 +251,14 @@ label {
   vertical-align: top;
   width: 130px;
 }
-.checkbox label {
+.checkbox label,
+.radio label {
   font-weight: normal;
   padding-top: 0.1rem;
   width: auto;
 }
-.checkbox {
+.checkbox,
+.radio {
   padding: 0.3rem 0 0 128px;
 }
 
@@ -265,6 +267,7 @@ fieldset textarea {
   width: 528px;
 }
 fieldset input[type='checkbox'],
+fieldset input[type='radio'],
 fieldset input[size] {
   width: auto;
 }
