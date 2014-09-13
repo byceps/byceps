@@ -55,12 +55,12 @@ class Category(db.Model):
         topic_count = Topic.query.for_category(self).count()
         posting_query = Posting.query.join(Topic).filter_by(category=self)
         posting_count = posting_query.count()
-        last_posting = posting_query.latest_to_earliest().first()
+        latest_posting = posting_query.latest_to_earliest().first()
 
         self.topic_count = topic_count
         self.posting_count = posting_count
-        self.last_posting_updated_at = last_posting.created_at if last_posting else None
-        self.last_posting_updated_by = last_posting.creator if last_posting else None
+        self.last_posting_updated_at = latest_posting.created_at if latest_posting else None
+        self.last_posting_updated_by = latest_posting.creator if latest_posting else None
 
         db.session.commit()
 
@@ -221,7 +221,7 @@ class Topic(db.Model):
         latest_posting = self.get_latest_posting()
 
         self.posting_count = posting_count
-        if last_posting:
+        if latest_posting:
             self.last_updated_at = latest_posting.created_at
             self.last_updated_by = latest_posting.creator
 
