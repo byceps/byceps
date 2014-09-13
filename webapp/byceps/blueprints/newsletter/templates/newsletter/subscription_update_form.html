@@ -1,0 +1,18 @@
+{% extends 'layout/base.html' %}
+{% from 'macros/forms.html' import form_buttons, form_fields_radio, form_fieldset %}
+{% set current_page = 'user' %}
+{% set title = 'Mein Newsletter-Abonnement bearbeiten' %}
+
+{% block body %}
+
+  <h1>{{ title }}</h1>
+
+  <form action="{{ url_for('.subscription_update') }}" method="post">
+    {%- call form_fieldset() %}
+      {{ form_fields_radio(form.state) }}
+    {%- endcall %}
+
+    {{ form_buttons('Speichern', cancel_url=url_for('user.view_current')) }}
+  </form>
+
+{%- endblock body %}

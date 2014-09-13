@@ -49,7 +49,7 @@
 
   <h2>Persönliche Daten</h2>
   <ol class="actions" style="margin: 0;">
-    <li><a href="{{ url_for('.details_update_form') }}">{{ render_icon('edit') }} Persönliche Daten bearbeiten</a></li>
+    <li><a href="{{ url_for('.details_update_form') }}">{{ render_icon('edit') }} bearbeiten</a></li>
   </ol>
   <table class="index">
     <tr>
@@ -67,6 +67,9 @@
   </table>
 
   <h2>Newsletter-Abonnement</h2>
+  <ol class="actions" style="margin: 0;">
+    <li><a href="{{ url_for('newsletter.subscription_update_form') }}">{{ render_icon('edit') }} bearbeiten</a></li>
+  </ol>
   <table class="index">
     <tr>
       <th>Status</th>
