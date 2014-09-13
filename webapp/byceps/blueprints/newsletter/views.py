@@ -17,7 +17,7 @@ from ...util.templating import templated
 from ...util.views import redirect_to
 
 from .forms import SubscriptionForm
-from .models import NewsletterSubscription, NewsletterSubscriptionState
+from .models import NewsletterSubscription, SubscriptionState
 
 
 blueprint = create_blueprint('newsletter', __name__)
@@ -44,7 +44,7 @@ def subscription_update():
     user = get_current_user_or_404()
     form = SubscriptionForm(request.form)
 
-    state = NewsletterSubscriptionState[form.state.data]
+    state = SubscriptionState[form.state.data]
     newsletter_subscription = NewsletterSubscription(user, state)
     db.session.add(newsletter_subscription)
     db.session.commit()

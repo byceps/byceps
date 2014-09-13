@@ -20,9 +20,7 @@ from ..brand.models import Brand
 from ..user.models import User
 
 
-NewsletterSubscriptionState = Enum(
-    'NewsletterSubscriptionState',
-    ['requested', 'declined'])
+SubscriptionState = Enum('SubscriptionState', ['requested', 'declined'])
 
 
 class NewsletterSubscription(db.Model):
@@ -45,7 +43,7 @@ class NewsletterSubscription(db.Model):
 
     @hybrid_property
     def state(self):
-        return NewsletterSubscriptionState[self._state]
+        return SubscriptionState[self._state]
 
     @state.setter
     def state(self, state):
@@ -69,6 +67,6 @@ class NewsletterSubscription(db.Model):
             .first()
 
         if current_subscription is None:
-            return NewsletterSubscriptionState.declined
+            return SubscriptionState.declined
 
         return current_subscription.state

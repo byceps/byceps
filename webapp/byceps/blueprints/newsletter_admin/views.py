@@ -13,7 +13,7 @@ from ...util.templating import templated
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 from ..brand.models import Brand
-from ..newsletter.models import NewsletterSubscriptionState
+from ..newsletter.models import SubscriptionState
 
 from .authorization import NewsletterPermission
 from .models import count_subscriptions_by_state, get_subscriptions_for_brand
@@ -49,5 +49,5 @@ def view_subscriptions_for_brand(brand_id):
         'brand': brand,
         'subscriptions': subscriptions,
         'totals': totals,
-        'State': NewsletterSubscriptionState,
+        'State': SubscriptionState,
     }

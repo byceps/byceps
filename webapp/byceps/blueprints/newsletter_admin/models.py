@@ -12,8 +12,7 @@ from operator import itemgetter
 
 from ...database import db
 
-from ..newsletter.models import NewsletterSubscription, \
-    NewsletterSubscriptionState
+from ..newsletter.models import NewsletterSubscription, SubscriptionState
 from ..user.models import User
 
 
@@ -28,7 +27,7 @@ def get_subscriptions_for_brand(brand):
     users_by_id = {user.id: user for user in users}
 
     for user_id, brand_id, state_name in subscriptions:
-        state = NewsletterSubscriptionState[state_name]
+        state = SubscriptionState[state_name]
         yield users_by_id[user_id], state
 
 
@@ -99,7 +98,7 @@ def count_subscriptions_by_state(subscriptions):
     counter = Counter(state for _, state in subscriptions)
 
     totals = {}
-    for state in NewsletterSubscriptionState:
+    for state in SubscriptionState:
         totals[state] = counter.get(state, 0)
     totals['total'] = sum(totals.values())
 

@@ -12,14 +12,14 @@ from wtforms.validators import DataRequired
 
 from ...util.l10n import LocalizedForm
 
-from ..newsletter.models import NewsletterSubscriptionState
+from ..newsletter.models import SubscriptionState
 
 
 class SubscriptionForm(LocalizedForm):
     state = RadioField(
         'Abonnement',
         choices=[
-            (NewsletterSubscriptionState.requested.name, 'ja, bitte'),
-            (NewsletterSubscriptionState.declined.name, 'nein, danke'),
+            (SubscriptionState.requested.name, 'ja, bitte'),
+            (SubscriptionState.declined.name, 'nein, danke'),
         ],
         validators=[DataRequired()])

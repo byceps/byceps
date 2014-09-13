@@ -22,7 +22,8 @@ from ...util import upload
 from ...util.views import redirect_to, respond_no_content
 
 from ..authorization.models import Role
-from ..newsletter.models import NewsletterSubscription, NewsletterSubscriptionState
+from ..newsletter.models import NewsletterSubscription, \
+    SubscriptionState as NewsletterSubscriptionState
 from ..terms.models import Consent, ConsentContext
 
 from .forms import AvatarImageUpdateForm, DetailsForm, LoginForm, UserCreateForm
