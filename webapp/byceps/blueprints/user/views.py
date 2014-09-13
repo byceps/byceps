@@ -254,7 +254,7 @@ def avatar_image_update():
     db.session.commit()
 
     flash_success('Das Avatarbild wurde aktualisiert.', icon='upload')
-    return redirect_to('.view', id=user.id)
+    return redirect_to('.view_current')
 
 
 def determine_image_type(stream):
