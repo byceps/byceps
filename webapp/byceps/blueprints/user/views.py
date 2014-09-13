@@ -22,7 +22,7 @@ from ...util import upload
 from ...util.views import redirect_to, respond_no_content
 
 from ..authorization.models import Role
-from ..newsletter.models import NewsletterSubscription, \
+from ..newsletter.models import Subscription as NewsletterSubscription, \
     SubscriptionState as NewsletterSubscriptionState
 from ..terms.models import Consent, ConsentContext
 

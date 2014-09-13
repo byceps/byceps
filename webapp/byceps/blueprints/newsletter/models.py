@@ -23,7 +23,7 @@ from ..user.models import User
 SubscriptionState = Enum('SubscriptionState', ['requested', 'declined'])
 
 
-class NewsletterSubscription(db.Model):
+class Subscription(db.Model):
     """A user's declaration that he/she wants or does not want to receive the
     newsletter for this brand.
     """

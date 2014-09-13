@@ -12,7 +12,7 @@ from operator import itemgetter
 
 from ...database import db
 
-from ..newsletter.models import NewsletterSubscription, SubscriptionState
+from ..newsletter.models import Subscription, SubscriptionState
 from ..user.models import User
 
 
@@ -59,14 +59,14 @@ def build_query_for_current_state():
     subquery = build_query_for_latest_expressed_at().subquery()
     return db.session \
         .query(
-            NewsletterSubscription.user_id,
-            NewsletterSubscription.brand_id,
-            NewsletterSubscription._state
+            Subscription.user_id,
+            Subscription.brand_id,
+            Subscription._state
         ) \
         .join(subquery, db.and_(
-            NewsletterSubscription.user_id == subquery.c.user_id,
-            NewsletterSubscription.brand_id == subquery.c.brand_id,
-            NewsletterSubscription.expressed_at == subquery.c.latest_expressed_at
+            Subscription.user_id == subquery.c.user_id,
+            Subscription.brand_id == subquery.c.brand_id,
+            Subscription.expressed_at == subquery.c.latest_expressed_at
         ));
 
 
@@ -82,14 +82,13 @@ def build_query_for_latest_expressed_at():
     """
     return db.session \
         .query(
-            NewsletterSubscription.user_id,
-            NewsletterSubscription.brand_id,
-            db.func.max(NewsletterSubscription.expressed_at) \
-                .label('latest_expressed_at')
+            Subscription.user_id,
+            Subscription.brand_id,
+            db.func.max(Subscription.expressed_at).label('latest_expressed_at')
         ) \
         .group_by(
-            NewsletterSubscription.user_id,
-            NewsletterSubscription.brand_id
+            Subscription.user_id,
+            Subscription.brand_id
         )
 
 
