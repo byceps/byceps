@@ -9,6 +9,11 @@ byceps.blueprints.board.formatting
 
 import bbcode
 
+try:
+    from .smileys import replace_smileys
+except ImportError:
+    replace_smileys = lambda x: x
+
 
 def create_parser():
     """Create a customized BBcode parser."""
@@ -37,4 +42,6 @@ PARSER = create_parser()
 
 def render_html(value):
     """Render text as HTML, interpreting BBcode."""
-    return PARSER.format(value)
+    html = PARSER.format(value)
+    html = replace_smileys(html)
+    return html
