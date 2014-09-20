@@ -20,7 +20,7 @@
       {{ form_field(form.body, required='required', autofocus='autofocus') }}
     {%- endcall %}
 
-    <p><small><a href="http://de.wikipedia.org/wiki/BBCode" target="_blank">BBCode</a> wird unterstützt.</small></p>
+{%- include 'board/_posting_body_supplement.html' %}
 
     {{ form_buttons('Hinzufügen', cancel_url=url_for('.topic_view', id=topic.id)) }}
   </form>
