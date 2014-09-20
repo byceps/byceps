@@ -1,4 +1,4 @@
-<div class="label"></div>
-<div class="supplement">
+{%- from 'macros/forms.html' import form_supplement %}
+{%- call form_supplement() %}
   <small><a href="http://de.wikipedia.org/wiki/BBCode" target="_blank">BBCode</a> wird unterstützt.</small>
-</div>
+{%- endcall %}

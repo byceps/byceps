@@ -51,6 +51,13 @@
         {%- endif -%}
 {%- endmacro %}
 
+{% macro form_supplement(label=None) -%}
+    <div class="label">{% if label is not none %}{{ label }}{% endif %}</div>
+    <div class="supplement">
+{{ caller() }}
+    </div>
+{%- endmacro %}
+
 {# A field set with a submit button. #}
 {% macro form_buttons(label, cancel_url=None) -%}
   <fieldset class="buttons">
