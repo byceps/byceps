@@ -37,7 +37,7 @@ def index():
 @blueprint.route('/subscriptions/<brand_id>')
 @permission_required(NewsletterPermission.view_subscriptions)
 @templated
-def view_subscriptions_for_brand(brand_id):
+def view_subscriptions(brand_id):
     """Show user subscriptions for that brand."""
     brand = Brand.query.get_or_404(brand_id)
 
