@@ -16,17 +16,17 @@ from ..newsletter.models import Subscription, SubscriptionState
 from ..user.models import User
 
 
-def get_subscriptions_for_brand(brand):
+def get_user_subscription_states_for_brand(brand):
     """Return subscriptions as (user, state) pairs for the brand."""
-    subscriptions = build_query_for_current_state() \
+    subscription_states = build_query_for_current_state() \
         .filter_by(brand_id=brand.id) \
         .all()
 
-    user_ids = frozenset(map(itemgetter(0), subscriptions))
+    user_ids = frozenset(map(itemgetter(0), subscription_states))
     users = User.query.filter(User.id.in_(user_ids))
     users_by_id = {user.id: user for user in users}
 
-    for user_id, brand_id, state_name in subscriptions:
+    for user_id, brand_id, state_name in subscription_states:
         state = SubscriptionState[state_name]
         yield users_by_id[user_id], state
 

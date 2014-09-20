@@ -23,7 +23,7 @@
       </tr>
     </thead>
     <tbody>
-      {%- for user, state in subscriptions %}
+      {%- for user, state in subscription_states %}
       <tr>
         <td>{{ render_user_admin_link(user) }}</td>
         <td>{{ render_icon('enabled' if state == State.requested else 'disabled') }}</td>

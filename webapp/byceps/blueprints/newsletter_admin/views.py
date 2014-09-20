@@ -16,7 +16,8 @@ from ..brand.models import Brand
 from ..newsletter.models import SubscriptionState
 
 from .authorization import NewsletterPermission
-from .models import count_subscriptions_by_state, get_subscriptions_for_brand
+from .models import count_subscriptions_by_state, \
+    get_user_subscription_states_for_brand
 
 
 blueprint = create_blueprint('newsletter_admin', __name__)
@@ -38,16 +39,16 @@ def index():
 @permission_required(NewsletterPermission.view_subscriptions)
 @templated
 def view_subscriptions(brand_id):
-    """Show user subscriptions for that brand."""
+    """Show user subscription states for that brand."""
     brand = Brand.query.get_or_404(brand_id)
 
-    subscriptions = list(get_subscriptions_for_brand(brand))
+    subscription_states = list(get_user_subscription_states_for_brand(brand))
 
-    totals = count_subscriptions_by_state(subscriptions)
+    totals = count_subscriptions_by_state(subscription_states)
 
     return {
         'brand': brand,
-        'subscriptions': subscriptions,
+        'subscription_states': subscription_states,
         'totals': totals,
         'State': SubscriptionState,
     }
