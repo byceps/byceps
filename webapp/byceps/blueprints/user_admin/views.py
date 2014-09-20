@@ -47,11 +47,13 @@ def index(page):
 
     total_enabled = User.query.filter_by(enabled=True).count()
     total_disabled = User.query.filter_by(enabled=False).count()
+    total_overall = total_enabled + total_disabled
 
     return {
         'users': users,
         'total_enabled': total_enabled,
         'total_disabled': total_disabled,
+        'total_overall': total_overall,
         'only': only,
     }
 

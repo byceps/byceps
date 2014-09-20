@@ -14,7 +14,7 @@
   <div class="bigstats">
     {{ render_bigstats_item(total_enabled, 'aktiviert', icon_name='enabled', color='#008800') }}
     {{ render_bigstats_item(total_disabled, 'nicht aktiviert', icon_name='disabled', color='#cc0000') }}
-    {{ render_bigstats_item(users.total, '&sum; gesamt'|safe) }}
+    {{ render_bigstats_item(total_overall, '&sum; gesamt'|safe) }}
   </div>
 
   <p style="font-size: 0.8rem; margin: 2.5rem 0 2rem 0; text-align: right;">{{ render_icon('filter') }} Einschränkung:
