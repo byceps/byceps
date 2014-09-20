@@ -59,6 +59,7 @@ class Role(db.Model):
     title = db.Column(db.Unicode(80), unique=True)
 
     permissions = association_proxy('role_permissions', 'permission')
+    users = association_proxy('user_roles', 'user')
 
     def __repr__(self):
         return ReprBuilder(self) \
@@ -95,7 +96,9 @@ class UserRole(db.Model):
                            backref=db.backref('user_roles', collection_class=set),
                            collection_class=set)
     role_id = db.Column(db.Unicode(40), db.ForeignKey('auth_roles.id'), primary_key=True)
-    role = db.relationship(Role, collection_class=set)
+    role = db.relationship(Role,
+                           backref=db.backref('user_roles', collection_class=set),
+                           collection_class=set)
 
     def __init__(self, role):
         self.role = role

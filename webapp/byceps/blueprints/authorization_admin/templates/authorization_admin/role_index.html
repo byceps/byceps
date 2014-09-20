@@ -1,4 +1,5 @@
 {% extends 'layout/base.html' %}
+{% from 'macros/user_admin.html' import render_user_admin_link %}
 {% set current_page = 'authorization_admin.roles' %}
 {% set title = 'Rollen' %}
 
@@ -12,6 +13,7 @@
         <th>ID</th>
         <th>Beschreibung</th>
         <th>zugewiesene Rechte</th>
+        <th>Benutzer mit dieser Rolle</th>
       </tr>
     </thead>
     <tbody>
@@ -25,6 +27,18 @@
             <li class="monospace">{{ permission.id }}</li>
           {%- endfor %}
           </ol>
+        </td>
+        <td>
+        {%- set user_limit = 10 %}
+        {%- if role.users|length <= user_limit %}
+          <ol>
+          {%- for user in role.users|sort(attribute='screen_name') %}
+            <li>{{ render_user_admin_link(user) }}</li>
+          {%- endfor %}
+          </ol>
+        {%- else %}
+          <em>[mehr als {{ user_limit }}]</em>
+        {%- endif %}
         </td>
       </tr>
       {%- endfor %}
