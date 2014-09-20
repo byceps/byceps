@@ -245,7 +245,8 @@ fieldset li {
   padding: 0.2rem 0;
 }
 
-label {
+label,
+fieldset .label {
   display: inline-block;
   font-weight: bold;
   vertical-align: top;
@@ -263,7 +264,8 @@ label {
 }
 
 fieldset input,
-fieldset textarea {
+fieldset textarea,
+fieldset .supplement {
   width: 528px;
 }
 fieldset input[type='checkbox'],
@@ -274,6 +276,10 @@ fieldset input[size] {
 fieldset textarea {
   height: 20rem;
   resize: vertical;
+}
+fieldset .supplement {
+  display: inline-block;
+  margin-left: -4px;
 }
 
 fieldset.buttons {
