@@ -10,6 +10,11 @@ byceps.blueprints.board.formatting
 import bbcode
 
 try:
+    from .smileys import get_smileys
+except ImportError:
+    get_smileys = lambda: []
+
+try:
     from .smileys import replace_smileys
 except ImportError:
     replace_smileys = lambda x: x

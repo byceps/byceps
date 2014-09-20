@@ -19,7 +19,7 @@ from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 
 from .authorization import BoardPostingPermission, BoardTopicPermission
-from .formatting import render_html
+from .formatting import get_smileys, render_html
 from .forms import PostingCreateForm, PostingUpdateForm, TopicCreateForm, \
     TopicUpdateForm
 from .models import Category, Posting, Topic
@@ -158,6 +158,7 @@ def topic_create_form(category_id, errorneous_form=None):
     return {
         'category': category,
         'form': form,
+        'smileys': get_smileys(),
     }
 
 
@@ -206,6 +207,7 @@ def topic_update_form(id):
     return {
         'form': form,
         'topic': topic,
+        'smileys': get_smileys(),
     }
 
 
@@ -354,6 +356,7 @@ def posting_create_form(topic_id, errorneous_form=None):
     return {
         'topic': topic,
         'form': form,
+        'smileys': get_smileys(),
     }
 
 
@@ -425,6 +428,7 @@ def posting_update_form(id):
     return {
         'form': form,
         'posting': posting,
+        'smileys': get_smileys(),
     }
 
 
