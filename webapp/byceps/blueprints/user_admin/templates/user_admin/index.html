@@ -2,13 +2,20 @@
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
+{% from 'macros/stats.html' import render_bigstats_item %}
 {% from 'macros/user_admin.html' import render_user_admin_link %}
 {% set current_page = 'user_admin' %}
 {% set title = 'Benutzer' %}
 
 {% block body %}
 
-  <h1>{{ title }} <small>({{ users.total }})</h1>
+  <h1>{{ title }}</h1>
+
+  <div class="bigstats">
+    {{ render_bigstats_item(total_enabled, 'aktiviert', icon_name='enabled', color='#008800') }}
+    {{ render_bigstats_item(total_disabled, 'nicht aktiviert', icon_name='disabled', color='#cc0000') }}
+    {{ render_bigstats_item(users.total, '&sum; gesamt'|safe) }}
+  </div>
 
   <table class="index wide">
     <thead>

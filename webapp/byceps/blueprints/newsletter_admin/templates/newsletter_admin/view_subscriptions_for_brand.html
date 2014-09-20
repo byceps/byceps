@@ -10,7 +10,7 @@
   <h1>{{ title }}</h1>
 
   <div class="bigstats">
-    {{ render_bigstats_item(totals[State.requested], 'angefordert', icon_name='enabled', color='#00aa00') }}
+    {{ render_bigstats_item(totals[State.requested], 'angefordert', icon_name='enabled', color='#008800') }}
     {{ render_bigstats_item(totals[State.declined], 'abgelehnt', icon_name='disabled', color='#cc0000') }}
     {{ render_bigstats_item(totals['total'], '&sum; gesamt'|safe) }}
   </div>

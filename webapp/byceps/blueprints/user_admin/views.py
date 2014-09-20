@@ -33,7 +33,15 @@ def index(page):
     users = User.query \
         .order_by(User.created_at.desc()) \
         .paginate(page, per_page)
-    return {'users': users}
+
+    total_enabled = User.query.filter_by(enabled=True).count()
+    total_disabled = User.query.filter_by(enabled=False).count()
+
+    return {
+        'users': users,
+        'total_enabled': total_enabled,
+        'total_disabled': total_disabled,
+    }
 
 
 @blueprint.route('/<id>')
