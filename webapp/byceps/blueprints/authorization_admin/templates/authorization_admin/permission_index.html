@@ -1,0 +1,34 @@
+{% extends 'layout/base.html' %}
+{% set current_page = 'authorization_admin.permissions' %}
+{% set title = 'Rechte' %}
+
+{% block body %}
+
+  <h1>{{ title }}</h1>
+
+  <table class="index wide">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Beschreibung</th>
+        <th>Teil dieser Rollen</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for permission in permissions|sort(attribute='id') %}
+      <tr>
+        <td class="monospace">{{ permission.id }}</td>
+        <td>{% if permission.title is not none %}{{ permission.title }}{% else %}<span class="faint">(keine)</span>{% endif %}</td>
+        <td>
+          <ol>
+          {%- for role in permission.roles|sort(attribute='id') %}
+            <li class="monospace">{{ role.id }}</li>
+          {%- endfor %}
+          </ol>
+        </td>
+      </tr>
+      {%- endfor %}
+    </tbody>
+  </table>
+
+{%- endblock body %}
