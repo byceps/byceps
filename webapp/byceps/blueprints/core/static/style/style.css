@@ -484,6 +484,27 @@ nav.board-breadcrumbs li:last-child {
 }
 
 
+/* stats */
+
+.bigstats {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 2rem;
+}
+.bigstats figure {
+  font-weight: bold;
+  text-align: center;
+}
+.bigstats .value,
+.bigstats figcaption {
+  display: block;
+}
+.bigstats .value {
+  font-size: 5rem;
+  margin-bottom: -1rem;
+}
+
+
 /* footer */
 
 #footer {

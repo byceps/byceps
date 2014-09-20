@@ -1,49 +1,19 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/icons.html' import render_icon %}
+{% from 'macros/stats.html' import render_bigstats_item %}
 {% from 'macros/user_admin.html' import render_user_admin_link %}
 {% set current_page = 'newsletter_admin' %}
 {% set title = 'Newsletter - Bestellstatus ({})'.format(brand.title) %}
-
-{% block head %}
-    <style>
-      .stats {
-        display: flex;
-        justify-content: space-around;
-        margin-bottom: 2rem;
-      }
-      .stats li {
-        font-weight: bold;
-        text-align: center;
-      }
-      .stats .number,
-      .stats .description {
-        display: block;
-      }
-      .stats .number {
-        font-size: 5rem;
-        margin-bottom: -1rem;
-      }
-    </style>
-{%- endblock head %}
 
 {% block body %}
 
   <h1>{{ title }}</h1>
 
-  <ol class="stats">
-    <li style="color: #00aa00;">
-      <span class="number">{{ totals[State.requested] }}</span>
-      <span class="description">{{ render_icon('enabled') }} angefordert</span>
-    </li>
-    <li style="color: #cc0000;">
-      <span class="number">{{ totals[State.declined] }}</span>
-      <span class="description">{{ render_icon('disabled') }} abgelehnt</span>
-    </li>
-    <li>
-      <span class="number">{{ totals['total'] }}</span>
-      <span class="description">&sum; gesamt</span>
-    </li>
-  </ol>
+  <div class="bigstats">
+    {{ render_bigstats_item(totals[State.requested], 'angefordert', icon_name='enabled', color='#00aa00') }}
+    {{ render_bigstats_item(totals[State.declined], 'abgelehnt', icon_name='disabled', color='#cc0000') }}
+    {{ render_bigstats_item(totals['total'], '&sum; gesamt'|safe) }}
+  </div>
 
   <table class="index">
     <thead>
