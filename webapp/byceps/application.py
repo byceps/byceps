@@ -70,13 +70,14 @@ def create_app(environment_name, *, initialize=True):
     if initialize:
         with app.app_context():
             if config.get_site_mode().is_public():
+                party_id = config.get_current_party_id()
+
                 # Mount snippets.
-                app.party_id = config.get_current_party_id()
-                add_routes_for_snippets()
+                add_routes_for_snippets(party_id)
 
                 # Incorporate template overrides for the current party.
                 app.template_folder = str(Path('party_template_overrides') \
-                                    / app.party_id)
+                                    / party_id)
 
     return app
 
