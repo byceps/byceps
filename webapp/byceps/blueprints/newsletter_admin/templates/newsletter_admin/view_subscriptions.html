@@ -15,6 +15,12 @@
     {{ render_bigstats_item(totals['total'], '&sum; gesamt'|safe) }}
   </div>
 
+  {%- if g.current_user.has_permission(NewsletterPermission.export_email_addresses) %}
+  <ol class="actions">
+    <li><a href="{{ url_for('.export_email_addresses', brand_id=brand.id) }}">{{ render_icon('download') }} Abonnenten exportieren</a></li>
+  </ol>
+  {%- endif %}
+
   <table class="index">
     <thead>
       <tr>

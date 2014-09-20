@@ -16,6 +16,53 @@ from ..newsletter.models import Subscription, SubscriptionState
 from ..user.models import User
 
 
+def get_subscribers(brand):
+    """Return the users that are currently subscribed for the brand."""
+    subscribers = build_query_for_current_subscribers(brand).all()
+
+    user_ids = frozenset(map(itemgetter(0), subscribers))
+    return get_users(user_ids)
+
+
+def build_query_for_current_subscribers(brand):
+    """Build a query to return the most recent subscription state
+    (grouped by user and brand).
+
+    The generated SQL should be equivalent to this:
+
+        SELECT
+          nso.user_id
+        FROM newsletter_subscriptions AS nso
+          JOIN (
+            SELECT
+              user_id,
+              brand_id,
+              MAX(expressed_at) AS latest_expressed_at
+            FROM newsletter_subscriptions
+            GROUP BY
+              user_id,
+              brand_id
+          ) AS nsi
+            ON nso.user_id = nsi.user_id
+              AND nso.brand_id = nsi.brand_id
+              AND nso.expressed_at = nsi.latest_expressed_at
+        WHERE nso.state = 'requested'
+          AND nso.brand_id = <brand_id>
+    """
+    subquery = build_query_for_latest_expressed_at().subquery()
+    return db.session \
+        .query(
+            Subscription.user_id
+        ) \
+        .join(subquery, db.and_(
+            Subscription.user_id == subquery.c.user_id,
+            Subscription.brand_id == subquery.c.brand_id,
+            Subscription.expressed_at == subquery.c.latest_expressed_at
+        )) \
+        .filter(Subscription._state == SubscriptionState.requested.name) \
+        .filter(Subscription.brand_id == brand.id)
+
+
 def get_user_subscription_states_for_brand(brand):
     """Return subscriptions as (user, state) pairs for the brand."""
     subscription_states = build_query_for_current_state() \
@@ -23,7 +70,7 @@ def get_user_subscription_states_for_brand(brand):
         .all()
 
     user_ids = frozenset(map(itemgetter(0), subscription_states))
-    users = User.query.filter(User.id.in_(user_ids))
+    users = get_users(user_ids)
     users_by_id = {user.id: user for user in users}
 
     for user_id, brand_id, state_name in subscription_states:
@@ -41,7 +88,7 @@ def build_query_for_current_state():
           nso.user_id,
           nso.brand_id,
           nso.state
-        FROM newsletter_subscriptions nso
+        FROM newsletter_subscriptions AS nso
           JOIN (
             SELECT
               user_id,
@@ -67,7 +114,7 @@ def build_query_for_current_state():
             Subscription.user_id == subquery.c.user_id,
             Subscription.brand_id == subquery.c.brand_id,
             Subscription.expressed_at == subquery.c.latest_expressed_at
-        ));
+        ))
 
 
 def build_query_for_latest_expressed_at():
@@ -102,3 +149,8 @@ def count_subscriptions_by_state(subscriptions):
     totals['total'] = sum(totals.values())
 
     return totals
+
+
+def get_users(ids):
+    """Return the users with the given IDs."""
+    return User.query.filter(User.id.in_(ids))

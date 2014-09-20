@@ -46,6 +46,7 @@ li [class*=" icon-"] {
 .icon-date:before           { content: "\f073"; }
 .icon-delete:before         { content: "\f1f8"; }
 .icon-disabled:before       { content: "\f05e"; }
+.icon-download:before       { content: "\f019"; }
 .icon-edit:before           { content: "\f040"; }
 .icon-enabled:before        { content: "\f00c"; }
 .icon-error:before          { content: "\f071"; }
