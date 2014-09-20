@@ -18,9 +18,8 @@
   <form action="{{ url_for('.posting_update', id=posting.id) }}" method="post">
     {% call form_fieldset() %}
       {{ form_field(form.body, required='required', autofocus='autofocus') }}
+      <li>{%- include 'board/_posting_body_supplement.html' %}</li>
     {% endcall %}
-
-    <p><small><a href="http://de.wikipedia.org/wiki/BBCode" target="_blank">BBCode</a> wird unterstützt.</small></p>
 
     {{ form_buttons('Speichern', cancel_url=url_for('.topic_view', id=posting.topic.id)) }}
   </form>

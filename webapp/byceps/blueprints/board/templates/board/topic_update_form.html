@@ -19,9 +19,8 @@
     {% call form_fieldset() %}
       {{ form_field(form.title, required='required', maxlength=80, autofocus='autofocus') }}
       {{ form_field(form.body, required='required') }}
+      <li>{%- include 'board/_posting_body_supplement.html' %}</li>
     {% endcall %}
-
-    <p><small><a href="http://de.wikipedia.org/wiki/BBCode" target="_blank">BBCode</a> wird unterstützt.</small></p>
 
     {{ form_buttons('Speichern', cancel_url=url_for('.topic_view', id=topic.id)) }}
   </form>
