@@ -7,6 +7,8 @@ byceps.blueprints.user_admin.views
 :Copyright: 2006-2014 Jochen Kupperschmidt
 """
 
+from flask import request
+
 from ...util.framework import create_blueprint
 from ...util.templating import templated
 
@@ -30,9 +32,18 @@ permission_registry.register_enum(UserPermission)
 def index(page):
     """List users."""
     per_page = 20
-    users = User.query \
-        .order_by(User.created_at.desc()) \
-        .paginate(page, per_page)
+    query = User.query \
+        .order_by(User.created_at.desc())
+
+    only = request.args.get('only')
+    if only == 'enabled':
+        query = query.filter_by(enabled=True)
+    elif only == 'disabled':
+        query = query.filter_by(enabled=False)
+    else:
+        only = None
+
+    users = query.paginate(page, per_page)
 
     total_enabled = User.query.filter_by(enabled=True).count()
     total_disabled = User.query.filter_by(enabled=False).count()
@@ -41,6 +52,7 @@ def index(page):
         'users': users,
         'total_enabled': total_enabled,
         'total_disabled': total_disabled,
+        'only': only,
     }
 
 

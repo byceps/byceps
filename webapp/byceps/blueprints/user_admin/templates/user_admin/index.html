@@ -17,6 +17,26 @@
     {{ render_bigstats_item(users.total, '&sum; gesamt'|safe) }}
   </div>
 
+  <p style="font-size: 0.8rem; margin: 2.5rem 0 2rem 0; text-align: right;">{{ render_icon('filter') }} Einschränkung:
+    {%- if only == 'enabled' %}
+    <strong>{{ render_icon('enabled') }} aktivierte</strong>
+    {%- else %}
+    <a href="{{ url_for('.index', only='enabled') }}">{{ render_icon('enabled') }} aktivierte</a>
+    {%- endif %}
+    /
+    {%- if only == 'disabled' %}
+    <strong>{{ render_icon('disabled') }} nicht aktivierte</strong>
+    {%- else %}
+    <a href="{{ url_for('.index', only='disabled') }}">{{ render_icon('disabled') }} nicht aktivierte</a>
+    {%- endif %}
+    /
+    {%- if only != 'enabled' and only != 'disabled' %}
+    <strong>alle</strong>
+    {%- else %}
+    <a href="{{ url_for('.index') }}">alle</a>
+    {%- endif %}
+  </p>
+
   <table class="index wide">
     <thead>
       <tr>
