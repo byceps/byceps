@@ -11,6 +11,6 @@ from byceps.util.authorization import create_permission_enum
 
 
 NewsletterPermission = create_permission_enum('newsletter', [
-    'export_email_addresses',
+    'export_subscribers',
     'view_subscriptions',
 ])

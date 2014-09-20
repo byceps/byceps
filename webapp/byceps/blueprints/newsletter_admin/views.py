@@ -56,11 +56,11 @@ def view_subscriptions(brand_id):
 
 
 @blueprint.route('/subscriptions/<brand_id>/export')
-@permission_required(NewsletterPermission.export_email_addresses)
+@permission_required(NewsletterPermission.export_subscribers)
 @jsonified
-def export_email_addresses(brand_id):
-    """Export the email addresses of the users which are currently
-    subscribed for this brand.
+def export_subscribers(brand_id):
+    """Export the screen names and email addresses of users which are
+    currently subscribed to the newsletter for this brand.
     """
     brand = Brand.query.get_or_404(brand_id)
 
@@ -69,6 +69,7 @@ def export_email_addresses(brand_id):
     exports = list(map(assemble_subscriber_export, subscribers))
 
     return {'subscribers': exports}
+
 
 def assemble_subscriber_export(user):
     return {
