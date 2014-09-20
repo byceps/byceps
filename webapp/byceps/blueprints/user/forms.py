@@ -10,8 +10,9 @@ byceps.blueprints.user.forms
 from itertools import chain
 from string import ascii_letters, digits
 
-from wtforms import BooleanField, FileField, PasswordField, StringField
-from wtforms.validators import DataRequired, ValidationError
+from wtforms import BooleanField, DateField, FileField, PasswordField, \
+    StringField
+from wtforms.validators import DataRequired, Optional, ValidationError
 
 from ...util.l10n import LocalizedForm
 
@@ -39,6 +40,9 @@ class UserCreateForm(LocalizedForm):
 class DetailsForm(LocalizedForm):
     first_names = StringField('Vorname(n)')
     last_name = StringField('Nachname')
+    date_of_birth = DateField('Geburtsdatum',
+                              format='%d.%m.%Y',
+                              validators=[Optional()])
 
 
 class AvatarImageUpdateForm(LocalizedForm):

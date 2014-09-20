@@ -239,6 +239,7 @@ class UserDetail(db.Model):
     last_name = db.Column(db.Unicode(40))
     full_name = db.column_property(
         (first_names + ' ' + last_name).label('full_name'))
+    date_of_birth = db.Column(db.Date)
     zip_code = db.Column(db.Unicode(5))
     city = db.Column(db.Unicode(40))
     street = db.Column(db.Unicode(40))

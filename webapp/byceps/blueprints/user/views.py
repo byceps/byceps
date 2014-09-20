@@ -203,8 +203,12 @@ def details_update():
     user = get_current_user_or_404()
     form = DetailsForm(request.form)
 
+    if not form.validate():
+        return details_update_form(form)
+
     user.detail.first_names = form.first_names.data.strip()
     user.detail.last_name = form.last_name.data.strip()
+    user.detail.date_of_birth = form.date_of_birth.data
     db.session.commit()
 
     flash_success('Deine Daten wurden gespeichert.')

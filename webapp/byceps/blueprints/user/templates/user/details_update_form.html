@@ -11,6 +11,7 @@
     {%- call form_fieldset() %}
       {{ form_field(form.first_names, maxlength=40, autofocus='autofocus') }}
       {{ form_field(form.last_name, maxlength=40) }}
+      {{ form_field(form.date_of_birth, size=10, maxlength=10, note='<small>Format: <tt>TT.MM.JJJJ</tt> (T = Tag, M = Monat, J = Jahr)</small>'|safe) }}
     {%- endcall %}
 
     {{ form_buttons('Speichern', cancel_url=url_for('.view_current')) }}

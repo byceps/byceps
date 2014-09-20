@@ -1,5 +1,5 @@
 {% extends 'layout/base.html' %}
-{% from 'macros/datetime.html' import render_datetime %}
+{% from 'macros/datetime.html' import render_date, render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/user.html' import render_user_avatar %}
 {% set current_page = 'user' %}
@@ -55,6 +55,10 @@
     <tr>
       <th>Voller Name</th>
       <td>{% if user.detail.full_name %}{{ user.detail.full_name }}{% endif %}</td>
+    </tr>
+    <tr>
+      <th>Geburtsdatum</th>
+      <td>{% if user.detail.date_of_birth %}{{ render_date(user.detail.date_of_birth) }}{% endif %}</td>
     </tr>
     <tr>
       <th>Anschrift</th>
