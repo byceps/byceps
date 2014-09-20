@@ -12,7 +12,7 @@ from ...util.templating import templated
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
-from ..authorization.models import Role
+from ..authorization.models import Permission, Role
 
 from .authorization import RolePermission
 
@@ -23,7 +23,16 @@ blueprint = create_blueprint('authorization_admin', __name__)
 permission_registry.register_enum(RolePermission)
 
 
-@blueprint.route('/')
+@blueprint.route('/permissions')
+@permission_required(RolePermission.list)
+@templated
+def permission_index():
+    """List permissions."""
+    permissions = Permission.query.all()
+    return {'permissions': permissions}
+
+
+@blueprint.route('/roles')
 @permission_required(RolePermission.list)
 @templated
 def role_index():

@@ -11,7 +11,8 @@ from byceps.util.navigation import Navigation, NavigationItem
 
 
 admin = Navigation('Verwaltung')
-admin.add_item('authorization_admin.role_index', 'Rollen', id='authorization_admin', required_permission=RolePermission.list)
+admin.add_item('authorization_admin.permission_index', 'Rechte', id='authorization_admin.permissions', required_permission=RolePermission.list)
+admin.add_item('authorization_admin.role_index', 'Rollen', id='authorization_admin.roles', required_permission=RolePermission.list)
 admin.add_item('party_admin.index', 'Parties', id='party_admin', required_permission=PartyPermission.list)
 admin.add_item('snippet_admin.index', 'Snippets', id='snippet_admin', required_permission=SnippetPermission.list)
 admin.add_item('terms_admin.index', 'AGB', id='terms_admin', required_permission=TermsPermission.list)

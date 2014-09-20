@@ -1,5 +1,5 @@
 {% extends 'layout/base.html' %}
-{% set current_page = 'authorization_admin' %}
+{% set current_page = 'authorization_admin.roles' %}
 {% set title = 'Rollen' %}
 
 {% block body %}
@@ -17,12 +17,12 @@
     <tbody>
       {%- for role in roles|sort(attribute='id') %}
       <tr>
-        <td>{{ role.id }}</td>
+        <td class="monospace">{{ role.id }}</td>
         <td>{{ role.title }}</td>
         <td>
           <ol>
           {%- for permission in role.permissions|sort(attribute='id') %}
-            <li>{{ permission.id }}</li>
+            <li class="monospace">{{ permission.id }}</li>
           {%- endfor %}
           </ol>
         </td>

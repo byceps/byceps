@@ -526,8 +526,14 @@ main img {
   max-width: 100%;
 }
 
+.faint,
 .hidden {
   opacity: 0.5;
+}
+
+.monospace {
+  font-family: monospace;
+  font-size: 0.8rem !important;
 }
 
 [class^="icon-"][title] {

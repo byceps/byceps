@@ -27,6 +27,8 @@ class Permission(db.Model):
     id = db.Column(db.Unicode(40), primary_key=True)
     title = db.Column(db.Unicode(80), unique=True)
 
+    roles = association_proxy('role_permissions', 'role')
+
     @classmethod
     def from_enum_member(cls, enum_member):
         key = enum_member.__class__.__key__
@@ -72,7 +74,7 @@ class RolePermission(db.Model):
     role_id = db.Column(db.Unicode(40), db.ForeignKey('auth_roles.id'), primary_key=True)
     role = db.relationship(Role, backref='role_permissions', collection_class=set)
     permission_id = db.Column(db.Unicode(40), db.ForeignKey('auth_permissions.id'), primary_key=True)
-    permission = db.relationship(Permission, collection_class=set)
+    permission = db.relationship(Permission, backref='role_permissions', collection_class=set)
 
     def __init__(self, permission):
         self.permission = permission
