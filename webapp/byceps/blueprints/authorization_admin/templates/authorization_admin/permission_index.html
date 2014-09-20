@@ -18,13 +18,23 @@
       {%- for permission in permissions|sort(attribute='id') %}
       <tr>
         <td class="monospace">{{ permission.id }}</td>
-        <td>{% if permission.title is not none %}{{ permission.title }}{% else %}<span class="faint">(keine)</span>{% endif %}</td>
         <td>
+        {%- if permission.title is not none %}
+          {{ permission.title }}
+        {%- else %}
+          <span class="faint">(keine)</span>
+        {%- endif %}
+        </td>
+        <td>
+        {%- if permission.roles %}
           <ol>
           {%- for role in permission.roles|sort(attribute='id') %}
             <li class="monospace">{{ role.id }}</li>
           {%- endfor %}
           </ol>
+        {%- else %}
+          <span class="faint">(keine)</span>
+        {%- endif %}
         </td>
       </tr>
       {%- endfor %}

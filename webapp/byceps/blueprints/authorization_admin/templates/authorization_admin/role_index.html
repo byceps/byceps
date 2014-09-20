@@ -30,7 +30,9 @@
         </td>
         <td>
         {%- set user_limit = 10 %}
-        {%- if role.users|length <= user_limit %}
+        {%- if not role.users %}
+          <span class="faint">(keine)</span>
+        {%- elif role.users|length <= user_limit %}
           <ol>
           {%- for user in role.users|sort(attribute='screen_name') %}
             <li>{{ render_user_admin_link(user) }}</li>
