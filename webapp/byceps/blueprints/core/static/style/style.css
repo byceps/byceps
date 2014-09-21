@@ -190,6 +190,30 @@ p.notification-success {
 }
 
 
+/* breadcrumbs */
+
+nav.breadcrumbs {
+  font-size: 0.9rem;
+  margin: 1rem 0;
+}
+nav.breadcrumbs li {
+  display: inline-block;
+}
+nav.breadcrumbs li:before {
+  content: '\0BB \020';
+}
+nav.breadcrumbs li:first-child:before,
+nav.breadcrumbs li:last-child:before {
+  content: none;
+}
+nav.breadcrumbs li:last-child {
+  display: block;
+  font-size: 2.2rem;
+  font-weight: bold;
+  margin-top: 0.5rem;
+}
+
+
 /* headings */
 
 h1 {
@@ -396,27 +420,6 @@ nav.pagination li.current {
 
 
 /* board */
-
-nav.board-breadcrumbs {
-  font-size: 0.9rem;
-  margin: 1rem 0;
-}
-nav.board-breadcrumbs li {
-  display: inline-block;
-}
-nav.board-breadcrumbs li:before {
-  content: '\0BB \020';
-}
-nav.board-breadcrumbs li:first-child:before,
-nav.board-breadcrumbs li:last-child:before {
-  content: none;
-}
-nav.board-breadcrumbs li:last-child {
-  display: block;
-  font-size: 2.2rem;
-  font-weight: bold;
-  margin-top: 0.5rem;
-}
 
 .board-postings {
   border-bottom: #cccccc solid 1px;

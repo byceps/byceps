@@ -12,7 +12,7 @@
 
 {% block body %}
 
-  <nav class="board-breadcrumbs">
+  <nav class="breadcrumbs">
     <ol>
       <li><a href="{{ url_for('.category_index') }}">Forum</a></li>
       <li><a href="{{ url_for('.category_view', slug=topic.category.slug) }}">{{ topic.category.title }}</a></li>
