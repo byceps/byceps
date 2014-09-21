@@ -27,6 +27,7 @@ app = create_app(ENVIRONMENT, initialize=True)
 
 if app.debug:
     exports = {
+        '/content': str(app.config['PATH_CONTENT']),
         '/users/avatars': str(app.config['PATH_USER_AVATAR_IMAGES']),
     }
     app.wsgi_app = SharedDataMiddleware(app.wsgi_app, exports)

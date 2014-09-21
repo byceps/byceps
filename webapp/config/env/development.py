@@ -13,6 +13,7 @@ SQLALCHEMY_DATABASE_URI = 'postgresql+pg8000://byceps:boioioing@127.0.0.1/byceps
 SQLALCHEMY_ECHO = False
 
 PATH_DATA = Path('./data')
+PATH_CONTENT = PATH_DATA / 'content'
 PATH_USER_AVATAR_IMAGES = PATH_DATA / 'users/avatars'
 
 MODE = 'public'
