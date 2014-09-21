@@ -14,6 +14,9 @@ from flask.ext.script import Manager
 from werkzeug.wsgi import SharedDataMiddleware
 
 from byceps.application import create_app
+from byceps.blueprints.brand.models import Brand
+from byceps.blueprints.party.models import Party
+from byceps.blueprints.user.models import User, UserDetail
 from byceps.database import db
 
 
@@ -36,6 +39,10 @@ def make_shell_context():
     return {
         'app': app,
         'db': db,
+        'Brand': Brand,
+        'Party': Party,
+        'User': User,
+        'UserDetail': UserDetail,
     }
 
 
