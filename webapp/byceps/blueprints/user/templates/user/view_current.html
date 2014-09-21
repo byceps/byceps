@@ -64,8 +64,8 @@
       <th>Anschrift</th>
       <td>
         {%- if user.detail.street %}{{ user.detail.street }}<br/>{% endif -%}
-        {%- if user.detail.zip_code %}{{ user.detail.zip_code }}{% endif -%}
-        {%- if user.detail.city %}{{ user.detail.city }}{% endif -%}
+        {%- if user.detail.zip_code %}{{ user.detail.zip_code }}{% endif %}
+        {% if user.detail.city %}{{ user.detail.city }}{% endif -%}
       </td>
     </tr>
   </table>

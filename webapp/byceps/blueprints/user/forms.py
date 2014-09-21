@@ -43,6 +43,9 @@ class DetailsForm(LocalizedForm):
     date_of_birth = DateField('Geburtsdatum',
                               format='%d.%m.%Y',
                               validators=[Optional()])
+    zip_code = StringField('PLZ', validators=[Optional()])
+    city = StringField('Stadt', validators=[Optional()])
+    street = StringField('Straße', validators=[Optional()])
 
 
 class AvatarImageUpdateForm(LocalizedForm):

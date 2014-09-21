@@ -209,6 +209,9 @@ def details_update():
     user.detail.first_names = form.first_names.data.strip()
     user.detail.last_name = form.last_name.data.strip()
     user.detail.date_of_birth = form.date_of_birth.data
+    user.detail.zip_code = form.zip_code.data.strip()
+    user.detail.city = form.city.data.strip()
+    user.detail.street = form.street.data.strip()
     db.session.commit()
 
     flash_success('Deine Daten wurden gespeichert.')
