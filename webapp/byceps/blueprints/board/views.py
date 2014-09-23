@@ -43,7 +43,12 @@ blueprint.add_app_template_filter(render_html, 'bbcode')
 @templated
 def category_index():
     """List categories."""
-    categories = Category.query.for_current_brand().all()
+    categories = Category.query \
+        .for_current_brand() \
+        .options(
+            db.joinedload(Category.last_posting_updated_by),
+        ) \
+        .all()
     return {'categories': categories}
 
 
@@ -63,6 +68,14 @@ def category_view(slug, page):
 
     topics = Topic.query \
         .for_category(category) \
+        .options(
+            db.joinedload(Topic.category),
+            db.joinedload(Topic.creator),
+            db.joinedload(Topic.last_updated_by),
+            db.joinedload(Topic.hidden_by),
+            db.joinedload(Topic.locked_by),
+            db.joinedload(Topic.pinned_by),
+        ) \
         .only_visible() \
         .order_by(Topic.pinned.desc(), Topic.last_updated_at.desc()) \
         .paginate(page, topics_per_page)
@@ -82,7 +95,12 @@ def category_view(slug, page):
 @templated
 def topic_view(id, page):
     """List postings for the topic."""
-    topic = Topic.query.only_visible().with_id_or_404(id)
+    topic = Topic.query \
+        .options(
+            db.joinedload(Topic.category),
+        ) \
+        .only_visible() \
+        .with_id_or_404(id)
 
     # Copy last view timestamp for later use to compare postings
     # against it.
@@ -116,6 +134,12 @@ def topic_view(id, page):
             return redirect(url, code=307)
 
     postings = Posting.query \
+        .options(
+            db.joinedload(Posting.topic),
+            db.joinedload(Posting.creator),
+            db.joinedload(Posting.last_edited_by),
+            db.joinedload(Posting.hidden_by),
+        ) \
         .for_topic(topic) \
         .only_visible() \
         .earliest_to_latest() \
