@@ -15,6 +15,8 @@ class AbstractAppTestCase(TestCase):
 
         self.db = db
         db.app = self.app
+
+        db.drop_all()
         db.create_all()
 
         self.create_brand_and_party()
