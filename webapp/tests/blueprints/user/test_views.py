@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from datetime import datetime
-from unittest import TestCase
-
-from nose2.tools import params
 
 from byceps.blueprints.user.models import User, VerificationToken, \
     VerificationTokenPurpose
