@@ -7,12 +7,13 @@ byceps.blueprints.authorization_admin.views
 :Copyright: 2006-2014 Jochen Kupperschmidt
 """
 
+from ...database import db
 from ...util.framework import create_blueprint
 from ...util.templating import templated
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
-from ..authorization.models import Permission, Role
+from ..authorization.models import Permission, Role, RolePermission
 
 from .authorization import RolePermission
 
@@ -28,7 +29,14 @@ permission_registry.register_enum(RolePermission)
 @templated
 def permission_index():
     """List permissions."""
-    permissions = Permission.query.all()
+    permissions = Permission.query \
+        .options(
+            db.joinedload('role_permissions')
+                .joinedload('role')
+                .joinedload('user_roles')
+                .joinedload('user')
+        ) \
+        .all()
     return {'permissions': permissions}
 
 
@@ -37,5 +45,10 @@ def permission_index():
 @templated
 def role_index():
     """List roles."""
-    roles = Role.query.all()
+    roles = Role.query \
+        .options(
+            db.joinedload('user_roles')
+                .joinedload('user')
+        ) \
+        .all()
     return {'roles': roles}
