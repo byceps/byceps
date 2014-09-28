@@ -33,12 +33,12 @@
 {{ render_pagination_nav(postings, 'board.topic_view', {'id': topic.id}) }}
 
   <div style="text-align: right;">
-    {%- set current_user_may_reply = (not topic.locked and g.current_user.has_permission(BoardPostingPermission.create)) %}
-    {%- if not current_user_may_reply %}
+    {%- set current_user_may_reply_generally = g.current_user.has_permission(BoardPostingPermission.create) %}
+    {%- if not current_user_may_reply_generally and not topic.locked %}
     <small style="margin-right: 1em;">Du musst <a href="{{ url_for('user.login_form') }}">angemeldet</a> sein um antworten zu können.</small>
     {%- endif %}
     <ol class="actions">
-    {%- if current_user_may_reply %}
+    {%- if current_user_may_reply_generally and not topic.locked %}
       <li><a href="{{ url_for('.posting_create_form', topic_id=topic.id) }}">{{ render_icon('reply') }} Antworten</a></li>
     {%- else %}
       <li><span class="action disabled">{{ render_icon('reply') }} Antworten</span></li>
