@@ -24,10 +24,12 @@ class AbstractAppTestCase(TestCase):
         self.client = self.app.test_client()
 
     def create_brand_and_party(self):
-        brand = Brand(id='acme', title='ACME')
-        db.session.add(brand)
-        party = Party(id='acme-2014', brand=brand, title='ACME 2014')
-        db.session.add(party)
+        self.brand = Brand(id='acme', title='ACME')
+        db.session.add(self.brand)
+
+        self.party = Party(id='acme-2014', brand=self.brand, title='ACME 2014')
+        db.session.add(self.party)
+
         db.session.commit()
 
     def tearDown(self):
