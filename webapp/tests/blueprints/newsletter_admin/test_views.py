@@ -18,11 +18,6 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
 
         self.setUp_current_user()
 
-        self.user1 = self.create_user(1)
-        self.user2 = self.create_user(2)
-        self.user3 = self.create_user(3)
-        self.db.session.commit()
-
     def setUp_current_user(self):
         export_subscribers_permission = Permission.from_enum_member(
             NewsletterPermission.export_subscribers)
@@ -45,16 +40,25 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
                     'screen_name': 'User-1',
                     'email_address': 'user001@example.com',
                 },
+                # User #2 has declined a subscription.
+                # User #3 is not enabled.
                 {
-                    'screen_name': 'User-3',
-                    'email_address': 'user003@example.com',
+                    'screen_name': 'User-4',
+                    'email_address': 'user004@example.com',
                 },
             ],
         }
 
+        self.user1 = self.create_user(1, enabled=True)
+        self.user2 = self.create_user(2, enabled=True)
+        self.user3 = self.create_user(3, enabled=False)
+        self.user4 = self.create_user(4, enabled=True)
+
         self.add_subscription(self.user1, SubscriptionState.requested)
         self.add_subscription(self.user2, SubscriptionState.declined)
         self.add_subscription(self.user3, SubscriptionState.requested)
+        self.add_subscription(self.user4, SubscriptionState.requested)
+
         self.db.session.commit()
 
         url = '/admin/newsletter/subscriptions/{}/export'.format(self.brand.id)

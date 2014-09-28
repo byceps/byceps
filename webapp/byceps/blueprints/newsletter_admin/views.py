@@ -64,7 +64,8 @@ def export_subscribers(brand_id):
     """
     brand = Brand.query.get_or_404(brand_id)
 
-    subscribers = list(get_subscribers(brand))
+    subscribers = get_subscribers(brand)
+    subscribers = filter(lambda user: user.enabled, subscribers)
 
     exports = list(map(assemble_subscriber_export, subscribers))
 
