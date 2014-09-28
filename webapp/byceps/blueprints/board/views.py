@@ -286,7 +286,7 @@ def topic_hide(id):
     db.session.commit()
 
     flash_success('Das Thema "{}" wurde versteckt.', topic.title, icon='hidden')
-    return url_for('.category_view', id=topic.category.id, _anchor=topic.anchor)
+    return url_for('.category_view', slug=topic.category.slug, _anchor=topic.anchor)
 
 
 @blueprint.route('/topics/<id>/flags/hidden', methods=['DELETE'])
@@ -301,7 +301,7 @@ def topic_unhide(id):
 
     flash_success(
         'Das Thema "{}" wurde wieder sichtbar gemacht.', topic.title, icon='view')
-    return url_for('.category_view', id=topic.category.id, _anchor=topic.anchor)
+    return url_for('.category_view', slug=topic.category.slug, _anchor=topic.anchor)
 
 
 @blueprint.route('/topics/<id>/flags/locked', methods=['POST'])
@@ -315,7 +315,7 @@ def topic_lock(id):
     db.session.commit()
 
     flash_success('Das Thema "{}" wurde geschlossen.', topic.title, icon='lock')
-    return url_for('.category_view', id=topic.category.id, _anchor=topic.anchor)
+    return url_for('.category_view', slug=topic.category.slug, _anchor=topic.anchor)
 
 
 @blueprint.route('/topics/<id>/flags/locked', methods=['DELETE'])
@@ -330,7 +330,7 @@ def topic_unlock(id):
 
     flash_success('Das Thema "{}" wurde wieder geöffnet.', topic.title,
                   icon='unlock')
-    return url_for('.category_view', id=topic.category.id, _anchor=topic.anchor)
+    return url_for('.category_view', slug=topic.category.slug, _anchor=topic.anchor)
 
 
 @blueprint.route('/topics/<id>/flags/pinned', methods=['POST'])
@@ -344,7 +344,7 @@ def topic_pin(id):
     db.session.commit()
 
     flash_success('Das Thema "{}" wurde angepinnt.', topic.title, icon='pin')
-    return url_for('.category_view', id=topic.category.id, _anchor=topic.anchor)
+    return url_for('.category_view', slug=topic.category.slug, _anchor=topic.anchor)
 
 
 @blueprint.route('/topics/<id>/flags/pinned', methods=['DELETE'])
@@ -358,7 +358,7 @@ def topic_unpin(id):
     db.session.commit()
 
     flash_success('Das Thema "{}" wurde wieder gelöst.', topic.title)
-    return url_for('.category_view', id=topic.category.id, _anchor=topic.anchor)
+    return url_for('.category_view', slug=topic.category.slug, _anchor=topic.anchor)
 
 
 # -------------------------------------------------------------------- #
