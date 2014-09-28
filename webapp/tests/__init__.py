@@ -10,8 +10,8 @@ from byceps.database import db
 
 class AbstractAppTestCase(TestCase):
 
-    def setUp(self):
-        self.app = create_app('test', initialize=False)
+    def setUp(self, env='test'):
+        self.app = create_app(env, initialize=False)
 
         self.db = db
         db.app = self.app
