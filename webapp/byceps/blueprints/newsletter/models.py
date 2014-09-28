@@ -36,9 +36,9 @@ class Subscription(db.Model):
     expressed_at = db.Column(db.DateTime, default=datetime.now, primary_key=True)
     _state = db.Column('state', db.Unicode(20), nullable=False)
 
-    def __init__(self, user, state):
+    def __init__(self, user, state, *, brand=None):
         self.user = user
-        self.brand = g.party.brand
+        self.brand = brand if brand is not None else g.party.brand
         self.state = state
 
     @hybrid_property
