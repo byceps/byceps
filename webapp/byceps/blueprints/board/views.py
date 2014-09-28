@@ -106,19 +106,6 @@ def topic_view(id, page):
     # against it.
     last_viewed_at = topic.last_viewed_at
 
-    # Mark as viewed before aborting so a user can itself remove the
-    # 'new' tag from a locked topic.
-    topic.mark_as_viewed()
-
-    if topic.hidden:
-        flash_notice('Das Thema ist versteckt.', icon='hidden')
-
-    if topic.locked:
-        flash_notice(
-            'Das Thema ist geschlossen. '
-            'Es können keine Beiträge mehr hinzugefügt werden.',
-            icon='lock')
-
     postings_per_page = int(current_app.config['BOARD_POSTINGS_PER_PAGE'])
     if page == 0:
         posting = topic.get_default_posting_to_jump_to(last_viewed_at)
@@ -132,6 +119,19 @@ def topic_view(id, page):
                           page=page,
                           _anchor=posting.anchor)
             return redirect(url, code=307)
+
+    # Mark as viewed before aborting so a user can itself remove the
+    # 'new' tag from a locked topic.
+    topic.mark_as_viewed()
+
+    if topic.hidden:
+        flash_notice('Das Thema ist versteckt.', icon='hidden')
+
+    if topic.locked:
+        flash_notice(
+            'Das Thema ist geschlossen. '
+            'Es können keine Beiträge mehr hinzugefügt werden.',
+            icon='lock')
 
     postings = Posting.query \
         .options(
