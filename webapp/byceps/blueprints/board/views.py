@@ -7,6 +7,8 @@ byceps.blueprints.board.views
 :Copyright: 2006-2014 Jochen Kupperschmidt
 """
 
+from datetime import datetime
+
 from flask import current_app, g, redirect, request, url_for
 
 from ...database import db
@@ -282,6 +284,7 @@ def topic_hide(id):
     """Hide a topic."""
     topic = Topic.query.get_or_404(id)
     topic.hidden = True
+    topic.hidden_at = datetime.now()
     topic.hidden_by = g.current_user
     db.session.commit()
 
@@ -296,6 +299,7 @@ def topic_unhide(id):
     """Un-hide a topic."""
     topic = Topic.query.get_or_404(id)
     topic.hidden = False
+    topic.hidden_at = None
     topic.hidden_by = None
     db.session.commit()
 
@@ -311,6 +315,7 @@ def topic_lock(id):
     """Lock a topic."""
     topic = Topic.query.get_or_404(id)
     topic.locked = True
+    topic.locked_at = datetime.now()
     topic.locked_by = g.current_user
     db.session.commit()
 
@@ -325,6 +330,7 @@ def topic_unlock(id):
     """Unlock a topic."""
     topic = Topic.query.get_or_404(id)
     topic.locked = False
+    topic.locked_at = None
     topic.locked_by = None
     db.session.commit()
 
@@ -340,6 +346,7 @@ def topic_pin(id):
     """Pin a topic."""
     topic = Topic.query.get_or_404(id)
     topic.pinned = True
+    topic.pinned_at = datetime.now()
     topic.pinned_by = g.current_user
     db.session.commit()
 
@@ -354,6 +361,7 @@ def topic_unpin(id):
     """Unpin a topic."""
     topic = Topic.query.get_or_404(id)
     topic.pinned = False
+    topic.pinned_at = None
     topic.pinned_by = None
     db.session.commit()
 
