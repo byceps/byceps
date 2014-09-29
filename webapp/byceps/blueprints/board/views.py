@@ -270,8 +270,15 @@ def topic_update(id):
 def topic_flags_form(id):
     """Show a form to change the topic's flags."""
     topic = Topic.query.get_or_404(id)
+
+    categories = Category.query.for_current_brand() \
+        .filter(Category.id != topic.category_id) \
+        .order_by(Category.position) \
+        .all()
+
     return {
         'topic': topic,
+        'categories': categories,
     }
 
 
@@ -353,6 +360,25 @@ def topic_unpin(id):
 
     flash_success('Das Thema "{}" wurde wieder gelöst.', topic.title)
     return url_for('.category_view', slug=topic.category.slug, _anchor=topic.anchor)
+
+
+@blueprint.route('/topics/<id>/move', methods=['POST'])
+@permission_required(BoardTopicPermission.move)
+def topic_move(id):
+    """Move a topic."""
+    topic = Topic.query.get_or_404(id)
+
+    category_id = request.form['category_id']
+    category = Category.query.get_or_404(category_id)
+
+    topic.category = category
+    db.session.commit()
+
+    flash_success('Das Thema "{}" wurde in die Kategorie "{}" verschoben.',
+                  topic.title, category.title, icon='move')
+    return redirect_to('.category_view',
+                       slug=topic.category.slug,
+                       _anchor=topic.anchor)
 
 
 # -------------------------------------------------------------------- #

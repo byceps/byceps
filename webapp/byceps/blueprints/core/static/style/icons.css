@@ -65,6 +65,7 @@ li [class*=" icon-"] {
 .icon-lock:before           { content: "\f023"; }
 .icon-log-in:before         { content: "\f090"; }
 .icon-log-out:before        { content: "\f08b"; }
+.icon-move:before           { content: "\f047"; }
 .icon-network:before        { content: "\f0e8"; }
 .icon-new:before            { content: "\f069"; }
 .icon-parking:before        { content: "\f1b9"; }

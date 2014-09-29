@@ -57,4 +57,22 @@
   {%- endif %}
   </ol>
 
+  {%- if g.current_user.has_permission(BoardTopicPermission.move) %}
+  <h2>Verschieben</h2>
+  <p>Dieses Thema befindet sich in der Kategorie &quot;{{ topic.category.title }}&quot;.</p>
+  <ol class="actions">
+    <li>
+      <form action="{{ url_for('.topic_move', id=topic.id) }}" method="post">
+        Neue Kategorie:
+        <select name="category_id">
+        {%- for category in categories %}
+          <option value="{{ category.id }}">{{ category.title }}</option>
+        {%- endfor %}
+        </select>
+        <button type="submit" class="action">{{ render_icon('move') }} verschieben</button>
+      </form>
+    </li>
+  </ol>
+  {%- endif %}
+
 {%- endblock body %}

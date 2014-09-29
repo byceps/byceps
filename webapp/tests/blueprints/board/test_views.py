@@ -156,6 +156,27 @@ class BoardModerationTestCase(AbstractAppTestCase):
         self.assertIsNone(topic_afterwards.pinned_at)
         self.assertIsNone(topic_afterwards.pinned_by)
 
+    def test_move_topic(self):
+        self.setup_current_user(BoardTopicPermission.move)
+
+        user = self.create_user(1)
+        category1 = self.create_category(1)
+        category2 = self.create_category(2)
+        topic_before = self.create_topic(category1, user, 1)
+        self.db.session.commit()
+
+        self.assertEqual(topic_before.category, category1)
+
+        url = '/board/topics/{}/move'.format(topic_before.id)
+        form_data = {'category_id': category2.id}
+        with self.client.session_transaction() as session:
+            session['user_id'] = str(self.current_user.id)
+        response = self.client.post(url, data=form_data)
+
+        self.assertEqual(response.status_code, 302)
+        topic_afterwards = self.find_topic(topic_before.id)
+        self.assertEqual(topic_afterwards.category, category2)
+
     # -------------------------------------------------------------------- #
     # helpers
 
