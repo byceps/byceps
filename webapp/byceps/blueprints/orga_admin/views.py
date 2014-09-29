@@ -7,6 +7,8 @@ byceps.blueprints.orga_admin.views
 :Copyright: 2006-2014 Jochen Kupperschmidt
 """
 
+from operator import attrgetter
+
 from ...util.framework import create_blueprint
 from ...util.templating import templated
 
@@ -53,4 +55,8 @@ def teams_for_party(party_id):
 @templated
 def birthdays():
     birthdays = list(collect_next_orga_birthdays())
-    return {'birthdays': birthdays}
+    any_birthdays_today = any(map(attrgetter('is_today'), birthdays))
+    return {
+        'birthdays': birthdays,
+        'any_birthdays_today': any_birthdays_today,
+    }
