@@ -26,7 +26,8 @@ from ..newsletter.models import Subscription as NewsletterSubscription, \
     SubscriptionState as NewsletterSubscriptionState
 from ..terms.models import Consent, ConsentContext
 
-from .forms import AvatarImageUpdateForm, DetailsForm, LoginForm, UserCreateForm
+from .forms import AvatarImageUpdateForm, DetailsForm, LoginForm, \
+    RequestConfirmationEmailForm, UserCreateForm
 from .models import User, VerificationToken, VerificationTokenPurpose
 
 
@@ -83,9 +84,7 @@ def create():
     user = User.create(screen_name, email_address, password)
     db.session.add(user)
 
-    verification_token = VerificationToken(
-        user, VerificationTokenPurpose.email_address_confirmation)
-    db.session.add(verification_token)
+    verification_token = create_verification_token_for_email_address_confirmation(user)
 
     terms_consent = Consent(user, ConsentContext.account_creation)
     db.session.add(terms_consent)
@@ -106,8 +105,6 @@ def create():
         flash_error('Das Benutzerkonto für "{}" konnte nicht angelegt werden.',
                     user.screen_name)
         return create_form(form)
-
-    db.session.commit()
 
     send_email_address_confirmation_email(user, verification_token)
 
@@ -137,6 +134,50 @@ def do_users_matching_filter_exist(model_attribute, search_value):
         .filter(db.func.lower(model_attribute) == search_value.lower()) \
         .count()
     return user_count > 0
+
+
+@blueprint.route('/email_address_confirmations/request')
+@templated
+def request_email_address_confirmation_email_form(errorneous_form=None):
+    """Show a form to request the email address confirmation email for the user
+    account again.
+    """
+    form = errorneous_form if errorneous_form else RequestConfirmationEmailForm()
+    return {'form': form}
+
+
+@blueprint.route('/email_address_confirmations/request', methods=['POST'])
+def request_email_address_confirmation_email():
+    """Request the email address confirmation email for the user account
+    again.
+    """
+    form = RequestConfirmationEmailForm(request.form)
+    if not form.validate():
+        return request_email_address_confirmation_email_form(form)
+
+    screen_name = form.screen_name.data.strip()
+    user = User.query.filter_by(screen_name=screen_name).first()
+
+    if user is None:
+        flash_error('Der Benutzername "{}" ist unbekannt.', screen_name)
+        return request_email_address_confirmation_email_form(form)
+
+    verification_token = VerificationToken.query \
+        .filter_by(user=user) \
+        .for_purpose(VerificationTokenPurpose.email_address_confirmation) \
+        .first()
+
+    if verification_token is None:
+        verification_token = create_verification_token_for_email_address_confirmation(user)
+        db.session.commit()
+
+    send_email_address_confirmation_email(user, verification_token)
+
+    flash_success(
+        'Der Link zur Bestätigung der für den Benutzernamen "{}" '
+        'hinterlegten E-Mail-Adresse wurde erneut versendet.',
+        user.screen_name)
+    return request_email_address_confirmation_email_form()
 
 
 def send_email_address_confirmation_email(user, verification_token):
@@ -362,6 +403,13 @@ def get_current_user_or_404():
         abort(404)
 
     return user
+
+
+def create_verification_token_for_email_address_confirmation(user):
+    verification_token = VerificationToken(
+        user, VerificationTokenPurpose.email_address_confirmation)
+    db.session.add(verification_token)
+    return verification_token
 
 
 class UserSession(object):

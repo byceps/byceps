@@ -20,7 +20,7 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from werkzeug.security import check_password_hash, \
     generate_password_hash as _generate_password_hash
 
-from ...database import db, generate_uuid
+from ...database import BaseQuery, db, generate_uuid
 from ...util.image import ImageType
 from ...util.instances import ReprBuilder
 
@@ -285,11 +285,18 @@ VerificationTokenPurpose = Enum(
     ['email_address_confirmation', 'password_reset'])
 
 
+class VerificationTokenQuery(BaseQuery):
+
+    def for_purpose(self, purpose):
+        return self.filter_by(_purpose=purpose.name)
+
+
 class VerificationToken(db.Model):
     """A private token to authenticate as a certain user for a certain
     action.
     """
     __tablename__ = 'user_verification_tokens'
+    query_class = VerificationTokenQuery
 
     token = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
@@ -300,7 +307,7 @@ class VerificationToken(db.Model):
     def find(cls, token, purpose):
         return cls.query \
             .filter_by(token=token) \
-            .filter_by(_purpose=purpose.name) \
+            .for_purpose(purpose) \
             .first()
 
     def __init__(self, user, purpose):
