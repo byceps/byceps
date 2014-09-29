@@ -13,9 +13,7 @@
     <thead>
       <tr>
         <th>Tag</th>
-        {%- if any_birthdays_today %}
         <th></th>
-        {%- endif %}
         <th>Name</th>
         <th>Alter</th>
       </tr>
@@ -24,9 +22,13 @@
       {%- for birthday in birthdays %}
       <tr{% if birthday.is_today %} style="font-weight: bold;"{% endif %}>
         <td>{{ render_date(birthday.date) }}</td>
-        {%- if any_birthdays_today %}
-        <td>{% if birthday.is_today %}{{ render_icon('birthday') }}{% endif %}</td>
-        {%- endif %}
+        <td>
+          {%- if birthday.is_today -%}
+            {{ render_icon('birthday') }} heute!
+          {%- else -%}
+            noch {{ birthday.days_until }} Tage
+          {%- endif -%}
+        </td>
         <td>{{ render_user_admin_link(birthday.user) }}</td>
         <td>{{ birthday.age }} Jahre</td>
       </tr>

@@ -55,8 +55,6 @@ def teams_for_party(party_id):
 @templated
 def birthdays():
     birthdays = list(collect_next_orga_birthdays())
-    any_birthdays_today = any(map(attrgetter('is_today'), birthdays))
     return {
         'birthdays': birthdays,
-        'any_birthdays_today': any_birthdays_today,
     }
