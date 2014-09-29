@@ -85,6 +85,9 @@ class Category(db.Model):
     def mark_as_viewed(self):
         LastCategoryView.update(g.current_user, self)
 
+    def __eq__(self, other):
+        return self.id == other.id
+
     def __repr__(self):
         return ReprBuilder(self) \
             .add_with_lookup('id') \
@@ -279,6 +282,9 @@ class Topic(db.Model):
     def mark_as_viewed(self):
         LastTopicView.update(g.current_user, self)
 
+    def __eq__(self, other):
+        return self.id == other.id
+
     def __repr__(self):
         builder = ReprBuilder(self) \
             .add_with_lookup('id') \
@@ -381,6 +387,9 @@ class Posting(db.Model):
     def anchor(self):
         """Return the URL anchor for this posting."""
         return 'posting-{}'.format(self.id)
+
+    def __eq__(self, other):
+        return self.id == other.id
 
     def __repr__(self):
         builder = ReprBuilder(self) \
