@@ -17,11 +17,11 @@
       <li><a href="{{ url_for('.category_index') }}">Forum</a></li>
       <li><a href="{{ url_for('.category_view', slug=topic.category.slug) }}">{{ topic.category.title }}</a></li>
       <li><a href="{{ url_for('.topic_view', id=topic.id) }}">{{ topic.title }}</a></li>
-      <li>{{ title }}</li>
+      <li>{{ render_icon('administrate') }}&thinsp;{{ title }}</li>
     </ol>
   </nav>
 
-  <h2>Sichtbarkeit</h2>
+  <h2>{{ render_icon('view') }} Sichtbarkeit</h2>
   <p>Das Thema &quot;{{ topic.title }}&quot; von {{ render_user_link(topic.creator) }} ist {% if topic.hidden %}<strong>versteckt</strong> ({{ render_datetime(topic.hidden_at) }} durch {{ topic.hidden_by.screen_name }}){% else %}<strong>sichtbar</strong>{% endif %}.</p>
   <ol class="actions">
   {%- if topic.hidden %}
@@ -33,7 +33,7 @@
   {%- endif %}
   </ol>
 
-  <h2>Schreibsperre</h2>
+  <h2>{{ render_icon('lock') }} Schreibsperre</h2>
   <p>Das Thema &quot;{{ topic.title }}&quot; von {{ render_user_link(topic.creator) }} ist {% if topic.locked %}<strong>geschlossen</strong> ({{ render_datetime(topic.locked_at) }} durch {{ topic.locked_by.screen_name }}){% else %}<strong>offen</strong>{% endif %}.</p>
   <ol class="actions">
   {%- if topic.locked %}
@@ -45,7 +45,7 @@
   {%- endif %}
   </ol>
 
-  <h2>Anheften</h2>
+  <h2>{{ render_icon('pin') }} Anheften</h2>
   <p>Das Thema &quot;{{ topic.title }}&quot; von {{ render_user_link(topic.creator) }} ist {% if topic.pinned %}<strong>angepinnt</strong> ({{ render_datetime(topic.pinned_at) }} durch {{ topic.pinned_by.screen_name }}){% else %}<strong>nicht angepinnt</strong>{% endif %}.</p>
   <ol class="actions">
   {%- if topic.pinned %}
@@ -58,7 +58,7 @@
   </ol>
 
   {%- if g.current_user.has_permission(BoardTopicPermission.move) %}
-  <h2>Verschieben</h2>
+  <h2>{{ render_icon('move') }} Verschieben</h2>
   <p>Dieses Thema befindet sich in der Kategorie &quot;{{ topic.category.title }}&quot;.</p>
   <ol class="actions">
     <li>
