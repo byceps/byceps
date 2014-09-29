@@ -525,8 +525,7 @@ def posting_flags_form(id):
 def posting_hide(id):
     """Hide a posting."""
     posting = Posting.query.get_or_404(id)
-    posting.hidden = True
-    posting.hidden_by = g.current_user
+    posting.hide(g.current_user)
     db.session.commit()
 
     flash_success('Der Beitrag wurde versteckt.', icon='hidden')
@@ -539,8 +538,7 @@ def posting_hide(id):
 def posting_unhide(id):
     """Un-hide a posting."""
     posting = Posting.query.get_or_404(id)
-    posting.hidden = False
-    posting.hidden_by = None
+    posting.unhide()
     db.session.commit()
 
     flash_success('Der Beitrag wurde wieder sichtbar gemacht.', icon='view')

@@ -340,7 +340,7 @@ class Posting(db.Model):
     last_edited_by = db.relationship(User, foreign_keys=[last_edited_by_id])
     edit_count = db.Column(db.Integer, default=0)
     hidden = db.Column(db.Boolean, default=False)
-    hidden_at = db.Column(db.DateTime, default=datetime.now())
+    hidden_at = db.Column(db.DateTime)
     hidden_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
     hidden_by = db.relationship(User, foreign_keys=[hidden_by_id])
 
@@ -362,6 +362,16 @@ class Posting(db.Model):
 
         if commit:
             db.session.commit()
+
+    def hide(self, user):
+        self.hidden = True
+        self.hidden_at = datetime.now()
+        self.hidden_by = user
+
+    def unhide(self):
+        self.hidden = False
+        self.hidden_at = None
+        self.hidden_by = None
 
     def __init__(self, topic, creator, body):
         self.topic = topic
