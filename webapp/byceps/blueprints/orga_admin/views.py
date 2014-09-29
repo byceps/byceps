@@ -15,12 +15,14 @@ from ..authorization.registry import permission_registry
 from ..orga.models import OrgaTeam
 from ..party.models import Party
 
-from .authorization import OrgaTeamPermission
+from .authorization import OrgaBirthdayPermission, OrgaTeamPermission
+from .models import collect_next_orga_birthdays
 
 
 blueprint = create_blueprint('orga_admin', __name__)
 
 
+permission_registry.register_enum(OrgaBirthdayPermission)
 permission_registry.register_enum(OrgaTeamPermission)
 
 
@@ -44,3 +46,11 @@ def teams_for_party(party_id):
         'teams': teams,
         'party': party,
     }
+
+
+@blueprint.route('/birthdays')
+@permission_required(OrgaBirthdayPermission.list)
+@templated
+def birthdays():
+    birthdays = list(collect_next_orga_birthdays())
+    return {'birthdays': birthdays}

@@ -2,7 +2,8 @@
 
 from byceps.blueprints.authorization_admin.authorization import RolePermission
 from byceps.blueprints.newsletter_admin.authorization import NewsletterPermission
-from byceps.blueprints.orga_admin.authorization import OrgaTeamPermission
+from byceps.blueprints.orga_admin.authorization import OrgaBirthdayPermission, \
+    OrgaTeamPermission
 from byceps.blueprints.party_admin.authorization import PartyPermission
 from byceps.blueprints.snippet_admin.authorization import SnippetPermission
 from byceps.blueprints.terms_admin.authorization import TermsPermission
@@ -11,6 +12,7 @@ from byceps.util.navigation import Navigation, NavigationItem
 
 
 admin = Navigation('Verwaltung')
+admin.add_item('orga_admin.birthdays', 'Geburtstage', id='orga_admin.birthdays', required_permission=OrgaBirthdayPermission.list)
 admin.add_item('authorization_admin.permission_index', 'Rechte', id='authorization_admin.permissions', required_permission=RolePermission.list)
 admin.add_item('authorization_admin.role_index', 'Rollen', id='authorization_admin.roles', required_permission=RolePermission.list)
 admin.add_item('party_admin.index', 'Parties', id='party_admin', required_permission=PartyPermission.list)
