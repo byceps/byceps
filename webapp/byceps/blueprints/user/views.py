@@ -14,7 +14,8 @@ from flask import abort, g, request, session, url_for
 from ...config import get_site_mode
 from ...database import db
 from ...mail import mail
-from ...util.framework import create_blueprint, flash_error, flash_success
+from ...util.framework import create_blueprint, flash_error, flash_notice, \
+    flash_success
 from ...util.image import create_thumbnail, Dimensions, \
     guess_type as guess_image_type, read_dimensions
 from ...util.templating import templated
@@ -162,6 +163,13 @@ def request_email_address_confirmation_email():
         flash_error('Der Benutzername "{}" ist unbekannt.', screen_name)
         return request_email_address_confirmation_email_form(form)
 
+    if user.enabled:
+        flash_notice(
+            'Das Benutzerkonto mit dem Namen "{}" ist bereits aktiviert und '
+            'muss nicht mehr bestätigt werden.',
+            user.screen_name)
+        return request_email_address_confirmation_email_form()
+
     verification_token = VerificationToken.query \
         .filter_by(user=user) \
         .for_purpose(VerificationTokenPurpose.email_address_confirmation) \
@@ -212,7 +220,7 @@ def confirm_email_address(token):
     db.session.commit()
 
     flash_success(
-        'Die E-Mail-Adresse wurde bestätigt. Das Benutzerkonto "{}" ist nun aktiv.',
+        'Die E-Mail-Adresse wurde bestätigt. Das Benutzerkonto "{}" ist nun aktiviert.',
         user.screen_name)
     return redirect_to('.login_form')
 
