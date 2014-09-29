@@ -1,0 +1,18 @@
+{% extends 'layout/base.html' %}
+{% from 'macros/forms.html' import form_buttons, form_field, form_field_checkbox, form_fieldset %}
+{% set current_page = 'user.request_email_address_confirmation_email' %}
+{% set title = 'Bestätigungs-E-Mail erneut anfordern' %}
+
+{% block body %}
+
+  <h1>{{ title }}</h1>
+
+  <form action="{{ url_for('.request_email_address_confirmation_email') }}" method="post">
+    {%- call form_fieldset() %}
+      {{ form_field(form.screen_name, maxlength=40, required='required', autofocus='autofocus') }}
+    {%- endcall %}
+
+    {{ form_buttons('Bestätigungs-E-Mail anfordern') }}
+  </form>
+
+{%- endblock body %}
