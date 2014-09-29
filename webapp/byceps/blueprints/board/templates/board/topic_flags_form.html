@@ -21,6 +21,7 @@
     </ol>
   </nav>
 
+  {%- if g.current_user.has_permission(BoardTopicPermission.hide) %}
   <h2>{{ render_icon('view') }} Sichtbarkeit</h2>
   <p>Das Thema &quot;{{ topic.title }}&quot; von {{ render_user_link(topic.creator) }} ist {% if topic.hidden %}<strong>versteckt</strong> ({{ render_datetime(topic.hidden_at) }} durch {{ topic.hidden_by.screen_name }}){% else %}<strong>sichtbar</strong>{% endif %}.</p>
   <ol class="actions">
@@ -32,7 +33,9 @@
     <li><span class="action disabled">{{ render_icon('view') }} sichtbar machen</span></li>
   {%- endif %}
   </ol>
+  {%- endif %}
 
+  {%- if g.current_user.has_permission(BoardTopicPermission.lock) %}
   <h2>{{ render_icon('lock') }} Schreibsperre</h2>
   <p>Das Thema &quot;{{ topic.title }}&quot; von {{ render_user_link(topic.creator) }} ist {% if topic.locked %}<strong>geschlossen</strong> ({{ render_datetime(topic.locked_at) }} durch {{ topic.locked_by.screen_name }}){% else %}<strong>offen</strong>{% endif %}.</p>
   <ol class="actions">
@@ -44,7 +47,9 @@
     <li><span class="action disabled">{{ render_icon('unlock') }} öffnen</span></li>
   {%- endif %}
   </ol>
+  {%- endif %}
 
+  {%- if g.current_user.has_permission(BoardTopicPermission.pin) %}
   <h2>{{ render_icon('pin') }} Anheften</h2>
   <p>Das Thema &quot;{{ topic.title }}&quot; von {{ render_user_link(topic.creator) }} ist {% if topic.pinned %}<strong>angepinnt</strong> ({{ render_datetime(topic.pinned_at) }} durch {{ topic.pinned_by.screen_name }}){% else %}<strong>nicht angepinnt</strong>{% endif %}.</p>
   <ol class="actions">
@@ -56,6 +61,7 @@
     <li><span class="action disabled">{{ render_icon('sorted') }} lösen</span></li>
   {%- endif %}
   </ol>
+  {%- endif %}
 
   {%- if g.current_user.has_permission(BoardTopicPermission.move) %}
   <h2>{{ render_icon('move') }} Verschieben</h2>
