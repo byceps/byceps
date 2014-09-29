@@ -4,7 +4,7 @@
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/user.html' import render_user_link %}
 {% set current_page = 'board' %}
-{% set title = 'Thema verwalten' %}
+{% set title = 'Thema moderieren' %}
 
 {% block head %}
     <script src="{{ url_for('.static', filename='behavior/board.js') }}"></script>
@@ -17,7 +17,7 @@
       <li><a href="{{ url_for('.category_index') }}">Forum</a></li>
       <li><a href="{{ url_for('.category_view', slug=topic.category.slug) }}">{{ topic.category.title }}</a></li>
       <li><a href="{{ url_for('.topic_view', id=topic.id) }}">{{ topic.title }}</a></li>
-      <li>{{ render_icon('administrate') }}&thinsp;{{ title }}</li>
+      <li>{{ render_icon('moderate') }}&thinsp;{{ title }}</li>
     </ol>
   </nav>
 

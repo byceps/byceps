@@ -17,7 +17,7 @@
   {%- if g.current_user.has_any_permission(BoardTopicPermission.hide, BoardTopicPermission.lock, BoardTopicPermission.move, BoardTopicPermission.pin) %}
   <div style="text-align: right;">
     <ol class="actions">
-        <li><a href="{{ url_for('.topic_flags_form', id=topic.id) }}" title="Thema verwalten">{{ render_icon('administrate') }} verwalten</a></li>
+        <li><a href="{{ url_for('.topic_flags_form', id=topic.id) }}" title="Thema moderieren">{{ render_icon('moderate') }} moderieren</a></li>
     </ol>
   </div>
   {%- endif %}
