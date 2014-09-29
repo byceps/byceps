@@ -27,7 +27,7 @@ permission_registry.register_enum(OrgaTeamPermission)
 @blueprint.route('/teams')
 @permission_required(OrgaTeamPermission.list)
 @templated
-def index():
+def teams():
     """List parties to choose from."""
     parties = Party.query.all()
     return {'parties': parties}
@@ -36,7 +36,7 @@ def index():
 @blueprint.route('/teams/<party_id>')
 @permission_required(OrgaTeamPermission.list)
 @templated
-def view_teams_for_party(party_id):
+def teams_for_party(party_id):
     """List orga teams for that party."""
     party = Party.query.get_or_404(party_id)
     teams = OrgaTeam.query.all()

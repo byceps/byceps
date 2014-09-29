@@ -1,6 +1,6 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/icons.html' import render_icon %}
-{% set current_page = 'orga_admin' %}
+{% set current_page = 'orga_admin.teams' %}
 {% set title = 'Orgateams - Party wählen' %}
 
 {% block body %}
@@ -11,7 +11,7 @@
     {%- for party in parties|sort(attribute='starts_at', reverse=True) %}
     <li{% if party.is_archived %} class="hidden"{% endif %}>
       {%- if party.is_archived %}{{ render_icon('archived', title='archiviert') }} {% endif -%}
-      <a href="{{ url_for('.view_teams_for_party', party_id=party.id) }}">{{ party.title }}</a></li>
+      <a href="{{ url_for('.teams_for_party', party_id=party.id) }}">{{ party.title }}</a></li>
     {%- endfor %}
   </ul>
 

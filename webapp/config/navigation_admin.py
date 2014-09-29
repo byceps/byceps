@@ -17,7 +17,7 @@ admin.add_item('party_admin.index', 'Parties', id='party_admin', required_permis
 admin.add_item('snippet_admin.index', 'Snippets', id='snippet_admin', required_permission=SnippetPermission.list)
 admin.add_item('terms_admin.index', 'AGB', id='terms_admin', required_permission=TermsPermission.list)
 admin.add_item('user_admin.index', 'Benutzer', id='user_admin', required_permission=UserPermission.list)
-admin.add_item('orga_admin.index', 'Orgateams', id='orga_admin', required_permission=OrgaTeamPermission.list)
+admin.add_item('orga_admin.teams', 'Orgateams', id='orga_admin.teams', required_permission=OrgaTeamPermission.list)
 admin.add_item('newsletter_admin.index', 'Newsletter', id='newsletter_admin', required_permission=NewsletterPermission.view_subscriptions)
 
 
