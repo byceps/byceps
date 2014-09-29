@@ -264,11 +264,11 @@ def topic_update(id):
     return redirect(url)
 
 
-@blueprint.route('/topics/<id>/flags')
+@blueprint.route('/topics/<id>/moderate')
 @permission_required(BoardTopicPermission.hide)
 @templated
-def topic_flags_form(id):
-    """Show a form to change the topic's flags."""
+def topic_moderate_form(id):
+    """Show a form to moderate the topic."""
     topic = Topic.query.get_or_404(id)
 
     categories = Category.query.for_current_brand() \
@@ -508,11 +508,11 @@ def posting_update(id):
     return redirect(url)
 
 
-@blueprint.route('/postings/<id>/flags')
+@blueprint.route('/postings/<id>/moderate')
 @permission_required(BoardPostingPermission.hide)
 @templated
-def posting_flags_form(id):
-    """Show a form to change the posting's flags."""
+def posting_moderate_form(id):
+    """Show a form to moderate the posting."""
     posting = Posting.query.get_or_404(id)
     return {
         'posting': posting,
