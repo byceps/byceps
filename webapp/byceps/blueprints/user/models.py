@@ -69,6 +69,9 @@ class AnonymousUser(object):
     def is_orga_for_current_brand(self):
         return False
 
+    def __eq__(self, other):
+        return self.id == other.id
+
     def __repr__(self):
         return ReprBuilder(self) \
             .add_with_lookup('id') \
@@ -218,6 +221,9 @@ class User(db.Model):
 
         if memberships_for_current_party:
             return memberships_for_current_party[0]
+
+    def __eq__(self, other):
+        return self.id == other.id
 
     def __repr__(self):
         return ReprBuilder(self) \

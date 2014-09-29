@@ -23,20 +23,20 @@ class BoardModerationTestCase(AbstractAppTestCase):
         topic_before = self.create_topic(category, user, 1)
         self.db.session.commit()
 
-        assert topic_before.hidden == False
-        assert topic_before.hidden_at is None
-        assert topic_before.hidden_by is None
+        self.assertFalse(topic_before.hidden)
+        self.assertIsNone(topic_before.hidden_at)
+        self.assertIsNone(topic_before.hidden_by)
 
         url = '/board/topics/{}/flags/hidden'.format(topic_before.id)
         with self.client.session_transaction() as session:
             session['user_id'] = str(self.current_user.id)
         response = self.client.post(url)
 
-        assert response.status_code == 204
+        self.assertEqual(response.status_code, 204)
         topic_afterwards = self.find_topic(topic_before.id)
-        assert topic_afterwards.hidden == True
-        assert topic_afterwards.hidden_at is not None
-        assert topic_afterwards.hidden_by is not None
+        self.assertTrue(topic_afterwards.hidden)
+        self.assertIsNotNone(topic_afterwards.hidden_at)
+        self.assertEqual(topic_afterwards.hidden_by, self.current_user)
 
     def test_unhide_topic(self):
         self.setup_current_user(BoardTopicPermission.hide)
@@ -47,20 +47,20 @@ class BoardModerationTestCase(AbstractAppTestCase):
         topic_before.hide(self.current_user)
         self.db.session.commit()
 
-        assert topic_before.hidden == True
-        assert topic_before.hidden_at is not None
-        assert topic_before.hidden_by is not None
+        self.assertTrue(topic_before.hidden)
+        self.assertIsNotNone(topic_before.hidden_at)
+        self.assertEqual(topic_before.hidden_by, self.current_user)
 
         url = '/board/topics/{}/flags/hidden'.format(topic_before.id)
         with self.client.session_transaction() as session:
             session['user_id'] = str(self.current_user.id)
         response = self.client.delete(url)
 
-        assert response.status_code == 204
+        self.assertEqual(response.status_code, 204)
         topic_afterwards = self.find_topic(topic_before.id)
-        assert topic_afterwards.hidden == False
-        assert topic_afterwards.hidden_at is None
-        assert topic_afterwards.hidden_by is None
+        self.assertFalse(topic_afterwards.hidden)
+        self.assertIsNone(topic_afterwards.hidden_at)
+        self.assertIsNone(topic_afterwards.hidden_by)
 
     def test_lock_topic(self):
         self.setup_current_user(BoardTopicPermission.lock)
@@ -70,20 +70,20 @@ class BoardModerationTestCase(AbstractAppTestCase):
         topic_before = self.create_topic(category, user, 1)
         self.db.session.commit()
 
-        assert topic_before.locked == False
-        assert topic_before.locked_at is None
-        assert topic_before.locked_by is None
+        self.assertFalse(topic_before.locked)
+        self.assertIsNone(topic_before.locked_at)
+        self.assertIsNone(topic_before.locked_by)
 
         url = '/board/topics/{}/flags/locked'.format(topic_before.id)
         with self.client.session_transaction() as session:
             session['user_id'] = str(self.current_user.id)
         response = self.client.post(url)
 
-        assert response.status_code == 204
+        self.assertEqual(response.status_code, 204)
         topic_afterwards = self.find_topic(topic_before.id)
-        assert topic_afterwards.locked == True
-        assert topic_afterwards.locked_at is not None
-        assert topic_afterwards.locked_by is not None
+        self.assertTrue(topic_afterwards.locked)
+        self.assertIsNotNone(topic_afterwards.locked_at)
+        self.assertEqual(topic_afterwards.locked_by, self.current_user)
 
     def test_unlock_topic(self):
         self.setup_current_user(BoardTopicPermission.lock)
@@ -94,20 +94,20 @@ class BoardModerationTestCase(AbstractAppTestCase):
         topic_before.lock(self.current_user)
         self.db.session.commit()
 
-        assert topic_before.locked == True
-        assert topic_before.locked_at is not None
-        assert topic_before.locked_by is not None
+        self.assertTrue(topic_before.locked)
+        self.assertIsNotNone(topic_before.locked_at)
+        self.assertEqual(topic_before.locked_by, self.current_user)
 
         url = '/board/topics/{}/flags/locked'.format(topic_before.id)
         with self.client.session_transaction() as session:
             session['user_id'] = str(self.current_user.id)
         response = self.client.delete(url)
 
-        assert response.status_code == 204
+        self.assertEqual(response.status_code, 204)
         topic_afterwards = self.find_topic(topic_before.id)
-        assert topic_afterwards.locked == False
-        assert topic_afterwards.locked_at is None
-        assert topic_afterwards.locked_by is None
+        self.assertFalse(topic_afterwards.locked)
+        self.assertIsNone(topic_afterwards.locked_at)
+        self.assertIsNone(topic_afterwards.locked_by)
 
     def test_pin_topic(self):
         self.setup_current_user(BoardTopicPermission.pin)
@@ -117,20 +117,20 @@ class BoardModerationTestCase(AbstractAppTestCase):
         topic_before = self.create_topic(category, user, 1)
         self.db.session.commit()
 
-        assert topic_before.pinned == False
-        assert topic_before.pinned_at is None
-        assert topic_before.pinned_by is None
+        self.assertFalse(topic_before.pinned)
+        self.assertIsNone(topic_before.pinned_at)
+        self.assertIsNone(topic_before.pinned_by)
 
         url = '/board/topics/{}/flags/pinned'.format(topic_before.id)
         with self.client.session_transaction() as session:
             session['user_id'] = str(self.current_user.id)
         response = self.client.post(url)
 
-        assert response.status_code == 204
+        self.assertEqual(response.status_code, 204)
         topic_afterwards = self.find_topic(topic_before.id)
-        assert topic_afterwards.pinned == True
-        assert topic_afterwards.pinned_at is not None
-        assert topic_afterwards.pinned_by is not None
+        self.assertTrue(topic_afterwards.pinned)
+        self.assertIsNotNone(topic_afterwards.pinned_at)
+        self.assertEqual(topic_afterwards.pinned_by, self.current_user)
 
     def test_unpin_topic(self):
         self.setup_current_user(BoardTopicPermission.pin)
@@ -141,20 +141,20 @@ class BoardModerationTestCase(AbstractAppTestCase):
         topic_before.pin(self.current_user)
         self.db.session.commit()
 
-        assert topic_before.pinned == True
-        assert topic_before.pinned_at is not None
-        assert topic_before.pinned_by is not None
+        self.assertTrue(topic_before.pinned)
+        self.assertIsNotNone(topic_before.pinned_at)
+        self.assertEqual(topic_before.pinned_by, self.current_user)
 
         url = '/board/topics/{}/flags/pinned'.format(topic_before.id)
         with self.client.session_transaction() as session:
             session['user_id'] = str(self.current_user.id)
         response = self.client.delete(url)
 
-        assert response.status_code == 204
+        self.assertEqual(response.status_code, 204)
         topic_afterwards = self.find_topic(topic_before.id)
-        assert topic_afterwards.pinned == False
-        assert topic_afterwards.pinned_at is None
-        assert topic_afterwards.pinned_by is None
+        self.assertFalse(topic_afterwards.pinned)
+        self.assertIsNone(topic_afterwards.pinned_at)
+        self.assertIsNone(topic_afterwards.pinned_by)
 
     # -------------------------------------------------------------------- #
     # helpers
