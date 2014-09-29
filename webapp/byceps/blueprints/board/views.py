@@ -7,8 +7,6 @@ byceps.blueprints.board.views
 :Copyright: 2006-2014 Jochen Kupperschmidt
 """
 
-from datetime import datetime
-
 from flask import current_app, g, redirect, request, url_for
 
 from ...database import db
@@ -283,9 +281,7 @@ def topic_flags_form(id):
 def topic_hide(id):
     """Hide a topic."""
     topic = Topic.query.get_or_404(id)
-    topic.hidden = True
-    topic.hidden_at = datetime.now()
-    topic.hidden_by = g.current_user
+    topic.hide(g.current_user)
     db.session.commit()
 
     flash_success('Das Thema "{}" wurde versteckt.', topic.title, icon='hidden')
@@ -298,9 +294,7 @@ def topic_hide(id):
 def topic_unhide(id):
     """Un-hide a topic."""
     topic = Topic.query.get_or_404(id)
-    topic.hidden = False
-    topic.hidden_at = None
-    topic.hidden_by = None
+    topic.unhide()
     db.session.commit()
 
     flash_success(
@@ -314,9 +308,7 @@ def topic_unhide(id):
 def topic_lock(id):
     """Lock a topic."""
     topic = Topic.query.get_or_404(id)
-    topic.locked = True
-    topic.locked_at = datetime.now()
-    topic.locked_by = g.current_user
+    topic.lock(g.current_user)
     db.session.commit()
 
     flash_success('Das Thema "{}" wurde geschlossen.', topic.title, icon='lock')
@@ -329,9 +321,7 @@ def topic_lock(id):
 def topic_unlock(id):
     """Unlock a topic."""
     topic = Topic.query.get_or_404(id)
-    topic.locked = False
-    topic.locked_at = None
-    topic.locked_by = None
+    topic.unlock()
     db.session.commit()
 
     flash_success('Das Thema "{}" wurde wieder geöffnet.', topic.title,
@@ -345,9 +335,7 @@ def topic_unlock(id):
 def topic_pin(id):
     """Pin a topic."""
     topic = Topic.query.get_or_404(id)
-    topic.pinned = True
-    topic.pinned_at = datetime.now()
-    topic.pinned_by = g.current_user
+    topic.pin(g.current_user)
     db.session.commit()
 
     flash_success('Das Thema "{}" wurde angepinnt.', topic.title, icon='pin')
@@ -360,9 +348,7 @@ def topic_pin(id):
 def topic_unpin(id):
     """Unpin a topic."""
     topic = Topic.query.get_or_404(id)
-    topic.pinned = False
-    topic.pinned_at = None
-    topic.pinned_by = None
+    topic.unpin()
     db.session.commit()
 
     flash_success('Das Thema "{}" wurde wieder gelöst.', topic.title)

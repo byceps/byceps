@@ -160,6 +160,36 @@ class Topic(db.Model):
 
         db.session.commit()
 
+    def hide(self, user):
+        self.hidden = True
+        self.hidden_at = datetime.now()
+        self.hidden_by = user
+
+    def unhide(self):
+        self.hidden = False
+        self.hidden_at = None
+        self.hidden_by = None
+
+    def lock(self, user):
+        self.locked = True
+        self.locked_at = datetime.now()
+        self.locked_by = user
+
+    def unlock(self):
+        self.locked = False
+        self.locked_at = None
+        self.locked_by = None
+
+    def pin(self, user):
+        self.pinned = True
+        self.pinned_at = datetime.now()
+        self.pinned_by = user
+
+    def unpin(self):
+        self.pinned = False
+        self.pinned_at = None
+        self.pinned_by = None
+
     @property
     def reply_count(self):
         return self.posting_count - 1
