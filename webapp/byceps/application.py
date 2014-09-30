@@ -34,6 +34,7 @@ BLUEPRINTS = [
     ('party',               None,                   SiteMode.public),
     ('party_admin',         '/admin/parties',       SiteMode.admin ),
     ('seating',             '/seating',             SiteMode.public),
+    ('shop',                '/shop',                SiteMode.public),
     ('snippet',             '/snippets',            None           ),
     ('snippet_admin',       '/admin/snippets',      SiteMode.admin ),
     ('terms',               '/terms',               SiteMode.public),
