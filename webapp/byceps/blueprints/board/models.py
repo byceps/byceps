@@ -126,7 +126,7 @@ class Topic(db.Model):
     creator = db.relationship(User, foreign_keys=[creator_id])
     title = db.Column(db.Unicode(80))
     posting_count = db.Column(db.Integer, default=0)
-    last_updated_at = db.Column(db.DateTime, default=datetime.now())
+    last_updated_at = db.Column(db.DateTime, default=datetime.now)
     last_updated_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
     last_updated_by = db.relationship(User, foreign_keys=[last_updated_by_id])
     hidden = db.Column(db.Boolean, default=False)
