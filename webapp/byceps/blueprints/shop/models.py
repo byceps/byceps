@@ -19,3 +19,6 @@ class EuroAmount(namedtuple('EuroAmount', ['euro', 'cent'])):
 
         euro, cent = divmod(value, 100)
         return cls(euro, cent)
+
+    def to_int(self):
+        return (self.euro * 100) + self.cent
