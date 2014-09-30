@@ -299,6 +299,7 @@ class VerificationToken(db.Model):
     query_class = VerificationTokenQuery
 
     token = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    created_at = db.Column(db.DateTime, default=datetime.now, nullable=False)
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
     user = db.relationship(User)
     _purpose = db.Column('purpose', db.Unicode(40), nullable=False)
