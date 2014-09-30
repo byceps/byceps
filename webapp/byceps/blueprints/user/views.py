@@ -28,7 +28,7 @@ from ..newsletter.models import Subscription as NewsletterSubscription, \
 from ..terms.models import Consent, ConsentContext
 
 from .forms import AvatarImageUpdateForm, DetailsForm, LoginForm, \
-    RequestConfirmationEmailForm, UserCreateForm
+    RequestConfirmationEmailForm, RequestPasswordResetForm, UserCreateForm
 from .models import User, VerificationToken, VerificationTokenPurpose
 
 
@@ -225,6 +225,61 @@ def confirm_email_address(token):
     return redirect_to('.login_form')
 
 
+@blueprint.route('/password_reset/request')
+@templated
+def request_password_reset_form(errorneous_form=None):
+    """Show a form to request a password reset."""
+    form = errorneous_form if errorneous_form else RequestPasswordResetForm()
+    return {'form': form}
+
+
+@blueprint.route('/password_reset/request', methods=['POST'])
+def request_password_reset():
+    """Request a password reset."""
+    form = RequestPasswordResetForm(request.form)
+    if not form.validate():
+        return request_password_reset_form(form)
+
+    screen_name = form.screen_name.data.strip()
+    user = User.query.filter_by(screen_name=screen_name).first()
+
+    if user is None:
+        flash_error('Der Benutzername "{}" ist unbekannt.', screen_name)
+        return request_password_reset_form(form)
+
+    verification_token = create_verification_token_for_password_reset(user)
+    db.session.commit()
+
+    send_password_reset_email(user, verification_token)
+
+    flash_success(
+        'Ein Link zum Setzen eines neuen Passworts für den Benutzernamen "{}" '
+        'wurde an die hinterlegte E-Mail-Adresse versendet.',
+        user.screen_name)
+    return request_password_reset_form()
+
+
+def send_password_reset_email(user, verification_token):
+    confirmation_url = url_for('.reset_password_form',
+                               token=verification_token.token,
+                               _external=True)
+
+    subject = '{0.screen_name}, so kannst du ein neues Passwort festlegen'.format(user)
+    body = (
+        'Hallo {0.screen_name},\n\n'
+        'du kannst ein neues Passwort festlegen indem du diese URL abrufst: {1}'
+    ).format(user, confirmation_url).encode('ascii', errors='replace')
+    recipients = [user.email_address]
+
+    mail.send_message(subject=subject, body=body, recipients=recipients)
+
+
+@blueprint.route('/password_reset')
+def reset_password_form():
+    """Show a form to reset the password."""
+    abort(501)  # Not implemented (yet)
+
+
 @blueprint.route('/me')
 @templated
 def view_current():
@@ -416,6 +471,13 @@ def get_current_user_or_404():
 def create_verification_token_for_email_address_confirmation(user):
     verification_token = VerificationToken(
         user, VerificationTokenPurpose.email_address_confirmation)
+    db.session.add(verification_token)
+    return verification_token
+
+
+def create_verification_token_for_password_reset(user):
+    verification_token = VerificationToken(
+        user, VerificationTokenPurpose.password_reset)
     db.session.add(verification_token)
     return verification_token
 

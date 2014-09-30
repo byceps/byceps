@@ -56,6 +56,10 @@ class RequestConfirmationEmailForm(LocalizedForm):
     screen_name = StringField('Benutzername', validators=[DataRequired()])
 
 
+class RequestPasswordResetForm(LocalizedForm):
+    screen_name = StringField('Benutzername', validators=[DataRequired()])
+
+
 class LoginForm(LocalizedForm):
     screen_name = StringField('Benutzername', validators=[DataRequired()])
     password = PasswordField('Passwort', validators=[DataRequired()])
