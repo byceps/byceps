@@ -45,11 +45,9 @@ class Area(db.Model):
     party = db.relationship(Party, backref='seating_areas')
     slug = db.Column(db.Unicode(40))
     title = db.Column(db.Unicode(40))
-    details = db.Column(db.Unicode(40))
     image_filename = db.Column(db.Unicode(40))
     image_width = db.Column(db.Integer)
     image_height = db.Column(db.Integer)
-    seat_quantity = db.Column(db.Integer)
 
     def __repr__(self):
         return ReprBuilder(self) \
