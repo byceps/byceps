@@ -18,7 +18,7 @@
       {%- for article in articles %}
       <tr>
         <td>{{ article.description }}</td>
-        <td style="text-align: right;">{{ article.price.to_str }} &eur;</td>
+        <td style="text-align: right;">{{ article.price.to_str() }} &euro;</td>
         <td style="text-align: right;">{{ article.quantity }}</td>
       </tr>
       {%- endfor %}
