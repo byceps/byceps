@@ -9,6 +9,7 @@ byceps.blueprints.shop.models
 
 from collections import namedtuple
 from datetime import datetime
+from enum import Enum
 
 from flask import g
 from sqlalchemy.ext.hybrid import hybrid_property
