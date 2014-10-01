@@ -98,7 +98,7 @@ def order():
     db.session.commit()
 
     flash_success('Deine Bestellung wurde entgegen genommen. Vielen Dank!')
-    order_placed.send(None, user, [article_id])
+    order_placed.send(None, placed_by=user, article_ids=[article_id])
     return redirect_to('snippet.order_placed')
 
 
