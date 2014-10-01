@@ -114,7 +114,7 @@ class Order(db.Model):
         return PaymentState[self._payment_state]
 
     @payment_state.setter
-    def payment_state(self, amount):
+    def payment_state(self, state):
         assert state is not None
         self._payment_state = state.name
 
