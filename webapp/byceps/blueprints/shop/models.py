@@ -50,7 +50,7 @@ class Article(db.Model):
     query_class = ArticleQuery
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    party_id = db.Column(db.Unicode(20), db.ForeignKey('parties.id'), nullable=False)
+    party_id = db.Column(db.Unicode(20), db.ForeignKey('parties.id'), index=True, nullable=False)
     party = db.relationship(Party)
     description = db.Column(db.Unicode(80), nullable=False)
     _price = db.Column('price', db.Integer, nullable=False)
