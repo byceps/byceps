@@ -9,7 +9,7 @@ byceps.blueprints.user.views
 
 from datetime import datetime
 
-from flask import abort, g, request, session, url_for
+from flask import abort, current_app, g, request, session, url_for
 
 from ...config import get_site_mode
 from ...database import db
@@ -102,6 +102,7 @@ def create():
     try:
         db.session.commit()
     except Exception as e:
+        current_app.loger.error('User creation failed: %s', e)
         db.session.rollback()
         flash_error('Das Benutzerkonto für "{}" konnte nicht angelegt werden.',
                     user.screen_name)
