@@ -105,7 +105,8 @@ def order():
         zip_code=form.zip_code.data.strip(),
         city=form.city.data.strip(),
         street=form.street.data.strip(),
-        payment_state=PaymentState.open,
+        #payment_state=PaymentState.open,
+        _payment_state='open',  # TODO: fix
         )
     db.session.add(order)
 
