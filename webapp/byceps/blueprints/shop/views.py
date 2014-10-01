@@ -45,6 +45,13 @@ def order_form(errorneous_form=None):
             'articles': [],
         }
 
+    if article.quantity < 1:
+        flash_error('Der Artikel ist nicht mehr verfügbar.')
+        return {
+            'form': form,
+            'articles': [],
+        }
+
     articles = [article]
     return {
         'form': form,
@@ -65,6 +72,10 @@ def order():
     article = Article.query.get(article_id)
     if article is None:
         flash_error('Der Artikel wurde nicht gefunden.')
+        return order_form()
+
+    if article.quantity < 1:
+        flash_error('Der Artikel ist nicht mehr verfügbar.')
         return order_form()
 
     form = OrderForm(request.form)
@@ -94,6 +105,8 @@ def order():
         quantity=article_quantity,
         )
     db.session.add(order_item)
+
+    article.quantity = 0
 
     db.session.commit()
 
