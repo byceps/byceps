@@ -31,6 +31,9 @@ class EuroAmount(namedtuple('EuroAmount', ['euro', 'cent'])):
     def to_int(self):
         return (self.euro * 100) + self.cent
 
+    def to_str(self):
+        return '{0.euro:d},{0.cent:02d}'.format(self)
+
 
 class ArticleQuery(BaseQuery):
 
