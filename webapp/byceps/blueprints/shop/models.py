@@ -124,3 +124,25 @@ class Order(db.Model):
             .add('placed_by', self.placed_by.screen_name) \
             .add('payment_state', self.payment_state.name) \
             .build()
+
+
+class OrderItem(db.Model):
+    """An item that belongs to an order."""
+    __tablename__ = 'shop_order_items'
+
+    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    order_id = db.Column(db.Uuid, db.ForeignKey('shop_orders.id'), index=True, nullable=False)
+    order = db.relationship(Order, backref='items')
+    article_id = db.Column(db.Uuid, db.ForeignKey('shop_articles.id'), index=True, nullable=False)
+    article = db.relationship(Article)
+    description = db.Column(db.Unicode(80), nullable=False)
+    _price = db.Column('price', db.Integer, nullable=False)
+    quantity = db.Column(db.Integer, nullable=False)
+
+    @hybrid_property
+    def price(self):
+        return EuroAmount.from_int(self._price)
+
+    @price.setter
+    def price(self, amount):
+        self._price = amount.to_int()
