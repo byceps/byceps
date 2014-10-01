@@ -16,6 +16,7 @@ from ...util.views import redirect_to
 
 from .forms import OrderForm
 from .models import Article, Order, OrderItem, PaymentState
+from .signals import order_placed
 
 
 blueprint = create_blueprint('shop', __name__)
@@ -72,6 +73,7 @@ def order():
     db.session.commit()
 
     flash_success('Deine Bestellung wurde entgegen genommen. Vielen Dank!')
+    order_placed.send(None, user, [article_id])
     return redirect_to('snippet.order_placed')
 
 
