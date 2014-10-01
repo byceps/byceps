@@ -28,6 +28,8 @@ def order_form(errorneous_form=None):
     """Show a form to order articles."""
     user = get_current_user_or_403()
 
+    form = errorneous_form if errorneous_form else OrderForm(obj=user.detail)
+
     orders_placed_by_user = Order.query.for_current_party().filter_by(placed_by=user).count()
     if orders_placed_by_user > 0:
         flash_error('Du kannst keine weiteren Bestellung aufgeben.')
@@ -35,8 +37,6 @@ def order_form(errorneous_form=None):
             'form': form,
             'articles': [],
         }
-
-    form = errorneous_form if errorneous_form else OrderForm(obj=user.detail)
 
     article_id = request.args.get('article', type=str)
     if not article_id:
