@@ -23,13 +23,13 @@
         <td>{{ render_user_admin_link(order.placed_by) }}</td>
         <td>{{ order.first_names }} {{ order.last_name }}</td>
         <td>{{ render_datetime(order.created_at) }}</td>
-        <td>{{ order._payment_status }}</td>
+        <td>{{ order.payment_status.name }}</td>
       </tr>
       {%- endfor %}
       <tr>
     </tbody>
   </table>
 
-{{ render_pagination_nav(orders, '.order_index_for_party') }}
+{{ render_pagination_nav(orders, '.order_index_for_party', {'party_id': party.id}) }}
 
 {%- endblock body %}
