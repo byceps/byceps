@@ -22,7 +22,7 @@ admin.add_item('terms_admin.index', 'AGB', id='terms_admin', required_permission
 admin.add_item('user_admin.index', 'Benutzer', id='user_admin', required_permission=UserPermission.list)
 admin.add_item('orga_admin.teams', 'Orgateams', id='orga_admin.teams', required_permission=OrgaTeamPermission.list)
 admin.add_item('newsletter_admin.index', 'Newsletter', id='newsletter_admin', required_permission=NewsletterPermission.view_subscriptions)
-admin.add_item('shop_admin.index', 'Shop: Artikel', id='shop_admin.articles', required_permission=ShopPermission.list_articles)
+admin.add_item('shop_admin.article_index', 'Shop: Artikel', id='shop_admin.articles', required_permission=ShopPermission.list_articles)
 
 
 def get_blocks():
