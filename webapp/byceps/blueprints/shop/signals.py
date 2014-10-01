@@ -13,4 +13,4 @@ from blinker import Namespace
 shop_signals = Namespace()
 
 
-order_placed = shop_signals.signal()
+order_placed = shop_signals.signal('order-placed')
