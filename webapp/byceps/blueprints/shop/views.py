@@ -28,7 +28,28 @@ def order_form(errorneous_form=None):
     """Show a form to order articles."""
     user = get_current_user_or_403()
     form = errorneous_form if errorneous_form else OrderForm(obj=user.detail)
-    return {'form': form}
+
+    article_id = request.args.get('article', type=str)
+    if not article_id:
+        flash_error('Es wurde kein Artikel angegeben.')
+        return {
+            'form': form,
+            'articles': [],
+        }
+
+    article = Article.query.get(article_id)
+    if article is None:
+        flash_error('Der Artikel wurde nicht gefunden.')
+        return {
+            'form': form,
+            'articles': [],
+        }
+
+    articles = [article]
+    return {
+        'form': form,
+        'articles': articles,
+    }
 
 
 @blueprint.route('/order', methods=['POST'])
@@ -39,12 +60,12 @@ def order():
     article_id = request.args.get('article', type=str)
     if not article_id:
         flash_error('Es wurde kein Artikel angegeben.')
-        return order_form(form)
+        return order_form()
 
     article = Article.query.get(article_id)
     if article is None:
         flash_error('Der Artikel wurde nicht gefunden.')
-        return order_form(form)
+        return order_form()
 
     form = OrderForm(request.form)
     if not form.validate():

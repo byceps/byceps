@@ -7,7 +7,8 @@
 
   <h1>{{ title }}</h1>
 
-  <form action="{{ url_for('.order') }}" method="post">
+  <h2>Deine Daten</h2>
+  <form action="{{ url_for('.order', article=articles[0].id) }}" method="post">
     {%- call form_fieldset() %}
       {{ form_field(form.first_names, maxlength=40, autofocus='autofocus') }}
       {{ form_field(form.last_name, maxlength=40) }}
@@ -19,5 +20,25 @@
 
     {{ form_buttons('Kostenpflichtig bestellen') }}
   </form>
+
+  <h2>Artikel</h2>
+  <table class="index wide">
+    <thead>
+      <tr>
+        <th>Anzahl</th>
+        <th>Beschreibung</th>
+        <th>Preis</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for article in articles %}
+      <tr>
+        <td style="text-align: right;">1</td>
+        <td><strong>{{ article.description }}</strong></td>
+        <td style="text-align: right;">{{ article.price.to_str() }} &euro;</td>
+      </tr>
+      {%- endfor %}
+    </tbody>
+  </table>
 
 {%- endblock body %}
