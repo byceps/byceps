@@ -116,7 +116,8 @@ def order():
         order=order,
         article=article,
         description=article.description,
-        price=article.price,
+        #price=article.price,
+        _price=article._price, # TODO: fix
         quantity=article_quantity,
         )
     db.session.add(order_item)
