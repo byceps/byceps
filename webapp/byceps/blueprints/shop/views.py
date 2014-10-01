@@ -10,11 +10,12 @@ byceps.blueprints.shop.views
 from flask import abort, g, request
 
 from ...database import db
-from ...util.framework import create_blueprint, flash_success
+from ...util.framework import create_blueprint, flash_error, flash_success
 from ...util.templating import templated
 from ...util.views import redirect_to
 
 from .forms import OrderForm
+from .models import Article, Order, OrderItem, PaymentState
 
 
 blueprint = create_blueprint('shop', __name__)
@@ -33,21 +34,45 @@ def order_form(errorneous_form=None):
 def order():
     """Order articles."""
     user = get_current_user_or_403()
-    form = OrderForm(request.form)
 
+    article_id = request.args.get('article', type=str)
+    article = Article.query.get(article_id)
+    if article is None:
+        flash_error('Der Artikel wurde nicht gefunden.')
+        return order_form(form)
+
+    form = OrderForm(request.form)
     if not form.validate():
         return order_form(form)
 
-    #order.first_names = form.first_names.data.strip()
-    #order.last_name = form.last_name.data.strip()
-    #order.date_of_birth = form.date_of_birth.data
-    #order.zip_code = form.zip_code.data.strip()
-    #order.city = form.city.data.strip()
-    #order.street = form.street.data.strip()
-    #db.session.commit()
+    order = Order(
+        party=g.party,
+        placed_by=user,
+        first_names=form.first_names.data.strip(),
+        last_name=form.last_name.data.strip(),
+        date_of_birth=form.date_of_birth.data,
+        zip_code=form.zip_code.data.strip(),
+        city=form.city.data.strip(),
+        street=form.street.data.strip(),
+        payment_state=PaymentState.open,
+        )
+    db.session.add(order)
 
-    flash_success('Deine Bestellung wurde entgegen genommen.')
-    return redirect_to('.order_form')
+    article_quantity = 1
+
+    order_item = OrderItem(
+        order=order,
+        article=article,
+        description=article.description,
+        price=article.price,
+        quantity=article_quantity,
+        )
+    db.session.add(order_item)
+
+    db.session.commit()
+
+    flash_success('Deine Bestellung wurde entgegen genommen. Vielen Dank!')
+    return redirect_to('snippet.order_placed')
 
 
 def get_current_user_or_403():
