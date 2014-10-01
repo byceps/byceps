@@ -64,7 +64,7 @@ class Article(db.Model):
 
     @hybrid_property
     def price(self):
-        return EuroAmount.from_int(self._price)
+        return EuroAmount.from_int(int(self._price))
 
     @price.setter
     def price(self, amount):
