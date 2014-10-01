@@ -37,6 +37,10 @@ def order():
     user = get_current_user_or_403()
 
     article_id = request.args.get('article', type=str)
+    if not article_id:
+        flash_error('Es wurde kein Artikel angegeben.')
+        return order_form(form)
+
     article = Article.query.get(article_id)
     if article is None:
         flash_error('Der Artikel wurde nicht gefunden.')
