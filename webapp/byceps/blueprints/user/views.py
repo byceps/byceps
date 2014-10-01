@@ -102,7 +102,7 @@ def create():
     try:
         db.session.commit()
     except Exception as e:
-        current_app.loger.error('User creation failed: %s', e)
+        current_app.logger.error('User creation failed: %s', e)
         db.session.rollback()
         flash_error('Das Benutzerkonto für "{}" konnte nicht angelegt werden.',
                     user.screen_name)
