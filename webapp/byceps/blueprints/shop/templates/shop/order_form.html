@@ -7,7 +7,7 @@
 
   <h1>{{ title }}</h1>
 
-  <form action="{{ url_for('.order', article=articles[0].id) }}" method="post">
+  <form action="{{ url_for('.order', article=(articles[0].id if articles else '')) }}" method="post">
 
     <h2>Deine Daten</h2>
     {%- call form_fieldset() %}
