@@ -35,7 +35,10 @@ class EuroAmount(namedtuple('EuroAmount', ['euro', 'cent'])):
 class ArticleQuery(BaseQuery):
 
     def for_current_party(self):
-        return self.filter_by(party_id=g.party.id)
+        return self.for_party(g.party)
+
+    def for_party(self, party):
+        return self.filter_by(party_id=party.id)
 
 
 class Article(db.Model):

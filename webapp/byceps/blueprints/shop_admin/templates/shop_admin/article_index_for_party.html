@@ -1,0 +1,29 @@
+{% extends 'layout/base.html' %}
+{% set current_page = 'shop_admin.articles' %}
+{% set title = 'Shop - Artikel auflisten' %}
+
+{% block body %}
+
+  <h1>{{ title }}</h1>
+
+  <table class="index">
+    <thead>
+      <tr>
+        <th>Beschreibung</th>
+        <th>Preis</th>
+        <th>Anzahl</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for article in articles %}
+      <tr>
+        <td>{{ article.description }}</td>
+        <td style="text-align: right;">{{ article.amount }}</td>
+        <td style="text-align: right;">{{ article.quantity }}</td>
+      </tr>
+      {%- endfor %}
+      <tr>
+    </tbody>
+  </table>
+
+{%- endblock body %}
