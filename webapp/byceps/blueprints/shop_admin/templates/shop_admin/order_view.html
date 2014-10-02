@@ -1,0 +1,59 @@
+{% extends 'layout/base.html' %}
+{% from 'macros/datetime.html' import render_date, render_datetime %}
+{% from 'macros/icons.html' import render_icon %}
+{% from 'macros/user_admin.html' import render_user_admin_link %}
+{% set current_page = 'shop_admin.orders' %}
+{% set title = 'Bestellung ansehen' %}
+
+{% block body %}
+
+  <h1>{{ title }}</h1>
+
+  <table class="index">
+    <tr>
+      <th>Zeitpunkt</th>
+      <td>{{ render_datetime(user.created_at) }}</td>
+    </tr>
+    <tr>
+      <th>Benutzer</th>
+      <td>{{ render_user_admin_link(order.placed_by) }}</td>
+    </tr>
+    <tr>
+      <th>Name</th>
+      <td>{{ order.first_names }} {{ order.last_name }}</td>
+    </tr>
+    <tr>
+      <th>Anschrift</th>
+      <td>{{ order.street }}, {{ order.zip_code }} {{ order.city }}</td>
+    </tr>
+    <tr>
+      <th>Geburtsdatum</th>
+      <td>{{ render_date(order.date_of_birth, smart=False) }}</td>
+    </tr>
+    <tr>
+      <th>Bezahlstatus</th>
+      <td>{{ order.payment_state.name }}</td>
+    </tr>
+  </table>
+
+  <h2>Artikel</h2>
+  <table class="index" style="margin: 0 auto;">
+    <thead>
+      <tr>
+        <th>Anzahl</th>
+        <th>Beschreibung</th>
+        <th>Preis</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for item in order.items %}
+      <tr>
+        <td style="text-align: right;">{{ item.quantity }}</td>
+        <td><strong>{{ item.description }}</strong></td>
+        <td style="text-align: right;">{{ item.price.to_str() }} &euro;</td>
+      </tr>
+      {%- endfor %}
+    </tbody>
+  </table>
+
+{%- endblock body %}

@@ -33,7 +33,7 @@ def article_index():
     return {'parties': parties}
 
 
-@blueprint.route('/articles/<party_id>')
+@blueprint.route('/parties/<party_id>/articles')
 @permission_required(ShopPermission.list_articles)
 @templated
 def article_index_for_party(party_id):
@@ -57,8 +57,8 @@ def order_index():
     return {'parties': parties}
 
 
-@blueprint.route('/orders/<party_id>', defaults={'page': 1})
-@blueprint.route('/orders/<party_id>/pages/<int:page>')
+@blueprint.route('/parties/<party_id>/orders', defaults={'page': 1})
+@blueprint.route('/parties/<party_id>/orders/pages/<int:page>')
 @permission_required(ShopPermission.list_orders)
 @templated
 def order_index_for_party(party_id, page):
@@ -76,3 +76,10 @@ def order_index_for_party(party_id, page):
         'party': party,
         'orders': orders,
     }
+
+@blueprint.route('/orders/<order_id>')
+@templated
+def order_view(order_id):
+    """Show a single order."""
+    order = Order.query.get_or_404(order_id)
+    return {'order': order}

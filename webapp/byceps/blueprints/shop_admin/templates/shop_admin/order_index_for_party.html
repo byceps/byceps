@@ -15,6 +15,7 @@
         <th colspan="2">Besteller</th>
         <th>Zeitpunkt</th>
         <th>Bezahlstatus</th>
+        <th>Aktionen</th>
       </tr>
     </thead>
     <tbody>
@@ -24,6 +25,7 @@
         <td>{{ order.first_names }} {{ order.last_name }}</td>
         <td>{{ render_datetime(order.created_at) }}</td>
         <td>{{ order.payment_state.name }}</td>
+        <td><a href="{{ url_for('.order_view', id=order.id) }}" class="action">{{ render_icon('view') }} ansehen</a></td>
       </tr>
       {%- endfor %}
       <tr>
