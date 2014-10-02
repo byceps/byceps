@@ -77,9 +77,10 @@ def order_index_for_party(party_id, page):
         'orders': orders,
     }
 
-@blueprint.route('/orders/<order_id>')
+@blueprint.route('/orders/<id>')
+@permission_required(ShopPermission.list_orders)
 @templated
-def order_view(order_id):
+def order_view(id):
     """Show a single order."""
     order = Order.query.get_or_404(order_id)
     return {'order': order}
