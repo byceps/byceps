@@ -82,5 +82,5 @@ def order_index_for_party(party_id, page):
 @templated
 def order_view(id):
     """Show a single order."""
-    order = Order.query.get_or_404(order_id)
+    order = Order.query.get_or_404(id)
     return {'order': order}
