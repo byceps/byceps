@@ -18,12 +18,11 @@ from byceps.blueprints.brand.models import Brand
 from byceps.blueprints.party.models import Party
 from byceps.blueprints.user.models import User, UserDetail
 from byceps.database import db
+from byceps.util.system import get_config_env_name_from_env
 
 
-ENVIRONMENT = 'development'
-
-
-app = create_app(ENVIRONMENT, initialize=True)
+environment = get_config_env_name_from_env(default='development')
+app = create_app(environment, initialize=True)
 
 if app.debug:
     exports = {
