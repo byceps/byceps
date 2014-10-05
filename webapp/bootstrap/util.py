@@ -6,18 +6,10 @@ import os
 
 from byceps.application import create_app
 from byceps.database import db
+from byceps.util.system import get_config_env_name_from_env
 
 
-def get_config_name_from_env():
-    """Return the config environment name set via environment variable.
-
-    Raise an exception if it isn't set.
-    """
-    env = os.environ.get('ENV')
-    if env is None:
-        raise Exception(
-            'No configuration was specified via the ENV environment variable.')
-    return env
+get_config_name_from_env = get_config_env_name_from_env
 
 
 @contextmanager
