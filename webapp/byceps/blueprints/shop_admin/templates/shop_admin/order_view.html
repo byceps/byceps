@@ -1,5 +1,6 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/datetime.html' import render_date, render_datetime %}
+{% from 'macros/icons.html' import render_icon %}
 {% from 'macros/user_admin.html' import render_user_admin_link %}
 {% set current_page = 'shop_admin.orders' %}
 {% set title = 'Bestellung ansehen' %}
@@ -31,7 +32,18 @@
     </tr>
     <tr>
       <th>Bezahlstatus</th>
-      <td>{{ order.payment_state.name }}</td>
+      <td>
+        {{ order.payment_state.name }}
+        {%- if order.payment_state == PaymentState.open %}
+          <ol class="actions" style="display: block; margin: 0.5rem 0 0 0;">
+            <li>
+              <form action="{{ url_for('.order_mark_as_paid', id=order.id) }}" method="post">
+                <button type="submit" class="action">{{ render_icon('success') }} als bezahlt markieren</button>
+              </form>
+            </li>
+          </ol>
+        {%- endif %}
+      </td>
     </tr>
   </table>
 

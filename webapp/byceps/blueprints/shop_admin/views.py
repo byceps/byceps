@@ -7,12 +7,14 @@ byceps.blueprints.shop_admin.views
 :Copyright: 2006-2014 Jochen Kupperschmidt
 """
 
-from ...util.framework import create_blueprint
+from ...database import db
+from ...util.framework import create_blueprint, flash_success
 from ...util.templating import templated
+from ...util.views import redirect_to
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
-from ..shop.models import Article, Order
+from ..shop.models import Article, Order, PaymentState
 from ..party.models import Party
 
 from .authorization import ShopPermission
@@ -83,4 +85,19 @@ def order_index_for_party(party_id, page):
 def order_view(id):
     """Show a single order."""
     order = Order.query.get_or_404(id)
-    return {'order': order}
+    return {
+        'order': order,
+        'PaymentState': PaymentState,
+    }
+
+
+@blueprint.route('/orders/<id>/mark_as_paid', methods=['POST'])
+@permission_required(ShopPermission.update_orders)
+def order_mark_as_paid(id):
+    """Set the payment status of a single order to 'paid'."""
+    order = Order.query.get_or_404(id)
+    order.payment_state = PaymentState.paid
+    db.session.commit()
+
+    flash_success('Die Rechnung wurde als bezahlt markiert.')
+    return redirect_to('.order_view', id=order.id)
