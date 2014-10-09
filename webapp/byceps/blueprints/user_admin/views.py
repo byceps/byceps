@@ -31,7 +31,7 @@ permission_registry.register_enum(UserPermission)
 @templated
 def index(page):
     """List users."""
-    per_page = 20
+    per_page = request.args.get('per_page', type=int, default=20)
     query = User.query \
         .order_by(User.created_at.desc())
 
