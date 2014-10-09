@@ -445,6 +445,8 @@ nav.pagination li.current {
 }
 .board-postings .body {
   font-size: 1rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
   width: 520px;
 }
 
