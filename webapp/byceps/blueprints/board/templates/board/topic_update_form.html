@@ -19,7 +19,7 @@
     {% call form_fieldset() %}
       {{ form_field(form.title, required='required', maxlength=80, autofocus='autofocus') }}
       {{ form_field(form.body, required='required') }}
-      <li>{%- include 'board/_posting_body_supplement.html' %}</li>
+      <li>{%- include 'board/_posting_form_body_supplement.html' %}</li>
     {% endcall %}
 
     {{ form_buttons('Speichern', cancel_url=url_for('.topic_view', id=topic.id)) }}
