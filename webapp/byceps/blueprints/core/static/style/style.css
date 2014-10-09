@@ -562,7 +562,6 @@ main img {
 
 .avatar {
   display: inline-block;
-  height: 152px;
   max-height: 152px;
   max-width: 112px;
   overflow: hidden;
