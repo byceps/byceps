@@ -100,7 +100,7 @@ class Order(db.Model):
     party_id = db.Column(db.Unicode(20), db.ForeignKey('parties.id'), index=True, nullable=False)
     party = db.relationship(Party)
     placed_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=False)
-    placed_by = db.relationship(User)
+    placed_by = db.relationship(User, foreign_keys=[placed_by_id])
     first_names = db.Column(db.Unicode(40), nullable=False)
     last_name = db.Column(db.Unicode(40), nullable=False)
     date_of_birth = db.Column(db.Date, nullable=False)
@@ -108,6 +108,9 @@ class Order(db.Model):
     city = db.Column(db.Unicode(40), nullable=False)
     street = db.Column(db.Unicode(40), nullable=False)
     _payment_state = db.Column('payment_state', db.Unicode(20), nullable=False)
+    payment_state_updated_at = db.Column(db.DateTime)
+    payment_state_updated_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
+    payment_state_updated_by = db.relationship(User, foreign_keys=[payment_state_updated_by_id])
 
     @hybrid_property
     def payment_state(self):
@@ -117,6 +120,11 @@ class Order(db.Model):
     def payment_state(self, state):
         assert state is not None
         self._payment_state = state.name
+
+    def mark_as_paid(self):
+        self.payment_state = PaymentState.paid
+        self.payment_state_updated_at = datetime.now()
+        self.payment_state_updated_by = g.current_user
 
     def __repr__(self):
         return ReprBuilder(self) \

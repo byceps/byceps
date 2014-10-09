@@ -96,7 +96,7 @@ def order_view(id):
 def order_mark_as_paid(id):
     """Set the payment status of a single order to 'paid'."""
     order = Order.query.get_or_404(id)
-    order.payment_state = PaymentState.paid
+    order.mark_as_paid()
     db.session.commit()
 
     flash_success('Die Rechnung wurde als bezahlt markiert.')

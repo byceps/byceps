@@ -42,6 +42,8 @@
               </form>
             </li>
           </ol>
+        {%- elif order.payment_state == PaymentState.paid %}
+        (gesetzt: {{ render_datetime(order.payment_state_updated_at) }} von {{ render_user_admin_link(order.payment_state_updated_by) }})
         {%- endif %}
       </td>
     </tr>
