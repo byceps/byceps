@@ -20,7 +20,7 @@
     </thead>
     <tbody>
       {%- for birthday in birthdays %}
-      <tr{% if birthday.is_today %} style="font-weight: bold;"{% endif %}>
+      <tr{% if birthday.is_today %} style="font-weight: bold;"{% elif birthday.days_until > 14 %} class="faint"{% endif %}>
         <td>{{ render_date(birthday.date) }}</td>
         <td>
           {%- if birthday.is_today -%}
