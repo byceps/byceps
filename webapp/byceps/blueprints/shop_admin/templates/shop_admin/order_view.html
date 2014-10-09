@@ -19,6 +19,10 @@
       <td>{{ render_user_admin_link(order.placed_by) }}</td>
     </tr>
     <tr>
+      <th>E-Mail-Adresse</th>
+      <td>{{ order.placed_by.email_address }}</td>
+    </tr>
+    <tr>
       <th>Name</th>
       <td>{{ order.first_names }} {{ order.last_name }}</td>
     </tr>
