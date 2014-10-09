@@ -46,4 +46,12 @@
     </ol>
   </div>
 
+  <nav class="breadcrumbs compact">
+    <ol>
+      <li><a href="{{ url_for('.category_index') }}">Forum</a></li>
+      <li><a href="{{ url_for('.category_view', slug=topic.category.slug) }}">{{ topic.category.title }}</a></li>
+      <li>{{ topic.title }}</li>
+    </ol>
+  </nav>
+
 {%- endblock body %}
