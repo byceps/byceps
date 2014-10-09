@@ -49,15 +49,15 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
             ],
         }
 
-        self.user1 = self.create_user(1, enabled=True)
-        self.user2 = self.create_user(2, enabled=True)
-        self.user3 = self.create_user(3, enabled=False)
-        self.user4 = self.create_user(4, enabled=True)
+        user1 = self.create_user(1, enabled=True)
+        user2 = self.create_user(2, enabled=True)
+        user3 = self.create_user(3, enabled=False)
+        user4 = self.create_user(4, enabled=True)
 
-        self.add_subscription(self.user1, SubscriptionState.requested)
-        self.add_subscription(self.user2, SubscriptionState.declined)
-        self.add_subscription(self.user3, SubscriptionState.requested)
-        self.add_subscription(self.user4, SubscriptionState.requested)
+        self.add_subscription(user1, SubscriptionState.requested)
+        self.add_subscription(user2, SubscriptionState.declined)
+        self.add_subscription(user3, SubscriptionState.requested)
+        self.add_subscription(user4, SubscriptionState.requested)
 
         self.db.session.commit()
 
