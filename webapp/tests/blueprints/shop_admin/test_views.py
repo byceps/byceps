@@ -7,6 +7,8 @@ from byceps.blueprints.shop_admin.authorization import ShopPermission
 from byceps.blueprints.shop.models import Order, PaymentState
 from byceps.blueprints.user.models import User
 
+from testfixtures.user import create_user
+
 from tests import AbstractAppTestCase
 
 
@@ -67,9 +69,6 @@ class ShopAdminTestCase(AbstractAppTestCase):
         self.assertEqual(order_afterwards.payment_state_updated_by, self.current_user)
 
     def create_user(self, number, *, enabled=True):
-        screen_name = 'User-{:d}'.format(number)
-        email_address = 'user{:03d}@example.com'.format(number)
-        user = User.create(screen_name, email_address, 'le_password')
-        user.enabled = enabled
+        user = create_user(number, enabled=enabled)
         self.db.session.add(user)
         return user
