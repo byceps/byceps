@@ -97,11 +97,18 @@ def order_mark_as_canceled(id):
     """Set the payment status of a single order to 'canceled'."""
     order = Order.query.get_or_404(id)
     order.mark_as_canceled()
+
+    # Make the reserved quantity of articles available again.
+    for item in order.items:
+        item.article.quantity += item.quantity
+
     db.session.commit()
 
-    # TODO: Add freed quantity counts back to the respective articles.
+    flash_success(
+        'Die Bestellung wurde als storniert markiert und die betroffenen '
+        'Artikel in den entsprechenden Stückzahlen wieder zur Bestellung '
+        'freigegeben.')
 
-    flash_success('Die Bestellung wurde als storniert markiert.')
     return redirect_to('.order_view', id=order.id)
 
 
@@ -114,4 +121,5 @@ def order_mark_as_paid(id):
     db.session.commit()
 
     flash_success('Die Bestellung wurde als bezahlt markiert.')
+
     return redirect_to('.order_view', id=order.id)

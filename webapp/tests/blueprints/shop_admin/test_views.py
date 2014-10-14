@@ -4,7 +4,8 @@ from datetime import date
 
 from byceps.blueprints.authorization.models import Permission, Role
 from byceps.blueprints.shop_admin.authorization import ShopPermission
-from byceps.blueprints.shop.models import Order, PaymentState
+from byceps.blueprints.shop.models import Article, EuroAmount, Order, \
+    PaymentState
 from byceps.blueprints.user.models import User
 
 from testfixtures.user import create_user
@@ -36,8 +37,12 @@ class ShopAdminTestCase(AbstractAppTestCase):
 
     def test_mark_order_as_canceled(self):
         user = self.create_user(1, enabled=True)
-        order_before = self.create_order(user)
+        article_before = self.create_article(5)
+        quantified_articles_to_order = {(article_before, 3)}
+        order_before = self.create_order(user, quantified_articles_to_order)
         self.db.session.commit()
+
+        self.assertEqual(article_before.quantity, 5)
 
         self.assertEqual(order_before.payment_state, PaymentState.open)
         self.assertIsNone(order_before.payment_state_updated_at)
@@ -54,9 +59,12 @@ class ShopAdminTestCase(AbstractAppTestCase):
         self.assertIsNotNone(order_afterwards.payment_state_updated_at)
         self.assertEqual(order_afterwards.payment_state_updated_by, self.current_user)
 
+        article_afterwards = Article.query.get(article_before.id)
+        self.assertEqual(article_afterwards.quantity, 8)
+
     def test_mark_order_as_paid(self):
         user = self.create_user(1, enabled=True)
-        order_before = self.create_order(user)
+        order_before = self.create_order(user, [])
         self.db.session.commit()
 
         self.assertEqual(order_before.payment_state, PaymentState.open)
@@ -79,7 +87,17 @@ class ShopAdminTestCase(AbstractAppTestCase):
         self.db.session.add(user)
         return user
 
-    def create_order(self, placed_by):
+    def create_article(self, quantity):
+        article = Article(
+            party=self.party,
+            description='Something awesome',
+            quantity=quantity,
+        )
+        article.price = EuroAmount(24, 99)
+        self.db.session.add(article)
+        return article
+
+    def create_order(self, placed_by, quantified_articles):
         order = Order(
             party=self.party,
             placed_by=placed_by,
@@ -91,4 +109,9 @@ class ShopAdminTestCase(AbstractAppTestCase):
             street='L33t Street 101',
         )
         self.db.session.add(order)
+
+        for article, quantity_to_order in quantified_articles:
+            order_item = order.add_item(article, quantity_to_order)
+            self.db.session.add(order_item)
+
         return order
