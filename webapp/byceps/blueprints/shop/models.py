@@ -75,6 +75,7 @@ class Article(db.Model):
             .add_with_lookup('id') \
             .add('party', self.party_id) \
             .add_with_lookup('description') \
+            .add_with_lookup('quantity') \
             .build()
 
 
@@ -131,7 +132,8 @@ class Order(db.Model):
             .add_with_lookup('id') \
             .add('party', self.party_id) \
             .add('placed_by', self.placed_by.screen_name) \
-            .add('payment_state', self.payment_state.name) \
+            .add_custom('{:d} items'.format(len(self.items))) \
+            .add_custom(self.payment_state.name) \
             .build()
 
 
