@@ -74,4 +74,4 @@ def to_birthdays(users):
 
 
 def sort_birthdays(birthdays):
-    return sorted(birthdays, key=lambda b: b.days_until)
+    return sorted(birthdays, key=lambda b: (b.days_until, -b.age))
