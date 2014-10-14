@@ -34,21 +34,29 @@ class ShopAdminTestCase(AbstractAppTestCase):
 
         self.db.session.commit()
 
+    def test_mark_order_as_canceled(self):
+        user = self.create_user(1, enabled=True)
+        order_before = self.create_order(user)
+        self.db.session.commit()
+
+        self.assertEqual(order_before.payment_state, PaymentState.open)
+        self.assertIsNone(order_before.payment_state_updated_at)
+        self.assertIsNone(order_before.payment_state_updated_by)
+
+        url = '/admin/shop/orders/{}/mark_as_canceled'.format(order_before.id)
+        with self.client.session_transaction() as session:
+            session['user_id'] = str(self.current_user.id)
+        response = self.client.post(url)
+
+        order_afterwards = Order.query.get(order_before.id)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(order_afterwards.payment_state, PaymentState.canceled)
+        self.assertIsNotNone(order_afterwards.payment_state_updated_at)
+        self.assertEqual(order_afterwards.payment_state_updated_by, self.current_user)
+
     def test_mark_order_as_paid(self):
         user = self.create_user(1, enabled=True)
-
-        order_before = Order(
-            party=self.party,
-            placed_by=user,
-            first_names='Hiro',
-            last_name='Protagonist',
-            date_of_birth=date(1970, 1, 1),
-            zip_code='31337',
-            city='Atrocity',
-            street='L33t Street 101',
-        )
-        self.db.session.add(order_before)
-
+        order_before = self.create_order(user)
         self.db.session.commit()
 
         self.assertEqual(order_before.payment_state, PaymentState.open)
@@ -70,3 +78,17 @@ class ShopAdminTestCase(AbstractAppTestCase):
         user = create_user(number, enabled=enabled)
         self.db.session.add(user)
         return user
+
+    def create_order(self, placed_by):
+        order = Order(
+            party=self.party,
+            placed_by=placed_by,
+            first_names='Hiro',
+            last_name='Protagonist',
+            date_of_birth=date(1970, 1, 1),
+            zip_code='31337',
+            city='Atrocity',
+            street='L33t Street 101',
+        )
+        self.db.session.add(order)
+        return order

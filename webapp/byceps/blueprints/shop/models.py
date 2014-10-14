@@ -142,9 +142,16 @@ class Order(db.Model):
         """
         return OrderItem(self, article, quantity=quantity)
 
+    def mark_as_canceled(self):
+        """Mark the order as canceled."""
+        self._update_payment_state(PaymentState.canceled)
+
     def mark_as_paid(self):
         """Mark the order as being paid for."""
-        self.payment_state = PaymentState.paid
+        self._update_payment_state(PaymentState.paid)
+
+    def _update_payment_state(self, state):
+        self.payment_state = state
         self.payment_state_updated_at = datetime.now()
         self.payment_state_updated_by = g.current_user
 
