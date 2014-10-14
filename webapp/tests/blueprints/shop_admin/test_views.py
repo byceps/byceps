@@ -46,9 +46,7 @@ class ShopAdminTestCase(AbstractAppTestCase):
             zip_code='31337',
             city='Atrocity',
             street='L33t Street 101',
-            #payment_state=PaymentState.open,
-            _payment_state='open',  # TODO: fix
-            )
+        )
         self.db.session.add(order_before)
 
         self.db.session.commit()

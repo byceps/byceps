@@ -15,7 +15,7 @@ from ...util.templating import templated
 from ...util.views import redirect_to
 
 from .forms import OrderForm
-from .models import Article, Order, OrderItem, PaymentState
+from .models import Article, Order, PaymentState
 from .signals import order_placed
 
 
@@ -105,24 +105,15 @@ def order():
         zip_code=form.zip_code.data.strip(),
         city=form.city.data.strip(),
         street=form.street.data.strip(),
-        #payment_state=PaymentState.open,
-        _payment_state='open',  # TODO: fix
-        )
+    )
     db.session.add(order)
 
     article_quantity = 1
 
-    order_item = OrderItem(
-        order=order,
-        article=article,
-        description=article.description,
-        #price=article.price,
-        _price=article._price, # TODO: fix
-        quantity=article_quantity,
-        )
+    order_item = order.add_item(article, article_quantity)
     db.session.add(order_item)
 
-    article.quantity = 0
+    article.quantity -= article_quantity
 
     db.session.commit()
 

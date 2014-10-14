@@ -113,6 +113,18 @@ class Order(db.Model):
     payment_state_updated_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
     payment_state_updated_by = db.relationship(User, foreign_keys=[payment_state_updated_by_id])
 
+    def __init__(self, party, placed_by, first_names, last_name, date_of_birth,
+                 zip_code, city, street):
+        self.party = party
+        self.placed_by = placed_by
+        self.first_names = first_names
+        self.last_name = last_name
+        self.date_of_birth = date_of_birth
+        self.zip_code = zip_code
+        self.city = city
+        self.street = street
+        self.payment_state = PaymentState.open
+
     @hybrid_property
     def payment_state(self):
         return PaymentState[self._payment_state]
@@ -122,7 +134,16 @@ class Order(db.Model):
         assert state is not None
         self._payment_state = state.name
 
+    def add_item(self, article, quantity):
+        """Add an article as an item to this order.
+
+        Return the resulting order item so it can be added to the
+        database session.
+        """
+        return OrderItem(self, article, quantity=quantity)
+
     def mark_as_paid(self):
+        """Mark the order as being paid for."""
         self.payment_state = PaymentState.paid
         self.payment_state_updated_at = datetime.now()
         self.payment_state_updated_by = g.current_user
@@ -149,6 +170,13 @@ class OrderItem(db.Model):
     description = db.Column(db.Unicode(80), nullable=False)
     _price = db.Column('price', db.Integer, nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
+
+    def __init__(self, order, article, quantity):
+        self.order = order
+        self.article = article
+        self.description = article.description
+        self.price = article.price
+        self.quantity = quantity
 
     @hybrid_property
     def price(self):
