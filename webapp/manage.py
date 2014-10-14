@@ -16,6 +16,8 @@ from werkzeug.wsgi import SharedDataMiddleware
 from byceps.application import create_app
 from byceps.blueprints.brand.models import Brand
 from byceps.blueprints.party.models import Party
+from byceps.blueprints.shop.models import Article, EuroAmount, Order, \
+    OrderItem, PaymentState as OrderPaymentState
 from byceps.blueprints.user.models import User, UserDetail
 from byceps.database import db
 from byceps.util.system import get_config_env_name_from_env
@@ -39,7 +41,12 @@ def make_shell_context():
     return {
         'app': app,
         'db': db,
+        'Article': Article,
         'Brand': Brand,
+        'EuroAmount': EuroAmount,
+        'Order': Order,
+        'OrderItem': OrderItem,
+        'OrderPaymentState': OrderPaymentState,
         'Party': Party,
         'User': User,
         'UserDetail': UserDetail,
