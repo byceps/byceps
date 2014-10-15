@@ -155,6 +155,10 @@ class Order(db.Model):
         self.payment_state_updated_at = datetime.now()
         self.payment_state_updated_by = g.current_user
 
+    def collect_articles(self):
+        """Return the articles associated with this order."""
+        return {item.article for item in self.items}
+
     def __repr__(self):
         return ReprBuilder(self) \
             .add_with_lookup('id') \

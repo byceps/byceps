@@ -17,6 +17,7 @@ from ...util.views import redirect_to
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 from ..shop.models import Article, Order, PaymentState
+from ..shop.signals import order_canceled, order_marked_as_paid
 from ..party.models import Party
 
 from .authorization import ShopPermission
@@ -123,6 +124,8 @@ def order_mark_as_canceled(id):
         'Artikel in den entsprechenden Stückzahlen wieder zur Bestellung '
         'freigegeben.')
 
+    order_canceled.send(None, articles=order.collect_articles())
+
     return redirect_to('.order_view', id=order.id)
 
 
@@ -135,5 +138,7 @@ def order_mark_as_paid(id):
     db.session.commit()
 
     flash_success('Die Bestellung wurde als bezahlt markiert.')
+
+    order_mark_as_paid.send(None, articles=order.collect_articles())
 
     return redirect_to('.order_view', id=order.id)

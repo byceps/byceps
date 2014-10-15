@@ -14,3 +14,5 @@ shop_signals = Namespace()
 
 
 order_placed = shop_signals.signal('order-placed')
+order_canceled = shop_signals.signal('order-canceled')
+order_marked_as_paid = shop_signals.signal('order-marked-as-paid')
