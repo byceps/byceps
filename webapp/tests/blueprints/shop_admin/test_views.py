@@ -35,7 +35,7 @@ class ShopAdminTestCase(AbstractAppTestCase):
 
         self.db.session.commit()
 
-    def test_mark_order_as_canceled(self):
+    def test_cancel(self):
         user = self.create_user(1, enabled=True)
         article_before = self.create_article(5)
         quantified_articles_to_order = {(article_before, 3)}
@@ -48,7 +48,7 @@ class ShopAdminTestCase(AbstractAppTestCase):
         self.assertIsNone(order_before.payment_state_updated_at)
         self.assertIsNone(order_before.payment_state_updated_by)
 
-        url = '/admin/shop/orders/{}/mark_as_canceled'.format(order_before.id)
+        url = '/admin/shop/orders/{}/cancel'.format(order_before.id)
         with self.client.session_transaction() as session:
             session['user_id'] = str(self.current_user.id)
         response = self.client.post(url)

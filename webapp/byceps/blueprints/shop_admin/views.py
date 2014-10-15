@@ -106,12 +106,14 @@ def order_view(id):
     }
 
 
-@blueprint.route('/orders/<id>/mark_as_canceled', methods=['POST'])
+@blueprint.route('/orders/<id>/cancel', methods=['POST'])
 @permission_required(ShopPermission.update_orders)
-def order_mark_as_canceled(id):
-    """Set the payment status of a single order to 'canceled'."""
+def order_cancel(id):
+    """Set the payment status of a single order to 'canceled' and
+    release the respective article quantities.
+    """
     order = Order.query.get_or_404(id)
-    order.mark_as_canceled()
+    order.cancel()
 
     # Make the reserved quantity of articles available again.
     for item in order.items:

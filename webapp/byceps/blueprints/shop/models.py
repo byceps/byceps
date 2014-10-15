@@ -142,8 +142,8 @@ class Order(db.Model):
         """
         return OrderItem(self, article, quantity=quantity)
 
-    def mark_as_canceled(self):
-        """Mark the order as canceled."""
+    def cancel(self):
+        """Cancel the order."""
         self._update_payment_state(PaymentState.canceled)
 
     def mark_as_paid(self):
