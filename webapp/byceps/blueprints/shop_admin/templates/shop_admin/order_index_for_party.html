@@ -10,6 +10,22 @@
 
   <h1>{{ title }}</h1>
 
+  <p style="font-size: 0.8rem; margin: 2.5rem 0 2rem 0; text-align: right;">{{ render_icon('filter') }} Einschränkung:
+    {%- for payment_state in PaymentState %}
+      {%- if only == 'enabled' %}
+    <strong>{{ payment_state.name }}</strong>
+      {%- else %}
+    <a href="{{ url_for('.order_index_for_party', party_id=party.id, only=payment_state.name) }}">{{ payment_state.name }}</a>
+      {%- endif %}
+    /
+    {%- endfor %}
+    {%- if only is none %}
+    <strong>alle</strong>
+    {%- else %}
+    <a href="{{ url_for('.order_index_for_party', party_id=party.id) }}">alle</a>
+    {%- endif %}
+  </p>
+
   <table class="index wide">
     <thead>
       <tr>

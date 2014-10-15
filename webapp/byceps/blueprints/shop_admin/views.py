@@ -7,6 +7,8 @@ byceps.blueprints.shop_admin.views
 :Copyright: 2006-2014 Jochen Kupperschmidt
 """
 
+from flask import request
+
 from ...database import db
 from ...util.framework import create_blueprint, flash_success
 from ...util.templating import templated
@@ -78,10 +80,16 @@ def order_index_for_party(party_id, page):
         .for_party(party) \
         .order_by(Order.created_at.desc())
 
+    only = request.args.get('only', type=PaymentState.__getitem__)
+    if only is not None:
+        query = query.filter_by(_payment_state=only.name)
+
     orders = query.paginate(page, per_page)
 
     return {
         'party': party,
+        'PaymentState': PaymentState,
+        'only': only,
         'orders': orders,
     }
 
