@@ -67,7 +67,7 @@ def order_index_for_party(party_id, page):
     """List orders for that party."""
     party = Party.query.get_or_404(party_id)
 
-    per_page = 15
+    per_page = request.args.get('per_page', type=int, default=15)
     query = Order.query \
         .for_party(party) \
         .order_by(Order.created_at.desc())
