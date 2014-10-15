@@ -35,14 +35,20 @@ def article_index():
     return {'parties': parties}
 
 
-@blueprint.route('/parties/<party_id>/articles')
+@blueprint.route('/parties/<party_id>/articles', defaults={'page': 1})
+@blueprint.route('/parties/<party_id>/articles/pages/<int:page>')
 @permission_required(ShopPermission.list_articles)
 @templated
-def article_index_for_party(party_id):
+def article_index_for_party(party_id, page):
     """List articles for that party."""
     party = Party.query.get_or_404(party_id)
 
-    articles = Article.query.for_party(party).all()
+    per_page = request.args.get('per_page', type=int, default=15)
+    query = Article.query \
+        .for_party(party) \
+        .order_by(Article.description)
+
+    articles = query.paginate(page, per_page)
 
     return {
         'party': party,
