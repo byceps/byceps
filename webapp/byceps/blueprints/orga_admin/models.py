@@ -10,15 +10,10 @@ byceps.blueprints.orga_admin.models
 from collections import namedtuple
 from datetime import date
 
+from ...util.datetime import calculate_days_until, MonthDay
+
 from ..orga.models import OrgaFlag
 from ..user.models import User, UserDetail
-
-
-class MonthDay(namedtuple('MonthDay', ['month', 'day'])):
-
-    @classmethod
-    def of(cls, date):
-        return cls(date.month, date.day)
 
 
 class Birthday(namedtuple(
@@ -39,15 +34,6 @@ class Birthday(namedtuple(
         is_today = (month_day_dob == month_day_today)
 
         return cls(user, date_of_birth, age, days_until, is_today)
-
-
-def calculate_days_until(date, today):
-    date_this_year = date.replace(year=today.year)
-    if date_this_year < today:
-        date_this_year = date.replace(year=date_this_year.year + 1)
-
-    delta = date_this_year - today
-    return delta.days
 
 
 def collect_next_orga_birthdays():

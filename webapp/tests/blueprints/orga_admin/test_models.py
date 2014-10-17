@@ -7,23 +7,7 @@ from unittest import TestCase
 from nose2.tools import params
 
 from byceps.blueprints.user.models import User
-from byceps.blueprints.orga_admin.models import Birthday, MonthDay, \
-    sort_birthdays
-
-
-class MonthDayTestCase(TestCase):
-
-    @params(
-        (date(1994,  3, 18),  3, 18),
-        (date(2012,  9, 27),  9, 27),
-        (date(2015,  1,  1),  1,  1),
-        (date(2022, 12, 31), 12, 31),
-    )
-    def test_of(self, date, expected_month, expected_day):
-        month_day = MonthDay.of(date)
-
-        self.assertEquals(month_day.month, expected_month)
-        self.assertEquals(month_day.day, expected_day)
+from byceps.blueprints.orga_admin.models import Birthday, sort_birthdays
 
 
 class BirthdayTestCase(TestCase):
