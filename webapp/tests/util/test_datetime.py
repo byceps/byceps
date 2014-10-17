@@ -5,7 +5,7 @@ from unittest import TestCase
 
 from nose2.tools import params
 
-from byceps.util.datetime import calculate_days_until, MonthDay
+from byceps.util.datetime import calculate_age, calculate_days_until, MonthDay
 
 
 class MonthDayTestCase(TestCase):
@@ -23,10 +23,22 @@ class MonthDayTestCase(TestCase):
         self.assertEquals(month_day.day, expected_day)
 
 
-class DaysUntilTestCase(TestCase):
+class CalculationTestCase(TestCase):
 
     def setUp(self):
         self.date = date(1994, 3, 18)
+
+    @params(
+        (date(2014, 3, 17), 19),
+        (date(2014, 3, 18), 20),
+        (date(2014, 3, 19), 20),
+        (date(2015, 3, 17), 20),
+        (date(2015, 3, 18), 21),
+        (date(2015, 3, 19), 21),
+    )
+    def test_calculate_age(self, today, expected):
+        actual = calculate_age(self.date, today)
+        self.assertEquals(actual, expected)
 
     @params(
         (date(2014, 3, 16), 2),
@@ -34,6 +46,6 @@ class DaysUntilTestCase(TestCase):
         (date(2014, 3, 18), 0),
         (date(2014, 3, 19), 364),
     )
-    def test_days_until(self, today, expected):
+    def test_calculate_days_until(self, today, expected):
         actual = calculate_days_until(self.date, today)
         self.assertEquals(actual, expected)

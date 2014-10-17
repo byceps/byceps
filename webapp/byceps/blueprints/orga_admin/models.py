@@ -10,7 +10,7 @@ byceps.blueprints.orga_admin.models
 from collections import namedtuple
 from datetime import date
 
-from ...util.datetime import calculate_days_until, MonthDay
+from ...util.datetime import calculate_age, calculate_days_until, MonthDay
 
 from ..orga.models import OrgaFlag
 from ..user.models import User, UserDetail
@@ -25,9 +25,7 @@ class Birthday(namedtuple(
         month_day_dob = MonthDay.of(date_of_birth)
         month_day_today = MonthDay.of(today)
 
-        age = today.year - date_of_birth.year
-        if month_day_dob > month_day_today:
-            age -= 1
+        age = calculate_age(date_of_birth, today)
 
         days_until = calculate_days_until(date_of_birth, today)
 

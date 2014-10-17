@@ -19,8 +19,18 @@ class MonthDay(namedtuple('MonthDay', ['month', 'day'])):
         return cls(date.month, date.day)
 
 
+def calculate_age(date_of_birth, today):
+    """Calculate the number of full years since the date of birth until
+    today.
+    """
+    age = today.year - date_of_birth.year
+    if MonthDay.of(date_of_birth) > MonthDay.of(today):
+        age -= 1
+    return age
+
+
 def calculate_days_until(date, today):
-    """Calculate the number of days until the given date."""
+    """Calculate the number of days from today until the given date."""
     date_this_year = date.replace(year=today.year)
     if date_this_year < today:
         date_this_year = date.replace(year=date_this_year.year + 1)
