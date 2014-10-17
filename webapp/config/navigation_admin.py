@@ -12,19 +12,25 @@ from byceps.blueprints.user_admin.authorization import UserPermission
 from byceps.util.navigation import Navigation, NavigationItem
 
 
-admin = Navigation('Verwaltung')
-admin.add_item('orga_admin.birthdays', 'Geburtstage', id='orga_admin.birthdays', required_permission=OrgaBirthdayPermission.list)
-admin.add_item('authorization_admin.permission_index', 'Rechte', id='authorization_admin.permissions', required_permission=RolePermission.list)
-admin.add_item('authorization_admin.role_index', 'Rollen', id='authorization_admin.roles', required_permission=RolePermission.list)
-admin.add_item('party_admin.index', 'Parties', id='party_admin', required_permission=PartyPermission.list)
-admin.add_item('snippet_admin.index', 'Snippets', id='snippet_admin', required_permission=SnippetPermission.list)
-admin.add_item('terms_admin.index', 'AGB', id='terms_admin', required_permission=TermsPermission.list)
-admin.add_item('user_admin.index', 'Benutzer', id='user_admin', required_permission=UserPermission.list)
-admin.add_item('orga_admin.teams', 'Orgateams', id='orga_admin.teams', required_permission=OrgaTeamPermission.list)
-admin.add_item('newsletter_admin.index', 'Newsletter', id='newsletter_admin', required_permission=NewsletterPermission.view_subscriptions)
-admin.add_item('shop_admin.article_index', 'Shop: Artikel', id='shop_admin.articles', required_permission=ShopPermission.list_articles)
-admin.add_item('shop_admin.order_index', 'Shop: Bestellungen', id='shop_admin.orders', required_permission=ShopPermission.list_orders)
+users = Navigation('Benutzer')
+users.add_item('user_admin.index', 'Benutzer', id='user_admin', required_permission=UserPermission.list)
+users.add_item('authorization_admin.role_index', 'Rollen', id='authorization_admin.roles', required_permission=RolePermission.list)
+users.add_item('authorization_admin.permission_index', 'Rechte', id='authorization_admin.permissions', required_permission=RolePermission.list)
+
+orgas = Navigation('Orgas')
+orgas.add_item('orga_admin.birthdays', 'Geburtstage', id='orga_admin.birthdays', required_permission=OrgaBirthdayPermission.list)
+orgas.add_item('orga_admin.teams', 'Orgateams', id='orga_admin.teams', required_permission=OrgaTeamPermission.list)
+
+shop = Navigation('Shop')
+shop.add_item('shop_admin.article_index', 'Artikel', id='shop_admin.articles', required_permission=ShopPermission.list_articles)
+shop.add_item('shop_admin.order_index', 'Bestellungen', id='shop_admin.orders', required_permission=ShopPermission.list_orders)
+
+misc = Navigation('Verschiedenes')
+misc.add_item('party_admin.index', 'Parties', id='party_admin', required_permission=PartyPermission.list)
+misc.add_item('snippet_admin.index', 'Snippets', id='snippet_admin', required_permission=SnippetPermission.list)
+misc.add_item('terms_admin.index', 'AGB', id='terms_admin', required_permission=TermsPermission.list)
+misc.add_item('newsletter_admin.index', 'Newsletter', id='newsletter_admin', required_permission=NewsletterPermission.view_subscriptions)
 
 
 def get_blocks():
-    return [admin]
+    return [users, orgas, shop, misc]
