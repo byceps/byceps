@@ -18,6 +18,10 @@ class MonthDay(namedtuple('MonthDay', ['month', 'day'])):
     def of(cls, date):
         return cls(date.month, date.day)
 
+    def matches(self, date):
+        """Return `True` if the given date's month and day match this."""
+        return self == self.__class__.of(date)
+
 
 def calculate_age(date_of_birth, today):
     """Calculate the number of full years since the date of birth until

@@ -22,14 +22,11 @@ class Birthday(namedtuple(
 
     @classmethod
     def of(cls, user, date_of_birth, today):
-        month_day_dob = MonthDay.of(date_of_birth)
-        month_day_today = MonthDay.of(today)
-
         age = calculate_age(date_of_birth, today)
 
         days_until = calculate_days_until(date_of_birth, today)
 
-        is_today = (month_day_dob == month_day_today)
+        is_today = MonthDay.of(date_of_birth).matches(today)
 
         return cls(user, date_of_birth, age, days_until, is_today)
 

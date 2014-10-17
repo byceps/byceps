@@ -22,6 +22,23 @@ class MonthDayTestCase(TestCase):
         self.assertEquals(month_day.month, expected_month)
         self.assertEquals(month_day.day, expected_day)
 
+    @params(
+        ( 3, 17, date(2005,  2, 17), False),
+        ( 3, 17, date(2005,  3, 16), False),
+        ( 3, 17, date(2005,  3, 17), True ),
+        ( 3, 17, date(2014,  3, 17), True ),
+        ( 3, 17, date(2017,  3, 17), True ),
+        ( 3, 17, date(2005,  3, 18), False),
+        ( 3, 17, date(2005,  4, 17), False),
+        (12, 31, date(2010, 12, 30), False),
+        (12, 31, date(2010, 12, 31), True ),
+    )
+    def test_matches(self, month, day, date, expected):
+        month_day = MonthDay(month=month, day=day)
+        actual = month_day.matches(date)
+
+        self.assertEquals(actual, expected)
+
 
 class CalculationTestCase(TestCase):
 
