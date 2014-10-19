@@ -9,7 +9,10 @@ byceps.blueprints.party.models
 
 from datetime import datetime
 
+from sqlalchemy.ext.hybrid import hybrid_property
+
 from ...database import db
+from ...util.datetime import DateTimeRange
 from ...util.instances import ReprBuilder
 
 from ..brand.models import Brand
@@ -26,6 +29,10 @@ class Party(db.Model):
     starts_at = db.Column(db.DateTime)
     ends_at = db.Column(db.DateTime)
     is_archived = db.Column(db.Boolean, default=False)
+
+    @hybrid_property
+    def range(self):
+        return DateTimeRange(self.starts_at, self.ends_at)
 
     @property
     def is_over(self):

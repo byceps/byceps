@@ -1,0 +1,119 @@
+{% extends 'layout/base.html' %}
+{% from 'macros/datetime.html' import render_datetime, render_datetime_custom %}
+{% from 'macros/user_admin.html' import render_user_admin_link %}
+{% set current_page = 'orga_presence' %}
+{% set title = 'Anwesenheit' %}
+
+{% block head %}
+  <style>
+    body {
+      background-color: #ffffff;
+    }
+    #footer,
+    #header,
+    #sidebar {
+      display: none;
+    }
+    #page {
+      margin: 0;
+      width: 100%;
+    }
+    main {
+      background-color: transparent;
+      border: 0;
+      border-radius: 0;
+      box-shadow: none;
+      margin: 0;
+    }
+
+    .nowrap {
+      white-space: nowrap;
+    }
+    .bar-column {
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
+    .bar {
+      display: inline-block;
+      height: 8px;
+      width: 40px;
+    }
+    .bar:hover {
+      outline: 1px solid red;
+    }
+    .party .bar {
+      background-color: blue;
+    }
+    .presence .bar {
+      background-color: green;
+    }
+    .task .bar {
+      background-color: orange;
+    }
+  </style>
+{%- endblock head %}
+
+{% block body %}
+
+  <h1>{{ title }}</h1>
+
+  <p><strong>Party:</strong> {{ party.title }}
+
+  <div style="overflow-x: scroll;">
+    <table class="index wide">
+      <thead>
+        <tr>
+          <th colspan="3"></th>
+          {%- for day, hour_total in days %}
+          <th colspan="{{ hour_total }}">{{ render_datetime_custom(day, '%A') }}</th>
+          {%- endfor %}
+        </tr>
+        <tr>
+          <th>Aufgabe/Orga</th>
+          <th>Beginn</th>
+          <th>Ende</th>
+          {%- for hour_range in hour_ranges %}
+          <th class="bar-column">{{ render_datetime_custom(hour_range.start, '%H') }}h</th>
+          {%- endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="party">
+          <td class="nowrap"><strong>{{ party.title }}</strong></td>
+          {{ render_range_columns(party) }}
+          {{ render_bar_columns(party) }}
+        </tr>
+        {%- for task in tasks|sort(attribute='starts_at') %}
+        <tr class="task">
+          <td>{{ task.title }}</td>
+          {{ render_range_columns(party) }}
+          {{ render_bar_columns(task) }}
+        </tr>
+        {%- endfor %}
+        {%- for presence in presences|sort(attribute='orga.screen_name') %}
+        <tr class="presence">
+          <td>{{ render_user_admin_link(presence.orga) }}</td>
+          {{ render_range_columns(party) }}
+          {{ render_bar_columns(presence) }}
+        </tr>
+        {%- endfor %}
+      </tbody>
+    </table>
+  </div>
+
+{%- endblock body %}
+
+{% macro render_range_columns(time_slot) -%}
+          <td class="nowrap">{{ render_datetime(time_slot.range.start, smart=False) }}</td>
+          <td class="nowrap">{{ render_datetime(time_slot.range.end, smart=False) }}</td>
+{%- endmacro %}
+
+{% macro render_bar_columns(time_slot) -%}
+      {%- for hour_range in hour_ranges %}
+        {%- if time_slot.range.contains(hour_range.start) %}
+          <td class="bar-column"><span class="bar"></span></td>
+        {%- else %}
+          <td></td>
+        {%- endif %}
+      {%- endfor %}
+{%- endmacro %}

@@ -31,6 +31,7 @@ BLUEPRINTS = [
     ('newsletter_admin',    '/admin/newsletter',    SiteMode.admin ),
     ('orga',                '/orgas',               SiteMode.public),
     ('orga_admin',          '/admin/orgas',         SiteMode.admin ),
+    ('orga_presence',       '/admin/presence',      SiteMode.admin ),
     ('party',               None,                   SiteMode.public),
     ('party_admin',         '/admin/parties',       SiteMode.admin ),
     ('seating',             '/seating',             SiteMode.public),
