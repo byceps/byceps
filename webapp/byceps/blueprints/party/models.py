@@ -42,9 +42,5 @@ class Party(db.Model):
     def __repr__(self):
         return ReprBuilder(self) \
             .add_with_lookup('id') \
-            .add('brand', self.brand.title) \
             .add_with_lookup('title') \
-            .add_with_lookup('starts_at') \
-            .add_with_lookup('ends_at') \
-            .add_with_lookup('is_archived') \
             .build()
