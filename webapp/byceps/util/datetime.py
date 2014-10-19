@@ -12,6 +12,16 @@ Date/time supplements.
 from collections import namedtuple
 
 
+class DateTimeRange(namedtuple('DateTimeRange', ['start', 'end'])):
+    """A date/time range with an inclusive start and an exclusive end."""
+
+    def contains(self, datetime):
+        return self.start <= datetime < self.end
+
+    def __repr__(self):
+        return '[{0.start}..{0.end})'.format(self)
+
+
 class MonthDay(namedtuple('MonthDay', ['month', 'day'])):
 
     @classmethod
