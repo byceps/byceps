@@ -223,7 +223,7 @@ class User(db.Model):
             return memberships_for_current_party[0]
 
     def __eq__(self, other):
-        return self.id == other.id
+        return (other is not None) and (self.id == other.id)
 
     def __repr__(self):
         return ReprBuilder(self) \
