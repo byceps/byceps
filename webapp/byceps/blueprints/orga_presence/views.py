@@ -7,7 +7,6 @@ byceps.blueprints.orga_presence.views
 :Copyright: 2006-2014 Jochen Kupperschmidt
 """
 
-from datetime import timedelta
 from itertools import groupby
 
 from arrow import Arrow
@@ -48,9 +47,14 @@ def view(party_id):
     """List orga presence and task time slots for that party."""
     party = Party.query.get_or_404(party_id)
 
-    party_span_starts_at = party.starts_at - timedelta(days=2)
-    party_span_ends_at = party.ends_at + timedelta(days=2)
-    hour_starts_arrow = Arrow.range('hour', party_span_starts_at, party_span_ends_at)
+    presences = Presence.query.for_party(party).all()
+    tasks = Task.query.for_party(party).all()
+
+    time_slots = [party] + tasks
+    min_starts_at = find_earliest_time_slot_start(time_slots)
+    max_ends_at = find_latest_time_slot_end(time_slots)
+
+    hour_starts_arrow = Arrow.range('hour', min_starts_at, max_ends_at)
     hour_starts = [hour_start.datetime.replace(tzinfo=None)
                    for hour_start in hour_starts_arrow]
 
@@ -59,9 +63,6 @@ def view(party_id):
     days = [(day, len(list(hour_starts))) for day, hour_starts
                   in groupby(hour_starts, key=lambda hour: hour.date())]
 
-    presences = Presence.query.for_party(party).all()
-    tasks = Task.query.for_party(party).all()
-
     return {
         'party': party,
         'days': days,
@@ -69,3 +70,11 @@ def view(party_id):
         'presences': presences,
         'tasks': tasks,
     }
+
+
+def find_earliest_time_slot_start(time_slots):
+    return min(time_slot.range.start for time_slot in time_slots)
+
+
+def find_latest_time_slot_end(time_slots):
+    return max(time_slot.range.end for time_slot in time_slots)
