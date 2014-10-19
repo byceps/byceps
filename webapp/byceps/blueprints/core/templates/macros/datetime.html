@@ -1,3 +1,7 @@
+{%- macro render_datetime_custom(dt, pattern) -%}
+  {{ dt|format_custom(pattern) }}
+{%- endmacro %}
+
 {%- macro render_date(d, smart=True) -%}
   {{ _time_element(d|format_date_iso, d|format_date_short(smart=smart)) }}
 {%- endmacro %}
