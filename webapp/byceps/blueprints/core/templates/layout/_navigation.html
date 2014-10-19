@@ -1,13 +1,16 @@
 {%- from 'macros/navigation.html' import render_navigation_item_from_item %}
 {%- for block in navigation_blocks %}
+  {%- set items = block.get_items() %}
+  {%- if items %}
 <section>
   <h1>{{ block.title }}</h1>
   <nav class="main">
     <ol>
-      {%- for item in block.get_items() %}
+      {%- for item in items %}
       {{ render_navigation_item_from_item(item, current_page) }}
       {%- endfor %}
     </ol>
   </nav>
 </section>
+  {%- endif %}
 {%- endfor %}
