@@ -124,8 +124,8 @@ def create_terms_version(brand, creator, body):
 
 
 @add_to_database
-def create_seating_area(party, slug, title):
-    return SeatingArea(party=party, slug=slug, title=title)
+def create_seating_area(party, slug, title, **kwargs):
+    return SeatingArea(party=party, slug=slug, title=title, **kwargs)
 
 
 @add_to_database
