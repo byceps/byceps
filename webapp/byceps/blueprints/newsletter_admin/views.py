@@ -59,13 +59,12 @@ def view_subscriptions(brand_id):
 @permission_required(NewsletterPermission.export_subscribers)
 @jsonified
 def export_subscribers(brand_id):
-    """Export the screen names and email addresses of users which are
-    currently subscribed to the newsletter for this brand.
+    """Export the screen names and email addresses of enabled users
+    which are currently subscribed to the newsletter for this brand.
     """
     brand = Brand.query.get_or_404(brand_id)
 
     subscribers = get_subscribers(brand)
-    subscribers = filter(lambda user: user.enabled, subscribers)
 
     exports = list(map(assemble_subscriber_export, subscribers))
 

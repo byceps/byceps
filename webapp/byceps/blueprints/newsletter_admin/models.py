@@ -17,11 +17,11 @@ from ..user.models import User
 
 
 def get_subscribers(brand):
-    """Return the users that are currently subscribed for the brand."""
+    """Return the enabled users that are currently subscribed for the brand."""
     subscribers = build_query_for_current_subscribers(brand).all()
 
     user_ids = frozenset(map(itemgetter(0), subscribers))
-    return get_users(user_ids)
+    return get_users_query(user_ids).filter_by(enabled=True).all()
 
 
 def build_query_for_current_subscribers(brand):
@@ -70,7 +70,7 @@ def get_user_subscription_states_for_brand(brand):
         .all()
 
     user_ids = frozenset(map(itemgetter(0), subscription_states))
-    users = get_users(user_ids)
+    users = get_users_query(user_ids).all()
     users_by_id = {user.id: user for user in users}
 
     for user_id, brand_id, state_name in subscription_states:
@@ -151,6 +151,6 @@ def count_subscriptions_by_state(subscriptions):
     return totals
 
 
-def get_users(ids):
-    """Return the users with the given IDs."""
+def get_users_query(ids):
+    """Return a query to select the users with the given IDs."""
     return User.query.filter(User.id.in_(ids))
