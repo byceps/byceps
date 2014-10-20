@@ -42,9 +42,15 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
                 },
                 # User #2 has declined a subscription.
                 # User #3 is not enabled.
+                # User #4 has initially declined, but later requested a subscription.
                 {
                     'screen_name': 'User-4',
                     'email_address': 'user004@example.com',
+                },
+                # User #5 has initially requested, but later declined a subscription.
+                {
+                    'screen_name': 'User-6',
+                    'email_address': 'user006@example.com',
                 },
             ],
         }
@@ -53,11 +59,17 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
         user2 = self.create_user(2, enabled=True)
         user3 = self.create_user(3, enabled=False)
         user4 = self.create_user(4, enabled=True)
+        user5 = self.create_user(5, enabled=True)
+        user6 = self.create_user(6, enabled=True)
 
         self.add_subscription(user1, SubscriptionState.requested)
         self.add_subscription(user2, SubscriptionState.declined)
         self.add_subscription(user3, SubscriptionState.requested)
+        self.add_subscription(user4, SubscriptionState.declined)
         self.add_subscription(user4, SubscriptionState.requested)
+        self.add_subscription(user5, SubscriptionState.requested)
+        self.add_subscription(user5, SubscriptionState.declined)
+        self.add_subscription(user6, SubscriptionState.requested)
 
         self.db.session.commit()
 
