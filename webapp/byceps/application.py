@@ -41,6 +41,8 @@ BLUEPRINTS = [
     ('snippet_admin',       '/admin/snippets',      SiteMode.admin ),
     ('terms',               '/terms',               SiteMode.public),
     ('terms_admin',         '/admin/terms',         SiteMode.admin ),
+    ('ticket',              '/tickets',             SiteMode.public),
+    ('ticket_admin',        '/admin/tickets',       SiteMode.admin ),
     ('user',                '/users',               None           ),
     ('user_admin',          '/admin/users',         SiteMode.admin ),
     ('user_group',          '/user_groups',         SiteMode.public),

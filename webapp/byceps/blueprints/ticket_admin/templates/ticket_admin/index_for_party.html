@@ -1,0 +1,57 @@
+{% extends 'layout/base.html' %}
+{% from 'macros/datetime.html' import render_datetime, render_datetime_custom %}
+{% from 'macros/user_admin.html' import render_user_admin_link %}
+{% set current_page = 'ticket_admin' %}
+{% set title = 'Tickets' %}
+
+{% block head %}
+    <style>
+      span[title] {
+        border-bottom: dotted 1px;
+        cursor: help;
+      }
+    </style>
+{%- endblock head %}
+
+{% block body %}
+
+  <h1>{{ title }}</h1>
+
+  <p><strong>Party:</strong> {{ party.title }}
+
+  <table class="index wide">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Besitzer</th>
+        <th>Kategorie</th>
+        <th>Sitzplatz</th>
+        <th>Nutzer</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for ticket in tickets|sort(attribute='created_at') %}
+      <tr>
+        <td><span title="{{ ticket.id }}">{{ ticket.id|string|truncate(6, killwords=True, end='…') }}</span></td>
+        <td>{{ render_user_admin_link(ticket.owned_by) }}</td>
+        <td>{{ ticket.category.title }}</td>
+        <td>
+          <span class="tag available">keiner</span><br/>
+          <small>(verwaltet durch {{ render_user_admin_link(ticket.get_seat_manager()) }})</small>
+        </td>
+        <td>
+          {%- if ticket.used_by -%}
+          {{ render_user_link(ticket.used_by) }}
+          {%- else -%}
+          <span class="tag available">frei</span>
+          {%- endif -%}
+          <br/>
+          <small>(verwaltet durch {{ render_user_admin_link(ticket.get_user_manager()) }})</small>
+        </td>
+      </tr>
+      {%- endfor %}
+      <tr>
+    </tbody>
+  </table>
+
+{%- endblock body %}

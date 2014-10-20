@@ -76,8 +76,10 @@ li [class*=" icon-"] {
 .icon-published:before      { content: "\f06e"; }
 .icon-quote:before          { content: "\f10d"; }
 .icon-reply:before          { content: "\f112"; }
+.icon-shopping-cart:before  { content: "\f07a"; }
 .icon-sorted:before         { content: "\f0dc"; }
 .icon-success:before        { content: "\f00c"; }
+.icon-ticket:before         { content: "\f145"; }
 .icon-twitter:before        { content: "\f099"; }
 .icon-unlock:before         { content: "\f09c"; }
 .icon-update:before         { content: "\f021"; }

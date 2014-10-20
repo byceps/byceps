@@ -1,0 +1,69 @@
+{% extends 'layout/base.html' %}
+{% from 'macros/icons.html' import render_icon %}
+{% from 'macros/user.html' import render_user_link %}
+{% set current_page = 'ticket' %}
+{% set title = 'Tickets' %}
+
+{% block body %}
+
+  <h1>{{ render_icon('ticket') }} {{ title }}</h1>
+
+  <h2>{{ render_icon('user') }} Das von dir genutze Ticket</h2>
+  {%- if ticket_mine %}
+  {{ render_tickets_table([ticket_mine]) }}
+  {%- else %}
+  <p><em>keines</em></p>
+  {%- endif %}
+
+  <h2>{{ render_icon('administrate') }} Von dir verwaltete Tickets</h2>
+  {%- if tickets_managed %}
+  {{ render_tickets_table(tickets_managed) }}
+  {%- else %}
+  <p><em>keine</em></p>
+  {%- endif %}
+
+  <h2>{{ render_icon('shopping-cart') }} Von dir gekaufte Tickets</h2>
+  {%- if tickets_bought %}
+  {{ render_tickets_table(tickets_bought) }}
+  {%- else %}
+  <p><em>keine</em></p>
+  {%- endif %}
+
+{%- endblock body %}
+
+{% macro render_tickets_table(tickets) -%}
+  <table class="index wide">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Besitzer</th>
+        <th>Kategorie</th>
+        <th>Sitzplatz</th>
+        <th>Nutzer</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for ticket in tickets|sort(attribute='created_at') %}
+      <tr>
+        <td>{{ ticket.id|string|truncate(6, killwords=True, end='…') }}</td>
+        <td>{{ render_user_link(ticket.owned_by) }}</td>
+        <td>{{ ticket.category.title }}</td>
+        <td>
+          <span class="tag available">keiner</span><br/>
+          <small>(verwaltet durch {{ render_user_link(ticket.get_seat_manager()) }})</small>
+        </td>
+        <td>
+          {%- if ticket.used_by -%}
+          {{ render_user_link(ticket.used_by) }}
+          {%- else -%}
+          <span class="tag available">frei</span>
+          {%- endif -%}
+          <br/>
+          <small>(verwaltet durch {{ render_user_link(ticket.get_user_manager()) }})</small>
+        </td>
+      </tr>
+      {%- endfor %}
+      <tr>
+    </tbody>
+  </table>
+{%- endmacro %}

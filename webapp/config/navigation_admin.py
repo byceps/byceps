@@ -9,6 +9,7 @@ from byceps.blueprints.party_admin.authorization import PartyPermission
 from byceps.blueprints.shop_admin.authorization import ShopPermission
 from byceps.blueprints.snippet_admin.authorization import SnippetPermission
 from byceps.blueprints.terms_admin.authorization import TermsPermission
+from byceps.blueprints.ticket_admin.authorization import TicketPermission
 from byceps.blueprints.user_admin.authorization import UserPermission
 from byceps.util.navigation import Navigation, NavigationItem
 
@@ -17,6 +18,7 @@ users = Navigation('Benutzer')
 users.add_item('user_admin.index', 'Benutzer', id='user_admin', required_permission=UserPermission.list)
 users.add_item('authorization_admin.role_index', 'Rollen', id='authorization_admin.roles', required_permission=RolePermission.list)
 users.add_item('authorization_admin.permission_index', 'Rechte', id='authorization_admin.permissions', required_permission=RolePermission.list)
+users.add_item('ticket_admin.index', 'Tickets', id='ticket_admin', required_permission=TicketPermission.list)
 
 orgas = Navigation('Orgas')
 orgas.add_item('orga_admin.birthdays', 'Geburtstage', id='orga_admin.birthdays', required_permission=OrgaBirthdayPermission.list)
