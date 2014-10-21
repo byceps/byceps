@@ -5,6 +5,26 @@
 {% set current_page = 'newsletter_admin' %}
 {% set title = 'Newsletter - Bestellstatus ({})'.format(brand.title) %}
 
+{% block head %}
+    <style>
+      ol.actions {
+        float: left;
+        margin: 0.5rem 5rem 0 0;
+        width: 15rem;
+      }
+      ol.actions li {
+        display: block;
+      }
+      ol.actions a {
+        display: block;
+      }
+      ol.actions small {
+        display: block;
+        margin-left: 2em;
+      }
+    </style>
+{%- endblock head %}
+
 {% block body %}
 
   <h1>{{ title }}</h1>
@@ -17,7 +37,8 @@
 
   {%- if g.current_user.has_permission(NewsletterPermission.export_subscribers) %}
   <ol class="actions">
-    <li><a href="{{ url_for('.export_subscribers', brand_id=brand.id) }}">{{ render_icon('download') }} Abonnenten exportieren</a></li>
+    <li><a href="{{ url_for('.export_subscribers', brand_id=brand.id) }}">{{ render_icon('download') }} Abonnenten exportieren <small>(Benutzernamen und E-Mail-<br/>Adressen; als JSON)</small></a></li>
+    <li><a href="{{ url_for('.export_subscriber_email_addresses', brand_id=brand.id) }}">{{ render_icon('download') }} Abonnenten exportieren <small>(nur E-Mail-Adressen; als Text)</small></a></li>
   </ol>
   {%- endif %}
 

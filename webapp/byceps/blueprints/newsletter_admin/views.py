@@ -7,9 +7,11 @@ byceps.blueprints.newsletter_admin.views
 :Copyright: 2006-2014 Jochen Kupperschmidt
 """
 
+from operator import attrgetter
+
 from ...util.framework import create_blueprint
 from ...util.templating import templated
-from ...util.views import jsonified
+from ...util.views import jsonified, textified
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
@@ -60,7 +62,8 @@ def view_subscriptions(brand_id):
 @jsonified
 def export_subscribers(brand_id):
     """Export the screen names and email addresses of enabled users
-    which are currently subscribed to the newsletter for this brand.
+    which are currently subscribed to the newsletter for this brand
+    as JSON.
     """
     brand = Brand.query.get_or_404(brand_id)
 
@@ -76,3 +79,18 @@ def assemble_subscriber_export(user):
         'screen_name': user.screen_name,
         'email_address': user.email_address,
     }
+
+
+@blueprint.route('/subscriptions/<brand_id>/export_email_addresses')
+@permission_required(NewsletterPermission.export_subscribers)
+@textified
+def export_subscriber_email_addresses(brand_id):
+    """Export the email addresses of enabled users which are currently
+    subscribed to the newsletter for this brand as plaintext, with one
+    address per row.
+    """
+    brand = Brand.query.get_or_404(brand_id)
+
+    subscribers = get_subscribers(brand)
+    email_addresses = map(attrgetter('email_address'), subscribers)
+    return '\n'.join(email_addresses)

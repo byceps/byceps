@@ -71,14 +71,31 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
         }
 
         url = '/admin/newsletter/subscriptions/{}/export'.format(self.brand.id)
-        with self.client.session_transaction() as session:
-            session['user_id'] = str(self.current_user.id)
-        response = self.client.get(url)
+        response = self.get_with_current_user(url)
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.content_type, 'application/json')
         data = json.loads(response.data.decode('utf-8'))
         self.assertEqual(data, expected_data)
+
+    def test_export_subscriber_email_addresses(self):
+        expected_data = '\n'.join([
+            'user001@example.com',
+            # User #2 has declined a subscription.
+            # User #3 is not enabled.
+            # User #4 has initially declined, but later requested a subscription.
+            'user004@example.com',
+            # User #5 has initially requested, but later declined a subscription.
+            'user006@example.com',
+        ]).encode('utf-8')
+
+        url = '/admin/newsletter/subscriptions/{}/export_email_addresses'.format(self.brand.id)
+        response = self.get_with_current_user(url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.content_type, 'text/plain; charset=utf-8')
+        self.assertEqual(response.mimetype, 'text/plain')
+        self.assertEqual(response.data, expected_data)
 
     def create_user(self, number, *, enabled=True):
         screen_name = 'User-{:d}'.format(number)
@@ -95,3 +112,9 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
     def add_subscription(self, user, state):
         subscription = Subscription(user, state, brand=self.brand)
         self.db.session.add(subscription)
+
+    def get_with_current_user(self, url):
+        """Make a GET request as the current user and return the response."""
+        with self.client.session_transaction() as session:
+            session['user_id'] = str(self.current_user.id)
+        return self.client.get(url)
