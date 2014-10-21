@@ -16,9 +16,10 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
     def setUp(self):
         super(NewsletterAdminTestCase, self).setUp(env='test_admin')
 
-        self.setUp_current_user()
+        self.setup_current_user()
+        self.setup_subscribers()
 
-    def setUp_current_user(self):
+    def setup_current_user(self):
         export_subscribers_permission = Permission.from_enum_member(
             NewsletterPermission.export_subscribers)
         self.db.session.add(export_subscribers_permission)
@@ -30,6 +31,20 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
 
         self.current_user = self.create_user(99, enabled=True)
         self.current_user.roles.add(newsletter_admin_role)
+
+        self.db.session.commit()
+
+    def setup_subscribers(self):
+        for user_number, enabled, states in [
+            (1, True,  [SubscriptionState.requested                             ]),
+            (2, True,  [SubscriptionState.declined                              ]),
+            (3, False, [SubscriptionState.requested                             ]),
+            (4, True,  [SubscriptionState.declined,  SubscriptionState.requested]),
+            (5, True,  [SubscriptionState.requested, SubscriptionState.declined ]),
+            (6, True,  [SubscriptionState.requested                             ]),
+        ]:
+            user = self.create_user(user_number, enabled=enabled)
+            self.add_subscriptions(user, states)
 
         self.db.session.commit()
 
@@ -55,24 +70,6 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
             ],
         }
 
-        user1 = self.create_user(1, enabled=True)
-        user2 = self.create_user(2, enabled=True)
-        user3 = self.create_user(3, enabled=False)
-        user4 = self.create_user(4, enabled=True)
-        user5 = self.create_user(5, enabled=True)
-        user6 = self.create_user(6, enabled=True)
-
-        self.add_subscription(user1, SubscriptionState.requested)
-        self.add_subscription(user2, SubscriptionState.declined)
-        self.add_subscription(user3, SubscriptionState.requested)
-        self.add_subscription(user4, SubscriptionState.declined)
-        self.add_subscription(user4, SubscriptionState.requested)
-        self.add_subscription(user5, SubscriptionState.requested)
-        self.add_subscription(user5, SubscriptionState.declined)
-        self.add_subscription(user6, SubscriptionState.requested)
-
-        self.db.session.commit()
-
         url = '/admin/newsletter/subscriptions/{}/export'.format(self.brand.id)
         with self.client.session_transaction() as session:
             session['user_id'] = str(self.current_user.id)
@@ -90,6 +87,10 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
         user.enabled = enabled
         self.db.session.add(user)
         return user
+
+    def add_subscriptions(self, user, states):
+        for state in states:
+            self.add_subscription(user, state)
 
     def add_subscription(self, user, state):
         subscription = Subscription(user, state, brand=self.brand)
