@@ -22,7 +22,7 @@
         <tr>
           <td>{{ version.id }}</td>
           <td>{{ version.brand.title }}</td>
-          <td style="white-space: nowrap;">{{ render_datetime(version.created_at) }}</td>
+          <td class="nowrap">{{ render_datetime(version.created_at) }}</td>
           <td>{{ render_user_admin_link(version.creator) }}</td>
         </tr>
       {%- endfor %}

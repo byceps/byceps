@@ -25,7 +25,7 @@
       {%- set latest_version = snippet.get_latest_version() %}
       <tr>
         <td>{{ snippet.name }}</td>
-        <td style="white-space: nowrap;">
+        <td class="nowrap">
           {%- if g.current_user.has_permission(SnippetPermission.view_history) %}
           {{ render_icon('history') }} <a href="{{ url_for('.history', id=snippet.id) }}" title="Änderungshistorie ansehen">{{ render_datetime(latest_version.created_at) }}</a>
           {%- else %}

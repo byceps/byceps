@@ -17,8 +17,8 @@
     <thead>
       <tr>
         <th>Kategorie</th>
-        <th style="text-align: center;">Themen</th>
-        <th style="text-align: center;">Beiträge</th>
+        <th class="centered">Themen</th>
+        <th class="centered">Beiträge</th>
         <th>Letzter Beitrag</th>
       </tr>
     </thead>
@@ -30,9 +30,9 @@
           {%- if category.contains_unseen_postings() %} {{ render_flag_new() }}{% endif %}
           <div class="details">{{ category.description }}</div>
         </td>
-        <td style="text-align: center;">{{ category.topic_count }}</td>
-        <td style="text-align: center;">{{ category.posting_count }}</td>
-        <td style="white-space: nowrap;">
+        <td class="centered">{{ category.topic_count }}</td>
+        <td class="centered">{{ category.posting_count }}</td>
+        <td class="nowrap">
           {%- if category.last_posting_updated_at and category.last_posting_updated_by -%}
             {{ render_datetime(category.last_posting_updated_at) }}<br/>
             von {{ render_user_link(category.last_posting_updated_by) }}

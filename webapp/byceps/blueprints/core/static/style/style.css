@@ -533,6 +533,14 @@ main img {
   max-width: 100%;
 }
 
+.centered {
+  text-align: center;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
 .faint,
 .hidden {
   opacity: 0.5;
