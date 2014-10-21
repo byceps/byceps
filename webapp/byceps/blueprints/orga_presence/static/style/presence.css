@@ -18,9 +18,6 @@ main {
   margin: 0;
 }
 
-.nowrap {
-  white-space: nowrap;
-}
 .bar-column {
   padding-left: 0 !important;
   padding-right: 0 !important;
