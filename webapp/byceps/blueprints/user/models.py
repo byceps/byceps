@@ -96,14 +96,24 @@ class User(db.Model):
 
     @classmethod
     def create(cls, screen_name, email_address, password):
-        user = cls(
-            screen_name=normalize_name(screen_name),
-            email_address=normalize_email_address(email_address),
-            password_hash=generate_password_hash(password))
+        user = cls()
+        user.set_screen_name(screen_name)
+        user.set_email_address(email_address)
+        user.set_password(password)
 
         detail = UserDetail(user=user)
 
         return user
+
+    def set_screen_name(self, screen_name):
+        self.screen_name = normalize_screen_name(screen_name)
+
+    def set_email_address(self, email_address):
+        self.email_address = normalize_email_address(email_address)
+
+    def set_password(self, password):
+        """Calculate and store a hash value for the password."""
+        self.password_hash = generate_password_hash(password))
 
     @classmethod
     def authenticate(cls, screen_name, password):
@@ -259,7 +269,7 @@ class UserDetail(db.Model):
             .build()
 
 
-def normalize_name(screen_name):
+def normalize_screen_name(screen_name):
     """Normalize the screen name, or raise an exception if invalid."""
     normalized = screen_name.strip()
     if not normalized or (' ' in normalized) or ('@' in normalized):
