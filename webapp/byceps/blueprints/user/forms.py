@@ -10,9 +10,11 @@ byceps.blueprints.user.forms
 from itertools import chain
 from string import ascii_letters, digits
 
+from flask import g
 from wtforms import BooleanField, DateField, FileField, PasswordField, \
     StringField
-from wtforms.validators import DataRequired, Optional, ValidationError
+from wtforms.validators import DataRequired, EqualTo, Length, Optional, \
+    ValidationError
 
 from ...util.l10n import LocalizedForm
 
@@ -58,6 +60,30 @@ class RequestConfirmationEmailForm(LocalizedForm):
 
 class RequestPasswordResetForm(LocalizedForm):
     screen_name = StringField('Benutzername', [DataRequired()])
+
+
+def get_new_password_validators(companion_field_name):
+    return [
+        DataRequired(),
+        EqualTo(companion_field_name,
+                message='Das neue Passwort muss mit der Wiederholung übereinstimmen.'),
+        Length(min=8),
+    ]
+
+
+class UpdatePasswordForm(LocalizedForm):
+    old_password = PasswordField('Bisheriges Passwort', [DataRequired()])
+    new_password = PasswordField(
+        'Neues Passwort',
+        get_new_password_validators('new_password_confirmation'))
+    new_password_confirmation = PasswordField(
+        'Neues Passwort (Wiederholung)',
+        get_new_password_validators('new_password'))
+
+    def validate_old_password(form, field):
+        if not g.current_user.is_password_valid(field.data):
+            raise ValidationError(
+                'Das eingegebene Passwort stimmt nicht mit dem bisherigen überein.')
 
 
 class LoginForm(LocalizedForm):

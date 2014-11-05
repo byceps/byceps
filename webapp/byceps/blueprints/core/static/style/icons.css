@@ -71,6 +71,7 @@ li [class*=" icon-"] {
 .icon-network:before        { content: "\f0e8"; }
 .icon-new:before            { content: "\f069"; }
 .icon-parking:before        { content: "\f1b9"; }
+.icon-password:before       { content: "\f084"; }
 .icon-pending:before        { content: "\f017"; }
 .icon-pin:before            { content: "\f08d"; }
 .icon-published:before      { content: "\f06e"; }

@@ -44,6 +44,7 @@
   </table>
   <ol class="actions">
     <li><a href="{{ url_for('.view', id=user.id) }}">{{ render_icon('view') }} öffentliches Profil ansehen</a></li>
+    <li><a href="{{ url_for('.password_update_form') }}">{{ render_icon('password') }} Passwort ändern</a></li>
   </ol>
 
   <h2>Persönliche Daten</h2>

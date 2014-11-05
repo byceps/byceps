@@ -28,7 +28,8 @@ from ..newsletter.models import Subscription as NewsletterSubscription, \
 from ..terms.models import Consent, ConsentContext
 
 from .forms import AvatarImageUpdateForm, DetailsForm, LoginForm, \
-    RequestConfirmationEmailForm, RequestPasswordResetForm, UserCreateForm
+    RequestConfirmationEmailForm, RequestPasswordResetForm, \
+    UpdatePasswordForm, UserCreateForm
 from .models import User, VerificationToken, VerificationTokenPurpose
 
 
@@ -279,6 +280,31 @@ def send_password_reset_email(user, verification_token):
 def reset_password_form():
     """Show a form to reset the password."""
     abort(501)  # Not implemented (yet)
+
+
+@blueprint.route('/me/password/update')
+@templated
+def password_update_form(errorneous_form=None):
+    """Show a form to update the current user's password."""
+    user = get_current_user_or_404()
+    form = errorneous_form if errorneous_form else UpdatePasswordForm()
+    return {'form': form}
+
+
+@blueprint.route('/me/password', methods=['POST'])
+def password_update():
+    """Update the current user's password."""
+    user = get_current_user_or_404()
+    form = UpdatePasswordForm(request.form)
+
+    if not form.validate():
+        return password_update_form(form)
+
+    user.set_password(form.new_password.data)
+    db.session.commit()
+
+    flash_success('Das Passwort wurde geändert.')
+    return redirect_to('.view_current')
 
 
 @blueprint.route('/me')
