@@ -115,6 +115,12 @@ class User(db.Model):
         """Calculate and store a hash value for the password."""
         self.password_hash = generate_password_hash(password)
 
+    def is_password_valid(self, password):
+        """Return `True` if the password is valid for this user, and
+        `False` otherwise.
+        """
+        return check_password_hash(self.password_hash, password)
+
     @classmethod
     def authenticate(cls, screen_name, password):
         """Try to authenticate the user.
@@ -128,7 +134,7 @@ class User(db.Model):
             # User name is unknown.
             return
 
-        if not check_password_hash(user.password_hash, password):
+        if not user.is_password_valid(password):
             # Password does not match.
             return
 
