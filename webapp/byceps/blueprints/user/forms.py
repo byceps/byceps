@@ -24,10 +24,10 @@ VALID_SCREEN_NAME_CHARS = frozenset(chain(
 
 
 class UserCreateForm(LocalizedForm):
-    screen_name = StringField('Benutzername', validators=[DataRequired()])
-    email_address = StringField('E-Mail-Adresse', validators=[DataRequired()])
-    password = PasswordField('Passwort', validators=[DataRequired()])
-    consent_to_terms = BooleanField('AGB', validators=[DataRequired()])
+    screen_name = StringField('Benutzername', [DataRequired()])
+    email_address = StringField('E-Mail-Adresse', [DataRequired()])
+    password = PasswordField('Passwort', [DataRequired()])
+    consent_to_terms = BooleanField('AGB', [DataRequired()])
     subscribe_to_newsletter = BooleanField('Newsletter')
 
     def validate_screen_name(form, field):
@@ -41,11 +41,11 @@ class DetailsForm(LocalizedForm):
     first_names = StringField('Vorname(n)')
     last_name = StringField('Nachname')
     date_of_birth = DateField('Geburtsdatum',
-                              format='%d.%m.%Y',
-                              validators=[Optional()])
-    zip_code = StringField('PLZ', validators=[Optional()])
-    city = StringField('Stadt', validators=[Optional()])
-    street = StringField('Straße', validators=[Optional()])
+                              [Optional()],
+                              format='%d.%m.%Y')
+    zip_code = StringField('PLZ', [Optional()])
+    city = StringField('Stadt', [Optional()])
+    street = StringField('Straße', [Optional()])
 
 
 class AvatarImageUpdateForm(LocalizedForm):
@@ -53,14 +53,14 @@ class AvatarImageUpdateForm(LocalizedForm):
 
 
 class RequestConfirmationEmailForm(LocalizedForm):
-    screen_name = StringField('Benutzername', validators=[DataRequired()])
+    screen_name = StringField('Benutzername', [DataRequired()])
 
 
 class RequestPasswordResetForm(LocalizedForm):
-    screen_name = StringField('Benutzername', validators=[DataRequired()])
+    screen_name = StringField('Benutzername', [DataRequired()])
 
 
 class LoginForm(LocalizedForm):
-    screen_name = StringField('Benutzername', validators=[DataRequired()])
-    password = PasswordField('Passwort', validators=[DataRequired()])
+    screen_name = StringField('Benutzername', [DataRequired()])
+    password = PasswordField('Passwort', [DataRequired()])
     permanent = BooleanField()
