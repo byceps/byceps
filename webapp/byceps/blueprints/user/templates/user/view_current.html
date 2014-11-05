@@ -9,10 +9,6 @@
 
   <h1>{{ title }}</h1>
 
-  <ol class="actions" style="margin: 0;">
-    <li><a href="{{ url_for('.view', id=user.id) }}">{{ render_icon('view') }} öffentliches Profil ansehen</a></li>
-  </ol>
-
   <h2>Benutzerkonto</h2>
   <table class="index">
     <tr>
@@ -37,20 +33,20 @@
       {%- endif -%}
       {%- if g.current_user == user %}
         <ol class="actions" style="display: block; margin: 0.5rem 0 0 0;">
-          <li><a href="{{ url_for('.avatar_image_update_form') }}">{{ render_icon('upload') }} Avatar hochladen</a></li>
-          {%- if user.has_avatar_image -%}
-          <li><a id="avatar-delete" href="{{ url_for('.delete_avatar_image', _method='DELETE') }}">{{ render_icon('delete') }} Avatar entfernen</a></li>
+          <li><a href="{{ url_for('.avatar_image_update_form') }}">{{ render_icon('upload') }} hochladen</a></li>
+          {%- if user.has_avatar_image %}
+          <li><a id="avatar-delete" href="{{ url_for('.delete_avatar_image', _method='DELETE') }}">{{ render_icon('delete') }} entfernen</a></li>
           {%- endif %}
         </ol>
       {%- endif %}
       </td>
     </tr>
   </table>
+  <ol class="actions">
+    <li><a href="{{ url_for('.view', id=user.id) }}">{{ render_icon('view') }} öffentliches Profil ansehen</a></li>
+  </ol>
 
   <h2>Persönliche Daten</h2>
-  <ol class="actions" style="margin: 0;">
-    <li><a href="{{ url_for('.details_update_form') }}">{{ render_icon('edit') }} bearbeiten</a></li>
-  </ol>
   <table class="index">
     <tr>
       <th>Voller Name</th>
@@ -69,11 +65,11 @@
       </td>
     </tr>
   </table>
-
-  <h2>Newsletter-Abonnement</h2>
-  <ol class="actions" style="margin: 0;">
-    <li><a href="{{ url_for('newsletter.subscription_update_form') }}">{{ render_icon('edit') }} bearbeiten</a></li>
+  <ol class="actions">
+    <li><a href="{{ url_for('.details_update_form') }}">{{ render_icon('edit') }} bearbeiten</a></li>
   </ol>
+
+  <h2>Newsletter</h2>
   <table class="index">
     <tr>
       <th>Status</th>
@@ -85,5 +81,8 @@
         {%- endif -%}
     </tr>
   </table>
+  <ol class="actions">
+    <li><a href="{{ url_for('newsletter.subscription_update_form') }}">{{ render_icon('edit') }} bearbeiten</a></li>
+  </ol>
 
 {%- endblock body %}
