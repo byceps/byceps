@@ -349,3 +349,10 @@ class VerificationToken(db.Model):
             return now > (self.created_at + expires_after)
         else:
             return False
+
+    def __repr__(self):
+        return ReprBuilder(self) \
+            .add_with_lookup('token') \
+            .add('user', self.user.screen_name) \
+            .add('purpose', self.purpose.name) \
+            .build()
