@@ -87,6 +87,7 @@ class User(db.Model):
     screen_name = db.Column(db.Unicode(40), unique=True)
     email_address = db.Column(db.Unicode(80), unique=True)
     password_hash = db.Column(db.Unicode(66))
+    auth_token = db.Column(db.Uuid)
     enabled = db.Column(db.Boolean, default=False, nullable=False)
     avatar_image_created_at = db.Column(db.DateTime)
     _avatar_image_type = db.Column(db.Unicode(4))
@@ -100,6 +101,7 @@ class User(db.Model):
         user.set_screen_name(screen_name)
         user.set_email_address(email_address)
         user.set_password(password)
+        user.set_new_auth_token()
 
         detail = UserDetail(user=user)
 
@@ -120,6 +122,10 @@ class User(db.Model):
         `False` otherwise.
         """
         return check_password_hash(self.password_hash, password)
+
+    def set_new_auth_token(self):
+        """Generate and store a new authentication token."""
+        self.auth_token = generate_uuid()
 
     @classmethod
     def authenticate(cls, screen_name, password):

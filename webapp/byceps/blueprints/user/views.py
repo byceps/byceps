@@ -302,7 +302,9 @@ def password_reset(token):
     if not form.validate():
         return password_reset_form(token, form)
 
-    verification_token.user.set_password(form.new_password.data)
+    user = verification_token.user
+    user.set_password(form.new_password.data)
+    user.set_new_auth_token()
     db.session.commit()
 
     flash_success('Das Passwort wurde geändert.')
@@ -335,6 +337,7 @@ def password_update():
         return password_update_form(form)
 
     user.set_password(form.new_password.data)
+    user.set_new_auth_token()
     db.session.commit()
 
     flash_success('Das Passwort wurde geändert.')
