@@ -555,7 +555,7 @@ class UserSession(object):
     def start(cls, user, *, permanent=False):
         """End the user's session by deleting the session cookie."""
         session[cls.KEY_USER_ID] = str(user.id)
-        session[cls.KEY_USER_ID] = str(user.auth_token)
+        session[cls.KEY_USER_AUTH_TOKEN] = str(user.auth_token)
         session.permanent = permanent
 
     @classmethod
