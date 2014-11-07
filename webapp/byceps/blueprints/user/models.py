@@ -83,11 +83,11 @@ class User(db.Model):
     __tablename__ = 'users'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    created_at = db.Column(db.DateTime, default=datetime.now)
+    created_at = db.Column(db.DateTime, default=datetime.now, nullable=False)
     screen_name = db.Column(db.Unicode(40), unique=True)
     email_address = db.Column(db.Unicode(80), unique=True)
     password_hash = db.Column(db.Unicode(66))
-    enabled = db.Column(db.Boolean, default=False)
+    enabled = db.Column(db.Boolean, default=False, nullable=False)
     avatar_image_created_at = db.Column(db.DateTime)
     _avatar_image_type = db.Column(db.Unicode(4))
     legacy_id = db.Column(db.Integer)
@@ -265,7 +265,7 @@ class UserDetail(db.Model):
     zip_code = db.Column(db.Unicode(5))
     city = db.Column(db.Unicode(40))
     street = db.Column(db.Unicode(40))
-    internal_comment =  db.Column(db.Unicode(200))
+    internal_comment = db.Column(db.Unicode(200))
 
     def __repr__(self):
         return ReprBuilder(self) \
