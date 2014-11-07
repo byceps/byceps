@@ -549,17 +549,20 @@ def create_verification_token_for_password_reset(user):
 class UserSession(object):
 
     KEY_USER_ID = 'user_id'
+    KEY_USER_AUTH_TOKEN = 'user_auth_token'
 
     @classmethod
     def start(cls, user, *, permanent=False):
         """End the user's session by deleting the session cookie."""
         session[cls.KEY_USER_ID] = str(user.id)
+        session[cls.KEY_USER_ID] = str(user.auth_token)
         session.permanent = permanent
 
     @classmethod
     def end(cls):
         """End the user's session by deleting the session cookie."""
         session.pop(cls.KEY_USER_ID, None)
+        session.pop(cls.KEY_USER_AUTH_TOKEN, None)
         session.permanent = False
 
     @classmethod
