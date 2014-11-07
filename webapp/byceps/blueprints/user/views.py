@@ -29,7 +29,7 @@ from ..terms.models import Consent, ConsentContext
 
 from .forms import AvatarImageUpdateForm, DetailsForm, LoginForm, \
     RequestConfirmationEmailForm, RequestPasswordResetForm, \
-    UpdatePasswordForm, UserCreateForm
+    ResetPasswordForm, UpdatePasswordForm, UserCreateForm
 from .models import User, VerificationToken, VerificationTokenPurpose
 
 
@@ -227,7 +227,7 @@ def confirm_email_address(token):
     return redirect_to('.login_form')
 
 
-@blueprint.route('/password_reset/request')
+@blueprint.route('/me/password/reset/request')
 @templated
 def request_password_reset_form(errorneous_form=None):
     """Show a form to request a password reset."""
@@ -235,7 +235,7 @@ def request_password_reset_form(errorneous_form=None):
     return {'form': form}
 
 
-@blueprint.route('/password_reset/request', methods=['POST'])
+@blueprint.route('/me/password/reset/request', methods=['POST'])
 def request_password_reset():
     """Request a password reset."""
     form = RequestPasswordResetForm(request.form)
@@ -262,7 +262,7 @@ def request_password_reset():
 
 
 def send_password_reset_email(user, verification_token):
-    confirmation_url = url_for('.reset_password_form',
+    confirmation_url = url_for('.password_reset_form',
                                token=verification_token.token,
                                _external=True)
 
@@ -276,10 +276,44 @@ def send_password_reset_email(user, verification_token):
     mail.send_message(subject=subject, body=body, recipients=recipients)
 
 
-@blueprint.route('/password_reset')
-def reset_password_form():
-    """Show a form to reset the password."""
-    abort(501)  # Not implemented (yet)
+@blueprint.route('/me/password/reset/token/<token>')
+@templated
+def password_reset_form(token, errorneous_form=None):
+    """Show a form to reset the current user's password."""
+    verification_token = VerificationToken.find(
+        token, VerificationTokenPurpose.password_reset)
+    _verify_password_reset_token(verification_token)
+
+    form = errorneous_form if errorneous_form else ResetPasswordForm()
+    return {
+        'form': form,
+        'token': token,
+    }
+
+
+@blueprint.route('/me/password/reset/token/<token>', methods=['POST'])
+def password_reset(token):
+    """Reset the current user's password."""
+    verification_token = VerificationToken.find(
+        token, VerificationTokenPurpose.password_reset)
+    _verify_password_reset_token(verification_token)
+
+    form = ResetPasswordForm(request.form)
+    if not form.validate():
+        return password_reset_form(token, form)
+
+    verification_token.user.set_password(form.new_password.data)
+    db.session.commit()
+
+    flash_success('Das Passwort wurde geändert.')
+    return redirect_to('.login_form')
+
+
+def _verify_password_reset_token(verification_token ):
+    if verification_token is None or verification_token.is_expired:
+        flash_error('Es wurde kein gültiges Token angegeben. '
+                    'Ein Token ist nur 24 Stunden lang gültig.')
+        abort(404)
 
 
 @blueprint.route('/me/password/update')

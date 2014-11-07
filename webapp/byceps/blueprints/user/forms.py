@@ -71,14 +71,17 @@ def get_new_password_validators(companion_field_name):
     ]
 
 
-class UpdatePasswordForm(LocalizedForm):
-    old_password = PasswordField('Bisheriges Passwort', [DataRequired()])
+class ResetPasswordForm(LocalizedForm):
     new_password = PasswordField(
         'Neues Passwort',
         get_new_password_validators('new_password_confirmation'))
     new_password_confirmation = PasswordField(
         'Neues Passwort (Wiederholung)',
         get_new_password_validators('new_password'))
+
+
+class UpdatePasswordForm(LocalizedForm):
+    old_password = PasswordField('Bisheriges Passwort', [DataRequired()])
 
     def validate_old_password(form, field):
         if not g.current_user.is_password_valid(field.data):
