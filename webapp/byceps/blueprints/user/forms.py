@@ -80,7 +80,7 @@ class ResetPasswordForm(LocalizedForm):
         get_new_password_validators('new_password'))
 
 
-class UpdatePasswordForm(LocalizedForm):
+class UpdatePasswordForm(ResetPasswordForm):
     old_password = PasswordField('Bisheriges Passwort', [DataRequired()])
 
     def validate_old_password(form, field):
