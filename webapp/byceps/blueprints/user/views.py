@@ -548,18 +548,18 @@ def create_verification_token_for_password_reset(user):
 
 class UserSession(object):
 
-    KEY = 'user_id'
+    KEY_USER_ID = 'user_id'
 
     @classmethod
     def start(cls, user, *, permanent=False):
         """End the user's session by deleting the session cookie."""
-        session[cls.KEY] = str(user.id)
+        session[cls.KEY_USER_ID] = str(user.id)
         session.permanent = permanent
 
     @classmethod
     def end(cls):
         """End the user's session by deleting the session cookie."""
-        session.pop(cls.KEY, None)
+        session.pop(cls.KEY_USER_ID, None)
         session.permanent = False
 
     @classmethod
@@ -570,4 +570,4 @@ class UserSession(object):
     @classmethod
     def get_user_id(cls):
         """Return the current user's ID, or `None` if not available."""
-        return session.get(cls.KEY)
+        return session.get(cls.KEY_USER_ID)
