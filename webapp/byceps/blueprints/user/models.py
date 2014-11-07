@@ -7,7 +7,7 @@ byceps.blueprints.user.models
 :Copyright: 2006-2014 Jochen Kupperschmidt
 """
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from enum import Enum
 from itertools import chain
 from operator import attrgetter
@@ -339,3 +339,13 @@ class VerificationToken(db.Model):
     def purpose(self, purpose):
         assert purpose is not None
         self._purpose = purpose.name
+
+    @property
+    def is_expired(self):
+        """Return `True` if expired, i.e. it is no longer valid."""
+        if self.purpose == VerificationTokenPurpose.password_reset:
+            now = datetime.now()
+            expires_after = timedelta(hours=24)
+            return now > (self.created_at + expires_after)
+        else:
+            return False
