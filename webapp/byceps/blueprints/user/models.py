@@ -269,9 +269,9 @@ class UserDetail(db.Model):
 
     def __repr__(self):
         return ReprBuilder(self) \
-            .add('user_id') \
-            .add('first_names') \
-            .add('last_name') \
+            .add_with_lookup('user_id') \
+            .add_with_lookup('first_names') \
+            .add_with_lookup('last_name') \
             .build()
 
 
