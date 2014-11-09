@@ -1,0 +1,63 @@
+# -*- coding: utf-8 -*-
+
+"""
+byceps.util.checkdigit
+~~~~~~~~~~~~~~~~~~~~~~
+
+:Copyright: 2006-2014 Jochen Kupperschmidt
+"""
+
+import math
+from string import ascii_uppercase, digits
+
+
+VALID_CHARS = frozenset(ascii_uppercase + digits)
+
+
+def calculate_check_digit(chars):
+    """Calculate the check digit for the given value, using a modified
+    Luhn algorithm to support not only digits in the value but also
+    letters.
+
+    Based on https://wiki.openmrs.org/display/docs/Check+Digit+Algorithm
+    """
+    chars = chars.strip().upper()
+
+    total_weight = calculate_total_weight(chars)
+
+    # The check digit is the amount needed to reach the next number
+    # that is divisible by ten.
+    return (10 - (total_weight % 10)) % 10
+
+
+def calculate_total_weight(chars):
+    total_weight = sum(calculate_weights(chars))
+
+    # Avoid a total weight less than 10 (this could happen if
+    # characters below `0` are allowed).
+    return math.fabs(total_weight) + 10
+
+
+def calculate_weights(chars):
+    # Loop through characters from right to left.
+    for position, char in enumerate(reversed(chars)):
+        yield calculate_weight(position, char)
+
+
+def calculate_weight(position, char):
+    """Calculate the current digit's contribution to the total weight."""
+    if char not in VALID_CHARS:
+        raise ValueError("Invalid character '{}'.".format(char))
+
+    digit = ord(char) - 48
+    if is_even(position):
+        # This is the same as multiplying by 2 and summing up digits
+        # for values 0 to 9. This allows to gracefully calculate the
+        # weight for a non-numeric "digit" as well.
+        return (2 * digit) - int(digit / 5) * 9
+    else:
+        return digit
+
+
+def is_even(n):
+    return n % 2 == 0
