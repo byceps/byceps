@@ -15,7 +15,7 @@ from ...database import BaseQuery, db, generate_uuid
 from ...util.instances import ReprBuilder
 
 from ..party.models import Party
-from ..seating.models import Category
+from ..seating.models import Category, Seat
 from ..user.models import User
 
 
@@ -43,6 +43,8 @@ class Ticket(db.Model):
     seat_managed_by = db.relationship(User, foreign_keys=[seat_managed_by_id])
     user_managed_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=True)
     user_managed_by = db.relationship(User, foreign_keys=[user_managed_by_id])
+    occupied_seat_id = db.Column(db.Uuid, db.ForeignKey('seats.id'), index=True, nullable=True, unique=True)
+    occupied_seat = db.relationship(Seat)
     used_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=True, unique=True)
     used_by = db.relationship(User, foreign_keys=[used_by_id])
 
@@ -85,5 +87,6 @@ class Ticket(db.Model):
             .add_with_lookup('id') \
             .add_with_lookup('category') \
             .add_with_lookup('owned_by') \
+            .add_with_lookup('occupied_seat') \
             .add_with_lookup('used_by') \
             .build()
