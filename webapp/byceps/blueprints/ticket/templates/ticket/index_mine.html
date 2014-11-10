@@ -45,7 +45,7 @@
     <tbody>
       {%- for ticket in tickets|sort(attribute='created_at') %}
       <tr>
-        <td>{{ ticket.id|string|truncate(6, killwords=True, end='…') }}</td>
+        <td title="{{ ticket.id }}">{{ ticket.id|string|truncate(6, killwords=True, end='…') }}</td>
         <td>{{ render_user_link(ticket.owned_by) }}</td>
         <td>{{ ticket.category.title }}</td>
         <td>
