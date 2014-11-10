@@ -44,7 +44,7 @@ class Ticket(db.Model):
     user_managed_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=True)
     user_managed_by = db.relationship(User, foreign_keys=[user_managed_by_id])
     occupied_seat_id = db.Column(db.Uuid, db.ForeignKey('seats.id'), index=True, nullable=True, unique=True)
-    occupied_seat = db.relationship(Seat)
+    occupied_seat = db.relationship(Seat, backref=db.backref('occupied_by_ticket', uselist=False))
     used_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=True, unique=True)
     used_by = db.relationship(User, foreign_keys=[used_by_id])
 
