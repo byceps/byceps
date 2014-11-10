@@ -7,7 +7,7 @@ byceps.blueprints.snippet_admin.forms
 :Copyright: 2006-2014 Jochen Kupperschmidt
 """
 
-from wtforms import StringField, TextAreaField
+from wtforms import SelectField, StringField, TextAreaField
 
 from ...util.l10n import LocalizedForm
 
@@ -15,7 +15,7 @@ from ...util.l10n import LocalizedForm
 class MountpointCreateForm(LocalizedForm):
     endpoint_suffix = StringField('Bezeichner')
     url_path = StringField('URL-Pfad')
-    snippet_name = StringField('Snippet-Name')
+    snippet_id = SelectField('Snippet')
 
 
 class MountpointUpdateForm(MountpointCreateForm):

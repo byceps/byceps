@@ -7,6 +7,8 @@ byceps.blueprints.snippet_admin.views
 :Copyright: 2006-2014 Jochen Kupperschmidt
 """
 
+from operator import attrgetter
+
 from flask import abort, g, request
 
 from ...database import db
@@ -156,7 +158,13 @@ def update_snippet(id):
 def create_mountpoint_form(party_id):
     """Show form to create a mountpoint."""
     party = Party.query.get_or_404(party_id)
+
+    snippets = Snippet.query.for_party(party).order_by(Snippet.name).all()
+    snippet_choices = list(map(attrgetter('id', 'name'), snippets))
+
     form = MountpointCreateForm()
+    form.snippet_id.choices = snippet_choices
+
     return {
         'party': party,
         'form': form,
@@ -175,8 +183,8 @@ def create_mountpoint(party_id):
     if not url_path.startswith('/'):
         abort(400, 'URL path must start with a slash.')
 
-    snippet_name = form.snippet_name.data.strip().lower()
-    snippet = Snippet.query.filter_by(name=snippet_name).one()
+    snippet_id = form.snippet_id.data.strip().lower()
+    snippet = find_snippet_by_id(snippet_id)
 
     mountpoint = Mountpoint(
         endpoint_suffix=endpoint_suffix,
