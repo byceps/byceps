@@ -54,11 +54,11 @@ class Ticket(db.Model):
 
     def get_seat_manager(self):
         """Return the user that may choose the seat for this ticket."""
-        return self.seat_managed_by_id or self.owned_by
+        return self.seat_managed_by or self.owned_by
 
     def get_user_manager(self):
         """Return the user that may choose the user of this ticket."""
-        return self.user_managed_by_id or self.owned_by
+        return self.user_managed_by or self.owned_by
 
     def is_managed_by(self, user):
         """Return `True` if the user may choose the seat for or the
