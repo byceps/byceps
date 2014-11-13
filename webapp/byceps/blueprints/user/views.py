@@ -310,6 +310,7 @@ def password_reset(token):
     user = verification_token.user
     user.set_password(form.new_password.data)
     user.set_new_auth_token()
+    db.session.delete(verification_token)
     db.session.commit()
 
     flash_success('Das Passwort wurde geändert.')
