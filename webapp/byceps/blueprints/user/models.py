@@ -352,7 +352,7 @@ class VerificationToken(db.Model):
         if self.purpose == VerificationTokenPurpose.password_reset:
             now = datetime.now()
             expires_after = timedelta(hours=24)
-            return now > (self.created_at + expires_after)
+            return now >= (self.created_at + expires_after)
         else:
             return False
 
