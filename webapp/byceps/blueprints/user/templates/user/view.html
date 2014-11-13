@@ -1,5 +1,6 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/icons.html' import render_icon %}
+{% from 'macros/seating.html' import render_seating_area_link %}
 {% from 'macros/user.html' import render_user_avatar %}
 {% set current_page = 'user.view' %}
 {% set title = 'Benutzer - %s'|format(user.screen_name) %}
@@ -26,6 +27,12 @@
       <td>
         <div>{{ render_user_avatar(user) }}</div>
       </td>
+    </tr>
+    {%- endif %}
+    {%- if current_party_ticket %}
+    <tr>
+      <th>Sitzplatz</th>
+      <td>{{ render_seating_area_link(current_party_ticket.occupied_seat.area) }}</td>
     </tr>
     {%- endif %}
   </table>
