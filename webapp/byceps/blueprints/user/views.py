@@ -254,6 +254,11 @@ def request_password_reset():
         flash_error('Der Benutzername "{}" ist unbekannt.', screen_name)
         return request_password_reset_form(form)
 
+    if not user.enabled:
+        flash_error('Die E-Mail-Adresse für das Benutzerkonto "{}" wurde '
+                    'noch nicht bestätigt.', screen_name)
+        return redirect_to('.request_email_address_confirmation_email')
+
     verification_token = create_verification_token_for_password_reset(user)
     db.session.commit()
 
