@@ -42,7 +42,7 @@
   {%- elif range.hasLowerBound() and not range.hasUpperBound() -%}
     ab {{ render_datetime(range.lowerEndpoint(), smart=False) }}
   {%- elif not range.hasLowerBound() and range.hasUpperBound() -%}
-    ab {{ render_datetime(range.upperEndpoint(), smart=False) }}
+    bis {{ render_datetime(range.upperEndpoint(), smart=False) }}
   {%- else -%}
     unbegrenzt
   {%- endif -%}
