@@ -37,7 +37,7 @@ def index_mine():
     tickets_bought = [ticket for ticket in tickets if ticket.owned_by == me]
     tickets_managed = [ticket for ticket in tickets if ticket.is_managed_by(me)]
     tickets_mine = [ticket for ticket in tickets if ticket.used_by == me]
-    ticket_mine = tickets[0] if len(tickets) == 1 else None
+    ticket_mine = tickets_mine[0] if len(tickets_mine) == 1 else None
 
     return {
         'tickets_bought': tickets_bought,
