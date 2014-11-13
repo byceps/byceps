@@ -11,6 +11,20 @@ from functools import wraps
 
 from flask import abort, g
 
+from ...util.views import redirect
+
+
+def login_required(permission):
+    """Ensure the current user has logged in."""
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            if not g.current_user.is_active:
+                return redirect_to('user.login_form')
+            return func(*args, **kwargs)
+        return wrapper
+    return decorator
+
 
 def permission_required(permission):
     """Ensure the current user has the given permission."""

@@ -14,6 +14,8 @@ from ...util.framework import create_blueprint, flash_error, flash_success
 from ...util.templating import templated
 from ...util.views import redirect_to
 
+from ..authorization.decorators import login_required
+
 from .forms import OrderForm
 from .models import Article, Order, PaymentState
 from .signals import order_placed
@@ -23,11 +25,11 @@ blueprint = create_blueprint('shop', __name__)
 
 
 @blueprint.route('/order_single')
+@login_required
 @templated
 def order_single_form(errorneous_form=None):
     """Show a form to order a single article."""
-    user = get_current_user_or_redirect_to_login_form()
-
+    user = g.current_user
     form = errorneous_form if errorneous_form else OrderForm(obj=user.detail)
 
     orders_placed_by_user = Order.query.for_current_party().filter_by(placed_by=user).count()
@@ -68,9 +70,10 @@ def order_single_form(errorneous_form=None):
 
 
 @blueprint.route('/order_single', methods=['POST'])
+@login_required
 def order_single():
     """Order a single article."""
-    user = get_current_user_or_redirect_to_login_form()
+    user = g.current_user
 
     orders_placed_by_user = Order.query.for_current_party().filter_by(placed_by=user).count()
     if orders_placed_by_user > 0:
@@ -121,11 +124,3 @@ def order_single():
     order_placed.send(None, order=order)
 
     return redirect_to('snippet.order_placed')
-
-
-def get_current_user_or_redirect_to_login_form():
-    user = g.current_user
-    if not user.is_active:
-        return redirect_to('user.login_form')
-
-    return user
