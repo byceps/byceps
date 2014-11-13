@@ -126,7 +126,7 @@ def order_cancel(id):
         'Artikel in den entsprechenden Stückzahlen wieder zur Bestellung '
         'freigegeben.')
 
-    order_canceled.send(None, articles=order.collect_articles())
+    order_canceled.send(None, order=order)
 
     return redirect_to('.order_view', id=order.id)
 
@@ -141,6 +141,6 @@ def order_mark_as_paid(id):
 
     flash_success('Die Bestellung wurde als bezahlt markiert.')
 
-    order_paid.send(None, articles=order.collect_articles())
+    order_paid.send(None, order=order)
 
     return redirect_to('.order_view', id=order.id)
