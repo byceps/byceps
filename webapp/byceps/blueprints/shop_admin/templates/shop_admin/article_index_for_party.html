@@ -1,4 +1,5 @@
 {% extends 'layout/base.html' %}
+{% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
 {% set current_page = 'shop_admin.articles' %}
 {% set title = 'Shop - Artikel auflisten' %}
@@ -7,10 +8,11 @@
 
   <h1>{{ title }}</h1>
 
-  <table class="index">
+  <table class="index wide" style="margin-top: 2rem;">
     <thead>
       <tr>
         <th>Beschreibung</th>
+        <th>Zeitliche Verfügbarkeit</th>
         <th>Preis</th>
         <th>Anzahl</th>
       </tr>
@@ -18,8 +20,9 @@
     <tbody>
       {%- for article in articles.items %}
       <tr>
-        <td>{{ article.description }}</td>
-        <td style="text-align: right;">{{ article.price.to_str() }} &euro;</td>
+        <td><strong>{{ article.description }}</strong></td>
+        <td>{{ render_availability(article) }}</td>
+        <td class="nowrap" style="text-align: right;">{{ article.price.to_str() }} &euro;</td>
         <td style="text-align: right;">{{ article.quantity }}</td>
       </tr>
       {%- endfor %}
@@ -30,3 +33,17 @@
 {{ render_pagination_nav(articles, '.article_index_for_party', {'party_id': party.id}) }}
 
 {%- endblock body %}
+
+{% macro render_availability(article) -%}
+  {%- set range = article.availability_range %}
+  {%- if range.hasLowerBound() and range.hasUpperBound() -%}
+    {{ render_datetime(article.available_from, smart=False) }} –<br/>
+    {{- render_datetime(article.available_until, smart=False) }}
+  {%- elif range.hasLowerBound() and not range.hasUpperBound() -%}
+    ab {{ render_datetime(range.lowerEndpoint(), smart=False) }}
+  {%- elif not range.hasLowerBound() and range.hasUpperBound() -%}
+    ab {{ render_datetime(range.upperEndpoint(), smart=False) }}
+  {%- else -%}
+    unbegrenzt
+  {%- endif -%}
+{%- endmacro %}

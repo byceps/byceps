@@ -12,6 +12,8 @@ from datetime import datetime
 from enum import Enum
 
 from flask import g
+from Ranger import Range
+from Ranger.src.Range.Cut import Cut
 from sqlalchemy.ext.hybrid import hybrid_property
 
 from ...database import BaseQuery, db, generate_uuid
@@ -60,6 +62,8 @@ class Article(db.Model):
     party = db.relationship(Party)
     description = db.Column(db.Unicode(80), nullable=False)
     _price = db.Column('price', db.Integer, nullable=False)
+    available_from = db.Column(db.DateTime, nullable=True)
+    available_until = db.Column(db.DateTime, nullable=True)
     quantity = db.Column(db.Integer, nullable=False)
 
     @hybrid_property
@@ -70,6 +74,29 @@ class Article(db.Model):
     def price(self, amount):
         self._price = amount.to_int()
 
+    @property
+    def availability_range(self):
+        """Assemble the date/time range of the articles availability."""
+        start = self.available_from
+        end = self.available_until
+
+        if start:
+            if end:
+                return Range.closedOpen(start, end)
+            else:
+                return Range.atLeast(start)
+        else:
+            if end:
+                return Range.lessThan(end)
+            else:
+                return range_all(datetime)
+
+    @property
+    def is_available(self):
+        """Return `True` if the article is available at this moment in time."""
+        now = datetime.now()
+        return self.availability_range.contains(now)
+
     def __repr__(self):
         return ReprBuilder(self) \
             .add_with_lookup('id') \
@@ -77,6 +104,13 @@ class Article(db.Model):
             .add_with_lookup('description') \
             .add_with_lookup('quantity') \
             .build()
+
+
+def range_all(theType):
+    """Create a range than contains every value of the given type."""
+    return Range(
+        Cut.belowAll(theType=theType),
+        Cut.aboveAll(theType=theType))
 
 
 PaymentState = Enum('PaymentState', ['open', 'canceled', 'paid'])
