@@ -10,6 +10,7 @@ byceps.blueprints.ticket.views
 from flask import abort, g
 
 from ...util.framework import create_blueprint
+from ...util.iterables import find
 from ...util.templating import templated
 
 from .models import Ticket
@@ -35,10 +36,9 @@ def index_mine():
         .order_by(Ticket.created_at) \
         .all()
 
-    tickets_bought = [ticket for ticket in tickets if ticket.owned_by == me]
-    tickets_managed = [ticket for ticket in tickets if ticket.is_managed_by(me)]
-    tickets_mine = [ticket for ticket in tickets if ticket.used_by == me]
-    ticket_mine = tickets_mine[0] if len(tickets_mine) == 1 else None
+    tickets_bought = list(filter(lambda t: t.owned_by == me, tickets))
+    tickets_managed = list(filter(lambda t: t.is_managed_by(me), tickets))
+    ticket_mine = find(lambda t: t.used_by == me, tickets)
 
     return {
         'tickets_bought': tickets_bought,
