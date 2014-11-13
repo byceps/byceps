@@ -7,7 +7,7 @@
 
   <h1>{{ title }}</h1>
 
-  <form action="{{ url_for('.order', article=(articles[0].id if articles else '')) }}" method="post">
+  <form action="{{ url_for('.order_single', article=(article.id if article else '')) }}" method="post">
 
     <h2>Deine Daten</h2>
     {%- call form_fieldset() %}
@@ -29,13 +29,11 @@
         </tr>
       </thead>
       <tbody>
-        {%- for article in articles %}
         <tr>
           <td style="text-align: right;">1</td>
           <td><strong>{{ article.description }}</strong></td>
           <td style="text-align: right;">{{ article.price.to_str() }} &euro;</td>
         </tr>
-        {%- endfor %}
       </tbody>
     </table>
     <p><small>Im Preis ist gemäß § 19 UStG keine Umsatzsteuer enthalten (Kleinunternehmerregelung).</small></p>
