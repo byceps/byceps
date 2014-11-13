@@ -15,6 +15,7 @@
         <th>Zeitliche Verfügbarkeit</th>
         <th>Stückpreis</th>
         <th>Anzahl</th>
+        <th>Muss einzeln bestellt werden</th>
       </tr>
     </thead>
     <tbody>
@@ -24,6 +25,7 @@
         <td>{{ render_availability(article) }}</td>
         <td class="nowrap" style="text-align: right;">{{ article.price.to_str() }} &euro;</td>
         <td style="text-align: right;">{{ article.quantity }}</td>
+        <td class="centered">{{ render_icon('enabled' if article.requires_separate_order else 'disabled') }}</td>
       </tr>
       {%- endfor %}
       <tr>
