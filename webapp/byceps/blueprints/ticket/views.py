@@ -25,6 +25,7 @@ def index_mine():
     me = get_current_user_or_403()
 
     tickets = Ticket.query \
+        .for_current_party() \
         .filter(
             (Ticket.owned_by == me) |
             (Ticket.seat_managed_by == me) |
