@@ -10,11 +10,11 @@ byceps.blueprints.ticket.service
 from .models import Ticket
 
 
-def find_current_party_ticket_for_user(user):
-    """Return the ticket used by the user for the current party, or
-    `None` if not found.
+def find_ticket_for_user(user, party):
+    """Return the ticket used by the user for the party, or `None` if not
+    found.
     """
     return Ticket.query \
-        .for_current_party() \
         .filter(Ticket.used_by == user) \
+        .for_party(party) \
         .first()

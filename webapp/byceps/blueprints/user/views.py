@@ -26,7 +26,7 @@ from ..authorization.models import Role
 from ..newsletter.models import Subscription as NewsletterSubscription, \
     SubscriptionState as NewsletterSubscriptionState
 from ..terms.models import Consent, ConsentContext
-from ..ticket.service import find_current_party_ticket_for_user
+from ..ticket.service import find_ticket_for_user
 
 from .forms import AvatarImageUpdateForm, DetailsForm, LoginForm, \
     RequestConfirmationEmailForm, RequestPasswordResetForm, \
@@ -50,7 +50,7 @@ def before_request():
 def view(id):
     """Show a user's profile."""
     user = find_user_by_id(id)
-    current_party_ticket = find_current_party_ticket_for_user(user)
+    current_party_ticket = find_ticket_for_user(user, g.current_party)
     return {
         'user': user,
         'current_party_ticket': current_party_ticket,
