@@ -26,7 +26,7 @@ blueprint = create_blueprint('shop', __name__)
 @templated
 def order_single_form(errorneous_form=None):
     """Show a form to order a single article."""
-    user = get_current_user_or_403()
+    user = get_current_user_or_redirect_to_login_form()
 
     form = errorneous_form if errorneous_form else OrderForm(obj=user.detail)
 
@@ -70,7 +70,7 @@ def order_single_form(errorneous_form=None):
 @blueprint.route('/order_single', methods=['POST'])
 def order_single():
     """Order a single article."""
-    user = get_current_user_or_403()
+    user = get_current_user_or_redirect_to_login_form()
 
     orders_placed_by_user = Order.query.for_current_party().filter_by(placed_by=user).count()
     if orders_placed_by_user > 0:
@@ -123,9 +123,9 @@ def order_single():
     return redirect_to('snippet.order_placed')
 
 
-def get_current_user_or_403():
+def get_current_user_or_redirect_to_login_form():
     user = g.current_user
     if not user.is_active:
-        abort(403)
+        return redirect_to('user.login_form')
 
     return user
