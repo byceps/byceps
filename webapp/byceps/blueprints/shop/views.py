@@ -118,7 +118,7 @@ def order_single():
 
     flash_success('Deine Bestellung wurde entgegen genommen. Vielen Dank!')
 
-    order_placed.send(None, placed_by=user, articles=order.collect_articles())
+    order_placed.send(None, order=order)
 
     return redirect_to('snippet.order_placed')
 
