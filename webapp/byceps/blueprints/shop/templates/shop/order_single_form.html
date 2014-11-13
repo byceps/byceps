@@ -1,5 +1,6 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
+{% from 'macros/shop.html' import render_selected_articles %}
 {% set current_page = 'shop' %}
 {% set title = 'Bestellen' %}
 
@@ -19,26 +20,6 @@
       {{ form_field(form.city, maxlength=40) }}
     {%- endcall %}
 
-    <h2>Artikel</h2>
-    <table class="index" style="margin: 0 auto;">
-      <thead>
-        <tr>
-          <th>Anzahl</th>
-          <th>Beschreibung</th>
-          <th>Preis</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td style="text-align: right;">1</td>
-          <td><strong>{{ article.description }}</strong></td>
-          <td style="text-align: right;">{{ article.price.to_str() }} &euro;</td>
-        </tr>
-      </tbody>
-    </table>
-    <p><small>Im Preis ist gemäß § 19 UStG keine Umsatzsteuer enthalten (Kleinunternehmerregelung).</small></p>
-
-    {{ form_buttons('Kostenpflichtig bestellen') }}
-  </form>
+{{ render_selected_articles([(article, quantity)]) }}
 
 {%- endblock body %}

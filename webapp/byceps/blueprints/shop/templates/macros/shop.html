@@ -1,0 +1,22 @@
+{% macro render_selected_articles(articles_with_quantity) %}
+    <h2>Artikel</h2>
+    <table class="index wide">
+      <thead>
+        <tr>
+          <th>Anzahl</th>
+          <th>Beschreibung</th>
+          <th>Preis</th>
+        </tr>
+      </thead>
+      <tbody>
+        {%- for article, quantity in articles %}
+        <tr>
+          <td style="text-align: right;">{{ quantity }}</td>
+          <td><strong>{{ article.description }}</strong></td>
+          <td style="text-align: right;">{{ article.price.to_str() }} &euro;</td>
+        </tr>
+        {%- endfor %}
+      </tbody>
+    </table>
+    <p><small>Im Preis ist gemäß § 19 UStG keine Umsatzsteuer enthalten (Kleinunternehmerregelung).</small></p>
+{% endmacro %}
