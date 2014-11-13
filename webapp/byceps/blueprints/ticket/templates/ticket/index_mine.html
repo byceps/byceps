@@ -9,21 +9,21 @@
 
   <h1>{{ render_icon('ticket') }} {{ title }}</h1>
 
-  <h2>{{ render_icon('user') }} Das von dir genutze Ticket</h2>
+  <h2>{{ render_icon('user') }} Von dir genutzt</h2>
   {%- if ticket_mine %}
   {{ render_tickets_table([ticket_mine]) }}
   {%- else %}
   <p><em>keines</em></p>
   {%- endif %}
 
-  <h2>{{ render_icon('administrate') }} Von dir verwaltete Tickets</h2>
+  <h2>{{ render_icon('administrate') }} Von dir verwaltet</h2>
   {%- if tickets_managed %}
   {{ render_tickets_table(tickets_managed) }}
   {%- else %}
   <p><em>keine</em></p>
   {%- endif %}
 
-  <h2>{{ render_icon('shopping-cart') }} Von dir gekaufte Tickets</h2>
+  <h2>{{ render_icon('shopping-cart') }} Von dir gekauft</h2>
   {%- if tickets_bought %}
   {{ render_tickets_table(tickets_bought) }}
   {%- else %}
