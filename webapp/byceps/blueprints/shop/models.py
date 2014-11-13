@@ -65,6 +65,7 @@ class Article(db.Model):
     available_from = db.Column(db.DateTime, nullable=True)
     available_until = db.Column(db.DateTime, nullable=True)
     quantity = db.Column(db.Integer, nullable=False)
+    requires_separate_order = db.Column(db.Boolean, default=False, nullable=False)
 
     @hybrid_property
     def price(self):
