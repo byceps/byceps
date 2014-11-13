@@ -10,7 +10,7 @@ byceps.util.iterables
 from itertools import islice, tee
 
 
-def find(iterable, predicate):
+def find(predicate, iterable):
     """Return the first element in the iterable that matches the
     predicate.
 
@@ -21,7 +21,7 @@ def find(iterable, predicate):
             return elem
 
 
-def index_of(iterable, predicate):
+def index_of(predicate, iterable):
     """Return the (0-based) index of the first element in the iterable
     that matches the predicate.
 

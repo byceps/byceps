@@ -386,7 +386,7 @@ class Posting(db.Model):
             .earliest_to_latest() \
             .all()
 
-        index = index_of(topic_postings, lambda p: p == self)
+        index = index_of(lambda p: p == self, topic_postings)
         if index is None:
             return  # Shouldn't happen.
 

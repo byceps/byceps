@@ -11,49 +11,49 @@ class IterablesTestCase(TestCase):
 
     @params(
         (
+            lambda x: x > 3,
             [],
-            lambda x: x > 3,
             None,
         ),
         (
+            lambda x: x > 3,
             [-2, 0, 1, 3],
-            lambda x: x > 3,
             None,
         ),
         (
-            [2, 3, 4, 5],
             lambda x: x > 3,
+            [2, 3, 4, 5],
             4,
         ),
     )
-    def test_find(self, iterable, predicate, expected):
-        actual = find(iterable, predicate)
+    def test_find(self, predicate, iterable, expected):
+        actual = find(predicate, iterable)
         self.assertEqual(actual, expected)
 
     @params(
         (
-            [],
             lambda x: x > 3,
+            [],
             None,
         ),
         (
-            [2, 3, 4, 5],
             lambda x: x > 1,
+            [2, 3, 4, 5],
             0,
         ),
         (
-            [2, 3, 4, 5],
             lambda x: x > 3,
+            [2, 3, 4, 5],
             2,
         ),
         (
-            [2, 3, 4, 5],
             lambda x: x > 6,
+            [2, 3, 4, 5],
             None,
         ),
     )
-    def test_index_of(self, iterable, predicate, expected):
-        actual = index_of(iterable, predicate)
+    def test_index_of(self, predicate, iterable, expected):
+        actual = index_of(predicate, iterable)
         self.assertEqual(actual, expected)
 
     @params(
