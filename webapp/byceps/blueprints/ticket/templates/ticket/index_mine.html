@@ -1,5 +1,6 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/icons.html' import render_icon %}
+{% from 'macros/seating.html' import render_seating_area_link %}
 {% from 'macros/user.html' import render_user_link %}
 {% set current_page = 'ticket' %}
 {% set title = 'Tickets' %}
@@ -50,7 +51,7 @@
         <td>{{ ticket.category.title }}</td>
         <td>
           {%- if ticket.occupied_seat -%}
-          <a href="{{ url_for('seating.view_area', slug=ticket.occupied_seat.area.slug) }}">{{ ticket.occupied_seat.area.title }}</a>
+          {{ render_seating_area_link(ticket.occupied_seat.area) }}
           {%- else -%}
           <span class="tag available">keiner</span><br/>
           {%- endif -%}

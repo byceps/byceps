@@ -1,0 +1,3 @@
+{% macro render_seating_area_link(area) -%}
+<a href="{{ url_for('seating.view_area', slug=area.slug) }}">{{ area.title }}</a>
+{%- endmacro %}

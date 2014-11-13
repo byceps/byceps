@@ -1,4 +1,5 @@
 {% extends 'layout/base.html' %}
+{% from 'macros/seating.html' import render_seating_area_link %}
 {% set current_page = 'seating' %}
 {% set title = 'Sitzplan' %}
 
@@ -9,7 +10,7 @@
   <h2>Bereiche</h2>
   <ul>
     {%- for area in areas|sort(attribute='title') %}
-    <li><a href="{{ url_for('seating.view_area', slug=area.slug) }}">{{ area.title }}</a></li>
+    <li>{{ render_seating_area_link(area) }}</li>
     {%- endfor %}
   </ul>
 
