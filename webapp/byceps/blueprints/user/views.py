@@ -50,7 +50,7 @@ def before_request():
 def view(id):
     """Show a user's profile."""
     user = find_user_by_id(id)
-    current_party_ticket = find_ticket_for_user(user, g.current_party)
+    current_party_ticket = find_ticket_for_user(user, g.party)
     return {
         'user': user,
         'current_party_ticket': current_party_ticket,
