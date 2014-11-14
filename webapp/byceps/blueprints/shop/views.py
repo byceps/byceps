@@ -71,6 +71,9 @@ def order():
         field_name = 'article_{}'.format(article.id)
         field = getattr(form, field_name)
         quantity = field.data
+        if quantity == 0:
+            continue
+
         quantities += quantity
 
         article.quantity -= quantity
