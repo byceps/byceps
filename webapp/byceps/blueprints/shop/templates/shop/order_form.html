@@ -1,0 +1,57 @@
+{% extends 'layout/base.html' %}
+{% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
+{% from 'macros/shop.html' import render_selected_articles %}
+{% set current_page = 'shop' %}
+{% set title = 'Bestellen' %}
+
+{% block body %}
+
+  <h1>{{ title }}</h1>
+
+  <form action="{{ url_for('.order') }}" method="post">
+
+    <h2>Deine Daten</h2>
+    {%- call form_fieldset() %}
+      {{ form_field(form.first_names, maxlength=40, autofocus='autofocus') }}
+      {{ form_field(form.last_name, maxlength=40) }}
+      {{ form_field(form.date_of_birth, size=10, maxlength=10, note='<small>Format: <tt>TT.MM.JJJJ</tt> (T = Tag, M = Monat, J = Jahr)</small>'|safe) }}
+      {{ form_field(form.street, maxlength=40) }}
+      {{ form_field(form.zip_code, size=5, maxlength=5) }}
+      {{ form_field(form.city, maxlength=40) }}
+    {%- endcall %}
+
+    <h2>Artikel</h2>
+    <table class="index wide">
+      <thead>
+        <tr>
+          <th>Anzahl</th>
+          <th>Beschreibung</th>
+          <th>Preis</th>
+        </tr>
+      </thead>
+      <tbody>
+        {%- for article in articles %}
+        <tr>
+          <td>
+            {%- set field = form|attr('article_%s'|format(article.id)) %}
+            {{ field() }}
+            {%- if field.errors %}
+            <ol class="errors">
+              {%- for error in field.errors %}
+              <li><strong>Fehler:</strong> <span>{{ error }}</span></li>
+              {%- endfor %}
+            </ol>
+            {%- endif -%}
+          </td>
+          <td><strong>{{ article.description }}</strong></td>
+          <td style="text-align: right;">{{ article.price.to_str() }} &euro;</td>
+        </tr>
+        {%- endfor %}
+      </tbody>
+    </table>
+    <p><small>Im Preis ist gemäß § 19 UStG keine Umsatzsteuer enthalten (Kleinunternehmerregelung).</small></p>
+
+    {{ form_buttons('Kostenpflichtig bestellen') }}
+  </form>
+
+{%- endblock body %}

@@ -16,12 +16,70 @@ from ...util.views import redirect_to
 
 from ..authorization.decorators import login_required
 
-from .forms import OrderForm
+from .forms import assemble_articles_order_form, OrderForm
 from .models import Article, Order, PaymentState
+from .service import get_orderable_articles
 from .signals import order_placed
 
 
 blueprint = create_blueprint('shop', __name__)
+
+
+@blueprint.route('/order')
+@login_required
+@templated
+def order_form(errorneous_form=None):
+    """Show a form to order articles."""
+    articles = get_orderable_articles()
+    ArticlesOrderForm = assemble_articles_order_form(articles)
+
+    user = g.current_user
+    form = errorneous_form if errorneous_form else ArticlesOrderForm(obj=user.detail)
+
+    return {
+        'form': form,
+        'articles': articles,
+    }
+
+@blueprint.route('/order', methods=['POST'])
+@login_required
+def order():
+    """Order articles."""
+    articles = get_orderable_articles()
+    ArticlesOrderForm = assemble_articles_order_form(articles)
+
+    form = ArticlesOrderForm(request.form)
+    if not form.validate():
+        return order_form(form)
+
+    user = g.current_user
+
+    order = Order(
+        party=g.party,
+        placed_by=user,
+        first_names=form.first_names.data.strip(),
+        last_name=form.last_name.data.strip(),
+        date_of_birth=form.date_of_birth.data,
+        zip_code=form.zip_code.data.strip(),
+        city=form.city.data.strip(),
+        street=form.street.data.strip(),
+    )
+    db.session.add(order)
+
+    for article in articles:
+        field_name = 'article_{}'.format(article.id)
+        field = getattr(form, field_name)
+        quantity = field.data
+
+        article.quantity -= quantity
+
+        order_item = order.add_item(article, quantity)
+        db.session.add(order_item)
+
+    db.session.commit()
+    flash_success('Deine Bestellung wurde entgegen genommen. Vielen Dank!')
+    order_placed.send(None, order=order)
+    return redirect_to('snippet.order_placed')
 
 
 @blueprint.route('/order_single')
