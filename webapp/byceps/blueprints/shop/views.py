@@ -66,15 +66,21 @@ def order():
     )
     db.session.add(order)
 
+    quantities = 0
     for article in articles:
         field_name = 'article_{}'.format(article.id)
         field = getattr(form, field_name)
         quantity = field.data
+        quantities += quantity
 
         article.quantity -= quantity
 
         order_item = order.add_item(article, quantity)
         db.session.add(order_item)
+
+    if not quantities:
+        flash_error('Es wurden keine Artikel ausgewählt.')
+        return order_form(form)
 
     db.session.commit()
     flash_success('Deine Bestellung wurde entgegen genommen. Vielen Dank!')
