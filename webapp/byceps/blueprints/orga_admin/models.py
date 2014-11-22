@@ -18,7 +18,7 @@ from ..user.models import User, UserDetail
 
 class Birthday(namedtuple(
         'Birthday',
-        ['user', 'date', 'days_until', 'is_today'])):
+        ['user', 'days_until', 'is_today'])):
 
     @classmethod
     def of(cls, user, today):
@@ -28,7 +28,7 @@ class Birthday(namedtuple(
 
         is_today = MonthDay.of(date_of_birth).matches(today)
 
-        return cls(user, date_of_birth, days_until, is_today)
+        return cls(user, days_until, is_today)
 
 
 def collect_next_orga_birthdays():

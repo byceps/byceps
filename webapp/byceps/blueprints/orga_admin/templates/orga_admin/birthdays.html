@@ -21,7 +21,7 @@
     <tbody>
       {%- for birthday in birthdays %}
       <tr{% if birthday.is_today %} style="font-weight: bold;"{% elif birthday.days_until > 14 %} class="faint"{% endif %}>
-        <td>{{ render_date(birthday.date) }}</td>
+        <td>{{ render_date(birthday.user.detail.date_of_birth) }}</td>
         <td>
           {%- if birthday.is_today -%}
             {{ render_icon('birthday') }} heute!
