@@ -21,10 +21,11 @@
     <tbody>
       {%- for birthday in birthdays %}
         {%- set days_until_next_birthday = birthday.user.detail.days_until_next_birthday %}
-      <tr{% if birthday.is_today %} style="font-weight: bold;"{% elif days_until_next_birthday > 14 %} class="faint"{% endif %}>
+        {%- set is_birthday_today = birthday.user.detail.is_birthday_today %}
+      <tr{% if is_birthday_today %} style="font-weight: bold;"{% elif days_until_next_birthday > 14 %} class="faint"{% endif %}>
         <td>{{ render_date(birthday.user.detail.date_of_birth) }}</td>
         <td>
-          {%- if birthday.is_today -%}
+          {%- if is_birthday_today -%}
             {{ render_icon('birthday') }} heute!
           {%- else -%}
             noch {{ days_until_next_birthday }} Tage

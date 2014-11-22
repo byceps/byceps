@@ -8,9 +8,6 @@ byceps.blueprints.orga_admin.models
 """
 
 from collections import namedtuple
-from datetime import date
-
-from ...util.datetime import MonthDay
 
 from ..orga.models import OrgaFlag
 from ..user.models import User, UserDetail
@@ -18,15 +15,11 @@ from ..user.models import User, UserDetail
 
 class Birthday(namedtuple(
         'Birthday',
-        ['user', 'is_today'])):
+        ['user'])):
 
     @classmethod
-    def of(cls, user, today):
-        date_of_birth = user.detail.date_of_birth
-
-        is_today = MonthDay.of(date_of_birth).matches(today)
-
-        return cls(user, is_today)
+    def of(cls, user):
+        return cls(user)
 
 
 def collect_next_orga_birthdays():
@@ -47,9 +40,8 @@ def collect_orgas_with_birthdays():
 
 def to_birthdays(users):
     """Create birthday objects from users."""
-    today = date.today()
     for user in users:
-        yield Birthday.of(user, today)
+        yield Birthday.of(user)
 
 
 def sort_birthdays(birthdays):
