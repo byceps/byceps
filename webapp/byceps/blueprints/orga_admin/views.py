@@ -18,7 +18,7 @@ from ..orga.models import OrgaTeam
 from ..party.models import Party
 
 from .authorization import OrgaBirthdayPermission, OrgaTeamPermission
-from .models import collect_next_orga_birthdays
+from .models import collect_orgas_with_next_birthdays
 
 
 blueprint = create_blueprint('orga_admin', __name__)
@@ -54,7 +54,7 @@ def teams_for_party(party_id):
 @permission_required(OrgaBirthdayPermission.list)
 @templated
 def birthdays():
-    birthdays = list(collect_next_orga_birthdays())
+    orgas = list(collect_orgas_with_next_birthdays())
     return {
-        'birthdays': birthdays,
+        'orgas': orgas,
     }

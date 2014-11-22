@@ -7,26 +7,14 @@ byceps.blueprints.orga_admin.models
 :Copyright: 2006-2014 Jochen Kupperschmidt
 """
 
-from collections import namedtuple
-
 from ..orga.models import OrgaFlag
 from ..user.models import User, UserDetail
 
 
-class Birthday(namedtuple(
-        'Birthday',
-        ['user'])):
-
-    @classmethod
-    def of(cls, user):
-        return cls(user)
-
-
-def collect_next_orga_birthdays():
+def collect_orgas_with_next_birthdays():
     """Return the next birthdays of organizers, sorted by month and day."""
     orgas_with_birthdays = collect_orgas_with_birthdays()
-    birthdays = to_birthdays(orgas_with_birthdays)
-    return sort_birthdays(birthdays)
+    return sort_users_by_next_birthday(orgas_with_birthdays)
 
 
 def collect_orgas_with_birthdays():
@@ -38,14 +26,8 @@ def collect_orgas_with_birthdays():
         .all()
 
 
-def to_birthdays(users):
-    """Create birthday objects from users."""
-    for user in users:
-        yield Birthday.of(user)
-
-
-def sort_birthdays(birthdays):
-    return sorted(birthdays,
-                  key=lambda b: (
-                    b.user.detail.days_until_next_birthday,
-                    -b.user.detail.age))
+def sort_users_by_next_birthday(users):
+    return sorted(users,
+                  key=lambda user: (
+                    user.detail.days_until_next_birthday,
+                    -user.detail.age))

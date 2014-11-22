@@ -19,11 +19,11 @@
       </tr>
     </thead>
     <tbody>
-      {%- for birthday in birthdays %}
-        {%- set days_until_next_birthday = birthday.user.detail.days_until_next_birthday %}
-        {%- set is_birthday_today = birthday.user.detail.is_birthday_today %}
+      {%- for user in orgas %}
+        {%- set days_until_next_birthday = user.detail.days_until_next_birthday %}
+        {%- set is_birthday_today = user.detail.is_birthday_today %}
       <tr{% if is_birthday_today %} style="font-weight: bold;"{% elif days_until_next_birthday > 14 %} class="faint"{% endif %}>
-        <td>{{ render_date(birthday.user.detail.date_of_birth) }}</td>
+        <td>{{ render_date(user.detail.date_of_birth) }}</td>
         <td>
           {%- if is_birthday_today -%}
             {{ render_icon('birthday') }} heute!
@@ -31,8 +31,8 @@
             noch {{ days_until_next_birthday }} Tage
           {%- endif -%}
         </td>
-        <td>{{ render_user_admin_link(birthday.user) }}</td>
-        <td>{{ birthday.user.detail.age }} Jahre</td>
+        <td>{{ render_user_admin_link(user) }}</td>
+        <td>{{ user.detail.age }} Jahre</td>
       </tr>
       {%- endfor %}
       <tr>
