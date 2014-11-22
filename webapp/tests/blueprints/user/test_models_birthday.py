@@ -44,3 +44,15 @@ class BirthdayTestCase(TestCase):
         with freeze_time(today_text):
             actual = self.user_detail.days_until_next_birthday
             self.assertEquals(actual, expected)
+
+    @params(
+        ('1994-03-17', False),
+        ('1994-03-18', True ),
+        ('1994-03-19', False),
+        ('2014-03-17', False),
+        ('2014-03-18', True ),
+        ('2014-03-19', False),
+    )
+    def test_is_birthday_today(self, today_text, expected):
+        with freeze_time(today_text):
+            self.assertEquals(self.user_detail.is_birthday_today, expected)
