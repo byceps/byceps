@@ -7,7 +7,7 @@ byceps.blueprints.user.models
 :Copyright: 2006-2014 Jochen Kupperschmidt
 """
 
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 from enum import Enum
 from itertools import chain
 from operator import attrgetter
@@ -21,6 +21,7 @@ from werkzeug.security import check_password_hash, \
     generate_password_hash as _generate_password_hash
 
 from ...database import BaseQuery, db, generate_uuid
+from ...util.datetime import calculate_age
 from ...util.image import ImageType
 from ...util.instances import ReprBuilder
 
@@ -272,6 +273,11 @@ class UserDetail(db.Model):
     city = db.Column(db.Unicode(40))
     street = db.Column(db.Unicode(40))
     internal_comment = db.Column(db.Unicode(200))
+
+    @property
+    def age(self):
+        """Return the user's current age."""
+        return calculate_age(self.date_of_birth, date.today())
 
     def __repr__(self):
         return ReprBuilder(self) \
