@@ -30,7 +30,7 @@
           {%- endif -%}
         </td>
         <td>{{ render_user_admin_link(birthday.user) }}</td>
-        <td>{{ birthday.age }} Jahre</td>
+        <td>{{ birthday.user.detail.age }} Jahre</td>
       </tr>
       {%- endfor %}
       <tr>

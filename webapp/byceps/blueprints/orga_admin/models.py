@@ -10,7 +10,7 @@ byceps.blueprints.orga_admin.models
 from collections import namedtuple
 from datetime import date
 
-from ...util.datetime import calculate_age, calculate_days_until, MonthDay
+from ...util.datetime import calculate_days_until, MonthDay
 
 from ..orga.models import OrgaFlag
 from ..user.models import User, UserDetail
@@ -18,17 +18,15 @@ from ..user.models import User, UserDetail
 
 class Birthday(namedtuple(
         'Birthday',
-        ['user', 'date', 'age', 'days_until', 'is_today'])):
+        ['user', 'date', 'days_until', 'is_today'])):
 
     @classmethod
     def of(cls, user, date_of_birth, today):
-        age = calculate_age(date_of_birth, today)
-
         days_until = calculate_days_until(date_of_birth, today)
 
         is_today = MonthDay.of(date_of_birth).matches(today)
 
-        return cls(user, date_of_birth, age, days_until, is_today)
+        return cls(user, date_of_birth, days_until, is_today)
 
 
 def collect_next_orga_birthdays():
@@ -55,4 +53,4 @@ def to_birthdays(users):
 
 
 def sort_birthdays(birthdays):
-    return sorted(birthdays, key=lambda b: (b.days_until, -b.age))
+    return sorted(birthdays, key=lambda b: (b.days_until, -b.user.detail.age))

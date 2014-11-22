@@ -6,27 +6,15 @@ from unittest import TestCase
 
 from nose2.tools import params
 
-from byceps.blueprints.user.models import User
 from byceps.blueprints.orga_admin.models import Birthday, sort_birthdays
+
+from testfixtures.user import create_user_with_detail
 
 
 class BirthdayTestCase(TestCase):
 
     def setUp(self):
         self.date_of_birth = date(1994, 3, 18)
-
-    @params(
-        (date(2014, 3, 17), 19),
-        (date(2014, 3, 18), 20),
-        (date(2014, 3, 19), 20),
-        (date(2015, 3, 17), 20),
-        (date(2015, 3, 18), 21),
-        (date(2015, 3, 19), 21),
-    )
-    def test_age(self, today, expected):
-        birthday = create_birthday(self.date_of_birth, today)
-
-        self.assertEquals(birthday.age, expected)
 
     @params(
         (date(2014, 3, 16), 2),
@@ -66,13 +54,13 @@ class BirthdayListTestCase(TestCase):
         birthday1992 = to_birthday(date(1992, 11, 14))
         birthday1994 = to_birthday(date(1994,  9, 30))
 
-        birthdays = set([
-            birthday1985,
-            birthday1987,
-            birthday1991,
-            birthday1992,
+        birthdays = [
             birthday1994,
-        ])
+            birthday1992,
+            birthday1985,
+            birthday1991,
+            birthday1987,
+        ]
 
         expected = [
             birthday1994,
@@ -87,4 +75,5 @@ class BirthdayListTestCase(TestCase):
 
 
 def create_birthday(date_of_birth, today):
-    return Birthday.of(None, date_of_birth, today)
+    user = create_user_with_detail(42, date_of_birth=date_of_birth)
+    return Birthday.of(user, date_of_birth, today)
