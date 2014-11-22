@@ -4,6 +4,7 @@ from datetime import date
 from functools import partial
 from unittest import TestCase
 
+from freezegun import freeze_time
 from nose2.tools import params
 
 from byceps.blueprints.orga_admin.models import Birthday, sort_birthdays
@@ -15,17 +16,6 @@ class BirthdayTestCase(TestCase):
 
     def setUp(self):
         self.date_of_birth = date(1994, 3, 18)
-
-    @params(
-        (date(2014, 3, 16), 2),
-        (date(2014, 3, 17), 1),
-        (date(2014, 3, 18), 0),
-        (date(2014, 3, 19), 364),
-    )
-    def test_days_until(self, today, expected):
-        birthday = create_birthday(self.date_of_birth, today)
-
-        self.assertEquals(birthday.days_until, expected)
 
     @params(
         (date(1994, 3, 17), False),
@@ -43,8 +33,9 @@ class BirthdayTestCase(TestCase):
 
 class BirthdayListTestCase(TestCase):
 
+    @freeze_time('1994-09-30')
     def test_sort(self):
-        today = date(1994, 9, 30)
+        today = date.today()  # Already mocked.
 
         to_birthday = partial(create_birthday, today=today)
 
