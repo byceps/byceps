@@ -60,24 +60,27 @@ class BirthdayListTestCase(TestCase):
 
         to_birthday = partial(create_birthday, today=today)
 
-        def to_birthdays(dates_of_birth):
-            return map(to_birthday, dates_of_birth)
+        birthday1985 = to_birthday(date(1985,  9, 29))
+        birthday1987 = to_birthday(date(1987, 10,  1))
+        birthday1991 = to_birthday(date(1991, 11, 14))
+        birthday1992 = to_birthday(date(1992, 11, 14))
+        birthday1994 = to_birthday(date(1994,  9, 30))
 
-        birthdays = to_birthdays(set([
-            date(1985,  9, 29),
-            date(1987, 10,  1),
-            date(1991, 11, 14),
-            date(1992, 11, 14),
-            date(1994,  9, 30),
-        ]))
+        birthdays = set([
+            birthday1985,
+            birthday1987,
+            birthday1991,
+            birthday1992,
+            birthday1994,
+        ])
 
-        expected = list(to_birthdays([
-            date(1994,  9, 30),
-            date(1987, 10,  1),
-            date(1991, 11, 14),
-            date(1992, 11, 14),
-            date(1985,  9, 29),
-        ]))
+        expected = [
+            birthday1994,
+            birthday1987,
+            birthday1991,
+            birthday1992,
+            birthday1985,
+        ]
 
         actual = list(sort_birthdays(birthdays))
         self.assertEquals(actual, expected)
