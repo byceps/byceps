@@ -21,7 +21,7 @@ from werkzeug.security import check_password_hash, \
     generate_password_hash as _generate_password_hash
 
 from ...database import BaseQuery, db, generate_uuid
-from ...util.datetime import calculate_age
+from ...util.datetime import calculate_age, calculate_days_until
 from ...util.image import ImageType
 from ...util.instances import ReprBuilder
 
@@ -278,6 +278,11 @@ class UserDetail(db.Model):
     def age(self):
         """Return the user's current age."""
         return calculate_age(self.date_of_birth, date.today())
+
+    @property
+    def days_until_next_birthday(self):
+        """Return the number of days until the user's next birthday."""
+        return calculate_days_until(self.date_of_birth, date.today())
 
     def __repr__(self):
         return ReprBuilder(self) \
