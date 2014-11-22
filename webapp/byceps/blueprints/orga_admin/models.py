@@ -21,7 +21,9 @@ class Birthday(namedtuple(
         ['user', 'date', 'days_until', 'is_today'])):
 
     @classmethod
-    def of(cls, user, date_of_birth, today):
+    def of(cls, user, today):
+        date_of_birth = user.detail.date_of_birth
+
         days_until = calculate_days_until(date_of_birth, today)
 
         is_today = MonthDay.of(date_of_birth).matches(today)
@@ -49,7 +51,7 @@ def to_birthdays(users):
     """Create birthday objects from users."""
     today = date.today()
     for user in users:
-        yield Birthday.of(user, user.detail.date_of_birth, today)
+        yield Birthday.of(user, today)
 
 
 def sort_birthdays(birthdays):

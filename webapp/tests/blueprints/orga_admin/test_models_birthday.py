@@ -76,4 +76,4 @@ class BirthdayListTestCase(TestCase):
 
 def create_birthday(date_of_birth, today):
     user = create_user_with_detail(42, date_of_birth=date_of_birth)
-    return Birthday.of(user, date_of_birth, today)
+    return Birthday.of(user, today)
