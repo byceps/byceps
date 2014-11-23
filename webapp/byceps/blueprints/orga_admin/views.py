@@ -16,11 +16,10 @@ from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 from ..orga.models import OrgaFlag, OrgaTeam
 from ..party.models import Party
-from ..user.models import User, UserDetail
 
 from .authorization import OrgaBirthdayPermission, OrgaDetailPermission, \
     OrgaTeamPermission
-from .models import collect_orgas_with_next_birthdays
+from .models import collect_orgas_with_next_birthdays, get_organizers
 
 
 blueprint = create_blueprint('orga_admin', __name__)
@@ -36,10 +35,7 @@ permission_registry.register_enum(OrgaTeamPermission)
 @templated
 def persons():
     """List organizers with details."""
-    orgas = User.query \
-        .join(OrgaFlag) \
-        .join(UserDetail) \
-        .all()
+    orgas = get_organizers()
     return {'orgas': orgas}
 
 
