@@ -7,10 +7,13 @@ byceps.blueprints.orga_admin.views
 :Copyright: 2006-2014 Jochen Kupperschmidt
 """
 
+import csv
+import io
 from operator import attrgetter
 
 from ...util.framework import create_blueprint
 from ...util.templating import templated
+from ...util.views import textified
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
@@ -37,6 +40,53 @@ def persons():
     """List organizers with details."""
     orgas = get_organizers()
     return {'orgas': orgas}
+
+
+@blueprint.route('/persons/export')
+@permission_required(OrgaDetailPermission.view)
+@textified
+def export_persons():
+    """Export the list of organizers als CSV in Microsoft Excel dialect."""
+    orgas = get_organizers()
+
+    def to_dict(user):
+        date_of_birth = user.detail.date_of_birth.strftime('%d.%m.%Y') \
+                        if user.detail.date_of_birth else None
+
+        return {
+            'Benutzername': user.screen_name,
+            'Vorname': user.detail.first_names,
+            'Nachname': user.detail.last_name,
+            'Geburtstag': date_of_birth,
+            'Straße': user.detail.street,
+            'PLZ': user.detail.zip_code,
+            'Ort': user.detail.city,
+            'E-Mail-Adresse': user.email_address,
+            'Telefonnummer': user.detail.phone_number,
+        }
+
+    field_names = [
+        'Benutzername',
+        'Vorname',
+        'Nachname',
+        'Geburtstag',
+        'Straße',
+        'PLZ',
+        'Ort',
+        'E-Mail-Adresse',
+        'Telefonnummer',
+    ]
+
+    with io.StringIO(newline='') as f:
+        writer = csv.DictWriter(f, field_names, dialect=csv.excel)
+
+        writer.writeheader()
+
+        for user in orgas:
+            writer.writerow(to_dict(user))
+
+        f.seek(0)
+        yield from f
 
 
 @blueprint.route('/teams')
