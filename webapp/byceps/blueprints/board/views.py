@@ -380,6 +380,9 @@ def topic_move(id):
     topic.category = new_category
     db.session.commit()
 
+    for category in old_category, new_category:
+        category.aggregate()
+
     flash_success('Das Thema "{}" wurde aus der Kategorie "{}" '
                   'in die Kategorie "{}" verschoben.',
                   topic.title, old_category.title, new_category.title,
