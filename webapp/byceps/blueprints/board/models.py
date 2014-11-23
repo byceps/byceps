@@ -52,8 +52,8 @@ class Category(db.Model):
 
     def aggregate(self):
         """Update the count and latest fields."""
-        topic_count = Topic.query.for_category(self).count()
-        posting_query = Posting.query.join(Topic).filter_by(category=self)
+        topic_count = Topic.query.for_category(self).without_hidden().count()
+        posting_query = Posting.query.without_hidden().join(Topic).filter_by(category=self)
         posting_count = posting_query.count()
         latest_posting = posting_query.latest_to_earliest().first()
 
@@ -105,9 +105,13 @@ class TopicQuery(BaseQuery):
     def only_visible_for_current_user(self):
         """Only return topics the current user may see."""
         if not g.current_user.has_permission(BoardTopicPermission.view_hidden):
-            return self.filter_by(hidden=False)
+            return self.without_hidden()
 
         return self
+
+    def without_hidden(self):
+        """Only return topics every user may see."""
+        return self.filter(Topic.hidden == False)
 
     def with_id_or_404(self, id):
         return self.filter_by(id=id).first_or_404()
@@ -250,8 +254,9 @@ class Topic(db.Model):
 
     def aggregate(self):
         """Update the count and latest fields."""
-        posting_count = Posting.query.for_topic(self).count()
-        latest_posting = self.get_latest_posting()
+        posting_query = Posting.query.for_topic(self).without_hidden()
+        posting_count = posting_query.count()
+        latest_posting = posting_query.latest_to_earliest().first()
 
         self.posting_count = posting_count
         if latest_posting:
@@ -312,9 +317,13 @@ class PostingQuery(BaseQuery):
     def only_visible_for_current_user(self):
         """Only return postings the current user may see."""
         if not g.current_user.has_permission(BoardPostingPermission.view_hidden):
-            return self.filter_by(hidden=False)
+            return self.without_hidden()
 
         return self
+
+    def without_hidden(self):
+        """Only return postings every user may see."""
+        return self.filter(Posting.hidden == False)
 
     def earliest_to_latest(self):
         return self.order_by(Posting.created_at.asc())
