@@ -224,16 +224,18 @@ class Topic(db.Model):
             # start on the first page.
             return None
 
-        first_new_posting = Posting.query \
+        first_new_posting_query = Posting.query \
             .for_topic(self) \
             .only_visible_for_current_user() \
-            .earliest_to_latest() \
+            .earliest_to_latest()
+
+        first_new_posting = first_new_posting_query \
             .filter(Posting.created_at > last_viewed_at) \
             .first()
 
         if first_new_posting is None:
             # Current user has seen all postings so far, so show the last one.
-            return self.get_latest_posting()
+            return first_new_posting_query.first()
 
         return first_new_posting
 
@@ -247,10 +249,6 @@ class Topic(db.Model):
         opening posting.
         """
         return sorted(self.postings, key=lambda p: p.created_at)[0]
-
-    def get_latest_posting(self):
-        """Return the most recent posting in this topic."""
-        return Posting.query.for_topic(self).latest_to_earliest().first()
 
     def aggregate(self):
         """Update the count and latest fields."""
