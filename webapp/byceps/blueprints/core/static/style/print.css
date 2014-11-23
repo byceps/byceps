@@ -1,0 +1,27 @@
+html,
+body {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+#page {
+  margin: 0;
+  width: auto;
+}
+
+nav.top,
+#sidebar {
+  display: none;
+}
+
+main {
+  border: none;
+  box-shadow: none;
+  margin: 0;
+  padding: 0;
+}
+
+.actions,
+.action {
+  display: none !important;
+}
