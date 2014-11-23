@@ -53,7 +53,7 @@
   </table>
 
   <ol class="actions" style="margin-top: 2rem;">
-    <li><a href="{{ url_for('.export_persons') }}">{{ render_icon('download') }} Exportieren <small>(als Excel-CSV)</small></a></li>
+    <li><a href="{{ url_for('.export_persons') }}" download="organizers.csv">{{ render_icon('download') }} Exportieren <small>(als Excel-CSV)</small></a></li>
   </ol>
 
 {%- endblock body %}
