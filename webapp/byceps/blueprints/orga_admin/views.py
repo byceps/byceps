@@ -7,9 +7,6 @@ byceps.blueprints.orga_admin.views
 :Copyright: 2006-2014 Jochen Kupperschmidt
 """
 
-import csv
-import io
-
 from ...util.framework import create_blueprint
 from ...util.templating import templated
 from ...util.views import textified
@@ -21,7 +18,8 @@ from ..party.models import Party
 
 from .authorization import OrgaBirthdayPermission, OrgaDetailPermission, \
     OrgaTeamPermission
-from .service import collect_orgas_with_next_birthdays, get_organizers
+from .service import collect_orgas_with_next_birthdays, get_organizers, \
+    serialize_to_csv
 
 
 blueprint = create_blueprint('orga_admin', __name__)
@@ -76,18 +74,7 @@ def export_persons():
 
     orgas = get_organizers()
     rows = map(to_dict, orgas)
-    return to_csv(field_names, rows)
-
-
-def to_csv(field_names, rows):
-    with io.StringIO(newline='') as f:
-        writer = csv.DictWriter(f, field_names, dialect=csv.excel)
-
-        writer.writeheader()
-        writer.writerows(rows)
-
-        f.seek(0)
-        yield from f
+    return serialize_to_csv(field_names, rows)
 
 
 @blueprint.route('/teams')
