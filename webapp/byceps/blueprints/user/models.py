@@ -20,6 +20,7 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from werkzeug.security import check_password_hash, \
     generate_password_hash as _generate_password_hash
 
+from ...config import get_site_mode
 from ...database import BaseQuery, db, generate_uuid
 from ...util.datetime import calculate_age, calculate_days_until, MonthDay
 from ...util.image import ImageType
@@ -230,6 +231,10 @@ class User(db.Model):
 
     @property
     def is_orga_for_current_brand(self):
+        if get_site_mode().is_admin():
+            # No orga flags for brands or parties are available in admin mode.
+            return False
+
         return any(flag.brand == g.party.brand for flag in self.orga_flags)
 
     @property
