@@ -13,3 +13,7 @@ SQLALCHEMY_DATABASE_URI = 'postgresql+pg8000://byceps_test:test@127.0.0.1/byceps
 SQLALCHEMY_ECHO = False
 
 MODE = 'admin'
+
+MAIL_DEBUG = False
+MAIL_DEFAULT_SENDER = 'LANresort <noreply@lanresort.de>'
+MAIL_SUPPRESS_SEND = True

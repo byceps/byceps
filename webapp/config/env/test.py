@@ -18,3 +18,7 @@ PATH_USER_AVATAR_IMAGES = PATH_DATA / 'users/avatars'
 
 MODE = 'public'
 PARTY = 'acme-2014'
+
+MAIL_DEBUG = False
+MAIL_DEFAULT_SENDER = 'LANresort <noreply@lanresort.de>'
+MAIL_SUPPRESS_SEND = True
