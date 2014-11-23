@@ -369,17 +369,21 @@ def topic_unpin(id):
 @blueprint.route('/topics/<id>/move', methods=['POST'])
 @permission_required(BoardTopicPermission.move)
 def topic_move(id):
-    """Move a topic."""
+    """Move a topic from one category to another."""
     topic = Topic.query.get_or_404(id)
 
-    category_id = request.form['category_id']
-    category = Category.query.get_or_404(category_id)
+    old_category = topic.category
 
-    topic.category = category
+    new_category_id = request.form['category_id']
+    new_category = Category.query.get_or_404(new_category_id)
+
+    topic.category = new_category
     db.session.commit()
 
-    flash_success('Das Thema "{}" wurde in die Kategorie "{}" verschoben.',
-                  topic.title, category.title, icon='move')
+    flash_success('Das Thema "{}" wurde aus der Kategorie "{}" '
+                  'in die Kategorie "{}" verschoben.',
+                  topic.title, old_category.title, new_category.title,
+                  icon='move')
     return redirect_to('.category_view',
                        slug=topic.category.slug,
                        _anchor=topic.anchor)
