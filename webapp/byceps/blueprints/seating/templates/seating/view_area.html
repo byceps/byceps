@@ -3,7 +3,7 @@
 {% set title = 'Sitzplan - %s'|format(area.title) %}
 
 {% block head %}
-    <link rel="stylesheet" media="screen" href="{{ url_for('.static', filename='style/seating.css') }}"/>
+    <link rel="stylesheet" href="{{ url_for('.static', filename='style/seating.css') }}"/>
 {%- endblock head %}
 
 {% block body %}
