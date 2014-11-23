@@ -11,7 +11,7 @@ View utilities.
 
 from functools import wraps
 
-from flask import jsonify, redirect, Response, url_for
+from flask import jsonify, redirect, Response, stream_with_context, url_for
 
 
 def jsonified(f):
@@ -28,7 +28,7 @@ def textified(f):
     @wraps(f)
     def wrapper(*args, **kwargs):
         data = f(*args, **kwargs)
-        return Response(data, mimetype='text/plain')
+        return Response(stream_with_context(data), mimetype='text/plain')
     return wrapper
 
 
