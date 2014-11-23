@@ -6,7 +6,7 @@ from unittest import TestCase
 from freezegun import freeze_time
 from nose2.tools import params
 
-from byceps.blueprints.orga_admin.models import sort_users_by_next_birthday
+from byceps.blueprints.orga_admin.service import sort_users_by_next_birthday
 
 from testfixtures.user import create_user_with_detail
 
