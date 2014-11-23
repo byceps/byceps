@@ -291,6 +291,8 @@ def topic_hide(id):
     topic.hide(g.current_user)
     db.session.commit()
 
+    topic.aggregate()
+
     flash_success('Das Thema "{}" wurde versteckt.', topic.title, icon='hidden')
     return url_for('.category_view', slug=topic.category.slug, _anchor=topic.anchor)
 
@@ -303,6 +305,8 @@ def topic_unhide(id):
     topic = Topic.query.get_or_404(id)
     topic.unhide()
     db.session.commit()
+
+    topic.aggregate()
 
     flash_success(
         'Das Thema "{}" wurde wieder sichtbar gemacht.', topic.title, icon='view')
@@ -528,6 +532,8 @@ def posting_hide(id):
     posting.hide(g.current_user)
     db.session.commit()
 
+    posting.topic.aggregate()
+
     flash_success('Der Beitrag wurde versteckt.', icon='hidden')
     return url_for('.topic_view', id=posting.topic.id, _anchor=posting.anchor)
 
@@ -540,6 +546,8 @@ def posting_unhide(id):
     posting = Posting.query.get_or_404(id)
     posting.unhide()
     db.session.commit()
+
+    posting.topic.aggregate()
 
     flash_success('Der Beitrag wurde wieder sichtbar gemacht.', icon='view')
     return url_for('.topic_view', id=posting.topic.id, _anchor=posting.anchor)
