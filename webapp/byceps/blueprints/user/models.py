@@ -272,6 +272,7 @@ class UserDetail(db.Model):
     zip_code = db.Column(db.Unicode(5))
     city = db.Column(db.Unicode(40))
     street = db.Column(db.Unicode(40))
+    phone_number = db.Column(db.Unicode(20))
     internal_comment = db.Column(db.Unicode(200))
 
     @property

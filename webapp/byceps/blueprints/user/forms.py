@@ -48,6 +48,7 @@ class DetailsForm(LocalizedForm):
     zip_code = StringField('PLZ', [Optional()])
     city = StringField('Stadt', [Optional()])
     street = StringField('Straße', [Optional()])
+    phone_number = StringField('Telefonnummer', [Optional(), Length(max=20)])
 
 
 class AvatarImageUpdateForm(LocalizedForm):

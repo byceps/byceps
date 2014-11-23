@@ -65,6 +65,10 @@
         {% if user.detail.city %}{{ user.detail.city }}{% endif -%}
       </td>
     </tr>
+    <tr>
+      <th>Telefonnummer</th>
+      <td>{% if user.detail.phone_number %}{{ user.detail.phone_number }}{% endif %}</td>
+    </tr>
   </table>
   <ol class="actions">
     <li><a href="{{ url_for('.details_update_form') }}">{{ render_icon('edit') }} bearbeiten</a></li>
