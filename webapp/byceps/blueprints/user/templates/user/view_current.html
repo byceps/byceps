@@ -29,7 +29,7 @@
       {%- if user.has_avatar_image -%}
         {{ render_user_avatar(user) }}
       {%- else -%}
-        <em>nicht hinterlegt</em>
+        {{ render_faint('nicht hinterlegt') }}
       {%- endif -%}
       {%- if g.current_user == user %}
         <ol class="actions" style="display: block; margin: 0.5rem 0 0 0;">
@@ -51,23 +51,33 @@
   <table class="index">
     <tr>
       <th>Voller Name</th>
-      <td>{% if user.detail.full_name %}{{ user.detail.full_name }}{% endif %}</td>
+      <td>{{ render_with_fallback(user.detail.full_name|trim) }}</td>
     </tr>
     <tr>
       <th>Geburtsdatum</th>
-      <td>{% if user.detail.date_of_birth %}{{ render_date(user.detail.date_of_birth, smart=False) }}{% endif %}</td>
+      <td>
+        {%- if user.detail.date_of_birth -%}
+          {{ render_date(user.detail.date_of_birth, smart=False) }}
+        {%- else -%}
+          {{ render_faint('nicht angegeben') }}
+        {%- endif -%}
+      </td>
     </tr>
     <tr>
       <th>Anschrift</th>
       <td>
-        {%- if user.detail.street %}{{ user.detail.street }}<br/>{% endif -%}
-        {%- if user.detail.zip_code %}{{ user.detail.zip_code }}{% endif %}
-        {% if user.detail.city %}{{ user.detail.city }}{% endif -%}
+        {%- if user.detail.street or user.detail.zip_code or user.detail.city %}
+          {%- if user.detail.street %}{{ user.detail.street }}<br/>{% endif -%}
+          {%- if user.detail.zip_code %}{{ user.detail.zip_code }} {% endif %}
+          {%- if user.detail.city %}{{ user.detail.city }}{% endif -%}
+        {%- else -%}
+          {{ render_faint('nicht angegeben') }}
+        {%- endif -%}
       </td>
     </tr>
     <tr>
       <th>Telefonnummer</th>
-      <td>{% if user.detail.phone_number %}{{ user.detail.phone_number }}{% endif %}</td>
+      <td>{{ render_with_fallback(user.detail.phone_number) }}</td>
     </tr>
   </table>
   <ol class="actions">
@@ -91,3 +101,15 @@
   </ol>
 
 {%- endblock body %}
+
+{% macro render_with_fallback(value) %}
+  {%- if value %}
+    {{- value }}
+  {%- else -%}
+    {{ render_faint('nicht angegeben') }}
+  {%- endif %}
+{%- endmacro %}
+
+{% macro render_faint(value) -%}
+  <span class="faint">{{ value }}</span>
+{%- endmacro %}
