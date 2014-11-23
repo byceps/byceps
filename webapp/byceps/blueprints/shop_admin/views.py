@@ -65,7 +65,10 @@ def article_index_for_party(party_id, page):
 def order_index():
     """List orders."""
     parties = Party.query.all()
-    return {'parties': parties}
+    return {
+        'parties': parties,
+        'PaymentState': PaymentState,
+    }
 
 
 @blueprint.route('/parties/<party_id>/orders', defaults={'page': 1})
