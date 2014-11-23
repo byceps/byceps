@@ -47,7 +47,17 @@ def persons():
 @textified
 def export_persons():
     """Export the list of organizers als CSV in Microsoft Excel dialect."""
-    orgas = get_organizers()
+    field_names = [
+        'Benutzername',
+        'Vorname',
+        'Nachname',
+        'Geburtstag',
+        'Straße',
+        'PLZ',
+        'Ort',
+        'E-Mail-Adresse',
+        'Telefonnummer',
+    ]
 
     def to_dict(user):
         date_of_birth = user.detail.date_of_birth.strftime('%d.%m.%Y') \
@@ -65,25 +75,17 @@ def export_persons():
             'Telefonnummer': user.detail.phone_number,
         }
 
-    field_names = [
-        'Benutzername',
-        'Vorname',
-        'Nachname',
-        'Geburtstag',
-        'Straße',
-        'PLZ',
-        'Ort',
-        'E-Mail-Adresse',
-        'Telefonnummer',
-    ]
+    orgas = get_organizers()
+    rows = map(to_dict, orgas)
+    return to_csv(field_names, rows)
 
+
+def to_csv(field_names, rows):
     with io.StringIO(newline='') as f:
         writer = csv.DictWriter(f, field_names, dialect=csv.excel)
 
         writer.writeheader()
-
-        for user in orgas:
-            writer.writerow(to_dict(user))
+        writer.writerows(rows)
 
         f.seek(0)
         yield from f
