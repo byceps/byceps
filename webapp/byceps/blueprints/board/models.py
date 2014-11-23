@@ -102,7 +102,7 @@ class TopicQuery(BaseQuery):
     def for_category(self, category):
         return self.filter_by(category=category)
 
-    def only_visible(self):
+    def only_visible_for_current_user(self):
         """Only return topics the current user may see."""
         if not g.current_user.has_permission(BoardTopicPermission.view_hidden):
             return self.filter_by(hidden=False)
@@ -222,7 +222,7 @@ class Topic(db.Model):
 
         first_new_posting = Posting.query \
             .for_topic(self) \
-            .only_visible() \
+            .only_visible_for_current_user() \
             .earliest_to_latest() \
             .filter(Posting.created_at > last_viewed_at) \
             .first()
@@ -309,7 +309,7 @@ class PostingQuery(BaseQuery):
     def for_topic(self, topic):
         return self.filter_by(topic=topic)
 
-    def only_visible(self):
+    def only_visible_for_current_user(self):
         """Only return postings the current user may see."""
         if not g.current_user.has_permission(BoardPostingPermission.view_hidden):
             return self.filter_by(hidden=False)
@@ -382,7 +382,7 @@ class Posting(db.Model):
         """Return the number of the page this posting should appear on."""
         topic_postings = Posting.query \
             .for_topic(self.topic) \
-            .only_visible() \
+            .only_visible_for_current_user() \
             .earliest_to_latest() \
             .all()
 
