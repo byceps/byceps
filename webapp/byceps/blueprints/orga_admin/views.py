@@ -19,7 +19,7 @@ from ..party.models import Party
 
 from .authorization import OrgaBirthdayPermission, OrgaDetailPermission, \
     OrgaTeamPermission
-from .models import collect_orgas_with_next_birthdays, get_organizers
+from .service import collect_orgas_with_next_birthdays, get_organizers
 
 
 blueprint = create_blueprint('orga_admin', __name__)
