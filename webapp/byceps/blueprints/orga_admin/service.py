@@ -47,7 +47,9 @@ def sort_users_by_next_birthday(users):
 def serialize_to_csv(field_names, rows):
     """Serialize the rows (must be dictionary objects) to CSV."""
     with io.StringIO(newline='') as f:
-        writer = csv.DictWriter(f, field_names, dialect=csv.excel)
+        writer = csv.DictWriter(f, field_names,
+                                dialect=csv.excel,
+                                delimiter=';')
 
         writer.writeheader()
         writer.writerows(rows)
