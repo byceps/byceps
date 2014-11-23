@@ -9,7 +9,6 @@ byceps.blueprints.orga_admin.views
 
 import csv
 import io
-from operator import attrgetter
 
 from ...util.framework import create_blueprint
 from ...util.templating import templated
@@ -17,7 +16,7 @@ from ...util.views import textified
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
-from ..orga.models import OrgaFlag, OrgaTeam
+from ..orga.models import OrgaTeam
 from ..party.models import Party
 
 from .authorization import OrgaBirthdayPermission, OrgaDetailPermission, \
