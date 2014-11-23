@@ -1,0 +1,55 @@
+{% extends 'layout/base.html' %}
+{% from 'macros/datetime.html' import render_date %}
+{% from 'macros/user_admin.html' import render_user_admin_link %}
+{% set current_page = 'orga_admin.persons' %}
+{% set title = 'Orgas' %}
+
+{% block body %}
+
+  <h1>{{ title }}</h1>
+
+  <table class="index wide">
+    <thead>
+      <tr>
+        <th>Benutzername<br/>Vorname, Nachname</th>
+        <th>Geburtstag<br/>Alter</th>
+        <th>Straße<br/>PLZ, Ort</th>
+        <th>E-Mail-Adresse<br/>Telefonnummer</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for user in orgas %}
+      <tr>
+        <td>
+          {{- render_user_admin_link(user) }}<br/>
+          {{- render_if_not_none(user.detail.full_name) -}}
+        </td>
+        <td>
+          {%- if user.detail.date_of_birth %}
+            {{- render_date(user.detail.date_of_birth) }}<br/>
+            {{- user.detail.age }} Jahre
+          {%- endif -%}
+        </td>
+        <td>
+          {{- render_if_not_none(user.detail.street) -}}
+          <br/>
+          {{- render_if_not_none(user.detail.zip_code) }}
+          {{- render_if_not_none(user.detail.city) -}}
+        </td>
+        <td>
+          <a href="mailto:{{- user.email_address }}">{{- user.email_address }}</a><br/>
+          <span class="faint">noch nicht verfügbar</span>
+        </td>
+      </tr>
+      {%- endfor %}
+      <tr>
+    </tbody>
+  </table>
+
+{%- endblock body %}
+
+{% macro render_if_not_none(value) %}
+  {%- if value is not none %}
+    {{- value }}
+  {%- endif %}
+{%- endmacro %}

@@ -14,10 +14,12 @@ from ...util.templating import templated
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
-from ..orga.models import OrgaTeam
+from ..orga.models import OrgaFlag, OrgaTeam
 from ..party.models import Party
+from ..user.models import User, UserDetail
 
-from .authorization import OrgaBirthdayPermission, OrgaTeamPermission
+from .authorization import OrgaBirthdayPermission, OrgaDetailPermission, \
+    OrgaTeamPermission
 from .models import collect_orgas_with_next_birthdays
 
 
@@ -25,7 +27,20 @@ blueprint = create_blueprint('orga_admin', __name__)
 
 
 permission_registry.register_enum(OrgaBirthdayPermission)
+permission_registry.register_enum(OrgaDetailPermission)
 permission_registry.register_enum(OrgaTeamPermission)
+
+
+@blueprint.route('/persons')
+@permission_required(OrgaDetailPermission.view)
+@templated
+def persons():
+    """List organizers with details."""
+    orgas = User.query \
+        .join(OrgaFlag) \
+        .join(UserDetail) \
+        .all()
+    return {'orgas': orgas}
 
 
 @blueprint.route('/teams')
@@ -41,7 +56,7 @@ def teams():
 @permission_required(OrgaTeamPermission.list)
 @templated
 def teams_for_party(party_id):
-    """List orga teams for that party."""
+    """List organizer teams for that party."""
     party = Party.query.get_or_404(party_id)
     teams = OrgaTeam.query.all()
     return {

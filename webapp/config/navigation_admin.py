@@ -3,7 +3,7 @@
 from byceps.blueprints.authorization_admin.authorization import RolePermission
 from byceps.blueprints.newsletter_admin.authorization import NewsletterPermission
 from byceps.blueprints.orga_admin.authorization import OrgaBirthdayPermission, \
-    OrgaTeamPermission
+    OrgaDetailPermission, OrgaTeamPermission
 from byceps.blueprints.orga_presence.authorization import OrgaPresencePermission
 from byceps.blueprints.party_admin.authorization import PartyPermission
 from byceps.blueprints.shop_admin.authorization import ShopPermission
@@ -21,6 +21,7 @@ users.add_item('authorization_admin.permission_index', 'Rechte', id='authorizati
 users.add_item('ticket_admin.index', 'Tickets', id='ticket_admin', required_permission=TicketPermission.list)
 
 orgas = Navigation('Orgas')
+orgas.add_item('orga_admin.persons', 'Personen', id='orga_admin.persons', required_permission=OrgaDetailPermission.view)
 orgas.add_item('orga_admin.birthdays', 'Geburtstage', id='orga_admin.birthdays', required_permission=OrgaBirthdayPermission.list)
 orgas.add_item('orga_admin.teams', 'Teams', id='orga_admin.teams', required_permission=OrgaTeamPermission.list)
 orgas.add_item('orga_presence.index', 'Anwesenheit', id='orga_presence', required_permission=OrgaPresencePermission.list)

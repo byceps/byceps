@@ -15,6 +15,11 @@ OrgaBirthdayPermission = create_permission_enum('orga_birthday', [
 ])
 
 
+OrgaDetailPermission = create_permission_enum('orga_detail', [
+    'view',
+])
+
+
 OrgaTeamPermission = create_permission_enum('orga_team', [
     'list',
 ])
