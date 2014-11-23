@@ -213,7 +213,7 @@ class Topic(db.Model):
             return full_page_count
 
     def get_default_posting_to_jump_to(self, last_viewed_at):
-        """Return the posting to show by default, and the page it's on."""
+        """Return the posting to show by default."""
         if g.current_user.is_anonymous:
             # All postings are potentially new to a guest, so start on
             # the first page.
