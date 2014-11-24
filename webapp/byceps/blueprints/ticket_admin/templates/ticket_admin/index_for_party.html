@@ -41,7 +41,7 @@
         </td>
         <td>
           {%- if ticket.used_by -%}
-          {{ render_user_link(ticket.used_by) }}
+          {{ render_user_admin_link(ticket.used_by) }}
           {%- else -%}
           <span class="tag available">frei</span>
           {%- endif -%}
