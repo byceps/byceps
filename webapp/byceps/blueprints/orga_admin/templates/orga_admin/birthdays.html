@@ -14,6 +14,11 @@
       .hastoday {
         font-weight: bold;
       }
+
+      .birthdays time {
+        cursor: help;
+        border-bottom: #666666 dotted 1px;
+      }
     </style>
 {%- endblock head %}
 
@@ -27,13 +32,15 @@
     <li{% if is_today %} class="hastoday"{% endif %}>
       {{ render_user_admin_link(user) }}
       {% if is_today %}{{ render_icon('birthday') }}{% endif %}
-      wird {{ render_relative_days_until(user) }}
+      {%- set relative_days_label = render_relative_days_until(user) %}
+      wird {{ render_time_element(user.detail.date_of_birth, relative_days_label) }}
       {{ render_random_age_adjective() }} {{ user.detail.age + 1 }} Jahre alt.
     </li>
   {%- endfor %}
   </ol>
 
 {%- endblock body %}
+
 
 {% macro render_relative_days_until(user) %}
   {%- set days_until_next_birthday = user.detail.days_until_next_birthday %}
@@ -53,6 +60,12 @@
 
   {%- if is_soon %}</strong>{% endif %}
 {%- endmacro %}
+
+
+{% macro render_time_element(date, label) -%}
+  <time datetime="{{ date.isoformat() }}" title="{{ date.strftime('%d.%m.%Y') }}">{{ label }}</time>
+{%- endmacro %}
+
 
 {% macro render_random_age_adjective() %}
   {{- [
