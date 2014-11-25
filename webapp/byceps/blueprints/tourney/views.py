@@ -34,8 +34,7 @@ def match_comment_create(match_id):
     """Create a comment on a match."""
     match = Match.query.get_or_404(match_id)
 
-    #body = request.form['body'].strip()
-    body = 'enis'
+    body = request.form['body'].strip()
 
     comment = MatchComment.create(match, body)
 
