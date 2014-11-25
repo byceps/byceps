@@ -5,38 +5,51 @@
 {% set current_page = 'orga_admin.birthdays' %}
 {% set title = 'Die nächsten Geburtstage' %}
 
+{% block head %}
+    <style>
+      .birthdays {
+        line-height: 1.7rem;
+      }
+
+      .hastoday {
+        font-weight: bold;
+      }
+    </style>
+{%- endblock head %}
+
 {% block body %}
 
   <h1>{{ title }}</h1>
 
-  <table class="index">
-    <thead>
-      <tr>
-        <th>Tag</th>
-        <th></th>
-        <th>Name</th>
-        <th>Alter</th>
-      </tr>
-    </thead>
-    <tbody>
-      {%- for user in orgas %}
-        {%- set days_until_next_birthday = user.detail.days_until_next_birthday %}
-        {%- set is_birthday_today = user.detail.is_birthday_today %}
-      <tr{% if is_birthday_today %} style="font-weight: bold;"{% elif days_until_next_birthday > 14 %} class="faint"{% endif %}>
-        <td>{{ render_date(user.detail.date_of_birth) }}</td>
-        <td>
-          {%- if is_birthday_today -%}
-            {{ render_icon('birthday') }} heute!
-          {%- else -%}
-            noch {{ days_until_next_birthday }} Tage
-          {%- endif -%}
-        </td>
-        <td>{{ render_user_admin_link(user) }}</td>
-        <td>{{ user.detail.age }} Jahre</td>
-      </tr>
-      {%- endfor %}
-      <tr>
-    </tbody>
-  </table>
+  <ol class="birthdays">
+  {%- for user in orgas %}
+    {%- set is_today = user.detail.is_birthday_today %}
+    <li{% if is_today %} class="hastoday"{% endif %}>
+      {{ render_user_admin_link(user) }}
+      {% if is_today %}{{ render_icon('birthday') }}{% endif %}
+      wird {{ render_relative_days_until(user) }}
+      ganze {{ user.detail.age + 1 }} Jahre alt.
+    </li>
+  {%- endfor %}
+  </ol>
 
 {%- endblock body %}
+
+{% macro render_relative_days_until(user) %}
+  {%- set days_until_next_birthday = user.detail.days_until_next_birthday %}
+  {%- set is_soon = (days_until_next_birthday <= 7) %}
+
+  {%- if is_soon %}<strong>{% endif %}
+
+  {%- if days_until_next_birthday == 0 -%}
+    heute
+  {%- elif days_until_next_birthday == 1 -%}
+    morgen
+  {%- elif days_until_next_birthday == 2 -%}
+    übermorgen
+  {%- else -%}
+    in {{ days_until_next_birthday }} Tagen
+  {%- endif %}
+
+  {%- if is_soon %}</strong>{% endif %}
+{%- endmacro %}
