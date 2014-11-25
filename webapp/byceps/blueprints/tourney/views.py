@@ -10,9 +10,11 @@ byceps.blueprints.tourney.views
 from flask import request, url_for
 
 from ...util.framework import create_blueprint
+from ...util.templating import templated
 from ...util.views import respond_created
 
 from .models import Match, MatchComment
+from .service import get_match_comments
 
 
 blueprint = create_blueprint('tourney', __name__)
@@ -20,6 +22,19 @@ blueprint = create_blueprint('tourney', __name__)
 
 # -------------------------------------------------------------------- #
 # match comments
+
+
+@blueprint.route('/matches/<match_id>/comments')
+@templated
+def match_comments_view(match_id):
+    """Render the comments on a match."""
+    match = Match.query.get_or_404(match_id)
+
+    comments = get_match_comments(match)
+
+    return {
+        'comments': comments,
+    }
 
 
 blueprint.add_url_rule(
