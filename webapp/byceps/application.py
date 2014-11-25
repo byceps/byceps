@@ -27,7 +27,7 @@ BLUEPRINTS = [
     ('board',               '/board',               SiteMode.public),
     #('brand',               None,                   None           ),
     ('core',                '/core',                None           ),
-    ('newsletter',          '/newsletter',          SiteMode.public),
+    ('newsletter',          '/newsletter',          None           ),
     ('newsletter_admin',    '/admin/newsletter',    SiteMode.admin ),
     ('orga',                '/orgas',               SiteMode.public),
     ('orga_admin',          '/admin/orgas',         SiteMode.admin ),
