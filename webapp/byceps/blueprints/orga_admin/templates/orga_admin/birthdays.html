@@ -28,7 +28,7 @@
       {{ render_user_admin_link(user) }}
       {% if is_today %}{{ render_icon('birthday') }}{% endif %}
       wird {{ render_relative_days_until(user) }}
-      ganze {{ user.detail.age + 1 }} Jahre alt.
+      {{ render_random_age_adjective() }} {{ user.detail.age + 1 }} Jahre alt.
     </li>
   {%- endfor %}
   </ol>
@@ -52,4 +52,41 @@
   {%- endif %}
 
   {%- if is_soon %}</strong>{% endif %}
+{%- endmacro %}
+
+{% macro render_random_age_adjective() %}
+  {{- [
+    'atemberaubende',
+    'fantastische',
+    'beschauliche',
+    'bombastische',
+    'eindrucksvolle',
+    'epische',
+    'erbarmungslose',
+    'erfrischende',
+    'erheiternde',
+    'erquickende',
+    'fantastische',
+    'ganze',
+    'grandiose',
+    'herzallerliebste',
+    'kolossale',
+    'krasse',
+    'legendäre',
+    'niedliche',
+    'phänomenale',
+    'possierliche',
+    'quirlige',
+    'sportliche',
+    'umwerfende',
+    'unbegreifliche',
+    'unbeschreibliche',
+    'unfassbare',
+    'unglaubliche',
+    'wahnsinnige',
+    'wilde',
+    'zarte',
+    'zierliche',
+    'zuckersüße',
+  ]|random }}
 {%- endmacro %}
