@@ -24,3 +24,5 @@ BOARD_POSTINGS_PER_PAGE = 10
 MAIL_DEBUG = True
 MAIL_DEFAULT_SENDER = 'LANresort <noreply@lanresort.de>'
 MAIL_SUPPRESS_SEND = True
+
+ROOT_REDIRECT_TARGET = 'admin/orgas/birthdays'

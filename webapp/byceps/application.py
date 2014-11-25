@@ -74,6 +74,8 @@ def create_app(environment_name, *, initialize=True):
 
     if initialize:
         with app.app_context():
+            set_root_path(app)
+
             if config.get_site_mode().is_public():
                 party_id = config.get_current_party_id()
 
@@ -94,3 +96,14 @@ def register_blueprints(app):
     for name, url_prefix, mode in BLUEPRINTS:
         if mode is None or mode == current_mode:
             register_blueprint(app, name, url_prefix)
+
+
+def set_root_path(app):
+    """Set an optioanl URL path to redirect to from the root URL path (`/`).
+
+    Important: Don't specify the target with a leading slash unless you
+    really mean the root of host.
+    """
+    target = app.config.get('ROOT_REDIRECT_TARGET')
+    if target:
+        app.add_url_rule('/', endpoint='root', redirect_to=target)
