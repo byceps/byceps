@@ -29,7 +29,7 @@
   <ol class="birthdays">
   {%- for user in orgas %}
     {%- set is_today = user.detail.is_birthday_today %}
-    <li{% if is_today %} class="hastoday"{% endif %}>
+    <li{% if is_today %} class="hastoday"{% elif user.detail.days_until_next_birthday > 14 %} class="faint"{% endif %}>
       {{ render_user_admin_link(user) }}
       {% if is_today %}{{ render_icon('birthday') }}{% endif %}
       {%- set relative_days_label = render_relative_days_until(user) %}
