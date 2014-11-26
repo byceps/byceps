@@ -7,6 +7,8 @@ byceps.blueprints.orga_admin.views
 :Copyright: 2006-2014 Jochen Kupperschmidt
 """
 
+from operator import attrgetter
+
 from ...util.framework import create_blueprint
 from ...util.templating import templated
 from ...util.views import textified
@@ -73,6 +75,7 @@ def export_persons():
         }
 
     orgas = get_organizers()
+    orgas.sort(key=attrgetter('screen_name'))
     rows = map(to_dict, orgas)
     return serialize_to_csv(field_names, rows)
 
