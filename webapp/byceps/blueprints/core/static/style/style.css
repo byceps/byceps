@@ -424,45 +424,55 @@ nav.pagination li.current {
 }
 
 
-/* board */
+/* board, tourneys */
 
-.board-postings {
+.board-postings,
+.tourney-match-comments {
   border-bottom: #cccccc solid 1px;
 }
 
-.board-postings article {
+.board-postings article,
+.tourney-match-comments article {
   border-top: #cccccc solid 1px;
   margin: 0;
   padding: 10px 0;
 }
 
 .board-postings aside,
-.board-postings .body {
+.board-postings .body,
+.tourney-match-comments aside,
+.tourney-match-comments .body {
   display: inline-block;
   vertical-align: top;
 }
-.board-postings aside {
+.board-postings aside,
+.tourney-match-comments aside {
   font-size: 0.9rem;
   margin-right: 4px;
   width: 130px;
 }
-.board-postings .body {
+.board-postings .body,
+.tourney-match-comments .body {
   font-size: 1rem;
   overflow: hidden;
   text-overflow: ellipsis;
   width: 520px;
 }
 
-.board-postings aside .creator {
+.board-postings aside .creator,
+.tourney-match-comments aside .creator {
   font-weight: bold;
 }
 
 .board-postings aside .creator,
-.board-postings aside .avatar {
+.board-postings aside .avatar,
+.tourney-match-comments aside .creator,
+.tourney-match-comments aside .avatar {
   margin-bottom: 0.25rem;
 }
 
-.board-postings aside time {
+.board-postings aside time,
+.tourney-match-comments aside time {
   display: block;
   font-size: 0.8rem;
 }
@@ -477,16 +487,19 @@ nav.pagination li.current {
   padding: 0;
 }
 
-.board-postings .quote-intro {
+.board-postings .quote-intro,
+.tourney-match-comments .quote-intro {
   font-size: 0.8rem;
   font-style: italic;
   margin: 0 0 0.2rem 0;
   padding: 0;
 }
-.board-postings .quote-intro cite {
+.board-postings .quote-intro cite,
+.tourney-match-comments .quote-intro cite {
   font-weight: bold;
 }
-.board-postings blockquote {
+.board-postings blockquote,
+.tourney-match-comments blockquote {
   background-color: #eeeeee;
   border: #cccccc solid 1px;
   margin: 0 0 0 1rem;
