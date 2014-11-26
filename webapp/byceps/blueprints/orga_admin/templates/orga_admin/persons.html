@@ -19,7 +19,7 @@
       </tr>
     </thead>
     <tbody>
-      {%- for user in orgas %}
+      {%- for user in orgas|sort(attribute='screen_name') %}
       <tr>
         <td class="nowrap">
           {{- render_user_admin_link(user) }}<br/>
