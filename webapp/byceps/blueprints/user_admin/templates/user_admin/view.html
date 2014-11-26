@@ -44,18 +44,25 @@
   <table class="index">
     <tr>
       <th>Voller Name</th>
-      <td>{% if user.detail.full_name %}{{ user.detail.full_name }}{% endif %}</td>
+      <td>{{ render_with_fallback(user.detail.full_name|default('', true)|trim) }}</td>
     </tr>
     <tr>
       <th>Geburtsdatum</th>
-      <td>{% if user.detail.date_of_birth %}{{ render_date(user.detail.date_of_birth) }}{% endif %}</td>
+      <td>
+        {%- if user.detail.date_of_birth -%}
+          {{ render_date(user.detail.date_of_birth, smart=False) }}
+        {%- else -%}
+          {{ render_faint('nicht angegeben') }}
+        {%- endif -%}
+      </td>
     </tr>
     <tr>
       <th>Anschrift</th>
       <td>
-        {%- if user.detail.street %}{{ user.detail.street }}<br/>{% endif -%}
+        {{- render_with_fallback(user.detail.street) }}
+        {%- if user.detail.street %}<br/>{% endif %}
         {%- if user.detail.zip_code %}{{ user.detail.zip_code }}{% endif %}
-        {% if user.detail.city %}{{ user.detail.city }}{% endif -%}
+        {{- render_with_fallback(user.detail.city) -}}
       </td>
     </tr>
   </table>
@@ -64,8 +71,20 @@
   <table class="index">
     <tr>
       <th>Legacy-ID</th>
-      <td>{% if user.legacy_id %}{{ user.legacy_id }}{% endif %}</td>
+      <td>{{ render_with_fallback(user.legacy_id) }}</td>
     </tr>
   </table>
 
 {%- endblock body %}
+
+{% macro render_with_fallback(value) %}
+  {%- if value -%}
+    {{ value }}
+  {%- else -%}
+    {{ render_faint('nicht angegeben') }}
+  {%- endif %}
+{%- endmacro %}
+
+{% macro render_faint(value) -%}
+  <span class="faint">{{ value }}</span>
+{%- endmacro %}
