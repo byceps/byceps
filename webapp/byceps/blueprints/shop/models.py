@@ -51,6 +51,15 @@ class Article(db.Model):
     max_quantity_per_order = db.Column(db.Integer, nullable=True)
     requires_separate_order = db.Column(db.Boolean, default=False, nullable=False)
 
+    def __init__(self, party, description, price, quantity,
+                 *, available_from=None, available_until=None):
+        self.party = party
+        self.description = description
+        self._price = price.to_int()
+        self.available_from = available_from
+        self.available_until = available_until
+        self.quantity = quantity
+
     @hybrid_property
     def price(self):
         return EuroAmount.from_int(int(self._price))

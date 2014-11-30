@@ -6,8 +6,8 @@ from byceps.blueprints.authorization.models import Permission, Role
 from byceps.blueprints.shop_admin.authorization import ShopPermission
 from byceps.blueprints.shop.models import Article, Order, PaymentState
 from byceps.blueprints.user.models import User
-from byceps.util.money import EuroAmount
 
+from testfixtures.shop import create_article
 from testfixtures.user import create_user
 
 from tests import AbstractAppTestCase
@@ -88,12 +88,7 @@ class ShopAdminTestCase(AbstractAppTestCase):
         return user
 
     def create_article(self, quantity):
-        article = Article(
-            party=self.party,
-            description='Something awesome',
-            quantity=quantity,
-        )
-        article.price = EuroAmount(24, 99)
+        article = create_article(party=self.party, quantity=quantity)
         self.db.session.add(article)
         return article
 

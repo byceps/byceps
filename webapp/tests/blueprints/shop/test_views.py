@@ -5,8 +5,8 @@ from datetime import date
 from byceps.blueprints.shop.models import Article, Order, PaymentState
 from byceps.blueprints.snippet.models import Snippet
 from byceps.blueprints.user.models import User
-from byceps.util.money import EuroAmount
 
+from testfixtures.shop import create_article
 from testfixtures.user import create_user
 
 from tests import AbstractAppTestCase
@@ -27,11 +27,7 @@ class ShopTestCase(AbstractAppTestCase):
         self.db.session.commit()
 
     def test_order_article(self):
-        article_before = Article(
-            party=self.party,
-            description='Super thingy!',
-            quantity=5)
-        article_before.price = EuroAmount(19, 90)
+        article_before = create_article(party=self.party, quantity=5)
         self.db.session.add(article_before)
         self.db.session.commit()
 
