@@ -13,6 +13,10 @@ from collections import namedtuple
 
 
 class EuroAmount(namedtuple('EuroAmount', ['euro', 'cent'])):
+    """A monetary amount in Euro.
+
+    To create instances manually, use ``EuroAmount(39, 95)``.
+    """
 
     @classmethod
     def from_int(cls, value):
