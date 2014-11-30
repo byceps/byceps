@@ -24,7 +24,7 @@
       <tr>
         <td><strong>{{ article.description }}</strong></td>
         <td>{{ render_availability(article) }}</td>
-        <td class="nowrap" style="text-align: right;">{{ article.price.to_string() }} &euro;</td>
+        <td class="nowrap" style="text-align: right;">{{ article.price.to_string() }}</td>
         <td style="text-align: right;">{{ article.quantity }}</td>
         <td class="centered">{{ render_icon('enabled' if article.requires_separate_order else 'disabled') }}</td>
       </tr>

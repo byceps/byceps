@@ -70,7 +70,7 @@
     <tfoot>
       <tr>
         <th colspan="2">Gesamtbetrag</th>
-        <td style="text-align: right;"><strong>{{ order.calculate_total_price().to_string() }} &euro;</strong></td>
+        <td style="text-align: right;"><strong>{{ order.calculate_total_price().to_string() }}</strong></td>
       </tr>
     </tfoot>
     <tbody>
@@ -78,7 +78,7 @@
       <tr>
         <td style="text-align: right;">{{ item.quantity }}</td>
         <td><strong>{{ item.description }}</strong></td>
-        <td style="text-align: right;">{{ item.price.to_string() }} &euro;</td>
+        <td style="text-align: right;">{{ item.price.to_string() }}</td>
       </tr>
       {%- endfor %}
     </tbody>
