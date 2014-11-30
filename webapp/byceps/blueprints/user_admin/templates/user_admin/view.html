@@ -1,6 +1,7 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/datetime.html' import render_date, render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
+{% from 'macros/misc.html' import render_faint %}
 {% from 'macros/user.html' import render_user_avatar %}
 {% set current_page = 'user_admin' %}
 {% set title = 'Benutzer - %s'|format(user.screen_name) %}
@@ -86,8 +87,4 @@
   {%- else -%}
     {{ render_faint('nicht angegeben') }}
   {%- endif %}
-{%- endmacro %}
-
-{% macro render_faint(value) -%}
-  <span class="faint">{{ value }}</span>
 {%- endmacro %}

@@ -1,6 +1,7 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/datetime.html' import render_date %}
 {% from 'macros/icons.html' import render_icon %}
+{% from 'macros/misc.html' import render_faint %}
 {% from 'macros/user_admin.html' import render_user_admin_link %}
 {% set current_page = 'orga_admin.persons' %}
 {% set title = 'Orgas' %}
@@ -61,8 +62,4 @@
   {%- else -%}
     {{ render_faint('nicht angegeben') }}
   {%- endif %}
-{%- endmacro %}
-
-{% macro render_faint(value) -%}
-  <span class="faint">{{ value }}</span>
 {%- endmacro %}
