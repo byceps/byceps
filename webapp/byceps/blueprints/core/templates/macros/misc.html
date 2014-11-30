@@ -3,7 +3,7 @@
 {%- endmacro %}
 
 {% macro render_with_fallback(value) %}
-  {%- if value -%}
+  {%- if value|default('', true)|trim -%}
     {{ value }}
   {%- else -%}
     {{ render_faint('nicht angegeben') }}
