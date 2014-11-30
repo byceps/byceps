@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from byceps.database import generate_uuid
-
 from byceps.blueprints.user.models import User, UserDetail
+from byceps.database import generate_uuid
 
 
 def create_user(number, *, enabled=True):
