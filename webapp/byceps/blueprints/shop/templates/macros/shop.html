@@ -13,7 +13,7 @@
         <tr>
           <td style="text-align: right;">{{ quantity }}</td>
           <td><strong>{{ article.description }}</strong></td>
-          <td style="text-align: right;">{{ article.price.to_str() }} &euro;</td>
+          <td style="text-align: right;">{{ article.price.to_string() }} &euro;</td>
         </tr>
         {%- endfor %}
       </tbody>

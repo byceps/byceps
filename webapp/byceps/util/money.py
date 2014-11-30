@@ -48,5 +48,6 @@ class EuroAmount(namedtuple('EuroAmount', ['euro', 'cent'])):
     def to_int(self):
         return (self.euro * 100) + self.cent
 
-    def to_str(self):
+    def to_string(self):
+        """Return a textual representation for display purposes only."""
         return '{0.euro:d},{0.cent:02d}'.format(self)

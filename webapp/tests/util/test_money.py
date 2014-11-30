@@ -134,7 +134,7 @@ class EuroAmountTestCase(TestCase):
         (EuroAmount( 12, 34),  '12,34'),
         (EuroAmount(123, 45), '123,45'),
     )
-    def test_to_str(self, euro_amount, expected):
-        actual = euro_amount.to_str()
+    def test_to_string(self, euro_amount, expected):
+        actual = euro_amount.to_string()
 
         self.assertEquals(actual, expected)
