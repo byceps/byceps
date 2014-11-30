@@ -11,19 +11,19 @@ class EuroAmountTestCase(TestCase):
 
     @params(
         (
-            EuroAmount(  0,  0),
-            EuroAmount(  0,  0),
-            EuroAmount(  0,  0),
+            EuroAmount( 0,  0),
+            EuroAmount( 0,  0),
+            EuroAmount( 0,  0),
         ),
         (
-            EuroAmount(  0, 99),
-            EuroAmount(  0,  2),
-            EuroAmount(  1,  1),
+            EuroAmount( 0, 99),
+            EuroAmount( 0,  2),
+            EuroAmount( 1,  1),
         ),
         (
-            EuroAmount( 24, 90),
-            EuroAmount( 17, 10),
-            EuroAmount( 42,  0),
+            EuroAmount(24, 90),
+            EuroAmount(17, 10),
+            EuroAmount(42,  0),
         ),
     )
     def test_addition(self, a, b, expected):
@@ -31,19 +31,19 @@ class EuroAmountTestCase(TestCase):
 
     @params(
         (
-            EuroAmount(  0,  0),
-            EuroAmount(  0,  0),
-            EuroAmount(  0,  0),
+            EuroAmount( 0,  0),
+            EuroAmount( 0,  0),
+            EuroAmount( 0,  0),
         ),
         (
-            EuroAmount(  0, 99),
-            EuroAmount(  0,  2),
-            EuroAmount(  1,  1),
+            EuroAmount( 0, 99),
+            EuroAmount( 0,  2),
+            EuroAmount( 1,  1),
         ),
         (
-            EuroAmount( 24, 90),
-            EuroAmount( 17, 10),
-            EuroAmount( 42,  0),
+            EuroAmount(24, 90),
+            EuroAmount(17, 10),
+            EuroAmount(42,  0),
         ),
     )
     def test_sum(self, a, b, expected):
