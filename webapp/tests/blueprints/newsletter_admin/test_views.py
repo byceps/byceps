@@ -3,7 +3,6 @@
 import json
 
 from byceps.blueprints.authorization.models import Permission, Role
-from byceps.blueprints.brand.models import Brand
 from byceps.blueprints.newsletter_admin.authorization import NewsletterPermission
 from byceps.blueprints.newsletter.models import Subscription, SubscriptionState
 from byceps.blueprints.user.models import User
