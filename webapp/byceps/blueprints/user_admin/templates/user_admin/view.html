@@ -45,7 +45,7 @@
   <table class="index">
     <tr>
       <th>Voller Name</th>
-      <td>{{ render_with_fallback(user.detail.full_name|default('', true)|trim) }}</td>
+      <td>{{ render_with_fallback(user.detail.full_name) }}</td>
     </tr>
     <tr>
       <th>Geburtsdatum</th>
