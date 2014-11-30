@@ -27,6 +27,8 @@ VALID_SCREEN_NAME_CHARS = frozenset(chain(
 
 class UserCreateForm(LocalizedForm):
     screen_name = StringField('Benutzername', [DataRequired(), Length(min=4)])
+    first_names = StringField('Vorname(n)')
+    last_name = StringField('Nachname')
     email_address = StringField('E-Mail-Adresse', [DataRequired(), Length(min=6)])
     password = PasswordField('Passwort', [DataRequired(), Length(min=8)])
     consent_to_terms = BooleanField('AGB', [DataRequired()])

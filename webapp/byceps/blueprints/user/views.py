@@ -72,7 +72,9 @@ def create():
     if not form.validate():
         return create_form(form)
 
-    screen_name = form.screen_name.data
+    screen_name = form.screen_name.data.strip()
+    first_names = form.first_names.data.strip()
+    last_name = form.last_name.data.strip()
     email_address = form.email_address.data.lower()
     password = form.password.data
     consent_to_terms = form.consent_to_terms.data
@@ -89,6 +91,8 @@ def create():
         return create_form(form)
 
     user = User.create(screen_name, email_address, password)
+    user.detail.first_names = first_names
+    user.detail.last_name = last_name
     db.session.add(user)
 
     verification_token = create_verification_token_for_email_address_confirmation(user)
