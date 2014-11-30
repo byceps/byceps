@@ -10,6 +10,47 @@ from byceps.util.money import EuroAmount
 class EuroAmountTestCase(TestCase):
 
     @params(
+        (
+            EuroAmount(  0,  0),
+            EuroAmount(  0,  0),
+            EuroAmount(  0,  0),
+        ),
+        (
+            EuroAmount(  0, 99),
+            EuroAmount(  0,  2),
+            EuroAmount(  1,  1),
+        ),
+        (
+            EuroAmount( 24, 90),
+            EuroAmount( 17, 10),
+            EuroAmount( 42,  0),
+        ),
+    )
+    def test_addition(self, a, b, expected):
+        self.assertEquals(a + b, expected)
+
+    @params(
+        (
+            EuroAmount(  0,  0),
+            EuroAmount(  0,  0),
+            EuroAmount(  0,  0),
+        ),
+        (
+            EuroAmount(  0, 99),
+            EuroAmount(  0,  2),
+            EuroAmount(  1,  1),
+        ),
+        (
+            EuroAmount( 24, 90),
+            EuroAmount( 17, 10),
+            EuroAmount( 42,  0),
+        ),
+    )
+    def test_sum(self, a, b, expected):
+        # Using the `sum` function requires `__radd__` to be implemented.
+        self.assertEquals(sum([a, b]), expected)
+
+    @params(
         (    0, EuroAmount(  0,  0)),
         (    1, EuroAmount(  0,  1)),
         (    5, EuroAmount(  0,  5)),

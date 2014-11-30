@@ -18,6 +18,18 @@ class EuroAmount(namedtuple('EuroAmount', ['euro', 'cent'])):
     To create instances manually, use ``EuroAmount(39, 95)``.
     """
 
+    def __add__(self, other):
+        # Allow addition with integers. This is required for the `sum`
+        # function to be applicable, which begings by adding `0` and
+        # the first value).
+        if isinstance(other, int):
+            other = self.__class__.from_int(other)
+
+        return self.__class__.from_int(self.to_int() + other.to_int())
+
+    def __radd__(self, other):
+        return self.__add__(other)
+
     @classmethod
     def from_int(cls, value):
         if value < 0:
