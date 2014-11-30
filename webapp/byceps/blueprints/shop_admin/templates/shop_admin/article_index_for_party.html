@@ -1,6 +1,7 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
+{% from 'macros/misc.html' import render_faint %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
 {% set current_page = 'shop_admin.articles' %}
 {% set title = 'Shop - Artikel auflisten' %}
@@ -13,10 +14,10 @@
     <thead>
       <tr>
         <th>Beschreibung</th>
-        <th>Zeitliche Verfügbarkeit</th>
+        <th>Zeitliche<br/>Verfügbarkeit</th>
         <th>Stückpreis</th>
-        <th>Anzahl</th>
-        <th>Muss einzeln bestellt werden</th>
+        <th>Anzahl<br/>verfügbar</th>
+        <th>Muss einzeln<br/>bestellt werden</th>
       </tr>
     </thead>
     <tbody>
@@ -47,6 +48,6 @@
   {%- elif not range.hasLowerBound() and range.hasUpperBound() -%}
     bis {{ render_datetime(range.upperEndpoint(), smart=False) }}
   {%- else -%}
-    unbegrenzt
+    {{ render_faint('unbegrenzt') }}
   {%- endif -%}
 {%- endmacro %}
