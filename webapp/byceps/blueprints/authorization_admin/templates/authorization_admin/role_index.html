@@ -1,4 +1,5 @@
 {% extends 'layout/base.html' %}
+{% from 'macros/misc.html' import render_faint %}
 {% from 'macros/user_admin.html' import render_user_admin_link %}
 {% set current_page = 'authorization_admin.roles' %}
 {% set title = 'Rollen' %}
@@ -22,16 +23,20 @@
         <td class="monospace">{{ role.id }}</td>
         <td>{{ role.title }}</td>
         <td>
+        {%- if role.permissions %}
           <ol>
           {%- for permission in role.permissions|sort(attribute='id') %}
             <li class="monospace">{{ permission.id }}</li>
           {%- endfor %}
           </ol>
+        {%- else %}
+          {{ render_faint('keine') }}
+        {%- endif %}
         </td>
         <td>
         {%- set user_limit = 10 %}
         {%- if not role.users %}
-          <span class="faint">(keine)</span>
+          {{ render_faint('keine') }}
         {%- elif role.users|length <= user_limit %}
           <ol>
           {%- for user in role.users|sort(attribute='screen_name') %}

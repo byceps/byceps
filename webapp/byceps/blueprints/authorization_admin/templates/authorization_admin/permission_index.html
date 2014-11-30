@@ -1,4 +1,5 @@
 {% extends 'layout/base.html' %}
+{% from 'macros/misc.html' import render_faint, render_with_fallback %}
 {% set current_page = 'authorization_admin.permissions' %}
 {% set title = 'Rechte' %}
 
@@ -18,13 +19,7 @@
       {%- for permission in permissions|sort(attribute='id') %}
       <tr>
         <td class="monospace">{{ permission.id }}</td>
-        <td>
-        {%- if permission.title is not none %}
-          {{ permission.title }}
-        {%- else %}
-          <span class="faint">(keine)</span>
-        {%- endif %}
-        </td>
+        <td>{{ render_with_fallback(permission.title) }}</td>
         <td>
         {%- if permission.roles %}
           <ol>
@@ -33,7 +28,7 @@
           {%- endfor %}
           </ol>
         {%- else %}
-          <span class="faint">(keine)</span>
+          {{ render_faint('keine') }}
         {%- endif %}
         </td>
       </tr>
