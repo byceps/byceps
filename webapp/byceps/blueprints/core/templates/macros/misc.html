@@ -1,3 +1,11 @@
 {% macro render_faint(value) -%}
   <span class="faint">{{ value }}</span>
 {%- endmacro %}
+
+{% macro render_with_fallback(value) %}
+  {%- if value -%}
+    {{ value }}
+  {%- else -%}
+    {{ render_faint('nicht angegeben') }}
+  {%- endif -%}
+{% endmacro %}
