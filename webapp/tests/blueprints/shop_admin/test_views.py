@@ -7,7 +7,7 @@ from byceps.blueprints.shop_admin.authorization import ShopPermission
 from byceps.blueprints.shop.models import Article, Order, PaymentState
 from byceps.blueprints.user.models import User
 
-from testfixtures.shop import create_article
+from testfixtures.shop import create_article, create_order
 from testfixtures.user import create_user
 
 from tests import AbstractAppTestCase
@@ -93,16 +93,7 @@ class ShopAdminTestCase(AbstractAppTestCase):
         return article
 
     def create_order(self, placed_by, quantified_articles):
-        order = Order(
-            party=self.party,
-            placed_by=placed_by,
-            first_names='Hiro',
-            last_name='Protagonist',
-            date_of_birth=date(1970, 1, 1),
-            zip_code='31337',
-            city='Atrocity',
-            street='L33t Street 101',
-        )
+        order = create_order(party=self.party, placed_by=placed_by)
         self.db.session.add(order)
 
         for article, quantity_to_order in quantified_articles:
