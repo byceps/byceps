@@ -30,6 +30,13 @@ class EuroAmount(namedtuple('EuroAmount', ['euro', 'cent'])):
     def __radd__(self, other):
         return self.__add__(other)
 
+    def __mul__(self, other):
+        if isinstance(other, self.__class__):
+            raise TypeError('Instances of this class must only be multiplied '
+                            'with integers, but not with each other.')
+
+        return self.__class__.from_int(self.to_int() * other)
+
     @classmethod
     def from_int(cls, value):
         if value < 0:

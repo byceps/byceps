@@ -51,6 +51,25 @@ class EuroAmountTestCase(TestCase):
         self.assertEquals(sum([a, b]), expected)
 
     @params(
+        (
+            EuroAmount( 0,  0),
+            3,
+            EuroAmount( 0,  0),
+        ),
+        (
+            EuroAmount( 0, 99),
+            3,
+            EuroAmount( 2, 97),
+        ),
+    )
+    def test_multiplication(self, a, b, expected):
+        self.assertEquals(a * b, expected)
+
+    def test_multiplication_with_another_euro_amount_is_denied(self):
+        with self.assertRaises(TypeError):
+            EuroAmount(12, 99) * EuroAmount(4, 55)
+
+    @params(
         (    0, EuroAmount(  0,  0)),
         (    1, EuroAmount(  0,  1)),
         (    5, EuroAmount(  0,  5)),
