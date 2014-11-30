@@ -353,6 +353,15 @@ td {
   vertical-align: top;
 }
 
+table.index {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+table.index th,
+table.index td {
+  line-height: 1.2em;
+  padding: 0.5rem 1rem 0.5rem 0;
+}
 table.index th {
   font-size: 0.8rem;
   font-weight: bold;
@@ -360,24 +369,12 @@ table.index th {
 table.index td {
   font-size: 0.9rem;
 }
-
-table.index {
-  border-collapse: collapse;
-  border-spacing: 0;
-  border-bottom: #cccccc solid 1px;
-}
-table.index tbody {
-  line-height: 1.2em;
-}
 table.index tbody th,
 table.index tbody td {
-  border-top: #cccccc solid 1px;
+  border-color: #cccccc;
+  border-style: solid;
+  border-width: 1px 0;
 }
-table.index th,
-table.index td {
-  padding: 0.5rem 1rem 0.5rem 0;
-}
-
 table.index .details {
   display: block;
   font-size: 0.75rem;
