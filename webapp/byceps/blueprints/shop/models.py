@@ -187,6 +187,9 @@ class Order(db.Model):
         """Return the articles associated with this order."""
         return {item.article for item in self.items}
 
+    def calculate_total_price(self):
+        return sum(item.price * item.quantity for item in self.items)
+
     def __repr__(self):
         return ReprBuilder(self) \
             .add_with_lookup('id') \
