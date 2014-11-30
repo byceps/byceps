@@ -3,10 +3,10 @@
 from unittest import TestCase
 
 from byceps.application import create_app
-from byceps.blueprints.party.models import Party
 from byceps.database import db
 
 from testfixtures.brand import create_brand
+from testfixtures.party import create_party
 
 
 class AbstractAppTestCase(TestCase):
@@ -28,7 +28,7 @@ class AbstractAppTestCase(TestCase):
         self.brand = create_brand()
         db.session.add(self.brand)
 
-        self.party = Party(id='acme-2014', brand=self.brand, title='ACME 2014')
+        self.party = create_party(brand=self.brand)
         db.session.add(self.party)
 
         db.session.commit()
