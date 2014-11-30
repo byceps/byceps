@@ -7,7 +7,6 @@ byceps.blueprints.shop.models
 :Copyright: 2006-2014 Jochen Kupperschmidt
 """
 
-from collections import namedtuple
 from datetime import datetime
 from enum import Enum
 
@@ -18,26 +17,10 @@ from sqlalchemy.ext.hybrid import hybrid_property
 
 from ...database import BaseQuery, db, generate_uuid
 from ...util.instances import ReprBuilder
+from ...util.money import EuroAmount
 
 from ..party.models import Party
 from ..user.models import User
-
-
-class EuroAmount(namedtuple('EuroAmount', ['euro', 'cent'])):
-
-    @classmethod
-    def from_int(cls, value):
-        if value < 0:
-            raise ValueError
-
-        euro, cent = divmod(value, 100)
-        return cls(euro, cent)
-
-    def to_int(self):
-        return (self.euro * 100) + self.cent
-
-    def to_str(self):
-        return '{0.euro:d},{0.cent:02d}'.format(self)
 
 
 class ArticleQuery(BaseQuery):

@@ -4,9 +4,9 @@ from datetime import date
 
 from byceps.blueprints.authorization.models import Permission, Role
 from byceps.blueprints.shop_admin.authorization import ShopPermission
-from byceps.blueprints.shop.models import Article, EuroAmount, Order, \
-    PaymentState
+from byceps.blueprints.shop.models import Article, Order, PaymentState
 from byceps.blueprints.user.models import User
+from byceps.util.money import EuroAmount
 
 from testfixtures.user import create_user
 

@@ -2,10 +2,10 @@
 
 from datetime import date
 
-from byceps.blueprints.shop.models import Article, EuroAmount, Order, \
-    PaymentState
+from byceps.blueprints.shop.models import Article, Order, PaymentState
 from byceps.blueprints.snippet.models import Snippet
 from byceps.blueprints.user.models import User
+from byceps.util.money import EuroAmount
 
 from testfixtures.user import create_user
 

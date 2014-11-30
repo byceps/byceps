@@ -4,7 +4,7 @@ from unittest import TestCase
 
 from nose2.tools import params
 
-from byceps.blueprints.shop.models import EuroAmount
+from byceps.util.money import EuroAmount
 
 
 class EuroAmountTestCase(TestCase):
