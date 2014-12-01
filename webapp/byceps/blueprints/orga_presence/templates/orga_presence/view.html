@@ -41,14 +41,14 @@
         {%- for task in tasks|sort(attribute='starts_at') %}
         <tr class="task">
           <td>{{ task.title }}</td>
-          {{ render_range_columns(party) }}
+          {{ render_range_columns(task) }}
           {{ render_bar_columns(task) }}
         </tr>
         {%- endfor %}
         {%- for presence in presences|sort(attribute='orga.screen_name') %}
         <tr class="presence">
           <td>{{ render_user_admin_link(presence.orga) }}</td>
-          {{ render_range_columns(party) }}
+          {{ render_range_columns(presence) }}
           {{ render_bar_columns(presence) }}
         </tr>
         {%- endfor %}
