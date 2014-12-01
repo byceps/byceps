@@ -118,6 +118,9 @@ class OrderQuery(BaseQuery):
     def for_party(self, party):
         return self.filter_by(party_id=party.id)
 
+    def placed_by(self, user):
+        return self.filter_by(placed_by=user)
+
 
 class Order(db.Model):
     """An order for articles, placed by a user."""

@@ -7,7 +7,7 @@ byceps.blueprints.shop.service
 :Copyright: 2006-2014 Jochen Kupperschmidt
 """
 
-from .models import Article
+from .models import Article, Order
 
 
 def get_orderable_articles():
@@ -18,4 +18,12 @@ def get_orderable_articles():
         .for_current_party() \
         .filter_by(requires_separate_order=False) \
         .order_by(Article.description) \
+        .all()
+
+
+def get_orders_placed_by_user(user):
+    """Return orders placed by the user."""
+    return Order.query \
+        .placed_by(user) \
+        .order_by(Order.created_at.desc()) \
         .all()
