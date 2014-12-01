@@ -103,7 +103,7 @@ def order_single_form(article_id, errorneous_form=None):
 
     orders_placed_by_user = Order.query.for_current_party().filter_by(placed_by=user).count()
     if orders_placed_by_user > 0:
-        flash_error('Du kannst keine weiteren Bestellung aufgeben.')
+        flash_error('Du kannst keine weitere Bestellung aufgeben.')
         return {
             'form': form,
             'article': article,
@@ -132,7 +132,7 @@ def order_single(article_id):
 
     orders_placed_by_user = Order.query.for_current_party().filter_by(placed_by=user).count()
     if orders_placed_by_user > 0:
-        flash_error('Du kannst keine weiteren Bestellung aufgeben.')
+        flash_error('Du kannst keine weitere Bestellung aufgeben.')
         return order_single_form()
 
     if article.quantity < 1:
