@@ -18,7 +18,7 @@ from ..authorization.decorators import login_required
 
 from .forms import assemble_articles_order_form, OrderForm
 from .models import Article, Order, PaymentState
-from .service import get_orderable_articles
+from .service import get_orderable_articles, has_user_placed_orders
 from .signals import order_placed
 
 
@@ -101,8 +101,7 @@ def order_single_form(article_id, errorneous_form=None):
     user = g.current_user
     form = errorneous_form if errorneous_form else OrderForm(obj=user.detail)
 
-    orders_placed_by_user = Order.query.for_current_party().filter_by(placed_by=user).count()
-    if orders_placed_by_user > 0:
+    if has_user_placed_orders(user):
         flash_error('Du kannst keine weitere Bestellung aufgeben.')
         return {
             'form': form,
@@ -130,8 +129,7 @@ def order_single(article_id):
 
     user = g.current_user
 
-    orders_placed_by_user = Order.query.for_current_party().filter_by(placed_by=user).count()
-    if orders_placed_by_user > 0:
+    if has_user_placed_orders(user):
         flash_error('Du kannst keine weitere Bestellung aufgeben.')
         return order_single_form()
 

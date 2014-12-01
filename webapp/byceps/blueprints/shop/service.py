@@ -27,3 +27,12 @@ def get_orders_placed_by_user(user):
         .placed_by(user) \
         .order_by(Order.created_at.desc()) \
         .all()
+
+
+def has_user_placed_orders(user):
+    """Return `True` if the user has placed orders for the current party."""
+    orders_total = Order.query \
+        .for_current_party() \
+        .filter_by(placed_by=user) \
+        .count()
+    return orders_total > 0
