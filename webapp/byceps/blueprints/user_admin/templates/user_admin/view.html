@@ -81,6 +81,7 @@
   </table>
 
   <h2>Bestellungen</h2>
+  {%- if orders %}
   <table class="index">
     <thead>
       <tr>
@@ -100,5 +101,8 @@
       <tr>
     </tbody>
   </table>
+  {%- else %}
+  {{ render_faint('keine') }}
+  {%- endif %}
 
 {%- endblock body %}
