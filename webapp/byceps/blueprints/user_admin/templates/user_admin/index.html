@@ -8,6 +8,21 @@
 {% set current_page = 'user_admin' %}
 {% set title = 'Benutzer' %}
 
+{% block head %}
+    <style>
+      form.search {
+        float: left;
+      }
+      form.search input {
+        opacity: 0.5;
+      }
+      form.search input:focus,
+      form.search input:hover {
+        opacity: 1;
+      }
+    </style>
+{%- endblock head %}
+
 {% block body %}
 
   <h1>{{ title }}</h1>
@@ -17,6 +32,11 @@
     {{ render_bigstats_item(total_disabled, 'nicht aktiviert', icon_name='disabled', color='#cc0000') }}
     {{ render_bigstats_item(total_overall, '&sum; gesamt'|safe) }}
   </div>
+
+  <form action="{{ url_for('.index') }}" class="search">
+    {{ render_icon('search') }} <input type="search" name="search_term" placeholder="Suchbegriff" {%- if search_term %} value="{{ search_term }}"{% endif %} autofocus>
+    <a href="{{ url_for('.index') }}" class="action" title="Einschränkung auf Suchbegriff aufheben">{{ render_icon('remove') }}</a>
+  </form>
 
   <p style="font-size: 0.8rem; margin: 2.5rem 0 2rem 0; text-align: right;">{{ render_icon('filter') }} Einschränkung:
     {%- if only == 'enabled' %}

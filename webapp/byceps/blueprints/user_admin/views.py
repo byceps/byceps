@@ -32,17 +32,27 @@ permission_registry.register_enum(UserPermission)
 @templated
 def index(page):
     """List users."""
-    per_page = request.args.get('per_page', type=int, default=20)
     query = User.query \
         .order_by(User.created_at.desc())
 
-    only = request.args.get('only')
-    if only == 'enabled':
-        query = query.filter_by(enabled=True)
-    elif only == 'disabled':
-        query = query.filter_by(enabled=False)
-    else:
+    search_term = request.args.get('search_term', default='').strip()
+    if search_term:
+        query = query \
+            .filter(User.screen_name.ilike('%{}%'.format(search_term)))
+
         only = None
+
+        per_page = 100
+    else:
+        only = request.args.get('only')
+        if only == 'enabled':
+            query = query.filter_by(enabled=True)
+        elif only == 'disabled':
+            query = query.filter_by(enabled=False)
+        else:
+            only = None
+
+        per_page = request.args.get('per_page', type=int, default=20)
 
     users = query.paginate(page, per_page)
 
@@ -56,6 +66,7 @@ def index(page):
         'total_disabled': total_disabled,
         'total_overall': total_overall,
         'only': only,
+        'search_term': search_term,
     }
 
 
