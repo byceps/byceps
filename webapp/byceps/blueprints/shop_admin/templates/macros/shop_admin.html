@@ -1,0 +1,10 @@
+{% macro render_order_payment_state(payment_state) %}
+  {%- set state_name = payment_state.name %}
+  {%- if state_name == 'paid' -%}
+    <span class="tag order-paid">bezahlt</span>
+  {%- elif state_name == 'canceled' -%}
+    <span class="tag order-canceled">storniert</span>
+  {%- else -%}
+    <span class="tag order-open">offen</span>
+  {%- endif -%}
+{% endmacro %}

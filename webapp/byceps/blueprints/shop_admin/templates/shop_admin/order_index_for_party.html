@@ -2,29 +2,63 @@
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
+{% from 'macros/shop_admin.html' import render_order_payment_state %}
 {% from 'macros/user_admin.html' import render_user_admin_link %}
 {% set current_page = 'shop_admin.orders' %}
 {% set title = 'Shop - Bestellungen auflisten' %}
+
+{% block head %}
+    <style>
+      .order-payment-status-filter {
+        font-size: 0.8rem;
+        margin: 2.5rem 0 2rem 0;
+        text-align: right;
+      }
+      .order-payment-status-filter ol {
+        display: inline-block;
+      }
+      .order-payment-status-filter li {
+        display: inline-block;
+      }
+      .order-payment-status-filter li:after {
+        content: ' |';
+        opacity: 0.5;
+      }
+      .order-payment-status-filter li:last-child:after {
+        content: none;
+        opacity: 1;
+      }
+      .order-payment-status-filter li a .tag {
+        opacity: 0.5;
+      }
+      .order-payment-status-filter li :not(a),
+      .order-payment-status-filter a:hover {
+        opacity: 1;
+      }
+    </style>
+{%- endblock head %}
 
 {% block body %}
 
   <h1>{{ title }}</h1>
 
-  <p style="font-size: 0.8rem; margin: 2.5rem 0 2rem 0; text-align: right;">{{ render_icon('filter') }} Einschränkung:
+  <div class="order-payment-status-filter">
+    <span>{{ render_icon('filter') }} Einschränkung:</span>
+    <ol>
     {%- for payment_state in PaymentState %}
       {%- if only == payment_state %}
-    <strong>{{ payment_state.name }}</strong>
+      <li>{{ render_order_payment_state(payment_state) }}</li>
       {%- else %}
-    <a href="{{ url_for('.order_index_for_party', party_id=party.id, only=payment_state.name) }}">{{ payment_state.name }}</a>
+      <li><a href="{{ url_for('.order_index_for_party', party_id=party.id, only=payment_state.name) }}" class="faint">{{ render_order_payment_state(payment_state) }}</a></li>
       {%- endif %}
-    /
     {%- endfor %}
     {%- if only is none %}
-    <strong>alle</strong>
+      <li><strong>alle</strong></li>
     {%- else %}
-    <a href="{{ url_for('.order_index_for_party', party_id=party.id) }}">alle</a>
+      <li><a href="{{ url_for('.order_index_for_party', party_id=party.id) }}">alle</a></li>
     {%- endif %}
-  </p>
+    </ol>
+  </div>
 
   <table class="index wide">
     <thead>
@@ -41,7 +75,7 @@
         <td>{{ render_user_admin_link(order.placed_by) }}</td>
         <td>{{ order.first_names }} {{ order.last_name }}</td>
         <td>{{ render_datetime(order.created_at) }}</td>
-        <td>{{ order.payment_state.name }}</td>
+        <td>{{ render_order_payment_state(order.payment_state) }}</td>
         <td><a href="{{ url_for('.order_view', id=order.id) }}" class="action">{{ render_icon('view') }} ansehen</a></td>
       </tr>
       {%- endfor %}

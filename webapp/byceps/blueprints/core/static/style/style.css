@@ -568,6 +568,9 @@ main img {
   cursor: help;
 }
 
+
+/* tags */
+
 .tag {
   background-color: orange;
   border-radius: 3px;
@@ -580,6 +583,19 @@ main img {
   padding: 0 0.4em;
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.15);
 }
+
+.tag.order-open {
+  background-color: #ee3322;
+}
+.tag.order-paid {
+  background-color: #11aa22;
+}
+.tag.order-canceled {
+  background-color: #999999;
+}
+
+
+/* avatars */
 
 .avatar {
   display: inline-block;
