@@ -8,7 +8,7 @@
 
   <h1>{{ title }}</h1>
 
-  <form action="{{ url_for('.order_single', article=(article.id if article else '')) }}" method="post">
+  <form action="{{ url_for('.order_single', article_id=(article.id if article else '')) }}" method="post">
 
     <h2>Deine Daten</h2>
     {%- call form_fieldset() %}

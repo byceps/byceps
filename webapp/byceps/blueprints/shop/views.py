@@ -91,11 +91,13 @@ def order():
     return redirect_to('snippet.order_placed')
 
 
-@blueprint.route('/order_single')
+@blueprint.route('/order_single/<article_id>')
 @login_required
 @templated
-def order_single_form(errorneous_form=None):
+def order_single_form(article_id, errorneous_form=None):
     """Show a form to order a single article."""
+    article = Article.query.get_or_404(article_id)
+
     user = g.current_user
     form = errorneous_form if errorneous_form else OrderForm(obj=user.detail)
 
@@ -104,30 +106,14 @@ def order_single_form(errorneous_form=None):
         flash_error('Du kannst keine weiteren Bestellung aufgeben.')
         return {
             'form': form,
-            'article': None,
-        }
-
-    article_id = request.args.get('article', type=str)
-    if not article_id:
-        flash_error('Es wurde kein Artikel angegeben.')
-        return {
-            'form': form,
-            'article': None,
-        }
-
-    article = Article.query.get(article_id)
-    if article is None:
-        flash_error('Der Artikel wurde nicht gefunden.')
-        return {
-            'form': form,
-            'article': None,
+            'article': article,
         }
 
     if article.quantity < 1:
         flash_error('Der Artikel ist nicht mehr verfügbar.')
         return {
             'form': form,
-            'article': None,
+            'article': article,
         }
 
     return {
@@ -136,10 +122,12 @@ def order_single_form(errorneous_form=None):
     }
 
 
-@blueprint.route('/order_single', methods=['POST'])
+@blueprint.route('/order_single/<article_id>', methods=['POST'])
 @login_required
-def order_single():
+def order_single(article_id):
     """Order a single article."""
+    article = Article.query.get_or_404(article_id)
+
     user = g.current_user
 
     orders_placed_by_user = Order.query.for_current_party().filter_by(placed_by=user).count()
@@ -147,23 +135,13 @@ def order_single():
         flash_error('Du kannst keine weiteren Bestellung aufgeben.')
         return order_single_form()
 
-    article_id = request.args.get('article', type=str)
-    if not article_id:
-        flash_error('Es wurde kein Artikel angegeben.')
-        return order_single_form()
-
-    article = Article.query.get(article_id)
-    if article is None:
-        flash_error('Der Artikel wurde nicht gefunden.')
-        return order_single_form()
-
     if article.quantity < 1:
         flash_error('Der Artikel ist nicht mehr verfügbar.')
-        return order_single_form()
+        return order_single_form(article.id)
 
     form = OrderForm(request.form)
     if not form.validate():
-        return order_single_form(form)
+        return order_single_form(article.id, form)
 
     order = Order(
         party=g.party,
