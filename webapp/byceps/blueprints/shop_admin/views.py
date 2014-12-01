@@ -59,6 +59,17 @@ def article_index_for_party(party_id, page):
     }
 
 
+@blueprint.route('/articles/<id>')
+@permission_required(ShopPermission.list_articles)
+@templated
+def article_view(id):
+    """Show a single article."""
+    article = Article.query.get_or_404(id)
+    return {
+        'article': article,
+    }
+
+
 @blueprint.route('/orders')
 @permission_required(ShopPermission.list_orders)
 @templated
@@ -96,6 +107,7 @@ def order_index_for_party(party_id, page):
         'only': only,
         'orders': orders,
     }
+
 
 @blueprint.route('/orders/<id>')
 @permission_required(ShopPermission.list_orders)

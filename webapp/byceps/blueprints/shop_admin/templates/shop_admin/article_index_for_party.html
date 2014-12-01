@@ -22,7 +22,7 @@
     <tbody>
       {%- for article in articles.items %}
       <tr>
-        <td><strong>{{ article.description }}</strong></td>
+        <td><a href="{{ url_for('.article_view', id=article.id) }}">{{ article.description }}</a></td>
         <td>{{ render_article_temporal_availability(article) }}</td>
         <td class="nowrap" style="text-align: right;">{{ article.price.to_string() }}</td>
         <td style="text-align: right;">{{ article.quantity }}</td>

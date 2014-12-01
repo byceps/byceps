@@ -1,0 +1,42 @@
+{% extends 'layout/base.html' %}
+{% from 'macros/misc.html' import render_with_fallback %}
+{% from 'macros/shop_admin.html' import render_article_temporal_availability %}
+{% set current_page = 'shop_admin.articles' %}
+{% set title = 'Artikel ansehen' %}
+
+{% block body %}
+
+  <h1>{{ title }}</h1>
+
+  <table class="index">
+    <tr>
+      <th>Party</th>
+      <td>{{ article.party.title }}</td>
+    </tr>
+    <tr>
+      <th>Beschreibung</th>
+      <td>{{ article.description }}</td>
+    </tr>
+    <tr>
+      <th>Stückpreis</th>
+      <td>{{ article.price.to_string() }}</td>
+    </tr>
+    <tr>
+      <th>Zeitliche<br/>Verfügbarkeit</th>
+      <td>{{ render_article_temporal_availability(article) }}</td>
+    </tr>
+    <tr>
+      <th>Anzahl verfügbar</th>
+      <td>{{ article.quantity }}</td>
+    </tr>
+    <tr>
+      <th>Maximale Anzahl<br/>pro Bestellung</th>
+      <td>{{ render_with_fallback(article.max_quantity_per_order) }}</td>
+    </tr>
+    <tr>
+      <th>Muss separat<br/>bestellt werden</th>
+      <td>{{ 'ja' if article.requires_separate_order else 'nein' }}</td>
+    </tr>
+  </table>
+
+{%- endblock body %}
