@@ -9,6 +9,7 @@ byceps.blueprints.orga_admin.views
 
 from operator import attrgetter
 
+from ...util.export import serialize_to_csv
 from ...util.framework import create_blueprint
 from ...util.templating import templated
 from ...util.views import textified
@@ -20,8 +21,7 @@ from ..party.models import Party
 
 from .authorization import OrgaBirthdayPermission, OrgaDetailPermission, \
     OrgaTeamPermission
-from .service import collect_orgas_with_next_birthdays, get_organizers, \
-    serialize_to_csv
+from .service import collect_orgas_with_next_birthdays, get_organizers
 
 
 blueprint = create_blueprint('orga_admin', __name__)
