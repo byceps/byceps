@@ -83,6 +83,7 @@ def article_view_ordered(id):
 
     order_items = OrderItem.query \
         .filter_by(article=article) \
+        .filter(Order._payment_state == PaymentState.paid) \
         .all()
 
     def transform(order_item):
