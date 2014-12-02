@@ -33,7 +33,7 @@ class ShopTestCase(AbstractAppTestCase):
 
         self.assertEqual(article_before.quantity, 5)
 
-        url = '/shop/order_single?article_id={}'.format(str(article_before.id))
+        url = '/shop/order_single/{}'.format(str(article_before.id))
         with self.client.session_transaction() as session:
             session['user_id'] = str(self.current_user.id)
         form_data = {
