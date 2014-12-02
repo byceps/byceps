@@ -25,7 +25,7 @@
       </tr>
     </thead>
     <tbody>
-    {%- for user, ticket, quantity in users_tickets_quantities|sort(attribute='0.detail.full_name') %}
+    {%- for user, ticket, quantity in users_tickets_quantities|sort(attribute='0.screen_name') %}
       <tr>
         {%- if ticket %}
         <td>{{ ticket.occupied_seat.area.title }}</td>
