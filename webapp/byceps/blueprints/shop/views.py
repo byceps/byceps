@@ -105,14 +105,14 @@ def order_single_form(article_id, errorneous_form=None):
         flash_error('Du kannst keine weitere Bestellung aufgeben.')
         return {
             'form': form,
-            'article': article,
+            'article': None,
         }
 
     if article.quantity < 1 or not article.is_available:
         flash_error('Der Artikel ist nicht verfügbar.')
         return {
             'form': form,
-            'article': article,
+            'article': None,
         }
 
     return {

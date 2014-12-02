@@ -8,6 +8,7 @@
 
   <h1>{{ title }}</h1>
 
+{%- if article %}
   <form action="{{ url_for('.order_single', article_id=(article.id if article else '')) }}" method="post">
 
     <h2>Deine Daten</h2>
@@ -20,11 +21,10 @@
       {{ form_field(form.city, maxlength=40) }}
     {%- endcall %}
 
-{%- if article %}
 {{ render_selected_articles([(article, 1)]) }}
-{%- endif %}
 
     {{ form_buttons('Kostenpflichtig bestellen') }}
   </form>
+{%- endif %}
 
 {%- endblock body %}
