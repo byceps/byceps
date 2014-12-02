@@ -1,0 +1,44 @@
+{% extends 'layout/base.html' %}
+{% from 'macros/datetime.html' import render_datetime %}
+{% from 'macros/misc.html' import render_faint, render_with_fallback %}
+{% from 'macros/user_admin.html' import render_user_admin_link %}
+{% set current_page = 'shop_admin.article_ordered' %}
+{% set title = article.description %}
+
+{% block body %}
+
+  <h1>{{ title }}</h1>
+
+  <p style="margin: 2rem 0;">
+    <small>
+      <span><strong>Stand:</strong> {{ render_datetime(now, smart=False) }}</span>
+    </small>
+  </p>
+
+  <table class="index wide">
+    <thead>
+      <tr>
+        <th>Sitzplatz</th>
+        <th>Benutzername</th>
+        <th>Vor- und Nachname</th>
+        <th>Anzahl</th>
+      </tr>
+    </thead>
+    <tbody>
+    {%- for user, ticket, quantity in users_tickets_quantities|sort(attribute='0.detail.full_name') %}
+      <tr>
+        {%- if ticket %}
+        {%- set area = ticket.occupied_seat.area %}
+        <td><a href="{{ url_for('seating.view_area', slug=area.slug) }}">{{ area.title }}</a></td>
+        {%- else %}
+        <td>{{ render_faint('keiner') }}</td>
+        {%- endif %}
+        <td>{{ render_user_admin_link(user) }}</td>
+        <td>{{ render_with_fallback(user.detail.full_name) }}</td>
+        <td class="centered">{{ quantity }}</td>
+      </tr>
+    {%- endfor %}
+    </tbody>
+  </table>
+
+{%- endblock body %}

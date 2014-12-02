@@ -7,6 +7,7 @@ byceps.blueprints.shop_admin.views
 :Copyright: 2006-2014 Jochen Kupperschmidt
 """
 
+from datetime import datetime
 from flask import request
 
 from ...database import db
@@ -16,8 +17,9 @@ from ...util.views import redirect_to
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
-from ..shop.models import Article, Order, PaymentState
+from ..shop.models import Article, Order, OrderItem, PaymentState
 from ..shop.signals import order_canceled, order_paid
+from ..ticket.service import find_ticket_for_user
 from ..party.models import Party
 
 from .authorization import ShopPermission
@@ -67,6 +69,34 @@ def article_view(id):
     article = Article.query.get_or_404(id)
     return {
         'article': article,
+    }
+
+
+@blueprint.route('/articles/<id>/ordered')
+@permission_required(ShopPermission.list_articles)
+@templated
+def article_view_ordered(id):
+    """List the people that have ordered this article, and the
+    corresponding quantities.
+    """
+    article = Article.query.get_or_404(id)
+
+    order_items = OrderItem.query \
+        .filter_by(article=article) \
+        .all()
+
+    def transform(order_item):
+        user = order_item.order.placed_by
+        ticket = find_ticket_for_user(user, article.party)
+        quantity = order_item.quantity
+        return user, ticket, quantity
+
+    users_tickets_quantities = map(transform, order_items)
+
+    return {
+        'article': article,
+        'users_tickets_quantities': users_tickets_quantities,
+        'now': datetime.now(),
     }
 
 
