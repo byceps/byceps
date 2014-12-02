@@ -8,7 +8,6 @@ byceps.blueprints.shop_admin.views
 """
 
 from datetime import datetime
-from operator import attrgetter
 
 from flask import request
 
@@ -88,7 +87,7 @@ def article_view_ordered(id):
         .filter(Order._payment_state == PaymentState.paid.name) \
         .all()
 
-    quantity_total = sum(attrgetter('quantity'), order_items)
+    quantity_total = sum(item.quantity for item in order_items)
 
     def transform(order_item):
         user = order_item.order.placed_by
