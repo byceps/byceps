@@ -84,7 +84,7 @@ def article_view_ordered(id):
 
     order_items = OrderItem.query \
         .filter_by(article=article) \
-        .filter(Order._payment_state == PaymentState.paid.name) \
+        .join(Order).filter(Order._payment_state == PaymentState.paid.name) \
         .all()
 
     quantity_total = sum(item.quantity for item in order_items)
