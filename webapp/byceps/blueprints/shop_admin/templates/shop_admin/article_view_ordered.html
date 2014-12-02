@@ -28,8 +28,7 @@
     {%- for user, ticket, quantity in users_tickets_quantities|sort(attribute='0.detail.full_name') %}
       <tr>
         {%- if ticket %}
-        {%- set area = ticket.occupied_seat.area %}
-        <td><a href="{{ url_for('seating.view_area', slug=area.slug) }}">{{ area.title }}</a></td>
+        <td>{{ ticket.occupied_seat.area.title }}</td>
         {%- else %}
         <td>{{ render_faint('keiner') }}</td>
         {%- endif %}
