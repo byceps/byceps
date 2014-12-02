@@ -17,6 +17,7 @@ def get_orderable_articles():
     return Article.query \
         .for_current_party() \
         .filter_by(requires_separate_order=False) \
+        .currently_available() \
         .order_by(Article.description) \
         .all()
 

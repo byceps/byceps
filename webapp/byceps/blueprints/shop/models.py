@@ -31,6 +31,22 @@ class ArticleQuery(BaseQuery):
     def for_party(self, party):
         return self.filter_by(party_id=party.id)
 
+    def currently_available(self):
+        """Select only articles that are available in between the
+        temporal boundaries for this article, if specified.
+        """
+        now = datetime.now()
+
+        return self \
+            .filter(db.or_(
+                Article.available_from == None,
+                now >= Article.available_from
+            )) \
+            .filter(db.or_(
+                Article.available_until == None,
+                now < Article.available_until
+            ))
+
 
 class Article(db.Model):
     """An article that can be bought."""
