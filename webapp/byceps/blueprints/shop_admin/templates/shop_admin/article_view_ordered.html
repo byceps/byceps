@@ -1,6 +1,7 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/misc.html' import render_faint, render_with_fallback %}
+{% from 'macros/shop_admin.html' import render_payment_state %}
 {% from 'macros/user_admin.html' import render_user_admin_link %}
 {% set current_page = 'shop_admin.article_ordered' %}
 {% set title = article.description %}
@@ -23,7 +24,7 @@
         <th>Benutzername</th>
         <th>Vor- und Nachname</th>
         <th>Anzahl</th>
-        <th>Bestelldatum</th>
+        <th colspan="2">Bestellung</th>
       </tr>
     </thead>
     <tbody>
@@ -38,6 +39,7 @@
         <td>{{ render_with_fallback(user.detail.full_name) }}</td>
         <td class="centered">{{ quantity }}</td>
         <td>{{ render_datetime(order.created_at, smart=False) }}</td>
+        <td>{{ render_payment_state(order.payment_state) }}</td>
       </tr>
     {%- endfor %}
     </tbody>
