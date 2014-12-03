@@ -21,25 +21,28 @@
     <thead>
       <tr>
         <th>Sitzplatz</th>
-        <th>Benutzername</th>
-        <th>Vor- und Nachname</th>
+        <th>Benutzername<br/>Vor- und Nachname</th>
         <th>Anzahl</th>
-        <th colspan="2">Bestellung</th>
+        <th>Bestellung</th>
       </tr>
     </thead>
     <tbody>
     {%- for user, ticket, quantity, order in users_tickets_quantities_orders|sort(attribute='0.screen_name') %}
       <tr>
         {%- if ticket %}
-        <td>{{ ticket.occupied_seat.area.title }}</td>
+        <td class="nowrap">{{ ticket.occupied_seat.area.title }}</td>
         {%- else %}
         <td>{{ render_faint('keiner') }}</td>
         {%- endif %}
-        <td>{{ render_user_admin_link(user) }}</td>
-        <td>{{ render_with_fallback(user.detail.full_name) }}</td>
+        <td>
+          {{- render_user_admin_link(user) }}<br/>
+          {{- render_with_fallback(user.detail.full_name) -}}
+        </td>
         <td class="centered">{{ quantity }}</td>
-        <td>{{ render_datetime(order.created_at, smart=False) }}</td>
-        <td>{{ render_order_payment_state(order.payment_state) }}</td>
+        <td>
+          {{- render_datetime(order.created_at, smart=False) }}<br/>
+          {{- render_order_payment_state(order.payment_state) -}}
+        </td>
       </tr>
     {%- endfor %}
     </tbody>
