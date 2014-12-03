@@ -16,6 +16,9 @@ def count_ordered_articles(article):
     """Count how often the article has been ordered, grouped by the
     order's payment state.
     """
+    # Ensure every payment state is present in the resulting dictionary,
+    # even if no orders of the corresponding payment state exist for the
+    # article.
     counter = Counter({state: 0 for state in PaymentState})
 
     for order_item in article.order_items:
