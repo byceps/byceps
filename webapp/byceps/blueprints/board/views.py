@@ -23,6 +23,7 @@ from .formatting import get_smileys, render_html
 from .forms import PostingCreateForm, PostingUpdateForm, TopicCreateForm, \
     TopicUpdateForm
 from .models import Category, Posting, Topic
+from . import signals
 
 
 blueprint = create_blueprint('board', __name__)
@@ -200,6 +201,8 @@ def topic_create(category_id):
     topic = Topic.create(category, creator, title, body)
 
     flash_success('Das Thema "{}" wurde hinzugefügt.', topic.title)
+    signals.topic_created.send(None, topic=topic)
+
     return redirect_to('.topic_view', id=topic.id)
 
 
@@ -449,6 +452,8 @@ def posting_create(topic_id):
     posting = Posting.create(topic, creator, body)
 
     flash_success('Deine Antwort wurde hinzugefügt.')
+    signals.posting_created.send(None, posting=posting)
+
     return redirect_to('.topic_view',
                        id=topic.id,
                        page=topic.page_count,
