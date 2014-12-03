@@ -23,7 +23,7 @@
         <th>Sitzplatz</th>
         <th>Benutzername<br/>Vor- und Nachname</th>
         <th>Anzahl</th>
-        <th>Bestellung</th>
+        <th colspan="2">Bestellung</th>
       </tr>
     </thead>
     <tbody>
@@ -39,10 +39,8 @@
           {{- render_with_fallback(user.detail.full_name) -}}
         </td>
         <td class="centered">{{ quantity }}</td>
-        <td>
-          {{- render_datetime(order.created_at, smart=False) }}<br/>
-          {{- render_order_payment_state(order.payment_state) -}}
-        </td>
+        <td>{{ render_datetime(order.created_at, smart=False) }}</td>
+        <td>{{ render_order_payment_state(order.payment_state) }}</td>
       </tr>
     {%- endfor %}
     </tbody>
