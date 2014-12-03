@@ -31,6 +31,18 @@
       <td>{{ article.quantity }}</td>
     </tr>
     <tr>
+      <th>Anzahl bestellt</th>
+      <td>{{ totals[PaymentState.open] }}</td>
+    </tr>
+    <tr>
+      <th>Anzahl bezahlt</th>
+      <td>{{ totals[PaymentState.paid] }}</td>
+    </tr>
+    <tr>
+      <th>Anzahl storniert</th>
+      <td>{{ totals[PaymentState.canceled] }}</td>
+    </tr>
+    <tr>
       <th>Maximale Anzahl<br/>pro Bestellung</th>
       <td>{{ render_with_fallback(article.max_quantity_per_order) }}</td>
     </tr>

@@ -68,8 +68,11 @@ def article_index_for_party(party_id, page):
 def article_view(id):
     """Show a single article."""
     article = Article.query.get_or_404(id)
+
     return {
         'article': article,
+        'totals': count_ordered_articles(article),
+        'PaymentState': PaymentState,
     }
 
 

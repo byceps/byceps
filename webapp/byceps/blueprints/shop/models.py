@@ -227,7 +227,7 @@ class OrderItem(db.Model):
     order_id = db.Column(db.Uuid, db.ForeignKey('shop_orders.id'), index=True, nullable=False)
     order = db.relationship(Order, backref='items')
     article_id = db.Column(db.Uuid, db.ForeignKey('shop_articles.id'), index=True, nullable=False)
-    article = db.relationship(Article)
+    article = db.relationship(Article, backref='order_items')
     description = db.Column(db.Unicode(80), nullable=False)
     _price = db.Column('price', db.Integer, nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
