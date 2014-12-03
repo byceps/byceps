@@ -23,10 +23,11 @@
         <th>Benutzername</th>
         <th>Vor- und Nachname</th>
         <th>Anzahl</th>
+        <th>Bestelldatum</th>
       </tr>
     </thead>
     <tbody>
-    {%- for user, ticket, quantity in users_tickets_quantities|sort(attribute='0.screen_name') %}
+    {%- for user, ticket, quantity, order in users_tickets_quantities_orders|sort(attribute='0.screen_name') %}
       <tr>
         {%- if ticket %}
         <td>{{ ticket.occupied_seat.area.title }}</td>
@@ -36,6 +37,7 @@
         <td>{{ render_user_admin_link(user) }}</td>
         <td>{{ render_with_fallback(user.detail.full_name) }}</td>
         <td class="centered">{{ quantity }}</td>
+        <td>{{ render_datetime(order.created_at, smart=False) }}</td>
       </tr>
     {%- endfor %}
     </tbody>

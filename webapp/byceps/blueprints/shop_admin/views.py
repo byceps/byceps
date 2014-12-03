@@ -93,14 +93,15 @@ def article_view_ordered(id):
         user = order_item.order.placed_by
         ticket = find_ticket_for_user(user, article.party)
         quantity = order_item.quantity
-        return user, ticket, quantity
+        order = order_item.order
+        return user, ticket, quantity, order
 
-    users_tickets_quantities = map(transform, order_items)
+    users_tickets_quantities_orders = map(transform, order_items)
 
     return {
         'article': article,
         'quantity_total': quantity_total,
-        'users_tickets_quantities': users_tickets_quantities,
+        'users_tickets_quantities_orders': users_tickets_quantities_orders,
         'now': datetime.now(),
     }
 
