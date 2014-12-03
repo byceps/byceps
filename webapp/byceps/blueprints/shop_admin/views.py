@@ -24,6 +24,7 @@ from ..ticket.service import find_ticket_for_user
 from ..party.models import Party
 
 from .authorization import ShopPermission
+from .service import count_ordered_articles
 
 
 blueprint = create_blueprint('shop_admin', __name__)
