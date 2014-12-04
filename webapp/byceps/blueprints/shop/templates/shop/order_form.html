@@ -7,6 +7,7 @@
 
   <h1>{{ title }}</h1>
 
+  {%- if articles %}
   <form action="{{ url_for('.order') }}" method="post">
 
     <h2>Deine Daten</h2>
@@ -52,5 +53,8 @@
 
     {{ form_buttons('Kostenpflichtig bestellen') }}
   </form>
+  {%- else %}
+  <p>Es sind derzeit keine Artikel verfügbar.</p>
+  {%- endif %}
 
 {%- endblock body %}
