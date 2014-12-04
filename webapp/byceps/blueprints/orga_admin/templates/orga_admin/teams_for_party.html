@@ -1,4 +1,5 @@
 {% extends 'layout/base.html' %}
+{% from 'macros/misc.html' import render_with_fallback %}
 {% from 'macros/user_admin.html' import render_user_admin_link %}
 {% set current_page = 'orga_admin.teams' %}
 {% set title = 'Orgateams' %}
@@ -15,29 +16,26 @@
         <th>ID</th>
         <th>Name</th>
         <th>Mitgliederzahl</th>
-        <th>Mitglieder (Aufgabe)</th>
+        <th>Mitglieder</th>
+        <th>Aufgabe</th>
       </tr>
     </thead>
     <tbody>
-      {%- for team in teams|sort(attribute='title') %}
+    {%- for team in teams|sort(attribute='title') %}
       {%- set memberships = team.memberships_for_party(party)|list %}
+      {%- for membership in memberships|sort(attribute='user.screen_name') %}
+        {%- set member_total = memberships|length %}
       <tr>
-        <td>{{ team.id }}</td>
-        <td><strong>{{ team.title }}</strong></td>
-        <td>{{ memberships|length }}</td>
-        <td>
-          <ul style="list-style: none; margin: 0; padding: 0;">
-          {%- for membership in memberships|sort(attribute='user.screen_name') %}
-            <li>
-              {{- render_user_admin_link(membership.user) -}}
-              {%- if membership.duties %} ({{ membership.duties }}){% endif -%}
-            </li>
-          {%- endfor %}
-          </ul>
-        </td>
+        {%- if loop.first %}
+        <td{% if member_total > 1 %} rowspan="{{ member_total }}"{% endif %}>{{ team.id }}</td>
+        <td{% if member_total > 1 %} rowspan="{{ member_total }}"{% endif %}><strong>{{ team.title }}</strong></td>
+        <td{% if member_total > 1 %} rowspan="{{ member_total }}"{% endif %} class="centered">{{ memberships|length }}</td>
+        {%- endif %}
+        <td>{{ render_user_admin_link(membership.user) }}</td>
+        <td>{{ render_with_fallback(membership.duties) }}</td>
       </tr>
       {%- endfor %}
-      <tr>
+    {%- endfor %}
     </tbody>
   </table>
 
