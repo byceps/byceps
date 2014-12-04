@@ -9,14 +9,17 @@ byceps.blueprints.orga_admin.views
 
 from operator import attrgetter
 
+from flask import url_for
+
+from ...database import db
 from ...util.export import serialize_to_csv
-from ...util.framework import create_blueprint
+from ...util.framework import create_blueprint, flash_success
 from ...util.templating import templated
-from ...util.views import textified
+from ...util.views import respond_no_content_with_location, textified
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
-from ..orga.models import OrgaTeam
+from ..orga.models import Membership, OrgaTeam
 from ..party.models import Party
 
 from .authorization import OrgaBirthdayPermission, OrgaDetailPermission, \
@@ -100,6 +103,26 @@ def teams_for_party(party_id):
         'teams': teams,
         'party': party,
     }
+
+
+@blueprint.route('/memberships/<id>', methods=['DELETE'])
+@permission_required(OrgaTeamPermission.administrate_memberships)
+@respond_no_content_with_location
+def membership_remove(id):
+    """Remove an organizer from a team."""
+    membership = Membership.query.get_or_404(id)
+
+    user = membership.user
+    party = membership.party
+    team = membership.orga_team
+
+    db.session.delete(membership)
+    db.session.commit()
+
+    flash_success(
+        '{} wurde für die Veranstaltung "{}" aus dem Team "{}" entfernt.' \
+            .format(user.screen_name, party.title, team.title))
+    return url_for('.teams_for_party', party_id=party.id)
 
 
 @blueprint.route('/birthdays')

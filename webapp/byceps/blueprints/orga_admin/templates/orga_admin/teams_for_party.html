@@ -1,8 +1,17 @@
 {% extends 'layout/base.html' %}
+{% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_with_fallback %}
 {% from 'macros/user_admin.html' import render_user_admin_link %}
 {% set current_page = 'orga_admin.teams' %}
 {% set title = 'Orgateams' %}
+
+{% block head %}
+    <script>
+      $(function() {
+        confirmed_delete_on_click('a.membership-remove', 'Person aus dem Team entfernen?');
+      });
+    </script>
+{%- endblock head %}
 
 {% block body %}
 
@@ -18,6 +27,7 @@
         <th>Mitgliederzahl</th>
         <th>Mitglieder</th>
         <th>Aufgabe</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -33,6 +43,7 @@
         {%- endif %}
         <td>{{ render_user_admin_link(membership.user) }}</td>
         <td>{{ render_with_fallback(membership.duties) }}</td>
+        <td><a href="{{ url_for('.membership_remove', id=membership.id) }}" class="action membership-remove" title="Person aus Team entfernen">{{ render_icon('remove') }}</a></td>
       </tr>
       {%- endfor %}
     {%- endfor %}

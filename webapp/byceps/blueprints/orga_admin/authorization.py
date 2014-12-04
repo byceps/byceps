@@ -22,4 +22,5 @@ OrgaDetailPermission = create_permission_enum('orga_detail', [
 
 OrgaTeamPermission = create_permission_enum('orga_team', [
     'list',
+    'administrate_memberships',
 ])
