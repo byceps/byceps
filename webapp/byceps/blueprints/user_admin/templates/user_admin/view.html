@@ -63,7 +63,7 @@
       <td>
         {{- render_with_fallback(user.detail.street) }}<br/>
         {%- if user.detail.zip_code %}{{ user.detail.zip_code }}{% endif %}
-        {{- render_with_fallback(user.detail.city) -}}
+        {{ render_with_fallback(user.detail.city) -}}
       </td>
     </tr>
     <tr>
