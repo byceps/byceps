@@ -44,9 +44,9 @@ class Snippet(db.Model):
     query_class = BelongsToPartyQuery
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    party_id = db.Column(db.Unicode(20), db.ForeignKey('parties.id'), nullable=False)
+    party_id = db.Column(db.Unicode(20), db.ForeignKey('parties.id'), index=True, nullable=False)
     party = db.relationship(Party)
-    name = db.Column(db.Unicode(40), nullable=False)
+    name = db.Column(db.Unicode(40), index=True, nullable=False)
 
     def get_latest_version(self):
         """Return the most recent version.
@@ -83,13 +83,13 @@ class SnippetVersion(db.Model):
     query_class = SnippetVersionQuery
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    snippet_id = db.Column(db.Uuid, db.ForeignKey('snippets.id'))
+    snippet_id = db.Column(db.Uuid, db.ForeignKey('snippets.id'), index=True, nullable=False)
     snippet = db.relationship(Snippet)
-    created_at = db.Column(db.DateTime, default=datetime.now)
-    creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
+    created_at = db.Column(db.DateTime, default=datetime.now, nullable=False)
+    creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
     creator = db.relationship(User)
     title = db.Column(db.Unicode(80))
-    body = db.Column(db.UnicodeText)
+    body = db.Column(db.UnicodeText, nullable=False)
 
     def __repr__(self):
         return ReprBuilder(self) \
@@ -118,9 +118,9 @@ class Mountpoint(db.Model):
     query_class = MountpointQuery
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    endpoint_suffix = db.Column(db.Unicode(40))
-    url_path = db.Column(db.Unicode(40))
-    snippet_id = db.Column(db.Uuid, db.ForeignKey('snippets.id'))
+    endpoint_suffix = db.Column(db.Unicode(40), nullable=False)
+    url_path = db.Column(db.Unicode(40), nullable=False)
+    snippet_id = db.Column(db.Uuid, db.ForeignKey('snippets.id'), index=True, nullable=False)
     snippet = db.relationship(Snippet)
 
     def generate_url(self):
