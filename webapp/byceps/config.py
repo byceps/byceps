@@ -15,6 +15,7 @@ from flask import current_app
 EXTENSION_KEY = 'byceps'
 KEY_SITE_MODE = 'site_mode'
 KEY_PARTY_ID = 'party_id'
+KEY_TICKET_MANAGEMENT_ENABLED = 'ticket_management_enabled'
 KEY_USER_REGISTRATION_ENABLED = 'user_registration_enabled'
 
 
@@ -37,6 +38,11 @@ def init_app(app):
                                                                     site_mode)
     update_extension_value(app, KEY_USER_REGISTRATION_ENABLED,
                            user_registration_enabled)
+
+    ticket_management_enabled = determine_ticket_management_enabled(app,
+                                                                    site_mode)
+    update_extension_value(app, KEY_TICKET_MANAGEMENT_ENABLED,
+                           ticket_management_enabled)
 
 
 def update_extension_value(app, key, value):
@@ -97,6 +103,22 @@ def determine_user_registration_enabled(app, site_mode):
 def get_user_registration_enabled(app=None):
     """Return `True` if guests may register user accounts."""
     return _get_config_dict(app)[KEY_USER_REGISTRATION_ENABLED]
+
+
+# -------------------------------------------------------------------- #
+# ticket management
+
+
+def determine_ticket_management_enabled(app, site_mode):
+    if site_mode.is_admin():
+        return False
+
+    return app.config.get('TICKET_MANAGEMENT_ENABLED', True)
+
+
+def get_ticket_management_enabled(app=None):
+    """Return `True` if users may manage tickets."""
+    return _get_config_dict(app)[KEY_TICKET_MANAGEMENT_ENABLED]
 
 
 # -------------------------------------------------------------------- #
