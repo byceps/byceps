@@ -47,6 +47,7 @@ def update_extension_value(app, key, value):
 
 
 # -------------------------------------------------------------------- #
+# site mode
 
 
 def determine_site_mode(app):
@@ -65,6 +66,10 @@ def get_site_mode(app=None):
     return _get_config_dict(app)[KEY_SITE_MODE]
 
 
+# -------------------------------------------------------------------- #
+# party ID
+
+
 def determine_party_id(app):
     party_id = app.config.get('PARTY')
     if party_id is None:
@@ -76,6 +81,10 @@ def determine_party_id(app):
 def get_current_party_id(app=None):
     """Return the id of the current party."""
     return _get_config_dict(app)[KEY_PARTY_ID]
+
+
+# -------------------------------------------------------------------- #
+# user registration
 
 
 def determine_user_registration_enabled(app, site_mode):
