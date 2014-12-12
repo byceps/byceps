@@ -82,7 +82,7 @@ def determine_user_registration_enabled(app, site_mode):
     if site_mode.is_admin():
         return False
 
-    return app.config.get(KEY_USER_REGISTRATION_ENABLED, True)
+    return app.config.get('USER_REGISTRATION_ENABLED', True)
 
 
 def get_user_registration_enabled(app=None):
