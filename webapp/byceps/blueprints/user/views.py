@@ -11,7 +11,7 @@ from datetime import datetime
 
 from flask import abort, current_app, g, request, session, url_for
 
-from ...config import get_site_mode
+from ...config import get_site_mode, get_user_registration_enabled
 from ...database import db
 from ...mail import mail
 from ...util.framework import create_blueprint, flash_error, flash_notice, \
@@ -61,6 +61,10 @@ def view(id):
 @templated
 def create_form(errorneous_form=None):
     """Show a form to create a user."""
+    if not get_user_registration_enabled():
+        flash_error('Das Erstellen von Benutzerkonten ist deaktiviert.')
+        abort(403)
+
     form = errorneous_form if errorneous_form else UserCreateForm()
     return {'form': form}
 
@@ -68,6 +72,10 @@ def create_form(errorneous_form=None):
 @blueprint.route('/', methods=['POST'])
 def create():
     """Create a user."""
+    if not get_user_registration_enabled():
+        flash_error('Das Erstellen von Benutzerkonten ist deaktiviert.')
+        abort(403)
+
     form = UserCreateForm(request.form)
     if not form.validate():
         return create_form(form)
@@ -491,9 +499,11 @@ def login_form():
         flash_error('Du bist bereits als Benutzer "{}" angemeldet.', g.current_user.screen_name)
 
     form = LoginForm()
+    user_registration_enabled = get_user_registration_enabled()
     return {
         'logged_in': logged_in,
         'form': form,
+        'user_registration_enabled': user_registration_enabled,
     }
 
 

@@ -15,6 +15,7 @@ from flask import current_app
 EXTENSION_KEY = 'byceps'
 KEY_SITE_MODE = 'site_mode'
 KEY_PARTY_ID = 'party_id'
+KEY_USER_REGISTRATION_ENABLED = 'user_registration_enabled'
 
 
 SiteMode = Enum('SiteMode', ['public', 'admin'])
@@ -31,6 +32,9 @@ def init_app(app):
     if site_mode.is_public():
         party_id = determine_party_id(app)
         app.extensions[EXTENSION_KEY][KEY_PARTY_ID] = party_id
+
+    app.extensions[EXTENSION_KEY][KEY_USER_REGISTRATION_ENABLED] \
+        = determine_user_registration_enabled(app, site_mode)
 
 
 def determine_site_mode(app):
@@ -60,6 +64,18 @@ def determine_party_id(app):
 def get_current_party_id(app=None):
     """Return the id of the current party."""
     return _get_config_dict(app)[KEY_PARTY_ID]
+
+
+def determine_user_registration_enabled(app, site_mode):
+    if site_mode.is_admin():
+        return False
+
+    return app.config.get(KEY_USER_REGISTRATION_ENABLED, True)
+
+
+def get_user_registration_enabled(app=None):
+    """Return `True` if guests may register user accounts."""
+    return _get_config_dict(app)[KEY_USER_REGISTRATION_ENABLED]
 
 
 def _get_config_dict(app=None):
