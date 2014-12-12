@@ -7,6 +7,7 @@ byceps.blueprints.seating.views
 :Copyright: 2006-2014 Jochen Kupperschmidt
 """
 
+from ...config import get_ticket_management_enabled
 from ...util.framework import create_blueprint
 from ...util.templating import templated
 
@@ -29,4 +30,9 @@ def index():
 def view_area(slug):
     """View area."""
     area = Area.query.for_current_party().filter_by(slug=slug).first_or_404()
-    return {'area': area}
+    ticket_management_enabled = get_ticket_management_enabled()
+
+    return {
+        'area': area,
+        'ticket_management_enabled': ticket_management_enabled,
+    }
