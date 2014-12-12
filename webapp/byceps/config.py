@@ -27,14 +27,26 @@ def init_app(app):
     app.extensions[EXTENSION_KEY] = {}
 
     site_mode = determine_site_mode(app)
-    app.extensions[EXTENSION_KEY][KEY_SITE_MODE] = site_mode
+    update_extension_value(app, KEY_SITE_MODE, site_mode)
 
     if site_mode.is_public():
         party_id = determine_party_id(app)
-        app.extensions[EXTENSION_KEY][KEY_PARTY_ID] = party_id
+        update_extension_value(app, KEY_PARTY_ID, party_id)
 
-    app.extensions[EXTENSION_KEY][KEY_USER_REGISTRATION_ENABLED] \
-        = determine_user_registration_enabled(app, site_mode)
+    user_registration_enabled = determine_user_registration_enabled(app,
+                                                                    site_mode)
+    update_extension_value(app, KEY_USER_REGISTRATION_ENABLED,
+                           user_registration_enabled)
+
+
+def update_extension_value(app, key, value):
+    """Set/replace the value value for the key in this application's
+    own extension namespace.
+    """
+    app.extensions[EXTENSION_KEY][key] = value
+
+
+# -------------------------------------------------------------------- #
 
 
 def determine_site_mode(app):
@@ -76,6 +88,9 @@ def determine_user_registration_enabled(app, site_mode):
 def get_user_registration_enabled(app=None):
     """Return `True` if guests may register user accounts."""
     return _get_config_dict(app)[KEY_USER_REGISTRATION_ENABLED]
+
+
+# -------------------------------------------------------------------- #
 
 
 def _get_config_dict(app=None):
