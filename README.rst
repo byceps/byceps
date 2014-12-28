@@ -17,8 +17,8 @@ for more than a decade.
 Requirements
 ============
 
-- Python_ 3.4.1 or higher
-- PostgreSQL_ 9.2 or higher
+- Python_ 3.4.2 or higher
+- PostgreSQL_ 9.4 or higher
 
 .. _Python: http://www.python.org/
 .. _PostgreSQL: http://www.postgresql.org/
@@ -47,7 +47,8 @@ Debian_ Linux is the suggested operating system to run BYCEPS on.
 The following packages available in the Debian repository as part of
 the "Jessie" release:
 
-- postgresql-9.3
+- postgresql-9.4
+- postgresql-contrib-9.4
 - python3.4
 - python3.4-dev  
 - python3.4-venv
@@ -61,7 +62,7 @@ user):
 .. code:: sh
 
     # aptitude update
-    # aptitude install postgresql-9.3 python3.4 python3.4-dev python3.4-venv
+    # aptitude install postgresql-9.4 postgresql-contrib-9.4 python3.4 python3.4-dev python3.4-venv
 
 Refer to the Debian documentation for further details.
 
@@ -89,7 +90,7 @@ Make sure the correct version of Python is used:
 .. code:: sh
 
     (venv)$ python -V
-    Python 3.4.1
+    Python 3.4.2
 
 Install the Python depdendencies via pip_:
 
@@ -107,12 +108,17 @@ Database
 
 There should already be a system user, likely 'postgres'.
 
-Become root, then switch to that user:
+Become root:
 
 .. code:: sh
 
     $ su
     <enter root password>
+
+Switch to the 'postgres' user:
+
+.. code:: sh
+
     # su postgres
 
 Create a database user named 'byceps':
@@ -128,6 +134,33 @@ Create a schema, also named 'byceps':
 .. code:: sh
 
     postgres@host$ createdb --encoding=UTF8 --template=template0 --owner byceps byceps
+
+Connect to the database:
+
+.. code:: sh
+
+    $ psql
+
+Load the 'pgcrypto' extension:
+
+.. code::
+
+    postgres=# CREATE EXTENSION pgcrypto;
+
+Ensure that the function 'gen_random_uuid()' is available now:
+
+.. code::
+
+    postgres=# select gen_random_uuid();
+
+Expected result:
+
+.. code::
+
+               gen_random_uuid
+    --------------------------------------
+     b30bd643-d592-44e2-a256-0e0e167ac762
+    (1 row)
 
 
 Testing
