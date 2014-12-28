@@ -1,5 +1,6 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/icons.html' import render_icon %}
+{% from 'macros/misc.html' import render_faint %}
 {% from 'macros/seating.html' import render_seating_area_link %}
 {% from 'macros/user.html' import render_user_avatar %}
 {% set current_page = 'user.view' %}
@@ -35,6 +36,20 @@
       <td>{{ render_seating_area_link(current_party_ticket.occupied_seat.area) }}</td>
     </tr>
     {%- endif %}
+    <tr>
+      <th>Besuchte Parties</th>
+      <td>
+        {%- if attended_parties %}
+        <ol>
+          {%- for party in attended_parties %}
+          <li>{{ party.title }}</li>
+          {%- endfor %}
+        </ol>
+        {%- else %}
+          {{- render_faint('keine') -}}
+        {%- endif %}
+      </td>
+    </tr>
   </table>
 
 {%- endblock body %}

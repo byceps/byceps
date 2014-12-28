@@ -8,6 +8,7 @@ byceps.blueprints.user.views
 """
 
 from datetime import datetime
+from operator import attrgetter
 
 from flask import abort, current_app, g, request, session, url_for
 
@@ -26,7 +27,7 @@ from ..authorization.models import Role
 from ..newsletter.models import Subscription as NewsletterSubscription, \
     SubscriptionState as NewsletterSubscriptionState
 from ..terms.models import Consent, ConsentContext
-from ..ticket.service import find_ticket_for_user
+from ..ticket.service import find_ticket_for_user, get_attended_parties
 
 from .forms import AvatarImageUpdateForm, DetailsForm, LoginForm, \
     RequestConfirmationEmailForm, RequestPasswordResetForm, \
@@ -51,9 +52,13 @@ def view(id):
     """Show a user's profile."""
     user = find_user_by_id(id)
     current_party_ticket = find_ticket_for_user(user, g.party)
+    attended_parties = get_attended_parties(user)
+    attended_parties.sort(key=attrgetter('starts_at'), reverse=True)
+
     return {
         'user': user,
         'current_party_ticket': current_party_ticket,
+        'attended_parties': attended_parties,
     }
 
 
