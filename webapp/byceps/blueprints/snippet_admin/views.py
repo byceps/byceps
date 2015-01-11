@@ -9,12 +9,12 @@ byceps.blueprints.snippet_admin.views
 
 from operator import attrgetter
 
-from flask import abort, g, request
+from flask import abort, g, request, url_for
 
 from ...database import db
 from ...util.framework import create_blueprint, flash_success
 from ...util.templating import templated
-from ...util.views import redirect_to
+from ...util.views import redirect_to, respond_no_content_with_location
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
@@ -197,6 +197,23 @@ def create_mountpoint(party_id):
     flash_success('Der Mountpoint für "{}" wurde angelegt.',
                   mountpoint.url_path)
     return redirect_to('.index_for_party', party_id=party.id)
+
+
+@blueprint.route('/mountpoints/<id>', methods=['DELETE'])
+@permission_required(SnippetPermission.update)
+@respond_no_content_with_location
+def delete_mountpoint(id):
+    """Delete a mountpoint."""
+    mountpoint = Mountpoint.query.get_or_404(id)
+
+    url_path = mountpoint.url_path
+    party = mountpoint.snippet.party
+
+    db.session.delete(mountpoint)
+    db.session.commit()
+
+    flash_success('Der Mountpoint für "{}" wurde entfernt.'.format(url_path))
+    return url_for('.index_for_party', party_id=party.id)
 
 
 def find_snippet_by_id(id):

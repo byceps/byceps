@@ -5,6 +5,14 @@
 {% set current_page = 'snippet_admin' %}
 {% set title = 'Snippets' %}
 
+{% block head %}
+    <script>
+      $(function() {
+        confirmed_delete_on_click('a.mountpoint-delete', 'Mountpoint entfernen?');
+      });
+    </script>
+{%- endblock head %}
+
 {% block body %}
 
   <p><strong>Party:</strong> {{ party.title }}
@@ -58,6 +66,7 @@
         <th>URL-Pfad</th>
         <th>Endpoint-Name</th>
         <th>Snippet</th>
+        <th>Aktionen</th>
       </tr>
     </thead>
     <tbody>
@@ -66,6 +75,7 @@
         <td>{{ mountpoint.url_path }}</td>
         <td>{{ mountpoint.endpoint_suffix }}</td>
         <td>{{ mountpoint.snippet.name }}</td>
+        <td><a href="{{ url_for('.delete_mountpoint', id=mountpoint.id) }}" class="action mountpoint-delete" title="Mountpoint entfernen">{{ render_icon('remove') }}</a></td>
       </tr>
     {%- endfor %}
     </tbody>
