@@ -22,7 +22,7 @@ from ..party.models import Party
 from ..snippet.models import Mountpoint, Snippet, SnippetVersion
 from ..snippet.templating import render_snippet_as_page
 
-from .authorization import SnippetPermission
+from .authorization import MountpointPermission, SnippetPermission
 from .forms import MountpointCreateForm, MountpointUpdateForm, \
     SnippetCreateForm, SnippetUpdateForm
 
@@ -30,6 +30,7 @@ from .forms import MountpointCreateForm, MountpointUpdateForm, \
 blueprint = create_blueprint('snippet_admin', __name__)
 
 
+permission_registry.register_enum(MountpointPermission)
 permission_registry.register_enum(SnippetPermission)
 
 
@@ -154,7 +155,7 @@ def update_snippet(id):
 
 
 @blueprint.route('/mointpoints/for_party/<party_id>/create')
-@permission_required(SnippetPermission.create)
+@permission_required(MountpointPermission.create)
 @templated
 def create_mountpoint_form(party_id):
     """Show form to create a mountpoint."""
@@ -173,7 +174,7 @@ def create_mountpoint_form(party_id):
 
 
 @blueprint.route('/mountpoints/for_party/<party_id>', methods=['POST'])
-@permission_required(SnippetPermission.create)
+@permission_required(MountpointPermission.create)
 def create_mountpoint(party_id):
     """Create a mountpoint."""
     party = Party.query.get_or_404(party_id)
@@ -200,7 +201,7 @@ def create_mountpoint(party_id):
 
 
 @blueprint.route('/mountpoints/<id>', methods=['DELETE'])
-@permission_required(SnippetPermission.update)
+@permission_required(MountpointPermission.delete)
 @respond_no_content_with_location
 def delete_mountpoint(id):
     """Delete a mountpoint."""
