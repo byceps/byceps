@@ -11,6 +11,10 @@
 
   <table class="index">
     <tr>
+      <th>Artikelnummer</th>
+      <td>{{ render_with_fallback(article.item_number) }}</td>
+    </tr>
+    <tr>
       <th>Party</th>
       <td>{{ article.party.title }}</td>
     </tr>

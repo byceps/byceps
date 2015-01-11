@@ -57,6 +57,7 @@ class Article(db.Model):
     query_class = ArticleQuery
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    item_number = db.Column(db.Unicode(20), unique=True)
     party_id = db.Column(db.Unicode(20), db.ForeignKey('parties.id'), index=True, nullable=False)
     party = db.relationship(Party)
     description = db.Column(db.Unicode(80), nullable=False)
@@ -111,6 +112,7 @@ class Article(db.Model):
         return ReprBuilder(self) \
             .add_with_lookup('id') \
             .add('party', self.party_id) \
+            .add_with_lookup('item_number') \
             .add_with_lookup('description') \
             .add_with_lookup('quantity') \
             .build()

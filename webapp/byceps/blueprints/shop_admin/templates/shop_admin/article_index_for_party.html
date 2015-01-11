@@ -1,5 +1,6 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/icons.html' import render_icon %}
+{% from 'macros/misc.html' import render_with_fallback %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
 {% from 'macros/shop_admin.html' import render_article_temporal_availability %}
 {% set current_page = 'shop_admin.articles' %}
@@ -12,6 +13,7 @@
   <table class="index wide" style="margin-bottom: 2rem;">
     <thead>
       <tr>
+        <th>Artikelnummer</th>
         <th>Beschreibung</th>
         <th>Zeitliche<br/>Verfügbarkeit</th>
         <th>Stückpreis</th>
@@ -22,6 +24,7 @@
     <tbody>
       {%- for article in articles.items %}
       <tr>
+        <td>{{ render_with_fallback(article.item_number) }}</td>
         <td><a href="{{ url_for('.article_view', id=article.id) }}">{{ article.description }}</a></td>
         <td>{{ render_article_temporal_availability(article) }}</td>
         <td class="nowrap" style="text-align: right;">{{ article.price.to_string() }}</td>
