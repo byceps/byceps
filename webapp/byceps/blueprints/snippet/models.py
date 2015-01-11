@@ -8,7 +8,7 @@ Snippets of database-stored content. Can contain HTML and template
 engine syntax. Can be embedded in other templates or mounted as full
 page.
 
-:Copyright: 2006-2014 Jochen Kupperschmidt
+:Copyright: 2006-2015 Jochen Kupperschmidt
 """
 
 from datetime import datetime

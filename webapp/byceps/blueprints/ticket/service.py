@@ -4,7 +4,7 @@
 byceps.blueprints.ticket.service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2006-2014 Jochen Kupperschmidt
+:Copyright: 2006-2015 Jochen Kupperschmidt
 """
 
 from ..party.models import Party

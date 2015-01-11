@@ -4,7 +4,7 @@
 byceps.blueprints.user.forms
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2006-2014 Jochen Kupperschmidt
+:Copyright: 2006-2015 Jochen Kupperschmidt
 """
 
 from itertools import chain

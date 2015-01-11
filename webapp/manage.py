@@ -7,7 +7,7 @@ management script
 
 Run the application, take administrative action.
 
-:Copyright: 2006-2014 Jochen Kupperschmidt
+:Copyright: 2006-2015 Jochen Kupperschmidt
 """
 
 from flask.ext.script import Manager

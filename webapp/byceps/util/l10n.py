@@ -6,7 +6,7 @@ byceps.util.l10n
 
 Localization.
 
-:Copyright: 2006-2014 Jochen Kupperschmidt
+:Copyright: 2006-2015 Jochen Kupperschmidt
 """
 
 import locale

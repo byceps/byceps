@@ -4,7 +4,7 @@
 byceps.blueprints.board.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2006-2014 Jochen Kupperschmidt
+:Copyright: 2006-2015 Jochen Kupperschmidt
 """
 
 from flask import current_app, g, redirect, request, url_for

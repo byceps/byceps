@@ -4,7 +4,7 @@
 byceps.util.iterables
 ~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2006-2014 Jochen Kupperschmidt
+:Copyright: 2006-2015 Jochen Kupperschmidt
 """
 
 from itertools import islice, tee

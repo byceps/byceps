@@ -4,7 +4,7 @@
 byceps.blueprints.orga_admin.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2006-2014 Jochen Kupperschmidt
+:Copyright: 2006-2015 Jochen Kupperschmidt
 """
 
 from operator import attrgetter
