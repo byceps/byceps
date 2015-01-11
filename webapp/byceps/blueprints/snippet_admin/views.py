@@ -122,13 +122,12 @@ def update_snippet_form(id):
     latest_version = snippet.get_latest_version()
 
     form = SnippetUpdateForm(
-        obj=snippet,
-        title=latest_version.title.strip(),
-        body=latest_version.body)
+        obj=latest_version,
+        name=latest_version.snippet.name)
 
     return {
         'form': form,
-        'snippet': snippet,
+        'snippet': latest_version.snippet,
     }
 
 
