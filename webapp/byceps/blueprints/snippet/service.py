@@ -7,12 +7,12 @@ byceps.blueprints.snippet.service
 :Copyright: 2006-2015 Jochen Kupperschmidt
 """
 
-from .models import Snippet
+from .models import Snippet, SnippetVersion
 
 
 def find_latest_version_of_snippet(name):
-    snippet = Snippet.query \
-        .for_current_party() \
-        .filter_by(name=name) \
+    """Return the latest version of the snippet with that name."""
+    return SnippetVersion.query \
+        .join(Snippet).filter(Snippet.name == name) \
+        .latest_first() \
         .one()
-    return snippet.get_latest_version()
