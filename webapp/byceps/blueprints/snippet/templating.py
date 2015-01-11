@@ -51,11 +51,18 @@ def get_snippet_context(version):
     }
 
 
-def render_snippet_as_partial(name):
+def render_snippet_as_partial(name, *, ignore_if_unknown=False):
     """Render the latest version of the snippet with the given name and
     return the result.
     """
-    latest_version = find_latest_version_of_snippet(name)
+    try:
+        latest_version = find_latest_version_of_snippet(name)
+    except SnippetNotFound as e:
+        if ignore_if_unknown:
+            return ''
+        else:
+            raise e
+
     template = load_template(latest_version)
     return template.render()
 
