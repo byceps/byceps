@@ -24,10 +24,10 @@
       </tr>
     </thead>
     <tbody>
-      {%- for version in snippet.get_versions() %}
+      {%- for version in versions %}
         <tr>
           <td>
-            {%- if version == snippet.get_latest_version() -%}
+            {%- if version == latest_version -%}
             {{ render_icon('published', title='öffentlich') }}
             {%- else -%}
             {{ render_icon('archived', title='archiviert') }}

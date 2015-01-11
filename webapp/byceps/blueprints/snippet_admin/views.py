@@ -72,6 +72,8 @@ def history(id):
     snippet = find_snippet_by_id(id)
     return {
         'snippet': snippet,
+        'versions': snippet.get_versions(),
+        'latest_version': snippet.get_latest_version(),
     }
 
 
