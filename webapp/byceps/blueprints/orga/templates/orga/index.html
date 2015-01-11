@@ -32,6 +32,8 @@
 
   <h1>{{ title }}</h1>
 
+{{ render_snippet('orga_team_intro', ignore_if_unknown=True) }}
+
   <ol class="orga-overview">
     {%- for user in orgas|sort(attribute='screen_name') %}
     <li>
