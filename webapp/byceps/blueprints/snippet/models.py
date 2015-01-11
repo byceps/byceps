@@ -51,7 +51,7 @@ class Snippet(db.Model):
     def get_latest_version(self):
         """Return the most recent version.
 
-        A snippet is excepted to have at least one version (the initial
+        A snippet is expected to have at least one version (the initial
         one).
         """
         return SnippetVersion.query.for_snippet(self).latest_first().first()
