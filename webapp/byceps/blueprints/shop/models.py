@@ -62,7 +62,7 @@ class Article(db.Model):
     party = db.relationship(Party)
     description = db.Column(db.Unicode(80), nullable=False)
     _price = db.Column('price', db.Integer, nullable=False)
-    tax_rate = db.Column(db.Numeric(3, 3))
+    tax_rate = db.Column(db.Numeric(3, 3), nullable=False)
     available_from = db.Column(db.DateTime, nullable=True)
     available_until = db.Column(db.DateTime, nullable=True)
     quantity = db.Column(db.Integer, nullable=False)
