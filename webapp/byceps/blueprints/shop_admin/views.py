@@ -24,6 +24,7 @@ from ..ticket.service import find_ticket_for_user
 from ..party.models import Party
 
 from .authorization import ShopPermission
+from .forms import ArticleUpdateForm
 from .service import count_ordered_articles
 
 
@@ -110,6 +111,37 @@ def article_view_ordered(id):
         'users_tickets_quantities_orders': users_tickets_quantities_orders,
         'now': datetime.now(),
     }
+
+
+@blueprint.route('/articles/<id>/update')
+@permission_required(ShopPermission.update_article)
+@templated
+def article_update_form(id):
+    """Show form to update an article."""
+    article = Article.query.get_or_404(id)
+
+    form = ArticleUpdateForm(obj=article)
+
+    return {
+        'form': form,
+        'article': article,
+    }
+
+
+@blueprint.route('/articles/<id>', methods=['POST'])
+@permission_required(ShopPermission.update_article)
+def article_update(id):
+    """Update an article."""
+    form = ArticleUpdateForm(request.form)
+
+    article = Article.query.get_or_404(id)
+    article.item_number = form.item_number.data.strip()
+    article.description = form.description.data.strip()
+    article.quantity = form.quantity.data
+    db.session.commit()
+
+    flash_success('Der Artikel "{}" wurde aktualisiert.', article.description)
+    return redirect_to('.article_view', id=article.id)
 
 
 @blueprint.route('/orders')

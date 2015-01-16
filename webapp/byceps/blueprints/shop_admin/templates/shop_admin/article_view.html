@@ -57,6 +57,7 @@
   </table>
 
   <ol class="actions" style="margin-top: 2rem;">
+    <li><a href="{{ url_for('.article_update_form', id=article.id) }}">{{ render_icon('edit') }} Bearbeiten</a></li>
     <li><a href="{{ url_for('.article_view_ordered', id=article.id) }}">{{ render_icon('users') }} Käufer auflisten</a></li>
   </ol>
 

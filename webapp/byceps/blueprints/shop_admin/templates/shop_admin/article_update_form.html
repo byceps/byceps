@@ -1,0 +1,26 @@
+{% extends 'layout/base.html' %}
+{% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
+{% from 'macros/icons.html' import render_icon %}
+{% set current_page = 'shop_admin.articles' %}
+{% set title = 'Artikel bearbeiten' %}
+
+{% block body %}
+
+  <nav class="breadcrumbs">
+    <ol>
+      <li><a href="{{ url_for('.article_index_for_party', party_id=article.party.id) }}">{{ article.party.title }}</a></li>
+      <li>{{ render_icon('edit') }} Artikel bearbeiten</li>
+    </ol>
+  </nav>
+
+  <form action="{{ url_for('.article_update', id=article.id) }}" method="post">
+    {% call form_fieldset() %}
+      {{ form_field(form.item_number, maxlength=20, autofocus='autofocus') }}
+      {{ form_field(form.description, maxlength=80, required='required') }}
+      {{ form_field(form.quantity, maxlength=4, required='required') }}
+    {% endcall %}
+
+    {{ form_buttons('Speichern', cancel_url=url_for('.article_view', id=article.id)) }}
+  </form>
+
+{%- endblock body %}

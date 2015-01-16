@@ -12,6 +12,7 @@ from byceps.util.authorization import create_permission_enum
 
 ShopPermission = create_permission_enum('shop', [
     'list_articles',
+    'update_article',
     'list_orders',
     'update_orders',
 ])
