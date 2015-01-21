@@ -11,10 +11,10 @@ from ..orga.models import OrgaFlag
 from ..user.models import User, UserDetail
 
 
-def get_organizers():
-    """Return all users flagged as organizers."""
+def get_organizers_for_brand(brand):
+    """Return all users flagged as organizers for the brand."""
     return User.query \
-        .join(OrgaFlag) \
+        .join(OrgaFlag).filter(OrgaFlag.brand == brand) \
         .join(UserDetail) \
         .all()
 

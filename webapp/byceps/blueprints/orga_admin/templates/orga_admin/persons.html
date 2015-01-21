@@ -1,57 +1,16 @@
 {% extends 'layout/base.html' %}
-{% from 'macros/datetime.html' import render_date %}
 {% from 'macros/icons.html' import render_icon %}
-{% from 'macros/misc.html' import render_faint, render_with_fallback %}
-{% from 'macros/user_admin.html' import render_user_admin_link %}
 {% set current_page = 'orga_admin.persons' %}
-{% set title = 'Orgas' %}
+{% set title = 'Orgateams - Marke wählen' %}
 
 {% block body %}
 
-  <h1>{{ title }} <span class="faint" style="font-size: 1.3rem; font-weight: normal;">({{ orgas|length }})</span></h1>
+  <h1>{{ title }}</h1>
 
-  <table class="index wide">
-    <thead>
-      <tr>
-        <th>Benutzername<br/>Voller Name</th>
-        <th>Geburtstag<br/>Alter</th>
-        <th>Straße<br/>PLZ, Ort</th>
-        <th>E-Mail-Adresse<br/>Telefonnummer</th>
-      </tr>
-    </thead>
-    <tbody>
-      {%- for user in orgas|sort(attribute='screen_name') %}
-      <tr>
-        <td class="nowrap">
-          {{- render_user_admin_link(user) }}<br/>
-          {{- render_with_fallback(user.detail.full_name) -}}
-        </td>
-        <td class="nowrap">
-          {%- if user.detail.date_of_birth %}
-            {{- render_date(user.detail.date_of_birth) }}<br/>
-            {{- user.detail.age }} Jahre
-          {%- else -%}
-            {{ render_faint('nicht angegeben') }}
-          {%- endif -%}
-        </td>
-        <td class="nowrap">
-          {{- render_with_fallback(user.detail.street) -}}
-          <br/>
-          {%- if user.detail.zip_code %}{{ user.detail.zip_code }} {% endif -%}
-          {{- render_with_fallback(user.detail.city) -}}
-        </td>
-        <td class="nowrap">
-          <a href="mailto:{{- user.email_address }}">{{- user.email_address }}</a><br/>
-          {{- render_with_fallback(user.detail.phone_number) -}}
-        </td>
-      </tr>
-      {%- endfor %}
-      <tr>
-    </tbody>
-  </table>
-
-  <ol class="actions" style="margin-top: 2rem;">
-    <li><a href="{{ url_for('.export_persons') }}" download="organizers.csv">{{ render_icon('download') }} Exportieren <small>(als Excel-CSV)</small></a></li>
-  </ol>
+  <ul>
+    {%- for brand in brands|sort(attribute='title') %}
+    <li><a href="{{ url_for('.persons_for_brand', brand_id=brand.id) }}">{{ brand.title }}</a></li>
+    {%- endfor %}
+  </ul>
 
 {%- endblock body %}

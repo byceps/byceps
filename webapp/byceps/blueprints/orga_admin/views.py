@@ -19,12 +19,13 @@ from ...util.views import respond_no_content_with_location, textified
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
+from ..brand.models import Brand
 from ..orga.models import Membership, OrgaTeam
 from ..party.models import Party
 
 from .authorization import OrgaBirthdayPermission, OrgaDetailPermission, \
     OrgaTeamPermission
-from .service import collect_orgas_with_next_birthdays, get_organizers
+from .service import collect_orgas_with_next_birthdays, get_organizers_for_brand
 
 
 blueprint = create_blueprint('orga_admin', __name__)
@@ -39,16 +40,31 @@ permission_registry.register_enum(OrgaTeamPermission)
 @permission_required(OrgaDetailPermission.view)
 @templated
 def persons():
+    """List brands to choose from."""
+    brands = Brand.query.all()
+    return {'brands': brands}
+
+
+@blueprint.route('/persons/<brand_id>')
+@permission_required(OrgaDetailPermission.view)
+@templated
+def persons_for_brand(brand_id):
     """List organizers with details."""
-    orgas = get_organizers()
-    return {'orgas': orgas}
+    brand = Brand.query.get_or_404(brand_id)
+    orgas = get_organizers_for_brand(brand)
+    return {
+        'brand': brand,
+        'orgas': orgas,
+    }
 
 
-@blueprint.route('/persons/export')
+@blueprint.route('/persons/<brand_id>/export')
 @permission_required(OrgaDetailPermission.view)
 @textified
-def export_persons():
-    """Export the list of organizers als CSV in Microsoft Excel dialect."""
+def export_persons(brand_id):
+    """Export the list of organizers for the brand as a CSV document in
+    Microsoft Excel dialect.
+    """
     field_names = [
         'Benutzername',
         'Vorname',
@@ -77,7 +93,8 @@ def export_persons():
             'Telefonnummer': user.detail.phone_number,
         }
 
-    orgas = get_organizers()
+    brand = Brand.query.get_or_404(brand_id)
+    orgas = get_organizers_for_brand(brand)
     orgas.sort(key=attrgetter('screen_name'))
     rows = map(to_dict, orgas)
     return serialize_to_csv(field_names, rows)
