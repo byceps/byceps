@@ -20,7 +20,7 @@ from ...util.views import respond_no_content_with_location, textified
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 from ..brand.models import Brand
-from ..orga.models import Membership, OrgaTeam
+from ..orga.models import Membership, OrgaFlag, OrgaTeam
 from ..party.models import Party
 
 from .authorization import OrgaBirthdayPermission, OrgaDetailPermission, \
@@ -49,13 +49,34 @@ def persons():
 @permission_required(OrgaDetailPermission.view)
 @templated
 def persons_for_brand(brand_id):
-    """List organizers with details."""
+    """List organizers for the brand with details."""
     brand = Brand.query.get_or_404(brand_id)
     orgas = get_organizers_for_brand(brand)
     return {
         'brand': brand,
         'orgas': orgas,
     }
+
+
+@blueprint.route('/<brand_id>/persons/<user_id>', methods=['DELETE'])
+@permission_required(OrgaTeamPermission.administrate_memberships)
+@respond_no_content_with_location
+def orgaflag_remove(brand_id, user_id):
+    """Remove the organizer flag for a brand from a person."""
+    orga_flag = OrgaFlag.query \
+        .filter_by(brand_id=brand_id) \
+        .filter_by(user_id=user_id) \
+        .first_or_404()
+
+    brand = orga_flag.brand
+    user = orga_flag.user
+
+    db.session.delete(orga_flag)
+    db.session.commit()
+
+    flash_success('{} wurde das Orga-Flag für die Marke {} entzogen.'
+                  .format(user.screen_name, brand.title))
+    return url_for('.persons_for_brand', brand_id=brand.id)
 
 
 @blueprint.route('/persons/<brand_id>/export')

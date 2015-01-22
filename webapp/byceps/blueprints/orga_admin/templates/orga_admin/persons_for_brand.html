@@ -4,7 +4,15 @@
 {% from 'macros/misc.html' import render_faint, render_with_fallback %}
 {% from 'macros/user_admin.html' import render_user_admin_link %}
 {% set current_page = 'orga_admin.persons' %}
-{% set title = 'Orgas' %}
+{% set title = 'Organisatoren' %}
+
+{% block head %}
+    <script>
+      $(function() {
+        confirmed_delete_on_click('a.orgaflag-remove', 'Person den Orga-Status entziehen?');
+      });
+    </script>
+{%- endblock head %}
 
 {% block body %}
 
@@ -43,9 +51,10 @@
           {{- render_with_fallback(user.detail.city) -}}
         </td>
         <td class="nowrap">
-          <a href="mailto:{{- user.email_address }}">{{- user.email_address }}</a><br/>
+          <a href="mailto:{{- user.email_address }}">{{- user.email_address|truncate(28, killwords=True, end='…') }}</a><br/>
           {{- render_with_fallback(user.detail.phone_number) -}}
         </td>
+        <td><a href="{{ url_for('.orgaflag_remove', brand_id=brand.id, user_id=user.id) }}" class="action orgaflag-remove" title="Person den Orga-Status entziehen">{{ render_icon('remove') }}</a></td>
       </tr>
       {%- endfor %}
       <tr>
