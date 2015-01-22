@@ -58,7 +58,7 @@ def persons_for_brand(brand_id):
     }
 
 
-@blueprint.route('/<brand_id>/persons/<user_id>', methods=['DELETE'])
+@blueprint.route('/persons/<brand_id>/<user_id>', methods=['DELETE'])
 @permission_required(OrgaTeamPermission.administrate_memberships)
 @respond_no_content_with_location
 def remove_orgaflag(brand_id, user_id):
