@@ -61,7 +61,7 @@ def persons_for_brand(brand_id):
 @blueprint.route('/<brand_id>/persons/<user_id>', methods=['DELETE'])
 @permission_required(OrgaTeamPermission.administrate_memberships)
 @respond_no_content_with_location
-def orgaflag_remove(brand_id, user_id):
+def remove_orgaflag(brand_id, user_id):
     """Remove the organizer flag for a brand from a person."""
     orga_flag = OrgaFlag.query \
         .filter_by(brand_id=brand_id) \

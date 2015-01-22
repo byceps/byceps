@@ -54,7 +54,7 @@
           <a href="mailto:{{- user.email_address }}">{{- user.email_address|truncate(28, killwords=True, end='…') }}</a><br/>
           {{- render_with_fallback(user.detail.phone_number) -}}
         </td>
-        <td><a href="{{ url_for('.orgaflag_remove', brand_id=brand.id, user_id=user.id) }}" class="action orgaflag-remove" title="Person den Orga-Status entziehen">{{ render_icon('remove') }}</a></td>
+        <td><a href="{{ url_for('.remove_orgaflag', brand_id=brand.id, user_id=user.id) }}" class="action orgaflag-remove" title="Person den Orga-Status entziehen">{{ render_icon('remove') }}</a></td>
       </tr>
       {%- endfor %}
       <tr>
