@@ -1,0 +1,24 @@
+{% extends 'layout/base.html' %}
+{% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
+{% from 'macros/icons.html' import render_icon %}
+{% set current_page = 'orga_admin.persons' %}
+{% set title = 'Person zum Orga ernennen' %}
+
+{% block body %}
+
+  <nav class="breadcrumbs">
+    <ol>
+      <li><a href="{{ url_for('.persons_for_brand', brand_id=brand.id) }}">{{ brand.title }}</a></li>
+      <li>{{ render_icon('add') }} {{ title }}</li>
+    </ol>
+  </nav>
+
+  <form action="{{ url_for('.create_orgaflag', brand_id=brand.id) }}" method="post">
+    {% call form_fieldset() %}
+      {{ form_field(form.user_id, maxlength=36, required='required', autofocus='autofocus') }}
+    {% endcall %}
+
+    {{ form_buttons('Zum Orga ernennen', cancel_url=url_for('.persons_for_brand', brand_id=brand.id)) }}
+  </form>
+
+{%- endblock body %}

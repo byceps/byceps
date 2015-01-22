@@ -9,22 +9,24 @@ byceps.blueprints.orga_admin.views
 
 from operator import attrgetter
 
-from flask import url_for
+from flask import request, url_for
 
 from ...database import db
 from ...util.export import serialize_to_csv
 from ...util.framework import create_blueprint, flash_success
 from ...util.templating import templated
-from ...util.views import respond_no_content_with_location, textified
+from ...util.views import redirect_to, respond_no_content_with_location, textified
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 from ..brand.models import Brand
 from ..orga.models import Membership, OrgaFlag, OrgaTeam
 from ..party.models import Party
+from ..user.models import User
 
 from .authorization import OrgaBirthdayPermission, OrgaDetailPermission, \
     OrgaTeamPermission
+from .forms import OrgaFlagCreateForm
 from .service import collect_orgas_with_next_birthdays, get_organizers_for_brand
 
 
@@ -56,6 +58,40 @@ def persons_for_brand(brand_id):
         'brand': brand,
         'orgas': orgas,
     }
+
+
+@blueprint.route('/persons/<brand_id>/create')
+@permission_required(OrgaTeamPermission.administrate_memberships)
+@templated
+def create_orgaflag_form(brand_id):
+    """Show form to give the organizer flag to a user."""
+    brand = Brand.query.get_or_404(brand_id)
+    form = OrgaFlagCreateForm()
+    return {
+        'brand': brand,
+        'form': form,
+    }
+
+
+@blueprint.route('/persons/<brand_id>', methods=['POST'])
+@permission_required(OrgaTeamPermission.administrate_memberships)
+def create_orgaflag(brand_id):
+    """Give the organizer flag to a user."""
+    brand = Brand.query.get_or_404(brand_id)
+    form = OrgaFlagCreateForm(request.form)
+
+    user_id = form.user_id.data.strip()
+    user = User.query.get_or_404(user_id)
+
+    orga_flag = OrgaFlag(
+        brand=brand,
+        user=user)
+    db.session.add(orga_flag)
+    db.session.commit()
+
+    flash_success('{} wurde das Orga-Flag für die Marke {} gegeben.'
+                  .format(user.screen_name, brand.title))
+    return redirect_to('.persons_for_brand', brand_id=brand.id)
 
 
 @blueprint.route('/persons/<brand_id>/<user_id>', methods=['DELETE'])
