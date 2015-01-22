@@ -159,6 +159,11 @@ class Topic(db.Model):
 
         return topic
 
+    def may_be_updated_by_user(self, user):
+        return not self.locked \
+            and user == self.creator \
+            and user.has_permission(BoardTopicPermission.update) %}
+
     def update(self, title, body):
         self.title = title.strip()
 
@@ -360,6 +365,11 @@ class Posting(db.Model):
         topic.aggregate()
 
         return posting
+
+    def may_be_updated_by_user(self, user):
+        return not self.topic.locked \
+            and user == self.creator \
+            and user.has_permission(BoardPostingPermission.update) %}
 
     def update(self, body, *, commit=True):
         self.body = body.strip()
