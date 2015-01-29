@@ -60,6 +60,21 @@ address {
 }
 
 
+/* "micro clearfix" */
+
+.clearfix {
+  *zoom: 1;
+}
+.clearfix:before,
+.clearfix:after {
+  content: ' ';
+  display: table;
+}
+.clearfix:after {
+  clear: both;
+}
+
+
 /* basic */
 
 html {
