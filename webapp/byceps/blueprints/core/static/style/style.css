@@ -30,6 +30,11 @@ section {
   display: block;
 }
 
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
 ol {
   list-style: none;
   margin: 0;
@@ -371,10 +376,6 @@ td {
   vertical-align: top;
 }
 
-table.index {
-  border-collapse: collapse;
-  border-spacing: 0;
-}
 table.index th,
 table.index td {
   line-height: 1.2em;
