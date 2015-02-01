@@ -330,6 +330,9 @@ fieldset textarea {
   height: 20rem;
   resize: vertical;
 }
+fieldset textarea.wide {
+  width: 100%;
+}
 fieldset .supplement {
   display: inline-block;
   margin-left: -4px;
