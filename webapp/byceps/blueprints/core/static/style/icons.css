@@ -81,6 +81,7 @@ li [class*=" icon-"] {
 .icon-search:before         { content: "\f002"; }
 .icon-shopping-cart:before  { content: "\f07a"; }
 .icon-sorted:before         { content: "\f0dc"; }
+.icon-steam:before          { content: "\f1b6"; }
 .icon-success:before        { content: "\f00c"; }
 .icon-text:before           { content: "\f0f6"; }
 .icon-ticket:before         { content: "\f145"; }
