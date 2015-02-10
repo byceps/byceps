@@ -463,21 +463,19 @@ nav.pagination li.current {
 .board-postings .body,
 .tourney-match-comments aside,
 .tourney-match-comments .body {
-  display: inline-block;
+  display: table-cell;
   vertical-align: top;
 }
 .board-postings aside,
 .tourney-match-comments aside {
   font-size: 0.9rem;
-  margin-right: 4px;
-  width: 130px;
+  width: 136px;
 }
 .board-postings .body,
 .tourney-match-comments .body {
   font-size: 1rem;
   overflow: hidden;
   text-overflow: ellipsis;
-  width: 520px;
 }
 
 .board-postings aside .creator,
