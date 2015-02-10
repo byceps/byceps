@@ -92,3 +92,4 @@ li [class*=" icon-"] {
 .icon-user:before           { content: "\f007"; }
 .icon-users:before          { content: "\f0c0"; }
 .icon-view:before           { content: "\f06e"; }
+.icon-warning:before        { content: "\f071"; }

@@ -15,6 +15,10 @@
     </ol>
   </nav>
 
+  {%- if posting.creator != g.current_user %}
+  <p class="notification-info">{{ render_icon('warning') }} Du bist im Begriff, einen Beitrag von jemand anderem zu verändern.</p>
+  {%- endif %}
+
   <form action="{{ url_for('.posting_update', id=posting.id) }}" method="post">
     {% call form_fieldset() %}
       {{ form_field(form.body, required='required', autofocus='autofocus') }}
