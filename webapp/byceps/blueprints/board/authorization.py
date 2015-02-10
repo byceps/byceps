@@ -13,6 +13,7 @@ from byceps.util.authorization import create_permission_enum
 BoardTopicPermission = create_permission_enum('board_topic', [
     'create',
     'update',
+    'update_of_others',
     'hide',
     'lock',
     'move',
@@ -24,6 +25,7 @@ BoardTopicPermission = create_permission_enum('board_topic', [
 BoardPostingPermission = create_permission_enum('board_posting', [
     'create',
     'update',
+    'update_of_others',
     'hide',
     'view_hidden',
 ])

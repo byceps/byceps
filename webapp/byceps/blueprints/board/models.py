@@ -160,9 +160,13 @@ class Topic(db.Model):
         return topic
 
     def may_be_updated_by_user(self, user):
-        return not self.locked \
-            and user == self.creator \
-            and user.has_permission(BoardTopicPermission.update)
+        return not self.locked and (
+            (
+                user == self.creator and \
+                user.has_permission(BoardTopicPermission.update)
+            ) or \
+            user.has_permission(BoardTopicPermission.update_of_others)
+        )
 
     def update(self, title, body):
         self.title = title.strip()
@@ -367,9 +371,13 @@ class Posting(db.Model):
         return posting
 
     def may_be_updated_by_user(self, user):
-        return not self.topic.locked \
-            and user == self.creator \
-            and user.has_permission(BoardPostingPermission.update)
+        return not self.topic.locked and (
+            (
+                user == self.creator and \
+                user.has_permission(BoardPostingPermission.update)
+            ) or \
+            user.has_permission(BoardPostingPermission.update_of_others)
+        )
 
     def update(self, body, *, commit=True):
         self.body = body.strip()
