@@ -1,6 +1,7 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
 {% from 'macros/icons.html' import render_icon %}
+{% from 'macros/misc.html' import render_notification %}
 {% set current_page = 'board' %}
 {% set title = 'Beitrag bearbeiten' %}
 
@@ -16,7 +17,7 @@
   </nav>
 
   {%- if posting.creator != g.current_user %}
-  <p class="notification-info">{{ render_icon('warning') }} Du bist im Begriff, einen Beitrag von jemand anderem zu verändern.</p>
+  {{ render_notification('info', 'warning', 'Du bist im Begriff, einen Beitrag von jemand anderem zu verändern.') }}
   {%- endif %}
 
   <form action="{{ url_for('.posting_update', id=posting.id) }}" method="post">

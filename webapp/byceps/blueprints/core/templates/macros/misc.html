@@ -1,5 +1,12 @@
+{%- from 'macros/icons.html' import render_icon %}
+
+
 {% macro render_faint(value) -%}
   <span class="faint">{{ value }}</span>
+{%- endmacro %}
+
+{% macro render_notification(category, icon, text) -%}
+  <p class="notification-{{ category }}">{{ render_icon(icon) }} {{ text }}</p>
 {%- endmacro %}
 
 {% macro render_with_fallback(value) %}
