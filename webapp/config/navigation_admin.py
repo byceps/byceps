@@ -6,7 +6,8 @@ from byceps.blueprints.orga_admin.authorization import OrgaBirthdayPermission, \
     OrgaDetailPermission, OrgaTeamPermission
 from byceps.blueprints.orga_presence.authorization import OrgaPresencePermission
 from byceps.blueprints.party_admin.authorization import PartyPermission
-from byceps.blueprints.shop_admin.authorization import ShopPermission
+from byceps.blueprints.shop_admin.authorization import ShopArticlePermission, \
+    ShopOrderPermission
 from byceps.blueprints.snippet_admin.authorization import SnippetPermission
 from byceps.blueprints.terms_admin.authorization import TermsPermission
 from byceps.blueprints.ticket_admin.authorization import TicketPermission
@@ -27,8 +28,8 @@ orgas.add_item('orga_admin.teams', 'Teams', id='orga_admin.teams', required_perm
 orgas.add_item('orga_presence.index', 'Anwesenheit', id='orga_presence', required_permission=OrgaPresencePermission.list)
 
 shop = Navigation('Shop')
-shop.add_item('shop_admin.article_index', 'Artikel', id='shop_admin.articles', required_permission=ShopPermission.list_articles)
-shop.add_item('shop_admin.order_index', 'Bestellungen', id='shop_admin.orders', required_permission=ShopPermission.list_orders)
+shop.add_item('shop_admin.article_index', 'Artikel', id='shop_admin.articles', required_permission=ShopArticlePermission.list)
+shop.add_item('shop_admin.order_index', 'Bestellungen', id='shop_admin.orders', required_permission=ShopOrderPermission.list)
 
 misc = Navigation('Verschiedenes')
 misc.add_item('party_admin.index', 'Parties', id='party_admin', required_permission=PartyPermission.list)

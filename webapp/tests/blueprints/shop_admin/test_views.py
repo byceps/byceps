@@ -3,7 +3,7 @@
 from datetime import date
 
 from byceps.blueprints.authorization.models import Permission, Role
-from byceps.blueprints.shop_admin.authorization import ShopPermission
+from byceps.blueprints.shop_admin.authorization import ShopOrderPermission
 from byceps.blueprints.shop.models import Article, Order, PaymentState
 from byceps.blueprints.user.models import User
 
@@ -22,7 +22,7 @@ class ShopAdminTestCase(AbstractAppTestCase):
 
     def setUp_current_user(self):
         update_orders_permission = Permission.from_enum_member(
-            ShopPermission.update_orders)
+            ShopOrderPermission.update)
         self.db.session.add(update_orders_permission)
 
         shop_admin_role = Role(id='shop_admin')

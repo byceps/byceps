@@ -23,7 +23,7 @@ from ..shop.signals import order_canceled, order_paid
 from ..ticket.service import find_ticket_for_user
 from ..party.models import Party
 
-from .authorization import ShopPermission
+from .authorization import ShopArticlePermission, ShopOrderPermission
 from .forms import ArticleUpdateForm
 from .service import count_ordered_articles
 
@@ -31,11 +31,12 @@ from .service import count_ordered_articles
 blueprint = create_blueprint('shop_admin', __name__)
 
 
-permission_registry.register_enum(ShopPermission)
+permission_registry.register_enum(ShopArticlePermission)
+permission_registry.register_enum(ShopOrderPermission)
 
 
 @blueprint.route('/articles')
-@permission_required(ShopPermission.list_articles)
+@permission_required(ShopArticlePermission.list)
 @templated
 def article_index():
     """List parties to choose from."""
@@ -45,7 +46,7 @@ def article_index():
 
 @blueprint.route('/parties/<party_id>/articles', defaults={'page': 1})
 @blueprint.route('/parties/<party_id>/articles/pages/<int:page>')
-@permission_required(ShopPermission.list_articles)
+@permission_required(ShopArticlePermission.list)
 @templated
 def article_index_for_party(party_id, page):
     """List articles for that party."""
@@ -65,7 +66,7 @@ def article_index_for_party(party_id, page):
 
 
 @blueprint.route('/articles/<id>')
-@permission_required(ShopPermission.list_articles)
+@permission_required(ShopArticlePermission.view)
 @templated
 def article_view(id):
     """Show a single article."""
@@ -79,7 +80,7 @@ def article_view(id):
 
 
 @blueprint.route('/articles/<id>/ordered')
-@permission_required(ShopPermission.list_articles)
+@permission_required(ShopArticlePermission.view)
 @templated
 def article_view_ordered(id):
     """List the people that have ordered this article, and the
@@ -114,7 +115,7 @@ def article_view_ordered(id):
 
 
 @blueprint.route('/articles/<id>/update')
-@permission_required(ShopPermission.update_article)
+@permission_required(ShopArticlePermission.update)
 @templated
 def article_update_form(id):
     """Show form to update an article."""
@@ -129,7 +130,7 @@ def article_update_form(id):
 
 
 @blueprint.route('/articles/<id>', methods=['POST'])
-@permission_required(ShopPermission.update_article)
+@permission_required(ShopArticlePermission.update)
 def article_update(id):
     """Update an article."""
     form = ArticleUpdateForm(request.form)
@@ -145,7 +146,7 @@ def article_update(id):
 
 
 @blueprint.route('/orders')
-@permission_required(ShopPermission.list_orders)
+@permission_required(ShopOrderPermission.list)
 @templated
 def order_index():
     """List orders."""
@@ -158,7 +159,7 @@ def order_index():
 
 @blueprint.route('/parties/<party_id>/orders', defaults={'page': 1})
 @blueprint.route('/parties/<party_id>/orders/pages/<int:page>')
-@permission_required(ShopPermission.list_orders)
+@permission_required(ShopOrderPermission.list)
 @templated
 def order_index_for_party(party_id, page):
     """List orders for that party."""
@@ -184,7 +185,7 @@ def order_index_for_party(party_id, page):
 
 
 @blueprint.route('/orders/<id>')
-@permission_required(ShopPermission.list_orders)
+@permission_required(ShopOrderPermission.view)
 @templated
 def order_view(id):
     """Show a single order."""
@@ -196,7 +197,7 @@ def order_view(id):
 
 
 @blueprint.route('/orders/<id>/cancel', methods=['POST'])
-@permission_required(ShopPermission.update_orders)
+@permission_required(ShopOrderPermission.update)
 def order_cancel(id):
     """Set the payment status of a single order to 'canceled' and
     release the respective article quantities.
@@ -221,7 +222,7 @@ def order_cancel(id):
 
 
 @blueprint.route('/orders/<id>/mark_as_paid', methods=['POST'])
-@permission_required(ShopPermission.update_orders)
+@permission_required(ShopOrderPermission.update)
 def order_mark_as_paid(id):
     """Set the payment status of a single order to 'paid'."""
     order = Order.query.get_or_404(id)

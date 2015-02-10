@@ -10,9 +10,15 @@ byceps.blueprints.shop_admin.authorization
 from byceps.util.authorization import create_permission_enum
 
 
-ShopPermission = create_permission_enum('shop', [
-    'list_articles',
-    'update_article',
-    'list_orders',
-    'update_orders',
+ShopArticlePermission = create_permission_enum('shop_article', [
+    'update',
+    'list',
+    'view',
+])
+
+
+ShopOrderPermission = create_permission_enum('shop_order', [
+    'update',
+    'list',
+    'view',
 ])
