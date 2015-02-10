@@ -199,6 +199,9 @@ p[class|=notification] {
 p[class|=notification]:first-child {
   margin-top: 25px;
 }
+p[class|=notification] [class^=icon-] {
+  margin-right: 5px;
+}
 p.notification-error {
   background-color: #ff9999;
   border-color: #ff1a1a;
