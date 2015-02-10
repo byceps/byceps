@@ -7,7 +7,9 @@ byceps.blueprints.shop.service
 :Copyright: 2006-2015 Jochen Kupperschmidt
 """
 
-from .models import Article, Order
+from ...database import db
+
+from .models import Article, Order, OrderNumberSequence
 
 
 def get_orderable_articles():
@@ -20,6 +22,14 @@ def get_orderable_articles():
         .currently_available() \
         .order_by(Article.description) \
         .all()
+
+
+def generate_order_number(brand):
+    """Calculate and reserve the next sequential order number for the brand."""
+    ons = OrderNumberSequence.query.filter_by(brand=brand).with_for_update().one()
+    ons.value = OrderNumberSequence.value + 1
+    db.session.commit()
+    return ons.value
 
 
 def get_orders_placed_by_user(user):

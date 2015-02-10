@@ -19,6 +19,7 @@ from ...database import BaseQuery, db, generate_uuid
 from ...util.instances import ReprBuilder
 from ...util.money import EuroAmount
 
+from ..brand.models import Brand
 from ..party.models import Party
 from ..user.models import User
 
@@ -125,6 +126,23 @@ def range_all(theType):
     return Range(
         Cut.belowAll(theType=theType),
         Cut.aboveAll(theType=theType))
+
+
+class OrderNumberSequence(db.Model):
+    """The currently highest sequential order number for a brand."""
+    __tablename__ = 'shop_order_number_sequences'
+
+    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    brand_id = db.Column(db.Unicode(20), db.ForeignKey('brands.id'), nullable=False)
+    brand = db.relationship(Brand)
+    value = db.Column(db.Integer, nullable=False)
+
+    def __repr__(self):
+        return ReprBuilder(self) \
+            .add_with_lookup('id') \
+            .add('brand', self.brand_id) \
+            .add_with_lookup('value') \
+            .build()
 
 
 PaymentState = Enum('PaymentState', ['open', 'canceled', 'paid'])
