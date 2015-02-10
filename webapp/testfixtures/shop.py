@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from datetime import date
+from decimal import Decimal
 
 from byceps.blueprints.shop.models import Article, Order
 from byceps.util.money import EuroAmount
@@ -8,8 +9,8 @@ from byceps.util.money import EuroAmount
 from .party import create_party
 
 
-def create_article(*, party=None, description='Cool thing',
-                   available_from=None, available_until=None, price=None,
+def create_article(*, party=None, description='Cool thing', price=None,
+                   tax_rate=None, available_from=None, available_until=None,
                    quantity=1):
     if party is None:
         party = create_party()
@@ -17,10 +18,14 @@ def create_article(*, party=None, description='Cool thing',
     if price is None:
         price = EuroAmount(24, 95)
 
+    if tax_rate is None:
+        tax_rate = Decimal('0.19')
+
     return Article(
         party=party,
         description=description,
         price=price,
+        tax_rate=tax_rate,
         available_from=available_from,
         available_until=available_until,
         quantity=quantity)
