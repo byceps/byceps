@@ -24,6 +24,10 @@ from ..party.models import Party
 from ..user.models import User
 
 
+# -------------------------------------------------------------------- #
+# articles
+
+
 class ArticleQuery(BaseQuery):
 
     def for_current_party(self):
@@ -126,6 +130,10 @@ def range_all(theType):
     return Range(
         Cut.belowAll(theType=theType),
         Cut.aboveAll(theType=theType))
+
+
+# -------------------------------------------------------------------- #
+# orders
 
 
 class OrderNumberSequence(db.Model):
