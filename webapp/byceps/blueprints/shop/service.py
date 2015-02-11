@@ -24,8 +24,22 @@ def get_orderable_articles():
         .all()
 
 
-def generate_order_number(brand):
-    """Calculate and reserve the next sequential order number for the brand."""
+def generate_order_number(party, *, brand_order_serial_generator=None):
+    """Generate and reserve an unused, unique order number for this party."""
+    # Allow easy injection of custom generator callable to simplify testing.
+    if not brand_order_serial_generator:
+        brand_order_serial_generator = _get_next_available_brand_order_serial
+
+    brand_order_serial = brand_order_serial_generator(party.brand)
+
+    return '{}-{:02d}-B{:05d}'.format(
+        party.brand.code,
+        party.brand_party_serial,
+        brand_order_serial)
+
+
+def _get_next_available_brand_order_serial(brand):
+    """Calculate and reserve the next sequential order serial number for the brand."""
     ons = OrderNumberSequence.query.filter_by(brand=brand).with_for_update().one()
     ons.value = OrderNumberSequence.value + 1
     db.session.commit()
