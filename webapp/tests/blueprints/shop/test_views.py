@@ -2,7 +2,8 @@
 
 from datetime import date
 
-from byceps.blueprints.shop.models import Article, Order, PaymentState
+from byceps.blueprints.shop.models import Article, Order, \
+    OrderNumberSequence, PaymentState
 from byceps.blueprints.snippet.models import Snippet
 from byceps.blueprints.user.models import User
 
@@ -20,7 +21,13 @@ class ShopTestCase(AbstractAppTestCase):
         self.app.add_url_rule('/shop/order_placed', 'snippet.order_placed',
                               lambda: None)
 
+        self.setUp_order_number_sequence()
         self.setUp_current_user()
+
+    def setUp_order_number_sequence(self):
+        sequence = OrderNumberSequence(brand=self.brand, value=4)
+        self.db.session.add(sequence)
+        self.db.session.commit()
 
     def setUp_current_user(self):
         self.current_user = self.create_user(99, enabled=True)

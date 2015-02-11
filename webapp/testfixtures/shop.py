@@ -37,6 +37,7 @@ def create_order(placed_by, *, party=None):
 
     return Order(
         party=party,
+        order_number='AEC-04-B00376',
         placed_by=placed_by,
         first_names='John Joseph',
         last_name='Doe',

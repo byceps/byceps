@@ -18,7 +18,8 @@ from ..authorization.decorators import login_required
 
 from .forms import assemble_articles_order_form, OrderForm
 from .models import Article, Order, PaymentState
-from .service import get_orderable_articles, has_user_placed_orders
+from .service import generate_order_number, get_orderable_articles, \
+    has_user_placed_orders
 from .signals import order_placed
 
 
@@ -52,10 +53,12 @@ def order():
     if not form.validate():
         return order_form(form)
 
+    order_number = generate_order_number(g.party)
     user = g.current_user
 
     order = Order(
         party=g.party,
+        order_number=order_number,
         placed_by=user,
         first_names=form.first_names.data.strip(),
         last_name=form.last_name.data.strip(),
@@ -141,8 +144,11 @@ def order_single(article_id):
     if not form.validate():
         return order_single_form(article.id, form)
 
+    order_number = generate_order_number(g.party)
+
     order = Order(
         party=g.party,
+        order_number=order_number,
         placed_by=user,
         first_names=form.first_names.data.strip(),
         last_name=form.last_name.data.strip(),

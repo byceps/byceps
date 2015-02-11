@@ -191,9 +191,10 @@ class Order(db.Model):
     payment_state_updated_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
     payment_state_updated_by = db.relationship(User, foreign_keys=[payment_state_updated_by_id])
 
-    def __init__(self, party, placed_by, first_names, last_name, date_of_birth,
-                 zip_code, city, street):
+    def __init__(self, party, order_number, placed_by, first_names, last_name,
+                 date_of_birth, zip_code, city, street):
         self.party = party
+        self.order_number = order_number
         self.placed_by = placed_by
         self.first_names = first_names
         self.last_name = last_name
@@ -244,6 +245,7 @@ class Order(db.Model):
         return ReprBuilder(self) \
             .add_with_lookup('id') \
             .add('party', self.party_id) \
+            .add_with_lookup('order_number') \
             .add('placed_by', self.placed_by.screen_name) \
             .add_custom('{:d} items'.format(len(self.items))) \
             .add_custom(self.payment_state.name) \
