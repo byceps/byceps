@@ -86,8 +86,8 @@ class User(db.Model):
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.now, nullable=False)
-    screen_name = db.Column(db.Unicode(40), unique=True)
-    email_address = db.Column(db.Unicode(80), unique=True)
+    screen_name = db.Column(db.Unicode(40), unique=True, nullable=False)
+    email_address = db.Column(db.Unicode(80), unique=True, nullable=False)
     password_hash = db.Column(db.Unicode(66))
     auth_token = db.Column(db.Uuid)
     enabled = db.Column(db.Boolean, default=False, nullable=False)

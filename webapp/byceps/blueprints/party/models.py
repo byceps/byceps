@@ -23,12 +23,12 @@ class Party(db.Model):
     __tablename__ = 'parties'
 
     id = db.Column(db.Unicode(40), primary_key=True)
-    brand_id = db.Column(db.Unicode(20), db.ForeignKey('brands.id'))
+    brand_id = db.Column(db.Unicode(20), db.ForeignKey('brands.id'), index=True, nullable=False)
     brand = db.relationship(Brand, backref='parties')
-    title = db.Column(db.Unicode(40), unique=True)
-    starts_at = db.Column(db.DateTime)
-    ends_at = db.Column(db.DateTime)
-    is_archived = db.Column(db.Boolean, default=False)
+    title = db.Column(db.Unicode(40), unique=True, nullable=False)
+    starts_at = db.Column(db.DateTime, nullable=False)
+    ends_at = db.Column(db.DateTime, nullable=False)
+    is_archived = db.Column(db.Boolean, default=False, nullable=False)
 
     @hybrid_property
     def range(self):
