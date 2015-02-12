@@ -12,6 +12,10 @@
 
   <table class="index">
     <tr>
+      <th>Bestellnummer</th>
+      <td>{{ order.order_number }}</td>
+    </tr>
+    <tr>
       <th>Zeitpunkt</th>
       <td>{{ render_datetime(order.created_at) }}</td>
     </tr>
