@@ -24,7 +24,7 @@ class SerialNumberGenerationTestCase(AbstractAppTestCase):
         last_assigned_article_serial_number = 41
 
         brand = create_brand(code='XYZ')
-        party = create_party(brand=brand, brand_party_serial=9)
+        party = create_party(brand=brand, number=9)
         self.set_article_number_sequence(value=last_assigned_article_serial_number)
 
         actual = generate_article_number(party)
@@ -42,7 +42,7 @@ class SerialNumberGenerationTestCase(AbstractAppTestCase):
         last_assigned_order_serial_number = 206
 
         brand = create_brand(code='LOL')
-        party = create_party(brand=brand, brand_party_serial=3)
+        party = create_party(brand=brand, number=3)
         self.set_order_number_sequence(value=last_assigned_order_serial_number)
 
         actual = generate_order_number(party)
