@@ -24,13 +24,9 @@ def get_orderable_articles():
         .all()
 
 
-def generate_order_number(party, *, brand_order_serial_generator=None):
+def generate_order_number(party):
     """Generate and reserve an unused, unique order number for this party."""
-    # Allow easy injection of custom generator callable to simplify testing.
-    if not brand_order_serial_generator:
-        brand_order_serial_generator = _get_next_available_brand_order_serial
-
-    brand_order_serial = brand_order_serial_generator(party.brand)
+    brand_order_serial = _get_next_available_brand_order_serial(party.brand)
 
     return '{}-{:02d}-B{:05d}'.format(
         party.brand.code,
