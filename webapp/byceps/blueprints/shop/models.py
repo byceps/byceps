@@ -19,7 +19,6 @@ from ...database import BaseQuery, db, generate_uuid
 from ...util.instances import ReprBuilder
 from ...util.money import EuroAmount
 
-from ..brand.models import Brand
 from ..party.models import Party
 from ..user.models import User
 
@@ -134,23 +133,6 @@ def range_all(theType):
 
 # -------------------------------------------------------------------- #
 # orders
-
-
-class OrderNumberSequence(db.Model):
-    """The currently highest sequential order number for a brand."""
-    __tablename__ = 'shop_order_number_sequences'
-
-    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    brand_id = db.Column(db.Unicode(20), db.ForeignKey('brands.id'), nullable=False)
-    brand = db.relationship(Brand)
-    value = db.Column(db.Integer, nullable=False)
-
-    def __repr__(self):
-        return ReprBuilder(self) \
-            .add_with_lookup('id') \
-            .add('brand', self.brand_id) \
-            .add_with_lookup('value') \
-            .build()
 
 
 PaymentState = Enum('PaymentState', ['open', 'canceled', 'paid'])
@@ -279,3 +261,45 @@ class OrderItem(db.Model):
     @price.setter
     def price(self, amount):
         self._price = amount.to_int()
+
+
+# -------------------------------------------------------------------- #
+# sequences
+
+
+PartySequencePurpose = Enum('PartySequencePurpose', ['order'])
+
+
+class PartySequence(db.Model):
+    """A sequence for a party and a purpose."""
+    __tablename__ = 'shop_party_sequences'
+    __table_args__ = (
+        db.UniqueConstraint('party_id', 'purpose'),
+    )
+
+    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    party_id = db.Column(db.Unicode(20), db.ForeignKey('parties.id'), nullable=False)
+    party = db.relationship(Party)
+    _purpose = db.Column('purpose', db.Unicode(20), nullable=False)
+    value = db.Column(db.Integer, default=0, nullable=False)
+
+    def __init__(self, party, purpose):
+        self.party = party
+        self.purpose = purpose
+
+    @hybrid_property
+    def purpose(self):
+        return PartySequencePurpose[self._purpose]
+
+    @purpose.setter
+    def purpose(self, purpose):
+        assert purpose is not None
+        self._purpose = purpose.name
+
+    def __repr__(self):
+        return ReprBuilder(self) \
+            .add_with_lookup('id') \
+            .add('party', self.party_id) \
+            .add('purpose', self.purpose.name) \
+            .add_with_lookup('value') \
+            .build()

@@ -3,7 +3,7 @@
 from datetime import date
 from decimal import Decimal
 
-from byceps.blueprints.shop.models import Article, Order
+from byceps.blueprints.shop.models import Article, Order, PartySequence
 from byceps.util.money import EuroAmount
 
 from .party import create_party
@@ -46,3 +46,9 @@ def create_order(placed_by, *, party=None):
         street='Elite Street 1337',
         city='Atrocity',
     )
+
+
+def create_party_sequence(party, purpose, *, value=0):
+    sequence = PartySequence(party, purpose)
+    sequence.value = value
+    return sequence

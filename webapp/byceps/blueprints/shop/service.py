@@ -9,7 +9,7 @@ byceps.blueprints.shop.service
 
 from ...database import db
 
-from .models import Article, Order, OrderNumberSequence
+from .models import Article, Order, PartySequence, PartySequencePurpose
 
 
 def get_orderable_articles():
@@ -26,20 +26,28 @@ def get_orderable_articles():
 
 def generate_order_number(party):
     """Generate and reserve an unused, unique order number for this party."""
-    brand_order_serial = _get_next_available_brand_order_serial(party.brand)
+    brand_code = party.brand.code
+    party_serial_number = party.brand_party_serial
+    order_serial_number = _get_next_serial_number(party,
+                                                  PartySequencePurpose.order)
 
     return '{}-{:02d}-B{:05d}'.format(
-        party.brand.code,
-        party.brand_party_serial,
-        brand_order_serial)
+        brand_code,
+        party_serial_number,
+        order_serial_number)
 
 
-def _get_next_available_brand_order_serial(brand):
-    """Calculate and reserve the next sequential order serial number for the brand."""
-    ons = OrderNumberSequence.query.filter_by(brand=brand).with_for_update().one()
-    ons.value = OrderNumberSequence.value + 1
+def _get_next_serial_number(party, purpose):
+    """Calculate and reserve the next serial number for the party and purpose."""
+    sequence = PartySequence.query \
+        .filter_by(party=party) \
+        .filter_by(_purpose=purpose.name) \
+        .with_for_update() \
+        .one()
+
+    sequence.value = PartySequence.value + 1
     db.session.commit()
-    return ons.value
+    return sequence.value
 
 
 def get_orders_placed_by_user(user):

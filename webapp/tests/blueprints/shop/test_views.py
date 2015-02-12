@@ -3,11 +3,11 @@
 from datetime import date
 
 from byceps.blueprints.shop.models import Article, Order, \
-    OrderNumberSequence, PaymentState
+    PartySequencePurpose, PaymentState
 from byceps.blueprints.snippet.models import Snippet
 from byceps.blueprints.user.models import User
 
-from testfixtures.shop import create_article
+from testfixtures.shop import create_article, create_party_sequence
 from testfixtures.user import create_user
 
 from tests import AbstractAppTestCase
@@ -25,7 +25,9 @@ class ShopTestCase(AbstractAppTestCase):
         self.setUp_current_user()
 
     def setUp_order_number_sequence(self):
-        sequence = OrderNumberSequence(brand=self.brand, value=4)
+        sequence = create_party_sequence(self.party,
+                                         PartySequencePurpose.order,
+                                         value=4)
         self.db.session.add(sequence)
         self.db.session.commit()
 
