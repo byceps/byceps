@@ -21,6 +21,9 @@ from ..brand.models import Brand
 class Party(db.Model):
     """A party."""
     __tablename__ = 'parties'
+    __table_args__ = (
+        db.UniqueConstraint('brand_id', 'number'),
+    )
 
     id = db.Column(db.Unicode(40), primary_key=True)
     brand_id = db.Column(db.Unicode(20), db.ForeignKey('brands.id'), index=True, nullable=False)
