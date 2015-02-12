@@ -24,6 +24,19 @@ def get_orderable_articles():
         .all()
 
 
+def generate_article_number(party):
+    """Generate and reserve an unused, unique article number for this party."""
+    brand_code = party.brand.code
+    party_serial_number = party.brand_party_serial
+    article_serial_number = _get_next_serial_number(party,
+                                                    PartySequencePurpose.article)
+
+    return '{}-{:02d}-A{:05d}'.format(
+        brand_code,
+        party_serial_number,
+        article_serial_number)
+
+
 def generate_order_number(party):
     """Generate and reserve an unused, unique order number for this party."""
     brand_code = party.brand.code

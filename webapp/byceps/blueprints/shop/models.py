@@ -267,7 +267,7 @@ class OrderItem(db.Model):
 # sequences
 
 
-PartySequencePurpose = Enum('PartySequencePurpose', ['order'])
+PartySequencePurpose = Enum('PartySequencePurpose', ['article', 'order'])
 
 
 class PartySequence(db.Model):
