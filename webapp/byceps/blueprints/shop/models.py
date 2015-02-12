@@ -273,14 +273,10 @@ PartySequencePurpose = Enum('PartySequencePurpose', ['article', 'order'])
 class PartySequence(db.Model):
     """A sequence for a party and a purpose."""
     __tablename__ = 'shop_party_sequences'
-    __table_args__ = (
-        db.UniqueConstraint('party_id', 'purpose'),
-    )
 
-    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    party_id = db.Column(db.Unicode(20), db.ForeignKey('parties.id'), nullable=False)
+    party_id = db.Column(db.Unicode(20), db.ForeignKey('parties.id'), primary_key=True)
     party = db.relationship(Party)
-    _purpose = db.Column('purpose', db.Unicode(20), nullable=False)
+    _purpose = db.Column('purpose', db.Unicode(20), primary_key=True)
     value = db.Column(db.Integer, default=0, nullable=False)
 
     def __init__(self, party, purpose):
