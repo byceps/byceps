@@ -56,14 +56,15 @@ class Article(db.Model):
     """An article that can be bought."""
     __tablename__ = 'shop_articles'
     __table_args__ = (
+        db.UniqueConstraint('party_id', 'item_number'),
         db.UniqueConstraint('party_id', 'description'),
     )
     query_class = ArticleQuery
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    item_number = db.Column(db.Unicode(20), unique=True, nullable=False)
     party_id = db.Column(db.Unicode(20), db.ForeignKey('parties.id'), index=True, nullable=False)
     party = db.relationship(Party)
+    item_number = db.Column(db.Unicode(20), unique=True, nullable=False)
     description = db.Column(db.Unicode(80), nullable=False)
     _price = db.Column('price', db.Integer, nullable=False)
     tax_rate = db.Column(db.Numeric(3, 3), nullable=False)
@@ -154,6 +155,9 @@ class Order(db.Model):
     """An order for articles, placed by a user."""
     __tablename__ = 'shop_orders'
     query_class = OrderQuery
+    __table_args__ = (
+        db.UniqueConstraint('party_id', 'order_number'),
+    )
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.now)
