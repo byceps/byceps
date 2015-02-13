@@ -220,22 +220,22 @@ p.notification-success {
 
 nav.breadcrumbs {
   font-size: 0.9rem;
-  margin: 1rem 0;
+  margin: 1rem 0 2rem 0;
 }
 nav.breadcrumbs li {
   display: inline-block;
 }
-nav.breadcrumbs li:before {
-  content: '\0BB \020';
+nav.breadcrumbs li:after {
+  content: ' \0BB \020';
 }
-nav.breadcrumbs li:first-child:before,
-nav.breadcrumbs:not(.compact) li:last-child:before {
+nav.breadcrumbs li:last-child:after {
   content: none;
 }
 nav.breadcrumbs:not(.compact) li:last-child {
   display: block;
-  font-size: 2.2rem;
+  font-size: 2rem;
   font-weight: bold;
+  line-height: 2rem;
   margin-top: 0.5rem;
 }
 
