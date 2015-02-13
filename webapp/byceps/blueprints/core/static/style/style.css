@@ -564,6 +564,13 @@ nav.pagination li.current {
 
 /* misc */
 
+.pull-left {
+  float: left !important;
+}
+.pull-right {
+  float: right !important;
+}
+
 main img {
   max-width: 100%;
 }
@@ -579,6 +586,12 @@ main img {
 .faint,
 .hidden {
   opacity: 0.5;
+}
+
+.hyphenate {
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
 }
 
 .monospace {
