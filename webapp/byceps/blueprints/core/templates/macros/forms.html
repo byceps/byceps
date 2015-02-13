@@ -1,3 +1,6 @@
+{%- from 'macros/icons.html' import render_icon %}
+
+
 {% macro form_fieldset() -%}
   <fieldset>
     <ol>
@@ -59,9 +62,9 @@
 {%- endmacro %}
 
 {# A field set with a submit button. #}
-{% macro form_buttons(label, cancel_url=None) -%}
+{% macro form_buttons(label, icon=None, cancel_url=None) -%}
   <fieldset class="buttons">
-    <button type="submit">{{ label }}</button>
+    <button type="submit">{% if icon %}{{ render_icon(icon) }} {% endif %}{{ label }}</button>
     {%- if cancel_url %} oder <a class="cancel" href="{{ cancel_url }}">abbrechen</a>{% endif -%}
   </fieldset>
 {%- endmacro %}
