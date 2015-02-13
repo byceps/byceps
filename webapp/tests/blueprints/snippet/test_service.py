@@ -17,8 +17,8 @@ class FindLatestVersionOfSnippetTestCase(AbstractAppTestCase):
     def setUp(self):
         super(FindLatestVersionOfSnippetTestCase, self).setUp()
 
-        self.party2014 = self.create_party('lafiesta-2014', 'La Fiesta 2014')
-        self.party2015 = self.create_party('lafiesta-2015', 'La Fiesta 2015')
+        self.party2014 = self.create_party('lafiesta-2014', 4, 'La Fiesta 2014')
+        self.party2015 = self.create_party('lafiesta-2015', 5, 'La Fiesta 2015')
 
         self.snippet_creator = create_user(1)
         self.db.session.add(self.snippet_creator)
@@ -42,8 +42,8 @@ class FindLatestVersionOfSnippetTestCase(AbstractAppTestCase):
     # -------------------------------------------------------------------- #
     # helpers
 
-    def create_party(self, id, title):
-        party = create_party(id=id, title=title, brand=self.brand)
+    def create_party(self, id, number, title):
+        party = create_party(id=id, number=number, title=title, brand=self.brand)
         self.db.session.add(party)
         return party
 
