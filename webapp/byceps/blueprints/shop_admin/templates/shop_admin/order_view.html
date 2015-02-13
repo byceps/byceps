@@ -46,13 +46,13 @@
         {%- if order.payment_state == PaymentState.open %}
           <ol class="actions" style="display: block; margin: 0.5rem 0 0 0;">
             <li>
-              <form action="{{ url_for('.order_cancel', id=order.id) }}" method="post">
-                <button type="submit" class="action">{{ render_icon('disabled') }} als storniert markieren</button>
+              <form action="{{ url_for('.order_mark_as_paid', id=order.id) }}" method="post">
+                <button type="submit" class="action">{{ render_icon('success') }} als bezahlt markieren</button>
               </form>
             </li>
             <li>
-              <form action="{{ url_for('.order_mark_as_paid', id=order.id) }}" method="post">
-                <button type="submit" class="action">{{ render_icon('success') }} als bezahlt markieren</button>
+              <form action="{{ url_for('.order_cancel', id=order.id) }}" method="post">
+                <button type="submit" class="action">{{ render_icon('disabled') }} als storniert markieren</button>
               </form>
             </li>
           </ol>
