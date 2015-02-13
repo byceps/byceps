@@ -24,7 +24,7 @@ from ..ticket.service import find_ticket_for_user
 from ..party.models import Party
 
 from .authorization import ShopArticlePermission, ShopOrderPermission
-from .forms import ArticleUpdateForm
+from .forms import ArticleUpdateForm, OrderCancelForm
 from .service import count_ordered_articles
 
 
@@ -203,9 +203,11 @@ def order_view(id):
 def order_update_payment_form(id):
     """Show form to update an order's payment state."""
     order = Order.query.get_or_404(id)
+    cancel_form = OrderCancelForm()
 
     return {
         'order': order,
+        'cancel_form': cancel_form,
     }
 
 
@@ -215,8 +217,11 @@ def order_cancel(id):
     """Set the payment status of a single order to 'canceled' and
     release the respective article quantities.
     """
+    form = OrderCancelForm(request.form)
+    reason = form.reason.data.strip()
+
     order = Order.query.get_or_404(id)
-    order.cancel()
+    order.cancel(reason)
 
     # Make the reserved quantity of articles available again.
     for item in order.items:

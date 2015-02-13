@@ -176,6 +176,7 @@ class Order(db.Model):
     payment_state_updated_at = db.Column(db.DateTime)
     payment_state_updated_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
     payment_state_updated_by = db.relationship(User, foreign_keys=[payment_state_updated_by_id])
+    cancelation_reason = db.Column(db.Unicode(200))
 
     def __init__(self, party, order_number, placed_by, first_names, last_name,
                  date_of_birth, zip_code, city, street):
@@ -207,9 +208,10 @@ class Order(db.Model):
         """
         return OrderItem(self, article, quantity=quantity)
 
-    def cancel(self):
+    def cancel(self, reason):
         """Cancel the order."""
         self._update_payment_state(PaymentState.canceled)
+        self.cancelation_reason = reason
 
     def mark_as_paid(self):
         """Mark the order as being paid for."""

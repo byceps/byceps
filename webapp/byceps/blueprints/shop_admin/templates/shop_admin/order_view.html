@@ -50,6 +50,12 @@
         {%- endif %}
       </td>
     </tr>
+    {%- if order.payment_state == PaymentState.canceled %}
+    <tr>
+      <th>Begründung für<br/>Stornierung</th>
+      <td>{{ order.cancelation_reason }}</td>
+    </tr>
+    {%- endif %}
   </table>
 
   <h2>Artikel</h2>
