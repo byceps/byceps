@@ -23,6 +23,7 @@ def create_article(*, party=None, description='Cool thing', price=None,
 
     return Article(
         party=party,
+        item_number='AEC-03-A00015',
         description=description,
         price=price,
         tax_rate=tax_rate,
