@@ -190,9 +190,22 @@ def order_index_for_party(party_id, page):
 def order_view(id):
     """Show a single order."""
     order = Order.query.get_or_404(id)
+
     return {
         'order': order,
         'PaymentState': PaymentState,
+    }
+
+
+@blueprint.route('/orders/<id>/update_payment')
+@permission_required(ShopOrderPermission.update)
+@templated
+def order_update_payment_form(id):
+    """Show form to update an order's payment state."""
+    order = Order.query.get_or_404(id)
+
+    return {
+        'order': order,
     }
 
 

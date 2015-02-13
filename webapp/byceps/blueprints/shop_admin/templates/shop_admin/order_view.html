@@ -44,18 +44,7 @@
       <td>
         {{ render_order_payment_state(order.payment_state) }}
         {%- if order.payment_state == PaymentState.open %}
-          <ol class="actions" style="display: block; margin: 0.5rem 0 0 0;">
-            <li>
-              <form action="{{ url_for('.order_mark_as_paid', id=order.id) }}" method="post">
-                <button type="submit" class="action">{{ render_icon('success') }} als bezahlt markieren</button>
-              </form>
-            </li>
-            <li>
-              <form action="{{ url_for('.order_cancel', id=order.id) }}" method="post">
-                <button type="submit" class="action">{{ render_icon('disabled') }} als storniert markieren</button>
-              </form>
-            </li>
-          </ol>
+        <a class="action" style="margin-left: 1em;" href="{{ url_for('.order_update_payment_form', id=order.id) }}">{{ render_icon('edit') }} ändern</a></li>
         {%- elif order.payment_state == PaymentState.canceled or order.payment_state == PaymentState.paid %}
         (gesetzt: {{ render_datetime(order.payment_state_updated_at) }} von {{ render_user_admin_link(order.payment_state_updated_by) }})
         {%- endif %}

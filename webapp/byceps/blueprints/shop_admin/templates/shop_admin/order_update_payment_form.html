@@ -1,0 +1,27 @@
+{% extends 'layout/base.html' %}
+{% from 'macros/forms.html' import form_buttons %}
+{% from 'macros/icons.html' import render_icon %}
+{% set current_page = 'shop_admin.orders' %}
+{% set title = 'Bestellung ändern' %}
+
+{% block body %}
+
+  <nav class="breadcrumbs">
+    <ol>
+      <li><a href="{{ url_for('.order_index_for_party', party_id=order.party.id) }}">{{ order.party.title }}</a></li>
+      <li><a href="{{ url_for('.order_view', id=order.id) }}">{{ order.order_number }}</a></li>
+      <li>{{ render_icon('edit') }} {{ title }}</li>
+    </ol>
+  </nav>
+
+  <h2>Als bezahlt markieren</h2>
+  <form action="{{ url_for('.order_mark_as_paid', id=order.id) }}" method="post">
+    {{ form_buttons('als bezahlt markieren', icon='success', cancel_url=url_for('.order_view', id=order.id)) }}
+  </form>
+
+  <h2>Stornieren</h2>
+  <form action="{{ url_for('.order_cancel', id=order.id) }}" method="post">
+    {{ form_buttons('Stornieren', icon='disabled', cancel_url=url_for('.order_cancel', id=order.id)) }}
+  </form>
+
+{%- endblock body %}
