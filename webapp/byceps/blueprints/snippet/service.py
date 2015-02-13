@@ -22,10 +22,12 @@ def find_latest_version_of_snippet(name):
         .first()
 
     if latest_version is None:
-        raise SnippetNotFound()
+        raise SnippetNotFound(name)
 
     return latest_version
 
 
 class SnippetNotFound(Exception):
-    pass
+
+    def __init__(self, name):
+        self.name = name
