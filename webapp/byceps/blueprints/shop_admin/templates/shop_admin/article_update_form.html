@@ -17,8 +17,7 @@
 
   <form action="{{ url_for('.article_update', id=article.id) }}" method="post">
     {% call form_fieldset() %}
-      {{ form_field(form.item_number, maxlength=20, autofocus='autofocus') }}
-      {{ form_field(form.description, maxlength=80, required='required') }}
+      {{ form_field(form.description, maxlength=80, required='required', autofocus='autofocus') }}
       {{ form_field(form.quantity, type='number', maxlength=4, required='required') }}
     {% endcall %}
 

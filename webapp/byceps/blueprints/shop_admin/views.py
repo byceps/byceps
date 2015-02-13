@@ -176,7 +176,6 @@ def article_update(id):
     form = ArticleUpdateForm(request.form)
 
     article = Article.query.get_or_404(id)
-    article.item_number = form.item_number.data.strip()
     article.description = form.description.data.strip()
     article.quantity = form.quantity.data
     db.session.commit()

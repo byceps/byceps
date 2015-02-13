@@ -18,7 +18,6 @@ class ArticleCreateForm(LocalizedForm):
 
 
 class ArticleUpdateForm(LocalizedForm):
-    item_number = StringField('Artikelnummer')
     description = StringField('Beschreibung')
     quantity = IntegerField('Anzahl verfügbar')
 
