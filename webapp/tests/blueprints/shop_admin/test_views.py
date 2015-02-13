@@ -49,9 +49,10 @@ class ShopAdminTestCase(AbstractAppTestCase):
         self.assertIsNone(order_before.payment_state_updated_by)
 
         url = '/admin/shop/orders/{}/cancel'.format(order_before.id)
+        form_data = {'reason': 'Dein Vorname ist albern!'}
         with self.client.session_transaction() as session:
             session['user_id'] = str(self.current_user.id)
-        response = self.client.post(url)
+        response = self.client.post(url, data=form_data)
 
         order_afterwards = Order.query.get(order_before.id)
         self.assertEqual(response.status_code, 302)
