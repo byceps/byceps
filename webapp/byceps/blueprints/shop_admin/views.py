@@ -12,7 +12,7 @@ from datetime import datetime
 from flask import request
 
 from ...database import db
-from ...util.framework import create_blueprint, flash_success
+from ...util.framework import create_blueprint, flash_error, flash_success
 from ...util.templating import templated
 from ...util.views import redirect_to
 
@@ -205,6 +205,12 @@ def order_update_payment_form(id):
     order = Order.query.get_or_404(id)
     cancel_form = OrderCancelForm()
 
+    if order.payment_state != PaymentState.open:
+        flash_error(
+            'Die Bestellung ist bereits abgeschlossen; '
+            'der Bezahlstatus kann nicht mehr geändert werden.')
+        return redirect_to('.order_view', id=order.id)
+
     return {
         'order': order,
         'cancel_form': cancel_form,
@@ -221,6 +227,13 @@ def order_cancel(id):
     reason = form.reason.data.strip()
 
     order = Order.query.get_or_404(id)
+
+    if order.payment_state != PaymentState.open:
+        flash_error(
+            'Die Bestellung ist bereits abgeschlossen; '
+            'der Bezahlstatus kann nicht mehr geändert werden.')
+        return redirect_to('.order_view', id=order.id)
+
     order.cancel(reason)
 
     # Make the reserved quantity of articles available again.
@@ -244,6 +257,13 @@ def order_cancel(id):
 def order_mark_as_paid(id):
     """Set the payment status of a single order to 'paid'."""
     order = Order.query.get_or_404(id)
+
+    if order.payment_state != PaymentState.open:
+        flash_error(
+            'Die Bestellung ist bereits abgeschlossen; '
+            'der Bezahlstatus kann nicht mehr geändert werden.')
+        return redirect_to('.order_view', id=order.id)
+
     order.mark_as_paid()
     db.session.commit()
 
