@@ -8,23 +8,26 @@ byceps.blueprints.shop_admin.views
 """
 
 from datetime import datetime
+from decimal import Decimal
 
 from flask import request
 
 from ...database import db
 from ...util.framework import create_blueprint, flash_error, flash_success
+from ...util.money import EuroAmount
 from ...util.templating import templated
 from ...util.views import redirect_to
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 from ..shop.models import Article, Order, OrderItem, PaymentState
+from ..shop.service import generate_article_number
 from ..shop.signals import order_canceled, order_paid
 from ..ticket.service import find_ticket_for_user
 from ..party.models import Party
 
 from .authorization import ShopArticlePermission, ShopOrderPermission
-from .forms import ArticleUpdateForm, OrderCancelForm
+from .forms import ArticleCreateForm, ArticleUpdateForm, OrderCancelForm
 from .service import count_ordered_articles
 
 
@@ -112,6 +115,43 @@ def article_view_ordered(id):
         'users_tickets_quantities_orders': users_tickets_quantities_orders,
         'now': datetime.now(),
     }
+
+
+@blueprint.route('/articles/for_party/<party_id>/create')
+@permission_required(ShopArticlePermission.create)
+@templated
+def article_create_form(party_id):
+    """Show form to create an article."""
+    party = Party.query.get_or_404(party_id)
+
+    form = ArticleCreateForm()
+
+    return {
+        'party': party,
+        'form': form,
+    }
+
+
+@blueprint.route('/articles/for_party/<party_id>', methods=['POST'])
+@permission_required(ShopArticlePermission.create)
+def article_create(party_id):
+    """Create an article."""
+    party = Party.query.get_or_404(party_id)
+    form = ArticleCreateForm(request.form)
+
+    item_number = generate_article_number(party)
+    description = form.description.data.strip()
+    price = EuroAmount(9999, 0)  # TODO: Request via form.
+    tax_rate = Decimal(0.19)  # TODO: Request via form.
+    quantity = form.quantity.data
+
+    article = Article(party, item_number, description, price, tax_rate,
+                      quantity)
+    db.session.add(article)
+    db.session.commit()
+
+    flash_success('Des Artikel "{}" wurde angelegt.', article.item_number)
+    return redirect_to('.article_view', id=article.id)
 
 
 @blueprint.route('/articles/<id>/update')

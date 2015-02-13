@@ -43,6 +43,12 @@
     </tbody>
   </table>
 
+  {%- if g.current_user.has_permission(ShopArticlePermission.create) %}
+  <ol class="actions">
+    <li><a href="{{ url_for('.article_create_form', party_id=party.id) }}">{{ render_icon('add') }} Artikel anlegen</a></li>
+  </ol>
+  {%- endif %}
+
 {{ render_pagination_nav(articles, '.article_index_for_party', {'party_id': party.id}) }}
 
 {%- endblock body %}

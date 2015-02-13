@@ -12,6 +12,11 @@ from wtforms import IntegerField, StringField, TextAreaField
 from ...util.l10n import LocalizedForm
 
 
+class ArticleCreateForm(LocalizedForm):
+    description = StringField('Beschreibung')
+    quantity = IntegerField('Anzahl verfügbar')
+
+
 class ArticleUpdateForm(LocalizedForm):
     item_number = StringField('Artikelnummer')
     description = StringField('Beschreibung')
