@@ -12,23 +12,26 @@
   <table class="index wide" style="margin-bottom: 2rem;">
     <thead>
       <tr>
-        <th>Artikelnummer</th>
+        <th>Artikelnr.</th>
         <th>Beschreibung</th>
         <th>Zeitliche<br/>Verfügbarkeit</th>
-        <th>Stückpreis</th>
-        <th>Anzahl<br/>verfügbar</th>
-        <th>Muss einzeln<br/>bestellt werden</th>
+        <th class="hyphenate" style="width: 12%;">Stückpreis</th>
+        <th class="hyphenate" style="width: 10%;">Anzahl<br/>verfügbar</th>
       </tr>
     </thead>
     <tbody>
       {%- for article in articles.items %}
       <tr>
         <td class="nowrap">{{ article.item_number }}</td>
-        <td><a href="{{ url_for('.article_view', id=article.id) }}">{{ article.description }}</a></td>
+        <td>
+          <a href="{{ url_for('.article_view', id=article.id) }}">{{ article.description }}</a>
+          {%- if article.requires_separate_order %}
+          <br/>{{ render_icon('info') }} <em>separat zu bestellen</em>
+          {%- endif %}
+        </td>
         <td>{{ render_article_temporal_availability(article) }}</td>
         <td class="nowrap" style="text-align: right;">{{ article.price.to_string() }}</td>
-        <td style="text-align: right;">{{ article.quantity }}</td>
-        <td class="centered">{{ render_icon('enabled' if article.requires_separate_order else 'disabled') }}</td>
+        <td{% if article.quantity == 0 %} class="faint"{% endif %} style="text-align: right;">{{ article.quantity }}</td>
       </tr>
       {%- endfor %}
       <tr>
