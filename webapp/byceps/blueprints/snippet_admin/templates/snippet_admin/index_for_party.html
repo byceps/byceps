@@ -3,7 +3,7 @@
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/user_admin.html' import render_user_admin_link %}
 {% set current_page = 'snippet_admin' %}
-{% set title = 'Snippets' %}
+{% set title = '%s - Snippets'|format(party.title) %}
 
 {% block head %}
     <script>
@@ -15,9 +15,14 @@
 
 {% block body %}
 
-  <p><strong>Party:</strong> {{ party.title }}
+  <nav class="breadcrumbs">
+    <ol>
+      <li><a href="{{ url_for('.index') }}">Snippets</a></li>
+      <li>{{ party.title }}</li>
+    </ol>
+  </nav>
 
-  <h1>Snippets</h1>
+  <h2>Snippets</h2>
 
   <table class="index wide">
     <thead>

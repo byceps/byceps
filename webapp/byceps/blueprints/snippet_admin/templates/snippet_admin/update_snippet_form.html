@@ -8,6 +8,7 @@
 
   <nav class="breadcrumbs">
     <ol>
+      <li><a href="{{ url_for('.index') }}">Snippets</a></li>
       <li><a href="{{ url_for('.index_for_party', party_id=snippet.party.id) }}">{{ snippet.party.title }}</a></li>
       <li>{{ render_icon('edit') }} {{ title }}</li>
     </ol>
