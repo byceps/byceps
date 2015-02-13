@@ -27,9 +27,9 @@
     <tbody>
       {%- for article in articles.items %}
       <tr>
-        <td class="nowrap">{{ article.item_number }}</td>
+        <td class="nowrap"><a href="{{ url_for('.article_view', id=article.id) }}">{{ article.item_number }}</a></td>
         <td>
-          <a href="{{ url_for('.article_view', id=article.id) }}">{{ article.description }}</a>
+          {{ article.description }}
           {%- if article.requires_separate_order %}
           <br/>{{ render_icon('info') }} <em>separat zu bestellen</em>
           {%- endif %}
