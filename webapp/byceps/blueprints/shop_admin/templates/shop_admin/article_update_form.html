@@ -8,8 +8,10 @@
 
   <nav class="breadcrumbs">
     <ol>
+      <li><a href="{{ url_for('.article_index') }}">Artikel</a></li>
       <li><a href="{{ url_for('.article_index_for_party', party_id=article.party.id) }}">{{ article.party.title }}</a></li>
-      <li>{{ render_icon('edit') }} Artikel bearbeiten</li>
+      <li><a href="{{ url_for('.article_view', id=article.id) }}">{{ article.item_number }}</a></li>
+      <li>{{ render_icon('edit') }} {{ title }}</li>
     </ol>
   </nav>
 

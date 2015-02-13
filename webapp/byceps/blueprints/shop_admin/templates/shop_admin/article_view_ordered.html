@@ -8,7 +8,14 @@
 
 {% block body %}
 
-  <h1>{{ title }}</h1>
+  <nav class="breadcrumbs">
+    <ol>
+      <li><a href="{{ url_for('.article_index') }}">Artikel</a></li>
+      <li><a href="{{ url_for('.article_index_for_party', party_id=article.party.id) }}">{{ article.party.title }}</a></li>
+      <li><a href="{{ url_for('.article_view', id=article.id) }}">{{ article.item_number }}</a></li>
+      <li>{{ title }}</li>
+    </ol>
+  </nav>
 
   <p style="margin: 2rem 0;">
     <small>
