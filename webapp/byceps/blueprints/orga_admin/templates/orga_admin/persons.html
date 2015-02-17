@@ -1,12 +1,17 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'orga_admin.persons' %}
-{% set title = 'Organisatoren - Marke wählen' %}
+{% set title = 'Organisatoren' %}
 
 {% block body %}
 
-  <h1>{{ title }}</h1>
+  <nav class="breadcrumbs">
+    <ol>
+      <li>{{ title }}</li>
+    </ol>
+  </nav>
 
+  <p>Marke wählen:</p>
   <ul>
     {%- for brand in brands|sort(attribute='title') %}
     <li><a href="{{ url_for('.persons_for_brand', brand_id=brand.id) }}">{{ brand.title }}</a></li>

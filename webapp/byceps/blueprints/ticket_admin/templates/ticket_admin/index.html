@@ -1,12 +1,17 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'ticket_admin' %}
-{% set title = 'Tickets - Party wählen' %}
+{% set title = 'Tickets' %}
 
 {% block body %}
 
-  <h1>{{ title }}</h1>
+  <nav class="breadcrumbs">
+    <ol>
+      <li>{{ title }}</li>
+    </ol>
+  </nav>
 
+  <p>Party wählen:</p>
   <ul>
     {%- for party in parties|sort(attribute='starts_at', reverse=True) %}
     <li{% if party.is_archived %} class="hidden"{% endif %}>

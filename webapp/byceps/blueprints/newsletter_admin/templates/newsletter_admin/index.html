@@ -1,12 +1,17 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'newsletter_admin' %}
-{% set title = 'Newsletter - Marke wählen' %}
+{% set title = 'Newsletter' %}
 
 {% block body %}
 
-  <h1>{{ title }}</h1>
+  <nav class="breadcrumbs">
+    <ol>
+      <li>{{ title }}</li>
+    </ol>
+  </nav>
 
+  <p>Marke wählen:</p>
   <ul>
     {%- for brand in brands|sort(attribute='title', reverse=True) %}
     <li><a href="{{ url_for('.view_subscriptions', brand_id=brand.id) }}">{{ brand.title }}</a></li>

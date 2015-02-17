@@ -2,7 +2,7 @@
 {% from 'macros/datetime.html' import render_datetime, render_datetime_custom %}
 {% from 'macros/user_admin.html' import render_user_admin_link %}
 {% set current_page = 'ticket_admin' %}
-{% set title = 'Tickets' %}
+{% set title = '%s - Tickets'|format(party.title) %}
 
 {% block head %}
     <style>
@@ -15,9 +15,12 @@
 
 {% block body %}
 
-  <h1>{{ title }}</h1>
-
-  <p><strong>Party:</strong> {{ party.title }}
+  <nav class="breadcrumbs">
+    <ol>
+      <li><a href="{{ url_for('.index') }}">{{ party.title }}</a></li>
+      <li>Tickets</li>
+    </ol>
+  </nav>
 
   <table class="index wide">
     <thead>

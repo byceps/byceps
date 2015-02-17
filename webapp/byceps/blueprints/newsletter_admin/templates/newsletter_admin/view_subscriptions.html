@@ -27,7 +27,13 @@
 
 {% block body %}
 
-  <h1>{{ title }}</h1>
+  <nav class="breadcrumbs">
+    <ol>
+      <li><a href="{{ url_for('.index') }}">Newsletter</a></li>
+      <li>{{ brand.title }}</li>
+      <li>Bestellstatus</li>
+    </ol>
+  </nav>
 
   <div class="bigstats">
     {{ render_bigstats_item(totals[State.requested], 'angefordert', icon_name='enabled', color='#008800') }}

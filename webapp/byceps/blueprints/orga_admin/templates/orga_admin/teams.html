@@ -1,12 +1,17 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'orga_admin.teams' %}
-{% set title = 'Orgateams - Party wählen' %}
+{% set title = 'Orgateams' %}
 
 {% block body %}
 
-  <h1>{{ title }}</h1>
+  <nav class="breadcrumbs">
+    <ol>
+      <li>{{ title }}</li>
+    </ol>
+  </nav>
 
+  <p>Party wählen:</p>
   <ul>
     {%- for party in parties|sort(attribute='starts_at', reverse=True) %}
     <li{% if party.is_archived %} class="hidden"{% endif %}>

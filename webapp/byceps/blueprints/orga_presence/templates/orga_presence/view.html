@@ -10,9 +10,12 @@
 
 {% block body %}
 
-  <h1>{{ title }}</h1>
-
-  <p><strong>Party:</strong> {{ party.title }}
+  <nav class="breadcrumbs">
+    <ol>
+      <li><a href="{{ url_for('.index') }}">{{ party.title }}</a></li>
+      <li>{{ title }}</li>
+    </ol>
+  </nav>
 
   <div style="overflow-x: scroll;">
     <table class="index wide">
@@ -28,7 +31,7 @@
           <th>Beginn</th>
           <th>Ende</th>
           {%- for hour_range in hour_ranges %}
-          <th class="bar-column">{{ render_datetime_custom(hour_range.start, '%H') }}h</th>
+          <th class="bar-column">{{ render_datetime_custom(hour_range.start, '%H') }}</th>
           {%- endfor %}
         </tr>
       </thead>
