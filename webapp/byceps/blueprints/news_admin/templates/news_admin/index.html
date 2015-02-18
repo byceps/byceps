@@ -1,0 +1,20 @@
+{% extends 'layout/base.html' %}
+{% set current_page = 'news_item' %}
+{% set title = 'News' %}
+
+{% block body %}
+
+  <nav class="breadcrumbs">
+    <ol>
+      <li>{{ title }}</li>
+    </ol>
+  </nav>
+
+  <p>Marke wählen:</p>
+  <ul>
+    {%- for brand in brands|sort(attribute='title', reverse=True) %}
+    <li><a href="{{ url_for('.index_for_brand', brand_id=brand.id) }}">{{ brand.title }}</a></li>
+    {%- endfor %}
+  </ul>
+
+{%- endblock body %}

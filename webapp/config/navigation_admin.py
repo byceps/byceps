@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from byceps.blueprints.authorization_admin.authorization import RolePermission
+from byceps.blueprints.news_admin.authorization import NewsItemPermission
 from byceps.blueprints.newsletter_admin.authorization import NewsletterPermission
 from byceps.blueprints.orga_admin.authorization import OrgaBirthdayPermission, \
     OrgaDetailPermission, OrgaTeamPermission
@@ -34,6 +35,7 @@ shop.add_item('shop_admin.order_index', 'Bestellungen', id='shop_admin.orders', 
 misc = Navigation('Verschiedenes')
 misc.add_item('party_admin.index', 'Parties', id='party_admin', required_permission=PartyPermission.list)
 misc.add_item('snippet_admin.index', 'Snippets', id='snippet_admin', required_permission=SnippetPermission.list)
+misc.add_item('news_admin.index', 'News', id='news_admin', required_permission=NewsItemPermission.list)
 misc.add_item('terms_admin.index', 'AGB', id='terms_admin', required_permission=TermsPermission.list)
 misc.add_item('newsletter_admin.index', 'Newsletter', id='newsletter_admin', required_permission=NewsletterPermission.view_subscriptions)
 

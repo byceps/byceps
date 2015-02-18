@@ -1,0 +1,41 @@
+{% extends 'layout/base.html' %}
+{% from 'macros/datetime.html' import render_datetime %}
+{% from 'macros/icons.html' import render_icon %}
+{% set current_page = 'news_item' %}
+{% set title = '%s - News'|format(brand.title) %}
+
+{% block body %}
+
+  <nav class="breadcrumbs">
+    <ol>
+      <li><a href="{{ url_for('.index') }}">News</a></li>
+      <li>{{ brand.title }}</li>
+    </ol>
+  </nav>
+
+  <table class="index wide">
+    <thead>
+      <tr>
+        <th>Veröffentlichung</th>
+        <th>Slug</th>
+        <th>Titel</th>
+      </tr>
+    </thead>
+    <tbody>
+    {%- for item in items|sort(attribute='published_at', reverse=True) %}
+      <tr>
+        <td>{{ render_datetime(item.published_at) }}</td>
+        <td>{{ item.slug }}</td>
+        <td>{{ item.snippet.get_latest_version().title }}</td>
+      </tr>
+    {%- endfor %}
+    </tbody>
+  </table>
+
+  {%- if g.current_user.has_permission(NewsItemPermission.create) %}
+  <ol class="actions">
+    <li><a href="{{ url_for('.create_form', brand_id=brand.id) }}">{{ render_icon('add') }} News erstellen</a></li>
+  </ol>
+  {%- endif %}
+
+{%- endblock body %}
