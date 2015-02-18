@@ -94,7 +94,7 @@ def create_orgaflag(brand_id):
     return redirect_to('.persons_for_brand', brand_id=brand.id)
 
 
-@blueprint.route('/persons/<brand_id>/<user_id>', methods=['DELETE'])
+@blueprint.route('/persons/<brand_id>/<uuid:user_id>', methods=['DELETE'])
 @permission_required(OrgaTeamPermission.administrate_memberships)
 @respond_no_content_with_location
 def remove_orgaflag(brand_id, user_id):
@@ -179,7 +179,7 @@ def teams_for_party(party_id):
     }
 
 
-@blueprint.route('/memberships/<id>', methods=['DELETE'])
+@blueprint.route('/memberships/<uuid:id>', methods=['DELETE'])
 @permission_required(OrgaTeamPermission.administrate_memberships)
 @respond_no_content_with_location
 def membership_remove(id):

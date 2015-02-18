@@ -58,7 +58,7 @@ def index_for_party(party_id):
     }
 
 
-@blueprint.route('/versions/<id>')
+@blueprint.route('/versions/<uuid:id>')
 @permission_required(SnippetPermission.view_history)
 def view_version(id):
     """Show the snippet with the given id."""
@@ -66,7 +66,7 @@ def view_version(id):
     return render_snippet_as_page(version)
 
 
-@blueprint.route('/<id>/history')
+@blueprint.route('/<uuid:id>/history')
 @permission_required(SnippetPermission.view_history)
 @templated
 def history(id):
@@ -116,7 +116,7 @@ def create_snippet(party_id):
     return redirect_to('.view_version', id=version.id)
 
 
-@blueprint.route('/snippets/<id>/update')
+@blueprint.route('/snippets/<uuid:id>/update')
 @permission_required(SnippetPermission.update)
 @templated
 def update_snippet_form(id):
@@ -134,7 +134,7 @@ def update_snippet_form(id):
     }
 
 
-@blueprint.route('/snippets/<id>', methods=['POST'])
+@blueprint.route('/snippets/<uuid:id>', methods=['POST'])
 @permission_required(SnippetPermission.update)
 def update_snippet(id):
     """Update a snippet."""
@@ -200,7 +200,7 @@ def create_mountpoint(party_id):
     return redirect_to('.index_for_party', party_id=party.id)
 
 
-@blueprint.route('/mountpoints/<id>', methods=['DELETE'])
+@blueprint.route('/mountpoints/<uuid:id>', methods=['DELETE'])
 @permission_required(MountpointPermission.delete)
 @respond_no_content_with_location
 def delete_mountpoint(id):

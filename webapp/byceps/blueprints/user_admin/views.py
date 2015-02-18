@@ -70,7 +70,7 @@ def index(page):
     }
 
 
-@blueprint.route('/<id>')
+@blueprint.route('/<uuid:id>')
 @templated
 def view(id):
     """Show a user's interal profile."""

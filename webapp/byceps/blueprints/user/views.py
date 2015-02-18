@@ -46,7 +46,7 @@ def before_request():
     g.current_user = UserSession.get_user()
 
 
-@blueprint.route('/<id>')
+@blueprint.route('/<uuid:id>')
 @templated
 def view(id):
     """Show a user's profile."""
@@ -227,7 +227,7 @@ def send_email_address_confirmation_email(user, verification_token):
     mail.send_message(subject=subject, body=body, recipients=recipients)
 
 
-@blueprint.route('/email_address_confirmations/<token>')
+@blueprint.route('/email_address_confirmations/<uuid:token>')
 def confirm_email_address(token):
     """Confirm e-mail address of the user account assigned with the
     verification token.
@@ -303,7 +303,7 @@ def send_password_reset_email(user, verification_token):
     mail.send_message(subject=subject, body=body, recipients=recipients)
 
 
-@blueprint.route('/me/password/reset/token/<token>')
+@blueprint.route('/me/password/reset/token/<uuid:token>')
 @templated
 def password_reset_form(token, errorneous_form=None):
     """Show a form to reset the current user's password."""
@@ -318,7 +318,7 @@ def password_reset_form(token, errorneous_form=None):
     }
 
 
-@blueprint.route('/me/password/reset/token/<token>', methods=['POST'])
+@blueprint.route('/me/password/reset/token/<uuid:token>', methods=['POST'])
 def password_reset(token):
     """Reset the current user's password."""
     verification_token = VerificationToken.find(

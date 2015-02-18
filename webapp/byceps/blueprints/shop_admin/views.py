@@ -68,7 +68,7 @@ def article_index_for_party(party_id, page):
     }
 
 
-@blueprint.route('/articles/<id>')
+@blueprint.route('/articles/<uuid:id>')
 @permission_required(ShopArticlePermission.view)
 @templated
 def article_view(id):
@@ -82,7 +82,7 @@ def article_view(id):
     }
 
 
-@blueprint.route('/articles/<id>/ordered')
+@blueprint.route('/articles/<uuid:id>/ordered')
 @permission_required(ShopArticlePermission.view)
 @templated
 def article_view_ordered(id):
@@ -154,7 +154,7 @@ def article_create(party_id):
     return redirect_to('.article_view', id=article.id)
 
 
-@blueprint.route('/articles/<id>/update')
+@blueprint.route('/articles/<uuid:id>/update')
 @permission_required(ShopArticlePermission.update)
 @templated
 def article_update_form(id):
@@ -169,7 +169,7 @@ def article_update_form(id):
     }
 
 
-@blueprint.route('/articles/<id>', methods=['POST'])
+@blueprint.route('/articles/<uuid:id>', methods=['POST'])
 @permission_required(ShopArticlePermission.update)
 def article_update(id):
     """Update an article."""
@@ -223,7 +223,7 @@ def order_index_for_party(party_id, page):
     }
 
 
-@blueprint.route('/orders/<id>')
+@blueprint.route('/orders/<uuid:id>')
 @permission_required(ShopOrderPermission.view)
 @templated
 def order_view(id):
@@ -236,7 +236,7 @@ def order_view(id):
     }
 
 
-@blueprint.route('/orders/<id>/update_payment')
+@blueprint.route('/orders/<uuid:id>/update_payment')
 @permission_required(ShopOrderPermission.update)
 @templated
 def order_update_payment_form(id):
@@ -256,7 +256,7 @@ def order_update_payment_form(id):
     }
 
 
-@blueprint.route('/orders/<id>/cancel', methods=['POST'])
+@blueprint.route('/orders/<uuid:id>/cancel', methods=['POST'])
 @permission_required(ShopOrderPermission.update)
 def order_cancel(id):
     """Set the payment status of a single order to 'canceled' and
@@ -291,7 +291,7 @@ def order_cancel(id):
     return redirect_to('.order_view', id=order.id)
 
 
-@blueprint.route('/orders/<id>/mark_as_paid', methods=['POST'])
+@blueprint.route('/orders/<uuid:id>/mark_as_paid', methods=['POST'])
 @permission_required(ShopOrderPermission.update)
 def order_mark_as_paid(id):
     """Set the payment status of a single order to 'paid'."""

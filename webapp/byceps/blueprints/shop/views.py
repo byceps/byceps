@@ -94,7 +94,7 @@ def order():
     return redirect_to('snippet.order_placed')
 
 
-@blueprint.route('/order_single/<article_id>')
+@blueprint.route('/order_single/<uuid:article_id>')
 @login_required
 @templated
 def order_single_form(article_id, errorneous_form=None):
@@ -124,7 +124,7 @@ def order_single_form(article_id, errorneous_form=None):
     }
 
 
-@blueprint.route('/order_single/<article_id>', methods=['POST'])
+@blueprint.route('/order_single/<uuid:article_id>', methods=['POST'])
 @login_required
 def order_single(article_id):
     """Order a single article."""

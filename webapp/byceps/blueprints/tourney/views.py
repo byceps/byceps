@@ -24,7 +24,7 @@ blueprint = create_blueprint('tourney', __name__)
 # match comments
 
 
-@blueprint.route('/matches/<match_id>/comments')
+@blueprint.route('/matches/<uuid:match_id>/comments')
 @templated
 def match_comments_view(match_id):
     """Render the comments on a match."""
@@ -38,12 +38,12 @@ def match_comments_view(match_id):
 
 
 blueprint.add_url_rule(
-    '/matches/<match_id>/comments/<comment_id>',
+    '/matches/<uuid:match_id>/comments/<uuid:comment_id>',
     endpoint='match_comment_view',
     build_only=True)
 
 
-@blueprint.route('/matches/<match_id>/comments', methods=['POST'])
+@blueprint.route('/matches/<uuid:match_id>/comments', methods=['POST'])
 @respond_created
 def match_comment_create(match_id):
     """Create a comment on a match."""
