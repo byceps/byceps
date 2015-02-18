@@ -46,7 +46,10 @@
         {%- endif %}
         <td>{{ render_user_admin_link(membership.user) }}</td>
         <td>{{ render_with_fallback(membership.duties) }}</td>
-        <td><a href="{{ url_for('.membership_remove', id=membership.id) }}" class="action membership-remove" title="Person aus Team entfernen">{{ render_icon('remove') }}</a></td>
+        <td>
+          <a href="{{ url_for('.membership_update_form', id=membership.id) }}" class="action" title="Aufgabe bearbeiten">{{ render_icon('edit') }}</a>
+          <a href="{{ url_for('.membership_remove', id=membership.id) }}" class="action membership-remove" title="Person aus Team entfernen">{{ render_icon('remove') }}</a>
+        </td>
       </tr>
       {%- endfor %}
     {%- endfor %}

@@ -26,7 +26,7 @@ from ..user.models import User
 
 from .authorization import OrgaBirthdayPermission, OrgaDetailPermission, \
     OrgaTeamPermission
-from .forms import OrgaFlagCreateForm
+from .forms import MembershipUpdateForm, OrgaFlagCreateForm
 from .service import collect_orgas_with_next_birthdays, get_organizers_for_brand
 
 
@@ -177,6 +177,36 @@ def teams_for_party(party_id):
         'teams': teams,
         'party': party,
     }
+
+
+@blueprint.route('/memberships/<uuid:id>/update')
+@permission_required(OrgaTeamPermission.administrate_memberships)
+@templated
+def membership_update_form(id):
+    """Show form to update a membership."""
+    membership = Membership.query.get_or_404(id)
+
+    form = MembershipUpdateForm(obj=membership)
+
+    return {
+        'form': form,
+        'membership': membership,
+    }
+
+
+@blueprint.route('/memberships/<uuid:id>', methods=['POST'])
+@permission_required(OrgaTeamPermission.administrate_memberships)
+def membership_update(id):
+    """Update a membership."""
+    form = MembershipUpdateForm(request.form)
+
+    membership = Membership.query.get_or_404(id)
+    membership.duties = form.duties.data.strip()
+    db.session.commit()
+
+    flash_success('Der Aufgabe von {} wurde aktualisiert.',
+                  membership.user.screen_name)
+    return redirect_to('.teams_for_party', party_id=membership.party.id)
 
 
 @blueprint.route('/memberships/<uuid:id>', methods=['DELETE'])
