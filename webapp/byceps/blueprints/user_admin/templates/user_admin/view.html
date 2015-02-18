@@ -9,7 +9,7 @@
 
 {% block body %}
 
-  <h1>{{ title }}</h1>
+  <h1>{{ render_icon('user') }} {{ user.screen_name }}</h1>
 
   <h2>Benutzerkonto</h2>
   {%- if user.has_avatar_image %}
