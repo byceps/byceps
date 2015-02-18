@@ -201,7 +201,7 @@ def membership_update(id):
     form = MembershipUpdateForm(request.form)
 
     membership = Membership.query.get_or_404(id)
-    membership.duties = form.duties.data.strip()
+    membership.duties = form.duties.data.strip() or None
     db.session.commit()
 
     flash_success('Der Aufgabe von {} wurde aktualisiert.',
