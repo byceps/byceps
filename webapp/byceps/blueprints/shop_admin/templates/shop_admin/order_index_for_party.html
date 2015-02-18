@@ -42,8 +42,9 @@
 
   <nav class="breadcrumbs">
     <ol>
-      <li><a href="{{ url_for('.order_index') }}">Bestellungen</a></li>
-      <li>{{ party.title }}</li>
+      <li><a href="{{ url_for('.order_index') }}">{{ party.title }}</a></li>
+      <li>Shop</li>
+      <li>{{ title }}</li>
     </ol>
   </nav>
 
