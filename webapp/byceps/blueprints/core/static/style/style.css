@@ -445,6 +445,37 @@ nav.pagination li.current {
 }
 
 
+/* news */
+
+.news-item {
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+.news-item h1 {
+  margin-bottom: 0;
+}
+.news-item .meta {
+  font-size: 0.75rem;
+  margin: 10px 0;
+  opacity: 0.5;
+}
+
+.news-items .news-item,
+.news-items .pagination {
+  border-top: #cccccc solid 1px;
+  margin-top: 20px;
+  padding-top: 20px;
+}
+.news-items .news-item:first-of-type {
+  border: none;
+}
+.news-items .news-item h1 {
+  font-size: 1.4rem;
+  margin-top: 0;
+}
+
+
 /* board, tourneys */
 
 .board-postings,

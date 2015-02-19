@@ -6,6 +6,10 @@
   {{ _time_element(d|format_date_iso, d|format_date_short(smart=smart)) }}
 {%- endmacro %}
 
+{%- macro render_date_long(d, smart=True) -%}
+  {{ _time_element(d|format_date_iso, d|format_date_long(smart=smart)) }}
+{%- endmacro %}
+
 {%- macro render_datetime(dt, smart=True) -%}
   {{ _time_element(dt|format_datetime_iso, dt|format_datetime_short(smart=smart)) }}
 {%- endmacro %}

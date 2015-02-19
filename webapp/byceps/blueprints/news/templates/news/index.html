@@ -1,0 +1,18 @@
+{% extends 'layout/base.html' %}
+{% from 'macros/pagination.html' import render_pagination_nav %}
+{% set current_page = 'news' %}
+{% set title = 'Neuigkeiten' %}
+
+{% block body %}
+
+  <h1>Neuigkeiten</h1>
+
+  <div class="news-items">
+    {%- for item in items.items %}
+{%- include 'news/_item.html' %}
+    {%- endfor %}
+
+{{ render_pagination_nav(items, 'news.index') }}
+  </div>
+
+{%- endblock body %}
