@@ -1,12 +1,11 @@
 {%- from 'macros/datetime.html' import render_date_long %}
 
-{%- set snippet_version = item.snippet.get_latest_version() %}
 <article class="news-item">
-  <h1>{{ snippet_version.title }}</h1>
+  <h1>{{ item.title }}</h1>
   <footer class="meta">
     {{ render_date_long(item.published_at) }}
   </footer>
   <div class="body">
-{{ snippet_version.body }}
+{{ item.body }}
   </div>
 </article>

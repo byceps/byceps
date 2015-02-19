@@ -39,6 +39,14 @@ class Item(db.Model):
     snippet_id = db.Column(db.Uuid, db.ForeignKey('snippets.id'), index=True, nullable=False)
     snippet = db.relationship(Snippet)
 
+    @property
+    def title(self):
+        return self.snippet.get_latest_version().title
+
+    @property
+    def body(self):
+        return self.snippet.get_latest_version().body
+
     def __repr__(self):
         return ReprBuilder(self) \
             .add_with_lookup('id') \
