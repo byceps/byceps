@@ -10,8 +10,9 @@ byceps.blueprints.news.service
 from . models import Item
 
 
-def get_items_paginated(page, items_per_page):
+def get_items_paginated(brand, page, items_per_page):
     """Return the news items to show on the specified page."""
     return Item.query \
+        .for_brand(brand) \
         .order_by(Item.published_at.desc()) \
         .paginate(page, items_per_page)
