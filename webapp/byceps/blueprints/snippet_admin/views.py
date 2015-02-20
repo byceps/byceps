@@ -19,7 +19,8 @@ from ...util.views import redirect_to, respond_no_content_with_location
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 from ..party.models import Party
-from ..snippet.models import Mountpoint, Snippet, SnippetVersion
+from ..snippet.models import Mountpoint, Snippet, CurrentVersionAssociation, \
+    SnippetVersion
 from ..snippet.templating import render_snippet_as_page
 
 from .authorization import MountpointPermission, SnippetPermission
@@ -110,6 +111,11 @@ def create_snippet(party_id):
         body=form.body.data.strip())
     db.session.add(version)
 
+    current_version_association = CurrentVersionAssociation(
+        snippet=snippet,
+        version=version)
+    db.session.add(current_version_association)
+
     db.session.commit()
 
     flash_success('Das Snippet "{}" wurde angelegt.', snippet.name)
@@ -148,6 +154,9 @@ def update_snippet(id):
         title=form.title.data.strip(),
         body=form.body.data.strip())
     db.session.add(version)
+
+    snippet.current_version = version
+
     db.session.commit()
 
     flash_success('Das Snippet "{}" wurde aktualisiert.', snippet.name)
