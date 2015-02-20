@@ -91,6 +91,5 @@ def create(brand_id):
     db.session.add(item)
     db.session.commit()
 
-    flash_success('Die News "{}" wurde angelegt.',
-                  snippet.get_latest_version().title)
+    flash_success('Die News "{}" wurde angelegt.', item.title)
     return redirect_to('.index_for_brand', brand_id=brand.id)
