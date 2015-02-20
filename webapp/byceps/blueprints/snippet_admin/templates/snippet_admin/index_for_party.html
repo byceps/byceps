@@ -35,18 +35,17 @@
     </thead>
     <tbody>
     {%- for snippet in snippets|sort(attribute='name') %}
-      {%- set latest_version = snippet.get_latest_version() %}
       <tr>
         <td>{{ snippet.name }}</td>
         <td class="nowrap">
           {%- if g.current_user.has_permission(SnippetPermission.view_history) %}
-          {{ render_icon('history') }} <a href="{{ url_for('.history', id=snippet.id) }}" title="Änderungshistorie ansehen">{{ render_datetime(latest_version.created_at) }}</a>
+          {{ render_icon('history') }} <a href="{{ url_for('.history', id=snippet.id) }}" title="Änderungshistorie ansehen">{{ render_datetime(snippet.current_version.created_at) }}</a>
           {%- else %}
-          {{ render_datetime(latest_version.created_at) }}
+          {{ render_datetime(snippet.current_version.created_at) }}
           {%- endif %}
         </td>
-        <td>{{ render_user_admin_link(latest_version.creator) }}</td>
-        <td><a href="{{ url_for('.view_version', id=latest_version.id) }}" class="action">{{ render_icon('view') }} ansehen</a></td>
+        <td>{{ render_user_admin_link(snippet.current_version.creator) }}</td>
+        <td><a href="{{ url_for('.view_version', id=snippet.current_version.id) }}" class="action">{{ render_icon('view') }} ansehen</a></td>
         <td>
           {%- if g.current_user.has_permission(SnippetPermission.update) -%}
           <a href="{{ url_for('.update_snippet_form', id=snippet.id) }}" class="action">{{ render_icon('edit') }} bearbeiten</a>
