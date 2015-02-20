@@ -16,3 +16,11 @@ def get_items_paginated(brand, page, items_per_page):
         .for_brand(brand) \
         .order_by(Item.published_at.desc()) \
         .paginate(page, items_per_page)
+
+
+def get_item(brand, slug):
+    """Return the news item identified by that slug."""
+    return Item.query \
+        .for_brand(brand) \
+        .filter_by(slug=slug) \
+        .first_or_404()

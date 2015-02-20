@@ -1,7 +1,7 @@
 {%- from 'macros/datetime.html' import render_date_long %}
 
 <article class="news-item">
-  <h1>{{ item.title }}</h1>
+  <h1><a href="{{ url_for('.view', slug=item.slug) }}">{{ item.title }}</a></h1>
   <footer class="meta">
     {{ render_date_long(item.published_at) }}
   </footer>

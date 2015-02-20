@@ -1,0 +1,9 @@
+{% extends 'layout/base.html' %}
+{% set current_page = 'news' %}
+{% set title = '%s - Neuigkeiten'|format(item.title) %}
+
+{% block body %}
+
+{%- include 'news/_item.html' %}
+
+{%- endblock body %}
