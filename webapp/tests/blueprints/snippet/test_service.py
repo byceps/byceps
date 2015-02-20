@@ -2,20 +2,21 @@
 
 from datetime import datetime
 
-from byceps.blueprints.snippet.service import find_latest_version_of_snippet, \
-    SnippetNotFound
+from byceps.blueprints.snippet.service import \
+    get_current_version_of_snippet_with_name, SnippetNotFound
 
 from testfixtures.party import create_party
-from testfixtures.snippet import create_snippet, create_snippet_version
+from testfixtures.snippet import create_current_version_association, \
+    create_snippet, create_snippet_version
 from testfixtures.user import create_user
 from tests import AbstractAppTestCase
 from tests.helpers import current_party_set
 
 
-class FindLatestVersionOfSnippetTestCase(AbstractAppTestCase):
+class GetCurrentVersionOfSnippetTestCase(AbstractAppTestCase):
 
     def setUp(self):
-        super(FindLatestVersionOfSnippetTestCase, self).setUp()
+        super(GetCurrentVersionOfSnippetTestCase, self).setUp()
 
         self.party2014 = self.create_party('lafiesta-2014', 4, 'La Fiesta 2014')
         self.party2015 = self.create_party('lafiesta-2015', 5, 'La Fiesta 2015')
@@ -31,13 +32,13 @@ class FindLatestVersionOfSnippetTestCase(AbstractAppTestCase):
         self.db.session.commit()
 
         with current_party_set(self.app, self.party2014), self.app.app_context():
-            actual = find_latest_version_of_snippet('info')
+            actual = get_current_version_of_snippet_with_name('info')
             self.assertEquals(actual, snippet_info2014_version)
 
     def test_unknown_name(self):
         with current_party_set(self.app, self.party2014), self.app.app_context():
             with self.assertRaises(SnippetNotFound):
-                find_latest_version_of_snippet('totally-unknown-snippet-name')
+                get_current_version_of_snippet_with_name('totally-unknown-snippet-name')
 
     # -------------------------------------------------------------------- #
     # helpers
@@ -54,5 +55,8 @@ class FindLatestVersionOfSnippetTestCase(AbstractAppTestCase):
         created_at = datetime.strptime(created_at_text, '%Y-%m-%d %H:%M:%S')
         version = create_snippet_version(snippet, self.snippet_creator, created_at=created_at)
         self.db.session.add(version)
+
+        current_version_association = create_current_version_association(snippet, version)
+        self.db.session.add(current_version_association)
 
         return version

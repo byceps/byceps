@@ -15,7 +15,7 @@ from flask import abort, render_template, url_for
 from jinja2 import FunctionLoader, TemplateNotFound
 from jinja2.sandbox import ImmutableSandboxedEnvironment
 
-from .service import find_latest_version_of_snippet, SnippetNotFound
+from .service import get_current_version_of_snippet_with_name, SnippetNotFound
 
 
 def render_snippet_as_page(version):
@@ -56,14 +56,14 @@ def render_snippet_as_partial(name, *, ignore_if_unknown=False):
     return the result.
     """
     try:
-        latest_version = find_latest_version_of_snippet(name)
+        current_version = get_current_version_of_snippet_with_name(name)
     except SnippetNotFound as e:
         if ignore_if_unknown:
             return ''
         else:
             raise e
 
-    template = load_template(latest_version)
+    template = load_template(current_version)
     return template.render()
 
 
