@@ -14,6 +14,7 @@ page.
 from datetime import datetime
 
 from flask import g, url_for
+from sqlalchemy.ext.associationproxy import association_proxy
 from werkzeug.routing import BuildError
 
 from ...database import BaseQuery, db, generate_uuid
@@ -47,6 +48,7 @@ class Snippet(db.Model):
     party_id = db.Column(db.Unicode(20), db.ForeignKey('parties.id'), index=True, nullable=False)
     party = db.relationship(Party)
     name = db.Column(db.Unicode(40), index=True, nullable=False)
+    current_version = association_proxy('current_version_association', 'version')
 
     def get_latest_version(self):
         """Return the most recent version.
@@ -100,6 +102,15 @@ class SnippetVersion(db.Model):
             .add_with_lookup('title') \
             .add('body length', len(self.body)) \
             .build()
+
+
+class CurrentVersionAssociation(db.Model):
+    __tablename__ = 'snippet_current_versions'
+
+    snippet_id = db.Column(db.Uuid, db.ForeignKey('snippets.id'), primary_key=True)
+    snippet = db.relationship(Snippet, backref=db.backref('current_version_association', uselist=False))
+    version_id = db.Column(db.Uuid, db.ForeignKey('snippet_versions.id'), unique=True, nullable=False)
+    version = db.relationship(SnippetVersion)
 
 
 class MountpointQuery(BelongsToPartyQuery):
