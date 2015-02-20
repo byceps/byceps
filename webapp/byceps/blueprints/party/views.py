@@ -21,10 +21,16 @@ blueprint = create_blueprint('party', __name__)
 
 @blueprint.before_app_request
 def before_request():
-    party_id = get_current_party_id()
-    g.party = Party.query.get(party_id)
-    if g.party is None:
-        raise Exception('Unknown party "{}".'.format(party_id))
+    id = get_current_party_id()
+    party = get_party(id)
+    if party is None:
+        raise Exception('Unknown party ID "{}".'.format(id))
+
+    g.party = party
+
+
+def get_party(id):
+    return Party.query.get(id)
 
 
 @blueprint.route('/info')
