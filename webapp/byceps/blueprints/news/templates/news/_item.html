@@ -6,6 +6,6 @@
     {{ render_date_long(item.published_at) }}
   </footer>
   <div class="body">
-{{ item.body }}
+{{ item.render_body()|safe }}
   </div>
 </article>

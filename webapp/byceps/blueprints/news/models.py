@@ -14,6 +14,7 @@ from ...util.instances import ReprBuilder
 
 from ..brand.models import Brand
 from ..snippet.models import Snippet
+from ..snippet.templating import render_body
 
 
 class ItemQuery(BaseQuery):
@@ -48,9 +49,8 @@ class Item(db.Model):
     def title(self):
         return self.snippet.current_version.title
 
-    @property
-    def body(self):
-        return self.snippet.current_version.body
+    def render_body(self):
+        return render_body(self.snippet.current_version)
 
     def __repr__(self):
         return ReprBuilder(self) \

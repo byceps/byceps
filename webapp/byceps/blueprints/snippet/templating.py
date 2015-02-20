@@ -63,7 +63,12 @@ def render_snippet_as_partial(name, *, ignore_if_unknown=False):
         else:
             raise e
 
-    template = load_template(current_version)
+    return render_body(current_version)
+
+
+def render_body(version):
+    """Render the snippet version's body as a template."""
+    template = load_template(version)
     return template.render()
 
 
