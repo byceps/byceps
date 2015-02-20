@@ -601,9 +601,14 @@ class UserSession(object):
     @classmethod
     def get_user(cls):
         """Return the current user, falling back to the anonymous user."""
-        return User.load(cls.get_user_id())
+        return User.load(cls.get_user_id(), cls.get_auth_token())
 
     @classmethod
     def get_user_id(cls):
         """Return the current user's ID, or `None` if not available."""
         return session.get(cls.KEY_USER_ID)
+
+    @classmethod
+    def get_auth_token(cls):
+        """Return the current user's auth token, or `None` if not available."""
+        return session.get(cls.KEY_USER_AUTH_TOKEN)
