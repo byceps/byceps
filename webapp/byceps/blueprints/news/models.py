@@ -21,6 +21,11 @@ class ItemQuery(BaseQuery):
     def for_brand(self, brand):
         return self.filter_by(brand_id=brand.id)
 
+    def with_current_version(self):
+        return self.options(
+            db.joinedload_all('snippet.current_version_association.version'),
+        )
+
 
 class Item(db.Model):
     """A news item."""
@@ -41,11 +46,11 @@ class Item(db.Model):
 
     @property
     def title(self):
-        return self.snippet.get_latest_version().title
+        return self.snippet.current_version.title
 
     @property
     def body(self):
-        return self.snippet.get_latest_version().body
+        return self.snippet.current_version.body
 
     def __repr__(self):
         return ReprBuilder(self) \
