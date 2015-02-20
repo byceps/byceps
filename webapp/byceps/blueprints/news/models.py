@@ -40,7 +40,7 @@ class Item(db.Model):
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     brand_id = db.Column(db.Unicode(20), db.ForeignKey('brands.id'), index=True, nullable=False)
     brand = db.relationship(Brand)
-    slug = db.Column(db.Unicode(40), index=True, nullable=False)
+    slug = db.Column(db.Unicode(80), index=True, nullable=False)
     published_at = db.Column(db.DateTime, default=datetime.now, nullable=False)
     snippet_id = db.Column(db.Uuid, db.ForeignKey('snippets.id'), index=True, nullable=False)
     snippet = db.relationship(Snippet)

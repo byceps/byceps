@@ -16,7 +16,7 @@
 
   <form action="{{ url_for('.create', brand_id=brand.id) }}" method="post">
     {% call form_fieldset() %}
-      {{ form_field(form.slug, maxlength=40, required='required', autofocus='autofocus') }}
+      {{ form_field(form.slug, maxlength=80, required='required', autofocus='autofocus') }}
       {{ form_field(form.snippet_id, maxlength=36, required='required') }}
     {% endcall %}
 
