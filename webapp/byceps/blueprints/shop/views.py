@@ -29,13 +29,13 @@ blueprint = create_blueprint('shop', __name__)
 @blueprint.route('/order')
 @login_required
 @templated
-def order_form(errorneous_form=None):
+def order_form(erroneous_form=None):
     """Show a form to order articles."""
     articles = get_orderable_articles()
     ArticlesOrderForm = assemble_articles_order_form(articles)
 
     user = g.current_user
-    form = errorneous_form if errorneous_form else ArticlesOrderForm(obj=user.detail)
+    form = erroneous_form if erroneous_form else ArticlesOrderForm(obj=user.detail)
 
     return {
         'form': form,
@@ -97,12 +97,12 @@ def order():
 @blueprint.route('/order_single/<uuid:article_id>')
 @login_required
 @templated
-def order_single_form(article_id, errorneous_form=None):
+def order_single_form(article_id, erroneous_form=None):
     """Show a form to order a single article."""
     article = Article.query.get_or_404(article_id)
 
     user = g.current_user
-    form = errorneous_form if errorneous_form else OrderForm(obj=user.detail)
+    form = erroneous_form if erroneous_form else OrderForm(obj=user.detail)
 
     if has_user_placed_orders(user):
         flash_error('Du kannst keine weitere Bestellung aufgeben.')

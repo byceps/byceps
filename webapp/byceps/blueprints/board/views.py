@@ -176,10 +176,10 @@ def add_unseen_flag_to_postings(postings, last_viewed_at):
 @blueprint.route('/categories/<category_id>/create')
 @permission_required(BoardTopicPermission.create)
 @templated
-def topic_create_form(category_id, errorneous_form=None):
+def topic_create_form(category_id, erroneous_form=None):
     """Show a form to create a topic in the category."""
     category = Category.query.get_or_404(category_id)
-    form = errorneous_form if errorneous_form else TopicCreateForm()
+    form = erroneous_form if erroneous_form else TopicCreateForm()
     return {
         'category': category,
         'form': form,
@@ -400,10 +400,10 @@ def topic_move(id):
 @blueprint.route('/topics/<uuid:topic_id>/create')
 @permission_required(BoardPostingPermission.create)
 @templated
-def posting_create_form(topic_id, errorneous_form=None):
+def posting_create_form(topic_id, erroneous_form=None):
     """Show a form to create a posting to the topic."""
     topic = Topic.query.get_or_404(topic_id)
-    form = errorneous_form if errorneous_form else PostingCreateForm()
+    form = erroneous_form if erroneous_form else PostingCreateForm()
 
     quoted_posting_bbcode = quote_posting_as_bbcode()
     if quoted_posting_bbcode:

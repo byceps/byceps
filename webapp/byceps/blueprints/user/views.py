@@ -64,13 +64,13 @@ def view(id):
 
 @blueprint.route('/create')
 @templated
-def create_form(errorneous_form=None):
+def create_form(erroneous_form=None):
     """Show a form to create a user."""
     if not get_user_registration_enabled():
         flash_error('Das Erstellen von Benutzerkonten ist deaktiviert.')
         abort(403)
 
-    form = errorneous_form if errorneous_form else UserCreateForm()
+    form = erroneous_form if erroneous_form else UserCreateForm()
     return {'form': form}
 
 
@@ -163,11 +163,11 @@ def do_users_matching_filter_exist(model_attribute, search_value):
 
 @blueprint.route('/email_address_confirmations/request')
 @templated
-def request_email_address_confirmation_email_form(errorneous_form=None):
+def request_email_address_confirmation_email_form(erroneous_form=None):
     """Show a form to request the email address confirmation email for the user
     account again.
     """
-    form = errorneous_form if errorneous_form else RequestConfirmationEmailForm()
+    form = erroneous_form if erroneous_form else RequestConfirmationEmailForm()
     return {'form': form}
 
 
@@ -251,9 +251,9 @@ def confirm_email_address(token):
 
 @blueprint.route('/me/password/reset/request')
 @templated
-def request_password_reset_form(errorneous_form=None):
+def request_password_reset_form(erroneous_form=None):
     """Show a form to request a password reset."""
-    form = errorneous_form if errorneous_form else RequestPasswordResetForm()
+    form = erroneous_form if erroneous_form else RequestPasswordResetForm()
     return {'form': form}
 
 
@@ -305,13 +305,13 @@ def send_password_reset_email(user, verification_token):
 
 @blueprint.route('/me/password/reset/token/<uuid:token>')
 @templated
-def password_reset_form(token, errorneous_form=None):
+def password_reset_form(token, erroneous_form=None):
     """Show a form to reset the current user's password."""
     verification_token = VerificationToken.find(
         token, VerificationTokenPurpose.password_reset)
     _verify_password_reset_token(verification_token)
 
-    form = errorneous_form if errorneous_form else ResetPasswordForm()
+    form = erroneous_form if erroneous_form else ResetPasswordForm()
     return {
         'form': form,
         'token': token,
@@ -348,10 +348,10 @@ def _verify_password_reset_token(verification_token ):
 
 @blueprint.route('/me/password/update')
 @templated
-def password_update_form(errorneous_form=None):
+def password_update_form(erroneous_form=None):
     """Show a form to update the current user's password."""
     user = get_current_user_or_404()
-    form = errorneous_form if errorneous_form else UpdatePasswordForm()
+    form = erroneous_form if erroneous_form else UpdatePasswordForm()
     return {'form': form}
 
 
@@ -386,10 +386,10 @@ def view_current():
 
 @blueprint.route('/me/details')
 @templated
-def details_update_form(errorneous_form=None):
+def details_update_form(erroneous_form=None):
     """Show a form to update the current user's details."""
     user = get_current_user_or_404()
-    form = errorneous_form if errorneous_form else DetailsForm(obj=user.detail)
+    form = erroneous_form if erroneous_form else DetailsForm(obj=user.detail)
     return {'form': form}
 
 
