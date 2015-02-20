@@ -10,6 +10,7 @@ byceps.blueprints.party.views
 from flask import g
 
 from ...config import get_current_party_id
+from ...database import db
 from ...util.framework import create_blueprint
 from ...util.templating import templated
 
@@ -30,7 +31,9 @@ def before_request():
 
 
 def get_party(id):
-    return Party.query.get(id)
+    return Party.query \
+        .options(db.joinedload('brand')) \
+        .get(id)
 
 
 @blueprint.route('/info')
