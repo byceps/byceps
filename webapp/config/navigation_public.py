@@ -4,6 +4,7 @@ from byceps.util.navigation import Navigation, NavigationItem
 
 
 info = Navigation('Informationen')
+info.add_item('news.index', 'Neuigkeiten', id='news')
 info.add_item('party.info', 'Partydetails', id='party')
 info.add_item('orga.index', 'Team', id='orga')
 #info.add_item('user_group.index', 'Benutzergruppen', id='user_group')
