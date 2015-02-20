@@ -93,6 +93,13 @@ class SnippetVersion(db.Model):
     title = db.Column(db.Unicode(80))
     body = db.Column(db.UnicodeText, nullable=False)
 
+    @property
+    def is_current(self):
+        """Return `True` if this version is the current version of the
+        snippet it belongs to.
+        """
+        return self.id == self.snippet.current_version.id
+
     def __repr__(self):
         return ReprBuilder(self) \
             .add_with_lookup('id') \

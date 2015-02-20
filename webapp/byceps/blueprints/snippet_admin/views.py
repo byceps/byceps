@@ -75,7 +75,6 @@ def history(id):
     return {
         'snippet': snippet,
         'versions': snippet.get_versions(),
-        'latest_version': snippet.get_latest_version(),
     }
 
 
