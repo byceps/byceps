@@ -127,15 +127,15 @@ def create_snippet(party_id):
 def update_snippet_form(id):
     """Show form to update a snippet."""
     snippet = find_snippet_by_id(id)
-    latest_version = snippet.get_latest_version()
+    current_version = snippet.current_version
 
     form = SnippetUpdateForm(
-        obj=latest_version,
-        name=latest_version.snippet.name)
+        obj=current_version,
+        name=snippet.name)
 
     return {
         'form': form,
-        'snippet': latest_version.snippet,
+        'snippet': snippet,
     }
 
 

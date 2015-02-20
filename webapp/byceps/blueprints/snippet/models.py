@@ -37,7 +37,11 @@ class BelongsToPartyQuery(BaseQuery):
 
 
 class Snippet(db.Model):
-    """A snippet."""
+    """A snippet.
+
+    Each snippet is expected to have at least one version (the initial
+    one).
+    """
     __tablename__ = 'snippets'
     __table_args__ = (
         db.UniqueConstraint('party_id', 'name'),
@@ -49,14 +53,6 @@ class Snippet(db.Model):
     party = db.relationship(Party)
     name = db.Column(db.Unicode(40), index=True, nullable=False)
     current_version = association_proxy('current_version_association', 'version')
-
-    def get_latest_version(self):
-        """Return the most recent version.
-
-        A snippet is expected to have at least one version (the initial
-        one).
-        """
-        return SnippetVersion.query.for_snippet(self).latest_first().first()
 
     def get_versions(self):
         """Return all versions, sorted from most recent to oldest."""
