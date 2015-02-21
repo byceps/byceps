@@ -306,3 +306,42 @@ class PartySequence(db.Model):
             .add('purpose', self.purpose.name) \
             .add_with_lookup('value') \
             .build()
+
+
+# -------------------------------------------------------------------- #
+# shopping cart
+
+
+class Cart(object):
+    """A shopping cart."""
+
+    def __init__(self):
+        self.items = []
+
+    def add_item(self, item):
+        self.items.append(item)
+
+    def is_empty(self):
+        return not self.items
+
+    def __repr__(self):
+        return ReprBuilder(self) \
+            .add_custom('{:d} items'.format(len(self.items))) \
+            .build()
+
+
+class CartItem(object):
+    """An article with a quantity."""
+
+    def __init__(self, article, quantity):
+        if quantity < 1:
+            raise ValueError('Quantity must be a positive number.')
+
+        self.article = article
+        self.quantity = quantity
+
+    def __repr__(self):
+        return ReprBuilder(self) \
+            .add_with_lookup('item_number') \
+            .add_with_lookup('quantity') \
+            .build()
