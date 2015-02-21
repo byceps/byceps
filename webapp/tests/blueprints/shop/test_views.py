@@ -45,6 +45,7 @@ class ShopTestCase(AbstractAppTestCase):
         url = '/shop/order_single/{}'.format(str(article_before.id))
         with self.client.session_transaction() as session:
             session['user_id'] = str(self.current_user.id)
+            session['user_auth_token'] = str(self.current_user.auth_token)
         form_data = {
             'first_names': 'Hiro',
             'last_name': 'Protagonist',
