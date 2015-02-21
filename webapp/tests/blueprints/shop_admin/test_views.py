@@ -50,8 +50,8 @@ class ShopAdminTestCase(AbstractAppTestCase):
 
         url = '/admin/shop/orders/{}/cancel'.format(order_before.id)
         form_data = {'reason': 'Dein Vorname ist albern!'}
-        self.enrich_session_for_user(self.current_user)
-        response = self.client.post(url, data=form_data)
+        with self.client(user=self.current_user) as client:
+            response = client.post(url, data=form_data)
 
         order_afterwards = Order.query.get(order_before.id)
         self.assertEqual(response.status_code, 302)
@@ -72,8 +72,8 @@ class ShopAdminTestCase(AbstractAppTestCase):
         self.assertIsNone(order_before.payment_state_updated_by)
 
         url = '/admin/shop/orders/{}/mark_as_paid'.format(order_before.id)
-        self.enrich_session_for_user(self.current_user)
-        response = self.client.post(url)
+        with self.client(user=self.current_user) as client:
+            response = client.post(url)
 
         order_afterwards = Order.query.get(order_before.id)
         self.assertEqual(response.status_code, 302)

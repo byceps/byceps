@@ -46,7 +46,8 @@ class EmailAddressConfirmationTestCase(AbstractAppTestCase):
     def _confirm(self, verification_token):
         url = '/users/email_address_confirmations/{}' \
             .format(verification_token.token)
-        return self.client.get(url)
+        with self.client() as client:
+            return client.get(url)
 
 
 def create_confirmation_token(user):

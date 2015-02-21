@@ -52,8 +52,8 @@ class ShopTestCase(AbstractAppTestCase):
             'street': 'L33t Street 101',
             'quantity': 1,  # TODO: Test with `3` if limitation is removed.
         }
-        self.enrich_session_for_user(self.current_user)
-        response = self.client.post(url, data=form_data)
+        with self.client(user=self.current_user) as client:
+            response = client.post(url, data=form_data)
 
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.headers.get('Location'), 'http://localhost/shop/order_placed')
