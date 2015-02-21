@@ -114,7 +114,5 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
 
     def get_with_current_user(self, url):
         """Make a GET request as the current user and return the response."""
-        with self.client.session_transaction() as session:
-            session['user_id'] = str(self.current_user.id)
-            session['user_auth_token'] = str(self.current_user.auth_token)
+        self.enrich_session_for_user(self.current_user)
         return self.client.get(url)

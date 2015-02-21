@@ -36,3 +36,8 @@ class AbstractAppTestCase(TestCase):
     def tearDown(self):
         db.session.remove()
         db.drop_all()
+
+    def enrich_session_for_user(self, user):
+        with self.client.session_transaction() as session:
+            session['user_id'] = str(user.id)
+            session['user_auth_token'] = str(user.auth_token)

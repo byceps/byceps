@@ -43,9 +43,6 @@ class ShopTestCase(AbstractAppTestCase):
         self.assertEqual(article_before.quantity, 5)
 
         url = '/shop/order_single/{}'.format(str(article_before.id))
-        with self.client.session_transaction() as session:
-            session['user_id'] = str(self.current_user.id)
-            session['user_auth_token'] = str(self.current_user.auth_token)
         form_data = {
             'first_names': 'Hiro',
             'last_name': 'Protagonist',
@@ -55,6 +52,7 @@ class ShopTestCase(AbstractAppTestCase):
             'street': 'L33t Street 101',
             'quantity': 1,  # TODO: Test with `3` if limitation is removed.
         }
+        self.enrich_session_for_user(self.current_user)
         response = self.client.post(url, data=form_data)
 
         self.assertEqual(response.status_code, 302)

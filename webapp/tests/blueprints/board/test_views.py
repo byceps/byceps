@@ -28,9 +28,7 @@ class BoardModerationTestCase(AbstractAppTestCase):
         self.assertIsNone(topic_before.hidden_by)
 
         url = '/board/topics/{}/flags/hidden'.format(topic_before.id)
-        with self.client.session_transaction() as session:
-            session['user_id'] = str(self.current_user.id)
-            session['user_auth_token'] = str(self.current_user.auth_token)
+        self.enrich_session_for_user(self.current_user)
         response = self.client.post(url)
 
         self.assertEqual(response.status_code, 204)
@@ -53,9 +51,7 @@ class BoardModerationTestCase(AbstractAppTestCase):
         self.assertEqual(topic_before.hidden_by, self.current_user)
 
         url = '/board/topics/{}/flags/hidden'.format(topic_before.id)
-        with self.client.session_transaction() as session:
-            session['user_id'] = str(self.current_user.id)
-            session['user_auth_token'] = str(self.current_user.auth_token)
+        self.enrich_session_for_user(self.current_user)
         response = self.client.delete(url)
 
         self.assertEqual(response.status_code, 204)
@@ -77,9 +73,7 @@ class BoardModerationTestCase(AbstractAppTestCase):
         self.assertIsNone(topic_before.locked_by)
 
         url = '/board/topics/{}/flags/locked'.format(topic_before.id)
-        with self.client.session_transaction() as session:
-            session['user_id'] = str(self.current_user.id)
-            session['user_auth_token'] = str(self.current_user.auth_token)
+        self.enrich_session_for_user(self.current_user)
         response = self.client.post(url)
 
         self.assertEqual(response.status_code, 204)
@@ -102,9 +96,7 @@ class BoardModerationTestCase(AbstractAppTestCase):
         self.assertEqual(topic_before.locked_by, self.current_user)
 
         url = '/board/topics/{}/flags/locked'.format(topic_before.id)
-        with self.client.session_transaction() as session:
-            session['user_id'] = str(self.current_user.id)
-            session['user_auth_token'] = str(self.current_user.auth_token)
+        self.enrich_session_for_user(self.current_user)
         response = self.client.delete(url)
 
         self.assertEqual(response.status_code, 204)
@@ -126,9 +118,7 @@ class BoardModerationTestCase(AbstractAppTestCase):
         self.assertIsNone(topic_before.pinned_by)
 
         url = '/board/topics/{}/flags/pinned'.format(topic_before.id)
-        with self.client.session_transaction() as session:
-            session['user_id'] = str(self.current_user.id)
-            session['user_auth_token'] = str(self.current_user.auth_token)
+        self.enrich_session_for_user(self.current_user)
         response = self.client.post(url)
 
         self.assertEqual(response.status_code, 204)
@@ -151,9 +141,7 @@ class BoardModerationTestCase(AbstractAppTestCase):
         self.assertEqual(topic_before.pinned_by, self.current_user)
 
         url = '/board/topics/{}/flags/pinned'.format(topic_before.id)
-        with self.client.session_transaction() as session:
-            session['user_id'] = str(self.current_user.id)
-            session['user_auth_token'] = str(self.current_user.auth_token)
+        self.enrich_session_for_user(self.current_user)
         response = self.client.delete(url)
 
         self.assertEqual(response.status_code, 204)
@@ -175,9 +163,7 @@ class BoardModerationTestCase(AbstractAppTestCase):
 
         url = '/board/topics/{}/move'.format(topic_before.id)
         form_data = {'category_id': category2.id}
-        with self.client.session_transaction() as session:
-            session['user_id'] = str(self.current_user.id)
-            session['user_auth_token'] = str(self.current_user.auth_token)
+        self.enrich_session_for_user(self.current_user)
         response = self.client.post(url, data=form_data)
 
         self.assertEqual(response.status_code, 302)
