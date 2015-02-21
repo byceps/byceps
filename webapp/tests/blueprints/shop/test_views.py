@@ -62,6 +62,7 @@ class ShopTestCase(AbstractAppTestCase):
         self.assertEqual(article_afterwards.quantity, 4)
 
         order = Order.query.filter_by(placed_by=self.current_user).one()
+        self.assertEqual(order.order_number, 'AEC-01-B00005')
         self.assertEqual(len(order.items), 1)
         self.assertEqual(order.items[0].article.id, article_before.id)
         self.assertEqual(order.items[0].quantity, 1)
