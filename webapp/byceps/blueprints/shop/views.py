@@ -17,7 +17,8 @@ from ...util.views import redirect_to
 from ..authorization.decorators import login_required
 
 from .forms import assemble_articles_order_form, OrderForm
-from .models import Article, Order, PaymentState
+from .models import Article, Cart, CartItem, Order, PaymentState
+from . import service
 from .service import create_order, generate_order_number, \
     get_orderable_articles, has_user_placed_orders
 from .signals import order_placed
@@ -65,14 +66,7 @@ def order():
     order = create_order(g.party, order_number, orderer)
     db.session.add(order)
 
-    for item in cart.get_items():
-        article = item.article
-        quantity = item.quantity
-
-        article.quantity -= quantity
-
-        order_item = order.add_item(article, quantity)
-        db.session.add(order_item)
+    service.add_items_from_cart_to_order(cart, order)
 
     db.session.commit()
     flash_success('Deine Bestellung wurde entgegen genommen. Vielen Dank!')

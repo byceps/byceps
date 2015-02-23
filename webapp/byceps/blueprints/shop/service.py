@@ -74,6 +74,18 @@ def create_order(party, order_number, orderer):
     )
 
 
+def add_items_from_cart_to_order(cart, order):
+    """Add the items from the cart to the order."""
+    for article_item in cart.get_items():
+        article = article_item.article
+        quantity = article_item.quantity
+
+        article.quantity -= quantity
+
+        order_item = order.add_item(article, quantity)
+        db.session.add(order_item)
+
+
 def get_orders_placed_by_user(user):
     """Return orders placed by the user."""
     return Order.query \
