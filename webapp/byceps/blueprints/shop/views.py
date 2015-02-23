@@ -18,8 +18,8 @@ from ..authorization.decorators import login_required
 
 from .forms import assemble_articles_order_form, OrderForm
 from .models import Article, Order, PaymentState
-from .service import generate_order_number, get_orderable_articles, \
-    has_user_placed_orders
+from .service import create_order, generate_order_number, \
+    get_orderable_articles, has_user_placed_orders
 from .signals import order_placed
 
 
@@ -62,17 +62,7 @@ def order():
     user = g.current_user
     orderer = form.get_orderer(user)
 
-    order = Order(
-        party=g.party,
-        order_number=order_number,
-        placed_by=orderer.user,
-        first_names=orderer.first_names,
-        last_name=orderer.last_name,
-        date_of_birth=orderer.date_of_birth,
-        zip_code=orderer.zip_code,
-        city=orderer.city,
-        street=orderer.street,
-    )
+    order = create_order(g.party, order_number, orderer)
     db.session.add(order)
 
     for item in cart.get_items():
@@ -143,17 +133,7 @@ def order_single(article_id):
     orderer = form.get_orderer(user)
     order_number = generate_order_number(g.party)
 
-    order = Order(
-        party=g.party,
-        order_number=order_number,
-        placed_by=orderer.user,
-        first_names=orderer.first_names,
-        last_name=orderer.last_name,
-        date_of_birth=orderer.date_of_birth,
-        zip_code=orderer.zip_code,
-        city=orderer.city,
-        street=orderer.street,
-    )
+    order = create_order(g.party, order_number, orderer)
     db.session.add(order)
 
     article_quantity = 1

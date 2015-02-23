@@ -59,6 +59,21 @@ def _get_next_serial_number(party, purpose):
     return sequence.value
 
 
+def create_order(party, order_number, orderer):
+    """Create an order of one or more articles."""
+    return Order(
+        party=party,
+        order_number=order_number,
+        placed_by=orderer.user,
+        first_names=orderer.first_names,
+        last_name=orderer.last_name,
+        date_of_birth=orderer.date_of_birth,
+        zip_code=orderer.zip_code,
+        city=orderer.city,
+        street=orderer.street,
+    )
+
+
 def get_orders_placed_by_user(user):
     """Return orders placed by the user."""
     return Order.query \
