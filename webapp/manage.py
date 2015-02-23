@@ -10,7 +10,9 @@ Run the application, take administrative action.
 :Copyright: 2006-2015 Jochen Kupperschmidt
 """
 
+import ssl
 from flask.ext.script import Manager
+from flask.ext.script.commands import Server
 from werkzeug.wsgi import SharedDataMiddleware
 
 from byceps.application import create_app
@@ -35,6 +37,19 @@ if app.debug:
     app.wsgi_app = SharedDataMiddleware(app.wsgi_app, exports)
 
 manager = Manager(app)
+
+
+class SslServer(Server):
+
+    def __init__(self, **kwargs):
+        ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
+        ssl_context.load_cert_chain('development.cert', 'development.key')
+        kwargs['ssl_context'] = ssl_context
+
+        super().__init__(**kwargs)
+
+
+manager.add_command('runserver', SslServer())
 
 
 @manager.shell
