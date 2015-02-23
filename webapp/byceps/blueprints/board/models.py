@@ -55,7 +55,7 @@ class Category(db.Model):
         topic_count = Topic.query.for_category(self).without_hidden().count()
         posting_query = Posting.query.without_hidden().join(Topic).filter_by(category=self)
         posting_count = posting_query.count()
-        latest_posting = posting_query.latest_to_earliest().first()
+        latest_posting = posting_query.filter(Topic.hidden == False).latest_to_earliest().first()
 
         self.topic_count = topic_count
         self.posting_count = posting_count
