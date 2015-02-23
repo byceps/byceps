@@ -69,6 +69,7 @@ def order():
     service.add_items_from_cart_to_order(cart, order)
 
     db.session.commit()
+
     flash_success('Deine Bestellung wurde entgegen genommen. Vielen Dank!')
     order_placed.send(None, order=order)
     return redirect_to('snippet.order_placed')
@@ -124,23 +125,19 @@ def order_single(article_id):
     if not form.validate():
         return order_single_form(article.id, form)
 
+    cart = Cart()
+    cart.add_item(CartItem(article, 1))
+
     orderer = form.get_orderer(user)
     order_number = generate_order_number(g.party)
 
     order = create_order(g.party, order_number, orderer)
     db.session.add(order)
 
-    article_quantity = 1
-
-    order_item = order.add_item(article, article_quantity)
-    db.session.add(order_item)
-
-    article.quantity -= article_quantity
+    service.add_items_from_cart_to_order(cart, order)
 
     db.session.commit()
 
     flash_success('Deine Bestellung wurde entgegen genommen. Vielen Dank!')
-
     order_placed.send(None, order=order)
-
     return redirect_to('snippet.order_placed')
