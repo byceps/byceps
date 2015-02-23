@@ -316,17 +316,20 @@ class Cart(object):
     """A shopping cart."""
 
     def __init__(self):
-        self.items = []
+        self._items = []
 
     def add_item(self, item):
-        self.items.append(item)
+        self._items.append(item)
+
+    def get_items(self):
+        return self._items
 
     def is_empty(self):
-        return not self.items
+        return not self._items
 
     def __repr__(self):
         return ReprBuilder(self) \
-            .add_custom('{:d} items'.format(len(self.items))) \
+            .add_custom('{:d} items'.format(len(self._items))) \
             .build()
 
 

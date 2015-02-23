@@ -53,6 +53,11 @@ def order():
     if not form.validate():
         return order_form(form)
 
+    cart = form.get_cart(articles)
+    if cart.is_empty():
+        flash_error('Es wurden keine Artikel ausgewählt.')
+        return order_form(form)
+
     order_number = generate_order_number(g.party)
     user = g.current_user
 
@@ -69,24 +74,14 @@ def order():
     )
     db.session.add(order)
 
-    quantities = 0
-    for article in articles:
-        field_name = 'article_{}'.format(article.id)
-        field = getattr(form, field_name)
-        quantity = field.data
-        if quantity == 0:
-            continue
-
-        quantities += quantity
+    for item in cart.get_items():
+        article = item.article
+        quantity = item.quantity
 
         article.quantity -= quantity
 
         order_item = order.add_item(article, quantity)
         db.session.add(order_item)
-
-    if not quantities:
-        flash_error('Es wurden keine Artikel ausgewählt.')
-        return order_form(form)
 
     db.session.commit()
     flash_success('Deine Bestellung wurde entgegen genommen. Vielen Dank!')

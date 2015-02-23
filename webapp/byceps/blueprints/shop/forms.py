@@ -12,6 +12,8 @@ from wtforms.validators import InputRequired, Length
 
 from ...util.l10n import LocalizedForm
 
+from .models import Cart, CartItem
+
 
 class OrderForm(LocalizedForm):
     first_names = StringField('Vorname(n)', validators=[Length(min=2)])
@@ -24,8 +26,23 @@ class OrderForm(LocalizedForm):
 
 def assemble_articles_order_form(articles):
     """Dynamically extend the order form with one field per article."""
+
     class ArticlesOrderForm(OrderForm):
-        pass
+
+        def get_cart(self, articles):
+            cart = Cart()
+            for item in self.get_cart_items(articles):
+                cart.add_item(item)
+            return cart
+
+        def get_cart_items(self, articles):
+            for article in articles:
+                field_name = 'article_{}'.format(article.id)
+                field = getattr(self, field_name)
+                quantity = field.data
+                if quantity > 0:
+                    yield CartItem(article, quantity)
+
 
     validators = [InputRequired()]
     for article in articles:
