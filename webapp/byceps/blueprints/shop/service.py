@@ -10,6 +10,7 @@ byceps.blueprints.shop.service
 from ...database import db
 
 from .models import Article, Order, PartySequence, PartySequencePurpose
+from .signals import order_placed
 
 
 def get_orderable_articles():
@@ -69,6 +70,8 @@ def create_order(party, orderer, cart):
     service.add_items_from_cart_to_order(cart, order)
 
     db.session.commit()
+
+    order_placed.send(None, order=order)
 
 
 def build_order(party, order_number, orderer):

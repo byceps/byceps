@@ -20,7 +20,6 @@ from .forms import assemble_articles_order_form, OrderForm
 from .models import Article, Cart, CartItem, Order, PaymentState
 from . import service
 from .service import get_orderable_articles, has_user_placed_orders
-from .signals import order_placed
 
 
 blueprint = create_blueprint('shop', __name__)
@@ -64,7 +63,6 @@ def order():
     service.create_order(g.party, orderer, cart)
 
     flash_success('Deine Bestellung wurde entgegen genommen. Vielen Dank!')
-    order_placed.send(None, order=order)
     return redirect_to('snippet.order_placed')
 
 
@@ -126,5 +124,4 @@ def order_single(article_id):
     service.create_order(g.party, orderer, cart)
 
     flash_success('Deine Bestellung wurde entgegen genommen. Vielen Dank!')
-    order_placed.send(None, order=order)
     return redirect_to('snippet.order_placed')
