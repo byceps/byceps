@@ -60,17 +60,18 @@ def order():
 
     order_number = generate_order_number(g.party)
     user = g.current_user
+    orderer = form.get_orderer(user)
 
     order = Order(
         party=g.party,
         order_number=order_number,
-        placed_by=user,
-        first_names=form.first_names.data.strip(),
-        last_name=form.last_name.data.strip(),
-        date_of_birth=form.date_of_birth.data,
-        zip_code=form.zip_code.data.strip(),
-        city=form.city.data.strip(),
-        street=form.street.data.strip(),
+        placed_by=orderer.user,
+        first_names=orderer.first_names,
+        last_name=orderer.last_name,
+        date_of_birth=orderer.date_of_birth,
+        zip_code=orderer.zip_code,
+        city=orderer.city,
+        street=orderer.street,
     )
     db.session.add(order)
 
@@ -139,18 +140,19 @@ def order_single(article_id):
     if not form.validate():
         return order_single_form(article.id, form)
 
+    orderer = form.get_orderer(user)
     order_number = generate_order_number(g.party)
 
     order = Order(
         party=g.party,
         order_number=order_number,
-        placed_by=user,
-        first_names=form.first_names.data.strip(),
-        last_name=form.last_name.data.strip(),
-        date_of_birth=form.date_of_birth.data,
-        zip_code=form.zip_code.data.strip(),
-        city=form.city.data.strip(),
-        street=form.street.data.strip(),
+        placed_by=orderer.user,
+        first_names=orderer.first_names,
+        last_name=orderer.last_name,
+        date_of_birth=orderer.date_of_birth,
+        zip_code=orderer.zip_code,
+        city=orderer.city,
+        street=orderer.street,
     )
     db.session.add(order)
 

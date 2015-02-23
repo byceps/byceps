@@ -12,7 +12,7 @@ from wtforms.validators import InputRequired, Length
 
 from ...util.l10n import LocalizedForm
 
-from .models import Cart, CartItem
+from .models import Cart, CartItem, Orderer
 
 
 class OrderForm(LocalizedForm):
@@ -22,6 +22,17 @@ class OrderForm(LocalizedForm):
     zip_code = StringField('PLZ', validators=[Length(min=5, max=5)])
     city = StringField('Stadt', validators=[Length(min=2)])
     street = StringField('Straße', validators=[Length(min=2)])
+
+    def get_orderer(self, user):
+        return Orderer(
+            user,
+            self.first_names.data.strip(),
+            self.last_name.data.strip(),
+            self.date_of_birth.data,
+            self.zip_code.data.strip(),
+            self.city.data.strip(),
+            self.street.data.strip(),
+        )
 
 
 def assemble_articles_order_form(articles):

@@ -179,6 +179,20 @@ class CartItem(object):
 # orders
 
 
+class Orderer(object):
+    """Someone who orders articles."""
+
+    def __init__(self, user, first_names, last_name, date_of_birth, zip_code,
+                 city, street):
+        self.user = user
+        self.first_names = first_names
+        self.last_name = last_name
+        self.date_of_birth = date_of_birth
+        self.zip_code = zip_code
+        self.city = city
+        self.street = street
+
+
 PaymentState = Enum('PaymentState', ['open', 'canceled', 'paid'])
 
 
