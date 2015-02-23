@@ -120,7 +120,7 @@ def order_single(article_id):
 
     if has_user_placed_orders(user):
         flash_error('Du kannst keine weitere Bestellung aufgeben.')
-        return order_single_form()
+        return order_single_form(article.id)
 
     if article.quantity < 1 or not article.is_available:
         flash_error('Der Artikel ist nicht verfügbar.')
