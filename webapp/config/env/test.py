@@ -14,11 +14,11 @@ LOCALES_FORMS = ['de']
 SQLALCHEMY_DATABASE_URI = 'postgresql+pg8000://byceps_test:test@127.0.0.1/byceps_test'
 SQLALCHEMY_ECHO = False
 
-PATH_DATA = Path('./data')
-PATH_USER_AVATAR_IMAGES = PATH_DATA / 'users/avatars'
-
 MODE = 'public'
 PARTY = 'acme-2014'
+
+PATH_DATA = Path('./data')
+PATH_USER_AVATAR_IMAGES = PATH_DATA / 'users/avatars'
 
 MAIL_DEBUG = False
 MAIL_DEFAULT_SENDER = 'LANresort <noreply@lanresort.de>'

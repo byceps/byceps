@@ -13,12 +13,12 @@ LOCALES_FORMS = ['de']
 SQLALCHEMY_DATABASE_URI = 'postgresql+pg8000://byceps:boioioing@127.0.0.1/byceps'
 SQLALCHEMY_ECHO = False
 
-PATH_DATA = Path('./data')
-PATH_CONTENT = PATH_DATA / 'content'
-PATH_USER_AVATAR_IMAGES = PATH_DATA / 'users/avatars'
-
 MODE = 'public'
 PARTY = 'lanresort-2014'
+
+PATH_DATA = Path('./data')
+PATH_CONTENT = PATH_DATA / 'party_content' / PARTY
+PATH_USER_AVATAR_IMAGES = PATH_DATA / 'users/avatars'
 
 BOARD_TOPICS_PER_PAGE = 10
 BOARD_POSTINGS_PER_PAGE = 10
