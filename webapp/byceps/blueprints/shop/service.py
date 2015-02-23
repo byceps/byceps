@@ -59,7 +59,19 @@ def _get_next_serial_number(party, purpose):
     return sequence.value
 
 
-def create_order(party, order_number, orderer):
+def create_order(party, orderer, cart):
+    """Create an order of one or more articles."""
+    order_number = generate_order_number(party)
+
+    order = build_order(party, order_number, orderer)
+    db.session.add(order)
+
+    service.add_items_from_cart_to_order(cart, order)
+
+    db.session.commit()
+
+
+def build_order(party, order_number, orderer):
     """Create an order of one or more articles."""
     return Order(
         party=party,

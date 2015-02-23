@@ -19,8 +19,7 @@ from ..authorization.decorators import login_required
 from .forms import assemble_articles_order_form, OrderForm
 from .models import Article, Cart, CartItem, Order, PaymentState
 from . import service
-from .service import create_order, generate_order_number, \
-    get_orderable_articles, has_user_placed_orders
+from .service import get_orderable_articles, has_user_placed_orders
 from .signals import order_placed
 
 
@@ -59,16 +58,10 @@ def order():
         flash_error('Es wurden keine Artikel ausgewählt.')
         return order_form(form)
 
-    order_number = generate_order_number(g.party)
     user = g.current_user
     orderer = form.get_orderer(user)
 
-    order = create_order(g.party, order_number, orderer)
-    db.session.add(order)
-
-    service.add_items_from_cart_to_order(cart, order)
-
-    db.session.commit()
+    service.create_order(g.party, orderer, cart)
 
     flash_success('Deine Bestellung wurde entgegen genommen. Vielen Dank!')
     order_placed.send(None, order=order)
@@ -125,18 +118,12 @@ def order_single(article_id):
     if not form.validate():
         return order_single_form(article.id, form)
 
+    orderer = form.get_orderer(user)
+
     cart = Cart()
     cart.add_item(CartItem(article, 1))
 
-    orderer = form.get_orderer(user)
-    order_number = generate_order_number(g.party)
-
-    order = create_order(g.party, order_number, orderer)
-    db.session.add(order)
-
-    service.add_items_from_cart_to_order(cart, order)
-
-    db.session.commit()
+    service.create_order(g.party, orderer, cart)
 
     flash_success('Deine Bestellung wurde entgegen genommen. Vielen Dank!')
     order_placed.send(None, order=order)
