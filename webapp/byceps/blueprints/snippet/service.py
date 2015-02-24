@@ -7,26 +7,23 @@ byceps.blueprints.snippet.service
 :Copyright: 2006-2015 Jochen Kupperschmidt
 """
 
-from .models import Snippet
+from flask import g
+from sqlalchemy.orm.exc import NoResultFound
+
+from .models import CurrentVersionAssociation, Snippet, SnippetVersion
 
 
 def get_current_version_of_snippet_with_name(name):
     """Return the current version of the snippet with that name."""
-    snippet = get_snippet_by_name(name)
-    return snippet.current_version
-
-
-def get_snippet_by_name(name):
-    """Return the snippet with that name."""
-    snippet = Snippet.query \
-        .for_current_party() \
-        .filter_by(name=name) \
-        .first()
-
-    if snippet is None:
+    try:
+        return SnippetVersion.query \
+            .join(CurrentVersionAssociation) \
+            .join(Snippet) \
+                .filter(Snippet.party == g.party) \
+                .filter(Snippet.name == name) \
+            .one()
+    except NoResultFound:
         raise SnippetNotFound(name)
-
-    return snippet
 
 
 class SnippetNotFound(Exception):
