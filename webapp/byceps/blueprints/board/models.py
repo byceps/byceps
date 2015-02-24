@@ -257,7 +257,13 @@ class Topic(db.Model):
         """Return the posting that stores the body of this topic's
         opening posting.
         """
-        return sorted(self.postings, key=lambda p: p.created_at)[0]
+        if not hasattr(self, '_body_posting'):
+            self._body_posting = Posting.query \
+                .filter_by(topic=self) \
+                .earliest_to_latest() \
+                .first()
+
+        return self._body_posting
 
     def aggregate(self):
         """Update the count and latest fields."""
