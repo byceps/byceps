@@ -8,6 +8,7 @@ byceps.blueprints.shop.models
 """
 
 from datetime import datetime
+from decimal import Decimal
 from enum import Enum
 
 from flask import g
@@ -92,6 +93,13 @@ class Article(db.Model):
     @price.setter
     def price(self, amount):
         self._price = amount.to_int()
+
+    @property
+    def tax_rate_as_percentage(self):
+        # Keep a digit after the decimal point in case
+        # the tax rate is a fractional number.
+        percentage = (self.tax_rate * 100).quantize(Decimal('.0'))
+        return str(percentage).replace('.', ',')
 
     @property
     def availability_range(self):

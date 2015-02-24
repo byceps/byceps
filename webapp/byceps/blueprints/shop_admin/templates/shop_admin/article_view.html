@@ -29,6 +29,10 @@
       <td>{{ article.price.to_string() }}</td>
     </tr>
     <tr>
+      <th>Steuersatz</th>
+      <td>{{ article.tax_rate_as_percentage }}&thinsp;%</td>
+    </tr>
+    <tr>
       <th>Zeitliche<br/>Verfügbarkeit</th>
       <td>{{ render_article_temporal_availability(article) }}</td>
     </tr>
