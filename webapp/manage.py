@@ -31,9 +31,13 @@ app = create_app(environment, initialize=True)
 
 if app.debug:
     exports = {
-        '/content': str(app.config['PATH_CONTENT']),
         '/users/avatars': str(app.config['PATH_USER_AVATAR_IMAGES']),
     }
+
+    path_content = app.config.get('PATH_CONTENT')
+    if path_content:
+        exports['/content'] = str(path_content)
+
     app.wsgi_app = SharedDataMiddleware(app.wsgi_app, exports)
 
 manager = Manager(app)

@@ -16,7 +16,6 @@ SQLALCHEMY_ECHO = False
 MODE = 'admin'
 
 PATH_DATA = Path('./data')
-PATH_CONTENT = PATH_DATA / 'party_content' / PARTY
 PATH_USER_AVATAR_IMAGES = PATH_DATA / 'users/avatars'
 
 BOARD_TOPICS_PER_PAGE = 10
