@@ -73,7 +73,12 @@ def article_index_for_party(party_id, page):
 @templated
 def article_view(id):
     """Show a single article."""
-    article = Article.query.get_or_404(id)
+    article = Article.query \
+        .options(
+            db.joinedload('party'),
+            db.joinedload_all('order_items.order'),
+        ) \
+        .get_or_404(id)
 
     return {
         'article': article,
@@ -94,7 +99,8 @@ def article_view_ordered(id):
     order_items = OrderItem.query \
         .filter_by(article=article) \
         .options(
-            db.joinedload('order'),
+            db.joinedload_all('order.placed_by.detail'),
+            db.joinedload_all('order.party'),
         ) \
         .all()
 
@@ -207,6 +213,9 @@ def order_index_for_party(party_id, page):
     per_page = request.args.get('per_page', type=int, default=15)
     query = Order.query \
         .for_party(party) \
+        .options(
+            db.joinedload('placed_by'),
+        ) \
         .order_by(Order.created_at.desc())
 
     only = request.args.get('only', type=PaymentState.__getitem__)
@@ -228,7 +237,12 @@ def order_index_for_party(party_id, page):
 @templated
 def order_view(id):
     """Show a single order."""
-    order = Order.query.get_or_404(id)
+    order = Order.query \
+        .options(
+            db.joinedload('party'),
+            db.joinedload('items'),
+        ) \
+        .get_or_404(id)
 
     return {
         'order': order,

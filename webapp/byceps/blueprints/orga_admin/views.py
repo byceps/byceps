@@ -172,7 +172,9 @@ def teams():
 def teams_for_party(party_id):
     """List organizer teams for that party."""
     party = Party.query.get_or_404(party_id)
-    teams = OrgaTeam.query.all()
+    teams = OrgaTeam.query \
+        .options(db.joinedload('memberships')) \
+        .all()
     return {
         'teams': teams,
         'party': party,

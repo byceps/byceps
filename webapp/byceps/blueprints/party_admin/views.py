@@ -7,6 +7,7 @@ byceps.blueprints.party_admin.views
 :Copyright: 2006-2015 Jochen Kupperschmidt
 """
 
+from ...database import db
 from ...util.framework import create_blueprint
 from ...util.templating import templated
 
@@ -28,5 +29,5 @@ permission_registry.register_enum(PartyPermission)
 @templated
 def index():
     """List parties."""
-    parties = Party.query.all()
+    parties = Party.query.options(db.joinedload('brand')).all()
     return {'parties': parties}

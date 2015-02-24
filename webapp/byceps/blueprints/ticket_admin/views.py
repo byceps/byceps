@@ -7,6 +7,7 @@ byceps.blueprints.ticket_admin.views
 :Copyright: 2006-2015 Jochen Kupperschmidt
 """
 
+from ...database import db
 from ...util.framework import create_blueprint
 from ...util.templating import templated
 
@@ -41,7 +42,15 @@ def index_for_party(party_id):
     """List tickets for that party."""
     party = Party.query.get_or_404(party_id)
 
-    tickets = Ticket.query.for_party(party).order_by(Ticket.created_at).all()
+    tickets = Ticket.query \
+        .for_party(party) \
+        .options(
+            db.joinedload('category'),
+            db.joinedload('owned_by'),
+            db.joinedload_all('occupied_seat.area'),
+        ) \
+        .order_by(Ticket.created_at) \
+        .all()
 
     return {
         'party': party,

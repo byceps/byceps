@@ -47,7 +47,11 @@ def index():
 def index_for_brand(brand_id):
     """List news items for that brand."""
     brand = Brand.query.get_or_404(brand_id)
-    items = Item.query.for_brand(brand).all()
+    items = Item.query.for_brand(brand) \
+        .options(
+            db.joinedload_all('snippet.current_version_association.version'),
+        ) \
+        .all()
     return {
         'brand': brand,
         'items': items,

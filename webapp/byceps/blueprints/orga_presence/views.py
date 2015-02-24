@@ -11,6 +11,7 @@ from itertools import groupby
 
 from arrow import Arrow
 
+from ...database import db
 from ...util.datetime import DateTimeRange
 from ...util.framework import create_blueprint
 from ...util.iterables import pairwise
@@ -47,7 +48,10 @@ def view(party_id):
     """List orga presence and task time slots for that party."""
     party = Party.query.get_or_404(party_id)
 
-    presences = Presence.query.for_party(party).all()
+    presences = Presence.query \
+        .for_party(party) \
+        .options(db.joinedload('orga')) \
+        .all()
     tasks = Task.query.for_party(party).all()
 
     time_slots = [party] + tasks

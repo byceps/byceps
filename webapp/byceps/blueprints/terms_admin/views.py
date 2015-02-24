@@ -7,6 +7,7 @@ byceps.blueprints.terms_admin.views
 :Copyright: 2006-2015 Jochen Kupperschmidt
 """
 
+from ...database import db
 from ...util.framework import create_blueprint
 from ...util.templating import templated
 
@@ -28,5 +29,7 @@ permission_registry.register_enum(TermsPermission)
 @templated
 def index():
     """List terms versions."""
-    versions = Version.query.all()
+    versions = Version.query \
+        .options(db.joinedload('brand')) \
+        .all()
     return {'versions': versions}

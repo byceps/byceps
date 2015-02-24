@@ -7,6 +7,8 @@ byceps.blueprints.orga_admin.service
 :Copyright: 2006-2015 Jochen Kupperschmidt
 """
 
+from ...database import db
+
 from ..orga.models import OrgaFlag
 from ..user.models import User, UserDetail
 
@@ -15,7 +17,7 @@ def get_organizers_for_brand(brand):
     """Return all users flagged as organizers for the brand."""
     return User.query \
         .join(OrgaFlag).filter(OrgaFlag.brand == brand) \
-        .join(UserDetail) \
+        .options(db.joinedload('detail')) \
         .all()
 
 
@@ -31,6 +33,7 @@ def collect_orgas_with_birthdays():
         .join(OrgaFlag) \
         .join(UserDetail) \
         .filter(UserDetail.date_of_birth != None) \
+        .options(db.joinedload('detail')) \
         .all()
 
 

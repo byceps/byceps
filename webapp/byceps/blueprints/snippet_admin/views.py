@@ -50,7 +50,10 @@ def index():
 def index_for_party(party_id):
     """List snippets for that party."""
     party = Party.query.get_or_404(party_id)
-    snippets = Snippet.query.for_party(party).all()
+    snippets = Snippet.query \
+        .for_party(party) \
+        .options(db.joinedload_all('current_version_association.version')) \
+        .all()
     mountpoints = Mountpoint.query.for_party(party).all()
     return {
         'party': party,

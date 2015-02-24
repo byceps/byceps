@@ -9,6 +9,7 @@ byceps.blueprints.user_admin.views
 
 from flask import request
 
+from ...database import db
 from ...util.framework import create_blueprint
 from ...util.templating import templated
 
@@ -33,6 +34,7 @@ permission_registry.register_enum(UserPermission)
 def index(page):
     """List users."""
     query = User.query \
+        .options(db.joinedload('detail')) \
         .order_by(User.created_at.desc())
 
     search_term = request.args.get('search_term', default='').strip()
