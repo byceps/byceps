@@ -25,7 +25,7 @@ class Permission(db.Model):
     __tablename__ = 'auth_permissions'
 
     id = db.Column(db.Unicode(40), primary_key=True)
-    title = db.Column(db.Unicode(80), unique=True)
+    title = db.deferred(db.Column(db.Unicode(80), unique=True))
 
     roles = association_proxy('role_permissions', 'role')
 
@@ -56,7 +56,7 @@ class Role(db.Model):
     __tablename__ = 'auth_roles'
 
     id = db.Column(db.Unicode(40), primary_key=True)
-    title = db.Column(db.Unicode(80), unique=True)
+    title = db.deferred(db.Column(db.Unicode(80), unique=True))
 
     permissions = association_proxy('role_permissions', 'permission')
     users = association_proxy('user_roles', 'user')
