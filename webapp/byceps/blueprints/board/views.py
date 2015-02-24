@@ -137,7 +137,7 @@ def topic_view(id, page):
     postings = Posting.query \
         .options(
             db.joinedload(Posting.topic),
-            db.joinedload(Posting.creator),
+            db.joinedload_all('creator.orga_flags'),
             db.joinedload(Posting.last_edited_by),
             db.joinedload(Posting.hidden_by),
         ) \
