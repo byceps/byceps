@@ -8,6 +8,7 @@ byceps.blueprints.seating.views
 """
 
 from ...config import get_ticket_management_enabled
+from ...database import db
 from ...util.framework import create_blueprint
 from ...util.templating import templated
 
@@ -29,7 +30,12 @@ def index():
 @templated
 def view_area(slug):
     """View area."""
-    area = Area.query.for_current_party().filter_by(slug=slug).first_or_404()
+    area = Area.query \
+        .for_current_party() \
+        .filter_by(slug=slug) \
+        .options(db.joinedload_all('seats.category')) \
+        .first_or_404()
+
     ticket_management_enabled = get_ticket_management_enabled()
 
     return {
