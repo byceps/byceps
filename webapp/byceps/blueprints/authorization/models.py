@@ -73,9 +73,11 @@ class RolePermission(db.Model):
     __tablename__ = 'auth_role_permissions'
 
     role_id = db.Column(db.Unicode(40), db.ForeignKey('auth_roles.id'), primary_key=True)
-    role = db.relationship(Role, backref='role_permissions', collection_class=set)
+    role = db.relationship(Role,
+                           backref=db.backref('role_permissions', collection_class=set, lazy='joined'),
+                           collection_class=set)
     permission_id = db.Column(db.Unicode(40), db.ForeignKey('auth_permissions.id'), primary_key=True)
-    permission = db.relationship(Permission, backref='role_permissions', collection_class=set)
+    permission = db.relationship(Permission, backref='role_permissions', collection_class=set, lazy='joined')
 
     def __init__(self, permission):
         self.permission = permission
@@ -98,7 +100,8 @@ class UserRole(db.Model):
     role_id = db.Column(db.Unicode(40), db.ForeignKey('auth_roles.id'), primary_key=True)
     role = db.relationship(Role,
                            backref=db.backref('user_roles', collection_class=set),
-                           collection_class=set)
+                           collection_class=set,
+                           lazy='joined')
 
     def __init__(self, role):
         self.role = role
