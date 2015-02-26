@@ -138,8 +138,8 @@ def topic_view(id, page):
         .options(
             db.joinedload(Posting.topic),
             db.joinedload_all('creator.orga_flags'),
-            db.joinedload(Posting.last_edited_by),
-            db.joinedload(Posting.hidden_by),
+            db.joinedload(Posting.last_edited_by).load_only('screen_name'),
+            db.joinedload(Posting.hidden_by).load_only('screen_name'),
         ) \
         .for_topic(topic) \
         .only_visible_for_current_user() \
