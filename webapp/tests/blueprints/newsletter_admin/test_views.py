@@ -26,7 +26,7 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
         newsletter_admin_role = Role(id='newsletter_admin')
         self.db.session.add(newsletter_admin_role)
 
-        newsletter_admin_role.permissions.append(export_subscribers_permission)
+        newsletter_admin_role.permissions.add(export_subscribers_permission)
 
         self.current_user = self.create_user(99, enabled=True)
         self.current_user.roles.add(newsletter_admin_role)

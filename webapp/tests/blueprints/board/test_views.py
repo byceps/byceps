@@ -188,7 +188,7 @@ class BoardModerationTestCase(AbstractAppTestCase):
         board_moderator_role = Role(id='board_moderator')
         self.db.session.add(board_moderator_role)
 
-        board_moderator_role.permissions.append(db_permission)
+        board_moderator_role.permissions.add(db_permission)
 
         self.current_user = self.create_user(99, enabled=True)
         self.current_user.roles.add(board_moderator_role)

@@ -28,7 +28,7 @@ class ShopAdminTestCase(AbstractAppTestCase):
         shop_admin_role = Role(id='shop_admin')
         self.db.session.add(shop_admin_role)
 
-        shop_admin_role.permissions.append(update_orders_permission)
+        shop_admin_role.permissions.add(update_orders_permission)
 
         self.current_user = self.create_user(99, enabled=True)
         self.current_user.roles.add(shop_admin_role)
