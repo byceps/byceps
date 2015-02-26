@@ -31,6 +31,7 @@ def permission_index():
     """List permissions."""
     permissions = Permission.query \
         .options(
+            db.undefer('title'),
             db.joinedload('role_permissions')
         ) \
         .all()
@@ -44,6 +45,7 @@ def role_index():
     """List roles."""
     roles = Role.query \
         .options(
+            db.undefer('title'),
             db.joinedload_all('user_roles.user')
         ) \
         .all()
