@@ -31,6 +31,7 @@ blueprint = create_blueprint('shop', __name__)
 def order_form(erroneous_form=None):
     """Show a form to order articles."""
     articles = get_orderable_articles()
+    article_compilation = service.get_article_compilation_for_articles(articles)
 
     user = g.current_user
 
@@ -42,7 +43,7 @@ def order_form(erroneous_form=None):
 
     return {
         'form': form,
-        'articles': articles,
+        'article_compilation': article_compilation,
     }
 
 @blueprint.route('/order', methods=['POST'])
@@ -50,13 +51,16 @@ def order_form(erroneous_form=None):
 def order():
     """Order articles."""
     articles = get_orderable_articles()
-    ArticlesOrderForm = assemble_articles_order_form(articles)
+    article_compilation = service.get_article_compilation_for_articles(articles)
 
+    ArticlesOrderForm = assemble_articles_order_form(articles)
     form = ArticlesOrderForm(request.form)
+
     if not form.validate():
         return order_form(form)
 
-    cart = form.get_cart(articles)
+    cart = form.get_cart(article_compilation)
+
     if cart.is_empty():
         flash_error('Es wurden keine Artikel ausgewählt.')
         return order_form(form)

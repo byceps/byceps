@@ -46,13 +46,13 @@ def assemble_articles_order_form(articles):
                 cart.add_item(item)
             return cart
 
-        def get_cart_items(self, articles):
-            for article in articles:
-                field_name = 'article_{}'.format(article.id)
+        def get_cart_items(self, article_compilation):
+            for item in article_compilation.get_items():
+                field_name = 'article_{}'.format(item.article.id)
                 field = getattr(self, field_name)
                 quantity = field.data
                 if quantity > 0:
-                    yield CartItem(article, quantity)
+                    yield CartItem(item.article, quantity)
 
 
     validators = [InputRequired()]

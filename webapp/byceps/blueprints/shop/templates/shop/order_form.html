@@ -1,5 +1,6 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
+{% from 'macros/shop.html' import render_article_compilation %}
 {% set current_page = 'shop' %}
 {% set title = 'Bestellen' %}
 
@@ -7,7 +8,7 @@
 
   <h1>{{ title }}</h1>
 
-  {%- if articles %}
+  {%- if article_compilation %}
   <form action="{{ url_for('.order') }}" method="post">
 
 {%- include 'shop/_orderer_form_fields.html' %}
@@ -22,10 +23,10 @@
         </tr>
       </thead>
       <tbody>
-        {%- for article in articles %}
+        {%- for item in article_compilation.get_items() %}
         <tr>
           <td>
-            {%- set field = form|attr('article_%s'|format(article.id)) %}
+            {%- set field = form|attr('article_%s'|format(item.article.id)) %}
             {{ field() }}
             {%- if field.errors %}
             <ol class="errors">
@@ -35,8 +36,8 @@
             </ol>
             {%- endif -%}
           </td>
-          <td><strong>{{ article.description }}</strong></td>
-          <td style="text-align: right;">{{ article.price.to_string() }}</td>
+          <td><strong>{{ item.article.description }}</strong></td>
+          <td style="text-align: right;">{{ item.article.price.to_string() }}</td>
         </tr>
         {%- endfor %}
       </tbody>

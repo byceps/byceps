@@ -26,6 +26,14 @@ def get_orderable_articles():
         .all()
 
 
+def get_article_compilation_for_articles(articles):
+    """Return a compilation built from the given articles."""
+    compilation = ArticleCompilation()
+    for article in articles:
+        compilation.append(ArticleCompilationItem(article))
+    return compilation
+
+
 def get_article_compilation_for_single_article(article, *, fixed_quantity=None):
     """Return a compilation built from just the given article."""
     compilation = ArticleCompilation()
