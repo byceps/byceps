@@ -229,8 +229,8 @@ class User(db.Model):
 
     @property
     def avatar_image_filename(self):
-        timestamp = self.avatar_image_created_at.strftime('%s')
-        name_without_suffix = '{}_{}'.format(self.id, timestamp)
+        timestamp = int(self.avatar_image_created_at.timestamp())
+        name_without_suffix = '{}_{:d}'.format(self.id, timestamp)
         suffix = '.' + self.avatar_image_type.name
         return Path(name_without_suffix).with_suffix(suffix)
 
