@@ -19,7 +19,6 @@ from ..authorization.decorators import login_required
 from .forms import assemble_articles_order_form, OrderForm
 from .models import Article, Cart, CartItem, Order, PaymentState
 from . import service
-from .service import has_user_placed_orders
 
 
 blueprint = create_blueprint('shop', __name__)
@@ -85,7 +84,7 @@ def order_single_form(article_id, erroneous_form=None):
     user = g.current_user
     form = erroneous_form if erroneous_form else OrderForm(obj=user.detail)
 
-    if has_user_placed_orders(user):
+    if service.has_user_placed_orders(user):
         flash_error('Du kannst keine weitere Bestellung aufgeben.')
         return {
             'form': form,
@@ -118,7 +117,7 @@ def order_single(article_id):
 
     user = g.current_user
 
-    if has_user_placed_orders(user):
+    if service.has_user_placed_orders(user):
         flash_error('Du kannst keine weitere Bestellung aufgeben.')
         return order_single_form(article.id)
 
