@@ -40,9 +40,9 @@ def assemble_articles_order_form(article_compilation):
 
     class ArticlesOrderForm(OrderForm):
 
-        def get_cart(self, articles):
+        def get_cart(self, article_compilation):
             cart = Cart()
-            for item in self.get_cart_items(articles):
+            for item in self.get_cart_items(articles_compilation:
                 cart.add_item(item)
             return cart
 
