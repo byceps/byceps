@@ -19,7 +19,7 @@ from ..authorization.decorators import login_required
 from .forms import assemble_articles_order_form, OrderForm
 from .models import Article, Cart, CartItem, Order, PaymentState
 from . import service
-from .service import get_orderable_articles, has_user_placed_orders
+from .service import has_user_placed_orders
 
 
 blueprint = create_blueprint('shop', __name__)
@@ -30,8 +30,7 @@ blueprint = create_blueprint('shop', __name__)
 @templated
 def order_form(erroneous_form=None):
     """Show a form to order articles."""
-    articles = get_orderable_articles()
-    article_compilation = service.get_article_compilation_for_articles(articles)
+    article_compilation = service.get_article_compilation_for_orderable_articles()
 
     user = g.current_user
 
@@ -50,8 +49,7 @@ def order_form(erroneous_form=None):
 @login_required
 def order():
     """Order articles."""
-    articles = get_orderable_articles()
-    article_compilation = service.get_article_compilation_for_articles(articles)
+    article_compilation = service.get_article_compilation_for_orderable_articles()
 
     ArticlesOrderForm = assemble_articles_order_form(article_compilation)
     form = ArticlesOrderForm(request.form)

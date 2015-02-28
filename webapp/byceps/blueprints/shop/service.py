@@ -14,22 +14,19 @@ from .models import Article, ArticleCompilation, ArticleCompilationItem, \
 from .signals import order_placed
 
 
-def get_orderable_articles():
-    """Return the articles that can be ordered for the current party,
+def get_article_compilation_for_orderable_articles():
+    """Return a compilation of the articles which can be ordered for the current party,
     less the ones that are only orderable in a dedicated order.
     """
-    return Article.query \
+    orderable_articles = Article.query \
         .for_current_party() \
         .filter_by(requires_separate_order=False) \
         .currently_available() \
         .order_by(Article.description) \
         .all()
 
-
-def get_article_compilation_for_articles(articles):
-    """Return a compilation built from the given articles."""
     compilation = ArticleCompilation()
-    for article in articles:
+    for article in orderable_articles:
         compilation.append(ArticleCompilationItem(article))
     return compilation
 
