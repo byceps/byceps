@@ -9,7 +9,8 @@ byceps.blueprints.shop.service
 
 from ...database import db
 
-from .models import Article, Order, PartySequence, PartySequencePurpose
+from .models import Article, ArticleCompilation, ArticleCompilationItem, \
+    Order, PartySequence, PartySequencePurpose
 from .signals import order_placed
 
 
@@ -23,6 +24,14 @@ def get_orderable_articles():
         .currently_available() \
         .order_by(Article.description) \
         .all()
+
+
+def get_article_compilation_for_single_article(article, *, fixed_quantity=None):
+    """Return a compilation built from just the given article."""
+    compilation = ArticleCompilation()
+    compilation.append(
+        ArticleCompilationItem(article, fixed_quantity=fixed_quantity))
+    return compilation
 
 
 def generate_article_number(party):

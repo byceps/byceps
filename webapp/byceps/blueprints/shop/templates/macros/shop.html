@@ -1,4 +1,4 @@
-{% macro render_selected_articles(articles_with_quantity) %}
+{% macro render_article_compilation(article_compilation) %}
     <h2>Artikel</h2>
     <table class="index wide">
       <thead>
@@ -9,11 +9,11 @@
         </tr>
       </thead>
       <tbody>
-        {%- for article, quantity in articles_with_quantity %}
+        {%- for item in article_compilation.get_items() %}
         <tr>
-          <td style="text-align: right;">{{ quantity }}</td>
-          <td><strong>{{ article.description }}</strong></td>
-          <td style="text-align: right;">{{ article.price.to_string() }}</td>
+          <td style="text-align: right;">{{ item.fixed_quantity }}</td>
+          <td><strong>{{ item.article.description }}</strong></td>
+          <td style="text-align: right;">{{ item.article.price.to_string() }}</td>
         </tr>
         {%- endfor %}
       </tbody>

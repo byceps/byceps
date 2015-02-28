@@ -73,6 +73,9 @@ def order_single_form(article_id, erroneous_form=None):
     """Show a form to order a single article."""
     article = Article.query.get_or_404(article_id)
 
+    article_compilation = service.get_article_compilation_for_single_article(
+        article, fixed_quantity=1)
+
     user = g.current_user
     form = erroneous_form if erroneous_form else OrderForm(obj=user.detail)
 
@@ -93,6 +96,7 @@ def order_single_form(article_id, erroneous_form=None):
     return {
         'form': form,
         'article': article,
+        'article_compilation': article_compilation,
     }
 
 
@@ -101,6 +105,10 @@ def order_single_form(article_id, erroneous_form=None):
 def order_single(article_id):
     """Order a single article."""
     article = Article.query.get_or_404(article_id)
+    quantity = 1
+
+    article_compilation = service.get_article_compilation_for_single_article(
+        article, fixed_quantity=quantity)
 
     user = g.current_user
 
@@ -119,7 +127,8 @@ def order_single(article_id):
     orderer = form.get_orderer(user)
 
     cart = Cart()
-    cart.add_item(CartItem(article, 1))
+    for item in article_compilation.get_items():
+        cart.add_item(CartItem(item.article, item.fixed_quantity))
 
     service.create_order(g.party, orderer, cart)
 
