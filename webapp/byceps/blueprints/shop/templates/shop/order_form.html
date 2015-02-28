@@ -1,6 +1,5 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
-{% from 'macros/shop.html' import render_article_compilation %}
 {% set current_page = 'shop' %}
 {% set title = 'Bestellen' %}
 
@@ -12,8 +11,7 @@
   <form action="{{ url_for('.order') }}" method="post">
 
 {%- include 'shop/_orderer_form_fields.html' %}
-
-{{ render_article_compilation(article_compilation, form=form) }}
+{%- include 'shop/_order_form_articles.html' %}
 
     {{ form_buttons('Kostenpflichtig bestellen') }}
   </form>
