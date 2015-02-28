@@ -40,6 +40,10 @@ if app.debug:
 
     app.wsgi_app = SharedDataMiddleware(app.wsgi_app, exports)
 
+    from flask_debugtoolbar import DebugToolbarExtension
+    app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
+    toolbar = DebugToolbarExtension(app)
+
 manager = Manager(app)
 
 
