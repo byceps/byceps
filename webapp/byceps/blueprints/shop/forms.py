@@ -48,7 +48,7 @@ def assemble_articles_order_form(article_compilation):
 
         def get_cart_items(self, article_compilation):
             for item in article_compilation:
-                field_name = 'article_{}'.format(item.article.id)
+                field_name = _generate_field_name(item.article)
                 field = getattr(self, field_name)
                 quantity = field.data
                 if quantity > 0:
@@ -57,12 +57,16 @@ def assemble_articles_order_form(article_compilation):
 
     validators = [InputRequired()]
     for item in article_compilation:
-        field_name = 'article_{}'.format(item.article.id)
+        field_name = _generate_field_name(item.article)
         choices = _create_choices(item.article)
         field = SelectField('Anzahl', validators, coerce=int, choices=choices)
         setattr(ArticlesOrderForm, field_name, field)
 
     return ArticlesOrderForm
+
+
+def _generate_field_name(article):
+    return 'article_{}'.format(article.id)
 
 
 def _create_choices(article):
