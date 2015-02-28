@@ -40,6 +40,10 @@ def assemble_articles_order_form(article_compilation):
 
     class ArticlesOrderForm(OrderForm):
 
+        def get_field_for_article(self, article):
+            name = _generate_field_name(article)
+            return getattr(self, name)
+
         def get_cart(self, article_compilation):
             cart = Cart()
             for item in self.get_cart_items(articles_compilation):

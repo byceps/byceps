@@ -14,7 +14,7 @@
           <td style="text-align: right;">{{ item.fixed_quantity }}</td>
           {%- else %}
           <td style="text-align: right;">
-            {%- set field = form|attr('article_%s'|format(item.article.id)) %}
+            {%- set field = form.get_field_for_article(item.article) %}
             {{ field() }}
             {%- if field.errors %}
             <ol class="errors" style="text-align: left;">
