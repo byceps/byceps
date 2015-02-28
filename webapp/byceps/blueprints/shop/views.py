@@ -31,10 +31,14 @@ blueprint = create_blueprint('shop', __name__)
 def order_form(erroneous_form=None):
     """Show a form to order articles."""
     articles = get_orderable_articles()
-    ArticlesOrderForm = assemble_articles_order_form(articles)
 
     user = g.current_user
-    form = erroneous_form if erroneous_form else ArticlesOrderForm(obj=user.detail)
+
+    if erroneous_form:
+        form = erroneous_form
+    else:
+        ArticlesOrderForm = assemble_articles_order_form(articles)
+        form = ArticlesOrderForm(obj=user.detail)
 
     return {
         'form': form,
