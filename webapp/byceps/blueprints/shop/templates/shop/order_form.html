@@ -13,36 +13,7 @@
 
 {%- include 'shop/_orderer_form_fields.html' %}
 
-    <h2>Artikel</h2>
-    <table class="index wide">
-      <thead>
-        <tr>
-          <th>Anzahl</th>
-          <th>Beschreibung</th>
-          <th>Stückpreis</th>
-        </tr>
-      </thead>
-      <tbody>
-        {%- for item in article_compilation %}
-        <tr>
-          <td>
-            {%- set field = form|attr('article_%s'|format(item.article.id)) %}
-            {{ field() }}
-            {%- if field.errors %}
-            <ol class="errors">
-              {%- for error in field.errors %}
-              <li><strong>Fehler:</strong> <span>{{ error }}</span></li>
-              {%- endfor %}
-            </ol>
-            {%- endif -%}
-          </td>
-          <td><strong>{{ item.article.description }}</strong></td>
-          <td style="text-align: right;">{{ item.article.price.to_string() }}</td>
-        </tr>
-        {%- endfor %}
-      </tbody>
-    </table>
-    <p><small>Im Preis ist gemäß § 19 UStG keine Umsatzsteuer enthalten (Kleinunternehmerregelung).</small></p>
+{{ render_article_compilation(article_compilation, form=form) }}
 
     {{ form_buttons('Kostenpflichtig bestellen') }}
   </form>

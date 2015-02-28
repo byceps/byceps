@@ -141,8 +141,8 @@ def range_all(theType):
         Cut.aboveAll(theType=theType))
 
 
+# -------------------------------------------------------------------- #
 # article compilation
-#
 
 
 class ArticleCompilation(object):
@@ -166,6 +166,9 @@ class ArticleCompilationItem(object):
 
         self.article = article
         self.fixed_quantity = fixed_quantity
+
+    def has_fixed_quantity(self):
+        return self.fixed_quantity is not None
 
 
 # -------------------------------------------------------------------- #
