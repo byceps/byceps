@@ -35,7 +35,7 @@ class OrderForm(LocalizedForm):
         )
 
 
-def assemble_articles_order_form(articles):
+def assemble_articles_order_form(article_compilation):
     """Dynamically extend the order form with one field per article."""
 
     class ArticlesOrderForm(OrderForm):
@@ -56,9 +56,9 @@ def assemble_articles_order_form(articles):
 
 
     validators = [InputRequired()]
-    for article in articles:
-        field_name = 'article_{}'.format(article.id)
-        choices = _create_choices(article)
+    for item in article_compilation:
+        field_name = 'article_{}'.format(item.article.id)
+        choices = _create_choices(item.article)
         field = SelectField('Anzahl', validators, coerce=int, choices=choices)
         setattr(ArticlesOrderForm, field_name, field)
 

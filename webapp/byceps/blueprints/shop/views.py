@@ -38,7 +38,7 @@ def order_form(erroneous_form=None):
     if erroneous_form:
         form = erroneous_form
     else:
-        ArticlesOrderForm = assemble_articles_order_form(articles)
+        ArticlesOrderForm = assemble_articles_order_form(article_compilation)
         form = ArticlesOrderForm(obj=user.detail)
 
     return {
@@ -53,7 +53,7 @@ def order():
     articles = get_orderable_articles()
     article_compilation = service.get_article_compilation_for_articles(articles)
 
-    ArticlesOrderForm = assemble_articles_order_form(articles)
+    ArticlesOrderForm = assemble_articles_order_form(article_compilation)
     form = ArticlesOrderForm(request.form)
 
     if not form.validate():
