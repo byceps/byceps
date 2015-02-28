@@ -23,7 +23,7 @@
         </tr>
       </thead>
       <tbody>
-        {%- for item in article_compilation.get_items() %}
+        {%- for item in article_compilation %}
         <tr>
           <td>
             {%- set field = form|attr('article_%s'|format(item.article.id)) %}

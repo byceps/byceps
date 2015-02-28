@@ -47,7 +47,7 @@ def assemble_articles_order_form(articles):
             return cart
 
         def get_cart_items(self, article_compilation):
-            for item in article_compilation.get_items():
+            for item in article_compilation:
                 field_name = 'article_{}'.format(item.article.id)
                 field = getattr(self, field_name)
                 quantity = field.data

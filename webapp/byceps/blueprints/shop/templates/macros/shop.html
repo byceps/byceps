@@ -9,7 +9,7 @@
         </tr>
       </thead>
       <tbody>
-        {%- for item in article_compilation.get_items() %}
+        {%- for item in article_compilation %}
         <tr>
           <td style="text-align: right;">{{ item.fixed_quantity }}</td>
           <td><strong>{{ item.article.description }}</strong></td>

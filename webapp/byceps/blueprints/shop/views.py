@@ -135,7 +135,7 @@ def order_single(article_id):
     orderer = form.get_orderer(user)
 
     cart = Cart()
-    for item in article_compilation.get_items():
+    for item in article_compilation:
         cart.add_item(CartItem(item.article, item.fixed_quantity))
 
     service.create_order(g.party, orderer, cart)

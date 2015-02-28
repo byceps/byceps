@@ -153,8 +153,8 @@ class ArticleCompilation(object):
     def append(self, item):
         self._items.append(item)
 
-    def get_items(self):
-        return self._items
+    def __iter__(self):
+        return iter(self._items)
 
 
 class ArticleCompilationItem(object):
