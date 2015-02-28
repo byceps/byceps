@@ -6,6 +6,7 @@ from unittest import TestCase
 from uuid import UUID
 
 from nose2.tools import params
+from pytz import timezone
 
 from byceps.blueprints.user.models import User
 from byceps.util.image import ImageType
@@ -13,7 +14,8 @@ from byceps.util.image import ImageType
 from tests import AbstractAppTestCase
 
 
-NOW = datetime.now()
+TIME_ZONE = timezone('Europe/Berlin')
+NOW = datetime.now(tz=TIME_ZONE)
 
 
 class AvatarImageTestCase(TestCase):
