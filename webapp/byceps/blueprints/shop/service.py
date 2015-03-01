@@ -31,10 +31,7 @@ def get_article_compilation_for_orderable_articles():
     for article in orderable_articles:
         compilation.append(ArticleCompilationItem(article))
 
-    for attached_article in article.attached_articles:
-        compilation.append(
-            ArticleCompilationItem(attached_article.article,
-                                   fixed_quantity=attached_article.quantity))
+    _add_attached_articles(compilation, article.attached_articles)
 
     return compilation
 
@@ -48,12 +45,17 @@ def get_article_compilation_for_single_article(article, *, fixed_quantity=None):
     compilation.append(
         ArticleCompilationItem(article, fixed_quantity=fixed_quantity))
 
-    for attached_article in article.attached_articles:
+    _add_attached_articles(compilation, article.attached_articles)
+
+    return compilation
+
+
+def _add_attached_articles(compilation, attached_articles):
+    """Add the attached articles to the compilation."""
+    for attached_article in attached_articles:
         compilation.append(
             ArticleCompilationItem(attached_article.article,
                                    fixed_quantity=attached_article.quantity))
-
-    return compilation
 
 
 def generate_article_number(party):
