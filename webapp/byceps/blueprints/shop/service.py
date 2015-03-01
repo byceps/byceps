@@ -15,8 +15,9 @@ from .signals import order_placed
 
 
 def get_article_compilation_for_orderable_articles():
-    """Return a compilation of the articles which can be ordered for the current party,
-    less the ones that are only orderable in a dedicated order.
+    """Return a compilation of the articles which can be ordered for
+    the current party, less the ones that are only orderable in a
+    dedicated order.
     """
     orderable_articles = Article.query \
         .for_current_party() \
