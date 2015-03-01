@@ -57,7 +57,6 @@ class Article(db.Model):
     """An article that can be bought."""
     __tablename__ = 'shop_articles'
     __table_args__ = (
-        db.UniqueConstraint('party_id', 'item_number'),
         db.UniqueConstraint('party_id', 'description'),
     )
     query_class = ArticleQuery
