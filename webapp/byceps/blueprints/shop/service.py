@@ -33,10 +33,19 @@ def get_article_compilation_for_orderable_articles():
 
 
 def get_article_compilation_for_single_article(article, *, fixed_quantity=None):
-    """Return a compilation built from just the given article."""
+    """Return a compilation built from just the given article plus the
+    articles attached to it (if any).
+    """
     compilation = ArticleCompilation()
+
     compilation.append(
         ArticleCompilationItem(article, fixed_quantity=fixed_quantity))
+
+    for attached_article in article.attached_articles:
+        compilation.append(
+            ArticleCompilationItem(attached_article.article,
+                                   fixed_quantity=attached_article.quantity))
+
     return compilation
 
 
