@@ -141,6 +141,23 @@ def range_all(theType):
 
 
 # -------------------------------------------------------------------- #
+# articles attached to articles
+
+
+class AttachedArticle(db.Model):
+    """An article that is attached to another article."""
+    __tablename__ = 'shop_attached_articles'
+
+    article_number = db.Column(db.Unicode(20), db.ForeignKey('shop_articles.item_number'), primary_key=True)
+    article = db.relationship(Article, foreign_keys=[article_number],
+                              backref=db.backref('articles_attached_to', collection_class=set))
+    quantity = db.Column(db.Integer, nullable=False)
+    attached_to_article_number = db.Column(db.Unicode(20), db.ForeignKey('shop_articles.item_number'), primary_key=True)
+    attached_to_article = db.relationship(Article, foreign_keys=[attached_to_article_number],
+                                          backref=db.backref('attached_articles', collection_class=set))
+
+
+# -------------------------------------------------------------------- #
 # article compilation
 
 

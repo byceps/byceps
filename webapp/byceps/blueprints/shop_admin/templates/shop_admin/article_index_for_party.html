@@ -29,7 +29,12 @@
     <tbody>
       {%- for article in articles.items %}
       <tr>
-        <td class="nowrap"><a href="{{ url_for('.article_view', id=article.id) }}">{{ article.item_number }}</a></td>
+        <td class="nowrap">
+          <a href="{{ url_for('.article_view', id=article.id) }}">{{ article.item_number }}</a>
+          {%- for attached_article in article.attached_articles %}
+            <br/><span class="icon-attached"></span> <a style="font-size: 0.75rem;" href="{{ url_for('.article_view', id=attached_article.article.id) }}">{{ attached_article.article.item_number }}</a>
+          {%- endfor %}
+        </td>
         <td>
           {{ article.description }}
           {%- if article.requires_separate_order %}

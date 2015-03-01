@@ -1,6 +1,6 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/icons.html' import render_icon %}
-{% from 'macros/misc.html' import render_with_fallback %}
+{% from 'macros/misc.html' import render_faint, render_with_fallback %}
 {% from 'macros/shop_admin.html' import render_article_temporal_availability %}
 {% set current_page = 'shop_admin.articles' %}
 {% set title = 'Artikel ansehen' %}
@@ -60,6 +60,18 @@
       <th>Muss separat<br/>bestellt werden</th>
       <td>{{ 'ja' if article.requires_separate_order else 'nein' }}</td>
     </tr>
+    <tr>
+      <th>Angehängt an Artikel</th>
+      <td>
+{{- render_attachached_articles(article.articles_attached_to) }}
+      </td>
+    </tr>
+    <tr>
+      <th>Angehängte Artikel</th>
+      <td>
+{{- render_attachached_articles(article.attached_articles) }}
+      </td>
+    </tr>
   </table>
 
   <ol class="actions" style="margin-top: 2rem;">
@@ -68,3 +80,16 @@
   </ol>
 
 {%- endblock body %}
+
+
+{% macro render_attachached_articles(attached_articles) %}
+  {%- if attached_articles %}
+  <ul class="condensed">
+  {%- for attached_article in attached_articles %}
+    <li><a href="{{ url_for('.article_view', id=attached_article.article.id) }}">{{ attached_article.article.item_number }}</a> ({{ attached_article.quantity }} Stück)</li>
+  {%- endfor %}
+  </ul>
+  {%- else %}
+  {{ render_faint('keine') }}
+  {%- endif %}
+{%- endmacro %}

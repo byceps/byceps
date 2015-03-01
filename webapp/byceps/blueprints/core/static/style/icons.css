@@ -41,6 +41,7 @@ li [class*=" icon-"] {
 .icon-archived:before       { content: "\f187"; }
 .icon-arrow-left:before     { content: "\f060"; }
 .icon-arrow-right:before    { content: "\f061"; }
+.icon-attached:before       { content: "\f0c6"; }
 .icon-birthday:before       { content: "\f1fd"; }
 .icon-bullhorn:before       { content: "\f0a1"; }
 .icon-cost:before           { content: "\f153"; }

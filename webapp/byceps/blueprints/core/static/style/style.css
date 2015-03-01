@@ -637,6 +637,11 @@ main img {
   font-size: 0.8rem !important;
 }
 
+ul.condensed {
+  margin: 0 0 0 1em;
+  padding: 0;
+}
+
 [class^="icon-"][title] {
   cursor: help;
 }
