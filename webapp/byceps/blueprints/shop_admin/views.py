@@ -28,7 +28,7 @@ from ..party.models import Party
 
 from .authorization import ShopArticlePermission, ShopOrderPermission
 from .forms import ArticleCreateForm, ArticleUpdateForm, OrderCancelForm
-from .service import count_ordered_articles
+from . import service
 
 
 blueprint = create_blueprint('shop_admin', __name__)
@@ -76,13 +76,16 @@ def article_view(id):
     article = Article.query \
         .options(
             db.joinedload('party'),
-            db.joinedload_all('order_items.order'),
+            db.joinedload_all('articles_attached_to.article'),
+            db.joinedload_all('attached_articles.article'),
         ) \
         .get_or_404(id)
 
+    totals = service.count_ordered_articles(article)
+
     return {
         'article': article,
-        'totals': count_ordered_articles(article),
+        'totals': totals,
         'PaymentState': PaymentState,
     }
 
