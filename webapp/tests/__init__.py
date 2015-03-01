@@ -18,6 +18,7 @@ class AbstractAppTestCase(TestCase):
         self.db = db
         db.app = self.app
 
+        db.reflect()
         db.drop_all()
         db.create_all()
 
