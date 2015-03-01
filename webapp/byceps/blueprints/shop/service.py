@@ -27,8 +27,15 @@ def get_article_compilation_for_orderable_articles():
         .all()
 
     compilation = ArticleCompilation()
+
     for article in orderable_articles:
         compilation.append(ArticleCompilationItem(article))
+
+    for attached_article in article.attached_articles:
+        compilation.append(
+            ArticleCompilationItem(attached_article.article,
+                                   fixed_quantity=attached_article.quantity))
+
     return compilation
 
 
