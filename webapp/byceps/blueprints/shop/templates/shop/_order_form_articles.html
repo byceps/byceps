@@ -2,9 +2,10 @@
     <table class="index wide">
       <thead>
         <tr>
-          <th>Anzahl</th>
+          <th style="width: 15%;">Anzahl</th>
           <th>Beschreibung</th>
-          <th>Stückpreis</th>
+          <th style="width: 15%;">Steuersatz</th>
+          <th style="width: 15%;">Stückpreis</th>
         </tr>
       </thead>
       <tbody>
@@ -26,9 +27,9 @@
           </td>
           {%- endif %}
           <td><strong>{{ item.article.description }}</strong></td>
+          <td style="text-align: right;">{{ item.article.tax_rate_as_percentage }}&thinsp;%</td>
           <td style="text-align: right;">{{ item.article.price.to_string() }}</td>
         </tr>
         {%- endfor %}
       </tbody>
     </table>
-    <p><small>Im Preis ist gemäß § 19 UStG keine Umsatzsteuer enthalten (Kleinunternehmerregelung).</small></p>
