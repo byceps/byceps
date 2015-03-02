@@ -208,7 +208,7 @@ def request_email_address_confirmation_email():
     return request_email_address_confirmation_email_form()
 
 
-def find_or_create_verification_token_for_email_address_confirmation(uesr):
+def find_or_create_verification_token_for_email_address_confirmation(user):
     token = verification_token_service.find_for_email_address_confirmation_by_user(user)
     if token is None:
         token = verification_token_service.build_for_email_address_confirmation(user)
