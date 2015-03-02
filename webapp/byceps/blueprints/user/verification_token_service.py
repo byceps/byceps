@@ -7,8 +7,7 @@ byceps.blueprints.user.verification_token_service
 :Copyright: 2006-2015 Jochen Kupperschmidt
 """
 
-from .verification_token_models import VerificationToken as Token, \
-    VerificationTokenPurpose as Purpose
+from .verification_token_models import Purpose, Token
 
 
 def build_for_email_address_confirmation(user):

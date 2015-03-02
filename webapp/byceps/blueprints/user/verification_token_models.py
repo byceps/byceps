@@ -18,23 +18,22 @@ from ...util.instances import ReprBuilder
 from ..user.models import User
 
 
-VerificationTokenPurpose = Enum(
-    'VerificationTokenPurpose',
+Purpose = Enum('Purpose',
     ['email_address_confirmation', 'password_reset'])
 
 
-class VerificationTokenQuery(BaseQuery):
+class TokenQuery(BaseQuery):
 
     def for_purpose(self, purpose):
         return self.filter_by(_purpose=purpose.name)
 
 
-class VerificationToken(db.Model):
+class Token(db.Model):
     """A private token to authenticate as a certain user for a certain
     action.
     """
     __tablename__ = 'user_verification_tokens'
-    query_class = VerificationTokenQuery
+    query_class = TokenQuery
 
     token = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.now, nullable=False)
@@ -48,7 +47,7 @@ class VerificationToken(db.Model):
 
     @hybrid_property
     def purpose(self):
-        return VerificationTokenPurpose[self._purpose]
+        return TokenPurpose[self._purpose]
 
     @purpose.setter
     def purpose(self, purpose):
@@ -58,7 +57,7 @@ class VerificationToken(db.Model):
     @property
     def is_expired(self):
         """Return `True` if expired, i.e. it is no longer valid."""
-        if self.purpose == VerificationTokenPurpose.password_reset:
+        if self.purpose == TokenPurpose.password_reset:
             now = datetime.now()
             expires_after = timedelta(hours=24)
             return now >= (self.created_at + expires_after)
