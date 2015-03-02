@@ -197,12 +197,7 @@ def request_email_address_confirmation_email():
             user.screen_name)
         return request_email_address_confirmation_email_form()
 
-    verification_token = verification_token_service.find_for_email_address_confirmation_by_user(user)
-    if verification_token is None:
-        verification_token = verification_token_service.build_for_email_address_confirmation(user)
-        db.session.add(verification_token)
-        db.session.commit()
-
+    verification_token = find_or_create_verification_token_for_email_address_confirmation(user)
     send_email_address_confirmation_email(user, verification_token)
 
     flash_success(
@@ -210,6 +205,15 @@ def request_email_address_confirmation_email():
         'hinterlegten E-Mail-Adresse wurde erneut versendet.',
         user.screen_name)
     return request_email_address_confirmation_email_form()
+
+
+def find_or_create_verification_token_for_email_address_confirmation(uesr):
+    token = verification_token_service.find_for_email_address_confirmation_by_user(user)
+    if token is None:
+        token = verification_token_service.build_for_email_address_confirmation(user)
+        db.session.add(token)
+        db.session.commit()
+    return token
 
 
 def send_email_address_confirmation_email(user, verification_token):
