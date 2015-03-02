@@ -19,7 +19,7 @@ from ..user.models import User
 
 
 Purpose = Enum('Purpose',
-    ['email_address_confirmation', 'password_reset'])
+    ['email_address_confirmation', 'password_reset', 'terms_consent'])
 
 
 class TokenQuery(BaseQuery):

@@ -51,7 +51,7 @@ class Version(db.Model):
             .build()
 
 
-ConsentContext = Enum('ConsentContext', ['account_creation'])
+ConsentContext = Enum('ConsentContext', ['account_creation', 'separate_action'])
 
 
 class Consent(db.Model):

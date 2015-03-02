@@ -18,6 +18,10 @@ def build_for_password_reset(user):
     return Token(user, Purpose.password_reset)
 
 
+def build_for_terms_consent(user):
+    return Token(user, Purpose.terms_consent)
+
+
 def find_for_email_address_confirmation_by_user(user):
     return Token.query \
         .filter_by(user=user) \
@@ -32,7 +36,12 @@ def find_for_email_address_confirmation_by_token(token):
 
 def find_for_password_reset_by_token(token):
     purpose = Purpose.password_reset
-    return find_for_purpose_by_token(token, purpose )
+    return find_for_purpose_by_token(token, purpose)
+
+
+def find_for_terms_consent_by_token(token):
+    purpose = Purpose.terms_consent
+    return find_for_purpose_by_token(token, purpose)
 
 
 def find_for_purpose_by_token(token, purpose):

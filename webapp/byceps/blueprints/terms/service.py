@@ -19,3 +19,11 @@ def build_consent_on_account_creation(user, version):
     """Create user's consent to that version expressed on account creation."""
     context = ConsentContext.account_creation
     return Consent(user, version, context)
+
+
+def build_consent_on_separate_action(user, version):
+    """Create user's consent to that version expressed through a
+    separate action.
+    """
+    context = ConsentContext.separate_action
+    return Consent(user, version, context)
