@@ -32,7 +32,8 @@ from ..ticket.service import find_ticket_for_user, get_attended_parties
 from .forms import AvatarImageUpdateForm, DetailsForm, LoginForm, \
     RequestConfirmationEmailForm, RequestPasswordResetForm, \
     ResetPasswordForm, UpdatePasswordForm, UserCreateForm
-from .models import User, VerificationToken, VerificationTokenPurpose
+from .models import User
+from . import verification_token_service
 
 
 MAXIMUM_AVATAR_IMAGE_DIMENSIONS = Dimensions(110, 150)
@@ -108,7 +109,8 @@ def create():
     user.detail.last_name = last_name
     db.session.add(user)
 
-    verification_token = create_verification_token_for_email_address_confirmation(user)
+    verification_token = verification_token_service.build_for_email_address_confirmation(user)
+    db.session.add(verification_token)
 
     terms_version = terms_service.get_current_version()
     terms_consent = terms_service.build_consent_on_account_creation(user, terms_version)
@@ -195,13 +197,10 @@ def request_email_address_confirmation_email():
             user.screen_name)
         return request_email_address_confirmation_email_form()
 
-    verification_token = VerificationToken.query \
-        .filter_by(user=user) \
-        .for_purpose(VerificationTokenPurpose.email_address_confirmation) \
-        .first()
-
+    verification_token = verification_token_service.find_for_email_address_confirmation_by_user(user)
     if verification_token is None:
-        verification_token = create_verification_token_for_email_address_confirmation(user)
+        verification_token = verification_token_service.build_for_email_address_confirmation(user)
+        db.session.add(verification_token)
         db.session.commit()
 
     send_email_address_confirmation_email(user, verification_token)
@@ -233,9 +232,7 @@ def confirm_email_address(token):
     """Confirm e-mail address of the user account assigned with the
     verification token.
     """
-    verification_token = VerificationToken.find(
-        token, VerificationTokenPurpose.email_address_confirmation)
-
+    verification_token = verification_token_service.find_for_email_address_confirmation_by_token(token)
     if verification_token is None:
         abort(404)
 
@@ -277,7 +274,8 @@ def request_password_reset():
                     'noch nicht bestätigt.', screen_name)
         return redirect_to('.request_email_address_confirmation_email')
 
-    verification_token = create_verification_token_for_password_reset(user)
+    verification_token = verification_token_service.build_for_password_reset(user)
+    db.session.add(verification_token)
     db.session.commit()
 
     send_password_reset_email(user, verification_token)
@@ -308,8 +306,7 @@ def send_password_reset_email(user, verification_token):
 @templated
 def password_reset_form(token, erroneous_form=None):
     """Show a form to reset the current user's password."""
-    verification_token = VerificationToken.find(
-        token, VerificationTokenPurpose.password_reset)
+    verification_token = verification_token_service.find_for_password_reset_by_token(token)
     _verify_password_reset_token(verification_token)
 
     form = erroneous_form if erroneous_form else ResetPasswordForm()
@@ -322,8 +319,7 @@ def password_reset_form(token, erroneous_form=None):
 @blueprint.route('/me/password/reset/token/<uuid:token>', methods=['POST'])
 def password_reset(token):
     """Reset the current user's password."""
-    verification_token = VerificationToken.find(
-        token, VerificationTokenPurpose.password_reset)
+    verification_token = verification_token_service.find_for_password_reset_by_token(token)
     _verify_password_reset_token(verification_token)
 
     form = ResetPasswordForm(request.form)
@@ -562,20 +558,6 @@ def get_current_user_or_404():
         abort(404)
 
     return user
-
-
-def create_verification_token_for_email_address_confirmation(user):
-    verification_token = VerificationToken(
-        user, VerificationTokenPurpose.email_address_confirmation)
-    db.session.add(verification_token)
-    return verification_token
-
-
-def create_verification_token_for_password_reset(user):
-    verification_token = VerificationToken(
-        user, VerificationTokenPurpose.password_reset)
-    db.session.add(verification_token)
-    return verification_token
 
 
 class UserSession(object):

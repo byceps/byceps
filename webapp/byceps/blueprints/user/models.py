@@ -357,13 +357,6 @@ class VerificationToken(db.Model):
     user = db.relationship(User)
     _purpose = db.Column('purpose', db.Unicode(40), index=True, nullable=False)
 
-    @classmethod
-    def find(cls, token, purpose):
-        return cls.query \
-            .filter_by(token=token) \
-            .for_purpose(purpose) \
-            .first()
-
     def __init__(self, user, purpose):
         self.user = user
         self.purpose = purpose
