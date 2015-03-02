@@ -26,7 +26,7 @@ from ...util.views import redirect_to, respond_no_content
 from ..authorization.models import Role
 from ..newsletter.models import Subscription as NewsletterSubscription, \
     SubscriptionState as NewsletterSubscriptionState
-from ..terms.models import Consent, ConsentContext
+from ..terms import service as terms_service
 from ..ticket.service import find_ticket_for_user, get_attended_parties
 
 from .forms import AvatarImageUpdateForm, DetailsForm, LoginForm, \
@@ -110,7 +110,8 @@ def create():
 
     verification_token = create_verification_token_for_email_address_confirmation(user)
 
-    terms_consent = Consent(user, ConsentContext.account_creation)
+    terms_version = terms_service.get_current_version()
+    terms_consent = terms_service.build_consent_on_account_creation(user, terms_version)
     db.session.add(terms_consent)
 
     newsletter_subscription_state = NewsletterSubscriptionState.requested \

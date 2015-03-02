@@ -10,7 +10,7 @@ byceps.blueprints.terms.views
 from ...util.framework import create_blueprint
 from ...util.templating import templated
 
-from .models import Version
+from . import service
 
 
 blueprint = create_blueprint('terms', __name__)
@@ -20,5 +20,5 @@ blueprint = create_blueprint('terms', __name__)
 @templated
 def view_current():
     """Show the current version of this brand's terms and conditions."""
-    version = Version.query.get_current()
+    version = service.get_current_version()
     return {'version': version}

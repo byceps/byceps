@@ -29,9 +29,6 @@ class VersionQuery(BaseQuery):
     def latest_first(self):
         return self.order_by(Version.created_at.desc())
 
-    def get_current(self):
-        return self.for_current_brand().latest_first().first()
-
 
 class Version(db.Model):
     """A specific version of a specific brand's terms and conditions."""
@@ -70,9 +67,9 @@ class Consent(db.Model):
     expressed_at = db.Column(db.DateTime, default=datetime.now, primary_key=True)
     _context = db.Column('context', db.Unicode(20), primary_key=True)
 
-    def __init__(self, user, context):
+    def __init__(self, user, version, context):
         self.user = user
-        self.version = Version.query.get_current()
+        self.version = version
         self.context = context
 
     @hybrid_property
