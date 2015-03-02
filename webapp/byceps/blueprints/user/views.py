@@ -28,12 +28,12 @@ from ..newsletter.models import Subscription as NewsletterSubscription, \
     SubscriptionState as NewsletterSubscriptionState
 from ..terms import service as terms_service
 from ..ticket.service import find_ticket_for_user, get_attended_parties
+from ..verification_token import service as verification_token_service
 
 from .forms import AvatarImageUpdateForm, DetailsForm, LoginForm, \
     RequestConfirmationEmailForm, RequestPasswordResetForm, \
     ResetPasswordForm, UpdatePasswordForm, UserCreateForm
 from .models import User
-from . import verification_token_service
 
 
 MAXIMUM_AVATAR_IMAGE_DIMENSIONS = Dimensions(110, 150)

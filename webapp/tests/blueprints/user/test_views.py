@@ -2,8 +2,8 @@
 
 from datetime import datetime
 
-from byceps.blueprints.user.models import User, VerificationToken, \
-    VerificationTokenPurpose
+from byceps.blueprints.verification_token.models import Purpose, Token
+from byceps.blueprints.user.models import User
 
 from tests import AbstractAppTestCase
 
@@ -51,5 +51,5 @@ class EmailAddressConfirmationTestCase(AbstractAppTestCase):
 
 
 def create_confirmation_token(user):
-    purpose = VerificationTokenPurpose.email_address_confirmation
-    return VerificationToken(user, purpose)
+    purpose = Purpose.email_address_confirmation
+    return Token(user, purpose)

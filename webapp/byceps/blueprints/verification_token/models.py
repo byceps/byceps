@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-byceps.blueprints.user.verification_token_models
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.verification_token.models
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2015 Jochen Kupperschmidt
 """
@@ -47,7 +47,7 @@ class Token(db.Model):
 
     @hybrid_property
     def purpose(self):
-        return TokenPurpose[self._purpose]
+        return Purpose[self._purpose]
 
     @purpose.setter
     def purpose(self, purpose):
@@ -57,7 +57,7 @@ class Token(db.Model):
     @property
     def is_expired(self):
         """Return `True` if expired, i.e. it is no longer valid."""
-        if self.purpose == TokenPurpose.password_reset:
+        if self.purpose == Purpose.password_reset:
             now = datetime.now()
             expires_after = timedelta(hours=24)
             return now >= (self.created_at + expires_after)
