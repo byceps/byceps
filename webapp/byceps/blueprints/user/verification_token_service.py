@@ -7,7 +7,7 @@ byceps.blueprints.user.verification_token_service
 :Copyright: 2006-2015 Jochen Kupperschmidt
 """
 
-from .models import VerificationToken as Token, \
+from .verification_token_models import VerificationToken as Token, \
     VerificationTokenPurpose as Purpose
 
 
