@@ -33,16 +33,16 @@ def build_for_terms_consent(user):
     return Token(user, Purpose.terms_consent)
 
 
+def find_for_email_address_confirmation_by_token(token):
+    purpose = Purpose.email_address_confirmation
+    return find_for_purpose_by_token(token, purpose)
+
+
 def find_for_email_address_confirmation_by_user(user):
     return Token.query \
         .filter_by(user=user) \
         .for_purpose(Purpose.email_address_confirmation) \
         .first()
-
-
-def find_for_email_address_confirmation_by_token(token):
-    purpose = Purpose.email_address_confirmation
-    return find_for_purpose_by_token(token, purpose)
 
 
 def find_for_password_reset_by_token(token):
