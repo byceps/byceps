@@ -32,7 +32,7 @@ def get_article_compilation_for_orderable_articles():
     for article in orderable_articles:
         compilation.append(ArticleCompilationItem(article))
 
-    _add_attached_articles(compilation, article.attached_articles)
+        _add_attached_articles(compilation, article.attached_articles)
 
     return compilation
 
