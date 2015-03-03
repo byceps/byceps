@@ -32,7 +32,7 @@ class Token(db.Model):
     """A private token to authenticate as a certain user for a certain
     action.
     """
-    __tablename__ = 'user_verification_tokens'
+    __tablename__ = 'verification_tokens'
     query_class = TokenQuery
 
     token = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
