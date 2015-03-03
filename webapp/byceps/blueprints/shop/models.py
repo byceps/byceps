@@ -173,6 +173,9 @@ class ArticleCompilation(object):
     def __iter__(self):
         return iter(self._items)
 
+    def is_empty(self):
+        return not self._items
+
 
 class ArticleCompilationItem(object):
 

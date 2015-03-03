@@ -31,6 +31,10 @@ def order_form(erroneous_form=None):
     """Show a form to order articles."""
     article_compilation = service.get_article_compilation_for_orderable_articles()
 
+    if article_compilation.is_empty():
+        flash_error('Es sind keine Artikel verfügbar.')
+        return {'article_compilation': None}
+
     user = g.current_user
 
     if erroneous_form:
@@ -49,6 +53,10 @@ def order_form(erroneous_form=None):
 def order():
     """Order articles."""
     article_compilation = service.get_article_compilation_for_orderable_articles()
+
+    if article_compilation.is_empty():
+        flash_error('Es sind keine Artikel verfügbar.')
+        return order_form()
 
     ArticlesOrderForm = assemble_articles_order_form(article_compilation)
     form = ArticlesOrderForm(request.form)
