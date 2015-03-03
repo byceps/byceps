@@ -1,7 +1,7 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_faint, render_with_fallback %}
-{% from 'macros/shop_admin.html' import render_article_temporal_availability %}
+{% from 'macros/shop_admin.html' import render_article_link, render_article_temporal_availability %}
 {% set current_page = 'shop_admin.articles' %}
 {% set title = 'Artikel ansehen' %}
 
@@ -86,7 +86,7 @@
   {%- if attached_articles %}
   <ul class="condensed">
   {%- for attached_article in attached_articles %}
-    <li><a href="{{ url_for('.article_view', id=attached_article.article.id) }}">{{ attached_article.article.item_number }}</a> ({{ attached_article.quantity }} Stück)</li>
+    <li>{{ render_article_link(attached_article.article) }} ({{ attached_article.quantity }} Stück)</li>
   {%- endfor %}
   </ul>
   {%- else %}

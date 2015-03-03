@@ -1,7 +1,7 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
-{% from 'macros/shop_admin.html' import render_article_temporal_availability %}
+{% from 'macros/shop_admin.html' import render_article_link, render_article_temporal_availability %}
 {% set current_page = 'shop_admin.articles' %}
 {% set title = 'Artikel' %}
 
@@ -30,9 +30,9 @@
       {%- for article in articles.items %}
       <tr>
         <td class="nowrap">
-          <a href="{{ url_for('.article_view', id=article.id) }}">{{ article.item_number }}</a>
+          {{ render_article_link(article) }}
           {%- for attached_article in article.attached_articles %}
-            <br/><span class="icon-attached"></span> <a style="font-size: 0.75rem;" href="{{ url_for('.article_view', id=attached_article.article.id) }}">{{ attached_article.article.item_number }}</a>
+            <div style="font-size: 0.75rem;"><span class="icon-attached"></span> {{ render_article_link(attached_article.article) }}</div>
           {%- endfor %}
         </td>
         <td>

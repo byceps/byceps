@@ -1,6 +1,12 @@
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/misc.html' import render_faint %}
 
+
+{% macro render_article_link(article) -%}
+  <a href="{{ url_for('.article_view', id=article.id) }}">{{ article.item_number }}</a>
+{%- endmacro %}
+
+
 {% macro render_article_temporal_availability(article) -%}
   {%- set range = article.availability_range %}
   {%- if range.hasLowerBound() and range.hasUpperBound() -%}
@@ -14,6 +20,7 @@
     {{ render_faint('unbegrenzt') }}
   {%- endif -%}
 {%- endmacro %}
+
 
 {% macro render_order_payment_state(payment_state) %}
   {%- set state_name = payment_state.name %}

@@ -1,6 +1,7 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
 {% from 'macros/icons.html' import render_icon %}
+{% from 'macros/shop_admin.html' import render_article_link %}
 {% set current_page = 'shop_admin.articles' %}
 {% set title = 'Artikel bearbeiten' %}
 
@@ -10,7 +11,7 @@
     <ol>
       <li><a href="{{ url_for('.article_index') }}">Artikel</a></li>
       <li><a href="{{ url_for('.article_index_for_party', party_id=article.party.id) }}">{{ article.party.title }}</a></li>
-      <li><a href="{{ url_for('.article_view', id=article.id) }}">{{ article.item_number }}</a></li>
+      <li>{{ render_article_link(article) }}</li>
       <li>{{ render_icon('edit') }} {{ title }}</li>
     </ol>
   </nav>
