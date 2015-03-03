@@ -65,6 +65,8 @@ class ShopTestCase(AbstractAppTestCase):
         self.assertEqual(order.order_number, 'AEC-01-B00005')
         self.assertEqual(len(order.items), 1)
         self.assertEqual(order.items[0].article.id, article_before.id)
+        self.assertEqual(order.items[0].price, article_before.price)
+        self.assertEqual(order.items[0].tax_rate, article_before.tax_rate)
         self.assertEqual(order.items[0].quantity, 1)
 
     def create_user(self, number, *, enabled=True):

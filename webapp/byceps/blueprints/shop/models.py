@@ -362,6 +362,7 @@ class OrderItem(db.Model):
     article = db.relationship(Article, backref='order_items')
     description = db.Column(db.Unicode(80), nullable=False)
     _price = db.Column('price', db.Integer, nullable=False)
+    tax_rate = db.Column(db.Numeric(3, 3), nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
 
     def __init__(self, order, article, quantity):
@@ -369,6 +370,7 @@ class OrderItem(db.Model):
         self.article = article
         self.description = article.description
         self.price = article.price
+        self.tax_rate = article.tax_rate
         self.quantity = quantity
 
     @hybrid_property
