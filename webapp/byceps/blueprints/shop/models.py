@@ -72,6 +72,7 @@ class Article(db.Model):
     available_until = db.Column(db.DateTime, nullable=True)
     quantity = db.Column(db.Integer, nullable=False)
     max_quantity_per_order = db.Column(db.Integer, nullable=True)
+    not_directly_orderable = db.Column(db.Boolean, default=False, nullable=False)
     requires_separate_order = db.Column(db.Boolean, default=False, nullable=False)
 
     def __init__(self, party, item_number, description, price, tax_rate,

@@ -37,6 +37,9 @@
         </td>
         <td>
           {{ article.description }}
+          {%- if article.not_directly_orderable %}
+          <br/>{{ render_icon('info') }} <em>nur indirekt bestellbar</em>
+          {%- endif %}
           {%- if article.requires_separate_order %}
           <br/>{{ render_icon('info') }} <em>separat zu bestellen</em>
           {%- endif %}

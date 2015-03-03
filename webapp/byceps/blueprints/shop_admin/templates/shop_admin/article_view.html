@@ -57,6 +57,10 @@
       <td>{{ render_with_fallback(article.max_quantity_per_order) }}</td>
     </tr>
     <tr>
+      <th>Nur indirekt<br/>bestellbar</th>
+      <td>{{ 'ja' if article.not_directly_orderable else 'nein' }}</td>
+    </tr>
+    <tr>
       <th>Muss separat<br/>bestellt werden</th>
       <td>{{ 'ja' if article.requires_separate_order else 'nein' }}</td>
     </tr>

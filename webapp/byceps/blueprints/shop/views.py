@@ -84,6 +84,13 @@ def order_single_form(article_id, erroneous_form=None):
     user = g.current_user
     form = erroneous_form if erroneous_form else OrderForm(obj=user.detail)
 
+    if article.not_directly_orderable:
+        flash_error('Der Artikel kann nicht direkt bestellt werden.')
+        return {
+            'form': form,
+            'article': None,
+        }
+
     if service.has_user_placed_orders(user):
         flash_error('Du kannst keine weitere Bestellung aufgeben.')
         return {
@@ -111,6 +118,10 @@ def order_single(article_id):
     """Order a single article."""
     article = Article.query.get_or_404(article_id)
     quantity = 1
+
+    if article.not_directly_orderable:
+        flash_error('Der Artikel kann nicht direkt bestellt werden.')
+        return order_single_form(article.id)
 
     article_compilation = service.get_article_compilation_for_single_article(
         article, fixed_quantity=quantity)

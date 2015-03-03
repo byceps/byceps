@@ -21,6 +21,7 @@ def get_article_compilation_for_orderable_articles():
     """
     orderable_articles = Article.query \
         .for_current_party() \
+        .filter_by(not_directly_orderable=False) \
         .filter_by(requires_separate_order=False) \
         .currently_available() \
         .order_by(Article.description) \
