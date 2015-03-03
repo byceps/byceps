@@ -7,7 +7,18 @@ byceps.blueprints.verification_token.service
 :Copyright: 2006-2015 Jochen Kupperschmidt
 """
 
+from ...database import db
+
 from .models import Purpose, Token
+
+
+def find_or_create_for_email_address_confirmation(user):
+    token = find_for_email_address_confirmation_by_user(user)
+    if token is None:
+        token = build_for_email_address_confirmation(user)
+        db.session.add(token)
+        db.session.commit()
+    return token
 
 
 def build_for_email_address_confirmation(user):
