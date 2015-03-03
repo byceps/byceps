@@ -483,6 +483,19 @@ nav.pagination li.current {
 }
 
 
+/* terms */
+
+.terms ol,
+.terms ul {
+  margin: 1rem 0 1rem 3rem;
+  padding: 0;
+}
+
+.terms ol {
+  list-style-type: decimal;
+}
+
+
 /* board, tourneys */
 
 .board-postings,
