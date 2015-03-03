@@ -10,3 +10,6 @@ venv
 
 # user data
 webapp/data
+
+# OpenSSL keys for development server
+webapp/keys

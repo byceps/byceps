@@ -51,7 +51,9 @@ class SslServer(Server):
 
     def __init__(self, **kwargs):
         ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
-        ssl_context.load_cert_chain('development.cert', 'development.key')
+        ssl_context.load_cert_chain(
+            'keys/development.cert',
+            'keys/development.key')
         kwargs['ssl_context'] = ssl_context
 
         super().__init__(**kwargs)
