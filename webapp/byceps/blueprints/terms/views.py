@@ -7,11 +7,12 @@ byceps.blueprints.terms.views
 :Copyright: 2006-2015 Jochen Kupperschmidt
 """
 
-from flask import abort, redirect, request
+from flask import abort, request
 
 from ...database import db
 from ...util.framework import create_blueprint, flash_error, flash_success
 from ...util.templating import templated
+from ...util.views import redirect_to
 
 from ..verification_token import service as verification_token_service
 
@@ -74,4 +75,4 @@ def consent(version_id, token):
     db.session.commit()
 
     flash_success('Du hast die AGB akzeptiert.')
-    return redirect('/')
+    return redirect_to('user.login_form')

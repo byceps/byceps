@@ -27,3 +27,12 @@ def build_consent_on_separate_action(user, version):
     """
     context = ConsentContext.separate_action
     return Consent(user, version, context)
+
+
+def has_user_accepted_version(user, version):
+    """Tell if the user has accepted the specified version of the terms."""
+    count = Consent.query \
+        .filter_by(user=user) \
+        .filter_by(version=version) \
+        .count()
+    return count > 0
