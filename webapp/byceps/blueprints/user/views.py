@@ -532,17 +532,18 @@ def login():
         # admin area but isn't.
         abort(403)
 
-    terms_version = terms_service.get_current_version()
-    if not terms_service.has_user_accepted_version(user, terms_version):
-        verification_token = verification_token_service \
-            .find_or_create_for_terms_consent(user)
-        consent_form_url = url_for('terms.consent_form',
-                                   version_id=terms_version.id,
-                                   token=verification_token.token)
-        flash_notice(
-            'Bitte <a href="{}">akzeptiere zunächst die aktuellen AGB</a>.'
-                .format(consent_form_url), text_is_safe=True)
-        return
+    if not get_site_mode().is_admin():
+        terms_version = terms_service.get_current_version()
+        if not terms_service.has_user_accepted_version(user, terms_version):
+            verification_token = verification_token_service \
+                .find_or_create_for_terms_consent(user)
+            consent_form_url = url_for('terms.consent_form',
+                                       version_id=terms_version.id,
+                                       token=verification_token.token)
+            flash_notice(
+                'Bitte <a href="{}">akzeptiere zunächst die aktuellen AGB</a>.'
+                    .format(consent_form_url), text_is_safe=True)
+            return
 
     # Authorization succeeded.
     UserSession.start(user, permanent=permanent)
