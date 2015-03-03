@@ -1,6 +1,6 @@
 {%- from 'macros/misc.html' import render_notification %}
 
 
-{%- for text, category, icon in get_flashed_messages() %}
-  {{ render_notification(category, icon if icon is not none else category, text) }}
+{%- for text, text_is_safe, category, icon in get_flashed_messages() %}
+  {{ render_notification(category, icon if icon is not none else category, text, text_is_safe=text_is_safe) }}
 {%- endfor %}

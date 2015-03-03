@@ -65,27 +65,31 @@ def get_blueprint_views_module(name):
 # message flashing
 
 
-FlashMessage = namedtuple('FlashMessage', ['text', 'category', 'icon'])
+FlashMessage = namedtuple('FlashMessage',
+                          ['text', 'text_is_safe', 'category', 'icon'])
 
 
-def flash_error(message, *args, icon=None):
+def flash_error(message, *args, icon=None, text_is_safe=False):
     """Flash a message indicating an error."""
-    return _flash(message, *args, category='error', icon=icon)
+    return _flash(message, *args,
+                  category='error', icon=icon, text_is_safe=text_is_safe)
 
 
-def flash_notice(message, *args, icon=None):
+def flash_notice(message, *args, icon=None, text_is_safe=False):
     """Flash a generally informational message."""
-    return _flash(message, *args, category='info', icon=icon)
+    return _flash(message, *args,
+                  category='info', icon=icon, text_is_safe=text_is_safe)
 
 
-def flash_success(message, *args, icon=None):
+def flash_success(message, *args, icon=None, text_is_safe=False):
     """Flash a message describing a successful action."""
-    return _flash(message, *args, category='success', icon=icon)
+    return _flash(message, *args,
+                  category='success', icon=icon, text_is_safe=text_is_safe)
 
 
-def _flash(message, *args, category=None, icon=None):
+def _flash(message, *args, category=None, icon=None, text_is_safe=False):
     text = message.format(*args)
 
-    flash_message = FlashMessage(text, category, icon)
+    flash_message = FlashMessage(text, text_is_safe, category, icon)
 
     return flash(flash_message)
