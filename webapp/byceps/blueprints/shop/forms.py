@@ -52,9 +52,7 @@ def assemble_articles_order_form(article_compilation):
 
         def get_cart_items(self, article_compilation):
             for item in article_compilation:
-                field_name = _generate_field_name(item.article)
-                field = getattr(self, field_name)
-                quantity = field.data
+                quantity = self.get_field_for_article(item.article).data
                 if quantity > 0:
                     yield CartItem(item.article, quantity)
 
