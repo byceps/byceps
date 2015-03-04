@@ -104,6 +104,8 @@ def create_order(party, orderer, cart):
 
     order_placed.send(None, order=order)
 
+    return order
+
 
 def build_order(party, order_number, orderer):
     """Create an order of one or more articles."""
