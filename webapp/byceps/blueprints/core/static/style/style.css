@@ -244,6 +244,7 @@ nav.breadcrumbs:not(.compact) li:last-child {
 
 h1 {
   font-size: 2rem;
+  line-height: 1.2em;
 }
 h2 {
   font-size: 1.4rem;
