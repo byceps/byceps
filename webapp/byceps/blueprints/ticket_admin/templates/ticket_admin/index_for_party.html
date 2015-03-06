@@ -1,5 +1,6 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/datetime.html' import render_datetime, render_datetime_custom %}
+{% from 'macros/misc.html' import render_tag %}
 {% from 'macros/user_admin.html' import render_user_admin_link %}
 {% set current_page = 'ticket_admin' %}
 {% set title = '%s - Tickets'|format(party.title) %}
@@ -39,14 +40,14 @@
         <td>{{ render_user_admin_link(ticket.owned_by) }}</td>
         <td>{{ ticket.category.title }}</td>
         <td>
-          <span class="tag available">keiner</span><br/>
+          {{ render_tag('keiner', class='available')<br/>
           <small>(verwaltet durch {{ render_user_admin_link(ticket.get_seat_manager()) }})</small>
         </td>
         <td>
           {%- if ticket.used_by -%}
           {{ render_user_admin_link(ticket.used_by) }}
           {%- else -%}
-          <span class="tag available">frei</span>
+          {{ render_tag('frei', class='available')
           {%- endif -%}
           <br/>
           <small>(verwaltet durch {{ render_user_admin_link(ticket.get_user_manager()) }})</small>

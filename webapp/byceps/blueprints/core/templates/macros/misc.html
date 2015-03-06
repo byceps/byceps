@@ -5,9 +5,16 @@
   <span class="faint">{{ value }}</span>
 {%- endmacro %}
 
+
 {% macro render_notification(category, icon, text, text_is_safe=False) -%}
   <p class="notification-{{ category }}">{{ render_icon(icon) }} {{ text|safe if text_is_safe else text }}</p>
 {%- endmacro %}
+
+
+{% macro render_tag(label, class=None) -%}
+  <span class="tag{% if class is not none %} {{ class }}{% endif %}">{{ label }}</span>
+{%- endmacro %}
+
 
 {% macro render_with_fallback(value) %}
   {%- if value|default('', true)|trim -%}

@@ -1,3 +1,6 @@
+{% from 'macros/misc.html' import render_tag %}
+
+
 {% macro render_flag_new() -%}
-  <span class="tag">neu</span>
+  {{ render_tag('neu') }}
 {%- endmacro %}
