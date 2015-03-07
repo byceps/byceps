@@ -9,11 +9,16 @@ from byceps.util.money import EuroAmount
 from .party import create_party
 
 
-def create_article(*, party=None, description='Cool thing', price=None,
-                   tax_rate=None, available_from=None, available_until=None,
-                   quantity=1):
+def create_article(*, party=None, item_number=None, description='Cool thing',
+                   price=None, tax_rate=None, available_from=None,
+                   available_until=None, quantity=1):
     if party is None:
         party = create_party()
+
+    if item_number is None:
+        serial_number = 1
+        item_number = '{}-{:02d}-A{:05d}'.format(
+            party.brand.code, party.number, serial_number)
 
     if price is None:
         price = EuroAmount(24, 95)
@@ -23,7 +28,7 @@ def create_article(*, party=None, description='Cool thing', price=None,
 
     return Article(
         party=party,
-        item_number='AEC-03-A00015',
+        item_number=item_number,
         description=description,
         price=price,
         tax_rate=tax_rate,
