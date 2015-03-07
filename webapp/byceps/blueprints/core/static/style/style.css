@@ -330,6 +330,9 @@ fieldset input[type='radio'],
 fieldset input[size] {
   width: auto;
 }
+fieldset input[type='number'] {
+  text-align: right;
+}
 fieldset textarea {
   height: 20rem;
   resize: vertical;
