@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from datetime import date
+
 from byceps.blueprints.user.models import User, UserDetail
 from byceps.database import generate_uuid
 
@@ -21,7 +23,13 @@ def create_user_with_detail(number, *, screen_name=None, email_address=None,
                             enabled=True, date_of_birth=None):
     user = create_user(number, screen_name=screen_name,
                        email_address=email_address, enabled=enabled)
+
     detail = UserDetail(user=user)
-    if date_of_birth:
-        detail.date_of_birth = date_of_birth
+    detail.first_names = 'John Joseph'
+    detail.last_name = 'Doe'
+    detail.date_of_birth = (date_of_birth if date_of_birth else date(1993, 2, 15))
+    detail.zip_code = '31337'
+    detail.street = 'Elite Street 1337'
+    detail.city = 'Atrocity'
+
     return user

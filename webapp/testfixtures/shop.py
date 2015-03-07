@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from datetime import date
 from decimal import Decimal
 
 from byceps.blueprints.shop.models import Article, Order, PartySequence
@@ -45,12 +44,12 @@ def create_order(placed_by, *, party=None):
         party=party,
         order_number='AEC-04-B00376',
         placed_by=placed_by,
-        first_names='John Joseph',
-        last_name='Doe',
-        date_of_birth=date(1993, 2, 15),
-        zip_code='31337',
-        street='Elite Street 1337',
-        city='Atrocity',
+        first_names=placed_by.detail.first_names,
+        last_name=placed_by.detail.last_name,
+        date_of_birth=placed_by.detail.date_of_birth,
+        zip_code=placed_by.detail.zip_code,
+        city=placed_by.detail.city,
+        street=placed_by.detail.street,
     )
 
 

@@ -8,7 +8,7 @@ from byceps.blueprints.shop.models import Article, Order, PaymentState
 from byceps.blueprints.user.models import User
 
 from testfixtures.shop import create_article, create_order
-from testfixtures.user import create_user
+from testfixtures.user import create_user_with_detail
 
 from tests import AbstractAppTestCase
 
@@ -82,7 +82,7 @@ class ShopAdminTestCase(AbstractAppTestCase):
         self.assertEqual(order_afterwards.payment_state_updated_by, self.current_user)
 
     def create_user(self, number, *, enabled=True):
-        user = create_user(number, enabled=enabled)
+        user = create_user_with_detail(number, enabled=enabled)
         self.db.session.add(user)
         return user
 
