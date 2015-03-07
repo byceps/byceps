@@ -7,7 +7,7 @@ byceps.blueprints.shop_admin.forms
 :Copyright: 2006-2015 Jochen Kupperschmidt
 """
 
-from wtforms import IntegerField, StringField, TextAreaField
+from wtforms import BooleanField, DecimalField, IntegerField, StringField, TextAreaField
 
 from ...util.l10n import LocalizedForm
 
@@ -19,7 +19,11 @@ class ArticleCreateForm(LocalizedForm):
 
 class ArticleUpdateForm(LocalizedForm):
     description = StringField('Beschreibung')
+    tax_rate = DecimalField('Steuersatz', places=3)
     quantity = IntegerField('Anzahl verfügbar')
+    max_quantity_per_order = IntegerField('Maximale Anzahl pro Bestellung')
+    not_directly_orderable = BooleanField('nur indirekt bestellbar')
+    requires_separate_order = BooleanField('muss separat bestellt werden')
 
 
 class OrderCancelForm(LocalizedForm):

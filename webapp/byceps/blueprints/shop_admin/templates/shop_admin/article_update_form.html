@@ -1,5 +1,5 @@
 {% extends 'layout/base.html' %}
-{% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
+{% from 'macros/forms.html' import form_buttons, form_field_checkbox, form_field, form_fieldset %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/shop_admin.html' import render_article_link %}
 {% set current_page = 'shop_admin.articles' %}
@@ -19,7 +19,11 @@
   <form action="{{ url_for('.article_update', id=article.id) }}" method="post">
     {% call form_fieldset() %}
       {{ form_field(form.description, maxlength=80, required='required', autofocus='autofocus') }}
-      {{ form_field(form.quantity, type='number', maxlength=4, required='required') }}
+      {{ form_field(form.tax_rate, size=5, maxlength=5, style='width: 5rem;', required='required') }}
+      {{ form_field(form.quantity, type='number', min=1, max=99999, style='width: 5rem;', required='required') }}
+      {{ form_field(form.max_quantity_per_order, type='number', min=1, max=99, style='width: 5rem;', note='optional') }}
+      {{ form_field_checkbox(form.not_directly_orderable, form.not_directly_orderable.label.text) }}
+      {{ form_field_checkbox(form.requires_separate_order, form.requires_separate_order.label.text) }}
     {% endcall %}
 
     {{ form_buttons('Speichern', cancel_url=url_for('.article_view', id=article.id)) }}
