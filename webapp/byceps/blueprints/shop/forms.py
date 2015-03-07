@@ -46,7 +46,7 @@ def assemble_articles_order_form(article_compilation):
 
         def get_cart(self, article_compilation):
             cart = Cart()
-            for item in self.get_cart_items(articles_compilation):
+            for item in self.get_cart_items(article_compilation):
                 cart.add_item(item)
             return cart
 
