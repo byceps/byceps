@@ -17,7 +17,7 @@
   <form action="{{ url_for('.article_create', party_id=party.id) }}" method="post">
     {% call form_fieldset() %}
       {{ form_field(form.description, maxlength=80, required='required', autofocus='autofocus') }}
-      {{ form_field(form.quantity, type='number', min=1, max=99999, style='width: 5rem;', required='required') }}
+      {{ form_field(form.quantity, type='number', min=0, max=99999, style='width: 5rem;', required='required') }}
     {% endcall %}
 
     {{ form_buttons('Speichern', cancel_url=url_for('.article_index_for_party', party_id=party.id)) }}
