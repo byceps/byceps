@@ -5,6 +5,7 @@ from pathlib import Path
 from unittest import TestCase
 from uuid import UUID
 
+from freezegun import freeze_time
 from nose2.tools import params
 
 from byceps.blueprints.user.models import User
@@ -68,7 +69,9 @@ class AvatarImagePathTestCase(AbstractAppTestCase):
         expected = Path(
             '/var/data/avatars/2e17cb15-d763-4f93-882a-371296a3c63f_1406637810.jpeg')
 
-        created_at = datetime(2014, 7, 29, 14, 43, 30, 196165)
+        with freeze_time('2014-07-29 14:43:30'):
+            created_at = datetime.now()
+
         self.user.set_avatar_image(created_at, ImageType.jpeg)
 
         with self.app.app_context():
