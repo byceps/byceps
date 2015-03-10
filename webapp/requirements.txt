@@ -14,4 +14,5 @@ Arrow >= 0.4.4
 bbcode >= 1.0.19
 Flask-Mail >= 0.9.1
 Pillow >= 2.5.3
+pytz >= 2014.10
 Ranger >= 0.9
