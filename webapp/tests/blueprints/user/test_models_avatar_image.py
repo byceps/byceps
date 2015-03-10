@@ -6,7 +6,6 @@ from unittest import TestCase
 from uuid import UUID
 
 from nose2.tools import params
-from pytz import timezone
 
 from byceps.blueprints.user.models import User
 from byceps.util.image import ImageType
@@ -14,8 +13,7 @@ from byceps.util.image import ImageType
 from tests import AbstractAppTestCase
 
 
-TIME_ZONE = timezone('Europe/Berlin')
-NOW = datetime.now(tz=TIME_ZONE)
+CREATED_AT = datetime(2014, 7, 29, 14, 43, 30, 196165)
 
 
 class AvatarImageTestCase(TestCase):
@@ -24,10 +22,10 @@ class AvatarImageTestCase(TestCase):
         self.user = User()
 
     @params(
-        (None, None          , False),
-        (NOW , None          , False),
-        (None, ImageType.jpeg, False),
-        (NOW , ImageType.jpeg, True ),
+        (None      , None          , False),
+        (CREATED_AT, None          , False),
+        (None      , ImageType.jpeg, False),
+        (CREATED_AT, ImageType.jpeg, True ),
     )
     def test_has_avatar_image(self, created_at, image_type, expected):
         self.user.avatar_image_created_at = created_at
@@ -61,7 +59,7 @@ class AvatarImageTestCase(TestCase):
 class AvatarImagePathTestCase(AbstractAppTestCase):
 
     def setUp(self):
-        super(AvatarImagePathTestCase, self).setUp()
+        super().setUp()
 
         user_id = UUID('2e17cb15-d763-4f93-882a-371296a3c63f')
         self.user = User(id=user_id)
