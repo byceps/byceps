@@ -7,9 +7,10 @@ byceps.application
 :Copyright: 2006-2015 Jochen Kupperschmidt
 """
 
+from pathlib import Path
+
 from flask import Flask, g
 import jinja2
-from pathlib import Path
 
 from .blueprints.snippet.init import add_routes_for_snippets
 from . import config
