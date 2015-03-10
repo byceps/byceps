@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ORDER_LIST>
+	<ORDER xmlns="http://www.opentrans.org/XMLSchema/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0" type="standard">
+		<ORDER_HEADER>
+			<CONTROL_INFO>
+				<GENERATOR_INFO>BYCEPS</GENERATOR_INFO>
+				<GENERATION_DATE>{{ format_export_datetime(now) }}</GENERATION_DATE>
+			</CONTROL_INFO>
+			<ORDER_INFO>
+				<ORDER_ID>{{ order.order_number }}</ORDER_ID>
+				<ORDER_DATE>{{ format_export_datetime(order.created_at) }}</ORDER_DATE>
+				<ORDER_PARTIES>
+					<BUYER_PARTY>
+						<PARTY>
+							<ADDRESS>
+								<NAME></NAME>
+								<NAME2>{{ order.last_name }}</NAME2>
+								<NAME3>{{ order.first_names }}</NAME3>
+								<STREET>{{ order.street }}</STREET>
+								<ZIP>{{ order.zip_code }}</ZIP>
+								<CITY>{{ order.city }}</CITY>
+								<COUNTRY>DE</COUNTRY>
+							</ADDRESS>
+						</PARTY>
+					</BUYER_PARTY>
+					<INVOICE_PARTY>
+						<PARTY>
+							<ADDRESS>
+								<NAME></NAME>
+								<NAME2>{{ order.last_name }}</NAME2>
+								<NAME3>{{ order.first_names }}</NAME3>
+								<STREET>{{ order.street }}</STREET>
+								<ZIP>{{ order.zip_code }}</ZIP>
+								<CITY>{{ order.city }}</CITY>
+								<COUNTRY>DE</COUNTRY>
+								<PHONE/>
+								<FAX/>
+								<EMAIL>{{ order.placed_by.email_address }}</EMAIL>
+							</ADDRESS>
+						</PARTY>
+					</INVOICE_PARTY>
+				</ORDER_PARTIES>
+				<PRICE_CURRENCY>EUR</PRICE_CURRENCY>
+				<PAYMENT>
+					<CASH>
+						<PAYMENT_TERM type="unece">10</PAYMENT_TERM>
+					</CASH>
+				</PAYMENT>
+				<REMARK type="delivery_method">Online</REMARK>
+			</ORDER_INFO>
+		</ORDER_HEADER>
+		<ORDER_ITEM_LIST>
+        {%- for item in order.items|sort(attribute='article_number') %}
+			<ORDER_ITEM>
+				<LINE_ITEM_ID>{{ loop.index0 }}</LINE_ITEM_ID>
+				<ARTICLE_ID>
+					<SUPPLIER_AID>{{ item.article_number }}</SUPPLIER_AID>
+					<DESCRIPTION_SHORT>{{ item.description }}</DESCRIPTION_SHORT>
+					<DESCRIPTION_LONG></DESCRIPTION_LONG>
+				</ARTICLE_ID>
+				<QUANTITY>{{ item.quantity }}</QUANTITY>
+				<ORDER_UNIT>1</ORDER_UNIT>
+				<ARTICLE_PRICE type="gros_list">
+					<PRICE_AMOUNT>{{ format_export_amount(item.unit_price) }}</PRICE_AMOUNT>
+					<PRICE_LINE_AMOUNT>{{ format_export_amount(item.line_price) }}</PRICE_LINE_AMOUNT>
+					<TAX>{{ '%0.2f'|format(item.tax_rate) }}</TAX>
+				</ARTICLE_PRICE>
+			</ORDER_ITEM>
+        {%- endfor %}
+		</ORDER_ITEM_LIST>
+		<ORDER_SUMMARY>
+			<TOTAL_ITEM_NUM>{{ order.item_total_quantity }}</TOTAL_ITEM_NUM>
+			<TOTAL_AMOUNT>{{ format_export_amount(order.calculate_total_price()) }}</TOTAL_AMOUNT>
+		</ORDER_SUMMARY>
+	</ORDER>
+</ORDER_LIST>

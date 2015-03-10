@@ -10,7 +10,7 @@ byceps.blueprints.shop_admin.views
 from datetime import datetime
 from decimal import Decimal
 
-from flask import request
+from flask import current_app, render_template, request, Response
 
 from ...database import db
 from ...util.framework import create_blueprint, flash_error, flash_success
@@ -255,6 +255,51 @@ def order_view(id):
         'order': order,
         'PaymentState': PaymentState,
     }
+
+
+@blueprint.route('/orders/<uuid:id>/export')
+@permission_required(ShopOrderPermission.view)
+def order_export(id):
+    """Export the order as an XML document."""
+    order = Order.query \
+        .options(
+            db.joinedload('items'),
+        ) \
+        .get_or_404(id)
+
+    now = datetime.now()
+
+    context = {
+        'order': order,
+        'now': now,
+        'format_export_amount': _format_export_amount,
+        'format_export_datetime': _format_export_datetime,
+    }
+
+    xml = render_template('shop_admin/order_export.xml', **context)
+    return Response(xml, mimetype='application/xml')
+
+
+def _format_export_amount(amount):
+    """Format the monetary amount as required by the export format
+    specification.
+    """
+    return '{:d}.{:02d}'.format(amount.euro, amount.cent)
+
+
+def _format_export_datetime(dt):
+    """Format date and time as required by the export format specification."""
+    timezone = current_app.config['TIMEZONE']
+    localized_dt = timezone.localize(dt)
+
+    date_time, utc_offset = localized_dt.strftime('%Y-%m-%dT%H:%M:%S|%z') \
+                                        .split('|', 1)
+
+    if len(utc_offset) == 5:
+        # Insert colon between hours and minutes.
+        utc_offset = utc_offset[:3] + ':' + utc_offset[3:]
+
+    return date_time + utc_offset
 
 
 @blueprint.route('/orders/<uuid:id>/update_payment')

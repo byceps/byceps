@@ -94,4 +94,8 @@
     </tbody>
   </table>
 
+  <ol class="actions">
+    <li><a href="{{ url_for('.order_export', id=order.id) }}">{{ render_icon('download') }} für Lexware exportieren<br/><small>(Shopschnittstelle; als XML)</small></a></li>
+  </ol>
+
 {%- endblock body %}

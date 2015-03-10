@@ -323,6 +323,11 @@ class Order(db.Model):
         """
         return OrderItem(self, article, quantity=quantity)
 
+    @property
+    def item_total_quantity(self):
+        """Return the sum of all items' quantities."""
+        return sum(item.quantity for item in self.items)
+
     def cancel(self, reason):
         """Cancel the order."""
         self._update_payment_state(PaymentState.canceled)
@@ -384,6 +389,14 @@ class OrderItem(db.Model):
     @price.setter
     def price(self, amount):
         self._price = amount.to_int()
+
+    @property
+    def unit_price(self):
+        return self.price
+
+    @property
+    def line_price(self):
+        return self.unit_price * self.quantity
 
 
 # -------------------------------------------------------------------- #

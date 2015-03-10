@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ORDER_LIST>
+	<ORDER xmlns="http://www.opentrans.org/XMLSchema/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0" type="standard">
+		<ORDER_HEADER>
+			<CONTROL_INFO>
+				<GENERATOR_INFO>BYCEPS</GENERATOR_INFO>
+				<GENERATION_DATE>2015-04-15T09:54:18+02:00</GENERATION_DATE>
+			</CONTROL_INFO>
+			<ORDER_INFO>
+				<ORDER_ID>LR-08-B00027</ORDER_ID>
+				<ORDER_DATE>2015-02-26T13:26:24+01:00</ORDER_DATE>
+				<ORDER_PARTIES>
+					<BUYER_PARTY>
+						<PARTY>
+							<ADDRESS>
+								<NAME></NAME>
+								<NAME2>Mustermann</NAME2>
+								<NAME3>Hans-Werner</NAME3>
+								<STREET>Nebenstraße 23a</STREET>
+								<ZIP>42000</ZIP>
+								<CITY>Hauptstadt</CITY>
+								<COUNTRY>DE</COUNTRY>
+							</ADDRESS>
+						</PARTY>
+					</BUYER_PARTY>
+					<INVOICE_PARTY>
+						<PARTY>
+							<ADDRESS>
+								<NAME></NAME>
+								<NAME2>Mustermann</NAME2>
+								<NAME3>Hans-Werner</NAME3>
+								<STREET>Nebenstraße 23a</STREET>
+								<ZIP>42000</ZIP>
+								<CITY>Hauptstadt</CITY>
+								<COUNTRY>DE</COUNTRY>
+								<PHONE/>
+								<FAX/>
+								<EMAIL>h-w.mustermann@example.com</EMAIL>
+							</ADDRESS>
+						</PARTY>
+					</INVOICE_PARTY>
+				</ORDER_PARTIES>
+				<PRICE_CURRENCY>EUR</PRICE_CURRENCY>
+				<PAYMENT>
+					<CASH>
+						<PAYMENT_TERM type="unece">10</PAYMENT_TERM>
+					</CASH>
+				</PAYMENT>
+				<REMARK type="delivery_method">Online</REMARK>
+			</ORDER_INFO>
+		</ORDER_HEADER>
+		<ORDER_ITEM_LIST>
+			<ORDER_ITEM>
+				<LINE_ITEM_ID>0</LINE_ITEM_ID>
+				<ARTICLE_ID>
+					<SUPPLIER_AID>LR-08-A00002</SUPPLIER_AID>
+					<DESCRIPTION_SHORT>Tisch (zur Miete), 200 x 80 cm</DESCRIPTION_SHORT>
+					<DESCRIPTION_LONG></DESCRIPTION_LONG>
+				</ARTICLE_ID>
+				<QUANTITY>2</QUANTITY>
+				<ORDER_UNIT>1</ORDER_UNIT>
+				<ARTICLE_PRICE type="gros_list">
+					<PRICE_AMOUNT>20.00</PRICE_AMOUNT>
+					<PRICE_LINE_AMOUNT>40.00</PRICE_LINE_AMOUNT>
+					<TAX>0.19</TAX>
+				</ARTICLE_PRICE>
+			</ORDER_ITEM>
+			<ORDER_ITEM>
+				<LINE_ITEM_ID>1</LINE_ITEM_ID>
+				<ARTICLE_ID>
+					<SUPPLIER_AID>LR-08-A00003</SUPPLIER_AID>
+					<DESCRIPTION_SHORT>LANresort 2015: Bungalow 4 Plätze</DESCRIPTION_SHORT>
+					<DESCRIPTION_LONG></DESCRIPTION_LONG>
+				</ARTICLE_ID>
+				<QUANTITY>1</QUANTITY>
+				<ORDER_UNIT>1</ORDER_UNIT>
+				<ARTICLE_PRICE type="gros_list">
+					<PRICE_AMOUNT>355.00</PRICE_AMOUNT>
+					<PRICE_LINE_AMOUNT>355.00</PRICE_LINE_AMOUNT>
+					<TAX>0.07</TAX>
+				</ARTICLE_PRICE>
+			</ORDER_ITEM>
+			<ORDER_ITEM>
+				<LINE_ITEM_ID>2</LINE_ITEM_ID>
+				<ARTICLE_ID>
+					<SUPPLIER_AID>LR-08-A00006</SUPPLIER_AID>
+					<DESCRIPTION_SHORT>Touristische Gästeabgabe (BispingenCard), pauschal für 4 Personen</DESCRIPTION_SHORT>
+					<DESCRIPTION_LONG></DESCRIPTION_LONG>
+				</ARTICLE_ID>
+				<QUANTITY>1</QUANTITY>
+				<ORDER_UNIT>1</ORDER_UNIT>
+				<ARTICLE_PRICE type="gros_list">
+					<PRICE_AMOUNT>6.00</PRICE_AMOUNT>
+					<PRICE_LINE_AMOUNT>6.00</PRICE_LINE_AMOUNT>
+					<TAX>0.19</TAX>
+				</ARTICLE_PRICE>
+			</ORDER_ITEM>
+		</ORDER_ITEM_LIST>
+		<ORDER_SUMMARY>
+			<TOTAL_ITEM_NUM>4</TOTAL_ITEM_NUM>
+			<TOTAL_AMOUNT>401.00</TOTAL_AMOUNT>
+		</ORDER_SUMMARY>
+	</ORDER>
+</ORDER_LIST>
