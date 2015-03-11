@@ -7,6 +7,7 @@ from uuid import UUID
 
 from freezegun import freeze_time
 from nose2.tools import params
+from pytz import timezone
 
 from byceps.blueprints.user.models import User
 from byceps.util.image import ImageType
@@ -15,6 +16,8 @@ from tests import AbstractAppTestCase
 
 
 CREATED_AT = datetime(2014, 7, 29, 14, 43, 30, 196165)
+
+TIMEZONE = timezone('Europe/Berlin')
 
 
 class AvatarImageTestCase(TestCase):
@@ -70,7 +73,7 @@ class AvatarImagePathTestCase(AbstractAppTestCase):
             '/var/data/avatars/2e17cb15-d763-4f93-882a-371296a3c63f_1406637810.jpeg')
 
         with freeze_time('2014-07-29 14:43:30'):
-            created_at = datetime.now()
+            created_at = TIMEZONE.localize(datetime.now())
 
         self.user.set_avatar_image(created_at, ImageType.jpeg)
 
