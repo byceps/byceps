@@ -74,7 +74,7 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.content_type, 'application/json')
-        data = json.loads(response.data.decode('utf-8'))
+        data = json.loads(response.get_data().decode('utf-8'))
         self.assertEqual(data, expected_data)
 
     def test_export_subscriber_email_addresses(self):
@@ -94,7 +94,7 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.content_type, 'text/plain; charset=utf-8')
         self.assertEqual(response.mimetype, 'text/plain')
-        self.assertEqual(response.data, expected_data)
+        self.assertEqual(response.get_data(), expected_data)
 
     def create_user(self, number, *, enabled=True):
         screen_name = 'User-{:d}'.format(number)
