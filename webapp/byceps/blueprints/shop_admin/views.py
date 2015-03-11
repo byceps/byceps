@@ -277,7 +277,8 @@ def order_export(id):
     }
 
     xml = render_template('shop_admin/order_export.xml', **context)
-    return Response(xml, mimetype='application/xml')
+
+    return Response(xml, content_type='application/xml; charset=iso-8859-1')
 
 
 def _format_export_amount(amount):
