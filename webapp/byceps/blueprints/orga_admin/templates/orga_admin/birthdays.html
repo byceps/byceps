@@ -34,7 +34,7 @@
       {% if is_today %}{{ render_icon('birthday') }}{% endif %}
       {%- set relative_days_label = render_relative_days_until(user) %}
       wird {{ render_time_element(user.detail.date_of_birth, relative_days_label) }}
-      {{ render_random_age_adjective() }} {{ user.detail.age + 1 }} Jahre alt.
+      {{ render_random_age_adjective() }} {{ user.detail.age if is_today else user.detail.age + 1 }} Jahre alt.
     </li>
   {%- endfor %}
   </ol>
