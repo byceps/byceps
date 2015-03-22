@@ -14,7 +14,7 @@ from flask import abort, current_app, g, request, session, url_for
 
 from ...config import get_site_mode, get_user_registration_enabled
 from ...database import db
-from ...mail import mail
+from ... import email
 from ...util.framework import create_blueprint, flash_error, flash_notice, \
     flash_success
 from ...util.image import create_thumbnail, Dimensions, \
@@ -221,7 +221,7 @@ def send_email_address_confirmation_email(user, verification_token):
     ).format(user, confirmation_url)
     recipients = [user.email_address]
 
-    mail.send_message(subject=subject, body=body, recipients=recipients)
+    email.send(subject=subject, body=body, recipients=recipients)
 
 
 @blueprint.route('/email_address_confirmations/<uuid:token>')
@@ -296,7 +296,7 @@ def send_password_reset_email(user, verification_token):
     ).format(user, confirmation_url)
     recipients = [user.email_address]
 
-    mail.send_message(subject=subject, body=body, recipients=recipients)
+    email.send(subject=subject, body=body, recipients=recipients)
 
 
 @blueprint.route('/me/password/reset/token/<uuid:token>')

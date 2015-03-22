@@ -17,7 +17,7 @@ from .blueprints.snippet.init import add_routes_for_snippets
 from . import config
 from .config import SiteMode
 from .database import db
-from .mail import mail
+from . import email
 from .util import dateformat
 from .util.framework import load_config, register_blueprint
 from .util.l10n import set_locale
@@ -74,7 +74,7 @@ def create_app(environment_name, *, initialize=True):
     # Initialize database.
     db.init_app(app)
 
-    mail.init_app(app)
+    email.init_app(app)
 
     config.init_app(app)
 
