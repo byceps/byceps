@@ -86,7 +86,8 @@ def create_app(environment_name, *, initialize=True):
         with app.app_context():
             set_root_path(app)
 
-            if config.get_site_mode().is_public():
+            site_mode = config.get_site_mode()
+            if site_mode.is_public():
                 party_id = config.get_current_party_id()
 
                 # Mount snippets.
@@ -95,6 +96,9 @@ def create_app(environment_name, *, initialize=True):
                 # Incorporate template overrides for the current party.
                 app.template_folder = str(Path('party_template_overrides') \
                                     / party_id)
+            elif site_mode.is_admin():
+                from rq_dashboard import RQDashboard
+                RQDashboard(app, url_prefix='/admin/rq')
 
     return app
 
