@@ -15,6 +15,8 @@ LOCALES_FORMS = ['de']
 SQLALCHEMY_DATABASE_URI = 'postgresql+pg8000://byceps:boioioing@127.0.0.1/byceps'
 SQLALCHEMY_ECHO = False
 
+REDIS_URL = 'unix:///var/run/redis/redis.sock?db=0'
+
 PATH_DATA = Path('./data')
 PATH_USER_AVATAR_IMAGES = PATH_DATA / 'users/avatars'
 
