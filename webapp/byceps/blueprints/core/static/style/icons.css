@@ -43,6 +43,7 @@ li [class*=" icon-"] {
 .icon-arrow-right:before    { content: "\f061"; }
 .icon-attached:before       { content: "\f0c6"; }
 .icon-birthday:before       { content: "\f1fd"; }
+.icon-board:before          { content: "\f086"; }
 .icon-bullhorn:before       { content: "\f0a1"; }
 .icon-cost:before           { content: "\f153"; }
 .icon-date:before           { content: "\f073"; }
@@ -62,7 +63,7 @@ li [class*=" icon-"] {
 .icon-important:before      { content: "\f12a"; }
 .icon-info:before           { content: "\f05a"; }
 .icon-internet:before       { content: "\f0ac"; }
-.icon-irc:before            { content: "\f086"; }
+.icon-irc:before            { content: "#"; font-weight: bold; }
 .icon-location:before       { content: "\f041"; }
 .icon-lock:before           { content: "\f023"; }
 .icon-log-in:before         { content: "\f090"; }
