@@ -663,6 +663,12 @@ ul.condensed {
   padding: 0;
 }
 
+hr {
+  border: 0;
+  border-top: #cccccc solid 1px;
+  height: 0;
+}
+
 [class^="icon-"][title] {
   cursor: help;
 }
