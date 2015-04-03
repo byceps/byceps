@@ -523,14 +523,18 @@ nav.pagination li.current {
 }
 .board-postings aside,
 .tourney-match-comments aside {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
+  max-width: 136px;
+  overflow: hidden;
   width: 136px;
 }
 .board-postings .body,
 .tourney-match-comments .body {
   font-size: 1rem;
+  max-width: 522px;
   overflow: hidden;
   text-overflow: ellipsis;
+  width: 522px;
 }
 
 .board-postings aside .creator,
