@@ -35,6 +35,7 @@ from .forms import AvatarImageUpdateForm, DetailsForm, LoginForm, \
     ResetPasswordForm, UpdatePasswordForm, UserCreateForm
 from .models import User
 from .session import UserSession
+from . import signals
 
 
 MAXIMUM_AVATAR_IMAGE_DIMENSIONS = Dimensions(110, 150)
@@ -143,6 +144,8 @@ def create():
         'der an die angegebene Adresse verschickten E-Mail besucht werden.'
         ,
         user.screen_name)
+    signals.user_created.send(None, user=user)
+
     return redirect_to('.view', id=user.id)
 
 
@@ -241,6 +244,8 @@ def confirm_email_address(token):
     flash_success(
         'Die E-Mail-Adresse wurde bestätigt. Das Benutzerkonto "{}" ist nun aktiviert.',
         user.screen_name)
+    signals.email_address_confirmed.send(None, user=user)
+
     return redirect_to('.login_form')
 
 
@@ -458,6 +463,8 @@ def avatar_image_update():
     db.session.commit()
 
     flash_success('Das Avatarbild wurde aktualisiert.', icon='upload')
+    signals.avatar_updated.send(None, user=user)
+
     return redirect_to('.view_current')
 
 

@@ -295,6 +295,7 @@ def topic_hide(id):
     topic.aggregate()
 
     flash_success('Das Thema "{}" wurde versteckt.', topic.title, icon='hidden')
+    signals.topic_hidden.send(None, topic=topic)
     return url_for('.category_view', slug=topic.category.slug, _anchor=topic.anchor)
 
 
@@ -543,6 +544,7 @@ def posting_hide(id):
     posting.topic.aggregate()
 
     flash_success('Der Beitrag wurde versteckt.', icon='hidden')
+    signals.posting_hidden.send(None, posting=posting)
     return url_for('.topic_view', id=posting.topic.id, _anchor=posting.anchor)
 
 

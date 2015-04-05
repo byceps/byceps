@@ -18,6 +18,7 @@ from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 from ..brand.models import Brand
 from ..news.models import Item
+from ..news import signals
 from ..snippet.models import Snippet
 
 from .authorization import NewsItemPermission
@@ -96,4 +97,6 @@ def create(brand_id):
     db.session.commit()
 
     flash_success('Die News "{}" wurde angelegt.', item.title)
+    signals.item_published.send(None, item=item)
+
     return redirect_to('.index_for_brand', brand_id=brand.id)
