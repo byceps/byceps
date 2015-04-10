@@ -69,6 +69,10 @@ class RenderBbcodeTestCase(TestCase):
             '[quote author="]foobar["]blah[/quote]',
             '<p class="quote-intro"><cite>]foobar[</cite> schrieb:</p>\n<blockquote>blah</blockquote>',
         ),
+        (
+            '[quote author="<AngleBracketeer>"]careful.[/quote]',
+            '<p class="quote-intro"><cite>&lt;AngleBracketeer&gt;</cite> schrieb:</p>\n<blockquote>careful.</blockquote>',
+        ),
     )
     def test_quote_with_author_whose_name_contains_square_brackets(self, text, expected):
         self.assert_rendered_html(text, expected)

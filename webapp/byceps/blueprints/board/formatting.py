@@ -7,6 +7,8 @@ byceps.blueprints.board.formatting
 :Copyright: 2006-2015 Jochen Kupperschmidt
 """
 
+from cgi import escape
+
 import bbcode
 
 try:
@@ -33,7 +35,7 @@ def create_parser():
     def render_quote(name, value, options, parent, context):
         intro = ''
         if 'author' in options:
-            author = options['author']
+            author = escape(options['author'])
             intro = '<p class="quote-intro"><cite>{}</cite> schrieb:</p>\n' \
                 .format(author)
         return '{}<blockquote>{}</blockquote>'.format(intro, value)
