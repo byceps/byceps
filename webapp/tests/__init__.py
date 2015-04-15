@@ -8,6 +8,7 @@ from byceps.database import db
 
 from testfixtures.brand import create_brand
 from testfixtures.party import create_party
+from testfixtures.user import create_user
 
 
 class AbstractAppTestCase(TestCase):
@@ -23,6 +24,7 @@ class AbstractAppTestCase(TestCase):
         db.create_all()
 
         self.create_brand_and_party()
+        self.create_admin()
 
     def create_brand_and_party(self):
         self.brand = create_brand()
@@ -30,6 +32,12 @@ class AbstractAppTestCase(TestCase):
 
         self.party = create_party(brand=self.brand)
         db.session.add(self.party)
+
+        db.session.commit()
+
+    def create_admin(self):
+        self.admin = create_user(99)
+        db.session.add(self.admin)
 
         db.session.commit()
 
