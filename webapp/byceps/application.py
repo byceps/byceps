@@ -113,10 +113,10 @@ def register_blueprints(app):
 
 
 def set_root_path(app):
-    """Set an optioanl URL path to redirect to from the root URL path (`/`).
+    """Set an optional URL path to redirect to from the root URL path (`/`).
 
     Important: Don't specify the target with a leading slash unless you
-    really mean the root of host.
+    really mean the root of the host.
     """
     target = app.config.get('ROOT_REDIRECT_TARGET')
     if target:
