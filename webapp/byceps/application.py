@@ -82,6 +82,11 @@ def create_app(environment_name, *, initialize=True):
 
     dateformat.register_template_filters(app)
 
+    app.add_url_rule('/content/<path:filename>',
+                     endpoint='content_file',
+                     methods=['GET'],
+                     build_only=True)
+
     if initialize:
         with app.app_context():
             set_root_path(app)

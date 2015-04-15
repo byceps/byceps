@@ -9,6 +9,8 @@ byceps.blueprints.news.models
 
 from datetime import datetime
 
+from flask import url_for
+
 from ...database import BaseQuery, db, generate_uuid
 from ...util.instances import ReprBuilder
 
@@ -51,6 +53,12 @@ class Item(db.Model):
 
     def render_body(self):
         return render_body(self.snippet.current_version)
+
+    @property
+    def image_url(self):
+        url_path = self.snippet.current_version.image_url_path
+        if url_path:
+            return url_for('content_file', filename=url_path, _external=True)
 
     def __repr__(self):
         return ReprBuilder(self) \
