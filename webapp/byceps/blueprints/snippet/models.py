@@ -88,6 +88,7 @@ class SnippetVersion(db.Model):
     creator = db.relationship(User)
     title = db.Column(db.Unicode(80))
     body = db.Column(db.UnicodeText, nullable=False)
+    image_url_path = db.Column(db.Unicode(80), nullable=True)
 
     @property
     def is_current(self):
@@ -104,6 +105,7 @@ class SnippetVersion(db.Model):
             .add_with_lookup('creator') \
             .add_with_lookup('title') \
             .add('body length', len(self.body)) \
+            .add_with_lookup('image_url_path') \
             .build()
 
 

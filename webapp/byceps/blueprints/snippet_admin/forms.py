@@ -26,6 +26,7 @@ class SnippetCreateForm(LocalizedForm):
     name = StringField('Bezeichner')
     title = StringField('Titel')
     body = TextAreaField('Text')
+    image_url_path = StringField('Bild-URL-Pfad')
 
 
 class SnippetUpdateForm(SnippetCreateForm):

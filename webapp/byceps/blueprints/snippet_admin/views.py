@@ -110,7 +110,8 @@ def create_snippet(party_id):
         snippet=snippet,
         creator=g.current_user,
         title=form.title.data.strip(),
-        body=form.body.data.strip())
+        body=form.body.data.strip(),
+        image_url_path=form.image_url_path.data.strip())
     db.session.add(version)
 
     current_version_association = CurrentVersionAssociation(
@@ -154,7 +155,8 @@ def update_snippet(id):
         snippet=snippet,
         creator=g.current_user,
         title=form.title.data.strip(),
-        body=form.body.data.strip())
+        body=form.body.data.strip(),
+        image_url_path=form.image_url_path.data.strip())
     db.session.add(version)
 
     snippet.current_version = version
