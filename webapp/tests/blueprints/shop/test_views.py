@@ -21,18 +21,18 @@ class ShopTestCase(AbstractAppTestCase):
         self.app.add_url_rule('/shop/order_placed', 'snippet.order_placed',
                               lambda: None)
 
-        self.setUp_order_number_sequence()
-        self.setUp_current_user()
+        self.setup_order_number_sequence()
+        self.setup_current_user()
 
-    def setUp_order_number_sequence(self):
+    def setup_order_number_sequence(self):
         sequence = create_party_sequence(self.party,
                                          PartySequencePurpose.order,
                                          value=4)
         self.db.session.add(sequence)
         self.db.session.commit()
 
-    def setUp_current_user(self):
-        self.current_user = self.create_user(99, enabled=True)
+    def setup_current_user(self):
+        self.orderer = self.create_user(1, enabled=True)
         self.db.session.commit()
 
     def test_order_article(self):
@@ -52,7 +52,7 @@ class ShopTestCase(AbstractAppTestCase):
             'street': 'L33t Street 101',
             'quantity': 1,  # TODO: Test with `3` if limitation is removed.
         }
-        with self.client(user=self.current_user) as client:
+        with self.client(user=self.orderer) as client:
             response = client.post(url, data=form_data)
 
         self.assertEqual(response.status_code, 302)
@@ -61,7 +61,7 @@ class ShopTestCase(AbstractAppTestCase):
         article_afterwards = Article.query.get(article_before.id)
         self.assertEqual(article_afterwards.quantity, 4)
 
-        order = Order.query.filter_by(placed_by=self.current_user).one()
+        order = Order.query.filter_by(placed_by=self.orderer).one()
         self.assertEqual(order.order_number, 'AEC-01-B00005')
         self.assertEqual(len(order.items), 1)
         self.assertEqual(order.items[0].article.id, article_before.id)

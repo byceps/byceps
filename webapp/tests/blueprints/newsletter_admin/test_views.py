@@ -15,10 +15,10 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
     def setUp(self):
         super(NewsletterAdminTestCase, self).setUp(env='test_admin')
 
-        self.setup_current_user()
+        self.setup_admin()
         self.setup_subscribers()
 
-    def setup_current_user(self):
+    def setup_admin(self):
         export_subscribers_permission = Permission.from_enum_member(
             NewsletterPermission.export_subscribers)
         self.db.session.add(export_subscribers_permission)
@@ -28,8 +28,7 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
 
         newsletter_admin_role.permissions.add(export_subscribers_permission)
 
-        self.current_user = self.create_user(99, enabled=True)
-        self.current_user.roles.add(newsletter_admin_role)
+        self.admin.roles.add(newsletter_admin_role)
 
         self.db.session.commit()
 
@@ -70,7 +69,7 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
         }
 
         url = '/admin/newsletter/subscriptions/{}/export'.format(self.brand.id)
-        response = self.get_with_current_user(url)
+        response = self.get_as_admin(url)
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.content_type, 'application/json')
@@ -89,7 +88,7 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
         ]).encode('utf-8')
 
         url = '/admin/newsletter/subscriptions/{}/export_email_addresses'.format(self.brand.id)
-        response = self.get_with_current_user(url)
+        response = self.get_as_admin(url)
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.content_type, 'text/plain; charset=utf-8')
@@ -112,7 +111,7 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
         subscription = Subscription(user, state, brand=self.brand)
         self.db.session.add(subscription)
 
-    def get_with_current_user(self, url):
-        """Make a GET request as the current user and return the response."""
-        with self.client(user=self.current_user) as client:
+    def get_as_admin(self, url):
+        """Make a GET request as the admin and return the response."""
+        with self.client(user=self.admin) as client:
             return client.get(url)

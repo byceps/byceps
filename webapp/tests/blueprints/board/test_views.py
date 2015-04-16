@@ -16,7 +16,7 @@ class BoardModerationTestCase(AbstractAppTestCase):
         super(BoardModerationTestCase, self).setUp()
 
     def test_hide_topic(self):
-        self.setup_current_user(BoardTopicPermission.hide)
+        self.setup_admin(BoardTopicPermission.hide)
 
         user = self.create_user(1)
         category = self.create_category(1)
@@ -28,30 +28,30 @@ class BoardModerationTestCase(AbstractAppTestCase):
         self.assertIsNone(topic_before.hidden_by)
 
         url = '/board/topics/{}/flags/hidden'.format(topic_before.id)
-        with self.client(user=self.current_user) as client:
+        with self.client(user=self.admin) as client:
             response = client.post(url)
 
         self.assertEqual(response.status_code, 204)
         topic_afterwards = self.find_topic(topic_before.id)
         self.assertTrue(topic_afterwards.hidden)
         self.assertIsNotNone(topic_afterwards.hidden_at)
-        self.assertEqual(topic_afterwards.hidden_by, self.current_user)
+        self.assertEqual(topic_afterwards.hidden_by, self.admin)
 
     def test_unhide_topic(self):
-        self.setup_current_user(BoardTopicPermission.hide)
+        self.setup_admin(BoardTopicPermission.hide)
 
         user = self.create_user(1)
         category = self.create_category(1)
         topic_before = self.create_topic(category, user, 1)
-        topic_before.hide(self.current_user)
+        topic_before.hide(self.admin)
         self.db.session.commit()
 
         self.assertTrue(topic_before.hidden)
         self.assertIsNotNone(topic_before.hidden_at)
-        self.assertEqual(topic_before.hidden_by, self.current_user)
+        self.assertEqual(topic_before.hidden_by, self.admin)
 
         url = '/board/topics/{}/flags/hidden'.format(topic_before.id)
-        with self.client(user=self.current_user) as client:
+        with self.client(user=self.admin) as client:
             response = client.delete(url)
 
         self.assertEqual(response.status_code, 204)
@@ -61,7 +61,7 @@ class BoardModerationTestCase(AbstractAppTestCase):
         self.assertIsNone(topic_afterwards.hidden_by)
 
     def test_lock_topic(self):
-        self.setup_current_user(BoardTopicPermission.lock)
+        self.setup_admin(BoardTopicPermission.lock)
 
         user = self.create_user(1)
         category = self.create_category(1)
@@ -73,30 +73,30 @@ class BoardModerationTestCase(AbstractAppTestCase):
         self.assertIsNone(topic_before.locked_by)
 
         url = '/board/topics/{}/flags/locked'.format(topic_before.id)
-        with self.client(user=self.current_user) as client:
+        with self.client(user=self.admin) as client:
             response = client.post(url)
 
         self.assertEqual(response.status_code, 204)
         topic_afterwards = self.find_topic(topic_before.id)
         self.assertTrue(topic_afterwards.locked)
         self.assertIsNotNone(topic_afterwards.locked_at)
-        self.assertEqual(topic_afterwards.locked_by, self.current_user)
+        self.assertEqual(topic_afterwards.locked_by, self.admin)
 
     def test_unlock_topic(self):
-        self.setup_current_user(BoardTopicPermission.lock)
+        self.setup_admin(BoardTopicPermission.lock)
 
         user = self.create_user(1)
         category = self.create_category(1)
         topic_before = self.create_topic(category, user, 1)
-        topic_before.lock(self.current_user)
+        topic_before.lock(self.admin)
         self.db.session.commit()
 
         self.assertTrue(topic_before.locked)
         self.assertIsNotNone(topic_before.locked_at)
-        self.assertEqual(topic_before.locked_by, self.current_user)
+        self.assertEqual(topic_before.locked_by, self.admin)
 
         url = '/board/topics/{}/flags/locked'.format(topic_before.id)
-        with self.client(user=self.current_user) as client:
+        with self.client(user=self.admin) as client:
             response = client.delete(url)
 
         self.assertEqual(response.status_code, 204)
@@ -106,7 +106,7 @@ class BoardModerationTestCase(AbstractAppTestCase):
         self.assertIsNone(topic_afterwards.locked_by)
 
     def test_pin_topic(self):
-        self.setup_current_user(BoardTopicPermission.pin)
+        self.setup_admin(BoardTopicPermission.pin)
 
         user = self.create_user(1)
         category = self.create_category(1)
@@ -118,30 +118,30 @@ class BoardModerationTestCase(AbstractAppTestCase):
         self.assertIsNone(topic_before.pinned_by)
 
         url = '/board/topics/{}/flags/pinned'.format(topic_before.id)
-        with self.client(user=self.current_user) as client:
+        with self.client(user=self.admin) as client:
             response = client.post(url)
 
         self.assertEqual(response.status_code, 204)
         topic_afterwards = self.find_topic(topic_before.id)
         self.assertTrue(topic_afterwards.pinned)
         self.assertIsNotNone(topic_afterwards.pinned_at)
-        self.assertEqual(topic_afterwards.pinned_by, self.current_user)
+        self.assertEqual(topic_afterwards.pinned_by, self.admin)
 
     def test_unpin_topic(self):
-        self.setup_current_user(BoardTopicPermission.pin)
+        self.setup_admin(BoardTopicPermission.pin)
 
         user = self.create_user(1)
         category = self.create_category(1)
         topic_before = self.create_topic(category, user, 1)
-        topic_before.pin(self.current_user)
+        topic_before.pin(self.admin)
         self.db.session.commit()
 
         self.assertTrue(topic_before.pinned)
         self.assertIsNotNone(topic_before.pinned_at)
-        self.assertEqual(topic_before.pinned_by, self.current_user)
+        self.assertEqual(topic_before.pinned_by, self.admin)
 
         url = '/board/topics/{}/flags/pinned'.format(topic_before.id)
-        with self.client(user=self.current_user) as client:
+        with self.client(user=self.admin) as client:
             response = client.delete(url)
 
         self.assertEqual(response.status_code, 204)
@@ -151,7 +151,7 @@ class BoardModerationTestCase(AbstractAppTestCase):
         self.assertIsNone(topic_afterwards.pinned_by)
 
     def test_move_topic(self):
-        self.setup_current_user(BoardTopicPermission.move)
+        self.setup_admin(BoardTopicPermission.move)
 
         user = self.create_user(1)
         category1 = self.create_category(1)
@@ -163,7 +163,7 @@ class BoardModerationTestCase(AbstractAppTestCase):
 
         url = '/board/topics/{}/move'.format(topic_before.id)
         form_data = {'category_id': category2.id}
-        with self.client(user=self.current_user) as client:
+        with self.client(user=self.admin) as client:
             response = client.post(url, data=form_data)
 
         self.assertEqual(response.status_code, 302)
@@ -181,7 +181,7 @@ class BoardModerationTestCase(AbstractAppTestCase):
         self.db.session.add(user)
         return user
 
-    def setup_current_user(self, permission=None):
+    def setup_admin(self, permission):
         db_permission = Permission.from_enum_member(permission)
         self.db.session.add(db_permission)
 
@@ -190,8 +190,7 @@ class BoardModerationTestCase(AbstractAppTestCase):
 
         board_moderator_role.permissions.add(db_permission)
 
-        self.current_user = self.create_user(99, enabled=True)
-        self.current_user.roles.add(board_moderator_role)
+        self.admin.roles.add(board_moderator_role)
 
         self.db.session.commit()
 

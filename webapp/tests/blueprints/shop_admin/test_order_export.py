@@ -13,7 +13,7 @@ from byceps.util.money import EuroAmount
 from testfixtures.brand import create_brand
 from testfixtures.party import create_party
 from testfixtures.shop import create_article, create_order
-from testfixtures.user import create_user, create_user_with_detail
+from testfixtures.user import create_user_with_detail
 
 from tests import AbstractAppTestCase
 
@@ -23,7 +23,7 @@ class ExportTestCase(AbstractAppTestCase):
     def setUp(self):
         super().setUp(env='test_admin')
 
-        self.setup_current_user()
+        self.setup_admin()
         self.create_articles()
         self.create_order()
 
@@ -50,7 +50,7 @@ class ExportTestCase(AbstractAppTestCase):
             expected = f.read().rstrip()
 
         url = '/admin/shop/orders/{}/export'.format(self.order.id)
-        with self.client(user=self.current_user) as client:
+        with self.client(user=self.admin) as client:
             response = client.get(url)
 
         self.assertEqual(response.status_code, 200)
@@ -60,7 +60,7 @@ class ExportTestCase(AbstractAppTestCase):
 
     # helpers
 
-    def setup_current_user(self):
+    def setup_admin(self):
         permission = Permission.from_enum_member(ShopOrderPermission.view)
         self.db.session.add(permission)
 
@@ -68,9 +68,7 @@ class ExportTestCase(AbstractAppTestCase):
         role.permissions.add(permission)
         self.db.session.add(role)
 
-        self.current_user = create_user(99)
-        self.current_user.roles.add(role)
-        self.db.session.add(self.current_user)
+        self.admin.roles.add(role)
 
         self.db.session.commit()
 

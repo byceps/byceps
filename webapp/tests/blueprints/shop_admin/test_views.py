@@ -18,9 +18,10 @@ class ShopAdminTestCase(AbstractAppTestCase):
     def setUp(self):
         super(ShopAdminTestCase, self).setUp(env='test_admin')
 
-        self.setUp_current_user()
+        self.setup_admin()
+        self.orderer = self.create_user(1)
 
-    def setUp_current_user(self):
+    def setup_admin(self):
         update_orders_permission = Permission.from_enum_member(
             ShopOrderPermission.update)
         self.db.session.add(update_orders_permission)
@@ -30,16 +31,14 @@ class ShopAdminTestCase(AbstractAppTestCase):
 
         shop_admin_role.permissions.add(update_orders_permission)
 
-        self.current_user = self.create_user(99, enabled=True)
-        self.current_user.roles.add(shop_admin_role)
+        self.admin.roles.add(shop_admin_role)
 
         self.db.session.commit()
 
     def test_cancel(self):
-        user = self.create_user(1, enabled=True)
         article_before = self.create_article(5)
         quantified_articles_to_order = {(article_before, 3)}
-        order_before = self.create_order(user, quantified_articles_to_order)
+        order_before = self.create_order(quantified_articles_to_order)
         self.db.session.commit()
 
         self.assertEqual(article_before.quantity, 5)
@@ -50,21 +49,20 @@ class ShopAdminTestCase(AbstractAppTestCase):
 
         url = '/admin/shop/orders/{}/cancel'.format(order_before.id)
         form_data = {'reason': 'Dein Vorname ist albern!'}
-        with self.client(user=self.current_user) as client:
+        with self.client(user=self.admin) as client:
             response = client.post(url, data=form_data)
 
         order_afterwards = Order.query.get(order_before.id)
         self.assertEqual(response.status_code, 302)
         self.assertEqual(order_afterwards.payment_state, PaymentState.canceled)
         self.assertIsNotNone(order_afterwards.payment_state_updated_at)
-        self.assertEqual(order_afterwards.payment_state_updated_by, self.current_user)
+        self.assertEqual(order_afterwards.payment_state_updated_by, self.admin)
 
         article_afterwards = Article.query.get(article_before.id)
         self.assertEqual(article_afterwards.quantity, 8)
 
     def test_mark_order_as_paid(self):
-        user = self.create_user(1, enabled=True)
-        order_before = self.create_order(user, [])
+        order_before = self.create_order([])
         self.db.session.commit()
 
         self.assertEqual(order_before.payment_state, PaymentState.open)
@@ -72,17 +70,19 @@ class ShopAdminTestCase(AbstractAppTestCase):
         self.assertIsNone(order_before.payment_state_updated_by)
 
         url = '/admin/shop/orders/{}/mark_as_paid'.format(order_before.id)
-        with self.client(user=self.current_user) as client:
+        with self.client(user=self.admin) as client:
             response = client.post(url)
 
         order_afterwards = Order.query.get(order_before.id)
         self.assertEqual(response.status_code, 302)
         self.assertEqual(order_afterwards.payment_state, PaymentState.paid)
         self.assertIsNotNone(order_afterwards.payment_state_updated_at)
-        self.assertEqual(order_afterwards.payment_state_updated_by, self.current_user)
+        self.assertEqual(order_afterwards.payment_state_updated_by, self.admin)
 
-    def create_user(self, number, *, enabled=True):
-        user = create_user_with_detail(number, enabled=enabled)
+    # helpers
+
+    def create_user(self, number):
+        user = create_user_with_detail(number)
         self.db.session.add(user)
         return user
 
@@ -91,8 +91,8 @@ class ShopAdminTestCase(AbstractAppTestCase):
         self.db.session.add(article)
         return article
 
-    def create_order(self, placed_by, quantified_articles):
-        order = create_order(party=self.party, placed_by=placed_by)
+    def create_order(self, quantified_articles):
+        order = create_order(party=self.party, placed_by=self.orderer)
         self.db.session.add(order)
 
         for article, quantity_to_order in quantified_articles:
