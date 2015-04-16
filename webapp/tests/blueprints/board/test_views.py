@@ -7,6 +7,8 @@ from byceps.blueprints.board.authorization import BoardTopicPermission
 from byceps.blueprints.board.models import Category, Topic
 from byceps.blueprints.user.models import User
 
+from testfixtures.user import create_user
+
 from tests import AbstractAppTestCase
 
 
@@ -18,7 +20,7 @@ class BoardModerationTestCase(AbstractAppTestCase):
     def test_hide_topic(self):
         self.setup_admin(BoardTopicPermission.hide)
 
-        user = self.create_user(1)
+        user = self.create_user()
         category = self.create_category(1)
         topic_before = self.create_topic(category, user, 1)
         self.db.session.commit()
@@ -40,7 +42,7 @@ class BoardModerationTestCase(AbstractAppTestCase):
     def test_unhide_topic(self):
         self.setup_admin(BoardTopicPermission.hide)
 
-        user = self.create_user(1)
+        user = self.create_user()
         category = self.create_category(1)
         topic_before = self.create_topic(category, user, 1)
         topic_before.hide(self.admin)
@@ -63,7 +65,7 @@ class BoardModerationTestCase(AbstractAppTestCase):
     def test_lock_topic(self):
         self.setup_admin(BoardTopicPermission.lock)
 
-        user = self.create_user(1)
+        user = self.create_user()
         category = self.create_category(1)
         topic_before = self.create_topic(category, user, 1)
         self.db.session.commit()
@@ -85,7 +87,7 @@ class BoardModerationTestCase(AbstractAppTestCase):
     def test_unlock_topic(self):
         self.setup_admin(BoardTopicPermission.lock)
 
-        user = self.create_user(1)
+        user = self.create_user()
         category = self.create_category(1)
         topic_before = self.create_topic(category, user, 1)
         topic_before.lock(self.admin)
@@ -108,7 +110,7 @@ class BoardModerationTestCase(AbstractAppTestCase):
     def test_pin_topic(self):
         self.setup_admin(BoardTopicPermission.pin)
 
-        user = self.create_user(1)
+        user = self.create_user()
         category = self.create_category(1)
         topic_before = self.create_topic(category, user, 1)
         self.db.session.commit()
@@ -130,7 +132,7 @@ class BoardModerationTestCase(AbstractAppTestCase):
     def test_unpin_topic(self):
         self.setup_admin(BoardTopicPermission.pin)
 
-        user = self.create_user(1)
+        user = self.create_user()
         category = self.create_category(1)
         topic_before = self.create_topic(category, user, 1)
         topic_before.pin(self.admin)
@@ -153,7 +155,7 @@ class BoardModerationTestCase(AbstractAppTestCase):
     def test_move_topic(self):
         self.setup_admin(BoardTopicPermission.move)
 
-        user = self.create_user(1)
+        user = self.create_user()
         category1 = self.create_category(1)
         category2 = self.create_category(2)
         topic_before = self.create_topic(category1, user, 1)
@@ -173,11 +175,14 @@ class BoardModerationTestCase(AbstractAppTestCase):
     # -------------------------------------------------------------------- #
     # helpers
 
-    def create_user(self, number, *, enabled=True):
+    def create_user(self):
+        number = 1
         screen_name = 'User-{:d}'.format(number)
         email_address = 'user{:03d}@example.com'.format(number)
-        user = User.create(screen_name, email_address, 'le_password')
-        user.enabled = enabled
+
+        user = create_user(number,
+                           screen_name=screen_name,
+                           email_address=email_address)
         self.db.session.add(user)
         return user
 
