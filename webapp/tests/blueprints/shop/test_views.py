@@ -22,7 +22,7 @@ class ShopTestCase(AbstractAppTestCase):
                               lambda: None)
 
         self.setup_order_number_sequence()
-        self.setup_current_user()
+        self.setup_orderer()
 
     def setup_order_number_sequence(self):
         sequence = create_party_sequence(self.party,
@@ -31,8 +31,9 @@ class ShopTestCase(AbstractAppTestCase):
         self.db.session.add(sequence)
         self.db.session.commit()
 
-    def setup_current_user(self):
-        self.orderer = self.create_user(1, enabled=True)
+    def setup_orderer(self):
+        self.orderer = create_user(1)
+        self.db.session.add(self.orderer)
         self.db.session.commit()
 
     def test_order_article(self):
@@ -68,8 +69,3 @@ class ShopTestCase(AbstractAppTestCase):
         self.assertEqual(order.items[0].price, article_before.price)
         self.assertEqual(order.items[0].tax_rate, article_before.tax_rate)
         self.assertEqual(order.items[0].quantity, 1)
-
-    def create_user(self, number, *, enabled=True):
-        user = create_user(number, enabled=enabled)
-        self.db.session.add(user)
-        return user
