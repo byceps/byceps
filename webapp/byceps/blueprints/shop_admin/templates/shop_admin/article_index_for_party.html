@@ -1,4 +1,5 @@
 {% extends 'layout/base.html' %}
+{% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
 {% from 'macros/shop_admin.html' import render_article_link, render_article_temporal_availability %}
@@ -20,10 +21,9 @@
       <tr>
         <th>Artikelnr.</th>
         <th>Beschreibung</th>
-        <th>Zeitraum</th>
         <th class="hyphenate" style="width: 12%;">Stückpreis</th>
         <th class="hyphenate" style="width: 12%;">Steuersatz</th>
-        <th class="hyphenate" style="width: 10%;">Anzahl<br/>verfügbar</th>
+        <th class="hyphenate" style="width: 10%;">Anzahl<br>verfügbar</th>
       </tr>
     </thead>
     <tbody>
@@ -37,14 +37,25 @@
         </td>
         <td>
           {{ article.description }}
+
           {%- if article.not_directly_orderable %}
-          <br/>{{ render_icon('info') }} <em>nur indirekt bestellbar</em>
+          <br>{{ render_icon('info') }} <span class="faint">nur indirekt bestellbar</span>
           {%- endif %}
+
           {%- if article.requires_separate_order %}
-          <br/>{{ render_icon('info') }} <em>separat zu bestellen</em>
+          <br>{{ render_icon('info') }} <span class="faint">separat zu bestellen</span>
+          {%- endif %}
+
+          {%- set time_range = article.availability_range %}
+
+          {%- if time_range.hasLowerBound() %}
+          <br>{{ render_icon('time') }} <span class="faint">ab {{ render_datetime(time_range.lowerEndpoint(), smart=False) }}</span>
+          {%- endif %}
+
+          {%- if time_range.hasUpperBound() %}
+          <br>{{ render_icon('time') }} <span class="faint">bis {{ render_datetime(time_range.upperEndpoint(), smart=False) }}</span>
           {%- endif %}
         </td>
-        <td>{{ render_article_temporal_availability(article) }}</td>
         <td class="nowrap" style="text-align: right;">{{ article.price.to_string() }}</td>
         <td class="nowrap" style="text-align: right;">{{ article.tax_rate_as_percentage }}&thinsp;%</td>
         <td{% if article.quantity == 0 %} class="faint"{% endif %} style="text-align: right;">{{ article.quantity }}</td>
