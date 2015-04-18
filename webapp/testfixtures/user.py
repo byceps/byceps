@@ -19,14 +19,19 @@ def create_user(number, *, screen_name=None, email_address=None, enabled=True):
     return user
 
 
-def create_user_with_detail(number, *, screen_name=None, email_address=None,
-                            enabled=True, date_of_birth=None):
+def create_user_with_detail(number, *,
+                            screen_name=None,
+                            email_address=None,
+                            enabled=True,
+                            first_names='John Joseph',
+                            last_name='Doe',
+                            date_of_birth=None):
     user = create_user(number, screen_name=screen_name,
                        email_address=email_address, enabled=enabled)
 
     detail = UserDetail(user=user)
-    detail.first_names = 'John Joseph'
-    detail.last_name = 'Doe'
+    detail.first_names = first_names
+    detail.last_name = last_name
     detail.date_of_birth = (date_of_birth if date_of_birth else date(1993, 2, 15))
     detail.zip_code = '31337'
     detail.street = 'Elite Street 1337'

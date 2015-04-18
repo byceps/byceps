@@ -279,14 +279,17 @@ class UserDetail(db.Model):
     user = db.relationship('User', backref=db.backref('detail', uselist=False))
     first_names = db.Column(db.Unicode(40))
     last_name = db.Column(db.Unicode(40))
-    full_name = db.column_property(
-        (first_names + ' ' + last_name).label('full_name'))
     date_of_birth = db.Column(db.Date)
     zip_code = db.Column(db.Unicode(5))
     city = db.Column(db.Unicode(40))
     street = db.Column(db.Unicode(40))
     phone_number = db.Column(db.Unicode(20))
     internal_comment = db.Column(db.Unicode(200))
+
+    @property
+    def full_name(self):
+        names = [self.first_names, self.last_name]
+        return ' '.join(filter(None, names)) or None
 
     @property
     def age(self):
