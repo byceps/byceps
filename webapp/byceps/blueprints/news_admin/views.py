@@ -47,7 +47,7 @@ def index():
 @templated
 def index_for_brand(brand_id):
     """List news items for that brand."""
-    brand = Brand.query.get_or_404(brand_id)
+    brand = get_brand_or_404(brand_id)
     items = Item.query.for_brand(brand) \
         .options(
             db.joinedload_all('snippet.current_version_association.version'),
@@ -64,7 +64,7 @@ def index_for_brand(brand_id):
 @templated
 def create_form(brand_id, *, erroneous_form=None):
     """Show form to create a news item."""
-    brand = Brand.query.get_or_404(brand_id)
+    brand = get_brand_or_404(brand_id)
     form = erroneous_form if erroneous_form else ItemCreateForm()
     return {
         'brand': brand,
@@ -76,7 +76,7 @@ def create_form(brand_id, *, erroneous_form=None):
 @permission_required(NewsItemPermission.create)
 def create(brand_id):
     """Create a news item."""
-    brand = Brand.query.get_or_404(brand_id)
+    brand = get_brand_or_404(brand_id)
     form = ItemCreateForm(request.form)
 
     slug = form.slug.data.strip().lower()
@@ -100,3 +100,7 @@ def create(brand_id):
     signals.item_published.send(None, item=item)
 
     return redirect_to('.index_for_brand', brand_id=brand.id)
+
+
+def get_brand_or_404(brand_id):
+    return Brand.query.get_or_404(brand_id)
