@@ -18,7 +18,7 @@
     {% call form_fieldset() %}
       {{ form_field(form.endpoint_suffix, maxlength=40, required='required', autofocus='autofocus') }}
       {{ form_field(form.url_path, maxlength=40, required='required') }}
-      {{ form_field(form.snippet_id, maxlength=40, required='required') }}
+      {{ form_field(form.snippet_id, maxlength=36, required='required') }}
     {% endcall %}
 
     {{ form_buttons('Speichern', cancel_url=url_for('.index_for_party', party_id=party.id)) }}
