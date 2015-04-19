@@ -72,7 +72,7 @@ def create_form(brand_id, *, erroneous_form=None):
     snippets = Snippet.query \
         .join(Party).filter_by(brand_id=brand_id) \
         .filter(Snippet.name.startswith('news_')) \
-        .order_by(Snippet.name) \
+        .order_by(Snippet.name.desc()) \
         .all()
     snippet_choices = list(map(attrgetter('id', 'name'), snippets))
 
