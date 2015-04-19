@@ -40,7 +40,8 @@
         <td>{{ render_user_admin_link(ticket.owned_by) }}</td>
         <td>{{ ticket.category.title }}</td>
         <td>
-          {{ render_tag('keiner', class='available') }}<br/>
+          {{ render_tag('keiner', class='available') }}<br>
+          {{ ticket.occupied_seat.area.title }}<br>
           <small>(verwaltet durch {{ render_user_admin_link(ticket.get_seat_manager()) }})</small>
         </td>
         <td>
@@ -49,7 +50,7 @@
           {%- else -%}
           {{ render_tag('frei', class='available') }}
           {%- endif -%}
-          <br/>
+          <br>
           <small>(verwaltet durch {{ render_user_admin_link(ticket.get_user_manager()) }})</small>
         </td>
       </tr>
