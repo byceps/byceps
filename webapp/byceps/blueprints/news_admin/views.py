@@ -7,6 +7,8 @@ byceps.blueprints.news_admin.views
 :Copyright: 2006-2015 Jochen Kupperschmidt
 """
 
+from operator import attrgetter
+
 from flask import request
 
 from ...database import db
@@ -19,6 +21,7 @@ from ..authorization.registry import permission_registry
 from ..brand.models import Brand
 from ..news.models import Item
 from ..news import signals
+from ..party.models import Party
 from ..snippet.models import Snippet
 
 from .authorization import NewsItemPermission
@@ -65,7 +68,17 @@ def index_for_brand(brand_id):
 def create_form(brand_id, *, erroneous_form=None):
     """Show form to create a news item."""
     brand = get_brand_or_404(brand_id)
+
+    snippets = Snippet.query \
+        .join(Party).filter_by(brand_id=brand_id) \
+        .filter(Snippet.name.startswith('news_')) \
+        .order_by(Snippet.name) \
+        .all()
+    snippet_choices = list(map(attrgetter('id', 'name'), snippets))
+
     form = erroneous_form if erroneous_form else ItemCreateForm()
+    form.snippet_id.choices = snippet_choices
+
     return {
         'brand': brand,
         'form': form,
