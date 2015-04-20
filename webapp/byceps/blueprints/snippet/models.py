@@ -102,10 +102,6 @@ class SnippetVersion(db.Model):
             .add_with_lookup('id') \
             .add_with_lookup('snippet') \
             .add_with_lookup('created_at') \
-            .add_with_lookup('creator') \
-            .add_with_lookup('title') \
-            .add('body length', len(self.body)) \
-            .add_with_lookup('image_url_path') \
             .build()
 
 

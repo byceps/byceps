@@ -54,7 +54,6 @@ class Area(db.Model):
             .add_with_lookup('id') \
             .add_with_lookup('party') \
             .add_with_lookup('slug') \
-            .add_with_lookup('title') \
             .build()
 
 
@@ -105,6 +104,5 @@ class Seat(db.Model):
         return ReprBuilder(self) \
             .add_with_lookup('id') \
             .add_with_lookup('area') \
-            .add_with_lookup('coords') \
             .add_with_lookup('category') \
             .build()

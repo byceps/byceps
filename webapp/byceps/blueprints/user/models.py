@@ -265,9 +265,6 @@ class User(db.Model):
         return ReprBuilder(self) \
             .add_with_lookup('id') \
             .add_with_lookup('screen_name') \
-            .add_with_lookup('email_address') \
-            .add_with_lookup('enabled') \
-            .add_with_lookup('has_avatar_image') \
             .build()
 
 

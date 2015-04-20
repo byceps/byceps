@@ -46,5 +46,4 @@ class Party(db.Model):
     def __repr__(self):
         return ReprBuilder(self) \
             .add_with_lookup('id') \
-            .add_with_lookup('title') \
             .build()
