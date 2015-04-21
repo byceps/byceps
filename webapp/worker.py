@@ -3,19 +3,19 @@
 
 """Run a worker for the job queue."""
 
-import os
 import sys
 
 from redis import StrictRedis
 from rq import Connection, Queue, Worker
 
-from bootstrap.util import app_context
+from bootstrap.util import app_context, get_config_name_from_env
 
 
 if __name__ == '__main__':
-    config_name = os.environ.get('ENVIRONMENT')
-    if config_name is None:
-        sys.stderr.write("Environment variable 'ENVIRONMENT' must be set but isn't.")
+    try:
+        config_name = get_config_name_from_env()
+    except Exception as e:
+        sys.stderr.write(str(e) + '\n')
         sys.exit()
 
     with app_context(config_name) as app:
