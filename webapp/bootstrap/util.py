@@ -19,7 +19,7 @@ def app_context(config_name):
     """
     app = create_app(config_name, initialize=False)
     with app.app_context():
-        yield
+        yield app
 
 
 def add_to_database(f):

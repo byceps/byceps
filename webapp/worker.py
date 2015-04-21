@@ -9,18 +9,16 @@ import sys
 from redis import StrictRedis
 from rq import Connection, Queue, Worker
 
-from byceps.application import create_app
+from bootstrap.util import app_context
 
 
 if __name__ == '__main__':
-    environment = os.environ.get('ENVIRONMENT')
-    if environment is None:
+    config_name = os.environ.get('ENVIRONMENT')
+    if config_name is None:
         sys.stderr.write("Environment variable 'ENVIRONMENT' must be set but isn't.")
         sys.exit()
 
-    app = create_app(environment, initialize=False)
-
-    with app.app_context():
+    with app_context(config_name) as app:
         redis = StrictRedis(app.config['REDIS_URL'])
         with Connection(redis):
             queues = [Queue()]
