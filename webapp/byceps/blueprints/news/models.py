@@ -55,6 +55,10 @@ class Item(db.Model):
         return render_body(self.snippet.current_version)
 
     @property
+    def external_url(self):
+        return url_for('.view', slug=self.slug, _external=True)
+
+    @property
     def image_url(self):
         url_path = self.snippet.current_version.image_url_path
         if url_path:
