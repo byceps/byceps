@@ -28,3 +28,10 @@ def connection():
 
 def get_queue():
     return Queue()
+
+
+def enqueue(*args, **kwargs):
+    """Add the function call to the queue as a job."""
+    with connection():
+        queue = get_queue()
+        queue.enqueue(*args, **kwargs)
