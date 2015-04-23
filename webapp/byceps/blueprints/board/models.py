@@ -9,7 +9,7 @@ byceps.blueprints.board.models
 
 from datetime import datetime
 
-from flask import current_app, g
+from flask import current_app, g, url_for
 
 from ...database import BaseQuery, db, generate_uuid
 from ...util.instances import ReprBuilder
@@ -253,6 +253,11 @@ class Topic(db.Model):
         """Return the URL anchor for this topic."""
         return 'topic-{}'.format(self.id)
 
+    @property
+    def external_url(self):
+        """Return the absolute URL of this topic."""
+        return url_for('.topic_view', id=self.id, _external=True)
+
     def get_body_posting(self):
         """Return the posting that stores the body of this topic's
         opening posting.
@@ -428,6 +433,15 @@ class Posting(db.Model):
     def anchor(self):
         """Return the URL anchor for this posting."""
         return 'posting-{}'.format(self.id)
+
+    @property
+    def external_url(self):
+        """Return the absolute URL of this posting (in its topic)."""
+        return url_for('.topic_view',
+                       id=self.topic.id,
+                       page=self.topic.page_count,
+                       _anchor=self.anchor,
+                       _external=True)
 
     def __eq__(self, other):
         return self.id == other.id
