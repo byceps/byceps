@@ -18,6 +18,7 @@ from . import config
 from .config import SiteMode
 from .database import db
 from . import email
+from . import redis
 from .util import dateformat
 from .util.framework import load_config, register_blueprint
 from .util.l10n import set_locale
@@ -73,6 +74,8 @@ def create_app(environment_name, *, initialize=True):
 
     # Initialize database.
     db.init_app(app)
+
+    redis.init_app(app)
 
     email.init_app(app)
 
