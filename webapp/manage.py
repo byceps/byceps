@@ -59,7 +59,7 @@ class SslServer(Server):
         super().__init__(**kwargs)
 
 
-manager.add_command('runserver', SslServer())
+manager.add_command('runserver_ssl', SslServer())
 
 
 @manager.shell
