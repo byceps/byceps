@@ -12,3 +12,19 @@ An asynchronously processed job queue based on Redis_ and RQ_.
 
 :Copyright: 2006-2015 Jochen Kupperschmidt
 """
+
+from contextlib import contextmanager
+
+from rq import Connection, Queue
+
+from byceps import redis
+
+
+@contextmanager
+def connection():
+    with Connection(redis.get_connection()):
+        yield
+
+
+def get_queue():
+    return Queue()

@@ -5,10 +5,10 @@
 
 import sys
 
-from rq import Connection, Queue, Worker
+from rq import Worker
 
 from bootstrap.util import app_context, get_config_name_from_env
-from byceps import redis
+from byceps.util.jobqueue import connection, get_queue
 
 
 def get_config_name():
@@ -23,7 +23,8 @@ if __name__ == '__main__':
     config_name = get_config_name()
 
     with app_context(config_name):
-        with Connection(redis.get_connection()):
-            queues = [Queue()]
+        with connection():
+            queues = [get_queue()]
+
             worker = Worker(queues)
             worker.work()
