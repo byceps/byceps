@@ -14,6 +14,8 @@ LOCALES_FORMS = ['de']
 SQLALCHEMY_DATABASE_URI = 'postgresql+pg8000://byceps_test:test@127.0.0.1/byceps_test'
 SQLALCHEMY_ECHO = False
 
+REDIS_URL = 'redis://127.0.0.1:6379/0'
+
 MODE = 'public'
 PARTY = 'acme-2014'
 
