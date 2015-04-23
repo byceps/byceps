@@ -13,7 +13,7 @@ LOCALES_FORMS = ['de']
 SQLALCHEMY_DATABASE_URI = 'postgresql+pg8000://byceps:boioioing@127.0.0.1/byceps'
 SQLALCHEMY_ECHO = False
 
-REDIS_URL = 'unix:///var/run/redis/redis.sock?db=0'
+REDIS_URL = 'redis://127.0.0.1:6379/0'
 
 MODE = 'public'
 PARTY = 'lanresort-2014'
