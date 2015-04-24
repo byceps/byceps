@@ -7,6 +7,8 @@ byceps.blueprints.ticket.service
 :Copyright: 2006-2015 Jochen Kupperschmidt
 """
 
+from ...database import db
+
 from ..party.models import Party
 from ..seating.models import Category
 
@@ -22,6 +24,9 @@ def find_ticket_for_user(user, party):
 
     return Ticket.query \
         .filter(Ticket.used_by == user) \
+        .options(
+            db.joinedload_all('occupied_seat.area'),
+        ) \
         .for_party(party) \
         .first()
 
