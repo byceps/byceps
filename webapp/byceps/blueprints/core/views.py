@@ -9,7 +9,7 @@ byceps.blueprints.core.views
 
 from importlib import import_module
 
-from flask import current_app, render_template
+from flask import render_template
 
 from ... import config
 from ...config import SiteMode

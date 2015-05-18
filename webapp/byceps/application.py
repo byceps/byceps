@@ -9,7 +9,7 @@ byceps.application
 
 from pathlib import Path
 
-from flask import Flask, g
+from flask import Flask
 import jinja2
 from pytz import timezone
 
