@@ -256,7 +256,7 @@ class Topic(db.Model):
     @property
     def external_url(self):
         """Return the absolute URL of this topic."""
-        return url_for('.topic_view', id=self.id, _external=True)
+        return url_for('board.topic_view', id=self.id, _external=True)
 
     def get_body_posting(self):
         """Return the posting that stores the body of this topic's
@@ -437,7 +437,7 @@ class Posting(db.Model):
     @property
     def external_url(self):
         """Return the absolute URL of this posting (in its topic)."""
-        return url_for('.topic_view',
+        return url_for('board.topic_view',
                        id=self.topic.id,
                        page=self.topic.page_count,
                        _anchor=self.anchor,
