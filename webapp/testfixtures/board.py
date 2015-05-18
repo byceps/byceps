@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from byceps.blueprints.board.models import Category, Topic
+from byceps.blueprints.board.models import Category, Posting, Topic
 
 from .brand import create_brand
 
@@ -34,3 +34,10 @@ def create_topic(category, creator, *, number=1, title=None, body=None):
         body = 'Inhalt von Thema {}'.format(number)
 
     return Topic.create(category, creator, title, body)
+
+
+def create_posting(topic, creator, *, number=1, body=None):
+    if body is None:
+        body = 'Inhalt von Beitrag {}.'.format(number)
+
+    return Posting.create(topic, creator, body)
