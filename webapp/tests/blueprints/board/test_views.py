@@ -7,6 +7,7 @@ from byceps.blueprints.board.authorization import BoardTopicPermission
 from byceps.blueprints.board.models import Category, Topic
 from byceps.blueprints.user.models import User
 
+from testfixtures.board import create_category, create_topic
 from testfixtures.user import create_user
 
 from tests import AbstractAppTestCase
@@ -200,18 +201,12 @@ class BoardModerationTestCase(AbstractAppTestCase):
         self.db.session.commit()
 
     def create_category(self, number):
-        category = Category(
-            brand=self.brand,
-            position=number,
-            slug='category-{}'.format(number),
-            title='Kategorie {}'.format(number))
+        category = create_category(brand=self.brand, number=number)
         self.db.session.add(category)
         return category
 
     def create_topic(self, category, creator, number):
-        title = 'Thema {}'.format(number)
-        body = 'Inhalt von Thema {}'.format(number)
-        topic = Topic.create(category, creator, title, body)
+        topic = create_topic(category, creator, number=number)
         self.db.session.add(topic)
         return topic
 
