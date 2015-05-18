@@ -20,3 +20,5 @@ MODE = 'admin'
 MAIL_DEBUG = False
 MAIL_DEFAULT_SENDER = 'LANresort <noreply@lanresort.de>'
 MAIL_SUPPRESS_SEND = True
+
+JOBS_ASYNC = False
