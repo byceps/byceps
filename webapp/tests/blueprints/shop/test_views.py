@@ -57,7 +57,7 @@ class ShopTestCase(AbstractAppTestCase):
             response = client.post(url, data=form_data)
 
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.headers.get('Location'), 'http://localhost/shop/order_placed')
+        self.assertEqual(response.headers.get('Location'), 'http://example.com/shop/order_placed')
 
         article_afterwards = Article.query.get(article_before.id)
         self.assertEqual(article_afterwards.quantity, 4)
