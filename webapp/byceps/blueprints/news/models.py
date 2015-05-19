@@ -56,7 +56,7 @@ class Item(db.Model):
 
     @property
     def external_url(self):
-        return url_for('.view', slug=self.slug, _external=True)
+        return url_for('news.view', slug=self.slug, _external=True)
 
     @property
     def image_url(self):
