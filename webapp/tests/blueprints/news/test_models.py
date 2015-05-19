@@ -12,11 +12,6 @@ from tests.helpers import current_party_set
 
 class ItemTestCase(AbstractAppTestCase):
 
-    def setUp(self):
-        super().setUp()
-
-        self.app.config['SERVER_NAME'] = 'example.com'
-
     @params(
         (None,                None                                          ),
         ('news/breaking.png', 'http://example.com/content/news/breaking.png'),
