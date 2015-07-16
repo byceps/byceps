@@ -6,9 +6,9 @@ Werkzeug >= 0.10.4
 WTForms >= 2.0.2
 
 # data persistence
-Flask-SQLAlchemy >= 1.0
+Flask-SQLAlchemy >= 2.0
 pg8000 >= 1.10.2
-SQLAlchemy >= 0.9.7
+SQLAlchemy >= 1.0.6
 
 Arrow >= 0.4.4
 bbcode >= 1.0.21
