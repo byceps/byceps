@@ -138,6 +138,7 @@ Create a schema, also named 'byceps':
 To run the tests, a dedicated user and database have to be created:
 
 .. code:: sh
+
     postgres@host$ createuser --echo --pwprompt byceps_test
     postgres@host$ createdb --encoding=UTF8 --template=template0 --owner byceps_test byceps_test
 
