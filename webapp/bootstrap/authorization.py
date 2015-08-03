@@ -107,7 +107,7 @@ def create_permissions_from_enum_members(enum_members):
 
 def add_permissions_to_role(permissions, role):
     for permission in permissions:
-        role.permissions.append(permission)
+        role.permissions.add(permission)
 
 
 def add_roles_to_user(roles, user):
