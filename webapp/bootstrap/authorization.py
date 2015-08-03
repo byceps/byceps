@@ -7,7 +7,8 @@ from byceps.blueprints.board.authorization import BoardPostingPermission, \
     BoardTopicPermission
 from byceps.blueprints.orga_admin.authorization import OrgaTeamPermission
 from byceps.blueprints.party_admin.authorization import PartyPermission
-from byceps.blueprints.snippet_admin.authorization import SnippetPermission
+from byceps.blueprints.snippet_admin.authorization import \
+    MountpointPermission, SnippetPermission
 from byceps.blueprints.terms_admin.authorization import TermsPermission
 from byceps.blueprints.user_admin.authorization import UserPermission
 from byceps.database import db
@@ -60,8 +61,13 @@ def create_roles_and_permissions():
         PartyPermission)
 
     create_role_with_permissions_from_enum(
-        'snippet_editor',
+        'snippet_admin',
         'Snippets verwalten',
+        MountpointPermission)
+
+    create_role_with_permissions_from_enum(
+        'snippet_editor',
+        'Snippets bearbeiten',
         SnippetPermission)
 
     create_role_with_permissions_from_enum(
