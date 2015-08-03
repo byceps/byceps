@@ -20,8 +20,8 @@ from .util import add_to_database
 
 
 @add_to_database
-def create_brand(id, title):
-    return Brand(id=id, title=title)
+def create_brand(id, title, code):
+    return Brand(id=id, title=title, code=code)
 
 
 def get_brand(id):
