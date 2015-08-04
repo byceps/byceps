@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+"""
+:Copyright: 2006-2015 Jochen Kupperschmidt
+:License: Modified BSD, see LICENSE for details.
+"""
+
 from unittest import TestCase
 
 from nose2.tools import params

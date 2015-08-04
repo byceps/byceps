@@ -1,5 +1,13 @@
 # -*- coding: utf-8 -*-
 
+"""
+testfixtures.user
+~~~~~~~~~~~~~~~~~
+
+:Copyright: 2006-2015 Jochen Kupperschmidt
+:License: Modified BSD, see LICENSE for details.
+"""
+
 from datetime import date
 
 from byceps.blueprints.user.models import User, UserDetail

@@ -1,5 +1,13 @@
 # -*- coding: utf-8 -*-
 
+"""
+testfixtures.party
+~~~~~~~~~~~~~~~~~~
+
+:Copyright: 2006-2015 Jochen Kupperschmidt
+:License: Modified BSD, see LICENSE for details.
+"""
+
 from datetime import datetime
 
 from byceps.blueprints.party.models import Party

@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+"""
+:Copyright: 2006-2015 Jochen Kupperschmidt
+:License: Modified BSD, see LICENSE for details.
+"""
+
 from byceps.blueprints.news.models import Item
 
 from nose2.tools import params

@@ -1,5 +1,13 @@
 # -*- coding: utf-8 -*-
 
+"""
+testfixtures.board
+~~~~~~~~~~~~~~~~~~
+
+:Copyright: 2006-2015 Jochen Kupperschmidt
+:License: Modified BSD, see LICENSE for details.
+"""
+
 from byceps.blueprints.board.models import Category, Posting, Topic
 
 from .brand import create_brand

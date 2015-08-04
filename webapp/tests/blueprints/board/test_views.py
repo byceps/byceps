@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+"""
+:Copyright: 2006-2015 Jochen Kupperschmidt
+:License: Modified BSD, see LICENSE for details.
+"""
+
 from datetime import datetime
 
 from byceps.blueprints.authorization.models import Permission, Role

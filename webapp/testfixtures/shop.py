@@ -1,5 +1,13 @@
 # -*- coding: utf-8 -*-
 
+"""
+testfixtures.shop
+~~~~~~~~~~~~~~~~~
+
+:Copyright: 2006-2015 Jochen Kupperschmidt
+:License: Modified BSD, see LICENSE for details.
+"""
+
 from decimal import Decimal
 
 from byceps.blueprints.shop.models import Article, Order, PartySequence
