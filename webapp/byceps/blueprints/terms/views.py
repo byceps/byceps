@@ -5,6 +5,7 @@ byceps.blueprints.terms.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2015 Jochen Kupperschmidt
+:License: Modified BSD, see LICENSE for details.
 """
 
 from flask import abort, request

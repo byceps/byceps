@@ -5,6 +5,7 @@ byceps.blueprints.shop_admin.service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2015 Jochen Kupperschmidt
+:License: Modified BSD, see LICENSE for details.
 """
 
 from collections import Counter

@@ -5,6 +5,7 @@ byceps.blueprints.seating.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2015 Jochen Kupperschmidt
+:License: Modified BSD, see LICENSE for details.
 """
 
 from ...config import get_ticket_management_enabled

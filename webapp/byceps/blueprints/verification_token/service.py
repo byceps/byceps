@@ -5,6 +5,7 @@ byceps.blueprints.verification_token.service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2015 Jochen Kupperschmidt
+:License: Modified BSD, see LICENSE for details.
 """
 
 from ...database import db

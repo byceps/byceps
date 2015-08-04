@@ -5,6 +5,7 @@ byceps.blueprints.terms.service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2015 Jochen Kupperschmidt
+:License: Modified BSD, see LICENSE for details.
 """
 
 from .models import Consent, ConsentContext, Version

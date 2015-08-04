@@ -10,5 +10,6 @@ setup(
     author='Jochen "Y0Gi" Kupperschmidt',
     author_email='homework@nwsnet.de',
     url='http://homework.nwsnet.de/',
+    license='Modified BSD',
     packages=['byceps'],
 )

@@ -5,6 +5,7 @@ byceps.blueprints.orga_presence.models
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2015 Jochen Kupperschmidt
+:License: Modified BSD, see LICENSE for details.
 """
 
 from sqlalchemy.ext.hybrid import hybrid_property

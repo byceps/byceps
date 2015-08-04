@@ -1,5 +1,13 @@
 # -*- coding: utf-8 -*-
 
+"""
+bootstrap.board
+~~~~~~~~~~~~~~~
+
+:Copyright: 2006-2015 Jochen Kupperschmidt
+:License: Modified BSD, see LICENSE for details.
+"""
+
 from byceps.blueprints.board.models import Category, Posting, Topic
 
 from .util import add_to_database

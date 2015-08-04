@@ -1,7 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""Run a worker for the job queue."""
+"""Run a worker for the job queue.
+
+:Copyright: 2006-2015 Jochen Kupperschmidt
+:License: Modified BSD, see LICENSE for details.
+"""
 
 import sys
 

@@ -7,6 +7,7 @@ byceps.util.export
 Data export as CSV.
 
 :Copyright: 2006-2015 Jochen Kupperschmidt
+:License: Modified BSD, see LICENSE for details.
 """
 
 import csv

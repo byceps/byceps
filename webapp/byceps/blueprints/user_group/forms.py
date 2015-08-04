@@ -5,6 +5,7 @@ byceps.blueprints.user_group.forms
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2015 Jochen Kupperschmidt
+:License: Modified BSD, see LICENSE for details.
 """
 
 from wtforms import StringField, TextAreaField

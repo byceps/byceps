@@ -1,5 +1,13 @@
 # -*- coding: utf-8 -*-
 
+"""
+bootstrap.authorization
+~~~~~~~~~~~~~~~~~~~~~~~
+
+:Copyright: 2006-2015 Jochen Kupperschmidt
+:License: Modified BSD, see LICENSE for details.
+"""
+
 from byceps.blueprints.authorization.models import Permission as DbPermission, \
     Role
 from byceps.blueprints.authorization_admin.authorization import RolePermission

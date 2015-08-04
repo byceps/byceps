@@ -8,9 +8,11 @@ management script
 Run the application, take administrative action.
 
 :Copyright: 2006-2015 Jochen Kupperschmidt
+:License: Modified BSD, see LICENSE for details.
 """
 
 import ssl
+
 from flask.ext.script import Manager
 from flask.ext.script.commands import Server
 from werkzeug.wsgi import SharedDataMiddleware

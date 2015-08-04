@@ -5,6 +5,7 @@ byceps.blueprints.tourney.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2015 Jochen Kupperschmidt
+:License: Modified BSD, see LICENSE for details.
 """
 
 from flask import request, url_for

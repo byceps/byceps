@@ -1,5 +1,13 @@
 # -*- coding: utf-8 -*-
 
+"""
+bootstrap.helpers
+~~~~~~~~~~~~~~~~~
+
+:Copyright: 2006-2015 Jochen Kupperschmidt
+:License: Modified BSD, see LICENSE for details.
+"""
+
 from byceps.blueprints.brand.models import Brand
 from byceps.blueprints.orga.models import OrgaFlag, OrgaTeam, \
     Membership as OrgaTeamMembership

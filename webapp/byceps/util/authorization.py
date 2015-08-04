@@ -5,6 +5,7 @@ byceps.util.authorization
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2015 Jochen Kupperschmidt
+:License: Modified BSD, see LICENSE for details.
 """
 
 from enum import Enum

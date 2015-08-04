@@ -7,6 +7,7 @@ byceps.util.templating
 Templating utilities.
 
 :Copyright: 2006-2015 Jochen Kupperschmidt
+:License: Modified BSD, see LICENSE for details.
 """
 
 from functools import wraps

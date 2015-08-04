@@ -5,6 +5,7 @@ byceps.blueprints.snippet_admin.forms
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2015 Jochen Kupperschmidt
+:License: Modified BSD, see LICENSE for details.
 """
 
 from wtforms import SelectField, StringField, TextAreaField

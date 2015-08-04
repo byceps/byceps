@@ -9,6 +9,7 @@ engine syntax. Can be embedded in other templates or mounted as full
 page.
 
 :Copyright: 2006-2015 Jochen Kupperschmidt
+:License: Modified BSD, see LICENSE for details.
 """
 
 from datetime import datetime

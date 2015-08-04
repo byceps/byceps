@@ -5,6 +5,7 @@ byceps.blueprints.shop.forms
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2015 Jochen Kupperschmidt
+:License: Modified BSD, see LICENSE for details.
 """
 
 from wtforms import DateField, SelectField, StringField
