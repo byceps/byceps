@@ -4,7 +4,7 @@ from pathlib import Path
 
 DEBUG = True
 PERMANENT_SESSION_LIFETIME = timedelta(14)
-SECRET_KEY = b'\xcb;\xcd\xdc\x11\xf2\xa8\x08_Ks\xa3\xb0\xc5K/\x9b\xf1\xd9\xdc_\x16\x8e\xa8'
+SECRET_KEY = b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
 SESSION_COOKIE_SECURE = True
 
 LOCALE = 'de_DE.UTF-8'
@@ -16,7 +16,7 @@ SQLALCHEMY_ECHO = False
 REDIS_URL = 'redis://127.0.0.1:6379/0'
 
 MODE = 'public'
-PARTY = 'lanresort-2014'
+PARTY = 'example-party-1'
 
 PATH_DATA = Path('./data')
 PATH_CONTENT = PATH_DATA / 'party_content' / PARTY
@@ -26,5 +26,5 @@ BOARD_TOPICS_PER_PAGE = 10
 BOARD_POSTINGS_PER_PAGE = 10
 
 MAIL_DEBUG = True
-MAIL_DEFAULT_SENDER = 'LANresort <noreply@lanresort.de>'
+MAIL_DEFAULT_SENDER = 'BYCEPS <noreply@example.com>'
 MAIL_SUPPRESS_SEND = True
