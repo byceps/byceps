@@ -1,0 +1,8 @@
+language: python
+env:
+  - TOXENV=py34
+install:
+  - pip install tox
+script:
+  - cd webapp
+  - tox
