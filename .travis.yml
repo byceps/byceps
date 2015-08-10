@@ -1,8 +1,9 @@
 language: python
-env:
-  - TOXENV=py34
+python:
+  - "3.4"
 install:
-  - pip install tox
+  - "pip install tox"
 script:
-  - cd webapp
+  - "cd webapp"
   - tox
+sudo: false
