@@ -25,7 +25,7 @@ def app_context(config_name):
     """Provide a context in which the application is available with the
     specified environment.
     """
-    app = create_app(config_name, initialize=False)
+    app = create_app(config_name)
     with app.app_context():
         yield app
 

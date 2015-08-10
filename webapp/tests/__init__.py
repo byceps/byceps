@@ -19,7 +19,7 @@ from testfixtures.user import create_user
 class AbstractAppTestCase(TestCase):
 
     def setUp(self, env='test'):
-        self.app = create_app(env, initialize=False)
+        self.app = create_app(env)
 
         self.db = db
         db.app = self.app

@@ -58,7 +58,7 @@ BLUEPRINTS = [
 TIMEZONE = timezone('Europe/Berlin')
 
 
-def create_app(environment_name, *, initialize=True):
+def create_app(environment_name):
     """Create the actual Flask application."""
     app = Flask(__name__)
 
@@ -91,24 +91,6 @@ def create_app(environment_name, *, initialize=True):
                      methods=['GET'],
                      build_only=True)
 
-    if initialize:
-        with app.app_context():
-            set_root_path(app)
-
-            site_mode = config.get_site_mode()
-            if site_mode.is_public():
-                party_id = config.get_current_party_id()
-
-                # Mount snippets.
-                add_routes_for_snippets(party_id)
-
-                # Incorporate template overrides for the current party.
-                app.template_folder = str(Path('party_template_overrides') \
-                                    / party_id)
-            elif site_mode.is_admin():
-                from rq_dashboard import RQDashboard
-                RQDashboard(app, url_prefix='/admin/rq')
-
     return app
 
 
@@ -119,6 +101,26 @@ def register_blueprints(app):
     for name, url_prefix, mode in BLUEPRINTS:
         if mode is None or mode == current_mode:
             register_blueprint(app, name, url_prefix)
+
+
+def init_app(app):
+    """Initialize the application after is has been created."""
+    with app.app_context():
+        set_root_path(app)
+
+        site_mode = config.get_site_mode()
+        if site_mode.is_public():
+            party_id = config.get_current_party_id()
+
+            # Mount snippets.
+            add_routes_for_snippets(party_id)
+
+            # Incorporate template overrides for the current party.
+            app.template_folder = str(Path('party_template_overrides') \
+                                / party_id)
+        elif site_mode.is_admin():
+            from rq_dashboard import RQDashboard
+            RQDashboard(app, url_prefix='/admin/rq')
 
 
 def set_root_path(app):
