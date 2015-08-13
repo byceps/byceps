@@ -7,6 +7,18 @@ BYCEPS distinguishes three scopes:
 * :ref:`brand <scope-brand>`
 * :ref:`party <scope-party>`
 
+.. graph:: unnamed
+
+   subgraph clusterGlobal {
+     label = "global"
+
+     subgraph clusterBrand {
+       label = "brand"
+
+       node [shape=box] party;
+     }
+   }
+
 Each entity belongs to exactly one of these scopes.
 
 
