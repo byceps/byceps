@@ -7,3 +7,4 @@ Concepts
 
    authorization
    scopes
+   signals
