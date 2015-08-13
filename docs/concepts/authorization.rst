@@ -7,6 +7,12 @@ User authorization in BYCEPS is based upon permissions and roles.
 Structure
 ---------
 
+.. digraph:: unnamed
+
+   rankdir=RL
+
+   User -> Role -> Permission
+
 * A **permission** is a requirement to perform a specific action.
 
   A permission can be part of one or more roles.
@@ -21,12 +27,6 @@ Structure
 
 * A **user** can be assigned one or more roles through which the
   associated permissions are granted.
-
-.. digraph:: unnamed
-
-   rankdir=LR
-
-   User -> Role -> Permission
 
 
 Rationale
