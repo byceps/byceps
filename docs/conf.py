@@ -57,7 +57,7 @@ exclude_patterns = ['_build']
 #add_module_names = True
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = 'sphinx'
+pygments_style = 'alabaster.support.Alabaster'
 
 
 # -- Options for HTML output ----------------------------------------------
