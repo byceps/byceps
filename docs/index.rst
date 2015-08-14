@@ -7,6 +7,7 @@ Contents:
    :maxdepth: 2
 
    concepts/index
+   blueprints/index
 
    license
 
