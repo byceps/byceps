@@ -9,13 +9,19 @@ BYCEPS distinguishes three scopes:
 
 .. graph:: unnamed
 
-   subgraph clusterGlobal {
+   color=lightgray
+   fillcolor=lightgray
+   labeljust="l"
+   style=filled
+
+   subgraph cluster_global {
      label = "global"
 
-     subgraph clusterBrand {
+     subgraph cluster_brand {
+       fillcolor=white
        label = "brand"
 
-       node [shape=box] party;
+       node [color=lightgray, shape=box, style=filled] party;
      }
    }
 
