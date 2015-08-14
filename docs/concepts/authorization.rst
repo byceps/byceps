@@ -95,17 +95,28 @@ permissions that should be granted.
 
 As a result, the users have these roles and permissions:
 
-=====  ===========  ==============
-User   Roles        Permissions
-=====  ===========  ==============
-Alice  * Guest      * View Topic
+.. list-table::
+   :header-rows: 1
+   :widths: 3 7 8
 
-Bob    * Guest      * View Topic
-       * Author     * Create Topic
-                    * Update Topic
+   * - User
+     - Roles
+     - Permissions
 
-Eve    * Guest      * View Topic
-       * Author     * Create Topic
-                    * Update Topic
-       * Moderator  * Hide Topic
-=====  ===========  ==============
+   * - Alice
+     - - Guest
+     - - View Topic
+   * - Bob
+     - - Guest
+       - Author
+     - - View Topic
+       - Create Topic
+       - Update Topic
+   * - Eve
+     - - Guest
+       - Author
+       - Moderator
+     - - View Topic
+       - Create Topic
+       - Update Topic
+       - Hide Topic
