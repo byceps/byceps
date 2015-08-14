@@ -9,6 +9,7 @@ Structure
 
 .. digraph:: unnamed
 
+   node [color=lightgray, style=filled]
    rankdir=RL
 
    User -> Role -> Permission
