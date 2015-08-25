@@ -6,5 +6,6 @@ Concepts
    :maxdepth: 2
 
    authorization
+   blueprints
    scopes
    signals
