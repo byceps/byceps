@@ -7,9 +7,11 @@ Requirements
 
 * Python_ 3.4.2 or higher
 * PostgreSQL_ 9.4 or higher
+* Redis_ 2.8 or higher
 
 .. _Python: http://www.python.org/
 .. _PostgreSQL: http://www.postgresql.org/
+.. _Redis: http://redis.io/
 
 
 Virtual Environment
@@ -39,6 +41,7 @@ the "Jessie" release:
 * ``python3.4``
 * ``python3.4-dev``
 * ``python3.4-venv``
+* ``redis-server``
 
 Additional required packages should be suggested for installation by
 the package manager.
@@ -49,7 +52,7 @@ user):
 .. code-block:: sh
 
     # aptitude update
-    # aptitude install postgresql-9.4 postgresql-contrib-9.4 python3.4 python3.4-dev python3.4-venv
+    # aptitude install postgresql-9.4 postgresql-contrib-9.4 python3.4 python3.4-dev python3.4-venv redis-server
 
 Refer to the Debian documentation for further details.
 
