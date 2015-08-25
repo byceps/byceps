@@ -141,7 +141,7 @@ Ensure that the function 'gen_random_uuid()' is available now:
 
     postgres=# select gen_random_uuid();
 
-Expected result:
+Expected result (the actual UUID hopefully is different!):
 
 .. code-block:: psql
 
