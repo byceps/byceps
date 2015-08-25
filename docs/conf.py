@@ -70,7 +70,7 @@ html_theme = 'alabaster'
 # further.  For a list of options available for each theme, see the
 # documentation.
 html_theme_options = {
-    'show_powered_by': 'false',
+    'show_powered_by': False,
 }
 
 # Add any paths that contain custom themes here, relative to this directory.
@@ -126,8 +126,10 @@ html_static_path = ['_static']
 # If true, the index is split into individual pages for each letter.
 #html_split_index = False
 
+html_copy_source = False
+
 # If true, links to the reST sources are added to the pages.
-#html_show_sourcelink = True
+html_show_sourcelink = False
 
 # If true, "Created using Sphinx" is shown in the HTML footer. Default is True.
 #html_show_sphinx = True
