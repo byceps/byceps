@@ -8,13 +8,13 @@ certain topic.
 
 It bundles:
 
-- server-side code (Python, ``*.py``),
-- templates (Jinja, ``*.html``),
-- and static files, including:
+* server-side code (Python, ``*.py``),
+* templates (Jinja, ``*.html``),
+* and static files, including:
 
-  - front-end styles (CSS, ``*.css``)
-  - front-end behaviour (JavaScript, ``*.js``)
-  - images (``*.jpeg``, ``*.png``, etc.)
+  * front-end styles (CSS, ``*.css``)
+  * front-end behaviour (JavaScript, ``*.js``)
+  * images (``*.jpeg``, ``*.png``, etc.)
 
 Blueprints should use their own database tables instead of extending or
 modifying existing ones.
