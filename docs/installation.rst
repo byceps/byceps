@@ -14,20 +14,6 @@ Requirements
 .. _Redis: http://redis.io/
 
 
-Virtual Environment
--------------------
-
-The installation should happen in an isolated environment just for
-BYCEPS so that its requirements don't clash with different versions of
-the same libraries somewhere else in the system.
-
-Python_ already comes with the necessary tools, namely virtualenv_ and
-pip_.
-
-.. _virtualenv: http://www.virtualenv.org/
-.. _pip: http://www.pip-installer.org/
-
-
 Debian
 ------
 
@@ -59,8 +45,18 @@ Refer to the Debian documentation for further details.
 .. _Debian Linux: https://www.debian.org/
 
 
-Set up the virtual environment
-------------------------------
+Virtual Environment
+-------------------
+
+The installation should happen in an isolated Python_ environment just
+for BYCEPS so that its requirements don't clash with different versions
+of the same libraries somewhere else in the system.
+
+Python_ already comes with the necessary tools, namely virtualenv_ and
+pip_.
+
+.. _virtualenv: http://www.virtualenv.org/
+.. _pip: http://www.pip-installer.org/
 
 Create a virtual environment (named "venv"):
 
