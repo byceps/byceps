@@ -31,9 +31,9 @@ pip_.
 Debian
 ------
 
-Debian_ Linux is the suggested operating system to run BYCEPS on.
+`Debian Linux`_ is the recommended operating system to run BYCEPS on.
 
-The following packages available in the Debian repository as part of
+The following packages are available in the Debian repository as part of
 the "Jessie" release:
 
 * ``postgresql-9.4``
@@ -56,7 +56,7 @@ user):
 
 Refer to the Debian documentation for further details.
 
-.. _Debian: https://www.debian.org/
+.. _Debian Linux: https://www.debian.org/
 
 
 Set up the virtual environment
