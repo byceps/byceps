@@ -18,16 +18,6 @@ for more than a decade.
 :Website: http://homework.nwsnet.de/releases/b1ce/#byceps
 
 
-Requirements
-============
-
-- Python_ 3.4.2 or higher
-- PostgreSQL_ 9.4 or higher
-
-.. _Python: http://www.python.org/
-.. _PostgreSQL: http://www.postgresql.org/
-
-
 Installation
 ============
 
