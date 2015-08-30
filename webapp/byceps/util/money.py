@@ -22,8 +22,8 @@ class EuroAmount(namedtuple('EuroAmount', ['euro', 'cent'])):
 
     def __add__(self, other):
         # Allow addition with integers. This is required for the `sum`
-        # function to be applicable, which begings by adding `0` and
-        # the first value).
+        # function to be applicable, which begins by adding `0` and the
+        # first value).
         if isinstance(other, int):
             other = self.__class__.from_int(other)
 
