@@ -20,12 +20,12 @@ from testfixtures.user import create_user
 class AbstractAppTestCase(TestCase):
 
     def setUp(self, env='test'):
+        self.app = create_app(env)
+
         # Allow overriding of database URI from the environment.
         db_uri_override = os.environ.get('DATABASE_URI')
         if db_uri_override:
-            app.config['SQLALCHEMY_DATABASE_URI'] = db_uri_override
-
-        self.app = create_app(env)
+            self.app.config['SQLALCHEMY_DATABASE_URI'] = db_uri_override
 
         self.db = db
         db.app = self.app
