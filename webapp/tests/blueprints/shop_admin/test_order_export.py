@@ -82,21 +82,21 @@ class ExportTestCase(AbstractAppTestCase):
             2,
             'Tisch (zur Miete), 200 x 80 cm',
             EuroAmount(20, 0),
-            Decimal(0.19),
+            Decimal('0.19'),
         )
 
         self.article_bungalow = self.build_article(
             3,
             'LANresort 2015: Bungalow 4 Plätze',
             EuroAmount(355, 0),
-            Decimal(0.07),
+            Decimal('0.07'),
         )
 
         self.article_guest_fee = self.build_article(
             6,
             'Touristische Gästeabgabe (BispingenCard), pauschal für 4 Personen',
             EuroAmount(6, 0),
-            Decimal(0.19),
+            Decimal('0.19'),
         )
 
         self.db.session.add(self.article_table)

@@ -152,7 +152,7 @@ def article_create(party_id):
     item_number = generate_article_number(party)
     description = form.description.data.strip()
     price = EuroAmount(9999, 0)  # TODO: Request via form.
-    tax_rate = Decimal(0.19)  # TODO: Request via form.
+    tax_rate = Decimal('0.19')  # TODO: Request via form.
     quantity = form.quantity.data
 
     article = Article(party, item_number, description, price, tax_rate,
