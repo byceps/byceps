@@ -91,7 +91,6 @@ class EuroAmountTestCase(TestCase):
     )
     def test_from_int(self, value, expected):
         actual = EuroAmount.from_int(value)
-
         self.assertEquals(actual, expected)
 
     @params(
@@ -121,7 +120,6 @@ class EuroAmountTestCase(TestCase):
     )
     def test_to_int(self, euro_amount, expected):
         actual = euro_amount.to_int()
-
         self.assertEquals(actual, expected)
 
     @params(
@@ -141,5 +139,4 @@ class EuroAmountTestCase(TestCase):
     )
     def test_to_string(self, euro_amount, expected):
         actual = euro_amount.to_string()
-
         self.assertEquals(actual, expected)
