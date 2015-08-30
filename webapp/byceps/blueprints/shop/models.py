@@ -67,7 +67,7 @@ class Article(db.Model):
     party = db.relationship(Party)
     item_number = db.Column(db.Unicode(20), unique=True, nullable=False)
     description = db.Column(db.Unicode(80), nullable=False)
-    _price = db.Column('price', db.Numeric(4, 2), nullable=False)
+    _price = db.Column('price', db.Numeric(6, 2), nullable=False)
     tax_rate = db.Column(db.Numeric(3, 3), nullable=False)
     available_from = db.Column(db.DateTime, nullable=True)
     available_until = db.Column(db.DateTime, nullable=True)
@@ -371,7 +371,7 @@ class OrderItem(db.Model):
     article_number = db.Column(db.Unicode(20), db.ForeignKey('shop_articles.item_number'), index=True, nullable=False)
     article = db.relationship(Article, backref='order_items')
     description = db.Column(db.Unicode(80), nullable=False)
-    _price = db.Column('price', db.Numeric(4, 2), nullable=False)
+    _price = db.Column('price', db.Numeric(6, 2), nullable=False)
     tax_rate = db.Column(db.Numeric(3, 3), nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
 
