@@ -138,6 +138,26 @@ class EuroAmountTestCase(TestCase):
             EuroAmount.from_int(value)
 
     @params(
+        (EuroAmount(  0,  0),   '0.00'),
+        (EuroAmount(  0,  1),   '0.01'),
+        (EuroAmount(  0,  5),   '0.05'),
+        (EuroAmount(  0,  9),   '0.09'),
+        (EuroAmount(  0, 10),   '0.10'),
+        (EuroAmount(  0, 99),   '0.99'),
+        (EuroAmount(  1,  0),   '1.00'),
+        (EuroAmount(  1,  1),   '1.01'),
+        (EuroAmount(  1, 11),   '1.11'),
+        (EuroAmount(  1, 99),   '1.99'),
+        (EuroAmount(  2,  0),   '2.00'),
+        (EuroAmount( 12, 34),  '12.34'),
+        (EuroAmount(123, 45), '123.45'),
+    )
+    def test_to_decimal(self, euro_amount, expected_text):
+        expected = Decimal(expected_text)
+        actual = euro_amount.to_decimal()
+        self.assertEquals(actual, expected)
+
+    @params(
         (EuroAmount(  0,  0),     0),
         (EuroAmount(  0,  1),     1),
         (EuroAmount(  0,  5),     5),
