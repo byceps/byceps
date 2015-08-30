@@ -6,6 +6,7 @@
 """
 
 from contextlib import contextmanager
+import os
 from unittest import TestCase
 
 from byceps.application import create_app
@@ -19,6 +20,11 @@ from testfixtures.user import create_user
 class AbstractAppTestCase(TestCase):
 
     def setUp(self, env='test'):
+        # Allow overriding of database URI from the environment.
+        db_uri_override = os.environ.get('DATABASE_URI')
+        if db_uri_override:
+            app.config['SQLALCHEMY_DATABASE_URI'] = db_uri_override
+
         self.app = create_app(env)
 
         self.db = db
