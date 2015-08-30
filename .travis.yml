@@ -15,3 +15,5 @@ script:
   - "cd webapp"
   - tox
 sudo: false
+notifications:
+  email: false
