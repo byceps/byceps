@@ -30,6 +30,7 @@ class EuroAmount(namedtuple('EuroAmount', ['euro', 'cent'])):
         return self.__class__.from_int(self.to_int() + other.to_int())
 
     def __radd__(self, other):
+        # Required for the `sum` function to be applicable.
         return self.__add__(other)
 
     def __mul__(self, other):
