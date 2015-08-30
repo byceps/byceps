@@ -5,6 +5,7 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
+from decimal import Decimal
 from unittest import TestCase
 
 from nose2.tools import params
@@ -73,6 +74,39 @@ class EuroAmountTestCase(TestCase):
     def test_multiplication_with_another_euro_amount_is_denied(self):
         with self.assertRaises(TypeError):
             EuroAmount(12, 99) * EuroAmount(4, 55)
+
+    @params(
+        (  '0'   , EuroAmount(  0,  0)),
+        (  '0.00', EuroAmount(  0,  0)),
+        (  '0.01', EuroAmount(  0,  1)),
+        (  '0.05', EuroAmount(  0,  5)),
+        (  '0.09', EuroAmount(  0,  9)),
+        (  '0.10', EuroAmount(  0, 10)),
+        (  '0.99', EuroAmount(  0, 99)),
+        (  '1'   , EuroAmount(  1,  0)),
+        (  '1.00', EuroAmount(  1,  0)),
+        (  '1.01', EuroAmount(  1,  1)),
+        (  '1.11', EuroAmount(  1, 11)),
+        (  '1.99', EuroAmount(  1, 99)),
+        (  '2.00', EuroAmount(  2,  0)),
+        ( '12.34', EuroAmount( 12, 34)),
+        ('123.45', EuroAmount(123, 45)),
+    )
+    def test_from_decimal(self, value_text, expected):
+        value = Decimal(value_text)
+        actual = EuroAmount.from_decimal(value)
+        self.assertEquals(actual, expected)
+
+    @params(
+        (  '-1'),
+        ( '-99'),
+        ('-100'),
+        ('-101'),
+    )
+    def test_from_decimal_raises_exception_on_negative_value(self, value_text):
+        value = Decimal(value_text)
+        with self.assertRaises(ValueError):
+            EuroAmount.from_decimal(value)
 
     @params(
         (    0, EuroAmount(  0,  0)),

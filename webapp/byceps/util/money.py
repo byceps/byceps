@@ -11,6 +11,7 @@ Monetary amounts.
 """
 
 from collections import namedtuple
+from decimal import Decimal
 
 
 class EuroAmount(namedtuple('EuroAmount', ['euro', 'cent'])):
@@ -37,6 +38,16 @@ class EuroAmount(namedtuple('EuroAmount', ['euro', 'cent'])):
                             'with integers, but not with each other.')
 
         return self.__class__.from_int(self.to_int() * other)
+
+    @classmethod
+    def from_decimal(cls, value):
+        if value < Decimal('0'):
+            raise ValueError
+
+        quantized = value.quantize(Decimal('.00'))
+        euro, cent = map(int, str(quantized).partition('.')[::2])
+
+        return cls(euro, cent)
 
     @classmethod
     def from_int(cls, value):
