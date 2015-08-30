@@ -7,6 +7,8 @@ services:
   - redis-server
 install:
   - "pip install tox"
+env:
+  - DATABASE_URI=postgresql+pg8000://postgres@127.0.0.1/byceps_test
 before_script:
   - psql -c 'CREATE DATABASE byceps_test;' -U postgres
 script:
