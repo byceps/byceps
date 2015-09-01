@@ -15,7 +15,7 @@ from flask import current_app, render_template, request, Response
 
 from ...database import db
 from ...util.framework import create_blueprint, flash_error, flash_success
-from ...util.money import EuroAmount
+from ...util.money import EuroAmount, to_two_places
 from ...util.templating import templated
 from ...util.views import redirect_to
 
@@ -286,7 +286,8 @@ def _format_export_amount(amount):
     """Format the monetary amount as required by the export format
     specification.
     """
-    return '{:d}.{:02d}'.format(amount.euro, amount.cent)
+    quantized = to_two_places(amount.to_decimal())
+    return '{:.2f}'.format(quantized)
 
 
 def _format_export_datetime(dt):
