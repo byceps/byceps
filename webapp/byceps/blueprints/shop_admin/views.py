@@ -286,7 +286,7 @@ def _format_export_amount(amount):
     """Format the monetary amount as required by the export format
     specification.
     """
-    quantized = to_two_places(amount.to_decimal())
+    quantized = to_two_places(amount)
     return '{:.2f}'.format(quantized)
 
 
