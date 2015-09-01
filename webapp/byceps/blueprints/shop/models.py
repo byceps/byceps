@@ -393,7 +393,7 @@ class OrderItem(db.Model):
 
     @property
     def unit_price(self):
-        return self.price
+        return self.price.to_decimal()
 
     @property
     def line_price(self):
