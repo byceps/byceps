@@ -56,7 +56,7 @@
           <br>{{ render_icon('time') }} <span class="faint">bis {{ render_datetime(time_range.upperEndpoint(), smart=False) }}</span>
           {%- endif %}
         </td>
-        <td class="nowrap" style="text-align: right;">{{ article.price.to_string() }}</td>
+        <td class="nowrap" style="text-align: right;">{{ article.price.to_decimal()|format_euro_amount }}</td>
         <td class="nowrap" style="text-align: right;">{{ article.tax_rate_as_percentage }}&thinsp;%</td>
         <td{% if article.quantity == 0 %} class="faint"{% endif %} style="text-align: right;">{{ article.quantity }}</td>
       </tr>
