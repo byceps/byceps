@@ -12,9 +12,25 @@ Monetary amounts.
 
 from collections import namedtuple
 from decimal import Decimal
+import locale
 
 
 TWO_PLACES = Decimal('.00')
+
+
+def register_template_filters(app):
+    """Make functions available as template filters."""
+    app.add_template_filter(format_euro_amount)
+
+
+def format_euro_amount(x):
+    """Return a textual representation with two decimal places,
+    locale-specific decimal point and thousands separators, and the Euro
+    symbol.
+    """
+    quantized = to_two_places(x)
+    formatted_number = locale.format('%.2f', float(quantized), grouping=True)
+    return '{} €'.format(formatted_number)
 
 
 class EuroAmount(namedtuple('EuroAmount', ['euro', 'cent'])):

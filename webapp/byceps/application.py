@@ -23,6 +23,7 @@ from . import redis
 from .util import dateformat
 from .util.framework import load_config, register_blueprint
 from .util.l10n import set_locale
+from .util import money
 
 
 BLUEPRINTS = [
@@ -85,6 +86,7 @@ def create_app(environment_name):
     register_blueprints(app)
 
     dateformat.register_template_filters(app)
+    money.register_template_filters(app)
 
     app.add_url_rule('/content/<path:filename>',
                      endpoint='content_file',
