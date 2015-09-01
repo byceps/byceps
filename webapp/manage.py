@@ -24,7 +24,6 @@ from byceps.blueprints.shop.models import Article, Order, OrderItem, \
     PaymentState as OrderPaymentState
 from byceps.blueprints.user.models import User, UserDetail
 from byceps.database import db
-from byceps.util.money import EuroAmount
 from byceps.util.system import get_config_env_name_from_env
 
 
@@ -73,7 +72,6 @@ def make_shell_context():
         'db': db,
         'Article': Article,
         'Brand': Brand,
-        'EuroAmount': EuroAmount,
         'Order': Order,
         'OrderItem': OrderItem,
         'OrderPaymentState': OrderPaymentState,
