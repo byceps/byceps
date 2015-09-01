@@ -88,7 +88,7 @@
       <tr>
         <td style="text-align: right;">{{ item.quantity }}</td>
         <td><strong>{{ item.description }}</strong></td>
-        <td style="text-align: right;">{{ item.price.to_decimal()|format_euro_amount }}</td>
+        <td style="text-align: right;">{{ item.price|format_euro_amount }}</td>
       </tr>
       {%- endfor %}
     </tbody>

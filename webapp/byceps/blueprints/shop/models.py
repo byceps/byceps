@@ -19,7 +19,6 @@ from sqlalchemy.ext.hybrid import hybrid_property
 
 from ...database import BaseQuery, db, generate_uuid
 from ...util.instances import ReprBuilder
-from ...util.money import EuroAmount
 
 from ..party.models import Party
 from ..user.models import User
@@ -67,7 +66,7 @@ class Article(db.Model):
     party = db.relationship(Party)
     item_number = db.Column(db.Unicode(20), unique=True, nullable=False)
     description = db.Column(db.Unicode(80), nullable=False)
-    _price = db.Column('price', db.Numeric(6, 2), nullable=False)
+    price = db.Column(db.Numeric(6, 2), nullable=False)
     tax_rate = db.Column(db.Numeric(3, 3), nullable=False)
     available_from = db.Column(db.DateTime, nullable=True)
     available_until = db.Column(db.DateTime, nullable=True)
@@ -81,19 +80,11 @@ class Article(db.Model):
         self.party = party
         self.item_number = item_number
         self.description = description
-        self._price = price.to_decimal()
+        self.price = price
         self.tax_rate = tax_rate
         self.available_from = available_from
         self.available_until = available_until
         self.quantity = quantity
-
-    @hybrid_property
-    def price(self):
-        return EuroAmount.from_decimal(self._price)
-
-    @price.setter
-    def price(self, amount):
-        self._price = amount.to_decimal()
 
     @property
     def tax_rate_as_percentage(self):
@@ -348,7 +339,7 @@ class Order(db.Model):
         return {item.article for item in self.items}
 
     def calculate_total_price(self):
-        return sum(item.price.to_decimal() * item.quantity for item in self.items)
+        return sum(item.price * item.quantity for item in self.items)
 
     def __repr__(self):
         return ReprBuilder(self) \
@@ -371,7 +362,7 @@ class OrderItem(db.Model):
     article_number = db.Column(db.Unicode(20), db.ForeignKey('shop_articles.item_number'), index=True, nullable=False)
     article = db.relationship(Article, backref='order_items')
     description = db.Column(db.Unicode(80), nullable=False)
-    _price = db.Column('price', db.Numeric(6, 2), nullable=False)
+    price = db.Column(db.Numeric(6, 2), nullable=False)
     tax_rate = db.Column(db.Numeric(3, 3), nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
 
@@ -383,17 +374,9 @@ class OrderItem(db.Model):
         self.tax_rate = article.tax_rate
         self.quantity = quantity
 
-    @hybrid_property
-    def price(self):
-        return EuroAmount.from_decimal(self._price)
-
-    @price.setter
-    def price(self, amount):
-        self._price = amount.to_decimal()
-
     @property
     def unit_price(self):
-        return self.price.to_decimal()
+        return self.price
 
     @property
     def line_price(self):

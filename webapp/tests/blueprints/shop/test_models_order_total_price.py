@@ -9,7 +9,6 @@ from decimal import Decimal
 from unittest import TestCase
 
 from byceps.blueprints.shop.models import Order
-from byceps.util.money import EuroAmount
 
 from testfixtures.shop import create_article, create_order
 from testfixtures.user import create_user
@@ -20,20 +19,20 @@ class OrderTotalPriceTestCase(TestCase):
     def test_without_any_items(self):
         order = self.create_order_with_items([])
 
-        self.assertEquals(order.calculate_total_price(), Decimal('0'))
+        self.assertEquals(order.calculate_total_price(), Decimal('0.00'))
 
     def test_with_single_item(self):
         order = self.create_order_with_items([
-            (EuroAmount(49, 95), 1),
+            (Decimal('49.95'), 1),
         ])
 
         self.assertEquals(order.calculate_total_price(), Decimal('49.95'))
 
     def test_with_multiple_items(self):
         order = self.create_order_with_items([
-            (EuroAmount(49, 95), 3),
-            (EuroAmount( 6, 20), 1),
-            (EuroAmount(12, 53), 4),
+            (Decimal('49.95'), 3),
+            (Decimal( '6.20'), 1),
+            (Decimal('12.53'), 4),
         ])
 
         self.assertEquals(order.calculate_total_price(), Decimal('206.17'))

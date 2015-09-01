@@ -11,7 +11,6 @@ testfixtures.shop
 from decimal import Decimal
 
 from byceps.blueprints.shop.models import Article, Order, PartySequence
-from byceps.util.money import EuroAmount
 
 from .party import create_party
 
@@ -26,7 +25,7 @@ def create_article(*, party=None, serial_number=1, description='Cool thing',
         party.brand.code, party.number, serial_number)
 
     if price is None:
-        price = EuroAmount(24, 95)
+        price = Decimal('24.95')
 
     if tax_rate is None:
         tax_rate = Decimal('0.19')

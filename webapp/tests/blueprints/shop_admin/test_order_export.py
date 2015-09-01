@@ -13,7 +13,6 @@ from freezegun import freeze_time
 
 from byceps.blueprints.authorization.models import Permission, Role
 from byceps.blueprints.shop_admin.authorization import ShopOrderPermission
-from byceps.util.money import EuroAmount
 
 from testfixtures.brand import create_brand
 from testfixtures.party import create_party
@@ -81,21 +80,21 @@ class ExportTestCase(AbstractAppTestCase):
         self.article_table = self.build_article(
             2,
             'Tisch (zur Miete), 200 x 80 cm',
-            EuroAmount(20, 0),
+            Decimal('20.00'),
             Decimal('0.19'),
         )
 
         self.article_bungalow = self.build_article(
             3,
             'LANresort 2015: Bungalow 4 Plätze',
-            EuroAmount(355, 0),
+            Decimal('355.00'),
             Decimal('0.07'),
         )
 
         self.article_guest_fee = self.build_article(
             6,
             'Touristische Gästeabgabe (BispingenCard), pauschal für 4 Personen',
-            EuroAmount(6, 0),
+            Decimal('6.00'),
             Decimal('0.19'),
         )
 

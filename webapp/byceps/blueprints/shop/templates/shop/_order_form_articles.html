@@ -28,7 +28,7 @@
           {%- endif %}
           <td><strong>{{ item.article.description }}</strong></td>
           <td style="text-align: right;">{{ item.article.tax_rate_as_percentage }}&thinsp;%</td>
-          <td style="text-align: right;">{{ item.article.price.to_decimal()|format_euro_amount }}</td>
+          <td style="text-align: right;">{{ item.article.price|format_euro_amount }}</td>
         </tr>
         {%- endfor %}
       </tbody>

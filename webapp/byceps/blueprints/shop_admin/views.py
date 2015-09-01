@@ -15,7 +15,7 @@ from flask import current_app, render_template, request, Response
 
 from ...database import db
 from ...util.framework import create_blueprint, flash_error, flash_success
-from ...util.money import EuroAmount, to_two_places
+from ...util.money import to_two_places
 from ...util.templating import templated
 from ...util.views import redirect_to
 
@@ -151,7 +151,7 @@ def article_create(party_id):
 
     item_number = generate_article_number(party)
     description = form.description.data.strip()
-    price = EuroAmount(9999, 0)  # TODO: Request via form.
+    price = Decimal('9999.00')  # TODO: Request via form.
     tax_rate = Decimal('0.19')  # TODO: Request via form.
     quantity = form.quantity.data
 
