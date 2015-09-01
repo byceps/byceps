@@ -14,6 +14,9 @@ from collections import namedtuple
 from decimal import Decimal
 
 
+TWO_PLACES = Decimal('.00')
+
+
 class EuroAmount(namedtuple('EuroAmount', ['euro', 'cent'])):
     """A monetary amount in Euro.
 
@@ -45,7 +48,7 @@ class EuroAmount(namedtuple('EuroAmount', ['euro', 'cent'])):
         if value < Decimal('0'):
             raise ValueError
 
-        quantized = value.quantize(Decimal('.00'))
+        quantized = to_two_places(value)
         euro, cent = map(int, str(quantized).partition('.')[::2])
 
         return cls(euro, cent)
@@ -68,3 +71,8 @@ class EuroAmount(namedtuple('EuroAmount', ['euro', 'cent'])):
     def to_string(self):
         """Return a textual representation for display purposes only."""
         return '{0.euro:d},{0.cent:02d} €'.format(self)
+
+
+def to_two_places(x):
+    """Quantize to two decimal places."""
+    return x.quantize(TWO_PLACES)
