@@ -80,7 +80,7 @@
     <tfoot>
       <tr>
         <th colspan="2">Gesamtbetrag</th>
-        <td style="text-align: right;"><strong>{{ order.calculate_total_price().to_decimal()|format_euro_amount }}</strong></td>
+        <td style="text-align: right;"><strong>{{ order.calculate_total_price()|format_euro_amount }}</strong></td>
       </tr>
     </tfoot>
     <tbody>

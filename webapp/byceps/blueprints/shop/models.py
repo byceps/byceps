@@ -348,7 +348,7 @@ class Order(db.Model):
         return {item.article for item in self.items}
 
     def calculate_total_price(self):
-        return sum(item.price * item.quantity for item in self.items)
+        return sum(item.price.to_decimal() * item.quantity for item in self.items)
 
     def __repr__(self):
         return ReprBuilder(self) \

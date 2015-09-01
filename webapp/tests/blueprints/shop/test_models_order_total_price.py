@@ -5,6 +5,7 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
+from decimal import Decimal
 from unittest import TestCase
 
 from byceps.blueprints.shop.models import Order
@@ -19,14 +20,14 @@ class OrderTotalPriceTestCase(TestCase):
     def test_without_any_items(self):
         order = self.create_order_with_items([])
 
-        self.assertEquals(order.calculate_total_price(), 0)
+        self.assertEquals(order.calculate_total_price(), Decimal('0'))
 
     def test_with_single_item(self):
         order = self.create_order_with_items([
             (EuroAmount(49, 95), 1),
         ])
 
-        self.assertEquals(order.calculate_total_price(), EuroAmount(49, 95))
+        self.assertEquals(order.calculate_total_price(), Decimal('49.95'))
 
     def test_with_multiple_items(self):
         order = self.create_order_with_items([
@@ -35,7 +36,7 @@ class OrderTotalPriceTestCase(TestCase):
             (EuroAmount(12, 53), 4),
         ])
 
-        self.assertEquals(order.calculate_total_price(), EuroAmount(206, 17))
+        self.assertEquals(order.calculate_total_price(), Decimal('206.17'))
 
     def create_order_with_items(self, price_quantity_pairs):
         user = create_user(42)

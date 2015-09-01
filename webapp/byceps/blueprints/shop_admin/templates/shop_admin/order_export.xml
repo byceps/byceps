@@ -70,7 +70,7 @@
 		</ORDER_ITEM_LIST>
 		<ORDER_SUMMARY>
 			<TOTAL_ITEM_NUM>{{ order.item_total_quantity }}</TOTAL_ITEM_NUM>
-			<TOTAL_AMOUNT>{{ format_export_amount(order.calculate_total_price().to_decimal()) }}</TOTAL_AMOUNT>
+			<TOTAL_AMOUNT>{{ format_export_amount(order.calculate_total_price()) }}</TOTAL_AMOUNT>
 		</ORDER_SUMMARY>
 	</ORDER>
 </ORDER_LIST>
