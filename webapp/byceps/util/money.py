@@ -29,7 +29,7 @@ def format_euro_amount(x):
     symbol.
     """
     quantized = to_two_places(x)
-    formatted_number = locale.format('%.2f', float(quantized), grouping=True)
+    formatted_number = locale.format('%.2f', quantized, grouping=True)
     return '{} €'.format(formatted_number)
 
 
