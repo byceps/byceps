@@ -26,15 +26,11 @@ class GetCurrentVersionOfSnippetTestCase(AbstractAppTestCase):
         self.party2014 = self.create_party('lafiesta-2014', 4, 'La Fiesta 2014')
         self.party2015 = self.create_party('lafiesta-2015', 5, 'La Fiesta 2015')
 
-        self.snippet_creator = create_user(1)
-        self.db.session.add(self.snippet_creator)
-
-        self.db.session.commit()
+        self.snippet_creator = self.create_snippet_creator()
 
     def test_current_party_is_considered(self):
         snippet_info2014_version = self.create_snippet_with_version(self.party2014, 'info', '2014-10-23 14:55:00')
         snippet_info2015_version = self.create_snippet_with_version(self.party2015, 'info', '2014-10-23 18:21:00')
-        self.db.session.commit()
 
         with current_party_set(self.app, self.party2014), self.app.app_context():
             actual = get_current_version_of_snippet_with_name('info')
@@ -51,7 +47,14 @@ class GetCurrentVersionOfSnippetTestCase(AbstractAppTestCase):
     def create_party(self, id, number, title):
         party = create_party(id=id, number=number, title=title, brand=self.brand)
         self.db.session.add(party)
+        self.db.session.commit()
         return party
+
+    def create_snippet_creator(self):
+        creator = create_user(1)
+        self.db.session.add(creator)
+        self.db.session.commit()
+        return creator
 
     def create_snippet_with_version(self, party, name, created_at_text):
         snippet = create_snippet(party, name)
@@ -64,4 +67,5 @@ class GetCurrentVersionOfSnippetTestCase(AbstractAppTestCase):
         current_version_association = create_current_version_association(snippet, version)
         self.db.session.add(current_version_association)
 
+        self.db.session.commit()
         return version
