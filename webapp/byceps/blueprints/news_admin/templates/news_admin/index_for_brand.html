@@ -19,6 +19,7 @@
         <th>Veröffentlichung</th>
         <th>Slug</th>
         <th>Titel</th>
+        <th>Aktionen</th>
       </tr>
     </thead>
     <tbody>
@@ -27,6 +28,11 @@
         <td>{{ render_datetime(item.published_at) }}</td>
         <td>{{ item.slug }}</td>
         <td>{{ item.title }}</td>
+        <td>
+          {%- if g.current_user.has_permission(NewsItemPermission.update) -%}
+          <a href="{{ url_for('.update_form', id=item.id) }}" class="action">{{ render_icon('edit') }} bearbeiten</a>
+          {%- endif -%}
+        </td>
       </tr>
     {%- endfor %}
     </tbody>

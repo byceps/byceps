@@ -20,9 +20,8 @@ def create_item(brand, slug, creator, title, body, *, image_url_path=None):
     item = Item(brand, slug)
     db.session.add(item)
 
-    version = ItemVersion(item, creator, title, body)
-    if image_url_path:
-        version.image_url_path = image_url_path
+    version = _create_version(item, creator, title, body,
+                              image_url_path=image_url_path)
     db.session.add(version)
 
     current_version_association = CurrentVersionAssociation(item, version)
@@ -31,6 +30,26 @@ def create_item(brand, slug, creator, title, body, *, image_url_path=None):
     db.session.commit()
 
     return item
+
+
+def update_item(item, creator, title, body, *, image_url_path=None):
+    """Update a news item by creating a new version of it and setting
+    the new version as the current one.
+    """
+    version = _create_version(item, creator, title, body,
+                              image_url_path=image_url_path)
+    db.session.add(version)
+
+    item.current_version = version
+
+    db.session.commit()
+
+
+def _create_version(item, creator, title, body, *, image_url_path=None):
+    version = ItemVersion(item, creator, title, body)
+    if image_url_path:
+        version.image_url_path = image_url_path
+    return version
 
 
 def get_items_paginated(brand, page, items_per_page):

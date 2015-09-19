@@ -18,3 +18,9 @@ class ItemCreateForm(LocalizedForm):
     title = StringField('Titel')
     body = TextAreaField('Text')
     image_url_path = StringField('Bild-URL-Pfad')
+
+
+class ItemUpdateForm(ItemCreateForm):
+    title = StringField('Titel')
+    body = TextAreaField('Text')
+    image_url_path = StringField('Bild-URL-Pfad')

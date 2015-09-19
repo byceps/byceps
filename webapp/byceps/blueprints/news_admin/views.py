@@ -25,7 +25,7 @@ from ..news import signals
 from ..party.models import Party
 
 from .authorization import NewsItemPermission
-from .forms import ItemCreateForm
+from .forms import ItemCreateForm, ItemUpdateForm
 
 
 blueprint = create_blueprint('news_admin', __name__)
@@ -94,6 +94,42 @@ def create(brand_id):
     signals.item_published.send(None, item=item)
 
     return redirect_to('.index_for_brand', brand_id=brand.id)
+
+
+@blueprint.route('/items/<uuid:id>/update')
+@permission_required(NewsItemPermission.update)
+@templated
+def update_form(id):
+    """Show form to update a news item."""
+    item = Item.query.get_or_404(id)
+
+    form = ItemUpdateForm(obj=item.current_version, slug=item.slug)
+
+    return {
+        'item': item,
+        'form': form,
+    }
+
+
+@blueprint.route('/items/<uuid:id>', methods=['POST'])
+@permission_required(NewsItemPermission.update)
+def update(id):
+    """Update a news item."""
+    item = Item.query.get_or_404(id)
+
+    form = ItemUpdateForm(request.form)
+
+    slug = form.slug.data.strip().lower()
+    creator = g.current_user
+    title = form.title.data.strip()
+    body = form.body.data.strip()
+    image_url_path = form.image_url_path.data.strip()
+
+    service.update_item(item, creator, title, body,
+                        image_url_path=image_url_path)
+
+    flash_success('Die News "{}" wurde aktualisiert.', item.title)
+    return redirect_to('.index_for_brand', brand_id=item.brand.id)
 
 
 def get_brand_or_404(brand_id):

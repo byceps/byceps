@@ -13,5 +13,6 @@ from byceps.util.authorization import create_permission_enum
 
 NewsItemPermission = create_permission_enum('news_item', [
     'create',
+    'update',
     'list',
 ])
