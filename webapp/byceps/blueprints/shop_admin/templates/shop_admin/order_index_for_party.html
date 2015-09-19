@@ -2,7 +2,7 @@
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
-{% from 'macros/shop_admin.html' import render_order_payment_state %}
+{% from 'macros/shop_admin.html' import render_order_link, render_order_payment_state %}
 {% from 'macros/user_admin.html' import render_user_admin_link %}
 {% set current_page = 'shop_admin.orders' %}
 {% set title = 'Bestellungen' %}
@@ -79,7 +79,7 @@
     <tbody>
       {%- for order in orders.items %}
       <tr>
-        <td class="nowrap"><a href="{{ url_for('.order_view', id=order.id) }}">{{ order.order_number }}</a></td>
+        <td class="nowrap">{{ render_order_link(order) }}</td>
         <td class="centered">{{ render_order_payment_state(order.payment_state) }}</td>
         <td>
           {{- render_user_admin_link(order.placed_by) -}}<br/>
