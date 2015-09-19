@@ -9,7 +9,8 @@ from nose2.tools import params
 
 from testfixtures.news import create_current_version_association, \
     create_item, create_item_version
-from tests import AbstractAppTestCase
+
+from tests.base import AbstractAppTestCase
 from tests.helpers import current_party_set
 
 

@@ -14,7 +14,8 @@ from testfixtures.party import create_party
 from testfixtures.snippet import create_current_version_association, \
     create_snippet, create_snippet_version
 from testfixtures.user import create_user
-from tests import AbstractAppTestCase
+
+from tests.base import AbstractAppTestCase
 from tests.helpers import current_party_set
 
 

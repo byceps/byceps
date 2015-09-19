@@ -17,7 +17,7 @@ from pytz import timezone
 from byceps.blueprints.user.models import User
 from byceps.util.image import ImageType
 
-from tests import AbstractAppTestCase
+from tests.base import AbstractAppTestCase
 
 
 CREATED_AT = datetime(2014, 7, 29, 14, 43, 30, 196165)

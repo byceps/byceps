@@ -16,7 +16,7 @@ from byceps.blueprints.user.models import User
 from testfixtures.shop import create_article, create_order
 from testfixtures.user import create_user_with_detail
 
-from tests import AbstractAppTestCase
+from tests.base import AbstractAppTestCase
 
 
 class ShopAdminTestCase(AbstractAppTestCase):

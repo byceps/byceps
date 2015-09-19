@@ -13,7 +13,7 @@ from testfixtures.brand import create_brand
 from testfixtures.party import create_party
 from testfixtures.shop import create_party_sequence
 
-from tests import AbstractAppTestCase
+from tests.base import AbstractAppTestCase
 
 
 class SerialNumberGenerationTestCase(AbstractAppTestCase):

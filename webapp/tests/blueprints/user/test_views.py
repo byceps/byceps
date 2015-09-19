@@ -10,7 +10,7 @@ from datetime import datetime
 from byceps.blueprints.verification_token.models import Purpose, Token
 from byceps.blueprints.user.models import User
 
-from tests import AbstractAppTestCase
+from tests.base import AbstractAppTestCase
 
 
 NOW = datetime.now()

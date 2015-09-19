@@ -12,7 +12,7 @@ from byceps.blueprints.newsletter_admin.authorization import NewsletterPermissio
 from byceps.blueprints.newsletter.models import Subscription, SubscriptionState
 from byceps.blueprints.user.models import User
 
-from tests import AbstractAppTestCase
+from tests.base import AbstractAppTestCase
 
 
 class NewsletterAdminTestCase(AbstractAppTestCase):

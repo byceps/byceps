@@ -15,7 +15,7 @@ from byceps.blueprints.user.models import User
 from testfixtures.board import create_category, create_topic
 from testfixtures.user import create_user
 
-from tests import AbstractAppTestCase
+from tests.base import AbstractAppTestCase
 
 
 class BoardModerationTestCase(AbstractAppTestCase):
