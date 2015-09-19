@@ -25,6 +25,4 @@ def create_item_version(item, creator, *, created_at=None, title='', body='',
 
 
 def create_current_version_association(item, version):
-    return CurrentVersionAssociation(
-        item=item,
-        version=version)
+    return CurrentVersionAssociation(item, version)

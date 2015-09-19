@@ -95,9 +95,7 @@ def create(brand_id):
         version.image_url_path = image_url_path
     db.session.add(version)
 
-    current_version_association = CurrentVersionAssociation(
-        item=item,
-        version=version)
+    current_version_association = CurrentVersionAssociation(item, version)
     db.session.add(current_version_association)
 
     db.session.commit()

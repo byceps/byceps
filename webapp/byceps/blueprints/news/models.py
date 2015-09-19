@@ -130,3 +130,7 @@ class CurrentVersionAssociation(db.Model):
     item = db.relationship(Item, backref=db.backref('current_version_association', uselist=False))
     version_id = db.Column(db.Uuid, db.ForeignKey('news_item_versions.id'), unique=True, nullable=False)
     version = db.relationship(ItemVersion)
+
+    def __init__(self, item, version):
+        self.item = item
+        self.version = version
