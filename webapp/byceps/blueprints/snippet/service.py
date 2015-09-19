@@ -11,7 +11,7 @@ byceps.blueprints.snippet.service
 from flask import g
 from sqlalchemy.orm.exc import NoResultFound
 
-from .models import CurrentVersionAssociation, Snippet, SnippetVersion
+from .models.snippet import CurrentVersionAssociation, Snippet, SnippetVersion
 
 
 def get_current_version_of_snippet_with_name(name):

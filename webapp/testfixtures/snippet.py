@@ -8,8 +8,8 @@ testfixtures.snippet
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.blueprints.snippet.models import CurrentVersionAssociation, \
-    Snippet, SnippetVersion
+from byceps.blueprints.snippet.models.snippet import \
+    CurrentVersionAssociation, Snippet, SnippetVersion
 
 
 def create_snippet(party, name):

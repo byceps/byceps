@@ -14,8 +14,9 @@ from byceps.blueprints.orga.models import OrgaFlag, OrgaTeam, \
 from byceps.blueprints.party.models import Party
 from byceps.blueprints.seating.models import Area as SeatingArea, \
     Category as SeatingCategory, Point, Seat
-from byceps.blueprints.snippet.models import Snippet, SnippetVersion, \
+from byceps.blueprints.snippet.models.mountpoint import \
     Mountpoint as SnippetMountpoint
+from byceps.blueprints.snippet.models.snippet import Snippet, SnippetVersion
 from byceps.blueprints.terms.models import Version as TermsVersion
 from byceps.blueprints.user.models import User
 from byceps.blueprints.user_group.models import UserGroup

@@ -20,7 +20,8 @@ from ...util.views import redirect_to, respond_no_content_with_location
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 from ..party.models import Party
-from ..snippet.models import Mountpoint, Snippet, CurrentVersionAssociation, \
+from ..snippet.models.mountpoint import Mountpoint
+from ..snippet.models.snippet import CurrentVersionAssociation, Snippet, \
     SnippetVersion
 from ..snippet.templating import render_snippet_as_page
 

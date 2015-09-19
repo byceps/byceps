@@ -16,7 +16,7 @@ from ...database import BaseQuery, db, generate_uuid
 from ...util.instances import ReprBuilder
 
 from ..brand.models import Brand
-from ..snippet.models import Snippet
+from ..snippet.models.snippet import Snippet
 from ..snippet.templating import render_body
 
 

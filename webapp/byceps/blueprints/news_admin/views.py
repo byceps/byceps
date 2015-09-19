@@ -23,7 +23,7 @@ from ..brand.models import Brand
 from ..news.models import Item
 from ..news import signals
 from ..party.models import Party
-from ..snippet.models import Snippet
+from ..snippet.models.snippet import Snippet
 
 from .authorization import NewsItemPermission
 from .forms import ItemCreateForm
