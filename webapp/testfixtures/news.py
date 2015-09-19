@@ -18,13 +18,10 @@ def create_item(brand, *, slug='a-news-item-about-something-nice'):
 
 def create_item_version(item, creator, *, created_at=None, title='', body='',
                         image_url_path=None):
-    return ItemVersion(
-        item=item,
-        created_at=created_at,
-        creator=creator,
-        title=title,
-        body=body,
-        image_url_path=image_url_path)
+    version = ItemVersion(item, creator, title, body)
+    version.created_at = created_at
+    version.image_url_path = image_url_path
+    return version
 
 
 def create_current_version_association(item, version):

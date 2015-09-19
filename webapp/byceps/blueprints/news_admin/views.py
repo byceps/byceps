@@ -10,7 +10,7 @@ byceps.blueprints.news_admin.views
 
 from operator import attrgetter
 
-from flask import request
+from flask import g, request
 
 from ...database import db
 from ...util.framework import create_blueprint, flash_error, flash_success
@@ -20,7 +20,7 @@ from ...util.views import redirect_to
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 from ..brand.models import Brand
-from ..news.models import Item
+from ..news.models import CurrentVersionAssociation, Item, ItemVersion
 from ..news import signals
 from ..party.models import Party
 from ..snippet.models.snippet import Snippet
@@ -81,10 +81,25 @@ def create(brand_id):
     brand = get_brand_or_404(brand_id)
     form = ItemCreateForm(request.form)
 
+    creator = g.current_user
     slug = form.slug.data.strip().lower()
+    title = form.title.data.strip()
+    body = form.body.data.strip()
+    image_url_path = form.image_url_path.data.strip()
 
     item = Item(brand, slug)
     db.session.add(item)
+
+    version = ItemVersion(item, creator, title, body)
+    if image_url_path:
+        version.image_url_path = image_url_path
+    db.session.add(version)
+
+    current_version_association = CurrentVersionAssociation(
+        item=item,
+        version=version)
+    db.session.add(current_version_association)
+
     db.session.commit()
 
     flash_success('Die News "{}" wurde angelegt.', item.title)

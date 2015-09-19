@@ -102,6 +102,12 @@ class ItemVersion(db.Model):
     body = db.Column(db.UnicodeText, nullable=False)
     image_url_path = db.Column(db.Unicode(80), nullable=True)
 
+    def __init__(self, item, creator, title, body):
+        self.item = item
+        self.creator = creator
+        self.title = title
+        self.body = body
+
     @property
     def is_current(self):
         """Return `True` if this version is the current version of the
