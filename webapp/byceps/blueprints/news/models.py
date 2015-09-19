@@ -15,10 +15,10 @@ from sqlalchemy.ext.associationproxy import association_proxy
 
 from ...database import BaseQuery, db, generate_uuid
 from ...util.instances import ReprBuilder
+from ...util.templating import load_template
 
 from ..brand.models import Brand
 from ..party.models import Party
-from ..snippet.templating import render_body
 from ..user.models import User
 
 
@@ -60,7 +60,8 @@ class Item(db.Model):
         return self.current_version.title
 
     def render_body(self):
-        return render_body(self.current_version)
+        template = load_template(self.current_version.body)
+        return template.render(url_for=url_for)
 
     @property
     def external_url(self):

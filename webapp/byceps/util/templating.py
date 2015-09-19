@@ -13,6 +13,8 @@ Templating utilities.
 from functools import wraps
 
 from flask import render_template
+from jinja2 import FunctionLoader
+from jinja2.sandbox import ImmutableSandboxedEnvironment
 
 
 TEMPLATE_FILENAME_EXTENSION = '.html'
@@ -58,3 +60,30 @@ def templated(arg):
         return decorator(f, arg)
 
     return wrapper
+
+
+def load_template(source):
+    """Load a template from source, using the sandboxed environment."""
+    env = create_sandboxed_env()
+    return env.from_string(source)
+
+
+def create_sandboxed_env():
+    """Create a sandboxed environment."""
+    # A loader that never finds a template.
+    dummy_loader = FunctionLoader(lambda name: None)
+
+    return ImmutableSandboxedEnvironment(
+        loader=dummy_loader,
+        autoescape=True,
+        trim_blocks=True)
+
+
+def get_variable_value(template, name):
+    """Return the named variable's value from the template, or `None` if
+    the variable is not defined.
+    """
+    try:
+        return getattr(template.module, name)
+    except AttributeError:
+        return None

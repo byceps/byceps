@@ -13,8 +13,9 @@ import traceback
 import warnings
 
 from flask import abort, render_template, url_for
-from jinja2 import FunctionLoader, TemplateNotFound
-from jinja2.sandbox import ImmutableSandboxedEnvironment
+from jinja2 import TemplateNotFound
+
+from ...util.templating import get_variable_value, load_template
 
 from .service import get_current_version_of_snippet_with_name, SnippetNotFound
 
@@ -39,9 +40,9 @@ def render_snippet_as_page(version):
 
 def get_snippet_context(version):
     """Return the snippet context to insert into the outer template."""
-    template = load_template(version)
+    template = load_template(version.body)
 
-    current_page = extract_variable(template, 'current_page')
+    current_page = get_variable_value(template, 'current_page')
     title = version.title
     body = template.render()
 
@@ -69,37 +70,9 @@ def render_snippet_as_partial(name, *, ignore_if_unknown=False):
 
 def render_body(version):
     """Render the snippet version's body as a template."""
-    template = load_template(version)
-    return template.render()
-
-
-def load_template(version):
-    """Load the template from the snippet version's body."""
-    env = create_env()
-    return env.from_string(version.body)
-
-
-def create_env():
-    """Create a sandboxed environment that uses the given function to
-    load templates.
-    """
-    dummy_loader = FunctionLoader(lambda name: None)
-    env = ImmutableSandboxedEnvironment(
-        loader=dummy_loader,
-        autoescape=True,
-        trim_blocks=True)
-
-    env.globals['render_snippet'] = render_snippet_as_partial
-    env.globals['url_for'] = url_for
-
-    return env
-
-
-def extract_variable(template, name):
-    """Try to extract a variable's value from the template, or return
-    `None` if the variable is not defined.
-    """
-    try:
-        return getattr(template.module, name)
-    except AttributeError:
-        return None
+    template = load_template(version.body)
+    context = {
+        'render_snippet': render_snippet_as_partial,
+        'url_for': url_for,
+    }
+    return template.render(**context)
