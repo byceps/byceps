@@ -10,7 +10,9 @@ testfixtures.shop
 
 from decimal import Decimal
 
-from byceps.blueprints.shop.models import Article, Order, PartySequence
+from byceps.blueprints.shop.models.article import Article
+from byceps.blueprints.shop.models.order import Order
+from byceps.blueprints.shop.models.sequence import PartySequence
 
 from .party import create_party
 

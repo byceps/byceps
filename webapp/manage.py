@@ -20,7 +20,8 @@ from werkzeug.wsgi import SharedDataMiddleware
 from byceps.application import create_app, init_app
 from byceps.blueprints.brand.models import Brand
 from byceps.blueprints.party.models import Party
-from byceps.blueprints.shop.models import Article, Order, OrderItem, \
+from byceps.blueprints.shop.models.article import Article
+from byceps.blueprints.shop.models.order import Order, OrderItem, \
     PaymentState as OrderPaymentState
 from byceps.blueprints.user.models import User, UserDetail
 from byceps.database import db

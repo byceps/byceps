@@ -10,8 +10,9 @@ byceps.blueprints.shop.service
 
 from ...database import db
 
-from .models import Article, ArticleCompilation, ArticleCompilationItem, \
-    Order, PartySequence, PartySequencePurpose
+from .models.article import Article, ArticleCompilation, ArticleCompilationItem
+from .models.order import Order
+from .models.sequence import PartySequence, PartySequencePurpose
 from .signals import order_placed
 
 

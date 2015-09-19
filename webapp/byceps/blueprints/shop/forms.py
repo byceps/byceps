@@ -13,7 +13,8 @@ from wtforms.validators import InputRequired, Length
 
 from ...util.l10n import LocalizedForm
 
-from .models import Cart, CartItem, Orderer
+from .models.cart import Cart, CartItem
+from .models.order import Orderer
 
 
 class OrderForm(LocalizedForm):

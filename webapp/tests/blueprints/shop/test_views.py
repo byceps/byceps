@@ -7,8 +7,9 @@
 
 from datetime import date
 
-from byceps.blueprints.shop.models import Article, Order, \
-    PartySequencePurpose, PaymentState
+from byceps.blueprints.shop.models.article import Article
+from byceps.blueprints.shop.models.order import Order, PaymentState
+from byceps.blueprints.shop.models.sequence import PartySequencePurpose
 from byceps.blueprints.snippet.models import Snippet
 from byceps.blueprints.user.models import User
 

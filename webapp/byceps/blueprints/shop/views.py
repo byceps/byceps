@@ -18,7 +18,9 @@ from ...util.views import redirect_to
 from ..authorization.decorators import login_required
 
 from .forms import assemble_articles_order_form, OrderForm
-from .models import Article, Cart, CartItem, Order, PaymentState
+from .models.article import Article
+from .models.cart import Cart, CartItem
+from .models.order import Order, PaymentState
 from . import service
 
 

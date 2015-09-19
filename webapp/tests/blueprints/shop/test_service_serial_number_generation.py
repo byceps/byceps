@@ -5,7 +5,7 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.blueprints.shop.models import PartySequencePurpose
+from byceps.blueprints.shop.models.sequence import PartySequencePurpose
 from byceps.blueprints.shop.service import generate_article_number, \
     generate_order_number
 

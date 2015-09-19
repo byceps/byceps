@@ -12,7 +12,7 @@ from collections import Counter
 
 from ...database import db
 
-from ..shop.models import OrderItem, PaymentState
+from ..shop.models.order import OrderItem, PaymentState
 
 
 def count_ordered_articles(article):

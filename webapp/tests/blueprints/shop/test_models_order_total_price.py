@@ -8,7 +8,7 @@
 from decimal import Decimal
 from unittest import TestCase
 
-from byceps.blueprints.shop.models import Order
+from byceps.blueprints.shop.models.order import Order
 
 from testfixtures.shop import create_article, create_order
 from testfixtures.user import create_user

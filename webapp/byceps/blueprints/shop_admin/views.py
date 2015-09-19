@@ -21,7 +21,8 @@ from ...util.views import redirect_to
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
-from ..shop.models import Article, Order, OrderItem, PaymentState
+from ..shop.models.article import Article
+from ..shop.models.order import Order, OrderItem, PaymentState
 from ..shop.service import generate_article_number
 from ..shop.signals import order_canceled, order_paid
 from ..ticket.service import find_ticket_for_user

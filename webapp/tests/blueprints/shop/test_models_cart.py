@@ -7,7 +7,7 @@
 
 from unittest import TestCase
 
-from byceps.blueprints.shop.models import Cart, CartItem
+from byceps.blueprints.shop.models.cart import Cart, CartItem
 
 from testfixtures.shop import create_article
 
