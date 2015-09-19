@@ -19,11 +19,10 @@ from ...util.views import redirect_to
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 from ..brand.models import Brand
-from ..news.models import CurrentVersionAssociation, Item, ItemVersion
+from ..news.models import Item
 from ..news import service
 from ..news import signals
 from ..party.models import Party
-from ..snippet.models.snippet import Snippet
 
 from .authorization import NewsItemPermission
 from .forms import ItemCreateForm
