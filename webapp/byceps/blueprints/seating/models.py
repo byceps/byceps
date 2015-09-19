@@ -101,6 +101,27 @@ class Seat(db.Model):
         self.coord_x = point.x
         self.coord_y = point.y
 
+    @property
+    def is_occupied(self):
+        """Return `True` if the seat is occupied by a ticket."""
+        return bool(self.occupied_by_ticket)
+
+    @property
+    def has_user(self):
+        """Return `True` if the seat is occupied by a ticket, and that
+        ticket is assigned to a user.
+        """
+        return self.is_occupied and bool(self.occupied_by_ticket.used_by)
+
+    @property
+    def user(self):
+        """Return the user to which the ticket that occupies this seat
+        is assigned, or `None` if this seat is not occupied by a ticket
+        or the ticket is not assigned to a user.
+        """
+        if self.has_user:
+            return self.occupied_by_ticket.used_by
+
     def __repr__(self):
         return ReprBuilder(self) \
             .add_with_lookup('id') \
