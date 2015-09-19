@@ -11,13 +11,15 @@ byceps.blueprints.news.models
 from datetime import datetime
 
 from flask import url_for
+from sqlalchemy.ext.associationproxy import association_proxy
 
 from ...database import BaseQuery, db, generate_uuid
 from ...util.instances import ReprBuilder
 
 from ..brand.models import Brand
-from ..snippet.models.snippet import Snippet
+from ..party.models import Party
 from ..snippet.templating import render_body
+from ..user.models import User
 
 
 class ItemQuery(BaseQuery):
@@ -27,16 +29,18 @@ class ItemQuery(BaseQuery):
 
     def with_current_version(self):
         return self.options(
-            db.joinedload_all('snippet.current_version_association.version'),
+            db.joinedload_all('current_version_association.version'),
         )
 
 
 class Item(db.Model):
-    """A news item."""
+    """A news item.
+
+    Each one is expected to have at least one version (the initial one).
+    """
     __tablename__ = 'news_items'
     __table_args__ = (
         db.UniqueConstraint('brand_id', 'slug'),
-        db.UniqueConstraint('brand_id', 'snippet_id'),
     )
     query_class = ItemQuery
 
@@ -45,15 +49,18 @@ class Item(db.Model):
     brand = db.relationship(Brand)
     slug = db.Column(db.Unicode(80), index=True, nullable=False)
     published_at = db.Column(db.DateTime, default=datetime.now, nullable=False)
-    snippet_id = db.Column(db.Uuid, db.ForeignKey('snippets.id'), index=True, nullable=False)
-    snippet = db.relationship(Snippet)
+    current_version = association_proxy('current_version_association', 'version')
+
+    def __init__(self, brand, slug):
+        self.brand = brand
+        self.slug = slug
 
     @property
     def title(self):
-        return self.snippet.current_version.title
+        return self.current_version.title
 
     def render_body(self):
-        return render_body(self.snippet.current_version)
+        return render_body(self.current_version)
 
     @property
     def external_url(self):
@@ -61,7 +68,7 @@ class Item(db.Model):
 
     @property
     def image_url(self):
-        url_path = self.snippet.current_version.image_url_path
+        url_path = self.current_version.image_url_path
         if url_path:
             return url_for('content_file', filename=url_path, _external=True)
 
@@ -72,3 +79,48 @@ class Item(db.Model):
             .add_with_lookup('slug') \
             .add_with_lookup('published_at') \
             .build()
+
+
+class ItemVersionQuery(BaseQuery):
+
+    def for_item(self, item):
+        return self.filter_by(item=item)
+
+
+class ItemVersion(db.Model):
+    """A snapshot of a news item at a certain time."""
+    __tablename__ = 'news_item_versions'
+    query_class = ItemVersionQuery
+
+    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    item_id = db.Column(db.Uuid, db.ForeignKey('news_items.id'), index=True, nullable=False)
+    item = db.relationship(Item)
+    created_at = db.Column(db.DateTime, default=datetime.now, nullable=False)
+    creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
+    creator = db.relationship(User)
+    title = db.Column(db.Unicode(80))
+    body = db.Column(db.UnicodeText, nullable=False)
+    image_url_path = db.Column(db.Unicode(80), nullable=True)
+
+    @property
+    def is_current(self):
+        """Return `True` if this version is the current version of the
+        item it belongs to.
+        """
+        return self.id == self.item.current_version.id
+
+    def __repr__(self):
+        return ReprBuilder(self) \
+            .add_with_lookup('id') \
+            .add_with_lookup('item') \
+            .add_with_lookup('created_at') \
+            .build()
+
+
+class CurrentVersionAssociation(db.Model):
+    __tablename__ = 'news_item_current_versions'
+
+    item_id = db.Column(db.Uuid, db.ForeignKey('news_items.id'), primary_key=True)
+    item = db.relationship(Item, backref=db.backref('current_version_association', uselist=False))
+    version_id = db.Column(db.Uuid, db.ForeignKey('news_item_versions.id'), unique=True, nullable=False)
+    version = db.relationship(ItemVersion)

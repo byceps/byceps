@@ -52,11 +52,7 @@ def index():
 def index_for_brand(brand_id):
     """List news items for that brand."""
     brand = get_brand_or_404(brand_id)
-    items = Item.query.for_brand(brand) \
-        .options(
-            db.joinedload_all('snippet.current_version_association.version'),
-        ) \
-        .all()
+    items = Item.query.for_brand(brand).with_current_version().all()
     return {
         'brand': brand,
         'items': items,
@@ -70,15 +66,7 @@ def create_form(brand_id, *, erroneous_form=None):
     """Show form to create a news item."""
     brand = get_brand_or_404(brand_id)
 
-    snippets = Snippet.query \
-        .join(Party).filter_by(brand_id=brand_id) \
-        .filter(Snippet.name.startswith('news_')) \
-        .order_by(Snippet.name.desc()) \
-        .all()
-    snippet_choices = list(map(attrgetter('id', 'name'), snippets))
-
     form = erroneous_form if erroneous_form else ItemCreateForm()
-    form.snippet_id.choices = snippet_choices
 
     return {
         'brand': brand,
@@ -94,19 +82,8 @@ def create(brand_id):
     form = ItemCreateForm(request.form)
 
     slug = form.slug.data.strip().lower()
-    snippet_id = form.snippet_id.data.strip()
 
-    snippet = Snippet.query.get(snippet_id)
-    if not snippet:
-        flash_error('Es wurde kein Snippet mit der ID "{}" gefunden.',
-                    snippet_id)
-        return create_form(brand.id, erroneous_form=form)
-
-    if snippet.party.brand != brand:
-        flash_error('Das Snippet gehört nicht zur Marke "{}".', brand.title)
-        return create_form(brand.id, erroneous_form=form)
-
-    item = Item(brand=brand, slug=slug, snippet=snippet)
+    item = Item(brand, slug)
     db.session.add(item)
     db.session.commit()
 

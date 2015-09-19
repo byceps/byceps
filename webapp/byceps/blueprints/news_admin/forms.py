@@ -8,11 +8,10 @@ byceps.blueprints.news_admin.forms
 :License: Modified BSD, see LICENSE for details.
 """
 
-from wtforms import SelectField, StringField
+from wtforms import StringField
 
 from ...util.l10n import LocalizedForm
 
 
 class ItemCreateForm(LocalizedForm):
     slug = StringField('Slug')
-    snippet_id = SelectField('Snippet')
