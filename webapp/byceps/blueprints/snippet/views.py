@@ -13,8 +13,7 @@ from flask import abort
 from ...util.framework import create_blueprint
 
 from .service import get_current_version_of_snippet_with_name, SnippetNotFound
-from .templating import load_template, render_snippet_as_page, \
-    render_snippet_as_partial
+from .templating import render_snippet_as_page, render_snippet_as_partial
 
 
 blueprint = create_blueprint('snippet', __name__)
