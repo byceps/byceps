@@ -13,6 +13,7 @@ Base classes for test cases
 from contextlib import contextmanager
 import os
 from unittest import TestCase
+from unittest.mock import patch
 
 from byceps.application import create_app
 from byceps.database import db
@@ -21,9 +22,12 @@ from testfixtures.brand import create_brand
 from testfixtures.party import create_party
 from testfixtures.user import create_user
 
+from tests import mocks
+
 
 class AbstractAppTestCase(TestCase):
 
+    @patch('redis.StrictRedis.from_url', mocks.strict_redis_client_from_url)
     def setUp(self, env='test'):
         self.app = create_app(env)
 
