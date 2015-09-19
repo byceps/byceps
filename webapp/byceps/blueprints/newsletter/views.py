@@ -10,7 +10,7 @@ byceps.blueprints.newsletter.views
 
 from collections import namedtuple
 
-from flask import g, request
+from flask import abort, g, request
 
 from ...database import db
 from ...util.framework import create_blueprint, flash_success
