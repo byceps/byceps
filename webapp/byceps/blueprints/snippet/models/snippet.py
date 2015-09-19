@@ -101,3 +101,7 @@ class CurrentVersionAssociation(db.Model):
     snippet = db.relationship(Snippet, backref=db.backref('current_version_association', uselist=False))
     version_id = db.Column(db.Uuid, db.ForeignKey('snippet_versions.id'), unique=True, nullable=False)
     version = db.relationship(SnippetVersion)
+
+    def __init__(self, item, version):
+        self.item = item
+        self.version = version
