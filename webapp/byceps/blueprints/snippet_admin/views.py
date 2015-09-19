@@ -116,7 +116,9 @@ def create_snippet(party_id):
         image_url_path=form.image_url_path.data.strip())
     db.session.add(version)
 
-    current_version_association = CurrentVersionAssociation(snippet, version)
+    current_version_association = CurrentVersionAssociation(
+        snippet=snippet,
+        version=version)
     db.session.add(current_version_association)
 
     db.session.commit()

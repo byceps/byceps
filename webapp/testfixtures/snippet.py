@@ -30,4 +30,6 @@ def create_snippet_version(snippet, creator, *, created_at=None,
 
 
 def create_current_version_association(snippet, version):
-    return CurrentVersionAssociation(snippet, version)
+    return CurrentVersionAssociation(
+        snippet=snippet,
+        version=version)
