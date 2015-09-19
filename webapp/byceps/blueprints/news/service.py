@@ -8,7 +8,29 @@ byceps.blueprints.news.service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from . models import Item
+from ...database import db
+
+from . models import CurrentVersionAssociation, Item, ItemVersion
+
+
+def create_item(brand, slug, creator, title, body, *, image_url_path=None):
+    """Create a news item, a version, and set the version as the item's
+    current one.
+    """
+    item = Item(brand, slug)
+    db.session.add(item)
+
+    version = ItemVersion(item, creator, title, body)
+    if image_url_path:
+        version.image_url_path = image_url_path
+    db.session.add(version)
+
+    current_version_association = CurrentVersionAssociation(item, version)
+    db.session.add(current_version_association)
+
+    db.session.commit()
+
+    return item
 
 
 def get_items_paginated(brand, page, items_per_page):

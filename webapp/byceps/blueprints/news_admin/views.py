@@ -12,7 +12,6 @@ from operator import attrgetter
 
 from flask import g, request
 
-from ...database import db
 from ...util.framework import create_blueprint, flash_error, flash_success
 from ...util.templating import templated
 from ...util.views import redirect_to
@@ -21,6 +20,7 @@ from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 from ..brand.models import Brand
 from ..news.models import CurrentVersionAssociation, Item, ItemVersion
+from ..news import service
 from ..news import signals
 from ..party.models import Party
 from ..snippet.models.snippet import Snippet
@@ -79,26 +79,17 @@ def create_form(brand_id, *, erroneous_form=None):
 def create(brand_id):
     """Create a news item."""
     brand = get_brand_or_404(brand_id)
+
     form = ItemCreateForm(request.form)
 
-    creator = g.current_user
     slug = form.slug.data.strip().lower()
+    creator = g.current_user
     title = form.title.data.strip()
     body = form.body.data.strip()
     image_url_path = form.image_url_path.data.strip()
 
-    item = Item(brand, slug)
-    db.session.add(item)
-
-    version = ItemVersion(item, creator, title, body)
-    if image_url_path:
-        version.image_url_path = image_url_path
-    db.session.add(version)
-
-    current_version_association = CurrentVersionAssociation(item, version)
-    db.session.add(current_version_association)
-
-    db.session.commit()
+    item = service.create_item(brand, slug, creator, title, body,
+        image_url_path=image_url_path)
 
     flash_success('Die News "{}" wurde angelegt.', item.title)
     signals.item_published.send(None, item=item)
