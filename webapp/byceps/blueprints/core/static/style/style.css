@@ -475,8 +475,8 @@ nav.pagination li.current {
 .news-items .news-item,
 .news-items .pagination {
   border-top: #cccccc solid 1px;
-  margin: 20px -40px 0;
-  padding: 20px 40px 0;
+  margin: 20px 0 0;
+  padding: 20px 0 0;
 }
 .news-items .news-item h1 {
   font-size: 1.4rem;
