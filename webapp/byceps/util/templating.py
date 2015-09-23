@@ -62,9 +62,13 @@ def templated(arg):
     return wrapper
 
 
-def load_template(source):
+def load_template(source, *, globals=None):
     """Load a template from source, using the sandboxed environment."""
     env = create_sandboxed_env()
+
+    if globals is not None:
+        env.globals.update(globals)
+
     return env.from_string(source)
 
 
