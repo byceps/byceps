@@ -482,6 +482,9 @@ nav.pagination li.current {
   font-size: 1.4rem;
   margin-top: 0;
 }
+.news-items .news-item h2 {
+  font-size: 1.1rem;
+}
 
 
 /* terms */
