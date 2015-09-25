@@ -17,7 +17,7 @@ from ...util.templating import templated
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 from ..shop.service import get_orders_placed_by_user
-from ..user.models import User
+from ..user.models import User, UserDetail
 
 from .authorization import UserPermission
 
@@ -40,8 +40,16 @@ def index(page):
 
     search_term = request.args.get('search_term', default='').strip()
     if search_term:
+        ilike_pattern = '%{}%'.format(search_term)
         query = query \
-            .filter(User.screen_name.ilike('%{}%'.format(search_term)))
+            .join(UserDetail) \
+            .filter(
+                db.or_(
+                    User.screen_name.ilike(ilike_pattern),
+                    UserDetail.first_names.ilike(ilike_pattern),
+                    UserDetail.last_name.ilike(ilike_pattern)
+                )
+            )
 
         only = None
 
