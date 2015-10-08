@@ -60,6 +60,7 @@ li [class*=" icon-"] {
 .icon-food:before           { content: "\f0f5"; }
 .icon-hidden:before         { content: "\f070"; }
 .icon-history:before        { content: "\f1da"; }
+.icon-image:before          { content: "\f03e"; }
 .icon-important:before      { content: "\f12a"; }
 .icon-info:before           { content: "\f05a"; }
 .icon-internet:before       { content: "\f0ac"; }

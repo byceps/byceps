@@ -20,6 +20,7 @@
         <th>Veröffentlichung</th>
         <th>Slug</th>
         <th>Titel</th>
+        <th></th>
         <th>Aktionen</th>
       </tr>
     </thead>
@@ -29,6 +30,7 @@
         <td>{{ render_datetime(item.published_at) }}</td>
         <td>{{ item.slug }}</td>
         <td>{{ item.title }}</td>
+        <td>{% if item.current_version.image_url_path %} {{ render_icon('image', title='Bild festgelegt') }}{% endif %}</td>
         <td>
           {%- if g.current_user.has_permission(NewsItemPermission.update) -%}
           <a href="{{ url_for('.update_form', id=item.id) }}" class="action">{{ render_icon('edit') }} bearbeiten</a>
