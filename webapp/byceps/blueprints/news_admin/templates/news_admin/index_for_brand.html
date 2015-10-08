@@ -1,6 +1,7 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
+{% from 'macros/pagination.html' import render_pagination_nav %}
 {% set current_page = 'news_item' %}
 {% set title = '%s - News'|format(brand.title) %}
 
@@ -23,7 +24,7 @@
       </tr>
     </thead>
     <tbody>
-    {%- for item in items|sort(attribute='published_at', reverse=True) %}
+    {%- for item in items.items|sort(attribute='published_at', reverse=True) %}
       <tr>
         <td>{{ render_datetime(item.published_at) }}</td>
         <td>{{ item.slug }}</td>
@@ -43,5 +44,7 @@
     <li><a href="{{ url_for('.create_form', brand_id=brand.id) }}">{{ render_icon('add') }} News erstellen</a></li>
   </ol>
   {%- endif %}
+
+{{ render_pagination_nav(items, '.index_for_brand', {'brand_id': brand.id}) }}
 
 {%- endblock body %}

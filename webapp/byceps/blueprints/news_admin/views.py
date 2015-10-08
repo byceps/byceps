@@ -45,13 +45,21 @@ def index():
     }
 
 
-@blueprint.route('/<brand_id>')
+@blueprint.route('/brands/<brand_id>', defaults={'page': 1})
+@blueprint.route('/brands/<brand_id>/pages/<int:page>')
 @permission_required(NewsItemPermission.list)
 @templated
-def index_for_brand(brand_id):
+def index_for_brand(brand_id, page):
     """List news items for that brand."""
     brand = get_brand_or_404(brand_id)
-    items = Item.query.for_brand(brand).with_current_version().all()
+
+    per_page = request.args.get('per_page', type=int, default=15)
+    query = Item.query \
+        .for_brand(brand) \
+        .with_current_version()
+
+    items = query.paginate(page, per_page)
+
     return {
         'brand': brand,
         'items': items,
