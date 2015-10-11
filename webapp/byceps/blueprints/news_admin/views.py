@@ -56,7 +56,8 @@ def index_for_brand(brand_id, page):
     per_page = request.args.get('per_page', type=int, default=15)
     query = Item.query \
         .for_brand(brand) \
-        .with_current_version()
+        .with_current_version() \
+        .order_by(Item.published_at.desc())
 
     items = query.paginate(page, per_page)
 
