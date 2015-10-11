@@ -430,7 +430,6 @@ def avatar_image_update_form():
 blueprint.add_url_rule(
     '/avatars/<filename>',
     endpoint='avatar_image',
-    methods=['GET'],
     build_only=True)
 
 
