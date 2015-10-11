@@ -68,7 +68,6 @@ def get_user_subscription_states_for_brand(brand):
     """Return subscriptions as (user, state) pairs for the brand."""
     subscription_states = build_query_for_current_state() \
         .filter_by(brand_id=brand.id) \
-        .order_by(User.screen_name) \
         .all()
 
     user_ids = frozenset(map(itemgetter(0), subscription_states))
