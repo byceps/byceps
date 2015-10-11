@@ -71,7 +71,7 @@ class Item(db.Model):
     def image_url(self):
         url_path = self.current_version.image_url_path
         if url_path:
-            return url_for('content_file', filename=url_path, _external=True)
+            return url_for('news_image', filename=url_path, _external=True)
 
     def __repr__(self):
         return ReprBuilder(self) \

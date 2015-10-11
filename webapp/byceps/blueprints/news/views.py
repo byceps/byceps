@@ -22,6 +22,12 @@ blueprint = create_blueprint('news', __name__)
 ITEMS_PER_PAGE = 4
 
 
+blueprint.add_url_rule(
+    '/brand/news/<path:filename>',
+    endpoint='news_image',
+    build_only=True)
+
+
 @blueprint.route('/', defaults={'page': 1})
 @blueprint.route('/pages/<int:page>')
 @templated
