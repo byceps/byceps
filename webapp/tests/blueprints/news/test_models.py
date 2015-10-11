@@ -16,9 +16,12 @@ from tests.helpers import current_party_set
 
 class ItemTestCase(AbstractAppTestCase):
 
+    def setUp(self):
+        super().setUp()
+
     @params(
-        ('without-image', None               , None                                          ),
-        ('with-image'   , 'news/breaking.png', 'http://example.com/content/news/breaking.png'),
+        ('without-image', None          , None                                        ),
+        ('with-image'   , 'breaking.png', 'http://example.com/content/brand/news/breaking.png'),
     )
     def test_image_url(self, slug, image_url_path, expected):
         item = self.create_item_with_version(slug, image_url_path)

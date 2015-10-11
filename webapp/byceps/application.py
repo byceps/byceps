@@ -93,6 +93,10 @@ def create_app(environment_name):
                      methods=['GET'],
                      build_only=True)
 
+    app.add_url_rule('/content/brand/<path:filename>',
+                     endpoint='brand_file',
+                     build_only=True)
+
     return app
 
 
