@@ -1,0 +1,29 @@
+{% extends 'layout/base.html' %}
+{% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
+{% from 'macros/icons.html' import render_icon %}
+{% set current_page = 'party_admin' %}
+{% set title = 'Party erstellen' %}
+
+{% block body %}
+
+  <nav class="breadcrumbs">
+    <ol>
+      <li><a href="{{ url_for('.index') }}">Parties</a></li>
+      <li>{{ render_icon('add') }} {{ title }}</li>
+    </ol>
+  </nav>
+
+  <form action="{{ url_for('.create') }}" method="post">
+    {% call form_fieldset() %}
+      {{ form_field(form.brand_id, required='required', autofocus='autofocus') }}
+      {{ form_field(form.id, maxlength=40, required='required') }}
+      {{ form_field(form.number, type='number', min=0, max=99, required='required', style='width: 3em;') }}
+      {{ form_field(form.title, maxlength=40, required='required') }}
+      {{ form_field(form.starts_at, size=16, maxlength=16, required='required', note='Format: <kbd>TT.MM.JJJJ hh:mm</kbd>'|safe) }}
+      {{ form_field(form.ends_at, size=16, maxlength=16, required='required', note='Format: <kbd>TT.MM.JJJJ hh:mm</kbd>'|safe) }}
+    {% endcall %}
+
+    {{ form_buttons('Erstellen', cancel_url=url_for('.index')) }}
+  </form>
+
+{%- endblock body %}

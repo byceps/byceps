@@ -35,6 +35,14 @@ class Party(db.Model):
     ends_at = db.Column(db.DateTime, nullable=False)
     is_archived = db.Column(db.Boolean, default=False, nullable=False)
 
+    def __init__(self, id, brand, number, title, starts_at, ends_at):
+        self.id = id
+        self.brand = brand
+        self.number = number
+        self.title = title
+        self.starts_at = starts_at
+        self.ends_at = ends_at
+
     @hybrid_property
     def range(self):
         return DateTimeRange(self.starts_at, self.ends_at)
