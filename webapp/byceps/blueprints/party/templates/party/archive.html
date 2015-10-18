@@ -1,0 +1,27 @@
+{% extends 'layout/base.html' %}
+{% from 'macros/datetime.html' import render_datetime_long %}
+{% set current_page = 'party.archive' %}
+{% set title = 'Party-Archiv' %}
+
+{% block body %}
+
+  <h1>{{ title }}</h1>
+
+  <div class="party-archive">
+    {%- for party in parties %}
+    <h2>{{ party.title }}</h2>
+    <p class="meta"><time datetime="{{ party.starts_at|format_date_iso }}">{{ party.starts_at|format_date_long }} – {{ party.ends_at|format_date_long }}</time></p>
+
+    <table class="index wide">
+      <tr>
+        <th><span class="icon-users"></span> Teilnehmer</th>
+      </tr>
+      <tr>
+        <td>{{ attendee_screen_names_by_party[party]|sort|join(', ') }}</td>
+      </tr>
+    </table>
+
+    {%- endfor %}
+  </div>
+
+{%- endblock body %}

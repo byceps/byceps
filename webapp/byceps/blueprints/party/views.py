@@ -16,6 +16,7 @@ from ...util.framework import create_blueprint
 from ...util.templating import templated
 
 from .models import Party
+from . import service
 
 
 blueprint = create_blueprint('party', __name__)
@@ -41,3 +42,17 @@ def get_party(id):
 @templated
 def info():
     """Show information about the current party."""
+
+
+@blueprint.route('/archive')
+@templated
+def archive():
+    """Show archived parties."""
+    archived_parties = service.get_archived_parties()
+    attendee_screen_names_by_party \
+        = service.get_attendee_screen_names_by_party(archived_parties)
+
+    return {
+        'parties': archived_parties,
+        'attendee_screen_names_by_party': attendee_screen_names_by_party,
+    }
