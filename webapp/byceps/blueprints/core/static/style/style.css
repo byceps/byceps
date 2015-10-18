@@ -704,7 +704,6 @@ hr {
 
 .avatar {
   display: inline-block;
-  max-height: 152px;
   max-width: 112px;
   overflow: hidden;
   position: relative;
@@ -712,6 +711,7 @@ hr {
 }
 .avatar img {
   border: #cccccc solid 1px;
+  display: block;
 }
 .avatar .orga-overlay {
   background-color: rgba(255, 255, 255, 0.5);
