@@ -8,6 +8,7 @@ byceps.blueprints.news_admin.views
 :License: Modified BSD, see LICENSE for details.
 """
 
+from datetime import date
 from operator import attrgetter
 
 from flask import g, request
@@ -74,7 +75,11 @@ def create_form(brand_id, *, erroneous_form=None):
     """Show form to create a news item."""
     brand = get_brand_or_404(brand_id)
 
-    form = erroneous_form if erroneous_form else ItemCreateForm()
+    if erroneous_form:
+        form = erroneous_form
+    else:
+        slug_prefix = date.today().strftime('%Y-%m-%d-')
+        form = ItemCreateForm(slug=slug_prefix)
 
     return {
         'brand': brand,
