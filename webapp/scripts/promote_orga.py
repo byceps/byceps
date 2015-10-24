@@ -20,7 +20,7 @@ from bootstrap.validators import validate_brand
 @click.argument('brand', callback=validate_brand)
 @click.argument('screen_name')
 def execute(brand, screen_name):
-    click.echo('Promoting user "{}" to orga for brand {} … '
+    click.echo('Promoting user "{}" to orga for brand {} ... '
                .format(screen_name, brand.title), nl=False)
 
     user = get_user(screen_name)

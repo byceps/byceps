@@ -25,7 +25,7 @@ def execute(party, screen_name, team_id):
     user = get_user(screen_name)
     team = get_orga_team(team_id)
 
-    click.echo('Assigning user "{}" to team "{}" … '.format(screen_name, team.title), nl=False)
+    click.echo('Assigning user "{}" to team "{}" ... '.format(screen_name, team.title), nl=False)
 
     assign_user_to_orga_team(user, team, party)
     db.session.commit()
