@@ -93,6 +93,10 @@ Activate it (but don't change into its path):
 
     $ . ./venv/bin/activate
 
+Note that the first dot is the `dot command`_, followed by a relative
+file name (which is written as explicitly relative to the current path,
+``./``).
+
 Whenever you want to activate the virtual environment, make sure to do
 that either in the path in which you have created it using the above
 command, or adjust the path to reference it relatively (e.g.
@@ -117,6 +121,8 @@ Install the Python depdendencies via pip_:
 .. code-block:: sh
 
     (venv)$ pip install -r requirements.txt
+
+.. _dot command: https://en.wikipedia.org/wiki/Dot_(Unix)
 
 
 Database
