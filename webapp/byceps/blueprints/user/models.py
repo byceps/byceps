@@ -246,19 +246,6 @@ class User(db.Model):
 
         return any(flag.brand == g.party.brand for flag in self.orga_flags)
 
-    @property
-    def orga_team_membership_for_current_party(self):
-        memberships_for_current_party = list(filter(
-            lambda m: m.belongs_to_current_party,
-            self.orga_team_memberships))
-
-        if len(memberships_for_current_party) > 2:
-            raise Exception(
-                'A user must only be part of one orga team per party.')
-
-        if memberships_for_current_party:
-            return memberships_for_current_party[0]
-
     def __eq__(self, other):
         return (other is not None) and (self.id == other.id)
 
