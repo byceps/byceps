@@ -55,7 +55,7 @@ clone the Git repository from GitHub:
 
     $ git clone https://github.com/homeworkprod/byceps.git
 
-A new directory, `byceps`, should have been created.
+A new directory, ``byceps``, should have been created.
 
 This way, it should be easy to pull in future updates to BYCEPS using
 Git. (And there currently are no release tarballs anyway.)
@@ -75,7 +75,7 @@ pip_.
 .. _pip: http://www.pip-installer.org/
 
 It is recommended to do create the virtual environment inside of
-BYCEPS's `webapp` path, so go there first:
+BYCEPS's ``webapp`` path, so go there first:
 
 .. code-block:: sh
 
@@ -100,8 +100,8 @@ file name (which is written as explicitly relative to the current path,
 Whenever you want to activate the virtual environment, make sure to do
 that either in the path in which you have created it using the above
 command, or adjust the path to reference it relatively (e.g.
-`../../venv/bin/activate`) or absolutely (e.g.
-`/var/www/byceps/webapp/venv/bin/activate`).
+``../../venv/bin/activate``) or absolutely (e.g.
+``/var/www/byceps/webapp/venv/bin/activate``).
 
 Make sure the correct version of Python is used:
 
@@ -176,7 +176,7 @@ Load the 'pgcrypto' extension:
 
     postgres=# CREATE EXTENSION pgcrypto;
 
-Ensure that the function 'gen_random_uuid()' is available now:
+Ensure that the function ``gen_random_uuid()`` is available now:
 
 .. code-block:: psql
 
