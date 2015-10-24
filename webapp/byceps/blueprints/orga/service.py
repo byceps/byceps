@@ -12,12 +12,12 @@ from flask import g
 
 from ...database import db
 
-from .models import Membership, OrgaTeam
+from .models import Membership
 
 
 def get_team_memberships_for_current_party():
     return Membership.query \
-        .join(OrgaTeam).filter(OrgaTeam.party == g.party) \
+        .for_party(g.party) \
         .options(
             db.joinedload('orga_team'),
             db.joinedload('user').load_only('id', 'screen_name', 'avatar_image_created_at', '_avatar_image_type'),
@@ -31,5 +31,5 @@ def find_orga_team_membership_for_current_party(user):
     """Return the user's membership in an orga team of the current party."""
     return Membership.query \
         .filter_by(user=user) \
-        .join(OrgaTeam).filter(OrgaTeam.party == g.party) \
+        .for_party(g.party) \
         .one_or_none()

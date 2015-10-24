@@ -57,12 +57,19 @@ class OrgaTeam(db.Model):
             .build()
 
 
+class MembershipQuery(BaseQuery):
+
+    def for_party(self, party):
+        return self.join(OrgaTeam).filter_by(party=party)
+
+
 class Membership(db.Model):
     """The assignment of a user to an organizer team."""
     __tablename__ = 'orga_team_memberships'
     __table_args__ = (
         db.UniqueConstraint('orga_team_id', 'user_id'),
     )
+    query_class = MembershipQuery
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     orga_team_id = db.Column(db.Uuid, db.ForeignKey('orga_teams.id'), index=True, nullable=False)
