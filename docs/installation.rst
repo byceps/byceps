@@ -77,6 +77,12 @@ Make sure the correct version of Python is used:
     (venv)$ python -V
     Python 3.4.2
 
+It's probably a good idea to update pip_ to the current version:
+
+.. code-block:: sh
+
+    (venv)$ pip install --upgrade pip
+
 Install the Python depdendencies via pip_:
 
 .. code-block:: sh
