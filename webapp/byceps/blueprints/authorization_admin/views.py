@@ -47,7 +47,7 @@ def role_index():
     roles = Role.query \
         .options(
             db.undefer('title'),
-            db.joinedload_all('user_roles.user')
+            db.joinedload('user_roles').joinedload('user')
         ) \
         .all()
     return {'roles': roles}

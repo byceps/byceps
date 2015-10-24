@@ -54,7 +54,9 @@ def index_for_party(party_id):
     party = Party.query.get_or_404(party_id)
     snippets = Snippet.query \
         .for_party(party) \
-        .options(db.joinedload_all('current_version_association.version')) \
+        .options(
+            db.joinedload('current_version_association').joinedload('version')
+        ) \
         .all()
     mountpoints = Mountpoint.query.for_party(party).all()
     return {

@@ -29,7 +29,7 @@ class ItemQuery(BaseQuery):
 
     def with_current_version(self):
         return self.options(
-            db.joinedload_all('current_version_association.version'),
+            db.joinedload('current_version_association').joinedload('version'),
         )
 
 

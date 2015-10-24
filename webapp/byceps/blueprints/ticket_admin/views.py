@@ -48,7 +48,7 @@ def index_for_party(party_id):
         .options(
             db.joinedload('category'),
             db.joinedload('owned_by'),
-            db.joinedload_all('occupied_seat.area'),
+            db.joinedload('occupied_seat').joinedload('area'),
         ) \
         .order_by(Ticket.created_at) \
         .all()

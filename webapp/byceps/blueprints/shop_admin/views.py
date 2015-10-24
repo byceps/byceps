@@ -78,8 +78,8 @@ def article_view(id):
     article = Article.query \
         .options(
             db.joinedload('party'),
-            db.joinedload_all('articles_attached_to.article'),
-            db.joinedload_all('attached_articles.article'),
+            db.joinedload('articles_attached_to').joinedload('article'),
+            db.joinedload('attached_articles').joinedload('article'),
         ) \
         .get_or_404(id)
 
@@ -104,8 +104,8 @@ def article_view_ordered(id):
     order_items = OrderItem.query \
         .filter_by(article=article) \
         .options(
-            db.joinedload_all('order.placed_by.detail'),
-            db.joinedload_all('order.party'),
+            db.joinedload('order.placed_by').joinedload('detail'),
+            db.joinedload('order').joinedload('party'),
         ) \
         .all()
 

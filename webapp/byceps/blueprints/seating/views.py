@@ -34,7 +34,7 @@ def view_area(slug):
     area = Area.query \
         .for_current_party() \
         .filter_by(slug=slug) \
-        .options(db.joinedload_all('seats.category')) \
+        .options(db.joinedload('seats').joinedload('category')) \
         .first_or_404()
 
     ticket_management_enabled = get_ticket_management_enabled()
