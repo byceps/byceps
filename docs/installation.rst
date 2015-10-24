@@ -45,6 +45,22 @@ Refer to the Debian documentation for further details.
 .. _Debian Linux: https://www.debian.org/
 
 
+BYCEPS
+------
+
+Grab a copy of BYCEPS itself. For now, the best way probably is to
+clone the Git repository from GitHub:
+
+.. code-block:: sh
+
+    $ git clone https://github.com/homeworkprod/byceps.git
+
+A new directory, `byceps`, should have been created.
+
+This way, it should be easy to pull in future updates to BYCEPS using
+Git. (And there currently are no release tarballs anyway.)
+
+
 Virtual Environment
 -------------------
 
@@ -58,17 +74,30 @@ pip_.
 .. _virtualenv: http://www.virtualenv.org/
 .. _pip: http://www.pip-installer.org/
 
-Create a virtual environment (named "venv"):
+It is recommended to do create the virtual environment inside of
+BYCEPS's `webapp` path, so go there first:
+
+.. code-block:: sh
+
+    $ cd byceps/webapp
+
+Then create a virtual environment (named "venv"):
 
 .. code-block:: sh
 
     $ pyvenv venv
 
-Activate it:
+Activate it (but don't change into its path):
 
 .. code-block:: sh
 
     $ . ./venv/bin/activate
+
+Whenever you want to activate the virtual environment, make sure to do
+that either in the path in which you have created it using the above
+command, or adjust the path to reference it relatively (e.g.
+`../../venv/bin/activate`) or absolutely (e.g.
+`/var/www/byceps/webapp/venv/bin/activate`).
 
 Make sure the correct version of Python is used:
 
