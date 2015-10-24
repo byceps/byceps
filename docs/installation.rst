@@ -85,7 +85,7 @@ Then create a virtual environment (named "venv"):
 
 .. code-block:: sh
 
-    $ pyvenv venv
+    $ pyvenv-3.4 venv
 
 Activate it (but don't change into its path):
 
