@@ -9,6 +9,7 @@ byceps.blueprints.orga_admin.forms
 """
 
 from wtforms import StringField
+from wtforms.validators import Length
 
 from ...util.l10n import LocalizedForm
 
@@ -19,3 +20,7 @@ class MembershipUpdateForm(LocalizedForm):
 
 class OrgaFlagCreateForm(LocalizedForm):
     user_id = StringField('Benutzer-ID')
+
+
+class OrgaTeamCreateForm(LocalizedForm):
+    title = StringField('Titel', validators=[Length(min=1, max=40)])

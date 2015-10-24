@@ -3,7 +3,7 @@
 {% from 'macros/misc.html' import render_with_fallback %}
 {% from 'macros/user_admin.html' import render_user_admin_link %}
 {% set current_page = 'orga_admin.teams' %}
-{% set title = 'Orgateams' %}
+{% set title = 'Orga-Teams' %}
 
 {% block head %}
     <script>
@@ -53,5 +53,11 @@
     {%- endfor %}
     </tbody>
   </table>
+
+  {%- if g.current_user.has_permission(OrgaTeamPermission.create) %}
+  <ol class="actions">
+    <li><a href="{{ url_for('.team_create_form', party_id=party.id) }}">{{ render_icon('add') }} Team erstellen</a></li>
+  </ol>
+  {%- endif %}
 
 {%- endblock body %}

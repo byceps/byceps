@@ -27,7 +27,7 @@ from ..user.models import User
 
 from .authorization import OrgaBirthdayPermission, OrgaDetailPermission, \
     OrgaTeamPermission
-from .forms import MembershipUpdateForm, OrgaFlagCreateForm
+from .forms import MembershipUpdateForm, OrgaFlagCreateForm, OrgaTeamCreateForm
 from .service import collect_orgas_with_next_birthdays, get_organizers_for_brand
 
 
@@ -183,6 +183,42 @@ def teams_for_party(party_id):
         'party': party,
         'teams': teams,
     }
+
+
+@blueprint.route('/teams/<party_id>/create')
+@permission_required(OrgaTeamPermission.create)
+@templated
+def team_create_form(party_id, erroneous_form=None):
+    """Show form to create an organizer team for a party."""
+    party = Party.query.get_or_404(party_id)
+
+    form = erroneous_form if erroneous_form else OrgaTeamCreateForm()
+
+    return {
+        'party': party,
+        'form': form,
+    }
+
+
+@blueprint.route('/teams/<party_id>', methods=['POST'])
+@permission_required(OrgaTeamPermission.create)
+def team_create(party_id):
+    """Create an organizer team for a party."""
+    party = Party.query.get_or_404(party_id)
+
+    form = OrgaTeamCreateForm(request.form)
+    if not form.validate():
+        return team_create_form(party_id, form)
+
+    title = form.title.data.strip()
+
+    team = OrgaTeam(party, title)
+    db.session.add(team)
+    db.session.commit()
+
+    flash_success('Das Team "{}" wurde für die Party "{}" erstellt.'
+                  .format(team.title, team.party.title))
+    return redirect_to('.teams_for_party', party_id=party.id)
 
 
 @blueprint.route('/memberships/<uuid:id>/update')

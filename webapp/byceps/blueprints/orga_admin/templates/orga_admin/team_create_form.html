@@ -1,0 +1,24 @@
+{% extends 'layout/base.html' %}
+{% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
+{% from 'macros/icons.html' import render_icon %}
+{% set current_page = 'orga_admin.teams' %}
+{% set title = 'Orga-Team erstellen' %}
+
+{% block body %}
+
+  <nav class="breadcrumbs">
+    <ol>
+      <li><a href="{{ url_for('.teams') }}">{{ party.title }}</a></li>
+      <li>{{ render_icon('add') }} {{ title }}</li>
+    </ol>
+  </nav>
+
+  <form action="{{ url_for('.team_create', party_id=party.id) }}" method="post">
+    {% call form_fieldset() %}
+      {{ form_field(form.title, maxlength=40, required='required', autofocus='autofocus') }}
+    {% endcall %}
+
+    {{ form_buttons('Team erstellen', cancel_url=url_for('.teams_for_party', party_id=party.id)) }}
+  </form>
+
+{%- endblock body %}
