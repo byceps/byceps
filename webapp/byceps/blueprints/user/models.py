@@ -21,7 +21,7 @@ from werkzeug.security import check_password_hash, \
     generate_password_hash as _generate_password_hash
 
 from ...config import get_site_mode
-from ...database import BaseQuery, db, generate_uuid
+from ...database import db, generate_uuid
 from ...util.datetime import calculate_age, calculate_days_until, MonthDay
 from ...util.image import ImageType
 from ...util.instances import ReprBuilder
