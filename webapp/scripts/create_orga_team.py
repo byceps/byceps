@@ -13,13 +13,15 @@ from byceps.database import db
 
 from bootstrap.helpers import create_orga_team
 from bootstrap.util import app_context, get_config_name_from_env
+from bootstrap.validators import validate_party
 
 
 @click.command()
+@click.argument('party', callback=validate_party)
 @click.argument('title')
-def execute(title):
-    click.echo('Creating orga team "{}" … '.format(title), nl=False)
-    create_orga_team(title)
+def execute(party, title):
+    click.echo('Creating orga team "{}" for party "{}" ... '.format(title, party.title), nl=False)
+    create_orga_team(party, title)
     db.session.commit()
     click.secho('done.', fg='green')
 

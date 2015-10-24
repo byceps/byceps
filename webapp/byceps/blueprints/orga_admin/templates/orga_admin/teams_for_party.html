@@ -34,7 +34,7 @@
     </thead>
     <tbody>
     {%- for team in teams|sort(attribute='title') %}
-      {%- set memberships = team.memberships_for_party(party)|list %}
+      {%- set memberships = team.memberships|list %}
       {%- for membership in memberships|sort(attribute='user.screen_name') %}
         {%- set member_total = memberships|length %}
       <tr>

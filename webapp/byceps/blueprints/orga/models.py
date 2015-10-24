@@ -9,7 +9,6 @@ byceps.blueprints.orga.models
 """
 
 from flask import g
-from sqlalchemy.ext.associationproxy import association_proxy
 
 from ...database import BaseQuery, db, generate_uuid
 from ...util.instances import ReprBuilder
@@ -36,69 +35,55 @@ class OrgaFlag(db.Model):
 
 
 class OrgaTeam(db.Model):
-    """A group of organizers."""
+    """A group of organizers for a single party."""
     __tablename__ = 'orga_teams'
+    __table_args__ = (
+        db.UniqueConstraint('party_id', 'title'),
+    )
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    title = db.Column(db.Unicode(40), unique=True)
+    party_id = db.Column(db.Unicode(20), db.ForeignKey('parties.id'), index=True, nullable=False)
+    party = db.relationship(Party)
+    title = db.Column(db.Unicode(40), nullable=False)
 
-    members = association_proxy('memberships', 'user')
-
-    def __init__(self, title):
+    def __init__(self, party, title):
+        self.party = party
         self.title = title
-
-    def memberships_for_party(self, party):
-        return filter(lambda m: m.party == party, self.memberships)
-
-    @property
-    def memberships_for_current_party(self):
-        return filter(lambda m: m.belongs_to_current_party, self.memberships)
 
     def __repr__(self):
         return ReprBuilder(self) \
             .add_with_lookup('id') \
+            .add_with_lookup('party_id') \
             .add_with_lookup('title') \
             .add_custom('{:d} members'.format(len(self.members))) \
             .build()
-
-
-class MembershipQuery(BaseQuery):
-
-    def for_current_party(self):
-        return self.filter_by(party_id=g.party.id)
 
 
 class Membership(db.Model):
     """The assignment of a user to an organizer team."""
     __tablename__ = 'orga_team_memberships'
     __table_args__ = (
-        db.UniqueConstraint('party_id', 'user_id'),
+        db.UniqueConstraint('orga_team_id', 'user_id'),
     )
-    query_class = MembershipQuery
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    orga_team_id = db.Column(db.Uuid, db.ForeignKey('orga_teams.id'))
+    orga_team_id = db.Column(db.Uuid, db.ForeignKey('orga_teams.id'), index=True, nullable=False)
     orga_team = db.relationship(OrgaTeam, collection_class=set, backref='memberships')
-    party_id = db.Column(db.Unicode(20), db.ForeignKey('parties.id'))
-    party = db.relationship(Party)
-    user_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
+    user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=False)
     user = db.relationship(User, collection_class=set, backref='orga_team_memberships')
     duties = db.Column(db.Unicode(40))
 
+    def __init__(self, orga_team, user):
+        self.orga_team = orga_team
+        self.user = user
+
     @property
     def belongs_to_current_party(self):
-        return self.party == g.party
+        return self.orga_team.party == g.party
 
     def __repr__(self):
         return ReprBuilder(self) \
             .add_with_lookup('id') \
             .add_with_lookup('orga_team') \
-            .add_with_lookup('party') \
             .add_with_lookup('user') \
             .build()
-
-
-def get_orgas_for_current_party():
-    memberships = Membership.query.for_current_party().all()
-    for m in memberships:
-        yield m.user

@@ -14,20 +14,18 @@ from byceps.database import db
 from bootstrap.helpers import assign_user_to_orga_team, get_orga_team, \
     get_user
 from bootstrap.util import app_context, get_config_name_from_env
-from bootstrap.validators import validate_party
 
 
 @click.command()
-@click.argument('party', callback=validate_party)
 @click.argument('screen_name')
 @click.argument('team_id')
-def execute(party, screen_name, team_id):
+def execute(screen_name, team_id):
     user = get_user(screen_name)
     team = get_orga_team(team_id)
 
     click.echo('Assigning user "{}" to team "{}" ... '.format(screen_name, team.title), nl=False)
 
-    assign_user_to_orga_team(user, team, party)
+    assign_user_to_orga_team(user, team)
     db.session.commit()
 
     click.secho('done.', fg='green')

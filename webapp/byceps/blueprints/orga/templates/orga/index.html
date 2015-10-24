@@ -35,7 +35,8 @@
 {{ render_snippet('orga_team_intro', ignore_if_unknown=True)|safe }}
 
   <ol class="orga-overview">
-    {%- for user in orgas|sort(attribute='screen_name') %}
+    {%- for membership in memberships|sort(attribute='user.screen_name') %}
+    {%- set user = membership.user %}
     <li>
       <div>
         {%- if user.has_avatar_image %}
@@ -45,17 +46,12 @@
         {%- endif %}
       </div>
       <p>
-        <strong>{{ user.screen_name }}</strong>
+        <strong>{{ user.screen_name }}</strong><br>
         {%- if user.detail.full_name %}
-        <br/>
-        {{ user.detail.full_name }}
-        {%- endif %}
-        {%- set orga_team_membership = user.orga_team_membership_for_current_party %}
-        {%- if orga_team_membership %}
-        <br/>
-        {{ orga_team_membership.orga_team.title }}
-        {%- if orga_team_membership.duties %} ({{ orga_team_membership.duties }}){% endif %}
-        {%- endif %}
+        {{ user.detail.full_name }}<br>
+        {%- endif -%}
+        {{ membership.orga_team.title }}
+        {%- if membership.duties %} ({{ membership.duties }}){% endif %}
       </p>
     </li>
     {%- endfor %}

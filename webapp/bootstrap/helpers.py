@@ -75,13 +75,13 @@ def promote_orga(brand, user):
 
 
 @add_to_database
-def create_orga_team(title):
-    return OrgaTeam(title)
+def create_orga_team(party, title):
+    return OrgaTeam(party, title)
 
 
 @add_to_database
-def assign_user_to_orga_team(user, orga_team, party, *, duties=None):
-    membership = OrgaTeamMembership(orga_team=orga_team, party=party, user=user)
+def assign_user_to_orga_team(user, orga_team, *, duties=None):
+    membership = OrgaTeamMembership(orga_team, user)
     if duties:
         membership.duties = duties
     return membership
