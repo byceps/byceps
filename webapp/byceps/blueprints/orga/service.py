@@ -29,13 +29,7 @@ def get_team_memberships_for_current_party():
 
 def find_orga_team_membership_for_current_party(user):
     """Return the user's membership in an orga team of the current party."""
-    memberships_for_current_party = list(filter(
-        lambda m: m.orga_team.party == g.party,
-        user.orga_team_memberships))
-
-    if len(memberships_for_current_party) > 2:
-        raise Exception(
-            'A user must only be part of one orga team per party.')
-
-    if memberships_for_current_party:
-        return memberships_for_current_party[0]
+    return Membership.query \
+        .filter_by(user=user) \
+        .join(OrgaTeam).filter(OrgaTeam.party == g.party) \
+        .one_or_none()
