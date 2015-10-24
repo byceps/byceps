@@ -1,6 +1,6 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/icons.html' import render_icon %}
-{% from 'macros/misc.html' import render_with_fallback %}
+{% from 'macros/misc.html' import render_faint, render_with_fallback %}
 {% from 'macros/user_admin.html' import render_user_admin_link %}
 {% set current_page = 'orga_admin.teams' %}
 {% set title = 'Orga-Teams' %}
@@ -35,8 +35,8 @@
     <tbody>
     {%- for team in teams|sort(attribute='title') %}
       {%- set memberships = team.memberships|list %}
+      {%- set member_total = memberships|length %}
       {%- for membership in memberships|sort(attribute='user.screen_name') %}
-        {%- set member_total = memberships|length %}
       <tr>
         {%- if loop.first %}
         <td{% if member_total > 1 %} rowspan="{{ member_total }}"{% endif %}><strong>{{ team.title }}</strong></td>
@@ -48,6 +48,14 @@
           <a href="{{ url_for('.membership_update_form', id=membership.id) }}" class="action" title="Aufgabe bearbeiten">{{ render_icon('edit') }}</a>
           <a href="{{ url_for('.membership_remove', id=membership.id) }}" class="action membership-remove" title="Person aus Team entfernen">{{ render_icon('remove') }}</a>
         </td>
+      </tr>
+      {%- else %}
+      <tr>
+        <td><strong>{{ team.title }}</strong></td>
+        <td class="centered">{{ memberships|length }}</td>
+        <td>{{ render_faint('keine') }}</td>
+        <td></td>
+        <td></td>
       </tr>
       {%- endfor %}
     {%- endfor %}
