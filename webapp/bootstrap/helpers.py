@@ -75,8 +75,8 @@ def promote_orga(brand, user):
 
 
 @add_to_database
-def create_orga_team(id, title):
-    return OrgaTeam(id=id, title=title)
+def create_orga_team(title):
+    return OrgaTeam(title)
 
 
 @add_to_database

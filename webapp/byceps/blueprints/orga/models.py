@@ -39,10 +39,13 @@ class OrgaTeam(db.Model):
     """A group of organizers."""
     __tablename__ = 'orga_teams'
 
-    id = db.Column(db.Unicode(40), primary_key=True)
+    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     title = db.Column(db.Unicode(40), unique=True)
 
     members = association_proxy('memberships', 'user')
+
+    def __init__(self, title):
+        self.title = title
 
     def memberships_for_party(self, party):
         return filter(lambda m: m.party == party, self.memberships)
@@ -74,7 +77,7 @@ class Membership(db.Model):
     query_class = MembershipQuery
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    orga_team_id = db.Column(db.Unicode(40), db.ForeignKey('orga_teams.id'))
+    orga_team_id = db.Column(db.Uuid, db.ForeignKey('orga_teams.id'))
     orga_team = db.relationship(OrgaTeam, collection_class=set, backref='memberships')
     party_id = db.Column(db.Unicode(20), db.ForeignKey('parties.id'))
     party = db.relationship(Party)

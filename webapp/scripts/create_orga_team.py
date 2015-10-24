@@ -16,11 +16,10 @@ from bootstrap.util import app_context, get_config_name_from_env
 
 
 @click.command()
-@click.argument('id')
 @click.argument('title')
-def execute(id, title):
+def execute(title):
     click.echo('Creating orga team "{}" … '.format(title), nl=False)
-    create_orga_team(id, title)
+    create_orga_team(title)
     db.session.commit()
     click.secho('done.', fg='green')
 

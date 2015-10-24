@@ -25,7 +25,6 @@
   <table class="index wide">
     <thead>
       <tr>
-        <th>ID</th>
         <th>Name</th>
         <th>Mitgliederzahl</th>
         <th>Mitglieder</th>
@@ -40,7 +39,6 @@
         {%- set member_total = memberships|length %}
       <tr>
         {%- if loop.first %}
-        <td{% if member_total > 1 %} rowspan="{{ member_total }}"{% endif %}>{{ team.id }}</td>
         <td{% if member_total > 1 %} rowspan="{{ member_total }}"{% endif %}><strong>{{ team.title }}</strong></td>
         <td{% if member_total > 1 %} rowspan="{{ member_total }}"{% endif %} class="centered">{{ memberships|length }}</td>
         {%- endif %}
