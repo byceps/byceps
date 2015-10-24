@@ -8,8 +8,6 @@ byceps.blueprints.orga.models
 :License: Modified BSD, see LICENSE for details.
 """
 
-from flask import g
-
 from ...database import BaseQuery, db, generate_uuid
 from ...util.instances import ReprBuilder
 
@@ -76,10 +74,6 @@ class Membership(db.Model):
     def __init__(self, orga_team, user):
         self.orga_team = orga_team
         self.user = user
-
-    @property
-    def belongs_to_current_party(self):
-        return self.orga_team.party == g.party
 
     def __repr__(self):
         return ReprBuilder(self) \
