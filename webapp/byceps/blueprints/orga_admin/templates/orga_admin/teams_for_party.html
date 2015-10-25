@@ -65,7 +65,7 @@
       {%- set memberships = team.memberships|list %}
       {%- set member_total = memberships|length %}
       <tr>
-        <td>
+        <td class="nowrap">
           <strong>{{ team.title }}</strong><br>
           {{ render_faint('%d %s'|format(member_total, 'Person' if member_total == 1 else 'Personen')) }}
         </td>
