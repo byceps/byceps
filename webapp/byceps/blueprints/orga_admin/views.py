@@ -280,7 +280,6 @@ def membership_remove(id):
     membership = Membership.query.get_or_404(id)
 
     user = membership.user
-    party = membership.party
     team = membership.orga_team
 
     db.session.delete(membership)
@@ -288,8 +287,8 @@ def membership_remove(id):
 
     flash_success(
         '{} wurde für die Veranstaltung "{}" aus dem Team "{}" entfernt.' \
-            .format(user.screen_name, party.title, team.title))
-    return url_for('.teams_for_party', party_id=party.id)
+            .format(user.screen_name, team.party.title, team.title))
+    return url_for('.teams_for_party', party_id=team.party.id)
 
 
 @blueprint.route('/birthdays')
