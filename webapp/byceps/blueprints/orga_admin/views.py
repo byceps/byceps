@@ -285,9 +285,8 @@ def membership_remove(id):
     db.session.delete(membership)
     db.session.commit()
 
-    flash_success(
-        '{} wurde für die Veranstaltung "{}" aus dem Team "{}" entfernt.' \
-            .format(user.screen_name, team.party.title, team.title))
+    flash_success('{} wurde aus dem Team "{}" entfernt.'
+                  .format(user.screen_name, team.title))
     return url_for('.teams_for_party', party_id=team.party.id)
 
 
