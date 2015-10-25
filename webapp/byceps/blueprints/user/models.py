@@ -68,7 +68,7 @@ class AnonymousUser(object):
         return False
 
     @property
-    def is_orga_for_current_brand(self):
+    def is_orga_for_current_party(self):
         return False
 
     def __eq__(self, other):
@@ -239,12 +239,12 @@ class User(db.Model):
         return bool(self.orga_flags)
 
     @property
-    def is_orga_for_current_brand(self):
+    def is_orga_for_current_party(self):
         if get_site_mode().is_admin():
-            # No orga flags for brands or parties are available in admin mode.
+            # Current party is not defined in admin mode.
             return False
 
-        return any(flag.brand == g.party.brand for flag in self.orga_flags)
+        return bool(self.orga_team_memberships)
 
     def __eq__(self, other):
         return (other is not None) and (self.id == other.id)

@@ -22,7 +22,7 @@ def get_team_memberships_for_current_party():
             db.joinedload('orga_team'),
             db.joinedload('user').load_only('id', 'screen_name', 'avatar_image_created_at', '_avatar_image_type'),
             db.joinedload('user').joinedload('detail').load_only('first_names', 'last_name'),
-            db.joinedload('user').joinedload('orga_flags'),
+            db.joinedload('user').joinedload('orga_team_memberships'),
         ) \
         .all()
 

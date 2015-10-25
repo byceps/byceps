@@ -6,7 +6,7 @@
   {%- if user.has_avatar_image %}
 <div class="avatar">
   <img src="{{ url_for('user.avatar_image', filename=user.avatar_image_filename) }}" alt="Avatarbild von {{ user.screen_name }}"/>
-  {%- if user.is_orga_for_current_brand %}
+  {%- if user.is_orga_for_current_party %}
   <div class="orga-overlay">Organizer</div>
   {%- endif %}
 </div>
