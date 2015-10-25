@@ -41,8 +41,21 @@
       <td>{{ render_icon('enabled' if user.has_avatar_image else 'disabled') }}</td>
     </tr>
     <tr>
-      <th>Orga</th>
-      <td>{{ render_icon('enabled' if user.is_orga_for_any_brand else 'disabled') }}</td>
+      <th>Orga-Teams</th>
+      <td>
+        {%- if user.orga_team_memberships %}
+        <ol>
+          {%- for membership in user.orga_team_memberships|sort(attribute='orga_team.party.starts_at', reverse=True) %}
+          <li>
+            {{- membership.orga_team.party.title }} – {{ membership.orga_team.title }}
+            {%- if membership.duties %} ({{ membership.duties }}){% endif -%}
+          </li>
+          {%- endfor %}
+        </ol>
+        {%- else %}
+          {{- render_faint('keine') -}}
+        {%- endif %}
+      </td>
     </tr>
   </table>
 
