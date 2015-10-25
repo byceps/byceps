@@ -540,12 +540,14 @@ def login():
         # Authentication failed.
         abort(403)
 
-    if get_site_mode().is_admin() and not user.is_orga_for_any_brand:
+    in_admin_mode = get_site_mode().is_admin()
+
+    if in_admin_mode and not user.is_orga_for_any_brand:
         # Authenticated user must be an orga to be allowed to enter the
         # admin area but isn't.
         abort(403)
 
-    if not get_site_mode().is_admin():
+    if not in_admin_mode:
         terms_version = terms_service.get_current_version()
         if not terms_service.has_user_accepted_version(user, terms_version):
             verification_token = verification_token_service \
