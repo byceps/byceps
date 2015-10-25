@@ -10,6 +10,16 @@
       .teams td:last-child {
         padding-right: 0;
       }
+      .teams .empty,
+      .teams .empty-actions {
+        vertical-align: middle;
+      }
+      .teams .empty {
+        padding-left: 2em;
+      }
+      .teams .empty-actions {
+        text-align: right;
+      }
       .members {
         display: flex;
         flex-wrap: wrap;
@@ -34,6 +44,7 @@
     </style>
     <script>
       $(function() {
+        confirmed_delete_on_click('a.team-delete', 'Team entfernen?');
         confirmed_delete_on_click('a.membership-remove', 'Person aus dem Team entfernen?');
       });
     </script>
@@ -58,7 +69,8 @@
           <strong>{{ team.title }}</strong><br>
           {{ render_faint('%d %s'|format(member_total, 'Person' if member_total == 1 else 'Personen')) }}
         </td>
-        <td>
+        {%- if memberships %}
+        <td colspan="2">
           <ol class="members">
           {%- for membership in memberships|sort(attribute='user.screen_name') %}
             <li>
@@ -71,11 +83,13 @@
                 <a href="{{ url_for('.membership_remove', id=membership.id) }}" class="membership-remove" title="Person aus Team entfernen">{{ render_icon('remove') }}</a>
               </div>
             </li>
-            {%- else %}
-            <li>{{ render_faint('keine') }}</li>
           {%- endfor %}
           </ol>
         </td>
+        {%- else %}
+        <td class="empty">{{ render_faint('keine Mitglieder') }}</td>
+        <td class="empty-actions"><a href="{{ url_for('.team_delete', team_id=team.id) }}" class="action team-delete" title="Team entfernen">{{ render_icon('remove') }} Team entfernen</a></td>
+        {%- endif %}
       </tr>
     {%- endfor %}
     </tbody>

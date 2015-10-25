@@ -10,7 +10,7 @@ byceps.blueprints.orga_admin.views
 
 from operator import attrgetter
 
-from flask import request, url_for
+from flask import abort, request, url_for
 
 from ...database import db
 from ...util.export import serialize_to_csv
@@ -219,6 +219,26 @@ def team_create(party_id):
     flash_success('Das Team "{}" wurde für die Party "{}" erstellt.'
                   .format(team.title, team.party.title))
     return redirect_to('.teams_for_party', party_id=party.id)
+
+
+@blueprint.route('/teams/<team_id>', methods=['DELETE'])
+@permission_required(OrgaTeamPermission.delete)
+@respond_no_content_with_location
+def team_delete(team_id):
+    """Delete the team."""
+    team = OrgaTeam.query.get_or_404(team_id)
+
+    if team.memberships:
+        abort(403, 'Orga team cannot be deleted as it has members.')
+
+    party = team.party
+    title = team.title
+
+    db.session.delete(team)
+    db.session.commit()
+
+    flash_success('Das Team "{}" wurde gelöscht.'.format(title))
+    return url_for('.teams_for_party', party_id=party.id)
 
 
 @blueprint.route('/memberships/<uuid:id>/update')
