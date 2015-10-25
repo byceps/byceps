@@ -10,16 +10,17 @@
   <table class="index wide">
     <thead>
       <tr>
-        <th>ID</th>
-        <th>Beschreibung</th>
+        <th>Recht</th>
         <th>Teil dieser Rollen</th>
       </tr>
     </thead>
     <tbody>
       {%- for permission in permissions|sort(attribute='id') %}
       <tr>
-        <td class="monospace">{{ permission.id }}</td>
-        <td>{{ render_with_fallback(permission.title) }}</td>
+        <td>
+          <strong class="monospace">{{ permission.id }}</strong><br>
+          {{ render_with_fallback(permission.title, 'keine Beschreibung vorhanden') }}
+        </td>
         <td>
         {%- if permission.roles %}
           <ol>
