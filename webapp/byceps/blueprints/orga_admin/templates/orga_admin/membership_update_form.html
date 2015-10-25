@@ -1,6 +1,7 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
 {% from 'macros/icons.html' import render_icon %}
+{% from 'macros/user_admin.html' import render_user_admin_link %}
 {% set current_page = 'orga_admin.teams' %}
 {% set title = 'Orga-Team-Mitgliedschaft bearbeiten' %}
 
@@ -9,7 +10,7 @@
   <nav class="breadcrumbs">
     <ol>
       <li><a href="{{ url_for('.teams') }}">{{ membership.orga_team.party.title }}</a></li>
-      <li>{{ membership.user.screen_name }}</li>
+      <li>{{ render_user_admin_link(membership.user) }}</li>
       <li>{{ title }}</li>
     </ol>
   </nav>
