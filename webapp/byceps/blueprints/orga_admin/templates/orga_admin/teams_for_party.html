@@ -6,6 +6,32 @@
 {% set title = 'Orga-Teams' %}
 
 {% block head %}
+    <style>
+      .teams td:last-child {
+        padding-right: 0;
+      }
+      .members {
+        display: flex;
+        flex-wrap: wrap;
+        list-style: none;
+        margin: 1em 0 0 2em;
+      }
+      .members li {
+        display: flex;
+        justify-content: space-between;
+        margin: 0 2em 1em 0;
+        width: 45%;
+      }
+      .members .details,
+      .members .actions {
+        white-space: nowrap;
+      }
+      .members .actions {
+        margin-left: 1em;
+        padding-top: 0.65em;
+        text-align: right;
+      }
+    </style>
     <script>
       $(function() {
         confirmed_delete_on_click('a.membership-remove', 'Person aus dem Team entfernen?');
@@ -22,42 +48,35 @@
     </ol>
   </nav>
 
-  <table class="index wide">
-    <thead>
-      <tr>
-        <th>Team</th>
-        <th>Mitglieder</th>
-        <th></th>
-      </tr>
-    </thead>
+  <table class="index wide teams">
     <tbody>
     {%- for team in teams|sort(attribute='title') %}
       {%- set memberships = team.memberships|list %}
       {%- set member_total = memberships|length %}
-      {%- for membership in memberships|sort(attribute='user.screen_name') %}
       <tr>
-        {%- if loop.first %}
-        <td{% if member_total > 1 %} rowspan="{{ member_total }}"{% endif %}>
+        <td>
           <strong>{{ team.title }}</strong><br>
           {{ render_faint('%d %s'|format(member_total, 'Person' if member_total == 1 else 'Personen')) }}
         </td>
-        {%- endif %}
         <td>
-          {{ render_user_admin_link(membership.user) }}<br>
-          {{ render_with_fallback(membership.duties) }}
-        </td>
-        <td style="vertical-align: middle; text-align: right;">
-          <a href="{{ url_for('.membership_update_form', id=membership.id) }}" class="action" title="Aufgabe bearbeiten">{{ render_icon('edit') }}</a>
-          <a href="{{ url_for('.membership_remove', id=membership.id) }}" class="action membership-remove" title="Person aus Team entfernen">{{ render_icon('remove') }}</a>
+          <ol class="members">
+          {%- for membership in memberships|sort(attribute='user.screen_name') %}
+            <li>
+              <div class="details">
+                {{ render_user_admin_link(membership.user) }}<br>
+                {{ render_with_fallback(membership.duties) }}
+              </div>
+              <div class="actions">
+                <a href="{{ url_for('.membership_update_form', id=membership.id) }}" title="Aufgabe bearbeiten">{{ render_icon('edit') }}</a>
+                <a href="{{ url_for('.membership_remove', id=membership.id) }}" class="membership-remove" title="Person aus Team entfernen">{{ render_icon('remove') }}</a>
+              </div>
+            </li>
+            {%- else %}
+            <li>{{ render_faint('keine') }}</li>
+          {%- endfor %}
+          </ol>
         </td>
       </tr>
-      {%- else %}
-      <tr>
-        <td><strong>{{ team.title }}</strong></td>
-        <td>{{ render_faint('keine') }}</td>
-        <td></td>
-      </tr>
-      {%- endfor %}
     {%- endfor %}
     </tbody>
   </table>
