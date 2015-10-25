@@ -53,7 +53,7 @@ class OrgaTeam(db.Model):
             .add_with_lookup('id') \
             .add_with_lookup('party_id') \
             .add_with_lookup('title') \
-            .add_custom('{:d} members'.format(len(self.members))) \
+            .add_custom('{:d} members'.format(len(self.memberships))) \
             .build()
 
 
