@@ -244,7 +244,8 @@ class User(db.Model):
             # Current party is not defined in admin mode.
             return False
 
-        return bool(self.orga_team_memberships)
+        parties = {ms.orga_team.party for ms in self.orga_team_memberships}
+        return g.party in parties
 
     def __eq__(self, other):
         return (other is not None) and (self.id == other.id)
