@@ -222,7 +222,7 @@ def team_create(party_id):
     return redirect_to('.teams_for_party', party_id=party.id)
 
 
-@blueprint.route('/teams/<team_id>', methods=['DELETE'])
+@blueprint.route('/teams/<uuid:team_id>', methods=['DELETE'])
 @permission_required(OrgaTeamPermission.delete)
 @respond_no_content_with_location
 def team_delete(team_id):
