@@ -268,7 +268,8 @@ def membership_update(id):
 
     flash_success('Der Aufgabe von {} wurde aktualisiert.',
                   membership.user.screen_name)
-    return redirect_to('.teams_for_party', party_id=membership.party.id)
+    return redirect_to('.teams_for_party',
+                       party_id=membership.orga_team.party.id)
 
 
 @blueprint.route('/memberships/<uuid:id>', methods=['DELETE'])

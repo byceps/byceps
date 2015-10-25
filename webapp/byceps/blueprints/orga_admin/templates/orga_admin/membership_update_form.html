@@ -8,7 +8,7 @@
 
   <nav class="breadcrumbs">
     <ol>
-      <li><a href="{{ url_for('.teams') }}">{{ membership.party.title }}</a></li>
+      <li><a href="{{ url_for('.teams') }}">{{ membership.orga_team.party.title }}</a></li>
       <li>{{ membership.user.screen_name }}</li>
       <li>{{ title }}</li>
     </ol>
@@ -19,7 +19,7 @@
       {{ form_field(form.duties, maxlength=40, autofocus='autofocus') }}
     {% endcall %}
 
-    {{ form_buttons('Speichern', cancel_url=url_for('.teams_for_party', party_id=membership.party.id)) }}
+    {{ form_buttons('Speichern', cancel_url=url_for('.teams_for_party', party_id=membership.orga_team.party.id)) }}
   </form>
 
 {%- endblock body %}
