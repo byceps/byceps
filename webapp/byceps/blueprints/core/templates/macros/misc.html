@@ -16,10 +16,10 @@
 {%- endmacro %}
 
 
-{% macro render_with_fallback(value) %}
+{% macro render_with_fallback(value, fallback='nicht angegeben') %}
   {%- if value|default('', true)|trim -%}
     {{ value }}
   {%- else -%}
-    {{ render_faint('nicht angegeben') }}
+    {{ render_faint(fallback) }}
   {%- endif -%}
 {% endmacro %}
