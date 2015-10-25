@@ -23,6 +23,14 @@ class MembershipUpdateForm(LocalizedForm):
         self.orga_team_id.choices = choices
 
 
+class MembershipCreateForm(MembershipUpdateForm):
+    user_id = SelectField('Benutzer')
+
+    def set_user_choices(self, orgas):
+        choices = [(str(orga.id), orga.screen_name) for orga in orgas]
+        self.user_id.choices = choices
+
+
 class OrgaFlagCreateForm(LocalizedForm):
     user_id = StringField('Benutzer-ID')
 

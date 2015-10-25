@@ -27,9 +27,11 @@ from ..user.models import User
 
 from .authorization import OrgaBirthdayPermission, OrgaDetailPermission, \
     OrgaTeamPermission
-from .forms import MembershipUpdateForm, OrgaFlagCreateForm, OrgaTeamCreateForm
+from .forms import MembershipCreateForm, MembershipUpdateForm, \
+    OrgaFlagCreateForm, OrgaTeamCreateForm
 from .service import collect_orgas_with_next_birthdays, \
-    get_organizers_for_brand, get_teams_for_party
+    get_organizers_for_brand, get_teams_for_party, \
+    get_unassigned_orgas_for_party
 
 
 blueprint = create_blueprint('orga_admin', __name__)
@@ -240,6 +242,53 @@ def team_delete(team_id):
 
     flash_success('Das Team "{}" wurde gelöscht.'.format(title))
     return url_for('.teams_for_party', party_id=party.id)
+
+
+@blueprint.route('/memberships/for_party/<party_id>/create')
+@permission_required(OrgaTeamPermission.administrate_memberships)
+@templated
+def membership_create_form(party_id, erroneous_form=None):
+    """Show form to assign an organizer to a team."""
+    party = Party.query.get_or_404(party_id)
+
+    form = erroneous_form if erroneous_form else MembershipCreateForm()
+    form.set_user_choices(get_unassigned_orgas_for_party(party))
+    form.set_orga_team_choices(get_teams_for_party(party))
+
+    return {
+        'form': form,
+        'party': party,
+    }
+
+
+@blueprint.route('/memberships/for_party/<party_id>', methods=['POST'])
+@permission_required(OrgaTeamPermission.administrate_memberships)
+def membership_create(party_id):
+    """Assign an organizer to a team."""
+    party = Party.query.get_or_404(party_id)
+
+    form = MembershipCreateForm(request.form)
+    form.set_user_choices(get_unassigned_orgas_for_party(party))
+    form.set_orga_team_choices(get_teams_for_party(party))
+
+    if not form.validate():
+        return membership_create_form(party_id, form)
+
+    user = User.query.get(form.user_id.data)
+    team = OrgaTeam.query.get(form.orga_team_id.data)
+    duties = form.duties.data.strip()
+
+    membership = Membership(team, user)
+    if duties:
+        membership.duties = duties
+    db.session.add(team)
+    db.session.commit()
+
+    flash_success('{} wurde in das Team "{}" aufgenommen.'
+                  .format(membership.user.screen_name,
+                          membership.orga_team.title))
+    return redirect_to('.teams_for_party',
+                       party_id=membership.orga_team.party.id)
 
 
 @blueprint.route('/memberships/<uuid:id>/update')
