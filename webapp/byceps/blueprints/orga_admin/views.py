@@ -28,7 +28,8 @@ from ..user.models import User
 from .authorization import OrgaBirthdayPermission, OrgaDetailPermission, \
     OrgaTeamPermission
 from .forms import MembershipUpdateForm, OrgaFlagCreateForm, OrgaTeamCreateForm
-from .service import collect_orgas_with_next_birthdays, get_organizers_for_brand
+from .service import collect_orgas_with_next_birthdays, \
+    get_organizers_for_brand, get_teams_for_party
 
 
 blueprint = create_blueprint('orga_admin', __name__)
@@ -244,11 +245,13 @@ def team_delete(team_id):
 @blueprint.route('/memberships/<uuid:id>/update')
 @permission_required(OrgaTeamPermission.administrate_memberships)
 @templated
-def membership_update_form(id):
+def membership_update_form(id, erroneous_form=None):
     """Show form to update a membership."""
     membership = Membership.query.get_or_404(id)
 
-    form = MembershipUpdateForm(obj=membership)
+    form = erroneous_form if erroneous_form \
+           else MembershipUpdateForm(obj=membership)
+    form.set_orga_team_choices(get_teams_for_party(membership.orga_team.party))
 
     return {
         'form': form,
@@ -260,13 +263,19 @@ def membership_update_form(id):
 @permission_required(OrgaTeamPermission.administrate_memberships)
 def membership_update(id):
     """Update a membership."""
-    form = MembershipUpdateForm(request.form)
-
     membership = Membership.query.get_or_404(id)
+
+    form = MembershipUpdateForm(request.form)
+    form.set_orga_team_choices(get_teams_for_party(membership.orga_team.party))
+
+    if not form.validate():
+        return membership_update_form(id, form)
+
+    membership.orga_team = OrgaTeam.query.get(form.orga_team_id.data)
     membership.duties = form.duties.data.strip() or None
     db.session.commit()
 
-    flash_success('Der Aufgabe von {} wurde aktualisiert.',
+    flash_success('Die Teammitgliedschaft von {} wurde aktualisiert.',
                   membership.user.screen_name)
     return redirect_to('.teams_for_party',
                        party_id=membership.orga_team.party.id)

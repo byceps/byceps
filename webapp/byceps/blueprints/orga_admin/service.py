@@ -10,7 +10,7 @@ byceps.blueprints.orga_admin.service
 
 from ...database import db
 
-from ..orga.models import OrgaFlag
+from ..orga.models import OrgaFlag, OrgaTeam
 from ..user.models import User, UserDetail
 
 
@@ -19,6 +19,14 @@ def get_organizers_for_brand(brand):
     return User.query \
         .join(OrgaFlag).filter(OrgaFlag.brand == brand) \
         .options(db.joinedload('detail')) \
+        .all()
+
+
+def get_teams_for_party(party):
+    """Return orga teams for that party, ordered by title."""
+    return OrgaTeam.query \
+        .filter_by(party=party) \
+        .order_by(OrgaTeam.title) \
         .all()
 
 

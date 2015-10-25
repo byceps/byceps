@@ -16,7 +16,8 @@
 
   <form action="{{ url_for('.membership_update', id=membership.id) }}" method="post">
     {% call form_fieldset() %}
-      {{ form_field(form.duties, maxlength=40, autofocus='autofocus') }}
+      {{ form_field(form.orga_team_id, required='required', autofocus='autofocus') }}
+      {{ form_field(form.duties, maxlength=40) }}
     {% endcall %}
 
     {{ form_buttons('Speichern', cancel_url=url_for('.teams_for_party', party_id=membership.orga_team.party.id)) }}
