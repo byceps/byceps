@@ -5,7 +5,7 @@ from pathlib import Path
 DEBUG = True
 PERMANENT_SESSION_LIFETIME = timedelta(14)
 SECRET_KEY = b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
-SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = False
 
 LOCALE = 'de_DE.UTF-8'
 LOCALES_FORMS = ['de']
