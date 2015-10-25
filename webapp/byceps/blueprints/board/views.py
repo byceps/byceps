@@ -138,7 +138,9 @@ def topic_view(id, page):
     postings = Posting.query \
         .options(
             db.joinedload(Posting.topic),
-            db.joinedload('creator').joinedload('orga_flags'),
+            db.joinedload('creator')
+                .load_only('id', 'screen_name', 'avatar_image_created_at', '_avatar_image_type')
+                .joinedload('orga_flags'),
             db.joinedload(Posting.last_edited_by).load_only('screen_name'),
             db.joinedload(Posting.hidden_by).load_only('screen_name'),
         ) \
