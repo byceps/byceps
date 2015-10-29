@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8"/>
+{%- with %}
+{#- Make the variable available to the included template. #}
+{%- set title = title|default %}
+{% include 'layout/_meta_head.html' with context %}
+{%- endwith %}
+{% block head %}{% endblock head %}
+  </head>
+  <body>
+
+    <div id="page">
+
+      <header id="header">
+{% include 'layout/_header.html' %}
+      </header>
+
+      <aside id="sidebar">
+{%- with %}
+{#- Make the variable available to the included template. #}
+{%- set current_page = current_page|default %}
+{%- include 'layout/_sidebar.html' with context %}
+{%- endwith %}
+      </aside>
+
+      <main>
+{%- include 'layout/_notifications.html' %}
+{%- block body %}{% endblock %}
+      </main>
+
+    </div><!-- /#page -->
+
+    <footer id="footer">
+{% include 'layout/_footer.html' %}
+    </footer>
+
+  </body>
+</html>
