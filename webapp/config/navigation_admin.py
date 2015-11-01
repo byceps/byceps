@@ -17,29 +17,29 @@ from byceps.blueprints.user_admin.authorization import UserPermission
 from byceps.util.navigation import Navigation, NavigationItem
 
 
-users = Navigation('Benutzer')
-users.add_item('user_admin.index', 'Benutzer', id='user_admin', required_permission=UserPermission.list)
-users.add_item('authorization_admin.role_index', 'Rollen', id='authorization_admin.roles', required_permission=RolePermission.list)
-users.add_item('authorization_admin.permission_index', 'Rechte', id='authorization_admin.permissions', required_permission=RolePermission.list)
-users.add_item('ticket_admin.index', 'Tickets', id='ticket_admin', required_permission=TicketPermission.list)
+users = Navigation('Benutzer') \
+    .add_item('user_admin.index', 'Benutzer', id='user_admin', required_permission=UserPermission.list) \
+    .add_item('authorization_admin.role_index', 'Rollen', id='authorization_admin.roles', required_permission=RolePermission.list) \
+    .add_item('authorization_admin.permission_index', 'Rechte', id='authorization_admin.permissions', required_permission=RolePermission.list) \
+    .add_item('ticket_admin.index', 'Tickets', id='ticket_admin', required_permission=TicketPermission.list)
 
-orgas = Navigation('Orgas')
-orgas.add_item('orga_admin.persons', 'Personen', id='orga_admin.persons', required_permission=OrgaDetailPermission.view)
-orgas.add_item('orga_admin.birthdays', 'Geburtstage', id='orga_admin.birthdays', required_permission=OrgaBirthdayPermission.list)
-orgas.add_item('orga_admin.teams', 'Teams', id='orga_admin.teams', required_permission=OrgaTeamPermission.list)
-orgas.add_item('orga_presence.index', 'Anwesenheit', id='orga_presence', required_permission=OrgaPresencePermission.list)
+orgas = Navigation('Orgas') \
+    .add_item('orga_admin.persons', 'Personen', id='orga_admin.persons', required_permission=OrgaDetailPermission.view) \
+    .add_item('orga_admin.birthdays', 'Geburtstage', id='orga_admin.birthdays', required_permission=OrgaBirthdayPermission.list) \
+    .add_item('orga_admin.teams', 'Teams', id='orga_admin.teams', required_permission=OrgaTeamPermission.list) \
+    .add_item('orga_presence.index', 'Anwesenheit', id='orga_presence', required_permission=OrgaPresencePermission.list)
 
-shop = Navigation('Shop')
-shop.add_item('shop_admin.article_index', 'Artikel', id='shop_admin.articles', required_permission=ShopArticlePermission.list)
-shop.add_item('shop_admin.order_index', 'Bestellungen', id='shop_admin.orders', required_permission=ShopOrderPermission.list)
+shop = Navigation('Shop') \
+    .add_item('shop_admin.article_index', 'Artikel', id='shop_admin.articles', required_permission=ShopArticlePermission.list) \
+    .add_item('shop_admin.order_index', 'Bestellungen', id='shop_admin.orders', required_permission=ShopOrderPermission.list)
 
-misc = Navigation('Verschiedenes')
-misc.add_item('party_admin.index', 'Parties', id='party_admin', required_permission=PartyPermission.list)
-misc.add_item('snippet_admin.index', 'Snippets', id='snippet_admin', required_permission=SnippetPermission.list)
-misc.add_item('news_admin.index', 'News', id='news_admin', required_permission=NewsItemPermission.list)
-misc.add_item('terms_admin.index', 'AGB', id='terms_admin', required_permission=TermsPermission.list)
-misc.add_item('newsletter_admin.index', 'Newsletter', id='newsletter_admin', required_permission=NewsletterPermission.view_subscriptions)
-misc.add_item('board_admin.index', 'Board', id='board_admin', required_permission=BoardCategoryPermission.list)
+misc = Navigation('Verschiedenes') \
+    .add_item('party_admin.index', 'Parties', id='party_admin', required_permission=PartyPermission.list) \
+    .add_item('snippet_admin.index', 'Snippets', id='snippet_admin', required_permission=SnippetPermission.list) \
+    .add_item('news_admin.index', 'News', id='news_admin', required_permission=NewsItemPermission.list) \
+    .add_item('terms_admin.index', 'AGB', id='terms_admin', required_permission=TermsPermission.list) \
+    .add_item('newsletter_admin.index', 'Newsletter', id='newsletter_admin', required_permission=NewsletterPermission.view_subscriptions) \
+    .add_item('board_admin.index', 'Board', id='board_admin', required_permission=BoardCategoryPermission.list)
 
 
 def get_blocks():

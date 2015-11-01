@@ -33,12 +33,15 @@ class Navigation(object):
 
     def add_item(self, endpoint, label, *, id=None, required_permission=None):
         """Add an item to the navigation."""
-        self.items.append(NavigationItem(
+        item = NavigationItem(
             endpoint=endpoint,
             label=label,
             id=id,
             required_permission=required_permission
-            ))
+            )
+
+        self.items.append(item)
+        return self
 
     def get_items(self):
         def current_user_has_permission(item):
