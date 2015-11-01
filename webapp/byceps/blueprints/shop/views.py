@@ -8,7 +8,7 @@ byceps.blueprints.shop.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from flask import abort, g, request
+from flask import abort, current_app, g, request
 
 from ...database import db
 from ...util.framework import create_blueprint, flash_error, flash_success
@@ -16,6 +16,7 @@ from ...util.templating import templated
 from ...util.views import redirect_to
 
 from ..authorization.decorators import login_required
+from ..user.service import get_country_names
 
 from .forms import assemble_articles_order_form, OrderForm
 from .models.article import Article
@@ -46,10 +47,14 @@ def order_form(erroneous_form=None):
         ArticlesOrderForm = assemble_articles_order_form(article_compilation)
         form = ArticlesOrderForm(obj=user.detail)
 
+    country_names = get_country_names(current_app)
+
     return {
         'form': form,
+        'country_names': country_names,
         'article_compilation': article_compilation,
     }
+
 
 @blueprint.route('/order', methods=['POST'])
 @login_required
@@ -94,6 +99,7 @@ def order_single_form(article_id, erroneous_form=None):
 
     user = g.current_user
     form = erroneous_form if erroneous_form else OrderForm(obj=user.detail)
+    country_names = get_country_names(current_app)
 
     if article.not_directly_orderable:
         flash_error('Der Artikel kann nicht direkt bestellt werden.')
@@ -118,6 +124,7 @@ def order_single_form(article_id, erroneous_form=None):
 
     return {
         'form': form,
+        'country_names': country_names,
         'article': article,
         'article_compilation': article_compilation,
     }
