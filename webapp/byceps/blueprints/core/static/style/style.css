@@ -453,44 +453,6 @@ nav.pagination li.current {
 }
 
 
-/* news */
-
-.news-item {
-  -moz-hyphens: auto;
-  -webkit-hyphens: auto;
-  hyphens: auto;
-}
-.news-item h1 {
-  margin-bottom: 0;
-}
-.news-item h1 a {
-  color: #333333;
-  text-decoration: none;
-}
-.news-item h1 a:hover {
-  text-decoration: underline;
-}
-.news-item .meta {
-  font-size: 0.75rem;
-  margin: 10px 0;
-  opacity: 0.5;
-}
-
-.news-items .news-item,
-.news-items .pagination {
-  border-top: #cccccc solid 1px;
-  margin: 20px 0 0;
-  padding: 20px 0 0;
-}
-.news-items .news-item h1 {
-  font-size: 1.4rem;
-  margin-top: 0;
-}
-.news-items .news-item h2 {
-  font-size: 1.1rem;
-}
-
-
 /* terms */
 
 .terms ol,
@@ -501,91 +463,6 @@ nav.pagination li.current {
 
 .terms ol {
   list-style-type: decimal;
-}
-
-
-/* board, tourneys */
-
-.board-postings,
-.tourney-match-comments {
-  border-bottom: #cccccc solid 1px;
-}
-
-.board-postings article,
-.tourney-match-comments article {
-  border-top: #cccccc solid 1px;
-  margin: 0;
-  padding: 10px 0;
-}
-
-.board-postings aside,
-.board-postings .body,
-.tourney-match-comments aside,
-.tourney-match-comments .body {
-  display: table-cell;
-  vertical-align: top;
-}
-.board-postings aside,
-.tourney-match-comments aside {
-  font-size: 0.85rem;
-  max-width: 136px;
-  overflow: hidden;
-  width: 136px;
-}
-.board-postings .body,
-.tourney-match-comments .body {
-  font-size: 1rem;
-  max-width: 522px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  width: 522px;
-}
-
-.board-postings aside .creator,
-.tourney-match-comments aside .creator {
-  font-weight: bold;
-}
-
-.board-postings aside .creator,
-.board-postings aside .avatar,
-.tourney-match-comments aside .creator,
-.tourney-match-comments aside .avatar {
-  margin-bottom: 0.25rem;
-}
-
-.board-postings aside time,
-.tourney-match-comments aside time {
-  display: block;
-  font-size: 0.8rem;
-}
-
-.board-postings footer {
-  font-size: 0.75rem;
-  margin-top: 1rem;
-  text-align: right;
-}
-.board-postings footer p {
-  margin: 0;
-  padding: 0;
-}
-
-.board-postings .quote-intro,
-.tourney-match-comments .quote-intro {
-  font-size: 0.8rem;
-  font-style: italic;
-  margin: 0 0 0.2rem 0;
-  padding: 0;
-}
-.board-postings .quote-intro cite,
-.tourney-match-comments .quote-intro cite {
-  font-weight: bold;
-}
-.board-postings blockquote,
-.tourney-match-comments blockquote {
-  background-color: #eeeeee;
-  border: #cccccc solid 1px;
-  margin: 0 0 0 1rem;
-  padding: 0.5rem;
 }
 
 
