@@ -28,8 +28,7 @@
     ] -%}
 
 
-{%- set navigation_blocks = navigation_blocks + navigation_items %}
-{%- for block in navigation_blocks %}
+{%- for block in navigation_items %}
   {%- set items = block.get_items() %}
   {%- if items %}
 <section>

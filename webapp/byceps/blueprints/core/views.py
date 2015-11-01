@@ -8,33 +8,14 @@ byceps.blueprints.core.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from importlib import import_module
-
 from flask import render_template
 
 from ... import config
-from ...config import SiteMode
 from ...util.framework import create_blueprint
 from ...util.navigation import Navigation
 
 
 blueprint = create_blueprint('core', __name__)
-
-
-def _get_navigation_blocks(site_mode):
-    """Import navigation module for the given mode and return the blocks."""
-    module_name = 'config.navigation_{}'.format(site_mode.name)
-
-    try:
-        module = import_module(module_name)
-    except ImportError:
-        return []
-
-    return module.get_blocks()
-
-
-NAVIGATION_BLOCKS_BY_SITE_MODE \
-    = {mode: _get_navigation_blocks(mode) for mode in SiteMode}
 
 
 @blueprint.app_errorhandler(403)
@@ -49,10 +30,8 @@ def not_found(error):
 
 @blueprint.app_context_processor
 def inject_navigation():
-    navigation_blocks = NAVIGATION_BLOCKS_BY_SITE_MODE[config.get_site_mode()]
     return {
         'Navigation': Navigation,
-        'navigation_blocks': navigation_blocks,
     }
 
 
