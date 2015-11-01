@@ -78,9 +78,11 @@
     <tr>
       <th>Anschrift</th>
       <td>
-        {{- render_with_fallback(user.detail.street) }}<br/>
+        {{- render_with_fallback(user.detail.street) }}<br>
         {%- if user.detail.zip_code %}{{ user.detail.zip_code }}{% endif %}
         {{ render_with_fallback(user.detail.city) -}}
+        <br>
+        {{- render_with_fallback(user.detail.country) -}}
       </td>
     </tr>
     <tr>
