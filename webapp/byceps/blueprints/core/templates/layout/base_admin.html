@@ -14,14 +14,16 @@
     <div id="page">
 
       <header id="header">
-{% include 'layout/_header.html' %}
+        <nav class="top">
+{% include 'user/_login_status.html' %}
+        </nav>
       </header>
 
       <aside id="sidebar">
 {%- with %}
 {#- Make the variable available to the included template. #}
 {%- set current_page = current_page|default %}
-{%- include 'layout/_sidebar.html' with context %}
+{%- include 'layout/_navigation.html' with context %}
 {%- endwith %}
       </aside>
 
@@ -33,7 +35,7 @@
     </div><!-- /#page -->
 
     <footer id="footer">
-{% include 'layout/_footer.html' %}
+      BYCEPS &middot; Copyright &copy; 2006&ndash;2015 <a href="http://homework.nwsnet.de/">Jochen &quot;Y0Gi&quot; Kupperschmidt</a>
     </footer>
 
   </body>
