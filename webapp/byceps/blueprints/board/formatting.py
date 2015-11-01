@@ -8,7 +8,7 @@ byceps.blueprints.board.formatting
 :License: Modified BSD, see LICENSE for details.
 """
 
-from cgi import escape
+from html import escape
 
 import bbcode
 
