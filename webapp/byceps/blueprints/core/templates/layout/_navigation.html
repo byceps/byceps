@@ -1,16 +1,20 @@
-{%- from 'macros/navigation.html' import render_navigation_item_from_item %}
-{%- for block in navigation_blocks %}
-  {%- set items = block.get_items() %}
-  {%- if items %}
+{%- from 'macros/navigation.html' import render_navigation_item %}
+{%- set navigation_items = [
+    ('news.index',           'Neuigkeiten',  'news'   ),
+    ('party.info',           'Partydetails', 'party'  ),
+    ('orga.index',           'Team',         'orga'   ),
+    ('seating.index',        'Sitzplan',     'seating'),
+    ('terms.view_current',   'AGB',          'terms'  ),
+    ('board.category_index', 'Forum',        'board'  ),
+] -%}
+
 <section>
-  <h1>{{ block.title }}</h1>
+  <h1>Informationen</h1>
   <nav class="main">
     <ol>
-      {%- for item in items %}
-      {{ render_navigation_item_from_item(item, current_page) }}
+      {%- for endpoint, label, id in navigation_items %}
+      {{ render_navigation_item(url_for(endpoint), label, id, current_page) }}
       {%- endfor %}
     </ol>
   </nav>
 </section>
-  {%- endif %}
-{%- endfor %}
