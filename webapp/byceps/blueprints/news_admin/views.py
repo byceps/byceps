@@ -13,7 +13,7 @@ from operator import attrgetter
 
 from flask import g, request
 
-from ...util.framework import create_blueprint, flash_error, flash_success
+from ...util.framework import create_blueprint, flash_success
 from ...util.templating import templated
 from ...util.views import redirect_to
 
