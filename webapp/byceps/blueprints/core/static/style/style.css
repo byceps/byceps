@@ -390,6 +390,10 @@ table.index th,
 table.index td {
   padding: 0.35rem 1rem 0.35rem 0;
 }
+table.index th:last-child,
+table.index td:last-child {
+  padding-right: 0;
+}
 table.index th {
   font-size: 0.8rem;
   font-weight: bold;
