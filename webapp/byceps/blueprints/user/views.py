@@ -398,9 +398,7 @@ def details_update_form(erroneous_form=None):
     user = get_current_user_or_404()
 
     form = erroneous_form if erroneous_form else DetailsForm(obj=user.detail)
-
-    countries = service.get_countries(current_app)
-    country_names = [country.name for country in countries]
+    country_names = service.get_country_names(current_app)
 
     return {
         'form': form,

@@ -22,3 +22,8 @@ def get_countries(app):
         records = json.load(reader(f))
 
     return [Country(**record) for record in records]
+
+
+def get_country_names(app):
+    """Return country names."""
+    return [country.name for country in get_countries(app)]
