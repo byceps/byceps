@@ -52,6 +52,10 @@ class Party(db.Model):
         """Returns true if the party has ended."""
         return self.ends_at < datetime.now()
 
+    @property
+    def number_prefix(self):
+        return '{}-{:02d}'.format(self.brand.code, self.number)
+
     def __repr__(self):
         return ReprBuilder(self) \
             .add_with_lookup('id') \

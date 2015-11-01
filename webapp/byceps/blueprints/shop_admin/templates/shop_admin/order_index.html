@@ -1,7 +1,28 @@
 {% extends 'layout/base_admin.html' %}
 {% from 'macros/icons.html' import render_icon %}
+{% from 'macros/misc.html' import render_faint %}
 {% set current_page = 'shop_admin.orders' %}
 {% set title = 'Shop - Bestellungen' %}
+
+{% block head %}
+    <style>
+      .orders td:hover {
+        background-color: #f8f888;
+      }
+      .orders a {
+        color: #333333;
+        display: flex;
+        padding-bottom: 2em;
+        text-decoration: none;
+      }
+      .orders a div {
+        flex: 1;
+      }
+      .orders .right {
+        text-align: right;
+      }
+    </style>
+{%- endblock head %}
 
 {% block body %}
 
@@ -13,12 +34,21 @@
   </nav>
 
   <p>Party wählen:</p>
-  <ul>
+  <table class="index wide orders">
     {%- for party in parties|sort(attribute='starts_at', reverse=True) %}
-    <li{% if party.is_archived %} class="hidden"{% endif %}>
-      {%- if party.is_archived %}{{ render_icon('archived', title='archiviert') }} {% endif -%}
-      <a href="{{ url_for('.order_index_for_party', party_id=party.id, only=PaymentState.open.name) }}">{{ party.title }}</a>
+    <tr>
+      <td>
+        <a href="{{ url_for('.order_index_for_party', party_id=party.id, only=PaymentState.open.name) }}">
+          <div{% if party.is_archived %} class="hidden"{% endif %}>
+            <strong>{{ party.title }}</strong>{% if party.is_archived %} {{ render_icon('archived', title='archiviert') }}{% endif %}
+          </div>
+          <div class="right">
+            {{ render_faint(party.number_prefix) }}
+          </div>
+        </a>
+      </td>
+    </tr>
     {%- endfor %}
-  </ul>
+  </table>
 
 {%- endblock body %}

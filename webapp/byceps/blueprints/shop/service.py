@@ -66,10 +66,7 @@ def generate_article_number(party):
     article_serial_number = _get_next_serial_number(party,
                                                     PartySequencePurpose.article)
 
-    return '{}-{:02d}-A{:05d}'.format(
-        party.brand.code,
-        party.number,
-        article_serial_number)
+    return '{}-A{:05d}'.format(party.number_prefix, article_serial_number)
 
 
 def generate_order_number(party):
@@ -77,10 +74,7 @@ def generate_order_number(party):
     order_serial_number = _get_next_serial_number(party,
                                                   PartySequencePurpose.order)
 
-    return '{}-{:02d}-B{:05d}'.format(
-        party.brand.code,
-        party.number,
-        order_serial_number)
+    return '{}-B{:05d}'.format(party.number_prefix, order_serial_number)
 
 
 def _get_next_serial_number(party, purpose):
