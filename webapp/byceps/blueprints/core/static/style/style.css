@@ -18,15 +18,7 @@ html {
   font-size: 90%;
 }
 
-article,
-aside,
-figcaption,
-figure,
-footer,
-header,
-main,
-nav,
-section {
+main {
   display: block;
 }
 
