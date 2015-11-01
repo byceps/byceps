@@ -1,0 +1,39 @@
+body {
+  border-color: #cc0000;
+  border-style: solid;
+  border-width: 3px 0;
+}
+
+
+/* tags */
+
+.tag.order-open {
+  background-color: #ee3322;
+}
+.tag.order-paid {
+  background-color: #11aa22;
+}
+.tag.order-canceled {
+  background-color: #999999;
+}
+
+
+/* stats */
+
+.bigstats {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 2rem;
+}
+.bigstats figure {
+  font-weight: bold;
+  text-align: center;
+}
+.bigstats .value,
+.bigstats figcaption {
+  display: block;
+}
+.bigstats .value {
+  font-size: 5rem;
+  line-height: 1;
+}

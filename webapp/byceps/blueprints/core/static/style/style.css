@@ -89,9 +89,6 @@ html {
 }
 body {
   background-color: #f4f4f4;
-  border-color: #cc0000;
-  border-style: solid;
-  border-width: 2px 0;
   color: #333333;
   font-family: sans-serif;
   line-height: 1.4em;
@@ -466,27 +463,6 @@ nav.pagination li.current {
 }
 
 
-/* stats */
-
-.bigstats {
-  display: flex;
-  justify-content: space-around;
-  margin-bottom: 2rem;
-}
-.bigstats figure {
-  font-weight: bold;
-  text-align: center;
-}
-.bigstats .value,
-.bigstats figcaption {
-  display: block;
-}
-.bigstats .value {
-  font-size: 5rem;
-  line-height: 1;
-}
-
-
 /* footer */
 
 #footer {
@@ -568,16 +544,6 @@ hr {
   line-height: 1.3;
   padding: 0 0.4em;
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.15);
-}
-
-.tag.order-open {
-  background-color: #ee3322;
-}
-.tag.order-paid {
-  background-color: #11aa22;
-}
-.tag.order-canceled {
-  background-color: #999999;
 }
 
 
