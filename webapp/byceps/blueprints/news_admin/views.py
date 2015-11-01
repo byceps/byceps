@@ -133,7 +133,6 @@ def update(id):
 
     form = ItemUpdateForm(request.form)
 
-    slug = form.slug.data.strip().lower()
     creator = g.current_user
     title = form.title.data.strip()
     body = form.body.data.strip()
