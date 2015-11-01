@@ -41,8 +41,9 @@ def create_user_with_detail(number, *,
     detail.first_names = first_names
     detail.last_name = last_name
     detail.date_of_birth = (date_of_birth if date_of_birth else date(1993, 2, 15))
+    detail.country = 'State of Mind'
     detail.zip_code = '31337'
-    detail.street = 'Elite Street 1337'
     detail.city = 'Atrocity'
+    detail.street = 'Elite Street 1337'
 
     return user

@@ -266,6 +266,7 @@ class UserDetail(db.Model):
     first_names = db.Column(db.Unicode(40))
     last_name = db.Column(db.Unicode(40))
     date_of_birth = db.Column(db.Date)
+    country = db.Column(db.Unicode(60))
     zip_code = db.Column(db.Unicode(5))
     city = db.Column(db.Unicode(40))
     street = db.Column(db.Unicode(40))

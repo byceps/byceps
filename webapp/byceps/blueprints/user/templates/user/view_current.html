@@ -67,10 +67,11 @@
     <tr>
       <th>Anschrift</th>
       <td>
-        {%- if user.detail.street or user.detail.zip_code or user.detail.city %}
-          {%- if user.detail.street %}{{ user.detail.street }}<br/>{% endif -%}
+        {%- if user.detail.street or user.detail.zip_code or user.detail.city or user.detail.country %}
+          {%- if user.detail.street %}{{ user.detail.street }}<br>{% endif -%}
           {%- if user.detail.zip_code %}{{ user.detail.zip_code }} {% endif %}
           {%- if user.detail.city %}{{ user.detail.city }}{% endif -%}
+          {%- if user.detail.country %}<br>{{ user.detail.country }}{% endif -%}
         {%- else -%}
           {{ render_faint('nicht angegeben') }}
         {%- endif -%}

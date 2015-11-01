@@ -21,6 +21,7 @@ class OrderForm(LocalizedForm):
     first_names = StringField('Vorname(n)', validators=[Length(min=2)])
     last_name = StringField('Nachname', validators=[Length(min=2)])
     date_of_birth = DateField('Geburtsdatum', format='%d.%m.%Y', validators=[InputRequired()])
+    country = StringField('Land', validators=[Length(min=2, max=60)])
     zip_code = StringField('PLZ', validators=[Length(min=5, max=5)])
     city = StringField('Stadt', validators=[Length(min=2)])
     street = StringField('Straße', validators=[Length(min=2)])
@@ -31,6 +32,7 @@ class OrderForm(LocalizedForm):
             self.first_names.data.strip(),
             self.last_name.data.strip(),
             self.date_of_birth.data,
+            self.country.data.strip(),
             self.zip_code.data.strip(),
             self.city.data.strip(),
             self.street.data.strip(),

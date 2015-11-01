@@ -48,6 +48,7 @@ class DetailsForm(LocalizedForm):
     date_of_birth = DateField('Geburtsdatum',
                               [Optional()],
                               format='%d.%m.%Y')
+    country = StringField('Land', [Optional(), Length(max=60)])
     zip_code = StringField('PLZ', [Optional()])
     city = StringField('Stadt', [Optional()])
     street = StringField('Straße', [Optional()])

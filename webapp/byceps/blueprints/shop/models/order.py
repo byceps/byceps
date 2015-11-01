@@ -26,12 +26,13 @@ from .article import Article
 class Orderer(object):
     """Someone who orders articles."""
 
-    def __init__(self, user, first_names, last_name, date_of_birth, zip_code,
-                 city, street):
+    def __init__(self, user, first_names, last_name, date_of_birth, country,
+                 zip_code, city, street):
         self.user = user
         self.first_names = first_names
         self.last_name = last_name
         self.date_of_birth = date_of_birth
+        self.country = country
         self.zip_code = zip_code
         self.city = city
         self.street = street
@@ -70,6 +71,7 @@ class Order(db.Model):
     first_names = db.Column(db.Unicode(40), nullable=False)
     last_name = db.Column(db.Unicode(40), nullable=False)
     date_of_birth = db.Column(db.Date, nullable=False)
+    country = db.Column(db.Unicode(60), nullable=False)
     zip_code = db.Column(db.Unicode(5), nullable=False)
     city = db.Column(db.Unicode(40), nullable=False)
     street = db.Column(db.Unicode(40), nullable=False)
@@ -80,13 +82,14 @@ class Order(db.Model):
     cancelation_reason = db.Column(db.Unicode(200))
 
     def __init__(self, party, order_number, placed_by, first_names, last_name,
-                 date_of_birth, zip_code, city, street):
+                 date_of_birth, country, zip_code, city, street):
         self.party = party
         self.order_number = order_number
         self.placed_by = placed_by
         self.first_names = first_names
         self.last_name = last_name
         self.date_of_birth = date_of_birth
+        self.country = country
         self.zip_code = zip_code
         self.city = city
         self.street = street

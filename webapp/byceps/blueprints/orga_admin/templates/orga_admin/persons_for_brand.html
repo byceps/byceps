@@ -28,7 +28,7 @@
       <tr>
         <th>Benutzername<br/>Voller Name</th>
         <th>Geburtstag<br/>Alter</th>
-        <th>Straße<br/>PLZ, Ort</th>
+        <th>Straße<br/>PLZ, Ort<br/>Land</th>
         <th>E-Mail-Adresse<br/>Telefonnummer</th>
       </tr>
     </thead>
@@ -52,6 +52,9 @@
           <br/>
           {%- if user.detail.zip_code %}{{ user.detail.zip_code }} {% endif -%}
           {{- render_with_fallback(user.detail.city) -}}
+          <br/>
+          {{- render_with_fallback(user.detail.country) -}}
+          <br/>
         </td>
         <td class="nowrap">
           <a href="mailto:{{- user.email_address }}">{{- user.email_address|truncate(28, killwords=True, end='…') }}</a><br/>

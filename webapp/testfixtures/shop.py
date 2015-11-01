@@ -57,6 +57,7 @@ def create_order(placed_by, *, party=None, serial_number=1):
         first_names=placed_by.detail.first_names,
         last_name=placed_by.detail.last_name,
         date_of_birth=placed_by.detail.date_of_birth,
+        country=placed_by.detail.country,
         zip_code=placed_by.detail.zip_code,
         city=placed_by.detail.city,
         street=placed_by.detail.street,

@@ -411,6 +411,7 @@ def details_update():
     user.detail.first_names = form.first_names.data.strip()
     user.detail.last_name = form.last_name.data.strip()
     user.detail.date_of_birth = form.date_of_birth.data
+    user.detail.country = form.country.data.strip()
     user.detail.zip_code = form.zip_code.data.strip()
     user.detail.city = form.city.data.strip()
     user.detail.street = form.street.data.strip()

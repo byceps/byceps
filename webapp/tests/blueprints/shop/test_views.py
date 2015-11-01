@@ -54,6 +54,7 @@ class ShopTestCase(AbstractAppTestCase):
             'first_names': 'Hiro',
             'last_name': 'Protagonist',
             'date_of_birth': '01.01.1970',
+            'country': 'State of Mind',
             'zip_code': '31337',
             'city': 'Atrocity',
             'street': 'L33t Street 101',

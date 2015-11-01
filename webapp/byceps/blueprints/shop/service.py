@@ -118,6 +118,7 @@ def build_order(party, order_number, orderer):
         first_names=orderer.first_names,
         last_name=orderer.last_name,
         date_of_birth=orderer.date_of_birth,
+        country=orderer.country,
         zip_code=orderer.zip_code,
         city=orderer.city,
         street=orderer.street,

@@ -132,6 +132,7 @@ class ExportTestCase(AbstractAppTestCase):
         orderer = create_user_with_detail(42, email_address=email_address)
         orderer.detail.last_name = 'Mustermann'
         orderer.detail.first_names = 'Hans-Werner'
+        orderer.detail.country = 'Deutschland'
         orderer.detail.zip_code = '42000'
         orderer.detail.city = 'Hauptstadt'
         orderer.detail.street = 'Nebenstraße 23a'

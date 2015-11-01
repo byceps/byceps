@@ -134,6 +134,7 @@ def export_persons(brand_id):
         'Straße',
         'PLZ',
         'Ort',
+        'Land',
         'E-Mail-Adresse',
         'Telefonnummer',
     ]
@@ -150,6 +151,7 @@ def export_persons(brand_id):
             'Straße': user.detail.street,
             'PLZ': user.detail.zip_code,
             'Ort': user.detail.city,
+            'Land': user.detail.country,
             'E-Mail-Adresse': user.email_address,
             'Telefonnummer': user.detail.phone_number,
         }
