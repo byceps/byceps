@@ -5,7 +5,7 @@
 {%- with %}
 {#- Make the variable available to the included template. #}
 {%- set title = title|default %}
-{% include 'layout/_meta_head.html' with context %}
+{% include 'layout/_meta_head_admin.html' with context %}
 {%- endwith %}
 {% block head %}{% endblock head %}
   </head>
@@ -23,7 +23,7 @@
 {%- with %}
 {#- Make the variable available to the included template. #}
 {%- set current_page = current_page|default %}
-{%- include 'layout/_navigation.html' with context %}
+{%- include 'layout/_navigation_admin.html' with context %}
 {%- endwith %}
       </aside>
 

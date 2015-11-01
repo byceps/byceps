@@ -1,0 +1,11 @@
+    <link rel="stylesheet" href="{{ url_for('core.static', filename='style/style.css') }}"/>
+    <link rel="stylesheet" href="{{ url_for('core.static', filename='style/icons.css') }}"/>
+    <link rel="stylesheet" href="{{ url_for('core.static', filename='style/print.css') }}" media="print"/>
+    <title>{% if title %}{{ title.replace(' - ', ' &middot; ')|safe }} &middot; {% endif %}BYCEPS</title>
+    <!--[if lt IE 9]>
+    <script src="{{ url_for('core.static', filename='behavior/html5shiv.js') }}"></script>
+    <script src="{{ url_for('core.static', filename='behavior/rem.js') }}"></script>
+    <![endif]-->
+    <script src="{{ url_for('core.static', filename='behavior/jquery.js') }}"></script>
+    <script src="{{ url_for('core.static', filename='behavior/utils.js') }}"></script>
+    <script src="{{ url_for('user.static', filename='behavior/user.js') }}"></script>
