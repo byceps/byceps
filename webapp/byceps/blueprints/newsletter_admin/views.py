@@ -48,7 +48,7 @@ def view_subscriptions(brand_id):
 
     subscription_states = list(get_user_subscription_states_for_brand(brand))
     subscription_states.sort(
-        key=lambda user_and_state: user_and_state[0].screen_name)
+        key=lambda user_and_state: user_and_state[0].screen_name.lower())
 
     totals = count_subscriptions_by_state(subscription_states)
 
