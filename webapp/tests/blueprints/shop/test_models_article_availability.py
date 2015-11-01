@@ -31,7 +31,7 @@ class ArticleAvailabilityTestCase(TestCase):
             available_until=datetime(2014, 9, 23, 18, 0, 0))
 
         with freeze_time(now):
-            self.assertEquals(article.is_available, expected)
+            self.assertEqual(article.is_available, expected)
 
     @params(
         (datetime(2014,  4,  8, 12,  0,  0), False),
@@ -48,7 +48,7 @@ class ArticleAvailabilityTestCase(TestCase):
             available_until=None)
 
         with freeze_time(now):
-            self.assertEquals(article.is_available, expected)
+            self.assertEqual(article.is_available, expected)
 
     @params(
         (datetime(2014,  4,  8, 12,  0,  0), True ),
@@ -65,7 +65,7 @@ class ArticleAvailabilityTestCase(TestCase):
             available_until=datetime(2014, 9, 23, 18, 0, 0))
 
         with freeze_time(now):
-            self.assertEquals(article.is_available, expected)
+            self.assertEqual(article.is_available, expected)
 
     @params(
         (datetime(2014,  4,  8, 12,  0,  0), True ),
@@ -82,4 +82,4 @@ class ArticleAvailabilityTestCase(TestCase):
             available_until=None)
 
         with freeze_time(now):
-            self.assertEquals(article.is_available, expected)
+            self.assertEqual(article.is_available, expected)

@@ -35,7 +35,7 @@ class GetCurrentVersionOfSnippetTestCase(AbstractAppTestCase):
 
         with current_party_set(self.app, self.party2014), self.app.app_context():
             actual = get_current_version_of_snippet_with_name('info')
-            self.assertEquals(actual, snippet_info2014_version)
+            self.assertEqual(actual, snippet_info2014_version)
 
     def test_unknown_name(self):
         with current_party_set(self.app, self.party2014), self.app.app_context():

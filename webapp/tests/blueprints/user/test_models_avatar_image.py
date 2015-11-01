@@ -40,7 +40,7 @@ class AvatarImageTestCase(TestCase):
         self.user.avatar_image_created_at = created_at
         self.user.avatar_image_type = image_type
 
-        self.assertEquals(self.user.has_avatar_image, expected)
+        self.assertEqual(self.user.has_avatar_image, expected)
 
     @params(
         (None  , None          ),
@@ -51,7 +51,7 @@ class AvatarImageTestCase(TestCase):
     def test_hybrid_image_type_getter(self, database_value, expected):
         self.user._avatar_image_type = database_value
 
-        self.assertEquals(self.user.avatar_image_type, expected)
+        self.assertEqual(self.user.avatar_image_type, expected)
 
     @params(
         (None          , None  ),
@@ -62,7 +62,7 @@ class AvatarImageTestCase(TestCase):
     def test_hybrid_image_type_setter(self, image_type, expected):
         self.user.avatar_image_type = image_type
 
-        self.assertEquals(self.user._avatar_image_type, expected)
+        self.assertEqual(self.user._avatar_image_type, expected)
 
 
 class AvatarImagePathTestCase(AbstractAppTestCase):
@@ -84,4 +84,4 @@ class AvatarImagePathTestCase(AbstractAppTestCase):
 
         with self.app.app_context():
             self.app.config['PATH_USER_AVATAR_IMAGES'] = Path('/var/data/avatars')
-            self.assertEquals(self.user.avatar_image_path, expected)
+            self.assertEqual(self.user.avatar_image_path, expected)

@@ -48,7 +48,7 @@ class CartItemCreationTestCase(TestCase):
     def test_init_with_positive_quantity(self):
         quantity = 1
         item = self.create_item(quantity)
-        self.assertEquals(item.quantity, quantity)
+        self.assertEqual(item.quantity, quantity)
 
     def test_init_with_zero_quantity(self):
         with self.assertRaises(ValueError):

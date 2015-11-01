@@ -55,4 +55,4 @@ class TokenTest(TestCase):
         token.created_at = datetime(2014, 11, 26, 17, 44, 53)
 
         with freeze_time(now):
-            self.assertEquals(token.is_expired, expected)
+            self.assertEqual(token.is_expired, expected)

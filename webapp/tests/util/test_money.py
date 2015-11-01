@@ -29,7 +29,7 @@ class MoneyTestCase(TestCase):
     def test_format_euro_amount(self, value, expected):
         set_locale('de_DE.UTF-8')
         actual = format_euro_amount(value)
-        self.assertEquals(actual, expected)
+        self.assertEqual(actual, expected)
 
     @params(
         (Decimal(       '0'), Decimal(  '0.00')),
@@ -42,4 +42,4 @@ class MoneyTestCase(TestCase):
     )
     def test_to_two_places(self, value, expected):
         actual = to_two_places(value)
-        self.assertEquals(actual, expected)
+        self.assertEqual(actual, expected)

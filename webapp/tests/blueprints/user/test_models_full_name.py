@@ -25,4 +25,4 @@ class FullNameTestCas(TestCase):
                                        first_names=first_names,
                                        last_name=last_name)
 
-        self.assertEquals(user.detail.full_name, expected)
+        self.assertEqual(user.detail.full_name, expected)

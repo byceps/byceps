@@ -28,4 +28,4 @@ class PermissionTestCase(TestCase):
     def test_creation_from_enum_member(self, enum_member, expected):
         actual = Permission.from_enum_member(enum_member)
 
-        self.assertEquals(actual.id, expected)
+        self.assertEqual(actual.id, expected)

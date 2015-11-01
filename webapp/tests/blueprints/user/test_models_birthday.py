@@ -30,7 +30,7 @@ class AgeTestCase(TestCase):
     )
     def test_age(self, today_text, expected):
         with freeze_time(today_text):
-            self.assertEquals(self.user_detail.age, expected)
+            self.assertEqual(self.user_detail.age, expected)
 
 
 class BirthdayTestCase(TestCase):
@@ -48,7 +48,7 @@ class BirthdayTestCase(TestCase):
     def test_days_until_next_birthday(self, today_text, expected):
         with freeze_time(today_text):
             actual = self.user_detail.days_until_next_birthday
-            self.assertEquals(actual, expected)
+            self.assertEqual(actual, expected)
 
     @params(
         ('1994-03-17', False),
@@ -60,4 +60,4 @@ class BirthdayTestCase(TestCase):
     )
     def test_is_birthday_today(self, today_text, expected):
         with freeze_time(today_text):
-            self.assertEquals(self.user_detail.is_birthday_today, expected)
+            self.assertEqual(self.user_detail.is_birthday_today, expected)

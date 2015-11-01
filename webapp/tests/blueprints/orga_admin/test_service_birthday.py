@@ -43,7 +43,7 @@ class BirthdayListTestCase(TestCase):
         ]
 
         actual = list(sort_users_by_next_birthday(users))
-        self.assertEquals(actual, expected)
+        self.assertEqual(actual, expected)
 
 
 def create_user(date_of_birth):

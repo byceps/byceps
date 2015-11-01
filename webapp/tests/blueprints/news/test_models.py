@@ -27,7 +27,7 @@ class ItemTestCase(AbstractAppTestCase):
         item = self.create_item_with_version(slug, image_url_path)
 
         with current_party_set(self.app, self.party), self.app.app_context():
-            self.assertEquals(item.image_url, expected)
+            self.assertEqual(item.image_url, expected)
 
     # -------------------------------------------------------------------- #
     # helpers

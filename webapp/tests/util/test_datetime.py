@@ -65,7 +65,7 @@ class DateTimeRangeTestCase(TestCase):
 
         actual = date_time_range.contains(tested_datetime)
 
-        self.assertEquals(actual, expected)
+        self.assertEqual(actual, expected)
 
 
 class MonthDayTestCase(TestCase):
@@ -79,8 +79,8 @@ class MonthDayTestCase(TestCase):
     def test_of(self, date, expected_month, expected_day):
         month_day = MonthDay.of(date)
 
-        self.assertEquals(month_day.month, expected_month)
-        self.assertEquals(month_day.day, expected_day)
+        self.assertEqual(month_day.month, expected_month)
+        self.assertEqual(month_day.day, expected_day)
 
     @params(
         ( 3, 17, date(2005,  2, 17), False),
@@ -97,7 +97,7 @@ class MonthDayTestCase(TestCase):
         month_day = MonthDay(month=month, day=day)
         actual = month_day.matches(date)
 
-        self.assertEquals(actual, expected)
+        self.assertEqual(actual, expected)
 
 
 class CalculationTestCase(TestCase):
@@ -115,7 +115,7 @@ class CalculationTestCase(TestCase):
     )
     def test_calculate_age(self, today, expected):
         actual = calculate_age(self.date, today)
-        self.assertEquals(actual, expected)
+        self.assertEqual(actual, expected)
 
     @params(
         (date(2014, 3, 16), 2),
@@ -125,4 +125,4 @@ class CalculationTestCase(TestCase):
     )
     def test_calculate_days_until(self, today, expected):
         actual = calculate_days_until(self.date, today)
-        self.assertEquals(actual, expected)
+        self.assertEqual(actual, expected)

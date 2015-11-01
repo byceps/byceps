@@ -43,7 +43,7 @@ class TicketTestCase(TestCase):
 
         actual = ticket.is_managed_by(user)
 
-        self.assertEquals(actual, expected)
+        self.assertEqual(actual, expected)
 
     @params(
         (user1, None,  user1, True ),
@@ -61,7 +61,7 @@ class TicketTestCase(TestCase):
 
         actual = ticket.is_seat_managed_by(user)
 
-        self.assertEquals(actual, expected)
+        self.assertEqual(actual, expected)
 
     @params(
         (user1, None,  user1, True ),
@@ -79,7 +79,7 @@ class TicketTestCase(TestCase):
 
         actual = ticket.is_user_managed_by(user)
 
-        self.assertEquals(actual, expected)
+        self.assertEqual(actual, expected)
 
 
 def create_ticket(owned_by, *, seat_managed_by=None, user_managed_by=None):
