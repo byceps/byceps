@@ -37,6 +37,7 @@ from .forms import AvatarImageUpdateForm, DetailsForm, LoginForm, \
     ResetPasswordForm, UpdatePasswordForm, UserCreateForm
 from .models import User
 from .session import UserSession
+from . import service
 from . import signals
 
 
@@ -396,7 +397,12 @@ def details_update_form(erroneous_form=None):
     """Show a form to update the current user's details."""
     user = get_current_user_or_404()
     form = erroneous_form if erroneous_form else DetailsForm(obj=user.detail)
-    return {'form': form}
+    countries = service.get_countries(current_app)
+
+    return {
+        'form': form,
+        'countries': countries,
+    }
 
 
 @blueprint.route('/me/details', methods=['POST'])

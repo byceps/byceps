@@ -8,6 +8,12 @@
   <h1>{{ title }}</h1>
 
   <form action="{{ url_for('.details_update') }}" method="post">
+    <datalist id="countries">
+      {%- for country in countries %}
+      <option value="{{ country.name }}">
+      {%- endfor %}
+    </datalist>
+
     {%- call form_fieldset() %}
       {{ form_field(form.first_names, maxlength=40, autofocus='autofocus') }}
       {{ form_field(form.last_name, maxlength=40) }}
@@ -15,7 +21,7 @@
       {{ form_field(form.street, maxlength=40) }}
       {{ form_field(form.zip_code, size=5, maxlength=5) }}
       {{ form_field(form.city, maxlength=40) }}
-      {{ form_field(form.country, maxlength=60) }}
+      {{ form_field(form.country, list='countries', maxlength=60) }}
       {{ form_field(form.phone_number, maxlength=20) }}
     {%- endcall %}
 
