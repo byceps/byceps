@@ -15,6 +15,7 @@ from flask import render_template
 from ... import config
 from ...config import SiteMode
 from ...util.framework import create_blueprint
+from ...util.navigation import Navigation
 
 
 blueprint = create_blueprint('core', __name__)
@@ -50,6 +51,7 @@ def not_found(error):
 def inject_navigation():
     navigation_blocks = NAVIGATION_BLOCKS_BY_SITE_MODE[config.get_site_mode()]
     return {
+        'Navigation': Navigation,
         'navigation_blocks': navigation_blocks,
     }
 
