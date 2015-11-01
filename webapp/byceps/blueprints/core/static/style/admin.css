@@ -16,7 +16,7 @@ body {
 main {
   background-color: #ffffff;
   border: #cccccc solid 1px;
-  border-radius: 15px;
+  border-radius: 2px;
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
 }
 
@@ -46,14 +46,17 @@ nav.top {
 #sidebar section {
   font-size: 0.8rem;
   margin-bottom: 20px;
-  padding: 12px 0;
+  padding-bottom: 12px;
 }
 #sidebar section h1 {
+  background-color: #555555;
   border-bottom: #cccccc solid 1px;
+  color: #f8f8f8;
   font-size: 1.1rem;
-  font-weight: bold;
+  font-weight: normal;
   margin: 0 0 10px 0;
-  padding: 0 15px 10px 15px;
+  padding: 35px 20px 10px 20px;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
 }
 #sidebar section p {
   padding: 0 20px
@@ -76,9 +79,10 @@ nav.main a {
   border-width: 1px 0;
   color: #333333;
   display: block;
-  font-weight: bold;
+  font-size: 0.95rem;
+  font-weight: normal;
   line-height: 1.5;
-  opacity: 0.7;
+  opacity: 0.8;
   padding: 0 20px;
   text-decoration: none;
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
