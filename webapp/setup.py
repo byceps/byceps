@@ -1,6 +1,17 @@
 # -*- coding: utf-8 -*-
 
+import codecs
+
 from setuptools import setup
+
+
+def read_lines_from_file(filename):
+    with codecs.open(filename, encoding='utf-8') as f:
+        return [line.rstrip('\n') for line in f]
+
+
+requirements = read_lines_from_file('requirements.txt')
+requirements_test = read_lines_from_file('requirements-test.txt')
 
 
 setup(
@@ -30,6 +41,7 @@ setup(
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content :: News/Diary',
     ],
     packages=['byceps'],
-    tests_require=['nose2'],
+    install_requires=requirements,
+    tests_require=requirements_test,
     test_suite='nose2.collector.collector',
 )
