@@ -23,7 +23,12 @@ blueprint = create_blueprint('core', __name__)
 def _get_navigation_blocks(site_mode):
     """Import navigation module for the given mode and return the blocks."""
     module_name = 'config.navigation_{}'.format(site_mode.name)
-    module = import_module(module_name)
+
+    try:
+        module = import_module(module_name)
+    except ImportError:
+        return []
+
     return module.get_blocks()
 
 
