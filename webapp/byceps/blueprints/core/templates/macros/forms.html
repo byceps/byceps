@@ -9,6 +9,7 @@
   </fieldset>
 {%- endmacro %}
 
+
 {%- macro form_field(field, note=None) -%}
   {%- set kwargs2 = kwargs %}
   {%- call _row(field) %}
@@ -16,6 +17,7 @@
         {%- if note %} <small class="faint">{{ note }}</small>{% endif %}
   {%- endcall %}
 {%- endmacro %}
+
 
 {%- macro form_field_checkbox(field, label) -%}
   {%- set kwargs2 = kwargs %}
@@ -25,6 +27,7 @@
       </div>
   {%- endcall %}
 {%- endmacro %}
+
 
 {%- macro form_fields_radio(field) -%}
   {%- set kwargs2 = kwargs %}
@@ -37,12 +40,14 @@
   {%- endfor %}
 {%- endmacro %}
 
+
 {%- macro _row(field) -%}
       <li{% if field.errors %} class="error"{% endif %}>
 {{- caller() -}}
         {{- _errors(field) -}}
       </li>
 {%- endmacro %}
+
 
 {%- macro _errors(field) -%}
         {%- if field.errors %}
@@ -54,12 +59,14 @@
         {%- endif -%}
 {%- endmacro %}
 
+
 {% macro form_supplement(label=None) -%}
     <div class="label">{% if label is not none %}{{ label }}{% endif %}</div>
     <div class="supplement">
 {{ caller() }}
     </div>
 {%- endmacro %}
+
 
 {# A field set with a submit button. #}
 {% macro form_buttons(label, icon=None, cancel_url=None) -%}
@@ -68,6 +75,7 @@
     {%- if cancel_url %} oder <a class="cancel" href="{{ cancel_url }}">abbrechen</a>{% endif -%}
   </fieldset>
 {%- endmacro %}
+
 
 {% macro form_datalist(id, values) -%}
   <datalist id="{{ id }}">

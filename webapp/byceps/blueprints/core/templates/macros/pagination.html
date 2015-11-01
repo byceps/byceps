@@ -1,5 +1,6 @@
 {% from 'macros/icons.html' import render_icon %}
 
+
 {% macro render_pagination_nav(pagination, endpoint, url_args=None, show_label=True) %}
   {%- if pagination.pages > 1 %}
     <nav class="pagination">
