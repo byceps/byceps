@@ -30,6 +30,7 @@ BLUEPRINTS = [
     ('authorization',       '/authorization',       None           ),
     ('authorization_admin', '/admin/authorization', SiteMode.admin ),
     ('board',               '/board',               SiteMode.public),
+    ('board_admin',         '/admin/board',         SiteMode.admin ),
     #('brand',               None,                   None           ),
     ('core',                '/core',                None           ),
     ('news',                '/news',                SiteMode.public),

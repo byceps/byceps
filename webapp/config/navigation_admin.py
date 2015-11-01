@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from byceps.blueprints.authorization_admin.authorization import RolePermission
+from byceps.blueprints.board_admin.authorization import BoardCategoryPermission
 from byceps.blueprints.news_admin.authorization import NewsItemPermission
 from byceps.blueprints.newsletter_admin.authorization import NewsletterPermission
 from byceps.blueprints.orga_admin.authorization import OrgaBirthdayPermission, \
@@ -38,6 +39,7 @@ misc.add_item('snippet_admin.index', 'Snippets', id='snippet_admin', required_pe
 misc.add_item('news_admin.index', 'News', id='news_admin', required_permission=NewsItemPermission.list)
 misc.add_item('terms_admin.index', 'AGB', id='terms_admin', required_permission=TermsPermission.list)
 misc.add_item('newsletter_admin.index', 'Newsletter', id='newsletter_admin', required_permission=NewsletterPermission.view_subscriptions)
+misc.add_item('board_admin.index', 'Board', id='board_admin', required_permission=BoardCategoryPermission.list)
 
 
 def get_blocks():

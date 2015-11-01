@@ -14,7 +14,7 @@ from .brand import create_brand
 
 
 def create_category(*, brand=None, number=1, position=None, slug=None,
-                    title=None):
+                    title=None, description=None):
     if brand is None:
         brand = create_brand()
 
@@ -27,11 +27,10 @@ def create_category(*, brand=None, number=1, position=None, slug=None,
     if title is None:
         title = 'Kategorie {}'.format(number)
 
-    return Category(
-        brand=brand,
-        position=position,
-        slug=slug,
-        title=title)
+    if description is None:
+        description = 'Hier geht es um Kategorie {}'.format(number)
+
+    return Category(brand, position, slug, title, description)
 
 
 def create_topic(category, creator, *, number=1, title=None, body=None):

@@ -51,6 +51,14 @@ class Category(db.Model):
     last_posting_updated_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
     last_posting_updated_by = db.relationship(User)
 
+    def __init__(self, brand, position, slug, title, description):
+        self.brand = brand
+        self.brand = brand
+        self.position = position
+        self.slug = slug
+        self.title = title
+        self.description = description
+
     def aggregate(self):
         """Update the count and latest fields."""
         topic_count = Topic.query.for_category(self).without_hidden().count()
