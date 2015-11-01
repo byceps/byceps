@@ -20,7 +20,7 @@ from ..brand.models import Brand
 from ..newsletter.models import SubscriptionState
 
 from .authorization import NewsletterPermission
-from .models import count_subscriptions_by_state, get_subscribers, \
+from .service import count_subscriptions_by_state, get_subscribers, \
     get_user_subscription_states_for_brand
 
 
