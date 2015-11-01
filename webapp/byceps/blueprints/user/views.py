@@ -396,12 +396,15 @@ def view_current():
 def details_update_form(erroneous_form=None):
     """Show a form to update the current user's details."""
     user = get_current_user_or_404()
+
     form = erroneous_form if erroneous_form else DetailsForm(obj=user.detail)
+
     countries = service.get_countries(current_app)
+    country_names = [country.name for country in countries]
 
     return {
         'form': form,
-        'countries': countries,
+        'country_names': country_names,
     }
 
 

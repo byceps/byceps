@@ -68,3 +68,11 @@
     {%- if cancel_url %} oder <a class="cancel" href="{{ cancel_url }}">abbrechen</a>{% endif -%}
   </fieldset>
 {%- endmacro %}
+
+{% macro form_datalist(id, values) -%}
+  <datalist id="{{ id }}">
+    {%- for value in values %}
+    <option value="{{ value }}">
+    {%- endfor %}
+  </datalist>
+{%- endmacro %}
