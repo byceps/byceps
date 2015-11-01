@@ -12,4 +12,6 @@ setup(
     url='http://homework.nwsnet.de/',
     license='Modified BSD',
     packages=['byceps'],
+    tests_require=['nose2'],
+    test_suite='nose2.collector.collector',
 )
