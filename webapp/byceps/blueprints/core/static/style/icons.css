@@ -16,8 +16,8 @@
   text-decoration: inherit;
 }
 
-[class^="icon-"]:before,
-[class*=" icon-"]:before {
+[class^="icon-"]::before,
+[class*=" icon-"]::before {
   display: inline-block;
   speak: none;
   text-decoration: inherit;
@@ -36,64 +36,64 @@ li [class*=" icon-"] {
   width: 1.25em;
 }
 
-.icon-add:before            { content: "\f067"; }
-.icon-administrate:before   { content: "\f0ad"; }
-.icon-archived:before       { content: "\f187"; }
-.icon-arrow-left:before     { content: "\f060"; }
-.icon-arrow-right:before    { content: "\f061"; }
-.icon-attached:before       { content: "\f0c6"; }
-.icon-birthday:before       { content: "\f1fd"; }
-.icon-board:before          { content: "\f086"; }
-.icon-bullhorn:before       { content: "\f0a1"; }
-.icon-cost:before           { content: "\f153"; }
-.icon-date:before           { content: "\f073"; }
-.icon-delete:before         { content: "\f1f8"; }
-.icon-disabled:before       { content: "\f05e"; }
-.icon-download:before       { content: "\f019"; }
-.icon-edit:before           { content: "\f040"; }
-.icon-enabled:before        { content: "\f00c"; }
-.icon-error:before          { content: "\f071"; }
-.icon-external-link:before  { content: "\f08e"; }
-.icon-facebook:before       { content: "\f09a"; }
-.icon-facility:before       { content: "\f015"; }
-.icon-filter:before         { content: "\f0b0"; }
-.icon-food:before           { content: "\f0f5"; }
-.icon-hidden:before         { content: "\f070"; }
-.icon-history:before        { content: "\f1da"; }
-.icon-image:before          { content: "\f03e"; }
-.icon-important:before      { content: "\f12a"; }
-.icon-info:before           { content: "\f05a"; }
-.icon-internet:before       { content: "\f0ac"; }
-.icon-irc:before            { content: "#"; font-weight: bold; }
-.icon-location:before       { content: "\f041"; }
-.icon-lock:before           { content: "\f023"; }
-.icon-log-in:before         { content: "\f090"; }
-.icon-log-out:before        { content: "\f08b"; }
-.icon-moderate:before       { content: "\f0e3"; }
-.icon-move:before           { content: "\f047"; }
-.icon-network:before        { content: "\f0e8"; }
-.icon-new:before            { content: "\f069"; }
-.icon-parking:before        { content: "\f1b9"; }
-.icon-password:before       { content: "\f084"; }
-.icon-pending:before        { content: "\f017"; }
-.icon-pin:before            { content: "\f08d"; }
-.icon-published:before      { content: "\f06e"; }
-.icon-quote:before          { content: "\f10d"; }
-.icon-remove:before         { content: "\f00d"; }
-.icon-reply:before          { content: "\f112"; }
-.icon-search:before         { content: "\f002"; }
-.icon-shopping-cart:before  { content: "\f07a"; }
-.icon-sorted:before         { content: "\f0dc"; }
-.icon-steam:before          { content: "\f1b6"; }
-.icon-success:before        { content: "\f00c"; }
-.icon-text:before           { content: "\f0f6"; }
-.icon-ticket:before         { content: "\f145"; }
-.icon-time:before           { content: "\f017"; }
-.icon-twitter:before        { content: "\f099"; }
-.icon-unlock:before         { content: "\f09c"; }
-.icon-update:before         { content: "\f021"; }
-.icon-upload:before         { content: "\f093"; }
-.icon-user:before           { content: "\f007"; }
-.icon-users:before          { content: "\f0c0"; }
-.icon-view:before           { content: "\f06e"; }
-.icon-warning:before        { content: "\f071"; }
+.icon-add::before            { content: "\f067"; }
+.icon-administrate::before   { content: "\f0ad"; }
+.icon-archived::before       { content: "\f187"; }
+.icon-arrow-left::before     { content: "\f060"; }
+.icon-arrow-right::before    { content: "\f061"; }
+.icon-attached::before       { content: "\f0c6"; }
+.icon-birthday::before       { content: "\f1fd"; }
+.icon-board::before          { content: "\f086"; }
+.icon-bullhorn::before       { content: "\f0a1"; }
+.icon-cost::before           { content: "\f153"; }
+.icon-date::before           { content: "\f073"; }
+.icon-delete::before         { content: "\f1f8"; }
+.icon-disabled::before       { content: "\f05e"; }
+.icon-download::before       { content: "\f019"; }
+.icon-edit::before           { content: "\f040"; }
+.icon-enabled::before        { content: "\f00c"; }
+.icon-error::before          { content: "\f071"; }
+.icon-external-link::before  { content: "\f08e"; }
+.icon-facebook::before       { content: "\f09a"; }
+.icon-facility::before       { content: "\f015"; }
+.icon-filter::before         { content: "\f0b0"; }
+.icon-food::before           { content: "\f0f5"; }
+.icon-hidden::before         { content: "\f070"; }
+.icon-history::before        { content: "\f1da"; }
+.icon-image::before          { content: "\f03e"; }
+.icon-important::before      { content: "\f12a"; }
+.icon-info::before           { content: "\f05a"; }
+.icon-internet::before       { content: "\f0ac"; }
+.icon-irc::before            { content: "#"; font-weight: bold; }
+.icon-location::before       { content: "\f041"; }
+.icon-lock::before           { content: "\f023"; }
+.icon-log-in::before         { content: "\f090"; }
+.icon-log-out::before        { content: "\f08b"; }
+.icon-moderate::before       { content: "\f0e3"; }
+.icon-move::before           { content: "\f047"; }
+.icon-network::before        { content: "\f0e8"; }
+.icon-new::before            { content: "\f069"; }
+.icon-parking::before        { content: "\f1b9"; }
+.icon-password::before       { content: "\f084"; }
+.icon-pending::before        { content: "\f017"; }
+.icon-pin::before            { content: "\f08d"; }
+.icon-published::before      { content: "\f06e"; }
+.icon-quote::before          { content: "\f10d"; }
+.icon-remove::before         { content: "\f00d"; }
+.icon-reply::before          { content: "\f112"; }
+.icon-search::before         { content: "\f002"; }
+.icon-shopping-cart::before  { content: "\f07a"; }
+.icon-sorted::before         { content: "\f0dc"; }
+.icon-steam::before          { content: "\f1b6"; }
+.icon-success::before        { content: "\f00c"; }
+.icon-text::before           { content: "\f0f6"; }
+.icon-ticket::before         { content: "\f145"; }
+.icon-time::before           { content: "\f017"; }
+.icon-twitter::before        { content: "\f099"; }
+.icon-unlock::before         { content: "\f09c"; }
+.icon-update::before         { content: "\f021"; }
+.icon-upload::before         { content: "\f093"; }
+.icon-user::before           { content: "\f007"; }
+.icon-users::before          { content: "\f0c0"; }
+.icon-view::before           { content: "\f06e"; }
+.icon-warning::before        { content: "\f071"; }

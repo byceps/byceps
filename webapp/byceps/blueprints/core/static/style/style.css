@@ -1,8 +1,8 @@
 /* reset */
 
 *,
-*:after,
-*:before {
+*::after,
+*::before {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -67,7 +67,7 @@ img {
 
 /* simplified/modernized "micro clearfix" */
 
-.clearfix:after {
+.clearfix::after {
   clear: both;
   content: '';
   display: table;
@@ -128,10 +128,10 @@ nav.breadcrumbs {
 nav.breadcrumbs li {
   display: inline-block;
 }
-nav.breadcrumbs li:after {
+nav.breadcrumbs li::after {
   content: ' \0BB \020';
 }
-nav.breadcrumbs li:last-child:after {
+nav.breadcrumbs li:last-child::after {
   content: none;
 }
 nav.breadcrumbs:not(.compact) li:last-child {
