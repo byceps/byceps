@@ -23,6 +23,14 @@ main {
   display: block;
 }
 
+a {
+  background-color: transparent;
+}
+a:active,
+a:hover {
+  outline: 0;
+}
+
 table {
   border-collapse: collapse;
   border-spacing: 0;
@@ -51,9 +59,11 @@ fieldset {
 
 textarea {
   font: inherit;
+  overflow: auto;
 }
 
 abbr {
+  border-bottom: solid 1px;
   cursor: help;
 }
 
