@@ -44,7 +44,9 @@
     </tr>
   </table>
   <ol class="actions">
+    {%- if g.site_mode.is_public() %}
     <li><a href="{{ url_for('.view', id=user.id) }}">{{ render_icon('view') }} öffentliches Profil ansehen</a></li>
+    {%- endif %}
     <li><a href="{{ url_for('.password_update_form') }}">{{ render_icon('password') }} Passwort ändern</a></li>
   </ol>
 
