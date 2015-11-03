@@ -1,11 +1,12 @@
 /* reset */
 
+html {
+  box-sizing: border-box;
+}
 *,
 *::after,
 *::before {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
+  box-sizing: inherit;
 }
 
 html,
