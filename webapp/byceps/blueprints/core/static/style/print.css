@@ -1,8 +1,13 @@
+* {
+  background-color: transparent !important;
+  color: #000000 !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+
 html,
 body {
-  background-color: #ffffff;
   border: none;
-  color: #000000;
 }
 
 #page {
