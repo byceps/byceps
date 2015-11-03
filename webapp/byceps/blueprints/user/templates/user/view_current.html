@@ -86,6 +86,7 @@
     <li><a href="{{ url_for('.details_update_form') }}">{{ render_icon('edit') }} bearbeiten</a></li>
   </ol>
 
+  {%- if g.site_mode.is_public() %}
   <h2>Newsletter</h2>
   <table class="index">
     <tr>
@@ -101,5 +102,6 @@
   <ol class="actions">
     <li><a href="{{ url_for('newsletter.subscription_update_form') }}">{{ render_icon('edit') }} bearbeiten</a></li>
   </ol>
+  {%- endif %}
 
 {%- endblock body %}
