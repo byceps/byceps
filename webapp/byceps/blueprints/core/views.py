@@ -8,7 +8,7 @@ byceps.blueprints.core.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from flask import render_template
+from flask import g, render_template
 
 from ... import config
 from ...util.framework import create_blueprint
@@ -52,3 +52,8 @@ def add_page_arg(args, page):
 def is_current_page(nav_item_path, current_page=None):
     return (current_page is not None) \
             and (nav_item_path == current_page)
+
+
+@blueprint.before_app_request
+def provide_site_mode():
+    g.site_mode = config.get_site_mode()
