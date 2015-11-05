@@ -20,6 +20,7 @@ class ArticleCreateForm(LocalizedForm):
 
 class ArticleUpdateForm(LocalizedForm):
     description = StringField('Beschreibung')
+    price = DecimalField('Stückpreis', places=2)
     tax_rate = DecimalField('Steuersatz', places=3)
     quantity = IntegerField('Anzahl verfügbar')
     max_quantity_per_order = IntegerField('Maximale Anzahl pro Bestellung')

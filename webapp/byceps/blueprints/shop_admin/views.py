@@ -188,6 +188,7 @@ def article_update(id):
 
     article = Article.query.get_or_404(id)
     article.description = form.description.data.strip()
+    article.price = form.price.data
     article.tax_rate = form.tax_rate.data
     article.quantity = form.quantity.data
     article.max_quantity_per_order = form.max_quantity_per_order.data
