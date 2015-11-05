@@ -1,5 +1,5 @@
 {% extends 'layout/base_admin.html' %}
-{% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
+{% from 'macros/forms.html' import form_buttons, form_datalist, form_field, form_fieldset %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'snippet_admin' %}
 {% set title = 'Artikel anlegen' %}
@@ -17,6 +17,9 @@
   <form action="{{ url_for('.article_create', party_id=party.id) }}" method="post">
     {% call form_fieldset() %}
       {{ form_field(form.description, maxlength=80, required='required', autofocus='autofocus') }}
+      {{ form_field(form.price, size=7, maxlength=7, style='width: 7rem;', required='required') }}
+      {{ form_field(form.tax_rate, list='tax_rates', size=5, maxlength=5, style='width: 5rem;', required='required') }}
+      {{ form_datalist('tax_rates', ['0.00', '0.07', '0.19']) }}
       {{ form_field(form.quantity, type='number', min=0, max=99999, style='width: 5rem;', required='required') }}
     {% endcall %}
 

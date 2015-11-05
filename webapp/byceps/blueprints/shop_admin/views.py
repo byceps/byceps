@@ -135,7 +135,10 @@ def article_create_form(party_id):
     """Show form to create an article."""
     party = Party.query.get_or_404(party_id)
 
-    form = ArticleCreateForm(quantity=0)
+    form = ArticleCreateForm(
+        price=Decimal('0.00'),
+        tax_rate=Decimal('0.19'),
+        quantity=0)
 
     return {
         'party': party,
@@ -152,8 +155,8 @@ def article_create(party_id):
 
     item_number = generate_article_number(party)
     description = form.description.data.strip()
-    price = Decimal('9999.00')  # TODO: Request via form.
-    tax_rate = Decimal('0.19')  # TODO: Request via form.
+    price = form.price.data
+    tax_rate = form.tax_rate.data
     quantity = form.quantity.data
 
     article = Article(party, item_number, description, price, tax_rate,
