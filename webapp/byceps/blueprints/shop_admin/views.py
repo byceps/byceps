@@ -135,7 +135,7 @@ def article_create_form(party_id):
     """Show form to create an article."""
     party = Party.query.get_or_404(party_id)
 
-    form = ArticleCreateForm()
+    form = ArticleCreateForm(quantity=0)
 
     return {
         'party': party,
