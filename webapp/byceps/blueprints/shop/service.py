@@ -83,7 +83,12 @@ def _get_next_serial_number(party, purpose):
         .filter_by(party=party) \
         .filter_by(_purpose=purpose.name) \
         .with_for_update() \
-        .one()
+        .one_or_none()
+
+    if sequence is None:
+        sequence = PartySequence(party, purpose)
+        db.session.add(sequence)
+        db.session.commit()
 
     sequence.value = PartySequence.value + 1
     db.session.commit()
