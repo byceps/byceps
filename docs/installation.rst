@@ -25,6 +25,7 @@ the "Jessie" release:
 * ``postgresql-9.4``
 * ``postgresql-contrib-9.4``
 * ``python3-pil``
+* ``python3-psycopg2``
 * ``python3.4``
 * ``python3.4-dev``
 * ``python3.4-venv``
@@ -39,7 +40,7 @@ user):
 .. code-block:: sh
 
     # aptitude update
-    # aptitude install postgresql-9.4 postgresql-contrib-9.4 python3-pil python3.4 python3.4-dev python3.4-venv redis-server
+    # aptitude install postgresql-9.4 postgresql-contrib-9.4 python3-pil python3-psycopg2 python3.4 python3.4-dev python3.4-venv redis-server
 
 Refer to the Debian documentation for further details.
 

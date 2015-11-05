@@ -19,7 +19,13 @@ from sqlalchemy.dialects.postgresql import UUID
 db = SQLAlchemy(session_options={'autoflush': False})
 
 
-db.Uuid = UUID
+class Uuid(UUID):
+
+    def __init__(self):
+        super().__init__(as_uuid=True)
+
+
+db.Uuid = Uuid
 
 
 def generate_uuid():

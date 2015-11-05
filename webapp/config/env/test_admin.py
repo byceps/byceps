@@ -11,7 +11,7 @@ TESTING = True
 LOCALE = 'de_DE.UTF-8'
 LOCALES_FORMS = ['de']
 
-SQLALCHEMY_DATABASE_URI = 'postgresql+pg8000://byceps_test:test@127.0.0.1/byceps_test'
+SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://byceps_test:test@127.0.0.1/byceps_test'
 SQLALCHEMY_ECHO = False
 
 REDIS_URL = 'redis://127.0.0.1:6379/0'

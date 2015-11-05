@@ -12,7 +12,7 @@ SESSION_COOKIE_SECURE = True
 LOCALE = 'de_DE.UTF-8'
 LOCALES_FORMS = ['de']
 
-SQLALCHEMY_DATABASE_URI = 'postgresql+pg8000://byceps:boioioing@127.0.0.1/byceps'
+SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://byceps:boioioing@127.0.0.1/byceps'
 SQLALCHEMY_ECHO = False
 
 REDIS_URL = 'unix:///var/run/redis/redis.sock?db=0'
