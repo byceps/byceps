@@ -7,6 +7,7 @@ addons:
   apt:
     packages:
       - language-pack-de
+      - python3-pil
 services:
   - redis-server
 before_script:

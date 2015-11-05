@@ -24,6 +24,7 @@ the "Jessie" release:
 
 * ``postgresql-9.4``
 * ``postgresql-contrib-9.4``
+* ``python3-pil``
 * ``python3.4``
 * ``python3.4-dev``
 * ``python3.4-venv``
@@ -38,7 +39,7 @@ user):
 .. code-block:: sh
 
     # aptitude update
-    # aptitude install postgresql-9.4 postgresql-contrib-9.4 python3.4 python3.4-dev python3.4-venv redis-server
+    # aptitude install postgresql-9.4 postgresql-contrib-9.4 python3-pil python3.4 python3.4-dev python3.4-venv redis-server
 
 Refer to the Debian documentation for further details.
 
@@ -85,7 +86,7 @@ Then create a virtual environment (named "venv"):
 
 .. code-block:: sh
 
-    $ pyvenv-3.4 venv
+    $ pyvenv-3.4 --system-site-packages venv
 
 Activate it (but don't change into its path):
 
