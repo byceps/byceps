@@ -5,6 +5,8 @@ python:
 addons:
   postgresql: "9.4"
   apt:
+    sources:
+      - debian-sid
     packages:
       - language-pack-de
       - python3-pil
