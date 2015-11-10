@@ -172,10 +172,12 @@ def export_persons(brand_id):
 @templated
 def teams():
     """List parties to choose from."""
-    parties_with_team_counts = service.get_parties_with_team_counts()
+    parties_with_team_and_person_counts = \
+        service.get_parties_with_team_and_person_counts()
 
     return {
-        'parties_with_team_counts': parties_with_team_counts,
+        'parties_with_team_and_person_counts': \
+            parties_with_team_and_person_counts,
     }
 
 

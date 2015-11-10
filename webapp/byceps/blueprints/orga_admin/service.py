@@ -67,15 +67,17 @@ def get_unassigned_orgas_for_party(party):
     return unassigned_orgas
 
 
-def get_parties_with_team_counts():
+def get_parties_with_team_and_person_counts():
     """Yield (party, team count) pairs."""
     parties = Party.query.all()
 
     team_counts_by_party_id = _get_team_counts_by_party_id()
+    person_counts_by_party_id = _get_person_counts_by_party_id()
 
     for party in parties:
         team_count = team_counts_by_party_id.get(party.id, 0)
-        yield party, team_count
+        person_count = person_counts_by_party_id.get(party.id, 0)
+        yield party, team_count, person_count
 
 
 def _get_team_counts_by_party_id():
@@ -84,6 +86,17 @@ def _get_team_counts_by_party_id():
             OrgaTeam.party_id,
             db.func.count(OrgaTeam.party_id)
         ) \
+        .group_by(OrgaTeam.party_id) \
+        .all())
+
+
+def _get_person_counts_by_party_id():
+    return dict(db.session \
+        .query(
+            OrgaTeam.party_id,
+            db.func.count(Membership.id)
+        ) \
+        .join(Membership) \
         .group_by(OrgaTeam.party_id) \
         .all())
 
