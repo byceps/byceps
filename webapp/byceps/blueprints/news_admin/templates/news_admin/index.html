@@ -1,4 +1,5 @@
 {% extends 'layout/base_admin.html' %}
+{% from 'macros/misc.html' import render_faint %}
 {% set current_page = 'news_admin' %}
 {% set title = 'News' %}
 
@@ -12,10 +13,11 @@
 
   <p>Marke wählen:</p>
   <ol class="index fully-linked">
-    {%- for brand in brands|sort(attribute='title', reverse=True) %}
+    {%- for brand, item_count in brands_with_item_counts|sort(attribute='0.title') %}
     <li>
       <a href="{{ url_for('.index_for_brand', brand_id=brand.id) }}">
-        <strong>{{ brand.title }}</strong>
+        <strong>{{ brand.title }}</strong><br>
+        {{ render_faint('%d %s'|format(item_count, 'Post' if (item_count == 1) else 'Posts')) }}
       </a>
     </li>
     {%- endfor %}

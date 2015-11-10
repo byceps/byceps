@@ -27,6 +27,7 @@ from ..party.models import Party
 
 from .authorization import NewsItemPermission
 from .forms import ItemCreateForm, ItemUpdateForm
+from . import service
 
 
 blueprint = create_blueprint('news_admin', __name__)
@@ -40,9 +41,10 @@ permission_registry.register_enum(NewsItemPermission)
 @templated
 def index():
     """List brands to choose from."""
-    brands = Brand.query.all()
+    brands_with_item_counts = service.get_brands_with_item_counts()
+
     return {
-        'brands': brands,
+        'brands_with_item_counts': brands_with_item_counts,
     }
 
 
