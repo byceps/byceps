@@ -8,6 +8,8 @@ byceps.blueprints.ticket_admin.views
 :License: Modified BSD, see LICENSE for details.
 """
 
+from flask import request
+
 from ...database import db
 from ...util.framework import create_blueprint
 from ...util.templating import templated
@@ -39,22 +41,25 @@ def index():
     }
 
 
-@blueprint.route('/<party_id>')
+@blueprint.route('/<party_id>', defaults={'page': 1})
+@blueprint.route('/<party_id>/pages/<int:page>')
 @permission_required(TicketPermission.list)
 @templated
-def index_for_party(party_id):
+def index_for_party(party_id, page):
     """List tickets for that party."""
     party = Party.query.get_or_404(party_id)
 
-    tickets = Ticket.query \
+    per_page = request.args.get('per_page', type=int, default=15)
+    query = Ticket.query \
         .for_party(party) \
         .options(
             db.joinedload('category'),
             db.joinedload('owned_by'),
             db.joinedload('occupied_seat').joinedload('area'),
         ) \
-        .order_by(Ticket.created_at) \
-        .all()
+        .order_by(Ticket.created_at)
+
+    tickets = query.paginate(page, per_page)
 
     return {
         'party': party,

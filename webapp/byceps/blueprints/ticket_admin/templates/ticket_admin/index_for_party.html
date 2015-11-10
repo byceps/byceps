@@ -1,6 +1,7 @@
 {% extends 'layout/base_admin.html' %}
 {% from 'macros/datetime.html' import render_datetime, render_datetime_custom %}
 {% from 'macros/misc.html' import render_tag %}
+{% from 'macros/pagination.html' import render_pagination_nav %}
 {% from 'macros/user_admin.html' import render_user_admin_link %}
 {% set current_page = 'ticket_admin' %}
 {% set title = '%s - Tickets'|format(party.title) %}
@@ -34,7 +35,7 @@
       </tr>
     </thead>
     <tbody>
-      {%- for ticket in tickets|sort(attribute='created_at') %}
+      {%- for ticket in tickets.items|sort(attribute='created_at') %}
       <tr>
         <td><span title="{{ ticket.id }}">{{ ticket.id|string|truncate(6, killwords=True, end='…') }}</span></td>
         <td>{{ render_user_admin_link(ticket.owned_by) }}</td>
@@ -58,5 +59,7 @@
       <tr>
     </tbody>
   </table>
+
+{{ render_pagination_nav(tickets, '.index_for_party', {'party_id': party.id}) }}
 
 {%- endblock body %}
