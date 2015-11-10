@@ -6,19 +6,13 @@
 
 {% block head %}
     <style>
-      .orders td:hover {
-        background-color: #f8f888;
-      }
-      .orders a {
-        color: #333333;
+      ol.index.fully-linked a {
         display: flex;
-        padding-bottom: 2em;
-        text-decoration: none;
       }
-      .orders a div {
+      ol.index a div {
         flex: 1;
       }
-      .orders .right {
+      ol.index .right {
         text-align: right;
       }
     </style>
@@ -34,21 +28,19 @@
   </nav>
 
   <p>Party wählen:</p>
-  <table class="index wide orders">
+  <ol class="index fully-linked">
     {%- for party in parties|sort(attribute='starts_at', reverse=True) %}
-    <tr>
-      <td>
-        <a href="{{ url_for('.order_index_for_party', party_id=party.id, only=PaymentState.open.name) }}">
-          <div{% if party.is_archived %} class="hidden"{% endif %}>
-            <strong>{{ party.title }}</strong>{% if party.is_archived %} {{ render_icon('archived', title='archiviert') }}{% endif %}
-          </div>
-          <div class="right">
-            {{ render_faint(party.number_prefix) }}
-          </div>
-        </a>
-      </td>
-    </tr>
+    <li>
+      <a href="{{ url_for('.order_index_for_party', party_id=party.id, only=PaymentState.open.name) }}">
+        <div{% if party.is_archived %} class="hidden"{% endif %}>
+          <strong>{{ party.title }}</strong>{% if party.is_archived %} {{ render_icon('archived', title='archiviert') }}{% endif %}
+        </div>
+        <div class="right">
+          {{ render_faint(party.number_prefix) }}
+        </div>
+      </a>
+    </li>
     {%- endfor %}
-  </table>
+  </ol>
 
 {%- endblock body %}

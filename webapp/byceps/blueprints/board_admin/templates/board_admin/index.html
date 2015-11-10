@@ -3,19 +3,6 @@
 {% set current_page = 'board_admin' %}
 {% set title = 'Board' %}
 
-{% block head %}
-    <style>
-      .brands td:hover {
-        background-color: #f8f888;
-      }
-      .brands a {
-        color: #333333;
-        display: block;
-        text-decoration: none;
-      }
-    </style>
-{%- endblock head %}
-
 {% block body %}
 
   <nav class="breadcrumbs">
@@ -25,17 +12,15 @@
   </nav>
 
   <p>Marke wählen:</p>
-  <table class="index wide brands">
+  <ol class="index fully-linked">
     {%- for brand, category_count in brands_with_category_counts|sort(attribute='0.title') %}
-    <tr>
-      <td>
-        <a href="{{ url_for('.index_for_brand', brand_id=brand.id) }}">
-          <strong>{{ brand.title }}</strong><br>
-          {{ render_faint('%d %s'|format(category_count, 'Kategorie' if (category_count == 1) else 'Kategorien')) }}
-        </a>
-      </td>
-    </tr>
+    <li>
+      <a href="{{ url_for('.index_for_brand', brand_id=brand.id) }}">
+        <strong>{{ brand.title }}</strong><br>
+        {{ render_faint('%d %s'|format(category_count, 'Kategorie' if (category_count == 1) else 'Kategorien')) }}
+      </a>
+    </li>
     {%- endfor %}
-  </table>
+  </ol>
 
 {%- endblock body %}

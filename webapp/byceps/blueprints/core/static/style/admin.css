@@ -95,6 +95,37 @@ nav.main .current a {
 }
 
 
+/* lists */
+
+ol.index,
+ol.index li {
+  border-color: #cccccc;
+  border-style: solid;
+}
+ol.index {
+  border-width: 0 0 1px 0;
+}
+ol.index li {
+  border-width: 1px 0 0 0;
+  font-size: 0.9rem;
+  padding: 0.35rem 0;
+}
+
+ol.index.fully-linked li {
+  padding: 0;
+}
+ol.index.fully-linked a {
+  color: #333333;
+  display: block;
+  margin: 0 -40px;
+  padding: 0.35rem 40px;
+  text-decoration: none;
+}
+ol.index.fully-linked a:hover {
+  background-color: #f8f888;
+}
+
+
 /* tags */
 
 .tag.order-open {
