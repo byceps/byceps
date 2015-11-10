@@ -28,6 +28,7 @@ from ..snippet.templating import render_snippet_as_page
 from .authorization import MountpointPermission, SnippetPermission
 from .forms import MountpointCreateForm, MountpointUpdateForm, \
     SnippetCreateForm, SnippetUpdateForm
+from . import service
 
 
 blueprint = create_blueprint('snippet_admin', __name__)
@@ -42,8 +43,11 @@ permission_registry.register_enum(SnippetPermission)
 @templated
 def index():
     """List parties to choose from."""
-    parties = Party.query.all()
-    return {'parties': parties}
+    parties_with_snippet_counts = service.get_parties_with_snippet_counts()
+
+    return {
+        'parties_with_snippet_counts': parties_with_snippet_counts,
+    }
 
 
 @blueprint.route('/<party_id>')

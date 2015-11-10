@@ -1,5 +1,6 @@
 {% extends 'layout/base_admin.html' %}
 {% from 'macros/icons.html' import render_icon %}
+{% from 'macros/misc.html' import render_faint %}
 {% set current_page = 'snippet_admin' %}
 {% set title = 'Snippets' %}
 
@@ -13,12 +14,14 @@
 
   <p>Party wählen:</p>
   <ol class="index fully-linked">
-    {%- for party in parties|sort(attribute='starts_at', reverse=True) %}
+    {%- for party, snippet_count in parties_with_snippet_counts|sort(attribute='0.starts_at', reverse=True) %}
     <li>
       <a href="{{ url_for('.index_for_party', party_id=party.id) }}">
         <div{% if party.is_archived %} class="hidden"{% endif %}>
           <strong>{{ party.title }}</strong>
-          {%- if party.is_archived %} {{ render_icon('archived', title='archiviert') }}{% endif %}
+          {%- if party.is_archived %} {{ render_icon('archived', title='archiviert') }}{% endif -%}
+          <br>
+          {{- render_faint('%d %s'|format(snippet_count, 'Snippet' if (snippet_count == 1) else 'Snippets')) }}
         </div>
       </a>
     </li>
