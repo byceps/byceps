@@ -211,9 +211,10 @@ def article_update(id):
 @templated
 def order_index():
     """List orders."""
-    parties = Party.query.all()
+    parties_with_order_counts = service.get_parties_with_order_counts()
+
     return {
-        'parties': parties,
+        'parties_with_order_counts': parties_with_order_counts,
         'PaymentState': PaymentState,
     }
 

@@ -14,7 +14,7 @@ from ...database import db
 
 from ..party.models import Party
 from ..shop.models.article import Article
-from ..shop.models.order import OrderItem, PaymentState
+from ..shop.models.order import Order, OrderItem, PaymentState
 
 
 def get_parties_with_article_counts():
@@ -35,6 +35,27 @@ def _get_article_counts_by_party_id():
             db.func.count(Article.party_id)
         ) \
         .group_by(Article.party_id) \
+        .all())
+
+
+def get_parties_with_order_counts():
+    """Yield (party, order count) pairs."""
+    parties = Party.query.all()
+
+    order_counts_by_party_id = _get_order_counts_by_party_id()
+
+    for party in parties:
+        order_count = order_counts_by_party_id.get(party.id, 0)
+        yield party, order_count
+
+
+def _get_order_counts_by_party_id():
+    return dict(db.session \
+        .query(
+            Order.party_id,
+            db.func.count(Order.party_id)
+        ) \
+        .group_by(Order.party_id) \
         .all())
 
 
