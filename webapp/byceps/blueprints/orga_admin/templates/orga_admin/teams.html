@@ -1,5 +1,6 @@
 {% extends 'layout/base_admin.html' %}
 {% from 'macros/icons.html' import render_icon %}
+{% from 'macros/misc.html' import render_faint %}
 {% set current_page = 'orga_admin.teams' %}
 {% set title = 'Orgateams' %}
 
@@ -13,12 +14,14 @@
 
   <p>Party wählen:</p>
   <ol class="index fully-linked">
-    {%- for party in parties|sort(attribute='starts_at', reverse=True) %}
+    {%- for party, team_count in parties_with_team_counts|sort(attribute='0.starts_at', reverse=True) %}
     <li>
       <a href="{{ url_for('.teams_for_party', party_id=party.id) }}">
         <div{% if party.is_archived %} class="hidden"{% endif %}>
           <strong>{{ party.title }}</strong>
-          {%- if party.is_archived %} {{ render_icon('archived', title='archiviert') }}{% endif %}
+          {%- if party.is_archived %} {{ render_icon('archived', title='archiviert') }}{% endif -%}
+          <br>
+          {{- render_faint('%d %s'|format(team_count, 'Team' if (team_count == 1) else 'Teams')) }}
         </div>
       </a>
     </li>

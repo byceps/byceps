@@ -172,8 +172,11 @@ def export_persons(brand_id):
 @templated
 def teams():
     """List parties to choose from."""
-    parties = Party.query.all()
-    return {'parties': parties}
+    parties_with_team_counts = service.get_parties_with_team_counts()
+
+    return {
+        'parties_with_team_counts': parties_with_team_counts,
+    }
 
 
 @blueprint.route('/teams/<party_id>')
