@@ -10,8 +10,30 @@ byceps.blueprints.orga_admin.service
 
 from ...database import db
 
+from ..brand.models import Brand
 from ..orga.models import Membership, OrgaFlag, OrgaTeam
 from ..user.models import User, UserDetail
+
+
+def get_brands_with_person_counts():
+    """Yield (brand, person count) pairs."""
+    brands = Brand.query.all()
+
+    person_counts_by_brand_id = _get_person_counts_by_brand_id()
+
+    for brand in brands:
+        person_count = person_counts_by_brand_id.get(brand.id, 0)
+        yield brand, person_count
+
+
+def _get_person_counts_by_brand_id():
+    return dict(db.session \
+        .query(
+            OrgaFlag.brand_id,
+            db.func.count(OrgaFlag.brand_id)
+        ) \
+        .group_by(OrgaFlag.brand_id) \
+        .all())
 
 
 def get_organizers_for_brand(brand):

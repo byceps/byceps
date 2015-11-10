@@ -1,5 +1,6 @@
 {% extends 'layout/base_admin.html' %}
 {% from 'macros/icons.html' import render_icon %}
+{% from 'macros/misc.html' import render_faint %}
 {% set current_page = 'orga_admin.persons' %}
 {% set title = 'Organisatoren' %}
 
@@ -13,10 +14,11 @@
 
   <p>Marke wählen:</p>
   <ol class="index fully-linked">
-    {%- for brand in brands|sort(attribute='title') %}
+    {%- for brand, person_count in brands_with_person_counts|sort(attribute='0.title') %}
     <li>
       <a href="{{ url_for('.persons_for_brand', brand_id=brand.id) }}">
-        <strong>{{ brand.title }}</strong>
+        <strong>{{ brand.title }}</strong><br>
+        {{ render_faint('%d %s'|format(person_count, 'Person' if (person_count == 1) else 'Personen')) }}
       </a>
     </li>
     {%- endfor %}

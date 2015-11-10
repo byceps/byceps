@@ -29,6 +29,7 @@ from .authorization import OrgaBirthdayPermission, OrgaDetailPermission, \
     OrgaTeamPermission
 from .forms import MembershipCreateForm, MembershipUpdateForm, \
     OrgaFlagCreateForm, OrgaTeamCreateForm
+from . import service
 from .service import collect_orgas_with_next_birthdays, \
     get_organizers_for_brand, get_teams_for_party, \
     get_unassigned_orgas_for_party
@@ -47,8 +48,11 @@ permission_registry.register_enum(OrgaTeamPermission)
 @templated
 def persons():
     """List brands to choose from."""
-    brands = Brand.query.all()
-    return {'brands': brands}
+    brands_with_person_counts = service.get_brands_with_person_counts()
+
+    return {
+        'brands_with_person_counts': brands_with_person_counts,
+    }
 
 
 @blueprint.route('/persons/<brand_id>')
