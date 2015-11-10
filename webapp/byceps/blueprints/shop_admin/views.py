@@ -45,8 +45,11 @@ permission_registry.register_enum(ShopOrderPermission)
 @templated
 def article_index():
     """List parties to choose from."""
-    parties = Party.query.all()
-    return {'parties': parties}
+    parties_with_article_counts = service.get_parties_with_article_counts()
+
+    return {
+        'parties_with_article_counts': parties_with_article_counts,
+    }
 
 
 @blueprint.route('/parties/<party_id>/articles', defaults={'page': 1})
