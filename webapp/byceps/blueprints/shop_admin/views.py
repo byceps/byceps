@@ -21,7 +21,7 @@ from ...util.views import redirect_to
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
-from ..shop.models.article import Article
+from ..shop.models.article import Article, AttachedArticle
 from ..shop.models.order import Order, OrderItem, PaymentState
 from ..shop.service import generate_article_number
 from ..shop.signals import order_canceled, order_paid
@@ -29,7 +29,8 @@ from ..ticket.service import find_ticket_for_user
 from ..party.models import Party
 
 from .authorization import ShopArticlePermission, ShopOrderPermission
-from .forms import ArticleCreateForm, ArticleUpdateForm, OrderCancelForm
+from .forms import ArticleCreateForm, ArticleUpdateForm, \
+    ArticleAttachmentCreateForm, OrderCancelForm
 from . import service
 
 
@@ -203,6 +204,52 @@ def article_update(id):
     db.session.commit()
 
     flash_success('Der Artikel "{}" wurde aktualisiert.', article.description)
+    return redirect_to('.article_view', id=article.id)
+
+
+@blueprint.route('/articles/<article_id>/attachments/create')
+@permission_required(ShopArticlePermission.update)
+@templated
+def article_attachment_create_form(article_id):
+    """Show form to attach an article to another article."""
+    article = Article.query.get_or_404(article_id)
+
+    attachable_articles = Article.query \
+        .for_party(article.party) \
+        .filter((Article.id != article.id)) \
+        .order_by(Article.item_number) \
+        .all()
+    article_choices = list(
+        (article.id, '{} – {}'.format(article.item_number, article.description))
+        for article in attachable_articles)
+
+    form = ArticleAttachmentCreateForm(quantity=0)
+    form.article_to_attach_id.choices = article_choices
+
+    return {
+        'article': article,
+        'form': form,
+    }
+
+
+@blueprint.route('/articles/<article_id>/attachments', methods=['POST'])
+@permission_required(ShopArticlePermission.update)
+def article_attachment_create(article_id):
+    """Attach an article to another article."""
+    article = Article.query.get_or_404(article_id)
+    form = ArticleAttachmentCreateForm(request.form)
+
+    article_to_attach_id = form.article_to_attach_id.data
+    article_to_attach = Article.query.get(article_to_attach_id)
+    quantity = form.quantity.data
+
+    attached_article = AttachedArticle(article_to_attach, quantity, article)
+    db.session.add(attached_article)
+    db.session.commit()
+
+    flash_success(
+        'Der Artikel "{}" wurde {:d} mal an den Artikel "{}" angehängt.',
+        article_to_attach.item_number, quantity, article.item_number)
     return redirect_to('.article_view', id=article.id)
 
 

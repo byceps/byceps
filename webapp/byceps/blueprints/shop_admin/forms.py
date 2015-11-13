@@ -8,7 +8,8 @@ byceps.blueprints.shop_admin.forms
 :License: Modified BSD, see LICENSE for details.
 """
 
-from wtforms import BooleanField, DecimalField, IntegerField, StringField, TextAreaField
+from wtforms import BooleanField, DecimalField, IntegerField, SelectField, \
+    StringField, TextAreaField
 
 from ...util.l10n import LocalizedForm
 
@@ -24,6 +25,11 @@ class ArticleUpdateForm(ArticleCreateForm):
     max_quantity_per_order = IntegerField('Maximale Anzahl pro Bestellung')
     not_directly_orderable = BooleanField('nur indirekt bestellbar')
     requires_separate_order = BooleanField('muss separat bestellt werden')
+
+
+class ArticleAttachmentCreateForm(LocalizedForm):
+    article_to_attach_id = SelectField('Artikel')
+    quantity = IntegerField('Anzahl')
 
 
 class OrderCancelForm(LocalizedForm):
