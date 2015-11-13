@@ -1,6 +1,7 @@
 {% extends 'layout/base_admin.html' %}
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
+{% from 'macros/misc.html' import render_faint %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
 {% from 'macros/shop_admin.html' import render_article_link, render_article_temporal_availability %}
 {% set current_page = 'shop_admin.articles' %}
@@ -21,9 +22,8 @@
       <tr>
         <th>Artikelnr.</th>
         <th>Beschreibung</th>
-        <th class="hyphenate" style="width: 12%;">Stückpreis</th>
-        <th class="hyphenate" style="width: 12%;">Steuersatz</th>
-        <th class="hyphenate" style="width: 10%;">Anzahl<br>verfügbar</th>
+        <th class="hyphenate" style="width: 15%;">Stückpreis<br>Steuersatz</th>
+        <th class="hyphenate" style="width: 11%;">Anzahl<br>verfügbar</th>
       </tr>
     </thead>
     <tbody>
@@ -56,8 +56,10 @@
           <br>{{ render_icon('time') }} <span class="faint">bis {{ render_datetime(time_range.upperEndpoint(), smart=False) }}</span>
           {%- endif %}
         </td>
-        <td class="nowrap" style="text-align: right;">{{ article.price|format_euro_amount }}</td>
-        <td class="nowrap" style="text-align: right;">{{ article.tax_rate_as_percentage }}&thinsp;%</td>
+        <td class="nowrap" style="text-align: right;">
+          {{- article.price|format_euro_amount }}<br>
+          {{- render_faint('%s&thinsp;%%'|safe|format(article.tax_rate_as_percentage)) -}}
+        </td>
         <td{% if article.quantity == 0 %} class="faint"{% endif %} style="text-align: right;">{{ article.quantity }}</td>
       </tr>
       {%- endfor %}
