@@ -10,6 +10,7 @@ byceps.blueprints.shop_admin.views
 
 from datetime import datetime
 from decimal import Decimal
+from operator import attrgetter
 
 from flask import current_app, render_template, request, Response
 
@@ -214,9 +215,12 @@ def article_attachment_create_form(article_id):
     """Show form to attach an article to another article."""
     article = Article.query.get_or_404(article_id)
 
+    attached_articles = {attached.article for attached in article.attached_articles}
+    unattachable_articles = {article} | attached_articles
+    unattachable_article_ids = {article.id for article in unattachable_articles}
     attachable_articles = Article.query \
         .for_party(article.party) \
-        .filter((Article.id != article.id)) \
+        .filter(db.not_(Article.id.in_(unattachable_article_ids))) \
         .order_by(Article.item_number) \
         .all()
     article_choices = list(
