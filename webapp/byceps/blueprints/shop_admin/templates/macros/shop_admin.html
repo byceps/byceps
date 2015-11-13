@@ -3,7 +3,7 @@
 
 
 {% macro render_article_link(article) -%}
-  <a href="{{ url_for('shop_admin.article_view', id=article.id) }}">{{ article.item_number }}</a>
+  <a href="{{ url_for('shop_admin.article_view', id=article.id) }}" title="{{ article.description }}">{{ article.item_number }}</a>
 {%- endmacro %}
 
 
