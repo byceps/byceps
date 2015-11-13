@@ -32,7 +32,7 @@
         <td class="nowrap">
           {{ render_article_link(article) }}
           {%- for attached_article in article.attached_articles %}
-            <div style="font-size: 0.75rem;"><span class="icon-attached"></span> {{ attached_article.quantity }} &times; {{ render_article_link(attached_article.article) }}</div>
+            <div style="font-size: 0.75rem;">{{ render_icon('attached') }} {{ attached_article.quantity }} &times; {{ render_article_link(attached_article.article) }}</div>
           {%- endfor %}
         </td>
         <td>
