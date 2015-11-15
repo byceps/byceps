@@ -234,7 +234,7 @@ def delete_mountpoint(id):
     db.session.delete(mountpoint)
     db.session.commit()
 
-    flash_success('Der Mountpoint für "{}" wurde entfernt.'.format(url_path))
+    flash_success('Der Mountpoint für "{}" wurde entfernt.', url_path)
     return url_for('.index_for_party', party_id=party.id)
 
 

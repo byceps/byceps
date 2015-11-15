@@ -97,8 +97,8 @@ def create_orgaflag(brand_id):
     db.session.add(orga_flag)
     db.session.commit()
 
-    flash_success('{} wurde das Orga-Flag für die Marke {} gegeben.'
-                  .format(user.screen_name, brand.title))
+    flash_success('{} wurde das Orga-Flag für die Marke {} gegeben.',
+                  user.screen_name, brand.title)
     return redirect_to('.persons_for_brand', brand_id=brand.id)
 
 
@@ -118,8 +118,8 @@ def remove_orgaflag(brand_id, user_id):
     db.session.delete(orga_flag)
     db.session.commit()
 
-    flash_success('{} wurde das Orga-Flag für die Marke {} entzogen.'
-                  .format(user.screen_name, brand.title))
+    flash_success('{} wurde das Orga-Flag für die Marke {} entzogen.',
+                  user.screen_name, brand.title)
     return url_for('.persons_for_brand', brand_id=brand.id)
 
 
@@ -230,8 +230,8 @@ def team_create(party_id):
     db.session.add(team)
     db.session.commit()
 
-    flash_success('Das Team "{}" wurde für die Party "{}" erstellt.'
-                  .format(team.title, team.party.title))
+    flash_success('Das Team "{}" wurde für die Party "{}" erstellt.',
+                  team.title, team.party.title)
     return redirect_to('.teams_for_party', party_id=party.id)
 
 
@@ -251,7 +251,7 @@ def team_delete(team_id):
     db.session.delete(team)
     db.session.commit()
 
-    flash_success('Das Team "{}" wurde gelöscht.'.format(title))
+    flash_success('Das Team "{}" wurde gelöscht.', title)
     return url_for('.teams_for_party', party_id=party.id)
 
 
@@ -295,9 +295,8 @@ def membership_create(party_id):
     db.session.add(team)
     db.session.commit()
 
-    flash_success('{} wurde in das Team "{}" aufgenommen.'
-                  .format(membership.user.screen_name,
-                          membership.orga_team.title))
+    flash_success('{} wurde in das Team "{}" aufgenommen.',
+                  membership.user.screen_name, membership.orga_team.title)
     return redirect_to('.teams_for_party',
                        party_id=membership.orga_team.party.id)
 
@@ -354,8 +353,8 @@ def membership_remove(id):
     db.session.delete(membership)
     db.session.commit()
 
-    flash_success('{} wurde aus dem Team "{}" entfernt.'
-                  .format(user.screen_name, team.title))
+    flash_success('{} wurde aus dem Team "{}" entfernt.',
+                  user.screen_name, team.title)
     return url_for('.teams_for_party', party_id=team.party.id)
 
 
