@@ -70,7 +70,7 @@
         {%- if article.articles_attached_to %}
         <ul class="condensed">
         {%- for attached_article in article.articles_attached_to %}
-          <li>{{ render_article_link(attached_article.article) }} ({{ attached_article.quantity }} Stück)</li>
+          <li>{{ render_article_link(attached_article.attached_to_article) }} ({{ attached_article.quantity }} Stück)</li>
         {%- endfor %}
         </ul>
         {%- else %}
