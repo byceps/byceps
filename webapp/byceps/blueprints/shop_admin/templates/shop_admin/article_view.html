@@ -69,7 +69,7 @@
       <td>
         {%- if article.articles_attached_to %}
         <ul class="condensed">
-        {%- for attached_article in article.articles_attached_to %}
+        {%- for attached_article in article.articles_attached_to|sort(attribute='attached_to_article.item_number') %}
           <li>{{ render_article_link(attached_article.attached_to_article) }} ({{ attached_article.quantity }} Stück)</li>
         {%- endfor %}
         </ul>
@@ -83,7 +83,7 @@
       <td>
         {%- if article.attached_articles %}
         <ul class="condensed">
-        {%- for attached_article in article.attached_articles %}
+        {%- for attached_article in article.attached_articles|sort(attribute='article.item_number') %}
           <li>{{ render_article_link(attached_article.article) }} ({{ attached_article.quantity }} Stück)</li>
         {%- endfor %}
         </ul>
