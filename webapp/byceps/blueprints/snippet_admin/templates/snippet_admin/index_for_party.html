@@ -45,10 +45,10 @@
           {%- endif %}
         </td>
         <td>{{ render_user_admin_link(snippet.current_version.creator) }}</td>
-        <td><a href="{{ url_for('.view_version', id=snippet.current_version.id) }}" class="action">{{ render_icon('view') }} ansehen</a></td>
+        <td><a href="{{ url_for('.view_version', id=snippet.current_version.id) }}" class="action inline">{{ render_icon('view') }} ansehen</a></td>
         <td>
           {%- if g.current_user.has_permission(SnippetPermission.update) -%}
-          <a href="{{ url_for('.update_snippet_form', id=snippet.id) }}" class="action">{{ render_icon('edit') }} bearbeiten</a>
+          <a href="{{ url_for('.update_snippet_form', id=snippet.id) }}" class="action inline">{{ render_icon('edit') }} bearbeiten</a>
           {%- endif -%}
         </td>
       </tr>
@@ -82,7 +82,7 @@
         <td>{{ mountpoint.endpoint_suffix }}</td>
         <td>{{ mountpoint.snippet.name }}</td>
         {%- if g.current_user.has_permission(MountpointPermission.delete) %}
-        <td><a href="{{ url_for('.delete_mountpoint', id=mountpoint.id) }}" class="action mountpoint-delete" title="Mountpoint entfernen">{{ render_icon('remove') }}</a></td>
+        <td><a href="{{ url_for('.delete_mountpoint', id=mountpoint.id) }}" class="action inline mountpoint-delete" title="Mountpoint entfernen">{{ render_icon('remove') }}</a></td>
         {%- endif %}
       </tr>
     {%- endfor %}

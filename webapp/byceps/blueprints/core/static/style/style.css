@@ -193,6 +193,11 @@ ol.actions li {
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
   white-space: nowrap;
 }
+.action.inline,
+.actions.inline a {
+  line-height: 1;
+  padding: 2px 3px;
+}
 .action:not(.disabled):hover,
 .actions a:hover {
   background-color: #999999;

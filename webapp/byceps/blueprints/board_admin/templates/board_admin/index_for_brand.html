@@ -34,7 +34,7 @@
         <td class="centered">{{ category.posting_count }}</td>
         <td>
           {%- if g.current_user.has_permission(BoardCategoryPermission.update) -%}
-          <a href="{{ url_for('.category_update_form', id=category.id) }}" class="action" title="bearbeiten">{{ render_icon('edit') }}</a>
+          <a href="{{ url_for('.category_update_form', id=category.id) }}" class="action inline" title="bearbeiten">{{ render_icon('edit') }}</a>
           {%- endif -%}
         </td>
       </tr>

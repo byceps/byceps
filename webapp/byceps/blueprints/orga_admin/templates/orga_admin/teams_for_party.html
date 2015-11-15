@@ -78,7 +78,7 @@
                 {{ render_user_admin_link(membership.user) }}<br>
                 {{ render_with_fallback(membership.duties) }}
               </div>
-              <div class="actions">
+              <div class="actions inline">
                 <a href="{{ url_for('.membership_update_form', id=membership.id) }}" title="Aufgabe bearbeiten">{{ render_icon('edit') }}</a>
                 <a href="{{ url_for('.membership_remove', id=membership.id) }}" class="membership-remove" title="Person aus Team entfernen">{{ render_icon('remove') }}</a>
               </div>

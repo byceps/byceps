@@ -33,7 +33,7 @@
         <td>{% if item.current_version.image_url_path %} {{ render_icon('image', title='Bild festgelegt') }}{% endif %}</td>
         <td>
           {%- if g.current_user.has_permission(NewsItemPermission.update) -%}
-          <a href="{{ url_for('.update_form', id=item.id) }}" class="action" title="bearbeiten">{{ render_icon('edit') }}</a>
+          <a href="{{ url_for('.update_form', id=item.id) }}" class="action inline" title="bearbeiten">{{ render_icon('edit') }}</a>
           {%- endif -%}
         </td>
       </tr>
