@@ -5,6 +5,20 @@
 {% set current_page = 'shop_admin.articles' %}
 {% set title = 'Artikel ansehen' %}
 
+{% block head %}
+    <style>
+      table.attachments td {
+        border: none !important;
+        text-align: right;
+      }
+    </style>
+    <script>
+      $(function() {
+        confirmed_delete_on_click('a.attachment-remove', 'Artikelanhang entfernen?');
+      });
+    </script>
+{%- endblock head %}
+
 {% block body %}
 
   <nav class="breadcrumbs">
@@ -82,11 +96,14 @@
       <th>Angehängte Artikel</th>
       <td>
         {%- if article.attached_articles %}
-        <ol>
+        <table class="attachments">
         {%- for attached_article in article.attached_articles|sort(attribute='article.item_number') %}
-          <li>{{ attached_article.quantity }} &times; {{ render_article_link(attached_article.article) }}</li>
+          <tr>
+            <td>{{ attached_article.quantity }} &times; {{ render_article_link(attached_article.article) }}</td>
+            <td><a href="{{ url_for('.article_attachment_remove', id=attached_article.id) }}" class="action inline attachment-remove" title="Artikelanhang entfernen">{{ render_icon('remove') }}</a></td>
+          </tr>
         {%- endfor %}
-        </ol>
+        </table>
         {%- else %}
         {{ render_faint('keine') }}
         {%- endif %}

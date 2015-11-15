@@ -12,13 +12,13 @@ from datetime import datetime
 from decimal import Decimal
 from operator import attrgetter
 
-from flask import current_app, render_template, request, Response
+from flask import current_app, render_template, request, Response, url_for
 
 from ...database import db
 from ...util.framework import create_blueprint, flash_error, flash_success
 from ...util.money import to_two_places
 from ...util.templating import templated
-from ...util.views import redirect_to
+from ...util.views import redirect_to, respond_no_content_with_location
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
@@ -40,6 +40,10 @@ blueprint = create_blueprint('shop_admin', __name__)
 
 permission_registry.register_enum(ShopArticlePermission)
 permission_registry.register_enum(ShopOrderPermission)
+
+
+# -------------------------------------------------------------------- #
+# articles
 
 
 @blueprint.route('/articles')
@@ -255,6 +259,28 @@ def article_attachment_create(article_id):
         'Der Artikel "{}" wurde {:d} mal an den Artikel "{}" angehängt.',
         article_to_attach.item_number, quantity, article.item_number)
     return redirect_to('.article_view', id=article.id)
+
+
+@blueprint.route('/articles/attachments/<uuid:id>', methods=['DELETE'])
+@permission_required(ShopArticlePermission.update)
+@respond_no_content_with_location
+def article_attachment_remove(id):
+    """Remove the attachment link from one article to another."""
+    attached_article = AttachedArticle.query.get_or_404(id)
+
+    article = attached_article.article
+    attached_to_article = attached_article.attached_to_article
+
+    db.session.delete(attached_article)
+    db.session.commit()
+
+    flash_success('Artikel "{}" ist nun nicht mehr an Artikel "{}" angehängt.',
+                  article.item_number, attached_to_article.item_number)
+    return url_for('.article_view', id=article.id)
+
+
+# -------------------------------------------------------------------- #
+# orders
 
 
 @blueprint.route('/orders')
