@@ -39,21 +39,21 @@
           {{ article.description }}
 
           {%- if article.not_directly_orderable %}
-          <br>{{ render_icon('info') }} <span class="faint">nur indirekt bestellbar</span>
+          <br>{{ render_icon('info') }} {{ render_faint('nur indirekt bestellbar') }}
           {%- endif %}
 
           {%- if article.requires_separate_order %}
-          <br>{{ render_icon('info') }} <span class="faint">separat zu bestellen</span>
+          <br>{{ render_icon('info') }} {{ render_faint('separat zu bestellen') }}
           {%- endif %}
 
           {%- set time_range = article.availability_range %}
 
           {%- if time_range.hasLowerBound() %}
-          <br>{{ render_icon('time') }} <span class="faint">ab {{ render_datetime(time_range.lowerEndpoint(), smart=False) }}</span>
+          <br>{{ render_icon('time') }} {{ render_faint('ab ' + render_datetime(time_range.lowerEndpoint(), smart=False)) }}
           {%- endif %}
 
           {%- if time_range.hasUpperBound() %}
-          <br>{{ render_icon('time') }} <span class="faint">bis {{ render_datetime(time_range.upperEndpoint(), smart=False) }}</span>
+          <br>{{ render_icon('time') }} {{ render_faint('bis ' + render_datetime(time_range.upperEndpoint(), smart=False)) }}
           {%- endif %}
         </td>
         <td class="nowrap" style="text-align: right;">
