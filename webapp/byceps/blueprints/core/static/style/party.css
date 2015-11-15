@@ -205,3 +205,17 @@ nav.main .current a {
   margin: 0 0 0 1rem;
   padding: 0.5rem;
 }
+
+
+/* misc */
+
+ul.condensed {
+  margin: 0 0 0 1em;
+  padding: 0;
+}
+
+hr {
+  border: 0;
+  border-top: #cccccc solid 1px;
+  height: 0;
+}
