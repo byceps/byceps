@@ -27,7 +27,7 @@
     </thead>
     <tbody>
       {%- for topic in topics.items %}
-      <tr id="topic-{{ topic.id }}"{% if topic.hidden %} class="hidden"{% endif %}>
+      <tr id="topic-{{ topic.id }}"{% if topic.hidden %} class="faint"{% endif %}>
         <td>
           {%- if topic.hidden %}{{ render_icon('hidden', title='versteckt (durch %s)'|format(topic.hidden_by.screen_name)) }} {% endif -%}
           {%- if topic.locked %}{{ render_icon('lock', title='geschlossen (durch %s)'|format(topic.locked_by.screen_name)) }} {% endif -%}

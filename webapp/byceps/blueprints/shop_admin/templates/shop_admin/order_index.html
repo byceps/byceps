@@ -32,7 +32,7 @@
     {%- for party, order_count in parties_with_order_counts|sort(attribute='0.starts_at', reverse=True) %}
     <li>
       <a href="{{ url_for('.order_index_for_party', party_id=party.id, only=PaymentState.open.name) }}">
-        <div{% if party.is_archived %} class="hidden"{% endif %}>
+        <div{% if party.is_archived %} class="faint"{% endif %}>
           <strong>{{ party.title }}</strong>
           {%- if party.is_archived %} {{ render_icon('archived', title='archiviert') }}{% endif -%}
           <br>

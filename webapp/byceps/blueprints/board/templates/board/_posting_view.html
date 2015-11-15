@@ -3,7 +3,7 @@
 {%- from 'macros/icons.html' import render_icon %}
 {%- from 'macros/user.html' import render_user_avatar, render_user_link %}
 
-<article id="posting-{{ posting.id }}" {%- if posting.hidden %} class="hidden"{% endif %}>
+<article id="posting-{{ posting.id }}" {%- if posting.hidden %} class="faint"{% endif %}>
   <aside>
     <div class="creator">{{ render_user_link(posting.creator) }}</div>
     {{ render_user_avatar(posting.creator) }}
