@@ -67,13 +67,29 @@
     <tr>
       <th>Angehängt an Artikel</th>
       <td>
-{{- render_attachached_articles(article.articles_attached_to) }}
+        {%- if article.articles_attached_to %}
+        <ul class="condensed">
+        {%- for attached_article in article.articles_attached_to %}
+          <li>{{ render_article_link(attached_article.article) }} ({{ attached_article.quantity }} Stück)</li>
+        {%- endfor %}
+        </ul>
+        {%- else %}
+        {{ render_faint('keine') }}
+        {%- endif %}
       </td>
     </tr>
     <tr>
       <th>Angehängte Artikel</th>
       <td>
-{{- render_attachached_articles(article.attached_articles) }}
+        {%- if article.attached_articles %}
+        <ul class="condensed">
+        {%- for attached_article in article.attached_articles %}
+          <li>{{ render_article_link(attached_article.article) }} ({{ attached_article.quantity }} Stück)</li>
+        {%- endfor %}
+        </ul>
+        {%- else %}
+        {{ render_faint('keine') }}
+        {%- endif %}
       </td>
     </tr>
   </table>
@@ -87,16 +103,3 @@
   </ol>
 
 {%- endblock body %}
-
-
-{% macro render_attachached_articles(attached_articles) %}
-  {%- if attached_articles %}
-  <ul class="condensed">
-  {%- for attached_article in attached_articles %}
-    <li>{{ render_article_link(attached_article.article) }} ({{ attached_article.quantity }} Stück)</li>
-  {%- endfor %}
-  </ul>
-  {%- else %}
-  {{ render_faint('keine') }}
-  {%- endif %}
-{%- endmacro %}
