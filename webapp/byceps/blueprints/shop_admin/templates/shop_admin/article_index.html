@@ -1,6 +1,6 @@
 {% extends 'layout/base_admin.html' %}
 {% from 'macros/icons.html' import render_icon %}
-{% from 'macros/misc.html' import render_faint %}
+{% from 'macros/misc.html' import render_dimmed %}
 {% set current_page = 'shop_admin.articles' %}
 {% set title = 'Shop - Artikel' %}
 
@@ -32,14 +32,14 @@
     {%- for party, article_count in parties_with_article_counts|sort(attribute='0.starts_at', reverse=True) %}
     <li>
       <a href="{{ url_for('.article_index_for_party', party_id=party.id) }}">
-        <div{% if party.is_archived %} class="faint"{% endif %}>
+        <div{% if party.is_archived %} class="dimmed"{% endif %}>
           <strong>{{ party.title }}</strong>
           {%- if party.is_archived %} {{ render_icon('archived', title='archiviert') }}{% endif -%}
           <br>
-          {{- render_faint('%d Artikel'|format(article_count)) }}
+          {{- render_dimmed('%d Artikel'|format(article_count)) }}
         </div>
         <div class="right">
-          {{ render_faint(party.number_prefix) }}
+          {{ render_dimmed(party.number_prefix) }}
         </div>
       </a>
     </li>

@@ -20,7 +20,7 @@
     </thead>
     <tbody>
       {%- for party in parties|sort(attribute='starts_at', reverse=True) %}
-      <tr{% if party.is_over %} class="faint"{% endif %}>
+      <tr{% if party.is_over %} class="dimmed"{% endif %}>
         <td>{{ party.id }}</td>
         <td>{{ party.brand.title }}</td>
         <td class="centered">{{ party.number }}</td>

@@ -1,5 +1,5 @@
 {% extends 'layout/base_admin.html' %}
-{% from 'macros/misc.html' import render_faint, render_with_fallback %}
+{% from 'macros/misc.html' import render_dimmed, render_with_fallback %}
 {% from 'macros/user_admin.html' import render_user_admin_link %}
 {% set current_page = 'authorization_admin.roles' %}
 {% set title = 'Rollen' %}
@@ -31,13 +31,13 @@
           {%- endfor %}
           </ol>
         {%- else %}
-          {{ render_faint('keine') }}
+          {{ render_dimmed('keine') }}
         {%- endif %}
         </td>
         <td>
         {%- set user_limit = 10 %}
         {%- if not role.users %}
-          {{ render_faint('keine') }}
+          {{ render_dimmed('keine') }}
         {%- elif role.users|length <= user_limit %}
           <ol>
           {%- for user in role.users|sort(attribute='screen_name') %}

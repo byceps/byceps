@@ -1,6 +1,6 @@
 {% extends 'layout/base_admin.html' %}
 {% from 'macros/icons.html' import render_icon %}
-{% from 'macros/misc.html' import render_faint %}
+{% from 'macros/misc.html' import render_dimmed %}
 {% set current_page = 'orga_admin.persons' %}
 {% set title = 'Organisatoren' %}
 
@@ -18,7 +18,7 @@
     <li>
       <a href="{{ url_for('.persons_for_brand', brand_id=brand.id) }}">
         <strong>{{ brand.title }}</strong><br>
-        {{ render_faint('%d %s'|format(person_count, 'Person' if (person_count == 1) else 'Personen')) }}
+        {{ render_dimmed('%d %s'|format(person_count, 'Person' if (person_count == 1) else 'Personen')) }}
       </a>
     </li>
     {%- endfor %}

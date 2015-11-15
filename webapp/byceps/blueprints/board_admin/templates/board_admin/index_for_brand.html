@@ -1,6 +1,6 @@
 {% extends 'layout/base_admin.html' %}
 {% from 'macros/icons.html' import render_icon %}
-{% from 'macros/misc.html' import render_faint %}
+{% from 'macros/misc.html' import render_dimmed %}
 {% set current_page = 'board_admin' %}
 {% set title = '%s - Board'|format(brand.title) %}
 
@@ -28,7 +28,7 @@
     {%- for category in categories|sort(attribute='position') %}
       <tr>
         <td class="centered">{{ category.position }}</td>
-        <td><strong>{{ category.title }}</strong><br>{{ render_faint(category.slug) }}</td>
+        <td><strong>{{ category.title }}</strong><br>{{ render_dimmed(category.slug) }}</td>
         <td>{{ category.description }}</td>
         <td class="centered">{{ category.topic_count }}</td>
         <td class="centered">{{ category.posting_count }}</td>

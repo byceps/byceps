@@ -1,6 +1,6 @@
 {% extends 'layout/base_admin.html' %}
 {% from 'macros/icons.html' import render_icon %}
-{% from 'macros/misc.html' import render_faint, render_with_fallback %}
+{% from 'macros/misc.html' import render_dimmed, render_with_fallback %}
 {% from 'macros/user_admin.html' import render_user_admin_link %}
 {% set current_page = 'orga_admin.teams' %}
 {% set title = 'Orga-Teams' %}
@@ -67,7 +67,7 @@
       <tr>
         <td class="nowrap">
           <strong>{{ team.title }}</strong><br>
-          {{ render_faint('%d %s'|format(member_total, 'Person' if member_total == 1 else 'Personen')) }}
+          {{ render_dimmed('%d %s'|format(member_total, 'Person' if member_total == 1 else 'Personen')) }}
         </td>
         {%- if memberships %}
         <td colspan="2">
@@ -87,7 +87,7 @@
           </ol>
         </td>
         {%- else %}
-        <td class="empty">{{ render_faint('keine Mitglieder') }}</td>
+        <td class="empty">{{ render_dimmed('keine Mitglieder') }}</td>
         <td class="empty-actions"><a href="{{ url_for('.team_delete', team_id=team.id) }}" class="action team-delete" title="Team entfernen">{{ render_icon('remove') }} Team entfernen</a></td>
         {%- endif %}
       </tr>

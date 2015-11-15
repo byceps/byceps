@@ -1,7 +1,7 @@
 {% extends 'layout/base_admin.html' %}
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
-{% from 'macros/misc.html' import render_faint %}
+{% from 'macros/misc.html' import render_dimmed %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
 {% from 'macros/shop_admin.html' import render_article_link, render_article_temporal_availability %}
 {% set current_page = 'shop_admin.articles' %}
@@ -39,28 +39,28 @@
           {{ article.description }}
 
           {%- if article.not_directly_orderable %}
-          <br>{{ render_icon('info') }} {{ render_faint('nur indirekt bestellbar') }}
+          <br>{{ render_icon('info') }} {{ render_dimmed('nur indirekt bestellbar') }}
           {%- endif %}
 
           {%- if article.requires_separate_order %}
-          <br>{{ render_icon('info') }} {{ render_faint('separat zu bestellen') }}
+          <br>{{ render_icon('info') }} {{ render_dimmed('separat zu bestellen') }}
           {%- endif %}
 
           {%- set time_range = article.availability_range %}
 
           {%- if time_range.hasLowerBound() %}
-          <br>{{ render_icon('time') }} {{ render_faint('ab ' + render_datetime(time_range.lowerEndpoint(), smart=False)) }}
+          <br>{{ render_icon('time') }} {{ render_dimmed('ab ' + render_datetime(time_range.lowerEndpoint(), smart=False)) }}
           {%- endif %}
 
           {%- if time_range.hasUpperBound() %}
-          <br>{{ render_icon('time') }} {{ render_faint('bis ' + render_datetime(time_range.upperEndpoint(), smart=False)) }}
+          <br>{{ render_icon('time') }} {{ render_dimmed('bis ' + render_datetime(time_range.upperEndpoint(), smart=False)) }}
           {%- endif %}
         </td>
         <td class="nowrap" style="text-align: right;">
           {{- article.price|format_euro_amount }}<br>
-          {{- render_faint('%s&thinsp;%%'|safe|format(article.tax_rate_as_percentage)) -}}
+          {{- render_dimmed('%s&thinsp;%%'|safe|format(article.tax_rate_as_percentage)) -}}
         </td>
-        <td{% if article.quantity == 0 %} class="faint"{% endif %} style="text-align: right;">{{ article.quantity }}</td>
+        <td{% if article.quantity == 0 %} class="dimmed"{% endif %} style="text-align: right;">{{ article.quantity }}</td>
       </tr>
       {%- endfor %}
       <tr>

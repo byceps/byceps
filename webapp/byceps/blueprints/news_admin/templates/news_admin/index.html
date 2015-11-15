@@ -1,5 +1,5 @@
 {% extends 'layout/base_admin.html' %}
-{% from 'macros/misc.html' import render_faint %}
+{% from 'macros/misc.html' import render_dimmed %}
 {% set current_page = 'news_admin' %}
 {% set title = 'News' %}
 
@@ -17,7 +17,7 @@
     <li>
       <a href="{{ url_for('.index_for_brand', brand_id=brand.id) }}">
         <strong>{{ brand.title }}</strong><br>
-        {{ render_faint('%d %s'|format(item_count, 'Post' if (item_count == 1) else 'Posts')) }}
+        {{ render_dimmed('%d %s'|format(item_count, 'Post' if (item_count == 1) else 'Posts')) }}
       </a>
     </li>
     {%- endfor %}

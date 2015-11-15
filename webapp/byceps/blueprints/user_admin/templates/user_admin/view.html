@@ -1,7 +1,7 @@
 {% extends 'layout/base_admin.html' %}
 {% from 'macros/datetime.html' import render_date, render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
-{% from 'macros/misc.html' import render_faint, render_with_fallback %}
+{% from 'macros/misc.html' import render_dimmed, render_with_fallback %}
 {% from 'macros/shop_admin.html' import render_order_payment_state %}
 {% from 'macros/user.html' import render_user_avatar %}
 {% set current_page = 'user_admin' %}
@@ -53,7 +53,7 @@
           {%- endfor %}
         </ol>
         {%- else %}
-          {{- render_faint('keine') -}}
+          {{- render_dimmed('keine') -}}
         {%- endif %}
       </td>
     </tr>
@@ -71,7 +71,7 @@
         {%- if user.detail.date_of_birth -%}
           {{ render_date(user.detail.date_of_birth, smart=False) }}
         {%- else -%}
-          {{ render_faint('nicht angegeben') }}
+          {{ render_dimmed('nicht angegeben') }}
         {%- endif -%}
       </td>
     </tr>
@@ -121,7 +121,7 @@
     </tbody>
   </table>
   {%- else %}
-  {{ render_faint('keine') }}
+  {{ render_dimmed('keine') }}
   {%- endif %}
 
 {%- endblock body %}

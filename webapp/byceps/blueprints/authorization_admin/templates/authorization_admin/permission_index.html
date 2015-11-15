@@ -1,5 +1,5 @@
 {% extends 'layout/base_admin.html' %}
-{% from 'macros/misc.html' import render_faint, render_with_fallback %}
+{% from 'macros/misc.html' import render_dimmed, render_with_fallback %}
 {% set current_page = 'authorization_admin.permissions' %}
 {% set title = 'Rechte' %}
 
@@ -29,7 +29,7 @@
           {%- endfor %}
           </ol>
         {%- else %}
-          {{ render_faint('keine') }}
+          {{ render_dimmed('keine') }}
         {%- endif %}
         </td>
       </tr>

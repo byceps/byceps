@@ -1,6 +1,6 @@
 {% extends 'layout/base_admin.html' %}
 {% from 'macros/datetime.html' import render_datetime %}
-{% from 'macros/misc.html' import render_faint, render_with_fallback %}
+{% from 'macros/misc.html' import render_dimmed, render_with_fallback %}
 {% from 'macros/shop_admin.html' import render_article_link, render_order_payment_state %}
 {% from 'macros/user_admin.html' import render_user_admin_link %}
 {% set current_page = 'shop_admin.article_ordered' %}
@@ -39,7 +39,7 @@
         {%- if ticket %}
         <td class="nowrap">{{ ticket.occupied_seat.area.title }}</td>
         {%- else %}
-        <td>{{ render_faint('keiner') }}</td>
+        <td>{{ render_dimmed('keiner') }}</td>
         {%- endif %}
         <td>
           {{- render_user_admin_link(user) }}<br/>

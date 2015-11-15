@@ -14,7 +14,7 @@
   {%- set kwargs2 = kwargs %}
   {%- call _row(field) %}
         {{- field.label }}{{ field(**kwargs2) }}
-        {%- if note %} <small class="faint">{{ note }}</small>{% endif %}
+        {%- if note %} <small class="dimmed">{{ note }}</small>{% endif %}
   {%- endcall %}
 {%- endmacro %}
 

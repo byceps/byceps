@@ -1,8 +1,8 @@
 {%- from 'macros/icons.html' import render_icon %}
 
 
-{% macro render_faint(value) -%}
-  <span class="faint">{{ value }}</span>
+{% macro render_dimmed(value) -%}
+  <span class="dimmed">{{ value }}</span>
 {%- endmacro %}
 
 
@@ -20,6 +20,6 @@
   {%- if value|default('', true)|trim -%}
     {{ value }}
   {%- else -%}
-    {{ render_faint(fallback) }}
+    {{ render_dimmed(fallback) }}
   {%- endif -%}
 {% endmacro %}

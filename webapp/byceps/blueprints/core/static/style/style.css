@@ -421,7 +421,7 @@ main img {
   white-space: nowrap;
 }
 
-.faint {
+.dimmed {
   opacity: 0.5;
 }
 

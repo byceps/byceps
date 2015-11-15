@@ -1,7 +1,7 @@
 {% extends 'layout/base_admin.html' %}
 {% from 'macros/datetime.html' import render_date %}
 {% from 'macros/icons.html' import render_icon %}
-{% from 'macros/misc.html' import render_faint, render_with_fallback %}
+{% from 'macros/misc.html' import render_dimmed, render_with_fallback %}
 {% from 'macros/user_admin.html' import render_user_admin_link %}
 {% set current_page = 'orga_admin.persons' %}
 {% set title = 'Organisatoren' %}
@@ -19,7 +19,7 @@
   <nav class="breadcrumbs">
     <ol>
       <li><a href="{{ url_for('.persons') }}">{{ brand.title }}</a></li>
-      <li>{{ title }} <span class="faint" style="font-size: 1.3rem; font-weight: normal;">({{ orgas|length }})</span></li>
+      <li>{{ title }} <span class="dimmed" style="font-size: 1.3rem; font-weight: normal;">({{ orgas|length }})</span></li>
     </ol>
   </nav>
 
@@ -44,7 +44,7 @@
             {{- render_date(user.detail.date_of_birth) }}<br/>
             {{- user.detail.age }} Jahre
           {%- else -%}
-            {{ render_faint('nicht angegeben') }}
+            {{ render_dimmed('nicht angegeben') }}
           {%- endif -%}
         </td>
         <td class="nowrap">
