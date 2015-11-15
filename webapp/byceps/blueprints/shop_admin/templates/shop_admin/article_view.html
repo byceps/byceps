@@ -82,11 +82,11 @@
       <th>Angehängte Artikel</th>
       <td>
         {%- if article.attached_articles %}
-        <ul class="condensed">
+        <ol>
         {%- for attached_article in article.attached_articles|sort(attribute='article.item_number') %}
-          <li>{{ render_article_link(attached_article.article) }} ({{ attached_article.quantity }} Stück)</li>
+          <li>{{ attached_article.quantity }} &times; {{ render_article_link(attached_article.article) }}</li>
         {%- endfor %}
-        </ul>
+        </ol>
         {%- else %}
         {{ render_faint('keine') }}
         {%- endif %}
