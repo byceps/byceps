@@ -206,7 +206,7 @@ def topic_create(category_id):
     flash_success('Das Thema "{}" wurde hinzugefügt.', topic.title)
     signals.topic_created.send(None, topic=topic)
 
-    return redirect_to('.topic_view', id=topic.id)
+    return redirect(topic.external_url)
 
 
 @blueprint.route('/topics/<uuid:id>/update')
@@ -215,7 +215,7 @@ def topic_create(category_id):
 def topic_update_form(id):
     """Show form to update a topic."""
     topic = Topic.query.get_or_404(id)
-    url = url_for('.topic_view', id=topic.id)
+    url = topic.external_url
 
     if topic.locked:
         flash_error(
@@ -245,7 +245,7 @@ def topic_update_form(id):
 def topic_update(id):
     """Update a topic."""
     topic = Topic.query.get_or_404(id)
-    url = url_for('.topic_view', id=topic.id)
+    url = topic.external_url
 
     if topic.locked:
         flash_error(
@@ -449,7 +449,7 @@ def posting_create(topic_id):
             'Das Thema ist geschlossen. '
             'Es können keine Beiträge mehr hinzugefügt werden.',
             icon='lock')
-        return redirect_to('.topic_view', id=topic.id)
+        return redirect(topic.external_url)
 
     posting = Posting.create(topic, creator, body)
 
