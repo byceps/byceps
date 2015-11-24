@@ -401,6 +401,22 @@ def topic_move(id):
 # posting
 
 
+@blueprint.route('/postings/<uuid:id>')
+def posting_view(id):
+    """Show the page of the posting's topic that contains the posting,
+    as seen by the current user.
+    """
+    posting = Posting.query.get_or_404(id)
+
+    page = posting.calculate_page_number()
+
+    return redirect_to('.topic_view',
+                       id=posting.topic.id,
+                       page=page,
+                       _anchor=posting.anchor,
+                       _external=True)
+
+
 @blueprint.route('/topics/<uuid:topic_id>/create')
 @permission_required(BoardPostingPermission.create)
 @templated

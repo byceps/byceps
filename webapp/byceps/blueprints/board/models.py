@@ -446,11 +446,7 @@ class Posting(db.Model):
     @property
     def external_url(self):
         """Return the absolute URL of this posting (in its topic)."""
-        return url_for('board.topic_view',
-                       id=self.topic.id,
-                       page=self.topic.page_count,
-                       _anchor=self.anchor,
-                       _external=True)
+        return url_for('board.posting_view', id=self.id)
 
     def __eq__(self, other):
         return self.id == other.id
