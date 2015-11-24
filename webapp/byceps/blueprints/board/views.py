@@ -546,9 +546,11 @@ def posting_hide(id):
 
     posting.topic.aggregate()
 
+    page = posting.calculate_page_number()
+
     flash_success('Der Beitrag wurde versteckt.', icon='hidden')
     signals.posting_hidden.send(None, posting=posting)
-    return url_for('.topic_view', id=posting.topic.id, _anchor=posting.anchor)
+    return url_for('.topic_view', id=posting.topic.id, page=page, _anchor=posting.anchor)
 
 
 @blueprint.route('/postings/<uuid:id>/flags/hidden', methods=['DELETE'])
@@ -562,5 +564,7 @@ def posting_unhide(id):
 
     posting.topic.aggregate()
 
+    page = posting.calculate_page_number()
+
     flash_success('Der Beitrag wurde wieder sichtbar gemacht.', icon='view')
-    return url_for('.topic_view', id=posting.topic.id, _anchor=posting.anchor)
+    return url_for('.topic_view', id=posting.topic.id, page=page, _anchor=posting.anchor)
