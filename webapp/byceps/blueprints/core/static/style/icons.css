@@ -1,7 +1,6 @@
 @font-face {
   font-family: "FontAwesome";
-  src: url("fonts/fontawesome.eot?v=4.1.0");
-  src: url("fonts/fontawesome.eot?#iefix&v=4.1.0") format("embedded-opentype"), url("fonts/fontawesome.woff?v=4.1.0") format("woff"), url("fonts/fontawesome.ttf?v=4.1.0") format("truetype"), url("fonts/fontawesome.svg?v=4.1.0#fontawesomeregular") format("svg");
+  src: url("fonts/fontawesome.woff?v=4.1.0") format("woff"), url("fonts/fontawesome.ttf?v=4.1.0") format("truetype"), url("fonts/fontawesome.svg?v=4.1.0#fontawesomeregular") format("svg");
   font-style: normal;
   font-weight: normal;
 }
