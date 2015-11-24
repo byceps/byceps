@@ -469,6 +469,8 @@ def posting_create(topic_id):
 
     posting = Posting.create(topic, creator, body)
 
+    topic.category.mark_as_viewed()
+
     flash_success('Deine Antwort wurde hinzugefügt.')
     signals.posting_created.send(None, posting=posting)
 
