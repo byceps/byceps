@@ -468,7 +468,9 @@ def posting_create(topic_id):
 def posting_update_form(id):
     """Show form to update a posting."""
     posting = Posting.query.get_or_404(id)
-    url = url_for('.topic_view', id=posting.topic.id, _anchor=posting.anchor)
+
+    page = posting.calculate_page_number()
+    url = url_for('.topic_view', id=posting.topic.id, page=page, _anchor=posting.anchor)
 
     if posting.topic.locked:
         flash_error(
