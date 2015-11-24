@@ -470,7 +470,7 @@ def posting_update_form(id):
     posting = Posting.query.get_or_404(id)
 
     page = posting.calculate_page_number()
-    url = url_for('.topic_view', id=posting.topic.id, page=page, _anchor=posting.anchor)
+    url = url_for('.topic_view', id=posting.topic.id, page=page)
 
     if posting.topic.locked:
         flash_error(
@@ -502,7 +502,7 @@ def posting_update(id):
     posting = Posting.query.get_or_404(id)
 
     page = posting.calculate_page_number()
-    url = url_for('.topic_view', id=posting.topic.id, page=page, _anchor=posting.anchor)
+    url = url_for('.topic_view', id=posting.topic.id, page=page)
 
     if posting.topic.locked:
         flash_error(
