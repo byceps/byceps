@@ -408,6 +408,10 @@ class LastCategoryView(db.Model):
     category = db.relationship(Category)
     occured_at = db.Column(db.DateTime, nullable=False)
 
+    def __init__(self, user, category):
+        self.user = user
+        self.category = category
+
     @classmethod
     def find(cls, user, category):
         if user.is_anonymous:
@@ -422,7 +426,7 @@ class LastCategoryView(db.Model):
 
         last_view = cls.find(user, category)
         if last_view is None:
-            last_view = cls(user=user, category=category)
+            last_view = cls(user, category)
             db.session.add(last_view)
 
         last_view.occured_at = datetime.now()
@@ -446,6 +450,10 @@ class LastTopicView(db.Model):
     topic = db.relationship(Topic)
     occured_at = db.Column(db.DateTime, nullable=False)
 
+    def __init__(self, user, topic):
+        self.user = user
+        self.topic = topic
+
     @classmethod
     def find(cls, user, topic):
         if user.is_anonymous:
@@ -460,7 +468,7 @@ class LastTopicView(db.Model):
 
         last_view = cls.find(user, topic)
         if last_view is None:
-            last_view = cls(user=user, topic=topic)
+            last_view = cls(user, topic)
             db.session.add(last_view)
 
         last_view.occured_at = datetime.now()
