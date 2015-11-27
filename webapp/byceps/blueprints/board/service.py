@@ -80,7 +80,7 @@ def update_topic(topic, title, body):
     topic.title = title.strip()
 
     posting = topic.get_body_posting()
-    posting.update(body, commit=False)
+    update_posting(posting, body, commit=False)
 
     db.session.commit()
 
