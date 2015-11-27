@@ -390,6 +390,11 @@ class Posting(db.Model):
 
         return posting
 
+    def __init__(self, topic, creator, body):
+        self.topic = topic
+        self.creator = creator
+        self.body = body
+
     def may_be_updated_by_user(self, user):
         return not self.topic.locked and (
             (
@@ -417,11 +422,6 @@ class Posting(db.Model):
         self.hidden = False
         self.hidden_at = None
         self.hidden_by = None
-
-    def __init__(self, topic, creator, body):
-        self.topic = topic
-        self.creator = creator
-        self.body = body
 
     def calculate_page_number(self):
         """Return the number of the page this posting should appear on."""
