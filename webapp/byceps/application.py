@@ -27,6 +27,7 @@ from .util import money
 
 
 BLUEPRINTS = [
+    ('admin_dashboard',     '/admin/dashboard',     SiteMode.admin ),
     ('authorization',       '/authorization',       None           ),
     ('authorization_admin', '/admin/authorization', SiteMode.admin ),
     ('board',               '/board',               SiteMode.public),
