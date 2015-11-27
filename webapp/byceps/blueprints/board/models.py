@@ -157,7 +157,7 @@ class Topic(db.Model):
 
     @classmethod
     def create(cls, category, creator, title, body):
-        topic = Topic(category=category, creator=creator, title=title)
+        topic = Topic(category, creator, title)
         posting = Posting(topic, creator, body)
 
         db.session.add(topic)
@@ -167,6 +167,11 @@ class Topic(db.Model):
         topic.aggregate()
 
         return topic
+
+    def __init__(self, category, creator, title):
+        self.category = category
+        self.creator = creator
+        self.title = title
 
     def may_be_updated_by_user(self, user):
         return not self.locked and (
