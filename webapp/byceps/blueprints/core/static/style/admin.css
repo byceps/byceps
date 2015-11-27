@@ -46,11 +46,29 @@ main {
 }
 
 
-/* top navigation */
+/* header */
 
 nav.top {
+  display: flex;
+  justify-content: flex-end;
+}
+
+#current-user {
   font-size: 0.8rem;
-  text-align: right;
+}
+#current-user .intro {
+  display: block;
+  opacity: 0.5;
+}
+#current-user strong {
+  font-size: 1.2rem;
+}
+#current-user a {
+  color: #333333;
+  text-decoration: none;
+}
+#current-user .actions {
+  margin-left: 0.5rem;
 }
 
 

@@ -1,3 +1,4 @@
+{%- from 'macros/icons.html' import render_icon %}
 <!DOCTYPE html>
 <html lang="de">
   <head>
@@ -13,7 +14,17 @@
 
     <header id="header">
       <nav class="top">
-{% include 'user/_login_status.html' %}
+        <div id="current-user">
+        {% if g.current_user.is_active -%}
+          <span class="intro">Angemeldet als</span>
+          <strong><a href="{{ url_for('user.view_current') }}">{{ render_icon('user') }} {{ g.current_user.screen_name }}</a></strong>
+          <span class="actions inline">
+            <a id="logout" href="{{ url_for('user.logout', _method='POST') }}" title="abmelden">{{ render_icon('log-out') }}</a>
+          </span>
+        {%- else -%}
+          {{ render_icon('log-in') }} <a href="{{ url_for('user.login_form') }}">Anmelden</a>
+        {%- endif %}
+        </div>
       </nav>
     </header>
 
