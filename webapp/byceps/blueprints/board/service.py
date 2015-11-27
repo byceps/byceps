@@ -17,6 +17,10 @@ from ...database import db
 from .models import Category, Posting, Topic
 
 
+# -------------------------------------------------------------------- #
+# category
+
+
 def create_category(brand, position, slug, title, description):
     """Create a category in that brand's board."""
     category = Category(brand, position, slug, title, description)
@@ -51,6 +55,10 @@ def aggregate_category(category):
                                         if latest_posting else None
 
     db.session.commit()
+
+
+# -------------------------------------------------------------------- #
+# topic
 
 
 def create_topic(category, creator, title, body):
@@ -93,6 +101,10 @@ def aggregate_topic(topic):
     db.session.commit()
 
     aggregate_category(topic.category)
+
+
+# -------------------------------------------------------------------- #
+# posting
 
 
 def create_posting(topic, creator, body):
