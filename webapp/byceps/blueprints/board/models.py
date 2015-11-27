@@ -155,19 +155,6 @@ class Topic(db.Model):
     pinned_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
     pinned_by = db.relationship(User, foreign_keys=[pinned_by_id])
 
-    @classmethod
-    def create(cls, category, creator, title, body):
-        topic = Topic(category, creator, title)
-        posting = Posting(topic, creator, body)
-
-        db.session.add(topic)
-        db.session.add(posting)
-        db.session.commit()
-
-        topic.aggregate()
-
-        return topic
-
     def __init__(self, category, creator, title):
         self.category = category
         self.creator = creator

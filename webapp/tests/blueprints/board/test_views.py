@@ -211,9 +211,7 @@ class BoardModerationTestCase(AbstractAppTestCase):
         return category
 
     def create_topic(self, category, creator, number):
-        topic = create_topic(category, creator, number=number)
-        self.db.session.add(topic)
-        return topic
+        return create_topic(category, creator, number=number)
 
     def find_topic(self, id):
         return Topic.query.get(id)

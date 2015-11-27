@@ -24,6 +24,7 @@ from .formatting import get_smileys, render_html
 from .forms import PostingCreateForm, PostingUpdateForm, TopicCreateForm, \
     TopicUpdateForm
 from .models import Category, Posting, Topic
+from . import service
 from . import signals
 
 
@@ -201,7 +202,7 @@ def topic_create(category_id):
     title = form.title.data.strip()
     body = form.body.data.strip()
 
-    topic = Topic.create(category, creator, title, body)
+    topic = service.create_topic(category, creator, title, body)
 
     flash_success('Das Thema "{}" wurde hinzugefügt.', topic.title)
     signals.topic_created.send(None, topic=topic)

@@ -8,7 +8,8 @@ testfixtures.board
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.blueprints.board.models import Category, Posting, Topic
+from byceps.blueprints.board.models import Category, Posting
+from byceps.blueprints.board import service
 
 from .brand import create_brand
 
@@ -40,7 +41,7 @@ def create_topic(category, creator, *, number=1, title=None, body=None):
     if body is None:
         body = 'Inhalt von Thema {}'.format(number)
 
-    return Topic.create(category, creator, title, body)
+    return service.create_topic(category, creator, title, body)
 
 
 def create_posting(topic, creator, *, number=1, body=None):

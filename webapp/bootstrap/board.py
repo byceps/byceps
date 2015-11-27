@@ -8,7 +8,8 @@ bootstrap.board
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.blueprints.board.models import Category, Posting, Topic
+from byceps.blueprints.board.models import Category, Posting
+from byceps.blueprints.board import service
 
 from .util import add_to_database
 
@@ -22,9 +23,8 @@ def get_first_category(brand):
     return Category.query.filter_by(brand=brand).filter_by(position=1).one()
 
 
-@add_to_database
 def create_topic(category, creator, title, body):
-    return Topic.create(category, creator, title, body)
+    return service.create_topic(category, creator, title, body)
 
 
 @add_to_database
