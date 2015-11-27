@@ -11,12 +11,9 @@ bootstrap.board
 from byceps.blueprints.board.models import Category
 from byceps.blueprints.board import service
 
-from .util import add_to_database
 
-
-@add_to_database
 def create_category(brand, position, slug, title, description):
-    return Category(brand, position, slug, title, description)
+    return service.create_ategory(brand, position, slug, title, description)
 
 
 def get_first_category(brand):

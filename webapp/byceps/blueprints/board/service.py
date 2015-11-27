@@ -10,7 +10,17 @@ byceps.blueprints.board.service
 
 from ...database import db
 
-from .models import Posting, Topic
+from .models import Category, Posting, Topic
+
+
+def create_category(brand, position, slug, title, description):
+    """Create a category in that brand's board."""
+    category = Category(brand, position, slug, title, description)
+
+    db.session.add(category)
+    db.session.commit()
+
+    return category
 
 
 def create_topic(category, creator, title, body):

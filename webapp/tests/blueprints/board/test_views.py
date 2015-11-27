@@ -206,9 +206,7 @@ class BoardModerationTestCase(AbstractAppTestCase):
         self.db.session.commit()
 
     def create_category(self, number):
-        category = create_category(brand=self.brand, number=number)
-        self.db.session.add(category)
-        return category
+        return create_category(brand=self.brand, number=number)
 
     def create_topic(self, category, creator, number):
         return create_topic(category, creator, number=number)
