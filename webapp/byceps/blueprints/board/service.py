@@ -118,7 +118,7 @@ def create_posting(topic, creator, body):
     return posting
 
 
-def update(posting, body, *, commit=True):
+def update_posting(posting, body, *, commit=True):
     """Update the posting."""
     posting.body = body.strip()
     posting.last_edited_at = datetime.now()
