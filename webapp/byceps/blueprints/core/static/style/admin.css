@@ -7,17 +7,32 @@ body {
 
 /* layout */
 
-#page {
-  margin: 40px auto 0 auto;
+#page,
+nav.top {
+  margin: 0 auto;
   width: 920px;
 }
+#page {
+  margin-top: 20px;
+}
 
+#header,
+#sidebar section,
+main {
+  border-color: #cccccc;
+  border-style: solid;
+  border-width: 1px;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+#header {
+  border-width: 0 0 1px 0;
+  background-color: rgba(0, 0, 0, 0.06);
+  padding: 1rem 0;
+}
 #sidebar section,
 main {
   background-color: #ffffff;
-  border: #cccccc solid 1px;
   border-radius: 2px;
-  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 #sidebar {
@@ -27,7 +42,7 @@ main {
 
 main {
   margin-left: 180px;
-  padding: 15px 40px 40px 40px;
+  padding: 20px 40px 40px 40px;
 }
 
 
@@ -35,8 +50,6 @@ main {
 
 nav.top {
   font-size: 0.8rem;
-  margin-bottom: 0.5em;
-  margin-right: 1em;
   text-align: right;
 }
 
