@@ -58,20 +58,6 @@ class Category(db.Model):
         self.title = title
         self.description = description
 
-    def aggregate(self):
-        """Update the count and latest fields."""
-        topic_count = Topic.query.for_category(self).without_hidden().count()
-        posting_query = Posting.query.without_hidden().join(Topic).filter_by(category=self)
-        posting_count = posting_query.count()
-        latest_posting = posting_query.filter(Topic.hidden == False).latest_to_earliest().first()
-
-        self.topic_count = topic_count
-        self.posting_count = posting_count
-        self.last_posting_updated_at = latest_posting.created_at if latest_posting else None
-        self.last_posting_updated_by = latest_posting.creator if latest_posting else None
-
-        db.session.commit()
-
     def contains_unseen_postings(self):
         """Return `True` if the category contains postings created after
         the last time the current user viewed it.
@@ -269,21 +255,6 @@ class Topic(db.Model):
                 .first()
 
         return self._body_posting
-
-    def aggregate(self):
-        """Update the count and latest fields."""
-        posting_query = Posting.query.for_topic(self).without_hidden()
-        posting_count = posting_query.count()
-        latest_posting = posting_query.latest_to_earliest().first()
-
-        self.posting_count = posting_count
-        if latest_posting:
-            self.last_updated_at = latest_posting.created_at
-            self.last_updated_by = latest_posting.creator
-
-        db.session.commit()
-
-        self.category.aggregate()
 
     def contains_unseen_postings(self):
         """Return `True` if the topic contains postings created after

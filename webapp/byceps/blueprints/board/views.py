@@ -296,7 +296,7 @@ def topic_hide(id):
     topic.hide(g.current_user)
     db.session.commit()
 
-    topic.aggregate()
+    service.aggregate_topic(topic)
 
     flash_success('Das Thema "{}" wurde versteckt.', topic.title, icon='hidden')
     signals.topic_hidden.send(None, topic=topic)
@@ -312,7 +312,7 @@ def topic_unhide(id):
     topic.unhide()
     db.session.commit()
 
-    topic.aggregate()
+    service.aggregate_topic(topic)
 
     flash_success(
         'Das Thema "{}" wurde wieder sichtbar gemacht.', topic.title, icon='view')
@@ -387,7 +387,7 @@ def topic_move(id):
     db.session.commit()
 
     for category in old_category, new_category:
-        category.aggregate()
+        service.aggregate_category(category)
 
     flash_success('Das Thema "{}" wurde aus der Kategorie "{}" '
                   'in die Kategorie "{}" verschoben.',
@@ -565,7 +565,7 @@ def posting_hide(id):
     posting.hide(g.current_user)
     db.session.commit()
 
-    posting.topic.aggregate()
+    service.aggregate_topic(posting.topic)
 
     page = posting.calculate_page_number()
 
@@ -583,7 +583,7 @@ def posting_unhide(id):
     posting.unhide()
     db.session.commit()
 
-    posting.topic.aggregate()
+    service.aggregate_topic(posting.topic)
 
     page = posting.calculate_page_number()
 
