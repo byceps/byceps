@@ -8,6 +8,10 @@ byceps.blueprints.board.service
 :License: Modified BSD, see LICENSE for details.
 """
 
+from datetime import datetime
+
+from flask import g
+
 from ...database import db
 
 from .models import Category, Posting, Topic
@@ -62,6 +66,17 @@ def create_topic(category, creator, title, body):
 
     return topic
 
+
+def update_topic(topic, title, body):
+    """Update the topic (and its initial posting)."""
+    topic.title = title.strip()
+
+    posting = topic.get_body_posting()
+    posting.update(body, commit=False)
+
+    db.session.commit()
+
+
 def aggregate_topic(topic):
     """Update the topic's count and latest fields."""
     posting_query = Posting.query.for_topic(topic).without_hidden()
@@ -89,3 +104,14 @@ def create_posting(topic, creator, body):
     aggregate_topic(topic)
 
     return posting
+
+
+def update(posting, body, *, commit=True):
+    """Update the posting."""
+    posting.body = body.strip()
+    posting.last_edited_at = datetime.now()
+    posting.last_edited_by = g.current_user
+    posting.edit_count += 1
+
+    if commit:
+        db.session.commit()

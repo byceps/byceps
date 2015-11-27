@@ -154,14 +154,6 @@ class Topic(db.Model):
             user.has_permission(BoardTopicPermission.update_of_others)
         )
 
-    def update(self, title, body):
-        self.title = title.strip()
-
-        posting = self.get_body_posting()
-        posting.update(body, commit=False)
-
-        db.session.commit()
-
     def hide(self, user):
         self.hidden = True
         self.hidden_at = datetime.now()
@@ -355,15 +347,6 @@ class Posting(db.Model):
             ) or \
             user.has_permission(BoardPostingPermission.update_of_others)
         )
-
-    def update(self, body, *, commit=True):
-        self.body = body.strip()
-        self.last_edited_at = datetime.now()
-        self.last_edited_by = g.current_user
-        self.edit_count += 1
-
-        if commit:
-            db.session.commit()
 
     def hide(self, user):
         self.hidden = True

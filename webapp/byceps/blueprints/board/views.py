@@ -263,7 +263,7 @@ def topic_update(id):
 
     form = TopicUpdateForm(request.form)
 
-    topic.update(form.title.data, form.body.data)
+    service.update_topic(topic, form.title.data, form.body.data)
 
     flash_success('Das Thema "{}" wurde aktualisiert.', topic.title)
     return redirect(url)
@@ -539,7 +539,7 @@ def posting_update(id):
 
     form = PostingUpdateForm(request.form)
 
-    posting.update(form.body.data)
+    service.update_posting(posting, form.body.data)
 
     flash_success('Der Beitrag wurde aktualisiert.')
     return redirect(url)
