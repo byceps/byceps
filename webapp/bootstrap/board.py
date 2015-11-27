@@ -8,7 +8,7 @@ bootstrap.board
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.blueprints.board.models import Category, Posting
+from byceps.blueprints.board.models import Category
 from byceps.blueprints.board import service
 
 from .util import add_to_database
@@ -27,6 +27,5 @@ def create_topic(category, creator, title, body):
     return service.create_topic(category, creator, title, body)
 
 
-@add_to_database
 def create_posting(topic, creator, body):
-    return Posting.create(topic, creator, body)
+    return service.create_posting(topic, creator, body)

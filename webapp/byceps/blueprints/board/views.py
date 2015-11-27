@@ -468,7 +468,7 @@ def posting_create(topic_id):
             icon='lock')
         return redirect(topic.external_url)
 
-    posting = Posting.create(topic, creator, body)
+    posting = service.create_posting(topic, creator, body)
 
     topic.category.mark_as_viewed()
 

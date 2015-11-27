@@ -25,3 +25,14 @@ def create_topic(category, creator, title, body):
     topic.aggregate()
 
     return topic
+
+
+def create_posting(topic, creator, body):
+    """Create a posting in that topic."""
+    posting = Posting(topic, creator, body)
+    db.session.add(posting)
+    db.session.commit()
+
+    topic.aggregate()
+
+    return posting

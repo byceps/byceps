@@ -372,16 +372,6 @@ class Posting(db.Model):
     hidden_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
     hidden_by = db.relationship(User, foreign_keys=[hidden_by_id])
 
-    @classmethod
-    def create(cls, topic, creator, body):
-        posting = Posting(topic, creator, body)
-        db.session.add(posting)
-        db.session.commit()
-
-        topic.aggregate()
-
-        return posting
-
     def __init__(self, topic, creator, body):
         self.topic = topic
         self.creator = creator
