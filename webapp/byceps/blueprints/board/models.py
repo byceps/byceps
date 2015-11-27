@@ -76,9 +76,6 @@ class Category(db.Model):
 
         return self.last_posting_updated_at > last_view.occured_at
 
-    def mark_as_viewed(self):
-        LastCategoryView.update(g.current_user, self)
-
     def __eq__(self, other):
         return self.id == other.id
 
@@ -265,9 +262,6 @@ class Topic(db.Model):
         last_view = LastTopicView.find(g.current_user, self)
         return last_view.occured_at if last_view is not None else None
 
-    def mark_as_viewed(self):
-        LastTopicView.update(g.current_user, self)
-
     def __eq__(self, other):
         return self.id == other.id
 
@@ -419,19 +413,6 @@ class LastCategoryView(db.Model):
 
         return cls.query.filter_by(user=user, category=category).first()
 
-    @classmethod
-    def update(cls, user, category):
-        if user.is_anonymous:
-            return
-
-        last_view = cls.find(user, category)
-        if last_view is None:
-            last_view = cls(user, category)
-            db.session.add(last_view)
-
-        last_view.occured_at = datetime.now()
-        db.session.commit()
-
     def __repr__(self):
         return ReprBuilder(self) \
             .add('user', self.user.screen_name) \
@@ -460,19 +441,6 @@ class LastTopicView(db.Model):
             return
 
         return cls.query.filter_by(user=user, topic=topic).first()
-
-    @classmethod
-    def update(cls, user, topic):
-        if user.is_anonymous:
-            return
-
-        last_view = cls.find(user, topic)
-        if last_view is None:
-            last_view = cls(user, topic)
-            db.session.add(last_view)
-
-        last_view.occured_at = datetime.now()
-        db.session.commit()
 
     def __repr__(self):
         return ReprBuilder(self) \

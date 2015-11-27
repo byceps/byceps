@@ -14,7 +14,7 @@ from flask import g
 
 from ...database import db
 
-from .models import Category, Posting, Topic
+from .models import Category, LastCategoryView, LastTopicView, Posting, Topic
 
 
 # -------------------------------------------------------------------- #
@@ -127,3 +127,39 @@ def update(posting, body, *, commit=True):
 
     if commit:
         db.session.commit()
+
+
+# -------------------------------------------------------------------- #
+# last views
+
+
+def mark_category_as_just_viewed(category, user):
+    """Mark the category as last viewed by the user (if logged in) at
+    the current time.
+    """
+    if user.is_anonymous:
+        return
+
+    last_view = LastCategoryView.find(user, category)
+    if last_view is None:
+        last_view = LastCategoryView(user, category)
+        db.session.add(last_view)
+
+    last_view.occured_at = datetime.now()
+    db.session.commit()
+
+
+def mark_topic_as_just_viewed(topic, user):
+    """Mark the topic as last viewed by the user (if logged in) at the
+    current time.
+    """
+    if user.is_anonymous:
+        return
+
+    last_view = LastTopicView.find(user, topic)
+    if last_view is None:
+        last_view = LastTopicView(user, topic)
+        db.session.add(last_view)
+
+    last_view.occured_at = datetime.now()
+    db.session.commit()

@@ -65,7 +65,7 @@ def category_view(slug, page):
         .filter_by(slug=slug) \
         .first_or_404()
 
-    category.mark_as_viewed()
+    service.mark_category_as_just_viewed(category, g.current_user)
 
     topics_per_page = int(current_app.config['BOARD_TOPICS_PER_PAGE'])
 
@@ -125,7 +125,7 @@ def topic_view(id, page):
 
     # Mark as viewed before aborting so a user can itself remove the
     # 'new' tag from a locked topic.
-    topic.mark_as_viewed()
+    service.mark_topic_as_just_viewed(topic, g.current_user)
 
     if topic.hidden:
         flash_notice('Das Thema ist versteckt.', icon='hidden')
@@ -470,7 +470,7 @@ def posting_create(topic_id):
 
     posting = service.create_posting(topic, creator, body)
 
-    topic.category.mark_as_viewed()
+    service.mark_category_as_just_viewed(topic.category, g.current_user)
 
     flash_success('Deine Antwort wurde hinzugefügt.')
     signals.posting_created.send(None, posting=posting)
