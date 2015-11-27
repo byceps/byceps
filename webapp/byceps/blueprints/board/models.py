@@ -53,7 +53,6 @@ class Category(db.Model):
 
     def __init__(self, brand, position, slug, title, description):
         self.brand = brand
-        self.brand = brand
         self.position = position
         self.slug = slug
         self.title = title
