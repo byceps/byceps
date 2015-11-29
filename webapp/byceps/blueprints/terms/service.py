@@ -11,9 +11,9 @@ byceps.blueprints.terms.service
 from .models import Consent, ConsentContext, Version
 
 
-def get_current_version():
-    """Return the current version of the terms for the current brand."""
-    return Version.query.for_current_brand().latest_first().first()
+def get_current_version(brand):
+    """Return the current version of the terms for that brand."""
+    return Version.query.for_brand(brand).latest_first().first()
 
 
 def build_consent_on_account_creation(user, version):

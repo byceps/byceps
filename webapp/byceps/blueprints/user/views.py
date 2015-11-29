@@ -122,7 +122,7 @@ def create():
     verification_token = verification_token_service.build_for_email_address_confirmation(user)
     db.session.add(verification_token)
 
-    terms_version = terms_service.get_current_version()
+    terms_version = terms_service.get_current_version(g.party.brand)
     terms_consent = terms_service.build_consent_on_account_creation(user, terms_version)
     db.session.add(terms_consent)
 
@@ -556,7 +556,7 @@ def login():
         abort(403)
 
     if not in_admin_mode:
-        terms_version = terms_service.get_current_version()
+        terms_version = terms_service.get_current_version(g.party.brand)
         if not terms_service.has_user_accepted_version(user, terms_version):
             verification_token = verification_token_service \
                 .find_or_create_for_terms_consent(user)

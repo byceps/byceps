@@ -12,7 +12,6 @@ from datetime import datetime
 from enum import Enum
 from operator import attrgetter
 
-from flask import g
 from sqlalchemy.ext.hybrid import hybrid_property
 
 from ...database import BaseQuery, db, generate_uuid
@@ -24,8 +23,8 @@ from ..user.models import User
 
 class VersionQuery(BaseQuery):
 
-    def for_current_brand(self):
-        return self.filter_by(brand=g.party.brand)
+    def for_brand(self, brand):
+        return self.filter_by(brand_id=brand.id)
 
     def latest_first(self):
         return self.order_by(Version.created_at.desc())
