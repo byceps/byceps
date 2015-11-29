@@ -76,8 +76,10 @@ main {
 
 #sidebar section {
   font-size: 0.8rem;
-  margin-bottom: 20px;
   padding-bottom: 12px;
+}
+#sidebar section:not(:last-child) {
+  margin-bottom: 20px;
 }
 #sidebar section h1 {
   background-color: #555555;
