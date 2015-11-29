@@ -1,4 +1,4 @@
-{%- from 'macros/admin.html' import render_party_head %}
+{%- from 'macros/admin.html' import render_brand_head, render_party_head %}
 {%- from 'macros/icons.html' import render_icon %}
 <!DOCTYPE html>
 <html lang="de">
@@ -18,6 +18,11 @@
 
         <div class="head">
 {%- with %}
+
+{%- set brand = current_page_brand|default %}
+{%- if brand %}
+{{ render_brand_head(brand) }}
+{%- endif %}
 
 {%- set party = current_page_party|default %}
 {%- if party %}

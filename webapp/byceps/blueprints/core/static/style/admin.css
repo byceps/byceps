@@ -72,16 +72,20 @@ main {
   padding-top: 10px;
 }
 
+.head-brand,
 .head-party {
   font-size: 1.3rem;
   margin: auto 0;
 }
+.head-party .brand,
 .head-party .party {
   font-weight: bold;
 }
+.head-brand a,
 .head-party a {
   text-decoration: none;
 }
+.head-brand a:hover,
 .head-party a:hover {
   text-decoration: underline;
 }

@@ -1,6 +1,13 @@
 {%- from 'macros/misc.html' import render_dimmed %}
 
 
+{% macro render_brand_head(brand) %}
+  <div class="head-brand">
+    Marken {{ render_dimmed('/') }} <span class="brand">{{ brand.title }}</span>
+  </div>
+{% endmacro %}
+
+
 {% macro render_party_head(party) %}
   <div class="head-party">
     <a href="{{ url_for('party_admin.index') }}">Partys</a> {{ render_dimmed('/') }} <a class="party" href="{{ url_for('party_admin.view', id=party.id) }}">{{ party.title }}</a>
