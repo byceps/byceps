@@ -19,7 +19,6 @@ body {
 
 #page-grid {
   display: flex;
-  flex: 1;
   flex-direction: column;
   margin: -20px 0 0 -20px;
 }
