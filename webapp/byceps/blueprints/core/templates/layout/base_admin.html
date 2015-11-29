@@ -4,9 +4,7 @@
 <html lang="de">
   <head>
     <meta charset="utf-8"/>
-{%- with %}
-{#- Make the variable available to the included template. #}
-{%- set title = title|default %}
+{%- with title = title|default %}
 {% include 'layout/_meta_head_admin.html' with context %}
 {%- endwith %}
 {% block head %}{% endblock head %}
