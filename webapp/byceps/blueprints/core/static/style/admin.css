@@ -10,11 +10,36 @@ body {
 #header-content,
 #page {
   margin: 0 auto;
-  width: 920px;
+  max-width: 960px;
+  padding: 20px;
 }
-#page {
-  margin-top: 20px;
+#footer {
+  margin-bottom: 20px;
 }
+
+#page-grid {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  margin: -20px 0 0 -20px;
+}
+#page-grid-main,
+#page-grid-sidebar {
+  padding: 20px 0 0 20px;
+}
+#page-grid-main {
+  flex: 1;
+}
+#page-grid-sidebar {
+  flex: 0 0 160px;
+}
+
+@media (min-width: 960px) {
+  #page-grid {
+    flex-direction: row;
+  }
+}
+
 
 #header,
 #sidebar section,
@@ -29,14 +54,7 @@ main {
   background-color: #ffffff;
   border-radius: 2px;
 }
-
-#sidebar {
-  float: left;
-  width: 160px;
-}
-
 main {
-  margin-left: 180px;
   padding: 20px 40px 40px 40px;
 }
 
@@ -50,7 +68,8 @@ main {
 #header-content {
   display: flex;
   justify-content: flex-end;
-  padding: 1rem 0;
+  padding-bottom: 10px;
+  padding-top: 10px;
 }
 
 #current-user {
@@ -196,11 +215,9 @@ ol.index.fully-linked a:hover {
 /* footer */
 
 #footer {
-  clear: both;
   display: block;
   font-size: 0.9rem;
   opacity: 0.5;
-  padding: 20px 0;
   text-align: center;
 }
 #footer:hover {
