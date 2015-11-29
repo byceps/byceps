@@ -65,6 +65,7 @@ li [class*=" icon-"] {
 .icon-info::before           { content: "\f05a"; }
 .icon-internet::before       { content: "\f0ac"; }
 .icon-irc::before            { content: "\f292"; }
+.icon-legal::before          { content: "\f0e3"; }
 .icon-location::before       { content: "\f041"; }
 .icon-lock::before           { content: "\f023"; }
 .icon-log-in::before         { content: "\f090"; }
@@ -73,6 +74,8 @@ li [class*=" icon-"] {
 .icon-move::before           { content: "\f047"; }
 .icon-network::before        { content: "\f0e8"; }
 .icon-new::before            { content: "\f069"; }
+.icon-news::before           { content: "\f1ea"; }
+.icon-newsletter::before     { content: "\f003"; }
 .icon-parking::before        { content: "\f1b9"; }
 .icon-password::before       { content: "\f084"; }
 .icon-payment::before        { content: "\f0d6"; }
