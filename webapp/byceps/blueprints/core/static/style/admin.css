@@ -146,6 +146,16 @@ nav.main .current a {
 }
 
 
+/* tables */
+
+@media (max-width: 960px) {
+  table.index.wide {
+    display: block;
+    overflow-x: auto;
+  }
+}
+
+
 /* lists */
 
 ol.index,
