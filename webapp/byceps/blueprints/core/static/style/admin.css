@@ -31,7 +31,7 @@ body {
   flex: 1;
 }
 #page-grid-sidebar {
-  flex: 0 0 160px;
+  flex: 0 0 18%;
 }
 
 @media (min-width: 960px) {
