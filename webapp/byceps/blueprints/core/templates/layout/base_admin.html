@@ -16,8 +16,8 @@
     <header id="header">
       <div id="header-content">
 
-        <div class="head">
 {%- with %}
+        <div class="head">
 
 {%- set brand = current_page_brand|default %}
 {%- if brand %}
@@ -29,8 +29,27 @@
 {{ render_party_head(party) }}
 {%- endif %}
 
-{%- endwith %}
         </div>
+
+{%- if party %}
+  {%- set navigation_items_party = Navigation('Party')
+          .add_item(url_for('ticket_admin.index_for_party', party_id=party.id), 'Tickets', id='ticket_admin', required_permission=TicketPermission.list, icon='ticket')
+          .add_item(url_for('orga_admin.teams_for_party', party_id=party.id), 'Teams', id='orga_admin.teams', required_permission=OrgaTeamPermission.list, icon='users')
+          .add_item(url_for('orga_presence.view', party_id=party.id), 'Anwesenheit', id='orga_presence', required_permission=OrgaPresencePermission.list, icon='date-okay')
+          .add_item(url_for('shop_admin.article_index_for_party', party_id=party.id), 'Artikel', id='shop_admin.articles', required_permission=ShopArticlePermission.list, icon='shopping-cart')
+          .add_item(url_for('shop_admin.order_index_for_party', party_id=party.id), 'Bestellungen', id='shop_admin.orders', required_permission=ShopOrderPermission.list, icon='payment')
+          .add_item(url_for('snippet_admin.index_for_party', party_id=party.id), 'Snippets', id='snippet_admin', required_permission=SnippetPermission.list, icon='snippet')
+  -%}
+        <nav>
+          <ol>
+            {%- for item in navigation_items_party.get_items() %}
+            <li{% if (item.id is not none) and (item.id is is_current_page(current_page)) %} class="current"{% endif %}><a href="{{ item.endpoint }}" title="{{ item.label }}">{{ render_icon(item.icon) if item.icon else item.label[0] }}</a></li>
+            {%- endfor %}
+          </ol>
+        </nav>
+{%- endif %}
+
+{%- endwith %}
 
         <div id="current-user">
         {% if g.current_user.is_active %}

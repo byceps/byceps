@@ -18,6 +18,7 @@ NavigationItem = namedtuple('NavigationItem', [
     'label',
     'id',
     'required_permission',
+    'icon',
 ])
 
 
@@ -31,13 +32,14 @@ class Navigation(object):
         self.title = title
         self.items = []
 
-    def add_item(self, endpoint, label, *, id=None, required_permission=None):
+    def add_item(self, endpoint, label, *, id=None, required_permission=None, icon=None):
         """Add an item to the navigation."""
         item = NavigationItem(
             endpoint=endpoint,
             label=label,
             id=id,
-            required_permission=required_permission
+            required_permission=required_permission,
+            icon=icon
             )
 
         self.items.append(item)

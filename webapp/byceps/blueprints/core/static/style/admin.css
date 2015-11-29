@@ -101,6 +101,36 @@ main {
   text-decoration: underline;
 }
 
+#header-content nav ol {
+  display: flex;
+  justify-content: center;
+}
+#header-content nav li {
+  border-left: #cccccc solid 1px;
+  flex: 1;
+  height: 62px;
+  line-height: 42px;
+  margin: -10px 0;
+  text-align: center;
+  width: 62px;
+}
+#header-content nav li:last-child {
+  border-right: #cccccc solid 1px;
+}
+#header-content nav a {
+  color: #333333;
+  display: block;
+  height: 100%;
+  padding: 10px 1rem;
+  text-decoration: none;
+}
+#header-content nav li.current a,
+#header-content nav li a:hover {
+  background-color: #f4f4f4;
+  height: 67px;
+  margin-bottom: -15px;
+}
+
 #current-user {
   font-size: 0.8rem;
 }

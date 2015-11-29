@@ -46,6 +46,7 @@ li [class*=" icon-"] {
 .icon-bullhorn::before       { content: "\f0a1"; }
 .icon-cost::before           { content: "\f153"; }
 .icon-date::before           { content: "\f073"; }
+.icon-date-okay::before      { content: "\f274"; }
 .icon-delete::before         { content: "\f1f8"; }
 .icon-disabled::before       { content: "\f05e"; }
 .icon-download::before       { content: "\f019"; }
@@ -74,6 +75,7 @@ li [class*=" icon-"] {
 .icon-new::before            { content: "\f069"; }
 .icon-parking::before        { content: "\f1b9"; }
 .icon-password::before       { content: "\f084"; }
+.icon-payment::before        { content: "\f0d6"; }
 .icon-pending::before        { content: "\f017"; }
 .icon-pin::before            { content: "\f08d"; }
 .icon-published::before      { content: "\f06e"; }
@@ -82,6 +84,7 @@ li [class*=" icon-"] {
 .icon-reply::before          { content: "\f112"; }
 .icon-search::before         { content: "\f002"; }
 .icon-shopping-cart::before  { content: "\f07a"; }
+.icon-snippet::before        { content: "\f0c4"; }
 .icon-sorted::before         { content: "\f0dc"; }
 .icon-steam::before          { content: "\f1b6"; }
 .icon-success::before        { content: "\f00c"; }
