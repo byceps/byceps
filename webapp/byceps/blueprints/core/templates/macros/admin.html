@@ -3,6 +3,6 @@
 
 {% macro render_party_head(party) %}
   <div class="head-party">
-    <a href="{{ url_for('party_admin.index') }}">parties</a> {{ render_dimmed('/') }} <a class="party" href="{{ url_for('party_admin.view', id=party.id) }}">{{ party.title }}</a>
+    <a href="{{ url_for('party_admin.index') }}">Partys</a> {{ render_dimmed('/') }} <a class="party" href="{{ url_for('party_admin.view', id=party.id) }}">{{ party.title }}</a>
   </div>
 {% endmacro %}
