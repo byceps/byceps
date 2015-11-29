@@ -39,6 +39,18 @@ def index():
     return {'parties': parties}
 
 
+@blueprint.route('/<id>')
+@permission_required(PartyPermission.list)
+@templated
+def view(id):
+    """Show a party."""
+    party = Party.query.get_or_404(id)
+
+    return {
+        'party': party,
+    }
+
+
 @blueprint.route('/create')
 @permission_required(PartyPermission.create)
 @templated

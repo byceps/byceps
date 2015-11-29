@@ -1,0 +1,31 @@
+{% extends 'layout/base_admin.html' %}
+{% from 'macros/datetime.html' import render_datetime %}
+{% set current_page = 'admin_dashboard_party' %}
+{% set current_page_party = party %}
+{% set title = 'Parties' %}
+
+{% block body %}
+
+  <nav class="breadcrumbs">
+    <ol>
+      <li>Partys</li>
+      <li>{{ party.title }}</li>
+    </ol>
+  </nav>
+
+  <table class="index">
+    <tr>
+      <th>Marke</th>
+      <td>{{ party.brand.title }}</td>
+    </tr>
+    <tr>
+      <th>Beginn</th>
+      <td>{{ render_datetime(party.starts_at) }}</td>
+    </tr>
+    <tr>
+      <th>Ende</th>
+      <td>{{ render_datetime(party.ends_at) }}</td>
+    </tr>
+  </table>
+
+{%- endblock body %}
