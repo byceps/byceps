@@ -76,9 +76,7 @@
 
         <div id="page-grid-sidebar">
           <aside id="sidebar">
-{%- with %}
-{#- Make the variable available to the included template. #}
-{%- set current_page = current_page|default %}
+{%- with current_page = current_page|default %}
 {%- include 'layout/_navigation_admin.html' with context %}
 {%- endwith %}
           </aside>
