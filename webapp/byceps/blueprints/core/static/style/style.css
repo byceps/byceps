@@ -15,10 +15,6 @@ body {
   padding: 0;
 }
 
-html {
-  font-size: 90%;
-}
-
 main {
   display: block;
 }
@@ -82,20 +78,6 @@ img {
   clear: both;
   content: '';
   display: table;
-}
-
-
-/* basic */
-
-html {
-  height: 100%;
-}
-body {
-  background-color: #f4f4f4;
-  color: #333333;
-  font-family: sans-serif;
-  line-height: 1.4em;
-  min-height: 100%;
 }
 
 

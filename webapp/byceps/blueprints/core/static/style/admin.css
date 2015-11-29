@@ -1,7 +1,18 @@
+/* basic */
+
+html {
+  font-size: 90%;
+  height: 100%;
+}
 body {
+  background-color: #f4f4f4;
   border-color: #cc0000;
   border-style: solid;
   border-width: 3px 0;
+  color: #333333;
+  font-family: sans-serif;
+  line-height: 1.4em;
+  min-height: 100%;
 }
 
 
