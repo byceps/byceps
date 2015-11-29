@@ -18,15 +18,17 @@
 
         <div class="head">
 {%- with %}
+
 {%- set party = current_page_party|default %}
 {%- if party %}
 {{ render_party_head(party) }}
 {%- endif %}
+
 {%- endwith %}
         </div>
 
         <div id="current-user">
-        {% if g.current_user.is_active -%}
+        {% if g.current_user.is_active %}
           <span class="intro">Angemeldet als</span>
           <strong><a href="{{ url_for('user.view_current') }}">{{ render_icon('user') }} {{ g.current_user.screen_name }}</a></strong>
           <span class="actions inline">
