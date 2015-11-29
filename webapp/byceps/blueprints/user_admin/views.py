@@ -52,8 +52,6 @@ def index(page):
             )
 
         only = None
-
-        per_page = 100
     else:
         only = request.args.get('only')
         if only == 'enabled':
@@ -63,7 +61,7 @@ def index(page):
         else:
             only = None
 
-        per_page = request.args.get('per_page', type=int, default=20)
+    per_page = request.args.get('per_page', type=int, default=20)
 
     users = query.paginate(page, per_page)
 
