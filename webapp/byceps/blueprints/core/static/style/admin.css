@@ -65,10 +65,25 @@ main {
   background-color: rgba(0, 0, 0, 0.06);
 }
 #header-content {
+  align-items: center;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   padding-bottom: 10px;
   padding-top: 10px;
+}
+
+.head-party {
+  font-size: 1.3rem;
+  margin: auto 0;
+}
+.head-party .party {
+  font-weight: bold;
+}
+.head-party a {
+  text-decoration: none;
+}
+.head-party a:hover {
+  text-decoration: underline;
 }
 
 #current-user {

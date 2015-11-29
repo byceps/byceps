@@ -4,6 +4,7 @@
 {% from 'macros/shop_admin.html' import render_article_link, render_order_payment_state %}
 {% from 'macros/user_admin.html' import render_user_admin_link %}
 {% set current_page = 'shop_admin.article_ordered' %}
+{% set current_page_party = article.party %}
 {% set title = article.description %}
 
 {% block body %}

@@ -4,6 +4,7 @@
 {% from 'macros/shop_admin.html' import render_order_payment_state %}
 {% from 'macros/user_admin.html' import render_user_admin_link %}
 {% set current_page = 'shop_admin.orders' %}
+{% set current_page_party = order.party %}
 {% set title = 'Bestellung ansehen' %}
 
 {% block body %}

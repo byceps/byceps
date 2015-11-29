@@ -1,3 +1,4 @@
+{%- from 'macros/admin.html' import render_party_head %}
 {%- from 'macros/icons.html' import render_icon %}
 <!DOCTYPE html>
 <html lang="de">
@@ -14,6 +15,16 @@
 
     <header id="header">
       <div id="header-content">
+
+        <div class="head">
+{%- with %}
+{%- set party = current_page_party|default %}
+{%- if party %}
+{{ render_party_head(party) }}
+{%- endif %}
+{%- endwith %}
+        </div>
+
         <div id="current-user">
         {% if g.current_user.is_active -%}
           <span class="intro">Angemeldet als</span>
@@ -25,6 +36,7 @@
           {{ render_icon('log-in') }} <a href="{{ url_for('user.login_form') }}">Anmelden</a>
         {%- endif %}
         </div>
+
       </nav>
     </header>
 

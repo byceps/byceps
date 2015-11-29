@@ -4,6 +4,7 @@
 {% from 'macros/pagination.html' import render_pagination_nav %}
 {% from 'macros/user_admin.html' import render_user_admin_link %}
 {% set current_page = 'ticket_admin' %}
+{% set current_page_party = party %}
 {% set title = '%s - Tickets'|format(party.title) %}
 
 {% block head %}
