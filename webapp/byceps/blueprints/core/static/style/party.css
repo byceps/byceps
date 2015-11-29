@@ -221,3 +221,18 @@ hr {
   border-top: #cccccc solid 1px;
   height: 0;
 }
+
+
+/* footer */
+
+#footer {
+  clear: both;
+  display: block;
+  font-size: 0.9rem;
+  opacity: 0.5;
+  padding: 20px 0;
+  text-align: center;
+}
+#footer:hover {
+  opacity: 1;
+}

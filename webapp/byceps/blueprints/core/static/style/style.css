@@ -384,21 +384,6 @@ nav.pagination li.current {
 }
 
 
-/* footer */
-
-#footer {
-  clear: both;
-  display: block;
-  font-size: 0.9rem;
-  opacity: 0.5;
-  padding: 20px 0;
-  text-align: center;
-}
-#footer:hover {
-  opacity: 1;
-}
-
-
 /* misc */
 
 .pull-left {

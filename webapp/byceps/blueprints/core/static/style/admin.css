@@ -191,3 +191,18 @@ ol.index.fully-linked a:hover {
   font-size: 5rem;
   line-height: 1;
 }
+
+
+/* footer */
+
+#footer {
+  clear: both;
+  display: block;
+  font-size: 0.9rem;
+  opacity: 0.5;
+  padding: 20px 0;
+  text-align: center;
+}
+#footer:hover {
+  opacity: 1;
+}
