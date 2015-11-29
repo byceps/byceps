@@ -14,6 +14,7 @@ from ...util.templating import templated
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
+from ..brand.models import Brand
 from ..terms.models import Version
 
 from .authorization import TermsPermission
@@ -32,5 +33,27 @@ def index():
     """List terms versions."""
     versions = Version.query \
         .options(db.joinedload('brand')) \
+        .order_by(Version.created_at.desc()) \
         .all()
-    return {'versions': versions}
+
+    return {
+        'versions': versions,
+    }
+
+
+@blueprint.route('/brands/<brand_id>')
+@permission_required(TermsPermission.list)
+@templated
+def index_for_brand(brand_id):
+    """List terms versions for that brand."""
+    brand = Brand.query.get_or_404(brand_id)
+
+    versions = Version.query \
+        .for_brand(brand) \
+        .order_by(Version.created_at.desc()) \
+        .all()
+
+    return {
+        'brand': brand,
+        'versions': versions,
+    }

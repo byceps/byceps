@@ -1,0 +1,31 @@
+{% extends 'layout/base_admin.html' %}
+{% from 'macros/datetime.html' import render_datetime %}
+{% from 'macros/user_admin.html' import render_user_admin_link %}
+{% set current_page = 'terms_admin' %}
+{% set current_page_brand = brand %}
+{% set title = 'Allgemeine Geschäftsbedingungen' %}
+
+{% block body %}
+
+  <h1>{{ title }}</h1>
+
+  <table class="index wide">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>erstellt</th>
+        <th>durch</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for version in versions %}
+        <tr>
+          <td>{{ version.id }}</td>
+          <td class="nowrap">{{ render_datetime(version.created_at) }}</td>
+          <td>{{ render_user_admin_link(version.creator) }}</td>
+        </tr>
+      {%- endfor %}
+    </tbody>
+  </table>
+
+{%- endblock body %}
