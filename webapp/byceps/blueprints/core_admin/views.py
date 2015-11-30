@@ -10,5 +10,14 @@ byceps.blueprints.core_admin.views
 
 from ...util.framework import create_blueprint
 
+from ..brand.models import Brand
+
 
 blueprint = create_blueprint('core_admin', __name__)
+
+
+@blueprint.app_context_processor
+def inject_brands():
+    return {
+        'all_brands': Brand.query.all(),
+    }

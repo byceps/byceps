@@ -19,6 +19,17 @@
     </ol>
   </nav>
 </section>
+{%- elif not party %}
+<section>
+  <h1>Marken</h1>
+  <nav class="main">
+    <ol>
+    {%- for brand in all_brands|sort(attribute='title') %}
+      <li><a href="{{ url_for('party_admin.index_for_brand', brand_id=brand.id) }}">{{ brand.title }}</a></li>
+    {%- endfor %}
+    </ol>
+  </nav>
+</section>
 {%- endif %}
 
 
