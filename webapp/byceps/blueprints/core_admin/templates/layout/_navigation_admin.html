@@ -2,7 +2,7 @@
 {%- from 'macros/navigation.html' import render_navigation_item_from_item %}
 
 
-{%- if brand %}
+{%- if brand and g.current_user.has_permission(PartyPermission.list) %}
 <section>
   <h1>Partys</h1>
   <nav class="main">
@@ -19,7 +19,7 @@
     </ol>
   </nav>
 </section>
-{%- elif not party %}
+{%- elif not party and g.current_user.has_permission(PartyPermission.list) %}
 <section>
   <h1>Marken</h1>
   <nav class="main">
