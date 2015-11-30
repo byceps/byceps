@@ -25,7 +25,7 @@
         <td>{{ party.brand.title }}</td>
         <td class="centered">{{ party.number }}</td>
         <td>
-          <strong>{{ party.title }}</strong>
+          <strong><a href="{{ url_for('party_admin.view', id=party.id) }}">{{ party.title }}</a></strong>
           {%- if party.is_archived %}<br/>{{ render_icon('archived', title='archiviert') }} <em>archiviert</em>{% endif -%}
         </td>
         <td>
