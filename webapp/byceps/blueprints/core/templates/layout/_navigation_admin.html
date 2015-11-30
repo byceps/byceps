@@ -1,4 +1,25 @@
+{%- from 'macros/misc.html' import render_dimmed %}
 {%- from 'macros/navigation.html' import render_navigation_item_from_item %}
+
+
+{%- if brand %}
+<section>
+  <h1>Partys</h1>
+  <nav class="main">
+    <ol>
+    {%- for party in brand.parties|sort(attribute='starts_at', reverse=True) %}
+      <li><a href="{{ url_for('party_admin.view', id=party.id) }}">
+        {%- if party.is_archived -%}
+          {{ render_dimmed(party.title) }}
+        {%- else -%}
+          {{ party.title }}
+        {%- endif %}
+      </a></li>
+    {%- endfor %}
+    </ol>
+  </nav>
+</section>
+{%- endif %}
 
 
 {%- set navigation_items = [
