@@ -37,22 +37,11 @@
     Navigation('Benutzer')
         .add_item('user_admin.index', 'Benutzer', id='user_admin', required_permission=UserPermission.list)
         .add_item('authorization_admin.role_index', 'Rollen', id='authorization_admin.roles', required_permission=RolePermission.list)
-        .add_item('authorization_admin.permission_index', 'Rechte', id='authorization_admin.permissions', required_permission=RolePermission.list)
-        .add_item('ticket_admin.index', 'Tickets', id='ticket_admin', required_permission=TicketPermission.list),
+        .add_item('authorization_admin.permission_index', 'Rechte', id='authorization_admin.permissions', required_permission=RolePermission.list),
 
     Navigation('Orgas')
         .add_item('orga_admin.persons', 'Personen', id='orga_admin.persons', required_permission=OrgaDetailPermission.view)
         .add_item('orga_admin.birthdays', 'Geburtstage', id='orga_admin.birthdays', required_permission=OrgaBirthdayPermission.list)
-        .add_item('orga_admin.teams', 'Teams', id='orga_admin.teams', required_permission=OrgaTeamPermission.list)
-        .add_item('orga_presence.index', 'Anwesenheit', id='orga_presence', required_permission=OrgaPresencePermission.list),
-
-    Navigation('Shop')
-        .add_item('shop_admin.article_index', 'Artikel', id='shop_admin.articles', required_permission=ShopArticlePermission.list)
-        .add_item('shop_admin.order_index', 'Bestellungen', id='shop_admin.orders', required_permission=ShopOrderPermission.list),
-
-    Navigation('Verschiedenes')
-        .add_item('party_admin.index', 'Parties', id='party_admin', required_permission=PartyPermission.list)
-        .add_item('snippet_admin.index', 'Snippets', id='snippet_admin', required_permission=SnippetPermission.list)
     ] -%}
 
 
