@@ -39,6 +39,24 @@ def index():
     return {'parties': parties}
 
 
+@blueprint.route('/brands/<brand_id>', defaults={'page': 1})
+@blueprint.route('/brands/<brand_id>/pages/<int:page>')
+@permission_required(PartyPermission.list)
+@templated
+def index_for_brand(brand_id, page):
+    """List parties for this brand."""
+    brand = Brand.query.get_or_404(brand_id)
+
+    per_page = request.args.get('per_page', type=int, default=15)
+
+    parties = Party.query.for_brand(brand).paginate(page, per_page)
+
+    return {
+        'brand': brand,
+        'parties': parties,
+    }
+
+
 @blueprint.route('/<id>')
 @permission_required(PartyPermission.list)
 @templated

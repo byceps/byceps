@@ -1,0 +1,54 @@
+{% extends 'layout/base_admin.html' %}
+{% from 'macros/datetime.html' import render_datetime %}
+{% from 'macros/icons.html' import render_icon %}
+{% from 'macros/pagination.html' import render_pagination_nav %}
+{% set current_page = 'party_admin' %}
+{% set current_page_brand = brand %}
+{% set title = '%s - Partys'|format(brand.title) %}
+
+{% block body %}
+
+  <nav class="breadcrumbs">
+    <ol>
+      <li>{{ brand.title }}</li>
+      <li>Partys</li>
+    </ol>
+  </nav>
+
+  <table class="index wide">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Nummer</th>
+        <th>Zeitraum</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for party in parties.items|sort(attribute='starts_at', reverse=True) %}
+      <tr{% if party.is_over %} class="dimmed"{% endif %}>
+        <td>{{ party.id }}</td>
+        <td>
+          <strong><a href="{{ url_for('party_admin.view', id=party.id) }}">{{ party.title }}</a></strong>
+          {%- if party.is_archived %}<br/>{{ render_icon('archived', title='archiviert') }} <em>archiviert</em>{% endif -%}
+        </td>
+        <td class="centered">{{ party.number }}</td>
+        <td>
+          {{- render_datetime(party.starts_at) }} bis<br/>
+          {{- render_datetime(party.ends_at) -}}
+        </td>
+      </tr>
+      {%- endfor %}
+      <tr>
+    </tbody>
+  </table>
+
+  {%- if g.current_user.has_permission(PartyPermission.create) %}
+  <ol class="actions">
+    <li><a href="{{ url_for('.create_form') }}">{{ render_icon('add') }} Party erstellen</a></li>
+  </ol>
+  {%- endif %}
+
+{{ render_pagination_nav(parties, '.index_for_brand', {'brand_id': brand.id}) }}
+
+{%- endblock body %}

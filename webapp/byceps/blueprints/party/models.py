@@ -12,11 +12,17 @@ from datetime import datetime
 
 from sqlalchemy.ext.hybrid import hybrid_property
 
-from ...database import db
+from ...database import BaseQuery, db
 from ...util.datetime import DateTimeRange
 from ...util.instances import ReprBuilder
 
 from ..brand.models import Brand
+
+
+class PartyQuery(BaseQuery):
+
+    def for_brand(self, brand):
+        return self.filter_by(brand_id=brand.id)
 
 
 class Party(db.Model):
@@ -25,6 +31,7 @@ class Party(db.Model):
     __table_args__ = (
         db.UniqueConstraint('brand_id', 'number'),
     )
+    query_class = PartyQuery
 
     id = db.Column(db.Unicode(40), primary_key=True)
     brand_id = db.Column(db.Unicode(20), db.ForeignKey('brands.id'), index=True, nullable=False)
