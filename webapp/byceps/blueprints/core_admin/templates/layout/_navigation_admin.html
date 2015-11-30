@@ -53,10 +53,6 @@
     Navigation('Verschiedenes')
         .add_item('party_admin.index', 'Parties', id='party_admin', required_permission=PartyPermission.list)
         .add_item('snippet_admin.index', 'Snippets', id='snippet_admin', required_permission=SnippetPermission.list)
-        .add_item('news_admin.index', 'News', id='news_admin', required_permission=NewsItemPermission.list)
-        .add_item('terms_admin.index', 'AGB', id='terms_admin', required_permission=TermsPermission.list)
-        .add_item('newsletter_admin.index', 'Newsletter', id='newsletter_admin', required_permission=NewsletterPermission.view_subscriptions)
-        .add_item('board_admin.index', 'Board', id='board_admin', required_permission=BoardCategoryPermission.list),
     ] -%}
 
 
