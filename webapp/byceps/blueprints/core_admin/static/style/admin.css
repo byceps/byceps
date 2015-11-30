@@ -82,11 +82,15 @@ main {
 #header-content {
   align-items: center;
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   padding-bottom: 10px;
   padding-top: 10px;
 }
 
+#header-content .head {
+  margin: 1rem 0;
+}
 .head-brand,
 .head-party {
   font-size: 1.3rem;
@@ -111,10 +115,11 @@ main {
 }
 #header-content nav li {
   border-left: #cccccc solid 1px;
+  border-top: #cccccc solid 1px;
   flex: 1;
   height: 62px;
   line-height: 42px;
-  margin: -10px 0;
+  margin-bottom: -10px;
   text-align: center;
   width: 62px;
 }
@@ -151,6 +156,22 @@ main {
 }
 #current-user .actions {
   margin-left: 0.5rem;
+}
+
+@media (min-width: 960px) {
+  #header-content {
+    flex-direction: row;
+  }
+  #header-content .head {
+    margin: 0;
+  }
+  #header-content nav li {
+    border-top: none;
+    margin-top: -10px;
+  }
+  #current-user {
+    order: 1;
+  }
 }
 
 

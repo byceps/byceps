@@ -14,6 +14,18 @@
     <header id="header">
       <div id="header-content">
 
+        <div id="current-user">
+        {% if g.current_user.is_active %}
+          <span class="intro">Angemeldet als</span>
+          <strong><a href="{{ url_for('user.view_current') }}">{{ render_icon('user') }} {{ g.current_user.screen_name }}</a></strong>
+          <span class="actions inline">
+            <a id="logout" href="{{ url_for('user.logout', _method='POST') }}" title="abmelden">{{ render_icon('log-out') }}</a>
+          </span>
+        {%- else -%}
+          {{ render_icon('log-in') }} <a href="{{ url_for('user.login_form') }}">Anmelden</a>
+        {%- endif %}
+        </div>
+
 {%- with
   current_page = current_page|default,
   brand = current_page_brand|default,
@@ -58,18 +70,6 @@
   {%- endif %}
 
 {%- endwith %}
-
-        <div id="current-user">
-        {% if g.current_user.is_active %}
-          <span class="intro">Angemeldet als</span>
-          <strong><a href="{{ url_for('user.view_current') }}">{{ render_icon('user') }} {{ g.current_user.screen_name }}</a></strong>
-          <span class="actions inline">
-            <a id="logout" href="{{ url_for('user.logout', _method='POST') }}" title="abmelden">{{ render_icon('log-out') }}</a>
-          </span>
-        {%- else -%}
-          {{ render_icon('log-in') }} <a href="{{ url_for('user.login_form') }}">Anmelden</a>
-        {%- endif %}
-        </div>
 
       </div>
     </header>
