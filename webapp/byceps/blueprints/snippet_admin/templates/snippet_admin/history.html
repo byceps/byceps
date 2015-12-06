@@ -23,10 +23,11 @@
         <th></th>
         <th>geändert</th>
         <th>durch</th>
+        <th>Unterschiede</th>
       </tr>
     </thead>
     <tbody>
-      {%- for version in versions %}
+      {%- for version, previous_version in versions_pairwise %}
         <tr>
           <td>
             {%- if version.is_current -%}
@@ -37,6 +38,11 @@
           </td>
           <td class="nowrap"><a href="{{ url_for('.view_version', id=version.id) }}">{{ render_datetime(version.created_at) }}</a></td>
           <td>{{ render_user_admin_link(version.creator) }}</td>
+          <td>
+            {%- if previous_version -%}
+            <a href="{{ url_for('.view_difference', from_version_id=previous_version.id, to_version_id=version.id) }}" title="Änderungen im Vergleich zur vorigen Version anzeigen">Änderungen zeigen</a>
+            {%- endif -%}
+           </td>
         </tr>
       {%- endfor %}
     </tbody>

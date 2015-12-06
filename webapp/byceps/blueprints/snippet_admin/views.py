@@ -8,12 +8,15 @@ byceps.blueprints.snippet_admin.views
 :License: Modified BSD, see LICENSE for details.
 """
 
+from difflib import HtmlDiff
 from operator import attrgetter
 
 from flask import abort, g, render_template, request, url_for
 
 from ...database import db
+from ...util.dateformat import format_datetime_short
 from ...util.framework import create_blueprint, flash_success
+from ...util.iterables import pairwise
 from ...util.templating import templated
 from ...util.views import redirect_to, respond_no_content_with_location
 
@@ -100,14 +103,43 @@ def view_version(id):
                500
 
 
+@blueprint.route('/difference/from/<uuid:from_version_id>/to/<uuid:to_version_id>')
+@permission_required(SnippetPermission.view_history)
+@templated
+def view_difference(from_version_id, to_version_id):
+    """Show the difference between two snippet versions."""
+    from_version = find_version(from_version_id)
+    to_version = find_version(to_version_id)
+
+    # TODO: Diff titles and image paths, too.
+
+    from_lines = from_version.body.split('\n')
+    to_lines = to_version.body.split('\n')
+
+    from_description = format_datetime_short(from_version.created_at)
+    to_description = format_datetime_short(to_version.created_at)
+
+    html_diff = HtmlDiff().make_table(from_lines, to_lines,
+                                      from_description, to_description,
+                                      context=True, numlines=3)
+
+    return {
+        'diff': html_diff,
+    }
+
+
 @blueprint.route('/<uuid:id>/history')
 @permission_required(SnippetPermission.view_history)
 @templated
 def history(id):
     snippet = find_snippet_by_id(id)
+
+    versions = snippet.get_versions()
+    versions_pairwise = list(pairwise(versions + [None]))
+
     return {
         'snippet': snippet,
-        'versions': snippet.get_versions(),
+        'versions_pairwise': versions_pairwise,
     }
 
 

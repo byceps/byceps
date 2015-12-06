@@ -1,0 +1,53 @@
+{% extends 'layout/base_admin.html' %}
+{% set current_page = 'snippet_admin' %}
+{% set current_page_party = party %}
+{% set title = 'Änderungen ansehen' %}
+
+{%- block head %}
+  <style>
+    .difference {
+      display: block;
+      max-width: 920px;
+      overflow-x: auto;
+    }
+    table.diff {
+      border: #cccccc solid 1px;;
+      font-size: 0.9rem;
+    }
+    table.diff tbody {
+      font-family: monospace;
+    }
+    .diff_header {
+      background-color: #e0e0e0;
+      padding-left: 0.5rem;
+    }
+    td.diff_header {
+      text-align: right;
+    }
+    .diff_next {
+      display: none;
+    }
+    .diff_add { 
+      background-color: #88ee88;
+      border-color: #1fd81f;
+    }
+    .diff_chg {
+      background-color: #ffff77;
+      border: #eeee1a solid 1px;
+    }
+    .diff_sub {
+      background-color: #ff9999;
+      border: #ff1a1a solid 1px;
+    }
+  </style>
+{%- endblock head %}
+
+{% block body %}
+
+  <h1>{{ title }}</h1>
+
+  <div class="difference">
+{{ diff|safe }}
+  </div>
+
+{%- endblock body %}
