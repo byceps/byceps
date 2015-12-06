@@ -1,0 +1,14 @@
+{% extends 'layout/base_admin.html' %}
+{% set current_page = 'snippet_admin' %}
+{% set current_page_party = party %}
+{% set title = 'Snippetversion ansehen - Fehler' %}
+
+{% block body %}
+
+  <h1>{{ title }}</h1>
+  <div class="notification-error">
+    <p>Entschuldigung, es ist ein Fehler aufgetreten.</p>
+    <pre>{{ error_message }}</pre>
+  </div>
+
+{%- endblock body %}

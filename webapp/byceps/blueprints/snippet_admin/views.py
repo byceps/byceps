@@ -10,7 +10,7 @@ byceps.blueprints.snippet_admin.views
 
 from operator import attrgetter
 
-from flask import abort, g, request, url_for
+from flask import abort, g, render_template, request, url_for
 
 from ...database import db
 from ...util.framework import create_blueprint, flash_success
@@ -23,7 +23,7 @@ from ..party.models import Party
 from ..snippet.models.mountpoint import Mountpoint
 from ..snippet.models.snippet import CurrentVersionAssociation, Snippet, \
     SnippetVersion
-from ..snippet.templating import render_snippet_as_page
+from ..snippet.templating import get_snippet_context
 
 from .authorization import MountpointPermission, SnippetPermission
 from .forms import MountpointCreateForm, MountpointUpdateForm, \
@@ -75,7 +75,26 @@ def index_for_party(party_id):
 def view_version(id):
     """Show the snippet with the given id."""
     version = find_version(id)
-    return render_snippet_as_page(version)
+
+    try:
+        snippet_context = get_snippet_context(version)
+
+        context = {
+            'party': version.snippet.party,
+            'snippet_title': snippet_context['title'],
+            'snippet_body': snippet_context['body'],
+        }
+
+        return render_template('snippet_admin/view_version.html', **context)
+    except Exception as e:
+        context = {
+            'party': version.snippet.party,
+            'error_message': str(e),
+        }
+
+        return render_template('snippet_admin/view_version_error.html',
+                               **context), \
+               500
 
 
 @blueprint.route('/<uuid:id>/history')
