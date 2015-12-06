@@ -56,13 +56,16 @@ def index():
 def index_for_party(party_id):
     """List snippets for that party."""
     party = Party.query.get_or_404(party_id)
+
     snippets = Snippet.query \
         .for_party(party) \
         .options(
             db.joinedload('current_version_association').joinedload('version')
         ) \
         .all()
+
     mountpoints = Mountpoint.query.for_party(party).all()
+
     return {
         'party': party,
         'snippets': snippets,
@@ -114,7 +117,9 @@ def history(id):
 def create_snippet_form(party_id):
     """Show form to create a snippet."""
     party = Party.query.get_or_404(party_id)
+
     form = SnippetCreateForm()
+
     return {
         'party': party,
         'form': form,
