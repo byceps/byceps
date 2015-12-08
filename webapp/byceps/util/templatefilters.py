@@ -13,6 +13,11 @@ Provide and register custom template filters.
 from . import dateformat, money
 
 
+def dim(value):
+    """Render value in a way so that it looks dimmed."""
+    return '<span class="dimmed">{}</span>'.format(value)
+
+
 def register(app):
     """Make functions available as template filters."""
     functions = [
@@ -24,6 +29,7 @@ def register(app):
         dateformat.format_datetime_short,
         dateformat.format_datetime_long,
         dateformat.format_time,
+        dim,
         money.format_euro_amount,
     ]
 
