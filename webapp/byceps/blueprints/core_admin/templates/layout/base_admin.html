@@ -1,5 +1,6 @@
 {%- from 'macros/admin.html' import render_brand_head, render_party_head %}
 {%- from 'macros/icons.html' import render_icon %}
+{%- from 'macros/user.html' import render_user_avatar %}
 <!DOCTYPE html>
 <html lang="de">
   <head>
@@ -16,11 +17,16 @@
 
         <div id="current-user">
         {% if g.current_user.is_active %}
-          <span class="intro">Angemeldet als</span>
-          <strong><a href="{{ url_for('user.view_current') }}">{{ render_icon('user') }} {{ g.current_user.screen_name }}</a></strong>
-          <span class="actions inline">
-            <a id="logout" href="{{ url_for('user.logout', _method='POST') }}" title="abmelden">{{ render_icon('log-out') }}</a>
-          </span>
+          <div>
+            {{ render_user_avatar(g.current_user) }}
+          </div>
+          <div>
+            <span class="intro">Angemeldet als</span>
+            <strong><a href="{{ url_for('user.view_current') }}">{{ render_icon('user') }} {{ g.current_user.screen_name }}</a></strong>
+            <span class="actions inline">
+              <a id="logout" href="{{ url_for('user.logout', _method='POST') }}" title="abmelden">{{ render_icon('log-out') }}</a>
+            </span>
+          </div>
         {%- else -%}
           {{ render_icon('log-in') }} <a href="{{ url_for('user.login_form') }}">Anmelden</a>
         {%- endif %}

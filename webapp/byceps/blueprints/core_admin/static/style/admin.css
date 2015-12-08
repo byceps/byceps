@@ -142,6 +142,26 @@ main {
 
 #current-user {
   font-size: 0.8rem;
+  display: flex;
+}
+#current-user > div {
+  flex: 1;
+  white-space: nowrap;
+}
+#current-user > div:first-child {
+  margin-right: 10px;
+}
+#current-user .avatar {
+  border: #cccccc solid 1px;
+  border-radius: 50%;
+  display: block;
+  height: 42px;
+  width: 42px;
+}
+#current-user .avatar img {
+  border: none;
+  height: auto;
+  max-width: 100%;
 }
 #current-user .intro {
   display: block;
