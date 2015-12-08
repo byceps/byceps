@@ -20,10 +20,9 @@ from .config import SiteMode
 from .database import db
 from . import email
 from . import redis
-from .util import dateformat
 from .util.framework import load_config, register_blueprint
 from .util.l10n import set_locale
-from .util import money
+from .util import templatefilters
 
 
 BLUEPRINTS = [
@@ -91,8 +90,7 @@ def create_app(environment_name):
 
     register_blueprints(app)
 
-    dateformat.register_template_filters(app)
-    money.register_template_filters(app)
+    templatefilters.register(app)
 
     app.add_url_rule('/content/<path:filename>',
                      endpoint='content_file',

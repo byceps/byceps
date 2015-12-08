@@ -13,18 +13,6 @@ Date/time formatting.
 from datetime import date, datetime, timedelta
 
 
-def register_template_filters(app):
-    """Make functions available as template filters."""
-    app.add_template_filter(format_custom)
-    app.add_template_filter(format_date_iso)
-    app.add_template_filter(format_date_short)
-    app.add_template_filter(format_date_long)
-    app.add_template_filter(format_datetime_iso)
-    app.add_template_filter(format_datetime_short)
-    app.add_template_filter(format_datetime_long)
-    app.add_template_filter(format_time)
-
-
 def format_custom(dt, pattern):
     return dt.strftime(pattern)
 
