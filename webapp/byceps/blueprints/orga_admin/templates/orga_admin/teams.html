@@ -1,6 +1,5 @@
 {% extends 'layout/base_admin.html' %}
 {% from 'macros/icons.html' import render_icon %}
-{% from 'macros/misc.html' import render_dimmed %}
 {% set current_page = 'orga_admin.teams' %}
 {% set title = 'Orgateams' %}
 
@@ -21,9 +20,9 @@
           <strong>{{ party.title }}</strong>
           {%- if party.is_archived %} {{ render_icon('archived', title='archiviert') }}{% endif -%}
           <br>
-          {{- render_dimmed('%d %s'|format(team_count, 'Team' if (team_count == 1) else 'Teams')) }}
+          {{- '%d %s'|format(team_count, 'Team' if (team_count == 1) else 'Teams')|dim }}
           &middot;
-          {{ render_dimmed('%d %s'|format(person_count, 'Person' if (person_count == 1) else 'Personen')) }}
+          {{ '%d %s'|format(person_count, 'Person' if (person_count == 1) else 'Personen')|dim }}
         </div>
       </a>
     </li>

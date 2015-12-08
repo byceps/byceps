@@ -1,5 +1,5 @@
 {% from 'macros/datetime.html' import render_datetime %}
-{% from 'macros/misc.html' import render_dimmed, render_tag %}
+{% from 'macros/misc.html' import render_tag %}
 
 
 {% macro render_article_link(article) -%}
@@ -17,7 +17,7 @@
   {%- elif not range.hasLowerBound() and range.hasUpperBound() -%}
     bis {{ render_datetime(range.upperEndpoint(), smart=False) }}
   {%- else -%}
-    {{ render_dimmed('unbegrenzt') }}
+    {{ 'unbegrenzt'|dim }}
   {%- endif -%}
 {%- endmacro %}
 

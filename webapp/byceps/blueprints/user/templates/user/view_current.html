@@ -1,7 +1,7 @@
 {% extends ('layout/base_admin.html' if g.site_mode.is_admin() else 'layout/base.html') %}
 {% from 'macros/datetime.html' import render_date, render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
-{% from 'macros/misc.html' import render_dimmed, render_with_fallback %}
+{% from 'macros/misc.html' import render_with_fallback %}
 {% from 'macros/user.html' import render_user_avatar %}
 {% set current_page = 'user' %}
 {% set title = 'Deine Daten' %}
@@ -30,7 +30,7 @@
       {%- if user.has_avatar_image -%}
         {{ render_user_avatar(user) }}
       {%- else -%}
-        {{ render_dimmed('nicht hinterlegt') }}
+        {{ 'nicht hinterlegt'|dim }}
       {%- endif -%}
       {%- if g.current_user == user %}
         <ol class="actions" style="display: block; margin: 0.5rem 0 0 0;">
@@ -62,7 +62,7 @@
         {%- if user.detail.date_of_birth -%}
           {{ render_date(user.detail.date_of_birth, smart=False) }}
         {%- else -%}
-          {{ render_dimmed('nicht angegeben') }}
+          {{ 'nicht angegeben'|dim }}
         {%- endif -%}
       </td>
     </tr>
@@ -75,7 +75,7 @@
           {%- if user.detail.city %}{{ user.detail.city }}{% endif -%}
           {%- if user.detail.country %}<br>{{ user.detail.country }}{% endif -%}
         {%- else -%}
-          {{ render_dimmed('nicht angegeben') }}
+          {{ 'nicht angegeben'|dim }}
         {%- endif -%}
       </td>
     </tr>

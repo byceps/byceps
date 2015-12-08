@@ -1,5 +1,4 @@
 {% extends 'layout/base_admin.html' %}
-{% from 'macros/misc.html' import render_dimmed %}
 {% set current_page = 'board_admin' %}
 {% set title = 'Board' %}
 
@@ -17,7 +16,7 @@
     <li>
       <a href="{{ url_for('.index_for_brand', brand_id=brand.id) }}">
         <strong>{{ brand.title }}</strong><br>
-        {{ render_dimmed('%d %s'|format(category_count, 'Kategorie' if (category_count == 1) else 'Kategorien')) }}
+        {{ '%d %s'|format(category_count, 'Kategorie' if (category_count == 1) else 'Kategorien')|dim }}
       </a>
     </li>
     {%- endfor %}

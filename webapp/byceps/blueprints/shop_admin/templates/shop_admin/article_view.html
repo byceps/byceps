@@ -1,6 +1,6 @@
 {% extends 'layout/base_admin.html' %}
 {% from 'macros/icons.html' import render_icon %}
-{% from 'macros/misc.html' import render_dimmed, render_with_fallback %}
+{% from 'macros/misc.html' import render_with_fallback %}
 {% from 'macros/shop_admin.html' import render_article_link, render_article_temporal_availability %}
 {% set current_page = 'shop_admin.articles' %}
 {% set current_page_party = article.party %}
@@ -89,7 +89,7 @@
         {%- endfor %}
         </ol>
         {%- else %}
-        {{ render_dimmed('keine') }}
+        {{ 'keine'|dim }}
         {%- endif %}
       </td>
     </tr>
@@ -106,7 +106,7 @@
         {%- endfor %}
         </table>
         {%- else %}
-        {{ render_dimmed('keine') }}
+        {{ 'keine'|dim }}
         {%- endif %}
       </td>
     </tr>

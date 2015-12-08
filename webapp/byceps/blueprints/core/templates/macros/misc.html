@@ -1,11 +1,6 @@
 {%- from 'macros/icons.html' import render_icon %}
 
 
-{% macro render_dimmed(value) -%}
-  <span class="dimmed">{{ value }}</span>
-{%- endmacro %}
-
-
 {% macro render_notification(category, icon, text, text_is_safe=False) -%}
   <p class="notification-{{ category }}">{{ render_icon(icon) }} {{ text|safe if text_is_safe else text }}</p>
 {%- endmacro %}
@@ -20,6 +15,6 @@
   {%- if value|default('', true)|trim -%}
     {{ value }}
   {%- else -%}
-    {{ render_dimmed(fallback) }}
+    {{ fallback|dim }}
   {%- endif -%}
 {% endmacro %}

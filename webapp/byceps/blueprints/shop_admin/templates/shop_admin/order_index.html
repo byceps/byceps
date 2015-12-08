@@ -1,6 +1,5 @@
 {% extends 'layout/base_admin.html' %}
 {% from 'macros/icons.html' import render_icon %}
-{% from 'macros/misc.html' import render_dimmed %}
 {% set current_page = 'shop_admin.orders' %}
 {% set title = 'Shop - Bestellungen' %}
 
@@ -36,10 +35,10 @@
           <strong>{{ party.title }}</strong>
           {%- if party.is_archived %} {{ render_icon('archived', title='archiviert') }}{% endif -%}
           <br>
-          {{- render_dimmed('%d %s'|format(order_count, 'Bestellung' if (order_count == 1) else 'Bestellungen')) }}
+          {{- '%d %s'|format(order_count, 'Bestellung' if (order_count == 1) else 'Bestellungen')|dim }}
         </div>
         <div class="right">
-          {{ render_dimmed(party.number_prefix) }}
+          {{ party.number_prefix|dim }}
         </div>
       </a>
     </li>

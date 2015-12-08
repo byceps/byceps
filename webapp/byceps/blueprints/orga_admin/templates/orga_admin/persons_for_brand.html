@@ -1,7 +1,7 @@
 {% extends 'layout/base_admin.html' %}
 {% from 'macros/datetime.html' import render_date %}
 {% from 'macros/icons.html' import render_icon %}
-{% from 'macros/misc.html' import render_dimmed, render_with_fallback %}
+{% from 'macros/misc.html' import render_with_fallback %}
 {% from 'macros/user_admin.html' import render_user_admin_link %}
 {% set current_page = 'orga_admin.persons' %}
 {% set title = 'Organisatoren' %}
@@ -44,7 +44,7 @@
             {{- render_date(user.detail.date_of_birth) }}<br/>
             {{- user.detail.age }} Jahre
           {%- else -%}
-            {{ render_dimmed('nicht angegeben') }}
+            {{ 'nicht angegeben'|dim }}
           {%- endif -%}
         </td>
         <td class="nowrap">

@@ -1,6 +1,5 @@
 {% extends 'layout/base_admin.html' %}
 {% from 'macros/icons.html' import render_icon %}
-{% from 'macros/misc.html' import render_dimmed %}
 {% set current_page = 'snippet_admin' %}
 {% set title = 'Snippets' %}
 
@@ -21,7 +20,7 @@
           <strong>{{ party.title }}</strong>
           {%- if party.is_archived %} {{ render_icon('archived', title='archiviert') }}{% endif -%}
           <br>
-          {{- render_dimmed('%d %s'|format(snippet_count, 'Snippet' if (snippet_count == 1) else 'Snippets')) }}
+          {{- '%d %s'|format(snippet_count, 'Snippet' if (snippet_count == 1) else 'Snippets')|dim }}
         </div>
       </a>
     </li>

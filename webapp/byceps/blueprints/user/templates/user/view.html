@@ -1,6 +1,5 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/icons.html' import render_icon %}
-{% from 'macros/misc.html' import render_dimmed %}
 {% from 'macros/seating.html' import render_seating_area_link %}
 {% from 'macros/user.html' import render_user_avatar %}
 {% set current_page = 'user.view' %}
@@ -45,7 +44,7 @@
           {%- endfor %}
         </ol>
         {%- else %}
-          {{- render_dimmed('keine') -}}
+          {{- 'keine'|dim -}}
         {%- endif %}
       </td>
     </tr>
