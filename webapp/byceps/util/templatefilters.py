@@ -10,12 +10,16 @@ Provide and register custom template filters.
 :License: Modified BSD, see LICENSE for details.
 """
 
+from jinja2 import evalcontextfilter, Markup
+
 from . import dateformat, money
 
 
-def dim(value):
+@evalcontextfilter
+def dim(eval_ctx, value):
     """Render value in a way so that it looks dimmed."""
-    return '<span class="dimmed">{}</span>'.format(value)
+    dimmed = '<span class="dimmed">{}</span>'.format(value)
+    return Markup(dimmed) if eval_ctx.autoescape else dimmed
 
 
 def register(app):
