@@ -82,7 +82,7 @@ nav.main a {
   border-color: transparent;
   border-style: solid;
   border-width: 1px 0;
-  color: #333333;
+  color: currentColor;
   display: block;
   font-weight: bold;
   line-height: 1.5;
@@ -110,7 +110,7 @@ nav.main .current a {
   margin-bottom: 0;
 }
 .news-item h1 a {
-  color: #333333;
+  color: currentColor;
   text-decoration: none;
 }
 .news-item h1 a:hover {
