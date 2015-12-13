@@ -70,7 +70,11 @@ def render_snippet_as_partial(name, *, ignore_if_unknown=False):
 
 def render_body(version):
     """Render the snippet version's body as a template."""
-    template = load_template_with_globals(version.body)
+    return _render_template(version.body)
+
+
+def _render_template(source):
+    template = load_template_with_globals(source)
     return template.render()
 
 
