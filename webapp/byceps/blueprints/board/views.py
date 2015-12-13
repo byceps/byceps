@@ -48,7 +48,7 @@ blueprint.add_app_template_filter(render_html, 'bbcode')
 def category_index():
     """List categories."""
     categories = Category.query \
-        .for_current_brand() \
+        .for_brand(g.party.brand) \
         .options(
             db.joinedload(Category.last_posting_updated_by),
         ) \
@@ -62,7 +62,7 @@ def category_index():
 def category_view(slug, page):
     """List latest topics in the category."""
     category = Category.query \
-        .for_current_brand() \
+        .for_brand(g.party.brand) \
         .filter_by(slug=slug) \
         .first_or_404()
 
@@ -277,7 +277,8 @@ def topic_moderate_form(id):
     """Show a form to moderate the topic."""
     topic = Topic.query.get_or_404(id)
 
-    categories = Category.query.for_current_brand() \
+    categories = Category.query \
+        .for_brand(g.party.brand) \
         .filter(Category.id != topic.category_id) \
         .order_by(Category.position) \
         .all()

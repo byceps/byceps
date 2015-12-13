@@ -19,8 +19,8 @@ from ...user.models import User
 
 class CategoryQuery(BaseQuery):
 
-    def for_current_brand(self):
-        return self.filter_by(brand=g.party.brand)
+    def for_brand(self, brand):
+        return self.filter_by(brand=brand)
 
 
 class Category(db.Model):
