@@ -140,6 +140,13 @@ nav.breadcrumbs:not(.compact) li:last-child {
   line-height: 1.2;
   margin-top: 0.5rem;
 }
+nav.breadcrumbs:not(.compact) li:last-child a {
+  color: currentColor;
+  text-decoration: none;
+}
+nav.breadcrumbs:not(.compact) li:last-child a:hover {
+  text-decoration: underline;
+}
 
 
 /* headings */
