@@ -197,7 +197,11 @@ nav.main .current a {
 .board-postings footer {
   font-size: 0.75rem;
   margin-top: 1rem;
+  opacity: 0.5;
   text-align: right;
+}
+.board-postings footer:hover {
+  opacity: 1;
 }
 .board-postings footer p {
   margin: 0;
