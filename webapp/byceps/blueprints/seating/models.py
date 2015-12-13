@@ -25,7 +25,10 @@ Point = namedtuple('Point', ['x', 'y'])
 class AreaQuery(BaseQuery):
 
     def for_current_party(self):
-        return self.filter_by(party_id=g.party.id)
+        return self.for_party(g.party)
+
+    def for_party(self, party):
+        return self.filter_by(party_id=party.id)
 
 
 class Area(db.Model):

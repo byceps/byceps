@@ -1,0 +1,41 @@
+{% extends 'layout/base_admin.html' %}
+{% from 'macros/pagination.html' import render_pagination_nav %}
+{% set current_page = 'seating_admin' %}
+{% set current_page_party = party %}
+{% set title = '%s - Sitzpläne'|format(party.title) %}
+
+{% block body %}
+
+  <nav class="breadcrumbs">
+    <ol>
+      <li>Sitzpläne</li>
+    </ol>
+  </nav>
+
+  <table class="index wide">
+    <thead>
+      <tr>
+        <th>Titel<br>Slug</th>
+        <th>Hintergrundbild<br>Größe</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for area in areas.items %}
+      <tr>
+        <td>
+          {{ area.title }}<br>
+          {{ area.slug|dim }}
+        </td>
+        <td>
+          {{ area.image_filename }}<br>
+          {{ '%d &times; %d Pixel'|format(area.image_width, area.image_height)|dim }}
+        </td>
+      </tr>
+      {%- endfor %}
+      <tr>
+    </tbody>
+  </table>
+
+{{ render_pagination_nav(areas, '.index_for_party', {'party_id': party.id}) }}
+
+{%- endblock body %}

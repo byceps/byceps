@@ -87,6 +87,7 @@ li [class*=" icon-"] {
 .icon-remove::before         { content: "\f00d"; }
 .icon-reply::before          { content: "\f112"; }
 .icon-search::before         { content: "\f002"; }
+.icon-seating-area::before   { content: "\f279"; }
 .icon-shopping-cart::before  { content: "\f07a"; }
 .icon-snippet::before        { content: "\f0c4"; }
 .icon-sorted::before         { content: "\f0dc"; }
