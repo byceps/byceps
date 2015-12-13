@@ -12,8 +12,9 @@ from datetime import datetime
 
 from ...database import db
 
-from .models import LastTopicView, Posting, Topic
+from .models import LastTopicView, Topic
 from .models.category import Category, LastCategoryView
+from .models.posting import Posting
 
 
 # -------------------------------------------------------------------- #
