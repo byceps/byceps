@@ -40,7 +40,7 @@ def render_snippet_as_page(version):
 
 def get_snippet_context(version):
     """Return the snippet context to insert into the outer template."""
-    template = load_template_with_globals(version.body)
+    template = _load_template_with_globals(version.body)
 
     current_page = get_variable_value(template, 'current_page')
     title = version.title
@@ -69,11 +69,11 @@ def render_snippet_as_partial(name, *, ignore_if_unknown=False):
 
 
 def _render_template(source):
-    template = load_template_with_globals(source)
+    template = _load_template_with_globals(source)
     return template.render()
 
 
-def load_template_with_globals(source):
+def _load_template_with_globals(source):
     globals = {
         'render_snippet': render_snippet_as_partial,
         'url_for': url_for,
