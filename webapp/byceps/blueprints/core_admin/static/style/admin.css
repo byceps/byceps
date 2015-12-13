@@ -118,7 +118,7 @@ main {
   border-right: #cccccc solid 1px;
 }
 #header-content nav a {
-  color: #333333;
+  color: currentColor;
   display: block;
   height: 100%;
   padding: 10px 1rem;
@@ -160,7 +160,7 @@ main {
   font-size: 1.2rem;
 }
 #current-user a {
-  color: #333333;
+  color: currentColor;
   text-decoration: none;
 }
 #current-user .actions {
@@ -222,7 +222,7 @@ nav.main a {
   border-color: transparent;
   border-style: solid;
   border-width: 1px 0;
-  color: #333333;
+  color: currentColor;
   display: block;
   font-size: 0.95rem;
   font-weight: normal;
@@ -270,7 +270,7 @@ ol.index.fully-linked li {
   padding: 0;
 }
 ol.index.fully-linked a {
-  color: #333333;
+  color: currentColor;
   display: block;
   margin: 0 -40px;
   padding: 0.35rem 40px;
