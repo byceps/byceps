@@ -19,6 +19,7 @@ from ..party.models import Party
 from ..seating.models import Area
 
 from .authorization import SeatingPermission
+from . import service
 
 
 blueprint = create_blueprint('seating_admin', __name__)
@@ -43,7 +44,10 @@ def index_for_party(party_id, page):
 
     areas = query.paginate(page, per_page)
 
+    seat_total_per_area = service.get_seat_total_per_area(party)
+
     return {
         'party': party,
         'areas': areas,
+        'seat_total_per_area': seat_total_per_area,
     }

@@ -299,6 +299,9 @@ td {
   text-align: left;
   vertical-align: top;
 }
+td.number {
+  text-align: right;
+}
 
 table.index th,
 table.index td {
