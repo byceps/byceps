@@ -112,7 +112,9 @@ def topic_view(id, page):
 
     postings_per_page = int(current_app.config['BOARD_POSTINGS_PER_PAGE'])
     if page == 0:
-        posting = topic.get_default_posting_to_jump_to(last_viewed_at)
+        posting = service.find_default_posting_to_jump_to(topic, g.current_user,
+                                                          last_viewed_at)
+
         if posting is None:
             page = 1
         else:

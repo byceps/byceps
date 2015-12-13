@@ -131,33 +131,6 @@ class Topic(db.Model):
         else:
             return full_page_count
 
-    def get_default_posting_to_jump_to(self, last_viewed_at):
-        """Return the posting to show by default."""
-        if g.current_user.is_anonymous:
-            # All postings are potentially new to a guest, so start on
-            # the first page.
-            return None
-
-        if last_viewed_at is None:
-            # This topic is completely new to the current user, so
-            # start on the first page.
-            return None
-
-        first_new_posting_query = Posting.query \
-            .for_topic(self) \
-            .only_visible_for_current_user() \
-            .earliest_to_latest()
-
-        first_new_posting = first_new_posting_query \
-            .filter(Posting.created_at > last_viewed_at) \
-            .first()
-
-        if first_new_posting is None:
-            # Current user has seen all postings so far, so show the last one.
-            return first_new_posting_query.first()
-
-        return first_new_posting
-
     @property
     def anchor(self):
         """Return the URL anchor for this topic."""
