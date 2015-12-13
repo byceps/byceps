@@ -10,8 +10,6 @@ byceps.blueprints.board.service
 
 from datetime import datetime
 
-from flask import g
-
 from ...database import db
 
 from .models import LastTopicView, Posting, Topic
@@ -76,12 +74,12 @@ def create_topic(category, creator, title, body):
     return topic
 
 
-def update_topic(topic, title, body):
+def update_topic(topic, editor, title, body):
     """Update the topic (and its initial posting)."""
     topic.title = title.strip()
 
     posting = topic.get_body_posting()
-    update_posting(posting, body, commit=False)
+    update_posting(posting, editor, body, commit=False)
 
     db.session.commit()
 
@@ -147,11 +145,11 @@ def create_posting(topic, creator, body):
     return posting
 
 
-def update_posting(posting, body, *, commit=True):
+def update_posting(posting, editor, body, *, commit=True):
     """Update the posting."""
     posting.body = body.strip()
     posting.last_edited_at = datetime.now()
-    posting.last_edited_by = g.current_user
+    posting.last_edited_by = editor
     posting.edit_count += 1
 
     if commit:
