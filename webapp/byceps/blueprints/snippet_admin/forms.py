@@ -26,6 +26,7 @@ class MountpointUpdateForm(MountpointCreateForm):
 class SnippetCreateForm(LocalizedForm):
     name = StringField('Bezeichner')
     title = StringField('Titel')
+    head = TextAreaField('Seitenkopf')
     body = TextAreaField('Text')
     image_url_path = StringField('Bild-URL-Pfad')
 

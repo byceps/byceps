@@ -44,11 +44,13 @@ def get_snippet_context(version):
 
     current_page = get_variable_value(template, 'current_page')
     title = version.title
+    head = _render_template(version.head) if version.head else None
     body = template.render()
 
     return {
         'title': title,
         'current_page': current_page,
+        'head': head,
         'body': body,
     }
 

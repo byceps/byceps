@@ -19,6 +19,7 @@
     {% call form_fieldset() %}
       {{ form_field(form.name, maxlength=40, required='required', readonly='readonly', autofocus='autofocus') }}
       {{ form_field(form.title, maxlength=80, required='required') }}
+      {{ form_field(form.head, class='monospace wide') }}
       {{ form_field(form.body, required='required', class='monospace wide') }}
       {{ form_field(form.image_url_path, maxlength=80) }}
     {% endcall %}

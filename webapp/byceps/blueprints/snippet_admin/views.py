@@ -88,6 +88,7 @@ def view_version(id):
         context = {
             'party': version.snippet.party,
             'snippet_title': snippet_context['title'],
+            'snippet_head': snippet_context['head'],
             'snippet_body': snippet_context['body'],
         }
 
@@ -111,7 +112,7 @@ def view_difference(from_version_id, to_version_id):
     from_version = find_version(from_version_id)
     to_version = find_version(to_version_id)
 
-    # TODO: Diff titles and image paths, too.
+    # TODO: Diff title, head, and image path, too.
 
     from_lines = from_version.body.split('\n')
     to_lines = to_version.body.split('\n')
@@ -174,6 +175,7 @@ def create_snippet(party_id):
         snippet=snippet,
         creator=g.current_user,
         title=form.title.data.strip(),
+        head=form.head.data.strip(),
         body=form.body.data.strip(),
         image_url_path=form.image_url_path.data.strip())
     db.session.add(version)
@@ -219,6 +221,7 @@ def update_snippet(id):
         snippet=snippet,
         creator=g.current_user,
         title=form.title.data.strip(),
+        head=form.head.data.strip(),
         body=form.body.data.strip(),
         image_url_path=form.image_url_path.data.strip())
     db.session.add(version)

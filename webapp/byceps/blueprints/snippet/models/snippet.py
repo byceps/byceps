@@ -75,7 +75,8 @@ class SnippetVersion(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.now, nullable=False)
     creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
     creator = db.relationship(User)
-    title = db.Column(db.Unicode(80))
+    title = db.Column(db.Unicode(80), nullable=True)
+    head = db.Column(db.UnicodeText, nullable=True)
     body = db.Column(db.UnicodeText, nullable=False)
     image_url_path = db.Column(db.Unicode(80), nullable=True)
 

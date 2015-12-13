@@ -3,6 +3,12 @@
 {% set current_page_party = party %}
 {% set title = 'Snippetversion ansehen' %}
 
+{% block head %}
+  {%- if snippet_head %}
+{{ snippet_head|safe }}
+  {%- endif -%}
+{% endblock %}
+
 {% block body %}
 
   <h1>{{ snippet_title }}</h1>
