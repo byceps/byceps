@@ -45,13 +45,13 @@ class Area(db.Model):
     query_class = AreaQuery
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    party_id = db.Column(db.Unicode(20), db.ForeignKey('parties.id'))
+    party_id = db.Column(db.Unicode(20), db.ForeignKey('parties.id'), index=True, nullable=False)
     party = db.relationship(Party, backref='seating_areas')
-    slug = db.Column(db.Unicode(40))
-    title = db.Column(db.Unicode(40))
-    image_filename = db.Column(db.Unicode(40))
-    image_width = db.Column(db.Integer)
-    image_height = db.Column(db.Integer)
+    slug = db.Column(db.Unicode(40), nullable=False)
+    title = db.Column(db.Unicode(40), nullable=False)
+    image_filename = db.Column(db.Unicode(40), nullable=True)
+    image_width = db.Column(db.Integer, nullable=True)
+    image_height = db.Column(db.Integer, nullable=True)
 
     def __repr__(self):
         return ReprBuilder(self) \
@@ -78,9 +78,9 @@ class Category(db.Model):
     query_class = CategoryQuery
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    party_id = db.Column(db.Unicode(20), db.ForeignKey('parties.id'))
+    party_id = db.Column(db.Unicode(20), db.ForeignKey('parties.id'), index=True, nullable=False)
     party = db.relationship(Party, backref='seat_categories')
-    title = db.Column(db.Unicode(40))
+    title = db.Column(db.Unicode(40), nullable=False)
 
     def __repr__(self):
         return ReprBuilder(self) \
@@ -95,11 +95,11 @@ class Seat(db.Model):
     __tablename__ = 'seats'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    area_id = db.Column(db.Uuid, db.ForeignKey('seating_areas.id'))
+    area_id = db.Column(db.Uuid, db.ForeignKey('seating_areas.id'), index=True, nullable=False)
     area = db.relationship(Area, backref='seats')
-    coord_x = db.Column(db.Integer)
-    coord_y = db.Column(db.Integer)
-    category_id = db.Column(db.Uuid, db.ForeignKey('seat_categories.id'))
+    coord_x = db.Column(db.Integer, nullable=False)
+    coord_y = db.Column(db.Integer, nullable=False)
+    category_id = db.Column(db.Uuid, db.ForeignKey('seat_categories.id'), index=True, nullable=False)
     category = db.relationship(Category, backref='seats')
 
     @hybrid_property
