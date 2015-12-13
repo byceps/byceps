@@ -28,7 +28,9 @@
             </span>
           </div>
         {%- else -%}
-          {{ render_icon('log-in') }} <a href="{{ url_for('user.login_form') }}">Anmelden</a>
+          <div>
+            {{ render_icon('log-in') }} <a href="{{ url_for('user.login_form') }}">Anmelden</a>
+          </div>
         {%- endif %}
         </div>
 

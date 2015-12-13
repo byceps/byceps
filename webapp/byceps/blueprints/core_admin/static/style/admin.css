@@ -148,14 +148,12 @@ main {
   flex: 1;
   white-space: nowrap;
 }
-#current-user > div:first-child {
-  margin-right: 10px;
-}
 #current-user .avatar {
   border: #cccccc solid 1px;
   border-radius: 50%;
   display: block;
   height: 42px;
+  margin-right: 10px;
   width: 42px;
 }
 #current-user .avatar img {
