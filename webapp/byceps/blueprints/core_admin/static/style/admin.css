@@ -89,23 +89,14 @@ main {
 }
 
 #header-content .head {
-  margin: 1rem 0;
-}
-.head-brand,
-.head-party {
   font-size: 1.3rem;
+  font-weight: bold;
   margin: auto 0;
 }
-.head-party .brand,
-.head-party .party {
-  font-weight: bold;
-}
-.head-brand a,
-.head-party a {
+#header-content .head a {
   text-decoration: none;
 }
-.head-brand a:hover,
-.head-party a:hover {
+#header-content .head a:hover {
   text-decoration: underline;
 }
 
