@@ -34,9 +34,10 @@
   <div class="body">
 {{ posting.body|bbcode|safe }}
   </div>
-  {%- if posting.edit_count %}
   <footer>
+    {%- if posting.edit_count %}
     <p>{{ posting.edit_count }} mal bearbeitet, zuletzt: {{ render_datetime(posting.last_edited_at) }} von {{ render_user_link(posting.last_edited_by) }}</p>
+    {%- endif %}
+    <p>{{ render_icon('bookmark') }} <a href="{{ posting.external_url }}">Permalink</a></p>
   </footer>
-  {%- endif %}
 </article>

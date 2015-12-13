@@ -43,6 +43,7 @@ li [class*=" icon-"] {
 .icon-attached::before       { content: "\f0c6"; }
 .icon-birthday::before       { content: "\f1fd"; }
 .icon-board::before          { content: "\f086"; }
+.icon-bookmark::before       { content: "\f02e"; }
 .icon-bullhorn::before       { content: "\f0a1"; }
 .icon-cost::before           { content: "\f153"; }
 .icon-date::before           { content: "\f073"; }
