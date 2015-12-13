@@ -20,7 +20,7 @@ from ..user.models import User
 class TimeSlotQuery(BaseQuery):
 
     def for_party(self, party):
-        return self.filter_by(party=party)
+        return self.filter_by(party_id=party.id)
 
 
 class TimeSlot(db.Model):

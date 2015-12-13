@@ -26,7 +26,7 @@ class TicketQuery(BaseQuery):
         return self.for_party(g.party)
 
     def for_party(self, party):
-        return self.join(Category).filter_by(party=party)
+        return self.join(Category).filter_by(party_id=party.id)
 
 
 class Ticket(db.Model):
