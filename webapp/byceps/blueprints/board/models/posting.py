@@ -20,7 +20,7 @@ from ...user.models import User
 
 from ..authorization import BoardPostingPermission
 
-from . import Topic
+from .topic import Topic
 
 
 class PostingQuery(BaseQuery):
