@@ -4,6 +4,16 @@
 {% set current_page_party = party %}
 {% set title = '%s - Sitzpläne'|format(party.title) %}
 
+{% block head %}
+  <style>
+    .columns {
+      -moz-columns: 4;
+      -webkit-columns: 4;
+      columns: 4;
+    }
+  </style>
+{% endblock %}
+
 {% block body %}
 
   <nav class="breadcrumbs">
@@ -39,5 +49,14 @@
   </table>
 
 {{ render_pagination_nav(areas, '.index_for_party', {'party_id': party.id}) }}
+
+  <h2>Sitzplatz-Kategorien</h2>
+  <div class="columns">
+    <ol class="index style="width: auto;">
+      {%- for category in categories %}
+      <li>{{ category.title }}</li>
+      {%- endfor %}
+    </ol>
+  </div>
 
 {%- endblock body %}

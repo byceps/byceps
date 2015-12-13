@@ -16,7 +16,7 @@ from ...util.templating import templated
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 from ..party.models import Party
-from ..seating.models import Area
+from ..seating.models import Area, Category
 
 from .authorization import SeatingPermission
 from . import service
@@ -46,8 +46,11 @@ def index_for_party(party_id, page):
 
     seat_total_per_area = service.get_seat_total_per_area(party)
 
+    categories = Category.query.for_party(party).all()
+
     return {
         'party': party,
         'areas': areas,
         'seat_total_per_area': seat_total_per_area,
+        'categories': categories,
     }

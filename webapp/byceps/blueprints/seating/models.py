@@ -61,6 +61,12 @@ class Area(db.Model):
             .build()
 
 
+class CategoryQuery(BaseQuery):
+
+    def for_party(self, party):
+        return self.filter_by(party_id=party.id)
+
+
 class Category(db.Model):
     """A seat's category which may (indirectly) indicate its price and
     features.
@@ -69,6 +75,7 @@ class Category(db.Model):
     __table_args__ = (
         db.UniqueConstraint('party_id', 'title'),
     )
+    query_class = CategoryQuery
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     party_id = db.Column(db.Unicode(20), db.ForeignKey('parties.id'))
