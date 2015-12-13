@@ -11,7 +11,7 @@ byceps.blueprints.board_admin.service
 from ...database import db
 
 from ..brand.models import Brand
-from ..board.models import Category
+from ..board.models.category import Category
 
 
 def get_brands_with_category_counts():

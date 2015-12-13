@@ -14,7 +14,8 @@ from flask import g
 
 from ...database import db
 
-from .models import Category, LastCategoryView, LastTopicView, Posting, Topic
+from .models import LastTopicView, Posting, Topic
+from .models.category import Category, LastCategoryView
 
 
 # -------------------------------------------------------------------- #

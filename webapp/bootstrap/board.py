@@ -8,7 +8,7 @@ bootstrap.board
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.blueprints.board.models import Category
+from byceps.blueprints.board.models.category import Category
 from byceps.blueprints.board import service
 
 

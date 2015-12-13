@@ -23,7 +23,8 @@ from .authorization import BoardPostingPermission, BoardTopicPermission
 from .formatting import get_smileys, render_html
 from .forms import PostingCreateForm, PostingUpdateForm, TopicCreateForm, \
     TopicUpdateForm
-from .models import Category, Posting, Topic
+from .models import Posting, Topic
+from .models.category import Category
 from . import service
 from . import signals
 

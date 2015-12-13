@@ -18,7 +18,7 @@ from ...util.views import redirect_to
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 from ..brand.models import Brand
-from ..board.models import Category
+from ..board.models.category import Category
 from ..board import service as board_service
 
 from .authorization import BoardCategoryPermission

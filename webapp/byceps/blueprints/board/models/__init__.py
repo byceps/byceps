@@ -12,80 +12,15 @@ from datetime import datetime
 
 from flask import current_app, g, url_for
 
-from ...database import BaseQuery, db, generate_uuid
-from ...util.instances import ReprBuilder
-from ...util.iterables import index_of
+from ....database import BaseQuery, db, generate_uuid
+from ....util.instances import ReprBuilder
+from ....util.iterables import index_of
 
-from ..brand.models import Brand
-from ..user.models import User
+from ...user.models import User
 
-from .authorization import BoardPostingPermission, BoardTopicPermission
+from ..authorization import BoardPostingPermission, BoardTopicPermission
 
-
-class CategoryQuery(BaseQuery):
-
-    def for_current_brand(self):
-        return self.filter_by(brand=g.party.brand)
-
-
-class Category(db.Model):
-    """A category for topics."""
-    __tablename__ = 'board_categories'
-    __table_args__ = (
-        db.UniqueConstraint('brand_id', 'position'),
-        db.UniqueConstraint('brand_id', 'slug'),
-        db.UniqueConstraint('brand_id', 'title'),
-    )
-    query_class = CategoryQuery
-
-    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    brand_id = db.Column(db.Unicode(20), db.ForeignKey('brands.id'), index=True, nullable=False)
-    brand = db.relationship(Brand)
-    position = db.Column(db.Integer, nullable=False)
-    slug = db.Column(db.Unicode(40), nullable=False)
-    title = db.Column(db.Unicode(40), nullable=False)
-    description = db.Column(db.Unicode(80))
-    topic_count = db.Column(db.Integer, default=0, nullable=False)
-    posting_count = db.Column(db.Integer, default=0, nullable=False)
-    last_posting_updated_at = db.Column(db.DateTime)
-    last_posting_updated_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
-    last_posting_updated_by = db.relationship(User)
-
-    def __init__(self, brand, position, slug, title, description):
-        self.brand = brand
-        self.position = position
-        self.slug = slug
-        self.title = title
-        self.description = description
-
-    def contains_unseen_postings(self):
-        """Return `True` if the category contains postings created after
-        the last time the current user viewed it.
-        """
-        # Don't display as new to a guest.
-        if g.current_user.is_anonymous:
-            return False
-
-        if self.last_posting_updated_at is None:
-            return False
-
-        last_view = LastCategoryView.find(g.current_user, self)
-
-        if last_view is None:
-            return True
-
-        return self.last_posting_updated_at > last_view.occured_at
-
-    def __eq__(self, other):
-        return self.id == other.id
-
-    def __repr__(self):
-        return ReprBuilder(self) \
-            .add_with_lookup('id') \
-            .add_with_lookup('brand') \
-            .add_with_lookup('slug') \
-            .add_with_lookup('title') \
-            .build()
+from .category import Category
 
 
 class TopicQuery(BaseQuery):
@@ -390,35 +325,6 @@ class Posting(db.Model):
             builder.add_custom('hidden by {}'.format(self.hidden_by.screen_name))
 
         return builder.build()
-
-
-class LastCategoryView(db.Model):
-    """The last time a user looked into specific category."""
-    __tablename__ = 'board_categories_lastviews'
-
-    user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
-    user = db.relationship(User, foreign_keys=[user_id])
-    category_id = db.Column(db.Uuid, db.ForeignKey('board_categories.id'), primary_key=True)
-    category = db.relationship(Category)
-    occured_at = db.Column(db.DateTime, nullable=False)
-
-    def __init__(self, user, category):
-        self.user = user
-        self.category = category
-
-    @classmethod
-    def find(cls, user, category):
-        if user.is_anonymous:
-            return
-
-        return cls.query.filter_by(user=user, category=category).first()
-
-    def __repr__(self):
-        return ReprBuilder(self) \
-            .add('user', self.user.screen_name) \
-            .add('category', self.category.title) \
-            .add_with_lookup('occured_at') \
-            .build()
 
 
 class LastTopicView(db.Model):
