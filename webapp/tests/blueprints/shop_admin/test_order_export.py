@@ -16,7 +16,8 @@ from byceps.blueprints.shop_admin.authorization import ShopOrderPermission
 
 from testfixtures.brand import create_brand
 from testfixtures.party import create_party
-from testfixtures.shop import create_article, create_order
+from testfixtures.shop import create_article, create_order, \
+    create_party_sequence_prefix
 from testfixtures.user import create_user_with_detail
 
 from tests.base import AbstractAppTestCase
@@ -44,6 +45,11 @@ class ExportTestCase(AbstractAppTestCase):
             number=8,
             title='LANresort 2015')
         self.db.session.add(self.party)
+
+        prefix = create_party_sequence_prefix(self.party,
+                                              article_number_prefix='LR-08-A',
+                                              order_number_prefix='LR-08-B')
+        self.db.session.add(prefix)
 
         self.db.session.commit()
 

@@ -11,7 +11,8 @@ from byceps.blueprints.shop.service import generate_article_number, \
 
 from testfixtures.brand import create_brand
 from testfixtures.party import create_party
-from testfixtures.shop import create_party_sequence
+from testfixtures.shop import create_party_sequence, \
+    create_party_sequence_prefix
 
 from tests.base import AbstractAppTestCase
 
@@ -19,6 +20,8 @@ from tests.base import AbstractAppTestCase
 class SerialNumberGenerationTestCase(AbstractAppTestCase):
 
     def test_generate_article_number_default(self):
+        create_party_sequence_prefix(self.party,
+                                     article_number_prefix='AEC-01-A')
         self.set_article_number_sequence()
 
         actual = generate_article_number(self.party)
@@ -28,8 +31,9 @@ class SerialNumberGenerationTestCase(AbstractAppTestCase):
     def test_generate_article_number_custom(self):
         last_assigned_article_serial_number = 41
 
-        brand = create_brand(code='XYZ')
-        party = create_party(brand=brand, number=9)
+        brand = create_brand()
+        party = create_party(brand=brand)
+        create_party_sequence_prefix(party, article_number_prefix='XYZ-09-A')
         self.set_article_number_sequence(value=last_assigned_article_serial_number)
 
         actual = generate_article_number(party)
@@ -37,6 +41,7 @@ class SerialNumberGenerationTestCase(AbstractAppTestCase):
         self.assertEqual(actual, 'XYZ-09-A00042')
 
     def test_generate_order_number_default(self):
+        create_party_sequence_prefix(self.party, order_number_prefix='AEC-01-B')
         self.set_order_number_sequence()
 
         actual = generate_order_number(self.party)
@@ -46,8 +51,9 @@ class SerialNumberGenerationTestCase(AbstractAppTestCase):
     def test_generate_order_number_custom(self):
         last_assigned_order_serial_number = 206
 
-        brand = create_brand(code='LOL')
-        party = create_party(brand=brand, number=3)
+        brand = create_brand()
+        party = create_party(brand=brand)
+        create_party_sequence_prefix(party, order_number_prefix='LOL-03-B')
         self.set_order_number_sequence(value=last_assigned_order_serial_number)
 
         actual = generate_order_number(party)

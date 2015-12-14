@@ -63,18 +63,22 @@ def _add_attached_articles(compilation, attached_articles):
 
 def generate_article_number(party):
     """Generate and reserve an unused, unique article number for this party."""
+    prefix = party.shop_number_prefix.article_number
+
     article_serial_number = _get_next_serial_number(party,
                                                     PartySequencePurpose.article)
 
-    return '{}-A{:05d}'.format(party.number_prefix, article_serial_number)
+    return '{}{:05d}'.format(prefix, article_serial_number)
 
 
 def generate_order_number(party):
     """Generate and reserve an unused, unique order number for this party."""
+    prefix = party.shop_number_prefix.order_number
+
     order_serial_number = _get_next_serial_number(party,
                                                   PartySequencePurpose.order)
 
-    return '{}-B{:05d}'.format(party.number_prefix, order_serial_number)
+    return '{}{:05d}'.format(prefix, order_serial_number)
 
 
 def _get_next_serial_number(party, purpose):

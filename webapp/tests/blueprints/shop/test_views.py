@@ -13,7 +13,8 @@ from byceps.blueprints.shop.models.sequence import PartySequencePurpose
 from byceps.blueprints.snippet.models.snippet import Snippet
 from byceps.blueprints.user.models import User
 
-from testfixtures.shop import create_article, create_party_sequence
+from testfixtures.shop import create_article, create_party_sequence, \
+    create_party_sequence_prefix
 from testfixtures.user import create_user
 
 from tests.base import AbstractAppTestCase
@@ -27,14 +28,19 @@ class ShopTestCase(AbstractAppTestCase):
         self.app.add_url_rule('/shop/order_placed', 'snippet.order_placed',
                               lambda: None)
 
-        self.setup_order_number_sequence()
+        self.setup_order_number_prefix_and_sequence()
         self.setup_orderer()
 
-    def setup_order_number_sequence(self):
+    def setup_order_number_prefix_and_sequence(self):
+        prefix = create_party_sequence_prefix(self.party,
+                                              order_number_prefix='AEC-01-B')
+        self.db.session.add(prefix)
+
         sequence = create_party_sequence(self.party,
                                          PartySequencePurpose.order,
                                          value=4)
         self.db.session.add(sequence)
+
         self.db.session.commit()
 
     def setup_orderer(self):

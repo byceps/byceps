@@ -12,7 +12,8 @@ from decimal import Decimal
 
 from byceps.blueprints.shop.models.article import Article
 from byceps.blueprints.shop.models.order import Order
-from byceps.blueprints.shop.models.sequence import PartySequence
+from byceps.blueprints.shop.models.sequence import PartySequence, \
+    PartySequencePrefix
 
 from .party import create_party
 
@@ -23,8 +24,11 @@ def create_article(*, party=None, serial_number=1, description='Cool thing',
     if party is None:
         party = create_party()
 
-    item_number = '{}-{:02d}-A{:05d}'.format(
-        party.brand.code, party.number, serial_number)
+    prefix = party.shop_number_prefix
+    if prefix is None:
+        prefix = create_party_sequence_prefix(party)
+
+    item_number = '{}{:05d}'.format(prefix.article_number, serial_number)
 
     if price is None:
         price = Decimal('24.95')
@@ -47,8 +51,11 @@ def create_order(placed_by, *, party=None, serial_number=1):
     if party is None:
         party = create_party()
 
-    order_number = '{}-{:02d}-B{:05d}'.format(
-        party.brand.code, party.number, serial_number)
+    prefix = party.shop_number_prefix
+    if prefix is None:
+        prefix = create_party_sequence_prefix(party)
+
+    order_number = '{}{:05d}'.format(prefix.order_number, serial_number)
 
     return Order(
         party=party,

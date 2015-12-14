@@ -37,8 +37,8 @@
           <br>
           {{- '%d Artikel'|format(article_count)|dim }}
         </div>
-        <div class="right">
-          {{ party.number_prefix|dim }}
+        <div class="number">
+          {{- (party.shop_number_prefix.article_number if party.shop_number_prefix is not none else 'nicht festgelegt')|dim -}}
         </div>
       </a>
     </li>
