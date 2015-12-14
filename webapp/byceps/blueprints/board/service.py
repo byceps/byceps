@@ -13,7 +13,7 @@ from datetime import datetime
 from ...database import db
 
 from .models.category import Category, LastCategoryView
-from .models.posting import Posting
+from .models.posting import InitialTopicPostingAssociation, Posting
 from .models.topic import LastTopicView, Topic
 
 
@@ -65,9 +65,11 @@ def create_topic(category, creator, title, body):
     """Create a topic with an initial posting in that category."""
     topic = Topic(category, creator, title)
     posting = Posting(topic, creator, body)
+    initial_topic_posting_association = InitialTopicPostingAssociation(topic, posting)
 
     db.session.add(topic)
     db.session.add(posting)
+    db.session.add(initial_topic_posting_association)
     db.session.commit()
 
     aggregate_topic(topic)

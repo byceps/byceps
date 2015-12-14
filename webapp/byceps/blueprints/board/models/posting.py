@@ -133,3 +133,16 @@ class Posting(db.Model):
             builder.add_custom('hidden by {}'.format(self.hidden_by.screen_name))
 
         return builder.build()
+
+
+class InitialTopicPostingAssociation(db.Model):
+    __tablename__ = 'board_initial_topic_postings'
+
+    topic_id = db.Column(db.Uuid, db.ForeignKey('board_topics.id'), primary_key=True)
+    topic = db.relationship(Topic, backref=db.backref('initial_topic_posting_association', uselist=False))
+    posting_id = db.Column(db.Uuid, db.ForeignKey('board_postings.id'), unique=True, nullable=False)
+    posting = db.relationship(Posting)
+
+    def __init__(self, topic, posting):
+        self.topic = topic
+        self.posting = posting
