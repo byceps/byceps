@@ -53,6 +53,11 @@ class Area(db.Model):
     image_width = db.Column(db.Integer, nullable=True)
     image_height = db.Column(db.Integer, nullable=True)
 
+    def __init__(self, party, slug, title):
+        self.party = party
+        self.slug = slug
+        self.title = title
+
     def __repr__(self):
         return ReprBuilder(self) \
             .add_with_lookup('id') \
@@ -82,6 +87,10 @@ class Category(db.Model):
     party = db.relationship(Party, backref='seat_categories')
     title = db.Column(db.Unicode(40), nullable=False)
 
+    def __init__(self, party, title):
+        self.party = party
+        self.title = title
+
     def __repr__(self):
         return ReprBuilder(self) \
             .add_with_lookup('id') \
@@ -101,6 +110,12 @@ class Seat(db.Model):
     coord_y = db.Column(db.Integer, nullable=False)
     category_id = db.Column(db.Uuid, db.ForeignKey('seat_categories.id'), index=True, nullable=False)
     category = db.relationship(Category, backref='seats')
+
+    def __init__(self, area, category, *, coord_x=0, coord_y=0):
+        self.area = area
+        self.coord_x = coord_x
+        self.coord_y = coord_y
+        self.category = category
 
     @hybrid_property
     def coords(self):

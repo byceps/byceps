@@ -13,7 +13,7 @@ from byceps.blueprints.orga.models import OrgaFlag, OrgaTeam, \
     Membership as OrgaTeamMembership
 from byceps.blueprints.party.models import Party
 from byceps.blueprints.seating.models import Area as SeatingArea, \
-    Category as SeatingCategory, Point, Seat
+    Category as SeatingCategory, Seat
 from byceps.blueprints.snippet.models.mountpoint import \
     Mountpoint as SnippetMountpoint
 from byceps.blueprints.snippet.models.snippet import Snippet, SnippetVersion
@@ -133,17 +133,15 @@ def create_terms_version(brand, creator, body):
 
 
 @add_to_database
-def create_seating_area(party, slug, title, **kwargs):
-    return SeatingArea(party=party, slug=slug, title=title, **kwargs)
+def create_seating_area(party, slug, title):
+    return SeatingArea(party, slug, title)
 
 
 @add_to_database
 def create_seat_category(party, title):
-    return SeatingCategory(party=party, title=title)
+    return SeatingCategory(party, title)
 
 
 @add_to_database
 def create_seat(area, coord_x, coord_y, category):
-    seat = Seat(area=area, category=category)
-    seat.coords = Point(x=coord_x, y=coord_y)
-    return seat
+    return Seat(area, category, coord_x=coord_x, coord_y=coord_y)
