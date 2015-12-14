@@ -58,6 +58,11 @@ class Area(db.Model):
         self.slug = slug
         self.title = title
 
+    def set_image(self, filename, width, height):
+        self.image_filename = filename
+        self.image_width = width
+        self.image_height = height
+
     def __repr__(self):
         return ReprBuilder(self) \
             .add_with_lookup('id') \
