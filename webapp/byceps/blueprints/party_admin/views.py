@@ -103,12 +103,11 @@ def create():
         return create_form(form)
 
     id = form.id.data.strip().lower()
-    number = form.number.data
     title = form.title.data.strip()
     starts_at = form.starts_at.data
     ends_at = form.ends_at.data
 
-    party = Party(id, brand, number, title, starts_at, ends_at)
+    party = Party(id, brand, title, starts_at, ends_at)
     db.session.add(party)
     db.session.commit()
 

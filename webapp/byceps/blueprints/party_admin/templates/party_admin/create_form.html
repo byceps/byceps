@@ -17,7 +17,6 @@
     {% call form_fieldset() %}
       {{ form_field(form.brand_id, required='required', autofocus='autofocus') }}
       {{ form_field(form.id, maxlength=40, required='required') }}
-      {{ form_field(form.number, type='number', min=0, max=99, required='required', style='width: 3em;') }}
       {{ form_field(form.title, maxlength=40, required='required') }}
       {{ form_field(form.starts_at, size=16, maxlength=16, required='required', note='Format: <kbd>TT.MM.JJJJ hh:mm</kbd>'|safe) }}
       {{ form_field(form.ends_at, size=16, maxlength=16, required='required', note='Format: <kbd>TT.MM.JJJJ hh:mm</kbd>'|safe) }}

@@ -35,14 +35,12 @@ class ExportTestCase(AbstractAppTestCase):
     def create_brand_and_party(self):
         self.brand = create_brand(
             id='lanresort',
-            title='LANresort',
-            code='LR')
+            title='LANresort')
         self.db.session.add(self.brand)
 
         self.party = create_party(
             id='lanresort-2015',
             brand=self.brand,
-            number=8,
             title='LANresort 2015')
         self.db.session.add(self.party)
 

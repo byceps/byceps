@@ -19,7 +19,6 @@ from ...util.l10n import LocalizedForm
 class CreateForm(LocalizedForm):
     id = StringField('ID', validators=[Length(min=1, max=40)])
     brand_id = SelectField('Marke')
-    number = IntegerField('Nummer')
     title = StringField('Titel', validators=[Length(min=1, max=40)])
     starts_at = DateTimeField('Beginn', format='%d.%m.%Y %H:%M', validators=[InputRequired()])
     ends_at = DateTimeField('Ende', format='%d.%m.%Y %H:%M', validators=[InputRequired()])
@@ -27,4 +26,3 @@ class CreateForm(LocalizedForm):
     def set_brand_choices(self, brands):
         choices = list(map(attrgetter('id', 'title'), brands))
         self.brand_id.choices = choices
-

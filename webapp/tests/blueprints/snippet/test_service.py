@@ -24,8 +24,8 @@ class GetCurrentVersionOfSnippetTestCase(AbstractAppTestCase):
     def setUp(self):
         super(GetCurrentVersionOfSnippetTestCase, self).setUp()
 
-        self.party2014 = self.create_party('lafiesta-2014', 4, 'La Fiesta 2014')
-        self.party2015 = self.create_party('lafiesta-2015', 5, 'La Fiesta 2015')
+        self.party2014 = self.create_party('lafiesta-2014', 'La Fiesta 2014')
+        self.party2015 = self.create_party('lafiesta-2015', 'La Fiesta 2015')
 
         self.snippet_creator = self.create_snippet_creator()
 
@@ -45,8 +45,8 @@ class GetCurrentVersionOfSnippetTestCase(AbstractAppTestCase):
     # -------------------------------------------------------------------- #
     # helpers
 
-    def create_party(self, id, number, title):
-        party = create_party(id=id, number=number, title=title, brand=self.brand)
+    def create_party(self, id, title):
+        party = create_party(id=id, title=title, brand=self.brand)
         self.db.session.add(party)
         self.db.session.commit()
         return party

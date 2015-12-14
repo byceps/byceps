@@ -18,7 +18,6 @@ class Brand(db.Model):
 
     id = db.Column(db.Unicode(20), primary_key=True)
     title = db.Column(db.Unicode(40), unique=True, nullable=False)
-    code = db.Column(db.Unicode(3), unique=True, nullable=False)
 
     def __repr__(self):
         return ReprBuilder(self) \

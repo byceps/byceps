@@ -20,7 +20,6 @@
       <tr>
         <th>ID</th>
         <th>Name</th>
-        <th>Nummer</th>
         <th>Zeitraum</th>
       </tr>
     </thead>
@@ -32,7 +31,6 @@
           <strong><a href="{{ url_for('party_admin.view', id=party.id) }}">{{ party.title }}</a></strong>
           {%- if party.is_archived %}<br/>{{ render_icon('archived', title='archiviert') }} <em>archiviert</em>{% endif -%}
         </td>
-        <td class="centered">{{ party.number }}</td>
         <td>
           {{- render_datetime(party.starts_at) }} bis<br/>
           {{- render_datetime(party.ends_at) -}}

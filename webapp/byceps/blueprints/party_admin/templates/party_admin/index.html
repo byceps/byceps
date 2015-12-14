@@ -13,7 +13,6 @@
       <tr>
         <th>ID</th>
         <th>Marke</th>
-        <th>Nummer</th>
         <th>Name</th>
         <th>Zeitraum</th>
       </tr>
@@ -23,7 +22,6 @@
       <tr{% if party.is_over %} class="dimmed"{% endif %}>
         <td>{{ party.id }}</td>
         <td>{{ party.brand.title }}</td>
-        <td class="centered">{{ party.number }}</td>
         <td>
           <strong><a href="{{ url_for('party_admin.view', id=party.id) }}">{{ party.title }}</a></strong>
           {%- if party.is_archived %}<br/>{{ render_icon('archived', title='archiviert') }} <em>archiviert</em>{% endif -%}
