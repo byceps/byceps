@@ -81,8 +81,7 @@ def update_topic(topic, editor, title, body):
     """Update the topic (and its initial posting)."""
     topic.title = title.strip()
 
-    posting = get_initial_posting_for_topic(topic)
-    update_posting(posting, editor, body, commit=False)
+    update_posting(topic.initial_posting, editor, body, commit=False)
 
     db.session.commit()
 
@@ -103,14 +102,6 @@ def aggregate_topic(topic):
     db.session.commit()
 
     aggregate_category(topic.category)
-
-
-def get_initial_posting_for_topic(topic):
-    """Return the initial posting of this topic."""
-    return Posting.query \
-        .filter_by(topic=topic) \
-        .earliest_to_latest() \
-        .first()
 
 
 def find_default_posting_to_jump_to(topic, user, last_viewed_at):

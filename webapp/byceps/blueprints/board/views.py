@@ -235,8 +235,7 @@ def topic_update_form(id):
         flash_error('Du darfst dieses Thema nicht bearbeiten.')
         return redirect(url)
 
-    posting = service.get_initial_posting_for_topic(topic)
-    form = TopicUpdateForm(obj=topic, body=posting.body)
+    form = TopicUpdateForm(obj=topic, body=topic.initial_posting.body)
 
     return {
         'form': form,

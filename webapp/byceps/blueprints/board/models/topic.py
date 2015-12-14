@@ -11,6 +11,7 @@ byceps.blueprints.board.models
 from datetime import datetime
 
 from flask import current_app, g, url_for
+from sqlalchemy.ext.associationproxy import association_proxy
 
 from ....database import BaseQuery, db, generate_uuid
 from ....util.instances import ReprBuilder
@@ -70,6 +71,7 @@ class Topic(db.Model):
     pinned_at = db.Column(db.DateTime)
     pinned_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
     pinned_by = db.relationship(User, foreign_keys=[pinned_by_id])
+    initial_posting = association_proxy('initial_topic_posting_association', 'posting')
 
     def __init__(self, category, creator, title):
         self.category = category
