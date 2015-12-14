@@ -142,20 +142,6 @@ class Topic(db.Model):
         """Return the absolute URL of this topic."""
         return url_for('board.topic_view', id=self.id, _external=True)
 
-    def get_body_posting(self):
-        """Return the posting that stores the body of this topic's
-        opening posting.
-        """
-        if not hasattr(self, '_body_posting'):
-            from .posting import Posting
-
-            self._body_posting = Posting.query \
-                .filter_by(topic=self) \
-                .earliest_to_latest() \
-                .first()
-
-        return self._body_posting
-
     def contains_unseen_postings(self):
         """Return `True` if the topic contains postings created after
         the last time the current user viewed it.

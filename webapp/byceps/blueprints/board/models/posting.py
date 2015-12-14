@@ -73,8 +73,7 @@ class Posting(db.Model):
         self.body = body
 
     def is_initial_topic_posting(self, topic):
-        initial_topic_posting = topic.get_body_posting()
-        return self == initial_topic_posting
+        return self == topic.initial_posting
 
     def may_be_updated_by_user(self, user):
         return not self.topic.locked and (
