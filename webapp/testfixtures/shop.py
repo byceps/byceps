@@ -64,6 +64,11 @@ def create_order(placed_by, *, party=None, serial_number=1):
     )
 
 
+def create_party_sequence_prefix(party, *, article_number_prefix='AEC-03-A',
+                                 order_number_prefix='AEC-03-B'):
+    return PartySequencePrefix(party, article_number_prefix, order_number_prefix)
+
+
 def create_party_sequence(party, purpose, *, value=0):
     sequence = PartySequence(party, purpose)
     sequence.value = value

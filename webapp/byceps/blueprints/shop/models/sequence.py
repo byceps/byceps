@@ -18,6 +18,21 @@ from ....util.instances import ReprBuilder
 from ...party.models import Party
 
 
+class PartySequencePrefix(db.Model):
+    """A set of party-specific sequence number prefixes."""
+    __tablename__ = 'shop_party_sequences_prefixes'
+
+    party_id = db.Column(db.Unicode(20), db.ForeignKey('parties.id'), primary_key=True)
+    party = db.relationship(Party, backref=db.backref('shop_number_prefix', uselist=False))
+    article_number = db.Column(db.Unicode(20), unique=True, nullable=False)
+    order_number = db.Column(db.Unicode(20), unique=True, nullable=False)
+
+    def __init__(self, party, article_number_prefix, order_number_prefix):
+        self.party = party
+        self.article_number = article_number_prefix
+        self.order_number = order_number_prefix
+
+
 PartySequencePurpose = Enum('PartySequencePurpose', ['article', 'order'])
 
 
