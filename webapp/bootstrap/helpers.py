@@ -30,7 +30,7 @@ from .util import add_to_database
 
 @add_to_database
 def create_brand(id, title):
-    return Brand(id=id, title=title)
+    return Brand(id, title)
 
 
 def get_brand(id):
