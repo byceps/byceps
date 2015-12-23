@@ -118,7 +118,7 @@ def find_default_posting_to_jump_to(topic, user, last_viewed_at):
 
     first_new_posting_query = Posting.query \
         .for_topic(topic) \
-        .only_visible_for_current_user() \
+        .only_visible_for_user(user) \
         .earliest_to_latest()
 
     first_new_posting = first_new_posting_query \

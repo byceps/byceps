@@ -28,9 +28,9 @@ class PostingQuery(BaseQuery):
     def for_topic(self, topic):
         return self.filter_by(topic=topic)
 
-    def only_visible_for_current_user(self):
-        """Only return postings the current user may see."""
-        if not g.current_user.has_permission(BoardPostingPermission.view_hidden):
+    def only_visible_for_user(self, user):
+        """Only return postings the user may see."""
+        if not user.has_permission(BoardPostingPermission.view_hidden):
             return self.without_hidden()
 
         return self
@@ -98,7 +98,7 @@ class Posting(db.Model):
         """Return the number of the page this posting should appear on."""
         topic_postings = Posting.query \
             .for_topic(self.topic) \
-            .only_visible_for_current_user() \
+            .only_visible_for_user(g.current_user) \
             .earliest_to_latest() \
             .all()
 

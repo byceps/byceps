@@ -28,9 +28,9 @@ class TopicQuery(BaseQuery):
     def for_category(self, category):
         return self.filter_by(category=category)
 
-    def only_visible_for_current_user(self):
-        """Only return topics the current user may see."""
-        if not g.current_user.has_permission(BoardTopicPermission.view_hidden):
+    def only_visible_for_user(self, user):
+        """Only return topics the user may see."""
+        if not user.has_permission(BoardTopicPermission.view_hidden):
             return self.without_hidden()
 
         return self

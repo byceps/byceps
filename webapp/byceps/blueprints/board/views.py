@@ -81,7 +81,7 @@ def category_view(slug, page):
             db.joinedload(Topic.locked_by),
             db.joinedload(Topic.pinned_by),
         ) \
-        .only_visible_for_current_user() \
+        .only_visible_for_user(g.current_user) \
         .order_by(Topic.pinned.desc(), Topic.last_updated_at.desc()) \
         .paginate(page, topics_per_page)
 
@@ -104,7 +104,7 @@ def topic_view(id, page):
         .options(
             db.joinedload(Topic.category),
         ) \
-        .only_visible_for_current_user() \
+        .only_visible_for_user(g.current_user) \
         .with_id_or_404(id)
 
     # Copy last view timestamp for later use to compare postings
@@ -150,7 +150,7 @@ def topic_view(id, page):
             db.joinedload(Posting.hidden_by).load_only('screen_name'),
         ) \
         .for_topic(topic) \
-        .only_visible_for_current_user() \
+        .only_visible_for_user(g.current_user) \
         .earliest_to_latest() \
         .paginate(page, postings_per_page)
 
