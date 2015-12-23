@@ -10,7 +10,7 @@ byceps.blueprints.board.models.posting
 
 from datetime import datetime
 
-from flask import current_app, url_for
+from flask import url_for
 
 from ....database import BaseQuery, db, generate_uuid
 from ....util.instances import ReprBuilder
@@ -93,23 +93,6 @@ class Posting(db.Model):
         self.hidden = False
         self.hidden_at = None
         self.hidden_by = None
-
-    def calculate_page_number(self, user):
-        """Return the number of the page this posting should appear on
-        when viewed by the user.
-        """
-        topic_postings = Posting.query \
-            .for_topic(self.topic) \
-            .only_visible_for_user(user) \
-            .earliest_to_latest() \
-            .all()
-
-        index = index_of(lambda p: p == self, topic_postings)
-        if index is None:
-            return  # Shouldn't happen.
-
-        per_page = int(current_app.config['BOARD_POSTINGS_PER_PAGE'])
-        return divmod(index, per_page)[0] + 1
 
     def is_unseen(self, user, last_viewed_at):
         # Don't display any posting as new to a guest.

@@ -10,6 +10,8 @@ byceps.blueprints.board.service
 
 from datetime import datetime
 
+from flask import current_app
+
 from ...database import db
 
 from .models.category import Category, LastCategoryView
@@ -156,6 +158,24 @@ def update_posting(posting, editor, body, *, commit=True):
 
     if commit:
         db.session.commit()
+
+
+def calculate_posting_page_number(posting, user):
+    """Return the number of the page the posting should appear on when
+    viewed by the user.
+    """
+    topic_postings = Posting.query \
+        .for_topic(posting.topic) \
+        .only_visible_for_user(user) \
+        .earliest_to_latest() \
+        .all()
+
+    index = index_of(lambda p: p == posting, topic_postings)
+    if index is None:
+        return  # Shouldn't happen.
+
+    per_page = int(current_app.config['BOARD_POSTINGS_PER_PAGE'])
+    return divmod(index, per_page)[0] + 1
 
 
 # -------------------------------------------------------------------- #

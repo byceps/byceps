@@ -119,7 +119,8 @@ def topic_view(id, page):
         if posting is None:
             page = 1
         else:
-            page = posting.calculate_page_number(g.current_user)
+            page = service.calculate_posting_page_number(posting,
+                                                         g.current_user)
             # Jump to a specific posting. This requires a redirect.
             url = url_for('.topic_view',
                           id=topic.id,
@@ -400,7 +401,7 @@ def posting_view(id):
     """
     posting = Posting.query.get_or_404(id)
 
-    page = posting.calculate_page_number(g.current_user)
+    page = service.calculate_posting_page_number(posting, g.current_user)
 
     return redirect_to('.topic_view',
                        id=posting.topic.id,
@@ -479,7 +480,7 @@ def posting_update_form(id):
     """Show form to update a posting."""
     posting = Posting.query.get_or_404(id)
 
-    page = posting.calculate_page_number(g.current_user)
+    page = service.calculate_posting_page_number(posting, g.current_user)
     url = url_for('.topic_view', id=posting.topic.id, page=page)
 
     if posting.topic.locked:
@@ -511,7 +512,7 @@ def posting_update(id):
     """Update a posting."""
     posting = Posting.query.get_or_404(id)
 
-    page = posting.calculate_page_number(g.current_user)
+    page = service.calculate_posting_page_number(posting, g.current_user)
     url = url_for('.topic_view', id=posting.topic.id, page=page)
 
     if posting.topic.locked:
@@ -558,7 +559,7 @@ def posting_hide(id):
 
     service.aggregate_topic(posting.topic)
 
-    page = posting.calculate_page_number(g.current_user)
+    page = service.calculate_posting_page_number(posting, g.current_user)
 
     flash_success('Der Beitrag wurde versteckt.', icon='hidden')
     signals.posting_hidden.send(None, posting=posting)
@@ -576,7 +577,7 @@ def posting_unhide(id):
 
     service.aggregate_topic(posting.topic)
 
-    page = posting.calculate_page_number(g.current_user)
+    page = service.calculate_posting_page_number(posting, g.current_user)
 
     flash_success('Der Beitrag wurde wieder sichtbar gemacht.', icon='view')
     return url_for('.topic_view', id=posting.topic.id, page=page, _anchor=posting.anchor)
