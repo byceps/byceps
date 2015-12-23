@@ -65,7 +65,7 @@ def create_roles_and_permissions():
 
     create_role_with_permissions_from_enum(
         'party_admin',
-        'Parties verwalten',
+        'Partys verwalten',
         PartyPermission)
 
     create_role_with_permissions_from_enum(
