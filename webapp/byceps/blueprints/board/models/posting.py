@@ -10,7 +10,7 @@ byceps.blueprints.board.models.posting
 
 from datetime import datetime
 
-from flask import current_app, g, url_for
+from flask import current_app, url_for
 
 from ....database import BaseQuery, db, generate_uuid
 from ....util.instances import ReprBuilder
@@ -94,11 +94,13 @@ class Posting(db.Model):
         self.hidden_at = None
         self.hidden_by = None
 
-    def calculate_page_number(self):
-        """Return the number of the page this posting should appear on."""
+    def calculate_page_number(self, user):
+        """Return the number of the page this posting should appear on
+        when viewed by the user.
+        """
         topic_postings = Posting.query \
             .for_topic(self.topic) \
-            .only_visible_for_user(g.current_user) \
+            .only_visible_for_user(user) \
             .earliest_to_latest() \
             .all()
 
