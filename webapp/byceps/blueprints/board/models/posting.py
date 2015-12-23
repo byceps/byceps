@@ -109,6 +109,17 @@ class Posting(db.Model):
         per_page = int(current_app.config['BOARD_POSTINGS_PER_PAGE'])
         return divmod(index, per_page)[0] + 1
 
+    def is_unseen(self, user, last_viewed_at):
+        # Don't display any posting as new to a guest.
+        if user.is_anonymous:
+            return False
+
+        # Don't display the author's own posting as new to him/her.
+        if posting.creator == user:
+            return False
+
+        return (last_viewed_at is None) or (posting.created_at > last_viewed_at)
+
     @property
     def anchor(self):
         """Return the URL anchor for this posting."""
