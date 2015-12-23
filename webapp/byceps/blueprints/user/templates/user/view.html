@@ -40,7 +40,7 @@
         {%- if attended_parties %}
         <ol>
           {%- for party in attended_parties %}
-          <li>{{ party.title }}</li>
+          <li>{% if party == g.party %}<strong>{% endif %}{{ party.title }}{% if party == g.party %}</strong>{% endif %}</li>
           {%- endfor %}
         </ol>
         {%- else %}
