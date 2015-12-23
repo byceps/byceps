@@ -166,7 +166,7 @@ def topic_view(id, page):
 def add_unseen_flag_to_postings(postings, user, last_viewed_at):
     """Add the attribute 'unseen' to each posting."""
     for posting in postings:
-        posting.unseen = posting_is_unseen(user, last_viewed_at)
+        posting.unseen = posting.is_unseen(user, last_viewed_at)
 
 
 @blueprint.route('/categories/<category_id>/create')
