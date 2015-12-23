@@ -150,12 +150,11 @@ class Topic(db.Model):
         if user.is_anonymous:
             return False
 
-        last_viewed_at = self.last_viewed_at
+        last_viewed_at = self.find_last_viewed_at()
         return last_viewed_at is None \
             or self.last_updated_at > last_viewed_at
 
-    @property
-    def last_viewed_at(self):
+    def find_last_viewed_at(self):
         last_view = LastTopicView.find(g.current_user, self)
         return last_view.occured_at if last_view is not None else None
 
