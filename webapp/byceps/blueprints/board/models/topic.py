@@ -10,7 +10,7 @@ byceps.blueprints.board.models
 
 from datetime import datetime
 
-from flask import current_app, g, url_for
+from flask import current_app, url_for
 from sqlalchemy.ext.associationproxy import association_proxy
 
 from ....database import BaseQuery, db, generate_uuid
@@ -150,12 +150,15 @@ class Topic(db.Model):
         if user.is_anonymous:
             return False
 
-        last_viewed_at = self.find_last_viewed_at()
+        last_viewed_at = self.find_last_viewed_at(user)
         return last_viewed_at is None \
             or self.last_updated_at > last_viewed_at
 
-    def find_last_viewed_at(self):
-        last_view = LastTopicView.find(g.current_user, self)
+    def find_last_viewed_at(self, user):
+        """Return the time this topic was last viewed by the user (or
+        nothing, if it hasn't been viewed by the user yet).
+        """
+        last_view = LastTopicView.find(user, self)
         return last_view.occured_at if last_view is not None else None
 
     def __eq__(self, other):
