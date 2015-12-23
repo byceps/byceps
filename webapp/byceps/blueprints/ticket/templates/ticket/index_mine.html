@@ -54,10 +54,10 @@
           {%- if ticket.occupied_seat -%}
           {{ render_seating_area_link(ticket.occupied_seat.area) }}
           {%- else -%}
-          {{ render_tag('keiner', class='available') }}<br/>
+          {{ render_tag('keiner', class='available') }}<br>
           {%- endif -%}
-          <br/>
-          <small>(verwaltet durch {{ render_user_link(ticket.get_seat_manager()) }})</small>
+          <br>
+          {{ 'verwaltet durch'|dim  }} {{ render_user_link(ticket.get_seat_manager()) }}
         </td>
         <td>
           {%- if ticket.used_by -%}
@@ -65,8 +65,8 @@
           {%- else -%}
           {{ render_tag('frei', class='available') }}
           {%- endif -%}
-          <br/>
-          <small>(verwaltet durch {{ render_user_link(ticket.get_user_manager()) }})</small>
+          <br>
+          {{ 'verwaltet durch'|dim }} {{ render_user_link(ticket.get_user_manager()) }}
         </td>
       </tr>
       {%- endfor %}
