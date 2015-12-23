@@ -13,6 +13,7 @@ from datetime import datetime
 from flask import current_app
 
 from ...database import db
+from ...util.iterables import index_of
 
 from .models.category import Category, LastCategoryView
 from .models.posting import InitialTopicPostingAssociation, Posting

@@ -14,7 +14,6 @@ from flask import url_for
 
 from ....database import BaseQuery, db, generate_uuid
 from ....util.instances import ReprBuilder
-from ....util.iterables import index_of
 
 from ...user.models import User
 
