@@ -164,20 +164,20 @@ def topic_view(id, page):
 
 def add_unseen_flag_to_postings(postings, user, last_viewed_at):
     """Add the attribute 'unseen' to each posting."""
-    def unseen(posting):
-        # Don't display any posting as new to a guest.
-        if user.is_anonymous:
-            return False
-
-        # Don't display the author's own posting as new to him/her.
-        if posting.creator == user:
-            return False
-
-        return last_viewed_at is None \
-            or posting.created_at > last_viewed_at
-
     for posting in postings:
-        posting.unseen = unseen(posting)
+        posting.unseen = is_posting_unseen(posting, user, last_viewed_at)
+
+
+def is_posting_unseen(posting, user, last_viewed_at):
+    # Don't display any posting as new to a guest.
+    if user.is_anonymous:
+        return False
+
+    # Don't display the author's own posting as new to him/her.
+    if posting.creator == user:
+        return False
+
+    return (last_viewed_at is None) or (posting.created_at > last_viewed_at)
 
 
 @blueprint.route('/categories/<category_id>/create')
