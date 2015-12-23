@@ -8,6 +8,8 @@ byceps.blueprints.core.views
 :License: Modified BSD, see LICENSE for details.
 """
 
+from datetime import date, datetime
+
 from flask import g, render_template
 
 from ... import config
@@ -31,6 +33,8 @@ def not_found(error):
 @blueprint.app_context_processor
 def inject_template_variables():
     return {
+        'now': datetime.utcnow(),
+        'today': date.today(),
         'Navigation': Navigation,
     }
 
