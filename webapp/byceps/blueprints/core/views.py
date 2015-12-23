@@ -29,7 +29,7 @@ def not_found(error):
 
 
 @blueprint.app_context_processor
-def inject_navigation():
+def inject_template_variables():
     return {
         'Navigation': Navigation,
     }
