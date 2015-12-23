@@ -154,7 +154,7 @@ def topic_view(id, page):
         .earliest_to_latest() \
         .paginate(page, postings_per_page)
 
-    add_unseen_flag_to_postings(postings.items, last_viewed_at)
+    add_unseen_flag_to_postings(postings.items, g.current_user, last_viewed_at)
 
     return {
         'topic': topic,
@@ -162,18 +162,18 @@ def topic_view(id, page):
     }
 
 
-def add_unseen_flag_to_postings(postings, last_viewed_at):
+def add_unseen_flag_to_postings(postings, user, last_viewed_at):
     """Add the attribute 'unseen' to each posting."""
     def unseen(posting):
         # Don't display the author's own posting as new to him/her.
-        if posting.creator == g.current_user:
+        if posting.creator == user:
             return False
 
         return last_viewed_at is None \
             or posting.created_at > last_viewed_at
 
     # Don't display any posting as new to a guest.
-    if g.current_user.is_anonymous:
+    if user.is_anonymous:
         def unseen(posting):
             return False
 
