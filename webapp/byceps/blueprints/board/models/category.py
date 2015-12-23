@@ -8,8 +8,6 @@ byceps.blueprints.board.models.category
 :License: Modified BSD, see LICENSE for details.
 """
 
-from flask import g
-
 from ....database import BaseQuery, db, generate_uuid
 from ....util.instances import ReprBuilder
 
@@ -53,18 +51,18 @@ class Category(db.Model):
         self.title = title
         self.description = description
 
-    def contains_unseen_postings(self):
+    def contains_unseen_postings(self, user):
         """Return `True` if the category contains postings created after
-        the last time the current user viewed it.
+        the last time the user viewed it.
         """
         # Don't display as new to a guest.
-        if g.current_user.is_anonymous:
+        if user.is_anonymous:
             return False
 
         if self.last_posting_updated_at is None:
             return False
 
-        last_view = LastCategoryView.find(g.current_user, self)
+        last_view = LastCategoryView.find(user, self)
 
         if last_view is None:
             return True

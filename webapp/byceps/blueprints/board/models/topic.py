@@ -142,12 +142,12 @@ class Topic(db.Model):
         """Return the absolute URL of this topic."""
         return url_for('board.topic_view', id=self.id, _external=True)
 
-    def contains_unseen_postings(self):
+    def contains_unseen_postings(self, user):
         """Return `True` if the topic contains postings created after
-        the last time the current user viewed it.
+        the last time the user viewed it.
         """
         # Don't display as new to a guest.
-        if g.current_user.is_anonymous:
+        if user.is_anonymous:
             return False
 
         last_viewed_at = self.last_viewed_at
