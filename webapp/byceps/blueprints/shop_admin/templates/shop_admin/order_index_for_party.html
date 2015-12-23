@@ -94,6 +94,6 @@
     </tbody>
   </table>
 
-{{ render_pagination_nav(orders, '.order_index_for_party', {'party_id': party.id}) }}
+{{ render_pagination_nav(orders, '.order_index_for_party', {'party_id': party.id, 'only': only.name if only else None}) }}
 
 {%- endblock body %}
