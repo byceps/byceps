@@ -100,10 +100,10 @@ class Posting(db.Model):
             return False
 
         # Don't display the author's own posting as new to him/her.
-        if posting.creator == user:
+        if self.creator == user:
             return False
 
-        return (last_viewed_at is None) or (posting.created_at > last_viewed_at)
+        return (last_viewed_at is None) or (self.created_at > last_viewed_at)
 
     @property
     def anchor(self):
