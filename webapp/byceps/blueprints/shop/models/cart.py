@@ -45,6 +45,6 @@ class CartItem(object):
 
     def __repr__(self):
         return ReprBuilder(self) \
-            .add_with_lookup('item_number') \
+            .add('article', self.article.item_number) \
             .add_with_lookup('quantity') \
             .build()
