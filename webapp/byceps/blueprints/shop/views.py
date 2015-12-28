@@ -20,7 +20,7 @@ from ..user.service import get_country_names
 
 from .forms import assemble_articles_order_form, OrderForm
 from .models.article import Article
-from .models.cart import Cart, CartItem
+from .models.cart import Cart
 from .models.order import Order, PaymentState
 from . import service
 
@@ -162,7 +162,7 @@ def order_single(article_id):
 
     cart = Cart()
     for item in article_compilation:
-        cart.add_item(CartItem(item.article, item.fixed_quantity))
+        cart.add_item(item.article, item.fixed_quantity)
 
     service.create_order(g.party, orderer, cart)
 

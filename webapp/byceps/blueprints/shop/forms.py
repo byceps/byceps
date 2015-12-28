@@ -13,7 +13,7 @@ from wtforms.validators import InputRequired, Length
 
 from ...util.l10n import LocalizedForm
 
-from .models.cart import Cart, CartItem
+from .models.cart import Cart
 from .models.order import Orderer
 
 
@@ -50,15 +50,15 @@ def assemble_articles_order_form(article_compilation):
 
         def get_cart(self, article_compilation):
             cart = Cart()
-            for item in self.get_cart_items(article_compilation):
-                cart.add_item(item)
+            for article, quantity in self.get_cart_items(article_compilation):
+                cart.add_item(article, quantity)
             return cart
 
         def get_cart_items(self, article_compilation):
             for item in article_compilation:
                 quantity = self.get_field_for_article(item.article).data
                 if quantity > 0:
-                    yield CartItem(item.article, quantity)
+                    yield item.article, quantity
 
 
     validators = [InputRequired()]

@@ -17,7 +17,8 @@ class Cart(object):
     def __init__(self):
         self._items = []
 
-    def add_item(self, item):
+    def add_item(self, article, quantity):
+        item = CartItem(article, quantity)
         self._items.append(item)
 
     def get_items(self):

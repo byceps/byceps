@@ -35,12 +35,8 @@ class CartEmptinessTestCase(TestCase):
     # helpers
 
     def add_item(self, quantity):
-        item = self.create_item(quantity)
-        self.cart.add_item(item)
-
-    def create_item(self, quantity):
         article = create_article()
-        return CartItem(article, quantity)
+        self.cart.add_item(article, quantity)
 
 
 class CartItemCreationTestCase(TestCase):
