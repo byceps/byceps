@@ -11,7 +11,7 @@ testfixtures.shop
 from decimal import Decimal
 
 from byceps.blueprints.shop.models.article import Article
-from byceps.blueprints.shop.models.order import Order
+from byceps.blueprints.shop.models.order import Order, Orderer
 from byceps.blueprints.shop.models.sequence import PartySequence, \
     PartySequencePrefix
 
@@ -45,6 +45,18 @@ def create_article(*, party=None, serial_number=1, description='Cool thing',
         available_from=available_from,
         available_until=available_until,
         quantity=quantity)
+
+
+def create_orderer(user):
+    return Orderer(
+        user,
+        user.detail.first_names,
+        user.detail.last_name,
+        user.detail.date_of_birth,
+        user.detail.country,
+        user.detail.zip_code,
+        user.detail.city,
+        user.detail.street)
 
 
 def create_order(placed_by, *, party=None, serial_number=1):
