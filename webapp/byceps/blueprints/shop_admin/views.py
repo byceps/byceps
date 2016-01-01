@@ -4,7 +4,7 @@
 byceps.blueprints.shop_admin.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2006-2015 Jochen Kupperschmidt
+:Copyright: 2006-2016 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
 """
 

@@ -4,7 +4,7 @@
 tests.mocks
 ~~~~~~~~~~~
 
-:Copyright: 2006-2015 Jochen Kupperschmidt
+:Copyright: 2006-2016 Jochen Kupperschmidt
 """
 
 from unittest.mock import MagicMock

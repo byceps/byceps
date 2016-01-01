@@ -8,7 +8,7 @@ Validators for use with Click_.
 
 .. _Click: http://click.pocoo.org/
 
-:Copyright: 2006-2015 Jochen Kupperschmidt
+:Copyright: 2006-2016 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
 """
 

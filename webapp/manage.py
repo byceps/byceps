@@ -7,7 +7,7 @@ management script
 
 Run the application, take administrative action.
 
-:Copyright: 2006-2015 Jochen Kupperschmidt
+:Copyright: 2006-2016 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
 """
 

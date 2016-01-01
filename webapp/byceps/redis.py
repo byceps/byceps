@@ -8,7 +8,7 @@ Redis_ integration.
 
 .. _Redis: http://redis.io/
 
-:Copyright: 2006-2015 Jochen Kupperschmidt
+:Copyright: 2006-2016 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
 """
 
