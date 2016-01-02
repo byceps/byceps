@@ -83,8 +83,7 @@ img {
 
 /* notifications */
 
-div[class|=notification],
-p[class|=notification] {
+div[class|=notification] {
   background-color: #dddddd;
   border-radius: 3px;
   border-style: solid;
@@ -93,26 +92,21 @@ p[class|=notification] {
   margin: 0 0 10px 0;
   padding: 0.3em 15px;
 }
-div[class|=notification]:first-child,
-p[class|=notification]:first-child {
+div[class|=notification]:first-child {
   margin-top: 25px;
 }
-div[class|=notification] [class^=icon-],
-p[class|=notification] [class^=icon-] {
+div[class|=notification] [class^=icon-] {
   margin-right: 5px;
 }
-div.notification-error,
-p.notification-error {
+div.notification-error {
   background-color: #ff9999;
   border-color: #ff1a1a;
 }
-div.notification-info,
-p.notification-info {
+div.notification-info {
   background-color: #99ccee;
   border-color: #66aacc;
 }
-div.notification-success,
-p.notification-success {
+div.notification-success {
   background-color: #88ee88;
   border-color: #1fd81f;
 }

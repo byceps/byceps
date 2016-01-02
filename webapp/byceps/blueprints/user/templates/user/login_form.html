@@ -15,7 +15,7 @@
         {{ form_field_checkbox(form.permanent, 'dauerhaft eingeloggt bleiben') }}
       {%- endcall %}
 
-      <p id="login-failed" class="notification-error" style="display: none; margin-top: 1em;">Die Anmeldung ist fehlgeschlagen.</p>
+      <div id="login-failed" class="notification-error" style="display: none; margin-top: 1em;">Die Anmeldung ist fehlgeschlagen.</div>
 
       {{ form_buttons('Anmelden') }}
     </form>
