@@ -1,4 +1,5 @@
 {% extends 'layout/base_admin.html' %}
+{% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'snippet_admin' %}
 {% set current_page_party = party %}
 {% set title = 'Snippetversion ansehen - Fehler' %}
@@ -7,8 +8,13 @@
 
   <h1>{{ title }}</h1>
   <div class="notification-error">
-    <p>Entschuldigung, es ist ein Fehler aufgetreten.</p>
-    <pre>{{ error_message }}</pre>
+    <div class="icon">
+      {{ render_icon('warning') }}
+    </div>
+    <div class="body">
+      <p>Entschuldigung, es ist ein Fehler aufgetreten.</p>
+      <pre>{{ error_message }}</pre>
+    </div>
   </div>
 
 {%- endblock body %}

@@ -4,6 +4,14 @@
 {% block body %}
 
   <h1>{{ title }}</h1>
-  <div class="notification-error">Entschuldigung, es ist ein Fehler aufgetreten.</div>
+
+  <div class="notification-error">
+    <div class="icon">
+      {{ render_icon('warning') }}
+    </div>
+    <div class="body">
+      <p>Entschuldigung, es ist ein Fehler aufgetreten.</p>
+    </div>
+  </div>
 
 {%- endblock body %}
