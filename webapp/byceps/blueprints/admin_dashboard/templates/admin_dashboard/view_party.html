@@ -50,13 +50,19 @@
 
 {%- endblock body %}
 
-{%- macro render_bigstats_cell(value, caption, icon_name=None, color=None) -%}
-    <div class="cell">
-      <div class="box">
-        <div class="cell-icon">{{ render_icon(icon_name) }}</div>
+{%- macro render_bigstats_cell(value, caption, icon_name, color=None) -%}
+  {%- call render_cell(icon_name) %}
         <div class="bigstats">
         {{ render_bigstats_item(value, caption, color=color) }}
         </div>
+  {%- endcall %}
+{%- endmacro %}
+
+{%- macro render_cell(icon_name) -%}
+    <div class="cell">
+      <div class="box">
+        <div class="cell-icon">{{ render_icon(icon_name) }}</div>
+{{ caller() }}
       </div>
     </div>
 {%- endmacro %}
