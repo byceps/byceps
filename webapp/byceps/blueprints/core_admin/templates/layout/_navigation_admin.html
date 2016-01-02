@@ -7,7 +7,7 @@
   <nav class="main">
     <ol>
     {%- for party in brand.parties|sort(attribute='starts_at', reverse=True) %}
-      <li><a href="{{ url_for('party_admin.view', id=party.id) }}">
+      <li><a href="{{ url_for('admin_dashboard.view_party', party_id=party.id) }}">
         {%- if party.is_archived -%}
           {{ party.title|dim }}
         {%- else -%}
