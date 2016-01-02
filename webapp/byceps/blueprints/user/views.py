@@ -41,7 +41,7 @@ from . import service
 from . import signals
 
 
-MAXIMUM_AVATAR_IMAGE_DIMENSIONS = Dimensions(110, 150)
+MAXIMUM_AVATAR_IMAGE_DIMENSIONS = Dimensions(110, 110)
 
 
 blueprint = create_blueprint('user', __name__)
