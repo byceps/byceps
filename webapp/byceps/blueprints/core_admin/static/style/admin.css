@@ -94,9 +94,12 @@ main:not(.raw) {
 }
 
 #header-content .head {
-  font-size: 1.3rem;
   font-weight: bold;
   margin: auto 0;
+}
+#header-content .head strong {
+  display: block;
+  font-size: 1.3rem;
 }
 #header-content .head a {
   text-decoration: none;
