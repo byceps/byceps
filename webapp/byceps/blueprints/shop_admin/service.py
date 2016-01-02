@@ -80,3 +80,18 @@ def count_ordered_articles(article):
         counter[order_item.order.payment_state] += order_item.quantity
 
     return dict(counter)
+
+
+def count_articles_for_party(party):
+    """Return the number of articles that are assigned to that party."""
+    return Article.query \
+        .filter_by(party_id=party.id) \
+        .count()
+
+
+def count_open_orders_for_party(party):
+    """Return the number of open orders for that party."""
+    return Order.query \
+        .filter_by(party_id=party.id) \
+        .filter_by(_payment_state=PaymentState.open.name) \
+        .count()

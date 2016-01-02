@@ -1,31 +1,62 @@
 {% extends 'layout/base_admin.html' %}
-{% from 'macros/datetime.html' import render_datetime %}
+{% from 'macros/icons.html' import render_icon %}
+{% from 'macros/stats.html' import render_bigstats_item %}
 {% set current_page = 'admin_dashboard_party' %}
 {% set current_page_party = party %}
 {% set title = 'Partys' %}
+{% set layout_main_raw = True %}
+
+{% block head %}
+    <style>
+      .grid {
+        display: flex;
+        flex-wrap: wrap;
+        margin: -20px 0 0 -20px;
+      }
+      .grid .cell {
+        flex: 0 0 33.3333%;
+        padding: 20px 0 0 20px;
+      }
+
+      .grid .cell .box {
+        position: relative;
+      }
+      .cell-icon {
+        font-size: 5rem;
+        left: 0.25rem;
+        opacity: 0.075;
+        position: absolute;
+        top: 2rem;
+      }
+
+      .bigstats {
+        margin-bottom: 0;
+      }
+      .bigstats figcaption {
+        font-weight: normal;
+      }
+    </style>
+{% endblock %}
 
 {% block body %}
 
-  <nav class="breadcrumbs">
-    <ol>
-      <li>Partys</li>
-      <li>{{ party.title }}</li>
-    </ol>
-  </nav>
-
-  <table class="index">
-    <tr>
-      <th>Marke</th>
-      <td>{{ party.brand.title }}</td>
-    </tr>
-    <tr>
-      <th>Beginn</th>
-      <td>{{ render_datetime(party.starts_at) }}</td>
-    </tr>
-    <tr>
-      <th>Ende</th>
-      <td>{{ render_datetime(party.ends_at) }}</td>
-    </tr>
-  </table>
+  <div class="grid">
+    {{ render_bigstats_cell(days_until_party, 'Tage bis zur Party', icon_name='date') }}
+    {{ render_bigstats_cell(orga_count, 'Organisatoren in <strong>%d</strong> Teams'|format(orga_team_count)|safe, icon_name='users') }}
+    {{ render_bigstats_cell(article_count, 'Artikel', icon_name='shopping-cart') }}
+    {{ render_bigstats_cell(open_order_count, '<a href="%s">offene Bestellungen</a>'|format(url_for('shop_admin.order_index_for_party', party_id=party.id, only='open'))|safe, icon_name='shopping-cart', color='#cc0000') }}
+    {{ render_bigstats_cell(tickets_sold, 'Tickets verkauft', icon_name='ticket', color='#008800') }}
+  </div>
 
 {%- endblock body %}
+
+{%- macro render_bigstats_cell(value, caption, icon_name=None, color=None) -%}
+    <div class="cell">
+      <div class="box">
+        <div class="cell-icon">{{ render_icon(icon_name) }}</div>
+        <div class="bigstats">
+        {{ render_bigstats_item(value, caption, color=color) }}
+        </div>
+      </div>
+    </div>
+{%- endmacro %}
