@@ -91,6 +91,25 @@
     </tr>
   </table>
 
+  <h2>Berechtigungen</h2>
+  <table class="index">
+    {%- for role in user.roles|sort(attribute='title') %}
+    <tr>
+      <td>
+        <strong>{{ role.title }}</strong><br>
+        <span class="monospace">{{ role.id|dim }}</span>
+      </td>
+      <td>
+        <ul>
+          {%- for permission in role.permissions|sort(attribute='title') %}
+          <li>{{ permission.title }} {{ '(<span class="monospace">%s</span>)'|format(permission.id)|dim }}</li>
+          {%- endfor %}
+        </ul>
+      </td>
+    </tr>
+    {%- endfor %}
+  </table>
+
   <h2>Diverses</h2>
   <table class="index">
     <tr>
