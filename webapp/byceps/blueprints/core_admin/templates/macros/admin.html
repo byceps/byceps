@@ -2,7 +2,7 @@
   <div class="head-brand">
     Marken
     {{ '/'|dim }}
-    <strong>{{ brand.title }}</strong>
+    <strong><a href="{{ url_for('party_admin.index_for_brand', brand_id=brand.id) }}">{{ brand.title }}</a></strong>
   </div>
 {% endmacro %}
 
