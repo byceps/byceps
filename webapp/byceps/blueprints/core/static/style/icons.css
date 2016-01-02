@@ -46,6 +46,7 @@ li [class*=" icon-"] {
 .icon-bookmark::before       { content: "\f02e"; }
 .icon-bullhorn::before       { content: "\f0a1"; }
 .icon-cost::before           { content: "\f153"; }
+.icon-dashboard::before      { content: "\f0e4"; }
 .icon-date::before           { content: "\f073"; }
 .icon-date-okay::before      { content: "\f274"; }
 .icon-delete::before         { content: "\f1f8"; }
