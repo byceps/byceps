@@ -18,6 +18,14 @@
   position: absolute;
   top: 2rem;
 }
+.grid .cell .box :first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+.grid .cell .box :last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
 
 .bigstats {
   margin-bottom: 0;
