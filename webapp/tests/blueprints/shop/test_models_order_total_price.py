@@ -19,14 +19,18 @@ class OrderTotalPriceTestCase(TestCase):
     def test_without_any_items(self):
         order = self.create_order_with_items([])
 
-        self.assertEqual(order.calculate_total_price(), Decimal('0.00'))
+        actual = order.calculate_total_price()
+
+        self.assertEqual(actual, Decimal('0.00'))
 
     def test_with_single_item(self):
         order = self.create_order_with_items([
             (Decimal('49.95'), 1),
         ])
 
-        self.assertEqual(order.calculate_total_price(), Decimal('49.95'))
+        actual = order.calculate_total_price()
+
+        self.assertEqual(actual, Decimal('49.95'))
 
     def test_with_multiple_items(self):
         order = self.create_order_with_items([
@@ -35,7 +39,9 @@ class OrderTotalPriceTestCase(TestCase):
             (Decimal('12.53'), 4),
         ])
 
-        self.assertEqual(order.calculate_total_price(), Decimal('206.17'))
+        actual = order.calculate_total_price()
+
+        self.assertEqual(actual, Decimal('206.17'))
 
     def create_order_with_items(self, price_quantity_pairs):
         user = create_user(42)
