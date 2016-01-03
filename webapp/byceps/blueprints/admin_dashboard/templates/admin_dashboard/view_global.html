@@ -15,6 +15,8 @@
     {{ render_bigstats_cell(party_count, 'Partys', icon_name='date') }}
     {{ render_bigstats_cell(orga_count, 'Organisatoren', icon_name='users') }}
     {{ render_bigstats_cell(user_count, 'Benutzer', icon_name='users') }}
+    {{ render_bigstats_cell(recent_users_count, 'neue Benutzer in den letzten 7 Tagen', icon_name='users', color='#008800') }}
+    {{ render_bigstats_cell(disabled_user_count, '<a href="%s">nicht aktivierte Benutzer</a>'|format(url_for('user_admin.index', only='disabled'))|safe, icon_name='users', color='#cc0000') }}
   </div>
 
 {%- endblock body %}

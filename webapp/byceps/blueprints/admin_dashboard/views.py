@@ -8,7 +8,7 @@ byceps.blueprints.admin_dashboard.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from datetime import date
+from datetime import date, datetime, timedelta
 
 from ...util.framework import create_blueprint
 from ...util.templating import templated
@@ -48,6 +48,15 @@ def view_global():
 
     user_count = User.query.count()
 
+    one_week_ago = (datetime.now() - timedelta(days=7))
+    recent_users_count = User.query \
+        .filter(User.created_at >= one_week_ago) \
+        .count()
+
+    disabled_user_count = User.query \
+        .filter_by(enabled=False) \
+        .count()
+
     return {
         'brand_count': brand_count,
         'party_count': party_count,
@@ -55,6 +64,8 @@ def view_global():
         'orga_count': orga_count,
 
         'user_count': user_count,
+        'recent_users_count': recent_users_count,
+        'disabled_user_count': disabled_user_count,
     }
 
 
