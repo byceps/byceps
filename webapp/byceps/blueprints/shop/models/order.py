@@ -9,6 +9,7 @@ byceps.blueprints.shop.models.order
 """
 
 from datetime import datetime
+from decimal import Decimal
 from enum import Enum
 
 from flask import g
@@ -136,7 +137,7 @@ class Order(db.Model):
         return {item.article for item in self.items}
 
     def calculate_total_price(self):
-        return sum(item.price * item.quantity for item in self.items)
+        return Decimal(sum(item.price * item.quantity for item in self.items))
 
     def __repr__(self):
         return ReprBuilder(self) \

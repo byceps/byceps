@@ -21,7 +21,7 @@ class OrderTotalPriceTestCase(TestCase):
 
         actual = order.calculate_total_price()
 
-        self.assertEqual(actual, Decimal('0.00'))
+        self.assertDecimalEqual(actual, Decimal('0.00'))
 
     def test_with_single_item(self):
         order = self.create_order_with_items([
@@ -30,7 +30,7 @@ class OrderTotalPriceTestCase(TestCase):
 
         actual = order.calculate_total_price()
 
-        self.assertEqual(actual, Decimal('49.95'))
+        self.assertDecimalEqual(actual, Decimal('49.95'))
 
     def test_with_multiple_items(self):
         order = self.create_order_with_items([
@@ -41,7 +41,9 @@ class OrderTotalPriceTestCase(TestCase):
 
         actual = order.calculate_total_price()
 
-        self.assertEqual(actual, Decimal('206.17'))
+        self.assertDecimalEqual(actual, Decimal('206.17'))
+
+    # helpers
 
     def create_order_with_items(self, price_quantity_pairs):
         user = create_user(42)
@@ -52,3 +54,7 @@ class OrderTotalPriceTestCase(TestCase):
             order.add_item(article, quantity)
 
         return order
+
+    def assertDecimalEqual(self, actual, expected):
+        self.assertIs(type(actual), Decimal)
+        self.assertEqual(actual, expected)
