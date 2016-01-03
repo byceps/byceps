@@ -41,20 +41,20 @@ permission_registry.register_enum(AdminDashboardPermission)
 @templated
 def view_global():
     """View dashboard for global entities."""
-    user_count = User.query.count()
-
-    orga_count = orga_admin_service.count_orgas()
-
     brand_count = Brand.query.count()
     party_count = Party.query.count()
 
+    orga_count = orga_admin_service.count_orgas()
+
+    user_count = User.query.count()
+
     return {
-        'user_count': user_count,
+        'brand_count': brand_count,
+        'party_count': party_count,
 
         'orga_count': orga_count,
 
-        'brand_count': brand_count,
-        'party_count': party_count,
+        'user_count': user_count,
     }
 
 

@@ -11,10 +11,10 @@
 {% block body %}
 
   <div class="grid">
-    {{ render_bigstats_cell(user_count, 'Benutzer', icon_name='users') }}
-    {{ render_bigstats_cell(orga_count, 'Organisatoren', icon_name='users') }}
     {{ render_bigstats_cell(brand_count, 'Marken') }}
     {{ render_bigstats_cell(party_count, 'Partys', icon_name='date') }}
+    {{ render_bigstats_cell(orga_count, 'Organisatoren', icon_name='users') }}
+    {{ render_bigstats_cell(user_count, 'Benutzer', icon_name='users') }}
   </div>
 
 {%- endblock body %}
