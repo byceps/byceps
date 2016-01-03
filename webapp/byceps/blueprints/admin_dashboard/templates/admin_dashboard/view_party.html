@@ -6,36 +6,8 @@
 {% set layout_main_raw = True %}
 
 {% block head %}
-    <style>
-      .grid {
-        display: flex;
-        flex-wrap: wrap;
-        margin: -20px 0 0 -20px;
-      }
-      .grid .cell {
-        flex: 0 0 33.3333%;
-        padding: 20px 0 0 20px;
-      }
-
-      .grid .cell .box {
-        position: relative;
-      }
-      .cell-icon {
-        font-size: 5rem;
-        left: 0.25rem;
-        opacity: 0.075;
-        position: absolute;
-        top: 2rem;
-      }
-
-      .bigstats {
-        margin-bottom: 0;
-      }
-      .bigstats figcaption {
-        font-weight: normal;
-      }
-    </style>
-{% endblock %}
+    <link rel="stylesheet" href="{{ url_for('.static', filename='style/admin_dashboard.css') }}"/>
+{%- endblock head %}
 
 {% block body %}
 
