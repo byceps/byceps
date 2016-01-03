@@ -27,3 +27,15 @@ def get_seat_total_per_area(party):
         .join(Seat) \
         .group_by(Area.id) \
         .all())
+
+
+def count_areas_for_party(party):
+    """Return the number of seating areas for that party."""
+    return Area.query.for_party(party).count()
+
+
+def count_seats_for_party(party):
+    """Return the number of seats in seating areas for that party."""
+    return Seat.query \
+        .join(Area).filter(Area.party_id == party.id) \
+        .count()

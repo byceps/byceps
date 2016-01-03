@@ -18,6 +18,7 @@ from ..authorization.registry import permission_registry
 from ..orga_admin import service as orga_admin_service
 from ..party.models import Party
 from ..ticket import service as ticket_service
+from ..seating_admin import service as seating_admin_service
 from ..shop_admin import service as shop_admin_service
 
 from .authorization import AdminDashboardPermission
@@ -42,6 +43,9 @@ def view_party(party_id):
     orga_team_count = len(orga_teams)
     orga_count = sum(len(team.memberships) for team in orga_teams)
 
+    seating_area_count = seating_admin_service.count_areas_for_party(party)
+    seat_count = seating_admin_service.count_seats_for_party(party)
+
     article_count = shop_admin_service.count_articles_for_party(party)
     open_order_count = shop_admin_service.count_open_orders_for_party(party)
     tickets_sold = ticket_service.count_tickets_for_party(party)
@@ -52,6 +56,9 @@ def view_party(party_id):
 
         'orga_count': orga_count,
         'orga_team_count': orga_team_count,
+
+        'seating_area_count': seating_area_count,
+        'seat_count': seat_count,
 
         'article_count': article_count,
         'open_order_count': open_order_count,
