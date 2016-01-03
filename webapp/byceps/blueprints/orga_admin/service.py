@@ -137,3 +137,12 @@ def count_orgas():
     return User.query \
         .join(OrgaFlag) \
         .count()
+
+
+def count_orgas_for_brand(brand):
+    """Return the number of organizers with the organizer flag set for
+    that brand.
+    """
+    return User.query \
+        .join(OrgaFlag).filter(OrgaFlag.brand == brand) \
+        .count()

@@ -14,6 +14,7 @@
 
   <div class="grid">
     {{ render_bigstats_cell(party_count, 'Parties', icon_name='date') }}
+    {{ render_bigstats_cell(orga_count, 'Organisatoren', icon_name='users') }}
     {{ render_bigstats_cell(news_item_count, 'Newsposts veröffentlicht', icon_name='news') }}
     {{ render_bigstats_cell(newsletter_subscriber_count, 'Newsletter-Abonnenten', icon_name='newsletter', color='#008800') }}
     {%- call render_cell('legal') %}
