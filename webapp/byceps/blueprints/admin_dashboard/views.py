@@ -13,13 +13,18 @@ from datetime import date
 from ...util.framework import create_blueprint
 from ...util.templating import templated
 
+from ..brand.models import Brand
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
+from ..board_admin import service as board_admin_service
+from ..news_admin import service as news_admin_service
+from ..newsletter_admin import service as newsletter_admin_service
 from ..orga_admin import service as orga_admin_service
 from ..party.models import Party
 from ..ticket import service as ticket_service
 from ..seating_admin import service as seating_admin_service
 from ..shop_admin import service as shop_admin_service
+from ..terms import service as terms_service
 
 from .authorization import AdminDashboardPermission
 
@@ -28,6 +33,43 @@ blueprint = create_blueprint('admin_dashboard', __name__)
 
 
 permission_registry.register_enum(AdminDashboardPermission)
+
+
+@blueprint.route('/brands/<brand_id>')
+@permission_required(AdminDashboardPermission.view_brand)
+@templated
+def view_brand(brand_id):
+    """View dashboard for that brand."""
+    brand = Brand.query.get_or_404(brand_id)
+
+    party_count = Party.query.for_brand(brand).count()
+
+    news_item_count = news_admin_service.count_items_for_brand(brand)
+
+    newsletter_subscriber_count = newsletter_admin_service \
+        .count_subscribers_for_brand(brand)
+
+    current_terms_version = terms_service.get_current_version(brand)
+
+    board_category_count = board_admin_service.count_categories_for_brand(brand)
+    board_topic_count = board_admin_service.count_topics_for_brand(brand)
+    board_posting_count = board_admin_service.count_postings_for_brand(brand)
+
+    return {
+        'brand': brand,
+
+        'party_count': party_count,
+
+        'news_item_count': news_item_count,
+
+        'newsletter_subscriber_count': newsletter_subscriber_count,
+
+        'current_terms_version': current_terms_version,
+
+        'board_category_count': board_category_count,
+        'board_topic_count': board_topic_count,
+        'board_posting_count': board_posting_count,
+    }
 
 
 @blueprint.route('/parties/<party_id>')

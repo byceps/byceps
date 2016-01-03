@@ -25,3 +25,8 @@
 .bigstats figcaption {
   font-weight: normal;
 }
+
+.hyphenate {
+  -moz-hyphens: auto;
+  hyphens: auto;
+}

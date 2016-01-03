@@ -155,3 +155,10 @@ def count_subscriptions_by_state(subscriptions):
 def get_users_query(ids):
     """Return a query to select the users with the given IDs."""
     return User.query.filter(User.id.in_(ids))
+
+
+def count_subscribers_for_brand(brand):
+    """Return the number of users that are currently subscribed to that
+    brand's newsletter.
+    """
+    return build_query_for_current_subscribers(brand).count()
