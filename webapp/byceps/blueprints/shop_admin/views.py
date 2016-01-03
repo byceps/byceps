@@ -12,7 +12,7 @@ from datetime import datetime
 from decimal import Decimal
 from operator import attrgetter
 
-from flask import current_app, render_template, request, Response, url_for
+from flask import current_app, g, render_template, request, Response, url_for
 
 from ...database import db
 from ...util.framework import create_blueprint, flash_error, flash_success
@@ -428,7 +428,7 @@ def order_cancel(id):
             'der Bezahlstatus kann nicht mehr geändert werden.')
         return redirect_to('.order_view', id=order.id)
 
-    order.cancel(reason)
+    order.cancel(g.current_user, reason)
 
     # Make the reserved quantity of articles available again.
     for item in order.items:
@@ -458,7 +458,7 @@ def order_mark_as_paid(id):
             'der Bezahlstatus kann nicht mehr geändert werden.')
         return redirect_to('.order_view', id=order.id)
 
-    order.mark_as_paid()
+    order.mark_as_paid(g.current_user)
     db.session.commit()
 
     flash_success('Die Bestellung wurde als bezahlt markiert.')

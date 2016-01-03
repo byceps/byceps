@@ -10,8 +10,6 @@ byceps.blueprints.ticket.models
 
 from datetime import datetime
 
-from flask import g
-
 from ...database import BaseQuery, db, generate_uuid
 from ...util.instances import ReprBuilder
 
@@ -21,9 +19,6 @@ from ..user.models import User
 
 
 class TicketQuery(BaseQuery):
-
-    def for_current_party(self):
-        return self.for_party(g.party)
 
     def for_party(self, party):
         return self.join(Category).filter_by(party_id=party.id)

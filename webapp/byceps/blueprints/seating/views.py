@@ -23,7 +23,7 @@ blueprint = create_blueprint('seating', __name__)
 @templated
 def index():
     """List areas."""
-    areas = Area.query.for_current_party().all()
+    areas = Area.query.for_party(g.party).all()
     return {'areas': areas}
 
 
@@ -32,7 +32,7 @@ def index():
 def view_area(slug):
     """View area."""
     area = Area.query \
-        .for_current_party() \
+        .for_party(g.party) \
         .filter_by(slug=slug) \
         .options(db.joinedload('seats').joinedload('category')) \
         .first_or_404()

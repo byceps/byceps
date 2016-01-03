@@ -16,13 +16,13 @@ from .models.sequence import PartySequence, PartySequencePurpose
 from .signals import order_placed
 
 
-def get_article_compilation_for_orderable_articles():
+def get_article_compilation_for_orderable_articles(party):
     """Return a compilation of the articles which can be ordered for
-    the current party, less the ones that are only orderable in a
-    dedicated order.
+    that party, less the ones that are only orderable in a dedicated
+    order.
     """
     orderable_articles = Article.query \
-        .for_current_party() \
+        .for_party(party) \
         .filter_by(not_directly_orderable=False) \
         .filter_by(requires_separate_order=False) \
         .currently_available() \
@@ -150,10 +150,10 @@ def get_orders_placed_by_user(user):
         .all()
 
 
-def has_user_placed_orders(user):
-    """Return `True` if the user has placed orders for the current party."""
+def has_user_placed_orders(user, party):
+    """Return `True` if the user has placed orders for that party."""
     orders_total = Order.query \
-        .for_current_party() \
+        .for_party(party) \
         .filter_by(placed_by=user) \
         .count()
     return orders_total > 0

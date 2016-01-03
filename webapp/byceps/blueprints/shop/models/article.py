@@ -11,7 +11,6 @@ byceps.blueprints.shop.models.article
 from datetime import datetime
 from decimal import Decimal
 
-from flask import g
 from Ranger import Range
 from Ranger.src.Range.Cut import Cut
 
@@ -22,9 +21,6 @@ from ...party.models import Party
 
 
 class ArticleQuery(BaseQuery):
-
-    def for_current_party(self):
-        return self.for_party(g.party)
 
     def for_party(self, party):
         return self.filter_by(party_id=party.id)

@@ -33,7 +33,8 @@ blueprint = create_blueprint('shop', __name__)
 @templated
 def order_form(erroneous_form=None):
     """Show a form to order articles."""
-    article_compilation = service.get_article_compilation_for_orderable_articles()
+    article_compilation = service \
+        .get_article_compilation_for_orderable_articles(g.party)
 
     if article_compilation.is_empty():
         flash_error('Es sind keine Artikel verfügbar.')
@@ -60,7 +61,8 @@ def order_form(erroneous_form=None):
 @login_required
 def order():
     """Order articles."""
-    article_compilation = service.get_article_compilation_for_orderable_articles()
+    article_compilation = service \
+        .get_article_compilation_for_orderable_articles(g.party)
 
     if article_compilation.is_empty():
         flash_error('Es sind keine Artikel verfügbar.')
@@ -108,7 +110,7 @@ def order_single_form(article_id, erroneous_form=None):
             'article': None,
         }
 
-    if service.has_user_placed_orders(user):
+    if service.has_user_placed_orders(user, g.party):
         flash_error('Du kannst keine weitere Bestellung aufgeben.')
         return {
             'form': form,
@@ -146,7 +148,7 @@ def order_single(article_id):
 
     user = g.current_user
 
-    if service.has_user_placed_orders(user):
+    if service.has_user_placed_orders(user, g.party):
         flash_error('Du kannst keine weitere Bestellung aufgeben.')
         return order_single_form(article.id)
 

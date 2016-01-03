@@ -12,7 +12,6 @@ from datetime import datetime
 from decimal import Decimal
 from enum import Enum
 
-from flask import g
 from sqlalchemy.ext.hybrid import hybrid_property
 
 from ....database import BaseQuery, db, generate_uuid
@@ -43,9 +42,6 @@ PaymentState = Enum('PaymentState', ['open', 'canceled', 'paid'])
 
 
 class OrderQuery(BaseQuery):
-
-    def for_current_party(self):
-        return self.for_party(g.party)
 
     def for_party(self, party):
         return self.filter_by(party_id=party.id)
@@ -118,19 +114,19 @@ class Order(db.Model):
         """Return the sum of all items' quantities."""
         return sum(item.quantity for item in self.items)
 
-    def cancel(self, reason):
+    def cancel(self, updated_by, reason):
         """Cancel the order."""
-        self._update_payment_state(PaymentState.canceled)
+        self._update_payment_state(PaymentState.canceled, updated_by)
         self.cancelation_reason = reason
 
-    def mark_as_paid(self):
+    def mark_as_paid(self, updated_by):
         """Mark the order as being paid for."""
-        self._update_payment_state(PaymentState.paid)
+        self._update_payment_state(PaymentState.paid, updated_by)
 
-    def _update_payment_state(self, state):
+    def _update_payment_state(self, state, updated_by):
         self.payment_state = state
         self.payment_state_updated_at = datetime.now()
-        self.payment_state_updated_by = g.current_user
+        self.payment_state_updated_by = updated_by
 
     def collect_articles(self):
         """Return the articles associated with this order."""
