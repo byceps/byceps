@@ -2,17 +2,19 @@
 {% from 'macros/stats.html' import render_bigstats_item %}
 
 
-{%- macro render_cell(icon_name) -%}
+{%- macro render_cell(icon_name=None) -%}
     <div class="cell">
       <div class="box">
+        {%- if icon_name is not none %}
         <div class="cell-icon">{{ render_icon(icon_name) }}</div>
+        {%- endif %}
 {{ caller() }}
       </div>
     </div>
 {%- endmacro %}
 
 
-{%- macro render_bigstats_cell(value, caption, icon_name, color=None) -%}
+{%- macro render_bigstats_cell(value, caption, icon_name=None, color=None) -%}
   {%- call render_cell(icon_name) %}
         <div class="bigstats">
         {{ render_bigstats_item(value, caption, color=color) }}

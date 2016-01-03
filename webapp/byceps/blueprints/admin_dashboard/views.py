@@ -25,6 +25,7 @@ from ..ticket import service as ticket_service
 from ..seating_admin import service as seating_admin_service
 from ..shop_admin import service as shop_admin_service
 from ..terms import service as terms_service
+from ..user.models import User
 
 from .authorization import AdminDashboardPermission
 
@@ -33,6 +34,28 @@ blueprint = create_blueprint('admin_dashboard', __name__)
 
 
 permission_registry.register_enum(AdminDashboardPermission)
+
+
+@blueprint.route('')
+@permission_required(AdminDashboardPermission.view_global)
+@templated
+def view_global():
+    """View dashboard for global entities."""
+    user_count = User.query.count()
+
+    orga_count = orga_admin_service.count_orgas()
+
+    brand_count = Brand.query.count()
+    party_count = Party.query.count()
+
+    return {
+        'user_count': user_count,
+
+        'orga_count': orga_count,
+
+        'brand_count': brand_count,
+        'party_count': party_count,
+    }
 
 
 @blueprint.route('/brands/<brand_id>')
@@ -104,5 +127,6 @@ def view_party(party_id):
 
         'article_count': article_count,
         'open_order_count': open_order_count,
+
         'tickets_sold': tickets_sold,
     }

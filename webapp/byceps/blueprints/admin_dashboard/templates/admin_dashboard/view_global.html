@@ -1,0 +1,20 @@
+{% extends 'layout/base_admin.html' %}
+{% from 'macros/admin_dashboard.html' import render_bigstats_cell %}
+{% set current_page = 'admin_dashboard' %}
+{% set title = 'Dashboard' %}
+{% set layout_main_raw = True %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('.static', filename='style/admin_dashboard.css') }}"/>
+{%- endblock head %}
+
+{% block body %}
+
+  <div class="grid">
+    {{ render_bigstats_cell(user_count, 'Benutzer', icon_name='users') }}
+    {{ render_bigstats_cell(orga_count, 'Organisatoren', icon_name='users') }}
+    {{ render_bigstats_cell(brand_count, 'Marken') }}
+    {{ render_bigstats_cell(party_count, 'Partys', icon_name='date') }}
+  </div>
+
+{%- endblock body %}

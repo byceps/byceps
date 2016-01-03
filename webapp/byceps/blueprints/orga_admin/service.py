@@ -130,3 +130,10 @@ def sort_users_by_next_birthday(users):
                   key=lambda user: (
                     user.detail.days_until_next_birthday,
                     -user.detail.age))
+
+
+def count_orgas():
+    """Return the number of organizers with the organizer flag set."""
+    return User.query \
+        .join(OrgaFlag) \
+        .count()
