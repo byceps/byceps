@@ -8,6 +8,8 @@ byceps.blueprints.seating.views
 :License: Modified BSD, see LICENSE for details.
 """
 
+from flask import g
+
 from ...config import get_ticket_management_enabled
 from ...database import db
 from ...util.framework import create_blueprint
