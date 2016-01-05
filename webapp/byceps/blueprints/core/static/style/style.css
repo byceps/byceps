@@ -459,7 +459,7 @@ main img {
   border: #cccccc solid 1px;
   display: block;
 }
-.avatar .orga-overlay {
+.avatar .orga-badge {
   background-color: rgba(255, 255, 255, 0.5);
   border-top: #cccccc solid 1px;
   bottom: 1px;

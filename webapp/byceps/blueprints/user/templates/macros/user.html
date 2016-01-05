@@ -7,7 +7,7 @@
 <div class="avatar">
   <img src="{{ url_for('user.avatar_image', filename=user.avatar_image_filename) }}" alt="Avatarbild von {{ user.screen_name }}"/>
   {%- if user.is_orga_for_current_party %}
-  <div class="orga-overlay">Organizer</div>
+  <div class="orga-badge">Organizer</div>
   {%- endif %}
 </div>
   {%- endif -%}
