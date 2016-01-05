@@ -1,8 +1,7 @@
 {% extends 'layout/base_admin.html' %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_with_fallback %}
-{% from 'macros/user.html' import render_user_avatar %}
-{% from 'macros/user_admin.html' import render_user_admin_link %}
+{% from 'macros/user_admin.html' import render_orga_avatar_small, render_user_admin_link %}
 {% set current_page = 'orga_admin.teams' %}
 {% set current_page_party = party %}
 {% set title = 'Orga-Teams' %}
@@ -44,17 +43,6 @@
         padding-top: 0.65em;
         text-align: right;
       }
-
-      .members .avatar {
-        border: #cccccc solid 1px;
-        border-radius: 50%;
-        display: block;
-        height: 48px;
-        width: 48px;
-      }
-      .members .avatar img {
-        border: none;
-      }
     </style>
     <script>
       $(function() {
@@ -89,7 +77,7 @@
           {%- for membership in memberships|sort(attribute='user.screen_name') %}
             <li>
               <div>
-                {{ render_user_avatar(membership.user) }}
+                {{ render_orga_avatar_small(membership.user) }}
               </div>
               <div class="details">
                 {{ render_user_admin_link(membership.user) }}<br>

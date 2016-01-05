@@ -2,24 +2,11 @@
 {% from 'macros/datetime.html' import render_date %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_with_fallback %}
-{% from 'macros/user.html' import render_user_avatar %}
-{% from 'macros/user_admin.html' import render_user_admin_link %}
+{% from 'macros/user_admin.html' import render_orga_avatar_small, render_user_admin_link %}
 {% set current_page = 'orga_admin.persons' %}
 {% set title = 'Organisatoren' %}
 
 {% block head %}
-    <style>
-      .avatar {
-        border: #cccccc solid 1px;
-        border-radius: 50%;
-        display: block;
-        height: 56px;
-        width: 56px;
-      }
-      .avatar img {
-        border: none;
-      }
-    </style>
     <script>
       $(function() {
         confirmed_delete_on_click('a.orgaflag-remove', 'Person den Orga-Status entziehen?');
@@ -49,7 +36,7 @@
     <tbody>
       {%- for user in orgas|sort(attribute='screen_name') %}
       <tr>
-        <td>{{ render_user_avatar(user) }}</td>
+        <td>{{ render_orga_avatar_small(user) }}</td>
         <td class="nowrap">
           {{- render_user_admin_link(user) }}<br/>
           {{- render_with_fallback(user.detail.full_name) -}}

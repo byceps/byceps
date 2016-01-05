@@ -1,3 +1,12 @@
 {% macro render_user_admin_link(user) -%}
 <a href="{{ url_for('user_admin.view', id=user.id) }}">{{ user.screen_name }}</a>
 {%- endmacro %}
+
+
+{% macro render_orga_avatar_small(user) %}
+  {%- if user.has_avatar_image %}
+<div class="avatar orga small">
+  <img src="{{ url_for('user.avatar_image', filename=user.avatar_image_filename) }}" alt="Avatarbild von {{ user.screen_name }}"/>
+</div>
+  {%- endif -%}
+{%- endmacro %}

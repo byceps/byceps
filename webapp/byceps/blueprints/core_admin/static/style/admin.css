@@ -148,15 +148,12 @@ main:not(.raw) {
   white-space: nowrap;
 }
 #current-user .avatar {
-  border: #cccccc solid 1px;
-  border-radius: 50%;
   display: block;
   height: 42px;
   margin-right: 10px;
   width: 42px;
 }
 #current-user .avatar img {
-  border: none;
   height: auto;
   max-width: 100%;
 }
@@ -336,4 +333,15 @@ ol.index.fully-linked a:hover {
 }
 #footer:hover {
   opacity: 1;
+}
+
+
+/* avatars */
+
+.avatar.small img {
+  height: 48px;
+  width: 48px;
+}
+.avatar.orga img {
+  border-radius: 50%;
 }
