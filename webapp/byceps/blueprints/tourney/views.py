@@ -16,6 +16,7 @@ from ...util.views import respond_created
 
 from .models import Match
 from . import service
+from . import signals
 
 
 blueprint = create_blueprint('tourney', __name__)
@@ -53,6 +54,8 @@ def match_comment_create(match_id):
     body = request.form['body'].strip()
 
     comment = service.create_match_comment(match, g.current_user, body)
+
+    signals.match_comment_create.send(None, comment=comment)
 
     return url_for('.match_comment_view',
                    match_id=match.id,
