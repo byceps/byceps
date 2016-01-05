@@ -51,7 +51,7 @@
 
   {%- if brand %}
     {%- set navigation = Navigation('Marke')
-        .add_item(url_for('admin_dashboard.view_brand', brand_id=brand.id), 'Dashboard', id='admin_dashboard', required_permission=AdminDashboardPermission.view_brand, icon='dashboard')
+        .add_item(url_for('admin_dashboard.view_brand', brand_id=brand.id), 'Dashboard', id='admin_dashboard_brand', required_permission=AdminDashboardPermission.view_brand, icon='dashboard')
         .add_item(url_for('news_admin.index_for_brand', brand_id=brand.id), 'News', id='news_admin', required_permission=NewsItemPermission.list, icon='news')
         .add_item(url_for('newsletter_admin.view_subscriptions', brand_id=brand.id), 'Newsletter', id='newsletter_admin', required_permission=NewsletterPermission.view_subscriptions, icon='newsletter')
         .add_item(url_for('terms_admin.index_for_brand', brand_id=brand.id), 'AGB', id='terms_admin', required_permission=TermsPermission.list, icon='legal')
@@ -59,7 +59,7 @@
     -%}
   {%- elif party %}
     {%- set navigation = Navigation('Party')
-        .add_item(url_for('admin_dashboard.view_party', party_id=party.id), 'Dashboard', id='admin_dashboard', required_permission=AdminDashboardPermission.view_party, icon='dashboard')
+        .add_item(url_for('admin_dashboard.view_party', party_id=party.id), 'Dashboard', id='admin_dashboard_party', required_permission=AdminDashboardPermission.view_party, icon='dashboard')
         .add_item(url_for('snippet_admin.index_for_party', party_id=party.id), 'Snippets', id='snippet_admin', required_permission=SnippetPermission.list, icon='snippet')
         .add_item(url_for('seating_admin.index_for_party', party_id=party.id), 'Sitzpläne', id='seating_admin', required_permission=SeatingPermission.view, icon='seating-area')
         .add_item(url_for('shop_admin.article_index_for_party', party_id=party.id), 'Shop-Artikel', id='shop_admin.articles', required_permission=ShopArticlePermission.list, icon='shopping-cart')
