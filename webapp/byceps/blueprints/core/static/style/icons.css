@@ -82,11 +82,13 @@ li [class*=" icon-"] {
 .icon-password::before       { content: "\f084"; }
 .icon-payment::before        { content: "\f0d6"; }
 .icon-pending::before        { content: "\f017"; }
+.icon-permission::before     { content: "\f084"; }
 .icon-pin::before            { content: "\f08d"; }
 .icon-published::before      { content: "\f06e"; }
 .icon-quote::before          { content: "\f10d"; }
 .icon-remove::before         { content: "\f00d"; }
 .icon-reply::before          { content: "\f112"; }
+.icon-role::before           { content: "\f0f2"; }
 .icon-search::before         { content: "\f002"; }
 .icon-seating-area::before   { content: "\f279"; }
 .icon-shopping-cart::before  { content: "\f07a"; }
