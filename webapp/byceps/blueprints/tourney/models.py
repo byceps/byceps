@@ -41,12 +41,14 @@ class MatchComment(db.Model):
     created_by = db.relationship(User)
     body = db.Column(db.UnicodeText, nullable=False)
 
+    def __init__(self, match, creator, body):
+        self.match = match
+        self.created_by = creator
+        self.body = body
+
     @classmethod
     def create(cls, match, creator, body):
-        comment = MatchComment(
-            match=match,
-            created_by=creator,
-            body=body)
+        comment = MatchComment(match, creator, body)
         db.session.add(comment)
         db.session.commit()
         return comment
