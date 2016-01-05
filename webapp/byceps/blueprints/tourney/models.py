@@ -10,8 +10,6 @@ byceps.blueprints.tourney.models
 
 from datetime import datetime
 
-from flask import g
-
 from ...database import BaseQuery, db, generate_uuid
 
 from ..user.models import User
@@ -44,10 +42,10 @@ class MatchComment(db.Model):
     body = db.Column(db.UnicodeText, nullable=False)
 
     @classmethod
-    def create(cls, match, body):
+    def create(cls, match, creator, body):
         comment = MatchComment(
             match=match,
-            created_by=g.current_user,
+            created_by=creator,
             body=body)
         db.session.add(comment)
         db.session.commit()
