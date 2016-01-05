@@ -448,29 +448,11 @@ main img {
 
 /* avatars */
 
-.avatar {
-  display: inline-block;
-  max-width: 112px;
-  overflow: hidden;
-  position: relative;
-  width: 112px;
-}
 .avatar img {
   border: #cccccc solid 1px;
   display: block;
 }
 .avatar .orga-badge {
-  background-color: rgba(255, 255, 255, 0.5);
-  border-top: #cccccc solid 1px;
-  bottom: 1px;
-  display: block;
-  font-size: 1rem;
   font-weight: bold;
-  height: 22px;
-  left: 1px;
-  line-height: 22px;
-  position: absolute;
-  text-align: center;
-  text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.2);
-  width: 110px;
+  padding-top: 0.5em;
 }
