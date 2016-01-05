@@ -45,10 +45,3 @@ class MatchComment(db.Model):
         self.match = match
         self.created_by = creator
         self.body = body
-
-    @classmethod
-    def create(cls, match, creator, body):
-        comment = MatchComment(match, creator, body)
-        db.session.add(comment)
-        db.session.commit()
-        return comment

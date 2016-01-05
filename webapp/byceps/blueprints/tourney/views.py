@@ -14,8 +14,8 @@ from ...util.framework import create_blueprint
 from ...util.templating import templated
 from ...util.views import respond_created
 
-from .models import Match, MatchComment
-from .service import get_match_comments
+from .models import Match
+from . import service
 
 
 blueprint = create_blueprint('tourney', __name__)
@@ -31,7 +31,7 @@ def match_comments_view(match_id):
     """Render the comments on a match."""
     match = Match.query.get_or_404(match_id)
 
-    comments = get_match_comments(match)
+    comments = service.get_match_comments(match)
 
     return {
         'comments': comments,
@@ -52,7 +52,7 @@ def match_comment_create(match_id):
 
     body = request.form['body'].strip()
 
-    comment = MatchComment.create(match, g.current_user, body)
+    comment = service.create_match_comment(match, g.current_user, body)
 
     return url_for('.match_comment_view',
                    match_id=match.id,

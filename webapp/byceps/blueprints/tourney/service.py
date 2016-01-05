@@ -22,3 +22,11 @@ def get_match_comments(match):
         ) \
         .order_by(MatchComment.created_at) \
         .all()
+
+
+def create_match_comment(match, creator, body):
+    """Create a comment to a match."""
+    match_comment = MatchComment(match, creator, body)
+    db.session.add(match_comment)
+    db.session.commit()
+    return match_comment
