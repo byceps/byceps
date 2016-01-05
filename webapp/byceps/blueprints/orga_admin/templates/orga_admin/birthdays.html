@@ -28,7 +28,7 @@
 
   <ol class="birthdays">
   {%- for user in orgas %}
-    {%- set is_today = user.detail.is_birthday_today %}
+    {%- with is_today = user.detail.is_birthday_today %}
     <li{% if is_today %} class="hastoday"{% elif user.detail.days_until_next_birthday > 14 %} class="dimmed"{% endif %}>
       {{ render_user_admin_link(user) }}
       {% if is_today %}{{ render_icon('birthday') }}{% endif %}
@@ -36,6 +36,7 @@
       wird {{ render_time_element(user.detail.date_of_birth, relative_days_label) }}
       {{ render_random_age_adjective() }} {{ user.detail.age if is_today else user.detail.age + 1 }} Jahre alt.
     </li>
+    {%- endwith %}
   {%- endfor %}
   </ol>
 
