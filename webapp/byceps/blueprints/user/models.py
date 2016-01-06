@@ -15,7 +15,7 @@ from operator import attrgetter
 from pathlib import Path
 from uuid import UUID
 
-from flask import current_app, g
+from flask import current_app
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
 from werkzeug.security import check_password_hash, \
@@ -68,8 +68,7 @@ class AnonymousUser(object):
     def is_orga_for_any_brand(self):
         return False
 
-    @property
-    def is_orga_for_current_party(self):
+    def is_orga_for_party(self, party):
         return False
 
     def __eq__(self, other):
@@ -239,14 +238,13 @@ class User(db.Model):
     def is_orga_for_any_brand(self):
         return bool(self.orga_flags)
 
-    @property
-    def is_orga_for_current_party(self):
+    def is_orga_for_party(self, party):
         if get_site_mode().is_admin():
             # Current party is not defined in admin mode.
             return False
 
         parties = {ms.orga_team.party for ms in self.orga_team_memberships}
-        return g.party in parties
+        return party in parties
 
     def __eq__(self, other):
         return (other is not None) and (self.id == other.id)
