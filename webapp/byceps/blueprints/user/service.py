@@ -14,6 +14,28 @@ import json
 from .models import AnonymousUser, Country, User
 
 
+def authenticate(screen_name, password):
+    """Try to authenticate the user.
+
+    Return the associated user object on success, or `None` on failure.
+    """
+    user = User.query.filter_by(screen_name=screen_name).first()
+
+    if user is None:
+        # User name is unknown.
+        return
+
+    if not user.is_password_valid(password):
+        # Password does not match.
+        return
+
+    if not user.is_active:
+        # User account is disabled.
+        return
+
+    return user
+
+
 def load_user(id, auth_token):
     """Load the user with that ID.
 

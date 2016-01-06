@@ -129,29 +129,6 @@ class User(db.Model):
         """Generate and store a new authentication token."""
         self.auth_token = generate_uuid()
 
-    @classmethod
-    def authenticate(cls, screen_name, password):
-        """Try to authenticate the user.
-
-        Return the associated user object on success, or `None` on
-        failure.
-        """
-        user = cls.query.filter_by(screen_name=screen_name).first()
-
-        if user is None:
-            # User name is unknown.
-            return
-
-        if not user.is_password_valid(password):
-            # Password does not match.
-            return
-
-        if not user.is_active:
-            # User account is disabled.
-            return
-
-        return user
-
     @property
     def is_anonymous(self):
         return False

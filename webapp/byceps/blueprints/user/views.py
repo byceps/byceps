@@ -554,7 +554,7 @@ def login():
         abort(403)
 
     # Verify credentials.
-    user = User.authenticate(screen_name, password)
+    user = service.authenticate(screen_name, password)
     if user is None:
         # Authentication failed.
         abort(403)
