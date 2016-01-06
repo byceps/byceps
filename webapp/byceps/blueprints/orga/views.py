@@ -8,10 +8,12 @@ byceps.blueprints.orga.views
 :License: Modified BSD, see LICENSE for details.
 """
 
+from flask import g
+
 from ...util.framework import create_blueprint
 from ...util.templating import templated
 
-from .service import get_team_memberships_for_current_party
+from . import service
 
 
 blueprint = create_blueprint('orga', __name__)
@@ -21,5 +23,5 @@ blueprint = create_blueprint('orga', __name__)
 @templated
 def index():
     """List organizers."""
-    memberships = get_team_memberships_for_current_party()
+    memberships = get_team_memberships_for_party(g.party)
     return {'memberships': memberships}

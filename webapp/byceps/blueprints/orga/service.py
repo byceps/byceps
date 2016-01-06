@@ -8,16 +8,14 @@ byceps.blueprints.orga.service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from flask import g
-
 from ...database import db
 
 from .models import Membership
 
 
-def get_team_memberships_for_current_party():
+def get_team_memberships_for_party(party):
     return Membership.query \
-        .for_party(g.party) \
+        .for_party(party) \
         .options(
             db.joinedload('orga_team'),
             db.joinedload('user').load_only('id', 'screen_name', 'avatar_image_created_at', '_avatar_image_type'),
@@ -27,9 +25,9 @@ def get_team_memberships_for_current_party():
         .all()
 
 
-def find_orga_team_membership_for_current_party(user):
-    """Return the user's membership in an orga team of the current party."""
+def find_orga_team_membership_for_party(user, party):
+    """Return the user's membership in an orga team of that party."""
     return Membership.query \
         .filter_by(user=user) \
-        .for_party(g.party) \
+        .for_party(party) \
         .one_or_none()

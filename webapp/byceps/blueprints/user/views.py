@@ -27,7 +27,7 @@ from ...util.views import redirect_to, respond_no_content
 from ..authorization.models import Role
 from ..newsletter.models import Subscription as NewsletterSubscription, \
     SubscriptionState as NewsletterSubscriptionState
-from ..orga.service import find_orga_team_membership_for_current_party
+from ..orga import service as orga_service
 from ..terms import service as terms_service
 from ..ticket.service import find_ticket_for_user, get_attended_parties
 from ..verification_token import service as verification_token_service
@@ -58,7 +58,7 @@ def view(id):
     """Show a user's profile."""
     user = find_user_by_id(id)
 
-    orga_team_membership = find_orga_team_membership_for_current_party(user)
+    orga_team_membership = orga_service.find_orga_team_membership_for_party(user, g.party)
 
     current_party_ticket = find_ticket_for_user(user, g.party)
 
