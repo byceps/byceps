@@ -8,7 +8,7 @@ byceps.blueprints.snippet.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from flask import abort
+from flask import abort, g
 
 from ...util.framework import create_blueprint
 
@@ -26,7 +26,8 @@ def view_latest_by_name(name):
     # TODO: Fetch snippet via mountpoint
     # endpoint suffix != snippet name
     try:
-        current_version = get_current_version_of_snippet_with_name(name)
+        current_version = get_current_version_of_snippet_with_name(g.party,
+                                                                   name)
     except SnippetNotFound:
         abort(404)
 

@@ -12,7 +12,7 @@ import sys
 import traceback
 import warnings
 
-from flask import abort, render_template, url_for
+from flask import abort, g, render_template, url_for
 from jinja2 import TemplateNotFound
 
 from ...util.templating import get_variable_value, load_template
@@ -60,7 +60,8 @@ def render_snippet_as_partial(name, *, ignore_if_unknown=False):
     return the result.
     """
     try:
-        current_version = get_current_version_of_snippet_with_name(name)
+        current_version = get_current_version_of_snippet_with_name(g.party,
+                                                                   name)
     except SnippetNotFound as e:
         if ignore_if_unknown:
             return ''

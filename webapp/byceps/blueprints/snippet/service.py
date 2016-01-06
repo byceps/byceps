@@ -8,19 +8,20 @@ byceps.blueprints.snippet.service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from flask import g
 from sqlalchemy.orm.exc import NoResultFound
 
 from .models.snippet import CurrentVersionAssociation, Snippet, SnippetVersion
 
 
-def get_current_version_of_snippet_with_name(name):
-    """Return the current version of the snippet with that name."""
+def get_current_version_of_snippet_with_name(party, name):
+    """Return the current version of the snippet with that name for that
+    party.
+    """
     try:
         return SnippetVersion.query \
             .join(CurrentVersionAssociation) \
             .join(Snippet) \
-                .filter(Snippet.party == g.party) \
+                .filter(Snippet.party == party) \
                 .filter(Snippet.name == name) \
             .one()
     except NoResultFound:
