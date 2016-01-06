@@ -12,20 +12,6 @@ from functools import wraps
 
 from flask import abort, g
 
-from ...util.framework import flash_notice
-from ...util.views import redirect_to
-
-
-def login_required(func):
-    """Ensure the current user has logged in."""
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        if not g.current_user.is_active:
-            flash_notice('Bitte melde dich an.')
-            return redirect_to('user.login_form')
-        return func(*args, **kwargs)
-    return wrapper
-
 
 def permission_required(permission):
     """Ensure the current user has the given permission."""

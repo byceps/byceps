@@ -15,7 +15,7 @@ from ...util.framework import create_blueprint, flash_error, flash_success
 from ...util.templating import templated
 from ...util.views import redirect_to
 
-from ..authorization.decorators import login_required
+from ..authentication.decorators import login_required
 from ..user.service import get_country_names
 
 from .forms import assemble_articles_order_form, OrderForm
