@@ -39,6 +39,7 @@ from .forms import AvatarImageUpdateForm, DetailsForm, \
 from .models import User
 from .session import UserSession
 from . import service
+from .service import AuthenticationFailed
 from . import signals
 
 
@@ -554,9 +555,9 @@ def login():
         abort(403)
 
     # Verify credentials.
-    user = service.authenticate(screen_name, password)
-    if user is None:
-        # Authentication failed.
+    try:
+        user = service.authenticate(screen_name, password)
+    except AuthenticationFailed:
         abort(403)
 
     in_admin_mode = get_site_mode().is_admin()

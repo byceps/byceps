@@ -14,24 +14,29 @@ import json
 from .models import AnonymousUser, Country, User
 
 
+class AuthenticationFailed(Exception):
+    pass
+
+
 def authenticate(screen_name, password):
     """Try to authenticate the user.
 
-    Return the associated user object on success, or `None` on failure.
+    Return the associated user object on success, or raise an exception
+    on failure.
     """
     user = User.query.filter_by(screen_name=screen_name).first()
 
     if user is None:
         # User name is unknown.
-        return
+        raise AuthenticationFailed()
 
     if not user.is_password_valid(password):
         # Password does not match.
-        return
+        raise AuthenticationFailed()
 
     if not user.is_active:
         # User account is disabled.
-        return
+        raise AuthenticationFailed()
 
     return user
 
