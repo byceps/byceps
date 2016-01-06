@@ -24,12 +24,12 @@
             <span class="intro">Angemeldet als</span>
             <strong><a href="{{ url_for('user.view_current') }}">{{ render_icon('user') }} {{ g.current_user.screen_name }}</a></strong>
             <span class="actions inline">
-              <a id="logout" href="{{ url_for('user.logout', _method='POST') }}" title="abmelden">{{ render_icon('log-out') }}</a>
+              <a id="logout" href="{{ url_for('authentication.logout', _method='POST') }}" title="abmelden">{{ render_icon('log-out') }}</a>
             </span>
           </div>
         {%- else -%}
           <div>
-            {{ render_icon('log-in') }} <a href="{{ url_for('user.login_form') }}">Anmelden</a>
+            {{ render_icon('log-in') }} <a href="{{ url_for('authentication.login_form') }}">Anmelden</a>
           </div>
         {%- endif %}
         </div>

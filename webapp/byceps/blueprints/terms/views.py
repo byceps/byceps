@@ -76,4 +76,4 @@ def consent(version_id, token):
     db.session.commit()
 
     flash_success('Du hast die AGB akzeptiert.')
-    return redirect_to('user.login_form')
+    return redirect_to('authentication.login_form')

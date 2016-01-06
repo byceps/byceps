@@ -11,9 +11,9 @@ byceps.blueprints.user.views
 from datetime import datetime
 from operator import attrgetter
 
-from flask import abort, current_app, g, request, session, url_for
+from flask import abort, current_app, g, request, url_for
 
-from ...config import get_site_mode, get_user_registration_enabled
+from ...config import get_user_registration_enabled
 from ...database import db
 from ... import email
 from ...util.framework import create_blueprint, flash_error, flash_notice, \
@@ -24,8 +24,6 @@ from ...util.templating import templated
 from ...util import upload
 from ...util.views import redirect_to, respond_no_content
 
-from ..authentication.forms import LoginForm
-from ..authentication.session import UserSession
 from ..authorization.models import Role
 from ..newsletter.models import Subscription as NewsletterSubscription, \
     SubscriptionState as NewsletterSubscriptionState
@@ -39,7 +37,6 @@ from .forms import AvatarImageUpdateForm, DetailsForm, \
     ResetPasswordForm, UpdatePasswordForm, UserCreateForm
 from .models import User
 from . import service
-from .service import AuthenticationFailed
 from . import signals
 
 
@@ -47,11 +44,6 @@ MAXIMUM_AVATAR_IMAGE_DIMENSIONS = Dimensions(110, 110)
 
 
 blueprint = create_blueprint('user', __name__)
-
-
-@blueprint.before_app_request
-def before_request():
-    g.current_user = UserSession.get_user()
 
 
 @blueprint.route('/<uuid:id>')
@@ -257,7 +249,7 @@ def confirm_email_address(token):
         user.screen_name)
     signals.email_address_confirmed.send(None, user=user)
 
-    return redirect_to('.login_form')
+    return redirect_to('authentication.login_form')
 
 
 @blueprint.route('/me/password/reset/request')
@@ -346,7 +338,7 @@ def password_reset(token):
     db.session.commit()
 
     flash_success('Das Passwort wurde geändert.')
-    return redirect_to('.login_form')
+    return redirect_to('authentication.login_form')
 
 
 def _verify_password_reset_token(verification_token ):
@@ -520,77 +512,6 @@ def delete_avatar_image():
 
     flash_success('Das Avatarbild wurde entfernt.')
     return [('Location', url_for('.view_current'))]
-
-
-@blueprint.route('/login')
-@templated
-def login_form():
-    """Show login form."""
-    logged_in = g.current_user.is_active
-    if logged_in:
-        flash_error('Du bist bereits als Benutzer "{}" angemeldet.', g.current_user.screen_name)
-
-    form = LoginForm()
-    user_registration_enabled = get_user_registration_enabled()
-    return {
-        'logged_in': logged_in,
-        'form': form,
-        'user_registration_enabled': user_registration_enabled,
-    }
-
-
-@blueprint.route('/login', methods=['POST'])
-@respond_no_content
-def login():
-    """Allow the user to authenticate with e-mail address and password."""
-    if g.current_user.is_active:
-        return
-
-    form = LoginForm(request.form)
-
-    screen_name = form.screen_name.data
-    password = form.password.data
-    permanent = form.permanent.data
-    if not all([screen_name, password]):
-        abort(403)
-
-    # Verify credentials.
-    try:
-        user = service.authenticate(screen_name, password)
-    except AuthenticationFailed:
-        abort(403)
-
-    in_admin_mode = get_site_mode().is_admin()
-
-    if in_admin_mode and not user.is_orga_for_any_brand:
-        # Authenticated user must be an orga to be allowed to enter the
-        # admin area but isn't.
-        abort(403)
-
-    if not in_admin_mode:
-        terms_version = terms_service.get_current_version(g.party.brand)
-        if not terms_service.has_user_accepted_version(user, terms_version):
-            verification_token = verification_token_service \
-                .find_or_create_for_terms_consent(user)
-            consent_form_url = url_for('terms.consent_form',
-                                       version_id=terms_version.id,
-                                       token=verification_token.token)
-            flash_notice(
-                'Bitte <a href="{}">akzeptiere zunächst die aktuellen AGB</a>.'
-                    .format(consent_form_url), text_is_safe=True)
-            return
-
-    # Authorization succeeded.
-    UserSession.start(user, permanent=permanent)
-    flash_success('Erfolgreich eingeloggt als {}.', user.screen_name)
-
-
-@blueprint.route('/logout', methods=['POST'])
-@respond_no_content
-def logout():
-    """Log out user by deleting the corresponding cookie."""
-    UserSession.end()
-    flash_success('Erfolgreich ausgeloggt.')
 
 
 def find_user_by_id(id):

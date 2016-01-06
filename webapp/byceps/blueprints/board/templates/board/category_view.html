@@ -49,7 +49,7 @@
   <div style="text-align: right;">
     {%- set current_user_may_create_topic =  g.current_user.has_permission(BoardTopicPermission.create) %}
     {%- if not current_user_may_create_topic %}
-    <small style="margin-right: 1em;">Du musst <a href="{{ url_for('user.login_form') }}">angemeldet</a> sein um Themen hinzufügen zu können.</small>
+    <small style="margin-right: 1em;">Du musst <a href="{{ url_for('authentication.login_form') }}">angemeldet</a> sein um Themen hinzufügen zu können.</small>
     {%- endif %}
     <ol class="actions">
     {%- if current_user_may_create_topic %}
