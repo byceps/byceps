@@ -129,7 +129,8 @@ def create():
     newsletter_subscription_state = NewsletterSubscriptionState.requested \
         if subscribe_to_newsletter \
         else NewsletterSubscriptionState.declined
-    newsletter_subscription = NewsletterSubscription(user, newsletter_subscription_state)
+    newsletter_subscription = NewsletterSubscription(user, g.party.brand,
+                                                     newsletter_subscription_state)
     db.session.add(newsletter_subscription)
 
     board_user_role = Role.query.get('board_user')

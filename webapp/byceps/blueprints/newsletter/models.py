@@ -11,7 +11,6 @@ byceps.blueprints.newsletter.models
 from datetime import datetime
 from enum import Enum
 
-from flask import g
 from sqlalchemy.ext.hybrid import hybrid_property
 
 from ...database import db
@@ -37,9 +36,9 @@ class Subscription(db.Model):
     expressed_at = db.Column(db.DateTime, default=datetime.now, primary_key=True)
     _state = db.Column('state', db.Unicode(20), nullable=False)
 
-    def __init__(self, user, state, *, brand=None):
+    def __init__(self, user, brand, state):
         self.user = user
-        self.brand = brand if brand is not None else g.party.brand
+        self.brand = brand
         self.state = state
 
     @hybrid_property

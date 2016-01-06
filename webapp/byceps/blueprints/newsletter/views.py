@@ -46,7 +46,7 @@ def subscription_update():
     form = SubscriptionForm(request.form)
 
     state = SubscriptionState[form.state.data]
-    subscription = Subscription(user, state)
+    subscription = Subscription(user, g.party.brand, state)
     db.session.add(subscription)
     db.session.commit()
 
