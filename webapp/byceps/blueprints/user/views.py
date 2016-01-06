@@ -29,7 +29,7 @@ from ..newsletter.models import Subscription as NewsletterSubscription, \
     SubscriptionState as NewsletterSubscriptionState
 from ..orga import service as orga_service
 from ..terms import service as terms_service
-from ..ticket.service import find_ticket_for_user, get_attended_parties
+from ..ticket import service as ticket_service
 from ..verification_token import service as verification_token_service
 
 from .forms import AvatarImageUpdateForm, DetailsForm, LoginForm, \
@@ -60,9 +60,9 @@ def view(id):
 
     orga_team_membership = orga_service.find_orga_team_membership_for_party(user, g.party)
 
-    current_party_ticket = find_ticket_for_user(user, g.party)
+    current_party_ticket = ticket_service.find_ticket_for_user(user, g.party)
 
-    attended_parties = get_attended_parties(user)
+    attended_parties = ticket_service.get_attended_parties(user)
     attended_parties.sort(key=attrgetter('starts_at'), reverse=True)
 
     return {
