@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-byceps.blueprints.user.session
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.authentication.session
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2016 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -10,7 +10,7 @@ byceps.blueprints.user.session
 
 from flask import session
 
-from .service import load_user
+from ..user.service import load_user
 
 
 KEY_USER_ID = 'user_id'

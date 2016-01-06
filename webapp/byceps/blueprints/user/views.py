@@ -25,6 +25,7 @@ from ...util import upload
 from ...util.views import redirect_to, respond_no_content
 
 from ..authentication.forms import LoginForm
+from ..authentication.session import UserSession
 from ..authorization.models import Role
 from ..newsletter.models import Subscription as NewsletterSubscription, \
     SubscriptionState as NewsletterSubscriptionState
@@ -37,7 +38,6 @@ from .forms import AvatarImageUpdateForm, DetailsForm, \
     RequestConfirmationEmailForm, RequestPasswordResetForm, \
     ResetPasswordForm, UpdatePasswordForm, UserCreateForm
 from .models import User
-from .session import UserSession
 from . import service
 from .service import AuthenticationFailed
 from . import signals
