@@ -1,5 +1,5 @@
 {% extends ('layout/base_admin.html' if g.site_mode.is_admin() else 'layout/base.html') %}
-{% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
+{% from 'macros/forms.html' import form_buttons, form_field, form_fieldset, form_supplement %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'user' %}
 {% set title = 'Avatar hochladen' %}
@@ -11,6 +11,12 @@
   <form action="{{ url_for('.avatar_image_update') }}" method="post" enctype="multipart/form-data">
     {%- call form_fieldset() %}
       {{ form_field(form.image, maxlength=500000, accept='image/*', required='required') }}
+      {%- call form_supplement() %}
+        <small class="dimmed">
+          Erlaubte Formate: {{ avatar_allowed_types|sort|join(', ') }}<br>
+          Maximale Bildgröße: {{ avatar_maximum_dimensions|join(' &times; ')|safe }} Pixel
+        </small>
+      {%- endcall %}
     {%- endcall %}
 
     {{ form_buttons('%s Bild hochladen'|format(render_icon('upload'))|safe) }}

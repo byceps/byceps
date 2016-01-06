@@ -19,7 +19,7 @@ from ... import email
 from ...util.framework import create_blueprint, flash_error, flash_notice, \
     flash_success
 from ...util.image import create_thumbnail, Dimensions, \
-    guess_type as guess_image_type, read_dimensions
+    guess_type as guess_image_type, ImageType, read_dimensions
 from ...util.templating import templated
 from ...util import upload
 from ...util.views import redirect_to, respond_no_content
@@ -384,7 +384,10 @@ def password_update():
 @templated
 def view_current():
     user = get_current_user_or_404()
-    newsletter_subscription_state = NewsletterSubscription.get_state_for_user(user)
+
+    newsletter_subscription_state \
+        = NewsletterSubscription.get_state_for_user(user)
+
     return {
         'user': user,
         'newsletter_subscription_state': newsletter_subscription_state,
@@ -435,9 +438,15 @@ def details_update():
 def avatar_image_update_form():
     """Show a form to update the current user's avatar image."""
     get_current_user_or_404()
+
     form = AvatarImageUpdateForm()
+
+    image_type_names = frozenset(type.name.upper() for type in ImageType)
+
     return {
         'form': form,
+        'avatar_allowed_types': image_type_names,
+        'avatar_maximum_dimensions': MAXIMUM_AVATAR_IMAGE_DIMENSIONS,
     }
 
 
