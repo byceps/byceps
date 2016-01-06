@@ -92,9 +92,3 @@ class UpdatePasswordForm(ResetPasswordForm):
         if not g.current_user.is_password_valid(field.data):
             raise ValidationError(
                 'Das eingegebene Passwort stimmt nicht mit dem bisherigen überein.')
-
-
-class LoginForm(LocalizedForm):
-    screen_name = StringField('Benutzername', [DataRequired()])
-    password = PasswordField('Passwort', [DataRequired()])
-    permanent = BooleanField()
