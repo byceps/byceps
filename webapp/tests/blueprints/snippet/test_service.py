@@ -16,7 +16,6 @@ from testfixtures.snippet import create_current_version_association, \
 from testfixtures.user import create_user
 
 from tests.base import AbstractAppTestCase
-from tests.helpers import current_party_set
 
 
 class GetCurrentVersionOfSnippetTestCase(AbstractAppTestCase):
@@ -33,14 +32,12 @@ class GetCurrentVersionOfSnippetTestCase(AbstractAppTestCase):
         snippet_info2014_version = self.create_snippet_with_version(self.party2014, 'info', '2014-10-23 14:55:00')
         snippet_info2015_version = self.create_snippet_with_version(self.party2015, 'info', '2014-10-23 18:21:00')
 
-        with current_party_set(self.app, self.party2014), self.app.app_context():
-            actual = get_current_version_of_snippet_with_name('info')
-            self.assertEqual(actual, snippet_info2014_version)
+        actual = get_current_version_of_snippet_with_name(self.party2014, 'info')
+        self.assertEqual(actual, snippet_info2014_version)
 
     def test_unknown_name(self):
-        with current_party_set(self.app, self.party2014), self.app.app_context():
-            with self.assertRaises(SnippetNotFound):
-                get_current_version_of_snippet_with_name('totally-unknown-snippet-name')
+        with self.assertRaises(SnippetNotFound):
+            get_current_version_of_snippet_with_name(self.party2014, 'totally-unknown-snippet-name')
 
     # -------------------------------------------------------------------- #
     # helpers
