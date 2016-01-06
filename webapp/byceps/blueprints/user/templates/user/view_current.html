@@ -6,6 +6,10 @@
 {% set current_page = 'user' %}
 {% set title = 'Deine Daten' %}
 
+{% block head %}
+    <script src="{{ url_for('.static', filename='behavior/user.js') }}"></script>
+{% endblock %}
+
 {% block body %}
 
   <h1>{{ title }}</h1>
