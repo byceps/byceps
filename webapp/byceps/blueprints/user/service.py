@@ -11,7 +11,28 @@ byceps.blueprints.user.service
 import codecs
 import json
 
-from .models import Country
+from .models import AnonymousUser, Country, User
+
+
+def load_user(id, auth_token):
+    """Load the user with that ID.
+
+    Fall back to the anonymous user if the ID is unknown, the account is
+    not enabled, or the auth token is invalid.
+    """
+    if id is None:
+        return AnonymousUser()
+
+    user = User.query.get(id)
+    if (user is None) or not user.enabled:
+        return AnonymousUser()
+
+    # Validate auth token.
+    if not auth_token or auth_token != str(user.auth_token):
+        # Bad auth token, not logging in.
+        return AnonymousUser()
+
+    return user
 
 
 def get_countries(app):

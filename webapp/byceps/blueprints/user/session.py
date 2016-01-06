@@ -10,7 +10,7 @@ byceps.blueprints.user.session
 
 from flask import session
 
-from .models import User
+from .service import load_user
 
 
 KEY_USER_ID = 'user_id'
@@ -38,7 +38,7 @@ class UserSession(object):
     @classmethod
     def get_user(cls):
         """Return the current user, falling back to the anonymous user."""
-        return User.load(cls.get_user_id(), cls.get_auth_token())
+        return load_user(cls.get_user_id(), cls.get_auth_token())
 
     @classmethod
     def get_user_id(cls):
