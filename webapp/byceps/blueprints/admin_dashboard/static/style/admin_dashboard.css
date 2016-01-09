@@ -6,10 +6,13 @@
 .grid .cell {
   flex: 0 0 33.3333%;
   padding: 20px 0 0 20px;
+  max-width: 33.3333%;
 }
 
 .grid .cell .box {
+  height: 100%;
   position: relative;
+  overflow: hidden;
 }
 .cell-icon {
   font-size: 5rem;
