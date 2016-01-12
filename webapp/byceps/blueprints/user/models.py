@@ -91,6 +91,7 @@ class User(db.Model):
     password_hash = db.Column(db.Unicode(66))
     auth_token = db.Column(db.Uuid)
     enabled = db.Column(db.Boolean, default=False, nullable=False)
+    deleted = db.Column(db.Boolean, default=False, nullable=False)
     avatar_image_created_at = db.Column(db.DateTime)
     _avatar_image_type = db.Column(db.Unicode(4))
     legacy_id = db.Column(db.Integer)

@@ -52,6 +52,9 @@ def view(id):
     """Show a user's profile."""
     user = find_user_by_id(id)
 
+    if user.deleted:
+        abort(410, 'User account has been deleted.')
+
     orga_team_membership = orga_service.find_orga_team_membership_for_party(user, g.party)
 
     current_party_ticket = ticket_service.find_ticket_for_user(user, g.party)

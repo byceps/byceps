@@ -1,5 +1,9 @@
 {% macro render_user_link(user) -%}
+  {%- if user.deleted -%}
+{{ user.screen_name|dim }}
+  {%- else -%}
 <a href="{{ url_for('user.view', id=user.id) }}">{{ user.screen_name }}</a>
+  {%- endif -%}
 {%- endmacro %}
 
 {% macro render_user_avatar(user) %}
