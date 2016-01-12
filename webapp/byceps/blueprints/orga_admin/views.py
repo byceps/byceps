@@ -30,9 +30,6 @@ from .authorization import OrgaBirthdayPermission, OrgaDetailPermission, \
 from .forms import MembershipCreateForm, MembershipUpdateForm, \
     OrgaFlagCreateForm, OrgaTeamCreateForm
 from . import service
-from .service import collect_orgas_with_next_birthdays, \
-    get_organizers_for_brand, get_teams_for_party, \
-    get_unassigned_orgas_for_party
 
 
 blueprint = create_blueprint('orga_admin', __name__)
@@ -61,7 +58,9 @@ def persons():
 def persons_for_brand(brand_id):
     """List organizers for the brand with details."""
     brand = Brand.query.get_or_404(brand_id)
-    orgas = get_organizers_for_brand(brand)
+
+    orgas = service.get_organizers_for_brand(brand)
+
     return {
         'brand': brand,
         'orgas': orgas,
@@ -74,7 +73,9 @@ def persons_for_brand(brand_id):
 def create_orgaflag_form(brand_id):
     """Show form to give the organizer flag to a user."""
     brand = Brand.query.get_or_404(brand_id)
+
     form = OrgaFlagCreateForm()
+
     return {
         'brand': brand,
         'form': form,
@@ -161,7 +162,7 @@ def export_persons(brand_id):
         }
 
     brand = Brand.query.get_or_404(brand_id)
-    orgas = get_organizers_for_brand(brand)
+    orgas = service.get_organizers_for_brand(brand)
     orgas.sort(key=attrgetter('screen_name'))
     rows = map(to_dict, orgas)
     return serialize_to_csv(field_names, rows)
@@ -263,8 +264,8 @@ def membership_create_form(party_id, erroneous_form=None):
     party = Party.query.get_or_404(party_id)
 
     form = erroneous_form if erroneous_form else MembershipCreateForm()
-    form.set_user_choices(get_unassigned_orgas_for_party(party))
-    form.set_orga_team_choices(get_teams_for_party(party))
+    form.set_user_choices(service.get_unassigned_orgas_for_party(party))
+    form.set_orga_team_choices(service.get_teams_for_party(party))
 
     return {
         'form': form,
@@ -279,8 +280,8 @@ def membership_create(party_id):
     party = Party.query.get_or_404(party_id)
 
     form = MembershipCreateForm(request.form)
-    form.set_user_choices(get_unassigned_orgas_for_party(party))
-    form.set_orga_team_choices(get_teams_for_party(party))
+    form.set_user_choices(service.get_unassigned_orgas_for_party(party))
+    form.set_orga_team_choices(service.get_teams_for_party(party))
 
     if not form.validate():
         return membership_create_form(party_id, form)
@@ -307,10 +308,11 @@ def membership_create(party_id):
 def membership_update_form(id, erroneous_form=None):
     """Show form to update a membership."""
     membership = Membership.query.get_or_404(id)
+    teams = service.get_teams_for_party(membership.orga_team.party)
 
     form = erroneous_form if erroneous_form \
            else MembershipUpdateForm(obj=membership)
-    form.set_orga_team_choices(get_teams_for_party(membership.orga_team.party))
+    form.set_orga_team_choices(teams)
 
     return {
         'form': form,
@@ -323,9 +325,10 @@ def membership_update_form(id, erroneous_form=None):
 def membership_update(id):
     """Update a membership."""
     membership = Membership.query.get_or_404(id)
+    teams = service.get_teams_for_party(membership.orga_team.party)
 
     form = MembershipUpdateForm(request.form)
-    form.set_orga_team_choices(get_teams_for_party(membership.orga_team.party))
+    form.set_orga_team_choices(teams)
 
     if not form.validate():
         return membership_update_form(id, form)
@@ -362,7 +365,8 @@ def membership_remove(id):
 @permission_required(OrgaBirthdayPermission.list)
 @templated
 def birthdays():
-    orgas = list(collect_orgas_with_next_birthdays())
+    orgas = list(service.collect_orgas_with_next_birthdays())
+
     return {
         'orgas': orgas,
     }
