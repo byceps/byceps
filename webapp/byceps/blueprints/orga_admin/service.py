@@ -8,6 +8,8 @@ byceps.blueprints.orga_admin.service
 :License: Modified BSD, see LICENSE for details.
 """
 
+from itertools import islice
+
 from ...database import db
 
 from ..brand.models import Brand
@@ -109,10 +111,16 @@ def get_teams_for_party(party):
         .all()
 
 
-def collect_orgas_with_next_birthdays():
-    """Return the next birthdays of organizers, sorted by month and day."""
+def collect_orgas_with_next_birthdays(*, limit=None):
+    """Yield the next birthdays of organizers, sorted by month and day."""
     orgas_with_birthdays = collect_orgas_with_birthdays()
-    return sort_users_by_next_birthday(orgas_with_birthdays)
+
+    sorted_orgas = sort_users_by_next_birthday(orgas_with_birthdays)
+
+    if limit is not None:
+        sorted_orgas = islice(sorted_orgas, limit)
+
+    yield from sorted_orgas
 
 
 def collect_orgas_with_birthdays():

@@ -365,7 +365,7 @@ def membership_remove(id):
 @permission_required(OrgaBirthdayPermission.list)
 @templated
 def birthdays():
-    orgas = list(service.collect_orgas_with_next_birthdays())
+    orgas = list(service.collect_orgas_with_next_birthdays(limit=5))
 
     return {
         'orgas': orgas,
