@@ -24,7 +24,7 @@ def find_ticket_for_user(user, party):
         return None
 
     return Ticket.query \
-        .filter(Ticket.used_by == user) \
+        .filter_by(used_by=user) \
         .options(
             db.joinedload('occupied_seat').joinedload('area'),
         ) \
