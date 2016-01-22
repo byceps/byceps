@@ -51,6 +51,4 @@ def get_attended_parties(user):
 
 def count_tickets_for_party(party):
     """Return the number of "sold" (i.e. generated) tickets for that party."""
-    return Ticket.query \
-        .join(Category).filter(Category.party_id == party.id) \
-        .count()
+    return Ticket.query.for_party(party).count()
