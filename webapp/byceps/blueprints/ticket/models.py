@@ -21,7 +21,7 @@ from ..user.models import User
 class TicketQuery(BaseQuery):
 
     def for_party(self, party):
-        return self.join(Category).filter_by(party_id=party.id)
+        return self.join(Category).filter(Category.party_id == party.id)
 
 
 class Ticket(db.Model):
