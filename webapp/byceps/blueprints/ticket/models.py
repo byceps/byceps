@@ -48,6 +48,11 @@ class Ticket(db.Model):
         self.category = category
         self.owned_by = owned_by
 
+    @property
+    def party(self):
+        """Return the party this ticket belongs to."""
+        return self.category.party
+
     def get_seat_manager(self):
         """Return the user that may choose the seat for this ticket."""
         return self.seat_managed_by or self.owned_by
