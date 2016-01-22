@@ -25,7 +25,14 @@ class TicketQuery(BaseQuery):
 
 
 class Ticket(db.Model):
-    """A ticket that permits to attend a party and to occupy a seat."""
+    """A ticket that permits to attend a party and to occupy a seat.
+
+    A user can generally occupy multiple seats which is why no database
+    constraints are in place to prevent that. However, if it makes sense
+    for a party or party series, a user can be limited to occupy only a
+    single seat by introducing custom guard code that blocks further
+    attempts to reserve a seat.
+    """
     __tablename__ = 'tickets'
     query_class = TicketQuery
 
