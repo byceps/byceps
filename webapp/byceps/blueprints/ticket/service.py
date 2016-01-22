@@ -32,6 +32,16 @@ def find_ticket_for_user(user, party):
         .first()
 
 
+def uses_any_ticket_for_party(user, party):
+    """Return `True` if the user uses any ticket for that party."""
+    count = Ticket.query \
+        .filter_by(used_by=user) \
+        .for_party(party) \
+        .count()
+
+    return count > 0
+
+
 def get_attended_parties(user):
     """Return the parties the user has attended."""
     return Party.query \
