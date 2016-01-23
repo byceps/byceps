@@ -11,7 +11,7 @@ byceps.blueprints.ticket_admin.service
 from ...database import db
 
 from ..party.models import Party
-from ..seating.models import Category as SeatCategory
+from ..seating.models.category import Category as SeatCategory
 from ..ticket.models import Ticket
 
 

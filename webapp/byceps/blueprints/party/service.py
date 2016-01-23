@@ -12,7 +12,7 @@ from operator import attrgetter
 
 from ...database import db
 
-from ..seating.models import Category as SeatCategory
+from ..seating.models.category import Category as SeatCategory
 from ..ticket.models import Ticket
 from ..user.models import User
 

@@ -15,7 +15,7 @@ from ...database import db
 from ...util.framework import create_blueprint
 from ...util.templating import templated
 
-from .models import Area
+from .models.area import Area
 
 
 blueprint = create_blueprint('seating', __name__)

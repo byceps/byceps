@@ -11,7 +11,8 @@ byceps.blueprints.seating_admin.service
 from ...database import db
 
 from ..party.models import Party
-from ..seating.models import Area, Seat
+from ..seating.models.area import Area
+from ..seating.models.seat import Seat
 
 
 def get_seat_total_per_area(party):

@@ -14,7 +14,8 @@ from ...database import BaseQuery, db, generate_uuid
 from ...util.instances import ReprBuilder
 
 from ..party.models import Party
-from ..seating.models import Category, Seat
+from ..seating.models.category import Category
+from ..seating.models.seat import Seat
 from ..user.models import User
 
 
