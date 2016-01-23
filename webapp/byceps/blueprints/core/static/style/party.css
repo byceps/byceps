@@ -15,13 +15,18 @@ body {
 
 /* layout */
 
-#page {
-  margin: 40px auto 0 auto;
+#page,
+#topbar-body {
+  margin: 0 auto;
   width: 920px;
 }
+#page {
+  margin-top: 20px;
+}
 
+main,
 #sidebar section,
-main {
+#topbar {
   background-color: #ffffff;
   border: #cccccc solid 1px;
   border-radius: 15px;
@@ -39,12 +44,23 @@ main {
 }
 
 
-/* top navigation */
+/* top bar */
 
-nav.top {
+#topbar {
+  border-width: 0 0 1px 0;
+  background-color: rgba(0, 0, 0, 0.06);
+}
+#topbar-body {
+  align-items: center;
+  display: flex;
   font-size: 0.8rem;
-  margin-bottom: 0.5em;
-  margin-right: 1em;
+  height: 2.5rem;
+  justify-content: space-between;
+  padding: 0 0.5rem;
+}
+
+.authentication {
+  flex-grow: 1;
   text-align: right;
 }
 
