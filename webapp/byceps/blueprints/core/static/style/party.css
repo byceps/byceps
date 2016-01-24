@@ -27,10 +27,13 @@ body {
 main,
 #sidebar section,
 #topbar {
-  background-color: #ffffff;
   border: #cccccc solid 1px;
-  border-radius: 15px;
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+main,
+#sidebar section {
+  background-color: #ffffff;
+  border-radius: 15px;
 }
 
 #sidebar {
