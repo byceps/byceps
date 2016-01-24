@@ -22,7 +22,7 @@
           </div>
           <div>
             <span class="intro">Angemeldet als</span>
-            <strong><a href="{{ url_for('user.view_current') }}">{{ render_icon('user') }} {{ g.current_user.screen_name }}</a></strong>
+            <strong><a href="{{ url_for('user.view_current') }}">{{ g.current_user.screen_name }}</a></strong>
             <span class="actions inline">
               <a id="logout" href="{{ url_for('authentication.logout', _method='POST') }}" title="abmelden">{{ render_icon('log-out') }}</a>
             </span>
