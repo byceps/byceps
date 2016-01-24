@@ -18,10 +18,25 @@ body {
 #page,
 #topbar-body {
   margin: 0 auto;
-  width: 920px;
+  max-width: 960px;
 }
 #page {
-  margin-top: 20px;
+  padding: 20px;
+}
+
+#page-grid {
+  display: flex;
+  margin: -20px 0 0 -20px;
+}
+#page-grid-main,
+#page-grid-sidebar {
+  padding: 20px 0 0 20px;
+}
+#page-grid-main {
+  flex: 1;
+}
+#page-grid-sidebar {
+  flex: 0 0 auto;
 }
 
 main,
@@ -37,12 +52,10 @@ main,
 }
 
 #sidebar {
-  float: left;
   width: 160px;
 }
 
 main {
-  margin-left: 180px;
   padding: 15px 40px 40px 40px;
 }
 
@@ -59,7 +72,7 @@ main {
   font-size: 0.8rem;
   height: 2.5rem;
   justify-content: space-between;
-  padding: 0 0.5rem;
+  padding: 0 25px;
 }
 
 .authentication {
@@ -267,8 +280,8 @@ hr {
   clear: both;
   display: block;
   font-size: 0.9rem;
+  margin-bottom: 20px;
   opacity: 0.5;
-  padding: 20px 0;
   text-align: center;
 }
 #footer:hover {

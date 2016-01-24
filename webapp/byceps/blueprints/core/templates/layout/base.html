@@ -16,20 +16,26 @@
     </header>
 
     <div id="page">
+      <div id="page-grid">
 
-      <aside id="sidebar">
+        <div id="page-grid-sidebar">
+          <aside id="sidebar">
 {%- with %}
 {#- Make the variable available to the included template. #}
 {%- set current_page = current_page|default %}
 {%- include 'layout/_sidebar.html' with context %}
 {%- endwith %}
-      </aside>
+          </aside>
+        </div>
 
-      <main>
+        <div id="page-grid-main">
+          <main>
 {%- include 'layout/_notifications.html' %}
 {%- block body %}{% endblock %}
-      </main>
+          </main>
+        </div>
 
+      </div><!-- /#page-grid -->
     </div><!-- /#page -->
 
     <footer id="footer">
