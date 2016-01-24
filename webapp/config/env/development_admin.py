@@ -20,9 +20,6 @@ MODE = 'admin'
 PATH_DATA = Path('./data')
 PATH_USER_AVATAR_IMAGES = PATH_DATA / 'users/avatars'
 
-BOARD_TOPICS_PER_PAGE = 10
-BOARD_POSTINGS_PER_PAGE = 10
-
 MAIL_DEBUG = True
 MAIL_DEFAULT_SENDER = 'BYCEPS <noreply@example.com>'
 MAIL_SUPPRESS_SEND = True
