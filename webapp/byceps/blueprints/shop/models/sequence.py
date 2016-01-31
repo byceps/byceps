@@ -32,6 +32,13 @@ class PartySequencePrefix(db.Model):
         self.article_number = article_number_prefix
         self.order_number = order_number_prefix
 
+    def __repr__(self):
+        return ReprBuilder(self) \
+            .add('party', self.party_id) \
+            .add_with_lookup('article_number') \
+            .add_with_lookup('order_number') \
+            .build()
+
 
 PartySequencePurpose = Enum('PartySequencePurpose', ['article', 'order'])
 
