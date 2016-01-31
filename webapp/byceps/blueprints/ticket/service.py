@@ -24,19 +24,19 @@ def find_ticket_for_user(user, party):
         return None
 
     return Ticket.query \
-        .filter_by(used_by=user) \
+        .for_party(party) \
+        .filter(Ticket.used_by == user) \
         .options(
             db.joinedload('occupied_seat').joinedload('area'),
         ) \
-        .for_party(party) \
         .first()
 
 
 def uses_any_ticket_for_party(user, party):
     """Return `True` if the user uses any ticket for that party."""
     count = Ticket.query \
-        .filter_by(used_by=user) \
         .for_party(party) \
+        .filter(Ticket.used_by == user) \
         .count()
 
     return count > 0
