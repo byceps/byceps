@@ -101,12 +101,12 @@ def create():
     consent_to_terms = form.consent_to_terms.data
     subscribe_to_newsletter = form.subscribe_to_newsletter.data
 
-    if is_screen_name_already_assigned(screen_name):
+    if service.is_screen_name_already_assigned(screen_name):
         flash_error(
             'Dieser Benutzername ist bereits einem Benutzerkonto zugeordnet.')
         return create_form(form)
 
-    if is_email_address_already_assigned(email_address):
+    if service.is_email_address_already_assigned(email_address):
         flash_error(
             'Diese E-Mail-Adresse ist bereits einem Benutzerkonto zugeordnet.')
         return create_form(form)
@@ -153,25 +153,6 @@ def create():
     signals.user_created.send(None, user=user)
 
     return redirect_to('.view', id=user.id)
-
-
-def is_screen_name_already_assigned(screen_name):
-    return do_users_matching_filter_exist(User.screen_name, screen_name)
-
-
-def is_email_address_already_assigned(email_address):
-    return do_users_matching_filter_exist(User.email_address, email_address)
-
-
-def do_users_matching_filter_exist(model_attribute, search_value):
-    """Return `True` if any users match the filter.
-
-    Comparison is done case-insensitively.
-    """
-    user_count = User.query \
-        .filter(db.func.lower(model_attribute) == search_value.lower()) \
-        .count()
-    return user_count > 0
 
 
 @blueprint.route('/email_address_confirmations/request')
