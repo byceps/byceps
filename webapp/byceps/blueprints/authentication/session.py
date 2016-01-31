@@ -10,7 +10,7 @@ byceps.blueprints.authentication.session
 
 from flask import session
 
-from ..user.service import load_user
+from .service import load_user
 
 
 KEY_USER_ID = 'user_id'

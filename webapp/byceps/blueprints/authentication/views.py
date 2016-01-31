@@ -17,11 +17,11 @@ from ...util.templating import templated
 from ...util.views import respond_no_content
 
 from ..terms import service as terms_service
-from ..user import service as user_service
-from ..user.service import AuthenticationFailed
 from ..verification_token import service as verification_token_service
 
 from .forms import LoginForm
+from . import service
+from .service import AuthenticationFailed
 from .session import UserSession
 
 
@@ -69,7 +69,7 @@ def login():
 
     # Verify credentials.
     try:
-        user = user_service.authenticate(screen_name, password)
+        user = service.authenticate(screen_name, password)
     except AuthenticationFailed:
         abort(403)
 
