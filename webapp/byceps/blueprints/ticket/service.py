@@ -20,7 +20,7 @@ from .models import Ticket
 def find_tickets_for_user(user, party):
     """Return the tickets (if any) used by the user for that party."""
     if user.is_anonymous:
-        return None
+        return []
 
     return Ticket.query \
         .for_party(party) \
