@@ -54,7 +54,7 @@
 
   <h2>Sitzplatz-Kategorien {{ render_extra_in_heading(categories|length) }}</h2>
   <div class="columns">
-    <ol class="index style="width: auto;">
+    <ol class="index">
       {%- for category in categories %}
       <li>{{ category.title }}</li>
       {%- endfor %}
