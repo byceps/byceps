@@ -28,10 +28,16 @@
       </td>
     </tr>
     {%- endif %}
-    {%- if current_party_ticket %}
+    {%- if current_party_tickets %}
     <tr>
       <th>Sitzplatz</th>
-      <td>{{ render_seating_area_link(current_party_ticket.occupied_seat.area) }}</td>
+      <td>
+        <ol>
+        {%- for ticket in current_party_tickets %}
+          <li>{{ render_seating_area_link(ticket.occupied_seat.area) }}</li>
+        {%- endfor %}
+        </ol>
+      </td>
     </tr>
     {%- endif %}
     <tr>

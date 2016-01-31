@@ -12,24 +12,25 @@ from ...database import db
 
 from ..party.models import Party
 from ..seating.models.category import Category
+from ..seating.models.seat import Seat
 
 from .models import Ticket
 
 
-def find_ticket_for_user(user, party):
-    """Return the ticket used by the user for the party, or `None` if not
-    found.
-    """
+def find_tickets_for_user(user, party):
+    """Return the tickets (if any) used by the user for that party."""
     if user.is_anonymous:
         return None
 
     return Ticket.query \
         .for_party(party) \
         .filter(Ticket.used_by == user) \
+        .join(Seat) \
         .options(
             db.joinedload('occupied_seat').joinedload('area'),
         ) \
-        .first()
+        .order_by(Seat.coord_x, Seat.coord_y) \
+        .all()
 
 
 def uses_any_ticket_for_party(user, party):

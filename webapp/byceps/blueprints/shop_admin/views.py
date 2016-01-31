@@ -122,10 +122,10 @@ def article_view_ordered(id):
 
     def transform(order_item):
         user = order_item.order.placed_by
-        ticket = ticket_service.find_ticket_for_user(user, article.party)
+        tickets = ticket_service.find_tickets_for_user(user, article.party)
         quantity = order_item.quantity
         order = order_item.order
-        return user, ticket, quantity, order
+        return user, tickets, quantity, order
 
     users_tickets_quantities_orders = map(transform, order_items)
 
