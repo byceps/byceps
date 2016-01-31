@@ -11,7 +11,10 @@ byceps.blueprints.user.service
 import codecs
 import json
 
+from flask import url_for
+
 from ...database import db
+from ... import email
 
 from .models import Country, User
 
@@ -50,3 +53,33 @@ def __do_users_matching_filter_exist(model_attribute, search_value):
         .filter(db.func.lower(model_attribute) == search_value.lower()) \
         .count()
     return user_count > 0
+
+
+def send_email_address_confirmation_email(user, verification_token):
+    confirmation_url = url_for('.confirm_email_address',
+                               token=verification_token.token,
+                               _external=True)
+
+    subject = '{0.screen_name}, bitte bestätige deine E-Mail-Adresse'.format(user)
+    body = (
+        'Hallo {0.screen_name},\n\n'
+        'bitte bestätige deine E-Mail-Adresse indem du diese URL abrufst: {1}'
+    ).format(user, confirmation_url)
+    recipients = [user.email_address]
+
+    email.send(subject=subject, body=body, recipients=recipients)
+
+
+def send_password_reset_email(user, verification_token):
+    confirmation_url = url_for('.password_reset_form',
+                               token=verification_token.token,
+                               _external=True)
+
+    subject = '{0.screen_name}, so kannst du ein neues Passwort festlegen'.format(user)
+    body = (
+        'Hallo {0.screen_name},\n\n'
+        'du kannst ein neues Passwort festlegen indem du diese URL abrufst: {1}'
+    ).format(user, confirmation_url)
+    recipients = [user.email_address]
+
+    email.send(subject=subject, body=body, recipients=recipients)

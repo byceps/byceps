@@ -15,7 +15,6 @@ from flask import abort, current_app, g, request, url_for
 
 from ...config import get_user_registration_enabled
 from ...database import db
-from ... import email
 from ...util.framework import create_blueprint, flash_error, flash_notice, \
     flash_success
 from ...util.image import create_thumbnail, Dimensions, \
@@ -142,7 +141,7 @@ def create():
                     user.screen_name)
         return create_form(form)
 
-    send_email_address_confirmation_email(user, verification_token)
+    service.send_email_address_confirmation_email(user, verification_token)
 
     flash_success(
         'Das Benutzerkonto für "{}" wurde angelegt. '
@@ -190,28 +189,13 @@ def request_email_address_confirmation_email():
 
     verification_token = verification_token_service \
         .find_or_create_for_email_address_confirmation(user)
-    send_email_address_confirmation_email(user, verification_token)
+    service.send_email_address_confirmation_email(user, verification_token)
 
     flash_success(
         'Der Link zur Bestätigung der für den Benutzernamen "{}" '
         'hinterlegten E-Mail-Adresse wurde erneut versendet.',
         user.screen_name)
     return request_email_address_confirmation_email_form()
-
-
-def send_email_address_confirmation_email(user, verification_token):
-    confirmation_url = url_for('.confirm_email_address',
-                               token=verification_token.token,
-                               _external=True)
-
-    subject = '{0.screen_name}, bitte bestätige deine E-Mail-Adresse'.format(user)
-    body = (
-        'Hallo {0.screen_name},\n\n'
-        'bitte bestätige deine E-Mail-Adresse indem du diese URL abrufst: {1}'
-    ).format(user, confirmation_url)
-    recipients = [user.email_address]
-
-    email.send(subject=subject, body=body, recipients=recipients)
 
 
 @blueprint.route('/email_address_confirmations/<uuid:token>')
@@ -267,28 +251,13 @@ def request_password_reset():
     db.session.add(verification_token)
     db.session.commit()
 
-    send_password_reset_email(user, verification_token)
+    service.send_password_reset_email(user, verification_token)
 
     flash_success(
         'Ein Link zum Setzen eines neuen Passworts für den Benutzernamen "{}" '
         'wurde an die hinterlegte E-Mail-Adresse versendet.',
         user.screen_name)
     return request_password_reset_form()
-
-
-def send_password_reset_email(user, verification_token):
-    confirmation_url = url_for('.password_reset_form',
-                               token=verification_token.token,
-                               _external=True)
-
-    subject = '{0.screen_name}, so kannst du ein neues Passwort festlegen'.format(user)
-    body = (
-        'Hallo {0.screen_name},\n\n'
-        'du kannst ein neues Passwort festlegen indem du diese URL abrufst: {1}'
-    ).format(user, confirmation_url)
-    recipients = [user.email_address]
-
-    email.send(subject=subject, body=body, recipients=recipients)
 
 
 @blueprint.route('/me/password/reset/token/<uuid:token>')
