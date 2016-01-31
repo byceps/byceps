@@ -12,13 +12,12 @@ from collections import namedtuple
 
 from flask import abort, g, request
 
-from ...database import db
 from ...util.framework import create_blueprint, flash_success
 from ...util.templating import templated
 from ...util.views import redirect_to
 
 from .forms import SubscriptionForm
-from .models import Subscription, SubscriptionState
+from .models import SubscriptionState
 from . import service
 
 
@@ -45,12 +44,12 @@ def subscription_update_form():
 def subscription_update():
     """Update the current user's subscription."""
     user = get_current_user_or_404()
+
     form = SubscriptionForm(request.form)
 
     state = SubscriptionState[form.state.data]
-    subscription = Subscription(user, g.party.brand, state)
-    db.session.add(subscription)
-    db.session.commit()
+
+    newsletter_service.update_subscription_state(user, g.party.brand, state)
 
     flash_success('Dein Newsletter-Abonnement wurde aktualisiert.')
     return redirect_to('user.view_current')

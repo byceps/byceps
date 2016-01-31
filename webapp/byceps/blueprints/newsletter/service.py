@@ -8,6 +8,8 @@ byceps.blueprints.newsletter.service
 :License: Modified BSD, see LICENSE for details.
 """
 
+from ...database import db
+
 from .models import Subscription, SubscriptionState
 
 
@@ -23,3 +25,10 @@ def get_subscription_state(user, brand):
         return SubscriptionState.declined
 
     return current_subscription.state
+
+
+def update_subscription_state(user, brand, state):
+    """Update the user's subscription state for that brand."""
+    subscription = Subscription(user, brand, state)
+    db.session.add(subscription)
+    db.session.commit()
