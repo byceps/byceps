@@ -19,6 +19,7 @@ from ...util.views import redirect_to
 
 from .forms import SubscriptionForm
 from .models import Subscription, SubscriptionState
+from . import service
 
 
 blueprint = create_blueprint('newsletter', __name__)
@@ -29,7 +30,8 @@ blueprint = create_blueprint('newsletter', __name__)
 def subscription_update_form():
     """Show a form to update the current user's subscription."""
     user = get_current_user_or_404()
-    state = Subscription.get_state_for_user(user)
+
+    state = service.get_subscription_state(user)
 
     obj = namedtuple('Obj', 'state')(state.name)
     form = SubscriptionForm(obj=obj)

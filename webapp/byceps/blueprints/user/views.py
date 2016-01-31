@@ -22,6 +22,7 @@ from ...util.views import redirect_to, respond_no_content
 from ..authorization.models import Role
 from ..newsletter.models import Subscription as NewsletterSubscription, \
     SubscriptionState as NewsletterSubscriptionState
+from ..newsletter import service as newsletter_service
 from ..orga import service as orga_service
 from ..terms import service as terms_service
 from ..ticket import service as ticket_service
@@ -326,8 +327,8 @@ def password_update():
 def view_current():
     user = get_current_user_or_404()
 
-    newsletter_subscription_state \
-        = NewsletterSubscription.get_state_for_user(user)
+    newsletter_subscription_state = newsletter_service \
+        .get_subscription_state(user)
 
     return {
         'user': user,
