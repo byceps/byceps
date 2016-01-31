@@ -26,7 +26,7 @@ from ..shop.models.article import Article, AttachedArticle
 from ..shop.models.order import Order, OrderItem, PaymentState
 from ..shop.service import generate_article_number
 from ..shop.signals import order_canceled, order_paid
-from ..ticket.service import find_ticket_for_user
+from ..ticket import service as ticket_service
 from ..party.models import Party
 
 from .authorization import ShopArticlePermission, ShopOrderPermission
@@ -122,7 +122,7 @@ def article_view_ordered(id):
 
     def transform(order_item):
         user = order_item.order.placed_by
-        ticket = find_ticket_for_user(user, article.party)
+        ticket = ticket_service.find_ticket_for_user(user, article.party)
         quantity = order_item.quantity
         order = order_item.order
         return user, ticket, quantity, order
