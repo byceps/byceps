@@ -12,7 +12,7 @@ from operator import attrgetter
 
 from flask import abort, current_app, g, request, url_for
 
-from ...config import get_user_registration_enabled
+from ...config import get_site_mode, get_user_registration_enabled
 from ...database import db
 from ...util.framework import create_blueprint, flash_error, flash_notice, \
     flash_success
@@ -44,6 +44,9 @@ blueprint = create_blueprint('user', __name__)
 @templated
 def view(id):
     """Show a user's profile."""
+    if get_site_mode().is_admin():
+        abort(404)
+
     user = find_user_by_id(id)
 
     if user.deleted:
