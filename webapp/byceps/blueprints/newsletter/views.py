@@ -31,7 +31,7 @@ def subscription_update_form():
     """Show a form to update the current user's subscription."""
     user = get_current_user_or_404()
 
-    state = service.get_subscription_state(user)
+    state = service.get_subscription_state(user, g.party.brand)
 
     obj = namedtuple('Obj', 'state')(state.name)
     form = SubscriptionForm(obj=obj)

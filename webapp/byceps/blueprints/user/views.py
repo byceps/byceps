@@ -328,7 +328,7 @@ def view_current():
     user = get_current_user_or_404()
 
     newsletter_subscription_state = newsletter_service \
-        .get_subscription_state(user)
+        .get_subscription_state(user, g.party.brand)
 
     return {
         'user': user,

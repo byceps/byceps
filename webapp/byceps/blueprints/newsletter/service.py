@@ -11,10 +11,11 @@ byceps.blueprints.newsletter.service
 from .models import Subscription, SubscriptionState
 
 
-def get_subscription_state(user):
-    """Return the user's current subscription state."""
+def get_subscription_state(user, brand):
+    """Return the user's current subscription state for that brand."""
     current_subscription = Subscription.query \
         .filter_by(user=user) \
+        .filter_by(brand=brand) \
         .order_by(Subscription.expressed_at.desc()) \
         .first()
 
