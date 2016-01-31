@@ -245,6 +245,17 @@ nav.main .current a {
 }
 
 
+/* headings */
+
+.breadcrumbs small,
+h1 small,
+h2 small {
+  font-size: 80%;
+  font-weight: normal;
+  opacity: 0.5;
+}
+
+
 /* tables */
 
 @media (max-width: 960px) {

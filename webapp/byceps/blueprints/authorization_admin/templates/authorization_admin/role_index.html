@@ -1,4 +1,5 @@
 {% extends 'layout/base_admin.html' %}
+{% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/misc.html' import render_with_fallback %}
 {% from 'macros/user_admin.html' import render_user_admin_link %}
 {% set current_page = 'authorization_admin.roles' %}
@@ -6,7 +7,7 @@
 
 {% block body %}
 
-  <h1>{{ title }}</h1>
+  <h1>{{ title }} {{ render_extra_in_heading(roles|length) }}</h1>
 
   <table class="index wide">
     <thead>

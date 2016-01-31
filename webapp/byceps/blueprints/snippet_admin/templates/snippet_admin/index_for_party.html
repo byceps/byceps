@@ -1,4 +1,5 @@
 {% extends 'layout/base_admin.html' %}
+{% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/user_admin.html' import render_user_admin_link %}
@@ -23,7 +24,7 @@
     </ol>
   </nav>
 
-  <h2>Snippets</h2>
+  <h2>Snippets {{ render_extra_in_heading(snippets|length) }}</h2>
 
   <table class="index wide">
     <thead>
@@ -63,7 +64,7 @@
   </ol>
   {%- endif %}
 
-  <h2>Mountpoints</h2>
+  <h2>Mountpoints {{ render_extra_in_heading(mountpoints|length) }}</h2>
 
   <table class="index wide">
     <thead>

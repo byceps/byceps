@@ -1,4 +1,5 @@
 {% extends 'layout/base_admin.html' %}
+{% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
 {% set current_page = 'seating_admin' %}
 {% set current_page_party = party %}
@@ -22,6 +23,7 @@
     </ol>
   </nav>
 
+  <h2>Bereiche {{ render_extra_in_heading(areas.total) }}</h2>
   <table class="index wide">
     <thead>
       <tr>
@@ -50,7 +52,7 @@
 
 {{ render_pagination_nav(areas, '.index_for_party', {'party_id': party.id}) }}
 
-  <h2>Sitzplatz-Kategorien</h2>
+  <h2>Sitzplatz-Kategorien {{ render_extra_in_heading(categories|length) }}</h2>
   <div class="columns">
     <ol class="index style="width: auto;">
       {%- for category in categories %}

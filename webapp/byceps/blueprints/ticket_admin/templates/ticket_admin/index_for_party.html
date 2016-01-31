@@ -1,4 +1,5 @@
 {% extends 'layout/base_admin.html' %}
+{% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/datetime.html' import render_datetime, render_datetime_custom %}
 {% from 'macros/misc.html' import render_tag %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
@@ -21,7 +22,7 @@
   <nav class="breadcrumbs">
     <ol>
       <li><a href="{{ url_for('.index') }}">{{ party.title }}</a></li>
-      <li>Tickets</li>
+      <li>Tickets {{ render_extra_in_heading(tickets.total) }}</li>
     </ol>
   </nav>
 

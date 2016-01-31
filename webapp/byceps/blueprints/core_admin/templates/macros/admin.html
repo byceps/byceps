@@ -14,3 +14,8 @@
     <strong><a href="{{ url_for('party_admin.view', id=party.id) }}">{{ party.title }}</a></strong>
   </div>
 {% endmacro %}
+
+
+{% macro render_extra_in_heading(value) -%}
+  <small>{{ value }}</small>
+{%- endmacro %}

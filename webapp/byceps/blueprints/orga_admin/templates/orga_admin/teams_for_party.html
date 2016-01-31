@@ -1,4 +1,5 @@
 {% extends 'layout/base_admin.html' %}
+{% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_with_fallback %}
 {% from 'macros/user_admin.html' import render_orga_avatar_small, render_user_admin_link %}
@@ -57,7 +58,7 @@
   <nav class="breadcrumbs">
     <ol>
       <li><a href="{{ url_for('.teams') }}">{{ party.title }}</a></li>
-      <li>{{ title }}</li>
+      <li>{{ title }} {{ render_extra_in_heading(teams|length) }}</li>
     </ol>
   </nav>
 

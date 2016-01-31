@@ -1,11 +1,12 @@
 {% extends 'layout/base_admin.html' %}
+{% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/misc.html' import render_with_fallback %}
 {% set current_page = 'authorization_admin.permissions' %}
 {% set title = 'Rechte' %}
 
 {% block body %}
 
-  <h1>{{ title }}</h1>
+  <h1>{{ title }} {{ render_extra_in_heading(permissions|length) }}</h1>
 
   <table class="index wide">
     <thead>
