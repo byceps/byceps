@@ -8,7 +8,6 @@ byceps.blueprints.user.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from datetime import datetime
 from operator import attrgetter
 
 from flask import abort, current_app, g, request, url_for
@@ -17,10 +16,7 @@ from ...config import get_user_registration_enabled
 from ...database import db
 from ...util.framework import create_blueprint, flash_error, flash_notice, \
     flash_success
-from ...util.image import create_thumbnail, Dimensions, \
-    guess_type as guess_image_type, ImageType, read_dimensions
 from ...util.templating import templated
-from ...util import upload
 from ...util.views import redirect_to, respond_no_content
 
 from ..authorization.models import Role
@@ -31,15 +27,13 @@ from ..terms import service as terms_service
 from ..ticket import service as ticket_service
 from ..verification_token import service as verification_token_service
 
+from . import avatar_service
 from .forms import AvatarImageUpdateForm, DetailsForm, \
     RequestConfirmationEmailForm, RequestPasswordResetForm, \
     ResetPasswordForm, UpdatePasswordForm, UserCreateForm
 from .models import User
 from . import service
 from . import signals
-
-
-MAXIMUM_AVATAR_IMAGE_DIMENSIONS = Dimensions(110, 110)
 
 
 blueprint = create_blueprint('user', __name__)
@@ -388,12 +382,12 @@ def avatar_image_update_form():
 
     form = AvatarImageUpdateForm()
 
-    image_type_names = frozenset(type.name.upper() for type in ImageType)
+    image_type_names = avatar_service.get_image_type_names()
 
     return {
         'form': form,
         'avatar_allowed_types': image_type_names,
-        'avatar_maximum_dimensions': MAXIMUM_AVATAR_IMAGE_DIMENSIONS,
+        'avatar_maximum_dimensions': avatar_service.MAXIMUM_DIMENSIONS,
     }
 
 
@@ -415,43 +409,17 @@ def avatar_image_update():
     if not image or not image.filename:
         abort(400, 'No file to upload has been specified.')
 
-    stream = image.stream
-
-    image_type = determine_image_type(stream)
-    user.set_avatar_image(datetime.now(), image_type)
-
-    if is_image_too_large(stream):
-        stream = create_thumbnail(
-            stream, image_type.name, MAXIMUM_AVATAR_IMAGE_DIMENSIONS)
-
     try:
-        upload.store(stream, user.avatar_image_path)
+        avatar_service.update_avatar_image(user, image.stream)
     except FileExistsError:
         # Werkzeug implements no default response for code 409.
         ##abort(409, 'File already exists, not overwriting.')
         abort(500, 'File already exists, not overwriting.')
 
-    db.session.commit()
-
     flash_success('Das Avatarbild wurde aktualisiert.', icon='upload')
     signals.avatar_updated.send(None, user=user)
 
     return redirect_to('.view_current')
-
-
-def determine_image_type(stream):
-    image_type = guess_image_type(stream)
-    if image_type is None:
-        abort(400, 'Only GIF, JPEG and PNG images are allowed.')
-
-    stream.seek(0)
-    return image_type
-
-
-def is_image_too_large(stream):
-    actual_dimensions = read_dimensions(stream)
-    stream.seek(0)
-    return actual_dimensions > MAXIMUM_AVATAR_IMAGE_DIMENSIONS
 
 
 @blueprint.route('/me/avatar', methods=['DELETE'])
@@ -460,8 +428,7 @@ def delete_avatar_image():
     """Remove the current user's avatar image."""
     user = get_current_user_or_404()
 
-    user.remove_avatar_image()
-    db.session.commit()
+    avatar_service.remove_avatar_image(user)
 
     flash_success('Das Avatarbild wurde entfernt.')
     return [('Location', url_for('.view_current'))]
