@@ -87,7 +87,7 @@
       </tr>
     </tfoot>
     <tbody>
-      {%- for item in order.items %}
+      {%- for item in order.items|sort(attribute='article_number') %}
       <tr>
         <td class="number">{{ item.quantity }}</td>
         <td>{{ render_article_link(article) }}</td>
