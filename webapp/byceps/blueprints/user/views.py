@@ -10,7 +10,7 @@ byceps.blueprints.user.views
 
 from operator import attrgetter
 
-from flask import abort, current_app, g, request, url_for
+from flask import abort, current_app, g, jsonify, request, Response, url_for
 
 from ...config import get_site_mode, get_user_registration_enabled
 from ...database import db
@@ -65,6 +65,29 @@ def view(id):
         'current_party_tickets': current_party_tickets,
         'attended_parties': attended_parties,
     }
+
+
+@blueprint.route('/<uuid:id>.json')
+def view_as_json(id):
+    """Show a user's profile."""
+    if get_site_mode().is_admin():
+        abort(404)
+
+    user = User.query.get(id)
+    if not user:
+        return _empty_json_response(404)
+
+    if user.deleted:
+        return _empty_json_response(410)
+
+    return jsonify({
+        'id': user.id,
+        'screen_name': user.screen_name,
+    })
+
+
+def _empty_json_response(status):
+    return Response('{}', status=status, mimetype='application/json')
 
 
 @blueprint.route('/create')
