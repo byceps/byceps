@@ -61,7 +61,7 @@
   <table class="index wide">
     <thead>
       <tr>
-        <th>Benutzername</th>
+        <th colspan="2">Benutzername</th>
         <th>Voller Name</th>
         <th>Erstellt</th>
         <th>Legacy ID</th>
@@ -72,6 +72,7 @@
       {%- for user in users.items %}
       <tr>
         <td>{{ render_user_admin_link(user) }}</td>
+        <td>{% if user.has_avatar_image %} {{ render_icon('image', title='Avatarbild hinterlegt') }}{% endif %}</td>
         <td>{{ render_with_fallback(user.detail.full_name) }}</td>
         <td>{{ render_datetime(user.created_at) }}</td>
         <td>{{ render_with_fallback(user.legacy_id) }}</td>
