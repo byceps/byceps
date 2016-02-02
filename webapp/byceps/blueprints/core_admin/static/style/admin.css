@@ -300,13 +300,45 @@ ol.index.fully-linked a:hover {
 /* tags */
 
 .tag.order-open {
-  background-color: #ee3322;
+  background-color: #ee3322 !important;
 }
 .tag.order-paid {
-  background-color: #11aa22;
+  background-color: #11aa22 !important;
 }
 .tag.order-canceled {
-  background-color: #999999;
+  background-color: #999999 !important;
+}
+
+
+/* filters */
+
+.filter {
+  font-size: 0.8rem;
+  margin: 2.5rem 0 2rem 0;
+  text-align: right;
+}
+.filter ol,
+.filter li {
+  display: inline-block;
+}
+.filter li::after {
+  content: ' |';
+  opacity: 0.5;
+}
+.filter li:last-child::after {
+  content: none;
+}
+.filter li a {
+  opacity: 0.3;
+}
+.filter a:hover {
+  opacity: 0.6;
+}
+.filter li :not(a) {
+  opacity: 1;
+}
+.filter .tag {
+  background-color: #666666;
 }
 
 

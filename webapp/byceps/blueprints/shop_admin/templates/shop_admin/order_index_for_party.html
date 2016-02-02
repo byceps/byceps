@@ -2,43 +2,13 @@
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
+{% from 'macros/misc.html' import render_tag %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
 {% from 'macros/shop_admin.html' import render_order_link, render_order_payment_state %}
 {% from 'macros/user_admin.html' import render_user_admin_link %}
 {% set current_page = 'shop_admin.orders' %}
 {% set current_page_party = party %}
 {% set title = 'Bestellungen' %}
-
-{% block head %}
-    <style>
-      .order-payment-status-filter {
-        font-size: 0.8rem;
-        margin: 2.5rem 0 2rem 0;
-        text-align: right;
-      }
-      .order-payment-status-filter ol {
-        display: inline-block;
-      }
-      .order-payment-status-filter li {
-        display: inline-block;
-      }
-      .order-payment-status-filter li::after {
-        content: ' |';
-        opacity: 0.5;
-      }
-      .order-payment-status-filter li:last-child::after {
-        content: none;
-        opacity: 1;
-      }
-      .order-payment-status-filter li a .tag {
-        opacity: 0.5;
-      }
-      .order-payment-status-filter li :not(a),
-      .order-payment-status-filter a:hover {
-        opacity: 1;
-      }
-    </style>
-{%- endblock head %}
 
 {% block body %}
 
@@ -50,20 +20,20 @@
     </ol>
   </nav>
 
-  <div class="order-payment-status-filter">
+  <div class="filter">
     <span>{{ render_icon('filter') }} Einschränkung:</span>
     <ol>
     {%- for payment_state in PaymentState %}
       {%- if only == payment_state %}
       <li>{{ render_order_payment_state(payment_state) }}</li>
       {%- else %}
-      <li><a href="{{ url_for('.order_index_for_party', party_id=party.id, only=payment_state.name) }}" class="dimmed">{{ render_order_payment_state(payment_state) }}</a></li>
+      <li><a href="{{ url_for('.order_index_for_party', party_id=party.id, only=payment_state.name) }}">{{ render_order_payment_state(payment_state) }}</a></li>
       {%- endif %}
     {%- endfor %}
     {%- if only is none %}
-      <li><strong>alle</strong></li>
+      <li><strong>{{ render_tag('alle') }}</strong></li>
     {%- else %}
-      <li><a href="{{ url_for('.order_index_for_party', party_id=party.id) }}">alle</a></li>
+      <li><a href="{{ url_for('.order_index_for_party', party_id=party.id) }}">{{ render_tag('alle') }}</a></li>
     {%- endif %}
     </ol>
   </div>

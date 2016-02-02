@@ -21,39 +21,10 @@
         opacity: 1;
       }
 
-      .user-state-filter {
-        font-size: 0.8rem;
-        margin: 2.5rem 0 2rem 0;
-        text-align: right;
-      }
-      .user-state-filter ol,
-      .user-state-filter li {
-        display: inline-block;
-      }
-      .user-state-filter li::after {
-        content: ' |';
-        opacity: 0.5;
-      }
-      .user-state-filter li:last-child::after {
-        content: none;
-      }
-      .user-state-filter li a {
-        opacity: 0.3;
-      }
-      .user-state-filter a:hover {
-        opacity: 0.6;
-      }
-      .user-state-filter li :not(a) {
-        opacity: 1;
-      }
-
-      .user-state-filter .tag {
-          background-color: #666666;
-      }
-      .user-state-filter .tag.user-state-enabled {
+      .filter .tag.user-state-enabled {
           background-color: #008800;
       }
-      .user-state-filter .tag.user-state-disabled {
+      .filter .tag.user-state-disabled {
           background-color: #cc0000;
       }
     </style>
@@ -74,7 +45,7 @@
     <a href="{{ url_for('.index') }}" class="action inline" title="Einschränkung auf Suchbegriff aufheben">{{ render_icon('remove') }}</a>
   </form>
 
-  <div class="user-state-filter">
+  <div class="filter">
     <span>{{ render_icon('filter') }} Einschränkung:</span>
     <ol>
     {%- if only == 'enabled' %}
