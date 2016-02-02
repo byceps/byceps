@@ -16,6 +16,22 @@ from .models.sequence import PartySequence, PartySequencePurpose
 from .signals import order_placed
 
 
+def get_articles_for_party(party):
+    """Return all articles for that party, ordered by article number."""
+    return _get_articles_for_party_query(party).all()
+
+
+def get_articles_for_party_paginated(party, page, per_page):
+    """Return all articles for that party, ordered by article number."""
+    return _get_articles_for_party_query(party).paginate(page, per_page)
+
+
+def _get_articles_for_party_query(party):
+    return Article.query \
+        .for_party(party) \
+        .order_by(Article.item_number)
+
+
 def get_article_compilation_for_orderable_articles(party):
     """Return a compilation of the articles which can be ordered for
     that party, less the ones that are only orderable in a dedicated

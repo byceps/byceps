@@ -67,11 +67,8 @@ def article_index_for_party(party_id, page):
     party = Party.query.get_or_404(party_id)
 
     per_page = request.args.get('per_page', type=int, default=15)
-    query = Article.query \
-        .for_party(party) \
-        .order_by(Article.description)
-
-    articles = query.paginate(page, per_page)
+    articles = shop_service.get_articles_for_party_paginated(party, page,
+                                                             per_page)
 
     return {
         'party': party,
