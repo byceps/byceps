@@ -17,28 +17,25 @@ KEY_USER_ID = 'user_id'
 KEY_USER_AUTH_TOKEN = 'user_auth_token'
 
 
-class UserSession(object):
+def start(user, *, permanent=False):
+    """Initialize the user's session by putting the relevant data
+    into the session cookie.
+    """
+    session[KEY_USER_ID] = str(user.id)
+    session[KEY_USER_AUTH_TOKEN] = str(user.auth_token)
+    session.permanent = permanent
 
-    @staticmethod
-    def start(user, *, permanent=False):
-        """Initialize the user's session by putting the relevant data
-        into the session cookie.
-        """
-        session[KEY_USER_ID] = str(user.id)
-        session[KEY_USER_AUTH_TOKEN] = str(user.auth_token)
-        session.permanent = permanent
 
-    @staticmethod
-    def end():
-        """End the user's session by deleting the session cookie."""
-        session.pop(KEY_USER_ID, None)
-        session.pop(KEY_USER_AUTH_TOKEN, None)
-        session.permanent = False
+def end():
+    """End the user's session by deleting the session cookie."""
+    session.pop(KEY_USER_ID, None)
+    session.pop(KEY_USER_AUTH_TOKEN, None)
+    session.permanent = False
 
-    @staticmethod
-    def get_user():
-        """Return the current user, falling back to the anonymous user."""
-        return load_user(_get_user_id(), _get_auth_token())
+
+def get_user():
+    """Return the current user, falling back to the anonymous user."""
+    return load_user(_get_user_id(), _get_auth_token())
 
 
 def _get_user_id():

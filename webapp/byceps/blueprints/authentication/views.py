@@ -22,7 +22,7 @@ from ..verification_token import service as verification_token_service
 from .forms import LoginForm
 from . import service
 from .service import AuthenticationFailed
-from .session import UserSession
+from . import session as user_session
 
 
 blueprint = create_blueprint('authentication', __name__)
@@ -30,7 +30,7 @@ blueprint = create_blueprint('authentication', __name__)
 
 @blueprint.before_app_request
 def before_request():
-    g.current_user = UserSession.get_user()
+    g.current_user = user_session.get_user()
 
 
 @blueprint.route('/login')
@@ -94,7 +94,7 @@ def login():
             return
 
     # Authorization succeeded.
-    UserSession.start(user, permanent=permanent)
+    user_session.start(user, permanent=permanent)
     flash_success('Erfolgreich eingeloggt als {}.', user.screen_name)
 
 
@@ -102,5 +102,5 @@ def login():
 @respond_no_content
 def logout():
     """Log out user by deleting the corresponding cookie."""
-    UserSession.end()
+    user_session.end()
     flash_success('Erfolgreich ausgeloggt.')
