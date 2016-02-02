@@ -35,17 +35,17 @@ class UserSession(object):
         session.pop(KEY_USER_AUTH_TOKEN, None)
         session.permanent = False
 
-    @classmethod
-    def get_user(cls):
+    @staticmethod
+    def get_user():
         """Return the current user, falling back to the anonymous user."""
-        return load_user(cls.get_user_id(), cls.get_auth_token())
+        return load_user(_get_user_id(), _get_auth_token())
 
-    @staticmethod
-    def get_user_id():
-        """Return the current user's ID, or `None` if not available."""
-        return session.get(KEY_USER_ID)
 
-    @staticmethod
-    def get_auth_token():
-        """Return the current user's auth token, or `None` if not available."""
-        return session.get(KEY_USER_AUTH_TOKEN)
+def _get_user_id():
+    """Return the current user's ID, or `None` if not available."""
+    return session.get(KEY_USER_ID)
+
+
+def _get_auth_token():
+    """Return the current user's auth token, or `None` if not available."""
+    return session.get(KEY_USER_AUTH_TOKEN)
