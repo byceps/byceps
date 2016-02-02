@@ -88,7 +88,7 @@
           {{- order.first_names }} {{ order.last_name -}}
         </td>
         <td>{{ render_datetime(order.created_at) }}</td>
-        <td style="text-align: right;">{{ order.calculate_total_price()|format_euro_amount }}</td>
+        <td class="number">{{ order.calculate_total_price()|format_euro_amount }}</td>
       </tr>
       {%- endfor %}
       <tr>
