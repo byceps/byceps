@@ -24,7 +24,7 @@ from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 from ..shop.models.article import Article, AttachedArticle
 from ..shop.models.order import Order, OrderItem, PaymentState
-from ..shop.service import generate_article_number
+from ..shop import service as shop_service
 from ..shop.signals import order_canceled, order_paid
 from ..ticket import service as ticket_service
 from ..party.models import Party
@@ -162,7 +162,7 @@ def article_create(party_id):
     party = Party.query.get_or_404(party_id)
     form = ArticleCreateForm(request.form)
 
-    item_number = generate_article_number(party)
+    item_number = shop_service.generate_article_number(party)
     description = form.description.data.strip()
     price = form.price.data
     tax_rate = form.tax_rate.data
