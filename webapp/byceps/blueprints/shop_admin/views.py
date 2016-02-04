@@ -388,17 +388,17 @@ def _format_export_datetime(dt):
     return date_time + utc_offset
 
 
-@blueprint.route('/orders/<uuid:id>/update_payment')
+@blueprint.route('/orders/<uuid:id>/cancel')
 @permission_required(ShopOrderPermission.update)
 @templated
-def order_update_payment_form(id):
-    """Show form to update an order's payment state."""
+def order_cancel_form(id):
+    """Show form to cancel an order."""
     order = Order.query.get_or_404(id)
     cancel_form = OrderCancelForm()
 
-    if order.payment_state != PaymentState.open:
+    if order.payment_state == PaymentState.canceled:
         flash_error(
-            'Die Bestellung ist bereits abgeschlossen; '
+            'Die Bestellung ist bereits storniert worden; '
             'der Bezahlstatus kann nicht mehr geändert werden.')
         return redirect_to('.order_view', id=order.id)
 
@@ -419,9 +419,9 @@ def order_cancel(id):
 
     order = Order.query.get_or_404(id)
 
-    if order.payment_state != PaymentState.open:
+    if order.payment_state == PaymentState.canceled:
         flash_error(
-            'Die Bestellung ist bereits abgeschlossen; '
+            'Die Bestellung ist bereits storniert worden; '
             'der Bezahlstatus kann nicht mehr geändert werden.')
         return redirect_to('.order_view', id=order.id)
 
@@ -443,16 +443,30 @@ def order_cancel(id):
     return redirect_to('.order_view', id=order.id)
 
 
+@blueprint.route('/orders/<uuid:id>/mark_as_paid')
+@permission_required(ShopOrderPermission.update)
+@templated
+def order_mark_as_paid_form(id):
+    """Show form to mark an order as paid."""
+    order = Order.query.get_or_404(id)
+
+    if order.payment_state == PaymentState.paid:
+        flash_error('Die Bestellung ist bereits als bezahlt markiert worden.')
+        return redirect_to('.order_view', id=order.id)
+
+    return {
+        'order': order,
+    }
+
+
 @blueprint.route('/orders/<uuid:id>/mark_as_paid', methods=['POST'])
 @permission_required(ShopOrderPermission.update)
 def order_mark_as_paid(id):
     """Set the payment status of a single order to 'paid'."""
     order = Order.query.get_or_404(id)
 
-    if order.payment_state != PaymentState.open:
-        flash_error(
-            'Die Bestellung ist bereits abgeschlossen; '
-            'der Bezahlstatus kann nicht mehr geändert werden.')
+    if order.payment_state == PaymentState.paid:
+        flash_error('Die Bestellung ist bereits als bezahlt markiert worden.')
         return redirect_to('.order_view', id=order.id)
 
     order.mark_as_paid(g.current_user)

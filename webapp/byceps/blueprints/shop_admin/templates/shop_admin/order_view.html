@@ -31,12 +31,17 @@
       <th>Bezahlstatus</th>
       <td>
         {{ render_order_payment_state(order.payment_state) }}
-        {%- if order.payment_state != PaymentState.canceled %}
-        <a class="action inline" style="margin-left: 1em;" href="{{ url_for('.order_update_payment_form', id=order.id) }}">{{ render_icon('edit') }} ändern</a></li>
-        {%- endif %}
-        {%- if order.payment_state in (PaymentState.canceled, PaymentState.paid) %}
+        {%- if order.payment_state != PaymentState.open %}
         (gesetzt: {{ render_datetime(order.payment_state_updated_at) }} von {{ render_user_admin_link(order.payment_state_updated_by) }})
         {%- endif %}
+        <ol class="actions inline">
+          {%- if order.payment_state == PaymentState.open %}
+          <li><a href="{{ url_for('.order_mark_as_paid_form', id=order.id) }}">{{ render_icon('success') }} als bezahlt markieren</a></li>
+          {%- endif %}
+          {%- if order.payment_state != PaymentState.canceled %}
+          <li><a href="{{ url_for('.order_cancel_form', id=order.id) }}">{{ render_icon('disabled') }} stornieren</a></li>
+          {%- endif %}
+        </ol>
       </td>
     </tr>
     {%- if order.payment_state == PaymentState.canceled %}
