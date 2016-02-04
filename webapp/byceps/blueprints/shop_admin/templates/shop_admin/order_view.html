@@ -34,7 +34,7 @@
         {%- if order.payment_state != PaymentState.canceled %}
         <a class="action inline" style="margin-left: 1em;" href="{{ url_for('.order_update_payment_form', id=order.id) }}">{{ render_icon('edit') }} ändern</a></li>
         {%- endif %}
-        {%- if order.payment_state == PaymentState.canceled or order.payment_state == PaymentState.paid %}
+        {%- if order.payment_state in (PaymentState.canceled, PaymentState.paid) %}
         (gesetzt: {{ render_datetime(order.payment_state_updated_at) }} von {{ render_user_admin_link(order.payment_state_updated_by) }})
         {%- endif %}
       </td>
