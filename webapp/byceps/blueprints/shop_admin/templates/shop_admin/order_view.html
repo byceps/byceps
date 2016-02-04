@@ -75,7 +75,7 @@
     <thead>
       <tr>
         <th>Anzahl</th>
-        <th>Artikelnummer</th>
+        <th>Artikelnr.</th>
         <th>Beschreibung</th>
         <th>Stückpreis</th>
       </tr>
@@ -90,7 +90,7 @@
       {%- for item in order.items|sort(attribute='article_number') %}
       <tr>
         <td class="number">{{ item.quantity }}</td>
-        <td>{{ render_article_link(item.article) }}</td>
+        <td class="nowrap">{{ render_article_link(item.article) }}</td>
         <td><strong>{{ item.description }}</strong></td>
         <td class="number">{{ item.price|format_euro_amount }}</td>
       </tr>
