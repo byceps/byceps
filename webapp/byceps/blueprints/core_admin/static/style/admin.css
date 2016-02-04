@@ -161,15 +161,16 @@ main:not(.raw) {
   display: block;
   opacity: 0.5;
 }
-#current-user strong {
-  font-size: 1.2rem;
+#current-user .name-and-logout {
+  display: flex;
+  justify-content: space-between;
 }
-#current-user a {
+#current-user a.name {
   color: currentColor;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-right: 0.5em;
   text-decoration: none;
-}
-#current-user .actions {
-  margin-left: 0.5rem;
 }
 
 @media (min-width: 960px) {
