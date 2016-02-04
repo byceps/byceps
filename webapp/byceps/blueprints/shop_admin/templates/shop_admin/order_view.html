@@ -34,6 +34,7 @@
         {%- if order.payment_state != PaymentState.open %}
         (gesetzt: {{ render_datetime(order.payment_state_updated_at) }} von {{ render_user_admin_link(order.payment_state_updated_by) }})
         {%- endif %}
+        <br>
         <ol class="actions inline">
           {%- if order.payment_state == PaymentState.open %}
           <li><a href="{{ url_for('.order_mark_as_paid_form', id=order.id) }}">{{ render_icon('success') }} als bezahlt markieren</a></li>
