@@ -44,7 +44,7 @@ def is_email_address_already_assigned(email_address):
     return _do_users_matching_filter_exist(User.email_address, email_address)
 
 
-def __do_users_matching_filter_exist(model_attribute, search_value):
+def _do_users_matching_filter_exist(model_attribute, search_value):
     """Return `True` if any users match the filter.
 
     Comparison is done case-insensitively.
