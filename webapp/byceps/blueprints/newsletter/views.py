@@ -51,12 +51,13 @@ def subscription_update():
 
     if state is SubscriptionState.requested:
         service.subscribe(user, g.party.brand)
+        flash_success('Du hast dich zum Newsletter angemeldet.')
     elif state is SubscriptionState.declined:
         service.unsubscribe(user, g.party.brand)
+        flash_success('Du hast dich vom Newsletter abgemeldet.')
     else:
         abort(400, 'Unknown subscription state.')
 
-    flash_success('Dein Newsletter-Abonnement wurde aktualisiert.')
     return redirect_to('user.view_current')
 
 
