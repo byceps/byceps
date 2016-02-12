@@ -24,4 +24,4 @@ MAIL_DEBUG = True
 MAIL_DEFAULT_SENDER = 'BYCEPS <noreply@example.com>'
 MAIL_SUPPRESS_SEND = True
 
-ROOT_REDIRECT_TARGET = 'admin/orgas/birthdays'
+ROOT_REDIRECT_TARGET = 'admin/dashboard'
