@@ -72,15 +72,6 @@ img {
 }
 
 
-/* simplified/modernized "micro clearfix" */
-
-.clearfix::after {
-  clear: both;
-  content: '';
-  display: table;
-}
-
-
 /* notifications */
 
 div[class|=notification] {
@@ -390,13 +381,6 @@ nav.pagination li.current {
 
 
 /* misc */
-
-.pull-left {
-  float: left !important;
-}
-.pull-right {
-  float: right !important;
-}
 
 main img {
   max-width: 100%;
