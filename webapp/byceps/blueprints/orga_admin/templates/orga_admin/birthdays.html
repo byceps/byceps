@@ -1,6 +1,7 @@
 {% extends 'layout/base_admin.html' %}
 {% from 'macros/datetime.html' import render_date %}
 {% from 'macros/icons.html' import render_icon %}
+{% from 'macros/orga_admin.html' import render_random_age_adjective, render_relative_days_until, render_time_element %}
 {% from 'macros/user_admin.html' import render_orga_avatar_small, render_user_admin_link %}
 {% set current_page = 'orga_admin.birthdays' %}
 {% set title = 'Die nächsten Geburtstage' %}
@@ -40,74 +41,3 @@
   </table>
 
 {%- endblock body %}
-
-
-{% macro render_relative_days_until(user) %}
-  {%- set days_until_next_birthday = user.detail.days_until_next_birthday %}
-  {%- set is_soon = (days_until_next_birthday <= 7) %}
-
-  {%- if is_soon %}<strong>{% endif %}
-
-  {%- if days_until_next_birthday == 0 -%}
-    heute
-  {%- elif days_until_next_birthday == 1 -%}
-    morgen
-  {%- elif days_until_next_birthday == 2 -%}
-    übermorgen
-  {%- else -%}
-    in {{ days_until_next_birthday }} Tagen
-  {%- endif %}
-
-  {%- if is_soon %}</strong>{% endif %}
-{%- endmacro %}
-
-
-{% macro render_time_element(date, label) -%}
-  <time datetime="{{ date.isoformat() }}" title="{{ date.strftime('%d.%m.%Y') }}">{{ label }}</time>
-{%- endmacro %}
-
-
-{% macro render_random_age_adjective() %}
-  {{- [
-    'agile',
-    'atemberaubende',
-    'bemerkenswerte',
-    'beneidenswerte',
-    'fantastische',
-    'beschauliche',
-    'bombastische',
-    'eindrucksvolle',
-    'epische',
-    'erbarmungslose',
-    'erfrischende',
-    'erheiternde',
-    'erquickende',
-    'fantastische',
-    'ganze',
-    'grandiose',
-    'herzallerliebste',
-    'kolossale',
-    'krasse',
-    'legendäre',
-    'niedliche',
-    'passable',
-    'phänomenale',
-    'possierliche',
-    'quirlige',
-    'schmeichelhafte',
-    'sensationelle',
-    'sportliche',
-    'überschaubare',
-    'umwerfende',
-    'unbegreifliche',
-    'unbeschreibliche',
-    'unbezahlbare',
-    'unfassbare',
-    'unglaubliche',
-    'wahnsinnige',
-    'wilde',
-    'zarte',
-    'zierliche',
-    'zuckersüße',
-  ]|random }}
-{%- endmacro %}
