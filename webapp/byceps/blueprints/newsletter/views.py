@@ -49,7 +49,7 @@ def subscription_update():
 
     state = SubscriptionState[form.state.data]
 
-    newsletter_service.update_subscription_state(user, g.party.brand, state)
+    service.update_subscription_state(user, g.party.brand, state)
 
     flash_success('Dein Newsletter-Abonnement wurde aktualisiert.')
     return redirect_to('user.view_current')
