@@ -262,17 +262,6 @@ nav.main .current a {
 
 /* misc */
 
-ul.condensed {
-  margin: 0 0 0 1em;
-  padding: 0;
-}
-
-hr {
-  border: 0;
-  border-top: #cccccc solid 1px;
-  height: 0;
-}
-
 .avatar .orga-badge {
   font-weight: bold;
   padding-top: 0.5em;
