@@ -80,6 +80,7 @@ def index(page):
 
 
 @blueprint.route('/<uuid:id>')
+@permission_required(UserPermission.view)
 @templated
 def view(id):
     """Show a user's interal profile."""
