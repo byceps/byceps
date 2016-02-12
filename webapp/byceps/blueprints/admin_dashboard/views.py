@@ -57,6 +57,9 @@ def view_global():
         .filter_by(enabled=False) \
         .count()
 
+    orgas_with_next_birthdays = list(
+        orga_admin_service.collect_orgas_with_next_birthdays(limit=3))
+
     return {
         'brand_count': brand_count,
         'party_count': party_count,
@@ -66,6 +69,8 @@ def view_global():
         'user_count': user_count,
         'recent_users_count': recent_users_count,
         'disabled_user_count': disabled_user_count,
+
+        'orgas_with_next_birthdays': orgas_with_next_birthdays,
     }
 
 

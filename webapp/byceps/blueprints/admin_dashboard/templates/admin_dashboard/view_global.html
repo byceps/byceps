@@ -1,11 +1,23 @@
 {% extends 'layout/base_admin.html' %}
-{% from 'macros/admin_dashboard.html' import render_bigstats_cell %}
+{% from 'macros/admin_dashboard.html' import render_bigstats_cell, render_cell %}
+{% from 'macros/orga_admin.html' import render_random_age_adjective, render_relative_days_until, render_time_element %}
+{% from 'macros/user_admin.html' import render_user_admin_link %}
 {% set current_page = 'admin_dashboard_global' %}
 {% set title = 'Dashboard' %}
 {% set layout_main_raw = True %}
 
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('.static', filename='style/admin_dashboard.css') }}"/>
+    <style>
+      .hastoday {
+        font-weight: bold;
+      }
+
+      .birthdays time {
+        cursor: help;
+        border-bottom: #666666 dotted 1px;
+      }
+    </style>
 {%- endblock head %}
 
 {% block body %}
@@ -17,6 +29,24 @@
     {{ render_bigstats_cell(user_count, 'Benutzer', icon_name='users') }}
     {{ render_bigstats_cell(recent_users_count, 'neue Benutzer in den letzten 7 Tagen', icon_name='users', color='#008800') }}
     {{ render_bigstats_cell(disabled_user_count, '<a href="%s">nicht aktivierte Benutzer</a>'|format(url_for('user_admin.index', only='disabled'))|safe, icon_name='users', color='#cc0000') }}
+    {%- call render_cell('birthday', 'wider') %}
+      <table class="index wide birthdays">
+      {%- for user in orgas_with_next_birthdays %}
+        {%- with is_today = user.detail.is_birthday_today %}
+        <tr>
+          <td>{{ render_orga_avatar_small(user) }}</td>
+          <td{% if is_today %} class="hastoday"{% elif user.detail.days_until_next_birthday > 14 %} class="dimmed"{% endif %}>
+            {{ render_user_admin_link(user) }}
+            {% if is_today %}{{ render_icon('birthday') }}{% endif %}
+            {%- set relative_days_label = render_relative_days_until(user) %}
+            wird {{ render_time_element(user.detail.date_of_birth, relative_days_label) }}
+            {{ render_random_age_adjective() }} {{ user.detail.age if is_today else user.detail.age + 1 }} Jahre alt.
+          </td>
+        </tr>
+        {%- endwith %}
+      {%- endfor %}
+      </table>
+    {%- endcall %}
   </div>
 
 {%- endblock body %}

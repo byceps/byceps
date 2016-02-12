@@ -8,6 +8,10 @@
   padding: 20px 0 0 20px;
   max-width: 33.3333%;
 }
+.grid .cell.wider {
+  flex: 0 0 66.6666%;
+  max-width: 66.6666%;
+}
 
 .grid .cell .box {
   height: 100%;
