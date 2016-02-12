@@ -27,7 +27,17 @@ def get_subscription_state(user, brand):
     return current_subscription.state
 
 
-def update_subscription_state(user, brand, state):
+def subscribe(user, brand):
+    """Subscribe the user to that brand's newsletter."""
+    _update_subscription_state(user, brand, SubscriptionState.requested)
+
+
+def unsubscribe(user, brand):
+    """Unsubscribe the user from that brand's newsletter."""
+    _update_subscription_state(user, brand, SubscriptionState.declined)
+
+
+def _update_subscription_state(user, brand, state):
     """Update the user's subscription state for that brand."""
     subscription = Subscription(user, brand, state)
     db.session.add(subscription)
