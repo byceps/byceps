@@ -3,7 +3,7 @@
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_with_fallback %}
 {% from 'macros/shop_admin.html' import render_order_payment_state %}
-{% from 'macros/user.html' import render_user_avatar %}
+{% from 'macros/user_admin.html' import render_user_admin_avatar %}
 {% set current_page = 'user_admin' %}
 {% set title = 'Benutzer - %s'|format(user.screen_name) %}
 
@@ -13,7 +13,7 @@
 
   <h2>Benutzerkonto</h2>
   {%- if user.has_avatar_image %}
-  <div style="float: right; margin: 0 120px 0 1rem;">{{ render_user_avatar(user) }}</div>
+  <div style="float: right; margin: 0 120px 0 1rem;">{{ render_user_admin_avatar(user) }}</div>
   {%- endif %}
   <table class="index">
     <tr>
