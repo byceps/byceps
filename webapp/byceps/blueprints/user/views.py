@@ -353,8 +353,11 @@ def password_update():
 def view_current():
     user = get_current_user_or_404()
 
-    newsletter_subscription_state = newsletter_service \
-        .get_subscription_state(user, g.party.brand)
+    if get_site_mode().is_public():
+        newsletter_subscription_state = newsletter_service \
+            .get_subscription_state(user, g.party.brand)
+    else:
+        newsletter_subscription_state = None
 
     return {
         'user': user,
