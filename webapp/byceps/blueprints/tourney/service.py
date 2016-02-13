@@ -10,7 +10,7 @@ byceps.blueprints.tourney.service
 
 from ...database import db
 
-from .models import MatchComment
+from .models.match import MatchComment
 
 
 def get_match_comments(match):

@@ -14,7 +14,7 @@ from ...util.framework import create_blueprint
 from ...util.templating import templated
 from ...util.views import respond_created
 
-from .models import Match
+from .models.match import Match
 from . import service
 from . import signals
 
