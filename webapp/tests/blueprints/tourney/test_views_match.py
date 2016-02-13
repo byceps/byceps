@@ -34,6 +34,23 @@ class MatchTestCase(AbstractAppTestCase):
         comment_count = MatchComment.query.for_match(match).count()
         self.assertEqual(comment_count, 1)
 
+    def test_create_comment_on_existent_match_as_anonymous_user(self):
+        match = self.create_match()
+
+        url = '/tourney/matches/{}/comments'.format(match.id)
+
+        form_data = {
+            'body': 'gg',
+        }
+
+        with self.client() as client:
+            response = client.post(url, data=form_data)
+
+        self.assertEqual(response.status_code, 403)
+
+        comment_count = MatchComment.query.for_match(match).count()
+        self.assertEqual(comment_count, 0)
+
     def test_create_comment_on_nonexistent_match(self):
         player = self.create_player()
 

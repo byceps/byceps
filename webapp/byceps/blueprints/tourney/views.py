@@ -8,7 +8,7 @@ byceps.blueprints.tourney.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from flask import g, request, url_for
+from flask import abort, g, request, url_for
 
 from ...util.framework import create_blueprint
 from ...util.templating import templated
@@ -49,6 +49,9 @@ blueprint.add_url_rule(
 @respond_created
 def match_comment_create(match_id):
     """Create a comment on a match."""
+    if not g.current_user.is_active:
+        abort(403)
+
     match = Match.query.get_or_404(match_id)
 
     body = request.form['body'].strip()
