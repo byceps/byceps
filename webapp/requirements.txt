@@ -19,4 +19,4 @@ pytz >= 2015.4
 Ranger >= 0.9
 redis >= 2.10.3
 rq >= 0.5.4
-rq-dashboard >= 0.3.4
+rq-dashboard == 0.3.4
