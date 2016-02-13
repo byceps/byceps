@@ -20,14 +20,7 @@ class MatchTestCase(AbstractAppTestCase):
 
         match = self.create_match()
 
-        url = '/tourney/matches/{}/comments'.format(match.id)
-
-        form_data = {
-            'body': 'gg',
-        }
-
-        with self.client(user=player) as client:
-            response = client.post(url, data=form_data)
+        response = self.request_comment_creation(match.id, user=player)
 
         self.assertEqual(response.status_code, 201)
 
@@ -36,14 +29,7 @@ class MatchTestCase(AbstractAppTestCase):
     def test_create_comment_on_existent_match_as_anonymous_user(self):
         match = self.create_match()
 
-        url = '/tourney/matches/{}/comments'.format(match.id)
-
-        form_data = {
-            'body': 'gg',
-        }
-
-        with self.client() as client:
-            response = client.post(url, data=form_data)
+        response = self.request_comment_creation(match.id)
 
         self.assertEqual(response.status_code, 403)
 
@@ -54,14 +40,7 @@ class MatchTestCase(AbstractAppTestCase):
 
         unknown_match_id = '00000000-0000-0000-0000-000000000000'
 
-        url = '/tourney/matches/{}/comments'.format(unknown_match_id)
-
-        form_data = {
-            'body': 'gg',
-        }
-
-        with self.client(user=player) as client:
-            response = client.post(url, data=form_data)
+        response = self.request_comment_creation(unknown_match_id, user=player)
 
         self.assertEqual(response.status_code, 404)
 
@@ -82,6 +61,16 @@ class MatchTestCase(AbstractAppTestCase):
         self.db.session.commit()
 
         return match
+
+    def request_comment_creation(self, match_id, *, user=None):
+        url = '/tourney/matches/{}/comments'.format(match_id)
+
+        form_data = {
+            'body': 'gg',
+        }
+
+        with self.client(user=user) as client:
+            return client.post(url, data=form_data)
 
     def assertCommentCountForMatch(self, match, expected):
         comment_count = MatchComment.query.for_match(match).count()
