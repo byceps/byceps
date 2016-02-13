@@ -31,8 +31,7 @@ class MatchTestCase(AbstractAppTestCase):
 
         self.assertEqual(response.status_code, 201)
 
-        comment_count = MatchComment.query.for_match(match).count()
-        self.assertEqual(comment_count, 1)
+        self.assertCommentCountForMatch(match, 1)
 
     def test_create_comment_on_existent_match_as_anonymous_user(self):
         match = self.create_match()
@@ -48,8 +47,7 @@ class MatchTestCase(AbstractAppTestCase):
 
         self.assertEqual(response.status_code, 403)
 
-        comment_count = MatchComment.query.for_match(match).count()
-        self.assertEqual(comment_count, 0)
+        self.assertCommentCountForMatch(match, 0)
 
     def test_create_comment_on_nonexistent_match(self):
         player = self.create_player()
@@ -84,3 +82,7 @@ class MatchTestCase(AbstractAppTestCase):
         self.db.session.commit()
 
         return match
+
+    def assertCommentCountForMatch(self, match, expected):
+        comment_count = MatchComment.query.for_match(match).count()
+        self.assertEqual(comment_count, expected)
