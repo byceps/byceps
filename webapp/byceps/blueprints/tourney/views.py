@@ -55,7 +55,7 @@ def match_comment_create(match_id):
 
     comment = service.create_match_comment(match, g.current_user, body)
 
-    signals.match_comment_create.send(None, comment=comment)
+    signals.match_comment_created.send(None, comment=comment)
 
     return url_for('.match_comment_view',
                    match_id=match.id,
