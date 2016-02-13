@@ -75,17 +75,12 @@ pip_.
 .. _virtualenv: http://www.virtualenv.org/
 .. _pip: http://www.pip-installer.org/
 
-It is recommended to do create the virtual environment inside of
-BYCEPS's ``webapp`` path, so go there first:
+Change into the BYCEPS path and create a virtual environment (named
+"venv") there:
 
 .. code-block:: sh
 
-    $ cd byceps/webapp
-
-Then create a virtual environment (named "venv"):
-
-.. code-block:: sh
-
+    $ cd byceps
     $ pyvenv-3.4 --system-site-packages venv
 
 Activate it (but don't change into its path):
@@ -102,7 +97,7 @@ Whenever you want to activate the virtual environment, make sure to do
 that either in the path in which you have created it using the above
 command, or adjust the path to reference it relatively (e.g.
 ``../../venv/bin/activate``) or absolutely (e.g.
-``/var/www/byceps/webapp/venv/bin/activate``).
+``/var/www/byceps/venv/bin/activate``).
 
 Make sure the correct version of Python is used:
 

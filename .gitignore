@@ -9,10 +9,10 @@ venv
 *.egg-info
 
 # user data
-webapp/data
+data
 
 # OpenSSL keys for development server
-webapp/keys
+keys
 
 # documentation
-docs/_build/
+docs/_build
