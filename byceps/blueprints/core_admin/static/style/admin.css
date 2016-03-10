@@ -192,12 +192,16 @@ main:not(.raw) {
 
 /* sidebar */
 
+#sidebar {
+  display: flex;
+  flex-direction: column;
+  margin: -20px 0 0 -20px;
+}
 #sidebar section {
   font-size: 0.8rem;
+  flex: 1;
+  margin: 20px 0 0 20px;
   padding-bottom: 12px;
-}
-#sidebar section:not(:last-child) {
-  margin-bottom: 20px;
 }
 #sidebar section h1 {
   background-color: #555555;

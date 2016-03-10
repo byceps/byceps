@@ -52,7 +52,7 @@ main,
 }
 
 #sidebar {
-  width: 160px;
+  width: 180px;
 }
 
 main {
@@ -83,9 +83,16 @@ main {
 
 /* sidebar */
 
+#sidebar {
+  display: flex;
+  flex-direction: column;
+  margin: -20px 0 0 -20px;
+}
+
 #sidebar section {
+  flex: 1;
   font-size: 0.8rem;
-  margin-bottom: 20px;
+  margin: 20px 0 0 20px;
   padding: 12px 0;
 }
 #sidebar section h1 {
@@ -109,6 +116,7 @@ nav.main li {
   display: block;
   margin: 0;
   padding: 0;
+  white-space: nowrap;
 }
 nav.main a {
   border-color: transparent;
