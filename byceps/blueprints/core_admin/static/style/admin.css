@@ -95,11 +95,7 @@ main:not(.raw) {
 
 #header-content .head {
   font-weight: bold;
-  margin: auto 0;
-}
-#header-content .head strong {
-  display: block;
-  font-size: 1.3rem;
+  margin: 1rem 0;
 }
 #header-content .head a {
   text-decoration: none;
@@ -179,6 +175,10 @@ main:not(.raw) {
   }
   #header-content .head {
     margin: 0;
+  }
+  #header-content .head strong {
+    display: block;
+    font-size: 1.3rem;
   }
   #header-content nav li {
     border-top: none;
