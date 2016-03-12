@@ -4,13 +4,11 @@
   margin: -20px 0 0 -20px;
 }
 .grid .cell {
-  flex: 0 0 33.3333%;
+  flex: 1 0 33.3333%;
   padding: 20px 0 0 20px;
-  max-width: 33.3333%;
 }
 .grid .cell.wider {
-  flex: 0 0 66.6666%;
-  max-width: 66.6666%;
+  flex: 1 0 66.6666%;
 }
 
 .grid .cell .box {
