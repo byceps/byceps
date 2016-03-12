@@ -194,7 +194,7 @@ main:not(.raw) {
 
 #sidebar {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   margin: -20px 0 0 -20px;
 }
 #sidebar section {
@@ -215,6 +215,12 @@ main:not(.raw) {
 }
 #sidebar section p {
   padding: 0 20px
+}
+
+@media (min-width: 960px) {
+  #sidebar {
+    flex-direction: column;
+  }
 }
 
 
