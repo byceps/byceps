@@ -90,7 +90,7 @@ main {
 }
 
 #sidebar section {
-  flex: 1;
+  flex: 1 0 auto;
   font-size: 0.8rem;
   margin: 20px 0 0 20px;
   padding: 12px 0;
