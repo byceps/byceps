@@ -34,7 +34,7 @@
             {{ render_icon('log-in') }} <a href="{{ url_for('authentication.login_form') }}">Anmelden</a>
           </div>
         {%- endif %}
-        </div>
+        </div><!-- /#current-user -->
 
 {%- with
   current_page = current_page|default,
@@ -91,7 +91,7 @@
 
 {%- endwith %}
 
-      </div>
+      </div><!-- /#header-content -->
     </header>
 
     <div id="page">
@@ -107,14 +107,14 @@
 {%- include 'layout/_navigation_admin.html' with context %}
 {%- endwith %}
           </aside>
-        </div>
+        </div><!-- /#page-grid-sidebar -->
 
         <div id="page-grid-main">
           <main{% if layout_main_raw|default(False) %} class="raw"{% endif %}>
 {%- include 'layout/_notifications.html' %}
 {%- block body %}{% endblock %}
           </main>
-        </div>
+        </div><!-- /#page-grid-main -->
 
       </div><!-- /#page-grid -->
     </div><!-- /#page -->
