@@ -9,10 +9,12 @@
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('.static', filename='style/admin_dashboard.css') }}"/>
     <style>
-      .hastoday {
+      .birthdays td:last-child {
+        vertical-align: middle;
+      }
+      .birthdays .hastoday {
         font-weight: bold;
       }
-
       .birthdays time {
         cursor: help;
         border-bottom: #666666 dotted 1px;
@@ -30,7 +32,7 @@
     {{ render_bigstats_cell(recent_users_count, 'neue Benutzer in den letzten 7 Tagen', icon_name='users', color='#008800') }}
     {{ render_bigstats_cell(disabled_user_count, '<a href="%s">nicht aktivierte Benutzer</a>'|format(url_for('user_admin.index', only='disabled'))|safe, icon_name='users', color='#cc0000') }}
     {%- call render_cell('birthday', 'wider') %}
-      <table class="index wide birthdays">
+      <table class="birthdays">
       {%- for user in orgas_with_next_birthdays %}
         {%- with is_today = user.detail.is_birthday_today %}
         <tr>
