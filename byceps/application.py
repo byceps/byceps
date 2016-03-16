@@ -94,12 +94,12 @@ def create_app(environment_name):
 
     templatefilters.register(app)
 
-    app.add_url_rule('/content/<path:filename>',
-                     endpoint='content_file',
+    app.add_url_rule('/party/<path:filename>',
+                     endpoint='party_file',
                      methods=['GET'],
                      build_only=True)
 
-    app.add_url_rule('/content/brand/<path:filename>',
+    app.add_url_rule('/brand/<path:filename>',
                      endpoint='brand_file',
                      build_only=True)
 
