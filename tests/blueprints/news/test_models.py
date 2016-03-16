@@ -21,7 +21,7 @@ class ItemTestCase(AbstractAppTestCase):
 
     @params(
         ('without-image', None          , None                                        ),
-        ('with-image'   , 'breaking.png', 'http://example.com/content/brand/news/breaking.png'),
+        ('with-image'   , 'breaking.png', 'http://example.com/brand/news/breaking.png'),
     )
     def test_image_url(self, slug, image_url_path, expected):
         item = self.create_item_with_version(slug, image_url_path)
