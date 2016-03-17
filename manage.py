@@ -38,9 +38,13 @@ if app.debug:
         '/users/avatars': str(app.config['PATH_USER_AVATAR_IMAGES']),
     }
 
-    path_content = app.config.get('PATH_CONTENT')
-    if path_content:
-        exports['/content'] = str(path_content)
+    path_brand = app.config.get('PATH_BRAND')
+    if path_brand:
+        exports['/brand'] = str(path_brand)
+
+    path_party = app.config.get('PATH_PARTY')
+    if path_party:
+        exports['/party'] = str(path_party)
 
     app.wsgi_app = SharedDataMiddleware(app.wsgi_app, exports)
 

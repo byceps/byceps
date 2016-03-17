@@ -16,10 +16,12 @@ SQLALCHEMY_ECHO = False
 REDIS_URL = 'redis://127.0.0.1:6379/0'
 
 MODE = 'public'
+BRAND = 'lanresort'
 PARTY = 'example-party-1'
 
 PATH_DATA = Path('./data')
-PATH_CONTENT = PATH_DATA / 'party_content' / PARTY
+PATH_BRAND = PATH_DATA / 'brands' / BRAND
+PATH_PARTY = PATH_DATA / 'parties' / PARTY
 PATH_USER_AVATAR_IMAGES = PATH_DATA / 'users/avatars'
 
 BOARD_TOPICS_PER_PAGE = 10
