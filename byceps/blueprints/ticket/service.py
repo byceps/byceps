@@ -17,8 +17,28 @@ from ..seating.models.seat import Seat
 from .models import Ticket
 
 
-def find_tickets_related_to_user_for_party(user, party):
+def find_tickets_related_to_user(user):
     """Return tickets related to the user."""
+    return Ticket.query \
+        .filter(
+            (Ticket.owned_by == user) |
+            (Ticket.seat_managed_by == user) |
+            (Ticket.user_managed_by == user) |
+            (Ticket.used_by == user)
+        ) \
+        .options(
+            db.joinedload('occupied_seat').joinedload('area'),
+            db.joinedload('occupied_seat').joinedload('category'),
+            db.joinedload('seat_managed_by'),
+            db.joinedload('user_managed_by'),
+            db.joinedload('used_by'),
+        ) \
+        .order_by(Ticket.created_at) \
+        .all()
+
+
+def find_tickets_related_to_user_for_party(user, party):
+    """Return tickets related to the user for the party."""
     return Ticket.query \
         .for_party(party) \
         .filter(

@@ -143,4 +143,13 @@
   {{ 'keine'|dim }}
   {%- endif %}
 
+  <h2>Tickets</h2>
+  <table class="index">
+    {%- for ticket in tickets %}
+    <tr>
+      <td><a href="{{ url_for('ticket_admin.view', id=ticket.id) }}">{{ ticket.id }}</a></td>
+    </tr>
+    {%- endfor %}
+  </table>
+
 {%- endblock body %}
