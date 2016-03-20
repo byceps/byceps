@@ -204,9 +204,17 @@ nav.main .current a {
 
 .board-postings aside,
 .tourney-match-comments aside {
+  display: flex;
   flex: 0 0 136px;
+  flex-direction: column;
   font-size: 0.85rem;
+  margin-top: -0.5rem;
   overflow: hidden;
+}
+.board-postings aside > *,
+.tourney-match-comments aside > * {
+  margin: 0;
+  padding: 0.5rem 0 0 0;
 }
 .board-postings aside .creator a,
 .tourney-match-comments aside .creator a {
