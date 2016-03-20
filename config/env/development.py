@@ -16,7 +16,7 @@ SQLALCHEMY_ECHO = False
 REDIS_URL = 'redis://127.0.0.1:6379/0'
 
 MODE = 'public'
-BRAND = 'lanresort'
+BRAND = 'example-brand'
 PARTY = 'example-party-1'
 
 PATH_DATA = Path('./data')
