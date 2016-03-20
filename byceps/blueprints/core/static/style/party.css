@@ -214,15 +214,16 @@ nav.main .current a {
   width: 522px;
 }
 
-.board-postings aside .creator,
-.tourney-match-comments aside .creator {
+.board-postings aside .creator a,
+.tourney-match-comments aside .creator a {
+  display: block;
   font-weight: bold;
 }
 
 .board-postings aside .creator,
-.board-postings aside .avatar,
+.board-postings aside .creator .avatar,
 .tourney-match-comments aside .creator,
-.tourney-match-comments aside .avatar {
+.tourney-match-comments aside .creator .avatar {
   margin-bottom: 0.25rem;
 }
 

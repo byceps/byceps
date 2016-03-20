@@ -5,8 +5,10 @@
 
 <article id="posting-{{ posting.id }}" {%- if posting.hidden %} class="dimmed"{% endif %}>
   <aside>
-    <div class="creator">{{ render_user_link(posting.creator) }}</div>
-    {{ render_user_avatar(posting.creator) }}
+    <div class="creator">
+      {{ render_user_link(posting.creator) }}
+      {{ render_user_avatar(posting.creator) }}
+    </div>
     {{ render_datetime(posting.created_at)|replace(', ', '<br/>'|safe) }}
     {%- if posting.unseen %}<div>{{ render_flag_new() }}</div>{% endif %}
 
