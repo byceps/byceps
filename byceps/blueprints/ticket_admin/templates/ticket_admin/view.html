@@ -1,0 +1,56 @@
+{% extends 'layout/base_admin.html' %}
+{% from 'macros/datetime.html' import render_datetime %}
+{% from 'macros/icons.html' import render_icon %}
+{% from 'macros/user_admin.html' import render_user_admin_link %}
+{% set current_page = 'ticket_admin' %}
+{% set current_page_party = ticket.party %}
+{% set title = 'Ticket %s - Tickets'|format(ticket.id) %}
+
+{% block body %}
+
+  <h1>{{ render_icon('ticket') }} {{ ticket.id }}</h1>
+
+  <table class="index">
+    <tr>
+      <th>ID</th>
+      <td>{{ ticket.id }}</td>
+    </tr>
+    <tr>
+      <th>Erstellt</th>
+      <td>{{ render_datetime(ticket.created_at) }}</td>
+    </tr>
+    <tr>
+      <th>Besitzer/in</th>
+      <td>{{ render_user_admin_link(ticket.owned_by) }}</td>
+    </tr>
+    <tr>
+      <th>Kategorie</th>
+      <td>{{ ticket.category.title }}</td>
+    </tr>
+    <tr>
+      <th>Sitzplatz</th>
+      <td>
+          {%- if ticket.occupied_seat -%}
+          {{ ticket.occupied_seat.area.title }}
+          {%- else -%}
+          {{ 'keiner'|dim }}
+          {%- endif -%}
+          <br>
+          {{ 'verwaltet durch'|dim  }} {{ render_user_admin_link(ticket.get_seat_manager()) }}
+      </td>
+    </tr>
+    <tr>
+      <th>Nutzer/in</th>
+      <td>
+          {%- if ticket.used_by -%}
+          {{ render_user_admin_link(ticket.used_by) }}
+          {%- else -%}
+          {{ 'keine/r'|dim }}
+          {%- endif -%}
+          <br>
+          {{ 'verwaltet durch'|dim }} {{ render_user_admin_link(ticket.get_user_manager()) }}
+      </td>
+    </tr>
+  </table>
+
+{%- endblock body %}

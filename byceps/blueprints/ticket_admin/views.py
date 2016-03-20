@@ -65,3 +65,23 @@ def index_for_party(party_id, page):
         'party': party,
         'tickets': tickets,
     }
+
+
+@blueprint.route('/<uuid:id>')
+@permission_required(TicketPermission.view)
+@templated
+def view(id):
+    """Show a ticket."""
+    ticket = Ticket.query \
+        .options(
+            db.joinedload('category'),
+            db.joinedload('occupied_seat').joinedload('area'),
+            db.joinedload('owned_by'),
+            db.joinedload('seat_managed_by'),
+            db.joinedload('user_managed_by'),
+        ) \
+        .get_or_404(id)
+
+    return {
+        'ticket': ticket,
+    }
