@@ -27,6 +27,13 @@ def find_tickets_related_to_user(user, party):
             (Ticket.user_managed_by == user) |
             (Ticket.used_by == user)
         ) \
+        .options(
+            db.joinedload('occupied_seat').joinedload('area'),
+            db.joinedload('occupied_seat').joinedload('category'),
+            db.joinedload('seat_managed_by'),
+            db.joinedload('user_managed_by'),
+            db.joinedload('used_by'),
+        ) \
         .order_by(Ticket.created_at) \
         .all()
 
