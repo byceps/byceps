@@ -16,7 +16,7 @@ from ...util.templating import templated
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
-from ..shop.service import get_orders_placed_by_user
+from ..shop import service as shop_service
 from ..user.models import User, UserDetail
 
 from .authorization import UserPermission
@@ -85,7 +85,7 @@ def index(page):
 def view(id):
     """Show a user's interal profile."""
     user = User.query.get_or_404(id)
-    orders = get_orders_placed_by_user(user)
+    orders = shop_service.get_orders_placed_by_user(user)
     return {
         'user': user,
         'orders': orders,
