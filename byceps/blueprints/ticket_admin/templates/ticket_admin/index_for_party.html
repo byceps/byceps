@@ -43,8 +43,11 @@
         <td>{{ render_user_admin_link(ticket.owned_by) }}</td>
         <td>{{ ticket.category.title }}</td>
         <td>
-          {{ render_tag('keiner', class='available') }}<br>
+          {%- if ticket.occupied_seat -%}
           {{ ticket.occupied_seat.area.title }}
+          {%- else -%}
+          {{ render_tag('keiner', class='available') }}
+          {%- endif -%}
           <br>
           {{ 'verwaltet durch'|dim  }} {{ render_user_admin_link(ticket.get_seat_manager()) }}
         </td>
