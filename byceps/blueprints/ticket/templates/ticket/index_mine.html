@@ -6,6 +6,15 @@
 {% set current_page = 'ticket' %}
 {% set title = 'Tickets' %}
 
+{% block head %}
+    <style>
+      span[title] {
+        border-bottom: dotted 1px;
+        cursor: help;
+      }
+    </style>
+{%- endblock head %}
+
 {% block body %}
 
   <h1>{{ render_icon('ticket') }} {{ title }}</h1>
