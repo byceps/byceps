@@ -187,46 +187,33 @@ nav.main .current a {
 .board-postings article,
 .tourney-match-comments article {
   border-top: #cccccc solid 1px;
-  margin: 0;
-  padding: 10px 0;
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 0.75rem;
+  padding-top: -0.75rem;
 }
 
 .board-postings aside,
 .board-postings .body,
+.board-postings footer,
 .tourney-match-comments aside,
-.tourney-match-comments .body {
-  display: table-cell;
-  vertical-align: top;
+.tourney-match-comments .body,
+.tourney-match-comments footer {
+  padding-top: 0.75rem;
 }
+
 .board-postings aside,
 .tourney-match-comments aside {
+  flex: 0 0 136px;
   font-size: 0.85rem;
-  max-width: 136px;
   overflow: hidden;
-  width: 136px;
 }
-.board-postings .body,
-.tourney-match-comments .body {
-  font-size: 1rem;
-  max-width: 522px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  width: 522px;
-}
-
 .board-postings aside .creator a,
 .tourney-match-comments aside .creator a {
   display: block;
   font-weight: bold;
-}
-
-.board-postings aside .creator,
-.board-postings aside .creator .avatar,
-.tourney-match-comments aside .creator,
-.tourney-match-comments aside .creator .avatar {
   margin-bottom: 0.25rem;
 }
-
 .board-postings aside time,
 .tourney-match-comments aside time {
   display: block;
@@ -235,16 +222,27 @@ nav.main .current a {
   opacity: 0.5;
 }
 
-.board-postings footer {
+.board-postings .body,
+.tourney-match-comments .body {
+  flex: 1 1 20rem;
+  font-size: 1rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.board-postings footer,
+.tourney-match-comments footer {
+  flex: 0 0 100%;
   font-size: 0.75rem;
-  margin-top: 1rem;
   opacity: 0.5;
   text-align: right;
 }
-.board-postings footer:hover {
+.board-postings footer:hover,
+.tourney-match-comments footer:hover {
   opacity: 1;
 }
-.board-postings footer p {
+.board-postings footer p,
+.tourney-match-comments footer p {
   margin: 0;
   padding: 0;
 }
