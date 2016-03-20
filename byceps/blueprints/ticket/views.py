@@ -15,6 +15,7 @@ from ...util.iterables import find
 from ...util.templating import templated
 
 from .models import Ticket
+from . import service
 
 
 blueprint = create_blueprint('ticket', __name__)
@@ -26,16 +27,7 @@ def index_mine():
     """List tickets related to the current user."""
     me = get_current_user_or_403()
 
-    tickets = Ticket.query \
-        .for_party(g.party) \
-        .filter(
-            (Ticket.owned_by == me) |
-            (Ticket.seat_managed_by == me) |
-            (Ticket.user_managed_by == me) |
-            (Ticket.used_by == me)
-        ) \
-        .order_by(Ticket.created_at) \
-        .all()
+    tickets = service.find_tickets_related_to_user(me, g.party)
 
     tickets_bought = list(filter(lambda t: t.owned_by == me, tickets))
     tickets_managed = list(filter(lambda t: t.is_managed_by(me), tickets))

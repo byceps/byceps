@@ -17,6 +17,20 @@ from ..seating.models.seat import Seat
 from .models import Ticket
 
 
+def find_tickets_related_to_user(user, party):
+    """Return tickets related to the user."""
+    return Ticket.query \
+        .for_party(party) \
+        .filter(
+            (Ticket.owned_by == user) |
+            (Ticket.seat_managed_by == user) |
+            (Ticket.user_managed_by == user) |
+            (Ticket.used_by == user)
+        ) \
+        .order_by(Ticket.created_at) \
+        .all()
+
+
 def find_tickets_used_by_user(user, party):
     """Return the tickets (if any) used by the user for that party."""
     if user.is_anonymous:
