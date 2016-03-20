@@ -54,7 +54,7 @@
           {%- if ticket.occupied_seat -%}
           {{ render_seating_area_link(ticket.occupied_seat.area) }}
           {%- else -%}
-          {{ render_tag('keiner', class='available') }}<br>
+          {{ render_tag('keiner', class='available') }}
           {%- endif -%}
           <br>
           {{ 'verwaltet durch'|dim  }} {{ render_user_link(ticket.get_seat_manager()) }}
