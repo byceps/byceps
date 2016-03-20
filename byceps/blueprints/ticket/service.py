@@ -17,7 +17,7 @@ from ..seating.models.seat import Seat
 from .models import Ticket
 
 
-def find_tickets_related_to_user(user, party):
+def find_tickets_related_to_user_for_party(user, party):
     """Return tickets related to the user."""
     return Ticket.query \
         .for_party(party) \

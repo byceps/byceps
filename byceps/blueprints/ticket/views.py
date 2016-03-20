@@ -27,7 +27,7 @@ def index_mine():
     """List tickets related to the current user."""
     me = get_current_user_or_403()
 
-    tickets = service.find_tickets_related_to_user(me, g.party)
+    tickets = service.find_tickets_related_to_user_for_party(me, g.party)
 
     tickets_bought = list(filter(lambda t: t.owned_by == me, tickets))
     tickets_managed = list(filter(lambda t: t.is_managed_by(me), tickets))
