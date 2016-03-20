@@ -41,8 +41,8 @@ def index():
     }
 
 
-@blueprint.route('/<party_id>', defaults={'page': 1})
-@blueprint.route('/<party_id>/pages/<int:page>')
+@blueprint.route('/for_party/<party_id>', defaults={'page': 1})
+@blueprint.route('/for_party/<party_id>/pages/<int:page>')
 @permission_required(TicketPermission.list)
 @templated
 def index_for_party(party_id, page):
