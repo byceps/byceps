@@ -17,7 +17,7 @@ from ..seating.models.seat import Seat
 from .models import Ticket
 
 
-def find_tickets_for_user(user, party):
+def find_tickets_used_by_user(user, party):
     """Return the tickets (if any) used by the user for that party."""
     if user.is_anonymous:
         return []
