@@ -425,6 +425,10 @@ ol.index.fully-linked a:hover {
     max-width: auto;
   }
 
+  #page-grid {
+    display: block;
+  }
+
   main {
     border: none !important;
     box-shadow: none !important;
@@ -434,6 +438,7 @@ ol.index.fully-linked a:hover {
 
   table {
     display: table !important;
+    overflow: visible !important;
   }
 
   .actions,
