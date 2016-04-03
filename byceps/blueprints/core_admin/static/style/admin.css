@@ -399,3 +399,45 @@ ol.index.fully-linked a:hover {
 .avatar.orga img {
   border-radius: 50%;
 }
+
+
+/* print view */
+
+@media print {
+  * {
+    background-color: transparent !important;
+    color: #000000 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  body {
+    border: none;
+  }
+
+  #header,
+  #sidebar,
+  #footer {
+    display: none;
+  }
+
+  #page {
+    max-width: auto;
+  }
+
+  main {
+    border: none !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  table {
+    display: table !important;
+  }
+
+  .actions,
+  .action {
+    display: none !important;
+  }
+}
