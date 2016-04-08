@@ -69,7 +69,7 @@ def view(id):
 
 @blueprint.route('/<uuid:id>.json')
 def view_as_json(id):
-    """Show a user's profile."""
+    """Show selected attributes of a user's profile as JSON."""
     if get_site_mode().is_admin():
         abort(404)
 
@@ -89,6 +89,7 @@ def view_as_json(id):
 @blueprint.route('/me')
 @templated
 def view_current():
+    """Show the current user's internal profile."""
     user = get_current_user_or_404()
 
     if get_site_mode().is_public():
