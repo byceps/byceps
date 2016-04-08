@@ -16,6 +16,7 @@ from ...util.templating import templated
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
+from ..authorization_admin import service as authorization_admin_service
 from ..shop import service as shop_service
 from ..ticket import service as ticket_service
 from ..user.models import User, UserDetail
@@ -86,7 +87,8 @@ def index(page):
 def view(id):
     """Show a user's interal profile."""
     user = User.query.get_or_404(id)
-    permissions_by_role = {role: role.permissions for role in user.roles}
+    permissions_by_role = authorization_admin_service \
+        .get_permissions_by_roles_for_user_with_titles(user)
     orders = shop_service.get_orders_placed_by_user(user)
     tickets = ticket_service.find_tickets_related_to_user(user)
 
