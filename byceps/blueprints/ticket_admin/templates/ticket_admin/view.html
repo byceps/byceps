@@ -24,6 +24,10 @@
       <td>{{ render_user_admin_link(ticket.owned_by) }}</td>
     </tr>
     <tr>
+      <th>Party</th>
+      <td>{{ ticket.category.party.title }}</td>
+    </tr>
+    <tr>
       <th>Kategorie</th>
       <td>{{ ticket.category.title }}</td>
     </tr>
