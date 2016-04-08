@@ -74,6 +74,7 @@ def view_as_json(id):
         abort(404)
 
     user = User.query.get(id)
+
     if not user:
         return _empty_json_response(404)
 
@@ -103,6 +104,23 @@ def view_current():
         'newsletter_subscription_state': newsletter_subscription_state,
         'NewsletterSubscriptionState': NewsletterSubscriptionState,
     }
+
+
+@blueprint.route('/me.json')
+def view_current_as_json():
+    """Show selected attributes of the current user's profile as JSON."""
+    if get_site_mode().is_admin():
+        abort(404)
+
+    user = g.current_user
+
+    if not user.is_active:
+        return _empty_json_response(404)
+
+    return jsonify({
+        'id': user.id,
+        'screen_name': user.screen_name,
+    })
 
 
 def _empty_json_response(status):
