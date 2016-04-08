@@ -18,6 +18,7 @@ SQLALCHEMY_ECHO = False
 REDIS_URL = 'redis://127.0.0.1:6379/0'
 
 MODE = 'public'
+BRAND = 'acme'
 PARTY = 'acme-2014'
 
 PATH_DATA = Path('./data')

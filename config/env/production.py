@@ -21,6 +21,7 @@ PATH_DATA = Path('./data')
 PATH_USER_AVATAR_IMAGES = PATH_DATA / 'users/avatars'
 
 MODE = 'public'
+BRAND = 'example-brand'
 PARTY = 'example-party-1'
 
 BOARD_TOPICS_PER_PAGE = 10
