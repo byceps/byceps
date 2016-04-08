@@ -116,8 +116,8 @@
   </table>
 
   <h2 id="permissions">Berechtigungen</h2>
-  <table class="index">
-    {%- for role in user.roles|sort(attribute='title') %}
+  <table class="index wide">
+    {%- for role, permissions in permissions_by_role.items()|sort(attribute='0.title') %}
     <tr>
       <td>
         <strong>{{ role.title }}</strong><br>
@@ -125,7 +125,7 @@
       </td>
       <td>
         <ul>
-          {%- for permission in role.permissions|sort(attribute='title') %}
+          {%- for permission in permissions|sort(attribute='title') %}
           <li>{{ permission.title }} {{ '(<span class="monospace">%s</span>)'|format(permission.id)|dim }}</li>
           {%- endfor %}
         </ul>

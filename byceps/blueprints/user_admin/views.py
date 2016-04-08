@@ -86,11 +86,13 @@ def index(page):
 def view(id):
     """Show a user's interal profile."""
     user = User.query.get_or_404(id)
+    permissions_by_role = {role: role.permissions for role in user.roles}
     orders = shop_service.get_orders_placed_by_user(user)
     tickets = ticket_service.find_tickets_related_to_user(user)
 
     return {
         'user': user,
+        'permissions_by_role': permissions_by_role,
         'orders': orders,
         'tickets': tickets,
     }
