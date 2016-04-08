@@ -7,11 +7,35 @@
 {% set current_page = 'user_admin' %}
 {% set title = 'Benutzer - %s'|format(user.screen_name) %}
 
+{% block head %}
+<style>
+  ol.toc li {
+    display: inline;
+    font-size: 0.9rem;
+  }
+  ol.toc li:not(:last-child)::after {
+    content: " \00b7";
+    opacity: 0.5;
+  }
+</style>
+{% endblock %}
+
 {% block body %}
 
   <h1>{{ render_icon('user') }} {{ user.screen_name }}</h1>
 
-  <h2>Benutzerkonto</h2>
+  <nav>
+    <ol class="toc">
+      <li><a href="#account">Benutzerkonto</a></li>
+      <li><a href="#personal">Persönliche Daten</a></li>
+      <li><a href="#permissions">Berechtigungen</a></li>
+      <li><a href="#misc">Diverses</a></li>
+      <li><a href="#orders">Bestellungen</a></li>
+      <li><a href="#tickets">Tickets</a></li>
+    </ol>
+  </nav>
+
+  <h2 id="account">Benutzerkonto</h2>
   {%- if user.has_avatar_image %}
   <div style="float: right; margin: 0 120px 0 1rem;">{{ render_user_admin_avatar(user) }}</div>
   {%- endif %}
@@ -59,7 +83,7 @@
     </tr>
   </table>
 
-  <h2>Persönliche Daten</h2>
+  <h2 id="personal">Persönliche Daten</h2>
   <table class="index">
     <tr>
       <th>Voller Name</th>
@@ -91,7 +115,7 @@
     </tr>
   </table>
 
-  <h2>Berechtigungen</h2>
+  <h2 id="permissions">Berechtigungen</h2>
   <table class="index">
     {%- for role in user.roles|sort(attribute='title') %}
     <tr>
@@ -110,7 +134,7 @@
     {%- endfor %}
   </table>
 
-  <h2>Diverses</h2>
+  <h2 id="misc">Diverses</h2>
   <table class="index">
     <tr>
       <th>Legacy-ID</th>
@@ -118,7 +142,7 @@
     </tr>
   </table>
 
-  <h2>Bestellungen</h2>
+  <h2 id="orders">Bestellungen</h2>
   {%- if orders %}
   <table class="index">
     <thead>
@@ -143,7 +167,7 @@
   {{ 'keine'|dim }}
   {%- endif %}
 
-  <h2>Tickets</h2>
+  <h2 id="tickets">Tickets</h2>
   <table class="index wide">
     <thead>
       <tr>
