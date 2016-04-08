@@ -86,6 +86,24 @@ def view_as_json(id):
     })
 
 
+@blueprint.route('/me')
+@templated
+def view_current():
+    user = get_current_user_or_404()
+
+    if get_site_mode().is_public():
+        newsletter_subscription_state = newsletter_service \
+            .get_subscription_state(user, g.party.brand)
+    else:
+        newsletter_subscription_state = None
+
+    return {
+        'user': user,
+        'newsletter_subscription_state': newsletter_subscription_state,
+        'NewsletterSubscriptionState': NewsletterSubscriptionState,
+    }
+
+
 def _empty_json_response(status):
     return Response('{}', status=status, mimetype='application/json')
 
@@ -346,24 +364,6 @@ def password_update():
 
     flash_success('Das Passwort wurde geändert.')
     return redirect_to('.view_current')
-
-
-@blueprint.route('/me')
-@templated
-def view_current():
-    user = get_current_user_or_404()
-
-    if get_site_mode().is_public():
-        newsletter_subscription_state = newsletter_service \
-            .get_subscription_state(user, g.party.brand)
-    else:
-        newsletter_subscription_state = None
-
-    return {
-        'user': user,
-        'newsletter_subscription_state': newsletter_subscription_state,
-        'NewsletterSubscriptionState': NewsletterSubscriptionState,
-    }
 
 
 @blueprint.route('/me/details')
