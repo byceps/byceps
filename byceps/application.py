@@ -131,8 +131,10 @@ def init_app(app):
             app.template_folder = str(Path('party_template_overrides') \
                                 / party_id)
         elif site_mode.is_admin():
-            from rq_dashboard import RQDashboard
-            RQDashboard(app, url_prefix='/admin/rq')
+            import rq_dashboard
+            app.config.from_object(rq_dashboard.default_settings)
+            app.register_blueprint(rq_dashboard.blueprint,
+                                   url_prefix='/admin/rq')
 
 
 def set_root_path(app):
