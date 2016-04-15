@@ -18,7 +18,8 @@ SQLALCHEMY_ECHO = False
 REDIS_URL = 'unix:///var/run/redis/redis.sock?db=0'
 
 PATH_DATA = Path('./data')
-PATH_USER_AVATAR_IMAGES = PATH_DATA / 'users/avatars'
+PATH_GLOBAL = PATH_DATA / 'global'
+PATH_USER_AVATAR_IMAGES = PATH_GLOBAL / 'users/avatars'
 
 MODE = 'public'
 BRAND = 'example-brand'
