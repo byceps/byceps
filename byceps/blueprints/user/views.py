@@ -461,9 +461,7 @@ def avatar_image_update():
     try:
         avatar_service.update_avatar_image(user, image.stream)
     except FileExistsError:
-        # Werkzeug implements no default response for code 409.
-        ##abort(409, 'File already exists, not overwriting.')
-        abort(500, 'File already exists, not overwriting.')
+        abort(409, 'File already exists, not overwriting.')
 
     flash_success('Das Avatarbild wurde aktualisiert.', icon='upload')
     signals.avatar_updated.send(None, user=user)
