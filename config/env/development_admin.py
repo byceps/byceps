@@ -18,7 +18,8 @@ REDIS_URL = 'redis://127.0.0.1:6379/0'
 MODE = 'admin'
 
 PATH_DATA = Path('./data')
-PATH_USER_AVATAR_IMAGES = PATH_DATA / 'users/avatars'
+PATH_GLOBAL = PATH_DATA / 'global'
+PATH_USER_AVATAR_IMAGES = PATH_GLOBAL / 'users/avatars'
 
 MAIL_DEBUG = True
 MAIL_DEFAULT_SENDER = 'BYCEPS <noreply@example.com>'

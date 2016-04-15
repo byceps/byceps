@@ -20,9 +20,10 @@ BRAND = 'example-brand'
 PARTY = 'example-party-1'
 
 PATH_DATA = Path('./data')
+PATH_GLOBAL = PATH_DATA / 'global'
 PATH_BRAND = PATH_DATA / 'brands' / BRAND
 PATH_PARTY = PATH_DATA / 'parties' / PARTY
-PATH_USER_AVATAR_IMAGES = PATH_DATA / 'users/avatars'
+PATH_USER_AVATAR_IMAGES = PATH_GLOBAL / 'users/avatars'
 
 BOARD_TOPICS_PER_PAGE = 10
 BOARD_POSTINGS_PER_PAGE = 10
