@@ -132,7 +132,7 @@ def init_app(app):
                                 / party_id)
         elif site_mode.is_admin():
             import rq_dashboard
-            add_to_config_if_not_set('RQ_POLL_INTERVAL', 2500)
+            add_to_config_if_not_set(app, 'RQ_POLL_INTERVAL', 2500)
             app.register_blueprint(rq_dashboard.blueprint,
                                    url_prefix='/admin/rq')
 
@@ -148,7 +148,7 @@ def set_root_path(app):
         app.add_url_rule('/', endpoint='root', redirect_to=target)
 
 
-def add_to_config_if_not_set(key, value):
+def add_to_config_if_not_set(app, key, value):
     """Add the value to the configuration if the key is not yet contained."""
     if key not in app.config:
         app.config[key] = value
