@@ -16,7 +16,8 @@ from flask import url_for
 from ...database import db
 from ... import email
 
-from .models import Country, User
+from .models import User
+from .models.country import Country
 
 
 def get_countries(app):

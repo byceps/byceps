@@ -9,7 +9,6 @@ byceps.blueprints.user.models
 """
 
 from datetime import datetime
-from collections import namedtuple
 from itertools import chain
 from operator import attrgetter
 from pathlib import Path
@@ -212,9 +211,6 @@ class User(db.Model):
             .add_with_lookup('id') \
             .add_with_lookup('screen_name') \
             .build()
-
-
-Country = namedtuple('Country', 'name alpha2 alpha3')
 
 
 def normalize_screen_name(screen_name):
