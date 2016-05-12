@@ -15,7 +15,8 @@ from ...database import db
 from ..brand.models import Brand
 from ..orga.models import Membership, OrgaFlag, OrgaTeam
 from ..party.models import Party
-from ..user.models import User, UserDetail
+from ..user.models import User
+from ..user.models.detail import UserDetail
 
 
 def get_brands_with_person_counts():

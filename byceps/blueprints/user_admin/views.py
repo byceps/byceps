@@ -19,7 +19,8 @@ from ..authorization.registry import permission_registry
 from ..authorization_admin import service as authorization_admin_service
 from ..shop import service as shop_service
 from ..ticket import service as ticket_service
-from ..user.models import User, UserDetail
+from ..user.models import User
+from ..user.models.detail import UserDetail
 
 from .authorization import UserPermission
 

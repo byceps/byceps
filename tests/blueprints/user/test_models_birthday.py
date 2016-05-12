@@ -11,7 +11,7 @@ from unittest import TestCase
 from freezegun import freeze_time
 from nose2.tools import params
 
-from byceps.blueprints.user.models import UserDetail
+from byceps.blueprints.user.models.detail import UserDetail
 
 
 class AgeTestCase(TestCase):

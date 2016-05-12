@@ -23,7 +23,8 @@ from byceps.blueprints.party.models import Party
 from byceps.blueprints.shop.models.article import Article
 from byceps.blueprints.shop.models.order import Order, OrderItem, \
     PaymentState as OrderPaymentState
-from byceps.blueprints.user.models import User, UserDetail
+from byceps.blueprints.user.models import User
+from byceps.blueprints.user.models.detail import UserDetail
 from byceps.database import db
 from byceps.util.system import get_config_env_name_from_env
 
