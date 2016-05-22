@@ -11,7 +11,6 @@ from byceps.blueprints.shop.models.article import Article
 from byceps.blueprints.shop.models.order import Order, PaymentState
 from byceps.blueprints.shop.models.sequence import PartySequencePurpose
 from byceps.blueprints.snippet.models.snippet import Snippet
-from byceps.blueprints.user.models import User
 
 from testfixtures.shop import create_article, create_party_sequence, \
     create_party_sequence_prefix

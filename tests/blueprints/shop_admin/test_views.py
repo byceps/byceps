@@ -11,7 +11,6 @@ from byceps.blueprints.authorization.models import Permission, Role
 from byceps.blueprints.shop_admin.authorization import ShopOrderPermission
 from byceps.blueprints.shop.models.article import Article
 from byceps.blueprints.shop.models.order import Order, PaymentState
-from byceps.blueprints.user.models import User
 
 from testfixtures.shop import create_article, create_order
 from testfixtures.user import create_user_with_detail

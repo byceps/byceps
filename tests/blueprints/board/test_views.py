@@ -11,7 +11,6 @@ from byceps.blueprints.authorization.models import Permission, Role
 from byceps.blueprints.board.authorization import BoardTopicPermission
 from byceps.blueprints.board.models.category import Category
 from byceps.blueprints.board.models.topic import Topic
-from byceps.blueprints.user.models import User
 
 from testfixtures.board import create_category, create_topic
 from testfixtures.user import create_user
