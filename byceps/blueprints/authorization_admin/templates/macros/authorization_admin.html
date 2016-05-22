@@ -1,9 +1,9 @@
-{% from 'macros/admin.html' import render_main_tabs %}
+{% from 'macros/admin.html' import render_main_tabs as _render_main_tabs %}
 
 
-{% macro render_main_tabs_authorization_admin(current_page) -%}
+{% macro render_main_tabs(current_page) -%}
   {{
-    render_main_tabs(
+    _render_main_tabs(
       Navigation(None)
         .add_item(url_for('authorization_admin.role_index'), 'Rollen', id='authorization_admin.roles', required_permission=RolePermission.list, icon='role')
         .add_item(url_for('authorization_admin.permission_index'), 'Rechte', id='authorization_admin.permissions', required_permission=RolePermission.list, icon='permission')

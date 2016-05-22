@@ -1,13 +1,13 @@
 {% extends 'layout/base_admin.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
-{% from 'macros/authorization_admin.html' import render_main_tabs_authorization_admin with context %}
+{% from 'macros/authorization_admin.html' import render_main_tabs with context %}
 {% from 'macros/misc.html' import render_with_fallback %}
 {% from 'macros/user_admin.html' import render_user_admin_link %}
 {% set current_page = 'authorization_admin.roles' %}
 {% set title = 'Rollen' %}
 
 {% block before_body %}
-{{ render_main_tabs_authorization_admin(current_page) }}
+{{ render_main_tabs(current_page) }}
 {%- endblock %}
 
 {% block body %}
