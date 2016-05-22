@@ -111,8 +111,8 @@
 
         <div id="page-grid-main">
           <main>
-            <div{% if not layout_main_raw|default(False) %} id="main"{% endif %}>
 {%- include 'layout/_notifications.html' %}
+            <div{% if not layout_main_raw|default(False) %} id="main"{% endif %}>
 {%- block body %}{% endblock %}
             </div><!-- /#main -->
           </main>
