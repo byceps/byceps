@@ -265,7 +265,6 @@ nav.main .current a {
   padding: 0;
 }
 .main-tabs li {
-  border: none;  /* Suppress focus border. */
   padding: 8px 0 0 8px;
 }
 .main-tabs a,
