@@ -10,8 +10,8 @@ testfixtures.user
 
 from datetime import date
 
-from byceps.blueprints.user.models import User
 from byceps.blueprints.user.models.detail import UserDetail
+from byceps.blueprints.user.models.user import User
 from byceps.database import generate_uuid
 
 

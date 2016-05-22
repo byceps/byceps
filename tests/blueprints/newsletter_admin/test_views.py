@@ -10,7 +10,7 @@ import json
 from byceps.blueprints.authorization.models import Permission, Role
 from byceps.blueprints.newsletter_admin.authorization import NewsletterPermission
 from byceps.blueprints.newsletter.models import Subscription, SubscriptionState
-from byceps.blueprints.user.models import User
+from byceps.blueprints.user.models.user import User
 
 from tests.base import AbstractAppTestCase
 

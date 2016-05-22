@@ -32,7 +32,7 @@ from . import avatar_service
 from .forms import AvatarImageUpdateForm, DetailsForm, \
     RequestConfirmationEmailForm, RequestPasswordResetForm, \
     ResetPasswordForm, UpdatePasswordForm, UserCreateForm
-from .models import User
+from .models.user import User
 from . import service
 from . import signals
 

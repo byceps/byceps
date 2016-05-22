@@ -25,7 +25,7 @@ from ..ticket import service as ticket_service
 from ..seating_admin import service as seating_admin_service
 from ..shop_admin import service as shop_admin_service
 from ..terms import service as terms_service
-from ..user.models import User
+from ..user.models.user import User
 
 from .authorization import AdminDashboardPermission
 

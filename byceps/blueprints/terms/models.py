@@ -18,7 +18,7 @@ from ...database import BaseQuery, db, generate_uuid
 from ...util.instances import ReprBuilder
 
 from ..brand.models import Brand
-from ..user.models import User
+from ..user.models.user import User
 
 
 class VersionQuery(BaseQuery):

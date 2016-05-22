@@ -19,7 +19,7 @@ from ...util.templating import load_template
 
 from ..brand.models import Brand
 from ..party.models import Party
-from ..user.models import User
+from ..user.models.user import User
 
 
 class ItemQuery(BaseQuery):

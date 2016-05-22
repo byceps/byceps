@@ -14,7 +14,7 @@ from ...database import db
 
 from ..seating.models.category import Category as SeatCategory
 from ..ticket.models import Ticket
-from ..user.models import User
+from ..user.models.user import User
 
 from .models import Party
 

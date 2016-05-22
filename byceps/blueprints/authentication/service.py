@@ -8,7 +8,7 @@ byceps.blueprints.authentication.service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from ..user.models import AnonymousUser, User
+from ..user.models.user import AnonymousUser, User
 
 
 class AuthenticationFailed(Exception):

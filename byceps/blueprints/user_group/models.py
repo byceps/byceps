@@ -15,7 +15,7 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from ...database import db, generate_uuid
 from ...util.instances import ReprBuilder
 
-from ..user.models import User
+from ..user.models.user import User
 
 
 class UserGroup(db.Model):

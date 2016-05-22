@@ -14,7 +14,7 @@ from ...database import BaseQuery, db, generate_uuid
 from ...util.datetime import DateTimeRange
 
 from ..party.models import Party
-from ..user.models import User
+from ..user.models.user import User
 
 
 class TimeSlotQuery(BaseQuery):

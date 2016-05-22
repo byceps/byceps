@@ -17,7 +17,7 @@ from ...database import db
 from ...util.instances import ReprBuilder
 
 from ..brand.models import Brand
-from ..user.models import User
+from ..user.models.user import User
 
 
 SubscriptionState = Enum('SubscriptionState', ['requested', 'declined'])

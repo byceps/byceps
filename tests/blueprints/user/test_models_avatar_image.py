@@ -14,7 +14,7 @@ from freezegun import freeze_time
 from nose2.tools import params
 from pytz import timezone
 
-from byceps.blueprints.user.models import User
+from byceps.blueprints.user.models.user import User
 from byceps.util.image import ImageType
 
 from tests.base import AbstractAppTestCase

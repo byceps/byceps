@@ -16,7 +16,7 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from ...database import BaseQuery, db, generate_uuid
 from ...util.instances import ReprBuilder
 
-from ..user.models import User
+from ..user.models.user import User
 
 
 Purpose = Enum('Purpose',

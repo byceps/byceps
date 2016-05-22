@@ -14,7 +14,7 @@ from operator import itemgetter
 from ...database import db
 
 from ..newsletter.models import Subscription, SubscriptionState
-from ..user.models import User
+from ..user.models.user import User
 
 
 def get_subscribers(brand):

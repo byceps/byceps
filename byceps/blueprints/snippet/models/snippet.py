@@ -20,7 +20,7 @@ from ....database import db, generate_uuid
 from ....util.instances import ReprBuilder
 
 from ...party.models import Party
-from ...user.models import User
+from ...user.models.user import User
 
 from .query import BelongsToPartyQuery
 

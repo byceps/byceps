@@ -19,7 +19,7 @@ from byceps.blueprints.snippet.models.mountpoint import \
     Mountpoint as SnippetMountpoint
 from byceps.blueprints.snippet.models.snippet import Snippet, SnippetVersion
 from byceps.blueprints.terms.models import Version as TermsVersion
-from byceps.blueprints.user.models import User
+from byceps.blueprints.user.models.user import User
 from byceps.blueprints.user_group.models import UserGroup
 
 from .util import add_to_database

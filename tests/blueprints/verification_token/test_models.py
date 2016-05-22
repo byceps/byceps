@@ -12,7 +12,7 @@ from freezegun import freeze_time
 from nose2.tools import params
 
 from byceps.blueprints.verification_token.models import Purpose, Token
-from byceps.blueprints.user.models import User
+from byceps.blueprints.user.models.user import User
 
 
 class TokenTest(TestCase):
