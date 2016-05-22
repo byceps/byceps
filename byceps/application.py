@@ -90,7 +90,7 @@ def create_app(environment_name):
 
     config.init_app(app)
 
-    register_blueprints(app)
+    _register_blueprints(app)
 
     templatefilters.register(app)
 
@@ -106,7 +106,7 @@ def create_app(environment_name):
     return app
 
 
-def register_blueprints(app):
+def _register_blueprints(app):
     """Register the blueprints that are relevant for the current mode."""
     current_mode = config.get_site_mode(app)
 
@@ -118,7 +118,7 @@ def register_blueprints(app):
 def init_app(app):
     """Initialize the application after is has been created."""
     with app.app_context():
-        set_root_path(app)
+        _set_root_path(app)
 
         site_mode = config.get_site_mode()
         if site_mode.is_public():
@@ -132,12 +132,12 @@ def init_app(app):
                                 / party_id)
         elif site_mode.is_admin():
             import rq_dashboard
-            add_to_config_if_not_set(app, 'RQ_POLL_INTERVAL', 2500)
+            _add_to_config_if_not_set(app, 'RQ_POLL_INTERVAL', 2500)
             app.register_blueprint(rq_dashboard.blueprint,
                                    url_prefix='/admin/rq')
 
 
-def set_root_path(app):
+def _set_root_path(app):
     """Set an optional URL path to redirect to from the root URL path (`/`).
 
     Important: Don't specify the target with a leading slash unless you
@@ -148,7 +148,7 @@ def set_root_path(app):
         app.add_url_rule('/', endpoint='root', redirect_to=target)
 
 
-def add_to_config_if_not_set(app, key, value):
+def _add_to_config_if_not_set(app, key, value):
     """Add the value to the configuration if the key is not yet contained."""
     if key not in app.config:
         app.config[key] = value
