@@ -201,9 +201,9 @@
   </table>
 
   <h2 id="badges">Abzeichen</h2>
-  <ul>
+  <ul class="list-grid">
     {%- for badge in user.badges|sort(attribute='label') %}
-    <li>{{ badge.label }}</li>
+    <li><div class="user-badge" title="{{ badge.label }}"><img src="{{ badge.image_url }}"></div></li>
     {%- endfor %}
   </ul>
 
