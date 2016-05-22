@@ -276,7 +276,7 @@ nav.main .current a {
   font-size: 0.9rem;
   font-weight: bold;
   margin-bottom: -1px;
-  padding: 0.5rem 2rem;
+  padding: 0.5rem 1rem;
 }
 .main-tabs a {
   border-width: 0;
@@ -297,6 +297,7 @@ nav.main .current a {
 }
 .main-tabs a:hover {
   color: currentColor;
+  opacity: 0.5;
 }
 
 
