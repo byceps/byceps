@@ -218,8 +218,11 @@ nav.main .current a {
 }
 .board-postings aside .creator a,
 .tourney-match-comments aside .creator a {
-  display: block;
   font-weight: bold;
+}
+.board-postings aside .creator .avatar,
+.tourney-match-comments aside .creator .avatar {
+  display: block;
   margin-bottom: 0.25rem;
 }
 .board-postings aside time,
