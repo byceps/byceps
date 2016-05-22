@@ -2,9 +2,14 @@
 {% from 'macros/forms.html' import form_buttons, form_datalist, form_field_checkbox, form_field, form_fieldset %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/shop_admin.html' import render_article_link %}
+{% from 'macros/shop_admin.html' import render_main_tabs with context %}
 {% set current_page = 'shop_admin.articles' %}
 {% set current_page_party = article.party %}
 {% set title = 'Artikel bearbeiten' %}
+
+{% block before_body %}
+{{ render_main_tabs(current_page, article.party) }}
+{%- endblock %}
 
 {% block body %}
 
@@ -32,4 +37,4 @@
     {{ form_buttons('Speichern', cancel_url=url_for('.article_view', id=article.id)) }}
   </form>
 
-{%- endblock body %}
+{%- endblock %}

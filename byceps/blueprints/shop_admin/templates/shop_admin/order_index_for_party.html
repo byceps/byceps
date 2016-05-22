@@ -4,11 +4,16 @@
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_tag %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
+{% from 'macros/shop_admin.html' import render_main_tabs with context %}
 {% from 'macros/shop_admin.html' import render_order_link, render_order_payment_state %}
 {% from 'macros/user_admin.html' import render_user_admin_link %}
 {% set current_page = 'shop_admin.orders' %}
 {% set current_page_party = party %}
 {% set title = 'Bestellungen' %}
+
+{% block before_body %}
+{{ render_main_tabs(current_page, party) }}
+{%- endblock %}
 
 {% block body %}
 
@@ -67,4 +72,4 @@
 
 {{ render_pagination_nav(orders, '.order_index_for_party', {'party_id': party.id, 'only': only.name if only else None}) }}
 
-{%- endblock body %}
+{%- endblock %}

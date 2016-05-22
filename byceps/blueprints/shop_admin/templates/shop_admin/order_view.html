@@ -3,10 +3,15 @@
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_with_fallback %}
 {% from 'macros/shop_admin.html' import render_article_link, render_order_payment_state %}
+{% from 'macros/shop_admin.html' import render_main_tabs with context %}
 {% from 'macros/user_admin.html' import render_user_admin_link %}
 {% set current_page = 'shop_admin.orders' %}
 {% set current_page_party = order.party %}
 {% set title = 'Bestellung ansehen' %}
+
+{% block before_body %}
+{{ render_main_tabs(current_page, order.party) }}
+{%- endblock %}
 
 {% block body %}
 
@@ -109,4 +114,4 @@
     <li><a href="{{ url_for('.order_export', id=order.id) }}">{{ render_icon('download') }} für Lexware exportieren<br/><small>(Shopschnittstelle; als XML)</small></a></li>
   </ol>
 
-{%- endblock body %}
+{%- endblock %}

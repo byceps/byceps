@@ -1,9 +1,14 @@
 {% extends 'layout/base_admin.html' %}
 {% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
 {% from 'macros/shop_admin.html' import render_order_link %}
+{% from 'macros/shop_admin.html' import render_main_tabs with context %}
 {% set current_page = 'shop_admin.orders' %}
 {% set current_page_party = order.party %}
 {% set title = 'Bestellung stornieren' %}
+
+{% block before_body %}
+{{ render_main_tabs(current_page, order.party) }}
+{%- endblock %}
 
 {% block body %}
 
@@ -24,4 +29,4 @@
     {{ form_buttons('Stornieren', icon='disabled', cancel_url=url_for('.order_view', id=order.id)) }}
   </form>
 
-{%- endblock body %}
+{%- endblock %}

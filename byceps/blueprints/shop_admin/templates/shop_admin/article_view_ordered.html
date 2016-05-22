@@ -2,10 +2,15 @@
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/misc.html' import render_with_fallback %}
 {% from 'macros/shop_admin.html' import render_article_link, render_order_payment_state %}
+{% from 'macros/shop_admin.html' import render_main_tabs with context %}
 {% from 'macros/user_admin.html' import render_user_admin_link %}
-{% set current_page = 'shop_admin.article_ordered' %}
+{% set current_page = 'shop_admin.articles' %}
 {% set current_page_party = article.party %}
 {% set title = article.description %}
+
+{% block before_body %}
+{{ render_main_tabs(current_page, article.party) }}
+{%- endblock %}
 
 {% block body %}
 
@@ -60,4 +65,4 @@
     </tbody>
   </table>
 
-{%- endblock body %}
+{%- endblock %}

@@ -1,5 +1,18 @@
+{% from 'macros/admin.html' import render_main_tabs as _render_main_tabs %}
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/misc.html' import render_tag %}
+
+
+{% macro render_main_tabs(current_page, party) -%}
+  {{
+    _render_main_tabs(
+      Navigation(None)
+        .add_item(url_for('shop_admin.article_index_for_party', party_id=party.id), 'Artikel', id='shop_admin.articles', required_permission=ShopArticlePermission.list, icon='shopping-cart')
+        .add_item(url_for('shop_admin.order_index_for_party', party_id=party.id), 'Bestellungen', id='shop_admin.orders', required_permission=ShopOrderPermission.list, icon='payment')
+      , current_page
+    )
+  }}
+{%- endmacro %}
 
 
 {% macro render_article_link(article) -%}

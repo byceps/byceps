@@ -2,6 +2,7 @@
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_with_fallback %}
 {% from 'macros/shop_admin.html' import render_article_link, render_article_temporal_availability %}
+{% from 'macros/shop_admin.html' import render_main_tabs with context %}
 {% set current_page = 'shop_admin.articles' %}
 {% set current_page_party = article.party %}
 {% set title = 'Artikel ansehen' %}
@@ -18,7 +19,11 @@
         confirmed_delete_on_click('a.attachment-remove', 'Artikelanhang entfernen?');
       });
     </script>
-{%- endblock head %}
+{%- endblock %}
+
+{% block before_body %}
+{{ render_main_tabs(current_page, article.party) }}
+{%- endblock %}
 
 {% block body %}
 
@@ -120,4 +125,4 @@
     <li><a href="{{ url_for('.article_view_ordered', id=article.id) }}">{{ render_icon('users') }} Käufer auflisten</a></li>
   </ol>
 
-{%- endblock body %}
+{%- endblock %}

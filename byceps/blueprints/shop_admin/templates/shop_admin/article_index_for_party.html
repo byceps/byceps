@@ -4,9 +4,14 @@
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
 {% from 'macros/shop_admin.html' import render_article_link, render_article_temporal_availability %}
+{% from 'macros/shop_admin.html' import render_main_tabs with context %}
 {% set current_page = 'shop_admin.articles' %}
 {% set current_page_party = party %}
 {% set title = 'Artikel' %}
+
+{% block before_body %}
+{{ render_main_tabs(current_page, party) }}
+{%- endblock %}
 
 {% block body %}
 
@@ -76,4 +81,4 @@
 
 {{ render_pagination_nav(articles, '.article_index_for_party', {'party_id': party.id}) }}
 
-{%- endblock body %}
+{%- endblock %}
