@@ -39,6 +39,10 @@ if app.debug:
         '/users/avatars': str(app.config['PATH_USER_AVATAR_IMAGES']),
     }
 
+    path_global = app.config.get('PATH_GLOBAL')
+    if path_global:
+        exports['/global'] = str(path_global)
+
     path_brand = app.config.get('PATH_BRAND')
     if path_brand:
         exports['/brand'] = str(path_brand)
