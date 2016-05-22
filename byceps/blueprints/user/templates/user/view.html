@@ -54,6 +54,18 @@
         {%- endif %}
       </td>
     </tr>
+    {%- if user.badges %}
+    <tr>
+      <th>Abzeichen</th>
+      <td>
+        <ul class="list-grid">
+          {%- for badge in user.badges|sort(attribute='label') %}
+          <li><div class="user-badge" title="{{ badge.label }}"><img src="{{ badge.image_url }}"></div></li>
+          {%- endfor %}
+        </ul>
+      </td>
+    </tr>
+    {%- endif %}
   </table>
 
 {%- endblock body %}

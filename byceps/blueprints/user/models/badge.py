@@ -10,6 +10,7 @@ byceps.blueprints.user.models.badge
 
 from datetime import datetime
 
+from flask import url_for
 from sqlalchemy.ext.associationproxy import association_proxy
 
 from ....database import db, generate_uuid
@@ -29,6 +30,11 @@ class Badge(db.Model):
 
     recipients = association_proxy('awardings', 'user',
         creator=lambda user: BadgeAwarding(None, user.id))
+
+    @property
+    def image_url(self):
+        filename = 'users/badges/{}'.format(self.image_filename)
+        return url_for('global_file', filename=filename)
 
     def __init__(self, label, image_filename, *, description=None):
         self.label = label

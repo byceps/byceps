@@ -277,6 +277,29 @@ nav.main .current a {
 
 /* misc */
 
+.list-grid {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  margin: -8px 0 0 -8px;
+  padding: 0;
+}
+.list-grid li {
+  padding: 8px 0 0 8px;
+}
+
+.user-badge {
+  border: #cccccc solid 1px;
+  border-radius: 50%;
+  cursor: help;
+  padding: 8px;
+}
+.user-badge img {
+  display: block;
+  height: 64px;
+  width: 64px;
+}
+
 .avatar .orga-badge {
   font-weight: bold;
   padding-top: 0.5em;
