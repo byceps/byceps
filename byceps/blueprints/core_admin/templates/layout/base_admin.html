@@ -74,8 +74,7 @@
     {%- set navigation = Navigation('global')
         .add_item(url_for('admin_dashboard.view_global'), 'Dashboard', id='admin_dashboard_global', required_permission=AdminDashboardPermission.view_global, icon='dashboard')
         .add_item(url_for('user_admin.index'), 'Benutzer', id='user_admin', required_permission=UserPermission.list, icon='users')
-        .add_item(url_for('authorization_admin.role_index'), 'Rollen', id='authorization_admin.roles', required_permission=RolePermission.list, icon='role')
-        .add_item(url_for('authorization_admin.permission_index'), 'Rechte', id='authorization_admin.permissions', required_permission=RolePermission.list, icon='permission')
+        .add_item(url_for('authorization_admin.role_index'), 'Berechtigungen', id='authorization_admin.roles', required_permission=RolePermission.list, icon='permission')
     -%}
   {%- endif %}
 
