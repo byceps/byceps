@@ -111,6 +111,7 @@ def _register_blueprints(app):
 def _add_static_file_url_rules(app):
     """Add URL rules to for static files."""
     for rule, endpoint in [
+        ('/global/<path:filename>', 'global_file'),
         ('/brand/<path:filename>', 'brand_file'),
         ('/party/<path:filename>', 'party_file'),
     ]:
