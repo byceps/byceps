@@ -1,3 +1,6 @@
+{% from 'macros/icons.html' import render_icon %}
+
+
 {% macro render_brand_head(brand) %}
   <div class="head-brand">
     Marken
@@ -14,6 +17,21 @@
     <strong><a href="{{ url_for('party_admin.view', id=party.id) }}">{{ party.title }}</a></strong>
   </div>
 {% endmacro %}
+
+
+{% macro render_main_tabs(navigation, current_page) -%}
+  <ol class="main-tabs">
+    {%- for item in navigation.get_items() %}
+      {%- with is_current = (item.id is not none) and (item.id is is_current_page(current_page)) %}
+        <li>
+          {%- if is_current %}<span class="current">{% else %}<a href="{{ item.endpoint }}">{% endif -%}
+          {{ render_icon(item.icon) if item.icon else item.label[0] }} {{ item.label }}
+          {%- if is_current %}</span>{% else %}</a>{% endif -%}
+        </li>
+      {%- endwith %}
+    {%- endfor %}
+  </ol>
+{%- endmacro %}
 
 
 {% macro render_extra_in_heading(value) -%}
