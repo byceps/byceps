@@ -34,9 +34,7 @@
 
 {%- set navigation_items = [
     Navigation('Benutzer')
-        .add_item('user_admin.index', 'Benutzer', id='user_admin', required_permission=UserPermission.list)
-        .add_item('authorization_admin.role_index', 'Rollen', id='authorization_admin.roles', required_permission=RolePermission.list)
-        .add_item('authorization_admin.permission_index', 'Rechte', id='authorization_admin.permissions', required_permission=RolePermission.list),
+        .add_item('user_admin.index', 'Benutzer', id='user_admin', required_permission=UserPermission.list),
 
     Navigation('Orgas')
         .add_item('orga_admin.persons', 'Personen', id='orga_admin.persons', required_permission=OrgaDetailPermission.view)
