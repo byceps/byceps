@@ -5,6 +5,15 @@
 {% set current_page = 'authorization_admin.roles' %}
 {% set title = 'Rollen' %}
 
+{% block before_body %}
+
+  <ol class="main-tabs">
+    <li><span class="current">Rollen</span></li>
+    <li><a href="{{ url_for('authorization_admin.permission_index') }}">Rechte</a></li>
+  </ol>
+
+{%- endblock %}
+
 {% block body %}
 
   <h1>{{ title }} {{ render_extra_in_heading(roles|length) }}</h1>
@@ -54,4 +63,4 @@
     </tbody>
   </table>
 
-{%- endblock body %}
+{%- endblock %}
