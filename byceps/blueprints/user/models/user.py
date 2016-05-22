@@ -97,6 +97,7 @@ class User(db.Model):
     legacy_id = db.Column(db.Integer)
 
     roles = association_proxy('user_roles', 'role')
+    badges = association_proxy('badge_awardings', 'badge')
 
     @classmethod
     def create(cls, screen_name, email_address, password):
