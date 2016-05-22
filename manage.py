@@ -34,7 +34,8 @@ environment = get_config_env_name_from_env(default='development')
 app = create_app(environment)
 init_app(app)
 
-if app.debug:
+
+def _assemble_exports():
     exports = {
         '/users/avatars': str(app.config['PATH_USER_AVATAR_IMAGES']),
     }
@@ -51,6 +52,11 @@ if app.debug:
     if path_party:
         exports['/party'] = str(path_party)
 
+    return exports
+
+
+if app.debug:
+    exports = _assemble_exports()
     app.wsgi_app = SharedDataMiddleware(app.wsgi_app, exports)
 
     from flask_debugtoolbar import DebugToolbarExtension
