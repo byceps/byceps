@@ -40,19 +40,18 @@ def _assemble_exports():
         '/users/avatars': str(app.config['PATH_USER_AVATAR_IMAGES']),
     }
 
-    path_global = app.config.get('PATH_GLOBAL')
-    if path_global:
-        exports['/global'] = str(path_global)
-
-    path_brand = app.config.get('PATH_BRAND')
-    if path_brand:
-        exports['/brand'] = str(path_brand)
-
-    path_party = app.config.get('PATH_PARTY')
-    if path_party:
-        exports['/party'] = str(path_party)
+    _export_path_if_configured(exports, 'PATH_GLOBAL', '/global')
+    _export_path_if_configured(exports, 'PATH_BRAND', '/brand')
+    _export_path_if_configured(exports, 'PATH_PARTY', '/party')
 
     return exports
+
+
+def _export_path_if_configured(exports, config_key, url_path):
+    path = app.config.get(config_key)
+    if path:
+        exports[url_path] = str(path)
+
 
 
 if app.debug:
