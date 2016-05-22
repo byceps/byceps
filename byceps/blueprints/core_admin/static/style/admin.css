@@ -57,7 +57,7 @@ a {
 
 #header,
 #sidebar section,
-main:not(.raw),
+#main,
 .box {
   border-color: #cccccc;
   border-style: solid;
@@ -65,12 +65,12 @@ main:not(.raw),
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
 }
 #sidebar section,
-main:not(.raw),
+#main,
 .box {
   background-color: #ffffff;
   border-radius: 2px;
 }
-main:not(.raw) {
+#main {
   padding: 20px 40px 40px 40px;
 }
 .box {
@@ -455,7 +455,7 @@ ol.index.fully-linked a:hover {
     display: block;
   }
 
-  main {
+  #main {
     border: none !important;
     box-shadow: none !important;
     margin: 0 !important;

@@ -10,7 +10,7 @@ body {
   margin: 0;
   width: 100%;
 }
-main {
+#main {
   background-color: transparent;
   border: 0;
   border-radius: 0;

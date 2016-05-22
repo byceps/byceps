@@ -110,9 +110,11 @@
         </div><!-- /#page-grid-sidebar -->
 
         <div id="page-grid-main">
-          <main{% if layout_main_raw|default(False) %} class="raw"{% endif %}>
+          <main>
+            <div{% if not layout_main_raw|default(False) %} id="main"{% endif %}>
 {%- include 'layout/_notifications.html' %}
 {%- block body %}{% endblock %}
+            </div><!-- /#main -->
           </main>
         </div><!-- /#page-grid-main -->
 
