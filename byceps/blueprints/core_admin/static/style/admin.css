@@ -256,6 +256,50 @@ nav.main .current a {
 }
 
 
+/* tabs above main content area */
+
+.main-tabs {
+  display: flex;
+  list-style: none;
+  margin: -8px 0 0 8px;
+  padding: 0;
+}
+.main-tabs li {
+  border: none;  /* Suppress focus border. */
+  padding: 8px 0 0 8px;
+}
+.main-tabs a,
+.main-tabs .current {
+  border-color: #cccccc;
+  border-style: solid;
+  display: block;
+  font-size: 0.9rem;
+  font-weight: bold;
+  margin-bottom: -1px;
+  padding: 0.5rem 2rem;
+}
+.main-tabs a {
+  border-width: 0;
+  color: #aaaaaa;
+  margin-top: 1px;
+  margin-right: 1px;
+  margin-left: 1px;
+  text-decoration: none;
+}
+.main-tabs a:hover,
+.main-tabs .current {
+  border-width: 1px 1px 0 1px;
+  background-color: #ffffff;
+  color: #888888;
+  margin-top: 0;
+  margin-right: 0;
+  margin-left: 0;
+}
+.main-tabs a:hover {
+  color: currentColor;
+}
+
+
 /* headings */
 
 .breadcrumbs small,
