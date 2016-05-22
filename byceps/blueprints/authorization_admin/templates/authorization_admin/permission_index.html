@@ -1,5 +1,6 @@
 {% extends 'layout/base_admin.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
+{% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_with_fallback %}
 {% set current_page = 'authorization_admin.permissions' %}
 {% set title = 'Rechte' %}
@@ -7,8 +8,8 @@
 {% block before_body %}
 
   <ol class="main-tabs">
-    <li><a href="{{ url_for('authorization_admin.role_index') }}">Rollen</a></li>
-    <li><span class="current">Rechte</span></li>
+    <li><a href="{{ url_for('authorization_admin.role_index') }}">{{ render_icon('role') }} Rollen</a></li>
+    <li><span class="current">{{ render_icon('permission') }} Rechte</span></li>
   </ol>
 
 {%- endblock %}
