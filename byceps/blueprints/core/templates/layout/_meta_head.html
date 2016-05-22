@@ -1,7 +1,6 @@
     <link rel="stylesheet" href="{{ url_for('core.static', filename='style/common.css') }}"/>
     <link rel="stylesheet" href="{{ url_for('core.static', filename='style/party.css') }}"/>
     <link rel="stylesheet" href="{{ url_for('core.static', filename='style/icons.css') }}"/>
-    <link rel="stylesheet" href="{{ url_for('core.static', filename='style/print.css') }}" media="print"/>
     <title>{% if title %}{{ title.replace(' - ', ' &middot; ')|safe }} &middot; {% endif %}BYCEPS</title>
     <script src="{{ url_for('core.static', filename='behavior/jquery.js') }}"></script>
     <script src="{{ url_for('core.static', filename='behavior/utils.js') }}"></script>

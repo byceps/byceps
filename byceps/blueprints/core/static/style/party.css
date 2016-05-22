@@ -319,3 +319,42 @@ nav.main .current a {
 #footer:hover {
   opacity: 1;
 }
+
+
+/* print view */
+
+@media print {
+  * {
+    background-color: transparent !important;
+    color: #000000 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  html,
+  body {
+    border: none;
+  }
+
+  #page {
+    margin: 0;
+    width: auto;
+  }
+
+  nav.top,
+  #sidebar {
+    display: none;
+  }
+
+  main {
+    border: none;
+    box-shadow: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .actions,
+  .action {
+    display: none !important;
+  }
+}
