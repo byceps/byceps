@@ -11,14 +11,14 @@ from unittest import TestCase
 from freezegun import freeze_time
 from nose2.tools import params
 
-from byceps.blueprints.user.models.detail import UserDetail
+from testfixtures.user import create_user_with_detail
 
 
 class AgeTestCase(TestCase):
 
     def setUp(self):
         date_of_birth = date(1994, 3, 18)
-        self.user_detail = UserDetail(date_of_birth=date_of_birth)
+        self.user = create_user_with_birthday(date_of_birth)
 
     @params(
         ('2014-03-17', 19),
@@ -30,14 +30,14 @@ class AgeTestCase(TestCase):
     )
     def test_age(self, today_text, expected):
         with freeze_time(today_text):
-            self.assertEqual(self.user_detail.age, expected)
+            self.assertEqual(self.user.detail.age, expected)
 
 
 class BirthdayTestCase(TestCase):
 
     def setUp(self):
         date_of_birth = date(1994, 3, 18)
-        self.user_detail = UserDetail(date_of_birth=date_of_birth)
+        self.user = create_user_with_birthday(date_of_birth)
 
     @params(
         ('2014-03-16',   2),
@@ -47,7 +47,7 @@ class BirthdayTestCase(TestCase):
     )
     def test_days_until_next_birthday(self, today_text, expected):
         with freeze_time(today_text):
-            actual = self.user_detail.days_until_next_birthday
+            actual = self.user.detail.days_until_next_birthday
             self.assertEqual(actual, expected)
 
     @params(
@@ -60,4 +60,8 @@ class BirthdayTestCase(TestCase):
     )
     def test_is_birthday_today(self, today_text, expected):
         with freeze_time(today_text):
-            self.assertEqual(self.user_detail.is_birthday_today, expected)
+            self.assertEqual(self.user.detail.is_birthday_today, expected)
+
+
+def create_user_with_birthday(date_of_birth):
+    return create_user_with_detail(1, date_of_birth=date_of_birth)
