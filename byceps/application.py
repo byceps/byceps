@@ -94,14 +94,7 @@ def create_app(environment_name):
 
     templatefilters.register(app)
 
-    app.add_url_rule('/party/<path:filename>',
-                     endpoint='party_file',
-                     methods=['GET'],
-                     build_only=True)
-
-    app.add_url_rule('/brand/<path:filename>',
-                     endpoint='brand_file',
-                     build_only=True)
+    _add_static_file_url_rules(app)
 
     return app
 
@@ -113,6 +106,18 @@ def _register_blueprints(app):
     for name, url_prefix, mode in BLUEPRINTS:
         if mode is None or mode == current_mode:
             register_blueprint(app, name, url_prefix)
+
+
+def _add_static_file_url_rules(app):
+    """Add URL rules to for static files."""
+    app.add_url_rule('/party/<path:filename>',
+                     endpoint='party_file',
+                     methods=['GET'],
+                     build_only=True)
+
+    app.add_url_rule('/brand/<path:filename>',
+                     endpoint='brand_file',
+                     build_only=True)
 
 
 def init_app(app):
