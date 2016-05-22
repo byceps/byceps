@@ -3,6 +3,7 @@
 {% from 'macros/user_admin.html' import render_user_admin_link %}
 {% set current_page = 'orga_presence' %}
 {% set title = 'Anwesenheit' %}
+{% set layout_main_raw = True %}
 
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('.static', filename='style/presence.css') }}"/>

@@ -10,13 +10,6 @@ body {
   margin: 0;
   width: 100%;
 }
-#main {
-  background-color: transparent;
-  border: 0;
-  border-radius: 0;
-  box-shadow: none;
-  margin: 0;
-}
 
 .bar-column {
   padding-left: 0 !important;
