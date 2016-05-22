@@ -84,9 +84,3 @@ def send_password_reset_email(user, verification_token):
     recipients = [user.email_address]
 
     email.send(subject=subject, body=body, recipients=recipients)
-
-
-def award_badge_to_user(badge, user):
-    """Award the badge to the user."""
-    badge.recipients.add(user)
-    db.session.commit()
