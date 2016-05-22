@@ -8,9 +8,10 @@
 from datetime import datetime
 
 from byceps.blueprints.verification_token.models import Purpose, Token
-from byceps.blueprints.user.models.user import User
 
 from tests.base import AbstractAppTestCase
+
+from testfixtures.user import create_user
 
 
 NOW = datetime.now()
@@ -21,7 +22,7 @@ class EmailAddressConfirmationTestCase(AbstractAppTestCase):
     def setUp(self):
         super(EmailAddressConfirmationTestCase, self).setUp()
 
-        self.user = User.create('John', 'john@example.com', 'SuperSecret')
+        self.user = create_user(1, enabled=False)
         self.db.session.add(self.user)
         self.db.session.commit()
 

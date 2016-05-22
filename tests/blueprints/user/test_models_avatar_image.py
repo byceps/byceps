@@ -14,10 +14,11 @@ from freezegun import freeze_time
 from nose2.tools import params
 from pytz import timezone
 
-from byceps.blueprints.user.models.user import User
 from byceps.util.image import ImageType
 
 from tests.base import AbstractAppTestCase
+
+from testfixtures.user import create_user
 
 
 CREATED_AT = datetime(2014, 7, 29, 14, 43, 30, 196165)
@@ -28,7 +29,7 @@ TIMEZONE = timezone('Europe/Berlin')
 class AvatarImageTestCase(TestCase):
 
     def setUp(self):
-        self.user = User()
+        self.user = create_user(1)
 
     @params(
         (None      , None          , False),
@@ -71,7 +72,9 @@ class AvatarImagePathTestCase(AbstractAppTestCase):
         super().setUp()
 
         user_id = UUID('2e17cb15-d763-4f93-882a-371296a3c63f')
-        self.user = User(id=user_id)
+
+        self.user = create_user(1)
+        self.user.id = user_id
 
     def test_path(self):
         expected = Path(

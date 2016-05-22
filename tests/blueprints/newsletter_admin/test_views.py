@@ -10,9 +10,10 @@ import json
 from byceps.blueprints.authorization.models import Permission, Role
 from byceps.blueprints.newsletter_admin.authorization import NewsletterPermission
 from byceps.blueprints.newsletter.models import Subscription, SubscriptionState
-from byceps.blueprints.user.models.user import User
 
 from tests.base import AbstractAppTestCase
+
+from testfixtures.user import create_user
 
 
 class NewsletterAdminTestCase(AbstractAppTestCase):
@@ -101,10 +102,7 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
         self.assertEqual(response.get_data(), expected_data)
 
     def create_user(self, number, *, enabled=True):
-        screen_name = 'User-{:d}'.format(number)
-        email_address = 'user{:03d}@example.com'.format(number)
-        user = User.create(screen_name, email_address, 'le_password')
-        user.enabled = enabled
+        user = create_user(number, enabled=enabled)
         self.db.session.add(user)
         return user
 

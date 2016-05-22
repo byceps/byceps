@@ -12,7 +12,8 @@ from freezegun import freeze_time
 from nose2.tools import params
 
 from byceps.blueprints.verification_token.models import Purpose, Token
-from byceps.blueprints.user.models.user import User
+
+from testfixtures.user import create_user
 
 
 class TokenTest(TestCase):
@@ -50,7 +51,8 @@ class TokenTest(TestCase):
         ),
     )
     def test_is_expired(self, purpose, now, expected):
-        user = User()
+        user = create_user(1)
+
         token = Token(user, purpose)
         token.created_at = datetime(2014, 11, 26, 17, 44, 53)
 
