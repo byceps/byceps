@@ -3,6 +3,7 @@
 {% from 'macros/datetime.html' import render_date %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_with_fallback %}
+{% from 'macros/orga_admin.html' import render_main_tabs with context %}
 {% from 'macros/user_admin.html' import render_orga_avatar_small, render_user_admin_link %}
 {% set current_page = 'orga_admin.persons' %}
 {% set title = 'Organisatoren' %}
@@ -13,7 +14,11 @@
         confirmed_delete_on_click('a.orgaflag-remove', 'Person den Orga-Status entziehen?');
       });
     </script>
-{%- endblock head %}
+{%- endblock %}
+
+{% block before_body %}
+{{ render_main_tabs(current_page) }}
+{%- endblock %}
 
 {% block body %}
 
@@ -77,4 +82,4 @@
     <li><a href="{{ url_for('.export_persons', brand_id=brand.id) }}" download="organizers_{{ brand.id }}.csv">{{ render_icon('download') }} Exportieren <small>(als Excel-CSV)</small></a></li>
   </ol>
 
-{%- endblock body %}
+{%- endblock %}

@@ -2,9 +2,14 @@
 {% from 'macros/datetime.html' import render_date %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/orga_admin.html' import render_random_age_adjective, render_relative_days_until, render_time_element %}
+{% from 'macros/orga_admin.html' import render_main_tabs with context %}
 {% from 'macros/user_admin.html' import render_orga_avatar_small, render_user_admin_link %}
 {% set current_page = 'orga_admin.birthdays' %}
 {% set title = 'Die nächsten Geburtstage' %}
+
+{% block before_body %}
+{{ render_main_tabs(current_page) }}
+{%- endblock %}
 
 {% block head %}
     <style>
@@ -40,4 +45,4 @@
   {%- endfor %}
   </table>
 
-{%- endblock body %}
+{%- endblock %}
