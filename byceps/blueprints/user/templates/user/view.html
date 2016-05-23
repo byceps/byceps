@@ -1,7 +1,7 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/seating.html' import render_seating_area_link %}
-{% from 'macros/user.html' import render_user_avatar %}
+{% from 'macros/user.html' import render_user_avatar, render_user_badges %}
 {% set current_page = 'user.view' %}
 {% set title = 'Benutzer - %s'|format(user.screen_name) %}
 
@@ -57,13 +57,7 @@
     {%- if user.badges %}
     <tr>
       <th>Abzeichen</th>
-      <td>
-        <ul class="list-grid">
-          {%- for badge in user.badges|sort(attribute='label') %}
-          <li><div class="user-badge" title="{{ badge.label }}"><img src="{{ badge.image_url }}"></div></li>
-          {%- endfor %}
-        </ul>
-      </td>
+      <td>{{ render_user_badges(user) }}</td>
     </tr>
     {%- endif %}
   </table>

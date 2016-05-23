@@ -3,6 +3,7 @@
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_with_fallback %}
 {% from 'macros/shop_admin.html' import render_order_payment_state %}
+{% from 'macros/user.html' import render_user_badges %}
 {% from 'macros/user_admin.html' import render_user_admin_avatar %}
 {% set current_page = 'user_admin' %}
 {% set title = 'Benutzer - %s'|format(user.screen_name) %}
@@ -201,10 +202,6 @@
   </table>
 
   <h2 id="badges">Abzeichen</h2>
-  <ul class="list-grid">
-    {%- for badge in user.badges|sort(attribute='label') %}
-    <li><div class="user-badge" title="{{ badge.label }}"><img src="{{ badge.image_url }}"></div></li>
-    {%- endfor %}
-  </ul>
+{{ render_user_badges(user) }}
 
 {%- endblock body %}
