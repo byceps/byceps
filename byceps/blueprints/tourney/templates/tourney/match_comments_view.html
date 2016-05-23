@@ -9,8 +9,10 @@
         {{- render_user_avatar(comment.created_by) }}
         {{ render_datetime(comment.created_at)|replace(', ', '<br/>'|safe) }}
       </aside>
-      <div class="body">
+      <div class="content">
+        <div class="body">
 {{ comment.body|bbcode|safe }}
+        </div>
       </div>
     </article>
     {%- endfor %}

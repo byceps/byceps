@@ -244,9 +244,16 @@ nav.main .current a {
   margin: 0;
 }
 
+.board-postings .content,
+.tourney-match-comments .content {
+  display: flex;
+  flex: 1 1 20rem;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
 .board-postings .body,
 .tourney-match-comments .body {
-  flex: 1 1 20rem;
   font-size: 1rem;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -254,7 +261,6 @@ nav.main .current a {
 
 .board-postings footer,
 .tourney-match-comments footer {
-  flex: 0 0 100%;
   font-size: 0.75rem;
   opacity: 0.5;
   text-align: right;
