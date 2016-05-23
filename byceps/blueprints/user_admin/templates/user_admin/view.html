@@ -1,4 +1,5 @@
 {% extends 'layout/base_admin.html' %}
+{% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/datetime.html' import render_date, render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_with_fallback %}
@@ -144,7 +145,7 @@
     </tr>
   </table>
 
-  <h2 id="orders">Bestellungen</h2>
+  <h2 id="orders">Bestellungen {{ render_extra_in_heading(orders|length) }}</h2>
   {%- if orders %}
   <table class="index">
     <thead>
@@ -201,7 +202,7 @@
     </tbody>
   </table>
 
-  <h2 id="badges">Abzeichen</h2>
+  <h2 id="badges">Abzeichen {{ render_extra_in_heading(user.badges|length) }}</h2>
 {{ render_user_badges(user) }}
 
 {%- endblock body %}
