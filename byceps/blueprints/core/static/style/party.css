@@ -225,6 +225,16 @@ nav.main .current a {
   display: block;
   margin-bottom: 0.25rem;
 }
+.board-postings .user-badge,
+.tourney-match-comments .user-badge {
+  display: inline-block;
+  padding: 4px;
+}
+.board-postings .user-badge img,
+.tourney-match-comments .user-badge img {
+  height: 16px;
+  width: 16px;
+}
 .board-postings aside time,
 .tourney-match-comments aside time {
   display: block;
