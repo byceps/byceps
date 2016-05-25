@@ -10,10 +10,6 @@
   <h1>{{ render_icon('user') }} {{ user.screen_name }}</h1>
 
   <table class="index">
-    <tr>
-      <th>Benutzername</th>
-      <td>{{ user.screen_name }}{% if user.is_orga_for_party(g.party) %} [<strong>Orga</strong>]{% endif%}</td>
-    </tr>
     {%- if orga_team_membership %}
     <tr>
       <th>Orga-Team</th>
