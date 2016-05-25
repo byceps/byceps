@@ -10,18 +10,18 @@
   <h1>{{ render_icon('user') }} {{ user.screen_name }}</h1>
 
   <table class="index">
-    {%- if orga_team_membership %}
-    <tr>
-      <th>Orga-Team</th>
-      <td>{{ orga_team_membership.orga_team.title}}{% if orga_team_membership.duties %} ({{ orga_team_membership.duties }}){% endif %}</td>
-    </tr>
-    {%- endif %}
     {%- if user.has_avatar_image %}
     <tr>
       <th>Avatarbild</th>
       <td>
         <div>{{ render_user_avatar(user) }}</div>
       </td>
+    </tr>
+    {%- endif %}
+    {%- if orga_team_membership %}
+    <tr>
+      <th>Orga-Team</th>
+      <td>{{ orga_team_membership.orga_team.title}}{% if orga_team_membership.duties %} ({{ orga_team_membership.duties }}){% endif %}</td>
     </tr>
     {%- endif %}
     {%- if current_party_tickets %}
