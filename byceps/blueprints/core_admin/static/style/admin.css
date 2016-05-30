@@ -358,7 +358,7 @@ ol.index.fully-linked a:hover {
   margin: -8px 0 0 -8px;
   padding: 0;
 }
-.list-grid li {
+.list-grid > li {
   padding: 8px 0 0 8px;
 }
 
