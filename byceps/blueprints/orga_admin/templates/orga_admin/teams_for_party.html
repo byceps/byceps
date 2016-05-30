@@ -30,16 +30,19 @@
         margin: 1em 0 0 2em;
       }
       .members > li {
+        width: 45%;
+      }
+
+      .member {
         display: flex;
         justify-content: space-between;
         margin: -1rem 2em 1em -1rem;
-        width: 45%;
       }
-      .members > li > div {
+      .member > div {
         flex: 0 0 auto;
         padding: 1rem 0 0 1rem;
       }
-      .members > li > div.details {
+      .member > div.details {
         flex: 1 0 auto;
       }
     </style>
@@ -74,7 +77,7 @@
         <td colspan="2">
           <ol class="members">
           {%- for membership in memberships|sort(attribute='user.screen_name') %}
-            <li>
+            <li class="member">
               <div>
                 {{ render_orga_avatar_small(membership.user) }}
               </div>
