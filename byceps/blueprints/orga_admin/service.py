@@ -54,7 +54,7 @@ def get_unassigned_orgas_for_party(party):
         .join(Membership) \
         .join(OrgaTeam) \
         .filter(OrgaTeam.party == party) \
-        .options(db.load_only(User.id ))\
+        .options(db.load_only(User.id)) \
         .all()
     assigned_orga_ids = frozenset(user.id for user in assigned_orgas)
 
