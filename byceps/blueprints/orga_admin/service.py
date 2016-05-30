@@ -58,8 +58,13 @@ def get_unassigned_orgas_for_party(party):
         .all()
     assigned_orga_ids = frozenset(user.id for user in assigned_orgas)
 
-    unassigned_orgas = User.query \
-        .filter(db.not_(User.id.in_(assigned_orga_ids))) \
+    unassigned_orgas_query = User.query
+
+    if assigned_orga_ids:
+        unassigned_orgas_query = unassigned_orgas_query \
+            .filter(db.not_(User.id.in_(assigned_orga_ids)))
+
+    unassigned_orgas = unassigned_orgas_query \
         .join(OrgaFlag).filter(OrgaFlag.brand == party.brand) \
         .options(
             db.load_only('screen_name')
