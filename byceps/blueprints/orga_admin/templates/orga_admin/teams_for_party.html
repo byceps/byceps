@@ -24,19 +24,17 @@
       }
 
       .members {
-        display: flex;
-        flex-wrap: wrap;
-        list-style: none;
-        margin: 1em 0 0 2em;
+        margin: 0 0 0.5rem 0;
       }
       .members > li {
-        width: 45%;
+        flex: 0 0 50%;
+        padding: 1em 0 0 2em;
       }
 
       .member {
         display: flex;
         justify-content: space-between;
-        margin: -1rem 2em 1em -1rem;
+        margin: -1rem 0 0 -1rem;
       }
       .member > div {
         flex: 0 0 auto;
@@ -75,19 +73,21 @@
         </td>
         {%- if memberships %}
         <td colspan="2">
-          <ol class="members">
+          <ol class="list-grid members">
           {%- for membership in memberships|sort(attribute='user.screen_name') %}
-            <li class="member">
-              <div>
-                {{ render_orga_avatar_small(membership.user) }}
-              </div>
-              <div class="details">
-                {{ render_user_admin_link(membership.user) }}<br>
-                {{ render_with_fallback(membership.duties) }}
-              </div>
-              <div class="actions inline">
-                <a href="{{ url_for('.membership_update_form', id=membership.id) }}" title="Aufgabe bearbeiten">{{ render_icon('edit') }}</a>
-                <a href="{{ url_for('.membership_remove', id=membership.id) }}" class="membership-remove" title="Person aus Team entfernen">{{ render_icon('remove') }}</a>
+            <li>
+              <div class="member">
+                <div>
+                  {{ render_orga_avatar_small(membership.user) }}
+                </div>
+                <div class="details">
+                  {{ render_user_admin_link(membership.user) }}<br>
+                  {{ render_with_fallback(membership.duties) }}
+                </div>
+                <div class="actions inline">
+                  <a href="{{ url_for('.membership_update_form', id=membership.id) }}" title="Aufgabe bearbeiten">{{ render_icon('edit') }}</a>
+                  <a href="{{ url_for('.membership_remove', id=membership.id) }}" class="membership-remove" title="Person aus Team entfernen">{{ render_icon('remove') }}</a>
+                </div>
               </div>
             </li>
           {%- endfor %}
