@@ -43,6 +43,12 @@
       .member > div.details {
         flex: 1 0 auto;
       }
+
+      .dropdown button {
+        border: #cccccc solid 1px;
+        border-radius: 3px;
+        padding: 0;
+      }
     </style>
     <script>
       $(function() {
@@ -84,9 +90,14 @@
                   {{ render_user_admin_link(membership.user) }}<br>
                   {{ render_with_fallback(membership.duties) }}
                 </div>
-                <div class="actions inline">
-                  <a href="{{ url_for('.membership_update_form', id=membership.id) }}" title="Aufgabe bearbeiten">{{ render_icon('edit') }}</a>
-                  <a href="{{ url_for('.membership_remove', id=membership.id) }}" class="membership-remove" title="Person aus Team entfernen">{{ render_icon('remove') }}</a>
+                <div>
+                  <div class="dropdown">
+                    <button><span class="icon-caret-down"></span></button>
+                    <ol>
+                      <li><a href="{{ url_for('.membership_update_form', id=membership.id) }}">{{ render_icon('edit') }} Team und Aufgabe bearbeiten</a></li>
+                      <li><a href="{{ url_for('.membership_remove', id=membership.id) }}" class="membership-remove">{{ render_icon('remove') }} Person aus Team entfernen</a></li>
+                    </ol>
+                  </div>
                 </div>
               </div>
             </li>
