@@ -29,20 +29,18 @@
         list-style: none;
         margin: 1em 0 0 2em;
       }
-      .members li {
+      .members > li {
         display: flex;
         justify-content: space-between;
-        margin: 0 2em 1em 0;
+        margin: -1rem 2em 1em -1rem;
         width: 45%;
       }
-      .members .details,
-      .members .actions {
-        white-space: nowrap;
+      .members > li > div {
+        flex: 0 0 auto;
+        padding: 1rem 0 0 1rem;
       }
-      .members .actions {
-        margin-left: 1em;
-        padding-top: 0.65em;
-        text-align: right;
+      .members > li > div.details {
+        flex: 1 0 auto;
       }
     </style>
     <script>
