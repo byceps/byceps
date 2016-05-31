@@ -17,7 +17,7 @@ from flask_script import Manager
 from flask_script.commands import Server
 from werkzeug.wsgi import SharedDataMiddleware
 
-from byceps.application import create_app, init_app
+from byceps.application_factory import app
 from byceps.blueprints.brand.models import Brand
 from byceps.blueprints.party.models import Party
 from byceps.blueprints.shop.models.article import Article
@@ -26,13 +26,6 @@ from byceps.blueprints.shop.models.order import Order, OrderItem, \
 from byceps.blueprints.user.models.detail import UserDetail
 from byceps.blueprints.user.models.user import User
 from byceps.database import db
-from byceps.util.system import get_config_env_name_from_env
-
-
-environment = get_config_env_name_from_env(default='development')
-
-app = create_app(environment)
-init_app(app)
 
 
 def _assemble_exports():
