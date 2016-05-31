@@ -9,8 +9,20 @@ byceps.blueprints.user_badge.views
 """
 
 from ...util.framework import create_blueprint
+from ...util.templating import templated
 
-from . import models  # Make `User.badges` association available.
+from .models import Badge
 
 
 blueprint = create_blueprint('user_badge', __name__)
+
+
+@blueprint.route('/<uuid:id>')
+@templated
+def view(id):
+    """Show information about a badge."""
+    badge = Badge.query.get_or_404(id)
+
+    return {
+        'badge': badge,
+    }

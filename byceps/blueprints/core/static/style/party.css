@@ -324,8 +324,11 @@ nav.main .current a {
 .user-badge {
   border: #cccccc solid 1px;
   border-radius: 50%;
-  cursor: help;
+  display: block;
   padding: 8px;
+}
+a.user-badge:hover {
+  border-color: currentColor;
 }
 .user-badge img {
   display: block;

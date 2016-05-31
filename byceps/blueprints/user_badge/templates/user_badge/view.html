@@ -1,0 +1,63 @@
+{% extends 'layout/base.html' %}
+{% from 'macros/icons.html' import render_icon %}
+{% from 'macros/user.html' import render_user_avatar, render_user_link %}
+{% set current_page = 'user_badge.view' %}
+{% set title = 'Badge - %s'|format(badge.label) %}
+
+{% block head %}
+  <style>
+    a.recipient {
+      border: none;
+      display: block;
+    }
+    a.recipient:hover .avatar img,
+    a.recipient:hover .avatar.none {
+      border: currentColor solid 1px;
+    }
+
+    .avatar {
+      display: block;
+      height: 64px;
+      overflow: hidden;
+      width: 64px;
+    }
+    .avatar img {
+      min-height: 100%;
+      min-width: 100%;
+    }
+    .avatar .orga-badge {
+      font-size: 0.5rem;
+    }
+    .avatar.none {
+      align-items: center;
+      background-color: #dddddd;
+      display: flex;
+      font-size: 3rem;
+      font-weight: bold;
+      justify-content: center;
+    }
+  </style>
+{% endblock %}
+
+{% block body %}
+
+  <h1>{{ render_icon('badge') }} Abzeichen &quot;{{ badge.label }}&quot;</h1>
+
+  {%- if badge.description %}
+  <p>{{ badge.description }}</p>
+  {%- endif %}
+
+  <h2>{{ badge.recipients|length }} mal verliehen</h2>
+  <ul class="list-grid">
+    {%- for user in badge.recipients|sort(attribute='screen_name') %}
+    <li><a class="recipient" href="{{ url_for('user.view', id=user.id) }}">
+      {%- if user.has_avatar_image -%}
+      {{ render_user_avatar(user) }}
+      {%- else -%}
+      <div class="avatar none">?</div>
+      {%- endif -%}
+    </a></li>
+    {%- endfor %}
+  </ul>
+
+{%- endblock body %}
