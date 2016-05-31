@@ -72,8 +72,8 @@
           <aside id="sidebar">
 {%- with
   current_page = current_page|default,
-  brand = current_page_brand|default,
-  party = current_page_party|default
+  party = current_page_party|default,
+  brand = current_page_brand|default(party.brand if party else None)
 %}
 {%- include 'layout/admin/_navigation.html' with context %}
 {%- endwith %}
