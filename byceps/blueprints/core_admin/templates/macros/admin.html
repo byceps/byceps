@@ -32,6 +32,17 @@
 {% endmacro %}
 
 
+{% macro render_navigation(navigation, current_page) %}
+  <nav>
+    <ol>
+      {%- for item in navigation.get_items() %}
+      <li{% if (item.id is not none) and (item.id is is_current_page(current_page)) %} class="current"{% endif %}><a href="{{ item.endpoint }}" title="{{ item.label }}">{{ render_icon(item.icon) if item.icon else item.label[0] }}</a></li>
+      {%- endfor %}
+    </ol>
+  </nav>
+{% endmacro %}
+
+
 {% macro render_main_tabs(navigation, current_page) -%}
   <ol class="main-tabs">
     {%- for item in navigation.get_items() %}

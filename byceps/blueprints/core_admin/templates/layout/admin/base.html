@@ -1,4 +1,4 @@
-{%- from 'macros/admin.html' import render_brand_head, render_party_head %}
+{%- from 'macros/admin.html' import render_brand_head, render_navigation, render_party_head %}
 {%- from 'macros/icons.html' import render_icon %}
 {%- from 'macros/user_admin.html' import render_orga_avatar_small %}
 <!DOCTYPE html>
@@ -79,13 +79,7 @@
   {%- endif %}
 
   {%- if navigation is defined %}
-        <nav>
-          <ol>
-            {%- for item in navigation.get_items() %}
-            <li{% if (item.id is not none) and (item.id is is_current_page(current_page)) %} class="current"{% endif %}><a href="{{ item.endpoint }}" title="{{ item.label }}">{{ render_icon(item.icon) if item.icon else item.label[0] }}</a></li>
-            {%- endfor %}
-          </ol>
-        </nav>
+{{ render_navigation(navigation, current_page) }}
   {%- endif %}
 
 {%- endwith %}
