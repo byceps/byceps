@@ -45,7 +45,7 @@ a {
   flex: 1;
 }
 #page-grid-sidebar {
-  flex: 0 0 18%;
+  flex: 0 0 20%;
 }
 
 @media (min-width: 960px) {
@@ -211,6 +211,9 @@ a {
   margin: 0 0 10px 0;
   padding: 35px 20px 10px 20px;
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+}
+#sidebar section li {
+  white-space: nowrap;
 }
 #sidebar section p {
   padding: 0 20px
