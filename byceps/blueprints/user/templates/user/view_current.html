@@ -1,4 +1,4 @@
-{% extends ('layout/admin/base.html' if g.site_mode.is_admin() else 'layout/base.html') %}
+{% extends 'layout/base_auto.html' %}
 {% from 'macros/datetime.html' import render_date, render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_with_fallback %}
