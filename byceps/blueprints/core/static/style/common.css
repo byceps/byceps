@@ -335,6 +335,7 @@ table.wide {
   background-color: #ffffff;
   border: #cccccc solid 1px;
   display: none;
+  font-weight: normal;
   left: 0;
   list-style: none;
   padding: 0.25rem 0;
