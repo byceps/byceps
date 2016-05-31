@@ -1,5 +1,4 @@
 {%- from 'macros/admin.html' import render_navigation_global with context %}
-{%- from 'macros/navigation.html' import render_navigation_item_from_item %}
 {%- from 'macros/party_admin.html' import render_party_admin_link %}
 
 
@@ -31,29 +30,3 @@
   </nav>
 </section>
 {%- endif %}
-
-
-{%- set navigation_items = [
-    Navigation('Benutzer')
-        .add_item('user_admin.index', 'Benutzer', id='user_admin', required_permission=UserPermission.list),
-
-    Navigation('Orgas')
-        .add_item('orga_admin.persons', 'Personen', id='orga_admin.persons', required_permission=OrgaDetailPermission.view)
-    ] -%}
-
-
-{%- for block in navigation_items %}
-  {%- set items = block.get_items() %}
-  {%- if items %}
-<section>
-  <h1>{{ block.title }}</h1>
-  <nav class="main">
-    <ol>
-      {%- for item in items %}
-      {{ render_navigation_item_from_item(item, current_page) }}
-      {%- endfor %}
-    </ol>
-  </nav>
-</section>
-  {%- endif %}
-{%- endfor %}
