@@ -149,13 +149,6 @@ nav.main .current a {
 .news-item h1 {
   margin-bottom: 0;
 }
-.news-item h1 a {
-  color: currentColor;
-  text-decoration: none;
-}
-.news-item h1 a:hover {
-  text-decoration: underline;
-}
 .news-item .meta {
   font-size: 0.75rem;
   margin: 10px 0;
@@ -309,6 +302,14 @@ nav.main .current a {
 
 
 /* misc */
+
+main h1 a {
+  color: currentColor;
+  text-decoration: none;
+}
+main h1 a:hover {
+  text-decoration: underline;
+}
 
 .list-grid {
   display: flex;
