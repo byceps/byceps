@@ -7,12 +7,21 @@
 {{ render_navigation_global(current_page, css_class='main', labels=True) }}
 </section>
 
-{%- if brand %}
 <section>
+{%- if brand %}
   <h1><small>Marke</small><br>{{ brand.title }}</h1>
 {{ render_navigation_brand(current_page, css_class='main', labels=True) }}
-</section>
+{%- else %}
+  <h1>Marken</h1>
+  <nav class="main">
+    <ol>
+      {%- for brand in all_brands|sort(attribute='title') %}
+      <li><a href="{{ url_for('party_admin.index_for_brand', brand_id=brand.id) }}">{{ brand.title }}</a></li>
+      {%- endfor %}
+    </ol>
+  </nav>
 {%- endif %}
+</section>
 
 {%- if brand and g.current_user.has_permission(PartyPermission.list) %}
 <section>
@@ -21,17 +30,6 @@
     <ol>
     {%- for party in brand.parties|sort(attribute='starts_at', reverse=True) %}
       <li>{{ render_party_admin_link(party, dim_archived=True) }}</li>
-    {%- endfor %}
-    </ol>
-  </nav>
-</section>
-{%- elif not party and g.current_user.has_permission(PartyPermission.list) %}
-<section>
-  <h1>Marken</h1>
-  <nav class="main">
-    <ol>
-    {%- for brand in all_brands|sort(attribute='title') %}
-      <li><a href="{{ url_for('party_admin.index_for_brand', brand_id=brand.id) }}">{{ brand.title }}</a></li>
     {%- endfor %}
     </ol>
   </nav>
