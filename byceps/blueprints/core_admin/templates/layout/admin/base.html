@@ -53,9 +53,9 @@
         </div>
 
   {%- if brand %}
-{{ render_navigation_brand(current_page) }}
+{{ render_navigation_brand(brand, current_page) }}
   {%- elif party %}
-{{ render_navigation_party(current_page) }}
+{{ render_navigation_party(party, current_page) }}
   {%- else %}
 {{ render_navigation_global(current_page) }}
   {%- endif %}
@@ -75,7 +75,7 @@
   party = current_page_party|default,
   brand = current_page_brand|default(party.brand if party else None)
 %}
-{%- include 'layout/admin/_navigation.html' with context %}
+{%- include 'layout/admin/_navigation.html' %}
 {%- endwith %}
           </aside>
         </div><!-- /#page-grid-sidebar -->

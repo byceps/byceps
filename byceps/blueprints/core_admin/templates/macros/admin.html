@@ -57,7 +57,7 @@
 {% endmacro %}
 
 
-{% macro render_navigation_brand(current_page, css_class=None, labels=False) -%}
+{% macro render_navigation_brand(brand, current_page, css_class=None, labels=False) -%}
   {%- set navigation = Navigation('Marke')
       .add_item(url_for('admin_dashboard.view_brand', brand_id=brand.id), 'Dashboard', id='admin_dashboard_brand', required_permission=AdminDashboardPermission.view_brand, icon='dashboard')
       .add_item(url_for('news_admin.index_for_brand', brand_id=brand.id), 'News', id='news_admin', required_permission=NewsItemPermission.list, icon='news')
@@ -69,7 +69,7 @@
 {% endmacro %}
 
 
-{% macro render_navigation_party(current_page, css_class=None, labels=False) -%}
+{% macro render_navigation_party(party, current_page, css_class=None, labels=False) -%}
   {%- set navigation = Navigation('Party')
       .add_item(url_for('admin_dashboard.view_party', party_id=party.id), 'Dashboard', id='admin_dashboard_party', required_permission=AdminDashboardPermission.view_party, icon='dashboard')
       .add_item(url_for('snippet_admin.index_for_party', party_id=party.id), 'Snippets', id='snippet_admin', required_permission=SnippetPermission.list, icon='snippet')

@@ -12,7 +12,7 @@
 <section>
 {%- if brand %}
   <h1><small>Marke</small><br>{{ brand.title }}</h1>
-{{ render_navigation_brand(current_page, css_class='main', labels=True) }}
+{{ render_navigation_brand(brand, current_page, css_class='main', labels=True) }}
 {%- else %}
   <h1>Marken</h1>
   <nav class="main">
@@ -28,7 +28,7 @@
 {%- if party %}
 <section>
   <h1><small>Party</small><br>{{ party.title }}</h1>
-{{ render_navigation_party(current_page, css_class='main', labels=True) }}
+{{ render_navigation_party(party, current_page, css_class='main', labels=True) }}
 </section>
 {%- elif brand %}
 <section>
