@@ -17,6 +17,17 @@ from .models import Badge
 blueprint = create_blueprint('user_badge', __name__)
 
 
+@blueprint.route('/')
+@templated
+def index():
+    """List all badges."""
+    badges = Badge.query.all()
+
+    return {
+        'badges': badges,
+    }
+
+
 @blueprint.route('/<uuid:id>')
 @templated
 def view(id):
