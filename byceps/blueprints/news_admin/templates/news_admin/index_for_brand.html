@@ -13,9 +13,9 @@
     <ol>
       <li><a href="{{ url_for('.index') }}">News</a></li>
       <li>{{ brand.title }}</li>
-      <li>Newsposts {{ render_extra_in_heading(items.total) }}</li>
     </ol>
   </nav>
+  <h1>Newsposts {{ render_extra_in_heading(items.total) }}</h1>
 
   <table class="index wide">
     <thead>

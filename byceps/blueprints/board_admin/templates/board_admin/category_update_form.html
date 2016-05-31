@@ -11,9 +11,9 @@
     <ol>
       <li><a href="{{ url_for('.index') }}">Board</a></li>
       <li><a href="{{ url_for('.index_for_brand', brand_id=category.brand.id) }}">{{ category.brand.title }}</a></li>
-      <li>{{ render_icon('edit') }} {{ title }}</li>
     </ol>
   </nav>
+  <h1>{{ render_icon('edit') }} {{ title }}</h1>
 
   <form action="{{ url_for('.category_update', id=category.id) }}" method="post">
     {% call form_fieldset() %}

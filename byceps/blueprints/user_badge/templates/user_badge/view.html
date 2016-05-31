@@ -44,9 +44,9 @@
   <nav class="breadcrumbs">
     <ol>
       <li>{{ render_icon('badge') }} <a href="{{ url_for('.index') }}">Abzeichen</a></li>
-      <li>{{ badge.label }}</li>
     </ol>
   </nav>
+  <h1>{{ badge.label }}</h1>
 
   {%- if badge.description %}
   <p>{{ badge.description }}</p>

@@ -19,9 +19,9 @@
     <ol>
       <li><a href="{{ url_for('.article_index') }}">{{ party.title }}</a></li>
       <li>Shop</li>
-      <li>{{ title }} {{ render_extra_in_heading(articles.total) }}</li>
     </ol>
   </nav>
+  <h1>{{ title }} {{ render_extra_in_heading(articles.total) }}</h1>
 
   <table class="index wide" style="margin-bottom: 2rem;">
     <thead>

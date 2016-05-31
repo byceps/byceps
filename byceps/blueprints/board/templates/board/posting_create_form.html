@@ -11,9 +11,9 @@
       <li><a href="{{ url_for('.category_index') }}">Forum</a></li>
       <li><a href="{{ url_for('.category_view', slug=topic.category.slug) }}">{{ topic.category.title }}</a></li>
       <li><a href="{{ url_for('.topic_view', id=topic.id) }}">{{ topic.title }}</a></li>
-      <li>{{ render_icon('reply') }} {{ title }}</li>
     </ol>
   </nav>
+  <h1>{{ render_icon('reply') }} {{ title }}</h1>
 
   <form action="{{ url_for('.posting_create', topic_id=topic.id) }}" method="post">
     {%- call form_fieldset() %}

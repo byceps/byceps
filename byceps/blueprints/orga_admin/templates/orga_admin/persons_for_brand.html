@@ -26,9 +26,9 @@
   <nav class="breadcrumbs">
     <ol>
       <li><a href="{{ url_for('.persons') }}">{{ brand.title }}</a></li>
-      <li>{{ title }} {{ render_extra_in_heading(orgas|length) }}</li>
     </ol>
   </nav>
+  <h1>{{ title }} {{ render_extra_in_heading(orgas|length) }}</h1>
 
   <table class="index wide">
     <thead>

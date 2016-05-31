@@ -11,9 +11,9 @@
     <ol>
       <li><a href="{{ url_for('.index') }}">Snippets</a></li>
       <li><a href="{{ url_for('.index_for_party', party_id=party.id) }}">{{ party.title }}</a></li>
-      <li>{{ render_icon('add') }} {{ title }}</li>
     </ol>
   </nav>
+  <h1>{{ render_icon('add') }} {{ title }}</h1>
 
   <form action="{{ url_for('.create_snippet', party_id=party.id) }}" method="post">
     {% call form_fieldset() %}

@@ -31,9 +31,9 @@
     <ol>
       <li><a href="{{ url_for('.article_index') }}">Artikel</a></li>
       <li><a href="{{ url_for('.article_index_for_party', party_id=article.party.id) }}">{{ article.party.title }}</a></li>
-      <li>{{ render_icon('view') }} {{ title }}</li>
     </ol>
   </nav>
+  <h1>{{ render_icon('view') }} {{ title }}</h1>
 
   <table class="index">
     <tr>

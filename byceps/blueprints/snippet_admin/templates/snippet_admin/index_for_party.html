@@ -20,9 +20,9 @@
   <nav class="breadcrumbs">
     <ol>
       <li><a href="{{ url_for('.index') }}">Snippets</a></li>
-      <li>{{ party.title }}</li>
     </ol>
   </nav>
+  <h1>{{ party.title }}</h1>
 
   <h2>Snippets {{ render_extra_in_heading(snippets|length) }}</h2>
 

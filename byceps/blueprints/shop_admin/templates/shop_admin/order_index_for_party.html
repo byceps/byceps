@@ -21,9 +21,9 @@
     <ol>
       <li><a href="{{ url_for('.order_index') }}">{{ party.title }}</a></li>
       <li>Shop</li>
-      <li>{{ title }} {{ render_extra_in_heading(orders.total) }}</li>
     </ol>
   </nav>
+  <h1>{{ title }} {{ render_extra_in_heading(orders.total) }}</h1>
 
   <div class="filter">
     <span>{{ render_icon('filter') }} Einschränkung:</span>

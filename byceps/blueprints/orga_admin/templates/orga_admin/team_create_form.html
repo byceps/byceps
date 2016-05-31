@@ -10,9 +10,9 @@
   <nav class="breadcrumbs">
     <ol>
       <li><a href="{{ url_for('.teams') }}">{{ party.title }}</a></li>
-      <li>{{ render_icon('add') }} {{ title }}</li>
     </ol>
   </nav>
+  <h1>{{ render_icon('add') }} {{ title }}</h1>
 
   <form action="{{ url_for('.team_create', party_id=party.id) }}" method="post">
     {% call form_fieldset() %}

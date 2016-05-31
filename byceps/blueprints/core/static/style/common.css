@@ -120,30 +120,21 @@ div.notification-success {
 
 nav.breadcrumbs {
   font-size: 0.9rem;
-  margin: 1rem 0 2rem 0;
+  margin-top: 1rem;
 }
+
 nav.breadcrumbs li {
   display: inline-block;
 }
 nav.breadcrumbs li::after {
   content: ' \0BB \020';
 }
-nav.breadcrumbs li:last-child::after {
+nav.breadcrumbs.compact li:last-child::after {
   content: none;
 }
-nav.breadcrumbs:not(.compact) li:last-child {
-  display: block;
-  font-size: 2rem;
-  font-weight: bold;
-  line-height: 1.2;
+
+nav.breadcrumbs + h1 {
   margin-top: 0.5rem;
-}
-nav.breadcrumbs:not(.compact) li:last-child a {
-  color: currentColor;
-  text-decoration: none;
-}
-nav.breadcrumbs:not(.compact) li:last-child a:hover {
-  text-decoration: underline;
 }
 
 

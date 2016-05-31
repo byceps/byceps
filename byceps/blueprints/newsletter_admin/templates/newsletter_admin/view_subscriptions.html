@@ -32,9 +32,9 @@
     <ol>
       <li><a href="{{ url_for('.index') }}">Newsletter</a></li>
       <li>{{ brand.title }}</li>
-      <li>Bestellstatus</li>
     </ol>
   </nav>
+  <h1>Bestellstatus</h1>
 
   <div class="bigstats">
     {{ render_bigstats_item(totals[State.requested], 'angefordert', icon_name='enabled', color='#008800') }}

@@ -63,9 +63,9 @@
   <nav class="breadcrumbs">
     <ol>
       <li><a href="{{ url_for('.teams') }}">{{ party.title }}</a></li>
-      <li>{{ title }} {{ render_extra_in_heading(teams|length) }}</li>
     </ol>
   </nav>
+  <h1>{{ title }} {{ render_extra_in_heading(teams|length) }}</h1>
 
   <table class="index wide teams">
     <tbody>

@@ -16,9 +16,9 @@
       <li><a href="{{ url_for('.category_index') }}">Forum</a></li>
       <li><a href="{{ url_for('.category_view', slug=topic.category.slug) }}">{{ topic.category.title }}</a></li>
       <li><a href="{{ url_for('.topic_view', id=topic.id) }}">{{ topic.title }}</a></li>
-      <li>{{ render_icon('moderate') }}&thinsp;{{ title }}</li>
     </ol>
   </nav>
+  <h1>{{ render_icon('moderate') }} {{ title }}</h1>
 
   {%- if g.current_user.has_permission(BoardTopicPermission.hide) %}
   <h2>{{ render_icon('view') }} Sichtbarkeit</h2>

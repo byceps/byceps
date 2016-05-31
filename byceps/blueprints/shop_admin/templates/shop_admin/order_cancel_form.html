@@ -17,9 +17,9 @@
       <li><a href="{{ url_for('.order_index') }}">Bestellungen</a></li>
       <li><a href="{{ url_for('.order_index_for_party', party_id=order.party.id) }}">{{ order.party.title }}</a></li>
       <li>{{ render_order_link(order) }}</li>
-      <li>{{ title }}</li>
     </ol>
   </nav>
+  <h1>{{ title }}</h1>
 
   <form action="{{ url_for('.order_cancel', id=order.id) }}" method="post">
     {% call form_fieldset() %}

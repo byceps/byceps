@@ -12,9 +12,9 @@
       <li><a href="{{ url_for('.category_index') }}">Forum</a></li>
       <li><a href="{{ url_for('.category_view', slug=posting.topic.category.slug) }}">{{ posting.topic.category.title }}</a></li>
       <li><a href="{{ url_for('.topic_view', id=posting.topic.id) }}">{{ posting.topic.title }}</a></li>
-      <li>{{ render_icon('edit') }} {{ title }}</li>
     </ol>
   </nav>
+  <h1>{{ render_icon('edit') }} {{ title }}</h1>
 
   {%- if posting.creator != g.current_user %}
   {{ render_notification('info', 'warning', 'Du bist im Begriff, einen Beitrag von jemand anderem zu verändern.') }}

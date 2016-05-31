@@ -12,9 +12,9 @@
     <ol>
       <li><a href="{{ url_for('.teams') }}">{{ membership.orga_team.party.title }}</a></li>
       <li>{{ render_user_admin_link(membership.user) }}</li>
-      <li>{{ title }}</li>
     </ol>
   </nav>
+  <h1>{{ title }}</h1>
 
   <form action="{{ url_for('.membership_update', id=membership.id) }}" method="post">
     {% call form_fieldset() %}
