@@ -62,6 +62,10 @@ def create_user(screen_name, email_address, password, *, enabled=False):
     return user
 
 
+def find_user(screen_name):
+    return User.query.filter_by(screen_name=screen_name).one_or_none()
+
+
 def get_user(screen_name):
     return User.query.filter_by(screen_name=screen_name).one()
 

@@ -14,7 +14,7 @@ Validators for use with Click_.
 
 import click
 
-from .helpers import get_brand, get_party, get_user
+from .helpers import find_user, get_brand, get_party
 
 
 def validate_brand(ctx, param, brand_id):
@@ -34,7 +34,7 @@ def validate_party(ctx, param, party_id):
 
 
 def validate_user_screen_name(ctx, param, screen_name):
-    user = get_user(screen_name)
+    user = find_user(screen_name)
     if not user:
         raise click.BadParameter('Unknown user screen name "{}".'.format(screen_name))
 
