@@ -32,7 +32,6 @@ from . import avatar_service
 from .forms import AvatarImageUpdateForm, DetailsForm, \
     RequestConfirmationEmailForm, RequestPasswordResetForm, \
     ResetPasswordForm, UpdatePasswordForm, UserCreateForm
-from .models import badge  # Make `User.badges` association available.
 from .models.user import User
 from . import service
 from . import signals

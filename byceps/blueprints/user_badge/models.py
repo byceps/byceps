@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-byceps.blueprints.user.models.badge
+byceps.blueprints.user_badge.models
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2016 Jochen Kupperschmidt
@@ -13,10 +13,10 @@ from datetime import datetime
 from flask import url_for
 from sqlalchemy.ext.associationproxy import association_proxy
 
-from ....database import db, generate_uuid
-from ....util.instances import ReprBuilder
+from ...database import db, generate_uuid
+from ...util.instances import ReprBuilder
 
-from .user import User
+from ..user.models.user import User
 
 
 class Badge(db.Model):

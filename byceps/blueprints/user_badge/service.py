@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-byceps.blueprints.user.service.badge_service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.user_badge.service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2016 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -10,7 +10,7 @@ byceps.blueprints.user.service.badge_service
 
 from ...database import db
 
-from .models.badge import Badge
+from .models import Badge
 
 
 def create_badge(label, image_filename, *, description=None):

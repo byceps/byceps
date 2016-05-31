@@ -6,6 +6,7 @@
   {%- endif -%}
 {%- endmacro %}
 
+
 {% macro render_user_avatar(user) %}
   {%- if user.has_avatar_image %}
 <div class="avatar{% if user.is_orga_for_party(g.party) %} orga{% endif %}">
@@ -15,13 +16,4 @@
   {%- endif %}
 </div>
   {%- endif -%}
-{%- endmacro %}
-
-
-{% macro render_user_badges(user) %}
-<ul class="list-grid">
-  {%- for badge in user.badges|sort(attribute='label') %}
-  <li><div class="user-badge" title="{{ badge.label }}"><img src="{{ badge.image_url }}"></div></li>
-  {%- endfor %}
-</ul>
 {%- endmacro %}
