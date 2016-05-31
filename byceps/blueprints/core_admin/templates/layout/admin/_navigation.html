@@ -1,4 +1,4 @@
-{%- from 'macros/admin.html' import render_navigation_brand, render_navigation_global with context %}
+{%- from 'macros/admin.html' import render_navigation_brand, render_navigation_global, render_navigation_party with context %}
 {%- from 'macros/party_admin.html' import render_party_admin_link %}
 
 
@@ -23,7 +23,12 @@
 {%- endif %}
 </section>
 
-{%- if brand and g.current_user.has_permission(PartyPermission.list) %}
+{%- if party %}
+<section>
+  <h1><small>Party</small><br>{{ party.title }}</h1>
+{{ render_navigation_party(current_page, css_class='main', labels=True) }}
+</section>
+{%- elif brand %}
 <section>
   <h1>Partys</h1>
   <nav class="main">
