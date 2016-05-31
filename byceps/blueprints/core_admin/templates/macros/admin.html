@@ -6,7 +6,9 @@
   <div class="head-brand">
     Marken
     {{ '/'|dim }}
-    <strong><a href="{{ url_for('party_admin.index_for_brand', brand_id=brand.id) }}">{{ brand.title }}</a></strong>
+    <div>
+      <strong><a href="{{ url_for('party_admin.index_for_brand', brand_id=brand.id) }}">{{ brand.title }}</a></strong>
+    </div>
   </div>
 {% endmacro %}
 
@@ -15,7 +17,9 @@
   <div class="head-party">
     <a href="{{ url_for('party_admin.index_for_brand', brand_id=party.brand.id) }}">{{ party.brand.title }}</a>
     {{ '/'|dim }}
-    <strong>{{ render_party_admin_link(party) }}</strong>
+    <div>
+      <strong>{{ render_party_admin_link(party) }}</strong>
+    </div>
   </div>
 {% endmacro %}
 
