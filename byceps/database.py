@@ -12,7 +12,7 @@ Database utilities.
 
 import uuid
 
-from flask.ext.sqlalchemy import BaseQuery, SQLAlchemy
+from flask_sqlalchemy import BaseQuery, SQLAlchemy
 from sqlalchemy.dialects.postgresql import UUID
 
 

@@ -13,8 +13,8 @@ Run the application, take administrative action.
 
 import ssl
 
-from flask.ext.script import Manager
-from flask.ext.script.commands import Server
+from flask_script import Manager
+from flask_script.commands import Server
 from werkzeug.wsgi import SharedDataMiddleware
 
 from byceps.application import create_app, init_app
