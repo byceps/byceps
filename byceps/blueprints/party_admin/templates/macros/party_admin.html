@@ -1,0 +1,3 @@
+{% macro render_party_admin_link(party) -%}
+  <a href="{{ url_for('party_admin.view', id=party.id) }}">{{ party.title }}</a>
+{%- endmacro %}

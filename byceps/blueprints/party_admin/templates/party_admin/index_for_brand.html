@@ -2,6 +2,7 @@
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
+{% from 'macros/party_admin.html' import render_party_admin_link %}
 {% set current_page = 'party_admin' %}
 {% set current_page_brand = brand %}
 {% set title = '%s - Partys'|format(brand.title) %}
@@ -28,7 +29,7 @@
       <tr{% if party.is_over %} class="dimmed"{% endif %}>
         <td>{{ party.id }}</td>
         <td>
-          <strong><a href="{{ url_for('party_admin.view', id=party.id) }}">{{ party.title }}</a></strong>
+          <strong>{{ render_party_admin_link(party) }}</strong>
           {%- if party.is_archived %}<br/>{{ render_icon('archived', title='archiviert') }} <em>archiviert</em>{% endif -%}
         </td>
         <td>
