@@ -43,6 +43,43 @@
 {% endmacro %}
 
 
+{% macro render_navigation_global(current_page) -%}
+  {%- set navigation = Navigation('global')
+      .add_item(url_for('admin_dashboard.view_global'), 'Dashboard', id='admin_dashboard_global', required_permission=AdminDashboardPermission.view_global, icon='dashboard')
+      .add_item(url_for('user_admin.index'), 'Benutzer', id='user_admin', required_permission=UserPermission.list, icon='users')
+      .add_item(url_for('authorization_admin.role_index'), 'Berechtigungen', id='authorization_admin.roles', required_permission=RolePermission.list, icon='permission')
+  -%}
+{{ render_navigation(navigation, current_page) }}
+{% endmacro %}
+
+
+{% macro render_navigation_brand(current_page) -%}
+  {%- set navigation = Navigation('Marke')
+      .add_item(url_for('admin_dashboard.view_brand', brand_id=brand.id), 'Dashboard', id='admin_dashboard_brand', required_permission=AdminDashboardPermission.view_brand, icon='dashboard')
+      .add_item(url_for('news_admin.index_for_brand', brand_id=brand.id), 'News', id='news_admin', required_permission=NewsItemPermission.list, icon='news')
+      .add_item(url_for('newsletter_admin.view_subscriptions', brand_id=brand.id), 'Newsletter', id='newsletter_admin', required_permission=NewsletterPermission.view_subscriptions, icon='newsletter')
+      .add_item(url_for('terms_admin.index_for_brand', brand_id=brand.id), 'AGB', id='terms_admin', required_permission=TermsPermission.list, icon='legal')
+      .add_item(url_for('board_admin.index_for_brand', brand_id=brand.id), 'Board', id='board_admin', required_permission=BoardCategoryPermission.list, icon='board')
+  -%}
+{{ render_navigation(navigation, current_page) }}
+{% endmacro %}
+
+
+{% macro render_navigation_party(current_page) -%}
+  {%- set navigation = Navigation('Party')
+      .add_item(url_for('admin_dashboard.view_party', party_id=party.id), 'Dashboard', id='admin_dashboard_party', required_permission=AdminDashboardPermission.view_party, icon='dashboard')
+      .add_item(url_for('snippet_admin.index_for_party', party_id=party.id), 'Snippets', id='snippet_admin', required_permission=SnippetPermission.list, icon='snippet')
+      .add_item(url_for('seating_admin.index_for_party', party_id=party.id), 'Sitzpläne', id='seating_admin', required_permission=SeatingPermission.view, icon='seating-area')
+      .add_item(url_for('shop_admin.article_index_for_party', party_id=party.id), 'Shop-Artikel', id='shop_admin.articles', required_permission=ShopArticlePermission.list, icon='shopping-cart')
+      .add_item(url_for('shop_admin.order_index_for_party', party_id=party.id), 'Shop-Bestellungen', id='shop_admin.orders', required_permission=ShopOrderPermission.list, icon='payment')
+      .add_item(url_for('ticket_admin.index_for_party', party_id=party.id), 'Tickets', id='ticket_admin', required_permission=TicketPermission.list, icon='ticket')
+      .add_item(url_for('orga_admin.teams_for_party', party_id=party.id), 'Orga-Teams', id='orga_admin.teams', required_permission=OrgaTeamPermission.list, icon='users')
+      .add_item(url_for('orga_presence.view', party_id=party.id), 'Orga-Anwesenheit', id='orga_presence', required_permission=OrgaPresencePermission.list, icon='date-okay')
+  -%}
+{{ render_navigation(navigation, current_page) }}
+{% endmacro %}
+
+
 {% macro render_main_tabs(navigation, current_page) -%}
   <ol class="main-tabs">
     {%- for item in navigation.get_items() %}
