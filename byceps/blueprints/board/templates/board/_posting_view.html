@@ -12,7 +12,7 @@
     </div>
 
     {%- if posting.creator.badges %}
-{{ render_user_badges(posting.creator) }}
+{{ render_user_badges(posting.creator.badges) }}
     {%- endif %}
 
     {{ render_datetime(posting.created_at)|replace(', ', '<br/>'|safe) }}

@@ -203,6 +203,6 @@
   </table>
 
   <h2 id="badges">Abzeichen {{ render_extra_in_heading(user.badges|length) }}</h2>
-{{ render_user_badges(user) }}
+{{ render_user_badges(user.badges) }}
 
 {%- endblock body %}

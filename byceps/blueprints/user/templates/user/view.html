@@ -54,7 +54,7 @@
     {%- if user.badges %}
     <tr>
       <th>Abzeichen</th>
-      <td>{{ render_user_badges(user) }}</td>
+      <td>{{ render_user_badges(user.badges) }}</td>
     </tr>
     {%- endif %}
   </table>
