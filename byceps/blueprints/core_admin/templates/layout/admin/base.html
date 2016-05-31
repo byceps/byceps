@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8"/>
 {%- with title = title|default %}
-{% include 'layout/_meta_head_admin.html' with context %}
+{% include 'layout/admin/_meta_head.html' with context %}
 {%- endwith %}
 {% block head %}{% endblock head %}
   </head>
@@ -103,7 +103,7 @@
   brand = current_page_brand|default,
   party = current_page_party|default
 %}
-{%- include 'layout/_navigation_admin.html' with context %}
+{%- include 'layout/admin/_navigation.html' with context %}
 {%- endwith %}
           </aside>
         </div><!-- /#page-grid-sidebar -->
