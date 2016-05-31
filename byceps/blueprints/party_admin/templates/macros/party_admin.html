@@ -1,3 +1,9 @@
-{% macro render_party_admin_link(party) -%}
-  <a href="{{ url_for('party_admin.view', id=party.id) }}">{{ party.title }}</a>
+{% macro render_party_admin_link(party, dim_archived=False) -%}
+  <a href="{{ url_for('party_admin.view', id=party.id) }}">
+  {%- if dim_archived and party.is_archived -%}
+    {{ party.title|dim }}
+  {%- else -%}
+    {{ party.title }}
+  {%- endif -%}
+  </a>
 {%- endmacro %}
