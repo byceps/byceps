@@ -10,10 +10,15 @@
 {% macro render_user_avatar(user) %}
   {%- if user.has_avatar_image -%}
 <div class="avatar{% if user.is_orga_for_party(g.party) %} orga{% endif %}" title="{{ user.screen_name }}">
-  <img src="{{ url_for('user.avatar_image', filename=user.avatar_image_filename) }}" alt="Avatarbild von {{ user.screen_name }}">
+  {{ render_user_avatar_image(user) }}
   {%- if user.is_orga_for_party(g.party) %}
   <div class="orga-badge">Organizer</div>
   {%- endif %}
 </div>
   {%- endif -%}
+{%- endmacro %}
+
+
+{% macro render_user_avatar_image(user) %}
+  <img src="{{ url_for('user.avatar_image', filename=user.avatar_image_filename) }}" alt="Avatarbild von {{ user.screen_name }}">
 {%- endmacro %}
