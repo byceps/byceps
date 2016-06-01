@@ -6,6 +6,14 @@
 
 {% block head %}
   <style>
+    .badge-details {
+      display: flex;
+    }
+    .badge-details .description {
+      align-self: center;
+      margin-left: 1rem;
+    }
+
     a.recipient {
       border: none;
       display: block;
@@ -49,9 +57,14 @@
   </nav>
   <h1>{{ badge.label }}</h1>
 
-  {%- if badge.description %}
-  <p>{{ badge.description }}</p>
-  {%- endif %}
+  <div class="badge-details">
+    <div>
+      <div class="user-badge"><img src="{{ badge.image_url }}"></div>
+    </div>
+    {%- if badge.description %}
+    <div class="description">{{ badge.description }}</div>
+    {%- endif %}
+  </div>
 
   <h2>{{ badge.recipients|length }} mal verliehen</h2>
   <ul class="list-grid">
