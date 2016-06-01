@@ -1,5 +1,4 @@
 {% extends 'layout/base_auto.html' %}
-{% from 'macros/icons.html' import render_icon %}
 {% from 'macros/user.html' import render_user_avatar, render_user_link %}
 {% set current_page = 'user_badge.view' %}
 {% set title = 'Abzeichen - %s'|format(badge.label) %}
@@ -52,7 +51,7 @@
 
   <nav class="breadcrumbs">
     <ol>
-      <li>{{ render_icon('badge') }} <a href="{{ url_for('.index') }}">Abzeichen</a></li>
+      <li><a href="{{ url_for('.index') }}">Abzeichen</a></li>
     </ol>
   </nav>
   <h1>{{ badge.label }}</h1>

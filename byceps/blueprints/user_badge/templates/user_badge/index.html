@@ -1,12 +1,11 @@
 {% extends 'layout/base_auto.html' %}
-{% from 'macros/icons.html' import render_icon %}
 {% from 'macros/user_badge.html' import render_user_badges %}
 {% set current_page = 'user_badge.view' %}
 {% set title = 'Abzeichen' %}
 
 {% block body %}
 
-  <h1>{{ render_icon('badge') }} Abzeichen</h1>
+  <h1>Abzeichen</h1>
 
 {{ render_user_badges(badges) }}
 
