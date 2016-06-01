@@ -29,9 +29,7 @@ from byceps.database import db
 
 
 def _assemble_exports():
-    exports = {
-        '/users/avatars': str(app.config['PATH_USER_AVATAR_IMAGES']),
-    }
+    exports = {}
 
     _export_path_if_configured(exports, 'PATH_GLOBAL', '/global')
     _export_path_if_configured(exports, 'PATH_BRAND', '/brand')

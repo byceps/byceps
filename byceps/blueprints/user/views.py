@@ -440,13 +440,6 @@ def avatar_image_update_form():
     }
 
 
-# Route to generate avatar image URLs.
-blueprint.add_url_rule(
-    '/avatars/<filename>',
-    endpoint='avatar_image',
-    build_only=True)
-
-
 @blueprint.route('/me/avatar', methods=['POST'])
 def avatar_image_update():
     """Update the current user's avatar image."""

@@ -187,8 +187,8 @@ class User(db.Model):
 
     @property
     def avatar_image_url(self):
-        filename = self.avatar_image_filename
-        return url_for('user.avatar_image', filename=filename)
+        path = 'users/avatars/{}'.format(self.avatar_image_filename)
+        return url_for('global_file', filename=path)
 
     @property
     def avatar_image_filename(self):
