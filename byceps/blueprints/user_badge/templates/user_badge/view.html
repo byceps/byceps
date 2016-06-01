@@ -8,6 +8,9 @@
     .badge-details {
       display: flex;
     }
+    .badge-details .badge {
+      flex: 0 0 auto;
+    }
     .badge-details .description {
       align-self: center;
       margin-left: 1rem;
@@ -57,7 +60,7 @@
   <h1>{{ badge.label }}</h1>
 
   <div class="badge-details">
-    <div>
+    <div class="badge">
       <div class="user-badge"><img src="{{ badge.image_url }}"></div>
     </div>
     {%- if badge.description %}
