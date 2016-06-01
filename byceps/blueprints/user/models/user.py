@@ -14,7 +14,7 @@ from operator import attrgetter
 from pathlib import Path
 from uuid import UUID
 
-from flask import current_app
+from flask import current_app, url_for
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
 from werkzeug.security import check_password_hash, \
@@ -184,6 +184,11 @@ class User(db.Model):
         path = current_app.config['PATH_USER_AVATAR_IMAGES']
         filename = self.avatar_image_filename
         return path / filename
+
+    @property
+    def avatar_image_url(self):
+        filename = self.avatar_image_filename
+        return url_for('user.avatar_image', filename=filename)
 
     @property
     def avatar_image_filename(self):

@@ -20,5 +20,5 @@
 
 
 {% macro render_user_avatar_image(user) %}
-  <img src="{{ url_for('user.avatar_image', filename=user.avatar_image_filename) }}" alt="Avatarbild von {{ user.screen_name }}">
+  <img src="{{ user.avatar_image_url }}" alt="Avatarbild von {{ user.screen_name }}">
 {%- endmacro %}
