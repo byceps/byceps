@@ -325,7 +325,7 @@ main h1 a:hover {
 .user-badge {
   border: #cccccc solid 1px;
   border-radius: 50%;
-  display: block;
+  display: inline-block;
   padding: 8px;
 }
 a.user-badge:hover {
