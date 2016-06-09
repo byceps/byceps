@@ -5,50 +5,51 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from unittest import TestCase
-
 from byceps.util.instances import ReprBuilder
 
 
-class ReprBuilderTestCase(TestCase):
+def test_without_any_values():
+    instance = Instance()
 
-    def setUp(self):
-        self.instance = Instance()
+    actual = ReprBuilder(instance) \
+        .build()
 
-    def test_without_any_values(self):
-        actual = ReprBuilder(self.instance) \
-            .build()
+    assert actual == '<Instance()>'
 
-        assert actual == '<Instance()>'
 
-    def test_with_looked_up_values(self):
-        actual = ReprBuilder(self.instance) \
-            .add_with_lookup('first_name') \
-            .add_with_lookup('last_name') \
-            .add_with_lookup('age') \
-            .add_with_lookup('delivers_pizza') \
-            .build()
+def test_with_looked_up_values():
+    instance = Instance()
 
-        assert actual == \
-            '<Instance(first_name=Hiro, last_name=Protagonist, age=26, delivers_pizza=True)>'
+    actual = ReprBuilder(instance) \
+        .add_with_lookup('first_name') \
+        .add_with_lookup('last_name') \
+        .add_with_lookup('age') \
+        .add_with_lookup('delivers_pizza') \
+        .build()
 
-    def test_with_given_value(self):
-        actual = ReprBuilder(self.instance) \
-            .add_with_lookup('last_name') \
-            .add('last_name length', 11) \
-            .build()
+    assert actual == '<Instance(first_name=Hiro, last_name=Protagonist, age=26, delivers_pizza=True)>'
 
-        assert actual == \
-            '<Instance(last_name=Protagonist, last_name length=11)>'
 
-    def test_with_custom_value(self):
-        actual = ReprBuilder(self.instance) \
-            .add('last_name', 'Protagonist') \
-            .add_custom('is of full age') \
-            .build()
+def test_with_given_value():
+    instance = Instance()
 
-        assert actual == \
-            '<Instance(last_name=Protagonist, is of full age)>'
+    actual = ReprBuilder(instance) \
+        .add_with_lookup('last_name') \
+        .add('last_name length', 11) \
+        .build()
+
+    assert actual == '<Instance(last_name=Protagonist, last_name length=11)>'
+
+
+def test_with_custom_value():
+    instance = Instance()
+
+    actual = ReprBuilder(instance) \
+        .add('last_name', 'Protagonist') \
+        .add_custom('is of full age') \
+        .build()
+
+    assert actual == '<Instance(last_name=Protagonist, is of full age)>'
 
 
 class Instance(object):

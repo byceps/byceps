@@ -6,40 +6,38 @@
 """
 
 from pathlib import Path
-from unittest import TestCase
 
 from nose2.tools import params
 
 from byceps.util.image import Dimensions, guess_type, ImageType, read_dimensions
 
 
-class ImageTestCase(TestCase):
+@params(
+    ('bmp',  None          ),
+    ('gif',  ImageType.gif ),
+    ('jpeg', ImageType.jpeg),
+    ('png',  ImageType.png ),
+)
+def test_guess_type(filename_suffix, expected):
+    with open_image_with_suffix(filename_suffix) as f:
+        actual = guess_type(f)
 
-    @params(
-        ('bmp',  None          ),
-        ('gif',  ImageType.gif ),
-        ('jpeg', ImageType.jpeg),
-        ('png',  ImageType.png ),
-    )
-    def test_guess_type(self, filename_suffix, expected):
-        with open_image_with_suffix(filename_suffix) as f:
-            actual = guess_type(f)
+    assert actual == expected
 
-        assert actual == expected
 
-    @params(
-        ('bmp',   7, 11),
-        ('gif',  17,  4),
-        ('jpeg', 12,  7),
-        ('png',   8, 25),
-    )
-    def test_read_dimensions(self, filename_suffix, expected_width, expected_height):
-        expected = Dimensions(width=expected_width, height=expected_height)
+@params(
+    ('bmp',   7, 11),
+    ('gif',  17,  4),
+    ('jpeg', 12,  7),
+    ('png',   8, 25),
+)
+def test_read_dimensions(filename_suffix, expected_width, expected_height):
+    expected = Dimensions(width=expected_width, height=expected_height)
 
-        with open_image_with_suffix(filename_suffix) as f:
-            actual = read_dimensions(f)
+    with open_image_with_suffix(filename_suffix) as f:
+        actual = read_dimensions(f)
 
-        assert actual == expected
+    assert actual == expected
 
 
 def open_image_with_suffix(suffix):
