@@ -28,7 +28,8 @@ class CalculationTestCase(TestCase):
     )
     def test_calculate_age(self, today, expected):
         actual = calculate_age(self.date, today)
-        self.assertEqual(actual, expected)
+
+        assert actual == expected
 
     @params(
         (date(2014, 3, 16), 2),
@@ -38,4 +39,5 @@ class CalculationTestCase(TestCase):
     )
     def test_calculate_days_until(self, today, expected):
         actual = calculate_days_until(self.date, today)
-        self.assertEqual(actual, expected)
+
+        assert actual == expected

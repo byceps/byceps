@@ -25,7 +25,7 @@ class ImageTestCase(TestCase):
         with open_image_with_suffix(filename_suffix) as f:
             actual = guess_type(f)
 
-        self.assertEqual(actual, expected)
+        assert actual == expected
 
     @params(
         ('bmp',   7, 11),
@@ -39,7 +39,7 @@ class ImageTestCase(TestCase):
         with open_image_with_suffix(filename_suffix) as f:
             actual = read_dimensions(f)
 
-        self.assertEqual(actual, expected)
+        assert actual == expected
 
 
 def open_image_with_suffix(suffix):

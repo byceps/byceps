@@ -33,7 +33,7 @@ class IterablesTestCase(TestCase):
     )
     def test_find(self, predicate, iterable, expected):
         actual = find(predicate, iterable)
-        self.assertEqual(actual, expected)
+        assert actual == expected
 
     @params(
         (
@@ -59,7 +59,7 @@ class IterablesTestCase(TestCase):
     )
     def test_index_of(self, predicate, iterable, expected):
         actual = index_of(predicate, iterable)
-        self.assertEqual(actual, expected)
+        assert actual == expected
 
     @params(
         (
@@ -77,4 +77,4 @@ class IterablesTestCase(TestCase):
     )
     def test_pairwise(self, iterable, expected):
         actual = pairwise(iterable)
-        self.assertEqual(list(actual), expected)
+        assert list(actual) == expected

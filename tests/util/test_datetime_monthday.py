@@ -24,8 +24,8 @@ class MonthDayTestCase(TestCase):
     def test_of(self, date, expected_month, expected_day):
         month_day = MonthDay.of(date)
 
-        self.assertEqual(month_day.month, expected_month)
-        self.assertEqual(month_day.day, expected_day)
+        assert month_day.month == expected_month
+        assert month_day.day == expected_day
 
     @params(
         ( 3, 17, date(2005,  2, 17), False),
@@ -40,6 +40,7 @@ class MonthDayTestCase(TestCase):
     )
     def test_matches(self, month, day, date, expected):
         month_day = MonthDay(month=month, day=day)
+
         actual = month_day.matches(date)
 
-        self.assertEqual(actual, expected)
+        assert actual == expected

@@ -38,5 +38,4 @@ class CheckDigitTestCase(TestCase):
         ('91BT',       2),
     )
     def test_calculate_check_digit(self, chars, expected):
-        actual = calculate_check_digit(chars)
-        self.assertEqual(actual, expected)
+        assert calculate_check_digit(chars) == expected

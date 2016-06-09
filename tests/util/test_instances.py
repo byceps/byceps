@@ -19,7 +19,7 @@ class ReprBuilderTestCase(TestCase):
         actual = ReprBuilder(self.instance) \
             .build()
 
-        self.assertEqual(actual, '<Instance()>')
+        assert actual == '<Instance()>'
 
     def test_with_looked_up_values(self):
         actual = ReprBuilder(self.instance) \
@@ -29,9 +29,8 @@ class ReprBuilderTestCase(TestCase):
             .add_with_lookup('delivers_pizza') \
             .build()
 
-        self.assertEqual(
-            actual,
-            '<Instance(first_name=Hiro, last_name=Protagonist, age=26, delivers_pizza=True)>')
+        assert actual == \
+            '<Instance(first_name=Hiro, last_name=Protagonist, age=26, delivers_pizza=True)>'
 
     def test_with_given_value(self):
         actual = ReprBuilder(self.instance) \
@@ -39,9 +38,8 @@ class ReprBuilderTestCase(TestCase):
             .add('last_name length', 11) \
             .build()
 
-        self.assertEqual(
-            actual,
-            '<Instance(last_name=Protagonist, last_name length=11)>')
+        assert actual == \
+            '<Instance(last_name=Protagonist, last_name length=11)>'
 
     def test_with_custom_value(self):
         actual = ReprBuilder(self.instance) \
@@ -49,9 +47,8 @@ class ReprBuilderTestCase(TestCase):
             .add_custom('is of full age') \
             .build()
 
-        self.assertEqual(
-            actual,
-            '<Instance(last_name=Protagonist, is of full age)>')
+        assert actual == \
+            '<Instance(last_name=Protagonist, is of full age)>'
 
 
 class Instance(object):

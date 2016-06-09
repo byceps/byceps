@@ -21,7 +21,7 @@ class PermissionEnumTestCase(TestCase):
     def test_key(self, key):
         enum = create_permission_enum(key, ['some_member'])
 
-        self.assertEqual(enum.__key__, key)
+        assert enum.__key__ == key
 
     @params(
         ('user',        'UserPermission'      ),
@@ -31,14 +31,16 @@ class PermissionEnumTestCase(TestCase):
     )
     def test_name_derivation(self, key, expected):
         enum = create_permission_enum(key, ['some_member'])
+
         actual = enum.some_member.__class__.__name__
 
-        self.assertEqual(actual, expected)
+        assert actual == expected
 
     def test_member_names(self):
         member_names = ['one', 'two', 'three']
 
         enum = create_permission_enum('example', member_names)
+
         actual = list(enum.__members__)
 
-        self.assertEqual(actual, member_names)
+        assert actual == member_names

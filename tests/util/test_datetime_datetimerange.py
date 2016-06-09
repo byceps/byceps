@@ -64,4 +64,4 @@ class DateTimeRangeTestCase(TestCase):
 
         actual = date_time_range.contains(tested_datetime)
 
-        self.assertEqual(actual, expected)
+        assert actual == expected
