@@ -52,6 +52,7 @@
 
         </div>
 
+{%- if g.current_user.is_orga_for_any_brand %}
   {%- if brand %}
 {{ render_navigation_brand(brand, current_page) }}
   {%- elif party %}
@@ -59,6 +60,7 @@
   {%- else %}
 {{ render_navigation_global(current_page) }}
   {%- endif %}
+{%- endif %}
 
 {%- endwith %}
 
