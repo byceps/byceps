@@ -1,0 +1,47 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/admin.html' import render_extra_in_heading %}
+{% from 'macros/icons.html' import render_icon %}
+{% set current_page = 'tourney_admin' %}
+{% set current_page_party = party %}
+{% set title = '%s - Turniere - Kategorien'|format(party.title) %}
+
+{% block body %}
+
+  <nav class="breadcrumbs">
+    <ol>
+      <li>{{ party.title }}</li>
+      <li>Turniere</li>
+    </ol>
+  </nav>
+  <h1>Kategorien {{ render_extra_in_heading(categories|length) }}</h1>
+
+  <table class="index">
+    <thead>
+      <tr>
+        <th>Position</th>
+        <th>Titel</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+    {%- for category in categories|sort(attribute='position') %}
+      <tr>
+        <td class="number">{{ category.position }}</td>
+        <td>{{ category.title }}</td>
+        <td>
+          {%- if g.current_user.has_permission(TourneyCategoryPermission.update) -%}
+          <a href="{{ url_for('.category_update_form', id=category.id) }}" class="action inline" title="bearbeiten">{{ render_icon('edit') }}</a>
+          {%- endif -%}
+        </td>
+      </tr>
+    {%- endfor %}
+    </tbody>
+  </table>
+
+  {%- if g.current_user.has_permission(TourneyCategoryPermission.create) %}
+  <ol class="actions">
+    <li><a href="{{ url_for('.category_create_form', party_id=party.id) }}">{{ render_icon('add') }} Kategorie erstellen</a></li>
+  </ol>
+  {%- endif %}
+
+{%- endblock body %}

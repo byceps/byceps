@@ -1,0 +1,28 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
+{% from 'macros/icons.html' import render_icon %}
+{% set current_page = 'tourney_admin' %}
+{% set current_page_party = category.party %}
+{% set title = 'Kategorie bearbeiten' %}
+
+{% block body %}
+
+  <nav class="breadcrumbs">
+    <ol>
+      <li>{{ category.party.title }}</li>
+      <li>Turniere</li>
+      <li><a href="{{ url_for('.category_index_for_party', party_id=category.party.id) }}">Kategorien</a></li>
+      <li>{{ category.title }}</li>
+    </ol>
+  </nav>
+  <h1>{{ render_icon('edit') }} {{ title }}</h1>
+
+  <form action="{{ url_for('.category_update', id=category.id) }}" method="post">
+    {% call form_fieldset() %}
+      {{ form_field(form.title, maxlength=40, required='required', autofocus='autofocus') }}
+    {% endcall %}
+
+    {{ form_buttons('Speichern', cancel_url=url_for('.category_index_for_party', party_id=category.party.id)) }}
+  </form>
+
+{%- endblock body %}

@@ -55,6 +55,7 @@ BLUEPRINTS = [
     ('ticket',              '/tickets',             SiteMode.public),
     ('ticket_admin',        '/admin/tickets',       SiteMode.admin ),
     ('tourney',             '/tourney',             SiteMode.public),
+    ('tourney_admin',       '/admin/tourney',       SiteMode.admin ),
     ('user',                '/users',               None           ),
     ('user_admin',          '/admin/users',         SiteMode.admin ),
     ('user_badge',          '/user_badges',         None           ),

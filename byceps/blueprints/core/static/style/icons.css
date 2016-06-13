@@ -101,6 +101,7 @@ li [class*=" icon-"] {
 .icon-text::before           { content: "\f0f6"; }
 .icon-ticket::before         { content: "\f145"; }
 .icon-time::before           { content: "\f017"; }
+.icon-trophy::before         { content: "\f091"; }
 .icon-twitter::before        { content: "\f099"; }
 .icon-unlock::before         { content: "\f09c"; }
 .icon-update::before         { content: "\f021"; }

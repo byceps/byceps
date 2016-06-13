@@ -8,6 +8,8 @@ byceps.blueprints.tourney.models.tourney_category
 :License: Modified BSD, see LICENSE for details.
 """
 
+from sqlalchemy.ext.orderinglist import ordering_list
+
 from ....database import BaseQuery, db, generate_uuid
 from ....util.instances import ReprBuilder
 
@@ -30,13 +32,15 @@ class TourneyCategory(db.Model):
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     party_id = db.Column(db.Unicode(20), db.ForeignKey('parties.id'), index=True, nullable=False)
-    party = db.relationship(Party)
+    party = db.relationship(Party,
+                            backref=db.backref('tourney_categories',
+                                               order_by='TourneyCategory.position',
+                                               collection_class=ordering_list('position', count_from=1)))
     position = db.Column(db.Integer, nullable=False)
     title = db.Column(db.Unicode(40), nullable=False)
 
-    def __init__(self, party, position, title):
+    def __init__(self, party, title):
         self.party = party
-        self.position = position
         self.title = title
 
     def __repr__(self):
