@@ -10,7 +10,7 @@ byceps.blueprints.tourney.models.tourney
 
 from ....database import BaseQuery, db, generate_uuid
 
-from .tourney_group import TourneyGroup
+from .tourney_category import TourneyCategory
 
 
 class Tourney(db.Model):
