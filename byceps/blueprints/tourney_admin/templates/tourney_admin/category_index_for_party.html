@@ -5,6 +5,16 @@
 {% set current_page_party = party %}
 {% set title = '%s - Turniere - Kategorien'|format(party.title) %}
 
+{% block head %}
+    <style>
+      .dropdown button {
+        border: #cccccc solid 1px;
+        border-radius: 3px;
+        padding: 0;
+      }
+    </style>
+{%- endblock %}
+
 {% block body %}
 
   <nav class="breadcrumbs">
@@ -30,7 +40,12 @@
         <td>{{ category.title }}</td>
         <td>
           {%- if g.current_user.has_permission(TourneyCategoryPermission.update) -%}
-          <a href="{{ url_for('.category_update_form', id=category.id) }}" class="action inline" title="bearbeiten">{{ render_icon('edit') }}</a>
+          <div class="dropdown">
+            <button><span class="icon-caret-down"></span></button>
+            <ol>
+              <li><a href="{{ url_for('.category_update_form', id=category.id) }}">{{ render_icon('edit') }} bearbeiten</a></li>
+            </ol>
+          </div>
           {%- endif -%}
         </td>
       </tr>
@@ -44,4 +59,4 @@
   </ol>
   {%- endif %}
 
-{%- endblock body %}
+{%- endblock %}
