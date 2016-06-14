@@ -122,7 +122,24 @@ def category_move_up(id):
     except ValueError:
         flash_error('Die Kategorie "{}" befindet sich bereits ganz oben.', category.title)
     else:
-        flash_success('Die Kategorie "{}" wurde nach oben verschoben.', category.title)
+        flash_success('Die Kategorie "{}" wurde eine Position nach oben verschoben.', category.title)
+
+    return url_for('.category_index_for_party', party_id=category.party.id)
+
+
+@blueprint.route('/categories/<uuid:id>/down', methods=['POST'])
+@permission_required(TourneyCategoryPermission.update)
+@respond_no_content_with_location
+def category_move_down(id):
+    """Move a category downwards by one position."""
+    category = TourneyCategory.query.get_or_404(id)
+
+    try:
+        service.move_category_down(category)
+    except ValueError:
+        flash_error('Die Kategorie "{}" befindet sich bereits ganz unten.', category.title)
+    else:
+        flash_success('Die Kategorie "{}" wurde eine Position nach unten verschoben.', category.title)
 
     return url_for('.category_index_for_party', party_id=category.party.id)
 

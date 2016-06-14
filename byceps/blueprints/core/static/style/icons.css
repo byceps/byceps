@@ -38,8 +38,10 @@ li [class*=" icon-"] {
 .icon-add::before            { content: "\f067"; }
 .icon-administrate::before   { content: "\f0ad"; }
 .icon-archived::before       { content: "\f187"; }
+.icon-arrow-down::before     { content: "\f063"; }
 .icon-arrow-left::before     { content: "\f060"; }
 .icon-arrow-right::before    { content: "\f061"; }
+.icon-arrow-up::before       { content: "\f062"; }
 .icon-attached::before       { content: "\f0c6"; }
 .icon-badge::before          { content: "\f0a3"; }
 .icon-birthday::before       { content: "\f1fd"; }

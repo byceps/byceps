@@ -42,6 +42,19 @@ def move_category_up(category):
     db.session.commit()
 
 
+def move_category_down(category):
+    """Move a category downwards by one position."""
+    category_list = category.party.tourney_categories
+
+    if category.position == len(category_list):
+        raise ValueError('Category already is at the bottom.')
+
+    popped_category = category_list.pop(category.position - 1)
+    category_list.insert(popped_category.position, popped_category)
+
+    db.session.commit()
+
+
 def get_categories_for_party(party):
     """Return the categories for this party."""
     return TourneyCategory.query \
