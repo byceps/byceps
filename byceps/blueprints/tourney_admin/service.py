@@ -29,6 +29,19 @@ def update_category(category, title):
     db.session.commit()
 
 
+def move_category_up(category):
+    """Move a category upwards by one position."""
+    category_list = category.party.tourney_categories
+
+    if category.position == 1:
+        raise ValueError('Category already is at the top.')
+
+    popped_category = category_list.pop(category.position - 1)
+    category_list.insert(popped_category.position - 2, popped_category)
+
+    db.session.commit()
+
+
 def get_categories_for_party(party):
     """Return the categories for this party."""
     return TourneyCategory.query \

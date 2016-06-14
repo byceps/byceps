@@ -8,11 +8,11 @@ byceps.blueprints.tourney_admin.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from flask import request
+from flask import request, url_for
 
-from ...util.framework import create_blueprint, flash_success
+from ...util.framework import create_blueprint, flash_error, flash_success
 from ...util.templating import templated
-from ...util.views import redirect_to
+from ...util.views import redirect_to, respond_no_content_with_location
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
@@ -108,6 +108,23 @@ def category_update(id):
 
     flash_success('Die Kategorie "{}" wurde aktualisiert.', category.title)
     return redirect_to('.category_index_for_party', party_id=category.party.id)
+
+
+@blueprint.route('/categories/<uuid:id>/up', methods=['POST'])
+@permission_required(TourneyCategoryPermission.update)
+@respond_no_content_with_location
+def category_move_up(id):
+    """Move a category upwards by one position."""
+    category = TourneyCategory.query.get_or_404(id)
+
+    try:
+        service.move_category_up(category)
+    except ValueError:
+        flash_error('Die Kategorie "{}" befindet sich bereits ganz oben.', category.title)
+    else:
+        flash_success('Die Kategorie "{}" wurde nach oben verschoben.', category.title)
+
+    return url_for('.category_index_for_party', party_id=category.party.id)
 
 
 def get_party_or_404(party_id):

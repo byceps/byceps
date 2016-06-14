@@ -1,9 +1,21 @@
+function post_on_click(selector) {
+  _request_on_click(selector, 'POST');
+}
+
 function confirmed_post_on_click(selector, confirmation_label) {
   _confirmed_request_on_click(selector, confirmation_label, 'POST');
 }
 
 function confirmed_delete_on_click(selector, confirmation_label) {
   _confirmed_request_on_click(selector, confirmation_label, 'DELETE');
+}
+
+function _request_on_click(selector, method) {
+  $(selector).click(function() {
+    var request_url = $(this).attr('href');
+    _ajax_and_redirect(method, request_url);
+    return false;
+  });
 }
 
 function _confirmed_request_on_click(selector, confirmation_label, method) {
