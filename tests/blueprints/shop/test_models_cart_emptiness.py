@@ -5,35 +5,37 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from unittest import TestCase
-
 from byceps.blueprints.shop.models.cart import Cart
 
 from testfixtures.shop import create_article
 
 
-class CartEmptinessTestCase(TestCase):
+def test_is_empty_without_items():
+    cart = Cart()
 
-    def setUp(self):
-        self.cart = Cart()
+    assert cart.is_empty()
 
-    def test_is_empty_without_items(self):
-        self.assertTrue(self.cart.is_empty())
 
-    def test_is_empty_with_one_item(self):
-        self.add_item(1)
+def test_is_empty_with_one_item():
+    cart = Cart()
 
-        self.assertFalse(self.cart.is_empty())
+    add_item(cart, 1)
 
-    def test_is_empty_with_multiple_items(self):
-        self.add_item(3)
-        self.add_item(1)
-        self.add_item(6)
+    assert not cart.is_empty()
 
-        self.assertFalse(self.cart.is_empty())
 
-    # helpers
+def test_is_empty_with_multiple_items():
+    cart = Cart()
 
-    def add_item(self, quantity):
-        article = create_article()
-        self.cart.add_item(article, quantity)
+    add_item(cart, 3)
+    add_item(cart, 1)
+    add_item(cart, 6)
+
+    assert not cart.is_empty()
+
+
+# helpers
+
+def add_item(cart, quantity):
+    article = create_article()
+    cart.add_item(article, quantity)

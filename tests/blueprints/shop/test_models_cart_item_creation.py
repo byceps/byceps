@@ -5,30 +5,33 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from unittest import TestCase
+from nose2.tools.such import helper
 
 from byceps.blueprints.shop.models.cart import CartItem
 
 from testfixtures.shop import create_article
 
 
-class CartItemCreationTestCase(TestCase):
+def test_init_with_positive_quantity():
+    quantity = 1
 
-    def test_init_with_positive_quantity(self):
-        quantity = 1
-        item = self.create_item(quantity)
-        self.assertEqual(item.quantity, quantity)
+    item = create_item(quantity)
 
-    def test_init_with_zero_quantity(self):
-        with self.assertRaises(ValueError):
-            self.create_item(0)
+    assert item.quantity == quantity
 
-    def test_init_with_negative_quantity(self):
-        with self.assertRaises(ValueError):
-            self.create_item(-1)
 
-    # helpers
+def test_init_with_zero_quantity():
+    with helper.assertRaises(ValueError):
+        create_item(0)
 
-    def create_item(self, quantity):
-        article = create_article()
-        return CartItem(article, quantity)
+
+def test_init_with_negative_quantity():
+    with helper.assertRaises(ValueError):
+        create_item(-1)
+
+
+# helpers
+
+def create_item(quantity):
+    article = create_article()
+    return CartItem(article, quantity)
