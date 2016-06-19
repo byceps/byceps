@@ -6,7 +6,6 @@
 """
 
 from decimal import Decimal
-from unittest import TestCase
 
 from byceps.blueprints.shop.models.order import Order
 
@@ -14,47 +13,49 @@ from testfixtures.shop import create_article, create_order
 from testfixtures.user import create_user
 
 
-class OrderTotalPriceTestCase(TestCase):
+def test_without_any_items():
+    order = create_order_with_items([])
 
-    def test_without_any_items(self):
-        order = self.create_order_with_items([])
+    actual = order.calculate_total_price()
 
-        actual = order.calculate_total_price()
+    assertDecimalEqual(actual, Decimal('0.00'))
 
-        self.assertDecimalEqual(actual, Decimal('0.00'))
 
-    def test_with_single_item(self):
-        order = self.create_order_with_items([
-            (Decimal('49.95'), 1),
-        ])
+def test_with_single_item():
+    order = create_order_with_items([
+        (Decimal('49.95'), 1),
+    ])
 
-        actual = order.calculate_total_price()
+    actual = order.calculate_total_price()
 
-        self.assertDecimalEqual(actual, Decimal('49.95'))
+    assertDecimalEqual(actual, Decimal('49.95'))
 
-    def test_with_multiple_items(self):
-        order = self.create_order_with_items([
-            (Decimal('49.95'), 3),
-            (Decimal( '6.20'), 1),
-            (Decimal('12.53'), 4),
-        ])
 
-        actual = order.calculate_total_price()
+def test_with_multiple_items():
+    order = create_order_with_items([
+        (Decimal('49.95'), 3),
+        (Decimal( '6.20'), 1),
+        (Decimal('12.53'), 4),
+    ])
 
-        self.assertDecimalEqual(actual, Decimal('206.17'))
+    actual = order.calculate_total_price()
 
-    # helpers
+    assertDecimalEqual(actual, Decimal('206.17'))
 
-    def create_order_with_items(self, price_quantity_pairs):
-        user = create_user(42)
-        order = create_order(placed_by=user)
 
-        for price, quantity in price_quantity_pairs:
-            article = create_article(price=price, quantity=quantity)
-            order.add_item(article, quantity)
+# helpers
 
-        return order
+def create_order_with_items(price_quantity_pairs):
+    user = create_user(42)
+    order = create_order(placed_by=user)
 
-    def assertDecimalEqual(self, actual, expected):
-        self.assertIs(type(actual), Decimal)
-        self.assertEqual(actual, expected)
+    for price, quantity in price_quantity_pairs:
+        article = create_article(price=price, quantity=quantity)
+        order.add_item(article, quantity)
+
+    return order
+
+
+def assertDecimalEqual(actual, expected):
+    assert isinstance(actual, Decimal)
+    assert actual == expected

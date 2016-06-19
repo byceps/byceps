@@ -5,8 +5,6 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from unittest import TestCase
-
 from nose2.tools import params
 
 from byceps.blueprints.authorization.models import Permission
@@ -18,14 +16,12 @@ ExamplePermission = create_permission_enum('example', ['one', 'two', 'three'])
 MultiWordPermission = create_permission_enum('multi_word', ['foo', 'bar'])
 
 
-class PermissionTestCase(TestCase):
+@params(
+    (ExamplePermission.one,   'example.one'   ),
+    (ExamplePermission.three, 'example.three' ),
+    (MultiWordPermission.foo, 'multi_word.foo'),
+)
+def test_creation_from_enum_member(enum_member, expected):
+    actual = Permission.from_enum_member(enum_member)
 
-    @params(
-        (ExamplePermission.one,   'example.one'   ),
-        (ExamplePermission.three, 'example.three' ),
-        (MultiWordPermission.foo, 'multi_word.foo'),
-    )
-    def test_creation_from_enum_member(self, enum_member, expected):
-        actual = Permission.from_enum_member(enum_member)
-
-        self.assertEqual(actual.id, expected)
+    assert actual.id == expected
