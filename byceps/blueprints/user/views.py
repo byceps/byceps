@@ -14,6 +14,7 @@ from flask import abort, current_app, g, jsonify, request, Response, url_for
 
 from ...config import get_site_mode, get_user_registration_enabled
 from ...database import db
+from ...services import countries as countries_service
 from ...util.framework import create_blueprint, flash_error, flash_notice, \
     flash_success
 from ...util.templating import templated
@@ -392,7 +393,7 @@ def details_update_form(erroneous_form=None):
     user = get_current_user_or_404()
 
     form = erroneous_form if erroneous_form else DetailsForm(obj=user.detail)
-    country_names = service.get_country_names(current_app)
+    country_names = countries_service.get_country_names(current_app)
 
     return {
         'form': form,
