@@ -12,20 +12,22 @@ import codecs
 from collections import namedtuple
 import json
 
+from flask import current_app
+
 
 Country = namedtuple('Country', 'name alpha2 alpha3')
 
 
-def get_countries(app):
+def get_countries():
     """Load countries from JSON file."""
     reader = codecs.getreader('utf-8')
 
-    with app.open_resource('resources/countries.json') as f:
+    with current_app.open_resource('resources/countries.json') as f:
         records = json.load(reader(f))
 
     return [Country(**record) for record in records]
 
 
-def get_country_names(app):
+def get_country_names():
     """Return country names."""
-    return [country.name for country in get_countries(app)]
+    return [country.name for country in get_countries()]

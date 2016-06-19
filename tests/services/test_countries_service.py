@@ -18,7 +18,8 @@ from byceps.services import countries as countries_service
 def test_get_countries_contains_country(name, alpha2, alpha3):
     app = create_app('test')
 
-    countries = countries_service.get_countries(app)
+    with app.app_context():
+        countries = countries_service.get_countries()
 
     country = find_by_name(countries, name)
 
@@ -31,7 +32,8 @@ def test_get_countries_contains_country(name, alpha2, alpha3):
 def test_get_country_names_contains_selected_items():
     app = create_app('test')
 
-    actual = countries_service.get_country_names(app)
+    with app.app_context():
+        actual = countries_service.get_country_names()
 
     some_expected = frozenset([
         'Belgien',
@@ -50,7 +52,8 @@ def test_get_country_names_contains_selected_items():
 def test_get_country_names_contains_no_duplicates():
     app = create_app('test')
 
-    actual = countries_service.get_country_names(app)
+    with app.app_context():
+        actual = countries_service.get_country_names()
 
     assert len(actual) == len(set(actual))
 
