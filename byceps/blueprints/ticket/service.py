@@ -17,6 +17,24 @@ from ..seating.models.seat import Seat
 from .models import Ticket
 
 
+def create_ticket(category, owned_by):
+    """Create a single ticket."""
+    return create_tickets(category, owned_by, 1)
+
+
+def create_tickets(category, owned_by, quantity):
+    """Create a number of tickets of the same category for a single owner."""
+    if quantity < 1:
+        raise ValueError('Ticket quantity must be positive.')
+
+    tickets = [Ticket(category, owned_by) for _ in range(quantity)]
+
+    db.session.add_all(tickets)
+    db.session.commit()
+
+    return tickets
+
+
 def find_tickets_related_to_user(user):
     """Return tickets related to the user."""
     return Ticket.query \
