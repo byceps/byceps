@@ -14,7 +14,7 @@ import json
 from flask import url_for
 
 from ...database import db
-from ... import email
+from ...services import email as email_service
 
 from .models.country import Country
 from .models.user import User
@@ -68,7 +68,7 @@ def send_email_address_confirmation_email(user, verification_token):
     ).format(user, confirmation_url)
     recipients = [user.email_address]
 
-    email.send(subject=subject, body=body, recipients=recipients)
+    email_service.send(subject=subject, body=body, recipients=recipients)
 
 
 def send_password_reset_email(user, verification_token):
@@ -83,4 +83,4 @@ def send_password_reset_email(user, verification_token):
     ).format(user, confirmation_url)
     recipients = [user.email_address]
 
-    email.send(subject=subject, body=body, recipients=recipients)
+    email_service.send(subject=subject, body=body, recipients=recipients)
