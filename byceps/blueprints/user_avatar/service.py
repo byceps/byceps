@@ -33,7 +33,7 @@ def update_avatar_image(user, stream):
         stream = create_thumbnail(stream, image_type.name, MAXIMUM_DIMENSIONS)
 
     # Might raise `FileExistsError`.
-    upload.store(stream, user.avatar_image_path)
+    upload.store(stream, user.avatar.path)
 
     db.session.commit()
 

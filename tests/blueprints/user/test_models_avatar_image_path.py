@@ -43,4 +43,4 @@ class AvatarImagePathTestCase(AbstractAppTestCase):
 
         with self.app.app_context():
             self.app.config['PATH_USER_AVATAR_IMAGES'] = Path('/var/data/avatars')
-            self.assertEqual(self.user.avatar_image_path, expected)
+            self.assertEqual(self.user.avatar.path, expected)

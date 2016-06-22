@@ -11,10 +11,8 @@ byceps.blueprints.user.models.user
 from datetime import datetime
 from itertools import chain
 from operator import attrgetter
-from pathlib import Path
 from uuid import UUID
 
-from flask import current_app, url_for
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
 from werkzeug.security import check_password_hash, \
@@ -24,6 +22,8 @@ from ....config import get_site_mode
 from ....database import db, generate_uuid
 from ....util.image import ImageType
 from ....util.instances import ReprBuilder
+
+from ...user_avatar.models import Avatar
 
 from .detail import UserDetail
 
@@ -59,6 +59,10 @@ class AnonymousUser(object):
 
     def has_any_permission(self, *permissions):
         return False
+
+    @property
+    def avatar(self):
+        return None
 
     @property
     def has_avatar_image(self):
@@ -152,6 +156,14 @@ class User(db.Model):
         return any(map(self.has_permission, permissions))
 
     @property
+    def avatar(self):
+        if self.has_avatar_image:
+            return Avatar(
+                user_id=self.id,
+                created_at=self.avatar_image_created_at,
+                image_type=self.avatar_image_type)
+
+    @property
     def has_avatar_image(self):
         return None not in {
             self.avatar_image_created_at,
@@ -175,27 +187,6 @@ class User(db.Model):
     @avatar_image_type.setter
     def avatar_image_type(self, type_):
         self._avatar_image_type = type_.name if type_ is not None else None
-
-    @property
-    def avatar_image_path(self):
-        if not self.has_avatar_image:
-            return None
-
-        path = current_app.config['PATH_USER_AVATAR_IMAGES']
-        filename = self.avatar_image_filename
-        return path / filename
-
-    @property
-    def avatar_image_url(self):
-        path = 'users/avatars/{}'.format(self.avatar_image_filename)
-        return url_for('global_file', filename=path)
-
-    @property
-    def avatar_image_filename(self):
-        timestamp = int(self.avatar_image_created_at.timestamp())
-        name_without_suffix = '{}_{:d}'.format(self.id, timestamp)
-        suffix = '.' + self.avatar_image_type.name
-        return Path(name_without_suffix).with_suffix(suffix)
 
     @property
     def is_orga_for_any_brand(self):
