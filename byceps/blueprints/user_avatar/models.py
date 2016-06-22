@@ -9,18 +9,33 @@ byceps.blueprints.user_avatar.models
 """
 
 from collections import namedtuple
+from datetime import datetime
 from pathlib import Path
 
 from flask import current_app, url_for
 
+from ...database import db, generate_uuid
+from ...util.instances import ReprBuilder
 
-class Avatar(namedtuple('Avatar', ['user_id', 'created_at', 'image_type'])):
+
+class Avatar(db.Model):
     """A user's avatar image."""
+    __tablename__ = 'user_avatars'
+
+    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
+    creator = db.relationship('User')
+    image_type = db.Column(db.Unicode(4), nullable=False)
+
+    def __init__(self, creator, image_type):
+        self.creator = creator
+        self.image_type = image_type
 
     @property
     def filename(self):
         timestamp = int(self.created_at.timestamp())
-        name_without_suffix = '{}_{:d}'.format(self.user_id, timestamp)
+        name_without_suffix = '{}_{:d}'.format(self.creator.id, timestamp)
         suffix = '.' + self.image_type.name
         return Path(name_without_suffix).with_suffix(suffix)
 
@@ -33,3 +48,10 @@ class Avatar(namedtuple('Avatar', ['user_id', 'created_at', 'image_type'])):
     def url(self):
         path = 'users/avatars/{}'.format(self.filename)
         return url_for('global_file', filename=path)
+
+    def __repr__(self):
+        return ReprBuilder(self) \
+            .add_with_lookup('id') \
+            .add('creator', self.creator.screen_name) \
+            .add('image_type', self.image_type.name) \
+            .build()

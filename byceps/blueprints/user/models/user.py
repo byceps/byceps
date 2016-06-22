@@ -158,10 +158,9 @@ class User(db.Model):
     @property
     def avatar(self):
         if self.has_avatar_image:
-            return Avatar(
-                user_id=self.id,
-                created_at=self.avatar_image_created_at,
-                image_type=self.avatar_image_type)
+            avatar = Avatar(self, self.avatar_image_type)
+            avatar.created_at = self.avatar_image_created_at
+            return avatar
 
     @property
     def has_avatar_image(self):
