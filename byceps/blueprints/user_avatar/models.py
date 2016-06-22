@@ -26,7 +26,9 @@ class Avatar(db.Model):
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
-    creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
+    creator_id = db.Column(db.Uuid,
+                           db.ForeignKey('users.id', name='user_avatars_creator_id_fkey'),
+                           nullable=False)
     creator = db.relationship('User', foreign_keys=[creator_id])
     _image_type = db.Column(db.Unicode(4), nullable=False)
 

@@ -96,7 +96,8 @@ class User(db.Model):
     auth_token = db.Column(db.Uuid)
     enabled = db.Column(db.Boolean, default=False, nullable=False)
     deleted = db.Column(db.Boolean, default=False, nullable=False)
-    avatar_id = db.Column(db.Uuid, db.ForeignKey('user_avatars.id'))
+    avatar_id = db.Column(db.Uuid, db.ForeignKey('user_avatars.id'),
+                          name='users_avatar_id_fkey')
     avatar = db.relationship(Avatar)
     avatar_image_created_at = db.Column(db.DateTime)
     _avatar_image_type = db.Column(db.Unicode(4))
