@@ -27,9 +27,9 @@ from ..newsletter import service as newsletter_service
 from ..orga import service as orga_service
 from ..terms import service as terms_service
 from ..ticket import service as ticket_service
+from ..user_avatar import service as avatar_service
 from ..verification_token import service as verification_token_service
 
-from . import avatar_service
 from .forms import AvatarImageUpdateForm, DetailsForm, \
     RequestConfirmationEmailForm, RequestPasswordResetForm, \
     ResetPasswordForm, UpdatePasswordForm, UserCreateForm

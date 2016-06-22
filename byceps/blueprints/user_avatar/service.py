@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-byceps.blueprints.user.avatar_service
+byceps.blueprints.user_avatar.service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2016 Jochen Kupperschmidt
@@ -11,7 +11,6 @@ byceps.blueprints.user.avatar_service
 from datetime import datetime
 
 from ...database import db
-
 from ...util.image import create_thumbnail, Dimensions, guess_type, ImageType, \
     read_dimensions
 from ...util import upload
