@@ -12,8 +12,7 @@ from itertools import chain
 from string import ascii_letters, digits
 
 from flask import g
-from wtforms import BooleanField, DateField, FileField, PasswordField, \
-    StringField
+from wtforms import BooleanField, DateField, PasswordField, StringField
 from wtforms.validators import DataRequired, EqualTo, Length, Optional, \
     ValidationError
 
@@ -53,10 +52,6 @@ class DetailsForm(LocalizedForm):
     city = StringField('Stadt', [Optional()])
     street = StringField('Straße', [Optional()])
     phone_number = StringField('Telefonnummer', [Optional(), Length(max=20)])
-
-
-class AvatarImageUpdateForm(LocalizedForm):
-    image = FileField('Bilddatei')
 
 
 class RequestConfirmationEmailForm(LocalizedForm):

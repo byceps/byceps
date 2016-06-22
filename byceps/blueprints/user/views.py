@@ -27,12 +27,11 @@ from ..newsletter import service as newsletter_service
 from ..orga import service as orga_service
 from ..terms import service as terms_service
 from ..ticket import service as ticket_service
-from ..user_avatar import service as avatar_service
 from ..verification_token import service as verification_token_service
 
-from .forms import AvatarImageUpdateForm, DetailsForm, \
-    RequestConfirmationEmailForm, RequestPasswordResetForm, \
-    ResetPasswordForm, UpdatePasswordForm, UserCreateForm
+from .forms import DetailsForm, RequestConfirmationEmailForm, \
+    RequestPasswordResetForm, ResetPasswordForm, UpdatePasswordForm, \
+    UserCreateForm
 from .models.user import User
 from . import service
 from . import signals
@@ -422,57 +421,6 @@ def details_update():
 
     flash_success('Deine Daten wurden gespeichert.')
     return redirect_to('.view_current')
-
-
-@blueprint.route('/me/avatar/update')
-@templated
-def avatar_image_update_form():
-    """Show a form to update the current user's avatar image."""
-    get_current_user_or_404()
-
-    form = AvatarImageUpdateForm()
-
-    image_type_names = avatar_service.get_image_type_names()
-
-    return {
-        'form': form,
-        'avatar_allowed_types': image_type_names,
-        'avatar_maximum_dimensions': avatar_service.MAXIMUM_DIMENSIONS,
-    }
-
-
-@blueprint.route('/me/avatar', methods=['POST'])
-def avatar_image_update():
-    """Update the current user's avatar image."""
-    user = get_current_user_or_404()
-
-    form = AvatarImageUpdateForm(request.form)
-
-    image = request.files.get('image')
-    if not image or not image.filename:
-        abort(400, 'No file to upload has been specified.')
-
-    try:
-        avatar_service.update_avatar_image(user, image.stream)
-    except FileExistsError:
-        abort(409, 'File already exists, not overwriting.')
-
-    flash_success('Das Avatarbild wurde aktualisiert.', icon='upload')
-    signals.avatar_updated.send(None, user=user)
-
-    return redirect_to('.view_current')
-
-
-@blueprint.route('/me/avatar', methods=['DELETE'])
-@respond_no_content
-def delete_avatar_image():
-    """Remove the current user's avatar image."""
-    user = get_current_user_or_404()
-
-    avatar_service.remove_avatar_image(user)
-
-    flash_success('Das Avatarbild wurde entfernt.')
-    return [('Location', url_for('.view_current'))]
 
 
 def find_user_by_id(id):
