@@ -15,6 +15,8 @@ from ...util.image import create_thumbnail, Dimensions, guess_type, ImageType, \
     read_dimensions
 from ...util import upload
 
+from .models import Avatar
+
 
 MAXIMUM_DIMENSIONS = Dimensions(110, 110)
 
@@ -31,6 +33,9 @@ def update_avatar_image(user, stream):
 
     if _is_image_too_large(stream):
         stream = create_thumbnail(stream, image_type.name, MAXIMUM_DIMENSIONS)
+
+    avatar = Avatar(user, image_type)
+    db.session.add(avatar)
 
     # Might raise `FileExistsError`.
     upload.store(stream, user.avatar.path)
