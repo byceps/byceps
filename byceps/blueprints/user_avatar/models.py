@@ -13,8 +13,10 @@ from datetime import datetime
 from pathlib import Path
 
 from flask import current_app, url_for
+from sqlalchemy.ext.hybrid import hybrid_property
 
 from ...database import db, generate_uuid
+from ...util.image import ImageType
 from ...util.instances import ReprBuilder
 
 
@@ -26,11 +28,21 @@ class Avatar(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
     creator = db.relationship('User')
-    image_type = db.Column(db.Unicode(4), nullable=False)
+    _image_type = db.Column(db.Unicode(4), nullable=False)
 
     def __init__(self, creator, image_type):
         self.creator = creator
         self.image_type = image_type
+
+    @hybrid_property
+    def image_type(self):
+        image_type_str = self._image_type
+        if image_type_str is not None:
+            return ImageType[image_type_str]
+
+    @image_type.setter
+    def image_type(self, image_type):
+        self._image_type = image_type.name if (image_type is not None) else None
 
     @property
     def filename(self):
