@@ -17,6 +17,7 @@ from byceps.util.image import ImageType
 from tests.base import AbstractAppTestCase
 
 from testfixtures.user import create_user
+from testfixtures.user_avatar import create_avatar
 
 
 TIMEZONE = timezone('Europe/Berlin')
@@ -39,8 +40,9 @@ class AvatarImagePathTestCase(AbstractAppTestCase):
         with freeze_time('2014-07-29 14:43:30'):
             created_at = TIMEZONE.localize(datetime.now())
 
-        self.user.set_avatar_image(created_at, ImageType.jpeg)
+        avatar = create_avatar(self.user, created_at=created_at,
+                               image_type=ImageType.jpeg)
 
         with self.app.app_context():
             self.app.config['PATH_USER_AVATAR_IMAGES'] = Path('/var/data/avatars')
-            self.assertEqual(self.user.avatar.path, expected)
+            self.assertEqual(avatar.path, expected)
