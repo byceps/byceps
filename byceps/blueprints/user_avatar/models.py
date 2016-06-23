@@ -46,8 +46,7 @@ class Avatar(db.Model):
 
     @property
     def filename(self):
-        timestamp = int(self.created_at.timestamp())
-        name_without_suffix = '{}_{:d}'.format(self.creator.id, timestamp)
+        name_without_suffix = str(self.id)
         suffix = '.' + self.image_type.name
         return Path(name_without_suffix).with_suffix(suffix)
 
