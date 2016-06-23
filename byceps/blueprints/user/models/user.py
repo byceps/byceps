@@ -14,13 +14,11 @@ from operator import attrgetter
 from uuid import UUID
 
 from sqlalchemy.ext.associationproxy import association_proxy
-from sqlalchemy.ext.hybrid import hybrid_property
 from werkzeug.security import check_password_hash, \
     generate_password_hash as _generate_password_hash
 
 from ....config import get_site_mode
 from ....database import db, generate_uuid
-from ....util.image import ImageType
 from ....util.instances import ReprBuilder
 
 from ...user_avatar.models import AvatarSelection
@@ -153,16 +151,6 @@ class User(db.Model):
 
     def has_any_permission(self, *permissions):
         return any(map(self.has_permission, permissions))
-
-    @hybrid_property
-    def avatar_image_type(self):
-        type_str = self._avatar_image_type
-        if type_str is not None:
-            return ImageType[type_str]
-
-    @avatar_image_type.setter
-    def avatar_image_type(self, type_):
-        self._avatar_image_type = type_.name if type_ is not None else None
 
     @property
     def is_orga_for_any_brand(self):
