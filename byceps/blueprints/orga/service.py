@@ -18,7 +18,7 @@ def get_team_memberships_for_party(party):
         .for_party(party) \
         .options(
             db.joinedload('orga_team'),
-            db.joinedload('user').load_only('id', 'screen_name', 'avatar_image_created_at', '_avatar_image_type'),
+            db.joinedload('user').load_only('id', 'screen_name'),
             db.joinedload('user').joinedload('detail').load_only('first_names', 'last_name'),
             db.joinedload('user').joinedload('orga_team_memberships'),
         ) \
