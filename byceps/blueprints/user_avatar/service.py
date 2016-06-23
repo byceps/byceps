@@ -8,8 +8,6 @@ byceps.blueprints.user_avatar.service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from datetime import datetime
-
 from ...database import db
 from ...util.image import create_thumbnail, Dimensions, guess_type, ImageType, \
     read_dimensions
@@ -29,7 +27,6 @@ def get_image_type_names():
 def update_avatar_image(user, stream):
     """Set a new avatar image for the user."""
     image_type = _determine_image_type(stream)
-    user.set_avatar_image(datetime.now(), image_type)
 
     if _is_image_too_large(stream):
         stream = create_thumbnail(stream, image_type.name, MAXIMUM_DIMENSIONS)
@@ -63,8 +60,8 @@ def _is_image_too_large(stream):
 def remove_avatar_image(user):
     """Remove the user's avatar image.
 
-    The image file itself isn't removed, though.
+    The avatar will be unlinked from the user, but the database record
+    as well as the image file itself won't be removed, though.
     """
-    user.remove_avatar_image()
     db.session.delete(user.avatar_selection)
     db.session.commit()

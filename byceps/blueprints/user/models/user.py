@@ -162,14 +162,6 @@ class User(db.Model):
     def has_avatar_image(self):
         return self.avatar is not None
 
-    def set_avatar_image(self, created_at, image_type):
-        self.avatar_image_created_at = created_at
-        self.avatar_image_type = image_type
-
-    def remove_avatar_image(self):
-        self.avatar_image_created_at = None
-        self.avatar_image_type = None
-
     @hybrid_property
     def avatar_image_type(self):
         type_str = self._avatar_image_type
