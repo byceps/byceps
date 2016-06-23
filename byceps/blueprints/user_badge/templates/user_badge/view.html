@@ -72,7 +72,7 @@
   <ul class="list-grid">
     {%- for user in badge.recipients|sort(attribute='screen_name') %}
     <li><a class="recipient" href="{{ url_for('user.view', id=user.id) }}">
-      {%- if user.has_avatar_image -%}
+      {%- if user.avatar -%}
       {{ render_user_avatar(user) }}
       {%- else -%}
       <div class="avatar none{% if user.is_orga_for_party(g.party) %} orga{% endif %}" title="{{ user.screen_name }}">

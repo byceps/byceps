@@ -65,10 +65,6 @@ class AnonymousUser(object):
         return None
 
     @property
-    def has_avatar_image(self):
-        return False
-
-    @property
     def is_orga_for_any_brand(self):
         return False
 
@@ -157,10 +153,6 @@ class User(db.Model):
 
     def has_any_permission(self, *permissions):
         return any(map(self.has_permission, permissions))
-
-    @property
-    def has_avatar_image(self):
-        return self.avatar is not None
 
     @hybrid_property
     def avatar_image_type(self):

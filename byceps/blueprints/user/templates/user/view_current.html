@@ -31,7 +31,7 @@
     <tr>
       <th>Avatar</th>
       <td>
-      {%- if user.has_avatar_image -%}
+      {%- if user.avatar -%}
         {{ render_user_avatar(user) }}
       {%- else -%}
         {{ 'nicht hinterlegt'|dim }}
@@ -39,7 +39,7 @@
       {%- if g.current_user == user %}
         <ol class="actions" style="display: block; margin: 0.5rem 0 0 0;">
           <li><a href="{{ url_for('user_avatar.update_form') }}">{{ render_icon('upload') }} hochladen</a></li>
-          {%- if user.has_avatar_image %}
+          {%- if user.avatar %}
           <li><a id="avatar-delete" href="{{ url_for('user_avatar.delete', _method='DELETE') }}">{{ render_icon('delete') }} entfernen</a></li>
           {%- endif %}
         </ol>

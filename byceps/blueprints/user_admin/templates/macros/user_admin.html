@@ -7,7 +7,7 @@
 
 
 {% macro render_user_admin_avatar(user) %}
-  {%- if user.has_avatar_image %}
+  {%- if user.avatar %}
 <div class="avatar">
   {{ render_user_avatar_image(user) }}
 </div>
@@ -16,7 +16,7 @@
 
 
 {% macro render_orga_avatar_small(user) %}
-  {%- if user.has_avatar_image %}
+  {%- if user.avatar %}
 <div class="avatar orga small">
   {{ render_user_avatar_image(user) }}
 </div>

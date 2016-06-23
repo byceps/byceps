@@ -39,7 +39,7 @@
   </nav>
 
   <h2 id="account">Benutzerkonto</h2>
-  {%- if user.has_avatar_image %}
+  {%- if user.avatar %}
   <div style="float: right; margin: 0 120px 0 1rem;">{{ render_user_admin_avatar(user) }}</div>
   {%- endif %}
   <table class="index">
@@ -65,7 +65,7 @@
     </tr>
     <tr>
       <th>Avatar</th>
-      <td>{{ render_icon('enabled' if user.has_avatar_image else 'disabled') }}</td>
+      <td>{{ render_icon('enabled' if user.avatar else 'disabled') }}</td>
     </tr>
     <tr>
       <th>Orga-Teams</th>
