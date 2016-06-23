@@ -23,7 +23,7 @@ from ....database import db, generate_uuid
 from ....util.image import ImageType
 from ....util.instances import ReprBuilder
 
-from ...user_avatar.models import Avatar
+from ...user_avatar.models import AvatarSelection
 
 from .detail import UserDetail
 
@@ -96,13 +96,13 @@ class User(db.Model):
     auth_token = db.Column(db.Uuid)
     enabled = db.Column(db.Boolean, default=False, nullable=False)
     deleted = db.Column(db.Boolean, default=False, nullable=False)
-    avatar_id = db.Column(db.Uuid, db.ForeignKey('user_avatars.id'),
-                          name='users_avatar_id_fkey')
-    avatar = db.relationship(Avatar)
     avatar_image_created_at = db.Column(db.DateTime)
     _avatar_image_type = db.Column(db.Unicode(4))
     legacy_id = db.Column(db.Integer)
 
+    avatar = association_proxy('avatar_selection', 'avatar',
+                               creator=lambda avatar:
+                                    AvatarSelection(None, avatar.id))
     roles = association_proxy('user_roles', 'role')
     badges = association_proxy('badge_awardings', 'badge')
 
@@ -159,18 +159,8 @@ class User(db.Model):
         return any(map(self.has_permission, permissions))
 
     @property
-    def avatar(self):
-        if self.has_avatar_image:
-            avatar = Avatar(self, self.avatar_image_type)
-            avatar.created_at = self.avatar_image_created_at
-            return avatar
-
-    @property
     def has_avatar_image(self):
-        return None not in {
-            self.avatar_image_created_at,
-            self.avatar_image_type,
-        }
+        return self.avatar is not None
 
     def set_avatar_image(self, created_at, image_type):
         self.avatar_image_created_at = created_at

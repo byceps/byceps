@@ -38,11 +38,10 @@ def update_avatar_image(user, stream):
     db.session.add(avatar)
     db.session.commit()
 
-    user.avatar_id = avatar.id
-
     # Might raise `FileExistsError`.
-    upload.store(stream, user.avatar.path)
+    upload.store(stream, avatar.path)
 
+    user.avatar = avatar
     db.session.commit()
 
 
@@ -67,5 +66,5 @@ def remove_avatar_image(user):
     The image file itself isn't removed, though.
     """
     user.remove_avatar_image()
-    user.avatar_id = None
+    db.session.delete(user.avatar_selection)
     db.session.commit()

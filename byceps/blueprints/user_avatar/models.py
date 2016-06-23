@@ -21,15 +21,13 @@ from ...util.instances import ReprBuilder
 
 
 class Avatar(db.Model):
-    """A user's avatar image."""
+    """A avatar image uploaded by a user."""
     __tablename__ = 'user_avatars'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
-    creator_id = db.Column(db.Uuid,
-                           db.ForeignKey('users.id', name='user_avatars_creator_id_fkey'),
-                           nullable=False)
-    creator = db.relationship('User', foreign_keys=[creator_id])
+    creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
+    creator = db.relationship('User')
     _image_type = db.Column(db.Unicode(4), nullable=False)
 
     def __init__(self, creator, image_type):
@@ -69,3 +67,17 @@ class Avatar(db.Model):
             .add('creator', self.creator.screen_name) \
             .add('image_type', self.image_type.name) \
             .build()
+
+
+class AvatarSelection(db.Model):
+    """The selection of an avatar image to be used for a user."""
+    __tablename__ = 'user_avatar_selections'
+
+    user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
+    user = db.relationship('User', backref=db.backref('avatar_selection', uselist=False))
+    avatar_id = db.Column(db.Uuid, db.ForeignKey('user_avatars.id'), unique=True, nullable=False)
+    avatar = db.relationship(Avatar)
+
+    def __init__(self, user_id, avatar_id):
+        self.user_id = user_id
+        self.avatar_id = avatar_id
