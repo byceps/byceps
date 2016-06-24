@@ -6,57 +6,90 @@
 {% set current_page = 'user.view' %}
 {% set title = 'Benutzer - %s'|format(user.screen_name) %}
 
+{% block head %}
+    <style>
+      main {
+        padding-top: 40px;
+      }
+
+      .user-profile {
+        display: flex;
+        flex-wrap: wrap;
+      }
+
+      .user-profile-primary {
+        flex: 0 1 auto;
+        margin-bottom: 20px;
+        padding-right: 40px;
+      }
+      .user-profile-primary .screenname,
+      .user-profile-primary .orgateam {
+        font-weight: bold;
+      }
+      .user-profile-primary .screenname {
+        font-size: 20px;
+        margin-top: 10px;
+      }
+      .user-profile-primary .orgateam {
+        font-size: 14px;
+        margin-top: 3px;
+      }
+
+      .user-profile-secondary {
+        flex: 1 0 auto;
+      }
+    </style>
+{%- endblock %}
+
 {% block body %}
 
-  <h1>{{ render_icon('user') }} {{ user.screen_name }}</h1>
+  <div class="user-profile">
 
-  <table class="index">
-    {%- if user.avatar %}
-    <tr>
-      <th>Avatarbild</th>
-      <td>
-        <div>{{ render_user_avatar(user) }}</div>
-      </td>
-    </tr>
-    {%- endif %}
-    {%- if orga_team_membership %}
-    <tr>
-      <th>Orga-Team</th>
-      <td>{{ orga_team_membership.orga_team.title}}{% if orga_team_membership.duties %} ({{ orga_team_membership.duties }}){% endif %}</td>
-    </tr>
-    {%- endif %}
-    {%- if current_party_tickets %}
-    <tr>
-      <th>Sitzplatz</th>
-      <td>
-        <ol>
-        {%- for ticket in current_party_tickets %}
-          <li>{{ render_seating_area_link(ticket.occupied_seat.area) }}</li>
-        {%- endfor %}
-        </ol>
-      </td>
-    </tr>
-    {%- endif %}
-    <tr>
-      <th>Besuchte Partys</th>
-      <td>
-        {%- if attended_parties %}
-        <ol>
-          {%- for party in attended_parties %}
-          <li>{% if party == g.party %}<strong>{% endif %}{{ party.title }}{% if party == g.party %}</strong>{% endif %}</li>
-          {%- endfor %}
-        </ol>
-        {%- else %}
-          {{- 'keine'|dim -}}
+    <div class="user-profile-primary">
+{{ render_user_avatar(user) }}
+      <div class="screenname">{{ user.screen_name }}</div>
+      {%- if orga_team_membership %}
+      <div class="orgateam">{{ orga_team_membership.orga_team.title|dim }}</div>
+      {%- endif %}
+    </div>
+
+    <div class="user-profile-secondary">
+      <table class="index">
+        {%- if current_party_tickets %}
+        <tr>
+          <th>Sitzplatz</th>
+          <td>
+            <ol>
+            {%- for ticket in current_party_tickets %}
+              <li>{{ render_seating_area_link(ticket.occupied_seat.area) }}</li>
+            {%- endfor %}
+            </ol>
+          </td>
+        </tr>
         {%- endif %}
-      </td>
-    </tr>
-    {%- if user.badges %}
-    <tr>
-      <th>Abzeichen</th>
-      <td>{{ render_user_badges(user.badges) }}</td>
-    </tr>
-    {%- endif %}
-  </table>
+        <tr>
+          <th>Besuchte Partys</th>
+          <td>
+            {%- if attended_parties %}
+            <ol>
+              {%- for party in attended_parties %}
+              <li>{% if party == g.party %}<strong>{% endif %}{{ party.title }}{% if party == g.party %}</strong>{% endif %}</li>
+              {%- endfor %}
+            </ol>
+            {%- else %}
+              {{- 'keine'|dim -}}
+            {%- endif %}
+          </td>
+        </tr>
+        {%- if user.badges %}
+        <tr>
+          <th>Abzeichen</th>
+          <td>{{ render_user_badges(user.badges) }}</td>
+        </tr>
+        {%- endif %}
+      </table>
+    </div>
+
+  </div>
 
 {%- endblock body %}
