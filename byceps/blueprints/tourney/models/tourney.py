@@ -10,6 +10,8 @@ byceps.blueprints.tourney.models.tourney
 
 from ....database import BaseQuery, db, generate_uuid
 
+from ....util.instances import ReprBuilder
+
 from .tourney_category import TourneyCategory
 
 
