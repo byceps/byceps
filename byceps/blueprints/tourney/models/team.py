@@ -15,7 +15,7 @@ from ....util.instances import ReprBuilder
 
 from ...user.models.user import User
 
-from .tourney import tourney
+from .tourney import Tourney
 
 
 class Team(db.Model):
