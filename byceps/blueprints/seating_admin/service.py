@@ -16,8 +16,6 @@ from ..seating.models.seat import Seat
 
 def get_seat_total_per_area(party):
     """Return the number of seats per area for this party."""
-    areas = Area.query.for_party(party).all()
-
     return dict(db.session \
         .query(
             Area.id,
