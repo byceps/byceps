@@ -70,11 +70,9 @@ li [class*=" icon-"] {
 .icon-log-out::before        { content: "\f08b"; }
 .icon-moderate::before       { content: "\f0e3"; }
 .icon-move::before           { content: "\f047"; }
-.icon-network::before        { content: "\f0e8"; }
 .icon-new::before            { content: "\f069"; }
 .icon-news::before           { content: "\f1ea"; }
 .icon-newsletter::before     { content: "\f003"; }
-.icon-parking::before        { content: "\f1b9"; }
 .icon-password::before       { content: "\f084"; }
 .icon-payment::before        { content: "\f0d6"; }
 .icon-pending::before        { content: "\f017"; }
@@ -90,7 +88,6 @@ li [class*=" icon-"] {
 .icon-shopping-cart::before  { content: "\f07a"; }
 .icon-snippet::before        { content: "\f0c4"; }
 .icon-sorted::before         { content: "\f0dc"; }
-.icon-steam::before          { content: "\f1b6"; }
 .icon-success::before        { content: "\f00c"; }
 .icon-text::before           { content: "\f0f6"; }
 .icon-ticket::before         { content: "\f145"; }
