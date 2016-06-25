@@ -363,8 +363,10 @@ def _verify_password_reset_token(verification_token ):
 @templated
 def password_update_form(erroneous_form=None):
     """Show a form to update the current user's password."""
-    user = get_current_user_or_404()
+    get_current_user_or_404()
+
     form = erroneous_form if erroneous_form else UpdatePasswordForm()
+
     return {'form': form}
 
 
