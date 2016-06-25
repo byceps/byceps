@@ -5,12 +5,8 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from datetime import datetime
 from pathlib import Path
 from uuid import UUID
-
-from freezegun import freeze_time
-from pytz import timezone
 
 from byceps.util.image import ImageType
 
@@ -18,9 +14,6 @@ from tests.base import AbstractAppTestCase
 
 from testfixtures.user import create_user
 from testfixtures.user_avatar import create_avatar
-
-
-TIMEZONE = timezone('Europe/Berlin')
 
 
 class AvatarImagePathTestCase(AbstractAppTestCase):
@@ -36,11 +29,7 @@ class AvatarImagePathTestCase(AbstractAppTestCase):
         expected = Path(
             '/var/data/avatars/2e17cb15-d763-4f93-882a-371296a3c63f.jpeg')
 
-        with freeze_time('2014-07-29 14:43:30'):
-            created_at = TIMEZONE.localize(datetime.utcnow())
-
-        avatar = create_avatar(self.user, id=avatar_id, created_at=created_at,
-                               image_type=ImageType.jpeg)
+        avatar = create_avatar(self.user, id=avatar_id, image_type=ImageType.jpeg)
 
         with self.app.app_context():
             self.app.config['PATH_USER_AVATAR_IMAGES'] = Path('/var/data/avatars')
