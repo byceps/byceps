@@ -24,7 +24,7 @@ class Tourney(db.Model):
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     group_id = db.Column(db.Uuid, db.ForeignKey('tourney_groups.id'), index=True, nullable=False)
-    group = db.relationship(TourneyGroup)
+    group = db.relationship(TourneyCategory)
     title = db.Column(db.Unicode(40), nullable=False)
 
     def __init__(self, group, title):
