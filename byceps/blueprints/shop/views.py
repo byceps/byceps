@@ -8,9 +8,8 @@ byceps.blueprints.shop.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from flask import abort, g, request
+from flask import g, request
 
-from ...database import db
 from ...services import countries as countries_service
 from ...util.framework import create_blueprint, flash_error, flash_success
 from ...util.templating import templated
@@ -21,7 +20,6 @@ from ..authentication.decorators import login_required
 from .forms import assemble_articles_order_form, OrderForm
 from .models.article import Article
 from .models.cart import Cart
-from .models.order import Order, PaymentState
 from . import service
 
 

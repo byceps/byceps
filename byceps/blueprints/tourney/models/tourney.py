@@ -8,7 +8,7 @@ byceps.blueprints.tourney.models.tourney
 :License: Modified BSD, see LICENSE for details.
 """
 
-from ....database import BaseQuery, db, generate_uuid
+from ....database import db, generate_uuid
 
 from ....util.instances import ReprBuilder
 

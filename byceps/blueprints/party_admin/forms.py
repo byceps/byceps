@@ -10,7 +10,7 @@ byceps.blueprints.party_admin.forms
 
 from operator import attrgetter
 
-from wtforms import DateTimeField, IntegerField, SelectField, StringField
+from wtforms import DateTimeField, SelectField, StringField
 from wtforms.validators import InputRequired, Length
 
 from ...util.l10n import LocalizedForm

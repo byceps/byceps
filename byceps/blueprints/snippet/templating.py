@@ -10,7 +10,6 @@ byceps.blueprints.snippet.templating
 
 import sys
 import traceback
-import warnings
 
 from flask import abort, g, render_template, url_for
 from jinja2 import TemplateNotFound

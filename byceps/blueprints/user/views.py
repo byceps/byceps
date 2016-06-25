@@ -10,7 +10,7 @@ byceps.blueprints.user.views
 
 from operator import attrgetter
 
-from flask import abort, current_app, g, jsonify, request, Response, url_for
+from flask import abort, current_app, g, jsonify, request, Response
 
 from ...config import get_site_mode, get_user_registration_enabled
 from ...database import db
@@ -18,7 +18,7 @@ from ...services import countries as countries_service
 from ...util.framework import create_blueprint, flash_error, flash_notice, \
     flash_success
 from ...util.templating import templated
-from ...util.views import redirect_to, respond_no_content
+from ...util.views import redirect_to
 
 from ..authorization.models import Role
 from ..newsletter.models import Subscription as NewsletterSubscription, \

@@ -18,7 +18,6 @@ from ..authorization.registry import permission_registry
 from ..party.models import Party
 from ..seating.models.area import Area
 from ..seating.models.category import Category
-from ..seating.models.seat import Seat
 
 from .authorization import SeatingPermission
 from . import service

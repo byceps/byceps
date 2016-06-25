@@ -10,7 +10,6 @@ byceps.blueprints.shop_admin.views
 
 from datetime import datetime
 from decimal import Decimal
-from operator import attrgetter
 
 from flask import current_app, g, render_template, request, Response, url_for
 

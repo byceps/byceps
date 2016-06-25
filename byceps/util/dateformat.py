@@ -10,7 +10,7 @@ Date/time formatting.
 :License: Modified BSD, see LICENSE for details.
 """
 
-from datetime import date, datetime, timedelta
+from datetime import date, timedelta
 
 
 def format_custom(dt, pattern):

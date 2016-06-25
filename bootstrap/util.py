@@ -10,7 +10,6 @@ bootstrap.util
 
 from contextlib import contextmanager
 from itertools import count, islice
-import os
 
 from byceps.application import create_app
 from byceps.database import db

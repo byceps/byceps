@@ -18,7 +18,6 @@ from ...util.instances import ReprBuilder
 from ...util.templating import load_template
 
 from ..brand.models import Brand
-from ..party.models import Party
 from ..user.models.user import User
 
 

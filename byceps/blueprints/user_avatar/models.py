@@ -8,7 +8,6 @@ byceps.blueprints.user_avatar.models
 :License: Modified BSD, see LICENSE for details.
 """
 
-from collections import namedtuple
 from datetime import datetime
 from pathlib import Path
 

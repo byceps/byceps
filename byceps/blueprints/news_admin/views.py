@@ -9,7 +9,6 @@ byceps.blueprints.news_admin.views
 """
 
 from datetime import date
-from operator import attrgetter
 
 from flask import g, request
 
@@ -23,7 +22,6 @@ from ..brand.models import Brand
 from ..news.models import Item
 from ..news import service
 from ..news import signals
-from ..party.models import Party
 
 from .authorization import NewsItemPermission
 from .forms import ItemCreateForm, ItemUpdateForm

@@ -29,8 +29,7 @@ from ..snippet.models.snippet import CurrentVersionAssociation, Snippet, \
 from ..snippet.templating import get_snippet_context
 
 from .authorization import MountpointPermission, SnippetPermission
-from .forms import MountpointCreateForm, MountpointUpdateForm, \
-    SnippetCreateForm, SnippetUpdateForm
+from .forms import MountpointCreateForm, SnippetCreateForm, SnippetUpdateForm
 from . import service
 
 

@@ -8,7 +8,7 @@ byceps.util.iterables
 :License: Modified BSD, see LICENSE for details.
 """
 
-from itertools import islice, tee
+from itertools import tee
 
 
 def find(predicate, iterable):

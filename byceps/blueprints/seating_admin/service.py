@@ -10,7 +10,6 @@ byceps.blueprints.seating_admin.service
 
 from ...database import db
 
-from ..party.models import Party
 from ..seating.models.area import Area
 from ..seating.models.seat import Seat
 

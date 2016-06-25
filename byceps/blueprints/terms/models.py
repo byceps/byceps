@@ -10,7 +10,6 @@ byceps.blueprints.terms.models
 
 from datetime import datetime
 from enum import Enum
-from operator import attrgetter
 
 from sqlalchemy.ext.hybrid import hybrid_property
 
