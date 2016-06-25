@@ -8,6 +8,8 @@ byceps.blueprints.user_avatar.service
 :License: Modified BSD, see LICENSE for details.
 """
 
+from flask import abort
+
 from ...database import db
 from ...util.image import create_thumbnail, Dimensions, guess_type, ImageType, \
     read_dimensions
