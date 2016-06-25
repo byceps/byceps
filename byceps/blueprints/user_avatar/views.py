@@ -24,11 +24,11 @@ blueprint = create_blueprint('user_avatar', __name__)
 
 @blueprint.route('/me/avatar/update')
 @templated
-def update_form():
+def update_form(erroneous_form=None):
     """Show a form to update the current user's avatar image."""
     get_current_user_or_404()
 
-    form = UpdateForm()
+    form = erroneous_form if erroneous_form else UpdateForm()
 
     image_type_names = service.get_image_type_names()
 
@@ -45,6 +45,8 @@ def update():
     user = get_current_user_or_404()
 
     form = UpdateForm(request.form)
+    if not form.validate():
+        return update_form(form)
 
     image = request.files.get('image')
     if not image or not image.filename:
