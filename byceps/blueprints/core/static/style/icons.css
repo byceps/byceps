@@ -47,9 +47,7 @@ li [class*=" icon-"] {
 .icon-birthday::before       { content: "\f1fd"; }
 .icon-board::before          { content: "\f086"; }
 .icon-bookmark::before       { content: "\f02e"; }
-.icon-bullhorn::before       { content: "\f0a1"; }
 .icon-caret-down::before     { content: "\f0d7"; }
-.icon-cost::before           { content: "\f153"; }
 .icon-dashboard::before      { content: "\f0e4"; }
 .icon-date::before           { content: "\f073"; }
 .icon-date-okay::before      { content: "\f274"; }
@@ -60,19 +58,13 @@ li [class*=" icon-"] {
 .icon-enabled::before        { content: "\f00c"; }
 .icon-error::before          { content: "\f071"; }
 .icon-external-link::before  { content: "\f08e"; }
-.icon-facebook::before       { content: "\f09a"; }
-.icon-facility::before       { content: "\f015"; }
 .icon-filter::before         { content: "\f0b0"; }
-.icon-food::before           { content: "\f0f5"; }
 .icon-hidden::before         { content: "\f070"; }
 .icon-history::before        { content: "\f1da"; }
 .icon-image::before          { content: "\f03e"; }
 .icon-important::before      { content: "\f12a"; }
 .icon-info::before           { content: "\f05a"; }
-.icon-internet::before       { content: "\f0ac"; }
-.icon-irc::before            { content: "\f292"; }
 .icon-legal::before          { content: "\f0e3"; }
-.icon-location::before       { content: "\f041"; }
 .icon-lock::before           { content: "\f023"; }
 .icon-log-in::before         { content: "\f090"; }
 .icon-log-out::before        { content: "\f08b"; }
@@ -104,7 +96,6 @@ li [class*=" icon-"] {
 .icon-ticket::before         { content: "\f145"; }
 .icon-time::before           { content: "\f017"; }
 .icon-trophy::before         { content: "\f091"; }
-.icon-twitter::before        { content: "\f099"; }
 .icon-unlock::before         { content: "\f09c"; }
 .icon-update::before         { content: "\f021"; }
 .icon-upload::before         { content: "\f093"; }
