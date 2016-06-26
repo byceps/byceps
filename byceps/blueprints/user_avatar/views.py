@@ -44,7 +44,13 @@ def update():
     """Update the current user's avatar image."""
     user = get_current_user_or_404()
 
-    form = UpdateForm(request.form)
+    # Make `InputRequired` work on `FileField`.
+    form_fields = request.form.copy()
+    if request.files:
+        form_fields.update(request.files)
+
+    form = UpdateForm(form_fields)
+
     if not form.validate():
         return update_form(form)
 
