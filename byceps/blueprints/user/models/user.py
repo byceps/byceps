@@ -26,7 +26,7 @@ from ...user_avatar.models import AvatarSelection
 from .detail import UserDetail
 
 
-PASSWORD_HASH_METHOD = 'pbkdf2:sha1'
+PASSWORD_HASH_METHOD = 'pbkdf2:sha1:50000'
 
 GUEST_USER_ID = UUID('00000000-0000-0000-0000-000000000000')
 
@@ -86,7 +86,7 @@ class User(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.now, nullable=False)
     screen_name = db.Column(db.Unicode(40), unique=True, nullable=False)
     email_address = db.Column(db.Unicode(80), unique=True, nullable=False)
-    password_hash = db.Column(db.Unicode(66))
+    password_hash = db.Column(db.Unicode(80))
     auth_token = db.Column(db.Uuid)
     enabled = db.Column(db.Boolean, default=False, nullable=False)
     deleted = db.Column(db.Boolean, default=False, nullable=False)
