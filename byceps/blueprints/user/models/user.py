@@ -124,7 +124,8 @@ class User(db.Model):
         """Return `True` if the password is valid for this user, and
         `False` otherwise.
         """
-        return check_password_hash(self.password_hash, password)
+        return (self.password_hash is not None) \
+            and check_password_hash(self.password_hash, password)
 
     def set_new_auth_token(self):
         """Generate and store a new authentication token."""
