@@ -22,7 +22,7 @@ def create_user(number, *, screen_name=None, email_address=None, enabled=True):
     if not email_address:
         email_address = 'user{:03d}@example.com'.format(number)
 
-    user = User.create(screen_name, email_address, 'le_password')
+    user = User.create(screen_name, email_address)
     user.id = generate_uuid()
     user.enabled = enabled
     return user

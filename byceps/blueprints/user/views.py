@@ -168,7 +168,9 @@ def create():
             'Diese E-Mail-Adresse ist bereits einem Benutzerkonto zugeordnet.')
         return create_form(form)
 
-    user = User.create(screen_name, email_address, password)
+    user = User.create(screen_name, email_address)
+    user.set_password(password)
+    user.set_new_auth_token()
     user.detail.first_names = first_names
     user.detail.last_name = last_name
     db.session.add(user)

@@ -56,8 +56,8 @@ def get_party(id):
 
 
 @add_to_database
-def create_user(screen_name, email_address, password, *, enabled=False):
-    user = User.create(screen_name, email_address, password)
+def create_user(screen_name, email_address, *, enabled=False):
+    user = User.create(screen_name, email_address)
     user.enabled = enabled
     return user
 

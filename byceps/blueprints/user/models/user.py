@@ -99,12 +99,10 @@ class User(db.Model):
     badges = association_proxy('badge_awardings', 'badge')
 
     @classmethod
-    def create(cls, screen_name, email_address, password):
+    def create(cls, screen_name, email_address):
         user = cls()
         user.set_screen_name(screen_name)
         user.set_email_address(email_address)
-        user.set_password(password)
-        user.set_new_auth_token()
 
         detail = UserDetail(user=user)
 
