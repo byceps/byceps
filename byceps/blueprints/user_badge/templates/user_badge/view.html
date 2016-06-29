@@ -39,13 +39,8 @@
     .avatar .orga-badge {
       font-size: 0.5rem;
     }
-    .avatar.none {
-      align-items: center;
-      background-color: #dddddd;
-      display: flex;
-      font-size: 3rem;
-      font-weight: bold;
-      justify-content: center;
+    .avatar.none img {
+      background-color: #eeeeee;
     }
   </style>
 {% endblock %}
@@ -76,7 +71,7 @@
       {{ render_user_avatar(user) }}
       {%- else -%}
       <div class="avatar none{% if user.is_orga_for_party(g.party) %} orga{% endif %}" title="{{ user.screen_name }}">
-        ?
+        <img src="{{ url_for('core.static', filename='avatar_fallback.svg') }}" alt="Avatar von {{ user.screen_name }}">
         {%- if user.is_orga_for_party(g.party) %}
         <div class="orga-badge">Organizer</div>
         {%- endif %}
