@@ -4,7 +4,7 @@
 {% from 'macros/user.html' import render_user_avatar %}
 {% from 'macros/user_badge.html' import render_user_badges %}
 {% set current_page = 'user.view' %}
-{% set title = 'Benutzer - %s'|format(user.screen_name) %}
+{% set title = '%s - Benutzer'|format(user.screen_name) %}
 
 {% block head %}
     <style>
