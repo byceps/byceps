@@ -11,7 +11,7 @@ byceps.blueprints.user.models.user
 from datetime import datetime
 from itertools import chain
 from operator import attrgetter
-from uuid import UUID
+from uuid import uuid4, UUID
 
 from sqlalchemy.ext.associationproxy import association_proxy
 
@@ -119,7 +119,7 @@ class User(db.Model):
 
     def set_new_auth_token(self):
         """Generate and store a new authentication token."""
-        self.auth_token = generate_uuid()
+        self.auth_token = generate_auth_token()
 
     @property
     def is_anonymous(self):
@@ -183,3 +183,8 @@ def normalize_email_address(email_address):
     if not normalized or (' ' in normalized) or ('@' not in normalized):
         raise ValueError('Invalid email address: \'{}\''.format(email_address))
     return normalized
+
+
+def generate_auth_token():
+    """Generate an authentication token."""
+    return uuid4()
