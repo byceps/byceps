@@ -20,6 +20,7 @@ from ...util.framework import create_blueprint, flash_error, flash_notice, \
 from ...util.templating import templated
 from ...util.views import redirect_to
 
+from ..authentication import service as authentication_service
 from ..authorization.models import Role
 from ..newsletter.models import Subscription as NewsletterSubscription, \
     SubscriptionState as NewsletterSubscriptionState
@@ -169,7 +170,7 @@ def create():
         return create_form(form)
 
     user = User.create(screen_name, email_address)
-    user.set_password(password)
+    user.update_password_hash(password_hash)
     user.set_new_auth_token()
     user.detail.first_names = first_names
     user.detail.last_name = last_name
@@ -344,8 +345,11 @@ def password_reset(token):
     if not form.validate():
         return password_reset_form(token, form)
 
+    password = form.new_password.data
+    password_hash = authentication_service.generate_password_hash(password)
+
     user = verification_token.user
-    user.set_password(form.new_password.data)
+    user.update_password_hash(password_hash)
     user.set_new_auth_token()
     db.session.delete(verification_token)
     db.session.commit()
@@ -381,7 +385,10 @@ def password_update():
     if not form.validate():
         return password_update_form(form)
 
-    user.set_password(form.new_password.data)
+    password = form.new_password.data
+    password_hash = authentication_service.generate_password_hash(password)
+
+    user.update_password_hash(password_hash)
     user.set_new_auth_token()
     db.session.commit()
 

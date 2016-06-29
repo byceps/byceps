@@ -14,8 +14,7 @@ from operator import attrgetter
 from uuid import UUID
 
 from sqlalchemy.ext.associationproxy import association_proxy
-from werkzeug.security import check_password_hash, \
-    generate_password_hash as _generate_password_hash
+from werkzeug.security import check_password_hash
 
 from ....config import get_site_mode
 from ....database import db, generate_uuid
@@ -25,8 +24,6 @@ from ...user_avatar.models import AvatarSelection
 
 from .detail import UserDetail
 
-
-PASSWORD_HASH_METHOD = 'pbkdf2:sha1:50000'
 
 GUEST_USER_ID = UUID('00000000-0000-0000-0000-000000000000')
 
@@ -114,9 +111,8 @@ class User(db.Model):
     def set_email_address(self, email_address):
         self.email_address = normalize_email_address(email_address)
 
-    def set_password(self, password):
-        """Calculate and store a hash value for the password."""
-        self.password_hash = generate_password_hash(password)
+    def update_password_hash(self, password_hash):
+        self.password_hash = password_hash
 
     def is_password_valid(self, password):
         """Return `True` if the password is valid for this user, and
@@ -191,8 +187,3 @@ def normalize_email_address(email_address):
     if not normalized or (' ' in normalized) or ('@' not in normalized):
         raise ValueError('Invalid email address: \'{}\''.format(email_address))
     return normalized
-
-
-def generate_password_hash(password):
-    """Generate a salted hash for the password."""
-    return _generate_password_hash(password, method=PASSWORD_HASH_METHOD)

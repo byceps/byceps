@@ -8,7 +8,18 @@ byceps.blueprints.authentication.service
 :License: Modified BSD, see LICENSE for details.
 """
 
+from werkzeug.security import generate_password_hash as _generate_password_hash
+
 from ..user.models.user import AnonymousUser, User
+
+
+PASSWORD_HASH_ITERATIONS = 50000
+PASSWORD_HASH_METHOD = 'pbkdf2:sha1:%d' % PASSWORD_HASH_ITERATIONS
+
+
+def generate_password_hash(password):
+    """Generate a salted hash value based on the password."""
+    return _generate_password_hash(password, method=PASSWORD_HASH_METHOD)
 
 
 class AuthenticationFailed(Exception):
