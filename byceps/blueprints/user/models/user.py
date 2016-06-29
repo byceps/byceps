@@ -111,7 +111,11 @@ class User(db.Model):
         self.email_address = normalize_email_address(email_address)
 
     def update_password_hash(self, password_hash):
+        """Update the password hash and set a newly-generated
+        authentication token.
+        """
         self.password_hash = password_hash
+        self.set_new_auth_token()
 
     def set_new_auth_token(self):
         """Generate and store a new authentication token."""

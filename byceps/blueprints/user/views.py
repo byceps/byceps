@@ -171,7 +171,6 @@ def create():
 
     user = User.create(screen_name, email_address)
     user.update_password_hash(password_hash)
-    user.set_new_auth_token()
     user.detail.first_names = first_names
     user.detail.last_name = last_name
     db.session.add(user)
@@ -350,7 +349,6 @@ def password_reset(token):
 
     user = verification_token.user
     user.update_password_hash(password_hash)
-    user.set_new_auth_token()
     db.session.delete(verification_token)
     db.session.commit()
 
@@ -389,7 +387,6 @@ def password_update():
     password_hash = authentication_service.generate_password_hash(password)
 
     user.update_password_hash(password_hash)
-    user.set_new_auth_token()
     db.session.commit()
 
     flash_success('Das Passwort wurde geändert.')
