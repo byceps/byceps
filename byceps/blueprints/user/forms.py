@@ -18,6 +18,8 @@ from wtforms.validators import DataRequired, EqualTo, Length, Optional, \
 
 from ...util.l10n import LocalizedForm
 
+from ..authentication import service as authentication_service
+
 
 GERMAN_CHARS = 'äöüß'
 SPECIAL_CHARS = '!$&*-./<=>?[]_'
@@ -84,6 +86,9 @@ class UpdatePasswordForm(ResetPasswordForm):
     old_password = PasswordField('Bisheriges Passwort', [DataRequired()])
 
     def validate_old_password(form, field):
-        if not g.current_user.is_password_valid(field.data):
+        user = g.current_user
+        password = field.data
+
+        if not authentication_service.is_password_valid_for_user(user, password):
             raise ValidationError(
                 'Das eingegebene Passwort stimmt nicht mit dem bisherigen überein.')

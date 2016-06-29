@@ -14,7 +14,6 @@ from operator import attrgetter
 from uuid import UUID
 
 from sqlalchemy.ext.associationproxy import association_proxy
-from werkzeug.security import check_password_hash
 
 from ....config import get_site_mode
 from ....database import db, generate_uuid
@@ -113,13 +112,6 @@ class User(db.Model):
 
     def update_password_hash(self, password_hash):
         self.password_hash = password_hash
-
-    def is_password_valid(self, password):
-        """Return `True` if the password is valid for this user, and
-        `False` otherwise.
-        """
-        return (self.password_hash is not None) \
-            and check_password_hash(self.password_hash, password)
 
     def set_new_auth_token(self):
         """Generate and store a new authentication token."""
