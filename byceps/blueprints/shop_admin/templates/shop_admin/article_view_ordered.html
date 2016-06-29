@@ -34,7 +34,7 @@
     <thead>
       <tr>
         <th>Sitzplatz</th>
-        <th>Benutzername<br/>Vor- und Nachname</th>
+        <th>Benutzername<br>Vor- und Nachname</th>
         <th>Anzahl</th>
         <th colspan="2">Bestellung</th>
       </tr>
@@ -54,7 +54,7 @@
         <td>{{ 'keiner'|dim }}</td>
         {%- endif %}
         <td>
-          {{- render_user_admin_link(user) }}<br/>
+          {{- render_user_admin_link(user) }}<br>
           {{- render_with_fallback(user.detail.full_name) -}}
         </td>
         <td class="centered">{{ quantity }}</td>

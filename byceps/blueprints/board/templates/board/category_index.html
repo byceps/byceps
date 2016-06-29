@@ -30,7 +30,7 @@
         <td class="centered">{{ category.posting_count }}</td>
         <td class="nowrap">
           {%- if category.last_posting_updated_at and category.last_posting_updated_by -%}
-            {{ render_datetime(category.last_posting_updated_at) }}<br/>
+            {{ render_datetime(category.last_posting_updated_at) }}<br>
             von {{ render_user_link(category.last_posting_updated_by) }}
           {%- endif -%}
         </td>

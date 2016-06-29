@@ -7,7 +7,7 @@
       <aside>
         <div class="creator">{{ render_user_link(comment.created_by) }}</div>
         {{- render_user_avatar(comment.created_by) }}
-        {{ render_datetime(comment.created_at)|replace(', ', '<br/>'|safe) }}
+        {{ render_datetime(comment.created_at)|replace(', ', '<br>'|safe) }}
       </aside>
       <div class="content">
         <div class="body">

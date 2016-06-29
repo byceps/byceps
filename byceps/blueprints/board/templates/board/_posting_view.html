@@ -15,7 +15,7 @@
 {{ render_user_badges(posting.creator.badges) }}
     {%- endif %}
 
-    {{ render_datetime(posting.created_at)|replace(', ', '<br/>'|safe) }}
+    {{ render_datetime(posting.created_at)|replace(', ', '<br>'|safe) }}
 
     {%- if posting.unseen %}<div>{{ render_flag_new() }}</div>{% endif %}
 

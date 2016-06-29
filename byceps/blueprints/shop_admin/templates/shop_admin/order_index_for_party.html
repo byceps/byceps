@@ -59,7 +59,7 @@
         <td class="nowrap">{{ render_order_link(order) }}</td>
         <td class="centered">{{ render_order_payment_state(order.payment_state) }}</td>
         <td>
-          {{- render_user_admin_link(order.placed_by) -}}<br/>
+          {{- render_user_admin_link(order.placed_by) -}}<br>
           {{- order.first_names }} {{ order.last_name -}}
         </td>
         <td>{{ render_datetime(order.created_at) }}</td>

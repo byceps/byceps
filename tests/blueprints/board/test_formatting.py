@@ -30,13 +30,13 @@ def test_labeled_url_linking():
 
 def test_image():
     text = 'before [img]http://example.com/image.png[/img] after'
-    expected = 'before <img src="http://example.com/image.png"/> after'
+    expected = 'before <img src="http://example.com/image.png"> after'
     assert render_html(text) == expected
 
 
 def test_linked_image():
     text = 'before [url=http://example.com/index.html][img]http://example.com/image.png[/img][/url] after'
-    expected = 'before <a href="http://example.com/index.html"><img src="http://example.com/image.png"/></a> after'
+    expected = 'before <a href="http://example.com/index.html"><img src="http://example.com/image.png"></a> after'
     assert render_html(text) == expected
 
 

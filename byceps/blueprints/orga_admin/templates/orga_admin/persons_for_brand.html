@@ -34,10 +34,10 @@
     <thead>
       <tr>
         <th>Avatar</th>
-        <th>Benutzername<br/>Voller Name</th>
-        <th>Geburtstag<br/>Alter</th>
-        <th>Straße<br/>PLZ, Ort<br/>Land</th>
-        <th>E-Mail-Adresse<br/>Telefonnummer</th>
+        <th>Benutzername<br>Voller Name</th>
+        <th>Geburtstag<br>Alter</th>
+        <th>Straße<br>PLZ, Ort<br>Land</th>
+        <th>E-Mail-Adresse<br>Telefonnummer</th>
       </tr>
     </thead>
     <tbody>
@@ -45,12 +45,12 @@
       <tr>
         <td>{{ render_orga_avatar_small(user) }}</td>
         <td class="nowrap">
-          {{- render_user_admin_link(user) }}<br/>
+          {{- render_user_admin_link(user) }}<br>
           {{- render_with_fallback(user.detail.full_name) -}}
         </td>
         <td class="nowrap">
           {%- if user.detail.date_of_birth %}
-            {{- render_date(user.detail.date_of_birth) }}<br/>
+            {{- render_date(user.detail.date_of_birth) }}<br>
             {{- user.detail.age }} Jahre
           {%- else -%}
             {{ 'nicht angegeben'|dim }}
@@ -58,15 +58,15 @@
         </td>
         <td class="nowrap">
           {{- render_with_fallback(user.detail.street) -}}
-          <br/>
+          <br>
           {%- if user.detail.zip_code %}{{ user.detail.zip_code }} {% endif -%}
           {{- render_with_fallback(user.detail.city) -}}
-          <br/>
+          <br>
           {{- render_with_fallback(user.detail.country) -}}
-          <br/>
+          <br>
         </td>
         <td class="nowrap">
-          <a href="mailto:{{- user.email_address }}">{{- user.email_address|truncate(28, killwords=True, end='…') }}</a><br/>
+          <a href="mailto:{{- user.email_address }}">{{- user.email_address|truncate(28, killwords=True, end='…') }}</a><br>
           {{- render_with_fallback(user.detail.phone_number) -}}
         </td>
         <td><a href="{{ url_for('.remove_orgaflag', brand_id=brand.id, user_id=user.id) }}" class="action inline orgaflag-remove" title="Person den Orga-Status entziehen">{{ render_icon('remove') }}</a></td>

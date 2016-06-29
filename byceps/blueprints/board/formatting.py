@@ -29,7 +29,7 @@ def create_parser():
 
     # Replace image tags.
     def render_image(name, value, options, parent, context):
-        return '<img src="{}"/>'.format(value)
+        return '<img src="{}">'.format(value)
     parser.add_formatter('img', render_image, replace_links=False)
 
     # Render quotes with optional author.

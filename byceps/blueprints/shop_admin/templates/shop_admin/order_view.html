@@ -52,7 +52,7 @@
     </tr>
     {%- if order.payment_state == PaymentState.canceled %}
     <tr>
-      <th>Begründung für<br/>Stornierung</th>
+      <th>Begründung für<br>Stornierung</th>
       <td>{{ render_with_fallback(order.cancelation_reason) }}</td>
     </tr>
     {%- endif %}
@@ -111,7 +111,7 @@
   </table>
 
   <ol class="actions">
-    <li><a href="{{ url_for('.order_export', id=order.id) }}" download="{{ order.order_number }}.xml">{{ render_icon('download') }} für Lexware exportieren<br/><small>(Shopschnittstelle; als XML)</small></a></li>
+    <li><a href="{{ url_for('.order_export', id=order.id) }}" download="{{ order.order_number }}.xml">{{ render_icon('download') }} für Lexware exportieren<br><small>(Shopschnittstelle; als XML)</small></a></li>
   </ol>
 
 {%- endblock %}
