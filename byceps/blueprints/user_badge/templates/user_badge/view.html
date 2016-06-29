@@ -1,5 +1,5 @@
 {% extends 'layout/base_auto.html' %}
-{% from 'macros/user.html' import render_user_avatar, render_user_link %}
+{% from 'macros/user.html' import render_user_avatar_with_fallback, render_user_link %}
 {% set current_page = 'user_badge' %}
 {% set title = 'Abzeichen - %s'|format(badge.label) %}
 
@@ -67,16 +67,7 @@
   <ul class="list-grid">
     {%- for user in badge.recipients|sort(attribute='screen_name') %}
     <li><a class="recipient" href="{{ url_for('user.view', id=user.id) }}">
-      {%- if user.avatar -%}
-      {{ render_user_avatar(user) }}
-      {%- else -%}
-      <div class="avatar none{% if user.is_orga_for_party(g.party) %} orga{% endif %}" title="{{ user.screen_name }}">
-        <img src="{{ url_for('core.static', filename='avatar_fallback.svg') }}" alt="Avatar von {{ user.screen_name }}">
-        {%- if user.is_orga_for_party(g.party) %}
-        <div class="orga-badge">Organizer</div>
-        {%- endif %}
-      </div>
-      {%- endif -%}
+{{ render_user_avatar_with_fallback(user) }}
     </a></li>
     {%- endfor %}
   </ul>
