@@ -20,7 +20,7 @@
 
 
 {% macro render_user_avatar_with_fallback(user) -%}
-<div class="avatar{% if not user.avatar %} none{% endif %}{% if user.is_orga_for_party(g.party) %} orga{% endif %}" title="{{ user.screen_name }}">
+<div class="avatar{% if user.is_orga_for_party(g.party) %} orga{% endif %}" title="{{ user.screen_name }}">
   {%- set avatar_url = user.avatar.url if user.avatar else url_for('core.static', filename='avatar_fallback.svg') %}
   <img src="{{ avatar_url }}" alt="Avatar von {{ user.screen_name }}">
   {%- if user.is_orga_for_party(g.party) %}
