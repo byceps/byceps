@@ -2,7 +2,7 @@
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/authorization_admin.html' import render_main_tabs with context %}
 {% from 'macros/misc.html' import render_with_fallback %}
-{% from 'macros/user_admin.html' import render_user_admin_link %}
+{% from 'macros/user_admin.html' import render_user_avatar_tiny_and_link %}
 {% set current_page = 'authorization_admin.roles' %}
 {% set title = 'Rollen' %}
 
@@ -47,7 +47,7 @@
         {%- elif role.users|length <= user_limit %}
           <ol>
           {%- for user in role.users|sort(attribute='screen_name') %}
-            <li>{{ render_user_admin_link(user) }}</li>
+            <li>{{ render_user_avatar_tiny_and_link(user) }}</li>
           {%- endfor %}
           </ol>
         {%- else %}

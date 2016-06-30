@@ -1,6 +1,6 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/datetime.html' import render_datetime %}
-{% from 'macros/user_admin.html' import render_user_admin_link %}
+{% from 'macros/user_admin.html' import render_user_avatar_tiny_and_link %}
 {% set current_page = 'terms_admin' %}
 {% set current_page_brand = brand %}
 {% set title = 'Allgemeine Geschäftsbedingungen' %}
@@ -22,7 +22,7 @@
         <tr>
           <td>{{ version.id }}</td>
           <td class="nowrap">{{ render_datetime(version.created_at) }}</td>
-          <td>{{ render_user_admin_link(version.creator) }}</td>
+          <td>{{ render_user_avatar_tiny_and_link(version.creator) }}</td>
         </tr>
       {%- endfor %}
     </tbody>

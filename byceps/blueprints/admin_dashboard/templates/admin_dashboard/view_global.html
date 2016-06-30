@@ -1,7 +1,7 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin_dashboard.html' import render_bigstats_cell, render_cell %}
 {% from 'macros/orga_admin.html' import render_random_age_adjective, render_relative_days_until, render_time_element %}
-{% from 'macros/user_admin.html' import render_orga_avatar_small, render_user_admin_link %}
+{% from 'macros/user_admin.html' import render_user_avatar_tiny_and_link %}
 {% set current_page = 'admin_dashboard_global' %}
 {% set title = 'Dashboard' %}
 {% set layout_main_raw = True %}
@@ -36,9 +36,8 @@
       {%- for user in orgas_with_next_birthdays %}
         {%- with is_today = user.detail.is_birthday_today %}
         <tr>
-          <td>{{ render_orga_avatar_small(user) }}</td>
           <td{% if is_today %} class="hastoday"{% elif user.detail.days_until_next_birthday > 14 %} class="dimmed"{% endif %}>
-            {{ render_user_admin_link(user) }}
+            {{ render_user_avatar_tiny_and_link(user) }}
             {% if is_today %}{{ render_icon('birthday') }}{% endif %}
             {%- set relative_days_label = render_relative_days_until(user) %}
             wird {{ render_time_element(user.detail.date_of_birth, relative_days_label) }}

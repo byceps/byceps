@@ -1,7 +1,7 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
-{% from 'macros/user_admin.html' import render_user_admin_link %}
+{% from 'macros/user_admin.html' import render_user_avatar_tiny_and_link %}
 {% set current_page = 'snippet_admin' %}
 {% set current_page_party = snippet.party %}
 {% set title = 'Versionshistorie' %}
@@ -37,7 +37,7 @@
             {%- endif -%}
           </td>
           <td class="nowrap"><a href="{{ url_for('.view_version', id=version.id) }}">{{ render_datetime(version.created_at) }}</a></td>
-          <td>{{ render_user_admin_link(version.creator) }}</td>
+          <td>{{ render_user_avatar_tiny_and_link(version.creator) }}</td>
           <td>
             {%- if previous_version -%}
             <a href="{{ url_for('.view_difference', from_version_id=previous_version.id, to_version_id=version.id) }}" title="Änderungen im Vergleich zur vorigen Version anzeigen">Änderungen zeigen</a>

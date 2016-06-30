@@ -4,7 +4,7 @@
 {% from 'macros/misc.html' import render_tag, render_with_fallback %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
 {% from 'macros/stats.html' import render_bigstats_item %}
-{% from 'macros/user_admin.html' import render_user_admin_link %}
+{% from 'macros/user_admin.html' import render_user_avatar_tiny_and_link %}
 {% set current_page = 'user_admin' %}
 {% set title = 'Benutzer' %}
 
@@ -69,7 +69,7 @@
   <table class="index wide">
     <thead>
       <tr>
-        <th colspan="2">Benutzername</th>
+        <th>Benutzername</th>
         <th>Voller Name</th>
         <th>Erstellt</th>
         <th>Legacy ID</th>
@@ -81,9 +81,8 @@
       <tr{% if user.deleted %} class="dimmed"{% endif %}>
         <td>
           {%- if user.deleted %}{{ render_icon('delete', title='gelöscht') }} {% endif -%}
-          {{- render_user_admin_link(user) -}}
+          {{- render_user_avatar_tiny_and_link(user) -}}
         </td>
-        <td>{% if user.avatar %} {{ render_icon('image', title='Avatarbild hinterlegt') }}{% endif %}</td>
         <td>{{ render_with_fallback(user.detail.full_name) }}</td>
         <td>{{ render_datetime(user.created_at) }}</td>
         <td>{{ render_with_fallback(user.legacy_id) }}</td>
