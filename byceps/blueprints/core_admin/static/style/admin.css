@@ -448,6 +448,14 @@ ol.index.fully-linked a:hover {
 
 /* user avatars */
 
+.avatar {
+  display: inline-block;
+}
+.avatar img {
+  border: #cccccc solid 1px;
+  display: block;
+}
+
 .avatar.small img {
   height: 48px;
   width: 48px;

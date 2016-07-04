@@ -301,6 +301,40 @@ nav.main .current a {
 }
 
 
+/* user avatars */
+
+.avatar {
+  display: inline-block;
+}
+.avatar img {
+  border: #cccccc solid 1px;
+  display: block;
+}
+
+.avatar .orga-badge {
+  font-weight: bold;
+  padding-top: 0.5em;
+}
+
+
+/* user badges */
+
+.user-badge {
+  border: #cccccc solid 1px;
+  border-radius: 50%;
+  display: inline-block;
+  padding: 8px;
+}
+a.user-badge:hover {
+  border-color: currentColor;
+}
+.user-badge img {
+  display: block;
+  height: 64px;
+  width: 64px;
+}
+
+
 /* misc */
 
 main h1 a {
@@ -320,26 +354,6 @@ main h1 a:hover {
 }
 .list-grid > li {
   padding: 8px 0 0 8px;
-}
-
-.user-badge {
-  border: #cccccc solid 1px;
-  border-radius: 50%;
-  display: inline-block;
-  padding: 8px;
-}
-a.user-badge:hover {
-  border-color: currentColor;
-}
-.user-badge img {
-  display: block;
-  height: 64px;
-  width: 64px;
-}
-
-.avatar .orga-badge {
-  font-weight: bold;
-  padding-top: 0.5em;
 }
 
 

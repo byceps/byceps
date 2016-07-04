@@ -442,14 +442,3 @@ main img {
   padding: 0 0.4em;
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.15);
 }
-
-
-/* avatars */
-
-.avatar {
-  display: inline-block;
-}
-.avatar img {
-  border: #cccccc solid 1px;
-  display: block;
-}
