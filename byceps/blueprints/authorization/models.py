@@ -61,6 +61,10 @@ class Role(db.Model):
     permissions = association_proxy('role_permissions', 'permission')
     users = association_proxy('user_roles', 'user')
 
+    def __init__(self, id, title=None):
+        self.id = id
+        self.title = title
+
     def __repr__(self):
         return ReprBuilder(self) \
             .add_with_lookup('id') \

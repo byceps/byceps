@@ -72,7 +72,7 @@ class ExportTestCase(AbstractAppTestCase):
         permission = Permission.from_enum_member(ShopOrderPermission.view)
         self.db.session.add(permission)
 
-        role = Role(id='shop_admin')
+        role = Role('shop_admin')
         role.permissions.add(permission)
         self.db.session.add(role)
 

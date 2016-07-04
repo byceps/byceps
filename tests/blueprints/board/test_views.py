@@ -196,7 +196,7 @@ class BoardModerationTestCase(AbstractAppTestCase):
         db_permission = Permission.from_enum_member(permission)
         self.db.session.add(db_permission)
 
-        board_moderator_role = Role(id='board_moderator')
+        board_moderator_role = Role('board_moderator')
         self.db.session.add(board_moderator_role)
 
         board_moderator_role.permissions.add(db_permission)

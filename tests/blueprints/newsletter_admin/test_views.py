@@ -29,7 +29,7 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
             NewsletterPermission.export_subscribers)
         self.db.session.add(export_subscribers_permission)
 
-        newsletter_admin_role = Role(id='newsletter_admin')
+        newsletter_admin_role = Role('newsletter_admin')
         self.db.session.add(newsletter_admin_role)
 
         newsletter_admin_role.permissions.add(export_subscribers_permission)

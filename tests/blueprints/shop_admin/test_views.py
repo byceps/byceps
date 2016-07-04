@@ -31,7 +31,7 @@ class ShopAdminTestCase(AbstractAppTestCase):
             ShopOrderPermission.update)
         self.db.session.add(update_orders_permission)
 
-        shop_admin_role = Role(id='shop_admin')
+        shop_admin_role = Role('shop_admin')
         self.db.session.add(shop_admin_role)
 
         shop_admin_role.permissions.add(update_orders_permission)
