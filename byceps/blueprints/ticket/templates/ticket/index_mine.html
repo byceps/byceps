@@ -66,7 +66,7 @@
           {{ render_tag('keiner', class='available') }}
           {%- endif -%}
           <br>
-          {{ 'verwaltet durch'|dim  }} {{ render_user_link(ticket.get_seat_manager()) }}
+          {{ 'verwaltet durch'|dim }} {{ render_user_link(ticket.get_seat_manager()) }}
         </td>
         <td>
           {%- if ticket.used_by -%}
