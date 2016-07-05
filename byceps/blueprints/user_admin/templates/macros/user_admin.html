@@ -1,17 +1,8 @@
-{% from 'macros/user.html' import render_user_avatar_image, render_user_avatar_tiny %}
+{% from 'macros/user.html' import render_user_avatar_tiny %}
 
 
 {% macro render_user_admin_link(user) -%}
 <a href="{{ url_for('user_admin.view', id=user.id) }}">{{ user.screen_name }}</a>
-{%- endmacro %}
-
-
-{% macro render_user_admin_avatar(user) %}
-  {%- if user.avatar %}
-<div class="avatar">
-  {{ render_user_avatar_image(user) }}
-</div>
-  {%- endif -%}
 {%- endmacro %}
 
 
