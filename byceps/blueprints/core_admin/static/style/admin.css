@@ -144,10 +144,7 @@ a {
   white-space: nowrap;
 }
 #current-user .avatar {
-  display: block;
-  height: 42px;
   margin-right: 10px;
-  width: 42px;
 }
 #current-user .avatar img {
   height: auto;
