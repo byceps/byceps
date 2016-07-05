@@ -7,13 +7,13 @@
 
 import json
 
-from byceps.blueprints.authorization.models import Permission
 from byceps.blueprints.newsletter_admin.authorization import NewsletterPermission
 from byceps.blueprints.newsletter.models import Subscription, SubscriptionState
 
 from tests.base import AbstractAppTestCase
 
-from testfixtures.authorization import create_role
+from testfixtures.authorization import create_permission_from_enum_member, \
+    create_role
 from testfixtures.user import create_user
 
 
@@ -26,7 +26,7 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
         self.setup_subscribers()
 
     def setup_admin(self):
-        export_subscribers_permission = Permission.from_enum_member(
+        export_subscribers_permission = create_permission_from_enum_member(
             NewsletterPermission.export_subscribers)
         self.db.session.add(export_subscribers_permission)
 

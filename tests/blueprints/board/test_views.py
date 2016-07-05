@@ -7,12 +7,12 @@
 
 from datetime import datetime
 
-from byceps.blueprints.authorization.models import Permission
 from byceps.blueprints.board.authorization import BoardTopicPermission
 from byceps.blueprints.board.models.category import Category
 from byceps.blueprints.board.models.topic import Topic
 
-from testfixtures.authorization import create_role
+from testfixtures.authorization import create_permission_from_enum_member, \
+    create_role
 from testfixtures.board import create_category, create_topic
 from testfixtures.user import create_user
 
@@ -194,7 +194,7 @@ class BoardModerationTestCase(AbstractAppTestCase):
         return user
 
     def setup_admin(self, permission):
-        db_permission = Permission.from_enum_member(permission)
+        db_permission = create_permission_from_enum_member(permission)
         self.db.session.add(db_permission)
 
         board_moderator_role = create_role('board_moderator')
