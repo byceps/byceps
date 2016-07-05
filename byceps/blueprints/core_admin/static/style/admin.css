@@ -453,11 +453,6 @@ ol.index.fully-linked a:hover {
   display: block;
 }
 
-.avatar.small img {
-  height: 48px;
-  width: 48px;
-}
-
 .avatar.size-medium,
 .avatar.size-small,
 .avatar.size-tiny {

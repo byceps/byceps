@@ -15,15 +15,6 @@
 {%- endmacro %}
 
 
-{% macro render_orga_avatar_small(user) %}
-  {%- if user.avatar %}
-<div class="avatar orga small">
-  {{ render_user_avatar_image(user) }}
-</div>
-  {%- endif -%}
-{%- endmacro %}
-
-
 {% macro render_user_avatar_tiny_and_link(user) -%}
 <span class="nowrap">{{ render_user_avatar_tiny(user) }} {{ render_user_admin_link(user) }}</span>
 {%- endmacro %}
