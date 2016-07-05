@@ -30,11 +30,15 @@ class Permission(db.Model):
 
     roles = association_proxy('role_permissions', 'role')
 
+    def __init__(self, id, title=None):
+        self.id = id
+        self.title = title
+
     @classmethod
     def from_enum_member(cls, enum_member):
         key = enum_member.__class__.__key__
         id = '{}.{}'.format(key, enum_member.name)
-        return cls(id=id)
+        return cls(id)
 
     @property
     def enum_member(self):

@@ -5,9 +5,10 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.blueprints.authorization.models import Permission
 from byceps.blueprints.authorization.registry import PermissionRegistry
 from byceps.util.authorization import create_permission_enum
+
+from testfixtures.authorization import create_permission
 
 
 ItemPermission = create_permission_enum('item', ['view', 'create', 'update'])
@@ -41,7 +42,3 @@ def create_registry_with_registered_enum():
     registry = PermissionRegistry()
     registry.register_enum(ItemPermission)
     return registry
-
-
-def create_permission(id):
-    return Permission(id=id)
