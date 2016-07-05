@@ -2,7 +2,8 @@
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_with_fallback %}
-{% from 'macros/user_admin.html' import render_orga_avatar_small, render_user_admin_link %}
+{% from 'macros/user.html' import render_user_avatar_small %}
+{% from 'macros/user_admin.html' import render_user_admin_link %}
 {% set current_page = 'orga_admin.teams' %}
 {% set current_page_party = party %}
 {% set title = 'Orga-Teams' %}
@@ -84,7 +85,7 @@
             <li>
               <div class="member">
                 <div>
-                  {{ render_orga_avatar_small(membership.user) }}
+                  {{ render_user_avatar_small(membership.user) }}
                 </div>
                 <div class="details">
                   {{ render_user_admin_link(membership.user) }}<br>
