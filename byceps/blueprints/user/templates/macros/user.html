@@ -52,18 +52,6 @@
 {%- endmacro %}
 
 
-{% macro render_user_avatar_with_fallback(user) -%}
-  {%- set is_orga = user.is_orga_for_party(g.party) %}
-<div class="avatar{% if is_orga %} orga{% endif %}" title="{{ user.screen_name }}">
-  {%- set avatar_url = user.avatar.url if user.avatar else url_for('core.static', filename='avatar_fallback.svg') %}
-  <img src="{{ avatar_url }}" alt="Avatar von {{ user.screen_name }}">
-  {%- if is_orga %}
-  <div class="orga-badge">Organizer</div>
-  {%- endif %}
-</div>
-{%- endmacro %}
-
-
 {% macro render_user_avatar_image(user) %}
   <img src="{{ user.avatar.url }}" alt="Avatar von {{ user.screen_name }}">
 {%- endmacro %}
