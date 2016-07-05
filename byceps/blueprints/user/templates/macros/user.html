@@ -8,10 +8,11 @@
 
 
 {% macro render_user_avatar(user) %}
+  {%- set is_orga = user.is_orga_for_party(g.party) %}
   {%- if user.avatar -%}
-<div class="avatar{% if user.is_orga_for_party(g.party) %} orga{% endif %}" title="{{ user.screen_name }}">
+<div class="avatar{% if is_orga %} orga{% endif %}" title="{{ user.screen_name }}">
   {{ render_user_avatar_image(user) }}
-  {%- if user.is_orga_for_party(g.party) %}
+  {%- if is_orga %}
   <div class="orga-badge">Organizer</div>
   {%- endif %}
 </div>
@@ -28,10 +29,11 @@
 
 
 {% macro render_user_avatar_with_fallback(user) -%}
-<div class="avatar{% if user.is_orga_for_party(g.party) %} orga{% endif %}" title="{{ user.screen_name }}">
+  {%- set is_orga = user.is_orga_for_party(g.party) %}
+<div class="avatar{% if is_orga %} orga{% endif %}" title="{{ user.screen_name }}">
   {%- set avatar_url = user.avatar.url if user.avatar else url_for('core.static', filename='avatar_fallback.svg') %}
   <img src="{{ avatar_url }}" alt="Avatar von {{ user.screen_name }}">
-  {%- if user.is_orga_for_party(g.party) %}
+  {%- if is_orga %}
   <div class="orga-badge">Organizer</div>
   {%- endif %}
 </div>
