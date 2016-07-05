@@ -1,5 +1,5 @@
 {% extends 'layout/base_auto.html' %}
-{% from 'macros/user.html' import render_user_avatar_with_fallback, render_user_link %}
+{% from 'macros/user.html' import render_user_avatar_medium %}
 {% set current_page = 'user_badge' %}
 {% set title = 'Abzeichen - %s'|format(badge.label) %}
 
@@ -23,20 +23,6 @@
     }
     a.recipient:hover .avatar img {
       border: currentColor solid 1px;
-    }
-
-    .avatar {
-      display: block;
-      height: 64px;
-      overflow: hidden;
-      width: 64px;
-    }
-    .avatar img {
-      min-height: 100%;
-      min-width: 100%;
-    }
-    .avatar .orga-badge {
-      font-size: 0.5rem;
     }
   </style>
 {% endblock %}
@@ -63,7 +49,7 @@
   <ul class="list-grid">
     {%- for user in badge.recipients|sort(attribute='screen_name') %}
     <li><a class="recipient" href="{{ url_for('user.view', id=user.id) }}">
-{{ render_user_avatar_with_fallback(user) }}
+{{ render_user_avatar_medium(user) }}
     </a></li>
     {%- endfor %}
   </ul>
