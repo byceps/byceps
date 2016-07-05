@@ -20,4 +20,7 @@ def create_permission_from_enum_member(permission_enum_member):
 
 
 def create_role(id, title=None):
+    if title is None:
+        title = id
+
     return Role(id, title)
