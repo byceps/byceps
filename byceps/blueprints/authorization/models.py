@@ -60,7 +60,7 @@ class Role(db.Model):
     __tablename__ = 'auth_roles'
 
     id = db.Column(db.Unicode(40), primary_key=True)
-    title = db.deferred(db.Column(db.Unicode(80), unique=True, nullable=True))
+    title = db.deferred(db.Column(db.Unicode(80), unique=True, nullable=False))
 
     permissions = association_proxy('role_permissions', 'permission')
     users = association_proxy('user_roles', 'user')
