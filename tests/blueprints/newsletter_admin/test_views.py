@@ -7,12 +7,13 @@
 
 import json
 
-from byceps.blueprints.authorization.models import Permission, Role
+from byceps.blueprints.authorization.models import Permission
 from byceps.blueprints.newsletter_admin.authorization import NewsletterPermission
 from byceps.blueprints.newsletter.models import Subscription, SubscriptionState
 
 from tests.base import AbstractAppTestCase
 
+from testfixtures.authorization import create_role
 from testfixtures.user import create_user
 
 
@@ -29,7 +30,7 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
             NewsletterPermission.export_subscribers)
         self.db.session.add(export_subscribers_permission)
 
-        newsletter_admin_role = Role('newsletter_admin')
+        newsletter_admin_role = create_role('newsletter_admin')
         self.db.session.add(newsletter_admin_role)
 
         newsletter_admin_role.permissions.add(export_subscribers_permission)

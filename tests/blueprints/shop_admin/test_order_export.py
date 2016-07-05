@@ -11,9 +11,10 @@ from decimal import Decimal
 
 from freezegun import freeze_time
 
-from byceps.blueprints.authorization.models import Permission, Role
+from byceps.blueprints.authorization.models import Permission
 from byceps.blueprints.shop_admin.authorization import ShopOrderPermission
 
+from testfixtures.authorization import create_role
 from testfixtures.brand import create_brand
 from testfixtures.party import create_party
 from testfixtures.shop import create_article, create_order, \
@@ -72,7 +73,7 @@ class ExportTestCase(AbstractAppTestCase):
         permission = Permission.from_enum_member(ShopOrderPermission.view)
         self.db.session.add(permission)
 
-        role = Role('shop_admin')
+        role = create_role('shop_admin')
         role.permissions.add(permission)
         self.db.session.add(role)
 

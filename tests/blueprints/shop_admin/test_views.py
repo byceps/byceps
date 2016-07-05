@@ -7,11 +7,12 @@
 
 from datetime import date
 
-from byceps.blueprints.authorization.models import Permission, Role
+from byceps.blueprints.authorization.models import Permission
 from byceps.blueprints.shop_admin.authorization import ShopOrderPermission
 from byceps.blueprints.shop.models.article import Article
 from byceps.blueprints.shop.models.order import Order, PaymentState
 
+from testfixtures.authorization import create_role
 from testfixtures.shop import create_article, create_order
 from testfixtures.user import create_user_with_detail
 
@@ -31,7 +32,7 @@ class ShopAdminTestCase(AbstractAppTestCase):
             ShopOrderPermission.update)
         self.db.session.add(update_orders_permission)
 
-        shop_admin_role = Role('shop_admin')
+        shop_admin_role = create_role('shop_admin')
         self.db.session.add(shop_admin_role)
 
         shop_admin_role.permissions.add(update_orders_permission)
