@@ -8,7 +8,6 @@ byceps.blueprints.snippet_admin.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from difflib import HtmlDiff
 from operator import attrgetter
 
 from flask import abort, g, render_template, request, url_for
@@ -113,15 +112,14 @@ def view_difference(from_version_id, to_version_id):
 
     # TODO: Diff title, head, and image path, too.
 
-    from_lines = from_version.body.split('\n')
-    to_lines = to_version.body.split('\n')
+    from_text = from_version.body
+    to_text = to_version.body
 
     from_description = format_datetime_short(from_version.created_at)
     to_description = format_datetime_short(to_version.created_at)
 
-    html_diff = HtmlDiff().make_table(from_lines, to_lines,
-                                      from_description, to_description,
-                                      context=True, numlines=3)
+    html_diff = service.create_html_diff(from_text, to_text,
+                                      from_description, to_description)
 
     return {
         'diff': html_diff,
