@@ -46,8 +46,24 @@
 
   <h1>{{ title }}</h1>
 
+  <h2>Titel</h2>
   <div class="difference">
-{{ diff|safe }}
+{{ diff_title|safe }}
+  </div>
+
+  <h2>Seitenkopf</h2>
+  <div class="difference">
+{{ diff_head|safe }}
+  </div>
+
+  <h2>Text</h2>
+  <div class="difference">
+{{ diff_body|safe }}
+  </div>
+
+  <h2>Bild-URL-Pfad</h2>
+  <div class="difference">
+{{ diff_image_url_path|safe }}
   </div>
 
 {%- endblock body %}

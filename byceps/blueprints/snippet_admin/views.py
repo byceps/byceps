@@ -112,17 +112,27 @@ def view_difference(from_version_id, to_version_id):
 
     # TODO: Diff title, head, and image path, too.
 
-    from_text = from_version.body
-    to_text = to_version.body
-
     from_description = format_datetime_short(from_version.created_at)
     to_description = format_datetime_short(to_version.created_at)
 
-    html_diff = service.create_html_diff(from_text, to_text,
-                                      from_description, to_description)
+    def create_html_diff(from_text, to_text):
+        return service.create_html_diff(from_text, to_text,
+                                        from_description, to_description)
+
+    html_diff_title = create_html_diff(from_version.title, to_version.title)
+
+    html_diff_head = create_html_diff(from_version.head, to_version.head)
+
+    html_diff_body = create_html_diff(from_version.body, to_version.body)
+
+    html_diff_image_url_path = create_html_diff(from_version.image_url_path,
+                                                to_version.image_url_path)
 
     return {
-        'diff': html_diff,
+        'diff_title': html_diff_title,
+        'diff_head': html_diff_head,
+        'diff_body': html_diff_body,
+        'diff_image_url_path': html_diff_image_url_path,
     }
 
 
