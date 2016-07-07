@@ -502,6 +502,15 @@ a.user-badge:hover {
 }
 
 
+/* misc */
+
+.dropdown button {
+  border: #cccccc solid 1px;
+  border-radius: 3px;
+  padding: 0;
+}
+
+
 /* print view */
 
 @media print {
