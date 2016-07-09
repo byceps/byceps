@@ -5,4 +5,5 @@
     <title>{% if title %}{{ title.replace(' - ', ' &middot; ')|safe }} &middot; {% endif %}BYCEPS</title>
     <script src="{{ url_for('core.static', filename='behavior/jquery.js') }}"></script>
     <script src="{{ url_for('core.static', filename='behavior/utils.js') }}"></script>
+    <script src="{{ url_for('core.static', filename='behavior/dropdown.js') }}"></script>
     <script src="{{ url_for('authentication.static', filename='behavior/authentication.js') }}"></script>
