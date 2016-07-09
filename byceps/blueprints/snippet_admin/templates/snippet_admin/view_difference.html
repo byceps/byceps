@@ -49,23 +49,22 @@
   <h1>{{ title }}</h1>
 
   <h2>Titel</h2>
-  <div class="difference">
-{{ diff_title|safe }}
-  </div>
+{{ render_difference(diff_title) }}
 
   <h2>Seitenkopf</h2>
-  <div class="difference">
-{{ diff_head|safe }}
-  </div>
+{{ render_difference(diff_head) }}
 
   <h2>Text</h2>
-  <div class="difference">
-{{ diff_body|safe }}
-  </div>
+{{ render_difference(diff_body) }}
 
   <h2>Bild-URL-Pfad</h2>
-  <div class="difference">
-{{ diff_image_url_path|safe }}
-  </div>
+{{ render_difference(diff_image_url_path) }}
 
 {%- endblock body %}
+
+
+{% macro render_difference(diff) %}
+  <div class="difference">
+{{- diff|safe }}
+  </div>
+{%- endmacro %}
