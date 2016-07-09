@@ -39,9 +39,15 @@ def _get_snippet_counts_by_party_id():
 
 def create_html_diff(from_text, to_text, from_description, to_description,
                      *, numlines=3):
-    """Calculate the difference between the two texts and render it as HTML."""
+    """Calculate the difference between the two texts and render it as HTML.
+
+    If the texts to compare are equal, `None` is returned.
+    """
     from_text = _fallback_if_none(from_text)
     to_text = _fallback_if_none(to_text)
+
+    if from_text == to_text:
+        return None
 
     from_lines = from_text.split('\n')
     to_lines = to_text.split('\n')

@@ -64,7 +64,11 @@
 
 
 {% macro render_difference(diff) %}
+  {%- if diff is not none %}
   <div class="difference">
 {{- diff|safe }}
   </div>
+  {%- else %}
+  <p>{{ 'keine Unterschiede'|dim }}</p>
+  {%- endif %}
 {%- endmacro %}
