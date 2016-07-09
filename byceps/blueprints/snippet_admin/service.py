@@ -40,8 +40,8 @@ def _get_snippet_counts_by_party_id():
 def create_html_diff(from_text, to_text, from_description, to_description,
                      *, numlines=3):
     """Calculate the difference between the two texts and render it as HTML."""
-    from_lines = from_text.split('\n')
-    to_lines = to_text.split('\n')
+    from_lines = (from_text or '').split('\n')
+    to_lines = (to_text or '').split('\n')
 
     return HtmlDiff().make_table(from_lines, to_lines,
                                  from_description, to_description,
