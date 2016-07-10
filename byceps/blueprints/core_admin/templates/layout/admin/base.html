@@ -25,9 +25,12 @@
             <a class="name" href="{{ url_for('user.view_current') }}">{{ g.current_user.screen_name }}</a>
           </div>
           <div>
-            <span class="actions inline">
-              <a id="logout" href="{{ url_for('authentication.logout', _method='POST') }}" title="abmelden">{{ render_icon('log-out') }}</a>
-            </span>
+            <div class="dropdown">
+              <button><span class="icon-caret-down"></span></button>
+              <ol>
+                <li><a id="logout" href="{{ url_for('authentication.logout', _method='POST') }}">{{ render_icon('log-out') }} abmelden</a></li>
+              </ol>
+            </div>
           </div>
         {%- else -%}
           <div>
