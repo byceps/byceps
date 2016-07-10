@@ -143,6 +143,10 @@ a {
   flex: 1;
   white-space: nowrap;
 }
+#current-user .current-user-avatar {
+  align-items: center;
+  display: flex;
+}
 #current-user .avatar {
   margin-right: 10px;
 }

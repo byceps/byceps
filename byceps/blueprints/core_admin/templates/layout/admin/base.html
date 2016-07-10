@@ -1,7 +1,7 @@
 {%- from 'macros/admin.html' import render_brand_head, render_navigation, render_party_head %}
 {%- from 'macros/admin.html' import render_navigation_brand, render_navigation_global, render_navigation_party with context %}
 {%- from 'macros/icons.html' import render_icon %}
-{%- from 'macros/user.html' import render_user_avatar_small %}
+{%- from 'macros/user.html' import render_user_avatar_mini %}
 <!DOCTYPE html>
 <html lang="de">
   <head>
@@ -18,8 +18,8 @@
 
         <div id="current-user">
         {% if g.current_user.is_active %}
-          <div>
-            {{ render_user_avatar_small(g.current_user) }}
+          <div class="current-user-avatar">
+            {{ render_user_avatar_mini(g.current_user) }}
           </div>
           <div>
             <span class="intro">Angemeldet als</span>
