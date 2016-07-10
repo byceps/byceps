@@ -119,10 +119,6 @@ a {
 #current-user .avatar {
   margin-right: 10px;
 }
-#current-user .avatar img {
-  height: auto;
-  max-width: 100%;
-}
 #current-user .intro {
   display: block;
   opacity: 0.5;
