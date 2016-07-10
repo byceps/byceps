@@ -32,13 +32,13 @@
 {% endmacro %}
 
 
-{% macro render_navigation(navigation, current_page, css_class=None, labels=False) %}
-  <nav{% if css_class %} class="{{ css_class }}"{% endif %}>
+{% macro render_navigation(navigation, current_page) %}
+  <nav class="main">
     <ol>
       {%- for item in navigation.get_items() %}
       <li{% if (item.id is not none) and (item.id is is_current_page(current_page)) %} class="current"{% endif %}><a href="{{ item.endpoint }}" title="{{ item.label }}">
-        {{- render_icon(item.icon) if item.icon else item.label[0] -}}
-        {%- if labels %} {{ item.label }}{% endif -%}
+        {%- if item.icon %}{{ render_icon(item.icon) }} {% endif -%}
+        {{- item.label -}}
       </a></li>
       {%- endfor %}
     </ol>
@@ -46,7 +46,7 @@
 {% endmacro %}
 
 
-{% macro render_navigation_global(current_page, css_class=None, labels=False) -%}
+{% macro render_navigation_global(current_page) -%}
   {%- set navigation = Navigation('global')
       .add_item(url_for('admin_dashboard.view_global'), 'Dashboard', id='admin_dashboard_global', required_permission=AdminDashboardPermission.view_global, icon='dashboard')
       .add_item(url_for('user_admin.index'), 'Benutzer', id='user_admin', required_permission=UserPermission.list, icon='users')
@@ -54,11 +54,11 @@
       .add_item(url_for('user_badge.index'), 'Abzeichen', id='user_badge', icon='badge')
       .add_item(url_for('orga_admin.birthdays'), 'Geburtstage', id='orga_admin.birthdays', required_permission=OrgaBirthdayPermission.list, icon='birthday')
   -%}
-{{ render_navigation(navigation, current_page, css_class=css_class, labels=labels) }}
+{{ render_navigation(navigation, current_page) }}
 {% endmacro %}
 
 
-{% macro render_navigation_brand(brand, current_page, css_class=None, labels=False) -%}
+{% macro render_navigation_brand(brand, current_page) -%}
   {%- set navigation = Navigation('Marke')
       .add_item(url_for('admin_dashboard.view_brand', brand_id=brand.id), 'Dashboard', id='admin_dashboard_brand', required_permission=AdminDashboardPermission.view_brand, icon='dashboard')
       .add_item(url_for('orga_admin.persons_for_brand', brand_id=brand.id), 'Organisatoren', id='orga_admin', required_permission=OrgaDetailPermission.view, icon='users')
@@ -67,11 +67,11 @@
       .add_item(url_for('terms_admin.index_for_brand', brand_id=brand.id), 'AGB', id='terms_admin', required_permission=TermsPermission.list, icon='legal')
       .add_item(url_for('board_admin.index_for_brand', brand_id=brand.id), 'Board', id='board_admin', required_permission=BoardCategoryPermission.list, icon='board')
   -%}
-{{ render_navigation(navigation, current_page, css_class=css_class, labels=labels) }}
+{{ render_navigation(navigation, current_page) }}
 {% endmacro %}
 
 
-{% macro render_navigation_party(party, current_page, css_class=None, labels=False) -%}
+{% macro render_navigation_party(party, current_page) -%}
   {%- set navigation = Navigation('Party')
       .add_item(url_for('admin_dashboard.view_party', party_id=party.id), 'Dashboard', id='admin_dashboard_party', required_permission=AdminDashboardPermission.view_party, icon='dashboard')
       .add_item(url_for('snippet_admin.index_for_party', party_id=party.id), 'Snippets', id='snippet_admin', required_permission=SnippetPermission.list, icon='snippet')
@@ -83,7 +83,7 @@
       .add_item(url_for('orga_presence.view', party_id=party.id), 'Orga-Anwesenheit', id='orga_presence', required_permission=OrgaPresencePermission.list, icon='date-okay')
       .add_item(url_for('tourney_admin.category_index_for_party', party_id=party.id), 'Turniere', id='tourney_admin', required_permission=TourneyCategoryPermission.list, icon='trophy')
   -%}
-{{ render_navigation(navigation, current_page, css_class=css_class, labels=labels) }}
+{{ render_navigation(navigation, current_page) }}
 {% endmacro %}
 
 
