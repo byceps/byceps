@@ -312,6 +312,7 @@ nav.main .current a {
 }
 
 .avatar.size-medium,
+.avatar.size-mini,
 .avatar.size-small,
 .avatar.size-tiny {
   display: inline-block;
@@ -322,6 +323,10 @@ nav.main .current a {
   height: 64px;
   width: 64px;
 }
+.avatar.size-mini {
+  height: 32px;
+  width: 32px;
+}
 .avatar.size-small {
   height: 48px;
   width: 48px;
@@ -331,6 +336,7 @@ nav.main .current a {
   width: 16px;
 }
 .avatar.size-medium img,
+.avatar.size-mini img,
 .avatar.size-small img,
 .avatar.size-tiny img {
   min-height: 100%;
@@ -340,6 +346,9 @@ nav.main .current a {
 .avatar .orga-badge {
   font-weight: bold;
   padding-top: 0.5em;
+}
+.avatar.size-mini .orga-badge {
+  font-size: 0.3rem;
 }
 
 
