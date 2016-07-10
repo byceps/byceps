@@ -1,5 +1,4 @@
 {%- from 'macros/admin.html' import render_brand_head, render_navigation, render_party_head %}
-{%- from 'macros/admin.html' import render_navigation_brand, render_navigation_global, render_navigation_party with context %}
 {%- from 'macros/icons.html' import render_icon %}
 {%- from 'macros/user.html' import render_user_avatar_mini %}
 <!DOCTYPE html>
@@ -51,16 +50,6 @@
   {%- endif %}
 
         </div>
-
-{%- if g.current_user.is_orga_for_any_brand %}
-  {%- if brand %}
-{{ render_navigation_brand(brand, current_page) }}
-  {%- elif party %}
-{{ render_navigation_party(party, current_page) }}
-  {%- else %}
-{{ render_navigation_global(current_page) }}
-  {%- endif %}
-{%- endif %}
 
 {%- endwith %}
 
