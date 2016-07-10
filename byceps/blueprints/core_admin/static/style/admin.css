@@ -110,22 +110,16 @@ a {
 }
 #current-user > div {
   flex: 1;
+  margin-left: 10px;
   white-space: nowrap;
 }
 #current-user .current-user-avatar {
   align-items: center;
   display: flex;
 }
-#current-user .avatar {
-  margin-right: 10px;
-}
 #current-user .intro {
   display: block;
   opacity: 0.5;
-}
-#current-user .name-and-logout {
-  display: flex;
-  justify-content: space-between;
 }
 #current-user a.name {
   color: currentColor;
