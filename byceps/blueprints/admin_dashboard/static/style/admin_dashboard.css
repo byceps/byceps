@@ -17,7 +17,7 @@
   overflow: hidden;
 }
 .cell-icon {
-  font-size: 5rem;
+  font-size: 5rem; /* 80px / 16px */
   left: 0.25rem;
   opacity: 0.075;
   position: absolute;
