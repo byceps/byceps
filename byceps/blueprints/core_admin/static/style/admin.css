@@ -103,6 +103,10 @@ a {
 #header-content .head a:hover {
   text-decoration: underline;
 }
+#header-content .head .dropdown button {
+  font-size: 1rem;
+  padding: 0;
+}
 
 #current-user {
   font-size: 0.8rem;
