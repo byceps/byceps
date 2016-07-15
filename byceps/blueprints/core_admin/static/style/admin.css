@@ -10,7 +10,6 @@ body {
   border-width: 3px 0;
   color: #333333;
   font-family: sans-serif;
-  font-size: 100%; /* 16px */
   line-height: 1.4;
   min-height: 100%;
 }
@@ -54,6 +53,9 @@ a {
   }
 }
 
+main {
+  font-size: 0.875rem; /* 14px / 16px */
+}
 
 #header,
 #sidebar section,
@@ -129,6 +131,7 @@ a {
   color: currentColor;
   font-size: 1.0625rem; /* 17px / 16px */
   font-weight: bold;
+  line-height: 1;
   margin-right: 0.5em;
   text-decoration: none;
 }
@@ -266,11 +269,11 @@ nav.main .current a {
 /* headings */
 
 h1 {
-  font-size: 2rem; /* 32px / 16px */
+  font-size: 1.75rem; /* 28px / 16px */
   line-height: 1.2;
 }
 h2 {
-  font-size: 1.375rem; /* 22px / 16px */
+  font-size: 1.25rem; /* 20px / 16px */
   margin-top: 2rem;
 }
 
@@ -400,7 +403,7 @@ ol.index.fully-linked a:hover {
   display: block;
 }
 .bigstats .value {
-  font-size: 5rem; /* 80px / 16px */
+  font-size: 4.5rem; /* 72px / 16px */
   line-height: 1;
 }
 .bigstats a {

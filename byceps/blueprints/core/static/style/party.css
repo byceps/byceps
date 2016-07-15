@@ -1,7 +1,6 @@
 /* basic */
 
 html {
-  font-size: 90%;
   height: 100%;
 }
 body {
@@ -69,7 +68,7 @@ main {
 #topbar-body {
   align-items: center;
   display: flex;
-  font-size: 0.8rem;
+  font-size: 0.75rem; /* 12px / 16px */
   height: 2.5rem;
   justify-content: space-between;
   padding: 0 25px;
@@ -91,13 +90,13 @@ main {
 
 #sidebar section {
   flex: 1 0 auto;
-  font-size: 0.8rem;
+  font-size: 0.75rem; /* 12px / 16px */
   margin: 20px 0 0 20px;
   padding: 12px 0;
 }
 #sidebar section h1 {
   border-bottom: #cccccc solid 1px;
-  font-size: 1.1rem;
+  font-size: 1rem; /* 16 px */
   font-weight: bold;
   margin: 0 0 10px 0;
   padding: 0 15px 10px 15px;
@@ -139,6 +138,18 @@ nav.main .current a {
 }
 
 
+/* headings */
+
+h1 {
+  font-size: 1.75rem; /* 28px / 16px */
+  line-height: 1.2;
+}
+h2 {
+  font-size: 1.25rem; /* 20px / 16px */
+  margin-top: 2rem;
+}
+
+
 /* news */
 
 .news-item {
@@ -150,7 +161,7 @@ nav.main .current a {
   margin-bottom: 0;
 }
 .news-item .meta {
-  font-size: 0.75rem;
+  font-size: 0.6875rem; /* 11px / 16px */
   margin: 10px 0;
   opacity: 0.5;
 }
@@ -162,11 +173,7 @@ nav.main .current a {
   padding: 20px 0 0;
 }
 .news-items .news-item h1 {
-  font-size: 1.4rem;
   margin-top: 0;
-}
-.news-items .news-item h2 {
-  font-size: 1.1rem;
 }
 
 
@@ -200,7 +207,7 @@ nav.main .current a {
   display: flex;
   flex: 0 0 136px;
   flex-direction: column;
-  font-size: 0.85rem;
+  font-size: 0.75rem; /* 12px / 16px */
   margin: -8px 0 0 -8px;
   overflow: hidden;
 }
@@ -228,7 +235,7 @@ nav.main .current a {
 .board-postings aside time,
 .tourney-match-comments aside time {
   display: block;
-  font-size: 0.75rem;
+  font-size: 0.6875rem; /* 11px / 16px */
   line-height: 1.3;
   opacity: 0.5;
 }
@@ -247,14 +254,13 @@ nav.main .current a {
 
 .board-postings .body,
 .tourney-match-comments .body {
-  font-size: 1rem;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .board-postings footer,
 .tourney-match-comments footer {
-  font-size: 0.75rem;
+  font-size: 0.6875rem; /* 11px / 16px */
   opacity: 0.5;
   text-align: right;
 }
@@ -270,7 +276,7 @@ nav.main .current a {
 
 .board-postings .quote-intro,
 .tourney-match-comments .quote-intro {
-  font-size: 0.8rem;
+  font-size: 0.75rem; /* 12px / 16px */
   font-style: italic;
   margin: 0 0 0.2rem 0;
   padding: 0;
@@ -348,7 +354,7 @@ nav.main .current a {
   padding-top: 0.5em;
 }
 .avatar.size-mini .orga-badge {
-  font-size: 0.3rem;
+  font-size: 0.25rem; /* 4px / 16px */
 }
 
 
@@ -397,7 +403,7 @@ main h1 a:hover {
 #footer {
   clear: both;
   display: block;
-  font-size: 0.9rem;
+  font-size: 0.8125rem; /* 13px / 16px */
   margin-bottom: 20px;
   opacity: 0.5;
   text-align: center;
