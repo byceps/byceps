@@ -20,25 +20,12 @@ from ..party.models import Party
 from ..ticket.models import Ticket
 
 from .authorization import TicketPermission
-from . import service
 
 
 blueprint = create_blueprint('ticket_admin', __name__)
 
 
 permission_registry.register_enum(TicketPermission)
-
-
-@blueprint.route('/')
-@permission_required(TicketPermission.list)
-@templated
-def index():
-    """List parties to choose from."""
-    parties_with_ticket_counts = service.get_parties_with_ticket_counts()
-
-    return {
-        'parties_with_ticket_counts': parties_with_ticket_counts,
-    }
 
 
 @blueprint.route('/for_party/<party_id>', defaults={'page': 1})
