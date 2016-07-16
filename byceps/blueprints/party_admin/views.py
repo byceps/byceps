@@ -53,21 +53,21 @@ def index_for_brand(brand_id, page):
 
     parties = Party.query.for_brand(brand).paginate(page, per_page)
 
-    article_counts_by_party_id = shop_admin_service \
-        .get_article_counts_by_party_id()
+    article_count_by_party_id = shop_admin_service \
+        .get_article_count_by_party_id()
 
-    order_counts_by_party_id = shop_admin_service \
-        .get_order_counts_by_party_id()
+    order_count_by_party_id = shop_admin_service \
+        .get_order_count_by_party_id()
 
-    ticket_counts_by_party_id = ticket_admin_service \
-        .get_ticket_counts_by_party_id()
+    ticket_count_by_party_id = ticket_admin_service \
+        .get_ticket_count_by_party_id()
 
     return {
         'brand': brand,
         'parties': parties,
-        'article_counts_by_party_id': article_counts_by_party_id,
-        'order_counts_by_party_id': order_counts_by_party_id,
-        'ticket_counts_by_party_id': ticket_counts_by_party_id,
+        'article_count_by_party_id': article_count_by_party_id,
+        'order_count_by_party_id': order_count_by_party_id,
+        'ticket_count_by_party_id': ticket_count_by_party_id,
     }
 
 

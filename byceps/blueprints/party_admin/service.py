@@ -14,8 +14,8 @@ from ..brand.models import Brand
 from ..party.models import Party
 
 
-def get_party_counts_by_brand_id():
-    """Return party counts (including 0) per brand, indexed by brand ID."""
+def get_party_count_by_brand_id():
+    """Return party count (including 0) per brand, indexed by brand ID."""
     return dict(db.session \
         .query(
             Brand.id,

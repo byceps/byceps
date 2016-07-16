@@ -15,8 +15,8 @@ from ..seating.models.category import Category as SeatCategory
 from ..ticket.models import Ticket
 
 
-def get_ticket_counts_by_party_id():
-    """Return ticket counts (including 0) per party, indexed by party ID."""
+def get_ticket_count_by_party_id():
+    """Return ticket count (including 0) per party, indexed by party ID."""
     return dict(db.session \
         .query(
             Party.id,

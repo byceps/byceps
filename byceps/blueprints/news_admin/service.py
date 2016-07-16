@@ -14,8 +14,8 @@ from ..brand.models import Brand
 from ..news.models import Item
 
 
-def get_item_counts_by_brand_id():
-    """Return news item counts (including 0) per brand, indexed by brand ID."""
+def get_item_count_by_brand_id():
+    """Return news item count (including 0) per brand, indexed by brand ID."""
     return dict(db.session \
         .query(
             Brand.id,

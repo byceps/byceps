@@ -17,8 +17,8 @@ from ..shop.models.article import Article
 from ..shop.models.order import Order, OrderItem, PaymentState
 
 
-def get_article_counts_by_party_id():
-    """Return article counts (including 0) per party, indexed by party ID."""
+def get_article_count_by_party_id():
+    """Return article count (including 0) per party, indexed by party ID."""
 
     return dict(db.session \
         .query(
@@ -30,8 +30,8 @@ def get_article_counts_by_party_id():
         .all())
 
 
-def get_order_counts_by_party_id():
-    """Return order counts (including 0) per party, indexed by party ID."""
+def get_order_count_by_party_id():
+    """Return order count (including 0) per party, indexed by party ID."""
     return dict(db.session \
         .query(
             Party.id,

@@ -21,8 +21,8 @@
           <strong>{{ brand.title }}</strong><br>
           {{ brand.id }}
         </td>
-        <td class="centered">{{ party_counts_by_brand_id[brand.id] }}</td>
-        <td class="centered">{{ news_item_counts_by_brand_id[brand.id] }}</td>
+        <td class="centered">{{ party_count_by_brand_id[brand.id] }}</td>
+        <td class="centered">{{ news_item_count_by_brand_id[brand.id] }}</td>
       </tr>
       {%- endfor %}
     </tbody>

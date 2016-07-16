@@ -33,14 +33,14 @@ def index():
     """List brands."""
     brands = Brand.query.order_by(Brand.title).all()
 
-    party_counts_by_brand_id = party_admin_service \
-        .get_party_counts_by_brand_id()
+    party_count_by_brand_id = party_admin_service \
+        .get_party_count_by_brand_id()
 
-    news_item_counts_by_brand_id = news_admin_service \
-        .get_item_counts_by_brand_id()
+    news_item_count_by_brand_id = news_admin_service \
+        .get_item_count_by_brand_id()
 
     return {
         'brands': brands,
-        'party_counts_by_brand_id': party_counts_by_brand_id,
-        'news_item_counts_by_brand_id': news_item_counts_by_brand_id,
+        'party_count_by_brand_id': party_count_by_brand_id,
+        'news_item_count_by_brand_id': news_item_count_by_brand_id,
     }

@@ -38,9 +38,9 @@
           {{- render_datetime(party.starts_at) }} bis<br>
           {{- render_datetime(party.ends_at) -}}
         </td>
-        <td class="centered">{{ article_counts_by_party_id[party.id] }}</td>
-        <td class="centered">{{ order_counts_by_party_id[party.id] }}</td>
-        <td class="centered">{{ ticket_counts_by_party_id[party.id] }}</td>
+        <td class="centered">{{ article_count_by_party_id[party.id] }}</td>
+        <td class="centered">{{ order_count_by_party_id[party.id] }}</td>
+        <td class="centered">{{ ticket_count_by_party_id[party.id] }}</td>
       </tr>
       {%- endfor %}
     </tbody>
