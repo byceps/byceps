@@ -14,17 +14,6 @@ from ..brand.models import Brand
 from ..news.models import Item
 
 
-def get_brands_with_item_counts():
-    """Yield (brand, item count) pairs."""
-    brands = Brand.query.all()
-
-    item_counts_by_brand_id = get_item_counts_by_brand_id()
-
-    for brand in brands:
-        item_count = item_counts_by_brand_id[brand.id]
-        yield brand, item_count
-
-
 def get_item_counts_by_brand_id():
     """Return news item counts (including 0) per brand, indexed by brand ID."""
     return dict(db.session \

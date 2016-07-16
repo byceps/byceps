@@ -25,25 +25,12 @@ from ..news import signals
 
 from .authorization import NewsItemPermission
 from .forms import ItemCreateForm, ItemUpdateForm
-from . import service as admin_service
 
 
 blueprint = create_blueprint('news_admin', __name__)
 
 
 permission_registry.register_enum(NewsItemPermission)
-
-
-@blueprint.route('/')
-@permission_required(NewsItemPermission.list)
-@templated
-def index():
-    """List brands to choose from."""
-    brands_with_item_counts = admin_service.get_brands_with_item_counts()
-
-    return {
-        'brands_with_item_counts': brands_with_item_counts,
-    }
 
 
 @blueprint.route('/brands/<brand_id>', defaults={'page': 1})
