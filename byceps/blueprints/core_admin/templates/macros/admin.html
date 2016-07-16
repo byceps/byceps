@@ -53,6 +53,7 @@
       .add_item(url_for('authorization_admin.role_index'), 'Berechtigungen', id='authorization_admin.roles', required_permission=RolePermission.list, icon='permission')
       .add_item(url_for('user_badge.index'), 'Abzeichen', id='user_badge', icon='badge')
       .add_item(url_for('orga_admin.birthdays'), 'Geburtstage', id='orga_admin.birthdays', required_permission=OrgaBirthdayPermission.list, icon='birthday')
+      .add_item(url_for('brand_admin.index'), 'Marken', id='brand_admin', required_permission=BrandPermission.view, icon='brand')
   -%}
 {{ render_navigation(navigation, current_page) }}
 {% endmacro %}

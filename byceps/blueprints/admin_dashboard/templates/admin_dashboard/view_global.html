@@ -25,7 +25,7 @@
 {% block body %}
 
   <div class="grid">
-    {{ render_bigstats_cell(brand_count, 'Marken', icon_name='brand') }}
+    {{ render_bigstats_cell(brand_count, '<a href="%s">Marken</a>'|format(url_for('brand_admin.index'))|safe, icon_name='brand') }}
     {{ render_bigstats_cell(party_count, 'Partys', icon_name='date') }}
     {{ render_bigstats_cell(orga_count, 'Organisatoren', icon_name='users') }}
     {{ render_bigstats_cell(user_count, 'Benutzer', icon_name='users') }}

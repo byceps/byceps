@@ -1,0 +1,27 @@
+{% extends 'layout/admin/base.html' %}
+{% set current_page = 'brand_admin' %}
+{% set title = 'Marken' %}
+
+{% block body %}
+
+  <h1>Marken</h1>
+
+  <table class="index wide">
+    <thead>
+      <tr>
+        <th>Name<br>ID</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for brand in brands %}
+      <tr>
+        <td>
+          <strong>{{ brand.title }}</strong><br>
+          {{ brand.id }}
+        </td>
+      </tr>
+      {%- endfor %}
+    </tbody>
+  </table>
+
+{%- endblock %}
