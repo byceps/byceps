@@ -24,17 +24,20 @@ def get_parties_with_article_counts():
     article_counts_by_party_id = _get_article_counts_by_party_id()
 
     for party in parties:
-        article_count = article_counts_by_party_id.get(party.id, 0)
+        article_count = article_counts_by_party_id[party.id]
         yield party, article_count
 
 
 def _get_article_counts_by_party_id():
+    """Return article counts (including 0) per party, indexed by party ID."""
+
     return dict(db.session \
         .query(
-            Article.party_id,
+            Party.id,
             db.func.count(Article.party_id)
         ) \
-        .group_by(Article.party_id) \
+        .outerjoin(Article) \
+        .group_by(Party.id) \
         .all())
 
 
@@ -45,17 +48,19 @@ def get_parties_with_order_counts():
     order_counts_by_party_id = _get_order_counts_by_party_id()
 
     for party in parties:
-        order_count = order_counts_by_party_id.get(party.id, 0)
+        order_count = order_counts_by_party_id[party.id]
         yield party, order_count
 
 
 def _get_order_counts_by_party_id():
+    """Return order counts (including 0) per party, indexed by party ID."""
     return dict(db.session \
         .query(
-            Order.party_id,
+            Party.id,
             db.func.count(Order.party_id)
         ) \
-        .group_by(Order.party_id) \
+        .outerjoin(Order) \
+        .group_by(Party.id) \
         .all())
 
 
