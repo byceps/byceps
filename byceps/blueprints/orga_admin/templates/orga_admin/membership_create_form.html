@@ -2,26 +2,26 @@
 {% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'orga_admin.teams' %}
-{% set current_page_party = party %}
+{% set current_page_party = team.party %}
 {% set title = 'Orga zu Team hinzufügen' %}
 
 {% block body %}
 
   <nav class="breadcrumbs">
     <ol>
-      <li><a href="{{ url_for('.teams') }}">{{ party.title }}</a></li>
+      <li><a href="{{ url_for('.teams') }}">{{ team.party.title }}</a></li>
+      <li>{{ team.title }}</li>
     </ol>
   </nav>
   <h1>{{ title }}</h1>
 
-  <form action="{{ url_for('.membership_create', party_id=party.id) }}" method="post">
+  <form action="{{ url_for('.membership_create', team_id=team.id) }}" method="post">
     {% call form_fieldset() %}
       {{ form_field(form.user_id, required='required', autofocus='autofocus') }}
-      {{ form_field(form.orga_team_id, required='required') }}
       {{ form_field(form.duties, maxlength=40) }}
     {% endcall %}
 
-    {{ form_buttons('Speichern', cancel_url=url_for('.teams_for_party', party_id=party.id)) }}
+    {{ form_buttons('Speichern', cancel_url=url_for('.teams_for_party', party_id=team.party.id)) }}
   </form>
 
 {%- endblock body %}

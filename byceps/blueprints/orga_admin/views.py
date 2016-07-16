@@ -256,38 +256,35 @@ def team_delete(team_id):
     return url_for('.teams_for_party', party_id=party.id)
 
 
-@blueprint.route('/memberships/for_party/<party_id>/create')
+@blueprint.route('/teams/<uuid:team_id>/memberships/create')
 @permission_required(OrgaTeamPermission.administrate_memberships)
 @templated
-def membership_create_form(party_id, erroneous_form=None):
-    """Show form to assign an organizer to a team."""
-    party = Party.query.get_or_404(party_id)
+def membership_create_form(team_id, erroneous_form=None):
+    """Show form to assign an organizer to that team."""
+    team = OrgaTeam.query.get_or_404(team_id)
 
     form = erroneous_form if erroneous_form else MembershipCreateForm()
-    form.set_user_choices(service.get_unassigned_orgas_for_party(party))
-    form.set_orga_team_choices(service.get_teams_for_party(party))
+    form.set_user_choices(service.get_unassigned_orgas_for_party(team.party))
 
     return {
         'form': form,
-        'party': party,
+        'team': team,
     }
 
 
-@blueprint.route('/memberships/for_party/<party_id>', methods=['POST'])
+@blueprint.route('/teams/<uuid:team_id>/memberships', methods=['POST'])
 @permission_required(OrgaTeamPermission.administrate_memberships)
-def membership_create(party_id):
-    """Assign an organizer to a team."""
-    party = Party.query.get_or_404(party_id)
+def membership_create(team_id):
+    """Assign an organizer to that team."""
+    team = OrgaTeam.query.get_or_404(team_id)
 
     form = MembershipCreateForm(request.form)
-    form.set_user_choices(service.get_unassigned_orgas_for_party(party))
-    form.set_orga_team_choices(service.get_teams_for_party(party))
+    form.set_user_choices(service.get_unassigned_orgas_for_party(team.party))
 
     if not form.validate():
-        return membership_create_form(party_id, form)
+        return membership_create_form(team_id, form)
 
     user = User.query.get(form.user_id.data)
-    team = OrgaTeam.query.get(form.orga_team_id.data)
     duties = form.duties.data.strip()
 
     membership = Membership(team, user)
