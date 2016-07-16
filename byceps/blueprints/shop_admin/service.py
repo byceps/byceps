@@ -17,17 +17,6 @@ from ..shop.models.article import Article
 from ..shop.models.order import Order, OrderItem, PaymentState
 
 
-def get_parties_with_article_counts():
-    """Yield (party, article count) pairs."""
-    parties = Party.query.all()
-
-    article_counts_by_party_id = get_article_counts_by_party_id()
-
-    for party in parties:
-        article_count = article_counts_by_party_id[party.id]
-        yield party, article_count
-
-
 def get_article_counts_by_party_id():
     """Return article counts (including 0) per party, indexed by party ID."""
 

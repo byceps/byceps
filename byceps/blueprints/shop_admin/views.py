@@ -45,18 +45,6 @@ permission_registry.register_enum(ShopOrderPermission)
 # articles
 
 
-@blueprint.route('/articles')
-@permission_required(ShopArticlePermission.list)
-@templated
-def article_index():
-    """List parties to choose from."""
-    parties_with_article_counts = service.get_parties_with_article_counts()
-
-    return {
-        'parties_with_article_counts': parties_with_article_counts,
-    }
-
-
 @blueprint.route('/parties/<party_id>/articles', defaults={'page': 1})
 @blueprint.route('/parties/<party_id>/articles/pages/<int:page>')
 @permission_required(ShopArticlePermission.list)
