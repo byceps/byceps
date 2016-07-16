@@ -420,6 +420,10 @@ ol.index.fully-linked a:hover {
   opacity: 1;
 }
 
+#footer:not(:hover) a {
+  color: currentColor;
+}
+
 
 /* user avatars */
 
