@@ -39,18 +39,6 @@ permission_registry.register_enum(MountpointPermission)
 permission_registry.register_enum(SnippetPermission)
 
 
-@blueprint.route('/')
-@permission_required(SnippetPermission.list)
-@templated
-def index():
-    """List parties to choose from."""
-    parties_with_snippet_counts = service.get_parties_with_snippet_counts()
-
-    return {
-        'parties_with_snippet_counts': parties_with_snippet_counts,
-    }
-
-
 @blueprint.route('/<party_id>')
 @permission_required(SnippetPermission.list)
 @templated

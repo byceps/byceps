@@ -9,7 +9,7 @@
 
   <nav class="breadcrumbs">
     <ol>
-      <li><a href="{{ url_for('.index') }}">Snippets</a></li>
+      <li>Snippets</li>
       <li><a href="{{ url_for('.index_for_party', party_id=snippet.party.id) }}">{{ snippet.party.title }}</a></li>
     </ol>
   </nav>
@@ -24,7 +24,7 @@
       {{ form_field(form.image_url_path, maxlength=80) }}
     {% endcall %}
 
-    {{ form_buttons('Speichern', cancel_url=url_for('.index')) }}
+    {{ form_buttons('Speichern', cancel_url=url_for('.index_for_party', party_id=snippet.party.id)) }}
   </form>
 
 {%- endblock body %}
