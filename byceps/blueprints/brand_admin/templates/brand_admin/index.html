@@ -11,6 +11,7 @@
       <tr>
         <th>Name<br>ID</th>
         <th class="centered">Partys</th>
+        <th class="centered">Newsposts</th>
       </tr>
     </thead>
     <tbody>
@@ -21,6 +22,7 @@
           {{ brand.id }}
         </td>
         <td class="centered">{{ party_counts_by_brand_id[brand.id] }}</td>
+        <td class="centered">{{ news_item_counts_by_brand_id[brand.id] }}</td>
       </tr>
       {%- endfor %}
     </tbody>
