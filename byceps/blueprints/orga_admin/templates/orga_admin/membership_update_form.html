@@ -10,7 +10,7 @@
 
   <nav class="breadcrumbs">
     <ol>
-      <li><a href="{{ url_for('.teams') }}">{{ membership.orga_team.party.title }}</a></li>
+      <li>{{ membership.orga_team.party.title }}</li>
       <li>{{ render_user_admin_link(membership.user) }}</li>
     </ol>
   </nav>

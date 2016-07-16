@@ -168,20 +168,6 @@ def export_persons(brand_id):
     return serialize_to_csv(field_names, rows)
 
 
-@blueprint.route('/teams')
-@permission_required(OrgaTeamPermission.list)
-@templated
-def teams():
-    """List parties to choose from."""
-    parties_with_team_and_person_counts = \
-        service.get_parties_with_team_and_person_counts()
-
-    return {
-        'parties_with_team_and_person_counts': \
-            parties_with_team_and_person_counts,
-    }
-
-
 @blueprint.route('/teams/<party_id>')
 @permission_required(OrgaTeamPermission.list)
 @templated
