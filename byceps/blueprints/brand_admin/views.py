@@ -14,6 +14,7 @@ from ...util.templating import templated
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 from ..brand.models import Brand
+from ..party_admin import service as party_admin_service
 
 from .authorization import BrandPermission
 
@@ -31,6 +32,10 @@ def index():
     """List brands."""
     brands = Brand.query.order_by(Brand.title).all()
 
+    party_counts_by_brand_id = party_admin_service \
+        .get_party_counts_by_brand_id()
+
     return {
         'brands': brands,
+        'party_counts_by_brand_id': party_counts_by_brand_id,
     }
