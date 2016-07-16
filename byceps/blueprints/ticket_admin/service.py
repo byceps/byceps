@@ -10,20 +10,19 @@ byceps.blueprints.ticket_admin.service
 
 from ...database import db
 
+from ..party.models import Party
 from ..seating.models.category import Category as SeatCategory
 from ..ticket.models import Ticket
 
 
 def get_ticket_counts_by_party_id():
-    """Return ticket counts per party, indexed by party ID.
-
-    Entries for parties without existing tickets are exluded.
-    """
+    """Return ticket counts (including 0) per party, indexed by party ID."""
     return dict(db.session \
         .query(
-            SeatCategory.party_id,
+            Party.id,
             db.func.count(Ticket.id)
         ) \
-        .join(Ticket) \
-        .group_by(SeatCategory.party_id) \
+        .outerjoin(SeatCategory) \
+        .outerjoin(Ticket) \
+        .group_by(Party.id) \
         .all())
