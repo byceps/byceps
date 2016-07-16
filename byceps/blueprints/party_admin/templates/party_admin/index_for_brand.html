@@ -22,6 +22,7 @@
         <th>ID</th>
         <th>Name</th>
         <th>Zeitraum</th>
+        <th class="centered">Tickets</th>
       </tr>
     </thead>
     <tbody>
@@ -36,6 +37,7 @@
           {{- render_datetime(party.starts_at) }} bis<br>
           {{- render_datetime(party.ends_at) -}}
         </td>
+        <td class="centered">{{ ticket_counts_by_party_id.get(party.id, 0) }}</td>
       </tr>
       {%- endfor %}
     </tbody>

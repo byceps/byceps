@@ -19,6 +19,7 @@ from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 from ..brand.models import Brand
 from ..party.models import Party
+from ..ticket_admin import service as ticket_admin_service
 
 from .authorization import PartyPermission
 from .forms import CreateForm
@@ -51,9 +52,13 @@ def index_for_brand(brand_id, page):
 
     parties = Party.query.for_brand(brand).paginate(page, per_page)
 
+    ticket_counts_by_party_id = ticket_admin_service \
+        .get_ticket_counts_by_party_id()
+
     return {
         'brand': brand,
         'parties': parties,
+        'ticket_counts_by_party_id': ticket_counts_by_party_id,
     }
 
 
