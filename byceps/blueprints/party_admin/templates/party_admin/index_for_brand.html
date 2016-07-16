@@ -19,24 +19,27 @@
   <table class="index wide">
     <thead>
       <tr>
-        <th>ID</th>
-        <th>Name</th>
+        <th>Name<br>ID</th>
         <th>Zeitraum</th>
+        <th class="centered">Artikel</th>
+        <th class="centered">Bestellungen</th>
         <th class="centered">Tickets</th>
       </tr>
     </thead>
     <tbody>
       {%- for party in parties.items|sort(attribute='starts_at', reverse=True) %}
       <tr{% if party.is_over %} class="dimmed"{% endif %}>
-        <td>{{ party.id }}</td>
         <td>
-          <strong>{{ render_party_admin_link(party) }}</strong>
+          <strong>{{ render_party_admin_link(party) }}</strong><br>
+          {{ party.id }}
           {%- if party.is_archived %}<br>{{ render_icon('archived', title='archiviert') }} <em>archiviert</em>{% endif -%}
         </td>
         <td>
           {{- render_datetime(party.starts_at) }} bis<br>
           {{- render_datetime(party.ends_at) -}}
         </td>
+        <td class="centered">{{ article_counts_by_party_id[party.id] }}</td>
+        <td class="centered">{{ order_counts_by_party_id[party.id] }}</td>
         <td class="centered">{{ ticket_counts_by_party_id[party.id] }}</td>
       </tr>
       {%- endfor %}
