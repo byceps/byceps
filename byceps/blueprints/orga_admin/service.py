@@ -22,20 +22,22 @@ def get_brands_with_person_counts():
     """Yield (brand, person count) pairs."""
     brands = Brand.query.all()
 
-    person_counts_by_brand_id = _get_person_counts_by_brand_id()
+    person_counts_by_brand_id = get_person_count_by_brand_id()
 
     for brand in brands:
-        person_count = person_counts_by_brand_id.get(brand.id, 0)
+        person_count = person_counts_by_brand_id[brand.id]
         yield brand, person_count
 
 
-def _get_person_counts_by_brand_id():
+def get_person_count_by_brand_id():
+    """Return organizer count (including 0) per brand, indexed by brand ID."""
     return dict(db.session \
         .query(
-            OrgaFlag.brand_id,
+            Brand.id,
             db.func.count(OrgaFlag.brand_id)
         ) \
-        .group_by(OrgaFlag.brand_id) \
+        .outerjoin(OrgaFlag) \
+        .group_by(Brand.id) \
         .all())
 
 
