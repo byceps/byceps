@@ -18,20 +18,22 @@ def get_brands_with_item_counts():
     """Yield (brand, item count) pairs."""
     brands = Brand.query.all()
 
-    item_counts_by_brand_id = _get_item_counts_by_brand_id()
+    item_counts_by_brand_id = get_item_counts_by_brand_id()
 
     for brand in brands:
-        item_count = item_counts_by_brand_id.get(brand.id, 0)
+        item_count = item_counts_by_brand_id[brand.id]
         yield brand, item_count
 
 
-def _get_item_counts_by_brand_id():
+def get_item_counts_by_brand_id():
+    """Return news item counts (including 0) per brand, indexed by brand ID."""
     return dict(db.session \
         .query(
-            Item.brand_id,
+            Brand.id,
             db.func.count(Item.brand_id)
         ) \
-        .group_by(Item.brand_id) \
+        .outerjoin(Item) \
+        .group_by(Brand.id) \
         .all())
 
 
