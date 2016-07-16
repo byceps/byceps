@@ -47,6 +47,7 @@ li [class*=" icon-"] {
 .icon-birthday::before       { content: "\f1fd"; }
 .icon-board::before          { content: "\f086"; }
 .icon-bookmark::before       { content: "\f02e"; }
+.icon-brand::before          { content: "\f024"; }
 .icon-caret-down::before     { content: "\f0d7"; }
 .icon-dashboard::before      { content: "\f0e4"; }
 .icon-date::before           { content: "\f073"; }
