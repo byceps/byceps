@@ -267,19 +267,6 @@ def article_attachment_remove(id):
 # orders
 
 
-@blueprint.route('/orders')
-@permission_required(ShopOrderPermission.list)
-@templated
-def order_index():
-    """List orders."""
-    parties_with_order_counts = service.get_parties_with_order_counts()
-
-    return {
-        'parties_with_order_counts': parties_with_order_counts,
-        'PaymentState': PaymentState,
-    }
-
-
 @blueprint.route('/parties/<party_id>/orders', defaults={'page': 1})
 @blueprint.route('/parties/<party_id>/orders/pages/<int:page>')
 @permission_required(ShopOrderPermission.list)

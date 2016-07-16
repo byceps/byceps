@@ -30,17 +30,6 @@ def get_article_counts_by_party_id():
         .all())
 
 
-def get_parties_with_order_counts():
-    """Yield (party, order count) pairs."""
-    parties = Party.query.all()
-
-    order_counts_by_party_id = get_order_counts_by_party_id()
-
-    for party in parties:
-        order_count = order_counts_by_party_id[party.id]
-        yield party, order_count
-
-
 def get_order_counts_by_party_id():
     """Return order counts (including 0) per party, indexed by party ID."""
     return dict(db.session \
