@@ -368,6 +368,10 @@ table.wide {
   top: 100%;
   z-index: 200;
 }
+.dropdown.left > ol {
+  left: auto;
+  right: 0;
+}
 .dropdown.open > ol {
   display: block;
 }

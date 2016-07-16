@@ -34,7 +34,7 @@
         <td class="centered">{{ category.posting_count }}</td>
         <td>
           {%- if g.current_user.has_permission(BoardCategoryPermission.update) -%}
-          <div class="dropdown">
+          <div class="dropdown left">
             <button><span class="icon-caret-down"></span></button>
             <ol>
               <li><a href="{{ url_for('.category_update_form', id=category.id) }}">{{ render_icon('edit') }} bearbeiten</a></li>

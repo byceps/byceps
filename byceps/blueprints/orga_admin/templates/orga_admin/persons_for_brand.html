@@ -71,7 +71,7 @@
           {{- render_with_fallback(user.detail.phone_number) -}}
         </td>
         <td>
-          <div class="dropdown">
+          <div class="dropdown left">
             <button><span class="icon-caret-down"></span></button>
             <ol>
               <li><a href="{{ url_for('.remove_orgaflag', brand_id=brand.id, user_id=user.id) }}" class="orgaflag-remove">{{ render_icon('remove') }} Orga-Status entziehen</a></li>
