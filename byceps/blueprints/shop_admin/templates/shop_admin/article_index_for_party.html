@@ -23,6 +23,13 @@
   </nav>
   <h1>{{ title }} {{ render_extra_in_heading(articles.total) }}</h1>
 
+  <table class="index">
+    <tr>
+      <th>Artikelnummer-Präfix</th>
+      <td>{{ (party.shop_number_prefix.article_number if party.shop_number_prefix is not none else 'nicht festgelegt')|dim }}</td>
+    </tr>
+  </table>
+
   <table class="index wide" style="margin-bottom: 2rem;">
     <thead>
       <tr>
