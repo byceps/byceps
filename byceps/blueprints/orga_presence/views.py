@@ -32,16 +32,6 @@ blueprint = create_blueprint('orga_presence', __name__)
 permission_registry.register_enum(OrgaPresencePermission)
 
 
-@blueprint.route('/')
-@permission_required(OrgaPresencePermission.list)
-@templated
-def index():
-    """List parties to choose from."""
-    parties = Party.query.all()
-
-    return {'parties': parties}
-
-
 @blueprint.route('/<party_id>')
 @permission_required(OrgaPresencePermission.list)
 @templated
