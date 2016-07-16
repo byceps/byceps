@@ -32,7 +32,7 @@
         <th>Name</th>
         <th>Letzte Änderung</th>
         <th>durch</th>
-        <th colspan="2">Aktionen</th>
+        <th class="nowrap">Aktionen</th>
       </tr>
     </thead>
     <tbody>
@@ -47,16 +47,13 @@
           {%- endif %}
         </td>
         <td>{{ render_user_avatar_tiny_and_link(snippet.current_version.creator) }}</td>
-        <td><a href="{{ url_for('.view_version', id=snippet.current_version.id) }}" class="action inline">{{ render_icon('view') }} ansehen</a></td>
         <td>
-          {%- if g.current_user.has_permission(SnippetPermission.update) -%}
-          <div class="dropdown">
-            <button><span class="icon-caret-down"></span></button>
-            <ol>
-              <li><a href="{{ url_for('.update_snippet_form', id=snippet.id) }}">{{ render_icon('edit') }} bearbeiten</a></li>
-            </ol>
-          </div>
-          {%- endif -%}
+          <ol class="actions inline">
+            <li><a href="{{ url_for('.view_version', id=snippet.current_version.id) }}">{{ render_icon('view') }} ansehen</a></li>
+            {%- if g.current_user.has_permission(SnippetPermission.update) -%}
+            <li><a href="{{ url_for('.update_snippet_form', id=snippet.id) }}">{{ render_icon('edit') }} bearbeiten</a></li>
+            {%- endif -%}
+          </ol>
         </td>
       </tr>
     {%- endfor %}
