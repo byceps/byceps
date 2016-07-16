@@ -144,14 +144,17 @@ nav.breadcrumbs + h1 {
 
 /* actions */
 
-ol.actions {
-  display: inline-block;
-  margin: 1em 0;
-}
+ol.actions,
 ol.actions li {
   display: inline-block;
+}
+ol.actions:not(.inline) {
+  margin: 1em 0;
+}
+ol.actions:not(.inline) li {
   margin-bottom: 0.5em;
 }
+
 .action,
 .actions a {
   background-color: #dddddd;
