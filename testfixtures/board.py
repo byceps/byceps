@@ -8,7 +8,8 @@ testfixtures.board
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.blueprints.board_admin import service
+from byceps.blueprints.board import service
+from byceps.blueprints.board_admin import service as admin_service
 
 from .brand import create_brand
 
@@ -27,7 +28,7 @@ def create_category(*, brand=None, number=1, position=None, slug=None,
     if description is None:
         description = 'Hier geht es um Kategorie {}'.format(number)
 
-    category = service.create_category(brand, slug, title, description)
+    category = admin_service.create_category(brand, slug, title, description)
 
     if position is None:
         category.position = position
