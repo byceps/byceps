@@ -34,6 +34,16 @@ def count_postings_for_brand(brand):
         .count()
 
 
+def create_category(brand, slug, title, description):
+    """Create a category in that brand's board."""
+    category = Category(brand, slug, title, description)
+    brand.board_categories.append(category)
+
+    db.session.commit()
+
+    return category
+
+
 def move_category_up(category):
     """Move a category upwards by one position."""
     category_list = category.brand.board_categories

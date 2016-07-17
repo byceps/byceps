@@ -15,23 +15,13 @@ from flask import current_app
 from ...database import db
 from ...util.iterables import index_of
 
-from .models.category import Category, LastCategoryView
+from .models.category import LastCategoryView
 from .models.posting import InitialTopicPostingAssociation, Posting
 from .models.topic import LastTopicView, Topic
 
 
 # -------------------------------------------------------------------- #
 # category
-
-
-def create_category(brand, slug, title, description):
-    """Create a category in that brand's board."""
-    category = Category(brand, slug, title, description)
-    brand.board_categories.append(category)
-
-    db.session.commit()
-
-    return category
 
 
 def aggregate_category(category):

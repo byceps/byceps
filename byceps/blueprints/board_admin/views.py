@@ -19,7 +19,6 @@ from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 from ..brand.models import Brand
 from ..board.models.category import Category
-from ..board import service as board_service
 
 from .authorization import BoardCategoryPermission
 from .forms import CategoryCreateForm, CategoryUpdateForm
@@ -79,7 +78,7 @@ def category_create(brand_id):
     title = form.title.data.strip()
     description = form.description.data.strip()
 
-    category = board_service.create_category(brand, slug, title, description)
+    category = service.create_category(brand, slug, title, description)
 
     flash_success('Die Kategorie "{}" wurde angelegt.', category.title)
     return redirect_to('.index_for_brand', brand_id=brand.id)
