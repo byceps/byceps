@@ -14,8 +14,8 @@ from byceps.blueprints.board_admin import service as admin_service
 from .brand import create_brand
 
 
-def create_category(*, brand=None, number=1, position=None, slug=None,
-                    title=None, description=None):
+def create_category(*, brand=None, number=1, slug=None, title=None,
+                    description=None):
     if brand is None:
         brand = create_brand()
 
@@ -28,12 +28,7 @@ def create_category(*, brand=None, number=1, position=None, slug=None,
     if description is None:
         description = 'Hier geht es um Kategorie {}'.format(number)
 
-    category = admin_service.create_category(brand, slug, title, description)
-
-    if position is None:
-        category.position = position
-
-    return category
+    return admin_service.create_category(brand, slug, title, description)
 
 
 def create_topic(category, creator, *, number=1, title=None, body=None):
