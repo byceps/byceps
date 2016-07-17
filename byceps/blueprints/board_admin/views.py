@@ -91,7 +91,7 @@ def category_create(brand_id):
 @templated
 def category_update_form(id, erroneous_form=None):
     """Show form to update a category."""
-    category = Category.query.get_or_404(id)
+    category = get_category_or_404(id)
 
     form = erroneous_form if erroneous_form \
            else CategoryUpdateForm(obj=category)
@@ -106,7 +106,7 @@ def category_update_form(id, erroneous_form=None):
 @permission_required(BoardCategoryPermission.update)
 def category_update(id):
     """Update a category."""
-    category = Category.query.get_or_404(id)
+    category = get_category_or_404(id)
 
     form = CategoryUpdateForm(request.form)
     if not form.validate():
@@ -122,5 +122,9 @@ def category_update(id):
     return redirect_to('.index_for_brand', brand_id=category.brand.id)
 
 
-def get_brand_or_404(brand_id):
-    return Brand.query.get_or_404(brand_id)
+def get_brand_or_404(id):
+    return Brand.query.get_or_404(id)
+
+
+def get_category_or_404(id):
+    return Category.query.get_or_404(id)
