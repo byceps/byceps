@@ -86,13 +86,17 @@ main {
   border-width: 0 0 1px 0;
   background-color: rgba(0, 0, 0, 0.06);
 }
-#header-content {
+#header-grid {
   align-items: center;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding-bottom: 10px;
-  padding-top: 10px;
+  margin: -20px 0 0 -20px;
+}
+
+#header-content .head,
+#header-content .current-user {
+  padding: 20px 0 0 20px;
 }
 
 #header-content .head {
@@ -134,7 +138,7 @@ main {
 }
 
 @media (min-width: 960px) {
-  #header-content {
+  #header-grid {
     flex-direction: row;
   }
   #header-content .head {
