@@ -18,8 +18,14 @@
     {{ render_bigstats_cell(news_item_count, 'Newsposts veröffentlicht', icon_name='news') }}
     {{ render_bigstats_cell(newsletter_subscriber_count, 'Newsletter-Abonnenten', icon_name='newsletter', color='#008800') }}
     {%- call render_cell('legal') %}
-      <span class="hyphenate">Stand der aktuellen Geschäftsbedingungen (AGB):</span>
-      <p class="centered"><strong style="font-size: 2rem;">{{ render_date(current_terms_version.created_at) }}</strong></p>
+      <span class="hyphenate">Stand der aktuellen AGB:</span>
+      <p class="centered">
+          {%- if current_terms_version -%}
+          <strong style="font-size: 2rem;">{{ render_date(current_terms_version.created_at) }}</strong>
+          {%- else -%}
+          <strong style="color: #cc0000; font-size: 1.2rem;">keine AGB hinterlegt</strong>
+          {%- endif -%}
+      </p>
     {%- endcall %}
     {{ render_bigstats_cell(board_category_count, 'Kategorien im Forum', icon_name='board') }}
     {{ render_bigstats_cell('{:n}'.format(board_topic_count), 'Themen im Forum', icon_name='board') }}
