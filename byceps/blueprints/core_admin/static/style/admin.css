@@ -107,24 +107,24 @@ main {
   text-decoration: underline;
 }
 
-#current-user {
+#header-content .current-user {
   font-size: 0.75rem; /* 12px / 16px */
   display: flex;
 }
-#current-user > div {
+#header-content .current-user > div {
   flex: 1;
   margin-left: 10px;
   white-space: nowrap;
 }
-#current-user .current-user-avatar {
+#header-content .current-user .current-user-avatar {
   align-items: center;
   display: flex;
 }
-#current-user .intro {
+#header-content .current-user .intro {
   display: block;
   opacity: 0.5;
 }
-#current-user a.name {
+#header-content .current-user a.name {
   color: currentColor;
   font-size: 1.0625rem; /* 17px / 16px */
   font-weight: bold;
@@ -143,7 +143,7 @@ main {
   #header-content .head strong {
     font-size: 1.125rem; /* 18px / 16px */
   }
-  #current-user {
+  #header-content .current-user {
     order: 1;
   }
 }

@@ -15,7 +15,7 @@
     <header id="header">
       <div id="header-content">
 
-        <div id="current-user">
+        <div class="current-user">
         {% if g.current_user.is_active %}
           <div class="current-user-avatar">
             {{ render_user_avatar_mini(g.current_user) }}
@@ -37,7 +37,7 @@
             {{ render_icon('log-in') }} <a href="{{ url_for('authentication.login_form') }}">Anmelden</a>
           </div>
         {%- endif %}
-        </div><!-- /#current-user -->
+        </div><!-- /.current-user -->
 
 {%- with
   current_page = current_page|default,
@@ -52,7 +52,7 @@
 {{ render_party_head(party) }}
   {%- endif %}
 
-        </div>
+        </div><!-- /.head -->
 
 {%- endwith %}
 
