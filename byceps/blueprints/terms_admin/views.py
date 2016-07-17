@@ -26,21 +26,6 @@ blueprint = create_blueprint('terms_admin', __name__)
 permission_registry.register_enum(TermsPermission)
 
 
-@blueprint.route('/')
-@permission_required(TermsPermission.list)
-@templated
-def index():
-    """List terms versions."""
-    versions = Version.query \
-        .options(db.joinedload('brand')) \
-        .order_by(Version.created_at.desc()) \
-        .all()
-
-    return {
-        'versions': versions,
-    }
-
-
 @blueprint.route('/brands/<brand_id>')
 @permission_required(TermsPermission.list)
 @templated
