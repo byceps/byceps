@@ -23,25 +23,12 @@ from ..board import service as board_service
 
 from .authorization import BoardCategoryPermission
 from .forms import CategoryCreateForm, CategoryUpdateForm
-from . import service
 
 
 blueprint = create_blueprint('board_admin', __name__)
 
 
 permission_registry.register_enum(BoardCategoryPermission)
-
-
-@blueprint.route('/')
-@permission_required(BoardCategoryPermission.list)
-@templated
-def index():
-    """List brands to choose from."""
-    brands_with_category_counts = service.get_brands_with_category_counts()
-
-    return {
-        'brands_with_category_counts': brands_with_category_counts,
-    }
 
 
 @blueprint.route('/brands/<brand_id>')
