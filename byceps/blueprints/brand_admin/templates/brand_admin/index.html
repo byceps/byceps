@@ -19,7 +19,7 @@
       {%- for brand in brands %}
       <tr>
         <td>
-          <strong>{{ brand.title }}</strong><br>
+          <strong><a href="{{ url_for('admin_dashboard.view_brand', brand_id=brand.id) }}">{{ brand.title }}</a></strong><br>
           {{ brand.id }}
         </td>
         <td class="centered">{{ party_count_by_brand_id[brand.id] }}</td>
