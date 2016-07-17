@@ -8,6 +8,8 @@ byceps.blueprints.board.models.category
 :License: Modified BSD, see LICENSE for details.
 """
 
+from sqlalchemy.ext.orderinglist import ordering_list
+
 from ....database import BaseQuery, db, generate_uuid
 from ....util.instances import ReprBuilder
 
@@ -25,7 +27,6 @@ class Category(db.Model):
     """A category for topics."""
     __tablename__ = 'board_categories'
     __table_args__ = (
-        db.UniqueConstraint('brand_id', 'position'),
         db.UniqueConstraint('brand_id', 'slug'),
         db.UniqueConstraint('brand_id', 'title'),
     )
@@ -33,7 +34,6 @@ class Category(db.Model):
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     brand_id = db.Column(db.Unicode(20), db.ForeignKey('brands.id'), index=True, nullable=False)
-    brand = db.relationship(Brand)
     position = db.Column(db.Integer, nullable=False)
     slug = db.Column(db.Unicode(40), nullable=False)
     title = db.Column(db.Unicode(40), nullable=False)
@@ -43,6 +43,11 @@ class Category(db.Model):
     last_posting_updated_at = db.Column(db.DateTime)
     last_posting_updated_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
     last_posting_updated_by = db.relationship(User)
+
+    brand = db.relationship(Brand,
+                            backref=db.backref('board_categories',
+                                               order_by=position,
+                                               collection_class=ordering_list('position', count_from=1)))
 
     def __init__(self, brand, position, slug, title, description):
         self.brand = brand
