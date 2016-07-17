@@ -17,8 +17,7 @@
 
   <form action="{{ url_for('.category_create', brand_id=brand.id) }}" method="post">
     {% call form_fieldset() %}
-      {{ form_field(form.position, type='number', min=1, max=99, required='required', autofocus='autofocus') }}
-      {{ form_field(form.slug, maxlength=40, required='required') }}
+      {{ form_field(form.slug, maxlength=40, required='required', autofocus='autofocus') }}
       {{ form_field(form.title, maxlength=40, required='required') }}
       {{ form_field(form.description, maxlength=80, required='required') }}
     {% endcall %}

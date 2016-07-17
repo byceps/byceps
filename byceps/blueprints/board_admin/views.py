@@ -75,13 +75,11 @@ def category_create(brand_id):
     if not form.validate():
         return category_create_form(brand_id, form)
 
-    position = form.position.data
     slug = form.slug.data.strip().lower()
     title = form.title.data.strip()
     description = form.description.data.strip()
 
-    category = board_service.create_category(brand, position, slug, title,
-                                             description)
+    category = board_service.create_category(brand, slug, title, description)
 
     flash_success('Die Kategorie "{}" wurde angelegt.', category.title)
     return redirect_to('.index_for_brand', brand_id=brand.id)
@@ -113,7 +111,6 @@ def category_update(id):
     if not form.validate():
         return category_update_form(id, form)
 
-    category.position = form.position.data
     category.slug = form.slug.data.strip().lower()
     category.title = form.title.data.strip()
     category.description = form.description.data.strip()

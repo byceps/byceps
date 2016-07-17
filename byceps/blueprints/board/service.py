@@ -24,11 +24,11 @@ from .models.topic import LastTopicView, Topic
 # category
 
 
-def create_category(brand, position, slug, title, description):
+def create_category(brand, slug, title, description):
     """Create a category in that brand's board."""
-    category = Category(brand, position, slug, title, description)
+    category = Category(brand, slug, title, description)
+    brand.board_categories.append(category)
 
-    db.session.add(category)
     db.session.commit()
 
     return category

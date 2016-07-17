@@ -49,9 +49,8 @@ class Category(db.Model):
                                                order_by=position,
                                                collection_class=ordering_list('position', count_from=1)))
 
-    def __init__(self, brand, position, slug, title, description):
+    def __init__(self, brand, slug, title, description):
         self.brand = brand
-        self.position = position
         self.slug = slug
         self.title = title
         self.description = description
