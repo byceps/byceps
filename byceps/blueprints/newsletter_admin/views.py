@@ -30,15 +30,6 @@ blueprint = create_blueprint('newsletter_admin', __name__)
 permission_registry.register_enum(NewsletterPermission)
 
 
-@blueprint.route('/')
-@permission_required(NewsletterPermission.view_subscriptions)
-@templated
-def index():
-    """List brands to choose from."""
-    brands = Brand.query.all()
-    return {'brands': brands}
-
-
 @blueprint.route('/subscriptions/<brand_id>')
 @permission_required(NewsletterPermission.view_subscriptions)
 @templated
