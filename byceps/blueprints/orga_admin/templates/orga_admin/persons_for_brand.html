@@ -13,7 +13,7 @@
 {% block head %}
     <script>
       $(function() {
-        confirmed_delete_on_click('a.orgaflag-remove', 'Person den Orga-Status entziehen?');
+        confirmed_delete_on_click('[data-action="orgaflag-remove"]', 'Person den Orga-Status entziehen?');
       });
     </script>
 {%- endblock %}
@@ -74,7 +74,7 @@
           <div class="dropdown left">
             <button><span class="icon-caret-down"></span></button>
             <ol>
-              <li><a href="{{ url_for('.remove_orgaflag', brand_id=brand.id, user_id=user.id) }}" class="orgaflag-remove">{{ render_icon('remove') }} Orga-Status entziehen</a></li>
+              <li><a data-action="orgaflag-remove" href="{{ url_for('.remove_orgaflag', brand_id=brand.id, user_id=user.id) }}">{{ render_icon('remove') }} Orga-Status entziehen</a></li>
             </ol>
           </div>
         </td>

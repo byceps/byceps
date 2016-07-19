@@ -8,8 +8,8 @@
 {% block head %}
     <script>
       $(function() {
-        post_on_click('a.category-move-up');
-        post_on_click('a.category-move-down');
+        post_on_click('[data-action="category-move-up"]');
+        post_on_click('[data-action="category-move-down"]');
       });
     </script>
 {%- endblock %}
@@ -43,8 +43,8 @@
             <button><span class="icon-caret-down"></span></button>
             <ol>
               <li><a href="{{ url_for('.category_update_form', id=category.id) }}">{{ render_icon('edit') }} bearbeiten</a></li>
-              <li><a class="category-move-up" href="{{ url_for('.category_move_up', id=category.id) }}">{{ render_icon('arrow-up') }} nach oben schieben</a></li>
-              <li><a class="category-move-down" href="{{ url_for('.category_move_down', id=category.id) }}">{{ render_icon('arrow-down') }} nach unten schieben</a></li>
+              <li><a data-action="category-move-up" href="{{ url_for('.category_move_up', id=category.id) }}">{{ render_icon('arrow-up') }} nach oben schieben</a></li>
+              <li><a data-action="category-move-down" href="{{ url_for('.category_move_down', id=category.id) }}">{{ render_icon('arrow-down') }} nach unten schieben</a></li>
             </ol>
           </div>
           {%- endif -%}

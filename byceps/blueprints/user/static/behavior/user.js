@@ -1,5 +1,5 @@
 $(function() {
 
-  confirmed_delete_on_click('a#avatar-delete', 'Avatarbild entfernen?');
+  confirmed_delete_on_click('[data-action="avatar-delete"]', 'Avatarbild entfernen?');
 
 });

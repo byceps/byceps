@@ -29,7 +29,7 @@
               <div class="dropdown left">
                 <button><span class="icon-caret-down"></span></button>
                 <ol>
-                  <li><a id="logout" href="{{ url_for('authentication.logout', _method='POST') }}">{{ render_icon('log-out') }} abmelden</a></li>
+                  <li><a data-action="logout" href="{{ url_for('authentication.logout', _method='POST') }}">{{ render_icon('log-out') }} abmelden</a></li>
                 </ol>
               </div>
             </div>

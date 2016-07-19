@@ -10,7 +10,7 @@
 {% block head %}
     <script>
       $(function() {
-        confirmed_delete_on_click('a.mountpoint-delete', 'Mountpoint entfernen?');
+        confirmed_delete_on_click('[data-action="mountpoint-delete"]', 'Mountpoint entfernen?');
       });
     </script>
 {%- endblock head %}
@@ -88,7 +88,7 @@
           <div class="dropdown left">
             <button><span class="icon-caret-down"></span></button>
             <ol>
-              <li><a href="{{ url_for('.delete_mountpoint', id=mountpoint.id) }}" class="mountpoint-delete">{{ render_icon('remove') }} Mountpoint entfernen</a></li>
+              <li><a data-action="mountpoint-delete" href="{{ url_for('.delete_mountpoint', id=mountpoint.id) }}">{{ render_icon('remove') }} Mountpoint entfernen</a></li>
             </ol>
           </div>
         {%- endif %}

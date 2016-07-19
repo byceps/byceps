@@ -47,8 +47,8 @@
     </style>
     <script>
       $(function() {
-        confirmed_delete_on_click('a.team-delete', 'Team entfernen?');
-        confirmed_delete_on_click('a.membership-remove', 'Person aus dem Team entfernen?');
+        confirmed_delete_on_click('[data-action="team-delete"]', 'Team entfernen?');
+        confirmed_delete_on_click('[data-action="membership-remove"]', 'Person aus dem Team entfernen?');
       });
     </script>
 {%- endblock head %}
@@ -75,7 +75,7 @@
             <ol>
               <li><a href="{{ url_for('.membership_create_form', team_id=team.id) }}">{{ render_icon('add') }} Orga hinzufügen</a></li>
               {%- if not memberships %}
-              <li><a href="{{ url_for('.team_delete', team_id=team.id) }}" class="team-delete">{{ render_icon('remove') }} Team entfernen</a></li>
+              <li><a data-action="team-delete" href="{{ url_for('.team_delete', team_id=team.id) }}">{{ render_icon('remove') }} Team entfernen</a></li>
               {%- endif %}
             </ol>
           </div>
@@ -102,7 +102,7 @@
                     <button><span class="icon-caret-down"></span></button>
                     <ol>
                       <li><a href="{{ url_for('.membership_update_form', id=membership.id) }}">{{ render_icon('edit') }} Teamzugehörigkeit und Aufgabe bearbeiten</a></li>
-                      <li><a href="{{ url_for('.membership_remove', id=membership.id) }}" class="membership-remove">{{ render_icon('remove') }} Person aus Team entfernen</a></li>
+                      <li><a data-action="membership-remove" href="{{ url_for('.membership_remove', id=membership.id) }}">{{ render_icon('remove') }} Person aus Team entfernen</a></li>
                     </ol>
                   </div>
                 </div>
