@@ -8,8 +8,6 @@ byceps.blueprints.party.service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from operator import attrgetter
-
 from ...database import db
 
 from ..seating.models.category import Category as SeatCategory
@@ -27,17 +25,18 @@ def get_archived_parties():
         .all()
 
 
-def get_attendee_screen_names_by_party(parties):
-    """Return the screen names of the parties' attendees, grouped by party."""
-    return {party: get_attendee_screen_names(party) for party in parties}
+def get_attendees_by_party(parties):
+    """Return the parties' attendees, grouped by party."""
+    return {party: get_attendees_for_party(party) for party in parties}
 
 
-def get_attendee_screen_names(party):
-    """Return the screen names of the party's attendees."""
-    users = User.query \
-        .options(db.load_only('screen_name')) \
+def get_attendees_for_party(party):
+    """Return the party's attendees."""
+    return User.query \
+        .options(
+            db.load_only('screen_name', 'deleted'),
+            db.joinedload('avatar_selection').joinedload('avatar')
+        ) \
         .join(Ticket.used_by) \
         .join(SeatCategory).filter(SeatCategory.party == party) \
         .all()
-
-    return frozenset(map(attrgetter('screen_name'), users))

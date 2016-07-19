@@ -49,10 +49,9 @@ def info():
 def archive():
     """Show archived parties."""
     archived_parties = service.get_archived_parties()
-    attendee_screen_names_by_party \
-        = service.get_attendee_screen_names_by_party(archived_parties)
+    attendees_by_party = service.get_attendees_by_party(archived_parties)
 
     return {
         'parties': archived_parties,
-        'attendee_screen_names_by_party': attendee_screen_names_by_party,
+        'attendees_by_party': attendees_by_party,
     }
