@@ -42,6 +42,11 @@ class Version(db.Model):
     creator = db.relationship(User)
     body = db.Column(db.UnicodeText)
 
+    def __init__(self, brand, creator, body):
+        self.brand = brand
+        self.creator = creator
+        self.body = body
+
     def __repr__(self):
         return ReprBuilder(self) \
             .add_with_lookup('id') \
