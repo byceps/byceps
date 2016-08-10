@@ -29,6 +29,7 @@ class ShopTestCase(AbstractAppTestCase):
 
         self.setup_order_number_prefix_and_sequence()
         self.setup_orderer()
+        self.setup_article()
 
     def setup_order_number_prefix_and_sequence(self):
         prefix = create_party_sequence_prefix(self.party,
@@ -47,14 +48,18 @@ class ShopTestCase(AbstractAppTestCase):
         self.db.session.add(self.orderer)
         self.db.session.commit()
 
-    def test_order_article(self):
-        article_before = create_article(party=self.party, quantity=5)
-        self.db.session.add(article_before)
+    def setup_article(self):
+        article = create_article(party=self.party, quantity=5)
+        self.db.session.add(article)
         self.db.session.commit()
 
+        self.article_id = article.id
+
+    def test_order_article(self):
+        article_before = self.get_article()
         self.assertEqual(article_before.quantity, 5)
 
-        url = '/shop/order_single/{}'.format(str(article_before.id))
+        url = '/shop/order_single/{}'.format(str(self.article_id))
         form_data = {
             'first_names': 'Hiro',
             'last_name': 'Protagonist',
@@ -71,13 +76,18 @@ class ShopTestCase(AbstractAppTestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.headers.get('Location'), 'http://example.com/shop/order_placed')
 
-        article_afterwards = Article.query.get(article_before.id)
+        article_afterwards = self.get_article()
         self.assertEqual(article_afterwards.quantity, 4)
 
         order = Order.query.filter_by(placed_by=self.orderer).one()
         self.assertEqual(order.order_number, 'AEC-01-B00005')
         self.assertEqual(len(order.items), 1)
-        self.assertEqual(order.items[0].article.id, article_before.id)
+        self.assertEqual(order.items[0].article.id, self.article_id)
         self.assertEqual(order.items[0].price, article_before.price)
         self.assertEqual(order.items[0].tax_rate, article_before.tax_rate)
         self.assertEqual(order.items[0].quantity, 1)
+
+    # helpers
+
+    def get_article(self):
+        return Article.query.get(self.article_id)
