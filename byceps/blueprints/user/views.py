@@ -169,6 +169,8 @@ def create():
             'Diese E-Mail-Adresse ist bereits einem Benutzerkonto zugeordnet.')
         return create_form(form)
 
+    password_hash = authentication_service.generate_password_hash(password)
+
     user = User.create(screen_name, email_address)
     user.update_password_hash(password_hash)
     user.detail.first_names = first_names
