@@ -8,7 +8,7 @@ byceps.blueprints.board.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from flask import current_app, g, redirect, request, url_for
+from flask import abort, current_app, g, redirect, request, url_for
 
 from ...database import db
 from ...util.framework import create_blueprint, flash_error, flash_notice, \
@@ -23,7 +23,6 @@ from .authorization import BoardPostingPermission, BoardTopicPermission
 from .formatting import get_smileys, render_html
 from .forms import PostingCreateForm, PostingUpdateForm, TopicCreateForm, \
     TopicUpdateForm
-from .models.category import Category
 from .models.posting import Posting
 from .models.topic import Topic
 from . import service
@@ -48,12 +47,8 @@ blueprint.add_app_template_filter(render_html, 'bbcode')
 @templated
 def category_index():
     """List categories."""
-    categories = Category.query \
-        .for_brand(g.party.brand) \
-        .options(
-            db.joinedload(Category.last_posting_updated_by),
-        ) \
-        .all()
+    categories = service.get_categories_with_last_updates(g.party.brand)
+
     return {'categories': categories}
 
 
@@ -62,10 +57,9 @@ def category_index():
 @templated
 def category_view(slug, page):
     """List latest topics in the category."""
-    category = Category.query \
-        .for_brand(g.party.brand) \
-        .filter_by(slug=slug) \
-        .first_or_404()
+    category = service.find_category_by_slug(g.party.brand, slug)
+    if category is None:
+        abort(404)
 
     service.mark_category_as_just_viewed(category, g.current_user)
 
@@ -174,8 +168,12 @@ def add_unseen_flag_to_postings(postings, user, last_viewed_at):
 @templated
 def topic_create_form(category_id, erroneous_form=None):
     """Show a form to create a topic in the category."""
-    category = Category.query.get_or_404(category_id)
+    category = service.find_category_by_id(category_id)
+    if category is None:
+        abort(404)
+
     form = erroneous_form if erroneous_form else TopicCreateForm()
+
     return {
         'category': category,
         'form': form,
@@ -189,7 +187,10 @@ def topic_create(category_id):
     """Create a topic in the category."""
     form = TopicCreateForm(request.form)
 
-    category = Category.query.get_or_404(category_id)
+    category = service.find_category_by_id(category_id)
+    if category is None:
+        abort(404)
+
     creator = g.current_user
     title = form.title.data.strip()
     body = form.body.data.strip()
@@ -267,11 +268,8 @@ def topic_moderate_form(id):
     """Show a form to moderate the topic."""
     topic = Topic.query.get_or_404(id)
 
-    categories = Category.query \
-        .for_brand(g.party.brand) \
-        .filter(Category.id != topic.category_id) \
-        .order_by(Category.position) \
-        .all()
+    categories = service.get_categories_excluding(g.party.brand,
+                                                  topic.category_id)
 
     return {
         'topic': topic,
@@ -373,7 +371,9 @@ def topic_move(id):
     old_category = topic.category
 
     new_category_id = request.form['category_id']
-    new_category = Category.query.get_or_404(new_category_id)
+    new_category = service.find_category_by_id(new_category_id)
+    if category is None:
+        abort(404)
 
     topic.category = new_category
     db.session.commit()

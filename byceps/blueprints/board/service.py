@@ -15,13 +15,48 @@ from flask import current_app
 from ...database import db
 from ...util.iterables import index_of
 
-from .models.category import LastCategoryView
+from .models.category import Category, LastCategoryView
 from .models.posting import InitialTopicPostingAssociation, Posting
 from .models.topic import LastTopicView, Topic
 
 
 # -------------------------------------------------------------------- #
 # category
+
+
+def find_category_by_id(category_id):
+    """Return the category with that id, or `None` if not found."""
+    return Category.query.get(category_id)
+
+
+def find_category_by_slug(brand, slug):
+    """Return the category for that brand and slug, or `None` if not found."""
+    return Category.query \
+        .for_brand(brand) \
+        .filter_by(slug=slug) \
+        .first()
+
+
+def get_categories_excluding(brand, category_id):
+    """Return all categories for that brand except for the specified one."""
+    return Category.query \
+        .for_brand(brand) \
+        .filter(Category.id != category_id) \
+        .order_by(Category.position) \
+        .all()
+
+
+def get_categories_with_last_updates(brand):
+    """Return the categories for that brand.
+
+    Include the creator of the last posting in each category.
+    """
+    return Category.query \
+        .for_brand(brand) \
+        .options(
+            db.joinedload(Category.last_posting_updated_by),
+        ) \
+        .all()
 
 
 def aggregate_category(category):
