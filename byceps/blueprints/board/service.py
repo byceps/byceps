@@ -89,6 +89,44 @@ def aggregate_category(category):
 # topic
 
 
+def find_topic_by_id(topic_id):
+    """Return the topic with that id, or `None` if not found."""
+    return Topic.query.get(topic_id)
+
+
+def find_topic_visible_for_user(topic_id, user):
+    """Return the topic with that id, or `None` if not found or
+    invisible for the user.
+    """
+    return Topic.query \
+        .options(
+            db.joinedload(Topic.category),
+        ) \
+        .only_visible_for_user(user) \
+        .filter_by(id=topic_id) \
+        .first()
+
+
+def paginate_topics(category, user, page, topics_per_page):
+    """Paginate topics in that category, as visible for the user.
+
+    Pinned topics are returned first.
+    """
+    return Topic.query \
+        .for_category(category) \
+        .options(
+            db.joinedload(Topic.category),
+            db.joinedload(Topic.creator),
+            db.joinedload(Topic.last_updated_by),
+            db.joinedload(Topic.hidden_by),
+            db.joinedload(Topic.locked_by),
+            db.joinedload(Topic.pinned_by),
+        ) \
+        .only_visible_for_user(user) \
+        .order_by(Topic.pinned.desc(), Topic.last_updated_at.desc()) \
+        .paginate(page, topics_per_page)
+
+
 def create_topic(category, creator, title, body):
     """Create a topic with an initial posting in that category."""
     topic = Topic(category, creator, title)

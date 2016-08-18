@@ -39,9 +39,6 @@ class TopicQuery(BaseQuery):
         """Only return topics every user may see."""
         return self.filter(Topic.hidden == False)
 
-    def with_id_or_404(self, id):
-        return self.filter_by(id=id).first_or_404()
-
 
 class Topic(db.Model):
     """A topic."""

@@ -24,7 +24,6 @@ from .formatting import get_smileys, render_html
 from .forms import PostingCreateForm, PostingUpdateForm, TopicCreateForm, \
     TopicUpdateForm
 from .models.posting import Posting
-from .models.topic import Topic
 from . import service
 from . import signals
 
@@ -65,19 +64,8 @@ def category_view(slug, page):
 
     topics_per_page = int(current_app.config['BOARD_TOPICS_PER_PAGE'])
 
-    topics = Topic.query \
-        .for_category(category) \
-        .options(
-            db.joinedload(Topic.category),
-            db.joinedload(Topic.creator),
-            db.joinedload(Topic.last_updated_by),
-            db.joinedload(Topic.hidden_by),
-            db.joinedload(Topic.locked_by),
-            db.joinedload(Topic.pinned_by),
-        ) \
-        .only_visible_for_user(g.current_user) \
-        .order_by(Topic.pinned.desc(), Topic.last_updated_at.desc()) \
-        .paginate(page, topics_per_page)
+    topics = service.paginate_topics(category, g.current_user, page,
+                                     topics_per_page)
 
     return {
         'category': category,
@@ -94,12 +82,9 @@ def category_view(slug, page):
 @templated
 def topic_view(id, page):
     """List postings for the topic."""
-    topic = Topic.query \
-        .options(
-            db.joinedload(Topic.category),
-        ) \
-        .only_visible_for_user(g.current_user) \
-        .with_id_or_404(id)
+    topic = service.find_topic_visible_for_user(id, g.current_user)
+    if topic is None:
+        abort(404)
 
     # Copy last view timestamp for later use to compare postings
     # against it.
@@ -208,7 +193,7 @@ def topic_create(category_id):
 @templated
 def topic_update_form(id):
     """Show form to update a topic."""
-    topic = Topic.query.get_or_404(id)
+    topic = _get_topic_or_404(id)
     url = topic.external_url
 
     if topic.locked:
@@ -232,12 +217,11 @@ def topic_update_form(id):
         'smileys': get_smileys(),
     }
 
-
 @blueprint.route('/topics/<uuid:id>', methods=['POST'])
 @permission_required(BoardTopicPermission.update)
 def topic_update(id):
     """Update a topic."""
-    topic = Topic.query.get_or_404(id)
+    topic = _get_topic_or_404(id)
     url = topic.external_url
 
     if topic.locked:
@@ -266,7 +250,7 @@ def topic_update(id):
 @templated
 def topic_moderate_form(id):
     """Show a form to moderate the topic."""
-    topic = Topic.query.get_or_404(id)
+    topic = _get_topic_or_404(id)
 
     categories = service.get_categories_excluding(g.party.brand,
                                                   topic.category_id)
@@ -282,7 +266,8 @@ def topic_moderate_form(id):
 @respond_no_content_with_location
 def topic_hide(id):
     """Hide a topic."""
-    topic = Topic.query.get_or_404(id)
+    topic = _get_topic_or_404(id)
+
     topic.hide(g.current_user)
     db.session.commit()
 
@@ -298,7 +283,8 @@ def topic_hide(id):
 @respond_no_content_with_location
 def topic_unhide(id):
     """Un-hide a topic."""
-    topic = Topic.query.get_or_404(id)
+    topic = _get_topic_or_404(id)
+
     topic.unhide()
     db.session.commit()
 
@@ -314,7 +300,8 @@ def topic_unhide(id):
 @respond_no_content_with_location
 def topic_lock(id):
     """Lock a topic."""
-    topic = Topic.query.get_or_404(id)
+    topic = _get_topic_or_404(id)
+
     topic.lock(g.current_user)
     db.session.commit()
 
@@ -327,7 +314,8 @@ def topic_lock(id):
 @respond_no_content_with_location
 def topic_unlock(id):
     """Unlock a topic."""
-    topic = Topic.query.get_or_404(id)
+    topic = _get_topic_or_404(id)
+
     topic.unlock()
     db.session.commit()
 
@@ -341,7 +329,8 @@ def topic_unlock(id):
 @respond_no_content_with_location
 def topic_pin(id):
     """Pin a topic."""
-    topic = Topic.query.get_or_404(id)
+    topic = _get_topic_or_404(id)
+
     topic.pin(g.current_user)
     db.session.commit()
 
@@ -354,7 +343,8 @@ def topic_pin(id):
 @respond_no_content_with_location
 def topic_unpin(id):
     """Unpin a topic."""
-    topic = Topic.query.get_or_404(id)
+    topic = _get_topic_or_404(id)
+
     topic.unpin()
     db.session.commit()
 
@@ -366,7 +356,7 @@ def topic_unpin(id):
 @permission_required(BoardTopicPermission.move)
 def topic_move(id):
     """Move a topic from one category to another."""
-    topic = Topic.query.get_or_404(id)
+    topic = _get_topic_or_404(id)
 
     old_category = topic.category
 
@@ -415,7 +405,8 @@ def posting_view(id):
 @templated
 def posting_create_form(topic_id, erroneous_form=None):
     """Show a form to create a posting to the topic."""
-    topic = Topic.query.get_or_404(topic_id)
+    topic = _get_topic_or_404(topic_id)
+
     form = erroneous_form if erroneous_form else PostingCreateForm()
 
     quoted_posting_bbcode = quote_posting_as_bbcode()
@@ -449,7 +440,7 @@ def posting_create(topic_id):
     """Create a posting to the topic."""
     form = PostingCreateForm(request.form)
 
-    topic = Topic.query.get_or_404(topic_id)
+    topic = _get_topic_or_404(topic_id)
     creator = g.current_user
     body = form.body.data.strip()
 
@@ -581,3 +572,12 @@ def posting_unhide(id):
 
     flash_success('Der Beitrag wurde wieder sichtbar gemacht.', icon='view')
     return url_for('.topic_view', id=posting.topic.id, page=page, _anchor=posting.anchor)
+
+
+def _get_topic_or_404(topic_id):
+    topic = service.find_topic_by_id(topic_id)
+
+    if topic is None:
+        abort(404)
+
+    return topic
