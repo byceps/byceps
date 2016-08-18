@@ -17,6 +17,21 @@ from ..user.models.user import User
 from .models import Party
 
 
+def count_parties():
+    """Return the number of parties (of all brands)."""
+    return Party.query.count()
+
+
+def count_parties_for_brand(brand):
+    """Return the number of parties for that brand."""
+    return Party.query.for_brand(brand).count()
+
+
+def find_party(party_id):
+    """Return the party with that id, or `None` if not found."""
+    return Party.query.get(party_id)
+
+
 def get_archived_parties():
     """Return archived parties."""
     return Party.query \

@@ -8,24 +8,26 @@ byceps.blueprints.admin_dashboard.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from datetime import date, datetime, timedelta
+from datetime import date, timedelta
+
+from flask import abort
 
 from ...util.framework import create_blueprint
 from ...util.templating import templated
 
-from ..brand.models import Brand
+from ..brand import service as brand_service
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 from ..board_admin import service as board_admin_service
 from ..news_admin import service as news_admin_service
 from ..newsletter_admin import service as newsletter_admin_service
 from ..orga_admin import service as orga_admin_service
-from ..party.models import Party
+from ..party import service as party_service
 from ..ticket import service as ticket_service
 from ..seating_admin import service as seating_admin_service
 from ..shop_admin import service as shop_admin_service
 from ..terms import service as terms_service
-from ..user.models.user import User
+from ..user import service as user_service
 
 from .authorization import AdminDashboardPermission
 
@@ -41,21 +43,17 @@ permission_registry.register_enum(AdminDashboardPermission)
 @templated
 def view_global():
     """View dashboard for global entities."""
-    brand_count = Brand.query.count()
-    party_count = Party.query.count()
+    brand_count = brand_service.count_brands()
+    party_count = party_service.count_parties()
 
     orga_count = orga_admin_service.count_orgas()
 
-    user_count = User.query.count()
+    user_count  = user_service.count_users()
 
-    one_week_ago = (datetime.now() - timedelta(days=7))
-    recent_users_count = User.query \
-        .filter(User.created_at >= one_week_ago) \
-        .count()
+    one_week_ago = timedelta(days=7)
+    recent_users_count = user_service.count_users_created_since(one_week_ago)
 
-    disabled_user_count = User.query \
-        .filter_by(enabled=False) \
-        .count()
+    disabled_user_count = user_service.count_disabled_users()
 
     orgas_with_next_birthdays = list(
         orga_admin_service.collect_orgas_with_next_birthdays(limit=3))
@@ -79,9 +77,11 @@ def view_global():
 @templated
 def view_brand(brand_id):
     """View dashboard for that brand."""
-    brand = Brand.query.get_or_404(brand_id)
+    brand = brand_service.find_brand(brand_id)
+    if brand is None:
+        abort(404)
 
-    party_count = Party.query.for_brand(brand).count()
+    party_count = party_service.count_parties_for_brand(brand)
 
     orga_count = orga_admin_service.count_orgas_for_brand(brand)
 
@@ -120,7 +120,9 @@ def view_brand(brand_id):
 @templated
 def view_party(party_id):
     """View dashboard for that party."""
-    party = Party.query.get_or_404(party_id)
+    party = party_service.find_party(party_id)
+    if party is None:
+        abort(404)
 
     days_until_party = (party.starts_at.date() - date.today()).days
 

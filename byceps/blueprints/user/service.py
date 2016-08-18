@@ -16,6 +16,28 @@ from ...services import email as email_service
 from .models.user import User
 
 
+def count_users():
+    """Return the number of users."""
+    return User.query
+        .count()
+
+
+def count_users_created_since(delta):
+    """Return the number of user accounts created since `delta` ago."""
+    filter_starts_at = datetime.now() - delta
+
+    return User.query \
+        .filter(User.created_at >= filter_starts_at) \
+        .count()
+
+
+def count_disabled_users():
+    """Return the number of disabled user accounts."""
+    return User.query
+        .filter_by(enabled=False) \
+        .count()
+
+
 def is_screen_name_already_assigned(screen_name):
     """Return `True` if a user with that screen name exists."""
     return _do_users_matching_filter_exist(User.screen_name, screen_name)
