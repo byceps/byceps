@@ -8,13 +8,11 @@ byceps.blueprints.authorization_admin.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from ...database import db
-from ...util.framework import create_blueprint
+from ...util.framework import create_blueprin
 from ...util.templating import templated
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
-from ..authorization.models import Permission, Role, RolePermission
 
 from .authorization import RolePermission
 
@@ -30,12 +28,8 @@ permission_registry.register_enum(RolePermission)
 @templated
 def permission_index():
     """List permissions."""
-    permissions = Permission.query \
-        .options(
-            db.undefer('title'),
-            db.joinedload('role_permissions')
-        ) \
-        .all()
+    permissions = get_permissions_with_titles()
+
     return {'permissions': permissions}
 
 
@@ -44,10 +38,6 @@ def permission_index():
 @templated
 def role_index():
     """List roles."""
-    roles = Role.query \
-        .options(
-            db.undefer('title'),
-            db.joinedload('user_roles').joinedload('user')
-        ) \
-        .all()
+    roles = get_roles_with_titles()
+
     return {'roles': roles}

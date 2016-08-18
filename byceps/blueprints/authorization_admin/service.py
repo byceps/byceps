@@ -15,6 +15,26 @@ from ...database import db
 from ..authorization.models import Permission, Role, RolePermission, UserRole
 
 
+def get_permissions_with_titles():
+    """Return all permissions, with titles."""
+    return Permission.query \
+        .options(
+            db.undefer('title'),
+            db.joinedload('role_permissions')
+        ) \
+        .all()
+
+
+def get_roles_with_titles():
+    """Return all roles, with titles."""
+    return Role.query \
+        .options(
+            db.undefer('title'),
+            db.joinedload('user_roles').joinedload('user')
+        ) \
+        .all()
+
+
 def get_permissions_by_roles_for_user_with_titles(user):
     """Return permissions grouped by their respective roles for that user.
 
