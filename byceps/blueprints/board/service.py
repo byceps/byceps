@@ -202,6 +202,28 @@ def find_default_posting_to_jump_to(topic, user, last_viewed_at):
 # posting
 
 
+def find_posting_by_id(posting_id):
+    """Return the posting with that id, or `None` if not found."""
+    return Posting.query.get(posting_id)
+
+
+def paginate_postings(topic, user, page, postings_per_page):
+    """Paginate postings in that topic, as visible for the user."""
+    return Posting.query \
+        .options(
+            db.joinedload(Posting.topic),
+            db.joinedload('creator')
+                .load_only('id', 'screen_name')
+                .joinedload('orga_team_memberships'),
+            db.joinedload(Posting.last_edited_by).load_only('screen_name'),
+            db.joinedload(Posting.hidden_by).load_only('screen_name'),
+        ) \
+        .for_topic(topic) \
+        .only_visible_for_user(user) \
+        .earliest_to_latest() \
+        .paginate(page, postings_per_page)
+
+
 def create_posting(topic, creator, body):
     """Create a posting in that topic."""
     posting = Posting(topic, creator, body)

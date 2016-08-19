@@ -23,7 +23,6 @@ from .authorization import BoardPostingPermission, BoardTopicPermission
 from .formatting import get_smileys, render_html
 from .forms import PostingCreateForm, PostingUpdateForm, TopicCreateForm, \
     TopicUpdateForm
-from .models.posting import Posting
 from . import service
 from . import signals
 
@@ -120,19 +119,8 @@ def topic_view(id, page):
             'Es können keine Beiträge mehr hinzugefügt werden.',
             icon='lock')
 
-    postings = Posting.query \
-        .options(
-            db.joinedload(Posting.topic),
-            db.joinedload('creator')
-                .load_only('id', 'screen_name')
-                .joinedload('orga_team_memberships'),
-            db.joinedload(Posting.last_edited_by).load_only('screen_name'),
-            db.joinedload(Posting.hidden_by).load_only('screen_name'),
-        ) \
-        .for_topic(topic) \
-        .only_visible_for_user(g.current_user) \
-        .earliest_to_latest() \
-        .paginate(page, postings_per_page)
+    postings = service.paginate_postings(topic, g.current_user, page,
+                                         postings_per_page)
 
     add_unseen_flag_to_postings(postings.items, g.current_user, last_viewed_at)
 
@@ -389,7 +377,7 @@ def posting_view(id):
     """Show the page of the posting's topic that contains the posting,
     as seen by the current user.
     """
-    posting = Posting.query.get_or_404(id)
+    posting = _get_posting_or_404(id)
 
     page = service.calculate_posting_page_number(posting, g.current_user)
 
@@ -425,7 +413,7 @@ def quote_posting_as_bbcode():
     if not posting_id:
         return
 
-    posting = Posting.query.get(posting_id)
+    posting = service.find_posting_by_id(posting_id)
     if posting is None:
         flash_error('Der zu zitierende Beitrag wurde nicht gefunden.')
         return
@@ -469,7 +457,7 @@ def posting_create(topic_id):
 @templated
 def posting_update_form(id):
     """Show form to update a posting."""
-    posting = Posting.query.get_or_404(id)
+    posting = _get_posting_or_404(id)
 
     page = service.calculate_posting_page_number(posting, g.current_user)
     url = url_for('.topic_view', id=posting.topic.id, page=page)
@@ -501,7 +489,7 @@ def posting_update_form(id):
 @permission_required(BoardPostingPermission.update)
 def posting_update(id):
     """Update a posting."""
-    posting = Posting.query.get_or_404(id)
+    posting = _get_posting_or_404(id)
 
     page = service.calculate_posting_page_number(posting, g.current_user)
     url = url_for('.topic_view', id=posting.topic.id, page=page)
@@ -533,7 +521,8 @@ def posting_update(id):
 @templated
 def posting_moderate_form(id):
     """Show a form to moderate the posting."""
-    posting = Posting.query.get_or_404(id)
+    posting = _get_posting_or_404(id)
+
     return {
         'posting': posting,
     }
@@ -544,7 +533,8 @@ def posting_moderate_form(id):
 @respond_no_content_with_location
 def posting_hide(id):
     """Hide a posting."""
-    posting = Posting.query.get_or_404(id)
+    posting = _get_posting_or_404(id)
+
     posting.hide(g.current_user)
     db.session.commit()
 
@@ -562,7 +552,8 @@ def posting_hide(id):
 @respond_no_content_with_location
 def posting_unhide(id):
     """Un-hide a posting."""
-    posting = Posting.query.get_or_404(id)
+    posting = _get_posting_or_404(id)
+
     posting.unhide()
     db.session.commit()
 
@@ -581,3 +572,12 @@ def _get_topic_or_404(topic_id):
         abort(404)
 
     return topic
+
+
+def _get_posting_or_404(posting_id):
+    posting = service.find_posting_by_id(posting_id)
+
+    if posting is None:
+        abort(404)
+
+    return posting
