@@ -13,7 +13,7 @@ from ...util.templating import templated
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
-from ..brand.models import Brand
+from ..brand import service as brand_service
 from ..news_admin import service as news_admin_service
 from ..orga_admin import service as orga_admin_service
 from ..party_admin import service as party_admin_service
@@ -32,7 +32,7 @@ permission_registry.register_enum(BrandPermission)
 @templated
 def index():
     """List brands."""
-    brands = Brand.query.order_by(Brand.title).all()
+    brands = brand_service.get_brands()
 
     party_count_by_brand_id = party_admin_service \
         .get_party_count_by_brand_id()
