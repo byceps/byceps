@@ -8,7 +8,7 @@ byceps.blueprints.board_admin.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from flask import request, url_for
+from flask import abort, request, url_for
 
 from ...database import db
 from ...util.framework import create_blueprint, flash_error, flash_success
@@ -17,8 +17,8 @@ from ...util.views import redirect_to, respond_no_content_with_location
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
-from ..brand.models import Brand
-from ..board.models.category import Category
+from ..brand import service as brand_service
+from ..board import service as board_service
 
 from .authorization import BoardCategoryPermission
 from .forms import CategoryCreateForm, CategoryUpdateForm
@@ -38,10 +38,7 @@ def index_for_brand(brand_id):
     """List categories for that brand."""
     brand = get_brand_or_404(brand_id)
 
-    categories = Category.query \
-        .filter_by(brand=brand) \
-        .order_by(Category.position) \
-        .all()
+    categories = service.get_categories(brand)
 
     return {
         'brand': brand,
@@ -153,9 +150,19 @@ def category_move_down(id):
     return url_for('.index_for_brand', brand_id=category.brand.id)
 
 
-def get_brand_or_404(id):
-    return Brand.query.get_or_404(id)
+def get_brand_or_404(brand_id):
+    brand = brand_service.find_brand(brand_id)
+
+    if brand is None:
+        abort(404)
+
+    return brand
 
 
-def get_category_or_404(id):
-    return Category.query.get_or_404(id)
+def get_category_or_404(category_id):
+    category = board_service.find_category_by_id(category_id)
+
+    if category is None:
+        abort(404)
+
+    return category

@@ -34,6 +34,14 @@ def count_postings_for_brand(brand):
         .count()
 
 
+def get_categories(brand):
+    """Return all categories for that brand, ordered by position."""
+    return Category.query \
+        .for_brand(brand) \
+        .order_by(Category.position) \
+        .all()
+
+
 def create_category(brand, slug, title, description):
     """Create a category in that brand's board."""
     category = Category(brand, slug, title, description)
