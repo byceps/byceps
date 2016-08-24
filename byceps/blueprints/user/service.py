@@ -38,6 +38,11 @@ def count_disabled_users():
         .count()
 
 
+def find_user(user_id):
+    """Return the user with that id, or `None` if not found."""
+    return User.query.get(user_id)
+
+
 def is_screen_name_already_assigned(screen_name):
     """Return `True` if a user with that screen name exists."""
     return _do_users_matching_filter_exist(User.screen_name, screen_name)

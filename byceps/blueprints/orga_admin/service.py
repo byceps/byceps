@@ -127,3 +127,87 @@ def count_orgas_for_brand(brand):
     return User.query \
         .join(OrgaFlag).filter(OrgaFlag.brand == brand) \
         .count()
+
+
+def create_orga_flag(brand, user):
+    """Create an orga flag for a user for brand."""
+    orga_flag = OrgaFlag(brand, user)
+
+    db.session.add(orga_flag)
+    db.session.commit()
+
+    return orga_flag
+
+
+def delete_orga_flag(orga_flag):
+    """Delete the orga flag."""
+    db.session.delete(orga_flag)
+    db.session.commit()
+
+
+def find_orga_flag(brand_id, user_id):
+    """Return the orga flag for that brand and user, or `None` if not found."""
+    return OrgaFlag.query \
+        .filter_by(brand_id=brand_id) \
+        .filter_by(user_id=user_id) \
+        .first()
+
+
+def create_orga_team(party, title):
+    """Create an orga team for that party."""
+    team = OrgaTeam(party, title)
+
+    db.session.add(team)
+    db.session.commit()
+
+    return team
+
+
+def delete_orga_team(team):
+    """Delete the orga team."""
+    db.session.delete(team)
+    db.session.commit()
+
+
+def find_orga_team(team_id):
+    """Return the team with that id, or `None` if not found."""
+    return OrgaTeam.query.get(team_id)
+
+
+def get_orga_teams_for_party(party):
+    """Return all orga teams for that party, with memberships."""
+    return OrgaTeam.query \
+        .options(db.joinedload('memberships')) \
+        .filter_by(party=party) \
+        .all()
+
+
+def create_membership(team, user, duties):
+    """Assign the user to the team."""
+    membership = Membership(team, user)
+
+    if duties:
+        membership.duties = duties
+
+    db.session.add(membership)
+    db.session.commit()
+
+    return membership
+
+
+def update_membership(membership, team, duties):
+    """Update the membership."""
+    membership.orga_team = team
+    membership.duties = duties
+    db.session.commit()
+
+
+def delete_membership(membership):
+    """Delete the membership."""
+    db.session.delete(membership)
+    db.session.commit()
+
+
+def find_membership(membership_id):
+    """Return the membership with that id, or `None` if not found."""
+    return Membership.query.get(membership_id)

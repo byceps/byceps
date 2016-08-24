@@ -12,7 +12,6 @@ from operator import attrgetter
 
 from flask import abort, request, url_for
 
-from ...database import db
 from ...util.export import serialize_to_csv
 from ...util.framework import create_blueprint, flash_success
 from ...util.templating import templated
@@ -20,10 +19,9 @@ from ...util.views import redirect_to, respond_no_content_with_location, textifi
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
-from ..brand.models import Brand
-from ..orga.models import Membership, OrgaFlag, OrgaTeam
-from ..party.models import Party
-from ..user.models.user import User
+from ..brand import service as brand_service
+from ..party import service as party_service
+from ..user import service as user_service
 
 from .authorization import OrgaBirthdayPermission, OrgaDetailPermission, \
     OrgaTeamPermission
@@ -57,7 +55,7 @@ def persons():
 @templated
 def persons_for_brand(brand_id):
     """List organizers for the brand with details."""
-    brand = Brand.query.get_or_404(brand_id)
+    brand = _get_brand_or_404(brand_id)
 
     orgas = service.get_organizers_for_brand(brand)
 
@@ -72,7 +70,7 @@ def persons_for_brand(brand_id):
 @templated
 def create_orgaflag_form(brand_id):
     """Show form to give the organizer flag to a user."""
-    brand = Brand.query.get_or_404(brand_id)
+    brand = _get_brand_or_404(brand_id)
 
     form = OrgaFlagCreateForm()
 
@@ -86,17 +84,14 @@ def create_orgaflag_form(brand_id):
 @permission_required(OrgaTeamPermission.administrate_memberships)
 def create_orgaflag(brand_id):
     """Give the organizer flag to a user."""
-    brand = Brand.query.get_or_404(brand_id)
+    brand = _get_brand_or_404(brand_id)
+
     form = OrgaFlagCreateForm(request.form)
 
     user_id = form.user_id.data.strip()
-    user = User.query.get_or_404(user_id)
+    user = _get_user_or_404(user_id)
 
-    orga_flag = OrgaFlag(
-        brand=brand,
-        user=user)
-    db.session.add(orga_flag)
-    db.session.commit()
+    orga_flag = service.create_orga_flag(brand, user)
 
     flash_success('{} wurde das Orga-Flag für die Marke {} gegeben.',
                   user.screen_name, brand.title)
@@ -108,16 +103,14 @@ def create_orgaflag(brand_id):
 @respond_no_content_with_location
 def remove_orgaflag(brand_id, user_id):
     """Remove the organizer flag for a brand from a person."""
-    orga_flag = OrgaFlag.query \
-        .filter_by(brand_id=brand_id) \
-        .filter_by(user_id=user_id) \
-        .first_or_404()
+    orga_flag = service.find_orga_flag(brand_id, user_id)
+    if orga_flag is None:
+        abort(404)
 
     brand = orga_flag.brand
     user = orga_flag.user
 
-    db.session.delete(orga_flag)
-    db.session.commit()
+    service.delete_orga_flag(orga_flag)
 
     flash_success('{} wurde das Orga-Flag für die Marke {} entzogen.',
                   user.screen_name, brand.title)
@@ -131,6 +124,8 @@ def export_persons(brand_id):
     """Export the list of organizers for the brand as a CSV document in
     Microsoft Excel dialect.
     """
+    brand = _get_brand_or_404(brand_id)
+
     field_names = [
         'Benutzername',
         'Vorname',
@@ -161,7 +156,6 @@ def export_persons(brand_id):
             'Telefonnummer': user.detail.phone_number,
         }
 
-    brand = Brand.query.get_or_404(brand_id)
     orgas = service.get_organizers_for_brand(brand)
     orgas.sort(key=attrgetter('screen_name'))
     rows = map(to_dict, orgas)
@@ -173,12 +167,9 @@ def export_persons(brand_id):
 @templated
 def teams_for_party(party_id):
     """List organizer teams for that party."""
-    party = Party.query.get_or_404(party_id)
+    party = _get_party_or_404(party_id)
 
-    teams = OrgaTeam.query \
-        .options(db.joinedload('memberships')) \
-        .filter_by(party=party) \
-        .all()
+    teams = service.get_orga_teams_for_party(party)
 
     return {
         'party': party,
@@ -191,7 +182,7 @@ def teams_for_party(party_id):
 @templated
 def team_create_form(party_id, erroneous_form=None):
     """Show form to create an organizer team for a party."""
-    party = Party.query.get_or_404(party_id)
+    party = _get_party_or_404(party_id)
 
     form = erroneous_form if erroneous_form else OrgaTeamCreateForm()
 
@@ -205,7 +196,7 @@ def team_create_form(party_id, erroneous_form=None):
 @permission_required(OrgaTeamPermission.create)
 def team_create(party_id):
     """Create an organizer team for a party."""
-    party = Party.query.get_or_404(party_id)
+    party = _get_party_or_404(party_id)
 
     form = OrgaTeamCreateForm(request.form)
     if not form.validate():
@@ -213,9 +204,7 @@ def team_create(party_id):
 
     title = form.title.data.strip()
 
-    team = OrgaTeam(party, title)
-    db.session.add(team)
-    db.session.commit()
+    team = service.create_orga_team(party, title)
 
     flash_success('Das Team "{}" wurde für die Party "{}" erstellt.',
                   team.title, team.party.title)
@@ -227,7 +216,7 @@ def team_create(party_id):
 @respond_no_content_with_location
 def team_delete(team_id):
     """Delete the team."""
-    team = OrgaTeam.query.get_or_404(team_id)
+    team = _get_team_or_404(team_id)
 
     if team.memberships:
         abort(403, 'Orga team cannot be deleted as it has members.')
@@ -235,8 +224,7 @@ def team_delete(team_id):
     party = team.party
     title = team.title
 
-    db.session.delete(team)
-    db.session.commit()
+    service.delete_orga_team(team)
 
     flash_success('Das Team "{}" wurde gelöscht.', title)
     return url_for('.teams_for_party', party_id=party.id)
@@ -247,7 +235,7 @@ def team_delete(team_id):
 @templated
 def membership_create_form(team_id, erroneous_form=None):
     """Show form to assign an organizer to that team."""
-    team = OrgaTeam.query.get_or_404(team_id)
+    team = _get_team_or_404(team_id)
 
     form = erroneous_form if erroneous_form else MembershipCreateForm()
     form.set_user_choices(service.get_unassigned_orgas_for_party(team.party))
@@ -262,7 +250,7 @@ def membership_create_form(team_id, erroneous_form=None):
 @permission_required(OrgaTeamPermission.administrate_memberships)
 def membership_create(team_id):
     """Assign an organizer to that team."""
-    team = OrgaTeam.query.get_or_404(team_id)
+    team = _get_team_or_404(team_id)
 
     form = MembershipCreateForm(request.form)
     form.set_user_choices(service.get_unassigned_orgas_for_party(team.party))
@@ -273,11 +261,7 @@ def membership_create(team_id):
     user = User.query.get(form.user_id.data)
     duties = form.duties.data.strip()
 
-    membership = Membership(team, user)
-    if duties:
-        membership.duties = duties
-    db.session.add(team)
-    db.session.commit()
+    membership = service.create_membership(team, user, duties)
 
     flash_success('{} wurde in das Team "{}" aufgenommen.',
                   membership.user.screen_name, membership.orga_team.title)
@@ -290,7 +274,8 @@ def membership_create(team_id):
 @templated
 def membership_update_form(id, erroneous_form=None):
     """Show form to update a membership."""
-    membership = Membership.query.get_or_404(id)
+    membership = _get_membership_or_404(membership_id)
+
     teams = service.get_teams_for_party(membership.orga_team.party)
 
     form = erroneous_form if erroneous_form \
@@ -307,7 +292,8 @@ def membership_update_form(id, erroneous_form=None):
 @permission_required(OrgaTeamPermission.administrate_memberships)
 def membership_update(id):
     """Update a membership."""
-    membership = Membership.query.get_or_404(id)
+    membership = _get_membership_or_404(membership_id)
+
     teams = service.get_teams_for_party(membership.orga_team.party)
 
     form = MembershipUpdateForm(request.form)
@@ -316,9 +302,11 @@ def membership_update(id):
     if not form.validate():
         return membership_update_form(id, form)
 
-    membership.orga_team = OrgaTeam.query.get(form.orga_team_id.data)
-    membership.duties = form.duties.data.strip() or None
-    db.session.commit()
+    team_id = form.orga_team_id.data
+    team = service.find_orga_team(team_id)
+    duties = form.duties.data.strip() or None
+
+    service.update_membership(membership, team, duties)
 
     flash_success('Die Teammitgliedschaft von {} wurde aktualisiert.',
                   membership.user.screen_name)
@@ -331,13 +319,12 @@ def membership_update(id):
 @respond_no_content_with_location
 def membership_remove(id):
     """Remove an organizer from a team."""
-    membership = Membership.query.get_or_404(id)
+    membership = _get_membership_or_404(membership_id)
 
     user = membership.user
     team = membership.orga_team
 
-    db.session.delete(membership)
-    db.session.commit()
+    service.delete_membership(membership)
 
     flash_success('{} wurde aus dem Team "{}" entfernt.',
                   user.screen_name, team.title)
@@ -353,3 +340,48 @@ def birthdays():
     return {
         'orgas': orgas,
     }
+
+
+def _get_brand_or_404(brand_id):
+    brand = brand_service.find_brand(brand_id)
+
+    if brand is None:
+        abort(404)
+
+    return brand
+
+
+def _get_party_or_404(party_id):
+    party = party_service.find_party(party_id)
+
+    if party is None:
+        abort(404)
+
+    return party
+
+
+def _get_user_or_404(user_id):
+    user = user_service.find_user(user_id)
+
+    if user is None:
+        abort(404)
+
+    return user
+
+
+def _get_team_or_404(team_id):
+    team = service.find_orga_team(team_id)
+
+    if team is None:
+        abort(404)
+
+    return team
+
+
+def _get_membership_or_404(membership_id):
+    membership = service.find_membership(membership_id)
+
+    if membership is None:
+        abort(404)
+
+    return membership
