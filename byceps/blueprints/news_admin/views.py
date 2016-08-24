@@ -20,6 +20,7 @@ from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 from ..brand.models import Brand
 from ..news.models import Item
+from ..news import service as news_service
 from ..news import service
 from ..news import signals
 
@@ -42,12 +43,8 @@ def index_for_brand(brand_id, page):
     brand = get_brand_or_404(brand_id)
 
     per_page = request.args.get('per_page', type=int, default=15)
-    query = Item.query \
-        .for_brand(brand) \
-        .with_current_version() \
-        .order_by(Item.published_at.desc())
 
-    items = query.paginate(page, per_page)
+    items = news_service.get_items_paginated(brand, page, per_page)
 
     return {
         'brand': brand,
