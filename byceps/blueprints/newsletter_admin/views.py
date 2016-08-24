@@ -10,13 +10,15 @@ byceps.blueprints.newsletter_admin.views
 
 from operator import attrgetter
 
+from flask import abort
+
 from ...util.framework import create_blueprint
 from ...util.templating import templated
 from ...util.views import jsonified, textified
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
-from ..brand.models import Brand
+from ..brand import service as brand_service
 from ..newsletter.models import SubscriptionState
 
 from .authorization import NewsletterPermission
@@ -35,7 +37,7 @@ permission_registry.register_enum(NewsletterPermission)
 @templated
 def view_subscriptions(brand_id):
     """Show user subscription states for that brand."""
-    brand = Brand.query.get_or_404(brand_id)
+    brand = _get_brand_or_404(brand_id)
 
     subscription_states = list(get_user_subscription_states_for_brand(brand))
     subscription_states.sort(
@@ -59,7 +61,7 @@ def export_subscribers(brand_id):
     which are currently subscribed to the newsletter for this brand
     as JSON.
     """
-    brand = Brand.query.get_or_404(brand_id)
+    brand = _get_brand_or_404(brand_id)
 
     subscribers = get_subscribers(brand)
 
@@ -83,8 +85,17 @@ def export_subscriber_email_addresses(brand_id):
     subscribed to the newsletter for this brand as plaintext, with one
     address per row.
     """
-    brand = Brand.query.get_or_404(brand_id)
+    brand = _get_brand_or_404(brand_id)
 
     subscribers = get_subscribers(brand)
     email_addresses = map(attrgetter('email_address'), subscribers)
     return '\n'.join(email_addresses)
+
+
+def _get_brand_or_404(brand_id):
+    brand = brand_service.find_brand(brand_id)
+
+    if brand is None:
+        abort(404)
+
+    return brand
