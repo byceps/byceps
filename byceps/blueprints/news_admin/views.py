@@ -10,7 +10,7 @@ byceps.blueprints.news_admin.views
 
 from datetime import date
 
-from flask import g, request
+from flask import abort, g, request
 
 from ...util.framework import create_blueprint, flash_success
 from ...util.templating import templated
@@ -18,7 +18,7 @@ from ...util.views import redirect_to
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
-from ..brand.models import Brand
+from ..brand import service as brand_service
 from ..news.models import Item
 from ..news import service as news_service
 from ..news import service
@@ -99,7 +99,7 @@ def create(brand_id):
 @templated
 def update_form(id):
     """Show form to update a news item."""
-    item = Item.query.get_or_404(id)
+    item = get_item_or_404(id)
 
     form = ItemUpdateForm(obj=item.current_version, slug=item.slug)
 
@@ -113,7 +113,7 @@ def update_form(id):
 @permission_required(NewsItemPermission.update)
 def update(id):
     """Update a news item."""
-    item = Item.query.get_or_404(id)
+    item = get_item_or_404(id)
 
     form = ItemUpdateForm(request.form)
 
@@ -130,4 +130,18 @@ def update(id):
 
 
 def get_brand_or_404(brand_id):
-    return Brand.query.get_or_404(brand_id)
+    brand = brand_service.find_brand(brand_id)
+
+    if brand is None:
+        abort(404)
+
+    return brand
+
+
+def get_item_or_404(item_id):
+    item = news_service.find_item(item_id)
+
+    if item is None:
+        abort(404)
+
+    return item
