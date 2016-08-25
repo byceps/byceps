@@ -37,3 +37,11 @@ def count_seats_for_party(party):
     return Seat.query \
         .join(Area).filter(Area.party_id == party.id) \
         .count()
+
+
+def paginate_areas_for_party(party, page, per_page):
+    """Return the areas for that party to show on the specified page."""
+    return Area.query \
+        .for_party(party) \
+        .order_by(Area.title) \
+        .paginate(page, per_page)

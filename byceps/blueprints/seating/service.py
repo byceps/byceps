@@ -11,6 +11,7 @@ byceps.blueprints.seating.service
 from ...database import db
 
 from .models.area import Area
+from .models.category import Category
 
 
 def find_area_for_party_by_slug(party, slug):
@@ -25,5 +26,12 @@ def find_area_for_party_by_slug(party, slug):
 def get_areas_for_party(party):
     """Return all areas for that party."""
     return Area.query \
+        .for_party(party) \
+        .all()
+
+
+def get_categories_for_party(party):
+    """Return all categories for that party."""
+    return Category.query \
         .for_party(party) \
         .all()
