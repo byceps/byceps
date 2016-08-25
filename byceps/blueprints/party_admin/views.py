@@ -8,17 +8,16 @@ byceps.blueprints.party_admin.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from flask import request
+from flask import abort, request
 
-from ...database import db
 from ...util.framework import create_blueprint, flash_error, flash_success
 from ...util.templating import templated
 from ...util.views import redirect_to
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
-from ..brand.models import Brand
-from ..party.models import Party
+from ..brand import service as brand_service
+from ..party import service as party_service
 from ..shop_admin import service as shop_admin_service
 from ..ticket_admin import service as ticket_admin_service
 
@@ -37,8 +36,11 @@ permission_registry.register_enum(PartyPermission)
 @templated
 def index():
     """List parties."""
-    parties = Party.query.options(db.joinedload('brand')).all()
-    return {'parties': parties}
+    parties = service.get_parties_with_brands()
+
+    return {
+        'parties': parties,
+    }
 
 
 @blueprint.route('/brands/<brand_id>', defaults={'page': 1})
@@ -47,11 +49,12 @@ def index():
 @templated
 def index_for_brand(brand_id, page):
     """List parties for this brand."""
-    brand = Brand.query.get_or_404(brand_id)
+    brand = brand_service.find_brand(id)
+    if brand is None:
+        abort(404)
 
     per_page = request.args.get('per_page', type=int, default=15)
-
-    parties = Party.query.for_brand(brand).paginate(page, per_page)
+    parties = party_service.paginate_parties_for_brand(brand, page, per_page)
 
     article_count_by_party_id = shop_admin_service \
         .get_article_count_by_party_id()
@@ -76,7 +79,9 @@ def index_for_brand(brand_id, page):
 @templated
 def view(id):
     """Show a party."""
-    party = Party.query.get_or_404(id)
+    party = party_service.find_party(id)
+    if party is None:
+        abort(404)
 
     return {
         'party': party,
@@ -88,7 +93,7 @@ def view(id):
 @templated
 def create_form(erroneous_form=None):
     """Show form to create a party."""
-    brands = get_brands_by_title()
+    brands = brand_service.get_brands()
 
     form = erroneous_form if erroneous_form else CreateForm()
     form.set_brand_choices(brands)
@@ -102,7 +107,7 @@ def create_form(erroneous_form=None):
 @permission_required(PartyPermission.create)
 def create():
     """Create a party."""
-    brands = get_brands_by_title()
+    brands = brand_service.get_brands()
 
     form = CreateForm(request.form)
     form.set_brand_choices(brands)
@@ -111,7 +116,7 @@ def create():
         return create_form(form)
 
     brand_id = form.brand_id.data
-    brand = Brand.query.get(brand_id)
+    brand = brand_service.find_brand(brand_id)
     if not brand:
         flash_error('Unbekannte Marke.')
         return create_form(form)
@@ -121,13 +126,7 @@ def create():
     starts_at = form.starts_at.data
     ends_at = form.ends_at.data
 
-    party = Party(id, brand, title, starts_at, ends_at)
-    db.session.add(party)
-    db.session.commit()
+    party = party_service.create_party(id, brand, title, starts_at, ends_at)
 
     flash_success('Die Party "{}" wurde angelegt.', party.title)
     return redirect_to('.index')
-
-
-def get_brands_by_title():
-    return Brand.query.order_by(Brand.title).all()
