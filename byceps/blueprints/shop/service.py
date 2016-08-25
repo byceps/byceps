@@ -16,6 +16,11 @@ from .models.sequence import PartySequence, PartySequencePurpose
 from .signals import order_placed
 
 
+def find_article(article_id):
+    """Return the article with that id, or `None` if not found."""
+    return Article.query.get(article_id)
+
+
 def get_articles_for_party(party):
     """Return all articles for that party, ordered by article number."""
     return _get_articles_for_party_query(party).all()

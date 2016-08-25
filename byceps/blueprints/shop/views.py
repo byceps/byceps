@@ -8,7 +8,7 @@ byceps.blueprints.shop.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from flask import g, request
+from flask import abort, g, request
 
 from ...services import countries as countries_service
 from ...util.framework import create_blueprint, flash_error, flash_success
@@ -18,7 +18,6 @@ from ...util.views import redirect_to
 from ..authentication.decorators import login_required
 
 from .forms import assemble_articles_order_form, OrderForm
-from .models.article import Article
 from .models.cart import Cart
 from . import service
 
@@ -92,7 +91,7 @@ def order():
 @templated
 def order_single_form(article_id, erroneous_form=None):
     """Show a form to order a single article."""
-    article = Article.query.get_or_404(article_id)
+    article = _get_article_or_404(article_id)
 
     article_compilation = service.get_article_compilation_for_single_article(
         article, fixed_quantity=1)
@@ -134,7 +133,7 @@ def order_single_form(article_id, erroneous_form=None):
 @login_required
 def order_single(article_id):
     """Order a single article."""
-    article = Article.query.get_or_404(article_id)
+    article = _get_article_or_404(article_id)
     quantity = 1
 
     if article.not_directly_orderable:
@@ -168,3 +167,12 @@ def order_single(article_id):
 
     flash_success('Deine Bestellung wurde entgegen genommen. Vielen Dank!')
     return redirect_to('snippet.order_placed')
+
+
+def _get_article_or_404(article_id):
+    article = service.find_article(article_id)
+
+    if article is None:
+        abort(404)
+
+    return article
