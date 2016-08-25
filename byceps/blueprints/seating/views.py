@@ -8,14 +8,13 @@ byceps.blueprints.seating.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from flask import g
+from flask import abort, g
 
 from ...config import get_ticket_management_enabled
-from ...database import db
 from ...util.framework import create_blueprint
 from ...util.templating import templated
 
-from .models.area import Area
+from . import service
 
 
 blueprint = create_blueprint('seating', __name__)
@@ -25,19 +24,20 @@ blueprint = create_blueprint('seating', __name__)
 @templated
 def index():
     """List areas."""
-    areas = Area.query.for_party(g.party).all()
-    return {'areas': areas}
+    areas = service.get_areas_for_party(g.party)
+
+    return {
+        'areas': areas,
+    }
 
 
 @blueprint.route('/areas/<slug>')
 @templated
 def view_area(slug):
     """View area."""
-    area = Area.query \
-        .for_party(g.party) \
-        .filter_by(slug=slug) \
-        .options(db.joinedload('seats').joinedload('category')) \
-        .first_or_404()
+    area = service.find_area_for_party_by_slug(g.party, slug)
+    if area is None:
+        abort(404)
 
     ticket_management_enabled = get_ticket_management_enabled()
 
