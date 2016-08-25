@@ -10,15 +10,47 @@ byceps.blueprints.shop.service
 
 from ...database import db
 
-from .models.article import Article, ArticleCompilation, ArticleCompilationItem
+from .models.article import Article, ArticleCompilation, \
+    ArticleCompilationItem, AttachedArticle
 from .models.order import Order
 from .models.sequence import PartySequence, PartySequencePurpose
 from .signals import order_placed
 
 
+def create_article(party, item_number, description, price, tax_rate, quantity):
+    """Create an article."""
+    article = Article(party, item_number, description, price, tax_rate,
+                      quantity)
+
+    db.session.add(article)
+    db.session.commit()
+
+    return article
+
+
+def attach_article(article_to_attach, quantity, article_to_attach_to):
+    """Attach an article to another article."""
+    attached_article = AttachedArticle(article_to_attach, quantity,
+                                       article_to_attach_to)
+
+    db.session.add(attached_article)
+    db.session.commit()
+
+
+def unattach_article(attached_article):
+    """Unattach an article from another."""
+    db.session.delete(attached_article)
+    db.session.commit()
+
+
 def find_article(article_id):
     """Return the article with that id, or `None` if not found."""
     return Article.query.get(article_id)
+
+
+def find_attached_article(attached_article_id):
+    """Return the attached article with that id, or `None` if not found."""
+    return AttachedArticle.query.get(attached_article_id)
 
 
 def get_articles_for_party(party):
@@ -161,6 +193,21 @@ def add_items_from_cart_to_order(cart, order):
 
         order_item = order.add_item(article, quantity)
         db.session.add(order_item)
+
+
+def find_order(order_id):
+    """Return the order with that id, or `None` if not found."""
+    return Order.query.get(order_id)
+
+
+def find_order_with_details(order_id):
+    """Return the order with that id, or `None` if not found."""
+    return Order.query \
+        .options(
+            db.joinedload('party'),
+            db.joinedload('items'),
+        ) \
+        .get(order_id)
 
 
 def get_orders_placed_by_user(user):

@@ -78,3 +78,60 @@ def count_open_orders_for_party(party):
         .filter_by(party_id=party.id) \
         .filter_by(_payment_state=PaymentState.open.name) \
         .count()
+
+
+def get_orders_for_party_paginated(party, page, per_page, *,
+                                   only_payment_state=None):
+    """Return all orders for that party, ordered by creation date.
+
+    If a payment state is specified, only orders in that state are
+    returned.
+    """
+    query = Order.query \
+        .for_party(party) \
+        .options(
+            db.joinedload('placed_by'),
+        ) \
+        .order_by(Order.created_at.desc())
+
+    if only_payment_state is not None:
+        query = query.filter_by(_payment_state=only_payment_state.name)
+
+    return query.paginate(page, per_page)
+
+
+def find_article_with_details(article_id):
+    """Return the article with that ID, or `None` if not found."""
+    return Article.query \
+        .options(
+            db.joinedload('party'),
+            db.joinedload('articles_attached_to').joinedload('article'),
+            db.joinedload('attached_articles').joinedload('article'),
+        ) \
+        .get(article_id)
+
+
+def get_attachable_articles(article):
+    """Return the articles that can be attached to that article."""
+    attached_articles = {attached.article for attached in article.attached_articles}
+
+    unattachable_articles = {article} | attached_articles
+
+    unattachable_article_ids = {article.id for article in unattachable_articles}
+
+    return Article.query \
+        .for_party(articleparty) \
+        .filter(db.not_(Article.id.in_(unattachable_article_ids))) \
+        .order_by(Article.item_number) \
+        .all()
+
+
+def get_order_items_for_article(article):
+    """Return all order items for that article."""
+    return OrderItem.query \
+        .filter_by(article=article) \
+        .options(
+            db.joinedload('order.placed_by').joinedload('detail'),
+            db.joinedload('order').joinedload('party'),
+        ) \
+        .all()
