@@ -11,11 +11,9 @@ byceps.blueprints.party.views
 from flask import g
 
 from ...config import get_current_party_id
-from ...database import db
 from ...util.framework import create_blueprint
 from ...util.templating import templated
 
-from .models import Party
 from . import service
 
 
@@ -24,18 +22,14 @@ blueprint = create_blueprint('party', __name__)
 
 @blueprint.before_app_request
 def before_request():
-    id = get_current_party_id()
-    party = get_party(id)
+    party_id = get_current_party_id()
+
+    party = service.find_party_with_brand(party_id)
+
     if party is None:
-        raise Exception('Unknown party ID "{}".'.format(id))
+        raise Exception('Unknown party ID "{}".'.format(party_id))
 
     g.party = party
-
-
-def get_party(id):
-    return Party.query \
-        .options(db.joinedload('brand')) \
-        .get(id)
 
 
 @blueprint.route('/info')

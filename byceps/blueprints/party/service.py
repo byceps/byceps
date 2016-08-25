@@ -32,6 +32,13 @@ def find_party(party_id):
     return Party.query.get(party_id)
 
 
+def find_party_with_brand(party_id):
+    """Return the party with that id, or `None` if not found."""
+    return Party.query \
+        .options(db.joinedload('brand')) \
+        .get(party_id)
+
+
 def get_archived_parties():
     """Return archived parties."""
     return Party.query \
