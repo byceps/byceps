@@ -11,8 +11,8 @@ byceps.blueprints.orga_presence.views
 from itertools import groupby
 
 from arrow import Arrow
+from flask import abort
 
-from ...database import db
 from ...util.datetime import DateTimeRange
 from ...util.framework import create_blueprint
 from ...util.iterables import pairwise
@@ -20,10 +20,10 @@ from ...util.templating import templated
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
-from ..party.models import Party
+from ..party import service as party_service
 
 from .authorization import OrgaPresencePermission
-from .models import Presence, Task
+from . import service
 
 
 blueprint = create_blueprint('orga_presence', __name__)
@@ -37,13 +37,12 @@ permission_registry.register_enum(OrgaPresencePermission)
 @templated
 def view(party_id):
     """List orga presence and task time slots for that party."""
-    party = Party.query.get_or_404(party_id)
+    party = party_service.find_party(party_id)
+    if party is None:
+        abort(404)
 
-    presences = Presence.query \
-        .for_party(party) \
-        .options(db.joinedload('orga')) \
-        .all()
-    tasks = Task.query.for_party(party).all()
+    presences = service.get_presences(party)
+    tasks = service.get_tasks(party)
 
     time_slots = [party] + tasks
     min_starts_at = find_earliest_time_slot_start(time_slots)
