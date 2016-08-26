@@ -43,6 +43,10 @@ class Snippet(db.Model):
     name = db.Column(db.Unicode(40), index=True, nullable=False)
     current_version = association_proxy('current_version_association', 'version')
 
+    def __init__(self, party, name):
+        self.party = party
+        self.name = name
+
     def get_versions(self):
         """Return all versions, sorted from most recent to oldest."""
         return SnippetVersion.query.for_snippet(self).latest_first().all()
@@ -80,6 +84,14 @@ class SnippetVersion(db.Model):
     body = db.Column(db.UnicodeText, nullable=False)
     image_url_path = db.Column(db.Unicode(80), nullable=True)
 
+    def __init__(self, snippet, creator, title, head, body, image_url_path):
+        self.snippet = snippet
+        self.creator = creator
+        self.title = title
+        self.head = head
+        self.body = body
+        self.image_url_path = image_url_path
+
     @property
     def is_current(self):
         """Return `True` if this version is the current version of the
@@ -102,3 +114,7 @@ class CurrentVersionAssociation(db.Model):
     snippet = db.relationship(Snippet, backref=db.backref('current_version_association', uselist=False))
     version_id = db.Column(db.Uuid, db.ForeignKey('snippet_versions.id'), unique=True, nullable=False)
     version = db.relationship(SnippetVersion)
+
+    def __init__(self, snippet, version):
+        self.snippet = snippet
+        self.version = version

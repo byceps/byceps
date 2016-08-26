@@ -12,7 +12,6 @@ from operator import attrgetter
 
 from flask import abort, g, render_template, request, url_for
 
-from ...database import db
 from ...util.dateformat import format_datetime_short
 from ...util.framework import create_blueprint, flash_success
 from ...util.iterables import pairwise
@@ -21,10 +20,8 @@ from ...util.views import redirect_to, respond_no_content_with_location
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
-from ..party.models import Party
-from ..snippet.models.mountpoint import Mountpoint
-from ..snippet.models.snippet import CurrentVersionAssociation, Snippet, \
-    SnippetVersion
+from ..party import service as party_service
+from ..snippet import service as snippet_service
 from ..snippet.templating import get_snippet_context
 
 from .authorization import MountpointPermission, SnippetPermission
@@ -44,16 +41,11 @@ permission_registry.register_enum(SnippetPermission)
 @templated
 def index_for_party(party_id):
     """List snippets for that party."""
-    party = Party.query.get_or_404(party_id)
+    party = _get_party_or_404(party_id)
 
-    snippets = Snippet.query \
-        .for_party(party) \
-        .options(
-            db.joinedload('current_version_association').joinedload('version')
-        ) \
-        .all()
+    snippets = service.get_snippets_for_party_with_current_versions(party)
 
-    mountpoints = Mountpoint.query.for_party(party).all()
+    mountpoints = snippet_service.get_mountpoints_for_party(party)
 
     return {
         'party': party,
@@ -144,7 +136,7 @@ def history(id):
 @templated
 def create_snippet_form(party_id):
     """Show form to create a snippet."""
-    party = Party.query.get_or_404(party_id)
+    party = _get_party_or_404(party_id)
 
     form = SnippetCreateForm()
 
@@ -158,31 +150,22 @@ def create_snippet_form(party_id):
 @permission_required(SnippetPermission.create)
 def create_snippet(party_id):
     """Create a snippet."""
-    party = Party.query.get_or_404(party_id)
+    party = _get_party_or_404(party_id)
+
     form = SnippetCreateForm(request.form)
 
     name = form.name.data.strip().lower()
 
-    snippet = Snippet(name=name, party=party)
-    db.session.add(snippet)
+    creator = g.current_user
+    title = form.title.data.strip()
+    head = form.head.data.strip()
+    body = form.body.data.strip()
+    image_url_path = form.image_url_path.data.strip()
 
-    version = SnippetVersion(
-        snippet=snippet,
-        creator=g.current_user,
-        title=form.title.data.strip(),
-        head=form.head.data.strip(),
-        body=form.body.data.strip(),
-        image_url_path=form.image_url_path.data.strip())
-    db.session.add(version)
+    version = snippet_service.create_snippet(party, name, creator, title, head,
+                                             body, image_url_path)
 
-    current_version_association = CurrentVersionAssociation(
-        snippet=snippet,
-        version=version)
-    db.session.add(current_version_association)
-
-    db.session.commit()
-
-    flash_success('Das Snippet "{}" wurde angelegt.', snippet.name)
+    flash_success('Das Snippet "{}" wurde angelegt.', version.snippet.name)
     return redirect_to('.view_version', id=version.id)
 
 
@@ -212,20 +195,16 @@ def update_snippet(id):
 
     snippet = find_snippet_by_id(id)
 
-    version = SnippetVersion(
-        snippet=snippet,
-        creator=g.current_user,
-        title=form.title.data.strip(),
-        head=form.head.data.strip(),
-        body=form.body.data.strip(),
-        image_url_path=form.image_url_path.data.strip())
-    db.session.add(version)
+    creator = g.current_user
+    title = form.title.data.strip()
+    head = form.head.data.strip()
+    body = form.body.data.strip()
+    image_url_path = form.image_url_path.data.strip()
 
-    snippet.current_version = version
+    version = snippet_service.update_snippet(snippet, creator, title, head,
+                                             body, image_url_path)
 
-    db.session.commit()
-
-    flash_success('Das Snippet "{}" wurde aktualisiert.', snippet.name)
+    flash_success('Das Snippet "{}" wurde aktualisiert.', version.snippet.name)
     return redirect_to('.view_version', id=version.id)
 
 
@@ -234,9 +213,9 @@ def update_snippet(id):
 @templated
 def create_mountpoint_form(party_id):
     """Show form to create a mountpoint."""
-    party = Party.query.get_or_404(party_id)
+    party = _get_party_or_404(party_id)
 
-    snippets = Snippet.query.for_party(party).order_by(Snippet.name).all()
+    snippets = service.get_snippets_for_party(party)
     snippet_choices = list(map(attrgetter('id', 'name'), snippets))
 
     form = MountpointCreateForm()
@@ -252,7 +231,8 @@ def create_mountpoint_form(party_id):
 @permission_required(MountpointPermission.create)
 def create_mountpoint(party_id):
     """Create a mountpoint."""
-    party = Party.query.get_or_404(party_id)
+    party = _get_party_or_404(party_id)
+
     form = MountpointCreateForm(request.form)
 
     endpoint_suffix = form.endpoint_suffix.data.strip()
@@ -263,12 +243,8 @@ def create_mountpoint(party_id):
     snippet_id = form.snippet_id.data.strip().lower()
     snippet = find_snippet_by_id(snippet_id)
 
-    mountpoint = Mountpoint(
-        endpoint_suffix=endpoint_suffix,
-        url_path=url_path,
-        snippet=snippet)
-    db.session.add(mountpoint)
-    db.session.commit()
+    mountpoint = snippet_service.create_mountpoint(endpoint_suffix, url_path,
+                                                   snippet)
 
     flash_success('Der Mountpoint für "{}" wurde angelegt.',
                   mountpoint.url_path)
@@ -280,21 +256,41 @@ def create_mountpoint(party_id):
 @respond_no_content_with_location
 def delete_mountpoint(id):
     """Delete a mountpoint."""
-    mountpoint = Mountpoint.query.get_or_404(id)
+    mountpoint = snippet_service.find_mountpoint(id)
+    if mountpoint is None:
+        abort(404)
 
     url_path = mountpoint.url_path
     party = mountpoint.snippet.party
 
-    db.session.delete(mountpoint)
-    db.session.commit()
+    snippet_service.delete_mountpoint(mountpoint)
 
     flash_success('Der Mountpoint für "{}" wurde entfernt.', url_path)
     return url_for('.index_for_party', party_id=party.id)
 
 
-def find_snippet_by_id(id):
-    return Snippet.query.get_or_404(id)
+def _get_party_or_404(party_id):
+    party = party_service.find_party(party_id)
+
+    if party is None:
+        abort(404)
+
+    return party
 
 
-def find_version(id):
-    return SnippetVersion.query.get_or_404(id)
+def find_snippet_by_id(snippet_id):
+    snippet = snippet_service.find_snippet(snippet_id)
+
+    if snippet is None:
+        abort(404)
+
+    return snippet
+
+
+def find_version(version_id):
+    version = snippet_service.find_snippet_version(version_id)
+
+    if version is None:
+        abort(404)
+
+    return version

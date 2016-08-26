@@ -10,6 +10,28 @@ byceps.blueprints.snippet_admin.service
 
 from difflib import HtmlDiff
 
+from ...database import db
+
+from .models.snippet import Snippet
+
+
+def get_snippets_for_party(party):
+    """Return all snippets for that party."""
+    return Snippet.query \
+        .for_party(party) \
+        .order_by(Snippet.name) \
+        .all()
+
+
+def get_snippets_for_party_with_current_versions(party):
+    """Return all snippets with their current versions for that party."""
+    return Snippet.query \
+        .for_party(party) \
+        .options(
+            db.joinedload('current_version_association').joinedload('version')
+        ) \
+        .all()
+
 
 def create_html_diff(from_text, to_text, from_description, to_description,
                      *, numlines=3):

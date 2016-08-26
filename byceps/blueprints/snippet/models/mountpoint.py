@@ -39,6 +39,11 @@ class Mountpoint(db.Model):
     snippet_id = db.Column(db.Uuid, db.ForeignKey('snippets.id'), index=True, nullable=False)
     snippet = db.relationship(Snippet)
 
+    def __init__(self, endpoint_suffix, url_path, snippet):
+        self.endpoint_suffix = endpoint_suffix
+        self.url_path = url_path
+        self.snippet = snippet
+
     def generate_url(self):
         try:
             return url_for('snippet.{}'.format(self.endpoint_suffix))
