@@ -11,6 +11,7 @@ byceps.blueprints.tourney.service
 from ...database import db
 
 from .models.match import Match, MatchComment
+from .models.tourney_category import TourneyCategory
 
 
 def get_match_comments(match):
@@ -37,3 +38,8 @@ def create_match_comment(match, creator, body):
 def find_match(match_id):
     """Return the match with that id, or `None` if not found."""
     return Match.query.get(match_id)
+
+
+def find_tourney_category(category_id):
+    """Return the category with that id, or `None` if not found."""
+    return TourneyCategory.query.get(category_id)

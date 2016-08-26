@@ -8,7 +8,7 @@ byceps.blueprints.tourney_admin.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from flask import request, url_for
+from flask import abort, request, url_for
 
 from ...util.framework import create_blueprint, flash_error, flash_success
 from ...util.templating import templated
@@ -16,8 +16,8 @@ from ...util.views import redirect_to, respond_no_content_with_location
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
-from ..party.models import Party
-from ..tourney.models.tourney_category import TourneyCategory
+from ..party import service as party_service
+from ..tourney import service as tourney_service
 
 from .authorization import TourneyCategoryPermission
 from .forms import TourneyCategoryCreateForm, TourneyCategoryUpdateForm
@@ -35,7 +35,7 @@ permission_registry.register_enum(TourneyCategoryPermission)
 @templated
 def category_index_for_party(party_id):
     """List tourney categories for that party."""
-    party = get_party_or_404(party_id)
+    party = _get_party_or_404(party_id)
 
     categories = service.get_categories_for_party(party)
 
@@ -50,7 +50,7 @@ def category_index_for_party(party_id):
 @templated
 def category_create_form(party_id, erroneous_form=None):
     """Show form to create a category."""
-    party = get_party_or_404(party_id)
+    party = _get_party_or_404(party_id)
 
     form = erroneous_form if erroneous_form else TourneyCategoryCreateForm()
 
@@ -64,7 +64,7 @@ def category_create_form(party_id, erroneous_form=None):
 @permission_required(TourneyCategoryPermission.create)
 def category_create(party_id):
     """Create a category."""
-    party = get_party_or_404(party_id)
+    party = _get_party_or_404(party_id)
 
     form = TourneyCategoryCreateForm(request.form)
     if not form.validate():
@@ -83,7 +83,7 @@ def category_create(party_id):
 @templated
 def category_update_form(id, erroneous_form=None):
     """Show form to update a category."""
-    category = TourneyCategory.query.get_or_404(id)
+    category = _get_category_or_404(id)
 
     form = erroneous_form if erroneous_form \
            else TourneyCategoryUpdateForm(obj=category)
@@ -98,7 +98,7 @@ def category_update_form(id, erroneous_form=None):
 @permission_required(TourneyCategoryPermission.update)
 def category_update(id):
     """Update a category."""
-    category = TourneyCategory.query.get_or_404(id)
+    category = _get_category_or_404(id)
 
     form = TourneyCategoryUpdateForm(request.form)
     if not form.validate():
@@ -115,7 +115,7 @@ def category_update(id):
 @respond_no_content_with_location
 def category_move_up(id):
     """Move a category upwards by one position."""
-    category = TourneyCategory.query.get_or_404(id)
+    category = _get_category_or_404(id)
 
     try:
         service.move_category_up(category)
@@ -132,7 +132,7 @@ def category_move_up(id):
 @respond_no_content_with_location
 def category_move_down(id):
     """Move a category downwards by one position."""
-    category = TourneyCategory.query.get_or_404(id)
+    category = _get_category_or_404(id)
 
     try:
         service.move_category_down(category)
@@ -144,5 +144,19 @@ def category_move_down(id):
     return url_for('.category_index_for_party', party_id=category.party.id)
 
 
-def get_party_or_404(party_id):
-    return Party.query.get_or_404(party_id)
+def _get_party_or_404(party_id):
+    party = party_service.find_party(party_id)
+
+    if party is None:
+        abort(404)
+
+    return party
+
+
+def _get_category_or_404(category_id):
+    category = tourney_service.find_tourney_category(category_id)
+
+    if category is None:
+        abort(404)
+
+    return category
