@@ -23,6 +23,14 @@ def get_current_version(brand):
     return Version.query.for_brand(brand).latest_first().first()
 
 
+def get_versions_for_brand(brand):
+    """Return all versions for that brand, ordered by creation date."""
+    return Version.query \
+        .for_brand(brand) \
+        .order_by(Version.created_at.desc()) \
+        .all()
+
+
 def build_consent_on_account_creation(user, version):
     """Create user's consent to that version expressed on account creation."""
     context = ConsentContext.account_creation

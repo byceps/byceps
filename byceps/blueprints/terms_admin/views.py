@@ -8,14 +8,15 @@ byceps.blueprints.terms_admin.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from ...database import db
+from flask import abort
+
 from ...util.framework import create_blueprint
 from ...util.templating import templated
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
-from ..brand.models import Brand
-from ..terms.models import Version
+from ..brand import service as brand_service
+from ..terms import service as terms_service
 
 from .authorization import TermsPermission
 
@@ -31,12 +32,11 @@ permission_registry.register_enum(TermsPermission)
 @templated
 def index_for_brand(brand_id):
     """List terms versions for that brand."""
-    brand = Brand.query.get_or_404(brand_id)
+    brand = brand_service.find_brand(brand_id)
+    if brand is None:
+        abort(404)
 
-    versions = Version.query \
-        .for_brand(brand) \
-        .order_by(Version.created_at.desc()) \
-        .all()
+    versions = terms_service.get_versions_for_brand(brand)
 
     return {
         'brand': brand,
