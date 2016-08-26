@@ -8,7 +8,14 @@ byceps.blueprints.terms.service
 :License: Modified BSD, see LICENSE for details.
 """
 
+from ...database import db
+
 from .models import Consent, ConsentContext, Version
+
+
+def find_version(version_id):
+    """Return the version with that id, or `None` if not found."""
+    return Version.query.get(version_id)
 
 
 def get_current_version(brand):
@@ -28,6 +35,19 @@ def build_consent_on_separate_action(user, version):
     """
     context = ConsentContext.separate_action
     return Consent(user, version, context)
+
+
+def consent_to_version_on_separate_action(version, verification_token):
+    """Store the user's consent to that version, and invalidate the
+    verification token.
+    """
+    user = verification_token.user
+    db.session.delete(verification_token)
+
+    consent = build_consent_on_separate_action(user, version)
+    db.session.add(consent)
+
+    db.session.commit()
 
 
 def has_user_accepted_version(user, version):
