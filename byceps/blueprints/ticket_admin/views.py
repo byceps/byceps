@@ -8,7 +8,7 @@ byceps.blueprints.ticket_admin.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from flask import request
+from flask import abort, request
 
 from ...database import db
 from ...util.framework import create_blueprint
@@ -16,10 +16,10 @@ from ...util.templating import templated
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
-from ..party.models import Party
-from ..ticket.models import Ticket
+from ..party import service as party_service
 
 from .authorization import TicketPermission
+from . import service
 
 
 blueprint = create_blueprint('ticket_admin', __name__)
@@ -34,19 +34,14 @@ permission_registry.register_enum(TicketPermission)
 @templated
 def index_for_party(party_id, page):
     """List tickets for that party."""
-    party = Party.query.get_or_404(party_id)
+    party = party_service.find_party(party_id)
+    if party is None:
+        abort(404)
 
     per_page = request.args.get('per_page', type=int, default=15)
-    query = Ticket.query \
-        .for_party(party) \
-        .options(
-            db.joinedload('category'),
-            db.joinedload('owned_by'),
-            db.joinedload('occupied_seat').joinedload('area'),
-        ) \
-        .order_by(Ticket.created_at)
 
-    tickets = query.paginate(page, per_page)
+    tickets = service.get_tickets_with_details_for_party_paginated(party, page,
+                                                                   per_page)
 
     return {
         'party': party,
@@ -59,15 +54,9 @@ def index_for_party(party_id, page):
 @templated
 def view(id):
     """Show a ticket."""
-    ticket = Ticket.query \
-        .options(
-            db.joinedload('category'),
-            db.joinedload('occupied_seat').joinedload('area'),
-            db.joinedload('owned_by'),
-            db.joinedload('seat_managed_by'),
-            db.joinedload('user_managed_by'),
-        ) \
-        .get_or_404(id)
+    ticket = service.get_ticket_with_details(id)
+    if ticket is None:
+        abort(404)
 
     return {
         'ticket': ticket,
