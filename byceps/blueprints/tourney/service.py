@@ -10,7 +10,7 @@ byceps.blueprints.tourney.service
 
 from ...database import db
 
-from .models.match import MatchComment
+from .models.match import Match, MatchComment
 
 
 def get_match_comments(match):
@@ -27,6 +27,13 @@ def get_match_comments(match):
 def create_match_comment(match, creator, body):
     """Create a comment to a match."""
     match_comment = MatchComment(match, creator, body)
+
     db.session.add(match_comment)
     db.session.commit()
+
     return match_comment
+
+
+def find_match(match_id):
+    """Return the match with that id, or `None` if not found."""
+    return Match.query.get(match_id)

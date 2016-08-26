@@ -14,7 +14,6 @@ from ...util.framework import create_blueprint
 from ...util.templating import templated
 from ...util.views import respond_created
 
-from .models.match import Match
 from . import service
 from . import signals
 
@@ -30,7 +29,7 @@ blueprint = create_blueprint('tourney', __name__)
 @templated
 def match_comments_view(match_id):
     """Render the comments on a match."""
-    match = Match.query.get_or_404(match_id)
+    match = _get_match_or_404(match_id)
 
     comments = service.get_match_comments(match)
 
@@ -52,7 +51,7 @@ def match_comment_create(match_id):
     if not g.current_user.is_active:
         abort(403)
 
-    match = Match.query.get_or_404(match_id)
+    match = _get_match_or_404(match_id)
 
     body = request.form['body'].strip()
 
@@ -63,3 +62,12 @@ def match_comment_create(match_id):
     return url_for('.match_comment_view',
                    match_id=match.id,
                    comment_id=comment.id)
+
+
+def _get_match_or_404(match_id):
+    match = service.find_match(match_id)
+
+    if match is None:
+        abort(404)
+
+    return match
