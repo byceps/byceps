@@ -23,6 +23,16 @@ def create_badge(label, image_filename, *, description=None):
     return badge
 
 
+def find_badge(badge_id):
+    """Return the badge with that id, or `None` if not found."""
+    return Badge.query.get(badge_id)
+
+
+def get_all_badges():
+    """Return all badges."""
+    return Badge.query.all()
+
+
 def award_badge_to_user(badge, user):
     """Award the badge to the user."""
     badge.recipients.add(user)

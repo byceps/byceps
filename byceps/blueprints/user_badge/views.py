@@ -8,10 +8,12 @@ byceps.blueprints.user_badge.views
 :License: Modified BSD, see LICENSE for details.
 """
 
+from flask import abort
+
 from ...util.framework import create_blueprint
 from ...util.templating import templated
 
-from .models import Badge
+from . import service
 
 
 blueprint = create_blueprint('user_badge', __name__)
@@ -21,7 +23,7 @@ blueprint = create_blueprint('user_badge', __name__)
 @templated
 def index():
     """List all badges."""
-    badges = Badge.query.all()
+    badges = service.get_all_badges()
 
     return {
         'badges': badges,
@@ -32,7 +34,10 @@ def index():
 @templated
 def view(id):
     """Show information about a badge."""
-    badge = Badge.query.get_or_404(id)
+    badge = service.find_badge(id)
+
+    if badge is None:
+        abort(404)
 
     return {
         'badge': badge,
