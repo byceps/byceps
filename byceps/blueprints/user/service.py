@@ -38,6 +38,13 @@ def count_users_created_since(delta):
         .count()
 
 
+def count_enabled_users():
+    """Return the number of enabled user accounts."""
+    return User.query
+        .filter_by(enabled=True) \
+        .count()
+
+
 def count_disabled_users():
     """Return the number of disabled user accounts."""
     return User.query

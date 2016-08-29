@@ -8,9 +8,8 @@ byceps.blueprints.user_admin.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from flask import request
+from flask import abort, request
 
-from ...database import db
 from ...util.framework import create_blueprint
 from ...util.templating import templated
 
@@ -19,10 +18,11 @@ from ..authorization.registry import permission_registry
 from ..authorization_admin import service as authorization_admin_service
 from ..shop import service as shop_service
 from ..ticket import service as ticket_service
-from ..user.models.detail import UserDetail
-from ..user.models.user import User
+from ..user import service as user_service
 
 from .authorization import UserPermission
+from . import service
+from .service import UserEnabledFilter
 
 
 blueprint = create_blueprint('user_admin', __name__)
@@ -37,39 +37,23 @@ permission_registry.register_enum(UserPermission)
 @templated
 def index(page):
     """List users."""
-    query = User.query \
-        .options(db.joinedload('detail')) \
-        .order_by(User.created_at.desc())
-
+    per_page = request.args.get('per_page', type=int, default=20)
     search_term = request.args.get('search_term', default='').strip()
-    if search_term:
-        ilike_pattern = '%{}%'.format(search_term)
-        query = query \
-            .join(UserDetail) \
-            .filter(
-                db.or_(
-                    User.screen_name.ilike(ilike_pattern),
-                    UserDetail.first_names.ilike(ilike_pattern),
-                    UserDetail.last_name.ilike(ilike_pattern)
-                )
-            )
 
+    if search_term:
+        # Enabled filter argument is ignored if search term is given.
         only = None
+        enabled_filter = None
     else:
         only = request.args.get('only')
-        if only == 'enabled':
-            query = query.filter_by(enabled=True)
-        elif only == 'disabled':
-            query = query.filter_by(enabled=False)
-        else:
-            only = None
+        enabled_filter = UserEnabledFilter.__members__.get(only)
 
-    per_page = request.args.get('per_page', type=int, default=20)
+    users = service.get_users_paginated(page, per_page,
+                                        search_term=search_term,
+                                        enabled_filter=enabled_filter)
 
-    users = query.paginate(page, per_page)
-
-    total_enabled = User.query.filter_by(enabled=True).count()
-    total_disabled = User.query.filter_by(enabled=False).count()
+    total_enabled = user_service.count_enabled_users()
+    total_disabled = user_service.count_disabled_users()
     total_overall = total_enabled + total_disabled
 
     return {
@@ -77,8 +61,8 @@ def index(page):
         'total_enabled': total_enabled,
         'total_disabled': total_disabled,
         'total_overall': total_overall,
-        'only': only,
         'search_term': search_term,
+        'only': only,
     }
 
 
@@ -87,10 +71,15 @@ def index(page):
 @templated
 def view(id):
     """Show a user's interal profile."""
-    user = User.query.get_or_404(id)
+    user = user_service.find_user(id)
+    if user is None:
+        abort(404)
+
     permissions_by_role = authorization_admin_service \
         .get_permissions_by_roles_for_user_with_titles(user)
+
     orders = shop_service.get_orders_placed_by_user(user)
+
     tickets = ticket_service.find_tickets_related_to_user(user)
 
     return {
