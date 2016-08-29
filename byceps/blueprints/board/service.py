@@ -138,7 +138,7 @@ def create_topic(category, creator, title, body):
     db.session.add(initial_topic_posting_association)
     db.session.commit()
 
-    aggregate_topic(topic)
+    _aggregate_topic(topic)
 
     return topic
 
@@ -152,7 +152,7 @@ def update_topic(topic, editor, title, body):
     db.session.commit()
 
 
-def aggregate_topic(topic):
+def _aggregate_topic(topic):
     """Update the topic's count and latest fields."""
     posting_query = Posting.query.for_topic(topic).without_hidden()
 
@@ -203,7 +203,7 @@ def hide_topic(topic, hidden_by):
     topic.hide(hidden_by)
     db.session.commit()
 
-    aggregate_topic(topic)
+    _aggregate_topic(topic)
 
 
 def unhide_topic(topic, unhidden_by):
@@ -212,7 +212,7 @@ def unhide_topic(topic, unhidden_by):
     topic.unhide()
     db.session.commit()
 
-    aggregate_topic(topic)
+    _aggregate_topic(topic)
 
 
 def lock_topic(topic, locked_by):
@@ -284,7 +284,7 @@ def create_posting(topic, creator, body):
     db.session.add(posting)
     db.session.commit()
 
-    aggregate_topic(topic)
+    _aggregate_topic(topic)
 
     return posting
 
@@ -323,7 +323,7 @@ def hide_posting(posting, hidden_by):
     posting.hide(hidden_by)
     db.session.commit()
 
-    aggregate_topic(posting.topic)
+    _aggregate_topic(posting.topic)
 
 
 def unhide_posting(posting, hidden_by):
@@ -332,7 +332,7 @@ def unhide_posting(posting, hidden_by):
     posting.unhide()
     db.session.commit()
 
-    aggregate_topic(posting.topic)
+    _aggregate_topic(posting.topic)
 
 
 # -------------------------------------------------------------------- #
