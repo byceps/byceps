@@ -198,6 +198,60 @@ def find_default_posting_to_jump_to(topic, user, last_viewed_at):
     return first_new_posting
 
 
+def hide_topic(topic, hidden_by):
+    """Hide the topic."""
+    topic.hide(hidden_by)
+    db.session.commit()
+
+    aggregate_topic(topic)
+
+
+def unhide_topic(topic, unhidden_by):
+    """Un-hide the topic."""
+    # TODO: Store who un-hid the topic.
+    topic.unhide()
+    db.session.commit()
+
+    aggregate_topic(topic)
+
+
+def lock_topic(topic, locked_by):
+    """Lock the topic."""
+    topic.lock(locked_by)
+    db.session.commit()
+
+
+def unlock_topic(topic, unlocked_by):
+    """Unlock the topic."""
+    # TODO: Store who unlocked the topic.
+    topic.unlock()
+    db.session.commit()
+
+
+def pin_topic(topic, pinned_by):
+    """Pin the topic."""
+    topic.pin(pinned_by)
+    db.session.commit()
+
+
+def unpin_topic(topic, unpinned_by):
+    """Unpin the topic."""
+    # TODO: Store who unpinned the topic.
+    topic.unpin()
+    db.session.commit()
+
+
+def move_topic(topic, new_category):
+    """Move the topic to another category."""
+    old_category = topic.category
+
+    topic.category = new_category
+    db.session.commit()
+
+    for category in old_category, new_category:
+        aggregate_category(category)
+
+
 # -------------------------------------------------------------------- #
 # posting
 
@@ -262,6 +316,23 @@ def calculate_posting_page_number(posting, user):
 
     per_page = int(current_app.config['BOARD_POSTINGS_PER_PAGE'])
     return divmod(index, per_page)[0] + 1
+
+
+def hide_posting(posting, hidden_by):
+    """Hide the posting."""
+    posting.hide(hidden_by)
+    db.session.commit()
+
+    aggregate_topic(posting.topic)
+
+
+def unhide_posting(posting, hidden_by):
+    """Un-hide the posting."""
+    # TODO: Store who un-hid the posting.
+    posting.unhide()
+    db.session.commit()
+
+    aggregate_topic(posting.topic)
 
 
 # -------------------------------------------------------------------- #

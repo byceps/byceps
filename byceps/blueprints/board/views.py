@@ -10,7 +10,6 @@ byceps.blueprints.board.views
 
 from flask import abort, current_app, g, redirect, request, url_for
 
-from ...database import db
 from ...util.framework import create_blueprint, flash_error, flash_notice, \
     flash_success
 from ...util.templating import templated
@@ -256,10 +255,7 @@ def topic_hide(id):
     """Hide a topic."""
     topic = _get_topic_or_404(id)
 
-    topic.hide(g.current_user)
-    db.session.commit()
-
-    service.aggregate_topic(topic)
+    service.hide_topic(topic, g.current_user)
 
     flash_success('Das Thema "{}" wurde versteckt.', topic.title, icon='hidden')
     signals.topic_hidden.send(None, topic=topic)
@@ -273,10 +269,7 @@ def topic_unhide(id):
     """Un-hide a topic."""
     topic = _get_topic_or_404(id)
 
-    topic.unhide()
-    db.session.commit()
-
-    service.aggregate_topic(topic)
+    service.unhide_topic(topic, g.current_user)
 
     flash_success(
         'Das Thema "{}" wurde wieder sichtbar gemacht.', topic.title, icon='view')
@@ -290,8 +283,7 @@ def topic_lock(id):
     """Lock a topic."""
     topic = _get_topic_or_404(id)
 
-    topic.lock(g.current_user)
-    db.session.commit()
+    service.lock_topic(topic, g.current_user)
 
     flash_success('Das Thema "{}" wurde geschlossen.', topic.title, icon='lock')
     return url_for('.category_view', slug=topic.category.slug, _anchor=topic.anchor)
@@ -304,8 +296,7 @@ def topic_unlock(id):
     """Unlock a topic."""
     topic = _get_topic_or_404(id)
 
-    topic.unlock()
-    db.session.commit()
+    service.unlock_topic(topic, g.current_user)
 
     flash_success('Das Thema "{}" wurde wieder geöffnet.', topic.title,
                   icon='unlock')
@@ -319,8 +310,7 @@ def topic_pin(id):
     """Pin a topic."""
     topic = _get_topic_or_404(id)
 
-    topic.pin(g.current_user)
-    db.session.commit()
+    service.pin_topic(topic, g.current_user)
 
     flash_success('Das Thema "{}" wurde angepinnt.', topic.title, icon='pin')
     return url_for('.category_view', slug=topic.category.slug, _anchor=topic.anchor)
@@ -333,8 +323,7 @@ def topic_unpin(id):
     """Unpin a topic."""
     topic = _get_topic_or_404(id)
 
-    topic.unpin()
-    db.session.commit()
+    service.unpin_topic(topic, g.current_user)
 
     flash_success('Das Thema "{}" wurde wieder gelöst.', topic.title)
     return url_for('.category_view', slug=topic.category.slug, _anchor=topic.anchor)
@@ -346,18 +335,14 @@ def topic_move(id):
     """Move a topic from one category to another."""
     topic = _get_topic_or_404(id)
 
-    old_category = topic.category
-
     new_category_id = request.form['category_id']
     new_category = service.find_category_by_id(new_category_id)
     if category is None:
         abort(404)
 
-    topic.category = new_category
-    db.session.commit()
+    old_category = topic.category
 
-    for category in old_category, new_category:
-        service.aggregate_category(category)
+    service.move_topic(topic, new_category)
 
     flash_success('Das Thema "{}" wurde aus der Kategorie "{}" '
                   'in die Kategorie "{}" verschoben.',
@@ -535,10 +520,7 @@ def posting_hide(id):
     """Hide a posting."""
     posting = _get_posting_or_404(id)
 
-    posting.hide(g.current_user)
-    db.session.commit()
-
-    service.aggregate_topic(posting.topic)
+    service.hide_posting(posting, g.current_user)
 
     page = service.calculate_posting_page_number(posting, g.current_user)
 
@@ -554,10 +536,7 @@ def posting_unhide(id):
     """Un-hide a posting."""
     posting = _get_posting_or_404(id)
 
-    posting.unhide()
-    db.session.commit()
-
-    service.aggregate_topic(posting.topic)
+    service.unhide_posting(posting, g.current_user)
 
     page = service.calculate_posting_page_number(posting, g.current_user)
 
