@@ -14,7 +14,6 @@ from decimal import Decimal
 from flask import abort, current_app, g, render_template, request, Response, \
     url_for
 
-from ...database import db
 from ...util.framework import create_blueprint, flash_error, flash_success
 from ...util.money import to_two_places
 from ...util.templating import templated
@@ -369,19 +368,13 @@ def order_cancel(id):
 
     reason = form.reason.data.strip()
 
-    if order.payment_state == PaymentState.canceled:
+    try:
+        service.cancel_order(order, g.current_user, reason)
+    except service.OrderAlreadyCanceled:
         flash_error(
             'Die Bestellung ist bereits storniert worden; '
             'der Bezahlstatus kann nicht mehr geändert werden.')
         return redirect_to('.order_view', id=order.id)
-
-    order.cancel(g.current_user, reason)
-
-    # Make the reserved quantity of articles available again.
-    for item in order.items:
-        item.article.quantity += item.quantity
-
-    db.session.commit()
 
     flash_success(
         'Die Bestellung wurde als storniert markiert und die betroffenen '
@@ -415,12 +408,11 @@ def order_mark_as_paid(id):
     """Set the payment status of a single order to 'paid'."""
     order = _get_order_or_404(id)
 
-    if order.payment_state == PaymentState.paid:
+    try:
+        service.mark_order_as_paid(order, g.current_user)
+    except service.OrderAlreadyMarkedAsPaid:
         flash_error('Die Bestellung ist bereits als bezahlt markiert worden.')
         return redirect_to('.order_view', id=order.id)
-
-    order.mark_as_paid(g.current_user)
-    db.session.commit()
 
     flash_success('Die Bestellung wurde als bezahlt markiert.')
 

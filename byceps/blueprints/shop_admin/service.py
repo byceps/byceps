@@ -100,6 +100,40 @@ def get_orders_for_party_paginated(party, page, per_page, *,
     return query.paginate(page, per_page)
 
 
+class OrderAlreadyCanceled(Exception):
+    pass
+
+
+class OrderAlreadyMarkedAsPaid(Exception):
+    pass
+
+
+def cancel_order(order, updated_by, reason):
+    """Cancel the order.
+
+    Reserved quantities of articles from that order are made available again.
+    """
+    if order.payment_state == PaymentState.canceled:
+        raise OrderAlreadyCanceled()
+
+    order.cancel(updated_by, reason)
+
+    # Make the reserved quantity of articles available again.
+    for item in order.items:
+        item.article.quantity += item.quantity
+
+    db.session.commit()
+
+
+def mark_order_as_paid(order, updated_by):
+    """Mark the order as paid."""
+    if order.payment_state == PaymentState.paid:
+        raise OrderAlreadyMarkedAsPaid()
+
+    order.mark_as_paid(updated_by)
+    db.session.commit()
+
+
 def find_article_with_details(article_id):
     """Return the article with that ID, or `None` if not found."""
     return Article.query \
