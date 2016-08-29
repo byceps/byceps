@@ -10,7 +10,6 @@ byceps.blueprints.ticket_admin.views
 
 from flask import abort, request
 
-from ...database import db
 from ...util.framework import create_blueprint
 from ...util.templating import templated
 

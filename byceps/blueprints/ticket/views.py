@@ -14,7 +14,6 @@ from ...util.framework import create_blueprint
 from ...util.iterables import find
 from ...util.templating import templated
 
-from .models import Ticket
 from . import service
 
 
