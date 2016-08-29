@@ -28,6 +28,21 @@ def create_article(party, item_number, description, price, tax_rate, quantity):
     return article
 
 
+def update_article(article, description, price, tax_rate, quantity,
+                   max_quantity_per_order, not_directly_orderable,
+                   requires_separate_order):
+    """Update the article."""
+    article.description = description
+    article.price = price
+    article.tax_rate = tax_rate
+    article.quantity = quantity
+    article.max_quantity_per_order = max_quantity_per_order
+    article.not_directly_orderable = not_directly_orderable
+    article.requires_separate_order = requires_separate_order
+
+    db.session.commit()
+
+
 def attach_article(article_to_attach, quantity, article_to_attach_to):
     """Attach an article to another article."""
     attached_article = AttachedArticle(article_to_attach, quantity,

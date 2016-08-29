@@ -173,14 +173,17 @@ def article_update(id):
 
     form = ArticleUpdateForm(request.form)
 
-    article.description = form.description.data.strip()
-    article.price = form.price.data
-    article.tax_rate = form.tax_rate.data
-    article.quantity = form.quantity.data
-    article.max_quantity_per_order = form.max_quantity_per_order.data
-    article.not_directly_orderable = form.not_directly_orderable.data
-    article.requires_separate_order = form.requires_separate_order.data
-    db.session.commit()
+    description = form.description.data.strip()
+    price = form.price.data
+    tax_rate = form.tax_rate.data
+    quantity = form.quantity.data
+    max_quantity_per_order = form.max_quantity_per_order.data
+    not_directly_orderable = form.not_directly_orderable.data
+    requires_separate_order = form.requires_separate_order.data
+
+    shop_service.update_article(article, description, price, tax_rate, quantity,
+                                max_quantity_per_order, not_directly_orderable,
+                                requires_separate_order):
 
     flash_success('Der Artikel "{}" wurde aktualisiert.', article.description)
     return redirect_to('.article_view', id=article.id)
