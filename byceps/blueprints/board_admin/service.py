@@ -52,6 +52,17 @@ def create_category(brand, slug, title, description):
     return category
 
 
+def update_category(category, slug, title, description):
+    """Update the category."""
+    category.slug = slug.strip().lower()
+    category.title = title.strip()
+    category.description = description.strip()
+
+    db.session.commit()
+
+    return category
+
+
 def move_category_up(category):
     """Move a category upwards by one position."""
     category_list = category.brand.board_categories

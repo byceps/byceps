@@ -10,7 +10,6 @@ byceps.blueprints.board_admin.views
 
 from flask import abort, request, url_for
 
-from ...database import db
 from ...util.framework import create_blueprint, flash_error, flash_success
 from ...util.templating import templated
 from ...util.views import redirect_to, respond_no_content_with_location
@@ -107,10 +106,11 @@ def category_update(id):
     if not form.validate():
         return category_update_form(id, form)
 
-    category.slug = form.slug.data.strip().lower()
-    category.title = form.title.data.strip()
-    category.description = form.description.data.strip()
-    db.session.commit()
+    slug = form.slug.data
+    title = form.title.data
+    description = form.description.data
+
+    category = service.update_category(category, slug, title, description)
 
     flash_success('Die Kategorie "{}" wurde aktualisiert.', category.title)
     return redirect_to('.index_for_brand', brand_id=category.brand.id)
