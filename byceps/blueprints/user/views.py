@@ -169,7 +169,7 @@ def create():
         user = service.create_user(screen_name, email_address, password,
                                    first_names, last_name, g.party.brand,
                                    subscribe_to_newsletter)
-    except service.UserCreationFailed as e:
+    except service.UserCreationFailed:
         flash_error('Das Benutzerkonto für "{}" konnte nicht angelegt werden.',
                     screen_name)
         return create_form(form)
