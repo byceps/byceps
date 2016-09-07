@@ -337,7 +337,7 @@ def topic_move(id):
 
     new_category_id = request.form['category_id']
     new_category = service.find_category_by_id(new_category_id)
-    if category is None:
+    if new_category is None:
         abort(404)
 
     old_category = topic.category
