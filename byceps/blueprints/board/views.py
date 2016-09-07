@@ -96,8 +96,7 @@ def topic_view(id, page):
         if posting is None:
             page = 1
         else:
-            page = service.calculate_posting_page_number(posting,
-                                                         g.current_user)
+            page = calculate_posting_page_number(posting)
             # Jump to a specific posting. This requires a redirect.
             url = url_for('.topic_view',
                           id=topic.id,
@@ -364,7 +363,7 @@ def posting_view(id):
     """
     posting = _get_posting_or_404(id)
 
-    page = service.calculate_posting_page_number(posting, g.current_user)
+    page = calculate_posting_page_number(posting)
 
     return redirect_to('.topic_view',
                        id=posting.topic.id,
@@ -447,7 +446,7 @@ def posting_update_form(id):
     """Show form to update a posting."""
     posting = _get_posting_or_404(id)
 
-    page = service.calculate_posting_page_number(posting, g.current_user)
+    page = calculate_posting_page_number(posting)
     url = url_for('.topic_view', id=posting.topic.id, page=page)
 
     if posting.topic.locked:
@@ -479,7 +478,7 @@ def posting_update(id):
     """Update a posting."""
     posting = _get_posting_or_404(id)
 
-    page = service.calculate_posting_page_number(posting, g.current_user)
+    page = calculate_posting_page_number(posting)
     url = url_for('.topic_view', id=posting.topic.id, page=page)
 
     if posting.topic.locked:
@@ -525,7 +524,7 @@ def posting_hide(id):
 
     service.hide_posting(posting, g.current_user)
 
-    page = service.calculate_posting_page_number(posting, g.current_user)
+    page = calculate_posting_page_number(posting)
 
     flash_success('Der Beitrag wurde versteckt.', icon='hidden')
     signals.posting_hidden.send(None, posting=posting)
@@ -541,7 +540,7 @@ def posting_unhide(id):
 
     service.unhide_posting(posting, g.current_user)
 
-    page = service.calculate_posting_page_number(posting, g.current_user)
+    page = calculate_posting_page_number(posting)
 
     flash_success('Der Beitrag wurde wieder sichtbar gemacht.', icon='view')
     return url_for('.topic_view', id=posting.topic.id, page=page, _anchor=posting.anchor)
@@ -563,3 +562,7 @@ def _get_posting_or_404(posting_id):
         abort(404)
 
     return posting
+
+
+def calculate_posting_page_number(posting):
+    return service.calculate_posting_page_number(posting, g.current_user)
