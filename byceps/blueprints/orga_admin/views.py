@@ -94,8 +94,8 @@ def create_orgaflag(brand_id):
     orga_flag = service.create_orga_flag(brand, user)
 
     flash_success('{} wurde das Orga-Flag für die Marke {} gegeben.',
-                  user.screen_name, brand.title)
-    return redirect_to('.persons_for_brand', brand_id=brand.id)
+                  orga_flag.user.screen_name, orga_flag.brand.title)
+    return redirect_to('.persons_for_brand', brand_id=orga_flag.brand.id)
 
 
 @blueprint.route('/persons/<brand_id>/<uuid:user_id>', methods=['DELETE'])
