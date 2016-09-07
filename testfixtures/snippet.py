@@ -20,15 +20,18 @@ def create_snippet(party, name):
 
 def create_snippet_version(snippet, creator, *, created_at=None,
                            title='', head='', body='', image_url_path=None):
-    return SnippetVersion(
+    version = SnippetVersion(
         snippet=snippet,
-        created_at=created_at,
         creator=creator,
         title=title,
         head=head,
         body=body,
         image_url_path=image_url_path)
 
+    if created_at is not None:
+        version.created_at = created_at
+
+    return version
 
 def create_current_version_association(snippet, version):
     return CurrentVersionAssociation(
