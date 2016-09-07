@@ -182,7 +182,7 @@ def article_update(id):
 
     shop_service.update_article(article, description, price, tax_rate, quantity,
                                 max_quantity_per_order, not_directly_orderable,
-                                requires_separate_order):
+                                requires_separate_order)
 
     flash_success('Der Artikel "{}" wurde aktualisiert.', article.description)
     return redirect_to('.article_view', id=article.id)
