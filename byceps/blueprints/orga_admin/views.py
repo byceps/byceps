@@ -258,7 +258,7 @@ def membership_create(team_id):
     if not form.validate():
         return membership_create_form(team_id, form)
 
-    user = User.query.get(form.user_id.data)
+    user = user_service.find_user(form.user_id.data)
     duties = form.duties.data.strip()
 
     membership = service.create_membership(team, user, duties)
