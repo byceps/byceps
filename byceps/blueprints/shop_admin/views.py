@@ -195,7 +195,7 @@ def article_attachment_create_form(article_id):
     """Show form to attach an article to another article."""
     article = _get_article_or_404(article_id)
 
-    attachable_articles = get_attachable_articles(article)
+    attachable_articles = service.get_attachable_articles(article)
 
     article_choices = list(
         (article.id, '{} – {}'.format(article.item_number, article.description))

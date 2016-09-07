@@ -19,9 +19,7 @@ from ...util.views import redirect_to
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 from ..brand import service as brand_service
-from ..news.models import Item
 from ..news import service as news_service
-from ..news import service
 from ..news import signals
 
 from .authorization import NewsItemPermission
@@ -85,8 +83,8 @@ def create(brand_id):
     body = form.body.data.strip()
     image_url_path = form.image_url_path.data.strip()
 
-    item = service.create_item(brand, slug, creator, title, body,
-        image_url_path=image_url_path)
+    item = news_service.create_item(brand, slug, creator, title, body,
+                                    image_url_path=image_url_path)
 
     flash_success('Die News "{}" wurde angelegt.', item.title)
     signals.item_published.send(None, item=item)
@@ -122,8 +120,8 @@ def update(id):
     body = form.body.data.strip()
     image_url_path = form.image_url_path.data.strip()
 
-    service.update_item(item, creator, title, body,
-                        image_url_path=image_url_path)
+    news_service.update_item(item, creator, title, body,
+                             image_url_path=image_url_path)
 
     flash_success('Die News "{}" wurde aktualisiert.', item.title)
     return redirect_to('.index_for_brand', brand_id=item.brand.id)

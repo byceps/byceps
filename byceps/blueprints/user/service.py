@@ -8,6 +8,8 @@ byceps.blueprints.user.service
 :License: Modified BSD, see LICENSE for details.
 """
 
+from datetime import datetime
+
 from flask import current_app, url_for
 
 from ...database import db

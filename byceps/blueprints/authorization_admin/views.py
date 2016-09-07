@@ -15,6 +15,7 @@ from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 
 from .authorization import RolePermission
+from . import service
 
 
 blueprint = create_blueprint('authorization_admin', __name__)
@@ -28,7 +29,7 @@ permission_registry.register_enum(RolePermission)
 @templated
 def permission_index():
     """List permissions."""
-    permissions = get_permissions_with_titles()
+    permissions = service.get_permissions_with_titles()
 
     return {'permissions': permissions}
 
@@ -38,6 +39,6 @@ def permission_index():
 @templated
 def role_index():
     """List roles."""
-    roles = get_roles_with_titles()
+    roles = service.get_roles_with_titles()
 
     return {'roles': roles}

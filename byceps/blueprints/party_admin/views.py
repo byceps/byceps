@@ -23,6 +23,7 @@ from ..ticket_admin import service as ticket_admin_service
 
 from .authorization import PartyPermission
 from .forms import CreateForm
+from . import service
 
 
 blueprint = create_blueprint('party_admin', __name__)
@@ -126,7 +127,7 @@ def create():
     starts_at = form.starts_at.data
     ends_at = form.ends_at.data
 
-    party = party_service.create_party(id, brand, title, starts_at, ends_at)
+    party = service.create_party(id, brand, title, starts_at, ends_at)
 
     flash_success('Die Party "{}" wurde angelegt.', party.title)
     return redirect_to('.index')
