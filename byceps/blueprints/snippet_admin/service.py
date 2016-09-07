@@ -12,7 +12,7 @@ from difflib import HtmlDiff
 
 from ...database import db
 
-from .models.snippet import Snippet
+from ..snippet.models.snippet import Snippet
 
 
 def get_snippets_for_party(party):

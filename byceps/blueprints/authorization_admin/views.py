@@ -8,7 +8,7 @@ byceps.blueprints.authorization_admin.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from ...util.framework import create_blueprin
+from ...util.framework import create_blueprint
 from ...util.templating import templated
 
 from ..authorization.decorators import permission_required
