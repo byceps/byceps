@@ -50,7 +50,7 @@ def index():
 @templated
 def index_for_brand(brand_id, page):
     """List parties for this brand."""
-    brand = brand_service.find_brand(id)
+    brand = brand_service.find_brand(brand_id)
     if brand is None:
         abort(404)
 

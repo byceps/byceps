@@ -274,7 +274,7 @@ def membership_create(team_id):
 @templated
 def membership_update_form(id, erroneous_form=None):
     """Show form to update a membership."""
-    membership = _get_membership_or_404(membership_id)
+    membership = _get_membership_or_404(id)
 
     teams = service.get_teams_for_party(membership.orga_team.party)
 
@@ -292,7 +292,7 @@ def membership_update_form(id, erroneous_form=None):
 @permission_required(OrgaTeamPermission.administrate_memberships)
 def membership_update(id):
     """Update a membership."""
-    membership = _get_membership_or_404(membership_id)
+    membership = _get_membership_or_404(id)
 
     teams = service.get_teams_for_party(membership.orga_team.party)
 
@@ -319,7 +319,7 @@ def membership_update(id):
 @respond_no_content_with_location
 def membership_remove(id):
     """Remove an organizer from a team."""
-    membership = _get_membership_or_404(membership_id)
+    membership = _get_membership_or_404(id)
 
     user = membership.user
     team = membership.orga_team

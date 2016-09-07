@@ -38,7 +38,7 @@ def get_ticket_with_details(ticket_id):
             db.joinedload('seat_managed_by'),
             db.joinedload('user_managed_by'),
         ) \
-        .get(id)
+        .get(ticket_id)
 
 
 def get_tickets_with_details_for_party_paginated(party, page, per_page):
