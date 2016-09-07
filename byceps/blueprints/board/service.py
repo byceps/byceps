@@ -10,8 +10,6 @@ byceps.blueprints.board.service
 
 from datetime import datetime
 
-from flask import current_app
-
 from ...database import db
 from ...util.iterables import index_of
 
@@ -300,7 +298,7 @@ def update_posting(posting, editor, body, *, commit=True):
         db.session.commit()
 
 
-def calculate_posting_page_number(posting, user):
+def calculate_posting_page_number(posting, user, postings_per_page):
     """Return the number of the page the posting should appear on when
     viewed by the user.
     """
@@ -314,8 +312,7 @@ def calculate_posting_page_number(posting, user):
     if index is None:
         return  # Shouldn't happen.
 
-    per_page = int(current_app.config['BOARD_POSTINGS_PER_PAGE'])
-    return divmod(index, per_page)[0] + 1
+    return divmod(index, postings_per_page)[0] + 1
 
 
 def hide_posting(posting, hidden_by):
