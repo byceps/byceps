@@ -15,7 +15,7 @@ from .models import Presence, Task
 
 def get_presences(party):
     """Return all presences for that party."""
-    presences = Presence.query \
+    return Presence.query \
         .for_party(party) \
         .options(db.joinedload('orga')) \
         .all()
