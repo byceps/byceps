@@ -11,9 +11,11 @@
       {{ render_user_avatar(posting.creator) }}
     </div>
 
-    {%- if posting.creator.badges %}
-{{ render_user_badges(posting.creator.badges) }}
-    {%- endif %}
+    {%- with badges = posting.creator.badges %}
+      {%- if badges %}
+{{ render_user_badges(badges) }}
+      {%- endif %}
+    {%- endwith %}
 
     {{ render_datetime(posting.created_at)|replace(', ', '<br>'|safe) }}
 

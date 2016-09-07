@@ -81,12 +81,14 @@
             {%- endif %}
           </td>
         </tr>
-        {%- if user.badges %}
+        {%- with badges = user.badges %}
+          {%- if badges %}
         <tr>
           <th>Abzeichen</th>
-          <td>{{ render_user_badges(user.badges) }}</td>
+          <td>{{ render_user_badges(badges) }}</td>
         </tr>
-        {%- endif %}
+          {%- endif %}
+        {%- endwith %}
       </table>
     </div>
 
