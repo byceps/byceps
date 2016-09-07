@@ -10,7 +10,7 @@ byceps.blueprints.board.models
 
 from datetime import datetime
 
-from flask import current_app, url_for
+from flask import url_for
 from sqlalchemy.ext.associationproxy import association_proxy
 
 from ....database import BaseQuery, db, generate_uuid
@@ -118,10 +118,8 @@ class Topic(db.Model):
     def reply_count(self):
         return self.posting_count - 1
 
-    @property
-    def page_count(self):
+    def count_pages(self, postings_per_page):
         """Return the number of pages this topic spans."""
-        postings_per_page = int(current_app.config['BOARD_POSTINGS_PER_PAGE'])
         full_page_count, remaining_postings = divmod(self.posting_count,
                                                      postings_per_page)
         if remaining_postings > 0:

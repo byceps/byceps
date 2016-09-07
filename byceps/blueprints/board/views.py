@@ -431,9 +431,12 @@ def posting_create(topic_id):
     flash_success('Deine Antwort wurde hinzugefügt.')
     signals.posting_created.send(None, posting=posting)
 
+    postings_per_page = int(current_app.config['BOARD_POSTINGS_PER_PAGE'])
+    page_count = topic.count_pages(postings_per_page)
+
     return redirect_to('.topic_view',
                        id=topic.id,
-                       page=topic.page_count,
+                       page=page_count,
                        _anchor=posting.anchor)
 
 
