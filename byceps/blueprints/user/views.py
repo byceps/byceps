@@ -23,6 +23,7 @@ from ..newsletter.models import SubscriptionState as NewsletterSubscriptionState
 from ..newsletter import service as newsletter_service
 from ..orga import service as orga_service
 from ..ticket import service as ticket_service
+from ..user_badge import service as badge_service
 from ..verification_token import service as verification_token_service
 
 from .forms import DetailsForm, RequestConfirmationEmailForm, \
@@ -49,6 +50,8 @@ def view(id):
     if user.deleted:
         abort(410, 'User account has been deleted.')
 
+    badges = badge_service.get_badges_for_user(user.id)
+
     orga_team_membership = orga_service.find_orga_team_membership_for_party(user, g.party)
 
     current_party_tickets = ticket_service.find_tickets_used_by_user(user, g.party)
@@ -58,6 +61,7 @@ def view(id):
 
     return {
         'user': user,
+        'badges': badges,
         'orga_team_membership': orga_team_membership,
         'current_party_tickets': current_party_tickets,
         'attended_parties': attended_parties,

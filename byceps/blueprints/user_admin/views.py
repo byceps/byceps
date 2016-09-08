@@ -19,6 +19,7 @@ from ..authorization_admin import service as authorization_admin_service
 from ..shop import service as shop_service
 from ..ticket import service as ticket_service
 from ..user import service as user_service
+from ..user_badge import service as badge_service
 
 from .authorization import UserPermission
 from . import service
@@ -78,6 +79,8 @@ def view(id):
     permissions_by_role = authorization_admin_service \
         .get_permissions_by_roles_for_user_with_titles(user)
 
+    badges = badge_service.get_badges_for_user(user.id)
+
     orders = shop_service.get_orders_placed_by_user(user)
 
     tickets = ticket_service.find_tickets_related_to_user(user)
@@ -85,6 +88,7 @@ def view(id):
     return {
         'user': user,
         'permissions_by_role': permissions_by_role,
+        'badges': badges,
         'orders': orders,
         'tickets': tickets,
     }
