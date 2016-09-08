@@ -11,7 +11,6 @@ byceps.blueprints.authorization.views
 from ...util.framework import create_blueprint
 
 from .registry import permission_registry
-from .models import Permission
 
 
 blueprint = create_blueprint('authorization', __name__)
