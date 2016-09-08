@@ -8,6 +8,8 @@ byceps.blueprints.user_badge.service
 :License: Modified BSD, see LICENSE for details.
 """
 
+from collections import defaultdict
+
 from ...database import db
 
 from .models import Badge, BadgeAwarding
@@ -33,6 +35,26 @@ def get_badges_for_user(user_id):
     return Badge.query \
         .join(BadgeAwarding).filter_by(user_id=user_id) \
         .all()
+
+
+def get_badges_for_users(user_ids):
+    """Return all badges that have been awarded to the users, indexed
+    by user ID.
+    """
+    return {}
+    awardings = BadgeAwarding.query \
+        .filter(BadgeAwarding.user_id.in_(user_ids)) \
+        .options(
+            db.joinedload(BadgeAwarding.badge),
+            db.joinedload(BadgeAwarding.user),
+        ) \
+        .all()
+
+    badges_by_user_id = defaultdict(set)
+    for awarding in awardings:
+        badges_by_user_id[awarding.user.id].add(awarding.badge)
+
+    return dict(badges_by_user_id)
 
 def get_all_badges():
     """Return all badges."""

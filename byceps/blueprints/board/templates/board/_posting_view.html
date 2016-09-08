@@ -11,7 +11,7 @@
       {{ render_user_avatar(posting.creator) }}
     </div>
 
-    {%- with badges = posting.creator.badges %}
+    {%- with badges = badges_by_user_id[posting.creator.id]|default([]) %}
       {%- if badges %}
 {{ render_user_badges(badges) }}
       {%- endif %}

@@ -17,6 +17,7 @@ from ...util.views import redirect_to, respond_no_content_with_location
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
+from ..user_badge import service as badge_service
 
 from .authorization import BoardPostingPermission, BoardTopicPermission
 from .formatting import get_smileys, render_html
@@ -122,9 +123,13 @@ def topic_view(id, page):
 
     add_unseen_flag_to_postings(postings.items, g.current_user, last_viewed_at)
 
+    creator_ids = {posting.creator.id for posting in postings.items}
+    badges_by_user_id = badge_service.get_badges_for_users(creator_ids)
+
     return {
         'topic': topic,
         'postings': postings,
+        'badges_by_user_id': badges_by_user_id,
     }
 
 
