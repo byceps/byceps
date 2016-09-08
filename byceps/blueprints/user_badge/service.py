@@ -41,7 +41,6 @@ def get_badges_for_users(user_ids):
     """Return all badges that have been awarded to the users, indexed
     by user ID.
     """
-    return {}
     awardings = BadgeAwarding.query \
         .filter(BadgeAwarding.user_id.in_(user_ids)) \
         .options(
