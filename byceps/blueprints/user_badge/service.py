@@ -45,13 +45,12 @@ def get_badges_for_users(user_ids):
         .filter(BadgeAwarding.user_id.in_(user_ids)) \
         .options(
             db.joinedload(BadgeAwarding.badge),
-            db.joinedload(BadgeAwarding.user),
         ) \
         .all()
 
     badges_by_user_id = defaultdict(set)
     for awarding in awardings:
-        badges_by_user_id[awarding.user.id].add(awarding.badge)
+        badges_by_user_id[awarding.user_id].add(awarding.badge)
 
     return dict(badges_by_user_id)
 
