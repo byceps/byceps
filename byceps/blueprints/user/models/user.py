@@ -92,7 +92,6 @@ class User(db.Model):
                                creator=lambda avatar:
                                     AvatarSelection(None, avatar.id))
     roles = association_proxy('user_roles', 'role')
-    badges = association_proxy('badge_awardings', 'badge')
 
     @classmethod
     def create(cls, screen_name, email_address):
