@@ -8,6 +8,9 @@ venv
 .tox
 *.egg-info
 
+# cache data
+.cache
+
 # user data
 data
 
