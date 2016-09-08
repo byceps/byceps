@@ -122,12 +122,12 @@ def create():
         flash_error('Unbekannte Marke.')
         return create_form(form)
 
-    id = form.id.data.strip().lower()
+    party_id = form.id.data.strip().lower()
     title = form.title.data.strip()
     starts_at = form.starts_at.data
     ends_at = form.ends_at.data
 
-    party = service.create_party(id, brand, title, starts_at, ends_at)
+    party = service.create_party(party_id, brand, title, starts_at, ends_at)
 
     flash_success('Die Party "{}" wurde angelegt.', party.title)
     return redirect_to('.index')

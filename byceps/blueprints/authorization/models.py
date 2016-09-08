@@ -37,8 +37,8 @@ class Permission(db.Model):
     @classmethod
     def from_enum_member(cls, enum_member):
         key = enum_member.__class__.__key__
-        id = '{}.{}'.format(key, enum_member.name)
-        return cls(id)
+        permission_id = '{}.{}'.format(key, enum_member.name)
+        return cls(permission_id)
 
     @property
     def enum_member(self):

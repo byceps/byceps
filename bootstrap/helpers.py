@@ -30,12 +30,12 @@ from .util import add_to_database
 
 
 @add_to_database
-def create_brand(id, title):
-    return Brand(id, title)
+def create_brand(brand_id, title):
+    return Brand(brand_id, title)
 
 
-def get_brand(id):
-    return Brand.query.get(id)
+def get_brand(brand_id):
+    return Brand.query.get(brand_id)
 
 
 # -------------------------------------------------------------------- #
@@ -47,8 +47,8 @@ def create_party(**kwargs):
     return Party(**kwargs)
 
 
-def get_party(id):
-    return Party.query.get(id)
+def get_party(party_id):
+    return Party.query.get(party_id)
 
 
 # -------------------------------------------------------------------- #
@@ -92,8 +92,8 @@ def assign_user_to_orga_team(user, orga_team, *, duties=None):
     return membership
 
 
-def get_orga_team(id):
-    return OrgaTeam.query.get(id)
+def get_orga_team(team_id):
+    return OrgaTeam.query.get(team_id)
 
 
 # -------------------------------------------------------------------- #

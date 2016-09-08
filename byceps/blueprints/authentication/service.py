@@ -65,16 +65,16 @@ def authenticate(screen_name, password):
     return user
 
 
-def load_user(id, auth_token):
+def load_user(user_id, auth_token):
     """Load the user with that ID.
 
     Fall back to the anonymous user if the ID is unknown, the account is
     not enabled, or the auth token is invalid.
     """
-    if id is None:
+    if user_id is None:
         return AnonymousUser()
 
-    user = User.query.get(id)
+    user = User.query.get(user_id)
     if (user is None) or not user.enabled:
         return AnonymousUser()
 
