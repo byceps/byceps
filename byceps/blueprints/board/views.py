@@ -571,4 +571,6 @@ def _get_posting_or_404(posting_id):
 
 def calculate_posting_page_number(posting):
     postings_per_page = int(current_app.config['BOARD_POSTINGS_PER_PAGE'])
-    return service.calculate_posting_page_number(posting, g.current_user)
+
+    return service.calculate_posting_page_number(posting, g.current_user,
+                                                 postings_per_page)
