@@ -20,7 +20,7 @@ from wtforms import Form
 def set_locale(locale_str):
     try:
         locale.setlocale(locale.LC_ALL, locale_str)
-    except:
+    except locale.Error:
         warnings.warn('Could not set locale to "{}".'.format(locale_str))
 
 
