@@ -91,18 +91,18 @@ div[class|=notification] {
 div[class|=notification]:first-child {
   margin-top: 25px;
 }
-div[class|=notification] .icon {
+div[class|=notification] > .icon {
   flex: 0 0 1;
   padding-right: 0.7em;
 }
-div[class|=notification] .body {
+div[class|=notification] > .body {
   flex: 1;
 }
-div[class|=notification] .body :first-child {
+div[class|=notification] > .body :first-child {
   margin-top: 0;
   padding-top: 0;
 }
-div[class|=notification] .body :last-child {
+div[class|=notification] > .body :last-child {
   margin-bottom: 0;
   padding-bottom: 0;
 }
