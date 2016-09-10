@@ -1,5 +1,6 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/datetime.html' import render_datetime_long %}
+{% from 'macros/icons.html' import render_icon %}
 {% from 'macros/user.html' import render_user_avatar_tiny_and_link %}
 {% set current_page = 'party.archive' %}
 {% set title = 'Party-Archiv' %}
@@ -17,7 +18,7 @@
       {%- if attendees %}
     <table class="index wide">
       <tr>
-        <th><span class="icon-users"></span> Teilnehmer</th>
+        <th>{{ render_icon('users') }} Teilnehmer</th>
       </tr>
       <tr>
         <td style="line-height: 1.6;">
