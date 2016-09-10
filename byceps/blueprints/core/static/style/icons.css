@@ -58,12 +58,10 @@ li [class*=" icon-"] {
 .icon-edit::before           { content: "\f040"; }
 .icon-enabled::before        { content: "\f00c"; }
 .icon-error::before          { content: "\f071"; }
-.icon-external-link::before  { content: "\f08e"; }
 .icon-filter::before         { content: "\f0b0"; }
 .icon-hidden::before         { content: "\f070"; }
 .icon-history::before        { content: "\f1da"; }
 .icon-image::before          { content: "\f03e"; }
-.icon-important::before      { content: "\f12a"; }
 .icon-info::before           { content: "\f05a"; }
 .icon-legal::before          { content: "\f0e3"; }
 .icon-lock::before           { content: "\f023"; }
