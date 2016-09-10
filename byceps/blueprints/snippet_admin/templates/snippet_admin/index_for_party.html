@@ -86,7 +86,7 @@
         <td>
         {%- if g.current_user.has_permission(MountpointPermission.delete) %}
           <div class="dropdown left">
-            <button><span class="icon-caret-down"></span></button>
+            <button>{{ render_icon('caret-down') }}</button>
             <ol>
               <li><a data-action="mountpoint-delete" href="{{ url_for('.delete_mountpoint', id=mountpoint.id) }}">{{ render_icon('remove') }} Mountpoint entfernen</a></li>
             </ol>
