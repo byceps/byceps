@@ -63,6 +63,11 @@
 {%- endmacro %}
 
 
+{% macro render_user_avatar_tiny_and_link(user) -%}
+<span class="nowrap">{{ render_user_avatar_tiny(user) }} {{ render_user_link(user) }}</span>
+{%- endmacro %}
+
+
 {% macro render_user_avatar_image(user) %}
   <img src="{{ user.avatar.url }}" alt="Avatar von {{ user.screen_name }}">
 {%- endmacro %}
