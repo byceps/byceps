@@ -1,18 +1,11 @@
 {% extends 'layout/base.html' %}
-{% from 'macros/icons.html' import render_icon %}
+{% from 'macros/misc.html' import render_notification %}
 {% set title = 'Fehler' %}
 
 {% block body %}
 
   <h1>{{ title }}</h1>
 
-  <div class="notification-error">
-    <div class="icon">
-      {{ render_icon('warning') }}
-    </div>
-    <div class="body">
-      <p>Entschuldigung, es ist ein Fehler aufgetreten.</p>
-    </div>
-  </div>
+{{ render_notification('error', 'warning', 'Entschuldigung, es ist ein Fehler aufgetreten.') }}
 
 {%- endblock body %}
