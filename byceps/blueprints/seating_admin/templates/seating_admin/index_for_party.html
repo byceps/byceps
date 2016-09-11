@@ -25,7 +25,7 @@
       <tr>
         <th>Titel<br>Slug</th>
         <th>Hintergrundbild<br>Größe</th>
-        <th>Plätze</th>
+        <th class="centered">Plätze</th>
       </tr>
     </thead>
     <tbody>
@@ -39,7 +39,7 @@
           {{ area.image_filename }}<br>
           {{ '%d &times; %d Pixel'|format(area.image_width, area.image_height)|dim }}
         </td>
-        <td class="number">{{ seat_total_per_area[area.id] }}</td>
+        <td class="centered bignumber">{{ seat_total_per_area[area.id] }}</td>
       </tr>
       {%- endfor %}
       <tr>

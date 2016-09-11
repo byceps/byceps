@@ -39,8 +39,8 @@
         <td class="centered">{{ category.position }}</td>
         <td><strong>{{ category.title }}</strong><br>{{ category.slug|dim }}</td>
         <td>{{ category.description }}</td>
-        <td class="centered">{{ category.topic_count }}</td>
-        <td class="centered">{{ category.posting_count }}</td>
+        <td class="centered bignumber">{{ category.topic_count }}</td>
+        <td class="centered bignumber">{{ category.posting_count }}</td>
         <td>
           {%- if g.current_user.has_permission(BoardCategoryPermission.update) -%}
           <div class="dropdown left">
