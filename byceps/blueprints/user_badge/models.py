@@ -11,7 +11,6 @@ byceps.blueprints.user_badge.models
 from datetime import datetime
 
 from flask import url_for
-from sqlalchemy.ext.associationproxy import association_proxy
 
 from ...database import db, generate_uuid
 from ...util.instances import ReprBuilder
@@ -27,9 +26,6 @@ class Badge(db.Model):
     label = db.Column(db.Unicode(80), unique=True, nullable=False)
     description = db.Column(db.UnicodeText, nullable=True)
     image_filename = db.Column(db.Unicode(80), nullable=False)
-
-    recipients = association_proxy('awardings', 'user',
-        creator=lambda user: BadgeAwarding(None, user.id))
 
     @property
     def image_url(self):
@@ -55,8 +51,6 @@ class BadgeAwarding(db.Model):
     badge = db.relationship(Badge, collection_class=set,
                             backref=db.backref('awardings', collection_class=set))
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
-    user = db.relationship(User, collection_class=set,
-                            backref=db.backref('badge_awardings', collection_class=set))
     awarded_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
 
     def __init__(self, badge_id, user_id):
