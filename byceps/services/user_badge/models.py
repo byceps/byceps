@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-byceps.blueprints.user_badge.models
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.user_badge.models
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2016 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -12,10 +12,9 @@ from datetime import datetime
 
 from flask import url_for
 
+from ...blueprints.user.models.user import User
 from ...database import db, generate_uuid
 from ...util.instances import ReprBuilder
-
-from ..user.models.user import User
 
 
 class Badge(db.Model):
