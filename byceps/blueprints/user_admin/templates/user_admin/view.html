@@ -31,7 +31,6 @@
       <li><a href="#account">Benutzerkonto</a></li>
       <li><a href="#personal">Persönliche Daten</a></li>
       <li><a href="#permissions">Berechtigungen</a></li>
-      <li><a href="#misc">Diverses</a></li>
       <li><a href="#orders">Bestellungen</a></li>
       <li><a href="#tickets">Tickets</a></li>
       <li><a href="#badges">Abzeichen</a></li>
@@ -70,6 +69,10 @@
     <tr>
       <th>Avatar</th>
       <td>{{ render_icon('enabled' if user.avatar else 'disabled') }}</td>
+    </tr>
+    <tr>
+      <th>Legacy-ID</th>
+      <td>{{ render_with_fallback(user.legacy_id) }}</td>
     </tr>
     <tr>
       <th>Orga-Teams</th>
@@ -139,14 +142,6 @@
       </td>
     </tr>
     {%- endfor %}
-  </table>
-
-  <h2 id="misc">Diverses</h2>
-  <table class="index">
-    <tr>
-      <th>Legacy-ID</th>
-      <td>{{ render_with_fallback(user.legacy_id) }}</td>
-    </tr>
   </table>
 
   <h2 id="orders">Bestellungen {{ render_extra_in_heading(orders|length) }}</h2>
