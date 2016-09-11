@@ -19,6 +19,21 @@ a {
 }
 
 
+/* grid */
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: -20px 0 0 -20px;
+}
+
+.column-auto {
+  flex: 1 0 0;
+  max-width: 100%;
+  padding: 20px 0 0 20px;
+}
+
+
 /* layout */
 
 #header-content,
@@ -360,17 +375,19 @@ ol.index.fully-linked a:hover {
 
 /* filters */
 
+.filters {
+  margin-bottom: 20px;
+}
+
 .filter {
   font-size: 0.75rem; /* 12px / 16px */
-  margin: 2.5rem 0 2rem 0;
-  text-align: right;
+  white-space: nowrap;
 }
 .filter ol,
 .filter li {
   display: inline-block;
 }
 .filter li::after {
-  content: ' |';
   opacity: 0.5;
 }
 .filter li:last-child::after {

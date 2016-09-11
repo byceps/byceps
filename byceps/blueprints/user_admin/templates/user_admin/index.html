@@ -11,7 +11,7 @@
 {% block head %}
     <style>
       form.search {
-        float: left;
+        white-space: nowrap;
       }
       form.search input {
         opacity: 0.5;
@@ -40,30 +40,39 @@
     {{ render_bigstats_item(total_overall, '&sum; gesamt'|safe) }}
   </div>
 
-  <form action="{{ url_for('.index') }}" class="search">
-    {{ render_icon('search') }} <input type="search" name="search_term" placeholder="Suchbegriff" {%- if search_term %} value="{{ search_term }}"{% endif %}>
-    <a href="{{ url_for('.index') }}" class="action inline" title="Einschränkung auf Suchbegriff aufheben">{{ render_icon('remove') }}</a>
-  </form>
+  <div class="row filters">
+    <div class="column-auto">
 
-  <div class="filter">
-    <span>{{ render_icon('filter') }} Einschränkung:</span>
-    <ol>
-    {%- if only == 'enabled' %}
-      <li>{{ render_tag('aktiviert', class='user-state-enabled') }}</li>
-    {%- else %}
-      <li><a href="{{ url_for('.index', only='enabled') }}">{{ render_tag('aktiviert', class='user-state-enabled') }}</a></li>
-    {%- endif %}
-    {%- if only == 'disabled' %}
-      <li>{{ render_tag('nicht aktiviert', class='user-state-disabled') }}</li>
-    {%- else %}
-      <li><a href="{{ url_for('.index', only='disabled') }}">{{ render_tag('nicht aktiviert', class='user-state-disabled') }}</a></li>
-    {%- endif %}
-    {%- if only not in ('enabled', 'disabled') %}
-      <li><strong>{{ render_tag('alle') }}</strong></li>
-    {%- else %}
-      <li><a href="{{ url_for('.index') }}">{{ render_tag('alle') }}</a></li>
-    {%- endif %}
-    </ol>
+      <form action="{{ url_for('.index') }}" class="search">
+        {{ render_icon('search') }} <input type="search" name="search_term" placeholder="Suchbegriff" {%- if search_term %} value="{{ search_term }}"{% endif %}>
+        <a href="{{ url_for('.index') }}" class="action inline" title="Einschränkung auf Suchbegriff aufheben">{{ render_icon('remove') }}</a>
+      </form>
+
+    </div>
+    <div class="column-auto">
+
+      <div class="filter">
+        <span>{{ render_icon('filter') }} Einschränkung:</span>
+        <ol>
+        {%- if only == 'enabled' %}
+          <li>{{ render_tag('aktiviert', class='user-state-enabled') }}</li>
+        {%- else %}
+          <li><a href="{{ url_for('.index', only='enabled') }}">{{ render_tag('aktiviert', class='user-state-enabled') }}</a></li>
+        {%- endif %}
+        {%- if only == 'disabled' %}
+          <li>{{ render_tag('nicht aktiviert', class='user-state-disabled') }}</li>
+        {%- else %}
+          <li><a href="{{ url_for('.index', only='disabled') }}">{{ render_tag('nicht aktiviert', class='user-state-disabled') }}</a></li>
+        {%- endif %}
+        {%- if only not in ('enabled', 'disabled') %}
+          <li><strong>{{ render_tag('alle') }}</strong></li>
+        {%- else %}
+          <li><a href="{{ url_for('.index') }}">{{ render_tag('alle') }}</a></li>
+        {%- endif %}
+        </ol>
+      </div>
+
+    </div>
   </div>
 
   <table class="index wide">
