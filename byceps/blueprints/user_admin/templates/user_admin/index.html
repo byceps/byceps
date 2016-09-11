@@ -72,7 +72,6 @@
         <th>Benutzername</th>
         <th>Voller Name</th>
         <th>Erstellt</th>
-        <th>Legacy ID</th>
         <th>aktiv</th>
       </tr>
     </thead>
@@ -85,7 +84,6 @@
         </td>
         <td>{{ render_with_fallback(user.detail.full_name) }}</td>
         <td>{{ render_datetime(user.created_at) }}</td>
-        <td>{{ render_with_fallback(user.legacy_id) }}</td>
         <td>{{ render_icon('enabled' if user.enabled else 'disabled') }}</td>
       </tr>
       {%- endfor %}
