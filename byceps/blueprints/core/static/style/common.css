@@ -76,6 +76,20 @@ img {
 }
 
 
+/* icons */
+
+[class^="icon-"],
+[class*=" icon-"] {
+  display: inline-block;
+  fill: currentColor;
+  height: 1em;
+  stroke: currentColor;
+  stroke-width: 0;
+  vertical-align: -7%;
+  width: 1em;
+}
+
+
 /* notifications */
 
 div[class|=notification] {
@@ -337,10 +351,6 @@ table.wide {
   cursor: pointer;
   display: inline-block;
   padding: 0 0.1em;
-}
-.dropdown button [class^="icon-"],
-.dropdown button [class*=" icon-"] {
-  width: auto;
 }
 .dropdown button:focus {
   outline: 0;
