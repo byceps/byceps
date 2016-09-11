@@ -65,6 +65,13 @@ def find_user_by_screen_name(screen_name):
         .filter_by(screen_name=screen_name) \
         .first()
 
+def get_users_with_avatars(user_ids):
+    """Return the users (and their avatars) for the IDs."""
+    return User.query \
+        .filter(User.id.in_(user_ids)) \
+        .options(db.joinedload('avatar_selection')) \
+        .all()
+
 
 def is_screen_name_already_assigned(screen_name):
     """Return `True` if a user with that screen name exists."""

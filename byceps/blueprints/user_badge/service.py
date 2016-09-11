@@ -30,6 +30,13 @@ def find_badge(badge_id):
     return Badge.query.get(badge_id)
 
 
+def get_awardings_of_badge(badge_id):
+    """Return the awardings (user and date) of this badge."""
+    return BadgeAwarding.query \
+        .filter_by(badge_id=badge_id) \
+        .all()
+
+
 def get_badges_for_user(user_id):
     """Return all badges that have been awarded to the user."""
     return Badge.query \

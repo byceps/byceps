@@ -13,6 +13,8 @@ from flask import abort
 from ...util.framework import create_blueprint
 from ...util.templating import templated
 
+from ..user import service as user_service
+
 from . import service
 
 
@@ -39,6 +41,11 @@ def view(id):
     if badge is None:
         abort(404)
 
+    awardings = service.get_awardings_of_badge(badge.id)
+    recipient_ids = [awarding.user_id for awarding in awardings]
+    recipients = user_service.get_users_with_avatars(recipient_ids)
+
     return {
         'badge': badge,
+        'recipients': recipients,
     }
