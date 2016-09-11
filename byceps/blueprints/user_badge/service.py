@@ -66,7 +66,11 @@ def get_all_badges():
     return Badge.query.all()
 
 
-def award_badge_to_user(badge, user):
+def award_badge_to_user(badge_id, user_id):
     """Award the badge to the user."""
-    badge.recipients.add(user)
+    awarding = BadgeAwarding(badge_id, user_id)
+
+    db.session.add(awarding)
     db.session.commit()
+
+    return awarding
