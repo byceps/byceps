@@ -34,10 +34,16 @@
 
   <h1>{{ title }}</h1>
 
-  <div class="bigstats">
-    {{ render_bigstats_item(total_enabled, 'aktiviert', icon_name='enabled', color='#008800') }}
-    {{ render_bigstats_item(total_disabled, 'nicht aktiviert', icon_name='disabled', color='#cc0000') }}
-    {{ render_bigstats_item(total_overall, '&sum; gesamt'|safe) }}
+  <div class="row bigstats">
+    <div class="column-auto">
+      {{ render_bigstats_item(total_enabled, 'aktiviert', icon_name='enabled', color='#008800') }}
+    </div>
+    <div class="column-auto">
+      {{ render_bigstats_item(total_disabled, 'nicht aktiviert', icon_name='disabled', color='#cc0000') }}
+    </div>
+    <div class="column-auto">
+      {{ render_bigstats_item(total_overall, '&sum; gesamt'|safe) }}
+    </div>
   </div>
 
   <div class="row filters">

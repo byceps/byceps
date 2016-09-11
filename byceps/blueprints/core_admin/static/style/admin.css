@@ -410,8 +410,6 @@ ol.index.fully-linked a:hover {
 /* stats */
 
 .bigstats {
-  display: flex;
-  justify-content: space-around;
   margin-bottom: 2rem;
 }
 .bigstats figure {

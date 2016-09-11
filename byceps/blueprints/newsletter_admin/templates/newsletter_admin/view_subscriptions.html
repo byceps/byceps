@@ -36,10 +36,16 @@
   </nav>
   <h1>Bestellstatus</h1>
 
-  <div class="bigstats">
-    {{ render_bigstats_item(totals[State.requested], 'angefordert', icon_name='enabled', color='#008800') }}
-    {{ render_bigstats_item(totals[State.declined], 'abgelehnt', icon_name='disabled', color='#cc0000') }}
-    {{ render_bigstats_item(totals['total'], '&sum; gesamt'|safe) }}
+  <div class="row bigstats">
+    <div class="column-auto">
+      {{ render_bigstats_item(totals[State.requested], 'angefordert', icon_name='enabled', color='#008800') }}
+    </div>
+    <div class="column-auto">
+      {{ render_bigstats_item(totals[State.declined], 'abgelehnt', icon_name='disabled', color='#cc0000') }}
+    </div>
+    <div class="column-auto">
+      {{ render_bigstats_item(totals['total'], '&sum; gesamt'|safe) }}
+    </div>
   </div>
 
   {%- if g.current_user.has_permission(NewsletterPermission.export_subscribers) %}
