@@ -23,7 +23,6 @@ from ..ticket_admin import service as ticket_admin_service
 
 from .authorization import PartyPermission
 from .forms import CreateForm
-from . import service
 
 
 blueprint = create_blueprint('party_admin', __name__)
@@ -37,7 +36,7 @@ permission_registry.register_enum(PartyPermission)
 @templated
 def index():
     """List parties."""
-    parties = service.get_parties_with_brands()
+    parties = party_service.get_parties_with_brands()
 
     return {
         'parties': parties,
@@ -127,7 +126,8 @@ def create():
     starts_at = form.starts_at.data
     ends_at = form.ends_at.data
 
-    party = service.create_party(party_id, brand.id, title, starts_at, ends_at)
+    party = party_service.create_party(party_id, brand.id, title, starts_at,
+                                       ends_at)
 
     flash_success('Die Party "{}" wurde angelegt.', party.title)
     return redirect_to('.index')

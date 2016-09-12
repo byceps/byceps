@@ -10,6 +10,7 @@ byceps.blueprints.party.service
 
 from ...database import db
 
+from ..brand.models import Brand
 from ..seating.models.category import Category as SeatCategory
 from ..ticket.models import Ticket
 from ..user.models.user import User
@@ -29,6 +30,18 @@ def count_parties_for_brand(brand_id):
         .count()
 
 
+def get_party_count_by_brand_id():
+    """Return party count (including 0) per brand, indexed by brand ID."""
+    return dict(db.session \
+        .query(
+            Brand.id,
+            db.func.count(Party.id)
+        ) \
+        .outerjoin(Party) \
+        .group_by(Brand.id) \
+        .all())
+
+
 def paginate_parties_for_brand(brand_id, page, per_page):
     """Return the parties for that brand to show on the specified page."""
     return Party.query \
@@ -46,6 +59,13 @@ def find_party_with_brand(party_id):
     return Party.query \
         .options(db.joinedload('brand')) \
         .get(party_id)
+
+
+def get_parties_with_brands():
+    """Return all parties."""
+    return Party.query \
+        .options(db.joinedload('brand')) \
+        .all()
 
 
 def get_archived_parties():
@@ -71,3 +91,13 @@ def get_attendees_for_party(party_id):
         .join(Ticket.used_by) \
         .join(SeatCategory).filter(SeatCategory.party_id == party_id) \
         .all()
+
+
+def create_party(party_id, brand_id, title, starts_at, ends_at):
+    """Create a party."""
+    party = Party(party_id, brand_id, title, starts_at, ends_at)
+
+    db.session.add(party)
+    db.session.commit()
+
+    return party
