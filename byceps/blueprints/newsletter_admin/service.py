@@ -17,15 +17,15 @@ from ..newsletter.models import Subscription, SubscriptionState
 from ..user.models.user import User
 
 
-def get_subscribers(brand):
+def get_subscribers(brand_id):
     """Return the enabled users that are currently subscribed for the brand."""
-    subscribers = _build_query_for_current_subscribers(brand).all()
+    subscribers = _build_query_for_current_subscribers(brand_id).all()
 
     user_ids = frozenset(map(itemgetter(0), subscribers))
     return get_users_query(user_ids).filter_by(enabled=True).all()
 
 
-def _build_query_for_current_subscribers(brand):
+def _build_query_for_current_subscribers(brand_id):
     """Build a query to return the most recent subscription state
     (grouped by user and brand).
 
@@ -62,13 +62,13 @@ def _build_query_for_current_subscribers(brand):
             Subscription.expressed_at == subquery.c.latest_expressed_at
         )) \
         .filter(Subscription._state == SubscriptionState.requested.name) \
-        .filter(Subscription.brand_id == brand.id)
+        .filter(Subscription.brand_id == brand_id)
 
 
-def get_user_subscription_states_for_brand(brand):
+def get_user_subscription_states_for_brand(brand_id):
     """Return subscriptions as (user, state) pairs for the brand."""
     subscription_states = _build_query_for_current_state() \
-        .filter_by(brand_id=brand.id) \
+        .filter_by(brand_id=brand_id) \
         .all()
 
     user_ids = frozenset(map(itemgetter(0), subscription_states))
@@ -154,13 +154,13 @@ def count_subscriptions_by_state(subscriptions):
     return totals
 
 
-def get_users_query(ids):
+def get_users_query(user_ids):
     """Return a query to select the users with the given IDs."""
-    return User.query.filter(User.id.in_(ids))
+    return User.query.filter(User.id.in_(user_ids))
 
 
-def count_subscribers_for_brand(brand):
+def count_subscribers_for_brand(brand_id):
     """Return the number of users that are currently subscribed to that
     brand's newsletter.
     """
-    return _build_query_for_current_subscribers(brand).count()
+    return _build_query_for_current_subscribers(brand_id).count()

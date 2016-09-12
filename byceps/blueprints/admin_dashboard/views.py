@@ -88,7 +88,7 @@ def view_brand(brand_id):
     news_item_count = news_admin_service.count_items_for_brand(brand)
 
     newsletter_subscriber_count = newsletter_admin_service \
-        .count_subscribers_for_brand(brand)
+        .count_subscribers_for_brand(brand.id)
 
     current_terms_version = terms_service.get_current_version(brand)
 

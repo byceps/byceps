@@ -39,7 +39,7 @@ def view_subscriptions(brand_id):
     """Show user subscription states for that brand."""
     brand = _get_brand_or_404(brand_id)
 
-    subscription_states = list(get_user_subscription_states_for_brand(brand))
+    subscription_states = list(get_user_subscription_states_for_brand(brand.id))
     subscription_states.sort(
         key=lambda user_and_state: user_and_state[0].screen_name.lower())
 
@@ -63,7 +63,7 @@ def export_subscribers(brand_id):
     """
     brand = _get_brand_or_404(brand_id)
 
-    subscribers = get_subscribers(brand)
+    subscribers = get_subscribers(brand.id)
 
     exports = list(map(assemble_subscriber_export, subscribers))
 
@@ -87,7 +87,7 @@ def export_subscriber_email_addresses(brand_id):
     """
     brand = _get_brand_or_404(brand_id)
 
-    subscribers = get_subscribers(brand)
+    subscribers = get_subscribers(brand.id)
     email_addresses = map(attrgetter('email_address'), subscribers)
     return '\n'.join(email_addresses)
 
