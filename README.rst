@@ -13,6 +13,13 @@ The system incorporates both experience from more than 15 years of
 organizing LAN parties as well as concepts and source code developed
 for more than a decade.
 
+Since 2014 BYCEPS is the foundation of the public website and local
+party intranet of the LANresort_ event series.
+
+
+.. _LANresort: https://www.lanresort.de/
+
+
 :Copyright: 2006-2016 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
 :Website: http://homework.nwsnet.de/releases/b1ce/#byceps
