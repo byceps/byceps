@@ -39,6 +39,7 @@ def unsubscribe(user, brand):
 
 def _update_subscription_state(user, brand, state):
     """Update the user's subscription state for that brand."""
-    subscription = Subscription(user, brand, state)
+    subscription = Subscription(user.id, brand.id, state)
+
     db.session.add(subscription)
     db.session.commit()

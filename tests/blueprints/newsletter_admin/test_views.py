@@ -112,7 +112,7 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
             self.add_subscription(user, state)
 
     def add_subscription(self, user, state):
-        subscription = Subscription(user, self.brand, state)
+        subscription = Subscription(user.id, self.brand.id, state)
         self.db.session.add(subscription)
 
     def get_as_admin(self, url):

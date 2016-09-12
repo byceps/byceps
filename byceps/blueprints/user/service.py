@@ -125,7 +125,7 @@ def create_user(screen_name, email_address, password, first_names, last_name,
     newsletter_subscription_state = NewsletterSubscriptionState.requested \
         if subscribe_to_newsletter \
         else NewsletterSubscriptionState.declined
-    newsletter_subscription = NewsletterSubscription(user, brand,
+    newsletter_subscription = NewsletterSubscription(user.id, brand.id,
                                                      newsletter_subscription_state)
     db.session.add(newsletter_subscription)
 

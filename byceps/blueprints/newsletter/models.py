@@ -36,9 +36,9 @@ class Subscription(db.Model):
     expressed_at = db.Column(db.DateTime, default=datetime.now, primary_key=True)
     _state = db.Column('state', db.Unicode(20), nullable=False)
 
-    def __init__(self, user, brand, state):
-        self.user = user
-        self.brand = brand
+    def __init__(self, user_id, brand_id, state):
+        self.user_id = user_id
+        self.brand_id = brand_id
         self.state = state
 
     @hybrid_property
@@ -52,8 +52,8 @@ class Subscription(db.Model):
 
     def __repr__(self):
         return ReprBuilder(self) \
-            .add('user', self.user.screen_name) \
-            .add('brand', self.brand.title) \
+            .add_with_lookup('user_id') \
+            .add_with_lookup('brand_id') \
             .add_with_lookup('expressed_at') \
             .add('state', self.state.name) \
             .build()
