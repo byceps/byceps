@@ -22,15 +22,17 @@ def count_parties():
     return Party.query.count()
 
 
-def count_parties_for_brand(brand):
+def count_parties_for_brand(brand_id):
     """Return the number of parties for that brand."""
-    return Party.query.for_brand(brand).count()
+    return Party.query \
+        .for_brand_id(brand_id) \
+        .count()
 
 
-def paginate_parties_for_brand(brand, page, per_page):
+def paginate_parties_for_brand(brand_id, page, per_page):
     """Return the parties for that brand to show on the specified page."""
     return Party.query \
-        .for_brand(brand) \
+        .for_brand_id(brand_id) \
         .paginate(page, per_page)
 
 
@@ -56,10 +58,10 @@ def get_archived_parties():
 
 def get_attendees_by_party(parties):
     """Return the parties' attendees, grouped by party."""
-    return {party: get_attendees_for_party(party) for party in parties}
+    return {party: get_attendees_for_party(party.id) for party in parties}
 
 
-def get_attendees_for_party(party):
+def get_attendees_for_party(party_id):
     """Return the party's attendees."""
     return User.query \
         .options(
@@ -67,5 +69,5 @@ def get_attendees_for_party(party):
             db.joinedload('avatar_selection').joinedload('avatar')
         ) \
         .join(Ticket.used_by) \
-        .join(SeatCategory).filter(SeatCategory.party == party) \
+        .join(SeatCategory).filter(SeatCategory.party_id == party_id) \
         .all()

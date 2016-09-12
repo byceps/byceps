@@ -81,7 +81,7 @@ def view_brand(brand_id):
     if brand is None:
         abort(404)
 
-    party_count = party_service.count_parties_for_brand(brand)
+    party_count = party_service.count_parties_for_brand(brand.id)
 
     orga_count = orga_admin_service.count_orgas_for_brand(brand)
 

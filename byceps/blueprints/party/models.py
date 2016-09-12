@@ -21,8 +21,8 @@ from ..brand.models import Brand
 
 class PartyQuery(BaseQuery):
 
-    def for_brand(self, brand):
-        return self.filter_by(brand_id=brand.id)
+    def for_brand_id(self, brand_id):
+        return self.filter_by(brand_id=brand_id)
 
 
 class Party(db.Model):
