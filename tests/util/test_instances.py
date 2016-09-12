@@ -25,9 +25,10 @@ def test_with_looked_up_values():
         .add_with_lookup('last_name') \
         .add_with_lookup('age') \
         .add_with_lookup('delivers_pizza') \
+        .add_with_lookup('favorite_customer') \
         .build()
 
-    assert actual == '<Instance(first_name=Hiro, last_name=Protagonist, age=26, delivers_pizza=True)>'
+    assert actual == "<Instance(first_name='Hiro', last_name='Protagonist', age=26, delivers_pizza=True, favorite_customer=None)>"
 
 
 def test_with_given_value():
@@ -38,7 +39,7 @@ def test_with_given_value():
         .add('last_name length', 11) \
         .build()
 
-    assert actual == '<Instance(last_name=Protagonist, last_name length=11)>'
+    assert actual == "<Instance(last_name='Protagonist', last_name length=11)>"
 
 
 def test_with_custom_value():
@@ -49,7 +50,7 @@ def test_with_custom_value():
         .add_custom('is of full age') \
         .build()
 
-    assert actual == '<Instance(last_name=Protagonist, is of full age)>'
+    assert actual == "<Instance(last_name=Protagonist, is of full age)>"
 
 
 class Instance(object):
@@ -59,3 +60,4 @@ class Instance(object):
         self.last_name = 'Protagonist'
         self.age = 26
         self.delivers_pizza = True
+        self.favorite_customer = None
