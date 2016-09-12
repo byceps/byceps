@@ -95,8 +95,9 @@ def view_current():
     user = get_current_user_or_404()
 
     if get_site_mode().is_public():
+        brand_id = g.party.brand.id
         newsletter_subscription_state = newsletter_service \
-            .get_subscription_state(user, g.party.brand)
+            .get_subscription_state(user.id, brand_id)
     else:
         newsletter_subscription_state = None
 

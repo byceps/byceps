@@ -13,11 +13,11 @@ from ...database import db
 from .models import Subscription, SubscriptionState
 
 
-def get_subscription_state(user, brand):
+def get_subscription_state(user_id, brand_id):
     """Return the user's current subscription state for that brand."""
     current_subscription = Subscription.query \
-        .filter_by(user=user) \
-        .filter_by(brand=brand) \
+        .filter_by(user_id=user_id) \
+        .filter_by(brand_id=brand_id) \
         .order_by(Subscription.expressed_at.desc()) \
         .first()
 
@@ -27,19 +27,19 @@ def get_subscription_state(user, brand):
     return current_subscription.state
 
 
-def subscribe(user, brand):
+def subscribe(user_id, brand_id):
     """Subscribe the user to that brand's newsletter."""
-    _update_subscription_state(user, brand, SubscriptionState.requested)
+    _update_subscription_state(user_id, brand_id, SubscriptionState.requested)
 
 
-def unsubscribe(user, brand):
+def unsubscribe(user_id, brand_id):
     """Unsubscribe the user from that brand's newsletter."""
-    _update_subscription_state(user, brand, SubscriptionState.declined)
+    _update_subscription_state(user_id, brand_id, SubscriptionState.declined)
 
 
-def _update_subscription_state(user, brand, state):
+def _update_subscription_state(user_id, brand_id, state):
     """Update the user's subscription state for that brand."""
-    subscription = Subscription(user.id, brand.id, state)
+    subscription = Subscription(user_id, brand_id, state)
 
     db.session.add(subscription)
     db.session.commit()

@@ -29,8 +29,9 @@ blueprint = create_blueprint('newsletter', __name__)
 def subscription_update_form():
     """Show a form to update the current user's subscription."""
     user = get_current_user_or_404()
+    brand_id = g.party.brand.id
 
-    state = service.get_subscription_state(user, g.party.brand)
+    state = service.get_subscription_state(user.id, brand_id)
 
     obj = namedtuple('Obj', 'state')(state.name)
     form = SubscriptionForm(obj=obj)
@@ -47,13 +48,14 @@ def subscription_update():
 
     form = SubscriptionForm(request.form)
 
+    brand_id = g.party.brand.id
     state = SubscriptionState[form.state.data]
 
     if state is SubscriptionState.requested:
-        service.subscribe(user, g.party.brand)
+        service.subscribe(user.id, brand_id)
         flash_success('Du hast dich zum Newsletter angemeldet.')
     elif state is SubscriptionState.declined:
-        service.unsubscribe(user, g.party.brand)
+        service.unsubscribe(user.id, brand_id)
         flash_success('Du hast dich vom Newsletter abgemeldet.')
     else:
         abort(400, 'Unknown subscription state.')
