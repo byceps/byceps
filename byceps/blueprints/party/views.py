@@ -14,6 +14,8 @@ from ...config import get_current_party_id
 from ...util.framework import create_blueprint
 from ...util.templating import templated
 
+from ..ticket import service as ticket_service
+
 from . import service
 
 
@@ -43,7 +45,7 @@ def info():
 def archive():
     """Show archived parties."""
     archived_parties = service.get_archived_parties()
-    attendees_by_party = service.get_attendees_by_party(archived_parties)
+    attendees_by_party = ticket_service.get_attendees_by_party(archived_parties)
 
     return {
         'parties': archived_parties,

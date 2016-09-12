@@ -13,6 +13,7 @@ from ...database import db
 from ..party.models import Party
 from ..seating.models.category import Category
 from ..seating.models.seat import Seat
+from ..user.models.user import User
 
 from .models import Ticket
 
@@ -115,3 +116,20 @@ def get_attended_parties(user):
 def count_tickets_for_party(party):
     """Return the number of "sold" (i.e. generated) tickets for that party."""
     return Ticket.query.for_party(party).count()
+
+
+def get_attendees_by_party(parties):
+    """Return the parties' attendees, grouped by party."""
+    return {party: get_attendees_for_party(party.id) for party in parties}
+
+
+def get_attendees_for_party(party_id):
+    """Return the party's attendees."""
+    return User.query \
+        .options(
+            db.load_only('screen_name', 'deleted'),
+            db.joinedload('avatar_selection').joinedload('avatar')
+        ) \
+        .join(Ticket.used_by) \
+        .join(Category).filter(Category.party_id == party_id) \
+        .all()
