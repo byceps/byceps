@@ -19,13 +19,13 @@ from ..user.models.user import User
 
 def get_subscribers(brand):
     """Return the enabled users that are currently subscribed for the brand."""
-    subscribers = build_query_for_current_subscribers(brand).all()
+    subscribers = _build_query_for_current_subscribers(brand).all()
 
     user_ids = frozenset(map(itemgetter(0), subscribers))
     return get_users_query(user_ids).filter_by(enabled=True).all()
 
 
-def build_query_for_current_subscribers(brand):
+def _build_query_for_current_subscribers(brand):
     """Build a query to return the most recent subscription state
     (grouped by user and brand).
 
@@ -50,7 +50,8 @@ def build_query_for_current_subscribers(brand):
         WHERE nso.state = 'requested'
           AND nso.brand_id = <brand_id>
     """
-    subquery = build_query_for_latest_expressed_at().subquery()
+    subquery = _build_query_for_latest_expressed_at().subquery()
+
     return db.session \
         .query(
             Subscription.user_id
@@ -66,7 +67,7 @@ def build_query_for_current_subscribers(brand):
 
 def get_user_subscription_states_for_brand(brand):
     """Return subscriptions as (user, state) pairs for the brand."""
-    subscription_states = build_query_for_current_state() \
+    subscription_states = _build_query_for_current_state() \
         .filter_by(brand_id=brand.id) \
         .all()
 
@@ -79,7 +80,7 @@ def get_user_subscription_states_for_brand(brand):
         yield users_by_id[user_id], state
 
 
-def build_query_for_current_state():
+def _build_query_for_current_state():
     """Build a query to return the most recent subscription state
     (grouped by user and brand).
 
@@ -104,7 +105,8 @@ def build_query_for_current_state():
               AND nso.brand_id = nsi.brand_id
               AND nso.expressed_at = nsi.latest_expressed_at
     """
-    subquery = build_query_for_latest_expressed_at().subquery()
+    subquery = _build_query_for_latest_expressed_at().subquery()
+
     return db.session \
         .query(
             Subscription.user_id,
@@ -118,7 +120,7 @@ def build_query_for_current_state():
         ))
 
 
-def build_query_for_latest_expressed_at():
+def _build_query_for_latest_expressed_at():
     """Build a query to return the most recent time the subscription
     state was set (grouped by user and brand).
 
@@ -161,4 +163,4 @@ def count_subscribers_for_brand(brand):
     """Return the number of users that are currently subscribed to that
     brand's newsletter.
     """
-    return build_query_for_current_subscribers(brand).count()
+    return _build_query_for_current_subscribers(brand).count()
