@@ -20,9 +20,7 @@ def create_party(*, id='acme-2014', brand=None,
     if brand is None:
         brand = create_brand()
 
-    return Party(
-        id=id,
-        brand=brand,
-        title=title,
-        starts_at=datetime(2014, 10, 24, 16, 0),
-        ends_at=datetime(2014, 10, 26, 13, 0))
+    starts_at = datetime(2014, 10, 24, 16, 0)
+    ends_at = datetime(2014, 10, 26, 13, 0)
+
+    return Party(id, brand.id, title, starts_at, ends_at)

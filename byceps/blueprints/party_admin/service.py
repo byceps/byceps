@@ -33,9 +33,9 @@ def get_party_count_by_brand_id():
         .all())
 
 
-def create_party(party_id, brand, title, starts_at, ends_at):
+def create_party(party_id, brand_id, title, starts_at, ends_at):
     """Create a party."""
-    party = Party(party_id, brand, title, starts_at, ends_at)
+    party = Party(party_id, brand_id, title, starts_at, ends_at)
 
     db.session.add(party)
     db.session.commit()

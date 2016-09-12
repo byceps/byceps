@@ -127,7 +127,7 @@ def create():
     starts_at = form.starts_at.data
     ends_at = form.ends_at.data
 
-    party = service.create_party(party_id, brand, title, starts_at, ends_at)
+    party = service.create_party(party_id, brand.id, title, starts_at, ends_at)
 
     flash_success('Die Party "{}" wurde angelegt.', party.title)
     return redirect_to('.index')

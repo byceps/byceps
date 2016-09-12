@@ -38,9 +38,9 @@ class Party(db.Model):
     ends_at = db.Column(db.DateTime, nullable=False)
     is_archived = db.Column(db.Boolean, default=False, nullable=False)
 
-    def __init__(self, id, brand, title, starts_at, ends_at):
-        self.id = id
-        self.brand = brand
+    def __init__(self, party_id, brand_id, title, starts_at, ends_at):
+        self.id = party_id
+        self.brand_id = brand_id
         self.title = title
         self.starts_at = starts_at
         self.ends_at = ends_at
