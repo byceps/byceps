@@ -101,11 +101,9 @@ class UserCreationFailed(Exception):
 def create_user(screen_name, email_address, password, first_names, last_name,
                 brand, subscribe_to_newsletter):
     """Create a user account and related records."""
-    password_hash = authentication_service.generate_password_hash(password)
-
     # user with details
     user = User.create(screen_name, email_address)
-    _update_password_hash(user, password_hash)
+    _update_password_hash(user, password)
     user.detail.first_names = first_names
     user.detail.last_name = last_name
     db.session.add(user)
@@ -203,25 +201,24 @@ def _send_password_reset_email(user, verification_token):
 def reset_password(verification_token, password):
     """Reset the user's password."""
     user = verification_token.user
-    password_hash = authentication_service.generate_password_hash(password)
 
-    _update_password_hash(user, password_hash)
+    _update_password_hash(user, password)
     db.session.delete(verification_token)
     db.session.commit()
 
 
 def update_password(user, password):
     """Update the user's password."""
-    password_hash = authentication_service.generate_password_hash(password)
-
-    _update_password_hash(user, password_hash)
+    _update_password_hash(user, password)
     db.session.commit()
 
 
-def _update_password_hash(user, password_hash):
+def _update_password_hash(user, password):
     """Update the password hash and set a newly-generated authentication
     token for the user.
     """
+    password_hash = authentication_service.generate_password_hash(password)
+
     user.password_hash = password_hash
     _set_new_auth_token(user)
 
