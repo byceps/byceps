@@ -17,8 +17,7 @@ from ...services import email as email_service
 
 from ..authentication import service as authentication_service
 from ..authorization.models import Role
-from ..newsletter.models import Subscription as NewsletterSubscription, \
-    SubscriptionState as NewsletterSubscriptionState
+from ..newsletter import service as newsletter_service
 from ..terms import service as terms_service
 from ..verification_token import service as verification_token_service
 
@@ -141,14 +140,10 @@ def create_user(screen_name, email_address, password, first_names, last_name,
 
 
 def _create_newsletter_subscription(user_id, brand_id, subscribe_to_newsletter):
-    subscription_state = NewsletterSubscriptionState.requested \
-        if subscribe_to_newsletter \
-        else NewsletterSubscriptionState.declined
-
-    subscription = NewsletterSubscription(user_id, brand_id, subscription_state)
-
-    db.session.add(subscription)
-    db.session.commit()
+    if subscribe_to_newsletter:
+        newsletter_service.subscribe(user_id, brand_id)
+    else:
+        newsletter_service.unsubscribe(user_id, brand_id)
 
 
 def send_email_address_confirmation_email(user, verification_token):
