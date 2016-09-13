@@ -9,6 +9,7 @@ byceps.blueprints.user.service
 """
 
 from datetime import datetime
+from uuid import uuid4
 
 from flask import current_app, url_for
 
@@ -104,7 +105,7 @@ def create_user(screen_name, email_address, password, first_names, last_name,
 
     # user with details
     user = User.create(screen_name, email_address)
-    user.update_password_hash(password_hash)
+    _update_password_hash(user, password_hash)
     user.detail.first_names = first_names
     user.detail.last_name = last_name
     db.session.add(user)
@@ -204,7 +205,7 @@ def reset_password(verification_token, password):
     user = verification_token.user
     password_hash = authentication_service.generate_password_hash(password)
 
-    user.update_password_hash(password_hash)
+    _update_password_hash(user, password_hash)
     db.session.delete(verification_token)
     db.session.commit()
 
@@ -213,8 +214,26 @@ def update_password(user, password):
     """Update the user's password."""
     password_hash = authentication_service.generate_password_hash(password)
 
-    user.update_password_hash(password_hash)
+    _update_password_hash(user, password_hash)
     db.session.commit()
+
+
+def _update_password_hash(user, password_hash):
+    """Update the password hash and set a newly-generated authentication
+    token for the user.
+    """
+    user.password_hash = password_hash
+    _set_new_auth_token(user)
+
+
+def _set_new_auth_token(user):
+    """Generate and store a new authentication token for the user."""
+    user.auth_token = _generate_auth_token()
+
+
+def _generate_auth_token():
+    """Generate an authentication token."""
+    return uuid4()
 
 
 def update_user_details(user, first_names, last_name, date_of_birth, country,
