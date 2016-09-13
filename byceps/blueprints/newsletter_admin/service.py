@@ -22,7 +22,7 @@ def get_subscribers(brand_id):
     subscribers = _build_query_for_current_subscribers(brand_id).all()
 
     user_ids = frozenset(map(itemgetter(0), subscribers))
-    return get_users_query(user_ids).filter_by(enabled=True).all()
+    return _get_users_query(user_ids).filter_by(enabled=True).all()
 
 
 def _build_query_for_current_subscribers(brand_id):
@@ -72,7 +72,7 @@ def get_user_subscription_states_for_brand(brand_id):
         .all()
 
     user_ids = frozenset(map(itemgetter(0), subscription_states))
-    users = get_users_query(user_ids).all()
+    users = _get_users_query(user_ids).all()
     users_by_id = {user.id: user for user in users}
 
     for user_id, brand_id, state_name in subscription_states:
@@ -154,7 +154,7 @@ def count_subscriptions_by_state(subscriptions):
     return totals
 
 
-def get_users_query(user_ids):
+def _get_users_query(user_ids):
     """Return a query to select the users with the given IDs."""
     return User.query.filter(User.id.in_(user_ids))
 
