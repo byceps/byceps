@@ -121,14 +121,6 @@ def create_user(screen_name, email_address, password, first_names, last_name,
                                                                     terms_version)
     db.session.add(terms_consent)
 
-    # newsletter subscription (optional)
-    newsletter_subscription_state = NewsletterSubscriptionState.requested \
-        if subscribe_to_newsletter \
-        else NewsletterSubscriptionState.declined
-    newsletter_subscription = NewsletterSubscription(user.id, brand.id,
-                                                     newsletter_subscription_state)
-    db.session.add(newsletter_subscription)
-
     # roles
     board_user_role = Role.query.get('board_user')
     user.roles.add(board_user_role)
@@ -140,9 +132,23 @@ def create_user(screen_name, email_address, password, first_names, last_name,
         db.session.rollback()
         raise UserCreationFailed()
 
+    # newsletter subscription (optional)
+    _create_newsletter_subscription(user.id, brand.id, subscribe_to_newsletter)
+
     send_email_address_confirmation_email(user, verification_token)
 
     return user
+
+
+def _create_newsletter_subscription(user_id, brand_id, subscribe_to_newsletter):
+    subscription_state = NewsletterSubscriptionState.requested \
+        if subscribe_to_newsletter \
+        else NewsletterSubscriptionState.declined
+
+    subscription = NewsletterSubscription(user_id, brand_id, subscription_state)
+
+    db.session.add(subscription)
+    db.session.commit()
 
 
 def send_email_address_confirmation_email(user, verification_token):
