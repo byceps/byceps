@@ -20,7 +20,6 @@ from ...util.framework import create_blueprint, flash_error, flash_notice, \
 from ...util.templating import templated
 from ...util.views import redirect_to
 
-from ..newsletter.models import SubscriptionState as NewsletterSubscriptionState
 from ..newsletter import service as newsletter_service
 from ..orga import service as orga_service
 from ..ticket import service as ticket_service
@@ -96,10 +95,8 @@ def view_current():
 
     if get_site_mode().is_public():
         brand_id = g.party.brand.id
-        subscription_state = newsletter_service.get_subscription_state(user.id,
-                                                                       brand_id)
-        subscribed_to_newsletter = \
-                subscription_state == NewsletterSubscriptionState.requested
+        subscribed_to_newsletter = newsletter_service.is_subscribed(user.id,
+                                                                    brand_id)
     else:
         subscribed_to_newsletter = None
 

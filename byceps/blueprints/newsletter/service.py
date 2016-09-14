@@ -27,6 +27,12 @@ def get_subscription_state(user_id, brand_id):
     return current_subscription.state
 
 
+def is_subscribed(user_id, brand_id):
+    """Return if the user is subscribed to the brand's newsletter or not."""
+    subscription_state = get_subscription_state(user_id, brand_id)
+    return subscription_state == SubscriptionState.requested
+
+
 def subscribe(user_id, brand_id):
     """Subscribe the user to that brand's newsletter."""
     _update_subscription_state(user_id, brand_id, SubscriptionState.requested)
