@@ -98,7 +98,7 @@
     <tr>
       <th>Status</th>
       <td>
-        {%- if newsletter_subscription_state == NewsletterSubscriptionState.requested -%}
+        {%- if subscribed_to_newsletter -%}
         {{ render_icon('enabled') }} abonniert
         {%- else -%}
         {{ render_icon('disabled') }} nicht abonniert

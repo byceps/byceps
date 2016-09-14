@@ -96,15 +96,16 @@ def view_current():
 
     if get_site_mode().is_public():
         brand_id = g.party.brand.id
-        newsletter_subscription_state = newsletter_service \
-            .get_subscription_state(user.id, brand_id)
+        subscription_state = newsletter_service.get_subscription_state(user.id,
+                                                                       brand_id)
+        subscribed_to_newsletter = \
+                subscription_state == NewsletterSubscriptionState.requested
     else:
-        newsletter_subscription_state = None
+        subscribed_to_newsletter = None
 
     return {
         'user': user,
-        'newsletter_subscription_state': newsletter_subscription_state,
-        'NewsletterSubscriptionState': NewsletterSubscriptionState,
+        'subscribed_to_newsletter': subscribed_to_newsletter,
     }
 
 
