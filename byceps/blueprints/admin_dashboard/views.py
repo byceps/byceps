@@ -20,7 +20,7 @@ from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 from ..board_admin import service as board_admin_service
 from ..news_admin import service as news_admin_service
-from ..newsletter_admin import service as newsletter_admin_service
+from ..newsletter import service as newsletter_service
 from ..orga_admin import service as orga_admin_service
 from ..party import service as party_service
 from ..ticket import service as ticket_service
@@ -87,7 +87,7 @@ def view_brand(brand_id):
 
     news_item_count = news_admin_service.count_items_for_brand(brand)
 
-    newsletter_subscriber_count = newsletter_admin_service \
+    newsletter_subscriber_count = newsletter_service \
         .count_subscribers_for_brand(brand.id)
 
     current_terms_version = terms_service.get_current_version(brand)

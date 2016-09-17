@@ -20,9 +20,9 @@ from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 from ..brand import service as brand_service
 from ..newsletter.models import SubscriptionState
+from ..newsletter import service as newsletter_service
 
 from .authorization import NewsletterPermission
-from . import service
 
 
 blueprint = create_blueprint('newsletter_admin', __name__)
@@ -38,12 +38,12 @@ def view_subscriptions(brand_id):
     """Show user subscription states for that brand."""
     brand = _get_brand_or_404(brand_id)
 
-    subscription_states = list(service
+    subscription_states = list(newsletter_service
         .get_user_subscription_states_for_brand(brand.id))
     subscription_states.sort(
         key=lambda user_and_state: user_and_state[0].screen_name.lower())
 
-    totals = service.count_subscriptions_by_state(subscription_states)
+    totals = newsletter_service.count_subscriptions_by_state(subscription_states)
 
     return {
         'brand': brand,
@@ -63,7 +63,7 @@ def export_subscribers(brand_id):
     """
     brand = _get_brand_or_404(brand_id)
 
-    subscribers = service.get_subscribers(brand.id)
+    subscribers = newsletter_service.get_subscribers(brand.id)
 
     exports = list(map(assemble_subscriber_export, subscribers))
 
@@ -87,7 +87,7 @@ def export_subscriber_email_addresses(brand_id):
     """
     brand = _get_brand_or_404(brand_id)
 
-    subscribers = service.get_subscribers(brand.id)
+    subscribers = newsletter_service.get_subscribers(brand.id)
     email_addresses = map(attrgetter('email_address'), subscribers)
     return '\n'.join(email_addresses)
 
