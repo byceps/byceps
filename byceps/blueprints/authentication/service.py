@@ -8,10 +8,15 @@ byceps.blueprints.authentication.service
 :License: Modified BSD, see LICENSE for details.
 """
 
+from datetime import datetime
 from uuid import uuid4
 
 from werkzeug.security import check_password_hash as _check_password_hash, \
     generate_password_hash as _generate_password_hash
+
+from ...database import db
+
+from .models import Credential
 
 
 PASSWORD_HASH_ITERATIONS = 50000
@@ -23,14 +28,34 @@ def generate_password_hash(password):
     return _generate_password_hash(password, method=PASSWORD_HASH_METHOD)
 
 
+def create_password_hash(user, password):
+    """Create a password-based credential for the user."""
+    password_hash = generate_password_hash(password)
+    updated_at = datetime.utcnow()
+
+    credential = Credential(user.id, password_hash, updated_at)
+    db.session.add(credential)
+
+    _set_new_auth_token(user)
+
+    db.session.commit()
+
+
 def update_password_hash(user, password):
     """Update the password hash and set a newly-generated authentication
     token for the user.
     """
     password_hash = generate_password_hash(password)
+    updated_at = datetime.utcnow()
 
-    user.password_hash = password_hash
+    credential = Credential.query.get(user.id)
+
+    credential.password_hash = password_hash
+    credential.updated_at = updated_at
+
     _set_new_auth_token(user)
+
+    db.session.commit()
 
 
 def _set_new_auth_token(user):
@@ -47,7 +72,13 @@ def is_password_valid_for_user(user, password):
     """Return `True` if the password is valid for the user, or `False`
     otherwise.
     """
-    return check_password_hash(user.password_hash, password)
+    credential = Credential.query.get(user.id)
+
+    if credential is None:
+        # no password stored for user
+        return False
+
+    return check_password_hash(credential.password_hash, password)
 
 
 def check_password_hash(password_hash, password):

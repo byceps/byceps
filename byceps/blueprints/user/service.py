@@ -102,7 +102,6 @@ def create_user(screen_name, email_address, password, first_names, last_name,
     """Create a user account and related records."""
     # user with details
     user = User.create(screen_name, email_address)
-    authentication_service.update_password_hash(user, password)
     user.detail.first_names = first_names
     user.detail.last_name = last_name
     db.session.add(user)
@@ -128,6 +127,9 @@ def create_user(screen_name, email_address, password, first_names, last_name,
         current_app.logger.error('User creation failed: %s', e)
         db.session.rollback()
         raise UserCreationFailed()
+
+    # password
+    authentication_service.create_password_hash(user, password)
 
     # newsletter subscription (optional)
     _create_newsletter_subscription(user.id, brand.id, subscribe_to_newsletter)
@@ -201,15 +203,15 @@ def reset_password(verification_token, password):
     """Reset the user's password."""
     user = verification_token.user
 
-    authentication_service.update_password_hash(user, password)
     db.session.delete(verification_token)
     db.session.commit()
+
+    authentication_service.update_password_hash(user, password)
 
 
 def update_password(user, password):
     """Update the user's password."""
     authentication_service.update_password_hash(user, password)
-    db.session.commit()
 
 
 def update_user_details(user, first_names, last_name, date_of_birth, country,
