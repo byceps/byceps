@@ -8,6 +8,8 @@ byceps.blueprints.authentication.service
 :License: Modified BSD, see LICENSE for details.
 """
 
+from uuid import uuid4
+
 from werkzeug.security import check_password_hash as _check_password_hash, \
     generate_password_hash as _generate_password_hash
 
@@ -21,6 +23,26 @@ PASSWORD_HASH_METHOD = 'pbkdf2:sha1:%d' % PASSWORD_HASH_ITERATIONS
 def generate_password_hash(password):
     """Generate a salted hash value based on the password."""
     return _generate_password_hash(password, method=PASSWORD_HASH_METHOD)
+
+
+def update_password_hash(user, password):
+    """Update the password hash and set a newly-generated authentication
+    token for the user.
+    """
+    password_hash = generate_password_hash(password)
+
+    user.password_hash = password_hash
+    _set_new_auth_token(user)
+
+
+def _set_new_auth_token(user):
+    """Generate and store a new authentication token for the user."""
+    user.auth_token = _generate_auth_token()
+
+
+def _generate_auth_token():
+    """Generate an authentication token."""
+    return uuid4()
 
 
 def is_password_valid_for_user(user, password):
