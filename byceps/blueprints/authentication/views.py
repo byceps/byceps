@@ -17,6 +17,7 @@ from ...util.templating import templated
 from ...util.views import respond_no_content
 
 from ..terms import service as terms_service
+from ..user import service as user_service
 from ..verification_token import service as verification_token_service
 
 from .forms import LoginForm
@@ -67,9 +68,15 @@ def login():
     if not all([screen_name, password]):
         abort(403)
 
+    # Look up user.
+    user = user_service.find_user_by_screen_name(screen_name)
+    if user is None:
+        # User name is unknown.
+        abort(403)
+
     # Verify credentials.
     try:
-        user = service.authenticate(screen_name, password)
+        user = service.authenticate(user, password)
     except AuthenticationFailed:
         abort(403)
 
