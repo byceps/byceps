@@ -10,7 +10,8 @@ byceps.blueprints.authentication.session
 
 from flask import session
 
-from ..user.models.user import AnonymousUser, User
+from ..user.models.user import AnonymousUser
+from ..user import service as user_service
 
 
 KEY_USER_ID = 'user_id'
@@ -57,7 +58,7 @@ def _load_user(user_id, auth_token):
     if user_id is None:
         return AnonymousUser()
 
-    user = User.query.get(user_id)
+    user = user_service.find_user(user_id)
     if (user is None) or not user.enabled:
         return AnonymousUser()
 
