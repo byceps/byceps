@@ -16,8 +16,10 @@ from unittest import TestCase
 from unittest.mock import patch
 
 from byceps.application import create_app
+from byceps.blueprints.authentication.models import SessionToken
 from byceps.database import db
 
+from testfixtures.authentication import create_session_token
 from testfixtures.brand import create_brand
 from testfixtures.party import create_party
 from testfixtures.user import create_user
@@ -57,9 +59,14 @@ class AbstractAppTestCase(TestCase):
 
     def create_admin(self):
         self.admin = create_user(99, screen_name='Admin')
-        db.session.add(self.admin)
 
+        db.session.add(self.admin)
         db.session.commit()
+
+        session_token = create_session_token(self.admin.id)
+
+        self.db.session.add(session_token)
+        self.db.session.commit()
 
     def tearDown(self):
         db.session.remove()
@@ -81,6 +88,8 @@ class AbstractAppTestCase(TestCase):
 
 
 def add_user_credentials_to_session(client, user):
+    session_token = SessionToken.query.get(user.id)
+
     with client.session_transaction() as session:
         session['user_id'] = str(user.id)
-        session['user_auth_token'] = str(user.auth_token)
+        session['user_auth_token'] = str(session_token.token)

@@ -13,6 +13,9 @@ from flask import session
 from ..user.models.user import AnonymousUser
 from ..user import service as user_service
 
+from . import service
+from .service import AuthenticationFailed
+
 
 KEY_USER_ID = 'user_id'
 KEY_USER_AUTH_TOKEN = 'user_auth_token'
@@ -63,7 +66,9 @@ def _load_user(user_id, auth_token):
         return AnonymousUser()
 
     # Validate auth token.
-    if not auth_token or auth_token != str(user.auth_token):
+    try:
+        service.authenticate_session(user.id, auth_token)
+    except AuthenticationFailed:
         # Bad auth token, not logging in.
         return AnonymousUser()
 

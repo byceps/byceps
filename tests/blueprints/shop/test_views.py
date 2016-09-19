@@ -12,6 +12,7 @@ from byceps.blueprints.shop.models.order import Order, PaymentState
 from byceps.blueprints.shop.models.sequence import PartySequencePurpose
 from byceps.blueprints.snippet.models.snippet import Snippet
 
+from testfixtures.authentication import create_session_token
 from testfixtures.shop import create_article, create_party_sequence, \
     create_party_sequence_prefix
 from testfixtures.user import create_user
@@ -45,7 +46,13 @@ class ShopTestCase(AbstractAppTestCase):
 
     def setup_orderer(self):
         self.orderer = create_user(1)
+
         self.db.session.add(self.orderer)
+        self.db.session.commit()
+
+        session_token = create_session_token(self.orderer.id)
+
+        self.db.session.add(session_token)
         self.db.session.commit()
 
     def setup_article(self):

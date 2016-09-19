@@ -101,7 +101,12 @@ def login():
             return
 
     # Authorization succeeded.
-    user_session.start(user.id, user.auth_token, permanent=permanent)
+
+    session_token = service.find_session_token(user.id)
+    if session_token is None:
+        abort(500)
+
+    user_session.start(user.id, session_token.token, permanent=permanent)
     flash_success('Erfolgreich eingeloggt als {}.', user.screen_name)
 
 

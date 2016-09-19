@@ -5,7 +5,7 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.blueprints.authentication.models import Credential
+from byceps.blueprints.authentication.models import Credential, SessionToken
 from byceps.blueprints.terms.models import Version as TermsVersion
 from byceps.blueprints.user.models.user import User
 
@@ -59,7 +59,6 @@ class UserCreateTestCase(AbstractAppTestCase):
         self.assertIsNotNone(user.created_at)
         self.assertEqual(user.screen_name, 'Hiro')
         self.assertEqual(user.email_address, 'hiro@metaverse.org')
-        self.assertIsNotNone(user.auth_token)
         self.assertFalse(user.enabled)
         self.assertFalse(user.deleted)
 
@@ -69,8 +68,16 @@ class UserCreateTestCase(AbstractAppTestCase):
         self.assertTrue(credential.password_hash.startswith('pbkdf2:sha1:'))
         self.assertIsNotNone(credential.updated_at)
 
+        # session token
+        session_token = SessionToken.query.get(user.id)
+        self.assertIsNotNone(session_token)
+        self.assertIsNotNone(session_token.token)
+        self.assertIsNotNone(session_token.created_at)
+
+        # avatar
         self.assertIsNone(user.avatar)
 
+        # details
         self.assertEqual(user.detail.first_names, 'Hiroaki')
         self.assertEqual(user.detail.last_name, 'Protagonist')
 

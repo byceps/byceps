@@ -16,11 +16,18 @@ from werkzeug.security import check_password_hash as _check_password_hash, \
 
 from ...database import db
 
-from .models import Credential
+from .models import Credential, SessionToken
 
 
 PASSWORD_HASH_ITERATIONS = 50000
 PASSWORD_HASH_METHOD = 'pbkdf2:sha1:%d' % PASSWORD_HASH_ITERATIONS
+
+
+def find_session_token(user_id):
+    """Return the session token for the user with that id, or `None` if
+    not found.
+    """
+    return SessionToken.query.get(user_id)
 
 
 def generate_password_hash(password):
@@ -30,13 +37,17 @@ def generate_password_hash(password):
 
 def create_password_hash(user, password):
     """Create a password-based credential for the user."""
-    password_hash = generate_password_hash(password)
-    updated_at = datetime.utcnow()
+    now = datetime.utcnow()
 
-    credential = Credential(user.id, password_hash, updated_at)
+    password_hash = generate_password_hash(password)
+
+    credential = Credential(user.id, password_hash, now)
     db.session.add(credential)
 
-    _set_new_auth_token(user)
+    token = _generate_auth_token()
+
+    session_token = SessionToken(user.id, token, now)
+    db.session.add(session_token)
 
     db.session.commit()
 
@@ -45,22 +56,20 @@ def update_password_hash(user, password):
     """Update the password hash and set a newly-generated authentication
     token for the user.
     """
+    now = datetime.utcnow()
+
     password_hash = generate_password_hash(password)
-    updated_at = datetime.utcnow()
 
     credential = Credential.query.get(user.id)
 
     credential.password_hash = password_hash
-    credential.updated_at = updated_at
+    credential.updated_at = now
 
-    _set_new_auth_token(user)
+    session_token = find_session_token(user.id)
+    session_token.token = _generate_auth_token()
+    session_token.created_at = now
 
     db.session.commit()
-
-
-def _set_new_auth_token(user):
-    """Generate and store a new authentication token for the user."""
-    user.auth_token = _generate_auth_token()
 
 
 def _generate_auth_token():
@@ -107,3 +116,23 @@ def authenticate(user, password):
         raise AuthenticationFailed()
 
     return user
+
+
+def authenticate_session(user_id, auth_token):
+    """Check the client session's validity.
+
+    Return the nothing on success, or raise an exception on failure.
+    """
+    if not auth_token:
+        # Authentication token must not be empty.
+        raise AuthenticationFailed()
+
+    session_token = find_session_token(user_id)
+
+    if session_token is None:
+        # Session token is unknown.
+        raise AuthenticationFailed()
+
+    if auth_token != str(session_token.token):
+        # Client's token does not match the server's.
+        raise AuthenticationFailed()

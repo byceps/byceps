@@ -7,6 +7,7 @@
 
 from tests.base import AbstractAppTestCase
 
+from testfixtures.authentication import create_session_token
 from testfixtures.user import create_user
 
 
@@ -30,6 +31,11 @@ class PasswordUpdateFormTestCase(AbstractAppTestCase):
         user = create_user(8516)
 
         self.db.session.add(user)
+        self.db.session.commit()
+
+        session_token = create_session_token(user.id)
+
+        self.db.session.add(session_token)
         self.db.session.commit()
 
         return user

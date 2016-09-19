@@ -7,6 +7,7 @@
 
 from byceps.blueprints.tourney.models.match import MatchComment
 
+from testfixtures.authentication import create_session_token
 from testfixtures.tourney import create_match
 from testfixtures.user import create_user
 
@@ -50,6 +51,11 @@ class MatchTestCase(AbstractAppTestCase):
         player = create_user(27)
 
         self.db.session.add(player)
+        self.db.session.commit()
+
+        session_token = create_session_token(player.id)
+
+        self.db.session.add(session_token)
         self.db.session.commit()
 
         return player

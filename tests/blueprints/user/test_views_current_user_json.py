@@ -9,6 +9,7 @@ import json
 
 from tests.base import AbstractAppTestCase
 
+from testfixtures.authentication import create_session_token
 from testfixtures.user import create_user
 
 
@@ -49,6 +50,11 @@ class CurrentUserJsonTestCase(AbstractAppTestCase):
         user = create_user(number, screen_name=screen_name)
 
         self.db.session.add(user)
+        self.db.session.commit()
+
+        session_token = create_session_token(user.id)
+
+        self.db.session.add(session_token)
         self.db.session.commit()
 
         return user
