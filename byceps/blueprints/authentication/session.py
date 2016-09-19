@@ -18,12 +18,12 @@ KEY_USER_ID = 'user_id'
 KEY_USER_AUTH_TOKEN = 'user_auth_token'
 
 
-def start(user, *, permanent=False):
+def start(user_id, auth_token, *, permanent=False):
     """Initialize the user's session by putting the relevant data
     into the session cookie.
     """
-    session[KEY_USER_ID] = str(user.id)
-    session[KEY_USER_AUTH_TOKEN] = str(user.auth_token)
+    session[KEY_USER_ID] = str(user_id)
+    session[KEY_USER_AUTH_TOKEN] = str(auth_token)
     session.permanent = permanent
 
 

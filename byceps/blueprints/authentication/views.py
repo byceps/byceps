@@ -101,7 +101,7 @@ def login():
             return
 
     # Authorization succeeded.
-    user_session.start(user, permanent=permanent)
+    user_session.start(user.id, user.auth_token, permanent=permanent)
     flash_success('Erfolgreich eingeloggt als {}.', user.screen_name)
 
 
