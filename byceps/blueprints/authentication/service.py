@@ -123,6 +123,10 @@ def authenticate_session(user_id, auth_token):
 
     Return the nothing on success, or raise an exception on failure.
     """
+    if user_id is None:
+        # User ID must not be empty.
+        raise AuthenticationFailed()
+
     if not auth_token:
         # Authentication token must not be empty.
         raise AuthenticationFailed()
