@@ -170,7 +170,7 @@ def prepare_password_reset(user):
 
 
 def _send_password_reset_email(user, verification_token):
-    confirmation_url = url_for('user.password_reset_form',
+    confirmation_url = url_for('authentication.password_reset_form',
                                token=verification_token.token,
                                _external=True)
 

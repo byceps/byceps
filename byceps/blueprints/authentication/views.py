@@ -14,13 +14,14 @@ from ...config import get_site_mode, get_user_registration_enabled
 from ...util.framework import create_blueprint, flash_error, flash_notice, \
     flash_success
 from ...util.templating import templated
-from ...util.views import respond_no_content
+from ...util.views import redirect_to, respond_no_content
 
 from ..terms import service as terms_service
 from ..user import service as user_service
 from ..verification_token import service as verification_token_service
 
-from .forms import LoginForm
+from .forms import LoginForm, RequestPasswordResetForm, ResetPasswordForm, \
+    UpdatePasswordForm
 from . import service
 from .service import AuthenticationFailed
 from . import session as user_session
@@ -32,6 +33,10 @@ blueprint = create_blueprint('authentication', __name__)
 @blueprint.before_app_request
 def before_request():
     g.current_user = user_session.get_user()
+
+
+# -------------------------------------------------------------------- #
+# log in/out
 
 
 @blueprint.route('/login')
@@ -116,3 +121,132 @@ def logout():
     """Log out user by deleting the corresponding cookie."""
     user_session.end()
     flash_success('Erfolgreich ausgeloggt.')
+
+
+# -------------------------------------------------------------------- #
+# password update
+
+
+@blueprint.route('/password/update')
+@templated
+def password_update_form(erroneous_form=None):
+    """Show a form to update the current user's password."""
+    _get_current_user_or_404()
+
+    form = erroneous_form if erroneous_form else UpdatePasswordForm()
+
+    return {'form': form}
+
+
+@blueprint.route('/password', methods=['POST'])
+def password_update():
+    """Update the current user's password."""
+    user = _get_current_user_or_404()
+    form = UpdatePasswordForm(request.form)
+
+    if not form.validate():
+        return password_update_form(form)
+
+    password = form.new_password.data
+
+    service.update_password_hash(user, password)
+
+    flash_success('Das Passwort wurde geändert.')
+    return redirect_to('.login_form')
+
+
+# -------------------------------------------------------------------- #
+# password reset
+
+
+@blueprint.route('/password/reset/request')
+@templated
+def request_password_reset_form(erroneous_form=None):
+    """Show a form to request a password reset."""
+    form = erroneous_form if erroneous_form else RequestPasswordResetForm()
+
+    return {'form': form}
+
+
+@blueprint.route('/password/reset/request', methods=['POST'])
+def request_password_reset():
+    """Request a password reset."""
+    form = RequestPasswordResetForm(request.form)
+    if not form.validate():
+        return request_password_reset_form(form)
+
+    screen_name = form.screen_name.data.strip()
+    user = user_service.find_user_by_screen_name(screen_name)
+
+    if user is None:
+        flash_error('Der Benutzername "{}" ist unbekannt.', screen_name)
+        return request_password_reset_form(form)
+
+    if not user.enabled:
+        flash_error('Die E-Mail-Adresse für das Benutzerkonto "{}" wurde '
+                    'noch nicht bestätigt.', screen_name)
+        return redirect_to('user.request_email_address_confirmation_email')
+
+    service.prepare_password_reset(user)
+
+    flash_success(
+        'Ein Link zum Setzen eines neuen Passworts für den Benutzernamen "{}" '
+        'wurde an die hinterlegte E-Mail-Adresse versendet.',
+        user.screen_name)
+    return request_password_reset_form()
+
+
+@blueprint.route('/password/reset/token/<uuid:token>')
+@templated
+def password_reset_form(token, erroneous_form=None):
+    """Show a form to reset the current user's password."""
+    verification_token = verification_token_service \
+        .find_for_password_reset_by_token(token)
+
+    _verify_password_reset_token(verification_token)
+
+    form = erroneous_form if erroneous_form else ResetPasswordForm()
+
+    return {
+        'form': form,
+        'token': token,
+    }
+
+
+@blueprint.route('/password/reset/token/<uuid:token>', methods=['POST'])
+def password_reset(token):
+    """Reset the current user's password."""
+    verification_token = verification_token_service \
+        .find_for_password_reset_by_token(token)
+
+    _verify_password_reset_token(verification_token)
+
+    form = ResetPasswordForm(request.form)
+    if not form.validate():
+        return password_reset_form(token, form)
+
+    password = form.new_password.data
+
+    service.reset_password(verification_token, password)
+
+    flash_success('Das Passwort wurde geändert.')
+    return redirect_to('.login_form')
+
+
+def _verify_password_reset_token(verification_token ):
+    if verification_token is None or verification_token.is_expired:
+        flash_error('Es wurde kein gültiges Token angegeben. '
+                    'Ein Token ist nur 24 Stunden lang gültig.')
+        abort(404)
+
+
+# -------------------------------------------------------------------- #
+# helpers
+
+
+def _get_current_user_or_404():
+    user = g.current_user
+    if not user.is_active:
+        abort(404)
+
+    return user

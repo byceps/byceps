@@ -27,7 +27,7 @@
     <p>Du hast noch keinen Benutzerzugang? Dann <a href="{{ url_for('user.create_form') }}">registriere dich</a>!</p>
     <p>Du hast die Bestätigungs-E-Mail noch nicht erhalten? Dann <a href="{{ url_for('user.request_email_address_confirmation_email_form') }}">fordere sie erneut an</a>.</p>
     {%- endif %}
-    <p>Du hast dein Passwort vergessen? Dann <a href="{{ url_for('user.request_password_reset_form') }}">setze ein neues</a>.</p>
+    <p>Du hast dein Passwort vergessen? Dann <a href="{{ url_for('.request_password_reset_form') }}">setze ein neues</a>.</p>
   {%- endif %}
 
 {%- endblock body %}

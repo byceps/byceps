@@ -41,6 +41,6 @@ class PasswordUpdateFormTestCase(AbstractAppTestCase):
         return user
 
     def send_request(self, *, user=None):
-        url = '/users/me/password/update'
+        url = '/authentication/password/update'
         with self.client(user=user) as client:
             return client.get(url)
