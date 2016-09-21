@@ -20,6 +20,7 @@ from ...util.framework import create_blueprint, flash_error, flash_notice, \
 from ...util.templating import templated
 from ...util.views import redirect_to
 
+from ..authentication import service as authentication_service
 from ..newsletter import service as newsletter_service
 from ..orga import service as orga_service
 from ..ticket import service as ticket_service
@@ -350,7 +351,7 @@ def password_update():
 
     password = form.new_password.data
 
-    service.update_password(user, password)
+    authentication_service.update_password_hash(user, password)
 
     flash_success('Das Passwort wurde geändert.')
     return redirect_to('.authentication.login_form')

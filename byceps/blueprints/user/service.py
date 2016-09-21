@@ -210,11 +210,6 @@ def reset_password(verification_token, password):
     authentication_service.update_password_hash(user, password)
 
 
-def update_password(user, password):
-    """Update the user's password."""
-    authentication_service.update_password_hash(user, password)
-
-
 def update_user_details(user, first_names, last_name, date_of_birth, country,
                         zip_code, city, street, phone_number):
     """Update the user's details."""
