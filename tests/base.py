@@ -88,7 +88,7 @@ class AbstractAppTestCase(TestCase):
 
 
 def add_user_credentials_to_session(client, user):
-    session_token = SessionToken.query.get(user.id)
+    session_token = SessionToken.query.filter_by(user_id=user.id).one_or_none()
 
     with client.session_transaction() as session:
         session['user_id'] = str(user.id)

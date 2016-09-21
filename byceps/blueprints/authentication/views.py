@@ -102,7 +102,7 @@ def login():
 
     # Authorization succeeded.
 
-    session_token = service.find_session_token(user.id)
+    session_token = service.find_session_token_for_user(user.id)
     if session_token is None:
         abort(500)
 

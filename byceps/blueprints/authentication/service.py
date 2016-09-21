@@ -23,11 +23,18 @@ PASSWORD_HASH_ITERATIONS = 50000
 PASSWORD_HASH_METHOD = 'pbkdf2:sha1:%d' % PASSWORD_HASH_ITERATIONS
 
 
-def find_session_token(user_id):
-    """Return the session token for the user with that id, or `None` if
+def find_session_token(token):
+    """Return the session token with that ID, or `None` if not found."""
+    return SessionToken.query.get(token)
+
+
+def find_session_token_for_user(user_id):
+    """Return the session token for the user with that ID, or `None` if
     not found.
     """
-    return SessionToken.query.get(user_id)
+    return SessionToken.query \
+        .filter_by(user_id=user_id) \
+        .one_or_none()
 
 
 def generate_password_hash(password):
@@ -46,7 +53,7 @@ def create_password_hash(user, password):
 
     token = _generate_auth_token()
 
-    session_token = SessionToken(user.id, token, now)
+    session_token = SessionToken(token, user.id, now)
     db.session.add(session_token)
 
     db.session.commit()
@@ -65,7 +72,7 @@ def update_password_hash(user, password):
     credential.password_hash = password_hash
     credential.updated_at = now
 
-    session_token = find_session_token(user.id)
+    session_token = find_session_token_for_user(user.id)
     session_token.token = _generate_auth_token()
     session_token.created_at = now
 
@@ -131,12 +138,12 @@ def authenticate_session(user_id, auth_token):
         # Authentication token must not be empty.
         raise AuthenticationFailed()
 
-    session_token = find_session_token(user_id)
+    session_token = find_session_token(auth_token)
 
     if session_token is None:
         # Session token is unknown.
         raise AuthenticationFailed()
 
-    if auth_token != str(session_token.token):
-        # Client's token does not match the server's.
+    if user_id != session_token.user_id:
+        # The user ID provided by the client does not match the server's.
         raise AuthenticationFailed()

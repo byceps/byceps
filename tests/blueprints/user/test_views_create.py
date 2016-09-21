@@ -69,7 +69,9 @@ class UserCreateTestCase(AbstractAppTestCase):
         self.assertIsNotNone(credential.updated_at)
 
         # session token
-        session_token = SessionToken.query.get(user.id)
+        session_token = SessionToken.query \
+            .filter_by(user_id=user.id) \
+            .one_or_none()
         self.assertIsNotNone(session_token)
         self.assertIsNotNone(session_token.token)
         self.assertIsNotNone(session_token.created_at)

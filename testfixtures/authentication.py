@@ -21,4 +21,4 @@ def create_session_token(user_id, *, token=None, created_at=None):
     if created_at is None:
         created_at = datetime.utcnow()
 
-    return SessionToken(user_id, token, created_at)
+    return SessionToken(token, user_id, created_at)
