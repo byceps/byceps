@@ -51,9 +51,9 @@ class UpdatePasswordForm(ResetPasswordForm):
     old_password = PasswordField('Bisheriges Passwort', [DataRequired()])
 
     def validate_old_password(form, field):
-        user = g.current_user
+        user_id = g.current_user.id
         password = field.data
 
-        if not password_service.is_password_valid_for_user(user, password):
+        if not password_service.is_password_valid_for_user(user_id, password):
             raise ValidationError(
                 'Das eingegebene Passwort stimmt nicht mit dem bisherigen überein.')

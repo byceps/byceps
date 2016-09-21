@@ -34,22 +34,22 @@ def generate_password_hash(password):
     return _generate_password_hash(password, method=PASSWORD_HASH_METHOD)
 
 
-def create_password_hash(user, password):
+def create_password_hash(user_id, password):
     """Create a password-based credential for the user."""
     now = datetime.utcnow()
 
     password_hash = generate_password_hash(password)
 
-    credential = Credential(user.id, password_hash, now)
+    credential = Credential(user_id, password_hash, now)
     db.session.add(credential)
 
-    session_token = session_service.create_session_token(user.id, now)
+    session_token = session_service.create_session_token(user_id, now)
     db.session.add(session_token)
 
     db.session.commit()
 
 
-def update_password_hash(user, password):
+def update_password_hash(user_id, password):
     """Update the password hash and set a newly-generated authentication
     token for the user.
     """
@@ -57,22 +57,22 @@ def update_password_hash(user, password):
 
     password_hash = generate_password_hash(password)
 
-    credential = Credential.query.get(user.id)
+    credential = Credential.query.get(user_id)
 
     credential.password_hash = password_hash
     credential.updated_at = now
 
-    session_token = session_service.find_session_token_for_user(user.id)
+    session_token = session_service.find_session_token_for_user(user_id)
     session_service.update_session_token(session_token, now)
 
     db.session.commit()
 
 
-def is_password_valid_for_user(user, password):
+def is_password_valid_for_user(user_id, password):
     """Return `True` if the password is valid for the user, or `False`
     otherwise.
     """
-    credential = Credential.query.get(user.id)
+    credential = Credential.query.get(user_id)
 
     if credential is None:
         # no password stored for user
@@ -94,7 +94,7 @@ def authenticate(user, password):
 
     Return the user object on success, or raise an exception on failure.
     """
-    if not is_password_valid_for_user(user, password):
+    if not is_password_valid_for_user(user.id, password):
         # Password does not match.
         raise AuthenticationFailed()
 
@@ -144,4 +144,4 @@ def reset_password(verification_token, password):
     db.session.delete(verification_token)
     db.session.commit()
 
-    update_password_hash(user, password)
+    update_password_hash(user.id, password)

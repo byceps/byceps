@@ -150,7 +150,7 @@ def password_update():
 
     password = form.new_password.data
 
-    password_service.update_password_hash(user, password)
+    password_service.update_password_hash(user_id, password)
 
     flash_success('Das Passwort wurde geändert.')
     return redirect_to('.login_form')

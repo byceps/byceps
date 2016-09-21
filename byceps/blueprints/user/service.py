@@ -130,7 +130,7 @@ def create_user(screen_name, email_address, password, first_names, last_name,
         raise UserCreationFailed()
 
     # password
-    password_service.create_password_hash(user, password)
+    password_service.create_password_hash(user.id, password)
 
     # newsletter subscription (optional)
     _create_newsletter_subscription(user.id, brand.id, subscribe_to_newsletter)
