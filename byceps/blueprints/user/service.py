@@ -159,7 +159,7 @@ def send_email_address_confirmation_email(user, verification_token):
     ).format(user, confirmation_url)
     recipients = [user.email_address]
 
-    email_service.send(subject=subject, body=body, recipients=recipients)
+    email_service.send_email(subject=subject, body=body, recipients=recipients)
 
 
 def confirm_email_address(verification_token):

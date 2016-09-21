@@ -11,6 +11,6 @@ byceps.services.email.service
 from ... import email
 
 
-def send(*args, **kwargs):
+def send_email(*args, **kwargs):
     """Send e-mail."""
     email.send(*args, **kwargs)

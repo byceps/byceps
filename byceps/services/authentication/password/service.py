@@ -135,7 +135,7 @@ def _send_password_reset_email(user, verification_token):
     ).format(user, confirmation_url)
     recipients = [user.email_address]
 
-    email_service.send(subject=subject, body=body, recipients=recipients)
+    email_service.send_email(subject=subject, body=body, recipients=recipients)
 
 
 def reset_password(verification_token, password):
