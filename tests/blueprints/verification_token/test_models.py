@@ -50,7 +50,7 @@ from testfixtures.user import create_user
 def test_is_expired(purpose, now, expected):
     user = create_user(1)
 
-    token = Token(user, purpose)
+    token = Token(user.id, purpose)
     token.created_at = datetime(2014, 11, 26, 17, 44, 53)
 
     with freeze_time(now):

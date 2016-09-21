@@ -27,7 +27,7 @@ class EmailAddressConfirmationTestCase(AbstractAppTestCase):
         self.db.session.commit()
 
     def test_confirm_email_address_with_valid_token(self):
-        verification_token = create_confirmation_token(self.user)
+        verification_token = create_confirmation_token(self.user.id)
         self.db.session.add(verification_token)
         self.db.session.commit()
 
@@ -39,7 +39,7 @@ class EmailAddressConfirmationTestCase(AbstractAppTestCase):
         self.assertTrue(self.user.enabled)
 
     def test_confirm_email_address_with_unknown_token(self):
-        verification_token = create_confirmation_token(self.user)
+        verification_token = create_confirmation_token(self.user.id)
         verification_token.token = '879fa007-5fbc-412e-8ec1-b7f140807631'
 
         self.assertFalse(self.user.enabled)
@@ -56,6 +56,6 @@ class EmailAddressConfirmationTestCase(AbstractAppTestCase):
             return client.get(url)
 
 
-def create_confirmation_token(user):
+def create_confirmation_token(user_id):
     purpose = Purpose.email_address_confirmation
-    return Token(user, purpose)
+    return Token(user_id, purpose)

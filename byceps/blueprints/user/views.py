@@ -220,7 +220,7 @@ def request_email_address_confirmation_email():
         return request_email_address_confirmation_email_form()
 
     verification_token = verification_token_service \
-        .find_or_create_for_email_address_confirmation(user)
+        .find_or_create_for_email_address_confirmation(user.id)
     service.send_email_address_confirmation_email(user, verification_token)
 
     flash_success(

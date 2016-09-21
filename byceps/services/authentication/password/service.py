@@ -114,7 +114,8 @@ def prepare_password_reset(user):
     """Create a verification token for password reset and email it to
     the user's address.
     """
-    verification_token = verification_token_service.build_for_password_reset(user)
+    verification_token = verification_token_service \
+        .build_for_password_reset(user.id)
 
     db.session.add(verification_token)
     db.session.commit()

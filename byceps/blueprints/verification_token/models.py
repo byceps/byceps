@@ -42,8 +42,8 @@ class Token(db.Model):
     user = db.relationship(User)
     _purpose = db.Column('purpose', db.Unicode(40), index=True, nullable=False)
 
-    def __init__(self, user, purpose):
-        self.user = user
+    def __init__(self, user_id, purpose):
+        self.user_id = user_id
         self.purpose = purpose
 
     @hybrid_property

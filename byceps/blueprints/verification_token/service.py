@@ -13,34 +13,34 @@ from ...database import db
 from .models import Purpose, Token
 
 
-def find_or_create_for_email_address_confirmation(user):
-    token = find_for_email_address_confirmation_by_user(user)
+def find_or_create_for_email_address_confirmation(user_id):
+    token = find_for_email_address_confirmation_by_user(user_id)
     if token is None:
-        token = build_for_email_address_confirmation(user)
+        token = build_for_email_address_confirmation(user_id)
         db.session.add(token)
         db.session.commit()
     return token
 
 
-def find_or_create_for_terms_consent(user):
-    token = find_for_terms_consent_by_user(user)
+def find_or_create_for_terms_consent(user_id):
+    token = find_for_terms_consent_by_user(user_id)
     if token is None:
-        token = build_for_terms_consent(user)
+        token = build_for_terms_consent(user_id)
         db.session.add(token)
         db.session.commit()
     return token
 
 
-def build_for_email_address_confirmation(user):
-    return Token(user, Purpose.email_address_confirmation)
+def build_for_email_address_confirmation(user_id):
+    return Token(user_id, Purpose.email_address_confirmation)
 
 
-def build_for_password_reset(user):
-    return Token(user, Purpose.password_reset)
+def build_for_password_reset(user_id):
+    return Token(user_id, Purpose.password_reset)
 
 
-def build_for_terms_consent(user):
-    return Token(user, Purpose.terms_consent)
+def build_for_terms_consent(user_id):
+    return Token(user_id, Purpose.terms_consent)
 
 
 def find_for_email_address_confirmation_by_token(token):
@@ -48,9 +48,9 @@ def find_for_email_address_confirmation_by_token(token):
     return find_for_purpose_by_token(token, purpose)
 
 
-def find_for_email_address_confirmation_by_user(user):
+def find_for_email_address_confirmation_by_user(user_id):
     return Token.query \
-        .filter_by(user=user) \
+        .filter_by(user_id=user_id) \
         .for_purpose(Purpose.email_address_confirmation) \
         .first()
 
@@ -65,9 +65,9 @@ def find_for_terms_consent_by_token(token):
     return find_for_purpose_by_token(token, purpose)
 
 
-def find_for_terms_consent_by_user(user):
+def find_for_terms_consent_by_user(user_id):
     return Token.query \
-        .filter_by(user=user) \
+        .filter_by(user_id=user_id) \
         .for_purpose(Purpose.terms_consent) \
         .first()
 

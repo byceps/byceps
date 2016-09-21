@@ -107,11 +107,6 @@ def create_user(screen_name, email_address, password, first_names, last_name,
     user.detail.last_name = last_name
     db.session.add(user)
 
-    # verification_token for email address confirmation
-    verification_token = verification_token_service \
-        .build_for_email_address_confirmation(user)
-    db.session.add(verification_token)
-
     # consent to terms of service (required)
     terms_version = terms_service.get_current_version(brand)
     terms_consent = terms_service.build_consent_on_account_creation(user,
@@ -134,6 +129,12 @@ def create_user(screen_name, email_address, password, first_names, last_name,
 
     # newsletter subscription (optional)
     _create_newsletter_subscription(user.id, brand.id, subscribe_to_newsletter)
+
+    # verification_token for email address confirmation
+    verification_token = verification_token_service \
+        .build_for_email_address_confirmation(user.id)
+    db.session.add(verification_token)
+    db.session.commit()
 
     send_email_address_confirmation_email(user, verification_token)
 
