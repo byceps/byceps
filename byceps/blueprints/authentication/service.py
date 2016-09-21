@@ -55,9 +55,7 @@ def create_password_hash(user, password):
     credential = Credential(user.id, password_hash, now)
     db.session.add(credential)
 
-    token = _generate_auth_token()
-
-    session_token = SessionToken(token, user.id, now)
+    session_token = create_session_token(user.id, now)
     db.session.add(session_token)
 
     db.session.commit()
@@ -77,10 +75,22 @@ def update_password_hash(user, password):
     credential.updated_at = now
 
     session_token = find_session_token_for_user(user.id)
-    session_token.token = _generate_auth_token()
-    session_token.created_at = now
+    update_session_token(session_token, now)
 
     db.session.commit()
+
+
+def create_session_token(user_id, created_at):
+    """Create, but do not persist, a session token entity."""
+    token = _generate_auth_token()
+
+    return SessionToken(token, user_id, created_at)
+
+
+def update_session_token(session_token, updated_at):
+    """Update, but do not persist, the session token entity."""
+    session_token.token = _generate_auth_token()
+    session_token.created_at = updated_at
 
 
 def _generate_auth_token():
