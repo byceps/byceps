@@ -173,43 +173,6 @@ def confirm_email_address(verification_token):
     db.session.commit()
 
 
-def prepare_password_reset(user):
-    """Create a verification token for password reset and email it to
-    the user's address.
-    """
-    verification_token = verification_token_service.build_for_password_reset(user)
-
-    db.session.add(verification_token)
-    db.session.commit()
-
-    _send_password_reset_email(user, verification_token)
-
-
-def _send_password_reset_email(user, verification_token):
-    confirmation_url = url_for('.password_reset_form',
-                               token=verification_token.token,
-                               _external=True)
-
-    subject = '{0.screen_name}, so kannst du ein neues Passwort festlegen'.format(user)
-    body = (
-        'Hallo {0.screen_name},\n\n'
-        'du kannst ein neues Passwort festlegen indem du diese URL abrufst: {1}'
-    ).format(user, confirmation_url)
-    recipients = [user.email_address]
-
-    email_service.send(subject=subject, body=body, recipients=recipients)
-
-
-def reset_password(verification_token, password):
-    """Reset the user's password."""
-    user = verification_token.user
-
-    db.session.delete(verification_token)
-    db.session.commit()
-
-    authentication_service.update_password_hash(user, password)
-
-
 def update_user_details(user, first_names, last_name, date_of_birth, country,
                         zip_code, city, street, phone_number):
     """Update the user's details."""

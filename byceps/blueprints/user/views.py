@@ -281,7 +281,7 @@ def request_password_reset():
                     'noch nicht bestätigt.', screen_name)
         return redirect_to('.request_email_address_confirmation_email')
 
-    service.prepare_password_reset(user)
+    authentication_service.prepare_password_reset(user)
 
     flash_success(
         'Ein Link zum Setzen eines neuen Passworts für den Benutzernamen "{}" '
@@ -316,7 +316,7 @@ def password_reset(token):
 
     password = form.new_password.data
 
-    service.reset_password(verification_token, password)
+    authentication_service.reset_password(verification_token, password)
 
     flash_success('Das Passwort wurde geändert.')
     return redirect_to('authentication.login_form')
