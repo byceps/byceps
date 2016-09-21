@@ -12,7 +12,6 @@ from datetime import datetime
 
 from flask import url_for
 
-from ...blueprints.user.models.user import User
 from ...database import db, generate_uuid
 from ...util.instances import ReprBuilder
 
