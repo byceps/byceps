@@ -17,6 +17,9 @@ from ...util.l10n import LocalizedForm
 from . import service
 
 
+MINIMUM_PASSWORD_LENGTH = 10
+
+
 class LoginForm(LocalizedForm):
     screen_name = StringField('Benutzername', [DataRequired()])
     password = PasswordField('Passwort', [DataRequired()])
@@ -32,7 +35,7 @@ def _get_new_password_validators(companion_field_name):
         DataRequired(),
         EqualTo(companion_field_name,
                 message='Das neue Passwort muss mit der Wiederholung übereinstimmen.'),
-        Length(min=8),
+        Length(min=MINIMUM_PASSWORD_LENGTH),
     ]
 
 
