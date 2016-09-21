@@ -62,7 +62,8 @@ def find_user_by_screen_name(screen_name):
     """Return the user with that screen name, or `None` if not found."""
     return User.query \
         .filter_by(screen_name=screen_name) \
-        .first()
+        .one_or_none()
+
 
 def get_users_with_avatars(user_ids):
     """Return the users (and their avatars) for the IDs."""
