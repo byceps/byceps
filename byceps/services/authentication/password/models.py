@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 
 """
-byceps.blueprints.authentication.models
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.authentication.password.models
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2016 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
 """
 
-from ...database import db
+from ....database import db
 
 
 class Credential(db.Model):

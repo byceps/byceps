@@ -12,9 +12,8 @@ from flask import g
 from wtforms import BooleanField, PasswordField, StringField
 from wtforms.validators import DataRequired, EqualTo, Length, ValidationError
 
+from ...services.authentication.password import service as password_service
 from ...util.l10n import LocalizedForm
-
-from . import service
 
 
 MINIMUM_PASSWORD_LENGTH = 10
@@ -55,6 +54,6 @@ class UpdatePasswordForm(ResetPasswordForm):
         user = g.current_user
         password = field.data
 
-        if not service.is_password_valid_for_user(user, password):
+        if not password_service.is_password_valid_for_user(user, password):
             raise ValidationError(
                 'Das eingegebene Passwort stimmt nicht mit dem bisherigen überein.')

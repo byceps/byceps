@@ -12,6 +12,7 @@ from flask import abort, g, request, url_for
 
 from ...config import get_site_mode, get_user_registration_enabled
 from ...services.authentication.exceptions import AuthenticationFailed
+from ...services.authentication.password import service as password_service
 from ...services.authentication.session import service as session_service
 from ...util.framework import create_blueprint, flash_error, flash_notice, \
     flash_success
@@ -24,7 +25,6 @@ from ..verification_token import service as verification_token_service
 
 from .forms import LoginForm, RequestPasswordResetForm, ResetPasswordForm, \
     UpdatePasswordForm
-from . import service
 from . import session as user_session
 
 
@@ -82,7 +82,7 @@ def login():
 
     # Verify credentials.
     try:
-        user = service.authenticate(user, password)
+        user = password_service.authenticate(user, password)
     except AuthenticationFailed:
         abort(403)
 
@@ -150,7 +150,7 @@ def password_update():
 
     password = form.new_password.data
 
-    service.update_password_hash(user, password)
+    password_service.update_password_hash(user, password)
 
     flash_success('Das Passwort wurde geändert.')
     return redirect_to('.login_form')
@@ -188,7 +188,7 @@ def request_password_reset():
                     'noch nicht bestätigt.', screen_name)
         return redirect_to('user.request_email_address_confirmation_email')
 
-    service.prepare_password_reset(user)
+    password_service.prepare_password_reset(user)
 
     flash_success(
         'Ein Link zum Setzen eines neuen Passworts für den Benutzernamen "{}" '
@@ -228,7 +228,7 @@ def password_reset(token):
 
     password = form.new_password.data
 
-    service.reset_password(verification_token, password)
+    password_service.reset_password(verification_token, password)
 
     flash_success('Das Passwort wurde geändert.')
     return redirect_to('.login_form')

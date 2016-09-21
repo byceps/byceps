@@ -13,9 +13,9 @@ from datetime import datetime
 from flask import current_app, url_for
 
 from ...database import db
+from ...services.authentication.password import service as password_service
 from ...services import email as email_service
 
-from ..authentication import service as authentication_service
 from ..authorization.models import Role
 from ..newsletter import service as newsletter_service
 from ..terms import service as terms_service
@@ -130,7 +130,7 @@ def create_user(screen_name, email_address, password, first_names, last_name,
         raise UserCreationFailed()
 
     # password
-    authentication_service.create_password_hash(user, password)
+    password_service.create_password_hash(user, password)
 
     # newsletter subscription (optional)
     _create_newsletter_subscription(user.id, brand.id, subscribe_to_newsletter)
