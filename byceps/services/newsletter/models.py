@@ -12,8 +12,6 @@ from datetime import datetime
 
 from sqlalchemy.ext.hybrid import hybrid_property
 
-from ...blueprints.brand.models import Brand
-from ...blueprints.user.models.user import User
 from ...database import db
 from ...util.instances import ReprBuilder
 
@@ -27,9 +25,7 @@ class Subscription(db.Model):
     __tablename__ = 'newsletter_subscriptions'
 
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
-    user = db.relationship(User)
     brand_id = db.Column(db.Unicode(20), db.ForeignKey('brands.id'), primary_key=True)
-    brand = db.relationship(Brand)
     expressed_at = db.Column(db.DateTime, default=datetime.now, primary_key=True)
     _state = db.Column('state', db.Unicode(20), nullable=False)
 
