@@ -18,9 +18,10 @@ from ....database import db
 from ....blueprints.verification_token import service \
     as verification_token_service
 
+from ...email import service as email_service
+
 from ..exceptions import AuthenticationFailed
 from ..session import service as session_service
-from ... import email as email_service
 
 from .models import Credential
 
