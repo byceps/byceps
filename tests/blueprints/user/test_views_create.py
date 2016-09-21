@@ -5,9 +5,10 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.blueprints.authentication.models import Credential, SessionToken
+from byceps.blueprints.authentication.models import Credential
 from byceps.blueprints.terms.models import Version as TermsVersion
 from byceps.blueprints.user.models.user import User
+from byceps.services.authentication.session.models import SessionToken
 
 from tests.base import AbstractAppTestCase
 

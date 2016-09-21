@@ -16,8 +16,8 @@ from unittest import TestCase
 from unittest.mock import patch
 
 from byceps.application import create_app
-from byceps.blueprints.authentication.models import SessionToken
 from byceps.database import db
+from byceps.services.authentication.session.models import SessionToken
 
 from testfixtures.authentication import create_session_token
 from testfixtures.brand import create_brand

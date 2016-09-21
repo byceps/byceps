@@ -9,36 +9,23 @@ byceps.blueprints.authentication.service
 """
 
 from datetime import datetime
-from uuid import uuid4
 
 from flask import url_for
 from werkzeug.security import check_password_hash as _check_password_hash, \
     generate_password_hash as _generate_password_hash
 
 from ...database import db
+from ...services.authentication.exceptions import AuthenticationFailed
+from ...services.authentication.session import service as session_service
 from ...services import email as email_service
 
 from ..verification_token import service as verification_token_service
 
-from .models import Credential, SessionToken
+from .models import Credential
 
 
 PASSWORD_HASH_ITERATIONS = 50000
 PASSWORD_HASH_METHOD = 'pbkdf2:sha1:%d' % PASSWORD_HASH_ITERATIONS
-
-
-def find_session_token(token):
-    """Return the session token with that ID, or `None` if not found."""
-    return SessionToken.query.get(token)
-
-
-def find_session_token_for_user(user_id):
-    """Return the session token for the user with that ID, or `None` if
-    not found.
-    """
-    return SessionToken.query \
-        .filter_by(user_id=user_id) \
-        .one_or_none()
 
 
 def generate_password_hash(password):
@@ -55,7 +42,7 @@ def create_password_hash(user, password):
     credential = Credential(user.id, password_hash, now)
     db.session.add(credential)
 
-    session_token = create_session_token(user.id, now)
+    session_token = session_service.create_session_token(user.id, now)
     db.session.add(session_token)
 
     db.session.commit()
@@ -74,28 +61,10 @@ def update_password_hash(user, password):
     credential.password_hash = password_hash
     credential.updated_at = now
 
-    session_token = find_session_token_for_user(user.id)
-    update_session_token(session_token, now)
+    session_token = session_service.find_session_token_for_user(user.id)
+    session_service.update_session_token(session_token, now)
 
     db.session.commit()
-
-
-def create_session_token(user_id, created_at):
-    """Create, but do not persist, a session token entity."""
-    token = _generate_auth_token()
-
-    return SessionToken(token, user_id, created_at)
-
-
-def update_session_token(session_token, updated_at):
-    """Update, but do not persist, the session token entity."""
-    session_token.token = _generate_auth_token()
-    session_token.created_at = updated_at
-
-
-def _generate_auth_token():
-    """Generate an authentication token."""
-    return uuid4()
 
 
 def is_password_valid_for_user(user, password):
@@ -119,10 +88,6 @@ def check_password_hash(password_hash, password):
         and _check_password_hash(password_hash, password)
 
 
-class AuthenticationFailed(Exception):
-    pass
-
-
 def authenticate(user, password):
     """Try to authenticate the user.
 
@@ -137,30 +102,6 @@ def authenticate(user, password):
         raise AuthenticationFailed()
 
     return user
-
-
-def authenticate_session(user_id, auth_token):
-    """Check the client session's validity.
-
-    Return the nothing on success, or raise an exception on failure.
-    """
-    if user_id is None:
-        # User ID must not be empty.
-        raise AuthenticationFailed()
-
-    if not auth_token:
-        # Authentication token must not be empty.
-        raise AuthenticationFailed()
-
-    session_token = find_session_token(auth_token)
-
-    if session_token is None:
-        # Session token is unknown.
-        raise AuthenticationFailed()
-
-    if user_id != session_token.user_id:
-        # The user ID provided by the client does not match the server's.
-        raise AuthenticationFailed()
 
 
 # -------------------------------------------------------------------- #

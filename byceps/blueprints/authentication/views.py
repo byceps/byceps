@@ -11,6 +11,8 @@ byceps.blueprints.authentication.views
 from flask import abort, g, request, url_for
 
 from ...config import get_site_mode, get_user_registration_enabled
+from ...services.authentication.exceptions import AuthenticationFailed
+from ...services.authentication.session import service as session_service
 from ...util.framework import create_blueprint, flash_error, flash_notice, \
     flash_success
 from ...util.templating import templated
@@ -23,7 +25,6 @@ from ..verification_token import service as verification_token_service
 from .forms import LoginForm, RequestPasswordResetForm, ResetPasswordForm, \
     UpdatePasswordForm
 from . import service
-from .service import AuthenticationFailed
 from . import session as user_session
 
 
@@ -107,7 +108,7 @@ def login():
 
     # Authorization succeeded.
 
-    session_token = service.find_session_token_for_user(user.id)
+    session_token = session_service.find_session_token_for_user(user.id)
     if session_token is None:
         abort(500)
 

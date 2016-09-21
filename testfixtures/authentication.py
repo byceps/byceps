@@ -11,7 +11,7 @@ testfixtures.authentication
 from datetime import datetime
 from uuid import uuid4
 
-from byceps.blueprints.authentication.models import SessionToken
+from byceps.services.authentication.session.models import SessionToken
 
 
 def create_session_token(user_id, *, token=None, created_at=None):

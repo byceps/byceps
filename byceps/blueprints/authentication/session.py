@@ -10,11 +10,11 @@ byceps.blueprints.authentication.session
 
 from flask import session
 
+from ...services.authentication.exceptions import AuthenticationFailed
+from ...services.authentication.session import service as session_service
+
 from ..user.models.user import AnonymousUser
 from ..user import service as user_service
-
-from . import service
-from .service import AuthenticationFailed
 
 
 KEY_USER_ID = 'user_id'
@@ -67,7 +67,7 @@ def _load_user(user_id, auth_token):
 
     # Validate auth token.
     try:
-        service.authenticate_session(user.id, auth_token)
+        session_service.authenticate_session(user.id, auth_token)
     except AuthenticationFailed:
         # Bad auth token, not logging in.
         return AnonymousUser()
