@@ -353,7 +353,7 @@ def password_update():
     service.update_password(user, password)
 
     flash_success('Das Passwort wurde geändert.')
-    return redirect_to('.view_current')
+    return redirect_to('.authentication.login_form')
 
 
 @blueprint.route('/me/details')
