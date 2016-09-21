@@ -15,9 +15,9 @@ from flask import current_app, url_for
 from ...database import db
 from ...services.authentication.password import service as password_service
 from ...services.email import service as email_service
+from ...services.newsletter import service as newsletter_service
 
 from ..authorization.models import Role
-from ..newsletter import service as newsletter_service
 from ..terms import service as terms_service
 from ..verification_token import service as verification_token_service
 

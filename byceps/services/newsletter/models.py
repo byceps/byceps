@@ -1,26 +1,23 @@
 # -*- coding: utf-8 -*-
 
 """
-byceps.blueprints.newsletter.models
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.newsletter.models
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2016 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
 """
 
 from datetime import datetime
-from enum import Enum
 
 from sqlalchemy.ext.hybrid import hybrid_property
 
+from ...blueprints.brand.models import Brand
+from ...blueprints.user.models.user import User
 from ...database import db
 from ...util.instances import ReprBuilder
 
-from ..brand.models import Brand
-from ..user.models.user import User
-
-
-SubscriptionState = Enum('SubscriptionState', ['requested', 'declined'])
+from .types import SubscriptionState
 
 
 class Subscription(db.Model):

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-byceps.blueprints.newsletter.service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.newsletter.service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2016 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -11,11 +11,11 @@ byceps.blueprints.newsletter.service
 from collections import Counter
 from operator import itemgetter
 
+from ...blueprints.user.models.user import User
 from ...database import db
 
-from ..user.models.user import User
-
-from .models import Subscription, SubscriptionState
+from .models import Subscription
+from .types import SubscriptionState
 
 
 def count_subscribers_for_brand(brand_id):

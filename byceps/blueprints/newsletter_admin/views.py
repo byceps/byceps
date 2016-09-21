@@ -12,6 +12,8 @@ from operator import attrgetter
 
 from flask import abort
 
+from ...services.newsletter import service as newsletter_service
+from ...services.newsletter.types import SubscriptionState
 from ...util.framework import create_blueprint
 from ...util.templating import templated
 from ...util.views import jsonified, textified
@@ -19,8 +21,6 @@ from ...util.views import jsonified, textified
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 from ..brand import service as brand_service
-from ..newsletter.models import SubscriptionState
-from ..newsletter import service as newsletter_service
 
 from .authorization import NewsletterPermission
 

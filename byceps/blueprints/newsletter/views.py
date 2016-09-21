@@ -12,13 +12,13 @@ from collections import namedtuple
 
 from flask import abort, g, request
 
+from ...services.newsletter import service as newsletter_service
+from ...services.newsletter.types import SubscriptionState
 from ...util.framework import create_blueprint, flash_success
 from ...util.templating import templated
 from ...util.views import redirect_to
 
 from .forms import SubscriptionForm
-from .models import SubscriptionState
-from . import service
 
 
 blueprint = create_blueprint('newsletter', __name__)
@@ -31,7 +31,7 @@ def subscription_update_form():
     user = get_current_user_or_404()
     brand_id = g.party.brand.id
 
-    state = service.get_subscription_state(user.id, brand_id)
+    state = newsletter_service.get_subscription_state(user.id, brand_id)
 
     obj = namedtuple('Obj', 'state')(state.name)
     form = SubscriptionForm(obj=obj)
@@ -52,10 +52,10 @@ def subscription_update():
     state = SubscriptionState[form.state.data]
 
     if state is SubscriptionState.requested:
-        service.subscribe(user.id, brand_id)
+        newsletter_service.subscribe(user.id, brand_id)
         flash_success('Du hast dich zum Newsletter angemeldet.')
     elif state is SubscriptionState.declined:
-        service.unsubscribe(user.id, brand_id)
+        newsletter_service.unsubscribe(user.id, brand_id)
         flash_success('Du hast dich vom Newsletter abgemeldet.')
     else:
         abort(400, 'Unknown subscription state.')

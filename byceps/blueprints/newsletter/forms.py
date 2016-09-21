@@ -11,9 +11,8 @@ byceps.blueprints.newsletter.forms
 from wtforms import RadioField
 from wtforms.validators import DataRequired
 
+from ...services.newsletter.types import SubscriptionState
 from ...util.l10n import LocalizedForm
-
-from ..newsletter.models import SubscriptionState
 
 
 class SubscriptionForm(LocalizedForm):

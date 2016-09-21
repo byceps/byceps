@@ -8,7 +8,8 @@
 import json
 
 from byceps.blueprints.newsletter_admin.authorization import NewsletterPermission
-from byceps.blueprints.newsletter.models import Subscription, SubscriptionState
+from byceps.services.newsletter.models import Subscription
+from byceps.services.newsletter.types import SubscriptionState
 
 from tests.base import AbstractAppTestCase
 
