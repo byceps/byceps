@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-byceps.services.countries
-~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.countries.service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2016 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.

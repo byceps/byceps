@@ -8,7 +8,7 @@
 from nose2.tools import params
 
 from byceps.application import create_app
-from byceps.services import countries as countries_service
+from byceps.services.countries import service as countries_service
 
 
 @params(

@@ -10,7 +10,7 @@ byceps.blueprints.shop.views
 
 from flask import abort, g, request
 
-from ...services import countries as countries_service
+from ...services.countries import service as countries_service
 from ...util.framework import create_blueprint, flash_error, flash_success
 from ...util.templating import templated
 from ...util.views import redirect_to
