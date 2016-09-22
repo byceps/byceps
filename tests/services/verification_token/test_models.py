@@ -10,9 +10,10 @@ from datetime import datetime
 from freezegun import freeze_time
 from nose2.tools import params
 
-from byceps.blueprints.verification_token.models import Purpose, Token
+from byceps.services.verification_token.models import Purpose
 
 from testfixtures.user import create_user
+from testfixtures.verification_token import create_verification_token
 
 
 @params(
@@ -49,9 +50,9 @@ from testfixtures.user import create_user
 )
 def test_is_expired(purpose, now, expected):
     user = create_user(1)
+    created_at = datetime(2014, 11, 26, 17, 44, 53)
 
-    token = Token(user.id, purpose)
-    token.created_at = datetime(2014, 11, 26, 17, 44, 53)
+    token = create_verification_token(user.id, purpose, created_at=created_at)
 
     with freeze_time(now):
         assert token.is_expired == expected

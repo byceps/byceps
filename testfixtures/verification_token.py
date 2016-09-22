@@ -11,8 +11,13 @@ testfixtures.verification_token
 from byceps.services.verification_token.models import Purpose, Token
 
 
-def create_verification_token(user_id, purpose):
-    return Token(user_id, purpose)
+def create_verification_token(user_id, purpose, *, created_at=None):
+    token = Token(user_id, purpose)
+
+    if created_at is not None:
+        token.created_at = created_at
+
+    return token
 
 
 def create_verification_token_for_email_address_confirmation(user_id):
