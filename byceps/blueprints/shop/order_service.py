@@ -14,13 +14,10 @@ from ..party.models import Party
 
 from .models.order import Order, PaymentState
 from .signals import order_placed
-from .service import generate_order_number
 
 
-def create_order(party, orderer, payment_method, cart):
+def create_order(party, order_number, orderer, payment_method, cart):
     """Create an order of one or more articles."""
-    order_number = generate_order_number(party)
-
     order = _build_order(party, order_number, orderer, payment_method)
     _add_items_from_cart_to_order(cart, order)
     db.session.commit()

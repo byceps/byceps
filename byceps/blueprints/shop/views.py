@@ -20,8 +20,7 @@ from ..authentication.decorators import login_required
 from .forms import assemble_articles_order_form, OrderForm
 from .models.cart import Cart
 from .models.order import PaymentMethod
-from . import article_service
-from . import order_service
+from . import article_service, order_service, service
 
 
 blueprint = create_blueprint('shop', __name__)
@@ -79,11 +78,12 @@ def order():
         flash_error('Es wurden keine Artikel ausgewählt.')
         return order_form(form)
 
-    user = g.current_user
-    orderer = form.get_orderer(user)
+    order_number = service.generate_order_number(g.party)
+    orderer = form.get_orderer(g.current_user)
     payment_method = PaymentMethod.cash
 
-    order_service.create_order(g.party, orderer, payment_method, cart)
+    order_service.create_order(g.party, order_number, orderer, payment_method,
+                               cart)
 
     flash_success('Deine Bestellung wurde entgegen genommen. Vielen Dank!')
     return redirect_to('snippet.order_placed')
@@ -161,6 +161,7 @@ def order_single(article_id):
     if not form.validate():
         return order_single_form(article.id, form)
 
+    order_number = service.generate_order_number(g.party)
     orderer = form.get_orderer(user)
     payment_method = PaymentMethod.cash
 
@@ -168,7 +169,8 @@ def order_single(article_id):
     for item in article_compilation:
         cart.add_item(item.article, item.fixed_quantity)
 
-    order_service.create_order(g.party, orderer, payment_method, cart)
+    order_service.create_order(g.party, order_number, orderer, payment_method,
+                               cart)
 
     flash_success('Deine Bestellung wurde entgegen genommen. Vielen Dank!')
     return redirect_to('snippet.order_placed')
