@@ -10,11 +10,10 @@ byceps.blueprints.terms.views
 
 from flask import abort, g, request
 
+from ...services.verification_token import service as verification_token_service
 from ...util.framework import create_blueprint, flash_error, flash_success
 from ...util.templating import templated
 from ...util.views import redirect_to
-
-from ..verification_token import service as verification_token_service
 
 from .forms import ConsentForm
 from . import service

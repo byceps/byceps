@@ -15,10 +15,9 @@ from werkzeug.security import check_password_hash as _check_password_hash, \
     generate_password_hash as _generate_password_hash
 
 from ....database import db
-from ....blueprints.verification_token import service \
-    as verification_token_service
 
 from ...email import service as email_service
+from ...verification_token import service as verification_token_service
 
 from ..exceptions import AuthenticationFailed
 from ..session import service as session_service

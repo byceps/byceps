@@ -14,6 +14,7 @@ from ...config import get_site_mode, get_user_registration_enabled
 from ...services.authentication.exceptions import AuthenticationFailed
 from ...services.authentication.password import service as password_service
 from ...services.authentication.session import service as session_service
+from ...services.verification_token import service as verification_token_service
 from ...util.framework import create_blueprint, flash_error, flash_notice, \
     flash_success
 from ...util.templating import templated
@@ -21,7 +22,6 @@ from ...util.views import redirect_to, respond_no_content
 
 from ..terms import service as terms_service
 from ..user import service as user_service
-from ..verification_token import service as verification_token_service
 
 from .forms import LoginForm, RequestPasswordResetForm, ResetPasswordForm, \
     UpdatePasswordForm

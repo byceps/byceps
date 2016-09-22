@@ -7,7 +7,7 @@
 
 from datetime import datetime
 
-from byceps.blueprints.verification_token.models import Purpose, Token
+from byceps.services.verification_token.models import Purpose, Token
 
 from tests.base import AbstractAppTestCase
 
