@@ -36,15 +36,9 @@ def create_article(*, party=None, serial_number=1, description='Cool thing',
     if tax_rate is None:
         tax_rate = Decimal('0.19')
 
-    return Article(
-        party=party,
-        item_number=item_number,
-        description=description,
-        price=price,
-        tax_rate=tax_rate,
-        available_from=available_from,
-        available_until=available_until,
-        quantity=quantity)
+    return Article(party, item_number, description, price, tax_rate, quantity,
+                   available_from=available_from,
+                   available_until=available_until)
 
 
 def create_orderer(user):
