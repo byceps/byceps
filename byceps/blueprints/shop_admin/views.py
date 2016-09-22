@@ -23,7 +23,7 @@ from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 from ..party import service as party_service
 from ..shop.models.order import PaymentState
-from ..shop import article_service
+from ..shop import article_service, order_service
 from ..shop import service as shop_service
 from ..shop.signals import order_canceled, order_paid
 from ..ticket import service as ticket_service
@@ -282,7 +282,7 @@ def order_index_for_party(party_id, page):
 @templated
 def order_view(id):
     """Show a single order."""
-    order = shop_service.find_order_with_details(id)
+    order = order_service.find_order_with_details(id)
     if order is None:
         abort(404)
 
@@ -296,7 +296,7 @@ def order_view(id):
 @permission_required(ShopOrderPermission.view)
 def order_export(id):
     """Export the order as an XML document."""
-    order = shop_service.find_order_with_details(id)
+    order = order_service.find_order_with_details(id)
     if order is None:
         abort(404)
 
@@ -442,7 +442,7 @@ def _get_article_or_404(article_id):
 
 
 def _get_order_or_404(order_id):
-    order = shop_service.find_order(order_id)
+    order = order_service.find_order(order_id)
 
     if order is None:
         abort(404)

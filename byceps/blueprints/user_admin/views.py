@@ -17,7 +17,7 @@ from ...util.templating import templated
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 from ..authorization_admin import service as authorization_admin_service
-from ..shop import service as shop_service
+from ..shop import order_service
 from ..ticket import service as ticket_service
 from ..user import service as user_service
 
@@ -81,7 +81,7 @@ def view(id):
 
     badges = badge_service.get_badges_for_user(user.id)
 
-    orders = shop_service.get_orders_placed_by_user(user)
+    orders = order_service.get_orders_placed_by_user(user)
 
     tickets = ticket_service.find_tickets_related_to_user(user)
 

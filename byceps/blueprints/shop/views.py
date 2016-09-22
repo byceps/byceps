@@ -20,7 +20,7 @@ from ..authentication.decorators import login_required
 from .forms import assemble_articles_order_form, OrderForm
 from .models.cart import Cart
 from . import article_service
-from . import service
+from . import order_service
 
 
 blueprint = create_blueprint('shop', __name__)
@@ -81,7 +81,7 @@ def order():
     user = g.current_user
     orderer = form.get_orderer(user)
 
-    service.create_order(g.party, orderer, cart)
+    order_service.create_order(g.party, orderer, cart)
 
     flash_success('Deine Bestellung wurde entgegen genommen. Vielen Dank!')
     return redirect_to('snippet.order_placed')
@@ -108,7 +108,7 @@ def order_single_form(article_id, erroneous_form=None):
             'article': None,
         }
 
-    if service.has_user_placed_orders(user, g.party):
+    if order_service.has_user_placed_orders(user, g.party):
         flash_error('Du kannst keine weitere Bestellung aufgeben.')
         return {
             'form': form,
@@ -147,7 +147,7 @@ def order_single(article_id):
 
     user = g.current_user
 
-    if service.has_user_placed_orders(user, g.party):
+    if order_service.has_user_placed_orders(user, g.party):
         flash_error('Du kannst keine weitere Bestellung aufgeben.')
         return order_single_form(article.id)
 
@@ -165,7 +165,7 @@ def order_single(article_id):
     for item in article_compilation:
         cart.add_item(item.article, item.fixed_quantity)
 
-    service.create_order(g.party, orderer, cart)
+    order_service.create_order(g.party, orderer, cart)
 
     flash_success('Deine Bestellung wurde entgegen genommen. Vielen Dank!')
     return redirect_to('snippet.order_placed')
