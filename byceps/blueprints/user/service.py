@@ -99,7 +99,7 @@ class UserCreationFailed(Exception):
 
 
 def create_user(screen_name, email_address, password, first_names, last_name,
-                brand, subscribe_to_newsletter):
+                brand_id, subscribe_to_newsletter):
     """Create a user account and related records."""
     # user with details
     user = User.create(screen_name, email_address)
@@ -122,14 +122,14 @@ def create_user(screen_name, email_address, password, first_names, last_name,
     password_service.create_password_hash(user.id, password)
 
     # consent to terms of service (required)
-    terms_version = terms_service.get_current_version(brand.id)
+    terms_version = terms_service.get_current_version(brand_id)
     terms_consent = terms_service.build_consent_on_account_creation(user.id,
                                                                     terms_version.id)
     db.session.add(terms_consent)
     db.session.commit()
 
     # newsletter subscription (optional)
-    _create_newsletter_subscription(user.id, brand.id, subscribe_to_newsletter)
+    _create_newsletter_subscription(user.id, brand_id, subscribe_to_newsletter)
 
     # verification_token for email address confirmation
     verification_token = verification_token_service \
