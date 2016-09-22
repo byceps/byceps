@@ -22,8 +22,8 @@ from ..user.models.user import User
 
 class VersionQuery(BaseQuery):
 
-    def for_brand(self, brand):
-        return self.filter_by(brand_id=brand.id)
+    def for_brand_id(self, brand_id):
+        return self.filter_by(brand_id=brand_id)
 
     def latest_first(self):
         return self.order_by(Version.created_at.desc())
@@ -42,9 +42,9 @@ class Version(db.Model):
     creator = db.relationship(User)
     body = db.Column(db.UnicodeText)
 
-    def __init__(self, brand, creator, body):
-        self.brand = brand
-        self.creator = creator
+    def __init__(self, brand_id, creator_id, body):
+        self.brand_id = brand_id
+        self.creator_id = creator_id
         self.body = body
 
     def __repr__(self):
@@ -71,9 +71,9 @@ class Consent(db.Model):
     expressed_at = db.Column(db.DateTime, default=datetime.now, primary_key=True)
     _context = db.Column('context', db.Unicode(20), primary_key=True)
 
-    def __init__(self, user, version, context):
-        self.user = user
-        self.version = version
+    def __init__(self, user_id, version_id, context):
+        self.user_id = user_id
+        self.version_id = version_id
         self.context = context
 
     @hybrid_property

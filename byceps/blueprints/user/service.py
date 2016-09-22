@@ -107,12 +107,6 @@ def create_user(screen_name, email_address, password, first_names, last_name,
     user.detail.last_name = last_name
     db.session.add(user)
 
-    # consent to terms of service (required)
-    terms_version = terms_service.get_current_version(brand)
-    terms_consent = terms_service.build_consent_on_account_creation(user,
-                                                                    terms_version)
-    db.session.add(terms_consent)
-
     # roles
     board_user_role = Role.query.get('board_user')
     user.roles.add(board_user_role)
@@ -126,6 +120,13 @@ def create_user(screen_name, email_address, password, first_names, last_name,
 
     # password
     password_service.create_password_hash(user.id, password)
+
+    # consent to terms of service (required)
+    terms_version = terms_service.get_current_version(brand.id)
+    terms_consent = terms_service.build_consent_on_account_creation(user.id,
+                                                                    terms_version.id)
+    db.session.add(terms_consent)
+    db.session.commit()
 
     # newsletter subscription (optional)
     _create_newsletter_subscription(user.id, brand.id, subscribe_to_newsletter)

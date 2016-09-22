@@ -18,50 +18,53 @@ def find_version(version_id):
     return Version.query.get(version_id)
 
 
-def get_current_version(brand):
+def get_current_version(brand_id):
     """Return the current version of the terms for that brand."""
-    return Version.query.for_brand(brand).latest_first().first()
+    return Version.query \
+        .for_brand_id(brand_id) \
+        .latest_first() \
+        .first()
 
 
-def get_versions_for_brand(brand):
+def get_versions_for_brand(brand_id):
     """Return all versions for that brand, ordered by creation date."""
     return Version.query \
-        .for_brand(brand) \
+        .for_brand_id(brand_id) \
         .order_by(Version.created_at.desc()) \
         .all()
 
 
-def build_consent_on_account_creation(user, version):
+def build_consent_on_account_creation(user_id, version_id):
     """Create user's consent to that version expressed on account creation."""
     context = ConsentContext.account_creation
-    return Consent(user, version, context)
+    return Consent(user_id, version_id, context)
 
 
-def build_consent_on_separate_action(user, version):
+def build_consent_on_separate_action(user_id, version_id):
     """Create user's consent to that version expressed through a
     separate action.
     """
     context = ConsentContext.separate_action
-    return Consent(user, version, context)
+    return Consent(user_id, version_id, context)
 
 
-def consent_to_version_on_separate_action(version, verification_token):
+def consent_to_version_on_separate_action(version_id, verification_token):
     """Store the user's consent to that version, and invalidate the
     verification token.
     """
-    user = verification_token.user
+    user_id = verification_token.user_id
     db.session.delete(verification_token)
 
-    consent = build_consent_on_separate_action(user, version)
+    consent = build_consent_on_separate_action(user_id, version_id)
     db.session.add(consent)
 
     db.session.commit()
 
 
-def has_user_accepted_version(user, version):
+def has_user_accepted_version(user_id, version_id):
     """Tell if the user has accepted the specified version of the terms."""
     count = Consent.query \
-        .filter_by(user=user) \
-        .filter_by(version=version) \
+        .filter_by(user_id=user_id) \
+        .filter_by(version_id=version_id) \
         .count()
     return count > 0

@@ -90,7 +90,7 @@ def view_brand(brand_id):
     newsletter_subscriber_count = newsletter_service \
         .count_subscribers_for_brand(brand.id)
 
-    current_terms_version = terms_service.get_current_version(brand)
+    current_terms_version = terms_service.get_current_version(brand.id)
 
     board_category_count = board_admin_service.count_categories_for_brand(brand)
     board_topic_count = board_admin_service.count_topics_for_brand(brand)

@@ -130,7 +130,7 @@ def mount_snippet(snippet, endpoint_suffix, url_path):
 
 @add_to_database
 def create_terms_version(brand, creator, body):
-    return TermsVersion(brand=brand, creator=creator, body=body)
+    return TermsVersion(brand.id, creator.id, body)
 
 
 # -------------------------------------------------------------------- #

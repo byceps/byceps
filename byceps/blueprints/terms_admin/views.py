@@ -36,7 +36,7 @@ def index_for_brand(brand_id):
     if brand is None:
         abort(404)
 
-    versions = terms_service.get_versions_for_brand(brand)
+    versions = terms_service.get_versions_for_brand(brand.id)
 
     return {
         'brand': brand,

@@ -26,7 +26,7 @@ blueprint = create_blueprint('terms', __name__)
 @templated
 def view_current():
     """Show the current version of this brand's terms and conditions."""
-    version = service.get_current_version(g.party.brand)
+    version = service.get_current_version(g.party.brand.id)
 
     return {
         'version': version,
@@ -67,7 +67,7 @@ def consent(version_id, token):
     if not form.validate():
         return consent_form(version_id, token, erroneous_form=form)
 
-    service.consent_to_version_on_separate_action(version, verification_token)
+    service.consent_to_version_on_separate_action(version.id, verification_token)
 
     flash_success('Du hast die AGB akzeptiert.')
     return redirect_to('authentication.login_form')
