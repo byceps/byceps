@@ -23,6 +23,7 @@ from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 from ..party import service as party_service
 from ..shop.models.order import PaymentState
+from ..shop import article_service
 from ..shop import service as shop_service
 from ..shop.signals import order_canceled, order_paid
 from ..ticket import service as ticket_service
@@ -53,8 +54,8 @@ def article_index_for_party(party_id, page):
     party = _get_party_or_404(party_id)
 
     per_page = request.args.get('per_page', type=int, default=15)
-    articles = shop_service.get_articles_for_party_paginated(party, page,
-                                                             per_page)
+    articles = article_service.get_articles_for_party_paginated(party, page,
+                                                                per_page)
 
     return {
         'party': party,
@@ -142,8 +143,8 @@ def article_create(party_id):
     tax_rate = form.tax_rate.data
     quantity = form.quantity.data
 
-    article = shop_service.create_article(party, item_number, description,
-                                          price, tax_rate, quantity)
+    article = article_service.create_article(party, item_number, description,
+                                             price, tax_rate, quantity)
 
     flash_success('Des Artikel "{}" wurde angelegt.', article.item_number)
     return redirect_to('.article_view', id=article.id)
@@ -180,9 +181,10 @@ def article_update(id):
     not_directly_orderable = form.not_directly_orderable.data
     requires_separate_order = form.requires_separate_order.data
 
-    shop_service.update_article(article, description, price, tax_rate, quantity,
-                                max_quantity_per_order, not_directly_orderable,
-                                requires_separate_order)
+    article_service.update_article(article, description, price, tax_rate,
+                                   quantity, max_quantity_per_order,
+                                   not_directly_orderable,
+                                   requires_separate_order)
 
     flash_success('Der Artikel "{}" wurde aktualisiert.', article.description)
     return redirect_to('.article_view', id=article.id)
@@ -219,10 +221,10 @@ def article_attachment_create(article_id):
     form = ArticleAttachmentCreateForm(request.form)
 
     article_to_attach_id = form.article_to_attach_id.data
-    article_to_attach = shop_service.find_article(article_to_attach_id)
+    article_to_attach = article_service.find_article(article_to_attach_id)
     quantity = form.quantity.data
 
-    shop_service.attach_article(article_to_attach, quantity, article)
+    article_service.attach_article(article_to_attach, quantity, article)
 
     flash_success(
         'Der Artikel "{}" wurde {:d} mal an den Artikel "{}" angehängt.',
@@ -235,14 +237,14 @@ def article_attachment_create(article_id):
 @respond_no_content_with_location
 def article_attachment_remove(id):
     """Remove the attachment link from one article to another."""
-    attached_article = shop_service.find_attached_article(id)
+    attached_article = article_service.find_attached_article(id)
     if attached_article is None:
         abort(404)
 
     article = attached_article.article
     attached_to_article = attached_article.attached_to_article
 
-    shop_service.unattach_article(attached_article)
+    article_service.unattach_article(attached_article)
 
     flash_success('Artikel "{}" ist nun nicht mehr an Artikel "{}" angehängt.',
                   article.item_number, attached_to_article.item_number)
@@ -431,7 +433,7 @@ def _get_party_or_404(party_id):
 
 
 def _get_article_or_404(article_id):
-    article = shop_service.find_article(article_id)
+    article = article_service.find_article(article_id)
 
     if article is None:
         abort(404)

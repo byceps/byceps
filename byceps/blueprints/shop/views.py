@@ -19,6 +19,7 @@ from ..authentication.decorators import login_required
 
 from .forms import assemble_articles_order_form, OrderForm
 from .models.cart import Cart
+from . import article_service
 from . import service
 
 
@@ -30,7 +31,7 @@ blueprint = create_blueprint('shop', __name__)
 @templated
 def order_form(erroneous_form=None):
     """Show a form to order articles."""
-    article_compilation = service \
+    article_compilation = article_service \
         .get_article_compilation_for_orderable_articles(g.party)
 
     if article_compilation.is_empty():
@@ -58,7 +59,7 @@ def order_form(erroneous_form=None):
 @login_required
 def order():
     """Order articles."""
-    article_compilation = service \
+    article_compilation = article_service \
         .get_article_compilation_for_orderable_articles(g.party)
 
     if article_compilation.is_empty():
@@ -93,8 +94,8 @@ def order_single_form(article_id, erroneous_form=None):
     """Show a form to order a single article."""
     article = _get_article_or_404(article_id)
 
-    article_compilation = service.get_article_compilation_for_single_article(
-        article, fixed_quantity=1)
+    article_compilation = article_service \
+        .get_article_compilation_for_single_article(article, fixed_quantity=1)
 
     user = g.current_user
     form = erroneous_form if erroneous_form else OrderForm(obj=user.detail)
@@ -140,8 +141,9 @@ def order_single(article_id):
         flash_error('Der Artikel kann nicht direkt bestellt werden.')
         return order_single_form(article.id)
 
-    article_compilation = service.get_article_compilation_for_single_article(
-        article, fixed_quantity=quantity)
+    article_compilation = article_service \
+        .get_article_compilation_for_single_article(article,
+                                                    fixed_quantity=quantity)
 
     user = g.current_user
 
@@ -170,7 +172,7 @@ def order_single(article_id):
 
 
 def _get_article_or_404(article_id):
-    article = service.find_article(article_id)
+    article = article_service.find_article(article_id)
 
     if article is None:
         abort(404)
