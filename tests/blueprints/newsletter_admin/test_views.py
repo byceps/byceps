@@ -52,8 +52,6 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
             user = self.create_user(user_number, enabled=enabled)
             self.add_subscriptions(user, states)
 
-        self.db.session.commit()
-
     def test_export_subscribers(self):
         expected_data = {
             'subscribers': [
@@ -105,12 +103,17 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
 
     def create_user(self, number, *, enabled=True):
         user = create_user(number, enabled=enabled)
+
         self.db.session.add(user)
+        self.db.session.commit()
+
         return user
 
     def add_subscriptions(self, user, states):
         for state in states:
             self.add_subscription(user, state)
+
+        self.db.session.commit()
 
     def add_subscription(self, user, state):
         subscription = Subscription(user.id, self.brand.id, state)
