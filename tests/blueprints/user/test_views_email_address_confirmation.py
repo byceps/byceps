@@ -7,11 +7,12 @@
 
 from datetime import datetime
 
-from byceps.services.verification_token.models import Purpose, Token
-
 from tests.base import AbstractAppTestCase
 
 from testfixtures.user import create_user
+from testfixtures.verification_token import \
+    create_verification_token_for_email_address_confirmation \
+    as create_confirmation_token
 
 
 NOW = datetime.now()
@@ -54,8 +55,3 @@ class EmailAddressConfirmationTestCase(AbstractAppTestCase):
             .format(verification_token.token)
         with self.client() as client:
             return client.get(url)
-
-
-def create_confirmation_token(user_id):
-    purpose = Purpose.email_address_confirmation
-    return Token(user_id, purpose)
