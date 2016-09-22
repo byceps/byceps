@@ -38,6 +38,9 @@ class Orderer(object):
         self.street = street
 
 
+PaymentMethod = Enum('PaymentMethod', ['cash'])
+
+
 PaymentState = Enum('PaymentState', ['open', 'canceled', 'paid'])
 
 
@@ -72,6 +75,7 @@ class Order(db.Model):
     zip_code = db.Column(db.Unicode(5), nullable=False)
     city = db.Column(db.Unicode(40), nullable=False)
     street = db.Column(db.Unicode(40), nullable=False)
+    _payment_method = db.Column('payment_method', db.Unicode(20), nullable=False)
     _payment_state = db.Column('payment_state', db.Unicode(20), nullable=False)
     payment_state_updated_at = db.Column(db.DateTime)
     payment_state_updated_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
@@ -79,7 +83,8 @@ class Order(db.Model):
     cancelation_reason = db.Column(db.Unicode(200))
 
     def __init__(self, party, order_number, placed_by, first_names, last_name,
-                 date_of_birth, country, zip_code, city, street):
+                 date_of_birth, country, zip_code, city, street,
+                 payment_method):
         self.party = party
         self.order_number = order_number
         self.placed_by = placed_by
@@ -90,7 +95,17 @@ class Order(db.Model):
         self.zip_code = zip_code
         self.city = city
         self.street = street
+        self.payment_method = payment_method
         self.payment_state = PaymentState.open
+
+    @hybrid_property
+    def payment_method(self):
+        return PaymentMethod[self._payment_method]
+
+    @payment_method.setter
+    def payment_method(self, method):
+        assert method is not None
+        self._payment_method = method.name
 
     @hybrid_property
     def payment_state(self):

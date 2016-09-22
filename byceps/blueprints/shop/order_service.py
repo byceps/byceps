@@ -15,11 +15,11 @@ from .signals import order_placed
 from .service import generate_order_number
 
 
-def create_order(party, orderer, cart):
+def create_order(party, orderer, payment_method, cart):
     """Create an order of one or more articles."""
     order_number = generate_order_number(party)
 
-    order = _build_order(party, order_number, orderer)
+    order = _build_order(party, order_number, orderer, payment_method)
     _add_items_from_cart_to_order(cart, order)
     db.session.commit()
 
@@ -28,7 +28,7 @@ def create_order(party, orderer, cart):
     return order
 
 
-def _build_order(party, order_number, orderer):
+def _build_order(party, order_number, orderer, payment_method):
     """Create an order of one or more articles."""
     order = Order(
         party=party,
@@ -41,6 +41,7 @@ def _build_order(party, order_number, orderer):
         zip_code=orderer.zip_code,
         city=orderer.city,
         street=orderer.street,
+        payment_method=payment_method,
     )
     db.session.add(order)
     return order
