@@ -25,8 +25,7 @@ from ..orga_admin import service as orga_admin_service
 from ..party import service as party_service
 from ..ticket import service as ticket_service
 from ..seating_admin import service as seating_admin_service
-from ..shop import article_service
-from ..shop_admin import service as shop_admin_service
+from ..shop import article_service, order_service
 from ..terms import service as terms_service
 from ..user import service as user_service
 
@@ -135,7 +134,7 @@ def view_party(party_id):
     seat_count = seating_admin_service.count_seats_for_party(party)
 
     article_count = article_service.count_articles_for_party(party)
-    open_order_count = shop_admin_service.count_open_orders_for_party(party)
+    open_order_count = order_service.count_open_orders_for_party(party)
     tickets_sold = ticket_service.count_tickets_for_party(party)
 
     return {

@@ -18,8 +18,7 @@ from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 from ..brand import service as brand_service
 from ..party import service as party_service
-from ..shop import article_service
-from ..shop_admin import service as shop_admin_service
+from ..shop import article_service, order_service
 from ..ticket_admin import service as ticket_admin_service
 
 from .authorization import PartyPermission
@@ -59,8 +58,7 @@ def index_for_brand(brand_id, page):
 
     article_count_by_party_id = article_service.get_article_count_by_party_id()
 
-    order_count_by_party_id = shop_admin_service \
-        .get_order_count_by_party_id()
+    order_count_by_party_id = order_service.get_order_count_by_party_id()
 
     ticket_count_by_party_id = ticket_admin_service \
         .get_ticket_count_by_party_id()

@@ -12,21 +12,7 @@ from collections import Counter
 
 from ...database import db
 
-from ..party.models import Party
-from ..shop.models.article import Article
-from ..shop.models.order import Order, OrderItem, PaymentState
-
-
-def get_order_count_by_party_id():
-    """Return order count (including 0) per party, indexed by party ID."""
-    return dict(db.session \
-        .query(
-            Party.id,
-            db.func.count(Order.party_id)
-        ) \
-        .outerjoin(Order) \
-        .group_by(Party.id) \
-        .all())
+from ..shop.models.order import OrderItem, PaymentState
 
 
 def count_ordered_articles(article):
@@ -50,68 +36,6 @@ def count_ordered_articles(article):
         counter[order_item.order.payment_state] += order_item.quantity
 
     return dict(counter)
-
-
-def count_open_orders_for_party(party):
-    """Return the number of open orders for that party."""
-    return Order.query \
-        .filter_by(party_id=party.id) \
-        .filter_by(_payment_state=PaymentState.open.name) \
-        .count()
-
-
-def get_orders_for_party_paginated(party, page, per_page, *,
-                                   only_payment_state=None):
-    """Return all orders for that party, ordered by creation date.
-
-    If a payment state is specified, only orders in that state are
-    returned.
-    """
-    query = Order.query \
-        .for_party(party) \
-        .options(
-            db.joinedload('placed_by'),
-        ) \
-        .order_by(Order.created_at.desc())
-
-    if only_payment_state is not None:
-        query = query.filter_by(_payment_state=only_payment_state.name)
-
-    return query.paginate(page, per_page)
-
-
-class OrderAlreadyCanceled(Exception):
-    pass
-
-
-class OrderAlreadyMarkedAsPaid(Exception):
-    pass
-
-
-def cancel_order(order, updated_by, reason):
-    """Cancel the order.
-
-    Reserved quantities of articles from that order are made available again.
-    """
-    if order.payment_state == PaymentState.canceled:
-        raise OrderAlreadyCanceled()
-
-    order.cancel(updated_by, reason)
-
-    # Make the reserved quantity of articles available again.
-    for item in order.items:
-        item.article.quantity += item.quantity
-
-    db.session.commit()
-
-
-def mark_order_as_paid(order, updated_by):
-    """Mark the order as paid."""
-    if order.payment_state == PaymentState.paid:
-        raise OrderAlreadyMarkedAsPaid()
-
-    order.mark_as_paid(updated_by)
-    db.session.commit()
 
 
 def get_order_items_for_article(article):

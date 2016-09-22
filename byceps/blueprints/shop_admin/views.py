@@ -266,8 +266,9 @@ def order_index_for_party(party_id, page):
     per_page = request.args.get('per_page', type=int, default=15)
     only = request.args.get('only', type=PaymentState.__getitem__)
 
-    orders = service.get_orders_for_party_paginated(party, page, per_page,
-                                                    only_payment_state=only)
+    orders = order_service \
+        .get_orders_for_party_paginated(party, page, per_page,
+                                        only_payment_state=only)
 
     return {
         'party': party,
@@ -371,8 +372,8 @@ def order_cancel(id):
     reason = form.reason.data.strip()
 
     try:
-        service.cancel_order(order, g.current_user, reason)
-    except service.OrderAlreadyCanceled:
+        order_service.cancel_order(order, g.current_user, reason)
+    except order_service.OrderAlreadyCanceled:
         flash_error(
             'Die Bestellung ist bereits storniert worden; '
             'der Bezahlstatus kann nicht mehr geändert werden.')
@@ -411,8 +412,8 @@ def order_mark_as_paid(id):
     order = _get_order_or_404(id)
 
     try:
-        service.mark_order_as_paid(order, g.current_user)
-    except service.OrderAlreadyMarkedAsPaid:
+        order_service.mark_order_as_paid(order, g.current_user)
+    except order_service.OrderAlreadyMarkedAsPaid:
         flash_error('Die Bestellung ist bereits als bezahlt markiert worden.')
         return redirect_to('.order_view', id=order.id)
 

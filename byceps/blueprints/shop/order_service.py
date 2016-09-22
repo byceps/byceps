@@ -10,7 +10,9 @@ byceps.blueprints.shop.order_service
 
 from ...database import db
 
-from .models.order import Order
+from ..party.models import Party
+
+from .models.order import Order, PaymentState
 from .signals import order_placed
 from .service import generate_order_number
 
@@ -59,6 +61,48 @@ def _add_items_from_cart_to_order(cart, order):
         db.session.add(order_item)
 
 
+class OrderAlreadyCanceled(Exception):
+    pass
+
+
+class OrderAlreadyMarkedAsPaid(Exception):
+    pass
+
+
+def cancel_order(order, updated_by, reason):
+    """Cancel the order.
+
+    Reserved quantities of articles from that order are made available again.
+    """
+    if order.payment_state == PaymentState.canceled:
+        raise OrderAlreadyCanceled()
+
+    order.cancel(updated_by, reason)
+
+    # Make the reserved quantity of articles available again.
+    for item in order.items:
+        item.article.quantity += item.quantity
+
+    db.session.commit()
+
+
+def mark_order_as_paid(order, updated_by):
+    """Mark the order as paid."""
+    if order.payment_state == PaymentState.paid:
+        raise OrderAlreadyMarkedAsPaid()
+
+    order.mark_as_paid(updated_by)
+    db.session.commit()
+
+
+def count_open_orders_for_party(party):
+    """Return the number of open orders for that party."""
+    return Order.query \
+        .filter_by(party_id=party.id) \
+        .filter_by(_payment_state=PaymentState.open.name) \
+        .count()
+
+
 def find_order(order_id):
     """Return the order with that id, or `None` if not found."""
     return Order.query.get(order_id)
@@ -72,6 +116,38 @@ def find_order_with_details(order_id):
             db.joinedload('items'),
         ) \
         .get(order_id)
+
+
+def get_order_count_by_party_id():
+    """Return order count (including 0) per party, indexed by party ID."""
+    return dict(db.session \
+        .query(
+            Party.id,
+            db.func.count(Order.party_id)
+        ) \
+        .outerjoin(Order) \
+        .group_by(Party.id) \
+        .all())
+
+
+def get_orders_for_party_paginated(party, page, per_page, *,
+                                   only_payment_state=None):
+    """Return all orders for that party, ordered by creation date.
+
+    If a payment state is specified, only orders in that state are
+    returned.
+    """
+    query = Order.query \
+        .for_party(party) \
+        .options(
+            db.joinedload('placed_by'),
+        ) \
+        .order_by(Order.created_at.desc())
+
+    if only_payment_state is not None:
+        query = query.filter_by(_payment_state=only_payment_state.name)
+
+    return query.paginate(page, per_page)
 
 
 def get_orders_placed_by_user(user):
