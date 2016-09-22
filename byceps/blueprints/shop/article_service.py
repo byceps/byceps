@@ -170,7 +170,7 @@ def get_attachable_articles(article):
     unattachable_article_ids = {article.id for article in unattachable_articles}
 
     return Article.query \
-        .for_party(article.party) \
+        .for_party_id(article.party.id) \
         .filter(db.not_(Article.id.in_(unattachable_article_ids))) \
         .order_by(Article.item_number) \
         .all()

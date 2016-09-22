@@ -22,9 +22,6 @@ from ...party.models import Party
 
 class ArticleQuery(BaseQuery):
 
-    def for_party(self, party):
-        return self.for_party_id(party.id)
-
     def for_party_id(self, party_id):
         return self.filter_by(party_id=party_id)
 
