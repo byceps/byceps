@@ -10,6 +10,8 @@ byceps.blueprints.shop.article_service
 
 from ...database import db
 
+from ..party.models import Party
+
 from .models.article import Article, ArticleCompilation, \
     ArticleCompilationItem, AttachedArticle
 
@@ -49,6 +51,13 @@ def attach_article(article_to_attach, quantity, article_to_attach_to):
     db.session.commit()
 
 
+def count_articles_for_party(party):
+    """Return the number of articles that are assigned to that party."""
+    return Article.query \
+        .filter_by(party_id=party.id) \
+        .count()
+
+
 def unattach_article(attached_article):
     """Unattach an article from another."""
     db.session.delete(attached_article)
@@ -60,9 +69,33 @@ def find_article(article_id):
     return Article.query.get(article_id)
 
 
+def find_article_with_details(article_id):
+    """Return the article with that ID, or `None` if not found."""
+    return Article.query \
+        .options(
+            db.joinedload('party'),
+            db.joinedload('articles_attached_to').joinedload('article'),
+            db.joinedload('attached_articles').joinedload('article'),
+        ) \
+        .get(article_id)
+
+
 def find_attached_article(attached_article_id):
     """Return the attached article with that id, or `None` if not found."""
     return AttachedArticle.query.get(attached_article_id)
+
+
+def get_article_count_by_party_id():
+    """Return article count (including 0) per party, indexed by party ID."""
+
+    return dict(db.session \
+        .query(
+            Party.id,
+            db.func.count(Article.party_id)
+        ) \
+        .outerjoin(Article) \
+        .group_by(Party.id) \
+        .all())
 
 
 def get_articles_for_party(party):
@@ -124,3 +157,18 @@ def _add_attached_articles(compilation, attached_articles):
         compilation.append(
             ArticleCompilationItem(attached_article.article,
                                    fixed_quantity=attached_article.quantity))
+
+
+def get_attachable_articles(article):
+    """Return the articles that can be attached to that article."""
+    attached_articles = {attached.article for attached in article.attached_articles}
+
+    unattachable_articles = {article} | attached_articles
+
+    unattachable_article_ids = {article.id for article in unattachable_articles}
+
+    return Article.query \
+        .for_party(article.party) \
+        .filter(db.not_(Article.id.in_(unattachable_article_ids))) \
+        .order_by(Article.item_number) \
+        .all()

@@ -18,6 +18,7 @@ from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 from ..brand import service as brand_service
 from ..party import service as party_service
+from ..shop import article_service
 from ..shop_admin import service as shop_admin_service
 from ..ticket_admin import service as ticket_admin_service
 
@@ -56,8 +57,7 @@ def index_for_brand(brand_id, page):
     per_page = request.args.get('per_page', type=int, default=15)
     parties = party_service.paginate_parties_for_brand(brand.id, page, per_page)
 
-    article_count_by_party_id = shop_admin_service \
-        .get_article_count_by_party_id()
+    article_count_by_party_id = article_service.get_article_count_by_party_id()
 
     order_count_by_party_id = shop_admin_service \
         .get_order_count_by_party_id()

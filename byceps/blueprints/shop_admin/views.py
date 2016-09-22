@@ -68,7 +68,7 @@ def article_index_for_party(party_id, page):
 @templated
 def article_view(id):
     """Show a single article."""
-    article = service.find_article_with_details(id)
+    article = article_service.find_article_with_details(id)
     if article is None:
         abort(404)
 
@@ -197,7 +197,7 @@ def article_attachment_create_form(article_id):
     """Show form to attach an article to another article."""
     article = _get_article_or_404(article_id)
 
-    attachable_articles = service.get_attachable_articles(article)
+    attachable_articles = article_service.get_attachable_articles(article)
 
     article_choices = list(
         (article.id, '{} – {}'.format(article.item_number, article.description))
