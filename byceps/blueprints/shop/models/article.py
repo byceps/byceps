@@ -23,7 +23,10 @@ from ...party.models import Party
 class ArticleQuery(BaseQuery):
 
     def for_party(self, party):
-        return self.filter_by(party_id=party.id)
+        return self.for_party_id(party.id)
+
+    def for_party_id(self, party_id):
+        return self.filter_by(party_id=party_id)
 
     def currently_available(self):
         """Select only articles that are available in between the
@@ -64,9 +67,9 @@ class Article(db.Model):
     not_directly_orderable = db.Column(db.Boolean, default=False, nullable=False)
     requires_separate_order = db.Column(db.Boolean, default=False, nullable=False)
 
-    def __init__(self, party, item_number, description, price, tax_rate,
+    def __init__(self, party_id, item_number, description, price, tax_rate,
                  quantity, *, available_from=None, available_until=None):
-        self.party = party
+        self.party_id = party_id
         self.item_number = item_number
         self.description = description
         self.price = price

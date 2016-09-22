@@ -33,7 +33,7 @@ blueprint = create_blueprint('shop', __name__)
 def order_form(erroneous_form=None):
     """Show a form to order articles."""
     article_compilation = article_service \
-        .get_article_compilation_for_orderable_articles(g.party)
+        .get_article_compilation_for_orderable_articles(g.party.id)
 
     if article_compilation.is_empty():
         flash_error('Es sind keine Artikel verfügbar.')
@@ -61,7 +61,7 @@ def order_form(erroneous_form=None):
 def order():
     """Order articles."""
     article_compilation = article_service \
-        .get_article_compilation_for_orderable_articles(g.party)
+        .get_article_compilation_for_orderable_articles(g.party.id)
 
     if article_compilation.is_empty():
         flash_error('Es sind keine Artikel verfügbar.')

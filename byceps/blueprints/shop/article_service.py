@@ -16,9 +16,10 @@ from .models.article import Article, ArticleCompilation, \
     ArticleCompilationItem, AttachedArticle
 
 
-def create_article(party, item_number, description, price, tax_rate, quantity):
+def create_article(party_id, item_number, description, price, tax_rate,
+                   quantity):
     """Create an article."""
-    article = Article(party, item_number, description, price, tax_rate,
+    article = Article(party_id, item_number, description, price, tax_rate,
                       quantity)
 
     db.session.add(article)
@@ -51,10 +52,10 @@ def attach_article(article_to_attach, quantity, article_to_attach_to):
     db.session.commit()
 
 
-def count_articles_for_party(party):
+def count_articles_for_party(party_id):
     """Return the number of articles that are assigned to that party."""
     return Article.query \
-        .filter_by(party_id=party.id) \
+        .for_party_id(party_id) \
         .count()
 
 
@@ -87,7 +88,6 @@ def find_attached_article(attached_article_id):
 
 def get_article_count_by_party_id():
     """Return article count (including 0) per party, indexed by party ID."""
-
     return dict(db.session \
         .query(
             Party.id,
@@ -98,29 +98,31 @@ def get_article_count_by_party_id():
         .all())
 
 
-def get_articles_for_party(party):
+def get_articles_for_party(party_id):
     """Return all articles for that party, ordered by article number."""
-    return _get_articles_for_party_query(party).all()
+    return _get_articles_for_party_query(party_id) \
+        .all()
 
 
-def get_articles_for_party_paginated(party, page, per_page):
+def get_articles_for_party_paginated(party_id, page, per_page):
     """Return all articles for that party, ordered by article number."""
-    return _get_articles_for_party_query(party).paginate(page, per_page)
+    return _get_articles_for_party_query(party_id) \
+        .paginate(page, per_page)
 
 
-def _get_articles_for_party_query(party):
+def _get_articles_for_party_query(party_id):
     return Article.query \
-        .for_party(party) \
+        .for_party_id(party_id) \
         .order_by(Article.item_number)
 
 
-def get_article_compilation_for_orderable_articles(party):
+def get_article_compilation_for_orderable_articles(party_id):
     """Return a compilation of the articles which can be ordered for
     that party, less the ones that are only orderable in a dedicated
     order.
     """
     orderable_articles = Article.query \
-        .for_party(party) \
+        .for_party_id(party_id) \
         .filter_by(not_directly_orderable=False) \
         .filter_by(requires_separate_order=False) \
         .currently_available() \

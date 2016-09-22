@@ -36,8 +36,8 @@ def create_article(*, party=None, serial_number=1, description='Cool thing',
     if tax_rate is None:
         tax_rate = Decimal('0.19')
 
-    return Article(party, item_number, description, price, tax_rate, quantity,
-                   available_from=available_from,
+    return Article(party.id, item_number, description, price, tax_rate,
+                   quantity, available_from=available_from,
                    available_until=available_until)
 
 

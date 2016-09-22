@@ -54,7 +54,7 @@ def article_index_for_party(party_id, page):
     party = _get_party_or_404(party_id)
 
     per_page = request.args.get('per_page', type=int, default=15)
-    articles = article_service.get_articles_for_party_paginated(party, page,
+    articles = article_service.get_articles_for_party_paginated(party.id, page,
                                                                 per_page)
 
     return {
@@ -143,7 +143,7 @@ def article_create(party_id):
     tax_rate = form.tax_rate.data
     quantity = form.quantity.data
 
-    article = article_service.create_article(party, item_number, description,
+    article = article_service.create_article(party.id, item_number, description,
                                              price, tax_rate, quantity)
 
     flash_success('Des Artikel "{}" wurde angelegt.', article.item_number)

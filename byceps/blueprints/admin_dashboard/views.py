@@ -133,7 +133,7 @@ def view_party(party_id):
     seating_area_count = seating_admin_service.count_areas_for_party(party)
     seat_count = seating_admin_service.count_seats_for_party(party)
 
-    article_count = article_service.count_articles_for_party(party)
+    article_count = article_service.count_articles_for_party(party.id)
     open_order_count = order_service.count_open_orders_for_party(party)
     tickets_sold = ticket_service.count_tickets_for_party(party)
 
