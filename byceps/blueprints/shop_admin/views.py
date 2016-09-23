@@ -372,7 +372,7 @@ def order_cancel(id):
     reason = form.reason.data.strip()
 
     try:
-        order_service.cancel_order(order, g.current_user, reason)
+        order_service.cancel_order(order, g.current_user.id, reason)
     except order_service.OrderAlreadyCanceled:
         flash_error(
             'Die Bestellung ist bereits storniert worden; '
@@ -412,7 +412,7 @@ def order_mark_as_paid(id):
     order = _get_order_or_404(id)
 
     try:
-        order_service.mark_order_as_paid(order, g.current_user)
+        order_service.mark_order_as_paid(order, g.current_user.id)
     except order_service.OrderAlreadyMarkedAsPaid:
         flash_error('Die Bestellung ist bereits als bezahlt markiert worden.')
         return redirect_to('.order_view', id=order.id)
