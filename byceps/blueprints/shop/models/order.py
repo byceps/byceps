@@ -46,11 +46,11 @@ PaymentState = Enum('PaymentState', ['open', 'canceled', 'paid'])
 
 class OrderQuery(BaseQuery):
 
-    def for_party(self, party):
-        return self.filter_by(party_id=party.id)
+    def for_party_id(self, party_id):
+        return self.filter_by(party_id=party_id)
 
-    def placed_by(self, user):
-        return self.filter_by(placed_by=user)
+    def placed_by_id(self, user_id):
+        return self.filter_by(placed_by_id=user_id)
 
 
 class Order(db.Model):

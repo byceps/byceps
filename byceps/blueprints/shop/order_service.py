@@ -92,10 +92,10 @@ def mark_order_as_paid(order, updated_by):
     db.session.commit()
 
 
-def count_open_orders_for_party(party):
+def count_open_orders_for_party(party_id):
     """Return the number of open orders for that party."""
     return Order.query \
-        .filter_by(party_id=party.id) \
+        .for_party_id(party_id) \
         .filter_by(_payment_state=PaymentState.open.name) \
         .count()
 
@@ -127,7 +127,7 @@ def get_order_count_by_party_id():
         .all())
 
 
-def get_orders_for_party_paginated(party, page, per_page, *,
+def get_orders_for_party_paginated(party_id, page, per_page, *,
                                    only_payment_state=None):
     """Return all orders for that party, ordered by creation date.
 
@@ -135,7 +135,7 @@ def get_orders_for_party_paginated(party, page, per_page, *,
     returned.
     """
     query = Order.query \
-        .for_party(party) \
+        .for_party_id(party_id) \
         .options(
             db.joinedload('placed_by'),
         ) \
@@ -147,18 +147,19 @@ def get_orders_for_party_paginated(party, page, per_page, *,
     return query.paginate(page, per_page)
 
 
-def get_orders_placed_by_user(user):
+def get_orders_placed_by_user(user_id):
     """Return orders placed by the user."""
     return Order.query \
-        .placed_by(user) \
+        .placed_by_id(user_id) \
         .order_by(Order.created_at.desc()) \
         .all()
 
 
-def has_user_placed_orders(user, party):
+def has_user_placed_orders(user_id, party_id):
     """Return `True` if the user has placed orders for that party."""
     orders_total = Order.query \
-        .for_party(party) \
-        .filter_by(placed_by=user) \
+        .for_party_id(party_id) \
+        .placed_by_id(user_id) \
         .count()
+
     return orders_total > 0

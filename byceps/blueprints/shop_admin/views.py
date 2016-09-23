@@ -267,7 +267,7 @@ def order_index_for_party(party_id, page):
     only = request.args.get('only', type=PaymentState.__getitem__)
 
     orders = order_service \
-        .get_orders_for_party_paginated(party, page, per_page,
+        .get_orders_for_party_paginated(party.id, page, per_page,
                                         only_payment_state=only)
 
     return {

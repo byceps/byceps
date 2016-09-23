@@ -81,7 +81,7 @@ def view(id):
 
     badges = badge_service.get_badges_for_user(user.id)
 
-    orders = order_service.get_orders_placed_by_user(user)
+    orders = order_service.get_orders_placed_by_user(user.id)
 
     tickets = ticket_service.find_tickets_related_to_user(user)
 

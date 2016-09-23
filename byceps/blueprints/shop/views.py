@@ -110,7 +110,7 @@ def order_single_form(article_id, erroneous_form=None):
             'article': None,
         }
 
-    if order_service.has_user_placed_orders(user, g.party):
+    if order_service.has_user_placed_orders(user.id, g.party.id):
         flash_error('Du kannst keine weitere Bestellung aufgeben.')
         return {
             'form': form,
@@ -149,7 +149,7 @@ def order_single(article_id):
 
     user = g.current_user
 
-    if order_service.has_user_placed_orders(user, g.party):
+    if order_service.has_user_placed_orders(user.id, g.party.id):
         flash_error('Du kannst keine weitere Bestellung aufgeben.')
         return order_single_form(article.id)
 
