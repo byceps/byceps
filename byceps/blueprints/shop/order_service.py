@@ -16,9 +16,9 @@ from .models.order import Order, PaymentState
 from .signals import order_placed
 
 
-def create_order(party, order_number, orderer, payment_method, cart):
+def create_order(party_id, order_number, orderer, payment_method, cart):
     """Create an order of one or more articles."""
-    order = _build_order(party, order_number, orderer, payment_method)
+    order = _build_order(party_id, order_number, orderer, payment_method)
     _add_items_from_cart_to_order(cart, order)
     db.session.commit()
 
@@ -27,10 +27,10 @@ def create_order(party, order_number, orderer, payment_method, cart):
     return order
 
 
-def _build_order(party, order_number, orderer, payment_method):
+def _build_order(party_id, order_number, orderer, payment_method):
     """Create an order of one or more articles."""
     order = Order(
-        party,
+        party_id,
         order_number,
         orderer.user,
         orderer.first_names,

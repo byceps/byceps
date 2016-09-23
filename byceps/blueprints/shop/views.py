@@ -82,8 +82,8 @@ def order():
     orderer = form.get_orderer(g.current_user)
     payment_method = PaymentMethod.cash
 
-    order_service.create_order(g.party, order_number, orderer, payment_method,
-                               cart)
+    order_service.create_order(g.party.id, order_number, orderer,
+                               payment_method, cart)
 
     flash_success('Deine Bestellung wurde entgegen genommen. Vielen Dank!')
     return redirect_to('snippet.order_placed')
@@ -169,8 +169,8 @@ def order_single(article_id):
     for item in article_compilation:
         cart.add_item(item.article, item.fixed_quantity)
 
-    order_service.create_order(g.party, order_number, orderer, payment_method,
-                               cart)
+    order_service.create_order(g.party.id, order_number, orderer,
+                               payment_method, cart)
 
     flash_success('Deine Bestellung wurde entgegen genommen. Vielen Dank!')
     return redirect_to('snippet.order_placed')

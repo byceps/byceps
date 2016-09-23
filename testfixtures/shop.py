@@ -65,7 +65,7 @@ def create_order(placed_by, *, party=None, serial_number=1,
     order_number = '{}{:05d}'.format(prefix.order_number, serial_number)
 
     return Order(
-        party,
+        party.id,
         order_number,
         placed_by,
         placed_by.detail.first_names,
