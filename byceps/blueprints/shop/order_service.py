@@ -30,17 +30,17 @@ def create_order(party, order_number, orderer, payment_method, cart):
 def _build_order(party, order_number, orderer, payment_method):
     """Create an order of one or more articles."""
     order = Order(
-        party=party,
-        order_number=order_number,
-        placed_by=orderer.user,
-        first_names=orderer.first_names,
-        last_name=orderer.last_name,
-        date_of_birth=orderer.date_of_birth,
-        country=orderer.country,
-        zip_code=orderer.zip_code,
-        city=orderer.city,
-        street=orderer.street,
-        payment_method=payment_method,
+        party,
+        order_number,
+        orderer.user,
+        orderer.first_names,
+        orderer.last_name,
+        orderer.date_of_birth,
+        orderer.country,
+        orderer.zip_code,
+        orderer.city,
+        orderer.street,
+        payment_method,
     )
     db.session.add(order)
     return order

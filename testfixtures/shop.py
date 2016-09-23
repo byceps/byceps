@@ -65,17 +65,17 @@ def create_order(placed_by, *, party=None, serial_number=1,
     order_number = '{}{:05d}'.format(prefix.order_number, serial_number)
 
     return Order(
-        party=party,
-        order_number=order_number,
-        placed_by=placed_by,
-        first_names=placed_by.detail.first_names,
-        last_name=placed_by.detail.last_name,
-        date_of_birth=placed_by.detail.date_of_birth,
-        country=placed_by.detail.country,
-        zip_code=placed_by.detail.zip_code,
-        city=placed_by.detail.city,
-        street=placed_by.detail.street,
-        payment_method=payment_method,
+        party,
+        order_number,
+        placed_by,
+        placed_by.detail.first_names,
+        placed_by.detail.last_name,
+        placed_by.detail.date_of_birth,
+        placed_by.detail.country,
+        placed_by.detail.zip_code,
+        placed_by.detail.city,
+        placed_by.detail.street,
+        payment_method,
     )
 
 
