@@ -54,7 +54,7 @@ def create_orderer(user):
 
 
 def create_order(placed_by, *, party=None, serial_number=1,
-                 payment_method=PaymentMethod.cash):
+                 payment_method=PaymentMethod.bank_transfer):
     if party is None:
         party = create_party()
 

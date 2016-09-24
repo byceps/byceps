@@ -42,7 +42,9 @@
 
 {% macro render_order_payment_method(payment_method) %}
   {%- set name = payment_method.name %}
-  {%- if name == 'cash' -%}
+  {%- if name == 'bank_transfer' -%}
+    Überweisung
+  {%- elif name == 'cash' -%}
     Barzahlung
   {%- else -%}
     ?

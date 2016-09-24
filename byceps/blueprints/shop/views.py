@@ -80,7 +80,7 @@ def order():
 
     order_number = service.generate_order_number(g.party)
     orderer = form.get_orderer(g.current_user)
-    payment_method = PaymentMethod.cash
+    payment_method = PaymentMethod.bank_transfer
 
     order_service.create_order(g.party.id, order_number, orderer,
                                payment_method, cart)
@@ -163,7 +163,7 @@ def order_single(article_id):
 
     order_number = service.generate_order_number(g.party)
     orderer = form.get_orderer(user)
-    payment_method = PaymentMethod.cash
+    payment_method = PaymentMethod.bank_transfer
 
     cart = Cart()
     for item in article_compilation:
