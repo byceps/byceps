@@ -19,7 +19,7 @@ from byceps.services.shop.sequence.models import PartySequence, \
 from .party import create_party
 
 
-def create_article(*, party=None, serial_number=1, description='Cool thing',
+def create_article(*, party=None, sequence_number=1, description='Cool thing',
                    price=None, tax_rate=None, available_from=None,
                    available_until=None, quantity=1):
     if party is None:
@@ -29,7 +29,7 @@ def create_article(*, party=None, serial_number=1, description='Cool thing',
     if prefix is None:
         prefix = create_party_sequence_prefix(party)
 
-    item_number = '{}{:05d}'.format(prefix.article_number, serial_number)
+    item_number = '{}{:05d}'.format(prefix.article_number, sequence_number)
 
     if price is None:
         price = Decimal('24.95')
@@ -54,7 +54,7 @@ def create_orderer(user):
         user.detail.street)
 
 
-def create_order(placed_by, *, party=None, serial_number=1,
+def create_order(placed_by, *, party=None, sequence_number=1,
                  payment_method=PaymentMethod.bank_transfer):
     if party is None:
         party = create_party()
@@ -63,7 +63,7 @@ def create_order(placed_by, *, party=None, serial_number=1,
     if prefix is None:
         prefix = create_party_sequence_prefix(party)
 
-    order_number = '{}{:05d}'.format(prefix.order_number, serial_number)
+    order_number = '{}{:05d}'.format(prefix.order_number, sequence_number)
 
     return Order(
         party.id,

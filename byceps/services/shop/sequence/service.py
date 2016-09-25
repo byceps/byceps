@@ -17,24 +17,24 @@ def generate_article_number(party):
     """Generate and reserve an unused, unique article number for this party."""
     prefix = party.shop_number_prefix.article_number
 
-    article_serial_number = _get_next_serial_number(party.id,
-                                                    PartySequencePurpose.article)
+    article_sequence_number = _get_next_sequence_number(party.id,
+        PartySequencePurpose.article)
 
-    return '{}{:05d}'.format(prefix, article_serial_number)
+    return '{}{:05d}'.format(prefix, article_sequence_number)
 
 
 def generate_order_number(party):
     """Generate and reserve an unused, unique order number for this party."""
     prefix = party.shop_number_prefix.order_number
 
-    order_serial_number = _get_next_serial_number(party.id,
-                                                  PartySequencePurpose.order)
+    order_sequence_number = _get_next_sequence_number(party.id,
+        PartySequencePurpose.order)
 
-    return '{}{:05d}'.format(prefix, order_serial_number)
+    return '{}{:05d}'.format(prefix, order_sequence_number)
 
 
-def _get_next_serial_number(party_id, purpose):
-    """Calculate and reserve the next serial number for the party and
+def _get_next_sequence_number(party_id, purpose):
+    """Calculate and reserve the next sequence number for the party and
     purpose.
     """
     sequence = PartySequence.query \

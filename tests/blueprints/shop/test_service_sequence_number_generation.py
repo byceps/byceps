@@ -17,7 +17,7 @@ from testfixtures.shop import create_party_sequence, \
 from tests.base import AbstractAppTestCase
 
 
-class SerialNumberGenerationTestCase(AbstractAppTestCase):
+class SequenceNumberGenerationTestCase(AbstractAppTestCase):
 
     def test_generate_article_number_default(self):
         self.setup_article_number_sequence(self.party, 'AEC-01-A')
@@ -28,10 +28,10 @@ class SerialNumberGenerationTestCase(AbstractAppTestCase):
 
     def test_generate_article_number_custom(self):
         party = self.create_custom_brand_and_party()
-        last_assigned_article_serial_number = 41
+        last_assigned_article_sequence_number = 41
 
         self.setup_article_number_sequence(party, 'XYZ-09-A',
-            value=last_assigned_article_serial_number)
+            value=last_assigned_article_sequence_number)
 
         actual = generate_article_number(party)
 
@@ -46,10 +46,10 @@ class SerialNumberGenerationTestCase(AbstractAppTestCase):
 
     def test_generate_order_number_custom(self):
         party = self.create_custom_brand_and_party()
-        last_assigned_order_serial_number = 206
+        last_assigned_order_sequence_number = 206
 
         self.setup_order_number_sequence(party, 'LOL-03-B',
-            value=last_assigned_order_serial_number)
+            value=last_assigned_order_sequence_number)
 
         actual = generate_order_number(party)
 

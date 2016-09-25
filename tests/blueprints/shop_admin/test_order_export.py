@@ -108,10 +108,10 @@ class ExportTestCase(AbstractAppTestCase):
         self.db.session.add(self.article_guest_fee)
         self.db.session.commit()
 
-    def build_article(self, serial_number, description, price, tax_rate):
+    def build_article(self, sequence_number, description, price, tax_rate):
         return create_article(
             party=self.party,
-            serial_number=serial_number,
+            sequence_number=sequence_number,
             description=description,
             price=price,
             tax_rate=tax_rate,
@@ -122,7 +122,7 @@ class ExportTestCase(AbstractAppTestCase):
         self.db.session.add(orderer)
 
         self.order = create_order(placed_by=orderer, party=self.party,
-                                  serial_number=27)
+                                  sequence_number=27)
         self.order.created_at = datetime(2015, 2, 26, 13, 26, 24)
         self.db.session.add(self.order)
 
