@@ -22,7 +22,7 @@ class NumberGenerationFailed(Exception):
 
 def generate_article_number(party):
     """Generate and reserve an unused, unique article number for this party."""
-    prefix = party.shop_number_prefix.article_number
+    prefix = get_article_number_prefix(party.id)
 
     if prefix is None:
         raise NumberGenerationFailed(
@@ -37,7 +37,7 @@ def generate_article_number(party):
 
 def generate_order_number(party):
     """Generate and reserve an unused, unique order number for this party."""
-    prefix = party.shop_number_prefix.order_number
+    prefix = get_order_number_prefix(party.id)
 
     if prefix is None:
         raise NumberGenerationFailed(
