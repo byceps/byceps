@@ -17,7 +17,7 @@ from .models.seat import Seat
 
 def count_areas_for_party(party):
     """Return the number of seating areas for that party."""
-    return Area.query.for_party(party).count()
+    return Area.query.for_party_id(party.id).count()
 
 
 def count_seats_for_party(party):
@@ -30,7 +30,7 @@ def count_seats_for_party(party):
 def find_area_for_party_by_slug(party, slug):
     """Return the area for that party with that slug, or `None` if not found."""
     return Area.query \
-        .for_party(party) \
+        .for_party_id(party.id) \
         .filter_by(slug=slug) \
         .options(db.joinedload('seats').joinedload('category')) \
         .first()
@@ -39,14 +39,14 @@ def find_area_for_party_by_slug(party, slug):
 def get_areas_for_party(party):
     """Return all areas for that party."""
     return Area.query \
-        .for_party(party) \
+        .for_party_id(party.id) \
         .all()
 
 
 def get_areas_for_party_paginated(party, page, per_page):
     """Return the areas for that party to show on the specified page."""
     return Area.query \
-        .for_party(party) \
+        .for_party_id(party.id) \
         .order_by(Area.title) \
         .paginate(page, per_page)
 

@@ -11,13 +11,11 @@ byceps.blueprints.seating.models.area
 from ....database import BaseQuery, db, generate_uuid
 from ....util.instances import ReprBuilder
 
-from ...party.models import Party
-
 
 class AreaQuery(BaseQuery):
 
-    def for_party(self, party):
-        return self.filter_by(party_id=party.id)
+    def for_party_id(self, party_id):
+        return self.filter_by(party_id=party_id)
 
 
 class Area(db.Model):
@@ -35,15 +33,14 @@ class Area(db.Model):
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     party_id = db.Column(db.Unicode(20), db.ForeignKey('parties.id'), index=True, nullable=False)
-    party = db.relationship(Party, backref='seating_areas')
     slug = db.Column(db.Unicode(40), nullable=False)
     title = db.Column(db.Unicode(40), nullable=False)
     image_filename = db.Column(db.Unicode(40), nullable=True)
     image_width = db.Column(db.Integer, nullable=True)
     image_height = db.Column(db.Integer, nullable=True)
 
-    def __init__(self, party, slug, title):
-        self.party = party
+    def __init__(self, party_id, slug, title):
+        self.party_id = party_id
         self.slug = slug
         self.title = title
 
@@ -55,6 +52,6 @@ class Area(db.Model):
     def __repr__(self):
         return ReprBuilder(self) \
             .add_with_lookup('id') \
-            .add_with_lookup('party') \
+            .add('party', self.party_id) \
             .add_with_lookup('slug') \
             .build()
