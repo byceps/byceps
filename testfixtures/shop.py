@@ -86,10 +86,10 @@ def create_order_item(order, article, quantity):
 
 def create_party_sequence_prefix(party, *, article_number_prefix='AEC-03-A',
                                  order_number_prefix='AEC-03-B'):
-    return PartySequencePrefix(party, article_number_prefix, order_number_prefix)
+    return PartySequencePrefix(party.id, article_number_prefix, order_number_prefix)
 
 
 def create_party_sequence(party, purpose, *, value=0):
-    sequence = PartySequence(party, purpose)
+    sequence = PartySequence(party.id, purpose)
     sequence.value = value
     return sequence

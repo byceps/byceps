@@ -27,8 +27,8 @@ class PartySequencePrefix(db.Model):
     article_number = db.Column(db.Unicode(20), unique=True, nullable=False)
     order_number = db.Column(db.Unicode(20), unique=True, nullable=False)
 
-    def __init__(self, party, article_number_prefix, order_number_prefix):
-        self.party = party
+    def __init__(self, party_id, article_number_prefix, order_number_prefix):
+        self.party_id = party_id
         self.article_number = article_number_prefix
         self.order_number = order_number_prefix
 
@@ -52,8 +52,8 @@ class PartySequence(db.Model):
     _purpose = db.Column('purpose', db.Unicode(20), primary_key=True)
     value = db.Column(db.Integer, default=0, nullable=False)
 
-    def __init__(self, party, purpose):
-        self.party = party
+    def __init__(self, party_id, purpose):
+        self.party_id = party_id
         self.purpose = purpose
 
     @hybrid_property

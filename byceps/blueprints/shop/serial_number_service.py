@@ -44,7 +44,7 @@ def _get_next_serial_number(party_id, purpose):
         .one_or_none()
 
     if sequence is None:
-        sequence = PartySequence(party, purpose)
+        sequence = PartySequence(party.id, purpose)
         db.session.add(sequence)
         db.session.commit()
 

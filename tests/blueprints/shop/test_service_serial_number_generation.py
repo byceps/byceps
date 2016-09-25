@@ -63,26 +63,28 @@ class SerialNumberGenerationTestCase(AbstractAppTestCase):
         party = create_party(id='custom-party-4', brand=brand,
                              title='Custom Party 4')
 
-        self.db.session.add(brand)
-        self.db.session.add(party)
-        self.db.session.commit()
+        self._persist(brand, party)
 
         return party
 
     def setup_article_number_sequence(self, party, prefix, *, value=0):
-        create_party_sequence_prefix(party, article_number_prefix=prefix)
+        sequence_prefix = create_party_sequence_prefix(party,
+            article_number_prefix=prefix)
 
-        self._set_number_sequence(party, PartySequencePurpose.article,
-                                  value=value)
-
-    def setup_order_number_sequence(self, party, prefix, *, value=0):
-        create_party_sequence_prefix(party, order_number_prefix=prefix)
-
-        self._set_number_sequence(party, PartySequencePurpose.order,
-                                  value=value)
-
-    def _set_number_sequence(self, party, purpose, *, value=0):
+        purpose = PartySequencePurpose.article
         sequence = create_party_sequence(party, purpose, value=value)
 
-        self.db.session.add(sequence)
+        self._persist(sequence_prefix, sequence)
+
+    def setup_order_number_sequence(self, party, prefix, *, value=0):
+        sequence_prefix = create_party_sequence_prefix(party,
+            order_number_prefix=prefix)
+
+        purpose = PartySequencePurpose.order
+        sequence = create_party_sequence(party, purpose, value=value)
+
+        self._persist(sequence_prefix, sequence)
+
+    def _persist(self, *instances):
+        self.db.session.add_all(instances)
         self.db.session.commit()
