@@ -20,9 +20,7 @@ from tests.base import AbstractAppTestCase
 class SerialNumberGenerationTestCase(AbstractAppTestCase):
 
     def test_generate_article_number_default(self):
-        create_party_sequence_prefix(self.party,
-                                     article_number_prefix='AEC-01-A')
-        self.set_article_number_sequence()
+        self.setup_article_number_sequence(self.party, 'AEC-01-A')
 
         actual = generate_article_number(self.party)
 
@@ -33,16 +31,16 @@ class SerialNumberGenerationTestCase(AbstractAppTestCase):
 
         brand = create_brand()
         party = create_party(brand=brand)
-        create_party_sequence_prefix(party, article_number_prefix='XYZ-09-A')
-        self.set_article_number_sequence(value=last_assigned_article_serial_number)
+
+        self.setup_article_number_sequence(party, 'XYZ-09-A',
+            value=last_assigned_article_serial_number)
 
         actual = generate_article_number(party)
 
         self.assertEqual(actual, 'XYZ-09-A00042')
 
     def test_generate_order_number_default(self):
-        create_party_sequence_prefix(self.party, order_number_prefix='AEC-01-B')
-        self.set_order_number_sequence()
+        self.setup_order_number_sequence(self.party, 'AEC-01-B')
 
         actual = generate_order_number(self.party)
 
@@ -53,8 +51,9 @@ class SerialNumberGenerationTestCase(AbstractAppTestCase):
 
         brand = create_brand()
         party = create_party(brand=brand)
-        create_party_sequence_prefix(party, order_number_prefix='LOL-03-B')
-        self.set_order_number_sequence(value=last_assigned_order_serial_number)
+
+        self.setup_order_number_sequence(party, 'LOL-03-B',
+            value=last_assigned_order_serial_number)
 
         actual = generate_order_number(party)
 
@@ -63,10 +62,14 @@ class SerialNumberGenerationTestCase(AbstractAppTestCase):
     # -------------------------------------------------------------------- #
     # helpers
 
-    def set_article_number_sequence(self, *, value=0):
+    def setup_article_number_sequence(self, party, prefix, *, value=0):
+        create_party_sequence_prefix(party, article_number_prefix=prefix)
+
         self._set_number_sequence(PartySequencePurpose.article, value=value)
 
-    def set_order_number_sequence(self, *, value=0):
+    def setup_order_number_sequence(self, party, prefix, *, value=0):
+        create_party_sequence_prefix(party, order_number_prefix=prefix)
+
         self._set_number_sequence(PartySequencePurpose.order, value=value)
 
     def _set_number_sequence(self, purpose, *, value=0):
