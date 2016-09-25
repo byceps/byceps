@@ -38,11 +38,12 @@ def index_for_party(party_id, page):
         abort(404)
 
     per_page = request.args.get('per_page', type=int, default=15)
-    areas = seating_service.get_areas_for_party_paginated(party, page, per_page)
+    areas = seating_service.get_areas_for_party_paginated(party.id, page,
+                                                          per_page)
 
-    seat_total_per_area = seating_service.get_seat_total_per_area(party)
+    seat_total_per_area = seating_service.get_seat_total_per_area(party.id)
 
-    categories = seating_service.get_categories_for_party(party)
+    categories = seating_service.get_categories_for_party(party.id)
 
     return {
         'party': party,

@@ -39,7 +39,8 @@ def index_for_party(party_id, page):
 
     per_page = request.args.get('per_page', type=int, default=15)
 
-    tickets = service.get_tickets_with_details_for_party_paginated(party, page,
+    tickets = service.get_tickets_with_details_for_party_paginated(party.id,
+                                                                   page,
                                                                    per_page)
 
     return {
