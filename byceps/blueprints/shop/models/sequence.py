@@ -67,7 +67,6 @@ class PartySequence(db.Model):
 
     def __repr__(self):
         return ReprBuilder(self) \
-            .add_with_lookup('id') \
             .add('party', self.party_id) \
             .add('purpose', self.purpose.name) \
             .add_with_lookup('value') \
