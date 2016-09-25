@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
 
 """
-byceps.blueprints.shop.serial_number_service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.shop.sequence.service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2016 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
 """
 
-from ...database import db
+from ....database import db
 
-from .models.sequence import PartySequence, PartySequencePurpose
+from .models import PartySequence, PartySequencePurpose
 
 
 def generate_article_number(party):

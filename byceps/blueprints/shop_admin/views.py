@@ -14,6 +14,7 @@ from decimal import Decimal
 from flask import abort, current_app, g, render_template, request, Response, \
     url_for
 
+from ...services.shop.sequence import service as sequence_service
 from ...util.framework import create_blueprint, flash_error, flash_success
 from ...util.money import to_two_places
 from ...util.templating import templated
@@ -23,7 +24,7 @@ from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 from ..party import service as party_service
 from ..shop.models.order import PaymentState
-from ..shop import article_service, order_service, serial_number_service
+from ..shop import article_service, order_service
 from ..shop.signals import order_canceled, order_paid
 from ..ticket import service as ticket_service
 
@@ -136,7 +137,7 @@ def article_create(party_id):
 
     form = ArticleCreateForm(request.form)
 
-    item_number = serial_number_service.generate_article_number(party)
+    item_number = sequence_service.generate_article_number(party)
     description = form.description.data.strip()
     price = form.price.data
     tax_rate = form.tax_rate.data

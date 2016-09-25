@@ -13,7 +13,7 @@ from decimal import Decimal
 from byceps.blueprints.shop.models.article import Article
 from byceps.blueprints.shop.models.order import Order, Orderer, OrderItem, \
     PaymentMethod
-from byceps.blueprints.shop.models.sequence import PartySequence, \
+from byceps.services.shop.sequence.models import PartySequence, \
     PartySequencePrefix
 
 from .party import create_party

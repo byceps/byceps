@@ -11,6 +11,7 @@ byceps.blueprints.shop.views
 from flask import abort, g, request
 
 from ...services.countries import service as countries_service
+from ...services.shop.sequence import service as sequence_service
 from ...util.framework import create_blueprint, flash_error, flash_success
 from ...util.templating import templated
 from ...util.views import redirect_to
@@ -20,7 +21,7 @@ from ..authentication.decorators import login_required
 from .forms import assemble_articles_order_form, OrderForm
 from .models.cart import Cart
 from .models.order import PaymentMethod
-from . import article_service, order_service, serial_number_service
+from . import article_service, order_service
 
 
 blueprint = create_blueprint('shop', __name__)
@@ -78,7 +79,7 @@ def order():
         flash_error('Es wurden keine Artikel ausgewählt.')
         return order_form(form)
 
-    order_number = serial_number_service.generate_order_number(g.party)
+    order_number = sequence_service.generate_order_number(g.party)
     orderer = form.get_orderer(g.current_user)
     payment_method = PaymentMethod.bank_transfer
 
@@ -161,7 +162,7 @@ def order_single(article_id):
     if not form.validate():
         return order_single_form(article.id, form)
 
-    order_number = serial_number_service.generate_order_number(g.party)
+    order_number = sequence_service.generate_order_number(g.party)
     orderer = form.get_orderer(user)
     payment_method = PaymentMethod.bank_transfer
 

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-byceps.blueprints.shop.models.sequence
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.shop.sequence.models
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2016 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -12,10 +12,9 @@ from enum import Enum
 
 from sqlalchemy.ext.hybrid import hybrid_property
 
+from ....blueprints.party.models import Party
 from ....database import db
 from ....util.instances import ReprBuilder
-
-from ...party.models import Party
 
 
 class PartySequencePrefix(db.Model):
