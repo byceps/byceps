@@ -144,7 +144,7 @@ def create_seating_area(party, slug, title):
 
 @add_to_database
 def create_seat_category(party, title):
-    return SeatingCategory(party, title)
+    return SeatingCategory(party.id, title)
 
 
 @add_to_database

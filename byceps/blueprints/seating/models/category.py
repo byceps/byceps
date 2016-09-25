@@ -11,13 +11,11 @@ byceps.blueprints.seating.models.category
 from ....database import BaseQuery, db, generate_uuid
 from ....util.instances import ReprBuilder
 
-from ...party.models import Party
-
 
 class CategoryQuery(BaseQuery):
 
-    def for_party(self, party):
-        return self.filter_by(party_id=party.id)
+    def for_party_id(self, party_id):
+        return self.filter_by(party_id=party_id)
 
 
 class Category(db.Model):
@@ -32,16 +30,15 @@ class Category(db.Model):
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     party_id = db.Column(db.Unicode(20), db.ForeignKey('parties.id'), index=True, nullable=False)
-    party = db.relationship(Party, backref='seat_categories')
     title = db.Column(db.Unicode(40), nullable=False)
 
-    def __init__(self, party, title):
-        self.party = party
+    def __init__(self, party_id, title):
+        self.party_id = party_id
         self.title = title
 
     def __repr__(self):
         return ReprBuilder(self) \
             .add_with_lookup('id') \
-            .add_with_lookup('party') \
+            .add('party', self.party_id) \
             .add_with_lookup('title') \
             .build()

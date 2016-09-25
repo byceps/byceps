@@ -54,7 +54,7 @@ def get_areas_for_party_paginated(party, page, per_page):
 def get_categories_for_party(party):
     """Return all categories for that party."""
     return Category.query \
-        .for_party(party) \
+        .for_party_id(party.id) \
         .all()
 
 
