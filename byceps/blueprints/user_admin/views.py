@@ -8,6 +8,8 @@ byceps.blueprints.user_admin.views
 :License: Modified BSD, see LICENSE for details.
 """
 
+from collections import defaultdict
+
 from flask import abort, request
 
 from ...services.user_badge import service as badge_service
@@ -17,6 +19,7 @@ from ...util.templating import templated
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 from ..authorization_admin import service as authorization_admin_service
+from ..party import service as party_service
 from ..shop import order_service
 from ..ticket import service as ticket_service
 from ..user import service as user_service
@@ -85,10 +88,31 @@ def view(id):
 
     tickets = ticket_service.find_tickets_related_to_user(user)
 
+    tickets_by_party = _group_tickets_by_party(tickets)
+
+    parties_and_tickets = []
+    for party in sorted(tickets_by_party.keys(),
+                        key=lambda p: p.starts_at, reverse=True):
+        tickets_sorted = sorted(tickets, key=lambda t: t.created_at)
+        parties_and_tickets.append((party, tickets_sorted))
+
     return {
         'user': user,
         'permissions_by_role': permissions_by_role,
         'badges': badges,
         'orders': orders,
-        'tickets': tickets,
+        'parties_and_tickets': parties_and_tickets,
     }
+
+
+def _group_tickets_by_party(tickets):
+    ticket_party_ids = {t.category.party_id for t in tickets}
+    ticket_parties = party_service.get_parties(ticket_party_ids)
+    ticket_parties_by_party_id = {p.id: p for p in ticket_parties}
+
+    tickets_by_party = defaultdict(list)
+    for ticket in tickets:
+        party = ticket_parties_by_party_id[ticket.category.party_id]
+        tickets_by_party[party].append(ticket)
+
+    return tickets_by_party

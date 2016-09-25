@@ -58,6 +58,9 @@ def view(id):
     if ticket is None:
         abort(404)
 
+    party = party_service.find_party(ticket.category.party_id)
+
     return {
+        'party': party,
         'ticket': ticket,
     }

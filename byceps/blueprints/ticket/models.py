@@ -20,8 +20,8 @@ from ..user.models.user import User
 
 class TicketQuery(BaseQuery):
 
-    def for_party(self, party):
-        return self.join(Category).filter(Category.party_id == party.id)
+    def for_party_id(self, party_id):
+        return self.join(Category).filter(Category.party_id == party_id)
 
 
 class Ticket(db.Model):
@@ -54,11 +54,6 @@ class Ticket(db.Model):
     def __init__(self, category, owned_by):
         self.category = category
         self.owned_by = owned_by
-
-    @property
-    def party(self):
-        """Return the party this ticket belongs to."""
-        return self.category.party
 
     def get_seat_manager(self):
         """Return the user that may choose the seat for this ticket."""

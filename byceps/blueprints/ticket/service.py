@@ -59,7 +59,7 @@ def find_tickets_related_to_user(user):
 def find_tickets_related_to_user_for_party(user, party):
     """Return tickets related to the user for the party."""
     return Ticket.query \
-        .for_party(party) \
+        .for_party_id(party.id) \
         .filter(
             (Ticket.owned_by == user) |
             (Ticket.seat_managed_by == user) |
@@ -83,7 +83,7 @@ def find_tickets_used_by_user(user, party):
         return []
 
     return Ticket.query \
-        .for_party(party) \
+        .for_party_id(party.id) \
         .filter(Ticket.used_by == user) \
         .join(Seat) \
         .options(
@@ -99,7 +99,7 @@ def uses_any_ticket_for_party(user, party):
         return False
 
     count = Ticket.query \
-        .for_party(party) \
+        .for_party_id(party.id) \
         .filter(Ticket.used_by == user) \
         .count()
 
@@ -115,7 +115,9 @@ def get_attended_parties(user):
 
 def count_tickets_for_party(party):
     """Return the number of "sold" (i.e. generated) tickets for that party."""
-    return Ticket.query.for_party(party).count()
+    return Ticket.query \
+        .for_party_id(party.id) \
+        .count()
 
 
 def get_attendees_by_party(parties):

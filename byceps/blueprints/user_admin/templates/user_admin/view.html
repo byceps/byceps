@@ -183,11 +183,11 @@
       </tr>
     </thead>
     <tbody>
-      {%- for party, tickets in tickets|groupby(attribute='party.title')|reverse %}
-        {%- for ticket in tickets|sort(attribute='created_at') %}
+      {%- for party, tickets in parties_and_tickets %}
+        {%- for ticket in tickets %}
       <tr>
         {%- if loop.first %}
-        <td rowspan="{{ tickets|length }}"><strong>{{ ticket.category.party.title }}</strong></td>
+        <td rowspan="{{ tickets|length }}"><strong>{{ party.title }}</strong></td>
         {%- endif %}
         <td>{{ ticket.category.title }}</td>
         <td>

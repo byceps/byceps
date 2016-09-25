@@ -3,7 +3,7 @@
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/user_admin.html' import render_user_avatar_tiny_and_link %}
 {% set current_page = 'ticket_admin' %}
-{% set current_page_party = ticket.party %}
+{% set current_page_party = party %}
 {% set title = 'Ticket %s - Tickets'|format(ticket.id) %}
 
 {% block body %}
@@ -25,7 +25,7 @@
     </tr>
     <tr>
       <th>Party</th>
-      <td>{{ ticket.category.party.title }}</td>
+      <td>{{ party.title }}</td>
     </tr>
     <tr>
       <th>Kategorie</th>

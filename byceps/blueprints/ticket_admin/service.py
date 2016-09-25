@@ -41,10 +41,10 @@ def get_ticket_with_details(ticket_id):
         .get(ticket_id)
 
 
-def get_tickets_with_details_for_party_paginated(party, page, per_page):
+def get_tickets_with_details_for_party_paginated(party_id, page, per_page):
     """Return the party's tickets to show on the specified page."""
     return Ticket.query \
-        .for_party(party) \
+        .for_party_id(party_id) \
         .options(
             db.joinedload('category'),
             db.joinedload('owned_by'),

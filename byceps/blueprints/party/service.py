@@ -73,6 +73,16 @@ def get_archived_parties():
         .all()
 
 
+def get_parties(party_ids):
+    """Return the parties with those IDs."""
+    if not party_ids:
+        return []
+
+    return Party.query \
+        .filter(Party.id.in_(party_ids)) \
+        .all()
+
+
 def create_party(party_id, brand_id, title, starts_at, ends_at):
     """Create a party."""
     party = Party(party_id, brand_id, title, starts_at, ends_at)
