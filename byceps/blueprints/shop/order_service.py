@@ -8,6 +8,8 @@ byceps.blueprints.shop.order_service
 :License: Modified BSD, see LICENSE for details.
 """
 
+from datetime import datetime
+
 from ...database import db
 
 from ..party.models import Party
@@ -84,12 +86,14 @@ class OrderAlreadyMarkedAsPaid(Exception):
 def cancel_order(order, updated_by_id, reason):
     """Cancel the order.
 
-    Reserved quantities of articles from that order are made available again.
+    Reserved quantities of articles from that order are made available
+    again.
     """
     if order.payment_state == PaymentState.canceled:
         raise OrderAlreadyCanceled()
 
-    order.cancel(updated_by_id, reason)
+    _update_payment_state(order, PaymentState.canceled, updated_by_id)
+    order.cancelation_reason = reason
 
     # Make the reserved quantity of articles available again.
     for item in order.items:
@@ -103,8 +107,15 @@ def mark_order_as_paid(order, updated_by_id):
     if order.payment_state == PaymentState.paid:
         raise OrderAlreadyMarkedAsPaid()
 
-    order.mark_as_paid(updated_by_id)
+    _update_payment_state(order, PaymentState.paid, updated_by_id)
+
     db.session.commit()
+
+
+def _update_payment_state(order, state, updated_by_id):
+    order.payment_state = state
+    order.payment_state_updated_at = datetime.now()
+    order.payment_state_updated_by_id = updated_by_id
 
 
 def count_open_orders_for_party(party_id):

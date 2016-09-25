@@ -121,20 +121,6 @@ class Order(db.Model):
         """Return the sum of all items' quantities."""
         return sum(item.quantity for item in self.items)
 
-    def cancel(self, updated_by_id, reason):
-        """Cancel the order."""
-        self._update_payment_state(PaymentState.canceled, updated_by_id)
-        self.cancelation_reason = reason
-
-    def mark_as_paid(self, updated_by_id):
-        """Mark the order as being paid for."""
-        self._update_payment_state(PaymentState.paid, updated_by_id)
-
-    def _update_payment_state(self, state, updated_by_id):
-        self.payment_state = state
-        self.payment_state_updated_at = datetime.now()
-        self.payment_state_updated_by_id = updated_by_id
-
     def collect_articles(self):
         """Return the articles associated with this order."""
         return {item.article for item in self.items}
