@@ -13,9 +13,21 @@ from ....database import db
 from .models import PartySequence, PartySequencePrefix, PartySequencePurpose
 
 
+class NumberGenerationFailed(Exception):
+    """Indicate that generating a prefixed, sequential number has failed."""
+
+    def __init__(self, message):
+        self.message = message
+
+
 def generate_article_number(party):
     """Generate and reserve an unused, unique article number for this party."""
     prefix = party.shop_number_prefix.article_number
+
+    if prefix is None:
+        raise NumberGenerationFailed(
+            'No article number prefix is configured for party "{}".'
+            .format(party.id))
 
     article_sequence_number = _get_next_sequence_number(party.id,
         PartySequencePurpose.article)
@@ -26,6 +38,11 @@ def generate_article_number(party):
 def generate_order_number(party):
     """Generate and reserve an unused, unique order number for this party."""
     prefix = party.shop_number_prefix.order_number
+
+    if prefix is None:
+        raise NumberGenerationFailed(
+            'No order number prefix is configured for party "{}".'
+            .format(party.id))
 
     order_sequence_number = _get_next_sequence_number(party.id,
         PartySequencePurpose.order)
