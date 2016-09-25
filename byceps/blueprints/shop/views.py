@@ -20,7 +20,7 @@ from ..authentication.decorators import login_required
 from .forms import assemble_articles_order_form, OrderForm
 from .models.cart import Cart
 from .models.order import PaymentMethod
-from . import article_service, order_service, service
+from . import article_service, order_service, serial_number_service
 
 
 blueprint = create_blueprint('shop', __name__)
@@ -78,7 +78,7 @@ def order():
         flash_error('Es wurden keine Artikel ausgewählt.')
         return order_form(form)
 
-    order_number = service.generate_order_number(g.party)
+    order_number = serial_number_service.generate_order_number(g.party)
     orderer = form.get_orderer(g.current_user)
     payment_method = PaymentMethod.bank_transfer
 
@@ -161,7 +161,7 @@ def order_single(article_id):
     if not form.validate():
         return order_single_form(article.id, form)
 
-    order_number = service.generate_order_number(g.party)
+    order_number = serial_number_service.generate_order_number(g.party)
     orderer = form.get_orderer(user)
     payment_method = PaymentMethod.bank_transfer
 

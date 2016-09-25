@@ -6,8 +6,8 @@
 """
 
 from byceps.blueprints.shop.models.sequence import PartySequencePurpose
-from byceps.blueprints.shop.service import generate_article_number, \
-    generate_order_number
+from byceps.blueprints.shop.serial_number_service import \
+    generate_article_number, generate_order_number
 
 from testfixtures.brand import create_brand
 from testfixtures.party import create_party
