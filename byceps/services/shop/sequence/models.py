@@ -12,7 +12,6 @@ from enum import Enum
 
 from sqlalchemy.ext.hybrid import hybrid_property
 
-from ....blueprints.party.models import Party
 from ....database import db
 from ....util.instances import ReprBuilder
 
@@ -22,7 +21,6 @@ class PartySequencePrefix(db.Model):
     __tablename__ = 'shop_party_sequences_prefixes'
 
     party_id = db.Column(db.Unicode(20), db.ForeignKey('parties.id'), primary_key=True)
-    party = db.relationship(Party, backref=db.backref('shop_number_prefix', uselist=False))
     article_number = db.Column(db.Unicode(20), unique=True, nullable=False)
     order_number = db.Column(db.Unicode(20), unique=True, nullable=False)
 
@@ -47,7 +45,6 @@ class PartySequence(db.Model):
     __tablename__ = 'shop_party_sequences'
 
     party_id = db.Column(db.Unicode(20), db.ForeignKey('parties.id'), primary_key=True)
-    party = db.relationship(Party)
     _purpose = db.Column('purpose', db.Unicode(20), primary_key=True)
     value = db.Column(db.Integer, default=0, nullable=False)
 
