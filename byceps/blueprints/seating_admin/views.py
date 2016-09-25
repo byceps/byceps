@@ -19,7 +19,6 @@ from ..party import service as party_service
 from ..seating import service as seating_service
 
 from .authorization import SeatingPermission
-from . import service
 
 
 blueprint = create_blueprint('seating_admin', __name__)
@@ -39,9 +38,9 @@ def index_for_party(party_id, page):
         abort(404)
 
     per_page = request.args.get('per_page', type=int, default=15)
-    areas = service.paginate_areas_for_party(party, page, per_page)
+    areas = seating_service.get_areas_for_party_paginated(party, page, per_page)
 
-    seat_total_per_area = service.get_seat_total_per_area(party)
+    seat_total_per_area = seating_service.get_seat_total_per_area(party)
 
     categories = seating_service.get_categories_for_party(party)
 
