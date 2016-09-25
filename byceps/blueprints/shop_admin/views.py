@@ -146,7 +146,7 @@ def article_create(party_id):
     article = article_service.create_article(party.id, item_number, description,
                                              price, tax_rate, quantity)
 
-    flash_success('Des Artikel "{}" wurde angelegt.', article.item_number)
+    flash_success('Der Artikel "{}" wurde angelegt.', article.item_number)
     return redirect_to('.article_view', id=article.id)
 
 
