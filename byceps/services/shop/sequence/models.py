@@ -16,7 +16,7 @@ from ....database import db
 from ....util.instances import ReprBuilder
 
 
-PartySequencePurpose = Enum('PartySequencePurpose', ['article', 'order'])
+Purpose = Enum('Purpose', ['article', 'order'])
 
 
 class PartySequence(db.Model):
@@ -35,7 +35,7 @@ class PartySequence(db.Model):
 
     @hybrid_property
     def purpose(self):
-        return PartySequencePurpose[self._purpose]
+        return Purpose[self._purpose]
 
     @purpose.setter
     def purpose(self, purpose):

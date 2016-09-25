@@ -7,7 +7,7 @@
 
 from byceps.services.shop.sequence.service import generate_article_number, \
     generate_order_number
-from byceps.services.shop.sequence.models import PartySequencePurpose
+from byceps.services.shop.sequence.models import Purpose
 
 from testfixtures.brand import create_brand
 from testfixtures.party import create_party
@@ -67,12 +67,10 @@ class SequenceNumberGenerationTestCase(AbstractAppTestCase):
         return party
 
     def setup_article_number_sequence(self, party, prefix, *, value=0):
-        purpose = PartySequencePurpose.article
-        self._create_sequence(party, purpose, prefix, value)
+        self._create_sequence(party, Purpose.article, prefix, value)
 
     def setup_order_number_sequence(self, party, prefix, *, value=0):
-        purpose = PartySequencePurpose.order
-        self._create_sequence(party, purpose, prefix, value)
+        self._create_sequence(party, Purpose.order, prefix, value)
 
     def _create_sequence(self, party, purpose, prefix, value):
         sequence = create_party_sequence(party, purpose, prefix, value=value)

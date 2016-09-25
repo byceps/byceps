@@ -10,7 +10,7 @@ byceps.services.shop.sequence.service
 
 from ....database import db
 
-from .models import PartySequence, PartySequencePurpose
+from .models import PartySequence, Purpose
 
 
 class NumberGenerationFailed(Exception):
@@ -30,7 +30,7 @@ def generate_article_number(party_id):
             .format(party_id))
 
     article_sequence_number = _get_next_sequence_number(party_id,
-        PartySequencePurpose.article)
+        Purpose.article)
 
     return '{}{:05d}'.format(prefix, article_sequence_number)
 
@@ -44,8 +44,7 @@ def generate_order_number(party_id):
             'No order number prefix is configured for party "{}".'
             .format(party_id))
 
-    order_sequence_number = _get_next_sequence_number(party_id,
-        PartySequencePurpose.order)
+    order_sequence_number = _get_next_sequence_number(party_id, Purpose.order)
 
     return '{}{:05d}'.format(prefix, order_sequence_number)
 
@@ -74,14 +73,14 @@ def get_article_number_prefix(party_id):
     """Return the article number prefix for that party, or `None` if
     none is defined.
     """
-    return _find_prefix_attr(party_id, PartySequencePurpose.article)
+    return _find_prefix_attr(party_id, Purpose.article)
 
 
 def get_order_number_prefix(party_id):
     """Return the order number prefix for that party, or `None` if
     none is defined.
     """
-    return _find_prefix_attr(party_id, PartySequencePurpose.order)
+    return _find_prefix_attr(party_id, Purpose.order)
 
 
 def _find_prefix_attr(party_id, purpose):

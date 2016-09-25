@@ -10,7 +10,7 @@ from datetime import date
 from byceps.blueprints.shop.models.article import Article
 from byceps.blueprints.shop.models.order import Order, PaymentState
 from byceps.blueprints.snippet.models.snippet import Snippet
-from byceps.services.shop.sequence.models import PartySequencePurpose
+from byceps.services.shop.sequence.models import Purpose
 
 from testfixtures.authentication import create_session_token
 from testfixtures.shop import create_article, create_party_sequence
@@ -32,7 +32,7 @@ class ShopTestCase(AbstractAppTestCase):
         self.setup_article()
 
     def setup_order_number_prefix_and_sequence(self):
-        purpose = PartySequencePurpose.order
+        purpose = Purpose.order
         prefix = 'AEC-01-B'
 
         sequence = create_party_sequence(self.party, purpose, prefix, value=4)
