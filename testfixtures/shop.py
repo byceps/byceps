@@ -19,9 +19,13 @@ from byceps.services.shop.sequence.models import PartySequence, \
 from .party import create_party
 
 
-def create_article(*, party=None, item_number=None, description='Cool thing',
-                   price=None, tax_rate=None, available_from=None,
-                   available_until=None, quantity=1):
+ANY_ARTICLE_ITEM_NUMBER = 'AEC-05-A00009'
+ANY_ORDER_NUMBER = 'AEC-03-B00074'
+
+
+def create_article(*, party=None, item_number=ANY_ARTICLE_ITEM_NUMBER,
+                   description='Cool thing', price=None, tax_rate=None,
+                   available_from=None, available_until=None, quantity=1):
     if party is None:
         party = create_party()
 
@@ -57,7 +61,7 @@ def create_orderer(user):
         user.detail.street)
 
 
-def create_order(placed_by, *, party=None, order_number=1,
+def create_order(placed_by, *, party=None, order_number=ANY_ORDER_NUMBER,
                  payment_method=PaymentMethod.bank_transfer):
     if party is None:
         party = create_party()
