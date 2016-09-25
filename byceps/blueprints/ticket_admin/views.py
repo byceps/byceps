@@ -16,9 +16,9 @@ from ...util.templating import templated
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 from ..party import service as party_service
+from ..ticket import service as ticket_service
 
 from .authorization import TicketPermission
-from . import service
 
 
 blueprint = create_blueprint('ticket_admin', __name__)
@@ -39,9 +39,8 @@ def index_for_party(party_id, page):
 
     per_page = request.args.get('per_page', type=int, default=15)
 
-    tickets = service.get_tickets_with_details_for_party_paginated(party.id,
-                                                                   page,
-                                                                   per_page)
+    tickets = ticket_service.get_tickets_with_details_for_party_paginated(
+        party.id, page, per_page)
 
     return {
         'party': party,
@@ -54,7 +53,7 @@ def index_for_party(party_id, page):
 @templated
 def view(id):
     """Show a ticket."""
-    ticket = service.get_ticket_with_details(id)
+    ticket = ticket_service.get_ticket_with_details(id)
     if ticket is None:
         abort(404)
 

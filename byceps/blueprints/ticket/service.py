@@ -113,6 +113,45 @@ def get_attended_parties(user):
         .all()
 
 
+def get_ticket_with_details(ticket_id):
+    """Return the ticket with that id, or `None` if not found."""
+    return Ticket.query \
+        .options(
+            db.joinedload('category'),
+            db.joinedload('occupied_seat').joinedload('area'),
+            db.joinedload('owned_by'),
+            db.joinedload('seat_managed_by'),
+            db.joinedload('user_managed_by'),
+        ) \
+        .get(ticket_id)
+
+
+def get_tickets_with_details_for_party_paginated(party_id, page, per_page):
+    """Return the party's tickets to show on the specified page."""
+    return Ticket.query \
+        .for_party_id(party_id) \
+        .options(
+            db.joinedload('category'),
+            db.joinedload('owned_by'),
+            db.joinedload('occupied_seat').joinedload('area'),
+        ) \
+        .order_by(Ticket.created_at) \
+        .paginate(page, per_page)
+
+
+def get_ticket_count_by_party_id():
+    """Return ticket count (including 0) per party, indexed by party ID."""
+    return dict(db.session \
+        .query(
+            Party.id,
+            db.func.count(Ticket.id)
+        ) \
+        .outerjoin(Category) \
+        .outerjoin(Ticket) \
+        .group_by(Party.id) \
+        .all())
+
+
 def count_tickets_for_party(party):
     """Return the number of "sold" (i.e. generated) tickets for that party."""
     return Ticket.query \

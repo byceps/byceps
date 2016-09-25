@@ -19,7 +19,7 @@ from ..authorization.registry import permission_registry
 from ..brand import service as brand_service
 from ..party import service as party_service
 from ..shop import article_service, order_service
-from ..ticket_admin import service as ticket_admin_service
+from ..ticket import service as ticket_service
 
 from .authorization import PartyPermission
 from .forms import CreateForm
@@ -61,8 +61,7 @@ def index_for_brand(brand_id, page):
 
     order_count_by_party_id = order_service.get_order_count_by_party_id()
 
-    ticket_count_by_party_id = ticket_admin_service \
-        .get_ticket_count_by_party_id()
+    ticket_count_by_party_id = ticket_service.get_ticket_count_by_party_id()
 
     return {
         'brand': brand,
