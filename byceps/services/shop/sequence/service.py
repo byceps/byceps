@@ -51,3 +51,17 @@ def _get_next_sequence_number(party_id, purpose):
     sequence.value = PartySequence.value + 1
     db.session.commit()
     return sequence.value
+
+
+def get_article_number_prefix(party):
+    """Return the article number prefix for that party, or `None` if
+    none is defined.
+    """
+    return getattr(party.shop_number_prefix, 'article_number', None)
+
+
+def get_order_number_prefix(party):
+    """Return the order number prefix for that party, or `None` if
+    none is defined.
+    """
+    return getattr(party.shop_number_prefix, 'order_number', None)
