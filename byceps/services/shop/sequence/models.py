@@ -21,7 +21,7 @@ Purpose = Enum('Purpose', ['article', 'order'])
 
 class PartySequence(db.Model):
     """A sequence for a party and a purpose."""
-    __tablename__ = 'shop_party_sequences2'
+    __tablename__ = 'shop_party_sequences'
 
     party_id = db.Column(db.Unicode(20), db.ForeignKey('parties.id'), primary_key=True)
     _purpose = db.Column('purpose', db.Unicode(20), primary_key=True)
