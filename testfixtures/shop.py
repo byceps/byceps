@@ -29,15 +29,6 @@ def create_article(*, party=None, item_number=ANY_ARTICLE_ITEM_NUMBER,
     if party is None:
         party = create_party()
 
-    if item_number is None:
-        prefix = party.shop_number_prefix
-        if prefix is None:
-            prefix = create_party_sequence_prefix(party)
-
-        sequence_number = 1
-
-        item_number = '{}{:05d}'.format(prefix.article_number, sequence_number)
-
     if price is None:
         price = Decimal('24.95')
 
@@ -65,14 +56,6 @@ def create_order(placed_by, *, party=None, order_number=ANY_ORDER_NUMBER,
                  payment_method=PaymentMethod.bank_transfer):
     if party is None:
         party = create_party()
-
-    prefix = party.shop_number_prefix
-    if prefix is None:
-        prefix = create_party_sequence_prefix(party)
-
-    if order_number is None:
-        sequence_number = 1
-        order_number = '{}{:05d}'.format(prefix.order_number, sequence_number)
 
     return Order(
         party.id,
