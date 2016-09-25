@@ -61,7 +61,7 @@ def _get_next_sequence_number(party_id, purpose):
         .one_or_none()
 
     if sequence is None:
-        sequence = PartySequence(party.id, purpose)
+        sequence = PartySequence(party_id, purpose)
         db.session.add(sequence)
         db.session.commit()
 
