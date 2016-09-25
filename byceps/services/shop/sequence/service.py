@@ -10,7 +10,7 @@ byceps.services.shop.sequence.service
 
 from ....database import db
 
-from .models import PartySequence, PartySequencePurpose
+from .models import PartySequence, PartySequencePrefix, PartySequencePurpose
 
 
 def generate_article_number(party):
@@ -53,15 +53,20 @@ def _get_next_sequence_number(party_id, purpose):
     return sequence.value
 
 
-def get_article_number_prefix(party):
+def get_article_number_prefix(party_id):
     """Return the article number prefix for that party, or `None` if
     none is defined.
     """
-    return getattr(party.shop_number_prefix, 'article_number', None)
+    return _find_prefix_attr(party_id, 'article_number')
 
 
-def get_order_number_prefix(party):
+def get_order_number_prefix(party_id):
     """Return the order number prefix for that party, or `None` if
     none is defined.
     """
-    return getattr(party.shop_number_prefix, 'order_number', None)
+    return _find_prefix_attr(party_id, 'order_number')
+
+
+def _find_prefix_attr(party_id, attr_name):
+    prefix = PartySequencePrefix.query.get(party_id)
+    return getattr(prefix, attr_name, None)

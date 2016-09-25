@@ -53,7 +53,7 @@ def article_index_for_party(party_id, page):
     """List articles for that party."""
     party = _get_party_or_404(party_id)
 
-    article_number_prefix = sequence_service.get_article_number_prefix(party)
+    article_number_prefix = sequence_service.get_article_number_prefix(party.id)
 
     per_page = request.args.get('per_page', type=int, default=15)
     articles = article_service.get_articles_for_party_paginated(party.id, page,
@@ -266,7 +266,7 @@ def order_index_for_party(party_id, page):
     """List orders for that party."""
     party = _get_party_or_404(party_id)
 
-    order_number_prefix = sequence_service.get_order_number_prefix(party)
+    order_number_prefix = sequence_service.get_order_number_prefix(party.id)
 
     per_page = request.args.get('per_page', type=int, default=15)
     only = request.args.get('only', type=PaymentState.__getitem__)
