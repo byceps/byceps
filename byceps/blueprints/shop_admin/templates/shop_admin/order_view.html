@@ -40,14 +40,17 @@
       <th>Bezahlstatus</th>
       <td>
         {{ render_order_payment_state(order.payment_state) }}
-        <ol class="actions inline">
-          {%- if order.payment_state == PaymentState.open %}
-          <li><a href="{{ url_for('.order_mark_as_paid_form', id=order.id) }}">{{ render_icon('success') }} als bezahlt markieren</a></li>
-          {%- endif %}
-          {%- if order.payment_state != PaymentState.canceled %}
-          <li><a href="{{ url_for('.order_cancel_form', id=order.id) }}">{{ render_icon('disabled') }} stornieren</a></li>
-          {%- endif %}
-        </ol>
+        {%- if order.payment_state != PaymentState.canceled %}
+        <div class="dropdown">
+          <button>{{ render_icon('caret-down') }}</button>
+          <ol>
+            {%- if order.payment_state == PaymentState.open %}
+            <li><a href="{{ url_for('.order_mark_as_paid_form', id=order.id) }}">{{ render_icon('success') }} als bezahlt markieren</a></li>
+            {%- endif %}
+            <li><a href="{{ url_for('.order_cancel_form', id=order.id) }}">{{ render_icon('disabled') }} stornieren</a></li>
+          </ol>
+        </div>
+        {%- endif %}
       </td>
     </tr>
     {%- if order.payment_state == PaymentState.canceled %}
