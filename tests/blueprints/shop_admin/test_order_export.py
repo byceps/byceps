@@ -17,8 +17,7 @@ from testfixtures.authorization import create_permission_from_enum_member, \
     create_role
 from testfixtures.brand import create_brand
 from testfixtures.party import create_party
-from testfixtures.shop import create_article, create_order, create_order_item, \
-    create_party_sequence_prefix
+from testfixtures.shop import create_article, create_order, create_order_item
 from testfixtures.user import create_user_with_detail
 
 from tests.base import AbstractAppTestCase
@@ -44,11 +43,6 @@ class ExportTestCase(AbstractAppTestCase):
             brand=self.brand,
             title='LANresort 2015')
         self.db.session.add(self.party)
-
-        prefix = create_party_sequence_prefix(self.party,
-                                              article_number_prefix='LR-08-A',
-                                              order_number_prefix='LR-08-B')
-        self.db.session.add(prefix)
 
         self.db.session.commit()
 
@@ -83,21 +77,21 @@ class ExportTestCase(AbstractAppTestCase):
 
     def create_articles(self):
         self.article_table = self.build_article(
-            2,
+            'LR-08-A00002',
             'Tisch (zur Miete), 200 x 80 cm',
             Decimal('20.00'),
             Decimal('0.19'),
         )
 
         self.article_bungalow = self.build_article(
-            3,
+            'LR-08-A00003',
             'LANresort 2015: Bungalow 4 Plätze',
             Decimal('355.00'),
             Decimal('0.07'),
         )
 
         self.article_guest_fee = self.build_article(
-            6,
+            'LR-08-A00006',
             'Touristische Gästeabgabe (BispingenCard), pauschal für 4 Personen',
             Decimal('6.00'),
             Decimal('0.19'),
@@ -108,10 +102,10 @@ class ExportTestCase(AbstractAppTestCase):
         self.db.session.add(self.article_guest_fee)
         self.db.session.commit()
 
-    def build_article(self, sequence_number, description, price, tax_rate):
+    def build_article(self, item_number, description, price, tax_rate):
         return create_article(
             party=self.party,
-            sequence_number=sequence_number,
+            item_number=item_number,
             description=description,
             price=price,
             tax_rate=tax_rate,
@@ -122,7 +116,7 @@ class ExportTestCase(AbstractAppTestCase):
         self.db.session.add(orderer)
 
         self.order = create_order(placed_by=orderer, party=self.party,
-                                  sequence_number=27)
+                                  order_number='LR-08-B00027')
         self.order.created_at = datetime(2015, 2, 26, 13, 26, 24)
         self.db.session.add(self.order)
 
