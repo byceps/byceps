@@ -36,7 +36,7 @@ permission_registry.register_enum(PartyPermission)
 @templated
 def index():
     """List parties."""
-    parties = party_service.get_parties_with_brands()
+    parties = party_service.get_all_parties_with_brands()
 
     return {
         'parties': parties,
@@ -54,7 +54,8 @@ def index_for_brand(brand_id, page):
         abort(404)
 
     per_page = request.args.get('per_page', type=int, default=15)
-    parties = party_service.paginate_parties_for_brand(brand.id, page, per_page)
+    parties = party_service.get_parties_for_brand_paginated(brand.id, page,
+                                                            per_page)
 
     article_count_by_party_id = article_service.get_article_count_by_party_id()
 

@@ -39,7 +39,7 @@ def get_party_count_by_brand_id():
         .all())
 
 
-def paginate_parties_for_brand(brand_id, page, per_page):
+def get_parties_for_brand_paginated(brand_id, page, per_page):
     """Return the parties for that brand to show on the specified page."""
     return Party.query \
         .for_brand_id(brand_id) \
@@ -58,7 +58,7 @@ def find_party_with_brand(party_id):
         .get(party_id)
 
 
-def get_parties_with_brands():
+def get_all_parties_with_brands():
     """Return all parties."""
     return Party.query \
         .options(db.joinedload('brand')) \
