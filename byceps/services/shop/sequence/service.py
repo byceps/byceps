@@ -10,7 +10,7 @@ byceps.services.shop.sequence.service
 
 from ....database import db
 
-from .models import PartySequence, PartySequencePrefix, PartySequencePurpose
+from .models import PartySequence, PartySequencePurpose
 
 
 class NumberGenerationFailed(Exception):
@@ -61,9 +61,9 @@ def _get_next_sequence_number(party_id, purpose):
         .one_or_none()
 
     if sequence is None:
-        sequence = PartySequence(party_id, purpose)
-        db.session.add(sequence)
-        db.session.commit()
+        raise NumberGenerationFailed(
+            'No sequence configured for party "{}" and purpose "{}".'
+            .format(party_id, purpose.name))
 
     sequence.value = PartySequence.value + 1
     db.session.commit()
@@ -74,16 +74,16 @@ def get_article_number_prefix(party_id):
     """Return the article number prefix for that party, or `None` if
     none is defined.
     """
-    return _find_prefix_attr(party_id, 'article_number')
+    return _find_prefix_attr(party_id, PartySequencePurpose.article)
 
 
 def get_order_number_prefix(party_id):
     """Return the order number prefix for that party, or `None` if
     none is defined.
     """
-    return _find_prefix_attr(party_id, 'order_number')
+    return _find_prefix_attr(party_id, PartySequencePurpose.order)
 
 
-def _find_prefix_attr(party_id, attr_name):
-    prefix = PartySequencePrefix.query.get(party_id)
-    return getattr(prefix, attr_name, None)
+def _find_prefix_attr(party_id, purpose):
+    sequence = PartySequence.query.get((party_id, purpose.name))
+    return getattr(sequence, 'prefix', None)

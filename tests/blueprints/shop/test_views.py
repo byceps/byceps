@@ -13,8 +13,7 @@ from byceps.blueprints.snippet.models.snippet import Snippet
 from byceps.services.shop.sequence.models import PartySequencePurpose
 
 from testfixtures.authentication import create_session_token
-from testfixtures.shop import create_article, create_party_sequence, \
-    create_party_sequence_prefix
+from testfixtures.shop import create_article, create_party_sequence
 from testfixtures.user import create_user
 
 from tests.base import AbstractAppTestCase
@@ -33,15 +32,12 @@ class ShopTestCase(AbstractAppTestCase):
         self.setup_article()
 
     def setup_order_number_prefix_and_sequence(self):
-        prefix = create_party_sequence_prefix(self.party,
-                                              order_number_prefix='AEC-01-B')
-        self.db.session.add(prefix)
+        purpose = PartySequencePurpose.order
+        prefix = 'AEC-01-B'
 
-        sequence = create_party_sequence(self.party,
-                                         PartySequencePurpose.order,
-                                         value=4)
+        sequence = create_party_sequence(self.party, purpose, prefix, value=4)
+
         self.db.session.add(sequence)
-
         self.db.session.commit()
 
     def setup_orderer(self):

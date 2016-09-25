@@ -13,8 +13,7 @@ from decimal import Decimal
 from byceps.blueprints.shop.models.article import Article
 from byceps.blueprints.shop.models.order import Order, Orderer, OrderItem, \
     PaymentMethod
-from byceps.services.shop.sequence.models import PartySequence, \
-    PartySequencePrefix
+from byceps.services.shop.sequence.models import PartySequence
 
 from .party import create_party
 
@@ -76,12 +75,7 @@ def create_order_item(order, article, quantity):
     return OrderItem(order, article, quantity)
 
 
-def create_party_sequence_prefix(party, *, article_number_prefix='AEC-03-A',
-                                 order_number_prefix='AEC-03-B'):
-    return PartySequencePrefix(party.id, article_number_prefix, order_number_prefix)
-
-
-def create_party_sequence(party, purpose, *, value=0):
-    sequence = PartySequence(party.id, purpose)
+def create_party_sequence(party, purpose, prefix, *, value=0):
+    sequence = PartySequence(party.id, purpose, prefix)
     sequence.value = value
     return sequence

@@ -16,41 +16,22 @@ from ....database import db
 from ....util.instances import ReprBuilder
 
 
-class PartySequencePrefix(db.Model):
-    """A set of party-specific sequence number prefixes."""
-    __tablename__ = 'shop_party_sequences_prefixes'
-
-    party_id = db.Column(db.Unicode(20), db.ForeignKey('parties.id'), primary_key=True)
-    article_number = db.Column(db.Unicode(20), unique=True, nullable=False)
-    order_number = db.Column(db.Unicode(20), unique=True, nullable=False)
-
-    def __init__(self, party_id, article_number_prefix, order_number_prefix):
-        self.party_id = party_id
-        self.article_number = article_number_prefix
-        self.order_number = order_number_prefix
-
-    def __repr__(self):
-        return ReprBuilder(self) \
-            .add('party', self.party_id) \
-            .add_with_lookup('article_number') \
-            .add_with_lookup('order_number') \
-            .build()
-
-
 PartySequencePurpose = Enum('PartySequencePurpose', ['article', 'order'])
 
 
 class PartySequence(db.Model):
     """A sequence for a party and a purpose."""
-    __tablename__ = 'shop_party_sequences'
+    __tablename__ = 'shop_party_sequences2'
 
     party_id = db.Column(db.Unicode(20), db.ForeignKey('parties.id'), primary_key=True)
     _purpose = db.Column('purpose', db.Unicode(20), primary_key=True)
+    prefix = db.Column(db.Unicode(20), unique=True, nullable=False)
     value = db.Column(db.Integer, default=0, nullable=False)
 
-    def __init__(self, party_id, purpose):
+    def __init__(self, party_id, purpose, prefix):
         self.party_id = party_id
         self.purpose = purpose
+        self.prefix = prefix
 
     @hybrid_property
     def purpose(self):
@@ -65,5 +46,6 @@ class PartySequence(db.Model):
         return ReprBuilder(self) \
             .add('party', self.party_id) \
             .add('purpose', self.purpose.name) \
+            .add_with_lookup('prefix') \
             .add_with_lookup('value') \
             .build()
