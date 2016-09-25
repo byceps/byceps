@@ -7,7 +7,7 @@
 
 from nose2.tools import params
 
-from byceps.blueprints.ticket.models import Ticket
+from byceps.services.ticket.models import Ticket
 
 from testfixtures.user import create_user
 

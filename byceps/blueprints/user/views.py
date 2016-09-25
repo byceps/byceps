@@ -15,6 +15,7 @@ from flask import abort, g, jsonify, request, Response
 from ...config import get_site_mode, get_user_registration_enabled
 from ...services.countries import service as countries_service
 from ...services.newsletter import service as newsletter_service
+from ...services.ticket import service as ticket_service
 from ...services.user_badge import service as badge_service
 from ...services.verification_token import service as verification_token_service
 from ...util.framework import create_blueprint, flash_error, flash_notice, \
@@ -23,7 +24,6 @@ from ...util.templating import templated
 from ...util.views import redirect_to
 
 from ..orga import service as orga_service
-from ..ticket import service as ticket_service
 
 from .forms import DetailsForm, RequestConfirmationEmailForm, UserCreateForm
 from . import service

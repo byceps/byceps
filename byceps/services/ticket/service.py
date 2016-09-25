@@ -1,19 +1,18 @@
 # -*- coding: utf-8 -*-
 
 """
-byceps.blueprints.ticket.service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.ticket.service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2016 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
 """
 
+from ...blueprints.party.models import Party
+from ...blueprints.user.models.user import User
 from ...database import db
 from ...services.seating.models.category import Category
 from ...services.seating.models.seat import Seat
-
-from ..party.models import Party
-from ..user.models.user import User
 
 from .models import Ticket
 

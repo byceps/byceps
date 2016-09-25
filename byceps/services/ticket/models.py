@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-byceps.blueprints.ticket.models
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.ticket.models
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2016 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -10,12 +10,11 @@ byceps.blueprints.ticket.models
 
 from datetime import datetime
 
+from ...blueprints.user.models.user import User
 from ...database import BaseQuery, db, generate_uuid
 from ...services.seating.models.category import Category
 from ...services.seating.models.seat import Seat
 from ...util.instances import ReprBuilder
-
-from ..user.models.user import User
 
 
 class TicketQuery(BaseQuery):

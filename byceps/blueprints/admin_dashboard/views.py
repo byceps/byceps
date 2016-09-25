@@ -14,6 +14,7 @@ from flask import abort
 
 from ...services.newsletter import service as newsletter_service
 from ...services.seating import service as seating_service
+from ...services.ticket import service as ticket_service
 from ...util.framework import create_blueprint
 from ...util.templating import templated
 
@@ -24,7 +25,6 @@ from ..board_admin import service as board_admin_service
 from ..news_admin import service as news_admin_service
 from ..orga_admin import service as orga_admin_service
 from ..party import service as party_service
-from ..ticket import service as ticket_service
 from ..shop import article_service, order_service
 from ..terms import service as terms_service
 from ..user import service as user_service

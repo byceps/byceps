@@ -10,6 +10,7 @@ byceps.blueprints.party_admin.views
 
 from flask import abort, request
 
+from ...services.ticket import service as ticket_service
 from ...util.framework import create_blueprint, flash_error, flash_success
 from ...util.templating import templated
 from ...util.views import redirect_to
@@ -19,7 +20,6 @@ from ..authorization.registry import permission_registry
 from ..brand import service as brand_service
 from ..party import service as party_service
 from ..shop import article_service, order_service
-from ..ticket import service as ticket_service
 
 from .authorization import PartyPermission
 from .forms import CreateForm

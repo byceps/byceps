@@ -11,10 +11,9 @@ byceps.blueprints.party.views
 from flask import g
 
 from ...config import get_current_party_id
+from ...services.ticket import service as ticket_service
 from ...util.framework import create_blueprint
 from ...util.templating import templated
-
-from ..ticket import service as ticket_service
 
 from . import service
 
