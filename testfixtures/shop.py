@@ -25,12 +25,13 @@ def create_article(*, party=None, item_number=None, description='Cool thing',
     if party is None:
         party = create_party()
 
-    prefix = party.shop_number_prefix
-    if prefix is None:
-        prefix = create_party_sequence_prefix(party)
-
     if item_number is None:
+        prefix = party.shop_number_prefix
+        if prefix is None:
+            prefix = create_party_sequence_prefix(party)
+
         sequence_number = 1
+
         item_number = '{}{:05d}'.format(prefix.article_number, sequence_number)
 
     if price is None:
