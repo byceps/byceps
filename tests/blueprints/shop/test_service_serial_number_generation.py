@@ -27,10 +27,8 @@ class SerialNumberGenerationTestCase(AbstractAppTestCase):
         self.assertEqual(actual, 'AEC-01-A00001')
 
     def test_generate_article_number_custom(self):
+        party = self.create_custom_brand_and_party()
         last_assigned_article_serial_number = 41
-
-        brand = create_brand()
-        party = create_party(brand=brand)
 
         self.setup_article_number_sequence(party, 'XYZ-09-A',
             value=last_assigned_article_serial_number)
@@ -47,10 +45,8 @@ class SerialNumberGenerationTestCase(AbstractAppTestCase):
         self.assertEqual(actual, 'AEC-01-B00001')
 
     def test_generate_order_number_custom(self):
+        party = self.create_custom_brand_and_party()
         last_assigned_order_serial_number = 206
-
-        brand = create_brand()
-        party = create_party(brand=brand)
 
         self.setup_order_number_sequence(party, 'LOL-03-B',
             value=last_assigned_order_serial_number)
@@ -62,17 +58,31 @@ class SerialNumberGenerationTestCase(AbstractAppTestCase):
     # -------------------------------------------------------------------- #
     # helpers
 
+    def create_custom_brand_and_party(self):
+        brand = create_brand(id='custom', title='Custom Events')
+        party = create_party(id='custom-party-4', brand=brand,
+                             title='Custom Party 4')
+
+        self.db.session.add(brand)
+        self.db.session.add(party)
+        self.db.session.commit()
+
+        return party
+
     def setup_article_number_sequence(self, party, prefix, *, value=0):
         create_party_sequence_prefix(party, article_number_prefix=prefix)
 
-        self._set_number_sequence(PartySequencePurpose.article, value=value)
+        self._set_number_sequence(party, PartySequencePurpose.article,
+                                  value=value)
 
     def setup_order_number_sequence(self, party, prefix, *, value=0):
         create_party_sequence_prefix(party, order_number_prefix=prefix)
 
-        self._set_number_sequence(PartySequencePurpose.order, value=value)
+        self._set_number_sequence(party, PartySequencePurpose.order,
+                                  value=value)
 
-    def _set_number_sequence(self, purpose, *, value=0):
-        sequence = create_party_sequence(self.party, purpose, value=value)
+    def _set_number_sequence(self, party, purpose, *, value=0):
+        sequence = create_party_sequence(party, purpose, value=value)
+
         self.db.session.add(sequence)
         self.db.session.commit()
