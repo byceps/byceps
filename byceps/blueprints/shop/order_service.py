@@ -19,7 +19,11 @@ from .signals import order_placed
 def create_order(party_id, order_number, orderer, payment_method, cart):
     """Create an order of one or more articles."""
     order = _build_order(party_id, order_number, orderer, payment_method)
-    _add_items_from_cart_to_order(cart, order)
+
+    order_items = _add_items_from_cart_to_order(cart, order)
+
+    db.session.add(order)
+    db.session.add_all(order_items)
     db.session.commit()
 
     order_placed.send(None, order=order)
@@ -29,7 +33,7 @@ def create_order(party_id, order_number, orderer, payment_method, cart):
 
 def _build_order(party_id, order_number, orderer, payment_method):
     """Create an order of one or more articles."""
-    order = Order(
+    return Order(
         party_id,
         order_number,
         orderer.user,
@@ -42,20 +46,22 @@ def _build_order(party_id, order_number, orderer, payment_method):
         orderer.street,
         payment_method,
     )
-    db.session.add(order)
-    return order
 
 
 def _add_items_from_cart_to_order(cart, order):
-    """Add the items from the cart to the order."""
+    """Add the items from the cart to the order.
+
+    Reduce the article's quantity accordingly.
+
+    Yield the created order items.
+    """
     for article_item in cart.get_items():
         article = article_item.article
         quantity = article_item.quantity
 
         article.quantity -= quantity
 
-        order_item = _add_article_to_order(order, article, quantity)
-        db.session.add(order_item)
+        yield _add_article_to_order(order, article, quantity)
 
 
 def _add_article_to_order(order, article, quantity):
