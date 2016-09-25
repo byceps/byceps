@@ -14,7 +14,7 @@ from ...database import db
 
 from ..party.models import Party
 
-from .models.order import Order, OrderItem, PaymentState
+from .models.order import Order, OrderItem, OrderUpdate, PaymentState
 from .signals import order_placed
 
 
@@ -92,8 +92,17 @@ def cancel_order(order, updated_by_id, reason):
     if order.payment_state == PaymentState.canceled:
         raise OrderAlreadyCanceled()
 
-    _update_payment_state(order, PaymentState.canceled, updated_by_id)
+    updated_at = datetime.now()
+    payment_state_from = order.payment_state
+    payment_state_to = PaymentState.canceled
+
+    _update_payment_state(order, payment_state_to, updated_at, updated_by_id)
     order.cancelation_reason = reason
+
+    update = _create_order_update(order.order_number, updated_at, updated_by_id,
+                                  payment_state_from, payment_state_to,
+                                  cancelation_reason=reason)
+    db.session.add(update)
 
     # Make the reserved quantity of articles available again.
     for item in order.items:
@@ -107,14 +116,22 @@ def mark_order_as_paid(order, updated_by_id):
     if order.payment_state == PaymentState.paid:
         raise OrderAlreadyMarkedAsPaid()
 
-    _update_payment_state(order, PaymentState.paid, updated_by_id)
+    updated_at = datetime.now()
+    payment_state_from = order.payment_state
+    payment_state_to = PaymentState.paid
+
+    _update_payment_state(order, payment_state_to, updated_at, updated_by_id)
+
+    update = _create_order_update(order.order_number, updated_at, updated_by_id,
+                                  payment_state_from, payment_state_to)
+    db.session.add(update)
 
     db.session.commit()
 
 
-def _update_payment_state(order, state, updated_by_id):
+def _update_payment_state(order, state, updated_at, updated_by_id):
     order.payment_state = state
-    order.payment_state_updated_at = datetime.now()
+    order.payment_state_updated_at = updated_at
     order.payment_state_updated_by_id = updated_by_id
 
 
@@ -189,3 +206,12 @@ def has_user_placed_orders(user_id, party_id):
         .count()
 
     return orders_total > 0
+
+
+def _create_order_update(order_number, created_at, created_by_id,
+                         payment_state_from, payment_state_to,
+                         *, cancelation_reason=None):
+    """Create an update for the order."""
+    return OrderUpdate(order_number, created_at, created_by_id,
+                       payment_state_from, payment_state_to,
+                       cancelation_reason=cancelation_reason)
