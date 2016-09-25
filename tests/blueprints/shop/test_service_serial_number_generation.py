@@ -63,20 +63,13 @@ class SerialNumberGenerationTestCase(AbstractAppTestCase):
     # -------------------------------------------------------------------- #
     # helpers
 
-    def set_article_number_sequence(self, *, party=None, value=0):
-        self._set_number_sequence(PartySequencePurpose.article,
-                                  party=party,
-                                  value=value)
+    def set_article_number_sequence(self, *, value=0):
+        self._set_number_sequence(PartySequencePurpose.article, value=value)
 
-    def set_order_number_sequence(self, *, party=None, value=0):
-        self._set_number_sequence(PartySequencePurpose.order,
-                                  party=party,
-                                  value=value)
+    def set_order_number_sequence(self, *, value=0):
+        self._set_number_sequence(PartySequencePurpose.order, value=value)
 
-    def _set_number_sequence(self, purpose, *, party=None, value=0):
-        if not party:
-            party = self.party
-
-        sequence = create_party_sequence(party, purpose, value=value)
+    def _set_number_sequence(self, purpose, *, value=0):
+        sequence = create_party_sequence(self.party, purpose, value=value)
         self.db.session.add(sequence)
         self.db.session.commit()
