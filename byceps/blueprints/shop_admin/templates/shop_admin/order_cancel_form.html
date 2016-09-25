@@ -25,6 +25,7 @@
     {% call form_fieldset() %}
       {{ form_field(cancel_form.reason, maxlength=200, required='required') }}
     {% endcall %}
+    <small><p>Die Begründung wird an die bestellende Person weitergegeben.<br>Es handelt sich <em>nicht</em> um einen internen Vermerk.</p></small>
 
     {{ form_buttons('Stornieren', icon='disabled', cancel_url=url_for('.order_view', id=order.id)) }}
   </form>
