@@ -78,6 +78,15 @@
       </table>
     </li>
     {%- endfor %}
+    <li>
+      <table class="activity-stream-item">
+        <tr>
+          <td><span class="icon-container">{{ render_icon('add') }}</span></td>
+          <td><span class="user-link">{{ render_user_avatar_tiny_and_link(order.placed_by) }}</span> hat die Bestellung <strong>{{ order.order_number }}</strong> aufgegeben.</td>
+          <td class="timestamp">{{ render_datetime(order.created_at) }}</td>
+        </tr>
+      </table>
+    </li>
   </ol>
 
   <h2>Auftraggeber/in</h2>
