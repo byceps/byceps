@@ -10,13 +10,13 @@ byceps.blueprints.seating_admin.views
 
 from flask import abort, request
 
+from ...services.seating import service as seating_service
 from ...util.framework import create_blueprint
 from ...util.templating import templated
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 from ..party import service as party_service
-from ..seating import service as seating_service
 
 from .authorization import SeatingPermission
 

@@ -9,9 +9,9 @@ byceps.blueprints.ticket_admin.service
 """
 
 from ...database import db
+from ...services.seating.models.category import Category as SeatCategory
 
 from ..party.models import Party
-from ..seating.models.category import Category as SeatCategory
 from ..ticket.models import Ticket
 
 
