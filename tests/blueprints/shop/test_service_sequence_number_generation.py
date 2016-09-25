@@ -22,7 +22,7 @@ class SequenceNumberGenerationTestCase(AbstractAppTestCase):
     def test_generate_article_number_default(self):
         self.setup_article_number_sequence(self.party, 'AEC-01-A')
 
-        actual = generate_article_number(self.party)
+        actual = generate_article_number(self.party.id)
 
         self.assertEqual(actual, 'AEC-01-A00001')
 
@@ -33,14 +33,14 @@ class SequenceNumberGenerationTestCase(AbstractAppTestCase):
         self.setup_article_number_sequence(party, 'XYZ-09-A',
             value=last_assigned_article_sequence_number)
 
-        actual = generate_article_number(party)
+        actual = generate_article_number(party.id)
 
         self.assertEqual(actual, 'XYZ-09-A00042')
 
     def test_generate_order_number_default(self):
         self.setup_order_number_sequence(self.party, 'AEC-01-B')
 
-        actual = generate_order_number(self.party)
+        actual = generate_order_number(self.party.id)
 
         self.assertEqual(actual, 'AEC-01-B00001')
 
@@ -51,7 +51,7 @@ class SequenceNumberGenerationTestCase(AbstractAppTestCase):
         self.setup_order_number_sequence(party, 'LOL-03-B',
             value=last_assigned_order_sequence_number)
 
-        actual = generate_order_number(party)
+        actual = generate_order_number(party.id)
 
         self.assertEqual(actual, 'LOL-03-B00207')
 

@@ -140,7 +140,7 @@ def article_create(party_id):
 
     form = ArticleCreateForm(request.form)
 
-    item_number = sequence_service.generate_article_number(party)
+    item_number = sequence_service.generate_article_number(party.id)
     description = form.description.data.strip()
     price = form.price.data
     tax_rate = form.tax_rate.data

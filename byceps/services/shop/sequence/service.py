@@ -20,31 +20,31 @@ class NumberGenerationFailed(Exception):
         self.message = message
 
 
-def generate_article_number(party):
+def generate_article_number(party_id):
     """Generate and reserve an unused, unique article number for this party."""
-    prefix = get_article_number_prefix(party.id)
+    prefix = get_article_number_prefix(party_id)
 
     if prefix is None:
         raise NumberGenerationFailed(
             'No article number prefix is configured for party "{}".'
-            .format(party.id))
+            .format(party_id))
 
-    article_sequence_number = _get_next_sequence_number(party.id,
+    article_sequence_number = _get_next_sequence_number(party_id,
         PartySequencePurpose.article)
 
     return '{}{:05d}'.format(prefix, article_sequence_number)
 
 
-def generate_order_number(party):
+def generate_order_number(party_id):
     """Generate and reserve an unused, unique order number for this party."""
-    prefix = get_order_number_prefix(party.id)
+    prefix = get_order_number_prefix(party_id)
 
     if prefix is None:
         raise NumberGenerationFailed(
             'No order number prefix is configured for party "{}".'
-            .format(party.id))
+            .format(party_id))
 
-    order_sequence_number = _get_next_sequence_number(party.id,
+    order_sequence_number = _get_next_sequence_number(party_id,
         PartySequencePurpose.order)
 
     return '{}{:05d}'.format(prefix, order_sequence_number)

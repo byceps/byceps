@@ -79,7 +79,7 @@ def order():
         flash_error('Es wurden keine Artikel ausgewählt.')
         return order_form(form)
 
-    order_number = sequence_service.generate_order_number(g.party)
+    order_number = sequence_service.generate_order_number(g.party.id)
     orderer = form.get_orderer(g.current_user)
     payment_method = PaymentMethod.bank_transfer
 
@@ -162,7 +162,7 @@ def order_single(article_id):
     if not form.validate():
         return order_single_form(article.id, form)
 
-    order_number = sequence_service.generate_order_number(g.party)
+    order_number = sequence_service.generate_order_number(g.party.id)
     orderer = form.get_orderer(user)
     payment_method = PaymentMethod.bank_transfer
 
