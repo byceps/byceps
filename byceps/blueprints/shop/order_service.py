@@ -215,3 +215,11 @@ def _create_order_update(order_number, created_at, created_by_id,
     return OrderUpdate(order_number, created_at, created_by_id,
                        payment_state_from, payment_state_to,
                        cancelation_reason=cancelation_reason)
+
+
+def get_updates_for_order(order_number):
+    """Return all updates for that order."""
+    return OrderUpdate.query \
+        .filter_by(order_number=order_number) \
+        .order_by(OrderUpdate.created_at.desc()) \
+        .all()

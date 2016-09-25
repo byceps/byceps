@@ -62,6 +62,24 @@
     {%- endif %}
   </table>
 
+  <h2>Aktivität</h2>
+  <ol class="activity-stream">
+    {%- for update in updates %}
+    <li>
+      <table class="activity-stream-item">
+        <tr>
+          <td><span class="icon-container">{{ render_icon('payment') }}</span></td>
+          <td>
+            <span class="user-link">{{ render_user_avatar_tiny_and_link(update.created_by) }}</span> hat den Bezahlstatus geändert:
+            {{ render_order_payment_state(update.payment_state_from) }} → {{ render_order_payment_state(update.payment_state_to) }}
+          </td>
+          <td class="timestamp">{{ render_datetime(update.created_at) }}</td>
+        </tr>
+      </table>
+    </li>
+    {%- endfor %}
+  </ol>
+
   <h2>Auftraggeber/in</h2>
   <table class="index">
     <tr>

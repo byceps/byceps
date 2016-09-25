@@ -287,8 +287,11 @@ def order_view(id):
     if order is None:
         abort(404)
 
+    updates = order_service.get_updates_for_order(order.order_number)
+
     return {
         'order': order,
+        'updates': updates,
         'PaymentState': PaymentState,
     }
 

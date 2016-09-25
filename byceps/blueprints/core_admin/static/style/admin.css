@@ -511,6 +511,60 @@ a.user-badge:hover {
 }
 
 
+/* activity stream */
+
+ol.activity-stream {
+  border-left: #cccccc solid 1px;
+  margin-left: 12px;
+  padding: 4px 0;
+  padding-left: 18px;
+}
+
+ol.activity-stream li {
+  color: #888888;
+  font-size: 0.8125rem; /* 13px / 16px */
+  padding: 8px 0;
+  position: relative;
+}
+
+table.activity-stream-item {
+  width: 100%;
+}
+
+.activity-stream-item .icon-container {
+  background-color: #eeeeee;
+  border-radius: #cccccc solid 1px;
+  border-radius: 50%;
+  display: inline-block;
+  height: 28px;
+  left: -32px;
+  line-height: 26px;
+  position: absolute;
+  text-align: center;
+  top: 4px;
+  width: 28px;
+}
+.activity-stream-item .icon-container > * {
+  fill: #666666;
+  height: 16px;
+  vertical-align: middle;
+  width: 16px;
+}
+
+.activity-stream-item .user-link a {
+  color: #333333;
+  font-weight: bold;
+}
+.activity-stream-item .user-link a:not(:hover) {
+  text-decoration: none;
+}
+
+.activity-stream-item .timestamp {
+  text-align: right;
+  white-space: nowrap;
+}
+
+
 /* print view */
 
 @media print {
