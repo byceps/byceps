@@ -10,11 +10,10 @@ byceps.blueprints.ticket.views
 
 from flask import abort, g
 
+from ...services.ticket import service as ticket_service
 from ...util.framework import create_blueprint
 from ...util.iterables import find
 from ...util.templating import templated
-
-from . import service
 
 
 blueprint = create_blueprint('ticket', __name__)
@@ -26,7 +25,7 @@ def index_mine():
     """List tickets related to the current user."""
     me = get_current_user_or_403()
 
-    tickets = service.find_tickets_related_to_user_for_party(me, g.party)
+    tickets = ticket_service.find_tickets_related_to_user_for_party(me, g.party)
 
     tickets_bought = list(filter(lambda t: t.owned_by == me, tickets))
     tickets_managed = list(filter(lambda t: t.is_managed_by(me), tickets))
