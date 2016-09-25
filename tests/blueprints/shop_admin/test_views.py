@@ -13,7 +13,7 @@ from byceps.blueprints.shop.models.order import Order, PaymentState
 
 from testfixtures.authorization import create_permission_from_enum_member, \
     create_role
-from testfixtures.shop import create_article, create_order
+from testfixtures.shop import create_article, create_order, create_order_item
 from testfixtures.user import create_user_with_detail
 
 from tests.base import AbstractAppTestCase
@@ -102,7 +102,7 @@ class ShopAdminTestCase(AbstractAppTestCase):
         self.db.session.add(order)
 
         for article, quantity_to_order in quantified_articles:
-            order_item = order.add_item(article, quantity_to_order)
+            order_item = create_order_item(order, article, quantity_to_order)
             self.db.session.add(order_item)
 
         return order

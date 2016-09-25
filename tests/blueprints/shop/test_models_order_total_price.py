@@ -9,7 +9,7 @@ from decimal import Decimal
 
 from byceps.blueprints.shop.models.order import Order
 
-from testfixtures.shop import create_article, create_order
+from testfixtures.shop import create_article, create_order, create_order_item
 from testfixtures.user import create_user
 
 
@@ -51,7 +51,7 @@ def create_order_with_items(price_quantity_pairs):
 
     for price, quantity in price_quantity_pairs:
         article = create_article(price=price, quantity=quantity)
-        order.add_item(article, quantity)
+        order_item = create_order_item(order, article, quantity)
 
     return order
 

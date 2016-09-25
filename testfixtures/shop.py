@@ -11,7 +11,8 @@ testfixtures.shop
 from decimal import Decimal
 
 from byceps.blueprints.shop.models.article import Article
-from byceps.blueprints.shop.models.order import Order, Orderer, PaymentMethod
+from byceps.blueprints.shop.models.order import Order, Orderer, OrderItem, \
+    PaymentMethod
 from byceps.blueprints.shop.models.sequence import PartySequence, \
     PartySequencePrefix
 
@@ -77,6 +78,10 @@ def create_order(placed_by, *, party=None, serial_number=1,
         placed_by.detail.street,
         payment_method,
     )
+
+
+def create_order_item(order, article, quantity):
+    return OrderItem(order, article, quantity)
 
 
 def create_party_sequence_prefix(party, *, article_number_prefix='AEC-03-A',

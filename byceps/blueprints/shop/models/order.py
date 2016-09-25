@@ -116,14 +116,6 @@ class Order(db.Model):
         assert state is not None
         self._payment_state = state.name
 
-    def add_item(self, article, quantity):
-        """Add an article as an item to this order.
-
-        Return the resulting order item so it can be added to the
-        database session.
-        """
-        return OrderItem(self, article, quantity=quantity)
-
     @property
     def item_total_quantity(self):
         """Return the sum of all items' quantities."""

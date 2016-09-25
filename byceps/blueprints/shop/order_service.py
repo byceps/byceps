@@ -12,7 +12,7 @@ from ...database import db
 
 from ..party.models import Party
 
-from .models.order import Order, PaymentState
+from .models.order import Order, OrderItem, PaymentState
 from .signals import order_placed
 
 
@@ -54,8 +54,17 @@ def _add_items_from_cart_to_order(cart, order):
 
         article.quantity -= quantity
 
-        order_item = order.add_item(article, quantity)
+        order_item = _add_article_to_order(order, article, quantity)
         db.session.add(order_item)
+
+
+def _add_article_to_order(order, article, quantity):
+    """Add an article as an item to this order.
+
+    Return the resulting order item (so it can be added to the database
+    session).
+    """
+    return OrderItem(order, article, quantity)
 
 
 class OrderAlreadyCanceled(Exception):

@@ -17,7 +17,7 @@ from testfixtures.authorization import create_permission_from_enum_member, \
     create_role
 from testfixtures.brand import create_brand
 from testfixtures.party import create_party
-from testfixtures.shop import create_article, create_order, \
+from testfixtures.shop import create_article, create_order, create_order_item, \
     create_party_sequence_prefix
 from testfixtures.user import create_user_with_detail
 
@@ -126,9 +126,8 @@ class ExportTestCase(AbstractAppTestCase):
         self.order.created_at = datetime(2015, 2, 26, 13, 26, 24)
         self.db.session.add(self.order)
 
-        self.order.add_item(self.article_bungalow, 1)
-        self.order.add_item(self.article_guest_fee, 1)
-        self.order.add_item(self.article_table, 2)
+        order_items = self.build_order_items()
+        self.db.session.add_all(order_items)
 
         self.db.session.commit()
 
@@ -143,3 +142,11 @@ class ExportTestCase(AbstractAppTestCase):
         orderer.detail.street = 'Nebenstraße 23a'
         orderer.detail.phone_number = '555-1234'
         return orderer
+
+    def build_order_items(self):
+        for article, quantity in [
+            (self.article_bungalow, 1),
+            (self.article_guest_fee, 1),
+            (self.article_table, 2),
+        ]:
+            yield create_order_item(self.order, article, quantity)
