@@ -5,7 +5,7 @@
 {% from 'macros/shop_admin.html' import render_main_tabs with context %}
 {% set current_page = 'shop_admin.articles' %}
 {% set current_page_party = article.party %}
-{% set title = 'Artikel ansehen' %}
+{% set title = 'Artikel ' ~ article.item_number %}
 
 {% block head %}
     <style>
@@ -33,13 +33,9 @@
       <li><a href="{{ url_for('.article_index_for_party', party_id=article.party.id) }}">{{ article.party.title }}</a></li>
     </ol>
   </nav>
-  <h1>{{ render_icon('view') }} {{ title }}</h1>
+  <h1>{{ title }}</h1>
 
   <table class="index">
-    <tr>
-      <th>Artikelnummer</th>
-      <td>{{ article.item_number }}</td>
-    </tr>
     <tr>
       <th>Beschreibung</th>
       <td>{{ article.description }}</td>

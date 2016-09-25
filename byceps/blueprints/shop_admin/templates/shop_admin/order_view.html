@@ -7,7 +7,7 @@
 {% from 'macros/user_admin.html' import render_user_avatar_tiny_and_link %}
 {% set current_page = 'shop_admin.orders' %}
 {% set current_page_party = order.party %}
-{% set title = 'Bestellung ansehen' %}
+{% set title = 'Bestellung ' ~ order.order_number %}
 
 {% block before_body %}
 {{ render_main_tabs(current_page, order.party) }}
@@ -21,13 +21,9 @@
       <li><a href="{{ url_for('.order_index_for_party', party_id=order.party.id) }}">{{ order.party.title }}</a></li>
     </ol>
   </nav>
-  <h1>{{ render_icon('view') }} {{ title }}</h1>
+  <h1>{{ title }}</h1>
 
   <table class="index">
-    <tr>
-      <th>Bestellnummer</th>
-      <td>{{ order.order_number }}</td>
-    </tr>
     <tr>
       <th>Zeitpunkt</th>
       <td>{{ render_datetime(order.created_at) }}</td>
