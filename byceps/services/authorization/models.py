@@ -20,7 +20,7 @@ class Permission(db.Model):
 
     Can be assigned to one or more roles.
     """
-    __tablename__ = 'auth_permissions'
+    __tablename__ = 'authz_permissions'
 
     id = db.Column(db.Unicode(40), primary_key=True)
     title = db.deferred(db.Column(db.Unicode(80), unique=True))
@@ -50,7 +50,7 @@ class Role(db.Model):
 
     Can be assigned to a user.
     """
-    __tablename__ = 'auth_roles'
+    __tablename__ = 'authz_roles'
 
     id = db.Column(db.Unicode(40), primary_key=True)
     title = db.deferred(db.Column(db.Unicode(80), unique=True, nullable=False))
@@ -70,7 +70,7 @@ class Role(db.Model):
 
 class RolePermission(db.Model):
     """The assignment of a permission to a role."""
-    __tablename__ = 'auth_role_permissions'
+    __tablename__ = 'authz_role_permissions'
 
     role_id = db.Column(db.Unicode(40), db.ForeignKey('auth_roles.id'), primary_key=True)
     role = db.relationship(Role,
@@ -91,7 +91,7 @@ class RolePermission(db.Model):
 
 class UserRole(db.Model):
     """The assignment of a role to a user."""
-    __tablename__ = 'auth_user_roles'
+    __tablename__ = 'authz_user_roles'
 
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
     user = db.relationship(User,
