@@ -192,7 +192,7 @@
         <td>{{ ticket.category.title }}</td>
         <td>
           {%- if ticket.used_by == user %}<strong>{% endif -%}
-          <a href="{{ url_for('ticket_admin.view', id=ticket.id) }}">{{ ticket.id }}</a>
+          <a href="{{ url_for('ticket_admin.view', ticket_id=ticket.id) }}">{{ ticket.id }}</a>
           {%- if ticket.used_by == user %}</strong>{% endif -%}
         </td>
         <td>{% if ticket.owned_by == user %}{{ render_icon('payment', title='gekauft') }}{% endif %}</td>

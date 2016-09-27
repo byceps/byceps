@@ -48,12 +48,12 @@ def index_for_party(party_id, page):
     }
 
 
-@blueprint.route('/<uuid:id>')
+@blueprint.route('/<uuid:ticket_id>')
 @permission_required(TicketPermission.view)
 @templated
-def view(id):
+def view(ticket_id):
     """Show a ticket."""
-    ticket = ticket_service.get_ticket_with_details(id)
+    ticket = ticket_service.get_ticket_with_details(ticket_id)
     if ticket is None:
         abort(404)
 
