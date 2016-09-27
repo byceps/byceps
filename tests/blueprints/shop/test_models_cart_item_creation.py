@@ -9,7 +9,7 @@ from nose2.tools.such import helper
 
 from byceps.blueprints.shop.models.cart import CartItem
 
-from testfixtures.shop import create_article
+from testfixtures.shop_article import create_article
 
 
 def test_init_with_positive_quantity():

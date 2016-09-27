@@ -11,7 +11,7 @@ from byceps.services.shop.sequence.models import Purpose
 
 from testfixtures.brand import create_brand
 from testfixtures.party import create_party
-from testfixtures.shop import create_party_sequence
+from testfixtures.shop_sequence import create_party_sequence
 
 from tests.base import AbstractAppTestCase
 

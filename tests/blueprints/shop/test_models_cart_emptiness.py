@@ -7,7 +7,7 @@
 
 from byceps.blueprints.shop.models.cart import Cart
 
-from testfixtures.shop import create_article
+from testfixtures.shop_article import create_article
 
 
 def test_is_empty_without_items():

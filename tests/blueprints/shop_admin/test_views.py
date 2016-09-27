@@ -13,7 +13,8 @@ from byceps.blueprints.shop.models.order import Order, PaymentState
 
 from testfixtures.authorization import create_permission_from_enum_member, \
     create_role
-from testfixtures.shop import create_article, create_order, create_order_item
+from testfixtures.shop_article import create_article
+from testfixtures.shop_order import create_order, create_order_item
 from testfixtures.user import create_user_with_detail
 
 from tests.base import AbstractAppTestCase

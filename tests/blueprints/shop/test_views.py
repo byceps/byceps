@@ -13,7 +13,8 @@ from byceps.blueprints.snippet.models.snippet import Snippet
 from byceps.services.shop.sequence.models import Purpose
 
 from testfixtures.authentication import create_session_token
-from testfixtures.shop import create_article, create_party_sequence
+from testfixtures.shop_article import create_article
+from testfixtures.shop_sequence import create_party_sequence
 from testfixtures.user import create_user
 
 from tests.base import AbstractAppTestCase

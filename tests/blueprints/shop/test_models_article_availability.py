@@ -10,7 +10,7 @@ from datetime import datetime
 from freezegun import freeze_time
 from nose2.tools import params
 
-from testfixtures.shop import create_article
+from testfixtures.shop_article import create_article
 
 
 @params(
