@@ -37,7 +37,7 @@
 
 
 {% macro render_order_link(order) -%}
-  <a href="{{ url_for('shop_admin.order_view', id=order.id) }}">{{ order.order_number }}</a>
+  <a href="{{ url_for('shop_admin.order_view', order_id=order.id) }}">{{ order.order_number }}</a>
 {%- endmacro %}
 
 

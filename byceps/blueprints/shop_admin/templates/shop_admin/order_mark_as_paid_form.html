@@ -21,8 +21,8 @@
   </nav>
   <h1>{{ title }}</h1>
 
-  <form action="{{ url_for('.order_mark_as_paid', id=order.id) }}" method="post">
-    {{ form_buttons('Als bezahlt markieren', icon='success', cancel_url=url_for('.order_view', id=order.id)) }}
+  <form action="{{ url_for('.order_mark_as_paid', order_id=order.id) }}" method="post">
+    {{ form_buttons('Als bezahlt markieren', icon='success', cancel_url=url_for('.order_view', order_id=order.id)) }}
   </form>
 
 {%- endblock %}

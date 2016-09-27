@@ -21,13 +21,13 @@
   </nav>
   <h1>{{ title }}</h1>
 
-  <form action="{{ url_for('.order_cancel', id=order.id) }}" method="post">
+  <form action="{{ url_for('.order_cancel', order_id=order.id) }}" method="post">
     {% call form_fieldset() %}
       {{ form_field(cancel_form.reason, maxlength=200, required='required') }}
     {% endcall %}
     <small><p>Die Begründung wird an die bestellende Person weitergegeben.<br>Es handelt sich <em>nicht</em> um einen internen Vermerk.</p></small>
 
-    {{ form_buttons('Stornieren', icon='disabled', cancel_url=url_for('.order_view', id=order.id)) }}
+    {{ form_buttons('Stornieren', icon='disabled', cancel_url=url_for('.order_view', order_id=order.id)) }}
   </form>
 
 {%- endblock %}

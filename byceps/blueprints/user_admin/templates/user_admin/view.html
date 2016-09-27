@@ -160,7 +160,7 @@
     <tbody>
       {%- for order in orders %}
       <tr>
-        <td><a href="{{ url_for('shop_admin.order_view', id=order.id) }}">{{ render_datetime(order.created_at) }}</a></td>
+        <td><a href="{{ url_for('shop_admin.order_view', order_id=order.id) }}">{{ render_datetime(order.created_at) }}</a></td>
         <td>{{ order.party.title }}</td>
         <td class="centered">{{ render_order_payment_state(order.payment_state) }}</td>
       </tr>

@@ -284,12 +284,12 @@ def order_index_for_party(party_id, page):
     }
 
 
-@blueprint.route('/orders/<uuid:id>')
+@blueprint.route('/orders/<uuid:order_id>')
 @permission_required(ShopOrderPermission.view)
 @templated
-def order_view(id):
+def order_view(order_id):
     """Show a single order."""
-    order = order_service.find_order_with_details(id)
+    order = order_service.find_order_with_details(order_id)
     if order is None:
         abort(404)
 
@@ -302,11 +302,11 @@ def order_view(id):
     }
 
 
-@blueprint.route('/orders/<uuid:id>/export')
+@blueprint.route('/orders/<uuid:order_id>/export')
 @permission_required(ShopOrderPermission.view)
-def order_export(id):
+def order_export(order_id):
     """Export the order as an XML document."""
-    order = order_service.find_order_with_details(id)
+    order = order_service.find_order_with_details(order_id)
     if order is None:
         abort(404)
 
@@ -347,12 +347,12 @@ def _format_export_datetime(dt):
     return date_time + utc_offset
 
 
-@blueprint.route('/orders/<uuid:id>/cancel')
+@blueprint.route('/orders/<uuid:order_id>/cancel')
 @permission_required(ShopOrderPermission.update)
 @templated
-def order_cancel_form(id):
+def order_cancel_form(order_id):
     """Show form to cancel an order."""
-    order = _get_order_or_404(id)
+    order = _get_order_or_404(order_id)
 
     cancel_form = OrderCancelForm()
 
@@ -360,7 +360,7 @@ def order_cancel_form(id):
         flash_error(
             'Die Bestellung ist bereits storniert worden; '
             'der Bezahlstatus kann nicht mehr geändert werden.')
-        return redirect_to('.order_view', id=order.id)
+        return redirect_to('.order_view', order_id=order.id)
 
     return {
         'order': order,
@@ -368,13 +368,13 @@ def order_cancel_form(id):
     }
 
 
-@blueprint.route('/orders/<uuid:id>/cancel', methods=['POST'])
+@blueprint.route('/orders/<uuid:order_id>/cancel', methods=['POST'])
 @permission_required(ShopOrderPermission.update)
-def order_cancel(id):
+def order_cancel(order_id):
     """Set the payment status of a single order to 'canceled' and
     release the respective article quantities.
     """
-    order = _get_order_or_404(id)
+    order = _get_order_or_404(order_id)
 
     form = OrderCancelForm(request.form)
 
@@ -386,7 +386,7 @@ def order_cancel(id):
         flash_error(
             'Die Bestellung ist bereits storniert worden; '
             'der Bezahlstatus kann nicht mehr geändert werden.')
-        return redirect_to('.order_view', id=order.id)
+        return redirect_to('.order_view', order_id=order.id)
 
     flash_success(
         'Die Bestellung wurde als storniert markiert und die betroffenen '
@@ -395,42 +395,42 @@ def order_cancel(id):
 
     order_canceled.send(None, order=order)
 
-    return redirect_to('.order_view', id=order.id)
+    return redirect_to('.order_view', order_id=order.id)
 
 
-@blueprint.route('/orders/<uuid:id>/mark_as_paid')
+@blueprint.route('/orders/<uuid:order_id>/mark_as_paid')
 @permission_required(ShopOrderPermission.update)
 @templated
-def order_mark_as_paid_form(id):
+def order_mark_as_paid_form(order_id):
     """Show form to mark an order as paid."""
-    order = _get_order_or_404(id)
+    order = _get_order_or_404(order_id)
 
     if order.payment_state == PaymentState.paid:
         flash_error('Die Bestellung ist bereits als bezahlt markiert worden.')
-        return redirect_to('.order_view', id=order.id)
+        return redirect_to('.order_view', order_id=order.id)
 
     return {
         'order': order,
     }
 
 
-@blueprint.route('/orders/<uuid:id>/mark_as_paid', methods=['POST'])
+@blueprint.route('/orders/<uuid:order_id>/mark_as_paid', methods=['POST'])
 @permission_required(ShopOrderPermission.update)
-def order_mark_as_paid(id):
+def order_mark_as_paid(order_id):
     """Set the payment status of a single order to 'paid'."""
-    order = _get_order_or_404(id)
+    order = _get_order_or_404(order_id)
 
     try:
         order_service.mark_order_as_paid(order, g.current_user.id)
     except order_service.OrderAlreadyMarkedAsPaid:
         flash_error('Die Bestellung ist bereits als bezahlt markiert worden.')
-        return redirect_to('.order_view', id=order.id)
+        return redirect_to('.order_view', order_id=order.id)
 
     flash_success('Die Bestellung wurde als bezahlt markiert.')
 
     order_paid.send(None, order=order)
 
-    return redirect_to('.order_view', id=order.id)
+    return redirect_to('.order_view', order_id=order.id)
 
 
 def _get_party_or_404(party_id):
