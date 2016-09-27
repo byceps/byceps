@@ -135,7 +135,7 @@ class Topic(db.Model):
     @property
     def external_url(self):
         """Return the absolute URL of this topic."""
-        return url_for('board.topic_view', id=self.id, _external=True)
+        return url_for('board.topic_view', topic_id=self.id, _external=True)
 
     def contains_unseen_postings(self, user):
         """Return `True` if the topic contains postings created after

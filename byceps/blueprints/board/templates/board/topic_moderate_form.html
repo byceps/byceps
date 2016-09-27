@@ -15,7 +15,7 @@
     <ol>
       <li><a href="{{ url_for('.category_index') }}">Forum</a></li>
       <li><a href="{{ url_for('.category_view', slug=topic.category.slug) }}">{{ topic.category.title }}</a></li>
-      <li><a href="{{ url_for('.topic_view', id=topic.id) }}">{{ topic.title }}</a></li>
+      <li><a href="{{ url_for('.topic_view', topic_id=topic.id) }}">{{ topic.title }}</a></li>
     </ol>
   </nav>
   <h1>{{ render_icon('moderate') }} {{ title }}</h1>
@@ -26,9 +26,9 @@
   <ol class="actions">
   {%- if topic.hidden %}
     <li><span class="action disabled">{{ render_icon('hidden') }} verstecken</span></li>
-    <li><a data-action="topic-unhide" href="{{ url_for('.topic_unhide', id=topic.id) }}">{{ render_icon('view') }} sichtbar machen</a></li>
+    <li><a data-action="topic-unhide" href="{{ url_for('.topic_unhide', topic_id=topic.id) }}">{{ render_icon('view') }} sichtbar machen</a></li>
   {%- else %}
-    <li><a data-action="topic-hide" href="{{ url_for('.topic_hide', id=topic.id) }}">{{ render_icon('hidden') }} verstecken</a></li>
+    <li><a data-action="topic-hide" href="{{ url_for('.topic_hide', topic_id=topic.id) }}">{{ render_icon('hidden') }} verstecken</a></li>
     <li><span class="action disabled">{{ render_icon('view') }} sichtbar machen</span></li>
   {%- endif %}
   </ol>
@@ -40,9 +40,9 @@
   <ol class="actions">
   {%- if topic.locked %}
     <li><span class="action disabled">{{ render_icon('lock') }} schließen</span></li>
-    <li><a data-action="topic-unlock" href="{{ url_for('.topic_unlock', id=topic.id) }}">{{ render_icon('unlock') }} öffnen</a></li>
+    <li><a data-action="topic-unlock" href="{{ url_for('.topic_unlock', topic_id=topic.id) }}">{{ render_icon('unlock') }} öffnen</a></li>
   {%- else %}
-    <li><a data-action="topic-lock" href="{{ url_for('.topic_lock', id=topic.id) }}">{{ render_icon('lock') }} schließen</a></li>
+    <li><a data-action="topic-lock" href="{{ url_for('.topic_lock', topic_id=topic.id) }}">{{ render_icon('lock') }} schließen</a></li>
     <li><span class="action disabled">{{ render_icon('unlock') }} öffnen</span></li>
   {%- endif %}
   </ol>
@@ -54,9 +54,9 @@
   <ol class="actions">
   {%- if topic.pinned %}
     <li><span class="action disabled">{{ render_icon('pin') }} anpinnen</span></li>
-    <li><a data-action="topic-unpin" href="{{ url_for('.topic_unpin', id=topic.id) }}">{{ render_icon('sorted') }} lösen</a></li>
+    <li><a data-action="topic-unpin" href="{{ url_for('.topic_unpin', topic_id=topic.id) }}">{{ render_icon('sorted') }} lösen</a></li>
   {%- else %}
-    <li><a data-action="topic-pin" href="{{ url_for('.topic_pin', id=topic.id) }}">{{ render_icon('pin') }} anpinnen</a></li>
+    <li><a data-action="topic-pin" href="{{ url_for('.topic_pin', topic_id=topic.id) }}">{{ render_icon('pin') }} anpinnen</a></li>
     <li><span class="action disabled">{{ render_icon('sorted') }} lösen</span></li>
   {%- endif %}
   </ol>
@@ -67,7 +67,7 @@
   <p>Dieses Thema befindet sich in der Kategorie &quot;{{ topic.category.title }}&quot;.</p>
   <ol class="actions">
     <li>
-      <form action="{{ url_for('.topic_move', id=topic.id) }}" method="post">
+      <form action="{{ url_for('.topic_move', topic_id=topic.id) }}" method="post">
         Neue Kategorie:
         <select name="category_id">
         {%- for category in categories %}

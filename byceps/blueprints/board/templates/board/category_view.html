@@ -32,7 +32,7 @@
           {%- if topic.hidden %}{{ render_icon('hidden', title='versteckt (durch %s)'|format(topic.hidden_by.screen_name)) }} {% endif -%}
           {%- if topic.locked %}{{ render_icon('lock', title='geschlossen (durch %s)'|format(topic.locked_by.screen_name)) }} {% endif -%}
           {%- if topic.pinned %}{{ render_icon('pin', title='angeheftet (durch %s)'|format(topic.pinned_by.screen_name)) }} {% endif -%}
-          <strong><a href="{{ url_for('.topic_view', id=topic.id) }}">{{ topic.title }}</a></strong>
+          <strong><a href="{{ url_for('.topic_view', topic_id=topic.id) }}">{{ topic.title }}</a></strong>
           {%- if topic.contains_unseen_postings(g.current_user) %} {{ render_flag_new() }}{% endif -%}
         </td>
         <td>{{ render_user_avatar_tiny_and_link(topic.creator) }}</td>

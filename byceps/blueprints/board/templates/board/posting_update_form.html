@@ -11,7 +11,7 @@
     <ol>
       <li><a href="{{ url_for('.category_index') }}">Forum</a></li>
       <li><a href="{{ url_for('.category_view', slug=posting.topic.category.slug) }}">{{ posting.topic.category.title }}</a></li>
-      <li><a href="{{ url_for('.topic_view', id=posting.topic.id) }}">{{ posting.topic.title }}</a></li>
+      <li><a href="{{ url_for('.topic_view', topic_id=posting.topic.id) }}">{{ posting.topic.title }}</a></li>
     </ol>
   </nav>
   <h1>{{ render_icon('edit') }} {{ title }}</h1>
@@ -26,7 +26,7 @@
       <li>{%- include 'board/_posting_form_body_supplement.html' %}</li>
     {% endcall %}
 
-    {{ form_buttons('Speichern', cancel_url=url_for('.topic_view', id=posting.topic.id)) }}
+    {{ form_buttons('Speichern', cancel_url=url_for('.topic_view', topic_id=posting.topic.id)) }}
   </form>
 
 {%- endblock body %}

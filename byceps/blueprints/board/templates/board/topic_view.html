@@ -17,12 +17,12 @@
   {%- if g.current_user.has_any_permission(BoardTopicPermission.hide, BoardTopicPermission.lock, BoardTopicPermission.move, BoardTopicPermission.pin) %}
   <div style="text-align: right;">
     <ol class="actions">
-        <li><a href="{{ url_for('.topic_moderate_form', id=topic.id) }}" title="Thema moderieren">{{ render_icon('moderate') }} moderieren</a></li>
+        <li><a href="{{ url_for('.topic_moderate_form', topic_id=topic.id) }}" title="Thema moderieren">{{ render_icon('moderate') }} moderieren</a></li>
     </ol>
   </div>
   {%- endif %}
 
-{{ render_pagination_nav(postings, 'board.topic_view', {'id': topic.id}) }}
+{{ render_pagination_nav(postings, 'board.topic_view', {'topic_id': topic.id}) }}
 
   <div class="board-postings">
   {%- for posting in postings.items %}
@@ -30,7 +30,7 @@
   {%- endfor %}
   </div>
 
-{{ render_pagination_nav(postings, 'board.topic_view', {'id': topic.id}) }}
+{{ render_pagination_nav(postings, 'board.topic_view', {'topic_id': topic.id}) }}
 
   <div style="text-align: right;">
     {%- set current_user_may_reply_generally = g.current_user.has_permission(BoardPostingPermission.create) %}

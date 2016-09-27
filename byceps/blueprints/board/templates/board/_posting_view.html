@@ -29,7 +29,7 @@
       {%- endif %}
       {%- if posting.is_initial_topic_posting(posting.topic) %}
         {%- if topic.may_be_updated_by_user(g.current_user) %}
-      <li><a href="{{ url_for('.topic_update_form', id=topic.id) }}" title="dieses Thema bearbeiten">{{ render_icon('edit') }}</a></li>
+      <li><a href="{{ url_for('.topic_update_form', topic_id=topic.id) }}" title="dieses Thema bearbeiten">{{ render_icon('edit') }}</a></li>
         {%- endif %}
       {%- else %}
         {%- if posting.may_be_updated_by_user(g.current_user) %}

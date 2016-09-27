@@ -76,12 +76,12 @@ def category_view(slug, page):
 # topic
 
 
-@blueprint.route('/topics/<uuid:id>', defaults={'page': 0})
-@blueprint.route('/topics/<uuid:id>/pages/<int:page>')
+@blueprint.route('/topics/<uuid:topic_id>', defaults={'page': 0})
+@blueprint.route('/topics/<uuid:topic_id>/pages/<int:page>')
 @templated
-def topic_view(id, page):
+def topic_view(topic_id, page):
     """List postings for the topic."""
-    topic = service.find_topic_visible_for_user(id, g.current_user)
+    topic = service.find_topic_visible_for_user(topic_id, g.current_user)
     if topic is None:
         abort(404)
 
@@ -100,7 +100,7 @@ def topic_view(id, page):
             page = calculate_posting_page_number(posting)
             # Jump to a specific posting. This requires a redirect.
             url = url_for('.topic_view',
-                          id=topic.id,
+                          topic_id=topic.id,
                           page=page,
                           _anchor=posting.anchor)
             return redirect(url, code=307)
@@ -179,12 +179,12 @@ def topic_create(category_id):
     return redirect(topic.external_url)
 
 
-@blueprint.route('/topics/<uuid:id>/update')
+@blueprint.route('/topics/<uuid:topic_id>/update')
 @permission_required(BoardTopicPermission.update)
 @templated
-def topic_update_form(id):
+def topic_update_form(topic_id):
     """Show form to update a topic."""
-    topic = _get_topic_or_404(id)
+    topic = _get_topic_or_404(topic_id)
     url = topic.external_url
 
     if topic.locked:
@@ -208,11 +208,11 @@ def topic_update_form(id):
         'smileys': get_smileys(),
     }
 
-@blueprint.route('/topics/<uuid:id>', methods=['POST'])
+@blueprint.route('/topics/<uuid:topic_id>', methods=['POST'])
 @permission_required(BoardTopicPermission.update)
-def topic_update(id):
+def topic_update(topic_id):
     """Update a topic."""
-    topic = _get_topic_or_404(id)
+    topic = _get_topic_or_404(topic_id)
     url = topic.external_url
 
     if topic.locked:
@@ -236,12 +236,12 @@ def topic_update(id):
     return redirect(url)
 
 
-@blueprint.route('/topics/<uuid:id>/moderate')
+@blueprint.route('/topics/<uuid:topic_id>/moderate')
 @permission_required(BoardTopicPermission.hide)
 @templated
-def topic_moderate_form(id):
+def topic_moderate_form(topic_id):
     """Show a form to moderate the topic."""
-    topic = _get_topic_or_404(id)
+    topic = _get_topic_or_404(topic_id)
 
     categories = service.get_categories_excluding(g.party.brand,
                                                   topic.category_id)
@@ -252,12 +252,12 @@ def topic_moderate_form(id):
     }
 
 
-@blueprint.route('/topics/<uuid:id>/flags/hidden', methods=['POST'])
+@blueprint.route('/topics/<uuid:topic_id>/flags/hidden', methods=['POST'])
 @permission_required(BoardTopicPermission.hide)
 @respond_no_content_with_location
-def topic_hide(id):
+def topic_hide(topic_id):
     """Hide a topic."""
-    topic = _get_topic_or_404(id)
+    topic = _get_topic_or_404(topic_id)
 
     service.hide_topic(topic, g.current_user)
 
@@ -266,12 +266,12 @@ def topic_hide(id):
     return url_for('.category_view', slug=topic.category.slug, _anchor=topic.anchor)
 
 
-@blueprint.route('/topics/<uuid:id>/flags/hidden', methods=['DELETE'])
+@blueprint.route('/topics/<uuid:topic_id>/flags/hidden', methods=['DELETE'])
 @permission_required(BoardTopicPermission.hide)
 @respond_no_content_with_location
-def topic_unhide(id):
+def topic_unhide(topic_id):
     """Un-hide a topic."""
-    topic = _get_topic_or_404(id)
+    topic = _get_topic_or_404(topic_id)
 
     service.unhide_topic(topic, g.current_user)
 
@@ -280,12 +280,12 @@ def topic_unhide(id):
     return url_for('.category_view', slug=topic.category.slug, _anchor=topic.anchor)
 
 
-@blueprint.route('/topics/<uuid:id>/flags/locked', methods=['POST'])
+@blueprint.route('/topics/<uuid:topic_id>/flags/locked', methods=['POST'])
 @permission_required(BoardTopicPermission.lock)
 @respond_no_content_with_location
-def topic_lock(id):
+def topic_lock(topic_id):
     """Lock a topic."""
-    topic = _get_topic_or_404(id)
+    topic = _get_topic_or_404(topic_id)
 
     service.lock_topic(topic, g.current_user)
 
@@ -293,12 +293,12 @@ def topic_lock(id):
     return url_for('.category_view', slug=topic.category.slug, _anchor=topic.anchor)
 
 
-@blueprint.route('/topics/<uuid:id>/flags/locked', methods=['DELETE'])
+@blueprint.route('/topics/<uuid:topic_id>/flags/locked', methods=['DELETE'])
 @permission_required(BoardTopicPermission.lock)
 @respond_no_content_with_location
-def topic_unlock(id):
+def topic_unlock(topic_id):
     """Unlock a topic."""
-    topic = _get_topic_or_404(id)
+    topic = _get_topic_or_404(topic_id)
 
     service.unlock_topic(topic, g.current_user)
 
@@ -307,12 +307,12 @@ def topic_unlock(id):
     return url_for('.category_view', slug=topic.category.slug, _anchor=topic.anchor)
 
 
-@blueprint.route('/topics/<uuid:id>/flags/pinned', methods=['POST'])
+@blueprint.route('/topics/<uuid:topic_id>/flags/pinned', methods=['POST'])
 @permission_required(BoardTopicPermission.pin)
 @respond_no_content_with_location
-def topic_pin(id):
+def topic_pin(topic_id):
     """Pin a topic."""
-    topic = _get_topic_or_404(id)
+    topic = _get_topic_or_404(topic_id)
 
     service.pin_topic(topic, g.current_user)
 
@@ -320,12 +320,12 @@ def topic_pin(id):
     return url_for('.category_view', slug=topic.category.slug, _anchor=topic.anchor)
 
 
-@blueprint.route('/topics/<uuid:id>/flags/pinned', methods=['DELETE'])
+@blueprint.route('/topics/<uuid:topic_id>/flags/pinned', methods=['DELETE'])
 @permission_required(BoardTopicPermission.pin)
 @respond_no_content_with_location
-def topic_unpin(id):
+def topic_unpin(topic_id):
     """Unpin a topic."""
-    topic = _get_topic_or_404(id)
+    topic = _get_topic_or_404(topic_id)
 
     service.unpin_topic(topic, g.current_user)
 
@@ -333,11 +333,11 @@ def topic_unpin(id):
     return url_for('.category_view', slug=topic.category.slug, _anchor=topic.anchor)
 
 
-@blueprint.route('/topics/<uuid:id>/move', methods=['POST'])
+@blueprint.route('/topics/<uuid:topic_id>/move', methods=['POST'])
 @permission_required(BoardTopicPermission.move)
-def topic_move(id):
+def topic_move(topic_id):
     """Move a topic from one category to another."""
-    topic = _get_topic_or_404(id)
+    topic = _get_topic_or_404(topic_id)
 
     new_category_id = request.form['category_id']
     new_category = service.find_category_by_id(new_category_id)
@@ -371,7 +371,7 @@ def posting_view(id):
     page = calculate_posting_page_number(posting)
 
     return redirect_to('.topic_view',
-                       id=posting.topic.id,
+                       topic_id=posting.topic.id,
                        page=page,
                        _anchor=posting.anchor,
                        _external=True)
@@ -439,7 +439,7 @@ def posting_create(topic_id):
     page_count = topic.count_pages(postings_per_page)
 
     return redirect_to('.topic_view',
-                       id=topic.id,
+                       topic_id=topic.id,
                        page=page_count,
                        _anchor=posting.anchor)
 
@@ -452,7 +452,7 @@ def posting_update_form(id):
     posting = _get_posting_or_404(id)
 
     page = calculate_posting_page_number(posting)
-    url = url_for('.topic_view', id=posting.topic.id, page=page)
+    url = url_for('.topic_view', topic_id=posting.topic.id, page=page)
 
     if posting.topic.locked:
         flash_error(
@@ -484,7 +484,7 @@ def posting_update(id):
     posting = _get_posting_or_404(id)
 
     page = calculate_posting_page_number(posting)
-    url = url_for('.topic_view', id=posting.topic.id, page=page)
+    url = url_for('.topic_view', topic_id=posting.topic.id, page=page)
 
     if posting.topic.locked:
         flash_error(
@@ -533,7 +533,10 @@ def posting_hide(id):
 
     flash_success('Der Beitrag wurde versteckt.', icon='hidden')
     signals.posting_hidden.send(None, posting=posting)
-    return url_for('.topic_view', id=posting.topic.id, page=page, _anchor=posting.anchor)
+    return url_for('.topic_view',
+                   topic_id=posting.topic.id,
+                   page=page,
+                   _anchor=posting.anchor)
 
 
 @blueprint.route('/postings/<uuid:id>/flags/hidden', methods=['DELETE'])
@@ -548,7 +551,10 @@ def posting_unhide(id):
     page = calculate_posting_page_number(posting)
 
     flash_success('Der Beitrag wurde wieder sichtbar gemacht.', icon='view')
-    return url_for('.topic_view', id=posting.topic.id, page=page, _anchor=posting.anchor)
+    return url_for('.topic_view',
+                   topic_id=posting.topic.id,
+                   page=page,
+                   _anchor=posting.anchor)
 
 
 def _get_topic_or_404(topic_id):
