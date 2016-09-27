@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-byceps.blueprints.authorization.service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.authorization.service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2016 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -12,7 +12,7 @@ from collections import defaultdict
 
 from ...database import db
 
-from ..authorization.models import Permission, Role, RolePermission, UserRole
+from .models import Permission, Role, RolePermission, UserRole
 
 
 def get_permissions_with_titles():

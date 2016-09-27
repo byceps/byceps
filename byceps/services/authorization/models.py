@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-byceps.blueprints.authorization.models
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.authorization.models
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2016 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -10,10 +10,9 @@ byceps.blueprints.authorization.models
 
 from sqlalchemy.ext.associationproxy import association_proxy
 
+from ...blueprints.user.models.user import User
 from ...database import db
 from ...util.instances import ReprBuilder
-
-from ..user.models.user import User
 
 
 class Permission(db.Model):

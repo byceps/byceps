@@ -8,8 +8,6 @@ bootstrap.authorization
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.blueprints.authorization.models import Permission as DbPermission, \
-    Role
 from byceps.blueprints.authorization_admin.authorization import RolePermission
 from byceps.blueprints.board.authorization import BoardPostingPermission, \
     BoardTopicPermission
@@ -20,6 +18,8 @@ from byceps.blueprints.snippet_admin.authorization import \
 from byceps.blueprints.terms_admin.authorization import TermsPermission
 from byceps.blueprints.user_admin.authorization import UserPermission
 from byceps.database import db
+from byceps.services.authorization.models import Permission as DbPermission, \
+    Role
 
 from .util import add_all_to_database, add_to_database
 

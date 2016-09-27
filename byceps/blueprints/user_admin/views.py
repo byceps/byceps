@@ -12,6 +12,7 @@ from collections import defaultdict
 
 from flask import abort, request
 
+from ...services.authorization import service as authorization_service
 from ...services.ticket import service as ticket_service
 from ...services.user_badge import service as badge_service
 from ...util.framework import create_blueprint
@@ -19,7 +20,6 @@ from ...util.templating import templated
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
-from ..authorization_admin import service as authorization_admin_service
 from ..party import service as party_service
 from ..shop import order_service
 from ..user import service as user_service
@@ -79,7 +79,7 @@ def view(id):
     if user is None:
         abort(404)
 
-    permissions_by_role = authorization_admin_service \
+    permissions_by_role = authorization_service \
         .get_permissions_by_roles_for_user_with_titles(user)
 
     badges = badge_service.get_badges_for_user(user.id)

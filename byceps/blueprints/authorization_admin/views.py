@@ -8,6 +8,7 @@ byceps.blueprints.authorization_admin.views
 :License: Modified BSD, see LICENSE for details.
 """
 
+from ...services.authorization import service as authorization_service
 from ...util.framework import create_blueprint
 from ...util.templating import templated
 
@@ -15,7 +16,6 @@ from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 
 from .authorization import RolePermission
-from . import service
 
 
 blueprint = create_blueprint('authorization_admin', __name__)
@@ -29,7 +29,7 @@ permission_registry.register_enum(RolePermission)
 @templated
 def permission_index():
     """List permissions."""
-    permissions = service.get_permissions_with_titles()
+    permissions = authorization_service.get_permissions_with_titles()
 
     return {'permissions': permissions}
 
@@ -39,6 +39,6 @@ def permission_index():
 @templated
 def role_index():
     """List roles."""
-    roles = service.get_roles_with_titles()
+    roles = authorization_service.get_roles_with_titles()
 
     return {'roles': roles}

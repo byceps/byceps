@@ -8,7 +8,7 @@ testfixtures.authorization
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.blueprints.authorization.models import Permission, Role
+from byceps.services.authorization.models import Permission, Role
 
 
 def create_permission(id, title=None):
