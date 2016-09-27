@@ -80,12 +80,12 @@ def category_create(brand_id):
     return redirect_to('.index_for_brand', brand_id=brand.id)
 
 
-@blueprint.route('/categories/<uuid:id>/update')
+@blueprint.route('/categories/<uuid:category_id>/update')
 @permission_required(BoardCategoryPermission.update)
 @templated
-def category_update_form(id, erroneous_form=None):
+def category_update_form(category_id, erroneous_form=None):
     """Show form to update a category."""
-    category = get_category_or_404(id)
+    category = get_category_or_404(category_id)
 
     form = erroneous_form if erroneous_form \
            else CategoryUpdateForm(obj=category)
@@ -96,15 +96,15 @@ def category_update_form(id, erroneous_form=None):
     }
 
 
-@blueprint.route('/categories/<uuid:id>', methods=['POST'])
+@blueprint.route('/categories/<uuid:category_id>', methods=['POST'])
 @permission_required(BoardCategoryPermission.update)
-def category_update(id):
+def category_update(category_id):
     """Update a category."""
-    category = get_category_or_404(id)
+    category = get_category_or_404(category_id)
 
     form = CategoryUpdateForm(request.form)
     if not form.validate():
-        return category_update_form(id, form)
+        return category_update_form(category_id, form)
 
     slug = form.slug.data
     title = form.title.data
@@ -116,12 +116,12 @@ def category_update(id):
     return redirect_to('.index_for_brand', brand_id=category.brand.id)
 
 
-@blueprint.route('/categories/<uuid:id>/up', methods=['POST'])
+@blueprint.route('/categories/<uuid:category_id>/up', methods=['POST'])
 @permission_required(BoardCategoryPermission.update)
 @respond_no_content_with_location
-def category_move_up(id):
+def category_move_up(category_id):
     """Move a category upwards by one position."""
-    category = get_category_or_404(id)
+    category = get_category_or_404(category_id)
 
     try:
         service.move_category_up(category)
@@ -133,12 +133,12 @@ def category_move_up(id):
     return url_for('.index_for_brand', brand_id=category.brand.id)
 
 
-@blueprint.route('/categories/<uuid:id>/down', methods=['POST'])
+@blueprint.route('/categories/<uuid:category_id>/down', methods=['POST'])
 @permission_required(BoardCategoryPermission.update)
 @respond_no_content_with_location
-def category_move_down(id):
+def category_move_down(category_id):
     """Move a category downwards by one position."""
-    category = get_category_or_404(id)
+    category = get_category_or_404(category_id)
 
     try:
         service.move_category_down(category)
