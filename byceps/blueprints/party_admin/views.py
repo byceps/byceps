@@ -72,12 +72,12 @@ def index_for_brand(brand_id, page):
     }
 
 
-@blueprint.route('/<id>')
+@blueprint.route('/<party_id>')
 @permission_required(PartyPermission.list)
 @templated
-def view(id):
+def view(party_id):
     """Show a party."""
-    party = party_service.find_party(id)
+    party = party_service.find_party(party_id)
     if party is None:
         abort(404)
 
