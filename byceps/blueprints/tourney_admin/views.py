@@ -78,12 +78,12 @@ def category_create(party_id):
     return redirect_to('.category_index_for_party', party_id=category.party.id)
 
 
-@blueprint.route('/categories/<uuid:id>/update')
+@blueprint.route('/categories/<uuid:category_id>/update')
 @permission_required(TourneyCategoryPermission.update)
 @templated
-def category_update_form(id, erroneous_form=None):
+def category_update_form(category_id, erroneous_form=None):
     """Show form to update a category."""
-    category = _get_category_or_404(id)
+    category = _get_category_or_404(category_id)
 
     form = erroneous_form if erroneous_form \
            else TourneyCategoryUpdateForm(obj=category)
@@ -94,15 +94,15 @@ def category_update_form(id, erroneous_form=None):
     }
 
 
-@blueprint.route('/categories/<uuid:id>', methods=['POST'])
+@blueprint.route('/categories/<uuid:category_id>', methods=['POST'])
 @permission_required(TourneyCategoryPermission.update)
-def category_update(id):
+def category_update(category_id):
     """Update a category."""
-    category = _get_category_or_404(id)
+    category = _get_category_or_404(category_id)
 
     form = TourneyCategoryUpdateForm(request.form)
     if not form.validate():
-        return category_update_form(id, form)
+        return category_update_form(category_id, form)
 
     service.update_category(category, form.title.data.strip())
 
@@ -110,12 +110,12 @@ def category_update(id):
     return redirect_to('.category_index_for_party', party_id=category.party.id)
 
 
-@blueprint.route('/categories/<uuid:id>/up', methods=['POST'])
+@blueprint.route('/categories/<uuid:category_id>/up', methods=['POST'])
 @permission_required(TourneyCategoryPermission.update)
 @respond_no_content_with_location
-def category_move_up(id):
+def category_move_up(category_id):
     """Move a category upwards by one position."""
-    category = _get_category_or_404(id)
+    category = _get_category_or_404(category_id)
 
     try:
         service.move_category_up(category)
@@ -127,12 +127,12 @@ def category_move_up(id):
     return url_for('.category_index_for_party', party_id=category.party.id)
 
 
-@blueprint.route('/categories/<uuid:id>/down', methods=['POST'])
+@blueprint.route('/categories/<uuid:category_id>/down', methods=['POST'])
 @permission_required(TourneyCategoryPermission.update)
 @respond_no_content_with_location
-def category_move_down(id):
+def category_move_down(category_id):
     """Move a category downwards by one position."""
-    category = _get_category_or_404(id)
+    category = _get_category_or_404(category_id)
 
     try:
         service.move_category_down(category)
