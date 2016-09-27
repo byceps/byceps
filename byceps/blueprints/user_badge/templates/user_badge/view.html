@@ -48,7 +48,7 @@
   <h2>{{ recipients|length }} mal verliehen</h2>
   <ul class="list-grid">
     {%- for user in recipients|sort(attribute='screen_name') %}
-    <li><a class="recipient" href="{{ url_for('user.view', id=user.id) }}">
+    <li><a class="recipient" href="{{ url_for('user.view', user_id=user.id) }}">
 {{ render_user_avatar_medium(user) }}
     </a></li>
     {%- endfor %}

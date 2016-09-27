@@ -70,12 +70,12 @@ def index(page):
     }
 
 
-@blueprint.route('/<uuid:id>')
+@blueprint.route('/<uuid:user_id>')
 @permission_required(UserPermission.view)
 @templated
-def view(id):
+def view(user_id):
     """Show a user's interal profile."""
-    user = user_service.find_user(id)
+    user = user_service.find_user(user_id)
     if user is None:
         abort(404)
 

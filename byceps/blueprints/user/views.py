@@ -33,14 +33,14 @@ from . import signals
 blueprint = create_blueprint('user', __name__)
 
 
-@blueprint.route('/<uuid:id>')
+@blueprint.route('/<uuid:user_id>')
 @templated
-def view(id):
+def view(user_id):
     """Show a user's profile."""
     if get_site_mode().is_admin():
         abort(404)
 
-    user = service.find_user(id)
+    user = service.find_user(user_id)
     if user is None:
         abort(404)
 
@@ -65,13 +65,13 @@ def view(id):
     }
 
 
-@blueprint.route('/<uuid:id>.json')
-def view_as_json(id):
+@blueprint.route('/<uuid:user_id>.json')
+def view_as_json(user_id):
     """Show selected attributes of a user's profile as JSON."""
     if get_site_mode().is_admin():
         abort(404)
 
-    user = service.find_user(id)
+    user = service.find_user(user_id)
 
     if not user:
         return _empty_json_response(404)
@@ -183,7 +183,7 @@ def create():
         user.screen_name)
     signals.user_created.send(None, user=user)
 
-    return redirect_to('.view', id=user.id)
+    return redirect_to('.view', user_id=user.id)
 
 
 @blueprint.route('/email_address_confirmations/request')
