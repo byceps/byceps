@@ -102,7 +102,7 @@
         {%- for attached_article in article.attached_articles|sort(attribute='article.item_number') %}
           <tr>
             <td>{{ attached_article.quantity }} &times; {{ render_article_link(attached_article.article) }}</td>
-            <td><a href="{{ url_for('.article_attachment_remove', id=attached_article.id) }}" class="action inline attachment-remove" title="Artikelanhang entfernen">{{ render_icon('remove') }}</a></td>
+            <td><a href="{{ url_for('.article_attachment_remove', article_id=attached_article.id) }}" class="action inline attachment-remove" title="Artikelanhang entfernen">{{ render_icon('remove') }}</a></td>
           </tr>
         {%- endfor %}
         </table>
@@ -115,10 +115,10 @@
 
   <ol class="actions" style="margin-top: 2rem;">
     {%- if g.current_user.has_permission(ShopArticlePermission.update) %}
-    <li><a href="{{ url_for('.article_update_form', id=article.id) }}">{{ render_icon('edit') }} Bearbeiten</a></li>
+    <li><a href="{{ url_for('.article_update_form', article_id=article.id) }}">{{ render_icon('edit') }} Bearbeiten</a></li>
     <li><a href="{{ url_for('.article_attachment_create_form', article_id=article.id) }}">{{ render_icon('attached') }} Artikel anhängen</a></li>
     {%- endif %}
-    <li><a href="{{ url_for('.article_view_ordered', id=article.id) }}">{{ render_icon('users') }} Käufer auflisten</a></li>
+    <li><a href="{{ url_for('.article_view_ordered', article_id=article.id) }}">{{ render_icon('users') }} Käufer auflisten</a></li>
   </ol>
 
 {%- endblock %}

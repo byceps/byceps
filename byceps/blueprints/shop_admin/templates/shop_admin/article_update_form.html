@@ -22,7 +22,7 @@
   </nav>
   <h1>{{ render_icon('edit') }} {{ title }}</h1>
 
-  <form action="{{ url_for('.article_update', id=article.id) }}" method="post">
+  <form action="{{ url_for('.article_update', article_id=article.id) }}" method="post">
     {% call form_fieldset() %}
       {{ form_field(form.description, maxlength=80, required='required', autofocus='autofocus') }}
       {{ form_field(form.price, size=7, maxlength=7, style='text-align: right; width: 5.5rem;', required='required', note='€') }}
@@ -34,7 +34,7 @@
       {{ form_field_checkbox(form.requires_separate_order, form.requires_separate_order.label.text) }}
     {% endcall %}
 
-    {{ form_buttons('Speichern', cancel_url=url_for('.article_view', id=article.id)) }}
+    {{ form_buttons('Speichern', cancel_url=url_for('.article_view', article_id=article.id)) }}
   </form>
 
 {%- endblock %}

@@ -66,12 +66,12 @@ def article_index_for_party(party_id, page):
     }
 
 
-@blueprint.route('/articles/<uuid:id>')
+@blueprint.route('/articles/<uuid:article_id>')
 @permission_required(ShopArticlePermission.view)
 @templated
-def article_view(id):
+def article_view(article_id):
     """Show a single article."""
-    article = article_service.find_article_with_details(id)
+    article = article_service.find_article_with_details(article_id)
     if article is None:
         abort(404)
 
@@ -84,14 +84,14 @@ def article_view(id):
     }
 
 
-@blueprint.route('/articles/<uuid:id>/ordered')
+@blueprint.route('/articles/<uuid:article_id>/ordered')
 @permission_required(ShopArticlePermission.view)
 @templated
-def article_view_ordered(id):
+def article_view_ordered(article_id):
     """List the people that have ordered this article, and the
     corresponding quantities.
     """
-    article = _get_article_or_404(id)
+    article = _get_article_or_404(article_id)
 
     order_items = service.get_order_items_for_article(article)
 
@@ -150,15 +150,15 @@ def article_create(party_id):
                                              price, tax_rate, quantity)
 
     flash_success('Der Artikel "{}" wurde angelegt.', article.item_number)
-    return redirect_to('.article_view', id=article.id)
+    return redirect_to('.article_view', article_id=article.id)
 
 
-@blueprint.route('/articles/<uuid:id>/update')
+@blueprint.route('/articles/<uuid:article_id>/update')
 @permission_required(ShopArticlePermission.update)
 @templated
-def article_update_form(id):
+def article_update_form(article_id):
     """Show form to update an article."""
-    article = _get_article_or_404(id)
+    article = _get_article_or_404(article_id)
 
     form = ArticleUpdateForm(obj=article)
 
@@ -168,11 +168,11 @@ def article_update_form(id):
     }
 
 
-@blueprint.route('/articles/<uuid:id>', methods=['POST'])
+@blueprint.route('/articles/<uuid:article_id>', methods=['POST'])
 @permission_required(ShopArticlePermission.update)
-def article_update(id):
+def article_update(article_id):
     """Update an article."""
-    article = _get_article_or_404(id)
+    article = _get_article_or_404(article_id)
 
     form = ArticleUpdateForm(request.form)
 
@@ -190,7 +190,7 @@ def article_update(id):
                                    requires_separate_order)
 
     flash_success('Der Artikel "{}" wurde aktualisiert.', article.description)
-    return redirect_to('.article_view', id=article.id)
+    return redirect_to('.article_view', article_id=article.id)
 
 
 @blueprint.route('/articles/<article_id>/attachments/create')
@@ -232,15 +232,15 @@ def article_attachment_create(article_id):
     flash_success(
         'Der Artikel "{}" wurde {:d} mal an den Artikel "{}" angehängt.',
         article_to_attach.item_number, quantity, article.item_number)
-    return redirect_to('.article_view', id=article.id)
+    return redirect_to('.article_view', article_id=article.id)
 
 
-@blueprint.route('/articles/attachments/<uuid:id>', methods=['DELETE'])
+@blueprint.route('/articles/attachments/<uuid:article_id>', methods=['DELETE'])
 @permission_required(ShopArticlePermission.update)
 @respond_no_content_with_location
-def article_attachment_remove(id):
+def article_attachment_remove(article_id):
     """Remove the attachment link from one article to another."""
-    attached_article = article_service.find_attached_article(id)
+    attached_article = article_service.find_attached_article(article_id)
     if attached_article is None:
         abort(404)
 
@@ -251,7 +251,7 @@ def article_attachment_remove(id):
 
     flash_success('Artikel "{}" ist nun nicht mehr an Artikel "{}" angehängt.',
                   article.item_number, attached_to_article.item_number)
-    return url_for('.article_view', id=article.id)
+    return url_for('.article_view', article_id=article.id)
 
 
 # -------------------------------------------------------------------- #
