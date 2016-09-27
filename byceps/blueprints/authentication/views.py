@@ -235,7 +235,7 @@ def password_reset(token):
     return redirect_to('.login_form')
 
 
-def _verify_password_reset_token(verification_token ):
+def _verify_password_reset_token(verification_token):
     if verification_token is None or verification_token.is_expired:
         flash_error('Es wurde kein gültiges Token angegeben. '
                     'Ein Token ist nur 24 Stunden lang gültig.')
