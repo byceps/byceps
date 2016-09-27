@@ -143,6 +143,7 @@ def password_update_form(erroneous_form=None):
 def password_update():
     """Update the current user's password."""
     user = _get_current_user_or_404()
+
     form = UpdatePasswordForm(request.form)
 
     if not form.validate():
@@ -150,7 +151,7 @@ def password_update():
 
     password = form.new_password.data
 
-    password_service.update_password_hash(user_id, password)
+    password_service.update_password_hash(user.id, password)
 
     flash_success('Das Passwort wurde geändert.')
     return redirect_to('.login_form')
