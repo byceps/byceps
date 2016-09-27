@@ -269,12 +269,12 @@ def membership_create(team_id):
                        party_id=membership.orga_team.party.id)
 
 
-@blueprint.route('/memberships/<uuid:id>/update')
+@blueprint.route('/memberships/<uuid:membership_id>/update')
 @permission_required(OrgaTeamPermission.administrate_memberships)
 @templated
-def membership_update_form(id, erroneous_form=None):
+def membership_update_form(membership_id, erroneous_form=None):
     """Show form to update a membership."""
-    membership = _get_membership_or_404(id)
+    membership = _get_membership_or_404(membership_id)
 
     teams = service.get_teams_for_party(membership.orga_team.party)
 
@@ -288,11 +288,11 @@ def membership_update_form(id, erroneous_form=None):
     }
 
 
-@blueprint.route('/memberships/<uuid:id>', methods=['POST'])
+@blueprint.route('/memberships/<uuid:membership_id>', methods=['POST'])
 @permission_required(OrgaTeamPermission.administrate_memberships)
-def membership_update(id):
+def membership_update(membership_id):
     """Update a membership."""
-    membership = _get_membership_or_404(id)
+    membership = _get_membership_or_404(membership_id)
 
     teams = service.get_teams_for_party(membership.orga_team.party)
 
@@ -300,7 +300,7 @@ def membership_update(id):
     form.set_orga_team_choices(teams)
 
     if not form.validate():
-        return membership_update_form(id, form)
+        return membership_update_form(membership_id, form)
 
     team_id = form.orga_team_id.data
     team = service.find_orga_team(team_id)
@@ -314,12 +314,12 @@ def membership_update(id):
                        party_id=membership.orga_team.party.id)
 
 
-@blueprint.route('/memberships/<uuid:id>', methods=['DELETE'])
+@blueprint.route('/memberships/<uuid:membership_id>', methods=['DELETE'])
 @permission_required(OrgaTeamPermission.administrate_memberships)
 @respond_no_content_with_location
-def membership_remove(id):
+def membership_remove(membership_id):
     """Remove an organizer from a team."""
-    membership = _get_membership_or_404(id)
+    membership = _get_membership_or_404(membership_id)
 
     user = membership.user
     team = membership.orga_team

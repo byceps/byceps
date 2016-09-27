@@ -101,8 +101,8 @@
                   <div class="dropdown left">
                     <button>{{ render_icon('caret-down') }}</button>
                     <ol>
-                      <li><a href="{{ url_for('.membership_update_form', id=membership.id) }}">{{ render_icon('edit') }} Teamzugehörigkeit und Aufgabe bearbeiten</a></li>
-                      <li><a data-action="membership-remove" href="{{ url_for('.membership_remove', id=membership.id) }}">{{ render_icon('remove') }} Person aus Team entfernen</a></li>
+                      <li><a href="{{ url_for('.membership_update_form', membership_id=membership.id) }}">{{ render_icon('edit') }} Teamzugehörigkeit und Aufgabe bearbeiten</a></li>
+                      <li><a data-action="membership-remove" href="{{ url_for('.membership_remove', membership_id=membership.id) }}">{{ render_icon('remove') }} Person aus Team entfernen</a></li>
                     </ol>
                   </div>
                 </div>

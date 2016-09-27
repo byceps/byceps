@@ -15,7 +15,7 @@
   </nav>
   <h1>{{ title }}</h1>
 
-  <form action="{{ url_for('.membership_update', id=membership.id) }}" method="post">
+  <form action="{{ url_for('.membership_update', membership_id=membership.id) }}" method="post">
     {% call form_fieldset() %}
       {{ form_field(form.orga_team_id, required='required', autofocus='autofocus') }}
       {{ form_field(form.duties, maxlength=40) }}
