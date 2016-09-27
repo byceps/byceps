@@ -15,8 +15,6 @@ from ...util.instances import ReprBuilder
 
 from ..user.models.user import User
 
-from .registry import permission_registry
-
 
 class Permission(db.Model):
     """A permission for a specific task.
@@ -39,10 +37,6 @@ class Permission(db.Model):
         key = enum_member.__class__.__key__
         permission_id = '{}.{}'.format(key, enum_member.name)
         return cls(permission_id)
-
-    @property
-    def enum_member(self):
-        return permission_registry.get_enum_member(self)
 
     def __repr__(self):
         return ReprBuilder(self) \

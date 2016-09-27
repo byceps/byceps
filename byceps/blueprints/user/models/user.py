@@ -10,7 +10,6 @@ byceps.blueprints.user.models.user
 
 from datetime import datetime
 from itertools import chain
-from operator import attrgetter
 from uuid import UUID
 
 from sqlalchemy.ext.associationproxy import association_proxy
@@ -19,6 +18,7 @@ from ....config import get_site_mode
 from ....database import db, generate_uuid
 from ....util.instances import ReprBuilder
 
+from ...authorization.registry import permission_registry
 from ...user_avatar.models import AvatarSelection
 
 from .detail import UserDetail
@@ -117,9 +117,11 @@ class User(db.Model):
 
     @property
     def permissions(self):
-        models = frozenset(
+        permission_models = frozenset(
             chain.from_iterable(role.permissions for role in self.roles))
-        return frozenset(map(attrgetter('enum_member'), models))
+
+        return frozenset(
+            permission_registry.get_enum_member(p) for p in permission_models)
 
     def has_permission(self, permission):
         return permission in self.permissions
