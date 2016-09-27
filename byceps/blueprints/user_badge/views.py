@@ -31,11 +31,11 @@ def index():
     }
 
 
-@blueprint.route('/<uuid:id>')
+@blueprint.route('/<uuid:badge_id>')
 @templated
-def view(id):
+def view(badge_id):
     """Show information about a badge."""
-    badge = badge_service.find_badge(id)
+    badge = badge_service.find_badge(badge_id)
 
     if badge is None:
         abort(404)

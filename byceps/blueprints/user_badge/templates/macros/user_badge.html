@@ -1,7 +1,7 @@
 {% macro render_user_badges(badges) %}
 <ul class="list-grid">
   {%- for badge in badges|sort(attribute='label') %}
-  <li><a href="{{ url_for('user_badge.view', id=badge.id) }}" class="user-badge" title="{{ badge.label }}"><img src="{{ badge.image_url }}"></a></li>
+  <li><a href="{{ url_for('user_badge.view', badge_id=badge.id) }}" class="user-badge" title="{{ badge.label }}"><img src="{{ badge.image_url }}"></a></li>
   {%- endfor %}
 </ul>
 {%- endmacro %}
