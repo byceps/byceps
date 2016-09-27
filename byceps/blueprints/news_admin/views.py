@@ -92,12 +92,12 @@ def create(brand_id):
     return redirect_to('.index_for_brand', brand_id=brand.id)
 
 
-@blueprint.route('/items/<uuid:id>/update')
+@blueprint.route('/items/<uuid:item_id>/update')
 @permission_required(NewsItemPermission.update)
 @templated
-def update_form(id):
+def update_form(item_id):
     """Show form to update a news item."""
-    item = get_item_or_404(id)
+    item = get_item_or_404(item_id)
 
     form = ItemUpdateForm(obj=item.current_version, slug=item.slug)
 
@@ -107,11 +107,11 @@ def update_form(id):
     }
 
 
-@blueprint.route('/items/<uuid:id>', methods=['POST'])
+@blueprint.route('/items/<uuid:item_id>', methods=['POST'])
 @permission_required(NewsItemPermission.update)
-def update(id):
+def update(item_id):
     """Update a news item."""
-    item = get_item_or_404(id)
+    item = get_item_or_404(item_id)
 
     form = ItemUpdateForm(request.form)
 

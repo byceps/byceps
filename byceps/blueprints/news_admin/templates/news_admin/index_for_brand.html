@@ -39,7 +39,7 @@
           <div class="dropdown left">
             <button>{{ render_icon('caret-down') }}</button>
             <ol>
-              <li><a href="{{ url_for('.update_form', id=item.id) }}">{{ render_icon('edit') }} bearbeiten</a></li>
+              <li><a href="{{ url_for('.update_form', item_id=item.id) }}">{{ render_icon('edit') }} bearbeiten</a></li>
             </ol>
           </div>
           {%- endif -%}
