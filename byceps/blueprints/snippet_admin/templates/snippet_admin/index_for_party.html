@@ -41,7 +41,7 @@
         <td>{{ snippet.name }}</td>
         <td class="nowrap">
           {%- if g.current_user.has_permission(SnippetPermission.view_history) %}
-          {{ render_icon('history') }} <a href="{{ url_for('.history', id=snippet.id) }}" title="Änderungshistorie ansehen">{{ render_datetime(snippet.current_version.created_at) }}</a>
+          {{ render_icon('history') }} <a href="{{ url_for('.history', snippet_id=snippet.id) }}" title="Änderungshistorie ansehen">{{ render_datetime(snippet.current_version.created_at) }}</a>
           {%- else %}
           {{ render_datetime(snippet.current_version.created_at) }}
           {%- endif %}
@@ -49,9 +49,9 @@
         <td>{{ render_user_avatar_tiny_and_link(snippet.current_version.creator) }}</td>
         <td>
           <ol class="actions inline">
-            <li><a href="{{ url_for('.view_version', id=snippet.current_version.id) }}">{{ render_icon('view') }} ansehen</a></li>
+            <li><a href="{{ url_for('.view_version', snippet_version_id=snippet.current_version.id) }}">{{ render_icon('view') }} ansehen</a></li>
             {%- if g.current_user.has_permission(SnippetPermission.update) -%}
-            <li><a href="{{ url_for('.update_snippet_form', id=snippet.id) }}">{{ render_icon('edit') }} bearbeiten</a></li>
+            <li><a href="{{ url_for('.update_snippet_form', snippet_id=snippet.id) }}">{{ render_icon('edit') }} bearbeiten</a></li>
             {%- endif -%}
           </ol>
         </td>
@@ -88,7 +88,7 @@
           <div class="dropdown left">
             <button>{{ render_icon('caret-down') }}</button>
             <ol>
-              <li><a data-action="mountpoint-delete" href="{{ url_for('.delete_mountpoint', id=mountpoint.id) }}">{{ render_icon('remove') }} Mountpoint entfernen</a></li>
+              <li><a data-action="mountpoint-delete" href="{{ url_for('.delete_mountpoint', mountpoint_id=mountpoint.id) }}">{{ render_icon('remove') }} Mountpoint entfernen</a></li>
             </ol>
           </div>
         {%- endif %}

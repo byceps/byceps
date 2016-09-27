@@ -54,11 +54,11 @@ def index_for_party(party_id):
     }
 
 
-@blueprint.route('/versions/<uuid:id>')
+@blueprint.route('/versions/<uuid:snippet_version_id>')
 @permission_required(SnippetPermission.view_history)
-def view_version(id):
+def view_version(snippet_version_id):
     """Show the snippet with the given id."""
-    version = find_version(id)
+    version = find_version(snippet_version_id)
 
     try:
         snippet_context = get_snippet_context(version)
@@ -116,11 +116,11 @@ def view_difference(from_version_id, to_version_id):
     }
 
 
-@blueprint.route('/<uuid:id>/history')
+@blueprint.route('/<uuid:snippet_id>/history')
 @permission_required(SnippetPermission.view_history)
 @templated
-def history(id):
-    snippet = find_snippet_by_id(id)
+def history(snippet_id):
+    snippet = find_snippet_by_id(snippet_id)
 
     versions = snippet.get_versions()
     versions_pairwise = list(pairwise(versions + [None]))
@@ -166,15 +166,15 @@ def create_snippet(party_id):
                                              body, image_url_path)
 
     flash_success('Das Snippet "{}" wurde angelegt.', version.snippet.name)
-    return redirect_to('.view_version', id=version.id)
+    return redirect_to('.view_version', snippet_version_id=version.id)
 
 
-@blueprint.route('/snippets/<uuid:id>/update')
+@blueprint.route('/snippets/<uuid:snippet_id>/update')
 @permission_required(SnippetPermission.update)
 @templated
-def update_snippet_form(id):
+def update_snippet_form(snippet_id):
     """Show form to update a snippet."""
-    snippet = find_snippet_by_id(id)
+    snippet = find_snippet_by_id(snippet_id)
     current_version = snippet.current_version
 
     form = SnippetUpdateForm(
@@ -187,13 +187,13 @@ def update_snippet_form(id):
     }
 
 
-@blueprint.route('/snippets/<uuid:id>', methods=['POST'])
+@blueprint.route('/snippets/<uuid:snippet_id>', methods=['POST'])
 @permission_required(SnippetPermission.update)
-def update_snippet(id):
+def update_snippet(snippet_id):
     """Update a snippet."""
     form = SnippetUpdateForm(request.form)
 
-    snippet = find_snippet_by_id(id)
+    snippet = find_snippet_by_id(snippet_id)
 
     creator = g.current_user
     title = form.title.data.strip()
@@ -205,7 +205,7 @@ def update_snippet(id):
                                              body, image_url_path)
 
     flash_success('Das Snippet "{}" wurde aktualisiert.', version.snippet.name)
-    return redirect_to('.view_version', id=version.id)
+    return redirect_to('.view_version', snippet_version_id=version.id)
 
 
 @blueprint.route('/mointpoints/for_party/<party_id>/create')
@@ -251,12 +251,12 @@ def create_mountpoint(party_id):
     return redirect_to('.index_for_party', party_id=party.id)
 
 
-@blueprint.route('/mountpoints/<uuid:id>', methods=['DELETE'])
+@blueprint.route('/mountpoints/<uuid:mountpoint_id>', methods=['DELETE'])
 @permission_required(MountpointPermission.delete)
 @respond_no_content_with_location
-def delete_mountpoint(id):
+def delete_mountpoint(mountpoint_id):
     """Delete a mountpoint."""
-    mountpoint = snippet_service.find_mountpoint(id)
+    mountpoint = snippet_service.find_mountpoint(mountpoint_id)
     if mountpoint is None:
         abort(404)
 
