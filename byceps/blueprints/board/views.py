@@ -361,12 +361,12 @@ def topic_move(topic_id):
 # posting
 
 
-@blueprint.route('/postings/<uuid:id>')
-def posting_view(id):
+@blueprint.route('/postings/<uuid:posting_id>')
+def posting_view(posting_id):
     """Show the page of the posting's topic that contains the posting,
     as seen by the current user.
     """
-    posting = _get_posting_or_404(id)
+    posting = _get_posting_or_404(posting_id)
 
     page = calculate_posting_page_number(posting)
 
@@ -444,12 +444,12 @@ def posting_create(topic_id):
                        _anchor=posting.anchor)
 
 
-@blueprint.route('/postings/<uuid:id>/update')
+@blueprint.route('/postings/<uuid:posting_id>/update')
 @permission_required(BoardPostingPermission.update)
 @templated
-def posting_update_form(id):
+def posting_update_form(posting_id):
     """Show form to update a posting."""
-    posting = _get_posting_or_404(id)
+    posting = _get_posting_or_404(posting_id)
 
     page = calculate_posting_page_number(posting)
     url = url_for('.topic_view', topic_id=posting.topic.id, page=page)
@@ -477,11 +477,11 @@ def posting_update_form(id):
     }
 
 
-@blueprint.route('/postings/<uuid:id>', methods=['POST'])
+@blueprint.route('/postings/<uuid:posting_id>', methods=['POST'])
 @permission_required(BoardPostingPermission.update)
-def posting_update(id):
+def posting_update(posting_id):
     """Update a posting."""
-    posting = _get_posting_or_404(id)
+    posting = _get_posting_or_404(posting_id)
 
     page = calculate_posting_page_number(posting)
     url = url_for('.topic_view', topic_id=posting.topic.id, page=page)
@@ -508,24 +508,24 @@ def posting_update(id):
     return redirect(url)
 
 
-@blueprint.route('/postings/<uuid:id>/moderate')
+@blueprint.route('/postings/<uuid:posting_id>/moderate')
 @permission_required(BoardPostingPermission.hide)
 @templated
-def posting_moderate_form(id):
+def posting_moderate_form(posting_id):
     """Show a form to moderate the posting."""
-    posting = _get_posting_or_404(id)
+    posting = _get_posting_or_404(posting_id)
 
     return {
         'posting': posting,
     }
 
 
-@blueprint.route('/postings/<uuid:id>/flags/hidden', methods=['POST'])
+@blueprint.route('/postings/<uuid:posting_id>/flags/hidden', methods=['POST'])
 @permission_required(BoardPostingPermission.hide)
 @respond_no_content_with_location
-def posting_hide(id):
+def posting_hide(posting_id):
     """Hide a posting."""
-    posting = _get_posting_or_404(id)
+    posting = _get_posting_or_404(posting_id)
 
     service.hide_posting(posting, g.current_user)
 
@@ -539,12 +539,12 @@ def posting_hide(id):
                    _anchor=posting.anchor)
 
 
-@blueprint.route('/postings/<uuid:id>/flags/hidden', methods=['DELETE'])
+@blueprint.route('/postings/<uuid:posting_id>/flags/hidden', methods=['DELETE'])
 @permission_required(BoardPostingPermission.hide)
 @respond_no_content_with_location
-def posting_unhide(id):
+def posting_unhide(posting_id):
     """Un-hide a posting."""
-    posting = _get_posting_or_404(id)
+    posting = _get_posting_or_404(posting_id)
 
     service.unhide_posting(posting, g.current_user)
 

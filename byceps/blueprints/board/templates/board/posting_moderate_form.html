@@ -26,9 +26,9 @@
   <ol class="actions">
   {%- if posting.hidden %}
     <li><span class="action disabled">{{ render_icon('hidden') }} verstecken</span></li>
-    <li><a data-action="posting-unhide" href="{{ url_for('.posting_unhide', id=posting.id) }}">{{ render_icon('view') }} sichtbar machen</a></li>
+    <li><a data-action="posting-unhide" href="{{ url_for('.posting_unhide', posting_id=posting.id) }}">{{ render_icon('view') }} sichtbar machen</a></li>
   {%- else %}
-    <li><a data-action="posting-hide" href="{{ url_for('.posting_hide', id=posting.id) }}">{{ render_icon('hidden') }} verstecken</a></li>
+    <li><a data-action="posting-hide" href="{{ url_for('.posting_hide', posting_id=posting.id) }}">{{ render_icon('hidden') }} verstecken</a></li>
     <li><span class="action disabled">{{ render_icon('view') }} sichtbar machen</span></li>
   {%- endif %}
   </ol>
