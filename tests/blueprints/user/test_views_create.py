@@ -66,7 +66,7 @@ class UserCreateTestCase(AbstractAppTestCase):
         # password
         credential = Credential.query.get(user.id)
         self.assertIsNotNone(credential)
-        self.assertTrue(credential.password_hash.startswith('pbkdf2:sha1:'))
+        self.assertTrue(credential.password_hash.startswith('pbkdf2:sha256:100000$'))
         self.assertIsNotNone(credential.updated_at)
 
         # session token

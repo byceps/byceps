@@ -16,7 +16,7 @@ class Credential(db.Model):
     __tablename__ = 'authn_credentials'
 
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
-    password_hash = db.Column(db.Unicode(80), nullable=False)
+    password_hash = db.Column(db.Unicode(100), nullable=False)
     updated_at = db.Column(db.DateTime, nullable=False)
 
     def __init__(self, user_id, password_hash, updated_at):
