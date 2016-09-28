@@ -15,37 +15,37 @@
     <header id="header">
       <div id="header-content">
         <div id="header-grid">
+          <div class="column">
 
-          <div class="current-user">
-          {% if g.current_user.is_active %}
-            <div class="current-user-avatar">
+            <div class="current-user">
+            {% if g.current_user.is_active %}
               {{ render_user_avatar_mini(g.current_user) }}
-            </div>
-            <div>
-              <span class="intro">Angemeldet als</span>
-              <a class="name" href="{{ url_for('user.view_current') }}">{{ g.current_user.screen_name }}</a>
-            </div>
-            <div>
+              <span class="label-and-name">
+                <span class="label">Angemeldet als</span>
+                <a class="name" href="{{ url_for('user.view_current') }}">{{ g.current_user.screen_name }}</a>
+              </span>
               <div class="dropdown left">
                 <button>{{ render_icon('caret-down') }}</button>
                 <ol>
                   <li><a data-action="logout" href="{{ url_for('authentication.logout', _method='POST') }}">{{ render_icon('log-out') }} abmelden</a></li>
                 </ol>
               </div>
-            </div>
-          {%- else -%}
-            <div>
-              {{ render_icon('log-in') }} <a href="{{ url_for('authentication.login_form') }}">Anmelden</a>
-            </div>
-          {%- endif %}
-          </div><!-- /.current-user -->
+            {%- else -%}
+              <div>
+                {{ render_icon('log-in') }} <a href="{{ url_for('authentication.login_form') }}">Anmelden</a>
+              </div>
+            {%- endif %}
+            </div><!-- /.current-user -->
+
+          </div><!-- /.column -->
+          <div class="column">
 
 {%- with
   current_page = current_page|default,
   brand = current_page_brand|default,
   party = current_page_party|default
 %}
-          <div class="head">
+            <div class="head">
 
   {%- if brand %}
 {{ render_brand_head(brand) }}
@@ -53,10 +53,11 @@
 {{ render_party_head(party) }}
   {%- endif %}
 
-          </div><!-- /.head -->
+            </div><!-- /.head -->
 
 {%- endwith %}
 
+          </div><!-- /.column -->
         </div><!-- /#header-grid -->
       </div><!-- /#header-content -->
     </header>

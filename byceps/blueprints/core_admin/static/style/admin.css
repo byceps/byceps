@@ -112,8 +112,8 @@ main {
   margin: -20px 0 0 -20px;
 }
 
-#header-content .head,
-#header-content .current-user {
+#header-content .column {
+  align-self: center;
   padding: 20px 0 0 20px;
 }
 
@@ -130,30 +130,24 @@ main {
 }
 
 #header-content .current-user {
-  align-items: center;
-  flex: 0 1 auto;
   font-size: 0.75rem; /* 12px / 16px */
-  display: flex;
 }
-#header-content .current-user > div {
-  flex: 1;
-  margin-left: 10px;
-  white-space: nowrap;
+#header-content .current-user .label-and-name {
+  display: inline-block;
+  margin: 0 0.3rem 0 0.1rem;
+  vertical-align: middle;
 }
-#header-content .current-user .current-user-avatar {
-  align-items: center;
-  display: flex;
-}
-#header-content .current-user .intro {
+#header-content .current-user .label-and-name .label {
   display: block;
+  font-size: 0.6875rem; /* 11px / 16px */
   opacity: 0.5;
 }
-#header-content .current-user a.name {
+#header-content .current-user .label-and-name .name {
   color: currentColor;
+  display: block;
   font-size: 1.0625rem; /* 17px / 16px */
   font-weight: bold;
   line-height: 1;
-  margin-right: 0.5em;
   text-decoration: none;
 }
 
