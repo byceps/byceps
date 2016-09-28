@@ -352,17 +352,18 @@ table.wide {
   display: inline-block;
   padding: 0 0.1em;
 }
-.dropdown button:focus {
-  outline: 0;
-}
-.dropdown button::-moz-focus-inner {
-  border: 0;
-}
 .dropdown button:hover,
 .dropdown.open button {
   background-color: #999999;
   border-color: #666666;
   color: #ffffff;
+}
+
+.dropdown-toggle:focus {
+  outline: 0;
+}
+.dropdown-toggle::-moz-focus-inner {
+  border: 0;
 }
 
 .dropdown > ol {

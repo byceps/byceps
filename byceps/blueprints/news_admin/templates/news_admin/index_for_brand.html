@@ -37,7 +37,7 @@
         <td>
           {%- if g.current_user.has_permission(NewsItemPermission.update) -%}
           <div class="dropdown left">
-            <button>{{ render_icon('caret-down') }}</button>
+            <button class="dropdown-toggle">{{ render_icon('caret-down') }}</button>
             <ol>
               <li><a href="{{ url_for('.update_form', item_id=item.id) }}">{{ render_icon('edit') }} bearbeiten</a></li>
             </ol>

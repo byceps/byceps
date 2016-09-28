@@ -25,7 +25,7 @@
                 <a class="name" href="{{ url_for('user.view_current') }}">{{ g.current_user.screen_name }}</a>
               </span>
               <div class="dropdown left">
-                <button>{{ render_icon('caret-down') }}</button>
+                <button class="dropdown-toggle">{{ render_icon('caret-down') }}</button>
                 <ol>
                   <li><a data-action="logout" href="{{ url_for('authentication.logout', _method='POST') }}">{{ render_icon('log-out') }} abmelden</a></li>
                 </ol>

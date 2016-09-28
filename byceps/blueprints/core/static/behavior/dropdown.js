@@ -1,7 +1,8 @@
 $(function() {
 
-  $('.dropdown button').click(function() {
+  $('.dropdown .dropdown-toggle').click(function() {
     $(this).parent().toggleClass('open');
+    return false;
   });
 
   $(document).click(function(event) {
