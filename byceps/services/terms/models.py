@@ -37,13 +37,13 @@ class Version(db.Model):
     query_class = VersionQuery
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    brand_id = db.Column(db.Unicode(20), db.ForeignKey('brands.id'))
+    brand_id = db.Column(db.Unicode(20), db.ForeignKey('brands.id'), nullable=False)
     brand = db.relationship(Brand)
-    created_at = db.Column(db.DateTime, default=datetime.now)
-    creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
+    created_at = db.Column(db.DateTime, default=datetime.now, nullable=False)
+    creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
     creator = db.relationship(User)
     title = db.Column(db.Unicode(40), nullable=False)
-    body = db.Column(db.UnicodeText)
+    body = db.Column(db.UnicodeText, nullable=False)
 
     def __init__(self, brand_id, creator_id, body):
         self.brand_id = brand_id
