@@ -25,7 +25,8 @@ class UserCreateTestCase(AbstractAppTestCase):
         self.setup_roles()
 
     def setup_terms(self):
-        self.terms_version = TermsVersion(self.brand.id, self.admin.id, 'ToS')
+        self.terms_version = TermsVersion(self.brand.id, self.admin.id,
+                                          '01-Jan-2016', 'ToS')
         self.db.session.add(self.terms_version)
         self.db.session.commit()
 
