@@ -13,6 +13,7 @@
     <thead>
       <tr>
         <th>ID</th>
+        <th>Titel</th>
         <th>erstellt</th>
         <th>durch</th>
       </tr>
@@ -21,6 +22,7 @@
       {%- for version in versions %}
         <tr>
           <td>{{ version.id }}</td>
+          <td>{{ version.title }}</td>
           <td class="nowrap">{{ render_datetime(version.created_at) }}</td>
           <td>{{ render_user_avatar_tiny_and_link(version.creator) }}</td>
         </tr>

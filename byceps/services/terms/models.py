@@ -31,6 +31,9 @@ class VersionQuery(BaseQuery):
 class Version(db.Model):
     """A specific version of a specific brand's terms and conditions."""
     __tablename__ = 'terms_versions'
+    __table_args__ = (
+        db.UniqueConstraint('brand_id', 'title'),
+    )
     query_class = VersionQuery
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
@@ -39,6 +42,7 @@ class Version(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.now)
     creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
     creator = db.relationship(User)
+    title = db.Column(db.Unicode(40), nullable=False)
     body = db.Column(db.UnicodeText)
 
     def __init__(self, brand_id, creator_id, body):
