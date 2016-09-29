@@ -45,9 +45,10 @@ class Version(db.Model):
     title = db.Column(db.Unicode(40), nullable=False)
     body = db.Column(db.UnicodeText, nullable=False)
 
-    def __init__(self, brand_id, creator_id, body):
+    def __init__(self, brand_id, creator_id, title, body):
         self.brand_id = brand_id
         self.creator_id = creator_id
+        self.title = title
         self.body = body
 
     def __repr__(self):
@@ -55,6 +56,7 @@ class Version(db.Model):
             .add_with_lookup('id') \
             .add('brand', self.brand_id) \
             .add_with_lookup('created_at') \
+            .add_with_lookup('title') \
             .build()
 
 

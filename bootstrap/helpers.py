@@ -129,8 +129,8 @@ def mount_snippet(snippet, endpoint_suffix, url_path):
 
 
 @add_to_database
-def create_terms_version(brand, creator, body):
-    return TermsVersion(brand.id, creator.id, body)
+def create_terms_version(brand, creator, title, body):
+    return TermsVersion(brand.id, creator.id, title, body)
 
 
 # -------------------------------------------------------------------- #
