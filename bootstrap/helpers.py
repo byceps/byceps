@@ -15,12 +15,12 @@ from byceps.blueprints.party.models import Party
 from byceps.blueprints.snippet.models.mountpoint import \
     Mountpoint as SnippetMountpoint
 from byceps.blueprints.snippet.models.snippet import Snippet, SnippetVersion
-from byceps.blueprints.terms.models import Version as TermsVersion
 from byceps.blueprints.user.models.user import User
 from byceps.blueprints.user_group.models import UserGroup
 from byceps.services.seating.models.area import Area as SeatingArea
 from byceps.services.seating.models.category import Category as SeatingCategory
 from byceps.services.seating.models.seat import Seat
+from byceps.services.terms.models import Version as TermsVersion
 
 from .util import add_to_database
 

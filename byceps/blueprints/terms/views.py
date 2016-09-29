@@ -10,13 +10,13 @@ byceps.blueprints.terms.views
 
 from flask import abort, g, request
 
+from ...services.terms import service as terms_service
 from ...services.verification_token import service as verification_token_service
 from ...util.framework import create_blueprint, flash_error, flash_success
 from ...util.templating import templated
 from ...util.views import redirect_to
 
 from .forms import ConsentForm
-from . import service
 
 
 blueprint = create_blueprint('terms', __name__)
@@ -26,7 +26,7 @@ blueprint = create_blueprint('terms', __name__)
 @templated
 def view_current():
     """Show the current version of this brand's terms and conditions."""
-    version = service.get_current_version(g.party.brand.id)
+    version = terms_service.get_current_version(g.party.brand.id)
 
     return {
         'version': version,
@@ -39,7 +39,9 @@ def consent_form(version_id, token, *, erroneous_form=None):
     """Show that version of the terms, and a form to consent to it."""
     version = _get_version_or_404(version_id)
 
-    verification_token = verification_token_service.find_for_terms_consent_by_token(token)
+    verification_token = verification_token_service \
+        .find_for_terms_consent_by_token(token)
+
     if verification_token is None:
         flash_error('Unbekannter Bestätigungscode.')
         abort(404)
@@ -58,7 +60,9 @@ def consent(version_id, token):
     """Consent to that version of the terms."""
     version = _get_version_or_404(version_id)
 
-    verification_token = verification_token_service.find_for_terms_consent_by_token(token)
+    verification_token = verification_token_service \
+        .find_for_terms_consent_by_token(token)
+
     if verification_token is None:
         flash_error('Unbekannter Bestätigungscode.')
         abort(404)
@@ -67,14 +71,15 @@ def consent(version_id, token):
     if not form.validate():
         return consent_form(version_id, token, erroneous_form=form)
 
-    service.consent_to_version_on_separate_action(version.id, verification_token)
+    terms_service.consent_to_version_on_separate_action(version.id,
+                                                        verification_token)
 
     flash_success('Du hast die AGB akzeptiert.')
     return redirect_to('authentication.login_form')
 
 
 def _get_version_or_404(version_id):
-    version = service.find_version(version_id)
+    version = terms_service.find_version(version_id)
 
     if version is None:
         abort(404)
