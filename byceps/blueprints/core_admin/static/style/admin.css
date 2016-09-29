@@ -132,6 +132,22 @@ main {
 #header-content .current-user {
   font-size: 0.75rem; /* 12px / 16px */
 }
+#header-content .current-user .dropdown {
+  padding: 5px;
+}
+#header-content .current-user .dropdown:hover {
+  background-color: #ffffff;
+  border: #cccccc solid 1px;
+  padding: 4px;
+}
+#header-content .current-user .dropdown a {
+  color: currentColor;
+  display: block;
+  text-decoration: none;
+}
+#header-content .current-user .dropdown ol {
+  margin-right: -1px;
+}
 #header-content .current-user .label-and-name {
   display: inline-block;
   margin: 0 0.3rem 0 0.1rem;

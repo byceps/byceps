@@ -19,13 +19,15 @@
 
             <div class="current-user">
             {% if g.current_user.is_active %}
-              {{ render_user_avatar_mini(g.current_user) }}
-              <span class="label-and-name">
-                <span class="label">Angemeldet als</span>
-                <a class="name" href="{{ url_for('user.view_current') }}">{{ g.current_user.screen_name }}</a>
-              </span>
               <div class="dropdown left">
-                <button class="dropdown-toggle">{{ render_icon('caret-down') }}</button>
+                <a href="{{ url_for('user.view_current') }}" class="dropdown-toggle">
+                  {{ render_user_avatar_mini(g.current_user) }}
+                  <span class="label-and-name">
+                    <span class="label">Angemeldet als</span>
+                    <span class="name">{{ g.current_user.screen_name }}</span>
+                  </span>
+                  {{ render_icon('caret-down') }}
+                </a>
                 <ol>
                   <li><a data-action="logout" href="{{ url_for('authentication.logout', _method='POST') }}">{{ render_icon('log-out') }} abmelden</a></li>
                 </ol>
