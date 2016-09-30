@@ -33,9 +33,7 @@ permission_registry.register_enum(SeatingPermission)
 @templated
 def index_for_party(party_id, page):
     """List seating areas for that party."""
-    party = party_service.find_party(party_id)
-    if party is None:
-        abort(404)
+    party = _get_party_or_404(party_id)
 
     per_page = request.args.get('per_page', type=int, default=15)
     areas = seating_service.get_areas_for_party_paginated(party.id, page,
@@ -45,9 +43,21 @@ def index_for_party(party_id, page):
 
     categories = seating_service.get_categories_for_party(party.id)
 
+    groups = seating_service.get_all_seat_groups_for_party(party.id)
+
     return {
         'party': party,
         'areas': areas,
         'seat_total_per_area': seat_total_per_area,
         'categories': categories,
+        'groups': groups,
     }
+
+
+def _get_party_or_404(party_id):
+    party = party_service.find_party(party_id)
+
+    if party is None:
+        abort(404)
+
+    return party

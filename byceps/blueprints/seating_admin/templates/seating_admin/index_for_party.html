@@ -57,4 +57,28 @@
     </ol>
   </div>
 
+  <h2>Sitzplatz-Gruppen {{ render_extra_in_heading(groups|length) }}</h2>
+  <table class="index wide">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Ticket-Kategorie</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for group in groups|sort(attribute='title') %}
+      <tr>
+        <td colspan="2"><strong>{{ group.title }}</strong></td>
+      </tr>
+        {%- for seat in group.seats %}
+      <tr>
+        <td>{{ seat.id }}</td>
+        <td>{{ seat.category.title }}</td>
+      </tr>
+        {%- endfor %}
+      {%- endfor %}
+      <tr>
+    </tbody>
+  </table>
+
 {%- endblock body %}

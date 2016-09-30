@@ -13,6 +13,7 @@ from ...database import db
 from .models.area import Area
 from .models.category import Category
 from .models.seat import Seat
+from .models.seat_group import SeatGroup, SeatGroupAssignment
 
 
 def count_areas_for_party(party_id):
@@ -61,7 +62,7 @@ def get_categories_for_party(party_id):
 
 
 def get_seat_total_per_area(party_id):
-    """Return the number of seats per area for this party."""
+    """Return the number of seats per area for that party."""
     return dict(db.session \
         .query(
             Area.id,
@@ -71,3 +72,26 @@ def get_seat_total_per_area(party_id):
         .join(Seat) \
         .group_by(Area.id) \
         .all())
+
+
+# -------------------------------------------------------------------- #
+# seat groups
+
+def create_seat_group(party_id, title, seat_ids):
+    """Create a seat group and assign the given seats."""
+    group = SeatGroup(party_id, title)
+    db.session.add(group)
+    db.session.commit()
+
+    for seat_id in seat_ids:
+        assignment = SeatGroupAssignment(group.id, seat_id)
+        db.session.add(assignment)
+    db.session.commit()
+
+    return group
+
+def get_all_seat_groups_for_party(party_id):
+    """Return all seat groups for that party."""
+    return SeatGroup.query \
+        .filter_by(party_id=party_id) \
+        .all()
