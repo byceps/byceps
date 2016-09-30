@@ -33,6 +33,7 @@ class Seat(db.Model):
     coord_y = db.Column(db.Integer, nullable=False)
     category_id = db.Column(db.Uuid, db.ForeignKey('seat_categories.id'), index=True, nullable=False)
     category = db.relationship(Category, backref='seats')
+    label = db.Column(db.Unicode(40), nullable=True)
 
     def __init__(self, area, category, *, coord_x=0, coord_y=0):
         self.area = area
@@ -75,4 +76,5 @@ class Seat(db.Model):
             .add_with_lookup('id') \
             .add_with_lookup('area') \
             .add_with_lookup('category') \
+            .add_with_lookup('label') \
             .build()

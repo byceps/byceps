@@ -1,5 +1,6 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
+{% from 'macros/misc.html' import render_with_fallback %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
 {% set current_page = 'seating_admin' %}
 {% set current_page_party = party %}
@@ -62,17 +63,19 @@
     <thead>
       <tr>
         <th>ID</th>
+        <th>Bezeichung</th>
         <th>Ticket-Kategorie</th>
       </tr>
     </thead>
     <tbody>
       {%- for group in groups|sort(attribute='title') %}
       <tr>
-        <td colspan="2"><strong>{{ group.title }}</strong></td>
+        <td colspan="3"><strong>{{ group.title }}</strong></td>
       </tr>
         {%- for seat in group.seats %}
       <tr>
         <td>{{ seat.id }}</td>
+        <td>{{ render_with_fallback(seat.label) }}</td>
         <td>{{ seat.category.title }}</td>
       </tr>
         {%- endfor %}
