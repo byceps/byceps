@@ -184,7 +184,7 @@
         {%- endif %}
         <td>
           {%- if ticket.used_by == user %}<strong>{% endif -%}
-          <a href="{{ url_for('ticket_admin.view', ticket_id=ticket.id) }}">{{ ticket.id }}</a>
+              <a href="{{ url_for('ticket_admin.view', ticket_id=ticket.id) }}" title="{{ ticket.id }}">{{ ticket.id|string|truncate(6, killwords=True, end='…') }}</a>
           {%- if ticket.used_by == user %}</strong>{% endif -%}
         </td>
         <td>{{ ticket.category.title }}</td>
@@ -192,7 +192,7 @@
           {%- with seat = ticket.occupied_seat %}
             {%- if seat %}
           {{ seat.area.title }}<br>
-          {{ seat.label|fallback(seat.id) }}
+          <span title="{{ seat.id }}">{{ seat.label|fallback(seat.id|string|truncate(6, killwords=True, end='…')) }}</span>
             {%- endif %}
           {%- endwith %}
         </td>
