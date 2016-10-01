@@ -91,7 +91,7 @@ def create_orgaflag(brand_id):
     user_id = form.user_id.data.strip()
     user = _get_user_or_404(user_id)
 
-    orga_flag = service.create_orga_flag(brand, user)
+    orga_flag = service.create_orga_flag(brand.id, user.id)
 
     flash_success('{} wurde das Orga-Flag für die Marke {} gegeben.',
                   orga_flag.user.screen_name, orga_flag.brand.title)

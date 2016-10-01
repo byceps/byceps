@@ -129,9 +129,9 @@ def count_orgas_for_brand(brand):
         .count()
 
 
-def create_orga_flag(brand, user):
+def create_orga_flag(brand_id, user_id):
     """Create an orga flag for a user for brand."""
-    orga_flag = OrgaFlag(brand, user)
+    orga_flag = OrgaFlag(brand_id, user_id)
 
     db.session.add(orga_flag)
     db.session.commit()

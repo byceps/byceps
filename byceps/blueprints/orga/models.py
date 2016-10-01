@@ -25,13 +25,13 @@ class OrgaFlag(db.Model):
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
     user = db.relationship(User, backref='orga_flags')
 
-    def __init__(self, brand, user):
-        self.brand = brand
-        self.user = user
+    def __init__(self, brand_id, user_id):
+        self.brand_id = brand_id
+        self.user_id = user_id
 
     def __repr__(self):
         return ReprBuilder(self) \
-            .add('brand', self.brand.title) \
+            .add('brand', self.brand_id) \
             .add('user', self.user.screen_name) \
             .build()
 

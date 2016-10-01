@@ -76,7 +76,7 @@ def get_user(screen_name):
 
 @add_to_database
 def promote_orga(brand, user):
-    return OrgaFlag(brand=brand, user=user)
+    return OrgaFlag(brand.id, user.id)
 
 
 @add_to_database
