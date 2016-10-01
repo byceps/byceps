@@ -1,0 +1,41 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/admin.html' import render_extra_in_heading %}
+{% from 'macros/datetime.html' import render_datetime %}
+{% from 'macros/icons.html' import render_icon %}
+{% from 'macros/misc.html' import render_tag, render_with_fallback %}
+{% from 'macros/user.html' import render_user_avatar_image %}
+{% from 'macros/user_admin.html' import render_main_tabs_view with context %}
+{% set current_page = 'user_admin.view_permissions' %}
+{% set title = 'Benutzer - Berechtigungen - %s'|format(user.screen_name) %}
+
+{% block before_body %}
+{{ render_main_tabs_view(current_page, user.id) }}
+{%- endblock %}
+
+{% block body %}
+
+  <h1>
+    {{- render_icon('user') }} {{ user.screen_name -}}
+    {%- if user.deleted %} {{ render_tag(render_icon('delete') ~ ' gelöscht', class='notification-error') }}{% endif -%}
+  </h1>
+
+  <h2 id="permissions">Berechtigungen</h2>
+  <table class="index wide">
+    {%- for role, permissions in permissions_by_role.items()|sort(attribute='0.title') %}
+    <tr>
+      <td>
+        <strong>{{ role.title }}</strong><br>
+        <span class="monospace">{{ role.id|dim }}</span>
+      </td>
+      <td>
+        <ul>
+          {%- for permission in permissions|sort(attribute='title') %}
+          <li>{{ permission.title }} {{ '(<span class="monospace">%s</span>)'|format(permission.id)|dim }}</li>
+          {%- endfor %}
+        </ul>
+      </td>
+    </tr>
+    {%- endfor %}
+  </table>
+
+{%- endblock body %}

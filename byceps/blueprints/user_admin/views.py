@@ -75,12 +75,7 @@ def index(page):
 @templated
 def view(user_id):
     """Show a user's interal profile."""
-    user = user_service.find_user(user_id)
-    if user is None:
-        abort(404)
-
-    permissions_by_role = authorization_service \
-        .get_permissions_by_roles_for_user_with_titles(user)
+    user = _get_user_or_404(user_id)
 
     badges = badge_service.get_badges_for_user(user.id)
 
@@ -98,7 +93,6 @@ def view(user_id):
 
     return {
         'user': user,
-        'permissions_by_role': permissions_by_role,
         'badges': badges,
         'orders': orders,
         'parties_and_tickets': parties_and_tickets,
@@ -116,3 +110,27 @@ def _group_tickets_by_party(tickets):
         tickets_by_party[party].append(ticket)
 
     return tickets_by_party
+
+
+@blueprint.route('/<uuid:user_id>/permissions')
+@permission_required(UserPermission.view)
+@templated
+def view_permissions(user_id):
+    """Show user's permissions."""
+    user = _get_user_or_404(user_id)
+
+    permissions_by_role = authorization_service \
+        .get_permissions_by_roles_for_user_with_titles(user)
+
+    return {
+        'user': user,
+        'permissions_by_role': permissions_by_role,
+    }
+
+
+def _get_user_or_404(user_id):
+    user = user_service.find_user(user_id)
+    if user is None:
+        abort(404)
+
+    return user
