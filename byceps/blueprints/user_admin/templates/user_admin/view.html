@@ -29,6 +29,11 @@
 
 {% block body %}
 
+  <nav class="breadcrumbs">
+    <ol>
+      <li><a href="{{ url_for('.index') }}">Benutzer</a></li>
+    </ol>
+  </nav>
   <h1>
     {{- render_icon('user') }} {{ user.screen_name -}}
     {%- if user.deleted %} {{ render_tag(render_icon('delete') ~ ' gelöscht', class='notification-error') }}{% endif -%}
