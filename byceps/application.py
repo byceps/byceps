@@ -43,6 +43,7 @@ BLUEPRINTS = [
     ('orga_admin',          '/admin/orgas',         SiteMode.admin ),
     ('orga_presence',       '/admin/presence',      SiteMode.admin ),
     ('orga_team',           '/orgas',               SiteMode.public),
+    ('orga_team_admin',     '/admin/orga_teams',    SiteMode.admin ),
     ('party',               None,                   SiteMode.public),
     ('party_admin',         '/admin/parties',       SiteMode.admin ),
     ('seating',             '/seating',             SiteMode.public),

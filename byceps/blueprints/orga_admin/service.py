@@ -11,7 +11,6 @@ byceps.blueprints.orga_admin.service
 from itertools import islice
 
 from ...database import db
-from ...services.orga_team.models import Membership, OrgaTeam
 
 from ..brand.models import Brand
 from ..orga.models import OrgaFlag
@@ -47,41 +46,6 @@ def get_organizers_for_brand(brand):
     return User.query \
         .join(OrgaFlag).filter(OrgaFlag.brand == brand) \
         .options(db.joinedload('detail')) \
-        .all()
-
-
-def get_unassigned_orgas_for_party(party):
-    """Return organizers that are not assigned to a team for the party."""
-    assigned_orgas = User.query \
-        .join(Membership) \
-        .join(OrgaTeam) \
-        .filter(OrgaTeam.party == party) \
-        .options(db.load_only(User.id)) \
-        .all()
-    assigned_orga_ids = frozenset(user.id for user in assigned_orgas)
-
-    unassigned_orgas_query = User.query
-
-    if assigned_orga_ids:
-        unassigned_orgas_query = unassigned_orgas_query \
-            .filter(db.not_(User.id.in_(assigned_orga_ids)))
-
-    unassigned_orgas = unassigned_orgas_query \
-        .join(OrgaFlag).filter(OrgaFlag.brand == party.brand) \
-        .options(
-            db.load_only('screen_name')
-        ) \
-        .all()
-    unassigned_orgas.sort(key=lambda user: user.screen_name.lower())
-
-    return unassigned_orgas
-
-
-def get_teams_for_party(party):
-    """Return orga teams for that party, ordered by title."""
-    return OrgaTeam.query \
-        .filter_by(party=party) \
-        .order_by(OrgaTeam.title) \
         .all()
 
 
@@ -152,63 +116,3 @@ def find_orga_flag(brand_id, user_id):
         .filter_by(brand_id=brand_id) \
         .filter_by(user_id=user_id) \
         .first()
-
-
-def create_orga_team(party_id, title_id):
-    """Create an orga team for that party."""
-    team = OrgaTeam(party_id, title_id)
-
-    db.session.add(team)
-    db.session.commit()
-
-    return team
-
-
-def delete_orga_team(team):
-    """Delete the orga team."""
-    db.session.delete(team)
-    db.session.commit()
-
-
-def find_orga_team(team_id):
-    """Return the team with that id, or `None` if not found."""
-    return OrgaTeam.query.get(team_id)
-
-
-def get_orga_teams_for_party(party):
-    """Return all orga teams for that party, with memberships."""
-    return OrgaTeam.query \
-        .options(db.joinedload('memberships')) \
-        .filter_by(party=party) \
-        .all()
-
-
-def create_membership(team_id, user_id, duties):
-    """Assign the user to the team."""
-    membership = Membership(team.id, user.id)
-
-    if duties:
-        membership.duties = duties
-
-    db.session.add(membership)
-    db.session.commit()
-
-    return membership
-
-
-def update_membership(membership, team, duties):
-    """Update the membership."""
-    membership.orga_team = team
-    membership.duties = duties
-    db.session.commit()
-
-
-def delete_membership(membership):
-    """Delete the membership."""
-    db.session.delete(membership)
-    db.session.commit()
-
-
-def find_membership(membership_id):
-    """Return the membership with that id, or `None` if not found."""
-    return Membership.query.get(membership_id)
