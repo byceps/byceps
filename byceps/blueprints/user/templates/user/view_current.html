@@ -99,15 +99,12 @@
       <th>Status</th>
       <td>
         {%- if subscribed_to_newsletter -%}
-        {{ render_icon('enabled', color='#009900') }} abonniert
+          {{ render_icon('enabled', color='#009900') }} abonniert <a class="action inline" style="margin-left: 0.5em;" data-action="newsletter-unsubscribe" href="{{ url_for('newsletter.unsubscribe') }}">{{ render_icon('edit') }} abmelden</a>
         {%- else -%}
-        {{ render_icon('disabled', color='#cc0000') }} nicht abonniert
+          {{ render_icon('disabled', color='#cc0000') }} nicht abonniert <a class="action inline" style="margin-left: 0.5em;" data-action="newsletter-subscribe" href="{{ url_for('newsletter.subscribe') }}">{{ render_icon('edit') }} anmelden</a>
         {%- endif -%}
     </tr>
   </table>
-  <ol class="actions">
-    <li><a href="{{ url_for('newsletter.subscription_update_form') }}">{{ render_icon('edit') }} bearbeiten</a></li>
-  </ol>
   {%- endif %}
 
 {%- endblock body %}

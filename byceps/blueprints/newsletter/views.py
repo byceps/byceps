@@ -8,62 +8,41 @@ byceps.blueprints.newsletter.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from collections import namedtuple
-
-from flask import abort, g, request
+from flask import abort, g, url_for
 
 from ...services.newsletter import service as newsletter_service
-from ...services.newsletter.types import SubscriptionState
 from ...util.framework import create_blueprint, flash_success
-from ...util.templating import templated
-from ...util.views import redirect_to
-
-from .forms import SubscriptionForm
+from ...util.views import respond_no_content_with_location
 
 
 blueprint = create_blueprint('newsletter', __name__)
 
 
-@blueprint.route('/subscriptions/mine/update')
-@templated
-def subscription_update_form():
-    """Show a form to update the current user's subscription."""
-    user = get_current_user_or_404()
+@blueprint.route('/subscription', methods=['POST'])
+@respond_no_content_with_location
+def subscribe():
+    user = _get_current_user_or_404()
     brand_id = g.party.brand.id
 
-    state = newsletter_service.get_subscription_state(user.id, brand_id)
+    newsletter_service.subscribe(user.id, brand_id)
 
-    obj = namedtuple('Obj', 'state')(state.name)
-    form = SubscriptionForm(obj=obj)
-
-    return {
-        'form': form,
-    }
+    flash_success('Du hast dich zum Newsletter angemeldet.')
+    return url_for('user.view_current')
 
 
-@blueprint.route('/subscriptions/mine', methods=['POST'])
-def subscription_update():
-    """Update the current user's subscription."""
-    user = get_current_user_or_404()
-
-    form = SubscriptionForm(request.form)
-
+@blueprint.route('/subscription', methods=['DELETE'])
+@respond_no_content_with_location
+def unsubscribe():
+    user = _get_current_user_or_404()
     brand_id = g.party.brand.id
-    state = SubscriptionState[form.state.data]
 
-    if state is SubscriptionState.requested:
-        newsletter_service.subscribe(user.id, brand_id)
-        flash_success('Du hast dich zum Newsletter angemeldet.')
-    elif state is SubscriptionState.declined:
-        newsletter_service.unsubscribe(user.id, brand_id)
-        flash_success('Du hast dich vom Newsletter abgemeldet.')
-    else:
-        abort(400, 'Unknown subscription state.')
+    newsletter_service.unsubscribe(user.id, brand_id)
 
-    return redirect_to('user.view_current')
+    flash_success('Du hast dich vom Newsletter abgemeldet.')
+    return url_for('user.view_current')
 
 
-def get_current_user_or_404():
+def _get_current_user_or_404():
     user = g.current_user
     if not user.is_active:
         abort(404)
