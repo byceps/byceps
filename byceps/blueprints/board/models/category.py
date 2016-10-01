@@ -49,8 +49,8 @@ class Category(db.Model):
                                                order_by=position,
                                                collection_class=ordering_list('position', count_from=1)))
 
-    def __init__(self, brand, slug, title, description):
-        self.brand = brand
+    def __init__(self, brand_id, slug, title, description):
+        self.brand_id = brand_id
         self.slug = slug
         self.title = title
         self.description = description
@@ -79,7 +79,7 @@ class Category(db.Model):
     def __repr__(self):
         return ReprBuilder(self) \
             .add_with_lookup('id') \
-            .add_with_lookup('brand') \
+            .add('brand', self.brand_id) \
             .add_with_lookup('slug') \
             .add_with_lookup('title') \
             .build()
@@ -95,9 +95,9 @@ class LastCategoryView(db.Model):
     category = db.relationship(Category)
     occured_at = db.Column(db.DateTime, nullable=False)
 
-    def __init__(self, user, category):
-        self.user = user
-        self.category = category
+    def __init__(self, user_id, category_id):
+        self.user_id = user_id
+        self.category_id = category_id
 
     @classmethod
     def find(cls, user, category):

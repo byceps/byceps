@@ -66,9 +66,9 @@ class Posting(db.Model):
     hidden_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
     hidden_by = db.relationship(User, foreign_keys=[hidden_by_id])
 
-    def __init__(self, topic, creator, body):
+    def __init__(self, topic, creator_id, body):
         self.topic = topic
-        self.creator = creator
+        self.creator_id = creator_id
         self.body = body
 
     def is_initial_topic_posting(self, topic):

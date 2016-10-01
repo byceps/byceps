@@ -24,7 +24,7 @@ from .models.topic import LastTopicView, Topic
 
 def create_category(brand, slug, title, description):
     """Create a category in that brand's board."""
-    category = Category(brand, slug, title, description)
+    category = Category(brand.id, slug, title, description)
     brand.board_categories.append(category)
 
     db.session.commit()
@@ -194,8 +194,8 @@ def paginate_topics(category, user, page, topics_per_page):
 
 def create_topic(category, creator, title, body):
     """Create a topic with an initial posting in that category."""
-    topic = Topic(category, creator, title)
-    posting = Posting(topic, creator, body)
+    topic = Topic(category.id, creator.id, title)
+    posting = Posting(topic, creator.id, body)
     initial_topic_posting_association = InitialTopicPostingAssociation(topic, posting)
 
     db.session.add(topic)
@@ -352,7 +352,7 @@ def paginate_postings(topic, user, page, postings_per_page):
 
 def create_posting(topic, creator, body):
     """Create a posting in that topic."""
-    posting = Posting(topic, creator, body)
+    posting = Posting(topic, creator.id, body)
     db.session.add(posting)
     db.session.commit()
 
@@ -419,7 +419,7 @@ def mark_category_as_just_viewed(category, user):
 
     last_view = LastCategoryView.find(user, category)
     if last_view is None:
-        last_view = LastCategoryView(user, category)
+        last_view = LastCategoryView(user.id, category.id)
         db.session.add(last_view)
 
     last_view.occured_at = datetime.now()
@@ -435,7 +435,7 @@ def mark_topic_as_just_viewed(topic, user):
 
     last_view = LastTopicView.find(user, topic)
     if last_view is None:
-        last_view = LastTopicView(user, topic)
+        last_view = LastTopicView(user.id, topic.id)
         db.session.add(last_view)
 
     last_view.occured_at = datetime.now()

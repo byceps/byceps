@@ -70,9 +70,9 @@ class Topic(db.Model):
     pinned_by = db.relationship(User, foreign_keys=[pinned_by_id])
     initial_posting = association_proxy('initial_topic_posting_association', 'posting')
 
-    def __init__(self, category, creator, title):
-        self.category = category
-        self.creator = creator
+    def __init__(self, category_id, creator_id, title):
+        self.category_id = category_id
+        self.creator_id = creator_id
         self.title = title
 
     def may_be_updated_by_user(self, user):
@@ -188,9 +188,9 @@ class LastTopicView(db.Model):
     topic = db.relationship(Topic)
     occured_at = db.Column(db.DateTime, nullable=False)
 
-    def __init__(self, user, topic):
-        self.user = user
-        self.topic = topic
+    def __init__(self, user_id, topic_id):
+        self.user_id = user_id
+        self.topic_id = topic_id
 
     @classmethod
     def find(cls, user, topic):
