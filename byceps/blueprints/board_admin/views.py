@@ -21,7 +21,6 @@ from ..board import service as board_service
 
 from .authorization import BoardCategoryPermission
 from .forms import CategoryCreateForm, CategoryUpdateForm
-from . import service
 
 
 blueprint = create_blueprint('board_admin', __name__)
@@ -37,7 +36,7 @@ def index_for_brand(brand_id):
     """List categories for that brand."""
     brand = get_brand_or_404(brand_id)
 
-    categories = service.get_categories(brand)
+    categories = board_service.get_categories(brand)
 
     return {
         'brand': brand,
@@ -74,7 +73,7 @@ def category_create(brand_id):
     title = form.title.data.strip()
     description = form.description.data.strip()
 
-    category = service.create_category(brand, slug, title, description)
+    category = board_service.create_category(brand, slug, title, description)
 
     flash_success('Die Kategorie "{}" wurde angelegt.', category.title)
     return redirect_to('.index_for_brand', brand_id=brand.id)
@@ -110,7 +109,7 @@ def category_update(category_id):
     title = form.title.data
     description = form.description.data
 
-    category = service.update_category(category, slug, title, description)
+    category = board_service.update_category(category, slug, title, description)
 
     flash_success('Die Kategorie "{}" wurde aktualisiert.', category.title)
     return redirect_to('.index_for_brand', brand_id=category.brand.id)
@@ -124,7 +123,7 @@ def category_move_up(category_id):
     category = get_category_or_404(category_id)
 
     try:
-        service.move_category_up(category)
+        board_service.move_category_up(category)
     except ValueError:
         flash_error('Die Kategorie "{}" befindet sich bereits ganz oben.', category.title)
     else:
@@ -141,7 +140,7 @@ def category_move_down(category_id):
     category = get_category_or_404(category_id)
 
     try:
-        service.move_category_down(category)
+        board_service.move_category_down(category)
     except ValueError:
         flash_error('Die Kategorie "{}" befindet sich bereits ganz unten.', category.title)
     else:

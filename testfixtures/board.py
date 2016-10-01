@@ -9,7 +9,6 @@ testfixtures.board
 """
 
 from byceps.blueprints.board import service
-from byceps.blueprints.board_admin import service as admin_service
 
 from .brand import create_brand
 
@@ -28,7 +27,7 @@ def create_category(*, brand=None, number=1, slug=None, title=None,
     if description is None:
         description = 'Hier geht es um Kategorie {}'.format(number)
 
-    return admin_service.create_category(brand, slug, title, description)
+    return service.create_category(brand, slug, title, description)
 
 
 def create_topic(category, creator, *, number=1, title=None, body=None):

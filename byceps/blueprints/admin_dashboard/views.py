@@ -22,7 +22,7 @@ from ...util.templating import templated
 from ..brand import service as brand_service
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
-from ..board_admin import service as board_admin_service
+from ..board import service as board_service
 from ..news_admin import service as news_admin_service
 from ..orga_admin import service as orga_admin_service
 from ..party import service as party_service
@@ -92,9 +92,9 @@ def view_brand(brand_id):
 
     current_terms_version = terms_service.get_current_version(brand.id)
 
-    board_category_count = board_admin_service.count_categories_for_brand(brand)
-    board_topic_count = board_admin_service.count_topics_for_brand(brand)
-    board_posting_count = board_admin_service.count_postings_for_brand(brand)
+    board_category_count = board_service.count_categories_for_brand(brand)
+    board_topic_count = board_service.count_topics_for_brand(brand)
+    board_posting_count = board_service.count_postings_for_brand(brand)
 
     return {
         'brand': brand,
