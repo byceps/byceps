@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-byceps.blueprints.orga.views
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.orga_team.views
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2016 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -15,13 +15,13 @@ from ...util.framework import create_blueprint
 from ...util.templating import templated
 
 
-blueprint = create_blueprint('orga', __name__)
+blueprint = create_blueprint('orga_team', __name__)
 
 
 @blueprint.route('/')
 @templated
 def index():
-    """List organizers."""
+    """List all organizers for the current party."""
     memberships = service.get_memberships_for_party(g.party.id)
 
     return {
