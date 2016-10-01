@@ -1,5 +1,8 @@
-{% macro render_icon(name, title=None) -%}
-<svg class="icon-{{ name }}"{% if title is not none %} title="{{ title }}"{% endif %}>
+{% macro render_icon(name, color=None, title=None) -%}
+<svg class="icon-{{ name }}"
+  {%- if color is not none %} style="fill: {{ color }}"{% endif -%}
+  {%- if title is not none %} title="{{ title }}"{% endif -%}
+>
   <use xlink:href="{{ url_for('core.static', filename='style/icons.svg') }}#icon-{{ name }}"></use>
 </svg>
 {%- endmacro %}

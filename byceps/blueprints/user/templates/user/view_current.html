@@ -99,9 +99,9 @@
       <th>Status</th>
       <td>
         {%- if subscribed_to_newsletter -%}
-        {{ render_icon('enabled') }} abonniert
+        {{ render_icon('enabled', color='#009900') }} abonniert
         {%- else -%}
-        {{ render_icon('disabled') }} nicht abonniert
+        {{ render_icon('disabled', color='#cc0000') }} nicht abonniert
         {%- endif -%}
     </tr>
   </table>
