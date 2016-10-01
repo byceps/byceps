@@ -16,12 +16,3 @@
 {% macro render_tag(label, class=None) -%}
   <span class="tag{% if class is not none %} {{ class }}{% endif %}">{{ label }}</span>
 {%- endmacro %}
-
-
-{% macro render_with_fallback(value, fallback='nicht angegeben') %}
-  {%- if value|default('', true)|trim -%}
-    {{ value }}
-  {%- else -%}
-    {{ fallback|dim }}
-  {%- endif -%}
-{% endmacro %}

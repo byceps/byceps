@@ -1,7 +1,6 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/icons.html' import render_icon %}
-{% from 'macros/misc.html' import render_with_fallback %}
 {% from 'macros/user.html' import render_user_avatar_small %}
 {% from 'macros/user_admin.html' import render_user_admin_link %}
 {% set current_page = 'orga_admin.teams' %}
@@ -95,7 +94,7 @@
                 </div>
                 <div class="details">
                   {{ render_user_admin_link(membership.user) }}<br>
-                  {{ render_with_fallback(membership.duties) }}
+                  {{ membership.duties|fallback }}
                 </div>
                 <div>
                   <div class="dropdown left">

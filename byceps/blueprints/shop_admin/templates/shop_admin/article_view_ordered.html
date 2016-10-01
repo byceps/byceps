@@ -1,6 +1,5 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/datetime.html' import render_datetime %}
-{% from 'macros/misc.html' import render_with_fallback %}
 {% from 'macros/shop_admin.html' import render_article_link, render_order_payment_state %}
 {% from 'macros/shop_admin.html' import render_main_tabs with context %}
 {% from 'macros/user_admin.html' import render_user_avatar_tiny_and_link %}
@@ -55,7 +54,7 @@
         {%- endif %}
         <td>
           {{- render_user_avatar_tiny_and_link(user) }}<br>
-          {{- render_with_fallback(user.detail.full_name) -}}
+          {{- user.detail.full_name|fallback -}}
         </td>
         <td class="centered">{{ quantity }}</td>
         <td>{{ render_datetime(order.created_at, smart=False) }}</td>

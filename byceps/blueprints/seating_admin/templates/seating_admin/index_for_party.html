@@ -1,6 +1,5 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
-{% from 'macros/misc.html' import render_with_fallback %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
 {% set current_page = 'seating_admin' %}
 {% set current_page_party = party %}
@@ -75,7 +74,7 @@
         {%- for seat in group.seats %}
       <tr>
         <td>{{ seat.id }}</td>
-        <td>{{ render_with_fallback(seat.label) }}</td>
+        <td>{{ seat.label|fallback }}</td>
         <td>{{ seat.category.title }}</td>
       </tr>
         {%- endfor %}

@@ -2,7 +2,6 @@
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/datetime.html' import render_date %}
 {% from 'macros/icons.html' import render_icon %}
-{% from 'macros/misc.html' import render_with_fallback %}
 {% from 'macros/orga_admin.html' import render_main_tabs with context %}
 {% from 'macros/user.html' import render_user_avatar_small %}
 {% from 'macros/user_admin.html' import render_user_admin_link %}
@@ -47,7 +46,7 @@
         <td>{{ render_user_avatar_small(user) }}</td>
         <td class="nowrap">
           {{- render_user_admin_link(user) }}<br>
-          {{- render_with_fallback(user.detail.full_name) -}}
+          {{- user.detail.full_name|fallback -}}
         </td>
         <td class="nowrap">
           {%- if user.detail.date_of_birth %}
@@ -58,17 +57,17 @@
           {%- endif -%}
         </td>
         <td class="nowrap">
-          {{- render_with_fallback(user.detail.street) -}}
+          {{- user.detail.street|fallback -}}
           <br>
           {%- if user.detail.zip_code %}{{ user.detail.zip_code }} {% endif -%}
-          {{- render_with_fallback(user.detail.city) -}}
+          {{- user.detail.city|fallback -}}
           <br>
-          {{- render_with_fallback(user.detail.country) -}}
+          {{- user.detail.country|fallback -}}
           <br>
         </td>
         <td class="nowrap">
           <a href="mailto:{{- user.email_address }}">{{- user.email_address|truncate(28, killwords=True, end='…') }}</a><br>
-          {{- render_with_fallback(user.detail.phone_number) -}}
+          {{- user.detail.phone_number|fallback -}}
         </td>
         <td>
           <div class="dropdown left">

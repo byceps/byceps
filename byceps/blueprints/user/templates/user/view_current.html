@@ -1,7 +1,6 @@
 {% extends 'layout/base_auto.html' %}
 {% from 'macros/datetime.html' import render_date, render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
-{% from 'macros/misc.html' import render_with_fallback %}
 {% from 'macros/user.html' import render_user_avatar %}
 {% set current_page = 'user' %}
 {% set title = 'Deine Daten' %}
@@ -58,7 +57,7 @@
   <table class="index">
     <tr>
       <th>Voller Name</th>
-      <td>{{ render_with_fallback(user.detail.full_name) }}</td>
+      <td>{{ user.detail.full_name|fallback }}</td>
     </tr>
     <tr>
       <th>Geburtsdatum</th>
@@ -85,7 +84,7 @@
     </tr>
     <tr>
       <th>Telefonnummer</th>
-      <td>{{ render_with_fallback(user.detail.phone_number) }}</td>
+      <td>{{ user.detail.phone_number|fallback }}</td>
     </tr>
   </table>
   <ol class="actions">

@@ -1,6 +1,5 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/icons.html' import render_icon %}
-{% from 'macros/misc.html' import render_with_fallback %}
 {% from 'macros/shop_admin.html' import render_article_link, render_article_temporal_availability %}
 {% from 'macros/shop_admin.html' import render_main_tabs with context %}
 {% set current_page = 'shop_admin.articles' %}
@@ -70,7 +69,7 @@
     </tr>
     <tr>
       <th>Maximale Anzahl<br>pro Bestellung</th>
-      <td>{{ render_with_fallback(article.max_quantity_per_order) }}</td>
+      <td>{{ article.max_quantity_per_order|fallback }}</td>
     </tr>
     <tr>
       <th>Nur indirekt<br>bestellbar</th>

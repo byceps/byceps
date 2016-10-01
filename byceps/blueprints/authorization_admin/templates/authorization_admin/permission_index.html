@@ -1,7 +1,6 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/authorization_admin.html' import render_main_tabs with context %}
-{% from 'macros/misc.html' import render_with_fallback %}
 {% set current_page = 'authorization_admin.permissions' %}
 {% set title = 'Rechte' %}
 
@@ -25,7 +24,7 @@
       <tr>
         <td>
           <strong class="monospace">{{ permission.id }}</strong><br>
-          {{ render_with_fallback(permission.title, 'keine Beschreibung vorhanden') }}
+          {{ permission.title|fallback('keine Beschreibung vorhanden') }}
         </td>
         <td>
         {%- if permission.roles %}

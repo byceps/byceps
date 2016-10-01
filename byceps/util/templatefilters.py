@@ -11,6 +11,7 @@ Provide and register custom template filters.
 """
 
 from jinja2 import evalcontextfilter, Markup
+from jinja2.filters import do_default, do_trim
 
 from . import dateformat, money
 
@@ -18,8 +19,23 @@ from . import dateformat, money
 @evalcontextfilter
 def dim(eval_ctx, value):
     """Render value in a way so that it looks dimmed."""
-    dimmed = '<span class="dimmed">{}</span>'.format(value)
-    return Markup(dimmed) if eval_ctx.autoescape else dimmed
+    dimmed = _dim(value)
+    return _wrap_markup_on_autoescape(eval_ctx, dimmed)
+
+
+def _dim(value):
+    return '<span class="dimmed">{}</span>'.format(value)
+
+
+@evalcontextfilter
+def fallback(eval_ctx, value, fallback='nicht angegeben'):
+    defaulted = do_trim(do_default(value, '', True))
+    result = value if defaulted else _dim(fallback)
+    return _wrap_markup_on_autoescape(eval_ctx, result)
+
+
+def _wrap_markup_on_autoescape(eval_ctx, value):
+    return Markup(value) if eval_ctx.autoescape else value
 
 
 def register(app):
@@ -34,6 +50,7 @@ def register(app):
         dateformat.format_datetime_long,
         dateformat.format_time,
         dim,
+        fallback,
         money.format_euro_amount,
     ]
 

@@ -1,7 +1,7 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
-{% from 'macros/misc.html' import render_tag, render_with_fallback %}
+{% from 'macros/misc.html' import render_tag %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
 {% from 'macros/stats.html' import render_bigstats_item %}
 {% from 'macros/user_admin.html' import render_user_avatar_tiny_and_link %}
@@ -97,7 +97,7 @@
           {%- if user.deleted %}{{ render_icon('delete', title='gelöscht') }} {% endif -%}
           {{- render_user_avatar_tiny_and_link(user) -}}
         </td>
-        <td>{{ render_with_fallback(user.detail.full_name) }}</td>
+        <td>{{ user.detail.full_name|fallback }}</td>
         <td>{{ render_datetime(user.created_at) }}</td>
         <td>{{ render_icon('enabled' if user.enabled else 'disabled') }}</td>
       </tr>
