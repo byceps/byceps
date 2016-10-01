@@ -10,10 +10,9 @@ byceps.blueprints.orga.views
 
 from flask import g
 
+from ...services.orga_team import service as orga_team_service
 from ...util.framework import create_blueprint
 from ...util.templating import templated
-
-from . import service
 
 
 blueprint = create_blueprint('orga', __name__)
@@ -23,5 +22,5 @@ blueprint = create_blueprint('orga', __name__)
 @templated
 def index():
     """List organizers."""
-    memberships = service.get_team_memberships_for_party(g.party)
+    memberships = service.get_memberships_for_party(g.party)
     return {'memberships': memberships}

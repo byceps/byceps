@@ -15,6 +15,7 @@ from flask import abort, g, jsonify, request, Response
 from ...config import get_site_mode, get_user_registration_enabled
 from ...services.countries import service as countries_service
 from ...services.newsletter import service as newsletter_service
+from ...services.orga_team import service as orga_team_service
 from ...services.ticket import service as ticket_service
 from ...services.user_badge import service as badge_service
 from ...services.verification_token import service as verification_token_service
@@ -22,8 +23,6 @@ from ...util.framework import create_blueprint, flash_error, flash_notice, \
     flash_success
 from ...util.templating import templated
 from ...util.views import redirect_to
-
-from ..orga import service as orga_service
 
 from .forms import DetailsForm, RequestConfirmationEmailForm, UserCreateForm
 from . import service
@@ -49,7 +48,8 @@ def view(user_id):
 
     badges = badge_service.get_badges_for_user(user.id)
 
-    orga_team_membership = orga_service.find_orga_team_membership_for_party(user, g.party)
+    orga_team_membership = orga_team_service.find_membership_for_party(user,
+                                                                       g.party)
 
     current_party_tickets = ticket_service.find_tickets_used_by_user(user, g.party)
 

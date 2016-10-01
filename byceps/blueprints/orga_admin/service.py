@@ -11,9 +11,10 @@ byceps.blueprints.orga_admin.service
 from itertools import islice
 
 from ...database import db
+from ...services.orga_team.models import Membership, OrgaTeam
 
 from ..brand.models import Brand
-from ..orga.models import Membership, OrgaFlag, OrgaTeam
+from ..orga.models import OrgaFlag
 from ..user.models.detail import UserDetail
 from ..user.models.user import User
 
