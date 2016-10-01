@@ -38,7 +38,7 @@ class Orderer(object):
         self.street = street
 
 
-PaymentMethod = Enum('PaymentMethod', ['bank_transfer', 'cash'])
+PaymentMethod = Enum('PaymentMethod', ['bank_transfer', 'cash', 'direct_debit'])
 
 
 PaymentState = Enum('PaymentState', ['open', 'canceled', 'paid'])
