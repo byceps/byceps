@@ -12,7 +12,7 @@ from flask import abort, g, request, url_for
 
 from ...util.framework import create_blueprint, flash_success
 from ...util.templating import templated
-from ...util.views import redirect_to, respond_no_content
+from ...util.views import redirect_to, respond_no_content_with_location
 
 from .forms import UpdateForm
 from . import service
@@ -70,7 +70,7 @@ def update():
 
 
 @blueprint.route('/me/avatar', methods=['DELETE'])
-@respond_no_content
+@respond_no_content_with_location
 def delete():
     """Remove the current user's avatar image."""
     user = get_current_user_or_404()
@@ -78,7 +78,7 @@ def delete():
     service.remove_avatar_image(user)
 
     flash_success('Das Avatarbild wurde entfernt.')
-    return [('Location', url_for('user.view_current'))]
+    return url_for('user.view_current')
 
 
 def get_current_user_or_404():
