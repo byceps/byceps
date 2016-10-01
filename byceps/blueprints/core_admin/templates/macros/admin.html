@@ -67,7 +67,7 @@
       .add_item(url_for('news_admin.index_for_brand', brand_id=brand.id), 'News', id='news_admin', required_permission=NewsItemPermission.list, icon='news')
       .add_item(url_for('newsletter_admin.view_subscriptions', brand_id=brand.id), 'Newsletter', id='newsletter_admin', required_permission=NewsletterPermission.view_subscriptions, icon='newsletter')
       .add_item(url_for('terms_admin.index_for_brand', brand_id=brand.id), 'AGB', id='terms_admin', required_permission=TermsPermission.list, icon='legal')
-      .add_item(url_for('board_admin.index_for_brand', brand_id=brand.id), 'Board', id='board_admin', required_permission=BoardCategoryPermission.list, icon='board')
+      .add_item(url_for('board_admin.index_for_brand', brand_id=brand.id), 'Forum', id='board_admin', required_permission=BoardCategoryPermission.list, icon='board')
   -%}
 {{ render_navigation(navigation, current_page) }}
 {% endmacro %}
