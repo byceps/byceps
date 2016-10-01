@@ -391,7 +391,9 @@ def calculate_posting_page_number(posting, user, postings_per_page):
 
 def hide_posting(posting, hidden_by):
     """Hide the posting."""
-    posting.hide(hidden_by)
+    posting.hidden = True
+    posting.hidden_at = datetime.now()
+    posting.hidden_by = hidden_by
     db.session.commit()
 
     _aggregate_topic(posting.topic)
@@ -400,7 +402,9 @@ def hide_posting(posting, hidden_by):
 def unhide_posting(posting, hidden_by):
     """Un-hide the posting."""
     # TODO: Store who un-hid the posting.
-    posting.unhide()
+    posting.hidden = False
+    posting.hidden_at = None
+    posting.hidden_by = None
     db.session.commit()
 
     _aggregate_topic(posting.topic)

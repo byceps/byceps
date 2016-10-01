@@ -83,16 +83,6 @@ class Posting(db.Model):
             user.has_permission(BoardPostingPermission.update_of_others)
         )
 
-    def hide(self, user):
-        self.hidden = True
-        self.hidden_at = datetime.now()
-        self.hidden_by = user
-
-    def unhide(self):
-        self.hidden = False
-        self.hidden_at = None
-        self.hidden_by = None
-
     def is_unseen(self, user, last_viewed_at):
         # Don't display any posting as new to a guest.
         if user.is_anonymous:
