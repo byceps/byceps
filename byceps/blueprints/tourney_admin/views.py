@@ -21,7 +21,6 @@ from ..tourney import service as tourney_service
 
 from .authorization import TourneyCategoryPermission
 from .forms import TourneyCategoryCreateForm, TourneyCategoryUpdateForm
-from . import service
 
 
 blueprint = create_blueprint('tourney_admin', __name__)
@@ -37,7 +36,7 @@ def category_index_for_party(party_id):
     """List tourney categories for that party."""
     party = _get_party_or_404(party_id)
 
-    categories = service.get_categories_for_party(party)
+    categories = tourney_service.get_categories_for_party(party)
 
     return {
         'party': party,
@@ -72,7 +71,7 @@ def category_create(party_id):
 
     title = form.title.data.strip()
 
-    category = service.create_category(party, title)
+    category = tourney_service.create_category(party, title)
 
     flash_success('Die Kategorie "{}" wurde angelegt.', category.title)
     return redirect_to('.category_index_for_party', party_id=category.party.id)
@@ -104,7 +103,7 @@ def category_update(category_id):
     if not form.validate():
         return category_update_form(category_id, form)
 
-    service.update_category(category, form.title.data.strip())
+    tourney_service.update_category(category, form.title.data.strip())
 
     flash_success('Die Kategorie "{}" wurde aktualisiert.', category.title)
     return redirect_to('.category_index_for_party', party_id=category.party.id)
@@ -118,7 +117,7 @@ def category_move_up(category_id):
     category = _get_category_or_404(category_id)
 
     try:
-        service.move_category_up(category)
+        tourney_service.move_category_up(category)
     except ValueError:
         flash_error('Die Kategorie "{}" befindet sich bereits ganz oben.', category.title)
     else:
@@ -135,7 +134,7 @@ def category_move_down(category_id):
     category = _get_category_or_404(category_id)
 
     try:
-        service.move_category_down(category)
+        tourney_service.move_category_down(category)
     except ValueError:
         flash_error('Die Kategorie "{}" befindet sich bereits ganz unten.', category.title)
     else:
