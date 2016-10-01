@@ -72,6 +72,10 @@ main {
   font-size: 0.875rem; /* 14px / 16px */
 }
 
+.notifications {
+  margin-top: 20px;
+}
+
 #header,
 #sidebar section,
 #main,

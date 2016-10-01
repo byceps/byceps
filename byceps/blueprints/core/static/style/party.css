@@ -139,6 +139,14 @@ nav.main .current a {
 }
 
 
+/* notifications */
+
+.notifications {
+  margin-bottom: 25px;
+  margin-top: 20px;
+}
+
+
 /* headings */
 
 h1 {

@@ -92,6 +92,10 @@ img {
 
 /* notifications */
 
+.notifications > * + * {
+  margin-top: 10px;
+}
+
 div[class|=notification] {
   background-color: #dddddd;
   border-radius: 3px;
@@ -99,11 +103,7 @@ div[class|=notification] {
   border-width: 1px;
   box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.25);
   display: flex;
-  margin: 0 0 10px 0;
   padding: 0.3em 15px;
-}
-div[class|=notification]:first-child {
-  margin-top: 25px;
 }
 div[class|=notification] > .icon {
   flex: 0 0 1;
