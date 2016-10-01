@@ -153,9 +153,9 @@ def find_orga_flag(brand_id, user_id):
         .first()
 
 
-def create_orga_team(party, title):
+def create_orga_team(party_id, title_id):
     """Create an orga team for that party."""
-    team = OrgaTeam(party, title)
+    team = OrgaTeam(party_id, title_id)
 
     db.session.add(team)
     db.session.commit()
@@ -182,9 +182,9 @@ def get_orga_teams_for_party(party):
         .all()
 
 
-def create_membership(team, user, duties):
+def create_membership(team_id, user_id, duties):
     """Assign the user to the team."""
-    membership = Membership(team, user)
+    membership = Membership(team.id, user.id)
 
     if duties:
         membership.duties = duties

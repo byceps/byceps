@@ -204,7 +204,7 @@ def team_create(party_id):
 
     title = form.title.data.strip()
 
-    team = service.create_orga_team(party, title)
+    team = service.create_orga_team(party.id, title.id)
 
     flash_success('Das Team "{}" wurde für die Party "{}" erstellt.',
                   team.title, team.party.title)
@@ -261,7 +261,7 @@ def membership_create(team_id):
     user = user_service.find_user(form.user_id.data)
     duties = form.duties.data.strip()
 
-    membership = service.create_membership(team, user, duties)
+    membership = service.create_membership(team.id, user.id, duties)
 
     flash_success('{} wurde in das Team "{}" aufgenommen.',
                   membership.user.screen_name, membership.orga_team.title)

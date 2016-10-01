@@ -81,12 +81,12 @@ def promote_orga(brand, user):
 
 @add_to_database
 def create_orga_team(party, title):
-    return OrgaTeam(party, title)
+    return OrgaTeam(party.id, title.id)
 
 
 @add_to_database
 def assign_user_to_orga_team(user, orga_team, *, duties=None):
-    membership = OrgaTeamMembership(orga_team, user)
+    membership = OrgaTeamMembership(orga_team.id, user.id)
     if duties:
         membership.duties = duties
     return membership

@@ -48,9 +48,9 @@ class OrgaTeam(db.Model):
     party = db.relationship(Party)
     title = db.Column(db.Unicode(40), nullable=False)
 
-    def __init__(self, party, title):
-        self.party = party
-        self.title = title
+    def __init__(self, party_id, title_id):
+        self.party_id = party_id
+        self.title_id = title_id
 
     def __repr__(self):
         return ReprBuilder(self) \
@@ -82,9 +82,9 @@ class Membership(db.Model):
     user = db.relationship(User, collection_class=set, backref='orga_team_memberships')
     duties = db.Column(db.Unicode(40))
 
-    def __init__(self, orga_team, user):
-        self.orga_team = orga_team
-        self.user = user
+    def __init__(self, orga_team_id, user_id):
+        self.orga_team_id = orga_team_id
+        self.user_id = user_id
 
     def __repr__(self):
         return ReprBuilder(self) \
