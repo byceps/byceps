@@ -48,8 +48,8 @@ def view(user_id):
 
     badges = badge_service.get_badges_for_user(user.id)
 
-    orga_team_membership = orga_team_service.find_membership_for_party(user,
-                                                                       g.party)
+    orga_team_membership = orga_team_service.find_membership_for_party(user.id,
+        g.party.id)
 
     current_party_tickets = ticket_service.find_tickets_used_by_user(user, g.party)
 

@@ -22,5 +22,8 @@ blueprint = create_blueprint('orga', __name__)
 @templated
 def index():
     """List organizers."""
-    memberships = service.get_memberships_for_party(g.party)
-    return {'memberships': memberships}
+    memberships = service.get_memberships_for_party(g.party.id)
+
+    return {
+        'memberships': memberships,
+    }

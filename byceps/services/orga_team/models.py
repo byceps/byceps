@@ -41,8 +41,8 @@ class OrgaTeam(db.Model):
 
 class MembershipQuery(BaseQuery):
 
-    def for_party(self, party):
-        return self.join(OrgaTeam).filter_by(party_id=party.id)
+    def for_party_id(self, party_id):
+        return self.join(OrgaTeam).filter_by(party_id=party_id)
 
 
 class Membership(db.Model):

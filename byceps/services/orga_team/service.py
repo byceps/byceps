@@ -13,17 +13,17 @@ from ...database import db
 from .models import Membership
 
 
-def find_membership_for_party(user, party):
+def find_membership_for_party(user_id, party_id):
     """Return the user's membership in an orga team of that party."""
     return Membership.query \
-        .filter_by(user=user) \
-        .for_party(party) \
+        .filter_by(user_id=user_id) \
+        .for_party_id(party_id) \
         .one_or_none()
 
 
-def get_memberships_for_party(party):
+def get_memberships_for_party(party_id):
     return Membership.query \
-        .for_party(party) \
+        .for_party_id(party_id) \
         .options(
             db.joinedload('orga_team'),
             db.joinedload('user').load_only('id', 'screen_name'),
