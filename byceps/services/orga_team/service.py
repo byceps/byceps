@@ -22,6 +22,7 @@ def find_membership_for_party(user_id, party_id):
 
 
 def get_memberships_for_party(party_id):
+    """Return all orga team memberships for that party."""
     return Membership.query \
         .for_party_id(party_id) \
         .options(
