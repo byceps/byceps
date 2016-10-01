@@ -36,7 +36,7 @@ def index_for_brand(brand_id):
     """List categories for that brand."""
     brand = get_brand_or_404(brand_id)
 
-    categories = board_service.get_categories(brand)
+    categories = board_service.get_categories(brand.id)
 
     return {
         'brand': brand,

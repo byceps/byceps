@@ -45,7 +45,7 @@ blueprint.add_app_template_filter(render_html, 'bbcode')
 @templated
 def category_index():
     """List categories."""
-    categories = service.get_categories_with_last_updates(g.party.brand)
+    categories = service.get_categories_with_last_updates(g.party.brand.id)
 
     return {'categories': categories}
 
@@ -55,7 +55,7 @@ def category_index():
 @templated
 def category_view(slug, page):
     """List latest topics in the category."""
-    category = service.find_category_by_slug(g.party.brand, slug)
+    category = service.find_category_by_slug(g.party.brand.id, slug)
     if category is None:
         abort(404)
 
@@ -243,7 +243,7 @@ def topic_moderate_form(topic_id):
     """Show a form to moderate the topic."""
     topic = _get_topic_or_404(topic_id)
 
-    categories = service.get_categories_excluding(g.party.brand,
+    categories = service.get_categories_excluding(g.party.brand.id,
                                                   topic.category_id)
 
     return {

@@ -19,8 +19,8 @@ from ...user.models.user import User
 
 class CategoryQuery(BaseQuery):
 
-    def for_brand(self, brand):
-        return self.filter_by(brand=brand)
+    def for_brand_id(self, brand_id):
+        return self.filter_by(brand_id=brand_id)
 
 
 class Category(db.Model):

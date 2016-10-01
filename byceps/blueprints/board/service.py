@@ -69,9 +69,9 @@ def move_category_down(category):
     db.session.commit()
 
 
-def count_categories_for_brand(brand):
+def count_categories_for_brand(brand_id):
     """Return the number of categories for that brand."""
-    return Category.query.for_brand(brand).count()
+    return Category.query.for_brand_id(brand_id).count()
 
 
 def find_category_by_id(category_id):
@@ -79,38 +79,38 @@ def find_category_by_id(category_id):
     return Category.query.get(category_id)
 
 
-def find_category_by_slug(brand, slug):
+def find_category_by_slug(brand_id, slug):
     """Return the category for that brand and slug, or `None` if not found."""
     return Category.query \
-        .for_brand(brand) \
+        .for_brand_id(brand_id) \
         .filter_by(slug=slug) \
         .first()
 
 
-def get_categories(brand):
+def get_categories(brand_id):
     """Return all categories for that brand, ordered by position."""
     return Category.query \
-        .for_brand(brand) \
+        .for_brand_id(brand_id) \
         .order_by(Category.position) \
         .all()
 
 
-def get_categories_excluding(brand, category_id):
+def get_categories_excluding(brand_id, category_id):
     """Return all categories for that brand except for the specified one."""
     return Category.query \
-        .for_brand(brand) \
+        .for_brand_id(brand_id) \
         .filter(Category.id != category_id) \
         .order_by(Category.position) \
         .all()
 
 
-def get_categories_with_last_updates(brand):
+def get_categories_with_last_updates(brand_id):
     """Return the categories for that brand.
 
     Include the creator of the last posting in each category.
     """
     return Category.query \
-        .for_brand(brand) \
+        .for_brand_id(brand_id) \
         .options(
             db.joinedload(Category.last_posting_updated_by),
         ) \

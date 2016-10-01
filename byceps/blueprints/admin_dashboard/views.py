@@ -92,7 +92,7 @@ def view_brand(brand_id):
 
     current_terms_version = terms_service.get_current_version(brand.id)
 
-    board_category_count = board_service.count_categories_for_brand(brand)
+    board_category_count = board_service.count_categories_for_brand(brand.id)
     board_topic_count = board_service.count_topics_for_brand(brand)
     board_posting_count = board_service.count_postings_for_brand(brand)
 
