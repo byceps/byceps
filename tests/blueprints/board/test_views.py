@@ -10,6 +10,7 @@ from datetime import datetime
 from byceps.blueprints.board.authorization import BoardTopicPermission
 from byceps.blueprints.board.models.category import Category
 from byceps.blueprints.board.models.topic import Topic
+from byceps.blueprints.board import service as board_service
 
 from testfixtures.authorization import create_permission_from_enum_member, \
     create_role
@@ -52,8 +53,7 @@ class BoardModerationTestCase(AbstractAppTestCase):
         user = self.create_user()
         category = self.create_category(1)
         topic_before = self.create_topic(category, user, 1)
-        topic_before.hide(self.admin)
-        self.db.session.commit()
+        board_service.hide_topic(topic_before, self.admin)
 
         self.assertTrue(topic_before.hidden)
         self.assertIsNotNone(topic_before.hidden_at)
@@ -75,7 +75,6 @@ class BoardModerationTestCase(AbstractAppTestCase):
         user = self.create_user()
         category = self.create_category(1)
         topic_before = self.create_topic(category, user, 1)
-        self.db.session.commit()
 
         self.assertFalse(topic_before.locked)
         self.assertIsNone(topic_before.locked_at)
@@ -97,8 +96,7 @@ class BoardModerationTestCase(AbstractAppTestCase):
         user = self.create_user()
         category = self.create_category(1)
         topic_before = self.create_topic(category, user, 1)
-        topic_before.lock(self.admin)
-        self.db.session.commit()
+        board_service.lock_topic(topic_before, self.admin)
 
         self.assertTrue(topic_before.locked)
         self.assertIsNotNone(topic_before.locked_at)
@@ -120,7 +118,6 @@ class BoardModerationTestCase(AbstractAppTestCase):
         user = self.create_user()
         category = self.create_category(1)
         topic_before = self.create_topic(category, user, 1)
-        self.db.session.commit()
 
         self.assertFalse(topic_before.pinned)
         self.assertIsNone(topic_before.pinned_at)
@@ -142,8 +139,7 @@ class BoardModerationTestCase(AbstractAppTestCase):
         user = self.create_user()
         category = self.create_category(1)
         topic_before = self.create_topic(category, user, 1)
-        topic_before.pin(self.admin)
-        self.db.session.commit()
+        board_service.pin_topic(topic_before, self.admin)
 
         self.assertTrue(topic_before.pinned)
         self.assertIsNotNone(topic_before.pinned_at)
@@ -166,7 +162,6 @@ class BoardModerationTestCase(AbstractAppTestCase):
         category1 = self.create_category(1)
         category2 = self.create_category(2)
         topic_before = self.create_topic(category1, user, 1)
-        self.db.session.commit()
 
         self.assertEqual(topic_before.category, category1)
 

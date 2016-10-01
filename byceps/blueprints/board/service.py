@@ -265,7 +265,9 @@ def find_default_posting_to_jump_to(topic, user, last_viewed_at):
 
 def hide_topic(topic, hidden_by):
     """Hide the topic."""
-    topic.hide(hidden_by)
+    topic.hidden = True
+    topic.hidden_at = datetime.now()
+    topic.hidden_by = hidden_by
     db.session.commit()
 
     _aggregate_topic(topic)
@@ -274,7 +276,9 @@ def hide_topic(topic, hidden_by):
 def unhide_topic(topic, unhidden_by):
     """Un-hide the topic."""
     # TODO: Store who un-hid the topic.
-    topic.unhide()
+    topic.hidden = False
+    topic.hidden_at = None
+    topic.hidden_by = None
     db.session.commit()
 
     _aggregate_topic(topic)
@@ -282,27 +286,35 @@ def unhide_topic(topic, unhidden_by):
 
 def lock_topic(topic, locked_by):
     """Lock the topic."""
-    topic.lock(locked_by)
+    topic.locked = True
+    topic.locked_at = datetime.now()
+    topic.locked_by = locked_by
     db.session.commit()
 
 
 def unlock_topic(topic, unlocked_by):
     """Unlock the topic."""
     # TODO: Store who unlocked the topic.
-    topic.unlock()
+    topic.locked = False
+    topic.locked_at = None
+    topic.locked_by = None
     db.session.commit()
 
 
 def pin_topic(topic, pinned_by):
     """Pin the topic."""
-    topic.pin(pinned_by)
+    topic.pinned = True
+    topic.pinned_at = datetime.now()
+    topic.pinned_by = pinned_by
     db.session.commit()
 
 
 def unpin_topic(topic, unpinned_by):
     """Unpin the topic."""
     # TODO: Store who unpinned the topic.
-    topic.unpin()
+    topic.pinned = False
+    topic.pinned_at = None
+    topic.pinned_by = None
     db.session.commit()
 
 
