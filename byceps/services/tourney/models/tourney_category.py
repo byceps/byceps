@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-byceps.blueprints.tourney.models.tourney_category
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.tourney.models.tourney_category
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2016 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -10,10 +10,9 @@ byceps.blueprints.tourney.models.tourney_category
 
 from sqlalchemy.ext.orderinglist import ordering_list
 
+from ....blueprints.party.models import Party
 from ....database import BaseQuery, db, generate_uuid
 from ....util.instances import ReprBuilder
-
-from ...party.models import Party
 
 
 class TourneyCategoryQuery(BaseQuery):

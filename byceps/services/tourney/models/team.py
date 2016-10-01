@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-byceps.blueprints.tourney.models.team
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.tourney.models.team
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2016 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -10,10 +10,9 @@ byceps.blueprints.tourney.models.team
 
 from datetime import datetime
 
+from ....blueprints.user.models.user import User
 from ....database import db, generate_uuid
 from ....util.instances import ReprBuilder
-
-from ...user.models.user import User
 
 from .tourney import Tourney
 

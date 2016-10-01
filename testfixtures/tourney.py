@@ -8,7 +8,7 @@ testfixtures.tourney
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.blueprints.tourney.models.match import Match
+from byceps.services.tourney.models.match import Match
 
 
 def create_match():

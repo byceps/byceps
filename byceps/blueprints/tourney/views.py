@@ -10,11 +10,11 @@ byceps.blueprints.tourney.views
 
 from flask import abort, g, request, url_for
 
+from ...services.tourney import service as tourney_service
 from ...util.framework import create_blueprint
 from ...util.templating import templated
 from ...util.views import respond_created
 
-from . import service
 from . import signals
 
 
@@ -31,7 +31,7 @@ def match_comments_view(match_id):
     """Render the comments on a match."""
     match = _get_match_or_404(match_id)
 
-    comments = service.get_match_comments(match)
+    comments = tourney_service.get_match_comments(match)
 
     return {
         'comments': comments,
@@ -55,7 +55,7 @@ def match_comment_create(match_id):
 
     body = request.form['body'].strip()
 
-    comment = service.create_match_comment(match, g.current_user, body)
+    comment = tourney_service.create_match_comment(match, g.current_user, body)
 
     signals.match_comment_created.send(None, comment=comment)
 
@@ -65,7 +65,7 @@ def match_comment_create(match_id):
 
 
 def _get_match_or_404(match_id):
-    match = service.find_match(match_id)
+    match = tourney_service.find_match(match_id)
 
     if match is None:
         abort(404)

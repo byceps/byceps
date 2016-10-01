@@ -5,7 +5,7 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.blueprints.tourney.models.match import MatchComment
+from byceps.services.tourney.models.match import MatchComment
 
 from testfixtures.authentication import create_session_token
 from testfixtures.tourney import create_match

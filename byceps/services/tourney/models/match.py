@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-byceps.blueprints.tourney.models.match
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.tourney.models.match
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2016 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -10,9 +10,8 @@ byceps.blueprints.tourney.models.match
 
 from datetime import datetime
 
+from ....blueprints.user.models.user import User
 from ....database import BaseQuery, db, generate_uuid
-
-from ...user.models.user import User
 
 
 class Match(db.Model):
