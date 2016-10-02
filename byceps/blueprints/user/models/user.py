@@ -21,8 +21,6 @@ from ....util.instances import ReprBuilder
 from ...authorization.registry import permission_registry
 from ...user_avatar.models import AvatarSelection
 
-from .detail import UserDetail
-
 
 GUEST_USER_ID = UUID('00000000-0000-0000-0000-000000000000')
 
@@ -91,21 +89,9 @@ class User(db.Model):
                                     AvatarSelection(None, avatar.id))
     roles = association_proxy('user_roles', 'role')
 
-    @classmethod
-    def create(cls, screen_name, email_address):
-        user = cls()
-        user.set_screen_name(screen_name)
-        user.set_email_address(email_address)
-
-        detail = UserDetail(user=user)
-
-        return user
-
-    def set_screen_name(self, screen_name):
-        self.screen_name = normalize_screen_name(screen_name)
-
-    def set_email_address(self, email_address):
-        self.email_address = normalize_email_address(email_address)
+    def __init__(self, screen_name, email_address):
+        self.screen_name = screen_name
+        self.email_address = email_address
 
     @property
     def is_anonymous(self):
@@ -155,19 +141,3 @@ class User(db.Model):
             .add_with_lookup('id') \
             .add_with_lookup('screen_name') \
             .build()
-
-
-def normalize_screen_name(screen_name):
-    """Normalize the screen name, or raise an exception if invalid."""
-    normalized = screen_name.strip()
-    if not normalized or (' ' in normalized) or ('@' in normalized):
-        raise ValueError('Invalid screen name: \'{}\''.format(screen_name))
-    return normalized
-
-
-def normalize_email_address(email_address):
-    """Normalize the e-mail address, or raise an exception if invalid."""
-    normalized = email_address.strip()
-    if not normalized or (' ' in normalized) or ('@' not in normalized):
-        raise ValueError('Invalid email address: \'{}\''.format(email_address))
-    return normalized

@@ -11,7 +11,7 @@ testfixtures.user
 from datetime import date
 
 from byceps.blueprints.user.models.detail import UserDetail
-from byceps.blueprints.user.models.user import User
+from byceps.blueprints.user import service as user_service
 from byceps.database import generate_uuid
 
 
@@ -22,7 +22,7 @@ def create_user(number, *, screen_name=None, email_address=None, enabled=True):
     if not email_address:
         email_address = 'user{:03d}@example.com'.format(number)
 
-    user = User.create(screen_name, email_address)
+    user = user_service.build_user(screen_name, email_address)
     user.id = generate_uuid()
     user.enabled = enabled
     return user

@@ -15,6 +15,7 @@ from byceps.blueprints.snippet.models.mountpoint import \
     Mountpoint as SnippetMountpoint
 from byceps.blueprints.snippet.models.snippet import Snippet, SnippetVersion
 from byceps.blueprints.user.models.user import User
+from byceps.blueprints.user import service as user_service
 from byceps.blueprints.user_group.models import UserGroup
 from byceps.services.orga_team.models import OrgaTeam, \
     Membership as OrgaTeamMembership
@@ -58,7 +59,7 @@ def get_party(party_id):
 
 @add_to_database
 def create_user(screen_name, email_address, *, enabled=False):
-    user = User.create(screen_name, email_address)
+    user = user_service.build_user(screen_name, email_address)
     user.enabled = enabled
     return user
 

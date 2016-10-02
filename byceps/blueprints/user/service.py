@@ -20,6 +20,7 @@ from ...services.newsletter import service as newsletter_service
 from ...services.terms import service as terms_service
 from ...services.verification_token import service as verification_token_service
 
+from .models.detail import UserDetail
 from .models.user import User
 
 
@@ -101,7 +102,7 @@ def create_user(screen_name, email_address, password, first_names, last_name,
                 brand_id, subscribe_to_newsletter):
     """Create a user account and related records."""
     # user with details
-    user = User.create(screen_name, email_address)
+    user = build_user(screen_name, email_address)
     user.detail.first_names = first_names
     user.detail.last_name = last_name
     db.session.add(user)
@@ -139,6 +140,33 @@ def create_user(screen_name, email_address, password, first_names, last_name,
     send_email_address_confirmation_email(user, verification_token)
 
     return user
+
+
+def build_user(screen_name, email_address):
+    normalized_screen_name = _normalize_screen_name(screen_name)
+    normalized_email_address = _normalize_email_address(email_address)
+
+    user = User(screen_name, email_address)
+
+    detail = UserDetail(user=user)
+
+    return user
+
+
+def _normalize_screen_name(screen_name):
+    """Normalize the screen name, or raise an exception if invalid."""
+    normalized = screen_name.strip()
+    if not normalized or (' ' in normalized) or ('@' in normalized):
+        raise ValueError('Invalid screen name: \'{}\''.format(screen_name))
+    return normalized
+
+
+def _normalize_email_address(email_address):
+    """Normalize the e-mail address, or raise an exception if invalid."""
+    normalized = email_address.strip()
+    if not normalized or (' ' in normalized) or ('@' not in normalized):
+        raise ValueError('Invalid email address: \'{}\''.format(email_address))
+    return normalized
 
 
 def _create_newsletter_subscription(user_id, brand_id, subscribe_to_newsletter):
