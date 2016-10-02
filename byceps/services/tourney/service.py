@@ -68,7 +68,7 @@ def find_tourney_category(category_id):
 def get_categories_for_party(party):
     """Return the categories for this party."""
     return TourneyCategory.query \
-        .for_party(party) \
+        .filter_by(party_id=party.id) \
         .order_by(TourneyCategory.position) \
         .all()
 

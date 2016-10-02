@@ -11,14 +11,8 @@ byceps.services.tourney.models.tourney_category
 from sqlalchemy.ext.orderinglist import ordering_list
 
 from ....blueprints.party.models import Party
-from ....database import BaseQuery, db, generate_uuid
+from ....database import db, generate_uuid
 from ....util.instances import ReprBuilder
-
-
-class TourneyCategoryQuery(BaseQuery):
-
-    def for_party(self, party):
-        return self.filter_by(party_id=party.id)
 
 
 class TourneyCategory(db.Model):
@@ -27,7 +21,6 @@ class TourneyCategory(db.Model):
     __table_args__ = (
         db.UniqueConstraint('party_id', 'title'),
     )
-    query_class = TourneyCategoryQuery
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     party_id = db.Column(db.Unicode(20), db.ForeignKey('parties.id'), index=True, nullable=False)
