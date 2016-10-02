@@ -8,6 +8,7 @@
 from byceps.blueprints.user.models.user import User
 from byceps.services.authentication.password.models import Credential
 from byceps.services.authentication.session.models import SessionToken
+from byceps.services.authorization.models import Role
 from byceps.services.terms.models import Version as TermsVersion
 
 from tests.base import AbstractAppTestCase
@@ -84,6 +85,10 @@ class UserCreateTestCase(AbstractAppTestCase):
         # details
         self.assertEqual(user.detail.first_names, 'Hiroaki')
         self.assertEqual(user.detail.last_name, 'Protagonist')
+
+        # authorization
+        board_user_role = Role.query.get('board_user')
+        self.assertIn(board_user_role, user.roles)
 
     # helpers
 
