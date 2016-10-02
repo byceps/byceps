@@ -54,7 +54,7 @@ def get_teams_for_party_with_memberships(party):
 
 def create_membership(team_id, user_id, duties):
     """Assign the user to the team."""
-    membership = Membership(team.id, user.id)
+    membership = Membership(team_id, user_id)
 
     if duties:
         membership.duties = duties
