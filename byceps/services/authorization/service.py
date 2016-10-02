@@ -58,3 +58,11 @@ def get_permissions_by_roles_for_user_with_titles(user):
             permissions_by_role[role].add(permission)
 
     return permissions_by_role
+
+
+def assign_role_to_user(role, user):
+    """Assign that role to the user (but do not persist the assignment)."""
+    user_role = UserRole(role)
+    user_role.user = user
+
+    return user_role

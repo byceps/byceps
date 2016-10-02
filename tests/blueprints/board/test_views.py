@@ -11,6 +11,7 @@ from byceps.blueprints.board.authorization import BoardTopicPermission
 from byceps.blueprints.board.models.category import Category
 from byceps.blueprints.board.models.topic import Topic
 from byceps.blueprints.board import service as board_service
+from byceps.services.authorization import service as authorization_service
 
 from testfixtures.authorization import create_permission_from_enum_member, \
     create_role
@@ -196,8 +197,8 @@ class BoardModerationTestCase(AbstractAppTestCase):
         self.db.session.add(board_moderator_role)
 
         board_moderator_role.permissions.add(db_permission)
-
-        self.admin.roles.add(board_moderator_role)
+        authorization_service.assign_role_to_user(board_moderator_role,
+                                                  self.admin)
 
         self.db.session.commit()
 

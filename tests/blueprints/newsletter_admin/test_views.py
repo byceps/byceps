@@ -8,6 +8,7 @@
 import json
 
 from byceps.blueprints.newsletter_admin.authorization import NewsletterPermission
+from byceps.services.authorization import service as authorization_service
 from byceps.services.newsletter.models import Subscription
 from byceps.services.newsletter.types import SubscriptionState
 
@@ -36,7 +37,8 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
 
         newsletter_admin_role.permissions.add(export_subscribers_permission)
 
-        self.admin.roles.add(newsletter_admin_role)
+        authorization_service.assign_role_to_user(newsletter_admin_role,
+                                                  self.admin)
 
         self.db.session.commit()
 

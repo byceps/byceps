@@ -20,6 +20,7 @@ from byceps.blueprints.user_admin.authorization import UserPermission
 from byceps.database import db
 from byceps.services.authorization.models import Permission as DbPermission, \
     Role
+from byceps.services.authorization import service as authorization_service
 
 from .util import add_all_to_database, add_to_database
 
@@ -126,4 +127,4 @@ def add_permissions_to_role(permissions, role):
 
 def add_roles_to_user(roles, user):
     for role in roles:
-        user.roles.add(role)
+        yield authorization_service.assign_role_to_user(role, user)

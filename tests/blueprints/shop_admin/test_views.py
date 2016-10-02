@@ -10,6 +10,7 @@ from datetime import date
 from byceps.blueprints.shop_admin.authorization import ShopOrderPermission
 from byceps.blueprints.shop.models.article import Article
 from byceps.blueprints.shop.models.order import Order, PaymentState
+from byceps.services.authorization import service as authorization_service
 
 from testfixtures.authorization import create_permission_from_enum_member, \
     create_role
@@ -38,7 +39,7 @@ class ShopAdminTestCase(AbstractAppTestCase):
 
         shop_admin_role.permissions.add(update_orders_permission)
 
-        self.admin.roles.add(shop_admin_role)
+        authorization_service.assign_role_to_user(shop_admin_role, self.admin)
 
         self.db.session.commit()
 

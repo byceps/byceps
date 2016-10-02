@@ -15,6 +15,7 @@ from flask import current_app, url_for
 from ...database import db
 from ...services.authentication.password import service as password_service
 from ...services.authorization.models import Role
+from ...services.authorization import service as authorization_service
 from ...services.email import service as email_service
 from ...services.newsletter import service as newsletter_service
 from ...services.terms import service as terms_service
@@ -109,7 +110,7 @@ def create_user(screen_name, email_address, password, first_names, last_name,
 
     # roles
     board_user_role = Role.query.get('board_user')
-    user.roles.add(board_user_role)
+    user_role = authorization_service.assign_role_to_user(board_user_role, user)
 
     try:
         db.session.commit()
