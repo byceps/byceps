@@ -7,7 +7,7 @@
 
 from datetime import datetime
 
-from byceps.blueprints.snippet.service import \
+from byceps.services.snippet.service import \
     get_current_version_of_snippet_with_name, SnippetNotFound
 
 from testfixtures.party import create_party

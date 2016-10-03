@@ -12,6 +12,7 @@ from operator import attrgetter
 
 from flask import abort, g, render_template, request, url_for
 
+from ...services.snippet import service as snippet_service
 from ...util.dateformat import format_datetime_short
 from ...util.framework import create_blueprint, flash_success
 from ...util.iterables import pairwise
@@ -21,7 +22,6 @@ from ...util.views import redirect_to, respond_no_content_with_location
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 from ..party import service as party_service
-from ..snippet import service as snippet_service
 from ..snippet.templating import get_snippet_context
 
 from .authorization import MountpointPermission, SnippetPermission

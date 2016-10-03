@@ -8,7 +8,7 @@ testfixtures.snippet
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.blueprints.snippet.models.snippet import \
+from byceps.services.snippet.models.snippet import \
     CurrentVersionAssociation, Snippet, SnippetVersion
 
 

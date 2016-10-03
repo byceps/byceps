@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-byceps.blueprints.snippet.models.snippet
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.snippet.models.snippet
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Snippets of database-stored content. Can contain HTML and template
 engine syntax. Can be embedded in other templates or mounted as full
@@ -16,11 +16,10 @@ from datetime import datetime
 
 from sqlalchemy.ext.associationproxy import association_proxy
 
+from ....blueprints.party.models import Party
+from ....blueprints.user.models.user import User
 from ....database import db, generate_uuid
 from ....util.instances import ReprBuilder
-
-from ...party.models import Party
-from ...user.models.user import User
 
 from .query import BelongsToPartyQuery
 

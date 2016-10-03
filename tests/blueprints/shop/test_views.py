@@ -9,8 +9,8 @@ from datetime import date
 
 from byceps.blueprints.shop.models.article import Article
 from byceps.blueprints.shop.models.order import Order, PaymentState
-from byceps.blueprints.snippet.models.snippet import Snippet
 from byceps.services.shop.sequence.models import Purpose
+from byceps.services.snippet.models.snippet import Snippet
 
 from testfixtures.authentication import create_session_token
 from testfixtures.shop_article import create_article

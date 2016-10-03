@@ -10,9 +10,10 @@ byceps.blueprints.snippet.views
 
 from flask import abort, g
 
+from ...services.snippet import service as snippet_service
+from ...services.snippet.service import SnippetNotFound
 from ...util.framework import create_blueprint
 
-from .service import get_current_version_of_snippet_with_name, SnippetNotFound
 from .templating import render_snippet_as_page, render_snippet_as_partial
 
 
@@ -26,8 +27,8 @@ def view_latest_by_name(name):
     # TODO: Fetch snippet via mountpoint
     # endpoint suffix != snippet name
     try:
-        current_version = get_current_version_of_snippet_with_name(g.party,
-                                                                   name)
+        current_version = snippet_service \
+            .get_current_version_of_snippet_with_name(g.party, name)
     except SnippetNotFound:
         abort(404)
 

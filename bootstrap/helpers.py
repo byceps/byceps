@@ -10,9 +10,6 @@ bootstrap.helpers
 
 from byceps.blueprints.brand.models import Brand
 from byceps.blueprints.party.models import Party
-from byceps.blueprints.snippet.models.mountpoint import \
-    Mountpoint as SnippetMountpoint
-from byceps.blueprints.snippet.models.snippet import Snippet, SnippetVersion
 from byceps.blueprints.user.models.user import User
 from byceps.blueprints.user import service as user_service
 from byceps.blueprints.user_group.models import UserGroup
@@ -22,6 +19,9 @@ from byceps.services.orga_team.models import OrgaTeam, \
 from byceps.services.seating.models.area import Area as SeatingArea
 from byceps.services.seating.models.category import Category as SeatingCategory
 from byceps.services.seating.models.seat import Seat
+from byceps.services.snippet.models.mountpoint import \
+    Mountpoint as SnippetMountpoint
+from byceps.services.snippet.models.snippet import Snippet, SnippetVersion
 from byceps.services.terms.models import Version as TermsVersion
 
 from .util import add_to_database

@@ -10,7 +10,8 @@ byceps.blueprints.snippet.init
 
 from flask import current_app
 
-from .models.mountpoint import Mountpoint
+from ...services.snippet.models.mountpoint import Mountpoint
+
 from .views import blueprint, view_latest_by_name
 
 
