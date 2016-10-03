@@ -26,10 +26,12 @@ from .util import add_all_to_database, add_to_database
 
 
 def create_roles_and_permissions():
-    create_role_with_permissions_from_enum(
+    create_role_with_permissions_from_enum_members(
         'authorization_admin',
         'Rechte und Rollen verwalten',
-        RolePermission)
+        [
+            RolePermission.list,
+        ])
 
     create_role_with_permissions_from_enum_members(
         'board_user',
@@ -59,45 +61,63 @@ def create_roles_and_permissions():
             BoardTopicPermission.pin,
         ])
 
-    create_role_with_permissions_from_enum(
+    create_role_with_permissions_from_enum_members(
         'orga_team_admin',
         'Orgateams verwalten',
-        OrgaTeamPermission)
+        [
+            OrgaTeamPermission.list,
+            OrgaTeamPermission.create,
+            OrgaTeamPermission.delete,
+            OrgaTeamPermission.administrate_memberships,
+        ])
 
-    create_role_with_permissions_from_enum(
+    create_role_with_permissions_from_enum_members(
         'party_admin',
         'Partys verwalten',
-        PartyPermission)
+        [
+            PartyPermission.list,
+            PartyPermission.create,
+        ])
 
-    create_role_with_permissions_from_enum(
+    create_role_with_permissions_from_enum_members(
         'snippet_admin',
         'Snippets verwalten',
-        MountpointPermission)
+        [
+            MountpointPermission.create,
+            MountpointPermission.delete,
+        ])
 
-    create_role_with_permissions_from_enum(
+    create_role_with_permissions_from_enum_members(
         'snippet_editor',
         'Snippets bearbeiten',
-        SnippetPermission)
+        [
+            SnippetPermission.list,
+            SnippetPermission.create,
+            SnippetPermission.update,
+            SnippetPermission.view_history,
+        ])
 
-    create_role_with_permissions_from_enum(
+    create_role_with_permissions_from_enum_members(
         'terms_editor',
         'AGB verwalten',
-        TermsPermission)
+        [
+            TermsPermission.list,
+            TermsPermission.create,
+        ])
 
-    create_role_with_permissions_from_enum(
+    create_role_with_permissions_from_enum_members(
         'user_admin',
         'Benutzer verwalten',
-        UserPermission)
+        [
+            UserPermission.list,
+            UserPermission.view,
+        ])
 
     db.session.commit()
 
 
 # -------------------------------------------------------------------- #
 # helpers
-
-
-def create_role_with_permissions_from_enum(role_id, role_title, permission_enum):
-    return create_role_with_permissions_from_enum_members(role_id, role_title, iter(permission_enum))
 
 
 def create_role_with_permissions_from_enum_members(role_id, role_title, permission_enum_members):
