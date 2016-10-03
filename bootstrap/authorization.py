@@ -107,12 +107,12 @@ def create_role_with_permissions_from_enum_members(role_id, role_title, permissi
 
 
 @add_to_database
-def create_role(id, title):
-    return Role(id, title)
+def create_role(role_id, title):
+    return Role(role_id, title)
 
 
-def get_role(id):
-    return Role.query.get(id)
+def get_role(role_id):
+    return Role.query.get(role_id)
 
 
 @add_all_to_database
