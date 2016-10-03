@@ -36,5 +36,14 @@ class PermissionRegistry(object):
         except KeyError:
             return None
 
+    def get_enum_members(self, permission_ids):
+        """Return the nums that are registered for the permission IDs.
+
+        If no enum is found for a permission ID, it is silently ignored.
+        """
+        enums = (self.get_enum_member(p_id) for p_id in permission_ids)
+        enums_without_none = (enum for enum in enums if enum is not None)
+        return frozenset(enums_without_none)
+
 
 permission_registry = PermissionRegistry()
