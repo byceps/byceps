@@ -21,7 +21,7 @@ class OrgaFlag(db.Model):
     brand_id = db.Column(db.Unicode(20), db.ForeignKey('brands.id'), primary_key=True)
     brand = db.relationship(Brand)
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
-    user = db.relationship(User, backref='orga_flags')
+    user = db.relationship(User)
 
     def __init__(self, brand_id, user_id):
         self.brand_id = brand_id

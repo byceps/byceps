@@ -116,3 +116,12 @@ def find_orga_flag(brand_id, user_id):
         .filter_by(brand_id=brand_id) \
         .filter_by(user_id=user_id) \
         .first()
+
+
+def is_user_orga(user_id):
+    """Return `True` if the user is an organizer."""
+    flag_count = OrgaFlag.query \
+        .filter_by(user_id=user_id) \
+        .count()
+
+    return flag_count > 0

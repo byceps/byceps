@@ -46,10 +46,6 @@ class AnonymousUser(object):
     def avatar(self):
         return None
 
-    @property
-    def is_orga_for_any_brand(self):
-        return False
-
     def is_orga_for_party(self, party):
         return False
 
@@ -95,10 +91,6 @@ class User(db.Model):
 
     def has_any_permission(self, *permissions):
         return any(map(self.has_permission, permissions))
-
-    @property
-    def is_orga_for_any_brand(self):
-        return bool(self.orga_flags)
 
     def is_orga_for_party(self, party):
         if get_site_mode().is_admin():

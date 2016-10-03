@@ -15,6 +15,7 @@ from ...services.authentication.exceptions import AuthenticationFailed
 from ...services.authentication.password import service as password_service
 from ...services.authentication.session import service as session_service
 from ...services.authorization import service as authorization_service
+from ...services.orga import service as orga_service
 from ...services.terms import service as terms_service
 from ...services.verification_token import service as verification_token_service
 from ...util.framework import create_blueprint, flash_error, flash_notice, \
@@ -39,6 +40,9 @@ def before_request():
 
     if not user.is_anonymous:
         user.permissions = _get_permissions_for_user(user.id)
+
+    user.is_orga_for_any_brand = _is_admin_mode() \
+        and orga_service.is_user_orga(user.id)
 
     g.current_user = user
 
@@ -98,9 +102,9 @@ def login():
     except AuthenticationFailed:
         abort(403)
 
-    in_admin_mode = get_site_mode().is_admin()
+    in_admin_mode = _is_admin_mode()
 
-    if in_admin_mode and not user.is_orga_for_any_brand:
+    if in_admin_mode and not orga_service.is_user_orga(user.id):
         # Authenticated user must be an orga to be allowed to enter the
         # admin area but isn't.
         abort(403)
@@ -256,6 +260,10 @@ def _verify_password_reset_token(verification_token):
 
 # -------------------------------------------------------------------- #
 # helpers
+
+
+def _is_admin_mode():
+    return get_site_mode().is_admin()
 
 
 def _get_current_user_or_404():
