@@ -31,12 +31,6 @@ class Permission(db.Model):
         self.id = id
         self.title = title
 
-    @classmethod
-    def from_enum_member(cls, enum_member):
-        key = enum_member.__class__.__key__
-        permission_id = '{}.{}'.format(key, enum_member.name)
-        return cls(permission_id)
-
     def __repr__(self):
         return ReprBuilder(self) \
             .add_with_lookup('id') \
