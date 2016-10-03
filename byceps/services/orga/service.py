@@ -41,7 +41,7 @@ def get_person_count_by_brand_id():
         .all())
 
 
-def get_organizers_for_brand(brand_id):
+def get_orgas_for_brand(brand_id):
     """Return all users flagged as organizers for the brand."""
     return User.query \
         .join(OrgaFlag).filter(OrgaFlag.brand_id == brand_id) \
