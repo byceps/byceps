@@ -14,6 +14,7 @@ from ...config import get_site_mode, get_user_registration_enabled
 from ...services.authentication.exceptions import AuthenticationFailed
 from ...services.authentication.password import service as password_service
 from ...services.authentication.session import service as session_service
+from ...services.authorization import service as authorization_service
 from ...services.terms import service as terms_service
 from ...services.verification_token import service as verification_token_service
 from ...util.framework import create_blueprint, flash_error, flash_notice, \
@@ -21,6 +22,7 @@ from ...util.framework import create_blueprint, flash_error, flash_notice, \
 from ...util.templating import templated
 from ...util.views import redirect_to, respond_no_content
 
+from ..authorization.registry import permission_registry
 from ..user import service as user_service
 
 from .forms import LoginForm, RequestPasswordResetForm, ResetPasswordForm, \
@@ -33,7 +35,17 @@ blueprint = create_blueprint('authentication', __name__)
 
 @blueprint.before_app_request
 def before_request():
-    g.current_user = user_session.get_user()
+    user = user_session.get_user()
+
+    if not user.is_anonymous:
+        user.permissions = _get_permissions_for_user(user.id)
+
+    g.current_user = user
+
+
+def _get_permissions_for_user(user_id):
+    permission_ids = authorization_service.get_permission_ids_for_user(user_id)
+    return permission_registry.get_enum_members(permission_ids)
 
 
 # -------------------------------------------------------------------- #

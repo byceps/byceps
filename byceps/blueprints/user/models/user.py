@@ -9,7 +9,6 @@ byceps.blueprints.user.models.user
 """
 
 from datetime import datetime
-from itertools import chain
 from uuid import UUID
 
 from sqlalchemy.ext.associationproxy import association_proxy
@@ -18,7 +17,6 @@ from ....config import get_site_mode
 from ....database import db, generate_uuid
 from ....util.instances import ReprBuilder
 
-from ...authorization.registry import permission_registry
 from ...user_avatar.models import AvatarSelection
 
 
@@ -37,14 +35,6 @@ class AnonymousUser(object):
     @property
     def is_active(self):
         return False
-
-    @property
-    def roles(self):
-        return frozenset()
-
-    @property
-    def permissions(self):
-        return frozenset()
 
     def has_permission(self, permission):
         return False
@@ -87,7 +77,6 @@ class User(db.Model):
     avatar = association_proxy('avatar_selection', 'avatar',
                                creator=lambda avatar:
                                     AvatarSelection(None, avatar.id))
-    roles = association_proxy('user_roles', 'role')
 
     def __init__(self, screen_name, email_address):
         self.screen_name = screen_name
@@ -100,15 +89,6 @@ class User(db.Model):
     @property
     def is_active(self):
         return self.enabled
-
-    @property
-    def permissions(self):
-        permission_models = frozenset(
-            chain.from_iterable(role.permissions for role in self.roles))
-
-        permission_ids = (p.id for p in permission_models)
-
-        return permission_registry.get_enum_members(permission_ids)
 
     def has_permission(self, permission):
         return permission in self.permissions
