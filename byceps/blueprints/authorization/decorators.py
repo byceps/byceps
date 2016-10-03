@@ -23,15 +23,3 @@ def permission_required(permission):
             return func(*args, **kwargs)
         return wrapper
     return decorator
-
-
-def role_required(role):
-    """Ensure the current user has the given role."""
-    def decorator(func):
-        @wraps(func)
-        def wrapper(*args, **kwargs):
-            if role not in g.current_user.roles:
-                abort(403)
-            return func(*args, **kwargs)
-        return wrapper
-    return decorator
