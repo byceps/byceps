@@ -10,7 +10,7 @@ from datetime import date
 from freezegun import freeze_time
 from nose2.tools import params
 
-from byceps.blueprints.orga_admin.service import sort_users_by_next_birthday
+from byceps.services.orga import service as orga_service
 
 from testfixtures.user import create_user_with_detail
 
@@ -39,7 +39,7 @@ def test_sort():
         born1985,
     ]
 
-    actual = list(sort_users_by_next_birthday(users))
+    actual = list(orga_service.sort_users_by_next_birthday(users))
     assert actual == expected
 
 

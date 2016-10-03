@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-byceps.blueprints.orga_admin.service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.orga.service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2016 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -10,12 +10,12 @@ byceps.blueprints.orga_admin.service
 
 from itertools import islice
 
+from ...blueprints.brand.models import Brand
+from ...blueprints.user.models.detail import UserDetail
+from ...blueprints.user.models.user import User
 from ...database import db
 
-from ..brand.models import Brand
-from ..orga.models import OrgaFlag
-from ..user.models.detail import UserDetail
-from ..user.models.user import User
+from .models import OrgaFlag
 
 
 def get_brands_with_person_counts():

@@ -1,18 +1,17 @@
 # -*- coding: utf-8 -*-
 
 """
-byceps.blueprints.orga.models
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.orga.models
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2016 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
 """
 
+from ...blueprints.brand.models import Brand
+from ...blueprints.user.models.user import User
 from ...database import db
 from ...util.instances import ReprBuilder
-
-from ..brand.models import Brand
-from ..user.models.user import User
 
 
 class OrgaFlag(db.Model):

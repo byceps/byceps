@@ -13,6 +13,7 @@ from datetime import date, timedelta
 from flask import abort
 
 from ...services.newsletter import service as newsletter_service
+from ...services.orga import service as orga_service
 from ...services.orga_team import service as orga_team_service
 from ...services.seating import service as seating_service
 from ...services.terms import service as terms_service
@@ -25,7 +26,6 @@ from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 from ..board import service as board_service
 from ..news_admin import service as news_admin_service
-from ..orga_admin import service as orga_admin_service
 from ..party import service as party_service
 from ..shop import article_service, order_service
 from ..user import service as user_service
@@ -47,7 +47,7 @@ def view_global():
     brand_count = brand_service.count_brands()
     party_count = party_service.count_parties()
 
-    orga_count = orga_admin_service.count_orgas()
+    orga_count = orga_service.count_orgas()
 
     user_count  = user_service.count_users()
 
@@ -57,7 +57,7 @@ def view_global():
     disabled_user_count = user_service.count_disabled_users()
 
     orgas_with_next_birthdays = list(
-        orga_admin_service.collect_orgas_with_next_birthdays(limit=3))
+        orga_service.collect_orgas_with_next_birthdays(limit=3))
 
     return {
         'brand_count': brand_count,
@@ -84,7 +84,7 @@ def view_brand(brand_id):
 
     party_count = party_service.count_parties_for_brand(brand.id)
 
-    orga_count = orga_admin_service.count_orgas_for_brand(brand)
+    orga_count = orga_service.count_orgas_for_brand(brand)
 
     news_item_count = news_admin_service.count_items_for_brand(brand)
 

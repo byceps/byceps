@@ -8,6 +8,7 @@ byceps.blueprints.brand_admin.views
 :License: Modified BSD, see LICENSE for details.
 """
 
+from ...services.orga import service as orga_service
 from ...util.framework import create_blueprint
 from ...util.templating import templated
 
@@ -15,7 +16,6 @@ from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 from ..brand import service as brand_service
 from ..news_admin import service as news_admin_service
-from ..orga_admin import service as orga_admin_service
 from ..party import service as party_service
 
 from .authorization import BrandPermission
@@ -36,8 +36,7 @@ def index():
 
     party_count_by_brand_id = party_service.get_party_count_by_brand_id()
 
-    orga_count_by_brand_id = orga_admin_service \
-        .get_person_count_by_brand_id()
+    orga_count_by_brand_id = orga_service.get_person_count_by_brand_id()
 
     news_item_count_by_brand_id = news_admin_service \
         .get_item_count_by_brand_id()

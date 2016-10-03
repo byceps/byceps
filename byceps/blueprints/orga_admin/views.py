@@ -12,6 +12,7 @@ from operator import attrgetter
 
 from flask import abort, request, url_for
 
+from ...services.orga import service as orga_service
 from ...util.export import serialize_to_csv
 from ...util.framework import create_blueprint, flash_success
 from ...util.templating import templated
@@ -25,7 +26,6 @@ from ..user import service as user_service
 
 from .authorization import OrgaBirthdayPermission, OrgaDetailPermission
 from .forms import OrgaFlagCreateForm
-from . import service
 
 
 blueprint = create_blueprint('orga_admin', __name__)
@@ -41,7 +41,7 @@ permission_registry.register_enum(OrgaTeamPermission)
 @templated
 def persons():
     """List brands to choose from."""
-    brands_with_person_counts = service.get_brands_with_person_counts()
+    brands_with_person_counts = orga_service.get_brands_with_person_counts()
 
     return {
         'brands_with_person_counts': brands_with_person_counts,
@@ -55,7 +55,7 @@ def persons_for_brand(brand_id):
     """List organizers for the brand with details."""
     brand = _get_brand_or_404(brand_id)
 
-    orgas = service.get_organizers_for_brand(brand)
+    orgas = orga_service.get_organizers_for_brand(brand)
 
     return {
         'brand': brand,
@@ -89,7 +89,7 @@ def create_orgaflag(brand_id):
     user_id = form.user_id.data.strip()
     user = _get_user_or_404(user_id)
 
-    orga_flag = service.create_orga_flag(brand.id, user.id)
+    orga_flag = orga_service.create_orga_flag(brand.id, user.id)
 
     flash_success('{} wurde das Orga-Flag für die Marke {} gegeben.',
                   orga_flag.user.screen_name, orga_flag.brand.title)
@@ -101,14 +101,14 @@ def create_orgaflag(brand_id):
 @respond_no_content_with_location
 def remove_orgaflag(brand_id, user_id):
     """Remove the organizer flag for a brand from a person."""
-    orga_flag = service.find_orga_flag(brand_id, user_id)
+    orga_flag = orga_service.find_orga_flag(brand_id, user_id)
     if orga_flag is None:
         abort(404)
 
     brand = orga_flag.brand
     user = orga_flag.user
 
-    service.delete_orga_flag(orga_flag)
+    orga_service.delete_orga_flag(orga_flag)
 
     flash_success('{} wurde das Orga-Flag für die Marke {} entzogen.',
                   user.screen_name, brand.title)
@@ -154,7 +154,7 @@ def export_persons(brand_id):
             'Telefonnummer': user.detail.phone_number,
         }
 
-    orgas = service.get_organizers_for_brand(brand)
+    orgas = orga_service.get_organizers_for_brand(brand)
     orgas.sort(key=attrgetter('screen_name'))
     rows = map(to_dict, orgas)
     return serialize_to_csv(field_names, rows)
@@ -164,7 +164,7 @@ def export_persons(brand_id):
 @permission_required(OrgaBirthdayPermission.list)
 @templated
 def birthdays():
-    orgas = list(service.collect_orgas_with_next_birthdays(limit=5))
+    orgas = list(orga_service.collect_orgas_with_next_birthdays(limit=5))
 
     return {
         'orgas': orgas,
