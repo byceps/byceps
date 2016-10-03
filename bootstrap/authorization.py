@@ -17,131 +17,107 @@ from byceps.blueprints.snippet_admin.authorization import \
     MountpointPermission, SnippetPermission
 from byceps.blueprints.terms_admin.authorization import TermsPermission
 from byceps.blueprints.user_admin.authorization import UserPermission
-from byceps.database import db
-from byceps.services.authorization.models import Permission as DbPermission, \
-    Role
 from byceps.services.authorization import service as authorization_service
-
-from .util import add_all_to_database, add_to_database
 
 
 def create_roles_and_permissions():
-    create_role_with_permissions_from_enum_members(
+    create_role_with_permissions(
         'authorization_admin',
         'Rechte und Rollen verwalten',
         [
-            RolePermission.list,
+            (RolePermission.list, 'Rollen auflisten'),
         ])
 
-    create_role_with_permissions_from_enum_members(
+    create_role_with_permissions(
         'board_user',
         'im Forum schreiben',
         [
-            BoardPostingPermission.create,
-            BoardPostingPermission.update,
-            BoardTopicPermission.create,
-            BoardTopicPermission.update,
+            (BoardPostingPermission.create, 'Beiträge im Forum erstellen'),
+            (BoardPostingPermission.update, 'Beiträge im Forum bearbeiten'),
+            (BoardTopicPermission.create, 'Themen im Forum erstellen'),
+            (BoardTopicPermission.update, 'Themen im Forum bearbeiten'),
         ])
 
-    create_role_with_permissions_from_enum_members(
+    create_role_with_permissions(
         'board_orga',
         'versteckte Themen und Beiträge im Forum lesen',
         [
-            BoardPostingPermission.view_hidden,
-            BoardTopicPermission.view_hidden
+            (BoardPostingPermission.view_hidden, 'versteckte Beiträge im Forum anzeigen'),
+            (BoardTopicPermission.view_hidden 'versteckte Themen im Forum anzeigen'),
         ])
 
-    create_role_with_permissions_from_enum_members(
+    create_role_with_permissions(
         'board_moderator',
         'Forum moderieren',
         [
-            BoardPostingPermission.hide,
-            BoardTopicPermission.hide,
-            BoardTopicPermission.lock,
-            BoardTopicPermission.pin,
+            (BoardPostingPermission.hide, 'Beiträge im Forum verstecken'),
+            (BoardTopicPermission.hide, 'Themen im Forum verstecken'),
+            (BoardTopicPermission.lock, 'Themen im Forum schließen'),
+            (BoardTopicPermission.pin, 'Themen im Forum anpinnen'),
         ])
 
-    create_role_with_permissions_from_enum_members(
+    create_role_with_permissions(
         'orga_team_admin',
         'Orgateams verwalten',
         [
-            OrgaTeamPermission.list,
-            OrgaTeamPermission.create,
-            OrgaTeamPermission.delete,
-            OrgaTeamPermission.administrate_memberships,
+            (OrgaTeamPermission.list, 'Orga-Teams auflisten'),
+            (OrgaTeamPermission.create, 'Orga-Teams erstellen'),
+            (OrgaTeamPermission.delete, 'Orga-Teams entfernen'),
+            (OrgaTeamPermission.administrate_memberships, 'Orga-Team-Mitgliedschaften verwalten'),
         ])
 
-    create_role_with_permissions_from_enum_members(
+    create_role_with_permissions(
         'party_admin',
         'Partys verwalten',
         [
-            PartyPermission.list,
-            PartyPermission.create,
+            (PartyPermission.list, 'Partys auflisten'),
+            (PartyPermission.create, 'Partys anlegen'),
         ])
 
-    create_role_with_permissions_from_enum_members(
+    create_role_with_permissions(
         'snippet_admin',
         'Snippets verwalten',
         [
-            MountpointPermission.create,
-            MountpointPermission.delete,
+            (MountpointPermission.create, 'Snippet-Mountpoints erstellen'),
+            (MountpointPermission.delete, 'Snippet-Mountpoints löschen'),
         ])
 
-    create_role_with_permissions_from_enum_members(
+    create_role_with_permissions(
         'snippet_editor',
         'Snippets bearbeiten',
         [
-            SnippetPermission.list,
-            SnippetPermission.create,
-            SnippetPermission.update,
-            SnippetPermission.view_history,
+            (SnippetPermission.list, 'Snippets auflisten'),
+            (SnippetPermission.create, 'Snippets erstellen'),
+            (SnippetPermission.update, 'Snippets bearbeiten'),
+            (SnippetPermission.view_history, 'Versionsverlauf von Snippets anzeigen'),
         ])
 
-    create_role_with_permissions_from_enum_members(
+    create_role_with_permissions(
         'terms_editor',
         'AGB verwalten',
         [
-            TermsPermission.list,
-            TermsPermission.create,
+            (TermsPermission.list, 'AGB-Versionen auflisten'),
+            (TermsPermission.create, 'neue AGB-Versionen erstellen'),
         ])
 
-    create_role_with_permissions_from_enum_members(
+    create_role_with_permissions(
         'user_admin',
         'Benutzer verwalten',
         [
-            UserPermission.list,
-            UserPermission.view,
+            (UserPermission.list, 'Benutzer auflisten'),
+            (UserPermission.view, 'Benutzer ansehen'),
         ])
-
-    db.session.commit()
 
 
 # -------------------------------------------------------------------- #
 # helpers
 
 
-def create_role_with_permissions_from_enum_members(role_id, role_title, permission_enum_members):
-    role = create_role(role_id, role_title)
-    permissions = create_permissions_from_enum_members(permission_enum_members)
-    add_permissions_to_role(permissions, role)
+def create_role_with_permissions(role_id, role_title, permission_ids_and_titles):
+    role = authorization_service.create_role(role_id, role_title)
 
-
-@add_to_database
-def create_role(role_id, title):
-    return Role(role_id, title)
-
-
-def get_role(role_id):
-    return Role.query.get(role_id)
-
-
-@add_all_to_database
-def create_permissions_from_enum_members(enum_members):
-    return list(map(DbPermission.from_enum_member, enum_members))
-
-
-def add_permissions_to_role(permissions, role):
-    for permission in permissions:
+    for permission_id, title in permission_ids_and_titles:
+        permission = authorization_service.create_permission(permission_id, title)
         authorization_service.assign_permission_to_role(permission, role)
 
 
