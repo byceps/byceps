@@ -8,8 +8,6 @@
 from byceps.blueprints.authorization.registry import PermissionRegistry
 from byceps.util.authorization import create_permission_enum
 
-from testfixtures.authorization import create_permission
-
 
 ItemPermission = create_permission_enum('item', ['view', 'create', 'update'])
 
@@ -17,25 +15,25 @@ ItemPermission = create_permission_enum('item', ['view', 'create', 'update'])
 def test_lookup_of_existing_enum_member():
     registry = create_registry_with_registered_enum()
 
-    permission = create_permission('item.create')
+    permission_id = 'item.create'
 
-    assert registry.get_enum_member(permission) == ItemPermission.create
+    assert registry.get_enum_member(permission_id) == ItemPermission.create
 
 
 def test_lookup_of_nonexistent_member_of_existing_enum():
     registry = create_registry_with_registered_enum()
 
-    permission = create_permission('item.delete')
+    permission_id = 'item.delete'
 
-    assert registry.get_enum_member(permission) == None
+    assert registry.get_enum_member(permission_id) == None
 
 
 def test_lookup_of_member_of_nonexistent_enum():
     registry = create_registry_with_registered_enum()
 
-    permission = create_permission('article.create')
+    permission_id = 'article.create'
 
-    assert registry.get_enum_member(permission) == None
+    assert registry.get_enum_member(permission_id) == None
 
 
 def create_registry_with_registered_enum():

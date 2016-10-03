@@ -107,7 +107,7 @@ class User(db.Model):
             chain.from_iterable(role.permissions for role in self.roles))
 
         return frozenset(
-            permission_registry.get_enum_member(p) for p in permission_models)
+            permission_registry.get_enum_member(p.id) for p in permission_models)
 
     def has_permission(self, permission):
         return permission in self.permissions

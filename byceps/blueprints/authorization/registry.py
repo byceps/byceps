@@ -21,11 +21,11 @@ class PermissionRegistry(object):
         """Return the registered enums."""
         return frozenset(self.enums.values())
 
-    def get_enum_member(self, permission):
+    def get_enum_member(self, permission_id):
         """Return the enum that is registered for the given permission
-        model instance, or `None` if none is.
+        ID, or `None` if none is.
         """
-        key, permission_name = permission.id.split('.', 1)
+        key, permission_name = permission_id.split('.', 1)
 
         enum = self.enums.get(key)
         if enum is None:
