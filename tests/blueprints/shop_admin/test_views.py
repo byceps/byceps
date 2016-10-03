@@ -7,13 +7,10 @@
 
 from datetime import date
 
-from byceps.blueprints.shop_admin.authorization import ShopOrderPermission
 from byceps.blueprints.shop.models.article import Article
 from byceps.blueprints.shop.models.order import Order, PaymentState
 from byceps.services.authorization import service as authorization_service
 
-from testfixtures.authorization import create_permission_from_enum_member, \
-    create_role
 from testfixtures.shop_article import create_article
 from testfixtures.shop_order import create_order, create_order_item
 from testfixtures.user import create_user_with_detail
@@ -30,18 +27,15 @@ class ShopAdminTestCase(AbstractAppTestCase):
         self.orderer = self.create_user(1)
 
     def setup_admin(self):
-        update_orders_permission = create_permission_from_enum_member(
-            ShopOrderPermission.update)
-        self.db.session.add(update_orders_permission)
+        permission_id = 'shop_order.update'
+        permission = authorization_service.create_permission(permission_id,
+                                                             permission_id)
 
-        shop_admin_role = create_role('shop_admin')
-        self.db.session.add(shop_admin_role)
+        role_id = 'shop_admin'
+        role = authorization_service.create_role(role_id, role_id)
 
-        shop_admin_role.permissions.add(update_orders_permission)
-
-        authorization_service.assign_role_to_user(shop_admin_role, self.admin)
-
-        self.db.session.commit()
+        authorization_service.assign_permission_to_role(permission, role)
+        authorization_service.assign_role_to_user(role, self.admin)
 
     def test_cancel(self):
         article_before = self.create_article(5)

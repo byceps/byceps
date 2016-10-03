@@ -7,14 +7,11 @@
 
 from datetime import datetime
 
-from byceps.blueprints.board.authorization import BoardTopicPermission
 from byceps.blueprints.board.models.category import Category
 from byceps.blueprints.board.models.topic import Topic
 from byceps.blueprints.board import service as board_service
 from byceps.services.authorization import service as authorization_service
 
-from testfixtures.authorization import create_permission_from_enum_member, \
-    create_role
 from testfixtures.board import create_category, create_topic
 from testfixtures.user import create_user
 
@@ -27,7 +24,7 @@ class BoardModerationTestCase(AbstractAppTestCase):
         super(BoardModerationTestCase, self).setUp()
 
     def test_hide_topic(self):
-        self.setup_admin(BoardTopicPermission.hide)
+        self.setup_admin('board_topic.hide')
 
         user = self.create_user()
         category = self.create_category(1)
@@ -49,7 +46,7 @@ class BoardModerationTestCase(AbstractAppTestCase):
         self.assertEqual(topic_afterwards.hidden_by, self.admin)
 
     def test_unhide_topic(self):
-        self.setup_admin(BoardTopicPermission.hide)
+        self.setup_admin('board_topic.hide')
 
         user = self.create_user()
         category = self.create_category(1)
@@ -71,7 +68,7 @@ class BoardModerationTestCase(AbstractAppTestCase):
         self.assertIsNone(topic_afterwards.hidden_by)
 
     def test_lock_topic(self):
-        self.setup_admin(BoardTopicPermission.lock)
+        self.setup_admin('board_topic.lock')
 
         user = self.create_user()
         category = self.create_category(1)
@@ -92,7 +89,7 @@ class BoardModerationTestCase(AbstractAppTestCase):
         self.assertEqual(topic_afterwards.locked_by, self.admin)
 
     def test_unlock_topic(self):
-        self.setup_admin(BoardTopicPermission.lock)
+        self.setup_admin('board_topic.lock')
 
         user = self.create_user()
         category = self.create_category(1)
@@ -114,7 +111,7 @@ class BoardModerationTestCase(AbstractAppTestCase):
         self.assertIsNone(topic_afterwards.locked_by)
 
     def test_pin_topic(self):
-        self.setup_admin(BoardTopicPermission.pin)
+        self.setup_admin('board_topic.pin')
 
         user = self.create_user()
         category = self.create_category(1)
@@ -135,7 +132,7 @@ class BoardModerationTestCase(AbstractAppTestCase):
         self.assertEqual(topic_afterwards.pinned_by, self.admin)
 
     def test_unpin_topic(self):
-        self.setup_admin(BoardTopicPermission.pin)
+        self.setup_admin('board_topic.pin')
 
         user = self.create_user()
         category = self.create_category(1)
@@ -157,7 +154,7 @@ class BoardModerationTestCase(AbstractAppTestCase):
         self.assertIsNone(topic_afterwards.pinned_by)
 
     def test_move_topic(self):
-        self.setup_admin(BoardTopicPermission.move)
+        self.setup_admin('board_topic.move')
 
         user = self.create_user()
         category1 = self.create_category(1)
@@ -189,18 +186,15 @@ class BoardModerationTestCase(AbstractAppTestCase):
         self.db.session.add(user)
         return user
 
-    def setup_admin(self, permission):
-        db_permission = create_permission_from_enum_member(permission)
-        self.db.session.add(db_permission)
+    def setup_admin(self, permission_id):
+        permission = authorization_service.create_permission(permission_id,
+                                                             permission_id)
 
-        board_moderator_role = create_role('board_moderator')
-        self.db.session.add(board_moderator_role)
+        role_id = 'board_moderator'
+        role = authorization_service.create_role(role_id, role_id)
 
-        board_moderator_role.permissions.add(db_permission)
-        authorization_service.assign_role_to_user(board_moderator_role,
-                                                  self.admin)
-
-        self.db.session.commit()
+        authorization_service.assign_permission_to_role(permission, role)
+        authorization_service.assign_role_to_user(role, self.admin)
 
     def create_category(self, number):
         return create_category(brand=self.brand, number=number)

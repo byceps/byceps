@@ -11,11 +11,8 @@ from decimal import Decimal
 
 from freezegun import freeze_time
 
-from byceps.blueprints.shop_admin.authorization import ShopOrderPermission
 from byceps.services.authorization import service as authorization_service
 
-from testfixtures.authorization import create_permission_from_enum_member, \
-    create_role
 from testfixtures.brand import create_brand
 from testfixtures.party import create_party
 from testfixtures.shop_article import create_article
@@ -66,16 +63,15 @@ class ExportTestCase(AbstractAppTestCase):
     # helpers
 
     def setup_admin(self):
-        permission = create_permission_from_enum_member(ShopOrderPermission.view)
-        self.db.session.add(permission)
+        permission_id = 'shop_order.view'
+        permission = authorization_service.create_permission(permission_id,
+                                                             permission_id)
 
-        role = create_role('shop_admin')
-        role.permissions.add(permission)
-        self.db.session.add(role)
+        role_id = 'shop_admin'
+        role = authorization_service.create_role(role_id, role_id)
 
+        authorization_service.assign_permission_to_role(permission, role)
         authorization_service.assign_role_to_user(role, self.admin)
-
-        self.db.session.commit()
 
     def create_articles(self):
         self.article_table = self.build_article(
