@@ -122,9 +122,9 @@ def create_permissions_from_enum_members(enum_members):
 
 def add_permissions_to_role(permissions, role):
     for permission in permissions:
-        role.permissions.add(permission)
+        authorization_service.assign_permission_to_role(permission, role)
 
 
 def add_roles_to_user(roles, user):
     for role in roles:
-        yield authorization_service.assign_role_to_user(role, user)
+        authorization_service.assign_role_to_user(role, user)

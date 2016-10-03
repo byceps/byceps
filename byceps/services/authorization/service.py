@@ -15,6 +15,48 @@ from ...database import db
 from .models import Permission, Role, RolePermission, UserRole
 
 
+def create_permission(permission_id, title):
+    """Create a permission."""
+    permission = Permission(permission_id, title)
+
+    db.session.add(permission)
+    db.session.commit()
+
+    return permission
+
+
+def create_role(role_id, title):
+    """Create a role."""
+    role = Role(role_id, title)
+
+    db.session.add(role)
+    db.session.commit()
+
+    return role
+
+
+def assign_permission_to_role(permission, role):
+    """Assign the permission to the role."""
+    role_permission = RolePermission(permission)
+    role_permission.role = role
+
+    db.session.add(role_permission)
+    db.session.commit()
+
+    return role_permission
+
+
+def assign_role_to_user(role, user):
+    """Assign the role to the user."""
+    user_role = UserRole(role)
+    user_role.user = user
+
+    db.session.add(user_role)
+    db.session.commit()
+
+    return user_role
+
+
 def get_permissions_with_titles():
     """Return all permissions, with titles."""
     return Permission.query \
@@ -58,11 +100,3 @@ def get_permissions_by_roles_for_user_with_titles(user):
             permissions_by_role[role].add(permission)
 
     return permissions_by_role
-
-
-def assign_role_to_user(role, user):
-    """Assign that role to the user (but do not persist the assignment)."""
-    user_role = UserRole(role)
-    user_role.user = user
-
-    return user_role
