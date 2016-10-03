@@ -57,6 +57,19 @@ def assign_role_to_user(role, user):
     return user_role
 
 
+def get_permission_ids_for_user(user_id):
+    """Return the IDs of all permissions the user has through the roles
+    assigned to it.
+    """
+    role_permissions = RolePermission.query \
+        .join(Role) \
+        .join(UserRole) \
+        .filter_by(user_id=user_id) \
+        .all()
+
+    return frozenset(rp.permission_id for rp in role_permissions)
+
+
 def get_permissions_with_titles():
     """Return all permissions, with titles."""
     return Permission.query \
