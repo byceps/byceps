@@ -55,7 +55,7 @@ def persons_for_brand(brand_id):
     """List organizers for the brand with details."""
     brand = _get_brand_or_404(brand_id)
 
-    orgas = orga_service.get_organizers_for_brand(brand)
+    orgas = orga_service.get_organizers_for_brand(brand.id)
 
     return {
         'brand': brand,
@@ -154,7 +154,7 @@ def export_persons(brand_id):
             'Telefonnummer': user.detail.phone_number,
         }
 
-    orgas = orga_service.get_organizers_for_brand(brand)
+    orgas = orga_service.get_organizers_for_brand(brand.id)
     orgas.sort(key=attrgetter('screen_name'))
     rows = map(to_dict, orgas)
     return serialize_to_csv(field_names, rows)

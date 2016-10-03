@@ -84,7 +84,7 @@ def view_brand(brand_id):
 
     party_count = party_service.count_parties_for_brand(brand.id)
 
-    orga_count = orga_service.count_orgas_for_brand(brand)
+    orga_count = orga_service.count_orgas_for_brand(brand.id)
 
     news_item_count = news_admin_service.count_items_for_brand(brand)
 
