@@ -26,7 +26,6 @@ from ..snippet.templating import get_snippet_context
 
 from .authorization import MountpointPermission, SnippetPermission
 from .forms import MountpointCreateForm, SnippetCreateForm, SnippetUpdateForm
-from . import service
 
 
 blueprint = create_blueprint('snippet_admin', __name__)
@@ -43,7 +42,8 @@ def index_for_party(party_id):
     """List snippets for that party."""
     party = _get_party_or_404(party_id)
 
-    snippets = service.get_snippets_for_party_with_current_versions(party)
+    snippets = snippet_service.get_snippets_for_party_with_current_versions(
+        party)
 
     mountpoints = snippet_service.get_mountpoints_for_party(party)
 
@@ -96,8 +96,9 @@ def view_difference(from_version_id, to_version_id):
     to_description = format_datetime_short(to_version.created_at)
 
     def create_html_diff(from_text, to_text):
-        return service.create_html_diff(from_text, to_text,
-                                        from_description, to_description)
+        return snippet_service.create_html_diff(from_text, to_text,
+                                                from_description,
+                                                to_description)
 
     html_diff_title = create_html_diff(from_version.title, to_version.title)
 
@@ -215,7 +216,7 @@ def create_mountpoint_form(party_id):
     """Show form to create a mountpoint."""
     party = _get_party_or_404(party_id)
 
-    snippets = service.get_snippets_for_party(party)
+    snippets = snippet_service.get_snippets_for_party(party)
     snippet_choices = list(map(attrgetter('id', 'name'), snippets))
 
     form = MountpointCreateForm()
