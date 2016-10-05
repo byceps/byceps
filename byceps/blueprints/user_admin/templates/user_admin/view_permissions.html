@@ -24,7 +24,7 @@
     {%- if user.deleted %} {{ render_tag(render_icon('delete') ~ ' gelöscht', class='notification-error') }}{% endif -%}
   </h1>
 
-  <h2 id="permissions">Berechtigungen</h2>
+  <h2>Berechtigungen</h2>
   <table class="index wide">
     {%- for role, permissions in permissions_by_role.items()|sort(attribute='0.title') %}
     <tr>
