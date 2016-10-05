@@ -81,7 +81,7 @@ def view(user_id):
 
     orders = order_service.get_orders_placed_by_user(user.id)
 
-    tickets = ticket_service.find_tickets_related_to_user(user)
+    tickets = ticket_service.find_tickets_related_to_user(user.id)
 
     tickets_by_party = _group_tickets_by_party(tickets)
 

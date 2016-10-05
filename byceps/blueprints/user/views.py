@@ -51,9 +51,10 @@ def view(user_id):
     orga_team_membership = orga_team_service.find_membership_for_party(user.id,
         g.party.id)
 
-    current_party_tickets = ticket_service.find_tickets_used_by_user(user, g.party)
+    current_party_tickets = ticket_service.find_tickets_used_by_user(user,
+        g.party.id)
 
-    attended_parties = ticket_service.get_attended_parties(user)
+    attended_parties = ticket_service.get_attended_parties(user.id)
     attended_parties.sort(key=attrgetter('starts_at'), reverse=True)
 
     return {

@@ -36,14 +36,14 @@ def create_tickets(category, owned_by, quantity):
     return tickets
 
 
-def find_tickets_related_to_user(user):
+def find_tickets_related_to_user(user_id):
     """Return tickets related to the user."""
     return Ticket.query \
         .filter(
-            (Ticket.owned_by == user) |
-            (Ticket.seat_managed_by == user) |
-            (Ticket.user_managed_by == user) |
-            (Ticket.used_by == user)
+            (Ticket.owned_by_id == user_id) |
+            (Ticket.seat_managed_by_id == user_id) |
+            (Ticket.user_managed_by_id == user_id) |
+            (Ticket.used_by_id == user_id)
         ) \
         .options(
             db.joinedload('occupied_seat').joinedload('area'),
@@ -56,15 +56,15 @@ def find_tickets_related_to_user(user):
         .all()
 
 
-def find_tickets_related_to_user_for_party(user, party):
+def find_tickets_related_to_user_for_party(user_id, party_id):
     """Return tickets related to the user for the party."""
     return Ticket.query \
-        .for_party_id(party.id) \
+        .for_party_id(party_id) \
         .filter(
-            (Ticket.owned_by == user) |
-            (Ticket.seat_managed_by == user) |
-            (Ticket.user_managed_by == user) |
-            (Ticket.used_by == user)
+            (Ticket.owned_by_id == user_id) |
+            (Ticket.seat_managed_by_id == user_id) |
+            (Ticket.user_managed_by_id == user_id) |
+            (Ticket.used_by_id == user_id)
         ) \
         .options(
             db.joinedload('occupied_seat').joinedload('area'),
@@ -77,13 +77,13 @@ def find_tickets_related_to_user_for_party(user, party):
         .all()
 
 
-def find_tickets_used_by_user(user, party):
+def find_tickets_used_by_user(user, party_id):
     """Return the tickets (if any) used by the user for that party."""
     if user.is_anonymous:
         return []
 
     return Ticket.query \
-        .for_party_id(party.id) \
+        .for_party_id(party_id) \
         .filter(Ticket.used_by == user) \
         .join(Seat) \
         .options(
@@ -93,23 +93,23 @@ def find_tickets_used_by_user(user, party):
         .all()
 
 
-def uses_any_ticket_for_party(user, party):
+def uses_any_ticket_for_party(user, party_id):
     """Return `True` if the user uses any ticket for that party."""
     if user.is_anonymous:
         return False
 
     count = Ticket.query \
-        .for_party_id(party.id) \
+        .for_party_id(party_id) \
         .filter(Ticket.used_by == user) \
         .count()
 
     return count > 0
 
 
-def get_attended_parties(user):
+def get_attended_parties(user_id):
     """Return the parties the user has attended."""
     return Party.query \
-        .join(Category).join(Ticket).filter(Ticket.used_by == user) \
+        .join(Category).join(Ticket).filter(Ticket.used_by_id == user_id) \
         .all()
 
 
@@ -152,10 +152,10 @@ def get_ticket_count_by_party_id():
         .all())
 
 
-def count_tickets_for_party(party):
+def count_tickets_for_party(party_id):
     """Return the number of "sold" (i.e. generated) tickets for that party."""
     return Ticket.query \
-        .for_party_id(party.id) \
+        .for_party_id(party_id) \
         .count()
 
 
