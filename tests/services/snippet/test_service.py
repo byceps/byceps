@@ -12,7 +12,7 @@ from byceps.services.snippet.service import \
 
 from testfixtures.party import create_party
 from testfixtures.snippet import create_current_version_association, \
-    create_snippet, create_snippet_version
+    create_fragment, create_snippet_version
 from testfixtures.user import create_user
 
 from tests.base import AbstractAppTestCase
@@ -26,14 +26,14 @@ class GetCurrentVersionOfSnippetTestCase(AbstractAppTestCase):
         self.party2014 = self.create_party('lafiesta-2014', 'La Fiesta 2014')
         self.party2015 = self.create_party('lafiesta-2015', 'La Fiesta 2015')
 
-        self.snippet_creator = self.create_snippet_creator()
+        self.creator = self.create_creator()
 
     def test_current_party_is_considered(self):
-        snippet_info2014_version = self.create_snippet_with_version(self.party2014, 'info', '2014-10-23 14:55:00')
-        snippet_info2015_version = self.create_snippet_with_version(self.party2015, 'info', '2014-10-23 18:21:00')
+        fragment_info2014_version = self.create_fragment_with_version(self.party2014, 'info', '2014-10-23 14:55:00')
+        fragment_info2015_version = self.create_fragment_with_version(self.party2015, 'info', '2014-10-23 18:21:00')
 
         actual = get_current_version_of_snippet_with_name(self.party2014, 'info')
-        self.assertEqual(actual, snippet_info2014_version)
+        self.assertEqual(actual, fragment_info2014_version)
 
     def test_unknown_name(self):
         with self.assertRaises(SnippetNotFound):
@@ -48,18 +48,18 @@ class GetCurrentVersionOfSnippetTestCase(AbstractAppTestCase):
         self.db.session.commit()
         return party
 
-    def create_snippet_creator(self):
+    def create_creator(self):
         creator = create_user(1)
         self.db.session.add(creator)
         self.db.session.commit()
         return creator
 
-    def create_snippet_with_version(self, party, name, created_at_text):
-        snippet = create_snippet(party, name)
+    def create_fragment_with_version(self, party, name, created_at_text):
+        snippet = create_fragment(party, name)
         self.db.session.add(snippet)
 
         created_at = datetime.strptime(created_at_text, '%Y-%m-%d %H:%M:%S')
-        version = create_snippet_version(snippet, self.snippet_creator, created_at=created_at)
+        version = create_snippet_version(snippet, self.creator, created_at=created_at)
         self.db.session.add(version)
 
         current_version_association = create_current_version_association(snippet, version)

@@ -25,8 +25,8 @@ from ..party import service as party_service
 from ..snippet.templating import get_snippet_context
 
 from .authorization import MountpointPermission, SnippetPermission
-from .forms import MountpointCreateForm, SnippetCreateForm, SnippetUpdateForm
-
+from .forms import DocumentCreateForm, DocumentUpdateForm, \
+    FragmentCreateForm, FragmentUpdateForm, MountpointCreateForm
 
 blueprint = create_blueprint('snippet_admin', __name__)
 
@@ -132,14 +132,18 @@ def history(snippet_id):
     }
 
 
-@blueprint.route('/for_party/<party_id>/create')
+# -------------------------------------------------------------------- #
+# document
+
+
+@blueprint.route('/documents/for_party/<party_id>/create')
 @permission_required(SnippetPermission.create)
 @templated
-def create_snippet_form(party_id):
-    """Show form to create a snippet."""
+def create_document_form(party_id):
+    """Show form to create a document."""
     party = _get_party_or_404(party_id)
 
-    form = SnippetCreateForm()
+    form = DocumentCreateForm()
 
     return {
         'party': party,
@@ -147,13 +151,13 @@ def create_snippet_form(party_id):
     }
 
 
-@blueprint.route('/for_party/<party_id>', methods=['POST'])
+@blueprint.route('/documents/for_party/<party_id>', methods=['POST'])
 @permission_required(SnippetPermission.create)
-def create_snippet(party_id):
-    """Create a snippet."""
+def create_document(party_id):
+    """Create a document."""
     party = _get_party_or_404(party_id)
 
-    form = SnippetCreateForm(request.form)
+    form = DocumentCreateForm(request.form)
 
     name = form.name.data.strip().lower()
 
@@ -163,22 +167,22 @@ def create_snippet(party_id):
     body = form.body.data.strip()
     image_url_path = form.image_url_path.data.strip()
 
-    version = snippet_service.create_snippet(party, name, creator, title, head,
-                                             body, image_url_path)
+    version = snippet_service.create_document(party, name, creator, title, head,
+                                              body, image_url_path)
 
-    flash_success('Das Snippet "{}" wurde angelegt.', version.snippet.name)
+    flash_success('Das Dokument "{}" wurde angelegt.', version.snippet.name)
     return redirect_to('.view_version', snippet_version_id=version.id)
 
 
-@blueprint.route('/snippets/<uuid:snippet_id>/update')
+@blueprint.route('/documents/<uuid:snippet_id>/update')
 @permission_required(SnippetPermission.update)
 @templated
-def update_snippet_form(snippet_id):
-    """Show form to update a snippet."""
+def update_document_form(snippet_id):
+    """Show form to update a document."""
     snippet = find_snippet_by_id(snippet_id)
     current_version = snippet.current_version
 
-    form = SnippetUpdateForm(
+    form = DocumentUpdateForm(
         obj=current_version,
         name=snippet.name)
 
@@ -188,11 +192,11 @@ def update_snippet_form(snippet_id):
     }
 
 
-@blueprint.route('/snippets/<uuid:snippet_id>', methods=['POST'])
+@blueprint.route('/documents/<uuid:snippet_id>', methods=['POST'])
 @permission_required(SnippetPermission.update)
-def update_snippet(snippet_id):
-    """Update a snippet."""
-    form = SnippetUpdateForm(request.form)
+def update_document(snippet_id):
+    """Update a document."""
+    form = DocumentUpdateForm(request.form)
 
     snippet = find_snippet_by_id(snippet_id)
 
@@ -202,11 +206,88 @@ def update_snippet(snippet_id):
     body = form.body.data.strip()
     image_url_path = form.image_url_path.data.strip()
 
-    version = snippet_service.update_snippet(snippet, creator, title, head,
-                                             body, image_url_path)
+    version = snippet_service.update_document(snippet, creator, title, head,
+                                              body, image_url_path)
 
-    flash_success('Das Snippet "{}" wurde aktualisiert.', version.snippet.name)
+    flash_success('Das Dokument "{}" wurde aktualisiert.', version.snippet.name)
     return redirect_to('.view_version', snippet_version_id=version.id)
+
+
+# -------------------------------------------------------------------- #
+# fragment
+
+
+@blueprint.route('/fragments/for_party/<party_id>/create')
+@permission_required(SnippetPermission.create)
+@templated
+def create_fragment_form(party_id):
+    """Show form to create a fragment."""
+    party = _get_party_or_404(party_id)
+
+    form = FragmentCreateForm()
+
+    return {
+        'party': party,
+        'form': form,
+    }
+
+
+@blueprint.route('/fragments/for_party/<party_id>', methods=['POST'])
+@permission_required(SnippetPermission.create)
+def create_fragment(party_id):
+    """Create a fragment."""
+    party = _get_party_or_404(party_id)
+
+    form = FragmentCreateForm(request.form)
+
+    name = form.name.data.strip().lower()
+
+    creator = g.current_user
+    body = form.body.data.strip()
+
+    version = snippet_service.create_fragment(party, name, creator, body)
+
+    flash_success('Das Fragment "{}" wurde angelegt.', version.snippet.name)
+    return redirect_to('.view_version', snippet_version_id=version.id)
+
+
+@blueprint.route('/fragments/<uuid:snippet_id>/update')
+@permission_required(SnippetPermission.update)
+@templated
+def update_fragment_form(snippet_id):
+    """Show form to update a fragment."""
+    snippet = find_snippet_by_id(snippet_id)
+    current_version = snippet.current_version
+
+    form = FragmentUpdateForm(
+        obj=current_version,
+        name=snippet.name)
+
+    return {
+        'form': form,
+        'snippet': snippet,
+    }
+
+
+@blueprint.route('/fragments/<uuid:snippet_id>', methods=['POST'])
+@permission_required(SnippetPermission.update)
+def update_fragment(snippet_id):
+    """Update a fragment."""
+    form = FragmentUpdateForm(request.form)
+
+    snippet = find_snippet_by_id(snippet_id)
+
+    creator = g.current_user
+    body = form.body.data.strip()
+
+    version = snippet_service.update_fragment(snippet, creator, body)
+
+    flash_success('Das Fragment "{}" wurde aktualisiert.', version.snippet.name)
+    return redirect_to('.view_version', snippet_version_id=version.id)
+
+
+# -------------------------------------------------------------------- #
+# mountpoint
 
 
 @blueprint.route('/mointpoints/for_party/<party_id>/create')
@@ -268,6 +349,10 @@ def delete_mountpoint(mountpoint_id):
 
     flash_success('Der Mountpoint für "{}" wurde entfernt.', url_path)
     return url_for('.index_for_party', party_id=party.id)
+
+
+# -------------------------------------------------------------------- #
+# helpers
 
 
 def _get_party_or_404(party_id):

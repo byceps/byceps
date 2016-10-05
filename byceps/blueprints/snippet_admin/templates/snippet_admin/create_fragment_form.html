@@ -3,7 +3,7 @@
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'snippet_admin' %}
 {% set current_page_party = party %}
-{% set title = 'Snippet erstellen' %}
+{% set title = 'Fragment erstellen' %}
 
 {% block body %}
 
@@ -15,13 +15,10 @@
   </nav>
   <h1>{{ render_icon('add') }} {{ title }}</h1>
 
-  <form action="{{ url_for('.create_snippet', party_id=party.id) }}" method="post">
+  <form action="{{ url_for('.create_fragment', party_id=party.id) }}" method="post">
     {% call form_fieldset() %}
       {{ form_field(form.name, maxlength=40, required='required', autofocus='autofocus') }}
-      {{ form_field(form.title, maxlength=80, required='required') }}
-      {{ form_field(form.head, class='monospace wide') }}
       {{ form_field(form.body, required='required', class='monospace wide') }}
-      {{ form_field(form.image_url_path, maxlength=80) }}
     {% endcall %}
 
     {{ form_buttons('Speichern', cancel_url=url_for('.index_for_party', party_id=party.id)) }}

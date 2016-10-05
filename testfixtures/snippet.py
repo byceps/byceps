@@ -9,13 +9,15 @@ testfixtures.snippet
 """
 
 from byceps.services.snippet.models.snippet import \
-    CurrentVersionAssociation, Snippet, SnippetVersion
+    CurrentVersionAssociation, Snippet, SnippetType, SnippetVersion
 
 
-def create_snippet(party, name):
-    return Snippet(
-        party=party,
-        name=name)
+def create_document(party, name):
+    return Snippet(party, name, SnippetType.document)
+
+
+def create_fragment(party, name):
+    return Snippet(party, name, SnippetType.fragment)
 
 
 def create_snippet_version(snippet, creator, *, created_at=None,

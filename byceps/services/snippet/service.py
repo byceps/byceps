@@ -15,16 +15,30 @@ from sqlalchemy.orm.exc import NoResultFound
 from ...database import db
 
 from .models.mountpoint import Mountpoint
-from .models.snippet import CurrentVersionAssociation, Snippet, SnippetVersion
+from .models.snippet import CurrentVersionAssociation, Snippet, SnippetType, \
+    SnippetVersion
 
 
 # -------------------------------------------------------------------- #
 # snippet
 
 
-def create_snippet(party, name, creator, title, head, body, image_url_path):
+def create_document(party, name, creator, title, head, body, image_url_path):
+    """Create a document and its initial version, and return that version."""
+    return _create_snippet(party, name, SnippetType.document, creator, body,
+                           title=title, head=head,
+                           image_url_path=image_url_path)
+
+
+def create_fragment(party, name, creator, body):
+    """Create a fragment and its initial version, and return that version."""
+    return _create_snippet(party, name, SnippetType.fragment, creator, body)
+
+
+def _create_snippet(party, name, type_, creator, body, *, title=None, head=None,
+                    image_url_path=None):
     """Create a snippet and its initial version, and return that version."""
-    snippet = Snippet(party, name)
+    snippet = Snippet(party, name, type_)
     db.session.add(snippet)
 
     version = SnippetVersion(snippet, creator, title, head, body,
@@ -39,7 +53,21 @@ def create_snippet(party, name, creator, title, head, body, image_url_path):
     return version
 
 
-def update_snippet(snippet, creator, title, head, body, image_url_path):
+def update_document(document, creator, title, head, body, image_url_path):
+    """Update document with a new version, and return that version."""
+    return _update_snippet(document, creator, title, head, body, image_url_path)
+
+
+def update_fragment(fragment, creator, body):
+    """Update fragment with a new version, and return that version."""
+    title = None
+    head = None
+    image_url_path = None
+
+    return _update_snippet(fragment, creator, title, head, body, image_url_path)
+
+
+def _update_snippet(snippet, creator, title, head, body, image_url_path):
     """Update snippet with a new version, and return that version."""
     version = SnippetVersion(snippet, creator, title, head, body,
                              image_url_path)

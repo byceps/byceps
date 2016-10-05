@@ -2,29 +2,29 @@
 {% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'snippet_admin' %}
-{% set current_page_party = snippet.party %}
-{% set title = 'Snippet bearbeiten' %}
+{% set current_page_party = party %}
+{% set title = 'Dokument erstellen' %}
 
 {% block body %}
 
   <nav class="breadcrumbs">
     <ol>
       <li>Snippets</li>
-      <li><a href="{{ url_for('.index_for_party', party_id=snippet.party.id) }}">{{ snippet.party.title }}</a></li>
+      <li><a href="{{ url_for('.index_for_party', party_id=party.id) }}">{{ party.title }}</a></li>
     </ol>
   </nav>
-  <h1>{{ render_icon('edit') }} {{ title }}</h1>
+  <h1>{{ render_icon('add') }} {{ title }}</h1>
 
-  <form action="{{ url_for('.update_snippet', snippet_id=snippet.id) }}" method="post">
+  <form action="{{ url_for('.create_document', party_id=party.id) }}" method="post">
     {% call form_fieldset() %}
-      {{ form_field(form.name, maxlength=40, required='required', readonly='readonly', autofocus='autofocus') }}
+      {{ form_field(form.name, maxlength=40, required='required', autofocus='autofocus') }}
       {{ form_field(form.title, maxlength=80, required='required') }}
       {{ form_field(form.head, class='monospace wide') }}
       {{ form_field(form.body, required='required', class='monospace wide') }}
       {{ form_field(form.image_url_path, maxlength=80) }}
     {% endcall %}
 
-    {{ form_buttons('Speichern', cancel_url=url_for('.index_for_party', party_id=snippet.party.id)) }}
+    {{ form_buttons('Speichern', cancel_url=url_for('.index_for_party', party_id=party.id)) }}
   </form>
 
 {%- endblock body %}

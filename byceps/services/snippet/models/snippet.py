@@ -13,8 +13,10 @@ page.
 """
 
 from datetime import datetime
+from enum import Enum
 
 from sqlalchemy.ext.associationproxy import association_proxy
+from sqlalchemy.ext.hybrid import hybrid_property
 
 from ....blueprints.party.models import Party
 from ....blueprints.user.models.user import User
@@ -22,6 +24,9 @@ from ....database import db, generate_uuid
 from ....util.instances import ReprBuilder
 
 from .query import BelongsToPartyQuery
+
+
+SnippetType = Enum('SnippetType', ['document', 'fragment'])
 
 
 class Snippet(db.Model):
@@ -40,11 +45,22 @@ class Snippet(db.Model):
     party_id = db.Column(db.Unicode(20), db.ForeignKey('parties.id'), index=True, nullable=False)
     party = db.relationship(Party)
     name = db.Column(db.Unicode(40), index=True, nullable=False)
+    _type = db.Column('type', db.Unicode(8), nullable=False)
     current_version = association_proxy('current_version_association', 'version')
 
-    def __init__(self, party, name):
+    def __init__(self, party, name, type_):
         self.party = party
         self.name = name
+        self.type_ = type_
+
+    @hybrid_property
+    def type_(self):
+        return SnippetType[self._type]
+
+    @type_.setter
+    def type_(self, type_):
+        assert type_ is not None
+        self._type = type_.name
 
     def get_versions(self):
         """Return all versions, sorted from most recent to oldest."""
@@ -55,6 +71,7 @@ class Snippet(db.Model):
             .add_with_lookup('id') \
             .add('party', self.party_id) \
             .add_with_lookup('name') \
+            .add('type', self._type) \
             .build()
 
 

@@ -23,13 +23,20 @@ class MountpointUpdateForm(MountpointCreateForm):
     pass
 
 
-class SnippetCreateForm(LocalizedForm):
+class FragmentCreateForm(LocalizedForm):
     name = StringField('Bezeichner')
+    body = TextAreaField('Text')
+
+
+class FragmentUpdateForm(FragmentCreateForm):
+    pass
+
+
+class DocumentCreateForm(FragmentCreateForm):
     title = StringField('Titel')
     head = TextAreaField('Seitenkopf')
-    body = TextAreaField('Text')
     image_url_path = StringField('Bild-URL-Pfad')
 
 
-class SnippetUpdateForm(SnippetCreateForm):
+class DocumentUpdateForm(DocumentCreateForm):
     pass
