@@ -48,15 +48,17 @@ def format_datetime_iso(dt):
 
 
 def format_datetime_short(dt, *, smart=True):
-    return '{}, {}'.format(
-        format_date_short(dt.date(), smart=smart),
-        format_time(dt.time()))
+    date_string = format_date_short(dt.date(), smart=smart)
+    time_string = format_time(dt.time())
+
+    return '{}, {}'.format(date_string, time_string)
 
 
 def format_datetime_long(dt, *, smart=True):
-    return '{}, {}'.format(
-        format_date_long(dt.date(), smart=smart),
-        format_time(dt.time()))
+    date_string = format_date_long(dt.date(), smart=smart)
+    time_string = format_time(dt.time())
+
+    return '{}, {}'.format(date_string, time_string)
 
 
 def format_time(t):
