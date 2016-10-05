@@ -10,9 +10,10 @@ byceps.services.ticket.service
 
 from ...blueprints.user.models.user import User
 from ...database import db
-from ...services.party.models import Party
-from ...services.seating.models.category import Category
-from ...services.seating.models.seat import Seat
+
+from ..party.models import Party
+from ..seating.models.category import Category
+from ..seating.models.seat import Seat
 
 from .models import Ticket
 

@@ -12,9 +12,10 @@ from datetime import datetime
 
 from ...blueprints.user.models.user import User
 from ...database import BaseQuery, db, generate_uuid
-from ...services.seating.models.category import Category
-from ...services.seating.models.seat import Seat
 from ...util.instances import ReprBuilder
+
+from ..seating.models.category import Category
+from ..seating.models.seat import Seat
 
 
 class TicketQuery(BaseQuery):

@@ -10,8 +10,9 @@ byceps.services.orga_team.models
 
 from ...blueprints.user.models.user import User
 from ...database import BaseQuery, db, generate_uuid
-from ...services.party.models import Party
 from ...util.instances import ReprBuilder
+
+from ..party.models import Party
 
 
 class OrgaTeam(db.Model):
