@@ -85,10 +85,11 @@ def find_snippet(snippet_id):
     return Snippet.query.get(snippet_id)
 
 
-def get_snippets_for_party(party):
-    """Return all snippets for that party."""
+def get_documents_for_party(party):
+    """Return all documents for that party."""
     return Snippet.query \
         .for_party(party) \
+        .filter_by(_type=SnippetType.document.name) \
         .order_by(Snippet.name) \
         .all()
 

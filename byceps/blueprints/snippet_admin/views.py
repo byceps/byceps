@@ -297,11 +297,11 @@ def create_mountpoint_form(party_id):
     """Show form to create a mountpoint."""
     party = _get_party_or_404(party_id)
 
-    snippets = snippet_service.get_snippets_for_party(party)
-    snippet_choices = list(map(attrgetter('id', 'name'), snippets))
+    documents = snippet_service.get_documents_for_party(party)
+    document_choices = list(map(attrgetter('id', 'name'), documents))
 
     form = MountpointCreateForm()
-    form.snippet_id.choices = snippet_choices
+    form.snippet_id.choices = document_choices
 
     return {
         'party': party,
