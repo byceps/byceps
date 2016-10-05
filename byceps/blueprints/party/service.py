@@ -15,6 +15,16 @@ from ..brand.models import Brand
 from .models import Party
 
 
+def create_party(party_id, brand_id, title, starts_at, ends_at):
+    """Create a party."""
+    party = Party(party_id, brand_id, title, starts_at, ends_at)
+
+    db.session.add(party)
+    db.session.commit()
+
+    return party
+
+
 def count_parties():
     """Return the number of parties (of all brands)."""
     return Party.query.count()
@@ -25,25 +35,6 @@ def count_parties_for_brand(brand_id):
     return Party.query \
         .filter_by(brand_id=brand_id) \
         .count()
-
-
-def get_party_count_by_brand_id():
-    """Return party count (including 0) per brand, indexed by brand ID."""
-    return dict(db.session \
-        .query(
-            Brand.id,
-            db.func.count(Party.id)
-        ) \
-        .outerjoin(Party) \
-        .group_by(Brand.id) \
-        .all())
-
-
-def get_parties_for_brand_paginated(brand_id, page, per_page):
-    """Return the parties for that brand to show on the specified page."""
-    return Party.query \
-        .filter_by(brand_id=brand_id) \
-        .paginate(page, per_page)
 
 
 def find_party(party_id):
@@ -83,11 +74,20 @@ def get_parties(party_ids):
         .all()
 
 
-def create_party(party_id, brand_id, title, starts_at, ends_at):
-    """Create a party."""
-    party = Party(party_id, brand_id, title, starts_at, ends_at)
+def get_parties_for_brand_paginated(brand_id, page, per_page):
+    """Return the parties for that brand to show on the specified page."""
+    return Party.query \
+        .filter_by(brand_id=brand_id) \
+        .paginate(page, per_page)
 
-    db.session.add(party)
-    db.session.commit()
 
-    return party
+def get_party_count_by_brand_id():
+    """Return party count (including 0) per brand, indexed by brand ID."""
+    return dict(db.session \
+        .query(
+            Brand.id,
+            db.func.count(Party.id)
+        ) \
+        .outerjoin(Party) \
+        .group_by(Brand.id) \
+        .all())
