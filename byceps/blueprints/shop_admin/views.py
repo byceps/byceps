@@ -119,11 +119,11 @@ def article_view_ordered(article_id):
 @blueprint.route('/articles/for_party/<party_id>/create')
 @permission_required(ShopArticlePermission.create)
 @templated
-def article_create_form(party_id):
+def article_create_form(party_id, erroneous_form=None):
     """Show form to create an article."""
     party = _get_party_or_404(party_id)
 
-    form = ArticleCreateForm(
+    form = erroneous_form if erroneous_form else ArticleCreateForm(
         price=Decimal('0.00'),
         tax_rate=Decimal('0.19'),
         quantity=0)
@@ -141,6 +141,8 @@ def article_create(party_id):
     party = _get_party_or_404(party_id)
 
     form = ArticleCreateForm(request.form)
+    if not form.validate():
+        return article_create_form(party_id, form)
 
     item_number = sequence_service.generate_article_number(party.id)
     description = form.description.data.strip()
@@ -158,11 +160,11 @@ def article_create(party_id):
 @blueprint.route('/articles/<uuid:article_id>/update')
 @permission_required(ShopArticlePermission.update)
 @templated
-def article_update_form(article_id):
+def article_update_form(article_id, erroneous_form=None):
     """Show form to update an article."""
     article = _get_article_or_404(article_id)
 
-    form = ArticleUpdateForm(obj=article)
+    form = erroneous_form if erroneous_form else ArticleUpdateForm(obj=article)
 
     return {
         'form': form,
@@ -177,6 +179,8 @@ def article_update(article_id):
     article = _get_article_or_404(article_id)
 
     form = ArticleUpdateForm(request.form)
+    if not form.validate():
+        return article_update_form(article_id, form)
 
     description = form.description.data.strip()
     price = form.price.data
@@ -198,7 +202,7 @@ def article_update(article_id):
 @blueprint.route('/articles/<article_id>/attachments/create')
 @permission_required(ShopArticlePermission.update)
 @templated
-def article_attachment_create_form(article_id):
+def article_attachment_create_form(article_id, erroneous_form=None):
     """Show form to attach an article to another article."""
     article = _get_article_or_404(article_id)
 
@@ -208,7 +212,8 @@ def article_attachment_create_form(article_id):
         (article.id, '{} – {}'.format(article.item_number, article.description))
         for article in attachable_articles)
 
-    form = ArticleAttachmentCreateForm(quantity=0)
+    form = erroneous_form if erroneous_form else ArticleAttachmentCreateForm(
+        quantity=0)
     form.article_to_attach_id.choices = article_choices
 
     return {
@@ -224,6 +229,8 @@ def article_attachment_create(article_id):
     article = _get_article_or_404(article_id)
 
     form = ArticleAttachmentCreateForm(request.form)
+    if not form.validate():
+        return article_attachment_create_form(article_id, form)
 
     article_to_attach_id = form.article_to_attach_id.data
     article_to_attach = article_service.find_article(article_to_attach_id)
@@ -352,11 +359,11 @@ def _format_export_datetime(dt):
 @blueprint.route('/orders/<uuid:order_id>/cancel')
 @permission_required(ShopOrderPermission.update)
 @templated
-def order_cancel_form(order_id):
+def order_cancel_form(order_id, erroneous_form=None):
     """Show form to cancel an order."""
     order = _get_order_or_404(order_id)
 
-    cancel_form = OrderCancelForm()
+    cancel_form = erroneous_form if erroneous_form else OrderCancelForm()
 
     if order.payment_state == PaymentState.canceled:
         flash_error(
@@ -379,6 +386,8 @@ def order_cancel(order_id):
     order = _get_order_or_404(order_id)
 
     form = OrderCancelForm(request.form)
+    if not form.validate():
+        return order_cancel_form(order_id, form)
 
     reason = form.reason.data.strip()
 

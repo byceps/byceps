@@ -10,15 +10,16 @@ byceps.blueprints.shop_admin.forms
 
 from wtforms import BooleanField, DecimalField, IntegerField, SelectField, \
     StringField, TextAreaField
+from wtforms.validators import InputRequired, Length
 
 from ...util.l10n import LocalizedForm
 
 
 class ArticleCreateForm(LocalizedForm):
     description = StringField('Beschreibung')
-    price = DecimalField('Stückpreis', places=2)
-    tax_rate = DecimalField('Steuersatz', places=3)
-    quantity = IntegerField('Anzahl verfügbar')
+    price = DecimalField('Stückpreis', places=2, validators=[InputRequired()])
+    tax_rate = DecimalField('Steuersatz', places=3, validators=[InputRequired()])
+    quantity = IntegerField('Anzahl verfügbar', validators=[InputRequired()])
 
 
 class ArticleUpdateForm(ArticleCreateForm):
@@ -28,9 +29,9 @@ class ArticleUpdateForm(ArticleCreateForm):
 
 
 class ArticleAttachmentCreateForm(LocalizedForm):
-    article_to_attach_id = SelectField('Artikel')
-    quantity = IntegerField('Anzahl')
+    article_to_attach_id = SelectField('Artikel', validators=[InputRequired()])
+    quantity = IntegerField('Anzahl', validators=[InputRequired()])
 
 
 class OrderCancelForm(LocalizedForm):
-    reason = TextAreaField('Begründung')
+    reason = TextAreaField('Begründung', validators=[InputRequired()])
