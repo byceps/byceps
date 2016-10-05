@@ -23,7 +23,7 @@ def count_parties():
 def count_parties_for_brand(brand_id):
     """Return the number of parties for that brand."""
     return Party.query \
-        .for_brand_id(brand_id) \
+        .filter_by(brand_id=brand_id) \
         .count()
 
 
@@ -42,7 +42,7 @@ def get_party_count_by_brand_id():
 def get_parties_for_brand_paginated(brand_id, page, per_page):
     """Return the parties for that brand to show on the specified page."""
     return Party.query \
-        .for_brand_id(brand_id) \
+        .filter_by(brand_id=brand_id) \
         .paginate(page, per_page)
 
 
