@@ -7,7 +7,7 @@
 
 from nose2.tools.such import helper
 
-from byceps.blueprints.shop.models.cart import CartItem
+from byceps.services.shop.cart.models import CartItem
 
 from testfixtures.shop_article import create_article
 

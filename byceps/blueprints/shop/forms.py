@@ -11,9 +11,9 @@ byceps.blueprints.shop.forms
 from wtforms import DateField, SelectField, StringField
 from wtforms.validators import InputRequired, Length
 
+from ...services.shop.cart.models import Cart
 from ...util.l10n import LocalizedForm
 
-from .models.cart import Cart
 from .models.order import Orderer
 
 

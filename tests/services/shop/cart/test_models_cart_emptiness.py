@@ -5,7 +5,7 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.blueprints.shop.models.cart import Cart
+from byceps.services.shop.cart.models import Cart
 
 from testfixtures.shop_article import create_article
 
