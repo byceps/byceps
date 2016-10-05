@@ -7,8 +7,8 @@
 
 from datetime import date
 
-from byceps.blueprints.shop.models.order import Order, PaymentState
 from byceps.services.shop.article.models import Article
+from byceps.services.shop.order.models import Order, PaymentState
 from byceps.services.shop.sequence.models import Purpose
 from byceps.services.snippet.models.snippet import Snippet
 

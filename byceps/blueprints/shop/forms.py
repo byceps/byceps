@@ -12,9 +12,8 @@ from wtforms import DateField, SelectField, StringField
 from wtforms.validators import InputRequired, Length
 
 from ...services.shop.cart.models import Cart
+from ...services.shop.order.models import Orderer
 from ...util.l10n import LocalizedForm
-
-from .models.order import Orderer
 
 
 class OrderForm(LocalizedForm):

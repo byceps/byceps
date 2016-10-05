@@ -16,6 +16,8 @@ from flask import abort, current_app, g, render_template, request, Response, \
 
 from ...services.party import service as party_service
 from ...services.shop.article import service as article_service
+from ...services.shop.order.models import PaymentState
+from ...services.shop.order import service as order_service
 from ...services.shop.sequence import service as sequence_service
 from ...services.ticket import service as ticket_service
 from ...util.framework import create_blueprint, flash_error, flash_success
@@ -25,8 +27,6 @@ from ...util.views import redirect_to, respond_no_content_with_location
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
-from ..shop.models.order import PaymentState
-from ..shop import order_service
 from ..shop.signals import order_canceled, order_paid
 
 from .authorization import ShopArticlePermission, ShopOrderPermission

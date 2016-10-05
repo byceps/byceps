@@ -8,7 +8,7 @@ testfixtures.shop_order
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.blueprints.shop.models.order import Order, Orderer, OrderItem, \
+from byceps.services.shop.order.models import Order, Orderer, OrderItem, \
     PaymentMethod
 
 from .party import create_party

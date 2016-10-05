@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-byceps.blueprints.shop.order_service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.shop.order.service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2016 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -10,11 +10,12 @@ byceps.blueprints.shop.order_service
 
 from datetime import datetime
 
-from ...database import db
-from ...services.party.models import Party
+from ....blueprints.shop.signals import order_placed
+from ....database import db
 
-from .models.order import Order, OrderItem, OrderUpdate, PaymentState
-from .signals import order_placed
+from ...party.models import Party
+
+from .models import Order, OrderItem, OrderUpdate, PaymentState
 
 
 def create_order(party_id, order_number, orderer, payment_method, cart):

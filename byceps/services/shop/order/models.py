@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-byceps.blueprints.shop.models.order
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.shop.order.models
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2016 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -14,12 +14,13 @@ from enum import Enum
 
 from sqlalchemy.ext.hybrid import hybrid_property
 
+from ....blueprints.user.models.user import User
 from ....database import BaseQuery, db, generate_uuid
-from ....services.party.models import Party
-from ....services.shop.article.models import Article
 from ....util.instances import ReprBuilder
 
-from ...user.models.user import User
+from ...party.models import Party
+
+from ..article.models import Article
 
 
 class Orderer(object):

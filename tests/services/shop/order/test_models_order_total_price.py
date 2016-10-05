@@ -7,7 +7,7 @@
 
 from decimal import Decimal
 
-from byceps.blueprints.shop.models.order import Order
+from byceps.services.shop.order.models import Order
 
 from testfixtures.shop_article import create_article
 from testfixtures.shop_order import create_order, create_order_item

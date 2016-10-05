@@ -11,8 +11,7 @@ byceps.blueprints.shop_admin.service
 from collections import Counter
 
 from ...database import db
-
-from ..shop.models.order import OrderItem, PaymentState
+from ...services.shop.order.models import OrderItem, PaymentState
 
 
 def count_ordered_articles(article):

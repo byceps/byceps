@@ -13,6 +13,7 @@ from flask import abort, request
 from ...services.brand import service as brand_service
 from ...services.party import service as party_service
 from ...services.shop.article import service as article_service
+from ...services.shop.order import service as order_service
 from ...services.ticket import service as ticket_service
 from ...util.framework import create_blueprint, flash_error, flash_success
 from ...util.templating import templated
@@ -20,7 +21,6 @@ from ...util.views import redirect_to
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
-from ..shop import order_service
 
 from .authorization import PartyPermission
 from .forms import CreateForm

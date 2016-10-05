@@ -13,6 +13,8 @@ from flask import abort, g, request
 from ...services.countries import service as countries_service
 from ...services.shop.article import service as article_service
 from ...services.shop.cart.models import Cart
+from ...services.shop.order.models import PaymentMethod
+from ...services.shop.order import service as order_service
 from ...services.shop.sequence import service as sequence_service
 from ...util.framework import create_blueprint, flash_error, flash_success
 from ...util.templating import templated
@@ -21,8 +23,6 @@ from ...util.views import redirect_to
 from ..authentication.decorators import login_required
 
 from .forms import assemble_articles_order_form, OrderForm
-from .models.order import PaymentMethod
-from . import order_service
 
 
 blueprint = create_blueprint('shop', __name__)

@@ -7,9 +7,9 @@
 
 from datetime import date
 
-from byceps.blueprints.shop.models.order import Order, PaymentState
 from byceps.services.authorization import service as authorization_service
 from byceps.services.shop.article.models import Article
+from byceps.services.shop.order.models import Order, PaymentState
 
 from testfixtures.shop_article import create_article
 from testfixtures.shop_order import create_order, create_order_item
