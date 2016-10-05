@@ -14,10 +14,10 @@ from flask import url_for
 from sqlalchemy.ext.associationproxy import association_proxy
 
 from ...database import BaseQuery, db, generate_uuid
+from ...services.brand.models import Brand
 from ...util.instances import ReprBuilder
 from ...util.templating import load_template
 
-from ..brand.models import Brand
 from ..user.models.user import User
 
 

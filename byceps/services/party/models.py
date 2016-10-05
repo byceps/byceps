@@ -12,10 +12,11 @@ from datetime import datetime
 
 from sqlalchemy.ext.hybrid import hybrid_property
 
-from ...blueprints.brand.models import Brand
 from ...database import db
 from ...util.datetime import DateTimeRange
 from ...util.instances import ReprBuilder
+
+from ..brand.models import Brand
 
 
 class Party(db.Model):

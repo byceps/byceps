@@ -12,13 +12,13 @@ from datetime import date
 
 from flask import abort, g, request
 
+from ...services.brand import service as brand_service
 from ...util.framework import create_blueprint, flash_success
 from ...util.templating import templated
 from ...util.views import redirect_to
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
-from ..brand import service as brand_service
 from ..news import service as news_service
 from ..news import signals
 

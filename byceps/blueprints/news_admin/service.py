@@ -9,8 +9,8 @@ byceps.blueprints.news_admin.service
 """
 
 from ...database import db
+from ...services.brand.models import Brand
 
-from ..brand.models import Brand
 from ..news.models import Item
 
 

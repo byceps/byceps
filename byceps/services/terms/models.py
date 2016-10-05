@@ -13,10 +13,11 @@ from enum import Enum
 
 from sqlalchemy.ext.hybrid import hybrid_property
 
-from ...blueprints.brand.models import Brand
 from ...blueprints.user.models.user import User
 from ...database import BaseQuery, db, generate_uuid
 from ...util.instances import ReprBuilder
+
+from ..brand.models import Brand
 
 
 class VersionQuery(BaseQuery):

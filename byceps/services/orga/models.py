@@ -8,10 +8,11 @@ byceps.services.orga.models
 :License: Modified BSD, see LICENSE for details.
 """
 
-from ...blueprints.brand.models import Brand
 from ...blueprints.user.models.user import User
 from ...database import db
 from ...util.instances import ReprBuilder
+
+from ..brand.models import Brand
 
 
 class OrgaFlag(db.Model):

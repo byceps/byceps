@@ -8,9 +8,8 @@ byceps.blueprints.core_admin.views
 :License: Modified BSD, see LICENSE for details.
 """
 
+from ...services.brand import service as brand_service
 from ...util.framework import create_blueprint
-
-from ..brand import service as brand_service
 
 
 blueprint = create_blueprint('core_admin', __name__)

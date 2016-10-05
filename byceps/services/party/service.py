@@ -8,8 +8,9 @@ byceps.services.party.service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from ...blueprints.brand.models import Brand
 from ...database import db
+
+from ..brand.models import Brand
 
 from .models import Party
 

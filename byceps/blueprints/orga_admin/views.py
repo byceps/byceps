@@ -12,6 +12,7 @@ from operator import attrgetter
 
 from flask import abort, request, url_for
 
+from ...services.brand import service as brand_service
 from ...services.orga import service as orga_service
 from ...util.export import serialize_to_csv
 from ...util.framework import create_blueprint, flash_success
@@ -20,7 +21,6 @@ from ...util.views import redirect_to, respond_no_content_with_location, textifi
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
-from ..brand import service as brand_service
 from ..orga_team_admin.authorization import OrgaTeamPermission
 from ..user import service as user_service
 
