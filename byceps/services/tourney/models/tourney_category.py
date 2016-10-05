@@ -10,8 +10,8 @@ byceps.services.tourney.models.tourney_category
 
 from sqlalchemy.ext.orderinglist import ordering_list
 
-from ....blueprints.party.models import Party
 from ....database import db, generate_uuid
+from ....services.party.models import Party
 from ....util.instances import ReprBuilder
 
 

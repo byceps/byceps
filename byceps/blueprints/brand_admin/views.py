@@ -9,6 +9,7 @@ byceps.blueprints.brand_admin.views
 """
 
 from ...services.orga import service as orga_service
+from ...services.party import service as party_service
 from ...util.framework import create_blueprint
 from ...util.templating import templated
 
@@ -16,7 +17,6 @@ from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 from ..brand import service as brand_service
 from ..news_admin import service as news_admin_service
-from ..party import service as party_service
 
 from .authorization import BrandPermission
 

@@ -11,8 +11,7 @@ byceps.blueprints.shop.order_service
 from datetime import datetime
 
 from ...database import db
-
-from ..party.models import Party
+from ...services.party.models import Party
 
 from .models.order import Order, OrderItem, OrderUpdate, PaymentState
 from .signals import order_placed

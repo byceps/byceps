@@ -13,6 +13,7 @@ from itertools import groupby
 from arrow import Arrow
 from flask import abort
 
+from ...services.party import service as party_service
 from ...util.datetime import DateTimeRange
 from ...util.framework import create_blueprint
 from ...util.iterables import pairwise
@@ -20,7 +21,6 @@ from ...util.templating import templated
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
-from ..party import service as party_service
 
 from .authorization import OrgaPresencePermission
 from . import service

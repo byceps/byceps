@@ -9,13 +9,13 @@ bootstrap.helpers
 """
 
 from byceps.blueprints.brand.models import Brand
-from byceps.blueprints.party.models import Party
 from byceps.blueprints.user.models.user import User
 from byceps.blueprints.user import service as user_service
 from byceps.blueprints.user_group.models import UserGroup
 from byceps.services.orga.models import OrgaFlag
 from byceps.services.orga_team.models import OrgaTeam, \
     Membership as OrgaTeamMembership
+from byceps.services.party.models import Party
 from byceps.services.seating.models.area import Area as SeatingArea
 from byceps.services.seating.models.category import Category as SeatingCategory
 from byceps.services.seating.models.seat import Seat

@@ -10,13 +10,13 @@ byceps.blueprints.ticket_admin.views
 
 from flask import abort, request
 
+from ...services.party import service as party_service
 from ...services.ticket import service as ticket_service
 from ...util.framework import create_blueprint
 from ...util.templating import templated
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
-from ..party import service as party_service
 
 from .authorization import TicketPermission
 

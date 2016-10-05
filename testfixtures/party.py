@@ -10,7 +10,7 @@ testfixtures.party
 
 from datetime import datetime
 
-from byceps.blueprints.party.models import Party
+from byceps.services.party.models import Party
 
 from .brand import create_brand
 

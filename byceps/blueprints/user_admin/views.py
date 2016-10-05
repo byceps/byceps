@@ -13,6 +13,7 @@ from collections import defaultdict
 from flask import abort, request
 
 from ...services.authorization import service as authorization_service
+from ...services.party import service as party_service
 from ...services.ticket import service as ticket_service
 from ...services.user_badge import service as badge_service
 from ...util.framework import create_blueprint
@@ -20,7 +21,6 @@ from ...util.templating import templated
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
-from ..party import service as party_service
 from ..shop import order_service
 from ..user import service as user_service
 

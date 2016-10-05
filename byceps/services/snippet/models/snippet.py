@@ -18,9 +18,9 @@ from enum import Enum
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
 
-from ....blueprints.party.models import Party
 from ....blueprints.user.models.user import User
 from ....database import db, generate_uuid
+from ....services.party.models import Party
 from ....util.instances import ReprBuilder
 
 from .query import BelongsToPartyQuery

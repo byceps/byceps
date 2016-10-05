@@ -9,8 +9,7 @@ byceps.blueprints.shop.article_service
 """
 
 from ...database import db
-
-from ..party.models import Party
+from ...services.party.models import Party
 
 from .models.article import Article, ArticleCompilation, \
     ArticleCompilationItem, AttachedArticle

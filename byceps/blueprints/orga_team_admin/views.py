@@ -11,13 +11,13 @@ byceps.blueprints.orga_team_admin.views
 from flask import abort, request, url_for
 
 from ...services.orga_team import service as orga_team_service
+from ...services.party import service as party_service
 from ...util.framework import create_blueprint, flash_success
 from ...util.templating import templated
 from ...util.views import redirect_to, respond_no_content_with_location
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
-from ..party import service as party_service
 from ..user import service as user_service
 
 from .authorization import OrgaTeamPermission

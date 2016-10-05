@@ -15,9 +15,9 @@ from enum import Enum
 from sqlalchemy.ext.hybrid import hybrid_property
 
 from ....database import BaseQuery, db, generate_uuid
+from ....services.party.models import Party
 from ....util.instances import ReprBuilder
 
-from ...party.models import Party
 from ...user.models.user import User
 
 from .article import Article

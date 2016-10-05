@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-byceps.blueprints.party.models
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.party.models
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2016 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -12,11 +12,10 @@ from datetime import datetime
 
 from sqlalchemy.ext.hybrid import hybrid_property
 
+from ...blueprints.brand.models import Brand
 from ...database import db
 from ...util.datetime import DateTimeRange
 from ...util.instances import ReprBuilder
-
-from ..brand.models import Brand
 
 
 class Party(db.Model):

@@ -10,6 +10,7 @@ byceps.blueprints.tourney_admin.views
 
 from flask import abort, request, url_for
 
+from ...services.party import service as party_service
 from ...services.tourney import service as tourney_service
 from ...util.framework import create_blueprint, flash_error, flash_success
 from ...util.templating import templated
@@ -17,7 +18,6 @@ from ...util.views import redirect_to, respond_no_content_with_location
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
-from ..party import service as party_service
 
 from .authorization import TourneyCategoryPermission
 from .forms import TourneyCategoryCreateForm, TourneyCategoryUpdateForm
