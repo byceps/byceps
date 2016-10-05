@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-byceps.blueprints.shop.models.article
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.shop.article.models
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2016 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -15,8 +15,9 @@ from Ranger import Range
 from Ranger.src.Range.Cut import Cut
 
 from ....database import BaseQuery, db, generate_uuid
-from ....services.party.models import Party
 from ....util.instances import ReprBuilder
+
+from ...party.models import Party
 
 
 class ArticleQuery(BaseQuery):

@@ -18,6 +18,7 @@ from ...services.orga import service as orga_service
 from ...services.orga_team import service as orga_team_service
 from ...services.party import service as party_service
 from ...services.seating import service as seating_service
+from ...services.shop.article import service as article_service
 from ...services.terms import service as terms_service
 from ...services.ticket import service as ticket_service
 from ...util.framework import create_blueprint
@@ -27,7 +28,7 @@ from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 from ..board import service as board_service
 from ..news_admin import service as news_admin_service
-from ..shop import article_service, order_service
+from ..shop import order_service
 from ..user import service as user_service
 
 from .authorization import AdminDashboardPermission

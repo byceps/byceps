@@ -10,7 +10,7 @@ testfixtures.shop_article
 
 from decimal import Decimal
 
-from byceps.blueprints.shop.models.article import Article
+from byceps.services.shop.article.models import Article
 
 from .party import create_party
 

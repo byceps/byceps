@@ -1,18 +1,19 @@
 # -*- coding: utf-8 -*-
 
 """
-byceps.blueprints.shop.article_service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.shop.article.service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2016 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
 """
 
-from ...database import db
-from ...services.party.models import Party
+from ....database import db
 
-from .models.article import Article, ArticleCompilation, \
-    ArticleCompilationItem, AttachedArticle
+from ...party.models import Party
+
+from .models import Article, ArticleCompilation, ArticleCompilationItem, \
+    AttachedArticle
 
 
 def create_article(party_id, item_number, description, price, tax_rate,

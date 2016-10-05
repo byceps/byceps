@@ -16,11 +16,10 @@ from sqlalchemy.ext.hybrid import hybrid_property
 
 from ....database import BaseQuery, db, generate_uuid
 from ....services.party.models import Party
+from ....services.shop.article.models import Article
 from ....util.instances import ReprBuilder
 
 from ...user.models.user import User
-
-from .article import Article
 
 
 class Orderer(object):
