@@ -13,7 +13,6 @@ from collections import defaultdict
 from flask import abort, request
 
 from ...services.authorization import service as authorization_service
-from ...services.newsletter import service as newsletter_service
 from ...services.party import service as party_service
 from ...services.shop.order import service as order_service
 from ...services.ticket import service as ticket_service
@@ -26,7 +25,7 @@ from ..authorization.registry import permission_registry
 from ..user import service as user_service
 
 from .authorization import UserPermission
-from . import service
+from . import activity_service, service
 from .service import UserEnabledFilter
 
 
@@ -136,15 +135,16 @@ def view_activity(user_id):
     """Show user's activity."""
     user = _get_user_or_404(user_id)
 
-    newsletter_subscription_updates = newsletter_service \
-        .get_subscription_updates_for_user(user.id)
+    activities = []
 
-    newsletter_subscription_updates.sort(key=lambda u: u.expressed_at,
-                                         reverse=True)
+    activities.extend(activity_service \
+        .get_newsletter_subscription_updates_for_user(user.id))
+
+    activity_service.sort_activities(activities)
 
     return {
         'user': user,
-        'newsletter_subscription_updates': newsletter_subscription_updates,
+        'activities': activities,
     }
 
 

@@ -36,15 +36,15 @@
 
   <h2>Aktivität</h2>
   <ol class="activity-stream">
-    {%- for update in newsletter_subscription_updates %}
+    {%- for activity in activities %}
     <li>
       <table class="activity-stream-item">
         <tr>
           <td><span class="icon-container">{{ render_icon('newsletter') }}</span></td>
           <td>
-            <span class="user-link">{{ render_user_avatar_tiny_and_link(user) }}</span> hat den Newsletter zur Marke &quot;{{ update.brand_id }}&quot; {{ render_newsletter_subscription_update(update) }}.
+            <span class="user-link">{{ render_user_avatar_tiny_and_link(user) }}</span> {{ render_newsletter_subscription_update_activity_label(activity) }}
           </td>
-          <td class="timestamp">{{ render_datetime(update.expressed_at) }}</td>
+          <td class="timestamp">{{ render_datetime(activity.occured_at) }}</td>
         </tr>
       </table>
     </li>
@@ -54,8 +54,13 @@
 {%- endblock body %}
 
 
-{% macro render_newsletter_subscription_update(subscription) %}
-  {%- set state_name = subscription.state.name %}
+{% macro render_newsletter_subscription_update_activity_label(activity) -%}
+hat den Newsletter zur Marke &quot;{{ activity.object.brand_id }}&quot; {{ render_newsletter_subscription_update(activity.object.state) }}.
+{%- endmacro %}
+
+
+{% macro render_newsletter_subscription_update(state) %}
+  {%- set state_name = state.name %}
   {%- if state_name == 'requested' -%}
     {{ render_tag(render_icon('success') ~ ' angefordert', class='newsletter-subscribed') }}
   {%- elif state_name == 'declined' -%}
