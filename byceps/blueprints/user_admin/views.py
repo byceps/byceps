@@ -137,6 +137,8 @@ def view_activity(user_id):
 
     activities = []
 
+    activities.extend(activity_service.get_terms_consents_for_user(user.id))
+
     activities.extend(activity_service \
         .get_newsletter_subscription_updates_for_user(user.id))
 

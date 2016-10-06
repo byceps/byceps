@@ -12,6 +12,7 @@ from collections import namedtuple
 from enum import Enum
 
 from ...services.newsletter import service as newsletter_service
+from ...services.terms import service as terms_service
 
 
 Activity = namedtuple('Activity', ['occured_at', 'type', 'object'])
@@ -19,6 +20,7 @@ Activity = namedtuple('Activity', ['occured_at', 'type', 'object'])
 
 ActivityType = Enum('ActivityType', [
     'newsletter_subscription_update',
+    'terms_consent',
 ])
 
 
@@ -30,6 +32,16 @@ def get_newsletter_subscription_updates_for_user(user_id):
         type_ = ActivityType.newsletter_subscription_update
 
         yield Activity(update.expressed_at, type_, update)
+
+
+def get_terms_consents_for_user(user_id):
+    """Yield the user's consents to terms as activities."""
+    consents = terms_service.get_consents_by_user(user_id)
+
+    for consent in consents:
+        type_ = ActivityType.terms_consent
+
+        yield Activity(consent.expressed_at, type_, consent)
 
 
 def sort_activities(activities):

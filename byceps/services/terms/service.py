@@ -13,6 +13,10 @@ from ...database import db
 from .models import Consent, ConsentContext, Version
 
 
+# -------------------------------------------------------------------- #
+# version
+
+
 def find_version(version_id):
     """Return the version with that id, or `None` if not found."""
     return Version.query.get(version_id)
@@ -32,6 +36,10 @@ def get_versions_for_brand(brand_id):
         .for_brand_id(brand_id) \
         .order_by(Version.created_at.desc()) \
         .all()
+
+
+# -------------------------------------------------------------------- #
+# consent
 
 
 def build_consent_on_account_creation(user_id, version_id):
@@ -59,6 +67,13 @@ def consent_to_version_on_separate_action(version_id, verification_token):
     db.session.add(consent)
 
     db.session.commit()
+
+
+def get_consents_by_user(user_id):
+    """Return the consents the user submitted."""
+    return Consent.query \
+        .filter_by(user_id=user_id) \
+        .all()
 
 
 def has_user_accepted_version(user_id, version_id):

@@ -40,10 +40,8 @@
     <li>
       <table class="activity-stream-item">
         <tr>
-          <td><span class="icon-container">{{ render_icon('newsletter') }}</span></td>
-          <td>
-            <span class="user-link">{{ render_user_avatar_tiny_and_link(user) }}</span> {{ render_newsletter_subscription_update_activity_label(activity) }}
-          </td>
+          <td><span class="icon-container">{{ render_activity_icon(activity) }}</span></td>
+          <td><span class="user-link">{{ render_user_avatar_tiny_and_link(user) }}</span> {{ render_activity_label(activity) }}</td>
           <td class="timestamp">{{ render_datetime(activity.occured_at) }}</td>
         </tr>
       </table>
@@ -52,6 +50,30 @@
   </ol>
 
 {%- endblock body %}
+
+
+{% macro render_activity_icon(activity) -%}
+  {%- set type_name = activity.type.name %}
+  {%- if type_name == 'newsletter_subscription_update' -%}
+    {{ render_icon('newsletter') }}
+  {%- elif type_name == 'terms_consent' -%}
+    {{ render_icon('legal') }}
+  {%- else -%}
+    ?
+  {%- endif -%}
+{%- endmacro %}
+
+
+{% macro render_activity_label(activity) -%}
+  {%- set type_name = activity.type.name %}
+  {%- if type_name == 'newsletter_subscription_update' -%}
+    {{ render_newsletter_subscription_update_activity_label(activity) }}
+  {%- elif type_name == 'terms_consent' -%}
+    {{ render_terms_consent_activity_label(activity) }}
+  {%- else -%}
+    ?
+  {%- endif -%}
+{%- endmacro %}
 
 
 {% macro render_newsletter_subscription_update_activity_label(activity) -%}
@@ -68,4 +90,9 @@ hat den Newsletter zur Marke &quot;{{ activity.object.brand_id }}&quot; {{ rende
   {%- else -%}
     ?
   {%- endif -%}
+{%- endmacro %}
+
+
+{% macro render_terms_consent_activity_label(activity) -%}
+hat die aktuellen AGB (&quot;{{ activity.object.version.title }}&quot;) angenommen.
 {%- endmacro %}
