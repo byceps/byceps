@@ -181,6 +181,13 @@ def get_subscription_state(user_id, brand_id):
     return current_subscription.state
 
 
+def get_subscription_updates_for_user(user_id):
+    """Return subscription updates made by the user, for any brand."""
+    return Subscription.query \
+        .filter_by(user_id=user_id) \
+        .all()
+
+
 def is_subscribed(user_id, brand_id):
     """Return if the user is subscribed to the brand's newsletter or not."""
     subscription_state = get_subscription_state(user_id, brand_id)

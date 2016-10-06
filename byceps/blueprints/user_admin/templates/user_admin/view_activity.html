@@ -1,0 +1,66 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/datetime.html' import render_datetime %}
+{% from 'macros/icons.html' import render_icon %}
+{% from 'macros/misc.html' import render_tag %}
+{% from 'macros/user_admin.html' import render_main_tabs_view with context %}
+{% from 'macros/user_admin.html' import render_user_avatar_tiny_and_link %}
+{% set current_page = 'user_admin.view_activity' %}
+{% set title = 'Benutzer - Aktivität - %s'|format(user.screen_name) %}
+
+{% block head %}
+    <style>
+      .newsletter-subscribed {
+        background-color: #11aa22;
+      }
+      .newsletter-unsubscribed {
+        background-color: #ee3322;
+      }
+    </style>
+{%- endblock %}
+
+{% block before_body %}
+{{ render_main_tabs_view(current_page, user.id) }}
+{%- endblock %}
+
+{% block body %}
+
+  <nav class="breadcrumbs">
+    <ol>
+      <li><a href="{{ url_for('.index') }}">Benutzer</a></li>
+    </ol>
+  </nav>
+  <h1>
+    {{- render_icon('user') }} {{ user.screen_name -}}
+    {%- if user.deleted %} {{ render_tag(render_icon('delete') ~ ' gelöscht', class='notification-error') }}{% endif -%}
+  </h1>
+
+  <h2>Aktivität</h2>
+  <ol class="activity-stream">
+    {%- for update in newsletter_subscription_updates %}
+    <li>
+      <table class="activity-stream-item">
+        <tr>
+          <td><span class="icon-container">{{ render_icon('newsletter') }}</span></td>
+          <td>
+            <span class="user-link">{{ render_user_avatar_tiny_and_link(user) }}</span> hat den Newsletter zur Marke &quot;{{ update.brand_id }}&quot; {{ render_newsletter_subscription_update(update) }}.
+          </td>
+          <td class="timestamp">{{ render_datetime(update.expressed_at) }}</td>
+        </tr>
+      </table>
+    </li>
+    {%- endfor %}
+  </ol>
+
+{%- endblock body %}
+
+
+{% macro render_newsletter_subscription_update(subscription) %}
+  {%- set state_name = subscription.state.name %}
+  {%- if state_name == 'requested' -%}
+    {{ render_tag(render_icon('success') ~ ' angefordert', class='newsletter-subscribed') }}
+  {%- elif state_name == 'declined' -%}
+    {{ render_tag(render_icon('disabled') ~ ' abbestellt', class='newsletter-unsubscribed') }}
+  {%- else -%}
+    ?
+  {%- endif -%}
+{%- endmacro %}

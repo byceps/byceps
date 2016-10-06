@@ -13,6 +13,7 @@ from collections import defaultdict
 from flask import abort, request
 
 from ...services.authorization import service as authorization_service
+from ...services.newsletter import service as newsletter_service
 from ...services.party import service as party_service
 from ...services.shop.order import service as order_service
 from ...services.ticket import service as ticket_service
@@ -125,6 +126,25 @@ def view_permissions(user_id):
     return {
         'user': user,
         'permissions_by_role': permissions_by_role,
+    }
+
+
+@blueprint.route('/<uuid:user_id>/activity')
+@permission_required(UserPermission.view)
+@templated
+def view_activity(user_id):
+    """Show user's activity."""
+    user = _get_user_or_404(user_id)
+
+    newsletter_subscription_updates = newsletter_service \
+        .get_subscription_updates_for_user(user.id)
+
+    newsletter_subscription_updates.sort(key=lambda u: u.expressed_at,
+                                         reverse=True)
+
+    return {
+        'user': user,
+        'newsletter_subscription_updates': newsletter_subscription_updates,
     }
 
 

@@ -8,6 +8,7 @@
       Navigation(None)
         .add_item(url_for('.view', user_id=user_id), 'Übersicht', id='user_admin.view', required_permission=UserPermission.view, icon='user')
         .add_item(url_for('.view_permissions', user_id=user_id), 'Berechtigungen', id='user_admin.view_permissions', required_permission=UserPermission.view, icon='permission')
+        .add_item(url_for('.view_activity', user_id=user_id), 'Aktvität', id='user_admin.view_activity', required_permission=UserPermission.view, icon='history')
       , current_page
     )
   }}
