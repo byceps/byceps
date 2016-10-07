@@ -18,12 +18,14 @@ from ...util import upload
 from .models import Avatar
 
 
+ALL_IMAGE_TYPES = frozenset(ImageType)
+
 MAXIMUM_DIMENSIONS = Dimensions(110, 110)
 
 
-def get_image_type_names():
-    """Return the names of the known/accepted image types."""
-    return frozenset(type.name.upper() for type in ImageType)
+def get_image_type_names(types):
+    """Return the names of the image types."""
+    return frozenset(t.name.upper() for t in types)
 
 
 def update_avatar_image(user, stream):

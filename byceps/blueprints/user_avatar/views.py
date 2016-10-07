@@ -30,7 +30,7 @@ def update_form(erroneous_form=None):
 
     form = erroneous_form if erroneous_form else UpdateForm()
 
-    image_type_names = service.get_image_type_names()
+    image_type_names = service.get_image_type_names(service.ALL_IMAGE_TYPES)
 
     return {
         'form': form,
