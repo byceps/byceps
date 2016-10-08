@@ -11,7 +11,7 @@ byceps.blueprints.user_avatar.views
 from flask import abort, g, request, url_for
 
 from ...util.framework import create_blueprint, flash_success
-from ...util.image import ImageType
+from ...util.image.models import ImageType
 from ...util.templating import templated
 from ...util.views import redirect_to, respond_no_content_with_location
 

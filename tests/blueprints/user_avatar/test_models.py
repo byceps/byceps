@@ -9,7 +9,7 @@ from datetime import datetime
 
 from nose2.tools import params
 
-from byceps.util.image import ImageType
+from byceps.util.image.models import ImageType
 
 from testfixtures.user import create_user
 from testfixtures.user_avatar import create_avatar

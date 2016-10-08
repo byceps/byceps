@@ -11,8 +11,9 @@ byceps.blueprints.user_avatar.service
 from flask import abort
 
 from ...database import db
-from ...util.image import create_thumbnail, Dimensions, guess_type, ImageType, \
-    read_dimensions
+from ...util.image import create_thumbnail, read_dimensions
+from ...util.image.models import Dimensions, ImageType
+from ...util.image.typeguess import guess_type
 from ...util import upload
 
 from .models import Avatar

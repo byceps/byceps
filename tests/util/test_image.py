@@ -9,7 +9,9 @@ from pathlib import Path
 
 from nose2.tools import params
 
-from byceps.util.image import Dimensions, guess_type, ImageType, read_dimensions
+from byceps.util.image import read_dimensions
+from byceps.util.image.models import Dimensions, ImageType
+from byceps.util.image.typeguess import guess_type
 
 
 @params(

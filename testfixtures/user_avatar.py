@@ -12,7 +12,7 @@ from datetime import datetime
 
 from byceps.blueprints.user_avatar.models import Avatar
 from byceps.database import generate_uuid
-from byceps.util.image import ImageType
+from byceps.util.image.models import ImageType
 
 
 def create_avatar(creator, *, id=None, created_at=None,

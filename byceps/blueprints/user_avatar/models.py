@@ -15,7 +15,7 @@ from flask import current_app, url_for
 from sqlalchemy.ext.hybrid import hybrid_property
 
 from ...database import db, generate_uuid
-from ...util.image import ImageType
+from ...util.image.models import ImageType
 from ...util.instances import ReprBuilder
 
 
