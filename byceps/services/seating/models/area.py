@@ -51,7 +51,7 @@ class Area(db.Model):
 
     def __repr__(self):
         return ReprBuilder(self) \
-            .add_with_lookup('id') \
+            .add('id', str(self.id)) \
             .add('party', self.party_id) \
             .add_with_lookup('slug') \
             .build()

@@ -86,10 +86,23 @@ class Ticket(db.Model):
             (self.user_managed_by == user)
 
     def __repr__(self):
+        def user(user):
+            return user.screen_name if (user is not None) else None
+
+        def occupied_seat():
+            seat = self.occupied_seat
+
+            if seat is None:
+                return None
+
+            return '{{area={!r}, label={!r}}}' \
+                .format(seat.area.title, seat.label)
+
         return ReprBuilder(self) \
-            .add_with_lookup('id') \
-            .add_with_lookup('category') \
-            .add_with_lookup('owned_by') \
-            .add_with_lookup('occupied_seat') \
-            .add_with_lookup('used_by') \
+            .add('id', str(self.id)) \
+            .add('party', self.category.party_id) \
+            .add('category', self.category.title) \
+            .add('owned_by', user(self.owned_by)) \
+            .add_custom('occupied_seat={}'.format(occupied_seat())) \
+            .add('used_by', user(self.used_by)) \
             .build()

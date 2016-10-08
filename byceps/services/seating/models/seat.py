@@ -73,7 +73,7 @@ class Seat(db.Model):
 
     def __repr__(self):
         return ReprBuilder(self) \
-            .add_with_lookup('id') \
+            .add('id', str(self.id)) \
             .add_with_lookup('area') \
             .add_with_lookup('category') \
             .add_with_lookup('label') \
