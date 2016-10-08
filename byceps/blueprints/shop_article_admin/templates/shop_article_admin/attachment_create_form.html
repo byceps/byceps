@@ -1,9 +1,9 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
 {% from 'macros/icons.html' import render_icon %}
-{% from 'macros/shop_admin.html' import render_article_link %}
 {% from 'macros/shop_admin.html' import render_main_tabs with context %}
-{% set current_page = 'shop_admin.articles' %}
+{% from 'macros/shop_article_admin.html' import render_article_link %}
+{% set current_page = 'shop_article_admin.attachment_create_form' %}
 {% set current_page_party = article.party %}
 {% set title = 'Artikel anhängen' %}
 
@@ -16,19 +16,19 @@
   <nav class="breadcrumbs">
     <ol>
       <li>Artikel</li>
-      <li><a href="{{ url_for('.article_index_for_party', party_id=article.party.id) }}">{{ article.party.title }}</a></li>
+      <li><a href="{{ url_for('.index_for_party', party_id=article.party.id) }}">{{ article.party.title }}</a></li>
       <li>{{ render_article_link(article) }}</li>
     </ol>
   </nav>
   <h1>{{ render_icon('add') }} {{ title }}</h1>
 
-  <form action="{{ url_for('.article_attachment_create', article_id=article.id) }}" method="post">
+  <form action="{{ url_for('.attachment_create', article_id=article.id) }}" method="post">
     {% call form_fieldset() %}
       {{ form_field(form.article_to_attach_id, required='required', autofocus='autofocus') }}
       {{ form_field(form.quantity, type='number', min=1, max=999, style='width: 4em;', required='required') }}
     {% endcall %}
 
-    {{ form_buttons('Artikel anhängen', cancel_url=url_for('.article_view', article_id=article.id)) }}
+    {{ form_buttons('Artikel anhängen', cancel_url=url_for('.view', article_id=article.id)) }}
   </form>
 
 {%- endblock %}

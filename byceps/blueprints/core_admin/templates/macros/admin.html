@@ -78,7 +78,7 @@
       .add_item(url_for('admin_dashboard.view_party', party_id=party.id), 'Dashboard', id='admin_dashboard_party', required_permission=AdminDashboardPermission.view_party, icon='dashboard')
       .add_item(url_for('snippet_admin.index_for_party', party_id=party.id), 'Snippets', id='snippet_admin', required_permission=SnippetPermission.list, icon='snippet')
       .add_item(url_for('seating_admin.index_for_party', party_id=party.id), 'Sitzpläne', id='seating_admin', required_permission=SeatingPermission.view, icon='seating-area')
-      .add_item(url_for('shop_admin.article_index_for_party', party_id=party.id), 'Shop-Artikel', id='shop_admin.articles', required_permission=ShopArticlePermission.list, icon='shopping-cart')
+      .add_item(url_for('shop_article_admin.index_for_party', party_id=party.id), 'Shop-Artikel', id='shop_article_admin.index_for_party', required_permission=ShopArticlePermission.list, icon='shopping-cart')
       .add_item(url_for('shop_order_admin.index_for_party', party_id=party.id), 'Shop-Bestellungen', id='shop_order_admin.index_for_party', required_permission=ShopOrderPermission.list, icon='payment')
       .add_item(url_for('ticket_admin.index_for_party', party_id=party.id), 'Tickets', id='ticket_admin', required_permission=TicketPermission.list, icon='ticket')
       .add_item(url_for('orga_team_admin.teams_for_party', party_id=party.id), 'Orga-Teams', id='orga_admin.teams', required_permission=OrgaTeamPermission.list, icon='users')

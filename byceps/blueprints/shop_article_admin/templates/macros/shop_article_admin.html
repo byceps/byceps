@@ -1,0 +1,21 @@
+{% from 'macros/datetime.html' import render_datetime %}
+
+
+{% macro render_article_link(article) -%}
+  <a href="{{ url_for('shop_article_admin.view', article_id=article.id) }}" title="{{ article.description }}">{{ article.item_number }}</a>
+{%- endmacro %}
+
+
+{% macro render_article_temporal_availability(article) -%}
+  {%- set range = article.availability_range %}
+  {%- if range.hasLowerBound() and range.hasUpperBound() -%}
+    {{ render_datetime(article.available_from, smart=False) }} –<br>
+    {{- render_datetime(article.available_until, smart=False) }}
+  {%- elif range.hasLowerBound() and not range.hasUpperBound() -%}
+    ab {{ render_datetime(range.lowerEndpoint(), smart=False) }}
+  {%- elif not range.hasLowerBound() and range.hasUpperBound() -%}
+    bis {{ render_datetime(range.upperEndpoint(), smart=False) }}
+  {%- else -%}
+    {{ 'unbegrenzt'|dim }}
+  {%- endif -%}
+{%- endmacro %}

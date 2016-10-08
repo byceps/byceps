@@ -1,34 +1,13 @@
 {% from 'macros/admin.html' import render_main_tabs as _render_main_tabs %}
-{% from 'macros/datetime.html' import render_datetime %}
 
 
 {% macro render_main_tabs(current_page, party) -%}
   {{
     _render_main_tabs(
       Navigation(None)
-        .add_item(url_for('shop_admin.article_index_for_party', party_id=party.id), 'Artikel', id='shop_admin.articles', required_permission=ShopArticlePermission.list, icon='shopping-cart')
+        .add_item(url_for('shop_article_admin.index_for_party', party_id=party.id), 'Artikel', id='shop_article_admin.index_for_party', required_permission=ShopArticlePermission.list, icon='shopping-cart')
         .add_item(url_for('shop_order_admin.index_for_party', party_id=party.id), 'Bestellungen', id='shop_order_admin.index_for_party', required_permission=ShopOrderPermission.list, icon='payment')
       , current_page
     )
   }}
-{%- endmacro %}
-
-
-{% macro render_article_link(article) -%}
-  <a href="{{ url_for('shop_admin.article_view', article_id=article.id) }}" title="{{ article.description }}">{{ article.item_number }}</a>
-{%- endmacro %}
-
-
-{% macro render_article_temporal_availability(article) -%}
-  {%- set range = article.availability_range %}
-  {%- if range.hasLowerBound() and range.hasUpperBound() -%}
-    {{ render_datetime(article.available_from, smart=False) }} –<br>
-    {{- render_datetime(article.available_until, smart=False) }}
-  {%- elif range.hasLowerBound() and not range.hasUpperBound() -%}
-    ab {{ render_datetime(range.lowerEndpoint(), smart=False) }}
-  {%- elif not range.hasLowerBound() and range.hasUpperBound() -%}
-    bis {{ render_datetime(range.upperEndpoint(), smart=False) }}
-  {%- else -%}
-    {{ 'unbegrenzt'|dim }}
-  {%- endif -%}
 {%- endmacro %}
