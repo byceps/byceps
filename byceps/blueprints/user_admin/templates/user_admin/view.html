@@ -177,7 +177,7 @@
     </thead>
     <tbody>
       {%- for party, tickets in parties_and_tickets %}
-        {%- for ticket in tickets %}
+        {%- for ticket in tickets|sort(attribute='created_at') %}
       <tr>
         {%- if loop.first %}
         <td rowspan="{{ tickets|length }}"><strong>{{ party.title }}</strong></td>

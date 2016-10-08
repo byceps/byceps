@@ -81,15 +81,7 @@ def view(user_id):
 
     orders = order_service.get_orders_placed_by_user(user.id)
 
-    tickets = ticket_service.find_tickets_related_to_user(user.id)
-
-    tickets_by_party = _group_tickets_by_party(tickets)
-
-    parties_and_tickets = []
-    for party in sorted(tickets_by_party.keys(),
-                        key=lambda p: p.starts_at, reverse=True):
-        tickets_sorted = sorted(tickets, key=lambda t: t.created_at)
-        parties_and_tickets.append((party, tickets_sorted))
+    parties_and_tickets = _get_parties_and_tickets(user.id)
 
     return {
         'user': user,
@@ -99,17 +91,31 @@ def view(user_id):
     }
 
 
-def _group_tickets_by_party(tickets):
-    ticket_party_ids = {t.category.party_id for t in tickets}
-    ticket_parties = party_service.get_parties(ticket_party_ids)
-    ticket_parties_by_party_id = {p.id: p for p in ticket_parties}
+def _get_parties_and_tickets(user_id):
+    tickets = ticket_service.find_tickets_related_to_user(user_id)
 
-    tickets_by_party = defaultdict(list)
+    tickets_by_party_id = _group_tickets_by_party_id(tickets)
+
+    party_ids = tickets_by_party_id.keys()
+    parties = party_service.get_parties(party_ids)
+    parties_by_id = {p.id: p for p in parties}
+
+    parties_and_tickets = [
+        (parties_by_id[party_id], tickets)
+        for party_id, tickets in tickets_by_party_id.items()]
+
+    parties_and_tickets.sort(key=lambda x: x[0].starts_at, reverse=True)
+
+    return parties_and_tickets
+
+
+def _group_tickets_by_party_id(tickets):
+    tickets_by_party_id = defaultdict(list)
+
     for ticket in tickets:
-        party = ticket_parties_by_party_id[ticket.category.party_id]
-        tickets_by_party[party].append(ticket)
+        tickets_by_party_id[ticket.category.party_id].append(ticket)
 
-    return tickets_by_party
+    return tickets_by_party_id
 
 
 @blueprint.route('/<uuid:user_id>/permissions')
