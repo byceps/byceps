@@ -26,7 +26,16 @@ def create_thumbnail(filename_or_stream, image_type, maximum_dimensions):
     output_stream = BytesIO()
 
     image = Image.open(filename_or_stream)
+
+    dimensions = Dimensions(*image.size)
+
+    if not dimensions.is_square:
+        edge_length = min(*dimensions)
+        crop_box = (0, 0, edge_length, edge_length)
+        image = image.crop(crop_box)
+
     image.thumbnail(maximum_dimensions, resample=Image.ANTIALIAS)
+
     image.save(output_stream, format=image_type)
 
     output_stream.seek(0)
