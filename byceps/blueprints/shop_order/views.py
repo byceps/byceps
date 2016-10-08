@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-byceps.blueprints.shop.views
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.shop_order.views
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2016 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -25,7 +25,7 @@ from ..authentication.decorators import login_required
 from .forms import assemble_articles_order_form, OrderForm
 
 
-blueprint = create_blueprint('shop', __name__)
+blueprint = create_blueprint('shop_order', __name__)
 
 
 @blueprint.route('/order')

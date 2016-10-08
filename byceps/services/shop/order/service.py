@@ -10,7 +10,7 @@ byceps.services.shop.order.service
 
 from datetime import datetime
 
-from ....blueprints.shop.signals import order_placed
+from ....blueprints.shop_order.signals import order_placed
 from ....database import db
 
 from ...party.models import Party

@@ -27,7 +27,7 @@ from ...util.views import redirect_to, respond_no_content_with_location
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
-from ..shop.signals import order_canceled, order_paid
+from ..shop_order.signals import order_canceled, order_paid
 
 from .authorization import ShopArticlePermission, ShopOrderPermission
 from .forms import ArticleCreateForm, ArticleUpdateForm, \
