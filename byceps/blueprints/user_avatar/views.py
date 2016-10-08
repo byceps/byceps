@@ -24,7 +24,6 @@ blueprint = create_blueprint('user_avatar', __name__)
 
 
 ALLOWED_IMAGE_TYPES = frozenset([
-    ImageType.gif,
     ImageType.jpeg,
     ImageType.png,
 ])
