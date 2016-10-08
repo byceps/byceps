@@ -12,7 +12,14 @@ from collections import namedtuple
 from enum import Enum
 
 
-Dimensions = namedtuple('Dimensions', ['width', 'height'])
+class Dimensions(namedtuple('Dimensions', ['width', 'height'])):
+    """A 2D image's width and height."""
+
+    __slots__ = ()
+
+    @property
+    def is_square(self):
+        return self.width == self.height
 
 
 ImageType = Enum('ImageType', ['gif', 'jpeg', 'png'])
