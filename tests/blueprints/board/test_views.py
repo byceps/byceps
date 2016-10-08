@@ -7,10 +7,10 @@
 
 from datetime import datetime
 
-from byceps.blueprints.board.models.category import Category
-from byceps.blueprints.board.models.topic import Topic
-from byceps.blueprints.board import service as board_service
 from byceps.services.authorization import service as authorization_service
+from byceps.services.board.models.category import Category
+from byceps.services.board.models.topic import Topic
+from byceps.services.board import service as board_service
 
 from testfixtures.board import create_category, create_topic
 from testfixtures.user import create_user

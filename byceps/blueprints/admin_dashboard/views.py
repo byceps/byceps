@@ -12,6 +12,7 @@ from datetime import date, timedelta
 
 from flask import abort
 
+from ...services.board import service as board_service
 from ...services.brand import service as brand_service
 from ...services.newsletter import service as newsletter_service
 from ...services.orga import service as orga_service
@@ -27,7 +28,6 @@ from ...util.templating import templated
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
-from ..board import service as board_service
 from ..news_admin import service as news_admin_service
 from ..user import service as user_service
 

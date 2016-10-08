@@ -10,6 +10,7 @@ byceps.blueprints.board_admin.views
 
 from flask import abort, request, url_for
 
+from ...services.board import service as board_service
 from ...services.brand import service as brand_service
 from ...util.framework import create_blueprint, flash_error, flash_success
 from ...util.templating import templated
@@ -17,7 +18,6 @@ from ...util.views import redirect_to, respond_no_content_with_location
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
-from ..board import service as board_service
 
 from .authorization import BoardCategoryPermission
 from .forms import CategoryCreateForm, CategoryUpdateForm

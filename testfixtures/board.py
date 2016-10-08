@@ -8,7 +8,7 @@ testfixtures.board
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.blueprints.board import service
+from byceps.services.board import service
 
 from .brand import create_brand
 

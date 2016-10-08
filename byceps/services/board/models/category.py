@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-byceps.blueprints.board.models.category
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.board.models.category
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2016 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -10,11 +10,10 @@ byceps.blueprints.board.models.category
 
 from sqlalchemy.ext.orderinglist import ordering_list
 
+from ....blueprints.user.models.user import User
 from ....database import BaseQuery, db, generate_uuid
 from ....services.brand.models import Brand
 from ....util.instances import ReprBuilder
-
-from ...user.models.user import User
 
 
 class CategoryQuery(BaseQuery):
