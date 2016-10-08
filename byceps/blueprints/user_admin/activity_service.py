@@ -26,6 +26,18 @@ ActivityType = Enum('ActivityType', [
 ])
 
 
+def get_activities_for_user(user_id):
+    activities = []
+
+    activities.extend(get_avatar_updates_for_user(user_id))
+    activities.extend(get_terms_consents_for_user(user_id))
+    activities.extend(get_newsletter_subscription_updates_for_user(user_id))
+
+    _sort_activities(activities)
+
+    return activities
+
+
 def get_avatar_updates_for_user(user_id):
     """Yield the user's avatar updates as activities."""
     avatars = avatar_service.get_avatars_for_user(user_id)
@@ -56,6 +68,6 @@ def get_terms_consents_for_user(user_id):
         yield Activity(consent.expressed_at, type_, consent)
 
 
-def sort_activities(activities):
+def _sort_activities(activities):
     """Sort activities chronologically backwards, in-place."""
     activities.sort(key=lambda a: a.occured_at, reverse=True)

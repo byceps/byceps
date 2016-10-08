@@ -141,16 +141,7 @@ def view_activity(user_id):
     """Show user's activity."""
     user = _get_user_or_404(user_id)
 
-    activities = []
-
-    activities.extend(activity_service.get_avatar_updates_for_user(user.id))
-
-    activities.extend(activity_service.get_terms_consents_for_user(user.id))
-
-    activities.extend(activity_service \
-        .get_newsletter_subscription_updates_for_user(user.id))
-
-    activity_service.sort_activities(activities)
+    activities = activity_service.get_activities_for_user(user.id)
 
     return {
         'user': user,
