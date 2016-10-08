@@ -11,6 +11,7 @@ byceps.blueprints.user_avatar.views
 from flask import abort, g, request, url_for
 
 from ...util.framework import create_blueprint, flash_success
+from ...util.image import ImageType
 from ...util.templating import templated
 from ...util.views import redirect_to, respond_no_content_with_location
 
@@ -22,6 +23,13 @@ from . import signals
 blueprint = create_blueprint('user_avatar', __name__)
 
 
+ALLOWED_IMAGE_TYPES = frozenset([
+    ImageType.gif,
+    ImageType.jpeg,
+    ImageType.png,
+])
+
+
 @blueprint.route('/me/avatar/update')
 @templated
 def update_form(erroneous_form=None):
@@ -30,7 +38,7 @@ def update_form(erroneous_form=None):
 
     form = erroneous_form if erroneous_form else UpdateForm()
 
-    image_type_names = service.get_image_type_names(service.ALL_IMAGE_TYPES)
+    image_type_names = service.get_image_type_names(ALLOWED_IMAGE_TYPES)
 
     return {
         'form': form,
@@ -59,7 +67,8 @@ def update():
         abort(400, 'No file to upload has been specified.')
 
     try:
-        service.update_avatar_image(user, image.stream)
+        service.update_avatar_image(user, image.stream,
+                                    allowed_types=ALLOWED_IMAGE_TYPES)
     except FileExistsError:
         abort(409, 'File already exists, not overwriting.')
 
