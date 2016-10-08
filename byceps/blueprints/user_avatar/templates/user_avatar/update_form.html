@@ -14,7 +14,8 @@
       {%- call form_supplement() %}
         <small class="dimmed">
           Erlaubte Formate: {{ allowed_types|sort|join(', ') }}<br>
-          Maximale Bildgröße: {{ maximum_dimensions|join(' &times; ')|safe }} Pixel
+          Maximale Bildgröße: {{ maximum_dimensions|join(' &times; ')|safe }} Pixel<br>
+          Falls das Bild nicht quadratisch ist, wird es entsprechend zugeschnitten.
         </small>
       {%- endcall %}
     {%- endcall %}
