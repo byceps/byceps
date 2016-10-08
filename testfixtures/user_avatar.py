@@ -10,8 +10,8 @@ testfixtures.user_avatar
 
 from datetime import datetime
 
-from byceps.blueprints.user_avatar.models import Avatar
 from byceps.database import generate_uuid
+from byceps.services.user_avatar.models import Avatar
 from byceps.util.image.models import ImageType
 
 

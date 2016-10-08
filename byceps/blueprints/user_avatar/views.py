@@ -10,13 +10,13 @@ byceps.blueprints.user_avatar.views
 
 from flask import abort, g, request, url_for
 
+from ...services.user_avatar import service as avatar_service
 from ...util.framework import create_blueprint, flash_success
 from ...util.image.models import ImageType
 from ...util.templating import templated
 from ...util.views import redirect_to, respond_no_content_with_location
 
 from .forms import UpdateForm
-from . import service
 from . import signals
 
 
@@ -37,12 +37,12 @@ def update_form(erroneous_form=None):
 
     form = erroneous_form if erroneous_form else UpdateForm()
 
-    image_type_names = service.get_image_type_names(ALLOWED_IMAGE_TYPES)
+    image_type_names = avatar_service.get_image_type_names(ALLOWED_IMAGE_TYPES)
 
     return {
         'form': form,
         'allowed_types': image_type_names,
-        'maximum_dimensions': service.MAXIMUM_DIMENSIONS,
+        'maximum_dimensions': avatar_service.MAXIMUM_DIMENSIONS,
     }
 
 
@@ -66,8 +66,8 @@ def update():
         abort(400, 'No file to upload has been specified.')
 
     try:
-        service.update_avatar_image(user, image.stream,
-                                    allowed_types=ALLOWED_IMAGE_TYPES)
+        avatar_service.update_avatar_image(user, image.stream,
+                                           allowed_types=ALLOWED_IMAGE_TYPES)
     except FileExistsError:
         abort(409, 'File already exists, not overwriting.')
 
@@ -83,7 +83,7 @@ def delete():
     """Remove the current user's avatar image."""
     user = get_current_user_or_404()
 
-    service.remove_avatar_image(user)
+    avatar_service.remove_avatar_image(user)
 
     flash_success('Das Avatarbild wurde entfernt.')
     return url_for('user.view_current')

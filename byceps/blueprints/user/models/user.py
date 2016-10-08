@@ -15,9 +15,8 @@ from sqlalchemy.ext.associationproxy import association_proxy
 
 from ....config import get_site_mode
 from ....database import db, generate_uuid
+from ....services.user_avatar.models import AvatarSelection
 from ....util.instances import ReprBuilder
-
-from ...user_avatar.models import AvatarSelection
 
 
 GUEST_USER_ID = UUID('00000000-0000-0000-0000-000000000000')

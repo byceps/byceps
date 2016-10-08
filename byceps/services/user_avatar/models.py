@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-byceps.blueprints.user_avatar.models
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.user_avatar.models
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2016 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
