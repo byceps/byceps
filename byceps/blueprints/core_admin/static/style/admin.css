@@ -527,7 +527,7 @@ a.user-badge:hover {
 /* activity stream */
 
 ol.activity-stream {
-  border-left: #cccccc solid 1px;
+  border-left: #eeeeee solid 2px;
   margin-left: 12px;
   padding: 4px 0;
   padding-left: 18px;
@@ -546,12 +546,12 @@ table.activity-stream-item {
 
 .activity-stream-item .icon-container {
   background-color: #eeeeee;
-  border-radius: #cccccc solid 1px;
+  border: #ffffff solid 2px;
   border-radius: 50%;
   display: inline-block;
   height: 28px;
-  left: -32px;
-  line-height: 26px;
+  left: -33px;
+  line-height: 22px;
   position: absolute;
   text-align: center;
   top: 4px;
@@ -559,9 +559,9 @@ table.activity-stream-item {
 }
 .activity-stream-item .icon-container > * {
   fill: #666666;
-  height: 16px;
+  height: 12px;
   vertical-align: middle;
-  width: 16px;
+  width: 12px;
 }
 
 .activity-stream-item .user-link a {
@@ -573,6 +573,7 @@ table.activity-stream-item {
 }
 
 .activity-stream-item .timestamp {
+  font-size: 0.6875rem; /* 11px / 16px */
   text-align: right;
   white-space: nowrap;
 }
