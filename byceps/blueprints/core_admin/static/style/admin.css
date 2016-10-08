@@ -544,6 +544,10 @@ table.activity-stream-item {
   width: 100%;
 }
 
+table.activity-stream-item td:first-child {
+  width: 8px;
+}
+
 .activity-stream-item .icon-container {
   background-color: #eeeeee;
   border: #ffffff solid 2px;
