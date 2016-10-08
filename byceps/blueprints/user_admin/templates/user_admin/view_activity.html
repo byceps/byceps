@@ -54,7 +54,9 @@
 
 {% macro render_activity_icon(activity) -%}
   {%- set type_name = activity.type.name %}
-  {%- if type_name == 'newsletter_subscription_update' -%}
+  {%- if type_name == 'avatar_update' -%}
+    {{ render_icon('user') }}
+  {%- elif type_name == 'newsletter_subscription_update' -%}
     {{ render_icon('newsletter') }}
   {%- elif type_name == 'terms_consent' -%}
     {{ render_icon('legal') }}
@@ -66,13 +68,20 @@
 
 {% macro render_activity_label(activity) -%}
   {%- set type_name = activity.type.name %}
-  {%- if type_name == 'newsletter_subscription_update' -%}
+  {%- if type_name == 'avatar_update' -%}
+    {{ render_avatar_update_label(activity) }}
+  {%- elif type_name == 'newsletter_subscription_update' -%}
     {{ render_newsletter_subscription_update_activity_label(activity) }}
   {%- elif type_name == 'terms_consent' -%}
     {{ render_terms_consent_activity_label(activity) }}
   {%- else -%}
     ?
   {%- endif -%}
+{%- endmacro %}
+
+
+{% macro render_avatar_update_label(activity) -%}
+hat ein neues Avatarbild hochgeladen.
 {%- endmacro %}
 
 

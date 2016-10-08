@@ -75,3 +75,10 @@ def remove_avatar_image(user):
     """
     db.session.delete(user.avatar_selection)
     db.session.commit()
+
+
+def get_avatars_for_user(user_id):
+    """Return all avatars uploaded by the user."""
+    return Avatar.query \
+        .filter_by(creator_id=user_id) \
+        .all()

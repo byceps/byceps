@@ -13,15 +13,27 @@ from enum import Enum
 
 from ...services.newsletter import service as newsletter_service
 from ...services.terms import service as terms_service
+from ...services.user_avatar import service as avatar_service
 
 
 Activity = namedtuple('Activity', ['occured_at', 'type', 'object'])
 
 
 ActivityType = Enum('ActivityType', [
+    'avatar_update',
     'newsletter_subscription_update',
     'terms_consent',
 ])
+
+
+def get_avatar_updates_for_user(user_id):
+    """Yield the user's avatar updates as activities."""
+    avatars = avatar_service.get_avatars_for_user(user_id)
+
+    for avatar in avatars:
+        type_ = ActivityType.avatar_update
+
+        yield Activity(avatar.created_at, type_, avatar)
 
 
 def get_newsletter_subscription_updates_for_user(user_id):
