@@ -16,6 +16,8 @@ from collections import namedtuple
 class DateTimeRange(namedtuple('DateTimeRange', ['start', 'end'])):
     """A date/time range with an inclusive start and an exclusive end."""
 
+    __slots__ = ()
+
     def contains(self, datetime):
         return self.start <= datetime < self.end
 
@@ -24,6 +26,8 @@ class DateTimeRange(namedtuple('DateTimeRange', ['start', 'end'])):
 
 
 class MonthDay(namedtuple('MonthDay', ['month', 'day'])):
+
+    __slots__ = ()
 
     @classmethod
     def of(cls, date):
