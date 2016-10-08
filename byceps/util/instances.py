@@ -19,11 +19,11 @@ class ReprBuilder(object):
     def add_with_lookup(self, name):
         """Add the attribute with its value looked up on the instance."""
         value = getattr(self.instance, name)
-        return self.add(name, repr(value))
+        return self.add(name, value)
 
     def add(self, name, value):
         """Add the attribute with the given value."""
-        return self.add_custom('{}={}'.format(name, value))
+        return self.add_custom('{}={!r}'.format(name, value))
 
     def add_custom(self, value):
         """Add a custom value."""
