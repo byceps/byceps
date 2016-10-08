@@ -3,7 +3,7 @@
 {% from 'macros/datetime.html' import render_date, render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_tag %}
-{% from 'macros/shop_admin.html' import render_order_payment_state %}
+{% from 'macros/shop_order_admin.html' import render_order_payment_state %}
 {% from 'macros/user.html' import render_user_avatar_image %}
 {% from 'macros/user_admin.html' import render_main_tabs_view with context %}
 {% from 'macros/user_badge.html' import render_user_badges %}
@@ -153,7 +153,7 @@
       <tr>
         <td>{{ render_datetime(order.created_at) }}</td>
         <td>{{ order.party.title }}</td>
-        <td><a href="{{ url_for('shop_admin.order_view', order_id=order.id) }}">{{ order.order_number }}</a></td>
+        <td><a href="{{ url_for('shop_order_admin.view', order_id=order.id) }}">{{ order.order_number }}</a></td>
         <td class="centered">{{ render_order_payment_state(order.payment_state) }}</td>
       </tr>
       {%- endfor %}

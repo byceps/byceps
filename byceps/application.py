@@ -50,6 +50,7 @@ BLUEPRINTS = [
     ('seating_admin',       '/admin/seating',       SiteMode.admin ),
     ('shop_order',          '/shop',                SiteMode.public),
     ('shop_admin',          '/admin/shop',          SiteMode.admin ),
+    ('shop_order_admin',    '/admin/shop/orders',   SiteMode.admin ),
     ('snippet',             '/snippets',            SiteMode.public),
     ('snippet_admin',       '/admin/snippets',      SiteMode.admin ),
     ('terms',               '/terms',               SiteMode.public),

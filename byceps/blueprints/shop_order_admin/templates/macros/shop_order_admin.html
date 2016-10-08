@@ -1,0 +1,33 @@
+{% from 'macros/icons.html' import render_icon %}
+{% from 'macros/misc.html' import render_tag %}
+
+
+{% macro render_order_link(order) -%}
+  <a href="{{ url_for('shop_order_admin.view', order_id=order.id) }}">{{ order.order_number }}</a>
+{%- endmacro %}
+
+
+{% macro render_order_payment_method(payment_method) %}
+  {%- set name = payment_method.name %}
+  {%- if name == 'bank_transfer' -%}
+    Überweisung
+  {%- elif name == 'cash' -%}
+    Barzahlung
+  {%- elif name == 'direct_debit' -%}
+    Lastschrift
+  {%- else -%}
+    ?
+  {%- endif -%}
+{%- endmacro %}
+
+
+{% macro render_order_payment_state(payment_state) %}
+  {%- set state_name = payment_state.name %}
+  {%- if state_name == 'paid' -%}
+    {{ render_tag(render_icon('success') ~ ' bezahlt', class='order-paid') }}
+  {%- elif state_name == 'canceled' -%}
+    {{ render_tag(render_icon('disabled') ~ ' storniert', class='order-canceled') }}
+  {%- else -%}
+    {{ render_tag(render_icon('pending') ~ ' offen', class='order-open') }}
+  {%- endif -%}
+{%- endmacro %}

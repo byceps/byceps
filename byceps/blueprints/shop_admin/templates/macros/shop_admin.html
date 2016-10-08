@@ -1,7 +1,5 @@
 {% from 'macros/admin.html' import render_main_tabs as _render_main_tabs %}
 {% from 'macros/datetime.html' import render_datetime %}
-{% from 'macros/icons.html' import render_icon %}
-{% from 'macros/misc.html' import render_tag %}
 
 
 {% macro render_main_tabs(current_page, party) -%}
@@ -9,7 +7,7 @@
     _render_main_tabs(
       Navigation(None)
         .add_item(url_for('shop_admin.article_index_for_party', party_id=party.id), 'Artikel', id='shop_admin.articles', required_permission=ShopArticlePermission.list, icon='shopping-cart')
-        .add_item(url_for('shop_admin.order_index_for_party', party_id=party.id), 'Bestellungen', id='shop_admin.orders', required_permission=ShopOrderPermission.list, icon='payment')
+        .add_item(url_for('shop_order_admin.index_for_party', party_id=party.id), 'Bestellungen', id='shop_order_admin.index_for_party', required_permission=ShopOrderPermission.list, icon='payment')
       , current_page
     )
   }}
@@ -32,36 +30,5 @@
     bis {{ render_datetime(range.upperEndpoint(), smart=False) }}
   {%- else -%}
     {{ 'unbegrenzt'|dim }}
-  {%- endif -%}
-{%- endmacro %}
-
-
-{% macro render_order_link(order) -%}
-  <a href="{{ url_for('shop_admin.order_view', order_id=order.id) }}">{{ order.order_number }}</a>
-{%- endmacro %}
-
-
-{% macro render_order_payment_method(payment_method) %}
-  {%- set name = payment_method.name %}
-  {%- if name == 'bank_transfer' -%}
-    Überweisung
-  {%- elif name == 'cash' -%}
-    Barzahlung
-  {%- elif name == 'direct_debit' -%}
-    Lastschrift
-  {%- else -%}
-    ?
-  {%- endif -%}
-{%- endmacro %}
-
-
-{% macro render_order_payment_state(payment_state) %}
-  {%- set state_name = payment_state.name %}
-  {%- if state_name == 'paid' -%}
-    {{ render_tag(render_icon('success') ~ ' bezahlt', class='order-paid') }}
-  {%- elif state_name == 'canceled' -%}
-    {{ render_tag(render_icon('disabled') ~ ' storniert', class='order-canceled') }}
-  {%- else -%}
-    {{ render_tag(render_icon('pending') ~ ' offen', class='order-open') }}
   {%- endif -%}
 {%- endmacro %}

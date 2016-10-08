@@ -5,9 +5,9 @@
 {% from 'macros/misc.html' import render_tag %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
 {% from 'macros/shop_admin.html' import render_main_tabs with context %}
-{% from 'macros/shop_admin.html' import render_order_link, render_order_payment_method, render_order_payment_state %}
+{% from 'macros/shop_order_admin.html' import render_order_link, render_order_payment_method, render_order_payment_state %}
 {% from 'macros/user_admin.html' import render_user_avatar_tiny_and_link %}
-{% set current_page = 'shop_admin.orders' %}
+{% set current_page = 'shop_order_admin.index_for_party' %}
 {% set current_page_party = party %}
 {% set title = 'Bestellungen' %}
 
@@ -45,13 +45,13 @@
           {%- if only == payment_state %}
           <li>{{ render_order_payment_state(payment_state) }}</li>
           {%- else %}
-          <li><a href="{{ url_for('.order_index_for_party', party_id=party.id, only=payment_state.name) }}">{{ render_order_payment_state(payment_state) }}</a></li>
+          <li><a href="{{ url_for('.index_for_party', party_id=party.id, only=payment_state.name) }}">{{ render_order_payment_state(payment_state) }}</a></li>
           {%- endif %}
         {%- endfor %}
         {%- if only is none %}
           <li><strong>{{ render_tag('alle') }}</strong></li>
         {%- else %}
-          <li><a href="{{ url_for('.order_index_for_party', party_id=party.id) }}">{{ render_tag('alle') }}</a></li>
+          <li><a href="{{ url_for('.index_for_party', party_id=party.id) }}">{{ render_tag('alle') }}</a></li>
         {%- endif %}
         </ol>
       </div>
@@ -89,6 +89,6 @@
     </tbody>
   </table>
 
-{{ render_pagination_nav(orders, '.order_index_for_party', {'party_id': party.id, 'only': only.name if only else None}) }}
+{{ render_pagination_nav(orders, '.index_for_party', {'party_id': party.id, 'only': only.name if only else None}) }}
 
 {%- endblock %}

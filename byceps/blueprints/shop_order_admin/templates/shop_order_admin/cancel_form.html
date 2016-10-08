@@ -1,8 +1,8 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
-{% from 'macros/shop_admin.html' import render_order_link %}
 {% from 'macros/shop_admin.html' import render_main_tabs with context %}
-{% set current_page = 'shop_admin.orders' %}
+{% from 'macros/shop_order_admin.html' import render_order_link %}
+{% set current_page = 'shop_order_admin.cancel' %}
 {% set current_page_party = order.party %}
 {% set title = 'Bestellung stornieren' %}
 
@@ -15,19 +15,19 @@
   <nav class="breadcrumbs">
     <ol>
       <li>Bestellungen</li>
-      <li><a href="{{ url_for('.order_index_for_party', party_id=order.party.id) }}">{{ order.party.title }}</a></li>
+      <li><a href="{{ url_for('.index_for_party', party_id=order.party.id) }}">{{ order.party.title }}</a></li>
       <li>{{ render_order_link(order) }}</li>
     </ol>
   </nav>
   <h1>{{ title }}</h1>
 
-  <form action="{{ url_for('.order_cancel', order_id=order.id) }}" method="post">
+  <form action="{{ url_for('.cancel', order_id=order.id) }}" method="post">
     {% call form_fieldset() %}
       {{ form_field(cancel_form.reason, maxlength=200, required='required') }}
     {% endcall %}
     <small><p>Die Begründung wird an die bestellende Person weitergegeben.<br>Es handelt sich <em>nicht</em> um einen internen Vermerk.</p></small>
 
-    {{ form_buttons('Stornieren', icon='disabled', cancel_url=url_for('.order_view', order_id=order.id)) }}
+    {{ form_buttons('Stornieren', icon='disabled', cancel_url=url_for('.view', order_id=order.id)) }}
   </form>
 
 {%- endblock %}
