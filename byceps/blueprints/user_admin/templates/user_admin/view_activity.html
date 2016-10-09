@@ -55,7 +55,7 @@
 {% macro render_activity_icon(activity) -%}
   {%- set type_name = activity.type.name %}
   {%- if type_name == 'avatar_update' -%}
-    {{ render_icon('user') }}
+    {{ render_icon('upload') }}
   {%- elif type_name == 'newsletter_subscription_update' -%}
     {{ render_icon('email') }}
   {%- elif type_name == 'terms_consent' -%}
