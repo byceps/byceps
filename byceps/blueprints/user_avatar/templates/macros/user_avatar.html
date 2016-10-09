@@ -24,14 +24,14 @@
 
 
 {% macro render_user_avatar_tiny(user) -%}
-  {{ render_user_avatar_image_with_fallback(user) }}
+  {{ _render_user_avatar_image_with_fallback(user) }}
 {%- endmacro %}
 
 
 {% macro _render_user_avatar(user, size_name) -%}
   {%- set is_orga = user.is_orga_for_party(g.party) %}
 <div class="avatar size-{{ size_name }}{% if is_orga %} orga{% endif %}" title="{{ user.screen_name }}">
-  {{ render_user_avatar_image_with_fallback(user) }}
+  {{ _render_user_avatar_image_with_fallback(user) }}
   {%- if is_orga %}
   <div class="orga-badge">Organizer</div>
   {%- endif %}
@@ -39,7 +39,7 @@
 {%- endmacro %}
 
 
-{% macro render_user_avatar_image_with_fallback(user) -%}
+{% macro _render_user_avatar_image_with_fallback(user) -%}
   {%- set image_url = user.avatar.url if user.avatar else url_for('core.static', filename='avatar_fallback.svg') %}
   <img src="{{ image_url }}" alt="Avatar von {{ user.screen_name }}">
 {%- endmacro %}
