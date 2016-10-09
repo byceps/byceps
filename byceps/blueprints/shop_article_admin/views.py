@@ -206,13 +206,9 @@ def attachment_create_form(article_id, erroneous_form=None):
 
     attachable_articles = article_service.get_attachable_articles(article)
 
-    article_choices = list(
-        (article.id, '{} – {}'.format(article.item_number, article.description))
-        for article in attachable_articles)
-
     form = erroneous_form if erroneous_form else ArticleAttachmentCreateForm(
         quantity=0)
-    form.article_to_attach_id.choices = article_choices
+    form.set_article_to_attach_choices(attachable_articles)
 
     return {
         'article': article,
@@ -226,7 +222,11 @@ def attachment_create(article_id):
     """Attach an article to another article."""
     article = _get_article_or_404(article_id)
 
+    attachable_articles = article_service.get_attachable_articles(article)
+
     form = ArticleAttachmentCreateForm(request.form)
+    form.set_article_to_attach_choices(attachable_articles)
+
     if not form.validate():
         return attachment_create_form(article_id, form)
 

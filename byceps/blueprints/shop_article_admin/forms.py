@@ -31,3 +31,12 @@ class ArticleUpdateForm(ArticleCreateForm):
 class ArticleAttachmentCreateForm(LocalizedForm):
     article_to_attach_id = SelectField('Artikel', validators=[InputRequired()])
     quantity = IntegerField('Anzahl', validators=[InputRequired()])
+
+    def set_article_to_attach_choices(self, attachable_articles):
+        def to_label(article):
+            return '{} – {}'.format(article.item_number, article.description)
+
+        choices = [(str(article.id), to_label(article))
+                   for article in attachable_articles]
+
+        self.article_to_attach_id.choices = choices
