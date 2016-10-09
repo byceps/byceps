@@ -13,8 +13,10 @@
 {%- endmacro %}
 
 
-{% macro render_tag(label, class=None, icon=None) -%}
-  <span class="tag{% if class is not none %} {{ class }}{% endif %}">
+{% macro render_tag(label, class=None, icon=None, title=None) -%}
+  <span class="tag{% if class is not none %} {{ class }}{% endif %}"
+    {%- if title %} title="{{ title }}"{% endif -%}
+  >
   {%- if icon %}{{ render_icon(icon) }} {% endif %}{{ label -}}
   </span>
 {%- endmacro %}
