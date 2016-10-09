@@ -20,7 +20,6 @@
     <thead>
       <tr>
         <th>Thema</th>
-        <th>begonnen von</th>
         <th class="centered">Antworten</th>
         <th>Letzter Beitrag</th>
       </tr>
@@ -34,8 +33,9 @@
           {%- if topic.pinned %}{{ render_icon('pin', title='angeheftet (durch %s)'|format(topic.pinned_by.screen_name)) }} {% endif -%}
           <strong><a href="{{ url_for('.topic_view', topic_id=topic.id) }}">{{ topic.title }}</a></strong>
           {%- if topic.contains_unseen_postings(g.current_user) %} {{ render_flag_new() }}{% endif -%}
+          <br>
+          begonnen von {{ render_user_avatar_tiny_and_link(topic.creator) }}
         </td>
-        <td>{{ render_user_avatar_tiny_and_link(topic.creator) }}</td>
         <td class="centered bignumber">{{ topic.reply_count }}</td>
         <td class="nowrap">{{ render_datetime(topic.last_updated_at) }}<br>von {{ render_user_avatar_tiny_and_link(topic.last_updated_by) }}</td>
       </tr>
