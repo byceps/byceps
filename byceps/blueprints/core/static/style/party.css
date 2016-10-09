@@ -195,11 +195,19 @@ h2 {
 
 .board-postings article,
 .tourney-match-comments article {
-  border: #dddddd solid 1px;
-  border-radius: 3px;
   display: flex;
   flex-wrap: wrap;
   margin-bottom: 0.75rem;
+}
+
+.board-postings .content,
+.tourney-match-comments .content {
+  border: #dddddd solid 1px;
+  border-radius: 3px;
+  display: flex;
+  flex: 1 1 20rem;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .board-postings header,
@@ -207,6 +215,7 @@ h2 {
   background-color: #eeeeee;
   border-bottom: #dddddd solid 1px;
   display: flex;
+  flex: 0 0 auto;
   font-size: 0.75rem;
   justify-content: space-between;
   line-height: 1.3rem;
@@ -242,10 +251,8 @@ h2 {
   background-color: #dddddd;
 }
 
-.board-postings aside,
 .board-postings .body,
 .board-postings footer,
-.tourney-match-comments aside,
 .tourney-match-comments .body,
 .tourney-match-comments footer {
   padding-top: 0.75rem;
@@ -271,17 +278,10 @@ h2 {
   display: flex;
   flex: 0 0 136px;
   flex-direction: column;
-  font-size: 0.75rem; /* 12px / 16px */
-  margin: -8px 0 0 -8px;
-  overflow: hidden;
 }
 .board-postings aside > *,
 .tourney-match-comments aside > * {
-  padding: 8px 0 0 8px;
-}
-.board-postings aside .creator a,
-.tourney-match-comments aside .creator a {
-  font-weight: bold;
+  padding: 0 8px 8px 0;
 }
 .board-postings aside .creator .avatar,
 .tourney-match-comments aside .creator .avatar {
@@ -296,34 +296,17 @@ h2 {
   height: 16px;
   width: 16px;
 }
-.board-postings aside time,
-.tourney-match-comments aside time {
-  display: block;
-  font-size: 0.6875rem; /* 11px / 16px */
-  line-height: 1.3;
-  opacity: 0.5;
-}
-.board-postings aside > .actions,
-.tourney-match-comments aside > .actions {
-  margin: 0;
-}
-
-.board-postings .content,
-.tourney-match-comments .content {
-  display: flex;
-  flex: 1 1 20rem;
-  flex-direction: column;
-  justify-content: space-between;
-}
 
 .board-postings .body,
 .tourney-match-comments .body {
+  flex: 1 0 auto;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .board-postings footer,
 .tourney-match-comments footer {
+  flex: 0 0 auto;
   font-size: 0.6875rem; /* 11px / 16px */
   opacity: 0.5;
   text-align: right;
