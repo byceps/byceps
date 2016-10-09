@@ -61,10 +61,5 @@
 
 {% macro render_user_avatar_image_with_fallback(user) -%}
   {%- set image_url = user.avatar.url if user.avatar else url_for('core.static', filename='avatar_fallback.svg') %}
-  {{ _render_user_avatar_image(image_url, user.screen_name) }}
-{%- endmacro %}
-
-
-{% macro _render_user_avatar_image(image_url, user_screen_name) -%}
-  <img src="{{ image_url }}" alt="Avatar von {{ user_screen_name }}">
+  <img src="{{ image_url }}" alt="Avatar von {{ user.screen_name }}">
 {%- endmacro %}
