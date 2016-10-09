@@ -12,7 +12,9 @@
 
     {%- with badges = badges_by_user_id[posting.creator.id]|default([]) %}
       {%- if badges %}
+    <div class="user-badges">
 {{ render_user_badges(badges) }}
+    </div>
       {%- endif %}
     {%- endwith %}
   </aside>

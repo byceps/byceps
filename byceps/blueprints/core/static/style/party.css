@@ -247,7 +247,7 @@ h2 {
   flex: 0 0 auto;
   font-size: 0.75rem;
   justify-content: space-between;
-  line-height: 1.3rem;
+  line-height: 1.8;
   width: 100%;
 }
 
@@ -271,7 +271,7 @@ h2 {
   display: inline-block;
   font-size: inherit;
   font-weight: normal;
-  line-height: 1.3rem;
+  line-height: 1.8;
   margin: 0 -15px;
   padding: 0 15px;
   white-space: nowrap;
@@ -306,16 +306,20 @@ h2 {
 .board-postings aside,
 .tourney-match-comments aside {
   display: flex;
-  flex: 0 0 136px;
+  flex: 0 0 130px;
   flex-direction: column;
-}
-.board-postings aside > *,
-.tourney-match-comments aside > * {
-  padding: 0 8px 8px 0;
 }
 .board-postings aside .creator .avatar,
 .tourney-match-comments aside .creator .avatar {
   display: block;
+}
+.board-postings aside .creator .avatar img,
+.tourney-match-comments aside .creator .avatar img {
+  border-radius: 3px;
+}
+.board-postings .user-badges,
+.tourney-match-comments .user-badges {
+  margin-top: 8px;
 }
 .board-postings .user-badge,
 .tourney-match-comments .user-badge {
