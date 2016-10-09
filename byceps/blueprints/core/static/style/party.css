@@ -240,6 +240,7 @@ h2 {
   box-shadow: none;
   color: currentColor;
   display: inline-block;
+  font-size: inherit;
   font-weight: normal;
   line-height: 1.3rem;
   margin: 0 -15px;
