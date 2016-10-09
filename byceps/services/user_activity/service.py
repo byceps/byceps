@@ -1,30 +1,20 @@
 # -*- coding: utf-8 -*-
 
 """
-byceps.blueprints.user_admin.activity_service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.user_activity.service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2016 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
 """
 
-from collections import namedtuple
-from enum import Enum
 from itertools import chain
 
-from ...services.newsletter import service as newsletter_service
-from ...services.terms import service as terms_service
-from ...services.user_avatar import service as avatar_service
+from ..newsletter import service as newsletter_service
+from ..terms import service as terms_service
+from ..user_avatar import service as avatar_service
 
-
-Activity = namedtuple('Activity', ['occured_at', 'type', 'object'])
-
-
-ActivityType = Enum('ActivityType', [
-    'avatar_update',
-    'newsletter_subscription_update',
-    'terms_consent',
-])
+from .models import Activity, ActivityType
 
 
 def get_activities_for_user(user_id):

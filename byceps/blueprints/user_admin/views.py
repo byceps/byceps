@@ -16,6 +16,7 @@ from ...services.authorization import service as authorization_service
 from ...services.party import service as party_service
 from ...services.shop.order import service as order_service
 from ...services.ticket import service as ticket_service
+from ...services.user_activity import service as activity_service
 from ...services.user_badge import service as badge_service
 from ...util.framework import create_blueprint
 from ...util.templating import templated
@@ -25,7 +26,7 @@ from ..authorization.registry import permission_registry
 from ..user import service as user_service
 
 from .authorization import UserPermission
-from . import activity_service, service
+from . import service
 from .service import UserEnabledFilter
 
 
