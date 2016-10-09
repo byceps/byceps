@@ -11,6 +11,14 @@
   flex: 1 0 66.6666%;
 }
 
+.grid .cell a {
+  color: currentColor;
+  text-decoration: none;
+}
+.grid .cell a:hover .box {
+  background-color: #f4f4f4;
+}
+
 .grid .cell .box {
   height: 100%;
   position: relative;

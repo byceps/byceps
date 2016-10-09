@@ -2,22 +2,24 @@
 {% from 'macros/stats.html' import render_bigstats_item %}
 
 
-{%- macro render_cell(icon_name=None, additional_classes=None) -%}
+{%- macro render_cell(icon_name=None, additional_classes=None, href=None) -%}
     <div class="cell{% if additional_classes %} {{ additional_classes }}{% endif %}">
+      {%- if href %}<a href="{{ href }}">{% endif %}
       <div class="box">
         {%- if icon_name is not none %}
         <div class="cell-icon">{{ render_icon(icon_name) }}</div>
         {%- endif %}
 {{ caller() }}
       </div>
+      {%- if href %}</a>{% endif %}
     </div>
 {%- endmacro %}
 
 
-{%- macro render_bigstats_cell(value, caption, icon_name=None, color=None) -%}
-  {%- call render_cell(icon_name) %}
+{%- macro render_bigstats_cell(value, caption, href=None, icon_name=None, color=None) -%}
+  {%- call render_cell(icon_name, href=href) %}
         <div class="bigstats">
-        {{ render_bigstats_item(value, caption, color=color) }}
+          {{ render_bigstats_item(value, caption, color=color) }}
         </div>
   {%- endcall %}
 {%- endmacro %}
