@@ -21,7 +21,7 @@ from .models import Avatar
 
 ALL_IMAGE_TYPES = frozenset(ImageType)
 
-MAXIMUM_DIMENSIONS = Dimensions(110, 110)
+MAXIMUM_DIMENSIONS = Dimensions(128, 128)
 
 
 def get_image_type_names(types):
