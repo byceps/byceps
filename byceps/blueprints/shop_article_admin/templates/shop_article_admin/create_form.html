@@ -20,6 +20,10 @@
   </nav>
   <h1>{{ render_icon('add') }} {{ title }}</h1>
 
+  {%- if not article_number_prefix %}
+  <div class="notification-error">Der Artikelnummer-Präfix für diese Party muss erst konfiguriert werden bevor Artikel angelegt werden können.</div>
+  {%- endif %}
+
   <form action="{{ url_for('.create', party_id=party.id) }}" method="post">
     {% call form_fieldset() %}
       {{ form_field(form.description, maxlength=80, required='required', autofocus='autofocus') }}

@@ -114,6 +114,8 @@ def create_form(party_id, erroneous_form=None):
     """Show form to create an article."""
     party = _get_party_or_404(party_id)
 
+    article_number_prefix = sequence_service.get_article_number_prefix(party.id)
+
     form = erroneous_form if erroneous_form else ArticleCreateForm(
         price=Decimal('0.00'),
         tax_rate=Decimal('0.19'),
@@ -121,6 +123,7 @@ def create_form(party_id, erroneous_form=None):
 
     return {
         'party': party,
+        'article_number_prefix': article_number_prefix,
         'form': form,
     }
 
