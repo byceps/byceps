@@ -42,6 +42,10 @@
 {% include 'layout/_footer.html' %}
     </footer>
 
+    <script src="{{ url_for('core.static', filename='behavior/jquery.js') }}"></script>
+    <script src="{{ url_for('core.static', filename='behavior/utils.js') }}"></script>
+    <script src="{{ url_for('core.static', filename='behavior/dropdown.js') }}"></script>
+    <script src="{{ url_for('authentication.static', filename='behavior/authentication.js') }}"></script>
     <script src="{{ url_for('core.static', filename='behavior/svgxuse.js') }}" defer></script>
 {% block scripts %}{% endblock %}
 
