@@ -1,16 +1,3 @@
-{% macro render_user_avatar(user) %}
-  {%- set is_orga = user.is_orga_for_party(g.party) %}
-  {%- if user.avatar -%}
-<div class="avatar{% if is_orga %} orga{% endif %}" title="{{ user.screen_name }}">
-  {{ render_user_avatar_image(user) }}
-  {%- if is_orga %}
-  <div class="orga-badge">Organizer</div>
-  {%- endif %}
-</div>
-  {%- endif -%}
-{%- endmacro %}
-
-
 {% macro render_user_avatar_huge(user) -%}
   {%- set is_orga = user.is_orga_for_party(g.party) %}
 <div class="avatar size-huge{% if is_orga %} orga{% endif %}" title="{{ user.screen_name }}">
@@ -69,11 +56,6 @@
 <div class="avatar size-tiny" title="{{ user.screen_name }}">
   {{ render_user_avatar_image_with_fallback(user) }}
 </div>
-{%- endmacro %}
-
-
-{% macro render_user_avatar_image(user) -%}
-  {{ _render_user_avatar_image(user.avatar.url, user.screen_name) }}
 {%- endmacro %}
 
 
