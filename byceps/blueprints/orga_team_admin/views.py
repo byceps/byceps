@@ -73,7 +73,7 @@ def team_create(party_id):
 
     title = form.title.data.strip()
 
-    team = orga_team_service.create_team(party.id, title.id)
+    team = orga_team_service.create_team(party.id, title)
 
     flash_success('Das Team "{}" wurde für die Party "{}" erstellt.',
                   team.title, team.party.title)

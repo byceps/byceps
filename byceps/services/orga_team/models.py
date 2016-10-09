@@ -27,9 +27,9 @@ class OrgaTeam(db.Model):
     party = db.relationship(Party)
     title = db.Column(db.Unicode(40), nullable=False)
 
-    def __init__(self, party_id, title_id):
+    def __init__(self, party_id, title):
         self.party_id = party_id
-        self.title_id = title_id
+        self.title = title
 
     def __repr__(self):
         return ReprBuilder(self) \

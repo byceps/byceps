@@ -16,9 +16,9 @@ from ..orga.models import OrgaFlag
 from .models import Membership, OrgaTeam
 
 
-def create_team(party_id, title_id):
+def create_team(party_id, title):
     """Create an orga team for that party."""
-    team = OrgaTeam(party_id, title_id)
+    team = OrgaTeam(party_id, title)
 
     db.session.add(team)
     db.session.commit()
