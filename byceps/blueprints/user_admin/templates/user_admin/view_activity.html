@@ -93,9 +93,9 @@ hat den Newsletter zur Marke &quot;{{ activity.object.brand_id }}&quot; {{ rende
 {% macro render_newsletter_subscription_update(state) %}
   {%- set state_name = state.name %}
   {%- if state_name == 'requested' -%}
-    {{ render_tag(render_icon('success') ~ ' angefordert', class='newsletter-subscribed') }}
+    {{ render_tag('angefordert', icon='success', class='newsletter-subscribed') }}
   {%- elif state_name == 'declined' -%}
-    {{ render_tag(render_icon('disabled') ~ ' abbestellt', class='newsletter-unsubscribed') }}
+    {{ render_tag('abbestellt', icon='disabled', class='newsletter-unsubscribed') }}
   {%- else -%}
     ?
   {%- endif -%}

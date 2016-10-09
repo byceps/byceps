@@ -1,4 +1,3 @@
-{% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_tag %}
 
 
@@ -24,10 +23,10 @@
 {% macro render_order_payment_state(payment_state) %}
   {%- set state_name = payment_state.name %}
   {%- if state_name == 'paid' -%}
-    {{ render_tag(render_icon('success') ~ ' bezahlt', class='order-paid') }}
+    {{ render_tag('bezahlt', icon='success', class='order-paid') }}
   {%- elif state_name == 'canceled' -%}
-    {{ render_tag(render_icon('disabled') ~ ' storniert', class='order-canceled') }}
+    {{ render_tag('storniert', icon='disabled', class='order-canceled') }}
   {%- else -%}
-    {{ render_tag(render_icon('pending') ~ ' offen', class='order-open') }}
+    {{ render_tag('offen', icon='pending', class='order-open') }}
   {%- endif -%}
 {%- endmacro %}
