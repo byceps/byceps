@@ -15,7 +15,7 @@
   {%- set is_orga = user.is_orga_for_party(g.party) %}
 <div class="avatar size-medium{% if is_orga %} orga{% endif %}" title="{{ user.screen_name }}">
   {%- set avatar_url = user.avatar.url if user.avatar else url_for('core.static', filename='avatar_fallback.svg') %}
-  <img src="{{ avatar_url }}" alt="Avatar von {{ user.screen_name }}">
+  {{ _render_user_avatar_image(avatar_url, user.screen_name) }}
   {%- if is_orga %}
   <div class="orga-badge">Organizer</div>
   {%- endif %}
@@ -27,7 +27,7 @@
   {%- set is_orga = user.is_orga_for_party(g.party) %}
 <div class="avatar size-small{% if is_orga %} orga{% endif %}" title="{{ user.screen_name }}">
   {%- set avatar_url = user.avatar.url if user.avatar else url_for('core.static', filename='avatar_fallback.svg') %}
-  <img src="{{ avatar_url }}" alt="Avatar von {{ user.screen_name }}">
+  {{ _render_user_avatar_image(avatar_url, user.screen_name) }}
   {%- if is_orga %}
   <div class="orga-badge">Organizer</div>
   {%- endif %}
@@ -38,7 +38,7 @@
 {% macro render_user_avatar_mini(user) -%}
 <div class="avatar size-mini{% if user.is_orga_for_party(g.party) %} orga{% endif %}" title="{{ user.screen_name }}">
   {%- set avatar_url = user.avatar.url if user.avatar else url_for('core.static', filename='avatar_fallback.svg') %}
-  <img src="{{ avatar_url }}" alt="Avatar von {{ user.screen_name }}">
+  {{ _render_user_avatar_image(avatar_url, user.screen_name) }}
   {%- if user.is_orga_for_party(g.party) %}
   <div class="orga-badge">Organizer</div>
   {%- endif %}
@@ -49,11 +49,16 @@
 {% macro render_user_avatar_tiny(user) -%}
 <div class="avatar size-tiny" title="{{ user.screen_name }}">
   {%- set avatar_url = user.avatar.url if user.avatar else url_for('core.static', filename='avatar_fallback.svg') %}
-  <img src="{{ avatar_url }}" alt="Avatar von {{ user.screen_name }}">
+  {{ _render_user_avatar_image(avatar_url, user.screen_name) }}
 </div>
 {%- endmacro %}
 
 
-{% macro render_user_avatar_image(user) %}
-  <img src="{{ user.avatar.url }}" alt="Avatar von {{ user.screen_name }}">
+{% macro render_user_avatar_image(user) -%}
+  {{ _render_user_avatar_image(user.avatar.url, user.screen_name) }}
+{%- endmacro %}
+
+
+{% macro _render_user_avatar_image(image_url, user_screen_name) -%}
+  <img src="{{ image_url }}" alt="Avatar von {{ user_screen_name }}">
 {%- endmacro %}
