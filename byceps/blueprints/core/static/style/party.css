@@ -190,16 +190,26 @@ h2 {
 
 .board-postings,
 .tourney-match-comments {
-  border-bottom: #cccccc solid 1px;
+  margin: 20px 0;
 }
 
 .board-postings article,
 .tourney-match-comments article {
-  border-top: #cccccc solid 1px;
+  border: #dddddd solid 1px;
+  border-radius: 3px;
   display: flex;
   flex-wrap: wrap;
   margin-bottom: 0.75rem;
-  padding-top: -0.75rem;
+}
+
+.board-postings header,
+.tourney-match-comments header {
+  background-color: #eeeeee;
+  border-bottom: #dddddd solid 1px;
+  font-size: 0.75rem;
+  line-height: 1.3rem;
+  padding: 0 15px;
+  width: 100%;
 }
 
 .board-postings aside,
@@ -209,6 +219,21 @@ h2 {
 .tourney-match-comments .body,
 .tourney-match-comments footer {
   padding-top: 0.75rem;
+  padding-left: 15px;
+}
+
+.board-postings .body,
+.board-postings footer,
+.tourney-match-comments .body,
+.tourney-match-comments footer {
+  padding-right: 15px;
+}
+
+.board-postings aside,
+.board-postings footer,
+.tourney-match-comments aside,
+.tourney-match-comments footer {
+  padding-bottom: 15px;
 }
 
 .board-postings aside,

@@ -5,9 +5,21 @@
 {%- from 'macros/user_badge.html' import render_user_badges %}
 
 <article id="posting-{{ posting.id }}" {%- if posting.hidden %} class="dimmed"{% endif %}>
+  <header>
+    <strong>{{ render_user_link(posting.creator) }}</strong>
+    &middot;
+    {{ render_datetime(posting.created_at)|replace(', ', ' um ') }}
+
+    {%- if posting.unseen %}
+    &middot; {{ render_flag_new() }}
+    {%- endif %}
+
+    {%- if posting.hidden %}
+    &middot; {{ render_flag_hidden(posting.hidden_by) }}
+    {%- endif %}
+  </header>
   <aside>
     <div class="creator">
-      {{ render_user_link(posting.creator) }}
       {{ render_user_avatar(posting.creator) }}
     </div>
 
@@ -16,16 +28,6 @@
 {{ render_user_badges(badges) }}
       {%- endif %}
     {%- endwith %}
-
-    {{ render_datetime(posting.created_at)|replace(', ', '<br>'|safe) }}
-
-    {%- if posting.unseen %}
-    <div>{{ render_flag_new() }}</div>
-    {%- endif %}
-
-    {%- if posting.hidden %}
-    <div>{{ render_flag_hidden(posting.hidden_by) }}</div>
-    {%- endif %}
 
     <ol class="actions inline">
       {%- if not topic.locked and g.current_user.has_permission(BoardPostingPermission.create) %}
