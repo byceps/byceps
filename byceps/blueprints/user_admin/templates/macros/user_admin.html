@@ -1,4 +1,6 @@
 {% from 'macros/admin.html' import render_main_tabs as _render_main_tabs %}
+{% from 'macros/icons.html' import render_icon %}
+{% from 'macros/misc.html' import render_tag %}
 {% from 'macros/user.html' import render_user_avatar_tiny %}
 
 
@@ -22,4 +24,9 @@
 
 {% macro render_user_avatar_tiny_and_link(user) -%}
 <span class="nowrap">{{ render_user_avatar_tiny(user) }} {{ render_user_admin_link(user) }}</span>
+{%- endmacro %}
+
+
+{% macro render_user_deleted_flag() -%}
+  {{ render_tag(render_icon('delete') ~ ' gelöscht', class='notification-error') }}
 {%- endmacro %}
