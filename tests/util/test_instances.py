@@ -50,7 +50,7 @@ def test_with_custom_value():
         .add_custom('is of full age') \
         .build()
 
-    assert actual == "<Instance(last_name=Protagonist, is of full age)>"
+    assert actual == "<Instance(last_name='Protagonist', is of full age)>"
 
 
 class Instance(object):
