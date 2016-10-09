@@ -1,6 +1,12 @@
 {%- from 'macros/icons.html' import render_icon %}
-{% if g.current_user.is_active -%}
-  Angemeldet als {{ render_icon('user') }} <strong><a href="{{ url_for('user.view_current') }}">{{ g.current_user.screen_name }}</a></strong> ({{ render_icon('log-out') }} <a data-action="logout" href="{{ url_for('authentication.logout', _method='POST') }}">abmelden</a>)
+{%- from 'macros/user_avatar.html' import render_user_avatar_mini %}
+
+
+{%- if g.current_user.is_active -%}
+  {{ render_user_avatar_mini(g.current_user) }}
+  <strong><a href="{{ url_for('user.view_current') }}">{{ g.current_user.screen_name }}</a></strong>
+  &middot;
+  {{ render_icon('log-out') }} <a data-action="logout" href="{{ url_for('authentication.logout', _method='POST') }}">abmelden</a>
 {%- else -%}
   {{ render_icon('log-in') }} <a href="{{ url_for('authentication.login_form') }}">Anmelden</a>
 {%- endif %}
