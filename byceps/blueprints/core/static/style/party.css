@@ -206,10 +206,40 @@ h2 {
 .tourney-match-comments header {
   background-color: #eeeeee;
   border-bottom: #dddddd solid 1px;
+  display: flex;
   font-size: 0.75rem;
+  justify-content: space-between;
   line-height: 1.3rem;
-  padding: 0 15px;
   width: 100%;
+}
+
+.board-posting-meta-top,
+.board-posting-actions {
+  padding: 0 15px;
+}
+.board-posting-actions {
+  text-align: right;
+}
+
+.board-postings header .dropdown-toggle,
+.board-postings header .dropdown-toggle:hover,
+.tourney-match-comments header .dropdown-toggle,
+.tourney-match-comments header .dropdown-toggle:hover {
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  color: currentColor;
+  display: inline-block;
+  font-weight: normal;
+  line-height: 1.3rem;
+  margin: 0 -15px;
+  padding: 0 15px;
+  white-space: nowrap;
+}
+.board-postings header .dropdown-toggle:hover,
+.tourney-match-comments header .dropdown-toggle:hover {
+  background-color: #dddddd;
 }
 
 .board-postings aside,

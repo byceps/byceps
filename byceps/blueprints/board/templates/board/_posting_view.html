@@ -6,17 +6,41 @@
 
 <article id="posting-{{ posting.id }}" {%- if posting.hidden %} class="dimmed"{% endif %}>
   <header>
-    <strong>{{ render_user_link(posting.creator) }}</strong>
-    &middot;
-    {{ render_datetime(posting.created_at)|replace(', ', ' um ') }}
+    <div class="board-posting-meta-top">
+      <strong>{{ render_user_link(posting.creator) }}</strong>
+      &middot;
+      {{ render_datetime(posting.created_at)|replace(', ', ' um ') }}
 
-    {%- if posting.unseen %}
-    &middot; {{ render_flag_new() }}
-    {%- endif %}
+      {%- if posting.unseen %}
+      &middot; {{ render_flag_new() }}
+      {%- endif %}
 
-    {%- if posting.hidden %}
-    &middot; {{ render_flag_hidden(posting.hidden_by) }}
-    {%- endif %}
+      {%- if posting.hidden %}
+      &middot; {{ render_flag_hidden(posting.hidden_by) }}
+      {%- endif %}
+    </div>
+    <div class="board-posting-actions">
+      <div class="dropdown left">
+        <button class="dropdown-toggle">Aktionen {{ render_icon('caret-down') }}</button>
+        <ol>
+          {%- if not topic.locked and g.current_user.has_permission(BoardPostingPermission.create) %}
+          <li><a href="{{ url_for('.posting_create_form', topic_id=topic.id, quote=posting.id) }}" title="diesen Beitrag zitieren">{{ render_icon('quote') }} Beitrag zitieren</a></li>
+          {%- endif %}
+          {%- if posting.is_initial_topic_posting(posting.topic) %}
+            {%- if topic.may_be_updated_by_user(g.current_user) %}
+          <li><a href="{{ url_for('.topic_update_form', topic_id=topic.id) }}" title="dieses Thema bearbeiten">{{ render_icon('edit') }} Thema bearbeiten</a></li>
+            {%- endif %}
+          {%- else %}
+            {%- if posting.may_be_updated_by_user(g.current_user) %}
+          <li><a href="{{ url_for('.posting_update_form', posting_id=posting.id) }}" title="diesen Beitrag bearbeiten">{{ render_icon('edit') }} Beitrag bearbeiten</a></li>
+            {%- endif %}
+          {%- endif %}
+          {%- if g.current_user.has_permission(BoardPostingPermission.hide) %}
+          <li><a href="{{ url_for('.posting_moderate_form', posting_id=posting.id) }}" title="diesen Beitrag moderieren">{{ render_icon('moderate') }} moderieren</a></li>
+          {%- endif %}
+        </ol>
+      </div>
+    </div>
   </header>
   <aside>
     <div class="creator">
@@ -28,24 +52,6 @@
 {{ render_user_badges(badges) }}
       {%- endif %}
     {%- endwith %}
-
-    <ol class="actions inline">
-      {%- if not topic.locked and g.current_user.has_permission(BoardPostingPermission.create) %}
-      <li><a href="{{ url_for('.posting_create_form', topic_id=topic.id, quote=posting.id) }}" title="diesen Beitrag zitieren">{{ render_icon('quote') }}</a></li>
-      {%- endif %}
-      {%- if posting.is_initial_topic_posting(posting.topic) %}
-        {%- if topic.may_be_updated_by_user(g.current_user) %}
-      <li><a href="{{ url_for('.topic_update_form', topic_id=topic.id) }}" title="dieses Thema bearbeiten">{{ render_icon('edit') }}</a></li>
-        {%- endif %}
-      {%- else %}
-        {%- if posting.may_be_updated_by_user(g.current_user) %}
-      <li><a href="{{ url_for('.posting_update_form', posting_id=posting.id) }}" title="diesen Beitrag bearbeiten">{{ render_icon('edit') }}</a></li>
-        {%- endif %}
-      {%- endif %}
-      {%- if g.current_user.has_permission(BoardPostingPermission.hide) %}
-      <li><a href="{{ url_for('.posting_moderate_form', posting_id=posting.id) }}" class="action" title="diesen Beitrag moderieren">{{ render_icon('moderate') }}</a></li>
-      {%- endif %}
-    </ol>
   </aside>
   <div class="content">
     <div class="body">
