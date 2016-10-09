@@ -1,60 +1,40 @@
 {% macro render_user_avatar_huge(user) -%}
-  {%- set is_orga = user.is_orga_for_party(g.party) %}
-<div class="avatar size-huge{% if is_orga %} orga{% endif %}" title="{{ user.screen_name }}">
-  {{ render_user_avatar_image_with_fallback(user) }}
-  {%- if is_orga %}
-  <div class="orga-badge">Organizer</div>
-  {%- endif %}
-</div>
+  {{ _render_user_avatar(user, 'huge') }}
 {%- endmacro %}
 
 
 {% macro render_user_avatar_large(user) -%}
-  {%- set is_orga = user.is_orga_for_party(g.party) %}
-<div class="avatar size-large{% if is_orga %} orga{% endif %}" title="{{ user.screen_name }}">
-  {{ render_user_avatar_image_with_fallback(user) }}
-  {%- if is_orga %}
-  <div class="orga-badge">Organizer</div>
-  {%- endif %}
-</div>
+  {{ _render_user_avatar(user, 'large') }}
 {%- endmacro %}
 
 
 {% macro render_user_avatar_medium(user) -%}
-  {%- set is_orga = user.is_orga_for_party(g.party) %}
-<div class="avatar size-medium{% if is_orga %} orga{% endif %}" title="{{ user.screen_name }}">
-  {{ render_user_avatar_image_with_fallback(user) }}
-  {%- if is_orga %}
-  <div class="orga-badge">Organizer</div>
-  {%- endif %}
-</div>
+  {{ _render_user_avatar(user, 'medium') }}
 {%- endmacro %}
 
 
 {% macro render_user_avatar_small(user) -%}
-  {%- set is_orga = user.is_orga_for_party(g.party) %}
-<div class="avatar size-small{% if is_orga %} orga{% endif %}" title="{{ user.screen_name }}">
-  {{ render_user_avatar_image_with_fallback(user) }}
-  {%- if is_orga %}
-  <div class="orga-badge">Organizer</div>
-  {%- endif %}
-</div>
+  {{ _render_user_avatar(user, 'small') }}
 {%- endmacro %}
 
 
 {% macro render_user_avatar_mini(user) -%}
-<div class="avatar size-mini{% if user.is_orga_for_party(g.party) %} orga{% endif %}" title="{{ user.screen_name }}">
-  {{ render_user_avatar_image_with_fallback(user) }}
-  {%- if user.is_orga_for_party(g.party) %}
-  <div class="orga-badge">Organizer</div>
-  {%- endif %}
-</div>
+  {{ _render_user_avatar(user, 'mini') }}
 {%- endmacro %}
 
 
 {% macro render_user_avatar_tiny(user) -%}
-<div class="avatar size-tiny" title="{{ user.screen_name }}">
   {{ render_user_avatar_image_with_fallback(user) }}
+{%- endmacro %}
+
+
+{% macro _render_user_avatar(user, size_name) -%}
+  {%- set is_orga = user.is_orga_for_party(g.party) %}
+<div class="avatar size-{{ size_name }}{% if is_orga %} orga{% endif %}" title="{{ user.screen_name }}">
+  {{ render_user_avatar_image_with_fallback(user) }}
+  {%- if is_orga %}
+  <div class="orga-badge">Organizer</div>
+  {%- endif %}
 </div>
 {%- endmacro %}
 
