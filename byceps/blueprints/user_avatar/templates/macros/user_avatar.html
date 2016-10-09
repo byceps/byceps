@@ -24,7 +24,9 @@
 
 
 {% macro render_user_avatar_tiny(user) -%}
+<div class="avatar size-tiny" title="{{ user.screen_name }}">
   {{ _render_user_avatar_image_with_fallback(user) }}
+</div>
 {%- endmacro %}
 
 
