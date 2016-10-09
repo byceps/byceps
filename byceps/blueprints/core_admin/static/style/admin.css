@@ -469,6 +469,8 @@ ol.index.fully-linked a:hover {
   display: block;
 }
 
+.avatar.size-huge,
+.avatar.size-large,
 .avatar.size-medium,
 .avatar.size-mini,
 .avatar.size-small,
@@ -476,6 +478,14 @@ ol.index.fully-linked a:hover {
   display: inline-block;
   overflow: hidden;
   vertical-align: middle;
+}
+.avatar.size-huge {
+  height: 128px;
+  width: 128px;
+}
+.avatar.size-large {
+  height: 96px;
+  width: 96px;
 }
 .avatar.size-medium {
   height: 64px;
