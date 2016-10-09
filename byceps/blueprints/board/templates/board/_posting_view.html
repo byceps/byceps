@@ -1,4 +1,4 @@
-{%- from 'macros/board.html' import render_flag_new %}
+{%- from 'macros/board.html' import render_flag_hidden, render_flag_new %}
 {%- from 'macros/datetime.html' import render_datetime %}
 {%- from 'macros/icons.html' import render_icon %}
 {%- from 'macros/user.html' import render_user_avatar, render_user_link %}
@@ -19,9 +19,13 @@
 
     {{ render_datetime(posting.created_at)|replace(', ', '<br>'|safe) }}
 
-    {%- if posting.unseen %}<div>{{ render_flag_new() }}</div>{% endif %}
+    {%- if posting.unseen %}
+    <div>{{ render_flag_new() }}</div>
+    {%- endif %}
 
-    {%- if posting.hidden %}<div title="versteckt (durch {{ posting.hidden_by.screen_name }})">{{ render_icon('hidden') }} versteckt</div>{% endif %}
+    {%- if posting.hidden %}
+    <div>{{ render_flag_hidden(posting.hidden_by) }}</div>
+    {%- endif %}
 
     <ol class="actions inline">
       {%- if not topic.locked and g.current_user.has_permission(BoardPostingPermission.create) %}

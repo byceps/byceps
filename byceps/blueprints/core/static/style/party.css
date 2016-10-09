@@ -302,6 +302,10 @@ h2 {
   padding: 0.5rem;
 }
 
+.board-posting-hidden {
+  background-color: #999999;
+}
+
 
 /* terms */
 

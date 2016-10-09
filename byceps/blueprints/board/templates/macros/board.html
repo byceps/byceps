@@ -1,6 +1,11 @@
 {% from 'macros/misc.html' import render_tag %}
 
 
+{% macro render_flag_hidden(hidden_by) -%}
+  {{ render_tag('versteckt', class='board-posting-hidden', icon='hidden', title='versteckt (durch %s)'|format(hidden_by.screen_name)) }}
+{%- endmacro %}
+
+
 {% macro render_flag_new() -%}
   {{ render_tag('neu') }}
 {%- endmacro %}
