@@ -31,6 +31,7 @@
         &middot; {{ render_flag_hidden(posting.hidden_by) }}
         {%- endif %}
       </div>
+      {%- if not topic.locked and g.current_user.has_permission(BoardPostingPermission.create) %}
       <div class="board-posting-actions">
         <div class="dropdown left">
           <button class="dropdown-toggle">Aktionen {{ render_icon('caret-down') }}</button>
@@ -53,9 +54,10 @@
           </ol>
         </div>
       </div>
+      {%- endif %}
     </header>
     <div class="body">
-  {{ posting.body|bbcode|safe }}
+{{ posting.body|bbcode|safe }}
     </div>
     <footer>
       {%- if posting.edit_count %}
