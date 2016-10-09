@@ -135,7 +135,11 @@ def create(party_id):
     if not form.validate():
         return create_form(party_id, form)
 
-    item_number = sequence_service.generate_article_number(party.id)
+    try:
+        item_number = sequence_service.generate_article_number(party.id)
+    except sequence_service.NumberGenerationFailed as e:
+        abort(500, e.message)
+
     description = form.description.data.strip()
     price = form.price.data
     tax_rate = form.tax_rate.data
