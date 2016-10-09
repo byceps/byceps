@@ -435,6 +435,8 @@ h2 {
   height: 16px;
   width: 16px;
 }
+.avatar.size-huge img,
+.avatar.size-large img,
 .avatar.size-medium img,
 .avatar.size-mini img,
 .avatar.size-small img,
