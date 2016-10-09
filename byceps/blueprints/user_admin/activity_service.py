@@ -10,6 +10,7 @@ byceps.blueprints.user_admin.activity_service
 
 from collections import namedtuple
 from enum import Enum
+from itertools import chain
 
 from ...services.newsletter import service as newsletter_service
 from ...services.terms import service as terms_service
@@ -27,11 +28,11 @@ ActivityType = Enum('ActivityType', [
 
 
 def get_activities_for_user(user_id):
-    activities = []
-
-    activities.extend(get_avatar_updates_for_user(user_id))
-    activities.extend(get_terms_consents_for_user(user_id))
-    activities.extend(get_newsletter_subscription_updates_for_user(user_id))
+    activities = list(chain(
+        get_avatar_updates_for_user(user_id),
+        get_terms_consents_for_user(user_id),
+        get_newsletter_subscription_updates_for_user(user_id),
+    ))
 
     _sort_activities(activities)
 
