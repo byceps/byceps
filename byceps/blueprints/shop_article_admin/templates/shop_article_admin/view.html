@@ -13,11 +13,6 @@
         text-align: right;
       }
     </style>
-    <script>
-      $(function() {
-        confirmed_delete_on_click('a.attachment-remove', 'Artikelanhang entfernen?');
-      });
-    </script>
 {%- endblock %}
 
 {% block before_body %}
@@ -120,4 +115,12 @@
     <li><a href="{{ url_for('.view_ordered', article_id=article.id) }}">{{ render_icon('users') }} Käufer auflisten</a></li>
   </ol>
 
+{%- endblock %}
+
+{% block scripts %}
+    <script>
+      $(function() {
+        confirmed_delete_on_click('a.attachment-remove', 'Artikelanhang entfernen?');
+      });
+    </script>
 {%- endblock %}

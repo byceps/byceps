@@ -44,12 +44,6 @@
         flex: 1 0 auto;
       }
     </style>
-    <script>
-      $(function() {
-        confirmed_delete_on_click('[data-action="team-delete"]', 'Team entfernen?');
-        confirmed_delete_on_click('[data-action="membership-remove"]', 'Person aus dem Team entfernen?');
-      });
-    </script>
 {%- endblock %}
 
 {% block body %}
@@ -124,4 +118,13 @@
   </ol>
   {%- endif %}
 
+{%- endblock %}
+
+{% block scripts %}
+    <script>
+      $(function() {
+        confirmed_delete_on_click('[data-action="team-delete"]', 'Team entfernen?');
+        confirmed_delete_on_click('[data-action="membership-remove"]', 'Person aus dem Team entfernen?');
+      });
+    </script>
 {%- endblock %}

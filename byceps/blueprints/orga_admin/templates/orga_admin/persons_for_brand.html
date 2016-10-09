@@ -9,14 +9,6 @@
 {% set current_page_brand = brand %}
 {% set title = 'Organisatoren' %}
 
-{% block head %}
-    <script>
-      $(function() {
-        confirmed_delete_on_click('[data-action="orgaflag-remove"]', 'Person den Orga-Status entziehen?');
-      });
-    </script>
-{%- endblock %}
-
 {% block before_body %}
 {{ render_main_tabs(current_page) }}
 {%- endblock %}
@@ -96,4 +88,12 @@
     <li><a href="{{ url_for('.export_persons', brand_id=brand.id) }}" download="organizers_{{ brand.id }}.csv">{{ render_icon('download') }} Exportieren <small>(als Excel-CSV)</small></a></li>
   </ol>
 
+{%- endblock %}
+
+{% block scripts %}
+    <script>
+      $(function() {
+        confirmed_delete_on_click('[data-action="orgaflag-remove"]', 'Person den Orga-Status entziehen?');
+      });
+    </script>
 {%- endblock %}

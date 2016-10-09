@@ -7,14 +7,6 @@
 {% set current_page_party = party %}
 {% set title = '%s - Snippets'|format(party.title) %}
 
-{% block head %}
-    <script>
-      $(function() {
-        confirmed_delete_on_click('[data-action="mountpoint-delete"]', 'Mountpoint entfernen?');
-      });
-    </script>
-{%- endblock %}
-
 {% block body %}
 
   <nav class="breadcrumbs">
@@ -112,4 +104,12 @@
   </ol>
   {%- endif %}
 
+{%- endblock %}
+
+{% block scripts %}
+    <script>
+      $(function() {
+        confirmed_delete_on_click('[data-action="mountpoint-delete"]', 'Mountpoint entfernen?');
+      });
+    </script>
 {%- endblock %}

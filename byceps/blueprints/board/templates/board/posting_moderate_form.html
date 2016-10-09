@@ -6,10 +6,6 @@
 {% set current_page = 'board' %}
 {% set title = 'Beitrag moderieren' %}
 
-{% block head %}
-    <script src="{{ url_for('.static', filename='behavior/board.js') }}"></script>
-{%- endblock %}
-
 {% block body %}
 
   <nav class="breadcrumbs">
@@ -33,4 +29,8 @@
   {%- endif %}
   </ol>
 
+{%- endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('.static', filename='behavior/board.js') }}"></script>
 {%- endblock %}
