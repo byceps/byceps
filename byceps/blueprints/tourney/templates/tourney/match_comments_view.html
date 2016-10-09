@@ -1,13 +1,13 @@
 {%- from 'macros/datetime.html' import render_datetime %}
 {%- from 'macros/user.html' import render_user_link %}
-{%- from 'macros/user_avatar.html' import render_user_avatar %}
+{%- from 'macros/user_avatar.html' import render_user_avatar_large %}
 
   <div class="tourney-match-comments">
     {%- for comment in comments %}
     <article id="tourney-match-comment-{{ comment.id }}">
       <aside>
         <div class="creator">{{ render_user_link(comment.created_by) }}</div>
-        {{- render_user_avatar(comment.created_by) }}
+        {{- render_user_avatar_large(comment.created_by) }}
         {{ render_datetime(comment.created_at)|replace(', ', '<br>'|safe) }}
       </aside>
       <div class="content">

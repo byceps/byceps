@@ -221,7 +221,7 @@ h2 {
   pointer-events: none;
   position: absolute;
   right: 100%;
-  top: 55px;
+  top: 47px;
   width: 0;
 }
 .board-postings .content:after,
@@ -306,7 +306,7 @@ h2 {
 .board-postings aside,
 .tourney-match-comments aside {
   display: flex;
-  flex: 0 0 130px;
+  flex: 0 0 116px;
   flex-direction: column;
 }
 .board-postings aside .creator .avatar,

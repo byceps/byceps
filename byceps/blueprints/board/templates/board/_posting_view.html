@@ -2,13 +2,13 @@
 {%- from 'macros/datetime.html' import render_datetime %}
 {%- from 'macros/icons.html' import render_icon %}
 {%- from 'macros/user.html' import render_user_link %}
-{%- from 'macros/user_avatar.html' import render_user_avatar %}
+{%- from 'macros/user_avatar.html' import render_user_avatar_large %}
 {%- from 'macros/user_badge.html' import render_user_badges %}
 
 <article id="posting-{{ posting.id }}" {%- if posting.hidden %} class="dimmed"{% endif %}>
   <aside>
     <div class="creator">
-      {{ render_user_avatar(posting.creator) }}
+      {{ render_user_avatar_large(posting.creator) }}
     </div>
 
     {%- with badges = badges_by_user_id[posting.creator.id]|default([]) %}
