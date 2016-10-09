@@ -71,7 +71,7 @@ def update():
     except FileExistsError:
         abort(409, 'File already exists, not overwriting.')
 
-    flash_success('Das Avatarbild wurde aktualisiert.', icon='upload')
+    flash_success('Dein Avatarbild wurde aktualisiert.', icon='upload')
     signals.avatar_updated.send(None, user=user)
 
     return redirect_to('user.view_current')
@@ -85,7 +85,7 @@ def delete():
 
     avatar_service.remove_avatar_image(user)
 
-    flash_success('Das Avatarbild wurde entfernt.')
+    flash_success('Dein Avatarbild wurde entfernt.')
     return url_for('user.view_current')
 
 
