@@ -1,6 +1,6 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/seating.html' import render_seating_area_link %}
-{% from 'macros/user_avatar.html' import render_user_avatar %}
+{% from 'macros/user_avatar.html' import render_user_avatar_huge %}
 {% from 'macros/user_badge.html' import render_user_badges %}
 {% set current_page = 'user.view' %}
 {% set title = '%s - Benutzer'|format(user.screen_name) %}
@@ -45,7 +45,7 @@
   <div class="user-profile">
 
     <div class="user-profile-primary">
-{{ render_user_avatar(user) }}
+{{ render_user_avatar_huge(user) }}
       <div class="screenname">{{ user.screen_name }}</div>
       {%- if orga_team_membership %}
       <div class="orgateam">{{ orga_team_membership.orga_team.title|dim }}</div>
