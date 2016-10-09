@@ -7,7 +7,7 @@
 
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('.static', filename='style/admin_dashboard.css') }}">
-{%- endblock head %}
+{%- endblock %}
 
 {% block body %}
 
@@ -20,4 +20,4 @@
     {{ render_bigstats_cell(tickets_sold, 'Tickets verkauft', href=url_for('ticket_admin.index_for_party', party_id=party.id), icon_name='ticket', color='#008800') }}
   </div>
 
-{%- endblock body %}
+{%- endblock %}

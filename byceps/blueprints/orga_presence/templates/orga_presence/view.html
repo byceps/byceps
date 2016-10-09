@@ -8,7 +8,7 @@
 
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('.static', filename='style/presence.css') }}">
-{%- endblock head %}
+{%- endblock %}
 
 {% block body %}
 
@@ -61,7 +61,7 @@
     </table>
   </div>
 
-{%- endblock body %}
+{%- endblock %}
 
 {% macro render_range_columns(time_slot) -%}
           <td class="nowrap">{{ render_datetime(time_slot.range.start, smart=False) }}</td>

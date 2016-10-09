@@ -8,7 +8,7 @@
 
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('.static', filename='style/admin_dashboard.css') }}">
-{%- endblock head %}
+{%- endblock %}
 
 {% block body %}
 
@@ -32,4 +32,4 @@
     {{ render_bigstats_cell('{:n}'.format(board_posting_count), 'Beiträge im Forum', icon_name='board') }}
   </div>
 
-{%- endblock body %}
+{%- endblock %}
