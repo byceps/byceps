@@ -34,40 +34,46 @@
     <thead>
       <tr>
         <th>Avatar</th>
-        <th>Benutzername<br>Voller Name</th>
-        <th>Geburtstag<br>Alter</th>
-        <th>Straße<br>PLZ, Ort<br>Land</th>
-        <th>E-Mail-Adresse<br>Telefonnummer</th>
+        <th class="nowrap">
+          Voller Name<br>
+          Benutzername<br>
+          Geburtstag, Alter
+        </th>
+        <th class="nowrap">
+          Wohnort<br>
+          E-Mail-Adresse<br>
+          Telefonnummer
+        </th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
       {%- for user in orgas|sort(attribute='screen_name') %}
       <tr>
-        <td>{{ render_user_avatar_small(user) }}</td>
+        <td style="vertical-align: middle;">{{ render_user_avatar_small(user) }}</td>
         <td class="nowrap">
-          {{- render_user_admin_link(user) }}<br>
-          {{- user.detail.full_name|fallback -}}
-        </td>
-        <td class="nowrap">
+          {{ user.detail.full_name|fallback }}<br>
+          {{ render_user_admin_link(user) }}<br>
+          {{ render_icon('birthday') }}
           {%- if user.detail.date_of_birth %}
-            {{- render_date(user.detail.date_of_birth) }}<br>
-            {{- user.detail.age }} Jahre
-          {%- else -%}
+            {{ render_date(user.detail.date_of_birth) }}
+            ({{ user.detail.age }} Jahre)
+          {%- else %}
             {{ 'nicht angegeben'|dim }}
-          {%- endif -%}
+          {%- endif %}
         </td>
         <td class="nowrap">
-          {{- user.detail.street|fallback -}}
+          {{ render_icon('location') }}
+          {{ user.detail.street|fallback }}
+          &middot;
+          {%- if user.detail.zip_code %}{{ user.detail.zip_code }} {% endif %}
+          {{ user.detail.city|fallback }}
+          &middot;
+          {{ user.detail.country|fallback }}
           <br>
-          {%- if user.detail.zip_code %}{{ user.detail.zip_code }} {% endif -%}
-          {{- user.detail.city|fallback -}}
+          {{ render_icon('email') }} <a href="mailto:{{- user.email_address }}">{{ user.email_address|truncate(36, killwords=True, end='…') }}</a>
           <br>
-          {{- user.detail.country|fallback -}}
-          <br>
-        </td>
-        <td class="nowrap">
-          <a href="mailto:{{- user.email_address }}">{{- user.email_address|truncate(28, killwords=True, end='…') }}</a><br>
-          {{- user.detail.phone_number|fallback -}}
+          {{ render_icon('phone') }} {{ user.detail.phone_number|fallback }}
         </td>
         <td>
           <div class="dropdown left">
