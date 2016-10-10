@@ -366,6 +366,14 @@ h2 {
   padding: 0;
 }
 
+a.board-posting-permalink {
+  color: currentColor;
+  text-decoration: none;
+}
+a.board-posting-permalink:hover span {
+  text-decoration: underline;
+}
+
 .board-postings .quote-intro,
 .tourney-match-comments .quote-intro {
   font-size: 0.75rem; /* 12px / 16px */
