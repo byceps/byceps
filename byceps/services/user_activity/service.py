@@ -11,6 +11,7 @@ byceps.services.user_activity.service
 from itertools import chain
 
 from ..newsletter import service as newsletter_service
+from ..shop.order import service as order_service
 from ..terms import service as terms_service
 from ..user_avatar import service as avatar_service
 
@@ -20,8 +21,9 @@ from .models import Activity, ActivityType
 def get_activities_for_user(user_id):
     activities = list(chain(
         get_avatar_updates_for_user(user_id),
-        get_terms_consents_for_user(user_id),
         get_newsletter_subscription_updates_for_user(user_id),
+        get_orders_for_user(user_id),
+        get_terms_consents_for_user(user_id),
     ))
 
     _sort_activities(activities)
@@ -47,6 +49,16 @@ def get_newsletter_subscription_updates_for_user(user_id):
         type_ = ActivityType.newsletter_subscription_update
 
         yield Activity(update.expressed_at, type_, update)
+
+
+def get_orders_for_user(user_id):
+    """Yield the orders placed by the user as activities."""
+    orders = order_service.get_orders_placed_by_user(user_id)
+
+    for order in orders:
+        type_ = ActivityType.order_placement
+
+        yield Activity(order.created_at, type_, order)
 
 
 def get_terms_consents_for_user(user_id):

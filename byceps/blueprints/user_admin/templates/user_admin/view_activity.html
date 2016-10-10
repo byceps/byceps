@@ -2,6 +2,7 @@
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_tag %}
+{% from 'macros/shop_order_admin.html' import render_order_link %}
 {% from 'macros/user_admin.html' import render_main_tabs_view with context %}
 {% from 'macros/user_admin.html' import render_user_deleted_flag, render_user_avatar_tiny_and_link %}
 {% set current_page = 'user_admin.view_activity' %}
@@ -58,6 +59,8 @@
     {{ render_icon('upload') }}
   {%- elif type_name == 'newsletter_subscription_update' -%}
     {{ render_icon('email') }}
+  {%- elif type_name == 'order_placement' -%}
+    {{ render_icon('shopping-cart') }}
   {%- elif type_name == 'terms_consent' -%}
     {{ render_icon('legal') }}
   {%- else -%}
@@ -72,6 +75,8 @@
     {{ render_avatar_update_label(activity) }}
   {%- elif type_name == 'newsletter_subscription_update' -%}
     {{ render_newsletter_subscription_update_activity_label(activity) }}
+  {%- elif type_name == 'order_placement' -%}
+    {{ render_order_placement_label(activity) }}
   {%- elif type_name == 'terms_consent' -%}
     {{ render_terms_consent_activity_label(activity) }}
   {%- else -%}
@@ -99,6 +104,11 @@ hat den Newsletter zur Marke &quot;{{ activity.object.brand_id }}&quot; {{ rende
   {%- else -%}
     ?
   {%- endif -%}
+{%- endmacro %}
+
+
+{% macro render_order_placement_label(activity) -%}
+hat Bestellung {{ render_order_link(activity.object) }} aufgegeben.
 {%- endmacro %}
 
 

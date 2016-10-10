@@ -18,5 +18,6 @@ Activity = namedtuple('Activity', ['occured_at', 'type', 'object'])
 ActivityType = Enum('ActivityType', [
     'avatar_update',
     'newsletter_subscription_update',
+    'order_placement',
     'terms_consent',
 ])
