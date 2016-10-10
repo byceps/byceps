@@ -1,9 +1,9 @@
 {% from 'macros/icons.html' import render_icon %}
 
 
-{% macro render_pagination_nav(pagination, endpoint, url_args=None, show_label=True) %}
+{% macro render_pagination_nav(pagination, endpoint, url_args=None, show_label=True, centered=False) %}
   {%- if pagination.pages > 1 %}
-    <nav class="pagination">
+    <nav class="pagination{{ ' centered' if centered else '' }}">
       {% if show_label %}Seiten: {% endif %}
       <ol>
       {%- if pagination.has_prev %}

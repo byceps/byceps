@@ -406,6 +406,9 @@ nav.pagination {
   margin: 1em 0;
   text-align: left;
 }
+nav.pagination.centered {
+  text-align: center;
+}
 
 nav.pagination ol {
   display: inline-block;

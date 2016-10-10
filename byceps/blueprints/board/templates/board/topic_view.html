@@ -22,7 +22,7 @@
   </div>
   {%- endif %}
 
-{{ render_pagination_nav(postings, 'board.topic_view', {'topic_id': topic.id}) }}
+{{ render_pagination_nav(postings, 'board.topic_view', {'topic_id': topic.id}, centered=True) }}
 
   <div class="board-postings">
   {%- for posting in postings.items %}
@@ -30,7 +30,7 @@
   {%- endfor %}
   </div>
 
-{{ render_pagination_nav(postings, 'board.topic_view', {'topic_id': topic.id}) }}
+{{ render_pagination_nav(postings, 'board.topic_view', {'topic_id': topic.id}, centered=True) }}
 
   <div style="text-align: right;">
     {%- set current_user_may_reply_generally = g.current_user.has_permission(BoardPostingPermission.create) %}

@@ -44,7 +44,7 @@
     </tbody>
   </table>
 
-{{ render_pagination_nav(topics, 'board.category_view', {'slug': category.slug}) }}
+{{ render_pagination_nav(topics, 'board.category_view', {'slug': category.slug}, centered=True) }}
 
   <div style="text-align: right;">
     {%- set current_user_may_create_topic =  g.current_user.has_permission(BoardTopicPermission.create) %}
