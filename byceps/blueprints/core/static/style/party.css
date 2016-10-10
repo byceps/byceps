@@ -414,6 +414,7 @@ a.board-posting-permalink:hover span {
 /* user avatars */
 
 .avatar {
+  border-radius: 3px;
   display: inline-block;
 }
 .avatar img {
