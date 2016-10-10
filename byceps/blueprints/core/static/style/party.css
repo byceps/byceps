@@ -255,6 +255,17 @@ h2 {
 .board-posting-actions {
   padding: 0 15px;
 }
+.board-posting-meta-top {
+  color: #888888;
+}
+.board-posting-meta-top a {
+  color: #333333;
+  font-weight: bold;
+  text-decoration: none;
+}
+.board-posting-meta-top a:hover {
+  text-decoration: underline;
+}
 .board-posting-actions {
   text-align: right;
 }

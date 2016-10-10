@@ -22,7 +22,7 @@
   <div class="content">
     <header>
       <div class="board-posting-meta-top">
-        <strong>{{ render_user_link(posting.creator) }}</strong>
+        {{ render_user_link(posting.creator) }}
         &middot;
         {{ render_datetime(posting.created_at)|replace(', ', ' um ') }}
 
