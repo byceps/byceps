@@ -2,17 +2,74 @@
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_tag %}
 {% from 'macros/seating.html' import render_seating_area_link %}
-{% from 'macros/user.html' import render_user_link %}
+{% from 'macros/user.html' import render_user_link, render_user_avatar_tiny_and_link %}
+{% from 'macros/user_avatar.html' import render_user_avatar_large %}
 {% set current_page = 'ticket' %}
 {% set title = 'Tickets' %}
 
 {% block head %}
-    <style>
-      span[title] {
-        border-bottom: dotted 1px;
-        cursor: help;
-      }
-    </style>
+  <style>
+    .ticket-grid {
+      display: flex;
+      flex-wrap: wrap;
+      list-style: none;
+      margin: -15px 0 0 -15px;
+      padding: 0;
+    }
+    .ticket-grid > li {
+      padding: 15px 0 0 15px;
+    }
+
+    .ticket-id {
+      color: #888888;
+      cursor: help;
+      font-size: 0.625rem; /* 10px / 16px */
+      margin-bottom: 5px;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .ticket-card {
+      border: #dddddd solid 1px;
+      border-radius: 15px;
+      padding: 5px 0;
+    }
+    .ticket-card-row {
+      font-size: 0.8125rem; /* 13px / 16px */
+      padding: 0 15px 10px 15px;
+      width: 126px;
+    }
+    .ticket-card-row + .ticket-card-row {
+      border-top: #dddddd solid 1px;
+    }
+    .ticket-card-row .label {
+      color: #888888;
+      display: block;
+      font-size: 0.625rem; /* 10px / 16px */
+      margin-bottom: 5px;
+      margin-top: 10px;
+      text-transform: uppercase;
+    }
+    .ticket-card-row a {
+      color: currentColor;
+      text-decoration: none;
+    }
+    .ticket-card-row a:hover {
+      text-decoration: underline;
+    }
+
+    .ticket-card-row .avatar.size-large,
+    .ticket-user-placeholder {
+      margin-bottom: 0.3rem;
+    }
+    .ticket-user-placeholder {
+      background-color: #f4f4f4;
+      border: #dddddd dashed 1px;
+      border-radius: 3px;
+      height: 95px;
+      width: 95px;
+    }
+  </style>
 {%- endblock %}
 
 {% block body %}
@@ -22,64 +79,87 @@
 
   <h2>{{ render_icon('user') }} Von dir genutzt</h2>
   {%- if ticket_mine %}
-  {{ render_tickets_table([ticket_mine]) }}
+  {{ render_tickets([ticket_mine]) }}
   {%- else %}
   <p><em>keines</em></p>
   {%- endif %}
 
   <h2>{{ render_icon('administrate') }} Von dir verwaltet</h2>
   {%- if tickets_managed %}
-  {{ render_tickets_table(tickets_managed) }}
+  {{ render_tickets(tickets_managed) }}
   {%- else %}
   <p><em>keine</em></p>
   {%- endif %}
 
   <h2>{{ render_icon('shopping-cart') }} Von dir gekauft</h2>
   {%- if tickets_bought %}
-  {{ render_tickets_table(tickets_bought) }}
+  {{ render_tickets(tickets_bought) }}
   {%- else %}
   <p><em>keine</em></p>
   {%- endif %}
 
 {%- endblock %}
 
-{% macro render_tickets_table(tickets) -%}
-  <table class="index wide">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Besitzer</th>
-        <th>Kategorie</th>
-        <th>Sitzplatz</th>
-        <th>Nutzer</th>
-      </tr>
-    </thead>
-    <tbody>
-      {%- for ticket in tickets|sort(attribute='created_at') %}
-      <tr>
-        <td><span title="{{ ticket.id }}">{{ ticket.id|string|truncate(6, killwords=True, end='…') }}</span></td>
-        <td>{{ render_user_link(ticket.owned_by) }}</td>
-        <td>{{ ticket.category.title }}</td>
-        <td>
-          {%- if ticket.occupied_seat -%}
-          {{ render_seating_area_link(ticket.occupied_seat.area) }}
-          {%- else -%}
-          {{ render_tag('keiner', class='available') }}
-          {%- endif -%}
-          <br>
-          {{ 'verwaltet durch'|dim }} {{ render_user_link(ticket.get_seat_manager()) }}
-        </td>
-        <td>
+
+{% macro render_tickets(tickets) -%}
+  <ol class="ticket-grid">
+    {%- for ticket in tickets|sort(attribute='created_at') %}
+    <li>
+      <div class="ticket-id" title="{{ ticket.id }}">{{ ticket.id|string|truncate(7, killwords=True, end='') }}</div>
+      <div class="ticket-card">
+
+        <div class="ticket-card-row">
+          <span class="label">Kategorie</span>
+          {{ ticket.category.title }}
+        </div>
+
+        <div class="ticket-card-row">
+          <span class="label">Käufer/in</span>
+          {{ render_user_avatar_tiny_and_link(ticket.owned_by) }}
+        </div>
+
+        <div class="ticket-card-row">
+          <span class="label">Sitzplatz</span>
+          <div class="centered">
+            {%- if ticket.occupied_seat -%}
+            {{ render_seating_area_link(ticket.occupied_seat.area) }}
+            {%- else -%}
+            {{ render_tag('keiner', class='available') }}
+            {%- endif -%}
+          </div>
+
+          {%- with seat_manager = ticket.get_seat_manager() %}
+            {%- if seat_manager != ticket.owned_by %}
+          <span class="label">Verwalter/in</span>
+          {{ render_user_avatar_tiny_and_link(seat_manager) }}
+            {%- endif %}
+          {%- endwith %}
+        </div>
+
+        <div class="ticket-card-row">
+          <span class="label">Nutzer/in</span>
           {%- if ticket.used_by -%}
-          {{ render_user_link(ticket.used_by) }}
-          {%- else -%}
-          {{ render_tag('frei', class='available') }}
-          {%- endif -%}
-          <br>
-          {{ 'verwaltet durch'|dim }} {{ render_user_link(ticket.get_user_manager()) }}
-        </td>
-      </tr>
-      {%- endfor %}
-    </tbody>
-  </table>
+          {{ render_user_avatar_large(ticket.used_by) }}
+          <div class="centered">
+            {{ render_user_link(ticket.used_by) }}
+          </div>
+            {%- else -%}
+          <div class="centered">
+            <div class="ticket-user-placeholder"></div>
+            {{ render_tag('frei', class='available') }}
+          </div>
+            {%- endif -%}
+
+          {%- with user_manager = ticket.get_user_manager() %}
+            {%- if user_manager != ticket.owned_by %}
+          <span class="label">Verwalter/in</span>
+          {{ render_user_avatar_tiny_and_link(user_manager) }}
+            {%- endif %}
+          {%- endwith %}
+        </div>
+
+      </div>
+    </li>
+    {%- endfor %}
+  </ol>
 {%- endmacro %}
