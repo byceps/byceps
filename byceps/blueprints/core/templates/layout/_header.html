@@ -1,7 +1,17 @@
+{%- from 'macros/icons.html' import render_icon %}
+{%- from 'macros/user_avatar.html' import render_user_avatar_mini %}
+
 <div id="topbar">
   <div id="topbar-body">
     <div class="authentication">
-{%- include 'authentication/_login_status.html' %}
+{%- if g.current_user.is_active -%}
+  {{ render_user_avatar_mini(g.current_user) }}
+  <strong><a href="{{ url_for('user.view_current') }}">{{ g.current_user.screen_name }}</a></strong>
+  &middot;
+  {{ render_icon('log-out') }} <a data-action="logout" href="{{ url_for('authentication.logout', _method='POST') }}">abmelden</a>
+{%- else -%}
+  {{ render_icon('log-in') }} <a href="{{ url_for('authentication.login_form') }}">Anmelden</a>
+{%- endif %}
     </div>
   </div>
 </div>
