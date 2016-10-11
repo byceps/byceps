@@ -13,6 +13,7 @@
         </a>
         <ol>
           <li><a href="{{ url_for('user.view_current') }}">{{ render_icon('user') }} Profil</a></li>
+          <li><a href="{{ url_for('ticket.index_mine') }}">{{ render_icon('ticket') }} Tickets</a></li>
           <li><a data-action="logout" href="{{ url_for('authentication.logout', _method='POST') }}">{{ render_icon('log-out') }} abmelden</a></li>
         </ol>
       </div>
