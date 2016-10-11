@@ -18,6 +18,7 @@
 {% block body %}
 
   <h1>{{ render_icon('ticket') }} {{ title }}</h1>
+  <p>Dies sind die für dich relevanten Tickets für die Party <strong>{{ g.party.title }}</strong>.</p>
 
   <h2>{{ render_icon('user') }} Von dir genutzt</h2>
   {%- if ticket_mine %}
