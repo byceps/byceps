@@ -20,6 +20,16 @@ from .models.seat_group import SeatGroup, SeatGroupAssignment
 # areas
 
 
+def create_area(party_id, slug, title):
+    """Create an area."""
+    area = Area(party_id, slug, title)
+
+    db.session.add(area)
+    db.session.commit()
+
+    return area
+
+
 def count_areas_for_party(party_id):
     """Return the number of seating areas for that party."""
     return Area.query \
@@ -55,6 +65,16 @@ def get_areas_for_party_paginated(party_id, page, per_page):
 # categories
 
 
+def create_category(party_id, title):
+    """Create a category."""
+    category = Category(party_id, title)
+
+    db.session.add(category)
+    db.session.commit()
+
+    return category
+
+
 def get_categories_for_party(party_id):
     """Return all categories for that party."""
     return Category.query \
@@ -64,6 +84,16 @@ def get_categories_for_party(party_id):
 
 # -------------------------------------------------------------------- #
 # seats
+
+
+def create_seat(area, coord_x, coord_y, category):
+    """Create a seat."""
+    seat = Seat(area, category, coord_x=coord_x, coord_y=coord_y)
+
+    db.session.add(seat)
+    db.session.commit()
+
+    return seat
 
 
 def count_seats_for_party(party_id):

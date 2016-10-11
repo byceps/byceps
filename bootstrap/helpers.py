@@ -16,9 +16,6 @@ from byceps.services.orga.models import OrgaFlag
 from byceps.services.orga_team.models import OrgaTeam, \
     Membership as OrgaTeamMembership
 from byceps.services.party.models import Party
-from byceps.services.seating.models.area import Area as SeatingArea
-from byceps.services.seating.models.category import Category as SeatingCategory
-from byceps.services.seating.models.seat import Seat
 from byceps.services.snippet.models.mountpoint import \
     Mountpoint as SnippetMountpoint
 from byceps.services.snippet.models.snippet import Snippet, SnippetVersion
@@ -133,22 +130,3 @@ def mount_snippet(snippet, endpoint_suffix, url_path):
 @add_to_database
 def create_terms_version(brand, creator, title, body):
     return TermsVersion(brand.id, creator.id, title, body)
-
-
-# -------------------------------------------------------------------- #
-# seating
-
-
-@add_to_database
-def create_seating_area(party, slug, title):
-    return SeatingArea(party.id, slug, title)
-
-
-@add_to_database
-def create_seat_category(party, title):
-    return SeatingCategory(party.id, title)
-
-
-@add_to_database
-def create_seat(area, coord_x, coord_y, category):
-    return Seat(area, category, coord_x=coord_x, coord_y=coord_y)
