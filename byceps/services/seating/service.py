@@ -16,17 +16,14 @@ from .models.seat import Seat
 from .models.seat_group import SeatGroup, SeatGroupAssignment
 
 
+# -------------------------------------------------------------------- #
+# areas
+
+
 def count_areas_for_party(party_id):
     """Return the number of seating areas for that party."""
     return Area.query \
         .for_party_id(party_id) \
-        .count()
-
-
-def count_seats_for_party(party_id):
-    """Return the number of seats in seating areas for that party."""
-    return Seat.query \
-        .join(Area).filter(Area.party_id == party_id) \
         .count()
 
 
@@ -54,11 +51,26 @@ def get_areas_for_party_paginated(party_id, page, per_page):
         .paginate(page, per_page)
 
 
+# -------------------------------------------------------------------- #
+# categories
+
+
 def get_categories_for_party(party_id):
     """Return all categories for that party."""
     return Category.query \
         .for_party_id(party_id) \
         .all()
+
+
+# -------------------------------------------------------------------- #
+# seats
+
+
+def count_seats_for_party(party_id):
+    """Return the number of seats in seating areas for that party."""
+    return Seat.query \
+        .join(Area).filter(Area.party_id == party_id) \
+        .count()
 
 
 def get_seat_total_per_area(party_id):
@@ -77,6 +89,7 @@ def get_seat_total_per_area(party_id):
 # -------------------------------------------------------------------- #
 # seat groups
 
+
 def create_seat_group(party_id, title, seat_ids):
     """Create a seat group and assign the given seats."""
     group = SeatGroup(party_id, title)
@@ -89,6 +102,7 @@ def create_seat_group(party_id, title, seat_ids):
     db.session.commit()
 
     return group
+
 
 def get_all_seat_groups_for_party(party_id):
     """Return all seat groups for that party."""
