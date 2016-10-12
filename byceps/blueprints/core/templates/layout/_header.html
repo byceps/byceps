@@ -1,33 +1,8 @@
-{%- from 'macros/icons.html' import render_icon %}
-{%- from 'macros/user_avatar.html' import render_user_avatar_mini %}
-
 <div id="topbar">
   <div id="topbar-body">
     <div class="authentication">
 
-      <div class="current-user">
-        {%- if g.current_user.is_active -%}
-        <div class="dropdown left">
-          <a href="{{ url_for('user.view_current') }}" class="dropdown-toggle">
-            {{ render_user_avatar_mini(g.current_user) }}
-            <span class="label-and-name">
-              <span class="label">Angemeldet als</span>
-              <span class="name">{{ g.current_user.screen_name }}</span>
-            </span>
-            {{ render_icon('caret-down') }}
-          </a>
-          <ol>
-            <li><a href="{{ url_for('user.view_current') }}">{{ render_icon('user') }} Profil</a></li>
-            <li><a href="{{ url_for('ticket.index_mine') }}">{{ render_icon('ticket') }} Tickets</a></li>
-            <li><a data-action="logout" href="{{ url_for('authentication.logout', _method='POST') }}">{{ render_icon('log-out') }} abmelden</a></li>
-          </ol>
-        </div>
-        {%- else -%}
-        <div>
-          {{ render_icon('log-in') }} <a href="{{ url_for('authentication.login_form') }}">Anmelden</a>
-        </div>
-        {%- endif %}
-      </div>
+{%- include 'layout/_current_user.html' %}
 
     </div>
   </div>
