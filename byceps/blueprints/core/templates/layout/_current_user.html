@@ -14,8 +14,7 @@
       {{ render_icon('caret-down') }}
     </a>
     <ol>
-      <li><a href="{{ url_for('user.view_current') }}">{{ render_icon('user') }} Profil</a></li>
-      <li><a href="{{ url_for('ticket.index_mine') }}">{{ render_icon('ticket') }} Tickets</a></li>
+{%- include 'layout/_current_user_menu_items.html' %}
       <li><a data-action="logout" href="{{ url_for('authentication.logout', _method='POST') }}">{{ render_icon('log-out') }} abmelden</a></li>
     </ol>
   </div>
