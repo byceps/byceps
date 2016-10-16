@@ -113,7 +113,7 @@ class ExportTestCase(AbstractAppTestCase):
         orderer = self.build_orderer()
         self.db.session.add(orderer)
 
-        self.order = create_order(placed_by=orderer, party=self.party,
+        self.order = create_order(placed_by=orderer, party_id=self.party.id,
                                   order_number='LR-08-B00027')
         self.order.created_at = datetime(2015, 2, 26, 13, 26, 24)
         self.db.session.add(self.order)

@@ -29,13 +29,14 @@ def create_orderer(user):
         user.detail.street)
 
 
-def create_order(placed_by, *, party=None, order_number=ANY_ORDER_NUMBER,
+def create_order(placed_by, *, party_id=None, order_number=ANY_ORDER_NUMBER,
                  payment_method=PaymentMethod.bank_transfer):
-    if party is None:
+    if party_id is None:
         party = create_party()
+        party_id = party.id
 
     return Order(
-        party.id,
+        party_id,
         order_number,
         placed_by,
         placed_by.detail.first_names,
