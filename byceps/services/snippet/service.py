@@ -20,7 +20,7 @@ from .models.snippet import CurrentVersionAssociation, Snippet, SnippetType, \
 
 
 # -------------------------------------------------------------------- #
-# snippet
+# document
 
 
 def create_document(party_id, name, creator, title, head, body, image_url_path):
@@ -30,9 +30,40 @@ def create_document(party_id, name, creator, title, head, body, image_url_path):
                            image_url_path=image_url_path)
 
 
+def update_document(document, creator, title, head, body, image_url_path):
+    """Update document with a new version, and return that version."""
+    return _update_snippet(document, creator, title, head, body, image_url_path)
+
+
+def get_documents_for_party(party):
+    """Return all documents for that party."""
+    return Snippet.query \
+        .for_party_id(party.id) \
+        .filter_by(_type=SnippetType.document.name) \
+        .order_by(Snippet.name) \
+        .all()
+
+
+# -------------------------------------------------------------------- #
+# fragment
+
+
 def create_fragment(party_id, name, creator, body):
     """Create a fragment and its initial version, and return that version."""
     return _create_snippet(party_id, name, SnippetType.fragment, creator, body)
+
+
+def update_fragment(fragment, creator, body):
+    """Update fragment with a new version, and return that version."""
+    title = None
+    head = None
+    image_url_path = None
+
+    return _update_snippet(fragment, creator, title, head, body, image_url_path)
+
+
+# -------------------------------------------------------------------- #
+# snippet
 
 
 def _create_snippet(party_id, name, type_, creator, body, *, title=None,
@@ -53,20 +84,6 @@ def _create_snippet(party_id, name, type_, creator, body, *, title=None,
     return version
 
 
-def update_document(document, creator, title, head, body, image_url_path):
-    """Update document with a new version, and return that version."""
-    return _update_snippet(document, creator, title, head, body, image_url_path)
-
-
-def update_fragment(fragment, creator, body):
-    """Update fragment with a new version, and return that version."""
-    title = None
-    head = None
-    image_url_path = None
-
-    return _update_snippet(fragment, creator, title, head, body, image_url_path)
-
-
 def _update_snippet(snippet, creator, title, head, body, image_url_path):
     """Update snippet with a new version, and return that version."""
     version = SnippetVersion(snippet, creator, title, head, body,
@@ -83,15 +100,6 @@ def _update_snippet(snippet, creator, title, head, body, image_url_path):
 def find_snippet(snippet_id):
     """Return the snippet with that id, or `None` if not found."""
     return Snippet.query.get(snippet_id)
-
-
-def get_documents_for_party(party):
-    """Return all documents for that party."""
-    return Snippet.query \
-        .for_party_id(party.id) \
-        .filter_by(_type=SnippetType.document.name) \
-        .order_by(Snippet.name) \
-        .all()
 
 
 def get_snippets_for_party_with_current_versions(party):
