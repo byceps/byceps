@@ -182,5 +182,6 @@ def find_mountpoint(mountpoint_id):
 def get_mountpoints_for_party(party):
     """Return all mountpoints for that party."""
     return Mountpoint.query \
-        .for_party(party) \
+        .join(Snippet).filter_by(party_id=party.id) \
+        .for_party_id(party.id) \
         .all()

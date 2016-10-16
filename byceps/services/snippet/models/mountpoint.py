@@ -14,14 +14,7 @@ from werkzeug.routing import BuildError
 from ....database import db, generate_uuid
 from ....util.instances import ReprBuilder
 
-from .query import BelongsToPartyQuery
 from .snippet import Snippet
-
-
-class MountpointQuery(BelongsToPartyQuery):
-
-    def for_party_with_id(self, party_id):
-        return self.join(Snippet).filter_by(party_id=party_id)
 
 
 class Mountpoint(db.Model):
@@ -31,7 +24,6 @@ class Mountpoint(db.Model):
         db.UniqueConstraint('snippet_id', 'endpoint_suffix'),
         db.UniqueConstraint('snippet_id', 'url_path'),
     )
-    query_class = MountpointQuery
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     endpoint_suffix = db.Column(db.Unicode(40), nullable=False)
