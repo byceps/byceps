@@ -94,7 +94,7 @@ class ShopAdminTestCase(AbstractAppTestCase):
         return article
 
     def create_order(self, quantified_articles):
-        order = create_order(party_id=self.party.id, placed_by=self.orderer)
+        order = create_order(self.party.id, self.orderer)
         self.db.session.add(order)
 
         for article, quantity_to_order in quantified_articles:

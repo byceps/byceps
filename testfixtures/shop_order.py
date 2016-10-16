@@ -11,8 +11,6 @@ testfixtures.shop_order
 from byceps.services.shop.order.models import Order, Orderer, OrderItem, \
     PaymentMethod
 
-from .party import create_party
-
 
 ANY_ORDER_NUMBER = 'AEC-03-B00074'
 
@@ -29,12 +27,8 @@ def create_orderer(user):
         user.detail.street)
 
 
-def create_order(placed_by, *, party_id=None, order_number=ANY_ORDER_NUMBER,
+def create_order(party_id, placed_by, *, order_number=ANY_ORDER_NUMBER,
                  payment_method=PaymentMethod.bank_transfer):
-    if party_id is None:
-        party = create_party()
-        party_id = party.id
-
     return Order(
         party_id,
         order_number,
