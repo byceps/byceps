@@ -109,8 +109,8 @@ def create_user_group(creator, title, description=None):
 
 
 @add_to_database
-def create_snippet(party, name, type_):
-    return Snippet(party, name, type_)
+def create_snippet(party_id, name, type_):
+    return Snippet(party_id, name, type_)
 
 
 @add_to_database

@@ -53,8 +53,8 @@ class Snippet(db.Model):
     _type = db.Column('type', db.Unicode(8), nullable=False)
     current_version = association_proxy('current_version_association', 'version')
 
-    def __init__(self, party, name, type_):
-        self.party = party
+    def __init__(self, party_id, name, type_):
+        self.party_id = party_id
         self.name = name
         self.type_ = type_
 

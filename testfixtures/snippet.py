@@ -12,12 +12,12 @@ from byceps.services.snippet.models.snippet import \
     CurrentVersionAssociation, Snippet, SnippetType, SnippetVersion
 
 
-def create_document(party, name):
-    return Snippet(party, name, SnippetType.document)
+def create_document(party_id, name):
+    return Snippet(party_id, name, SnippetType.document)
 
 
-def create_fragment(party, name):
-    return Snippet(party, name, SnippetType.fragment)
+def create_fragment(party_id, name):
+    return Snippet(party_id, name, SnippetType.fragment)
 
 
 def create_snippet_version(snippet, creator, *, created_at=None,
@@ -34,6 +34,7 @@ def create_snippet_version(snippet, creator, *, created_at=None,
         version.created_at = created_at
 
     return version
+
 
 def create_current_version_association(snippet, version):
     return CurrentVersionAssociation(

@@ -167,8 +167,8 @@ def create_document(party_id):
     body = form.body.data.strip()
     image_url_path = form.image_url_path.data.strip()
 
-    version = snippet_service.create_document(party, name, creator, title, head,
-                                              body, image_url_path)
+    version = snippet_service.create_document(party.id, name, creator, title,
+                                              head, body, image_url_path)
 
     flash_success('Das Dokument "{}" wurde angelegt.', version.snippet.name)
     return redirect_to('.view_version', snippet_version_id=version.id)
@@ -245,7 +245,7 @@ def create_fragment(party_id):
     creator = g.current_user
     body = form.body.data.strip()
 
-    version = snippet_service.create_fragment(party, name, creator, body)
+    version = snippet_service.create_fragment(party.id, name, creator, body)
 
     flash_success('Das Fragment "{}" wurde angelegt.', version.snippet.name)
     return redirect_to('.view_version', snippet_version_id=version.id)

@@ -55,7 +55,7 @@ class GetCurrentVersionOfSnippetTestCase(AbstractAppTestCase):
         return creator
 
     def create_fragment_with_version(self, party, name, created_at_text):
-        snippet = create_fragment(party, name)
+        snippet = create_fragment(party.id, name)
         self.db.session.add(snippet)
 
         created_at = datetime.strptime(created_at_text, '%Y-%m-%d %H:%M:%S')

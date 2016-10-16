@@ -23,22 +23,22 @@ from .models.snippet import CurrentVersionAssociation, Snippet, SnippetType, \
 # snippet
 
 
-def create_document(party, name, creator, title, head, body, image_url_path):
+def create_document(party_id, name, creator, title, head, body, image_url_path):
     """Create a document and its initial version, and return that version."""
-    return _create_snippet(party, name, SnippetType.document, creator, body,
+    return _create_snippet(party_id, name, SnippetType.document, creator, body,
                            title=title, head=head,
                            image_url_path=image_url_path)
 
 
-def create_fragment(party, name, creator, body):
+def create_fragment(party_id, name, creator, body):
     """Create a fragment and its initial version, and return that version."""
-    return _create_snippet(party, name, SnippetType.fragment, creator, body)
+    return _create_snippet(party_id, name, SnippetType.fragment, creator, body)
 
 
-def _create_snippet(party, name, type_, creator, body, *, title=None, head=None,
-                    image_url_path=None):
+def _create_snippet(party_id, name, type_, creator, body, *, title=None,
+                    head=None, image_url_path=None):
     """Create a snippet and its initial version, and return that version."""
-    snippet = Snippet(party, name, type_)
+    snippet = Snippet(party_id, name, type_)
     db.session.add(snippet)
 
     version = SnippetVersion(snippet, creator, title, head, body,
