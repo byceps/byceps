@@ -88,7 +88,7 @@ def find_snippet(snippet_id):
 def get_documents_for_party(party):
     """Return all documents for that party."""
     return Snippet.query \
-        .for_party(party) \
+        .for_party_id(party.id) \
         .filter_by(_type=SnippetType.document.name) \
         .order_by(Snippet.name) \
         .all()
@@ -97,7 +97,7 @@ def get_documents_for_party(party):
 def get_snippets_for_party_with_current_versions(party):
     """Return all snippets with their current versions for that party."""
     return Snippet.query \
-        .for_party(party) \
+        .for_party_id(party.id) \
         .options(
             db.joinedload('current_version_association').joinedload('version')
         ) \

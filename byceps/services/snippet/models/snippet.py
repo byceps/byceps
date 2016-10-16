@@ -19,12 +19,16 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
 
 from ....blueprints.user.models.user import User
-from ....database import db, generate_uuid
+from ....database import BaseQuery, db, generate_uuid
 from ....util.instances import ReprBuilder
 
 from ...party.models import Party
 
-from .query import BelongsToPartyQuery
+
+class SnippetQuery(BaseQuery):
+
+    def for_party(self, party):
+        return self.filter_by(party_id=party.id)
 
 
 SnippetType = Enum('SnippetType', ['document', 'fragment'])
@@ -40,7 +44,7 @@ class Snippet(db.Model):
     __table_args__ = (
         db.UniqueConstraint('party_id', 'name'),
     )
-    query_class = BelongsToPartyQuery
+    query_class = SnippetQuery
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     party_id = db.Column(db.Unicode(20), db.ForeignKey('parties.id'), index=True, nullable=False)
@@ -76,7 +80,7 @@ class Snippet(db.Model):
             .build()
 
 
-class SnippetVersionQuery(BelongsToPartyQuery):
+class SnippetVersionQuery(BaseQuery):
 
     def for_snippet(self, snippet):
         return self.filter_by(snippet=snippet)
