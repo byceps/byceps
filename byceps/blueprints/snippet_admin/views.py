@@ -58,7 +58,7 @@ def index_for_party(party_id):
 @permission_required(SnippetPermission.view_history)
 def view_version(snippet_version_id):
     """Show the snippet with the given id."""
-    version = find_version(snippet_version_id)
+    version = _find_version(snippet_version_id)
 
     try:
         snippet_context = get_snippet_context(version)
@@ -86,7 +86,7 @@ def view_version(snippet_version_id):
 @permission_required(SnippetPermission.view_history)
 @templated
 def history(snippet_id):
-    snippet = find_snippet_by_id(snippet_id)
+    snippet = _find_snippet_by_id(snippet_id)
 
     versions = snippet.get_versions()
     versions_pairwise = list(pairwise(versions + [None]))
@@ -144,7 +144,7 @@ def create_document(party_id):
 @templated
 def update_document_form(snippet_id):
     """Show form to update a document."""
-    snippet = find_snippet_by_id(snippet_id)
+    snippet = _find_snippet_by_id(snippet_id)
     current_version = snippet.current_version
 
     form = DocumentUpdateForm(
@@ -163,7 +163,7 @@ def update_document(snippet_id):
     """Update a document."""
     form = DocumentUpdateForm(request.form)
 
-    snippet = find_snippet_by_id(snippet_id)
+    snippet = _find_snippet_by_id(snippet_id)
 
     creator = g.current_user
     title = form.title.data.strip()
@@ -183,8 +183,8 @@ def update_document(snippet_id):
 @templated
 def compare_documents(from_version_id, to_version_id):
     """Show the difference between two document versions."""
-    from_version = find_version(from_version_id)
-    to_version = find_version(to_version_id)
+    from_version = _find_version(from_version_id)
+    to_version = _find_version(to_version_id)
 
     html_diff_title = _create_html_diff(from_version, to_version, 'title')
     html_diff_head = _create_html_diff(from_version, to_version, 'head')
@@ -243,7 +243,7 @@ def create_fragment(party_id):
 @templated
 def update_fragment_form(snippet_id):
     """Show form to update a fragment."""
-    snippet = find_snippet_by_id(snippet_id)
+    snippet = _find_snippet_by_id(snippet_id)
     current_version = snippet.current_version
 
     form = FragmentUpdateForm(
@@ -262,7 +262,7 @@ def update_fragment(snippet_id):
     """Update a fragment."""
     form = FragmentUpdateForm(request.form)
 
-    snippet = find_snippet_by_id(snippet_id)
+    snippet = _find_snippet_by_id(snippet_id)
 
     creator = g.current_user
     body = form.body.data.strip()
@@ -278,8 +278,8 @@ def update_fragment(snippet_id):
 @templated
 def compare_fragments(from_version_id, to_version_id):
     """Show the difference between two fragment versions."""
-    from_version = find_version(from_version_id)
-    to_version = find_version(to_version_id)
+    from_version = _find_version(from_version_id)
+    to_version = _find_version(to_version_id)
 
     html_diff_body = _create_html_diff(from_version, to_version, 'body')
 
@@ -325,7 +325,7 @@ def create_mountpoint(party_id):
         abort(400, 'URL path must start with a slash.')
 
     snippet_id = form.snippet_id.data.strip().lower()
-    snippet = find_snippet_by_id(snippet_id)
+    snippet = _find_snippet_by_id(snippet_id)
 
     mountpoint = snippet_service.create_mountpoint(endpoint_suffix, url_path,
                                                    snippet)
@@ -366,7 +366,7 @@ def _get_party_or_404(party_id):
     return party
 
 
-def find_snippet_by_id(snippet_id):
+def _find_snippet_by_id(snippet_id):
     snippet = snippet_service.find_snippet(snippet_id)
 
     if snippet is None:
@@ -375,7 +375,7 @@ def find_snippet_by_id(snippet_id):
     return snippet
 
 
-def find_version(version_id):
+def _find_version(version_id):
     version = snippet_service.find_snippet_version(version_id)
 
     if version is None:
