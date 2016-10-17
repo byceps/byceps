@@ -196,6 +196,7 @@ def compare_documents(from_version_id, to_version_id):
                                                  'image_url_path')
 
     return {
+        'party': from_version.snippet.party,
         'diff_title': html_diff_title,
         'diff_head': html_diff_head,
         'diff_body': html_diff_body,
@@ -290,6 +291,7 @@ def compare_fragments(from_version_id, to_version_id):
     html_diff_body = _create_html_diff(from_version, to_version, 'body')
 
     return {
+        'party': from_version.snippet.party,
         'diff_body': html_diff_body,
     }
 
