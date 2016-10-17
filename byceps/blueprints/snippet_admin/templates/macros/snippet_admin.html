@@ -1,9 +1,4 @@
-{% extends 'layout/admin/base.html' %}
-{% set current_page = 'snippet_admin' %}
-{% set current_page_party = party %}
-{% set title = 'Änderungen ansehen' %}
-
-{%- block head %}
+{% macro render_difference_styles() -%}
   <style>
     .difference {
       display: block;
@@ -47,28 +42,10 @@
       border: #ff1a1a solid 1px;
     }
   </style>
-{%- endblock %}
-
-{% block body %}
-
-  <h1>{{ title }}</h1>
-
-  <h2>Titel</h2>
-{{ render_difference(diff_title) }}
-
-  <h2>Seitenkopf</h2>
-{{ render_difference(diff_head) }}
-
-  <h2>Text</h2>
-{{ render_difference(diff_body) }}
-
-  <h2>Bild-URL-Pfad</h2>
-{{ render_difference(diff_image_url_path) }}
-
-{%- endblock %}
+{%- endmacro %}
 
 
-{% macro render_difference(diff) %}
+{% macro render_difference(diff) -%}
   {%- if diff is not none %}
   <div class="difference">
 {{- diff|safe }}

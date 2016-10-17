@@ -40,7 +40,11 @@
           <td>{{ render_user_avatar_tiny_and_link(version.creator) }}</td>
           <td>
             {%- if previous_version -%}
-            <a href="{{ url_for('.view_difference', from_version_id=previous_version.id, to_version_id=version.id) }}" title="Änderungen im Vergleich zur vorigen Version anzeigen">Änderungen zeigen</a>
+              {%- if snippet.type_.name == 'fragment' -%}
+              <a href="{{ url_for('.compare_fragments', from_version_id=previous_version.id, to_version_id=version.id) }}" title="Änderungen im Vergleich zur vorigen Version anzeigen">Änderungen zeigen</a>
+              {%- else -%}
+              <a href="{{ url_for('.compare_documents', from_version_id=previous_version.id, to_version_id=version.id) }}" title="Änderungen im Vergleich zur vorigen Version anzeigen">Änderungen zeigen</a>
+              {%- endif -%}
             {%- endif -%}
            </td>
         </tr>

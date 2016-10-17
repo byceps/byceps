@@ -82,41 +82,6 @@ def view_version(snippet_version_id):
                500
 
 
-@blueprint.route('/difference/from/<uuid:from_version_id>/to/<uuid:to_version_id>')
-@permission_required(SnippetPermission.view_history)
-@templated
-def view_difference(from_version_id, to_version_id):
-    """Show the difference between two snippet versions."""
-    from_version = find_version(from_version_id)
-    to_version = find_version(to_version_id)
-
-    # TODO: Diff title, head, and image path, too.
-
-    from_description = format_datetime_short(from_version.created_at)
-    to_description = format_datetime_short(to_version.created_at)
-
-    def create_html_diff(from_text, to_text):
-        return snippet_service.create_html_diff(from_text, to_text,
-                                                from_description,
-                                                to_description)
-
-    html_diff_title = create_html_diff(from_version.title, to_version.title)
-
-    html_diff_head = create_html_diff(from_version.head, to_version.head)
-
-    html_diff_body = create_html_diff(from_version.body, to_version.body)
-
-    html_diff_image_url_path = create_html_diff(from_version.image_url_path,
-                                                to_version.image_url_path)
-
-    return {
-        'diff_title': html_diff_title,
-        'diff_head': html_diff_head,
-        'diff_body': html_diff_body,
-        'diff_image_url_path': html_diff_image_url_path,
-    }
-
-
 @blueprint.route('/<uuid:snippet_id>/history')
 @permission_required(SnippetPermission.view_history)
 @templated
@@ -213,6 +178,28 @@ def update_document(snippet_id):
     return redirect_to('.view_version', snippet_version_id=version.id)
 
 
+@blueprint.route('/documents/<uuid:from_version_id>/compare_to/<uuid:to_version_id>')
+@permission_required(SnippetPermission.view_history)
+@templated
+def compare_documents(from_version_id, to_version_id):
+    """Show the difference between two document versions."""
+    from_version = find_version(from_version_id)
+    to_version = find_version(to_version_id)
+
+    html_diff_title = _create_html_diff(from_version, to_version, 'title')
+    html_diff_head = _create_html_diff(from_version, to_version, 'head')
+    html_diff_body = _create_html_diff(from_version, to_version, 'body')
+    html_diff_image_url_path = _create_html_diff(from_version, to_version,
+                                                 'image_url_path')
+
+    return {
+        'diff_title': html_diff_title,
+        'diff_head': html_diff_head,
+        'diff_body': html_diff_body,
+        'diff_image_url_path': html_diff_image_url_path,
+    }
+
+
 # -------------------------------------------------------------------- #
 # fragment
 
@@ -284,6 +271,21 @@ def update_fragment(snippet_id):
 
     flash_success('Das Fragment "{}" wurde aktualisiert.', version.snippet.name)
     return redirect_to('.view_version', snippet_version_id=version.id)
+
+
+@blueprint.route('/fragments/<uuid:from_version_id>/compare_to/<uuid:to_version_id>')
+@permission_required(SnippetPermission.view_history)
+@templated
+def compare_fragments(from_version_id, to_version_id):
+    """Show the difference between two fragment versions."""
+    from_version = find_version(from_version_id)
+    to_version = find_version(to_version_id)
+
+    html_diff_body = _create_html_diff(from_version, to_version, 'body')
+
+    return {
+        'diff_body': html_diff_body,
+    }
 
 
 # -------------------------------------------------------------------- #
@@ -380,3 +382,17 @@ def find_version(version_id):
         abort(404)
 
     return version
+
+
+def _create_html_diff(from_version, to_version, attribute_name):
+    """Create an HTML diff between the named attribute's value of each
+    of the two versions.
+    """
+    from_description = format_datetime_short(from_version.created_at)
+    to_description = format_datetime_short(to_version.created_at)
+
+    from_text = getattr(from_version, attribute_name)
+    to_text = getattr(to_version, attribute_name)
+
+    return snippet_service.create_html_diff(from_text, to_text,
+                                            from_description, to_description)
