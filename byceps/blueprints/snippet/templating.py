@@ -76,8 +76,9 @@ def _render_template(source):
 
 
 def _load_template_with_globals(source):
-    globals = {
+    template_globals = {
         'render_snippet': render_snippet_as_partial,
         'url_for': url_for,
     }
-    return load_template(source, globals=globals)
+
+    return load_template(source, template_globals=template_globals)
