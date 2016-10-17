@@ -186,6 +186,9 @@ def compare_documents(from_version_id, to_version_id):
     from_version = _find_version(from_version_id)
     to_version = _find_version(to_version_id)
 
+    if from_version.snippet_id != to_version.snippet_id:
+        abort(400, 'The versions do not belong to the same snippet.')
+
     html_diff_title = _create_html_diff(from_version, to_version, 'title')
     html_diff_head = _create_html_diff(from_version, to_version, 'head')
     html_diff_body = _create_html_diff(from_version, to_version, 'body')
@@ -280,6 +283,9 @@ def compare_fragments(from_version_id, to_version_id):
     """Show the difference between two fragment versions."""
     from_version = _find_version(from_version_id)
     to_version = _find_version(to_version_id)
+
+    if from_version.snippet_id != to_version.snippet_id:
+        abort(400, 'The versions do not belong to the same snippet.')
 
     html_diff_body = _create_html_diff(from_version, to_version, 'body')
 
