@@ -45,7 +45,7 @@ def index_for_party(party_id):
     snippets = snippet_service.get_snippets_for_party_with_current_versions(
         party)
 
-    mountpoints = snippet_service.get_mountpoints_for_party(party)
+    mountpoints = snippet_service.get_mountpoints_for_party(party.id)
 
     return {
         'party': party,
