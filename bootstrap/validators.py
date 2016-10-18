@@ -14,13 +14,14 @@ Validators for use with Click_.
 
 import click
 
+from byceps.services.brand import service as brand_service
 from byceps.services.party import service as party_service
 
-from .helpers import find_user, get_brand
+from .helpers import find_user
 
 
 def validate_brand(ctx, param, brand_id):
-    brand = get_brand(brand_id)
+    brand = brand_service.find_brand(brand_id)
     if not brand:
         raise click.BadParameter('Unknown brand ID "{}".'.format(brand_id))
 

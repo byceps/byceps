@@ -8,7 +8,6 @@ bootstrap.helpers
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.blueprints.brand.models import Brand
 from byceps.blueprints.user.models.user import User
 from byceps.blueprints.user import service as user_service
 from byceps.blueprints.user_group.models import UserGroup
@@ -17,19 +16,6 @@ from byceps.services.orga_team.models import OrgaTeam, \
     Membership as OrgaTeamMembership
 
 from .util import add_to_database
-
-
-# -------------------------------------------------------------------- #
-# brands
-
-
-@add_to_database
-def create_brand(brand_id, title):
-    return Brand(brand_id, title)
-
-
-def get_brand(brand_id):
-    return Brand.query.get(brand_id)
 
 
 # -------------------------------------------------------------------- #
