@@ -16,9 +16,6 @@ from byceps.services.orga.models import OrgaFlag
 from byceps.services.orga_team.models import OrgaTeam, \
     Membership as OrgaTeamMembership
 from byceps.services.party.models import Party
-from byceps.services.snippet.models.mountpoint import \
-    Mountpoint as SnippetMountpoint
-from byceps.services.snippet.models.snippet import Snippet, SnippetVersion
 
 from .util import add_to_database
 
@@ -101,22 +98,3 @@ def get_orga_team(team_id):
 @add_to_database
 def create_user_group(creator, title, description=None):
     return UserGroup(creator, title, description)
-
-
-# -------------------------------------------------------------------- #
-# snippets
-
-
-@add_to_database
-def create_snippet(party_id, name, type_):
-    return Snippet(party_id, name, type_)
-
-
-@add_to_database
-def create_snippet_version(snippet, creator, title, body):
-    return SnippetVersion(snippet, creator, title, body=body)
-
-
-@add_to_database
-def mount_snippet(snippet, endpoint_suffix, url_path):
-    return SnippetMountpoint(endpoint_suffix, url_path, snippet)
