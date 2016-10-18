@@ -23,14 +23,16 @@ from .models.snippet import CurrentVersionAssociation, Snippet, SnippetType, \
 # document
 
 
-def create_document(party_id, name, creator, title, head, body, image_url_path):
+def create_document(party_id, name, creator, title, body, *, head=None,
+                    image_url_path=None):
     """Create a document and its initial version, and return that version."""
     return _create_snippet(party_id, name, SnippetType.document, creator, body,
                            title=title, head=head,
                            image_url_path=image_url_path)
 
 
-def update_document(document, creator, title, head, body, image_url_path):
+def update_document(document, creator, title, body, *, head=None,
+                    image_url_path=None):
     """Update document with a new version, and return that version."""
     return _update_snippet(document, creator, title, head, body, image_url_path)
 

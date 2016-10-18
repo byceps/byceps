@@ -133,7 +133,8 @@ def create_document(party_id):
     image_url_path = form.image_url_path.data.strip()
 
     version = snippet_service.create_document(party.id, name, creator, title,
-                                              head, body, image_url_path)
+                                              body, head=head,
+                                              image_url_path=image_url_path)
 
     flash_success('Das Dokument "{}" wurde angelegt.', version.snippet.name)
     return redirect_to('.view_version', snippet_version_id=version.id)
@@ -171,8 +172,9 @@ def update_document(snippet_id):
     body = form.body.data.strip()
     image_url_path = form.image_url_path.data.strip()
 
-    version = snippet_service.update_document(snippet, creator, title, head,
-                                              body, image_url_path)
+    version = snippet_service.update_document(snippet, creator, title, body,
+                                              head=head,
+                                              image_url_path=image_url_path)
 
     flash_success('Das Dokument "{}" wurde aktualisiert.', version.snippet.name)
     return redirect_to('.view_version', snippet_version_id=version.id)
