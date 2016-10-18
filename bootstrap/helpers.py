@@ -19,7 +19,6 @@ from byceps.services.party.models import Party
 from byceps.services.snippet.models.mountpoint import \
     Mountpoint as SnippetMountpoint
 from byceps.services.snippet.models.snippet import Snippet, SnippetVersion
-from byceps.services.terms.models import Version as TermsVersion
 
 from .util import add_to_database
 
@@ -115,18 +114,9 @@ def create_snippet(party_id, name, type_):
 
 @add_to_database
 def create_snippet_version(snippet, creator, title, body):
-    return SnippetVersion(snippet=snippet, creator=creator, title=title, body=body)
+    return SnippetVersion(snippet, creator, title, body=body)
 
 
 @add_to_database
 def mount_snippet(snippet, endpoint_suffix, url_path):
-    return SnippetMountpoint(snippet=snippet, endpoint_suffix=endpoint_suffix, url_path=url_path)
-
-
-# -------------------------------------------------------------------- #
-# terms
-
-
-@add_to_database
-def create_terms_version(brand, creator, title, body):
-    return TermsVersion(brand.id, creator.id, title, body)
+    return SnippetMountpoint(endpoint_suffix, url_path, snippet)

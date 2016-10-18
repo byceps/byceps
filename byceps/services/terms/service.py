@@ -17,6 +17,16 @@ from .models import Consent, ConsentContext, Version
 # version
 
 
+def create_version(brand_id, creator_id, title, body):
+    """Create a new version of the terms for that brand."""
+    version = Version(brand_id, creator_id, title, body)
+
+    db.session.add(version)
+    db.session.commit()
+
+    return version
+
+
 def find_version(version_id):
     """Return the version with that id, or `None` if not found."""
     return Version.query.get(version_id)
