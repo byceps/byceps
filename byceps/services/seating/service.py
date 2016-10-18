@@ -127,7 +127,7 @@ def create_seat_group(party_id, title, seat_ids):
     db.session.commit()
 
     for seat_id in seat_ids:
-        assignment = SeatGroupAssignment(group.id, seat_id)
+        assignment = SeatGroupAssignment(group, seat_id)
         db.session.add(assignment)
     db.session.commit()
 
