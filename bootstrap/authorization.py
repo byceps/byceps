@@ -43,7 +43,7 @@ def create_roles_and_permissions():
         'versteckte Themen und Beiträge im Forum lesen',
         [
             (BoardPostingPermission.view_hidden, 'versteckte Beiträge im Forum anzeigen'),
-            (BoardTopicPermission.view_hidden 'versteckte Themen im Forum anzeigen'),
+            (BoardTopicPermission.view_hidden, 'versteckte Themen im Forum anzeigen'),
         ])
 
     create_role_with_permissions(
