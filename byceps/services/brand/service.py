@@ -11,9 +11,14 @@ byceps.services.brand.service
 from .models import Brand
 
 
-def count_brands():
-    """Return the number of brands."""
-    return Brand.query.count()
+def create_brand(brand_id, title):
+    """Create a brand."""
+    brand = Brand(brand_id, title)
+
+    db.session.add(brand)
+    db.session.commit()
+
+    return brand
 
 
 def find_brand(brand_id):
@@ -26,3 +31,8 @@ def get_brands():
     return Brand.query \
         .order_by(Brand.title) \
         .all()
+
+
+def count_brands():
+    """Return the number of brands."""
+    return Brand.query.count()
