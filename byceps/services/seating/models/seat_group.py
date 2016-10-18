@@ -51,9 +51,9 @@ class SeatGroupAssignment(db.Model):
     seat_id = db.Column(db.Uuid, db.ForeignKey('seats.id'), unique=True, index=True, nullable=False)
     seat = db.relationship(Seat)
 
-    def __init__(self, group, seat_id):
+    def __init__(self, group, seat):
         self.group = group
-        self.seat_id = seat_id
+        self.seat = seat
 
     def __repr__(self):
         return ReprBuilder(self) \
