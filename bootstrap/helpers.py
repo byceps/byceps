@@ -15,7 +15,6 @@ from byceps.blueprints.user_group.models import UserGroup
 from byceps.services.orga.models import OrgaFlag
 from byceps.services.orga_team.models import OrgaTeam, \
     Membership as OrgaTeamMembership
-from byceps.services.party.models import Party
 
 from .util import add_to_database
 
@@ -31,19 +30,6 @@ def create_brand(brand_id, title):
 
 def get_brand(brand_id):
     return Brand.query.get(brand_id)
-
-
-# -------------------------------------------------------------------- #
-# parties
-
-
-@add_to_database
-def create_party(**kwargs):
-    return Party(**kwargs)
-
-
-def get_party(party_id):
-    return Party.query.get(party_id)
 
 
 # -------------------------------------------------------------------- #

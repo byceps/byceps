@@ -14,7 +14,9 @@ Validators for use with Click_.
 
 import click
 
-from .helpers import find_user, get_brand, get_party
+from byceps.services.party import service as party_service
+
+from .helpers import find_user, get_brand
 
 
 def validate_brand(ctx, param, brand_id):
@@ -26,7 +28,7 @@ def validate_brand(ctx, param, brand_id):
 
 
 def validate_party(ctx, param, party_id):
-    party = get_party(party_id)
+    party = party_service.find_party(party_id)
     if not party:
         raise click.BadParameter('Unknown party ID "{}".'.format(party_id))
 
