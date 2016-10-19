@@ -45,30 +45,53 @@ def view(party_id):
     tasks = service.get_tasks(party.id)
 
     time_slots = [party] + tasks
-    min_starts_at = find_earliest_time_slot_start(time_slots)
-    max_ends_at = find_latest_time_slot_end(time_slots)
 
-    hour_starts_arrow = Arrow.range('hour', min_starts_at, max_ends_at)
-    hour_starts = [hour_start.datetime.replace(tzinfo=None)
-                   for hour_start in hour_starts_arrow]
+    hour_starts = list(_get_hour_starts(time_slots))
 
-    hour_ranges = list(map(DateTimeRange._make, pairwise(hour_starts)))
+    hour_ranges = list(_to_hour_ranges(hour_starts))
 
-    days = [(day, len(list(hour_starts))) for day, hour_starts
-                  in groupby(hour_starts, key=lambda hour: hour.date())]
+    days_and_hour_totals = _get_days_and_hour_totals(hour_starts)
 
     return {
         'party': party,
-        'days': days,
+        'days_and_hour_totals': days_and_hour_totals,
         'hour_ranges': hour_ranges,
         'presences': presences,
         'tasks': tasks,
     }
 
 
-def find_earliest_time_slot_start(time_slots):
+def _get_hour_starts(time_slots):
+    min_starts_at = _find_earliest_time_slot_start(time_slots)
+    max_ends_at = _find_latest_time_slot_end(time_slots)
+
+    hour_starts_arrow = Arrow.range('hour', min_starts_at, max_ends_at)
+
+    return _to_datetimes_without_tzinfo(hour_starts_arrow)
+
+
+def _find_earliest_time_slot_start(time_slots):
     return min(time_slot.range.start for time_slot in time_slots)
 
 
-def find_latest_time_slot_end(time_slots):
+def _find_latest_time_slot_end(time_slots):
     return max(time_slot.range.end for time_slot in time_slots)
+
+
+def _to_datetimes_without_tzinfo(arrow_datetimes):
+    for arrow_datetime in arrow_datetimes:
+        yield arrow_datetime.datetime.replace(tzinfo=None)
+
+
+def _to_hour_ranges(hour_starts):
+    for pair in pairwise(hour_starts):
+        yield DateTimeRange._make(pair)
+
+
+def _get_days_and_hour_totals(hour_starts):
+    def get_date(dt):
+        return dt.date()
+
+    for day, hour_starts_for_day in groupby(hour_starts, key=get_date):
+        hour_total = len(list(hour_starts_for_day))
+        yield day, hour_total

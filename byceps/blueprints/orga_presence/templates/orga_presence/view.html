@@ -24,7 +24,7 @@
       <thead>
         <tr>
           <th colspan="3"></th>
-          {%- for day, hour_total in days %}
+          {%- for day, hour_total in days_and_hour_totals %}
           <th colspan="{{ hour_total }}">{{ render_datetime_custom(day, '%A') }}</th>
           {%- endfor %}
         </tr>
@@ -63,10 +63,12 @@
 
 {%- endblock %}
 
+
 {% macro render_range_columns(time_slot) -%}
           <td class="nowrap">{{ render_datetime(time_slot.range.start, smart=False) }}</td>
           <td class="nowrap">{{ render_datetime(time_slot.range.end, smart=False) }}</td>
 {%- endmacro %}
+
 
 {% macro render_bar_columns(time_slot) -%}
       {%- for hour_range in hour_ranges %}
