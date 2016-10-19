@@ -22,6 +22,13 @@
   </nav>
   <h1>{{ title }} {{ render_extra_in_heading(orgas|length) }}</h1>
 
+  <ol class="actions">
+    {%- if g.current_user.has_permission(OrgaTeamPermission.administrate_memberships) %}
+    <li><a href="{{ url_for('.create_orgaflag_form', brand_id=brand.id) }}">{{ render_icon('add') }} Person zum Orga ernennen</a></li>
+    {%- endif %}
+    <li><a href="{{ url_for('.export_persons', brand_id=brand.id) }}" download="organizers_{{ brand.id }}.csv">{{ render_icon('download') }} Exportieren <small>(als Excel-CSV)</small></a></li>
+  </ol>
+
   <table class="index wide">
     <thead>
       <tr>
@@ -80,13 +87,6 @@
       <tr>
     </tbody>
   </table>
-
-  <ol class="actions" style="margin-top: 2rem;">
-    {%- if g.current_user.has_permission(OrgaTeamPermission.administrate_memberships) %}
-    <li><a href="{{ url_for('.create_orgaflag_form', brand_id=brand.id) }}">{{ render_icon('add') }} Person zum Orga ernennen</a></li>
-    {%- endif %}
-    <li><a href="{{ url_for('.export_persons', brand_id=brand.id) }}" download="organizers_{{ brand.id }}.csv">{{ render_icon('download') }} Exportieren <small>(als Excel-CSV)</small></a></li>
-  </ol>
 
 {%- endblock %}
 

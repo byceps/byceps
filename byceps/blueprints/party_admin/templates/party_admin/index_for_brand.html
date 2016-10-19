@@ -16,6 +16,12 @@
   </nav>
   <h1>Partys</h1>
 
+  {%- if g.current_user.has_permission(PartyPermission.create) %}
+  <ol class="actions">
+    <li><a href="{{ url_for('.create_form') }}">{{ render_icon('add') }} Party erstellen</a></li>
+  </ol>
+  {%- endif %}
+
   <table class="index wide">
     <thead>
       <tr>
@@ -45,12 +51,6 @@
       {%- endfor %}
     </tbody>
   </table>
-
-  {%- if g.current_user.has_permission(PartyPermission.create) %}
-  <ol class="actions">
-    <li><a href="{{ url_for('.create_form') }}">{{ render_icon('add') }} Party erstellen</a></li>
-  </ol>
-  {%- endif %}
 
 {{ render_pagination_nav(parties, '.index_for_brand', {'brand_id': brand.id}) }}
 

@@ -18,6 +18,13 @@
 
   <h2>Snippets {{ render_extra_in_heading(snippets|length) }}</h2>
 
+  {%- if g.current_user.has_permission(SnippetPermission.create) %}
+  <ol class="actions">
+    <li><a href="{{ url_for('.create_document_form', party_id=party.id) }}">{{ render_icon('add') }} Dokument erstellen</a></li>
+    <li><a href="{{ url_for('.create_fragment_form', party_id=party.id) }}">{{ render_icon('add') }} Fragment erstellen</a></li>
+  </ol>
+  {%- endif %}
+
   <table class="index wide">
     <thead>
       <tr>
@@ -59,14 +66,13 @@
     </tbody>
   </table>
 
-  {%- if g.current_user.has_permission(SnippetPermission.create) %}
+  <h2>Mountpoints {{ render_extra_in_heading(mountpoints|length) }}</h2>
+
+  {%- if g.current_user.has_permission(MountpointPermission.create) %}
   <ol class="actions">
-    <li><a href="{{ url_for('.create_document_form', party_id=party.id) }}">{{ render_icon('add') }} Dokument erstellen</a></li>
-    <li><a href="{{ url_for('.create_fragment_form', party_id=party.id) }}">{{ render_icon('add') }} Fragment erstellen</a></li>
+    <li><a href="{{ url_for('.create_mountpoint_form', party_id=party.id) }}">{{ render_icon('add') }} Mountpoint erstellen</a></li>
   </ol>
   {%- endif %}
-
-  <h2>Mountpoints {{ render_extra_in_heading(mountpoints|length) }}</h2>
 
   <table class="index wide">
     <thead>
@@ -97,12 +103,6 @@
     {%- endfor %}
     </tbody>
   </table>
-
-  {%- if g.current_user.has_permission(MountpointPermission.create) %}
-  <ol class="actions">
-    <li><a href="{{ url_for('.create_mountpoint_form', party_id=party.id) }}">{{ render_icon('add') }} Mountpoint erstellen</a></li>
-  </ol>
-  {%- endif %}
 
 {%- endblock %}
 
