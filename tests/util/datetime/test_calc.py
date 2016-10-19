@@ -9,7 +9,7 @@ from datetime import date
 
 from nose2.tools import params
 
-from byceps.util.datetime import calculate_age, calculate_days_until
+from byceps.util.datetime.calc import calculate_age, calculate_days_until
 
 
 SOME_DATE = date(1994, 3, 18)

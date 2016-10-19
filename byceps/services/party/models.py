@@ -13,7 +13,7 @@ from datetime import datetime
 from sqlalchemy.ext.hybrid import hybrid_property
 
 from ...database import db
-from ...util.datetime import DateTimeRange
+from ...util.datetime.range import DateTimeRange
 from ...util.instances import ReprBuilder
 
 from ..brand.models import Brand

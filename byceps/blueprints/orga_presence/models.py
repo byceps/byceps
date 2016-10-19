@@ -11,7 +11,7 @@ byceps.blueprints.orga_presence.models
 from sqlalchemy.ext.hybrid import hybrid_property
 
 from ...database import BaseQuery, db, generate_uuid
-from ...util.datetime import DateTimeRange
+from ...util.datetime.range import DateTimeRange
 
 from ..user.models.user import User
 

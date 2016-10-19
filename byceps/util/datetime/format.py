@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-byceps.util.dateformat
-~~~~~~~~~~~~~~~~~~~~~~
+byceps.util.datetime.format
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Date/time formatting.
 

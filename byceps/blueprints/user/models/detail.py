@@ -11,7 +11,8 @@ byceps.blueprints.user.models.detail
 from datetime import date
 
 from ....database import db
-from ....util.datetime import calculate_age, calculate_days_until, MonthDay
+from ....util.datetime.calc import calculate_age, calculate_days_until
+from ....util.datetime.monthday import MonthDay
 from ....util.instances import ReprBuilder
 
 

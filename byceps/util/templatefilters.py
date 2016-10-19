@@ -13,7 +13,8 @@ Provide and register custom template filters.
 from jinja2 import evalcontextfilter, Markup
 from jinja2.filters import do_default, do_trim
 
-from . import dateformat, money
+from .datetime import format as dateformat
+from . import money
 
 
 @evalcontextfilter

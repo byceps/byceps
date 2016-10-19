@@ -9,7 +9,7 @@ from datetime import datetime
 
 from nose2.tools import params
 
-from byceps.util.datetime import DateTimeRange
+from byceps.util.datetime.range import DateTimeRange
 
 
 @params(

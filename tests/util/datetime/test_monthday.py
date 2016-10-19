@@ -9,7 +9,7 @@ from datetime import date
 
 from nose2.tools import params
 
-from byceps.util.datetime import MonthDay
+from byceps.util.datetime.monthday import MonthDay
 
 
 @params(

@@ -14,7 +14,7 @@ from arrow import Arrow
 from flask import abort
 
 from ...services.party import service as party_service
-from ...util.datetime import DateTimeRange
+from ...util.datetime.range import DateTimeRange
 from ...util.framework import create_blueprint
 from ...util.iterables import pairwise
 from ...util.templating import templated
