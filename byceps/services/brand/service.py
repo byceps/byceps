@@ -8,6 +8,8 @@ byceps.services.brand.service
 :License: Modified BSD, see LICENSE for details.
 """
 
+from ...database import db
+
 from .models import Brand
 
 
