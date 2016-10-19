@@ -27,8 +27,8 @@ from ...party.models import Party
 
 class SnippetQuery(BaseQuery):
 
-    def for_party(self, party):
-        return self.filter_by(party_id=party.id)
+    def for_party_id(self, party_id):
+        return self.filter_by(party_id=party_id)
 
 
 SnippetType = Enum('SnippetType', ['document', 'fragment'])
