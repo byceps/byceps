@@ -13,14 +13,16 @@ from ...database import db
 from .models import Presence, Task
 
 
-def get_presences(party):
+def get_presences(party_id):
     """Return all presences for that party."""
     return Presence.query \
-        .for_party(party) \
+        .for_party_id(party_id) \
         .options(db.joinedload('orga')) \
         .all()
 
 
-def get_tasks(party):
+def get_tasks(party_id):
     """Return all tasks for that party."""
-    return Task.query.for_party(party).all()
+    return Task.query \
+        .for_party_id(party_id) \
+        .all()

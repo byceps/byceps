@@ -41,8 +41,8 @@ def view(party_id):
     if party is None:
         abort(404)
 
-    presences = service.get_presences(party)
-    tasks = service.get_tasks(party)
+    presences = service.get_presences(party.id)
+    tasks = service.get_tasks(party.id)
 
     time_slots = [party] + tasks
     min_starts_at = find_earliest_time_slot_start(time_slots)
