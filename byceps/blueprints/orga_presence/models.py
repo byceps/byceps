@@ -11,7 +11,6 @@ byceps.blueprints.orga_presence.models
 from sqlalchemy.ext.hybrid import hybrid_property
 
 from ...database import BaseQuery, db, generate_uuid
-from ...services.party.models import Party
 from ...util.datetime import DateTimeRange
 
 from ..user.models.user import User
@@ -34,7 +33,6 @@ class TimeSlot(db.Model):
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     party_id = db.Column(db.Unicode(20), db.ForeignKey('parties.id'), index=True, nullable=False)
-    party = db.relationship(Party)
     type = db.Column(db.Unicode(13), index=True, nullable=False)
     starts_at = db.Column(db.DateTime, nullable=False)
     ends_at = db.Column(db.DateTime, nullable=False)
