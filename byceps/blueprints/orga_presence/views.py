@@ -43,9 +43,9 @@ def view(party_id):
     presences = service.get_presences(party.id)
     tasks = service.get_tasks(party.id)
 
-    time_slots = [party] + tasks
+    time_slot_ranges = list(_get_time_slot_ranges(party, tasks))
 
-    hour_starts = list(_get_hour_starts(time_slots))
+    hour_starts = list(_get_hour_starts(time_slot_ranges))
 
     hour_ranges = list(create_adjacent_ranges(hour_starts))
 
@@ -60,21 +60,27 @@ def view(party_id):
     }
 
 
-def _get_hour_starts(time_slots):
-    min_starts_at = _find_earliest_time_slot_start(time_slots)
-    max_ends_at = _find_latest_time_slot_end(time_slots)
+def _get_time_slot_ranges(party, tasks):
+    time_slots = [party] + tasks
+    for time_slot in time_slots:
+        yield time_slot.range
+
+
+def _get_hour_starts(dt_ranges):
+    min_starts_at = _find_earliest_start(dt_ranges)
+    max_ends_at = _find_latest_end(dt_ranges)
 
     hour_starts_arrow = Arrow.range('hour', min_starts_at, max_ends_at)
 
     return _to_datetimes_without_tzinfo(hour_starts_arrow)
 
 
-def _find_earliest_time_slot_start(time_slots):
-    return min(time_slot.range.start for time_slot in time_slots)
+def _find_earliest_start(dt_ranges):
+    return min(dt_range.start for dt_range in dt_ranges)
 
 
-def _find_latest_time_slot_end(time_slots):
-    return max(time_slot.range.end for time_slot in time_slots)
+def _find_latest_end(dt_ranges):
+    return max(dt_range.end for dt_range in dt_ranges)
 
 
 def _to_datetimes_without_tzinfo(arrow_datetimes):
