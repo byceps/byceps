@@ -11,19 +11,18 @@ import click
 
 from byceps.database import db
 
-from bootstrap.helpers import get_user, promote_orga
+from bootstrap.helpers import promote_orga
 from bootstrap.util import app_context, get_config_name_from_env
-from bootstrap.validators import validate_brand
+from bootstrap.validators import validate_brand, validate_user_screen_name
 
 
 @click.command()
 @click.argument('brand', callback=validate_brand)
-@click.argument('screen_name')
-def execute(brand, screen_name):
-    click.echo('Promoting user "{}" to orga for brand {} ... '
-               .format(screen_name, brand.title), nl=False)
+@click.argument('user', callback=validate_user_screen_name)
+def execute(brand, user):
+    click.echo('Promoting user "{}" to orga for brand "{}" ... '
+               .format(user.screen_name, brand.title), nl=False)
 
-    user = get_user(screen_name)
     promote_orga(brand, user)
     db.session.commit()
 
