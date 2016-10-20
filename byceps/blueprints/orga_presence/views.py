@@ -45,9 +45,7 @@ def view(party_id):
 
     time_slot_ranges = list(_get_time_slot_ranges(party, tasks))
 
-    hour_starts = list(_get_hour_starts(time_slot_ranges))
-
-    hour_ranges = list(create_adjacent_ranges(hour_starts))
+    hour_ranges = list(_get_hour_ranges(time_slot_ranges))
 
     days_and_hour_totals = _get_days_and_hour_totals(hour_ranges)
 
@@ -64,6 +62,11 @@ def _get_time_slot_ranges(party, tasks):
     time_slots = [party] + tasks
     for time_slot in time_slots:
         yield time_slot.range
+
+
+def _get_hour_ranges(time_slot_ranges):
+    hour_starts = _get_hour_starts(time_slot_ranges)
+    return create_adjacent_ranges(hour_starts)
 
 
 def _get_hour_starts(dt_ranges):
