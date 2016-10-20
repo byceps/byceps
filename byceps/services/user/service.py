@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-byceps.blueprints.user.service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.user.service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2016 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -13,15 +13,17 @@ from datetime import datetime
 from flask import current_app, url_for
 
 from ...database import db
-from ...services.authentication.password import service as password_service
-from ...services.authorization.models import Role
-from ...services.authorization import service as authorization_service
-from ...services.email import service as email_service
-from ...services.newsletter import service as newsletter_service
-from ...services.terms import service as terms_service
-from ...services.user.models.detail import UserDetail
-from ...services.user.models.user import User
-from ...services.verification_token import service as verification_token_service
+
+from ..authentication.password import service as password_service
+from ..authorization.models import Role
+from ..authorization import service as authorization_service
+from ..email import service as email_service
+from ..newsletter import service as newsletter_service
+from ..terms import service as terms_service
+from ..verification_token import service as verification_token_service
+
+from .models.detail import UserDetail
+from .models.user import User
 
 
 def count_users():

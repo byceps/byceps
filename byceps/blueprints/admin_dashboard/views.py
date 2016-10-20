@@ -23,13 +23,13 @@ from ...services.shop.article import service as article_service
 from ...services.shop.order import service as order_service
 from ...services.terms import service as terms_service
 from ...services.ticket import service as ticket_service
+from ...services.user import service as user_service
 from ...util.framework import create_blueprint
 from ...util.templating import templated
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 from ..news_admin import service as news_admin_service
-from ..user import service as user_service
 
 from .authorization import AdminDashboardPermission
 
@@ -50,7 +50,7 @@ def view_global():
 
     orga_count = orga_service.count_orgas()
 
-    user_count  = user_service.count_users()
+    user_count = user_service.count_users()
 
     one_week_ago = timedelta(days=7)
     recent_users_count = user_service.count_users_created_since(one_week_ago)

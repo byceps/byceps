@@ -17,6 +17,7 @@ from ...services.authentication.session import service as session_service
 from ...services.authorization import service as authorization_service
 from ...services.orga import service as orga_service
 from ...services.terms import service as terms_service
+from ...services.user import service as user_service
 from ...services.verification_token import service as verification_token_service
 from ...util.framework import create_blueprint, flash_error, flash_notice, \
     flash_success
@@ -24,7 +25,6 @@ from ...util.templating import templated
 from ...util.views import redirect_to, respond_no_content
 
 from ..authorization.registry import permission_registry
-from ..user import service as user_service
 
 from .forms import LoginForm, RequestPasswordResetForm, ResetPasswordForm, \
     UpdatePasswordForm

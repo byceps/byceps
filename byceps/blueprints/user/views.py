@@ -17,6 +17,7 @@ from ...services.countries import service as countries_service
 from ...services.newsletter import service as newsletter_service
 from ...services.orga_team import service as orga_team_service
 from ...services.ticket import service as ticket_service
+from ...services.user import service as user_service
 from ...services.user_badge import service as badge_service
 from ...services.verification_token import service as verification_token_service
 from ...util.framework import create_blueprint, flash_error, flash_notice, \
@@ -25,7 +26,6 @@ from ...util.templating import templated
 from ...util.views import redirect_to
 
 from .forms import DetailsForm, RequestConfirmationEmailForm, UserCreateForm
-from . import service
 from . import signals
 
 
@@ -39,7 +39,7 @@ def view(user_id):
     if get_site_mode().is_admin():
         abort(404)
 
-    user = service.find_user(user_id)
+    user = user_service.find_user(user_id)
     if user is None:
         abort(404)
 
@@ -72,7 +72,7 @@ def view_as_json(user_id):
     if get_site_mode().is_admin():
         abort(404)
 
-    user = service.find_user(user_id)
+    user = user_service.find_user(user_id)
 
     if not user:
         return _empty_json_response(404)
@@ -157,21 +157,22 @@ def create():
     consent_to_terms = form.consent_to_terms.data
     subscribe_to_newsletter = form.subscribe_to_newsletter.data
 
-    if service.is_screen_name_already_assigned(screen_name):
+    if user_service.is_screen_name_already_assigned(screen_name):
         flash_error(
             'Dieser Benutzername ist bereits einem Benutzerkonto zugeordnet.')
         return create_form(form)
 
-    if service.is_email_address_already_assigned(email_address):
+    if user_service.is_email_address_already_assigned(email_address):
         flash_error(
             'Diese E-Mail-Adresse ist bereits einem Benutzerkonto zugeordnet.')
         return create_form(form)
 
     try:
-        user = service.create_user(screen_name, email_address, password,
-                                   first_names, last_name, g.party.brand.id,
-                                   subscribe_to_newsletter)
-    except service.UserCreationFailed:
+        user = user_service.create_user(screen_name, email_address, password,
+                                        first_names, last_name,
+                                        g.party.brand.id,
+                                        subscribe_to_newsletter)
+    except user_service.UserCreationFailed:
         flash_error('Das Benutzerkonto für "{}" konnte nicht angelegt werden.',
                     screen_name)
         return create_form(form)
@@ -207,7 +208,7 @@ def request_email_address_confirmation_email():
         return request_email_address_confirmation_email_form(form)
 
     screen_name = form.screen_name.data.strip()
-    user = service.find_user_by_screen_name(screen_name)
+    user = user_service.find_user_by_screen_name(screen_name)
 
     if user is None:
         flash_error('Der Benutzername "{}" ist unbekannt.', screen_name)
@@ -222,7 +223,7 @@ def request_email_address_confirmation_email():
 
     verification_token = verification_token_service \
         .find_or_create_for_email_address_confirmation(user.id)
-    service.send_email_address_confirmation_email(user, verification_token)
+    user_service.send_email_address_confirmation_email(user, verification_token)
 
     flash_success(
         'Der Link zur Bestätigung der für den Benutzernamen "{}" '
@@ -242,7 +243,7 @@ def confirm_email_address(token):
 
     user = verification_token.user
 
-    service.confirm_email_address(verification_token)
+    user_service.confirm_email_address(verification_token)
 
     flash_success(
         'Die E-Mail-Adresse wurde bestätigt. Das Benutzerkonto "{}" ist nun aktiviert.',
@@ -285,8 +286,9 @@ def details_update():
     street = form.street.data.strip()
     phone_number = form.phone_number.data.strip()
 
-    service.update_user_details(user, first_names, last_name, date_of_birth,
-                                country, zip_code, city, street, phone_number)
+    user_service.update_user_details(user, first_names, last_name,
+                                     date_of_birth, country, zip_code, city,
+                                     street, phone_number)
 
     flash_success('Deine Daten wurden gespeichert.')
     return redirect_to('.view_current')
