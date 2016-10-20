@@ -11,9 +11,8 @@ byceps.blueprints.messaging.models
 from datetime import datetime
 
 from ...database import db, generate_uuid
+from ...services.user.models.user import User
 from ...util.instances import ReprBuilder
-
-from ..user.models.user import User
 
 
 class Message(db.Model):

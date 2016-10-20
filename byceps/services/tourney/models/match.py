@@ -10,8 +10,9 @@ byceps.services.tourney.models.match
 
 from datetime import datetime
 
-from ....blueprints.user.models.user import User
 from ....database import BaseQuery, db, generate_uuid
+
+from ...user.models.user import User
 
 
 class Match(db.Model):

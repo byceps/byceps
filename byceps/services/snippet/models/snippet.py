@@ -18,11 +18,11 @@ from enum import Enum
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
 
-from ....blueprints.user.models.user import User
 from ....database import BaseQuery, db, generate_uuid
 from ....util.instances import ReprBuilder
 
 from ...party.models import Party
+from ...user.models.user import User
 
 
 class SnippetQuery(BaseQuery):

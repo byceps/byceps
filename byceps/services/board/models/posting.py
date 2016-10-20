@@ -13,9 +13,10 @@ from datetime import datetime
 from flask import url_for
 
 from ....blueprints.board.authorization import BoardPostingPermission
-from ....blueprints.user.models.user import User
 from ....database import BaseQuery, db, generate_uuid
 from ....util.instances import ReprBuilder
+
+from ...user.models.user import User
 
 from .topic import Topic
 

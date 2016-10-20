@@ -10,11 +10,11 @@ byceps.services.orga.service
 
 from itertools import islice
 
-from ...blueprints.user.models.detail import UserDetail
-from ...blueprints.user.models.user import User
 from ...database import db
 
 from ..brand.models import Brand
+from ..user.models.detail import UserDetail
+from ..user.models.user import User
 
 from .models import OrgaFlag
 

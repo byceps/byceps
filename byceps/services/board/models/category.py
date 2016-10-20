@@ -10,10 +10,11 @@ byceps.services.board.models.category
 
 from sqlalchemy.ext.orderinglist import ordering_list
 
-from ....blueprints.user.models.user import User
 from ....database import BaseQuery, db, generate_uuid
-from ....services.brand.models import Brand
 from ....util.instances import ReprBuilder
+
+from ...brand.models import Brand
+from ...user.models.user import User
 
 
 class CategoryQuery(BaseQuery):

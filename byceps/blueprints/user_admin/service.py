@@ -11,9 +11,8 @@ byceps.blueprints.user_admin.service
 from enum import Enum
 
 from ...database import db
-
-from ..user.models.detail import UserDetail
-from ..user.models.user import User
+from ...services.user.models.detail import UserDetail
+from ...services.user.models.user import User
 
 
 UserEnabledFilter = Enum('UserEnabledFilter', ['enabled', 'disabled'])

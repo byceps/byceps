@@ -13,9 +13,8 @@ from datetime import datetime
 from sqlalchemy.ext.associationproxy import association_proxy
 
 from ...database import db, generate_uuid
+from ...services.user.models.user import User
 from ...util.instances import ReprBuilder
-
-from ..user.models.user import User
 
 
 class UserGroup(db.Model):

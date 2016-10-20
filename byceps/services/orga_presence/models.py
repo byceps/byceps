@@ -10,9 +10,10 @@ byceps.services.orga_presence.models
 
 from sqlalchemy.ext.hybrid import hybrid_property
 
-from ...blueprints.user.models.user import User
 from ...database import BaseQuery, db, generate_uuid
 from ...util.datetime.range import DateTimeRange
+
+from ..user.models.user import User
 
 
 class TimeSlotQuery(BaseQuery):

@@ -8,10 +8,10 @@ byceps.services.orga_team.service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from ...blueprints.user.models.user import User
 from ...database import db
 
 from ..orga.models import OrgaFlag
+from ..user.models.user import User
 
 from .models import Membership, OrgaTeam
 

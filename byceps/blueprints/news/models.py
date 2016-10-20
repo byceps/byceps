@@ -15,10 +15,9 @@ from sqlalchemy.ext.associationproxy import association_proxy
 
 from ...database import BaseQuery, db, generate_uuid
 from ...services.brand.models import Brand
+from ...services.user.models.user import User
 from ...util.instances import ReprBuilder
 from ...util.templating import load_template
-
-from ..user.models.user import User
 
 
 class ItemQuery(BaseQuery):

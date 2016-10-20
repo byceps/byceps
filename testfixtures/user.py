@@ -10,9 +10,9 @@ testfixtures.user
 
 from datetime import date
 
-from byceps.blueprints.user.models.detail import UserDetail
 from byceps.blueprints.user import service as user_service
 from byceps.database import generate_uuid
+from byceps.services.user.models.detail import UserDetail
 
 
 def create_user(number, *, screen_name=None, email_address=None, enabled=True):

@@ -8,12 +8,12 @@ byceps.services.ticket.service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from ...blueprints.user.models.user import User
 from ...database import db
 
 from ..party.models import Party
 from ..seating.models.category import Category
 from ..seating.models.seat import Seat
+from ..user.models.user import User
 
 from .models import Ticket
 

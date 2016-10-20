@@ -8,11 +8,11 @@ byceps.services.orga_team.models
 :License: Modified BSD, see LICENSE for details.
 """
 
-from ...blueprints.user.models.user import User
 from ...database import BaseQuery, db, generate_uuid
 from ...util.instances import ReprBuilder
 
 from ..party.models import Party
+from ..user.models.user import User
 
 
 class OrgaTeam(db.Model):

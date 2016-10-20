@@ -10,12 +10,12 @@ byceps.services.ticket.models
 
 from datetime import datetime
 
-from ...blueprints.user.models.user import User
 from ...database import BaseQuery, db, generate_uuid
 from ...util.instances import ReprBuilder
 
 from ..seating.models.category import Category
 from ..seating.models.seat import Seat
+from ..user.models.user import User
 
 
 class TicketQuery(BaseQuery):

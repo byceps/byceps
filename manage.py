@@ -18,14 +18,14 @@ from flask_script.commands import Server
 from werkzeug.wsgi import SharedDataMiddleware
 
 from byceps.application_factory import app
-from byceps.blueprints.user.models.detail import UserDetail
-from byceps.blueprints.user.models.user import User
 from byceps.database import db
 from byceps.services.brand.models import Brand
 from byceps.services.party.models import Party
 from byceps.services.shop.article.models import Article
 from byceps.services.shop.order.models import Order, OrderItem, \
     PaymentState as OrderPaymentState
+from byceps.services.user.models.detail import UserDetail
+from byceps.services.user.models.user import User
 
 
 def _assemble_exports():

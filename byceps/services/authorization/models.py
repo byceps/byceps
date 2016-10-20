@@ -10,9 +10,10 @@ byceps.services.authorization.models
 
 from sqlalchemy.ext.associationproxy import association_proxy
 
-from ...blueprints.user.models.user import User
 from ...database import db
 from ...util.instances import ReprBuilder
+
+from ..user.models.user import User
 
 
 class Permission(db.Model):

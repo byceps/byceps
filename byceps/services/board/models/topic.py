@@ -14,9 +14,10 @@ from flask import url_for
 from sqlalchemy.ext.associationproxy import association_proxy
 
 from ....blueprints.board.authorization import BoardTopicPermission
-from ....blueprints.user.models.user import User
 from ....database import BaseQuery, db, generate_uuid
 from ....util.instances import ReprBuilder
+
+from ...user.models.user import User
 
 from .category import Category
 

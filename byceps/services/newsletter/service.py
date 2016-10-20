@@ -11,8 +11,9 @@ byceps.services.newsletter.service
 from collections import Counter
 from operator import itemgetter
 
-from ...blueprints.user.models.user import User
 from ...database import db
+
+from ..user.models.user import User
 
 from .models import Subscription
 from .types import SubscriptionState

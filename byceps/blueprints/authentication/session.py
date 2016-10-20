@@ -12,8 +12,8 @@ from flask import session
 
 from ...services.authentication.exceptions import AuthenticationFailed
 from ...services.authentication.session import service as session_service
+from ...services.user.models.user import AnonymousUser
 
-from ..user.models.user import AnonymousUser
 from ..user import service as user_service
 
 

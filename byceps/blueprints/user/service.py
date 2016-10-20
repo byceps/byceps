@@ -19,10 +19,9 @@ from ...services.authorization import service as authorization_service
 from ...services.email import service as email_service
 from ...services.newsletter import service as newsletter_service
 from ...services.terms import service as terms_service
+from ...services.user.models.detail import UserDetail
+from ...services.user.models.user import User
 from ...services.verification_token import service as verification_token_service
-
-from .models.detail import UserDetail
-from .models.user import User
 
 
 def count_users():
