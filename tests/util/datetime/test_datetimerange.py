@@ -9,7 +9,7 @@ from datetime import datetime
 
 from nose2.tools import params
 
-from byceps.util.datetime.range import DateTimeRange
+from byceps.util.datetime.range import create_adjacent_ranges, DateTimeRange
 
 
 @params(
@@ -62,3 +62,22 @@ def test_contains(starts_at, ends_at, tested_datetime, expected):
     actual = date_time_range.contains(tested_datetime)
 
     assert actual == expected
+
+
+def test_create_adjacent_ranges():
+    dt1 = datetime(2014,  8, 15, 12,  0,  0)
+    dt2 = datetime(2014,  8, 15, 19, 30,  0)
+    dt3 = datetime(2014,  8, 16,  7, 15,  0)
+    dt4 = datetime(2014,  8, 18, 22, 45,  0)
+
+    dts = [dt1, dt2, dt3, dt4]
+
+    expected = [
+        DateTimeRange(dt1, dt2),
+        DateTimeRange(dt2, dt3),
+        DateTimeRange(dt3, dt4),
+    ]
+
+    actual = create_adjacent_ranges(dts)
+
+    assert list(actual) == expected

@@ -10,6 +10,8 @@ byceps.util.datetime.range
 
 from collections import namedtuple
 
+from ..iterables import pairwise
+
 
 class DateTimeRange(namedtuple('DateTimeRange', ['start', 'end'])):
     """A date/time range with an inclusive start and an exclusive end."""
@@ -21,3 +23,9 @@ class DateTimeRange(namedtuple('DateTimeRange', ['start', 'end'])):
 
     def __repr__(self):
         return '[{0.start}..{0.end})'.format(self)
+
+
+def create_adjacent_ranges(dts):
+    """Yield adjacent ranges from successive date/time values."""
+    for pair in pairwise(dts):
+        yield DateTimeRange._make(pair)

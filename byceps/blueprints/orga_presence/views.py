@@ -14,9 +14,8 @@ from arrow import Arrow
 from flask import abort
 
 from ...services.party import service as party_service
-from ...util.datetime.range import DateTimeRange
+from ...util.datetime.range import create_adjacent_ranges
 from ...util.framework import create_blueprint
-from ...util.iterables import pairwise
 from ...util.templating import templated
 
 from ..authorization.decorators import permission_required
@@ -48,7 +47,7 @@ def view(party_id):
 
     hour_starts = list(_get_hour_starts(time_slots))
 
-    hour_ranges = list(_to_hour_ranges(hour_starts))
+    hour_ranges = list(create_adjacent_ranges(hour_starts))
 
     days_and_hour_totals = _get_days_and_hour_totals(hour_starts)
 
@@ -81,11 +80,6 @@ def _find_latest_time_slot_end(time_slots):
 def _to_datetimes_without_tzinfo(arrow_datetimes):
     for arrow_datetime in arrow_datetimes:
         yield arrow_datetime.datetime.replace(tzinfo=None)
-
-
-def _to_hour_ranges(hour_starts):
-    for pair in pairwise(hour_starts):
-        yield DateTimeRange._make(pair)
 
 
 def _get_days_and_hour_totals(hour_starts):
