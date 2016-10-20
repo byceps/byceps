@@ -1,28 +1,35 @@
 body {
   background-color: #ffffff;
+  border: none;
 }
+
 #footer,
 #header,
+#page-grid-sidebar,
 #sidebar {
   display: none;
 }
+
 #page {
   margin: 0;
-  width: 100%;
+  max-width: none;
+}
+
+nav.breadcrumbs {
+  margin-top: 0;
 }
 
 .bar-column {
   padding-left: 0 !important;
   padding-right: 0 !important;
 }
+
 .bar {
   display: inline-block;
   height: 8px;
   width: 40px;
 }
-.bar:hover {
-  outline: 1px solid red;
-}
+
 .party .bar {
   background-color: blue;
 }
@@ -31,4 +38,8 @@ body {
 }
 .task .bar {
   background-color: orange;
+}
+
+td:hover .bar {
+  background-color: red;
 }
