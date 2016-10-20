@@ -49,7 +49,7 @@ def view(party_id):
 
     hour_ranges = list(create_adjacent_ranges(hour_starts))
 
-    days_and_hour_totals = _get_days_and_hour_totals(hour_starts)
+    days_and_hour_totals = _get_days_and_hour_totals(hour_ranges)
 
     return {
         'party': party,
@@ -88,10 +88,10 @@ def _to_datetimes_without_tzinfo(arrow_datetimes):
         yield arrow_datetime.datetime.replace(tzinfo=None)
 
 
-def _get_days_and_hour_totals(hour_starts):
-    def get_date(dt):
-        return dt.date()
+def _get_days_and_hour_totals(hour_ranges):
+    def get_date(dt_range):
+        return dt_range.start.date()
 
-    for day, hour_starts_for_day in groupby(hour_starts, key=get_date):
-        hour_total = len(list(hour_starts_for_day))
+    for day, hour_ranges_for_day in groupby(hour_ranges, key=get_date):
+        hour_total = len(list(hour_ranges_for_day))
         yield day, hour_total
