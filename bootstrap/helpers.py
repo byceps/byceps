@@ -8,10 +8,7 @@ bootstrap.helpers
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.blueprints.user_group.models import UserGroup
 from byceps.services.orga.models import OrgaFlag
-from byceps.services.orga_team.models import OrgaTeam, \
-    Membership as OrgaTeamMembership
 from byceps.services.user.models.user import User
 from byceps.services.user import service as user_service
 
@@ -38,35 +35,9 @@ def get_user(screen_name):
 
 
 # -------------------------------------------------------------------- #
-# orga teams
+# orgas
 
 
 @add_to_database
 def promote_orga(brand, user):
     return OrgaFlag(brand.id, user.id)
-
-
-@add_to_database
-def create_orga_team(party, title):
-    return OrgaTeam(party.id, title.id)
-
-
-@add_to_database
-def assign_user_to_orga_team(user, orga_team, *, duties=None):
-    membership = OrgaTeamMembership(orga_team.id, user.id)
-    if duties:
-        membership.duties = duties
-    return membership
-
-
-def get_orga_team(team_id):
-    return OrgaTeam.query.get(team_id)
-
-
-# -------------------------------------------------------------------- #
-# user groups
-
-
-@add_to_database
-def create_user_group(creator, title, description=None):
-    return UserGroup(creator, title, description)
