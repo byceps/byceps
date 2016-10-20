@@ -13,7 +13,6 @@ from uuid import UUID
 
 from sqlalchemy.ext.associationproxy import association_proxy
 
-from ....config import get_site_mode
 from ....database import db, generate_uuid
 from ....services.user_avatar.models import AvatarSelection
 from ....util.instances import ReprBuilder
@@ -92,10 +91,6 @@ class User(db.Model):
         return any(map(self.has_permission, permissions))
 
     def is_orga_for_party(self, party):
-        if get_site_mode().is_admin():
-            # Current party is not defined in admin mode.
-            return False
-
         parties = {ms.orga_team.party for ms in self.orga_team_memberships}
         return party in parties
 

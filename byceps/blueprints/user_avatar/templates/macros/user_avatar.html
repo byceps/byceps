@@ -31,7 +31,7 @@
 
 
 {% macro _render_user_avatar(user, size_name) -%}
-  {%- set is_orga = user.is_orga_for_party(g.party) %}
+  {%- set is_orga = user.is_orga_for_party(g.party|default(None)) %}
 <div class="avatar size-{{ size_name }}{% if is_orga %} orga{% endif %}" title="{{ user.screen_name }}">
   {{ _render_user_avatar_image_with_fallback(user) }}
   {%- if is_orga %}
