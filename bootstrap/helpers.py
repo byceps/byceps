@@ -8,7 +8,6 @@ bootstrap.helpers
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.services.orga.models import OrgaFlag
 from byceps.services.user.models.user import User
 from byceps.services.user import service as user_service
 
@@ -32,12 +31,3 @@ def find_user(screen_name):
 
 def get_user(screen_name):
     return User.query.filter_by(screen_name=screen_name).one()
-
-
-# -------------------------------------------------------------------- #
-# orgas
-
-
-@add_to_database
-def promote_orga(brand, user):
-    return OrgaFlag(brand.id, user.id)
