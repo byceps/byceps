@@ -21,7 +21,7 @@ from ...user.models.user import User
 from .seat import Seat
 
 
-State = Enum('OccupationState', ['available', 'reserved', 'occupied'])
+State = Enum('State', ['available', 'reserved', 'occupied'])
 
 
 class SeatGroup(db.Model):
@@ -47,7 +47,7 @@ class SeatGroup(db.Model):
 
     @hybrid_property
     def state(self):
-        return OccupancyState[self._state]
+        return State[self._state]
 
     @state.setter
     def state(self, state):
