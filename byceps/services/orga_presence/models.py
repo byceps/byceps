@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-byceps.blueprints.orga_presence.models
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.orga_presence.models
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2016 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -10,10 +10,9 @@ byceps.blueprints.orga_presence.models
 
 from sqlalchemy.ext.hybrid import hybrid_property
 
+from ...blueprints.user.models.user import User
 from ...database import BaseQuery, db, generate_uuid
 from ...util.datetime.range import DateTimeRange
-
-from ..user.models.user import User
 
 
 class TimeSlotQuery(BaseQuery):

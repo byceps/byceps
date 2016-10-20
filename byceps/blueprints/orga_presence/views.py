@@ -13,6 +13,7 @@ from itertools import groupby
 from arrow import Arrow
 from flask import abort
 
+from ...services.orga_presence import service as orga_presence_service
 from ...services.party import service as party_service
 from ...util.datetime.range import create_adjacent_ranges
 from ...util.framework import create_blueprint
@@ -22,7 +23,6 @@ from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 
 from .authorization import OrgaPresencePermission
-from . import service
 
 
 blueprint = create_blueprint('orga_presence', __name__)
@@ -40,8 +40,8 @@ def view(party_id):
     if party is None:
         abort(404)
 
-    presences = service.get_presences(party.id)
-    tasks = service.get_tasks(party.id)
+    presences = orga_presence_service.get_presences(party.id)
+    tasks = orga_presence_service.get_tasks(party.id)
 
     time_slot_ranges = list(_get_time_slot_ranges(party, tasks))
 
