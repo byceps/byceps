@@ -9,9 +9,8 @@
 
 import click
 
-from byceps.database import db
+from byceps.services.orga import service as orga_service
 
-from bootstrap.helpers import promote_orga
 from bootstrap.util import app_context, get_config_name_from_env
 from bootstrap.validators import validate_brand, validate_user_screen_name
 
@@ -23,8 +22,7 @@ def execute(brand, user):
     click.echo('Promoting user "{}" to orga for brand "{}" ... '
                .format(user.screen_name, brand.title), nl=False)
 
-    promote_orga(brand, user)
-    db.session.commit()
+    orga_service.create_orga_flag(brand.id, user.id)
 
     click.secho('done.', fg='green')
 
