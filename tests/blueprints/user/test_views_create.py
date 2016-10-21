@@ -14,7 +14,6 @@ from byceps.services.user.models.user import User
 from tests.base import AbstractAppTestCase
 
 from testfixtures.authorization import create_role
-from testfixtures.user import create_user
 
 
 class UserCreateTestCase(AbstractAppTestCase):
