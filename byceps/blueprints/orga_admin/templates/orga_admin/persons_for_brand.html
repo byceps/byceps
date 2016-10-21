@@ -53,12 +53,12 @@
         <td class="nowrap">
           {{ user.detail.full_name|fallback }}<br>
           {{ render_user_admin_link(user) }}<br>
-          {{ render_icon('birthday') }}
           {%- if user.detail.date_of_birth %}
+            {{ render_icon('birthday') }}
             {{ render_date(user.detail.date_of_birth) }}
             ({{ user.detail.age }} Jahre)
           {%- else %}
-            {{ 'nicht angegeben'|dim }}
+            {{ (render_icon('birthday') ~ ' nicht angegeben')|dim }}
           {%- endif %}
         </td>
         <td class="nowrap">
@@ -72,7 +72,12 @@
           <br>
           {{ render_icon('email') }} <a href="mailto:{{- user.email_address }}">{{ user.email_address|truncate(36, killwords=True, end='…') }}</a>
           <br>
-          {{ render_icon('phone') }} {{ user.detail.phone_number|fallback }}
+          {%- if user.detail.phone_number %}
+            {{ render_icon('phone') }}
+            {{ user.detail.phone_number }}
+          {%- else %}
+            {{ (render_icon('phone') ~ ' nicht angegeben')|dim }}
+          {%- endif %}
         </td>
         <td>
           <div class="dropdown left">
