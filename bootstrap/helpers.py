@@ -9,6 +9,7 @@ bootstrap.helpers
 """
 
 from byceps.services.user.models.user import User
+from byceps.services.user import service as user_service
 
 from .util import add_to_database
 

@@ -11,7 +11,7 @@ bootstrap.authorization
 from byceps.blueprints.authorization_admin.authorization import RolePermission
 from byceps.blueprints.board.authorization import BoardPostingPermission, \
     BoardTopicPermission
-from byceps.blueprints.orga_admin.authorization import OrgaTeamPermission
+from byceps.blueprints.orga_team_admin.authorization import OrgaTeamPermission
 from byceps.blueprints.party_admin.authorization import PartyPermission
 from byceps.blueprints.snippet_admin.authorization import \
     MountpointPermission, SnippetPermission

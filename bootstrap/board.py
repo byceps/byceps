@@ -8,8 +8,8 @@ bootstrap.board
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.blueprints.board.models.category import Category
-from byceps.blueprints.board import service
+from byceps.services.board.models.category import Category
+from byceps.services.board import service
 
 
 def create_category(brand, position, slug, title, description):
