@@ -13,7 +13,8 @@ from ...database import db
 from .models.area import Area
 from .models.category import Category
 from .models.seat import Seat
-from .models.seat_group import SeatGroup, SeatGroupAssignment
+from .models.seat_group import Occupancy, OccupancyState, SeatGroup, \
+    SeatGroupAssignment, State
 
 
 # -------------------------------------------------------------------- #
@@ -132,6 +133,38 @@ def create_seat_group(party_id, title, seats):
     db.session.commit()
 
     return group
+
+
+def reserve_seat_group(seat_group, occupied_by_id):
+    """Reserve the seat group."""
+    seat_group.state = State.reserved
+
+    occupancy = Occupancy(seat_group.id, occupied_by_id)
+    db.session.add(occupancy)
+
+    db.session.commit()
+
+
+def occupy_seat_group(seat_group):
+    """Mark the seat group as occupied."""
+    seat_group.state = State.occupied
+
+    if seat_group.occupancy.state != OccupancyState.reserved:
+        raise ValueError("Seat group occupancy is not in state 'reserved', "
+                         "cannot change to state 'occupied'.")
+
+    seat_group.occupancy.state = OccupancyState.occupied
+
+    db.session.commit()
+
+
+def reset_seat_group(seat_group):
+    """Reset a seat group so it becomes available again."""
+    seat_group.state = State.available
+
+    db.session.delete(seat_group.occupancy)
+
+    db.session.commit()
 
 
 def get_all_seat_groups_for_party(party_id):
