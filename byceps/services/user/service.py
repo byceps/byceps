@@ -15,7 +15,6 @@ from flask import current_app, url_for
 from ...database import db
 
 from ..authentication.password import service as password_service
-from ..authorization.models import Role
 from ..authorization import service as authorization_service
 from ..email import service as email_service
 from ..newsletter import service as newsletter_service
@@ -110,7 +109,7 @@ def create_user(screen_name, email_address, password, first_names, last_name,
     db.session.add(user)
 
     # roles
-    board_user_role = Role.query.get('board_user')
+    board_user_role = authorization_service.find_role('board_user')
     user_role = authorization_service.assign_role_to_user(board_user_role, user)
 
     try:

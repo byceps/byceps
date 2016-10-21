@@ -57,6 +57,11 @@ def assign_role_to_user(role, user):
     return user_role
 
 
+def find_role(role_id):
+    """Return the role with that id, or `None` if not found."""
+    return Role.query.get(role_id)
+
+
 def get_permission_ids_for_user(user_id):
     """Return the IDs of all permissions the user has through the roles
     assigned to it.
