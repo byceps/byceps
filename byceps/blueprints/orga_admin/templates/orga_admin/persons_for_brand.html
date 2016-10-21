@@ -9,6 +9,20 @@
 {% set current_page_brand = brand %}
 {% set title = 'Organisatoren' %}
 
+{% block head %}
+  <style>
+    .orgas tr td:first-child {
+      vertical-align: middle;
+    }
+
+    .orgas th,
+    .orgas td {
+      line-height: 1.6;
+      white-space: nowrap;
+    }
+  </style>
+{%- endblock %}
+
 {% block before_body %}
 {{ render_main_tabs(current_page) }}
 {%- endblock %}
@@ -26,19 +40,19 @@
     {%- if g.current_user.has_permission(OrgaTeamPermission.administrate_memberships) %}
     <li><a href="{{ url_for('.create_orgaflag_form', brand_id=brand.id) }}">{{ render_icon('add') }} Person zum Orga ernennen</a></li>
     {%- endif %}
-    <li><a href="{{ url_for('.export_persons', brand_id=brand.id) }}" download="organizers_{{ brand.id }}.csv">{{ render_icon('download') }} Exportieren <small>(als Excel-CSV)</small></a></li>
+    <li><a href="{{ url_for('.export_persons', brand_id=brand.id) }}" download="organizers_{{ brand.id }}.csv">{{ render_icon('download') }} Exportieren <small>{{ 'als Excel-CSV'|dim }}</small></a></li>
   </ol>
 
-  <table class="index wide">
+  <table class="index wide orgas">
     <thead>
       <tr>
         <th>Avatar</th>
-        <th class="nowrap">
+        <th>
           Voller Name<br>
           Benutzername<br>
           Geburtstag, Alter
         </th>
-        <th class="nowrap">
+        <th>
           Wohnort<br>
           E-Mail-Adresse<br>
           Telefonnummer
@@ -49,10 +63,10 @@
     <tbody>
       {%- for user in orgas|sort(attribute='screen_name') %}
       <tr>
-        <td style="vertical-align: middle;">{{ render_user_avatar_small(user) }}</td>
-        <td class="nowrap">
+        <td>{{ render_user_avatar_small(user) }}</td>
+        <td>
+          <strong>{{ render_user_admin_link(user) }}</strong><br>
           {{ user.detail.full_name|fallback }}<br>
-          {{ render_user_admin_link(user) }}<br>
           {%- if user.detail.date_of_birth %}
             {{ render_icon('birthday') }}
             {{ render_date(user.detail.date_of_birth) }}
@@ -61,7 +75,9 @@
             {{ (render_icon('birthday') ~ ' nicht angegeben')|dim }}
           {%- endif %}
         </td>
-        <td class="nowrap">
+        <td>
+          {{ render_icon('email') }} <a href="mailto:{{- user.email_address }}">{{ user.email_address|truncate(36, killwords=True, end='…') }}</a>
+          <br>
           {{ render_icon('location') }}
           {{ user.detail.street|fallback }}
           &middot;
@@ -69,8 +85,6 @@
           {{ user.detail.city|fallback }}
           &middot;
           {{ user.detail.country|fallback }}
-          <br>
-          {{ render_icon('email') }} <a href="mailto:{{- user.email_address }}">{{ user.email_address|truncate(36, killwords=True, end='…') }}</a>
           <br>
           {%- if user.detail.phone_number %}
             {{ render_icon('phone') }}
