@@ -8,21 +8,20 @@
 
   <nav class="breadcrumbs">
     <ol>
-      <li><a href="{{ url_for('.index') }}">Partys</a></li>
+      <li><a href="{{ url_for('.index_for_brand', brand_id=brand.id) }}">{{ brand.title }}</a></li>
     </ol>
   </nav>
   <h1>{{ render_icon('add') }} {{ title }}</h1>
 
-  <form action="{{ url_for('.create') }}" method="post">
+  <form action="{{ url_for('.create', brand_id=brand.id) }}" method="post">
     {% call form_fieldset() %}
-      {{ form_field(form.brand_id, required='required', autofocus='autofocus') }}
-      {{ form_field(form.id, maxlength=40, required='required') }}
+      {{ form_field(form.id, maxlength=40, required='required', autofocus='autofocus') }}
       {{ form_field(form.title, maxlength=40, required='required') }}
       {{ form_field(form.starts_at, size=16, maxlength=16, required='required', note='Format: <kbd>TT.MM.JJJJ hh:mm</kbd>'|safe) }}
       {{ form_field(form.ends_at, size=16, maxlength=16, required='required', note='Format: <kbd>TT.MM.JJJJ hh:mm</kbd>'|safe) }}
     {% endcall %}
 
-    {{ form_buttons('Erstellen', cancel_url=url_for('.index')) }}
+    {{ form_buttons('Erstellen', cancel_url=url_for('.index_for_brand', brand_id=brand.id)) }}
   </form>
 
 {%- endblock %}

@@ -83,38 +83,31 @@ def view(party_id):
     }
 
 
-@blueprint.route('/create')
+@blueprint.route('/for_brand/<brand_id>/create')
 @permission_required(PartyPermission.create)
 @templated
-def create_form(erroneous_form=None):
-    """Show form to create a party."""
-    brands = brand_service.get_brands()
+def create_form(brand_id, erroneous_form=None):
+    """Show form to create a party for that brand."""
+    brand = _get_brand_or_404(brand_id)
 
     form = erroneous_form if erroneous_form else CreateForm()
-    form.set_brand_choices(brands)
 
     return {
+        'brand': brand,
         'form': form,
     }
 
 
-@blueprint.route('/', methods=['POST'])
+@blueprint.route('/for_brand/<brand_id>', methods=['POST'])
 @permission_required(PartyPermission.create)
-def create():
-    """Create a party."""
-    brands = brand_service.get_brands()
+def create(brand_id):
+    """Create a party for that brand."""
+    brand = _get_brand_or_404(brand_id)
 
     form = CreateForm(request.form)
-    form.set_brand_choices(brands)
 
     if not form.validate():
-        return create_form(form)
-
-    brand_id = form.brand_id.data
-    brand = brand_service.find_brand(brand_id)
-    if not brand:
-        flash_error('Unbekannte Marke.')
-        return create_form(form)
+        return create_form(brand.id, form)
 
     party_id = form.id.data.strip().lower()
     title = form.title.data.strip()
@@ -125,7 +118,7 @@ def create():
                                        ends_at)
 
     flash_success('Die Party "{}" wurde angelegt.', party.title)
-    return redirect_to('.index')
+    return redirect_to('.index_for_brand', brand_id=brand.id)
 
 
 def _get_brand_or_404(brand_id):
