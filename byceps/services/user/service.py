@@ -110,7 +110,7 @@ def create_user(screen_name, email_address, password, first_names, last_name,
 
     # roles
     board_user_role = authorization_service.find_role('board_user')
-    user_role = authorization_service.assign_role_to_user(board_user_role, user)
+    authorization_service.assign_role_to_user(board_user_role, user)
 
     try:
         db.session.commit()
