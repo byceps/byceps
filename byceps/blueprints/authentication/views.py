@@ -50,11 +50,6 @@ def before_request():
     g.current_user = user
 
 
-def _get_permissions_for_user(user_id):
-    permission_ids = authorization_service.get_permission_ids_for_user(user_id)
-    return permission_registry.get_enum_members(permission_ids)
-
-
 # -------------------------------------------------------------------- #
 # log in/out
 
@@ -258,13 +253,18 @@ def _verify_password_reset_token(verification_token):
 # helpers
 
 
-def _is_admin_mode():
-    return get_site_mode().is_admin()
-
-
 def _get_current_user_or_404():
     user = g.current_user
     if not user.is_active:
         abort(404)
 
     return user
+
+
+def _get_permissions_for_user(user_id):
+    permission_ids = authorization_service.get_permission_ids_for_user(user_id)
+    return permission_registry.get_enum_members(permission_ids)
+
+
+def _is_admin_mode():
+    return get_site_mode().is_admin()
