@@ -50,9 +50,7 @@ def index():
 @templated
 def index_for_brand(brand_id, page):
     """List parties for this brand."""
-    brand = brand_service.find_brand(brand_id)
-    if brand is None:
-        abort(404)
+    brand = _get_brand_or_404(brand_id)
 
     per_page = request.args.get('per_page', type=int, default=15)
     parties = party_service.get_parties_for_brand_paginated(brand.id, page,
@@ -78,9 +76,7 @@ def index_for_brand(brand_id, page):
 @templated
 def view(party_id):
     """Show a party."""
-    party = party_service.find_party(party_id)
-    if party is None:
-        abort(404)
+    party = _get_party_or_404(party_id)
 
     return {
         'party': party,
@@ -130,3 +126,21 @@ def create():
 
     flash_success('Die Party "{}" wurde angelegt.', party.title)
     return redirect_to('.index')
+
+
+def _get_brand_or_404(brand_id):
+    brand = brand_service.find_brand(brand_id)
+
+    if brand is None:
+        abort(404)
+
+    return brand
+
+
+def _get_party_or_404(party_id):
+    party = party_service.find_party(party_id)
+
+    if party is None:
+        abort(404)
+
+    return party
