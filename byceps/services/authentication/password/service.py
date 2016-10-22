@@ -15,7 +15,6 @@ from werkzeug.security import check_password_hash as _check_password_hash, \
 
 from ....database import db
 
-from ..exceptions import AuthenticationFailed
 from ..session import service as session_service
 
 from .models import Credential
@@ -83,19 +82,3 @@ def check_password_hash(password_hash, password):
     """
     return (password_hash is not None) \
         and _check_password_hash(password_hash, password)
-
-
-def authenticate(user, password):
-    """Try to authenticate the user.
-
-    Return the user object on success, or raise an exception on failure.
-    """
-    if not is_password_valid_for_user(user.id, password):
-        # Password does not match.
-        raise AuthenticationFailed()
-
-    if not user.is_active:
-        # User account is disabled.
-        raise AuthenticationFailed()
-
-    return user

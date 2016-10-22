@@ -12,6 +12,7 @@ from flask import abort, g, request, url_for
 
 from ...config import get_site_mode, get_user_registration_enabled
 from ...services.authentication.exceptions import AuthenticationFailed
+from ...services.authentication import service as authentication_service
 from ...services.authentication.password import service as password_service
 from ...services.authentication.password import \
     reset_service as password_reset_service
@@ -100,7 +101,7 @@ def login():
 
     # Verify credentials.
     try:
-        user = password_service.authenticate(user, password)
+        user = authentication_service.authenticate(user, password)
     except AuthenticationFailed:
         abort(403)
 
