@@ -13,6 +13,8 @@ from flask import abort, g, request, url_for
 from ...config import get_site_mode, get_user_registration_enabled
 from ...services.authentication.exceptions import AuthenticationFailed
 from ...services.authentication.password import service as password_service
+from ...services.authentication.password import \
+    reset_service as password_reset_service
 from ...services.authentication.session import service as session_service
 from ...services.authorization import service as authorization_service
 from ...services.orga import service as orga_service
@@ -205,7 +207,7 @@ def request_password_reset():
                     'noch nicht bestätigt.', screen_name)
         return redirect_to('user.request_email_address_confirmation_email')
 
-    password_service.prepare_password_reset(user)
+    password_reset_service.prepare_password_reset(user)
 
     flash_success(
         'Ein Link zum Setzen eines neuen Passworts für den Benutzernamen "{}" '
@@ -245,7 +247,7 @@ def password_reset(token):
 
     password = form.new_password.data
 
-    password_service.reset_password(verification_token, password)
+    password_reset_service.reset_password(verification_token, password)
 
     flash_success('Das Passwort wurde geändert.')
     return redirect_to('.login_form')
