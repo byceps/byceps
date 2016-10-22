@@ -113,11 +113,14 @@ def create_roles_and_permissions():
 # helpers
 
 
-def create_role_with_permissions(role_id, role_title, permission_ids_and_titles):
+def create_role_with_permissions(role_id, role_title, permissions_and_titles):
     role = authorization_service.create_role(role_id, role_title)
 
-    for permission_id, title in permission_ids_and_titles:
-        permission = authorization_service.create_permission(permission_id, title)
+    for permission_enum_member, permission_title in permissions_and_titles:
+        permission_id = permission_enum_member.__key__
+
+        permission = authorization_service.create_permission(permission_id,
+                                                             permission_title)
         authorization_service.assign_permission_to_role(permission, role)
 
 
