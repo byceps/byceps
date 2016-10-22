@@ -20,6 +20,7 @@ from ...services.authentication.session import service as session_service
 from ...services.authorization import service as authorization_service
 from ...services.orga import service as orga_service
 from ...services.terms import service as terms_service
+from ...services.user.models.user import AnonymousUser
 from ...services.user import service as user_service
 from ...services.verification_token import service as verification_token_service
 from ...util.framework import create_blueprint, flash_error, flash_notice, \
@@ -28,6 +29,7 @@ from ...util.templating import templated
 from ...util.views import redirect_to, respond_no_content
 
 from ..authorization.registry import permission_registry
+from ..core_admin.authorization import AdminPermission
 
 from .forms import LoginForm, RequestPasswordResetForm, ResetPasswordForm, \
     UpdatePasswordForm
@@ -39,15 +41,28 @@ blueprint = create_blueprint('authentication', __name__)
 
 @blueprint.before_app_request
 def before_request():
+    in_admin_mode = _is_admin_mode()
+
+    user = _get_current_user(in_admin_mode)
+
+    user.is_orga_for_any_brand = in_admin_mode \
+        and orga_service.is_user_orga(user.id)
+
+    g.current_user = user
+
+
+def _get_current_user(in_admin_mode):
     user = user_session.get_user()
 
     if not user.is_anonymous:
         user.permissions = _get_permissions_for_user(user.id)
 
-    user.is_orga_for_any_brand = _is_admin_mode() \
-        and orga_service.is_user_orga(user.id)
+    if in_admin_mode and not user.has_permission(AdminPermission.access):
+            # The user lacks the admin access permission which is
+            # required to enter the admin area.
+            return AnonymousUser()
 
-    g.current_user = user
+    return user
 
 
 # -------------------------------------------------------------------- #
@@ -95,10 +110,12 @@ def login():
 
     in_admin_mode = _is_admin_mode()
 
-    if in_admin_mode and not orga_service.is_user_orga(user.id):
-        # Authenticated user must be an orga to be allowed to enter the
-        # admin area but isn't.
-        abort(403)
+    if in_admin_mode:
+        permissions = _get_permissions_for_user(user.id)
+        if not AdminPermission.access in permissions:
+            # The user lacks the admin access permission which is required
+            # to enter the admin area.
+            abort(403)
 
     if not in_admin_mode:
         terms_version = terms_service.get_current_version(g.party.brand.id)
