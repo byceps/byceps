@@ -93,15 +93,8 @@ def login():
     if not all([screen_name, password]):
         abort(403)
 
-    # Look up user.
-    user = user_service.find_user_by_screen_name(screen_name)
-    if user is None:
-        # User name is unknown.
-        abort(403)
-
-    # Verify credentials.
     try:
-        user = authentication_service.authenticate(user, password)
+        user = authentication_service.authenticate(screen_name, password)
     except AuthenticationFailed:
         abort(403)
 
