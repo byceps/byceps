@@ -1,0 +1,20 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
+{% from 'macros/icons.html' import render_icon %}
+{% set current_page = 'brand_admin' %}
+{% set title = 'Marke erstellen' %}
+
+{% block body %}
+
+  <h1>{{ render_icon('add') }} {{ title }}</h1>
+
+  <form action="{{ url_for('.create') }}" method="post">
+    {% call form_fieldset() %}
+      {{ form_field(form.id, maxlength=40, required='required', placeholder='superlan', autofocus='autofocus') }}
+      {{ form_field(form.title, maxlength=40, required='required', placeholder='SuperLAN') }}
+    {% endcall %}
+
+    {{ form_buttons('Erstellen', cancel_url=url_for('.index')) }}
+  </form>
+
+{%- endblock %}

@@ -6,6 +6,12 @@
 
   <h1>Marken</h1>
 
+  {%- if g.current_user.has_permission(BrandPermission.create) %}
+  <ol class="actions">
+    <li><a href="{{ url_for('.create_form') }}">{{ render_icon('add') }} Marke erstellen</a></li>
+  </ol>
+  {%- endif %}
+
   <table class="index wide">
     <thead>
       <tr>

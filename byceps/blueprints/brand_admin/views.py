@@ -8,17 +8,21 @@ byceps.blueprints.brand_admin.views
 :License: Modified BSD, see LICENSE for details.
 """
 
+from flask import request
+
 from ...services.brand import service as brand_service
 from ...services.orga import service as orga_service
 from ...services.party import service as party_service
-from ...util.framework import create_blueprint
+from ...util.framework import create_blueprint, flash_success
 from ...util.templating import templated
+from ...util.views import redirect_to
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 from ..news_admin import service as news_admin_service
 
 from .authorization import BrandPermission
+from .forms import CreateForm
 
 
 blueprint = create_blueprint('brand_admin', __name__)
@@ -47,3 +51,33 @@ def index():
         'orga_count_by_brand_id': orga_count_by_brand_id,
         'news_item_count_by_brand_id': news_item_count_by_brand_id,
     }
+
+
+@blueprint.route('/create')
+@permission_required(BrandPermission.create)
+@templated
+def create_form(erroneous_form=None):
+    """Show form to create a brand."""
+    form = erroneous_form if erroneous_form else CreateForm()
+
+    return {
+        'form': form,
+    }
+
+
+@blueprint.route('/', methods=['POST'])
+@permission_required(BrandPermission.create)
+def create():
+    """Create a brand."""
+    form = CreateForm(request.form)
+
+    if not form.validate():
+        return create_form(form)
+
+    brand_id = form.id.data.strip().lower()
+    title = form.title.data.strip()
+
+    brand = brand_service.create_brand(brand_id, title)
+
+    flash_success('Die Marke "{}" wurde angelegt.', brand.title)
+    return redirect_to('.index')

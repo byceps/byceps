@@ -12,5 +12,6 @@ from byceps.util.authorization import create_permission_enum
 
 
 BrandPermission = create_permission_enum('brand', [
+    'create',
     'view',
 ])
