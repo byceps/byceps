@@ -217,10 +217,6 @@ fieldset .label {
   vertical-align: top;
   width: 140px;
 }
-label,
-fieldset .label {
-  width: 139px;
-}
 .checkbox label,
 .radio label {
   font-weight: normal;
@@ -235,7 +231,7 @@ fieldset .label {
 fieldset input,
 fieldset textarea,
 fieldset .supplement {
-  width: 518px;
+  width: 510px;
 }
 fieldset input[type='checkbox'],
 fieldset input[type='radio'],
