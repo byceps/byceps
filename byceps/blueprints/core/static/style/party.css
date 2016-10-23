@@ -48,6 +48,7 @@ main,
 #sidebar section {
   background-color: #ffffff;
   border-radius: 15px;
+  overflow: hidden;
 }
 
 #sidebar {

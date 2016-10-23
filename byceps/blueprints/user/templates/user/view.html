@@ -8,12 +8,45 @@
 {% block head %}
     <style>
       main {
-        padding-top: 40px;
+        padding: 0;
       }
 
-      .user-profile {
+      .user-profile-background {
+        background-color: #f4f4f4;
+        border-bottom: #dddddd solid 1px;
+        height: 104px;
+      }
+
+      .user-profile-header {
+        display: flex;
+        margin-top: -104px;
+        padding: 40px;
+      }
+
+      .user-profile-header-column {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+      }
+      .user-profile-header-column + .user-profile-header-column {
+        margin-left: 1rem;
+      }
+
+      .user-profile-header-cell-top,
+      .user-profile-header-cell-bottom {
+      }
+      .user-profile-header-cell-top {
+        padding-bottom: 3px;
+      }
+      .user-profile-header-cell-bottom {
+        height: 50%;
+        padding-top: 4px;
+      }
+
+      .user-profile-layout {
         display: flex;
         flex-wrap: wrap;
+        padding: 0 40px 40px 40px;
       }
 
       .user-profile-primary {
@@ -21,17 +54,16 @@
         margin-bottom: 20px;
         padding-right: 40px;
       }
-      .user-profile-primary .screenname,
-      .user-profile-primary .orgateam {
+
+      .user-profile .screenname,
+      .user-profile .orgateam {
         font-weight: bold;
       }
-      .user-profile-primary .screenname {
-        font-size: 20px;
-        margin-top: 10px;
+      .user-profile .screenname {
+        font-size: 1.25rem; /* 20px / 16px */
       }
-      .user-profile-primary .orgateam {
-        font-size: 14px;
-        margin-top: 3px;
+      .user-profile .orgateam {
+        font-size: 0.875rem; /* 14px / 16px */
       }
 
       .user-profile-secondary {
@@ -44,49 +76,66 @@
 
   <div class="user-profile">
 
-    <div class="user-profile-primary">
+    <div class="user-profile-background"></div>
+
+    <div class="user-profile-header">
+
+      <div class="user-profile-header-column">
 {{ render_user_avatar_huge(user) }}
-      <div class="screenname">{{ user.screen_name }}</div>
-      {%- if orga_team_membership %}
-      <div class="orgateam">{{ orga_team_membership.orga_team.title|dim }}</div>
-      {%- endif %}
+      </div>
+
+      <div class="user-profile-header-column">
+        <div class="user-profile-header-cell-top">
+          <div class="screenname">{{ user.screen_name }}</div>
+        </div>
+        <div class="user-profile-header-cell-bottom">
+          {%- if orga_team_membership %}
+          <div class="orgateam">{{ orga_team_membership.orga_team.title|dim }}</div>
+          {%- endif %}
+        </div>
+      </div>
+
     </div>
 
-    <div class="user-profile-secondary">
-      <table class="index">
-        {%- if current_party_tickets %}
-        <tr>
-          <th>Sitzplatz</th>
-          <td>
-            <ol>
-            {%- for ticket in current_party_tickets %}
-              <li>{{ render_seating_area_link(ticket.occupied_seat.area) }}</li>
-            {%- endfor %}
-            </ol>
-          </td>
-        </tr>
-        {%- endif %}
-        <tr>
-          <th>Besuchte Partys</th>
-          <td>
-            {%- if attended_parties %}
-            <ol>
-              {%- for party in attended_parties %}
-              <li>{% if party == g.party %}<strong>{% endif %}{{ party.title }}{% if party == g.party %}</strong>{% endif %}</li>
+    <div class="user-profile-layout">
+
+      <div class="user-profile-secondary">
+        <table class="index">
+          {%- if current_party_tickets %}
+          <tr>
+            <th>Sitzplatz</th>
+            <td>
+              <ol>
+              {%- for ticket in current_party_tickets %}
+                <li>{{ render_seating_area_link(ticket.occupied_seat.area) }}</li>
               {%- endfor %}
-            </ol>
-            {%- else %}
-              {{- 'keine'|dim -}}
-            {%- endif %}
-          </td>
-        </tr>
-        {%- if badges %}
-        <tr>
-          <th>Abzeichen</th>
-          <td>{{ render_user_badges(badges) }}</td>
-        </tr>
-        {%- endif %}
-      </table>
+              </ol>
+            </td>
+          </tr>
+          {%- endif %}
+          <tr>
+            <th>Besuchte Partys</th>
+            <td>
+              {%- if attended_parties %}
+              <ol>
+                {%- for party in attended_parties %}
+                <li>{% if party == g.party %}<strong>{% endif %}{{ party.title }}{% if party == g.party %}</strong>{% endif %}</li>
+                {%- endfor %}
+              </ol>
+              {%- else %}
+                {{- 'keine'|dim -}}
+              {%- endif %}
+            </td>
+          </tr>
+          {%- if badges %}
+          <tr>
+            <th>Abzeichen</th>
+            <td>{{ render_user_badges(badges) }}</td>
+          </tr>
+          {%- endif %}
+        </table>
+      </div>
+
     </div>
 
   </div>
