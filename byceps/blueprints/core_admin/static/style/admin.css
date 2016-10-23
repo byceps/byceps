@@ -136,6 +136,7 @@ main {
 #header-content .current-user {
   font-size: 0.75rem; /* 12px / 16px */
 }
+
 #header-content .current-user .dropdown {
   padding: 5px;
 }
@@ -169,6 +170,11 @@ main {
   font-weight: bold;
   line-height: 1;
   text-decoration: none;
+}
+
+#header-content .current-user .logged-out {
+  height: 42px;
+  padding-top: 9px;
 }
 
 @media (min-width: 960px) {

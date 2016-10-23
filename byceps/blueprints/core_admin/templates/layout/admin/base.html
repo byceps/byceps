@@ -34,8 +34,8 @@
                 </ol>
               </div>
             {%- else -%}
-              <div>
-                {{ render_icon('log-in') }} <a href="{{ url_for('authentication.login_form') }}">Anmelden</a>
+              <div class="logged-out">
+                <a class="action" href="{{ url_for('authentication.login_form') }}">{{ render_icon('log-in') }} Anmelden</a>
               </div>
             {%- endif %}
             </div><!-- /.current-user -->
