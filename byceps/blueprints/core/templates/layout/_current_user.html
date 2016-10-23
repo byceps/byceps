@@ -3,7 +3,7 @@
 
 
 <div class="current-user">
-  {%- if g.current_user.is_active -%}
+  {%- if g.current_user.is_active %}
   <div class="dropdown left">
     <a href="{{ url_for('user.view_current') }}" class="dropdown-toggle">
       {{ render_user_avatar_mini(g.current_user) }}
@@ -18,7 +18,7 @@
       <li><a data-action="logout" href="{{ url_for('authentication.logout', _method='POST') }}">{{ render_icon('log-out') }} abmelden</a></li>
     </ol>
   </div>
-  {%- else -%}
+  {%- else %}
   <div>
     {{ render_icon('log-in') }} <a href="{{ url_for('authentication.login_form') }}">Anmelden</a>
   </div>
