@@ -104,7 +104,7 @@ def login():
 
     if in_admin_mode:
         permissions = _get_permissions_for_user(user.id)
-        if not AdminPermission.access in permissions:
+        if AdminPermission.access not in permissions:
             # The user lacks the admin access permission which is required
             # to enter the admin area.
             abort(403)
