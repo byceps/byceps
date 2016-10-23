@@ -133,6 +133,12 @@ main {
   text-decoration: underline;
 }
 
+@media (min-width: 960px) {
+  #header-content .head strong.big {
+    font-size: 1.125rem; /* 18px / 16px */
+  }
+}
+
 #header-content .head .dropdown-toggle:hover {
   cursor: pointer;
 }
@@ -182,12 +188,6 @@ main {
 #header-content .current-user .logged-out {
   height: 42px;
   padding-top: 9px;
-}
-
-@media (min-width: 960px) {
-  #header-content .head strong {
-    font-size: 1.125rem; /* 18px / 16px */
-  }
 }
 
 
