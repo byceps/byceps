@@ -261,6 +261,9 @@ nav.main .current a {
   border-color: #cccccc;
   opacity: 1;
 }
+nav.main [class^="icon-"] {
+  margin-right: 0.2em;
+}
 
 
 /* tabs above main content area */
