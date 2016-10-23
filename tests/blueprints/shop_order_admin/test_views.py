@@ -7,7 +7,6 @@
 
 from datetime import date
 
-from byceps.services.authorization import service as authorization_service
 from byceps.services.shop.article.models import Article
 from byceps.services.shop.order.models import Order, PaymentState
 
@@ -16,6 +15,7 @@ from testfixtures.shop_order import create_order, create_order_item
 from testfixtures.user import create_user_with_detail
 
 from tests.base import AbstractAppTestCase
+from tests.helpers import assign_permissions_to_user
 
 
 class ShopAdminTestCase(AbstractAppTestCase):
@@ -27,15 +27,8 @@ class ShopAdminTestCase(AbstractAppTestCase):
         self.orderer = self.create_user(1)
 
     def setup_admin(self):
-        permission_id = 'shop_order.update'
-        permission = authorization_service.create_permission(permission_id,
-                                                             permission_id)
-
-        role_id = 'shop_admin'
-        role = authorization_service.create_role(role_id, role_id)
-
-        authorization_service.assign_permission_to_role(permission, role)
-        authorization_service.assign_role_to_user(role, self.admin)
+        permission_ids = {'admin.access', 'shop_order.update'}
+        assign_permissions_to_user(self.admin, 'admin', permission_ids)
 
     def test_cancel(self):
         article_before = self.create_article(5)

@@ -11,8 +11,6 @@ from decimal import Decimal
 
 from freezegun import freeze_time
 
-from byceps.services.authorization import service as authorization_service
-
 from testfixtures.brand import create_brand
 from testfixtures.party import create_party
 from testfixtures.shop_article import create_article
@@ -20,6 +18,7 @@ from testfixtures.shop_order import create_order, create_order_item
 from testfixtures.user import create_user_with_detail
 
 from tests.base import AbstractAppTestCase
+from tests.helpers import assign_permissions_to_user
 
 
 class ExportTestCase(AbstractAppTestCase):
@@ -63,15 +62,8 @@ class ExportTestCase(AbstractAppTestCase):
     # helpers
 
     def setup_admin(self):
-        permission_id = 'shop_order.view'
-        permission = authorization_service.create_permission(permission_id,
-                                                             permission_id)
-
-        role_id = 'shop_admin'
-        role = authorization_service.create_role(role_id, role_id)
-
-        authorization_service.assign_permission_to_role(permission, role)
-        authorization_service.assign_role_to_user(role, self.admin)
+        permission_ids = {'admin.access', 'shop_order.view'}
+        assign_permissions_to_user(self.admin, 'admin', permission_ids)
 
     def create_articles(self):
         self.article_table = self.build_article(

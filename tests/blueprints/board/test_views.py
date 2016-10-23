@@ -7,7 +7,6 @@
 
 from datetime import datetime
 
-from byceps.services.authorization import service as authorization_service
 from byceps.services.board.models.category import Category
 from byceps.services.board.models.topic import Topic
 from byceps.services.board import service as board_service
@@ -16,6 +15,7 @@ from testfixtures.board import create_category, create_topic
 from testfixtures.user import create_user
 
 from tests.base import AbstractAppTestCase
+from tests.helpers import assign_permissions_to_user
 
 
 class BoardModerationTestCase(AbstractAppTestCase):
@@ -187,14 +187,8 @@ class BoardModerationTestCase(AbstractAppTestCase):
         return user
 
     def setup_admin(self, permission_id):
-        permission = authorization_service.create_permission(permission_id,
-                                                             permission_id)
-
-        role_id = 'board_moderator'
-        role = authorization_service.create_role(role_id, role_id)
-
-        authorization_service.assign_permission_to_role(permission, role)
-        authorization_service.assign_role_to_user(role, self.admin)
+        permission_ids = {'admin.access', permission_id}
+        assign_permissions_to_user(self.admin, 'admin', permission_ids)
 
     def create_category(self, number):
         return create_category(brand=self.brand, number=number)

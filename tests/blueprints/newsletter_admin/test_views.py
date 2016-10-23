@@ -7,11 +7,11 @@
 
 import json
 
-from byceps.services.authorization import service as authorization_service
 from byceps.services.newsletter.models import Subscription
 from byceps.services.newsletter.types import SubscriptionState
 
 from tests.base import AbstractAppTestCase
+from tests.helpers import assign_permissions_to_user
 
 from testfixtures.user import create_user
 
@@ -25,15 +25,8 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
         self.setup_subscribers()
 
     def setup_admin(self):
-        permission_id = 'newsletter.export_subscribers'
-        permission = authorization_service.create_permission(permission_id,
-                                                             permission_id)
-
-        role_id = 'newsletter_admin'
-        role = authorization_service.create_role(role_id, role_id)
-
-        authorization_service.assign_permission_to_role(permission, role)
-        authorization_service.assign_role_to_user(role, self.admin)
+        permission_ids = {'admin.access', 'newsletter.export_subscribers'}
+        assign_permissions_to_user(self.admin, 'admin', permission_ids)
 
     def setup_subscribers(self):
         for user_number, enabled, states in [
