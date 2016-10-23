@@ -17,28 +17,7 @@
         <div id="header-grid">
           <div class="column">
 
-            <div class="current-user">
-            {% if g.current_user.is_active %}
-              <div class="dropdown left">
-                <a href="{{ url_for('user.view_current') }}" class="dropdown-toggle">
-                  {{ render_user_avatar_mini(g.current_user) }}
-                  <span class="label-and-name">
-                    <span class="label">Angemeldet als</span>
-                    <span class="name">{{ g.current_user.screen_name }}</span>
-                  </span>
-                  {{ render_icon('caret-down') }}
-                </a>
-                <ol>
-                  <li><a href="{{ url_for('user.view_current') }}">{{ render_icon('user') }} Profil ansehen</a></li>
-                  <li><a data-action="logout" href="{{ url_for('authentication.logout', _method='POST') }}">{{ render_icon('log-out') }} abmelden</a></li>
-                </ol>
-              </div>
-            {%- else -%}
-              <div class="logged-out">
-                <a class="action" href="{{ url_for('authentication.login_form') }}">{{ render_icon('log-in') }} Anmelden</a>
-              </div>
-            {%- endif %}
-            </div><!-- /.current-user -->
+{%- include 'layout/admin/_current_user.html' %}
 
           </div><!-- /.column -->
           <div class="column">
