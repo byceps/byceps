@@ -2,7 +2,7 @@
 {%- from 'macros/party_admin.html' import render_party_admin_link %}
 
 
-{%- if g.current_user.is_orga_for_any_brand %}
+{%- if g.current_user.has_permission(AdminPermission.access) %}
 
 <section>
   <h1>Global</h1>

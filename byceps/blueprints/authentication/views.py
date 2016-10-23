@@ -18,7 +18,6 @@ from ...services.authentication.password import \
     reset_service as password_reset_service
 from ...services.authentication.session import service as session_service
 from ...services.authorization import service as authorization_service
-from ...services.orga import service as orga_service
 from ...services.terms import service as terms_service
 from ...services.user.models.user import AnonymousUser
 from ...services.user import service as user_service
@@ -41,23 +40,16 @@ blueprint = create_blueprint('authentication', __name__)
 
 @blueprint.before_app_request
 def before_request():
-    in_admin_mode = _is_admin_mode()
-
-    user = _get_current_user(in_admin_mode)
-
-    user.is_orga_for_any_brand = in_admin_mode \
-        and orga_service.is_user_orga(user.id)
-
-    g.current_user = user
+    g.current_user = _get_current_user()
 
 
-def _get_current_user(in_admin_mode):
+def _get_current_user():
     user = user_session.get_user()
 
     if not user.is_anonymous:
         user.permissions = _get_permissions_for_user(user.id)
 
-    if in_admin_mode and not user.has_permission(AdminPermission.access):
+    if _is_admin_mode() and not user.has_permission(AdminPermission.access):
             # The user lacks the admin access permission which is
             # required to enter the admin area.
             return AnonymousUser()
