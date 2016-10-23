@@ -80,12 +80,14 @@ main {
   font-size: 0.75rem; /* 12px / 16px */
 }
 #topbar .current-user .dropdown {
-  padding: 5px;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 1px;
+  padding: 4px 8px;
 }
 #topbar .current-user .dropdown:hover {
   background-color: #ffffff;
-  border: #cccccc solid 1px;
-  padding: 4px;
+  border-color: #cccccc;
 }
 #topbar .current-user .dropdown a {
   color: currentColor;
