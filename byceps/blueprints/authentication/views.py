@@ -118,7 +118,7 @@ def login():
                                        version_id=terms_version.id,
                                        token=verification_token.token)
             flash_notice(
-                'Bitte <a href="{}">akzeptiere zunächst die aktuellen AGB</a>.'
+                'Bitte <a href="{}">akzeptiere zunächst die aktuellen AGB</a>.',
                 consent_form_url, text_is_safe=True)
             return
 
