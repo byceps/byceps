@@ -147,7 +147,7 @@ def build_user(screen_name, email_address):
     normalized_screen_name = _normalize_screen_name(screen_name)
     normalized_email_address = _normalize_email_address(email_address)
 
-    user = User(screen_name, email_address)
+    user = User(normalized_screen_name, normalized_email_address)
 
     detail = UserDetail(user=user)
 
