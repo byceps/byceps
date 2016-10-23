@@ -15,7 +15,7 @@ from ...services.party import service as party_service
 from ...services.shop.article import service as article_service
 from ...services.shop.order import service as order_service
 from ...services.ticket import service as ticket_service
-from ...util.framework import create_blueprint, flash_error, flash_success
+from ...util.framework import create_blueprint, flash_success
 from ...util.templating import templated
 from ...util.views import redirect_to
 

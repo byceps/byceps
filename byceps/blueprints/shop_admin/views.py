@@ -8,7 +8,7 @@ byceps.blueprints.shop_admin.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from ...util.framework import create_blueprint, flash_success
+from ...util.framework import create_blueprint
 
 
 blueprint = create_blueprint('shop_admin', __name__)

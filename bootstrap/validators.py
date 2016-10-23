@@ -18,8 +18,6 @@ from byceps.services.brand import service as brand_service
 from byceps.services.party import service as party_service
 from byceps.services.user import service as user_service
 
-from .helpers import find_user
-
 
 def validate_brand(ctx, param, brand_id):
     brand = brand_service.find_brand(brand_id)

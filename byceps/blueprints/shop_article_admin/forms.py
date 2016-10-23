@@ -10,7 +10,7 @@ byceps.blueprints.shop_article_admin.forms
 
 from wtforms import BooleanField, DecimalField, IntegerField, SelectField, \
     StringField
-from wtforms.validators import InputRequired, Length
+from wtforms.validators import InputRequired
 
 from ...util.l10n import LocalizedForm
 
