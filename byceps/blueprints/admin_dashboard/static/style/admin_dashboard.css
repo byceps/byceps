@@ -26,10 +26,10 @@
 }
 .cell-icon {
   font-size: 5rem; /* 80px / 16px */
-  left: 0.25rem;
   opacity: 0.075;
   position: absolute;
-  top: 2rem;
+  right: 0.25rem;
+  top: 0;
 }
 .grid .cell .box :first-child {
   margin-top: 0;
