@@ -21,9 +21,16 @@
 {% endmacro %}
 
 
-{% macro render_party_head(party) %}
+{% macro render_party_head(party, all_brands) %}
   <div class="head-party">
-    <a href="{{ url_for('party_admin.index_for_brand', brand_id=party.brand.id) }}">{{ party.brand.title }}</a>
+    <div class="dropdown">
+      <div class="dropdown-toggle"><strong>{{ party.brand.title }}</strong> {{ render_icon('caret-down') }}</div>
+      <ol>
+        {%- for brand in all_brands|sort(attribute='title') %}
+        <li>{{ render_brand_admin_link(brand) }}</li>
+        {%- endfor %}
+      </ol>
+    </div>
     {{ '/'|dim }}
     <div>
       <div class="dropdown">
