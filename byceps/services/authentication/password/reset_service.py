@@ -15,6 +15,8 @@ from ....database import db
 from ...email import service as email_service
 from ...verification_token import service as verification_token_service
 
+from . import service as password_service
+
 
 def prepare_password_reset(user):
     """Create a verification token for password reset and email it to
@@ -52,4 +54,4 @@ def reset_password(verification_token, password):
     db.session.delete(verification_token)
     db.session.commit()
 
-    update_password_hash(user.id, password)
+    password_service.update_password_hash(user.id, password)
