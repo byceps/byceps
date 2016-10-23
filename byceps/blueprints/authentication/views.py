@@ -50,9 +50,9 @@ def _get_current_user():
         user.permissions = _get_permissions_for_user(user.id)
 
     if _is_admin_mode() and not user.has_permission(AdminPermission.access):
-            # The user lacks the admin access permission which is
-            # required to enter the admin area.
-            return AnonymousUser()
+        # The user lacks the admin access permission which is
+        # required to enter the admin area.
+        return AnonymousUser()
 
     return user
 
