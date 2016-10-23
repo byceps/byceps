@@ -119,7 +119,7 @@ def login():
                                        token=verification_token.token)
             flash_notice(
                 'Bitte <a href="{}">akzeptiere zunächst die aktuellen AGB</a>.'
-                    .format(consent_form_url), text_is_safe=True)
+                consent_form_url, text_is_safe=True)
             return
 
     # Authorization succeeded.
