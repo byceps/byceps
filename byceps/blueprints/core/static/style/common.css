@@ -215,7 +215,7 @@ fieldset .label {
   display: inline-block;
   font-weight: bold;
   vertical-align: top;
-  width: 22%;
+  width: 100%;
 }
 .checkbox label,
 .radio label {
@@ -225,14 +225,13 @@ fieldset .label {
 }
 .checkbox,
 .radio {
-  padding-left: 22%;
   padding-top: 0.3rem;
 }
 
 fieldset input:not([size]):not([type='checkbox']):not([type='radio']),
 fieldset textarea,
 fieldset .supplement {
-  width: 78%;
+  width: 100%;
 }
 fieldset input[type='number'] {
   text-align: right;
@@ -247,6 +246,24 @@ fieldset textarea.wide {
 fieldset .supplement {
   display: inline-block;
   margin-left: -4px;
+}
+
+@media (min-width: 720px) {
+  label,
+  fieldset .label {
+    width: 22%;
+  }
+
+  fieldset input:not([size]):not([type='checkbox']):not([type='radio']),
+  fieldset textarea,
+  fieldset .supplement {
+    width: 78%;
+  }
+
+  .checkbox,
+  .radio {
+    padding-left: 22%;
+  }
 }
 
 fieldset.buttons {
