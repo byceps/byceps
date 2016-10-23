@@ -1,0 +1,3 @@
+{% macro render_brand_admin_link(brand) -%}
+  <a href="{{ url_for('admin_dashboard.view_brand', brand_id=brand.id) }}">{{ brand.title }}</a>
+{%- endmacro %}
