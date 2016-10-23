@@ -1,12 +1,53 @@
 {% extends 'layout/base_auto.html' %}
-{% from 'macros/user_badge.html' import render_user_badges %}
 {% set current_page = 'user_badge' %}
 {% set title = 'Abzeichen' %}
+
+{% block head %}
+  <style>
+    .badges li {
+      align-items: center;
+      display: flex;
+    }
+    .badges li + li {
+      margin-top: 1.5rem;
+    }
+    .badges .badge {
+      flex: 0 0 auto;
+    }
+    .badges .badge a.user-badge {
+      display: block;
+    }
+    .badges .description {
+      margin-left: 1rem;
+    }
+    .badges .description p {
+      margin: 0;
+      padding: 0;
+    }
+    .badges .description p + p {
+      margin-top: 0.5rem;
+    }
+  </style>
+{%- endblock %}
 
 {% block body %}
 
   <h1>Abzeichen</h1>
 
-{{ render_user_badges(badges) }}
+  <ol class="badges">
+    {%- for badge in badges|sort(attribute='label') %}
+      <li>
+        <div class="badge">
+          <a class="user-badge" href="{{ url_for('user_badge.view', badge_id=badge.id) }}" title="{{ badge.label }}"><img src="{{ badge.image_url }}"></a>
+        </div>
+        {%- if badge.description %}
+        <div class="description">
+          <p><strong>{{ badge.label }}</strong></p>
+          <p>{{ badge.description }}</p>
+        </div>
+        {%- endif %}
+      </li>
+    {%- endfor %}
+  </ol>
 
 {%- endblock %}
