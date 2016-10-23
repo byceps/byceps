@@ -229,15 +229,10 @@ fieldset .label {
   padding-top: 0.3rem;
 }
 
-fieldset input,
+fieldset input:not([size]):not([type='checkbox']):not([type='radio']),
 fieldset textarea,
 fieldset .supplement {
   width: 78%;
-}
-fieldset input[type='checkbox'],
-fieldset input[type='radio'],
-fieldset input[size] {
-  width: auto;
 }
 fieldset input[type='number'] {
   text-align: right;
