@@ -31,7 +31,7 @@
             <div class="head">
 
   {%- if brand %}
-{{ render_brand_head(brand) }}
+{{ render_brand_head(brand, all_brands) }}
   {%- elif party %}
 {{ render_party_head(party) }}
   {%- endif %}

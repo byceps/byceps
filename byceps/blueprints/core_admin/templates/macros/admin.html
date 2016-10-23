@@ -1,13 +1,21 @@
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/party_admin.html' import render_party_admin_link %}
+{% from 'macros/brand_admin.html' import render_brand_admin_link %}
 
 
-{% macro render_brand_head(brand) %}
+{% macro render_brand_head(brand, all_brands) %}
   <div class="head-brand">
     Marken
     {{ '/'|dim }}
     <div>
-      <strong><a href="{{ url_for('party_admin.index_for_brand', brand_id=brand.id) }}">{{ brand.title }}</a></strong>
+      <div class="dropdown">
+        <div class="dropdown-toggle"><strong>{{ brand.title }}</strong> {{ render_icon('caret-down') }}</div>
+        <ol>
+          {%- for brand in all_brands|sort(attribute='title') %}
+          <li>{{ render_brand_admin_link(brand) }}</li>
+          {%- endfor %}
+        </ol>
+      </div>
     </div>
   </div>
 {% endmacro %}
