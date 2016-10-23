@@ -16,11 +16,15 @@
 {%- else %}
   <h1>Marken</h1>
   <nav class="main">
+    {%- if all_brands %}
     <ol>
       {%- for brand in all_brands|sort(attribute='title') %}
       <li><a href="{{ url_for('admin_dashboard.view_brand', brand_id=brand.id) }}">{{ brand.title }}</a></li>
       {%- endfor %}
     </ol>
+    {%- else %}
+    <p>{{ 'keine'|dim }}</p>
+    {%- endif %}
   </nav>
 {%- endif %}
 </section>
@@ -34,11 +38,15 @@
 <section>
   <h1>Partys</h1>
   <nav class="main">
+    {%- if brand.parties %}
     <ol>
     {%- for party in brand.parties|sort(attribute='starts_at', reverse=True) %}
       <li>{{ render_party_admin_link(party, dim_archived=True) }}</li>
     {%- endfor %}
     </ol>
+    {%- else %}
+    <p>{{ 'keine'|dim }}</p>
+    {%- endif %}
   </nav>
 </section>
 {%- endif %}

@@ -215,7 +215,8 @@ main {
   white-space: nowrap;
 }
 #sidebar section p {
-  padding: 0 20px
+  margin: 0;
+  padding: 0 20px;
 }
 
 @media (min-width: 960px) {
