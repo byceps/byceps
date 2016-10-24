@@ -19,7 +19,7 @@ from ...util.views import redirect_to
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
-from ..news_admin import service as news_admin_service
+from ..news import service as news_service
 
 from .authorization import BrandPermission
 from .forms import CreateForm
@@ -42,8 +42,7 @@ def index():
 
     orga_count_by_brand_id = orga_service.get_person_count_by_brand_id()
 
-    news_item_count_by_brand_id = news_admin_service \
-        .get_item_count_by_brand_id()
+    news_item_count_by_brand_id = news_service.get_item_count_by_brand_id()
 
     return {
         'brands': brands,

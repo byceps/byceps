@@ -9,6 +9,7 @@ byceps.blueprints.news.service
 """
 
 from ...database import db
+from ...services.brand.models import Brand
 
 from . models import CurrentVersionAssociation, Item, ItemVersion
 
@@ -57,6 +58,15 @@ def find_item_by_id(item_id):
     return Item.query.get(item_id)
 
 
+def get_item(brand_id, slug):
+    """Return the news item identified by that slug."""
+    return Item.query \
+        .for_brand_id(brand_id) \
+        .with_current_version() \
+        .filter_by(slug=slug) \
+        .first_or_404()
+
+
 def get_items_paginated(brand_id, page, items_per_page):
     """Return the news items to show on the specified page."""
     return Item.query \
@@ -66,10 +76,20 @@ def get_items_paginated(brand_id, page, items_per_page):
         .paginate(page, items_per_page)
 
 
-def get_item(brand_id, slug):
-    """Return the news item identified by that slug."""
+def count_items_for_brand(brand_id):
+    """Return the number of news items for that brand."""
     return Item.query \
         .for_brand_id(brand_id) \
-        .with_current_version() \
-        .filter_by(slug=slug) \
-        .first_or_404()
+        .count()
+
+
+def get_item_count_by_brand_id():
+    """Return news item count (including 0) per brand, indexed by brand ID."""
+    return dict(db.session \
+        .query(
+            Brand.id,
+            db.func.count(Item.brand_id)
+        ) \
+        .outerjoin(Item) \
+        .group_by(Brand.id) \
+        .all())
