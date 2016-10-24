@@ -11,6 +11,7 @@ byceps.blueprints.brand_admin.views
 from flask import request
 
 from ...services.brand import service as brand_service
+from ...services.news import service as news_service
 from ...services.orga import service as orga_service
 from ...services.party import service as party_service
 from ...util.framework import create_blueprint, flash_success
@@ -19,7 +20,6 @@ from ...util.views import redirect_to
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
-from ..news import service as news_service
 
 from .authorization import BrandPermission
 from .forms import CreateForm

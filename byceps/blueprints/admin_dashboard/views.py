@@ -14,6 +14,7 @@ from flask import abort
 
 from ...services.board import service as board_service
 from ...services.brand import service as brand_service
+from ...services.news import service as news_service
 from ...services.newsletter import service as newsletter_service
 from ...services.orga import service as orga_service
 from ...services.orga_team import service as orga_team_service
@@ -29,7 +30,6 @@ from ...util.templating import templated
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
-from ..news import service as news_service
 
 from .authorization import AdminDashboardPermission
 

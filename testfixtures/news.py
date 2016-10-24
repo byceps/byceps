@@ -8,7 +8,7 @@ testfixtures.news
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.blueprints.news.models import CurrentVersionAssociation, Item, \
+from byceps.services.news.models import CurrentVersionAssociation, Item, \
     ItemVersion
 
 

@@ -1,17 +1,18 @@
 # -*- coding: utf-8 -*-
 
 """
-byceps.blueprints.news.service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.news.service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2016 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
 """
 
 from ...database import db
-from ...services.brand.models import Brand
 
-from . models import CurrentVersionAssociation, Item, ItemVersion
+from ..brand.models import Brand
+
+from .models import CurrentVersionAssociation, Item, ItemVersion
 
 
 def create_item(brand, slug, creator, title, body, *, image_url_path=None):

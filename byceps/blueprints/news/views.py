@@ -10,10 +10,9 @@ byceps.blueprints.news.views
 
 from flask import g
 
+from ...services.news import service as news_service
 from ...util.framework import create_blueprint
 from ...util.templating import templated
-
-from .service import get_item, get_items_paginated
 
 
 blueprint = create_blueprint('news', __name__)
@@ -27,7 +26,8 @@ ITEMS_PER_PAGE = 4
 @templated
 def index(page):
     """Show a page of news items."""
-    items = get_items_paginated(g.party.brand.id, page, ITEMS_PER_PAGE)
+    items = news_service.get_items_paginated(g.party.brand.id, page,
+                                             ITEMS_PER_PAGE)
 
     return {
         'items': items,
@@ -39,7 +39,7 @@ def index(page):
 @templated
 def view(slug):
     """Show a single news item."""
-    item = get_item(g.party.brand.id, slug)
+    item = news_service.get_item(g.party.brand.id, slug)
 
     return {
         'item': item,
