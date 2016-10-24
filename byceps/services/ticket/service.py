@@ -15,7 +15,7 @@ from ..seating.models.category import Category
 from ..seating.models.seat import Seat
 from ..user.models.user import User
 
-from .models import Ticket
+from .models.ticket import Ticket
 
 
 def create_ticket(category, owned_by):
