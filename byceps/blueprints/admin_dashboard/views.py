@@ -87,7 +87,7 @@ def view_brand(brand_id):
 
     orga_count = orga_service.count_orgas_for_brand(brand.id)
 
-    news_item_count = news_admin_service.count_items_for_brand(brand)
+    news_item_count = news_admin_service.count_items_for_brand(brand.id)
 
     newsletter_subscriber_count = newsletter_service \
         .count_subscribers_for_brand(brand.id)

@@ -26,6 +26,8 @@ def get_item_count_by_brand_id():
         .all())
 
 
-def count_items_for_brand(brand):
+def count_items_for_brand(brand_id):
     """Return the number of news items for that brand."""
-    return Item.query.for_brand(brand).count()
+    return Item.query \
+        .for_brand_id(brand_id) \
+        .count()

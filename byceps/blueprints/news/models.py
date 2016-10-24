@@ -22,8 +22,8 @@ from ...util.templating import load_template
 
 class ItemQuery(BaseQuery):
 
-    def for_brand(self, brand):
-        return self.filter_by(brand_id=brand.id)
+    def for_brand_id(self, brand_id):
+        return self.filter_by(brand_id=brand_id)
 
     def with_current_version(self):
         return self.options(

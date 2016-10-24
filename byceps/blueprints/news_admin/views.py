@@ -42,7 +42,7 @@ def index_for_brand(brand_id, page):
 
     per_page = request.args.get('per_page', type=int, default=15)
 
-    items = news_service.get_items_paginated(brand, page, per_page)
+    items = news_service.get_items_paginated(brand.id, page, per_page)
 
     return {
         'brand': brand,

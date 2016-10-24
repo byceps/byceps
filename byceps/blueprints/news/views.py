@@ -27,8 +27,8 @@ ITEMS_PER_PAGE = 4
 @templated
 def index(page):
     """Show a page of news items."""
-    brand = g.party.brand
-    items = get_items_paginated(brand, page, ITEMS_PER_PAGE)
+    items = get_items_paginated(g.party.brand.id, page, ITEMS_PER_PAGE)
+
     return {
         'items': items,
         'page': page,
@@ -39,8 +39,8 @@ def index(page):
 @templated
 def view(slug):
     """Show a single news item."""
-    brand = g.party.brand
-    item = get_item(brand, slug)
+    item = get_item(g.party.brand.id, slug)
+
     return {
         'item': item,
     }

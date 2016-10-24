@@ -57,19 +57,19 @@ def find_item_by_id(item_id):
     return Item.query.get(item_id)
 
 
-def get_items_paginated(brand, page, items_per_page):
+def get_items_paginated(brand_id, page, items_per_page):
     """Return the news items to show on the specified page."""
     return Item.query \
-        .for_brand(brand) \
+        .for_brand_id(brand_id) \
         .with_current_version() \
         .order_by(Item.published_at.desc()) \
         .paginate(page, items_per_page)
 
 
-def get_item(brand, slug):
+def get_item(brand_id, slug):
     """Return the news item identified by that slug."""
     return Item.query \
-        .for_brand(brand) \
+        .for_brand_id(brand_id) \
         .with_current_version() \
         .filter_by(slug=slug) \
         .first_or_404()
