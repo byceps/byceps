@@ -83,7 +83,7 @@ def create(brand_id):
     body = form.body.data.strip()
     image_url_path = form.image_url_path.data.strip()
 
-    item = news_service.create_item(brand, slug, creator, title, body,
+    item = news_service.create_item(brand.id, slug, creator, title, body,
                                     image_url_path=image_url_path)
 
     flash_success('Die News "{}" wurde angelegt.', item.title)

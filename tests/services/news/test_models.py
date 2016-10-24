@@ -33,7 +33,7 @@ class ItemTestCase(AbstractAppTestCase):
     # helpers
 
     def create_item_with_version(self, slug, image_url_path):
-        item = create_item(self.brand, slug=slug)
+        item = create_item(self.brand.id, slug=slug)
         self.db.session.add(item)
 
         version = create_item_version(item, self.admin,

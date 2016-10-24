@@ -15,11 +15,11 @@ from ..brand.models import Brand
 from .models import CurrentVersionAssociation, Item, ItemVersion
 
 
-def create_item(brand, slug, creator, title, body, *, image_url_path=None):
+def create_item(brand_id, slug, creator, title, body, *, image_url_path=None):
     """Create a news item, a version, and set the version as the item's
     current one.
     """
-    item = Item(brand, slug)
+    item = Item(brand_id, slug)
     db.session.add(item)
 
     version = _create_version(item, creator, title, body,

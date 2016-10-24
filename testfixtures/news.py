@@ -12,8 +12,8 @@ from byceps.services.news.models import CurrentVersionAssociation, Item, \
     ItemVersion
 
 
-def create_item(brand, *, slug='a-news-item-about-something-nice'):
-    return Item(brand, slug)
+def create_item(brand_id, *, slug='a-news-item-about-something-nice'):
+    return Item(brand_id, slug)
 
 
 def create_item_version(item, creator, *, created_at=None, title='', body='',
