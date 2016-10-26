@@ -8,7 +8,7 @@
 from nose2.tools import params
 
 from byceps.application import create_app
-from byceps.services.countries import service as countries_service
+from byceps.services.country import service as country_service
 
 
 @params(
@@ -19,7 +19,7 @@ def test_get_countries_contains_country(name, alpha2, alpha3):
     app = create_app('test')
 
     with app.app_context():
-        countries = countries_service.get_countries()
+        countries = country_service.get_countries()
 
     country = find_by_name(countries, name)
 
@@ -33,7 +33,7 @@ def test_get_country_names_contains_selected_items():
     app = create_app('test')
 
     with app.app_context():
-        actual = countries_service.get_country_names()
+        actual = country_service.get_country_names()
 
     some_expected = frozenset([
         'Belgien',
@@ -53,7 +53,7 @@ def test_get_country_names_contains_no_duplicates():
     app = create_app('test')
 
     with app.app_context():
-        actual = countries_service.get_country_names()
+        actual = country_service.get_country_names()
 
     assert len(actual) == len(set(actual))
 

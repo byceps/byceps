@@ -13,7 +13,7 @@ from operator import attrgetter
 from flask import abort, g, jsonify, request, Response
 
 from ...config import get_site_mode, get_user_registration_enabled
-from ...services.countries import service as countries_service
+from ...services.country import service as country_service
 from ...services.newsletter import service as newsletter_service
 from ...services.orga_team import service as orga_team_service
 from ...services.ticket import service as ticket_service
@@ -260,7 +260,7 @@ def details_update_form(erroneous_form=None):
     user = get_current_user_or_404()
 
     form = erroneous_form if erroneous_form else DetailsForm(obj=user.detail)
-    country_names = countries_service.get_country_names()
+    country_names = country_service.get_country_names()
 
     return {
         'form': form,

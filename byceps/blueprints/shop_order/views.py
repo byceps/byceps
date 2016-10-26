@@ -10,7 +10,7 @@ byceps.blueprints.shop_order.views
 
 from flask import abort, g, request
 
-from ...services.countries import service as countries_service
+from ...services.country import service as country_service
 from ...services.shop.article import service as article_service
 from ...services.shop.cart.models import Cart
 from ...services.shop.order.models import PaymentMethod
@@ -48,7 +48,7 @@ def order_form(erroneous_form=None):
         ArticlesOrderForm = assemble_articles_order_form(article_compilation)
         form = ArticlesOrderForm(obj=user.detail)
 
-    country_names = countries_service.get_country_names()
+    country_names = country_service.get_country_names()
 
     return {
         'form': form,
@@ -103,7 +103,7 @@ def order_single_form(article_id, erroneous_form=None):
 
     user = g.current_user
     form = erroneous_form if erroneous_form else OrderForm(obj=user.detail)
-    country_names = countries_service.get_country_names()
+    country_names = country_service.get_country_names()
 
     if article.not_directly_orderable:
         flash_error('Der Artikel kann nicht direkt bestellt werden.')
