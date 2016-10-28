@@ -8,7 +8,7 @@ byceps.blueprints.news.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from flask import abort, g
+from flask import abort, current_app, g
 
 from ...services.news import service as news_service
 from ...util.framework import create_blueprint
@@ -18,16 +18,15 @@ from ...util.templating import templated
 blueprint = create_blueprint('news', __name__)
 
 
-ITEMS_PER_PAGE = 4
-
-
 @blueprint.route('/', defaults={'page': 1})
 @blueprint.route('/pages/<int:page>')
 @templated
 def index(page):
     """Show a page of news items."""
+    items_per_page = _get_items_per_page_value()
+
     items = news_service.get_items_paginated(g.party.brand.id, page,
-                                             ITEMS_PER_PAGE)
+                                             items_per_page)
 
     return {
         'items': items,
@@ -47,3 +46,7 @@ def view(slug):
     return {
         'item': item,
     }
+
+
+def _get_items_per_page_value(default=4):
+    return int(current_app.config.get('NEWS_ITEMS_PER_PAGE', default))
