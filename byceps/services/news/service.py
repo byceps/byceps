@@ -59,13 +59,13 @@ def find_item(item_id):
     return Item.query.get(item_id)
 
 
-def get_item(brand_id, slug):
+def find_item_by_slug(brand_id, slug):
     """Return the news item identified by that slug."""
     return Item.query \
         .for_brand_id(brand_id) \
         .with_current_version() \
         .filter_by(slug=slug) \
-        .first_or_404()
+        .first()
 
 
 def get_items_paginated(brand_id, page, items_per_page):

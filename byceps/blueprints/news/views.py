@@ -8,7 +8,7 @@ byceps.blueprints.news.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from flask import g
+from flask import abort, g
 
 from ...services.news import service as news_service
 from ...util.framework import create_blueprint
@@ -39,7 +39,10 @@ def index(page):
 @templated
 def view(slug):
     """Show a single news item."""
-    item = news_service.get_item(g.party.brand.id, slug)
+    item = news_service.find_item_by_slug(g.party.brand.id, slug)
+
+    if item is None:
+        abort(404)
 
     return {
         'item': item,
