@@ -54,7 +54,7 @@ def _create_version(item, creator, title, body, *, image_url_path=None):
     return version
 
 
-def find_item_by_id(item_id):
+def find_item(item_id):
     """Return the item with that id, or `None` if not found."""
     return Item.query.get(item_id)
 
