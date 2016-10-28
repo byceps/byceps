@@ -29,12 +29,13 @@ def get_image_type_names(types):
     return frozenset(t.name.upper() for t in types)
 
 
-def update_avatar_image(user, stream, *, allowed_types=ALL_IMAGE_TYPES):
+def update_avatar_image(user, stream, *, allowed_types=ALL_IMAGE_TYPES,
+                        maximum_dimensions=MAXIMUM_DIMENSIONS):
     """Set a new avatar image for the user."""
     image_type = _determine_image_type(stream, allowed_types)
 
     if _is_image_too_large(stream):
-        stream = create_thumbnail(stream, image_type.name, MAXIMUM_DIMENSIONS)
+        stream = create_thumbnail(stream, image_type.name, maximum_dimensions)
 
     avatar = Avatar(user, image_type)
     db.session.add(avatar)
@@ -61,10 +62,10 @@ def _determine_image_type(stream, allowed_types):
     return image_type
 
 
-def _is_image_too_large(stream):
+def _is_image_too_large(stream, maximum_dimensions):
     actual_dimensions = read_dimensions(stream)
     stream.seek(0)
-    return actual_dimensions > MAXIMUM_DIMENSIONS
+    return actual_dimensions > maximum_dimensions
 
 
 def remove_avatar_image(user):
