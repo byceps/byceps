@@ -64,7 +64,7 @@ def category_view(slug, page):
 
     board_service.mark_category_as_just_viewed(category, g.current_user)
 
-    topics_per_page = int(current_app.config['BOARD_TOPICS_PER_PAGE'])
+    topics_per_page = _get_topics_per_page_value()
 
     topics = board_service.paginate_topics(category, g.current_user, page,
                                            topics_per_page)
@@ -92,7 +92,7 @@ def topic_view(topic_id, page):
     # against it.
     last_viewed_at = topic.find_last_viewed_at(g.current_user)
 
-    postings_per_page = int(current_app.config['BOARD_POSTINGS_PER_PAGE'])
+    postings_per_page = _get_postings_per_page_value()
     if page == 0:
         posting = board_service.find_default_posting_to_jump_to(topic,
                                                                 g.current_user,
@@ -440,7 +440,7 @@ def posting_create(topic_id):
     flash_success('Deine Antwort wurde hinzugefügt.')
     signals.posting_created.send(None, posting=posting)
 
-    postings_per_page = int(current_app.config['BOARD_POSTINGS_PER_PAGE'])
+    postings_per_page = _get_postings_per_page_value()
     page_count = topic.count_pages(postings_per_page)
 
     return redirect_to('.topic_view',
@@ -581,7 +581,15 @@ def _get_posting_or_404(posting_id):
 
 
 def calculate_posting_page_number(posting):
-    postings_per_page = int(current_app.config['BOARD_POSTINGS_PER_PAGE'])
+    postings_per_page = _get_postings_per_page_value()
 
     return board_service.calculate_posting_page_number(posting, g.current_user,
                                                        postings_per_page)
+
+
+def _get_topics_per_page_value():
+    return int(current_app.config['BOARD_TOPICS_PER_PAGE'])
+
+
+def _get_postings_per_page_value():
+    return int(current_app.config['BOARD_POSTINGS_PER_PAGE'])
