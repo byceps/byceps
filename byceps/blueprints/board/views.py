@@ -587,9 +587,9 @@ def calculate_posting_page_number(posting):
                                                        postings_per_page)
 
 
-def _get_topics_per_page_value():
-    return int(current_app.config['BOARD_TOPICS_PER_PAGE'])
+def _get_topics_per_page_value(default=10):
+    return int(current_app.config.get('BOARD_TOPICS_PER_PAGE', default))
 
 
-def _get_postings_per_page_value():
-    return int(current_app.config['BOARD_POSTINGS_PER_PAGE'])
+def _get_postings_per_page_value(default=10):
+    return int(current_app.config.get('BOARD_POSTINGS_PER_PAGE', default))
