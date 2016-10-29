@@ -10,12 +10,12 @@ byceps.blueprints.user_group.views
 
 from flask import g, request
 
+from ...services.user_group import service as user_group_service
 from ...util.framework import create_blueprint, flash_error, flash_success
 from ...util.templating import templated
 from ...util.views import redirect_to
 
 from .forms import CreateForm
-from . import service
 
 
 blueprint = create_blueprint('user_group', __name__)
@@ -25,7 +25,7 @@ blueprint = create_blueprint('user_group', __name__)
 @templated
 def index():
     """List groups."""
-    groups = service.get_all_groups()
+    groups = user_group_service.get_all_groups()
 
     return {
         'groups': groups,
@@ -62,7 +62,7 @@ def create():
     title = form.title.data.strip()
     description = form.description.data.strip()
 
-    group = service.create_group(creator, title, description)
+    group = user_group_service.create_group(creator, title, description)
 
     flash_success('Die Gruppe "{}" wurde erstellt.', group.title)
     return redirect_to('.index')

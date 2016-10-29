@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-byceps.blueprints.user_group.models
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.user_group.models
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2016 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -13,8 +13,9 @@ from datetime import datetime
 from sqlalchemy.ext.associationproxy import association_proxy
 
 from ...database import db, generate_uuid
-from ...services.user.models.user import User
 from ...util.instances import ReprBuilder
+
+from ..user.models.user import User
 
 
 class UserGroup(db.Model):
