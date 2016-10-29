@@ -232,7 +232,9 @@ h2 {
 .user-comment {
   display: flex;
   flex-wrap: wrap;
-  margin-bottom: 0.75rem;
+}
+.user-comment + .user-comment {
+  margin-top: 15px;
 }
 
 .user-comment aside {
@@ -358,7 +360,7 @@ h2 {
   flex: 0 0 auto;
   font-size: 0.6875rem; /* 11px / 16px */
   opacity: 0.5;
-  padding: 10px 16px;
+  padding: 10px 16px 0 16px;
   text-align: right;
 }
 .user-comment footer:hover {
