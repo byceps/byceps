@@ -86,7 +86,8 @@ main {
   border-width: 1px;
   padding: 4px 8px;
 }
-#topbar .current-user .dropdown:hover {
+#topbar .current-user .dropdown:hover,
+#topbar .current-user .dropdown.open {
   background-color: #ffffff;
   border-color: #cccccc;
 }
@@ -328,8 +329,7 @@ h2 {
   text-align: right;
 }
 
-.user-comment header .dropdown-toggle,
-.user-comment header .dropdown-toggle:hover {
+.user-comment header .dropdown-toggle {
   background-color: transparent;
   border: none;
   border-radius: 0;
@@ -343,7 +343,8 @@ h2 {
   padding: 0 15px;
   white-space: nowrap;
 }
-.user-comment header .dropdown-toggle:hover {
+.user-comment header .dropdown:hover .dropdown-toggle,
+.user-comment header .dropdown.open .dropdown-toggle {
   background-color: #dddddd;
 }
 

@@ -156,7 +156,8 @@ main {
   border-width: 1px;
   padding: 4px 8px;
 }
-#header-content .current-user .dropdown:hover {
+#header-content .current-user .dropdown:hover,
+#header-content .current-user .dropdown.open {
   background-color: #ffffff;
   border-color: #cccccc;
 }
