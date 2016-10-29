@@ -15,6 +15,7 @@
     </a>
     <ol>
 {%- include 'layout/_current_user_menu_items.html' %}
+      <li class="divider"></li>
       <li><a data-action="logout" href="{{ url_for('authentication.logout', _method='POST') }}">{{ render_icon('log-out') }} abmelden</a></li>
     </ol>
   </div>

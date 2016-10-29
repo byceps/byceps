@@ -407,6 +407,12 @@ table.wide {
   background-color: #eeeeee;
 }
 
+.dropdown li.divider {
+  border-top: #dddddd solid 1px;
+  margin-top: 0.25rem;
+  padding-top: 0.25rem;
+}
+
 
 /* pagination */
 

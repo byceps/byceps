@@ -15,6 +15,7 @@
     </a>
     <ol>
       <li><a href="{{ url_for('user.view_current') }}">{{ render_icon('user') }} Profil ansehen</a></li>
+      <li class="divider"></li>
       <li><a data-action="logout" href="{{ url_for('authentication.logout', _method='POST') }}">{{ render_icon('log-out') }} abmelden</a></li>
     </ol>
   </div>
