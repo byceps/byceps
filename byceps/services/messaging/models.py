@@ -30,9 +30,9 @@ class Message(db.Model):
     body = db.Column(db.UnicodeText, nullable=False)
     is_read = db.Column(db.Boolean, default=False, nullable=False)
 
-    def __init__(self, sender, recipient, body, *, subject=None):
-        self.sender = sender
-        self.recipient = recipient
+    def __init__(self, sender_id, recipient_id, body, *, subject=None):
+        self.sender_id = sender_id
+        self.recipient_id = recipient_id
         self.subject = subject
         self.body = body
 
