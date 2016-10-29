@@ -325,8 +325,8 @@ table.index th {
 table.index td {
   font-size: 0.8125rem; /* 13px / 16px */
 }
-table.index tbody th,
-table.index tbody td {
+table.index > tbody > tr > th,
+table.index > tbody > tr > td {
   border-color: #cccccc;
   border-style: solid;
   border-width: 1px 0;
