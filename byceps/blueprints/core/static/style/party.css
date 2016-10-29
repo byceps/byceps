@@ -347,6 +347,9 @@ h2 {
 .user-comment header .dropdown.open .dropdown-toggle {
   background-color: #dddddd;
 }
+.user-comment header .dropdown > ol {
+  margin-right: -16px;
+}
 
 .user-comment .body {
   border-width: 1px;
