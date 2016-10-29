@@ -16,6 +16,7 @@ from flask import abort, request, url_for
 from ...services.party import service as party_service
 from ...services.shop.article import service as article_service
 from ...services.shop.order.models import PaymentState
+from ...services.shop.order import ordered_articles_service
 from ...services.shop.sequence import service as sequence_service
 from ...services.ticket import service as ticket_service
 from ...util.framework import create_blueprint, flash_success
@@ -28,7 +29,6 @@ from ..authorization.registry import permission_registry
 from .authorization import ShopArticlePermission
 from .forms import ArticleCreateForm, ArticleUpdateForm, \
     ArticleAttachmentCreateForm
-from . import service
 
 
 blueprint = create_blueprint('shop_article_admin', __name__)
@@ -67,7 +67,7 @@ def view(article_id):
     if article is None:
         abort(404)
 
-    totals = service.count_ordered_articles(article)
+    totals = ordered_articles_service.count_ordered_articles(article)
 
     return {
         'article': article,
@@ -85,7 +85,7 @@ def view_ordered(article_id):
     """
     article = _get_article_or_404(article_id)
 
-    order_items = service.get_order_items_for_article(article)
+    order_items = ordered_articles_service.get_order_items_for_article(article)
 
     quantity_total = sum(item.quantity for item in order_items)
 

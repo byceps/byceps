@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-byceps.blueprints.shop_article_admin.service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.shop.order.ordered_articles_service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2016 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -10,8 +10,9 @@ byceps.blueprints.shop_article_admin.service
 
 from collections import Counter
 
-from ...database import db
-from ...services.shop.order.models import OrderItem, PaymentState
+from ....database import db
+
+from .models import OrderItem, PaymentState
 
 
 def count_ordered_articles(article):
