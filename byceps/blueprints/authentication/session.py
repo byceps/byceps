@@ -12,7 +12,6 @@ from flask import session
 
 from ...services.authentication.exceptions import AuthenticationFailed
 from ...services.authentication.session import service as session_service
-from ...services.user.models.user import AnonymousUser
 from ...services.user import service as user_service
 
 
@@ -58,17 +57,17 @@ def _load_user(user_id, auth_token):
     not enabled, or the auth token is invalid.
     """
     if user_id is None:
-        return AnonymousUser()
+        return user_service.get_anonymous_user()
 
     user = user_service.find_user(user_id)
     if (user is None) or not user.enabled:
-        return AnonymousUser()
+        return user_service.get_anonymous_user()
 
     # Validate auth token.
     try:
         session_service.authenticate_session(user.id, auth_token)
     except AuthenticationFailed:
         # Bad auth token, not logging in.
-        return AnonymousUser()
+        return user_service.get_anonymous_user()
 
     return user

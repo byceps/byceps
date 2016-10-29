@@ -22,7 +22,7 @@ from ..terms import service as terms_service
 from ..verification_token import service as verification_token_service
 
 from .models.detail import UserDetail
-from .models.user import User
+from .models.user import AnonymousUser, User
 
 
 def count_users():
@@ -64,6 +64,11 @@ def find_user_by_screen_name(screen_name):
     return User.query \
         .filter_by(screen_name=screen_name) \
         .one_or_none()
+
+
+def get_anonymous_user():
+    """Return the anonymous user."""
+    return AnonymousUser()
 
 
 def get_users_with_avatars(user_ids):

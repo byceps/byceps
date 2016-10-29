@@ -19,7 +19,6 @@ from ...services.authentication.password import \
 from ...services.authentication.session import service as session_service
 from ...services.authorization import service as authorization_service
 from ...services.terms import service as terms_service
-from ...services.user.models.user import AnonymousUser
 from ...services.user import service as user_service
 from ...services.verification_token import service as verification_token_service
 from ...util.framework import create_blueprint, flash_error, flash_notice, \
@@ -52,7 +51,7 @@ def _get_current_user():
     if _is_admin_mode() and not user.has_permission(AdminPermission.access):
         # The user lacks the admin access permission which is
         # required to enter the admin area.
-        return AnonymousUser()
+        return user_service.get_anonymous_user()
 
     return user
 
