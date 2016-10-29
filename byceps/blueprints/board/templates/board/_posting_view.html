@@ -5,7 +5,7 @@
 {%- from 'macros/user_avatar.html' import render_user_avatar_large %}
 {%- from 'macros/user_badge.html' import render_user_badges %}
 
-<article id="posting-{{ posting.id }}" {%- if posting.hidden %} class="dimmed"{% endif %}>
+<article class="user-comment{% if posting.hidden %} dimmed{% endif %}" id="posting-{{ posting.id }}">
   <aside>
     <div class="creator">
       {{ render_user_avatar_large(posting.creator) }}
@@ -21,7 +21,7 @@
   </aside>
   <div class="content">
     <header>
-      <div class="board-posting-meta-top">
+      <div class="user-comment-meta-top">
         {{ render_user_link(posting.creator) }}
         &middot;
         {{ render_datetime(posting.created_at)|replace(', ', ' um ') }}
@@ -35,7 +35,7 @@
         {%- endif %}
       </div>
       {%- if not topic.locked and g.current_user.has_permission(BoardPostingPermission.create) %}
-      <div class="board-posting-actions">
+      <div class="user-comment-actions">
         <div class="dropdown left">
           <button class="dropdown-toggle">Aktionen {{ render_icon('caret-down') }}</button>
           <ol>
@@ -68,7 +68,7 @@
         {{ posting.edit_count }} mal bearbeitet, zuletzt: {{ render_datetime(posting.last_edited_at) }} von {{ render_user_link(posting.last_edited_by) }}
         &middot;
         {%- endif %}
-        <a href="{{ posting.external_url }}" class="board-posting-permalink">{{ render_icon('bookmark') }} <span>Permalink</span></a>
+        <a href="{{ posting.external_url }}">{{ render_icon('bookmark') }} <span>Permalink</span></a>
       </p>
     </footer>
   </div>

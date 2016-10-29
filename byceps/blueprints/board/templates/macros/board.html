@@ -2,7 +2,7 @@
 
 
 {% macro render_flag_hidden(hidden_by) -%}
-  {{ render_tag('versteckt', class='board-posting-hidden', icon='hidden', title='versteckt (durch %s)'|format(hidden_by.screen_name)) }}
+  {{ render_tag('versteckt', class='user-comment-hidden', icon='hidden', title='versteckt (durch %s)'|format(hidden_by.screen_name)) }}
 {%- endmacro %}
 
 

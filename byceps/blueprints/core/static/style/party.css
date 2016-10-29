@@ -225,58 +225,48 @@ h2 {
 
 /* board, tourneys */
 
-.board-postings,
-.tourney-match-comments {
-  margin: 20px 0;
+.user-comments {
+  margin: 30px 0 20px 0;
 }
 
-.board-postings article,
-.tourney-match-comments article {
+.user-comment {
   display: flex;
   flex-wrap: wrap;
   margin-bottom: 0.75rem;
 }
 
-.board-postings aside,
-.tourney-match-comments aside {
+.user-comment aside {
   display: flex;
   flex: 0 0 116px;
   flex-direction: column;
   padding-bottom: 15px;
 }
 
-.board-postings aside .creator .avatar,
-.tourney-match-comments aside .creator .avatar {
+.user-comment aside .creator .avatar {
   display: block;
 }
-.board-postings aside .creator .avatar img,
-.tourney-match-comments aside .creator .avatar img {
+.user-comment aside .creator .avatar img {
   border-radius: 3px;
 }
-.board-postings .user-badges,
-.tourney-match-comments .user-badges {
+
+.user-comment .user-badges {
   margin-top: 8px;
 }
-.board-postings .user-badge,
-.tourney-match-comments .user-badge {
+.user-comment .user-badge {
   padding: 4px;
 }
-.board-postings .user-badge img,
-.tourney-match-comments .user-badge img {
+.user-comment .user-badge img {
   height: 16px;
   width: 16px;
 }
 
-.board-postings .content,
-.tourney-match-comments .content {
+.user-comment .content {
   flex: 1 1 20rem;
   position: relative;
 }
 
-.board-postings .content:after,
-.board-postings .content:before,
-.tourney-match-comments .content:after,
-.tourney-match-comments .content:before {
+.user-comment .content:after,
+.user-comment .content:before {
   border: solid transparent;
   content: " ";
   height: 0;
@@ -286,31 +276,26 @@ h2 {
   top: 47px;
   width: 0;
 }
-.board-postings .content:after,
-.tourney-match-comments .content:after {
+.user-comment .content:after {
   border-color: rgba(255, 255, 255, 0);
   border-right-color: #ffffff;
   border-width: 10px;
   margin-top: -10px;
 }
-.board-postings .content:before,
-.tourney-match-comments .content:before {
+.user-comment .content:before {
   border-color: rgba(221, 221, 221, 0);
   border-right-color: #dddddd;
   border-width: 11px;
   margin-top: -11px;
 }
 
-.board-postings header,
-.board-postings .body,
-.tourney-match-comments header,
-.tourney-match-comments .body {
+.user-comment header,
+.user-comment .body {
   border-color: #dddddd;
   border-style: solid;
 }
 
-.board-postings header,
-.tourney-match-comments header {
+.user-comment header {
   background-color: #eeeeee;
   border-width: 1px 1px 0 1px;
   border-radius: 3px 3px 0 0;
@@ -321,29 +306,28 @@ h2 {
   width: 100%;
 }
 
-.board-posting-meta-top,
-.board-posting-actions {
+.user-comment-meta-top,
+.user-comment-actions {
   padding: 0 15px;
 }
-.board-posting-meta-top {
+.user-comment-meta-top {
   color: #888888;
 }
-.board-posting-meta-top a {
+.user-comment-meta-top a {
+  border: none;
   color: #333333;
   font-weight: bold;
   text-decoration: none;
 }
-.board-posting-meta-top a:hover {
+.user-comment-meta-top a:hover {
   text-decoration: underline;
 }
-.board-posting-actions {
+.user-comment-actions {
   text-align: right;
 }
 
-.board-postings header .dropdown-toggle,
-.board-postings header .dropdown-toggle:hover,
-.tourney-match-comments header .dropdown-toggle,
-.tourney-match-comments header .dropdown-toggle:hover {
+.user-comment header .dropdown-toggle,
+.user-comment header .dropdown-toggle:hover {
   background-color: transparent;
   border: none;
   border-radius: 0;
@@ -357,13 +341,11 @@ h2 {
   padding: 0 15px;
   white-space: nowrap;
 }
-.board-postings header .dropdown-toggle:hover,
-.tourney-match-comments header .dropdown-toggle:hover {
+.user-comment header .dropdown-toggle:hover {
   background-color: #dddddd;
 }
 
-.board-postings .body,
-.tourney-match-comments .body {
+.user-comment .body {
   border-width: 1px;
   border-radius: 0 0 3px 3px;
   flex: 1 0 auto;
@@ -372,52 +354,49 @@ h2 {
   text-overflow: ellipsis;
 }
 
-.board-postings footer,
-.tourney-match-comments footer {
+.user-comment footer {
   flex: 0 0 auto;
   font-size: 0.6875rem; /* 11px / 16px */
   opacity: 0.5;
   padding: 10px 16px;
   text-align: right;
 }
-.board-postings footer:hover,
-.tourney-match-comments footer:hover {
+.user-comment footer:hover {
   opacity: 1;
 }
-.board-postings footer p,
-.tourney-match-comments footer p {
+
+.user-comment footer p {
   margin: 0;
   padding: 0;
 }
 
-a.board-posting-permalink {
+.user-comment footer a {
+  border: none;
   color: currentColor;
   text-decoration: none;
 }
-a.board-posting-permalink:hover span {
+.user-comment footer a:hover span {
   text-decoration: underline;
 }
 
-.board-postings .quote-intro,
-.tourney-match-comments .quote-intro {
+.user-comment .quote-intro {
   font-size: 0.75rem; /* 12px / 16px */
   font-style: italic;
   margin: 0 0 0.2rem 0;
   padding: 0;
 }
-.board-postings .quote-intro cite,
-.tourney-match-comments .quote-intro cite {
+.user-comment .quote-intro cite {
   font-weight: bold;
 }
-.board-postings blockquote,
-.tourney-match-comments blockquote {
+
+.user-comment blockquote {
   background-color: #eeeeee;
   border: #cccccc solid 1px;
   margin: 0 0 0 1rem;
   padding: 0.5rem;
 }
 
-.board-posting-hidden {
+.user-comment-hidden {
   background-color: #999999;
 }
 

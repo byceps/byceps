@@ -24,7 +24,7 @@
 
 {{ render_pagination_nav(postings, 'board.topic_view', {'topic_id': topic.id}, centered=True) }}
 
-  <div class="board-postings">
+  <div class="user-comments">
   {%- for posting in postings.items %}
 {%- include 'board/_posting_view.html' %}
   {%- endfor %}
