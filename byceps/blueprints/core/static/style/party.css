@@ -242,7 +242,9 @@ h2 {
   display: flex;
   flex: 0 0 116px;
   flex-direction: column;
+  padding-bottom: 15px;
 }
+
 .board-postings aside .creator .avatar,
 .tourney-match-comments aside .creator .avatar {
   display: block;
@@ -267,12 +269,7 @@ h2 {
 
 .board-postings .content,
 .tourney-match-comments .content {
-  border: #dddddd solid 1px;
-  border-radius: 3px;
-  display: flex;
   flex: 1 1 20rem;
-  flex-direction: column;
-  justify-content: space-between;
   position: relative;
 }
 
@@ -285,7 +282,7 @@ h2 {
   height: 0;
   pointer-events: none;
   position: absolute;
-  right: 100%;
+  right: calc(100% - 1px);
   top: 47px;
   width: 0;
 }
@@ -305,11 +302,19 @@ h2 {
 }
 
 .board-postings header,
+.board-postings .body,
+.tourney-match-comments header,
+.tourney-match-comments .body {
+  border-color: #dddddd;
+  border-style: solid;
+}
+
+.board-postings header,
 .tourney-match-comments header {
   background-color: #eeeeee;
-  border-bottom: #dddddd solid 1px;
+  border-width: 1px 1px 0 1px;
+  border-radius: 3px 3px 0 0;
   display: flex;
-  flex: 0 0 auto;
   font-size: 0.75rem;
   justify-content: space-between;
   line-height: 1.8;
@@ -358,31 +363,12 @@ h2 {
 }
 
 .board-postings .body,
-.board-postings footer,
-.tourney-match-comments .body,
-.tourney-match-comments footer {
-  padding-top: 0.75rem;
-  padding-left: 15px;
-}
-
-.board-postings .body,
-.board-postings footer,
-.tourney-match-comments .body,
-.tourney-match-comments footer {
-  padding-right: 15px;
-}
-
-.board-postings aside,
-.board-postings footer,
-.tourney-match-comments aside,
-.tourney-match-comments footer {
-  padding-bottom: 15px;
-}
-
-.board-postings .body,
 .tourney-match-comments .body {
+  border-width: 1px;
+  border-radius: 0 0 3px 3px;
   flex: 1 0 auto;
   overflow: hidden;
+  padding: 15px;
   text-overflow: ellipsis;
 }
 
@@ -391,6 +377,7 @@ h2 {
   flex: 0 0 auto;
   font-size: 0.6875rem; /* 11px / 16px */
   opacity: 0.5;
+  padding: 10px 16px;
   text-align: right;
 }
 .board-postings footer:hover,

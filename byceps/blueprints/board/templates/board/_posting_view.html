@@ -63,10 +63,13 @@
 {{ posting.body|bbcode|safe }}
     </div>
     <footer>
-      {%- if posting.edit_count %}
-      <p>{{ posting.edit_count }} mal bearbeitet, zuletzt: {{ render_datetime(posting.last_edited_at) }} von {{ render_user_link(posting.last_edited_by) }}</p>
-      {%- endif %}
-      <p><a href="{{ posting.external_url }}" class="board-posting-permalink">{{ render_icon('bookmark') }} <span>Permalink</span></a></p>
+      <p>
+        {%- if posting.edit_count %}
+        {{ posting.edit_count }} mal bearbeitet, zuletzt: {{ render_datetime(posting.last_edited_at) }} von {{ render_user_link(posting.last_edited_by) }}
+        &middot;
+        {%- endif %}
+        <a href="{{ posting.external_url }}" class="board-posting-permalink">{{ render_icon('bookmark') }} <span>Permalink</span></a>
+      </p>
     </footer>
   </div>
 </article>
