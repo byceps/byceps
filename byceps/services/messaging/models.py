@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-byceps.blueprints.messaging.models
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.messaging.models
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2016 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -11,8 +11,9 @@ byceps.blueprints.messaging.models
 from datetime import datetime
 
 from ...database import db, generate_uuid
-from ...services.user.models.user import User
 from ...util.instances import ReprBuilder
+
+from ..user.models.user import User
 
 
 class Message(db.Model):
