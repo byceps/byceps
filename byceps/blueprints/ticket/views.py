@@ -28,11 +28,11 @@ def index_mine():
     tickets = ticket_service.find_tickets_related_to_user_for_party(me.id,
                                                                     g.party.id)
 
-    ticket_mine = find(lambda t: t.used_by == me, tickets)
+    current_user_uses_any_ticket = find(lambda t: t.used_by == me, tickets)
 
     return {
         'tickets': tickets,
-        'ticket_mine': ticket_mine,
+        'current_user_uses_any_ticket': current_user_uses_any_ticket,
     }
 
 
