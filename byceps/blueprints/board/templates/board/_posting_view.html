@@ -22,9 +22,9 @@
   <div class="content">
     <header>
       <div class="user-comment-meta-top">
-        {{ render_user_link(posting.creator) }}
+        <span class="user-link">{{ render_user_link(posting.creator) }}</span>
         &middot;
-        {{ render_datetime(posting.created_at)|replace(', ', ' um ') }}
+        <a href="{{ posting.external_url }}" title="Permalink zu diesem Beitrag">{{ render_datetime(posting.created_at)|replace(', ', ' um ') }}</a>
 
         {%- if posting.unseen %}
         &middot; {{ render_flag_new() }}
@@ -62,14 +62,10 @@
     <div class="body">
 {{ posting.body|bbcode|safe }}
     </div>
+    {%- if posting.edit_count %}
     <footer>
-      <p>
-        {%- if posting.edit_count %}
-        {{ posting.edit_count }} mal bearbeitet, zuletzt: {{ render_datetime(posting.last_edited_at) }} von {{ render_user_link(posting.last_edited_by) }}
-        &middot;
-        {%- endif %}
-        <a href="{{ posting.external_url }}">{{ render_icon('bookmark') }} <span>Permalink</span></a>
-      </p>
+      <p>{{ posting.edit_count }} mal bearbeitet, zuletzt: {{ render_datetime(posting.last_edited_at) }} von {{ render_user_link(posting.last_edited_by) }}</p>
     </footer>
+    {%- endif %}
   </div>
 </article>

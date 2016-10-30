@@ -311,12 +311,15 @@ h2 {
 }
 .user-comment-meta-top a {
   border: none;
-  color: #333333;
-  font-weight: bold;
+  color: inherit;
   text-decoration: none;
 }
 .user-comment-meta-top a:hover {
   text-decoration: underline;
+}
+.user-comment-meta-top .user-link a {
+  color: #333333;
+  font-weight: bold;
 }
 .user-comment-actions {
   text-align: right;
@@ -374,7 +377,7 @@ h2 {
   color: currentColor;
   text-decoration: none;
 }
-.user-comment footer a:hover span {
+.user-comment footer a:hover {
   text-decoration: underline;
 }
 
