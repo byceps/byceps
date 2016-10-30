@@ -485,21 +485,15 @@ ol.index.fully-linked a:hover {
 .avatar {
   border-radius: 3px;
   display: inline-block;
-}
-.avatar img {
-  display: block;
-}
-
-.avatar.size-huge,
-.avatar.size-large,
-.avatar.size-medium,
-.avatar.size-mini,
-.avatar.size-small,
-.avatar.size-tiny {
-  display: inline-block;
   overflow: hidden;
   vertical-align: middle;
 }
+.avatar img {
+  display: block;
+  min-height: 100%;
+  min-width: 100%;
+}
+
 .avatar.size-huge {
   height: 128px;
   width: 128px;
@@ -523,15 +517,6 @@ ol.index.fully-linked a:hover {
 .avatar.size-tiny {
   height: 20px;
   width: 20px;
-}
-.avatar.size-huge img,
-.avatar.size-large img,
-.avatar.size-medium img,
-.avatar.size-mini img,
-.avatar.size-small img,
-.avatar.size-tiny img {
-  min-height: 100%;
-  min-width: 100%;
 }
 
 
