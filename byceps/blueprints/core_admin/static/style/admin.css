@@ -482,18 +482,6 @@ ol.index.fully-linked a:hover {
 
 /* user avatars */
 
-.avatar {
-  border-radius: 3px;
-  display: inline-block;
-  overflow: hidden;
-  vertical-align: middle;
-}
-.avatar img {
-  display: block;
-  min-height: 100%;
-  min-width: 100%;
-}
-
 .avatar.size-huge {
   height: 128px;
   width: 128px;
