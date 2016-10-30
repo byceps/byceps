@@ -431,24 +431,6 @@ h2 {
 }
 
 
-/* user badges */
-
-.user-badge {
-  border: #cccccc solid 1px;
-  border-radius: 50%;
-  display: inline-block;
-  padding: 8px;
-}
-a.user-badge:hover {
-  border-color: currentColor;
-}
-.user-badge img {
-  display: block;
-  height: 64px;
-  width: 64px;
-}
-
-
 /* misc */
 
 main h1 a {
