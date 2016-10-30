@@ -18,8 +18,28 @@
 
   {%- if g.current_user.has_permission(NewsletterPermission.export_subscribers) %}
   <ol class="actions">
-    <li><a href="{{ url_for('.export_subscribers', brand_id=brand.id) }}">{{ render_icon('download') }} Abonnenten exportieren<br><small>{{ 'Benutzernamen und E-Mail-Adressen; als JSON'|dim }}</small></a></li>
-    <li><a href="{{ url_for('.export_subscriber_email_addresses', brand_id=brand.id) }}">{{ render_icon('download') }} Abonnenten exportieren<br><small>{{ 'nur E-Mail-Adressen; als Text'|dim }}</small></a></li>
+    <li><a href="{{ url_for('.export_subscribers', brand_id=brand.id) }}">
+      <div class="block-with-icon">
+        <div class="icon">
+          {{ render_icon('download') }}
+        </div>
+        <div class="body">
+          Abonnenten exportieren<br>
+          <small>{{ 'Benutzernamen und E-Mail-Adressen (als JSON)'|dim }}</small>
+        </div>
+      </div>
+    </a></li>
+    <li><a href="{{ url_for('.export_subscriber_email_addresses', brand_id=brand.id) }}">
+      <div class="block-with-icon">
+        <div class="icon">
+          {{ render_icon('download') }}
+        </div>
+        <div class="body">
+          Abonnenten exportieren<br>
+          <small>{{ 'nur E-Mail-Adressen (als Text)'|dim }}</small>
+        </div>
+      </div>
+    </a></li>
   </ol>
   {%- endif %}
 
