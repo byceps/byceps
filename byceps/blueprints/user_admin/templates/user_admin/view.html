@@ -6,7 +6,7 @@
 {% from 'macros/user_admin.html' import render_main_tabs_view with context %}
 {% from 'macros/user_admin.html' import render_user_deleted_flag %}
 {% from 'macros/user_avatar.html' import render_user_avatar_128 %}
-{% from 'macros/user_badge.html' import render_user_badges %}
+{% from 'macros/user_badge.html' import render_user_badges_list %}
 {% set current_page = 'user_admin.view' %}
 {% set title = 'Benutzer - %s'|format(user.screen_name) %}
 
@@ -202,6 +202,6 @@
   </table>
 
   <h2 id="badges">Abzeichen {{ render_extra_in_heading(badges|length) }}</h2>
-{{ render_user_badges(badges, size=64) }}
+{{ render_user_badges_list(badges) }}
 
 {%- endblock %}

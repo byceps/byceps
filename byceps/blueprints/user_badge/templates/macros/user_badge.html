@@ -15,3 +15,15 @@
   {%- endfor %}
 </ul>
 {%- endmacro %}
+
+
+{% macro render_user_badges_list(badges) %}
+<table class="user-badges-list">
+  {%- for badge in badges|sort(attribute='label') %}
+  <tr>
+    <td>{{ render_user_badge_linked(badge, 32) }}</td>
+    <td>{{ badge.label }}</td>
+  </tr>
+  {%- endfor %}
+</table>
+{%- endmacro %}

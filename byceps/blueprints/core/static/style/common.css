@@ -519,10 +519,20 @@ a.user-badge:hover {
   padding: 3px;
   width: 24px;
 }
+.user-badge.size-32 {
+  height: 32px;
+  padding: 4px;
+  width: 32px;
+}
 .user-badge.size-64 {
   height: 64px;
   padding: 8px;
   width: 64px;
+}
+
+table.user-badges-list td {
+  padding: 0.25rem 0.5rem 0.25rem 0;
+  vertical-align: middle;
 }
 
 
