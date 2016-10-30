@@ -1,6 +1,6 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/icons.html' import render_icon %}
-{% from 'macros/misc.html' import render_tag %}
+{% from 'macros/misc.html' import render_notification, render_tag %}
 {% from 'macros/seating.html' import render_seating_area_link %}
 {% from 'macros/user.html' import render_user_link, render_user_avatar_16_and_link %}
 {% from 'macros/user_avatar.html' import render_user_avatar_96 %}
@@ -84,16 +84,12 @@
   <h1>{{ render_icon('ticket') }} {{ title }}</h1>
   <p>Dies sind die für dich relevanten (d.h. gekauften, verwalteten und/oder genutzten) Tickets für die Party <strong>{{ g.party.title }}</strong>.</p>
 
-  <h2>Von dir genutzt</h2>
-  {%- if ticket_mine %}
-  {{ render_tickets([ticket_mine]) }}
-  {%- else %}
-  <p><em>keines</em></p>
+  {%- if not ticket_mine %}
+  {{ render_notification('error', 'warning', 'Du nutzt derzeit kein Ticket.') }}
   {%- endif %}
 
-  <h2>Von dir gekauft und/oder verwaltet</h2>
-  {%- if tickets_bought_or_managed %}
-  {{ render_tickets(tickets_bought_or_managed) }}
+  {%- if tickets %}
+  {{ render_tickets(tickets) }}
   {%- else %}
   <p><em>keine</em></p>
   {%- endif %}

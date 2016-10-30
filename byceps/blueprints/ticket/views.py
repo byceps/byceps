@@ -28,14 +28,10 @@ def index_mine():
     tickets = ticket_service.find_tickets_related_to_user_for_party(me.id,
                                                                     g.party.id)
 
-    tickets_bought = list(filter(lambda t: t.owned_by == me, tickets))
-    tickets_managed = list(filter(lambda t: t.is_managed_by(me), tickets))
-    tickets_bought_or_managed = set(tickets_bought + tickets_managed)
-
     ticket_mine = find(lambda t: t.used_by == me, tickets)
 
     return {
-        'tickets_bought_or_managed': tickets_bought_or_managed,
+        'tickets': tickets,
         'ticket_mine': ticket_mine,
     }
 
