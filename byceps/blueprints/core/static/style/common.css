@@ -330,7 +330,7 @@ table.index td {
 }
 table.index > tbody > tr > th,
 table.index > tbody > tr > td {
-  border-color: #cccccc;
+  border-color: #dddddd;
   border-style: solid;
   border-width: 1px 0;
 }
