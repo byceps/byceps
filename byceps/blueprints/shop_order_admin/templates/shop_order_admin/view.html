@@ -137,7 +137,17 @@
   </table>
 
   <ol class="actions">
-    <li><a href="{{ url_for('.export', order_id=order.id) }}" download="{{ order.order_number }}.xml">{{ render_icon('download') }} für Lexware exportieren<br><small>(Shopschnittstelle; als XML)</small></a></li>
+    <li><a href="{{ url_for('.export', order_id=order.id) }}" download="{{ order.order_number }}.xml">
+      <div class="block-with-icon">
+        <div class="icon">
+          {{ render_icon('download') }}
+        </div>
+        <div class="body">
+          für Lexware exportieren<br>
+          <small>{{ 'Shopschnittstelle (als XML)'|dim }}</small>
+        </div>
+      </div>
+    </a></li>
   </ol>
 
 {%- endblock %}
