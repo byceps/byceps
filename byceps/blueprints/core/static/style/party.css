@@ -255,13 +255,6 @@ h2 {
 .user-comment .user-badges {
   margin-top: 8px;
 }
-.user-comment .user-badge {
-  padding: 4px;
-}
-.user-comment .user-badge img {
-  height: 16px;
-  width: 16px;
-}
 
 .user-comment .content {
   flex: 1 1 20rem;

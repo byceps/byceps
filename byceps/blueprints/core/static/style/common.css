@@ -504,14 +504,24 @@ nav.pagination li.current {
   border: #cccccc solid 1px;
   border-radius: 50%;
   display: inline-block;
-  padding: 8px;
 }
 a.user-badge:hover {
   border-color: currentColor;
 }
 .user-badge img {
   display: block;
+  min-height: 100%;
+  min-width: 100%;
+}
+
+.user-badge.size-24 {
+  height: 24px;
+  padding: 3px;
+  width: 24px;
+}
+.user-badge.size-64 {
   height: 64px;
+  padding: 8px;
   width: 64px;
 }
 

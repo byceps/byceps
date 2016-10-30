@@ -38,7 +38,7 @@
     {%- for badge in badges|sort(attribute='label') %}
       <li>
         <div class="badge">
-          <a class="user-badge" href="{{ url_for('user_badge.view', badge_id=badge.id) }}" title="{{ badge.label }}"><img src="{{ badge.image_url }}"></a>
+          <a class="user-badge size-64" href="{{ url_for('user_badge.view', badge_id=badge.id) }}" title="{{ badge.label }}"><img src="{{ badge.image_url }}"></a>
         </div>
         {%- if badge.description %}
         <div class="description">
