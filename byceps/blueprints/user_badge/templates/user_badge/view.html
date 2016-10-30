@@ -1,5 +1,6 @@
 {% extends 'layout/base_auto.html' %}
 {% from 'macros/user_avatar.html' import render_user_avatar_64 %}
+{% from 'macros/user_badge.html' import render_user_badge %}
 {% set current_page = 'user_badge' %}
 {% set title = 'Abzeichen - %s'|format(badge.label) %}
 
@@ -37,9 +38,7 @@
   <h1>{{ badge.label }}</h1>
 
   <div class="badge-details">
-    <div class="badge">
-      <div class="user-badge size-64"><img src="{{ badge.image_url }}"></div>
-    </div>
+    <div class="badge">{{ render_user_badge(badge, 64) }}</div>
     {%- if badge.description %}
     <div class="description">{{ badge.description }}</div>
     {%- endif %}

@@ -1,4 +1,5 @@
 {% extends 'layout/base_auto.html' %}
+{% from 'macros/user_badge.html' import render_user_badge_linked %}
 {% set current_page = 'user_badge' %}
 {% set title = 'Abzeichen' %}
 
@@ -38,7 +39,7 @@
     {%- for badge in badges|sort(attribute='label') %}
       <li>
         <div class="badge">
-          <a class="user-badge size-64" href="{{ url_for('user_badge.view', badge_id=badge.id) }}" title="{{ badge.label }}"><img src="{{ badge.image_url }}"></a>
+          {{ render_user_badge_linked(badge, 64) }}
         </div>
         {%- if badge.description %}
         <div class="description">

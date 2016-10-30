@@ -1,7 +1,17 @@
-{% macro render_user_badges(badges, size=64) %}
+{% macro render_user_badge(badge, size) -%}
+<div class="user-badge size-{{ size }}" title="{{ badge.label }}"><img src="{{ badge.image_url }}"></div>
+{%- endmacro %}
+
+
+{% macro render_user_badge_linked(badge, size) -%}
+<a href="{{ url_for('user_badge.view', badge_id=badge.id) }}" class="user-badge size-{{ size }}" title="{{ badge.label }}"><img src="{{ badge.image_url }}"></a>
+{%- endmacro %}
+
+
+{% macro render_user_badges(badges, size=64) -%}
 <ul class="list-grid">
   {%- for badge in badges|sort(attribute='label') %}
-  <li><a href="{{ url_for('user_badge.view', badge_id=badge.id) }}" class="user-badge size-{{ size }}" title="{{ badge.label }}"><img src="{{ badge.image_url }}"></a></li>
+  <li>{{ render_user_badge_linked(badge, size) }}</li>
   {%- endfor %}
 </ul>
 {%- endmacro %}
