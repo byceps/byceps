@@ -84,23 +84,16 @@
   <h1>{{ render_icon('ticket') }} {{ title }}</h1>
   <p>Dies sind die für dich relevanten Tickets für die Party <strong>{{ g.party.title }}</strong>.</p>
 
-  <h2>{{ render_icon('user') }} Von dir genutzt</h2>
+  <h2>Von dir genutzt</h2>
   {%- if ticket_mine %}
   {{ render_tickets([ticket_mine]) }}
   {%- else %}
   <p><em>keines</em></p>
   {%- endif %}
 
-  <h2>{{ render_icon('administrate') }} Von dir verwaltet</h2>
-  {%- if tickets_managed %}
-  {{ render_tickets(tickets_managed) }}
-  {%- else %}
-  <p><em>keine</em></p>
-  {%- endif %}
-
-  <h2>{{ render_icon('shopping-cart') }} Von dir gekauft</h2>
-  {%- if tickets_bought %}
-  {{ render_tickets(tickets_bought) }}
+  <h2>Von dir gekauft und/oder verwaltet</h2>
+  {%- if tickets_bought_or_managed %}
+  {{ render_tickets(tickets_bought_or_managed) }}
   {%- else %}
   <p><em>keine</em></p>
   {%- endif %}

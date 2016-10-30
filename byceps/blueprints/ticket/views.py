@@ -30,11 +30,12 @@ def index_mine():
 
     tickets_bought = list(filter(lambda t: t.owned_by == me, tickets))
     tickets_managed = list(filter(lambda t: t.is_managed_by(me), tickets))
+    tickets_bought_or_managed = set(tickets_bought + tickets_managed)
+
     ticket_mine = find(lambda t: t.used_by == me, tickets)
 
     return {
-        'tickets_bought': tickets_bought,
-        'tickets_managed': tickets_managed,
+        'tickets_bought_or_managed': tickets_bought_or_managed,
         'ticket_mine': ticket_mine,
     }
 
