@@ -5,7 +5,7 @@
 {% from 'macros/shop_order_admin.html' import render_order_payment_state %}
 {% from 'macros/user_admin.html' import render_main_tabs_view with context %}
 {% from 'macros/user_admin.html' import render_user_deleted_flag %}
-{% from 'macros/user_avatar.html' import render_user_avatar_huge %}
+{% from 'macros/user_avatar.html' import render_user_avatar_128 %}
 {% from 'macros/user_badge.html' import render_user_badges %}
 {% set current_page = 'user_admin.view' %}
 {% set title = 'Benutzer - %s'|format(user.screen_name) %}
@@ -51,7 +51,7 @@
 
   <h2 id="account">Benutzerkonto</h2>
   <div style="float: right; margin-left: 40px;">
-    {{ render_user_avatar_huge(user) }}
+    {{ render_user_avatar_128(user) }}
   </div>
   <table class="index">
     <tr>

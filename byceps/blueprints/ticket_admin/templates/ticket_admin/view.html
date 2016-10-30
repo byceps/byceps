@@ -1,7 +1,7 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
-{% from 'macros/user_admin.html' import render_user_avatar_tiny_and_link %}
+{% from 'macros/user_admin.html' import render_user_avatar_20_and_link %}
 {% set current_page = 'ticket_admin' %}
 {% set current_page_party = party %}
 {% set title = 'Ticket %s - Tickets'|format(ticket.id) %}
@@ -21,7 +21,7 @@
     </tr>
     <tr>
       <th>Besitzer/in</th>
-      <td>{{ render_user_avatar_tiny_and_link(ticket.owned_by) }}</td>
+      <td>{{ render_user_avatar_20_and_link(ticket.owned_by) }}</td>
     </tr>
     <tr>
       <th>Party</th>
@@ -40,19 +40,19 @@
           {{ 'keiner'|dim }}
           {%- endif -%}
           <br>
-          {{ 'verwaltet durch'|dim  }} {{ render_user_avatar_tiny_and_link(ticket.get_seat_manager()) }}
+          {{ 'verwaltet durch'|dim  }} {{ render_user_avatar_20_and_link(ticket.get_seat_manager()) }}
       </td>
     </tr>
     <tr>
       <th>Nutzer/in</th>
       <td>
           {%- if ticket.used_by -%}
-          {{ render_user_avatar_tiny_and_link(ticket.used_by) }}
+          {{ render_user_avatar_20_and_link(ticket.used_by) }}
           {%- else -%}
           {{ 'keine/r'|dim }}
           {%- endif -%}
           <br>
-          {{ 'verwaltet durch'|dim }} {{ render_user_avatar_tiny_and_link(ticket.get_user_manager()) }}
+          {{ 'verwaltet durch'|dim }} {{ render_user_avatar_20_and_link(ticket.get_user_manager()) }}
       </td>
     </tr>
   </table>

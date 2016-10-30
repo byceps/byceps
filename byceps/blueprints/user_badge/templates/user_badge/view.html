@@ -1,5 +1,5 @@
 {% extends 'layout/base_auto.html' %}
-{% from 'macros/user_avatar.html' import render_user_avatar_medium %}
+{% from 'macros/user_avatar.html' import render_user_avatar_64 %}
 {% set current_page = 'user_badge' %}
 {% set title = 'Abzeichen - %s'|format(badge.label) %}
 
@@ -49,7 +49,7 @@
   <ul class="list-grid">
     {%- for user in recipients|sort(attribute='screen_name') %}
     <li><a class="recipient" href="{{ url_for('user.view', user_id=user.id) }}">
-{{ render_user_avatar_medium(user) }}
+{{ render_user_avatar_64(user) }}
     </a></li>
     {%- endfor %}
   </ul>

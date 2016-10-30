@@ -3,7 +3,7 @@
 {% from 'macros/datetime.html' import render_datetime, render_datetime_custom %}
 {% from 'macros/misc.html' import render_tag %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
-{% from 'macros/user_admin.html' import render_user_avatar_tiny_and_link %}
+{% from 'macros/user_admin.html' import render_user_avatar_16_and_link %}
 {% set current_page = 'ticket_admin' %}
 {% set current_page_party = party %}
 {% set title = '%s - Tickets'|format(party.title) %}
@@ -40,7 +40,7 @@
       {%- for ticket in tickets.items|sort(attribute='created_at') %}
       <tr>
         <td><span title="{{ ticket.id }}">{{ ticket.id|string|truncate(6, killwords=True, end='…') }}</span></td>
-        <td>{{ render_user_avatar_tiny_and_link(ticket.owned_by) }}</td>
+        <td>{{ render_user_avatar_16_and_link(ticket.owned_by) }}</td>
         <td>{{ ticket.category.title }}</td>
         <td>
           {%- if ticket.occupied_seat -%}
@@ -49,16 +49,16 @@
           {{ render_tag('keiner', class='available') }}
           {%- endif -%}
           <br>
-          {{ 'verwaltet durch'|dim  }} {{ render_user_avatar_tiny_and_link(ticket.get_seat_manager()) }}
+          {{ 'verwaltet durch'|dim  }} {{ render_user_avatar_16_and_link(ticket.get_seat_manager()) }}
         </td>
         <td>
           {%- if ticket.used_by -%}
-          {{ render_user_avatar_tiny_and_link(ticket.used_by) }}
+          {{ render_user_avatar_16_and_link(ticket.used_by) }}
           {%- else -%}
           {{ render_tag('frei', class='available') }}
           {%- endif -%}
           <br>
-          {{ 'verwaltet durch'|dim }} {{ render_user_avatar_tiny_and_link(ticket.get_user_manager()) }}
+          {{ 'verwaltet durch'|dim }} {{ render_user_avatar_16_and_link(ticket.get_user_manager()) }}
         </td>
       </tr>
       {%- endfor %}

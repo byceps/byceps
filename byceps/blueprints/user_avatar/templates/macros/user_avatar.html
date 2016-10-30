@@ -1,32 +1,39 @@
-{% macro render_user_avatar_huge(user) -%}
-  {{ _render_user_avatar(user, 'huge') }}
-{%- endmacro %}
-
-
-{% macro render_user_avatar_large(user) -%}
-  {{ _render_user_avatar(user, 'large') }}
-{%- endmacro %}
-
-
-{% macro render_user_avatar_medium(user) -%}
-  {{ _render_user_avatar(user, 'medium') }}
-{%- endmacro %}
-
-
-{% macro render_user_avatar_small(user) -%}
-  {{ _render_user_avatar(user, 'small') }}
-{%- endmacro %}
-
-
-{% macro render_user_avatar_mini(user) -%}
-  {{ _render_user_avatar(user, 'mini') }}
-{%- endmacro %}
-
-
-{% macro render_user_avatar_tiny(user) -%}
-<div class="avatar size-tiny" title="{{ user.screen_name }}">
+{% macro render_user_avatar_16(user) -%}
+<div class="avatar size-16" title="{{ user.screen_name }}">
   {{ _render_user_avatar_image_with_fallback(user) }}
 </div>
+{%- endmacro %}
+
+
+{% macro render_user_avatar_20(user) -%}
+<div class="avatar size-20" title="{{ user.screen_name }}">
+  {{ _render_user_avatar_image_with_fallback(user) }}
+</div>
+{%- endmacro %}
+
+
+{% macro render_user_avatar_32(user) -%}
+  {{ _render_user_avatar(user, '32') }}
+{%- endmacro %}
+
+
+{% macro render_user_avatar_48(user) -%}
+  {{ _render_user_avatar(user, '48') }}
+{%- endmacro %}
+
+
+{% macro render_user_avatar_64(user) -%}
+  {{ _render_user_avatar(user, '64') }}
+{%- endmacro %}
+
+
+{% macro render_user_avatar_96(user) -%}
+  {{ _render_user_avatar(user, '96') }}
+{%- endmacro %}
+
+
+{% macro render_user_avatar_128(user) -%}
+  {{ _render_user_avatar(user, '128') }}
 {%- endmacro %}
 
 

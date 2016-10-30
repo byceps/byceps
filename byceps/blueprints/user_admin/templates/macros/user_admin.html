@@ -1,7 +1,7 @@
 {% from 'macros/admin.html' import render_main_tabs as _render_main_tabs %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_tag %}
-{% from 'macros/user_avatar.html' import render_user_avatar_tiny %}
+{% from 'macros/user_avatar.html' import render_user_avatar_16, render_user_avatar_20 %}
 
 
 {% macro render_main_tabs_view(current_page, user_id) -%}
@@ -22,8 +22,13 @@
 {%- endmacro %}
 
 
-{% macro render_user_avatar_tiny_and_link(user) -%}
-<span class="nowrap">{{ render_user_avatar_tiny(user) }} {{ render_user_admin_link(user) }}</span>
+{% macro render_user_avatar_16_and_link(user) -%}
+<span class="nowrap">{{ render_user_avatar_16(user) }} {{ render_user_admin_link(user) }}</span>
+{%- endmacro %}
+
+
+{% macro render_user_avatar_20_and_link(user) -%}
+<span class="nowrap">{{ render_user_avatar_20(user) }} {{ render_user_admin_link(user) }}</span>
 {%- endmacro %}
 
 

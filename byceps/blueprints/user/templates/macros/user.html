@@ -1,4 +1,4 @@
-{% from 'macros/user_avatar.html' import render_user_avatar_mini, render_user_avatar_tiny %}
+{% from 'macros/user_avatar.html' import render_user_avatar_16, render_user_avatar_20, render_user_avatar_32 %}
 
 
 {% macro render_user_link(user) -%}
@@ -10,11 +10,16 @@
 {%- endmacro %}
 
 
-{% macro render_user_avatar_mini_and_link(user) -%}
-<span class="nowrap">{{ render_user_avatar_mini(user) }} {{ render_user_link(user) }}</span>
+{% macro render_user_avatar_16_and_link(user) -%}
+<span class="nowrap">{{ render_user_avatar_16(user) }} {{ render_user_link(user) }}</span>
 {%- endmacro %}
 
 
-{% macro render_user_avatar_tiny_and_link(user) -%}
-<span class="nowrap">{{ render_user_avatar_tiny(user) }} {{ render_user_link(user) }}</span>
+{% macro render_user_avatar_20_and_link(user) -%}
+<span class="nowrap">{{ render_user_avatar_20(user) }} {{ render_user_link(user) }}</span>
+{%- endmacro %}
+
+
+{% macro render_user_avatar_32_and_link(user) -%}
+<span class="nowrap">{{ render_user_avatar_32(user) }} {{ render_user_link(user) }}</span>
 {%- endmacro %}

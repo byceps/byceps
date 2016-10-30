@@ -3,7 +3,7 @@
 {% from 'macros/shop_admin.html' import render_main_tabs with context %}
 {% from 'macros/shop_article_admin.html' import render_article_link %}
 {% from 'macros/shop_order_admin.html' import render_order_payment_state %}
-{% from 'macros/user_admin.html' import render_user_avatar_tiny_and_link %}
+{% from 'macros/user_admin.html' import render_user_avatar_16_and_link %}
 {% set current_page = 'shop_article_admin.view_ordered' %}
 {% set current_page_party = article.party %}
 {% set title = article.description %}
@@ -54,7 +54,7 @@
         <td>{{ 'keiner'|dim }}</td>
         {%- endif %}
         <td>
-          {{- render_user_avatar_tiny_and_link(user) }}<br>
+          {{- render_user_avatar_16_and_link(user) }}<br>
           {{- user.detail.full_name|fallback -}}
         </td>
         <td class="centered">{{ quantity }}</td>

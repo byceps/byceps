@@ -480,34 +480,6 @@ ol.index.fully-linked a:hover {
 }
 
 
-/* user avatars */
-
-.avatar.size-huge {
-  height: 128px;
-  width: 128px;
-}
-.avatar.size-large {
-  height: 96px;
-  width: 96px;
-}
-.avatar.size-medium {
-  height: 64px;
-  width: 64px;
-}
-.avatar.size-mini {
-  height: 32px;
-  width: 32px;
-}
-.avatar.size-small {
-  height: 48px;
-  width: 48px;
-}
-.avatar.size-tiny {
-  height: 20px;
-  width: 20px;
-}
-
-
 /* user badges */
 
 .user-badge {

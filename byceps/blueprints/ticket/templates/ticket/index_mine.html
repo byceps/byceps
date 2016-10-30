@@ -2,8 +2,8 @@
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_tag %}
 {% from 'macros/seating.html' import render_seating_area_link %}
-{% from 'macros/user.html' import render_user_link, render_user_avatar_tiny_and_link %}
-{% from 'macros/user_avatar.html' import render_user_avatar_large %}
+{% from 'macros/user.html' import render_user_link, render_user_avatar_16_and_link %}
+{% from 'macros/user_avatar.html' import render_user_avatar_96 %}
 {% set current_page = 'ticket' %}
 {% set title = 'Tickets' %}
 
@@ -58,7 +58,7 @@
       text-decoration: underline;
     }
 
-    .ticket-card-row .avatar.size-large,
+    .ticket-card-row .avatar.size-96,
     .ticket-user-placeholder {
       margin-bottom: 0.3rem;
     }
@@ -115,7 +115,7 @@
 
         <div class="ticket-card-row">
           <span class="label">Käufer/in</span>
-          {{ render_user_avatar_tiny_and_link(ticket.owned_by) }}
+          {{ render_user_avatar_16_and_link(ticket.owned_by) }}
         </div>
 
         <div class="ticket-card-row">
@@ -131,7 +131,7 @@
           {%- with seat_manager = ticket.get_seat_manager() %}
             {%- if seat_manager != ticket.owned_by %}
           <span class="label">Verwalter/in</span>
-          {{ render_user_avatar_tiny_and_link(seat_manager) }}
+          {{ render_user_avatar_16_and_link(seat_manager) }}
             {%- endif %}
           {%- endwith %}
         </div>
@@ -139,7 +139,7 @@
         <div class="ticket-card-row">
           <span class="label">Nutzer/in</span>
           {%- if ticket.used_by -%}
-          {{ render_user_avatar_large(ticket.used_by) }}
+          {{ render_user_avatar_96(ticket.used_by) }}
           <div class="centered">
             {{ render_user_link(ticket.used_by) }}
           </div>
@@ -153,7 +153,7 @@
           {%- with user_manager = ticket.get_user_manager() %}
             {%- if user_manager != ticket.owned_by %}
           <span class="label">Verwalter/in</span>
-          {{ render_user_avatar_tiny_and_link(user_manager) }}
+          {{ render_user_avatar_16_and_link(user_manager) }}
             {%- endif %}
           {%- endwith %}
         </div>

@@ -1,6 +1,6 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/datetime.html' import render_datetime, render_datetime_custom %}
-{% from 'macros/user_admin.html' import render_user_avatar_tiny_and_link %}
+{% from 'macros/user_admin.html' import render_user_avatar_16_and_link %}
 {% set current_page = 'orga_presence' %}
 {% set layout_main_raw = True %}
 {% set title = 'Anwesenheit' %}
@@ -52,7 +52,7 @@
         {%- endfor %}
         {%- for presence in presences|sort(attribute='orga.screen_name') %}
         <tr class="presence">
-          <td>{{ render_user_avatar_tiny_and_link(presence.orga) }}</td>
+          <td>{{ render_user_avatar_16_and_link(presence.orga) }}</td>
           {{ render_range_columns(presence) }}
           {{ render_bar_columns(presence) }}
         </tr>

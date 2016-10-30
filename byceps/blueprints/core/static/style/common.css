@@ -465,6 +465,35 @@ nav.pagination li.current {
   min-width: 100%;
 }
 
+.avatar.size-16 {
+  height: 16px;
+  width: 16px;
+}
+.avatar.size-20 {
+  height: 20px;
+  width: 20px;
+}
+.avatar.size-32 {
+  height: 32px;
+  width: 32px;
+}
+.avatar.size-48 {
+  height: 48px;
+  width: 48px;
+}
+.avatar.size-64 {
+  height: 64px;
+  width: 64px;
+}
+.avatar.size-96 {
+  height: 96px;
+  width: 96px;
+}
+.avatar.size-128 {
+  height: 128px;
+  width: 128px;
+}
+
 
 /* misc */
 

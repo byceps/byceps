@@ -4,7 +4,7 @@
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/orga_admin.html' import render_main_tabs with context %}
 {% from 'macros/user_admin.html' import render_user_admin_link %}
-{% from 'macros/user_avatar.html' import render_user_avatar_small %}
+{% from 'macros/user_avatar.html' import render_user_avatar_48 %}
 {% set current_page = 'orga_admin.persons' %}
 {% set current_page_brand = brand %}
 {% set title = 'Organisatoren' %}
@@ -63,7 +63,7 @@
     <tbody>
       {%- for user in orgas|sort(attribute='screen_name') %}
       <tr>
-        <td>{{ render_user_avatar_small(user) }}</td>
+        <td>{{ render_user_avatar_48(user) }}</td>
         <td>
           <strong>{{ render_user_admin_link(user) }}</strong><br>
           {{ user.detail.full_name|fallback }}<br>

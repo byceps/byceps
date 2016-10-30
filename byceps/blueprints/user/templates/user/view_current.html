@@ -1,7 +1,7 @@
 {% extends 'layout/base_auto.html' %}
 {% from 'macros/datetime.html' import render_date, render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
-{% from 'macros/user_avatar.html' import render_user_avatar_huge %}
+{% from 'macros/user_avatar.html' import render_user_avatar_128 %}
 {% set current_page = 'user' %}
 {% set title = 'Deine Daten' %}
 
@@ -26,7 +26,7 @@
     <tr>
       <th>Avatar</th>
       <td>
-        {{ render_user_avatar_huge(user) }}
+        {{ render_user_avatar_128(user) }}
       {%- if g.current_user == user %}
         <ol class="actions" style="display: block; margin: 0.5rem 0 0 0;">
           <li><a href="{{ url_for('user_avatar.update_form') }}">{{ render_icon('upload') }} hochladen</a></li>

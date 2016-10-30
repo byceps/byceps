@@ -1,7 +1,7 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/stats.html' import render_bigstats_item %}
-{% from 'macros/user_admin.html' import render_user_avatar_tiny_and_link %}
+{% from 'macros/user_admin.html' import render_user_avatar_16_and_link %}
 {% set current_page = 'newsletter_admin' %}
 {% set current_page_brand = brand %}
 {% set title = 'Newsletter - Bestellstatus ({})'.format(brand.title) %}
@@ -45,7 +45,7 @@
     <tbody>
       {%- for user, state in subscription_states %}
       <tr>
-        <td>{{ render_user_avatar_tiny_and_link(user) }}</td>
+        <td>{{ render_user_avatar_16_and_link(user) }}</td>
         <td>{{ render_icon('enabled' if state == State.requested else 'disabled') }}</td>
       </tr>
       {%- endfor %}

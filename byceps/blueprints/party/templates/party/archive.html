@@ -1,7 +1,7 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/datetime.html' import render_datetime_long %}
 {% from 'macros/icons.html' import render_icon %}
-{% from 'macros/user.html' import render_user_avatar_tiny_and_link %}
+{% from 'macros/user.html' import render_user_avatar_20_and_link %}
 {% set current_page = 'party.archive' %}
 {% set title = 'Party-Archiv' %}
 
@@ -23,7 +23,7 @@
       <tr>
         <td style="line-height: 1.6;">
           {%- for user in attendees -%}
-            {{- render_user_avatar_tiny_and_link(user) -}}
+            {{- render_user_avatar_20_and_link(user) -}}
             {%- if not loop.last %}, {% endif -%}
           {%- endfor %}
         </td>
