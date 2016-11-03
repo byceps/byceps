@@ -17,6 +17,7 @@ from ...database import BaseQuery, db, generate_uuid
 from ...util.instances import ReprBuilder
 from ...util.templating import load_template
 
+from ..brand.models import Brand
 from ..user.models.user import User
 
 
@@ -44,6 +45,7 @@ class Item(db.Model):
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     brand_id = db.Column(db.Unicode(20), db.ForeignKey('brands.id'), index=True, nullable=False)
+    brand = db.relationship(Brand)
     slug = db.Column(db.Unicode(80), index=True, nullable=False)
     published_at = db.Column(db.DateTime, default=datetime.now, nullable=False)
     current_version = association_proxy('current_version_association', 'version')
