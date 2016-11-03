@@ -3,6 +3,7 @@
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
+{% from 'macros/user_admin.html' import render_user_avatar_16_and_link %}
 {% set current_page = 'news_admin' %}
 {% set current_page_brand = brand %}
 {% set title = '%s - News'|format(brand.title) %}
@@ -26,20 +27,33 @@
   <table class="index wide">
     <thead>
       <tr>
-        <th>Veröffentlichung</th>
-        <th>Slug</th>
-        <th>Titel</th>
+        <th>
+          Titel<br>
+          Slug
+        </th>
         <th></th>
+        <th class="nowrap">
+          Veröffentlichung<br>
+          Letzte Änderung
+        </th>
         <th></th>
       </tr>
     </thead>
     <tbody>
     {%- for item in items.items|sort(attribute='published_at', reverse=True) %}
       <tr>
-        <td>{{ render_datetime(item.published_at) }}</td>
-        <td>{{ item.slug }}</td>
-        <td>{{ item.title }}</td>
+        <td>
+          <strong>{{ item.title }}</strong><br>
+          {{ item.slug|dim }}
+        </td>
         <td>{% if item.current_version.image_url_path %} {{ render_icon('image', title='Bild festgelegt') }}{% endif %}</td>
+        <td class="nowrap">
+          <strong>{{ render_datetime(item.published_at) }}</strong><br>
+          {%- filter dim %}
+          {{ render_datetime(item.current_version.created_at) }}<br>
+          von {{ render_user_avatar_16_and_link(item.current_version.creator) }}
+          {%- endfilter %}
+        </td>
         <td>
           {%- if g.current_user.has_permission(NewsItemPermission.update) -%}
           <div class="dropdown left">
