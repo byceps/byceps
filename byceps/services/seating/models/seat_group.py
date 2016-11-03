@@ -8,10 +8,7 @@ byceps.services.seating.models.seat_group
 :License: Modified BSD, see LICENSE for details.
 """
 
-from enum import Enum
-
 from sqlalchemy.ext.associationproxy import association_proxy
-from sqlalchemy.ext.hybrid import hybrid_property
 
 from ....database import db, generate_uuid
 from ....util.instances import ReprBuilder
@@ -20,9 +17,6 @@ from ...user.models.user import User
 
 from .category import Category
 from .seat import Seat
-
-
-State = Enum('State', ['available', 'reserved', 'occupied'])
 
 
 class SeatGroup(db.Model):
@@ -38,7 +32,6 @@ class SeatGroup(db.Model):
     seat_category = db.relationship(Category)
     seat_quantity = db.Column(db.Integer, nullable=False)
     title = db.Column(db.Unicode(40), unique=True, nullable=False)
-    _state = db.Column('state', db.Unicode(10), nullable=False)
 
     seats = association_proxy('assignments', 'seat')
 
@@ -47,16 +40,9 @@ class SeatGroup(db.Model):
         self.seat_category_id = seat_category_id
         self.seat_quantity = seat_quantity
         self.title = title
-        self._state = State.available.name
 
-    @hybrid_property
-    def state(self):
-        return State[self._state]
-
-    @state.setter
-    def state(self, state):
-        assert state is not None
-        self._state = state.name
+    def is_occupied(self):
+        return self.occupancy is not None
 
     def __repr__(self):
         return ReprBuilder(self) \
@@ -65,7 +51,7 @@ class SeatGroup(db.Model):
             .add('seat_category', self.seat_category.title) \
             .add_with_lookup('seat_quantity') \
             .add_with_lookup('title') \
-            .add('state', self.state.name) \
+            .add_with_lookup('is_occupied') \
             .build()
 
 
@@ -91,9 +77,6 @@ class SeatGroupAssignment(db.Model):
             .build()
 
 
-OccupancyState = Enum('OccupancyState', ['reserved', 'occupied'])
-
-
 class Occupancy(db.Model):
     """The occupancy of a seat group."""
     __tablename__ = 'seat_group_occupancies'
@@ -103,25 +86,13 @@ class Occupancy(db.Model):
     seat_group = db.relationship(SeatGroup, backref=db.backref('occupancy', uselist=False))
     occupied_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
     occupied_by = db.relationship(User)
-    _state = db.Column('state', db.Unicode(10), nullable=False)
 
     def __init__(self, seat_group_id, occupied_by_id):
         self.seat_group_id = seat_group_id
         self.occupied_by_id = occupied_by_id
-        self._state = OccupancyState.reserved.name
-
-    @hybrid_property
-    def state(self):
-        return OccupancyState[self._state]
-
-    @state.setter
-    def state(self, state):
-        assert state is not None
-        self._state = state.name
 
     def __repr__(self):
         return ReprBuilder(self) \
             .add('seat_group_id', str(self.seat_group_id)) \
             .add('occupied_by', self.occupied_by.screen_name) \
-            .add('state', self.state.name) \
             .build()

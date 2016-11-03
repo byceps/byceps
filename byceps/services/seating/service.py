@@ -13,8 +13,7 @@ from ...database import db
 from .models.area import Area
 from .models.category import Category
 from .models.seat import Seat
-from .models.seat_group import Occupancy, OccupancyState, SeatGroup, \
-    SeatGroupAssignment, State
+from .models.seat_group import Occupancy, SeatGroup, SeatGroupAssignment
 
 
 # -------------------------------------------------------------------- #
@@ -135,35 +134,22 @@ def create_seat_group(party_id, seat_category_id, seat_quantity, title, seats):
     return group
 
 
-def reserve_seat_group(seat_group, occupied_by_id):
-    """Reserve the seat group."""
-    seat_group.state = State.reserved
+def occupy_seat_group(seat_group, occupied_by):
+    """Occupy the seat group."""
+    if seat_group.is_occupied():
+        raise ValueError('Seat group is already occupied.')
 
     occupancy = Occupancy(seat_group.id, occupied_by_id)
+
     db.session.add(occupancy)
-
     db.session.commit()
 
-
-def occupy_seat_group(seat_group):
-    """Mark the seat group as occupied."""
-    seat_group.state = State.occupied
-
-    if seat_group.occupancy.state != OccupancyState.reserved:
-        raise ValueError("Seat group occupancy is not in state 'reserved', "
-                         "cannot change to state 'occupied'.")
-
-    seat_group.occupancy.state = OccupancyState.occupied
-
-    db.session.commit()
+    return occupancy
 
 
-def reset_seat_group(seat_group):
-    """Reset a seat group so it becomes available again."""
-    seat_group.state = State.available
-
+def release_seat_group(seat_group):
+    """Release a seat group so it becomes available again."""
     db.session.delete(seat_group.occupancy)
-
     db.session.commit()
 
 
