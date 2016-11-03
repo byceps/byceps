@@ -35,8 +35,9 @@ class TicketBundle(db.Model):
     users_managed_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=True)
     users_managed_by = db.relationship(User, foreign_keys=[users_managed_by_id])
 
-    def __init__(self, ticket_category_id, owned_by):
+    def __init__(self, ticket_category_id, ticket_quantity, owned_by):
         self.ticket_category_id = ticket_category_id
+        self.ticket_quantity = ticket_quantity
         self.owned_by = owned_by
 
     def __repr__(self):
