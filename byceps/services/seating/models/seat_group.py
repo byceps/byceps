@@ -18,6 +18,7 @@ from ....util.instances import ReprBuilder
 
 from ...user.models.user import User
 
+from .category import Category
 from .seat import Seat
 
 
@@ -33,13 +34,18 @@ class SeatGroup(db.Model):
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     party_id = db.Column(db.Unicode(20), db.ForeignKey('parties.id'), index=True, nullable=False)
+    seat_category_id = db.Column(db.Uuid, db.ForeignKey('seat_categories.id'), nullable=False)
+    seat_category = db.relationship(Category)
+    seat_quantity = db.Column(db.Integer, nullable=False)
     title = db.Column(db.Unicode(40), unique=True, nullable=False)
     _state = db.Column('state', db.Unicode(10), nullable=False)
 
     seats = association_proxy('assignments', 'seat')
 
-    def __init__(self, party_id, title):
+    def __init__(self, party_id, seat_category_id, seat_quantity, title):
         self.party_id = party_id
+        self.seat_category_id = seat_category_id
+        self.seat_quantity = seat_quantity
         self.title = title
         self._state = State.available.name
 
@@ -56,6 +62,8 @@ class SeatGroup(db.Model):
         return ReprBuilder(self) \
             .add('id', str(self.id)) \
             .add('party', self.party_id) \
+            .add('seat_category', self.seat_category.title) \
+            .add_with_lookup('seat_quantity') \
             .add_with_lookup('title') \
             .add('state', self.state.name) \
             .build()

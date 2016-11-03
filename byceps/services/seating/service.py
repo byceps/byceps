@@ -121,9 +121,9 @@ def get_seat_total_per_area(party_id):
 # seat groups
 
 
-def create_seat_group(party_id, title, seats):
+def create_seat_group(party_id, seat_category_id, seat_quantity, title, seats):
     """Create a seat group and assign the given seats."""
-    group = SeatGroup(party_id, title)
+    group = SeatGroup(party_id, seat_category_id, seat_quantity, title)
     db.session.add(group)
     db.session.commit()
 
