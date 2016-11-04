@@ -154,7 +154,7 @@ def occupy_seat_group(seat_group, ticket_bundle):
     if seat_group.seat_quantity != ticket_bundle.ticket_quantity:
         raise ValueError('Seat and ticket quantities do not match.')
 
-    seats = list(sorted(seat_group.seats, key=lambda s: s.coord_x, s.coord_y))
+    seats = list(sorted(seat_group.seats, key=lambda s: (s.coord_x, s.coord_y)))
     tickets = list(sorted(ticket_bundle.tickets, key=lambda t: t.created_at))
 
     if len(seats) != len(tickets):
