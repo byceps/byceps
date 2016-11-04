@@ -18,12 +18,12 @@ except ImportError:
     get_smileys = lambda: []
 
 try:
-    from .smileys import replace_smileys
+    from .smileys import replace_smileys as _replace_smileys
 except ImportError:
-    replace_smileys = lambda x: x
+    _replace_smileys = lambda x: x
 
 
-def create_parser():
+def _create_parser():
     """Create a customized BBcode parser."""
     parser = bbcode.Parser(replace_cosmetic=False)
 
@@ -45,11 +45,11 @@ def create_parser():
     return parser
 
 
-PARSER = create_parser()
+_PARSER = _create_parser()
 
 
 def render_html(value):
     """Render text as HTML, interpreting BBcode."""
-    html = PARSER.format(value)
-    html = replace_smileys(html)
+    html = _PARSER.format(value)
+    html = _replace_smileys(html)
     return html
