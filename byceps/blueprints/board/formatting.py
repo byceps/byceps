@@ -27,12 +27,22 @@ def _create_parser():
     """Create a customized BBcode parser."""
     parser = bbcode.Parser(replace_cosmetic=False)
 
-    # Replace image tags.
+    _add_image_formatter(parser)
+    _add_quote_formatter(parser)
+
+    return parser
+
+
+def _add_image_formatter(parser):
+    """Replace image tags."""
     def render_image(name, value, options, parent, context):
         return '<img src="{}">'.format(value)
+
     parser.add_formatter('img', render_image, replace_links=False)
 
-    # Render quotes with optional author.
+
+def _add_quote_formatter(parser):
+    """Render quotes with optional author."""
     def render_quote(name, value, options, parent, context):
         intro = ''
         if 'author' in options:
@@ -40,9 +50,8 @@ def _create_parser():
             intro = '<p class="quote-intro"><cite>{}</cite> schrieb:</p>\n' \
                 .format(author)
         return '{}<blockquote>{}</blockquote>'.format(intro, value)
-    parser.add_formatter('quote', render_quote, strip=True)
 
-    return parser
+    parser.add_formatter('quote', render_quote, strip=True)
 
 
 _PARSER = _create_parser()
