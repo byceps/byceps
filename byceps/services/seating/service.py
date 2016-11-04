@@ -120,18 +120,17 @@ def get_seat_total_per_area(party_id):
 # seat groups
 
 
-def create_seat_group(party_id, seat_category_id, seat_quantity, title, seats):
+def create_seat_group(party_id, seat_category, seat_quantity, title, seats):
     """Create a seat group and assign the given seats."""
     if len(seats) != seat_quantity:
         raise ValueError("Number of seats to assign does not match "
                          "the group's seat quantity.")
 
-    seats_category_ids = {seat.category_id for seat in seats}
-    if len(seats_category_ids) != 1 \
-            or (seat_category_id not in seats_category_ids):
+    seats_categories = {seat.category for seat in seats}
+    if len(seats_categories) != 1 or (seat_category not in seats_categories):
         raise ValueError("Seats' category IDs do not match the group's.")
 
-    group = SeatGroup(party_id, seat_category_id, seat_quantity, title)
+    group = SeatGroup(party_id, seat_category, seat_quantity, title)
     db.session.add(group)
 
     for seat in seats:

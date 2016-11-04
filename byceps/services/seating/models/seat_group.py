@@ -35,9 +35,9 @@ class SeatGroup(db.Model):
 
     seats = association_proxy('assignments', 'seat')
 
-    def __init__(self, party_id, seat_category_id, seat_quantity, title):
+    def __init__(self, party_id, seat_category, seat_quantity, title):
         self.party_id = party_id
-        self.seat_category_id = seat_category_id
+        self.seat_category = seat_category
         self.seat_quantity = seat_quantity
         self.title = title
 
