@@ -134,12 +134,12 @@ def create_seat_group(party_id, seat_category_id, seat_quantity, title, seats):
     return group
 
 
-def occupy_seat_group(seat_group, occupied_by):
-    """Occupy the seat group."""
+def occupy_seat_group(seat_group, ticket_bundle):
+    """Occupy the seat group with that ticket bundle."""
     if seat_group.is_occupied():
         raise ValueError('Seat group is already occupied.')
 
-    occupancy = Occupancy(seat_group.id, occupied_by_id)
+    occupancy = Occupancy(seat_group.id, ticket_bundle.id)
 
     db.session.add(occupancy)
     db.session.commit()

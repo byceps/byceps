@@ -13,7 +13,7 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from ....database import db, generate_uuid
 from ....util.instances import ReprBuilder
 
-from ...user.models.user import User
+from ...ticket.models.ticket_bundle import TicketBundle
 
 from .category import Category
 from .seat import Seat
@@ -84,15 +84,15 @@ class Occupancy(db.Model):
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     seat_group_id = db.Column(db.Uuid, db.ForeignKey('seat_groups.id'), unique=True, index=True, nullable=False)
     seat_group = db.relationship(SeatGroup, backref=db.backref('occupancy', uselist=False))
-    occupied_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
-    occupied_by = db.relationship(User)
+    ticket_bundle_id = db.Column(db.Uuid, db.ForeignKey('ticket_bundles.id'), unique=True, index=True, nullable=False)
+    ticket_bundle = db.relationship(TicketBundle, backref=db.backref('occupied_seat_group', uselist=False))
 
-    def __init__(self, seat_group_id, occupied_by_id):
+    def __init__(self, seat_group_id, ticket_bundle_id):
         self.seat_group_id = seat_group_id
-        self.occupied_by_id = occupied_by_id
+        self.ticket_bundle_id = ticket_bundle_id
 
     def __repr__(self):
         return ReprBuilder(self) \
             .add('seat_group_id', str(self.seat_group_id)) \
-            .add('occupied_by', self.occupied_by.screen_name) \
+            .add('ticket_bundle_id', str(self.ticket_bundle_id)) \
             .build()
