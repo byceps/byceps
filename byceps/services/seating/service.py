@@ -174,6 +174,9 @@ def occupy_seat_group(seat_group, ticket_bundle):
 
 def release_seat_group(seat_group):
     """Release a seat group so it becomes available again."""
+    if not seat_group.is_occupied():
+        raise ValueError('Seat group is not occupied.')
+
     db.session.delete(seat_group.occupancy)
     db.session.commit()
 
