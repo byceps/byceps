@@ -7,7 +7,7 @@
 
 from nose2.tools import params
 
-from byceps.blueprints.board.formatting import render_html
+from byceps.services.text_markup.service import render_html
 
 
 def test_auto_url_linking():

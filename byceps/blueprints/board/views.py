@@ -11,6 +11,7 @@ byceps.blueprints.board.views
 from flask import abort, current_app, g, redirect, request, url_for
 
 from ...services.board import service as board_service
+from ...services.text_markup.service import get_smileys, render_html
 from ...services.user_badge import service as badge_service
 from ...util.framework import create_blueprint, flash_error, flash_notice, \
     flash_success
@@ -21,7 +22,6 @@ from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 
 from .authorization import BoardPostingPermission, BoardTopicPermission
-from .formatting import get_smileys, render_html
 from .forms import PostingCreateForm, PostingUpdateForm, TopicCreateForm, \
     TopicUpdateForm
 from . import signals
