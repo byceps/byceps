@@ -139,6 +139,12 @@ def occupy_seat_group(seat_group, ticket_bundle):
     if seat_group.is_occupied():
         raise ValueError('Seat group is already occupied.')
 
+    if seat_group.seat_category_id != ticket_bundle.ticket_category_id:
+        raise ValueError('Seat and ticket categories do not match.')
+
+    if seat_group.seat_quantity != ticket_bundle.ticket_quantity:
+        raise ValueError('Seat and ticket quantities do not match.')
+
     occupancy = Occupancy(seat_group.id, ticket_bundle.id)
 
     db.session.add(occupancy)
