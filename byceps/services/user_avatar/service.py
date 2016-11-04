@@ -34,7 +34,7 @@ def update_avatar_image(user, stream, *, allowed_types=ALL_IMAGE_TYPES,
     """Set a new avatar image for the user."""
     image_type = _determine_image_type(stream, allowed_types)
 
-    if _is_image_too_large(stream):
+    if _is_image_too_large(stream, maximum_dimensions):
         stream = create_thumbnail(stream, image_type.name, maximum_dimensions)
 
     avatar = Avatar(user, image_type)
