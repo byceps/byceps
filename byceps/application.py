@@ -27,7 +27,7 @@ from .util import templatefilters
 
 BLUEPRINTS = [
     ('admin_dashboard',     '/admin/dashboard',     SiteMode.admin ),
-    ('authentication',      '/authentication',      None           ),
+    ('authentication',      None,                   None           ),
     ('authorization',       '/authorization',       None           ),
     ('authorization_admin', '/admin/authorization', SiteMode.admin ),
     ('board',               '/board',               SiteMode.public),
