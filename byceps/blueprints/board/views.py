@@ -41,7 +41,7 @@ blueprint.add_app_template_filter(render_html, 'bbcode')
 # category
 
 
-@blueprint.route('/categories')
+@blueprint.route('/')
 @templated
 def category_index():
     """List categories."""
