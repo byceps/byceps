@@ -13,7 +13,7 @@ from byceps.services.seating.models.seat_group import SeatGroup
 
 
 def create_seat_category(party_id, title):
-    return SeatCategory(party_id, title)
+    return Category(party_id, title)
 
 
 def create_seat_group(party_id, seat_category, title, *, seat_quantity=4):
