@@ -1,15 +1,8 @@
-{% extends 'layout/admin/base.html' %}
+{% extends 'layouts/shop_order_admin.html' %}
 {% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
-{% from 'macros/shop_admin.html' import render_main_tabs with context %}
 {% from 'macros/shop_order_admin.html' import render_order_link %}
-{% set current_page = 'shop_order_admin' %}
 {% set current_page_party = order.party %}
-{% set current_tab = 'orders' %}
 {% set title = 'Bestellung stornieren' %}
-
-{% block before_body %}
-{{ render_main_tabs(current_tab, order.party) }}
-{%- endblock %}
 
 {% block body %}
 

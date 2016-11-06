@@ -1,18 +1,11 @@
-{% extends 'layout/admin/base.html' %}
+{% extends 'layouts/shop_order_admin.html' %}
 {% from 'macros/datetime.html' import render_date, render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
-{% from 'macros/shop_admin.html' import render_main_tabs with context %}
 {% from 'macros/shop_article_admin.html' import render_article_link %}
 {% from 'macros/shop_order_admin.html' import render_order_payment_method, render_order_payment_state %}
 {% from 'macros/user_admin.html' import render_user_avatar_20_and_link %}
-{% set current_page = 'shop_order_admin' %}
 {% set current_page_party = order.party %}
-{% set current_tab = 'orders' %}
 {% set title = 'Bestellung ' ~ order.order_number %}
-
-{% block before_body %}
-{{ render_main_tabs(current_tab, order.party) }}
-{%- endblock %}
 
 {% block body %}
 
