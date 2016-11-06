@@ -1,6 +1,5 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
-{% from 'macros/pagination.html' import render_pagination_nav %}
 {% set current_page = 'seating_admin' %}
 {% set current_page_party = party %}
 {% set title = '%s - Sitzpläne'|format(party.title) %}
@@ -10,33 +9,7 @@
   <h1>Sitzpläne</h1>
 
   <h2>Bereiche {{ render_extra_in_heading(areas.total) }}</h2>
-  <table class="index wide">
-    <thead>
-      <tr>
-        <th>Titel<br>Slug</th>
-        <th>Hintergrundbild<br>Größe</th>
-        <th class="centered">Plätze</th>
-      </tr>
-    </thead>
-    <tbody>
-      {%- for area in areas.items %}
-      <tr>
-        <td>
-          {{ area.title }}<br>
-          {{ area.slug|dim }}
-        </td>
-        <td>
-          {{ area.image_filename }}<br>
-          {{ '%d &times; %d Pixel'|format(area.image_width, area.image_height)|dim }}
-        </td>
-        <td class="centered bignumber">{{ seat_total_per_area[area.id] }}</td>
-      </tr>
-      {%- endfor %}
-      <tr>
-    </tbody>
-  </table>
-
-{{ render_pagination_nav(areas, '.index_for_party', {'party_id': party.id}) }}
+  <p><a href="{{ url_for('.seating_area_index', party_id=party.id) }}">Bereiche</a></p>
 
   <h2>Sitzplatz-Kategorien {{ render_extra_in_heading(categories|length) }}</h2>
   <p><a href="{{ url_for('.seat_category_index', party_id=party.id) }}">Sitzplatz-Kategorien</a></p>

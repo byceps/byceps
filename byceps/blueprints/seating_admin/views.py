@@ -54,6 +54,27 @@ def index_for_party(party_id, page):
     }
 
 
+@blueprint.route('/parties/<party_id>/seating_areas', defaults={'page': 1})
+@blueprint.route('/parties/<party_id>/seating_areas/pages/<int:page>')
+@permission_required(SeatingPermission.view)
+@templated
+def seating_area_index(party_id, page):
+    """List seating areas for that party."""
+    party = _get_party_or_404(party_id)
+
+    per_page = request.args.get('per_page', type=int, default=15)
+    areas = seating_service.get_areas_for_party_paginated(party.id, page,
+                                                          per_page)
+
+    seat_total_per_area = seating_service.get_seat_total_per_area(party.id)
+
+    return {
+        'party': party,
+        'areas': areas,
+        'seat_total_per_area': seat_total_per_area,
+    }
+
+
 @blueprint.route('/parties/<party_id>/seat_categories')
 @permission_required(SeatingPermission.view)
 @templated
