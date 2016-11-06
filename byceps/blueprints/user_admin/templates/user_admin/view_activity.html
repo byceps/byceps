@@ -1,11 +1,11 @@
-{% extends 'layout/admin/base.html' %}
+{% extends 'layouts/user_admin.html' %}
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_tag %}
 {% from 'macros/shop_order_admin.html' import render_order_link %}
-{% from 'macros/user_admin.html' import render_main_tabs_view with context %}
 {% from 'macros/user_admin.html' import render_user_deleted_flag, render_user_avatar_20_and_link %}
-{% set current_page = 'user_admin.view_activity' %}
+{% set current_tab = 'activities' %}
+{% set current_tab_user_id = user.id %}
 {% set title = 'Benutzer - Aktivität - %s'|format(user.screen_name) %}
 
 {% block head %}
@@ -17,10 +17,6 @@
         background-color: #ee3322;
       }
     </style>
-{%- endblock %}
-
-{% block before_body %}
-{{ render_main_tabs_view(current_page, user.id) }}
 {%- endblock %}
 
 {% block body %}

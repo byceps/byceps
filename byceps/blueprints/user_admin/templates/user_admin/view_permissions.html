@@ -1,15 +1,11 @@
-{% extends 'layout/admin/base.html' %}
+{% extends 'layouts/user_admin.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
-{% from 'macros/user_admin.html' import render_main_tabs_view with context %}
 {% from 'macros/user_admin.html' import render_user_deleted_flag %}
-{% set current_page = 'user_admin.view_permissions' %}
+{% set current_tab = 'permissions' %}
+{% set current_tab_user_id = user.id %}
 {% set title = 'Benutzer - Berechtigungen - %s'|format(user.screen_name) %}
-
-{% block before_body %}
-{{ render_main_tabs_view(current_page, user.id) }}
-{%- endblock %}
 
 {% block body %}
 
