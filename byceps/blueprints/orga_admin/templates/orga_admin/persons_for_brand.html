@@ -1,8 +1,7 @@
-{% extends 'layout/admin/base.html' %}
+{% extends 'layouts/orga_admin.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/datetime.html' import render_date %}
 {% from 'macros/icons.html' import render_icon %}
-{% from 'macros/orga_admin.html' import render_main_tabs with context %}
 {% from 'macros/user_admin.html' import render_user_admin_link %}
 {% from 'macros/user_avatar.html' import render_user_avatar_48 %}
 {% set current_page = 'orga_admin' %}
@@ -22,10 +21,6 @@
       white-space: nowrap;
     }
   </style>
-{%- endblock %}
-
-{% block before_body %}
-{{ render_main_tabs(current_tab) }}
 {%- endblock %}
 
 {% block body %}

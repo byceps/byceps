@@ -1,15 +1,10 @@
-{% extends 'layout/admin/base.html' %}
+{% extends 'layouts/orga_admin.html' %}
 {% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
 {% from 'macros/icons.html' import render_icon %}
-{% from 'macros/orga_admin.html' import render_main_tabs with context %}
 {% set current_page = 'orga_admin' %}
 {% set current_page_brand = brand %}
 {% set current_tab = 'persons' %}
 {% set title = 'Person zum Orga ernennen' %}
-
-{% block before_body %}
-{{ render_main_tabs(current_tab) }}
-{%- endblock %}
 
 {% block body %}
 

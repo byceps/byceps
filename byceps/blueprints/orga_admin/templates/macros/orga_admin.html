@@ -1,18 +1,3 @@
-{% from 'macros/admin.html' import render_main_tabs as _render_main_tabs %}
-
-
-{% macro render_main_tabs(current_tab) -%}
-  {{
-    _render_main_tabs(
-      Navigation(None)
-        .add_item(url_for('orga_admin.persons'), 'Personen', id='persons', required_permission=OrgaDetailPermission.view, icon='users')
-        .add_item(url_for('orga_admin.birthdays'), 'Geburtstage', id='birthdays', required_permission=OrgaBirthdayPermission.list, icon='birthday')
-      , current_tab
-    )
-  }}
-{%- endmacro %}
-
-
 {% macro render_relative_days_until(user) %}
   {%- set days_until_next_birthday = user.detail.days_until_next_birthday %}
   {%- set is_soon = (days_until_next_birthday <= 7) %}
