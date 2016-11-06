@@ -1,9 +1,15 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
 {% from 'macros/icons.html' import render_icon %}
+{% from 'macros/tourney_admin.html' import render_main_tabs with context %}
 {% set current_page = 'tourney_admin' %}
 {% set current_page_party = category.party %}
+{% set current_tab = 'categories' %}
 {% set title = 'Kategorie bearbeiten' %}
+
+{% block before_body %}
+{{ render_main_tabs(current_tab, category.party) }}
+{%- endblock %}
 
 {% block body %}
 

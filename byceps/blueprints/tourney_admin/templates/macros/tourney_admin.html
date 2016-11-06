@@ -1,0 +1,12 @@
+{% from 'macros/admin.html' import render_main_tabs as _render_main_tabs %}
+
+
+{% macro render_main_tabs(current_tab, party) -%}
+  {{
+    _render_main_tabs(
+      Navigation(None)
+        .add_item(url_for('.category_index_for_party', party_id=party.id), 'Kategorien', id='categories', required_permission=TourneyCategoryPermission.list)
+      , current_tab
+    )
+  }}
+{%- endmacro %}
