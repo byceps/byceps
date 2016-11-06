@@ -1,14 +1,8 @@
-{% extends 'layout/admin/base.html' %}
+{% extends 'layouts/seating_admin.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
-{% from 'macros/seating_admin.html' import render_main_tabs with context %}
-{% set current_page = 'seating_admin' %}
 {% set current_page_party = party %}
 {% set current_tab = 'seat_groups' %}
 {% set title = '%s - Sitzplatz-Gruppen'|format(party.title) %}
-
-{% block before_body %}
-{{ render_main_tabs(current_tab) }}
-{%- endblock %}
 
 {% block body %}
 

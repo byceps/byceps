@@ -1,0 +1,17 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/admin.html' import render_main_tabs %}
+{% set current_page = 'seating_admin' %}
+
+{% block before_body %}
+  {%- with party = current_page_party %}
+{{
+  render_main_tabs(
+    Navigation(None)
+      .add_item(url_for('.area_index', party_id=party.id), 'Bereiche', id='areas', required_permission=SeatingPermission.view)
+      .add_item(url_for('.seat_category_index', party_id=party.id), 'Kategorien', id='seat_categories', required_permission=SeatingPermission.view)
+      .add_item(url_for('.seat_group_index', party_id=party.id), 'Gruppen', id='seat_groups', required_permission=SeatingPermission.view)
+    , current_tab
+  )
+}}
+  {%- endwith %}
+{%- endblock %}
