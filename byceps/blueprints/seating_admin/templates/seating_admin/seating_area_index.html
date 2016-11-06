@@ -1,9 +1,15 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
+{% from 'macros/seating_admin.html' import render_main_tabs with context %}
 {% set current_page = 'seating_admin' %}
 {% set current_page_party = party %}
+{% set current_tab = 'seating_areas' %}
 {% set title = '%s - Bereiche'|format(party.title) %}
+
+{% block before_body %}
+{{ render_main_tabs(current_tab) }}
+{%- endblock %}
 
 {% block body %}
 
