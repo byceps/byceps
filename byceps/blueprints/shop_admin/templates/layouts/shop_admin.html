@@ -1,0 +1,15 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/admin.html' import render_main_tabs %}
+
+{% block before_body %}
+  {%- with party = current_page_party %}
+{{
+  render_main_tabs(
+    Navigation(None)
+      .add_item(url_for('shop_article_admin.index_for_party', party_id=party.id), 'Artikel', id='articles', required_permission=ShopArticlePermission.list, icon='shopping-cart')
+      .add_item(url_for('shop_order_admin.index_for_party', party_id=party.id), 'Bestellungen', id='orders', required_permission=ShopOrderPermission.list, icon='payment')
+    , current_tab
+  )
+}}
+  {%- endwith %}
+{%- endblock %}
