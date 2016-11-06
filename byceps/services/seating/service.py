@@ -13,7 +13,8 @@ from ...database import db
 from .models.area import Area
 from .models.category import Category
 from .models.seat import Seat
-from .models.seat_group import Occupancy, SeatGroup, SeatGroupAssignment
+from .models.seat_group import Occupancy as SeatGroupOccupancy, SeatGroup, \
+    SeatGroupAssignment
 
 
 # -------------------------------------------------------------------- #
@@ -160,7 +161,7 @@ def occupy_seat_group(seat_group, ticket_bundle):
         raise ValueError('The actual quantities of seats and tickets '
                          'do not match.')
 
-    occupancy = Occupancy(seat_group.id, ticket_bundle.id)
+    occupancy = SeatGroupOccupancy(seat_group.id, ticket_bundle.id)
     db.session.add(occupancy)
 
     for seat, ticket in zip(seats, tickets):
