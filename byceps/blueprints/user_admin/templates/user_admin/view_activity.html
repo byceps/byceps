@@ -82,7 +82,7 @@
 
 
 {% macro render_avatar_update_label(activity) -%}
-hat ein neues Avatarbild hochgeladen.
+hat ein <a href="{{ activity.object.url }}">neues Avatarbild</a> hochgeladen.
 {%- endmacro %}
 
 
