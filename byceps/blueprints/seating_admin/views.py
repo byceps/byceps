@@ -69,6 +69,21 @@ def seat_category_index(party_id):
     }
 
 
+@blueprint.route('/parties/<party_id>/seat_groups')
+@permission_required(SeatingPermission.view)
+@templated
+def seat_group_index(party_id):
+    """List seat groups for that party."""
+    party = _get_party_or_404(party_id)
+
+    groups = seating_service.get_all_seat_groups_for_party(party.id)
+
+    return {
+        'party': party,
+        'groups': groups,
+    }
+
+
 def _get_party_or_404(party_id):
     party = party_service.find_party(party_id)
 

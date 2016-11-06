@@ -42,29 +42,6 @@
   <p><a href="{{ url_for('.seat_category_index', party_id=party.id) }}">Sitzplatz-Kategorien</a></p>
 
   <h2>Sitzplatz-Gruppen {{ render_extra_in_heading(groups|length) }}</h2>
-  <table class="index wide">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Bezeichung</th>
-        <th>Ticket-Kategorie</th>
-      </tr>
-    </thead>
-    <tbody>
-      {%- for group in groups|sort(attribute='title') %}
-      <tr>
-        <td colspan="3"><strong>{{ group.title }}</strong></td>
-      </tr>
-        {%- for seat in group.seats %}
-      <tr>
-        <td>{{ seat.id }}</td>
-        <td>{{ seat.label|fallback }}</td>
-        <td>{{ seat.category.title }}</td>
-      </tr>
-        {%- endfor %}
-      {%- endfor %}
-      <tr>
-    </tbody>
-  </table>
+  <p><a href="{{ url_for('.seat_group_index', party_id=party.id) }}">Sitzplatz-Gruppen</a></p>
 
 {%- endblock %}
