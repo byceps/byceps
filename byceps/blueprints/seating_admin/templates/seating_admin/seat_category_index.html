@@ -1,0 +1,16 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/admin.html' import render_extra_in_heading %}
+{% set current_page = 'seating_admin' %}
+{% set current_page_party = party %}
+{% set title = '%s - Sitzplatz-Kategorien'|format(party.title) %}
+
+{% block body %}
+
+  <h1>Sitzplatz-Kategorien {{ render_extra_in_heading(categories|length) }}</h1>
+  <ol class="index">
+    {%- for category in categories %}
+    <li>{{ category.title }}</li>
+    {%- endfor %}
+  </ol>
+
+{%- endblock %}
