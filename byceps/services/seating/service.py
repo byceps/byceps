@@ -161,15 +161,30 @@ def occupy_seat_group(seat_group, ticket_bundle):
     occupancy = SeatGroupOccupancy(seat_group.id, ticket_bundle.id)
     db.session.add(occupancy)
 
-    seats = list(sorted(seat_group.seats, key=lambda s: (s.coord_x, s.coord_y)))
-    tickets = list(sorted(ticket_bundle.tickets, key=lambda t: t.created_at))
-
-    for seat, ticket in zip(seats, tickets):
-        ticket.occupied_seat = seat
+    _occupy_seats(seat_group, ticket_bundle)
 
     db.session.commit()
 
     return occupancy
+
+
+def _occupy_seats(seat_group, ticket_bundle):
+    """Occupy all seats in the group with all tickets from the bundle."""
+    seats = _sort_seats(seat_group.seats)
+    tickets = _sort_tickets(ticket_bundle.tickets)
+
+    for seat, ticket in zip(seats, tickets):
+        ticket.occupied_seat = seat
+
+
+def _sort_seats(seats):
+    """Create a list of the seats sorted by their respective coordinates."""
+    return list(sorted(seats, key=lambda s: (s.coord_x, s.coord_y)))
+
+
+def _sort_tickets(tickets):
+    """Create a list of the tickets sorted by creation time (ascending)."""
+    return list(sorted(tickets, key=lambda t: t.created_at))
 
 
 def release_seat_group(seat_group):
