@@ -64,7 +64,7 @@
   {%- set navigation = Navigation('global')
       .add_item(url_for('admin_dashboard.view_global'), 'Dashboard', id='admin_dashboard_global', required_permission=AdminDashboardPermission.view_global, icon='dashboard')
       .add_item(url_for('user_admin.index'), 'Benutzer', id='user_admin', required_permission=UserPermission.list, icon='users')
-      .add_item(url_for('authorization_admin.role_index'), 'Berechtigungen', id='authorization_admin.roles', required_permission=RolePermission.list, icon='permission')
+      .add_item(url_for('authorization_admin.role_index'), 'Berechtigungen', id='authorization_admin', required_permission=RolePermission.list, icon='permission')
       .add_item(url_for('user_badge.index'), 'Abzeichen', id='user_badge', icon='badge')
       .add_item(url_for('orga_admin.birthdays'), 'Geburtstage', id='orga_admin.birthdays', required_permission=OrgaBirthdayPermission.list, icon='birthday')
       .add_item(url_for('brand_admin.index'), 'Marken', id='brand_admin', required_permission=BrandPermission.view, icon='brand')
@@ -92,8 +92,8 @@
       .add_item(url_for('admin_dashboard.view_party', party_id=party.id), 'Dashboard', id='admin_dashboard_party', required_permission=AdminDashboardPermission.view_party, icon='dashboard')
       .add_item(url_for('snippet_admin.index_for_party', party_id=party.id), 'Snippets', id='snippet_admin', required_permission=SnippetPermission.list, icon='snippet')
       .add_item(url_for('seating_admin.index_for_party', party_id=party.id), 'Sitzpläne', id='seating_admin', required_permission=SeatingPermission.view, icon='seating-area')
-      .add_item(url_for('shop_article_admin.index_for_party', party_id=party.id), 'Shop-Artikel', id='shop_article_admin.index_for_party', required_permission=ShopArticlePermission.list, icon='shopping-cart')
-      .add_item(url_for('shop_order_admin.index_for_party', party_id=party.id), 'Shop-Bestellungen', id='shop_order_admin.index_for_party', required_permission=ShopOrderPermission.list, icon='payment')
+      .add_item(url_for('shop_article_admin.index_for_party', party_id=party.id), 'Shop-Artikel', id='shop_article_admin', required_permission=ShopArticlePermission.list, icon='shopping-cart')
+      .add_item(url_for('shop_order_admin.index_for_party', party_id=party.id), 'Shop-Bestellungen', id='shop_order_admin', required_permission=ShopOrderPermission.list, icon='payment')
       .add_item(url_for('ticket_admin.index_for_party', party_id=party.id), 'Tickets', id='ticket_admin', required_permission=TicketPermission.list, icon='ticket')
       .add_item(url_for('orga_team_admin.teams_for_party', party_id=party.id), 'Orga-Teams', id='orga_admin.teams', required_permission=OrgaTeamPermission.list, icon='users')
       .add_item(url_for('orga_presence.view', party_id=party.id), 'Orga-Anwesenheit', id='orga_presence', required_permission=OrgaPresencePermission.list, icon='date-okay')
@@ -103,10 +103,10 @@
 {% endmacro %}
 
 
-{% macro render_main_tabs(navigation, current_page) -%}
+{% macro render_main_tabs(navigation, current_tab) -%}
   <ol class="main-tabs">
     {%- for item in navigation.get_items() %}
-      {%- with is_current = (item.id is not none) and (item.id is is_current_page(current_page)) %}
+      {%- with is_current = (item.id is not none) and (item.id == current_tab) %}
         <li>
           {%- if is_current %}<span class="current">{% else %}<a href="{{ item.endpoint }}">{% endif -%}
           {% if item.icon %}{{ render_icon(item.icon) }}{% endif %} {{ item.label }}

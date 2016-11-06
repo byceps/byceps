@@ -5,10 +5,11 @@
 {% from 'macros/orga_admin.html' import render_main_tabs with context %}
 {% from 'macros/user_admin.html' import render_user_avatar_20_and_link %}
 {% set current_page = 'orga_admin.birthdays' %}
+{% set current_tab = 'birthdays' %}
 {% set title = 'Die nächsten Geburtstage' %}
 
 {% block before_body %}
-{{ render_main_tabs(current_page) }}
+{{ render_main_tabs(current_tab) }}
 {%- endblock %}
 
 {% block head %}

@@ -3,12 +3,13 @@
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/shop_admin.html' import render_main_tabs with context %}
 {% from 'macros/shop_article_admin.html' import render_article_link %}
-{% set current_page = 'shop_article_admin.update_form' %}
+{% set current_page = 'shop_article_admin' %}
 {% set current_page_party = article.party %}
+{% set current_tab = 'articles' %}
 {% set title = 'Artikel bearbeiten' %}
 
 {% block before_body %}
-{{ render_main_tabs(current_page, article.party) }}
+{{ render_main_tabs(current_tab, article.party) }}
 {%- endblock %}
 
 {% block body %}

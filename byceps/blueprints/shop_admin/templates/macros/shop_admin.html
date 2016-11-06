@@ -1,13 +1,13 @@
 {% from 'macros/admin.html' import render_main_tabs as _render_main_tabs %}
 
 
-{% macro render_main_tabs(current_page, party) -%}
+{% macro render_main_tabs(current_tab, party) -%}
   {{
     _render_main_tabs(
       Navigation(None)
-        .add_item(url_for('shop_article_admin.index_for_party', party_id=party.id), 'Artikel', id='shop_article_admin.index_for_party', required_permission=ShopArticlePermission.list, icon='shopping-cart')
-        .add_item(url_for('shop_order_admin.index_for_party', party_id=party.id), 'Bestellungen', id='shop_order_admin.index_for_party', required_permission=ShopOrderPermission.list, icon='payment')
-      , current_page
+        .add_item(url_for('shop_article_admin.index_for_party', party_id=party.id), 'Artikel', id='articles', required_permission=ShopArticlePermission.list, icon='shopping-cart')
+        .add_item(url_for('shop_order_admin.index_for_party', party_id=party.id), 'Bestellungen', id='orders', required_permission=ShopOrderPermission.list, icon='payment')
+      , current_tab
     )
   }}
 {%- endmacro %}

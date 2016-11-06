@@ -7,12 +7,13 @@
 {% from 'macros/shop_admin.html' import render_main_tabs with context %}
 {% from 'macros/shop_order_admin.html' import render_order_link, render_order_payment_method, render_order_payment_state %}
 {% from 'macros/user_admin.html' import render_user_avatar_16_and_link %}
-{% set current_page = 'shop_order_admin.index_for_party' %}
+{% set current_page = 'shop_order_admin' %}
 {% set current_page_party = party %}
+{% set current_tab = 'orders' %}
 {% set title = 'Bestellungen' %}
 
 {% block before_body %}
-{{ render_main_tabs(current_page, party) }}
+{{ render_main_tabs(current_tab, party) }}
 {%- endblock %}
 
 {% block body %}

@@ -1,10 +1,11 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/orga_admin.html' import render_main_tabs with context %}
 {% set current_page = 'orga_admin.persons' %}
+{% set current_tab = 'persons' %}
 {% set title = 'Organisatoren' %}
 
 {% block before_body %}
-{{ render_main_tabs(current_page) }}
+{{ render_main_tabs(current_tab) }}
 {%- endblock %}
 
 {% block body %}

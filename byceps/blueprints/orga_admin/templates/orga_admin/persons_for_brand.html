@@ -5,8 +5,9 @@
 {% from 'macros/orga_admin.html' import render_main_tabs with context %}
 {% from 'macros/user_admin.html' import render_user_admin_link %}
 {% from 'macros/user_avatar.html' import render_user_avatar_48 %}
-{% set current_page = 'orga_admin.persons' %}
+{% set current_page = 'orga_admin' %}
 {% set current_page_brand = brand %}
+{% set current_tab = 'persons' %}
 {% set title = 'Organisatoren' %}
 
 {% block head %}
@@ -24,7 +25,7 @@
 {%- endblock %}
 
 {% block before_body %}
-{{ render_main_tabs(current_page) }}
+{{ render_main_tabs(current_tab) }}
 {%- endblock %}
 
 {% block body %}

@@ -2,12 +2,13 @@
 {% from 'macros/forms.html' import form_buttons %}
 {% from 'macros/shop_admin.html' import render_main_tabs with context %}
 {% from 'macros/shop_order_admin.html' import render_order_link %}
-{% set current_page = 'shop_order_admin.mark_as_paid' %}
+{% set current_page = 'shop_order_admin' %}
 {% set current_page_party = order.party %}
+{% set current_tab = 'orders' %}
 {% set title = 'Bestellung als bezahlt markieren' %}
 
 {% block before_body %}
-{{ render_main_tabs(current_page, order.party) }}
+{{ render_main_tabs(current_tab, order.party) }}
 {%- endblock %}
 
 {% block body %}
