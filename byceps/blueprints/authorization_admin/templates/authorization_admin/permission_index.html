@@ -1,13 +1,7 @@
-{% extends 'layout/admin/base.html' %}
+{% extends 'layouts/authorization_admin.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
-{% from 'macros/authorization_admin.html' import render_main_tabs with context %}
-{% set current_page = 'authorization_admin' %}
 {% set current_tab = 'permissions' %}
 {% set title = 'Rechte' %}
-
-{% block before_body %}
-{{ render_main_tabs(current_tab) }}
-{%- endblock %}
 
 {% block body %}
 
