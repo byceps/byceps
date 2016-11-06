@@ -1,16 +1,9 @@
-{% extends 'layout/admin/base.html' %}
+{% extends 'layouts/shop_article_admin.html' %}
 {% from 'macros/forms.html' import form_buttons, form_datalist, form_field_checkbox, form_field, form_fieldset %}
 {% from 'macros/icons.html' import render_icon %}
-{% from 'macros/shop_admin.html' import render_main_tabs with context %}
 {% from 'macros/shop_article_admin.html' import render_article_link %}
-{% set current_page = 'shop_article_admin' %}
 {% set current_page_party = article.party %}
-{% set current_tab = 'articles' %}
 {% set title = 'Artikel bearbeiten' %}
-
-{% block before_body %}
-{{ render_main_tabs(current_tab, article.party) }}
-{%- endblock %}
 
 {% block body %}
 

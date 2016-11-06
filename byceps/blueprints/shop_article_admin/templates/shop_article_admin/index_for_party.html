@@ -1,18 +1,11 @@
-{% extends 'layout/admin/base.html' %}
+{% extends 'layouts/shop_article_admin.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
-{% from 'macros/shop_admin.html' import render_main_tabs with context %}
 {% from 'macros/shop_article_admin.html' import render_article_link %}
-{% set current_page = 'shop_article_admin' %}
 {% set current_page_party = party %}
-{% set current_tab = 'articles' %}
 {% set title = 'Artikel' %}
-
-{% block before_body %}
-{{ render_main_tabs(current_tab, party) }}
-{%- endblock %}
 
 {% block body %}
 

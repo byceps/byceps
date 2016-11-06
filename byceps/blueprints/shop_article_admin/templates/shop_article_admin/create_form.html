@@ -1,15 +1,8 @@
-{% extends 'layout/admin/base.html' %}
+{% extends 'layouts/shop_article_admin.html' %}
 {% from 'macros/forms.html' import form_buttons, form_datalist, form_field, form_fieldset %}
 {% from 'macros/icons.html' import render_icon %}
-{% from 'macros/shop_admin.html' import render_main_tabs with context %}
-{% set current_page = 'shop_article_admin' %}
 {% set current_page_party = party %}
-{% set current_tab = 'articles' %}
 {% set title = 'Artikel anlegen' %}
-
-{% block before_body %}
-{{ render_main_tabs(current_tab, party) }}
-{%- endblock %}
 
 {% block body %}
 

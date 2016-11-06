@@ -1,0 +1,8 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/shop_admin.html' import render_main_tabs with context %}
+{% set current_page = 'shop_article_admin' %}
+{% set current_tab = 'articles' %}
+
+{% block before_body %}
+{{ render_main_tabs(current_tab, current_page_party) }}
+{%- endblock %}
