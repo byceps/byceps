@@ -54,11 +54,11 @@ def index_for_party(party_id, page):
     }
 
 
-@blueprint.route('/parties/<party_id>/seating_areas', defaults={'page': 1})
-@blueprint.route('/parties/<party_id>/seating_areas/pages/<int:page>')
+@blueprint.route('/parties/<party_id>/areas', defaults={'page': 1})
+@blueprint.route('/parties/<party_id>/areas/pages/<int:page>')
 @permission_required(SeatingPermission.view)
 @templated
-def seating_area_index(party_id, page):
+def area_index(party_id, page):
     """List seating areas for that party."""
     party = _get_party_or_404(party_id)
 

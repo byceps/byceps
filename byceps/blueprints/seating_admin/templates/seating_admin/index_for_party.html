@@ -15,7 +15,7 @@
   <h1>Sitzpläne</h1>
 
   <h2>Bereiche {{ render_extra_in_heading(areas.total) }}</h2>
-  <p><a href="{{ url_for('.seating_area_index', party_id=party.id) }}">Bereiche</a></p>
+  <p><a href="{{ url_for('.area_index', party_id=party.id) }}">Bereiche</a></p>
 
   <h2>Sitzplatz-Kategorien {{ render_extra_in_heading(categories|length) }}</h2>
   <p><a href="{{ url_for('.seat_category_index', party_id=party.id) }}">Sitzplatz-Kategorien</a></p>
