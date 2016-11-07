@@ -9,7 +9,7 @@
 
   <table class="index">
     <tr>
-      <td class="bignumber number">{{ areas.total }}</td>
+      <td class="bignumber number">{{ areas|length }}</td>
       <td style="vertical-align: middle;"><a href="{{ url_for('.area_index', party_id=party.id) }}">Bereiche</a></td>
     </tr>
     <tr>

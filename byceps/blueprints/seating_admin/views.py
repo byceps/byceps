@@ -27,17 +27,14 @@ blueprint = create_blueprint('seating_admin', __name__)
 permission_registry.register_enum(SeatingPermission)
 
 
-@blueprint.route('/<party_id>', defaults={'page': 1})
-@blueprint.route('/<party_id>/pages/<int:page>')
+@blueprint.route('/<party_id>')
 @permission_required(SeatingPermission.view)
 @templated
-def index_for_party(party_id, page):
+def index_for_party(party_id):
     """List seating areas for that party."""
     party = _get_party_or_404(party_id)
 
-    per_page = request.args.get('per_page', type=int, default=15)
-    areas = seating_service.get_areas_for_party_paginated(party.id, page,
-                                                          per_page)
+    areas = seating_service.get_areas_for_party(party.id)
 
     seat_total_per_area = seating_service.get_seat_total_per_area(party.id)
 
