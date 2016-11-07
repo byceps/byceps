@@ -172,6 +172,14 @@ def occupy_seat_group(seat_group, ticket_bundle):
 
 def switch_seat_group(occupancy, to_group):
     """Switch ticket bundle to another seat group."""
+    seats = to_group.seats
+    tickets = ticket_bundle.tickets
+
+    _ensure_group_is_available(to_group)
+    _ensure_categories_match(to_group, ticket_bundle)
+    _ensure_quantities_match(to_group, ticket_bundle)
+    _ensure_actual_quantities_match(seats, tickets)
+
     occupancy.seat_group.id = to_group.id
 
     _occupy_seats(to_group.seats, occupancy.ticket_bundle.tickets)
