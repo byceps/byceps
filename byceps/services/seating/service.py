@@ -161,6 +161,9 @@ def occupy_seat_group(seat_group, ticket_bundle):
     if seat_group.seat_quantity != ticket_bundle.ticket_quantity:
         raise ValueError('Seat and ticket quantities do not match.')
 
+    seats = seat_group.seats
+    tickets = ticket_bundle.tickets
+
     if len(seats) != len(tickets):
         raise ValueError('The actual quantities of seats and tickets '
                          'do not match.')
@@ -168,7 +171,7 @@ def occupy_seat_group(seat_group, ticket_bundle):
     occupancy = SeatGroupOccupancy(seat_group.id, ticket_bundle.id)
     db.session.add(occupancy)
 
-    _occupy_seats(seat_group, ticket_bundle)
+    _occupy_seats(seats, tickets)
 
     db.session.commit()
 
@@ -179,15 +182,15 @@ def switch_seat_group(occupancy, to_group):
     """Switch ticket bundle to another seat group."""
     occupancy.seat_group.id = to_group.id
 
-    _occupy_seats(to_group, occupancy.ticket_bundle)
+    _occupy_seats(to_group.seats, occupancy.ticket_bundle.tickets)
 
     db.session.commit()
 
 
-def _occupy_seats(seat_group, ticket_bundle):
+def _occupy_seats(seats, tickets):
     """Occupy all seats in the group with all tickets from the bundle."""
-    seats = _sort_seats(seat_group.seats)
-    tickets = _sort_tickets(ticket_bundle.tickets)
+    seats = _sort_seats(seats)
+    tickets = _sort_tickets(tickets)
 
     for seat, ticket in zip(seats, tickets):
         ticket.occupied_seat = seat
