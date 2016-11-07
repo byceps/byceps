@@ -34,12 +34,14 @@ def index_for_party(party_id):
     """List seating areas for that party."""
     party = _get_party_or_404(party_id)
 
+    seat_count = seating_service.count_seats_for_party(party.id)
     area_count = seating_service.count_areas_for_party(party.id)
     category_count = seating_service.count_categories_for_party(party.id)
     group_count = seating_service.count_seat_groups_for_party(party.id)
 
     return {
         'party': party,
+        'seat_count': seat_count,
         'area_count': area_count,
         'category_count': category_count,
         'group_count': group_count,

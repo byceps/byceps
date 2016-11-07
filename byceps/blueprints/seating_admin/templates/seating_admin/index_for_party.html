@@ -9,6 +9,10 @@
 
   <table class="index">
     <tr>
+      <td class="bignumber number">{{ seat_count }}</td>
+      <td style="vertical-align: middle;">Sitzplätze</td>
+    </tr>
+    <tr>
       <td class="bignumber number">{{ area_count }}</td>
       <td style="vertical-align: middle;"><a href="{{ url_for('.area_index', party_id=party.id) }}">Bereiche</a></td>
     </tr>
