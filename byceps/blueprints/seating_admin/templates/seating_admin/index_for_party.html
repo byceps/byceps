@@ -1,5 +1,4 @@
 {% extends 'layouts/seating_admin.html' %}
-{% from 'macros/admin.html' import render_extra_in_heading %}
 {% set current_page_party = party %}
 {% set current_tab = None %}
 {% set title = '%s - Sitzpläne'|format(party.title) %}
@@ -8,13 +7,19 @@
 
   <h1>Sitzpläne</h1>
 
-  <h2>Bereiche {{ render_extra_in_heading(areas.total) }}</h2>
-  <p><a href="{{ url_for('.area_index', party_id=party.id) }}">Bereiche</a></p>
-
-  <h2>Sitzplatz-Kategorien {{ render_extra_in_heading(categories|length) }}</h2>
-  <p><a href="{{ url_for('.seat_category_index', party_id=party.id) }}">Sitzplatz-Kategorien</a></p>
-
-  <h2>Sitzplatz-Gruppen {{ render_extra_in_heading(groups|length) }}</h2>
-  <p><a href="{{ url_for('.seat_group_index', party_id=party.id) }}">Sitzplatz-Gruppen</a></p>
+  <table class="index">
+    <tr>
+      <td class="bignumber number">{{ areas.total }}</td>
+      <td style="vertical-align: middle;"><a href="{{ url_for('.area_index', party_id=party.id) }}">Bereiche</a></td>
+    </tr>
+    <tr>
+      <td class="bignumber number">{{ categories|length }}</td>
+      <td style="vertical-align: middle;"><a href="{{ url_for('.seat_category_index', party_id=party.id) }}">Sitzplatz-Kategorien</a></td>
+    </tr>
+    <tr>
+      <td class="bignumber number">{{ groups|length }}</td>
+      <td style="vertical-align: middle;"><a href="{{ url_for('.seat_group_index', party_id=party.id) }}">Sitzplatz-Gruppen</a></td>
+    </tr>
+  </table>
 
 {%- endblock %}
