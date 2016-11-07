@@ -31,7 +31,7 @@ class SeatGroup(db.Model):
     seat_category_id = db.Column(db.Uuid, db.ForeignKey('seat_categories.id'), nullable=False)
     seat_category = db.relationship(Category)
     seat_quantity = db.Column(db.Integer, nullable=False)
-    title = db.Column(db.Unicode(40), unique=True, nullable=False)
+    title = db.Column(db.Unicode(40), nullable=False)
 
     seats = association_proxy('assignments', 'seat')
 
