@@ -152,21 +152,13 @@ def create_seat_group(party_id, seat_category, seat_quantity, title, seats):
 
 def occupy_seat_group(seat_group, ticket_bundle):
     """Occupy the seat group with that ticket bundle."""
-    if seat_group.is_occupied():
-        raise ValueError('Seat group is already occupied.')
-
-    if seat_group.seat_category_id != ticket_bundle.ticket_category_id:
-        raise ValueError('Seat and ticket categories do not match.')
-
-    if seat_group.seat_quantity != ticket_bundle.ticket_quantity:
-        raise ValueError('Seat and ticket quantities do not match.')
-
     seats = seat_group.seats
     tickets = ticket_bundle.tickets
 
-    if len(seats) != len(tickets):
-        raise ValueError('The actual quantities of seats and tickets '
-                         'do not match.')
+    _ensure_group_is_available(seat_group)
+    _ensure_categories_match(seat_group, ticket_bundle)
+    _ensure_quantities_match(seat_group, ticket_bundle)
+    _ensure_actual_quantities_match(seats, tickets)
 
     occupancy = SeatGroupOccupancy(seat_group.id, ticket_bundle.id)
     db.session.add(occupancy)
@@ -185,6 +177,35 @@ def switch_seat_group(occupancy, to_group):
     _occupy_seats(to_group.seats, occupancy.ticket_bundle.tickets)
 
     db.session.commit()
+
+
+def _ensure_group_is_available(seat_group):
+    """Raise an error if the seat group is occupied."""
+    if seat_group.is_occupied():
+        raise ValueError('Seat group is already occupied.')
+
+
+def _ensure_categories_match(seat_group, ticket_bundle):
+    """Raise an error if the seat group's and the ticket bundle's
+    categories don't match.
+    """
+    if seat_group.seat_category_id != ticket_bundle.ticket_category_id:
+        raise ValueError('Seat and ticket categories do not match.')
+
+
+def _ensure_quantities_match(seat_group, ticket_bundle):
+    """Raise an error if the seat group's and the ticket bundle's
+    quantities don't match.
+    """
+    if seat_group.seat_quantity != ticket_bundle.ticket_quantity:
+        raise ValueError('Seat and ticket quantities do not match.')
+
+
+def _ensure_actual_quantities_match(seats, tickets):
+    """Raise an error if the totals of seats and tickets don't match."""
+    if len(seats) != len(tickets):
+        raise ValueError('The actual quantities of seats and tickets '
+                         'do not match.')
 
 
 def _occupy_seats(seats, tickets):
