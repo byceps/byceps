@@ -9,15 +9,15 @@
 
   <table class="index">
     <tr>
-      <td class="bignumber number">{{ areas|length }}</td>
+      <td class="bignumber number">{{ area_count }}</td>
       <td style="vertical-align: middle;"><a href="{{ url_for('.area_index', party_id=party.id) }}">Bereiche</a></td>
     </tr>
     <tr>
-      <td class="bignumber number">{{ categories|length }}</td>
+      <td class="bignumber number">{{ category_count }}</td>
       <td style="vertical-align: middle;"><a href="{{ url_for('.seat_category_index', party_id=party.id) }}">Sitzplatz-Kategorien</a></td>
     </tr>
     <tr>
-      <td class="bignumber number">{{ groups|length }}</td>
+      <td class="bignumber number">{{ group_count }}</td>
       <td style="vertical-align: middle;"><a href="{{ url_for('.seat_group_index', party_id=party.id) }}">Sitzplatz-Gruppen</a></td>
     </tr>
   </table>

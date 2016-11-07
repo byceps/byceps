@@ -76,6 +76,13 @@ def create_category(party_id, title):
     return category
 
 
+def count_categories_for_party(party_id):
+    """Return the number of categories for that party."""
+    return Category.query \
+        .for_party_id(party_id) \
+        .count()
+
+
 def get_categories_for_party(party_id):
     """Return all categories for that party."""
     return Category.query \
@@ -210,6 +217,13 @@ def release_seat_group(seat_group):
     db.session.delete(seat_group.occupancy)
 
     db.session.commit()
+
+
+def count_seat_groups_for_party(party_id):
+    """Return the number of seat groups for that party."""
+    return SeatGroup.query \
+        .filter_by(party_id=party_id) \
+        .count()
 
 
 def get_all_seat_groups_for_party(party_id):
