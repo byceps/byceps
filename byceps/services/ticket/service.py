@@ -205,3 +205,13 @@ def create_ticket_bundle(category, ticket_quantity, owned_by):
     db.session.commit()
 
     return bundle
+
+
+def delete_ticket_bundle(bundle):
+    """Delete the ticket bundle and the tickets associated with it."""
+    for ticket in bundle.tickets:
+        db.session.delete(ticket)
+
+    db.session.delete(bundle)
+
+    db.session.commit()
