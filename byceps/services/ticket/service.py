@@ -38,12 +38,12 @@ def create_tickets(category, owned_by, quantity):
     return tickets
 
 
-def _build_tickets(category, owned_by, quantity):
+def _build_tickets(category, owned_by, quantity, *, bundle=None):
     if quantity < 1:
         raise ValueError('Ticket quantity must be positive.')
 
     for _ in range(quantity):
-        yield Ticket(category, owned_by)
+        yield Ticket(category, owned_by, bundle=bundle)
 
 
 def find_tickets_related_to_user(user_id):
@@ -198,7 +198,8 @@ def create_ticket_bundle(category, ticket_quantity, owned_by):
     bundle = TicketBundle(category.id, ticket_quantity, owned_by)
     db.session.add(bundle)
 
-    tickets = list(_build_tickets(category, owned_by, ticket_quantity))
+    tickets = list(_build_tickets(category, owned_by, ticket_quantity,
+                                  bundle=bundle))
     db.session.add_all(tickets)
 
     db.session.commit()

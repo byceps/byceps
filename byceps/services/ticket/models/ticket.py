@@ -55,7 +55,9 @@ class Ticket(db.Model):
     used_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=True)
     used_by = db.relationship(User, foreign_keys=[used_by_id])
 
-    def __init__(self, category, owned_by):
+    def __init__(self, category, owned_by, *, bundle=None):
+        if bundle is not None:
+            self.bundle = bundle
         self.category = category
         self.owned_by = owned_by
 
