@@ -54,9 +54,21 @@ def count_disabled_users():
         .count()
 
 
-def find_user(user_id):
+def find_user(user_id, *, with_avatar=False, with_orga_teams=False):
     """Return the user with that id, or `None` if not found."""
-    return User.query.get(user_id)
+    query = User.query
+
+    if with_avatar:
+        query = query.options(
+            db.joinedload('avatar_selection').joinedload('avatar')
+        )
+
+    if with_orga_teams:
+        query = query.options(
+            db.joinedload('orga_team_memberships').joinedload('orga_team').joinedload('party')
+        )
+
+    return query.get(user_id)
 
 
 def find_user_by_screen_name(screen_name):
