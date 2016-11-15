@@ -33,11 +33,6 @@ def _generate_auth_token():
     return uuid4()
 
 
-def find_session_token(token):
-    """Return the session token with that ID, or `None` if not found."""
-    return SessionToken.query.get(token)
-
-
 def find_session_token_for_user(user_id):
     """Return the session token for the user with that ID, or `None` if
     not found.
@@ -60,12 +55,17 @@ def authenticate_session(user_id, auth_token):
         # Authentication token must not be empty.
         raise AuthenticationFailed()
 
-    session_token = find_session_token(auth_token)
-
-    if session_token is None:
-        # Session token is unknown.
+    if not _is_token_valid_for_user(token, user_id):
+        # Session token is unknown or the user ID provided by the
+        # client does not match the one stored on the server.
         raise AuthenticationFailed()
 
-    if user_id != session_token.user_id:
-        # The user ID provided by the client does not match the server's.
-        raise AuthenticationFailed()
+
+def _is_token_valid_for_user(token, user_id):
+    """Return `True` if a session token with that ID exists for that user."""
+    if not user_id:
+        raise ValueError('User ID is invalid.')
+
+    session_token = SessionToken.query.get(token)
+
+    return (session_token is not None) and (session_token.user_id == user_id)
