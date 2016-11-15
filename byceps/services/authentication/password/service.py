@@ -58,7 +58,13 @@ def update_password_hash(user_id, password):
     credential.updated_at = now
 
     session_token = session_service.find_session_token_for_user(user_id)
-    session_service.update_session_token(session_token, now)
+    if session_token:
+        session_service.update_session_token(session_token, now)
+    else:
+        # No session token is stored for the user, so create a new one
+        # to login with.
+        session_token = session_service.create_session_token(user_id, now)
+        db.session.add(session_token)
 
     db.session.commit()
 
