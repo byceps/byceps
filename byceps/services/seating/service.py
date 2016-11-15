@@ -172,8 +172,9 @@ def occupy_seat_group(seat_group, ticket_bundle):
 
 def switch_seat_group(occupancy, to_group):
     """Switch ticket bundle to another seat group."""
-    seats = to_group.seats
+    ticket_bundle = occupancy.ticket_bundle
     tickets = ticket_bundle.tickets
+    seats = to_group.seats
 
     _ensure_group_is_available(to_group)
     _ensure_categories_match(to_group, ticket_bundle)
@@ -182,7 +183,7 @@ def switch_seat_group(occupancy, to_group):
 
     occupancy.seat_group.id = to_group.id
 
-    _occupy_seats(to_group.seats, occupancy.ticket_bundle.tickets)
+    _occupy_seats(seats, tickets)
 
     db.session.commit()
 
