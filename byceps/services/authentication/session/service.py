@@ -50,7 +50,7 @@ def find_session_token_for_user(user_id):
 def authenticate_session(user_id, auth_token):
     """Check the client session's validity.
 
-    Return the nothing on success, or raise an exception on failure.
+    Return nothing on success, or raise an exception on failure.
     """
     if user_id is None:
         # User ID must not be empty.
