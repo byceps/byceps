@@ -55,7 +55,7 @@ def authenticate_session(user_id, auth_token):
         # Authentication token must not be empty.
         raise AuthenticationFailed()
 
-    if not _is_token_valid_for_user(token, user_id):
+    if not _is_token_valid_for_user(auth_token, user_id):
         # Session token is unknown or the user ID provided by the
         # client does not match the one stored on the server.
         raise AuthenticationFailed()
