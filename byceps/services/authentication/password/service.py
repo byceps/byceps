@@ -30,7 +30,7 @@ def generate_password_hash(password):
 
 
 def create_password_hash(user_id, password):
-    """Create a password-based credential for the user."""
+    """Create a password-based credential and a session token for the user."""
     now = datetime.utcnow()
 
     password_hash = generate_password_hash(password)
