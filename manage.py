@@ -26,6 +26,7 @@ from byceps.services.shop.order.models import Order, OrderItem, \
     PaymentState as OrderPaymentState
 from byceps.services.user.models.detail import UserDetail
 from byceps.services.user.models.user import User
+from byceps.services.user.service import find_user_by_screen_name
 
 
 def _assemble_exports():
@@ -84,6 +85,7 @@ def make_shell_context():
         'Party': Party,
         'User': User,
         'UserDetail': UserDetail,
+        'find_user_by_screen_name': find_user_by_screen_name,
     }
 
 
