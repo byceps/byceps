@@ -44,6 +44,6 @@ class TicketBundle(db.Model):
         return ReprBuilder(self) \
             .add('id', str(self.id)) \
             .add('party', self.category.party_id) \
-            .add('category', self.category.title) \
+            .add('category', self.ticket_category.title) \
             .add_with_lookup('ticket_quantity') \
             .build()
