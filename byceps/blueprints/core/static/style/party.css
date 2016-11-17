@@ -354,7 +354,7 @@ h2 {
   overflow: hidden;
   padding: 15px;
   text-overflow: ellipsis;
-  word-break: break-all;
+  word-break: break-word;
 }
 
 .user-comment:target header {
