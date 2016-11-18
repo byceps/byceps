@@ -1,20 +1,9 @@
 # -*- coding: utf-8 -*-
 
-import os
 import sys
 
-from byceps.application import create_app, init_app
-
-
-CONFIG_ENV_VAR_NAME = 'BYCEPS_CONFIG'
-
-
-environment = os.environ.get(CONFIG_ENV_VAR_NAME)
-
-if environment is None:
-    sys.stderr.write("Environment variable '{}' must be set but isn't."
-                     .format(CONFIG_ENV_VAR_NAME))
+try:
+    from byceps.application_factory import app
+except Exception as e:
+    sys.stderr.write("{}\n".format(e))
     sys.exit()
-
-app = create_app(environment)
-init_app(app)
