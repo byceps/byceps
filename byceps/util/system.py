@@ -11,7 +11,7 @@ byceps.util.system
 import os
 
 
-CONFIG_ENV_VAR_NAME = 'ENV'
+CONFIG_ENV_VAR_NAME = 'BYCEPS_CONFIG'
 
 
 def get_config_env_name_from_env(*, default=None):

@@ -6,7 +6,7 @@ import sys
 from byceps.application import create_app, init_app
 
 
-CONFIG_ENV_VAR_NAME = 'ENVIRONMENT'
+CONFIG_ENV_VAR_NAME = 'BYCEPS_CONFIG'
 
 
 environment = os.environ.get(CONFIG_ENV_VAR_NAME)
