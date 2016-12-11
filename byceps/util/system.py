@@ -14,7 +14,7 @@ import os
 CONFIG_ENV_VAR_NAME = 'BYCEPS_CONFIG'
 
 
-def get_config_env_name_from_env(*, default=None):
+def get_config_env_name_from_env():
     """Return the configuration environment name set via environment
     variable.
 
@@ -22,12 +22,9 @@ def get_config_env_name_from_env(*, default=None):
     """
     env = os.environ.get(CONFIG_ENV_VAR_NAME)
 
-    if env is None:
-        if default is None:
-            raise Exception(
-                "No configuration environment was specified via the '{}' "
-                "environment variable.".format(CONFIG_ENV_VAR_NAME))
-
-        env = default
+    if not env:
+        raise Exception(
+            "No configuration environment was specified via the '{}' "
+            "environment variable.".format(CONFIG_ENV_VAR_NAME))
 
     return env
