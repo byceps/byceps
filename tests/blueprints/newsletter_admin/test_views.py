@@ -10,7 +10,7 @@ import json
 from byceps.services.newsletter.models import Subscription
 from byceps.services.newsletter.types import SubscriptionState
 
-from tests.base import AbstractAppTestCase
+from tests.base import AbstractAppTestCase, CONFIG_FILENAME_TEST_ADMIN
 from tests.helpers import assign_permissions_to_user
 
 from testfixtures.user import create_user
@@ -19,7 +19,7 @@ from testfixtures.user import create_user
 class NewsletterAdminTestCase(AbstractAppTestCase):
 
     def setUp(self):
-        super(NewsletterAdminTestCase, self).setUp(env='test_admin')
+        super().setUp(config_filename=CONFIG_FILENAME_TEST_ADMIN)
 
         self.setup_admin()
         self.setup_subscribers()

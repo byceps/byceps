@@ -12,6 +12,8 @@ from nose2.tools import params
 from byceps.application import create_app
 from byceps.services.country import service as country_service
 
+from tests.base import CONFIG_FILENAME_TEST
+
 
 @params(
     ('Deutschland', 'DE', 'DEU'),
@@ -59,7 +61,7 @@ def test_get_country_names_contains_no_duplicates():
 
 @contextmanager
 def app_context():
-    app = create_app('test')
+    app = create_app(CONFIG_FILENAME_TEST)
 
     with app.app_context():
         yield

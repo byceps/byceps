@@ -18,6 +18,7 @@ from unittest.mock import patch
 from byceps.application import create_app
 from byceps.database import db
 from byceps.services.authentication.session.models import SessionToken
+from byceps.util.framework.config import assemble_config_filename
 
 from testfixtures.authentication import create_session_token
 from testfixtures.brand import create_brand
@@ -27,11 +28,15 @@ from testfixtures.user import create_user
 from tests import mocks
 
 
+CONFIG_FILENAME_TEST = assemble_config_filename('test')
+CONFIG_FILENAME_TEST_ADMIN = assemble_config_filename('test_admin')
+
+
 class AbstractAppTestCase(TestCase):
 
     @patch('redis.StrictRedis.from_url', mocks.strict_redis_client_from_url)
-    def setUp(self, env='test'):
-        self.app = create_app(env)
+    def setUp(self, config_filename=CONFIG_FILENAME_TEST):
+        self.app = create_app(config_filename)
 
         # Allow overriding of database URI from the environment.
         db_uri_override = os.environ.get('DATABASE_URI')

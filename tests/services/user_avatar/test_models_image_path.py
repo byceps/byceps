@@ -16,6 +16,8 @@ from byceps.util.image.models import ImageType
 from testfixtures.user import create_user
 from testfixtures.user_avatar import create_avatar
 
+from tests.base import CONFIG_FILENAME_TEST
+
 
 @params(
     (
@@ -36,7 +38,7 @@ def test_path(avatar_images_path, avatar_id, image_type, expected):
 
     avatar = create_avatar(user, id=avatar_id, image_type=image_type)
 
-    app = create_app('test')
+    app = create_app(CONFIG_FILENAME_TEST)
     with app.app_context():
         app.config['PATH_USER_AVATAR_IMAGES'] = avatar_images_path
         assert avatar.path == expected

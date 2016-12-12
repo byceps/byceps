@@ -17,14 +17,14 @@ from testfixtures.shop_article import create_article
 from testfixtures.shop_order import create_order, create_order_item
 from testfixtures.user import create_user_with_detail
 
-from tests.base import AbstractAppTestCase
+from tests.base import AbstractAppTestCase, CONFIG_FILENAME_TEST_ADMIN
 from tests.helpers import assign_permissions_to_user
 
 
 class ExportTestCase(AbstractAppTestCase):
 
     def setUp(self):
-        super().setUp(env='test_admin')
+        super().setUp(config_filename=CONFIG_FILENAME_TEST_ADMIN)
 
         self.setup_admin()
         self.create_articles()

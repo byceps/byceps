@@ -21,7 +21,6 @@ from .database import db
 from . import email
 from . import redis
 from .util.framework.blueprint import register_blueprint
-from .util.framework.config import assemble_config_filename
 from .util.l10n import set_locale
 from .util import templatefilters
 
@@ -71,11 +70,10 @@ BLUEPRINTS = [
 TIMEZONE = timezone('Europe/Berlin')
 
 
-def create_app(environment_name):
+def create_app(config_filename):
     """Create the actual Flask application."""
     app = Flask(__name__)
 
-    config_filename = assemble_config_filename(environment_name)
     app.config.from_pyfile(config_filename)
 
     # Throw an exception when an undefined name is referenced in a template.
