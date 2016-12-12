@@ -21,7 +21,7 @@ from .database import db
 from . import email
 from . import redis
 from .util.framework.blueprint import register_blueprint
-from .util.framework.config import load_config
+from .util.framework.config import assemble_config_filename
 from .util.l10n import set_locale
 from .util import templatefilters
 
@@ -75,7 +75,8 @@ def create_app(environment_name):
     """Create the actual Flask application."""
     app = Flask(__name__)
 
-    load_config(app, environment_name)
+    config_filename = assemble_config_filename(app, environment_name)
+    app.config.from_pyfile(config_filename)
 
     # Throw an exception when an undefined name is referenced in a template.
     app.jinja_env.undefined = jinja2.StrictUndefined

@@ -13,19 +13,8 @@ Configuration utilities
 from pathlib import Path
 
 
-def load_config(app, environment_name):
-    """Load the configuration for the specified environment from the
-    corresponding module.
-
-    The module is expected to be located in the 'config/env'
-    sub-package.
-    """
-    filename = _assemble_config_filename(app, environment_name)
-
-    app.config.from_pyfile(filename)
-
-
-def _assemble_config_filename(app, environment_name):
+def assemble_config_filename(app, environment_name):
+    """Assemble a full config filename from an environment name."""
     root = Path(app.root_path)
     filename = '{}.py'.format(environment_name)
 
