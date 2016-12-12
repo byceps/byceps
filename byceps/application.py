@@ -75,7 +75,7 @@ def create_app(environment_name):
     """Create the actual Flask application."""
     app = Flask(__name__)
 
-    config_filename = assemble_config_filename(app, environment_name)
+    config_filename = assemble_config_filename(environment_name)
     app.config.from_pyfile(config_filename)
 
     # Throw an exception when an undefined name is referenced in a template.

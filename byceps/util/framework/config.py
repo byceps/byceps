@@ -13,9 +13,9 @@ Configuration utilities
 from pathlib import Path
 
 
-def assemble_config_filename(app, environment_name):
+def assemble_config_filename(environment_name):
     """Assemble a full config filename from an environment name."""
-    root = Path(app.root_path)
+    root = Path('..')
     filename = '{}.py'.format(environment_name)
 
-    return str(root / '..' / 'config' / 'env' / filename)
+    return str(root / 'config' / 'env' / filename)
