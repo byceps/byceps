@@ -12,6 +12,7 @@ Framework utilities.
 
 from collections import namedtuple
 from importlib import import_module
+from pathlib import Path
 
 from flask import Blueprint, flash
 
@@ -27,8 +28,16 @@ def load_config(app, environment_name):
     The module is expected to be located in the 'config/env'
     sub-package.
     """
-    module_path = 'config.env.{}'.format(environment_name)
-    app.config.from_object(module_path)
+    filename = _assemble_config_filename(app, environment_name)
+
+    app.config.from_pyfile(filename)
+
+
+def _assemble_config_filename(app, environment_name):
+    root = Path(app.root_path)
+    filename = '{}.py'.format(environment_name)
+
+    return str(root / '..' / 'config' / 'env' / filename)
 
 
 # -------------------------------------------------------------------- #
