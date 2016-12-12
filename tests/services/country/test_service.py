@@ -5,6 +5,8 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
+from contextlib import contextmanager
+
 from nose2.tools import params
 
 from byceps.application import create_app
@@ -16,9 +18,7 @@ from byceps.services.country import service as country_service
     ('Österreich' , 'AT', 'AUT'),
 )
 def test_get_countries_contains_country(name, alpha2, alpha3):
-    app = create_app('test')
-
-    with app.app_context():
+    with app_context():
         countries = country_service.get_countries()
 
     country = find_by_name(countries, name)
@@ -30,9 +30,7 @@ def test_get_countries_contains_country(name, alpha2, alpha3):
 
 
 def test_get_country_names_contains_selected_items():
-    app = create_app('test')
-
-    with app.app_context():
+    with app_context():
         actual = country_service.get_country_names()
 
     some_expected = frozenset([
@@ -50,15 +48,21 @@ def test_get_country_names_contains_selected_items():
 
 
 def test_get_country_names_contains_no_duplicates():
-    app = create_app('test')
-
-    with app.app_context():
+    with app_context():
         actual = country_service.get_country_names()
 
     assert len(actual) == len(set(actual))
 
 
 # helpers
+
+
+@contextmanager
+def app_context():
+    app = create_app('test')
+
+    with app.app_context():
+        yield
 
 
 def find_by_name(countries, name):
