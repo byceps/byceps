@@ -11,7 +11,8 @@ byceps.blueprints.newsletter.views
 from flask import abort, g, url_for
 
 from ...services.newsletter import service as newsletter_service
-from ...util.framework import create_blueprint, flash_success
+from ...util.framework.blueprint import create_blueprint
+from ...util.framework.flash import flash_success
 from ...util.views import respond_no_content_with_location
 
 

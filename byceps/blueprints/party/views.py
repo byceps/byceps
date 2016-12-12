@@ -13,7 +13,7 @@ from flask import g
 from ...config import get_current_party_id
 from ...services.party import service as party_service
 from ...services.ticket import service as ticket_service
-from ...util.framework import create_blueprint
+from ...util.framework.blueprint import create_blueprint
 from ...util.templating import templated
 
 

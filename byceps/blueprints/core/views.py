@@ -13,7 +13,7 @@ from datetime import date, datetime
 from flask import g, render_template
 
 from ... import config
-from ...util.framework import create_blueprint
+from ...util.framework.blueprint import create_blueprint
 from ...util.navigation import Navigation
 
 

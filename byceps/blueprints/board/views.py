@@ -13,8 +13,8 @@ from flask import abort, current_app, g, redirect, request, url_for
 from ...services.board import service as board_service
 from ...services.text_markup.service import get_smileys, render_html
 from ...services.user_badge import service as badge_service
-from ...util.framework import create_blueprint, flash_error, flash_notice, \
-    flash_success
+from ...util.framework.blueprint import create_blueprint
+from ...util.framework.flash import flash_error, flash_notice, flash_success
 from ...util.templating import templated
 from ...util.views import redirect_to, respond_no_content_with_location
 

@@ -25,7 +25,7 @@ from ...services.shop.order import service as order_service
 from ...services.terms import service as terms_service
 from ...services.ticket import service as ticket_service
 from ...services.user import service as user_service
-from ...util.framework import create_blueprint
+from ...util.framework.blueprint import create_blueprint
 from ...util.templating import templated
 
 from ..authorization.decorators import permission_required

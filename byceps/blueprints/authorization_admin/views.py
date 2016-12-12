@@ -9,7 +9,7 @@ byceps.blueprints.authorization_admin.views
 """
 
 from ...services.authorization import service as authorization_service
-from ...util.framework import create_blueprint
+from ...util.framework.blueprint import create_blueprint
 from ...util.templating import templated
 
 from ..authorization.decorators import permission_required

@@ -15,7 +15,8 @@ from flask import abort, g, render_template, request, url_for
 from ...services.party import service as party_service
 from ...services.snippet import service as snippet_service
 from ...util.datetime.format import format_datetime_short
-from ...util.framework import create_blueprint, flash_success
+from ...util.framework.blueprint import create_blueprint
+from ...util.framework.flash import flash_success
 from ...util.iterables import pairwise
 from ...util.templating import templated
 from ...util.views import redirect_to, respond_no_content_with_location

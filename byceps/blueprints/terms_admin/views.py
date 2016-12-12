@@ -12,7 +12,7 @@ from flask import abort
 
 from ...services.brand import service as brand_service
 from ...services.terms import service as terms_service
-from ...util.framework import create_blueprint
+from ...util.framework.blueprint import create_blueprint
 from ...util.templating import templated
 
 from ..authorization.decorators import permission_required

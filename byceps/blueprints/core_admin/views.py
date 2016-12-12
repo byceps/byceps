@@ -9,7 +9,7 @@ byceps.blueprints.core_admin.views
 """
 
 from ...services.brand import service as brand_service
-from ...util.framework import create_blueprint
+from ...util.framework.blueprint import create_blueprint
 
 from ..authorization.registry import permission_registry
 

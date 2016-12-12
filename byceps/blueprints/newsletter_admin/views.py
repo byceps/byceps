@@ -15,7 +15,7 @@ from flask import abort
 from ...services.brand import service as brand_service
 from ...services.newsletter import service as newsletter_service
 from ...services.newsletter.types import SubscriptionState
-from ...util.framework import create_blueprint
+from ...util.framework.blueprint import create_blueprint
 from ...util.templating import templated
 from ...util.views import jsonified, textified
 

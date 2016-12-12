@@ -12,7 +12,7 @@ from functools import wraps
 
 from flask import g
 
-from ...util.framework import flash_notice
+from ...util.framework.flash import flash_notice
 from ...util.views import redirect_to
 
 

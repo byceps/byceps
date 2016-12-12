@@ -19,7 +19,8 @@ from ...services.shop.order.models import PaymentState
 from ...services.shop.order import ordered_articles_service
 from ...services.shop.sequence import service as sequence_service
 from ...services.ticket import service as ticket_service
-from ...util.framework import create_blueprint, flash_success
+from ...util.framework.blueprint import create_blueprint
+from ...util.framework.flash import flash_success
 from ...util.templating import templated
 from ...util.views import redirect_to, respond_no_content_with_location
 

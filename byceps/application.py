@@ -20,7 +20,8 @@ from .config import SiteMode
 from .database import db
 from . import email
 from . import redis
-from .util.framework import load_config, register_blueprint
+from .util.framework.blueprint import register_blueprint
+from .util.framework.config import load_config
 from .util.l10n import set_locale
 from .util import templatefilters
 

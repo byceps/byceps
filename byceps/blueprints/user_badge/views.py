@@ -12,7 +12,7 @@ from flask import abort
 
 from ...services.user import service as user_service
 from ...services.user_badge import service as badge_service
-from ...util.framework import create_blueprint
+from ...util.framework.blueprint import create_blueprint
 from ...util.templating import templated
 
 

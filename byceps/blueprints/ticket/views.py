@@ -11,7 +11,7 @@ byceps.blueprints.ticket.views
 from flask import abort, g
 
 from ...services.ticket import service as ticket_service
-from ...util.framework import create_blueprint
+from ...util.framework.blueprint import create_blueprint
 from ...util.iterables import find
 from ...util.templating import templated
 

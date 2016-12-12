@@ -12,7 +12,7 @@ from flask import abort
 
 from ...services.orga_presence import service as orga_presence_service
 from ...services.party import service as party_service
-from ...util.framework import create_blueprint
+from ...util.framework.blueprint import create_blueprint
 from ...util.templating import templated
 
 from ..authorization.decorators import permission_required

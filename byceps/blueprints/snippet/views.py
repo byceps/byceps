@@ -12,7 +12,7 @@ from flask import abort, g
 
 from ...services.snippet import service as snippet_service
 from ...services.snippet.service import SnippetNotFound
-from ...util.framework import create_blueprint
+from ...util.framework.blueprint import create_blueprint
 
 from .templating import render_snippet_as_page, render_snippet_as_partial
 

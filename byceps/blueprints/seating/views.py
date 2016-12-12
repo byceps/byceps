@@ -12,7 +12,7 @@ from flask import abort, g
 
 from ...config import get_ticket_management_enabled
 from ...services.seating import service as seating_service
-from ...util.framework import create_blueprint
+from ...util.framework.blueprint import create_blueprint
 from ...util.templating import templated
 
 
