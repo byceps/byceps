@@ -13,7 +13,6 @@ from itertools import count, islice
 
 from byceps.application import create_app
 from byceps.database import db
-from byceps.util.system import get_config_filename_from_env  # for scripts
 
 
 @contextmanager

@@ -12,8 +12,9 @@ import click
 from byceps.database import db
 from byceps.services.authentication.password import service as password_service
 from byceps.services.user import service as user_service
+from byceps.util.system import get_config_filename_from_env
 
-from bootstrap.util import app_context, get_config_filename_from_env
+from bootstrap.util import app_context
 
 
 @click.command()
