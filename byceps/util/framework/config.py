@@ -18,4 +18,4 @@ def assemble_config_filename(environment_name):
     root = Path('..')
     filename = '{}.py'.format(environment_name)
 
-    return str(root / 'config' / 'env' / filename)
+    return root / 'config' / 'env' / filename

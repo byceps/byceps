@@ -74,7 +74,7 @@ def create_app(config_filename):
     """Create the actual Flask application."""
     app = Flask(__name__)
 
-    app.config.from_pyfile(config_filename)
+    app.config.from_pyfile(str(config_filename))
 
     # Throw an exception when an undefined name is referenced in a template.
     app.jinja_env.undefined = jinja2.StrictUndefined
