@@ -11,7 +11,7 @@ import click
 
 from byceps.services.orga import service as orga_service
 
-from bootstrap.util import app_context, get_config_name_from_env
+from bootstrap.util import app_context, get_config_filename_from_env
 from bootstrap.validators import validate_brand, validate_user_screen_name
 
 
@@ -28,6 +28,6 @@ def execute(brand, user):
 
 
 if __name__ == '__main__':
-    config_name = get_config_name_from_env()
-    with app_context(config_name):
+    config_filename = get_config_filename_from_env()
+    with app_context(config_filename):
         execute()

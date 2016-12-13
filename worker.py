@@ -11,22 +11,22 @@ import sys
 
 from rq import Worker
 
-from bootstrap.util import app_context, get_config_name_from_env
+from bootstrap.util import app_context, get_config_filename_from_env
 from byceps.util.jobqueue import connection, get_queue
 
 
-def get_config_name():
+def get_config_filename():
     try:
-        return get_config_name_from_env()
+        return get_config_filename_from_env()
     except Exception as e:
         sys.stderr.write(str(e) + '\n')
         sys.exit()
 
 
 if __name__ == '__main__':
-    config_name = get_config_name()
+    config_filename = get_config_filename()
 
-    with app_context(config_name):
+    with app_context(config_filename):
         with connection():
             queues = [get_queue()]
 

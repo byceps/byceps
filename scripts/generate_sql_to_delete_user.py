@@ -10,7 +10,7 @@ traces from the database.
 
 import click
 
-from bootstrap.util import app_context, get_config_name_from_env
+from bootstrap.util import app_context, get_config_filename_from_env
 from bootstrap.validators import validate_user_screen_name
 
 
@@ -40,6 +40,6 @@ def generate_delete_statements(user_id):
 
 
 if __name__ == '__main__':
-    config_name = get_config_name_from_env()
-    with app_context(config_name):
+    config_filename = get_config_filename_from_env()
+    with app_context(config_filename):
         execute()

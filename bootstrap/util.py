@@ -13,20 +13,14 @@ from itertools import count, islice
 
 from byceps.application import create_app
 from byceps.database import db
-from byceps.util.framework.config import assemble_config_filename
-from byceps.util.system import get_config_env_name_from_env
-
-
-get_config_name_from_env = get_config_env_name_from_env
+from byceps.util.system import get_config_filename_from_env  # for scripts
 
 
 @contextmanager
-def app_context(config_name):
+def app_context(config_filename):
     """Provide a context in which the application is available with the
-    specified environment.
+    specified configuration.
     """
-    config_filename = assemble_config_filename(config_name)
-
     app = create_app(config_filename)
     with app.app_context():
         yield app
