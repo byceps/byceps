@@ -66,8 +66,8 @@ def login_form():
     """Show login form."""
     logged_in = g.current_user.is_active
     if logged_in:
-        flash_error('Du bist bereits als Benutzer "{}" angemeldet.',
-                    g.current_user.screen_name)
+        flash_notice('Du bist bereits als Benutzer "{}" angemeldet.',
+                     g.current_user.screen_name)
 
     form = LoginForm()
     user_registration_enabled = get_user_registration_enabled()
