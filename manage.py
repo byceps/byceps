@@ -45,7 +45,6 @@ def _export_path_if_configured(exports, config_key, url_path):
         exports[url_path] = str(path)
 
 
-
 if app.debug:
     exports = _assemble_exports()
     app.wsgi_app = SharedDataMiddleware(app.wsgi_app, exports)
