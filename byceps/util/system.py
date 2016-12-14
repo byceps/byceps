@@ -39,4 +39,4 @@ def get_config_filename_from_env_or_exit():
         return get_config_filename_from_env()
     except Exception as e:
         sys.stderr.write("{}\n".format(e))
-        sys.exit()
+        sys.exit(1)
