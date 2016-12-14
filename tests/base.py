@@ -12,13 +12,13 @@ Base classes for test cases
 
 from contextlib import contextmanager
 import os
+from pathlib import Path
 from unittest import TestCase
 from unittest.mock import patch
 
 from byceps.application import create_app
 from byceps.database import db
 from byceps.services.authentication.session.models import SessionToken
-from byceps.util.framework.config import assemble_config_filename
 
 from testfixtures.authentication import create_session_token
 from testfixtures.brand import create_brand
@@ -28,8 +28,9 @@ from testfixtures.user import create_user
 from tests import mocks
 
 
-CONFIG_FILENAME_TEST = assemble_config_filename('test')
-CONFIG_FILENAME_TEST_ADMIN = assemble_config_filename('test_admin')
+_CONFIG_PATH = Path('../config/env')
+CONFIG_FILENAME_TEST = _CONFIG_PATH / 'test.py'
+CONFIG_FILENAME_TEST_ADMIN = _CONFIG_PATH / 'test_admin.py'
 
 
 class AbstractAppTestCase(TestCase):
