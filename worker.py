@@ -11,8 +11,10 @@ import sys
 
 from rq import Worker
 
-from bootstrap.util import app_context, get_config_filename_from_env
 from byceps.util.jobqueue import connection, get_queue
+from byceps.util.system import get_config_filename_from_env
+
+from bootstrap.util import app_context
 
 
 def get_config_filename():
