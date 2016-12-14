@@ -10,7 +10,7 @@ traces from the database.
 
 import click
 
-from byceps.util.system import get_config_filename_from_env
+from byceps.util.system import get_config_filename_from_env_or_exit
 
 from bootstrap.util import app_context
 from bootstrap.validators import validate_user_screen_name
@@ -42,6 +42,6 @@ def generate_delete_statements(user_id):
 
 
 if __name__ == '__main__':
-    config_filename = get_config_filename_from_env()
+    config_filename = get_config_filename_from_env_or_exit()
     with app_context(config_filename):
         execute()

@@ -12,7 +12,7 @@ import click
 from byceps.database import db
 from byceps.services.authentication.password import service as password_service
 from byceps.services.user import service as user_service
-from byceps.util.system import get_config_filename_from_env
+from byceps.util.system import get_config_filename_from_env_or_exit
 
 from bootstrap.util import app_context
 
@@ -44,6 +44,6 @@ def _create_user(screen_name, email_address):
 
 
 if __name__ == '__main__':
-    config_filename = get_config_filename_from_env()
+    config_filename = get_config_filename_from_env_or_exit()
     with app_context(config_filename):
         execute()
