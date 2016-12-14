@@ -17,7 +17,7 @@ from flask_script import Manager
 from flask_script.commands import Server
 from werkzeug.wsgi import SharedDataMiddleware
 
-from byceps.application_factory import app
+from byceps.application import create_app, init_app
 from byceps.database import db
 from byceps.services.brand.models import Brand
 from byceps.services.party.models import Party
@@ -27,6 +27,13 @@ from byceps.services.shop.order.models import Order, OrderItem, \
 from byceps.services.user.models.detail import UserDetail
 from byceps.services.user.models.user import User
 from byceps.services.user.service import find_user_by_screen_name
+from byceps.util.system import get_config_filename_from_env
+
+
+config_filename = get_config_filename_from_env()
+
+app = create_app(config_filename)
+init_app(app)
 
 
 def _assemble_exports():
