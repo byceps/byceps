@@ -9,6 +9,7 @@ byceps.util.system
 """
 
 import os
+import sys
 
 
 CONFIG_VAR_NAME = 'BYCEPS_CONFIG'
@@ -27,3 +28,15 @@ def get_config_filename_from_env():
             "environment variable.".format(CONFIG_VAR_NAME))
 
     return env
+
+
+def get_config_filename_from_env_or_exit():
+    """Return the configuration filename set via environment variable.
+
+    Exit if it isn't set.
+    """
+    try:
+        return get_config_filename_from_env()
+    except Exception as e:
+        sys.stderr.write("{}\n".format(e))
+        sys.exit()

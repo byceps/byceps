@@ -7,26 +7,16 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-import sys
-
 from rq import Worker
 
 from byceps.util.jobqueue import connection, get_queue
-from byceps.util.system import get_config_filename_from_env
+from byceps.util.system import get_config_filename_from_env_or_exit
 
 from bootstrap.util import app_context
 
 
-def get_config_filename():
-    try:
-        return get_config_filename_from_env()
-    except Exception as e:
-        sys.stderr.write(str(e) + '\n')
-        sys.exit()
-
-
 if __name__ == '__main__':
-    config_filename = get_config_filename()
+    config_filename = get_config_filename_from_env_or_exit()
 
     with app_context(config_filename):
         with connection():
