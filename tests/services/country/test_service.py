@@ -5,14 +5,11 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from contextlib import contextmanager
-
 from nose2.tools import params
 
-from byceps.application import create_app
 from byceps.services.country import service as country_service
 
-from tests.base import CONFIG_FILENAME_TEST
+from tests.helpers import app_context
 
 
 @params(
@@ -57,14 +54,6 @@ def test_get_country_names_contains_no_duplicates():
 
 
 # helpers
-
-
-@contextmanager
-def app_context():
-    app = create_app(CONFIG_FILENAME_TEST)
-
-    with app.app_context():
-        yield
 
 
 def find_by_name(countries, name):

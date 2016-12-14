@@ -12,7 +12,18 @@ from contextlib import contextmanager
 
 from flask import appcontext_pushed, g
 
+from byceps.application import create_app
 from byceps.services.authorization import service as authorization_service
+
+from .base import CONFIG_FILENAME_TEST
+
+
+@contextmanager
+def app_context(*, config_filename=CONFIG_FILENAME_TEST):
+    app = create_app(config_filename)
+
+    with app.app_context():
+        yield app
 
 
 @contextmanager
