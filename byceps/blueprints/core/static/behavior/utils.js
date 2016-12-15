@@ -44,3 +44,19 @@ function _ajax_and_redirect(method, request_url) {
 function _get_location(xhr) {
   return xhr.getResponseHeader('Location');
 }
+
+
+/**
+ * Register an element as click trigger to copy the value of a field to
+ * the clipboard.
+ */
+function enableCopyToClipboard(field, triggerElement) {
+  triggerElement.addEventListener('click', function() {
+    field.focus();
+    field.select();
+    try {
+      document.execCommand('copy');
+    } catch (err) {}
+    field.blur();
+  });
+}

@@ -52,7 +52,11 @@
   <table class="index">
     <tr>
       <th>ID</th>
-      <td>{{ user.id }}</td>
+      <td>
+        {{ user.id }}
+        <input id="user-id-field" value="{{ user.id }}" style="position: fixed; top: -1000px;" readonly>
+        <button id="user-id-copy-trigger" class="action inline" title="In die Zwischenablage kopieren">{{ render_icon('clipboard') }}</button>
+      </td>
     </tr>
     <tr>
       <th>Benutzername</th>
@@ -201,3 +205,12 @@
 {{ render_user_badges_list(badges) }}
 
 {%- endblock %}
+
+{% block scripts %}
+<script>
+  var field = document.querySelector('#user-id-field');
+  var trigger = document.querySelector('#user-id-copy-trigger');
+
+  enableCopyToClipboard(field, trigger);
+</script>
+{% endblock %}
