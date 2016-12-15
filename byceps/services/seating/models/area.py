@@ -32,7 +32,7 @@ class Area(db.Model):
     query_class = AreaQuery
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    party_id = db.Column(db.Unicode(20), db.ForeignKey('parties.id'), index=True, nullable=False)
+    party_id = db.Column(db.Unicode(40), db.ForeignKey('parties.id'), index=True, nullable=False)
     slug = db.Column(db.Unicode(40), nullable=False)
     title = db.Column(db.Unicode(40), nullable=False)
     image_filename = db.Column(db.Unicode(40), nullable=True)

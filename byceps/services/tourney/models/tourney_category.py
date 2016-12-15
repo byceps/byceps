@@ -24,7 +24,7 @@ class TourneyCategory(db.Model):
     )
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    party_id = db.Column(db.Unicode(20), db.ForeignKey('parties.id'), index=True, nullable=False)
+    party_id = db.Column(db.Unicode(40), db.ForeignKey('parties.id'), index=True, nullable=False)
     party = db.relationship(Party,
                             backref=db.backref('tourney_categories',
                                                order_by='TourneyCategory.position',
