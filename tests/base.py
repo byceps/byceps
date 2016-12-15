@@ -28,7 +28,7 @@ from testfixtures.user import create_user
 from tests import mocks
 
 
-_CONFIG_PATH = Path('../config/env')
+_CONFIG_PATH = Path('../config')
 CONFIG_FILENAME_TEST = _CONFIG_PATH / 'test.py'
 CONFIG_FILENAME_TEST_ADMIN = _CONFIG_PATH / 'test_admin.py'
 
