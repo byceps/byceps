@@ -132,7 +132,7 @@ def _add_static_file_url_rules(app):
 def init_app(app):
     """Initialize the application after is has been created."""
     with app.app_context():
-        _set_root_path(app)
+        _set_url_root_path(app)
 
         site_mode = config.get_site_mode()
         if site_mode.is_public():
@@ -151,7 +151,7 @@ def init_app(app):
                                    url_prefix='/admin/rq')
 
 
-def _set_root_path(app):
+def _set_url_root_path(app):
     """Set an optional URL path to redirect to from the root URL path (`/`).
 
     Important: Don't specify the target with a leading slash unless you
