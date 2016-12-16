@@ -21,6 +21,9 @@ SQLALCHEMY_ECHO = False
 # job queue
 JOBS_ASYNC = True
 
+# RQ dashboard (for job queue)
+RQ_POLL_INTERVAL = 2500
+
 # user accounts
 USER_REGISTRATION_ENABLED = True
 
