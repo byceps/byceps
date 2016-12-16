@@ -18,6 +18,9 @@ DEBUG = False
 # database connection
 SQLALCHEMY_ECHO = False
 
+# Disable Flask-SQLAlchemy's tracking of object modifications.
+SQLALCHEMY_TRACK_MODIFICATIONS = False
+
 # job queue
 JOBS_ASYNC = True
 

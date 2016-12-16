@@ -87,9 +87,6 @@ def create_app(config_filename):
     # Add the time zone to the configuration.
     app.config['TIMEZONE'] = TIMEZONE
 
-    # Disable Flask-SQLAlchemy's tracking of object modifications.
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
     # Initialize database.
     db.init_app(app)
 
