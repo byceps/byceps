@@ -13,6 +13,10 @@ from enum import Enum
 from flask import current_app
 
 
+STATIC_URL_PREFIX_GLOBAL = '/global'
+STATIC_URL_PREFIX_BRAND = '/brand'
+STATIC_URL_PREFIX_PARTY = '/party'
+
 EXTENSION_KEY = 'byceps'
 KEY_SITE_MODE = 'site_mode'
 KEY_PARTY_ID = 'party_id'

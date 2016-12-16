@@ -16,7 +16,8 @@ from pytz import timezone
 
 from .blueprints.snippet.init import add_routes_for_snippets
 from . import config, config_defaults
-from .config import SiteMode
+from .config import SiteMode, STATIC_URL_PREFIX_BRAND, \
+    STATIC_URL_PREFIX_GLOBAL, STATIC_URL_PREFIX_PARTY
 from .database import db
 from . import email
 from . import redis
@@ -118,11 +119,12 @@ def _register_blueprints(app):
 
 def _add_static_file_url_rules(app):
     """Add URL rules to for static files."""
-    for rule, endpoint in [
-        ('/global/<path:filename>', 'global_file'),
-        ('/brand/<path:filename>', 'brand_file'),
-        ('/party/<path:filename>', 'party_file'),
+    for rule_prefix, endpoint in [
+        (STATIC_URL_PREFIX_GLOBAL, 'global_file'),
+        (STATIC_URL_PREFIX_BRAND, 'brand_file'),
+        (STATIC_URL_PREFIX_PARTY, 'party_file'),
     ]:
+        rule = rule_prefix + '/<path:filename>'
         app.add_url_rule(rule,
                          endpoint=endpoint,
                          methods=['GET'],

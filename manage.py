@@ -18,6 +18,8 @@ from flask_script.commands import Server
 from werkzeug.wsgi import SharedDataMiddleware
 
 from byceps.application import create_app, init_app
+from byceps.config import STATIC_URL_PREFIX_BRAND, STATIC_URL_PREFIX_GLOBAL, \
+    STATIC_URL_PREFIX_PARTY
 from byceps.database import db
 from byceps.services.brand.models import Brand
 from byceps.services.party.models import Party
@@ -39,9 +41,9 @@ init_app(app)
 def _assemble_exports():
     exports = {}
 
-    _export_path_if_configured(exports, 'PATH_GLOBAL', '/global')
-    _export_path_if_configured(exports, 'PATH_BRAND', '/brand')
-    _export_path_if_configured(exports, 'PATH_PARTY', '/party')
+    _export_path_if_configured(exports, 'PATH_GLOBAL', STATIC_URL_PREFIX_GLOBAL)
+    _export_path_if_configured(exports, 'PATH_BRAND', STATIC_URL_PREFIX_BRAND)
+    _export_path_if_configured(exports, 'PATH_PARTY', STATIC_URL_PREFIX_PARTY)
 
     return exports
 
