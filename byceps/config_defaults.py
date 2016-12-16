@@ -35,6 +35,9 @@ PERMANENT_SESSION_LIFETIME = timedelta(14)
 LOCALE = 'de_DE.UTF-8'
 LOCALES_FORMS = ['de']
 
+# home page
+ROOT_REDIRECT_TARGET = None
+
 # news item pagination
 NEWS_ITEMS_PER_PAGE = 4
 

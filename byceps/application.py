@@ -156,6 +156,6 @@ def _set_url_root_path(app):
     Important: Don't specify the target with a leading slash unless you
     really mean the root of the host.
     """
-    target = app.config.get('ROOT_REDIRECT_TARGET')
+    target = app.config['ROOT_REDIRECT_TARGET']
     if target:
         app.add_url_rule('/', endpoint='root', redirect_to=target)
