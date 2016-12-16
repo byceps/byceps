@@ -48,5 +48,5 @@ def view(slug):
     }
 
 
-def _get_items_per_page_value(default=4):
-    return int(current_app.config.get('NEWS_ITEMS_PER_PAGE', default))
+def _get_items_per_page_value():
+    return int(current_app.config['NEWS_ITEMS_PER_PAGE'])

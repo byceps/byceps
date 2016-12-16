@@ -98,7 +98,7 @@ def determine_user_registration_enabled(app, site_mode):
     if site_mode.is_admin():
         return False
 
-    return app.config.get('USER_REGISTRATION_ENABLED', True)
+    return app.config['USER_REGISTRATION_ENABLED']
 
 
 def get_user_registration_enabled(app=None):
@@ -114,7 +114,7 @@ def determine_ticket_management_enabled(app, site_mode):
     if site_mode.is_admin():
         return False
 
-    return app.config.get('TICKET_MANAGEMENT_ENABLED', True)
+    return app.config['TICKET_MANAGEMENT_ENABLED']
 
 
 def get_ticket_management_enabled(app=None):

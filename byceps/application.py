@@ -15,7 +15,7 @@ import jinja2
 from pytz import timezone
 
 from .blueprints.snippet.init import add_routes_for_snippets
-from . import config
+from . import config, config_defaults
 from .config import SiteMode
 from .database import db
 from . import email
@@ -74,6 +74,7 @@ def create_app(config_filename):
     """Create the actual Flask application."""
     app = Flask(__name__)
 
+    app.config.from_object(config_defaults)
     app.config.from_pyfile(str(config_filename))
 
     # Throw an exception when an undefined name is referenced in a template.

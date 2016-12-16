@@ -1,19 +1,12 @@
-from datetime import timedelta
 from pathlib import Path
 
 
-DEBUG = False
 MAX_CONTENT_LENGTH = 4000000
-PERMANENT_SESSION_LIFETIME = timedelta(14)
 PROPAGATE_EXCEPTIONS = True
 SECRET_KEY = b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
 SESSION_COOKIE_SECURE = True
 
-LOCALE = 'de_DE.UTF-8'
-LOCALES_FORMS = ['de']
-
 SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://byceps:boioioing@127.0.0.1/byceps'
-SQLALCHEMY_ECHO = False
 
 REDIS_URL = 'unix:///var/run/redis/redis.sock?db=0'
 
