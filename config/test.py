@@ -16,6 +16,8 @@ PARTY = 'acme-2014'
 
 PATH_DATA = Path('./data')
 PATH_GLOBAL = PATH_DATA / 'global'
+PATH_BRAND = PATH_DATA / 'brands' / BRAND
+PATH_PARTY = PATH_DATA / 'parties' / PARTY
 PATH_USER_AVATAR_IMAGES = PATH_GLOBAL / 'users/avatars'
 
 MAIL_DEBUG = False
