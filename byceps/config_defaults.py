@@ -12,6 +12,8 @@ Default configuration values
 
 from datetime import timedelta
 
+from pytz import timezone
+
 
 DEBUG = False
 
@@ -33,6 +35,9 @@ USER_REGISTRATION_ENABLED = True
 
 # login sessions
 PERMANENT_SESSION_LIFETIME = timedelta(14)
+
+# time zone
+TIMEZONE = timezone('Europe/Berlin')
 
 # localization
 LOCALE = 'de_DE.UTF-8'

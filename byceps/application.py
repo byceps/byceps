@@ -12,7 +12,6 @@ from pathlib import Path
 
 from flask import Flask
 import jinja2
-from pytz import timezone
 
 from .blueprints.snippet.init import add_routes_for_snippets
 from . import config, config_defaults
@@ -68,8 +67,6 @@ BLUEPRINTS = [
     ('user_group',          '/user_groups',         SiteMode.public),
 ]
 
-TIMEZONE = timezone('Europe/Berlin')
-
 
 def create_app(config_filename):
     """Create the actual Flask application."""
@@ -83,9 +80,6 @@ def create_app(config_filename):
 
     # Set the locale.
     set_locale(app.config['LOCALE'])  # Fail if not configured.
-
-    # Add the time zone to the configuration.
-    app.config['TIMEZONE'] = TIMEZONE
 
     # Initialize database.
     db.init_app(app)
