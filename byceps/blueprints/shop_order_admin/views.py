@@ -112,7 +112,7 @@ def _format_export_amount(amount):
 
 def _format_export_datetime(dt):
     """Format date and time as required by the export format specification."""
-    timezone = current_app.config['TIMEZONE']
+    timezone = current_app.config['SHOP_ORDER_EXPORT_TIMEZONE']
     localized_dt = timezone.localize(dt)
 
     date_time, utc_offset = localized_dt.strftime('%Y-%m-%dT%H:%M:%S|%z') \

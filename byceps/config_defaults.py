@@ -36,9 +36,6 @@ USER_REGISTRATION_ENABLED = True
 # login sessions
 PERMANENT_SESSION_LIFETIME = timedelta(14)
 
-# time zone
-TIMEZONE = timezone('Europe/Berlin')
-
 # localization
 LOCALE = 'de_DE.UTF-8'
 LOCALES_FORMS = ['de']
@@ -52,6 +49,9 @@ NEWS_ITEMS_PER_PAGE = 4
 # message board pagination
 BOARD_TOPICS_PER_PAGE = 10
 BOARD_POSTINGS_PER_PAGE = 10
+
+# shop
+SHOP_ORDER_EXPORT_TIMEZONE = timezone('Europe/Berlin')
 
 # ticketing
 TICKET_MANAGEMENT_ENABLED = True
