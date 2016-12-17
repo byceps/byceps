@@ -89,7 +89,7 @@ main {
 #main,
 .box {
   background-color: #ffffff;
-  border-radius: 2px;
+  border-radius: 4px;
 }
 #main {
   padding: 20px 40px 40px 40px;
@@ -206,6 +206,7 @@ main {
   font-size: 0.875rem; /* 14px / 16px */
   flex: 1;
   margin: 20px 0 0 20px;
+  overflow: hidden;
   padding-bottom: 12px;
 }
 #sidebar section h1 {
