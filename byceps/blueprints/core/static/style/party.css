@@ -39,16 +39,8 @@ body {
 }
 
 main,
-#sidebar section,
-#topbar {
-  border: #cccccc solid 1px;
-  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
-}
-main,
 #sidebar section {
   background-color: #ffffff;
-  border-radius: 15px;
-  overflow: hidden;
 }
 
 #sidebar {
@@ -131,17 +123,13 @@ main {
   flex: 1 0 auto;
   font-size: 0.75rem; /* 12px / 16px */
   margin: 20px 0 0 20px;
-  padding: 12px 0;
+  padding: 20px 0;
 }
 #sidebar section h1 {
-  border-bottom: #cccccc solid 1px;
   font-size: 1rem; /* 16 px */
   font-weight: bold;
-  margin: 0 0 10px 0;
-  padding: 0 15px 10px 15px;
-}
-#sidebar section p {
-  padding: 0 20px
+  margin: 0 0 20px 0;
+  padding: 0 20px;
 }
 
 
@@ -157,23 +145,17 @@ nav.main li {
   white-space: nowrap;
 }
 nav.main a {
-  border-color: transparent;
-  border-style: solid;
-  border-width: 1px 0;
   color: currentColor;
   display: block;
-  font-weight: bold;
   line-height: 1.5;
-  opacity: 0.7;
   padding: 0 20px;
   text-decoration: none;
-  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
 }
-nav.main a:hover,
+nav.main a:hover {
+  text-decoration: underline;
+}
 nav.main .current a {
-  background-color: #e8e8e8;
-  border-color: #cccccc;
-  opacity: 1;
+  font-weight: bold;
 }
 
 
