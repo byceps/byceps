@@ -15,7 +15,6 @@ from ...services.shop.article import service as article_service
 from ...services.shop.cart.models import Cart
 from ...services.shop.order.models import PaymentMethod
 from ...services.shop.order import service as order_service
-from ...services.shop.sequence import service as sequence_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_error, flash_success
 from ...util.templating import templated
@@ -81,12 +80,10 @@ def order():
         flash_error('Es wurden keine Artikel ausgewählt.')
         return order_form(form)
 
-    order_number = sequence_service.generate_order_number(g.party.id)
     orderer = form.get_orderer(g.current_user)
     payment_method = PaymentMethod.bank_transfer
 
-    order_service.create_order(g.party.id, order_number, orderer,
-                               payment_method, cart)
+    order_service.create_order(g.party.id, orderer, payment_method, cart)
 
     flash_success('Deine Bestellung wurde entgegen genommen. Vielen Dank!')
     return redirect_to('snippet.order_placed')
@@ -164,7 +161,6 @@ def order_single(article_id):
     if not form.validate():
         return order_single_form(article.id, form)
 
-    order_number = sequence_service.generate_order_number(g.party.id)
     orderer = form.get_orderer(user)
     payment_method = PaymentMethod.bank_transfer
 
@@ -172,8 +168,7 @@ def order_single(article_id):
     for item in article_compilation:
         cart.add_item(item.article, item.fixed_quantity)
 
-    order_service.create_order(g.party.id, order_number, orderer,
-                               payment_method, cart)
+    order_service.create_order(g.party.id, orderer, payment_method, cart)
 
     flash_success('Deine Bestellung wurde entgegen genommen. Vielen Dank!')
     return redirect_to('snippet.order_placed')

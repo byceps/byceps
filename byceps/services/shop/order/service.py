@@ -15,11 +15,15 @@ from ....database import db
 
 from ...party.models import Party
 
+from ..sequence import service as sequence_service
+
 from .models import Order, OrderItem, OrderUpdate, PaymentState
 
 
-def create_order(party_id, order_number, orderer, payment_method, cart):
+def create_order(party_id, orderer, payment_method, cart):
     """Create an order of one or more articles."""
+    order_number = sequence_service.generate_order_number(party_id)
+
     order = _build_order(party_id, order_number, orderer, payment_method)
 
     order_items = _add_items_from_cart_to_order(cart, order)
