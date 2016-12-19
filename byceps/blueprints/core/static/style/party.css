@@ -452,15 +452,10 @@ table.index td.bignumber {
 /* footer */
 
 #footer {
-  clear: both;
   display: block;
   font-size: 0.8125rem; /* 13px / 16px */
   margin-bottom: 20px;
-  opacity: 0.5;
   text-align: center;
-}
-#footer:hover {
-  opacity: 1;
 }
 
 
@@ -474,11 +469,6 @@ table.index td.bignumber {
     text-shadow: none !important;
   }
 
-  html,
-  body {
-    border: none;
-  }
-
   #page {
     margin: 0;
     width: auto;
@@ -490,8 +480,6 @@ table.index td.bignumber {
   }
 
   main {
-    border: none;
-    box-shadow: none;
     margin: 0;
     padding: 0;
   }
