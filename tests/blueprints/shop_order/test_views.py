@@ -23,7 +23,7 @@ from tests.base import AbstractAppTestCase
 class ShopTestCase(AbstractAppTestCase):
 
     def setUp(self):
-        super(ShopTestCase, self).setUp()
+        super().setUp()
 
         self.app.add_url_rule('/shop/order_placed', 'snippet.order_placed',
                               lambda: None)

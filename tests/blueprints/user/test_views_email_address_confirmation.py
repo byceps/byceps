@@ -21,7 +21,7 @@ NOW = datetime.now()
 class EmailAddressConfirmationTestCase(AbstractAppTestCase):
 
     def setUp(self):
-        super(EmailAddressConfirmationTestCase, self).setUp()
+        super().setUp()
 
         self.user = create_user(1, enabled=False)
         self.db.session.add(self.user)

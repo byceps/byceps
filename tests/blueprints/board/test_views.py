@@ -20,9 +20,6 @@ from tests.helpers import assign_permissions_to_user
 
 class BoardModerationTestCase(AbstractAppTestCase):
 
-    def setUp(self):
-        super(BoardModerationTestCase, self).setUp()
-
     def test_hide_topic(self):
         self.setup_admin('board_topic.hide')
 

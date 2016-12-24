@@ -16,9 +16,6 @@ from tests.helpers import current_party_set
 
 class ItemTestCase(AbstractAppTestCase):
 
-    def setUp(self):
-        super().setUp()
-
     @params(
         ('without-image', None          , None                                        ),
         ('with-image'   , 'breaking.png', 'http://example.com/brand/news/breaking.png'),
