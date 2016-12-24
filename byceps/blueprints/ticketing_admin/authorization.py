@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-byceps.blueprints.ticket_admin.authorization
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.ticketing_admin.authorization
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2016 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -11,7 +11,7 @@ byceps.blueprints.ticket_admin.authorization
 from byceps.util.authorization import create_permission_enum
 
 
-TicketPermission = create_permission_enum('ticket', [
+TicketingPermission = create_permission_enum('ticketing', [
     'list',
     'view',
 ])

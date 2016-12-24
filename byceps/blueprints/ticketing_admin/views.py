@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-byceps.blueprints.ticket_admin.views
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.ticketing_admin.views
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2016 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -18,18 +18,18 @@ from ...util.templating import templated
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 
-from .authorization import TicketPermission
+from .authorization import TicketingPermission
 
 
-blueprint = create_blueprint('ticket_admin', __name__)
+blueprint = create_blueprint('ticketing_admin', __name__)
 
 
-permission_registry.register_enum(TicketPermission)
+permission_registry.register_enum(TicketingPermission)
 
 
 @blueprint.route('/for_party/<party_id>', defaults={'page': 1})
 @blueprint.route('/for_party/<party_id>/pages/<int:page>')
-@permission_required(TicketPermission.list)
+@permission_required(TicketingPermission.list)
 @templated
 def index_for_party(party_id, page):
     """List tickets for that party."""
@@ -49,7 +49,7 @@ def index_for_party(party_id, page):
 
 
 @blueprint.route('/<uuid:ticket_id>')
-@permission_required(TicketPermission.view)
+@permission_required(TicketingPermission.view)
 @templated
 def view(ticket_id):
     """Show a ticket."""
