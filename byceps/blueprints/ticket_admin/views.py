@@ -11,7 +11,7 @@ byceps.blueprints.ticket_admin.views
 from flask import abort, request
 
 from ...services.party import service as party_service
-from ...services.ticket import service as ticket_service
+from ...services.ticketing import service as ticketing_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.templating import templated
 
@@ -39,7 +39,7 @@ def index_for_party(party_id, page):
 
     per_page = request.args.get('per_page', type=int, default=15)
 
-    tickets = ticket_service.get_tickets_with_details_for_party_paginated(
+    tickets = ticketing_service.get_tickets_with_details_for_party_paginated(
         party.id, page, per_page)
 
     return {
@@ -53,7 +53,7 @@ def index_for_party(party_id, page):
 @templated
 def view(ticket_id):
     """Show a ticket."""
-    ticket = ticket_service.get_ticket_with_details(ticket_id)
+    ticket = ticketing_service.get_ticket_with_details(ticket_id)
     if ticket is None:
         abort(404)
 

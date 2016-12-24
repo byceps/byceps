@@ -12,7 +12,7 @@ from flask import g
 
 from ...config import get_current_party_id
 from ...services.party import service as party_service
-from ...services.ticket import service as ticket_service
+from ...services.ticketing import service as ticketing_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.templating import templated
 
@@ -43,7 +43,8 @@ def info():
 def archive():
     """Show archived parties."""
     archived_parties = party_service.get_archived_parties()
-    attendees_by_party = ticket_service.get_attendees_by_party(archived_parties)
+    attendees_by_party = ticketing_service.get_attendees_by_party(
+        archived_parties)
 
     return {
         'parties': archived_parties,

@@ -23,7 +23,7 @@ from ...services.seating import service as seating_service
 from ...services.shop.article import service as article_service
 from ...services.shop.order import service as order_service
 from ...services.terms import service as terms_service
-from ...services.ticket import service as ticket_service
+from ...services.ticketing import service as ticketing_service
 from ...services.user import service as user_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.templating import templated
@@ -137,7 +137,7 @@ def view_party(party_id):
 
     article_count = article_service.count_articles_for_party(party.id)
     open_order_count = order_service.count_open_orders_for_party(party.id)
-    tickets_sold = ticket_service.count_tickets_for_party(party.id)
+    tickets_sold = ticketing_service.count_tickets_for_party(party.id)
 
     return {
         'party': party,

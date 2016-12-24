@@ -13,7 +13,7 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from ....database import db, generate_uuid
 from ....util.instances import ReprBuilder
 
-from ...ticket.models.ticket_bundle import TicketBundle
+from ...ticketing.models.ticket_bundle import TicketBundle
 
 from .category import Category
 from .seat import Seat
