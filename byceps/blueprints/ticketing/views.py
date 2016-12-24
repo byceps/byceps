@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-byceps.blueprints.ticket.views
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.ticketing.views
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2016 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -16,7 +16,7 @@ from ...util.iterables import find
 from ...util.templating import templated
 
 
-blueprint = create_blueprint('ticket', __name__)
+blueprint = create_blueprint('ticketing', __name__)
 
 
 @blueprint.route('/mine')
