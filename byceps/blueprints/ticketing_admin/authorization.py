@@ -12,6 +12,5 @@ from byceps.util.authorization import create_permission_enum
 
 
 TicketingPermission = create_permission_enum('ticketing', [
-    'list',
     'view',
 ])

@@ -29,7 +29,7 @@ permission_registry.register_enum(TicketingPermission)
 
 @blueprint.route('/for_party/<party_id>', defaults={'page': 1})
 @blueprint.route('/for_party/<party_id>/pages/<int:page>')
-@permission_required(TicketingPermission.list)
+@permission_required(TicketingPermission.view)
 @templated
 def index_for_party(party_id, page):
     """List tickets for that party."""
