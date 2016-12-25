@@ -192,6 +192,9 @@ main {
   height: 42px;
   padding-top: 9px;
 }
+#header-content .current-user .logged-out .action:not(:hover) {
+  background-color: #fff;
+}
 
 
 /* sidebar */
