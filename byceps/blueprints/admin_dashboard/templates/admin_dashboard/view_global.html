@@ -2,6 +2,7 @@
 {% from 'macros/admin_dashboard.html' import render_bigstats_cell, render_cell %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/orga_admin.html' import render_random_age_adjective, render_relative_days_until, render_time_element %}
+{% from 'macros/party_admin.html' import render_party_admin_link %}
 {% from 'macros/user_admin.html' import render_user_avatar_20_and_link %}
 {% set current_page = 'admin_dashboard_global' %}
 {% set title = 'Dashboard' %}
@@ -10,6 +11,20 @@
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('.static', filename='style/admin_dashboard.css') }}">
     <style>
+      .dashboard h2 {
+        font-size: 0.9rem;
+        font-weight: normal;
+        opacity: 0.7;
+        text-transform: uppercase;
+      }
+
+      .parties li {
+        line-height: 1.3;
+      }
+      .parties li + li {
+        margin-top: 0.5rem;
+      }
+
       .birthdays {
         line-height: 1.7;
       }
@@ -28,7 +43,26 @@
 
 {% block body %}
 
-  <div class="grid">
+  <div class="grid dashboard">
+    {%- call render_cell() %}
+      <h2>Aktive Parties</h2>
+      <ol class="parties">
+      {%- for party in active_parties %}
+        <li>
+          <strong>{{ render_party_admin_link(party) }}</strong><br>
+          {%- filter dim %}
+          <small>
+            <time datetime="{{ party.starts_at|format_date_iso }}">
+              {{ party.starts_at|format_date_short }}
+              {{- '–' -}}
+              {{ party.ends_at|format_date_short }}
+            </time>
+          </small>
+          {%- endfilter %}
+        </li>
+      {%- endfor %}
+      </ol>
+    {%- endcall %}
     {{ render_bigstats_cell(brand_count, 'Marken', href=url_for('brand_admin.index'), icon_name='brand') }}
     {{ render_bigstats_cell(party_count, 'Partys', href=url_for('party_admin.index'), icon_name='date') }}
     {{ render_bigstats_cell(orga_count, 'Organisatoren', href=url_for('orga_admin.persons'), icon_name='users') }}

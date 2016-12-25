@@ -45,6 +45,8 @@ permission_registry.register_enum(AdminDashboardPermission)
 @templated
 def view_global():
     """View dashboard for global entities."""
+    active_parties = party_service.get_active_parties()
+
     brand_count = brand_service.count_brands()
     party_count = party_service.count_parties()
 
@@ -61,6 +63,8 @@ def view_global():
         orga_service.collect_orgas_with_next_birthdays(limit=3))
 
     return {
+        'active_parties': active_parties,
+
         'brand_count': brand_count,
         'party_count': party_count,
 

@@ -56,6 +56,14 @@ def get_all_parties_with_brands():
         .all()
 
 
+def get_active_parties():
+    """Return active (i.e. non-archived) parties."""
+    return Party.query \
+        .filter_by(is_archived=False) \
+        .order_by(Party.starts_at.desc()) \
+        .all()
+
+
 def get_archived_parties():
     """Return archived parties."""
     return Party.query \
