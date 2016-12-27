@@ -46,6 +46,11 @@ def _build_tickets(category, owned_by, quantity, *, bundle=None):
         yield Ticket(category, owned_by, bundle=bundle)
 
 
+def find_ticket(ticket_id):
+    """Return the ticket with that id, or `None` if not found."""
+    return Ticket.query.get(ticket_id)
+
+
 def find_tickets_related_to_user(user_id):
     """Return tickets related to the user."""
     return Ticket.query \
