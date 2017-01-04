@@ -89,7 +89,7 @@ main {
 #main,
 .box {
   background-color: #ffffff;
-  border-radius: 4px;
+  border-radius: 3px;
 }
 #main {
   padding: 20px 40px 40px 40px;
@@ -193,7 +193,7 @@ main {
   padding-top: 9px;
 }
 #header-content .current-user .logged-out .action:not(:hover) {
-  background-color: #fff;
+  background-color: #ffffff;
 }
 
 
@@ -264,7 +264,7 @@ nav.main a {
 }
 nav.main a:hover,
 nav.main .current a {
-  background-color: #e8e8e8;
+  background-color: #eeeeee;
   border-color: #cccccc;
   opacity: 1;
 }
