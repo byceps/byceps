@@ -2,7 +2,8 @@
 {% from 'macros/admin_dashboard.html' import render_bigstats_cell, render_cell %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/orga_admin.html' import render_random_age_adjective, render_relative_days_until, render_time_element %}
-{% from 'macros/user_admin.html' import render_user_avatar_20_and_link %}
+{% from 'macros/user_admin.html' import render_user_admin_link %}
+{% from 'macros/user_avatar.html' import render_user_avatar_48 %}
 {% set current_page = 'admin_dashboard_global' %}
 {% set title = 'Dashboard' %}
 {% set layout_main_raw = True %}
@@ -43,11 +44,19 @@
         opacity: 0.5;
       }
 
-      .birthdays {
-        line-height: 1.7;
+      .birthdays li {
+        align-items: center;
+        display: flex;
+      }
+      .birthdays li + li {
+        margin-top: 10px;
       }
       .birthdays .hastoday {
         font-weight: bold;
+      }
+      .birthdays .avatar {
+        flex: 0 0 auto;
+        margin-right: 10px;
       }
       .birthdays a {
         font-weight: bold;
@@ -85,10 +94,13 @@
         {%- with is_today = user.detail.is_birthday_today %}
         <li{% if is_today %} class="hastoday"{% elif user.detail.days_until_next_birthday > 14 %} class="dimmed"{% endif %}>
           {{ render_user_avatar_20_and_link(user) }}
-          {% if is_today %}{{ render_icon('birthday') }}{% endif %}
-          {%- set relative_days_label = render_relative_days_until(user) %}
-          wird {{ render_time_element(user.detail.date_of_birth, relative_days_label) }}
-          {{ render_random_age_adjective() }} {{ user.detail.age if is_today else user.detail.age + 1 }} Jahre alt.
+          <div>
+            {{ render_user_avatar_20_and_link(user) }}
+            {% if is_today %}{{ render_icon('birthday') }}{% endif %}
+            {%- set relative_days_label = render_relative_days_until(user) %}
+            wird {{ render_time_element(user.detail.date_of_birth, relative_days_label) }}
+            {{ render_random_age_adjective() }} {{ user.detail.age if is_today else user.detail.age + 1 }} Jahre alt.
+          </div>
         </li>
         {%- endwith %}
       {%- endfor %}
