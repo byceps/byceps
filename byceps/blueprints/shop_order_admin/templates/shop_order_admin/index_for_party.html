@@ -59,6 +59,7 @@
         <th>Bestellnummer<br>Zeitpunkt</th>
         <th>Besteller</th>
         <th>Betrag</th>
+        <th></th>
         <th>Status</th>
       </tr>
     </thead>
@@ -76,6 +77,11 @@
           {%- endfilter %}
         </td>
         <td class="number">{{ order.calculate_total_price()|format_euro_amount }}</td>
+        <td class="centered">
+          {%- if order.invoice_created_at %}
+          {{- render_icon('invoice', title='Rechnung erstellt') -}}
+          {%- endif -%}
+        </td>
         <td>
           {{ render_order_payment_state(order.payment_state) }}<br>
           {{ render_order_payment_method(order.payment_method)|dim }}

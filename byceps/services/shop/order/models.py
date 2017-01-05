@@ -75,6 +75,7 @@ class Order(db.Model):
     zip_code = db.Column(db.Unicode(5), nullable=False)
     city = db.Column(db.Unicode(40), nullable=False)
     street = db.Column(db.Unicode(40), nullable=False)
+    invoice_created_at = db.Column(db.DateTime, nullable=True)
     _payment_method = db.Column('payment_method', db.Unicode(20), nullable=False)
     _payment_state = db.Column('payment_state', db.Unicode(20), nullable=False)
     payment_state_updated_at = db.Column(db.DateTime, nullable=True)
