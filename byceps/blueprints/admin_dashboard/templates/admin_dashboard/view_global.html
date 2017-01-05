@@ -89,6 +89,7 @@
       </ol>
     {%- endcall %}
     {%- call render_cell('birthday', 'wider') %}
+      <h2>Die nächsten Geburtstage</h2>
       <ol class="birthdays">
       {%- for user in orgas_with_next_birthdays %}
         {%- with is_today = user.detail.is_birthday_today %}
