@@ -77,10 +77,10 @@ class Order(db.Model):
     street = db.Column(db.Unicode(40), nullable=False)
     _payment_method = db.Column('payment_method', db.Unicode(20), nullable=False)
     _payment_state = db.Column('payment_state', db.Unicode(20), nullable=False)
-    payment_state_updated_at = db.Column(db.DateTime)
-    payment_state_updated_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
+    payment_state_updated_at = db.Column(db.DateTime, nullable=True)
+    payment_state_updated_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=True)
     payment_state_updated_by = db.relationship(User, foreign_keys=[payment_state_updated_by_id])
-    cancelation_reason = db.Column(db.Unicode(200))
+    cancelation_reason = db.Column(db.Unicode(200), nullable=True)
 
     def __init__(self, party_id, order_number, placed_by, first_names,
                  last_name, date_of_birth, country, zip_code, city, street,
