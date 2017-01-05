@@ -24,20 +24,21 @@
   position: relative;
   overflow: hidden;
 }
+
+.dashboard h2 {
+  font-size: 0.9rem;
+  font-weight: normal;
+  margin-top: 0;
+  opacity: 0.7;
+  text-transform: uppercase;
+}
+
 .cell-icon {
   font-size: 5rem; /* 80px / 16px */
   opacity: 0.075;
   position: absolute;
   right: 0.25rem;
   top: 0;
-}
-.grid .cell .box :first-child {
-  margin-top: 0;
-  padding-top: 0;
-}
-.grid .cell .box :last-child {
-  margin-bottom: 0;
-  padding-bottom: 0;
 }
 
 .bigstats {
