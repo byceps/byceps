@@ -79,6 +79,18 @@ def _add_article_to_order(order, article, quantity):
     return OrderItem(order, article, quantity)
 
 
+def record_invoice_creation(order, invoice_created_at):
+    """Record that the invoice for that order has been (externally) created."""
+    order.invoice_created_at = invoice_created_at
+    db.session.commit()
+
+
+def withdraw_invoice_creation(order):
+    """Withdraw record of the invoice for that order having been created."""
+    order.invoice_created_at = None
+    db.session.commit()
+
+
 class OrderAlreadyCanceled(Exception):
     pass
 
@@ -160,6 +172,13 @@ def find_order_with_details(order_id):
             db.joinedload('items'),
         ) \
         .get(order_id)
+
+
+def find_order_by_order_number(order_number):
+    """Return the order with that order number, or `None` if not found."""
+    return Order.query \
+        .filter_by(order_number=order_number) \
+        .one_or_none()
 
 
 def get_order_count_by_party_id():
