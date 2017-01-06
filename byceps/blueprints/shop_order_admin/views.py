@@ -71,13 +71,38 @@ def view(order_id):
     if order is None:
         abort(404)
 
-    updates = order_service.get_updates_for_order(order.order_number)
+    updates = _get_updates(order)
 
     return {
         'order': order,
         'updates': updates,
         'PaymentState': PaymentState,
     }
+
+
+def _get_updates(order):
+    return _get_invoice_updates(order) + _get_payment_updates(order)
+
+
+def _get_invoice_updates(order):
+    updates = []
+
+    if order.invoice_created_at:
+        updates.append({
+            'event': 'invoice_created',
+            'created_at': order.invoice_created_at,
+        })
+
+    return updates
+
+
+def _get_payment_updates(order):
+    updates = order_service.get_updates_for_order(order.order_number)
+
+    for update in updates:
+        update.event = 'payment_updated'
+
+    return updates
 
 
 @blueprint.route('/<uuid:order_id>/export')
