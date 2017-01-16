@@ -10,7 +10,8 @@ byceps.blueprints.shop_order_admin.views
 
 from datetime import datetime
 
-from flask import abort, current_app, g, render_template, request, Response
+from flask import abort, current_app, g, render_template, request, Response, \
+    url_for
 
 from ...services.party import service as party_service
 from ...services.shop.order.models import PaymentState
@@ -20,7 +21,7 @@ from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_error, flash_success
 from ...util.money import to_two_places
 from ...util.templating import templated
-from ...util.views import redirect_to
+from ...util.views import redirect_to, respond_no_content_with_location
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
@@ -148,6 +149,39 @@ def _format_export_datetime(dt):
         utc_offset = utc_offset[:3] + ':' + utc_offset[3:]
 
     return date_time + utc_offset
+
+
+@blueprint.route('/<uuid:order_id>/flags/invoiced', methods=['POST'])
+@permission_required(ShopOrderPermission.update)
+@respond_no_content_with_location
+def flag_invoiced(order_id):
+    """Flag the order as invoiced."""
+    order = _get_order_or_404(order_id)
+
+    now = datetime.utcnow()
+    order_service.record_invoice_creation(order, now)
+
+    flash_success(
+        'Bestellung {} wurde als in Rechnung gestellt markiert.',
+        order.order_number)
+
+    return url_for('.view', order_id=order.id)
+
+
+@blueprint.route('/<uuid:order_id>/flags/invoiced', methods=['DELETE'])
+@permission_required(ShopOrderPermission.update)
+@respond_no_content_with_location
+def unflag_invoiced(order_id):
+    """Unflag the order as invoiced."""
+    order = _get_order_or_404(order_id)
+
+    order_service.withdraw_invoice_creation(order)
+
+    flash_success(
+        'Bestellung {} wurde als nicht in Rechnung gestellt markiert.',
+        order.order_number)
+
+    return url_for('.view', order_id=order.id)
 
 
 @blueprint.route('/<uuid:order_id>/cancel')

@@ -26,9 +26,11 @@
       <th>Rechnung</th>
       <td>
         {%- if order.invoice_created_at %}
-          {{- render_icon('enabled') }} erstellt
+          {{- render_icon('success') }} erstellt
+          <a data-action="order-unflag-invoiced" href="{{ url_for('.unflag_invoiced', order_id=order.id) }}" class="action inline">{{ render_icon('remove') }}</a>
         {%- else %}
-          {{- render_icon('disabled') }} noch nicht erstellt
+          {{- render_icon('remove') }} noch nicht erstellt
+          <a data-action="order-flag-invoiced" href="{{ url_for('.flag_invoiced', order_id=order.id) }}" class="action inline">{{ render_icon('success') }}</a>
         {%- endif %}
       </td>
     </tr>
@@ -166,4 +168,13 @@
     </a></li>
   </ol>
 
+{%- endblock %}
+
+{% block scripts %}
+    <script>
+$(function() {
+  confirmed_post_on_click('[data-action="order-flag-invoiced"]', 'Rechnung als versendet vermerken?');
+  confirmed_delete_on_click('[data-action="order-unflag-invoiced"]', 'Rechnung als nicht versendet vermerken?');
+});
+    </script>
 {%- endblock %}
