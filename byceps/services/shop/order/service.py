@@ -91,6 +91,18 @@ def withdraw_invoice_creation(order):
     db.session.commit()
 
 
+def set_shipped_flag(order, shipped_at):
+    """Mark the order as shipped."""
+    order.shipped_at = shipped_at
+    db.session.commit()
+
+
+def unset_shipped_flag(order):
+    """Mark the order as not shipped."""
+    order.shipped_at = None
+    db.session.commit()
+
+
 class OrderAlreadyCanceled(Exception):
     pass
 

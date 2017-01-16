@@ -61,6 +61,18 @@
       <td>{{ order.cancelation_reason|fallback }}</td>
     </tr>
     {%- endif %}
+    <tr>
+      <th>Lieferstatus</th>
+      <td>
+        {%- if order.shipped_at %}
+          {{- render_icon('success') }} versendet
+          <a data-action="order-unflag-shipped" href="{{ url_for('.unset_shipped_flag', order_id=order.id) }}" class="action inline">{{ render_icon('remove') }}</a>
+        {%- else %}
+          {{- render_icon('remove') }} noch nicht versendet
+          <a data-action="order-flag-shipped" href="{{ url_for('.set_shipped_flag', order_id=order.id) }}" class="action inline">{{ render_icon('success') }}</a>
+        {%- endif %}
+      </td>
+    </tr>
   </table>
 
   <h2>Aktivität</h2>
@@ -78,6 +90,11 @@
           {%- set icon_name = 'invoice' %}
           {%- set body %}
             Die Rechnung ist erstellt worden.
+          {%- endset %}
+        {%- elif update.event == 'shipped' %}
+          {%- set icon_name = 'shipment' %}
+          {%- set body %}
+            Die Lieferung ist verschickt worden.
           {%- endset %}
         {%- endif %}
     <li>
@@ -175,6 +192,9 @@
 $(function() {
   confirmed_post_on_click('[data-action="order-flag-invoiced"]', 'Rechnung als versendet vermerken?');
   confirmed_delete_on_click('[data-action="order-unflag-invoiced"]', 'Rechnung als nicht versendet vermerken?');
+
+  confirmed_post_on_click('[data-action="order-flag-shipped"]', 'Bestellung als verschickt markieren?');
+  confirmed_delete_on_click('[data-action="order-unflag-shipped"]', 'Bestellung als nicht verschickt markieren?');
 });
     </script>
 {%- endblock %}

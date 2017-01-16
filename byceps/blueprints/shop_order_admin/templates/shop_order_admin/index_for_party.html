@@ -59,7 +59,7 @@
         <th>Bestellnummer<br>Zeitpunkt</th>
         <th>Besteller</th>
         <th>Betrag</th>
-        <th></th>
+        <th colspan="2"></th>
         <th>Status</th>
       </tr>
     </thead>
@@ -80,6 +80,11 @@
         <td class="centered">
           {%- if order.invoice_created_at %}
           {{- render_icon('invoice', title='Rechnung erstellt') -}}
+          {%- endif -%}
+        </td>
+        <td>
+          {%- if order.shipped_at %}
+          {{- render_icon('shipment', title='Lieferung versendet') -}}
           {%- endif -%}
         </td>
         <td>

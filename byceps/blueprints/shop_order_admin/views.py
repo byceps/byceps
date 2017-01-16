@@ -9,6 +9,7 @@ byceps.blueprints.shop_order_admin.views
 """
 
 from datetime import datetime
+from itertools import chain
 
 from flask import abort, current_app, g, render_template, request, Response, \
     url_for
@@ -82,7 +83,11 @@ def view(order_id):
 
 
 def _get_updates(order):
-    return _get_invoice_updates(order) + _get_payment_updates(order)
+    return chain(
+        _get_invoice_updates(order),
+        _get_payment_updates(order),
+        _get_shipment_updates(order)
+    )
 
 
 def _get_invoice_updates(order):
@@ -102,6 +107,18 @@ def _get_payment_updates(order):
 
     for update in updates:
         update.event = 'payment_updated'
+
+    return updates
+
+
+def _get_shipment_updates(order):
+    updates = []
+
+    if order.shipped_at:
+        updates.append({
+            'event': 'shipped',
+            'created_at': order.shipped_at,
+        })
 
     return updates
 
@@ -180,6 +197,37 @@ def unflag_invoiced(order_id):
     flash_success(
         'Bestellung {} wurde als nicht in Rechnung gestellt markiert.',
         order.order_number)
+
+    return url_for('.view', order_id=order.id)
+
+
+@blueprint.route('/<uuid:order_id>/flags/shipped', methods=['POST'])
+@permission_required(ShopOrderPermission.update)
+@respond_no_content_with_location
+def set_shipped_flag(order_id):
+    """Mark the order as shipped."""
+    order = _get_order_or_404(order_id)
+
+    now = datetime.utcnow()
+    order_service.set_shipped_flag(order, now)
+
+    flash_success('Bestellung {} wurde als verschickt markiert.',
+                  order.order_number)
+
+    return url_for('.view', order_id=order.id)
+
+
+@blueprint.route('/<uuid:order_id>/flags/shipped', methods=['DELETE'])
+@permission_required(ShopOrderPermission.update)
+@respond_no_content_with_location
+def unset_shipped_flag(order_id):
+    """Mark the order as not shipped."""
+    order = _get_order_or_404(order_id)
+
+    order_service.unset_shipped_flag(order)
+
+    flash_success('Bestellung {} wurde als nicht verschickt markiert.',
+                  order.order_number)
 
     return url_for('.view', order_id=order.id)
 
