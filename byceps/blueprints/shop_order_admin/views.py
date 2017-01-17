@@ -167,8 +167,7 @@ def flag_invoiced(order_id):
     """Flag the order as invoiced."""
     order = _get_order_or_404(order_id)
 
-    now = datetime.utcnow()
-    order_service.record_invoice_creation(order, now)
+    order_service.record_invoice_creation(order)
 
     flash_success(
         'Bestellung {} wurde als in Rechnung gestellt markiert.',
@@ -200,8 +199,7 @@ def set_shipped_flag(order_id):
     """Mark the order as shipped."""
     order = _get_order_or_404(order_id)
 
-    now = datetime.utcnow()
-    order_service.set_shipped_flag(order, now)
+    order_service.set_shipped_flag(order)
 
     flash_success('Bestellung {} wurde als verschickt markiert.',
                   order.order_number)

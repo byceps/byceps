@@ -79,9 +79,9 @@ def _add_article_to_order(order, article, quantity):
     return OrderItem(order, article, quantity)
 
 
-def record_invoice_creation(order, invoice_created_at):
+def record_invoice_creation(order):
     """Record that the invoice for that order has been (externally) created."""
-    order.invoice_created_at = invoice_created_at
+    order.invoice_created_at = datetime.utcnow()
     db.session.commit()
 
 
@@ -91,9 +91,9 @@ def withdraw_invoice_creation(order):
     db.session.commit()
 
 
-def set_shipped_flag(order, shipped_at):
+def set_shipped_flag(order):
     """Mark the order as shipped."""
-    order.shipped_at = shipped_at
+    order.shipped_at = datetime.utcnow()
     db.session.commit()
 
 
