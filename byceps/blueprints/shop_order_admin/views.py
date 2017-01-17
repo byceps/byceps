@@ -91,15 +91,11 @@ def _get_updates(order):
 
 
 def _get_invoice_updates(order):
-    updates = []
-
     if order.invoice_created_at:
-        updates.append({
+        yield {
             'event': 'invoice_created',
             'created_at': order.invoice_created_at,
-        })
-
-    return updates
+        }
 
 
 def _get_payment_updates(order):
@@ -108,19 +104,15 @@ def _get_payment_updates(order):
     for update in updates:
         update.event = 'payment_updated'
 
-    return updates
+    yield from updates
 
 
 def _get_shipment_updates(order):
-    updates = []
-
     if order.shipped_at:
-        updates.append({
+        yield {
             'event': 'shipped',
             'created_at': order.shipped_at,
-        })
-
-    return updates
+        }
 
 
 @blueprint.route('/<uuid:order_id>/export')
