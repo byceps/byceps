@@ -70,6 +70,14 @@ def find_user(user_id, *, with_avatar=False, with_orga_teams=False):
 
     return query.get(user_id)
 
+def find_users(user_ids):
+    """Return the users with those ids."""
+    users = User.query \
+        .filter(User.id.in_(frozenset(user_ids))) \
+        .all()
+
+    return set(users)
+
 
 def find_user_by_screen_name(screen_name):
     """Return the user with that screen name, or `None` if not found."""

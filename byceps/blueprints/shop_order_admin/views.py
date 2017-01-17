@@ -93,9 +93,13 @@ def _get_updates(order):
 def _get_event_updates(order):
     events = order_service.get_order_events(order.id)
 
+    user_ids = frozenset(event.data['user_id'] for event in events)
+    users_by_id = {str(user.id): user for user in user_service.find_users(user_ids)}
+
     for event in events:
         creator_id = event.data['user_id']
-        creator = user_service.find_user(creator_id)
+        creator = users_by_id[creator_id]
+
         yield {
             'event': event.event_type,
             'created_at': event.occured_at,
