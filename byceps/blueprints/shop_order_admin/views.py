@@ -18,6 +18,7 @@ from ...services.party import service as party_service
 from ...services.shop.order.models import PaymentState
 from ...services.shop.order import service as order_service
 from ...services.shop.sequence import service as sequence_service
+from ...services.user import service as user_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_error, flash_success
 from ...util.money import to_two_places
@@ -93,9 +94,12 @@ def _get_event_updates(order):
     events = order_service.get_order_events(order.id)
 
     for event in events:
+        creator_id = event.data['user_id']
+        creator = user_service.find_user(creator_id)
         yield {
             'event': event.event_type,
             'created_at': event.occured_at,
+            'creator': creator,
         }
 
 
@@ -159,8 +163,9 @@ def _format_export_datetime(dt):
 def set_invoiced_flag(order_id):
     """Mark the order as invoiced."""
     order = _get_order_or_404(order_id)
+    user_id = g.current_user.id
 
-    order_service.set_invoiced_flag(order)
+    order_service.set_invoiced_flag(order, user_id)
 
     flash_success(
         'Bestellung {} wurde als in Rechnung gestellt markiert.',
@@ -175,8 +180,9 @@ def set_invoiced_flag(order_id):
 def unset_invoiced_flag(order_id):
     """Mark the order as not invoiced."""
     order = _get_order_or_404(order_id)
+    user_id = g.current_user.id
 
-    order_service.unset_invoiced_flag(order)
+    order_service.unset_invoiced_flag(order, user_id)
 
     flash_success(
         'Bestellung {} wurde als nicht in Rechnung gestellt markiert.',
@@ -191,8 +197,9 @@ def unset_invoiced_flag(order_id):
 def set_shipped_flag(order_id):
     """Mark the order as shipped."""
     order = _get_order_or_404(order_id)
+    user_id = g.current_user.id
 
-    order_service.set_shipped_flag(order)
+    order_service.set_shipped_flag(order, user_id)
 
     flash_success('Bestellung {} wurde als verschickt markiert.',
                   order.order_number)
@@ -206,8 +213,9 @@ def set_shipped_flag(order_id):
 def unset_shipped_flag(order_id):
     """Mark the order as not shipped."""
     order = _get_order_or_404(order_id)
+    user_id = g.current_user.id
 
-    order_service.unset_shipped_flag(order)
+    order_service.unset_shipped_flag(order, user_id)
 
     flash_success('Bestellung {} wurde als nicht verschickt markiert.',
                   order.order_number)

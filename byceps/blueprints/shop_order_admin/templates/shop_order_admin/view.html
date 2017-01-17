@@ -89,22 +89,26 @@
         {%- elif update.event == 'order-invoiced' %}
           {%- set icon_name = 'invoice' %}
           {%- set body %}
-            Die Rechnung ist erstellt worden.
+            <span class="user-link">{{ render_user_avatar_20_and_link(update.creator) }}</span>
+            hat die Rechnung als <strong>erstellt</strong> markiert.
           {%- endset %}
         {%- elif update.event == 'order-invoiced-withdrawn' %}
           {%- set icon_name = 'remove' %}
           {%- set body %}
-            Die Rechnung ist doch nicht erstellt worden.
+            <span class="user-link">{{ render_user_avatar_20_and_link(update.creator) }}</span>
+            hat die Rechnung als <strong>doch nicht erstellt</strong> markiert.
           {%- endset %}
         {%- elif update.event == 'order-shipped' %}
           {%- set icon_name = 'shipment' %}
           {%- set body %}
-            Die Lieferung ist versendet worden.
+            <span class="user-link">{{ render_user_avatar_20_and_link(update.creator) }}</span>
+            hat die Lieferung als <strong>versendet</strong> markiert.
           {%- endset %}
         {%- elif update.event == 'order-shipped-withdrawn' %}
           {%- set icon_name = 'remove' %}
           {%- set body %}
-            Die Lieferung ist doch nicht versendet worden.
+            <span class="user-link">{{ render_user_avatar_20_and_link(update.creator) }}</span>
+            hat die Lieferung als <strong>doch nicht versendet</strong> markiert.
           {%- endset %}
         {%- endif %}
     <li>
