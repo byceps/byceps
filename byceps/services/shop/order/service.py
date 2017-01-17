@@ -17,7 +17,7 @@ from ...party.models import Party
 
 from ..sequence import service as sequence_service
 
-from .models import Order, OrderEvent, OrderItem, OrderUpdate, PaymentState
+from .models import Order, OrderEvent, OrderItem, PaymentState
 
 
 def create_order(party_id, orderer, payment_method, cart):
@@ -167,10 +167,16 @@ def cancel_order(order, updated_by_id, reason):
     _update_payment_state(order, payment_state_to, updated_at, updated_by_id)
     order.cancelation_reason = reason
 
-    update = _create_order_update(order.order_number, updated_at, updated_by_id,
-                                  payment_state_from, payment_state_to,
-                                  cancelation_reason=reason)
-    db.session.add(update)
+    now = datetime.utcnow()
+    event_type = 'order-canceled'
+    data = {
+        'initiator_id': str(updated_by_id),
+        'former_payment_state': payment_state_from.name,
+        'reason': reason,
+    }
+
+    event = OrderEvent(now, event_type, order.id, **data)
+    db.session.add(event)
 
     # Make the reserved quantity of articles available again.
     for item in order.items:
@@ -190,9 +196,15 @@ def mark_order_as_paid(order, updated_by_id):
 
     _update_payment_state(order, payment_state_to, updated_at, updated_by_id)
 
-    update = _create_order_update(order.order_number, updated_at, updated_by_id,
-                                  payment_state_from, payment_state_to)
-    db.session.add(update)
+    now = datetime.utcnow()
+    event_type = 'order-paid'
+    data = {
+        'initiator_id': str(updated_by_id),
+        'former_payment_state': payment_state_from.name,
+    }
+
+    event = OrderEvent(now, event_type, order.id, **data)
+    db.session.add(event)
 
     db.session.commit()
 
@@ -288,21 +300,4 @@ def get_order_events(order_id):
     return OrderEvent.query \
         .filter_by(order_id=order_id) \
         .order_by(OrderEvent.occured_at) \
-        .all()
-
-
-def _create_order_update(order_number, created_at, created_by_id,
-                         payment_state_from, payment_state_to,
-                         *, cancelation_reason=None):
-    """Create an update for the order."""
-    return OrderUpdate(order_number, created_at, created_by_id,
-                       payment_state_from, payment_state_to,
-                       cancelation_reason=cancelation_reason)
-
-
-def get_updates_for_order(order_number):
-    """Return all updates for that order."""
-    return OrderUpdate.query \
-        .filter_by(order_number=order_number) \
-        .order_by(OrderUpdate.created_at.desc()) \
         .all()

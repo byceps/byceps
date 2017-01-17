@@ -9,7 +9,6 @@ byceps.blueprints.shop_order_admin.views
 """
 
 from datetime import datetime
-from itertools import chain
 
 from flask import abort, current_app, g, render_template, request, Response, \
     url_for
@@ -84,13 +83,6 @@ def view(order_id):
 
 
 def _get_updates(order):
-    return chain(
-        _get_event_updates(order),
-        _get_payment_updates(order)
-    )
-
-
-def _get_event_updates(order):
     events = order_service.get_order_events(order.id)
 
     user_ids = frozenset(event.data['initiator_id'] for event in events)
@@ -105,15 +97,6 @@ def _get_event_updates(order):
             'created_at': event.occured_at,
             'creator': initiator,
         }
-
-
-def _get_payment_updates(order):
-    updates = order_service.get_updates_for_order(order.order_number)
-
-    for update in updates:
-        update.event = 'payment_updated'
-
-    yield from updates
 
 
 @blueprint.route('/<uuid:order_id>/export')
