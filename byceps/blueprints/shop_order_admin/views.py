@@ -89,13 +89,14 @@ def _get_updates(order):
     users_by_id = {str(user.id): user for user in user_service.find_users(user_ids)}
 
     for event in events:
-        initiator_id = event.data['initiator_id']
+        initiator_id = event.data.pop('initiator_id')
         initiator = users_by_id[initiator_id]
 
         yield {
             'event': event.event_type,
             'created_at': event.occured_at,
             'creator': initiator,
+            'data': event.data,
         }
 
 
