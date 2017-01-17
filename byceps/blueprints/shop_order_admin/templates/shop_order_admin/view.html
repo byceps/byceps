@@ -77,43 +77,43 @@
 
   <h2>Aktivität</h2>
   <ol class="activity-stream">
-    {%- for update in updates|sort(attribute='created_at', reverse=True) %}
+    {%- for event in events|sort(attribute='occured_at', reverse=True) %}
       {%- with %}
-        {%- if update.event == 'order-canceled' %}
+        {%- if event.event == 'order-canceled' %}
           {%- set icon_name = 'disabled' %}
           {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_link(update.creator) }}</span>
+            <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
             hat die Bestellung {{ render_order_payment_state(PaymentState.canceled) }}.
           {%- endset %}
-        {%- elif update.event == 'order-paid' %}
+        {%- elif event.event == 'order-paid' %}
           {%- set icon_name = 'success' %}
           {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_link(update.creator) }}</span>
+            <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
             hat die Bestellung als {{ render_order_payment_state(PaymentState.paid) }}
-            mittels {{ render_order_payment_method(PaymentMethod[update.data['payment_method']]) }} markiert.
+            mittels {{ render_order_payment_method(PaymentMethod[event.data['payment_method']]) }} markiert.
           {%- endset %}
-        {%- elif update.event == 'order-invoiced' %}
+        {%- elif event.event == 'order-invoiced' %}
           {%- set icon_name = 'invoice' %}
           {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_link(update.creator) }}</span>
+            <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
             hat die Rechnung als <strong>erstellt</strong> markiert.
           {%- endset %}
-        {%- elif update.event == 'order-invoiced-withdrawn' %}
+        {%- elif event.event == 'order-invoiced-withdrawn' %}
           {%- set icon_name = 'remove' %}
           {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_link(update.creator) }}</span>
+            <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
             hat die Rechnung als <strong>doch nicht erstellt</strong> markiert.
           {%- endset %}
-        {%- elif update.event == 'order-shipped' %}
+        {%- elif event.event == 'order-shipped' %}
           {%- set icon_name = 'shipment' %}
           {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_link(update.creator) }}</span>
+            <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
             hat die Lieferung als <strong>versendet</strong> markiert.
           {%- endset %}
-        {%- elif update.event == 'order-shipped-withdrawn' %}
+        {%- elif event.event == 'order-shipped-withdrawn' %}
           {%- set icon_name = 'remove' %}
           {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_link(update.creator) }}</span>
+            <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
             hat die Lieferung als <strong>doch nicht versendet</strong> markiert.
           {%- endset %}
         {%- endif %}
@@ -122,7 +122,7 @@
         <tr>
           <td><span class="icon-container">{{ render_icon(icon_name) }}</span></td>
           <td>{{ body|safe }}</td>
-          <td class="timestamp">{{ render_datetime(update.created_at) }}</td>
+          <td class="timestamp">{{ render_datetime(event.occured_at) }}</td>
         </tr>
       </table>
     </li>

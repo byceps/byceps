@@ -73,17 +73,17 @@ def view(order_id):
     if order is None:
         abort(404)
 
-    updates = _get_updates(order)
+    events = _get_events(order)
 
     return {
         'order': order,
-        'updates': updates,
+        'events': events,
         'PaymentMethod': PaymentMethod,
         'PaymentState': PaymentState,
     }
 
 
-def _get_updates(order):
+def _get_events(order):
     events = order_service.get_order_events(order.id)
 
     user_ids = frozenset(event.data['initiator_id'] for event in events)
@@ -95,8 +95,8 @@ def _get_updates(order):
 
         yield {
             'event': event.event_type,
-            'created_at': event.occured_at,
-            'creator': initiator,
+            'occured_at': event.occured_at,
+            'initiator': initiator,
             'data': event.data,
         }
 
