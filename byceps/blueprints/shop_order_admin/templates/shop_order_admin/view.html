@@ -89,7 +89,8 @@
           {%- set icon_name = 'success' %}
           {%- set body %}
             <span class="user-link">{{ render_user_avatar_20_and_link(update.creator) }}</span>
-            hat die Bestellung als {{ render_order_payment_state(PaymentState.paid) }} markiert.
+            hat die Bestellung als {{ render_order_payment_state(PaymentState.paid) }}
+            mittels {{ render_order_payment_method(PaymentMethod[update.data['payment_method']]) }} markiert.
           {%- endset %}
         {%- elif update.event == 'order-invoiced' %}
           {%- set icon_name = 'invoice' %}

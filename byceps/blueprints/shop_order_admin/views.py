@@ -78,6 +78,7 @@ def view(order_id):
     return {
         'order': order,
         'updates': updates,
+        'PaymentMethod': PaymentMethod,
         'PaymentState': PaymentState,
     }
 

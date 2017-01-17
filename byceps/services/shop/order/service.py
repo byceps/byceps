@@ -203,6 +203,7 @@ def mark_order_as_paid(order, payment_method, updated_by_id):
     data = {
         'initiator_id': str(updated_by_id),
         'former_payment_state': payment_state_from.name,
+        'payment_method': payment_method.name,
     }
 
     event = OrderEvent(now, event_type, order.id, **data)
