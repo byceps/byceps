@@ -14,7 +14,7 @@ from flask import abort, current_app, g, render_template, request, Response, \
     url_for
 
 from ...services.party import service as party_service
-from ...services.shop.order.models import PaymentState
+from ...services.shop.order.models import PaymentMethod, PaymentState
 from ...services.shop.order import service as order_service
 from ...services.shop.sequence import service as sequence_service
 from ...services.user import service as user_service
@@ -284,9 +284,11 @@ def mark_as_paid_form(order_id):
 def mark_as_paid(order_id):
     """Set the payment status of a single order to 'paid'."""
     order = _get_order_or_404(order_id)
+    payment_method = PaymentMethod.bank_transfer
+    updated_by_id = g.current_user.id
 
     try:
-        order_service.mark_order_as_paid(order, g.current_user.id)
+        order_service.mark_order_as_paid(order, payment_method, updated_by_id)
     except order_service.OrderAlreadyMarkedAsPaid:
         flash_error('Die Bestellung ist bereits als bezahlt markiert worden.')
         return redirect_to('.view', order_id=order.id)

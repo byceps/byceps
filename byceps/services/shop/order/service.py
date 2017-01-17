@@ -17,7 +17,7 @@ from ...party.models import Party
 
 from ..sequence import service as sequence_service
 
-from .models import Order, OrderEvent, OrderItem, PaymentState
+from .models import Order, OrderEvent, OrderItem, PaymentMethod, PaymentState
 
 
 def create_order(party_id, orderer, payment_method, cart):
@@ -165,6 +165,7 @@ def cancel_order(order, updated_by_id, reason):
     payment_state_to = PaymentState.canceled
 
     _update_payment_state(order, payment_state_to, updated_at, updated_by_id)
+    order.payment_method = PaymentMethod.bank_transfer
     order.cancelation_reason = reason
 
     now = datetime.utcnow()
@@ -185,7 +186,7 @@ def cancel_order(order, updated_by_id, reason):
     db.session.commit()
 
 
-def mark_order_as_paid(order, updated_by_id):
+def mark_order_as_paid(order, payment_method, updated_by_id):
     """Mark the order as paid."""
     if order.payment_state == PaymentState.paid:
         raise OrderAlreadyMarkedAsPaid()
@@ -194,6 +195,7 @@ def mark_order_as_paid(order, updated_by_id):
     payment_state_from = order.payment_state
     payment_state_to = PaymentState.paid
 
+    order.payment_method = payment_method
     _update_payment_state(order, payment_state_to, updated_at, updated_by_id)
 
     now = datetime.utcnow()
