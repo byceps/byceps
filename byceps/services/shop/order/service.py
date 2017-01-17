@@ -79,12 +79,12 @@ def _add_article_to_order(order, article, quantity):
     return OrderItem(order, article, quantity)
 
 
-def set_invoiced_flag(order, user_id):
+def set_invoiced_flag(order, initiator_id):
     """Record that the invoice for that order has been (externally) created."""
     now = datetime.utcnow()
     event_type = 'order-invoiced'
     data = {
-        'user_id': str(user_id),
+        'initiator_id': str(initiator_id),
     }
 
     event = OrderEvent(now, event_type, order.id, **data)
@@ -95,12 +95,12 @@ def set_invoiced_flag(order, user_id):
     db.session.commit()
 
 
-def unset_invoiced_flag(order, user_id):
+def unset_invoiced_flag(order, initiator_id):
     """Withdraw record of the invoice for that order having been created."""
     now = datetime.utcnow()
     event_type = 'order-invoiced-withdrawn'
     data = {
-        'user_id': str(user_id),
+        'initiator_id': str(initiator_id),
     }
 
     event = OrderEvent(now, event_type, order.id, **data)
@@ -111,12 +111,12 @@ def unset_invoiced_flag(order, user_id):
     db.session.commit()
 
 
-def set_shipped_flag(order, user_id):
+def set_shipped_flag(order, initiator_id):
     """Mark the order as shipped."""
     now = datetime.utcnow()
     event_type = 'order-shipped'
     data = {
-        'user_id': str(user_id),
+        'initiator_id': str(initiator_id),
     }
 
     event = OrderEvent(now, event_type, order.id, **data)
@@ -127,12 +127,12 @@ def set_shipped_flag(order, user_id):
     db.session.commit()
 
 
-def unset_shipped_flag(order, user_id):
+def unset_shipped_flag(order, initiator_id):
     """Mark the order as not shipped."""
     now = datetime.utcnow()
     event_type = 'order-shipped-withdrawn'
     data = {
-        'user_id': str(user_id),
+        'initiator_id': str(initiator_id),
     }
 
     event = OrderEvent(now, event_type, order.id, **data)
