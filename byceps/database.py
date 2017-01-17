@@ -13,10 +13,13 @@ Database utilities.
 import uuid
 
 from flask_sqlalchemy import BaseQuery, SQLAlchemy
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.dialects.postgresql import JSONB, UUID
 
 
 db = SQLAlchemy(session_options={'autoflush': False})
+
+
+db.JSONB = JSONB
 
 
 class Uuid(UUID):

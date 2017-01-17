@@ -86,15 +86,25 @@
             {{ render_order_payment_state(update.payment_state_from) }} zu
             {{ render_order_payment_state(update.payment_state_to) }} geändert.
           {%- endset %}
-        {%- elif update.event == 'invoice_created' %}
+        {%- elif update.event == 'order-invoiced' %}
           {%- set icon_name = 'invoice' %}
           {%- set body %}
             Die Rechnung ist erstellt worden.
           {%- endset %}
-        {%- elif update.event == 'shipped' %}
+        {%- elif update.event == 'order-invoiced-withdrawn' %}
+          {%- set icon_name = 'remove' %}
+          {%- set body %}
+            Die Rechnung ist doch nicht erstellt worden.
+          {%- endset %}
+        {%- elif update.event == 'order-shipped' %}
           {%- set icon_name = 'shipment' %}
           {%- set body %}
-            Die Lieferung ist verschickt worden.
+            Die Lieferung ist versendet worden.
+          {%- endset %}
+        {%- elif update.event == 'order-shipped-withdrawn' %}
+          {%- set icon_name = 'remove' %}
+          {%- set body %}
+            Die Lieferung ist doch nicht versendet worden.
           {%- endset %}
         {%- endif %}
     <li>

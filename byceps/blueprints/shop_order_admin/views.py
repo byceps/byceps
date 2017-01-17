@@ -84,17 +84,18 @@ def view(order_id):
 
 def _get_updates(order):
     return chain(
-        _get_invoice_updates(order),
-        _get_payment_updates(order),
-        _get_shipment_updates(order)
+        _get_event_updates(order),
+        _get_payment_updates(order)
     )
 
 
-def _get_invoice_updates(order):
-    if order.invoice_created_at:
+def _get_event_updates(order):
+    events = order_service.get_order_events(order.id)
+
+    for event in events:
         yield {
-            'event': 'invoice_created',
-            'created_at': order.invoice_created_at,
+            'event': event.event_type,
+            'created_at': event.occured_at,
         }
 
 
@@ -105,14 +106,6 @@ def _get_payment_updates(order):
         update.event = 'payment_updated'
 
     yield from updates
-
-
-def _get_shipment_updates(order):
-    if order.shipped_at:
-        yield {
-            'event': 'shipped',
-            'created_at': order.shipped_at,
-        }
 
 
 @blueprint.route('/<uuid:order_id>/export')

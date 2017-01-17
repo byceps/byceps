@@ -172,6 +172,30 @@ class OrderItem(db.Model):
         return self.unit_price * self.quantity
 
 
+class OrderEvent(db.Model):
+    """An event that refers to an order."""
+    __tablename__ = 'shop_order_events'
+
+    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    occured_at = db.Column(db.DateTime, nullable=False)
+    event_type = db.Column(db.Unicode(40), index=True, nullable=False)
+    order_id = db.Column(db.Uuid, db.ForeignKey('shop_orders.id'), index=True, nullable=False)
+    data = db.Column(db.JSONB)
+
+    def __init__(self, occured_at, event_type, order_id, **data):
+        self.occured_at = occured_at
+        self.event_type = event_type
+        self.order_id = order_id
+        self.data = data
+
+    def __repr__(self):
+        return ReprBuilder(self) \
+            .add_custom(repr(self.event_type)) \
+            .add_with_lookup('order_id') \
+            .add_with_lookup('data') \
+            .build()
+
+
 class OrderUpdate(db.Model):
     """An update of the order's state."""
     __tablename__ = 'shop_order_updates'

@@ -17,7 +17,7 @@ from ...party.models import Party
 
 from ..sequence import service as sequence_service
 
-from .models import Order, OrderItem, OrderUpdate, PaymentState
+from .models import Order, OrderEvent, OrderItem, OrderUpdate, PaymentState
 
 
 def create_order(party_id, orderer, payment_method, cart):
@@ -81,25 +81,53 @@ def _add_article_to_order(order, article, quantity):
 
 def record_invoice_creation(order):
     """Record that the invoice for that order has been (externally) created."""
-    order.invoice_created_at = datetime.utcnow()
+    now = datetime.utcnow()
+    event_type = 'order-invoiced'
+
+    event = OrderEvent(now, event_type, order.id)
+    db.session.add(event)
+
+    order.invoice_created_at = now
+
     db.session.commit()
 
 
 def withdraw_invoice_creation(order):
     """Withdraw record of the invoice for that order having been created."""
+    now = datetime.utcnow()
+    event_type = 'order-invoiced-withdrawn'
+
+    event = OrderEvent(now, event_type, order.id)
+    db.session.add(event)
+
     order.invoice_created_at = None
+
     db.session.commit()
 
 
 def set_shipped_flag(order):
     """Mark the order as shipped."""
-    order.shipped_at = datetime.utcnow()
+    now = datetime.utcnow()
+    event_type = 'order-shipped'
+
+    event = OrderEvent(now, event_type, order.id)
+    db.session.add(event)
+
+    order.shipped_at = now
+
     db.session.commit()
 
 
 def unset_shipped_flag(order):
     """Mark the order as not shipped."""
+    now = datetime.utcnow()
+    event_type = 'order-shipped-withdrawn'
+
+    event = OrderEvent(now, event_type, order.id)
+    db.session.add(event)
+
     order.shipped_at = None
+
     db.session.commit()
 
 
@@ -241,6 +269,14 @@ def has_user_placed_orders(user_id, party_id):
         .count()
 
     return orders_total > 0
+
+
+def get_order_events(order_id):
+    """Return the events for that order."""
+    return OrderEvent.query \
+        .filter_by(order_id=order_id) \
+        .order_by(OrderEvent.occured_at) \
+        .all()
 
 
 def _create_order_update(order_number, created_at, created_by_id,
