@@ -156,11 +156,11 @@ def _format_export_datetime(dt):
 @blueprint.route('/<uuid:order_id>/flags/invoiced', methods=['POST'])
 @permission_required(ShopOrderPermission.update)
 @respond_no_content_with_location
-def flag_invoiced(order_id):
-    """Flag the order as invoiced."""
+def set_invoiced_flag(order_id):
+    """Mark the order as invoiced."""
     order = _get_order_or_404(order_id)
 
-    order_service.record_invoice_creation(order)
+    order_service.set_invoiced_flag(order)
 
     flash_success(
         'Bestellung {} wurde als in Rechnung gestellt markiert.',
@@ -172,11 +172,11 @@ def flag_invoiced(order_id):
 @blueprint.route('/<uuid:order_id>/flags/invoiced', methods=['DELETE'])
 @permission_required(ShopOrderPermission.update)
 @respond_no_content_with_location
-def unflag_invoiced(order_id):
-    """Unflag the order as invoiced."""
+def unset_invoiced_flag(order_id):
+    """Mark the order as not invoiced."""
     order = _get_order_or_404(order_id)
 
-    order_service.withdraw_invoice_creation(order)
+    order_service.unset_invoiced_flag(order)
 
     flash_success(
         'Bestellung {} wurde als nicht in Rechnung gestellt markiert.',

@@ -27,10 +27,10 @@
       <td>
         {%- if order.invoice_created_at %}
           {{- render_icon('success') }} erstellt
-          <a data-action="order-unflag-invoiced" href="{{ url_for('.unflag_invoiced', order_id=order.id) }}" class="action inline">{{ render_icon('remove') }}</a>
+          <a data-action="order-unflag-invoiced" href="{{ url_for('.unset_invoiced_flag', order_id=order.id) }}" class="action inline">{{ render_icon('remove') }}</a>
         {%- else %}
           {{- render_icon('remove') }} noch nicht erstellt
-          <a data-action="order-flag-invoiced" href="{{ url_for('.flag_invoiced', order_id=order.id) }}" class="action inline">{{ render_icon('success') }}</a>
+          <a data-action="order-flag-invoiced" href="{{ url_for('.set_invoiced_flag', order_id=order.id) }}" class="action inline">{{ render_icon('success') }}</a>
         {%- endif %}
       </td>
     </tr>

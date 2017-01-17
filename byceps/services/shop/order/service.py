@@ -79,7 +79,7 @@ def _add_article_to_order(order, article, quantity):
     return OrderItem(order, article, quantity)
 
 
-def record_invoice_creation(order):
+def set_invoiced_flag(order):
     """Record that the invoice for that order has been (externally) created."""
     now = datetime.utcnow()
     event_type = 'order-invoiced'
@@ -92,7 +92,7 @@ def record_invoice_creation(order):
     db.session.commit()
 
 
-def withdraw_invoice_creation(order):
+def unset_invoiced_flag(order):
     """Withdraw record of the invoice for that order having been created."""
     now = datetime.utcnow()
     event_type = 'order-invoiced-withdrawn'
