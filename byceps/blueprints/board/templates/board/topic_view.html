@@ -16,9 +16,9 @@
 
   {%- if g.current_user.has_any_permission(BoardTopicPermission.hide, BoardTopicPermission.lock, BoardTopicPermission.move, BoardTopicPermission.pin) %}
   <div style="text-align: right;">
-    <ol class="actions">
-        <li><a href="{{ url_for('.topic_moderate_form', topic_id=topic.id) }}" title="Thema moderieren">{{ render_icon('moderate') }} moderieren</a></li>
-    </ol>
+    <div class="button-row">
+      <a class="button" href="{{ url_for('.topic_moderate_form', topic_id=topic.id) }}" title="Thema moderieren">{{ render_icon('moderate') }} moderieren</a>
+    </div>
   </div>
   {%- endif %}
 
@@ -37,13 +37,13 @@
     {%- if not current_user_may_reply_generally and not topic.locked %}
     <small style="margin-right: 1em;">Du musst <a href="{{ url_for('authentication.login_form') }}">angemeldet</a> sein um antworten zu können.</small>
     {%- endif %}
-    <ol class="actions">
+    <div class="button-row">
     {%- if current_user_may_reply_generally and not topic.locked %}
-      <li><a href="{{ url_for('.posting_create_form', topic_id=topic.id) }}">{{ render_icon('reply') }} Antworten</a></li>
+      <a class="button" href="{{ url_for('.posting_create_form', topic_id=topic.id) }}">{{ render_icon('reply') }} Antworten</a>
     {%- else %}
-      <li><span class="action disabled">{{ render_icon('reply') }} Antworten</span></li>
+      <span class="button button--disabled">{{ render_icon('reply') }} Antworten</span>
     {%- endif %}
-    </ol>
+    </div>
   </div>
 
   <nav class="breadcrumbs compact">

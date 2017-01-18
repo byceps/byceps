@@ -191,8 +191,8 @@
     </tbody>
   </table>
 
-  <ol class="actions">
-    <li><a href="{{ url_for('.export', order_id=order.id) }}" download="{{ order.order_number }}.xml">
+  <div class="button-row">
+    <a class="button" href="{{ url_for('.export', order_id=order.id) }}" download="{{ order.order_number }}.xml">
       <div class="block-with-icon">
         <div class="icon">
           {{ render_icon('download') }}
@@ -202,8 +202,8 @@
           <small>{{ 'Shopschnittstelle (als XML)'|dim }}</small>
         </div>
       </div>
-    </a></li>
-  </ol>
+    </a>
+  </div>
 
 {%- endblock %}
 

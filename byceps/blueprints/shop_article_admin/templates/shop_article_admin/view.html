@@ -23,13 +23,13 @@
   </nav>
   <h1>{{ title }}</h1>
 
-  <ol class="actions">
+  <div class="button-row">
     {%- if g.current_user.has_permission(ShopArticlePermission.update) %}
-    <li><a href="{{ url_for('.update_form', article_id=article.id) }}">{{ render_icon('edit') }} Bearbeiten</a></li>
-    <li><a href="{{ url_for('.attachment_create_form', article_id=article.id) }}">{{ render_icon('attached') }} Artikel anhängen</a></li>
+    <a class="button" href="{{ url_for('.update_form', article_id=article.id) }}">{{ render_icon('edit') }} Bearbeiten</a>
+    <a class="button" href="{{ url_for('.attachment_create_form', article_id=article.id) }}">{{ render_icon('attached') }} Artikel anhängen</a>
     {%- endif %}
-    <li><a href="{{ url_for('.view_ordered', article_id=article.id) }}">{{ render_icon('users') }} Käufer auflisten</a></li>
-  </ol>
+    <a class="button" href="{{ url_for('.view_ordered', article_id=article.id) }}">{{ render_icon('users') }} Käufer auflisten</a>
+  </div>
 
   <table class="index">
     <tr>

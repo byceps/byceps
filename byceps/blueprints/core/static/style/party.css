@@ -482,7 +482,8 @@ table.index td.bignumber {
   }
 
   .actions,
-  .action {
+  .action,
+  .button-row {
     display: none !important;
   }
 }

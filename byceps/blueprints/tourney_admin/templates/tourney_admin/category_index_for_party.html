@@ -16,9 +16,9 @@
   <h1>Kategorien {{ render_extra_in_heading(categories|length) }}</h1>
 
   {%- if g.current_user.has_permission(TourneyCategoryPermission.create) %}
-  <ol class="actions">
-    <li><a href="{{ url_for('.category_create_form', party_id=party.id) }}">{{ render_icon('add') }} Kategorie erstellen</a></li>
-  </ol>
+  <div class="button-row">
+    <a class="button" href="{{ url_for('.category_create_form', party_id=party.id) }}">{{ render_icon('add') }} Kategorie erstellen</a>
+  </div>
   {%- endif %}
 
   <table class="index">

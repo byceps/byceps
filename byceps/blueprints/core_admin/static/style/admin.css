@@ -581,7 +581,8 @@ table.activity-stream-item td:first-child {
   }
 
   .actions,
-  .action {
+  .action,
+  .button-row {
     display: none !important;
   }
 }

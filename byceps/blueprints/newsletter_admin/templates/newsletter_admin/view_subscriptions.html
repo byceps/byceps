@@ -17,8 +17,8 @@
   <h1>Bestellstatus</h1>
 
   {%- if g.current_user.has_permission(NewsletterPermission.export_subscribers) %}
-  <ol class="actions">
-    <li><a href="{{ url_for('.export_subscribers', brand_id=brand.id) }}">
+  <div class="button-row">
+    <a class="button" href="{{ url_for('.export_subscribers', brand_id=brand.id) }}">
       <div class="block-with-icon">
         <div class="icon">
           {{ render_icon('download') }}
@@ -28,8 +28,8 @@
           <small>{{ 'Benutzernamen und E-Mail-Adressen (als JSON)'|dim }}</small>
         </div>
       </div>
-    </a></li>
-    <li><a href="{{ url_for('.export_subscriber_email_addresses', brand_id=brand.id) }}">
+    </a>
+    <a class="button" href="{{ url_for('.export_subscriber_email_addresses', brand_id=brand.id) }}">
       <div class="block-with-icon">
         <div class="icon">
           {{ render_icon('download') }}
@@ -39,8 +39,8 @@
           <small>{{ 'nur E-Mail-Adressen (als Text)'|dim }}</small>
         </div>
       </div>
-    </a></li>
-  </ol>
+    </a>
+  </div>
   {%- endif %}
 
   <div class="row bigstats">

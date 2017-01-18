@@ -51,13 +51,13 @@
     {%- if not current_user_may_create_topic %}
     <small style="margin-right: 1em;">Du musst <a href="{{ url_for('authentication.login_form') }}">angemeldet</a> sein um Themen hinzufügen zu können.</small>
     {%- endif %}
-    <ol class="actions">
+    <div class="button-row">
     {%- if current_user_may_create_topic %}
-      <li><a href="{{ url_for('.topic_create_form', category_id=category.id) }}">{{ render_icon('add') }} Thema hinzufügen</a></li>
+      <a class="button" href="{{ url_for('.topic_create_form', category_id=category.id) }}">{{ render_icon('add') }} Thema hinzufügen</a>
     {%- else %}
-      <li><span class="action disabled">{{ render_icon('add') }} Thema hinzufügen</span></li>
+      <span class="button button--disabled">{{ render_icon('add') }} Thema hinzufügen</span>
     {%- endif %}
-    </ol>
+    </div>
   </div>
 
 {%- endblock %}

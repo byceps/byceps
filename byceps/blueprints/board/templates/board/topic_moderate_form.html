@@ -19,61 +19,59 @@
   {%- if g.current_user.has_permission(BoardTopicPermission.hide) %}
   <h2>{{ render_icon('view') }} Sichtbarkeit</h2>
   <p>Das Thema &quot;{{ topic.title }}&quot; von {{ render_user_link(topic.creator) }} ist {% if topic.hidden %}<strong>versteckt</strong> ({{ render_datetime(topic.hidden_at) }} durch {{ topic.hidden_by.screen_name }}){% else %}<strong>sichtbar</strong>{% endif %}.</p>
-  <ol class="actions">
+  <div class="button-row">
   {%- if topic.hidden %}
-    <li><span class="action disabled">{{ render_icon('hidden') }} verstecken</span></li>
-    <li><a data-action="topic-unhide" href="{{ url_for('.topic_unhide', topic_id=topic.id) }}">{{ render_icon('view') }} sichtbar machen</a></li>
+    <span class="button button--disabled">{{ render_icon('hidden') }} verstecken</span>
+    <a class="button" data-action="topic-unhide" href="{{ url_for('.topic_unhide', topic_id=topic.id) }}">{{ render_icon('view') }} sichtbar machen</a>
   {%- else %}
-    <li><a data-action="topic-hide" href="{{ url_for('.topic_hide', topic_id=topic.id) }}">{{ render_icon('hidden') }} verstecken</a></li>
-    <li><span class="action disabled">{{ render_icon('view') }} sichtbar machen</span></li>
+    <a class="button" data-action="topic-hide" href="{{ url_for('.topic_hide', topic_id=topic.id) }}">{{ render_icon('hidden') }} verstecken</a>
+    <span class="button button--disabled">{{ render_icon('view') }} sichtbar machen</span>
   {%- endif %}
-  </ol>
+  </div>
   {%- endif %}
 
   {%- if g.current_user.has_permission(BoardTopicPermission.lock) %}
   <h2>{{ render_icon('lock') }} Schreibsperre</h2>
   <p>Das Thema &quot;{{ topic.title }}&quot; von {{ render_user_link(topic.creator) }} ist {% if topic.locked %}<strong>geschlossen</strong> ({{ render_datetime(topic.locked_at) }} durch {{ topic.locked_by.screen_name }}){% else %}<strong>offen</strong>{% endif %}.</p>
-  <ol class="actions">
+  <div class="button-row">
   {%- if topic.locked %}
-    <li><span class="action disabled">{{ render_icon('lock') }} schließen</span></li>
-    <li><a data-action="topic-unlock" href="{{ url_for('.topic_unlock', topic_id=topic.id) }}">{{ render_icon('unlock') }} öffnen</a></li>
+    <span class="button button--disabled">{{ render_icon('lock') }} schließen</span>
+    <a class="button" data-action="topic-unlock" href="{{ url_for('.topic_unlock', topic_id=topic.id) }}">{{ render_icon('unlock') }} öffnen</a>
   {%- else %}
-    <li><a data-action="topic-lock" href="{{ url_for('.topic_lock', topic_id=topic.id) }}">{{ render_icon('lock') }} schließen</a></li>
-    <li><span class="action disabled">{{ render_icon('unlock') }} öffnen</span></li>
+    <a class="button" data-action="topic-lock" href="{{ url_for('.topic_lock', topic_id=topic.id) }}">{{ render_icon('lock') }} schließen</a>
+    <span class="button button--disabled">{{ render_icon('unlock') }} öffnen</span>
   {%- endif %}
-  </ol>
+  </div>
   {%- endif %}
 
   {%- if g.current_user.has_permission(BoardTopicPermission.pin) %}
   <h2>{{ render_icon('pin') }} Anheften</h2>
   <p>Das Thema &quot;{{ topic.title }}&quot; von {{ render_user_link(topic.creator) }} ist {% if topic.pinned %}<strong>angepinnt</strong> ({{ render_datetime(topic.pinned_at) }} durch {{ topic.pinned_by.screen_name }}){% else %}<strong>nicht angepinnt</strong>{% endif %}.</p>
-  <ol class="actions">
+  <div class="button-row">
   {%- if topic.pinned %}
-    <li><span class="action disabled">{{ render_icon('pin') }} anpinnen</span></li>
-    <li><a data-action="topic-unpin" href="{{ url_for('.topic_unpin', topic_id=topic.id) }}">{{ render_icon('sorted') }} lösen</a></li>
+    <span class="button button--disabled">{{ render_icon('pin') }} anpinnen</span>
+    <a class="button" data-action="topic-unpin" href="{{ url_for('.topic_unpin', topic_id=topic.id) }}">{{ render_icon('sorted') }} lösen</a>
   {%- else %}
-    <li><a data-action="topic-pin" href="{{ url_for('.topic_pin', topic_id=topic.id) }}">{{ render_icon('pin') }} anpinnen</a></li>
-    <li><span class="action disabled">{{ render_icon('sorted') }} lösen</span></li>
+    <a class="button" data-action="topic-pin" href="{{ url_for('.topic_pin', topic_id=topic.id) }}">{{ render_icon('pin') }} anpinnen</a>
+    <span class="button button--disabled">{{ render_icon('sorted') }} lösen</span>
   {%- endif %}
-  </ol>
+  </div>
   {%- endif %}
 
   {%- if g.current_user.has_permission(BoardTopicPermission.move) %}
   <h2>{{ render_icon('move') }} Verschieben</h2>
   <p>Dieses Thema befindet sich in der Kategorie &quot;{{ topic.category.title }}&quot;.</p>
-  <ol class="actions">
-    <li>
-      <form action="{{ url_for('.topic_move', topic_id=topic.id) }}" method="post">
-        Neue Kategorie:
-        <select name="category_id">
-        {%- for category in categories %}
-          <option value="{{ category.id }}">{{ category.title }}</option>
-        {%- endfor %}
-        </select>
-        <button type="submit" class="action">{{ render_icon('move') }} verschieben</button>
-      </form>
-    </li>
-  </ol>
+  <div class="button-row">
+    <form action="{{ url_for('.topic_move', topic_id=topic.id) }}" method="post">
+      Neue Kategorie:
+      <select name="category_id">
+      {%- for category in categories %}
+        <option value="{{ category.id }}">{{ category.title }}</option>
+      {%- endfor %}
+      </select>
+      <button type="submit" class="button">{{ render_icon('move') }} verschieben</button>
+    </form>
+  </div>
   {%- endif %}
 
 {%- endblock %}

@@ -35,9 +35,9 @@
   </table>
 
   {%- if g.current_user.is_active %}
-  <ol class="actions">
-    <li><a href="{{ url_for('.create_form') }}">{{ render_icon('add') }} Gruppe erstellen</a></li>
-  </ol>
+  <div class="button-row">
+    <a class="button" href="{{ url_for('.create_form') }}">{{ render_icon('add') }} Gruppe erstellen</a>
+  </div>
   {%- endif %}
 
 {%- endblock %}

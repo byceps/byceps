@@ -19,15 +19,15 @@
 
   <h2>{{ render_icon('view') }} Sichtbarkeit</h2>
   <p>Dieser Beitrag von {{ render_user_link(posting.creator) }} ist {% if posting.hidden %}<strong>versteckt</strong> (am {{ render_datetime(posting.hidden_at) }} durch {{ posting.hidden_by.screen_name }}){% else %}<strong>sichtbar</strong>{% endif %}.</p>
-  <ol class="actions">
+  <div class="button-row">
   {%- if posting.hidden %}
-    <li><span class="action disabled">{{ render_icon('hidden') }} verstecken</span></li>
-    <li><a data-action="posting-unhide" href="{{ url_for('.posting_unhide', posting_id=posting.id) }}">{{ render_icon('view') }} sichtbar machen</a></li>
+    <span class="button button--disabled">{{ render_icon('hidden') }} verstecken</span>
+    <a class="button" data-action="posting-unhide" href="{{ url_for('.posting_unhide', posting_id=posting.id) }}">{{ render_icon('view') }} sichtbar machen</a>
   {%- else %}
-    <li><a data-action="posting-hide" href="{{ url_for('.posting_hide', posting_id=posting.id) }}">{{ render_icon('hidden') }} verstecken</a></li>
-    <li><span class="action disabled">{{ render_icon('view') }} sichtbar machen</span></li>
+    <a class="button" data-action="posting-hide" href="{{ url_for('.posting_hide', posting_id=posting.id) }}">{{ render_icon('hidden') }} verstecken</a>
+    <span class="button button--disabled">{{ render_icon('view') }} sichtbar machen</span>
   {%- endif %}
-  </ol>
+  </div>
 
 {%- endblock %}
 

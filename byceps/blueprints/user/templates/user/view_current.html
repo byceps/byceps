@@ -28,22 +28,22 @@
       <td>
         {{ render_user_avatar_128(user) }}
       {%- if g.current_user == user %}
-        <ol class="actions" style="display: block; margin: 0.5rem 0 0 0;">
-          <li><a href="{{ url_for('user_avatar.update_form') }}">{{ render_icon('upload') }} hochladen</a></li>
+        <div class="button-row" style="margin: 0.5rem 0;">
+          <a class="button" href="{{ url_for('user_avatar.update_form') }}">{{ render_icon('upload') }} hochladen</a>
           {%- if user.avatar %}
-          <li><a data-action="avatar-delete" href="{{ url_for('user_avatar.delete', _method='DELETE') }}">{{ render_icon('delete') }} entfernen</a></li>
+          <a class="button" data-action="avatar-delete" href="{{ url_for('user_avatar.delete', _method='DELETE') }}">{{ render_icon('delete') }} entfernen</a>
           {%- endif %}
-        </ol>
+        </div>
       {%- endif %}
       </td>
     </tr>
   </table>
-  <ol class="actions">
+  <div class="button-row">
     {%- if g.site_mode.is_public() %}
-    <li><a href="{{ url_for('.view', user_id=user.id) }}">{{ render_icon('view') }} öffentliches Profil ansehen</a></li>
+    <a class="button" href="{{ url_for('.view', user_id=user.id) }}">{{ render_icon('view') }} öffentliches Profil ansehen</a>
     {%- endif %}
-    <li><a href="{{ url_for('authentication.password_update_form') }}">{{ render_icon('password') }} Passwort ändern</a></li>
-  </ol>
+    <a class="button" href="{{ url_for('authentication.password_update_form') }}">{{ render_icon('password') }} Passwort ändern</a>
+  </div>
 
   <h2>Persönliche Daten</h2>
   <table class="index">
@@ -79,9 +79,9 @@
       <td>{{ user.detail.phone_number|fallback }}</td>
     </tr>
   </table>
-  <ol class="actions">
-    <li><a href="{{ url_for('.details_update_form') }}">{{ render_icon('edit') }} bearbeiten</a></li>
-  </ol>
+  <div class="button-row">
+    <a class="button" href="{{ url_for('.details_update_form') }}">{{ render_icon('edit') }} bearbeiten</a>
+  </div>
 
   {%- if g.site_mode.is_public() %}
   <h2>Newsletter</h2>

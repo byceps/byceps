@@ -8,9 +8,9 @@
   <h1>Marken</h1>
 
   {%- if g.current_user.has_permission(BrandPermission.create) %}
-  <ol class="actions">
-    <li><a href="{{ url_for('.create_form') }}">{{ render_icon('add') }} Marke erstellen</a></li>
-  </ol>
+  <div class="button-row">
+    <a class="button" href="{{ url_for('.create_form') }}">{{ render_icon('add') }} Marke erstellen</a>
+  </div>
   {%- endif %}
 
   <table class="index wide">

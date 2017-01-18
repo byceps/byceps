@@ -298,6 +298,16 @@ form li.error .errors li span {
 }
 
 
+/* buttons */
+
+.button-row {
+  display: block;
+  margin: 1.5rem 0;
+}
+.button-row > * {
+  margin-right: 0.25em;
+}
+
 .button {
   background-color: #eeeeee;
   border-color: #cccccc;
@@ -308,9 +318,14 @@ form li.error .errors li span {
   cursor: pointer;
   display: inline-block;
   padding: 0.4em 0.6em;
+  text-decoration: none;
 }
 .button--compact {
   padding: 0;
+}
+.button--disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
 }
 .button:hover {
   background-color: #e8e8e8;
@@ -323,12 +338,6 @@ form li.error .errors li span {
 ol.actions,
 ol.actions li {
   display: inline-block;
-}
-ol.actions:not(.inline) {
-  margin: 1em 0;
-}
-ol.actions:not(.inline) li {
-  margin-bottom: 0.5em;
 }
 
 .action,
