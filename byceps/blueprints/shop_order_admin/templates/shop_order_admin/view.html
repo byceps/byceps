@@ -7,6 +7,28 @@
 {% set current_page_party = order.party %}
 {% set title = 'Bestellung ' ~ order.order_number %}
 
+{% block head %}
+  <style>
+    .order-status-bar {
+      justify-content: space-between;
+      margin: 0.1rem 0;
+    }
+
+    .order-status-flag {
+      display: inline-block;
+      opacity: 0.2;
+      text-align: center;
+    }
+    .order-status-flag.set {
+      opacity: 1;
+    }
+
+    .order-status-flag svg {
+      font-size: 200%;
+    }
+  </style>
+{%- endblock %}
+
 {% block body %}
 
   <nav class="breadcrumbs">
@@ -50,18 +72,17 @@
 
   <table class="index">
     <tr>
-      <th>Zeitpunkt</th>
-      <td>{{ render_datetime(order.created_at) }}</td>
+      <td colspan="2">
+        <ol class="order-status-bar list-grid">
+          <li class="order-status-flag {{ 'set' if (order.payment_state == PaymentState.paid) else '' }}">{{ render_icon('payment') }}<br>bezahlt</li>
+          <li class="order-status-flag {{ 'set' if order.is_invoiced else '' }}">{{ render_icon('invoice') }}<br>Rechnung<br>versendet</li>
+          <li class="order-status-flag {{ 'set' if order.is_shipped else '' }}">{{ render_icon('shipment') }}<br>Ware<br>versendet</li>
+        </ol>
+      </td>
     </tr>
     <tr>
-      <th>Rechnung</th>
-      <td>
-        {%- if order.is_invoiced %}
-          {{- render_icon('success') }} versendet
-        {%- else %}
-          {{- render_icon('remove') }} noch nicht versendet
-        {%- endif %}
-      </td>
+      <th>Zeitpunkt</th>
+      <td>{{ render_datetime(order.created_at) }}</td>
     </tr>
     <tr>
       <th>Zahlungsart</th>
@@ -77,16 +98,6 @@
       <td>{{ order.cancelation_reason|fallback }}</td>
     </tr>
     {%- endif %}
-    <tr>
-      <th>Lieferstatus</th>
-      <td>
-        {%- if order.is_shipped %}
-          {{- render_icon('success') }} versendet
-        {%- else %}
-          {{- render_icon('remove') }} noch nicht versendet
-        {%- endif %}
-      </td>
-    </tr>
   </table>
 
   <h2>Aktivität</h2>
