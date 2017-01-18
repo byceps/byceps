@@ -580,7 +580,6 @@ table.activity-stream-item td:first-child {
     overflow: visible !important;
   }
 
-  .actions,
   .action,
   .button-row {
     display: none !important;

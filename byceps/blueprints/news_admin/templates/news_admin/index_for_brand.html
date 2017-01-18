@@ -56,9 +56,7 @@
         </td>
         <td>
           {%- if g.current_user.has_permission(NewsItemPermission.update) -%}
-          <ol class="actions inline">
-            <li><a href="{{ url_for('.update_form', item_id=item.id) }}">{{ render_icon('edit') }} bearbeiten</a></li>
-          </ol>
+          <a class="action inline" href="{{ url_for('.update_form', item_id=item.id) }}">{{ render_icon('edit') }} bearbeiten</a>
           {%- endif -%}
         </td>
       </tr>

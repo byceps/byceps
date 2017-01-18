@@ -335,13 +335,7 @@ form li.error .errors li span {
 
 /* actions */
 
-ol.actions,
-ol.actions li {
-  display: inline-block;
-}
-
-.action,
-.actions a {
+.action {
   background-color: #eeeeee;
   border-color: #cccccc;
   border-style: solid;
@@ -355,13 +349,11 @@ ol.actions li {
   text-decoration: none;
   white-space: nowrap;
 }
-.action.inline,
-.actions.inline a {
+.action.inline {
   line-height: 1;
   padding: 2px 3px;
 }
-.action:not(.disabled):hover,
-.actions a:hover {
+.action:not(.disabled):hover {
   background-color: #e8e8e8;
   border-color: #999999;
 }
