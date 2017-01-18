@@ -27,7 +27,7 @@
       </tr>
     </thead>
     <tbody>
-    {%- with compare_endpoint = '.compare_fragments' if (snippet.type_.name == 'fragment') else '.compare_documents' %}
+    {%- with compare_endpoint = '.compare_fragments' if snippet.is_fragment else '.compare_documents' %}
       {%- for version, previous_version in versions_pairwise %}
         <tr>
           <td>

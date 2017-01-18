@@ -67,6 +67,14 @@ class Snippet(db.Model):
         assert type_ is not None
         self._type = type_.name
 
+    @property
+    def is_document(self):
+        return self.type_ == SnippetType.document
+
+    @property
+    def is_fragment(self):
+        return self.type_ == SnippetType.fragment
+
     def get_versions(self):
         """Return all versions, sorted from most recent to oldest."""
         return SnippetVersion.query.for_snippet(self).latest_first().all()
