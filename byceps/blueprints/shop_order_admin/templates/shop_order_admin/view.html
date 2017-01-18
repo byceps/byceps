@@ -27,10 +27,10 @@
       <td>
         {%- if order.invoice_created_at %}
           {{- render_icon('success') }} erstellt
-          <a data-action="order-unflag-invoiced" href="{{ url_for('.unset_invoiced_flag', order_id=order.id) }}" class="action inline">{{ render_icon('remove') }}</a>
+          <a class="button button--icon-only" data-action="order-unflag-invoiced" href="{{ url_for('.unset_invoiced_flag', order_id=order.id) }}">{{ render_icon('remove') }}</a>
         {%- else %}
           {{- render_icon('remove') }} noch nicht erstellt
-          <a data-action="order-flag-invoiced" href="{{ url_for('.set_invoiced_flag', order_id=order.id) }}" class="action inline">{{ render_icon('success') }}</a>
+          <a class="button button--icon-only" data-action="order-flag-invoiced" href="{{ url_for('.set_invoiced_flag', order_id=order.id) }}">{{ render_icon('success') }}</a>
         {%- endif %}
       </td>
     </tr>
@@ -66,10 +66,10 @@
       <td>
         {%- if order.shipped_at %}
           {{- render_icon('success') }} versendet
-          <a data-action="order-unflag-shipped" href="{{ url_for('.unset_shipped_flag', order_id=order.id) }}" class="action inline">{{ render_icon('remove') }}</a>
+          <a class="button button--icon-only" data-action="order-unflag-shipped" href="{{ url_for('.unset_shipped_flag', order_id=order.id) }}">{{ render_icon('remove') }}</a>
         {%- else %}
           {{- render_icon('remove') }} noch nicht versendet
-          <a data-action="order-flag-shipped" href="{{ url_for('.set_shipped_flag', order_id=order.id) }}" class="action inline">{{ render_icon('success') }}</a>
+          <a class="button button--icon-only" data-action="order-flag-shipped" href="{{ url_for('.set_shipped_flag', order_id=order.id) }}">{{ render_icon('success') }}</a>
         {%- endif %}
       </td>
     </tr>

@@ -189,7 +189,7 @@ main {
   height: 42px;
   padding-top: 9px;
 }
-#header-content .current-user .logged-out .action:not(:hover) {
+#header-content .current-user .logged-out .button:not(:hover) {
   background-color: #ffffff;
 }
 
@@ -580,7 +580,6 @@ table.activity-stream-item td:first-child {
     overflow: visible !important;
   }
 
-  .action,
   .button-row {
     display: none !important;
   }

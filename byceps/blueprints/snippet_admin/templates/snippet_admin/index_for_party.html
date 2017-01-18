@@ -47,10 +47,10 @@
         </td>
         <td>{{ render_user_avatar_20_and_link(snippet.current_version.creator) }}</td>
         <td>
-          <a class="action inline" href="{{ url_for('.view_version', snippet_version_id=snippet.current_version.id) }}">{{ render_icon('view') }} ansehen</a>
+          <a class="button button--inline" href="{{ url_for('.view_version', snippet_version_id=snippet.current_version.id) }}">{{ render_icon('view') }} ansehen</a>
           {%- if g.current_user.has_permission(SnippetPermission.update) -%}
             {%- with endpoint = '.update_fragment_form' if (snippet.type_.name == 'fragment') else '.update_document_form' %}
-          <a class="action inline" href="{{ url_for(endpoint, snippet_id=snippet.id) }}">{{ render_icon('edit') }} bearbeiten</a>
+          <a class="button button--inline" href="{{ url_for(endpoint, snippet_id=snippet.id) }}">{{ render_icon('edit') }} bearbeiten</a>
             {%- endwith %}
           {%- endif -%}
         </td>
