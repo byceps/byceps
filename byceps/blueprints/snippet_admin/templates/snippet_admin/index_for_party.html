@@ -49,12 +49,9 @@
         <td>
           <a class="action inline" href="{{ url_for('.view_version', snippet_version_id=snippet.current_version.id) }}">{{ render_icon('view') }} ansehen</a>
           {%- if g.current_user.has_permission(SnippetPermission.update) -%}
-            {%- if snippet.type_.name == 'fragment' -%}
-          <a class="action inline" href="{{ url_for('.update_fragment_form', snippet_id=snippet.id) }}">
-            {%- else -%}
-          <a class="action inline" href="{{ url_for('.update_document_form', snippet_id=snippet.id) }}">
-            {%- endif -%}
-          {{ render_icon('edit') }} bearbeiten</a>
+            {%- with endpoint = '.update_fragment_form' if (snippet.type_.name == 'fragment') else '.update_document_form' %}
+          <a class="action inline" href="{{ url_for(endpoint, snippet_id=snippet.id) }}">{{ render_icon('edit') }} bearbeiten</a>
+            {%- endwith %}
           {%- endif -%}
         </td>
       </tr>

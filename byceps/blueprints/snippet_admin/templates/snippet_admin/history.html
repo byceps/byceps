@@ -27,6 +27,7 @@
       </tr>
     </thead>
     <tbody>
+    {%- with compare_endpoint = '.compare_fragments' if (snippet.type_.name == 'fragment') else '.compare_documents' %}
       {%- for version, previous_version in versions_pairwise %}
         <tr>
           <td>
@@ -40,15 +41,12 @@
           <td>{{ render_user_avatar_16_and_link(version.creator) }}</td>
           <td>
             {%- if previous_version -%}
-              {%- if snippet.type_.name == 'fragment' -%}
-              <a href="{{ url_for('.compare_fragments', from_version_id=previous_version.id, to_version_id=version.id) }}" title="Änderungen im Vergleich zur vorigen Version anzeigen">Änderungen zeigen</a>
-              {%- else -%}
-              <a href="{{ url_for('.compare_documents', from_version_id=previous_version.id, to_version_id=version.id) }}" title="Änderungen im Vergleich zur vorigen Version anzeigen">Änderungen zeigen</a>
-              {%- endif -%}
+            <a href="{{ url_for(compare_endpoint, from_version_id=previous_version.id, to_version_id=version.id) }}" title="Änderungen im Vergleich zur vorigen Version anzeigen">Änderungen zeigen</a>
             {%- endif -%}
-           </td>
+          </td>
         </tr>
       {%- endfor %}
+    {%- endwith %}
     </tbody>
   </table>
 
