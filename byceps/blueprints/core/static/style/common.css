@@ -276,7 +276,7 @@ fieldset.buttons {
   text-align: center;
 }
 
-button {
+fieldset.buttons button {
   font-weight: bold;
   padding: 0.25em 0.75em;
 }
@@ -358,7 +358,6 @@ ol.actions:not(.inline) li {
   color: currentColor;
   cursor: pointer;
   display: inline-block;
-  font-weight: normal;
   padding: 0 0.1em;
 }
 .dropdown button:hover,
