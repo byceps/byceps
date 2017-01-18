@@ -9,7 +9,7 @@ An asynchronously processed job queue based on Redis_ and RQ_.
 .. _Redis: http://redis.io/
 .. _RQ:    http://python-rq.org/
 
-:Copyright: 2006-2016 Jochen Kupperschmidt
+:Copyright: 2006-2017 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
 """
 
