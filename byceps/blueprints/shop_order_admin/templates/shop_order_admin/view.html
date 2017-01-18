@@ -45,13 +45,6 @@
       <button class="dropdown-toggle button">Aktionen {{ render_icon('caret-down') }}</button>
       <ol>
         <li><a href="{{ url_for('.export', order_id=order.id) }}" download="{{ order.order_number }}.xml">{{ render_icon('download') }} für Lexware exportieren (XML)</a></li>
-        {%- if order.payment_state != PaymentState.canceled %}
-          {%- if order.payment_state == PaymentState.open %}
-        <li><a href="{{ url_for('.mark_as_paid_form', order_id=order.id) }}">{{ render_icon('payment') }} Bestellung als bezahlt markieren</a></li>
-          {%- endif %}
-        <li><a href="{{ url_for('.cancel_form', order_id=order.id) }}">{{ render_icon('disabled') }} Bestellung stornieren</a></li>
-        <li class="divider"></li>
-        {%- endif %}
         <li>
         {%- if order.is_invoiced %}
           <a data-action="order-unflag-invoiced" href="{{ url_for('.unset_invoiced_flag', order_id=order.id) }}">{{ render_icon('invoice') }} Rechnung wurde versendet</a>
@@ -59,6 +52,14 @@
           <a data-action="order-flag-invoiced" href="{{ url_for('.set_invoiced_flag', order_id=order.id) }}">{{ render_icon('invoice') }} Rechnung wurde <strong>nicht</strong> versendet</a>
         {%- endif %}
         </li>
+        <li class="divider"></li>
+        {%- if order.payment_state != PaymentState.canceled %}
+          {%- if order.payment_state == PaymentState.open %}
+        <li><a href="{{ url_for('.mark_as_paid_form', order_id=order.id) }}">{{ render_icon('payment') }} Bestellung als bezahlt markieren</a></li>
+          {%- endif %}
+        <li><a href="{{ url_for('.cancel_form', order_id=order.id) }}">{{ render_icon('disabled') }} Bestellung stornieren</a></li>
+        <li class="divider"></li>
+        {%- endif %}
         <li>
         {%- if order.is_shipped %}
           <a data-action="order-unflag-shipped" href="{{ url_for('.unset_shipped_flag', order_id=order.id) }}">{{ render_icon('shipment') }} Bestellung wurde versendet</a>
