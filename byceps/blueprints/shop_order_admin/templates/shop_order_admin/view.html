@@ -17,6 +17,28 @@
   </nav>
   <h1>{{ title }}</h1>
 
+  <div style="float: right;">
+    <div class="dropdown left">
+      <button class="dropdown-toggle button">Aktionen {{ render_icon('caret-down') }}</button>
+      <ol>
+        <li>
+        {%- if order.is_invoiced %}
+          <a data-action="order-unflag-invoiced" href="{{ url_for('.unset_invoiced_flag', order_id=order.id) }}">{{ render_icon('invoice') }} Rechnung wurde versendet</a>
+        {%- else %}
+          <a data-action="order-flag-invoiced" href="{{ url_for('.set_invoiced_flag', order_id=order.id) }}">{{ render_icon('invoice') }} Rechnung wurde <strong>nicht</strong> versendet</a>
+        {%- endif %}
+        </li>
+        <li>
+        {%- if order.is_shipped %}
+          <a data-action="order-unflag-shipped" href="{{ url_for('.unset_shipped_flag', order_id=order.id) }}">{{ render_icon('shipment') }} Bestellung wurde versendet</a>
+        {%- else %}
+          <a data-action="order-flag-shipped" href="{{ url_for('.set_shipped_flag', order_id=order.id) }}">{{ render_icon('shipment') }} Bestellung wurde <strong>nicht</strong> versendet</a>
+        {%- endif %}
+        </li>
+      </ol>
+    </div>
+  </div>
+
   <table class="index">
     <tr>
       <th>Zeitpunkt</th>
@@ -26,11 +48,9 @@
       <th>Rechnung</th>
       <td>
         {%- if order.is_invoiced %}
-          {{- render_icon('success') }} erstellt
-          <a class="button button--icon-only" data-action="order-unflag-invoiced" href="{{ url_for('.unset_invoiced_flag', order_id=order.id) }}">{{ render_icon('remove') }}</a>
+          {{- render_icon('success') }} versendet
         {%- else %}
-          {{- render_icon('remove') }} noch nicht erstellt
-          <a class="button button--icon-only" data-action="order-flag-invoiced" href="{{ url_for('.set_invoiced_flag', order_id=order.id) }}">{{ render_icon('success') }}</a>
+          {{- render_icon('remove') }} noch nicht versendet
         {%- endif %}
       </td>
     </tr>
@@ -66,10 +86,8 @@
       <td>
         {%- if order.is_shipped %}
           {{- render_icon('success') }} versendet
-          <a class="button button--icon-only" data-action="order-unflag-shipped" href="{{ url_for('.unset_shipped_flag', order_id=order.id) }}">{{ render_icon('remove') }}</a>
         {%- else %}
           {{- render_icon('remove') }} noch nicht versendet
-          <a class="button button--icon-only" data-action="order-flag-shipped" href="{{ url_for('.set_shipped_flag', order_id=order.id) }}">{{ render_icon('success') }}</a>
         {%- endif %}
       </td>
     </tr>
@@ -213,8 +231,8 @@ $(function() {
   confirmed_post_on_click('[data-action="order-flag-invoiced"]', 'Rechnung als versendet vermerken?');
   confirmed_delete_on_click('[data-action="order-unflag-invoiced"]', 'Rechnung als nicht versendet vermerken?');
 
-  confirmed_post_on_click('[data-action="order-flag-shipped"]', 'Bestellung als verschickt markieren?');
-  confirmed_delete_on_click('[data-action="order-unflag-shipped"]', 'Bestellung als nicht verschickt markieren?');
+  confirmed_post_on_click('[data-action="order-flag-shipped"]', 'Bestellung als versendet markieren?');
+  confirmed_delete_on_click('[data-action="order-unflag-shipped"]', 'Bestellung als nicht versendet markieren?');
 });
     </script>
 {%- endblock %}
