@@ -22,6 +22,13 @@
     <div class="dropdown left">
       <button class="dropdown-toggle button">Aktionen {{ render_icon('caret-down') }}</button>
       <ol>
+        {%- if order.payment_state != PaymentState.canceled %}
+          {%- if order.payment_state == PaymentState.open %}
+        <li><a href="{{ url_for('.mark_as_paid_form', order_id=order.id) }}">{{ render_icon('payment') }} Bestellung als bezahlt markieren</a></li>
+          {%- endif %}
+        <li><a href="{{ url_for('.cancel_form', order_id=order.id) }}">{{ render_icon('disabled') }} Bestellung stornieren</a></li>
+        <li class="divider"></li>
+        {%- endif %}
         <li>
         {%- if order.is_invoiced %}
           <a data-action="order-unflag-invoiced" href="{{ url_for('.unset_invoiced_flag', order_id=order.id) }}">{{ render_icon('invoice') }} Rechnung wurde versendet</a>
@@ -62,20 +69,7 @@
     </tr>
     <tr>
       <th>Bezahlstatus</th>
-      <td>
-        {{ render_order_payment_state(order.payment_state) }}
-        {%- if order.payment_state != PaymentState.canceled %}
-        <div class="dropdown">
-          <button class="dropdown-toggle button button--compact">{{ render_icon('caret-down') }}</button>
-          <ol>
-            {%- if order.payment_state == PaymentState.open %}
-            <li><a href="{{ url_for('.mark_as_paid_form', order_id=order.id) }}">{{ render_icon('success') }} als bezahlt markieren</a></li>
-            {%- endif %}
-            <li><a href="{{ url_for('.cancel_form', order_id=order.id) }}">{{ render_icon('disabled') }} stornieren</a></li>
-          </ol>
-        </div>
-        {%- endif %}
-      </td>
+      <td>{{ render_order_payment_state(order.payment_state) }}</td>
     </tr>
     {%- if order.payment_state == PaymentState.canceled %}
     <tr>
