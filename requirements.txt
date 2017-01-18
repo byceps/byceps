@@ -7,7 +7,7 @@ WTForms >= 2.1
 
 # data persistence
 Flask-SQLAlchemy >= 2.1
-SQLAlchemy >= 1.1.4
+SQLAlchemy >= 1.1.5
 
 Arrow >= 0.10.0
 bbcode >= 1.0.21
