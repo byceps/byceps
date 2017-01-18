@@ -367,6 +367,9 @@ ol.actions:not(.inline) li {
   border-color: #999999;
 }
 
+.dropdown-toggle {
+  cursor: pointer;
+}
 .dropdown-toggle:focus {
   outline: 0;
 }
