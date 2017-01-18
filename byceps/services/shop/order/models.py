@@ -130,6 +130,14 @@ class Order(db.Model):
     def calculate_total_price(self):
         return Decimal(sum(item.price * item.quantity for item in self.items))
 
+    @property
+    def is_invoiced(self):
+        return self.invoice_created_at is not None
+
+    @property
+    def is_shipped(self):
+        return self.shipped_at is not None
+
     def __repr__(self):
         return ReprBuilder(self) \
             .add_with_lookup('id') \

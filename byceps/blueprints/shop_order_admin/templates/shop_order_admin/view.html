@@ -25,7 +25,7 @@
     <tr>
       <th>Rechnung</th>
       <td>
-        {%- if order.invoice_created_at %}
+        {%- if order.is_invoiced %}
           {{- render_icon('success') }} erstellt
           <a class="button button--icon-only" data-action="order-unflag-invoiced" href="{{ url_for('.unset_invoiced_flag', order_id=order.id) }}">{{ render_icon('remove') }}</a>
         {%- else %}
@@ -64,7 +64,7 @@
     <tr>
       <th>Lieferstatus</th>
       <td>
-        {%- if order.shipped_at %}
+        {%- if order.is_shipped %}
           {{- render_icon('success') }} versendet
           <a class="button button--icon-only" data-action="order-unflag-shipped" href="{{ url_for('.unset_shipped_flag', order_id=order.id) }}">{{ render_icon('remove') }}</a>
         {%- else %}

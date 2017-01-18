@@ -78,12 +78,12 @@
         </td>
         <td class="number">{{ order.calculate_total_price()|format_euro_amount }}</td>
         <td class="centered">
-          {%- if order.invoice_created_at %}
+          {%- if order.is_invoiced %}
           {{- render_icon('invoice', title='Rechnung erstellt') -}}
           {%- endif -%}
         </td>
         <td>
-          {%- if order.shipped_at %}
+          {%- if order.is_shipped %}
           {{- render_icon('shipment', title='Lieferung versendet') -}}
           {%- endif -%}
         </td>
