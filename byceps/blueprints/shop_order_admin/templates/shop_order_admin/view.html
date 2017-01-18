@@ -44,6 +44,7 @@
     <div class="dropdown left">
       <button class="dropdown-toggle button">Aktionen {{ render_icon('caret-down') }}</button>
       <ol>
+        <li><a href="{{ url_for('.export', order_id=order.id) }}" download="{{ order.order_number }}.xml">{{ render_icon('download') }} für Lexware exportieren (XML)</a></li>
         {%- if order.payment_state != PaymentState.canceled %}
           {%- if order.payment_state == PaymentState.open %}
         <li><a href="{{ url_for('.mark_as_paid_form', order_id=order.id) }}">{{ render_icon('payment') }} Bestellung als bezahlt markieren</a></li>
@@ -215,20 +216,6 @@
       {%- endfor %}
     </tbody>
   </table>
-
-  <div class="button-row">
-    <a class="button" href="{{ url_for('.export', order_id=order.id) }}" download="{{ order.order_number }}.xml">
-      <div class="block-with-icon">
-        <div class="block-with-icon-icon">
-          {{ render_icon('download') }}
-        </div>
-        <div class="block-with-icon-body">
-          für Lexware exportieren<br>
-          <small>{{ 'Shopschnittstelle (als XML)'|dim }}</small>
-        </div>
-      </div>
-    </a>
-  </div>
 
 {%- endblock %}
 
