@@ -346,6 +346,7 @@ ol.actions:not(.inline) li {
 
 .dropdown {
   display: inline-block;
+  font-size: 0.8125rem; /* 13px / 16px */
   position: relative;
 }
 
