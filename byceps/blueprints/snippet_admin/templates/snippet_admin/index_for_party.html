@@ -20,8 +20,8 @@
 
   {%- if g.current_user.has_permission(SnippetPermission.create) %}
   <div class="button-row">
-    <a class="button" href="{{ url_for('.create_document_form', party_id=party.id) }}">{{ render_icon('add') }} Dokument erstellen</a>
-    <a class="button" href="{{ url_for('.create_fragment_form', party_id=party.id) }}">{{ render_icon('add') }} Fragment erstellen</a>
+    <a class="button" href="{{ url_for('.create_document_form', party_id=party.id) }}">{{ render_icon('snippet-document') }} Dokument erstellen</a>
+    <a class="button" href="{{ url_for('.create_fragment_form', party_id=party.id) }}">{{ render_icon('snippet-fragment') }} Fragment erstellen</a>
   </div>
   {%- endif %}
 
