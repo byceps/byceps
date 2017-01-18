@@ -219,10 +219,10 @@
   <div class="button-row">
     <a class="button" href="{{ url_for('.export', order_id=order.id) }}" download="{{ order.order_number }}.xml">
       <div class="block-with-icon">
-        <div class="icon">
+        <div class="block-with-icon-icon">
           {{ render_icon('download') }}
         </div>
-        <div class="body">
+        <div class="block-with-icon-body">
           für Lexware exportieren<br>
           <small>{{ 'Shopschnittstelle (als XML)'|dim }}</small>
         </div>

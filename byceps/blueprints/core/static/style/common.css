@@ -95,11 +95,11 @@ img {
 .block-with-icon {
   display: flex;
 }
-.block-with-icon > .icon {
+.block-with-icon-icon {
   flex: 0 0 1;
   padding-right: 0.5em;
 }
-.block-with-icon > .body {
+.block-with-icon-body {
   flex: 1;
 }
 

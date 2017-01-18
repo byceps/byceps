@@ -3,10 +3,10 @@
 
 {% macro render_notification(category, icon, text, text_is_safe=False) -%}
   <div class="notification-{{ category }} block-with-icon">
-    <div class="icon">
+    <div class="block-with-icon-icon">
       {{ render_icon(icon) }}
     </div>
-    <div class="body">
+    <div class="block-with-icon-body">
 {{ text|safe if text_is_safe else text }}
     </div>
   </div>

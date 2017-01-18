@@ -20,10 +20,10 @@
   <div class="button-row">
     <a class="button" href="{{ url_for('.export_subscribers', brand_id=brand.id) }}">
       <div class="block-with-icon">
-        <div class="icon">
+        <div class="block-with-icon-icon">
           {{ render_icon('download') }}
         </div>
-        <div class="body">
+        <div class="block-with-icon-body">
           Abonnenten exportieren<br>
           <small>{{ 'Benutzernamen und E-Mail-Adressen (als JSON)'|dim }}</small>
         </div>
@@ -31,10 +31,10 @@
     </a>
     <a class="button" href="{{ url_for('.export_subscriber_email_addresses', brand_id=brand.id) }}">
       <div class="block-with-icon">
-        <div class="icon">
+        <div class="block-with-icon-icon">
           {{ render_icon('download') }}
         </div>
-        <div class="body">
+        <div class="block-with-icon-body">
           Abonnenten exportieren<br>
           <small>{{ 'nur E-Mail-Adressen (als Text)'|dim }}</small>
         </div>
