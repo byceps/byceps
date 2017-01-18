@@ -41,7 +41,7 @@
         <td>
           {%- if g.current_user.has_permission(BoardCategoryPermission.update) -%}
           <div class="dropdown left">
-            <button class="dropdown-toggle">{{ render_icon('caret-down') }}</button>
+            <button class="dropdown-toggle button button--compact">{{ render_icon('caret-down') }}</button>
             <ol>
               <li><a href="{{ url_for('.category_update_form', category_id=category.id) }}">{{ render_icon('edit') }} bearbeiten</a></li>
               <li><a data-action="category-move-up" href="{{ url_for('.category_move_up', category_id=category.id) }}">{{ render_icon('arrow-up') }} nach oben schieben</a></li>

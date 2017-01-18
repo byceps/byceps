@@ -310,12 +310,9 @@ h2 {
 .user-comment header .dropdown-toggle {
   background-color: transparent;
   border: none;
-  border-radius: 0;
-  box-shadow: none;
   color: currentColor;
   display: inline-block;
   font-size: inherit;
-  font-weight: normal;
   line-height: inherit;
   margin: 0 -15px;
   padding: 0 15px;

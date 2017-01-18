@@ -298,6 +298,26 @@ form li.error .errors li span {
 }
 
 
+.button {
+  background-color: #eeeeee;
+  border-color: #cccccc;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 3px;
+  color: currentColor;
+  cursor: pointer;
+  display: inline-block;
+  padding: 0.4em 0.6em;
+}
+.button--compact {
+  padding: 0;
+}
+.button:hover {
+  background-color: #e8e8e8;
+  border-color: #999999;
+}
+
+
 /* actions */
 
 ol.actions,
@@ -348,23 +368,6 @@ ol.actions:not(.inline) li {
   display: inline-block;
   font-size: 0.8125rem; /* 13px / 16px */
   position: relative;
-}
-
-.dropdown button {
-  background-color: #eeeeee;
-  border-color: #cccccc;
-  border-style: solid;
-  border-width: 1px;
-  border-radius: 3px;
-  color: currentColor;
-  cursor: pointer;
-  display: inline-block;
-  padding: 0 0.1em;
-}
-.dropdown button:hover,
-.dropdown.open button {
-  background-color: #e8e8e8;
-  border-color: #999999;
 }
 
 .dropdown-toggle {
