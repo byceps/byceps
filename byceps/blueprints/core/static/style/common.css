@@ -368,7 +368,7 @@ form li.error .errors li span {
   font-weight: normal;
   left: 0;
   list-style: none;
-  padding: 0.25rem 0;
+  padding: 0.4rem 0;
   position: absolute;
   text-align: left;
   top: 100%;
@@ -385,7 +385,7 @@ form li.error .errors li span {
 .dropdown li > a {
   color: currentColor;
   display: block;
-  padding: 0.25rem 0.5rem;
+  padding: 0.4rem 0.8rem;
   text-decoration: none;
   white-space: nowrap;
 }
@@ -395,8 +395,8 @@ form li.error .errors li span {
 
 .dropdown li.divider {
   border-top: #dddddd solid 1px;
-  margin-top: 0.25rem;
-  padding-top: 0.25rem;
+  margin-top: 0.4rem;
+  padding-top: 0.4rem;
 }
 
 
