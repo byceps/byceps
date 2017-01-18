@@ -265,7 +265,7 @@ nav.main .current a {
   border-color: #cccccc;
   opacity: 1;
 }
-nav.main [class^="icon-"] {
+nav.main .icon {
   margin-right: 0.2em;
 }
 
