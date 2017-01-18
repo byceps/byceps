@@ -2,5 +2,5 @@
 <svg class="icon-{{ name }}"
   {%- if color is not none %} style="fill: {{ color }}"{% endif -%}
   {%- if title is not none %} title="{{ title }}"{% endif -%}
-><use xlink:href="{{ url_for('core.static', filename='style/%s.svg'|format(filename)) }}#icon-{{ name }}"/></svg>
+><use xlink:href="{{ url_for('core.static', filename='style/%s.svg'|format(filename)) }}#{{ name }}"/></svg>
 {%- endmacro %}
