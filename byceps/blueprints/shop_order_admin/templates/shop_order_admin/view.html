@@ -47,9 +47,9 @@
         <li><a href="{{ url_for('.export', order_id=order.id) }}" download="{{ order.order_number }}.xml">{{ render_icon('download') }} für Lexware exportieren (XML)</a></li>
         <li>
         {%- if order.is_invoiced %}
-          <a data-action="order-unflag-invoiced" href="{{ url_for('.unset_invoiced_flag', order_id=order.id) }}">{{ render_icon('invoice') }} Rechnung wurde versendet</a>
+          <a data-action="order-unflag-invoiced" href="{{ url_for('.unset_invoiced_flag', order_id=order.id) }}">{{ render_icon('invoice') }} Rechnung wurde <strong>nicht</strong> versendet</a>
         {%- else %}
-          <a data-action="order-flag-invoiced" href="{{ url_for('.set_invoiced_flag', order_id=order.id) }}">{{ render_icon('invoice') }} Rechnung wurde <strong>nicht</strong> versendet</a>
+          <a data-action="order-flag-invoiced" href="{{ url_for('.set_invoiced_flag', order_id=order.id) }}">{{ render_icon('invoice') }} Rechnung wurde versendet</a>
         {%- endif %}
         </li>
         <li class="divider"></li>
@@ -62,9 +62,9 @@
         {%- endif %}
         <li>
         {%- if order.is_shipped %}
-          <a data-action="order-unflag-shipped" href="{{ url_for('.unset_shipped_flag', order_id=order.id) }}">{{ render_icon('shipment') }} Bestellung wurde versendet</a>
+          <a data-action="order-unflag-shipped" href="{{ url_for('.unset_shipped_flag', order_id=order.id) }}">{{ render_icon('shipment') }} Bestellung wurde <strong>nicht</strong> versendet</a>
         {%- else %}
-          <a data-action="order-flag-shipped" href="{{ url_for('.set_shipped_flag', order_id=order.id) }}">{{ render_icon('shipment') }} Bestellung wurde <strong>nicht</strong> versendet</a>
+          <a data-action="order-flag-shipped" href="{{ url_for('.set_shipped_flag', order_id=order.id) }}">{{ render_icon('shipment') }} Bestellung wurde versendet</a>
         {%- endif %}
         </li>
       </ol>
