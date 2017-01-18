@@ -17,6 +17,7 @@
   </nav>
   <h1>{{ title }}</h1>
 
+  {%- if g.current_user.has_permission(ShopOrderPermission.update) %}
   <div style="float: right;">
     <div class="dropdown left">
       <button class="dropdown-toggle button">Aktionen {{ render_icon('caret-down') }}</button>
@@ -38,6 +39,7 @@
       </ol>
     </div>
   </div>
+  {%- endif %}
 
   <table class="index">
     <tr>
