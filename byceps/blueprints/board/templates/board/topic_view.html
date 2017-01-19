@@ -15,10 +15,8 @@
   <h1><a href="{{ topic.external_url }}">{{ topic.title }}</a></h1>
 
   {%- if g.current_user.has_any_permission(BoardTopicPermission.hide, BoardTopicPermission.lock, BoardTopicPermission.move, BoardTopicPermission.pin) %}
-  <div style="text-align: right;">
-    <div class="button-row">
-      <a class="button" href="{{ url_for('.topic_moderate_form', topic_id=topic.id) }}" title="Thema moderieren">{{ render_icon('moderate') }} moderieren</a>
-    </div>
+  <div class="button-row" style="text-align: right;">
+    <a class="button" href="{{ url_for('.topic_moderate_form', topic_id=topic.id) }}" title="Thema moderieren">{{ render_icon('moderate') }} moderieren</a>
   </div>
   {%- endif %}
 
