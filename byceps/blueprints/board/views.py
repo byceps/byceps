@@ -14,7 +14,7 @@ from ...services.board import service as board_service
 from ...services.text_markup.service import get_smileys, render_html
 from ...services.user_badge import service as badge_service
 from ...util.framework.blueprint import create_blueprint
-from ...util.framework.flash import flash_error, flash_notice, flash_success
+from ...util.framework.flash import flash_error, flash_success
 from ...util.templating import templated
 from ...util.views import redirect_to, respond_no_content_with_location
 
@@ -112,15 +112,6 @@ def topic_view(topic_id, page):
     # Mark as viewed before aborting so a user can itself remove the
     # 'new' tag from a locked topic.
     board_service.mark_topic_as_just_viewed(topic, g.current_user)
-
-    if topic.hidden:
-        flash_notice('Das Thema ist versteckt.', icon='hidden')
-
-    if topic.locked:
-        flash_notice(
-            'Das Thema ist geschlossen. '
-            'Es können keine Beiträge mehr hinzugefügt werden.',
-            icon='lock')
 
     postings = board_service.paginate_postings(topic, g.current_user, page,
                                                postings_per_page)

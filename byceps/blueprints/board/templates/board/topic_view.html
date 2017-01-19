@@ -1,5 +1,6 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/icons.html' import render_icon %}
+{% from 'macros/misc.html' import render_notification %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
 {% set current_page = 'board' %}
 {% set title = 'Forum - %s'|format(topic.title) %}
@@ -13,6 +14,21 @@
     </ol>
   </nav>
   <h1><a href="{{ topic.external_url }}">{{ topic.title }}</a></h1>
+
+{%- if topic.hidden or topic.locked%}
+  <div class="notifications">
+
+  {%- if topic.hidden %}
+{{ render_notification('info', 'hidden', 'Dieses Thema ist versteckt.') }}
+  {%- endif %}
+
+  {%- if topic.locked %}
+{{ render_notification('info', 'lock', 'Dieses Thema ist geschlossen. Es können keine Beiträge mehr hinzugefügt werden.') }}
+  {%- endif %}
+
+  </div>
+{%- endif %}
+
 
   {%- if g.current_user.has_any_permission(BoardTopicPermission.hide, BoardTopicPermission.lock, BoardTopicPermission.move, BoardTopicPermission.pin) %}
   <div class="button-row" style="text-align: right;">
