@@ -42,7 +42,7 @@
 <div class="avatar size-{{ size_name }}{% if is_orga %} orga{% endif %}" title="{{ user.screen_name }}">
   {{ _render_user_avatar_image_with_fallback(user) }}
   {%- if is_orga %}
-  <div class="orga-badge">Organizer</div>
+  <div class="avatar-orga-overlay"></div>
   {%- endif %}
 </div>
 {%- endmacro %}

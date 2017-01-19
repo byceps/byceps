@@ -410,12 +410,14 @@ h2 {
 
 /* user avatars */
 
-.avatar .orga-badge {
-  font-weight: bold;
-  padding-top: 0.5em;
+.avatar {
+  position: relative;
 }
-.avatar.size-32 .orga-badge {
-  font-size: 0.25rem; /* 4px / 16px */
+
+.avatar-orga-overlay {
+  left: 0;
+  position: absolute;
+  top: 0;
 }
 
 
