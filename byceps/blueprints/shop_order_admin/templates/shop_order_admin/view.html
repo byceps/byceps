@@ -162,7 +162,8 @@
           {%- set icon_name = 'disabled' %}
           {%- set body %}
             <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
-            hat die Bestellung {{ render_order_payment_state(PaymentState.canceled) }}.
+            hat die Bestellung {{ render_order_payment_state(PaymentState.canceled) }}
+            (war vorher {{ render_order_payment_state(PaymentState[event.data['former_payment_state']]) }}).
           {%- endset %}
         {%- elif event.event == 'order-paid' %}
           {%- set icon_name = 'success' %}
