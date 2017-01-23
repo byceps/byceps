@@ -17,6 +17,7 @@ from ...services.brand import service as brand_service
 from ...services.news import service as news_service
 from ...services.newsletter import service as newsletter_service
 from ...services.orga import service as orga_service
+from ...services.orga import birthday_service as orga_birthday_service
 from ...services.orga_team import service as orga_team_service
 from ...services.party import service as party_service
 from ...services.seating import service as seating_service
@@ -60,7 +61,7 @@ def view_global():
     disabled_user_count = user_service.count_disabled_users()
 
     orgas_with_next_birthdays = list(
-        orga_service.collect_orgas_with_next_birthdays(limit=3))
+        orga_birthday_service.collect_orgas_with_next_birthdays(limit=3))
 
     return {
         'active_parties': active_parties,
