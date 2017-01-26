@@ -249,8 +249,8 @@ h2 {
     margin-top: 8px;
   }
 
-  .user-comment-main:after,
-  .user-comment-main:before {
+  .user-comment-main::after,
+  .user-comment-main::before {
     border: solid transparent;
     content: " ";
     height: 0;
@@ -260,13 +260,13 @@ h2 {
     top: 47px;
     width: 0;
   }
-  .user-comment-main:after {
+  .user-comment-main::after {
     border-color: rgba(255, 255, 255, 0);
     border-right-color: #ffffff;
     border-width: 10px;
     margin-top: -10px;
   }
-  .user-comment-main:before {
+  .user-comment-main::before {
     border-color: rgba(221, 221, 221, 0);
     border-right-color: #dddddd;
     border-width: 11px;
@@ -344,7 +344,7 @@ h2 {
 .user-comment:target header {
   border-color: #333333;
 }
-.user-comment:target .user-comment-main:before {
+.user-comment:target .user-comment-main::before {
   border-right-color: #333333;
 }
 .user-comment:target .user-comment-main .body {
