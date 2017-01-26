@@ -220,31 +220,31 @@ h2 {
   margin-top: 15px;
 }
 
-.user-comment aside {
+.user-comment-aside {
   display: flex;
   flex: 0 0 116px;
   flex-direction: column;
   padding-bottom: 15px;
 }
 
-.user-comment aside .creator .avatar {
+.user-comment-aside .creator .avatar {
   display: block;
 }
-.user-comment aside .creator .avatar img {
+.user-comment-aside .creator .avatar img {
   border-radius: 3px;
 }
 
-.user-comment .user-badges {
+.user-comment-aside .user-badges {
   margin-top: 8px;
 }
 
-.user-comment .content {
+.user-comment-main {
   flex: 1 1 20rem;
   position: relative;
 }
 
-.user-comment .content:after,
-.user-comment .content:before {
+.user-comment-main:after,
+.user-comment-main:before {
   border: solid transparent;
   content: " ";
   height: 0;
@@ -254,26 +254,26 @@ h2 {
   top: 47px;
   width: 0;
 }
-.user-comment .content:after {
+.user-comment-main:after {
   border-color: rgba(255, 255, 255, 0);
   border-right-color: #ffffff;
   border-width: 10px;
   margin-top: -10px;
 }
-.user-comment .content:before {
+.user-comment-main:before {
   border-color: rgba(221, 221, 221, 0);
   border-right-color: #dddddd;
   border-width: 11px;
   margin-top: -11px;
 }
 
-.user-comment header,
-.user-comment .body {
+.user-comment-main header,
+.user-comment-main .body {
   border-color: #dddddd;
   border-style: solid;
 }
 
-.user-comment header {
+.user-comment-main header {
   background-color: #eeeeee;
   border-width: 1px 1px 0 1px;
   border-radius: 3px 3px 0 0;
@@ -307,7 +307,7 @@ h2 {
   text-align: right;
 }
 
-.user-comment header .dropdown-toggle {
+.user-comment-main header .dropdown-toggle {
   background-color: transparent;
   border: none;
   color: currentColor;
@@ -318,15 +318,15 @@ h2 {
   padding: 0 15px;
   white-space: nowrap;
 }
-.user-comment header .dropdown:hover .dropdown-toggle,
-.user-comment header .dropdown.open .dropdown-toggle {
+.user-comment-main header .dropdown:hover .dropdown-toggle,
+.user-comment-main header .dropdown.open .dropdown-toggle {
   background-color: #dddddd;
 }
-.user-comment header .dropdown > ol {
+.user-comment-main header .dropdown > ol {
   margin-right: -16px;
 }
 
-.user-comment .body {
+.user-comment-main .body {
   border-width: 1px;
   border-radius: 0 0 3px 3px;
   flex: 1 0 auto;
@@ -339,12 +339,12 @@ h2 {
 .user-comment:target header {
   border-color: #333333;
 }
-.user-comment:target .body {
-  border-bottom-color: #333333;
-  border-left-color: #333333;
+.user-comment:target .user-comment-main:before {
   border-right-color: #333333;
 }
-.user-comment:target .content:before {
+.user-comment:target .user-comment-main .body {
+  border-bottom-color: #333333;
+  border-left-color: #333333;
   border-right-color: #333333;
 }
 

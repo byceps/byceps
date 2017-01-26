@@ -6,7 +6,7 @@
 {%- from 'macros/user_badge.html' import render_user_badges %}
 
 <article class="user-comment{% if posting.hidden %} dimmed{% endif %}" id="posting-{{ posting.id }}">
-  <aside>
+  <aside class="user-comment-aside">
     <div class="creator">
       {{ render_user_avatar_96(posting.creator) }}
     </div>
@@ -19,7 +19,7 @@
       {%- endif %}
     {%- endwith %}
   </aside>
-  <div class="content">
+  <div class="user-comment-main">
     <header>
       <div class="user-comment-meta-top">
         <span class="user-link">{{ render_user_link(posting.creator) }}</span>
