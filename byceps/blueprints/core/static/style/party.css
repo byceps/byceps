@@ -293,9 +293,10 @@ h2 {
 }
 
 .user-comment-meta-top,
-.user-comment-actions {
+.user-comment-actions .dropdown-toggle {
   padding: 0 15px;
 }
+
 .user-comment-meta-top {
   color: #888888;
 }
@@ -319,16 +320,11 @@ h2 {
   display: inline-block;
   font-size: inherit;
   line-height: inherit;
-  margin: 0 -15px;
-  padding: 0 15px;
   white-space: nowrap;
 }
 .user-comment-actions .dropdown:hover .dropdown-toggle,
 .user-comment-actions .dropdown.open .dropdown-toggle {
   background-color: #dddddd;
-}
-.user-comment-actions .dropdown > ol {
-  margin-right: -16px;
 }
 
 .user-comment-main .body {
