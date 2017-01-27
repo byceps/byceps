@@ -10,6 +10,11 @@
 {%- endmacro %}
 
 
+{% macro render_user_avatar_16_and_name(user) -%}
+<span class="nowrap">{{ render_user_avatar_16(user) }} {{ user.screen_name }}</span>
+{%- endmacro %}
+
+
 {% macro render_user_avatar_16_and_link(user) -%}
 <span class="nowrap">{{ render_user_avatar_16(user) }} {{ render_user_link(user) }}</span>
 {%- endmacro %}
