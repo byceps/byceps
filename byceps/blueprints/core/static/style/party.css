@@ -208,6 +208,22 @@ h2 {
 
 /* board, tourneys */
 
+.board-category-link,
+.board-topic-link {
+  color: currentColor;
+  display: block;
+  text-decoration: none;
+}
+.board-category-link:hover,
+.board-topic-link:hover {
+  text-decoration: underline;
+}
+
+.board-category-description,
+.board-topic-initial-posting {
+  color: #888888;
+}
+
 @media (max-width: 575px) {
 
   table.board-category-index thead th:nth-child(4),
