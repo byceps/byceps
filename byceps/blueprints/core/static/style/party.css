@@ -312,7 +312,7 @@ h2 {
   font-weight: bold;
 }
 
-.user-comment-main header .dropdown-toggle {
+.user-comment-actions .dropdown-toggle {
   background-color: transparent;
   border: none;
   color: currentColor;
@@ -323,11 +323,11 @@ h2 {
   padding: 0 15px;
   white-space: nowrap;
 }
-.user-comment-main header .dropdown:hover .dropdown-toggle,
-.user-comment-main header .dropdown.open .dropdown-toggle {
+.user-comment-actions .dropdown:hover .dropdown-toggle,
+.user-comment-actions .dropdown.open .dropdown-toggle {
   background-color: #dddddd;
 }
-.user-comment-main header .dropdown > ol {
+.user-comment-actions .dropdown > ol {
   margin-right: -16px;
 }
 
