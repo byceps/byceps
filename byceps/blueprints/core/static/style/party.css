@@ -208,6 +208,33 @@ h2 {
 
 /* board, tourneys */
 
+@media (max-width: 575px) {
+
+  table.board-category-index thead th:nth-child(4),
+  table.board-category-index tbody td:nth-child(4),
+  table.board-topic-index thead th:nth-child(3),
+  table.board-topic-index tbody td:nth-child(3) {
+    display: none;
+  }
+
+}
+
+@media (max-width: 767px) {
+
+  table.board-category-index thead th:nth-child(2),
+  table.board-category-index thead th:nth-child(3),
+  table.board-category-index tbody td:nth-child(2),
+  table.board-category-index tbody td:nth-child(3),
+  table.board-topic-index thead th:nth-child(2),
+  table.board-topic-index tbody td:nth-child(2) {
+    display: none;
+  }
+
+}
+
+
+/* board, tourneys */
+
 .user-comments {
   margin: 30px 0 20px 0;
 }
