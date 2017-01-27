@@ -252,7 +252,7 @@ h2 {
   .user-comment-main::after,
   .user-comment-main::before {
     border: solid transparent;
-    content: " ";
+    content: ' ';
     height: 0;
     pointer-events: none;
     position: absolute;
