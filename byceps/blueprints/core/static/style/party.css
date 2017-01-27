@@ -299,6 +299,9 @@ h2 {
 .user-comment-meta-top {
   color: #888888;
 }
+.user-comment-meta-top > * {
+  display: block;
+}
 .user-comment-meta-top a {
   border: none;
   color: inherit;
@@ -310,6 +313,15 @@ h2 {
 .user-comment-meta-top .user-link a {
   color: #333333;
   font-weight: bold;
+}
+
+@media (min-width: 768px) {
+
+  .user-comment-meta-top > * {
+    display: inline-block;
+    padding-right: 0.5em;
+  }
+
 }
 
 .user-comment-actions .dropdown-toggle {

@@ -23,15 +23,14 @@
     <header>
       <div class="user-comment-meta-top">
         <span class="user-link">{{ render_user_link(posting.creator) }}</span>
-        &middot;
         <a href="{{ posting.external_url }}" title="Permalink zu diesem Beitrag">{{ render_datetime(posting.created_at)|replace(', ', ' um ') }}</a>
 
         {%- if posting.unseen %}
-        &middot; {{ render_flag_new() }}
+        <span>{{ render_flag_new() }}</span>
         {%- endif %}
 
         {%- if posting.hidden %}
-        &middot; {{ render_flag_hidden(posting.hidden_by) }}
+        <span>{{ render_flag_hidden(posting.hidden_by) }}</span>
         {%- endif %}
       </div>
       {%- if not topic.locked and g.current_user.has_permission(BoardPostingPermission.create) %}
