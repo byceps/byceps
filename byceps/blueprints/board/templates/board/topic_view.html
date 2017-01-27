@@ -48,9 +48,6 @@
 
   <div style="text-align: right;">
     {%- set current_user_may_reply_generally = g.current_user.has_permission(BoardPostingPermission.create) %}
-    {%- if not current_user_may_reply_generally and not topic.locked %}
-    <small style="margin-right: 1em;">Du musst <a href="{{ url_for('authentication.login_form') }}">angemeldet</a> sein um antworten zu können.</small>
-    {%- endif %}
     <div class="button-row">
     {%- if current_user_may_reply_generally and not topic.locked %}
       <a class="button" href="{{ url_for('.posting_create_form', topic_id=topic.id) }}">{{ render_icon('reply') }} Antworten</a>
@@ -58,6 +55,11 @@
       <span class="button button--disabled">{{ render_icon('reply') }} Antworten</span>
     {%- endif %}
     </div>
+    {%- if not current_user_may_reply_generally and not topic.locked %}
+    <small>
+      <p>Du musst <a href="{{ url_for('authentication.login_form') }}">angemeldet</a> sein um antworten zu können.</p>
+    </small>
+    {%- endif %}
   </div>
 
   <nav class="breadcrumbs compact">
