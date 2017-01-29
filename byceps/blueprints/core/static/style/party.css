@@ -336,7 +336,8 @@ h2 {
 
 .user-comment-meta-top,
 .user-comment-actions .dropdown-toggle {
-  padding: 5px 15px;
+  margin: 0 5px;
+  padding: 5px 10px;
 }
 
 .user-comment-meta-top {
