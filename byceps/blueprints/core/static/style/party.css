@@ -19,8 +19,11 @@ body {
   margin: 0 auto;
   max-width: 960px;
 }
-#page {
-  padding: 20px;
+
+@media (max-width: 576px) {
+  #page {
+    padding: 0 20px;
+  }
 }
 
 #page-grid {
@@ -49,7 +52,13 @@ main,
 
 main {
   font-size: 0.875rem; /* 14px / 16px */
-  padding: 15px 40px 40px 40px;
+  padding: 10px 20px 20px 20px;
+}
+
+@media (max-width: 576px) {
+  main {
+  padding: 20px 40px 40px 40px;
+  }
 }
 
 
