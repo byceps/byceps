@@ -12,6 +12,7 @@ from itertools import islice
 
 from ...database import db
 
+from ..user_avatar import service as user_avatar_service
 from ..user.models.detail import UserDetail
 from ..user.models.user import User
 
@@ -27,10 +28,14 @@ def collect_orgas_with_next_birthdays(*, limit=None):
     if limit is not None:
         sorted_orgas = islice(sorted_orgas, limit)
 
-    for user in sorted_orgas:
-        avatar = {}
-        if user.avatar:
-            avatar['url'] = user.avatar.url
+    orgas = list(sorted_orgas)
+
+    user_ids = frozenset(user.id for user in orgas)
+
+    avatars_by_user_id = user_avatar_service.get_avatars_for_users(user_ids)
+
+    for user in orgas:
+        avatar = avatars_by_user_id.get(user.id)
 
         yield {
             'id': user.id,

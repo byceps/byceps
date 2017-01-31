@@ -16,7 +16,7 @@ from ...util.image.models import Dimensions, ImageType
 from ...util.image.typeguess import guess_type
 from ...util import upload
 
-from .models import Avatar
+from .models import Avatar, AvatarSelection
 
 
 ALL_IMAGE_TYPES = frozenset(ImageType)
@@ -83,3 +83,30 @@ def get_avatars_for_user(user_id):
     return Avatar.query \
         .filter_by(creator_id=user_id) \
         .all()
+
+
+def get_avatars_for_users(user_ids):
+    """Return the those users' current avatars."""
+    urls_by_user_id = get_avatar_urls_for_users(user_ids)
+
+    avatars_by_user_id = {}
+
+    for user_id in user_ids:
+        avatar = {}
+
+        url = urls_by_user_id.get(user_id)
+        if url:
+            avatar['url'] = url
+
+        avatars_by_user_id[user_id] = avatar
+
+    return avatars_by_user_id
+
+
+def get_avatar_urls_for_users(user_ids):
+    """Return the URLs of those users' current avatars."""
+    selections = AvatarSelection.query \
+        .filter(AvatarSelection.user_id.in_(user_ids)) \
+        .all()
+
+    return {selection.user_id: selection.avatar.url for selection in selections}
