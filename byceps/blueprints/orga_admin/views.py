@@ -14,6 +14,7 @@ from flask import abort, request, url_for
 
 from ...services.brand import service as brand_service
 from ...services.orga import service as orga_service
+from ...services.orga import birthday_service as orga_birthday_service
 from ...services.user import service as user_service
 from ...util.export import serialize_to_csv
 from ...util.framework.blueprint import create_blueprint
@@ -165,7 +166,8 @@ def export_persons(brand_id):
 @permission_required(OrgaBirthdayPermission.list)
 @templated
 def birthdays():
-    orgas = list(orga_service.collect_orgas_with_next_birthdays(limit=5))
+    orgas = list(
+        orga_birthday_service.collect_orgas_with_next_birthdays(limit=5))
 
     return {
         'orgas': orgas,
