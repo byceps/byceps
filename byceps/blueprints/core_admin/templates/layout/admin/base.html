@@ -51,10 +51,11 @@
           <aside id="sidebar">
 {%- with
   current_page = current_page|default,
-  party = current_page_party|default,
-  brand = current_page_brand|default(party.brand if party else None)
+  party = current_page_party|default
 %}
-{%- include 'layout/admin/_navigation.html' %}
+  {%- with brand = current_page_brand|default(party.brand if party else None) %}
+    {%- include 'layout/admin/_navigation.html' %}
+  {%- endwith %}
 {%- endwith %}
           </aside>
         </div><!-- /#page-grid-sidebar -->
