@@ -20,17 +20,28 @@ from .models import OrgaFlag
 
 def collect_orgas_with_next_birthdays(*, limit=None):
     """Yield the next birthdays of organizers, sorted by month and day."""
-    orgas_with_birthdays = collect_orgas_with_birthdays()
+    orgas_with_birthdays = _collect_orgas_with_birthdays()
 
     sorted_orgas = sort_users_by_next_birthday(orgas_with_birthdays)
 
     if limit is not None:
         sorted_orgas = islice(sorted_orgas, limit)
 
-    yield from sorted_orgas
+    for user in sorted_orgas:
+        avatar = {}
+        if user.avatar:
+            avatar['url'] = user.avatar.url
+
+        yield {
+            'id': user.id,
+            'screen_name': user.screen_name,
+            'detail': user.detail,
+            'avatar': avatar,
+            'is_orga_for_party': (lambda party: False),
+        }
 
 
-def collect_orgas_with_birthdays():
+def _collect_orgas_with_birthdays():
     """Return all organizers whose birthday is known."""
     return User.query \
         .join(OrgaFlag) \
