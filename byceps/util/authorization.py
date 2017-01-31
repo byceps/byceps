@@ -20,9 +20,9 @@ def create_permission_enum(key, member_names):
     return permission_enum
 
 
-def derive_name(key):
+def derive_name(key: str) -> str:
     """Derive a `CamelCase` name from the `underscore_separated_key`."""
     words = key.split('_')
     words.append('permission')
-    words = (word.title() for word in words)
-    return ''.join(words)
+
+    return ''.join(word.title() for word in words)

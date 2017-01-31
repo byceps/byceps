@@ -10,12 +10,13 @@ byceps.util.checkdigit
 
 import math
 from string import ascii_uppercase, digits
+from typing import Iterator
 
 
 VALID_CHARS = frozenset(ascii_uppercase + digits)
 
 
-def calculate_check_digit(chars):
+def calculate_check_digit(chars: str) -> int:
     """Calculate the check digit for the given value, using a modified
     Luhn algorithm to support not only digits in the value but also
     letters.
@@ -31,21 +32,21 @@ def calculate_check_digit(chars):
     return (10 - (total_weight % 10)) % 10
 
 
-def calculate_total_weight(chars):
+def calculate_total_weight(chars: str) -> int:
     total_weight = sum(calculate_weights(chars))
 
     # Avoid a total weight less than 10 (this could happen if
     # characters below `0` are allowed).
-    return math.fabs(total_weight) + 10
+    return int(math.fabs(total_weight)) + 10
 
 
-def calculate_weights(chars):
+def calculate_weights(chars: str) -> Iterator[int]:
     # Loop through characters from right to left.
     for position, char in enumerate(reversed(chars)):
         yield calculate_weight(position, char)
 
 
-def calculate_weight(position, char):
+def calculate_weight(position: int, char: str) -> int:
     """Calculate the current digit's contribution to the total weight."""
     if char not in VALID_CHARS:
         raise ValueError("Invalid character '{}'.".format(char))
@@ -60,5 +61,5 @@ def calculate_weight(position, char):
         return digit
 
 
-def is_even(n):
+def is_even(n: int) -> bool:
     return n % 2 == 0

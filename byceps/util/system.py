@@ -15,7 +15,7 @@ import sys
 CONFIG_VAR_NAME = 'BYCEPS_CONFIG'
 
 
-def get_config_filename_from_env():
+def get_config_filename_from_env() -> str:
     """Return the configuration filename set via environment variable.
 
     Raise an exception if it isn't set.
@@ -30,7 +30,7 @@ def get_config_filename_from_env():
     return env
 
 
-def get_config_filename_from_env_or_exit():
+def get_config_filename_from_env_or_exit() -> str:
     """Return the configuration filename set via environment variable.
 
     Exit if it isn't set.

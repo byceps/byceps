@@ -8,10 +8,12 @@ byceps.util.upload
 :License: Modified BSD, see LICENSE for details.
 """
 
+from pathlib import Path
 from shutil import copyfileobj
+from typing import Any, IO
 
 
-def store(source, target_path):
+def store(source: IO[Any], target_path: Path) -> None:
     """Copy source data to the target path."""
     if target_path.exists():
         raise FileExistsError
@@ -20,7 +22,7 @@ def store(source, target_path):
         copyfileobj(source, f)
 
 
-def delete(path):
+def delete(path: Path) -> None:
     """Delete the path."""
     try:
         path.unlink()

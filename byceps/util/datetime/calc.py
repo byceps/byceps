@@ -10,10 +10,12 @@ Date/time calculations.
 :License: Modified BSD, see LICENSE for details.
 """
 
+from datetime import date
+
 from .monthday import MonthDay
 
 
-def calculate_age(date_of_birth, today):
+def calculate_age(date_of_birth: date, today: date) -> int:
     """Calculate the number of full years since the date of birth until
     today.
     """
@@ -23,7 +25,7 @@ def calculate_age(date_of_birth, today):
     return age
 
 
-def calculate_days_until(date, today):
+def calculate_days_until(date: date, today: date) -> int:
     """Calculate the number of days from today until the given date."""
     date_this_year = date.replace(year=today.year)
     if date_this_year < today:

@@ -27,6 +27,6 @@ def format_euro_amount(x):
     return '{} €'.format(formatted_number)
 
 
-def to_two_places(x):
+def to_two_places(x: Decimal) -> Decimal:
     """Quantize to two decimal places."""
     return x.quantize(TWO_PLACES)

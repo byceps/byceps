@@ -12,9 +12,13 @@ Data export as CSV.
 
 import csv
 import io
+from typing import Iterator, Sequence
 
 
-def serialize_to_csv(field_names, rows):
+def serialize_to_csv(
+        field_names: Sequence[str],
+        rows: Sequence[Dict[str, str]]
+    ) -> Iterator[str]:
     """Serialize the rows (must be dictionary objects) to CSV."""
     with io.StringIO(newline='') as f:
         writer = csv.DictWriter(f, field_names,
