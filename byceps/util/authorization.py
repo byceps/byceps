@@ -21,7 +21,7 @@ def create_permission_enum(key, member_names):
 
 
 def derive_name(key):
-    """Derive a CameCase name from the underscore_separated_key."""
+    """Derive a `CamelCase` name from the `underscore_separated_key`."""
     words = key.split('_')
     words.append('permission')
     words = (word.title() for word in words)
