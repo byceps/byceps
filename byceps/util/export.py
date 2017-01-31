@@ -12,7 +12,7 @@ Data export as CSV.
 
 import csv
 import io
-from typing import Iterator, Sequence
+from typing import Dict, Iterator, Sequence
 
 
 def serialize_to_csv(
