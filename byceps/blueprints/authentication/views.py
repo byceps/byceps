@@ -37,9 +37,45 @@ from . import session as user_session
 blueprint = create_blueprint('authentication', __name__)
 
 
+# -------------------------------------------------------------------- #
+# current user
+
+
+class CurrentUser(object):
+
+    def __init__(self, user):
+        self._user = user
+
+        self.id = user.id
+        self.screen_name = user.screen_name
+        self.is_active = user.is_active
+        self.is_anonymous = user.is_anonymous
+
+    @property
+    def avatar(self):
+        return self._user.avatar
+
+    @property
+    def is_orga(self):
+        return self._user.is_orga
+
+    def has_permission(self, permission):
+        return self._user.has_permission(permission)
+
+    def has_any_permission(self, *permissions):
+        return self._user.has_any_permission(*permissions)
+
+    def __eq__(self, other):
+        return (other is not None) and (self.id == other.id)
+
+    def __hash__(self):
+        return hash(self._user)
+
+
 @blueprint.before_app_request
 def before_request():
-    g.current_user = _get_current_user()
+    user = _get_current_user()
+    g.current_user = CurrentUser(user)
 
 
 def _get_current_user():
