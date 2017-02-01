@@ -11,6 +11,7 @@ byceps.services.user.models.user
 from datetime import datetime
 from uuid import UUID
 
+from flask import g
 from sqlalchemy.ext.associationproxy import association_proxy
 
 from ....database import db, generate_uuid
@@ -44,6 +45,10 @@ class AnonymousUser(object):
     @property
     def avatar(self):
         return None
+
+    @property
+    def is_orga(self):
+        return False
 
     def is_orga_for_party(self, party):
         return False
@@ -90,6 +95,11 @@ class User(db.Model):
 
     def has_any_permission(self, *permissions):
         return any(map(self.has_permission, permissions))
+
+    @property
+    def is_orga(self):
+        party = getattr(g, 'party', None)
+        return (party is not None) and self.is_orga_for_party(party)
 
     def is_orga_for_party(self, party):
         parties = {ms.orga_team.party for ms in self.orga_team_memberships}
