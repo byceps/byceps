@@ -48,7 +48,7 @@ class CurrentUser(object):
         self._user = user
 
         self.id = user.id
-        self.screen_name = user.screen_name
+        self.screen_name = user.screen_name if not user.is_anonymous else None
         self.is_active = user.is_active
         self.is_anonymous = user.is_anonymous
 
