@@ -112,6 +112,7 @@ def get_avatars_for_users(user_ids):
 def get_avatar_urls_for_users(user_ids):
     """Return the URLs of those users' current avatars."""
     selections = AvatarSelection.query \
+        .options(db.joinedload('avatar')) \
         .filter(AvatarSelection.user_id.in_(user_ids)) \
         .all()
 
