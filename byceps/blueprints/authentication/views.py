@@ -20,6 +20,7 @@ from ...services.authentication.session import service as session_service
 from ...services.authorization import service as authorization_service
 from ...services.terms import service as terms_service
 from ...services.user import service as user_service
+from ...services.user_avatar import service as user_avatar_service
 from ...services.verification_token import service as verification_token_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_error, flash_notice, flash_success
@@ -43,7 +44,7 @@ blueprint = create_blueprint('authentication', __name__)
 
 class CurrentUser(object):
 
-    def __init__(self, user):
+    def __init__(self, user, avatar):
         self._user = user
 
         self.id = user.id
@@ -51,9 +52,7 @@ class CurrentUser(object):
         self.is_active = user.is_active
         self.is_anonymous = user.is_anonymous
 
-    @property
-    def avatar(self):
-        return self._user.avatar
+        self.avatar = avatar
 
     @property
     def is_orga(self):
@@ -75,7 +74,12 @@ class CurrentUser(object):
 @blueprint.before_app_request
 def before_request():
     user = _get_current_user()
-    g.current_user = CurrentUser(user)
+
+    avatar = None
+    if not user.is_anonymous:
+        avatar = user_avatar_service.get_avatar_for_user(user.id)
+
+    g.current_user = CurrentUser(user, avatar)
 
 
 def _get_current_user():

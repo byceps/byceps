@@ -59,8 +59,7 @@ def _load_user(user_id, auth_token):
     if user_id is None:
         return user_service.get_anonymous_user()
 
-    user = user_service.find_user(user_id, with_avatar=True,
-                                  with_orga_teams=True)
+    user = user_service.find_user(user_id, with_orga_teams=True)
 
     if (user is None) or not user.enabled:
         return user_service.get_anonymous_user()
