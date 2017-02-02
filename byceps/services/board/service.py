@@ -137,7 +137,7 @@ def aggregate_category(category):
     category.posting_count = posting_count
     category.last_posting_updated_at = latest_posting.created_at \
                                         if latest_posting else None
-    category.last_posting_updated_by = latest_posting.creator \
+    category.last_posting_updated_by_id = latest_posting.creator_id \
                                         if latest_posting else None
 
     db.session.commit()
@@ -192,10 +192,10 @@ def paginate_topics(category, user, page, topics_per_page):
         .paginate(page, topics_per_page)
 
 
-def create_topic(category, creator, title, body):
+def create_topic(category, creator_id, title, body):
     """Create a topic with an initial posting in that category."""
-    topic = Topic(category.id, creator.id, title)
-    posting = Posting(topic, creator.id, body)
+    topic = Topic(category.id, creator_id, title)
+    posting = Posting(topic, creator_id, body)
     initial_topic_posting_association = InitialTopicPostingAssociation(topic, posting)
 
     db.session.add(topic)
@@ -208,11 +208,11 @@ def create_topic(category, creator, title, body):
     return topic
 
 
-def update_topic(topic, editor, title, body):
+def update_topic(topic, editor_id, title, body):
     """Update the topic (and its initial posting)."""
     topic.title = title.strip()
 
-    update_posting(topic.initial_posting, editor, body, commit=False)
+    update_posting(topic.initial_posting, editor_id, body, commit=False)
 
     db.session.commit()
 
@@ -228,7 +228,7 @@ def _aggregate_topic(topic):
     topic.posting_count = posting_count
     if latest_posting:
         topic.last_updated_at = latest_posting.created_at
-        topic.last_updated_by = latest_posting.creator
+        topic.last_updated_by_id = latest_posting.creator_id
 
     db.session.commit()
 
@@ -263,58 +263,58 @@ def find_default_posting_to_jump_to(topic, user, last_viewed_at):
     return first_new_posting
 
 
-def hide_topic(topic, hidden_by):
+def hide_topic(topic, hidden_by_id):
     """Hide the topic."""
     topic.hidden = True
     topic.hidden_at = datetime.now()
-    topic.hidden_by = hidden_by
+    topic.hidden_by_id = hidden_by_id
     db.session.commit()
 
     _aggregate_topic(topic)
 
 
-def unhide_topic(topic, unhidden_by):
+def unhide_topic(topic, unhidden_by_id):
     """Un-hide the topic."""
     # TODO: Store who un-hid the topic.
     topic.hidden = False
     topic.hidden_at = None
-    topic.hidden_by = None
+    topic.hidden_by_id = None
     db.session.commit()
 
     _aggregate_topic(topic)
 
 
-def lock_topic(topic, locked_by):
+def lock_topic(topic, locked_by_id):
     """Lock the topic."""
     topic.locked = True
     topic.locked_at = datetime.now()
-    topic.locked_by = locked_by
+    topic.locked_by_id = locked_by_id
     db.session.commit()
 
 
-def unlock_topic(topic, unlocked_by):
+def unlock_topic(topic, unlocked_by_id):
     """Unlock the topic."""
     # TODO: Store who unlocked the topic.
     topic.locked = False
     topic.locked_at = None
-    topic.locked_by = None
+    topic.locked_by_id = None
     db.session.commit()
 
 
-def pin_topic(topic, pinned_by):
+def pin_topic(topic, pinned_by_id):
     """Pin the topic."""
     topic.pinned = True
     topic.pinned_at = datetime.now()
-    topic.pinned_by = pinned_by
+    topic.pinned_by_id = pinned_by_id
     db.session.commit()
 
 
-def unpin_topic(topic, unpinned_by):
+def unpin_topic(topic, unpinned_by_id):
     """Unpin the topic."""
     # TODO: Store who unpinned the topic.
     topic.pinned = False
     topic.pinned_at = None
-    topic.pinned_by = None
+    topic.pinned_by_id = None
     db.session.commit()
 
 
@@ -362,9 +362,9 @@ def paginate_postings(topic, user, page, postings_per_page):
         .paginate(page, postings_per_page)
 
 
-def create_posting(topic, creator, body):
+def create_posting(topic, creator_id, body):
     """Create a posting in that topic."""
-    posting = Posting(topic, creator.id, body)
+    posting = Posting(topic, creator_id, body)
     db.session.add(posting)
     db.session.commit()
 
@@ -373,11 +373,11 @@ def create_posting(topic, creator, body):
     return posting
 
 
-def update_posting(posting, editor, body, *, commit=True):
+def update_posting(posting, editor_id, body, *, commit=True):
     """Update the posting."""
     posting.body = body.strip()
     posting.last_edited_at = datetime.now()
-    posting.last_edited_by = editor
+    posting.last_edited_by = editor_id
     posting.edit_count += 1
 
     if commit:
@@ -401,22 +401,22 @@ def calculate_posting_page_number(posting, user, postings_per_page):
     return divmod(index, postings_per_page)[0] + 1
 
 
-def hide_posting(posting, hidden_by):
+def hide_posting(posting, hidden_by_id):
     """Hide the posting."""
     posting.hidden = True
     posting.hidden_at = datetime.now()
-    posting.hidden_by = hidden_by
+    posting.hidden_by_id = hidden_by_id
     db.session.commit()
 
     _aggregate_topic(posting.topic)
 
 
-def unhide_posting(posting, hidden_by):
+def unhide_posting(posting, unhidden_by_id):
     """Un-hide the posting."""
     # TODO: Store who un-hid the posting.
     posting.hidden = False
     posting.hidden_at = None
-    posting.hidden_by = None
+    posting.hidden_by_id = None
     db.session.commit()
 
     _aggregate_topic(posting.topic)

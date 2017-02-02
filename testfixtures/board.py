@@ -30,18 +30,18 @@ def create_category(*, brand=None, number=1, slug=None, title=None,
     return service.create_category(brand, slug, title, description)
 
 
-def create_topic(category, creator, *, number=1, title=None, body=None):
+def create_topic(category, creator_id, *, number=1, title=None, body=None):
     if title is None:
         title = 'Thema {}'.format(number)
 
     if body is None:
         body = 'Inhalt von Thema {}'.format(number)
 
-    return service.create_topic(category, creator, title, body)
+    return service.create_topic(category, creator_id, title, body)
 
 
-def create_posting(topic, creator, *, number=1, body=None):
+def create_posting(topic, creator_id, *, number=1, body=None):
     if body is None:
         body = 'Inhalt von Beitrag {}.'.format(number)
 
-    return service.create_posting(topic, creator, body)
+    return service.create_posting(topic, creator_id, body)

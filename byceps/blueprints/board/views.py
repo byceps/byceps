@@ -62,11 +62,11 @@ def category_view(slug, page):
     if category is None:
         abort(404)
 
-    board_service.mark_category_as_just_viewed(category, g.current_user)
+    board_service.mark_category_as_just_viewed(category, g.current_user._user)
 
     topics_per_page = _get_topics_per_page_value()
 
-    topics = board_service.paginate_topics(category, g.current_user, page,
+    topics = board_service.paginate_topics(category, g.current_user._user, page,
                                            topics_per_page)
 
     return {
@@ -84,19 +84,19 @@ def category_view(slug, page):
 @templated
 def topic_view(topic_id, page):
     """List postings for the topic."""
-    topic = board_service.find_topic_visible_for_user(topic_id, g.current_user)
+    topic = board_service.find_topic_visible_for_user(topic_id,
+                                                      g.current_user._user)
     if topic is None:
         abort(404)
 
     # Copy last view timestamp for later use to compare postings
     # against it.
-    last_viewed_at = topic.find_last_viewed_at(g.current_user)
+    last_viewed_at = topic.find_last_viewed_at(g.current_user._user)
 
     postings_per_page = _get_postings_per_page_value()
     if page == 0:
-        posting = board_service.find_default_posting_to_jump_to(topic,
-                                                                g.current_user,
-                                                                last_viewed_at)
+        posting = board_service.find_default_posting_to_jump_to(
+            topic, g.current_user._user, last_viewed_at)
 
         if posting is None:
             page = 1
@@ -111,14 +111,15 @@ def topic_view(topic_id, page):
 
     # Mark as viewed before aborting so a user can itself remove the
     # 'new' tag from a locked topic.
-    board_service.mark_topic_as_just_viewed(topic, g.current_user)
+    board_service.mark_topic_as_just_viewed(topic, g.current_user._user)
 
-    postings = board_service.paginate_postings(topic, g.current_user, page,
-                                               postings_per_page)
+    postings = board_service.paginate_postings(topic, g.current_user._user,
+                                               page, postings_per_page)
 
-    add_unseen_flag_to_postings(postings.items, g.current_user, last_viewed_at)
+    add_unseen_flag_to_postings(postings.items, g.current_user._user,
+                                last_viewed_at)
 
-    creator_ids = {posting.creator.id for posting in postings.items}
+    creator_ids = {posting.creator_id for posting in postings.items}
     badges_by_user_id = badge_service.get_badges_for_users(creator_ids)
 
     return {
@@ -166,7 +167,7 @@ def topic_create(category_id):
     title = form.title.data.strip()
     body = form.body.data.strip()
 
-    topic = board_service.create_topic(category, creator, title, body)
+    topic = board_service.create_topic(category, creator.id, title, body)
 
     flash_success('Das Thema "{}" wurde hinzugefügt.', topic.title)
     signals.topic_created.send(None, topic=topic)
@@ -191,7 +192,7 @@ def topic_update_form(topic_id):
         flash_error('Das Thema darf nicht bearbeitet werden.')
         return redirect(url)
 
-    if not topic.may_be_updated_by_user(g.current_user):
+    if not topic.may_be_updated_by_user(g.current_user._user):
         flash_error('Du darfst dieses Thema nicht bearbeiten.')
         return redirect(url)
 
@@ -219,13 +220,13 @@ def topic_update(topic_id):
         flash_error('Das Thema darf nicht bearbeitet werden.')
         return redirect(url)
 
-    if not topic.may_be_updated_by_user(g.current_user):
+    if not topic.may_be_updated_by_user(g.current_user._user):
         flash_error('Du darfst dieses Thema nicht bearbeiten.')
         return redirect(url)
 
     form = TopicUpdateForm(request.form)
 
-    board_service.update_topic(topic, g.current_user, form.title.data,
+    board_service.update_topic(topic, g.current_user.id, form.title.data,
                                form.body.data)
 
     flash_success('Das Thema "{}" wurde aktualisiert.', topic.title)
@@ -255,7 +256,7 @@ def topic_hide(topic_id):
     """Hide a topic."""
     topic = _get_topic_or_404(topic_id)
 
-    board_service.hide_topic(topic, g.current_user)
+    board_service.hide_topic(topic, g.current_user.id)
 
     flash_success('Das Thema "{}" wurde versteckt.', topic.title, icon='hidden')
     signals.topic_hidden.send(None, topic=topic)
@@ -269,7 +270,7 @@ def topic_unhide(topic_id):
     """Un-hide a topic."""
     topic = _get_topic_or_404(topic_id)
 
-    board_service.unhide_topic(topic, g.current_user)
+    board_service.unhide_topic(topic, g.current_user.id)
 
     flash_success(
         'Das Thema "{}" wurde wieder sichtbar gemacht.', topic.title, icon='view')
@@ -283,7 +284,7 @@ def topic_lock(topic_id):
     """Lock a topic."""
     topic = _get_topic_or_404(topic_id)
 
-    board_service.lock_topic(topic, g.current_user)
+    board_service.lock_topic(topic, g.current_user.id)
 
     flash_success('Das Thema "{}" wurde geschlossen.', topic.title, icon='lock')
     return url_for('.category_view', slug=topic.category.slug, _anchor=topic.anchor)
@@ -296,7 +297,7 @@ def topic_unlock(topic_id):
     """Unlock a topic."""
     topic = _get_topic_or_404(topic_id)
 
-    board_service.unlock_topic(topic, g.current_user)
+    board_service.unlock_topic(topic, g.current_user.id)
 
     flash_success('Das Thema "{}" wurde wieder geöffnet.', topic.title,
                   icon='unlock')
@@ -310,7 +311,7 @@ def topic_pin(topic_id):
     """Pin a topic."""
     topic = _get_topic_or_404(topic_id)
 
-    board_service.pin_topic(topic, g.current_user)
+    board_service.pin_topic(topic, g.current_user.id)
 
     flash_success('Das Thema "{}" wurde angepinnt.', topic.title, icon='pin')
     return url_for('.category_view', slug=topic.category.slug, _anchor=topic.anchor)
@@ -323,7 +324,7 @@ def topic_unpin(topic_id):
     """Unpin a topic."""
     topic = _get_topic_or_404(topic_id)
 
-    board_service.unpin_topic(topic, g.current_user)
+    board_service.unpin_topic(topic, g.current_user.id)
 
     flash_success('Das Thema "{}" wurde wieder gelöst.', topic.title)
     return url_for('.category_view', slug=topic.category.slug, _anchor=topic.anchor)
@@ -424,9 +425,10 @@ def posting_create(topic_id):
             icon='lock')
         return redirect(topic.external_url)
 
-    posting = board_service.create_posting(topic, creator, body)
+    posting = board_service.create_posting(topic, creator.id, body)
 
-    board_service.mark_category_as_just_viewed(topic.category, g.current_user)
+    board_service.mark_category_as_just_viewed(topic.category,
+                                               g.current_user._user)
 
     flash_success('Deine Antwort wurde hinzugefügt.')
     signals.posting_created.send(None, posting=posting)
@@ -460,7 +462,7 @@ def posting_update_form(posting_id):
         flash_error('Der Beitrag darf nicht bearbeitet werden.')
         return redirect(url)
 
-    if not posting.may_be_updated_by_user(g.current_user):
+    if not posting.may_be_updated_by_user(g.current_user._user):
         flash_error('Du darfst diesen Beitrag nicht bearbeiten.')
         return redirect(url)
 
@@ -492,13 +494,13 @@ def posting_update(posting_id):
         flash_error('Der Beitrag darf nicht bearbeitet werden.')
         return redirect(url)
 
-    if not posting.may_be_updated_by_user(g.current_user):
+    if not posting.may_be_updated_by_user(g.current_user._user):
         flash_error('Du darfst diesen Beitrag nicht bearbeiten.')
         return redirect(url)
 
     form = PostingUpdateForm(request.form)
 
-    board_service.update_posting(posting, g.current_user, form.body.data)
+    board_service.update_posting(posting, g.current_user.id, form.body.data)
 
     flash_success('Der Beitrag wurde aktualisiert.')
     return redirect(url)
@@ -523,7 +525,7 @@ def posting_hide(posting_id):
     """Hide a posting."""
     posting = _get_posting_or_404(posting_id)
 
-    board_service.hide_posting(posting, g.current_user)
+    board_service.hide_posting(posting, g.current_user.id)
 
     page = calculate_posting_page_number(posting)
 
@@ -542,7 +544,7 @@ def posting_unhide(posting_id):
     """Un-hide a posting."""
     posting = _get_posting_or_404(posting_id)
 
-    board_service.unhide_posting(posting, g.current_user)
+    board_service.unhide_posting(posting, g.current_user.id)
 
     page = calculate_posting_page_number(posting)
 
@@ -574,8 +576,8 @@ def _get_posting_or_404(posting_id):
 def calculate_posting_page_number(posting):
     postings_per_page = _get_postings_per_page_value()
 
-    return board_service.calculate_posting_page_number(posting, g.current_user,
-                                                       postings_per_page)
+    return board_service.calculate_posting_page_number(
+        posting, g.current_user._user, postings_per_page)
 
 
 def _get_topics_per_page_value():
