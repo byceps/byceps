@@ -88,9 +88,9 @@ def get_match_comments(match):
         .all()
 
 
-def create_match_comment(match, creator, body):
+def create_match_comment(match, creator_id, body):
     """Create a comment to a match."""
-    match_comment = MatchComment(match, creator, body)
+    match_comment = MatchComment(match, creator_id, body)
 
     db.session.add(match_comment)
     db.session.commit()

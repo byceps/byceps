@@ -55,7 +55,8 @@ def match_comment_create(match_id):
 
     body = request.form['body'].strip()
 
-    comment = tourney_service.create_match_comment(match, g.current_user, body)
+    comment = tourney_service.create_match_comment(
+        match, g.current_user.id, body)
 
     signals.match_comment_created.send(None, comment=comment)
 
