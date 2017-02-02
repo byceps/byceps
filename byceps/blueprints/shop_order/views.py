@@ -40,7 +40,7 @@ def order_form(erroneous_form=None):
         flash_error('Es sind keine Artikel verfügbar.')
         return {'article_compilation': None}
 
-    user = g.current_user
+    user = g.current_user._user
 
     if erroneous_form:
         form = erroneous_form
@@ -80,7 +80,7 @@ def order():
         flash_error('Es wurden keine Artikel ausgewählt.')
         return order_form(form)
 
-    orderer = form.get_orderer(g.current_user)
+    orderer = form.get_orderer(g.current_user._user)
     payment_method = PaymentMethod.bank_transfer
 
     order_service.create_order(g.party.id, orderer, payment_method, cart)
@@ -99,7 +99,7 @@ def order_single_form(article_id, erroneous_form=None):
     article_compilation = article_service \
         .get_article_compilation_for_single_article(article, fixed_quantity=1)
 
-    user = g.current_user
+    user = g.current_user._user
     form = erroneous_form if erroneous_form else OrderForm(obj=user.detail)
     country_names = country_service.get_country_names()
 
@@ -147,7 +147,7 @@ def order_single(article_id):
         .get_article_compilation_for_single_article(article,
                                                     fixed_quantity=quantity)
 
-    user = g.current_user
+    user = g.current_user._user
 
     if order_service.has_user_placed_orders(user.id, g.party.id):
         flash_error('Du kannst keine weitere Bestellung aufgeben.')
