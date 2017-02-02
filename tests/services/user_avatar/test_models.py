@@ -26,7 +26,7 @@ CREATED_AT = datetime(2014, 7, 29, 14, 43, 30, 196165)
 )
 def test_hybrid_image_type_getter(database_value, expected):
     user = create_user(1)
-    avatar = create_avatar(user)
+    avatar = create_avatar(user.id)
 
     avatar._image_type = database_value
 
@@ -41,7 +41,7 @@ def test_hybrid_image_type_getter(database_value, expected):
 )
 def test_hybrid_image_type_setter(image_type, expected):
     user = create_user(1)
-    avatar = create_avatar(user)
+    avatar = create_avatar(user.id)
 
     avatar.image_type = image_type
 

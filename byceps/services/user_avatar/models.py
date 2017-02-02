@@ -26,11 +26,10 @@ class Avatar(db.Model):
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
-    creator = db.relationship('User')
     _image_type = db.Column('image_type', db.Unicode(4), nullable=False)
 
-    def __init__(self, creator, image_type):
-        self.creator = creator
+    def __init__(self, creator_id, image_type):
+        self.creator_id = creator_id
         self.image_type = image_type
 
     @hybrid_property
@@ -62,7 +61,6 @@ class Avatar(db.Model):
     def __repr__(self):
         return ReprBuilder(self) \
             .add_with_lookup('id') \
-            .add('creator', self.creator.screen_name) \
             .add('image_type', self.image_type.name) \
             .build()
 

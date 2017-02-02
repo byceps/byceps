@@ -15,7 +15,7 @@ from byceps.services.user_avatar.models import Avatar
 from byceps.util.image.models import ImageType
 
 
-def create_avatar(creator, *, id=None, created_at=None,
+def create_avatar(creator_id, *, id=None, created_at=None,
                   image_type=ImageType.jpeg):
     if id is None:
         id = generate_uuid()
@@ -23,7 +23,7 @@ def create_avatar(creator, *, id=None, created_at=None,
     if created_at is None:
         created_at = datetime.utcnow()
 
-    avatar = Avatar(creator, image_type)
+    avatar = Avatar(creator_id, image_type)
     avatar.id = id
     avatar.created_at = created_at
     return avatar
