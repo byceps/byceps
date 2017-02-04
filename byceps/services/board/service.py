@@ -377,7 +377,7 @@ def update_posting(posting, editor_id, body, *, commit=True):
     """Update the posting."""
     posting.body = body.strip()
     posting.last_edited_at = datetime.now()
-    posting.last_edited_by = editor_id
+    posting.last_edited_by_id = editor_id
     posting.edit_count += 1
 
     if commit:
