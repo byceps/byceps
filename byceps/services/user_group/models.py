@@ -31,8 +31,8 @@ class UserGroup(db.Model):
 
     members = association_proxy('memberships', 'user')
 
-    def __init__(self, creator, title, description):
-        self.creator = creator
+    def __init__(self, creator_id, title, description):
+        self.creator_id = creator_id
         self.title = title
         self.description = description
 

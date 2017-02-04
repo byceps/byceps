@@ -13,9 +13,9 @@ from ...database import db
 from .models import UserGroup
 
 
-def create_group(creator, title, description):
+def create_group(creator_id, title, description):
     """Introduce a new badge."""
-    group = UserGroup(creator, title, description)
+    group = UserGroup(creator_id, title, description)
 
     db.session.add(group)
     db.session.commit()
