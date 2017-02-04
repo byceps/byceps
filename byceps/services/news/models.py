@@ -106,9 +106,9 @@ class ItemVersion(db.Model):
     body = db.Column(db.UnicodeText, nullable=False)
     image_url_path = db.Column(db.Unicode(80), nullable=True)
 
-    def __init__(self, item, creator, title, body):
+    def __init__(self, item, creator_id, title, body):
         self.item = item
-        self.creator = creator
+        self.creator_id = creator_id
         self.title = title
         self.body = body
 

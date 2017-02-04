@@ -33,7 +33,7 @@ class ItemTestCase(AbstractAppTestCase):
         item = create_item(self.brand.id, slug=slug)
         self.db.session.add(item)
 
-        version = create_item_version(item, self.admin,
+        version = create_item_version(item, self.admin.id,
                                       image_url_path=image_url_path)
         self.db.session.add(version)
 

@@ -15,14 +15,15 @@ from ..brand.models import Brand
 from .models import CurrentVersionAssociation, Item, ItemVersion
 
 
-def create_item(brand_id, slug, creator, title, body, *, image_url_path=None):
+def create_item(brand_id, slug, creator_id, title, body, *,
+                image_url_path=None):
     """Create a news item, a version, and set the version as the item's
     current one.
     """
     item = Item(brand_id, slug)
     db.session.add(item)
 
-    version = _create_version(item, creator, title, body,
+    version = _create_version(item, creator_id, title, body,
                               image_url_path=image_url_path)
     db.session.add(version)
 
@@ -34,11 +35,11 @@ def create_item(brand_id, slug, creator, title, body, *, image_url_path=None):
     return item
 
 
-def update_item(item, creator, title, body, *, image_url_path=None):
+def update_item(item, creator_id, title, body, *, image_url_path=None):
     """Update a news item by creating a new version of it and setting
     the new version as the current one.
     """
-    version = _create_version(item, creator, title, body,
+    version = _create_version(item, creator_id, title, body,
                               image_url_path=image_url_path)
     db.session.add(version)
 
@@ -47,8 +48,8 @@ def update_item(item, creator, title, body, *, image_url_path=None):
     db.session.commit()
 
 
-def _create_version(item, creator, title, body, *, image_url_path=None):
-    version = ItemVersion(item, creator, title, body)
+def _create_version(item, creator_id, title, body, *, image_url_path=None):
+    version = ItemVersion(item, creator_id, title, body)
     if image_url_path:
         version.image_url_path = image_url_path
     return version

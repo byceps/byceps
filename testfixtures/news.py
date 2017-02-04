@@ -16,9 +16,9 @@ def create_item(brand_id, *, slug='a-news-item-about-something-nice'):
     return Item(brand_id, slug)
 
 
-def create_item_version(item, creator, *, created_at=None, title='', body='',
+def create_item_version(item, creator_id, *, created_at=None, title='', body='',
                         image_url_path=None):
-    version = ItemVersion(item, creator, title, body)
+    version = ItemVersion(item, creator_id, title, body)
     version.created_at = created_at
     version.image_url_path = image_url_path
     return version
