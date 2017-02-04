@@ -179,9 +179,9 @@
         <td rowspan="{{ tickets|length }}"><strong>{{ party.title }}</strong></td>
         {%- endif %}
         <td>
-          {%- if ticket.used_by == user %}<strong>{% endif -%}
+          {%- if ticket.used_by_id == user.id %}<strong>{% endif -%}
               <a href="{{ url_for('ticketing_admin.view', ticket_id=ticket.id) }}" title="{{ ticket.id }}">{{ ticket.id|string|truncate(6, killwords=True, end='…') }}</a>
-          {%- if ticket.used_by == user %}</strong>{% endif -%}
+          {%- if ticket.used_by_id == user.id %}</strong>{% endif -%}
         </td>
         <td>{{ ticket.category.title }}</td>
         <td>
@@ -192,9 +192,9 @@
             {%- endif %}
           {%- endwith %}
         </td>
-        <td>{% if ticket.owned_by == user %}{{ render_icon('payment', title='gekauft') }}{% endif %}</td>
-        <td>{% if ticket.is_seat_managed_by(user) %}{{ render_icon('seating-area', title='verwaltet Sitzplatz') }}{% endif %}</td>
-        <td>{% if ticket.is_user_managed_by(user) %}{{ render_icon('user', title='verwaltet Nutzer/in') }}{% endif %}</td>
+        <td>{% if ticket.owned_by_id == user.id %}{{ render_icon('payment', title='gekauft') }}{% endif %}</td>
+        <td>{% if ticket.is_seat_managed_by(user.id) %}{{ render_icon('seating-area', title='verwaltet Sitzplatz') }}{% endif %}</td>
+        <td>{% if ticket.is_user_managed_by(user.id) %}{{ render_icon('user', title='verwaltet Nutzer/in') }}{% endif %}</td>
       </tr>
         {%- endfor %}
       {%- endfor %}

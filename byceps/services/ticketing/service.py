@@ -23,14 +23,14 @@ from .models.ticket_bundle import TicketBundle
 # tickets
 
 
-def create_ticket(category, owned_by):
+def create_ticket(category, owned_by_id):
     """Create a single ticket."""
-    return create_tickets(category, owned_by, 1)
+    return create_tickets(category, owned_by_id, 1)
 
 
-def create_tickets(category, owned_by, quantity):
+def create_tickets(category, owned_by_id, quantity):
     """Create a number of tickets of the same category for a single owner."""
-    tickets = list(_build_tickets(category, owned_by, quantity))
+    tickets = list(_build_tickets(category, owned_by_id, quantity))
 
     db.session.add_all(tickets)
     db.session.commit()
@@ -38,12 +38,12 @@ def create_tickets(category, owned_by, quantity):
     return tickets
 
 
-def _build_tickets(category, owned_by, quantity, *, bundle=None):
+def _build_tickets(category, owned_by_id, quantity, *, bundle=None):
     if quantity < 1:
         raise ValueError('Ticket quantity must be positive.')
 
     for _ in range(quantity):
-        yield Ticket(category, owned_by, bundle=bundle)
+        yield Ticket(category, owned_by_id, bundle=bundle)
 
 
 def find_ticket(ticket_id):
@@ -195,15 +195,15 @@ def get_attendees_for_party(party_id):
 # ticket bundles
 
 
-def create_ticket_bundle(category, ticket_quantity, owned_by):
+def create_ticket_bundle(category, ticket_quantity, owned_by_id):
     """Create a ticket bundle and the given quantity of tickets."""
     if ticket_quantity < 1:
         raise ValueError('Ticket quantity must be positive.')
 
-    bundle = TicketBundle(category.id, ticket_quantity, owned_by)
+    bundle = TicketBundle(category.id, ticket_quantity, owned_by_id)
     db.session.add(bundle)
 
-    tickets = list(_build_tickets(category, owned_by, ticket_quantity,
+    tickets = list(_build_tickets(category, owned_by_id, ticket_quantity,
                                   bundle=bundle))
     db.session.add_all(tickets)
 

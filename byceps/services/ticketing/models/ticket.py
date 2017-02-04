@@ -55,11 +55,11 @@ class Ticket(db.Model):
     used_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=True)
     used_by = db.relationship(User, foreign_keys=[used_by_id])
 
-    def __init__(self, category, owned_by, *, bundle=None):
+    def __init__(self, category, owned_by_id, *, bundle=None):
         if bundle is not None:
             self.bundle = bundle
         self.category = category
-        self.owned_by = owned_by
+        self.owned_by_id = owned_by_id
 
     def get_seat_manager(self):
         """Return the user that may choose the seat for this ticket."""
@@ -69,27 +69,22 @@ class Ticket(db.Model):
         """Return the user that may choose the user of this ticket."""
         return self.user_managed_by or self.owned_by
 
-    def is_managed_by(self, user):
+    def is_managed_by(self, user_id):
         """Return `True` if the user may choose the seat for or the
         user of this ticket.
         """
-        return self.is_seat_managed_by(user) or self.is_user_managed_by(user)
+        return self.is_seat_managed_by(user_id) \
+            or self.is_user_managed_by(user_id)
 
-    def is_seat_managed_by(self, user):
+    def is_seat_managed_by(self, user_id):
         """Return `True` if the user may choose the seat for this ticket."""
-        if user is None:
-            return False
+        return ((self.seat_managed_by_id is None) and (self.owned_by_id == user_id)) or \
+            (self.seat_managed_by_id == user_id)
 
-        return ((self.seat_managed_by is None) and (self.owned_by == user)) or \
-            (self.seat_managed_by == user)
-
-    def is_user_managed_by(self, user):
+    def is_user_managed_by(self, user_id):
         """Return `True` if the user may choose the user of this ticket."""
-        if user is None:
-            return False
-
-        return ((self.user_managed_by is None) and (self.owned_by == user)) or \
-            (self.user_managed_by == user)
+        return ((self.user_managed_by_id is None) and (self.owned_by_id == user_id)) or \
+            (self.user_managed_by_id == user_id)
 
     def __repr__(self):
         def user(user):

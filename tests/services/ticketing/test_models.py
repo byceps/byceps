@@ -18,65 +18,66 @@ user3 = create_user(3)
 
 
 @params(
-    (user1, None,  None,  user1, True ),
-    (user1, user1, None,  user1, True ),
-    (user1, None,  user1, user1, True ),
-    (user1, user1, user1, user1, True ),
+    (user1.id, None    , None    , user1.id, True ),
+    (user1.id, user1.id, None    , user1.id, True ),
+    (user1.id, None    , user1.id, user1.id, True ),
+    (user1.id, user1.id, user1.id, user1.id, True ),
 
-    (user1, user2, None,  user1, True ),
-    (user1, None,  user2, user1, True ),
-    (user1, user2, user2, user1, False),  # all management rights waived
+    (user1.id, user2.id, None    , user1.id, True ),
+    (user1.id, None    , user2.id, user1.id, True ),
+    (user1.id, user2.id, user2.id, user1.id, False),  # all management rights waived
 
-    (user2, None,  None,  user1, False),
-    (user2, user1, None,  user1, True ),
-    (user2, None,  user1, user1, True ),
-    (user2, user1, user1, user1, True ),
+    (user2.id, None    , None    , user1.id, False),
+    (user2.id, user1.id, None    , user1.id, True ),
+    (user2.id, None    , user1.id, user1.id, True ),
+    (user2.id, user1.id, user1.id, user1.id, True ),
 )
-def test_is_managed_by(owned_by, seat_managed_by, user_managed_by, user, expected):
-    ticket = create_ticket(owned_by,
-                           seat_managed_by=seat_managed_by,
-                           user_managed_by=user_managed_by)
+def test_is_managed_by(owned_by_id, seat_managed_by_id, user_managed_by_id, user_id, expected):
+    ticket = create_ticket(owned_by_id,
+                           seat_managed_by_id=seat_managed_by_id,
+                           user_managed_by_id=user_managed_by_id)
 
-    assert ticket.is_managed_by(user) == expected
+    assert ticket.is_managed_by(user_id) == expected
 
 
 @params(
-    (user1, None,  user1, True ),
-    (user1, user1, user1, True ),
+    (user1.id, None    , user1.id, True ),
+    (user1.id, user1.id, user1.id, True ),
 
-    (user1, None,  user1, True ),
-    (user1, user2, user1, False),  # management right waived
+    (user1.id, None    , user1.id, True ),
+    (user1.id, user2.id, user1.id, False),  # management right waived
 
-    (user2, None,  user1, False),
-    (user2, user1, user1, True ),
+    (user2.id, None    , user1.id, False),
+    (user2.id, user1.id, user1.id, True ),
 )
-def test_is_seat_managed_by(owned_by, seat_managed_by, user, expected):
-    ticket = create_ticket(owned_by,
-                           seat_managed_by=seat_managed_by)
+def test_is_seat_managed_by(owned_by_id, seat_managed_by_id, user_id, expected):
+    ticket = create_ticket(owned_by_id,
+                           seat_managed_by_id=seat_managed_by_id)
 
-    assert ticket.is_seat_managed_by(user) == expected
+    assert ticket.is_seat_managed_by(user_id) == expected
 
 
 @params(
-    (user1, None,  user1, True ),
-    (user1, user1, user1, True ),
+    (user1.id, None    , user1.id, True ),
+    (user1.id, user1.id, user1.id, True ),
 
-    (user1, None,  user1, True ),
-    (user1, user2, user1, False),  # management right waived
+    (user1.id, None    , user1.id, True ),
+    (user1.id, user2.id, user1.id, False),  # management right waived
 
-    (user2, None,  user1, False),
-    (user2, user1, user1, True ),
+    (user2.id, None    , user1.id, False),
+    (user2.id, user1.id, user1.id, True ),
 )
-def test_is_user_managed_by(owned_by, user_managed_by, user, expected):
-    ticket = create_ticket(owned_by,
-                           user_managed_by=user_managed_by)
+def test_is_user_managed_by(owned_by_id, user_managed_by_id, user_id, expected):
+    ticket = create_ticket(owned_by_id,
+                           user_managed_by_id=user_managed_by_id)
 
-    assert ticket.is_user_managed_by(user) == expected
+    assert ticket.is_user_managed_by(user_id) == expected
 
 
-def create_ticket(owned_by, *, seat_managed_by=None, user_managed_by=None):
+def create_ticket(owned_by_id, *, seat_managed_by_id=None,
+                  user_managed_by_id=None):
     category = None
-    ticket = Ticket(category, owned_by)
-    ticket.seat_managed_by = seat_managed_by
-    ticket.user_managed_by = user_managed_by
+    ticket = Ticket(category, owned_by_id)
+    ticket.seat_managed_by_id = seat_managed_by_id
+    ticket.user_managed_by_id = user_managed_by_id
     return ticket
