@@ -92,14 +92,11 @@ def find_tickets_related_to_user_for_party(user_id, party_id):
         .all()
 
 
-def find_tickets_used_by_user(user, party_id):
+def find_tickets_used_by_user(user_id, party_id):
     """Return the tickets (if any) used by the user for that party."""
-    if user.is_anonymous:
-        return []
-
     return Ticket.query \
         .for_party_id(party_id) \
-        .filter(Ticket.used_by == user) \
+        .filter(Ticket.used_by_id == user_id) \
         .join(Seat) \
         .options(
             db.joinedload('occupied_seat').joinedload('area'),

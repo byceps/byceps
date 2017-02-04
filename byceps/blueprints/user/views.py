@@ -51,7 +51,7 @@ def view(user_id):
     orga_team_membership = orga_team_service.find_membership_for_party(user.id,
         g.party.id)
 
-    current_party_tickets = ticketing_service.find_tickets_used_by_user(user,
+    current_party_tickets = ticketing_service.find_tickets_used_by_user(user.id,
         g.party.id)
 
     attended_parties = ticketing_service.get_attended_parties(user.id)
