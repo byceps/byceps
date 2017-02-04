@@ -27,7 +27,7 @@
       <th>Avatar</th>
       <td>
         {{ render_user_avatar_128(user) }}
-      {%- if g.current_user == user %}
+      {%- if g.current_user.id == user.id %}
         <div class="button-row" style="margin: 0.5rem 0;">
           <a class="button" href="{{ url_for('user_avatar.update_form') }}">{{ render_icon('upload') }} hochladen</a>
           {%- if user.avatar %}
