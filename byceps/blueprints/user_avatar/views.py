@@ -50,7 +50,7 @@ def update_form(erroneous_form=None):
 @blueprint.route('/me/avatar', methods=['POST'])
 def update():
     """Update the current user's avatar image."""
-    user = get_current_user_or_404()
+    user = get_current_user_or_404()._user
 
     # Make `InputRequired` work on `FileField`.
     form_fields = request.form.copy()
@@ -82,7 +82,7 @@ def update():
 @respond_no_content_with_location
 def delete():
     """Remove the current user's avatar image."""
-    user = get_current_user_or_404()
+    user = get_current_user_or_404()._user
 
     avatar_service.remove_avatar_image(user)
 
