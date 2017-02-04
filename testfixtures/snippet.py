@@ -20,11 +20,11 @@ def create_fragment(party_id, name):
     return Snippet(party_id, name, SnippetType.fragment)
 
 
-def create_snippet_version(snippet, creator, *, created_at=None,
+def create_snippet_version(snippet, creator_id, *, created_at=None,
                            title='', head='', body='', image_url_path=None):
     version = SnippetVersion(
         snippet=snippet,
-        creator=creator,
+        creator_id=creator_id,
         title=title,
         head=head,
         body=body,

@@ -113,9 +113,9 @@ class SnippetVersion(db.Model):
     body = db.Column(db.UnicodeText, nullable=False)
     image_url_path = db.Column(db.Unicode(80), nullable=True)
 
-    def __init__(self, snippet, creator, title, head, body, image_url_path):
+    def __init__(self, snippet, creator_id, title, head, body, image_url_path):
         self.snippet = snippet
-        self.creator = creator
+        self.creator_id = creator_id
         self.title = title
         self.head = head
         self.body = body

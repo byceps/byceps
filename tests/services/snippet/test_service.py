@@ -59,7 +59,7 @@ class GetCurrentVersionOfSnippetTestCase(AbstractAppTestCase):
         self.db.session.add(snippet)
 
         created_at = datetime.strptime(created_at_text, '%Y-%m-%d %H:%M:%S')
-        version = create_snippet_version(snippet, self.creator, created_at=created_at)
+        version = create_snippet_version(snippet, self.creator.id, created_at=created_at)
         self.db.session.add(version)
 
         current_version_association = create_current_version_association(snippet, version)

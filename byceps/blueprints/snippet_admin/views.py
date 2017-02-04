@@ -133,7 +133,7 @@ def create_document(party_id):
     body = form.body.data.strip()
     image_url_path = form.image_url_path.data.strip()
 
-    version = snippet_service.create_document(party.id, name, creator, title,
+    version = snippet_service.create_document(party.id, name, creator.id, title,
                                               body, head=head,
                                               image_url_path=image_url_path)
 
@@ -173,7 +173,7 @@ def update_document(snippet_id):
     body = form.body.data.strip()
     image_url_path = form.image_url_path.data.strip()
 
-    version = snippet_service.update_document(snippet, creator, title, body,
+    version = snippet_service.update_document(snippet, creator.id, title, body,
                                               head=head,
                                               image_url_path=image_url_path)
 
@@ -239,7 +239,7 @@ def create_fragment(party_id):
     creator = g.current_user
     body = form.body.data.strip()
 
-    version = snippet_service.create_fragment(party.id, name, creator, body)
+    version = snippet_service.create_fragment(party.id, name, creator.id, body)
 
     flash_success('Das Fragment "{}" wurde angelegt.', version.snippet.name)
     return redirect_to('.view_version', snippet_version_id=version.id)
@@ -274,7 +274,7 @@ def update_fragment(snippet_id):
     creator = g.current_user
     body = form.body.data.strip()
 
-    version = snippet_service.update_fragment(snippet, creator, body)
+    version = snippet_service.update_fragment(snippet, creator.id, body)
 
     flash_success('Das Fragment "{}" wurde aktualisiert.', version.snippet.name)
     return redirect_to('.view_version', snippet_version_id=version.id)
