@@ -42,7 +42,7 @@ def collect_orgas_with_next_birthdays(*, limit=None):
             'screen_name': user.screen_name,
             'detail': user.detail,
             'avatar': avatar,
-            'is_orga_for_party': (lambda party: False),
+            'is_orga': False,
         }
 
 
