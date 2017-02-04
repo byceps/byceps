@@ -105,14 +105,11 @@ def find_tickets_used_by_user(user_id, party_id):
         .all()
 
 
-def uses_any_ticket_for_party(user, party_id):
+def uses_any_ticket_for_party(user_id, party_id):
     """Return `True` if the user uses any ticket for that party."""
-    if user.is_anonymous:
-        return False
-
     count = Ticket.query \
         .for_party_id(party_id) \
-        .filter(Ticket.used_by == user) \
+        .filter(Ticket.used_by_id == user_id) \
         .count()
 
     return count > 0
