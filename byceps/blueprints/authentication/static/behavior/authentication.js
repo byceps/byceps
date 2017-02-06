@@ -8,7 +8,10 @@ $(function() {
       url: $(this).attr('action'),
       data: $(this).serializeArray(),
       success: function() {
-        location.href = '/';
+        // Redirect to referrer if available.
+        var referrer = document.createElement('a');
+        referrer.href = document.referrer;
+        location.href = (referrer.hostname == location.hostname) ? referrer.pathname : '/';
       },
       error: function() {
         $('#login-failed').slideDown('slow', function() {
