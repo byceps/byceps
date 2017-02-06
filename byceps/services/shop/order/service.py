@@ -32,7 +32,7 @@ def create_order(party_id, orderer, payment_method, cart):
     db.session.add_all(order_items)
     db.session.commit()
 
-    order_placed.send(None, order=order)
+    order_placed.send(None, order_id=order.id)
 
     return order
 
