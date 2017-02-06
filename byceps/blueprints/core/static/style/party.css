@@ -477,6 +477,87 @@ h2 {
 }
 
 
+/* user profile */
+
+.user-profile-background {
+  background-color: #f4f4f4;
+  border-bottom: #dddddd solid 1px;
+  height: 104px;
+}
+
+.user-profile-header {
+  display: flex;
+  justify-content: space-between;
+  margin-top: -104px;
+  padding: 40px;
+}
+
+.user-profile-header-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.user-profile-header-column + .user-profile-header-column {
+  margin-left: 1rem;
+}
+
+.user-profile-header-column.screenname-and-orgateam {
+  flex-grow: 1;
+}
+
+.user-profile-header-cell-top,
+.user-profile-header-cell-bottom {
+}
+.user-profile-header-cell-top {
+  font-weight: bold;
+  padding-bottom: 3px;
+}
+.user-profile-header-cell-bottom {
+  height: 50%;
+  opacity: 0.5;
+  padding-top: 4px;
+}
+
+.user-profile-layout {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 40px 40px 40px;
+}
+
+.user-profile-primary {
+  flex: 0 1 auto;
+  margin-bottom: 20px;
+  padding-right: 40px;
+}
+
+.user-profile .screenname,
+.user-profile .orgateam {
+  font-weight: bold;
+}
+.user-profile .screenname {
+  font-size: 1.25rem; /* 20px / 16px */
+}
+.user-profile .orgateam {
+  font-size: 0.875rem; /* 14px / 16px */
+}
+
+.user-profile .stats,
+.user-profile .stats-label {
+  text-align: center;
+}
+.user-profile .stats {
+  font-size: 1.125rem; /* 18px / 16px */
+}
+.user-profile .stats-label {
+  font-size: 0.6875rem; /* 11px / 16px */
+  text-transform: uppercase;
+}
+
+.user-profile-secondary {
+  flex: 1 0 auto;
+}
+
+
 /* misc */
 
 main h1 a {
