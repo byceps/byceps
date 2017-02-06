@@ -73,7 +73,7 @@ def update():
         abort(409, 'File already exists, not overwriting.')
 
     flash_success('Dein Avatarbild wurde aktualisiert.', icon='upload')
-    signals.avatar_updated.send(None, user=user)
+    signals.avatar_updated.send(None, user_id=user.id)
 
     return redirect_to('user.view_current')
 

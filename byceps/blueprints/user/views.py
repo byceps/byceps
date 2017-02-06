@@ -187,7 +187,7 @@ def create():
         'der an die angegebene Adresse verschickten E-Mail besucht werden.'
         ,
         user.screen_name)
-    signals.user_created.send(None, user=user)
+    signals.user_created.send(None, user_id=user.id)
 
     return redirect_to('.view', user_id=user.id)
 
@@ -252,7 +252,7 @@ def confirm_email_address(token):
     flash_success(
         'Die E-Mail-Adresse wurde bestätigt. Das Benutzerkonto "{}" ist nun aktiviert.',
         user.screen_name)
-    signals.email_address_confirmed.send(None, user=user)
+    signals.email_address_confirmed.send(None, user_id=user.id)
 
     return redirect_to('authentication.login_form')
 
