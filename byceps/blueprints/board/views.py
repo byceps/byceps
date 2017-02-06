@@ -170,7 +170,7 @@ def topic_create(category_id):
     topic = board_service.create_topic(category, creator.id, title, body)
 
     flash_success('Das Thema "{}" wurde hinzugefügt.', topic.title)
-    signals.topic_created.send(None, topic=topic)
+    signals.topic_created.send(None, topic_id=topic.id)
 
     return redirect(topic.external_url)
 
@@ -259,7 +259,7 @@ def topic_hide(topic_id):
     board_service.hide_topic(topic, g.current_user.id)
 
     flash_success('Das Thema "{}" wurde versteckt.', topic.title, icon='hidden')
-    signals.topic_hidden.send(None, topic=topic)
+    signals.topic_hidden.send(None, topic_id=topic.id)
     return url_for('.category_view', slug=topic.category.slug, _anchor=topic.anchor)
 
 
@@ -431,7 +431,7 @@ def posting_create(topic_id):
                                                g.current_user._user)
 
     flash_success('Deine Antwort wurde hinzugefügt.')
-    signals.posting_created.send(None, posting=posting)
+    signals.posting_created.send(None, posting_id=posting.id)
 
     postings_per_page = _get_postings_per_page_value()
     page_count = topic.count_pages(postings_per_page)
@@ -530,7 +530,7 @@ def posting_hide(posting_id):
     page = calculate_posting_page_number(posting)
 
     flash_success('Der Beitrag wurde versteckt.', icon='hidden')
-    signals.posting_hidden.send(None, posting=posting)
+    signals.posting_hidden.send(None, posting_id=posting.id)
     return url_for('.topic_view',
                    topic_id=posting.topic.id,
                    page=page,
