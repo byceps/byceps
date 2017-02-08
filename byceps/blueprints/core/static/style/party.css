@@ -327,7 +327,7 @@ h2 {
   text-decoration: underline;
 }
 .user-comment-meta-top .user-link a {
-  color: #333333;
+  color: currentColor;
   font-weight: bold;
 }
 
