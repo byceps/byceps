@@ -55,10 +55,6 @@ main {
 
 /* top bar */
 
-#topbar {
-  border-width: 0 0 1px 0;
-  background-color: rgba(0, 0, 0, 0.06);
-}
 #topbar-body {
   align-items: center;
   display: flex;
