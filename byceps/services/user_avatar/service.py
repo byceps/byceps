@@ -33,8 +33,10 @@ def update_avatar_image(user, stream, *, allowed_types=ALL_IMAGE_TYPES,
                         maximum_dimensions=MAXIMUM_DIMENSIONS):
     """Set a new avatar image for the user."""
     image_type = _determine_image_type(stream, allowed_types)
+    image_dimensions = _determine_dimensions(stream)
 
-    if _is_image_too_large(stream, maximum_dimensions):
+    image_too_large = image_dimensions > maximum_dimensions
+    if image_too_large:
         stream = create_thumbnail(stream, image_type.name, maximum_dimensions)
 
     avatar = Avatar(user.id, image_type)
@@ -62,10 +64,10 @@ def _determine_image_type(stream, allowed_types):
     return image_type
 
 
-def _is_image_too_large(stream, maximum_dimensions):
-    actual_dimensions = read_dimensions(stream)
+def _determine_dimensions(stream):
+    dimensions = read_dimensions(stream)
     stream.seek(0)
-    return actual_dimensions > maximum_dimensions
+    return dimensions
 
 
 def remove_avatar_image(user):
