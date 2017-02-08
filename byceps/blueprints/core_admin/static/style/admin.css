@@ -408,6 +408,18 @@ ol.index.fully-linked a:hover {
 }
 
 
+/* forms */
+
+fieldset.buttons {
+  background-color: #e8e8e8;
+  border-color: #cccccc;
+  border-style: solid;
+  border-width: 1px 0;
+  padding-bottom: 1rem;
+  padding-top: 1rem;
+}
+
+
 /* filters */
 
 .filters {
