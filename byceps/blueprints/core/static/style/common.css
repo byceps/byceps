@@ -346,6 +346,9 @@ form li.error .errors li span {
   background-color: #e8e8e8;
   border-color: #999999;
 }
+.button:active {
+  box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
 
 
 /* dropdowns */
