@@ -36,7 +36,7 @@ def update_avatar_image(user, stream, *, allowed_types=ALL_IMAGE_TYPES,
     image_dimensions = _determine_dimensions(stream)
 
     image_too_large = image_dimensions > maximum_dimensions
-    if image_too_large:
+    if image_too_large or not image_dimensions.is_square:
         stream = create_thumbnail(stream, image_type.name, maximum_dimensions)
 
     avatar = Avatar(user.id, image_type)
