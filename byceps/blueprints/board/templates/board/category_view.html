@@ -51,20 +51,20 @@
 
 {{ render_pagination_nav(topics, 'board.category_view', {'slug': category.slug}, centered=True) }}
 
-  <div style="text-align: right;">
-    {%- set current_user_may_create_topic =  g.current_user.has_permission(BoardTopicPermission.create) %}
-    <div class="button-row">
+  {%- set current_user_may_create_topic = g.current_user.has_permission(BoardTopicPermission.create) %}
+
+  <div class="button-row button-row--right">
     {%- if current_user_may_create_topic %}
-      <a class="button" href="{{ url_for('.topic_create_form', category_id=category.id) }}">{{ render_icon('add') }} Thema hinzufügen</a>
+    <a class="button" href="{{ url_for('.topic_create_form', category_id=category.id) }}">{{ render_icon('add') }} Thema hinzufügen</a>
     {%- else %}
-      <span class="button button--disabled">{{ render_icon('add') }} Thema hinzufügen</span>
-    {%- endif %}
-    </div>
-    {%- if not current_user_may_create_topic %}
-    <small>
-      <p>Du musst <a href="{{ url_for('authentication.login_form') }}">angemeldet</a> sein um Themen hinzufügen zu können.</p>
-    </small>
+    <span class="button button--disabled">{{ render_icon('add') }} Thema hinzufügen</span>
     {%- endif %}
   </div>
+
+  {%- if not current_user_may_create_topic %}
+  <small>
+    <p style="text-align: right;">Du musst <a href="{{ url_for('authentication.login_form') }}">angemeldet</a> sein um Themen hinzufügen zu können.</p>
+  </small>
+  {%- endif %}
 
 {%- endblock %}

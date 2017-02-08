@@ -308,6 +308,14 @@ form li.error .errors li span {
   flex-wrap: wrap;
   margin: 1.5rem 0 1.5rem -8px;
 }
+
+.button-row--center {
+  justify-content: center;
+}
+.button-row--right {
+  justify-content: flex-end;
+}
+
 .button-row > * {
   margin: 8px 0 0 8px;
 }

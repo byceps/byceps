@@ -29,9 +29,8 @@
   </div>
 {%- endif %}
 
-
   {%- if g.current_user.has_any_permission(BoardTopicPermission.hide, BoardTopicPermission.lock, BoardTopicPermission.move, BoardTopicPermission.pin) %}
-  <div class="button-row" style="text-align: right;">
+  <div class="button-row button-row--right">
     <a class="button" href="{{ url_for('.topic_moderate_form', topic_id=topic.id) }}" title="Thema moderieren">{{ render_icon('moderate') }} moderieren</a>
   </div>
   {%- endif %}
@@ -46,21 +45,21 @@
 
 {{ render_pagination_nav(postings, 'board.topic_view', {'topic_id': topic.id}, centered=True) }}
 
-  <div style="text-align: right;">
-    {%- set current_user_may_reply_generally = g.current_user.has_permission(BoardPostingPermission.create) %}
-    <div class="button-row">
+  {%- set current_user_may_reply_generally = g.current_user.has_permission(BoardPostingPermission.create) %}
+
+  <div class="button-row button-row--right">
     {%- if current_user_may_reply_generally and not topic.locked %}
-      <a class="button" href="{{ url_for('.posting_create_form', topic_id=topic.id) }}">{{ render_icon('reply') }} Antworten</a>
+    <a class="button" href="{{ url_for('.posting_create_form', topic_id=topic.id) }}">{{ render_icon('reply') }} Antworten</a>
     {%- else %}
-      <span class="button button--disabled">{{ render_icon('reply') }} Antworten</span>
-    {%- endif %}
-    </div>
-    {%- if not current_user_may_reply_generally and not topic.locked %}
-    <small>
-      <p>Du musst <a href="{{ url_for('authentication.login_form') }}">angemeldet</a> sein um antworten zu können.</p>
-    </small>
+    <span class="button button--disabled">{{ render_icon('reply') }} Antworten</span>
     {%- endif %}
   </div>
+
+  {%- if not current_user_may_reply_generally and not topic.locked %}
+  <small>
+    <p style="text-align: right;">Du musst <a href="{{ url_for('authentication.login_form') }}">angemeldet</a> sein um antworten zu können.</p>
+  </small>
+  {%- endif %}
 
   <nav class="breadcrumbs compact">
     <ol>
