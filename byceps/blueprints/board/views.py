@@ -255,8 +255,9 @@ def topic_moderate_form(topic_id):
 def topic_hide(topic_id):
     """Hide a topic."""
     topic = _get_topic_or_404(topic_id)
+    moderator_id = g.current_user.id
 
-    board_service.hide_topic(topic, g.current_user.id)
+    board_service.hide_topic(topic, moderator_id)
 
     flash_success('Das Thema "{}" wurde versteckt.', topic.title, icon='hidden')
     signals.topic_hidden.send(None, topic_id=topic.id)
@@ -269,8 +270,9 @@ def topic_hide(topic_id):
 def topic_unhide(topic_id):
     """Un-hide a topic."""
     topic = _get_topic_or_404(topic_id)
+    moderator_id = g.current_user.id
 
-    board_service.unhide_topic(topic, g.current_user.id)
+    board_service.unhide_topic(topic, moderator_id)
 
     flash_success(
         'Das Thema "{}" wurde wieder sichtbar gemacht.', topic.title, icon='view')
@@ -283,8 +285,9 @@ def topic_unhide(topic_id):
 def topic_lock(topic_id):
     """Lock a topic."""
     topic = _get_topic_or_404(topic_id)
+    moderator_id = g.current_user.id
 
-    board_service.lock_topic(topic, g.current_user.id)
+    board_service.lock_topic(topic, moderator_id)
 
     flash_success('Das Thema "{}" wurde geschlossen.', topic.title, icon='lock')
     return url_for('.category_view', slug=topic.category.slug, _anchor=topic.anchor)
@@ -296,8 +299,9 @@ def topic_lock(topic_id):
 def topic_unlock(topic_id):
     """Unlock a topic."""
     topic = _get_topic_or_404(topic_id)
+    moderator_id = g.current_user.id
 
-    board_service.unlock_topic(topic, g.current_user.id)
+    board_service.unlock_topic(topic, moderator_id)
 
     flash_success('Das Thema "{}" wurde wieder geöffnet.', topic.title,
                   icon='unlock')
@@ -310,8 +314,9 @@ def topic_unlock(topic_id):
 def topic_pin(topic_id):
     """Pin a topic."""
     topic = _get_topic_or_404(topic_id)
+    moderator_id = g.current_user.id
 
-    board_service.pin_topic(topic, g.current_user.id)
+    board_service.pin_topic(topic, moderator_id)
 
     flash_success('Das Thema "{}" wurde angepinnt.', topic.title, icon='pin')
     return url_for('.category_view', slug=topic.category.slug, _anchor=topic.anchor)
@@ -323,8 +328,9 @@ def topic_pin(topic_id):
 def topic_unpin(topic_id):
     """Unpin a topic."""
     topic = _get_topic_or_404(topic_id)
+    moderator_id = g.current_user.id
 
-    board_service.unpin_topic(topic, g.current_user.id)
+    board_service.unpin_topic(topic, moderator_id)
 
     flash_success('Das Thema "{}" wurde wieder gelöst.', topic.title)
     return url_for('.category_view', slug=topic.category.slug, _anchor=topic.anchor)
@@ -524,8 +530,9 @@ def posting_moderate_form(posting_id):
 def posting_hide(posting_id):
     """Hide a posting."""
     posting = _get_posting_or_404(posting_id)
+    moderator_id = g.current_user.id
 
-    board_service.hide_posting(posting, g.current_user.id)
+    board_service.hide_posting(posting, moderator_id)
 
     page = calculate_posting_page_number(posting)
 
@@ -543,8 +550,9 @@ def posting_hide(posting_id):
 def posting_unhide(posting_id):
     """Un-hide a posting."""
     posting = _get_posting_or_404(posting_id)
+    moderator_id = g.current_user.id
 
-    board_service.unhide_posting(posting, g.current_user.id)
+    board_service.unhide_posting(posting, moderator_id)
 
     page = calculate_posting_page_number(posting)
 
