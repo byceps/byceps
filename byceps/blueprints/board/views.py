@@ -364,6 +364,7 @@ def topic_unpin(topic_id):
 def topic_move(topic_id):
     """Move a topic from one category to another."""
     topic = _get_topic_or_404(topic_id)
+    moderator_id = g.current_user.id
 
     new_category_id = request.form['category_id']
     new_category = board_service.find_category_by_id(new_category_id)
