@@ -308,11 +308,12 @@ form li.error .errors li span {
 /* buttons */
 
 .button-row {
-  display: block;
-  margin: 1.5rem 0;
+  display: flex;
+  flex-wrap: wrap;
+  margin: 1.5rem 0 1.5rem -8px;
 }
 .button-row > * {
-  margin-right: 0.25em;
+  margin: 8px 0 0 8px;
 }
 
 .button {
