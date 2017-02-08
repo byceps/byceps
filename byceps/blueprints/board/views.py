@@ -260,7 +260,10 @@ def topic_hide(topic_id):
     board_service.hide_topic(topic, moderator_id)
 
     flash_success('Das Thema "{}" wurde versteckt.', topic.title, icon='hidden')
-    signals.topic_hidden.send(None, topic_id=topic.id, moderator_id=moderator_id)
+
+    signals.topic_hidden.send(None, topic_id=topic.id,
+                              moderator_id=moderator_id)
+
     return url_for('.category_view', slug=topic.category.slug, _anchor=topic.anchor)
 
 
@@ -276,6 +279,10 @@ def topic_unhide(topic_id):
 
     flash_success(
         'Das Thema "{}" wurde wieder sichtbar gemacht.', topic.title, icon='view')
+
+    signals.topic_unhidden.send(None, topic_id=topic.id,
+                                moderator_id=moderator_id)
+
     return url_for('.category_view', slug=topic.category.slug, _anchor=topic.anchor)
 
 
@@ -290,6 +297,10 @@ def topic_lock(topic_id):
     board_service.lock_topic(topic, moderator_id)
 
     flash_success('Das Thema "{}" wurde geschlossen.', topic.title, icon='lock')
+
+    signals.topic_locked.send(None, topic_id=topic.id,
+                              moderator_id=moderator_id)
+
     return url_for('.category_view', slug=topic.category.slug, _anchor=topic.anchor)
 
 
@@ -305,6 +316,10 @@ def topic_unlock(topic_id):
 
     flash_success('Das Thema "{}" wurde wieder geöffnet.', topic.title,
                   icon='unlock')
+
+    signals.topic_unlocked.send(None, topic_id=topic.id,
+                                moderator_id=moderator_id)
+
     return url_for('.category_view', slug=topic.category.slug, _anchor=topic.anchor)
 
 
@@ -319,6 +334,10 @@ def topic_pin(topic_id):
     board_service.pin_topic(topic, moderator_id)
 
     flash_success('Das Thema "{}" wurde angepinnt.', topic.title, icon='pin')
+
+    signals.topic_pinned.send(None, topic_id=topic.id,
+                              moderator_id=moderator_id)
+
     return url_for('.category_view', slug=topic.category.slug, _anchor=topic.anchor)
 
 
@@ -333,6 +352,10 @@ def topic_unpin(topic_id):
     board_service.unpin_topic(topic, moderator_id)
 
     flash_success('Das Thema "{}" wurde wieder gelöst.', topic.title)
+
+    signals.topic_unpinned.send(None, topic_id=topic.id,
+                                moderator_id=moderator_id)
+
     return url_for('.category_view', slug=topic.category.slug, _anchor=topic.anchor)
 
 
@@ -355,6 +378,12 @@ def topic_move(topic_id):
                   'in die Kategorie "{}" verschoben.',
                   topic.title, old_category.title, new_category.title,
                   icon='move')
+
+    signals.topic_moved.send(None, topic_id=topic.id,
+                             old_category_id=old_category.id,
+                             new_category_id=new_category.id,
+                             moderator_id=moderator_id)
+
     return redirect_to('.category_view',
                        slug=topic.category.slug,
                        _anchor=topic.anchor)
@@ -537,7 +566,10 @@ def posting_hide(posting_id):
     page = calculate_posting_page_number(posting)
 
     flash_success('Der Beitrag wurde versteckt.', icon='hidden')
-    signals.posting_hidden.send(None, posting_id=posting.id, moderator_id=moderator_id)
+
+    signals.posting_hidden.send(None, posting_id=posting.id,
+                                moderator_id=moderator_id)
+
     return url_for('.topic_view',
                    topic_id=posting.topic.id,
                    page=page,
@@ -557,6 +589,10 @@ def posting_unhide(posting_id):
     page = calculate_posting_page_number(posting)
 
     flash_success('Der Beitrag wurde wieder sichtbar gemacht.', icon='view')
+
+    signals.posting_unhidden.send(None, posting_id=posting.id,
+                                  moderator_id=moderator_id)
+
     return url_for('.topic_view',
                    topic_id=posting.topic.id,
                    page=page,
