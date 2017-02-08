@@ -260,7 +260,7 @@ def topic_hide(topic_id):
     board_service.hide_topic(topic, moderator_id)
 
     flash_success('Das Thema "{}" wurde versteckt.', topic.title, icon='hidden')
-    signals.topic_hidden.send(None, topic_id=topic.id)
+    signals.topic_hidden.send(None, topic_id=topic.id, moderator_id=moderator_id)
     return url_for('.category_view', slug=topic.category.slug, _anchor=topic.anchor)
 
 
@@ -537,7 +537,7 @@ def posting_hide(posting_id):
     page = calculate_posting_page_number(posting)
 
     flash_success('Der Beitrag wurde versteckt.', icon='hidden')
-    signals.posting_hidden.send(None, posting_id=posting.id)
+    signals.posting_hidden.send(None, posting_id=posting.id, moderator_id=moderator_id)
     return url_for('.topic_view',
                    topic_id=posting.topic.id,
                    page=page,
