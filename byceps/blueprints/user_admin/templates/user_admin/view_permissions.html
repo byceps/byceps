@@ -50,7 +50,7 @@
         <td>
           {%- if permissions %}
           <ul class="permissions">
-            {%- for permission in permissions|sort(attribute='title') %}
+            {%- for permission in permissions|sort(attribute='id') %}
             <li>{{ permission.title }}<br><span class="monospace">{{ permission.id|dim }}</span></li>
             {%- endfor %}
           </ul>
