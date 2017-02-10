@@ -37,7 +37,7 @@
         <td>
           <ul>
             {%- for permission in permissions|sort(attribute='title') %}
-            <li>{{ permission.title }} {{ '(<span class="monospace">%s</span>)'|format(permission.id)|dim }}</li>
+            <li>{{ permission.title }}<br><span class="monospace">{{ permission.id|dim }}</span></li>
             {%- endfor %}
           </ul>
         </td>
