@@ -30,6 +30,7 @@
         <th class="centered">Artikel</th>
         <th class="centered">Bestellungen</th>
         <th class="centered">Tickets</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -47,6 +48,16 @@
         <td class="centered bignumber">{{ article_count_by_party_id[party.id] }}</td>
         <td class="centered bignumber">{{ order_count_by_party_id[party.id] }}</td>
         <td class="centered bignumber">{{ ticket_count_by_party_id[party.id] }}</td>
+        <td>
+          {%- if g.current_user.has_permission(PartyPermission.update) %}
+          <div class="dropdown left">
+            <button class="dropdown-toggle button button--compact">{{ render_icon('caret-down') }}</button>
+            <ol>
+              <li><a href="{{ url_for('.update_form', party_id=party.id) }}">{{ render_icon('edit') }} bearbeiten</a></li>
+            </ol>
+          </div>
+          {%- endif %}
+        </td>
       </tr>
       {%- endfor %}
     </tbody>

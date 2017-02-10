@@ -15,11 +15,31 @@ from ..brand.models import Brand
 from .models import Party
 
 
+class UnknownPartyId(Exception):
+    pass
+
+
 def create_party(party_id, brand_id, title, starts_at, ends_at):
     """Create a party."""
     party = Party(party_id, brand_id, title, starts_at, ends_at)
 
     db.session.add(party)
+    db.session.commit()
+
+    return party
+
+
+def update_party(party_id, title, starts_at, ends_at):
+    """Update a party."""
+    party = find_party(party_id)
+
+    if party is None:
+        raise UnknownPartyId(party_id)
+
+    party.title = title
+    party.starts_at = starts_at
+    party.ends_at = ends_at
+
     db.session.commit()
 
     return party

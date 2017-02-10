@@ -24,7 +24,7 @@ from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 
 from .authorization import PartyPermission
-from .forms import CreateForm
+from .forms import CreateForm, UpdateForm
 
 
 blueprint = create_blueprint('party_admin', __name__)
@@ -120,6 +120,43 @@ def create(brand_id):
 
     flash_success('Die Party "{}" wurde angelegt.', party.title)
     return redirect_to('.index_for_brand', brand_id=brand.id)
+
+
+@blueprint.route('/parties/<party_id>/update')
+@permission_required(PartyPermission.update)
+@templated
+def update_form(party_id, erroneous_form=None):
+    """Show form to update the party."""
+    party = _get_party_or_404(party_id)
+
+    form = erroneous_form if erroneous_form else UpdateForm(obj=party)
+
+    return {
+        'form': form,
+        'party': party,
+    }
+
+
+@blueprint.route('/parties/<party_id>', methods=['POST'])
+@permission_required(PartyPermission.update)
+def update(party_id):
+    """Update a party."""
+    form = UpdateForm(request.form)
+    if not form.validate():
+        return update_form(party_id, form)
+
+    title = form.title.data.strip()
+    starts_at = form.starts_at.data
+    ends_at = form.ends_at.data
+
+    try:
+        party = party_service.update_party(party_id, title, starts_at, ends_at)
+    except party_service.UnknownPartyId:
+        abort(404, 'Unknown party ID "{}".'.format(party_id))
+
+    flash_success('Der Party "{}" wurde aktualisiert.', party.title)
+
+    return redirect_to('.view', party_id=party.id)
 
 
 def _get_brand_or_404(brand_id):
