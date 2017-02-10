@@ -96,21 +96,31 @@ def get_permissions_by_roles_for_user_with_titles(user_id):
 
     Titles are undeferred to avoid lots of additional queries.
     """
-    permissions = Permission.query \
+    roles = Role.query \
         .options(
             db.undefer('title'),
-            db.joinedload('role_permissions').joinedload('role').undefer('title')
         ) \
-        .join(RolePermission) \
-        .join(Role) \
         .join(UserRole) \
         .filter(UserRole.user_id == user_id) \
         .all()
 
-    permissions_by_role = defaultdict(set)
+    role_ids = {r.id for r in roles}
+
+    permissions = Permission.query \
+        .options(
+            db.undefer('title'),
+            db.joinedload('role_permissions').joinedload('role')
+        ) \
+        .join(RolePermission) \
+        .join(Role) \
+        .filter(Role.id.in_(role_ids)) \
+        .all()
+
+    permissions_by_role = {r: set() for r in roles}
 
     for permission in permissions:
         for role in permission.roles:
-            permissions_by_role[role].add(permission)
+            if role in permissions_by_role:
+                permissions_by_role[role].add(permission)
 
     return permissions_by_role
