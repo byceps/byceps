@@ -91,7 +91,7 @@ def get_all_roles_with_titles():
         .all()
 
 
-def get_permissions_by_roles_for_user_with_titles(user):
+def get_permissions_by_roles_for_user_with_titles(user_id):
     """Return permissions grouped by their respective roles for that user.
 
     Titles are undeferred to avoid lots of additional queries.
@@ -104,7 +104,7 @@ def get_permissions_by_roles_for_user_with_titles(user):
         .join(RolePermission) \
         .join(Role) \
         .join(UserRole) \
-        .filter(UserRole.user == user) \
+        .filter(UserRole.user_id == user_id) \
         .all()
 
     permissions_by_role = defaultdict(set)

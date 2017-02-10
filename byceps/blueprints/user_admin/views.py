@@ -127,7 +127,7 @@ def view_permissions(user_id):
     user = _get_user_or_404(user_id)
 
     permissions_by_role = authorization_service \
-        .get_permissions_by_roles_for_user_with_titles(user)
+        .get_permissions_by_roles_for_user_with_titles(user.id)
 
     return {
         'user': user,
