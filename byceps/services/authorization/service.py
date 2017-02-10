@@ -71,7 +71,7 @@ def get_permission_ids_for_user(user_id):
     return frozenset(rp.permission_id for rp in role_permissions)
 
 
-def get_permissions_with_titles():
+def get_all_permissions_with_titles():
     """Return all permissions, with titles."""
     return Permission.query \
         .options(
@@ -81,7 +81,7 @@ def get_permissions_with_titles():
         .all()
 
 
-def get_roles_with_titles():
+def get_all_roles_with_titles():
     """Return all roles, with titles."""
     return Role.query \
         .options(

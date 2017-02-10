@@ -29,7 +29,7 @@ permission_registry.register_enum(RolePermission)
 @templated
 def permission_index():
     """List permissions."""
-    permissions = authorization_service.get_permissions_with_titles()
+    permissions = authorization_service.get_all_permissions_with_titles()
 
     return {'permissions': permissions}
 
@@ -39,6 +39,6 @@ def permission_index():
 @templated
 def role_index():
     """List roles."""
-    roles = authorization_service.get_roles_with_titles()
+    roles = authorization_service.get_all_roles_with_titles()
 
     return {'roles': roles}
