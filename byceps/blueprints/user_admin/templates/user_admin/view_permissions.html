@@ -7,6 +7,19 @@
 {% set current_tab_user_id = user.id %}
 {% set title = 'Benutzer - Berechtigungen - %s'|format(user.screen_name) %}
 
+{% block head %}
+  <style>
+    ul.permissions {
+      margin: 0;
+      padding-left: 1em;
+    }
+
+    ul.permissions li + li {
+      margin-top: 0.5em;
+    }
+  </style>
+{%- endblock %}
+
 {% block body %}
 
   <nav class="breadcrumbs">
@@ -35,7 +48,7 @@
           <span class="monospace">{{ role.id|dim }}</span>
         </td>
         <td>
-          <ul>
+          <ul class="permissions">
             {%- for permission in permissions|sort(attribute='title') %}
             <li>{{ permission.title }}<br><span class="monospace">{{ permission.id|dim }}</span></li>
             {%- endfor %}
