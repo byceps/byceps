@@ -48,11 +48,15 @@
           <span class="monospace">{{ role.id|dim }}</span>
         </td>
         <td>
+          {%- if permissions %}
           <ul class="permissions">
             {%- for permission in permissions|sort(attribute='title') %}
             <li>{{ permission.title }}<br><span class="monospace">{{ permission.id|dim }}</span></li>
             {%- endfor %}
           </ul>
+          {%- else %}
+          <p class="dimmed">keine</p>
+          {%- endif %}
         </td>
       </tr>
       {%- endfor %}
