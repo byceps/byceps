@@ -61,6 +61,7 @@
   {%- if g.current_user.has_permission(BoardTopicPermission.move) %}
   <h2>{{ render_icon('move') }} Verschieben</h2>
   <p>Dieses Thema befindet sich in der Kategorie &quot;{{ topic.category.title }}&quot;.</p>
+    {%- if categories %}
   <div class="button-row">
     <form action="{{ url_for('.topic_move', topic_id=topic.id) }}" method="post">
       Neue Kategorie:
@@ -72,6 +73,11 @@
       <button type="submit" class="button">{{ render_icon('move') }} verschieben</button>
     </form>
   </div>
+    {%- else %}
+  <small>
+    <p>Es gibt keine anderen Kategorien in diesem Forum, daher kann das Thema nicht verschoben werden.</p>
+  </small>
+    {%- endif %}
   {%- endif %}
 
 {%- endblock %}
