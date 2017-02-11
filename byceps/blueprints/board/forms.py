@@ -9,13 +9,13 @@ byceps.blueprints.board.forms
 """
 
 from wtforms import StringField, TextAreaField
-from wtforms.validators import DataRequired
+from wtforms.validators import InputRequired, Length
 
 from ...util.l10n import LocalizedForm
 
 
 class PostingCreateForm(LocalizedForm):
-    body = TextAreaField('Text', validators=[DataRequired()])
+    body = TextAreaField('Text', validators=[InputRequired()])
 
 
 class PostingUpdateForm(PostingCreateForm):
@@ -23,7 +23,7 @@ class PostingUpdateForm(PostingCreateForm):
 
 
 class TopicCreateForm(PostingCreateForm):
-    title = StringField('Titel', validators=[DataRequired()])
+    title = StringField('Titel', validators=[InputRequired(), Length(max=80)])
 
 
 class TopicUpdateForm(TopicCreateForm):

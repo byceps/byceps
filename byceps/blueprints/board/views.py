@@ -158,6 +158,8 @@ def topic_create_form(category_id, erroneous_form=None):
 def topic_create(category_id):
     """Create a topic in the category."""
     form = TopicCreateForm(request.form)
+    if not form.validate():
+        return topic_create_form(category_id, form)
 
     category = board_service.find_category_by_id(category_id)
     if category is None:
@@ -178,7 +180,7 @@ def topic_create(category_id):
 @blueprint.route('/topics/<uuid:topic_id>/update')
 @permission_required(BoardTopicPermission.update)
 @templated
-def topic_update_form(topic_id):
+def topic_update_form(topic_id, erroneous_form=None):
     """Show form to update a topic."""
     topic = _get_topic_or_404(topic_id)
     url = topic.external_url
@@ -196,7 +198,8 @@ def topic_update_form(topic_id):
         flash_error('Du darfst dieses Thema nicht bearbeiten.')
         return redirect(url)
 
-    form = TopicUpdateForm(obj=topic, body=topic.initial_posting.body)
+    form = erroneous_form if erroneous_form \
+            else TopicUpdateForm(obj=topic, body=topic.initial_posting.body)
 
     return {
         'form': form,
@@ -225,6 +228,8 @@ def topic_update(topic_id):
         return redirect(url)
 
     form = TopicUpdateForm(request.form)
+    if not form.validate():
+        return topic_update_form(topic_id, form)
 
     board_service.update_topic(topic, g.current_user.id, form.title.data,
                                form.body.data)
