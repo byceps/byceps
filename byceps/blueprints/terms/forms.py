@@ -9,10 +9,10 @@ byceps.blueprints.terms.forms
 """
 
 from wtforms import BooleanField
-from wtforms.validators import DataRequired
+from wtforms.validators import InputRequired
 
 from ...util.l10n import LocalizedForm
 
 
 class ConsentForm(LocalizedForm):
-    consent_to_terms = BooleanField('AGB', [DataRequired()])
+    consent_to_terms = BooleanField('AGB', [InputRequired()])

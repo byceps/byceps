@@ -10,7 +10,7 @@ byceps.blueprints.authentication.forms
 
 from flask import g
 from wtforms import BooleanField, PasswordField, StringField
-from wtforms.validators import DataRequired, EqualTo, Length, ValidationError
+from wtforms.validators import InputRequired, EqualTo, Length, ValidationError
 
 from ...services.authentication.password import service as password_service
 from ...util.l10n import LocalizedForm
@@ -20,18 +20,18 @@ MINIMUM_PASSWORD_LENGTH = 10
 
 
 class LoginForm(LocalizedForm):
-    screen_name = StringField('Benutzername', [DataRequired()])
-    password = PasswordField('Passwort', [DataRequired()])
+    screen_name = StringField('Benutzername', [InputRequired()])
+    password = PasswordField('Passwort', [InputRequired()])
     permanent = BooleanField()
 
 
 class RequestPasswordResetForm(LocalizedForm):
-    screen_name = StringField('Benutzername', [DataRequired()])
+    screen_name = StringField('Benutzername', [InputRequired()])
 
 
 def _get_new_password_validators(companion_field_name):
     return [
-        DataRequired(),
+        InputRequired(),
         EqualTo(companion_field_name,
                 message='Das neue Passwort muss mit der Wiederholung übereinstimmen.'),
         Length(min=MINIMUM_PASSWORD_LENGTH),
@@ -48,7 +48,7 @@ class ResetPasswordForm(LocalizedForm):
 
 
 class UpdatePasswordForm(ResetPasswordForm):
-    old_password = PasswordField('Bisheriges Passwort', [DataRequired()])
+    old_password = PasswordField('Bisheriges Passwort', [InputRequired()])
 
     def validate_old_password(form, field):
         user_id = g.current_user.id
