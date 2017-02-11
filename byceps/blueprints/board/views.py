@@ -371,7 +371,10 @@ def topic_move(topic_id):
     topic = _get_topic_or_404(topic_id)
     moderator_id = g.current_user.id
 
-    new_category_id = request.form['category_id']
+    new_category_id = request.form.get('category_id')
+    if not new_category_id:
+        abort(400, 'No target category ID given.')
+
     new_category = board_service.find_category_by_id(new_category_id)
     if new_category is None:
         abort(404)
