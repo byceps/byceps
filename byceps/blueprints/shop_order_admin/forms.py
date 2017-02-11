@@ -9,10 +9,10 @@ byceps.blueprints.shop_order_admin.forms
 """
 
 from wtforms import TextAreaField
-from wtforms.validators import InputRequired
+from wtforms.validators import InputRequired, Length
 
 from ...util.l10n import LocalizedForm
 
 
 class CancelForm(LocalizedForm):
-    reason = TextAreaField('Begründung', validators=[InputRequired()])
+    reason = TextAreaField('Begründung', validators=[InputRequired(), Length(max=200)])
