@@ -10,7 +10,7 @@ byceps.blueprints.shop_article_admin.forms
 
 from wtforms import BooleanField, DecimalField, IntegerField, SelectField, \
     StringField
-from wtforms.validators import InputRequired
+from wtforms.validators import InputRequired, Optional
 
 from ...util.l10n import LocalizedForm
 
@@ -23,7 +23,7 @@ class ArticleCreateForm(LocalizedForm):
 
 
 class ArticleUpdateForm(ArticleCreateForm):
-    max_quantity_per_order = IntegerField('Maximale Anzahl pro Bestellung')
+    max_quantity_per_order = IntegerField('Maximale Anzahl pro Bestellung', validators=[Optional()])
     not_directly_orderable = BooleanField('nur indirekt bestellbar')
     requires_separate_order = BooleanField('muss separat bestellt werden')
 
