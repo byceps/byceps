@@ -477,9 +477,6 @@ h2 {
   flex-grow: 1;
 }
 
-.user-profile-header-cell-top,
-.user-profile-header-cell-bottom {
-}
 .user-profile-header-cell-top {
   font-weight: bold;
   padding-bottom: 3px;
