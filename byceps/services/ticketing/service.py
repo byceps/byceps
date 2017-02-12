@@ -120,10 +120,12 @@ def uses_any_ticket_for_party(user_id, party_id):
 def get_attended_parties(user_id):
     """Return the parties the user has attended in the past."""
     # Note: Party dates aren't UTC, yet.
-    return Party.query \
+    parties = Party.query \
         .filter(Party.ends_at < datetime.now()) \
         .join(Category).join(Ticket).filter(Ticket.used_by_id == user_id) \
         .all()
+
+    return [party.to_tuple() for party in parties]
 
 
 def get_ticket_with_details(ticket_id):

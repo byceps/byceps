@@ -8,6 +8,7 @@ byceps.services.party.models
 :License: Modified BSD, see LICENSE for details.
 """
 
+from collections import namedtuple
 from datetime import datetime
 
 from sqlalchemy.ext.hybrid import hybrid_property
@@ -47,7 +48,20 @@ class Party(db.Model):
         """Returns true if the party has ended."""
         return self.ends_at < datetime.now()
 
+    def to_tuple(self):
+        """Return a tuple representation of (parts of) this entity."""
+        return PartyTuple(
+            self.id,
+            self.brand_id,
+            self.title,
+            self.starts_at,
+            self.ends_at,
+        )
+
     def __repr__(self):
         return ReprBuilder(self) \
             .add_with_lookup('id') \
             .build()
+
+
+PartyTuple = namedtuple('PartyTuple', 'id, brand_id, title, starts_at, ends_at')
