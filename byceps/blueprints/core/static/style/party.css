@@ -280,9 +280,6 @@ h2 {
   .user-comment-aside .creator .avatar {
     display: block;
   }
-  .user-comment-aside .creator .avatar img {
-    border-radius: 3px;
-  }
 
   .user-comment-aside .user-badges {
     margin-top: 8px;
