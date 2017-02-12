@@ -8,6 +8,8 @@ byceps.services.ticketing.service
 :License: Modified BSD, see LICENSE for details.
 """
 
+from datetime import datetime
+
 from ...database import db
 
 from ..party.models import Party
@@ -116,8 +118,10 @@ def uses_any_ticket_for_party(user_id, party_id):
 
 
 def get_attended_parties(user_id):
-    """Return the parties the user has attended."""
+    """Return the parties the user has attended in the past."""
+    # Note: Party dates aren't UTC, yet.
     return Party.query \
+        .filter(Party.ends_at < datetime.now()) \
         .join(Category).join(Ticket).filter(Ticket.used_by_id == user_id) \
         .all()
 
