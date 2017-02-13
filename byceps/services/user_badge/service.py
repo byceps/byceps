@@ -61,6 +61,7 @@ def get_badges_for_users(user_ids):
 
     return dict(badges_by_user_id)
 
+
 def get_all_badges():
     """Return all badges."""
     return Badge.query.all()
