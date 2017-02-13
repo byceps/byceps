@@ -13,6 +13,7 @@ from datetime import datetime
 from ...database import db
 
 from ..party.models import Party
+from ..party import service as party_service
 from ..seating.models.category import Category
 from ..seating.models.seat import Seat
 from ..user.models.user import User
@@ -121,10 +122,15 @@ def uses_any_ticket_for_party(user_id, party_id):
 def get_attended_parties(user_id):
     """Return the parties the user has attended in the past."""
     # Note: Party dates aren't UTC, yet.
-    parties = Party.query \
+    parties_via_ticket = Party.query \
         .filter(Party.ends_at < datetime.now()) \
         .join(Category).join(Ticket).filter(Ticket.used_by_id == user_id) \
         .all()
+
+    archived_attendance_party_ids = _get_archived_attendance_party_ids(user_id)
+    archived_attendance_parties = party_service.get_parties(archived_attendance_party_ids)
+
+    parties = parties_via_ticket + archived_attendance_parties
 
     return [party.to_tuple() for party in parties]
 
@@ -235,3 +241,13 @@ def create_archived_attendance(user_id, party_id):
     db.session.commit()
 
     return attendance
+
+
+def _get_archived_attendance_party_ids(user_id):
+    """Return the IDs of the legacy parties the user has attended."""
+    party_id_rows = db.session \
+        .query(ArchivedAttendance.party_id) \
+        .filter(User.id == user_id) \
+        .all()
+
+    return {row[0] for row in party_id_rows}
