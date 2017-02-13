@@ -256,7 +256,7 @@ def _get_archived_attendance_party_ids(user_id):
     """Return the IDs of the legacy parties the user has attended."""
     party_id_rows = db.session \
         .query(ArchivedAttendance.party_id) \
-        .filter(User.id == user_id) \
+        .filter(ArchivedAttendance.user_id == user_id) \
         .all()
 
     return _get_first_column_values_as_set(party_id_rows)
