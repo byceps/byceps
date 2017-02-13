@@ -17,6 +17,7 @@ from ..seating.models.category import Category
 from ..seating.models.seat import Seat
 from ..user.models.user import User
 
+from .models.archived_attendance import ArchivedAttendance
 from .models.ticket import Ticket
 from .models.ticket_bundle import TicketBundle
 
@@ -220,3 +221,17 @@ def delete_ticket_bundle(bundle):
     db.session.delete(bundle)
 
     db.session.commit()
+
+
+# -------------------------------------------------------------------- #
+# archived attendances
+
+
+def create_archived_attendance(user_id, party_id):
+    """Create an archived attendance of the user at the party."""
+    attendance = ArchivedAttendance(user_id, party_id)
+
+    db.session.add(attendance)
+    db.session.commit()
+
+    return attendance

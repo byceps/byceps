@@ -37,6 +37,15 @@ def validate_party(ctx, param, party_id):
     return party
 
 
+def validate_user_id(ctx, param, user_id):
+    user = user_service.find_user(user_id)
+
+    if not user:
+        raise click.BadParameter('Unknown user ID "{}".'.format(user_id))
+
+    return user
+
+
 def validate_user_screen_name(ctx, param, screen_name):
     user = user_service.find_user_by_screen_name(screen_name)
 
