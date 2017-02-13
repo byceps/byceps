@@ -9,6 +9,7 @@ byceps.services.ticketing.service
 """
 
 from datetime import datetime
+from itertools import chain
 
 from ...database import db
 
@@ -121,18 +122,26 @@ def uses_any_ticket_for_party(user_id, party_id):
 
 def get_attended_parties(user_id):
     """Return the parties the user has attended in the past."""
+    ticket_attendance_party_ids = _get_attended_party_ids(user_id)
+    archived_attendance_party_ids = _get_archived_attendance_party_ids(user_id)
+
+    party_ids = frozenset(chain(ticket_attendance_party_ids, archived_attendance_party_ids))
+
+    parties = party_service.get_parties(party_ids)
+
+    return [party.to_tuple() for party in parties]
+
+
+def _get_attended_party_ids(user_id):
+    """Return the IDs of the non-legacy parties the user has attended."""
     # Note: Party dates aren't UTC, yet.
-    parties_via_ticket = Party.query \
+    party_id_rows = db.session \
+        .query(Party.id) \
         .filter(Party.ends_at < datetime.now()) \
         .join(Category).join(Ticket).filter(Ticket.used_by_id == user_id) \
         .all()
 
-    archived_attendance_party_ids = _get_archived_attendance_party_ids(user_id)
-    archived_attendance_parties = party_service.get_parties(archived_attendance_party_ids)
-
-    parties = parties_via_ticket + archived_attendance_parties
-
-    return [party.to_tuple() for party in parties]
+    return _get_first_column_values_as_set(party_id_rows)
 
 
 def get_ticket_with_details(ticket_id):
@@ -250,4 +259,13 @@ def _get_archived_attendance_party_ids(user_id):
         .filter(User.id == user_id) \
         .all()
 
-    return {row[0] for row in party_id_rows}
+    return _get_first_column_values_as_set(party_id_rows)
+
+
+# -------------------------------------------------------------------- #
+# helpers
+
+
+def _get_first_column_values_as_set(rows):
+    """Return the first element of each row as a set."""
+    return frozenset(row[0] for row in rows)
