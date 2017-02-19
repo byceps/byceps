@@ -33,6 +33,15 @@ def find_badge(badge_id):
     return badge.to_tuple()
 
 
+def get_badges(badge_ids):
+    """Return the badges with those ids."""
+    badges = Badge.query \
+        .filter(Badge.id.in_(badge_ids)) \
+        .all()
+
+    return [badge.to_tuple() for badge in badges]
+
+
 def get_badges_for_user(user_id):
     """Return all badges that have been awarded to the user."""
     badges = Badge.query \
@@ -48,14 +57,15 @@ def get_badges_for_users(user_ids):
     """
     awardings = BadgeAwarding.query \
         .filter(BadgeAwarding.user_id.in_(user_ids)) \
-        .options(
-            db.joinedload(BadgeAwarding.badge),
-        ) \
         .all()
+
+    badge_ids = frozenset(awarding.badge_id for awarding in awardings)
+    badges = get_badges(badge_ids)
+    badges_by_id = {badge.id: badge for badge in badges}
 
     badges_by_user_id = defaultdict(set)
     for awarding in awardings:
-        badge = awarding.badge.to_tuple()
+        badge = badges_by_id[awarding.badge_id]
         badges_by_user_id[awarding.user_id].add(badge)
 
     return dict(badges_by_user_id)

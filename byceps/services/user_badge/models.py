@@ -60,8 +60,6 @@ class BadgeAwarding(db.Model):
     __tablename__ = 'user_badge_awardings'
 
     badge_id = db.Column(db.Uuid, db.ForeignKey('user_badges.id'), primary_key=True)
-    badge = db.relationship(Badge, collection_class=set,
-                            backref=db.backref('awardings', collection_class=set))
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
     awarded_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
 
