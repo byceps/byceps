@@ -33,15 +33,6 @@ def find_badge(badge_id):
     return badge.to_tuple()
 
 
-def get_awardings_of_badge(badge_id):
-    """Return the awardings (user and date) of this badge."""
-    awardings = BadgeAwarding.query \
-        .filter_by(badge_id=badge_id) \
-        .all()
-
-    return [awarding.to_tuple() for awarding in awardings]
-
-
 def get_badges_for_user(user_id):
     """Return all badges that have been awarded to the user."""
     badges = Badge.query \
@@ -85,3 +76,12 @@ def award_badge_to_user(badge_id, user_id):
     db.session.commit()
 
     return awarding.to_tuple()
+
+
+def get_awardings_of_badge(badge_id):
+    """Return the awardings (user and date) of this badge."""
+    awardings = BadgeAwarding.query \
+        .filter_by(badge_id=badge_id) \
+        .all()
+
+    return [awarding.to_tuple() for awarding in awardings]
