@@ -80,17 +80,17 @@ def remove_avatar_image(user):
     db.session.commit()
 
 
+def get_avatar_for_user(user_id):
+    """Return the user's current avatar."""
+    avatars_by_user_id = get_avatars_for_users({user_id})
+    return avatars_by_user_id[user_id]
+
+
 def get_avatars_for_user(user_id):
     """Return all avatars uploaded by the user."""
     return Avatar.query \
         .filter_by(creator_id=user_id) \
         .all()
-
-
-def get_avatar_for_user(user_id):
-    """Return the user's current avatar."""
-    avatars_by_user_id = get_avatars_for_users({user_id})
-    return avatars_by_user_id[user_id]
 
 
 def get_avatars_for_users(user_ids):
