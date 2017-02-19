@@ -44,7 +44,7 @@ blueprint = create_blueprint('authentication', __name__)
 
 class CurrentUser(object):
 
-    def __init__(self, user, avatar):
+    def __init__(self, user, avatar_url):
         self._user = user
 
         self.id = user.id
@@ -52,7 +52,7 @@ class CurrentUser(object):
         self.is_active = user.is_active
         self.is_anonymous = user.is_anonymous
 
-        self.avatar = avatar
+        self.avatar_url = avatar_url
 
     @property
     def is_orga(self):
@@ -75,11 +75,12 @@ class CurrentUser(object):
 def before_request():
     user = _get_current_user()
 
-    avatar = None
+    avatar_url = None
     if not user.is_anonymous:
         avatar = user_avatar_service.get_avatar_for_user(user.id)
+        avatar_url = avatar.get('url', None)
 
-    g.current_user = CurrentUser(user, avatar)
+    g.current_user = CurrentUser(user, avatar_url)
 
 
 def _get_current_user():

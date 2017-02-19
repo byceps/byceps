@@ -47,6 +47,10 @@ class AnonymousUser(object):
         return None
 
     @property
+    def avatar_url(self):
+        return None
+
+    @property
     def is_orga(self):
         return False
 
@@ -89,6 +93,11 @@ class User(db.Model):
     @property
     def is_active(self):
         return self.enabled
+
+    @property
+    def avatar_url(self):
+        avatar = self.avatar
+        return avatar.url if (avatar is not None) else None
 
     def has_permission(self, permission):
         return permission in self.permissions

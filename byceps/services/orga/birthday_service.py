@@ -41,7 +41,7 @@ def collect_orgas_with_next_birthdays(*, limit=None):
             'id': user.id,
             'screen_name': user.screen_name,
             'detail': user.detail,
-            'avatar': avatar,
+            'avatar_url': avatar.get('url', None),
             'is_orga': False,
         }
 
