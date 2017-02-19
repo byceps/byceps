@@ -15,9 +15,10 @@ from ...database import db
 from .models import Badge, BadgeAwarding
 
 
-def create_badge(label, image_filename, *, description=None):
+def create_badge(label, image_filename, *, brand_id=None, description=None):
     """Introduce a new badge."""
-    badge = Badge(label, image_filename, description=description)
+    badge = Badge(label, image_filename, brand_id=brand_id,
+                  description=description)
 
     db.session.add(badge)
     db.session.commit()
