@@ -5,6 +5,14 @@
 {% set current_page = 'party.archive' %}
 {% set title = 'Party-Archiv' %}
 
+{% block head %}
+  <style>
+    .party-archive td {
+      line-height: 1.6;
+    }
+  </style>
+{%- endblock %}
+
 {% block body %}
 
   <h1>{{ title }}</h1>
@@ -21,7 +29,7 @@
         <th>{{ render_icon('users') }} Teilnehmer</th>
       </tr>
       <tr>
-        <td style="line-height: 1.6;">
+        <td>
           {%- for user in attendees -%}
             {{- render_user_avatar_20_and_link(user) -}}
             {%- if not loop.last %}, {% endif -%}
