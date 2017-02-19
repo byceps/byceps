@@ -98,13 +98,13 @@ def get_avatar_url_for_user(user_id):
 
 def get_avatar_urls_for_users(user_ids):
     """Return the URLs of those users' current avatars."""
-    selections = AvatarSelection.query \
-        .options(db.joinedload('avatar')) \
+    user_ids_and_avatars = db.session.query(AvatarSelection.user_id, Avatar) \
+        .join(Avatar) \
         .filter(AvatarSelection.user_id.in_(user_ids)) \
         .all()
 
-    urls_by_user_id = {selection.user_id: selection.avatar.url
-                       for selection in selections}
+    urls_by_user_id = {user_id: avatar.url
+                       for user_id, avatar in user_ids_and_avatars}
 
     # Include all user IDs in result.
     return {user_id: urls_by_user_id.get(user_id) for user_id in user_ids}
