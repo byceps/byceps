@@ -8,6 +8,7 @@ byceps.services.user_avatar.models
 :License: Modified BSD, see LICENSE for details.
 """
 
+from collections import namedtuple
 from datetime import datetime
 from pathlib import Path
 
@@ -77,3 +78,6 @@ class AvatarSelection(db.Model):
     def __init__(self, user_id, avatar_id):
         self.user_id = user_id
         self.avatar_id = avatar_id
+
+
+AvatarCreationTuple = namedtuple('AvatarCreationTuple', 'created_at, url')

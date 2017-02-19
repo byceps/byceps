@@ -16,7 +16,7 @@ from ...util.image.models import Dimensions, ImageType
 from ...util.image.typeguess import guess_type
 from ...util import upload
 
-from .models import Avatar, AvatarSelection
+from .models import Avatar, AvatarCreationTuple, AvatarSelection
 
 
 ALL_IMAGE_TYPES = frozenset(ImageType)
@@ -80,35 +80,20 @@ def remove_avatar_image(user):
     db.session.commit()
 
 
-def get_avatar_for_user(user_id):
-    """Return the user's current avatar."""
-    avatars_by_user_id = get_avatars_for_users({user_id})
-    return avatars_by_user_id[user_id]
-
-
-def get_avatars_for_user(user_id):
-    """Return all avatars uploaded by the user."""
-    return Avatar.query \
+def get_avatars_uploaded_by_user(user_id):
+    """Return the avatars uploaded by the user."""
+    avatars = Avatar.query \
         .filter_by(creator_id=user_id) \
         .all()
 
+    return [AvatarCreationTuple(avatar.created_at, avatar.url)
+            for avatar in avatars]
 
-def get_avatars_for_users(user_ids):
-    """Return the those users' current avatars."""
-    urls_by_user_id = get_avatar_urls_for_users(user_ids)
 
-    avatars_by_user_id = {}
-
-    for user_id in user_ids:
-        avatar = {}
-
-        url = urls_by_user_id.get(user_id)
-        if url:
-            avatar['url'] = url
-
-        avatars_by_user_id[user_id] = avatar
-
-    return avatars_by_user_id
+def get_avatar_url_for_user(user_id):
+    """Return the URL of the user's current avatar, or `None` if not set."""
+    avatar_urls_by_user_id = get_avatar_urls_for_users({user_id})
+    return avatar_urls_by_user_id.get(user_id)
 
 
 def get_avatar_urls_for_users(user_ids):
@@ -118,4 +103,8 @@ def get_avatar_urls_for_users(user_ids):
         .filter(AvatarSelection.user_id.in_(user_ids)) \
         .all()
 
-    return {selection.user_id: selection.avatar.url for selection in selections}
+    urls_by_user_id = {selection.user_id: selection.avatar.url
+                       for selection in selections}
+
+    # Include all user IDs in result.
+    return {user_id: urls_by_user_id.get(user_id) for user_id in user_ids}

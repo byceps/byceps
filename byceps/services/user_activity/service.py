@@ -33,7 +33,7 @@ def get_activities_for_user(user_id):
 
 def get_avatar_updates_for_user(user_id):
     """Yield the user's avatar updates as activities."""
-    avatars = avatar_service.get_avatars_for_user(user_id)
+    avatars = avatar_service.get_avatars_uploaded_by_user(user_id)
 
     for avatar in avatars:
         type_ = ActivityType.avatar_update

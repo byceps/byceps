@@ -32,16 +32,17 @@ def collect_orgas_with_next_birthdays(*, limit=None):
 
     user_ids = frozenset(user.id for user in orgas)
 
-    avatars_by_user_id = user_avatar_service.get_avatars_for_users(user_ids)
+    avatar_urls_by_user_id = user_avatar_service \
+        .get_avatar_urls_for_users(user_ids)
 
     for user in orgas:
-        avatar = avatars_by_user_id.get(user.id)
+        avatar_url = avatar_urls_by_user_id.get(user.id)
 
         yield {
             'id': user.id,
             'screen_name': user.screen_name,
             'detail': user.detail,
-            'avatar_url': avatar.get('url', None),
+            'avatar_url': avatar_url,
             'is_orga': False,
         }
 

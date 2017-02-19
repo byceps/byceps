@@ -77,8 +77,7 @@ def before_request():
 
     avatar_url = None
     if not user.is_anonymous:
-        avatar = user_avatar_service.get_avatar_for_user(user.id)
-        avatar_url = avatar.get('url', None)
+        avatar_url = user_avatar_service.get_avatar_url_for_user(user.id)
 
     g.current_user = CurrentUser(user, avatar_url)
 
