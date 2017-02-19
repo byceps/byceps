@@ -8,6 +8,7 @@ byceps.services.user_badge.models
 :License: Modified BSD, see LICENSE for details.
 """
 
+from collections import namedtuple
 from datetime import datetime
 
 from flask import url_for
@@ -37,6 +38,16 @@ class Badge(db.Model):
         filename = 'users/badges/{}'.format(self.image_filename)
         return url_for('global_file', filename=filename)
 
+    def to_tuple(self):
+        """Return a tuple representation of this entity."""
+        return BadgeTuple(
+            self.id,
+            self.brand_id,
+            self.label,
+            self.description,
+            self.image_url
+        )
+
     def __repr__(self):
         return ReprBuilder(self) \
             .add_with_lookup('brand_id') \
@@ -57,3 +68,19 @@ class BadgeAwarding(db.Model):
     def __init__(self, badge_id, user_id):
         self.badge_id = badge_id
         self.user_id = user_id
+
+    def to_tuple(self):
+        """Return a tuple representation of this entity."""
+        return BadgeAwardingTuple(
+            self.badge_id,
+            self.user_id,
+            self.awarded_at
+        )
+
+
+BadgeTuple = namedtuple('BadgeTuple',
+    'id, brand_id, label, description, image_url')
+
+
+BadgeAwardingTuple = namedtuple('BadgeAwardingTuple',
+    'badge_id, user_id, awarded_at')

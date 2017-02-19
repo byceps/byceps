@@ -23,26 +23,32 @@ def create_badge(label, image_filename, *, brand_id=None, description=None):
     db.session.add(badge)
     db.session.commit()
 
-    return badge
+    return badge.to_tuple()
 
 
 def find_badge(badge_id):
     """Return the badge with that id, or `None` if not found."""
-    return Badge.query.get(badge_id)
+    badge = Badge.query.get(badge_id)
+
+    return badge.to_tuple()
 
 
 def get_awardings_of_badge(badge_id):
     """Return the awardings (user and date) of this badge."""
-    return BadgeAwarding.query \
+    awardings = BadgeAwarding.query \
         .filter_by(badge_id=badge_id) \
         .all()
+
+    return [awarding.to_tuple() for awarding in awardings]
 
 
 def get_badges_for_user(user_id):
     """Return all badges that have been awarded to the user."""
-    return Badge.query \
+    badges = Badge.query \
         .join(BadgeAwarding).filter_by(user_id=user_id) \
         .all()
+
+    return [badge.to_tuple() for badge in badges]
 
 
 def get_badges_for_users(user_ids):
@@ -58,14 +64,17 @@ def get_badges_for_users(user_ids):
 
     badges_by_user_id = defaultdict(set)
     for awarding in awardings:
-        badges_by_user_id[awarding.user_id].add(awarding.badge)
+        badge = awarding.badge.to_tuple()
+        badges_by_user_id[awarding.user_id].add(badge)
 
     return dict(badges_by_user_id)
 
 
 def get_all_badges():
     """Return all badges."""
-    return Badge.query.all()
+    badges = Badge.query.all()
+
+    return [badge.to_tuple() for badge in badges]
 
 
 def award_badge_to_user(badge_id, user_id):
@@ -75,4 +84,4 @@ def award_badge_to_user(badge_id, user_id):
     db.session.add(awarding)
     db.session.commit()
 
-    return awarding
+    return awarding.to_tuple()
