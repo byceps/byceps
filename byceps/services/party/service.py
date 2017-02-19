@@ -84,9 +84,10 @@ def get_active_parties():
         .all()
 
 
-def get_archived_parties():
-    """Return archived parties."""
+def get_archived_parties_for_brand(brand_id):
+    """Return archived parties for that brand."""
     return Party.query \
+        .filter_by(brand_id=brand_id) \
         .filter_by(is_archived=True) \
         .order_by(Party.starts_at.desc()) \
         .all()
