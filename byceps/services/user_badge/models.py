@@ -26,16 +26,16 @@ class Badge(db.Model):
     description = db.Column(db.UnicodeText, nullable=True)
     image_filename = db.Column(db.Unicode(80), nullable=False)
 
-    @property
-    def image_url(self):
-        filename = 'users/badges/{}'.format(self.image_filename)
-        return url_for('global_file', filename=filename)
-
     def __init__(self, label, image_filename, *, brand_id=None, description=None):
         self.brand_id = brand_id
         self.label = label
         self.description = description
         self.image_filename = image_filename
+
+    @property
+    def image_url(self):
+        filename = 'users/badges/{}'.format(self.image_filename)
+        return url_for('global_file', filename=filename)
 
     def __repr__(self):
         return ReprBuilder(self) \
