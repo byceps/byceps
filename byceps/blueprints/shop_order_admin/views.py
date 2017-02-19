@@ -87,7 +87,8 @@ def _get_events(order):
     events = order_service.get_order_events(order.id)
 
     user_ids = frozenset(event.data['initiator_id'] for event in events)
-    users_by_id = {str(user.id): user for user in user_service.find_users(user_ids)}
+    users = user_service.find_users(user_ids)
+    users_by_id = {str(user.id): user for user in users}
 
     for event in events:
         initiator_id = event.data.pop('initiator_id')

@@ -8,6 +8,7 @@ byceps.services.user.models.user
 :License: Modified BSD, see LICENSE for details.
 """
 
+from collections import namedtuple
 from datetime import datetime
 from uuid import UUID
 
@@ -128,3 +129,6 @@ class User(db.Model):
             .add_with_lookup('id') \
             .add_with_lookup('screen_name') \
             .build()
+
+
+UserTuple = namedtuple('UserTuple', 'id, screen_name, avatar_url, is_orga')

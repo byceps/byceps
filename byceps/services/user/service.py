@@ -18,11 +18,13 @@ from ..authentication.password import service as password_service
 from ..authorization import service as authorization_service
 from ..email import service as email_service
 from ..newsletter import service as newsletter_service
+from ..orga_team.models import OrgaTeam, Membership as OrgaTeamMembership
 from ..terms import service as terms_service
+from ..user_avatar.models import Avatar, AvatarSelection
 from ..verification_token import service as verification_token_service
 
 from .models.detail import UserDetail
-from .models.user import AnonymousUser, User
+from .models.user import AnonymousUser, User, UserTuple
 
 
 def count_users():
@@ -55,7 +57,7 @@ def count_disabled_users():
 
 
 def find_user(user_id, *, with_orga_teams=False):
-    """Return the user with that id, or `None` if not found."""
+    """Return the user with that ID, or `None` if not found."""
     query = User.query
 
     if with_orga_teams:
@@ -66,13 +68,35 @@ def find_user(user_id, *, with_orga_teams=False):
     return query.get(user_id)
 
 
-def find_users(user_ids):
-    """Return the users with those ids."""
-    users = User.query \
+def find_users(user_ids, *, party_id=None):
+    """Return the users and their current avatars' URLs with those IDs."""
+    rows = db.session \
+        .query(User.id, User.screen_name, Avatar) \
+        .outerjoin(AvatarSelection) \
+        .outerjoin(Avatar) \
         .filter(User.id.in_(frozenset(user_ids))) \
         .all()
 
-    return set(users)
+    if party_id is not None:
+        orga_team_members = db.session \
+            .query(OrgaTeamMembership.user_id) \
+            .join(OrgaTeam) \
+            .filter(OrgaTeam.party_id == party_id) \
+            .filter(OrgaTeamMembership.user_id.in_(frozenset(user_ids))) \
+            .group_by(OrgaTeamMembership.user_id) \
+            .having(db.func.count(OrgaTeamMembership.user_id) > 0) \
+            .all()
+    else:
+        orga_team_members = frozenset()
+
+    def to_tuples():
+        for user_id, screen_name, avatar in rows:
+            avatar_url = avatar.url if avatar else None
+            is_orga = user_id in orga_team_members
+
+            yield UserTuple(user_id, screen_name, avatar_url, is_orga)
+
+    return set(to_tuples())
 
 
 def find_user_by_screen_name(screen_name):
