@@ -8,7 +8,7 @@ byceps.blueprints.user_badge.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from flask import abort
+from flask import abort, g
 
 from ...services.user import service as user_service
 from ...services.user_badge import service as badge_service
@@ -41,7 +41,7 @@ def view(badge_id):
 
     awardings = badge_service.get_awardings_of_badge(badge.id)
     recipient_ids = [awarding.user_id for awarding in awardings]
-    recipients = user_service.get_users_with_avatars(recipient_ids)
+    recipients = user_service.find_users(recipient_ids, party_id=g.party.id)
 
     return {
         'badge': badge,
