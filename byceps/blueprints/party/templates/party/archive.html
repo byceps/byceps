@@ -7,8 +7,14 @@
 
 {% block head %}
   <style>
-    .party-archive td {
+    .attendees {
+      -moz-columns: 10rem;
+      -webkit-columns: 10rem;
+      columns: 10rem;
+    }
+    .attendees {
       line-height: 1.6;
+      padding-right: 2rem;
     }
   </style>
 {%- endblock %}
@@ -24,19 +30,12 @@
 
     {%- with attendees = attendees_by_party[party]|sort(attribute='screen_name') %}
       {%- if attendees %}
-    <table class="index wide">
-      <tr>
-        <th>{{ render_icon('users') }} Teilnehmer</th>
-      </tr>
-      <tr>
-        <td>
-          {%- for user in attendees -%}
-            {{- render_user_avatar_20_and_link(user) -}}
-            {%- if not loop.last %}, {% endif -%}
-          {%- endfor %}
-        </td>
-      </tr>
-    </table>
+      <h3>{{ render_icon('users') }} Teilnehmer</h3>
+      <ol class="attendees">
+        {%- for user in attendees -%}
+        <li>{{- render_user_avatar_20_and_link(user) -}}</li>
+        {%- endfor %}
+      </ol>
       {%- endif %}
     {%- endwith %}
   {%- else %}
