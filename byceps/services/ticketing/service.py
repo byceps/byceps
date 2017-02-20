@@ -8,6 +8,7 @@ byceps.services.ticketing.service
 :License: Modified BSD, see LICENSE for details.
 """
 
+from collections import defaultdict
 from datetime import datetime
 from itertools import chain
 
@@ -192,35 +193,41 @@ def count_tickets_for_party(party_id):
 
 def get_attendees_by_party(parties):
     """Return the parties' attendees, grouped by party."""
-    attendee_ids_by_party = {}
-    for party in parties:
-        attendee_ids = get_attendee_ids_for_party(party.id)
-        attendee_ids_by_party[party] = attendee_ids
+    party_ids = frozenset(party.id for party in parties)
+
+    attendee_ids_by_party_id = get_attendee_ids_for_parties(party_ids)
 
     all_attendee_ids = frozenset(
-        chain.from_iterable(attendee_ids_by_party.values()))
+        chain.from_iterable(attendee_ids_by_party_id.values()))
     all_attendees = user_service.find_users(all_attendee_ids)
     all_attendees_by_id = {user.id: user for user in all_attendees}
 
     attendees_by_party = {}
     for party in parties:
-        attendee_ids = attendee_ids_by_party[party]
+        attendee_ids = attendee_ids_by_party_id.get(party.id, frozenset())
+
         attendees = frozenset(all_attendees_by_id[attendee_id]
                               for attendee_id in attendee_ids)
+
         attendees_by_party[party] = attendees
 
     return attendees_by_party
 
 
-def get_attendee_ids_for_party(party_id):
-    """Return the party's attendees."""
-    attendee_id_rows = db.session \
-        .query(Ticket.used_by_id) \
+def get_attendee_ids_for_parties(party_ids):
+    """Return the partys' attendee IDs."""
+    rows = db.session \
+        .query(Category.party_id, Ticket.used_by_id) \
+        .filter(Category.party_id.in_(party_ids)) \
+        .join(Ticket) \
         .filter(Ticket.used_by_id != None) \
-        .join(Category).filter(Category.party_id == party_id) \
         .all()
 
-    return _get_first_column_values_as_set(attendee_id_rows)
+    attendee_ids_by_party_id = defaultdict(set)
+    for party_id, attendee_id in rows:
+        attendee_ids_by_party_id[party_id].add(attendee_id)
+
+    return dict(attendee_ids_by_party_id)
 
 
 # -------------------------------------------------------------------- #
