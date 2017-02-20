@@ -17,7 +17,7 @@ from ..party.models import Party
 from ..party import service as party_service
 from ..seating.models.category import Category
 from ..seating.models.seat import Seat
-from ..user.models.user import User
+from ..user import service as user_service
 
 from .models.archived_attendance import ArchivedAttendance
 from .models.ticket import Ticket
@@ -197,14 +197,15 @@ def get_attendees_by_party(parties):
 
 def get_attendees_for_party(party_id):
     """Return the party's attendees."""
-    return User.query \
-        .options(
-            db.load_only('screen_name', 'deleted'),
-            db.joinedload('avatar_selection').joinedload('avatar')
-        ) \
-        .join(Ticket.used_by) \
+    attendee_id_rows = db.session \
+        .query(Ticket.used_by_id) \
+        .filter(Ticket.used_by_id != None) \
         .join(Category).filter(Category.party_id == party_id) \
         .all()
+
+    attendee_ids = _get_first_column_values_as_set(attendee_id_rows)
+
+    return user_service.find_users(attendee_ids)
 
 
 # -------------------------------------------------------------------- #
