@@ -131,4 +131,4 @@ class User(db.Model):
             .build()
 
 
-UserTuple = namedtuple('UserTuple', 'id, screen_name, avatar_url, is_orga')
+UserTuple = namedtuple('UserTuple', 'id, screen_name, deleted, avatar_url, is_orga')

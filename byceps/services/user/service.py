@@ -71,7 +71,7 @@ def find_user(user_id, *, with_orga_teams=False):
 def find_users(user_ids, *, party_id=None):
     """Return the users and their current avatars' URLs with those IDs."""
     rows = db.session \
-        .query(User.id, User.screen_name, Avatar) \
+        .query(User.id, User.screen_name, User.deleted, Avatar) \
         .outerjoin(AvatarSelection) \
         .outerjoin(Avatar) \
         .filter(User.id.in_(frozenset(user_ids))) \
@@ -90,11 +90,17 @@ def find_users(user_ids, *, party_id=None):
         orga_team_members = frozenset()
 
     def to_tuples():
-        for user_id, screen_name, avatar in rows:
+        for user_id, screen_name, is_deleted, avatar in rows:
             avatar_url = avatar.url if avatar else None
             is_orga = user_id in orga_team_members
 
-            yield UserTuple(user_id, screen_name, avatar_url, is_orga)
+            yield UserTuple(
+                user_id,
+                screen_name,
+                is_deleted,
+                avatar_url,
+                is_orga
+            )
 
     return set(to_tuples())
 
