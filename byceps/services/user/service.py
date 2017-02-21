@@ -70,6 +70,9 @@ def find_user(user_id, *, with_orga_teams=False):
 
 def find_users(user_ids, *, party_id=None):
     """Return the users and their current avatars' URLs with those IDs."""
+    if not user_ids:
+        return frozenset()
+
     rows = db.session \
         .query(User.id, User.screen_name, User.deleted, Avatar) \
         .outerjoin(AvatarSelection) \

@@ -35,6 +35,9 @@ def find_badge(badge_id):
 
 def get_badges(badge_ids):
     """Return the badges with those IDs."""
+    if not badge_ids:
+        return []
+
     badges = Badge.query \
         .filter(Badge.id.in_(badge_ids)) \
         .all()
@@ -55,6 +58,9 @@ def get_badges_for_users(user_ids):
     """Return all badges that have been awarded to the users, indexed
     by user ID.
     """
+    if not user_ids:
+        return {}
+
     awardings = BadgeAwarding.query \
         .filter(BadgeAwarding.user_id.in_(user_ids)) \
         .all()
