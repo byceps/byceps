@@ -192,7 +192,7 @@ def count_tickets_for_party(party_id):
 
 
 def get_attendees_by_party(parties):
-    """Return the parties' attendees, grouped by party."""
+    """Return the parties' attendees, indexed by party."""
     party_ids = frozenset(party.id for party in parties)
 
     attendee_ids_by_party_id = get_attendee_ids_for_parties(party_ids)
@@ -215,7 +215,7 @@ def get_attendees_by_party(parties):
 
 
 def get_attendee_ids_for_parties(party_ids):
-    """Return the partys' attendee IDs."""
+    """Return the partys' attendee IDs, indexed by party ID."""
     rows = db.session \
         .query(Category.party_id, Ticket.used_by_id) \
         .filter(Category.party_id.in_(party_ids)) \

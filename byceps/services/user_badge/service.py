@@ -34,7 +34,7 @@ def find_badge(badge_id):
 
 
 def get_badges(badge_ids):
-    """Return the badges with those ids."""
+    """Return the badges with those IDs."""
     badges = Badge.query \
         .filter(Badge.id.in_(badge_ids)) \
         .all()
