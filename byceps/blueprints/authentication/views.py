@@ -150,6 +150,12 @@ def login():
 
     if not in_admin_mode:
         terms_version = terms_service.get_current_version(g.party.brand.id)
+
+        if not terms_version:
+            raise Exception(
+                'No terms of service defined for brand "{}", denying login.'
+                .format(g.party.brand.id))
+
         if not terms_service.has_user_accepted_version(user.id, terms_version.id):
             verification_token = verification_token_service \
                 .find_or_create_for_terms_consent(user.id)
