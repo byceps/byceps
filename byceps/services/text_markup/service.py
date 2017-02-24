@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 byceps.services.text_markup.service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

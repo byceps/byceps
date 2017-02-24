@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 byceps.services.user_badge.service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

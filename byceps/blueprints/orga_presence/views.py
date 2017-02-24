@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 byceps.blueprints.orga_presence.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

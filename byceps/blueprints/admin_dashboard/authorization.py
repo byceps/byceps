@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 byceps.blueprints.admin_dashboard.authorization
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

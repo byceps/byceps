@@ -1,6 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 """Run a worker for the job queue.
 
 :Copyright: 2006-2017 Jochen Kupperschmidt

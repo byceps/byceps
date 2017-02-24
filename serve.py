@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Create and initialize the application using a configuration specified by
 an environment variable.

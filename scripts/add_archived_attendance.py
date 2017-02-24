@@ -1,6 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 """Add the attendance of a user at a party to the archive.
 
 :Copyright: 2006-2017 Jochen Kupperschmidt

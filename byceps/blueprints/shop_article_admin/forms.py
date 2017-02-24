@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 byceps.blueprints.shop_article_admin.forms
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

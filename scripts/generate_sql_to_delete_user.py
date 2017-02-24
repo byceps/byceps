@@ -1,6 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 """Generate the SQL statements to remove a user and his/her various
 traces from the database.
 
