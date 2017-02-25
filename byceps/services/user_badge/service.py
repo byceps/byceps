@@ -28,6 +28,9 @@ def find_badge(badge_id):
     """Return the badge with that id, or `None` if not found."""
     badge = Badge.query.get(badge_id)
 
+    if badge is None:
+        return None
+
     return badge.to_tuple()
 
 
