@@ -181,7 +181,7 @@ def create():
 
     flash_success(
         'Das Benutzerkonto für "{}" wurde angelegt. '
-        'Bevor du dich damit anmelden kannst muss zunächst der Link in '
+        'Bevor du dich damit anmelden kannst, muss zunächst der Link in '
         'der an die angegebene Adresse verschickten E-Mail besucht werden.'
         ,
         user.screen_name)
