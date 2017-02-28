@@ -13,7 +13,7 @@ function confirmed_delete_on_click(selector, confirmation_label) {
 function _request_on_click(selector, method) {
   $(selector).click(function() {
     var request_url = $(this).attr('href');
-    _ajax_and_redirect(method, request_url);
+    _ajax_then_redirect_to_location_response_header(method, request_url);
     return false;
   });
 }
@@ -22,13 +22,13 @@ function _confirmed_request_on_click(selector, confirmation_label, method) {
   $(selector).click(function() {
     if (confirm(confirmation_label)) {
       var request_url = $(this).attr('href');
-      _ajax_and_redirect(method, request_url);
+      _ajax_then_redirect_to_location_response_header(method, request_url);
     };
     return false;
   });
 }
 
-function _ajax_and_redirect(method, request_url) {
+function _ajax_then_redirect_to_location_response_header(method, request_url) {
   _ajax(method, request_url, function(xhr, text_status) {
     if (text_status == 'nocontent') {
       var redirect_url = _get_location(xhr);
