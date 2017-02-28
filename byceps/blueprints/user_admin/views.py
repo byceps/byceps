@@ -18,10 +18,13 @@ from ...services.user import service as user_service
 from ...services.user_activity import service as activity_service
 from ...services.user_badge import service as badge_service
 from ...util.framework.blueprint import create_blueprint
+from ...util.framework.flash import flash_success
 from ...util.templating import templated
+from ...util.views import respond_no_content
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
+from ..authorization_admin.authorization import RolePermission
 
 from .authorization import UserPermission
 from . import service
@@ -133,6 +136,36 @@ def view_permissions(user_id):
     }
 
 
+@blueprint.route('/<uuid:user_id>/roles/assignment')
+@permission_required(RolePermission.assign)
+@templated
+def manage_roles(user_id):
+    """Manage what roles are assigned to the user."""
+    user = _get_user_or_404(user_id)
+
+    permissions_by_role = authorization_service \
+        .get_permissions_by_roles_for_user_with_titles(user.id)
+
+    return {
+        'user': user,
+        'permissions_by_role': permissions_by_role,
+    }
+
+
+@blueprint.route('/<uuid:user_id>/roles/<role_id>', methods=['DELETE'])
+@permission_required(RolePermission.assign)
+@respond_no_content
+def role_deassign(user_id, role_id):
+    """Deassign the role from the user."""
+    user = _get_user_or_404(user_id)
+    role = _get_role_or_404(role_id)
+
+    authorization_service.deassign_role_from_user(user_id, role_id)
+
+    flash_success('{} wurde die Rolle "{}" genommen.',
+                  user.screen_name, role.title)
+
+
 @blueprint.route('/<uuid:user_id>/activity')
 @permission_required(UserPermission.view)
 @templated
@@ -150,7 +183,17 @@ def view_activity(user_id):
 
 def _get_user_or_404(user_id):
     user = user_service.find_user(user_id)
+
     if user is None:
         abort(404)
 
     return user
+
+
+def _get_role_or_404(role_id):
+    role = authorization_service.find_role(role_id)
+
+    if role is None:
+        abort(404)
+
+    return role

@@ -5,7 +5,7 @@
 {% from 'macros/user_admin.html' import render_user_deleted_flag %}
 {% set current_tab = 'permissions' %}
 {% set current_tab_user_id = user.id %}
-{% set title = 'Benutzer - Berechtigungen - %s'|format(user.screen_name) %}
+{% set title = 'Benutzer - Berechtigungen zuweisen - %s'|format(user.screen_name) %}
 
 {% block head %}
   <style>
@@ -32,12 +32,6 @@
     {%- if user.deleted %} {{ render_user_deleted_flag() }}{% endif -%}
   </h1>
 
-  {%- if g.current_user.has_permission(RolePermission.assign) %}
-  <div class="button-row">
-    <a class="button" href="{{ url_for('.manage_roles', user_id=user.id) }}">{{ render_icon('permission') }} Rollen verwalten</a>
-  </div>
-  {%- endif %}
-
   <h2>Berechtigungen</h2>
   <table class="index wide">
     <thead>
@@ -50,6 +44,7 @@
       {%- for role, permissions in permissions_by_role.items()|sort(attribute='0.id') %}
       <tr>
         <td>
+          <a class="button button--inline" style="float: right;" data-action="role-deassign" href="{{ url_for('.role_deassign', user_id=user.id, role_id=role.id) }}" title="Rolle entfernen">{{ render_icon('remove') }}</a>
           <strong>{{ role.title }}</strong><br>
           <span class="monospace">{{ role.id|dim }}</span>
         </td>
@@ -69,4 +64,12 @@
     </tbody>
   </table>
 
+{%- endblock %}
+
+{% block scripts %}
+    <script>
+      $(function() {
+        confirmed_delete_on_click_then_reload('[data-action="role-deassign"]', 'Rolle entfernen?');
+      });
+    </script>
 {%- endblock %}

@@ -51,6 +51,17 @@ def assign_role_to_user(role, user):
     db.session.commit()
 
 
+def deassign_role_from_user(user_id, role_id):
+    """Deassign the role from the user."""
+    user_role = UserRole.query.get((user_id, role_id))
+
+    if user_role is None:
+        raise ValueError('Unknown user ID and/or role ID.')
+
+    db.session.delete(user_role)
+    db.session.commit()
+
+
 def find_role(role_id):
     """Return the role with that id, or `None` if not found."""
     return Role.query.get(role_id)
