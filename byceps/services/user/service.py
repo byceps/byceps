@@ -152,10 +152,6 @@ def create_user(screen_name, email_address, password, first_names, last_name,
     user.detail.last_name = last_name
     db.session.add(user)
 
-    # roles
-    board_user_role = authorization_service.find_role('board_user')
-    authorization_service.assign_role_to_user(board_user_role, user)
-
     try:
         db.session.commit()
     except Exception as e:
@@ -165,6 +161,10 @@ def create_user(screen_name, email_address, password, first_names, last_name,
 
     # password
     password_service.create_password_hash(user.id, password)
+
+    # roles
+    board_user_role = authorization_service.find_role('board_user')
+    authorization_service.assign_role_to_user(user.id, board_user_role.id)
 
     # consent to terms of service (required)
     terms_version = terms_service.get_current_version(brand_id)

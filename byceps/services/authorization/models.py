@@ -96,8 +96,9 @@ class UserRole(db.Model):
                            collection_class=set,
                            lazy='joined')
 
-    def __init__(self, role):
-        self.role = role
+    def __init__(self, user_id, role_id):
+        self.user_id = user_id
+        self.role_id = role_id
 
     def __repr__(self):
         return ReprBuilder(self) \

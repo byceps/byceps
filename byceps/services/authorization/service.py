@@ -42,10 +42,9 @@ def assign_permission_to_role(permission, role):
     db.session.commit()
 
 
-def assign_role_to_user(role, user):
+def assign_role_to_user(user_id, role_id):
     """Assign the role to the user."""
-    user_role = UserRole(role)
-    user_role.user = user
+    user_role = UserRole(user_id, role_id)
 
     db.session.add(user_role)
     db.session.commit()
