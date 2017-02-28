@@ -6,6 +6,10 @@ function confirmed_post_on_click(selector, confirmation_label) {
   _confirmed_request_on_click(selector, confirmation_label, 'POST');
 }
 
+function confirmed_post_on_click_then_reload(selector, confirmation_label) {
+  _confirmed_request_on_click_then_reload(selector, confirmation_label, 'POST');
+}
+
 function confirmed_delete_on_click(selector, confirmation_label) {
   _confirmed_request_on_click(selector, confirmation_label, 'DELETE');
 }

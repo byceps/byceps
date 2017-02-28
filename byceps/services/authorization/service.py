@@ -38,6 +38,16 @@ def find_role(role_id):
     return Role.query.get(role_id)
 
 
+def find_role_ids_for_user(user_id):
+    """Return the IDs of the roles assigned to the user."""
+    roles = Role.query \
+        .join(UserRole) \
+        .filter(UserRole.user_id == user_id) \
+        .all()
+
+    return {r.id for r in roles}
+
+
 def assign_permission_to_role(permission, role):
     """Assign the permission to the role."""
     role_permission = RolePermission(permission)
@@ -97,6 +107,34 @@ def get_all_roles_with_titles():
             db.joinedload('user_roles').joinedload('user')
         ) \
         .all()
+
+
+def get_permissions_by_roles_with_titles():
+    """Return all roles with their assigned permissions.
+
+    Titles are undeferred to avoid lots of additional queries.
+    """
+    roles = Role.query \
+        .options(
+            db.undefer('title'),
+        ) \
+        .all()
+
+    permissions = Permission.query \
+        .options(
+            db.undefer('title'),
+            db.joinedload('role_permissions').joinedload('role')
+        ) \
+        .all()
+
+    permissions_by_role = {r: set() for r in roles}
+
+    for permission in permissions:
+        for role in permission.roles:
+            if role in permissions_by_role:
+                permissions_by_role[role].add(permission)
+
+    return permissions_by_role
 
 
 def get_permissions_by_roles_for_user_with_titles(user_id):

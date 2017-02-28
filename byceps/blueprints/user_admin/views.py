@@ -144,12 +144,29 @@ def manage_roles(user_id):
     user = _get_user_or_404(user_id)
 
     permissions_by_role = authorization_service \
-        .get_permissions_by_roles_for_user_with_titles(user.id)
+        .get_permissions_by_roles_with_titles()
+
+    user_role_ids = authorization_service.find_role_ids_for_user(user.id)
 
     return {
         'user': user,
         'permissions_by_role': permissions_by_role,
+        'user_role_ids': user_role_ids,
     }
+
+
+@blueprint.route('/<uuid:user_id>/roles/<role_id>', methods=['POST'])
+@permission_required(RolePermission.assign)
+@respond_no_content
+def role_assign(user_id, role_id):
+    """Assign the role to the user."""
+    user = _get_user_or_404(user_id)
+    role = _get_role_or_404(role_id)
+
+    authorization_service.assign_role_to_user(user.id, role.id)
+
+    flash_success('{} wurde die Rolle "{}" zugewiesen.',
+                  user.screen_name, role.title)
 
 
 @blueprint.route('/<uuid:user_id>/roles/<role_id>', methods=['DELETE'])

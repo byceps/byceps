@@ -42,9 +42,16 @@
     </thead>
     <tbody>
       {%- for role, permissions in permissions_by_role.items()|sort(attribute='0.id') %}
-      <tr>
+        {%- with user_has_role = (role.id in user_role_ids) %}
+      <tr{% if not user_has_role %} class="dimmed"{% endif %}>
         <td>
+          {%- if g.current_user.has_permission(RolePermission.assign) %}
+            {%- if user_has_role %}
           <a class="button button--inline" style="float: right;" data-action="role-deassign" href="{{ url_for('.role_deassign', user_id=user.id, role_id=role.id) }}" title="Rolle entfernen">{{ render_icon('remove') }}</a>
+            {%- else %}
+          <a class="button button--inline" style="float: right;" data-action="role-assign" href="{{ url_for('.role_assign', user_id=user.id, role_id=role.id) }}" title="Rolle zuweisen">{{ render_icon('add') }}</a>
+            {%- endif %}
+          {%- endif %}
           <strong>{{ role.title }}</strong><br>
           <span class="monospace">{{ role.id|dim }}</span>
         </td>
@@ -60,6 +67,7 @@
           {%- endif %}
         </td>
       </tr>
+        {%- endwith %}
       {%- endfor %}
     </tbody>
   </table>
@@ -69,6 +77,7 @@
 {% block scripts %}
     <script>
       $(function() {
+        confirmed_post_on_click_then_reload('[data-action="role-assign"]', 'Rolle zuweisen?');
         confirmed_delete_on_click_then_reload('[data-action="role-deassign"]', 'Rolle entfernen?');
       });
     </script>
