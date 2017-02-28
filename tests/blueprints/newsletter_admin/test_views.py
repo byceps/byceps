@@ -24,7 +24,7 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
 
     def setup_admin(self):
         permission_ids = {'admin.access', 'newsletter.export_subscribers'}
-        assign_permissions_to_user(self.admin, 'admin', permission_ids)
+        assign_permissions_to_user(self.admin.id, 'admin', permission_ids)
 
     def setup_subscribers(self):
         for user_number, enabled, states in [

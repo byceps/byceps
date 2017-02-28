@@ -183,7 +183,7 @@ class BoardModerationTestCase(AbstractAppTestCase):
 
     def setup_admin(self, permission_id):
         permission_ids = {'admin.access', permission_id}
-        assign_permissions_to_user(self.admin, 'admin', permission_ids)
+        assign_permissions_to_user(self.admin.id, 'admin', permission_ids)
 
     def create_category(self, number):
         return create_category(brand=self.brand, number=number)

@@ -26,7 +26,7 @@ class AuthorizationServiceTestCase(AbstractAppTestCase):
         permissions_before = authorization_service.get_permission_ids_for_user(user.id)
         self.assertEqual(permissions_before, frozenset())
 
-        self.assign_roles_to_user([board_moderator_role, news_editor_role], user)
+        self.assign_roles_to_user(user.id, {board_moderator_role, news_editor_role})
 
         permissions_after = authorization_service.get_permission_ids_for_user(user.id)
         self.assertEqual(permissions_after, {
@@ -56,6 +56,6 @@ class AuthorizationServiceTestCase(AbstractAppTestCase):
 
         return role
 
-    def assign_roles_to_user(self, roles, user):
+    def assign_roles_to_user(self, user_id, roles):
         for role in roles:
-            authorization_service.assign_role_to_user(role, user)
+            authorization_service.assign_role_to_user(user_id, role.id)

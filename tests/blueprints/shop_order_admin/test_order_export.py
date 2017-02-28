@@ -61,7 +61,7 @@ class ExportTestCase(AbstractAppTestCase):
 
     def setup_admin(self):
         permission_ids = {'admin.access', 'shop_order.view'}
-        assign_permissions_to_user(self.admin, 'admin', permission_ids)
+        assign_permissions_to_user(self.admin.id, 'admin', permission_ids)
 
     def create_articles(self):
         self.article_table = self.build_article(
