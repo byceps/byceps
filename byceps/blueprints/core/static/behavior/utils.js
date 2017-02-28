@@ -29,15 +29,19 @@ function _confirmed_request_on_click(selector, confirmation_label, method) {
 }
 
 function _ajax_and_redirect(method, request_url) {
+  _ajax(method, request_url, function(xhr, text_status) {
+    if (text_status == 'nocontent') {
+      var redirect_url = _get_location(xhr);
+      location.href = redirect_url;
+    }
+  });
+}
+
+function _ajax(method, request_url, on_complete) {
   $.ajax({
     type: method,
     url: request_url,
-    complete: function(xhr, text_status) {
-      if (text_status == 'nocontent') {
-        var redirect_url = _get_location(xhr);
-        location.href = redirect_url;
-      }
-    }
+    complete: on_complete
   });
 }
 
