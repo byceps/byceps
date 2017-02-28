@@ -33,6 +33,11 @@ def create_role(role_id, title):
     return role
 
 
+def find_role(role_id):
+    """Return the role with that id, or `None` if not found."""
+    return Role.query.get(role_id)
+
+
 def assign_permission_to_role(permission, role):
     """Assign the permission to the role."""
     role_permission = RolePermission(permission)
@@ -59,11 +64,6 @@ def deassign_role_from_user(user_id, role_id):
 
     db.session.delete(user_role)
     db.session.commit()
-
-
-def find_role(role_id):
-    """Return the role with that id, or `None` if not found."""
-    return Role.query.get(role_id)
 
 
 def get_permission_ids_for_user(user_id):
