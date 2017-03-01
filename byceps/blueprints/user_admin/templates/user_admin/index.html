@@ -51,7 +51,7 @@
 
       <form action="{{ url_for('.index') }}" class="search">
         {{ render_icon('search') }} <input type="search" name="search_term" placeholder="Benutzer-, Vor-, Nachname" {%- if search_term %} value="{{ search_term }}"{% endif %}>
-        <a href="{{ url_for('.index') }}" class="button button--icon-only" title="Einschränkung auf Suchbegriff aufheben">{{ render_icon('remove') }}</a>
+        <a href="{{ url_for('.index') }}" class="button button--icon-only{% if not search_term %} dimmed{% endif %}" title="Einschränkung auf Suchbegriff aufheben">{{ render_icon('remove') }}</a>
       </form>
 
     </div>
