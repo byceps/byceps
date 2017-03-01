@@ -48,6 +48,16 @@ def find_role_ids_for_user(user_id):
     return {r.id for r in roles}
 
 
+def find_user_ids_for_role(role_id):
+    """Return the IDs of the users that have this role assigned."""
+    rows = db.session \
+        .query(UserRole.user_id) \
+        .filter(UserRole.role_id == role_id) \
+        .all()
+
+    return {row[0] for row in rows}
+
+
 def assign_permission_to_role(permission, role):
     """Assign the permission to the role."""
     role_permission = RolePermission(permission)
@@ -170,3 +180,14 @@ def get_permissions_by_roles_for_user_with_titles(user_id):
                 permissions_by_role[role].add(permission)
 
     return permissions_by_role
+
+
+def get_permissions_with_title_for_role(role_id):
+    """Return the permissions assigned to the role."""
+    return Permission.query \
+        .options(
+            db.undefer('title')
+        ) \
+        .join(RolePermission) \
+        .filter(RolePermission.role_id == role_id) \
+        .all()

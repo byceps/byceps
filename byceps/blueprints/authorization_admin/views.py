@@ -6,7 +6,10 @@ byceps.blueprints.authorization_admin.views
 :License: Modified BSD, see LICENSE for details.
 """
 
+from flask import abort
+
 from ...services.authorization import service as authorization_service
+from ...services.user import service as user_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.templating import templated
 
@@ -40,3 +43,26 @@ def role_index():
     roles = authorization_service.get_all_roles_with_titles()
 
     return {'roles': roles}
+
+
+@blueprint.route('/roles/<role_id>')
+@permission_required(RolePermission.list)
+@templated
+def role_view(role_id):
+    """View role details."""
+    role = authorization_service.find_role(role_id)
+
+    if role is None:
+        abort(404)
+
+    permissions = authorization_service \
+        .get_permissions_with_title_for_role(role.id)
+
+    user_ids = authorization_service.find_user_ids_for_role(role.id)
+    users = user_service.find_users(user_ids)
+
+    return {
+        'role': role,
+        'permissions': permissions,
+        'users': users,
+    }

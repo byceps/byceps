@@ -20,7 +20,7 @@
       {%- for role in roles|sort(attribute='id') %}
       <tr>
         <td>
-          <strong class="monospace">{{ role.id }}</strong><br>
+          <strong class="monospace"><a href="{{ url_for('.role_view', role_id=role.id) }}">{{ role.id }}</a></strong><br>
           {{ role.title|fallback('keine Beschreibung vorhanden') }}
         </td>
         <td>
