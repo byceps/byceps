@@ -37,7 +37,7 @@
     <tbody>
     {%- for snippet in snippets|sort(attribute='name') %}
       <tr>
-        <td>
+        <td class="nowrap">
           {%- if snippet.is_document %}
           {{ render_icon('snippet-document', title='Dokument') }}
           {%- elif snippet.is_fragment %}
