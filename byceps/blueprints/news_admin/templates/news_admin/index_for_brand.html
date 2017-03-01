@@ -3,7 +3,7 @@
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
-{% from 'macros/user_admin.html' import render_user_avatar_16_and_link %}
+{% from 'macros/user_admin.html' import render_user_avatar_16_and_name %}
 {% set current_page = 'news_admin' %}
 {% set current_page_brand = brand %}
 {% set title = '%s - News'|format(brand.title) %}
@@ -51,7 +51,7 @@
           <strong>{{ render_datetime(item.published_at) }}</strong><br>
           {%- filter dim %}
           {{ render_datetime(item.current_version.created_at) }}<br>
-          von {{ render_user_avatar_16_and_link(item.current_version.creator) }}
+          von {{ render_user_avatar_16_and_name(item.current_version.creator) }}
           {%- endfilter %}
         </td>
         <td>
