@@ -6,12 +6,14 @@
 {% block head %}
   {%- if snippet_head %}
 {{ snippet_head|safe }}
-  {%- endif -%}
+  {%- endif %}
 {% endblock %}
 
 {% block body %}
 
+{%- if snippet_title %}
   <h1>{{ snippet_title }}</h1>
+{%- endif %}
 
 {{ snippet_body|safe }}
 
