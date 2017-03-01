@@ -10,14 +10,14 @@
 
 {% block head %}
     <style>
-      form.search {
+      form.search-user {
         white-space: nowrap;
       }
-      form.search input {
+      form.search-user input {
         opacity: 0.5;
       }
-      form.search input:focus,
-      form.search input:hover {
+      form.search-user input:focus,
+      form.search-user input:hover {
         opacity: 1;
       }
 
@@ -49,7 +49,7 @@
   <div class="row filters">
     <div class="column-auto">
 
-      <form action="{{ url_for('.index') }}" class="search">
+      <form action="{{ url_for('.index') }}" class="search-user">
         {{ render_icon('search') }} <input type="search" name="search_term" placeholder="Benutzer-, Vor-, Nachname" {%- if search_term %} value="{{ search_term }}"{% endif %}>
         <a href="{{ url_for('.index') }}" class="button button--icon-only{% if not search_term %} dimmed{% endif %}" title="Einschränkung auf Suchbegriff aufheben">{{ render_icon('remove') }}</a>
       </form>
