@@ -22,6 +22,14 @@
           </div><!-- /.column -->
           <div class="column">
 
+            <form action="{{ url_for('user_admin.index') }}" class="user-search">
+              <input type="search" name="search_term" placeholder="Benutzer-, Vor-, Nachname">
+              <button type="submit" class="button" title="Suchen">{{ render_icon('search') }}</button>
+            </form>
+
+          </div><!-- /.column -->
+          <div class="column">
+
 {%- with
   current_page = current_page|default,
   brand = current_page_brand|default,
