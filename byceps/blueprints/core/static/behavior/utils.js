@@ -58,8 +58,7 @@ function _ajax_then_redirect_to_location_response_header(method, request_url) {
 function _ajax_then_reload(method, request_url) {
   _ajax(method, request_url, function(xhr, text_status) {
     if (text_status == 'nocontent') {
-      window.location.reload();
-      window.scrollTo(0, 0);
+      location.href = location.href;
     }
   });
 }
