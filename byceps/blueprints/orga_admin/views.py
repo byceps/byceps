@@ -8,7 +8,7 @@ byceps.blueprints.orga_admin.views
 
 from operator import attrgetter
 
-from flask import abort, request, url_for
+from flask import abort, request
 
 from ...services.brand import service as brand_service
 from ...services.orga import service as orga_service
@@ -18,7 +18,7 @@ from ...util.export import serialize_to_csv
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_success
 from ...util.templating import templated
-from ...util.views import redirect_to, respond_no_content_with_location, textified
+from ...util.views import redirect_to, respond_no_content, textified
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
@@ -98,10 +98,11 @@ def create_orgaflag(brand_id):
 
 @blueprint.route('/persons/<brand_id>/<uuid:user_id>', methods=['DELETE'])
 @permission_required(OrgaTeamPermission.administrate_memberships)
-@respond_no_content_with_location
+@respond_no_content
 def remove_orgaflag(brand_id, user_id):
     """Remove the organizer flag for a brand from a person."""
     orga_flag = orga_service.find_orga_flag(brand_id, user_id)
+
     if orga_flag is None:
         abort(404)
 
@@ -112,7 +113,6 @@ def remove_orgaflag(brand_id, user_id):
 
     flash_success('{} wurde das Orga-Flag für die Marke {} entzogen.',
                   user.screen_name, brand.title)
-    return url_for('.persons_for_brand', brand_id=brand.id)
 
 
 @blueprint.route('/persons/<brand_id>/export')

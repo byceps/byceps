@@ -110,7 +110,7 @@
 {% block scripts %}
     <script>
       $(function() {
-        confirmed_delete_on_click('[data-action="orgaflag-remove"]', 'Person den Orga-Status entziehen?');
+        confirmed_delete_on_click_then_reload('[data-action="orgaflag-remove"]', 'Person den Orga-Status entziehen?');
       });
     </script>
 {%- endblock %}
