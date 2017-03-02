@@ -6,19 +6,19 @@ byceps.blueprints.newsletter.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from flask import abort, g, url_for
+from flask import abort, g
 
 from ...services.newsletter import service as newsletter_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_success
-from ...util.views import respond_no_content_with_location
+from ...util.views import respond_no_content
 
 
 blueprint = create_blueprint('newsletter', __name__)
 
 
 @blueprint.route('/subscription', methods=['POST'])
-@respond_no_content_with_location
+@respond_no_content
 def subscribe():
     user = _get_current_user_or_404()
     brand_id = g.party.brand.id
@@ -26,11 +26,10 @@ def subscribe():
     newsletter_service.subscribe(user.id, brand_id)
 
     flash_success('Du hast dich zum Newsletter angemeldet.')
-    return url_for('user.view_current')
 
 
 @blueprint.route('/subscription', methods=['DELETE'])
-@respond_no_content_with_location
+@respond_no_content
 def unsubscribe():
     user = _get_current_user_or_404()
     brand_id = g.party.brand.id
@@ -38,11 +37,11 @@ def unsubscribe():
     newsletter_service.unsubscribe(user.id, brand_id)
 
     flash_success('Du hast dich vom Newsletter abgemeldet.')
-    return url_for('user.view_current')
 
 
 def _get_current_user_or_404():
     user = g.current_user
+
     if not user.is_active:
         abort(404)
 

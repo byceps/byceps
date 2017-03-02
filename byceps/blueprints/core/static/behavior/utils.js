@@ -2,6 +2,10 @@ function post_on_click(selector) {
   _request_on_click(selector, 'POST');
 }
 
+function post_on_click_then_reload(selector) {
+  _request_on_click_then_reload(selector, 'POST');
+}
+
 function confirmed_post_on_click(selector, confirmation_label) {
   _confirmed_request_on_click(selector, confirmation_label, 'POST');
 }
@@ -22,6 +26,14 @@ function _request_on_click(selector, method) {
   $(selector).click(function() {
     var request_url = $(this).attr('href');
     _ajax_then_redirect_to_location_response_header(method, request_url);
+    return false;
+  });
+}
+
+function _request_on_click_then_reload(selector, method) {
+  $(selector).click(function() {
+    var request_url = $(this).attr('href');
+    _ajax_then_reload(method, request_url);
     return false;
   });
 }
