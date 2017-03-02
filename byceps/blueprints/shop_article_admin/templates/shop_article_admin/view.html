@@ -114,7 +114,7 @@
 {% block scripts %}
     <script>
       $(function() {
-        confirmed_delete_on_click('a.attachment-remove', 'Artikelanhang entfernen?');
+        confirmed_delete_on_click_then_reload('a.attachment-remove', 'Artikelanhang entfernen?');
       });
     </script>
 {%- endblock %}

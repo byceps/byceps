@@ -9,7 +9,7 @@ byceps.blueprints.shop_article_admin.views
 from datetime import datetime
 from decimal import Decimal
 
-from flask import abort, request, url_for
+from flask import abort, request
 
 from ...services.party import service as party_service
 from ...services.shop.article import service as article_service
@@ -20,7 +20,7 @@ from ...services.ticketing import service as ticketing_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_success
 from ...util.templating import templated
-from ...util.views import redirect_to, respond_no_content_with_location
+from ...util.views import redirect_to, respond_no_content
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
@@ -243,10 +243,11 @@ def attachment_create(article_id):
 
 @blueprint.route('/attachments/<uuid:article_id>', methods=['DELETE'])
 @permission_required(ShopArticlePermission.update)
-@respond_no_content_with_location
+@respond_no_content
 def attachment_remove(article_id):
     """Remove the attachment link from one article to another."""
     attached_article = article_service.find_attached_article(article_id)
+
     if attached_article is None:
         abort(404)
 
@@ -257,7 +258,6 @@ def attachment_remove(article_id):
 
     flash_success('Artikel "{}" ist nun nicht mehr an Artikel "{}" angehängt.',
                   article.item_number, attached_to_article.item_number)
-    return url_for('.view', article_id=article.id)
 
 
 def _get_party_or_404(party_id):
