@@ -47,18 +47,18 @@
 
   {%- set current_user_may_reply_generally = g.current_user.has_permission(BoardPostingPermission.create) %}
 
-  <div class="button-row button-row--right">
-    {%- if current_user_may_reply_generally and not topic.locked %}
-    <a class="button" href="{{ url_for('.posting_create_form', topic_id=topic.id) }}">{{ render_icon('reply') }} Antworten</a>
-    {%- else %}
-    <span class="button button--disabled">{{ render_icon('reply') }} Antworten</span>
-    {%- endif %}
-  </div>
-
-  {%- if not current_user_may_reply_generally and not topic.locked %}
+  {%- if not current_user_may_reply_generally %}
   <small>
     <p style="text-align: right;">Du musst <a href="{{ url_for('authentication.login_form') }}">angemeldet</a> sein um antworten zu können.</p>
   </small>
+  {%- elif topic.locked %}
+  <div class="button-row button-row--right">
+    <span class="button button--disabled">{{ render_icon('reply') }} Antworten</span>
+  </div>
+  {%- else %}
+  <div class="button-row button-row--right">
+    <a class="button" href="{{ url_for('.posting_create_form', topic_id=topic.id) }}">{{ render_icon('reply') }} Antworten</a>
+  </div>
   {%- endif %}
 
   <nav class="breadcrumbs compact">
