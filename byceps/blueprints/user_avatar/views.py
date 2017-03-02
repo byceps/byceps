@@ -6,14 +6,14 @@ byceps.blueprints.user_avatar.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from flask import abort, g, request, url_for
+from flask import abort, g, request
 
 from ...services.user_avatar import service as avatar_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_success
 from ...util.image.models import ImageType
 from ...util.templating import templated
-from ...util.views import redirect_to, respond_no_content_with_location
+from ...util.views import redirect_to, respond_no_content
 
 from .forms import UpdateForm
 from . import signals
@@ -77,7 +77,7 @@ def update():
 
 
 @blueprint.route('/me/avatar', methods=['DELETE'])
-@respond_no_content_with_location
+@respond_no_content
 def delete():
     """Remove the current user's avatar image."""
     user = get_current_user_or_404()._user
@@ -85,11 +85,11 @@ def delete():
     avatar_service.remove_avatar_image(user)
 
     flash_success('Dein Avatarbild wurde entfernt.')
-    return url_for('user.view_current')
 
 
 def get_current_user_or_404():
     user = g.current_user
+
     if not user.is_active:
         abort(404)
 
