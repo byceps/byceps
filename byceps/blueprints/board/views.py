@@ -478,9 +478,12 @@ def quote_posting_as_bbcode():
 @permission_required(BoardPostingPermission.create)
 def posting_create(topic_id):
     """Create a posting to the topic."""
-    form = PostingCreateForm(request.form)
-
     topic = _get_topic_or_404(topic_id)
+
+    form = PostingCreateForm(request.form)
+    if not form.validate():
+        return posting_create_form(topic_id, form)
+
     creator = g.current_user
     body = form.body.data.strip()
 
@@ -511,7 +514,7 @@ def posting_create(topic_id):
 @blueprint.route('/postings/<uuid:posting_id>/update')
 @permission_required(BoardPostingPermission.update)
 @templated
-def posting_update_form(posting_id):
+def posting_update_form(posting_id, erroneous_form=None):
     """Show form to update a posting."""
     posting = _get_posting_or_404(posting_id)
 
@@ -532,7 +535,7 @@ def posting_update_form(posting_id):
         flash_error('Du darfst diesen Beitrag nicht bearbeiten.')
         return redirect(url)
 
-    form = PostingUpdateForm(obj=posting)
+    form = erroneous_form if erroneous_form else PostingUpdateForm(obj=posting)
 
     return {
         'form': form,
@@ -565,6 +568,8 @@ def posting_update(posting_id):
         return redirect(url)
 
     form = PostingUpdateForm(request.form)
+    if not form.validate():
+        return posting_update_form(posting_id, form)
 
     board_service.update_posting(posting, g.current_user.id, form.body.data)
 
