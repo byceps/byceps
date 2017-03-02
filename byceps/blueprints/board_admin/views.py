@@ -6,14 +6,14 @@ byceps.blueprints.board_admin.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from flask import abort, request, url_for
+from flask import abort, request
 
 from ...services.board import service as board_service
 from ...services.brand import service as brand_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_error, flash_success
 from ...util.templating import templated
-from ...util.views import redirect_to, respond_no_content_with_location
+from ...util.views import redirect_to, respond_no_content
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
@@ -116,7 +116,7 @@ def category_update(category_id):
 
 @blueprint.route('/categories/<uuid:category_id>/up', methods=['POST'])
 @permission_required(BoardCategoryPermission.update)
-@respond_no_content_with_location
+@respond_no_content
 def category_move_up(category_id):
     """Move a category upwards by one position."""
     category = get_category_or_404(category_id)
@@ -128,12 +128,10 @@ def category_move_up(category_id):
     else:
         flash_success('Die Kategorie "{}" wurde eine Position nach oben verschoben.', category.title)
 
-    return url_for('.index_for_brand', brand_id=category.brand.id)
-
 
 @blueprint.route('/categories/<uuid:category_id>/down', methods=['POST'])
 @permission_required(BoardCategoryPermission.update)
-@respond_no_content_with_location
+@respond_no_content
 def category_move_down(category_id):
     """Move a category downwards by one position."""
     category = get_category_or_404(category_id)
@@ -144,8 +142,6 @@ def category_move_down(category_id):
         flash_error('Die Kategorie "{}" befindet sich bereits ganz unten.', category.title)
     else:
         flash_success('Die Kategorie "{}" wurde eine Position nach unten verschoben.', category.title)
-
-    return url_for('.index_for_brand', brand_id=category.brand.id)
 
 
 def get_brand_or_404(brand_id):
