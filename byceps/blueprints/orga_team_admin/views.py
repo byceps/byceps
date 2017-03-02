@@ -6,7 +6,7 @@ byceps.blueprints.orga_team_admin.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from flask import abort, request, url_for
+from flask import abort, request
 
 from ...services.orga_team import service as orga_team_service
 from ...services.party import service as party_service
@@ -14,7 +14,7 @@ from ...services.user import service as user_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_success
 from ...util.templating import templated
-from ...util.views import redirect_to, respond_no_content_with_location
+from ...util.views import redirect_to, respond_no_content
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
@@ -81,7 +81,7 @@ def team_create(party_id):
 
 @blueprint.route('/teams/<uuid:team_id>', methods=['DELETE'])
 @permission_required(OrgaTeamPermission.delete)
-@respond_no_content_with_location
+@respond_no_content
 def team_delete(team_id):
     """Delete the team."""
     team = _get_team_or_404(team_id)
@@ -89,13 +89,11 @@ def team_delete(team_id):
     if team.memberships:
         abort(403, 'Orga team cannot be deleted as it has members.')
 
-    party = team.party
     title = team.title
 
     orga_team_service.delete_team(team)
 
     flash_success('Das Team "{}" wurde gelöscht.', title)
-    return url_for('.teams_for_party', party_id=party.id)
 
 
 @blueprint.route('/teams/<uuid:team_id>/memberships/create')
@@ -184,7 +182,7 @@ def membership_update(membership_id):
 
 @blueprint.route('/memberships/<uuid:membership_id>', methods=['DELETE'])
 @permission_required(OrgaTeamPermission.administrate_memberships)
-@respond_no_content_with_location
+@respond_no_content
 def membership_remove(membership_id):
     """Remove an organizer from a team."""
     membership = _get_membership_or_404(membership_id)
@@ -196,7 +194,6 @@ def membership_remove(membership_id):
 
     flash_success('{} wurde aus dem Team "{}" entfernt.',
                   user.screen_name, team.title)
-    return url_for('.teams_for_party', party_id=team.party.id)
 
 
 def _get_party_or_404(party_id):

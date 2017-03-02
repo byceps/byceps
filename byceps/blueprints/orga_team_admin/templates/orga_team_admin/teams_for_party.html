@@ -119,8 +119,8 @@
 {% block scripts %}
     <script>
       $(function() {
-        confirmed_delete_on_click('[data-action="team-delete"]', 'Team entfernen?');
-        confirmed_delete_on_click('[data-action="membership-remove"]', 'Person aus dem Team entfernen?');
+        confirmed_delete_on_click_then_reload('[data-action="team-delete"]', 'Team entfernen?');
+        confirmed_delete_on_click_then_reload('[data-action="membership-remove"]', 'Person aus dem Team entfernen?');
       });
     </script>
 {%- endblock %}
