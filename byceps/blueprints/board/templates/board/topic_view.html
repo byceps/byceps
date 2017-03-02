@@ -55,6 +55,8 @@
   <div class="button-row button-row--right">
     <span class="button button--disabled">{{ render_icon('reply') }} Antworten</span>
   </div>
+  {%- elif is_last_page %}
+{%- include 'board/_posting_inline_create_form.html' %}
   {%- else %}
   <div class="button-row button-row--right">
     <a class="button" href="{{ url_for('.posting_create_form', topic_id=topic.id) }}">{{ render_icon('reply') }} Antworten</a>

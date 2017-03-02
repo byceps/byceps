@@ -117,16 +117,27 @@ def topic_view(topic_id, page):
     add_unseen_flag_to_postings(postings.items, g.current_user._user,
                                 last_viewed_at)
 
+    is_last_page = not postings.has_next
+
     creator_ids = {posting.creator_id for posting in postings.items}
     badges_by_user_id = badge_service.get_badges_for_users(creator_ids)
     badges_by_user_id = _select_global_and_brand_badges(badges_by_user_id,
                                                         g.party.brand.id)
 
-    return {
+    context = {
         'topic': topic,
         'postings': postings,
+        'is_last_page': is_last_page,
         'badges_by_user_id': badges_by_user_id,
     }
+
+    if is_last_page:
+        context.update({
+            'form': PostingCreateForm(),
+            'smileys': get_smileys(),
+        })
+
+    return context
 
 
 def _select_global_and_brand_badges(badges_by_user_id, brand_id):
