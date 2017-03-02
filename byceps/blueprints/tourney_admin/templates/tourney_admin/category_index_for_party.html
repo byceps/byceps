@@ -56,8 +56,8 @@
 {% block scripts %}
     <script>
       $(function() {
-        post_on_click('[data-action="category-move-up"]');
-        post_on_click('[data-action="category-move-down"]');
+        post_on_click_then_reload('[data-action="category-move-up"]');
+        post_on_click_then_reload('[data-action="category-move-down"]');
       });
     </script>
 {%- endblock %}
