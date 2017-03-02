@@ -43,8 +43,6 @@
   {%- endfor %}
   </div>
 
-{{ render_pagination_nav(postings, 'board.topic_view', {'topic_id': topic.id}, centered=True) }}
-
   {%- set current_user_may_reply_generally = g.current_user.has_permission(BoardPostingPermission.create) %}
 
   {%- if not current_user_may_reply_generally %}
@@ -62,6 +60,8 @@
     <a class="button" href="{{ url_for('.posting_create_form', topic_id=topic.id) }}">{{ render_icon('reply') }} Antworten</a>
   </div>
   {%- endif %}
+
+{{ render_pagination_nav(postings, 'board.topic_view', {'topic_id': topic.id}, centered=True) }}
 
   <nav class="breadcrumbs compact">
     <ol>
