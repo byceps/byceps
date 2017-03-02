@@ -309,7 +309,7 @@ h2 {
   padding: 5px 10px;
 }
 
-.user-comment-meta-top {
+.user-comment-meta-top :not(.user-link) {
   color: #888888;
 }
 .user-comment-meta-top > * {
@@ -317,7 +317,6 @@ h2 {
 }
 .user-comment-meta-top a {
   border: none;
-  color: inherit;
   text-decoration: none;
 }
 .user-comment-meta-top a:hover {
