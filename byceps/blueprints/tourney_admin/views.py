@@ -148,7 +148,7 @@ def _get_party_or_404(party_id):
 
 
 def _get_category_or_404(category_id):
-    category = tourney_service.find_tourney_category(category_id)
+    category = tourney_service.find_category(category_id)
 
     if category is None:
         abort(404)

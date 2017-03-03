@@ -58,7 +58,7 @@ def move_category_down(category):
     db.session.commit()
 
 
-def find_tourney_category(category_id):
+def find_category(category_id):
     """Return the category with that id, or `None` if not found."""
     return TourneyCategory.query.get(category_id)
 
