@@ -309,12 +309,10 @@ h2 {
   padding: 5px 10px;
 }
 
-.user-comment-meta-top :not(.user-link) {
-  color: #888888;
-}
 .user-comment-meta-top > * {
   display: block;
 }
+
 .user-comment-meta-top a {
   border: none;
   text-decoration: none;
@@ -322,9 +320,14 @@ h2 {
 .user-comment-meta-top a:hover {
   text-decoration: underline;
 }
+
 .user-comment-meta-top .user-link a {
   color: currentColor;
   font-weight: bold;
+}
+
+.user-comment-meta-top a.user-comment-permalink {
+  color: #888888;
 }
 
 @media (min-width: 768px) {

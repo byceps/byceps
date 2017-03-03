@@ -23,7 +23,7 @@
     <header>
       <div class="user-comment-meta-top">
         <span class="user-link">{{ render_user_link(posting.creator) }}</span>
-        <a href="{{ posting.external_url }}" title="Permalink zu diesem Beitrag">{{ render_datetime(posting.created_at)|replace(', ', ' um ') }}</a>
+        <a href="{{ posting.external_url }}" class="user-comment-permalink "title="Permalink zu diesem Beitrag">{{ render_datetime(posting.created_at)|replace(', ', ' um ') }}</a>
 
         {%- if posting.unseen %}
         <span>{{ render_flag_new() }}</span>
