@@ -35,7 +35,7 @@ def category_index_for_party(party_id):
     """List tourney categories for that party."""
     party = _get_party_or_404(party_id)
 
-    categories = tourney_service.get_categories_for_party(party)
+    categories = tourney_service.get_categories_for_party(party.id)
 
     return {
         'party': party,
