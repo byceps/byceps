@@ -186,11 +186,12 @@ def update(article_id):
     max_quantity_per_order = form.max_quantity_per_order.data
     not_directly_orderable = form.not_directly_orderable.data
     requires_separate_order = form.requires_separate_order.data
+    shipping_required = form.shipping_required.data
 
     article_service.update_article(article, description, price, tax_rate,
                                    quantity, max_quantity_per_order,
                                    not_directly_orderable,
-                                   requires_separate_order)
+                                   requires_separate_order, shipping_required)
 
     flash_success('Der Artikel "{}" wurde aktualisiert.', article.description)
     return redirect_to('.view', article_id=article.id)

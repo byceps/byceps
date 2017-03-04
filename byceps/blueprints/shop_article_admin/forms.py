@@ -24,6 +24,7 @@ class ArticleUpdateForm(ArticleCreateForm):
     max_quantity_per_order = IntegerField('maximale Anzahl pro Bestellung', validators=[Optional()])
     not_directly_orderable = BooleanField('nur indirekt bestellbar')
     requires_separate_order = BooleanField('muss separat bestellt werden')
+    shipping_required = BooleanField('Versand erforderlich')
 
 
 class ArticleAttachmentCreateForm(LocalizedForm):

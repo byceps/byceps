@@ -77,6 +77,10 @@
       <td>{{ 'ja' if article.requires_separate_order else 'nein' }}</td>
     </tr>
     <tr>
+      <th>Versand erforderlich</th>
+      <td>{{ 'ja' if article.shipping_required else 'nein' }}</td>
+    </tr>
+    <tr>
       <th>Angehängt an Artikel</th>
       <td>
         {%- if article.articles_attached_to %}

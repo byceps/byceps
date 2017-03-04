@@ -28,7 +28,7 @@ def create_article(party_id, item_number, description, price, tax_rate,
 
 def update_article(article, description, price, tax_rate, quantity,
                    max_quantity_per_order, not_directly_orderable,
-                   requires_separate_order):
+                   requires_separate_order, shipping_required):
     """Update the article."""
     article.description = description
     article.price = price
@@ -37,6 +37,7 @@ def update_article(article, description, price, tax_rate, quantity,
     article.max_quantity_per_order = max_quantity_per_order
     article.not_directly_orderable = not_directly_orderable
     article.requires_separate_order = requires_separate_order
+    article.shipping_required = shipping_required
 
     db.session.commit()
 
