@@ -10,4 +10,18 @@ $(function() {
   confirmed_post_on_click('[data-action="posting-hide"]', 'Beitrag verstecken?');
   confirmed_delete_on_click('[data-action="posting-unhide"]', 'Beitrag wieder anzeigen?');
 
+  document.querySelectorAll('textarea.collapsed').forEach(function(element) {
+    // Expand collapsible text areas after receiving focus.
+    element.addEventListener('focus', function() {
+      element.classList.remove('collapsed');
+    });
+
+    // Collapse *empty* text areas after losing focus.
+    element.addEventListener('blur', function() {
+      if (element.value == '') {
+        element.classList.add('collapsed');
+      }
+    });
+  });
+
 });

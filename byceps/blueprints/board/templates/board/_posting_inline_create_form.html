@@ -11,7 +11,7 @@
     <div class="body">
       <form action="{{ url_for('.posting_create', topic_id=topic.id) }}" method="post">
         {%- call form_fieldset() %}
-          {{ form_field(form.body, show_label=False, class='collapsible wide', required='required') }}
+          {{ form_field(form.body, show_label=False, class='collapsible collapsed wide', required='required') }}
           <li>{%- include 'board/_posting_form_body_supplement.html' -%}</li>
         {%- endcall %}
         {{ form_buttons('Hinzufügen') }}

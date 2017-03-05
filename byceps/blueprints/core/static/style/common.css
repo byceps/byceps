@@ -251,11 +251,10 @@ fieldset textarea.wide {
   width: 100%;
 }
 fieldset textarea.collapsible {
-  height: 3rem;
   transition: height 0.5s;
 }
-fieldset textarea.collapsible:focus {
-  height: 20rem;
+fieldset textarea.collapsible.collapsed {
+  height: 3rem;
 }
 fieldset .supplement {
   display: inline-block;
