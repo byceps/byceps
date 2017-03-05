@@ -30,9 +30,9 @@ class ShopAdminTestCase(AbstractAppTestCase):
 
     def test_cancel(self):
         article_before = self.create_article(5)
+
         quantified_articles_to_order = {(article_before, 3)}
         order_before = self.create_order(quantified_articles_to_order)
-        self.db.session.commit()
 
         self.assertEqual(article_before.quantity, 5)
 
@@ -76,12 +76,18 @@ class ShopAdminTestCase(AbstractAppTestCase):
 
     def create_user(self, number):
         user = create_user_with_detail(number)
+
         self.db.session.add(user)
+        self.db.session.commit()
+
         return user
 
     def create_article(self, quantity):
         article = create_article(party=self.party, quantity=quantity)
+
         self.db.session.add(article)
+        self.db.session.commit()
+
         return article
 
     def create_order(self, quantified_articles):
@@ -91,5 +97,7 @@ class ShopAdminTestCase(AbstractAppTestCase):
         for article, quantity_to_order in quantified_articles:
             order_item = create_order_item(order, article, quantity_to_order)
             self.db.session.add(order_item)
+
+        self.db.session.commit()
 
         return order
