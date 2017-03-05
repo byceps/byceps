@@ -113,6 +113,9 @@ def unset_invoiced_flag(order, initiator_id):
 
 def set_shipped_flag(order, initiator_id):
     """Mark the order as shipped."""
+    if not order.shipping_required:
+        raise ValueError('Order contains no items that require shipping.')
+
     now = datetime.utcnow()
     event_type = 'order-shipped'
     data = {
@@ -129,6 +132,9 @@ def set_shipped_flag(order, initiator_id):
 
 def unset_shipped_flag(order, initiator_id):
     """Mark the order as not shipped."""
+    if not order.shipping_required:
+        raise ValueError('Order contains no items that require shipping.')
+
     now = datetime.utcnow()
     event_type = 'order-shipped-withdrawn'
     data = {
