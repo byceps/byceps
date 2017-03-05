@@ -77,10 +77,31 @@
     <tr>
       <td colspan="2">
         <ol class="order-status-bar list-grid">
-          <li class="order-status-flag {{ 'set' if order.is_invoiced else '' }}">{{ render_icon('invoice') }}<br>Rechnung<br>versendet</li>
-          <li class="order-status-flag {{ 'set' if (order.payment_state == PaymentState.paid) else '' }}">{{ render_icon('payment') }}<br>bezahlt</li>
+          <li class="order-status-flag {{ 'set' if order.is_invoiced else '' }}">
+            {{- render_icon('invoice') }}<br>
+            {%- if order.is_invoiced -%}
+            Rechnung<br>versendet
+            {%- else -%}
+            Rechnung<br>noch nicht<br>versendet
+            {%- endif -%}
+          </li>
+          <li class="order-status-flag {{ 'set' if (order.payment_state == PaymentState.paid) else '' }}">
+            {{- render_icon('payment') }}<br>
+            {%- if order.payment_state == PaymentState.paid -%}
+            bezahlt
+            {%- else -%}
+            noch nicht<br>bezahlt
+            {%- endif -%}
+          </li>
           {%- if order.is_shipping_required %}
-          <li class="order-status-flag {{ 'set' if order.is_shipped else '' }}">{{ render_icon('shipment') }}<br>Ware<br>versendet</li>
+          <li class="order-status-flag {{ 'set' if order.is_shipped else '' }}">
+            {{- render_icon('shipment') }}<br>
+            {%- if order.is_shipped -%}
+            Ware<br>versendet
+            {%- else -%}
+            Ware noch<br>nicht<br>versendet
+            {%- endif -%}
+          </li>
           {%- endif %}
         </ol>
       </td>
