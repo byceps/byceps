@@ -267,7 +267,7 @@ def get_order_count_by_party_id():
 
 
 def get_orders_for_party_paginated(party_id, page, per_page, *,
-                                   only_payment_state=None):
+                                   only_payment_state=None, only_shipped=None):
     """Return all orders for that party, ordered by creation date.
 
     If a payment state is specified, only orders in that state are
@@ -282,6 +282,14 @@ def get_orders_for_party_paginated(party_id, page, per_page, *,
 
     if only_payment_state is not None:
         query = query.filter_by(_payment_state=only_payment_state.name)
+
+    if only_shipped is not None:
+        query = query.filter(Order.shipping_required == True)
+
+        if only_shipped:
+            query = query.filter(Order.shipped_at != None)
+        else:
+            query = query.filter(Order.shipped_at == None)
 
     return query.paginate(page, per_page)
 

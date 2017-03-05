@@ -35,18 +35,29 @@
       <div class="filter">
         <span>{{ render_icon('filter') }} Einschränkung:</span>
         <ol>
-        {%- for payment_state in PaymentState %}
-          {%- if only_payment_state == payment_state %}
+        {%- with waiting_for_shipping = (only_payment_state == PaymentState.paid) and (only_shipped == False) %}
+
+          {%- for payment_state in PaymentState %}
+            {%- if (only_payment_state == payment_state) and not waiting_for_shipping %}
           <li>{{ render_order_payment_state(payment_state) }}</li>
-          {%- else %}
+            {%- else %}
           <li><a href="{{ url_for('.index_for_party', party_id=party.id, only_payment_state=payment_state.name) }}">{{ render_order_payment_state(payment_state) }}</a></li>
+            {%- endif %}
+          {%- endfor %}
+
+          {%- if waiting_for_shipping %}
+          <li><strong>{{ render_tag('auf Versand wartend', icon='shipment', class='order-waiting-for-shipping') }}</strong></li>
+          {%- else %}
+          <li><a href="{{ url_for('.index_for_party', party_id=party.id, only_payment_state=PaymentState.paid.name, only_shipped='false') }}">{{ render_tag('auf Versand wartend', icon='shipment', class='order-waiting-for-shipping') }}</a></li>
           {%- endif %}
-        {%- endfor %}
-        {%- if only_payment_state is none %}
+
+          {%- if (only_payment_state is none) and not waiting_for_shipping %}
           <li><strong>{{ render_tag('alle') }}</strong></li>
-        {%- else %}
+          {%- else %}
           <li><a href="{{ url_for('.index_for_party', party_id=party.id) }}">{{ render_tag('alle') }}</a></li>
-        {%- endif %}
+          {%- endif %}
+
+        {%- endwith %}
         </ol>
       </div>
 
@@ -103,6 +114,10 @@
     </tbody>
   </table>
 
-{{ render_pagination_nav(orders, '.index_for_party', {'party_id': party.id, 'only_payment_state': only_payment_state.name if only_payment_state else None}) }}
+{{ render_pagination_nav(orders, '.index_for_party', {
+    'party_id': party.id,
+    'only_payment_state': only_payment_state.name if only_payment_state else None,
+    'only_shipped': only_shipped if (only_shipped is not none) else None,
+  }) }}
 
 {%- endblock %}

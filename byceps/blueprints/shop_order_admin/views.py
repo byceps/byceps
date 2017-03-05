@@ -50,15 +50,25 @@ def index_for_party(party_id, page):
     only_payment_state = request.args.get('only_payment_state',
                                           type=PaymentState.__getitem__)
 
+    def _str_to_bool(value):
+        return {
+            'true': True,
+            'false': False,
+        }[value]
+
+    only_shipped = request.args.get('only_shipped', type=_str_to_bool)
+
     orders = order_service \
         .get_orders_for_party_paginated(party.id, page, per_page,
-                                        only_payment_state=only_payment_state)
+                                        only_payment_state=only_payment_state,
+                                        only_shipped=only_shipped)
 
     return {
         'party': party,
         'order_number_prefix': order_number_prefix,
         'PaymentState': PaymentState,
         'only_payment_state': only_payment_state,
+        'only_shipped': only_shipped,
         'orders': orders,
     }
 

@@ -428,6 +428,9 @@ ol.index.fully-linked a:hover {
 .tag.order-canceled {
   background-color: #999999 !important;
 }
+.tag.order-waiting-for-shipping {
+  background-color: #eecc00 !important;
+}
 
 
 /* forms */
