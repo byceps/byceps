@@ -69,21 +69,37 @@
       <div class="filter">
         <span>{{ render_icon('filter') }} Einschränkung:</span>
         <ol>
-        {%- if only == 'enabled' %}
-          <li>{{ render_tag('aktiviert', class='user-state-enabled') }}</li>
-        {%- else %}
-          <li><a href="{{ url_for('.index', only='enabled') }}">{{ render_tag('aktiviert', class='user-state-enabled') }}</a></li>
-        {%- endif %}
-        {%- if only == 'disabled' %}
-          <li>{{ render_tag('nicht aktiviert', class='user-state-disabled') }}</li>
-        {%- else %}
-          <li><a href="{{ url_for('.index', only='disabled') }}">{{ render_tag('nicht aktiviert', class='user-state-disabled') }}</a></li>
-        {%- endif %}
-        {%- if only not in ('enabled', 'disabled') %}
-          <li><strong>{{ render_tag('alle') }}</strong></li>
-        {%- else %}
-          <li><a href="{{ url_for('.index') }}">{{ render_tag('alle') }}</a></li>
-        {%- endif %}
+
+          {%- with tag = render_tag('aktiviert', class='user-state-enabled') %}
+          <li>
+            {%- if only == 'enabled' %}
+            {{ tag }}
+            {%- else %}
+            <a href="{{ url_for('.index', only='enabled') }}">{{ tag }}</a>
+            {%- endif %}
+          </li>
+          {%- endwith %}
+
+          {%- with tag = render_tag('nicht aktiviert', class='user-state-disabled') %}
+          <li>
+            {%- if only == 'disabled' %}
+            {{ tag }}
+            {%- else %}
+            <a href="{{ url_for('.index', only='disabled') }}">{{ tag }}</a>
+            {%- endif %}
+          </li>
+          {%- endwith %}
+
+          {%- with tag = render_tag('alle') %}
+          <li>
+            {%- if only not in ('enabled', 'disabled') %}
+            <strong>{{ tag }}</strong>
+            {%- else %}
+            <a href="{{ url_for('.index') }}">{{ tag }}</a>
+            {%- endif %}
+          </li>
+          {%- endwith %}
+
         </ol>
       </div>
 

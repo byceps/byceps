@@ -38,24 +38,36 @@
         {%- with waiting_for_shipping = (only_payment_state == PaymentState.paid) and (only_shipped == False) %}
 
           {%- for payment_state in PaymentState %}
-            {%- if (only_payment_state == payment_state) and not waiting_for_shipping %}
-          <li>{{ render_order_payment_state(payment_state) }}</li>
-            {%- else %}
-          <li><a href="{{ url_for('.index_for_party', party_id=party.id, only_payment_state=payment_state.name) }}">{{ render_order_payment_state(payment_state) }}</a></li>
-            {%- endif %}
+            {%- with tag = render_order_payment_state(payment_state) %}
+          <li>
+              {%- if (only_payment_state == payment_state) and not waiting_for_shipping -%}
+            {{- tag -}}
+              {%- else -%}
+            <a href="{{ url_for('.index_for_party', party_id=party.id, only_payment_state=payment_state.name) }}">{{ tag }}</a>
+              {%- endif -%}
+          </li>
+            {%- endwith %}
           {%- endfor %}
 
-          {%- if waiting_for_shipping %}
-          <li><strong>{{ render_tag('auf Versand wartend', icon='shipping', class='order-waiting-for-shipping') }}</strong></li>
-          {%- else %}
-          <li><a href="{{ url_for('.index_for_party', party_id=party.id, only_payment_state=PaymentState.paid.name, only_shipped='false') }}">{{ render_tag('auf Versand wartend', icon='shipping', class='order-waiting-for-shipping') }}</a></li>
-          {%- endif %}
+          {%- with tag = render_tag('auf Versand wartend', icon='shipping', class='order-waiting-for-shipping') %}
+          <li>
+            {%- if waiting_for_shipping -%}
+            <strong>{{ tag }}</strong>
+            {%- else -%}
+            <a href="{{ url_for('.index_for_party', party_id=party.id, only_payment_state=PaymentState.paid.name, only_shipped='false') }}">{{ tag }}</a>
+            {%- endif -%}
+          </li>
+          {%- endwith %}
 
-          {%- if (only_payment_state is none) and not waiting_for_shipping %}
-          <li><strong>{{ render_tag('alle') }}</strong></li>
-          {%- else %}
-          <li><a href="{{ url_for('.index_for_party', party_id=party.id) }}">{{ render_tag('alle') }}</a></li>
-          {%- endif %}
+          {%- with tag = render_tag('alle') %}
+          <li>
+            {%- if (only_payment_state is none) and not waiting_for_shipping -%}
+            <strong>{{ tag }}</strong>
+            {%- else -%}
+            <a href="{{ url_for('.index_for_party', party_id=party.id) }}">{{ tag }}</a>
+            {%- endif -%}
+          </li>
+          {%- endwith %}
 
         {%- endwith %}
         </ol>
