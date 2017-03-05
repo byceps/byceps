@@ -131,6 +131,6 @@
     </tbody>
   </table>
 
-{{ render_pagination_nav(users, '.index') }}
+{{ render_pagination_nav(users, '.index', {'only': only if only else None}) }}
 
 {%- endblock %}
