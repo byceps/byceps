@@ -133,6 +133,10 @@ class Order(db.Model):
         return self.invoice_created_at is not None
 
     @property
+    def is_shipping_required(self):
+        return any(item.shipping_required for item in self.items)
+
+    @property
     def is_shipped(self):
         return self.shipped_at is not None
 
@@ -160,6 +164,7 @@ class OrderItem(db.Model):
     price = db.Column(db.Numeric(6, 2), nullable=False)
     tax_rate = db.Column(db.Numeric(3, 3), nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
+    shipping_required = db.Column(db.Boolean, nullable=False)
 
     def __init__(self, order, article, quantity):
         self.order = order
@@ -168,6 +173,7 @@ class OrderItem(db.Model):
         self.price = article.price
         self.tax_rate = article.tax_rate
         self.quantity = quantity
+        self.shipping_required = article.shipping_required
 
     @property
     def unit_price(self):

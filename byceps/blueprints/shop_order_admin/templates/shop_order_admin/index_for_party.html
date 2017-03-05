@@ -83,8 +83,14 @@
           {%- endif -%}
         </td>
         <td>
-          {%- if order.is_shipped %}
-          {{- render_icon('shipment', title='Lieferung versendet') -}}
+          {%- if order.is_shipping_required %}
+            {%- if order.is_shipped %}
+              {{- render_icon('shipment', title='Lieferung versendet') -}}
+            {%- else -%}
+              {%- filter dim %}
+                {{- render_icon('shipment', title='Versand erforderlich') -}}
+              {%- endfilter %}
+            {%- endif -%}
           {%- endif -%}
         </td>
         <td>
