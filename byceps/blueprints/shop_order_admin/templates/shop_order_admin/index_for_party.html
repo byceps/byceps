@@ -36,13 +36,13 @@
         <span>{{ render_icon('filter') }} Einschränkung:</span>
         <ol>
         {%- for payment_state in PaymentState %}
-          {%- if only == payment_state %}
+          {%- if only_payment_state == payment_state %}
           <li>{{ render_order_payment_state(payment_state) }}</li>
           {%- else %}
-          <li><a href="{{ url_for('.index_for_party', party_id=party.id, only=payment_state.name) }}">{{ render_order_payment_state(payment_state) }}</a></li>
+          <li><a href="{{ url_for('.index_for_party', party_id=party.id, only_payment_state=payment_state.name) }}">{{ render_order_payment_state(payment_state) }}</a></li>
           {%- endif %}
         {%- endfor %}
-        {%- if only is none %}
+        {%- if only_payment_state is none %}
           <li><strong>{{ render_tag('alle') }}</strong></li>
         {%- else %}
           <li><a href="{{ url_for('.index_for_party', party_id=party.id) }}">{{ render_tag('alle') }}</a></li>
@@ -103,6 +103,6 @@
     </tbody>
   </table>
 
-{{ render_pagination_nav(orders, '.index_for_party', {'party_id': party.id, 'only': only.name if only else None}) }}
+{{ render_pagination_nav(orders, '.index_for_party', {'party_id': party.id, 'only_payment_state': only_payment_state.name if only_payment_state else None}) }}
 
 {%- endblock %}

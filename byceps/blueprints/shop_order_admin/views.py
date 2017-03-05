@@ -46,17 +46,19 @@ def index_for_party(party_id, page):
     order_number_prefix = sequence_service.get_order_number_prefix(party.id)
 
     per_page = request.args.get('per_page', type=int, default=15)
-    only = request.args.get('only', type=PaymentState.__getitem__)
+
+    only_payment_state = request.args.get('only_payment_state',
+                                          type=PaymentState.__getitem__)
 
     orders = order_service \
         .get_orders_for_party_paginated(party.id, page, per_page,
-                                        only_payment_state=only)
+                                        only_payment_state=only_payment_state)
 
     return {
         'party': party,
         'order_number_prefix': order_number_prefix,
         'PaymentState': PaymentState,
-        'only': only,
+        'only_payment_state': only_payment_state,
         'orders': orders,
     }
 
