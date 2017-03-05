@@ -26,8 +26,9 @@ def create_orderer(user):
 
 
 def create_order(party_id, placed_by, *, order_number=ANY_ORDER_NUMBER,
-                 payment_method=PaymentMethod.bank_transfer):
-    return Order(
+                 payment_method=PaymentMethod.bank_transfer,
+                 shipping_required=False):
+    order = Order(
         party_id,
         order_number,
         placed_by,
@@ -40,6 +41,10 @@ def create_order(party_id, placed_by, *, order_number=ANY_ORDER_NUMBER,
         placed_by.detail.street,
         payment_method,
     )
+
+    order.shipping_required = shipping_required
+
+    return order
 
 
 def create_order_item(order, article, quantity):

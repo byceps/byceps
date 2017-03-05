@@ -26,6 +26,8 @@ def create_order(party_id, orderer, payment_method, cart):
 
     order_items = _add_items_from_cart_to_order(cart, order)
 
+    order.shipping_required = any(item.shipping_required for item in order_items)
+
     db.session.add(order)
     db.session.add_all(order_items)
     db.session.commit()
