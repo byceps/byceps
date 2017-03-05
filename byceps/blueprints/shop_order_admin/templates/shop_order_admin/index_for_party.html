@@ -46,9 +46,9 @@
           {%- endfor %}
 
           {%- if waiting_for_shipping %}
-          <li><strong>{{ render_tag('auf Versand wartend', icon='shipment', class='order-waiting-for-shipping') }}</strong></li>
+          <li><strong>{{ render_tag('auf Versand wartend', icon='shipping', class='order-waiting-for-shipping') }}</strong></li>
           {%- else %}
-          <li><a href="{{ url_for('.index_for_party', party_id=party.id, only_payment_state=PaymentState.paid.name, only_shipped='false') }}">{{ render_tag('auf Versand wartend', icon='shipment', class='order-waiting-for-shipping') }}</a></li>
+          <li><a href="{{ url_for('.index_for_party', party_id=party.id, only_payment_state=PaymentState.paid.name, only_shipped='false') }}">{{ render_tag('auf Versand wartend', icon='shipping', class='order-waiting-for-shipping') }}</a></li>
           {%- endif %}
 
           {%- if (only_payment_state is none) and not waiting_for_shipping %}
@@ -96,10 +96,10 @@
         <td>
           {%- if order.is_shipping_required %}
             {%- if order.is_shipped %}
-              {{- render_icon('shipment', title='Lieferung versendet') -}}
+              {{- render_icon('shipping', title='Lieferung versendet') -}}
             {%- else -%}
               {%- filter dim %}
-                {{- render_icon('shipment', title='Versand erforderlich') -}}
+                {{- render_icon('shipping', title='Versand erforderlich') -}}
               {%- endfilter %}
             {%- endif -%}
           {%- endif -%}

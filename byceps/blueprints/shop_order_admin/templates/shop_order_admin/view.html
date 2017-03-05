@@ -62,9 +62,9 @@
         <li>
         {%- if order.is_shipping_required %}
           {%- if order.is_shipped %}
-            <a data-action="order-unflag-shipped" href="{{ url_for('.unset_shipped_flag', order_id=order.id) }}">{{ render_icon('shipment') }} Bestellung wurde <strong>nicht</strong> versendet</a>
+            <a data-action="order-unflag-shipped" href="{{ url_for('.unset_shipped_flag', order_id=order.id) }}">{{ render_icon('shipping') }} Bestellung wurde <strong>nicht</strong> versendet</a>
           {%- else %}
-            <a data-action="order-flag-shipped" href="{{ url_for('.set_shipped_flag', order_id=order.id) }}">{{ render_icon('shipment') }} Bestellung wurde versendet</a>
+            <a data-action="order-flag-shipped" href="{{ url_for('.set_shipped_flag', order_id=order.id) }}">{{ render_icon('shipping') }} Bestellung wurde versendet</a>
           {%- endif %}
         {%- endif %}
         </li>
@@ -95,7 +95,7 @@
           </li>
           {%- if order.is_shipping_required %}
           <li class="order-status-flag {{ 'set' if order.is_shipped else '' }}">
-            {{- render_icon('shipment') }}<br>
+            {{- render_icon('shipping') }}<br>
             {%- if order.is_shipped -%}
             Ware<br>versendet
             {%- else -%}
@@ -211,7 +211,7 @@
             hat die Rechnung als <strong>doch nicht erstellt</strong> markiert.
           {%- endset %}
         {%- elif event.event == 'order-shipped' %}
-          {%- set icon_name = 'shipment' %}
+          {%- set icon_name = 'shipping' %}
           {%- set body %}
             <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
             hat die Lieferung als <strong>versendet</strong> markiert.
