@@ -155,7 +155,7 @@ def cancel_order(order, updated_by_id, reason):
     Reserved quantities of articles from that order are made available
     again.
     """
-    if order.payment_state == PaymentState.canceled:
+    if order.is_canceled:
         raise OrderAlreadyCanceled()
 
     updated_at = datetime.now()
@@ -186,7 +186,7 @@ def cancel_order(order, updated_by_id, reason):
 
 def mark_order_as_paid(order, payment_method, updated_by_id):
     """Mark the order as paid."""
-    if order.payment_state == PaymentState.paid:
+    if order.is_paid:
         raise OrderAlreadyMarkedAsPaid()
 
     updated_at = datetime.now()

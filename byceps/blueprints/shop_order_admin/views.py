@@ -211,7 +211,7 @@ def cancel_form(order_id, erroneous_form=None):
 
     cancel_form = erroneous_form if erroneous_form else CancelForm()
 
-    if order.payment_state == PaymentState.canceled:
+    if order.is_canceled:
         flash_error(
             'Die Bestellung ist bereits storniert worden; '
             'der Bezahlstatus kann nicht mehr geändert werden.')
@@ -262,7 +262,7 @@ def mark_as_paid_form(order_id):
     """Show form to mark an order as paid."""
     order = _get_order_or_404(order_id)
 
-    if order.payment_state == PaymentState.paid:
+    if order.is_paid:
         flash_error('Die Bestellung ist bereits als bezahlt markiert worden.')
         return redirect_to('.view', order_id=order.id)
 

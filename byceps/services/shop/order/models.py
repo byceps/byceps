@@ -117,6 +117,18 @@ class Order(db.Model):
         self._payment_state = state.name
 
     @property
+    def is_open(self):
+        return self.payment_state == PaymentState.open
+
+    @property
+    def is_canceled(self):
+        return self.payment_state == PaymentState.canceled
+
+    @property
+    def is_paid(self):
+        return self.payment_state == PaymentState.paid
+
+    @property
     def item_total_quantity(self):
         """Return the sum of all items' quantities."""
         return sum(item.quantity for item in self.items)

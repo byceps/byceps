@@ -53,7 +53,7 @@
         </li>
         <li class="divider"></li>
         {%- if order.payment_state != PaymentState.canceled %}
-          {%- if order.payment_state == PaymentState.open %}
+          {%- if order.is_open %}
         <li><a href="{{ url_for('.mark_as_paid_form', order_id=order.id) }}">{{ render_icon('payment') }} Bestellung als bezahlt markieren</a></li>
           {%- endif %}
         <li><a href="{{ url_for('.cancel_form', order_id=order.id) }}">{{ render_icon('disabled') }} Bestellung stornieren</a></li>
@@ -85,9 +85,9 @@
             Rechnung<br>noch nicht<br>versendet
             {%- endif -%}
           </li>
-          <li class="order-status-flag {{ 'set' if (order.payment_state == PaymentState.paid) else '' }}">
+          <li class="order-status-flag {{ 'set' if order.is_paid else '' }}">
             {{- render_icon('payment') }}<br>
-            {%- if order.payment_state == PaymentState.paid -%}
+            {%- if order.is_paid -%}
             bezahlt
             {%- else -%}
             noch nicht<br>bezahlt
@@ -118,7 +118,7 @@
       <th>Bezahlstatus</th>
       <td>{{ render_order_payment_state(order.payment_state) }}</td>
     </tr>
-    {%- if order.payment_state == PaymentState.canceled %}
+    {%- if order.is_canceled %}
     <tr>
       <th>Begründung für<br>Stornierung</th>
       <td>{{ order.cancelation_reason|fallback }}</td>
