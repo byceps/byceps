@@ -52,7 +52,7 @@
           {%- with tag = render_tag('auf Versand wartend', icon='shipping', class='order-waiting-for-shipping') %}
           <li>
             {%- if waiting_for_shipping -%}
-            <strong>{{ tag }}</strong>
+            {{ tag }}
             {%- else -%}
             <a href="{{ url_for('.index_for_party', party_id=party.id, only_payment_state=PaymentState.paid.name, only_shipped='false') }}">{{ tag }}</a>
             {%- endif -%}
@@ -62,7 +62,7 @@
           {%- with tag = render_tag('alle') %}
           <li>
             {%- if (only_payment_state is none) and not waiting_for_shipping -%}
-            <strong>{{ tag }}</strong>
+            {{ tag }}
             {%- else -%}
             <a href="{{ url_for('.index_for_party', party_id=party.id) }}">{{ tag }}</a>
             {%- endif -%}

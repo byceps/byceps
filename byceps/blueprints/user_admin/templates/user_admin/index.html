@@ -93,7 +93,7 @@
           {%- with tag = render_tag('alle') %}
           <li>
             {%- if only not in ('enabled', 'disabled') %}
-            <strong>{{ tag }}</strong>
+            {{ tag }}
             {%- else %}
             <a href="{{ url_for('.index') }}">{{ tag }}</a>
             {%- endif %}
