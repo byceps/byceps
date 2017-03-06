@@ -22,10 +22,12 @@
           </div><!-- /.column -->
           <div class="column">
 
+            {%- if g.current_user.has_permission(UserPermission.view) %}
             <form action="{{ url_for('user_admin.index') }}" class="user-search">
               <input type="search" name="search_term" placeholder="Benutzer-, Vor-, Nachname">
               <button type="submit" class="button" title="Suchen">{{ render_icon('search') }}</button>
             </form>
+            {%- endif %}
 
           </div><!-- /.column -->
           <div class="column">
