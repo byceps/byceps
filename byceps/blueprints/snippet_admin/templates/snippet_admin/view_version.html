@@ -1,20 +1,78 @@
 {% extends 'layout/admin/base.html' %}
+{% from 'macros/datetime.html' import render_datetime %}
+{% from 'macros/misc.html' import render_notification %}
+{% from 'macros/user_admin.html' import render_user_avatar_16_and_name %}
 {% set current_page = 'snippet_admin' %}
-{% set current_page_party = party %}
+{% set current_page_party = version.snippet.party %}
 {% set title = 'Snippetversion ansehen' %}
 
 {% block head %}
-  {%- if snippet_head %}
+  <style>
+    .snippet-head {
+      background-color: #eeeeee;
+      border-bottom: #cccccc solid 1px;
+      margin-bottom: 40px;
+      margin-left: -40px;
+      margin-right: -40px;
+      margin-top: -20px;
+      padding: 20px 40px;
+    }
+  </style>
+
+  {%- if not error_occured and snippet_head %}
 {{ snippet_head|safe }}
   {%- endif %}
 {% endblock %}
 
 {% block body %}
 
-{%- if snippet_title %}
-  <h1>{{ snippet_title }}</h1>
-{%- endif %}
+  <div class="snippet-head">
+    <table>
+      <tr>
+        <th>Party:</th>
+        <td><a href="{{ url_for('.index_for_party', party_id=version.snippet.party_id) }}">{{ version.snippet.party.title }}</a></td>
+      </tr>
+      <tr>
+        <th>Snippet:</th>
+        <td>{{ version.snippet.name }}</td>
+      </tr>
+      <tr>
+        <th>Typ:</th>
+        <td>
+          {%- if version.snippet.is_document %}
+          {{ render_icon('snippet-document') }} Dokument
+          {%- elif version.snippet.is_fragment %}
+          {{ render_icon('snippet-fragment') }} Fragment
+          {%- endif %}
+        </td>
+      </tr>
+      <tr>
+        <th>Version:</th>
+        <td>{{ version.id }}</td>
+      </tr>
+      <tr>
+        <th>Erstellt:</th>
+        <td>{{ render_datetime(version.created_at) }} von {{ render_user_avatar_16_and_name(version.creator) }}</td>
+      </tr>
+    </table>
+  </div>
 
-{{ snippet_body|safe }}
+  {%- if error_occured %}
+
+    {%- set notification_body %}
+        Entschuldigung, es ist ein Fehler aufgetreten.<br>
+        <pre>{{ error_message }}</pre>
+    {%- endset %}
+    {{ render_notification('error', 'warning', notification_body, text_is_safe=True) }}
+
+  {%- else %}
+
+    {%- if snippet_title %}
+  <h1>{{ snippet_title }}</h1>
+    {%- endif %}
+
+  {{- snippet_body|safe }}
+
+  {%- endif %}
 
 {%- endblock %}

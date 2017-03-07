@@ -63,22 +63,24 @@ def view_version(snippet_version_id):
         snippet_context = get_snippet_context(version)
 
         context = {
-            'party': version.snippet.party,
+            'version': version,
             'snippet_title': snippet_context['title'],
             'snippet_head': snippet_context['head'],
             'snippet_body': snippet_context['body'],
+            'error_occured': False,
         }
 
-        return render_template('snippet_admin/view_version.html', **context)
+        status_code = 200
     except Exception as e:
         context = {
-            'party': version.snippet.party,
+            'version': version,
+            'error_occured': True,
             'error_message': str(e),
         }
 
-        return render_template('snippet_admin/view_version_error.html',
-                               **context), \
-               500
+        status_code = 500
+
+    return render_template('snippet_admin/view_version.html', **context)
 
 
 @blueprint.route('/<uuid:snippet_id>/history')
