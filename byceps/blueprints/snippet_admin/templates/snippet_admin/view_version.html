@@ -27,6 +27,15 @@
 {% block body %}
 
   <div class="snippet-head">
+
+    {%- if g.current_user.has_permission(SnippetPermission.update) -%}
+    <div style="float: right;">
+      {%- with endpoint = '.update_fragment_form' if version.snippet.is_fragment else '.update_document_form' %}
+      <a class="button" href="{{ url_for(endpoint, snippet_id=version.snippet.id) }}">{{ render_icon('edit') }} bearbeiten</a>
+      {%- endwith %}
+    </div>
+    {%- endif -%}
+
     <table>
       <tr>
         <th>Party:</th>
@@ -55,6 +64,7 @@
         <td>{{ render_datetime(version.created_at) }} von {{ render_user_avatar_16_and_name(version.creator) }}</td>
       </tr>
     </table>
+
   </div>
 
   {%- if error_occured %}
