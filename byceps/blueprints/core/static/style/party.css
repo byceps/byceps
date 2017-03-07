@@ -202,7 +202,7 @@ h2 {
 }
 
 
-/* board, tourneys */
+/* board */
 
 .board-category-link,
 .board-topic-link {
@@ -242,6 +242,17 @@ h2 {
     display: none;
   }
 
+}
+
+form.board-posting-create-form-inline textarea.collapsible ~ .supplement {
+  display: block;
+}
+form.board-posting-create-form-inline textarea.collapsible.collapsed ~ .supplement {
+  display: none;
+}
+
+form.board-posting-create-form-inline .label {
+  display: none;
 }
 
 

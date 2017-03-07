@@ -1,4 +1,4 @@
-{%- from 'macros/forms.html' import form_buttons, form_fieldset, form_field %}
+{%- from 'macros/forms.html' import form_buttons %}
 {%- from 'macros/user_avatar.html' import render_user_avatar_96 %}
 
   <article class="user-comment">
@@ -9,11 +9,11 @@
     </aside>
     <div class="user-comment-main">
     <div class="body">
-      <form action="{{ url_for('.posting_create', topic_id=topic.id) }}" method="post">
-        {%- call form_fieldset() %}
-          {{ form_field(form.body, show_label=False, class='collapsible collapsed wide', required='required') }}
-          <li>{%- include 'board/_posting_form_body_supplement.html' -%}</li>
-        {%- endcall %}
+      <form action="{{ url_for('.posting_create', topic_id=topic.id) }}" method="post" class="board-posting-create-form-inline">
+        <fieldset>
+          {{ form.body(class='collapsible collapsed wide', required='required') }}
+          {%- include 'board/_posting_form_body_supplement.html' -%}
+        </fieldset>
         {{ form_buttons('Hinzufügen') }}
       </form>
     </div>
