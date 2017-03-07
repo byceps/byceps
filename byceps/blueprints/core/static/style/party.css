@@ -246,6 +246,8 @@ h2 {
 
 form.board-posting-create-form-inline textarea.collapsible ~ .supplement {
   display: block;
+  margin-left: 0;
+  width: auto;
 }
 form.board-posting-create-form-inline textarea.collapsible.collapsed ~ .supplement {
   display: none;
