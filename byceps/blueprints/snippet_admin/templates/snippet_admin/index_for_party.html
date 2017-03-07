@@ -31,7 +31,6 @@
         <th>Name</th>
         <th>Letzte Änderung</th>
         <th>durch</th>
-        <th class="nowrap">Aktionen</th>
       </tr>
     </thead>
     <tbody>
@@ -43,7 +42,7 @@
           {%- elif snippet.is_fragment %}
           {{ render_icon('snippet-fragment', title='Fragment') }}
           {%- endif %}
-          {{ snippet.name }}
+          <a href="{{ url_for('.view_version', snippet_version_id=snippet.current_version.id) }}"><strong>{{ snippet.name }}</strong></a>
         </td>
         <td class="nowrap">
           {%- if g.current_user.has_permission(SnippetPermission.view_history) %}
@@ -53,9 +52,6 @@
           {%- endif %}
         </td>
         <td>{{ render_user_avatar_20_and_name(snippet.current_version.creator) }}</td>
-        <td>
-          <a class="button button--inline" href="{{ url_for('.view_version', snippet_version_id=snippet.current_version.id) }}">{{ render_icon('view') }} ansehen</a>
-        </td>
       </tr>
     {%- endfor %}
     </tbody>
