@@ -34,7 +34,7 @@ permission_registry.register_enum(MountpointPermission)
 permission_registry.register_enum(SnippetPermission)
 
 
-@blueprint.route('/<party_id>')
+@blueprint.route('/for_party/<party_id>')
 @permission_required(SnippetPermission.list)
 @templated
 def index_for_party(party_id):
@@ -83,7 +83,7 @@ def view_version(snippet_version_id):
     return render_template('snippet_admin/view_version.html', **context)
 
 
-@blueprint.route('/<uuid:snippet_id>/history')
+@blueprint.route('/snippets/<uuid:snippet_id>/history')
 @permission_required(SnippetPermission.view_history)
 @templated
 def history(snippet_id):
@@ -102,7 +102,7 @@ def history(snippet_id):
 # document
 
 
-@blueprint.route('/documents/for_party/<party_id>/create')
+@blueprint.route('/for_party/<party_id>/documents/create')
 @permission_required(SnippetPermission.create)
 @templated
 def create_document_form(party_id):
@@ -117,7 +117,7 @@ def create_document_form(party_id):
     }
 
 
-@blueprint.route('/documents/for_party/<party_id>', methods=['POST'])
+@blueprint.route('/for_party/<party_id>/documents', methods=['POST'])
 @permission_required(SnippetPermission.create)
 def create_document(party_id):
     """Create a document."""
@@ -211,7 +211,7 @@ def compare_documents(from_version_id, to_version_id):
 # fragment
 
 
-@blueprint.route('/fragments/for_party/<party_id>/create')
+@blueprint.route('/for_party/<party_id>/fragments/create')
 @permission_required(SnippetPermission.create)
 @templated
 def create_fragment_form(party_id):
@@ -226,7 +226,7 @@ def create_fragment_form(party_id):
     }
 
 
-@blueprint.route('/fragments/for_party/<party_id>', methods=['POST'])
+@blueprint.route('/for_party/<party_id>/fragments', methods=['POST'])
 @permission_required(SnippetPermission.create)
 def create_fragment(party_id):
     """Create a fragment."""
@@ -303,7 +303,7 @@ def compare_fragments(from_version_id, to_version_id):
 # mountpoint
 
 
-@blueprint.route('/mountpoints/for_party/<party_id>/create')
+@blueprint.route('/for_party/<party_id>/mountpoints/create')
 @permission_required(MountpointPermission.create)
 @templated
 def create_mountpoint_form(party_id):
@@ -322,7 +322,7 @@ def create_mountpoint_form(party_id):
     }
 
 
-@blueprint.route('/mountpoints/for_party/<party_id>', methods=['POST'])
+@blueprint.route('/for_party/<party_id>/mountpoints', methods=['POST'])
 @permission_required(MountpointPermission.create)
 def create_mountpoint(party_id):
     """Create a mountpoint."""
