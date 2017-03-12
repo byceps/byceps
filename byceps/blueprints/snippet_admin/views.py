@@ -303,7 +303,7 @@ def compare_fragments(from_version_id, to_version_id):
 # mountpoint
 
 
-@blueprint.route('/mointpoints/for_party/<party_id>/create')
+@blueprint.route('/mountpoints/for_party/<party_id>/create')
 @permission_required(MountpointPermission.create)
 @templated
 def create_mountpoint_form(party_id):
