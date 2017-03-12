@@ -29,7 +29,7 @@
   <div class="snippet-head">
 
     {%- if g.current_user.has_permission(SnippetPermission.update) -%}
-    <div style="float: right;">
+    <div class="button-row button-row--compact" style="float: right;">
       {%- with endpoint = '.update_fragment_form' if version.snippet.is_fragment else '.update_document_form' %}
       <a class="button" href="{{ url_for(endpoint, snippet_id=version.snippet.id) }}">{{ render_icon('edit') }} bearbeiten</a>
       {%- endwith %}
