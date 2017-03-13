@@ -303,30 +303,31 @@ def compare_fragments(from_version_id, to_version_id):
 # mountpoint
 
 
-@blueprint.route('/for_party/<party_id>/mountpoints/create')
+@blueprint.route('/snippets/<uuid:snippet_id>/mountpoints/create')
 @permission_required(MountpointPermission.create)
 @templated
-def create_mountpoint_form(party_id):
+def create_mountpoint_form(snippet_id):
     """Show form to create a mountpoint."""
-    party = _get_party_or_404(party_id)
+    snippet = _find_snippet_by_id(snippet_id)
+    party = party_service.find_party(snippet.party_id)
 
     documents = snippet_service.get_documents_for_party(party)
     document_choices = list(map(attrgetter('id', 'name'), documents))
 
     form = MountpointCreateForm()
-    form.snippet_id.choices = document_choices
 
     return {
         'party': party,
+        'snippet': snippet,
         'form': form,
     }
 
 
-@blueprint.route('/for_party/<party_id>/mountpoints', methods=['POST'])
+@blueprint.route('/snippets/<uuid:snippet_id>/mountpoints', methods=['POST'])
 @permission_required(MountpointPermission.create)
-def create_mountpoint(party_id):
+def create_mountpoint(snippet_id):
     """Create a mountpoint."""
-    party = _get_party_or_404(party_id)
+    snippet = _find_snippet_by_id(snippet_id)
 
     form = MountpointCreateForm(request.form)
 
@@ -335,15 +336,12 @@ def create_mountpoint(party_id):
     if not url_path.startswith('/'):
         abort(400, 'URL path must start with a slash.')
 
-    snippet_id = form.snippet_id.data.strip().lower()
-    snippet = _find_snippet_by_id(snippet_id)
-
     mountpoint = snippet_service.create_mountpoint(endpoint_suffix, url_path,
                                                    snippet)
 
     flash_success('Der Mountpoint für "{}" wurde angelegt.',
                   mountpoint.url_path)
-    return redirect_to('.index_for_party', party_id=party.id)
+    return redirect_to('.index_for_party', party_id=snippet.party_id)
 
 
 @blueprint.route('/mountpoints/<uuid:mountpoint_id>', methods=['DELETE'])

@@ -11,15 +11,15 @@
     <ol>
       <li>Snippets</li>
       <li><a href="{{ url_for('.index_for_party', party_id=party.id) }}">{{ party.title }}</a></li>
+      <li>{{ snippet.name }}</li>
     </ol>
   </nav>
   <h1>{{ render_icon('add') }} {{ title }}</h1>
 
-  <form action="{{ url_for('.create_mountpoint', party_id=party.id) }}" method="post">
+  <form action="{{ url_for('.create_mountpoint', snippet_id=snippet.id) }}" method="post">
     {% call form_fieldset() %}
       {{ form_field(form.endpoint_suffix, maxlength=40, required='required', autofocus='autofocus') }}
       {{ form_field(form.url_path, maxlength=40, required='required') }}
-      {{ form_field(form.snippet_id, maxlength=36, required='required') }}
     {% endcall %}
 
     {{ form_buttons('Speichern', cancel_url=url_for('.index_for_party', party_id=party.id)) }}
