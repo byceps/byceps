@@ -220,12 +220,19 @@ def get_attendee_ids_for_parties(party_ids):
     if not party_ids:
         return {}
 
-    rows = db.session \
+    ticket_rows = db.session \
         .query(Category.party_id, Ticket.used_by_id) \
         .filter(Category.party_id.in_(party_ids)) \
         .join(Ticket) \
         .filter(Ticket.used_by_id != None) \
         .all()
+
+    archived_attendance_rows = db.session \
+        .query(ArchivedAttendance.party_id, ArchivedAttendance.user_id) \
+        .filter(ArchivedAttendance.party_id.in_(party_ids)) \
+        .all()
+
+    rows = ticket_rows + archived_attendance_rows
 
     attendee_ids_by_party_id = defaultdict(set)
     for party_id, attendee_id in rows:
