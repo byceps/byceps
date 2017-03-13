@@ -23,6 +23,8 @@ body {
   font-size: 1rem; /* 16px */
 }
 
+figcaption,
+figure,
 main {
   display: block;
 }
