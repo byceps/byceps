@@ -55,17 +55,16 @@ def create_app(config_filename):
 
 
 def _register_blueprints(app):
-    """Register the blueprints that are relevant for the current mode."""
+    """Register blueprints depending on the configuration."""
+    for name, url_prefix in _get_blueprints(app):
+        register_blueprint(app, name, url_prefix)
+
+
+def _get_blueprints(app):
+    """Yield blueprints to register on the application."""
     current_mode = config.get_site_mode(app)
 
-    for name, url_prefix, mode in _get_blueprints():
-        if mode is None or mode == current_mode:
-            register_blueprint(app, name, url_prefix)
-
-
-def _get_blueprints():
-    """Yield blueprints to register on the application."""
-    yield from [
+    blueprints = [
         ('admin_dashboard',     '/admin/dashboard',     SiteMode.admin ),
         ('authentication',      '/authentication',      None           ),
         ('authorization',       None,                   None           ),
@@ -105,6 +104,10 @@ def _get_blueprints():
         ('user_badge',          '/user_badges',         None           ),
         ('user_group',          '/user_groups',         SiteMode.public),
     ]
+
+    for name, url_prefix, mode in blueprints:
+        if mode is None or mode == current_mode:
+            yield name, url_prefix
 
 
 def _add_static_file_url_rules(app):
