@@ -13,8 +13,8 @@ import jinja2
 
 from .blueprints.snippet.init import add_routes_for_snippets
 from . import config, config_defaults
-from .config import SiteMode, STATIC_URL_PREFIX_BRAND, \
-    STATIC_URL_PREFIX_GLOBAL, STATIC_URL_PREFIX_PARTY
+from .config import STATIC_URL_PREFIX_BRAND, STATIC_URL_PREFIX_GLOBAL, \
+    STATIC_URL_PREFIX_PARTY
 from .database import db
 from . import email
 from . import redis
@@ -65,8 +65,8 @@ def _get_blueprints(app):
     current_mode = config.get_site_mode(app)
 
     always = True
-    site_mode_admin = (current_mode == SiteMode.admin)
-    site_mode_public = (current_mode == SiteMode.public)
+    site_mode_admin = current_mode.is_admin()
+    site_mode_public = current_mode.is_public()
 
     blueprints = [
         ('admin_dashboard',     '/admin/dashboard',     site_mode_admin ),
