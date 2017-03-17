@@ -64,49 +64,53 @@ def _get_blueprints(app):
     """Yield blueprints to register on the application."""
     current_mode = config.get_site_mode(app)
 
+    always = True
+    site_mode_admin = (current_mode == SiteMode.admin)
+    site_mode_public = (current_mode == SiteMode.public)
+
     blueprints = [
-        ('admin_dashboard',     '/admin/dashboard',     SiteMode.admin ),
-        ('authentication',      '/authentication',      None           ),
-        ('authorization',       None,                   None           ),
-        ('authorization_admin', '/admin/authorization', SiteMode.admin ),
-        ('board',               '/board',               SiteMode.public),
-        ('board_admin',         '/admin/board',         SiteMode.admin ),
-        ('brand_admin',         '/admin/brands',        SiteMode.admin ),
-        ('core',                '/core',                None           ),
-        ('core_admin',          '/admin/core',          SiteMode.admin ),
-        ('news',                '/news',                SiteMode.public),
-        ('news_admin',          '/admin/news',          SiteMode.admin ),
-        ('newsletter',          '/newsletter',          SiteMode.public),
-        ('newsletter_admin',    '/admin/newsletter',    SiteMode.admin ),
-        ('orga_admin',          '/admin/orgas',         SiteMode.admin ),
-        ('orga_presence',       '/admin/presence',      SiteMode.admin ),
-        ('orga_team',           '/orgas',               SiteMode.public),
-        ('orga_team_admin',     '/admin/orga_teams',    SiteMode.admin ),
-        ('party',               None,                   SiteMode.public),
-        ('party_admin',         '/admin/parties',       SiteMode.admin ),
-        ('seating',             '/seating',             SiteMode.public),
-        ('seating_admin',       '/admin/seating',       SiteMode.admin ),
-        ('shop_order',          '/shop',                SiteMode.public),
-        ('shop_admin',          '/admin/shop',          SiteMode.admin ),
-        ('shop_article_admin',  '/admin/shop/articles', SiteMode.admin ),
-        ('shop_order_admin',    '/admin/shop/orders',   SiteMode.admin ),
-        ('snippet',             '/snippets',            SiteMode.public),
-        ('snippet_admin',       '/admin/snippets',      SiteMode.admin ),
-        ('terms',               '/terms',               SiteMode.public),
-        ('terms_admin',         '/admin/terms',         SiteMode.admin ),
-        ('ticketing',           '/tickets',             SiteMode.public),
-        ('ticketing_admin',     '/admin/tickets',       SiteMode.admin ),
-        ('tourney',             '/tourney',             SiteMode.public),
-        ('tourney_admin',       '/admin/tourney',       SiteMode.admin ),
-        ('user',                '/users',               None           ),
-        ('user_admin',          '/admin/users',         SiteMode.admin ),
-        ('user_avatar',         '/users',               None           ),
-        ('user_badge',          '/user_badges',         None           ),
-        ('user_group',          '/user_groups',         SiteMode.public),
+        ('admin_dashboard',     '/admin/dashboard',     site_mode_admin ),
+        ('authentication',      '/authentication',      always          ),
+        ('authorization',       None,                   always          ),
+        ('authorization_admin', '/admin/authorization', site_mode_admin ),
+        ('board',               '/board',               site_mode_public),
+        ('board_admin',         '/admin/board',         site_mode_admin ),
+        ('brand_admin',         '/admin/brands',        site_mode_admin ),
+        ('core',                '/core',                always          ),
+        ('core_admin',          '/admin/core',          site_mode_admin ),
+        ('news',                '/news',                site_mode_public),
+        ('news_admin',          '/admin/news',          site_mode_admin ),
+        ('newsletter',          '/newsletter',          site_mode_public),
+        ('newsletter_admin',    '/admin/newsletter',    site_mode_admin ),
+        ('orga_admin',          '/admin/orgas',         site_mode_admin ),
+        ('orga_presence',       '/admin/presence',      site_mode_admin ),
+        ('orga_team',           '/orgas',               site_mode_public),
+        ('orga_team_admin',     '/admin/orga_teams',    site_mode_admin ),
+        ('party',               None,                   site_mode_public),
+        ('party_admin',         '/admin/parties',       site_mode_admin ),
+        ('seating',             '/seating',             site_mode_public),
+        ('seating_admin',       '/admin/seating',       site_mode_admin ),
+        ('shop_order',          '/shop',                site_mode_public),
+        ('shop_admin',          '/admin/shop',          site_mode_admin ),
+        ('shop_article_admin',  '/admin/shop/articles', site_mode_admin ),
+        ('shop_order_admin',    '/admin/shop/orders',   site_mode_admin ),
+        ('snippet',             '/snippets',            site_mode_public),
+        ('snippet_admin',       '/admin/snippets',      site_mode_admin ),
+        ('terms',               '/terms',               site_mode_public),
+        ('terms_admin',         '/admin/terms',         site_mode_admin ),
+        ('ticketing',           '/tickets',             site_mode_public),
+        ('ticketing_admin',     '/admin/tickets',       site_mode_admin ),
+        ('tourney',             '/tourney',             site_mode_public),
+        ('tourney_admin',       '/admin/tourney',       site_mode_admin ),
+        ('user',                '/users',               always          ),
+        ('user_admin',          '/admin/users',         site_mode_admin ),
+        ('user_avatar',         '/users',               always          ),
+        ('user_badge',          '/user_badges',         always          ),
+        ('user_group',          '/user_groups',         site_mode_public),
     ]
 
-    for name, url_prefix, mode in blueprints:
-        if mode is None or mode == current_mode:
+    for name, url_prefix, include in blueprints:
+        if include:
             yield name, url_prefix
 
 
