@@ -23,48 +23,6 @@ from .util.l10n import set_locale
 from .util import templatefilters
 
 
-BLUEPRINTS = [
-    ('admin_dashboard',     '/admin/dashboard',     SiteMode.admin ),
-    ('authentication',      '/authentication',      None           ),
-    ('authorization',       None,                   None           ),
-    ('authorization_admin', '/admin/authorization', SiteMode.admin ),
-    ('board',               '/board',               SiteMode.public),
-    ('board_admin',         '/admin/board',         SiteMode.admin ),
-    ('brand_admin',         '/admin/brands',        SiteMode.admin ),
-    ('core',                '/core',                None           ),
-    ('core_admin',          '/admin/core',          SiteMode.admin ),
-    ('news',                '/news',                SiteMode.public),
-    ('news_admin',          '/admin/news',          SiteMode.admin ),
-    ('newsletter',          '/newsletter',          SiteMode.public),
-    ('newsletter_admin',    '/admin/newsletter',    SiteMode.admin ),
-    ('orga_admin',          '/admin/orgas',         SiteMode.admin ),
-    ('orga_presence',       '/admin/presence',      SiteMode.admin ),
-    ('orga_team',           '/orgas',               SiteMode.public),
-    ('orga_team_admin',     '/admin/orga_teams',    SiteMode.admin ),
-    ('party',               None,                   SiteMode.public),
-    ('party_admin',         '/admin/parties',       SiteMode.admin ),
-    ('seating',             '/seating',             SiteMode.public),
-    ('seating_admin',       '/admin/seating',       SiteMode.admin ),
-    ('shop_order',          '/shop',                SiteMode.public),
-    ('shop_admin',          '/admin/shop',          SiteMode.admin ),
-    ('shop_article_admin',  '/admin/shop/articles', SiteMode.admin ),
-    ('shop_order_admin',    '/admin/shop/orders',   SiteMode.admin ),
-    ('snippet',             '/snippets',            SiteMode.public),
-    ('snippet_admin',       '/admin/snippets',      SiteMode.admin ),
-    ('terms',               '/terms',               SiteMode.public),
-    ('terms_admin',         '/admin/terms',         SiteMode.admin ),
-    ('ticketing',           '/tickets',             SiteMode.public),
-    ('ticketing_admin',     '/admin/tickets',       SiteMode.admin ),
-    ('tourney',             '/tourney',             SiteMode.public),
-    ('tourney_admin',       '/admin/tourney',       SiteMode.admin ),
-    ('user',                '/users',               None           ),
-    ('user_admin',          '/admin/users',         SiteMode.admin ),
-    ('user_avatar',         '/users',               None           ),
-    ('user_badge',          '/user_badges',         None           ),
-    ('user_group',          '/user_groups',         SiteMode.public),
-]
-
-
 def create_app(config_filename):
     """Create the actual Flask application."""
     app = Flask(__name__)
@@ -100,9 +58,53 @@ def _register_blueprints(app):
     """Register the blueprints that are relevant for the current mode."""
     current_mode = config.get_site_mode(app)
 
-    for name, url_prefix, mode in BLUEPRINTS:
+    for name, url_prefix, mode in _get_blueprints():
         if mode is None or mode == current_mode:
             register_blueprint(app, name, url_prefix)
+
+
+def _get_blueprints():
+    """Yield blueprints to register on the application."""
+    yield from [
+        ('admin_dashboard',     '/admin/dashboard',     SiteMode.admin ),
+        ('authentication',      '/authentication',      None           ),
+        ('authorization',       None,                   None           ),
+        ('authorization_admin', '/admin/authorization', SiteMode.admin ),
+        ('board',               '/board',               SiteMode.public),
+        ('board_admin',         '/admin/board',         SiteMode.admin ),
+        ('brand_admin',         '/admin/brands',        SiteMode.admin ),
+        ('core',                '/core',                None           ),
+        ('core_admin',          '/admin/core',          SiteMode.admin ),
+        ('news',                '/news',                SiteMode.public),
+        ('news_admin',          '/admin/news',          SiteMode.admin ),
+        ('newsletter',          '/newsletter',          SiteMode.public),
+        ('newsletter_admin',    '/admin/newsletter',    SiteMode.admin ),
+        ('orga_admin',          '/admin/orgas',         SiteMode.admin ),
+        ('orga_presence',       '/admin/presence',      SiteMode.admin ),
+        ('orga_team',           '/orgas',               SiteMode.public),
+        ('orga_team_admin',     '/admin/orga_teams',    SiteMode.admin ),
+        ('party',               None,                   SiteMode.public),
+        ('party_admin',         '/admin/parties',       SiteMode.admin ),
+        ('seating',             '/seating',             SiteMode.public),
+        ('seating_admin',       '/admin/seating',       SiteMode.admin ),
+        ('shop_order',          '/shop',                SiteMode.public),
+        ('shop_admin',          '/admin/shop',          SiteMode.admin ),
+        ('shop_article_admin',  '/admin/shop/articles', SiteMode.admin ),
+        ('shop_order_admin',    '/admin/shop/orders',   SiteMode.admin ),
+        ('snippet',             '/snippets',            SiteMode.public),
+        ('snippet_admin',       '/admin/snippets',      SiteMode.admin ),
+        ('terms',               '/terms',               SiteMode.public),
+        ('terms_admin',         '/admin/terms',         SiteMode.admin ),
+        ('ticketing',           '/tickets',             SiteMode.public),
+        ('ticketing_admin',     '/admin/tickets',       SiteMode.admin ),
+        ('tourney',             '/tourney',             SiteMode.public),
+        ('tourney_admin',       '/admin/tourney',       SiteMode.admin ),
+        ('user',                '/users',               None           ),
+        ('user_admin',          '/admin/users',         SiteMode.admin ),
+        ('user_avatar',         '/users',               None           ),
+        ('user_badge',          '/user_badges',         None           ),
+        ('user_group',          '/user_groups',         SiteMode.public),
+    ]
 
 
 def _add_static_file_url_rules(app):
