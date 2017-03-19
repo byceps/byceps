@@ -6,7 +6,7 @@ byceps.blueprints.authentication.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from flask import abort, g, request, url_for
+from flask import abort, current_app, g, request, url_for
 
 from ...config import get_site_mode, get_user_registration_enabled
 from ...services.authentication.exceptions import AuthenticationFailed
@@ -169,6 +169,8 @@ def login():
 
     session_token = session_service.find_session_token_for_user(user.id)
     if session_token is None:
+        current_app.logger.error(
+            'No session token found for user %s on attempted login.', user)
         abort(500)
 
     user_session.start(user.id, session_token.token, permanent=permanent)
