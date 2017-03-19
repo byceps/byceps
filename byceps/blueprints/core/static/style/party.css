@@ -435,6 +435,44 @@ form.board-posting-create-form-inline .label {
 }
 
 
+/* events rows */
+
+.event-row {
+  display: flex;
+  margin: 0 0 1rem -0.5rem;
+}
+.event-row + .event-row {
+  margin-top: -1rem;
+}
+
+.event-column {
+  padding: 1rem 0 0 1rem;
+}
+
+.event-icon-container {
+  align-items: center;
+  background-color: #eeeeee;
+  border-radius: 50%;
+  display: flex;
+  height: 2.5rem; /* 40px / 16px */
+  justify-content: center;
+  width: 2.5rem; /* 40px / 16px */
+}
+
+.event-icon-container > .icon {
+  fill: #666666;
+  height: 1.5rem; /* 24px / 16px */
+  width: 1.5rem; /* 24px / 16px */
+}
+
+.event-timestamp {
+  color: #666666;
+  font-size: 0.6875rem; /* 11px / 16px */
+  text-align: right;
+  white-space: nowrap;
+}
+
+
 /* terms */
 
 .terms ol,

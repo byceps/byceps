@@ -1,0 +1,19 @@
+{% from 'macros/datetime.html' import render_datetime %}
+{% from 'macros/icons.html' import render_icon %}
+
+
+{% macro render_event_row(icon, timestamp=None) -%}
+  <div class="event-row">
+    <div class="event-column">
+      <span class="event-icon-container">{{ render_icon(icon) }}</span>
+    </div>
+    <div class="event-column">
+      <span class="event-description">{{ caller() }}</span>
+    </div>
+    {%- if timestamp %}
+    <div class="event-column">
+      <span class="event-timestamp">{{ render_datetime(activity.occured_at) }}</span>
+    </div>
+    {%- endif %}
+  </div>
+{%- endmacro %}

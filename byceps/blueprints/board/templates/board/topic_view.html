@@ -1,4 +1,5 @@
 {% extends 'layout/base.html' %}
+{% from 'macros/events.html' import render_event_row %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_notification %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
@@ -22,10 +23,6 @@
 {{ render_notification('info', 'hidden', 'Dieses Thema ist versteckt.') }}
   {%- endif %}
 
-  {%- if topic.locked %}
-{{ render_notification('info', 'lock', 'Dieses Thema ist geschlossen. Es können keine Beiträge mehr hinzugefügt werden.') }}
-  {%- endif %}
-
   </div>
 {%- endif %}
 
@@ -38,9 +35,17 @@
 {{ render_pagination_nav(postings, 'board.topic_view', {'topic_id': topic.id}, centered=True) }}
 
   <div class="user-comments">
+
   {%- for posting in postings.items %}
 {%- include 'board/_posting_view.html' %}
   {%- endfor %}
+
+  {%- if topic.locked %}
+    {%- call render_event_row('lock') %}
+      Dieses Thema ist <strong>geschlossen</strong>. Es können keine Beiträge mehr hinzugefügt werden.
+    {%- endcall %}
+  {%- endif %}
+
   </div>
 
   {%- set current_user_may_reply_generally = g.current_user.has_permission(BoardPostingPermission.create) %}
