@@ -69,8 +69,9 @@ textarea {
 }
 
 abbr {
-  border-bottom: solid 1px;
+  border-bottom: none;
   cursor: help;
+  text-decoration: underline dotted;
 }
 
 address {
