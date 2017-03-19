@@ -68,7 +68,7 @@ textarea {
   overflow: auto;
 }
 
-abbr {
+abbr[title] {
   border-bottom: none;
   cursor: help;
   text-decoration: underline dotted;
