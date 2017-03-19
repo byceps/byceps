@@ -34,7 +34,7 @@ See ``docs/installation.rst``.
 Testing
 =======
 
-In the activate virtual environment, install tox_ and nose2_:
+In the activated virtual environment, install tox_ and nose2_:
 
 .. code:: sh
 
