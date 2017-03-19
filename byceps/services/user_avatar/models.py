@@ -19,7 +19,7 @@ from ...util.instances import ReprBuilder
 
 
 class Avatar(db.Model):
-    """A avatar image uploaded by a user."""
+    """An avatar image uploaded by a user."""
     __tablename__ = 'user_avatars'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
