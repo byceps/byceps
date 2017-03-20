@@ -22,9 +22,9 @@ VALID_SCREEN_NAME_CHARS = frozenset(chain(
 
 
 class UserCreateForm(LocalizedForm):
-    screen_name = StringField('Benutzername', [InputRequired(), Length(min=4)])
-    first_names = StringField('Vorname(n)', [InputRequired(), Length(min=2)])
-    last_name = StringField('Nachname', [InputRequired(), Length(min=2)])
+    screen_name = StringField('Benutzername', [InputRequired(), Length(min=4, max=40)])
+    first_names = StringField('Vorname(n)', [InputRequired(), Length(min=2, max=40)])
+    last_name = StringField('Nachname', [InputRequired(), Length(min=2, max=40)])
     email_address = StringField('E-Mail-Adresse', [InputRequired(), Length(min=6)])
     password = PasswordField('Passwort', [InputRequired(), Length(min=8)])
     consent_to_terms = BooleanField('AGB', [InputRequired()])
