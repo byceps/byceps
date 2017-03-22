@@ -11,6 +11,13 @@ from ....database import db
 from .models import PartySequence, Purpose
 
 
+def create_party_sequence(party_id, purpose, prefix):
+    """Create a sequence for that party and purpose."""
+    sequence = PartySequence(party_id, purpose, prefix)
+    db.session.add(sequence)
+    db.session.commit()
+
+
 class NumberGenerationFailed(Exception):
     """Indicate that generating a prefixed, sequential number has failed."""
 
