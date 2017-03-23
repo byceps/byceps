@@ -241,7 +241,6 @@ def find_order_with_details(order_id):
     """Return the order with that id, or `None` if not found."""
     return Order.query \
         .options(
-            db.joinedload('party'),
             db.joinedload('items'),
         ) \
         .get(order_id)

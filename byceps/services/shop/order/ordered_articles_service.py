@@ -42,6 +42,6 @@ def get_order_items_for_article(article):
         .filter_by(article=article) \
         .options(
             db.joinedload('order.placed_by').joinedload('detail'),
-            db.joinedload('order').joinedload('party'),
+            db.joinedload('order'),
         ) \
         .all()

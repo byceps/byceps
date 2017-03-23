@@ -82,6 +82,8 @@ def view(user_id):
     badges = badge_service.get_badges_for_user(user.id)
 
     orders = order_service.get_orders_placed_by_user(user.id)
+    order_party_ids = {order.party_id for order in orders}
+    order_parties_by_id = _get_parties_by_id(order_party_ids)
 
     parties_and_tickets = _get_parties_and_tickets(user.id)
 
@@ -89,6 +91,7 @@ def view(user_id):
         'user': user,
         'badges': badges,
         'orders': orders,
+        'order_parties_by_id': order_parties_by_id,
         'parties_and_tickets': parties_and_tickets,
     }
 
@@ -99,8 +102,7 @@ def _get_parties_and_tickets(user_id):
     tickets_by_party_id = _group_tickets_by_party_id(tickets)
 
     party_ids = tickets_by_party_id.keys()
-    parties = party_service.get_parties(party_ids)
-    parties_by_id = {p.id: p for p in parties}
+    parties_by_id = _get_parties_by_id(party_ids)
 
     parties_and_tickets = [
         (parties_by_id[party_id], tickets)
@@ -118,6 +120,11 @@ def _group_tickets_by_party_id(tickets):
         tickets_by_party_id[ticket.category.party_id].append(ticket)
 
     return tickets_by_party_id
+
+
+def _get_parties_by_id(party_ids):
+    parties = party_service.get_parties(party_ids)
+    return {p.id: p for p in parties}
 
 
 @blueprint.route('/<uuid:user_id>/permissions')

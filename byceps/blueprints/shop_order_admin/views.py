@@ -82,10 +82,12 @@ def view(order_id):
     if order is None:
         abort(404)
 
+    party = party_service.find_party(order.party_id)
     events = _get_events(order)
 
     return {
         'order': order,
+        'party': party,
         'events': events,
         'PaymentMethod': PaymentMethod,
         'PaymentState': PaymentState,
@@ -221,6 +223,8 @@ def cancel_form(order_id, erroneous_form=None):
     """Show form to cancel an order."""
     order = _get_order_or_404(order_id)
 
+    party = party_service.find_party(order.party_id)
+
     cancel_form = erroneous_form if erroneous_form else CancelForm()
 
     if order.is_canceled:
@@ -231,6 +235,7 @@ def cancel_form(order_id, erroneous_form=None):
 
     return {
         'order': order,
+        'party': party,
         'cancel_form': cancel_form,
     }
 
@@ -274,12 +279,15 @@ def mark_as_paid_form(order_id):
     """Show form to mark an order as paid."""
     order = _get_order_or_404(order_id)
 
+    party = party_service.find_party(order.party_id)
+
     if order.is_paid:
         flash_error('Die Bestellung ist bereits als bezahlt markiert worden.')
         return redirect_to('.view', order_id=order.id)
 
     return {
         'order': order,
+        'party': party,
     }
 
 

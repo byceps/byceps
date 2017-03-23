@@ -15,7 +15,6 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from ....database import BaseQuery, db, generate_uuid
 from ....util.instances import ReprBuilder
 
-from ...party.models import Party
 from ...user.models.user import User
 
 from ..article.models import Article
@@ -62,7 +61,6 @@ class Order(db.Model):
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.now, nullable=False)
     party_id = db.Column(db.Unicode(40), db.ForeignKey('parties.id'), index=True, nullable=False)
-    party = db.relationship(Party)
     order_number = db.Column(db.Unicode(13), unique=True, nullable=False)
     placed_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=False)
     placed_by = db.relationship(User, foreign_keys=[placed_by_id])

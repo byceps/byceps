@@ -1,7 +1,7 @@
 {% extends 'layouts/shop_order_admin.html' %}
 {% from 'macros/forms.html' import form_buttons %}
 {% from 'macros/shop_order_admin.html' import render_order_link %}
-{% set current_page_party = order.party %}
+{% set current_page_party = party %}
 {% set title = 'Bestellung als bezahlt markieren' %}
 
 {% block body %}
@@ -9,7 +9,7 @@
   <nav class="breadcrumbs">
     <ol>
       <li>Bestellungen</li>
-      <li><a href="{{ url_for('.index_for_party', party_id=order.party.id) }}">{{ order.party.title }}</a></li>
+      <li><a href="{{ url_for('.index_for_party', party_id=party.id) }}">{{ party.title }}</a></li>
       <li>{{ render_order_link(order) }}</li>
     </ol>
   </nav>
