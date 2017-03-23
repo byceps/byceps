@@ -274,9 +274,6 @@ def get_orders_for_party_paginated(party_id, page, per_page, *,
     """
     query = Order.query \
         .for_party_id(party_id) \
-        .options(
-            db.joinedload('placed_by'),
-        ) \
         .order_by(Order.created_at.desc())
 
     if only_payment_state is not None:

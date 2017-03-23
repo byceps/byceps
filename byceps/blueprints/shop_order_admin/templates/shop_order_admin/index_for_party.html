@@ -94,7 +94,7 @@
           {{- render_datetime(order.created_at)|dim -}}
         </td>
         <td>
-          {{- render_user_avatar_16_and_link(order.placed_by) -}}<br>
+          {{- render_user_avatar_16_and_link(orderers_by_id[order.placed_by_id]) -}}<br>
           {%- filter dim %}
             {{- order.first_names }} {{ order.last_name -}}
           {%- endfilter %}
