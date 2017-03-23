@@ -90,12 +90,22 @@ def view(order_id):
     if order is None:
         abort(404)
 
+    placed_by = order.placed_by
+
+    order_tuple = order.to_tuple()
+
     party = party_service.find_party(order.party_id)
+
+    articles_by_item_number = {item.article.item_number: item.article
+                               for item in order.items}
+
     events = _get_events(order)
 
     return {
-        'order': order,
+        'order': order_tuple,
+        'placed_by': placed_by,
         'party': party,
+        'articles_by_item_number': articles_by_item_number,
         'events': events,
         'PaymentMethod': PaymentMethod,
         'PaymentState': PaymentState,
