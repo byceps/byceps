@@ -157,14 +157,21 @@ class Order(db.Model):
         items = [item.to_tuple() for item in self.items]
 
         return OrderTuple(
+            self.id,
             self.order_number,
             self.created_at,
+            self.placed_by_id,
             self.first_names,
             self.last_name,
             self.country,
             self.zip_code,
             self.city,
             self.street,
+            self.payment_method,
+            self.payment_state,
+            self.is_invoiced,
+            self.is_shipping_required,
+            self.is_shipped,
             items,
             self.item_total_quantity,
             self.calculate_total_price(),
@@ -181,8 +188,26 @@ class Order(db.Model):
             .build()
 
 
-OrderTuple = namedtuple('OrderTuple',
-    'order_number, created_at, first_names, last_name, country, zip_code, city, street, items, total_item_quantity, total_price')
+OrderTuple = namedtuple('OrderTuple', [
+    'id',
+    'order_number',
+    'created_at',
+    'placed_by_id',
+    'first_names',
+    'last_name',
+    'country',
+    'zip_code',
+    'city',
+    'street',
+    'payment_method',
+    'payment_state',
+    'is_invoiced',
+    'is_shipping_required',
+    'is_shipped',
+    'items',
+    'total_item_quantity',
+    'total_price',
+])
 
 
 class OrderItem(db.Model):

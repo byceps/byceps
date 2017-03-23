@@ -63,6 +63,9 @@ def index_for_party(party_id, page):
                                         only_payment_state=only_payment_state,
                                         only_shipped=only_shipped)
 
+    # Replace order objects in pagination object with order tuples.
+    orders.items = [order.to_tuple() for order in orders.items]
+
     orderer_ids = {order.placed_by_id for order in orders.items}
     orderers = user_service.find_users(orderer_ids)
     orderers_by_id = {orderer.id: orderer for orderer in orderers}
