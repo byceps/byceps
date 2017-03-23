@@ -35,7 +35,7 @@
 								<COUNTRY>DE</COUNTRY>
 								<PHONE/>
 								<FAX/>
-								<EMAIL>{{ order.placed_by.email_address }}</EMAIL>
+								<EMAIL>{{ email_address }}</EMAIL>
 							</ADDRESS>
 						</PARTY>
 					</INVOICE_PARTY>
@@ -50,7 +50,7 @@
 			</ORDER_INFO>
 		</ORDER_HEADER>
 		<ORDER_ITEM_LIST>
-        {%- for item in order.items|sort(attribute='article_number') %}
+        {%- for item in order_items|sort(attribute='article_number') %}
 			<ORDER_ITEM>
 				<LINE_ITEM_ID>{{ loop.index0 }}</LINE_ITEM_ID>
 				<ARTICLE_ID>
@@ -69,8 +69,8 @@
         {%- endfor %}
 		</ORDER_ITEM_LIST>
 		<ORDER_SUMMARY>
-			<TOTAL_ITEM_NUM>{{ order.item_total_quantity }}</TOTAL_ITEM_NUM>
-			<TOTAL_AMOUNT>{{ format_export_amount(order.calculate_total_price()) }}</TOTAL_AMOUNT>
+			<TOTAL_ITEM_NUM>{{ order.total_item_quantity }}</TOTAL_ITEM_NUM>
+			<TOTAL_AMOUNT>{{ format_export_amount(order.total_price) }}</TOTAL_AMOUNT>
 		</ORDER_SUMMARY>
 	</ORDER>
 </ORDER_LIST>

@@ -6,6 +6,7 @@ byceps.services.shop.order.models
 :License: Modified BSD, see LICENSE for details.
 """
 
+from collections import namedtuple
 from datetime import datetime
 from decimal import Decimal
 from enum import Enum
@@ -151,6 +152,24 @@ class Order(db.Model):
     def is_shipped(self):
         return self.shipped_at is not None
 
+    def to_tuple(self):
+        """Return a tuple representation of (parts of) this entity."""
+        items = [item.to_tuple() for item in self.items]
+
+        return OrderTuple(
+            self.order_number,
+            self.created_at,
+            self.first_names,
+            self.last_name,
+            self.country,
+            self.zip_code,
+            self.city,
+            self.street,
+            items,
+            self.item_total_quantity,
+            self.calculate_total_price(),
+        )
+
     def __repr__(self):
         return ReprBuilder(self) \
             .add_with_lookup('id') \
@@ -160,6 +179,10 @@ class Order(db.Model):
             .add_custom('{:d} items'.format(len(self.items))) \
             .add_custom(self.payment_state.name) \
             .build()
+
+
+OrderTuple = namedtuple('OrderTuple',
+    'order_number, created_at, first_names, last_name, country, zip_code, city, street, items, total_item_quantity, total_price')
 
 
 class OrderItem(db.Model):
@@ -193,6 +216,21 @@ class OrderItem(db.Model):
     @property
     def line_price(self):
         return self.unit_price * self.quantity
+
+    def to_tuple(self):
+        """Return a tuple representation of (parts of) this entity."""
+        return OrderItemTuple(
+            self.article_number,
+            self.description,
+            self.unit_price,
+            self.tax_rate,
+            self.quantity,
+            self.line_price,
+        )
+
+
+OrderItemTuple = namedtuple('OrderItemTuple',
+    'article_number, description, unit_price, tax_rate, quantity, line_price')
 
 
 class OrderEvent(db.Model):
