@@ -158,6 +158,7 @@ class Order(db.Model):
 
         return OrderTuple(
             self.id,
+            self.party_id,
             self.order_number,
             self.created_at,
             self.placed_by_id,
@@ -176,6 +177,7 @@ class Order(db.Model):
             self.is_invoiced,
             self.is_shipping_required,
             self.is_shipped,
+            self.cancelation_reason,
             items,
             self.item_total_quantity,
             self.calculate_total_price(),
@@ -194,6 +196,7 @@ class Order(db.Model):
 
 OrderTuple = namedtuple('OrderTuple', [
     'id',
+    'party_id',
     'order_number',
     'created_at',
     'placed_by_id',
@@ -212,6 +215,7 @@ OrderTuple = namedtuple('OrderTuple', [
     'is_invoiced',
     'is_shipping_required',
     'is_shipped',
+    'cancelation_reason',
     'items',
     'total_item_quantity',
     'total_price',
