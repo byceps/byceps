@@ -10,13 +10,14 @@
       </thead>
       <tbody>
         {%- for item in article_compilation %}
-        <tr>
+          {%- with is_available = (item.article.quantity > 0) %}
+        <tr{% if not is_available %} class="dimmed"{% endif %}>
           {%- if item.has_fixed_quantity() %}
           <td class="number">{{ item.fixed_quantity }}</td>
           {%- else %}
           <td class="number">
             {%- set field = form.get_field_for_article(item.article) %}
-            {{ field() }}
+            {{ field(hidden=not is_available) }}
             {%- if field.errors %}
             <ol class="errors" style="text-align: left;">
               {%- for error in field.errors %}
@@ -26,10 +27,15 @@
             {%- endif -%}
           </td>
           {%- endif %}
-          <td><strong>{{ item.article.description }}</strong></td>
+          <td><strong>{{ item.article.description }}</strong>
+            {%- if not is_available %}
+            <br><em>derzeit nicht verfügbar</em>
+            {%- endif -%}
+          </td>
           <td class="number">{{ item.article.tax_rate_as_percentage }}&thinsp;%</td>
           <td class="number">{{ item.article.price|format_euro_amount }}</td>
         </tr>
+          {%- endwith %}
         {%- endfor %}
       </tbody>
     </table>
