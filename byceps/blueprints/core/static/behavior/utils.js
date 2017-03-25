@@ -1,3 +1,13 @@
+/**
+ * Provide an alternative `forEach` function as `NodeList.forEach` is
+ * not available on Firefox < v50 and MSIE.
+ */
+function forEach(array, callback, scope) {
+  for (var i = 0; i < array.length; i++) {
+    callback.call(scope, array[i]);
+  }
+};
+
 function post_on_click(selector) {
   _request_on_click(selector, 'POST');
 }
