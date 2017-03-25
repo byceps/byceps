@@ -6,6 +6,9 @@ byceps.blueprints.authorization.registry
 :License: Modified BSD, see LICENSE for details.
 """
 
+from flask import current_app
+
+
 class PermissionRegistry(object):
 
     def __init__(self):
@@ -23,15 +26,22 @@ class PermissionRegistry(object):
         """Return the enum that is registered for the given permission
         ID, or `None` if none is.
         """
-        key, permission_name = permission_id.split('.', 1)
+        enum_key, permission_name = permission_id.split('.', 1)
 
-        enum = self.enums.get(key)
+        enum = self.enums.get(enum_key)
         if enum is None:
+            # No enum found for that key. This happens if the blueprint
+            # which contains the authorization enum is not registered in
+            # the current site mode (public/admin).
             return None
 
         try:
             return enum[permission_name]
         except KeyError:
+            current_app.logger.warn(
+                'Ignoring unknown permission name "%s" configured '
+                'in database for "%s" enum (permission ID: "%s").',
+                permission_name, enum_key, permission_id)
             return None
 
     def get_enum_members(self, permission_ids):
