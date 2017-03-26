@@ -3,9 +3,12 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
+from unittest.mock import patch
+
 from nose2.tools import params
 
-from byceps.blueprints.authorization.registry import PermissionRegistry
+with patch('flask.current_app'):
+    from byceps.blueprints.authorization.registry import PermissionRegistry
 from byceps.util.authorization import create_permission_enum
 
 
