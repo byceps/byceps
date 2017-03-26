@@ -253,6 +253,13 @@ def find_order_by_order_number(order_number):
         .one_or_none()
 
 
+def find_orders_by_order_numbers(order_numbers):
+    """Return the orders with those order numbers."""
+    return Order.query \
+        .filter(Order.order_number.in_(order_numbers)) \
+        .all()
+
+
 def get_order_count_by_party_id():
     """Return order count (including 0) per party, indexed by party ID."""
     return dict(db.session \
