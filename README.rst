@@ -62,7 +62,7 @@ debugging middleware and in-browser code evaluation:
 
 .. code:: sh
 
-    $ ./manage.py runserver -p 8080
+    $ BYCEPS_CONFIG=../config/development_admin.py ./manage.py runserver -p 8080
 
 In a production environment, the Gunicorn_ server is highly recommended
 to serve the Python application.
