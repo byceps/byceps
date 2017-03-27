@@ -1,9 +1,17 @@
+# an examplary configuration file of a public party web application to
+# be run in production
+
 from pathlib import Path
 
 
 MAX_CONTENT_LENGTH = 4000000
 PROPAGATE_EXCEPTIONS = True
+
+# Set a custom secret key for running in production!
+# To generate one:
+#     $ python -c 'import os; print(os.urandom(24))'
 SECRET_KEY = b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
+
 SESSION_COOKIE_SECURE = True
 
 SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://byceps:boioioing@127.0.0.1/byceps'

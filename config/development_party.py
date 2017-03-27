@@ -1,3 +1,6 @@
+# an examplary configuration file of a public party web application to
+# be run during development
+
 from pathlib import Path
 
 

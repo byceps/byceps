@@ -1,3 +1,5 @@
+# a party site configuration file to be used in tests
+
 from pathlib import Path
 
 

@@ -1,3 +1,5 @@
+# an admin site configuration file to be used in tests
+
 SECRET_KEY = b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
 SERVER_NAME = 'example.com'
 SESSION_COOKIE_SECURE = True
