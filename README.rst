@@ -64,12 +64,13 @@ debugging middleware and in-browser code evaluation:
 
     $ BYCEPS_CONFIG=../config/development_admin.py ./manage.py runserver -p 8080
 
-In a production environment, the Gunicorn_ server is highly recommended
-to serve the Python application.
+In a production environment, it is recommended to have the application
+served by uWSGI_ or Gunicorn_.
 
 It is furthermore recommended to run it locally behind nginx_ and have
 the latter both serve static files and provide SSL encryption.
 
 
+.. _uWSGI: http://uwsgi-docs.readthedocs.io/
 .. _Gunicorn: http://gunicorn.org/
 .. _nginx: http://nginx.org/
