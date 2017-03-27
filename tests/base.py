@@ -27,14 +27,14 @@ from tests import mocks
 
 
 _CONFIG_PATH = Path('../config')
-CONFIG_FILENAME_TEST = _CONFIG_PATH / 'test.py'
+CONFIG_FILENAME_TEST_PARTY = _CONFIG_PATH / 'test_party.py'
 CONFIG_FILENAME_TEST_ADMIN = _CONFIG_PATH / 'test_admin.py'
 
 
 class AbstractAppTestCase(TestCase):
 
     @patch('redis.StrictRedis.from_url', mocks.strict_redis_client_from_url)
-    def setUp(self, config_filename=CONFIG_FILENAME_TEST):
+    def setUp(self, config_filename=CONFIG_FILENAME_TEST_PARTY):
         self.app = create_app(config_filename)
 
         # Allow overriding of database URI from the environment.

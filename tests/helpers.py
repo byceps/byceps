@@ -13,11 +13,11 @@ from flask import appcontext_pushed, g
 from byceps.application import create_app
 from byceps.services.authorization import service as authorization_service
 
-from .base import CONFIG_FILENAME_TEST
+from .base import CONFIG_FILENAME_TEST_PARTY
 
 
 @contextmanager
-def app_context(*, config_filename=CONFIG_FILENAME_TEST):
+def app_context(*, config_filename=CONFIG_FILENAME_TEST_PARTY):
     app = create_app(config_filename)
 
     with app.app_context():
