@@ -16,8 +16,13 @@ for more than a decade.
 Since 2014 BYCEPS is the foundation of the public website and local
 party intranet of the LANresort_ event series.
 
+In 2016 and 2017, respectively, `LANresort Bostalsee`_ and NorthCon_
+have been (re-)launched on BYCEPS.
+
 
 .. _LANresort: https://www.lanresort.de/
+.. _LANresort Bostalsee: https://bostalsee.lanresort.de/
+.. _NorthCon: https://www.northcon.de/
 
 
 :Copyright: 2006-2017 Jochen Kupperschmidt
