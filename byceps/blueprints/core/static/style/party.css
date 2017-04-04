@@ -83,6 +83,7 @@ main {
   color: currentColor;
   display: block;
   text-decoration: none;
+  white-space: nowrap;
 }
 #topbar .current-user .dropdown ol {
   margin-right: -1px;
