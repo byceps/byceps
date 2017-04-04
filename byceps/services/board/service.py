@@ -245,18 +245,20 @@ def find_default_posting_to_jump_to(topic, user, last_viewed_at):
         # start on the first page.
         return None
 
-    first_new_posting_query = Posting.query \
+    postings_query = Posting.query \
         .for_topic(topic) \
-        .only_visible_for_user(user) \
-        .earliest_to_latest()
+        .only_visible_for_user(user)
 
-    first_new_posting = first_new_posting_query \
+    first_new_posting = postings_query \
         .filter(Posting.created_at > last_viewed_at) \
+        .earliest_to_latest() \
         .first()
 
     if first_new_posting is None:
         # Current user has seen all postings so far, so show the last one.
-        return first_new_posting_query.first()
+        return postings_query \
+            .latest_to_earliest() \
+            .first()
 
     return first_new_posting
 
