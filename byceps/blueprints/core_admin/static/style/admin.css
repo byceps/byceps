@@ -62,7 +62,7 @@ a {
   flex: 0 0 20%;
 }
 
-@media (min-width: 960px) {
+@media (min-width: 60rem) { /* 960px / 16px */
   #page-grid {
     flex-direction: row;
   }
@@ -142,7 +142,7 @@ main {
   text-decoration: underline;
 }
 
-@media (min-width: 960px) {
+@media (min-width: 60rem) { /* 960px / 16px */
   #header-content .head strong.big {
     font-size: 1.125rem; /* 18px / 16px */
   }
@@ -253,7 +253,7 @@ main {
   padding: 0 20px;
 }
 
-@media (min-width: 960px) {
+@media (min-width: 60rem) { /* 960px / 16px */
   #sidebar {
     flex-direction: column;
   }
@@ -363,7 +363,7 @@ h2 small {
 
 /* tables */
 
-@media (max-width: 960px) {
+@media (min-width: 60rem) { /* 960px / 16px */
   table.index.wide {
     display: block;
     overflow-x: auto;

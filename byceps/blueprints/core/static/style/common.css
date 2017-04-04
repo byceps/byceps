@@ -264,7 +264,7 @@ fieldset .supplement {
   margin-left: -4px;
 }
 
-@media (min-width: 720px) {
+@media (min-width: 45rem) { /* 720px / 16px */
   label,
   fieldset .label {
     width: 22%;
