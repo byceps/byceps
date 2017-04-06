@@ -6,8 +6,6 @@ byceps.services.user_avatar.service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from flask import abort
-
 from ...database import db
 from ...util.image import create_thumbnail, read_dimensions
 from ...util.image.models import Dimensions, ImageType
@@ -20,6 +18,10 @@ from .models import Avatar, AvatarCreationTuple, AvatarSelection
 ALL_IMAGE_TYPES = frozenset(ImageType)
 
 MAXIMUM_DIMENSIONS = Dimensions(512, 512)
+
+
+class ImageTypeProhibited(ValueError):
+    pass
 
 
 def get_image_type_names(types):
@@ -55,7 +57,8 @@ def _determine_image_type(stream, allowed_types):
         allowed_type_names = get_image_type_names(allowed_types)
         allowed_type_names_string = ', '.join(sorted(allowed_type_names))
 
-        abort(400, 'Only images of these types are allowed: {}'
+        raise ImageTypeProhibited(
+            'Image is not one of the allowed types ({}).'
             .format(allowed_type_names_string))
 
     stream.seek(0)

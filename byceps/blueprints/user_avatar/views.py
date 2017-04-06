@@ -67,6 +67,8 @@ def update():
     try:
         avatar_service.update_avatar_image(user, image.stream,
                                            allowed_types=ALLOWED_IMAGE_TYPES)
+    except avatar_service.ImageTypeProhibited as e:
+        abort(400, str(e))
     except FileExistsError:
         abort(409, 'File already exists, not overwriting.')
 
