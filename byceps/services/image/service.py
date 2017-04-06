@@ -1,0 +1,52 @@
+"""
+byceps.services.image.service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:Copyright: 2006-2017 Jochen Kupperschmidt
+:License: Modified BSD, see LICENSE for details.
+"""
+
+from ...util.image import read_dimensions
+from ...util.image.models import ImageType
+from ...util.image.typeguess import guess_type
+
+
+ALL_IMAGE_TYPES = frozenset(ImageType)
+
+
+
+class ImageTypeProhibited(ValueError):
+    pass
+
+
+def get_all_image_types():
+    """Return all known image types."""
+    return ALL_IMAGE_TYPES
+
+
+def get_image_type_names(types):
+    """Return the names of the image types."""
+    return frozenset(t.name.upper() for t in types)
+
+
+def determine_image_type(stream, allowed_types):
+    """Extract image type from stream."""
+    image_type = guess_type(stream)
+
+    if image_type not in allowed_types:
+        allowed_type_names = get_image_type_names(allowed_types)
+        allowed_type_names_string = ', '.join(sorted(allowed_type_names))
+
+        raise ImageTypeProhibited(
+            'Image is not one of the allowed types ({}).'
+            .format(allowed_type_names_string))
+
+    stream.seek(0)
+    return image_type
+
+
+def determine_dimensions(stream):
+    """Extract image dimensions from stream."""
+    dimensions = read_dimensions(stream)
+    stream.seek(0)
+    return dimensions

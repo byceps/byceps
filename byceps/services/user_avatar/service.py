@@ -7,33 +7,27 @@ byceps.services.user_avatar.service
 """
 
 from ...database import db
-from ...util.image import create_thumbnail, read_dimensions
-from ...util.image.models import Dimensions, ImageType
-from ...util.image.typeguess import guess_type
+from ...util.image import create_thumbnail
+from ...util.image.models import Dimensions
 from ...util import upload
+
+from ..image import service as image_service
+from ..image.service import ImageTypeProhibited
 
 from .models import Avatar, AvatarCreationTuple, AvatarSelection
 
 
-ALL_IMAGE_TYPES = frozenset(ImageType)
-
 MAXIMUM_DIMENSIONS = Dimensions(512, 512)
 
 
-class ImageTypeProhibited(ValueError):
-    pass
-
-
-def get_image_type_names(types):
-    """Return the names of the image types."""
-    return frozenset(t.name.upper() for t in types)
-
-
-def update_avatar_image(user, stream, *, allowed_types=ALL_IMAGE_TYPES,
+def update_avatar_image(user, stream, *, allowed_types=None,
                         maximum_dimensions=MAXIMUM_DIMENSIONS):
     """Set a new avatar image for the user."""
-    image_type = _determine_image_type(stream, allowed_types)
-    image_dimensions = _determine_dimensions(stream)
+    if allowed_types is None:
+        allowed_types = image_service.get_all_image_types()
+
+    image_type = image_service.determine_image_type(stream, allowed_types)
+    image_dimensions = image_service.determine_dimensions(stream)
 
     image_too_large = image_dimensions > maximum_dimensions
     if image_too_large or not image_dimensions.is_square:
@@ -48,27 +42,6 @@ def update_avatar_image(user, stream, *, allowed_types=ALL_IMAGE_TYPES,
 
     user.avatar = avatar
     db.session.commit()
-
-
-def _determine_image_type(stream, allowed_types):
-    image_type = guess_type(stream)
-
-    if image_type not in allowed_types:
-        allowed_type_names = get_image_type_names(allowed_types)
-        allowed_type_names_string = ', '.join(sorted(allowed_type_names))
-
-        raise ImageTypeProhibited(
-            'Image is not one of the allowed types ({}).'
-            .format(allowed_type_names_string))
-
-    stream.seek(0)
-    return image_type
-
-
-def _determine_dimensions(stream):
-    dimensions = read_dimensions(stream)
-    stream.seek(0)
-    return dimensions
 
 
 def remove_avatar_image(user):
