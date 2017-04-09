@@ -105,6 +105,7 @@ def get_parties_for_brand_paginated(brand_id, page, per_page):
     """Return the parties for that brand to show on the specified page."""
     return Party.query \
         .filter_by(brand_id=brand_id) \
+        .order_by(Party.starts_at.desc()) \
         .paginate(page, per_page)
 
 

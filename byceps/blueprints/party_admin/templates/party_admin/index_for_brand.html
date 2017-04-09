@@ -34,7 +34,7 @@
       </tr>
     </thead>
     <tbody>
-      {%- for party in parties.items|sort(attribute='starts_at', reverse=True) %}
+      {%- for party in parties.items %}
       <tr{% if party.is_over %} class="dimmed"{% endif %}>
         <td>
           <strong>{{ render_party_admin_link(party) }}</strong><br>
