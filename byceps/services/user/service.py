@@ -118,6 +118,11 @@ def get_anonymous_user():
     return AnonymousUser()
 
 
+def index_users_by_id(users):
+    """Map the users' IDs to the corresponding user objects."""
+    return {user.id: user for user in users}
+
+
 def is_screen_name_already_assigned(screen_name):
     """Return `True` if a user with that screen name exists."""
     return _do_users_matching_filter_exist(User.screen_name, screen_name)

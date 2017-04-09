@@ -68,7 +68,7 @@ def index_for_party(party_id, page):
 
     orderer_ids = {order.placed_by_id for order in orders.items}
     orderers = user_service.find_users(orderer_ids)
-    orderers_by_id = {orderer.id: orderer for orderer in orderers}
+    orderers_by_id = user_service.index_users_by_id(orderers)
 
     return {
         'party': party,

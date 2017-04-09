@@ -201,7 +201,7 @@ def get_attendees_by_party(parties):
     all_attendee_ids = frozenset(
         chain.from_iterable(attendee_ids_by_party_id.values()))
     all_attendees = user_service.find_users(all_attendee_ids)
-    all_attendees_by_id = {user.id: user for user in all_attendees}
+    all_attendees_by_id = user_service.index_users_by_id(all_attendees)
 
     attendees_by_party = {}
     for party in parties:
