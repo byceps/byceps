@@ -22,7 +22,11 @@ MAXIMUM_DIMENSIONS = Dimensions(512, 512)
 
 def update_avatar_image(user, stream, *, allowed_types=None,
                         maximum_dimensions=MAXIMUM_DIMENSIONS):
-    """Set a new avatar image for the user."""
+    """Set a new avatar image for the user.
+
+    Raise `ImageTypeProhibited` if the stream data is not of one the
+    allowed types.
+    """
     if allowed_types is None:
         allowed_types = image_service.get_all_image_types()
 
