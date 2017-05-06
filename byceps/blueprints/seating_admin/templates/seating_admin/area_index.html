@@ -24,8 +24,12 @@
           {{ area.slug|dim }}
         </td>
         <td>
+          {%- if area.image_filename %}
           {{ area.image_filename }}<br>
           {{ '%d &times; %d Pixel'|format(area.image_width, area.image_height)|dim }}
+          {%- else %}
+          {{ 'nicht angegeben'|dim }}
+          {%- endif %}
         </td>
         <td class="centered bignumber">{{ seat_total_per_area[area.id] }}</td>
       </tr>
