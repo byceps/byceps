@@ -129,6 +129,8 @@ def get_seat_total_per_area(party_id):
 def create_seat_group(party_id, seat_category, title, seats):
     """Create a seat group and assign the given seats."""
     seat_quantity = len(seats)
+    if seat_quantity == 0:
+        raise ValueError("No seats specified.")
 
     seats_categories = {seat.category for seat in seats}
     if len(seats_categories) != 1 or (seat_category not in seats_categories):
