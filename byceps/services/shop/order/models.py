@@ -24,12 +24,11 @@ from ..article.models import Article
 class Orderer(object):
     """Someone who orders articles."""
 
-    def __init__(self, user, first_names, last_name, date_of_birth, country,
-                 zip_code, city, street):
+    def __init__(self, user, first_names, last_name, country, zip_code, city,
+                 street):
         self.user = user
         self.first_names = first_names
         self.last_name = last_name
-        self.date_of_birth = date_of_birth
         self.country = country
         self.zip_code = zip_code
         self.city = city
@@ -67,7 +66,6 @@ class Order(db.Model):
     placed_by = db.relationship(User, foreign_keys=[placed_by_id])
     first_names = db.Column(db.Unicode(40), nullable=False)
     last_name = db.Column(db.Unicode(40), nullable=False)
-    date_of_birth = db.Column(db.Date, nullable=False)
     country = db.Column(db.Unicode(60), nullable=False)
     zip_code = db.Column(db.Unicode(5), nullable=False)
     city = db.Column(db.Unicode(40), nullable=False)
@@ -83,14 +81,12 @@ class Order(db.Model):
     shipped_at = db.Column(db.DateTime, nullable=True)
 
     def __init__(self, party_id, order_number, placed_by, first_names,
-                 last_name, date_of_birth, country, zip_code, city, street,
-                 payment_method):
+                 last_name, country, zip_code, city, street, payment_method):
         self.party_id = party_id
         self.order_number = order_number
         self.placed_by = placed_by
         self.first_names = first_names
         self.last_name = last_name
-        self.date_of_birth = date_of_birth
         self.country = country
         self.zip_code = zip_code
         self.city = city
@@ -164,7 +160,6 @@ class Order(db.Model):
             self.placed_by_id,
             self.first_names,
             self.last_name,
-            self.date_of_birth,
             self.country,
             self.zip_code,
             self.city,
@@ -202,7 +197,6 @@ OrderTuple = namedtuple('OrderTuple', [
     'placed_by_id',
     'first_names',
     'last_name',
-    'date_of_birth',
     'country',
     'zip_code',
     'city',

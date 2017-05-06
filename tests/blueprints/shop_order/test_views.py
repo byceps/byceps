@@ -65,7 +65,6 @@ class ShopTestCase(AbstractAppTestCase):
         form_data = {
             'first_names': 'Hiro',
             'last_name': 'Protagonist',
-            'date_of_birth': '01.01.1970',
             'country': 'State of Mind',
             'zip_code': '31337',
             'city': 'Atrocity',

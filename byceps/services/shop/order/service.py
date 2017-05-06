@@ -45,7 +45,6 @@ def _build_order(party_id, order_number, orderer, payment_method):
         orderer.user,
         orderer.first_names,
         orderer.last_name,
-        orderer.date_of_birth,
         orderer.country,
         orderer.zip_code,
         orderer.city,
