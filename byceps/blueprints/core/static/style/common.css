@@ -95,7 +95,7 @@ img {
   width: 1em;
 }
 
-.icon[title] {
+span[title] .icon {
   cursor: help;
 }
 
