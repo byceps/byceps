@@ -10,7 +10,8 @@ from collections import defaultdict
 
 from ...database import db
 
-from .models import Badge, BadgeAwarding
+from .models.awarding import BadgeAwarding
+from .models.badge import Badge
 
 
 def create_badge(label, image_filename, *, brand_id=None, description=None):

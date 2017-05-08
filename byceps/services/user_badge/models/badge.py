@@ -1,18 +1,17 @@
 """
-byceps.services.user_badge.models
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.user_badge.models.badge
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2017 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
 """
 
 from collections import namedtuple
-from datetime import datetime
 
 from flask import url_for
 
-from ...database import db, generate_uuid
-from ...util.instances import ReprBuilder
+from ....database import db, generate_uuid
+from ....util.instances import ReprBuilder
 
 
 class Badge(db.Model):
@@ -53,30 +52,5 @@ class Badge(db.Model):
             .build()
 
 
-class BadgeAwarding(db.Model):
-    """The awarding of a badge to a user."""
-    __tablename__ = 'user_badge_awardings'
-
-    badge_id = db.Column(db.Uuid, db.ForeignKey('user_badges.id'), primary_key=True)
-    user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
-    awarded_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
-
-    def __init__(self, badge_id, user_id):
-        self.badge_id = badge_id
-        self.user_id = user_id
-
-    def to_tuple(self):
-        """Return a tuple representation of this entity."""
-        return BadgeAwardingTuple(
-            self.badge_id,
-            self.user_id,
-            self.awarded_at
-        )
-
-
 BadgeTuple = namedtuple('BadgeTuple',
     'id, brand_id, label, description, image_url')
-
-
-BadgeAwardingTuple = namedtuple('BadgeAwardingTuple',
-    'badge_id, user_id, awarded_at')
