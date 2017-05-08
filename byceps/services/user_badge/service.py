@@ -43,7 +43,7 @@ def get_badges(badge_ids):
         .filter(Badge.id.in_(badge_ids)) \
         .all()
 
-    return [badge.to_tuple() for badge in badges]
+    return {badge.to_tuple() for badge in badges}
 
 
 def get_badges_for_user(user_id):
@@ -52,7 +52,7 @@ def get_badges_for_user(user_id):
         .join(BadgeAwarding).filter_by(user_id=user_id) \
         .all()
 
-    return [badge.to_tuple() for badge in badges]
+    return {badge.to_tuple() for badge in badges}
 
 
 def get_badges_for_users(user_ids):
@@ -82,7 +82,7 @@ def get_all_badges():
     """Return all badges."""
     badges = Badge.query.all()
 
-    return [badge.to_tuple() for badge in badges]
+    return {badge.to_tuple() for badge in badges}
 
 
 def award_badge_to_user(badge_id, user_id):
@@ -101,4 +101,4 @@ def get_awardings_of_badge(badge_id):
         .filter_by(badge_id=badge_id) \
         .all()
 
-    return [awarding.to_tuple() for awarding in awardings]
+    return {awarding.to_tuple() for awarding in awardings}
