@@ -10,7 +10,7 @@ from collections import defaultdict
 
 from ...database import db
 
-from .models.awarding import BadgeAwarding
+from .models.awarding import BadgeAwarding, QuantifiedBadgeAwardingTuple
 from .models.badge import Badge
 
 
@@ -98,8 +98,18 @@ def award_badge_to_user(badge_id, user_id):
 
 def get_awardings_of_badge(badge_id):
     """Return the awardings (user and date) of this badge."""
-    awardings = BadgeAwarding.query \
-        .filter_by(badge_id=badge_id) \
+    rows = db.session \
+        .query(
+            BadgeAwarding.badge_id,
+            BadgeAwarding.user_id,
+            db.func.count(BadgeAwarding.badge_id)
+        ) \
+        .filter(BadgeAwarding.badge_id == badge_id) \
+        .group_by(
+            BadgeAwarding.badge_id,
+            BadgeAwarding.user_id
+        ) \
         .all()
 
-    return {awarding.to_tuple() for awarding in awardings}
+    return {QuantifiedBadgeAwardingTuple(badge_id, user_id, quantity)
+            for badge_id, user_id, quantity in rows}

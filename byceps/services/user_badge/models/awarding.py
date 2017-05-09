@@ -35,3 +35,7 @@ class BadgeAwarding(db.Model):
 
 BadgeAwardingTuple = namedtuple('BadgeAwardingTuple',
     'badge_id, user_id, awarded_at')
+
+
+QuantifiedBadgeAwardingTuple = namedtuple('BadgeAwardingTuple',
+    'badge_id, user_id, quantity')
