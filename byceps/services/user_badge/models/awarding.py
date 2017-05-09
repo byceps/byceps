@@ -9,15 +9,19 @@ byceps.services.user_badge.models.awarding
 from collections import namedtuple
 from datetime import datetime
 
-from ....database import db
+from ....database import db, generate_uuid
 
 
 class BadgeAwarding(db.Model):
     """The awarding of a badge to a user."""
     __tablename__ = 'user_badge_awardings'
+    __table_args__ = (
+        db.UniqueConstraint('badge_id', 'user_id'),
+    )
 
-    badge_id = db.Column(db.Uuid, db.ForeignKey('user_badges.id'), primary_key=True)
-    user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
+    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    badge_id = db.Column(db.Uuid, db.ForeignKey('user_badges.id'), nullable=False)
+    user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
     awarded_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
 
     def __init__(self, badge_id, user_id):
