@@ -45,14 +45,9 @@ def index(page):
     """List users."""
     per_page = request.args.get('per_page', type=int, default=20)
     search_term = request.args.get('search_term', default='').strip()
+    only = request.args.get('only')
 
-    if search_term:
-        # Enabled filter argument is ignored if search term is given.
-        only = None
-        enabled_filter = None
-    else:
-        only = request.args.get('only')
-        enabled_filter = UserEnabledFilter.__members__.get(only)
+    enabled_filter = UserEnabledFilter.__members__.get(only)
 
     users = service.get_users_paginated(page, per_page,
                                         search_term=search_term,

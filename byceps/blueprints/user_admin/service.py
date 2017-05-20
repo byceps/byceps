@@ -25,10 +25,10 @@ def get_users_paginated(page, per_page, *, search_term=None,
         .options(db.joinedload('detail')) \
         .order_by(User.created_at.desc())
 
+    query = _filter_by_enabled_flag(query, enabled_filter)
+
     if search_term:
         query = _filter_by_search_term(query, search_term)
-    else:
-        query = _filter_by_enabled_flag(query, enabled_filter)
 
     return query.paginate(page, per_page)
 
