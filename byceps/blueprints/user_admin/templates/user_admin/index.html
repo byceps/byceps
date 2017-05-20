@@ -131,6 +131,9 @@
     </tbody>
   </table>
 
-{{ render_pagination_nav(users, '.index', {'only': only if only else None}) }}
+{{ render_pagination_nav(users, '.index', {
+    'only': only if only else None,
+    'search_term': search_term if search_term else None,
+}) }}
 
 {%- endblock %}
