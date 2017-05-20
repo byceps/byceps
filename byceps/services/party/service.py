@@ -27,7 +27,7 @@ def create_party(party_id, brand_id, title, starts_at, ends_at):
     return party
 
 
-def update_party(party_id, title, starts_at, ends_at):
+def update_party(party_id, title, starts_at, ends_at, is_archived):
     """Update a party."""
     party = find_party(party_id)
 
@@ -37,6 +37,7 @@ def update_party(party_id, title, starts_at, ends_at):
     party.title = title
     party.starts_at = starts_at
     party.ends_at = ends_at
+    party.is_archived = is_archived
 
     db.session.commit()
 
