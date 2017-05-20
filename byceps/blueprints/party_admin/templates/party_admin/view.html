@@ -26,6 +26,16 @@
       <th>Ende</th>
       <td>{{ render_datetime(party.ends_at) }}</td>
     </tr>
+    <tr>
+      <th>Status</th>
+      <td>
+        {%- if party.is_archived -%}
+        {{ render_icon('archived', title='archiviert') }} <em>archiviert</em>
+        {%- else -%}
+        aktiv
+        {%- endif -%}
+      </td>
+    </tr>
   </table>
 
 {%- endblock %}
