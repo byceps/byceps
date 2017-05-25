@@ -15,7 +15,7 @@ import locale
 TWO_PLACES = Decimal('.00')
 
 
-def format_euro_amount(x):
+def format_euro_amount(x: Decimal) -> str:
     """Return a textual representation with two decimal places,
     locale-specific decimal point and thousands separators, and the Euro
     symbol.

@@ -15,7 +15,7 @@ from flask import current_app
 from wtforms import Form
 
 
-def set_locale(locale_str):
+def set_locale(locale_str: str) -> None:
     try:
         locale.setlocale(locale.LC_ALL, locale_str)
     except locale.Error:

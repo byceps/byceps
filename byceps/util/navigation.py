@@ -7,6 +7,8 @@ byceps.util.navigation
 """
 
 from collections import namedtuple
+from enum import Enum
+from typing import List
 
 from flask import g
 
@@ -26,11 +28,12 @@ class Navigation(object):
     The order of items is the order in which they are added.
     """
 
-    def __init__(self, title):
+    def __init__(self, title: str) -> None:
         self.title = title
-        self.items = []
+        self.items = []  # type: List[NavigationItem]
 
-    def add_item(self, endpoint, label, *, id=None, required_permission=None, icon=None):
+    def add_item(self, endpoint: str, label: str, *, id: str=None,
+                 required_permission: Enum=None, icon: str=None) -> object:
         """Add an item to the navigation."""
         item = NavigationItem(
             endpoint=endpoint,
@@ -43,8 +46,8 @@ class Navigation(object):
         self.items.append(item)
         return self
 
-    def get_items(self):
-        def current_user_has_permission(item):
+    def get_items(self) -> List[NavigationItem]:
+        def current_user_has_permission(item: NavigationItem) -> bool:
             required_permission = item.required_permission
             if required_permission is None:
                 return True

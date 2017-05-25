@@ -7,14 +7,17 @@ byceps.util.authorization
 """
 
 from enum import Enum
+from typing import List
 
 
-def create_permission_enum(key, member_names):
+def create_permission_enum(key: str, member_names: List[str]) -> Enum:
     """Create a permission enum."""
     name = derive_name(key)
+
     permission_enum = Enum(name, list(member_names))
     permission_enum.__key__ = key
     permission_enum.__repr__ = lambda self: '<{}>'.format(self)
+
     return permission_enum
 
 
