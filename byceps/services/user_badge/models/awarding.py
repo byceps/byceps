@@ -10,6 +10,17 @@ from collections import namedtuple
 from datetime import datetime
 
 from ....database import db, generate_uuid
+from ....typing import UserID
+
+from .badge import BadgeID
+
+
+BadgeAwardingTuple = namedtuple('BadgeAwardingTuple',
+    'badge_id, user_id, awarded_at')
+
+
+QuantifiedBadgeAwardingTuple = namedtuple('BadgeAwardingTuple',
+    'badge_id, user_id, quantity')
 
 
 class BadgeAwarding(db.Model):
@@ -24,22 +35,14 @@ class BadgeAwarding(db.Model):
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
     awarded_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
 
-    def __init__(self, badge_id, user_id):
+    def __init__(self, badge_id: BadgeID, user_id: UserID) -> None:
         self.badge_id = badge_id
         self.user_id = user_id
 
-    def to_tuple(self):
+    def to_tuple(self) -> BadgeAwardingTuple:
         """Return a tuple representation of this entity."""
         return BadgeAwardingTuple(
             self.badge_id,
             self.user_id,
             self.awarded_at
         )
-
-
-BadgeAwardingTuple = namedtuple('BadgeAwardingTuple',
-    'badge_id, user_id, awarded_at')
-
-
-QuantifiedBadgeAwardingTuple = namedtuple('BadgeAwardingTuple',
-    'badge_id, user_id, quantity')

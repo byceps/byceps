@@ -7,14 +7,18 @@ byceps.services.user_badge.service
 """
 
 from collections import defaultdict
+from typing import Dict, Optional, Set
 
 from ...database import db
+from ...typing import BrandID, UserID
 
-from .models.awarding import BadgeAwarding, QuantifiedBadgeAwardingTuple
-from .models.badge import Badge
+from .models.awarding import BadgeAwarding, BadgeAwardingTuple, \
+    QuantifiedBadgeAwardingTuple
+from .models.badge import Badge, BadgeID, BadgeTuple
 
 
-def create_badge(label, image_filename, *, brand_id=None, description=None):
+def create_badge(label: str, image_filename: str, *, brand_id: BrandID=None,
+                 description: str=None) -> BadgeTuple:
     """Introduce a new badge."""
     badge = Badge(label, image_filename, brand_id=brand_id,
                   description=description)
@@ -25,7 +29,7 @@ def create_badge(label, image_filename, *, brand_id=None, description=None):
     return badge.to_tuple()
 
 
-def find_badge(badge_id):
+def find_badge(badge_id: BadgeID) -> Optional[BadgeTuple]:
     """Return the badge with that id, or `None` if not found."""
     badge = Badge.query.get(badge_id)
 
@@ -35,7 +39,7 @@ def find_badge(badge_id):
     return badge.to_tuple()
 
 
-def get_badges(badge_ids):
+def get_badges(badge_ids: Set[BadgeID]) -> Set[BadgeTuple]:
     """Return the badges with those IDs."""
     if not badge_ids:
         return []
@@ -47,7 +51,7 @@ def get_badges(badge_ids):
     return {badge.to_tuple() for badge in badges}
 
 
-def get_badges_for_user(user_id):
+def get_badges_for_user(user_id: UserID) -> Set[BadgeTuple]:
     """Return all badges that have been awarded to the user."""
     badges = Badge.query \
         .join(BadgeAwarding).filter_by(user_id=user_id) \
@@ -56,7 +60,7 @@ def get_badges_for_user(user_id):
     return {badge.to_tuple() for badge in badges}
 
 
-def get_badges_for_users(user_ids):
+def get_badges_for_users(user_ids: Set[UserID]) -> Dict[UserID, Set[BadgeTuple]]:
     """Return all badges that have been awarded to the users, indexed
     by user ID.
     """
@@ -67,11 +71,11 @@ def get_badges_for_users(user_ids):
         .filter(BadgeAwarding.user_id.in_(user_ids)) \
         .all()
 
-    badge_ids = frozenset(awarding.badge_id for awarding in awardings)
+    badge_ids = {awarding.badge_id for awarding in awardings}
     badges = get_badges(badge_ids)
     badges_by_id = {badge.id: badge for badge in badges}
 
-    badges_by_user_id = defaultdict(set)
+    badges_by_user_id = defaultdict(set)  # type: Dict[UserID, Set[BadgeTuple]]
     for awarding in awardings:
         badge = badges_by_id[awarding.badge_id]
         badges_by_user_id[awarding.user_id].add(badge)
@@ -79,14 +83,15 @@ def get_badges_for_users(user_ids):
     return dict(badges_by_user_id)
 
 
-def get_all_badges():
+def get_all_badges() -> Set[BadgeTuple]:
     """Return all badges."""
     badges = Badge.query.all()
 
     return {badge.to_tuple() for badge in badges}
 
 
-def award_badge_to_user(badge_id, user_id):
+def award_badge_to_user(badge_id: BadgeID, user_id: UserID) \
+                        -> BadgeAwardingTuple:
     """Award the badge to the user."""
     awarding = BadgeAwarding(badge_id, user_id)
 
@@ -96,7 +101,8 @@ def award_badge_to_user(badge_id, user_id):
     return awarding.to_tuple()
 
 
-def get_awardings_of_badge(badge_id):
+def get_awardings_of_badge(badge_id: BadgeID) \
+                           -> Set[QuantifiedBadgeAwardingTuple]:
     """Return the awardings (user and date) of this badge."""
     rows = db.session \
         .query(

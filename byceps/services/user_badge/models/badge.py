@@ -7,11 +7,20 @@ byceps.services.user_badge.models.badge
 """
 
 from collections import namedtuple
+from uuid import UUID
 
 from flask import url_for
 
 from ....database import db, generate_uuid
+from ....typing import BrandID
 from ....util.instances import ReprBuilder
+
+
+BadgeID = UUID
+
+
+BadgeTuple = namedtuple('BadgeTuple',
+    'id, brand_id, label, description, image_url')
 
 
 class Badge(db.Model):
@@ -24,18 +33,19 @@ class Badge(db.Model):
     description = db.Column(db.UnicodeText, nullable=True)
     image_filename = db.Column(db.Unicode(80), nullable=False)
 
-    def __init__(self, label, image_filename, *, brand_id=None, description=None):
+    def __init__(self, label: str, image_filename: str, *,
+                 brand_id: BrandID=None, description: str=None) -> None:
         self.brand_id = brand_id
         self.label = label
         self.description = description
         self.image_filename = image_filename
 
     @property
-    def image_url(self):
+    def image_url(self) -> str:
         filename = 'users/badges/{}'.format(self.image_filename)
         return url_for('global_file', filename=filename)
 
-    def to_tuple(self):
+    def to_tuple(self) -> BadgeTuple:
         """Return a tuple representation of this entity."""
         return BadgeTuple(
             self.id,
@@ -45,12 +55,8 @@ class Badge(db.Model):
             self.image_url
         )
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return ReprBuilder(self) \
             .add_with_lookup('brand_id') \
             .add_with_lookup('label') \
             .build()
-
-
-BadgeTuple = namedtuple('BadgeTuple',
-    'id, brand_id, label, description, image_url')
