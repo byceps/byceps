@@ -42,7 +42,7 @@ def find_badge(badge_id: BadgeID) -> Optional[BadgeTuple]:
 def get_badges(badge_ids: Set[BadgeID]) -> Set[BadgeTuple]:
     """Return the badges with those IDs."""
     if not badge_ids:
-        return []
+        return set()
 
     badges = Badge.query \
         .filter(Badge.id.in_(badge_ids)) \
