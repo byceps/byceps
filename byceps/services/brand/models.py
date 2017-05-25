@@ -7,6 +7,7 @@ byceps.services.brand.models
 """
 
 from ...database import db
+from ...typing import BrandID
 from ...util.instances import ReprBuilder
 
 
@@ -17,11 +18,11 @@ class Brand(db.Model):
     id = db.Column(db.Unicode(20), primary_key=True)
     title = db.Column(db.Unicode(40), unique=True, nullable=False)
 
-    def __init__(self, id, title):
-        self.id = id
+    def __init__(self, brand_id: BrandID, title: str) -> None:
+        self.id = brand_id
         self.title = title
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return ReprBuilder(self) \
             .add_with_lookup('id') \
             .build()

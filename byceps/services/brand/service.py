@@ -6,12 +6,15 @@ byceps.services.brand.service
 :License: Modified BSD, see LICENSE for details.
 """
 
+from typing import List, Optional
+
+from ...typing import BrandID
 from ...database import db
 
 from .models import Brand
 
 
-def create_brand(brand_id, title):
+def create_brand(brand_id: BrandID, title: str) -> Brand:
     """Create a brand."""
     brand = Brand(brand_id, title)
 
@@ -21,18 +24,18 @@ def create_brand(brand_id, title):
     return brand
 
 
-def find_brand(brand_id):
+def find_brand(brand_id: BrandID) -> Optional[Brand]:
     """Return the brand with that id, or `None` if not found."""
     return Brand.query.get(brand_id)
 
 
-def get_brands():
+def get_brands() -> List[Brand]:
     """Return all brands, ordered by title."""
     return Brand.query \
         .order_by(Brand.title) \
         .all()
 
 
-def count_brands():
+def count_brands() -> int:
     """Return the number of brands."""
     return Brand.query.count()
