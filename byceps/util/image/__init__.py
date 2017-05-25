@@ -9,7 +9,7 @@ byceps.util.image
 from io import BytesIO
 from typing import BinaryIO, Union
 
-from PIL import Image
+from PIL import Image, ImageFile
 
 from .models import Dimensions
 
@@ -31,11 +31,8 @@ def create_thumbnail(filename_or_stream: FilenameOrStream, image_type: str,
 
     image = Image.open(filename_or_stream)
 
-    dimensions = Dimensions(*image.size)
-    if force_square and not dimensions.is_square:
-        edge_length = min(*dimensions)
-        crop_box = (0, 0, edge_length, edge_length)
-        image = image.crop(crop_box)
+    if force_square:
+        image = _crop_to_square(image)
 
     image.thumbnail(maximum_dimensions, resample=Image.ANTIALIAS)
 
@@ -43,3 +40,16 @@ def create_thumbnail(filename_or_stream: FilenameOrStream, image_type: str,
 
     output_stream.seek(0)
     return output_stream
+
+
+def _crop_to_square(image: ImageFile) -> ImageFile:
+    """Crop image to be square."""
+    dimensions = Dimensions(*image.size)
+
+    if dimensions.is_square:
+        return image
+
+    edge_length = min(*dimensions)
+    crop_box = (0, 0, edge_length, edge_length)
+
+    return image.crop(crop_box)
