@@ -10,8 +10,6 @@ from collections import namedtuple
 from enum import Enum
 from typing import List
 
-from flask import g
-
 
 NavigationItem = namedtuple('NavigationItem', [
     'endpoint',
@@ -46,12 +44,13 @@ class Navigation(object):
         self.items.append(item)
         return self
 
-    def get_items(self) -> List[NavigationItem]:
-        def current_user_has_permission(item: NavigationItem) -> bool:
+    def get_items(self, user) -> List[NavigationItem]:
+        """Return the navigation items the user is permitted to see."""
+        def user_has_permission(item: NavigationItem) -> bool:
             required_permission = item.required_permission
             if required_permission is None:
                 return True
 
-            return g.current_user.has_permission(required_permission)
+            return user.has_permission(required_permission)
 
-        return list(filter(current_user_has_permission, self.items))
+        return list(filter(user_has_permission, self.items))
