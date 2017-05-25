@@ -7,6 +7,7 @@ byceps.services.orga.models
 """
 
 from ...database import db
+from ...typing import BrandID, UserID
 from ...util.instances import ReprBuilder
 
 from ..brand.models import Brand
@@ -22,11 +23,11 @@ class OrgaFlag(db.Model):
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
     user = db.relationship(User)
 
-    def __init__(self, brand_id, user_id):
+    def __init__(self, brand_id: BrandID, user_id: UserID) -> None:
         self.brand_id = brand_id
         self.user_id = user_id
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return ReprBuilder(self) \
             .add('brand', self.brand_id) \
             .add('user', self.user.screen_name) \

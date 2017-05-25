@@ -7,6 +7,7 @@ byceps.services.orga.birthday_service
 """
 
 from itertools import islice
+from typing import Any, Dict, Iterator, Sequence
 
 from ...database import db
 
@@ -17,16 +18,17 @@ from ..user.models.user import User
 from .models import OrgaFlag
 
 
-def collect_orgas_with_next_birthdays(*, limit=None):
+def collect_orgas_with_next_birthdays(*, limit: int=None) \
+                                      -> Iterator[Dict[str, Any]]:
     """Yield the next birthdays of organizers, sorted by month and day."""
     orgas_with_birthdays = _collect_orgas_with_birthdays()
 
     sorted_orgas = sort_users_by_next_birthday(orgas_with_birthdays)
 
     if limit is not None:
-        sorted_orgas = islice(sorted_orgas, limit)
+        sorted_orgas = list(islice(sorted_orgas, limit))
 
-    orgas = list(sorted_orgas)
+    orgas = sorted_orgas
 
     user_ids = frozenset(user.id for user in orgas)
 
@@ -45,7 +47,7 @@ def collect_orgas_with_next_birthdays(*, limit=None):
         }
 
 
-def _collect_orgas_with_birthdays():
+def _collect_orgas_with_birthdays() -> Sequence[User]:
     """Return all organizers whose birthday is known."""
     return User.query \
         .join(OrgaFlag) \
@@ -55,7 +57,7 @@ def _collect_orgas_with_birthdays():
         .all()
 
 
-def sort_users_by_next_birthday(users):
+def sort_users_by_next_birthday(users: Sequence[User]) -> Sequence[User]:
     return sorted(users,
                   key=lambda user: (
                     user.detail.days_until_next_birthday,
