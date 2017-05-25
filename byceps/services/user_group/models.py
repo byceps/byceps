@@ -11,6 +11,7 @@ from datetime import datetime
 from sqlalchemy.ext.associationproxy import association_proxy
 
 from ...database import db, generate_uuid
+from ...typing import UserID
 from ...util.instances import ReprBuilder
 
 from ..user.models.user import User
@@ -29,16 +30,17 @@ class UserGroup(db.Model):
 
     members = association_proxy('memberships', 'user')
 
-    def __init__(self, creator_id, title, description):
+    def __init__(self, creator_id: UserID, title: str, description: str) \
+                 -> None:
         self.creator_id = creator_id
         self.title = title
         self.description = description
 
     @property
-    def member_count(self):
+    def member_count(self) -> int:
         return len(self.members)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return ReprBuilder(self) \
             .add_with_lookup('id') \
             .add_with_lookup('title') \
@@ -60,7 +62,7 @@ class Membership(db.Model):
     user = db.relationship(User, backref='group_membership')
     created_at = db.Column(db.DateTime, default=datetime.now)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return ReprBuilder(self) \
             .add_with_lookup('id') \
             .add_with_lookup('group') \
