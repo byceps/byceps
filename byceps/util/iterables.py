@@ -25,6 +25,8 @@ def find(predicate: Predicate, iterable: Iterable[T]) -> Optional[T]:
         if predicate(elem):
             return elem
 
+    return None
+
 
 def index_of(predicate: Predicate, iterable: Iterable[T]) -> Optional[int]:
     """Return the (0-based) index of the first element in the iterable
@@ -35,6 +37,8 @@ def index_of(predicate: Predicate, iterable: Iterable[T]) -> Optional[int]:
     for i, elem in enumerate(iterable):
         if predicate(elem):
             return i
+
+    return None
 
 
 def pairwise(iterable: Iterable[T]) -> Iterator[Tuple[T, T]]:
