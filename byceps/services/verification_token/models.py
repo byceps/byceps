@@ -12,6 +12,7 @@ from enum import Enum
 from sqlalchemy.ext.hybrid import hybrid_property
 
 from ...database import BaseQuery, db, generate_uuid
+from ...typing import UserID
 from ...util.instances import ReprBuilder
 
 from ..user.models.user import User
@@ -40,21 +41,21 @@ class Token(db.Model):
     user = db.relationship(User)
     _purpose = db.Column('purpose', db.Unicode(40), index=True, nullable=False)
 
-    def __init__(self, user_id, purpose):
+    def __init__(self, user_id: UserID, purpose: Purpose) -> None:
         self.user_id = user_id
         self.purpose = purpose
 
     @hybrid_property
-    def purpose(self):
+    def purpose(self) -> Purpose:
         return Purpose[self._purpose]
 
     @purpose.setter
-    def purpose(self, purpose):
+    def purpose(self, purpose: Purpose) -> None:
         assert purpose is not None
         self._purpose = purpose.name
 
     @property
-    def is_expired(self):
+    def is_expired(self) -> bool:
         """Return `True` if expired, i.e. it is no longer valid."""
         if self.purpose == Purpose.password_reset:
             now = datetime.now()
@@ -63,7 +64,7 @@ class Token(db.Model):
         else:
             return False
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return ReprBuilder(self) \
             .add_with_lookup('token') \
             .add('user', self.user.screen_name) \
