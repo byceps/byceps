@@ -6,6 +6,8 @@ byceps.util.image.typeguess
 :License: Modified BSD, see LICENSE for details.
 """
 
+from typing import BinaryIO, Optional
+
 from .models import ImageType
 
 
@@ -20,7 +22,7 @@ JPEG_MARKER_SOI = b'\xff\xd8'
 PNG_SIGNATURE = b'\x89PNG\r\n\x1a\n'
 
 
-def guess_type(data):
+def guess_type(data: BinaryIO) -> Optional[ImageType]:
     """Return the guessed type, or `None` if the type could not be
     guessed or is not allowed (i.e. not a member of the enum).
     """

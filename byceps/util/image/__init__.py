@@ -7,19 +7,24 @@ byceps.util.image
 """
 
 from io import BytesIO
+from typing import BinaryIO, Union
 
 from PIL import Image
 
 from .models import Dimensions
 
 
-def read_dimensions(filename_or_stream):
+FilenameOrStream = Union[str, BinaryIO]
+
+
+def read_dimensions(filename_or_stream: FilenameOrStream) -> Dimensions:
     """Return the dimensions of the image."""
     image = Image.open(filename_or_stream)
     return Dimensions(*image.size)
 
 
-def create_thumbnail(filename_or_stream, image_type, maximum_dimensions):
+def create_thumbnail(filename_or_stream: FilenameOrStream, image_type: str,
+                     maximum_dimensions: Dimensions) -> BinaryIO:
     """Create a thumbnail from the given image and return the result stream."""
     output_stream = BytesIO()
 
