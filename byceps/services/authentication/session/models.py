@@ -6,7 +6,11 @@ byceps.services.authentication.session.models
 :License: Modified BSD, see LICENSE for details.
 """
 
+from datetime import datetime
+from uuid import UUID
+
 from ....database import db
+from ....typing import UserID
 
 
 class SessionToken(db.Model):
@@ -17,7 +21,7 @@ class SessionToken(db.Model):
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), unique=True, index=True, nullable=False)
     created_at = db.Column(db.DateTime, nullable=False)
 
-    def __init__(self, token, user_id, created_at):
+    def __init__(self, token: UUID, user_id: UserID, created_at: datetime) -> None:
         self.token = token
         self.user_id = user_id
         self.created_at = created_at

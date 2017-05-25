@@ -11,12 +11,14 @@ from flask import url_for
 from ....database import db
 
 from ...email import service as email_service
+from ...user.models.user import User
+from ...verification_token.models import Token
 from ...verification_token import service as verification_token_service
 
 from . import service as password_service
 
 
-def prepare_password_reset(user):
+def prepare_password_reset(user: User) -> None:
     """Create a verification token for password reset and email it to
     the user's address.
     """
@@ -29,7 +31,7 @@ def prepare_password_reset(user):
     _send_password_reset_email(user, verification_token)
 
 
-def _send_password_reset_email(user, verification_token):
+def _send_password_reset_email(user: User, verification_token: Token) -> None:
     confirmation_url = url_for('authentication.password_reset_form',
                                token=verification_token.token,
                                _external=True)
@@ -45,7 +47,7 @@ def _send_password_reset_email(user, verification_token):
     email_service.send_email(subject=subject, body=body, recipients=recipients)
 
 
-def reset_password(verification_token, password):
+def reset_password(verification_token: Token, password: str) -> None:
     """Reset the user's password."""
     user = verification_token.user
 

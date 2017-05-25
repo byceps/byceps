@@ -6,13 +6,14 @@ byceps.services.authentication.service
 :License: Modified BSD, see LICENSE for details.
 """
 
+from ..user.models.user import User
 from ..user import service as user_service
 
 from .exceptions import AuthenticationFailed
 from .password import service as password_service
 
 
-def authenticate(screen_name, password):
+def authenticate(screen_name: str, password: str) -> User:
     """Try to authenticate the user.
 
     Return the user object on success, or raise an exception on failure.

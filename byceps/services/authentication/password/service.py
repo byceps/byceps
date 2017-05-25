@@ -12,6 +12,7 @@ from werkzeug.security import check_password_hash as _check_password_hash, \
     generate_password_hash as _generate_password_hash
 
 from ....database import db
+from ....typing import UserID
 
 from ..session import service as session_service
 
@@ -22,12 +23,12 @@ PASSWORD_HASH_ITERATIONS = 100000
 PASSWORD_HASH_METHOD = 'pbkdf2:sha256:%d' % PASSWORD_HASH_ITERATIONS
 
 
-def generate_password_hash(password):
+def generate_password_hash(password: str) -> str:
     """Generate a salted hash value based on the password."""
     return _generate_password_hash(password, method=PASSWORD_HASH_METHOD)
 
 
-def create_password_hash(user_id, password):
+def create_password_hash(user_id: UserID, password: str) -> None:
     """Create a password-based credential and a session token for the user."""
     now = datetime.utcnow()
 
@@ -42,7 +43,7 @@ def create_password_hash(user_id, password):
     db.session.commit()
 
 
-def update_password_hash(user_id, password):
+def update_password_hash(user_id: UserID, password: str) -> None:
     """Update the password hash and set a newly-generated authentication
     token for the user.
     """
@@ -67,7 +68,7 @@ def update_password_hash(user_id, password):
     db.session.commit()
 
 
-def is_password_valid_for_user(user_id, password):
+def is_password_valid_for_user(user_id: UserID, password: str) -> bool:
     """Return `True` if the password is valid for the user, or `False`
     otherwise.
     """
@@ -80,7 +81,7 @@ def is_password_valid_for_user(user_id, password):
     return check_password_hash(credential.password_hash, password)
 
 
-def check_password_hash(password_hash, password):
+def check_password_hash(password_hash: str, password: str) -> bool:
     """Hash the password and return `True` if the result matches the
     given hash, `False` otherwise.
     """

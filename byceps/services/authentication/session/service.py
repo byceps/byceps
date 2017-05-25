@@ -6,32 +6,36 @@ byceps.services.authentication.session.service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from uuid import uuid4
+from datetime import datetime
+from typing import Optional
+from uuid import UUID, uuid4
+
+from ....typing import UserID
 
 from ..exceptions import AuthenticationFailed
 
 from .models import SessionToken
 
 
-def create_session_token(user_id, created_at):
+def create_session_token(user_id: UserID, created_at: datetime) -> SessionToken:
     """Create, but do not persist, a session token entity."""
     token = _generate_auth_token()
 
     return SessionToken(token, user_id, created_at)
 
 
-def update_session_token(session_token, updated_at):
+def update_session_token(session_token: SessionToken, updated_at) -> None:
     """Update, but do not persist, the session token entity."""
     session_token.token = _generate_auth_token()
     session_token.created_at = updated_at
 
 
-def _generate_auth_token():
+def _generate_auth_token() -> UUID:
     """Generate an authentication token."""
     return uuid4()
 
 
-def find_session_token_for_user(user_id):
+def find_session_token_for_user(user_id: UserID) -> Optional[SessionToken]:
     """Return the session token for the user with that ID, or `None` if
     not found.
     """
@@ -40,7 +44,7 @@ def find_session_token_for_user(user_id):
         .one_or_none()
 
 
-def authenticate_session(user_id, auth_token):
+def authenticate_session(user_id: UserID, auth_token: UUID) -> None:
     """Check the client session's validity.
 
     Return nothing on success, or raise an exception on failure.
@@ -59,7 +63,7 @@ def authenticate_session(user_id, auth_token):
         raise AuthenticationFailed()
 
 
-def _is_token_valid_for_user(token, user_id):
+def _is_token_valid_for_user(token: UUID, user_id: UserID) -> bool:
     """Return `True` if a session token with that ID exists for that user."""
     if not user_id:
         raise ValueError('User ID is invalid.')
