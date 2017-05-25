@@ -155,10 +155,10 @@ def aggregate_category(category: Category) -> None:
 # topic
 
 
-def count_topics_for_brand(brand: Brand) -> int:
+def count_topics_for_brand(brand_id: BrandID) -> int:
     """Return the number of topics for that brand."""
     return Topic.query \
-        .join(Category).filter(Category.brand_id == brand.id) \
+        .join(Category).filter(Category.brand_id == brand_id) \
         .count()
 
 
@@ -350,10 +350,10 @@ def move_topic(topic: Topic, new_category: Category) -> None:
 # posting
 
 
-def count_postings_for_brand(brand: Brand) -> int:
+def count_postings_for_brand(brand_id: BrandID) -> int:
     """Return the number of postings for that brand."""
     return Posting.query \
-        .join(Topic).join(Category).filter(Category.brand_id == brand.id) \
+        .join(Topic).join(Category).filter(Category.brand_id == brand_id) \
         .count()
 
 
