@@ -10,6 +10,7 @@ venv
 
 # cache data
 .cache
+.mypy_cache
 
 # user data
 data
