@@ -18,7 +18,7 @@ from ....util.instances import ReprBuilder
 
 from ...user.models.user import User
 
-from .topic import Topic
+from .topic import Topic, TopicID
 
 
 PostingID = UUID
@@ -26,8 +26,8 @@ PostingID = UUID
 
 class PostingQuery(BaseQuery):
 
-    def for_topic(self, topic: Topic):
-        return self.filter_by(topic=topic)
+    def for_topic(self, topic_id: TopicID):
+        return self.filter_by(topic_id=topic_id)
 
     def only_visible_for_user(self, user: User):
         """Only return postings the user may see."""

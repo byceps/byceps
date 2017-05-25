@@ -232,7 +232,7 @@ def update_topic(topic: Topic, editor_id: UserID, title: str, body: str
 
 def _aggregate_topic(topic: Topic) -> None:
     """Update the topic's count and latest fields."""
-    posting_query = Posting.query.for_topic(topic).without_hidden()
+    posting_query = Posting.query.for_topic(topic.id).without_hidden()
 
     posting_count = posting_query.count()
 
@@ -248,7 +248,7 @@ def _aggregate_topic(topic: Topic) -> None:
     aggregate_category(topic.category)
 
 
-def find_default_posting_to_jump_to(topic: Topic, user: User,
+def find_default_posting_to_jump_to(topic_id: TopicID, user: User,
                                     last_viewed_at: Optional[datetime]
                                    ) -> Optional[Posting]:
     """Return the posting of the topic to show by default, or `None`."""
@@ -263,7 +263,7 @@ def find_default_posting_to_jump_to(topic: Topic, user: User,
         return None
 
     postings_query = Posting.query \
-        .for_topic(topic) \
+        .for_topic(topic_id) \
         .only_visible_for_user(user)
 
     first_new_posting = postings_query \
@@ -362,7 +362,7 @@ def find_posting_by_id(posting_id: PostingID) -> Optional[Posting]:
     return Posting.query.get(posting_id)
 
 
-def paginate_postings(topic: Topic, user: User, page: int,
+def paginate_postings(topic_id: TopicID, user: User, page: int,
                       postings_per_page: int) -> Pagination:
     """Paginate postings in that topic, as visible for the user."""
     return Posting.query \
@@ -374,7 +374,7 @@ def paginate_postings(topic: Topic, user: User, page: int,
             db.joinedload(Posting.last_edited_by).load_only('screen_name'),
             db.joinedload(Posting.hidden_by).load_only('screen_name'),
         ) \
-        .for_topic(topic) \
+        .for_topic(topic_id) \
         .only_visible_for_user(user) \
         .earliest_to_latest() \
         .paginate(page, postings_per_page)
@@ -409,7 +409,7 @@ def calculate_posting_page_number(posting: Posting, user: User,
     viewed by the user.
     """
     topic_postings = Posting.query \
-        .for_topic(posting.topic) \
+        .for_topic(posting.topic_id) \
         .only_visible_for_user(user) \
         .earliest_to_latest() \
         .all()

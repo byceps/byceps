@@ -94,7 +94,7 @@ def topic_view(topic_id, page):
     postings_per_page = _get_postings_per_page_value()
     if page == 0:
         posting = board_service.find_default_posting_to_jump_to(
-            topic, g.current_user._user, last_viewed_at)
+            topic.id, g.current_user._user, last_viewed_at)
 
         if posting is None:
             page = 1
@@ -111,7 +111,7 @@ def topic_view(topic_id, page):
     # 'new' tag from a locked topic.
     board_service.mark_topic_as_just_viewed(topic, g.current_user._user)
 
-    postings = board_service.paginate_postings(topic, g.current_user._user,
+    postings = board_service.paginate_postings(topic.id, g.current_user._user,
                                                page, postings_per_page)
 
     add_unseen_flag_to_postings(postings.items, g.current_user._user,
