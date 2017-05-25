@@ -8,7 +8,7 @@ byceps.services.text_markup.service
 
 from html import escape
 
-import bbcode
+from bbcode import Parser
 
 try:
     from .smileys import get_smileys
@@ -21,9 +21,9 @@ except ImportError:
     _replace_smileys = lambda x: x
 
 
-def _create_parser():
+def _create_parser() -> Parser:
     """Create a customized BBcode parser."""
-    parser = bbcode.Parser(replace_cosmetic=False)
+    parser = Parser(replace_cosmetic=False)
 
     _add_image_formatter(parser)
     _add_quote_formatter(parser)
@@ -31,7 +31,7 @@ def _create_parser():
     return parser
 
 
-def _add_image_formatter(parser):
+def _add_image_formatter(parser: Parser) -> None:
     """Replace image tags."""
     def render_image(name, value, options, parent, context):
         return '<img src="{}">'.format(value)
@@ -39,7 +39,7 @@ def _add_image_formatter(parser):
     parser.add_formatter('img', render_image, replace_links=False)
 
 
-def _add_quote_formatter(parser):
+def _add_quote_formatter(parser: Parser) -> None:
     """Render quotes with optional author."""
     def render_quote(name, value, options, parent, context):
         intro = ''
@@ -55,7 +55,7 @@ def _add_quote_formatter(parser):
 _PARSER = _create_parser()
 
 
-def render_html(value):
+def render_html(value: str) -> str:
     """Render text as HTML, interpreting BBcode."""
     html = _PARSER.format(value)
     html = _replace_smileys(html)
