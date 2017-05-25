@@ -16,9 +16,9 @@ from flask import g
 from sqlalchemy.ext.associationproxy import association_proxy
 
 from ....database import db, generate_uuid
+from ....typing import PartyID
 from ....util.instances import ReprBuilder
 
-from ...party.models import Party
 from ...user_avatar.models import AvatarSelection
 
 
@@ -56,7 +56,7 @@ class AnonymousUser(object):
     def is_orga(self) -> bool:
         return False
 
-    def is_orga_for_party(self, party: Party) -> bool:
+    def is_orga_for_party(self, party_id: PartyID) -> bool:
         return False
 
     def __eq__(self, other) -> bool:
@@ -110,11 +110,11 @@ class User(db.Model):
     @property
     def is_orga(self) -> bool:
         party = getattr(g, 'party', None)
-        return (party is not None) and self.is_orga_for_party(party)
+        return (party is not None) and self.is_orga_for_party(party.id)
 
-    def is_orga_for_party(self, party: Party) -> bool:
-        parties = {ms.orga_team.party for ms in self.orga_team_memberships}
-        return party in parties
+    def is_orga_for_party(self, party_id: PartyID) -> bool:
+        party_ids = {ms.orga_team.party_id for ms in self.orga_team_memberships}
+        return party_id in party_ids
 
     def __eq__(self, other) -> bool:
         return (other is not None) and (self.id == other.id)
