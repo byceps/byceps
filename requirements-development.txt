@@ -1,1 +1,2 @@
 Flask-DebugToolbar >= 0.10.1
+mypy >= 0.511
