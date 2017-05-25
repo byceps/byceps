@@ -6,7 +6,7 @@ testfixtures.board
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.services.board import category_service, service
+from byceps.services.board import category_service, service, topic_service
 
 from .brand import create_brand
 
@@ -35,7 +35,7 @@ def create_topic(category, creator_id, *, number=1, title=None, body=None):
     if body is None:
         body = 'Inhalt von Thema {}'.format(number)
 
-    return service.create_topic(category, creator_id, title, body)
+    return topic_service.create_topic(category, creator_id, title, body)
 
 
 def create_posting(topic, creator_id, *, number=1, body=None):

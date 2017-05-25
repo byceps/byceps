@@ -9,7 +9,8 @@ byceps.blueprints.board.views
 from flask import abort, current_app, g, redirect, request, url_for
 
 from ...services.board import service as board_service, \
-    category_service as board_category_service
+    category_service as board_category_service, \
+    topic_service as board_topic_service
 from ...services.text_markup.service import get_smileys, render_html
 from ...services.user_badge import service as badge_service
 from ...util.framework.blueprint import create_blueprint
@@ -66,8 +67,9 @@ def category_view(slug, page):
 
     topics_per_page = _get_topics_per_page_value()
 
-    topics = board_service.paginate_topics(category.id, g.current_user._user,
-                                           page, topics_per_page)
+    topics = board_topic_service.paginate_topics(category.id,
+                                                 g.current_user._user, page,
+                                                 topics_per_page)
 
     return {
         'category': category,
@@ -84,8 +86,9 @@ def category_view(slug, page):
 @templated
 def topic_view(topic_id, page):
     """List postings for the topic."""
-    topic = board_service.find_topic_visible_for_user(topic_id,
-                                                      g.current_user._user)
+    topic = board_topic_service.find_topic_visible_for_user(topic_id,
+        g.current_user._user)
+
     if topic is None:
         abort(404)
 
@@ -95,7 +98,7 @@ def topic_view(topic_id, page):
 
     postings_per_page = _get_postings_per_page_value()
     if page == 0:
-        posting = board_service.find_default_posting_to_jump_to(
+        posting = board_topic_service.find_default_posting_to_jump_to(
             topic.id, g.current_user._user, last_viewed_at)
 
         if posting is None:
@@ -193,7 +196,7 @@ def topic_create(category_id):
     title = form.title.data.strip()
     body = form.body.data.strip()
 
-    topic = board_service.create_topic(category, creator.id, title, body)
+    topic = board_topic_service.create_topic(category, creator.id, title, body)
 
     flash_success('Das Thema "{}" wurde hinzugefügt.', topic.title)
     signals.topic_created.send(None, topic_id=topic.id)
@@ -255,8 +258,8 @@ def topic_update(topic_id):
     if not form.validate():
         return topic_update_form(topic_id, form)
 
-    board_service.update_topic(topic, g.current_user.id, form.title.data,
-                               form.body.data)
+    board_topic_service.update_topic(topic, g.current_user.id, form.title.data,
+                                     form.body.data)
 
     flash_success('Das Thema "{}" wurde aktualisiert.', topic.title)
     return redirect(url)
@@ -286,7 +289,7 @@ def topic_hide(topic_id):
     topic = _get_topic_or_404(topic_id)
     moderator_id = g.current_user.id
 
-    board_service.hide_topic(topic, moderator_id)
+    board_topic_service.hide_topic(topic, moderator_id)
 
     flash_success('Das Thema "{}" wurde versteckt.', topic.title, icon='hidden')
 
@@ -304,7 +307,7 @@ def topic_unhide(topic_id):
     topic = _get_topic_or_404(topic_id)
     moderator_id = g.current_user.id
 
-    board_service.unhide_topic(topic, moderator_id)
+    board_topic_service.unhide_topic(topic, moderator_id)
 
     flash_success(
         'Das Thema "{}" wurde wieder sichtbar gemacht.', topic.title, icon='view')
@@ -323,7 +326,7 @@ def topic_lock(topic_id):
     topic = _get_topic_or_404(topic_id)
     moderator_id = g.current_user.id
 
-    board_service.lock_topic(topic, moderator_id)
+    board_topic_service.lock_topic(topic, moderator_id)
 
     flash_success('Das Thema "{}" wurde geschlossen.', topic.title, icon='lock')
 
@@ -341,7 +344,7 @@ def topic_unlock(topic_id):
     topic = _get_topic_or_404(topic_id)
     moderator_id = g.current_user.id
 
-    board_service.unlock_topic(topic, moderator_id)
+    board_topic_service.unlock_topic(topic, moderator_id)
 
     flash_success('Das Thema "{}" wurde wieder geöffnet.', topic.title,
                   icon='unlock')
@@ -360,7 +363,7 @@ def topic_pin(topic_id):
     topic = _get_topic_or_404(topic_id)
     moderator_id = g.current_user.id
 
-    board_service.pin_topic(topic, moderator_id)
+    board_topic_service.pin_topic(topic, moderator_id)
 
     flash_success('Das Thema "{}" wurde angepinnt.', topic.title, icon='pin')
 
@@ -378,7 +381,7 @@ def topic_unpin(topic_id):
     topic = _get_topic_or_404(topic_id)
     moderator_id = g.current_user.id
 
-    board_service.unpin_topic(topic, moderator_id)
+    board_topic_service.unpin_topic(topic, moderator_id)
 
     flash_success('Das Thema "{}" wurde wieder gelöst.', topic.title)
 
@@ -405,7 +408,7 @@ def topic_move(topic_id):
 
     old_category = topic.category
 
-    board_service.move_topic(topic, new_category)
+    board_topic_service.move_topic(topic, new_category)
 
     flash_success('Das Thema "{}" wurde aus der Kategorie "{}" '
                   'in die Kategorie "{}" verschoben.',
@@ -638,7 +641,7 @@ def posting_unhide(posting_id):
 
 
 def _get_topic_or_404(topic_id):
-    topic = board_service.find_topic_by_id(topic_id)
+    topic = board_topic_service.find_topic_by_id(topic_id)
 
     if topic is None:
         abort(404)
