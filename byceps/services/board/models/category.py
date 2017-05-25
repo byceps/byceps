@@ -6,18 +6,25 @@ byceps.services.board.models.category
 :License: Modified BSD, see LICENSE for details.
 """
 
+from uuid import UUID
+from typing import Optional
+
 from sqlalchemy.ext.orderinglist import ordering_list
 
 from ....database import BaseQuery, db, generate_uuid
+from ....typing import BrandID, UserID
 from ....util.instances import ReprBuilder
 
 from ...brand.models import Brand
 from ...user.models.user import User
 
 
+CategoryID = UUID
+
+
 class CategoryQuery(BaseQuery):
 
-    def for_brand_id(self, brand_id):
+    def for_brand_id(self, brand_id: BrandID):
         return self.filter_by(brand_id=brand_id)
 
 
@@ -47,13 +54,14 @@ class Category(db.Model):
                                                order_by=position,
                                                collection_class=ordering_list('position', count_from=1)))
 
-    def __init__(self, brand_id, slug, title, description):
+    def __init__(self, brand_id: BrandID, slug: str, title: str,
+                 description: str) -> None:
         self.brand_id = brand_id
         self.slug = slug
         self.title = title
         self.description = description
 
-    def contains_unseen_postings(self, user):
+    def contains_unseen_postings(self, user: User) -> bool:
         """Return `True` if the category contains postings created after
         the last time the user viewed it.
         """
@@ -71,10 +79,10 @@ class Category(db.Model):
 
         return self.last_posting_updated_at > last_view.occured_at
 
-    def __eq__(self, other):
+    def __eq__(self, other) -> bool:
         return self.id == other.id
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return ReprBuilder(self) \
             .add_with_lookup('id') \
             .add('brand', self.brand_id) \
@@ -93,18 +101,18 @@ class LastCategoryView(db.Model):
     category = db.relationship(Category)
     occured_at = db.Column(db.DateTime, nullable=False)
 
-    def __init__(self, user_id, category_id):
+    def __init__(self, user_id: UserID, category_id: CategoryID) -> None:
         self.user_id = user_id
         self.category_id = category_id
 
     @classmethod
-    def find(cls, user, category):
+    def find(cls, user: User, category: Category) -> Optional['LastCategoryView']:
         if user.is_anonymous:
-            return
+            return None
 
         return cls.query.filter_by(user=user, category=category).first()
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return ReprBuilder(self) \
             .add('user', self.user.screen_name) \
             .add('category', self.category.title) \

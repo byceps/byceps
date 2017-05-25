@@ -7,20 +7,28 @@ byceps.services.board.service
 """
 
 from datetime import datetime
+from typing import Optional, Sequence
+
+from flask_sqlalchemy import Pagination
 
 from ...database import db
+from ...typing import BrandID, UserID
 from ...util.iterables import index_of
 
-from .models.category import Category, LastCategoryView
-from .models.posting import InitialTopicPostingAssociation, Posting
-from .models.topic import LastTopicView, Topic
+from ..brand.models import Brand
+from ..user.models.user import User
+
+from .models.category import Category, CategoryID, LastCategoryView
+from .models.posting import InitialTopicPostingAssociation, Posting, PostingID
+from .models.topic import LastTopicView, Topic, TopicID
 
 
 # -------------------------------------------------------------------- #
 # category
 
 
-def create_category(brand, slug, title, description):
+def create_category(brand: Brand, slug: str, title: str, description: str
+                   ) -> Category:
     """Create a category in that brand's board."""
     category = Category(brand.id, slug, title, description)
     brand.board_categories.append(category)
@@ -30,7 +38,8 @@ def create_category(brand, slug, title, description):
     return category
 
 
-def update_category(category, slug, title, description):
+def update_category(category: Category, slug: str, title: str, description: str
+                   ) -> Category:
     """Update the category."""
     category.slug = slug.strip().lower()
     category.title = title.strip()
@@ -41,7 +50,7 @@ def update_category(category, slug, title, description):
     return category
 
 
-def move_category_up(category):
+def move_category_up(category: Category) -> None:
     """Move a category upwards by one position."""
     category_list = category.brand.board_categories
 
@@ -54,7 +63,7 @@ def move_category_up(category):
     db.session.commit()
 
 
-def move_category_down(category):
+def move_category_down(category: Category) -> None:
     """Move a category downwards by one position."""
     category_list = category.brand.board_categories
 
@@ -67,17 +76,17 @@ def move_category_down(category):
     db.session.commit()
 
 
-def count_categories_for_brand(brand_id):
+def count_categories_for_brand(brand_id: BrandID) -> int:
     """Return the number of categories for that brand."""
     return Category.query.for_brand_id(brand_id).count()
 
 
-def find_category_by_id(category_id):
+def find_category_by_id(category_id: CategoryID) -> Optional[Category]:
     """Return the category with that id, or `None` if not found."""
     return Category.query.get(category_id)
 
 
-def find_category_by_slug(brand_id, slug):
+def find_category_by_slug(brand_id: BrandID, slug: str) -> Optional[Category]:
     """Return the category for that brand and slug, or `None` if not found."""
     return Category.query \
         .for_brand_id(brand_id) \
@@ -85,7 +94,7 @@ def find_category_by_slug(brand_id, slug):
         .first()
 
 
-def get_categories(brand_id):
+def get_categories(brand_id: BrandID) -> Sequence[Category]:
     """Return all categories for that brand, ordered by position."""
     return Category.query \
         .for_brand_id(brand_id) \
@@ -93,7 +102,8 @@ def get_categories(brand_id):
         .all()
 
 
-def get_categories_excluding(brand_id, category_id):
+def get_categories_excluding(brand_id: BrandID, category_id: CategoryID
+                            ) -> Sequence[Category]:
     """Return all categories for that brand except for the specified one."""
     return Category.query \
         .for_brand_id(brand_id) \
@@ -102,7 +112,7 @@ def get_categories_excluding(brand_id, category_id):
         .all()
 
 
-def get_categories_with_last_updates(brand_id):
+def get_categories_with_last_updates(brand_id: BrandID) -> Sequence[Category]:
     """Return the categories for that brand.
 
     Include the creator of the last posting in each category.
@@ -115,7 +125,7 @@ def get_categories_with_last_updates(brand_id):
         .all()
 
 
-def aggregate_category(category):
+def aggregate_category(category: Category) -> None:
     """Update the category's count and latest fields."""
     topic_count = Topic.query.for_category(category).without_hidden().count()
 
@@ -145,19 +155,20 @@ def aggregate_category(category):
 # topic
 
 
-def count_topics_for_brand(brand):
+def count_topics_for_brand(brand: Brand) -> int:
     """Return the number of topics for that brand."""
     return Topic.query \
         .join(Category).filter(Category.brand_id == brand.id) \
         .count()
 
 
-def find_topic_by_id(topic_id):
+def find_topic_by_id(topic_id: TopicID) -> Optional[Topic]:
     """Return the topic with that id, or `None` if not found."""
     return Topic.query.get(topic_id)
 
 
-def find_topic_visible_for_user(topic_id, user):
+def find_topic_visible_for_user(topic_id: TopicID, user: User
+                               ) -> Optional[Topic]:
     """Return the topic with that id, or `None` if not found or
     invisible for the user.
     """
@@ -170,7 +181,8 @@ def find_topic_visible_for_user(topic_id, user):
         .first()
 
 
-def paginate_topics(category, user, page, topics_per_page):
+def paginate_topics(category: Category, user: User, page: int,
+                    topics_per_page: int) -> Pagination:
     """Paginate topics in that category, as visible for the user.
 
     Pinned topics are returned first.
@@ -190,11 +202,13 @@ def paginate_topics(category, user, page, topics_per_page):
         .paginate(page, topics_per_page)
 
 
-def create_topic(category, creator_id, title, body):
+def create_topic(category: Category, creator_id: UserID, title: str, body: str
+                ) -> Topic:
     """Create a topic with an initial posting in that category."""
     topic = Topic(category.id, creator_id, title)
     posting = Posting(topic, creator_id, body)
-    initial_topic_posting_association = InitialTopicPostingAssociation(topic, posting)
+    initial_topic_posting_association = InitialTopicPostingAssociation(topic,
+                                                                       posting)
 
     db.session.add(topic)
     db.session.add(posting)
@@ -206,7 +220,8 @@ def create_topic(category, creator_id, title, body):
     return topic
 
 
-def update_topic(topic, editor_id, title, body):
+def update_topic(topic: Topic, editor_id: UserID, title: str, body: str
+                ) -> None:
     """Update the topic (and its initial posting)."""
     topic.title = title.strip()
 
@@ -215,7 +230,7 @@ def update_topic(topic, editor_id, title, body):
     db.session.commit()
 
 
-def _aggregate_topic(topic):
+def _aggregate_topic(topic: Topic) -> None:
     """Update the topic's count and latest fields."""
     posting_query = Posting.query.for_topic(topic).without_hidden()
 
@@ -233,7 +248,9 @@ def _aggregate_topic(topic):
     aggregate_category(topic.category)
 
 
-def find_default_posting_to_jump_to(topic, user, last_viewed_at):
+def find_default_posting_to_jump_to(topic: Topic, user: User,
+                                    last_viewed_at: Optional[datetime]
+                                   ) -> Optional[Posting]:
     """Return the posting of the topic to show by default, or `None`."""
     if user.is_anonymous:
         # All postings are potentially new to a guest, so start on
@@ -263,7 +280,7 @@ def find_default_posting_to_jump_to(topic, user, last_viewed_at):
     return first_new_posting
 
 
-def hide_topic(topic, hidden_by_id):
+def hide_topic(topic: Topic, hidden_by_id: UserID) -> None:
     """Hide the topic."""
     topic.hidden = True
     topic.hidden_at = datetime.now()
@@ -273,7 +290,7 @@ def hide_topic(topic, hidden_by_id):
     _aggregate_topic(topic)
 
 
-def unhide_topic(topic, unhidden_by_id):
+def unhide_topic(topic: Topic, unhidden_by_id: UserID) -> None:
     """Un-hide the topic."""
     # TODO: Store who un-hid the topic.
     topic.hidden = False
@@ -284,7 +301,7 @@ def unhide_topic(topic, unhidden_by_id):
     _aggregate_topic(topic)
 
 
-def lock_topic(topic, locked_by_id):
+def lock_topic(topic: Topic, locked_by_id: UserID) -> None:
     """Lock the topic."""
     topic.locked = True
     topic.locked_at = datetime.now()
@@ -292,7 +309,7 @@ def lock_topic(topic, locked_by_id):
     db.session.commit()
 
 
-def unlock_topic(topic, unlocked_by_id):
+def unlock_topic(topic: Topic, unlocked_by_id: UserID) -> None:
     """Unlock the topic."""
     # TODO: Store who unlocked the topic.
     topic.locked = False
@@ -301,7 +318,7 @@ def unlock_topic(topic, unlocked_by_id):
     db.session.commit()
 
 
-def pin_topic(topic, pinned_by_id):
+def pin_topic(topic: Topic, pinned_by_id: UserID) -> None:
     """Pin the topic."""
     topic.pinned = True
     topic.pinned_at = datetime.now()
@@ -309,7 +326,7 @@ def pin_topic(topic, pinned_by_id):
     db.session.commit()
 
 
-def unpin_topic(topic, unpinned_by_id):
+def unpin_topic(topic: Topic, unpinned_by_id: UserID) -> None:
     """Unpin the topic."""
     # TODO: Store who unpinned the topic.
     topic.pinned = False
@@ -318,7 +335,7 @@ def unpin_topic(topic, unpinned_by_id):
     db.session.commit()
 
 
-def move_topic(topic, new_category):
+def move_topic(topic: Topic, new_category: Category) -> None:
     """Move the topic to another category."""
     old_category = topic.category
 
@@ -333,19 +350,20 @@ def move_topic(topic, new_category):
 # posting
 
 
-def count_postings_for_brand(brand):
+def count_postings_for_brand(brand: Brand) -> int:
     """Return the number of postings for that brand."""
     return Posting.query \
         .join(Topic).join(Category).filter(Category.brand_id == brand.id) \
         .count()
 
 
-def find_posting_by_id(posting_id):
+def find_posting_by_id(posting_id: PostingID) -> Optional[Posting]:
     """Return the posting with that id, or `None` if not found."""
     return Posting.query.get(posting_id)
 
 
-def paginate_postings(topic, user, page, postings_per_page):
+def paginate_postings(topic: Topic, user: User, page: int,
+                      postings_per_page: int) -> Pagination:
     """Paginate postings in that topic, as visible for the user."""
     return Posting.query \
         .options(
@@ -362,7 +380,7 @@ def paginate_postings(topic, user, page, postings_per_page):
         .paginate(page, postings_per_page)
 
 
-def create_posting(topic, creator_id, body):
+def create_posting(topic: Topic, creator_id: UserID, body: str) -> Posting:
     """Create a posting in that topic."""
     posting = Posting(topic, creator_id, body)
     db.session.add(posting)
@@ -373,7 +391,8 @@ def create_posting(topic, creator_id, body):
     return posting
 
 
-def update_posting(posting, editor_id, body, *, commit=True):
+def update_posting(posting: Posting, editor_id: UserID, body: str, *,
+                   commit: bool=True) -> None:
     """Update the posting."""
     posting.body = body.strip()
     posting.last_edited_at = datetime.now()
@@ -384,7 +403,8 @@ def update_posting(posting, editor_id, body, *, commit=True):
         db.session.commit()
 
 
-def calculate_posting_page_number(posting, user, postings_per_page):
+def calculate_posting_page_number(posting: Posting, user: User,
+                                  postings_per_page: int) -> int:
     """Return the number of the page the posting should appear on when
     viewed by the user.
     """
@@ -396,12 +416,12 @@ def calculate_posting_page_number(posting, user, postings_per_page):
 
     index = index_of(lambda p: p == posting, topic_postings)
     if index is None:
-        return  # Shouldn't happen.
+        return 1  # Shouldn't happen.
 
     return divmod(index, postings_per_page)[0] + 1
 
 
-def hide_posting(posting, hidden_by_id):
+def hide_posting(posting: Posting, hidden_by_id: UserID) -> None:
     """Hide the posting."""
     posting.hidden = True
     posting.hidden_at = datetime.now()
@@ -411,7 +431,7 @@ def hide_posting(posting, hidden_by_id):
     _aggregate_topic(posting.topic)
 
 
-def unhide_posting(posting, unhidden_by_id):
+def unhide_posting(posting: Posting, unhidden_by_id: UserID) -> None:
     """Un-hide the posting."""
     # TODO: Store who un-hid the posting.
     posting.hidden = False
@@ -426,7 +446,7 @@ def unhide_posting(posting, unhidden_by_id):
 # last views
 
 
-def mark_category_as_just_viewed(category, user):
+def mark_category_as_just_viewed(category: Category, user: User) -> None:
     """Mark the category as last viewed by the user (if logged in) at
     the current time.
     """
@@ -442,7 +462,7 @@ def mark_category_as_just_viewed(category, user):
     db.session.commit()
 
 
-def mark_topic_as_just_viewed(topic, user):
+def mark_topic_as_just_viewed(topic: Topic, user: User) -> None:
     """Mark the topic as last viewed by the user (if logged in) at the
     current time.
     """

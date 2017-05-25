@@ -7,25 +7,31 @@ byceps.services.board.models
 """
 
 from datetime import datetime
+from typing import Optional
+from uuid import UUID
 
 from flask import url_for
 from sqlalchemy.ext.associationproxy import association_proxy
 
 from ....blueprints.board.authorization import BoardTopicPermission
 from ....database import BaseQuery, db, generate_uuid
+from ....typing import UserID
 from ....util.instances import ReprBuilder
 
 from ...user.models.user import User
 
-from .category import Category
+from .category import Category, CategoryID
+
+
+TopicID = UUID
 
 
 class TopicQuery(BaseQuery):
 
-    def for_category(self, category):
+    def for_category(self, category: Category):
         return self.filter_by(category=category)
 
-    def only_visible_for_user(self, user):
+    def only_visible_for_user(self, user: User):
         """Only return topics the user may see."""
         if not user.has_permission(BoardTopicPermission.view_hidden):
             return self.without_hidden()
@@ -67,12 +73,13 @@ class Topic(db.Model):
     pinned_by = db.relationship(User, foreign_keys=[pinned_by_id])
     initial_posting = association_proxy('initial_topic_posting_association', 'posting')
 
-    def __init__(self, category_id, creator_id, title):
+    def __init__(self, category_id: CategoryID, creator_id: UserID, title: str
+                ) -> None:
         self.category_id = category_id
         self.creator_id = creator_id
         self.title = title
 
-    def may_be_updated_by_user(self, user):
+    def may_be_updated_by_user(self, user: User) -> bool:
         return not self.locked and (
             (
                 user == self.creator and \
@@ -82,10 +89,10 @@ class Topic(db.Model):
         )
 
     @property
-    def reply_count(self):
+    def reply_count(self) -> int:
         return self.posting_count - 1
 
-    def count_pages(self, postings_per_page):
+    def count_pages(self, postings_per_page: int) -> int:
         """Return the number of pages this topic spans."""
         full_page_count, remaining_postings = divmod(self.posting_count,
                                                      postings_per_page)
@@ -95,16 +102,16 @@ class Topic(db.Model):
             return full_page_count
 
     @property
-    def anchor(self):
+    def anchor(self) -> str:
         """Return the URL anchor for this topic."""
         return 'topic-{}'.format(self.id)
 
     @property
-    def external_url(self):
+    def external_url(self) -> str:
         """Return the absolute URL of this topic."""
         return url_for('board.topic_view', topic_id=self.id, _external=True)
 
-    def contains_unseen_postings(self, user):
+    def contains_unseen_postings(self, user: User) -> bool:
         """Return `True` if the topic contains postings created after
         the last time the user viewed it.
         """
@@ -116,17 +123,17 @@ class Topic(db.Model):
         return last_viewed_at is None \
             or self.last_updated_at > last_viewed_at
 
-    def find_last_viewed_at(self, user):
+    def find_last_viewed_at(self, user: User) -> Optional[datetime]:
         """Return the time this topic was last viewed by the user (or
         nothing, if it hasn't been viewed by the user yet).
         """
         last_view = LastTopicView.find(user, self)
         return last_view.occured_at if last_view is not None else None
 
-    def __eq__(self, other):
+    def __eq__(self, other) -> bool:
         return self.id == other.id
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         builder = ReprBuilder(self) \
             .add_with_lookup('id') \
             .add('category', self.category.title) \
@@ -155,18 +162,18 @@ class LastTopicView(db.Model):
     topic = db.relationship(Topic)
     occured_at = db.Column(db.DateTime, nullable=False)
 
-    def __init__(self, user_id, topic_id):
+    def __init__(self, user_id: UserID, topic_id: TopicID) -> None:
         self.user_id = user_id
         self.topic_id = topic_id
 
     @classmethod
-    def find(cls, user, topic):
+    def find(cls, user: User, topic: Topic) -> Optional['LastTopicView']:
         if user.is_anonymous:
-            return
+            return None
 
         return cls.query.filter_by(user=user, topic=topic).first()
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return ReprBuilder(self) \
             .add('user', self.user.screen_name) \
             .add('topic', self.topic.title) \
