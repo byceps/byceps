@@ -127,7 +127,7 @@ def get_categories_with_last_updates(brand_id: BrandID) -> Sequence[Category]:
 
 def aggregate_category(category: Category) -> None:
     """Update the category's count and latest fields."""
-    topic_count = Topic.query.for_category(category).without_hidden().count()
+    topic_count = Topic.query.for_category(category.id).without_hidden().count()
 
     posting_query = Posting.query \
         .without_hidden() \
@@ -181,14 +181,14 @@ def find_topic_visible_for_user(topic_id: TopicID, user: User
         .first()
 
 
-def paginate_topics(category: Category, user: User, page: int,
+def paginate_topics(category_id: CategoryID, user: User, page: int,
                     topics_per_page: int) -> Pagination:
     """Paginate topics in that category, as visible for the user.
 
     Pinned topics are returned first.
     """
     return Topic.query \
-        .for_category(category) \
+        .for_category(category_id) \
         .options(
             db.joinedload(Topic.category),
             db.joinedload(Topic.creator),

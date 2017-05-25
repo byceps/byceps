@@ -64,8 +64,8 @@ def category_view(slug, page):
 
     topics_per_page = _get_topics_per_page_value()
 
-    topics = board_service.paginate_topics(category, g.current_user._user, page,
-                                           topics_per_page)
+    topics = board_service.paginate_topics(category.id, g.current_user._user,
+                                           page, topics_per_page)
 
     return {
         'category': category,
