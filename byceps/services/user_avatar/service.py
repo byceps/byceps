@@ -6,13 +6,17 @@ byceps.services.user_avatar.service
 :License: Modified BSD, see LICENSE for details.
 """
 
+from typing import BinaryIO, Dict, List, Set
+
 from ...database import db
+from ...typing import UserID
 from ...util.image import create_thumbnail
-from ...util.image.models import Dimensions
+from ...util.image.models import Dimensions, ImageType
 from ...util import upload
 
 from ..image import service as image_service
 from ..image.service import ImageTypeProhibited  # Provide to view functions.
+from ..user.models.user import User
 
 from .models import Avatar, AvatarCreationTuple, AvatarSelection
 
@@ -20,8 +24,10 @@ from .models import Avatar, AvatarCreationTuple, AvatarSelection
 MAXIMUM_DIMENSIONS = Dimensions(512, 512)
 
 
-def update_avatar_image(user, stream, *, allowed_types=None,
-                        maximum_dimensions=MAXIMUM_DIMENSIONS):
+def update_avatar_image(user: User, stream: BinaryIO, *,
+                        allowed_types: Set[ImageType]=None,
+                        maximum_dimensions: Dimensions=MAXIMUM_DIMENSIONS) \
+                        -> None:
     """Set a new avatar image for the user.
 
     Raise `ImageTypeProhibited` if the stream data is not of one the
@@ -49,7 +55,7 @@ def update_avatar_image(user, stream, *, allowed_types=None,
     db.session.commit()
 
 
-def remove_avatar_image(user):
+def remove_avatar_image(user: User) -> None:
     """Remove the user's avatar image.
 
     The avatar will be unlinked from the user, but the database record
@@ -59,7 +65,7 @@ def remove_avatar_image(user):
     db.session.commit()
 
 
-def get_avatars_uploaded_by_user(user_id):
+def get_avatars_uploaded_by_user(user_id: UserID) -> List[AvatarCreationTuple]:
     """Return the avatars uploaded by the user."""
     avatars = Avatar.query \
         .filter_by(creator_id=user_id) \
@@ -69,13 +75,13 @@ def get_avatars_uploaded_by_user(user_id):
             for avatar in avatars]
 
 
-def get_avatar_url_for_user(user_id):
+def get_avatar_url_for_user(user_id: UserID) -> str:
     """Return the URL of the user's current avatar, or `None` if not set."""
     avatar_urls_by_user_id = get_avatar_urls_for_users({user_id})
     return avatar_urls_by_user_id.get(user_id)
 
 
-def get_avatar_urls_for_users(user_ids):
+def get_avatar_urls_for_users(user_ids: Set[UserID]) -> Dict[UserID, str]:
     """Return the URLs of those users' current avatars."""
     if not user_ids:
         return {}
