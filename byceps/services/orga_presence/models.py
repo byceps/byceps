@@ -36,7 +36,7 @@ class TimeSlot(db.Model):
     ends_at = db.Column(db.DateTime, nullable=False)
 
     @hybrid_property
-    def range(self):
+    def range(self) -> DateTimeRange:
         return DateTimeRange(self.starts_at, self.ends_at)
 
 
