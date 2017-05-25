@@ -6,12 +6,14 @@ byceps.services.image.service
 :License: Modified BSD, see LICENSE for details.
 """
 
+from typing import BinaryIO, FrozenSet, Iterable, Set
+
 from ...util.image import read_dimensions
-from ...util.image.models import ImageType
+from ...util.image.models import Dimensions, ImageType
 from ...util.image.typeguess import guess_type
 
 
-ALL_IMAGE_TYPES = frozenset(ImageType)
+ALL_IMAGE_TYPES = frozenset(ImageType)  # type: FrozenSet[ImageType]
 
 
 
@@ -19,17 +21,18 @@ class ImageTypeProhibited(ValueError):
     pass
 
 
-def get_all_image_types():
+def get_all_image_types() -> FrozenSet[ImageType]:
     """Return all known image types."""
     return ALL_IMAGE_TYPES
 
 
-def get_image_type_names(types):
+def get_image_type_names(types: Iterable[ImageType]) -> FrozenSet[str]:
     """Return the names of the image types."""
     return frozenset(t.name.upper() for t in types)
 
 
-def determine_image_type(stream, allowed_types):
+def determine_image_type(stream: BinaryIO, allowed_types: Set[ImageType]) \
+                         -> ImageType:
     """Extract image type from stream."""
     image_type = guess_type(stream)
 
@@ -45,7 +48,7 @@ def determine_image_type(stream, allowed_types):
     return image_type
 
 
-def determine_dimensions(stream):
+def determine_dimensions(stream: BinaryIO) -> Dimensions:
     """Extract image dimensions from stream."""
     dimensions = read_dimensions(stream)
     stream.seek(0)
