@@ -6,11 +6,13 @@ byceps.services.user.service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from datetime import datetime
+from datetime import date, datetime, timedelta
+from typing import Dict, Iterator, Optional, Set
 
 from flask import current_app, url_for
 
 from ...database import db
+from ...typing import BrandID, PartyID, UserID
 
 from ..authentication.password import service as password_service
 from ..authorization import service as authorization_service
@@ -19,19 +21,20 @@ from ..newsletter import service as newsletter_service
 from ..orga_team.models import OrgaTeam, Membership as OrgaTeamMembership
 from ..terms import service as terms_service
 from ..user_avatar.models import Avatar, AvatarSelection
+from ..verification_token.models import Token
 from ..verification_token import service as verification_token_service
 
 from .models.detail import UserDetail
 from .models.user import AnonymousUser, User, UserTuple
 
 
-def count_users():
+def count_users() -> int:
     """Return the number of users."""
     return User.query \
         .count()
 
 
-def count_users_created_since(delta):
+def count_users_created_since(delta: timedelta) -> int:
     """Return the number of user accounts created since `delta` ago."""
     filter_starts_at = datetime.now() - delta
 
@@ -40,21 +43,21 @@ def count_users_created_since(delta):
         .count()
 
 
-def count_enabled_users():
+def count_enabled_users() -> int:
     """Return the number of enabled user accounts."""
     return User.query \
         .filter_by(enabled=True) \
         .count()
 
 
-def count_disabled_users():
+def count_disabled_users() -> int:
     """Return the number of disabled user accounts."""
     return User.query \
         .filter_by(enabled=False) \
         .count()
 
 
-def find_user(user_id, *, with_orga_teams=False):
+def find_user(user_id: UserID, *, with_orga_teams: bool=False) -> Optional[User]:
     """Return the user with that ID, or `None` if not found."""
     query = User.query
 
@@ -66,10 +69,10 @@ def find_user(user_id, *, with_orga_teams=False):
     return query.get(user_id)
 
 
-def find_users(user_ids, *, party_id=None):
+def find_users(user_ids: Set[UserID], *, party_id: PartyID=None) -> Set[UserTuple]:
     """Return the users and their current avatars' URLs with those IDs."""
     if not user_ids:
-        return frozenset()
+        return set()
 
     rows = db.session \
         .query(User.id, User.screen_name, User.deleted, Avatar) \
@@ -90,7 +93,7 @@ def find_users(user_ids, *, party_id=None):
     else:
         orga_team_members = frozenset()
 
-    def to_tuples():
+    def to_tuples() -> Iterator[UserTuple]:
         for user_id, screen_name, is_deleted, avatar in rows:
             avatar_url = avatar.url if avatar else None
             is_orga = user_id in orga_team_members
@@ -106,34 +109,34 @@ def find_users(user_ids, *, party_id=None):
     return set(to_tuples())
 
 
-def find_user_by_screen_name(screen_name):
+def find_user_by_screen_name(screen_name: str) -> Optional[User]:
     """Return the user with that screen name, or `None` if not found."""
     return User.query \
         .filter_by(screen_name=screen_name) \
         .one_or_none()
 
 
-def get_anonymous_user():
+def get_anonymous_user() -> AnonymousUser:
     """Return the anonymous user."""
     return AnonymousUser()
 
 
-def index_users_by_id(users):
+def index_users_by_id(users: Set[User]) -> Dict[UserID, User]:
     """Map the users' IDs to the corresponding user objects."""
     return {user.id: user for user in users}
 
 
-def is_screen_name_already_assigned(screen_name):
+def is_screen_name_already_assigned(screen_name: str) -> bool:
     """Return `True` if a user with that screen name exists."""
     return _do_users_matching_filter_exist(User.screen_name, screen_name)
 
 
-def is_email_address_already_assigned(email_address):
+def is_email_address_already_assigned(email_address: str) -> bool:
     """Return `True` if a user with that email address exists."""
     return _do_users_matching_filter_exist(User.email_address, email_address)
 
 
-def _do_users_matching_filter_exist(model_attribute, search_value):
+def _do_users_matching_filter_exist(model_attribute: str, search_value: str) -> bool:
     """Return `True` if any users match the filter.
 
     Comparison is done case-insensitively.
@@ -148,8 +151,9 @@ class UserCreationFailed(Exception):
     pass
 
 
-def create_user(screen_name, email_address, password, first_names, last_name,
-                brand_id, subscribe_to_newsletter):
+def create_user(screen_name: str, email_address: str, password: str,
+                first_names: str, last_name: str, brand_id: BrandID,
+                subscribe_to_newsletter: bool) -> User:
     """Create a user account and related records."""
     # user with details
     user = build_user(screen_name, email_address)
@@ -192,7 +196,7 @@ def create_user(screen_name, email_address, password, first_names, last_name,
     return user
 
 
-def build_user(screen_name, email_address):
+def build_user(screen_name: str, email_address: str) -> User:
     normalized_screen_name = _normalize_screen_name(screen_name)
     normalized_email_address = _normalize_email_address(email_address)
 
@@ -203,7 +207,7 @@ def build_user(screen_name, email_address):
     return user
 
 
-def _normalize_screen_name(screen_name):
+def _normalize_screen_name(screen_name: str) -> str:
     """Normalize the screen name, or raise an exception if invalid."""
     normalized = screen_name.strip()
     if not normalized or (' ' in normalized) or ('@' in normalized):
@@ -211,7 +215,7 @@ def _normalize_screen_name(screen_name):
     return normalized
 
 
-def _normalize_email_address(email_address):
+def _normalize_email_address(email_address: str) -> str:
     """Normalize the e-mail address, or raise an exception if invalid."""
     normalized = email_address.strip()
     if not normalized or (' ' in normalized) or ('@' not in normalized):
@@ -219,14 +223,16 @@ def _normalize_email_address(email_address):
     return normalized
 
 
-def _create_newsletter_subscription(user_id, brand_id, subscribe_to_newsletter):
+def _create_newsletter_subscription(user_id: UserID, brand_id: BrandID,
+                                    subscribe_to_newsletter: bool) -> None:
     if subscribe_to_newsletter:
         newsletter_service.subscribe(user_id, brand_id)
     else:
         newsletter_service.unsubscribe(user_id, brand_id)
 
 
-def send_email_address_confirmation_email(user, verification_token):
+def send_email_address_confirmation_email(user: User, verification_token: Token
+                                         ) -> None:
     confirmation_url = url_for('.confirm_email_address',
                                token=verification_token.token,
                                _external=True)
@@ -241,7 +247,7 @@ def send_email_address_confirmation_email(user, verification_token):
     email_service.send_email(subject=subject, body=body, recipients=recipients)
 
 
-def confirm_email_address(verification_token):
+def confirm_email_address(verification_token: Token) -> None:
     """Confirm the email address of the user assigned with that
     verification token.
     """
@@ -252,8 +258,9 @@ def confirm_email_address(verification_token):
     db.session.commit()
 
 
-def update_user_details(user, first_names, last_name, date_of_birth, country,
-                        zip_code, city, street, phone_number):
+def update_user_details(user: User, first_names: str, last_name: str,
+                        date_of_birth: date, country: str, zip_code, city: str,
+                        street: str, phone_number: str) -> None:
     """Update the user's details."""
     user.detail.first_names = first_names
     user.detail.last_name = last_name

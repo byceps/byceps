@@ -8,6 +8,8 @@ byceps.services.user.models.user
 
 from collections import namedtuple
 from datetime import datetime
+from enum import Enum
+from typing import Set
 from uuid import UUID
 
 from flask import g
@@ -16,6 +18,7 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from ....database import db, generate_uuid
 from ....util.instances import ReprBuilder
 
+from ...party.models import Party
 from ...user_avatar.models import AvatarSelection
 
 
@@ -28,38 +31,38 @@ class AnonymousUser(object):
     enabled = False
 
     @property
-    def is_anonymous(self):
+    def is_anonymous(self) -> bool:
         return True
 
     @property
-    def is_active(self):
+    def is_active(self) -> bool:
         return False
 
-    def has_permission(self, permission):
+    def has_permission(self, permission: Enum) -> bool:
         return False
 
-    def has_any_permission(self, *permissions):
+    def has_any_permission(self, *permissions: Set[Enum]) -> bool:
         return False
 
     @property
-    def avatar(self):
+    def avatar(self) -> None:
         return None
 
     @property
-    def avatar_url(self):
+    def avatar_url(self) -> None:
         return None
 
     @property
-    def is_orga(self):
+    def is_orga(self) -> bool:
         return False
 
-    def is_orga_for_party(self, party):
+    def is_orga_for_party(self, party: Party) -> bool:
         return False
 
-    def __eq__(self, other):
+    def __eq__(self, other) -> bool:
         return self.id == other.id
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return ReprBuilder(self) \
             .add_with_lookup('id') \
             .build()
@@ -81,16 +84,16 @@ class User(db.Model):
                                creator=lambda avatar:
                                     AvatarSelection(None, avatar.id))
 
-    def __init__(self, screen_name, email_address):
+    def __init__(self, screen_name: str, email_address: str) -> None:
         self.screen_name = screen_name
         self.email_address = email_address
 
     @property
-    def is_anonymous(self):
+    def is_anonymous(self) -> bool:
         return False
 
     @property
-    def is_active(self):
+    def is_active(self) -> bool:
         return self.enabled
 
     @property
@@ -98,31 +101,31 @@ class User(db.Model):
         avatar = self.avatar
         return avatar.url if (avatar is not None) else None
 
-    def has_permission(self, permission):
+    def has_permission(self, permission: Enum) -> bool:
         return permission in self.permissions
 
-    def has_any_permission(self, *permissions):
+    def has_any_permission(self, *permissions: Set[Enum]) -> bool:
         return any(map(self.has_permission, permissions))
 
     @property
-    def is_orga(self):
+    def is_orga(self) -> bool:
         party = getattr(g, 'party', None)
         return (party is not None) and self.is_orga_for_party(party)
 
-    def is_orga_for_party(self, party):
+    def is_orga_for_party(self, party: Party) -> bool:
         parties = {ms.orga_team.party for ms in self.orga_team_memberships}
         return party in parties
 
-    def __eq__(self, other):
+    def __eq__(self, other) -> bool:
         return (other is not None) and (self.id == other.id)
 
-    def __hash__(self):
+    def __hash__(self) -> int:
         if self.id is None:
             raise ValueError('User instance is unhashable because its id is None.')
 
         return hash(self.id)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return ReprBuilder(self) \
             .add_with_lookup('id') \
             .add_with_lookup('screen_name') \

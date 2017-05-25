@@ -31,26 +31,26 @@ class UserDetail(db.Model):
     internal_comment = db.Column(db.Unicode(200))
 
     @property
-    def full_name(self):
+    def full_name(self) -> str:
         names = [self.first_names, self.last_name]
         return ' '.join(filter(None, names)) or None
 
     @property
-    def age(self):
+    def age(self) -> int:
         """Return the user's current age."""
         return calculate_age(self.date_of_birth, date.today())
 
     @property
-    def days_until_next_birthday(self):
+    def days_until_next_birthday(self) -> int:
         """Return the number of days until the user's next birthday."""
         return calculate_days_until(self.date_of_birth, date.today())
 
     @property
-    def is_birthday_today(self):
+    def is_birthday_today(self) -> bool:
         """Return `True` if today is the user's birthday."""
         return MonthDay.of(self.date_of_birth).matches(date.today())
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return ReprBuilder(self) \
             .add_with_lookup('user_id') \
             .add_with_lookup('first_names') \
