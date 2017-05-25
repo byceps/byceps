@@ -7,13 +7,16 @@ byceps.services.authorization.service
 """
 
 from collections import defaultdict
+from typing import Dict, FrozenSet, Optional, Sequence, Set
 
 from ...database import db
+from ...typing import UserID
 
-from .models import Permission, Role, RolePermission, UserRole
+from .models import Permission, PermissionID, Role, RoleID, RolePermission, \
+    UserRole
 
 
-def create_permission(permission_id, title):
+def create_permission(permission_id: PermissionID, title: str) -> Permission:
     """Create a permission."""
     permission = Permission(permission_id, title)
 
@@ -23,7 +26,7 @@ def create_permission(permission_id, title):
     return permission
 
 
-def create_role(role_id, title):
+def create_role(role_id: RoleID, title: str) -> Role:
     """Create a role."""
     role = Role(role_id, title)
 
@@ -33,12 +36,12 @@ def create_role(role_id, title):
     return role
 
 
-def find_role(role_id):
+def find_role(role_id: RoleID) -> Optional[Role]:
     """Return the role with that id, or `None` if not found."""
     return Role.query.get(role_id)
 
 
-def find_role_ids_for_user(user_id):
+def find_role_ids_for_user(user_id: UserID) -> Set[Role]:
     """Return the IDs of the roles assigned to the user."""
     roles = Role.query \
         .join(UserRole) \
@@ -48,7 +51,7 @@ def find_role_ids_for_user(user_id):
     return {r.id for r in roles}
 
 
-def find_user_ids_for_role(role_id):
+def find_user_ids_for_role(role_id: RoleID) -> Set[UserID]:
     """Return the IDs of the users that have this role assigned."""
     rows = db.session \
         .query(UserRole.user_id) \
@@ -58,7 +61,7 @@ def find_user_ids_for_role(role_id):
     return {row[0] for row in rows}
 
 
-def assign_permission_to_role(permission, role):
+def assign_permission_to_role(permission: Permission, role: Role) -> None:
     """Assign the permission to the role."""
     role_permission = RolePermission(permission)
     role_permission.role = role
@@ -67,7 +70,7 @@ def assign_permission_to_role(permission, role):
     db.session.commit()
 
 
-def assign_role_to_user(user_id, role_id):
+def assign_role_to_user(user_id: UserID, role_id: RoleID) -> None:
     """Assign the role to the user."""
     user_role = UserRole(user_id, role_id)
 
@@ -75,7 +78,7 @@ def assign_role_to_user(user_id, role_id):
     db.session.commit()
 
 
-def deassign_role_from_user(user_id, role_id):
+def deassign_role_from_user(user_id: UserID, role_id: RoleID) -> None:
     """Deassign the role from the user."""
     user_role = UserRole.query.get((user_id, role_id))
 
@@ -86,7 +89,7 @@ def deassign_role_from_user(user_id, role_id):
     db.session.commit()
 
 
-def get_permission_ids_for_user(user_id):
+def get_permission_ids_for_user(user_id: UserID) -> FrozenSet[PermissionID]:
     """Return the IDs of all permissions the user has through the roles
     assigned to it.
     """
@@ -99,7 +102,7 @@ def get_permission_ids_for_user(user_id):
     return frozenset(rp.permission_id for rp in role_permissions)
 
 
-def get_all_permissions_with_titles():
+def get_all_permissions_with_titles() -> Sequence[Permission]:
     """Return all permissions, with titles."""
     return Permission.query \
         .options(
@@ -109,7 +112,7 @@ def get_all_permissions_with_titles():
         .all()
 
 
-def get_all_roles_with_titles():
+def get_all_roles_with_titles() -> Sequence[Role]:
     """Return all roles, with titles."""
     return Role.query \
         .options(
@@ -119,7 +122,7 @@ def get_all_roles_with_titles():
         .all()
 
 
-def get_permissions_by_roles_with_titles():
+def get_permissions_by_roles_with_titles() -> Dict[Role, Set[Permission]]:
     """Return all roles with their assigned permissions.
 
     Titles are undeferred to avoid lots of additional queries.
@@ -137,7 +140,7 @@ def get_permissions_by_roles_with_titles():
         ) \
         .all()
 
-    permissions_by_role = {r: set() for r in roles}
+    permissions_by_role = {r: set() for r in roles}  # type: Dict[Role, Set[Permission]]
 
     for permission in permissions:
         for role in permission.roles:
@@ -147,7 +150,8 @@ def get_permissions_by_roles_with_titles():
     return permissions_by_role
 
 
-def get_permissions_by_roles_for_user_with_titles(user_id):
+def get_permissions_by_roles_for_user_with_titles(user_id: UserID) \
+                                                  -> Dict[Role, Set[Permission]]:
     """Return permissions grouped by their respective roles for that user.
 
     Titles are undeferred to avoid lots of additional queries.
@@ -172,7 +176,7 @@ def get_permissions_by_roles_for_user_with_titles(user_id):
         .filter(Role.id.in_(role_ids)) \
         .all()
 
-    permissions_by_role = {r: set() for r in roles}
+    permissions_by_role = {r: set() for r in roles}  # type: Dict[Role, Set[Permission]]
 
     for permission in permissions:
         for role in permission.roles:
@@ -182,7 +186,8 @@ def get_permissions_by_roles_for_user_with_titles(user_id):
     return permissions_by_role
 
 
-def get_permissions_with_title_for_role(role_id):
+def get_permissions_with_title_for_role(role_id: RoleID) \
+                                        -> Sequence[Permission]:
     """Return the permissions assigned to the role."""
     return Permission.query \
         .options(
