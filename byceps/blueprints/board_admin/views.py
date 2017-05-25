@@ -8,7 +8,7 @@ byceps.blueprints.board_admin.views
 
 from flask import abort, request
 
-from ...services.board import service as board_service
+from ...services.board import category_service as board_category_service
 from ...services.brand import service as brand_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_error, flash_success
@@ -35,7 +35,7 @@ def index_for_brand(brand_id):
     """List categories for that brand."""
     brand = get_brand_or_404(brand_id)
 
-    categories = board_service.get_categories(brand.id)
+    categories = board_category_service.get_categories(brand.id)
 
     return {
         'brand': brand,
@@ -72,7 +72,8 @@ def category_create(brand_id):
     title = form.title.data.strip()
     description = form.description.data.strip()
 
-    category = board_service.create_category(brand, slug, title, description)
+    category = board_category_service.create_category(brand, slug, title,
+                                                      description)
 
     flash_success('Die Kategorie "{}" wurde angelegt.', category.title)
     return redirect_to('.index_for_brand', brand_id=brand.id)
@@ -108,7 +109,8 @@ def category_update(category_id):
     title = form.title.data
     description = form.description.data
 
-    category = board_service.update_category(category, slug, title, description)
+    category = board_category_service.update_category(category, slug, title,
+                                                      description)
 
     flash_success('Die Kategorie "{}" wurde aktualisiert.', category.title)
     return redirect_to('.index_for_brand', brand_id=category.brand.id)
@@ -122,7 +124,7 @@ def category_move_up(category_id):
     category = get_category_or_404(category_id)
 
     try:
-        board_service.move_category_up(category)
+        board_category_service.move_category_up(category)
     except ValueError:
         flash_error('Die Kategorie "{}" befindet sich bereits ganz oben.', category.title)
     else:
@@ -137,7 +139,7 @@ def category_move_down(category_id):
     category = get_category_or_404(category_id)
 
     try:
-        board_service.move_category_down(category)
+        board_category_service.move_category_down(category)
     except ValueError:
         flash_error('Die Kategorie "{}" befindet sich bereits ganz unten.', category.title)
     else:
@@ -154,7 +156,7 @@ def get_brand_or_404(brand_id):
 
 
 def get_category_or_404(category_id):
-    category = board_service.find_category_by_id(category_id)
+    category = board_category_service.find_category_by_id(category_id)
 
     if category is None:
         abort(404)

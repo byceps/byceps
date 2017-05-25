@@ -8,7 +8,8 @@ byceps.blueprints.board.views
 
 from flask import abort, current_app, g, redirect, request, url_for
 
-from ...services.board import service as board_service
+from ...services.board import service as board_service, \
+    category_service as board_category_service
 from ...services.text_markup.service import get_smileys, render_html
 from ...services.user_badge import service as badge_service
 from ...util.framework.blueprint import create_blueprint
@@ -44,7 +45,7 @@ blueprint.add_app_template_filter(render_html, 'bbcode')
 def category_index():
     """List categories."""
     brand_id = g.party.brand.id
-    categories = board_service.get_categories_with_last_updates(brand_id)
+    categories = board_category_service.get_categories_with_last_updates(brand_id)
 
     return {
         'categories': categories,
@@ -56,7 +57,8 @@ def category_index():
 @templated
 def category_view(slug, page):
     """List latest topics in the category."""
-    category = board_service.find_category_by_slug(g.party.brand.id, slug)
+    category = board_category_service.find_category_by_slug(g.party.brand.id,
+                                                            slug)
     if category is None:
         abort(404)
 
@@ -162,7 +164,7 @@ def add_unseen_flag_to_postings(postings, user, last_viewed_at):
 @templated
 def topic_create_form(category_id, erroneous_form=None):
     """Show a form to create a topic in the category."""
-    category = board_service.find_category_by_id(category_id)
+    category = board_category_service.find_category_by_id(category_id)
     if category is None:
         abort(404)
 
@@ -183,7 +185,7 @@ def topic_create(category_id):
     if not form.validate():
         return topic_create_form(category_id, form)
 
-    category = board_service.find_category_by_id(category_id)
+    category = board_category_service.find_category_by_id(category_id)
     if category is None:
         abort(404)
 
@@ -267,8 +269,8 @@ def topic_moderate_form(topic_id):
     """Show a form to moderate the topic."""
     topic = _get_topic_or_404(topic_id)
 
-    categories = board_service.get_categories_excluding(g.party.brand.id,
-                                                        topic.category_id)
+    categories = board_category_service.get_categories_excluding(
+        g.party.brand.id, topic.category_id)
 
     return {
         'topic': topic,
@@ -397,7 +399,7 @@ def topic_move(topic_id):
     if not new_category_id:
         abort(400, 'No target category ID given.')
 
-    new_category = board_service.find_category_by_id(new_category_id)
+    new_category = board_category_service.find_category_by_id(new_category_id)
     if new_category is None:
         abort(404)
 
