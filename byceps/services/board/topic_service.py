@@ -20,6 +20,7 @@ from .category_service import aggregate_category
 from .models.category import Category, CategoryID
 from .models.posting import InitialTopicPostingAssociation, Posting
 from .models.topic import Topic, TopicID
+from .posting_service import update_posting
 
 
 def count_topics_for_brand(brand_id: BrandID) -> int:

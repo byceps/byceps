@@ -10,8 +10,9 @@ from datetime import date, timedelta
 
 from flask import abort
 
-from ...services.board import service as board_service, \
+from ...services.board import \
     category_service as board_category_service, \
+    posting_service as board_posting_service, \
     topic_service as board_topic_service
 from ...services.brand import service as brand_service
 from ...services.news import service as news_service
@@ -102,7 +103,8 @@ def view_brand(brand_id):
     board_category_count = board_category_service.count_categories_for_brand(
         brand.id)
     board_topic_count = board_topic_service.count_topics_for_brand(brand.id)
-    board_posting_count = board_service.count_postings_for_brand(brand.id)
+    board_posting_count = board_posting_service.count_postings_for_brand(
+        brand.id)
 
     return {
         'brand': brand,
