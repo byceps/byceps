@@ -130,7 +130,8 @@ def topic_view(topic_id, page):
     is_last_page = not postings.has_next
 
     creator_ids = {posting.creator_id for posting in postings.items}
-    badges_by_user_id = badge_service.get_badges_for_users(creator_ids)
+    badges_by_user_id = badge_service.get_badges_for_users(creator_ids,
+                                                           featured_only=True)
     badges_by_user_id = _select_global_and_brand_badges(badges_by_user_id,
                                                         g.party.brand.id)
 

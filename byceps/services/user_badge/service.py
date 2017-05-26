@@ -39,14 +39,22 @@ def find_badge(badge_id: BadgeID) -> Optional[BadgeTuple]:
     return badge.to_tuple()
 
 
-def get_badges(badge_ids: Set[BadgeID]) -> Set[BadgeTuple]:
-    """Return the badges with those IDs."""
+def get_badges(badge_ids: Set[BadgeID], *, featured_only: bool=False
+              ) -> Set[BadgeTuple]:
+    """Return the badges with those IDs.
+
+    If `featured_only` is `True`, only return featured badges.
+    """
     if not badge_ids:
         return set()
 
-    badges = Badge.query \
-        .filter(Badge.id.in_(badge_ids)) \
-        .all()
+    query = Badge.query \
+        .filter(Badge.id.in_(badge_ids))
+
+    if featured_only:
+        query = query.filter_by(is_featured=True)
+
+    badges = query.all()
 
     return {badge.to_tuple() for badge in badges}
 
@@ -60,9 +68,12 @@ def get_badges_for_user(user_id: UserID) -> Set[BadgeTuple]:
     return {badge.to_tuple() for badge in badges}
 
 
-def get_badges_for_users(user_ids: Set[UserID]) -> Dict[UserID, Set[BadgeTuple]]:
+def get_badges_for_users(user_ids: Set[UserID], *, featured_only: bool=False
+                        ) -> Dict[UserID, Set[BadgeTuple]]:
     """Return all badges that have been awarded to the users, indexed
     by user ID.
+
+    If `featured_only` is `True`, only return featured badges.
     """
     if not user_ids:
         return {}
@@ -72,13 +83,14 @@ def get_badges_for_users(user_ids: Set[UserID]) -> Dict[UserID, Set[BadgeTuple]]
         .all()
 
     badge_ids = {awarding.badge_id for awarding in awardings}
-    badges = get_badges(badge_ids)
+    badges = get_badges(badge_ids, featured_only=featured_only)
     badges_by_id = {badge.id: badge for badge in badges}
 
     badges_by_user_id = defaultdict(set)  # type: Dict[UserID, Set[BadgeTuple]]
     for awarding in awardings:
-        badge = badges_by_id[awarding.badge_id]
-        badges_by_user_id[awarding.user_id].add(badge)
+        badge = badges_by_id.get(awarding.badge_id)
+        if badge:
+            badges_by_user_id[awarding.user_id].add(badge)
 
     return dict(badges_by_user_id)
 

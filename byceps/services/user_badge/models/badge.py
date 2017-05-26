@@ -32,6 +32,7 @@ class Badge(db.Model):
     label = db.Column(db.Unicode(80), unique=True, nullable=False)
     description = db.Column(db.UnicodeText, nullable=True)
     image_filename = db.Column(db.Unicode(80), nullable=False)
+    is_featured = db.Column(db.Boolean, default=False, nullable=False)
 
     def __init__(self, label: str, image_filename: str, *,
                  brand_id: BrandID=None, description: str=None) -> None:
