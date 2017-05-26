@@ -6,6 +6,8 @@ byceps.services.verification_token.service
 :License: Modified BSD, see LICENSE for details.
 """
 
+from typing import Optional
+
 from ...database import db
 from ...typing import UserID
 
@@ -51,7 +53,8 @@ def find_for_email_address_confirmation_by_token(token: Token) -> Token:
     return find_for_purpose_by_token(token, purpose)
 
 
-def find_for_email_address_confirmation_by_user(user_id: UserID) -> Token:
+def find_for_email_address_confirmation_by_user(user_id: UserID
+                                               ) -> Optional[Token]:
     return Token.query \
         .filter_by(user_id=user_id) \
         .for_purpose(Purpose.email_address_confirmation) \
@@ -68,14 +71,14 @@ def find_for_terms_consent_by_token(token: Token) -> Token:
     return find_for_purpose_by_token(token, purpose)
 
 
-def find_for_terms_consent_by_user(user_id: UserID) -> Token:
+def find_for_terms_consent_by_user(user_id: UserID) -> Optional[Token]:
     return Token.query \
         .filter_by(user_id=user_id) \
         .for_purpose(Purpose.terms_consent) \
         .first()
 
 
-def find_for_purpose_by_token(token: Token, purpose: Purpose) -> Token:
+def find_for_purpose_by_token(token: Token, purpose: Purpose) -> Optional[Token]:
     return Token.query \
         .filter_by(token=token) \
         .for_purpose(purpose) \

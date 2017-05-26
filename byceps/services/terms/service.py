@@ -36,8 +36,10 @@ def find_version(version_id: VersionID) -> Optional[Version]:
     return Version.query.get(version_id)
 
 
-def get_current_version(brand_id: BrandID) -> Version:
-    """Return the current version of the terms for that brand."""
+def get_current_version(brand_id: BrandID) -> Optional[Version]:
+    """Return the current version of the terms for that brand, or `None`
+    if none is defined.
+    """
     return Version.query \
         .for_brand_id(brand_id) \
         .latest_first() \
