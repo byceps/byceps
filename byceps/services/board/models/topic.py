@@ -127,7 +127,7 @@ class Topic(db.Model):
         """Return the time this topic was last viewed by the user (or
         nothing, if it hasn't been viewed by the user yet).
         """
-        last_view = LastTopicView.find(user, self)
+        last_view = LastTopicView.find(user, self.id)
         return last_view.occured_at if last_view is not None else None
 
     def __eq__(self, other) -> bool:
@@ -167,11 +167,11 @@ class LastTopicView(db.Model):
         self.topic_id = topic_id
 
     @classmethod
-    def find(cls, user: User, topic: Topic) -> Optional['LastTopicView']:
+    def find(cls, user: User, topic_id: TopicID) -> Optional['LastTopicView']:
         if user.is_anonymous:
             return None
 
-        return cls.query.filter_by(user=user, topic=topic).first()
+        return cls.query.filter_by(user=user, topic_id=topic_id).first()
 
     def __repr__(self) -> str:
         return ReprBuilder(self) \

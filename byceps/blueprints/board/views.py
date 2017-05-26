@@ -65,7 +65,7 @@ def category_view(slug, page):
     if category is None:
         abort(404)
 
-    board_last_view_service.mark_category_as_just_viewed(category,
+    board_last_view_service.mark_category_as_just_viewed(category.id,
                                                          g.current_user._user)
 
     topics_per_page = _get_topics_per_page_value()
@@ -117,7 +117,7 @@ def topic_view(topic_id, page):
 
     # Mark as viewed before aborting so a user can itself remove the
     # 'new' tag from a locked topic.
-    board_last_view_service.mark_topic_as_just_viewed(topic,
+    board_last_view_service.mark_topic_as_just_viewed(topic.id,
                                                       g.current_user._user)
 
     postings = board_posting_service.paginate_postings(topic.id,
@@ -506,7 +506,7 @@ def posting_create(topic_id):
 
     posting = board_posting_service.create_posting(topic, creator.id, body)
 
-    board_last_view_service.mark_category_as_just_viewed(topic.category,
+    board_last_view_service.mark_category_as_just_viewed(topic.category.id,
                                                          g.current_user._user)
 
     flash_success('Deine Antwort wurde hinzugefügt.')

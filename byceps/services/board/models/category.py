@@ -72,7 +72,7 @@ class Category(db.Model):
         if self.last_posting_updated_at is None:
             return False
 
-        last_view = LastCategoryView.find(user, self)
+        last_view = LastCategoryView.find(user, self.id)
 
         if last_view is None:
             return True
@@ -106,11 +106,12 @@ class LastCategoryView(db.Model):
         self.category_id = category_id
 
     @classmethod
-    def find(cls, user: User, category: Category) -> Optional['LastCategoryView']:
+    def find(cls, user: User, category_id: CategoryID
+            ) -> Optional['LastCategoryView']:
         if user.is_anonymous:
             return None
 
-        return cls.query.filter_by(user=user, category=category).first()
+        return cls.query.filter_by(user=user, category_id=category_id).first()
 
     def __repr__(self) -> str:
         return ReprBuilder(self) \
