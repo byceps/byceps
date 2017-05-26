@@ -17,10 +17,10 @@ from ...util.iterables import index_of
 
 from ..user.models.user import User
 
+from .aggregation_service import aggregate_topic
 from .models.category import Category
 from .models.posting import Posting, PostingID
 from .models.topic import Topic, TopicID
-from . import topic_service
 
 
 def count_postings_for_brand(brand_id: BrandID) -> int:
@@ -59,7 +59,7 @@ def create_posting(topic: Topic, creator_id: UserID, body: str) -> Posting:
     db.session.add(posting)
     db.session.commit()
 
-    topic_service.aggregate_topic(topic)
+    aggregate_topic(topic)
 
     return posting
 
@@ -101,7 +101,7 @@ def hide_posting(posting: Posting, hidden_by_id: UserID) -> None:
     posting.hidden_by_id = hidden_by_id
     db.session.commit()
 
-    topic_service.aggregate_topic(posting.topic)
+    aggregate_topic(posting.topic)
 
 
 def unhide_posting(posting: Posting, unhidden_by_id: UserID) -> None:
@@ -112,4 +112,4 @@ def unhide_posting(posting: Posting, unhidden_by_id: UserID) -> None:
     posting.hidden_by_id = None
     db.session.commit()
 
-    topic_service.aggregate_topic(posting.topic)
+    aggregate_topic(posting.topic)

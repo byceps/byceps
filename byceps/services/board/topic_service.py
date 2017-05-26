@@ -16,7 +16,7 @@ from ...typing import BrandID, UserID
 
 from ..user.models.user import User
 
-from .category_service import aggregate_category
+from .aggregation_service import aggregate_category, aggregate_topic
 from .models.category import Category, CategoryID
 from .models.posting import InitialTopicPostingAssociation, Posting
 from .models.topic import Topic, TopicID
@@ -83,7 +83,7 @@ def create_topic(category: Category, creator_id: UserID, title: str, body: str
     db.session.add(initial_topic_posting_association)
     db.session.commit()
 
-    _aggregate_topic(topic)
+    aggregate_topic(topic)
 
     return topic
 
@@ -96,24 +96,6 @@ def update_topic(topic: Topic, editor_id: UserID, title: str, body: str
     update_posting(topic.initial_posting, editor_id, body, commit=False)
 
     db.session.commit()
-
-
-def aggregate_topic(topic: Topic) -> None:
-    """Update the topic's count and latest fields."""
-    posting_query = Posting.query.for_topic(topic.id).without_hidden()
-
-    posting_count = posting_query.count()
-
-    latest_posting = posting_query.latest_to_earliest().first()
-
-    topic.posting_count = posting_count
-    if latest_posting:
-        topic.last_updated_at = latest_posting.created_at
-        topic.last_updated_by_id = latest_posting.creator_id
-
-    db.session.commit()
-
-    aggregate_category(topic.category)
 
 
 def find_default_posting_to_jump_to(topic_id: TopicID, user: User,
@@ -155,7 +137,7 @@ def hide_topic(topic: Topic, hidden_by_id: UserID) -> None:
     topic.hidden_by_id = hidden_by_id
     db.session.commit()
 
-    _aggregate_topic(topic)
+    aggregate_topic(topic)
 
 
 def unhide_topic(topic: Topic, unhidden_by_id: UserID) -> None:
@@ -166,7 +148,7 @@ def unhide_topic(topic: Topic, unhidden_by_id: UserID) -> None:
     topic.hidden_by_id = None
     db.session.commit()
 
-    _aggregate_topic(topic)
+    aggregate_topic(topic)
 
 
 def lock_topic(topic: Topic, locked_by_id: UserID) -> None:

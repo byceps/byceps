@@ -14,8 +14,6 @@ from ...typing import BrandID
 from ..brand.models import Brand
 
 from .models.category import Category, CategoryID
-from .models.posting import Posting
-from .models.topic import Topic
 
 
 def create_category(brand: Brand, slug: str, title: str, description: str
@@ -114,29 +112,3 @@ def get_categories_with_last_updates(brand_id: BrandID) -> Sequence[Category]:
             db.joinedload(Category.last_posting_updated_by),
         ) \
         .all()
-
-
-def aggregate_category(category: Category) -> None:
-    """Update the category's count and latest fields."""
-    topic_count = Topic.query.for_category(category.id).without_hidden().count()
-
-    posting_query = Posting.query \
-        .without_hidden() \
-        .join(Topic) \
-            .filter_by(category=category)
-
-    posting_count = posting_query.count()
-
-    latest_posting = posting_query \
-        .filter(Topic.hidden == False) \
-        .latest_to_earliest() \
-        .first()
-
-    category.topic_count = topic_count
-    category.posting_count = posting_count
-    category.last_posting_updated_at = latest_posting.created_at \
-                                        if latest_posting else None
-    category.last_posting_updated_by_id = latest_posting.creator_id \
-                                        if latest_posting else None
-
-    db.session.commit()
