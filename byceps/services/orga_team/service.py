@@ -6,15 +6,19 @@ byceps.services.orga_team.service
 :License: Modified BSD, see LICENSE for details.
 """
 
+from typing import Optional, Sequence
+
 from ...database import db
+from ...typing import PartyID, UserID
 
 from ..orga.models import OrgaFlag
+from ..party.models import Party
 from ..user.models.user import User
 
-from .models import Membership, OrgaTeam
+from .models import Membership, MembershipID, OrgaTeam, OrgaTeamID
 
 
-def create_team(party_id, title):
+def create_team(party_id: PartyID, title: str) -> OrgaTeam:
     """Create an orga team for that party."""
     team = OrgaTeam(party_id, title)
 
@@ -24,18 +28,18 @@ def create_team(party_id, title):
     return team
 
 
-def delete_team(team):
+def delete_team(team: OrgaTeam) -> None:
     """Delete the orga team."""
     db.session.delete(team)
     db.session.commit()
 
 
-def find_team(team_id):
+def find_team(team_id: OrgaTeamID) -> Optional[OrgaTeam]:
     """Return the team with that id, or `None` if not found."""
     return OrgaTeam.query.get(team_id)
 
 
-def get_teams_for_party(party):
+def get_teams_for_party(party: Party) -> Sequence[OrgaTeam]:
     """Return orga teams for that party, ordered by title."""
     return OrgaTeam.query \
         .filter_by(party=party) \
@@ -43,7 +47,7 @@ def get_teams_for_party(party):
         .all()
 
 
-def get_teams_for_party_with_memberships(party):
+def get_teams_for_party_with_memberships(party: Party) -> Sequence[OrgaTeam]:
     """Return all orga teams for that party, with memberships."""
     return OrgaTeam.query \
         .options(db.joinedload('memberships')) \
@@ -51,7 +55,8 @@ def get_teams_for_party_with_memberships(party):
         .all()
 
 
-def create_membership(team_id, user_id, duties):
+def create_membership(team_id: OrgaTeamID, user_id: UserID, duties: str
+                     ) -> Membership:
     """Assign the user to the team."""
     membership = Membership(team_id, user_id)
 
@@ -64,33 +69,37 @@ def create_membership(team_id, user_id, duties):
     return membership
 
 
-def update_membership(membership, team, duties):
+def update_membership(membership: Membership, team: OrgaTeam, duties: str
+                     ) -> None:
     """Update the membership."""
     membership.orga_team = team
     membership.duties = duties
     db.session.commit()
 
 
-def delete_membership(membership):
+def delete_membership(membership: Membership) -> None:
     """Delete the membership."""
     db.session.delete(membership)
     db.session.commit()
 
 
-def find_membership(membership_id):
+def find_membership(membership_id: MembershipID) -> Optional[Membership]:
     """Return the membership with that id, or `None` if not found."""
     return Membership.query.get(membership_id)
 
 
-def find_membership_for_party(user_id, party_id):
-    """Return the user's membership in an orga team of that party."""
+def find_membership_for_party(user_id: UserID, party_id: PartyID
+                             ) -> Optional[Membership]:
+    """Return the user's membership in an orga team of that party, or
+    `None` of user it not part of an orga team for that party.
+    """
     return Membership.query \
         .filter_by(user_id=user_id) \
         .for_party_id(party_id) \
         .one_or_none()
 
 
-def get_memberships_for_party(party_id):
+def get_memberships_for_party(party_id: PartyID) -> Sequence[Membership]:
     """Return all orga team memberships for that party."""
     return Membership.query \
         .for_party_id(party_id) \
@@ -103,7 +112,7 @@ def get_memberships_for_party(party_id):
         .all()
 
 
-def get_unassigned_orgas_for_party(party):
+def get_unassigned_orgas_for_party(party: Party) -> Sequence[User]:
     """Return organizers that are not assigned to a team for the party."""
     assigned_orgas = User.query \
         .join(Membership) \
