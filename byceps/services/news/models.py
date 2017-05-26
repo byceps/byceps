@@ -7,11 +7,14 @@ byceps.services.news.models
 """
 
 from datetime import datetime
+from typing import Optional
+from uuid import UUID
 
 from flask import url_for
 from sqlalchemy.ext.associationproxy import association_proxy
 
 from ...database import BaseQuery, db, generate_uuid
+from ...typing import BrandID, UserID
 from ...util.instances import ReprBuilder
 from ...util.templating import load_template
 
@@ -19,12 +22,15 @@ from ..brand.models import Brand
 from ..user.models.user import User
 
 
+ItemID = UUID
+
+
 class ItemQuery(BaseQuery):
 
-    def for_brand_id(self, brand_id):
+    def for_brand_id(self, brand_id: BrandID) -> BaseQuery:
         return self.filter_by(brand_id=brand_id)
 
-    def with_current_version(self):
+    def with_current_version(self) -> BaseQuery:
         return self.options(
             db.joinedload('current_version_association').joinedload('version'),
         )
@@ -48,33 +54,36 @@ class Item(db.Model):
     published_at = db.Column(db.DateTime, default=datetime.now, nullable=False)
     current_version = association_proxy('current_version_association', 'version')
 
-    def __init__(self, brand_id, slug):
+    def __init__(self, brand_id: BrandID, slug: str) -> None:
         self.brand_id = brand_id
         self.slug = slug
 
     @property
-    def title(self):
+    def title(self) -> str:
         return self.current_version.title
 
-    def render_body(self):
+    def render_body(self) -> str:
         template = load_template(self.current_version.body)
         return template.render(url_for=url_for)
 
     @property
-    def external_url(self):
+    def external_url(self) -> str:
         return url_for('news.view', slug=self.slug, _external=True)
 
     @property
-    def image_url(self):
+    def image_url(self) -> Optional[str]:
         url_path = self.current_version.image_url_path
-        if url_path:
-            filename = 'news/{}'.format(url_path)
-            return url_for('brand_file',
-                           filename=filename,
-                           _method='GET',
-                           _external=True)
 
-    def __repr__(self):
+        if not url_path:
+            return None
+
+        filename = 'news/{}'.format(url_path)
+        return url_for('brand_file',
+                       filename=filename,
+                       _method='GET',
+                       _external=True)
+
+    def __repr__(self) -> str:
         return ReprBuilder(self) \
             .add_with_lookup('id') \
             .add('brand', self.brand_id) \
@@ -85,7 +94,7 @@ class Item(db.Model):
 
 class ItemVersionQuery(BaseQuery):
 
-    def for_item(self, item):
+    def for_item(self, item: Item) -> BaseQuery:
         return self.filter_by(item=item)
 
 
@@ -104,20 +113,21 @@ class ItemVersion(db.Model):
     body = db.Column(db.UnicodeText, nullable=False)
     image_url_path = db.Column(db.Unicode(80), nullable=True)
 
-    def __init__(self, item, creator_id, title, body):
+    def __init__(self, item: Item, creator_id: UserID, title: str, body: str
+                ) -> None:
         self.item = item
         self.creator_id = creator_id
         self.title = title
         self.body = body
 
     @property
-    def is_current(self):
+    def is_current(self) -> bool:
         """Return `True` if this version is the current version of the
         item it belongs to.
         """
         return self.id == self.item.current_version.id
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return ReprBuilder(self) \
             .add_with_lookup('id') \
             .add_with_lookup('item') \
@@ -133,6 +143,6 @@ class CurrentVersionAssociation(db.Model):
     version_id = db.Column(db.Uuid, db.ForeignKey('news_item_versions.id'), unique=True, nullable=False)
     version = db.relationship(ItemVersion)
 
-    def __init__(self, item, version):
+    def __init__(self, item: Item, version: ItemVersion) -> None:
         self.item = item
         self.version = version
