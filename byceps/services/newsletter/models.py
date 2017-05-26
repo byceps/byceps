@@ -11,6 +11,7 @@ from datetime import datetime
 from sqlalchemy.ext.hybrid import hybrid_property
 
 from ...database import db
+from ...typing import BrandID, UserID
 from ...util.instances import ReprBuilder
 
 from .types import SubscriptionState
@@ -27,21 +28,22 @@ class Subscription(db.Model):
     expressed_at = db.Column(db.DateTime, default=datetime.now, primary_key=True)
     _state = db.Column('state', db.Unicode(20), nullable=False)
 
-    def __init__(self, user_id, brand_id, state):
+    def __init__(self, user_id: UserID, brand_id: BrandID,
+                 state: SubscriptionState) -> None:
         self.user_id = user_id
         self.brand_id = brand_id
         self.state = state
 
     @hybrid_property
-    def state(self):
+    def state(self) -> SubscriptionState:
         return SubscriptionState[self._state]
 
     @state.setter
-    def state(self, state):
+    def state(self, state: SubscriptionState) -> None:
         assert state is not None
         self._state = state.name
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return ReprBuilder(self) \
             .add_with_lookup('user_id') \
             .add_with_lookup('brand_id') \
