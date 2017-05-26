@@ -8,8 +8,9 @@ byceps.blueprints.board.views
 
 from flask import abort, current_app, g, redirect, request, url_for
 
-from ...services.board import service as board_service, \
+from ...services.board import \
     category_service as board_category_service, \
+    last_view_service as board_last_view_service, \
     posting_service as board_posting_service, \
     topic_service as board_topic_service
 from ...services.text_markup.service import get_smileys, render_html
@@ -64,7 +65,8 @@ def category_view(slug, page):
     if category is None:
         abort(404)
 
-    board_service.mark_category_as_just_viewed(category, g.current_user._user)
+    board_last_view_service.mark_category_as_just_viewed(category,
+                                                         g.current_user._user)
 
     topics_per_page = _get_topics_per_page_value()
 
@@ -115,7 +117,8 @@ def topic_view(topic_id, page):
 
     # Mark as viewed before aborting so a user can itself remove the
     # 'new' tag from a locked topic.
-    board_service.mark_topic_as_just_viewed(topic, g.current_user._user)
+    board_last_view_service.mark_topic_as_just_viewed(topic,
+                                                      g.current_user._user)
 
     postings = board_posting_service.paginate_postings(topic.id,
                                                        g.current_user._user,
@@ -503,8 +506,8 @@ def posting_create(topic_id):
 
     posting = board_posting_service.create_posting(topic, creator.id, body)
 
-    board_service.mark_category_as_just_viewed(topic.category,
-                                               g.current_user._user)
+    board_last_view_service.mark_category_as_just_viewed(topic.category,
+                                                         g.current_user._user)
 
     flash_success('Deine Antwort wurde hinzugefügt.')
     signals.posting_created.send(None, posting_id=posting.id)

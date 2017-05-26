@@ -1,6 +1,6 @@
 """
-byceps.services.board.service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.board.last_view_service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2017 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -14,10 +14,6 @@ from ..user.models.user import User
 
 from .models.category import Category, LastCategoryView
 from .models.topic import LastTopicView, Topic
-
-
-# -------------------------------------------------------------------- #
-# last views
 
 
 def mark_category_as_just_viewed(category: Category, user: User) -> None:
