@@ -24,7 +24,7 @@ CategoryID = UUID
 
 class CategoryQuery(BaseQuery):
 
-    def for_brand_id(self, brand_id: BrandID):
+    def for_brand_id(self, brand_id: BrandID) -> BaseQuery:
         return self.filter_by(brand_id=brand_id)
 
 

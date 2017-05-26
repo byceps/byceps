@@ -24,7 +24,7 @@ Purpose = Enum('Purpose',
 
 class TokenQuery(BaseQuery):
 
-    def for_purpose(self, purpose):
+    def for_purpose(self, purpose) -> BaseQuery:
         return self.filter_by(_purpose=purpose.name)
 
 

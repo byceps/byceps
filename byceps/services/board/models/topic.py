@@ -28,17 +28,17 @@ TopicID = UUID
 
 class TopicQuery(BaseQuery):
 
-    def for_category(self, category_id: CategoryID):
+    def for_category(self, category_id: CategoryID) -> BaseQuery:
         return self.filter_by(category_id=category_id)
 
-    def only_visible_for_user(self, user: User):
+    def only_visible_for_user(self, user: User) -> BaseQuery:
         """Only return topics the user may see."""
         if not user.has_permission(BoardTopicPermission.view_hidden):
             return self.without_hidden()
 
         return self
 
-    def without_hidden(self):
+    def without_hidden(self) -> BaseQuery:
         """Only return topics every user may see."""
         return self.filter(Topic.hidden == False)
 

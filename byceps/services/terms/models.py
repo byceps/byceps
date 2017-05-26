@@ -25,10 +25,10 @@ VersionID = UUID
 
 class VersionQuery(BaseQuery):
 
-    def for_brand_id(self, brand_id):
+    def for_brand_id(self, brand_id) -> BaseQuery:
         return self.filter_by(brand_id=brand_id)
 
-    def latest_first(self):
+    def latest_first(self) -> BaseQuery:
         return self.order_by(Version.created_at.desc())
 
 
