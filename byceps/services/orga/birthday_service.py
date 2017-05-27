@@ -30,7 +30,7 @@ def collect_orgas_with_next_birthdays(*, limit: int=None) \
 
     orgas = sorted_orgas
 
-    user_ids = frozenset(user.id for user in orgas)
+    user_ids = {user.id for user in orgas}
 
     avatar_urls_by_user_id = user_avatar_service \
         .get_avatar_urls_for_users(user_ids)
