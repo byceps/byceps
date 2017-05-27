@@ -6,7 +6,7 @@ byceps.blueprints.shop_order.forms
 :License: Modified BSD, see LICENSE for details.
 """
 
-from wtforms import DateField, SelectField, StringField
+from wtforms import SelectField, StringField
 from wtforms.validators import InputRequired, Length
 
 from ...services.shop.cart.models import Cart
