@@ -6,6 +6,7 @@ byceps.services.orga_team.models
 :License: Modified BSD, see LICENSE for details.
 """
 
+from typing import NewType
 from uuid import UUID
 
 from ...database import BaseQuery, db, generate_uuid
@@ -16,7 +17,7 @@ from ..party.models import Party
 from ..user.models.user import User
 
 
-OrgaTeamID = UUID
+OrgaTeamID = NewType('OrgaTeamID', UUID)
 
 
 class OrgaTeam(db.Model):
@@ -50,7 +51,7 @@ class MembershipQuery(BaseQuery):
         return self.join(OrgaTeam).filter_by(party_id=party_id)
 
 
-MembershipID = UUID
+MembershipID = NewType('MembershipID', UUID)
 
 
 class Membership(db.Model):

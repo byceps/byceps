@@ -6,6 +6,8 @@ byceps.services.authorization.models
 :License: Modified BSD, see LICENSE for details.
 """
 
+from typing import NewType
+
 from sqlalchemy.ext.associationproxy import association_proxy
 
 from ...database import db
@@ -15,9 +17,9 @@ from ...util.instances import ReprBuilder
 from ..user.models.user import User
 
 
-PermissionID = str
+PermissionID = NewType('PermissionID', str)
 
-RoleID = str
+RoleID = NewType('RoleID', str)
 
 
 class Permission(db.Model):

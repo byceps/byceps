@@ -7,7 +7,7 @@ byceps.services.board.models.category
 """
 
 from uuid import UUID
-from typing import Optional
+from typing import NewType, Optional
 
 from sqlalchemy.ext.orderinglist import ordering_list
 
@@ -19,7 +19,7 @@ from ...brand.models import Brand
 from ...user.models.user import User
 
 
-CategoryID = UUID
+CategoryID = NewType('CategoryID', UUID)
 
 
 class CategoryQuery(BaseQuery):

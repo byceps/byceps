@@ -7,7 +7,7 @@ byceps.services.board.models
 """
 
 from datetime import datetime
-from typing import Optional
+from typing import NewType, Optional
 from uuid import UUID
 
 from flask import url_for
@@ -23,7 +23,7 @@ from ...user.models.user import User
 from .category import Category, CategoryID
 
 
-TopicID = UUID
+TopicID = NewType('TopicID', UUID)
 
 
 class TopicQuery(BaseQuery):

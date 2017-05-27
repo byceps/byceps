@@ -7,6 +7,7 @@ byceps.services.board.models.posting
 """
 
 from datetime import datetime
+from typing import NewType
 from uuid import UUID
 
 from flask import url_for
@@ -21,7 +22,7 @@ from ...user.models.user import User
 from .topic import Topic, TopicID
 
 
-PostingID = UUID
+PostingID = NewType('PostingID', UUID)
 
 
 class PostingQuery(BaseQuery):

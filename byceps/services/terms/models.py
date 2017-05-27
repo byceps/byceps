@@ -8,6 +8,7 @@ byceps.services.terms.models
 
 from datetime import datetime
 from enum import Enum
+from typing import NewType
 from uuid import UUID
 
 from sqlalchemy.ext.hybrid import hybrid_property
@@ -20,7 +21,7 @@ from ..brand.models import Brand
 from ..user.models.user import User
 
 
-VersionID = UUID
+VersionID = NewType('VersionID', UUID)
 
 
 class VersionQuery(BaseQuery):

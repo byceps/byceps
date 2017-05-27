@@ -9,6 +9,7 @@ byceps.services.user_avatar.models
 from collections import namedtuple
 from datetime import datetime
 from pathlib import Path
+from typing import NewType
 from uuid import UUID
 
 from flask import current_app, url_for
@@ -20,7 +21,7 @@ from ...util.image.models import ImageType
 from ...util.instances import ReprBuilder
 
 
-AvatarID = UUID
+AvatarID = NewType('AvatarID', UUID)
 
 
 class Avatar(db.Model):

@@ -7,7 +7,7 @@ byceps.services.news.models
 """
 
 from datetime import datetime
-from typing import Optional
+from typing import NewType, Optional
 from uuid import UUID
 
 from flask import url_for
@@ -22,7 +22,7 @@ from ..brand.models import Brand
 from ..user.models.user import User
 
 
-ItemID = UUID
+ItemID = NewType('ItemID', UUID)
 
 
 class ItemQuery(BaseQuery):
