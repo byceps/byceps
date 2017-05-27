@@ -8,11 +8,12 @@ BYCEPS-specific type aliases for PEP 484 type hints
 :License: Modified BSD, see LICENSE for details.
 """
 
+from typing import NewType
 from uuid import UUID
 
 
-UserID = UUID
+UserID = NewType('UserID', UUID)
 
-BrandID = str
+BrandID = NewType('BrandID', str)
 
-PartyID = str
+PartyID = NewType('PartyID', str)
