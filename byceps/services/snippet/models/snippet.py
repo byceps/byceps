@@ -12,24 +12,30 @@ page.
 
 from datetime import datetime
 from enum import Enum
+from typing import NewType, Optional, Sequence
+from uuid import UUID
 
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
 
 from ....database import BaseQuery, db, generate_uuid
+from ....typing import PartyID, UserID
 from ....util.instances import ReprBuilder
 
 from ...party.models import Party
 from ...user.models.user import User
 
 
+SnippetType = Enum('SnippetType', ['document', 'fragment'])
+
+
+SnippetID = NewType('SnippetID', UUID)
+
+
 class SnippetQuery(BaseQuery):
 
-    def for_party_id(self, party_id):
+    def for_party_id(self, party_id: PartyID) -> BaseQuery:
         return self.filter_by(party_id=party_id)
-
-
-SnippetType = Enum('SnippetType', ['document', 'fragment'])
 
 
 class Snippet(db.Model):
@@ -51,33 +57,33 @@ class Snippet(db.Model):
     _type = db.Column('type', db.Unicode(8), nullable=False)
     current_version = association_proxy('current_version_association', 'version')
 
-    def __init__(self, party_id, name, type_):
+    def __init__(self, party_id: PartyID, name: str, type_: SnippetType) -> None:
         self.party_id = party_id
         self.name = name
         self.type_ = type_
 
     @hybrid_property
-    def type_(self):
+    def type_(self) -> SnippetType:
         return SnippetType[self._type]
 
     @type_.setter
-    def type_(self, type_):
+    def type_(self, type_: SnippetType) -> None:
         assert type_ is not None
         self._type = type_.name
 
     @property
-    def is_document(self):
+    def is_document(self) -> bool:
         return self.type_ == SnippetType.document
 
     @property
-    def is_fragment(self):
+    def is_fragment(self) -> bool:
         return self.type_ == SnippetType.fragment
 
-    def get_versions(self):
+    def get_versions(self) -> Sequence['SnippetVersion']:
         """Return all versions, sorted from most recent to oldest."""
         return SnippetVersion.query.for_snippet(self).latest_first().all()
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return ReprBuilder(self) \
             .add_with_lookup('id') \
             .add('party', self.party_id) \
@@ -86,12 +92,15 @@ class Snippet(db.Model):
             .build()
 
 
+SnippetVersionID = NewType('SnippetVersionID', UUID)
+
+
 class SnippetVersionQuery(BaseQuery):
 
-    def for_snippet(self, snippet):
+    def for_snippet(self, snippet: Snippet) -> BaseQuery:
         return self.filter_by(snippet=snippet)
 
-    def latest_first(self):
+    def latest_first(self) -> BaseQuery:
         return self.order_by(SnippetVersion.created_at.desc())
 
 
@@ -111,7 +120,9 @@ class SnippetVersion(db.Model):
     body = db.Column(db.UnicodeText, nullable=False)
     image_url_path = db.Column(db.Unicode(80), nullable=True)
 
-    def __init__(self, snippet, creator_id, title, head, body, image_url_path):
+    def __init__(self, snippet: Snippet, creator_id: UserID,
+                 title: Optional[str], head: Optional[str], body: str,
+                 image_url_path: Optional[str]) -> None:
         self.snippet = snippet
         self.creator_id = creator_id
         self.title = title
@@ -120,13 +131,13 @@ class SnippetVersion(db.Model):
         self.image_url_path = image_url_path
 
     @property
-    def is_current(self):
+    def is_current(self) -> bool:
         """Return `True` if this version is the current version of the
         snippet it belongs to.
         """
         return self.id == self.snippet.current_version.id
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return ReprBuilder(self) \
             .add_with_lookup('id') \
             .add_with_lookup('snippet') \
@@ -142,6 +153,6 @@ class CurrentVersionAssociation(db.Model):
     version_id = db.Column(db.Uuid, db.ForeignKey('snippet_versions.id'), unique=True, nullable=False)
     version = db.relationship(SnippetVersion)
 
-    def __init__(self, snippet, version):
+    def __init__(self, snippet: Snippet, version: SnippetVersion) -> None:
         self.snippet = snippet
         self.version = version

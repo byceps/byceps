@@ -7,36 +7,42 @@ byceps.services.snippet.service
 """
 
 from difflib import HtmlDiff
+from typing import Optional, Sequence
 
 from sqlalchemy.orm.exc import NoResultFound
 
 from ...database import db
+from ...typing import PartyID, UserID
 
-from .models.mountpoint import Mountpoint
-from .models.snippet import CurrentVersionAssociation, Snippet, SnippetType, \
-    SnippetVersion
+from ..party.models import Party
+
+from .models.mountpoint import Mountpoint, MountpointID
+from .models.snippet import CurrentVersionAssociation, Snippet, SnippetID, \
+    SnippetType, SnippetVersion, SnippetVersionID
 
 
 # -------------------------------------------------------------------- #
 # document
 
 
-def create_document(party_id, name, creator_id, title, body, *, head=None,
-                    image_url_path=None):
+def create_document(party_id: PartyID, name: str, creator_id: UserID,
+                    title: str, body: str, *, head: Optional[str]=None,
+                    image_url_path: Optional[str]=None) -> SnippetVersion:
     """Create a document and its initial version, and return that version."""
     return _create_snippet(party_id, name, SnippetType.document, creator_id,
                            body, title=title, head=head,
                            image_url_path=image_url_path)
 
 
-def update_document(document, creator_id, title, body, *, head=None,
-                    image_url_path=None):
+def update_document(document: Snippet, creator_id: UserID, title: str,
+                    body: str, *, head: Optional[str]=None,
+                    image_url_path: Optional[str]=None) -> SnippetVersion:
     """Update document with a new version, and return that version."""
     return _update_snippet(document, creator_id, title, head, body,
                            image_url_path)
 
 
-def get_documents_for_party(party):
+def get_documents_for_party(party: Party) -> Sequence[Snippet]:
     """Return all documents for that party."""
     return Snippet.query \
         .for_party_id(party.id) \
@@ -49,13 +55,15 @@ def get_documents_for_party(party):
 # fragment
 
 
-def create_fragment(party_id, name, creator_id, body):
+def create_fragment(party_id: PartyID, name: str, creator_id: UserID, body: str
+                   ) -> SnippetVersion:
     """Create a fragment and its initial version, and return that version."""
     return _create_snippet(party_id, name, SnippetType.fragment, creator_id,
                            body)
 
 
-def update_fragment(fragment, creator_id, body):
+def update_fragment(fragment: Snippet, creator_id: UserID, body: str
+                   ) -> SnippetVersion:
     """Update fragment with a new version, and return that version."""
     title = None
     head = None
@@ -69,8 +77,10 @@ def update_fragment(fragment, creator_id, body):
 # snippet
 
 
-def _create_snippet(party_id, name, type_, creator_id, body, *, title=None,
-                    head=None, image_url_path=None):
+def _create_snippet(party_id: PartyID, name: str, type_: SnippetType,
+                    creator_id: UserID, body: str, *, title: Optional[str]=None,
+                    head: Optional[str]=None, image_url_path: Optional[str]=None
+                   ) -> SnippetVersion:
     """Create a snippet and its initial version, and return that version."""
     snippet = Snippet(party_id, name, type_)
     db.session.add(snippet)
@@ -87,7 +97,9 @@ def _create_snippet(party_id, name, type_, creator_id, body, *, title=None,
     return version
 
 
-def _update_snippet(snippet, creator_id, title, head, body, image_url_path):
+def _update_snippet(snippet: Snippet, creator_id: UserID, title: Optional[str],
+                    head: Optional[str], body: str,
+                    image_url_path: Optional[str]) -> SnippetVersion:
     """Update snippet with a new version, and return that version."""
     version = SnippetVersion(snippet, creator_id, title, head, body,
                              image_url_path)
@@ -100,12 +112,13 @@ def _update_snippet(snippet, creator_id, title, head, body, image_url_path):
     return version
 
 
-def find_snippet(snippet_id):
+def find_snippet(snippet_id: SnippetID) -> Optional[Snippet]:
     """Return the snippet with that id, or `None` if not found."""
     return Snippet.query.get(snippet_id)
 
 
-def get_snippets_for_party_with_current_versions(party):
+def get_snippets_for_party_with_current_versions(party: Party
+                                                ) -> Sequence[Snippet]:
     """Return all snippets with their current versions for that party."""
     return Snippet.query \
         .for_party_id(party.id) \
@@ -115,12 +128,14 @@ def get_snippets_for_party_with_current_versions(party):
         .all()
 
 
-def find_snippet_version(version_id):
+def find_snippet_version(version_id: SnippetVersionID
+                        ) -> Optional[SnippetVersion]:
     """Return the snippet version with that id, or `None` if not found."""
     return SnippetVersion.query.get(version_id)
 
 
-def get_current_version_of_snippet_with_name(party, name):
+def get_current_version_of_snippet_with_name(party: Party, name: str
+                                            ) -> SnippetVersion:
     """Return the current version of the snippet with that name for that
     party.
     """
@@ -137,12 +152,12 @@ def get_current_version_of_snippet_with_name(party, name):
 
 class SnippetNotFound(Exception):
 
-    def __init__(self, name):
+    def __init__(self, name: str) -> None:
         self.name = name
 
 
-def create_html_diff(from_text, to_text, from_description, to_description,
-                     *, numlines=3):
+def create_html_diff(from_text: str, to_text: str, from_description: str,
+                     to_description: str, *, numlines: int=3) -> str:
     """Calculate the difference between the two texts and render it as HTML.
 
     If the texts to compare are equal, `None` is returned.
@@ -161,7 +176,7 @@ def create_html_diff(from_text, to_text, from_description, to_description,
                                  context=True, numlines=numlines)
 
 
-def _fallback_if_none(value, fallback=''):
+def _fallback_if_none(value: Optional[str], *, fallback: str='') -> str:
     return value if (value is not None) else fallback
 
 
@@ -169,7 +184,8 @@ def _fallback_if_none(value, fallback=''):
 # mountpoint
 
 
-def create_mountpoint(endpoint_suffix, url_path, snippet):
+def create_mountpoint(endpoint_suffix: str, url_path: str, snippet: Snippet
+                     ) -> Mountpoint:
     """Create a mountpoint."""
     mountpoint = Mountpoint(endpoint_suffix, url_path, snippet)
 
@@ -179,18 +195,18 @@ def create_mountpoint(endpoint_suffix, url_path, snippet):
     return mountpoint
 
 
-def delete_mountpoint(mountpoint):
+def delete_mountpoint(mountpoint: Mountpoint) -> None:
     """Delete the mountpoint."""
     db.session.delete(mountpoint)
     db.session.commit()
 
 
-def find_mountpoint(mountpoint_id):
+def find_mountpoint(mountpoint_id: MountpointID) -> Optional[Mountpoint]:
     """Return the mountpoint with that id, or `None` if not found."""
     return Mountpoint.query.get(mountpoint_id)
 
 
-def get_mountpoints_for_party(party_id):
+def get_mountpoints_for_party(party_id: PartyID) -> Sequence[Mountpoint]:
     """Return all mountpoints for that party."""
     return Mountpoint.query \
         .join(Snippet).filter_by(party_id=party_id) \
