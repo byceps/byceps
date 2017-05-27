@@ -6,9 +6,17 @@ byceps.services.seating.service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from ...database import db
+from typing import Dict, Optional, Sequence
 
-from .models.area import Area
+from flask_sqlalchemy import Pagination
+
+from ...database import db
+from ...typing import PartyID
+
+from ..ticketing.models.ticket import Ticket
+from ..ticketing.models.ticket_bundle import TicketBundle
+
+from .models.area import Area, AreaID
 from .models.category import Category
 from .models.seat import Seat
 from .models.seat_group import Occupancy as SeatGroupOccupancy, SeatGroup, \
@@ -19,7 +27,7 @@ from .models.seat_group import Occupancy as SeatGroupOccupancy, SeatGroup, \
 # areas
 
 
-def create_area(party_id, slug, title):
+def create_area(party_id: PartyID, slug: str, title: str) -> Area:
     """Create an area."""
     area = Area(party_id, slug, title)
 
@@ -29,14 +37,14 @@ def create_area(party_id, slug, title):
     return area
 
 
-def count_areas_for_party(party_id):
+def count_areas_for_party(party_id: PartyID) -> int:
     """Return the number of seating areas for that party."""
     return Area.query \
         .for_party_id(party_id) \
         .count()
 
 
-def find_area_for_party_by_slug(party_id, slug):
+def find_area_for_party_by_slug(party_id: PartyID, slug: str) -> Optional[Area]:
     """Return the area for that party with that slug, or `None` if not found."""
     return Area.query \
         .for_party_id(party_id) \
@@ -45,14 +53,15 @@ def find_area_for_party_by_slug(party_id, slug):
         .first()
 
 
-def get_areas_for_party(party_id):
+def get_areas_for_party(party_id: PartyID) -> Area:
     """Return all areas for that party."""
     return Area.query \
         .for_party_id(party_id) \
         .all()
 
 
-def get_areas_for_party_paginated(party_id, page, per_page):
+def get_areas_for_party_paginated(party_id: PartyID, page: int, per_page: int
+                                 ) -> Pagination:
     """Return the areas for that party to show on the specified page."""
     return Area.query \
         .for_party_id(party_id) \
@@ -64,7 +73,7 @@ def get_areas_for_party_paginated(party_id, page, per_page):
 # categories
 
 
-def create_category(party_id, title):
+def create_category(party_id: PartyID, title: str) -> Category:
     """Create a category."""
     category = Category(party_id, title)
 
@@ -74,14 +83,14 @@ def create_category(party_id, title):
     return category
 
 
-def count_categories_for_party(party_id):
+def count_categories_for_party(party_id: PartyID) -> int:
     """Return the number of categories for that party."""
     return Category.query \
         .for_party_id(party_id) \
         .count()
 
 
-def get_categories_for_party(party_id):
+def get_categories_for_party(party_id: PartyID) -> Sequence[Category]:
     """Return all categories for that party."""
     return Category.query \
         .for_party_id(party_id) \
@@ -92,7 +101,8 @@ def get_categories_for_party(party_id):
 # seats
 
 
-def create_seat(area, coord_x, coord_y, category):
+def create_seat(area: Area, coord_x: int, coord_y: int, category: Category
+               ) -> Seat:
     """Create a seat."""
     seat = Seat(area, category, coord_x=coord_x, coord_y=coord_y)
 
@@ -102,14 +112,14 @@ def create_seat(area, coord_x, coord_y, category):
     return seat
 
 
-def count_seats_for_party(party_id):
+def count_seats_for_party(party_id: PartyID) -> int:
     """Return the number of seats in seating areas for that party."""
     return Seat.query \
         .join(Area).filter(Area.party_id == party_id) \
         .count()
 
 
-def get_seat_total_per_area(party_id):
+def get_seat_total_per_area(party_id: PartyID) -> Dict[AreaID, int]:
     """Return the number of seats per area for that party."""
     return dict(db.session \
         .query(
@@ -126,7 +136,8 @@ def get_seat_total_per_area(party_id):
 # seat groups
 
 
-def create_seat_group(party_id, seat_category, title, seats):
+def create_seat_group(party_id: PartyID, seat_category: Category, title: str,
+                      seats: Sequence[Seat]) -> SeatGroup:
     """Create a seat group and assign the given seats."""
     seat_quantity = len(seats)
     if seat_quantity == 0:
@@ -148,7 +159,8 @@ def create_seat_group(party_id, seat_category, title, seats):
     return group
 
 
-def occupy_seat_group(seat_group, ticket_bundle):
+def occupy_seat_group(seat_group: SeatGroup, ticket_bundle: TicketBundle
+                     ) -> SeatGroupOccupancy:
     """Occupy the seat group with that ticket bundle."""
     seats = seat_group.seats
     tickets = ticket_bundle.tickets
@@ -168,7 +180,8 @@ def occupy_seat_group(seat_group, ticket_bundle):
     return occupancy
 
 
-def switch_seat_group(occupancy, to_group):
+def switch_seat_group(occupancy: SeatGroupOccupancy, to_group: SeatGroup
+                     ) -> None:
     """Switch ticket bundle to another seat group."""
     ticket_bundle = occupancy.ticket_bundle
     tickets = ticket_bundle.tickets
@@ -186,13 +199,14 @@ def switch_seat_group(occupancy, to_group):
     db.session.commit()
 
 
-def _ensure_group_is_available(seat_group):
+def _ensure_group_is_available(seat_group: SeatGroup) -> None:
     """Raise an error if the seat group is occupied."""
     if seat_group.is_occupied():
         raise ValueError('Seat group is already occupied.')
 
 
-def _ensure_categories_match(seat_group, ticket_bundle):
+def _ensure_categories_match(seat_group: SeatGroup, ticket_bundle: TicketBundle
+                            ) -> None:
     """Raise an error if the seat group's and the ticket bundle's
     categories don't match.
     """
@@ -200,7 +214,8 @@ def _ensure_categories_match(seat_group, ticket_bundle):
         raise ValueError('Seat and ticket categories do not match.')
 
 
-def _ensure_quantities_match(seat_group, ticket_bundle):
+def _ensure_quantities_match(seat_group: SeatGroup, ticket_bundle: TicketBundle
+                            ) -> None:
     """Raise an error if the seat group's and the ticket bundle's
     quantities don't match.
     """
@@ -208,14 +223,15 @@ def _ensure_quantities_match(seat_group, ticket_bundle):
         raise ValueError('Seat and ticket quantities do not match.')
 
 
-def _ensure_actual_quantities_match(seats, tickets):
+def _ensure_actual_quantities_match(seats: Sequence[Seat],
+                                    tickets: Sequence[Ticket]) -> None:
     """Raise an error if the totals of seats and tickets don't match."""
     if len(seats) != len(tickets):
         raise ValueError('The actual quantities of seats and tickets '
                          'do not match.')
 
 
-def _occupy_seats(seats, tickets):
+def _occupy_seats(seats: Sequence[Seat], tickets: Sequence[Ticket]) -> None:
     """Occupy all seats in the group with all tickets from the bundle."""
     seats = _sort_seats(seats)
     tickets = _sort_tickets(tickets)
@@ -224,17 +240,17 @@ def _occupy_seats(seats, tickets):
         ticket.occupied_seat = seat
 
 
-def _sort_seats(seats):
+def _sort_seats(seats: Sequence[Seat]) -> Sequence[Seat]:
     """Create a list of the seats sorted by their respective coordinates."""
     return list(sorted(seats, key=lambda s: (s.coord_x, s.coord_y)))
 
 
-def _sort_tickets(tickets):
+def _sort_tickets(tickets: Sequence[Ticket]) -> Sequence[Ticket]:
     """Create a list of the tickets sorted by creation time (ascending)."""
     return list(sorted(tickets, key=lambda t: t.created_at))
 
 
-def release_seat_group(seat_group):
+def release_seat_group(seat_group: SeatGroup) -> None:
     """Release a seat group so it becomes available again."""
     if not seat_group.is_occupied():
         raise ValueError('Seat group is not occupied.')
@@ -247,14 +263,14 @@ def release_seat_group(seat_group):
     db.session.commit()
 
 
-def count_seat_groups_for_party(party_id):
+def count_seat_groups_for_party(party_id: PartyID) -> int:
     """Return the number of seat groups for that party."""
     return SeatGroup.query \
         .filter_by(party_id=party_id) \
         .count()
 
 
-def get_all_seat_groups_for_party(party_id):
+def get_all_seat_groups_for_party(party_id: PartyID) -> Sequence[SeatGroup]:
     """Return all seat groups for that party."""
     return SeatGroup.query \
         .filter_by(party_id=party_id) \

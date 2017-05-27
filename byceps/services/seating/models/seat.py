@@ -7,17 +7,24 @@ byceps.services.seating.models.seat
 """
 
 from collections import namedtuple
+from typing import NewType, Optional
+from uuid import UUID
 
 from sqlalchemy.ext.hybrid import hybrid_property
 
 from ....database import db, generate_uuid
 from ....util.instances import ReprBuilder
 
+from ...user.models.user import User
+
 from .area import Area
 from .category import Category
 
 
 Point = namedtuple('Point', ['x', 'y'])
+
+
+SeatID = NewType('SeatID', UUID)
 
 
 class Seat(db.Model):
@@ -33,43 +40,46 @@ class Seat(db.Model):
     category = db.relationship(Category, backref='seats')
     label = db.Column(db.Unicode(40), nullable=True)
 
-    def __init__(self, area, category, *, coord_x=0, coord_y=0):
+    def __init__(self, area: Area, category: Category, *, coord_x: int=0,
+                 coord_y: int=0) -> None:
         self.area = area
         self.coord_x = coord_x
         self.coord_y = coord_y
         self.category = category
 
     @hybrid_property
-    def coords(self):
+    def coords(self) -> Point:
         return Point(x=self.coord_x, y=self.coord_y)
 
     @coords.setter
-    def coords(self, point):
+    def coords(self, point: Point) -> None:
         self.coord_x = point.x
         self.coord_y = point.y
 
     @property
-    def is_occupied(self):
+    def is_occupied(self) -> bool:
         """Return `True` if the seat is occupied by a ticket."""
         return bool(self.occupied_by_ticket)
 
     @property
-    def has_user(self):
+    def has_user(self) -> bool:
         """Return `True` if the seat is occupied by a ticket, and that
         ticket is assigned to a user.
         """
         return self.is_occupied and bool(self.occupied_by_ticket.used_by)
 
     @property
-    def user(self):
+    def user(self) -> Optional[User]:
         """Return the user to which the ticket that occupies this seat
         is assigned, or `None` if this seat is not occupied by a ticket
         or the ticket is not assigned to a user.
         """
-        if self.has_user:
-            return self.occupied_by_ticket.used_by
+        if not self.has_user:
+            return None
 
-    def __repr__(self):
+        return self.occupied_by_ticket.used_by
+
+    def __repr__(self) -> str:
         return ReprBuilder(self) \
             .add('id', str(self.id)) \
             .add_with_lookup('area') \

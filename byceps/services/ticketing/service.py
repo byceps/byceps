@@ -9,17 +9,21 @@ byceps.services.ticketing.service
 from collections import defaultdict
 from datetime import datetime
 from itertools import chain
+from typing import Any, Dict, Iterable, Iterator, Optional, Sequence, Set
+
+from flask_sqlalchemy import Pagination
 
 from ...database import db
+from ...typing import PartyID, UserID
 
-from ..party.models import Party
+from ..party.models import Party, PartyTuple
 from ..party import service as party_service
 from ..seating.models.category import Category
 from ..seating.models.seat import Seat
 from ..user import service as user_service
 
 from .models.archived_attendance import ArchivedAttendance
-from .models.ticket import Ticket
+from .models.ticket import Ticket, TicketID
 from .models.ticket_bundle import TicketBundle
 
 
@@ -27,12 +31,13 @@ from .models.ticket_bundle import TicketBundle
 # tickets
 
 
-def create_ticket(category, owned_by_id):
+def create_ticket(category: Category, owned_by_id: UserID) -> Sequence[Ticket]:
     """Create a single ticket."""
     return create_tickets(category, owned_by_id, 1)
 
 
-def create_tickets(category, owned_by_id, quantity):
+def create_tickets(category: Category, owned_by_id: UserID, quantity: int
+                  ) -> Sequence[Ticket]:
     """Create a number of tickets of the same category for a single owner."""
     tickets = list(_build_tickets(category, owned_by_id, quantity))
 
@@ -42,7 +47,8 @@ def create_tickets(category, owned_by_id, quantity):
     return tickets
 
 
-def _build_tickets(category, owned_by_id, quantity, *, bundle=None):
+def _build_tickets(category: Category, owned_by_id: UserID, quantity: int, *,
+                   bundle: Optional[TicketBundle]=None) -> Iterator[Ticket]:
     if quantity < 1:
         raise ValueError('Ticket quantity must be positive.')
 
@@ -50,12 +56,12 @@ def _build_tickets(category, owned_by_id, quantity, *, bundle=None):
         yield Ticket(category, owned_by_id, bundle=bundle)
 
 
-def find_ticket(ticket_id):
+def find_ticket(ticket_id: TicketID) -> Optional[Ticket]:
     """Return the ticket with that id, or `None` if not found."""
     return Ticket.query.get(ticket_id)
 
 
-def find_tickets_related_to_user(user_id):
+def find_tickets_related_to_user(user_id: UserID) -> Sequence[Ticket]:
     """Return tickets related to the user."""
     return Ticket.query \
         .filter(
@@ -75,7 +81,8 @@ def find_tickets_related_to_user(user_id):
         .all()
 
 
-def find_tickets_related_to_user_for_party(user_id, party_id):
+def find_tickets_related_to_user_for_party(user_id: UserID, party_id: PartyID
+                                          ) -> Sequence[Ticket]:
     """Return tickets related to the user for the party."""
     return Ticket.query \
         .for_party_id(party_id) \
@@ -96,7 +103,8 @@ def find_tickets_related_to_user_for_party(user_id, party_id):
         .all()
 
 
-def find_tickets_used_by_user(user_id, party_id):
+def find_tickets_used_by_user(user_id: UserID, party_id: PartyID
+                             ) -> Sequence[Ticket]:
     """Return the tickets (if any) used by the user for that party."""
     return Ticket.query \
         .for_party_id(party_id) \
@@ -109,7 +117,7 @@ def find_tickets_used_by_user(user_id, party_id):
         .all()
 
 
-def uses_any_ticket_for_party(user_id, party_id):
+def uses_any_ticket_for_party(user_id: UserID, party_id: PartyID) -> bool:
     """Return `True` if the user uses any ticket for that party."""
     count = Ticket.query \
         .for_party_id(party_id) \
@@ -119,19 +127,20 @@ def uses_any_ticket_for_party(user_id, party_id):
     return count > 0
 
 
-def get_attended_parties(user_id):
+def get_attended_parties(user_id: UserID) -> Sequence[PartyTuple]:
     """Return the parties the user has attended in the past."""
     ticket_attendance_party_ids = _get_attended_party_ids(user_id)
     archived_attendance_party_ids = _get_archived_attendance_party_ids(user_id)
 
-    party_ids = frozenset(chain(ticket_attendance_party_ids, archived_attendance_party_ids))
+    party_ids = set(chain(ticket_attendance_party_ids,
+                          archived_attendance_party_ids))
 
     parties = party_service.get_parties(party_ids)
 
     return [party.to_tuple() for party in parties]
 
 
-def _get_attended_party_ids(user_id):
+def _get_attended_party_ids(user_id: UserID) -> Set[PartyID]:
     """Return the IDs of the non-legacy parties the user has attended."""
     # Note: Party dates aren't UTC, yet.
     party_id_rows = db.session \
@@ -143,7 +152,7 @@ def _get_attended_party_ids(user_id):
     return _get_first_column_values_as_set(party_id_rows)
 
 
-def get_ticket_with_details(ticket_id):
+def get_ticket_with_details(ticket_id: TicketID) -> Optional[Ticket]:
     """Return the ticket with that id, or `None` if not found."""
     return Ticket.query \
         .options(
@@ -156,7 +165,8 @@ def get_ticket_with_details(ticket_id):
         .get(ticket_id)
 
 
-def get_tickets_with_details_for_party_paginated(party_id, page, per_page):
+def get_tickets_with_details_for_party_paginated(party_id: PartyID, page: int,
+                                                 per_page: int) -> Pagination:
     """Return the party's tickets to show on the specified page."""
     return Ticket.query \
         .for_party_id(party_id) \
@@ -169,7 +179,7 @@ def get_tickets_with_details_for_party_paginated(party_id, page, per_page):
         .paginate(page, per_page)
 
 
-def get_ticket_count_by_party_id():
+def get_ticket_count_by_party_id() -> Dict[PartyID, int]:
     """Return ticket count (including 0) per party, indexed by party ID."""
     return dict(db.session \
         .query(
@@ -182,40 +192,42 @@ def get_ticket_count_by_party_id():
         .all())
 
 
-def count_tickets_for_party(party_id):
+def count_tickets_for_party(party_id: PartyID) -> int:
     """Return the number of "sold" (i.e. generated) tickets for that party."""
     return Ticket.query \
         .for_party_id(party_id) \
         .count()
 
 
-def get_attendees_by_party(parties):
+def get_attendees_by_party(parties: Iterable[Party]
+                          ) -> Dict[Party, Set[UserID]]:
     """Return the parties' attendees, indexed by party."""
     if not parties:
         return {}
 
-    party_ids = frozenset(party.id for party in parties)
+    party_ids = {party.id for party in parties}
 
     attendee_ids_by_party_id = get_attendee_ids_for_parties(party_ids)
 
-    all_attendee_ids = frozenset(
+    all_attendee_ids = set(
         chain.from_iterable(attendee_ids_by_party_id.values()))
     all_attendees = user_service.find_users(all_attendee_ids)
     all_attendees_by_id = user_service.index_users_by_id(all_attendees)
 
     attendees_by_party = {}
     for party in parties:
-        attendee_ids = attendee_ids_by_party_id.get(party.id, frozenset())
+        attendee_ids = attendee_ids_by_party_id.get(party.id, set())
 
-        attendees = frozenset(all_attendees_by_id[attendee_id]
-                              for attendee_id in attendee_ids)
+        attendees = {all_attendees_by_id[attendee_id]
+                     for attendee_id in attendee_ids}
 
         attendees_by_party[party] = attendees
 
     return attendees_by_party
 
 
-def get_attendee_ids_for_parties(party_ids):
+def get_attendee_ids_for_parties(party_ids: Set[PartyID]
+                                ) -> Dict[PartyID, Set[UserID]]:
     """Return the partys' attendee IDs, indexed by party ID."""
     if not party_ids:
         return {}
@@ -234,7 +246,7 @@ def get_attendee_ids_for_parties(party_ids):
 
     rows = ticket_rows + archived_attendance_rows
 
-    attendee_ids_by_party_id = defaultdict(set)
+    attendee_ids_by_party_id = defaultdict(set)  # type: Dict[PartyID, Set[UserID]]
     for party_id, attendee_id in rows:
         attendee_ids_by_party_id[party_id].add(attendee_id)
 
@@ -245,7 +257,8 @@ def get_attendee_ids_for_parties(party_ids):
 # ticket bundles
 
 
-def create_ticket_bundle(category, ticket_quantity, owned_by_id):
+def create_ticket_bundle(category: Category, ticket_quantity: int,
+                         owned_by_id: UserID) -> TicketBundle:
     """Create a ticket bundle and the given quantity of tickets."""
     if ticket_quantity < 1:
         raise ValueError('Ticket quantity must be positive.')
@@ -262,7 +275,7 @@ def create_ticket_bundle(category, ticket_quantity, owned_by_id):
     return bundle
 
 
-def delete_ticket_bundle(bundle):
+def delete_ticket_bundle(bundle: TicketBundle) -> None:
     """Delete the ticket bundle and the tickets associated with it."""
     for ticket in bundle.tickets:
         db.session.delete(ticket)
@@ -276,7 +289,8 @@ def delete_ticket_bundle(bundle):
 # archived attendances
 
 
-def create_archived_attendance(user_id, party_id):
+def create_archived_attendance(user_id: UserID, party_id: PartyID
+                              ) -> ArchivedAttendance:
     """Create an archived attendance of the user at the party."""
     attendance = ArchivedAttendance(user_id, party_id)
 
@@ -286,7 +300,7 @@ def create_archived_attendance(user_id, party_id):
     return attendance
 
 
-def _get_archived_attendance_party_ids(user_id):
+def _get_archived_attendance_party_ids(user_id: UserID) -> Set[PartyID]:
     """Return the IDs of the legacy parties the user has attended."""
     party_id_rows = db.session \
         .query(ArchivedAttendance.party_id) \
@@ -300,6 +314,6 @@ def _get_archived_attendance_party_ids(user_id):
 # helpers
 
 
-def _get_first_column_values_as_set(rows):
+def _get_first_column_values_as_set(rows: Iterable[Sequence[Any]]) -> Set[Any]:
     """Return the first element of each row as a set."""
-    return frozenset(row[0] for row in rows)
+    return {row[0] for row in rows}

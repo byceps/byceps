@@ -7,12 +7,18 @@ byceps.services.ticketing.models.ticket_bundle
 """
 
 from datetime import datetime
+from typing import NewType
+from uuid import UUID
 
 from ....database import db, generate_uuid
+from ....typing import UserID
 from ....util.instances import ReprBuilder
 
-from ...seating.models.category import Category
+from ...seating.models.category import Category, CategoryID
 from ...user.models.user import User
+
+
+TicketBundleID = NewType('TicketBundleID', UUID)
 
 
 class TicketBundle(db.Model):
@@ -33,12 +39,13 @@ class TicketBundle(db.Model):
     users_managed_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=True)
     users_managed_by = db.relationship(User, foreign_keys=[users_managed_by_id])
 
-    def __init__(self, ticket_category_id, ticket_quantity, owned_by_id):
+    def __init__(self, ticket_category_id: CategoryID, ticket_quantity: int,
+                 owned_by_id: UserID) -> None:
         self.ticket_category_id = ticket_category_id
         self.ticket_quantity = ticket_quantity
         self.owned_by_id = owned_by_id
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return ReprBuilder(self) \
             .add('id', str(self.id)) \
             .add('party', self.ticket_category.party_id) \

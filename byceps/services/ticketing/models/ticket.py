@@ -7,8 +7,11 @@ byceps.services.ticketing.models.ticket
 """
 
 from datetime import datetime
+from typing import NewType, Optional
+from uuid import UUID
 
 from ....database import BaseQuery, db, generate_uuid
+from ....typing import PartyID, UserID
 from ....util.instances import ReprBuilder
 
 from ...seating.models.category import Category
@@ -18,9 +21,12 @@ from ...user.models.user import User
 from .ticket_bundle import TicketBundle
 
 
+TicketID = NewType('TicketID', UUID)
+
+
 class TicketQuery(BaseQuery):
 
-    def for_party_id(self, party_id):
+    def for_party_id(self, party_id: PartyID) -> BaseQuery:
         return self.join(Category).filter(Category.party_id == party_id)
 
 
@@ -53,42 +59,43 @@ class Ticket(db.Model):
     used_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=True)
     used_by = db.relationship(User, foreign_keys=[used_by_id])
 
-    def __init__(self, category, owned_by_id, *, bundle=None):
+    def __init__(self, category: Category, owned_by_id: UserID, *,
+                 bundle: Optional[TicketBundle]=None) -> None:
         if bundle is not None:
             self.bundle = bundle
         self.category = category
         self.owned_by_id = owned_by_id
 
-    def get_seat_manager(self):
+    def get_seat_manager(self) -> User:
         """Return the user that may choose the seat for this ticket."""
         return self.seat_managed_by or self.owned_by
 
-    def get_user_manager(self):
+    def get_user_manager(self) -> User:
         """Return the user that may choose the user of this ticket."""
         return self.user_managed_by or self.owned_by
 
-    def is_managed_by(self, user_id):
+    def is_managed_by(self, user_id: UserID) -> bool:
         """Return `True` if the user may choose the seat for or the
         user of this ticket.
         """
         return self.is_seat_managed_by(user_id) \
             or self.is_user_managed_by(user_id)
 
-    def is_seat_managed_by(self, user_id):
+    def is_seat_managed_by(self, user_id: UserID) -> bool:
         """Return `True` if the user may choose the seat for this ticket."""
         return ((self.seat_managed_by_id is None) and (self.owned_by_id == user_id)) or \
             (self.seat_managed_by_id == user_id)
 
-    def is_user_managed_by(self, user_id):
+    def is_user_managed_by(self, user_id: UserID) -> bool:
         """Return `True` if the user may choose the user of this ticket."""
         return ((self.user_managed_by_id is None) and (self.owned_by_id == user_id)) or \
             (self.user_managed_by_id == user_id)
 
-    def __repr__(self):
-        def user(user):
+    def __repr__(self) -> str:
+        def user(user: User) -> Optional[str]:
             return user.screen_name if (user is not None) else None
 
-        def occupied_seat():
+        def occupied_seat() -> Optional[str]:
             seat = self.occupied_seat
 
             if seat is None:

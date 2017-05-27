@@ -6,15 +6,22 @@ byceps.services.seating.models.seat_group
 :License: Modified BSD, see LICENSE for details.
 """
 
+from typing import NewType
+from uuid import UUID
+
 from sqlalchemy.ext.associationproxy import association_proxy
 
 from ....database import db, generate_uuid
+from ....typing import PartyID
 from ....util.instances import ReprBuilder
 
-from ...ticketing.models.ticket_bundle import TicketBundle
+from ...ticketing.models.ticket_bundle import TicketBundle, TicketBundleID
 
 from .category import Category
 from .seat import Seat
+
+
+SeatGroupID = NewType('SeatGroupID', UUID)
 
 
 class SeatGroup(db.Model):
@@ -33,16 +40,17 @@ class SeatGroup(db.Model):
 
     seats = association_proxy('assignments', 'seat')
 
-    def __init__(self, party_id, seat_category, seat_quantity, title):
+    def __init__(self, party_id: PartyID, seat_category: Category,
+                 seat_quantity: int, title: str) -> None:
         self.party_id = party_id
         self.seat_category = seat_category
         self.seat_quantity = seat_quantity
         self.title = title
 
-    def is_occupied(self):
+    def is_occupied(self) -> bool:
         return self.occupancy is not None
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return ReprBuilder(self) \
             .add('id', str(self.id)) \
             .add('party', self.party_id) \
@@ -63,11 +71,11 @@ class SeatGroupAssignment(db.Model):
     seat_id = db.Column(db.Uuid, db.ForeignKey('seats.id'), unique=True, index=True, nullable=False)
     seat = db.relationship(Seat)
 
-    def __init__(self, group, seat):
+    def __init__(self, group: SeatGroup, seat: Seat) -> None:
         self.group = group
         self.seat = seat
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return ReprBuilder(self) \
             .add('id', str(self.id)) \
             .add('group', self.group.title) \
@@ -85,11 +93,12 @@ class Occupancy(db.Model):
     ticket_bundle_id = db.Column(db.Uuid, db.ForeignKey('ticket_bundles.id'), unique=True, index=True, nullable=False)
     ticket_bundle = db.relationship(TicketBundle, backref=db.backref('occupied_seat_group', uselist=False))
 
-    def __init__(self, seat_group_id, ticket_bundle_id):
+    def __init__(self, seat_group_id: SeatGroup,
+                 ticket_bundle_id: TicketBundleID) -> None:
         self.seat_group_id = seat_group_id
         self.ticket_bundle_id = ticket_bundle_id
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return ReprBuilder(self) \
             .add('seat_group_id', str(self.seat_group_id)) \
             .add('ticket_bundle_id', str(self.ticket_bundle_id)) \

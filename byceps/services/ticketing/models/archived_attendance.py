@@ -9,6 +9,7 @@ byceps.services.ticketing.models.archived_attendance
 from datetime import datetime
 
 from ....database import db
+from ....typing import PartyID, UserID
 from ....util.instances import ReprBuilder
 
 
@@ -33,11 +34,11 @@ class ArchivedAttendance(db.Model):
     party_id = db.Column(db.Unicode(40), db.ForeignKey('parties.id'), primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
 
-    def __init__(self, user_id, party_id):
+    def __init__(self, user_id: UserID, party_id: PartyID) -> None:
         self.user_id = user_id
         self.party_id = party_id
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return ReprBuilder(self) \
             .add('user_id', str(self.user_id)) \
             .add('party_id', self.party_id) \

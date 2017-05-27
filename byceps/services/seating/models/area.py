@@ -6,13 +6,20 @@ byceps.services.seating.models.area
 :License: Modified BSD, see LICENSE for details.
 """
 
+from typing import NewType
+from uuid import UUID
+
 from ....database import BaseQuery, db, generate_uuid
+from ....typing import PartyID
 from ....util.instances import ReprBuilder
+
+
+AreaID = NewType('AreaID', UUID)
 
 
 class AreaQuery(BaseQuery):
 
-    def for_party_id(self, party_id):
+    def for_party_id(self, party_id: PartyID) -> BaseQuery:
         return self.filter_by(party_id=party_id)
 
 
@@ -37,17 +44,17 @@ class Area(db.Model):
     image_width = db.Column(db.Integer, nullable=True)
     image_height = db.Column(db.Integer, nullable=True)
 
-    def __init__(self, party_id, slug, title):
+    def __init__(self, party_id: PartyID, slug: str, title: str) -> None:
         self.party_id = party_id
         self.slug = slug
         self.title = title
 
-    def set_image(self, filename, width, height):
+    def set_image(self, filename: str, width: int, height: int) -> None:
         self.image_filename = filename
         self.image_width = width
         self.image_height = height
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return ReprBuilder(self) \
             .add('id', str(self.id)) \
             .add('party', self.party_id) \
