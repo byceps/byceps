@@ -53,7 +53,7 @@ def _get_time_slot_ranges(party: Party, tasks: List[Task]) \
         yield time_slot.range
 
 
-def _get_hour_starts(dt_ranges: Sequence[DateTimeRange]) -> Iterator[Arrow]:
+def _get_hour_starts(dt_ranges: Sequence[DateTimeRange]) -> Iterator[datetime]:
     min_starts_at = _find_earliest_start(dt_ranges)
     max_ends_at = _find_latest_end(dt_ranges)
 
@@ -71,7 +71,7 @@ def _find_latest_end(dt_ranges: Sequence[DateTimeRange]) -> datetime:
 
 
 def _to_datetimes_without_tzinfo(arrow_datetimes: Sequence[Arrow]) \
-                                 -> Iterator[Arrow]:
+                                 -> Iterator[datetime]:
     for arrow_datetime in arrow_datetimes:
         yield arrow_datetime.datetime.replace(tzinfo=None)
 

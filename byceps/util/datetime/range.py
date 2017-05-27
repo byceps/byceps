@@ -8,7 +8,7 @@ byceps.util.datetime.range
 
 from collections import namedtuple
 from datetime import datetime
-from typing import Sequence, Iterator
+from typing import Iterable, Iterator
 
 from ..iterables import pairwise
 
@@ -25,7 +25,7 @@ class DateTimeRange(namedtuple('DateTimeRange', ['start', 'end'])):
         return '[{0.start}..{0.end})'.format(self)
 
 
-def create_adjacent_ranges(dts: Sequence[datetime]) -> Iterator[DateTimeRange]:
+def create_adjacent_ranges(dts: Iterable[datetime]) -> Iterator[DateTimeRange]:
     """Yield adjacent ranges from successive date/time values."""
     for pair in pairwise(dts):
         yield DateTimeRange._make(pair)
