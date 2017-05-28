@@ -9,7 +9,7 @@ byceps.blueprints.authorization.registry
 from flask import current_app
 
 
-class PermissionRegistry(object):
+class PermissionRegistry:
 
     def __init__(self):
         self.enums = {}

@@ -30,7 +30,7 @@ OrderID = NewType('OrderID', UUID)
 OrderNumber = NewType('OrderNumber', str)
 
 
-class Orderer(object):
+class Orderer:
     """Someone who orders articles."""
 
     def __init__(self, user: User, first_names: str, last_name: str,

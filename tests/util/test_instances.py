@@ -51,7 +51,7 @@ def test_with_custom_value():
     assert actual == "<Instance(last_name='Protagonist', is of full age)>"
 
 
-class Instance(object):
+class Instance:
 
     def __init__(self):
         self.first_name = 'Hiro'

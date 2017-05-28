@@ -20,7 +20,7 @@ NavigationItem = namedtuple('NavigationItem', [
 ])
 
 
-class Navigation(object):
+class Navigation:
     """A navigation list.
 
     The order of items is the order in which they are added.

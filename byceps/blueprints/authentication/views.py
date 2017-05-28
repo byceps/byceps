@@ -40,7 +40,7 @@ blueprint = create_blueprint('authentication', __name__)
 # current user
 
 
-class CurrentUser(object):
+class CurrentUser:
 
     def __init__(self, user, avatar_url):
         self._user = user

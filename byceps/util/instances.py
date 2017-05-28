@@ -7,7 +7,7 @@ byceps.util.instances
 """
 
 
-class ReprBuilder(object):
+class ReprBuilder:
     """An instance representation builder."""
 
     def __init__(self, instance):

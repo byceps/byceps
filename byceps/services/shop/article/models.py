@@ -167,7 +167,7 @@ class AttachedArticle(db.Model):
 # article compilation
 
 
-class ArticleCompilationItem(object):
+class ArticleCompilationItem:
 
     def __init__(self, article: Article, *, fixed_quantity: Optional[int]=None
                 ) -> None:
@@ -182,7 +182,7 @@ class ArticleCompilationItem(object):
         return self.fixed_quantity is not None
 
 
-class ArticleCompilation(object):
+class ArticleCompilation:
 
     def __init__(self) -> None:
         self._items = []  # type: List[ArticleCompilationItem]

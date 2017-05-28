@@ -13,7 +13,7 @@ from ....util.instances import ReprBuilder
 from ..article.models import Article
 
 
-class CartItem(object):
+class CartItem:
     """An article with a quantity."""
 
     def __init__(self, article: Article, quantity: int) -> None:
@@ -30,7 +30,7 @@ class CartItem(object):
             .build()
 
 
-class Cart(object):
+class Cart:
     """A shopping cart."""
 
     def __init__(self) -> None:
