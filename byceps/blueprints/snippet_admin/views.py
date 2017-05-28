@@ -42,7 +42,7 @@ def index_for_party(party_id):
     party = _get_party_or_404(party_id)
 
     snippets = snippet_service.get_snippets_for_party_with_current_versions(
-        party)
+        party.id)
 
     mountpoints = snippet_service.get_mountpoints_for_party(party.id)
 
@@ -311,7 +311,7 @@ def create_mountpoint_form(snippet_id):
     snippet = _find_snippet_by_id(snippet_id)
     party = party_service.find_party(snippet.party_id)
 
-    documents = snippet_service.get_documents_for_party(party)
+    documents = snippet_service.get_documents_for_party(party.id)
     document_choices = list(map(attrgetter('id', 'name'), documents))
 
     form = MountpointCreateForm()

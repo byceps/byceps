@@ -14,8 +14,6 @@ from sqlalchemy.orm.exc import NoResultFound
 from ...database import db
 from ...typing import PartyID, UserID
 
-from ..party.models import Party
-
 from .models.mountpoint import Mountpoint, MountpointID
 from .models.snippet import CurrentVersionAssociation, Snippet, SnippetID, \
     SnippetType, SnippetVersion, SnippetVersionID
@@ -42,10 +40,10 @@ def update_document(document: Snippet, creator_id: UserID, title: str,
                            image_url_path)
 
 
-def get_documents_for_party(party: Party) -> Sequence[Snippet]:
+def get_documents_for_party(party_id: PartyID) -> Sequence[Snippet]:
     """Return all documents for that party."""
     return Snippet.query \
-        .for_party_id(party.id) \
+        .for_party_id(party_id) \
         .filter_by(_type=SnippetType.document.name) \
         .order_by(Snippet.name) \
         .all()
@@ -117,11 +115,11 @@ def find_snippet(snippet_id: SnippetID) -> Optional[Snippet]:
     return Snippet.query.get(snippet_id)
 
 
-def get_snippets_for_party_with_current_versions(party: Party
+def get_snippets_for_party_with_current_versions(party_id: PartyID
                                                 ) -> Sequence[Snippet]:
     """Return all snippets with their current versions for that party."""
     return Snippet.query \
-        .for_party_id(party.id) \
+        .for_party_id(party_id) \
         .options(
             db.joinedload('current_version_association').joinedload('version')
         ) \
@@ -134,7 +132,7 @@ def find_snippet_version(version_id: SnippetVersionID
     return SnippetVersion.query.get(version_id)
 
 
-def get_current_version_of_snippet_with_name(party: Party, name: str
+def get_current_version_of_snippet_with_name(party_id: PartyID, name: str
                                             ) -> SnippetVersion:
     """Return the current version of the snippet with that name for that
     party.
@@ -143,7 +141,7 @@ def get_current_version_of_snippet_with_name(party: Party, name: str
         return SnippetVersion.query \
             .join(CurrentVersionAssociation) \
             .join(Snippet) \
-                .filter(Snippet.party == party) \
+                .filter(Snippet.party_id == party_id) \
                 .filter(Snippet.name == name) \
             .one()
     except NoResultFound:

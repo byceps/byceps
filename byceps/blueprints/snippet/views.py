@@ -26,7 +26,7 @@ def view_latest_by_name(name):
     # endpoint suffix != snippet name
     try:
         current_version = snippet_service \
-            .get_current_version_of_snippet_with_name(g.party, name)
+            .get_current_version_of_snippet_with_name(g.party.id, name)
     except SnippetNotFound:
         abort(404)
 
