@@ -201,7 +201,7 @@ def count_tickets_for_party(party_id: PartyID) -> int:
 
 
 def get_attendees_by_party(parties: Iterable[Party]
-                          ) -> Dict[Party, Set[UserTuple]]:
+                          ) -> Dict[PartyID, Set[UserTuple]]:
     """Return the parties' attendees, indexed by party."""
     if not parties:
         return {}
@@ -215,16 +215,16 @@ def get_attendees_by_party(parties: Iterable[Party]
     all_attendees = user_service.find_users(all_attendee_ids)
     all_attendees_by_id = user_service.index_users_by_id(all_attendees)
 
-    attendees_by_party = {}
+    attendees_by_party_id = {}
     for party in parties:
         attendee_ids = attendee_ids_by_party_id.get(party.id, set())
 
         attendees = {all_attendees_by_id[attendee_id]
                      for attendee_id in attendee_ids}
 
-        attendees_by_party[party] = attendees
+        attendees_by_party_id[party.id] = attendees
 
-    return attendees_by_party
+    return attendees_by_party_id
 
 
 def get_attendee_ids_for_parties(party_ids: Set[PartyID]

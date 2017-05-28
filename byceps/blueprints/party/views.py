@@ -43,10 +43,10 @@ def archive():
     brand_id = g.party.brand.id
     archived_parties = party_service.get_archived_parties_for_brand(brand_id)
 
-    attendees_by_party = ticketing_service.get_attendees_by_party(
+    attendees_by_party_id = ticketing_service.get_attendees_by_party(
         archived_parties)
 
     return {
         'parties': archived_parties,
-        'attendees_by_party': attendees_by_party,
+        'attendees_by_party_id': attendees_by_party_id,
     }
