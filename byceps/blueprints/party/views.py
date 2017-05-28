@@ -22,7 +22,7 @@ blueprint = create_blueprint('party', __name__)
 def before_request():
     party_id = get_current_party_id()
 
-    party = party_service.find_party_with_brand(party_id)
+    party = party_service.find_party(party_id)
 
     if party is None:
         raise Exception('Unknown party ID "{}".'.format(party_id))
