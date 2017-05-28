@@ -6,11 +6,17 @@ byceps.services.tourney.models.tourney
 :License: Modified BSD, see LICENSE for details.
 """
 
+from typing import NewType
+from uuid import UUID
+
 from ....database import db, generate_uuid
 
 from ....util.instances import ReprBuilder
 
 from .tourney_category import TourneyCategory
+
+
+TourneyID = NewType('TourneyID', UUID)
 
 
 class Tourney(db.Model):
@@ -25,11 +31,11 @@ class Tourney(db.Model):
     group = db.relationship(TourneyCategory)
     title = db.Column(db.Unicode(40), nullable=False)
 
-    def __init__(self, group, title):
+    def __init__(self, group: TourneyCategory, title: str) -> None:
         self.group = group
         self.title = title
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return ReprBuilder(self) \
             .add_with_lookup('group') \
             .add_with_lookup('title') \

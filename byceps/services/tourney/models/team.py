@@ -7,6 +7,8 @@ byceps.services.tourney.models.team
 """
 
 from datetime import datetime
+from typing import NewType
+from uuid import UUID
 
 from ....database import db, generate_uuid
 from ....util.instances import ReprBuilder
@@ -14,6 +16,9 @@ from ....util.instances import ReprBuilder
 from ...user.models.user import User
 
 from .tourney import Tourney
+
+
+TeamID = NewType('TeamID', UUID)
 
 
 class Team(db.Model):
@@ -29,12 +34,12 @@ class Team(db.Model):
     title = db.Column(db.Unicode(32), nullable=False)
     max_size = db.Column(db.Integer, nullable=True)
 
-    def __init__(self, tourney, title, max_size):
+    def __init__(self, tourney: Tourney, title: str, max_size: int) -> None:
         self.tourney = tourney
         self.title = title
         self.max_size = max_size
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return ReprBuilder(self) \
             .add_with_lookup('tourney') \
             .add_with_lookup('title') \

@@ -6,17 +6,22 @@ byceps.services.tourney.service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from ...database import db
+from typing import Optional, Sequence
 
-from .models.match import Match, MatchComment
-from .models.tourney_category import TourneyCategory
+from ...database import db
+from ...typing import PartyID, UserID
+
+from ..party.models import Party
+
+from .models.match import Match, MatchID, MatchComment
+from .models.tourney_category import TourneyCategory, TourneyCategoryID
 
 
 # -------------------------------------------------------------------- #
 # tourney categories
 
 
-def create_category(party, title):
+def create_category(party: Party, title: str) -> TourneyCategory:
     """Create a category for that party."""
     category = TourneyCategory(party, title)
     party.tourney_categories.append(category)
@@ -26,13 +31,13 @@ def create_category(party, title):
     return category
 
 
-def update_category(category, title):
+def update_category(category: TourneyCategory, title: str) -> None:
     """Update category."""
     category.title = title
     db.session.commit()
 
 
-def move_category_up(category):
+def move_category_up(category: TourneyCategory) -> None:
     """Move a category upwards by one position."""
     category_list = category.party.tourney_categories
 
@@ -45,7 +50,7 @@ def move_category_up(category):
     db.session.commit()
 
 
-def move_category_down(category):
+def move_category_down(category: TourneyCategory) -> None:
     """Move a category downwards by one position."""
     category_list = category.party.tourney_categories
 
@@ -58,12 +63,12 @@ def move_category_down(category):
     db.session.commit()
 
 
-def find_category(category_id):
+def find_category(category_id: TourneyCategoryID) -> Optional[TourneyCategory]:
     """Return the category with that id, or `None` if not found."""
     return TourneyCategory.query.get(category_id)
 
 
-def get_categories_for_party(party_id):
+def get_categories_for_party(party_id: PartyID) -> Sequence[TourneyCategory]:
     """Return the categories for this party."""
     return TourneyCategory.query \
         .filter_by(party_id=party_id) \
@@ -75,7 +80,7 @@ def get_categories_for_party(party_id):
 # matches
 
 
-def get_match_comments(match):
+def get_match_comments(match: Match) -> Sequence[MatchComment]:
     """Return comments on the match, ordered chronologically."""
     return MatchComment.query \
         .for_match(match) \
@@ -86,7 +91,8 @@ def get_match_comments(match):
         .all()
 
 
-def create_match_comment(match, creator_id, body):
+def create_match_comment(match: Match, creator_id: UserID, body: str
+                        ) -> MatchComment:
     """Create a comment to a match."""
     match_comment = MatchComment(match, creator_id, body)
 
@@ -96,6 +102,6 @@ def create_match_comment(match, creator_id, body):
     return match_comment
 
 
-def find_match(match_id):
+def find_match(match_id: MatchID) -> Optional[Match]:
     """Return the match with that id, or `None` if not found."""
     return Match.query.get(match_id)

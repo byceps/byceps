@@ -7,10 +7,17 @@ byceps.services.tourney.models.match
 """
 
 from datetime import datetime
+from typing import NewType
+from uuid import UUID
+
 
 from ....database import BaseQuery, db, generate_uuid
+from ....typing import UserID
 
 from ...user.models.user import User
+
+
+MatchID = NewType('MatchID', UUID)
 
 
 class Match(db.Model):
@@ -20,9 +27,12 @@ class Match(db.Model):
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
 
 
+MatchCommentID = NewType('MatchCommentID', UUID)
+
+
 class MatchCommentQuery(BaseQuery):
 
-    def for_match(self, match):
+    def for_match(self, match: Match) -> BaseQuery:
         return self.filter_by(match=match)
 
 
@@ -39,7 +49,7 @@ class MatchComment(db.Model):
     created_by = db.relationship(User)
     body = db.Column(db.UnicodeText, nullable=False)
 
-    def __init__(self, match, creator_id, body):
+    def __init__(self, match: Match, creator_id: UserID, body: str) -> None:
         self.match = match
         self.created_by_id = creator_id
         self.body = body
