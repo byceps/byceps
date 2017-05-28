@@ -14,6 +14,7 @@ from ...config import get_site_mode, get_user_registration_enabled
 from ...services.country import service as country_service
 from ...services.newsletter import service as newsletter_service
 from ...services.orga_team import service as orga_team_service
+from ...services.terms import service as terms_service
 from ...services.ticketing import service as ticketing_service
 from ...services.user import service as user_service
 from ...services.user_badge import service as badge_service
@@ -165,10 +166,14 @@ def create():
             'Diese E-Mail-Adresse ist bereits einem Benutzerkonto zugeordnet.')
         return create_form(form)
 
+    brand_id = g.party.brand_id
+
     try:
-        brand_id = g.party.brand_id
+        terms_version = terms_service.get_current_version(brand_id)
+
         user = user_service.create_user(screen_name, email_address, password,
                                         first_names, last_name, brand_id,
+                                        terms_version.id,
                                         subscribe_to_newsletter)
     except user_service.UserCreationFailed:
         flash_error('Das Benutzerkonto für "{}" konnte nicht angelegt werden.',

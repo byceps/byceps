@@ -20,6 +20,7 @@ from ..authorization import service as authorization_service
 from ..email import service as email_service
 from ..newsletter import service as newsletter_service
 from ..orga_team.models import OrgaTeam, Membership as OrgaTeamMembership
+from ..terms.models import VersionID as TermsVersionID
 from ..terms import service as terms_service
 from ..user_avatar.models import Avatar, AvatarSelection
 from ..verification_token.models import Token
@@ -154,6 +155,7 @@ class UserCreationFailed(Exception):
 
 def create_user(screen_name: str, email_address: str, password: str,
                 first_names: str, last_name: str, brand_id: BrandID,
+                terms_version_id: TermsVersionID,
                 subscribe_to_newsletter: bool) -> User:
     """Create a user account and related records."""
     # user with details
@@ -177,9 +179,8 @@ def create_user(screen_name: str, email_address: str, password: str,
     authorization_service.assign_role_to_user(user.id, board_user_role.id)
 
     # consent to terms of service (required)
-    terms_version = terms_service.get_current_version(brand_id)
     terms_consent = terms_service.build_consent_on_account_creation(user.id,
-                                                                    terms_version.id)
+                                                                    terms_version_id)
     db.session.add(terms_consent)
     db.session.commit()
 
