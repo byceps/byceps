@@ -44,7 +44,7 @@ def generate_article_number(party_id: PartyID) -> ArticleNumber:
     article_sequence_number = _get_next_sequence_number(party_id,
         Purpose.article)
 
-    return '{}{:05d}'.format(prefix, article_sequence_number)
+    return ArticleNumber('{}{:05d}'.format(prefix, article_sequence_number))
 
 
 def generate_order_number(party_id: PartyID) -> OrderNumber:
@@ -58,7 +58,7 @@ def generate_order_number(party_id: PartyID) -> OrderNumber:
 
     order_sequence_number = _get_next_sequence_number(party_id, Purpose.order)
 
-    return '{}{:05d}'.format(prefix, order_sequence_number)
+    return OrderNumber('{}{:05d}'.format(prefix, order_sequence_number))
 
 
 def _get_next_sequence_number(party_id: PartyID, purpose: Purpose) -> int:

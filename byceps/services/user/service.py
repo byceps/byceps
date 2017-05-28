@@ -15,6 +15,7 @@ from ...database import db
 from ...typing import BrandID, PartyID, UserID
 
 from ..authentication.password import service as password_service
+from ..authorization.models import RoleID
 from ..authorization import service as authorization_service
 from ..email import service as email_service
 from ..newsletter import service as newsletter_service
@@ -172,7 +173,7 @@ def create_user(screen_name: str, email_address: str, password: str,
     password_service.create_password_hash(user.id, password)
 
     # roles
-    board_user_role = authorization_service.find_role('board_user')
+    board_user_role = authorization_service.find_role(RoleID('board_user'))
     authorization_service.assign_role_to_user(user.id, board_user_role.id)
 
     # consent to terms of service (required)
