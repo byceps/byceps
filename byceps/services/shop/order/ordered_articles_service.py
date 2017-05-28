@@ -7,13 +7,16 @@ byceps.services.shop.order.ordered_articles_service
 """
 
 from collections import Counter
+from typing import Dict, Sequence
 
 from ....database import db
+
+from ..article.models import Article
 
 from .models import OrderItem, PaymentState
 
 
-def count_ordered_articles(article):
+def count_ordered_articles(article: Article) -> Dict[PaymentState, int]:
     """Count how often the article has been ordered, grouped by the
     order's payment state.
     """
@@ -36,7 +39,7 @@ def count_ordered_articles(article):
     return dict(counter)
 
 
-def get_order_items_for_article(article):
+def get_order_items_for_article(article: Article) -> Sequence[OrderItem]:
     """Return all order items for that article."""
     return OrderItem.query \
         .filter_by(article=article) \

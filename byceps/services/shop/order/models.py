@@ -10,10 +10,13 @@ from collections import namedtuple
 from datetime import datetime
 from decimal import Decimal
 from enum import Enum
+from typing import NewType, Set
+from uuid import UUID
 
 from sqlalchemy.ext.hybrid import hybrid_property
 
 from ....database import BaseQuery, db, generate_uuid
+from ....typing import PartyID, UserID
 from ....util.instances import ReprBuilder
 
 from ...user.models.user import User
@@ -21,11 +24,17 @@ from ...user.models.user import User
 from ..article.models import Article
 
 
+OrderID = NewType('OrderID', UUID)
+
+
+OrderNumber = NewType('OrderNumber', str)
+
+
 class Orderer(object):
     """Someone who orders articles."""
 
-    def __init__(self, user, first_names, last_name, country, zip_code, city,
-                 street):
+    def __init__(self, user: User, first_names: str, last_name: str,
+                 country: str, zip_code: str, city: str, street: str) -> None:
         self.user = user
         self.first_names = first_names
         self.last_name = last_name
@@ -70,10 +79,10 @@ OrderTuple = namedtuple('OrderTuple', [
 
 class OrderQuery(BaseQuery):
 
-    def for_party_id(self, party_id):
+    def for_party_id(self, party_id: PartyID) -> BaseQuery:
         return self.filter_by(party_id=party_id)
 
-    def placed_by_id(self, user_id):
+    def placed_by_id(self, user_id: UserID) -> BaseQuery:
         return self.filter_by(placed_by_id=user_id)
 
 
@@ -107,8 +116,10 @@ class Order(db.Model):
     shipping_required = db.Column(db.Boolean, nullable=False)
     shipped_at = db.Column(db.DateTime, nullable=True)
 
-    def __init__(self, party_id, order_number, placed_by, first_names,
-                 last_name, country, zip_code, city, street, payment_method):
+    def __init__(self, party_id: PartyID, order_number: OrderNumber,
+                 placed_by: UserID, first_names: str, last_name: str,
+                 country: str, zip_code: str, city: str, street,
+                 payment_method: PaymentMethod) -> None:
         self.party_id = party_id
         self.order_number = order_number
         self.placed_by = placed_by
@@ -122,60 +133,60 @@ class Order(db.Model):
         self.payment_state = PaymentState.open
 
     @hybrid_property
-    def payment_method(self):
+    def payment_method(self) -> PaymentMethod:
         return PaymentMethod[self._payment_method]
 
     @payment_method.setter
-    def payment_method(self, method):
+    def payment_method(self, method: PaymentMethod) -> None:
         assert method is not None
         self._payment_method = method.name
 
     @hybrid_property
-    def payment_state(self):
+    def payment_state(self) -> PaymentState:
         return PaymentState[self._payment_state]
 
     @payment_state.setter
-    def payment_state(self, state):
+    def payment_state(self, state: PaymentState) -> None:
         assert state is not None
         self._payment_state = state.name
 
     @property
-    def is_open(self):
+    def is_open(self) -> bool:
         return self.payment_state == PaymentState.open
 
     @property
-    def is_canceled(self):
+    def is_canceled(self) -> bool:
         return self.payment_state == PaymentState.canceled
 
     @property
-    def is_paid(self):
+    def is_paid(self) -> bool:
         return self.payment_state == PaymentState.paid
 
     @property
-    def item_total_quantity(self):
+    def item_total_quantity(self) -> int:
         """Return the sum of all items' quantities."""
         return sum(item.quantity for item in self.items)
 
-    def collect_articles(self):
+    def collect_articles(self) -> Set[Article]:
         """Return the articles associated with this order."""
         return {item.article for item in self.items}
 
-    def calculate_total_price(self):
+    def calculate_total_price(self) -> Decimal:
         return Decimal(sum(item.price * item.quantity for item in self.items))
 
     @property
-    def is_invoiced(self):
+    def is_invoiced(self) -> bool:
         return self.invoice_created_at is not None
 
     @property
-    def is_shipping_required(self):
+    def is_shipping_required(self) -> bool:
         return self.shipping_required
 
     @property
-    def is_shipped(self):
+    def is_shipped(self) -> bool:
         return self.shipped_at is not None
 
-    def to_tuple(self):
+    def to_tuple(self) -> OrderTuple:
         """Return a tuple representation of (parts of) this entity."""
         items = [item.to_tuple() for item in self.items]
 
@@ -205,7 +216,7 @@ class Order(db.Model):
             self.calculate_total_price(),
         )
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return ReprBuilder(self) \
             .add_with_lookup('id') \
             .add('party', self.party_id) \
@@ -235,7 +246,7 @@ class OrderItem(db.Model):
     quantity = db.Column(db.Integer, nullable=False)
     shipping_required = db.Column(db.Boolean, nullable=False)
 
-    def __init__(self, order, article, quantity):
+    def __init__(self, order: Order, article: Article, quantity: int) -> None:
         self.order = order
         self.article = article
         self.description = article.description
@@ -245,14 +256,14 @@ class OrderItem(db.Model):
         self.shipping_required = article.shipping_required
 
     @property
-    def unit_price(self):
+    def unit_price(self) -> Decimal:
         return self.price
 
     @property
-    def line_price(self):
+    def line_price(self) -> Decimal:
         return self.unit_price * self.quantity
 
-    def to_tuple(self):
+    def to_tuple(self) -> OrderItemTuple:
         """Return a tuple representation of (parts of) this entity."""
         return OrderItemTuple(
             self.article_number,
@@ -274,13 +285,14 @@ class OrderEvent(db.Model):
     order_id = db.Column(db.Uuid, db.ForeignKey('shop_orders.id'), index=True, nullable=False)
     data = db.Column(db.JSONB)
 
-    def __init__(self, occured_at, event_type, order_id, **data):
+    def __init__(self, occured_at: datetime, event_type: str, order_id: OrderID,
+                 **data) -> None:
         self.occured_at = occured_at
         self.event_type = event_type
         self.order_id = order_id
         self.data = data
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return ReprBuilder(self) \
             .add_custom(repr(self.event_type)) \
             .add_with_lookup('order_id') \

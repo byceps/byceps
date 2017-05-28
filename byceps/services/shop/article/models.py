@@ -8,22 +8,31 @@ byceps.services.shop.article.models
 
 from datetime import datetime
 from decimal import Decimal
+from typing import Any, Iterator, List, NewType, Optional
+from uuid import UUID
 
 from Ranger import Range
 from Ranger.src.Range.Cut import Cut
 
 from ....database import BaseQuery, db, generate_uuid
+from ....typing import PartyID
 from ....util.instances import ReprBuilder
 
 from ...party.models import Party
 
 
+ArticleID = NewType('ArticleID', UUID)
+
+
+ArticleNumber = NewType('ArticleNumber', str)
+
+
 class ArticleQuery(BaseQuery):
 
-    def for_party_id(self, party_id):
+    def for_party_id(self, party_id: PartyID) -> BaseQuery:
         return self.filter_by(party_id=party_id)
 
-    def currently_available(self):
+    def currently_available(self) -> BaseQuery:
         """Select only articles that are available in between the
         temporal boundaries for this article, if specified.
         """
@@ -63,8 +72,10 @@ class Article(db.Model):
     requires_separate_order = db.Column(db.Boolean, default=False, nullable=False)
     shipping_required = db.Column(db.Boolean, default=False, nullable=False)
 
-    def __init__(self, party_id, item_number, description, price, tax_rate,
-                 quantity, *, available_from=None, available_until=None):
+    def __init__(self, party_id: PartyID, item_number: ArticleNumber,
+                 description: str, price: Decimal, tax_rate: Decimal,
+                 quantity: int, *, available_from: Optional[datetime]=None,
+                 available_until: Optional[datetime]=None) -> None:
         self.party_id = party_id
         self.item_number = item_number
         self.description = description
@@ -75,14 +86,14 @@ class Article(db.Model):
         self.quantity = quantity
 
     @property
-    def tax_rate_as_percentage(self):
+    def tax_rate_as_percentage(self) -> str:
         # Keep a digit after the decimal point in case
         # the tax rate is a fractional number.
         percentage = (self.tax_rate * 100).quantize(Decimal('.0'))
         return str(percentage).replace('.', ',')
 
     @property
-    def availability_range(self):
+    def availability_range(self) -> Range:
         """Assemble the date/time range of the articles availability."""
         start = self.available_from
         end = self.available_until
@@ -99,12 +110,12 @@ class Article(db.Model):
                 return range_all(datetime)
 
     @property
-    def is_available(self):
+    def is_available(self) -> bool:
         """Return `True` if the article is available at this moment in time."""
         now = datetime.now()
         return self.availability_range.contains(now)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return ReprBuilder(self) \
             .add_with_lookup('id') \
             .add('party', self.party_id) \
@@ -114,7 +125,7 @@ class Article(db.Model):
             .build()
 
 
-def range_all(theType):
+def range_all(theType: Any) -> Range:
     """Create a range than contains every value of the given type."""
     return Range(
         Cut.belowAll(theType=theType),
@@ -145,7 +156,8 @@ class AttachedArticle(db.Model):
     attached_to_article = db.relationship(Article, foreign_keys=[attached_to_article_number],
                                           backref=db.backref('attached_articles', collection_class=set))
 
-    def __init__(self, article, quantity, attached_to_article):
+    def __init__(self, article: Article, quantity: int,
+                 attached_to_article: Article) -> None:
         self.article = article
         self.quantity = quantity
         self.attached_to_article = attached_to_article
@@ -157,7 +169,8 @@ class AttachedArticle(db.Model):
 
 class ArticleCompilationItem(object):
 
-    def __init__(self, article, *, fixed_quantity=None):
+    def __init__(self, article: Article, *, fixed_quantity: Optional[int]=None
+                ) -> None:
         if (fixed_quantity is not None) and fixed_quantity < 1:
             raise ValueError(
                 'Fixed quantity, if given, must be a positive number.')
@@ -165,20 +178,20 @@ class ArticleCompilationItem(object):
         self.article = article
         self.fixed_quantity = fixed_quantity
 
-    def has_fixed_quantity(self):
+    def has_fixed_quantity(self) -> bool:
         return self.fixed_quantity is not None
 
 
 class ArticleCompilation(object):
 
-    def __init__(self):
-        self._items = []
+    def __init__(self) -> None:
+        self._items = []  # type: List[ArticleCompilationItem]
 
-    def append(self, item):
+    def append(self, item: ArticleCompilationItem) -> None:
         self._items.append(item)
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[ArticleCompilationItem]:
         return iter(self._items)
 
-    def is_empty(self):
+    def is_empty(self) -> bool:
         return not self._items
