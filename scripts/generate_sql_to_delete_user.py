@@ -26,6 +26,8 @@ def execute(user):
 
 def generate_delete_statements(user_id):
     for table, user_id_column in [
+        ('authn_credentials', 'user_id'),
+        ('authn_session_tokens', 'user_id'),
         ('authz_user_roles', 'user_id'),
         ('board_categories_lastviews', 'user_id'),
         ('board_topics_lastviews', 'user_id'),
