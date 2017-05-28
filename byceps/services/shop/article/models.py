@@ -155,6 +155,20 @@ class AttachedArticle(db.Model):
 # article compilation
 
 
+class ArticleCompilationItem(object):
+
+    def __init__(self, article, *, fixed_quantity=None):
+        if (fixed_quantity is not None) and fixed_quantity < 1:
+            raise ValueError(
+                'Fixed quantity, if given, must be a positive number.')
+
+        self.article = article
+        self.fixed_quantity = fixed_quantity
+
+    def has_fixed_quantity(self):
+        return self.fixed_quantity is not None
+
+
 class ArticleCompilation(object):
 
     def __init__(self):
@@ -168,17 +182,3 @@ class ArticleCompilation(object):
 
     def is_empty(self):
         return not self._items
-
-
-class ArticleCompilationItem(object):
-
-    def __init__(self, article, *, fixed_quantity=None):
-        if (fixed_quantity is not None) and fixed_quantity < 1:
-            raise ValueError(
-                'Fixed quantity, if given, must be a positive number.')
-
-        self.article = article
-        self.fixed_quantity = fixed_quantity
-
-    def has_fixed_quantity(self):
-        return self.fixed_quantity is not None

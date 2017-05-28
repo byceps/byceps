@@ -41,6 +41,33 @@ PaymentMethod = Enum('PaymentMethod', ['bank_transfer', 'cash', 'direct_debit'])
 PaymentState = Enum('PaymentState', ['open', 'canceled', 'paid'])
 
 
+OrderTuple = namedtuple('OrderTuple', [
+    'id',
+    'party_id',
+    'order_number',
+    'created_at',
+    'placed_by_id',
+    'first_names',
+    'last_name',
+    'country',
+    'zip_code',
+    'city',
+    'street',
+    'payment_method',
+    'payment_state',
+    'is_open',
+    'is_canceled',
+    'is_paid',
+    'is_invoiced',
+    'is_shipping_required',
+    'is_shipped',
+    'cancelation_reason',
+    'items',
+    'total_item_quantity',
+    'total_price',
+])
+
+
 class OrderQuery(BaseQuery):
 
     def for_party_id(self, party_id):
@@ -189,31 +216,8 @@ class Order(db.Model):
             .build()
 
 
-OrderTuple = namedtuple('OrderTuple', [
-    'id',
-    'party_id',
-    'order_number',
-    'created_at',
-    'placed_by_id',
-    'first_names',
-    'last_name',
-    'country',
-    'zip_code',
-    'city',
-    'street',
-    'payment_method',
-    'payment_state',
-    'is_open',
-    'is_canceled',
-    'is_paid',
-    'is_invoiced',
-    'is_shipping_required',
-    'is_shipped',
-    'cancelation_reason',
-    'items',
-    'total_item_quantity',
-    'total_price',
-])
+OrderItemTuple = namedtuple('OrderItemTuple',
+    'article_number, description, unit_price, tax_rate, quantity, line_price')
 
 
 class OrderItem(db.Model):
@@ -258,10 +262,6 @@ class OrderItem(db.Model):
             self.quantity,
             self.line_price,
         )
-
-
-OrderItemTuple = namedtuple('OrderItemTuple',
-    'article_number, description, unit_price, tax_rate, quantity, line_price')
 
 
 class OrderEvent(db.Model):

@@ -9,6 +9,23 @@ byceps.services.shop.cart.models
 from ....util.instances import ReprBuilder
 
 
+class CartItem(object):
+    """An article with a quantity."""
+
+    def __init__(self, article, quantity):
+        if quantity < 1:
+            raise ValueError('Quantity must be a positive number.')
+
+        self.article = article
+        self.quantity = quantity
+
+    def __repr__(self):
+        return ReprBuilder(self) \
+            .add('article', self.article.item_number) \
+            .add_with_lookup('quantity') \
+            .build()
+
+
 class Cart(object):
     """A shopping cart."""
 
@@ -28,21 +45,4 @@ class Cart(object):
     def __repr__(self):
         return ReprBuilder(self) \
             .add_custom('{:d} items'.format(len(self._items))) \
-            .build()
-
-
-class CartItem(object):
-    """An article with a quantity."""
-
-    def __init__(self, article, quantity):
-        if quantity < 1:
-            raise ValueError('Quantity must be a positive number.')
-
-        self.article = article
-        self.quantity = quantity
-
-    def __repr__(self):
-        return ReprBuilder(self) \
-            .add('article', self.article.item_number) \
-            .add_with_lookup('quantity') \
             .build()
