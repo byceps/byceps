@@ -16,7 +16,7 @@ from ...typing import BrandID, PartyID
 
 from ..brand.models import Brand
 
-from .models import Party
+from .models import Party, PartyTuple
 
 
 class UnknownPartyId(Exception):
@@ -24,18 +24,18 @@ class UnknownPartyId(Exception):
 
 
 def create_party(party_id: PartyID, brand_id: BrandID, title: str,
-                 starts_at: datetime, ends_at: datetime) -> Party:
+                 starts_at: datetime, ends_at: datetime) -> PartyTuple:
     """Create a party."""
     party = Party(party_id, brand_id, title, starts_at, ends_at)
 
     db.session.add(party)
     db.session.commit()
 
-    return party
+    return party.to_tuple()
 
 
 def update_party(party_id: PartyID, title: str, starts_at: datetime,
-                 ends_at: datetime, is_archived: bool) -> Party:
+                 ends_at: datetime, is_archived: bool) -> PartyTuple:
     """Update a party."""
     party = find_party(party_id)
 
@@ -49,7 +49,7 @@ def update_party(party_id: PartyID, title: str, starts_at: datetime,
 
     db.session.commit()
 
-    return party
+    return party.to_tuple()
 
 
 def count_parties() -> int:
@@ -83,31 +83,37 @@ def get_all_parties_with_brands() -> List[Party]:
         .all()
 
 
-def get_active_parties() -> List[Party]:
+def get_active_parties() -> List[PartyTuple]:
     """Return active (i.e. non-archived) parties."""
-    return Party.query \
+    parties = Party.query \
         .filter_by(is_archived=False) \
         .order_by(Party.starts_at.desc()) \
         .all()
 
+    return [party.to_tuple() for party in parties]
 
-def get_archived_parties_for_brand(brand_id: BrandID) -> List[Party]:
+
+def get_archived_parties_for_brand(brand_id: BrandID) -> List[PartyTuple]:
     """Return archived parties for that brand."""
-    return Party.query \
+    parties = Party.query \
         .filter_by(brand_id=brand_id) \
         .filter_by(is_archived=True) \
         .order_by(Party.starts_at.desc()) \
         .all()
 
+    return [party.to_tuple() for party in parties]
 
-def get_parties(party_ids: Set[PartyID]) -> List[Party]:
+
+def get_parties(party_ids: Set[PartyID]) -> List[PartyTuple]:
     """Return the parties with those IDs."""
     if not party_ids:
         return []
 
-    return Party.query \
+    parties = Party.query \
         .filter(Party.id.in_(party_ids)) \
         .all()
+
+    return [party.to_tuple() for party in parties]
 
 
 def get_parties_for_brand_paginated(brand_id: BrandID, page: int,

@@ -136,9 +136,7 @@ def get_attended_parties(user_id: UserID) -> Sequence[PartyTuple]:
     party_ids = set(chain(ticket_attendance_party_ids,
                           archived_attendance_party_ids))
 
-    parties = party_service.get_parties(party_ids)
-
-    return [party.to_tuple() for party in parties]
+    return party_service.get_parties(party_ids)
 
 
 def _get_attended_party_ids(user_id: UserID) -> Set[PartyID]:
