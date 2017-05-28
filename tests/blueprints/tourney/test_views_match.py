@@ -77,5 +77,5 @@ class MatchTestCase(AbstractAppTestCase):
             return client.post(url, data=form_data)
 
     def assertCommentCountForMatch(self, match, expected):
-        comment_count = MatchComment.query.for_match(match).count()
+        comment_count = MatchComment.query.for_match(match.id).count()
         self.assertEqual(comment_count, expected)

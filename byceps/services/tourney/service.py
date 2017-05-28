@@ -80,10 +80,10 @@ def get_categories_for_party(party_id: PartyID) -> Sequence[TourneyCategory]:
 # matches
 
 
-def get_match_comments(match: Match) -> Sequence[MatchComment]:
+def get_match_comments(match_id: MatchID) -> Sequence[MatchComment]:
     """Return comments on the match, ordered chronologically."""
     return MatchComment.query \
-        .for_match(match) \
+        .for_match(match_id) \
         .options(
             db.joinedload(MatchComment.created_by),
         ) \

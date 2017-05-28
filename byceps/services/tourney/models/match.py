@@ -32,8 +32,8 @@ MatchCommentID = NewType('MatchCommentID', UUID)
 
 class MatchCommentQuery(BaseQuery):
 
-    def for_match(self, match: Match) -> BaseQuery:
-        return self.filter_by(match=match)
+    def for_match(self, match_id: MatchID) -> BaseQuery:
+        return self.filter_by(match_id=match_id)
 
 
 class MatchComment(db.Model):

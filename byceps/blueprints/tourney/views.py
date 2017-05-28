@@ -29,7 +29,7 @@ def match_comments_view(match_id):
     """Render the comments on a match."""
     match = _get_match_or_404(match_id)
 
-    comments = tourney_service.get_match_comments(match)
+    comments = tourney_service.get_match_comments(match.id)
 
     return {
         'comments': comments,
