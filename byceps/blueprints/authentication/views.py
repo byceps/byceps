@@ -149,7 +149,7 @@ def login():
     if not in_admin_mode:
         brand_id = g.party.brand_id
 
-        terms_version = terms_service.get_current_version(brand_id)
+        terms_version = terms_service.find_current_version(brand_id)
 
         if not terms_version:
             raise Exception(

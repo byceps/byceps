@@ -66,6 +66,18 @@ class Version(db.Model):
             .build()
 
 
+class CurrentVersionAssociation(db.Model):
+    __tablename__ = 'terms_current_versions'
+
+    brand_id = db.Column(db.Unicode(20), db.ForeignKey('brands.id'), primary_key=True)
+    version_id = db.Column(db.Uuid, db.ForeignKey('terms_versions.id'), unique=True, nullable=False)
+    version = db.relationship(Version)
+
+    def __init__(self, brand_id: BrandID, version_id: VersionID) -> None:
+        self.brand_id = brand_id
+        self.version_id = version_id
+
+
 ConsentContext = Enum('ConsentContext', ['account_creation', 'separate_action'])
 
 
