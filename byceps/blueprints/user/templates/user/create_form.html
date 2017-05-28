@@ -15,6 +15,7 @@
       {{ form_field(form.email_address, type='email', maxlength=80, required='required') }}
       {{ form_field(form.password, type='password', maxlength=40, required='required') }}
       {%- set consent_to_terms_label = 'Ich akzeptiere die <a href="%s" target="_blank">Allgemeinen Geschäftsbedingungen</a>.'|format(url_for('terms.view_current')) %}
+      {{ form_field(form.terms_version_id, show_label=False, required='required') }}
       {{ form_field_checkbox(form.consent_to_terms, consent_to_terms_label) }}
       {{ form_field_checkbox(form.subscribe_to_newsletter, 'Ich möchte den Newsletter erhalten.') }}
     {%- endcall %}

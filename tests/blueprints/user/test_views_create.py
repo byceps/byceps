@@ -46,6 +46,7 @@ class UserCreateTestCase(AbstractAppTestCase):
             'last_name': 'Protagonist',
             'email_address': 'hiro@metaverse.org',
             'password': 'Snow_Crash',
+            'terms_version_id': self.terms_version_id,
             'consent_to_terms': 'y',
         }
 

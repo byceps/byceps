@@ -8,8 +8,10 @@ byceps.blueprints.user.forms
 
 from itertools import chain
 from string import ascii_letters, digits
+from uuid import UUID
 
-from wtforms import BooleanField, DateField, PasswordField, StringField
+from wtforms import BooleanField, DateField, HiddenField, PasswordField, \
+    StringField
 from wtforms.validators import InputRequired, Length, Optional, ValidationError
 
 from ...util.l10n import LocalizedForm
@@ -27,6 +29,7 @@ class UserCreateForm(LocalizedForm):
     last_name = StringField('Nachname', [InputRequired(), Length(min=2, max=40)])
     email_address = StringField('E-Mail-Adresse', [InputRequired(), Length(min=6)])
     password = PasswordField('Passwort', [InputRequired(), Length(min=8)])
+    terms_version_id = HiddenField('AGB-Version', [InputRequired()])
     consent_to_terms = BooleanField('AGB', [InputRequired()])
     subscribe_to_newsletter = BooleanField('Newsletter')
 
@@ -35,6 +38,12 @@ class UserCreateForm(LocalizedForm):
             raise ValidationError(
                 'Enthält ungültige Zeichen. Erlaubt sind Buchstaben, '
                 ' Ziffern und diese Sonderzeichen: {}'.format(SPECIAL_CHARS))
+
+    def validate_terms_version_id(form, field):
+        try:
+            UUID(field.data)
+        except ValueError:
+            raise ValueError('Ungültige AGB-Version.')
 
 
 class DetailsForm(LocalizedForm):

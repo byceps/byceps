@@ -133,7 +133,12 @@ def create_form(erroneous_form=None):
         flash_error('Das Erstellen von Benutzerkonten ist deaktiviert.')
         abort(403)
 
-    form = erroneous_form if erroneous_form else UserCreateForm()
+    brand_id = g.party.brand_id
+    terms_version = terms_service.get_current_version(brand_id)
+
+    form = erroneous_form if erroneous_form \
+        else UserCreateForm(terms_version_id=terms_version.id)
+
     return {'form': form}
 
 
@@ -153,6 +158,7 @@ def create():
     last_name = form.last_name.data.strip()
     email_address = form.email_address.data.lower()
     password = form.password.data
+    terms_version_id = form.terms_version_id.data
     consent_to_terms = form.consent_to_terms.data
     subscribe_to_newsletter = form.subscribe_to_newsletter.data
 
@@ -168,9 +174,11 @@ def create():
 
     brand_id = g.party.brand_id
 
-    try:
-        terms_version = terms_service.get_current_version(brand_id)
+    terms_version = terms_service.find_version(terms_version_id)
+    if terms_version.brand_id != brand_id:
+        abort(400, 'Die AGB-Version gehört nicht zu dieser Veranstaltung.')
 
+    try:
         user = user_service.create_user(screen_name, email_address, password,
                                         first_names, last_name, brand_id,
                                         terms_version.id,
