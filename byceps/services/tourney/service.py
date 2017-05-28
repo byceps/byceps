@@ -91,10 +91,10 @@ def get_match_comments(match_id: MatchID) -> Sequence[MatchComment]:
         .all()
 
 
-def create_match_comment(match: Match, creator_id: UserID, body: str
+def create_match_comment(match_id: MatchID, creator_id: UserID, body: str
                         ) -> MatchComment:
     """Create a comment to a match."""
-    match_comment = MatchComment(match, creator_id, body)
+    match_comment = MatchComment(match_id, creator_id, body)
 
     db.session.add(match_comment)
     db.session.commit()

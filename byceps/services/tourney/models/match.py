@@ -49,7 +49,8 @@ class MatchComment(db.Model):
     created_by = db.relationship(User)
     body = db.Column(db.UnicodeText, nullable=False)
 
-    def __init__(self, match: Match, creator_id: UserID, body: str) -> None:
-        self.match = match
+    def __init__(self, match_id: MatchID, creator_id: UserID, body: str
+                ) -> None:
+        self.match_id = match_id
         self.created_by_id = creator_id
         self.body = body
