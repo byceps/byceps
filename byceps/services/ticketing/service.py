@@ -20,6 +20,7 @@ from ..party.models import Party, PartyTuple
 from ..party import service as party_service
 from ..seating.models.category import Category
 from ..seating.models.seat import Seat
+from ..user.models.user import UserTuple
 from ..user import service as user_service
 
 from .models.archived_attendance import ArchivedAttendance
@@ -200,7 +201,7 @@ def count_tickets_for_party(party_id: PartyID) -> int:
 
 
 def get_attendees_by_party(parties: Iterable[Party]
-                          ) -> Dict[Party, Set[UserID]]:
+                          ) -> Dict[Party, Set[UserTuple]]:
     """Return the parties' attendees, indexed by party."""
     if not parties:
         return {}
