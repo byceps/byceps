@@ -151,7 +151,8 @@ def get_article_compilation_for_orderable_articles(party_id: PartyID
 
 
 def get_article_compilation_for_single_article(article: Article, *,
-                                               fixed_quantity: Optional[int]=None):
+                                               fixed_quantity: Optional[int]=None
+                                              ) -> ArticleCompilation:
     """Return a compilation built from just the given article plus the
     articles attached to it (if any).
     """
