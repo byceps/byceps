@@ -40,7 +40,7 @@ def info():
 @templated
 def archive():
     """Show archived parties."""
-    brand_id = g.party.brand.id
+    brand_id = g.party.brand_id
     archived_parties = party_service.get_archived_parties_for_brand(brand_id)
 
     party_ids = {party.id for party in archived_parties}

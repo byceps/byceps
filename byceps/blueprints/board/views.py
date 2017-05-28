@@ -47,7 +47,8 @@ blueprint.add_app_template_filter(render_html, 'bbcode')
 @templated
 def category_index():
     """List categories."""
-    brand_id = g.party.brand.id
+    brand_id = g.party.brand_id
+
     categories = board_category_service.get_categories_with_last_updates(brand_id)
 
     return {
@@ -60,8 +61,9 @@ def category_index():
 @templated
 def category_view(slug, page):
     """List latest topics in the category."""
-    category = board_category_service.find_category_by_slug(g.party.brand.id,
-                                                            slug)
+    brand_id = g.party.brand_id
+
+    category = board_category_service.find_category_by_slug(brand_id, slug)
     if category is None:
         abort(404)
 
@@ -129,11 +131,13 @@ def topic_view(topic_id, page):
 
     is_last_page = not postings.has_next
 
+    brand_id = g.party.brand_id
+
     creator_ids = {posting.creator_id for posting in postings.items}
     badges_by_user_id = badge_service.get_badges_for_users(creator_ids,
                                                            featured_only=True)
     badges_by_user_id = _select_global_and_brand_badges(badges_by_user_id,
-                                                        g.party.brand.id)
+                                                        brand_id)
 
     context = {
         'topic': topic,
@@ -278,8 +282,10 @@ def topic_moderate_form(topic_id):
     """Show a form to moderate the topic."""
     topic = _get_topic_or_404(topic_id)
 
-    categories = board_category_service.get_categories_excluding(
-        g.party.brand.id, topic.category_id)
+    brand_id = g.party.brand_id
+
+    categories = board_category_service.get_categories_excluding(brand_id,
+        topic.category_id)
 
     return {
         'topic': topic,

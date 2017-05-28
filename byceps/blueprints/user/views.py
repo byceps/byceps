@@ -95,7 +95,7 @@ def view_current():
         abort(404)
 
     if get_site_mode().is_public():
-        brand_id = g.party.brand.id
+        brand_id = g.party.brand_id
         subscribed_to_newsletter = newsletter_service.is_subscribed(user.id,
                                                                     brand_id)
     else:
@@ -170,9 +170,9 @@ def create():
         return create_form(form)
 
     try:
+        brand_id = g.party.brand_id
         user = user_service.create_user(screen_name, email_address, password,
-                                        first_names, last_name,
-                                        g.party.brand.id,
+                                        first_names, last_name, brand_id,
                                         subscribe_to_newsletter)
     except user_service.UserCreationFailed:
         flash_error('Das Benutzerkonto für "{}" konnte nicht angelegt werden.',

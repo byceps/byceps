@@ -147,12 +147,14 @@ def login():
             abort(403)
 
     if not in_admin_mode:
-        terms_version = terms_service.get_current_version(g.party.brand.id)
+        brand_id = g.party.brand_id
+
+        terms_version = terms_service.get_current_version(brand_id)
 
         if not terms_version:
             raise Exception(
                 'No terms of service defined for brand "{}", denying login.'
-                .format(g.party.brand.id))
+                .format(brand_id))
 
         if not terms_service.has_user_accepted_version(user.id, terms_version.id):
             verification_token = verification_token_service \

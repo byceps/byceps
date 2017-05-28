@@ -21,7 +21,7 @@ blueprint = create_blueprint('newsletter', __name__)
 @respond_no_content
 def subscribe():
     user = _get_current_user_or_404()
-    brand_id = g.party.brand.id
+    brand_id = g.party.brand_id
 
     newsletter_service.subscribe(user.id, brand_id)
 
@@ -32,7 +32,7 @@ def subscribe():
 @respond_no_content
 def unsubscribe():
     user = _get_current_user_or_404()
-    brand_id = g.party.brand.id
+    brand_id = g.party.brand_id
 
     newsletter_service.unsubscribe(user.id, brand_id)
 
