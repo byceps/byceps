@@ -9,6 +9,8 @@ byceps.services.party.service
 from datetime import datetime
 from typing import Dict, List, Optional, Set
 
+from flask_sqlalchemy import Pagination
+
 from ...database import db
 from ...typing import BrandID, PartyID
 
@@ -109,7 +111,7 @@ def get_parties(party_ids: Set[PartyID]) -> List[Party]:
 
 
 def get_parties_for_brand_paginated(brand_id: BrandID, page: int,
-                                    per_page: int):
+                                    per_page: int) -> Pagination:
     """Return the parties for that brand to show on the specified page."""
     return Party.query \
         .filter_by(brand_id=brand_id) \
