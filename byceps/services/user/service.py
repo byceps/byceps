@@ -121,7 +121,7 @@ def get_anonymous_user() -> AnonymousUser:
     return AnonymousUser()
 
 
-def index_users_by_id(users: Set[User]) -> Dict[UserID, User]:
+def index_users_by_id(users: Set[UserTuple]) -> Dict[UserID, UserTuple]:
     """Map the users' IDs to the corresponding user objects."""
     return {user.id: user for user in users}
 
