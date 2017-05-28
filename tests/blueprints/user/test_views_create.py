@@ -7,6 +7,7 @@ from byceps.services.authentication.password.models import Credential
 from byceps.services.authentication.session.models import SessionToken
 from byceps.services.authorization.models import Role, UserRole
 from byceps.services.terms.models import Version as TermsVersion
+from byceps.services.terms import service as terms_service
 from byceps.services.user.models.user import User
 
 from tests.base import AbstractAppTestCase
@@ -23,10 +24,13 @@ class UserCreateTestCase(AbstractAppTestCase):
         self.setup_roles()
 
     def setup_terms(self):
-        self.terms_version = TermsVersion(self.brand.id, self.admin.id,
-                                          '01-Jan-2016', 'ToS')
-        self.db.session.add(self.terms_version)
+        terms_version = TermsVersion(self.brand.id, self.admin.id,
+                                     '01-Jan-2016', 'ToS')
+
+        self.db.session.add(terms_version)
         self.db.session.commit()
+
+        self.terms_version_id = terms_version.id
 
     def setup_roles(self):
         self.board_user_role = create_role('board_user')
@@ -90,6 +94,11 @@ class UserCreateTestCase(AbstractAppTestCase):
             .filter_by(user_id=user.id) \
             .all()
         self.assertIn(board_user_role, actual_roles)
+
+        # consent to terms of service
+        terms_consents = terms_service.get_consents_by_user(user.id)
+        self.assertEqual(len(terms_consents), 1)
+        self.assertEqual(terms_consents[0].version_id, self.terms_version_id)
 
     # helpers
 
