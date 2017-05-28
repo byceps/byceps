@@ -8,7 +8,7 @@ byceps.blueprints.user.views
 
 from operator import attrgetter
 
-from flask import abort, g, jsonify, request, Response
+from flask import abort, g, jsonify, request
 
 from ...config import get_site_mode, get_user_registration_enabled
 from ...services.country import service as country_service
@@ -21,7 +21,7 @@ from ...services.verification_token import service as verification_token_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_error, flash_notice, flash_success
 from ...util.templating import templated
-from ...util.views import redirect_to
+from ...util.views import create_empty_json_response, redirect_to
 
 from .forms import DetailsForm, RequestConfirmationEmailForm, UserCreateForm
 from . import signals
@@ -73,10 +73,10 @@ def view_as_json(user_id):
     user = user_service.find_user(user_id)
 
     if not user:
-        return _empty_json_response(404)
+        return create_empty_json_response(404)
 
     if user.deleted:
-        return _empty_json_response(410)
+        return create_empty_json_response(410)
 
     return jsonify({
         'id': user.id,
@@ -116,16 +116,12 @@ def view_current_as_json():
     user = g.current_user
 
     if not user.is_active:
-        return _empty_json_response(404)
+        return create_empty_json_response(404)
 
     return jsonify({
         'id': user.id,
         'screen_name': user.screen_name,
     })
-
-
-def _empty_json_response(status):
-    return Response('{}', status=status, mimetype='application/json')
 
 
 @blueprint.route('/create')

@@ -13,6 +13,13 @@ from functools import wraps
 from flask import jsonify, redirect, Response, stream_with_context, url_for
 
 
+def create_empty_json_response(status):
+    """Create a JSON response with the given status code and an empty
+    object as its content.
+    """
+    return Response('{}', status=status, mimetype='application/json')
+
+
 def jsonified(f):
     """Send the data returned by the decorated function as JSON."""
     @wraps(f)
