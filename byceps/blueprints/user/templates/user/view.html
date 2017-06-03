@@ -47,7 +47,7 @@
 
       <div class="user-profile-header-column">
         <div class="user-profile-header-cell-top stats">
-          {{ badges|length }}
+          {{ badges_with_awarding_quantity|length }}
         </div>
         <div class="user-profile-header-cell-bottom stats-label">
           Abzeichen
@@ -86,10 +86,10 @@
               {%- endif %}
             </td>
           </tr>
-          {%- if badges %}
+          {%- if badges_with_awarding_quantity %}
           <tr>
             <th>Abzeichen</th>
-            <td>{{ render_user_badges_list(badges) }}</td>
+            <td>{{ render_user_badges_list(badges_with_awarding_quantity) }}</td>
           </tr>
           {%- endif %}
         </table>

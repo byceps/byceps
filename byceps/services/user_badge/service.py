@@ -59,13 +59,33 @@ def get_badges(badge_ids: Set[BadgeID], *, featured_only: bool=False
     return {badge.to_tuple() for badge in badges}
 
 
-def get_badges_for_user(user_id: UserID) -> Set[BadgeTuple]:
-    """Return all badges that have been awarded to the user."""
-    badges = Badge.query \
-        .join(BadgeAwarding).filter_by(user_id=user_id) \
+def get_badges_for_user(user_id: UserID) -> Dict[BadgeTuple, int]:
+    """Return all badges that have been awarded to the user (and how often)."""
+    rows = db.session \
+        .query(
+            BadgeAwarding.badge_id,
+            db.func.count(BadgeAwarding.badge_id)
+        ) \
+        .filter(BadgeAwarding.user_id == user_id) \
+        .group_by(
+            BadgeAwarding.badge_id,
+        ) \
         .all()
 
-    return {badge.to_tuple() for badge in badges}
+    badge_ids_with_awarding_quantity = {row[0]: row[1] for row in rows}
+
+    badge_ids = set(badge_ids_with_awarding_quantity.keys())
+
+    badges = Badge.query \
+        .filter(Badge.id.in_(badge_ids)) \
+        .all()
+
+    badges_with_awarding_quantity = {}
+    for badge in badges:
+        quantity = badge_ids_with_awarding_quantity[badge.id]
+        badges_with_awarding_quantity[badge.to_tuple()] = quantity
+
+    return badges_with_awarding_quantity
 
 
 def get_badges_for_users(user_ids: Set[UserID], *, featured_only: bool=False

@@ -38,12 +38,13 @@ class UserBadgeAwardingServiceTestCase(AbstractAppTestCase):
             badge = user_badge_service.create_badge('Certificate of Awesomeness', 'awesomeness.svg')
 
             awarding1 = user_badge_service.award_badge_to_user(badge.id, user1.id)
+            awarding1 = user_badge_service.award_badge_to_user(badge.id, user1.id)
             awarding2 = user_badge_service.award_badge_to_user(badge.id, user2.id)
 
             actual = user_badge_service.get_awardings_of_badge(badge.id)
 
             self.assertEqual(actual, {
-                QuantifiedBadgeAwardingTuple(badge.id, user1.id, 1),
+                QuantifiedBadgeAwardingTuple(badge.id, user1.id, 2),
                 QuantifiedBadgeAwardingTuple(badge.id, user2.id, 1),
             })
 

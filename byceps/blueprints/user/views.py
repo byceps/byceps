@@ -45,7 +45,7 @@ def view(user_id):
     if user.deleted:
         abort(410, 'User account has been deleted.')
 
-    badges = badge_service.get_badges_for_user(user.id)
+    badges_with_awarding_quantity = badge_service.get_badges_for_user(user.id)
 
     orga_team_membership = orga_team_service.find_membership_for_party(user.id,
         g.party.id)
@@ -58,7 +58,7 @@ def view(user_id):
 
     return {
         'user': user,
-        'badges': badges,
+        'badges_with_awarding_quantity': badges_with_awarding_quantity,
         'orga_team_membership': orga_team_membership,
         'current_party_tickets': current_party_tickets,
         'attended_parties': attended_parties,

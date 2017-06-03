@@ -74,7 +74,7 @@ def view(user_id):
     """Show a user's interal profile."""
     user = _get_user_or_404(user_id)
 
-    badges = badge_service.get_badges_for_user(user.id)
+    badges_with_awarding_quantity = badge_service.get_badges_for_user(user.id)
 
     orders = order_service.get_orders_placed_by_user(user.id)
     order_party_ids = {order.party_id for order in orders}
@@ -84,7 +84,7 @@ def view(user_id):
 
     return {
         'user': user,
-        'badges': badges,
+        'badges_with_awarding_quantity': badges_with_awarding_quantity,
         'orders': orders,
         'order_parties_by_id': order_parties_by_id,
         'parties_and_tickets': parties_and_tickets,
