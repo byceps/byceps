@@ -6,6 +6,7 @@ byceps.services.shop.article.service
 :License: Modified BSD, see LICENSE for details.
 """
 
+from datetime import datetime
 from decimal import Decimal
 from typing import Dict, Optional, Sequence
 
@@ -34,7 +35,8 @@ def create_article(party_id: PartyID, item_number: ArticleNumber,
 
 
 def update_article(article: Article, description: str, price: Decimal,
-                   tax_rate: Decimal, quantity: int,
+                   tax_rate: Decimal, available_from: Optional[datetime],
+                   available_until: Optional[datetime], quantity: int,
                    max_quantity_per_order: int, not_directly_orderable: bool,
                    requires_separate_order: bool, shipping_required: bool
                   ) -> None:
@@ -42,6 +44,8 @@ def update_article(article: Article, description: str, price: Decimal,
     article.description = description
     article.price = price
     article.tax_rate = tax_rate
+    article.available_from = available_from
+    article.available_until = available_until
     article.quantity = quantity
     article.max_quantity_per_order = max_quantity_per_order
     article.not_directly_orderable = not_directly_orderable

@@ -182,6 +182,8 @@ def update(article_id):
     description = form.description.data.strip()
     price = form.price.data
     tax_rate = form.tax_rate.data
+    available_from = form.available_from.data
+    available_until = form.available_until.data
     quantity = form.quantity.data
     max_quantity_per_order = form.max_quantity_per_order.data
     not_directly_orderable = form.not_directly_orderable.data
@@ -189,7 +191,8 @@ def update(article_id):
     shipping_required = form.shipping_required.data
 
     article_service.update_article(article, description, price, tax_rate,
-                                   quantity, max_quantity_per_order,
+                                   available_from, available_until, quantity,
+                                   max_quantity_per_order,
                                    not_directly_orderable,
                                    requires_separate_order, shipping_required)
 

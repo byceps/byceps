@@ -6,8 +6,8 @@ byceps.blueprints.shop_article_admin.forms
 :License: Modified BSD, see LICENSE for details.
 """
 
-from wtforms import BooleanField, DecimalField, IntegerField, SelectField, \
-    StringField
+from wtforms import BooleanField, DateTimeField, DecimalField, IntegerField, \
+    SelectField, StringField
 from wtforms.validators import InputRequired, Optional
 
 from ...util.l10n import LocalizedForm
@@ -21,6 +21,8 @@ class ArticleCreateForm(LocalizedForm):
 
 
 class ArticleUpdateForm(ArticleCreateForm):
+    available_from = DateTimeField('Verfügbar ab', format='%d.%m.%Y %H:%M', validators=[Optional()])
+    available_until = DateTimeField('Verfügbar bis', format='%d.%m.%Y %H:%M', validators=[Optional()])
     max_quantity_per_order = IntegerField('maximale Anzahl pro Bestellung', validators=[Optional()])
     not_directly_orderable = BooleanField('nur indirekt bestellbar')
     requires_separate_order = BooleanField('muss separat bestellt werden')
