@@ -36,7 +36,10 @@ def index_for_brand(brand_id):
 
     versions = terms_service.get_versions_for_brand(brand.id)
 
+    current_version_id = terms_service.find_current_version_id(brand.id)
+
     return {
         'brand': brand,
         'versions': versions,
+        'current_version_id': current_version_id,
     }
