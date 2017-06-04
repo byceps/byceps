@@ -10,6 +10,10 @@
 
   <h1>{{ title }}</h1>
 
+  {%- if not current_version_id %}
+  <div class="notification-error" style="margin-bottom: 1rem;"><strong>Achtung:</strong> Es ist keine aktuelle AGB-Version für diese Marke festgelegt.</div>
+  {%- endif %}
+
   <table class="index wide">
     <thead>
       <tr>
