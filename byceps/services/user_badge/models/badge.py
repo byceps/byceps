@@ -37,11 +37,13 @@ class Badge(db.Model):
 
     def __init__(self, label: str, image_filename: str, *,
                  brand_id: Optional[BrandID]=None,
-                 description: Optional[str]=None) -> None:
+                 description: Optional[str]=None,
+                 is_featured: bool=False) -> None:
         self.brand_id = brand_id
         self.label = label
         self.description = description
         self.image_filename = image_filename
+        self.is_featured = is_featured
 
     @property
     def image_url(self) -> str:

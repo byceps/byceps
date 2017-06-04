@@ -19,10 +19,11 @@ from .models.badge import Badge, BadgeID, BadgeTuple
 
 def create_badge(label: str, image_filename: str, *,
                  brand_id: Optional[BrandID]=None,
-                 description: Optional[str]=None) -> BadgeTuple:
+                 description: Optional[str]=None,
+                 is_featured: bool=False) -> BadgeTuple:
     """Introduce a new badge."""
     badge = Badge(label, image_filename, brand_id=brand_id,
-                  description=description)
+                  description=description, is_featured=is_featured)
 
     db.session.add(badge)
     db.session.commit()
