@@ -18,7 +18,7 @@ from ...typing import PartyID, UserID
 
 from ..party.models import Party, PartyTuple
 from ..party import service as party_service
-from ..seating.models.category import Category
+from ..seating.models.category import Category, CategoryID
 from ..seating.models.seat import Seat
 from ..user.models.user import UserTuple
 from ..user import service as user_service
@@ -32,15 +32,16 @@ from .models.ticket_bundle import TicketBundle
 # tickets
 
 
-def create_ticket(category: Category, owned_by_id: UserID) -> Sequence[Ticket]:
+def create_ticket(category_id: CategoryID, owned_by_id: UserID
+                 ) -> Sequence[Ticket]:
     """Create a single ticket."""
-    return create_tickets(category, owned_by_id, 1)
+    return create_tickets(category_id, owned_by_id, 1)
 
 
-def create_tickets(category: Category, owned_by_id: UserID, quantity: int
+def create_tickets(category_id: CategoryID, owned_by_id: UserID, quantity: int
                   ) -> Sequence[Ticket]:
     """Create a number of tickets of the same category for a single owner."""
-    tickets = list(_build_tickets(category, owned_by_id, quantity))
+    tickets = list(_build_tickets(category_id, owned_by_id, quantity))
 
     db.session.add_all(tickets)
     db.session.commit()
@@ -48,13 +49,13 @@ def create_tickets(category: Category, owned_by_id: UserID, quantity: int
     return tickets
 
 
-def _build_tickets(category: Category, owned_by_id: UserID, quantity: int, *,
-                   bundle: Optional[TicketBundle]=None) -> Iterator[Ticket]:
+def _build_tickets(category_id: CategoryID, owned_by_id: UserID, quantity: int,
+                   *, bundle: Optional[TicketBundle]=None) -> Iterator[Ticket]:
     if quantity < 1:
         raise ValueError('Ticket quantity must be positive.')
 
     for _ in range(quantity):
-        yield Ticket(category, owned_by_id, bundle=bundle)
+        yield Ticket(category_id, owned_by_id, bundle=bundle)
 
 
 def find_ticket(ticket_id: TicketID) -> Optional[Ticket]:
@@ -254,16 +255,16 @@ def get_attendee_ids_for_parties(party_ids: Set[PartyID]
 # ticket bundles
 
 
-def create_ticket_bundle(category: Category, ticket_quantity: int,
+def create_ticket_bundle(category_id: CategoryID, ticket_quantity: int,
                          owned_by_id: UserID) -> TicketBundle:
     """Create a ticket bundle and the given quantity of tickets."""
     if ticket_quantity < 1:
         raise ValueError('Ticket quantity must be positive.')
 
-    bundle = TicketBundle(category.id, ticket_quantity, owned_by_id)
+    bundle = TicketBundle(category_id, ticket_quantity, owned_by_id)
     db.session.add(bundle)
 
-    tickets = list(_build_tickets(category, owned_by_id, ticket_quantity,
+    tickets = list(_build_tickets(category_id, owned_by_id, ticket_quantity,
                                   bundle=bundle))
     db.session.add_all(tickets)
 

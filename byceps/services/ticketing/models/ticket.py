@@ -14,7 +14,7 @@ from ....database import BaseQuery, db, generate_uuid
 from ....typing import PartyID, UserID
 from ....util.instances import ReprBuilder
 
-from ...seating.models.category import Category
+from ...seating.models.category import Category, CategoryID
 from ...seating.models.seat import Seat
 from ...user.models.user import User
 
@@ -59,11 +59,12 @@ class Ticket(db.Model):
     used_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=True)
     used_by = db.relationship(User, foreign_keys=[used_by_id])
 
-    def __init__(self, category: Category, owned_by_id: UserID, *,
+    def __init__(self, category_id: CategoryID, owned_by_id: UserID, *,
                  bundle: Optional[TicketBundle]=None) -> None:
         if bundle is not None:
             self.bundle = bundle
-        self.category = category
+
+        self.category_id = category_id
         self.owned_by_id = owned_by_id
 
     def get_seat_manager(self) -> User:

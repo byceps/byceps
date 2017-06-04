@@ -74,8 +74,10 @@ def test_is_user_managed_by(owned_by_id, user_managed_by_id, user_id, expected):
 
 def create_ticket(owned_by_id, *, seat_managed_by_id=None,
                   user_managed_by_id=None):
-    category = None
-    ticket = Ticket(category, owned_by_id)
+    category_id = None
+
+    ticket = Ticket(category_id, owned_by_id)
     ticket.seat_managed_by_id = seat_managed_by_id
     ticket.user_managed_by_id = user_managed_by_id
+
     return ticket
