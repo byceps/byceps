@@ -13,6 +13,7 @@ from flask import abort, current_app, g, render_template, request, Response
 from ...services.party import service as party_service
 from ...services.shop.order.models import PaymentMethod, PaymentState
 from ...services.shop.order import service as order_service
+from ...services.shop.order import action_service as order_action_service
 from ...services.shop.sequence import service as sequence_service
 from ...services.user import service as user_service
 from ...util.framework.blueprint import create_blueprint
@@ -33,6 +34,20 @@ blueprint = create_blueprint('shop_order_admin', __name__)
 
 
 permission_registry.register_enum(ShopOrderPermission)
+
+
+# -------------------------------------------------------------------- #
+# hooks
+
+
+@order_paid.connect
+def execute_order_actions(sender, *, order_id=None):
+    """Execute relevant actions for order."""
+    order_action_service.execute_order_actions(order_id)
+
+
+# -------------------------------------------------------------------- #
+# view functions
 
 
 @blueprint.route('/parties/<party_id>', defaults={'page': 1})
