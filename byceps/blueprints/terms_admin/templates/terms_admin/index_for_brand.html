@@ -12,19 +12,21 @@
   <table class="index wide">
     <thead>
       <tr>
-        <th>ID</th>
-        <th>Titel</th>
-        <th>erstellt</th>
-        <th>durch</th>
+        <th>Titel<br>ID</th>
+        <th>Erstellt</th>
       </tr>
     </thead>
     <tbody>
       {%- for version in versions %}
         <tr>
-          <td>{{ version.id }}</td>
-          <td>{{ version.title }}</td>
-          <td class="nowrap">{{ render_datetime(version.created_at) }}</td>
-          <td>{{ render_user_avatar_16_and_link(version.creator) }}</td>
+          <td>
+            <strong>{{ version.title }}</strong><br>
+            {{ version.id|dim }}
+          </td>
+          <td>
+            <span class="nowrap">{{ render_datetime(version.created_at) }}</span><br>
+            von {{ render_user_avatar_16_and_link(version.creator) }}
+          </td>
         </tr>
       {%- endfor %}
     </tbody>
