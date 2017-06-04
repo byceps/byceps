@@ -14,6 +14,7 @@
   <div class="notification-error" style="margin-bottom: 1rem;"><strong>Achtung:</strong> Es ist keine aktuelle AGB-Version für diese Marke festgelegt.</div>
   {%- endif %}
 
+  {%- if versions %}
   <table class="index wide">
     <thead>
       <tr>
@@ -40,5 +41,8 @@
       {%- endfor %}
     </tbody>
   </table>
+  {%- else %}
+  <p>Es sind keine AGB-Versionen hinterlegt.</p>
+  {%- endif %}
 
 {%- endblock %}
