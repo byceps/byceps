@@ -12,6 +12,7 @@ from ....database import db
 
 from ..article.models import ArticleNumber
 
+from .actions.award_badge import award_badge
 from .models import Order, OrderAction, OrderID
 from . import service as order_service
 
@@ -51,6 +52,8 @@ def execute_order_actions(order_id: OrderID) -> None:
 
 
 def find_procedure(name: str) -> Optional[OrderActionType]:
-    procedures_by_name = {}  # type: Dict[str, OrderActionType]
+    procedures_by_name = {
+        'award_badge': award_badge,
+    }  # type: Dict[str, OrderActionType]
 
     return procedures_by_name.get(name)
