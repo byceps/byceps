@@ -7,7 +7,7 @@ byceps.services.user_badge.models.badge
 """
 
 from collections import namedtuple
-from typing import NewType
+from typing import NewType, Optional
 from uuid import UUID
 
 from flask import url_for
@@ -36,7 +36,8 @@ class Badge(db.Model):
     is_featured = db.Column(db.Boolean, default=False, nullable=False)
 
     def __init__(self, label: str, image_filename: str, *,
-                 brand_id: BrandID=None, description: str=None) -> None:
+                 brand_id: Optional[BrandID]=None,
+                 description: Optional[str]=None) -> None:
         self.brand_id = brand_id
         self.label = label
         self.description = description

@@ -17,8 +17,9 @@ from .models.awarding import BadgeAwarding, BadgeAwardingTuple, \
 from .models.badge import Badge, BadgeID, BadgeTuple
 
 
-def create_badge(label: str, image_filename: str, *, brand_id: BrandID=None,
-                 description: str=None) -> BadgeTuple:
+def create_badge(label: str, image_filename: str, *,
+                 brand_id: Optional[BrandID]=None,
+                 description: Optional[str]=None) -> BadgeTuple:
     """Introduce a new badge."""
     badge = Badge(label, image_filename, brand_id=brand_id,
                   description=description)
