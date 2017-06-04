@@ -363,7 +363,7 @@ h2 small {
 
 /* tables */
 
-@media (min-width: 60rem) { /* 960px / 16px */
+@media (max-width: 60rem) { /* 960px / 16px */
   table.index.wide {
     display: block;
     overflow-x: auto;
