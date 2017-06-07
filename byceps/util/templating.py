@@ -37,9 +37,11 @@ def templated(arg):
         def decorated(*args, **kwargs):
             name = template_name
             if name is None:
-                blueprint_name = f.__module__.split('.')[-2]
+                module_package_name_segments = f.__module__.split('.')
+                # Select segments between `byceps.blueprints.` and `.views`.
+                blueprint_path_segments = f.__module__.split('.')[2:-1]
                 action_name = f.__name__
-                name = '{}/{}'.format(blueprint_name, action_name)
+                name = '/'.join(blueprint_path_segments + [action_name])
             name += TEMPLATE_FILENAME_EXTENSION
 
             context = f(*args, **kwargs)
