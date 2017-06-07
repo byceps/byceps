@@ -1,0 +1,43 @@
+{% extends 'layout/base.html' %}
+{% from 'macros/datetime.html' import render_datetime %}
+{% from 'macros/shop/orders.html' import render_order_payment_state %}
+{% set current_page = 'shop_orders' %}
+{% set title = 'Deine Bestellungen' %}
+{% block body %}
+
+  <nav class="breadcrumbs">
+    <ol>
+      <li>Shop</li>
+    </ol>
+  </nav>
+  <h1>{{ title }}</h1>
+
+  <p>Dies sind deine Bestellungen für die Party <strong>{{ g.party.title }}</strong>.</p>
+
+  {%- if orders %}
+  <table class="index wide">
+    <thead>
+      <tr>
+        <th>Zeitpunkt</th>
+        <th>Bestellnummer</th>
+        <th class="number">Betrag</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for order in orders %}
+      <tr>
+        <td>{{ render_datetime(order.created_at) }}</td>
+        <td><strong><a href="{{ url_for('.view', order_id=order.id) }}">{{ order.order_number }}</a></strong></td>
+        <td class="number">{{ order.total_price|format_euro_amount }}</td>
+        <td>{{ render_order_payment_state(order.payment_state) }}</td>
+      </tr>
+      {%- endfor %}
+      <tr>
+    </tbody>
+  </table>
+  {%- else %}
+  <p><em>keine</em></p>
+  {%- endif %}
+
+{%- endblock %}

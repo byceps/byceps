@@ -90,6 +90,7 @@ def _get_blueprints(app):
         ('party_admin',         '/admin/parties',       site_mode_admin ),
         ('seating',             '/seating',             site_mode_public),
         ('seating_admin',       '/admin/seating',       site_mode_admin ),
+        ('shop.orders',         '/shop/orders',         site_mode_public),
         ('shop_order',          '/shop',                site_mode_public),
         ('shop_admin',          '/admin/shop',          site_mode_admin ),
         ('shop_article_admin',  '/admin/shop/articles', site_mode_admin ),

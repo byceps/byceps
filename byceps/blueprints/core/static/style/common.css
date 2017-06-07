@@ -177,6 +177,7 @@ td {
   text-align: left;
   vertical-align: top;
 }
+th.number,
 td.number {
   text-align: right;
 }

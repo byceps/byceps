@@ -22,7 +22,7 @@ from ..cart.models import Cart
 from ..sequence import service as sequence_service
 
 from .models import Order, Orderer, OrderEvent, OrderID, OrderItem, \
-    OrderNumber, PaymentMethod, PaymentState
+    OrderNumber, OrderTuple, PaymentMethod, PaymentState
 
 
 def create_order(party_id: PartyID, orderer: Orderer,
@@ -318,6 +318,18 @@ def get_orders_placed_by_user(user_id: UserID) -> Sequence[Order]:
         .placed_by_id(user_id) \
         .order_by(Order.created_at.desc()) \
         .all()
+
+
+def get_orders_placed_by_user_for_party(user_id: UserID, party_id: PartyID
+                                       ) -> Sequence[OrderTuple]:
+    """Return orders placed by the user for that party."""
+    orders = Order.query \
+        .for_party_id(party_id) \
+        .placed_by_id(user_id) \
+        .order_by(Order.created_at.desc()) \
+        .all()
+
+    return [order.to_tuple() for order in orders]
 
 
 def has_user_placed_orders(user_id: UserID, party_id: PartyID) -> bool:
