@@ -11,7 +11,7 @@ from datetime import datetime
 from flask import abort, current_app, g, render_template, request, Response
 
 from ...services.party import service as party_service
-from ...services.shop.order.models import PaymentMethod, PaymentState
+from ...services.shop.order.models.order import PaymentMethod, PaymentState
 from ...services.shop.order import service as order_service
 from ...services.shop.order import action_service as order_action_service
 from ...services.shop.sequence import service as sequence_service

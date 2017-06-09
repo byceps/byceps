@@ -1,6 +1,6 @@
 """
-byceps.services.shop.order.models
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.shop.order.models.order.order
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2017 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -10,18 +10,18 @@ from collections import namedtuple
 from datetime import datetime
 from decimal import Decimal
 from enum import Enum
-from typing import Any, Dict, NewType, Set
+from typing import NewType, Set
 from uuid import UUID
 
 from sqlalchemy.ext.hybrid import hybrid_property
 
-from ....database import BaseQuery, db, generate_uuid
-from ....typing import PartyID, UserID
-from ....util.instances import ReprBuilder
+from .....database import BaseQuery, db, generate_uuid
+from .....typing import PartyID, UserID
+from .....util.instances import ReprBuilder
 
-from ...user.models.user import User
+from ....user.models.user import User
 
-from ..article.models import Article, ArticleNumber
+from ...article.models import Article
 
 
 OrderID = NewType('OrderID', UUID)
@@ -225,95 +225,3 @@ class Order(db.Model):
             .add_custom('{:d} items'.format(len(self.items))) \
             .add_custom(self.payment_state.name) \
             .build()
-
-
-OrderItemTuple = namedtuple('OrderItemTuple',
-    'article_number, description, unit_price, tax_rate, quantity, line_price')
-
-
-class OrderItem(db.Model):
-    """An item that belongs to an order."""
-    __tablename__ = 'shop_order_items'
-
-    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    order_number = db.Column(db.Unicode(13), db.ForeignKey('shop_orders.order_number'), index=True, nullable=False)
-    order = db.relationship(Order, backref='items')
-    article_number = db.Column(db.Unicode(20), db.ForeignKey('shop_articles.item_number'), index=True, nullable=False)
-    article = db.relationship(Article, backref='order_items')
-    description = db.Column(db.Unicode(80), nullable=False)
-    price = db.Column(db.Numeric(6, 2), nullable=False)
-    tax_rate = db.Column(db.Numeric(3, 3), nullable=False)
-    quantity = db.Column(db.Integer, nullable=False)
-    shipping_required = db.Column(db.Boolean, nullable=False)
-
-    def __init__(self, order: Order, article: Article, quantity: int) -> None:
-        self.order = order
-        self.article = article
-        self.description = article.description
-        self.price = article.price
-        self.tax_rate = article.tax_rate
-        self.quantity = quantity
-        self.shipping_required = article.shipping_required
-
-    @property
-    def unit_price(self) -> Decimal:
-        return self.price
-
-    @property
-    def line_price(self) -> Decimal:
-        return self.unit_price * self.quantity
-
-    def to_tuple(self) -> OrderItemTuple:
-        """Return a tuple representation of (parts of) this entity."""
-        return OrderItemTuple(
-            self.article_number,
-            self.description,
-            self.unit_price,
-            self.tax_rate,
-            self.quantity,
-            self.line_price,
-        )
-
-
-class OrderEvent(db.Model):
-    """An event that refers to an order."""
-    __tablename__ = 'shop_order_events'
-
-    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    occured_at = db.Column(db.DateTime, nullable=False)
-    event_type = db.Column(db.Unicode(40), index=True, nullable=False)
-    order_id = db.Column(db.Uuid, db.ForeignKey('shop_orders.id'), index=True, nullable=False)
-    data = db.Column(db.JSONB)
-
-    def __init__(self, occured_at: datetime, event_type: str, order_id: OrderID,
-                 **data) -> None:
-        self.occured_at = occured_at
-        self.event_type = event_type
-        self.order_id = order_id
-        self.data = data
-
-    def __repr__(self) -> str:
-        return ReprBuilder(self) \
-            .add_custom(repr(self.event_type)) \
-            .add_with_lookup('order_id') \
-            .add_with_lookup('data') \
-            .build()
-
-
-class OrderAction(db.Model):
-    """A procedure to execute when an order for that article is marked
-    as paid.
-    """
-    __tablename__ = 'shop_order_actions'
-
-    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    article_number = db.Column(db.Unicode(20), db.ForeignKey('shop_articles.item_number'), index=True, nullable=False)
-    article = db.relationship(Article, backref='order_actions')
-    procedure = db.Column(db.Unicode(40), nullable=False)
-    parameters = db.Column(db.JSONB, nullable=False)
-
-    def __init__(self, article_number: ArticleNumber, procedure: str,
-                 parameters: Dict[str, Any]) -> None:
-        self.article_number = article_number
-        self.procedure = procedure
-        self.parameters = parameters

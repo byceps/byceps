@@ -13,7 +13,8 @@ from ....database import db
 from ..article.models import ArticleNumber
 
 from .actions.award_badge import award_badge
-from .models import Order, OrderAction, OrderID
+from .models.order import Order, OrderID
+from .models.order_action import OrderAction
 from . import service as order_service
 
 

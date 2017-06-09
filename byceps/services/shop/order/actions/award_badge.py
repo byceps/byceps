@@ -15,7 +15,7 @@ from ....user_badge import service as badge_service
 
 from ...article.models import ArticleNumber
 
-from ..models import Order
+from ..models.order import Order
 
 
 def award_badge(order: Order, article_number: ArticleNumber,

@@ -6,8 +6,8 @@ testfixtures.shop_order
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.services.shop.order.models import Order, Orderer, OrderItem, \
-    PaymentMethod
+from byceps.services.shop.order.models.order import Order, Orderer, PaymentMethod
+from byceps.services.shop.order.models.order_item import OrderItem
 
 
 ANY_ORDER_NUMBER = 'AEC-03-B00074'

@@ -21,8 +21,10 @@ from ..article.models import Article
 from ..cart.models import Cart
 from ..sequence import service as sequence_service
 
-from .models import Order, Orderer, OrderEvent, OrderID, OrderItem, \
-    OrderNumber, OrderTuple, PaymentMethod, PaymentState
+from .models.order import Order, Orderer, OrderID, OrderNumber, OrderTuple, \
+    PaymentMethod, PaymentState
+from .models.order_event import OrderEvent
+from .models.order_item import OrderItem
 
 
 def create_order(party_id: PartyID, orderer: Orderer,

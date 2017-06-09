@@ -11,7 +11,7 @@ from flask import abort, g, request
 from ...services.country import service as country_service
 from ...services.shop.article import service as article_service
 from ...services.shop.cart.models import Cart
-from ...services.shop.order.models import PaymentMethod
+from ...services.shop.order.models.order import PaymentMethod
 from ...services.shop.order import service as order_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_error, flash_success
