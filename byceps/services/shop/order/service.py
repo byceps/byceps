@@ -28,7 +28,7 @@ from .models.order_item import OrderItem
 
 
 def create_order(party_id: PartyID, orderer: Orderer,
-                 payment_method: PaymentMethod, cart: Cart) -> Order:
+                 payment_method: PaymentMethod, cart: Cart) -> OrderTuple:
     """Create an order of one or more articles."""
     order_number = sequence_service.generate_order_number(party_id)
 
@@ -44,7 +44,7 @@ def create_order(party_id: PartyID, orderer: Orderer,
 
     order_placed.send(None, order_id=order.id)
 
-    return order
+    return order.to_tuple()
 
 
 def _build_order(party_id: PartyID, order_number: OrderNumber, orderer: Orderer,
