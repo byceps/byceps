@@ -79,9 +79,8 @@ def order():
         return order_form(form)
 
     orderer = form.get_orderer(g.current_user._user)
-    payment_method = PaymentMethod.bank_transfer
 
-    order_service.create_order(g.party.id, orderer, payment_method, cart)
+    _submit_order(orderer, cart)
 
     flash_success('Deine Bestellung wurde entgegen genommen. Vielen Dank!')
     return redirect_to('snippet.order_placed')
@@ -160,13 +159,12 @@ def order_single(article_id):
         return order_single_form(article.id, form)
 
     orderer = form.get_orderer(user)
-    payment_method = PaymentMethod.bank_transfer
 
     cart = Cart()
     for item in article_compilation:
         cart.add_item(item.article, item.fixed_quantity)
 
-    order_service.create_order(g.party.id, orderer, payment_method, cart)
+    _submit_order(orderer, cart)
 
     flash_success('Deine Bestellung wurde entgegen genommen. Vielen Dank!')
     return redirect_to('snippet.order_placed')
@@ -179,3 +177,9 @@ def _get_article_or_404(article_id):
         abort(404)
 
     return article
+
+
+def _submit_order(orderer, cart):
+    payment_method = PaymentMethod.bank_transfer
+
+    order_service.create_order(g.party.id, orderer, payment_method, cart)
