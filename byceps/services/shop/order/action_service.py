@@ -38,6 +38,9 @@ def execute_order_actions(order_id: OrderID) -> None:
 
     article_numbers = {item.article_number for item in order.items}
 
+    if not article_numbers:
+        return
+
     actions = OrderAction.query \
         .filter(OrderAction.article_number.in_(article_numbers)) \
         .all()
