@@ -10,7 +10,7 @@ from typing import Any, Dict
 
 from .....database import db, generate_uuid
 
-from ...article.models import Article, ArticleNumber
+from ...article.models.article import Article, ArticleNumber
 
 
 class OrderAction(db.Model):

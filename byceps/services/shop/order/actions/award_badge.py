@@ -13,7 +13,7 @@ from .....util.iterables import find
 from ....user_badge.models.badge import BadgeID
 from ....user_badge import service as badge_service
 
-from ...article.models import ArticleNumber
+from ...article.models.article import ArticleNumber
 
 from ..models.order import Order
 

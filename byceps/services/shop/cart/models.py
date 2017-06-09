@@ -10,7 +10,7 @@ from typing import List, Sequence
 
 from ....util.instances import ReprBuilder
 
-from ..article.models import Article
+from ..article.models.article import Article
 
 
 class CartItem:

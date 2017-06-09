@@ -21,7 +21,7 @@ from byceps.config import STATIC_URL_PREFIX_BRAND, STATIC_URL_PREFIX_GLOBAL, \
 from byceps.database import db
 from byceps.services.brand.models import Brand
 from byceps.services.party.models import Party
-from byceps.services.shop.article.models import Article
+from byceps.services.shop.article.models.article import Article
 from byceps.services.shop.order.models.order import Order, \
     PaymentState as OrderPaymentState
 from byceps.services.shop.order.models.order_item import OrderItem

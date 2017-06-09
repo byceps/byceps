@@ -17,8 +17,9 @@ from ....typing import PartyID
 
 from ...party.models import Party
 
-from .models import Article, ArticleCompilation, ArticleCompilationItem, \
-    ArticleNumber, AttachedArticle
+from .models.article import Article, ArticleNumber
+from .models.attached_article import AttachedArticle
+from .models.compilation import ArticleCompilation, ArticleCompilationItem
 
 
 def create_article(party_id: PartyID, item_number: ArticleNumber,

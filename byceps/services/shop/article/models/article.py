@@ -1,6 +1,6 @@
 """
-byceps.services.shop.article.models
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.shop.article.models.article
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2017 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -8,17 +8,17 @@ byceps.services.shop.article.models
 
 from datetime import datetime
 from decimal import Decimal
-from typing import Any, Iterator, List, NewType, Optional
+from typing import Any, NewType, Optional
 from uuid import UUID
 
 from Ranger import Range
 from Ranger.src.Range.Cut import Cut
 
-from ....database import BaseQuery, db, generate_uuid
-from ....typing import PartyID
-from ....util.instances import ReprBuilder
+from .....database import BaseQuery, db, generate_uuid
+from .....typing import PartyID
+from .....util.instances import ReprBuilder
 
-from ...party.models import Party
+from ....party.models import Party
 
 
 ArticleID = NewType('ArticleID', UUID)
@@ -130,68 +130,3 @@ def range_all(theType: Any) -> Range:
     return Range(
         Cut.belowAll(theType=theType),
         Cut.aboveAll(theType=theType))
-
-
-# -------------------------------------------------------------------- #
-# articles attached to articles
-
-
-class AttachedArticle(db.Model):
-    """An article that is attached to another article."""
-    __tablename__ = 'shop_attached_articles'
-    __table_args__ = (
-        db.UniqueConstraint('article_number', 'attached_to_article_number'),
-    )
-
-    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    article_number = db.Column(db.Unicode(20),
-                               db.ForeignKey('shop_articles.item_number'),
-                               nullable=False, index=True)
-    article = db.relationship(Article, foreign_keys=[article_number],
-                              backref=db.backref('articles_attached_to', collection_class=set))
-    quantity = db.Column(db.Integer, nullable=False)
-    attached_to_article_number = db.Column(db.Unicode(20),
-                                           db.ForeignKey('shop_articles.item_number'),
-                                           nullable=False, index=True)
-    attached_to_article = db.relationship(Article, foreign_keys=[attached_to_article_number],
-                                          backref=db.backref('attached_articles', collection_class=set))
-
-    def __init__(self, article: Article, quantity: int,
-                 attached_to_article: Article) -> None:
-        self.article = article
-        self.quantity = quantity
-        self.attached_to_article = attached_to_article
-
-
-# -------------------------------------------------------------------- #
-# article compilation
-
-
-class ArticleCompilationItem:
-
-    def __init__(self, article: Article, *, fixed_quantity: Optional[int]=None
-                ) -> None:
-        if (fixed_quantity is not None) and fixed_quantity < 1:
-            raise ValueError(
-                'Fixed quantity, if given, must be a positive number.')
-
-        self.article = article
-        self.fixed_quantity = fixed_quantity
-
-    def has_fixed_quantity(self) -> bool:
-        return self.fixed_quantity is not None
-
-
-class ArticleCompilation:
-
-    def __init__(self) -> None:
-        self._items = []  # type: List[ArticleCompilationItem]
-
-    def append(self, item: ArticleCompilationItem) -> None:
-        self._items.append(item)
-
-    def __iter__(self) -> Iterator[ArticleCompilationItem]:
-        return iter(self._items)
-
-    def is_empty(self) -> bool:
-        return not self._items

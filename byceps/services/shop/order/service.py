@@ -17,7 +17,7 @@ from ....typing import PartyID, UserID
 
 from ...party.models import Party
 
-from ..article.models import Article
+from ..article.models.article import Article
 from ..cart.models import Cart
 from ..sequence import service as sequence_service
 

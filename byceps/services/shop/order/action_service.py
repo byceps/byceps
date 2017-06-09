@@ -10,7 +10,7 @@ from typing import Any, Callable, Dict, Optional
 
 from ....database import db
 
-from ..article.models import ArticleNumber
+from ..article.models.article import ArticleNumber
 
 from .actions.award_badge import award_badge
 from .models.order import Order, OrderID

@@ -21,7 +21,7 @@ from .....util.instances import ReprBuilder
 
 from ....user.models.user import User
 
-from ...article.models import Article
+from ...article.models.article import Article
 
 
 OrderID = NewType('OrderID', UUID)

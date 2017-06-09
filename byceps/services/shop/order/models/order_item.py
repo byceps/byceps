@@ -11,7 +11,7 @@ from decimal import Decimal
 
 from .....database import db, generate_uuid
 
-from ...article.models import Article
+from ...article.models.article import Article
 
 from .order import Order
 

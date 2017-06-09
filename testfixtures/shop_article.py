@@ -8,7 +8,7 @@ testfixtures.shop_article
 
 from decimal import Decimal
 
-from byceps.services.shop.article.models import Article
+from byceps.services.shop.article.models.article import Article
 
 from .party import create_party
 
