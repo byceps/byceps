@@ -80,9 +80,10 @@ def order():
 
     orderer = form.get_orderer(g.current_user._user)
 
-    _submit_order(orderer, cart)
+    order = _submit_order(orderer, cart)
 
-    flash_success('Deine Bestellung wurde entgegen genommen. Vielen Dank!')
+    _flash_order_success(order)
+
     return redirect_to('snippet.order_placed')
 
 
@@ -164,9 +165,10 @@ def order_single(article_id):
     for item in article_compilation:
         cart.add_item(item.article, item.fixed_quantity)
 
-    _submit_order(orderer, cart)
+    order = _submit_order(orderer, cart)
 
-    flash_success('Deine Bestellung wurde entgegen genommen. Vielen Dank!')
+    _flash_order_success(order)
+
     return redirect_to('snippet.order_placed')
 
 
@@ -182,4 +184,10 @@ def _get_article_or_404(article_id):
 def _submit_order(orderer, cart):
     payment_method = PaymentMethod.bank_transfer
 
-    order_service.create_order(g.party.id, orderer, payment_method, cart)
+    return order_service.create_order(g.party.id, orderer, payment_method, cart)
+
+
+def _flash_order_success(order):
+    flash_success('Deine Bestellung mit der Bestellnummer <strong>{}</strong> '
+                  'wurde entgegen genommen. Vielen Dank!', order.order_number,
+                  text_is_safe=True)
