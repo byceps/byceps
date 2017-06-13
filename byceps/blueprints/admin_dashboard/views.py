@@ -21,7 +21,8 @@ from ...services.orga import service as orga_service
 from ...services.orga import birthday_service as orga_birthday_service
 from ...services.orga_team import service as orga_team_service
 from ...services.party import service as party_service
-from ...services.seating import service as seating_service
+from ...services.seating import area_service as seating_area_service, \
+    seat_service
 from ...services.shop.article import service as article_service
 from ...services.shop.order import service as order_service
 from ...services.terms import service as terms_service
@@ -140,8 +141,8 @@ def view_party(party_id):
     orga_team_count = len(orga_teams)
     orga_count = sum(len(team.memberships) for team in orga_teams)
 
-    seating_area_count = seating_service.count_areas_for_party(party.id)
-    seat_count = seating_service.count_seats_for_party(party.id)
+    seating_area_count = seating_area_service.count_areas_for_party(party.id)
+    seat_count = seat_service.count_seats_for_party(party.id)
 
     article_count = article_service.count_articles_for_party(party.id)
     open_order_count = order_service.count_open_orders_for_party(party.id)

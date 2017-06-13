@@ -9,7 +9,7 @@ byceps.blueprints.seating.views
 from flask import abort, g
 
 from ...config import get_ticket_management_enabled
-from ...services.seating import service as seating_service
+from ...services.seating import area_service as seating_area_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.templating import templated
 
@@ -21,7 +21,7 @@ blueprint = create_blueprint('seating', __name__)
 @templated
 def index():
     """List areas."""
-    areas = seating_service.get_areas_for_party(g.party.id)
+    areas = seating_area_service.get_areas_for_party(g.party.id)
 
     return {
         'areas': areas,
@@ -32,7 +32,7 @@ def index():
 @templated
 def view_area(slug):
     """View area."""
-    area = seating_service.find_area_for_party_by_slug(g.party.id, slug)
+    area = seating_area_service.find_area_for_party_by_slug(g.party.id, slug)
     if area is None:
         abort(404)
 

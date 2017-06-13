@@ -9,7 +9,10 @@ byceps.blueprints.seating_admin.views
 from flask import abort, request
 
 from ...services.party import service as party_service
-from ...services.seating import service as seating_service
+from ...services.seating import \
+    area_service as seating_area_service, \
+    category_service as seating_category_service, \
+    seat_group_service, seat_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.templating import templated
 
@@ -32,10 +35,11 @@ def index_for_party(party_id):
     """List seating areas for that party."""
     party = _get_party_or_404(party_id)
 
-    seat_count = seating_service.count_seats_for_party(party.id)
-    area_count = seating_service.count_areas_for_party(party.id)
-    category_count = seating_service.count_categories_for_party(party.id)
-    group_count = seating_service.count_seat_groups_for_party(party.id)
+    seat_count = seat_service.count_seats_for_party(party.id)
+    area_count = seating_area_service.count_areas_for_party(party.id)
+    category_count = seating_category_service.count_categories_for_party(
+        party.id)
+    group_count = seat_group_service.count_seat_groups_for_party(party.id)
 
     return {
         'party': party,
@@ -55,10 +59,10 @@ def area_index(party_id, page):
     party = _get_party_or_404(party_id)
 
     per_page = request.args.get('per_page', type=int, default=15)
-    areas = seating_service.get_areas_for_party_paginated(party.id, page,
-                                                          per_page)
+    areas = seating_area_service.get_areas_for_party_paginated(party.id, page,
+                                                               per_page)
 
-    seat_total_per_area = seating_service.get_seat_total_per_area(party.id)
+    seat_total_per_area = seat_service.get_seat_total_per_area(party.id)
 
     return {
         'party': party,
@@ -74,7 +78,7 @@ def seat_category_index(party_id):
     """List seat categories for that party."""
     party = _get_party_or_404(party_id)
 
-    categories = seating_service.get_categories_for_party(party.id)
+    categories = seating_category_service.get_categories_for_party(party.id)
 
     return {
         'party': party,
@@ -89,7 +93,7 @@ def seat_group_index(party_id):
     """List seat groups for that party."""
     party = _get_party_or_404(party_id)
 
-    groups = seating_service.get_all_seat_groups_for_party(party.id)
+    groups = seat_group_service.get_all_seat_groups_for_party(party.id)
 
     return {
         'party': party,
