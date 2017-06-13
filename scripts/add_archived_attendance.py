@@ -7,7 +7,7 @@
 
 import click
 
-from byceps.services.ticketing import service as ticketing_service
+from byceps.services.ticketing import attendance_service
 from byceps.services.user import service as user_service
 from byceps.util.system import get_config_filename_from_env_or_exit
 
@@ -22,7 +22,7 @@ def execute(user, party):
     click.echo('Adding attendance of user "{}" at party "{}" ... '
         .format(user.screen_name, party.title), nl=False)
 
-    ticketing_service.create_archived_attendance(user.id, party.id)
+    attendance_service.create_archived_attendance(user.id, party.id)
 
     click.secho('done.', fg='green')
 

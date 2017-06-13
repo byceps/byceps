@@ -10,7 +10,7 @@ from flask import g
 
 from ...config import get_current_party_id
 from ...services.party import service as party_service
-from ...services.ticketing import service as ticketing_service
+from ...services.ticketing import attendance_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.templating import templated
 
@@ -44,7 +44,7 @@ def archive():
     archived_parties = party_service.get_archived_parties_for_brand(brand_id)
 
     party_ids = {party.id for party in archived_parties}
-    attendees_by_party_id = ticketing_service.get_attendees_by_party(party_ids)
+    attendees_by_party_id = attendance_service.get_attendees_by_party(party_ids)
 
     return {
         'parties': archived_parties,

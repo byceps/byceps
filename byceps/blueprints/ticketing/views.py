@@ -8,7 +8,7 @@ byceps.blueprints.ticketing.views
 
 from flask import abort, g
 
-from ...services.ticketing import service as ticketing_service
+from ...services.ticketing import ticket_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.iterables import find
 from ...util.templating import templated
@@ -23,7 +23,7 @@ def index_mine():
     """List tickets related to the current user."""
     me = get_current_user_or_403()
 
-    tickets = ticketing_service.find_tickets_related_to_user_for_party(
+    tickets = ticket_service.find_tickets_related_to_user_for_party(
         me.id, g.party.id)
 
     current_user_uses_any_ticket = find(lambda t: t.used_by_id == me.id, tickets)

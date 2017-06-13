@@ -13,7 +13,7 @@ from flask import abort, request
 from ...services.authorization import service as authorization_service
 from ...services.party import service as party_service
 from ...services.shop.order import service as order_service
-from ...services.ticketing import service as ticketing_service
+from ...services.ticketing import ticket_service
 from ...services.user import service as user_service
 from ...services.user_activity import service as activity_service
 from ...services.user_badge import service as badge_service
@@ -92,7 +92,7 @@ def view(user_id):
 
 
 def _get_parties_and_tickets(user_id):
-    tickets = ticketing_service.find_tickets_related_to_user(user_id)
+    tickets = ticket_service.find_tickets_related_to_user(user_id)
 
     tickets_by_party_id = _group_tickets_by_party_id(tickets)
 

@@ -15,7 +15,7 @@ from ...services.country import service as country_service
 from ...services.newsletter import service as newsletter_service
 from ...services.orga_team import service as orga_team_service
 from ...services.terms import service as terms_service
-from ...services.ticketing import service as ticketing_service
+from ...services.ticketing import attendance_service, ticket_service
 from ...services.user import service as user_service
 from ...services.user_badge import service as badge_service
 from ...services.verification_token import service as verification_token_service
@@ -50,10 +50,10 @@ def view(user_id):
     orga_team_membership = orga_team_service.find_membership_for_party(user.id,
         g.party.id)
 
-    current_party_tickets = ticketing_service.find_tickets_used_by_user(user.id,
+    current_party_tickets = ticket_service.find_tickets_used_by_user(user.id,
         g.party.id)
 
-    attended_parties = ticketing_service.get_attended_parties(user.id)
+    attended_parties = attendance_service.get_attended_parties(user.id)
     attended_parties.sort(key=attrgetter('starts_at'), reverse=True)
 
     return {
