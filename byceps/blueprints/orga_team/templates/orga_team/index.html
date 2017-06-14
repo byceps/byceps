@@ -56,20 +56,21 @@
 {{ render_snippet('orga_team_intro', ignore_if_unknown=True)|safe }}
 
   <ol class="orga-overview">
-    {%- for membership in memberships|sort(attribute='user.screen_name') %}
-    {%- set user = membership.user %}
-    <li>
-      <div>
-        {{ render_user_avatar_96(user) }}
+    {%- for orga in orgas|sort(attribute='user.screen_name') %}
+    <li class="orga">
+      <div class="orga-avatar">
+        {{ render_user_avatar_96(orga.user) }}
       </div>
-      <p>
-        <strong>{{ user.screen_name }}</strong><br>
-        {%- if user.detail.full_name %}
-        {{ user.detail.full_name }}<br>
+      <div class="orga-details">
+        <strong>{{ orga.user.screen_name }}</strong><br>
+        {%- if orga.full_name %}
+        {{ orga.full_name }}<br>
         {%- endif -%}
-        {{ membership.orga_team.title }}
-        {%- if membership.duties %} ({{ membership.duties }}){% endif %}
-      </p>
+        {%- filter dim %}
+        {{ orga.team_name }}
+        {%- if orga.duties %} ({{ orga.duties }}){% endif %}
+        {%- endfilter %}
+      </div>
     </li>
     {%- endfor %}
   </ol>
