@@ -84,7 +84,7 @@ def find_users(user_ids: Set[UserID], *, party_id: PartyID=None) -> Set[UserTupl
         .all()
 
     if party_id is not None:
-        orga_team_members = db.session \
+        orga_id_rows = db.session \
             .query(OrgaTeamMembership.user_id) \
             .join(OrgaTeam) \
             .filter(OrgaTeam.party_id == party_id) \
@@ -92,6 +92,7 @@ def find_users(user_ids: Set[UserID], *, party_id: PartyID=None) -> Set[UserTupl
             .group_by(OrgaTeamMembership.user_id) \
             .having(db.func.count(OrgaTeamMembership.user_id) > 0) \
             .all()
+        orga_team_members = {row[0] for row in orga_id_rows}
     else:
         orga_team_members = frozenset()
 
