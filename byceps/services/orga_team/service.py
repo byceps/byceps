@@ -105,9 +105,8 @@ def get_memberships_for_party(party_id: PartyID) -> Sequence[Membership]:
         .for_party_id(party_id) \
         .options(
             db.joinedload('orga_team'),
-            db.joinedload('user').load_only('id', 'screen_name'),
+            db.joinedload('user').load_only('id'),
             db.joinedload('user').joinedload('detail').load_only('first_names', 'last_name'),
-            db.joinedload('user').joinedload('orga_team_memberships'),
         ) \
         .all()
 
