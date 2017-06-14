@@ -6,24 +6,45 @@
 {% block head %}
   <style>
     .orga-overview {
-      display: -webkit-flex;
       display: flex;
-      -webkit-flex-wrap: wrap;
-      flex-wrap: wrap;
-      -webkit-justify-content: center;
+      flex-direction: column;
       justify-content: center;
     }
-    .orga-overview li {
+
+    .orga-overview li.orga {
+      align-items: center;
+      display: flex;
       font-size: 0.9rem;
       margin: 1rem 0;
       padding: 0;
-      text-align: center;
-      width: 200px;
+      text-align: left;
     }
-    .orga-overview li p {
+
+    .orga-overview .orga-avatar {
+      margin-right: 1rem;
+    }
+
+    .orga-overview .orga-details {
       line-height: 1.4;
       margin: 0.3rem 0 0 0;
       padding: 0;
+    }
+
+    @media (min-width: 28rem) {
+      .orga-overview {
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+
+      .orga-overview li.orga {
+        flex-direction: column;
+        text-align: center;
+        width: 200px;
+      }
+
+      .orga-overview .orga-avatar {
+        margin-right: 0;
+      }
     }
   </style>
 {%- endblock %}
