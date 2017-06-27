@@ -59,8 +59,9 @@
     <div class="user-profile-layout">
 
       <div class="user-profile-secondary">
+
+        {%- if current_party_tickets %}
         <table class="index">
-          {%- if current_party_tickets %}
           <tr>
             <th>Sitzplatz</th>
             <td>
@@ -71,28 +72,39 @@
               </ol>
             </td>
           </tr>
-          {%- endif %}
-          <tr>
-            <th>Besuchte Partys</th>
-            <td>
-              {%- if attended_parties %}
-              <ol>
-                {%- for party in attended_parties %}
-                <li>{% if party == g.party %}<strong>{% endif %}{{ party.title }}{% if party == g.party %}</strong>{% endif %}</li>
-                {%- endfor %}
-              </ol>
-              {%- else %}
-                {{- 'keine'|dim -}}
-              {%- endif %}
-            </td>
-          </tr>
-          {%- if badges_with_awarding_quantity %}
-          <tr>
-            <th>Abzeichen</th>
-            <td>{{ render_user_badges_list(badges_with_awarding_quantity) }}</td>
-          </tr>
-          {%- endif %}
         </table>
+        {%- endif %}
+
+        <div class="user-profile-details">
+
+          {# attended parties #}
+          <div class="user-profile-detail-block">
+            <h2>Besuchte Partys</h2>
+
+            {%- if attended_parties %}
+            <ol>
+              {%- for party in attended_parties %}
+              <li>{% if party == g.party %}<strong>{% endif %}{{ party.title }}{% if party == g.party %}</strong>{% endif %}</li>
+              {%- endfor %}
+            </ol>
+            {%- else %}
+              {{- 'keine'|dim -}}
+            {%- endif %}
+          </div>
+          {# /attended parties #}
+
+          {# badges #}
+          {%- if badges_with_awarding_quantity %}
+          <div class="user-profile-detail-block">
+            <h2>Abzeichen</h2>
+
+            {{ render_user_badges_list(badges_with_awarding_quantity) }}
+          </div>
+          {%- endif %}
+          {# /badges #}
+
+        </div>
+
       </div>
 
     </div>

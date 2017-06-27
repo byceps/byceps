@@ -590,6 +590,22 @@ form.board-posting-create-form-inline .label {
   flex: 1 0 auto;
 }
 
+.user-profile-details {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 2rem -2rem -2rem 0;
+}
+
+.user-profile-detail-block {
+  flex: 1 1 14rem;
+  margin: 0 2rem 2rem 0;
+}
+
+.user-profile-detail-block h2 {
+  font-size: 0.875rem; /* 14px / 16px */
+  margin: 0 0 1rem 0;
+}
+
 
 /* misc */
 
