@@ -12,6 +12,7 @@ from ...typing import UserID
 from ..seating.models.category import CategoryID
 
 from .models.ticket_bundle import TicketBundle
+from .ticket_service import build_tickets
 
 
 def create_ticket_bundle(category_id: CategoryID, ticket_quantity: int,
@@ -23,8 +24,8 @@ def create_ticket_bundle(category_id: CategoryID, ticket_quantity: int,
     bundle = TicketBundle(category_id, ticket_quantity, owned_by_id)
     db.session.add(bundle)
 
-    tickets = list(_build_tickets(category_id, owned_by_id, ticket_quantity,
-                                  bundle=bundle))
+    tickets = list(build_tickets(category_id, owned_by_id, ticket_quantity,
+                                 bundle=bundle))
     db.session.add_all(tickets)
 
     db.session.commit()

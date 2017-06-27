@@ -30,7 +30,7 @@ def create_ticket(category_id: CategoryID, owned_by_id: UserID
 def create_tickets(category_id: CategoryID, owned_by_id: UserID, quantity: int
                   ) -> Sequence[Ticket]:
     """Create a number of tickets of the same category for a single owner."""
-    tickets = list(_build_tickets(category_id, owned_by_id, quantity))
+    tickets = list(build_tickets(category_id, owned_by_id, quantity))
 
     db.session.add_all(tickets)
     db.session.commit()
@@ -38,8 +38,8 @@ def create_tickets(category_id: CategoryID, owned_by_id: UserID, quantity: int
     return tickets
 
 
-def _build_tickets(category_id: CategoryID, owned_by_id: UserID, quantity: int,
-                   *, bundle: Optional[TicketBundle]=None) -> Iterator[Ticket]:
+def build_tickets(category_id: CategoryID, owned_by_id: UserID, quantity: int,
+                  *, bundle: Optional[TicketBundle]=None) -> Iterator[Ticket]:
     if quantity < 1:
         raise ValueError('Ticket quantity must be positive.')
 
