@@ -20,7 +20,7 @@ def test_is_open():
     assert order.is_paid == False
 
 
-def test_is_open():
+def test_is_canceled():
     payment_state = PaymentState.canceled
 
     order = create_order_with_payment_state(payment_state)
@@ -31,7 +31,7 @@ def test_is_open():
     assert order.is_paid == False
 
 
-def test_is_open():
+def test_is_paid():
     payment_state = PaymentState.paid
 
     order = create_order_with_payment_state(payment_state)
