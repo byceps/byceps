@@ -576,6 +576,7 @@ form.board-posting-create-form-inline .label {
 
 .user-profile .stats,
 .user-profile .stats-label {
+  display: none;
   text-align: center;
 }
 .user-profile .stats {
@@ -584,6 +585,13 @@ form.board-posting-create-form-inline .label {
 .user-profile .stats-label {
   font-size: 0.6875rem; /* 11px / 16px */
   text-transform: uppercase;
+}
+
+@media (min-width: 36rem) { /* 576px / 16px */
+  .user-profile .stats,
+  .user-profile .stats-label {
+    display: block;
+  }
 }
 
 .user-profile-secondary {
