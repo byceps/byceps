@@ -180,7 +180,8 @@ def cancel_order(order: Order, updated_by_id: UserID, reason: str) -> None:
 
     updated_at = datetime.now()
     payment_state_from = order.payment_state
-    payment_state_to = PaymentState.canceled
+    payment_state_to = PaymentState.canceled_after_paid if order.is_paid \
+                  else PaymentState.canceled
 
     _update_payment_state(order, payment_state_to, updated_at, updated_by_id)
     order.payment_method = PaymentMethod.bank_transfer
