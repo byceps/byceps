@@ -30,11 +30,13 @@ class OrderedArticlesServiceTestCase(AbstractAppTestCase):
             PaymentState.open: 12,
             PaymentState.canceled: 7,
             PaymentState.paid: 3,
+            PaymentState.canceled_after_paid: 6,
         }
 
         order_number_sequence = count(1)
         for article_quantity, payment_state in [
             (4, PaymentState.open),
+            (6, PaymentState.canceled_after_paid),
             (1, PaymentState.open),
             (5, PaymentState.canceled),
             (3, PaymentState.paid),

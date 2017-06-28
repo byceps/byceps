@@ -52,7 +52,7 @@
         {%- endif %}
         </li>
         <li class="divider"></li>
-        {%- if order.payment_state != PaymentState.canceled %}
+        {%- if not order.is_canceled %}
           {%- if order.is_open %}
         <li><a href="{{ url_for('.mark_as_paid_form', order_id=order.id) }}">{{ render_icon('payment') }} Bestellung als bezahlt markieren</a></li>
           {%- endif %}

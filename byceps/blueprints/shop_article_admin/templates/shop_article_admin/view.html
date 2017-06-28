@@ -62,7 +62,7 @@
     </tr>
     <tr>
       <th>Anzahl storniert</th>
-      <td>{{ totals[PaymentState.canceled] }}</td>
+      <td>{{ totals[PaymentState.canceled] + totals[PaymentState.canceled_after_paid] }}</td>
     </tr>
     <tr>
       <th>Maximale Anzahl<br>pro Bestellung</th>
