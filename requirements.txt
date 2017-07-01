@@ -19,6 +19,6 @@ hiredis >= 0.2.0
 Pillow >= 3.4.2
 pytz >= 2016.10
 Ranger >= 0.9
-redis >= 2.10.3
+redis >= 2.10.5
 rq >= 0.7.1
 rq-dashboard >= 0.3.7
