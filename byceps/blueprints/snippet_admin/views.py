@@ -69,8 +69,6 @@ def view_version(snippet_version_id):
             'snippet_body': snippet_context['body'],
             'error_occured': False,
         }
-
-        status_code = 200
     except Exception as e:
         context = {
             'version': version,
@@ -78,10 +76,7 @@ def view_version(snippet_version_id):
             'error_message': str(e),
         }
 
-        status_code = 500
-
-    body = render_template('snippet_admin/view_version.html', **context)
-    return body, status_code
+    return render_template('snippet_admin/view_version.html', **context)
 
 
 @blueprint.route('/snippets/<uuid:snippet_id>/history')
