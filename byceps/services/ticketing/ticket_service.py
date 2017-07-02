@@ -24,7 +24,8 @@ from .models.ticket_bundle import TicketBundle
 def create_ticket(category_id: CategoryID, owned_by_id: UserID
                  ) -> Sequence[Ticket]:
     """Create a single ticket."""
-    return create_tickets(category_id, owned_by_id, 1)
+    tickets = create_tickets(category_id, owned_by_id, 1)
+    return tickets[0]
 
 
 def create_tickets(category_id: CategoryID, owned_by_id: UserID, quantity: int
