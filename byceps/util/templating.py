@@ -37,11 +37,7 @@ def templated(arg):
         def decorated(*args, **kwargs):
             name = template_name
             if name is None:
-                module_package_name_segments = f.__module__.split('.')
-                # Select segments between `byceps.blueprints.` and `.views`.
-                blueprint_path_segments = f.__module__.split('.')[2:-1]
-                action_name = f.__name__
-                name = '/'.join(blueprint_path_segments + [action_name])
+                name = _derive_template_name(f)
             name += TEMPLATE_FILENAME_EXTENSION
 
             context = f(*args, **kwargs)
@@ -60,6 +56,17 @@ def templated(arg):
         return decorator(f, arg)
 
     return wrapper
+
+
+def _derive_template_name(view_function):
+    """Derive the template name from the view function's module and name."""
+    # Select segments between `byceps.blueprints.` and `.views`.
+    module_package_name_segments = view_function.__module__.split('.')
+    blueprint_path_segments = module_package_name_segments[2:-1]
+
+    action_name = view_function.__name__
+
+    return '/'.join(blueprint_path_segments + [action_name])
 
 
 def load_template(source, *, template_globals=None):
