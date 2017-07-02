@@ -40,15 +40,6 @@ def update_document(document: Snippet, creator_id: UserID, title: str,
                            image_url_path)
 
 
-def get_documents_for_party(party_id: PartyID) -> Sequence[Snippet]:
-    """Return all documents for that party."""
-    return Snippet.query \
-        .for_party_id(party_id) \
-        .filter_by(_type=SnippetType.document.name) \
-        .order_by(Snippet.name) \
-        .all()
-
-
 # -------------------------------------------------------------------- #
 # fragment
 

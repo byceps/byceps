@@ -6,7 +6,7 @@ byceps.blueprints.snippet_admin.forms
 :License: Modified BSD, see LICENSE for details.
 """
 
-from wtforms import SelectField, StringField, TextAreaField
+from wtforms import StringField, TextAreaField
 
 from ...util.l10n import LocalizedForm
 

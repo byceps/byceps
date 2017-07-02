@@ -6,8 +6,6 @@ byceps.blueprints.snippet_admin.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from operator import attrgetter
-
 from flask import abort, g, render_template, request
 
 from ...services.party import service as party_service
@@ -306,9 +304,6 @@ def create_mountpoint_form(snippet_id):
     """Show form to create a mountpoint."""
     snippet = _find_snippet_by_id(snippet_id)
     party = party_service.find_party(snippet.party_id)
-
-    documents = snippet_service.get_documents_for_party(party.id)
-    document_choices = list(map(attrgetter('id', 'name'), documents))
 
     form = MountpointCreateForm()
 
