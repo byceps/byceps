@@ -109,7 +109,7 @@ def find_tickets_used_by_user(user_id: UserID, party_id: PartyID
     return Ticket.query \
         .for_party_id(party_id) \
         .filter(Ticket.used_by_id == user_id) \
-        .join(Seat) \
+        .outerjoin(Seat) \
         .options(
             db.joinedload('occupied_seat').joinedload('area'),
         ) \
