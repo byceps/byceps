@@ -15,10 +15,14 @@ from ...typing import PartyID, UserID
 
 from ..party.models import Party
 from ..seating.models.category import Category, CategoryID
-from ..seating.models.seat import Seat
+from ..seating.models.seat import Seat, SeatID
 
 from .models.ticket import Ticket, TicketID
 from .models.ticket_bundle import TicketBundle
+
+
+# -------------------------------------------------------------------- #
+# creation
 
 
 def create_ticket(category_id: CategoryID, owned_by_id: UserID
@@ -46,6 +50,10 @@ def build_tickets(category_id: CategoryID, owned_by_id: UserID, quantity: int,
 
     for _ in range(quantity):
         yield Ticket(category_id, owned_by_id, bundle=bundle)
+
+
+# -------------------------------------------------------------------- #
+# lookup
 
 
 def find_ticket(ticket_id: TicketID) -> Optional[Ticket]:
@@ -164,3 +172,83 @@ def count_tickets_for_party(party_id: PartyID) -> int:
     return Ticket.query \
         .for_party_id(party_id) \
         .count()
+
+
+# -------------------------------------------------------------------- #
+# user
+
+
+def appoint_user_manager(ticket_id: TicketID, user_id: UserID):
+    """Appoint the user as the ticket's user manager."""
+    ticket = find_ticket(ticket_id)
+
+    ticket.user_managed_by_id = user_id
+
+    db.session.commit()
+
+
+def withdraw_user_manager(ticket_id: TicketID):
+    """Withdraw the ticket's custom user manager."""
+    ticket = find_ticket(ticket_id)
+
+    ticket.user_managed_by_id = None
+
+    db.session.commit()
+
+
+def appoint_user(ticket_id: TicketID, user_id: UserID):
+    """Appoint the user as the ticket's user."""
+    ticket = find_ticket(ticket_id)
+
+    ticket.used_by_id = user_id
+
+    db.session.commit()
+
+
+def withdraw_user(ticket_id: TicketID):
+    """Withdraw the ticket's user."""
+    ticket = find_ticket(ticket_id)
+
+    ticket.used_by_id = None
+
+    db.session.commit()
+
+
+# -------------------------------------------------------------------- #
+# seat
+
+
+def appoint_seat_manager(ticket_id: TicketID, user_id: UserID):
+    """Appoint the user as the ticket's seat manager."""
+    ticket = find_ticket(ticket_id)
+
+    ticket.seat_managed_by_id = user_id
+
+    db.session.commit()
+
+
+def withdraw_seat_manager(ticket_id: TicketID):
+    """Withdraw the ticket's custom seat manager."""
+    ticket = find_ticket(ticket_id)
+
+    ticket.seat_managed_by_id = None
+
+    db.session.commit()
+
+
+def occupy_seat(ticket_id: TicketID, seat_id: SeatID):
+    """Occupy the seat with this ticket."""
+    ticket = find_ticket(ticket_id)
+
+    ticket.occupied_seat_id = seat_id
+
+    db.session.commit()
+
+
+def release_seat(ticket_id: TicketID):
+    """Release the seat occupied by this ticket."""
+    ticket = find_ticket(ticket_id)
+
+    ticket.occupied_seat_id = None
+
+    db.session.commit()
