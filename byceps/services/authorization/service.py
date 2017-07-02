@@ -6,7 +6,6 @@ byceps.services.authorization.service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from collections import defaultdict
 from typing import Dict, FrozenSet, Optional, Sequence, Set
 
 from ...database import db

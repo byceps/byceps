@@ -9,7 +9,6 @@ from byceps.services.user_badge import service as user_badge_service
 from testfixtures.user import create_user
 
 from tests.base import AbstractAppTestCase
-from tests.helpers import app_context
 
 
 class UserBadgeAwardingServiceTestCase(AbstractAppTestCase):

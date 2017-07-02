@@ -3,9 +3,6 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from datetime import datetime
-
-from byceps.services.board.models.category import Category
 from byceps.services.board.models.topic import Topic
 from byceps.services.board import topic_service as board_topic_service
 

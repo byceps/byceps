@@ -6,7 +6,6 @@
 from datetime import date
 
 from freezegun import freeze_time
-from nose2.tools import params
 
 from byceps.services.orga import birthday_service
 
