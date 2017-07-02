@@ -80,7 +80,8 @@ def view_version(snippet_version_id):
 
         status_code = 500
 
-    return render_template('snippet_admin/view_version.html', **context)
+    body = render_template('snippet_admin/view_version.html', **context)
+    return body, status_code
 
 
 @blueprint.route('/snippets/<uuid:snippet_id>/history')
