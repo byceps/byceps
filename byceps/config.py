@@ -15,7 +15,7 @@ STATIC_URL_PREFIX_GLOBAL = '/global'
 STATIC_URL_PREFIX_BRAND = '/brand'
 STATIC_URL_PREFIX_PARTY = '/party'
 
-EXTENSION_KEY = 'byceps'
+EXTENSION_KEY = 'byceps_config'
 KEY_SITE_MODE = 'site_mode'
 KEY_PARTY_ID = 'party_id'
 KEY_TICKET_MANAGEMENT_ENABLED = 'ticket_management_enabled'
