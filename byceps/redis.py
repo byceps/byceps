@@ -10,17 +10,32 @@ Redis_ integration.
 :License: Modified BSD, see LICENSE for details.
 """
 
-from flask import current_app
+from flask import _app_ctx_stack as stack, current_app
 from redis import StrictRedis
 
 
-def init_app(app):
-    """Create a Redis connection object according to the configuration
-    and attach it to the application.
-    """
-    url = app.config['REDIS_URL']
-    app.extensions['redis'] = StrictRedis.from_url(url)
+EXTENSION_KEY = 'byceps_redis'
+
+CONTEXT_ATTRIBUTE_NAME = 'redis_client'
 
 
-def get_connection():
-    return current_app.extensions['redis']
+class Redis:
+
+    def init_app(self, app):
+        url = app.config['REDIS_URL']
+        self._client = StrictRedis.from_url(url)
+
+        app.extensions[EXTENSION_KEY] = self
+
+    @property
+    def client(self):
+        ctx = stack.top
+
+        if ctx is not None:
+            if not hasattr(ctx, CONTEXT_ATTRIBUTE_NAME):
+                setattr(ctx, CONTEXT_ATTRIBUTE_NAME, self._client)
+
+            return getattr(ctx, CONTEXT_ATTRIBUTE_NAME)
+
+
+redis = Redis()

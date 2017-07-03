@@ -17,7 +17,7 @@ from .config import STATIC_URL_PREFIX_BRAND, STATIC_URL_PREFIX_GLOBAL, \
     STATIC_URL_PREFIX_PARTY
 from .database import db
 from . import email
-from . import redis
+from .redis import redis
 from .util.framework.blueprint import register_blueprint
 from .util.l10n import set_locale
 from .util import templatefilters
@@ -39,6 +39,7 @@ def create_app(config_filename):
     # Initialize database.
     db.init_app(app)
 
+    # Initialize Redis connection.
     redis.init_app(app)
 
     email.init_app(app)

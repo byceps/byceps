@@ -16,12 +16,12 @@ from contextlib import contextmanager
 from flask import current_app
 from rq import Connection, Queue
 
-from byceps import redis
+from byceps.redis import redis
 
 
 @contextmanager
 def connection():
-    with Connection(redis.get_connection()):
+    with Connection(redis.client):
         yield
 
 
