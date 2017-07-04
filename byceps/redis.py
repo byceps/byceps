@@ -10,7 +10,7 @@ Redis_ integration.
 :License: Modified BSD, see LICENSE for details.
 """
 
-from flask import _app_ctx_stack as stack, current_app
+from flask import _app_ctx_stack as stack
 from redis import StrictRedis
 
 
