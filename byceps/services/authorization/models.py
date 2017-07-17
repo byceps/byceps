@@ -80,8 +80,9 @@ class RolePermission(db.Model):
     permission_id = db.Column(db.Unicode(40), db.ForeignKey('authz_permissions.id'), primary_key=True)
     permission = db.relationship(Permission, backref='role_permissions', collection_class=set, lazy='joined')
 
-    def __init__(self, permission: Permission) -> None:
-        self.permission = permission
+    def __init__(self, role_id: RoleID, permission_id: PermissionID) -> None:
+        self.role_id = role_id
+        self.permission_id = permission_id
 
     def __repr__(self) -> str:
         return ReprBuilder(self) \

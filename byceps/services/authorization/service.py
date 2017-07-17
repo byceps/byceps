@@ -60,10 +60,10 @@ def find_user_ids_for_role(role_id: RoleID) -> Set[UserID]:
     return {row[0] for row in rows}
 
 
-def assign_permission_to_role(permission: Permission, role: Role) -> None:
+def assign_permission_to_role(permission_id: PermissionID, role_id: RoleID
+                             ) -> None:
     """Assign the permission to the role."""
-    role_permission = RolePermission(permission)
-    role_permission.role = role
+    role_permission = RolePermission(role_id, permission_id)
 
     db.session.add(role_permission)
     db.session.commit()

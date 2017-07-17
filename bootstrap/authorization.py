@@ -119,7 +119,7 @@ def create_role_with_permissions(role_id, role_title, permissions_and_titles):
 
         permission = authorization_service.create_permission(permission_id,
                                                              permission_title)
-        authorization_service.assign_permission_to_role(permission, role)
+        authorization_service.assign_permission_to_role(permission.id, role.id)
 
 
 def add_roles_to_user(roles, user):

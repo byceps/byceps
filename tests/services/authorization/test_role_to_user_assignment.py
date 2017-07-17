@@ -63,6 +63,6 @@ class RoleToUserAssignmentTestCase(AbstractAppTestCase):
         role = service.create_role(role_id, role_id)
 
         permission = service.create_permission(permission_id, permission_id)
-        service.assign_permission_to_role(permission, role)
+        service.assign_permission_to_role(permission.id, role.id)
 
         return role

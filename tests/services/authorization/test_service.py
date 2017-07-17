@@ -52,7 +52,7 @@ class AuthorizationServiceTestCase(AbstractAppTestCase):
         for permission_id in permission_ids:
             permission = authorization_service.create_permission(permission_id,
                                                                  permission_id)
-            authorization_service.assign_permission_to_role(permission, role)
+            authorization_service.assign_permission_to_role(permission.id, role.id)
 
         return role
 
