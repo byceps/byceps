@@ -34,13 +34,12 @@
 
       <div class="filter">
         <span>{{ render_icon('filter') }} Einschränkung:</span>
+        <span>{{ order_state_filter }}</span>
         <ol>
-        {%- with waiting_for_shipping = (only_payment_state == PaymentState.paid) and (only_shipped == False) %}
-
           {%- for payment_state in PaymentState %}
             {%- with tag = render_order_payment_state(payment_state) %}
           <li>
-              {%- if (only_payment_state == payment_state) and not waiting_for_shipping -%}
+              {%- if order_state_filter == OrderStateFilter.find_for_payment_state(payment_state) -%}
             {{- tag -}}
               {%- else -%}
             <a href="{{ url_for('.index_for_party', party_id=party.id, only_payment_state=payment_state.name) }}">{{ tag }}</a>
@@ -51,7 +50,7 @@
 
           {%- with tag = render_tag('auf Versand wartend', icon='shipping', class='order-waiting-for-shipping') %}
           <li>
-            {%- if waiting_for_shipping -%}
+            {%- if order_state_filter == OrderStateFilter.waiting_for_shipping -%}
             {{ tag }}
             {%- else -%}
             <a href="{{ url_for('.index_for_party', party_id=party.id, only_payment_state=PaymentState.paid.name, only_shipped='false') }}">{{ tag }}</a>
@@ -61,7 +60,7 @@
 
           {%- with tag = render_tag('alle') %}
           <li>
-            {%- if (only_payment_state is none) and not waiting_for_shipping -%}
+            {%- if order_state_filter == OrderStateFilter.none -%}
             {{ tag }}
             {%- else -%}
             <a href="{{ url_for('.index_for_party', party_id=party.id) }}">{{ tag }}</a>
@@ -69,7 +68,6 @@
           </li>
           {%- endwith %}
 
-        {%- endwith %}
         </ol>
       </div>
 

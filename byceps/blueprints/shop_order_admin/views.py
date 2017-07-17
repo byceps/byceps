@@ -28,6 +28,7 @@ from ..shop_order.signals import order_canceled, order_paid
 
 from .authorization import ShopOrderPermission
 from .forms import CancelForm
+from .models import OrderStateFilter
 
 
 blueprint = create_blueprint('shop_order_admin', __name__)
@@ -73,6 +74,8 @@ def index_for_party(party_id, page):
 
     only_shipped = request.args.get('only_shipped', type=_str_to_bool)
 
+    order_state_filter = OrderStateFilter.find(only_payment_state, only_shipped)
+
     orders = order_service \
         .get_orders_for_party_paginated(party.id, page, per_page,
                                         only_payment_state=only_payment_state,
@@ -91,6 +94,8 @@ def index_for_party(party_id, page):
         'PaymentState': PaymentState,
         'only_payment_state': only_payment_state,
         'only_shipped': only_shipped,
+        'OrderStateFilter': OrderStateFilter,
+        'order_state_filter': order_state_filter,
         'orders': orders,
         'orderers_by_id': orderers_by_id,
     }
