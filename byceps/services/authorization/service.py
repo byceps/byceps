@@ -69,6 +69,18 @@ def assign_permission_to_role(permission_id: PermissionID, role_id: RoleID
     db.session.commit()
 
 
+def deassign_permission_from_role(permission_id: PermissionID, role_id: RoleID
+                                 ) -> None:
+    """Dessign the permission from the role."""
+    role_permission = RolePermission.query.get((role_id, permission_id))
+
+    if role_permission is None:
+        raise ValueError('Unknown role ID and/or permission ID.')
+
+    db.session.delete(role_permission)
+    db.session.commit()
+
+
 def assign_role_to_user(user_id: UserID, role_id: RoleID) -> None:
     """Assign the role to the user."""
     user_role = UserRole(user_id, role_id)

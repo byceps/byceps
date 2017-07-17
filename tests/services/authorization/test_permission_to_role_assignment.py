@@ -32,6 +32,20 @@ class PermissionToRoleAssignmentTestCase(AbstractAppTestCase):
         role_permission_ids_after = self.get_permission_ids_for_role(role_id)
         self.assertIn(self.permission_id, role_permission_ids_after)
 
+    def test_deassign_permission_from_role(self):
+        permission_id = self.permission.id
+        role_id = self.role.id
+
+        service.assign_permission_to_role(permission_id, role_id)
+
+        role_permission_ids_before = self.get_permission_ids_for_role(role_id)
+        self.assertIn(self.permission_id, role_permission_ids_before)
+
+        service.deassign_permission_from_role(permission_id, role_id)
+
+        role_permission_ids_after = self.get_permission_ids_for_role(role_id)
+        self.assertNotIn(self.permission_id, role_permission_ids_after)
+
     # -------------------------------------------------------------------- #
     # helpers
 
