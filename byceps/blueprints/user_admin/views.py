@@ -27,8 +27,8 @@ from ..authorization.registry import permission_registry
 from ..authorization_admin.authorization import RolePermission
 
 from .authorization import UserPermission
+from .models import UserEnabledFilter
 from . import service
-from .service import UserEnabledFilter
 
 
 blueprint = create_blueprint('user_admin', __name__)

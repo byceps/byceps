@@ -6,14 +6,11 @@ byceps.blueprints.user_admin.service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from enum import Enum
-
 from ...database import db
 from ...services.user.models.detail import UserDetail
 from ...services.user.models.user import User
 
-
-UserEnabledFilter = Enum('UserEnabledFilter', ['enabled', 'disabled'])
+from .models import UserEnabledFilter
 
 
 def get_users_paginated(page, per_page, *, search_term=None,
