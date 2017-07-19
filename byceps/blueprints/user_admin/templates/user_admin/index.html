@@ -42,7 +42,7 @@
 
   <h1>{{ title }}</h1>
 
-  <div class="row bigstats">
+  <div class="row row--space-around bigstats">
     <div class="column-auto">
       {{ render_bigstats_item(total_enabled, 'aktiviert', icon_name='enabled', color='#008800') }}
     </div>
@@ -54,7 +54,7 @@
     </div>
   </div>
 
-  <div class="row filters">
+  <div class="row row--space-between filters">
     <div class="column-auto">
 
       <form action="{{ url_for('.index') }}" class="search-user">
