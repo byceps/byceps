@@ -1,10 +1,9 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
-{% from 'macros/misc.html' import render_tag %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
 {% from 'macros/stats.html' import render_bigstats_item %}
-{% from 'macros/user_admin.html' import render_user_avatar_16_and_link %}
+{% from 'macros/user_admin.html' import render_user_avatar_16_and_link, render_user_state_filter %}
 {% set current_page = 'user_admin' %}
 {% set title = 'Benutzer' %}
 
@@ -68,39 +67,14 @@
 
       <div class="filter">
         <span>{{ render_icon('filter') }} Einschränkung:</span>
-        <ol class="filter-items">
-
-          {%- with tag = render_tag('aktiviert', class='user-state-enabled') %}
-          <li>
-            {%- if only == 'enabled' %}
-            {{ tag }}
-            {%- else %}
-            <a href="{{ url_for('.index', only='enabled') }}">{{ tag }}</a>
-            {%- endif %}
-          </li>
-          {%- endwith %}
-
-          {%- with tag = render_tag('nicht aktiviert', class='user-state-disabled') %}
-          <li>
-            {%- if only == 'disabled' %}
-            {{ tag }}
-            {%- else %}
-            <a href="{{ url_for('.index', only='disabled') }}">{{ tag }}</a>
-            {%- endif %}
-          </li>
-          {%- endwith %}
-
-          {%- with tag = render_tag('alle') %}
-          <li>
-            {%- if only not in ('enabled', 'disabled') %}
-            {{ tag }}
-            {%- else %}
-            <a href="{{ url_for('.index') }}">{{ tag }}</a>
-            {%- endif %}
-          </li>
-          {%- endwith %}
-
-        </ol>
+        <div class="dropdown left">
+          <button class="dropdown-toggle button button--seamless">{{ render_user_state_filter(user_state_filter) }} {{ render_icon('caret-down') }}</button>
+          <ol>
+            <li><a href="{{ url_for('.index') }}">{{ render_user_state_filter(UserStateFilter.none) }}</a></li>
+            <li><a href="{{ url_for('.index', only='enabled') }}">{{ render_user_state_filter(UserStateFilter.enabled) }}</a></li>
+            <li><a href="{{ url_for('.index', only='disabled') }}">{{ render_user_state_filter(UserStateFilter.disabled) }}</a></li>
+          </ol>
+        </div>
       </div>
 
     </div>

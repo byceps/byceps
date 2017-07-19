@@ -27,7 +27,7 @@ from ..authorization.registry import permission_registry
 from ..authorization_admin.authorization import RolePermission
 
 from .authorization import UserPermission
-from .models import UserEnabledFilter
+from .models import UserEnabledFilter, UserStateFilter
 from . import service
 
 
@@ -49,6 +49,8 @@ def index(page):
 
     enabled_filter = UserEnabledFilter.__members__.get(only)
 
+    user_state_filter = UserStateFilter.find(enabled_filter )
+
     users = service.get_users_paginated(page, per_page,
                                         search_term=search_term,
                                         enabled_filter=enabled_filter)
@@ -64,6 +66,8 @@ def index(page):
         'total_overall': total_overall,
         'search_term': search_term,
         'only': only,
+        'UserStateFilter': UserStateFilter,
+        'user_state_filter': user_state_filter,
     }
 
 

@@ -31,3 +31,14 @@
 {% macro render_user_deleted_flag() -%}
   {{ render_tag(render_icon('delete') ~ ' gelöscht', class='notification-error') }}
 {%- endmacro %}
+
+
+{% macro render_user_state_filter(user_state_filter) %}
+  {%- if user_state_filter.name == 'enabled' -%}
+    {{ render_tag('aktiviert', class='user-state-enabled') }}
+  {%- elif user_state_filter.name == 'disabled' -%}
+    {{ render_tag('nicht aktiviert', class='user-state-disabled') }}
+  {%- else -%}
+    {{ render_tag('keine') }}
+  {%- endif -%}
+{%- endmacro %}
