@@ -463,25 +463,27 @@ fieldset.buttons {
   font-size: 0.75rem; /* 12px / 16px */
   white-space: nowrap;
 }
-.filter ol,
-.filter li {
+
+.filter-items,
+.filter-items li {
   display: inline-block;
 }
-.filter li::after {
+.filter-items li::after {
   opacity: 0.5;
 }
-.filter li:last-child::after {
+.filter-items li:last-child::after {
   content: none;
 }
-.filter li a {
+.filter-items li a {
   opacity: 0.3;
 }
-.filter a:hover {
+.filter-items a:hover {
   opacity: 0.6;
 }
-.filter li :not(a) {
+.filter-items li :not(a) {
   opacity: 1;
 }
+
 .filter .tag {
   background-color: #666666;
 }

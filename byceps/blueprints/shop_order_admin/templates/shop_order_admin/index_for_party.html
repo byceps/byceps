@@ -35,7 +35,7 @@
       <div class="filter">
         <span>{{ render_icon('filter') }} Einschränkung:</span>
         <span>{{ order_state_filter }}</span>
-        <ol>
+        <ol class="filter-items">
           {%- for payment_state in PaymentState %}
             {%- with tag = render_order_payment_state(payment_state) %}
           <li>
