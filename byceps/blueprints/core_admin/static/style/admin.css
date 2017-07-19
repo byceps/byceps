@@ -477,26 +477,6 @@ fieldset.buttons {
   white-space: nowrap;
 }
 
-.filter-items,
-.filter-items li {
-  display: inline-block;
-}
-.filter-items li::after {
-  opacity: 0.5;
-}
-.filter-items li:last-child::after {
-  content: none;
-}
-.filter-items li a {
-  opacity: 0.3;
-}
-.filter-items a:hover {
-  opacity: 0.6;
-}
-.filter-items li :not(a) {
-  opacity: 1;
-}
-
 .filter .tag {
   background-color: #666666;
 }
