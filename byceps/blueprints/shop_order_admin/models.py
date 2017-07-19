@@ -20,12 +20,12 @@ SHIPPED = True
 
 class OrderStateFilter(Enum):
 
+    none                              = (None,                             IGNORED)
     payment_state_open                = (PaymentState.open,                IGNORED)
     payment_state_canceled            = (PaymentState.canceled,            IGNORED)
     payment_state_paid                = (PaymentState.paid,                IGNORED)
     payment_state_canceled_after_paid = (PaymentState.canceled_after_paid, IGNORED)
     waiting_for_shipping              = (None,                             NOT_YET_SHIPPED)
-    none                              = (None,                             IGNORED)
 
     def __init__(self, payment_state, shipped):
         self.payment_state = payment_state

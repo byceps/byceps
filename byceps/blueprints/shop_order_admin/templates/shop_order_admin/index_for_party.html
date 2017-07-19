@@ -2,9 +2,8 @@
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
-{% from 'macros/misc.html' import render_tag %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
-{% from 'macros/shop_order_admin.html' import render_order_link, render_order_payment_method, render_order_payment_state %}
+{% from 'macros/shop_order_admin.html' import render_order_link, render_order_payment_method, render_order_payment_state, render_order_state_filter %}
 {% from 'macros/user_admin.html' import render_user_avatar_16_and_link %}
 {% set current_page_party = party %}
 {% set title = 'Bestellungen' %}
@@ -34,41 +33,16 @@
 
       <div class="filter">
         <span>{{ render_icon('filter') }} Einschränkung:</span>
-        <span>{{ order_state_filter }}</span>
-        <ol class="filter-items">
-          {%- for payment_state in PaymentState %}
-            {%- with tag = render_order_payment_state(payment_state) %}
-          <li>
-              {%- if order_state_filter == OrderStateFilter.find_for_payment_state(payment_state) -%}
-            {{- tag -}}
-              {%- else -%}
-            <a href="{{ url_for('.index_for_party', party_id=party.id, only_payment_state=payment_state.name) }}">{{ tag }}</a>
-              {%- endif -%}
-          </li>
-            {%- endwith %}
-          {%- endfor %}
-
-          {%- with tag = render_tag('auf Versand wartend', icon='shipping', class='order-waiting-for-shipping') %}
-          <li>
-            {%- if order_state_filter == OrderStateFilter.waiting_for_shipping -%}
-            {{ tag }}
-            {%- else -%}
-            <a href="{{ url_for('.index_for_party', party_id=party.id, only_payment_state=PaymentState.paid.name, only_shipped='false') }}">{{ tag }}</a>
-            {%- endif -%}
-          </li>
-          {%- endwith %}
-
-          {%- with tag = render_tag('alle') %}
-          <li>
-            {%- if order_state_filter == OrderStateFilter.none -%}
-            {{ tag }}
-            {%- else -%}
-            <a href="{{ url_for('.index_for_party', party_id=party.id) }}">{{ tag }}</a>
-            {%- endif -%}
-          </li>
-          {%- endwith %}
-
-        </ol>
+        <div class="dropdown left">
+          <button class="dropdown-toggle button button--seamless">{{ render_order_state_filter(order_state_filter) }} {{ render_icon('caret-down') }}</button>
+          <ol>
+            <li><a href="{{ url_for('.index_for_party', party_id=party.id) }}">{{ render_order_state_filter(OrderStateFilter.none) }}</a></li>
+            {%- for payment_state in PaymentState %}
+            <li><a href="{{ url_for('.index_for_party', party_id=party.id, only_payment_state=payment_state.name) }}">{{ render_order_payment_state(payment_state) }}</a></li>
+            {%- endfor %}
+            <li><a href="{{ url_for('.index_for_party', party_id=party.id, only_payment_state=PaymentState.paid.name, only_shipped='false') }}">{{ render_order_state_filter(OrderStateFilter.waiting_for_shipping) }}</a></li>
+          </ol>
+        </div>
       </div>
 
     </div>
