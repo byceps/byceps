@@ -115,7 +115,7 @@ class ExportTestCase(AbstractAppTestCase):
 
     def build_orderer(self):
         email_address = 'h-w.mustermann@example.com'
-        orderer = create_user_with_detail(42, email_address=email_address)
+        orderer = create_user_with_detail(email_address=email_address)
         orderer.detail.last_name = 'Mustermann'
         orderer.detail.first_names = 'Hans-Werner'
         orderer.detail.country = 'Deutschland'

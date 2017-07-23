@@ -21,7 +21,7 @@ class OrderedArticlesServiceTestCase(AbstractAppTestCase):
     def setUp(self):
         super().setUp()
 
-        self.user = self.create_user(1)
+        self.user = self.create_user()
 
         self.article = self.create_article()
 
@@ -61,8 +61,8 @@ class OrderedArticlesServiceTestCase(AbstractAppTestCase):
 
         return party
 
-    def create_user(self, number):
-        user = create_user_with_detail(number)
+    def create_user(self):
+        user = create_user_with_detail()
 
         self.db.session.add(user)
         self.db.session.commit()

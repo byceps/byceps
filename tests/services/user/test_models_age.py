@@ -20,7 +20,7 @@ from testfixtures.user import create_user_with_detail
     ('2015-03-19', 21),
 )
 def test_age(today_text, expected):
-    user = create_user_with_detail(1, date_of_birth=date(1994, 3, 18))
+    user = create_user_with_detail(date_of_birth=date(1994, 3, 18))
 
     with freeze_time(today_text):
         assert user.detail.age == expected

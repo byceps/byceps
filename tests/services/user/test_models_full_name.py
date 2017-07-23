@@ -15,8 +15,7 @@ from testfixtures.user import create_user_with_detail
     ('Giesbert Z.', 'Blümli', 'Giesbert Z. Blümli'),
 )
 def test_full_name(first_names, last_name, expected):
-    user = create_user_with_detail(123,
-                                   first_names=first_names,
+    user = create_user_with_detail(first_names=first_names,
                                    last_name=last_name)
 
     assert user.detail.full_name == expected

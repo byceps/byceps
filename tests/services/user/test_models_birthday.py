@@ -18,7 +18,7 @@ from testfixtures.user import create_user_with_detail
     ('2014-03-19', 364),
 )
 def test_days_until_next_birthday(today_text, expected):
-    user = create_user_with_detail(1, date_of_birth=date(1994, 3, 18))
+    user = create_user_with_detail(date_of_birth=date(1994, 3, 18))
 
     with freeze_time(today_text):
         assert user.detail.days_until_next_birthday == expected
@@ -33,7 +33,7 @@ def test_days_until_next_birthday(today_text, expected):
     ('2014-03-19', False),
 )
 def test_is_birthday_today(today_text, expected):
-    user = create_user_with_detail(1, date_of_birth=date(1994, 3, 18))
+    user = create_user_with_detail(date_of_birth=date(1994, 3, 18))
 
     with freeze_time(today_text):
         assert user.detail.is_birthday_today == expected

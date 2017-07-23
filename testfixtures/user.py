@@ -29,14 +29,13 @@ def create_user(number, *, screen_name=None, email_address=None, enabled=True):
     return user
 
 
-def create_user_with_detail(number, *,
-                            screen_name=None,
+def create_user_with_detail(screen_name='Faith', *,
                             email_address=None,
                             enabled=True,
                             first_names='John Joseph',
                             last_name='Doe',
                             date_of_birth=None):
-    user = create_user(number, screen_name=screen_name,
+    user = create_user(None, screen_name=screen_name,
                        email_address=email_address, enabled=enabled)
 
     detail = UserDetail(user=user)

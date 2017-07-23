@@ -20,7 +20,7 @@ class ShopAdminTestCase(AbstractAppTestCase):
         super().setUp(config_filename=CONFIG_FILENAME_TEST_ADMIN)
 
         self.setup_admin()
-        self.orderer = self.create_user(1)
+        self.orderer = self.create_user()
 
     def setup_admin(self):
         permission_ids = {'admin.access', 'shop_order.update'}
@@ -102,8 +102,8 @@ class ShopAdminTestCase(AbstractAppTestCase):
 
     # helpers
 
-    def create_user(self, number):
-        user = create_user_with_detail(number)
+    def create_user(self):
+        user = create_user_with_detail()
 
         self.db.session.add(user)
         self.db.session.commit()

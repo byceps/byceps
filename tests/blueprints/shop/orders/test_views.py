@@ -16,8 +16,8 @@ class ShopOrdersTestCase(AbstractAppTestCase):
     def setUp(self):
         super().setUp()
 
-        self.user1 = self.create_user(1)
-        self.user2 = self.create_user(2)
+        self.user1 = self.create_user('User1')
+        self.user2 = self.create_user('User2')
 
     def test_view_matching_user_and_party(self):
         order = self.create_order(self.party.id, self.user1, 'LF-02-B00014')
@@ -52,8 +52,8 @@ class ShopOrdersTestCase(AbstractAppTestCase):
 
         return party
 
-    def create_user(self, number):
-        user = create_user_with_detail(number)
+    def create_user(self, screen_name):
+        user = create_user_with_detail(screen_name)
 
         self.db.session.add(user)
         self.db.session.commit()
