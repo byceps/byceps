@@ -88,7 +88,7 @@ def _add_items_from_cart_to_order(cart: Cart, order: Order
         article = article_item.article
         quantity = article_item.quantity
 
-        article.quantity -= quantity
+        article.quantity = Article.quantity - quantity
 
         yield _add_article_to_order(order, article, quantity)
 
@@ -212,7 +212,7 @@ def cancel_order(order: Order, updated_by_id: UserID, reason: str) -> None:
 
     # Make the reserved quantity of articles available again.
     for item in order.items:
-        item.article.quantity += item.quantity
+        item.article.quantity = Article.quantity + item.quantity
 
     db.session.commit()
 
