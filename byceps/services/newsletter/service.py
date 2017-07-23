@@ -28,11 +28,14 @@ def count_subscribers_for_brand(brand_id: BrandID) -> int:
 
 
 def get_subscribers(brand_id: BrandID) -> Sequence[User]:
-    """Return the enabled users that are currently subscribed for the brand."""
+    """Return screen name and email address of the enabled users that
+    are currently subscribed for the brand.
+    """
     subscribers = _build_query_for_current_subscribers(brand_id).all()
 
     user_ids = set(map(itemgetter(0), subscribers))
-    return _get_users_query(user_ids).filter_by(enabled=True).all()
+
+    return _get_subscriber_details(user_ids)
 
 
 def _build_query_for_current_subscribers(brand_id: BrandID) -> BaseQuery:
@@ -73,6 +76,18 @@ def _build_query_for_current_subscribers(brand_id: BrandID) -> BaseQuery:
         )) \
         .filter(Subscription._state == SubscriptionState.requested.name) \
         .filter(Subscription.brand_id == brand_id)
+
+
+def _get_subscriber_details(user_ids: Set[UserID]) -> Sequence[User]:
+    """Return screen name and email address of each user (if enabled)."""
+    return db.session \
+        .query(
+            User.screen_name,
+            User.email_address,
+        ) \
+        .filter(User.id.in_(user_ids)) \
+        .filter_by(enabled=True) \
+        .all()
 
 
 def get_user_subscription_states_for_brand(brand_id: BrandID) \
@@ -151,11 +166,6 @@ def _build_query_for_latest_expressed_at() -> BaseQuery:
             Subscription.user_id,
             Subscription.brand_id
         )
-
-
-def _get_users_query(user_ids: Set[UserID]) -> BaseQuery:
-    """Return a query to select the users with the given IDs."""
-    return User.query.filter(User.id.in_(user_ids))
 
 
 def count_subscriptions_by_state(
