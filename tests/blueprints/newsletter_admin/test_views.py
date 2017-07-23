@@ -88,7 +88,9 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
         self.assertEqual(response.get_data(), expected_data)
 
     def create_user(self, number, *, enabled=True):
-        user = create_user(number, enabled=enabled)
+        email_address = 'user{:03d}@example.com'.format(number)
+
+        user = create_user(number, email_address=email_address, enabled=enabled)
 
         self.db.session.add(user)
         self.db.session.commit()
