@@ -54,7 +54,39 @@ class ShopTestCase(AbstractAppTestCase):
 
         self.article_id = article.id
 
-    def test_order_article(self):
+    def test_order(self):
+        article_before = self.get_article()
+        self.assertEqual(article_before.quantity, 5)
+
+        url = '/shop/order'
+        article_quantity_key = 'article_{}'.format(self.article_id)
+        form_data = {
+            'first_names': 'Hiro',
+            'last_name': 'Protagonist',
+            'country': 'State of Mind',
+            'zip_code': '31337',
+            'city': 'Atrocity',
+            'street': 'L33t Street 101',
+            article_quantity_key: 3,
+        }
+        with self.client(user=self.orderer) as client:
+            response = client.post(url, data=form_data)
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.headers.get('Location'), 'http://example.com/shop/order_placed')
+
+        article_afterwards = self.get_article()
+        self.assertEqual(article_afterwards.quantity, 2)
+
+        order = Order.query.filter_by(placed_by=self.orderer).one()
+        self.assertEqual(order.order_number, 'AEC-01-B00005')
+        self.assertEqual(len(order.items), 1)
+        self.assertEqual(order.items[0].article.id, self.article_id)
+        self.assertEqual(order.items[0].price, article_before.price)
+        self.assertEqual(order.items[0].tax_rate, article_before.tax_rate)
+        self.assertEqual(order.items[0].quantity, 3)
+
+    def test_order_single(self):
         article_before = self.get_article()
         self.assertEqual(article_before.quantity, 5)
 
