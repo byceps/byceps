@@ -24,7 +24,7 @@ class AttachedArticle(db.Model):
                                nullable=False, index=True)
     article = db.relationship(Article, foreign_keys=[article_number],
                               backref=db.backref('articles_attached_to', collection_class=set))
-    quantity = db.Column(db.Integer, nullable=False)
+    quantity = db.Column(db.Integer, db.CheckConstraint('quantity > 0'), nullable=False)
     attached_to_article_number = db.Column(db.Unicode(20),
                                            db.ForeignKey('shop_articles.item_number'),
                                            nullable=False, index=True)

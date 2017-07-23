@@ -32,7 +32,7 @@ class OrderItem(db.Model):
     description = db.Column(db.Unicode(80), nullable=False)
     price = db.Column(db.Numeric(6, 2), nullable=False)
     tax_rate = db.Column(db.Numeric(3, 3), nullable=False)
-    quantity = db.Column(db.Integer, nullable=False)
+    quantity = db.Column(db.Integer, db.CheckConstraint('quantity > 0'), nullable=False)
     shipping_required = db.Column(db.Boolean, nullable=False)
 
     def __init__(self, order: Order, article: Article, quantity: int) -> None:

@@ -54,6 +54,7 @@ class Article(db.Model):
     __tablename__ = 'shop_articles'
     __table_args__ = (
         db.UniqueConstraint('party_id', 'description'),
+        db.CheckConstraint('available_from < available_until'),
     )
     query_class = ArticleQuery
 
@@ -66,7 +67,7 @@ class Article(db.Model):
     tax_rate = db.Column(db.Numeric(3, 3), nullable=False)
     available_from = db.Column(db.DateTime, nullable=True)
     available_until = db.Column(db.DateTime, nullable=True)
-    quantity = db.Column(db.Integer, nullable=False)
+    quantity = db.Column(db.Integer, db.CheckConstraint('quantity >= 0'), nullable=False)
     max_quantity_per_order = db.Column(db.Integer, nullable=True)
     not_directly_orderable = db.Column(db.Boolean, default=False, nullable=False)
     requires_separate_order = db.Column(db.Boolean, default=False, nullable=False)
