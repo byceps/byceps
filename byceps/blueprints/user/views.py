@@ -17,6 +17,7 @@ from ...services.orga_team import service as orga_team_service
 from ...services.terms import service as terms_service
 from ...services.ticketing import attendance_service, ticket_service
 from ...services.user import service as user_service
+from ...services.user import creation_service as user_creation_service
 from ...services.user_badge import service as badge_service
 from ...services.verification_token import service as verification_token_service
 from ...util.framework.blueprint import create_blueprint
@@ -179,11 +180,12 @@ def create():
         abort(400, 'Die AGB-Version gehört nicht zu dieser Veranstaltung.')
 
     try:
-        user = user_service.create_user(screen_name, email_address, password,
-                                        first_names, last_name, brand_id,
-                                        terms_version.id,
-                                        subscribe_to_newsletter)
-    except user_service.UserCreationFailed:
+        user = user_creation_service.create_user(screen_name, email_address,
+                                                 password, first_names,
+                                                 last_name, brand_id,
+                                                 terms_version.id,
+                                                 subscribe_to_newsletter)
+    except user_creation_service.UserCreationFailed:
         flash_error('Das Benutzerkonto für "{}" konnte nicht angelegt werden.',
                     screen_name)
         return create_form(form)

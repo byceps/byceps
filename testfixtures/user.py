@@ -10,7 +10,7 @@ from datetime import date
 
 from byceps.database import generate_uuid
 from byceps.services.user.models.detail import UserDetail
-from byceps.services.user import service as user_service
+from byceps.services.user import creation_service as user_creation_service
 
 
 def create_user(number, *, screen_name=None, email_address=None, enabled=True):
@@ -20,7 +20,7 @@ def create_user(number, *, screen_name=None, email_address=None, enabled=True):
     if not email_address:
         email_address = 'user{:03d}@example.com'.format(number)
 
-    user = user_service.build_user(screen_name, email_address)
+    user = user_creation_service.build_user(screen_name, email_address)
     user.id = generate_uuid()
     user.enabled = enabled
     return user

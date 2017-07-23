@@ -9,7 +9,7 @@ import click
 
 from byceps.database import db
 from byceps.services.authentication.password import service as password_service
-from byceps.services.user import service as user_service
+from byceps.services.user import creation_service as user_creation_service
 from byceps.util.system import get_config_filename_from_env_or_exit
 
 from bootstrap.util import app_context
@@ -30,7 +30,7 @@ def execute(screen_name, email_address, password):
 
 def _create_user(screen_name, email_address):
     try:
-        user = user_service.build_user(screen_name, email_address)
+        user = user_creation_service.build_user(screen_name, email_address)
     except ValueError as e:
         raise click.UsageError(e)
 

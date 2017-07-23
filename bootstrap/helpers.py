@@ -7,7 +7,7 @@ bootstrap.helpers
 """
 
 from byceps.services.user.models.user import User
-from byceps.services.user import service as user_service
+from byceps.services.user import creation_service as user_creation_service
 
 from .util import add_to_database
 
@@ -18,7 +18,7 @@ from .util import add_to_database
 
 @add_to_database
 def create_user(screen_name, email_address, *, enabled=False):
-    user = user_service.build_user(screen_name, email_address)
+    user = user_creation_service.build_user(screen_name, email_address)
     user.enabled = enabled
     return user
 
