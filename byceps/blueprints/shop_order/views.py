@@ -80,7 +80,11 @@ def order():
 
     orderer = form.get_orderer(g.current_user._user)
 
-    order = _submit_order(orderer, cart)
+    try:
+        order = _submit_order(orderer, cart)
+    except order_service.OrderFailed:
+        flash_error('Die Bestellung ist fehlgeschlagen.')
+        return order_form(form)
 
     _flash_order_success(order)
 
@@ -165,7 +169,11 @@ def order_single(article_id):
     for item in article_compilation:
         cart.add_item(item.article, item.fixed_quantity)
 
-    order = _submit_order(orderer, cart)
+    try:
+        order = _submit_order(orderer, cart)
+    except order_service.OrderFailed:
+        flash_error('Die Bestellung ist fehlgeschlagen.')
+        return order_form(form)
 
     _flash_order_success(order)
 

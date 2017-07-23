@@ -9,7 +9,9 @@ byceps.services.shop.order.service
 from datetime import datetime
 from typing import Dict, Iterator, Optional, Sequence, Set
 
+from flask import current_app
 from flask_sqlalchemy import Pagination
+from sqlalchemy.exc import IntegrityError
 
 from ....blueprints.shop_order.signals import order_placed
 from ....database import db
@@ -27,6 +29,10 @@ from .models.order_event import OrderEvent
 from .models.order_item import OrderItem
 
 
+class OrderFailed(Exception):
+    pass
+
+
 def create_order(party_id: PartyID, orderer: Orderer,
                  payment_method: PaymentMethod, cart: Cart) -> OrderTuple:
     """Create an order of one or more articles."""
@@ -40,7 +46,13 @@ def create_order(party_id: PartyID, orderer: Orderer,
 
     db.session.add(order)
     db.session.add_all(order_items)
-    db.session.commit()
+
+    try:
+        db.session.commit()
+    except IntegrityError as e:
+        current_app.logger.error('Order %s failed: %s', order_number, e)
+        db.session.rollback()
+        raise OrderFailed()
 
     order_placed.send(None, order_id=order.id)
 
