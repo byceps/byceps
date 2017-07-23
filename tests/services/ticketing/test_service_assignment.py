@@ -3,8 +3,6 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from itertools import count
-
 from byceps.services.seating import area_service, category_service, seat_service
 from byceps.services.ticketing import ticket_service
 
@@ -17,8 +15,6 @@ class TicketAssignmentServiceTestCase(AbstractAppTestCase):
 
     def setUp(self):
         super().setUp()
-
-        self.user_number_sequence = count(1)
 
         self.owner = self.create_user('Ticket_Owner')
 
@@ -76,8 +72,6 @@ class TicketAssignmentServiceTestCase(AbstractAppTestCase):
     # helpers
 
     def create_user(self, screen_name):
-        number = next(self.user_number_sequence)
-
         user = create_user(screen_name)
 
         self.db.session.add(user)
