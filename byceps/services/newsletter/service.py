@@ -13,7 +13,8 @@ from typing import Any, Dict, Iterable, Iterator, Sequence, Set, Tuple, Union
 from ...database import BaseQuery, db
 from ...typing import BrandID, UserID
 
-from ..user.models.user import User
+from ..user import service as user_service
+from ..user.models.user import User, UserTuple
 
 from .models import Subscription
 from .types import SubscriptionState
@@ -75,15 +76,15 @@ def _build_query_for_current_subscribers(brand_id: BrandID) -> BaseQuery:
 
 
 def get_user_subscription_states_for_brand(brand_id: BrandID) \
-        -> Iterator[Tuple[User, SubscriptionState]]:
+        -> Iterator[Tuple[UserTuple, SubscriptionState]]:
     """Return subscriptions as (user, state) pairs for the brand."""
     subscription_states = _build_query_for_current_state() \
         .filter_by(brand_id=brand_id) \
         .all()
 
     user_ids = set(map(itemgetter(0), subscription_states))
-    users = _get_users_query(user_ids).all()
-    users_by_id = {user.id: user for user in users}
+    users = user_service.find_users(user_ids)
+    users_by_id = user_service.index_users_by_id(users)
 
     for user_id, brand_id, state_name in subscription_states:
         state = SubscriptionState[state_name]
