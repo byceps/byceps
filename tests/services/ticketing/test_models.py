@@ -10,9 +10,9 @@ from byceps.services.ticketing.models.ticket import Ticket
 from testfixtures.user import create_user
 
 
-user1 = create_user(1)
-user2 = create_user(2)
-user3 = create_user(3)
+user1 = create_user('User1')
+user2 = create_user('User2')
+user3 = create_user('User3')
 
 
 @params(

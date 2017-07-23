@@ -43,7 +43,7 @@ def test_with_multiple_items():
 # helpers
 
 def create_order_with_items(price_quantity_pairs):
-    user = create_user(42)
+    user = create_user()
 
     party_id = 'acme-party-2016'
     placed_by = user

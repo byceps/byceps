@@ -19,7 +19,7 @@ class CurrentUserJsonTestCase(AbstractAppTestCase):
     def setUp(self):
         super().setUp()
 
-        self.user = self.create_user(220206, screen_name='McFly')
+        self.user = self.create_user('McFly')
 
     def test_when_logged_in(self):
         response = self.send_request(user=self.user)
@@ -44,8 +44,8 @@ class CurrentUserJsonTestCase(AbstractAppTestCase):
 
     # helpers
 
-    def create_user(self, number, screen_name):
-        user = create_user(number, screen_name=screen_name)
+    def create_user(self, screen_name):
+        user = create_user(screen_name)
 
         self.db.session.add(user)
         self.db.session.commit()

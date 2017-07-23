@@ -62,7 +62,7 @@ class AbstractAppTestCase(TestCase):
         db.session.commit()
 
     def create_admin(self):
-        self.admin = create_user(99, screen_name='Admin')
+        self.admin = create_user('Admin')
 
         db.session.add(self.admin)
         db.session.commit()

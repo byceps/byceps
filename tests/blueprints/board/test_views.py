@@ -168,13 +168,7 @@ class BoardModerationTestCase(AbstractAppTestCase):
     # helpers
 
     def create_user(self):
-        number = 1
-        screen_name = 'User-{:d}'.format(number)
-        email_address = 'user{:03d}@example.com'.format(number)
-
-        user = create_user(number,
-                           screen_name=screen_name,
-                           email_address=email_address)
+        user = create_user()
         self.db.session.add(user)
         return user
 

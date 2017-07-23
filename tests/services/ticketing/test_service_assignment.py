@@ -78,7 +78,7 @@ class TicketAssignmentServiceTestCase(AbstractAppTestCase):
     def create_user(self, screen_name):
         number = next(self.user_number_sequence)
 
-        user = create_user(number, screen_name=screen_name)
+        user = create_user(screen_name)
 
         self.db.session.add(user)
         self.db.session.commit()

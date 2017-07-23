@@ -46,7 +46,7 @@ class MatchTestCase(AbstractAppTestCase):
     # helpers
 
     def create_player(self):
-        player = create_user(27)
+        player = create_user()
 
         self.db.session.add(player)
         self.db.session.commit()

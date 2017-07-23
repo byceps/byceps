@@ -56,7 +56,7 @@ def test_is_canceled_after_paid():
 # helpers
 
 def create_order_with_payment_state(payment_state):
-    user = create_user(42)
+    user = create_user()
 
     party_id = 'acme-party-2016'
     placed_by = user

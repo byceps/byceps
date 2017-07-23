@@ -47,7 +47,7 @@ from testfixtures.verification_token import create_verification_token
     ),
 )
 def test_is_expired(purpose, now, expected):
-    user = create_user(1)
+    user = create_user()
     created_at = datetime(2014, 11, 26, 17, 44, 53)
 
     token = create_verification_token(user.id, purpose, created_at=created_at)

@@ -30,8 +30,8 @@ class UserBadgeAwardingServiceTestCase(AbstractAppTestCase):
             self.assertEqual(actual, set())
 
     def test_get_awardings_of_badge(self):
-        user1 = self.create_user(1)
-        user2 = self.create_user(2)
+        user1 = self.create_user('User1')
+        user2 = self.create_user('User2')
 
         with self.app.app_context():
             badge = user_badge_service.create_badge('Certificate of Awesomeness', 'awesomeness.svg')
@@ -50,8 +50,8 @@ class UserBadgeAwardingServiceTestCase(AbstractAppTestCase):
     # -------------------------------------------------------------------- #
     # helpers
 
-    def create_user(self, number):
-        user = create_user(number)
+    def create_user(self, screen_name):
+        user = create_user(screen_name)
 
         self.db.session.add(user)
         self.db.session.commit()

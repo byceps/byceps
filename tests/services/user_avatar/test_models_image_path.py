@@ -31,7 +31,7 @@ from tests.helpers import app_context
     ),
 )
 def test_path(avatar_images_path, avatar_id, image_type, expected):
-    user = create_user(1)
+    user = create_user()
 
     avatar = create_avatar(user.id, id=avatar_id, image_type=image_type)
 

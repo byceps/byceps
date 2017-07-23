@@ -37,7 +37,7 @@ class ShopTestCase(AbstractAppTestCase):
         self.db.session.commit()
 
     def setup_orderer(self):
-        self.orderer = create_user(1)
+        self.orderer = create_user()
 
         self.db.session.add(self.orderer)
         self.db.session.commit()

@@ -47,7 +47,7 @@ class GetCurrentVersionOfSnippetTestCase(AbstractAppTestCase):
         return party
 
     def create_creator(self):
-        creator = create_user(1)
+        creator = create_user()
         self.db.session.add(creator)
         self.db.session.commit()
         return creator

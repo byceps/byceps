@@ -59,7 +59,7 @@ class UserJsonTestCase(AbstractAppTestCase):
     # helpers
 
     def create_user(self, screen_name, *, deleted=False):
-        user = create_user(42, screen_name=screen_name)
+        user = create_user(screen_name)
         user.deleted = deleted
 
         self.db.session.add(user)

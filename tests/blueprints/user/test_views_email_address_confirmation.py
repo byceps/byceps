@@ -21,7 +21,7 @@ class EmailAddressConfirmationTestCase(AbstractAppTestCase):
     def setUp(self):
         super().setUp()
 
-        self.user = create_user(1, enabled=False)
+        self.user = create_user(enabled=False)
         self.db.session.add(self.user)
         self.db.session.commit()
 

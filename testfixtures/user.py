@@ -13,11 +13,8 @@ from byceps.services.user.models.detail import UserDetail
 from byceps.services.user import creation_service as user_creation_service
 
 
-def create_user(number, *, screen_name=None, email_address=None, enabled=True):
+def create_user(screen_name='Faith', *, email_address=None, enabled=True):
     user_id = generate_uuid()
-
-    if not screen_name:
-        screen_name = 'User-{:d}'.format(number)
 
     if not email_address:
         email_address = 'user{}@example.com'.format(user_id)
@@ -35,8 +32,8 @@ def create_user_with_detail(screen_name='Faith', *,
                             first_names='John Joseph',
                             last_name='Doe',
                             date_of_birth=None):
-    user = create_user(None, screen_name=screen_name,
-                       email_address=email_address, enabled=enabled)
+    user = create_user(screen_name, email_address=email_address,
+                       enabled=enabled)
 
     detail = UserDetail(user=user)
     detail.first_names = first_names

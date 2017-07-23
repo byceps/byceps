@@ -26,7 +26,7 @@ class PasswordUpdateFormTestCase(AbstractAppTestCase):
     # helpers
 
     def create_user(self):
-        user = create_user(8516)
+        user = create_user()
 
         self.db.session.add(user)
         self.db.session.commit()

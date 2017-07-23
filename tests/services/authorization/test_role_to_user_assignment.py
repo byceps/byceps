@@ -52,7 +52,7 @@ class RoleToUserAssignmentTestCase(AbstractAppTestCase):
     # helpers
 
     def create_user(self):
-        user = create_user(4, screen_name='Alice')
+        user = create_user('Alice')
 
         self.db.session.add(user)
         self.db.session.commit()
