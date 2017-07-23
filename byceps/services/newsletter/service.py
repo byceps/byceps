@@ -16,7 +16,7 @@ from ...typing import BrandID, UserID
 from ..user import service as user_service
 from ..user.models.user import User, UserTuple
 
-from .models import Subscription
+from .models import Subscriber, Subscription
 from .types import SubscriptionState
 
 
@@ -27,15 +27,15 @@ def count_subscribers_for_brand(brand_id: BrandID) -> int:
     return _build_query_for_current_subscribers(brand_id).count()
 
 
-def get_subscribers(brand_id: BrandID) -> Sequence[User]:
-    """Return screen name and email address of the enabled users that
+def get_subscribers(brand_id: BrandID) -> Iterable[Subscriber]:
+    """Yield screen name and email address of the enabled users that
     are currently subscribed for the brand.
     """
-    subscribers = _build_query_for_current_subscribers(brand_id).all()
+    subscriber_id_rows = _build_query_for_current_subscribers(brand_id).all()
 
-    user_ids = set(map(itemgetter(0), subscribers))
+    subscriber_ids = set(map(itemgetter(0), subscriber_id_rows))
 
-    return _get_subscriber_details(user_ids)
+    return _get_subscriber_details(subscriber_ids)
 
 
 def _build_query_for_current_subscribers(brand_id: BrandID) -> BaseQuery:
@@ -78,9 +78,9 @@ def _build_query_for_current_subscribers(brand_id: BrandID) -> BaseQuery:
         .filter(Subscription.brand_id == brand_id)
 
 
-def _get_subscriber_details(user_ids: Set[UserID]) -> Sequence[User]:
-    """Return screen name and email address of each user (if enabled)."""
-    return db.session \
+def _get_subscriber_details(user_ids: Set[UserID]) -> Iterator[Subscriber]:
+    """Yield screen name and email address of each user (if enabled)."""
+    rows = db.session \
         .query(
             User.screen_name,
             User.email_address,
@@ -88,6 +88,9 @@ def _get_subscriber_details(user_ids: Set[UserID]) -> Sequence[User]:
         .filter(User.id.in_(user_ids)) \
         .filter_by(enabled=True) \
         .all()
+
+    for row in rows:
+        yield Subscriber(row.screen_name, row.email_address)
 
 
 def get_user_subscription_states_for_brand(brand_id: BrandID) \

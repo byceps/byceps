@@ -68,10 +68,10 @@ def export_subscribers(brand_id):
     return {'subscribers': exports}
 
 
-def assemble_subscriber_export(user):
+def assemble_subscriber_export(subscriber):
     return {
-        'screen_name': user.screen_name,
-        'email_address': user.email_address,
+        'screen_name': subscriber.screen_name,
+        'email_address': subscriber.email_address,
     }
 
 

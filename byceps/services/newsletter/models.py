@@ -6,6 +6,7 @@ byceps.services.newsletter.models
 :License: Modified BSD, see LICENSE for details.
 """
 
+from collections import namedtuple
 from datetime import datetime
 
 from sqlalchemy.ext.hybrid import hybrid_property
@@ -50,3 +51,6 @@ class Subscription(db.Model):
             .add_with_lookup('expressed_at') \
             .add('state', self.state.name) \
             .build()
+
+
+Subscriber = namedtuple('Subscriber', ['screen_name', 'email_address'])
