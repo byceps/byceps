@@ -28,7 +28,7 @@ class OrderedArticlesServiceTestCase(AbstractAppTestCase):
     def test_count_ordered_articles(self):
         expected = {
             PaymentState.open: 12,
-            PaymentState.canceled: 7,
+            PaymentState.canceled_before_paid: 7,
             PaymentState.paid: 3,
             PaymentState.canceled_after_paid: 6,
         }
@@ -38,9 +38,9 @@ class OrderedArticlesServiceTestCase(AbstractAppTestCase):
             (4, PaymentState.open),
             (6, PaymentState.canceled_after_paid),
             (1, PaymentState.open),
-            (5, PaymentState.canceled),
+            (5, PaymentState.canceled_before_paid),
             (3, PaymentState.paid),
-            (2, PaymentState.canceled),
+            (2, PaymentState.canceled_before_paid),
             (7, PaymentState.open),
         ]:
             order_number = 'XY-01-B{:05d}'.format(next(order_number_sequence))

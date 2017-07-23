@@ -45,7 +45,7 @@ class ShopAdminTestCase(AbstractAppTestCase):
 
         order_afterwards = Order.query.get(order_before.id)
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(order_afterwards.payment_state, PaymentState.canceled)
+        self.assertEqual(order_afterwards.payment_state, PaymentState.canceled_before_paid)
         self.assertIsNotNone(order_afterwards.payment_state_updated_at)
         self.assertEqual(order_afterwards.payment_state_updated_by, self.admin)
 

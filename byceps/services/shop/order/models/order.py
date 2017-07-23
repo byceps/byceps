@@ -47,7 +47,12 @@ class Orderer:
 PaymentMethod = Enum('PaymentMethod', ['bank_transfer', 'cash', 'direct_debit'])
 
 
-PaymentState = Enum('PaymentState', ['open', 'canceled', 'paid', 'canceled_after_paid'])
+PaymentState = Enum('PaymentState', [
+    'open',
+    'canceled_before_paid',
+    'paid',
+    'canceled_after_paid',
+])
 
 
 OrderTuple = namedtuple('OrderTuple', [
@@ -156,8 +161,10 @@ class Order(db.Model):
 
     @property
     def is_canceled(self) -> bool:
-        return self.payment_state in \
-            {PaymentState.canceled, PaymentState.canceled_after_paid}
+        return self.payment_state in {
+            PaymentState.canceled_before_paid,
+            PaymentState.canceled_after_paid,
+        }
 
     @property
     def is_paid(self) -> bool:

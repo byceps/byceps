@@ -21,7 +21,7 @@ def test_is_open():
 
 
 def test_is_canceled():
-    payment_state = PaymentState.canceled
+    payment_state = PaymentState.canceled_before_paid
 
     order = create_order_with_payment_state(payment_state)
 
