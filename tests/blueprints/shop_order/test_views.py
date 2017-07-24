@@ -3,6 +3,8 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
+from unittest.mock import patch
+
 from byceps.services.shop.article.models.article import Article
 from byceps.services.shop.order.models.order import Order
 from byceps.services.shop.sequence.models import Purpose
@@ -54,7 +56,8 @@ class ShopTestCase(AbstractAppTestCase):
 
         self.article_id = article.id
 
-    def test_order(self):
+    @patch('byceps.blueprints.shop_order.signals.order_placed.send')
+    def test_order(self, order_placed_mock):
         article_before = self.get_article()
         self.assertEqual(article_before.quantity, 5)
 
@@ -86,7 +89,10 @@ class ShopTestCase(AbstractAppTestCase):
         self.assertEqual(order.items[0].tax_rate, article_before.tax_rate)
         self.assertEqual(order.items[0].quantity, 3)
 
-    def test_order_single(self):
+        order_placed_mock.assert_called_once_with(None, order_id=order.id)
+
+    @patch('byceps.blueprints.shop_order.signals.order_placed.send')
+    def test_order_single(self, order_placed_mock):
         article_before = self.get_article()
         self.assertEqual(article_before.quantity, 5)
 
@@ -116,6 +122,8 @@ class ShopTestCase(AbstractAppTestCase):
         self.assertEqual(order.items[0].price, article_before.price)
         self.assertEqual(order.items[0].tax_rate, article_before.tax_rate)
         self.assertEqual(order.items[0].quantity, 1)
+
+        order_placed_mock.assert_called_once_with(None, order_id=order.id)
 
     # helpers
 
