@@ -200,7 +200,8 @@ def cancel_order(order: Order, updated_by_id: UserID, reason: str) -> None:
     order.cancelation_reason = reason
 
     now = datetime.utcnow()
-    event_type = 'order-canceled'
+    event_type = 'order-canceled-after-paid' if order.is_paid \
+            else 'order-canceled-before-paid'
     data = {
         'initiator_id': str(updated_by_id),
         'former_payment_state': payment_state_from.name,

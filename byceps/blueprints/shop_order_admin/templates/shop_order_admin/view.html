@@ -178,7 +178,7 @@
   <ol class="activity-stream">
     {%- for event in events|sort(attribute='occured_at', reverse=True) %}
       {%- with %}
-        {%- if event.event == 'order-canceled' %}
+        {%- if event.event == 'order-canceled-before-paid' %}
           {%- set icon_name = 'disabled' %}
           {%- set body %}
             <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
@@ -193,6 +193,15 @@
             <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
             hat die Bestellung als {{ render_order_payment_state(PaymentState.paid) }}
             mittels {{ render_order_payment_method(PaymentMethod[event.data['payment_method']]) }} markiert.
+          {%- endset %}
+        {%- elif event.event == 'order-canceled-after-paid' %}
+          {%- set icon_name = 'disabled' %}
+          {%- set body %}
+            <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
+            hat die Bestellung {{ render_order_payment_state(PaymentState.canceled_after_paid) }}
+            (war vorher {{ render_order_payment_state(PaymentState[event.data['former_payment_state']]) }}).
+            Begründung:<br>
+            <blockquote><pre>{{ event.data['reason'] }}</pre></blockquote>
           {%- endset %}
         {%- elif event.event == 'order-invoiced' %}
           {%- set icon_name = 'invoice' %}
@@ -217,6 +226,12 @@
           {%- set body %}
             <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
             hat die Lieferung als <strong>doch nicht versendet</strong> markiert.
+          {%- endset %}
+        {%- else %}
+          {%- set icon_name = 'disabled' %}
+          {%- set body %}
+            <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
+            hat die <strong>unbekannte Aktion '{{ event.event }}'</strong> ausgelöst.
           {%- endset %}
         {%- endif %}
     <li>
