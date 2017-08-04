@@ -18,5 +18,12 @@ def init_app(app):
     _mail.init_app(app)
 
 
-def send(*args, **kwargs):
-    _mail.send_message(*args, **kwargs)
+def send(recipients, subject, body, *, sender=None):
+    message = {
+        'recipients': recipients,
+        'subject': subject,
+        'body': body,
+        'sender': sender,
+    }
+
+    _mail.send_message(**message)

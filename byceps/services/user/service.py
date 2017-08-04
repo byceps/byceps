@@ -155,7 +155,7 @@ def send_email_address_confirmation_email(user: User, verification_token: Token
     ).format(user, confirmation_url)
     recipients = [user.email_address]
 
-    email_service.send_email(subject=subject, body=body, recipients=recipients)
+    email_service.send_email(recipients, subject, body)
 
 
 def confirm_email_address(verification_token: Token) -> None:

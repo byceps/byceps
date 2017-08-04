@@ -44,7 +44,7 @@ def _send_password_reset_email(user: User, verification_token: Token) -> None:
     ).format(user, confirmation_url)
     recipients = [user.email_address]
 
-    email_service.send_email(subject=subject, body=body, recipients=recipients)
+    email_service.send_email(recipients, subject, body)
 
 
 def reset_password(verification_token: Token, password: str) -> None:
