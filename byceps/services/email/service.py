@@ -6,9 +6,12 @@ byceps.services.email.service
 :License: Modified BSD, see LICENSE for details.
 """
 
+from typing import List, Optional
+
 from ... import email
 
 
-def send_email(recipients, subject, body, *, sender=None):
+def send_email(recipients: List[str], subject: str, body: str, *,
+               sender: Optional[str]=None) -> None:
     """Send an e-mail."""
     email.send(recipients, subject, body, sender=sender)
