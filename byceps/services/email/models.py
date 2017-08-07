@@ -10,8 +10,6 @@ from ...database import db
 from ...typing import BrandID
 from ...util.instances import ReprBuilder
 
-from ..brand.models import Brand
-
 
 class EmailConfig(db.Model):
     """E-mail configuration for a brand."""
