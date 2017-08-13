@@ -147,6 +147,40 @@ div.notification-success {
 }
 
 
+/* tabs */
+
+.tabs {
+  border-bottom: #dddddd solid 1px;
+  display: flex;
+  margin-bottom: 2rem;
+}
+
+.tabs--centered {
+  justify-content: center;
+}
+
+.tabs a,
+.tabs .current {
+  display: block;
+  color: #888888;
+  flex: 1 0 auto;
+  margin-bottom: -1px;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+}
+
+.tabs a:hover,
+.tabs .current {
+  border-bottom: #333333 solid 1px;
+  color: currentColor;
+  padding-bottom: calc(0.5rem - 1px) !important;
+}
+
+.tabs a:hover {
+  background-color: #dddddd;
+}
+
+
 /* breadcrumbs */
 
 nav.breadcrumbs {
