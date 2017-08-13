@@ -161,6 +161,7 @@
   {%- endif %}
 
   <h2 id="tickets">Tickets</h2>
+  {%- if parties_and_tickets %}
   <table class="index wide">
     <thead>
       <tr>
@@ -200,9 +201,16 @@
       {%- endfor %}
     </tbody>
   </table>
+  {%- else %}
+  {{ 'keine'|dim }}
+  {%- endif %}
 
   <h2 id="badges">Abzeichen {{ render_extra_in_heading(badges_with_awarding_quantity|length) }}</h2>
+  {%- if badges_with_awarding_quantity %}
 {{ render_user_badges_list(badges_with_awarding_quantity) }}
+  {%- else %}
+  {{ 'keine'|dim }}
+  {%- endif %}
 
 {%- endblock %}
 
