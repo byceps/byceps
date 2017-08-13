@@ -205,17 +205,6 @@ h2 {
 
 /* board */
 
-.board-category-link,
-.board-topic-link {
-  color: currentColor;
-  display: block;
-  text-decoration: none;
-}
-.board-category-link:hover,
-.board-topic-link:hover {
-  text-decoration: underline;
-}
-
 .board-category-description,
 .board-topic-initial-posting {
   color: #888888;
@@ -615,7 +604,15 @@ form.board-posting-create-form-inline .label {
 }
 
 
-/* misc */
+/* links */
+
+a.disguised {
+  color: currentColor;
+  text-decoration: none;
+}
+a.disguised:hover {
+  text-decoration: underline;
+}
 
 main h1 a {
   color: currentColor;
@@ -624,6 +621,9 @@ main h1 a {
 main h1 a:hover {
   text-decoration: underline;
 }
+
+
+/* misc */
 
 table.index td.bignumber {
   font-size: 1.6em;
