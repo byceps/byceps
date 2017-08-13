@@ -24,7 +24,7 @@
 
 
 {% macro render_random_age_adjective() %}
-  {{- [
+  {%- set adjectives = [
     'agile',
     'atemberaubende',
     'bemerkenswerte',
@@ -65,5 +65,6 @@
     'zarte',
     'zierliche',
     'zuckersüße',
-  ]|random }}
+  ] %}
+  {{- adjectives|random }}
 {%- endmacro %}
