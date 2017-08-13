@@ -113,37 +113,25 @@ span[title] .icon {
 
 /* notifications */
 
-.notifications > * + * {
-  margin-top: 10px;
-}
-
-div[class|=notification] {
-  background-color: #dddddd;
+.notification {
   border-radius: 3px;
-  border-style: solid;
-  border-width: 1px;
+  border: rgba(0, 0, 0, 0.25) solid 1px;
   box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.25);
   padding: 0.3em 15px;
 }
-div[class|=notification] > .block-with-icon-body :first-child {
+
+.notification:not(:last-child) {
+  margin-bottom: 1rem;
+}
+
+.notification > .block-with-icon-body :first-child {
   margin-top: 0;
   padding-top: 0;
 }
-div[class|=notification] > .block-with-icon-body :last-child {
+
+.notification > .block-with-icon-body :last-child {
   margin-bottom: 0;
   padding-bottom: 0;
-}
-div.notification-error {
-  background-color: #ff9999;
-  border-color: #ff1a1a;
-}
-div.notification-info {
-  background-color: #99ccee;
-  border-color: #66aacc;
-}
-div.notification-success {
-  background-color: #88ee88;
-  border-color: #1fd81f;
 }
 
 
@@ -594,6 +582,28 @@ a.user-badge:hover {
 table.user-badges-list td {
   padding: 0.25rem 0.5rem 0.25rem 0;
   vertical-align: middle;
+}
+
+
+/* colors */
+
+.color-error {
+  background-color: #ff9999;
+  border-color: #ff1a1a;
+}
+
+.tag.color-error {
+  background-color: #ff1a1a;
+}
+
+.color-info {
+  background-color: #99ccee;
+  border-color: #66aacc;
+}
+
+.color-success {
+  background-color: #88ee88;
+  border-color: #1fd81f;
 }
 
 

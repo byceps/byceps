@@ -2,7 +2,7 @@
 
 
 {% macro render_notification(category, icon, text, text_is_safe=False) -%}
-  <div class="notification-{{ category }} block-with-icon">
+  <div class="notification color-{{ category }} block-with-icon">
     <div class="block-with-icon-icon">
       {{ render_icon(icon) }}
     </div>
