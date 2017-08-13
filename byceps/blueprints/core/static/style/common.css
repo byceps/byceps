@@ -161,6 +161,7 @@ div.notification-success {
 
 .tabs a,
 .tabs .current {
+  border-bottom: transparent solid 1px;
   display: block;
   color: #888888;
   flex: 1 0 auto;
@@ -171,13 +172,12 @@ div.notification-success {
 
 .tabs a:hover,
 .tabs .current {
-  border-bottom: #333333 solid 1px;
+  border-bottom-color: #333333;
   color: currentColor;
-  padding-bottom: calc(0.5rem - 1px) !important;
 }
 
 .tabs a:hover {
-  background-color: #dddddd;
+  background-color: #e8e8e8;
 }
 
 
