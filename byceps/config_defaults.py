@@ -40,6 +40,7 @@ LOCALES_FORMS = ['de']
 
 # home page
 ROOT_REDIRECT_TARGET = None
+ROOT_REDIRECT_STATUS_CODE = 307
 
 # news item pagination
 NEWS_ITEMS_PER_PAGE = 4

@@ -8,7 +8,7 @@ byceps.application
 
 from pathlib import Path
 
-from flask import Flask
+from flask import Flask, redirect
 import jinja2
 
 from .blueprints.snippet.init import add_routes_for_snippets
@@ -159,6 +159,13 @@ def _set_url_root_path(app):
     Important: Don't specify the target with a leading slash unless you
     really mean the root of the host.
     """
-    target = app.config['ROOT_REDIRECT_TARGET']
-    if target:
-        app.add_url_rule('/', endpoint='root', redirect_to=target)
+    target_url = app.config['ROOT_REDIRECT_TARGET']
+    if target_url is None:
+        return
+
+    status_code = app.config['ROOT_REDIRECT_STATUS_CODE']
+
+    def _redirect():
+        return redirect(target_url, status_code)
+
+    app.add_url_rule('/', endpoint='root', view_func=_redirect)
