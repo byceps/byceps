@@ -66,6 +66,7 @@ def _get_blueprints(app):
     current_mode = config.get_site_mode(app)
 
     always = True
+    debug = app.debug
     site_mode_admin = current_mode.is_admin()
     site_mode_public = current_mode.is_public()
 
@@ -98,6 +99,7 @@ def _get_blueprints(app):
         ('shop_order_admin',    '/admin/shop/orders',   site_mode_admin ),
         ('snippet',             '/snippets',            site_mode_public),
         ('snippet_admin',       '/admin/snippets',      site_mode_admin ),
+        ('style_guide',         '/style_guide',         debug           ),
         ('terms',               '/terms',               site_mode_public),
         ('terms_admin',         '/admin/terms',         site_mode_admin ),
         ('ticketing',           '/tickets',             site_mode_public),

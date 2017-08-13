@@ -1,0 +1,118 @@
+{% extends 'layout/base.html' %}
+{% from 'macros/misc.html' import render_notification, render_tag %}
+{% set title = 'Style Guide' %}
+
+{% block head %}
+  <style>
+    code {
+      background-color: rgba(0, 0, 0, 0.7);
+      border-radius: 0.2rem;
+      color: #ffffff;
+      padding: 0.05rem 0.3rem;
+    }
+  </style>
+{%- endblock %}
+
+{% block body %}
+
+  <h1>{{ title }}</h1>
+
+  <ul>
+    <li><a href="#notifications">Notifications</a></li>
+    <li><a href="#tabs">Tabs</a></li>
+    <li><a href="#tables">Tables</a></li>
+    <li><a href="#tags">Tags</a></li>
+  </ul>
+
+
+  <h2 id="notifications">Notifications</h2>
+  <div class="notifications">
+{{ render_notification('', None, 'Without category and icon.') }}
+{{ render_notification('info', None, 'Just FYI.') }}
+{{ render_notification('error', 'error', 'This did not end well. :(') }}
+{{ render_notification('success', 'success', 'The action was <strong>successful</strong>.', text_is_safe=true) }}
+  </div>
+
+
+  <h2 id="tabs">Tabs</h2>
+
+  <p>Left-aligned:</p>
+  <ol class="tabs">
+    <li><a href="#">Tab 1</a></li>
+    <li><span class="current">Tab 2</span></li>
+    <li><a href="#">Tab 3</a></li>
+    <li><a href="#">Tab 4</a></li>
+  </ol>
+
+  <p>Centered:</p>
+  <ol class="tabs tabs--centered">
+    <li><a href="#">Tab 1</a></li>
+    <li><span class="current">Tab 2</span></li>
+    <li><a href="#">Tab 3</a></li>
+    <li><a href="#">Tab 4</a></li>
+  </ol>
+
+
+  <h2 id="tables">Tables</h2>
+
+  <p>With class <code>index</code>:</p>
+  <table class="index">
+    <thead>
+      <tr>
+        <th>One</th>
+        <th>Two</th>
+        <th>Three</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>a1</td>
+        <td>a2</td>
+        <td>a3</td>
+      </tr>
+      <tr>
+        <td>b1</td>
+        <td>b2</td>
+        <td>b3</td>
+      </tr>
+      <tr>
+        <td>c1</td>
+        <td>c2</td>
+        <td>c3</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>With classes <code>index wide</code>:</p>
+  <table class="index wide">
+    <thead>
+      <tr>
+        <th>One</th>
+        <th>Two</th>
+        <th>Three</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>a1</td>
+        <td>a2</td>
+        <td>a3</td>
+      </tr>
+      <tr>
+        <td>b1</td>
+        <td>b2</td>
+        <td>b3</td>
+      </tr>
+      <tr>
+        <td>c1</td>
+        <td>c2</td>
+        <td>c3</td>
+      </tr>
+    </tbody>
+  </table>
+
+
+  <h2 id="tags">Tags</h2>
+  <p>Just a {{ render_tag('tag') }} to attach to things or to represent state.</p>
+
+{%- endblock %}
