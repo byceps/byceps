@@ -85,7 +85,7 @@
   <p>Dies sind die für dich relevanten (d.h. gekauften, verwalteten und/oder genutzten) Tickets für die Party <strong>{{ g.party.title }}</strong>.</p>
 
   {%- if not current_user_uses_any_ticket %}
-  {{ render_notification('error', 'warning', 'Du nutzt derzeit kein Ticket.') }}
+  {{ render_notification('danger', 'warning', 'Du nutzt derzeit kein Ticket.') }}
   {%- endif %}
 
   {%- if tickets %}

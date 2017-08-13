@@ -587,12 +587,12 @@ table.user-badges-list td {
 
 /* colors */
 
-.color-error {
+.color-danger {
   background-color: #ff9999;
   border-color: #ff1a1a;
 }
 
-.tag.color-error {
+.tag.color-danger {
   background-color: #ff1a1a;
 }
 

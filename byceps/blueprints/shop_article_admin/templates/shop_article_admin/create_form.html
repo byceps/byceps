@@ -15,7 +15,7 @@
   <h1>{{ render_icon('add') }} {{ title }}</h1>
 
   {%- if not article_number_prefix %}
-  <div class="notification color-error">Der Artikelnummer-Präfix für diese Party muss erst konfiguriert werden bevor Artikel angelegt werden können.</div>
+  <div class="notification color-danger">Der Artikelnummer-Präfix für diese Party muss erst konfiguriert werden bevor Artikel angelegt werden können.</div>
   {%- endif %}
 
   <form action="{{ url_for('.create', party_id=party.id) }}" method="post">

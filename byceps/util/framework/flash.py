@@ -20,7 +20,7 @@ FlashMessage = namedtuple('FlashMessage',
 def flash_error(message, *args, icon=None, text_is_safe=False):
     """Flash a message indicating an error."""
     return _flash(message, *args,
-                  category='error', icon=icon, text_is_safe=text_is_safe)
+                  category='danger', icon=icon, text_is_safe=text_is_safe)
 
 
 def flash_notice(message, *args, icon=None, text_is_safe=False):

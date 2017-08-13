@@ -25,7 +25,7 @@
     </tr>
   </table>
   {%- else %}
-  <div class="notification color-error">Der Artikelnummer-Präfix für diese Party muss erst konfiguriert werden bevor Artikel angelegt werden können.</div>
+  <div class="notification color-danger">Der Artikelnummer-Präfix für diese Party muss erst konfiguriert werden bevor Artikel angelegt werden können.</div>
   {%- endif %}
 
   {%- if g.current_user.has_permission(ShopArticlePermission.create) %}
