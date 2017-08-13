@@ -28,7 +28,7 @@
       {%- for topic in topics.items %}
       <tr id="topic-{{ topic.id }}"{% if topic.hidden %} class="dimmed"{% endif %}>
         <td>
-          <a class="disguised" href="{{ url_for('.topic_view', topic_id=topic.id) }}">
+          <a class="board-topic-link disguised" href="{{ url_for('.topic_view', topic_id=topic.id) }}">
             <div class="board-topic-title">
               {%- if topic.hidden %}{{ render_icon('hidden', title='versteckt (durch %s)'|format(topic.hidden_by.screen_name)) }} {% endif -%}
               {%- if topic.locked %}{{ render_icon('lock', title='geschlossen (durch %s)'|format(topic.locked_by.screen_name)) }} {% endif -%}
