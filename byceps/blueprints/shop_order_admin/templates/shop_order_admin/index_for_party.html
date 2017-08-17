@@ -34,7 +34,7 @@
       <div class="filter">
         <span>{{ render_icon('filter') }} Einschränkung:</span>
         <div class="dropdown left">
-          <button class="dropdown-toggle button button--seamless">{{ render_order_state_filter(order_state_filter) }} {{ render_icon('caret-down') }}</button>
+          <button class="dropdown-toggle button button--clear">{{ render_order_state_filter(order_state_filter) }} {{ render_icon('caret-down') }}</button>
           <ol>
             <li><a href="{{ url_for('.index_for_party', party_id=party.id) }}">{{ render_order_state_filter(OrderStateFilter.none) }}</a></li>
             {%- for payment_state in PaymentState %}

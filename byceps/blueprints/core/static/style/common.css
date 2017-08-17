@@ -391,6 +391,17 @@ form li.error .errors li span {
   box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
+.button--clear,
+.button--clear:active,
+.button--clear:hover {
+  background-color: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+.button--clear:hover {
+  border: #cccccc solid 1px;
+}
+
 
 /* dropdowns */
 

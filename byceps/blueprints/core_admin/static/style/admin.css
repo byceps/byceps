@@ -452,20 +452,6 @@ fieldset.buttons {
 }
 
 
-/* buttons */
-
-.button--seamless,
-.button--seamless:active,
-.button--seamless:hover {
-  background-color: transparent;
-  border-color: transparent;
-  box-shadow: none;
-}
-.button--seamless:hover {
-  border: #cccccc solid 1px;
-}
-
-
 /* filters */
 
 .filters {
