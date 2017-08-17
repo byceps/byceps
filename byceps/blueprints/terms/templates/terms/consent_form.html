@@ -11,7 +11,7 @@
 {{ version.body|safe }}
   </div>
 
-  <form action="{{ url_for('.consent', version_id=version.id, token=token) }}" method="post" style="margin-top: 1rem;">
+  <form action="{{ url_for('.consent', version_id=version.id, token=token) }}" method="post" class="disable-submit-button-on-submit" style="margin-top: 1rem;">
     {%- call form_fieldset() %}
       {{ form_field_checkbox(form.consent_to_terms, '<strong>Ich akzeptiere die Allgemeinen Geschäftsbedingungen.</strong>') }}
     {%- endcall %}
