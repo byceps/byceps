@@ -117,33 +117,56 @@ function _get_location(xhr) {
 }
 
 
-/**
- * Add behavior to dropdown menus.
- */
-onDomReady(function() {
+// ---------------------------------------------------------------------
+// dropdown menus
 
-  // Open dropdown if user clicks on dropdown trigger.
-  var dropdownToggles = document.querySelectorAll('.dropdown .dropdown-toggle');
+
+/**
+ * Make dropdown menus open if their respective trigger is clicked.
+ */
+function enableDropdownMenuToggles() {
+  const dropdownToggles = document.querySelectorAll('.dropdown .dropdown-toggle');
   forEach(dropdownToggles, function(triggerElement) {
     triggerElement.addEventListener('click', function(event) {
-      var dropdown = triggerElement.parentNode;
+      const dropdown = triggerElement.parentNode;
       dropdown.classList.toggle('open');
 
       event.preventDefault();
     });
   });
+}
+
+
+/**
+ * Close all open dropdown menus but the one that has been clicked (if
+ * any).
+ */
+function closeOpenDropdownMenus(clickTarget) {
+  const openDropdowns = document.querySelectorAll('.dropdown.open');
+  forEach(openDropdowns, function(openDropdown) {
+    if (!openDropdown.contains(clickTarget)) {
+      // Click was outside of this dropdown menu, so close it.
+      openDropdown.classList.remove('open');
+    }
+  });
+}
+
+
+/**
+ * Add behavior to dropdown menus.
+ */
+onDomReady(function() {
+  enableDropdownMenuToggles();
 
   // Close open dropdowns if user clicks outside of an open dropdown.
   document.addEventListener('click', function(event) {
-    var openDropdowns = document.querySelectorAll('.dropdown.open');
-    forEach(openDropdowns, function(openDropdown) {
-      if (!openDropdown.contains(event.target)) {
-        openDropdown.classList.remove('open');
-      }
-    });
+    closeOpenDropdownMenus(event.target);
   });
-
 });
+
+
+// ---------------------------------------------------------------------
+// clipboard
 
 
 /**
