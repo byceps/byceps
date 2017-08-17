@@ -94,6 +94,7 @@
         {%- else -%}
           {{ render_icon('disabled', color='#cc0000') }} nicht abonniert <a class="button button--inline" style="margin-left: 0.5em;" data-action="newsletter-subscribe" href="{{ url_for('newsletter.subscribe') }}">{{ render_icon('edit') }} anmelden</a>
         {%- endif -%}
+      </td>
     </tr>
   </table>
   {%- endif %}
