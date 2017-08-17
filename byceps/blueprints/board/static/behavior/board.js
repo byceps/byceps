@@ -1,4 +1,4 @@
-$(function() {
+onDomReady(function() {
 
   confirmed_post_on_click('[data-action="topic-hide"]', 'Thema verstecken?');
   confirmed_delete_on_click('[data-action="topic-unhide"]', 'Thema wieder anzeigen?');

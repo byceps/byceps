@@ -8,6 +8,25 @@ function forEach(array, callback, scope) {
   }
 };
 
+
+/**
+ * Register a function to be called when the document is "ready", i.e.
+ * all the markup has been placed on the page.
+ *
+ * It does not wait until additional resources (stylesheets, images,
+ * subframes) have been loaded.
+ */
+function onDomReady(callback) {
+  if (document.readyState === 'complete' || document.readyState !== 'loading') {
+    // The document has already fully loaded.
+    callback();
+  } else {
+    document.addEventListener('DOMContentLoaded', callback);
+  }
+}
+
+
+
 function post_on_click(selector) {
   _request_on_click(selector, 'POST');
 }

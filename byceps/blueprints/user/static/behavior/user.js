@@ -1,4 +1,4 @@
-$(function() {
+onDomReady(function() {
 
   confirmed_delete_on_click_then_reload('[data-action="avatar-delete"]', 'Avatarbild entfernen?');
 

@@ -1,4 +1,4 @@
-$(function() {
+onDomReady(function() {
 
   // Open dropdown if user clicks on dropdown trigger.
   var dropdownToggles = document.querySelectorAll('.dropdown .dropdown-toggle');

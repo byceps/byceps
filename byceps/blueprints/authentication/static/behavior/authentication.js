@@ -1,4 +1,4 @@
-$(function() {
+onDomReady(function() {
 
   // Log in.
   $('form#login').submit(function() {

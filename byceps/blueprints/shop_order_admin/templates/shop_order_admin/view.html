@@ -260,12 +260,12 @@
 
 {% block scripts %}
     <script>
-$(function() {
-  confirmed_post_on_click_then_reload('[data-action="order-flag-invoiced"]', 'Rechnung als versendet vermerken?');
-  confirmed_delete_on_click_then_reload('[data-action="order-unflag-invoiced"]', 'Rechnung als nicht versendet vermerken?');
+      onDomReady(function() {
+        confirmed_post_on_click_then_reload('[data-action="order-flag-invoiced"]', 'Rechnung als versendet vermerken?');
+        confirmed_delete_on_click_then_reload('[data-action="order-unflag-invoiced"]', 'Rechnung als nicht versendet vermerken?');
 
-  confirmed_post_on_click_then_reload('[data-action="order-flag-shipped"]', 'Bestellung als versendet markieren?');
-  confirmed_delete_on_click_then_reload('[data-action="order-unflag-shipped"]', 'Bestellung als nicht versendet markieren?');
-});
+        confirmed_post_on_click_then_reload('[data-action="order-flag-shipped"]', 'Bestellung als versendet markieren?');
+        confirmed_delete_on_click_then_reload('[data-action="order-unflag-shipped"]', 'Bestellung als nicht versendet markieren?');
+      });
     </script>
 {%- endblock %}

@@ -118,7 +118,7 @@
 
 {% block scripts %}
     <script>
-      $(function() {
+      onDomReady(function() {
         confirmed_delete_on_click_then_reload('[data-action="team-delete"]', 'Team entfernen?');
         confirmed_delete_on_click_then_reload('[data-action="membership-remove"]', 'Person aus dem Team entfernen?');
       });
