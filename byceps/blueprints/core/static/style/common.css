@@ -618,6 +618,35 @@ table.user-badges-list td {
 }
 
 
+/* animation */
+
+@-webkit-keyframes spin {
+  from {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+  }
+}
+@keyframes spin {
+  from {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+  }
+}
+
+.spinning {
+  -webkit-animation: spin 500ms infinite linear;
+  animation: spin 500ms infinite linear;
+}
+
+
 /* misc */
 
 img {
