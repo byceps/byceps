@@ -183,3 +183,25 @@ function enableCopyToClipboard(field, triggerElement) {
     field.blur();
   });
 }
+
+
+// ---------------------------------------------------------------------
+// forms
+
+
+/**
+ * Disable the submit button of forms with class
+ * `disable-submit-button-on-submit` on submit.
+ */
+onDomReady(function() {
+  const formsWhoseSubmitButtonShouldBeDisabledOnSubmit = document
+      .querySelectorAll('form.disable-submit-button-on-submit');
+
+  forEach(formsWhoseSubmitButtonShouldBeDisabledOnSubmit, function(form) {
+    form.onsubmit = function() {
+      const submitButton = form.querySelector('button[type="submit"]');
+      submitButton.disabled = true;
+      submitButton.innerHTML += ' <svg class="icon"><use xlink:href="/core/static/style/icons.svg#spinner"></use></svg>';
+    };
+  });
+});
