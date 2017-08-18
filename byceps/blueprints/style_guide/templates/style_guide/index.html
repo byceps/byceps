@@ -53,6 +53,7 @@
     <li><a href="#tabs">Tabs</a></li>
     <li><a href="#tables">Tables</a></li>
     <li><a href="#tags">Tags</a></li>
+    <li><a href="#forms">Forms</a></li>
   </ul>
 
 
@@ -250,6 +251,71 @@
 
   <div class="result">
     <p>Just a {{ render_tag('tag') }} to attach to things or to represent state.</p>
+  </div>
+
+
+  <h2 id="forms">Forms</h2>
+
+  {% call render_code_block() -%}
+<form action="/users/" method="post" class="disable-submit-button-on-submit">
+
+  <fieldset>
+    <ol>
+      <li>
+        <label for="field1">Field #1</label>
+        <input id="field1" name="field1">
+      </li>
+      <li class="error">
+        <label for="field2">Field #2</label>
+        <input id="field2" name="field2">
+        <ol class="errors">
+          <li><strong>Error:</strong> <span>Your answer must be in the form of a question.</span></li>
+        </ol>
+      </li>
+      <li>
+        <div class="checkbox">
+          <input id="check_it" name="check_it" type="checkbox"> <label for="check_it">Tick, tick, tick, tick.</label>
+        </div>
+      </li>
+    </ol>
+  </fieldset>
+
+  <fieldset class="buttons">
+    <button type="submit">Do it!</button>
+  </fieldset>
+
+</form>
+  {%- endcall %}
+
+  <div class="result">
+    <form action="/users/" method="post" class="disable-submit-button-on-submit">
+
+      <fieldset>
+        <ol>
+          <li>
+            <label for="field1">Field #1</label>
+            <input id="field1" name="field1">
+          </li>
+          <li class="error">
+            <label for="field2">Field #2</label>
+            <input id="field2" name="field2">
+            <ol class="errors">
+              <li><strong>Error:</strong> <span>Your answer must be in the form of a question.</span></li>
+            </ol>
+          </li>
+          <li>
+            <div class="checkbox">
+              <input id="check_it" name="check_it" type="checkbox"> <label for="check_it">Tick, tick, tick, tick.</label>
+            </div>
+          </li>
+        </ol>
+      </fieldset>
+
+      <fieldset class="buttons">
+        <button type="submit">Do it!</button>
+      </fieldset>
+
+    </form>
   </div>
 
 
