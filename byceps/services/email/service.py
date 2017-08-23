@@ -17,6 +17,10 @@ from .models import EmailConfig
 def find_sender_address_for_brand(brand_id: BrandID) -> Optional[str]:
     """Return the configured sender e-mail address for the brand."""
     config = EmailConfig.query.get(brand_id)
+
+    if config is None:
+        return None
+
     return config.sender_address
 
 
