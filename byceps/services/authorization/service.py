@@ -177,15 +177,18 @@ def get_permissions_by_roles_for_user_with_titles(user_id: UserID) \
 
     role_ids = {r.id for r in roles}
 
-    permissions = Permission.query \
-        .options(
-            db.undefer('title'),
-            db.joinedload('role_permissions').joinedload('role')
-        ) \
-        .join(RolePermission) \
-        .join(Role) \
-        .filter(Role.id.in_(role_ids)) \
-        .all()
+    if role_ids:
+        permissions = Permission.query \
+            .options(
+                db.undefer('title'),
+                db.joinedload('role_permissions').joinedload('role')
+            ) \
+            .join(RolePermission) \
+            .join(Role) \
+            .filter(Role.id.in_(role_ids)) \
+            .all()
+    else:
+        permissions = []
 
     permissions_by_role = {r: set() for r in roles}  # type: Dict[Role, Set[Permission]]
 

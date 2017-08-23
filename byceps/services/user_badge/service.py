@@ -78,9 +78,12 @@ def get_badges_for_user(user_id: UserID) -> Dict[BadgeTuple, int]:
 
     badge_ids = set(badge_ids_with_awarding_quantity.keys())
 
-    badges = Badge.query \
-        .filter(Badge.id.in_(badge_ids)) \
-        .all()
+    if badge_ids:
+        badges = Badge.query \
+            .filter(Badge.id.in_(badge_ids)) \
+            .all()
+    else:
+        badges = []
 
     badges_with_awarding_quantity = {}
     for badge in badges:

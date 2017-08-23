@@ -80,6 +80,9 @@ def _build_query_for_current_subscribers(brand_id: BrandID) -> BaseQuery:
 
 def _get_subscriber_details(user_ids: Set[UserID]) -> Iterator[Subscriber]:
     """Yield screen name and email address of each user (if enabled)."""
+    if not user_ids:
+        return []
+
     rows = db.session \
         .query(
             User.screen_name,

@@ -284,6 +284,9 @@ def find_order_by_order_number(order_number: OrderNumber) -> Optional[Order]:
 def find_orders_by_order_numbers(order_numbers: Set[OrderNumber]
                                 ) -> Sequence[Order]:
     """Return the orders with those order numbers."""
+    if not order_numbers:
+        return []
+
     return Order.query \
         .filter(Order.order_number.in_(order_numbers)) \
         .all()
