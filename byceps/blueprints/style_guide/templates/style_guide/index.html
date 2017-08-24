@@ -52,6 +52,7 @@
     <li><a href="#notifications">Notifications</a></li>
     <li><a href="#tabs">Tabs</a></li>
     <li><a href="#tables">Tables</a></li>
+    <li><a href="#buttons">Buttons</a></li>
     <li><a href="#tags">Tags</a></li>
     <li><a href="#forms">Forms</a></li>
   </ul>
@@ -240,6 +241,30 @@
         </tr>
       </tbody>
     </table>
+  </div>
+
+
+  <h2 id="buttons">Buttons</h2>
+
+  <p>A row of buttons:</p>
+  {% call render_code_block() -%}
+<div class="button-row">
+  <a href="#" class="button">Standard</a>
+  <a href="#" class="button button--clear">Clear</a>
+  <a href="#" class="button button--disabled">Disabled</a>
+</div>
+<p><a href="#" class="button button--compact">Compact</a></p>
+<p><a href="#" class="button button--inline">Inline</a></p>
+  {%- endcall %}
+
+  <div class="result">
+    <div class="button-row">
+      <a href="#" class="button">Standard</a>
+      <a href="#" class="button button--disabled">Disabled</a>
+      <a href="#" class="button button--clear">Clear</a>
+    </div>
+    <p><a href="#" class="button button--compact">Compact</a></p>
+    <p><a href="#" class="button button--inline">Inline</a></p>
   </div>
 
 
