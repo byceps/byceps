@@ -405,6 +405,10 @@ form li.error .errors li span {
   border-color: #cccccc;
 }
 
+.button--wrapping {
+  white-space: normal;
+}
+
 
 /* dropdowns */
 

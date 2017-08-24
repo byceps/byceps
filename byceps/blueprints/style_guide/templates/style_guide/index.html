@@ -248,7 +248,8 @@
 
   <h2 id="buttons">Buttons</h2>
 
-  <p>A row of buttons:</p>
+  <p>Buttons with different styles and states:</p>
+
   {% call render_code_block() -%}
 <div class="button-row">
   <a href="#" class="button">Standard</a>
@@ -256,6 +257,7 @@
   <a href="#" class="button button--clear">Clear</a>
   <a href="#" class="button button--disabled">Disabled</a>
 </div>
+
 <p><a href="#" class="button button--compact">Compact</a></p>
 <p><a href="#" class="button button--inline">Inline</a></p>
   {%- endcall %}
@@ -267,14 +269,28 @@
       <a href="#" class="button button--clear">Clear</a>
       <a href="#" class="button button--disabled">Disabled</a>
     </div>
+
     <p><a href="#" class="button button--compact">Compact</a></p>
     <p><a href="#" class="button button--inline">Inline</a></p>
+  </div>
+
+  <p>Label wrapping:</p>
+
+  {% call render_code_block() -%}
+<p><a href="#" class="button">A button with a rather long label, not wrapping by default</a></p>
+<p><a href="#" class="button button--wrapping" style="width: 12rem;">A button with a rather long label, wraps</a></p>
+  {%- endcall %}
+
+  <div class="result">
+    <p><a href="#" class="button">A button with a rather long label, not wrapping by default</a></p>
+    <p><a href="#" class="button button--wrapping" style="width: 12rem;">A button with a rather long label, wrapping</a></p>
   </div>
 
 
   <h2 id="dropdowns">Dropdowns</h2>
 
   <p>A simple dropdown menu:</p>
+
   {% call render_code_block() -%}
 <div class="dropdown right">
   <button class="dropdown-toggle button">Toggle {{ render_icon('caret-down') }}</button>
