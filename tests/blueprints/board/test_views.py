@@ -21,7 +21,7 @@ class BoardModerationTestCase(AbstractAppTestCase):
         self.user = self.create_user()
 
     def test_hide_topic(self):
-        self.setup_admin('board_topic.hide')
+        self.setup_admin('board.hide')
 
         category = self.create_category(1)
         topic_before = self.create_topic(category, self.user.id, 1)
@@ -42,7 +42,7 @@ class BoardModerationTestCase(AbstractAppTestCase):
         self.assertEqual(topic_afterwards.hidden_by_id, self.admin.id)
 
     def test_unhide_topic(self):
-        self.setup_admin('board_topic.hide')
+        self.setup_admin('board.hide')
 
         category = self.create_category(1)
         topic_before = self.create_topic(category, self.user.id, 1)
