@@ -1,4 +1,5 @@
 {% extends 'layout/base_auto.html' %}
+{% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_notification, render_tag %}
 {% set title = 'Style Guide' %}
 
@@ -53,6 +54,7 @@
     <li><a href="#tabs">Tabs</a></li>
     <li><a href="#tables">Tables</a></li>
     <li><a href="#buttons">Buttons</a></li>
+    <li><a href="#dropdowns">Dropdowns</a></li>
     <li><a href="#tags">Tags</a></li>
     <li><a href="#forms">Forms</a></li>
   </ul>
@@ -265,6 +267,34 @@
     </div>
     <p><a href="#" class="button button--compact">Compact</a></p>
     <p><a href="#" class="button button--inline">Inline</a></p>
+  </div>
+
+
+  <h2 id="dropdowns">Dropdowns</h2>
+
+  <p>A simple dropdown menu:</p>
+  {% call render_code_block() -%}
+<div class="dropdown right">
+  <button class="dropdown-toggle button">Toggle {{ render_icon('caret-down') }}</button>
+  <ol>
+    <li>One</li>
+    <li>Two</li>
+    <li class="divider"></li>
+    <li>Three</li>
+  </ol>
+</div>
+  {%- endcall %}
+
+  <div class="result">
+    <div class="dropdown right">
+      <button class="dropdown-toggle button">Toggle {{ render_icon('caret-down') }}</button>
+      <ol>
+        <li><a href="#">One</a></li>
+        <li><a href="#">Two</a></li>
+        <li class="divider"></li>
+        <li><a href="#">Three</a></li>
+      </ol>
+    </div>
   </div>
 
 
