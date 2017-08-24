@@ -274,6 +274,24 @@
     <p><a href="#" class="button button--inline">Inline</a></p>
   </div>
 
+  <p>Different colors:</p>
+
+  {% call render_code_block() -%}
+<div class="button-row">
+  <a href="#" class="button color-info">Info</a>
+  <a href="#" class="button color-success">Success</a>
+  <a href="#" class="button color-danger">Danger</a>
+</div>
+  {%- endcall %}
+
+  <div class="result">
+    <div class="button-row">
+      <a href="#" class="button color-info">Info</a>
+      <a href="#" class="button color-success">Success</a>
+      <a href="#" class="button color-danger">Danger</a>
+    </div>
+  </div>
+
   <p>Label wrapping:</p>
 
   {% call render_code_block() -%}
