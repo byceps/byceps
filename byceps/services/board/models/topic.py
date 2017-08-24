@@ -87,7 +87,7 @@ class Topic(db.Model):
                     and user == self.creator
                     and user.has_permission(BoardTopicPermission.update)
             )
-            or user.has_permission(BoardTopicPermission.update_of_others)
+            or user.has_permission(BoardPermission.update_of_others)
         )
 
     @property

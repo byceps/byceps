@@ -85,7 +85,7 @@ class Posting(db.Model):
                     and user == self.creator
                     and user.has_permission(BoardPostingPermission.update)
             )
-            or user.has_permission(BoardPostingPermission.update_of_others)
+            or user.has_permission(BoardPermission.update_of_others)
         )
 
     def is_unseen(self, user: User, last_viewed_at: datetime) -> bool:
