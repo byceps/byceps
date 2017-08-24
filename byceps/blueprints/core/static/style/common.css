@@ -605,23 +605,33 @@ table.user-badges-list td {
 
 /* colors */
 
+.color-primary {
+  background-color: #cc99ff;
+  border-color: #9955ff;
+}
+
 .color-danger {
   background-color: #ff9999;
-  border-color: #ff1a1a;
+  border-color: #ff2222;
 }
 
 .tag.color-danger {
-  background-color: #ff1a1a;
+  background-color: #ff2222;
 }
 
 .color-info {
-  background-color: #99ccee;
-  border-color: #66aacc;
+  background-color: #88ccff;
+  border-color: #1199ff;
 }
 
 .color-success {
-  background-color: #88ee88;
-  border-color: #1fd81f;
+  background-color: #99ee88;
+  border-color: #55cc00;
+}
+
+.color-warning {
+  background-color: #ffe777;
+  border-color: #ffcc11;
 }
 
 
