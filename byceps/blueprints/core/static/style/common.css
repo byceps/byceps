@@ -383,6 +383,9 @@ form li.error .errors li span {
 .button--inline {
   padding: 0 0.3rem;
 }
+.button--outlined {
+  background-color: transparent;
+}
 .button:hover {
   background-color: #e8e8e8;
   border-color: #999999;
