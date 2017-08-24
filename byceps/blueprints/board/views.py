@@ -23,7 +23,8 @@ from ...util.views import redirect_to, respond_no_content_with_location
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 
-from .authorization import BoardPostingPermission, BoardTopicPermission
+from .authorization import BoardPermission, BoardPostingPermission, \
+    BoardTopicPermission
 from .forms import PostingCreateForm, PostingUpdateForm, TopicCreateForm, \
     TopicUpdateForm
 from . import signals
@@ -32,6 +33,7 @@ from . import signals
 blueprint = create_blueprint('board', __name__)
 
 
+permission_registry.register_enum(BoardPermission)
 permission_registry.register_enum(BoardTopicPermission)
 permission_registry.register_enum(BoardPostingPermission)
 

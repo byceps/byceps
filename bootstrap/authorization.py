@@ -7,8 +7,8 @@ bootstrap.authorization
 """
 
 from byceps.blueprints.authorization_admin.authorization import RolePermission
-from byceps.blueprints.board.authorization import BoardPostingPermission, \
-    BoardTopicPermission
+from byceps.blueprints.board.authorization import BoardPermission, \
+    BoardPostingPermission, BoardTopicPermission
 from byceps.blueprints.orga_team_admin.authorization import OrgaTeamPermission
 from byceps.blueprints.party_admin.authorization import PartyPermission
 from byceps.blueprints.snippet_admin.authorization import \
@@ -40,8 +40,7 @@ def create_roles_and_permissions():
         'board_orga',
         'versteckte Themen und Beiträge im Forum lesen',
         [
-            (BoardPostingPermission.view_hidden, 'versteckte Beiträge im Forum anzeigen'),
-            (BoardTopicPermission.view_hidden, 'versteckte Themen im Forum anzeigen'),
+            (BoardPermission.view_hidden, 'versteckte Themen und Beiträge im Forum anzeigen'),
         ])
 
     create_role_with_permissions(

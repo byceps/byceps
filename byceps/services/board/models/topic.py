@@ -13,7 +13,8 @@ from uuid import UUID
 from flask import url_for
 from sqlalchemy.ext.associationproxy import association_proxy
 
-from ....blueprints.board.authorization import BoardTopicPermission
+from ....blueprints.board.authorization import BoardPermission, \
+    BoardTopicPermission
 from ....database import BaseQuery, db, generate_uuid
 from ....typing import UserID
 from ....util.instances import ReprBuilder
@@ -33,7 +34,7 @@ class TopicQuery(BaseQuery):
 
     def only_visible_for_user(self, user: User) -> BaseQuery:
         """Only return topics the user may see."""
-        if not user.has_permission(BoardTopicPermission.view_hidden):
+        if not user.has_permission(BoardPermission.view_hidden):
             return self.without_hidden()
 
         return self
