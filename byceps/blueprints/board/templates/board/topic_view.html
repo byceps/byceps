@@ -26,7 +26,7 @@
   </div>
 {%- endif %}
 
-  {%- if g.current_user.has_any_permission(BoardTopicPermission.hide, BoardTopicPermission.lock, BoardTopicPermission.move, BoardTopicPermission.pin) %}
+  {%- if g.current_user.has_any_permission(BoardPermission.hide, BoardTopicPermission.lock, BoardTopicPermission.move, BoardTopicPermission.pin) %}
   <div class="button-row button-row--right">
     <a class="button" href="{{ url_for('.topic_moderate_form', topic_id=topic.id) }}" title="Thema moderieren">{{ render_icon('moderate') }} moderieren</a>
   </div>

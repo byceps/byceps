@@ -47,8 +47,7 @@ def create_roles_and_permissions():
         'board_moderator',
         'Forum moderieren',
         [
-            (BoardPostingPermission.hide, 'Beiträge im Forum verstecken'),
-            (BoardTopicPermission.hide, 'Themen im Forum verstecken'),
+            (BoardPermission.hide, 'Themen und Beiträge im Forum verstecken'),
             (BoardTopicPermission.lock, 'Themen im Forum schließen'),
             (BoardTopicPermission.pin, 'Themen im Forum anpinnen'),
         ])

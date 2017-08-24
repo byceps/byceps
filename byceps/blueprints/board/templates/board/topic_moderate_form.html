@@ -16,7 +16,7 @@
   </nav>
   <h1>{{ render_icon('moderate') }} {{ title }}</h1>
 
-  {%- if g.current_user.has_permission(BoardTopicPermission.hide) %}
+  {%- if g.current_user.has_permission(BoardPermission.hide) %}
   <h2>{{ render_icon('view') }} Sichtbarkeit</h2>
   <p>Das Thema &quot;{{ topic.title }}&quot; von {{ render_user_link(topic.creator) }} ist {% if topic.hidden %}<strong>versteckt</strong> ({{ render_datetime(topic.hidden_at) }} durch {{ topic.hidden_by.screen_name }}){% else %}<strong>sichtbar</strong>{% endif %}.</p>
   <div class="button-row">

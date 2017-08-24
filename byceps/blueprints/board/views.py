@@ -282,7 +282,7 @@ def topic_update(topic_id):
 
 
 @blueprint.route('/topics/<uuid:topic_id>/moderate')
-@permission_required(BoardTopicPermission.hide)
+@permission_required(BoardPermission.hide)
 @templated
 def topic_moderate_form(topic_id):
     """Show a form to moderate the topic."""
@@ -300,7 +300,7 @@ def topic_moderate_form(topic_id):
 
 
 @blueprint.route('/topics/<uuid:topic_id>/flags/hidden', methods=['POST'])
-@permission_required(BoardTopicPermission.hide)
+@permission_required(BoardPermission.hide)
 @respond_no_content_with_location
 def topic_hide(topic_id):
     """Hide a topic."""
@@ -318,7 +318,7 @@ def topic_hide(topic_id):
 
 
 @blueprint.route('/topics/<uuid:topic_id>/flags/hidden', methods=['DELETE'])
-@permission_required(BoardTopicPermission.hide)
+@permission_required(BoardPermission.hide)
 @respond_no_content_with_location
 def topic_unhide(topic_id):
     """Un-hide a topic."""
@@ -606,7 +606,7 @@ def posting_update(posting_id):
 
 
 @blueprint.route('/postings/<uuid:posting_id>/moderate')
-@permission_required(BoardPostingPermission.hide)
+@permission_required(BoardPermission.hide)
 @templated
 def posting_moderate_form(posting_id):
     """Show a form to moderate the posting."""
@@ -618,7 +618,7 @@ def posting_moderate_form(posting_id):
 
 
 @blueprint.route('/postings/<uuid:posting_id>/flags/hidden', methods=['POST'])
-@permission_required(BoardPostingPermission.hide)
+@permission_required(BoardPermission.hide)
 @respond_no_content_with_location
 def posting_hide(posting_id):
     """Hide a posting."""
@@ -641,7 +641,7 @@ def posting_hide(posting_id):
 
 
 @blueprint.route('/postings/<uuid:posting_id>/flags/hidden', methods=['DELETE'])
-@permission_required(BoardPostingPermission.hide)
+@permission_required(BoardPermission.hide)
 @respond_no_content_with_location
 def posting_unhide(posting_id):
     """Un-hide a posting."""
