@@ -78,12 +78,13 @@ class Posting(db.Model):
         return self == topic.initial_posting
 
     def may_be_updated_by_user(self, user: User) -> bool:
-        return not self.topic.locked and (
+        return (
             (
-                user == self.creator and \
-                user.has_permission(BoardPostingPermission.update)
-            ) or \
-            user.has_permission(BoardPostingPermission.update_of_others)
+                not self.topic.locked
+                    and user == self.creator
+                    and user.has_permission(BoardPostingPermission.update)
+            )
+            or user.has_permission(BoardPostingPermission.update_of_others)
         )
 
     def is_unseen(self, user: User, last_viewed_at: datetime) -> bool:

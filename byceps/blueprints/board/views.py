@@ -222,7 +222,9 @@ def topic_update_form(topic_id, erroneous_form=None):
     topic = _get_topic_or_404(topic_id)
     url = topic.external_url
 
-    if topic.locked:
+    user_may_update = topic.may_be_updated_by_user(g.current_user._user)
+
+    if topic.locked and not user_may_update:
         flash_error(
             'Das Thema darf nicht bearbeitet werden weil es gesperrt ist.')
         return redirect(url)
@@ -231,7 +233,7 @@ def topic_update_form(topic_id, erroneous_form=None):
         flash_error('Das Thema darf nicht bearbeitet werden.')
         return redirect(url)
 
-    if not topic.may_be_updated_by_user(g.current_user._user):
+    if not user_may_update:
         flash_error('Du darfst dieses Thema nicht bearbeiten.')
         return redirect(url)
 
@@ -251,7 +253,9 @@ def topic_update(topic_id):
     topic = _get_topic_or_404(topic_id)
     url = topic.external_url
 
-    if topic.locked:
+    user_may_update = topic.may_be_updated_by_user(g.current_user._user)
+
+    if topic.locked and not user_may_update:
         flash_error(
             'Das Thema darf nicht bearbeitet werden weil es gesperrt ist.')
         return redirect(url)
@@ -260,7 +264,7 @@ def topic_update(topic_id):
         flash_error('Das Thema darf nicht bearbeitet werden.')
         return redirect(url)
 
-    if not topic.may_be_updated_by_user(g.current_user._user):
+    if not user_may_update:
         flash_error('Du darfst dieses Thema nicht bearbeiten.')
         return redirect(url)
 
@@ -538,7 +542,9 @@ def posting_update_form(posting_id, erroneous_form=None):
     page = calculate_posting_page_number(posting)
     url = url_for('.topic_view', topic_id=posting.topic.id, page=page)
 
-    if posting.topic.locked:
+    user_may_update = posting.may_be_updated_by_user(g.current_user._user)
+
+    if posting.topic.locked and not user_may_update:
         flash_error(
             'Der Beitrag darf nicht bearbeitet werden weil das Thema, '
             'zu dem dieser Beitrag gehört, gesperrt ist.')
@@ -548,7 +554,7 @@ def posting_update_form(posting_id, erroneous_form=None):
         flash_error('Der Beitrag darf nicht bearbeitet werden.')
         return redirect(url)
 
-    if not posting.may_be_updated_by_user(g.current_user._user):
+    if not user_may_update:
         flash_error('Du darfst diesen Beitrag nicht bearbeiten.')
         return redirect(url)
 
@@ -570,7 +576,9 @@ def posting_update(posting_id):
     page = calculate_posting_page_number(posting)
     url = url_for('.topic_view', topic_id=posting.topic.id, page=page)
 
-    if posting.topic.locked:
+    user_may_update = posting.may_be_updated_by_user(g.current_user._user)
+
+    if posting.topic.locked and not user_may_update:
         flash_error(
             'Der Beitrag darf nicht bearbeitet werden weil das Thema, '
             'zu dem dieser Beitrag gehört, gesperrt ist.')
@@ -580,7 +588,7 @@ def posting_update(posting_id):
         flash_error('Der Beitrag darf nicht bearbeitet werden.')
         return redirect(url)
 
-    if not posting.may_be_updated_by_user(g.current_user._user):
+    if not user_may_update:
         flash_error('Du darfst diesen Beitrag nicht bearbeiten.')
         return redirect(url)
 

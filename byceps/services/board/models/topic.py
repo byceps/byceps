@@ -80,12 +80,13 @@ class Topic(db.Model):
         self.title = title
 
     def may_be_updated_by_user(self, user: User) -> bool:
-        return not self.locked and (
+        return (
             (
-                user == self.creator and \
-                user.has_permission(BoardTopicPermission.update)
-            ) or \
-            user.has_permission(BoardTopicPermission.update_of_others)
+                not self.locked
+                    and user == self.creator
+                    and user.has_permission(BoardTopicPermission.update)
+            )
+            or user.has_permission(BoardTopicPermission.update_of_others)
         )
 
     @property
