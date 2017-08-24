@@ -402,7 +402,7 @@ form li.error .errors li span {
   box-shadow: none;
 }
 .button--clear:hover {
-  border: #cccccc solid 1px;
+  border-color: #cccccc;
 }
 
 
