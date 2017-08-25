@@ -367,7 +367,9 @@ form li.error .errors li span {
   cursor: pointer;
   display: inline-block;
   padding: 0.4em 0.6em;
+  text-align: center;
   text-decoration: none;
+  vertical-align: middle;
   white-space: nowrap;
 }
 .button--compact {
@@ -375,6 +377,7 @@ form li.error .errors li span {
 }
 .button--disabled {
   cursor: not-allowed;
+  pointer-events: none;
   opacity: 0.5;
 }
 .button--icon-only {
