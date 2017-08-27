@@ -20,10 +20,10 @@ from .models.badge import Badge, BadgeID, BadgeTuple
 def create_badge(label: str, image_filename: str, *,
                  brand_id: Optional[BrandID]=None,
                  description: Optional[str]=None,
-                 is_featured: bool=False) -> BadgeTuple:
+                 featured: bool=False) -> BadgeTuple:
     """Introduce a new badge."""
     badge = Badge(label, image_filename, brand_id=brand_id,
-                  description=description, is_featured=is_featured)
+                  description=description, featured=featured)
 
     db.session.add(badge)
     db.session.commit()
@@ -54,7 +54,7 @@ def get_badges(badge_ids: Set[BadgeID], *, featured_only: bool=False
         .filter(Badge.id.in_(badge_ids))
 
     if featured_only:
-        query = query.filter_by(is_featured=True)
+        query = query.filter_by(featured=True)
 
     badges = query.all()
 
