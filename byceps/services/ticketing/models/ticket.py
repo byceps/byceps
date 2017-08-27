@@ -58,6 +58,7 @@ class Ticket(db.Model):
     occupied_seat = db.relationship(Seat, backref=db.backref('occupied_by_ticket', uselist=False))
     used_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=True)
     used_by = db.relationship(User, foreign_keys=[used_by_id])
+    revoked = db.Column(db.Boolean, default=False, nullable=False)
 
     def __init__(self, category_id: CategoryID, owned_by_id: UserID, *,
                  bundle: Optional[TicketBundle]=None) -> None:

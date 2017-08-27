@@ -1,6 +1,7 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
+{% from 'macros/misc.html' import render_tag %}
 {% from 'macros/user_admin.html' import render_user_avatar_20_and_link %}
 {% set current_page = 'ticketing_admin' %}
 {% set current_page_party = party %}
@@ -53,6 +54,16 @@
         {%- endif -%}
         <br>
         {{ 'verwaltet durch'|dim }} {{ render_user_avatar_20_and_link(ticket.get_user_manager()) }}
+      </td>
+    </tr>
+    <tr>
+      <th>Markierungen</th>
+      <td>
+        {%- if ticket.revoked %}
+        {{ render_tag('widerrufen', class='color-danger', title='Dieses Ticket ist nicht mehr gültig.') }}
+        {%- else %}
+        {{ 'keine'|dim }}
+        {%- endif %}
       </td>
     </tr>
   </table>
