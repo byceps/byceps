@@ -34,25 +34,25 @@
     <tr>
       <th>Sitzplatz</th>
       <td>
-          {%- if ticket.occupied_seat -%}
-          {{ ticket.occupied_seat.area.title }}
-          {%- else -%}
-          {{ 'keiner'|dim }}
-          {%- endif -%}
-          <br>
-          {{ 'verwaltet durch'|dim  }} {{ render_user_avatar_20_and_link(ticket.get_seat_manager()) }}
+        {%- if ticket.occupied_seat -%}
+        {{ ticket.occupied_seat.area.title }}
+        {%- else -%}
+        {{ 'keiner'|dim }}
+        {%- endif -%}
+        <br>
+        {{ 'verwaltet durch'|dim  }} {{ render_user_avatar_20_and_link(ticket.get_seat_manager()) }}
       </td>
     </tr>
     <tr>
       <th>Nutzer/in</th>
       <td>
-          {%- if ticket.used_by -%}
-          {{ render_user_avatar_20_and_link(ticket.used_by) }}
-          {%- else -%}
-          {{ 'keine/r'|dim }}
-          {%- endif -%}
-          <br>
-          {{ 'verwaltet durch'|dim }} {{ render_user_avatar_20_and_link(ticket.get_user_manager()) }}
+        {%- if ticket.used_by -%}
+        {{ render_user_avatar_20_and_link(ticket.used_by) }}
+        {%- else -%}
+        {{ 'keine/r'|dim }}
+        {%- endif -%}
+        <br>
+        {{ 'verwaltet durch'|dim }} {{ render_user_avatar_20_and_link(ticket.get_user_manager()) }}
       </td>
     </tr>
   </table>
