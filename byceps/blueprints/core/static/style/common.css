@@ -606,33 +606,37 @@ table.user-badges-list td {
 
 /* colors */
 
-.color-primary {
+.button.color-primary {
   background-color: #cc99ff;
   border-color: #9955ff;
 }
 
-.color-danger {
+.button.color-danger,
+.notification.color-danger {
   background-color: #ff9999;
   border-color: #ff2222;
 }
 
-.tag.color-danger {
-  background-color: #ff2222;
-}
-
-.color-info {
+.button.color-info,
+.notification.color-info {
   background-color: #88ccff;
   border-color: #1199ff;
 }
 
-.color-success {
+.button.color-success,
+.notification.color-success {
   background-color: #99ee88;
   border-color: #55cc00;
 }
 
-.color-warning {
+.button.color-warning,
+.notification.color-warning {
   background-color: #ffe777;
   border-color: #ffcc11;
+}
+
+.tag.color-danger {
+  background-color: #ff2222;
 }
 
 
