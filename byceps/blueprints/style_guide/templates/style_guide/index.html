@@ -62,7 +62,7 @@
 
   <h2 id="notifications">Notifications</h2>
 
-  {% call render_code_block() -%}
+  {%- set example_notifications -%}
 {{ render_notification('', None, 'Without category and icon.') }}
 
 {{ render_notification('info', 'info', 'Just FYI.') }}
@@ -70,13 +70,14 @@
 {{ render_notification('danger', 'error', '<p>This did not end well. :(</p><p>To explain the problem, debug information like stack trace could follow here.</p>', text_is_safe=true) }}
 
 {{ render_notification('success', 'success', 'The action was <strong>successful</strong>.', text_is_safe=true) }}
+  {%- endset %}
+
+  {% call render_code_block() -%}
+{{ example_notifications }}
   {%- endcall %}
 
   <div class="result">
-    {{ render_notification('', None, 'Without category and icon.') }}
-    {{ render_notification('info', 'info', 'Just FYI.') }}
-    {{ render_notification('danger', 'error', '<p>This did not end well. :(</p><p>To explain the problem, debug information like stack trace could follow here.</p>', text_is_safe=true) }}
-    {{ render_notification('success', 'success', 'The action was <strong>successful</strong>.', text_is_safe=true) }}
+{{ example_notifications }}
   </div>
 
 
@@ -84,42 +85,40 @@
 
   <p>Left-aligned:</p>
 
-  {% call render_code_block() -%}
+  {%- set example_tabs_leftaligned -%}
 <ol class="tabs">
   <li><a href="#">Tab 1</a></li>
   <li><span class="current">Tab 2</span></li>
   <li><a href="#">Tab 3</a></li>
   <li><a href="#">Tab 4</a></li>
 </ol>
+  {%- endset %}
+
+  {% call render_code_block() -%}
+{{ example_tabs_leftaligned }}
   {%- endcall %}
 
   <div class="result">
-    <ol class="tabs">
-      <li><a href="#">Tab 1</a></li>
-      <li><span class="current">Tab 2</span></li>
-      <li><a href="#">Tab 3</a></li>
-      <li><a href="#">Tab 4</a></li>
-    </ol>
+{{ example_tabs_leftaligned }}
   </div>
 
   <p>Centered:</p>
 
-  {% call render_code_block() -%}
+  {%- set example_tabs_centered -%}
 <ol class="tabs tabs--centered">
   <li><a href="#">Tab 1</a></li>
   <li><span class="current">Tab 2</span></li>
   <li><a href="#">Tab 3</a></li>
   <li><a href="#">Tab 4</a></li>
 </ol>
+  {%- endset %}
+
+  {% call render_code_block() -%}
+{{ example_tabs_centered }}
   {%- endcall %}
 
   <div class="result">
-    <ol class="tabs tabs--centered">
-      <li><a href="#">Tab 1</a></li>
-      <li><span class="current">Tab 2</span></li>
-      <li><a href="#">Tab 3</a></li>
-      <li><a href="#">Tab 4</a></li>
-    </ol>
+{{ example_tabs_centered }}
   </div>
 
 
@@ -127,7 +126,7 @@
 
   <p>With class <code>index</code>:</p>
 
-  {% call render_code_block() -%}
+  {%- set example_table_index -%}
 <table class="index">
   <thead>
     <tr>
@@ -154,40 +153,19 @@
     </tr>
   </tbody>
 </table>
+  {%- endset %}
+
+  {% call render_code_block() -%}
+{{ example_table_index }}
   {%- endcall %}
 
   <div class="result">
-    <table class="index">
-      <thead>
-        <tr>
-          <th>One</th>
-          <th>Two</th>
-          <th>Three</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>a1</td>
-          <td>a2</td>
-          <td>a3</td>
-        </tr>
-        <tr>
-          <td>b1</td>
-          <td>b2</td>
-          <td>b3</td>
-        </tr>
-        <tr>
-          <td>c1</td>
-          <td>c2</td>
-          <td>c3</td>
-        </tr>
-      </tbody>
-    </table>
+{{ example_table_index }}
   </div>
 
   <p>With classes <code>index wide</code>:</p>
 
-  {% call render_code_block() -%}
+  {%- set example_table_index_wide -%}
 <table class="index wide">
   <thead>
     <tr>
@@ -214,35 +192,14 @@
     </tr>
   </tbody>
 </table>
+  {%- endset %}
+
+  {% call render_code_block() -%}
+{{ example_table_index_wide }}
   {%- endcall %}
 
   <div class="result">
-    <table class="index wide">
-      <thead>
-        <tr>
-          <th>One</th>
-          <th>Two</th>
-          <th>Three</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>a1</td>
-          <td>a2</td>
-          <td>a3</td>
-        </tr>
-        <tr>
-          <td>b1</td>
-          <td>b2</td>
-          <td>b3</td>
-        </tr>
-        <tr>
-          <td>c1</td>
-          <td>c2</td>
-          <td>c3</td>
-        </tr>
-      </tbody>
-    </table>
+{{ example_table_index_wide }}
   </div>
 
 
@@ -250,7 +207,7 @@
 
   <p>Buttons with different styles and states:</p>
 
-  {% call render_code_block() -%}
+  {%- set example_buttons -%}
 <div class="button-row">
   <a href="#" class="button">Standard</a>
   <a href="#" class="button button--outlined">Outlined</a>
@@ -260,23 +217,19 @@
 
 <p><a href="#" class="button button--compact">Compact</a></p>
 <p><a href="#" class="button button--inline">Inline</a></p>
+  {%- endset %}
+
+  {% call render_code_block() -%}
+{{ example_buttons }}
   {%- endcall %}
 
   <div class="result">
-    <div class="button-row">
-      <a href="#" class="button">Standard</a>
-      <a href="#" class="button button--outlined">Outlined</a>
-      <a href="#" class="button button--clear">Clear</a>
-      <a href="#" class="button button--disabled">Disabled</a>
-    </div>
-
-    <p><a href="#" class="button button--compact">Compact</a></p>
-    <p><a href="#" class="button button--inline">Inline</a></p>
+{{ example_buttons }}
   </div>
 
   <p>Different colors:</p>
 
-  {% call render_code_block() -%}
+  {%- set example_buttons_colored -%}
 <div class="button-row">
   <a href="#" class="button color-primary">Primary</a>
   <a href="#" class="button color-info">Info</a>
@@ -284,28 +237,29 @@
   <a href="#" class="button color-warning">Warning</a>
   <a href="#" class="button color-danger">Danger</a>
 </div>
+  {%- endset %}
+
+  {% call render_code_block() -%}
+{{ example_buttons_colored }}
   {%- endcall %}
 
   <div class="result">
-    <div class="button-row">
-      <a href="#" class="button color-primary">Primary</a>
-      <a href="#" class="button color-info">Info</a>
-      <a href="#" class="button color-success">Success</a>
-      <a href="#" class="button color-warning">Warning</a>
-      <a href="#" class="button color-danger">Danger</a>
-    </div>
+{{ example_buttons_colored }}
   </div>
 
   <p>Label wrapping:</p>
 
-  {% call render_code_block() -%}
+  {%- set example_buttons_label_wrap -%}
 <p><a href="#" class="button">A button with a rather long label, not wrapping by default</a></p>
-<p><a href="#" class="button button--wrapping" style="width: 12rem;">A button with a rather long label, wraps</a></p>
+<p><a href="#" class="button button--wrapping" style="width: 12rem;">A button with a rather long label, wrapping</a></p>
+  {%- endset %}
+
+  {% call render_code_block() -%}
+{{ example_buttons_label_wrap }}
   {%- endcall %}
 
   <div class="result">
-    <p><a href="#" class="button">A button with a rather long label, not wrapping by default</a></p>
-    <p><a href="#" class="button button--wrapping" style="width: 12rem;">A button with a rather long label, wrapping</a></p>
+{{ example_buttons_label_wrap }}
   </div>
 
 
@@ -313,7 +267,7 @@
 
   <p>A simple dropdown menu:</p>
 
-  {% call render_code_block() -%}
+  {%- set example_dropdown -%}
 <div class="dropdown right">
   <button class="dropdown-toggle button">Toggle {{ render_icon('caret-down') }}</button>
   <ol>
@@ -323,36 +277,36 @@
     <li>Three</li>
   </ol>
 </div>
+  {%- endset %}
+
+  {% call render_code_block() -%}
+{{ example_dropdown }}
   {%- endcall %}
 
   <div class="result">
-    <div class="dropdown right">
-      <button class="dropdown-toggle button">Toggle {{ render_icon('caret-down') }}</button>
-      <ol>
-        <li><a href="#">One</a></li>
-        <li><a href="#">Two</a></li>
-        <li class="divider"></li>
-        <li><a href="#">Three</a></li>
-      </ol>
-    </div>
+{{ example_dropdown }}
   </div>
 
 
   <h2 id="tags">Tags</h2>
 
-  {% call render_code_block() -%}
+  {%- set example_tags -%}
 <p>Just a {{ render_tag('tag') }} to attach to things or to represent state.</p>
+  {%- endset %}
+
+  {% call render_code_block() -%}
+{{ example_tags }}
   {%- endcall %}
 
   <div class="result">
-    <p>Just a {{ render_tag('tag') }} to attach to things or to represent state.</p>
+{{ example_tags }}
   </div>
 
 
   <h2 id="forms">Forms</h2>
 
-  {% call render_code_block() -%}
-<form action="/users/" method="post" class="disable-submit-button-on-submit">
+  {%- set example_form -%}
+<form>
 
   <fieldset>
     <ol>
@@ -380,37 +334,14 @@
   </fieldset>
 
 </form>
+  {%- endset %}
+
+  {% call render_code_block() -%}
+{{ example_form }}
   {%- endcall %}
 
   <div class="result">
-    <form action="/users/" method="post" class="disable-submit-button-on-submit">
-
-      <fieldset>
-        <ol>
-          <li>
-            <label for="field1">Field #1</label>
-            <input id="field1" name="field1">
-          </li>
-          <li class="error">
-            <label for="field2">Field #2</label>
-            <input id="field2" name="field2">
-            <ol class="errors">
-              <li><strong>Error:</strong> <span>Your answer must be in the form of a question.</span></li>
-            </ol>
-          </li>
-          <li>
-            <div class="checkbox">
-              <input id="check_it" name="check_it" type="checkbox"> <label for="check_it">Tick, tick, tick, tick.</label>
-            </div>
-          </li>
-        </ol>
-      </fieldset>
-
-      <fieldset class="buttons">
-        <button type="submit" class="button color-primary">Do it!</button>
-      </fieldset>
-
-    </form>
+{{ example_form }}
   </div>
 
 
