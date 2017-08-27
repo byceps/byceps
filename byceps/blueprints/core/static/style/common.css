@@ -639,6 +639,18 @@ table.user-badges-list td {
   background-color: #ff2222;
 }
 
+.tag.color-info {
+  background-color: #1199ff;
+}
+
+.tag.color-success {
+  background-color: #55cc00;
+}
+
+.tag.color-warning {
+  background-color: #ffcc11;
+}
+
 
 /* animation */
 
