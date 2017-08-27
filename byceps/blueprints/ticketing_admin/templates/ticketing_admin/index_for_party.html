@@ -10,7 +10,7 @@
 
 {% block head %}
     <style>
-      span[title] {
+      .ticket-id[title] {
         border-bottom: dotted 1px;
         cursor: help;
       }
@@ -39,7 +39,7 @@
     <tbody>
       {%- for ticket in tickets.items|sort(attribute='created_at') %}
       <tr>
-        <td><span title="{{ ticket.id }}">{{ ticket.id|string|truncate(6, killwords=True, end='…') }}</span></td>
+        <td><span class="ticket-id" title="{{ ticket.id }}">{{ ticket.id|string|truncate(6, killwords=True, end='…') }}</span></td>
         <td>{{ render_user_avatar_16_and_link(ticket.owned_by) }}</td>
         <td>{{ ticket.category.title }}</td>
         <td>
