@@ -138,7 +138,9 @@ span[title] .icon {
 /* tabs */
 
 .tabs {
-  border-bottom: #dddddd solid 1px;
+  border-color: #dddddd;
+  border-style: solid;
+  border-width: 0 0 1px 0;
   display: flex;
   margin-bottom: 2rem;
 }
@@ -149,7 +151,9 @@ span[title] .icon {
 
 .tabs a,
 .tabs .current {
-  border-bottom: transparent solid 1px;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 0 0 1px 0;
   display: block;
   color: #888888;
   flex: 1 0 auto;
@@ -160,7 +164,7 @@ span[title] .icon {
 
 .tabs a:hover,
 .tabs .current {
-  border-bottom-color: #333333;
+  border-color: #333333;
   color: currentColor;
 }
 
