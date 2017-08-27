@@ -368,6 +368,7 @@ form li.error .errors li span {
   padding: 0.6em 0.9em;
   text-align: center;
   text-decoration: none;
+  user-select: none;
   vertical-align: middle;
   white-space: nowrap;
 }
