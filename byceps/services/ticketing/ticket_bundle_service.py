@@ -36,8 +36,13 @@ def create_bundle(category_id: CategoryID, ticket_quantity: int,
     return bundle
 
 
-def revoke_bundle(bundle: TicketBundle) -> None:
+def revoke_bundle(bundle_id: TicketBundleID) -> None:
     """Revoke the tickets included in this bundle."""
+    bundle = find_bundle(bundle_id)
+
+    if bundle is None:
+        raise ValueError('Unknown ticket bundle ID.')
+
     for ticket in bundle.tickets:
         ticket.revoked = True
 
