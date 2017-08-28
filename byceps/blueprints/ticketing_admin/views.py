@@ -49,7 +49,7 @@ def index_for_party(party_id, page):
 @blueprint.route('/tickets/<uuid:ticket_id>')
 @permission_required(TicketingPermission.view)
 @templated
-def view(ticket_id):
+def view_ticket(ticket_id):
     """Show a ticket."""
     ticket = ticket_service.get_ticket_with_details(ticket_id)
     if ticket is None:

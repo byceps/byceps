@@ -31,7 +31,7 @@
       {%- for ticket in tickets.items|sort(attribute='created_at') %}
       <tr>
         <td>
-          <a href="{{ url_for('.view', ticket_id=ticket.id) }}" title="{{ ticket.id }}">{{ ticket.id|string|truncate(6, killwords=True, end='…') }}</a>
+          <a href="{{ url_for('.view_ticket', ticket_id=ticket.id) }}" title="{{ ticket.id }}">{{ ticket.id|string|truncate(6, killwords=True, end='…') }}</a>
           {%- if ticket.revoked %}<br>{{ render_tag('widerrufen', class='color-danger', title='Dieses Ticket ist nicht mehr gültig.') }}{% endif %}
         </td>
         <td>{{ render_user_avatar_16_and_link(ticket.owned_by) }}</td>

@@ -181,7 +181,7 @@
         {%- endif %}
         <td>
           {%- if ticket.used_by_id == user.id %}<strong>{% endif -%}
-              <a href="{{ url_for('ticketing_admin.view', ticket_id=ticket.id) }}" title="{{ ticket.id }}">{{ ticket.id|string|truncate(6, killwords=True, end='…') }}</a>
+              <a href="{{ url_for('ticketing_admin.view_ticket', ticket_id=ticket.id) }}" title="{{ ticket.id }}">{{ ticket.id|string|truncate(6, killwords=True, end='…') }}</a>
           {%- if ticket.used_by_id == user.id %}</strong>{% endif -%}
         </td>
         <td>{{ ticket.category.title }}</td>
