@@ -5,10 +5,16 @@
 {% from 'macros/user_admin.html' import render_user_avatar_20_and_link %}
 {% set current_page = 'ticketing_admin' %}
 {% set current_page_party = party %}
-{% set title = 'Ticket %s - Tickets'|format(ticket.id) %}
+{% set title = 'Ticket %s - Ticketing'|format(ticket.id) %}
 
 {% block body %}
 
+  <nav class="breadcrumbs">
+    <ol>
+      <li>Ticketing</li>
+      <li>{{ party.title }}</li>
+    </ol>
+  </nav>
   <h1>{{ render_icon('ticket') }} {{ ticket.id }}</h1>
 
   <table class="index">

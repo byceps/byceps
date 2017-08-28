@@ -6,12 +6,13 @@
 {% from 'macros/user_admin.html' import render_user_avatar_16_and_link %}
 {% set current_page = 'ticketing_admin' %}
 {% set current_page_party = party %}
-{% set title = '%s - Tickets'|format(party.title) %}
+{% set title = '%s - Ticketing'|format(party.title) %}
 
 {% block body %}
 
   <nav class="breadcrumbs">
     <ol>
+      <li>Ticketing</li>
       <li>{{ party.title }}</li>
     </ol>
   </nav>
