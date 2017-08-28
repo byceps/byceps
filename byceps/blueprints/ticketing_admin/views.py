@@ -25,8 +25,8 @@ blueprint = create_blueprint('ticketing_admin', __name__)
 permission_registry.register_enum(TicketingPermission)
 
 
-@blueprint.route('/for_party/<party_id>', defaults={'page': 1})
-@blueprint.route('/for_party/<party_id>/pages/<int:page>')
+@blueprint.route('/tickets/for_party/<party_id>', defaults={'page': 1})
+@blueprint.route('/tickets/for_party/<party_id>/pages/<int:page>')
 @permission_required(TicketingPermission.view)
 @templated
 def index_for_party(party_id, page):
@@ -46,7 +46,7 @@ def index_for_party(party_id, page):
     }
 
 
-@blueprint.route('/<uuid:ticket_id>')
+@blueprint.route('/tickets/<uuid:ticket_id>')
 @permission_required(TicketingPermission.view)
 @templated
 def view(ticket_id):

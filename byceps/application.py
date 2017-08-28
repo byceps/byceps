@@ -103,7 +103,7 @@ def _get_blueprints(app):
         ('terms',               '/terms',               site_mode_public),
         ('terms_admin',         '/admin/terms',         site_mode_admin ),
         ('ticketing',           '/tickets',             site_mode_public),
-        ('ticketing_admin',     '/admin/tickets',       site_mode_admin ),
+        ('ticketing_admin',     '/admin/ticketing',     site_mode_admin ),
         ('tourney',             '/tourney',             site_mode_public),
         ('tourney_admin',       '/admin/tourney',       site_mode_admin ),
         ('user',                '/users',               always          ),
