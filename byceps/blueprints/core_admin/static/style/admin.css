@@ -440,6 +440,18 @@ ol.index.fully-linked a:hover {
 }
 
 
+/* buttons */
+
+.button.color-primary {
+  background-color: #555555;
+  border-color: #cccccc;
+  color: #f8f8f8;
+  font-size: 0.875rem; /* 14px / 16px */
+  font-weight: normal;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+
 /* forms */
 
 fieldset.buttons {
