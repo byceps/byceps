@@ -18,8 +18,8 @@ from .models.ticket_bundle import TicketBundle, TicketBundleID
 from .ticket_service import build_tickets
 
 
-def create_ticket_bundle(category_id: CategoryID, ticket_quantity: int,
-                         owned_by_id: UserID) -> TicketBundle:
+def create_bundle(category_id: CategoryID, ticket_quantity: int,
+                  owned_by_id: UserID) -> TicketBundle:
     """Create a ticket bundle and the given quantity of tickets."""
     if ticket_quantity < 1:
         raise ValueError('Ticket quantity must be positive.')
@@ -36,7 +36,7 @@ def create_ticket_bundle(category_id: CategoryID, ticket_quantity: int,
     return bundle
 
 
-def delete_ticket_bundle(bundle: TicketBundle) -> None:
+def delete_bundle(bundle: TicketBundle) -> None:
     """Delete the ticket bundle and the tickets associated with it."""
     for ticket in bundle.tickets:
         db.session.delete(ticket)
