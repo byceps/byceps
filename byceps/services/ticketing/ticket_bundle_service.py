@@ -36,12 +36,10 @@ def create_bundle(category_id: CategoryID, ticket_quantity: int,
     return bundle
 
 
-def delete_bundle(bundle: TicketBundle) -> None:
-    """Delete the ticket bundle and the tickets associated with it."""
+def revoke_bundle(bundle: TicketBundle) -> None:
+    """Revoke the tickets included in this bundle."""
     for ticket in bundle.tickets:
-        db.session.delete(ticket)
-
-    db.session.delete(bundle)
+        ticket.revoked = True
 
     db.session.commit()
 
