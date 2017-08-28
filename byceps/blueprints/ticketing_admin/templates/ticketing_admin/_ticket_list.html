@@ -1,6 +1,7 @@
 {%- from 'macros/misc.html' import render_tag %}
 {%- from 'macros/user_admin.html' import render_user_avatar_16_and_link %}
 
+{%- if tickets %}
 <table class="index wide">
   <thead>
     <tr>
@@ -42,3 +43,6 @@
     {%- endfor %}
   </tbody>
 </table>
+{%- else %}
+<p>{{ 'keine'|dim }}</p>
+{%- endif %}
