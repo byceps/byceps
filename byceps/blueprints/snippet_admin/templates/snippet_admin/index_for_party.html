@@ -54,14 +54,18 @@
         </td>
         <td>{{ render_user_avatar_20_and_name(snippet.current_version.creator) }}</td>
         <td>
-        {%- if snippet.is_document and g.current_user.has_permission(MountpointPermission.create) %}
           <div class="dropdown left">
             <button class="dropdown-toggle button button--compact">{{ render_icon('caret-down') }}</button>
             <ol>
+              {%- with endpoint = '.update_fragment_form' if snippet.is_fragment else '.update_document_form' %}
+              <li><a href="{{ url_for(endpoint, snippet_id=snippet.id) }}">{{ render_icon('edit') }} bearbeiten</a></li>
+              {%- endwith %}
+              {%- if snippet.is_document and g.current_user.has_permission(MountpointPermission.create) %}
+              <li class="divider"></li>
               <li><a href="{{ url_for('.create_mountpoint_form', snippet_id=snippet.id) }}">{{ render_icon('add') }} Mountpoint erstellen</a></li>
+              {%- endif %}
             </ol>
           </div>
-        {%- endif %}
         </td>
       </tr>
     {%- endfor %}
