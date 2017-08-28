@@ -6,12 +6,15 @@ byceps.services.ticketing.ticket_bundle_service
 :License: Modified BSD, see LICENSE for details.
 """
 
+from typing import Optional, Sequence
+
 from ...database import db
 from ...typing import UserID
 
 from ..seating.models.category import CategoryID
 
-from .models.ticket_bundle import TicketBundle
+from .models.ticket import Ticket
+from .models.ticket_bundle import TicketBundle, TicketBundleID
 from .ticket_service import build_tickets
 
 
@@ -41,3 +44,15 @@ def delete_ticket_bundle(bundle: TicketBundle) -> None:
     db.session.delete(bundle)
 
     db.session.commit()
+
+
+def find_bundle(bundle_id: TicketBundleID) -> Optional[TicketBundle]:
+    """Return the ticket bundle with that id, or `None` if not found."""
+    return TicketBundle.query.get(bundle_id)
+
+
+def find_tickets_for_bundle(bundle_id: TicketBundleID) -> Sequence[Ticket]:
+    """Return all tickets included in this bundle."""
+    return Ticket.query \
+        .filter(Ticket.bundle_id == bundle_id) \
+        .all()

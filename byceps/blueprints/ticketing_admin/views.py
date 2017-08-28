@@ -9,7 +9,7 @@ byceps.blueprints.ticketing_admin.views
 from flask import abort, request
 
 from ...services.party import service as party_service
-from ...services.ticketing import ticket_service
+from ...services.ticketing import ticket_bundle_service, ticket_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.templating import templated
 
@@ -60,4 +60,24 @@ def view_ticket(ticket_id):
     return {
         'party': party,
         'ticket': ticket,
+    }
+
+
+@blueprint.route('/bundles/<uuid:bundle_id>')
+@permission_required(TicketingPermission.view)
+@templated
+def view_bundle(bundle_id):
+    """Show a ticket bundle."""
+    bundle = ticket_bundle_service.find_bundle(bundle_id)
+    if bundle is None:
+        abort(404)
+
+    party = party_service.find_party(bundle.ticket_category.party_id)
+
+    tickets = ticket_bundle_service.find_tickets_for_bundle(bundle.id)
+
+    return {
+        'party': party,
+        'bundle': bundle,
+        'tickets': tickets,
     }
