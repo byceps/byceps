@@ -1,9 +1,6 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
-{% from 'macros/datetime.html' import render_datetime, render_datetime_custom %}
-{% from 'macros/misc.html' import render_tag %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
-{% from 'macros/user_admin.html' import render_user_avatar_16_and_link %}
 {% set current_page = 'ticketing_admin' %}
 {% set current_page_party = party %}
 {% set title = '%s - Ticketing'|format(party.title) %}
@@ -18,48 +15,9 @@
   </nav>
   <h1>Tickets {{ render_extra_in_heading(tickets.total) }}</h1>
 
-  <table class="index wide">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Besitzer</th>
-        <th>Kategorie</th>
-        <th>Sitzplatz</th>
-        <th>Nutzer</th>
-      </tr>
-    </thead>
-    <tbody>
-      {%- for ticket in tickets.items|sort(attribute='created_at') %}
-      <tr>
-        <td>
-          <a href="{{ url_for('.view_ticket', ticket_id=ticket.id) }}" title="{{ ticket.id }}">{{ ticket.id|string|truncate(6, killwords=True, end='…') }}</a>
-          {%- if ticket.revoked %}<br>{{ render_tag('widerrufen', class='color-danger', title='Dieses Ticket ist nicht mehr gültig.') }}{% endif %}
-        </td>
-        <td>{{ render_user_avatar_16_and_link(ticket.owned_by) }}</td>
-        <td>{{ ticket.category.title }}</td>
-        <td>
-          {%- if ticket.occupied_seat -%}
-          {{ ticket.occupied_seat.area.title }}
-          {%- else -%}
-          {{ render_tag('keiner', class='available') }}
-          {%- endif -%}
-          <br>
-          {{ 'verwaltet durch'|dim  }} {{ render_user_avatar_16_and_link(ticket.get_seat_manager()) }}
-        </td>
-        <td>
-          {%- if ticket.used_by -%}
-          {{ render_user_avatar_16_and_link(ticket.used_by) }}
-          {%- else -%}
-          {{ render_tag('frei', class='available') }}
-          {%- endif -%}
-          <br>
-          {{ 'verwaltet durch'|dim }} {{ render_user_avatar_16_and_link(ticket.get_user_manager()) }}
-        </td>
-      </tr>
-      {%- endfor %}
-      <tr>
-    </tbody>
-  </table>
+{%- with tickets = tickets.items %}
+  {%- include 'ticketing_admin/_ticket_list.html' %}
+{%- endwith %}
 
 {{ render_pagination_nav(tickets, '.index_for_party', {'party_id': party.id}) }}
 
