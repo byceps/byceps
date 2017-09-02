@@ -8,7 +8,6 @@ from itertools import count
 from byceps.services.shop.order import ordered_articles_service
 from byceps.services.shop.order.models.order import PaymentState
 
-from testfixtures.party import create_party
 from testfixtures.shop_article import create_article
 from testfixtures.shop_order import create_order, create_order_item
 from testfixtures.user import create_user_with_detail
@@ -52,14 +51,6 @@ class OrderedArticlesServiceTestCase(AbstractAppTestCase):
 
     # -------------------------------------------------------------------- #
     # helpers
-
-    def create_party(self, party_id, title):
-        party = create_party(id=party_id, title=title, brand_id=self.brand.id)
-
-        self.db.session.add(party)
-        self.db.session.commit()
-
-        return party
 
     def create_user(self):
         user = create_user_with_detail()
