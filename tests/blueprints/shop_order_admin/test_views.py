@@ -8,7 +8,6 @@ from byceps.services.shop.order.models.order import Order, PaymentState
 
 from testfixtures.shop_article import create_article
 from testfixtures.shop_order import create_order, create_order_item
-from testfixtures.user import create_user_with_detail
 
 from tests.base import AbstractAppTestCase, CONFIG_FILENAME_TEST_ADMIN
 from tests.helpers import assign_permissions_to_user
@@ -20,7 +19,7 @@ class ShopAdminTestCase(AbstractAppTestCase):
         super().setUp(config_filename=CONFIG_FILENAME_TEST_ADMIN)
 
         self.setup_admin()
-        self.orderer = self.create_user()
+        self.orderer = self.create_user_with_detail()
 
     def setup_admin(self):
         permission_ids = {'admin.access', 'shop_order.update'}
@@ -101,14 +100,6 @@ class ShopAdminTestCase(AbstractAppTestCase):
         self.assertEqual(article_afterwards.quantity, 8)
 
     # helpers
-
-    def create_user(self):
-        user = create_user_with_detail()
-
-        self.db.session.add(user)
-        self.db.session.commit()
-
-        return user
 
     def create_article(self, quantity):
         article = create_article(party_id=self.party.id, quantity=quantity)

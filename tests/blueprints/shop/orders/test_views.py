@@ -5,7 +5,6 @@
 
 from testfixtures.authentication import create_session_token
 from testfixtures.shop_order import create_order
-from testfixtures.user import create_user_with_detail
 
 from tests.base import AbstractAppTestCase
 
@@ -15,8 +14,8 @@ class ShopOrdersTestCase(AbstractAppTestCase):
     def setUp(self):
         super().setUp()
 
-        self.user1 = self.create_user('User1')
-        self.user2 = self.create_user('User2')
+        self.user1 = self.create_user_with_detail('User1')
+        self.user2 = self.create_user_with_detail('User2')
 
     def test_view_matching_user_and_party(self):
         order = self.create_order(self.party.id, self.user1, 'LF-02-B00014')
@@ -43,14 +42,6 @@ class ShopOrdersTestCase(AbstractAppTestCase):
 
     # -------------------------------------------------------------------- #
     # helpers
-
-    def create_user(self, screen_name):
-        user = create_user_with_detail(screen_name)
-
-        self.db.session.add(user)
-        self.db.session.commit()
-
-        return user
 
     def create_session(self, user_id):
         session_token = create_session_token(user_id)
