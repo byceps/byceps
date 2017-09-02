@@ -11,14 +11,18 @@ from typing import Optional, Sequence
 from ...database import db
 from ...typing import BrandID
 
-from ..brand.models import Brand
+from ..brand import service as brand_service
 
 from .models.category import Category, CategoryID
 
 
-def create_category(brand: Brand, slug: str, title: str, description: str
+def create_category(brand_id: BrandID, slug: str, title: str, description: str
                    ) -> Category:
     """Create a category in that brand's board."""
+    brand = brand_service.find_brand(brand_id)
+    if brand is None:
+        raise ValueError('Unknown brand ID "{}"'.format(brand_id))
+
     category = Category(brand.id, slug, title, description)
     brand.board_categories.append(category)
 

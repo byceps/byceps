@@ -12,10 +12,11 @@ from byceps.services.board import category_service, posting_service, \
 from .brand import create_brand
 
 
-def create_category(*, brand=None, number=1, slug=None, title=None,
+def create_category(*, brand_id=None, number=1, slug=None, title=None,
                     description=None):
-    if brand is None:
+    if brand_id is None:
         brand = create_brand()
+        brand_id = brand.id
 
     if slug is None:
         slug = 'category-{}'.format(number)
@@ -26,7 +27,7 @@ def create_category(*, brand=None, number=1, slug=None, title=None,
     if description is None:
         description = 'Hier geht es um Kategorie {}'.format(number)
 
-    return category_service.create_category(brand, slug, title, description)
+    return category_service.create_category(brand_id, slug, title, description)
 
 
 def create_topic(category, creator_id, *, number=1, title=None, body=None):

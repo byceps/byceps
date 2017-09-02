@@ -72,7 +72,7 @@ def category_create(brand_id):
     title = form.title.data.strip()
     description = form.description.data.strip()
 
-    category = board_category_service.create_category(brand, slug, title,
+    category = board_category_service.create_category(brand.id, slug, title,
                                                       description)
 
     flash_success('Die Kategorie "{}" wurde angelegt.', category.title)
