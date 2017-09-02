@@ -6,19 +6,17 @@ byceps.blueprints.shop_order_admin.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from datetime import datetime
-
-from flask import abort, current_app, g, render_template, request, Response
+from flask import abort, g, request, Response
 
 from ...services.party import service as party_service
 from ...services.shop.order.models.order import PaymentMethod, PaymentState
-from ...services.shop.order import service as order_service
 from ...services.shop.order import action_service as order_action_service
+from ...services.shop.order import service as order_service
+from ...services.shop.order import export_service as order_export_service
 from ...services.shop.sequence import service as sequence_service
 from ...services.user import service as user_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_error, flash_success
-from ...util.money import to_two_places
 from ...util.templating import templated
 from ...util.views import redirect_to, respond_no_content
 
@@ -155,50 +153,13 @@ def _get_events(order):
 @permission_required(ShopOrderPermission.view)
 def export(order_id):
     """Export the order as an XML document."""
-    order = order_service.find_order_with_details(order_id)
-    if order is None:
+    xml_export = order_export_service.export_order_as_xml(order_id)
+
+    if xml_export is None:
         abort(404)
 
-    order_tuple = order.to_tuple()
-    order_items = [item.to_tuple() for item in order.items]
-
-    now = datetime.now()
-
-    context = {
-        'order': order_tuple,
-        'email_address': order.placed_by.email_address,
-        'order_items': order_items,
-        'now': now,
-        'format_export_amount': _format_export_amount,
-        'format_export_datetime': _format_export_datetime,
-    }
-
-    xml = render_template('shop_order_admin/export.xml', **context)
-
-    return Response(xml, content_type='application/xml; charset=iso-8859-1')
-
-
-def _format_export_amount(amount):
-    """Format the monetary amount as required by the export format
-    specification.
-    """
-    quantized = to_two_places(amount)
-    return '{:.2f}'.format(quantized)
-
-
-def _format_export_datetime(dt):
-    """Format date and time as required by the export format specification."""
-    timezone = current_app.config['SHOP_ORDER_EXPORT_TIMEZONE']
-    localized_dt = timezone.localize(dt)
-
-    date_time, utc_offset = localized_dt.strftime('%Y-%m-%dT%H:%M:%S|%z') \
-                                        .split('|', 1)
-
-    if len(utc_offset) == 5:
-        # Insert colon between hours and minutes.
-        utc_offset = utc_offset[:3] + ':' + utc_offset[3:]
-
-    return date_time + utc_offset
+    return Response(xml_export['content'],
+                    content_type=xml_export['content_type'])
 
 
 @blueprint.route('/<uuid:order_id>/flags/invoiced', methods=['POST'])
