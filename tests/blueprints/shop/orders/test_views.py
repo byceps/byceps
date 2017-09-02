@@ -45,7 +45,7 @@ class ShopOrdersTestCase(AbstractAppTestCase):
     # helpers
 
     def create_party(self, party_id, title):
-        party = create_party(id=party_id, title=title, brand=self.brand)
+        party = create_party(id=party_id, title=title, brand_id=self.brand.id)
 
         self.db.session.add(party)
         self.db.session.commit()

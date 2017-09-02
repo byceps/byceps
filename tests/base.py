@@ -56,7 +56,7 @@ class AbstractAppTestCase(TestCase):
         self.brand = create_brand()
         db.session.add(self.brand)
 
-        self.party = create_party(brand=self.brand)
+        self.party = create_party(brand_id=self.brand.id)
         db.session.add(self.party)
 
         db.session.commit()

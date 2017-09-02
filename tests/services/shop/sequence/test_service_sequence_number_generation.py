@@ -57,7 +57,7 @@ class SequenceNumberGenerationTestCase(AbstractAppTestCase):
 
     def create_custom_brand_and_party(self):
         brand = create_brand(id='custom', title='Custom Events')
-        party = create_party(id='custom-party-4', brand=brand,
+        party = create_party(id='custom-party-4', brand_id=brand.id,
                              title='Custom Party 4')
 
         self._persist(brand, party)

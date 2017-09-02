@@ -41,7 +41,7 @@ class GetCurrentVersionOfSnippetTestCase(AbstractAppTestCase):
     # helpers
 
     def create_party(self, id, title):
-        party = create_party(id=id, title=title, brand=self.brand)
+        party = create_party(id=id, title=title, brand_id=self.brand.id)
         self.db.session.add(party)
         self.db.session.commit()
         return party

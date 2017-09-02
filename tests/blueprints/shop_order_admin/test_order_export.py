@@ -36,7 +36,7 @@ class ExportTestCase(AbstractAppTestCase):
 
         self.party = create_party(
             id='lanresort-2015',
-            brand=self.brand,
+            brand_id=self.brand.id,
             title='LANresort 2015')
         self.db.session.add(self.party)
 
