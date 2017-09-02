@@ -12,7 +12,7 @@ from ...services.party import service as party_service
 from ...services.shop.order.models.order import PaymentMethod, PaymentState
 from ...services.shop.order import action_service as order_action_service
 from ...services.shop.order import service as order_service
-from ...services.shop.order import export_service as order_export_service
+from ...services.shop.order.export import service as order_export_service
 from ...services.shop.sequence import service as sequence_service
 from ...services.user import service as user_service
 from ...util.framework.blueprint import create_blueprint

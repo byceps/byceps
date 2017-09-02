@@ -1,5 +1,5 @@
 """
-byceps.services.shop.order.export_service
+byceps.services.shop.order.export.service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2017 Jochen Kupperschmidt
@@ -10,9 +10,9 @@ from datetime import datetime
 
 from flask import current_app, render_template
 
-from ....util.money import to_two_places
+from .....util.money import to_two_places
 
-from . import service as order_service
+from .. import service as order_service
 
 
 def export_order_as_xml(order_id):
