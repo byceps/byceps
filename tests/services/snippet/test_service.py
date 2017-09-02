@@ -8,7 +8,6 @@ from datetime import datetime
 from byceps.services.snippet.service import \
     get_current_version_of_snippet_with_name, SnippetNotFound
 
-from testfixtures.party import create_party
 from testfixtures.snippet import create_current_version_association, \
     create_fragment, create_snippet_version
 from testfixtures.user import create_user
@@ -21,8 +20,8 @@ class GetCurrentVersionOfSnippetTestCase(AbstractAppTestCase):
     def setUp(self):
         super().setUp()
 
-        self.party2014 = self.create_party('lafiesta-2014', 'La Fiesta 2014')
-        self.party2015 = self.create_party('lafiesta-2015', 'La Fiesta 2015')
+        self.party2014 = self.create_party(self.brand.id, 'lafiesta-2014', 'La Fiesta 2014')
+        self.party2015 = self.create_party(self.brand.id, 'lafiesta-2015', 'La Fiesta 2015')
 
         self.creator = self.create_creator()
 
@@ -39,12 +38,6 @@ class GetCurrentVersionOfSnippetTestCase(AbstractAppTestCase):
 
     # -------------------------------------------------------------------- #
     # helpers
-
-    def create_party(self, id, title):
-        party = create_party(id=id, title=title, brand_id=self.brand.id)
-        self.db.session.add(party)
-        self.db.session.commit()
-        return party
 
     def create_creator(self):
         creator = create_user()

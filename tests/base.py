@@ -80,6 +80,14 @@ class AbstractAppTestCase(TestCase):
 
         return brand
 
+    def create_party(self, brand_id, party_id, title):
+        party = create_party(id=party_id, title=title, brand_id=brand_id)
+
+        db.session.add(party)
+        db.session.commit()
+
+        return party
+
     def tearDown(self):
         db.session.remove()
         db.drop_all()

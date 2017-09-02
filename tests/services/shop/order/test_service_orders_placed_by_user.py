@@ -5,7 +5,6 @@
 
 from byceps.services.shop.order import service
 
-from testfixtures.party import create_party
 from testfixtures.shop_order import create_order
 from testfixtures.user import create_user_with_detail
 
@@ -15,8 +14,8 @@ from tests.base import AbstractAppTestCase
 class ShopOrdersServiceTestCase(AbstractAppTestCase):
 
     def test_get_orders_placed_by_user_for_party(self):
-        party1 = self.create_party('lafiesta-2012', 'La Fiesta 2012')
-        party2 = self.create_party('lafiesta-2013', 'La Fiesta 2013')
+        party1 = self.create_party(self.brand.id, 'lafiesta-2012', 'La Fiesta 2012')
+        party2 = self.create_party(self.brand.id, 'lafiesta-2013', 'La Fiesta 2013')
 
         user1 = self.create_user('User1')
         user2 = self.create_user('User2')
@@ -38,14 +37,6 @@ class ShopOrdersServiceTestCase(AbstractAppTestCase):
 
     # -------------------------------------------------------------------- #
     # helpers
-
-    def create_party(self, party_id, title):
-        party = create_party(id=party_id, title=title, brand_id=self.brand.id)
-
-        self.db.session.add(party)
-        self.db.session.commit()
-
-        return party
 
     def create_user(self, screen_name):
         user = create_user_with_detail(screen_name)

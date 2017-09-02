@@ -4,7 +4,6 @@
 """
 
 from testfixtures.authentication import create_session_token
-from testfixtures.party import create_party
 from testfixtures.shop_order import create_order
 from testfixtures.user import create_user_with_detail
 
@@ -34,7 +33,8 @@ class ShopOrdersTestCase(AbstractAppTestCase):
         self.assertEqual(response.status_code, 404)
 
     def test_view_matching_user_but_different_party(self):
-        other_party = self.create_party('otherlan-2013', 'OtherLAN 2013')
+        other_party = self.create_party(self.brand.id, 'otherlan-2013',
+                                        'OtherLAN 2013')
         order = self.create_order(other_party.id, self.user1, 'LF-02-B00014')
 
         response = self.request_view(self.user1, order)
@@ -43,14 +43,6 @@ class ShopOrdersTestCase(AbstractAppTestCase):
 
     # -------------------------------------------------------------------- #
     # helpers
-
-    def create_party(self, party_id, title):
-        party = create_party(id=party_id, title=title, brand_id=self.brand.id)
-
-        self.db.session.add(party)
-        self.db.session.commit()
-
-        return party
 
     def create_user(self, screen_name):
         user = create_user_with_detail(screen_name)
