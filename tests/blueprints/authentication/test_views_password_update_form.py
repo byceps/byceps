@@ -5,8 +5,6 @@
 
 from tests.base import AbstractAppTestCase
 
-from testfixtures.authentication import create_session_token
-
 
 class PasswordUpdateFormTestCase(AbstractAppTestCase):
 
@@ -24,12 +22,6 @@ class PasswordUpdateFormTestCase(AbstractAppTestCase):
         self.assertEqual(response.status_code, 404)
 
     # helpers
-
-    def create_session_token(self, user_id):
-        session_token = create_session_token(user_id)
-
-        self.db.session.add(session_token)
-        self.db.session.commit()
 
     def send_request(self, *, user=None):
         url = '/authentication/password/update'

@@ -9,7 +9,6 @@ from byceps.services.shop.article.models.article import Article
 from byceps.services.shop.order.models.order import Order
 from byceps.services.shop.sequence.models import Purpose
 
-from testfixtures.authentication import create_session_token
 from testfixtures.shop_article import create_article
 from testfixtures.shop_sequence import create_party_sequence
 
@@ -40,10 +39,7 @@ class ShopTestCase(AbstractAppTestCase):
 
     def setup_orderer(self):
         self.orderer = self.create_user()
-
-        session_token = create_session_token(self.orderer.id)
-        self.db.session.add(session_token)
-        self.db.session.commit()
+        self.create_session_token(self.orderer.id)
 
     def setup_article(self):
         article = create_article(party_id=self.party.id, quantity=5)

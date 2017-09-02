@@ -7,8 +7,6 @@ import json
 
 from tests.base import AbstractAppTestCase
 
-from testfixtures.authentication import create_session_token
-
 
 CONTENT_TYPE_JSON = 'application/json'
 
@@ -43,12 +41,6 @@ class CurrentUserJsonTestCase(AbstractAppTestCase):
         self.assertDictEqual(response_data, {})
 
     # helpers
-
-    def create_session_token(self, user_id):
-        session_token = create_session_token(user_id)
-
-        self.db.session.add(session_token)
-        self.db.session.commit()
 
     def send_request(self, *, user=None):
         url = '/users/me.json'

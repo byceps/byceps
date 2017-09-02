@@ -3,7 +3,6 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from testfixtures.authentication import create_session_token
 from testfixtures.shop_order import create_order
 
 from tests.base import AbstractAppTestCase
@@ -43,12 +42,6 @@ class ShopOrdersTestCase(AbstractAppTestCase):
     # -------------------------------------------------------------------- #
     # helpers
 
-    def create_session(self, user_id):
-        session_token = create_session_token(user_id)
-
-        self.db.session.add(session_token)
-        self.db.session.commit()
-
     def create_order(self, party_id, user, order_number):
         order = create_order(party_id, user, order_number=order_number)
 
@@ -58,7 +51,7 @@ class ShopOrdersTestCase(AbstractAppTestCase):
         return order.to_tuple()
 
     def request_view(self, current_user, order):
-        self.create_session(current_user.id)
+        self.create_session_token(current_user.id)
 
         url = '/shop/orders/{}'.format(str(order.id))
 

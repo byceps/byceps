@@ -63,10 +63,7 @@ class AbstractAppTestCase(TestCase):
 
     def create_admin(self):
         self.admin = self.create_user('Admin')
-
-        session_token = create_session_token(self.admin.id)
-        self.db.session.add(session_token)
-        self.db.session.commit()
+        self.create_session_token(self.admin.id)
 
     def create_user(self, *args, **kwargs):
         user = create_user(*args, **kwargs)
@@ -83,6 +80,12 @@ class AbstractAppTestCase(TestCase):
         self.db.session.commit()
 
         return user
+
+    def create_session_token(self, user_id):
+        session_token = create_session_token(user_id)
+
+        self.db.session.add(session_token)
+        self.db.session.commit()
 
     def create_brand(self, brand_id, title):
         brand = create_brand(id=brand_id, title=title)
