@@ -71,7 +71,7 @@ def _derive_template_name(view_function):
 
 def load_template(source, *, template_globals=None):
     """Load a template from source, using the sandboxed environment."""
-    env = create_sandboxed_env()
+    env = create_sandboxed_environment()
 
     if template_globals is not None:
         env.globals.update(template_globals)
@@ -79,7 +79,7 @@ def load_template(source, *, template_globals=None):
     return env.from_string(source)
 
 
-def create_sandboxed_env():
+def create_sandboxed_environment():
     """Create a sandboxed environment."""
     # A loader that never finds a template.
     dummy_loader = FunctionLoader(lambda name: None)
