@@ -17,12 +17,19 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
     def setUp(self):
         super().setUp(config_filename=CONFIG_FILENAME_TEST_ADMIN)
 
-        self.setup_admin()
+        self.admin = self.create_admin()
+
         self.setup_subscribers()
 
-    def setup_admin(self):
+    def create_admin(self):
+        admin = self.create_user('Admin')
+
         permission_ids = {'admin.access', 'newsletter.export_subscribers'}
-        assign_permissions_to_user(self.admin.id, 'admin', permission_ids)
+        assign_permissions_to_user(admin.id, 'admin', permission_ids)
+
+        self.create_session_token(admin.id)
+
+        return admin
 
     def setup_subscribers(self):
         for number, enabled, states in [

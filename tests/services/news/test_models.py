@@ -14,6 +14,11 @@ from tests.helpers import current_party_set
 
 class ItemTestCase(AbstractAppTestCase):
 
+    def setUp(self):
+        super().setUp()
+
+        self.editor = self.create_user()
+
     @params(
         ('without-image', None          , None                                        ),
         ('with-image'   , 'breaking.png', 'http://example.com/brand/news/breaking.png'),
@@ -31,7 +36,7 @@ class ItemTestCase(AbstractAppTestCase):
         item = create_item(self.brand.id, slug=slug)
         self.db.session.add(item)
 
-        version = create_item_version(item, self.admin.id,
+        version = create_item_version(item, self.editor.id,
                                       image_url_path=image_url_path)
         self.db.session.add(version)
 

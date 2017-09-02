@@ -21,7 +21,8 @@ class ExportTestCase(AbstractAppTestCase):
     def setUp(self):
         super().setUp(config_filename=CONFIG_FILENAME_TEST_ADMIN)
 
-        self.setup_admin()
+        self.admin = self.create_admin()
+
         self.create_articles()
         self.create_order()
 
@@ -47,9 +48,15 @@ class ExportTestCase(AbstractAppTestCase):
 
     # helpers
 
-    def setup_admin(self):
+    def create_admin(self):
+        admin = self.create_user('Admin')
+
         permission_ids = {'admin.access', 'shop_order.view'}
-        assign_permissions_to_user(self.admin.id, 'admin', permission_ids)
+        assign_permissions_to_user(admin.id, 'admin', permission_ids)
+
+        self.create_session_token(admin.id)
+
+        return admin
 
     def create_articles(self):
         self.article_table = self.build_article(
@@ -103,7 +110,8 @@ class ExportTestCase(AbstractAppTestCase):
 
     def build_orderer(self):
         email_address = 'h-w.mustermann@example.com'
-        orderer = self.create_user_with_detail(email_address=email_address)
+        orderer = self.create_user_with_detail('Besteller',
+                                               email_address=email_address)
         orderer.detail.last_name = 'Mustermann'
         orderer.detail.first_names = 'Hans-Werner'
         orderer.detail.country = 'Deutschland'

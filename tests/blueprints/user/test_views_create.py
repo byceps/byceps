@@ -20,6 +20,8 @@ class UserCreateTestCase(AbstractAppTestCase):
     def setUp(self):
         super().setUp()
 
+        self.admin = self.create_user('Admin')
+
         self.setup_terms()
         self.setup_roles()
 

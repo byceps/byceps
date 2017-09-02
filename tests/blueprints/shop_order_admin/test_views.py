@@ -18,12 +18,19 @@ class ShopAdminTestCase(AbstractAppTestCase):
     def setUp(self):
         super().setUp(config_filename=CONFIG_FILENAME_TEST_ADMIN)
 
-        self.setup_admin()
-        self.orderer = self.create_user_with_detail()
+        self.admin = self.create_admin()
 
-    def setup_admin(self):
+        self.orderer = self.create_user_with_detail('Besteller')
+
+    def create_admin(self):
+        admin = self.create_user('Admin')
+
         permission_ids = {'admin.access', 'shop_order.update'}
-        assign_permissions_to_user(self.admin.id, 'admin', permission_ids)
+        assign_permissions_to_user(admin.id, 'admin', permission_ids)
+
+        self.create_session_token(admin.id)
+
+        return admin
 
     def test_cancel_before_paid(self):
         article_before = self.create_article(5)

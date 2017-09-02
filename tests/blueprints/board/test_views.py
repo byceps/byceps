@@ -17,7 +17,10 @@ class BoardModerationTestCase(AbstractAppTestCase):
     def setUp(self):
         super().setUp()
 
-        self.user = self.create_user()
+        self.admin = self.create_user('Admin')
+        self.create_session_token(self.admin.id)
+
+        self.user = self.create_user('User')
 
     def test_hide_topic(self):
         self.setup_admin_with_permission('board.hide')

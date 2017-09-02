@@ -50,7 +50,6 @@ class AbstractAppTestCase(TestCase):
         db.create_all()
 
         self.create_brand_and_party()
-        self.create_admin()
 
     def create_brand_and_party(self):
         self.brand = create_brand()
@@ -60,10 +59,6 @@ class AbstractAppTestCase(TestCase):
         db.session.add(self.party)
 
         db.session.commit()
-
-    def create_admin(self):
-        self.admin = self.create_user('Admin')
-        self.create_session_token(self.admin.id)
 
     def create_user(self, *args, **kwargs):
         user = create_user(*args, **kwargs)
