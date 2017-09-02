@@ -9,7 +9,7 @@ testfixtures.shop_sequence
 from byceps.services.shop.sequence.models import PartySequence
 
 
-def create_party_sequence(party, purpose, prefix, *, value=0):
-    sequence = PartySequence(party.id, purpose, prefix)
+def create_party_sequence(party_id, purpose, prefix, *, value=0):
+    sequence = PartySequence(party_id, purpose, prefix)
     sequence.value = value
     return sequence
