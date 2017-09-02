@@ -77,7 +77,6 @@ OrderTuple = namedtuple('OrderTuple', [
     'is_shipped',
     'cancelation_reason',
     'items',
-    'total_item_quantity',
     'total_price',
 ])
 
@@ -170,11 +169,6 @@ class Order(db.Model):
     def is_paid(self) -> bool:
         return self.payment_state == PaymentState.paid
 
-    @property
-    def item_total_quantity(self) -> int:
-        """Return the sum of all items' quantities."""
-        return sum(item.quantity for item in self.items)
-
     def collect_articles(self) -> Set[Article]:
         """Return the articles associated with this order."""
         return {item.article for item in self.items}
@@ -220,7 +214,6 @@ class Order(db.Model):
             self.is_shipped,
             self.cancelation_reason,
             items,
-            self.item_total_quantity,
             self.calculate_total_price(),
         )
 
