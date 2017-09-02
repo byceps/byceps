@@ -28,8 +28,8 @@ class ExportTestCase(AbstractAppTestCase):
 
     def create_brand_and_party(self):
         self.brand = self.create_brand('lanresort', 'LANresort')
-        self.party = create_party(self.brand.id, 'lanresort-2015',
-                                  'LANresort 2015')
+        self.party = self.create_party(self.brand.id, 'lanresort-2015',
+                                       'LANresort 2015')
 
     @freeze_time('2015-04-15 09:54:18')
     def test_serialize_order(self):
