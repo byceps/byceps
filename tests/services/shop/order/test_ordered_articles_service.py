@@ -70,7 +70,7 @@ class OrderedArticlesServiceTestCase(AbstractAppTestCase):
         return user
 
     def create_article(self):
-        article = create_article(party=self.party)
+        article = create_article(party_id=self.party.id)
 
         self.db.session.add(article)
         self.db.session.commit()

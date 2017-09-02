@@ -16,11 +16,12 @@ from .party import create_party
 ANY_ARTICLE_ITEM_NUMBER = 'AEC-05-A00009'
 
 
-def create_article(*, party=None, item_number=ANY_ARTICLE_ITEM_NUMBER,
+def create_article(*, party_id=None, item_number=ANY_ARTICLE_ITEM_NUMBER,
                    description='Cool thing', price=None, tax_rate=None,
                    available_from=None, available_until=None, quantity=1):
-    if party is None:
+    if party_id is None:
         party = create_party()
+        party_id = party.id
 
     if price is None:
         price = Decimal('24.95')
@@ -28,6 +29,6 @@ def create_article(*, party=None, item_number=ANY_ARTICLE_ITEM_NUMBER,
     if tax_rate is None:
         tax_rate = Decimal('0.19')
 
-    return Article(party.id, item_number, description, price, tax_rate,
+    return Article(party_id, item_number, description, price, tax_rate,
                    quantity, available_from=available_from,
                    available_until=available_until)

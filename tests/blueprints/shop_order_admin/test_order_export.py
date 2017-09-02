@@ -92,7 +92,7 @@ class ExportTestCase(AbstractAppTestCase):
 
     def build_article(self, item_number, description, price, tax_rate):
         return create_article(
-            party=self.party,
+            party_id=self.party.id,
             item_number=item_number,
             description=description,
             price=price,

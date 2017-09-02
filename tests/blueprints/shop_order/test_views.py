@@ -51,7 +51,7 @@ class ShopTestCase(AbstractAppTestCase):
         self.db.session.commit()
 
     def setup_article(self):
-        article = create_article(party=self.party, quantity=5)
+        article = create_article(party_id=self.party.id, quantity=5)
         self.db.session.add(article)
         self.db.session.commit()
 

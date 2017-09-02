@@ -111,7 +111,7 @@ class ShopAdminTestCase(AbstractAppTestCase):
         return user
 
     def create_article(self, quantity):
-        article = create_article(party=self.party, quantity=quantity)
+        article = create_article(party_id=self.party.id, quantity=quantity)
 
         self.db.session.add(article)
         self.db.session.commit()
