@@ -9,7 +9,6 @@ from decimal import Decimal
 
 from freezegun import freeze_time
 
-from testfixtures.brand import create_brand
 from testfixtures.party import create_party
 from testfixtures.shop_article import create_article
 from testfixtures.shop_order import create_order, create_order_item
@@ -29,17 +28,13 @@ class ExportTestCase(AbstractAppTestCase):
         self.create_order()
 
     def create_brand_and_party(self):
-        self.brand = create_brand(
-            id='lanresort',
-            title='LANresort')
-        self.db.session.add(self.brand)
+        self.brand = self.create_brand('lanresort', 'LANresort')
 
         self.party = create_party(
             id='lanresort-2015',
             brand_id=self.brand.id,
             title='LANresort 2015')
         self.db.session.add(self.party)
-
         self.db.session.commit()
 
     @freeze_time('2015-04-15 09:54:18')

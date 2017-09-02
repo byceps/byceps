@@ -72,6 +72,14 @@ class AbstractAppTestCase(TestCase):
         self.db.session.add(session_token)
         self.db.session.commit()
 
+    def create_brand(self, brand_id, title):
+        brand = create_brand(id=brand_id, title=title)
+
+        db.session.add(brand)
+        db.session.commit()
+
+        return brand
+
     def tearDown(self):
         db.session.remove()
         db.drop_all()
