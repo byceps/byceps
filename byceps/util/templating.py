@@ -86,9 +86,7 @@ def create_sandboxed_env():
 
     return ImmutableSandboxedEnvironment(
         loader=dummy_loader,
-        autoescape=True,
-        lstrip_blocks=True,
-        trim_blocks=True)
+        autoescape=True)
 
 
 def get_variable_value(template, name):

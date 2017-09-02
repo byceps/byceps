@@ -8,9 +8,10 @@ byceps.services.shop.order.export.service
 
 from datetime import datetime
 
-from flask import current_app, render_template
+from flask import current_app
 
 from .....util.money import to_two_places
+from .....util.templating import load_template
 
 from .. import service as order_service
 
@@ -36,7 +37,7 @@ def export_order_as_xml(order_id):
         'format_export_datetime': _format_export_datetime,
     }
 
-    xml = render_template('shop_order_admin/export.xml', **context)
+    xml = _render_template(context)
 
     return {
         'content': xml,
@@ -65,3 +66,13 @@ def _format_export_datetime(dt):
         utc_offset = utc_offset[:3] + ':' + utc_offset[3:]
 
     return date_time + utc_offset
+
+
+def _render_template(context):
+    """Load and render export template."""
+    path = 'services/shop/order/export/templates/export.xml'
+    with current_app.open_resource(path, 'r') as f:
+        source = f.read()
+
+    template = load_template(source)
+    return template.render(**context)
