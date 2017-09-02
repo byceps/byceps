@@ -70,7 +70,7 @@ def category_create(party_id):
 
     title = form.title.data.strip()
 
-    category = tourney_service.create_category(party, title)
+    category = tourney_service.create_category(party.id, title)
 
     flash_success('Die Kategorie "{}" wurde angelegt.', category.title)
     return redirect_to('.category_index_for_party', party_id=category.party.id)
