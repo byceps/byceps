@@ -13,6 +13,11 @@ CONTENT_TYPE_JSON = 'application/json'
 
 class UserJsonTestCase(AbstractAppTestCase):
 
+    def setUp(self):
+        super().setUp()
+
+        self.create_brand_and_party()
+
     def test_with_existent_user(self):
         screen_name = 'Gemüsefrau'
 

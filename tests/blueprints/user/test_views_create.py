@@ -22,6 +22,8 @@ class UserCreateTestCase(AbstractAppTestCase):
 
         self.admin = self.create_user('Admin')
 
+        self.create_brand_and_party()
+
         self.setup_terms()
         self.setup_roles()
 

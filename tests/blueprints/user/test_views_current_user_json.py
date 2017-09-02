@@ -19,6 +19,8 @@ class CurrentUserJsonTestCase(AbstractAppTestCase):
         self.user = self.create_user('McFly')
         self.create_session_token(self.user.id)
 
+        self.create_brand_and_party()
+
     def test_when_logged_in(self):
         response = self.send_request(user=self.user)
 

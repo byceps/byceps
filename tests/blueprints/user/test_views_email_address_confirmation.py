@@ -22,6 +22,8 @@ class EmailAddressConfirmationTestCase(AbstractAppTestCase):
 
         self.user = self.create_user(enabled=False)
 
+        self.create_brand_and_party()
+
     def test_confirm_email_address_with_valid_token(self):
         verification_token = create_confirmation_token(self.user.id)
         self.db.session.add(verification_token)

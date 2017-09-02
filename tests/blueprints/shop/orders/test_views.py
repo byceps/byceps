@@ -16,6 +16,8 @@ class ShopOrdersTestCase(AbstractAppTestCase):
         self.user1 = self.create_user_with_detail('User1')
         self.user2 = self.create_user_with_detail('User2')
 
+        self.create_brand_and_party()
+
     def test_view_matching_user_and_party(self):
         order = self.create_order(self.party.id, self.user1, 'LF-02-B00014')
 

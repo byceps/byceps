@@ -19,6 +19,8 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
 
         self.admin = self.create_admin()
 
+        self.brand = self.create_brand('example', 'Example')
+
         self.setup_subscribers()
 
     def create_admin(self):

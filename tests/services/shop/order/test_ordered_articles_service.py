@@ -21,6 +21,8 @@ class OrderedArticlesServiceTestCase(AbstractAppTestCase):
 
         self.user = self.create_user_with_detail()
 
+        self.create_brand_and_party()
+
         self.article = self.create_article()
 
     def test_count_ordered_articles(self):

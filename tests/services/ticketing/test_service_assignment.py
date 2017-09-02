@@ -16,6 +16,8 @@ class TicketAssignmentServiceTestCase(AbstractAppTestCase):
 
         self.owner = self.create_user('Ticket_Owner')
 
+        self.create_brand_and_party()
+
         self.category = self.create_category('Premium')
 
         self.ticket = ticket_service.create_ticket(self.category.id,

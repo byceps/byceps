@@ -12,6 +12,11 @@ from tests.base import AbstractAppTestCase
 
 class MatchTestCase(AbstractAppTestCase):
 
+    def setUp(self):
+        super().setUp()
+
+        self.create_brand_and_party()
+
     def test_create_comment_on_existent_match(self):
         player = self.create_player()
 

@@ -10,6 +10,11 @@ from tests.base import AbstractAppTestCase
 
 class OrgaServiceTestCase(AbstractAppTestCase):
 
+    def setUp(self):
+        super().setUp()
+
+        self.create_brand_and_party()
+
     def test_is_user_orga(self):
         user = self.create_user()
 

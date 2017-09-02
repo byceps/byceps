@@ -23,6 +23,8 @@ class ExportTestCase(AbstractAppTestCase):
 
         self.admin = self.create_admin()
 
+        self.create_brand_and_party()
+
         self.create_articles()
         self.create_order()
 

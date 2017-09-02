@@ -12,6 +12,11 @@ from tests.base import AbstractAppTestCase
 
 class ShopOrdersServiceTestCase(AbstractAppTestCase):
 
+    def setUp(self):
+        super().setUp()
+
+        self.create_brand_and_party()
+
     def test_get_orders_placed_by_user_for_party(self):
         party1 = self.create_party(self.brand.id, 'lafiesta-2012', 'La Fiesta 2012')
         party2 = self.create_party(self.brand.id, 'lafiesta-2013', 'La Fiesta 2013')

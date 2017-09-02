@@ -14,6 +14,8 @@ class TicketBundleRevokeTestCase(AbstractAppTestCase):
     def setUp(self):
         super().setUp()
 
+        self.create_brand_and_party()
+
         self.quantity = 4
 
         bundle = self.create_bundle(self.quantity)

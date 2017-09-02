@@ -15,6 +15,8 @@ from tests.base import AbstractAppTestCase
 class SequenceNumberGenerationTestCase(AbstractAppTestCase):
 
     def test_generate_article_number_default(self):
+        self.create_brand_and_party()
+
         self.setup_article_number_sequence(self.party.id, 'AEC-01-A')
 
         actual = generate_article_number(self.party.id)
@@ -33,6 +35,8 @@ class SequenceNumberGenerationTestCase(AbstractAppTestCase):
         self.assertEqual(actual, 'XYZ-09-A00042')
 
     def test_generate_order_number_default(self):
+        self.create_brand_and_party()
+
         self.setup_order_number_sequence(self.party.id, 'AEC-01-B')
 
         actual = generate_order_number(self.party.id)

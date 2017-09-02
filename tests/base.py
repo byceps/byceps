@@ -49,8 +49,6 @@ class AbstractAppTestCase(TestCase):
         db.drop_all()
         db.create_all()
 
-        self.create_brand_and_party()
-
     def create_brand_and_party(self):
         self.brand = create_brand()
         db.session.add(self.brand)

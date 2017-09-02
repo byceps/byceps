@@ -22,6 +22,8 @@ class ShopAdminTestCase(AbstractAppTestCase):
 
         self.orderer = self.create_user_with_detail('Besteller')
 
+        self.create_brand_and_party()
+
     def create_admin(self):
         admin = self.create_user('Admin')
 

@@ -19,6 +19,8 @@ class ItemTestCase(AbstractAppTestCase):
 
         self.editor = self.create_user()
 
+        self.create_brand_and_party()
+
     @params(
         ('without-image', None          , None                                        ),
         ('with-image'   , 'breaking.png', 'http://example.com/brand/news/breaking.png'),

@@ -8,6 +8,11 @@ from tests.base import AbstractAppTestCase
 
 class PasswordUpdateFormTestCase(AbstractAppTestCase):
 
+    def setUp(self):
+        super().setUp()
+
+        self.create_brand_and_party()
+
     def test_when_logged_in_form_is_available(self):
         user = self.create_user()
         self.create_session_token(user.id)

@@ -20,6 +20,8 @@ class ShopTestCase(AbstractAppTestCase):
     def setUp(self):
         super().setUp()
 
+        self.create_brand_and_party()
+
         self.app.add_url_rule('/shop/order_placed', 'snippet.order_placed',
                               lambda: None)
 

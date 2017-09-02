@@ -19,6 +19,8 @@ class GetCurrentVersionOfSnippetTestCase(AbstractAppTestCase):
     def setUp(self):
         super().setUp()
 
+        self.brand = self.create_brand('lafiesta', 'La Fiesta')
+
         self.party2014 = self.create_party(self.brand.id, 'lafiesta-2014', 'La Fiesta 2014')
         self.party2015 = self.create_party(self.brand.id, 'lafiesta-2015', 'La Fiesta 2015')
 

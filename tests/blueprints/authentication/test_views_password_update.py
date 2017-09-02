@@ -12,6 +12,11 @@ from tests.base import AbstractAppTestCase
 
 class PasswordUpdateTestCase(AbstractAppTestCase):
 
+    def setUp(self):
+        super().setUp()
+
+        self.create_brand_and_party()
+
     def test_when_logged_in_endpoint_is_available(self):
         old_password = 'LekkerBratworsten'
         new_password = 'EvenMoreSecure!!1'

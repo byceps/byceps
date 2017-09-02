@@ -22,6 +22,8 @@ class BoardModerationTestCase(AbstractAppTestCase):
 
         self.user = self.create_user('User')
 
+        self.create_brand_and_party()
+
     def test_hide_topic(self):
         self.setup_admin_with_permission('board.hide')
 
