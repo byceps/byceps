@@ -8,7 +8,6 @@ import json
 from tests.base import AbstractAppTestCase
 
 from testfixtures.authentication import create_session_token
-from testfixtures.user import create_user
 
 
 CONTENT_TYPE_JSON = 'application/json'
@@ -20,6 +19,7 @@ class CurrentUserJsonTestCase(AbstractAppTestCase):
         super().setUp()
 
         self.user = self.create_user('McFly')
+        self.create_session_token(self.user.id)
 
     def test_when_logged_in(self):
         response = self.send_request(user=self.user)
@@ -44,18 +44,11 @@ class CurrentUserJsonTestCase(AbstractAppTestCase):
 
     # helpers
 
-    def create_user(self, screen_name):
-        user = create_user(screen_name)
-
-        self.db.session.add(user)
-        self.db.session.commit()
-
-        session_token = create_session_token(user.id)
+    def create_session_token(self, user_id):
+        session_token = create_session_token(user_id)
 
         self.db.session.add(session_token)
         self.db.session.commit()
-
-        return user
 
     def send_request(self, *, user=None):
         url = '/users/me.json'

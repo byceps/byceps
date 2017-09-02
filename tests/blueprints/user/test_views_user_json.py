@@ -7,8 +7,6 @@ import json
 
 from tests.base import AbstractAppTestCase
 
-from testfixtures.user import create_user
-
 
 CONTENT_TYPE_JSON = 'application/json'
 
@@ -18,7 +16,8 @@ class UserJsonTestCase(AbstractAppTestCase):
     def test_with_existent_user(self):
         screen_name = 'Gemüsefrau'
 
-        user_id = self.create_user(screen_name)
+        user = self.create_user(screen_name)
+        user_id = str(user.id)
 
         response = self.send_request(user_id)
 
@@ -33,9 +32,10 @@ class UserJsonTestCase(AbstractAppTestCase):
     def test_with_deleted_user(self):
         screen_name = 'DeletedUser'
 
-        user_id = self.create_user(screen_name, deleted=True)
+        user = self.create_user(screen_name)
+        user.deleted = True
 
-        response = self.send_request(user_id)
+        response = self.send_request(str(user.id))
 
         self.assertEqual(response.status_code, 410)
         self.assertEqual(response.content_type, CONTENT_TYPE_JSON)
@@ -57,15 +57,6 @@ class UserJsonTestCase(AbstractAppTestCase):
         self.assertDictEqual(response_data, {})
 
     # helpers
-
-    def create_user(self, screen_name, *, deleted=False):
-        user = create_user(screen_name)
-        user.deleted = deleted
-
-        self.db.session.add(user)
-        self.db.session.commit()
-
-        return str(user.id)
 
     def send_request(self, user_id):
         url = '/users/{}.json'.format(user_id)

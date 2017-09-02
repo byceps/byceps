@@ -6,13 +6,13 @@
 from tests.base import AbstractAppTestCase
 
 from testfixtures.authentication import create_session_token
-from testfixtures.user import create_user
 
 
 class PasswordUpdateFormTestCase(AbstractAppTestCase):
 
     def test_when_logged_in_form_is_available(self):
         user = self.create_user()
+        self.create_session_token(user.id)
 
         response = self.send_request(user=user)
 
@@ -25,18 +25,11 @@ class PasswordUpdateFormTestCase(AbstractAppTestCase):
 
     # helpers
 
-    def create_user(self):
-        user = create_user()
-
-        self.db.session.add(user)
-        self.db.session.commit()
-
-        session_token = create_session_token(user.id)
+    def create_session_token(self, user_id):
+        session_token = create_session_token(user_id)
 
         self.db.session.add(session_token)
         self.db.session.commit()
-
-        return user
 
     def send_request(self, *, user=None):
         url = '/authentication/password/update'

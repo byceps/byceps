@@ -6,8 +6,6 @@
 from byceps.services.user_badge.models.awarding import QuantifiedBadgeAwardingTuple
 from byceps.services.user_badge import service as user_badge_service
 
-from testfixtures.user import create_user
-
 from tests.base import AbstractAppTestCase
 
 
@@ -46,14 +44,3 @@ class UserBadgeAwardingServiceTestCase(AbstractAppTestCase):
                 QuantifiedBadgeAwardingTuple(badge.id, user1.id, 2),
                 QuantifiedBadgeAwardingTuple(badge.id, user2.id, 1),
             })
-
-    # -------------------------------------------------------------------- #
-    # helpers
-
-    def create_user(self, screen_name):
-        user = create_user(screen_name)
-
-        self.db.session.add(user)
-        self.db.session.commit()
-
-        return user

@@ -10,7 +10,6 @@ from byceps.services.snippet.service import \
 
 from testfixtures.snippet import create_current_version_association, \
     create_fragment, create_snippet_version
-from testfixtures.user import create_user
 
 from tests.base import AbstractAppTestCase
 
@@ -23,7 +22,7 @@ class GetCurrentVersionOfSnippetTestCase(AbstractAppTestCase):
         self.party2014 = self.create_party(self.brand.id, 'lafiesta-2014', 'La Fiesta 2014')
         self.party2015 = self.create_party(self.brand.id, 'lafiesta-2015', 'La Fiesta 2015')
 
-        self.creator = self.create_creator()
+        self.creator = self.create_user()
 
     def test_current_party_is_considered(self):
         fragment_info2014_version = self.create_fragment_with_version(self.party2014, 'info', '2014-10-23 14:55:00')
@@ -38,12 +37,6 @@ class GetCurrentVersionOfSnippetTestCase(AbstractAppTestCase):
 
     # -------------------------------------------------------------------- #
     # helpers
-
-    def create_creator(self):
-        creator = create_user()
-        self.db.session.add(creator)
-        self.db.session.commit()
-        return creator
 
     def create_fragment_with_version(self, party, name, created_at_text):
         snippet = create_fragment(party.id, name)

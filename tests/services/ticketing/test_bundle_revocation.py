@@ -6,8 +6,6 @@
 from byceps.services.seating import category_service
 from byceps.services.ticketing import ticket_bundle_service as bundle_service
 
-from testfixtures.user import create_user
-
 from tests.base import AbstractAppTestCase
 
 
@@ -35,14 +33,6 @@ class TicketBundleRevokeTestCase(AbstractAppTestCase):
 
     # -------------------------------------------------------------------- #
     # helpers
-
-    def create_user(self, screen_name):
-        user = create_user(screen_name)
-
-        self.db.session.add(user)
-        self.db.session.commit()
-
-        return user
 
     def create_bundle(self, quantity):
         category = self.create_category('Premium')

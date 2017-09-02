@@ -6,8 +6,6 @@
 from byceps.services.seating import area_service, category_service, seat_service
 from byceps.services.ticketing import ticket_service
 
-from testfixtures.user import create_user
-
 from tests.base import AbstractAppTestCase
 
 
@@ -70,14 +68,6 @@ class TicketAssignmentServiceTestCase(AbstractAppTestCase):
 
     # -------------------------------------------------------------------- #
     # helpers
-
-    def create_user(self, screen_name):
-        user = create_user(screen_name)
-
-        self.db.session.add(user)
-        self.db.session.commit()
-
-        return user
 
     def create_area(self, slug, title):
         return area_service.create_area(self.party.id, slug, title)

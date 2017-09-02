@@ -12,7 +12,6 @@ from byceps.services.shop.sequence.models import Purpose
 from testfixtures.authentication import create_session_token
 from testfixtures.shop_article import create_article
 from testfixtures.shop_sequence import create_party_sequence
-from testfixtures.user import create_user
 
 from tests.base import AbstractAppTestCase
 
@@ -40,13 +39,9 @@ class ShopTestCase(AbstractAppTestCase):
         self.db.session.commit()
 
     def setup_orderer(self):
-        self.orderer = create_user()
-
-        self.db.session.add(self.orderer)
-        self.db.session.commit()
+        self.orderer = self.create_user()
 
         session_token = create_session_token(self.orderer.id)
-
         self.db.session.add(session_token)
         self.db.session.commit()
 

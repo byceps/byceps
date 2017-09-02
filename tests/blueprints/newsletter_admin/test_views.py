@@ -11,8 +11,6 @@ from byceps.services.newsletter.types import SubscriptionState
 from tests.base import AbstractAppTestCase, CONFIG_FILENAME_TEST_ADMIN
 from tests.helpers import assign_permissions_to_user
 
-from testfixtures.user import create_user
-
 
 class NewsletterAdminTestCase(AbstractAppTestCase):
 
@@ -27,7 +25,7 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
         assign_permissions_to_user(self.admin.id, 'admin', permission_ids)
 
     def setup_subscribers(self):
-        for user_number, enabled, states in [
+        for number, enabled, states in [
             (1, True,  [SubscriptionState.requested                             ]),
             (2, True,  [SubscriptionState.declined                              ]),
             (3, False, [SubscriptionState.requested                             ]),
@@ -35,7 +33,11 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
             (5, True,  [SubscriptionState.requested, SubscriptionState.declined ]),
             (6, True,  [SubscriptionState.requested                             ]),
         ]:
-            user = self.create_user(user_number, enabled=enabled)
+            user = self.create_user(
+                screen_name='User-{:d}'.format(number),
+                email_address='user{:03d}@example.com'.format(number),
+                enabled=enabled)
+
             self.add_subscriptions(user, states)
 
     def test_export_subscribers(self):
@@ -86,18 +88,6 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
         self.assertEqual(response.content_type, 'text/plain; charset=utf-8')
         self.assertEqual(response.mimetype, 'text/plain')
         self.assertEqual(response.get_data(), expected_data)
-
-    def create_user(self, number, *, enabled=True):
-        screen_name = 'User-{:d}'.format(number)
-        email_address = 'user{:03d}@example.com'.format(number)
-
-        user = create_user(screen_name, email_address=email_address,
-                           enabled=enabled)
-
-        self.db.session.add(user)
-        self.db.session.commit()
-
-        return user
 
     def add_subscriptions(self, user, states):
         for state in states:

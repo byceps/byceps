@@ -5,8 +5,6 @@
 
 from byceps.services.authorization import service as authorization_service
 
-from testfixtures.user import create_user
-
 from tests.base import AbstractAppTestCase
 
 
@@ -37,14 +35,6 @@ class AuthorizationServiceTestCase(AbstractAppTestCase):
 
     # -------------------------------------------------------------------- #
     # helpers
-
-    def create_user(self):
-        user = create_user('Alice')
-
-        self.db.session.add(user)
-        self.db.session.commit()
-
-        return user
 
     def create_role_with_permissions(self, role_id, permission_ids):
         role = authorization_service.create_role(role_id, role_id)

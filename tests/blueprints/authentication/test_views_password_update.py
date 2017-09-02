@@ -9,8 +9,6 @@ from byceps.services.authentication.session.models import SessionToken
 
 from tests.base import AbstractAppTestCase
 
-from testfixtures.user import create_user
-
 
 class PasswordUpdateTestCase(AbstractAppTestCase):
 
@@ -18,7 +16,8 @@ class PasswordUpdateTestCase(AbstractAppTestCase):
         old_password = 'LekkerBratworsten'
         new_password = 'EvenMoreSecure!!1'
 
-        user = self.create_user(old_password)
+        user = self.create_user()
+        password_service.create_password_hash(user.id, old_password)
 
         credential_before = self.find_credential(user.id)
         self.assertIsNotNone(credential_before)
@@ -61,16 +60,6 @@ class PasswordUpdateTestCase(AbstractAppTestCase):
         self.assertEqual(response.status_code, 404)
 
     # helpers
-
-    def create_user(self, password):
-        user = create_user()
-
-        self.db.session.add(user)
-        self.db.session.commit()
-
-        password_service.create_password_hash(user.id, password)
-
-        return user
 
     def find_credential(self, user_id):
         return Credential.query.get(user_id)

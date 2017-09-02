@@ -7,7 +7,6 @@ from datetime import datetime
 
 from tests.base import AbstractAppTestCase
 
-from testfixtures.user import create_user
 from testfixtures.verification_token import \
     create_verification_token_for_email_address_confirmation \
     as create_confirmation_token
@@ -21,9 +20,7 @@ class EmailAddressConfirmationTestCase(AbstractAppTestCase):
     def setUp(self):
         super().setUp()
 
-        self.user = create_user(enabled=False)
-        self.db.session.add(self.user)
-        self.db.session.commit()
+        self.user = self.create_user(enabled=False)
 
     def test_confirm_email_address_with_valid_token(self):
         verification_token = create_confirmation_token(self.user.id)

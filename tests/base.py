@@ -62,15 +62,19 @@ class AbstractAppTestCase(TestCase):
         db.session.commit()
 
     def create_admin(self):
-        self.admin = create_user('Admin')
-
-        db.session.add(self.admin)
-        db.session.commit()
+        self.admin = self.create_user('Admin')
 
         session_token = create_session_token(self.admin.id)
-
         self.db.session.add(session_token)
         self.db.session.commit()
+
+    def create_user(self, *args, **kwargs):
+        user = create_user(*args, **kwargs)
+
+        self.db.session.add(user)
+        self.db.session.commit()
+
+        return user
 
     def create_user_with_detail(self, *args, **kwargs):
         user = create_user_with_detail(*args, **kwargs)

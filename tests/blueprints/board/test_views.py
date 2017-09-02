@@ -7,7 +7,6 @@ from byceps.services.board.models.topic import Topic
 from byceps.services.board import topic_service as board_topic_service
 
 from testfixtures.board import create_category, create_topic
-from testfixtures.user import create_user
 
 from tests.base import AbstractAppTestCase
 from tests.helpers import assign_permissions_to_user
@@ -164,11 +163,6 @@ class BoardModerationTestCase(AbstractAppTestCase):
 
     # -------------------------------------------------------------------- #
     # helpers
-
-    def create_user(self):
-        user = create_user()
-        self.db.session.add(user)
-        return user
 
     def setup_admin_with_permission(self, permission_id):
         permission_ids = {'admin.access', permission_id}
