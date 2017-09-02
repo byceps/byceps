@@ -79,13 +79,14 @@ def load_template(source, *, template_globals=None):
     return env.from_string(source)
 
 
-def create_sandboxed_environment():
+def create_sandboxed_environment(*, loader=None):
     """Create a sandboxed environment."""
-    # A loader that never finds a template.
-    dummy_loader = FunctionLoader(lambda name: None)
+    if loader is None:
+        # A loader that never finds a template.
+        loader = FunctionLoader(lambda name: None)
 
     return ImmutableSandboxedEnvironment(
-        loader=dummy_loader,
+        loader=loader,
         autoescape=True)
 
 
