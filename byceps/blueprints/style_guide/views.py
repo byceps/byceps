@@ -7,7 +7,7 @@ byceps.blueprints.style_guide.views
 """
 
 from ...util.framework.blueprint import create_blueprint
-from ...util.templating import templated
+from ...util.framework.templating import templated
 
 
 blueprint = create_blueprint('style_guide', __name__)

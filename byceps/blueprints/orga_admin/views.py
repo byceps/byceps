@@ -17,7 +17,7 @@ from ...services.user import service as user_service
 from ...util.export import serialize_to_csv
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_success
-from ...util.templating import templated
+from ...util.framework.templating import templated
 from ...util.views import redirect_to, respond_no_content, textified
 
 from ..authorization.decorators import permission_required

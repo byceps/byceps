@@ -13,7 +13,7 @@ from flask import g
 from ...services.orga_team import service as orga_team_service
 from ...services.user import service as user_service
 from ...util.framework.blueprint import create_blueprint
-from ...util.templating import templated
+from ...util.framework.templating import templated
 
 
 Orga = namedtuple('Orga', ['user', 'full_name', 'team_name', 'duties'])

@@ -10,7 +10,7 @@ from flask import abort, current_app, g
 
 from ...services.news import service as news_service
 from ...util.framework.blueprint import create_blueprint
-from ...util.templating import templated
+from ...util.framework.templating import templated
 
 
 blueprint = create_blueprint('news', __name__)

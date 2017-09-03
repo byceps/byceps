@@ -12,7 +12,7 @@ from ...config import get_current_party_id
 from ...services.party import service as party_service
 from ...services.ticketing import attendance_service
 from ...util.framework.blueprint import create_blueprint
-from ...util.templating import templated
+from ...util.framework.templating import templated
 
 
 blueprint = create_blueprint('party', __name__)

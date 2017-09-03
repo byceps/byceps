@@ -17,7 +17,7 @@ from ...services.text_markup.service import get_smileys, render_html
 from ...services.user_badge import service as badge_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_error, flash_success
-from ...util.templating import templated
+from ...util.framework.templating import templated
 from ...util.views import redirect_to, respond_no_content_with_location
 
 from ..authorization.decorators import permission_required

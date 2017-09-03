@@ -11,7 +11,7 @@ from flask import abort, g
 from ...config import get_ticket_management_enabled
 from ...services.seating import area_service as seating_area_service
 from ...util.framework.blueprint import create_blueprint
-from ...util.templating import templated
+from ...util.framework.templating import templated
 
 
 blueprint = create_blueprint('seating', __name__)

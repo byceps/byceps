@@ -14,7 +14,7 @@ from ...services.seating import \
     category_service as seating_category_service, \
     seat_group_service, seat_service
 from ...util.framework.blueprint import create_blueprint
-from ...util.templating import templated
+from ...util.framework.templating import templated
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry

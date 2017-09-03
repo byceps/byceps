@@ -14,7 +14,7 @@ from ...services.brand import service as brand_service
 from ...services.news import service as news_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_success
-from ...util.templating import templated
+from ...util.framework.templating import templated
 from ...util.views import redirect_to
 
 from ..authorization.decorators import permission_required

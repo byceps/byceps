@@ -11,7 +11,7 @@ from flask import abort, g
 from ...services.user import service as user_service
 from ...services.user_badge import service as badge_service
 from ...util.framework.blueprint import create_blueprint
-from ...util.templating import templated
+from ...util.framework.templating import templated
 
 
 blueprint = create_blueprint('user_badge', __name__)

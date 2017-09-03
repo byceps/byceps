@@ -13,7 +13,7 @@ from ...services.user_avatar import service as avatar_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_success
 from ...util.image.models import ImageType
-from ...util.templating import templated
+from ...util.framework.templating import templated
 from ...util.views import redirect_to, respond_no_content
 
 from .forms import UpdateForm

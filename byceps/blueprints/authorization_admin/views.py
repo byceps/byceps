@@ -11,7 +11,7 @@ from flask import abort
 from ...services.authorization import service as authorization_service
 from ...services.user import service as user_service
 from ...util.framework.blueprint import create_blueprint
-from ...util.templating import templated
+from ...util.framework.templating import templated
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry

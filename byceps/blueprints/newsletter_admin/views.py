@@ -14,7 +14,7 @@ from ...services.brand import service as brand_service
 from ...services.newsletter import service as newsletter_service
 from ...services.newsletter.types import SubscriptionState
 from ...util.framework.blueprint import create_blueprint
-from ...util.templating import templated
+from ...util.framework.templating import templated
 from ...util.views import jsonified, textified
 
 from ..authorization.decorators import permission_required

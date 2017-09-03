@@ -15,7 +15,7 @@ from ...services.shop.order.models.order import PaymentMethod
 from ...services.shop.order import service as order_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_error, flash_success
-from ...util.templating import templated
+from ...util.framework.templating import templated
 from ...util.views import redirect_to
 
 from ..authentication.decorators import login_required

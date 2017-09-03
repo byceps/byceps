@@ -11,7 +11,7 @@ from flask import abort, request
 from ...services.party import service as party_service
 from ...services.ticketing import ticket_bundle_service, ticket_service
 from ...util.framework.blueprint import create_blueprint
-from ...util.templating import templated
+from ...util.framework.templating import templated
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry

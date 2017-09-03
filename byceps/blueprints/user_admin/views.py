@@ -19,7 +19,7 @@ from ...services.user_activity import service as activity_service
 from ...services.user_badge import service as badge_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_success
-from ...util.templating import templated
+from ...util.framework.templating import templated
 from ...util.views import respond_no_content
 
 from ..authorization.decorators import permission_required

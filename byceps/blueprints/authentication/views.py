@@ -22,7 +22,7 @@ from ...services.user_avatar import service as user_avatar_service
 from ...services.verification_token import service as verification_token_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_error, flash_notice, flash_success
-from ...util.templating import templated
+from ...util.framework.templating import templated
 from ...util.views import redirect_to, respond_no_content
 
 from ..authorization.registry import permission_registry

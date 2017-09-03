@@ -14,7 +14,7 @@ from ...util.datetime.format import format_datetime_short
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_success
 from ...util.iterables import pairwise
-from ...util.templating import templated
+from ...util.framework.templating import templated
 from ...util.views import redirect_to, respond_no_content
 
 from ..authorization.decorators import permission_required

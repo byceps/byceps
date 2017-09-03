@@ -12,7 +12,7 @@ from ...services.board import category_service as board_category_service
 from ...services.brand import service as brand_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_error, flash_success
-from ...util.templating import templated
+from ...util.framework.templating import templated
 from ...util.views import redirect_to, respond_no_content
 
 from ..authorization.decorators import permission_required

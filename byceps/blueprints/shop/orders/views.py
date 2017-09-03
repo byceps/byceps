@@ -11,7 +11,7 @@ from flask import abort, g
 from ....services.shop.order import service as order_service
 from ....services.user import service as user_service
 from ....util.framework.blueprint import create_blueprint
-from ....util.templating import templated
+from ....util.framework.templating import templated
 
 from ...authentication.decorators import login_required
 

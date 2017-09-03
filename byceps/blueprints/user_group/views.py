@@ -11,7 +11,7 @@ from flask import g, request
 from ...services.user_group import service as user_group_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_error, flash_success
-from ...util.templating import templated
+from ...util.framework.templating import templated
 from ...util.views import redirect_to
 
 from .forms import CreateForm

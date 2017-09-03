@@ -11,7 +11,7 @@ from flask import abort, g
 from ...services.ticketing import ticket_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.iterables import find
-from ...util.templating import templated
+from ...util.framework.templating import templated
 
 
 blueprint = create_blueprint('ticketing', __name__)
