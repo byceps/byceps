@@ -35,12 +35,10 @@ def templated(arg):
     def decorator(f, template_name=None):
         @wraps(f)
         def decorated(*args, **kwargs):
-            name = template_name
-            if name is None:
-                name = _derive_template_name(f)
-            name += TEMPLATE_FILENAME_EXTENSION
+            name = _get_template_name(f, template_name)
 
             context = f(*args, **kwargs)
+
             if context is None:
                 context = {}
             elif not isinstance(context, dict):
@@ -56,6 +54,15 @@ def templated(arg):
         return decorator(f, arg)
 
     return wrapper
+
+
+def _get_template_name(view_function, template_name):
+    if template_name is None:
+        name = _derive_template_name(view_function)
+    else:
+        name = template_name
+
+    return name + TEMPLATE_FILENAME_EXTENSION
 
 
 def _derive_template_name(view_function):
