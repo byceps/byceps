@@ -44,13 +44,11 @@
       <button class="dropdown-toggle button">Aktionen {{ render_icon('caret-down') }}</button>
       <ol>
         <li><a href="{{ url_for('.export', order_id=order.id) }}" download="{{ order.order_number }}.xml">{{ render_icon('download') }} für Lexware exportieren (XML)</a></li>
-        <li>
         {%- if order.is_invoiced %}
-          <a data-action="order-unflag-invoiced" href="{{ url_for('.unset_invoiced_flag', order_id=order.id) }}">{{ render_icon('invoice') }} Rechnung wurde <strong>nicht</strong> versendet</a>
+        <li><a data-action="order-unflag-invoiced" href="{{ url_for('.unset_invoiced_flag', order_id=order.id) }}">{{ render_icon('invoice') }} Rechnung wurde <strong>nicht</strong> versendet</a></li>
         {%- else %}
-          <a data-action="order-flag-invoiced" href="{{ url_for('.set_invoiced_flag', order_id=order.id) }}">{{ render_icon('invoice') }} Rechnung wurde versendet</a>
+        <li><a data-action="order-flag-invoiced" href="{{ url_for('.set_invoiced_flag', order_id=order.id) }}">{{ render_icon('invoice') }} Rechnung wurde versendet</a></li>
         {%- endif %}
-        </li>
         <li class="divider"></li>
         {%- if not order.is_canceled %}
           {%- if order.is_open %}
