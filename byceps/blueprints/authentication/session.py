@@ -6,18 +6,22 @@ byceps.blueprints.authentication.session
 :License: Modified BSD, see LICENSE for details.
 """
 
+from typing import Optional, Union
+
 from flask import session
 
 from ...services.authentication.exceptions import AuthenticationFailed
 from ...services.authentication.session import service as session_service
+from ...services.user.models.user import AnonymousUser, User
 from ...services.user import service as user_service
+from ...typing import UserID
 
 
 KEY_USER_ID = 'user_id'
 KEY_USER_AUTH_TOKEN = 'user_auth_token'
 
 
-def start(user_id, auth_token, *, permanent=False):
+def start(user_id: UserID, auth_token: str, *, permanent: bool=False) -> None:
     """Initialize the user's session by putting the relevant data
     into the session cookie.
     """
@@ -26,29 +30,29 @@ def start(user_id, auth_token, *, permanent=False):
     session.permanent = permanent
 
 
-def end():
+def end() -> None:
     """End the user's session by deleting the session cookie."""
     session.pop(KEY_USER_ID, None)
     session.pop(KEY_USER_AUTH_TOKEN, None)
     session.permanent = False
 
 
-def get_user():
+def get_user() -> Union[AnonymousUser, User]:
     """Return the current user, falling back to the anonymous user."""
     return _load_user(_get_user_id(), _get_auth_token())
 
 
-def _get_user_id():
+def _get_user_id() -> Optional[str]:
     """Return the current user's ID, or `None` if not available."""
     return session.get(KEY_USER_ID)
 
 
-def _get_auth_token():
+def _get_auth_token() -> Optional[str]:
     """Return the current user's auth token, or `None` if not available."""
     return session.get(KEY_USER_AUTH_TOKEN)
 
 
-def _load_user(user_id, auth_token):
+def _load_user(user_id: str, auth_token: str) -> Union[AnonymousUser, User]:
     """Load the user with that ID.
 
     Fall back to the anonymous user if the ID is unknown, the account is
