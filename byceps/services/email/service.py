@@ -10,6 +10,7 @@ from typing import List, Optional
 
 from ... import email
 from ...typing import BrandID
+from ...util.jobqueue import enqueue
 
 from .models import EmailConfig
 
@@ -22,6 +23,12 @@ def find_sender_address_for_brand(brand_id: BrandID) -> Optional[str]:
         return None
 
     return config.sender_address
+
+
+def enqueue_email(recipients: List[str], subject: str, body: str, *,
+               sender: Optional[str]=None) -> None:
+    """Enqueue an e-mail to be sent asynchronously."""
+    enqueue(send_email, recipients, subject, body, sender=sender)
 
 
 def send_email(recipients: List[str], subject: str, body: str, *,
