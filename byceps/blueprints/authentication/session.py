@@ -67,10 +67,17 @@ def _load_user(user_id: str, auth_token: str) -> Union[AnonymousUser, User]:
         return user_service.get_anonymous_user()
 
     # Validate auth token.
-    try:
-        session_service.authenticate_session(user.id, auth_token)
-    except AuthenticationFailed:
+    if not _is_auth_token_valid(user.id, auth_token):
         # Bad auth token, not logging in.
         return user_service.get_anonymous_user()
 
     return user
+
+
+def _is_auth_token_valid(user_id: UserID, auth_token) -> bool:
+    try:
+        session_service.authenticate_session(user_id, auth_token)
+    except AuthenticationFailed:
+        return False
+    else:
+        return True
