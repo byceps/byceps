@@ -6,7 +6,7 @@ byceps.services.authorization.service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import Dict, FrozenSet, Optional, Sequence, Set
+from typing import Dict, FrozenSet, List, Optional, Sequence, Set
 
 from ...database import db
 from ...typing import UserID
@@ -190,6 +190,12 @@ def get_permissions_by_roles_for_user_with_titles(user_id: UserID) \
     else:
         permissions = []
 
+    return _index_permissions_by_role(permissions, roles)
+
+
+def _index_permissions_by_role(permissions: List[Permission],
+                               roles: List[Role]) \
+                               -> Dict[Role, Set[Permission]]:
     permissions_by_role = {r: set() for r in roles}  # type: Dict[Role, Set[Permission]]
 
     for permission in permissions:
