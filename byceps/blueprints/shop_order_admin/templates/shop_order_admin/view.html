@@ -59,15 +59,13 @@
         <li><a href="{{ url_for('.cancel_form', order_id=order.id) }}">{{ render_icon('disabled') }} Bestellung stornieren</a></li>
         <li class="divider"></li>
         {%- endif %}
-        <li>
         {%- if order.is_shipping_required %}
           {%- if order.is_shipped %}
-            <a data-action="order-unflag-shipped" href="{{ url_for('.unset_shipped_flag', order_id=order.id) }}">{{ render_icon('shipping') }} Bestellung wurde <strong>nicht</strong> versendet</a>
+            <li><a data-action="order-unflag-shipped" href="{{ url_for('.unset_shipped_flag', order_id=order.id) }}">{{ render_icon('shipping') }} Bestellung wurde <strong>nicht</strong> versendet</a></li>
           {%- else %}
-            <a data-action="order-flag-shipped" href="{{ url_for('.set_shipped_flag', order_id=order.id) }}">{{ render_icon('shipping') }} Bestellung wurde versendet</a>
+            <li><a data-action="order-flag-shipped" href="{{ url_for('.set_shipped_flag', order_id=order.id) }}">{{ render_icon('shipping') }} Bestellung wurde versendet</a></li>
           {%- endif %}
         {%- endif %}
-        </li>
       </ol>
     </div>
   </div>
