@@ -62,6 +62,16 @@ def update():
         return update_form(form)
 
     image = request.files.get('image')
+
+    _update(user, image)
+
+    flash_success('Dein Avatarbild wurde aktualisiert.', icon='upload')
+    signals.avatar_updated.send(None, user_id=user.id)
+
+    return redirect_to('user.view_current')
+
+
+def _update(user, image):
     if not image or not image.filename:
         abort(400, 'No file to upload has been specified.')
 
@@ -72,11 +82,6 @@ def update():
         abort(400, str(e))
     except FileExistsError:
         abort(409, 'File already exists, not overwriting.')
-
-    flash_success('Dein Avatarbild wurde aktualisiert.', icon='upload')
-    signals.avatar_updated.send(None, user_id=user.id)
-
-    return redirect_to('user.view_current')
 
 
 @blueprint.route('/me/avatar', methods=['DELETE'])
