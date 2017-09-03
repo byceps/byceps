@@ -86,7 +86,7 @@ def find_users(user_ids: Set[UserID], *, party_id: PartyID=None) -> Set[UserTupl
             .all()
         orga_team_members = {row[0] for row in orga_id_rows}
     else:
-        orga_team_members = frozenset()
+        orga_team_members = set()
 
     def to_tuples() -> Iterator[UserTuple]:
         for user_id, screen_name, is_deleted, avatar in rows:
