@@ -7,6 +7,7 @@ byceps.services.shop.order.export.service
 """
 
 from datetime import datetime
+from typing import Any, Dict
 
 from flask import current_app
 
@@ -14,6 +15,7 @@ from .....util.money import to_two_places
 from .....util.templating import load_template
 
 from .. import service as order_service
+from ..models.order import Order
 
 
 def export_order_as_xml(order_id):
@@ -23,25 +25,30 @@ def export_order_as_xml(order_id):
     if order is None:
         return None
 
+    context = _assemble_context(order)
+    xml = _render_template(context)
+
+    return {
+        'content': xml,
+        'content_type': 'application/xml; charset=iso-8859-1',
+    }
+
+
+def _assemble_context(order: Order) -> Dict[str, Any]:
+    """Assemble template context."""
     order_tuple = order.to_tuple()
+
     order_items = [item.to_tuple() for item in order.items]
 
     now = datetime.now()
 
-    context = {
+    return {
         'order': order_tuple,
         'email_address': order.placed_by.email_address,
         'order_items': order_items,
         'now': now,
         'format_export_amount': _format_export_amount,
         'format_export_datetime': _format_export_datetime,
-    }
-
-    xml = _render_template(context)
-
-    return {
-        'content': xml,
-        'content_type': 'application/xml; charset=iso-8859-1',
     }
 
 
