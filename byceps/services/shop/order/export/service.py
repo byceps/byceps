@@ -7,6 +7,7 @@ byceps.services.shop.order.export.service
 """
 
 from datetime import datetime
+from decimal import Decimal
 from typing import Any, Dict
 
 from flask import current_app
@@ -15,10 +16,10 @@ from .....util.money import to_two_places
 from .....util.templating import load_template
 
 from .. import service as order_service
-from ..models.order import Order
+from ..models.order import Order, OrderID
 
 
-def export_order_as_xml(order_id):
+def export_order_as_xml(order_id: OrderID) -> Dict[str, str]:
     """Export the order as an XML document."""
     order = order_service.find_order_with_details(order_id)
 
@@ -50,7 +51,7 @@ def _assemble_context(order: Order) -> Dict[str, Any]:
     }
 
 
-def _format_export_amount(amount):
+def _format_export_amount(amount: Decimal) -> str:
     """Format the monetary amount as required by the export format
     specification.
     """
@@ -58,7 +59,7 @@ def _format_export_amount(amount):
     return '{:.2f}'.format(quantized)
 
 
-def _format_export_datetime(dt):
+def _format_export_datetime(dt: datetime) -> str:
     """Format date and time as required by the export format specification."""
     timezone = current_app.config['SHOP_ORDER_EXPORT_TIMEZONE']
     localized_dt = timezone.localize(dt)
@@ -73,7 +74,7 @@ def _format_export_datetime(dt):
     return date_time + utc_offset
 
 
-def _render_template(context):
+def _render_template(context: Dict[str, Any]) -> str:
     """Load and render export template."""
     path = 'services/shop/order/export/templates/export.xml'
     with current_app.open_resource(path, 'r') as f:
