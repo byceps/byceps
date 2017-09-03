@@ -38,14 +38,12 @@ def _assemble_context(order: Order) -> Dict[str, Any]:
     """Assemble template context."""
     order_tuple = order.to_tuple()
 
-    order_items = [item.to_tuple() for item in order.items]
-
     now = datetime.now()
 
     return {
         'order': order_tuple,
         'email_address': order.placed_by.email_address,
-        'order_items': order_items,
+        'order_items': order_tuple.items,
         'now': now,
         'format_export_amount': _format_export_amount,
         'format_export_datetime': _format_export_datetime,
