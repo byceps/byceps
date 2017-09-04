@@ -144,11 +144,7 @@ def _do_users_matching_filter_exist(model_attribute: str, search_value: str) -> 
 
 def send_email_address_confirmation_email(user: User, verification_token: Token,
                                           brand_id: BrandID) -> None:
-    sender_address = email_service.find_sender_address_for_brand(brand_id)
-
-    if not sender_address:
-        raise email_service.EmailError(
-            'No sender address configured for brand "{}".'.format(brand_id))
+    sender_address = email_service.get_sender_address_for_brand(brand_id)
 
     confirmation_url = url_for('.confirm_email_address',
                                token=verification_token.token,

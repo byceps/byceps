@@ -29,6 +29,19 @@ def find_sender_address_for_brand(brand_id: BrandID) -> Optional[str]:
     return config.sender_address
 
 
+def get_sender_address_for_brand(brand_id: BrandID) -> str:
+    """Return the configured sender e-mail address for the brand, or
+    raise an error if none is configured for that brand ID.
+    """
+    sender_address = find_sender_address_for_brand(brand_id)
+
+    if not sender_address:
+        raise EmailError(
+            'No sender address configured for brand "{}".'.format(brand_id))
+
+    return sender_address
+
+
 def enqueue_email(sender: str, recipients: List[str], subject: str, body: str) \
                  -> None:
     """Enqueue an e-mail to be sent asynchronously."""

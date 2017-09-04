@@ -34,11 +34,7 @@ def prepare_password_reset(user: User, brand_id: BrandID) -> None:
 
 def _send_password_reset_email(user: User, verification_token: Token,
                                brand_id: BrandID) -> None:
-    sender_address = email_service.find_sender_address_for_brand(brand_id)
-
-    if not sender_address:
-        raise email_service.EmailError(
-            'No sender address configured for brand "{}".'.format(brand_id))
+    sender_address = email_service.get_sender_address_for_brand(brand_id)
 
     confirmation_url = url_for('authentication.password_reset_form',
                                token=verification_token.token,
