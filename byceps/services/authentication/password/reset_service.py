@@ -52,8 +52,7 @@ def _send_password_reset_email(user: User, verification_token: Token,
     ).format(user, confirmation_url)
     recipients = [user.email_address]
 
-    email_service.enqueue_email(recipients, subject, body,
-                                sender=sender_address)
+    email_service.enqueue_email(sender_address, recipients, subject, body)
 
 
 def reset_password(verification_token: Token, password: str) -> None:

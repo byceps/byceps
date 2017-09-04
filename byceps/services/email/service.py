@@ -29,13 +29,13 @@ def find_sender_address_for_brand(brand_id: BrandID) -> Optional[str]:
     return config.sender_address
 
 
-def enqueue_email(recipients: List[str], subject: str, body: str, *,
-               sender: Optional[str]=None) -> None:
+def enqueue_email(sender: str, recipients: List[str], subject: str, body: str) \
+                 -> None:
     """Enqueue an e-mail to be sent asynchronously."""
-    enqueue(send_email, recipients, subject, body, sender=sender)
+    enqueue(send_email, sender, recipients, subject, body)
 
 
-def send_email(recipients: List[str], subject: str, body: str, *,
-               sender: Optional[str]=None) -> None:
+def send_email(sender: str, recipients: List[str], subject: str, body: str) \
+              -> None:
     """Send an e-mail."""
     email.send(recipients, subject, body, sender=sender)
