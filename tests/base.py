@@ -50,6 +50,10 @@ class AbstractAppTestCase(TestCase):
         db.drop_all()
         db.create_all()
 
+    def tearDown(self):
+        db.session.remove()
+        db.drop_all()
+
     def create_brand_and_party(self):
         self.brand = create_brand()
         db.session.add(self.brand)
@@ -101,10 +105,6 @@ class AbstractAppTestCase(TestCase):
         email_config = EmailConfig(brand_id, sender_address)
         db.session.add(email_config)
         db.session.commit()
-
-    def tearDown(self):
-        db.session.remove()
-        db.drop_all()
 
     @contextmanager
     def client(self, *, user=None):
