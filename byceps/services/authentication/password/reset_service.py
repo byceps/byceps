@@ -29,7 +29,7 @@ def prepare_password_reset(user: User, brand_id: BrandID) -> None:
     db.session.add(verification_token)
     db.session.commit()
 
-    _send_password_reset_email(user, verification_token)
+    _send_password_reset_email(user, verification_token, brand_id)
 
 
 def _send_password_reset_email(user: User, verification_token: Token,
