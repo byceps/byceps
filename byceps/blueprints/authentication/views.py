@@ -252,7 +252,7 @@ def request_password_reset():
                     'noch nicht bestätigt.', screen_name)
         return redirect_to('user.request_email_address_confirmation_email')
 
-    password_reset_service.prepare_password_reset(user)
+    password_reset_service.prepare_password_reset(user, g.party.brand_id)
 
     flash_success(
         'Ein Link zum Setzen eines neuen Passworts für den Benutzernamen "{}" '
