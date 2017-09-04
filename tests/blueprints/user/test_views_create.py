@@ -3,12 +3,16 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
+from unittest.mock import patch
+
 from byceps.services.authentication.password.models import Credential
 from byceps.services.authentication.session.models import SessionToken
 from byceps.services.authorization.models import Role, UserRole
 from byceps.services.terms.models import Version as TermsVersion
 from byceps.services.terms import service as terms_service
 from byceps.services.user.models.user import User
+from byceps.services.verification_token import service as \
+    verification_token_service
 
 from tests.base import AbstractAppTestCase
 
@@ -23,7 +27,7 @@ class UserCreateTestCase(AbstractAppTestCase):
         self.admin = self.create_user('Admin')
 
         self.create_brand_and_party()
-        self.set_brand_email_sender_address(self.brand.id, 'acme@example.com')
+        self.set_brand_email_sender_address(self.brand.id, 'noreply@example.com')
 
         self.setup_terms()
         self.setup_roles()
@@ -42,7 +46,8 @@ class UserCreateTestCase(AbstractAppTestCase):
         self.db.session.add(self.board_user_role)
         self.db.session.commit()
 
-    def test_create(self):
+    @patch('byceps.email.send')
+    def test_create(self, send_email_mock):
         user_count_before = self.get_user_count()
 
         form_data = {
@@ -105,6 +110,27 @@ class UserCreateTestCase(AbstractAppTestCase):
         terms_consents = terms_service.get_consents_by_user(user.id)
         self.assertEqual(len(terms_consents), 1)
         self.assertEqual(terms_consents[0].version_id, self.terms_version_id)
+
+        # confirmation e-mail
+
+        verification_token = verification_token_service \
+            .find_for_email_address_confirmation_by_user(user.id)
+        self.assertIsNotNone(verification_token)
+
+        expected_sender = 'noreply@example.com'
+        expected_recipients = ['hiro@metaverse.org']
+        expected_subject = 'Hiro, bitte bestätige deine E-Mail-Adresse'
+        expected_body = '''
+Hallo Hiro,
+
+bitte bestätige deine E-Mail-Adresse indem du diese URL abrufst: http://example.com/users/email_address_confirmations/{}
+        '''.strip().format(verification_token.token)
+
+        send_email_mock.assert_called_once_with(
+            expected_sender,
+            expected_recipients,
+            expected_subject,
+            expected_body)
 
     # helpers
 
