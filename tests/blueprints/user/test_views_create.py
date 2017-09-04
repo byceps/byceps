@@ -23,6 +23,7 @@ class UserCreateTestCase(AbstractAppTestCase):
         self.admin = self.create_user('Admin')
 
         self.create_brand_and_party()
+        self.set_brand_email_sender_address(self.brand.id, 'acme@example.com')
 
         self.setup_terms()
         self.setup_roles()

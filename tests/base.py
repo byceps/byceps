@@ -17,6 +17,7 @@ from unittest.mock import patch
 from byceps.application import create_app
 from byceps.database import db
 from byceps.services.authentication.session.models import SessionToken
+from byceps.services.email.models import EmailConfig
 
 from testfixtures.authentication import create_session_token
 from testfixtures.brand import create_brand
@@ -95,6 +96,11 @@ class AbstractAppTestCase(TestCase):
         db.session.commit()
 
         return party
+
+    def set_brand_email_sender_address(self, brand_id, sender_address):
+        email_config = EmailConfig(brand_id, sender_address)
+        db.session.add(email_config)
+        db.session.commit()
 
     def tearDown(self):
         db.session.remove()
