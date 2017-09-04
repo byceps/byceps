@@ -12,7 +12,7 @@ from typing import Dict, Iterator, Optional, Set
 from flask import url_for
 
 from ...database import db
-from ...typing import PartyID, UserID
+from ...typing import BrandID, PartyID, UserID
 
 from ..email import service as email_service
 from ..orga_team.models import OrgaTeam, Membership as OrgaTeamMembership
@@ -142,8 +142,14 @@ def _do_users_matching_filter_exist(model_attribute: str, search_value: str) -> 
     return user_count > 0
 
 
-def send_email_address_confirmation_email(user: User, verification_token: Token
-                                         ) -> None:
+def send_email_address_confirmation_email(user: User, verification_token: Token,
+                                          brand_id: BrandID) -> None:
+    sender_address = email_service.find_sender_address_for_brand(brand_id)
+
+    if not sender_address:
+        raise email_service.EmailError(
+            'No sender address configured for brand "{}".'.format(brand_id))
+
     confirmation_url = url_for('.confirm_email_address',
                                token=verification_token.token,
                                _external=True)
@@ -155,7 +161,7 @@ def send_email_address_confirmation_email(user: User, verification_token: Token
     ).format(user, confirmation_url)
     recipients = [user.email_address]
 
-    email_service.send_email(recipients, subject, body)
+    email_service.send_email(recipients, subject, body, sender=sender_address)
 
 
 def confirm_email_address(verification_token: Token) -> None:

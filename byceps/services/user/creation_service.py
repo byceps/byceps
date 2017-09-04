@@ -68,7 +68,8 @@ def create_user(screen_name: str, email_address: str, password: str,
     db.session.add(verification_token)
     db.session.commit()
 
-    user_service.send_email_address_confirmation_email(user, verification_token)
+    user_service.send_email_address_confirmation_email(
+        user, verification_token, brand_id)
 
     return user
 

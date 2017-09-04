@@ -236,7 +236,8 @@ def request_email_address_confirmation_email():
 
     verification_token = verification_token_service \
         .find_or_create_for_email_address_confirmation(user.id)
-    user_service.send_email_address_confirmation_email(user, verification_token)
+    user_service.send_email_address_confirmation_email(
+        user, verification_token, g.party.brand_id)
 
     flash_success(
         'Der Link zur Bestätigung der für den Benutzernamen "{}" '
