@@ -51,4 +51,4 @@ def enqueue_email(sender: str, recipients: List[str], subject: str, body: str) \
 def send_email(sender: str, recipients: List[str], subject: str, body: str) \
               -> None:
     """Send an e-mail."""
-    email.send(recipients, subject, body, sender=sender)
+    email.send(sender, recipients, subject, body)
