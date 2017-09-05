@@ -1,9 +1,5 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin_dashboard.html' import render_bigstats_cell, render_cell %}
-{% from 'macros/icons.html' import render_icon %}
-{% from 'macros/orga_admin.html' import render_random_age_adjective, render_relative_days_until, render_time_element %}
-{% from 'macros/user_admin.html' import render_user_admin_link %}
-{% from 'macros/user_avatar.html' import render_user_avatar_32 %}
 {% set current_page = 'admin_dashboard_global' %}
 {% set title = 'Dashboard' %}
 {% set layout_main_raw = True %}
@@ -65,40 +61,10 @@
 
   <div class="grid dashboard">
     {%- call render_cell() %}
-      <h2>Aktive Partys</h2>
-      <ol class="parties">
-      {%- for party in active_parties %}
-        <li>
-          <a href="{{ url_for('admin_dashboard.view_party', party_id=party.id) }}">
-            <strong>{{ party.title }}</strong><br>
-            <time datetime="{{ party.starts_at|format_date_iso }}">
-              {{ party.starts_at|format_date_short }}
-              {{- '–' -}}
-              {{ party.ends_at|format_date_short }}
-            </time>
-          </a>
-        </li>
-      {%- endfor %}
-      </ol>
+{%- include 'admin_dashboard/_active_parties.html' %}
     {%- endcall %}
     {%- call render_cell('birthday', 'wider') %}
-      <h2>Die nächsten Geburtstage</h2>
-      <ol class="birthdays">
-      {%- for user in orgas_with_next_birthdays %}
-        {%- with is_today = user.detail.is_birthday_today %}
-        <li{% if is_today %} class="hastoday"{% elif user.detail.days_until_next_birthday > 14 %} class="dimmed"{% endif %}>
-          {{ render_user_avatar_32(user) }}
-          <div>
-            {{ render_user_admin_link(user) }}
-            {% if is_today %}{{ render_icon('birthday') }}{% endif %}
-            {%- set relative_days_label = render_relative_days_until(user) %}
-            wird {{ render_time_element(user.detail.date_of_birth, relative_days_label) }}
-            {{ render_random_age_adjective() }} {{ user.detail.age if is_today else user.detail.age + 1 }} Jahre alt.
-          </div>
-        </li>
-        {%- endwith %}
-      {%- endfor %}
-      </ol>
+{%- include 'admin_dashboard/_birthdays.html' %}
     {%- endcall %}
     {{ render_bigstats_cell(brand_count, 'Marken', href=url_for('brand_admin.index'), icon_name='brand') }}
     {{ render_bigstats_cell(party_count, 'Partys', href=url_for('party_admin.index'), icon_name='date') }}

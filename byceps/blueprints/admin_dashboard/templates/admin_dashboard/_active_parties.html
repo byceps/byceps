@@ -1,0 +1,15 @@
+<h2>Aktive Partys</h2>
+<ol class="parties">
+{%- for party in active_parties %}
+  <li>
+    <a href="{{ url_for('admin_dashboard.view_party', party_id=party.id) }}">
+      <strong>{{ party.title }}</strong><br>
+      <time datetime="{{ party.starts_at|format_date_iso }}">
+        {{ party.starts_at|format_date_short }}
+        {{- '–' -}}
+        {{ party.ends_at|format_date_short }}
+      </time>
+    </a>
+  </li>
+{%- endfor %}
+</ol>
