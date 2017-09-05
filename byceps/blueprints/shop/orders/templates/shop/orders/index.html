@@ -12,9 +12,9 @@
   </nav>
   <h1>{{ title }}</h1>
 
-  <p>Dies sind deine Bestellungen für die Party <strong>{{ g.party.title }}</strong>.</p>
-
   {%- if orders %}
+  <p>Dies sind deine Bestellungen für die Party <strong>{{ g.party.title }}</strong>:</p>
+
   <table class="index wide">
     <thead>
       <tr>
@@ -37,7 +37,7 @@
     </tbody>
   </table>
   {%- else %}
-  <p><em>keine</em></p>
+  <p>Du hast derzeit <em>keine</em> Bestellungen für die Party <strong>{{ g.party.title }}</strong>.</p>
   {%- endif %}
 
 {%- endblock %}
