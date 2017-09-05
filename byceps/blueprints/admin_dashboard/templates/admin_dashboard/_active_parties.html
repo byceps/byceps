@@ -1,6 +1,7 @@
 <h2>Aktive Partys</h2>
+{%- if active_parties %}
 <ol class="active-parties">
-{%- for party in active_parties %}
+  {%- for party in active_parties %}
   <li>
     <a href="{{ url_for('admin_dashboard.view_party', party_id=party.id) }}">
       <strong>{{ party.title }}</strong><br>
@@ -11,5 +12,8 @@
       </time>
     </a>
   </li>
-{%- endfor %}
+  {%- endfor %}
 </ol>
+{%- else %}
+<p>{{ 'keine aktiven Partys'|dim }}</p>
+{%- endif %}
