@@ -76,9 +76,15 @@ def get_all_parties_with_brands() -> List[Party]:
         .all()
 
 
-def get_active_parties() -> List[PartyTuple]:
+def get_active_parties(brand_id: Optional[BrandID]=None) -> List[PartyTuple]:
     """Return active (i.e. non-archived) parties."""
-    parties = Party.query \
+    query = Party.query
+
+    if brand_id is not None:
+        query = query \
+            .filter_by(brand_id=brand_id)
+
+    parties = query \
         .filter_by(is_archived=False) \
         .order_by(Party.starts_at.desc()) \
         .all()
