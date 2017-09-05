@@ -1,5 +1,5 @@
 <h2>Aktive Partys</h2>
-<ol class="parties">
+<ol class="active-parties">
 {%- for party in active_parties %}
   <li>
     <a href="{{ url_for('admin_dashboard.view_party', party_id=party.id) }}">

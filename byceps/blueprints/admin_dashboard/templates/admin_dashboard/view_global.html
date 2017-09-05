@@ -6,55 +6,6 @@
 
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('.static', filename='style/admin_dashboard.css') }}">
-    <style>
-      .parties li {
-        line-height: 1.3;
-      }
-      .parties li + li {
-        margin-top: 10px;
-      }
-
-      .parties a {
-        border-color: transparent;
-        border-radius: 3px;
-        border-style: solid;
-        border-width: 1px;
-        display: block;
-      }
-      .parties a:hover {
-        background-color: #eeeeee;
-        border-color: #cccccc;
-        margin: -5px -10px !important;
-        padding: 5px 10px !important;
-      }
-
-      .parties time {
-        font-size: 0.6875rem; /* 11px / 16px */
-        opacity: 0.5;
-      }
-
-      .birthdays li {
-        align-items: center;
-        display: flex;
-      }
-      .birthdays li + li {
-        margin-top: 10px;
-      }
-      .birthdays .hastoday {
-        font-weight: bold;
-      }
-      .birthdays .avatar {
-        flex: 0 0 auto;
-        margin-right: 10px;
-      }
-      .birthdays a {
-        font-weight: bold;
-      }
-      .birthdays time {
-        cursor: help;
-        border-bottom: #666666 dotted 1px;
-      }
-    </style>
 {%- endblock %}
 
 {% block body %}
