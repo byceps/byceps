@@ -350,12 +350,12 @@ form li.error .errors li span {
 .button-row {
   display: flex;
   flex-wrap: wrap;
-  margin: 1.5rem 0 1.5rem -8px;
+  margin: 1.5rem 0 1.5rem -0.5rem;
 }
 
 .button-row--compact {
   margin-bottom: 0;
-  margin-top: -8px;
+  margin-top: -0.5rem;
 }
 
 .button-row--center {
@@ -366,7 +366,7 @@ form li.error .errors li span {
 }
 
 .button-row > * {
-  margin: 8px 0 0 8px;
+  margin: 0.5rem 0 0 0.5rem;
 }
 
 .button {
