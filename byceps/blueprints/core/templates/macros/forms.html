@@ -72,7 +72,9 @@
 {% macro form_buttons(label, icon=None, cancel_url=None) -%}
   <fieldset class="buttons">
     <button type="submit" class="button color-primary">{% if icon %}{{ render_icon(icon) }} {% endif %}{{ label }}</button>
-    {%- if cancel_url %} oder <a class="cancel" href="{{ cancel_url }}">abbrechen</a>{% endif -%}
+    {%- if cancel_url %}
+    oder <a class="cancel" href="{{ cancel_url }}">abbrechen</a>
+    {%- endif %}
   </fieldset>
 {%- endmacro %}
 
