@@ -379,6 +379,7 @@ form li.error .errors li span {
 .button--compact {
   padding: 0;
 }
+button.button[disabled],
 .button--disabled {
   cursor: not-allowed;
   pointer-events: none;
