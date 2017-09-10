@@ -18,7 +18,7 @@ onDomReady(function() {
     });
 
     // Collapse text area on click on cancel button.
-    textarea.form.querySelector('a.cancel').addEventListener('click', function() {
+    textarea.form.querySelector('button.cancel').addEventListener('click', function() {
       textarea.classList.add('collapsed');
     });
   });

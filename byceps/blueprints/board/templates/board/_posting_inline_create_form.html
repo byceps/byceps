@@ -14,7 +14,7 @@
           {{ form.body(class='collapsible collapsed wide', required='required') }}
           <div class="collapsible-neighbor">
           {%- include 'board/_posting_form_body_supplement.html' -%}
-          {{ form_buttons('Hinzufügen', cancel_url='#') }}
+          {{ form_buttons('Hinzufügen', cancel_button=True) }}
           </div>
         </fieldset>
       </form>
