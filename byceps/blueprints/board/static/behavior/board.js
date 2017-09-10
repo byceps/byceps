@@ -12,16 +12,14 @@ onDomReady(function() {
 
   var collpasedTextareas = document.querySelectorAll('textarea.collapsed');
   forEach(collpasedTextareas, function(textarea) {
-    // Expand collapsible text areas after receiving focus.
+    // Expand collapsible text area after receiving focus.
     textarea.addEventListener('focus', function() {
       textarea.classList.remove('collapsed');
     });
 
-    // Collapse *empty* text areas after losing focus.
-    textarea.addEventListener('blur', function() {
-      if (textarea.value == '') {
-        textarea.classList.add('collapsed');
-      }
+    // Collapse text area on click on cancel button.
+    textarea.form.querySelector('a.cancel').addEventListener('click', function() {
+      textarea.classList.add('collapsed');
     });
   });
 

@@ -14,7 +14,7 @@
           {{ form.body(class='collapsible collapsed wide', required='required') }}
           {%- include 'board/_posting_form_body_supplement.html' -%}
         </fieldset>
-        {{ form_buttons('Hinzufügen') }}
+        {{ form_buttons('Hinzufügen', cancel_url='#') }}
       </form>
     </div>
     </div>
