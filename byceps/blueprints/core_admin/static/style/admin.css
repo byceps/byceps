@@ -443,10 +443,13 @@ ol.index.fully-linked a:hover {
 
 .button.color-primary {
   background-color: #555555;
-  border-color: #cccccc;
+  border-width: 0;
   color: #f8f8f8;
   font-weight: normal;
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+}
+.button.color-primary:hover {
+  background-color: #666666;
 }
 
 
