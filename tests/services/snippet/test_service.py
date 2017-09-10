@@ -5,8 +5,7 @@
 
 from datetime import datetime
 
-from byceps.services.snippet.service import \
-    get_current_version_of_snippet_with_name, SnippetNotFound
+from byceps.services.snippet import service as snippet_service
 
 from testfixtures.snippet import create_current_version_association, \
     create_fragment, create_snippet_version
@@ -30,12 +29,16 @@ class GetCurrentVersionOfSnippetTestCase(AbstractAppTestCase):
         fragment_info2014_version = self.create_fragment_with_version(self.party2014, 'info', '2014-10-23 14:55:00')
         fragment_info2015_version = self.create_fragment_with_version(self.party2015, 'info', '2014-10-23 18:21:00')
 
-        actual = get_current_version_of_snippet_with_name(self.party2014.id, 'info')
+        actual = snippet_service.find_current_version_of_snippet_with_name(
+            self.party2014.id, 'info')
+
         self.assertEqual(actual, fragment_info2014_version)
 
     def test_unknown_name(self):
-        with self.assertRaises(SnippetNotFound):
-            get_current_version_of_snippet_with_name(self.party2014.id, 'totally-unknown-snippet-name')
+        actual = snippet_service.find_current_version_of_snippet_with_name(
+            self.party2014.id, 'totally-unknown-snippet-name')
+
+        self.assertIsNone(actual)
 
     # -------------------------------------------------------------------- #
     # helpers

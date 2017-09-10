@@ -123,20 +123,17 @@ def find_snippet_version(version_id: SnippetVersionID
     return SnippetVersion.query.get(version_id)
 
 
-def get_current_version_of_snippet_with_name(party_id: PartyID, name: str
-                                            ) -> SnippetVersion:
+def find_current_version_of_snippet_with_name(party_id: PartyID, name: str
+                                             ) -> SnippetVersion:
     """Return the current version of the snippet with that name for that
-    party.
+    party, or `None` if not found.
     """
-    try:
-        return SnippetVersion.query \
-            .join(CurrentVersionAssociation) \
-            .join(Snippet) \
-                .filter(Snippet.party_id == party_id) \
-                .filter(Snippet.name == name) \
-            .one()
-    except NoResultFound:
-        raise SnippetNotFound(name)
+    return SnippetVersion.query \
+        .join(CurrentVersionAssociation) \
+        .join(Snippet) \
+            .filter(Snippet.party_id == party_id) \
+            .filter(Snippet.name == name) \
+        .one_or_none()
 
 
 class SnippetNotFound(Exception):

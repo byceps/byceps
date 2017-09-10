@@ -9,7 +9,6 @@ byceps.blueprints.snippet.views
 from flask import abort, g, jsonify
 
 from ...services.snippet import service as snippet_service
-from ...services.snippet.service import SnippetNotFound
 from ...util.framework.blueprint import create_blueprint
 from ...util.views import create_empty_json_response
 
@@ -26,9 +25,8 @@ def view_latest_by_name(name):
     """Show the latest version of the snippet with the given name."""
     # TODO: Fetch snippet via mountpoint
     # endpoint suffix != snippet name
-    try:
-        version = _find_current_snippet_version(name)
-    except SnippetNotFound:
+    version = _find_current_snippet_version(name)
+    if version is None:
         abort(404)
 
     return render_snippet_as_page(version)
@@ -37,9 +35,8 @@ def view_latest_by_name(name):
 @blueprint.route('/by_name/<name>.json')
 def view_as_json(name):
     """Return the current version of the snippet with that name as JSON."""
-    try:
-        version = _find_current_snippet_version(name)
-    except SnippetNotFound:
+    version = _find_current_snippet_version(name)
+    if version is None:
         return create_empty_json_response(404)
 
     context = get_snippet_context(version)
@@ -63,7 +60,7 @@ def view_as_json(name):
 
 def _find_current_snippet_version(name):
     """Return the current version of the snippet with that name, or
-    raise an exception if it does not exist.
+    `None` if it does not exist.
     """
-    return snippet_service.get_current_version_of_snippet_with_name(g.party.id,
-                                                                    name)
+    return snippet_service.find_current_version_of_snippet_with_name(
+        g.party.id, name)

@@ -56,14 +56,14 @@ def render_snippet_as_partial(name, *, ignore_if_unknown=False):
     """Render the latest version of the snippet with the given name and
     return the result.
     """
-    try:
-        current_version = snippet_service \
-            .get_current_version_of_snippet_with_name(g.party.id, name)
-    except SnippetNotFound as e:
+    current_version = snippet_service \
+        .find_current_version_of_snippet_with_name(g.party.id, name)
+
+    if current_version is None:
         if ignore_if_unknown:
             return ''
         else:
-            raise e
+            raise SnippetNotFound('name')
 
     return _render_template(current_version.body)
 
