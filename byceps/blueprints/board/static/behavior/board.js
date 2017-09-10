@@ -11,16 +11,16 @@ onDomReady(function() {
   confirmed_delete_on_click('[data-action="posting-unhide"]', 'Beitrag wieder anzeigen?');
 
   var collpasedTextareas = document.querySelectorAll('textarea.collapsed');
-  forEach(collpasedTextareas, function(element) {
+  forEach(collpasedTextareas, function(textarea) {
     // Expand collapsible text areas after receiving focus.
-    element.addEventListener('focus', function() {
-      element.classList.remove('collapsed');
+    textarea.addEventListener('focus', function() {
+      textarea.classList.remove('collapsed');
     });
 
     // Collapse *empty* text areas after losing focus.
-    element.addEventListener('blur', function() {
-      if (element.value == '') {
-        element.classList.add('collapsed');
+    textarea.addEventListener('blur', function() {
+      if (textarea.value == '') {
+        textarea.classList.add('collapsed');
       }
     });
   });
