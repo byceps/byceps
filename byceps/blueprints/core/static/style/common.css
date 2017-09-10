@@ -380,7 +380,7 @@ form li.error .errors li span {
   cursor: pointer;
   display: inline-block;
   font-size: 1rem;
-  padding: 0.4rem 0.75rem;
+  padding: 0.375rem 0.75rem;
   text-align: center;
   text-decoration: none;
   user-select: none;
