@@ -324,10 +324,6 @@ fieldset.buttons {
   text-align: center;
 }
 
-fieldset.buttons button {
-  font-weight: bold;
-}
-
 form li.error {
   background-color: #ff9999;
   border: #ff1a1a solid 1px;
