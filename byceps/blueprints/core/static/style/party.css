@@ -233,13 +233,16 @@ h2 {
 
 }
 
-form.board-posting-create-form-inline textarea.collapsible ~ .supplement {
+form.board-posting-create-form-inline textarea.collapsible ~ .collapsible-neighbor {
   display: block;
+}
+form.board-posting-create-form-inline textarea.collapsible.collapsed ~ .collapsible-neighbor {
+  display: none;
+}
+
+form.board-posting-create-form-inline textarea.collapsible ~ .collapsible-neighbor .supplement {
   margin-left: 0;
   width: auto;
-}
-form.board-posting-create-form-inline textarea.collapsible.collapsed ~ .supplement {
-  display: none;
 }
 
 form.board-posting-create-form-inline .label {
