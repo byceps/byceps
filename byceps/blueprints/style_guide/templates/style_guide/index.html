@@ -1,4 +1,5 @@
 {% extends 'layout/base_auto.html' %}
+{% from 'macros/forms.html' import form_buttons %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_notification, render_tag %}
 {% set title = 'Style Guide' %}
@@ -349,9 +350,7 @@
     </ol>
   </fieldset>
 
-  <fieldset class="buttons">
-    <button type="submit" class="button color-primary">Do it!</button>
-  </fieldset>
+  {{ form_buttons('Do it!', cancel_url='#') }}
 
 </form>
   {%- endset %}
