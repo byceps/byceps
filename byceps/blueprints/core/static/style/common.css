@@ -17,10 +17,19 @@ body {
 
 html {
   font-size: 16px;
+  text-rendering: optimizeLegibility;
 }
 
 body {
   font-size: 1rem; /* 16px */
+}
+
+body,
+button,
+input,
+select,
+textarea {
+  font-family: sans-serif;
 }
 
 figcaption,
@@ -361,6 +370,7 @@ form li.error .errors li span {
 }
 
 .button {
+  -moz-appearance: none;
   background-color: #eeeeee;
   border-color: #cccccc;
   border-style: solid;
@@ -369,6 +379,7 @@ form li.error .errors li span {
   color: currentColor;
   cursor: pointer;
   display: inline-block;
+  font-size: 1rem;
   padding: 0.4rem 0.75rem;
   text-align: center;
   text-decoration: none;
