@@ -208,7 +208,7 @@ def topic_create(category_id):
     title = form.title.data.strip()
     body = form.body.data.strip()
 
-    topic = board_topic_service.create_topic(category, creator.id, title, body)
+    topic = board_topic_service.create_topic(category.id, creator.id, title, body)
 
     flash_success('Das Thema "{}" wurde hinzugefügt.', topic.title)
     signals.topic_created.send(None, topic_id=topic.id)

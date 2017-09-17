@@ -70,10 +70,10 @@ def paginate_topics(category_id: CategoryID, user: User, page: int,
         .paginate(page, topics_per_page)
 
 
-def create_topic(category: Category, creator_id: UserID, title: str, body: str
-                ) -> Topic:
+def create_topic(category_id: CategoryID, creator_id: UserID, title: str,
+                 body: str) -> Topic:
     """Create a topic with an initial posting in that category."""
-    topic = Topic(category.id, creator_id, title)
+    topic = Topic(category_id, creator_id, title)
     posting = Posting(topic, creator_id, body)
     initial_topic_posting_association = InitialTopicPostingAssociation(topic,
                                                                        posting)

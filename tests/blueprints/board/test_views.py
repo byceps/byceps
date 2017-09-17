@@ -28,7 +28,7 @@ class BoardModerationTestCase(AbstractAppTestCase):
         self.setup_admin_with_permission('board.hide')
 
         category = self.create_category(1)
-        topic_before = self.create_topic(category, self.user.id, 1)
+        topic_before = self.create_topic(category.id, self.user.id, 1)
         self.db.session.commit()
 
         self.assertFalse(topic_before.hidden)
@@ -49,7 +49,7 @@ class BoardModerationTestCase(AbstractAppTestCase):
         self.setup_admin_with_permission('board.hide')
 
         category = self.create_category(1)
-        topic_before = self.create_topic(category, self.user.id, 1)
+        topic_before = self.create_topic(category.id, self.user.id, 1)
         board_topic_service.hide_topic(topic_before, self.admin.id)
 
         self.assertTrue(topic_before.hidden)
@@ -70,7 +70,7 @@ class BoardModerationTestCase(AbstractAppTestCase):
         self.setup_admin_with_permission('board_topic.lock')
 
         category = self.create_category(1)
-        topic_before = self.create_topic(category, self.user.id, 1)
+        topic_before = self.create_topic(category.id, self.user.id, 1)
 
         self.assertFalse(topic_before.locked)
         self.assertIsNone(topic_before.locked_at)
@@ -90,7 +90,7 @@ class BoardModerationTestCase(AbstractAppTestCase):
         self.setup_admin_with_permission('board_topic.lock')
 
         category = self.create_category(1)
-        topic_before = self.create_topic(category, self.user.id, 1)
+        topic_before = self.create_topic(category.id, self.user.id, 1)
         board_topic_service.lock_topic(topic_before, self.admin.id)
 
         self.assertTrue(topic_before.locked)
@@ -111,7 +111,7 @@ class BoardModerationTestCase(AbstractAppTestCase):
         self.setup_admin_with_permission('board_topic.pin')
 
         category = self.create_category(1)
-        topic_before = self.create_topic(category, self.user.id, 1)
+        topic_before = self.create_topic(category.id, self.user.id, 1)
 
         self.assertFalse(topic_before.pinned)
         self.assertIsNone(topic_before.pinned_at)
@@ -131,7 +131,7 @@ class BoardModerationTestCase(AbstractAppTestCase):
         self.setup_admin_with_permission('board_topic.pin')
 
         category = self.create_category(1)
-        topic_before = self.create_topic(category, self.user.id, 1)
+        topic_before = self.create_topic(category.id, self.user.id, 1)
         board_topic_service.pin_topic(topic_before, self.admin.id)
 
         self.assertTrue(topic_before.pinned)
@@ -153,7 +153,7 @@ class BoardModerationTestCase(AbstractAppTestCase):
 
         category1 = self.create_category(1)
         category2 = self.create_category(2)
-        topic_before = self.create_topic(category1, self.user.id, 1)
+        topic_before = self.create_topic(category1.id, self.user.id, 1)
 
         self.assertEqual(topic_before.category, category1)
 
@@ -176,8 +176,8 @@ class BoardModerationTestCase(AbstractAppTestCase):
     def create_category(self, number):
         return create_category(brand_id=self.brand.id, number=number)
 
-    def create_topic(self, category, creator_id, number):
-        return create_topic(category, creator_id, number=number)
+    def create_topic(self, category_id, creator_id, number):
+        return create_topic(category_id, creator_id, number=number)
 
     def find_topic(self, id):
         return Topic.query.get(id)
