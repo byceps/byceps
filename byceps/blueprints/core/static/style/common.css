@@ -343,7 +343,7 @@ form li.error .errors li span {
 }
 
 
-/* buttons */
+/* button rows */
 
 .button-row {
   display: flex;
@@ -366,6 +366,9 @@ form li.error .errors li span {
 .button-row > * {
   margin: 0.5rem 0 0 0.5rem;
 }
+
+
+/* buttons */
 
 .button {
   -moz-appearance: none;
