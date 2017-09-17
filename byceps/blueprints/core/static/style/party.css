@@ -346,6 +346,7 @@ form.board-posting-create-form-inline .label {
 
 .user-comment-actions .dropdown-toggle {
   background-color: transparent;
+  background-image: none;
   border: none;
   color: currentColor;
   display: inline-block;
