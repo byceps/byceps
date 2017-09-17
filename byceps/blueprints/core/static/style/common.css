@@ -17,11 +17,13 @@ body {
 
 html {
   font-size: 16px;
+  line-height: 1.15;
   text-rendering: optimizeLegibility;
 }
 
 body {
   font-size: 1rem; /* 16px */
+  line-height: 1.5;
 }
 
 body,
