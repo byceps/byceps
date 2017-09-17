@@ -65,7 +65,7 @@ a {
   flex: 1;
 }
 #page-grid-sidebar {
-  flex: 0 0 20%;
+  flex: 0 0 22%;
 }
 
 @media (min-width: 60rem) { /* 960px / 16px */
@@ -244,7 +244,7 @@ main {
   font-size: 1rem; /* 16px */
   font-weight: normal;
   margin: 0 0 10px 0;
-  padding: 10px 20px;
+  padding: 10px 15px;
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
 }
 #sidebar section h1 small {
@@ -252,7 +252,7 @@ main {
 }
 #sidebar section p {
   margin: 0;
-  padding: 0 20px;
+  padding: 0 15px;
 }
 
 @media (min-width: 60rem) { /* 960px / 16px */
@@ -281,7 +281,7 @@ nav.main li {
   display: flex;
   line-height: 1.2;
   opacity: 0.8;
-  padding: 0.2rem 20px;
+  padding: 0.2rem 15px;
   text-decoration: none;
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
 }
