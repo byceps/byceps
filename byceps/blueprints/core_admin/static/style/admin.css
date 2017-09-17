@@ -275,7 +275,8 @@ nav.main li {
   margin: 0;
   padding: 0;
 }
-nav.main a {
+
+.nav-item {
   border-color: transparent;
   border-style: solid;
   border-width: 1px 0;
@@ -287,14 +288,14 @@ nav.main a {
   text-decoration: none;
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
 }
-nav.main a:hover,
-nav.main .current a {
+.nav-item:hover,
+.nav-item--current {
   background-color: #eeeeee;
   border-color: #cccccc;
   opacity: 1;
 }
-nav.main .icon {
-  margin-right: 0.2em;
+.nav-item-icon {
+  margin-right: 0.4em;
 }
 
 
