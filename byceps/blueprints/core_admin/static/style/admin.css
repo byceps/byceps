@@ -250,9 +250,6 @@ main {
 #sidebar section h1 small {
   font-size: 0.75rem; /* 12px / 16px */
 }
-#sidebar section li {
-  white-space: nowrap;
-}
 #sidebar section p {
   margin: 0;
   padding: 0 20px;
@@ -281,10 +278,10 @@ nav.main li {
   border-style: solid;
   border-width: 1px 0;
   color: currentColor;
-  display: block;
-  line-height: 1.7;
+  display: flex;
+  line-height: 1.2;
   opacity: 0.8;
-  padding: 0 20px;
+  padding: 0.2rem 20px;
   text-decoration: none;
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
 }
@@ -294,7 +291,9 @@ nav.main li {
   border-color: #cccccc;
   opacity: 1;
 }
+
 .nav-item-icon {
+  flex: 0 0 auto;
   margin-right: 0.4em;
 }
 
