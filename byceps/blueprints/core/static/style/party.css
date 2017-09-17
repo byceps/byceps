@@ -253,7 +253,7 @@ form.board-posting-create-form-inline .label {
 /* board, tourneys */
 
 .user-comments {
-  margin: 30px 0 20px 0;
+  margin: 20px 0;
 }
 
 .user-comment {
@@ -261,7 +261,7 @@ form.board-posting-create-form-inline .label {
   flex-wrap: wrap;
 }
 .user-comment + .user-comment {
-  margin-top: 15px;
+  margin-top: 20px;
 }
 
 .user-comment-aside {
@@ -279,7 +279,7 @@ form.board-posting-create-form-inline .label {
     display: flex;
     flex: 0 0 116px;
     flex-direction: column;
-    padding-bottom: 15px;
+    padding-bottom: 20px;
   }
 
   .user-comment-aside .creator .avatar {
