@@ -5,14 +5,14 @@
 <div class="current-user">
   {%- if g.current_user.is_active %}
   <div class="dropdown left">
-    <a href="{{ url_for('user.view_current') }}" class="dropdown-toggle">
+    <button href="{{ url_for('user.view_current') }}" class="dropdown-toggle button button--clear">
       {{ render_user_avatar_32(g.current_user) }}
       <span class="label-and-name">
         <span class="label">Angemeldet als</span>
         <span class="name">{{ g.current_user.screen_name }}</span>
       </span>
       {{ render_icon('caret-down') }}
-    </a>
+    </button>
     <ol>
       <li><a href="{{ url_for('user.view_current') }}">{{ render_icon('user') }} Profil ansehen</a></li>
       <li class="divider"></li>

@@ -146,42 +146,16 @@ main {
   padding-left: 0.3rem;
 }
 
-#header-content .head .button:hover {
-  background-color: #ffffff;
-}
-
 @media (min-width: 60rem) { /* 960px / 16px */
   #header-content .head strong.big {
     font-size: 1.125rem; /* 18px / 16px */
   }
 }
 
-#header-content .current-user {
-  font-size: 0.75rem; /* 12px / 16px */
-}
-
-#header-content .current-user .dropdown {
-  border-color: transparent;
-  border-style: solid;
-  border-width: 1px;
-  padding: 4px 8px;
-}
-#header-content .current-user .dropdown:hover,
-#header-content .current-user .dropdown.open {
-  background-color: #ffffff;
-  border-color: #cccccc;
-}
-#header-content .current-user .dropdown a {
-  color: currentColor;
-  display: block;
-  text-decoration: none;
-}
-#header-content .current-user .dropdown ol {
-  margin-right: -1px;
-}
 #header-content .current-user .label-and-name {
   display: inline-block;
   margin: 0 0.3rem 0 0.1rem;
+  text-align: left;
   vertical-align: middle;
 }
 #header-content .current-user .label-and-name .label {
@@ -203,6 +177,10 @@ main {
   padding-top: 9px;
 }
 #header-content .current-user .logged-out .button:not(:hover) {
+  background-color: #ffffff;
+}
+
+#header-content .button:hover {
   background-color: #ffffff;
 }
 
