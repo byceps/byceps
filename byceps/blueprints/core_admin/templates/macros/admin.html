@@ -4,7 +4,7 @@
 
 
 {% macro render_brand_head(brand, all_brands) %}
-  <div class="head-brand">
+  <div>
     Marken
     {{ '/'|dim }}
     <div>
@@ -22,7 +22,7 @@
 
 
 {% macro render_party_head(party, all_brands) %}
-  <div class="head-party">
+  <div>
     <div class="dropdown">
       <div class="dropdown-toggle"><strong>{{ party.brand.title }}</strong> {{ render_icon('caret-down') }}</div>
       <ol>
