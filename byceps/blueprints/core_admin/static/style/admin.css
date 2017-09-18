@@ -184,6 +184,10 @@ main {
   background-color: #ffffff;
 }
 
+#header-content .dropdown ol {
+  margin-top: -1px;
+}
+
 
 /* sidebar */
 
