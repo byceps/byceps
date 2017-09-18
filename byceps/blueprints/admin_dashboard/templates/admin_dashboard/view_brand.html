@@ -21,12 +21,12 @@
     {{ render_bigstats_cell(news_item_count, 'Newsposts veröffentlicht', href=url_for('news_admin.index_for_brand', brand_id=brand.id), icon_name='news') }}
     {{ render_bigstats_cell(newsletter_subscriber_count, 'Newsletter-Abonnenten', href=url_for('newsletter_admin.view_subscriptions', brand_id=brand.id), icon_name='email', color='#008800') }}
     {%- call render_cell('legal') %}
-      <h2 class="hyphenate">Stand der aktuellen AGB</h2>
+      <h2 class="hyphenate">Stand aktuelle AGB</h2>
       <p class="centered">
           {%- if current_terms_version -%}
           <strong style="font-size: 2rem;">{{ render_date(current_terms_version.created_at) }}</strong>
           {%- else -%}
-          <strong style="color: #cc0000; font-size: 1.2rem;">Es sind keine AGB hinterlegt bzw. als aktuell festgelegt!</strong>
+          <strong style="color: #cc0000;">keine AGB hinterlegt bzw. als aktuell festgelegt</strong>
           {%- endif -%}
       </p>
     {%- endcall %}
