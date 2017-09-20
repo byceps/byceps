@@ -12,8 +12,5 @@ from blinker import Namespace
 snippet_signals = Namespace()
 
 
-document_created = snippet_signals.signal('document-created')
-document_updated = snippet_signals.signal('document-updated')
-
-fragment_created = snippet_signals.signal('fragment-created')
-fragment_updated = snippet_signals.signal('fragment-updated')
+snippet_created = snippet_signals.signal('snippet-created')
+snippet_updated = snippet_signals.signal('snippet-updated')
