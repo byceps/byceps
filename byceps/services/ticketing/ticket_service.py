@@ -6,7 +6,8 @@ byceps.services.ticketing.ticket_service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import Dict, Iterator, Optional, Sequence
+from random import sample
+from typing import Dict, Iterator, Optional, Sequence, Set
 
 from flask_sqlalchemy import Pagination
 
@@ -48,8 +49,33 @@ def build_tickets(category_id: CategoryID, owned_by_id: UserID, quantity: int,
     if quantity < 1:
         raise ValueError('Ticket quantity must be positive.')
 
+    codes = set()
+
     for _ in range(quantity):
-        yield Ticket(category_id, owned_by_id, bundle=bundle)
+        code = _generate_ticket_code_not_in(codes)
+        codes.add(code)
+
+        yield Ticket(code, category_id, owned_by_id, bundle=bundle)
+
+
+_CODE_ALPHABET = 'BCDFGHJKLMNPQRSTVWXYZ'
+_CODE_LENGTH = 5
+
+
+def _generate_ticket_code() -> str:
+    """Generate a ticket code.
+
+    Generated codes are not necessarily unique!
+    """
+    return ''.join(sample(_CODE_ALPHABET, _CODE_LENGTH))
+
+
+def _generate_ticket_code_not_in(codes: Set[str]) -> str:
+    """Generate ticket codes and return the first one not in the set."""
+    while True:
+        code = _generate_ticket_code()
+        if code not in codes:
+            return code
 
 
 # -------------------------------------------------------------------- #

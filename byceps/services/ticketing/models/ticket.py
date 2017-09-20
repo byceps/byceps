@@ -44,6 +44,7 @@ class Ticket(db.Model):
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.now, nullable=False)
+    code = db.Column(db.Unicode(5), unique=True, nullable=False)
     bundle_id = db.Column(db.Uuid, db.ForeignKey('ticket_bundles.id'), index=True, nullable=True)
     bundle = db.relationship(TicketBundle, backref='tickets')
     category_id = db.Column(db.Uuid, db.ForeignKey('seat_categories.id'), index=True, nullable=False)
@@ -60,8 +61,10 @@ class Ticket(db.Model):
     used_by = db.relationship(User, foreign_keys=[used_by_id])
     revoked = db.Column(db.Boolean, default=False, nullable=False)
 
-    def __init__(self, category_id: CategoryID, owned_by_id: UserID, *,
-                 bundle: Optional[TicketBundle]=None) -> None:
+    def __init__(self, code: str, category_id: CategoryID, owned_by_id: UserID,
+                 *, bundle: Optional[TicketBundle]=None) -> None:
+        self.code = code
+
         if bundle is not None:
             self.bundle = bundle
 
