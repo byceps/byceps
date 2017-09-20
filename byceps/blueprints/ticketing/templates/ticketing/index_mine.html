@@ -20,13 +20,11 @@
       padding: 20px 0 0 20px;
     }
 
-    .ticket-id {
+    .ticket-code {
       color: #888888;
-      cursor: help;
       font-size: 0.625rem; /* 10px / 16px */
       margin-bottom: 5px;
       text-align: center;
-      text-transform: uppercase;
     }
 
     .ticket-card {
@@ -101,7 +99,7 @@
   <ol class="ticket-grid">
     {%- for ticket in tickets|sort(attribute='created_at') %}
     <li>
-      <div class="ticket-id" title="{{ ticket.id }}">{{ ticket.id|string|truncate(7, killwords=True, end='') }}</div>
+      <div class="ticket-code">{{ ticket.code }}</div>
       <div class="ticket-card{% if ticket.used_by_id == g.current_user.id %} ticket-used-by-me{% endif %}">
 
         <div class="ticket-card-row">
