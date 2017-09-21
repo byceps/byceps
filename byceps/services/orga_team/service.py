@@ -6,7 +6,7 @@ byceps.services.orga_team.service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import Optional, Sequence
+from typing import Optional, Sequence, Set
 
 from ...database import db
 from ...typing import PartyID, UserID
@@ -97,6 +97,21 @@ def find_membership_for_party(user_id: UserID, party_id: PartyID
         .filter_by(user_id=user_id) \
         .for_party_id(party_id) \
         .one_or_none()
+
+
+def select_orgas_for_party(user_ids: Set[UserID], party_id: PartyID
+                          ) -> Set[UserID]:
+    """Return the IDs of the users that are member of an orga team of
+    that party.
+    """
+    orga_id_rows = db.session \
+        .query(Membership.user_id) \
+        .join(OrgaTeam) \
+        .filter(OrgaTeam.party_id == party_id) \
+        .filter(Membership.user_id.in_(frozenset(user_ids))) \
+        .all()
+
+    return {row[0] for row in orga_id_rows}
 
 
 def get_memberships_for_party(party_id: PartyID) -> Sequence[Membership]:
