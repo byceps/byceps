@@ -49,6 +49,9 @@ def index():
 def _get_users_by_id(memberships):
     user_ids = {ms.user_id for ms in memberships}
 
-    users = user_service.find_users(user_ids, party_id=g.party.id)
+    users = user_service.find_users(user_ids)
+
+    # Each of these users is an organizer.
+    users = {u._replace(is_orga=True) for u in users}
 
     return {user.id: user for user in users}
