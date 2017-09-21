@@ -15,7 +15,6 @@ from ...database import db
 from ...typing import BrandID, PartyID, UserID
 
 from ..email import service as email_service
-from ..orga_team.models import OrgaTeam, Membership as OrgaTeamMembership
 from ..user_avatar.models import Avatar, AvatarSelection
 from ..verification_token.models import Token
 
@@ -63,7 +62,7 @@ def find_user(user_id: UserID, *, with_orga_teams: bool=False) -> Optional[User]
     return query.get(user_id)
 
 
-def find_users(user_ids: Set[UserID], *, party_id: PartyID=None) -> Set[UserTuple]:
+def find_users(user_ids: Set[UserID]) -> Set[UserTuple]:
     """Return the users and their current avatars' URLs with those IDs."""
     if not user_ids:
         return set()
@@ -75,23 +74,10 @@ def find_users(user_ids: Set[UserID], *, party_id: PartyID=None) -> Set[UserTupl
         .filter(User.id.in_(frozenset(user_ids))) \
         .all()
 
-    if party_id is not None:
-        orga_id_rows = db.session \
-            .query(OrgaTeamMembership.user_id) \
-            .join(OrgaTeam) \
-            .filter(OrgaTeam.party_id == party_id) \
-            .filter(OrgaTeamMembership.user_id.in_(frozenset(user_ids))) \
-            .group_by(OrgaTeamMembership.user_id) \
-            .having(db.func.count(OrgaTeamMembership.user_id) > 0) \
-            .all()
-        orga_team_members = {row[0] for row in orga_id_rows}
-    else:
-        orga_team_members = set()
-
     def to_tuples() -> Iterator[UserTuple]:
         for user_id, screen_name, is_deleted, avatar in rows:
             avatar_url = avatar.url if avatar else None
-            is_orga = user_id in orga_team_members
+            is_orga = False  # Information is not available here by design.
 
             yield UserTuple(
                 user_id,
