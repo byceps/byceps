@@ -20,8 +20,13 @@ from ....util.instances import ReprBuilder
 BadgeID = NewType('BadgeID', UUID)
 
 
-BadgeTuple = namedtuple('BadgeTuple',
-    'id, brand_id, label, description, image_url')
+BadgeTuple = namedtuple('BadgeTuple', [
+    'id',
+    'brand_id',
+    'label',
+    'description',
+    'image_url',
+])
 
 
 class Badge(db.Model):
