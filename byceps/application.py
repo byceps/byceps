@@ -109,7 +109,8 @@ def _get_blueprints(app):
         ('user',                '/users',               always          ),
         ('user_admin',          '/admin/users',         site_mode_admin ),
         ('user_avatar',         '/users',               always          ),
-        ('user_badge',          '/user_badges',         always          ),
+        ('user_badge',          '/user_badges',         site_mode_public),
+        ('user_badge_admin',    '/user_badges/admin',   site_mode_admin ),
         ('user_group',          '/user_groups',         site_mode_public),
     ]
 

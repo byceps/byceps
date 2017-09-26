@@ -1,7 +1,7 @@
-{% extends 'layout/base.html' %}
+{% extends 'layout/admin/base.html' %}
 {% from 'macros/user_avatar.html' import render_user_avatar_64 %}
-{% from 'macros/user_badge.html' import render_user_badge %}
-{% set current_page = 'user_badge' %}
+{% from 'macros/user_badge_admin.html' import render_user_badge %}
+{% set current_page = 'user_badge_admin' %}
 {% set title = 'Abzeichen - %s'|format(badge.label) %}
 
 {% block head %}
@@ -47,7 +47,7 @@
   <h2>an {{ recipients|length }} Personen verliehen</h2>
   <ul class="list-grid">
     {%- for user in recipients|sort(attribute='screen_name') %}
-    <li><a class="recipient" href="{{ url_for('user.view', user_id=user.id) }}">
+    <li><a class="recipient" href="{{ url_for('user_admin.view', user_id=user.id) }}">
 {{ render_user_avatar_64(user) }}
     </a></li>
     {%- endfor %}
