@@ -133,7 +133,7 @@ def create_document(party_id):
                                               image_url_path=image_url_path)
 
     flash_success('Das Dokument "{}" wurde angelegt.', version.snippet.name)
-    signals.snippet_created.send(None, snippet_id=version.snippet.id)
+    signals.snippet_created.send(None, snippet_version_id=version.id)
 
     return redirect_to('.view_version', snippet_version_id=version.id)
 
@@ -175,7 +175,7 @@ def update_document(snippet_id):
                                               image_url_path=image_url_path)
 
     flash_success('Das Dokument "{}" wurde aktualisiert.', version.snippet.name)
-    signals.snippet_updated.send(None, snippet_id=version.snippet.id)
+    signals.snippet_updated.send(None, snippet_version_id=version.id)
 
     return redirect_to('.view_version', snippet_version_id=version.id)
 
@@ -241,7 +241,7 @@ def create_fragment(party_id):
     version = snippet_service.create_fragment(party.id, name, creator.id, body)
 
     flash_success('Das Fragment "{}" wurde angelegt.', version.snippet.name)
-    signals.snippet_created.send(None, snippet_id=version.snippet.id)
+    signals.snippet_created.send(None, snippet_version_id=version.id)
 
     return redirect_to('.view_version', snippet_version_id=version.id)
 
@@ -278,7 +278,7 @@ def update_fragment(snippet_id):
     version = snippet_service.update_fragment(snippet, creator.id, body)
 
     flash_success('Das Fragment "{}" wurde aktualisiert.', version.snippet.name)
-    signals.snippet_updated.send(None, snippet_id=version.snippet.id)
+    signals.snippet_updated.send(None, snippet_version_id=version.id)
 
     return redirect_to('.view_version', snippet_version_id=version.id)
 
