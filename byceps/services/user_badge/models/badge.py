@@ -26,6 +26,7 @@ BadgeTuple = namedtuple('BadgeTuple', [
     'label',
     'description',
     'image_url',
+    'featured',
 ])
 
 
@@ -62,7 +63,8 @@ class Badge(db.Model):
             self.brand_id,
             self.label,
             self.description,
-            self.image_url
+            self.image_url,
+            self.featured
         )
 
     def __repr__(self) -> str:
