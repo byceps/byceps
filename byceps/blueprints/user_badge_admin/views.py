@@ -8,6 +8,7 @@ byceps.blueprints.user_badge_admin.views
 
 from flask import abort
 
+from ...services.brand import service as brand_service
 from ...services.user import service as user_service
 from ...services.user_badge import service as badge_service
 from ...util.framework.blueprint import create_blueprint
@@ -21,7 +22,26 @@ blueprint = create_blueprint('user_badge_admin', __name__)
 @templated
 def index():
     """List all badges."""
-    badges = badge_service.get_all_badges()
+    all_badges = badge_service.get_all_badges()
+
+    brands = brand_service.get_brands()
+    brands_by_id = {brand.id: brand for brand in brands}
+
+    def _find_brand_title(brand_id):
+        if brand_id is None:
+            return None
+
+        return brands_by_id[brand_id].title
+
+    badges = [
+        {
+            'id': badge.id,
+            'label': badge.label,
+            'image_url': badge.image_url,
+            'brand_title': _find_brand_title(badge.brand_id),
+            'featured': badge.featured,
+        } for badge in all_badges
+    ]
 
     return {
         'badges': badges,

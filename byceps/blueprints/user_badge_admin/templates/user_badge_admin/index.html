@@ -1,54 +1,40 @@
 {% extends 'layout/admin/base.html' %}
-{% from 'macros/user_badge_admin.html' import render_user_badge_linked %}
+{% from 'macros/admin.html' import render_extra_in_heading %}
+{% from 'macros/misc.html' import render_tag %}
 {% set current_page = 'user_badge_admin' %}
 {% set title = 'Abzeichen' %}
 
 {% block head %}
   <style>
-    .badges li {
-      align-items: center;
-      display: flex;
-    }
-    .badges li + li {
-      margin-top: 1.5rem;
-    }
-    .badges .badge {
-      flex: 0 0 auto;
-    }
-    .badges .badge a.user-badge {
-      display: block;
-    }
-    .badges .description {
-      margin-left: 1rem;
-    }
-    .badges .description p {
-      margin: 0;
-      padding: 0;
-    }
-    .badges .description p + p {
-      margin-top: 0.5rem;
+    table.badges td {
+      vertical-align: middle;
     }
   </style>
 {%- endblock %}
 
 {% block body %}
 
-  <h1>Abzeichen</h1>
+  <h1>Abzeichen {{ render_extra_in_heading(badges|length) }}</h1>
 
-  <ol class="badges">
-    {%- for badge in badges|sort(attribute='label') %}
-      <li>
-        <div class="badge">
-          {{ render_user_badge_linked(badge, 64) }}
-        </div>
-        {%- if badge.description %}
-        <div class="description">
-          <p><strong>{{ badge.label }}</strong></p>
-          <p>{{ badge.description }}</p>
-        </div>
-        {%- endif %}
-      </li>
-    {%- endfor %}
-  </ol>
+  <table class="index wide badges">
+    <thead>
+      <tr>
+        <th>Marke</th>
+        <th>Bild</th>
+        <th>Bezeichnung</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for badge in badges|sort(attribute='label') %}
+      <tr>
+        <td>{{ badge.brand_title|fallback('alle') }}</td>
+        <td><span class="user-badge size-32"><img src="{{ badge.image_url }}"></span></td>
+        <td><a href="{{ url_for('user_badge_admin.view', badge_id=badge.id) }}">{{ badge.label }}</a></td>
+        <td>{{ render_tag('featured') if badge.featured else '' }}</td>
+      </tr>
+      {%- endfor %}
+    </tbody>
+  </table>
 
 {%- endblock %}
