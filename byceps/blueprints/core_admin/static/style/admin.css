@@ -42,10 +42,15 @@ a {
 
 /* layout */
 
-#header-content,
-#page {
+.container {
+  display: block;
   margin: 0 auto;
   max-width: 960px;
+  width: 960px;
+}
+
+#header-content,
+#page {
   padding: 20px;
 }
 #footer {
@@ -597,6 +602,7 @@ table.activity-stream-item td:first-child {
 
   #page {
     max-width: auto;
+    width: auto;
   }
 
   #page-grid {
