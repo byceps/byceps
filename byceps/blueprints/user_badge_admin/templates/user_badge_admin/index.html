@@ -1,5 +1,6 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
+{% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_tag %}
 {% set current_page = 'user_badge_admin' %}
 {% set title = 'Abzeichen' %}
@@ -15,6 +16,12 @@
 {% block body %}
 
   <h1>Abzeichen {{ render_extra_in_heading(badges|length) }}</h1>
+
+  {%- if g.current_user.has_permission(UserBadgePermission.create) %}
+  <div class="button-row">
+    <a class="button" href="{{ url_for('.create_form') }}">{{ render_icon('add') }} Abzeichen erstellen</a>
+  </div>
+  {%- endif %}
 
   <table class="index wide badges">
     <thead>

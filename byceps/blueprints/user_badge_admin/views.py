@@ -6,16 +6,27 @@ byceps.blueprints.user_badge_admin.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from flask import abort
+from flask import abort, request
 
 from ...services.brand import service as brand_service
 from ...services.user import service as user_service
 from ...services.user_badge import service as badge_service
 from ...util.framework.blueprint import create_blueprint
+from ...util.framework.flash import flash_success
 from ...util.framework.templating import templated
+from ...util.views import redirect_to
+
+from ..authorization.decorators import permission_required
+from ..authorization.registry import permission_registry
+
+from .authorization import UserBadgePermission
+from .forms import CreateForm
 
 
 blueprint = create_blueprint('user_badge_admin', __name__)
+
+
+permission_registry.register_enum(UserBadgePermission)
 
 
 @blueprint.route('/badges')
@@ -65,3 +76,52 @@ def view(badge_id):
         'badge': badge,
         'recipients': recipients,
     }
+
+
+@blueprint.route('/create')
+@permission_required(UserBadgePermission.create)
+@templated
+def create_form(erroneous_form=None):
+    """Show form to create a user badge."""
+    form = erroneous_form if erroneous_form else CreateForm()
+    _set_brand_ids_on_form(form)
+
+    return {
+        'form': form,
+    }
+
+
+@blueprint.route('/badges', methods=['POST'])
+@permission_required(UserBadgePermission.create)
+def create():
+    """Create a user badge."""
+    form = CreateForm(request.form)
+    _set_brand_ids_on_form(form)
+
+    if not form.validate():
+        return create_form(form)
+
+    brand_id = form.brand_id.data
+    label = form.label.data.strip()
+    description = form.description.data.strip()
+    image_filename = form.image_filename.data.strip()
+    featured = form.featured.data
+
+    if brand_id:
+        brand = brand_service.find_brand(brand_id)
+        brand_id = brand.id
+    else:
+        brand_id = None
+
+    badge = badge_service.create_badge(label, image_filename,
+                                       brand_id=brand_id,
+                                       description=description,
+                                       featured=featured)
+
+    flash_success('Das Abzeichen "{}" wurde angelegt.', badge.label)
+    return redirect_to('.index')
+
+
+def _set_brand_ids_on_form(form):
+    brands = brand_service.get_brands()
+    form.set_brand_choices(brands)
