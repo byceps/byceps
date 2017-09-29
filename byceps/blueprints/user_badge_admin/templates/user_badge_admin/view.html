@@ -7,6 +7,7 @@
   <style>
     .badge-details {
       display: flex;
+      margin-top: 2rem;
     }
     .badge-details .badge {
       flex: 0 0 auto;
@@ -35,6 +36,13 @@
     </ol>
   </nav>
   <h1>{{ badge.label }}</h1>
+
+  <table class="index">
+    <tr>
+      <th>Slug</th>
+      <td>{{ badge.slug }}</td>
+    </tr>
+  </table>
 
   <div class="badge-details">
     <div class="badge">

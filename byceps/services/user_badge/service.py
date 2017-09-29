@@ -17,12 +17,12 @@ from .models.awarding import BadgeAwarding, BadgeAwardingTuple, \
 from .models.badge import Badge, BadgeID, BadgeTuple
 
 
-def create_badge(label: str, image_filename: str, *,
+def create_badge(slug: str, label: str, image_filename: str, *,
                  brand_id: Optional[BrandID]=None,
                  description: Optional[str]=None,
                  featured: bool=False) -> BadgeTuple:
     """Introduce a new badge."""
-    badge = Badge(label, image_filename, brand_id=brand_id,
+    badge = Badge(slug, label, image_filename, brand_id=brand_id,
                   description=description, featured=featured)
 
     db.session.add(badge)
@@ -34,6 +34,18 @@ def create_badge(label: str, image_filename: str, *,
 def find_badge(badge_id: BadgeID) -> Optional[BadgeTuple]:
     """Return the badge with that id, or `None` if not found."""
     badge = Badge.query.get(badge_id)
+
+    if badge is None:
+        return None
+
+    return badge.to_tuple()
+
+
+def find_badge_by_slug(slug: str) -> Optional[BadgeTuple]:
+    """Return the badge with that slug, or `None` if not found."""
+    badge = Badge.query \
+        .filter_by(slug=slug) \
+        .one_or_none()
 
     if badge is None:
         return None

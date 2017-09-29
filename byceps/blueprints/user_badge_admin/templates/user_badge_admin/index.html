@@ -28,7 +28,7 @@
       <tr>
         <th>Marke</th>
         <th>Bild</th>
-        <th>Bezeichnung</th>
+        <th>Bezeichnung<br>Slug</th>
         <th></th>
       </tr>
     </thead>
@@ -37,7 +37,10 @@
       <tr>
         <td>{{ badge.brand_title|fallback('alle') }}</td>
         <td><span class="user-badge size-32"><img src="{{ badge.image_url }}"></span></td>
-        <td><a href="{{ url_for('user_badge_admin.view', badge_id=badge.id) }}">{{ badge.label }}</a></td>
+        <td>
+          <a href="{{ url_for('user_badge_admin.view', badge_id=badge.id) }}">{{ badge.label }}</a><br>
+          {{ badge.slug|dim }}
+        </td>
         <td>{{ render_tag('featured') if badge.featured else '' }}</td>
       </tr>
       {%- endfor %}

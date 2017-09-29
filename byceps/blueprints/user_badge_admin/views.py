@@ -47,6 +47,7 @@ def index():
     badges = [
         {
             'id': badge.id,
+            'slug': badge.slug,
             'label': badge.label,
             'image_url': badge.image_url,
             'brand_title': _find_brand_title(badge.brand_id),
@@ -102,6 +103,7 @@ def create():
         return create_form(form)
 
     brand_id = form.brand_id.data
+    slug = form.slug.data.strip()
     label = form.label.data.strip()
     description = form.description.data.strip()
     image_filename = form.image_filename.data.strip()
@@ -113,7 +115,7 @@ def create():
     else:
         brand_id = None
 
-    badge = badge_service.create_badge(label, image_filename,
+    badge = badge_service.create_badge(slug, label, image_filename,
                                        brand_id=brand_id,
                                        description=description,
                                        featured=featured)

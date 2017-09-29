@@ -23,6 +23,7 @@ BadgeID = NewType('BadgeID', UUID)
 BadgeTuple = namedtuple('BadgeTuple', [
     'id',
     'brand_id',
+    'slug',
     'label',
     'description',
     'image_url',
@@ -36,16 +37,18 @@ class Badge(db.Model):
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     brand_id = db.Column(db.Unicode(20), db.ForeignKey('brands.id'), nullable=True)
+    slug = db.Column(db.Unicode(40), unique=True, index=True, nullable=False)
     label = db.Column(db.Unicode(80), unique=True, nullable=False)
     description = db.Column(db.UnicodeText, nullable=True)
     image_filename = db.Column(db.Unicode(80), nullable=False)
     featured = db.Column(db.Boolean, default=False, nullable=False)
 
-    def __init__(self, label: str, image_filename: str, *,
+    def __init__(self, slug: str, label: str, image_filename: str, *,
                  brand_id: Optional[BrandID]=None,
                  description: Optional[str]=None,
                  featured: bool=False) -> None:
         self.brand_id = brand_id
+        self.slug = slug
         self.label = label
         self.description = description
         self.image_filename = image_filename
@@ -61,6 +64,7 @@ class Badge(db.Model):
         return BadgeTuple(
             self.id,
             self.brand_id,
+            self.slug,
             self.label,
             self.description,
             self.image_url,
