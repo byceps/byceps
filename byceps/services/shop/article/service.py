@@ -15,7 +15,7 @@ from flask_sqlalchemy import Pagination
 from ....database import BaseQuery, db
 from ....typing import PartyID
 
-from ...party.models import Party
+from ...party.models.party import Party
 
 from .models.article import Article, ArticleNumber
 from .models.attached_article import AttachedArticle

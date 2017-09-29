@@ -1,6 +1,6 @@
 """
-byceps.services.party.models
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.party.models.party
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2017 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -11,12 +11,12 @@ from datetime import datetime
 
 from sqlalchemy.ext.hybrid import hybrid_property
 
-from ...database import db
-from ...typing import BrandID, PartyID
-from ...util.datetime.range import DateTimeRange
-from ...util.instances import ReprBuilder
+from ....database import db
+from ....typing import BrandID, PartyID
+from ....util.datetime.range import DateTimeRange
+from ....util.instances import ReprBuilder
 
-from ..brand.models import Brand
+from ...brand.models import Brand
 
 
 PartyTuple = namedtuple('PartyTuple', 'id, brand_id, title, starts_at, ends_at')

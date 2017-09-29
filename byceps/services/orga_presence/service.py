@@ -16,7 +16,7 @@ from ...database import db
 from ...typing import PartyID
 from ...util.datetime.range import create_adjacent_ranges, DateTimeRange
 
-from ..party.models import Party
+from ..party.models.party import Party
 
 from .models import Presence, Task
 

@@ -22,7 +22,7 @@ from ....database import BaseQuery, db, generate_uuid
 from ....typing import PartyID, UserID
 from ....util.instances import ReprBuilder
 
-from ...party.models import Party
+from ...party.models.party import Party
 from ...user.models.user import User
 
 

@@ -18,7 +18,7 @@ from .....database import BaseQuery, db, generate_uuid
 from .....typing import PartyID
 from .....util.instances import ReprBuilder
 
-from ....party.models import Party
+from ....party.models.party import Party
 
 
 ArticleID = NewType('ArticleID', UUID)

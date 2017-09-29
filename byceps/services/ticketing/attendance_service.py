@@ -14,7 +14,7 @@ from typing import Dict, Sequence, Set
 from ...database import db
 from ...typing import PartyID, UserID
 
-from ..party.models import Party, PartyTuple
+from ..party.models.party import Party, PartyTuple
 from ..party import service as party_service
 from ..seating.models.category import Category
 from ..user.models.user import UserTuple

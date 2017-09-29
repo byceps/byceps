@@ -12,7 +12,7 @@ from ...database import db
 from ...typing import PartyID, UserID
 
 from ..orga.models import OrgaFlag
-from ..party.models import Party
+from ..party.models.party import Party
 from ..user.models.user import User
 
 from .models import Membership, MembershipID, OrgaTeam, OrgaTeamID

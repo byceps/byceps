@@ -16,7 +16,7 @@ from ...typing import BrandID, PartyID
 
 from ..brand.models import Brand
 
-from .models import Party, PartyTuple
+from .models.party import Party, PartyTuple
 
 
 class UnknownPartyId(Exception):

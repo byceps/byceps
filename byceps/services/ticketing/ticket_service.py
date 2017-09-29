@@ -14,7 +14,7 @@ from flask_sqlalchemy import Pagination
 from ...database import db
 from ...typing import PartyID, UserID
 
-from ..party.models import Party
+from ..party.models.party import Party
 from ..seating.models.category import Category, CategoryID
 from ..seating.models.seat import Seat, SeatID
 

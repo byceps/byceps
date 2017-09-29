@@ -17,7 +17,7 @@ from ....blueprints.shop_order.signals import order_placed
 from ....database import db
 from ....typing import PartyID, UserID
 
-from ...party.models import Party
+from ...party.models.party import Party
 
 from ..article.models.article import Article
 from ..cart.models import Cart
