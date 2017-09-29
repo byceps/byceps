@@ -211,7 +211,7 @@ def topic_create(category_id):
     topic = board_topic_service.create_topic(category.id, creator.id, title, body)
 
     flash_success('Das Thema "{}" wurde hinzugefügt.', topic.title)
-    signals.topic_created.send(None, topic_id=topic.id)
+    signals.topic_created.send(None, topic_id=topic.id, url=topic.external_url)
 
     return redirect(topic.external_url)
 
@@ -312,7 +312,8 @@ def topic_hide(topic_id):
     flash_success('Das Thema "{}" wurde versteckt.', topic.title, icon='hidden')
 
     signals.topic_hidden.send(None, topic_id=topic.id,
-                              moderator_id=moderator_id)
+                              moderator_id=moderator_id,
+                              url=topic.external_url)
 
     return url_for('.category_view', slug=topic.category.slug, _anchor=topic.anchor)
 
@@ -331,7 +332,8 @@ def topic_unhide(topic_id):
         'Das Thema "{}" wurde wieder sichtbar gemacht.', topic.title, icon='view')
 
     signals.topic_unhidden.send(None, topic_id=topic.id,
-                                moderator_id=moderator_id)
+                                moderator_id=moderator_id,
+                                url=topic.external_url)
 
     return url_for('.category_view', slug=topic.category.slug, _anchor=topic.anchor)
 
@@ -349,7 +351,8 @@ def topic_lock(topic_id):
     flash_success('Das Thema "{}" wurde geschlossen.', topic.title, icon='lock')
 
     signals.topic_locked.send(None, topic_id=topic.id,
-                              moderator_id=moderator_id)
+                              moderator_id=moderator_id,
+                              url=topic.external_url)
 
     return url_for('.category_view', slug=topic.category.slug, _anchor=topic.anchor)
 
@@ -368,7 +371,8 @@ def topic_unlock(topic_id):
                   icon='unlock')
 
     signals.topic_unlocked.send(None, topic_id=topic.id,
-                                moderator_id=moderator_id)
+                                moderator_id=moderator_id,
+                                url=topic.external_url)
 
     return url_for('.category_view', slug=topic.category.slug, _anchor=topic.anchor)
 
@@ -386,7 +390,8 @@ def topic_pin(topic_id):
     flash_success('Das Thema "{}" wurde angepinnt.', topic.title, icon='pin')
 
     signals.topic_pinned.send(None, topic_id=topic.id,
-                              moderator_id=moderator_id)
+                              moderator_id=moderator_id,
+                              url=topic.external_url)
 
     return url_for('.category_view', slug=topic.category.slug, _anchor=topic.anchor)
 
@@ -404,7 +409,8 @@ def topic_unpin(topic_id):
     flash_success('Das Thema "{}" wurde wieder gelöst.', topic.title)
 
     signals.topic_unpinned.send(None, topic_id=topic.id,
-                                moderator_id=moderator_id)
+                                moderator_id=moderator_id,
+                                url=topic.external_url)
 
     return url_for('.category_view', slug=topic.category.slug, _anchor=topic.anchor)
 
@@ -436,7 +442,8 @@ def topic_move(topic_id):
     signals.topic_moved.send(None, topic_id=topic.id,
                              old_category_id=old_category.id,
                              new_category_id=new_category.id,
-                             moderator_id=moderator_id)
+                             moderator_id=moderator_id,
+                             url=topic.external_url)
 
     return redirect_to('.category_view',
                        slug=topic.category.slug,
@@ -523,7 +530,8 @@ def posting_create(topic_id):
                                                          g.current_user._user)
 
     flash_success('Deine Antwort wurde hinzugefügt.')
-    signals.posting_created.send(None, posting_id=posting.id)
+    signals.posting_created.send(None, posting_id=posting.id,
+                                 url=posting.external_url)
 
     postings_per_page = _get_postings_per_page_value()
     page_count = topic.count_pages(postings_per_page)
@@ -632,7 +640,8 @@ def posting_hide(posting_id):
     flash_success('Der Beitrag wurde versteckt.', icon='hidden')
 
     signals.posting_hidden.send(None, posting_id=posting.id,
-                                moderator_id=moderator_id)
+                                moderator_id=moderator_id,
+                                url=posting.external_url)
 
     return url_for('.topic_view',
                    topic_id=posting.topic.id,
@@ -655,7 +664,8 @@ def posting_unhide(posting_id):
     flash_success('Der Beitrag wurde wieder sichtbar gemacht.', icon='view')
 
     signals.posting_unhidden.send(None, posting_id=posting.id,
-                                  moderator_id=moderator_id)
+                                  moderator_id=moderator_id,
+                                  url=posting.external_url)
 
     return url_for('.topic_view',
                    topic_id=posting.topic.id,
