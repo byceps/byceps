@@ -11,7 +11,7 @@ from typing import Dict, Iterator, Optional, Sequence, Tuple
 from ...database import db
 from ...typing import BrandID, UserID
 
-from ..brand.models import Brand
+from ..brand.models.brand import Brand
 from ..user.models.user import User
 
 from .models import OrgaFlag

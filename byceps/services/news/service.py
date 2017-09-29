@@ -13,7 +13,7 @@ from flask_sqlalchemy import Pagination
 from ...database import db
 from ...typing import BrandID, UserID
 
-from ..brand.models import Brand
+from ..brand.models.brand import Brand
 
 from .models import CurrentVersionAssociation, Item, ItemID, ItemVersion
 

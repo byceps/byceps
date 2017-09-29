@@ -18,7 +18,7 @@ from ...typing import BrandID, UserID
 from ...util.instances import ReprBuilder
 from ...util.templating import load_template
 
-from ..brand.models import Brand
+from ..brand.models.brand import Brand
 from ..user.models.user import User
 
 

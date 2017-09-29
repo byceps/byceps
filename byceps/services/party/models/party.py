@@ -16,7 +16,7 @@ from ....typing import BrandID, PartyID
 from ....util.datetime.range import DateTimeRange
 from ....util.instances import ReprBuilder
 
-from ...brand.models import Brand
+from ...brand.models.brand import Brand
 
 
 PartyTuple = namedtuple('PartyTuple', 'id, brand_id, title, starts_at, ends_at')

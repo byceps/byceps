@@ -11,7 +11,7 @@ from typing import List, Optional
 from ...typing import BrandID
 from ...database import db
 
-from .models import Brand
+from .models.brand import Brand
 
 
 def create_brand(brand_id: BrandID, title: str) -> Brand:

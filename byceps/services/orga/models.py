@@ -10,7 +10,7 @@ from ...database import db
 from ...typing import BrandID, UserID
 from ...util.instances import ReprBuilder
 
-from ..brand.models import Brand
+from ..brand.models.brand import Brand
 from ..user.models.user import User
 
 

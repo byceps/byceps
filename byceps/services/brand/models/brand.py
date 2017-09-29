@@ -1,14 +1,14 @@
 """
-byceps.services.brand.models
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.brand.models.brand
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2017 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
 """
 
-from ...database import db
-from ...typing import BrandID
-from ...util.instances import ReprBuilder
+from ....database import db
+from ....typing import BrandID
+from ....util.instances import ReprBuilder
 
 
 class Brand(db.Model):
