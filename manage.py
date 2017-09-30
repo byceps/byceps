@@ -18,16 +18,6 @@ from werkzeug.wsgi import SharedDataMiddleware
 from byceps.application import create_app, init_app
 from byceps.config import STATIC_URL_PREFIX_BRAND, STATIC_URL_PREFIX_GLOBAL, \
     STATIC_URL_PREFIX_PARTY
-from byceps.database import db
-from byceps.services.brand.models.brand import Brand
-from byceps.services.party.models.party import Party
-from byceps.services.shop.article.models.article import Article
-from byceps.services.shop.order.models.order import Order, \
-    PaymentState as OrderPaymentState
-from byceps.services.shop.order.models.order_item import OrderItem
-from byceps.services.user.models.detail import UserDetail
-from byceps.services.user.models.user import User
-from byceps.services.user.service import find_user_by_screen_name
 from byceps.util.system import get_config_filename_from_env_or_exit
 
 
@@ -77,23 +67,6 @@ class SslServer(Server):
 
 
 manager.add_command('runserver_ssl', SslServer())
-
-
-@manager.shell
-def make_shell_context():
-    return {
-        'app': app,
-        'db': db,
-        'Article': Article,
-        'Brand': Brand,
-        'Order': Order,
-        'OrderItem': OrderItem,
-        'OrderPaymentState': OrderPaymentState,
-        'Party': Party,
-        'User': User,
-        'UserDetail': UserDetail,
-        'find_user_by_screen_name': find_user_by_screen_name,
-    }
 
 
 if __name__ == '__main__':
