@@ -90,3 +90,10 @@ BYCEPS' functionality as well as the persisted data.
 .. code:: sh
 
     (venv)$ BYCEPS_CONFIG=../config/development_admin.py FLASK_APP=app.py flask shell
+
+Installation of an extra package makes the shell easier to use due to features
+like command history and auto-completion:
+
+.. code:: sh
+
+    (venv)$ pip install flask-shell-ipython
