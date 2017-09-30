@@ -6,18 +6,23 @@ byceps.blueprints.user_badge_admin.forms
 :License: Modified BSD, see LICENSE for details.
 """
 
+import re
+
 from wtforms import BooleanField, SelectField, StringField, TextAreaField
-from wtforms.validators import InputRequired, Length
+from wtforms.validators import InputRequired, Length, Regexp
 
 from ...util.l10n import LocalizedForm
 
 
+SLUG_REGEX = re.compile('^[a-z0-9-]+$')
+
+
 class CreateForm(LocalizedForm):
     brand_id = SelectField('Marke')
-    slug = StringField('Slug', validators=[InputRequired(), Length(max=40)])
-    label = StringField('Bezeichnung', validators=[InputRequired(), Length(max=80)])
+    slug = StringField('Slug', [InputRequired(), Length(max=80), Regexp(SLUG_REGEX, message='Nur Kleinbuchstaben, Ziffern und Bindestrich sind erlaubt.')])
+    label = StringField('Bezeichnung', [InputRequired(), Length(max=80)])
     description = TextAreaField('Beschreibung')
-    image_filename = StringField('Bilddateiname', validators=[InputRequired(), Length(max=80)])
+    image_filename = StringField('Bilddateiname', [InputRequired(), Length(max=80)])
     featured = BooleanField('featured')
 
     def set_brand_choices(self, brands):
