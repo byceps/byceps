@@ -52,7 +52,7 @@ def index_for_brand(brand_id, page):
 @blueprint.route('/for_brand/<brand_id>/create')
 @permission_required(NewsItemPermission.create)
 @templated
-def create_form(brand_id, *, erroneous_form=None):
+def create_form(brand_id, erroneous_form=None):
     """Show form to create a news item."""
     brand = get_brand_or_404(brand_id)
 
@@ -75,6 +75,8 @@ def create(brand_id):
     brand = get_brand_or_404(brand_id)
 
     form = ItemCreateForm(request.form)
+    if not form.validate():
+        return create_form(brand.id, form)
 
     slug = form.slug.data.strip().lower()
     creator = g.current_user
@@ -94,11 +96,12 @@ def create(brand_id):
 @blueprint.route('/items/<uuid:item_id>/update')
 @permission_required(NewsItemPermission.update)
 @templated
-def update_form(item_id):
+def update_form(item_id, erroneous_form=None):
     """Show form to update a news item."""
     item = get_item_or_404(item_id)
 
-    form = ItemUpdateForm(obj=item.current_version, slug=item.slug)
+    form = erroneous_form if erroneous_form \
+            else ItemUpdateForm(obj=item.current_version, slug=item.slug)
 
     return {
         'item': item,
@@ -113,6 +116,8 @@ def update(item_id):
     item = get_item_or_404(item_id)
 
     form = ItemUpdateForm(request.form)
+    if not form.validate():
+        return update_form(item.id, form)
 
     creator = g.current_user
     title = form.title.data.strip()
