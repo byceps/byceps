@@ -86,7 +86,7 @@ def create(brand_id):
                                     image_url_path=image_url_path)
 
     flash_success('Die News "{}" wurde angelegt.', item.title)
-    signals.item_published.send(None, item_id=item.id, url=item.external_url)
+    signals.item_published.send(None, item_id=item.id)
 
     return redirect_to('.index_for_brand', brand_id=brand.id)
 
