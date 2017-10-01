@@ -14,6 +14,7 @@ from uuid import UUID
 
 from flask import g
 from sqlalchemy.ext.associationproxy import association_proxy
+from werkzeug.utils import cached_property
 
 from ....database import db, generate_uuid
 from ....typing import PartyID
@@ -104,7 +105,7 @@ class User(db.Model):
     def has_any_permission(self, *permissions: Set[Enum]) -> bool:
         return any(map(self.has_permission, permissions))
 
-    @property
+    @cached_property
     def is_orga(self) -> bool:
         from ...orga_team import service as orga_team_service
         party = getattr(g, 'party', None)

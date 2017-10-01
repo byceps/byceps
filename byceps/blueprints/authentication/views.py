@@ -7,7 +7,6 @@ byceps.blueprints.authentication.views
 """
 
 from flask import abort, current_app, g, request, url_for
-from werkzeug.utils import cached_property
 
 from ...config import get_site_mode, get_user_registration_enabled
 from ...services.authentication.exceptions import AuthenticationFailed
@@ -54,7 +53,7 @@ class CurrentUser:
 
         self.avatar_url = avatar_url
 
-    @cached_property
+    @property
     def is_orga(self):
         return orga_team_service.is_orga_for_party(self.id, g.party.id)
 
