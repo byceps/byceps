@@ -18,6 +18,10 @@ from ..user.models.user import User
 from .models import Membership, MembershipID, OrgaTeam, OrgaTeamID
 
 
+# -------------------------------------------------------------------- #
+# teams
+
+
 def create_team(party_id: PartyID, title: str) -> OrgaTeam:
     """Create an orga team for that party."""
     team = OrgaTeam(party_id, title)
@@ -53,6 +57,10 @@ def get_teams_for_party_with_memberships(party: Party) -> Sequence[OrgaTeam]:
         .options(db.joinedload('memberships')) \
         .filter_by(party=party) \
         .all()
+
+
+# -------------------------------------------------------------------- #
+# memberships
 
 
 def create_membership(team_id: OrgaTeamID, user_id: UserID, duties: str
@@ -99,6 +107,22 @@ def find_membership_for_party(user_id: UserID, party_id: PartyID
         .one_or_none()
 
 
+def get_memberships_for_party(party_id: PartyID) -> Sequence[Membership]:
+    """Return all orga team memberships for that party."""
+    return Membership.query \
+        .for_party_id(party_id) \
+        .options(
+            db.joinedload('orga_team'),
+            db.joinedload('user').load_only('id'),
+            db.joinedload('user').joinedload('detail').load_only('first_names', 'last_name'),
+        ) \
+        .all()
+
+
+# -------------------------------------------------------------------- #
+# organizers
+
+
 def select_orgas_for_party(user_ids: Set[UserID], party_id: PartyID
                           ) -> Set[UserID]:
     """Return the IDs of the users that are member of an orga team of
@@ -112,18 +136,6 @@ def select_orgas_for_party(user_ids: Set[UserID], party_id: PartyID
         .all()
 
     return {row[0] for row in orga_id_rows}
-
-
-def get_memberships_for_party(party_id: PartyID) -> Sequence[Membership]:
-    """Return all orga team memberships for that party."""
-    return Membership.query \
-        .for_party_id(party_id) \
-        .options(
-            db.joinedload('orga_team'),
-            db.joinedload('user').load_only('id'),
-            db.joinedload('user').joinedload('detail').load_only('first_names', 'last_name'),
-        ) \
-        .all()
 
 
 def get_unassigned_orgas_for_party(party: Party) -> Sequence[User]:
