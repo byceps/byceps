@@ -17,7 +17,6 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from werkzeug.utils import cached_property
 
 from ....database import db, generate_uuid
-from ....typing import PartyID
 from ....util.instances import ReprBuilder
 
 from ...user_avatar.models import AvatarSelection

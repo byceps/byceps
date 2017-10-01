@@ -12,7 +12,7 @@ from typing import Dict, Iterator, Optional, Set
 from flask import url_for
 
 from ...database import db
-from ...typing import BrandID, PartyID, UserID
+from ...typing import BrandID, UserID
 
 from ..email import service as email_service
 from ..user_avatar.models import Avatar, AvatarSelection

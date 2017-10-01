@@ -9,8 +9,6 @@ byceps.services.snippet.service
 from difflib import HtmlDiff
 from typing import Optional, Sequence
 
-from sqlalchemy.orm.exc import NoResultFound
-
 from ...database import db
 from ...typing import PartyID, UserID
 
