@@ -9,7 +9,7 @@ byceps.services.user.models.user
 from collections import namedtuple
 from datetime import datetime
 from enum import Enum
-from typing import Set
+from typing import Optional, Set
 from uuid import UUID
 
 from flask import g
@@ -97,7 +97,7 @@ class User(db.Model):
         return self.enabled
 
     @property
-    def avatar_url(self):
+    def avatar_url(self) -> Optional[str]:
         avatar = self.avatar
         return avatar.url if (avatar is not None) else None
 
