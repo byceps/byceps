@@ -159,7 +159,6 @@ class LastTopicView(db.Model):
     __tablename__ = 'board_topics_lastviews'
 
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
-    user = db.relationship(User, foreign_keys=[user_id])
     topic_id = db.Column(db.Uuid, db.ForeignKey('board_topics.id'), primary_key=True)
     topic = db.relationship(Topic)
     occured_at = db.Column(db.DateTime, nullable=False)
@@ -173,11 +172,13 @@ class LastTopicView(db.Model):
         if user.is_anonymous:
             return None
 
-        return cls.query.filter_by(user=user, topic_id=topic_id).first()
+        return cls.query \
+            .filter_by(user_id=user.id, topic_id=topic_id) \
+            .first()
 
     def __repr__(self) -> str:
         return ReprBuilder(self) \
-            .add('user', self.user.screen_name) \
+            .add_with_lookup('user_id') \
             .add('topic', self.topic.title) \
             .add_with_lookup('occured_at') \
             .build()

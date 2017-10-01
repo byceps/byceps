@@ -96,7 +96,6 @@ class LastCategoryView(db.Model):
     __tablename__ = 'board_categories_lastviews'
 
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
-    user = db.relationship(User, foreign_keys=[user_id])
     category_id = db.Column(db.Uuid, db.ForeignKey('board_categories.id'), primary_key=True)
     category = db.relationship(Category)
     occured_at = db.Column(db.DateTime, nullable=False)
@@ -111,11 +110,13 @@ class LastCategoryView(db.Model):
         if user.is_anonymous:
             return None
 
-        return cls.query.filter_by(user=user, category_id=category_id).first()
+        return cls.query \
+            .filter_by(user_id=user.id, category_id=category_id) \
+            .first()
 
     def __repr__(self) -> str:
         return ReprBuilder(self) \
-            .add('user', self.user.screen_name) \
+            .add_with_lookup('user_id') \
             .add('category', self.category.title) \
             .add_with_lookup('occured_at') \
             .build()
