@@ -74,6 +74,7 @@ class User(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.now, nullable=False)
     screen_name = db.Column(db.Unicode(40), unique=True, nullable=False)
     email_address = db.Column(db.Unicode(80), unique=True, nullable=False)
+    email_address_verified = db.Column(db.Boolean, default=False, nullable=False)
     enabled = db.Column(db.Boolean, default=False, nullable=False)
     deleted = db.Column(db.Boolean, default=False, nullable=False)
     legacy_id = db.Column(db.Integer)
