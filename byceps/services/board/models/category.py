@@ -7,12 +7,12 @@ byceps.services.board.models.category
 """
 
 from uuid import UUID
-from typing import NewType, Optional
+from typing import NewType
 
 from sqlalchemy.ext.orderinglist import ordering_list
 
 from ....database import BaseQuery, db, generate_uuid
-from ....typing import BrandID, UserID
+from ....typing import BrandID
 from ....util.instances import ReprBuilder
 
 from ...brand.models.brand import Brand
@@ -70,32 +70,4 @@ class Category(db.Model):
             .add('brand', self.brand_id) \
             .add_with_lookup('slug') \
             .add_with_lookup('title') \
-            .build()
-
-
-class LastCategoryView(db.Model):
-    """The last time a user looked into specific category."""
-    __tablename__ = 'board_categories_lastviews'
-
-    user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
-    category_id = db.Column(db.Uuid, db.ForeignKey('board_categories.id'), primary_key=True)
-    category = db.relationship(Category)
-    occured_at = db.Column(db.DateTime, nullable=False)
-
-    def __init__(self, user_id: UserID, category_id: CategoryID) -> None:
-        self.user_id = user_id
-        self.category_id = category_id
-
-    @classmethod
-    def find(cls, user_id: UserID, category_id: CategoryID
-            ) -> Optional['LastCategoryView']:
-        return cls.query \
-            .filter_by(user_id=user_id, category_id=category_id) \
-            .first()
-
-    def __repr__(self) -> str:
-        return ReprBuilder(self) \
-            .add_with_lookup('user_id') \
-            .add('category', self.category.title) \
-            .add_with_lookup('occured_at') \
             .build()
