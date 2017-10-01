@@ -113,8 +113,8 @@ class User(db.Model):
         return (party is not None) and self.is_orga_for_party(party.id)
 
     def is_orga_for_party(self, party_id: PartyID) -> bool:
-        party_ids = {ms.orga_team.party_id for ms in self.orga_team_memberships}
-        return party_id in party_ids
+        from ...orga_team import service as orga_team_service
+        return orga_team_service.is_orga_for_party(self.id, party_id)
 
     def __eq__(self, other) -> bool:
         return (other is not None) and (self.id == other.id)
