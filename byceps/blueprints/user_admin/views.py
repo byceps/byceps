@@ -49,7 +49,7 @@ def index(page):
 
     enabled_filter = UserEnabledFilter.__members__.get(only)
 
-    user_state_filter = UserStateFilter.find(enabled_filter )
+    user_state_filter = UserStateFilter.find(enabled_filter)
 
     users = service.get_users_paginated(page, per_page,
                                         search_term=search_term,
