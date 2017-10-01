@@ -61,20 +61,6 @@ class Category(db.Model):
         self.title = title
         self.description = description
 
-    def contains_unseen_postings(self, user_id: UserID) -> bool:
-        """Return `True` if the category contains postings created after
-        the last time the user viewed it.
-        """
-        if self.last_posting_updated_at is None:
-            return False
-
-        last_view = LastCategoryView.find(user_id, self.id)
-
-        if last_view is None:
-            return True
-
-        return self.last_posting_updated_at > last_view.occured_at
-
     def __eq__(self, other) -> bool:
         return self.id == other.id
 

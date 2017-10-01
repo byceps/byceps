@@ -53,6 +53,13 @@ def category_index():
 
     categories = board_category_service.get_categories_with_last_updates(brand_id)
 
+    user = g.current_user
+
+    for category in categories:
+        category.contains_unseen_postings = not user.is_anonymous \
+            and board_last_view_service.contains_category_unseen_postings(
+                category, user.id)
+
     return {
         'categories': categories,
     }

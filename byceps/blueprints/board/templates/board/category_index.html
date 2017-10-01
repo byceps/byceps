@@ -25,7 +25,7 @@
           <a class="board-category-link disguised" href="{{ url_for('.category_view', slug=category.slug) }}">
             <div class="board-category-title">
               <strong>{{ category.title }}</strong>
-              {%- if not g.current_user.is_anonymous and category.contains_unseen_postings(g.current_user.id) %} {{ render_flag_new() }}{% endif %}
+              {%- if category.contains_unseen_postings %} {{ render_flag_new() }}{% endif %}
             </div>
             <div class="board-category-description">{{ category.description }}</div>
           </a>
