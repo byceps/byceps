@@ -69,14 +69,15 @@ def category_view(slug, page):
     if category is None:
         abort(404)
 
-    if not g.current_user.is_anonymous:
+    user = g.current_user
+
+    if not user.is_anonymous:
         board_last_view_service.mark_category_as_just_viewed(category.id,
-                                                             g.current_user.id)
+                                                             user.id)
 
     topics_per_page = _get_topics_per_page_value()
 
-    topics = board_topic_service.paginate_topics(category.id,
-                                                 g.current_user._user, page,
+    topics = board_topic_service.paginate_topics(category.id, user._user, page,
                                                  topics_per_page)
 
     return {
@@ -94,20 +95,22 @@ def category_view(slug, page):
 @templated
 def topic_view(topic_id, page):
     """List postings for the topic."""
+    user = g.current_user
+
     topic = board_topic_service.find_topic_visible_for_user(topic_id,
-        g.current_user._user)
+        user._user)
 
     if topic is None:
         abort(404)
 
     # Copy last view timestamp for later use to compare postings
     # against it.
-    last_viewed_at = topic.find_last_viewed_at(g.current_user.id)
+    last_viewed_at = topic.find_last_viewed_at(user.id)
 
     postings_per_page = _get_postings_per_page_value()
     if page == 0:
         posting = board_topic_service.find_default_posting_to_jump_to(
-            topic.id, g.current_user._user, last_viewed_at)
+            topic.id, user._user, last_viewed_at)
 
         if posting is None:
             page = 1
@@ -120,18 +123,15 @@ def topic_view(topic_id, page):
                           _anchor=posting.anchor)
             return redirect(url, code=307)
 
-    if not g.current_user.is_anonymous:
+    if not user.is_anonymous:
         # Mark as viewed before aborting so a user can itself remove the
         # 'new' tag from a locked topic.
-        board_last_view_service.mark_topic_as_just_viewed(topic.id,
-                                                          g.current_user.id)
+        board_last_view_service.mark_topic_as_just_viewed(topic.id, user.id)
 
-    postings = board_posting_service.paginate_postings(topic.id,
-                                                       g.current_user._user,
+    postings = board_posting_service.paginate_postings(topic.id, user._user,
                                                        page, postings_per_page)
 
-    add_unseen_flag_to_postings(postings.items, g.current_user._user,
-                                last_viewed_at)
+    add_unseen_flag_to_postings(postings.items, user._user, last_viewed_at)
 
     is_last_page = not postings.has_next
 
