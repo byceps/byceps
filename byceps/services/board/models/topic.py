@@ -113,13 +113,6 @@ class Topic(db.Model):
         """Return the absolute URL of this topic."""
         return url_for('board.topic_view', topic_id=self.id, _external=True)
 
-    def find_last_viewed_at(self, user_id: UserID) -> Optional[datetime]:
-        """Return the time this topic was last viewed by the user (or
-        nothing, if it hasn't been viewed by the user yet).
-        """
-        last_view = LastTopicView.find(user_id, self.id)
-        return last_view.occured_at if last_view is not None else None
-
     def __eq__(self, other) -> bool:
         return self.id == other.id
 

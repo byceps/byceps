@@ -7,6 +7,7 @@ byceps.services.board.last_view_service
 """
 
 from datetime import datetime
+from typing import Optional
 
 from ...database import db
 from ...typing import UserID
@@ -57,10 +58,19 @@ def contains_topic_unseen_postings(topic: Topic, user_id: UserID) -> bool:
     """Return `True` if the topic contains postings created after the
     last time the user viewed it.
     """
-    last_viewed_at = topic.find_last_viewed_at(user_id)
+    last_viewed_at = find_topic_last_viewed_at(topic.id, user_id)
 
     return last_viewed_at is None \
         or topic.last_updated_at > last_viewed_at
+
+
+def find_topic_last_viewed_at(topic_id: TopicID, user_id: UserID
+                             ) -> Optional[datetime]:
+    """Return the time the topic was last viewed by the user (or
+    nothing, if it hasn't been viewed by the user yet).
+    """
+    last_view = LastTopicView.find(user_id, topic_id)
+    return last_view.occured_at if (last_view is not None) else None
 
 
 def mark_topic_as_just_viewed(topic_id: TopicID, user_id: UserID) -> None:
