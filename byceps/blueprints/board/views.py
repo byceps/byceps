@@ -69,8 +69,9 @@ def category_view(slug, page):
     if category is None:
         abort(404)
 
-    board_last_view_service.mark_category_as_just_viewed(category.id,
-                                                         g.current_user._user)
+    if not g.current_user.is_anonymous:
+        board_last_view_service.mark_category_as_just_viewed(category.id,
+                                                             g.current_user.id)
 
     topics_per_page = _get_topics_per_page_value()
 
@@ -119,10 +120,11 @@ def topic_view(topic_id, page):
                           _anchor=posting.anchor)
             return redirect(url, code=307)
 
-    # Mark as viewed before aborting so a user can itself remove the
-    # 'new' tag from a locked topic.
-    board_last_view_service.mark_topic_as_just_viewed(topic.id,
-                                                      g.current_user._user)
+    if not g.current_user.is_anonymous:
+        # Mark as viewed before aborting so a user can itself remove the
+        # 'new' tag from a locked topic.
+        board_last_view_service.mark_topic_as_just_viewed(topic.id,
+                                                          g.current_user.id)
 
     postings = board_posting_service.paginate_postings(topic.id,
                                                        g.current_user._user,
@@ -526,8 +528,9 @@ def posting_create(topic_id):
 
     posting = board_posting_service.create_posting(topic, creator.id, body)
 
-    board_last_view_service.mark_category_as_just_viewed(topic.category.id,
-                                                         g.current_user._user)
+    if not g.current_user.is_anonymous:
+        board_last_view_service.mark_category_as_just_viewed(topic.category.id,
+                                                             g.current_user.id)
 
     flash_success('Deine Antwort wurde hinzugefügt.')
     signals.posting_created.send(None, posting_id=posting.id,
