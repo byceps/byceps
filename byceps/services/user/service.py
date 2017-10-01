@@ -50,16 +50,9 @@ def count_disabled_users() -> int:
         .count()
 
 
-def find_user(user_id: UserID, *, with_orga_teams: bool=False) -> Optional[User]:
+def find_user(user_id: UserID) -> Optional[User]:
     """Return the user with that ID, or `None` if not found."""
-    query = User.query
-
-    if with_orga_teams:
-        query = query.options(
-            db.joinedload('orga_team_memberships').joinedload('orga_team').joinedload('party')
-        )
-
-    return query.get(user_id)
+    return User.query.get(user_id)
 
 
 def find_users(user_ids: Set[UserID]) -> Set[UserTuple]:

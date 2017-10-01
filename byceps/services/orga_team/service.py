@@ -163,3 +163,19 @@ def get_unassigned_orgas_for_party(party: Party) -> Sequence[User]:
     unassigned_orgas.sort(key=lambda user: user.screen_name.lower())
 
     return unassigned_orgas
+
+
+def is_orga_for_party(user_id: UserID, party_id: PartyID) -> bool:
+    """Return `True` if the user is an organizer (i.e. is member of an
+    organizer team) of that party.
+    """
+    return db.session \
+        .query(
+            db.session
+                .query(Membership)
+                .filter(Membership.user_id == user_id) \
+                .join(OrgaTeam)
+                .filter(OrgaTeam.party_id == party_id) \
+                .exists()
+        ) \
+        .scalar()
