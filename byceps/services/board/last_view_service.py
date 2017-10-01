@@ -13,7 +13,8 @@ from ...database import db
 from ...typing import UserID
 
 from .models.category import Category, CategoryID, LastCategoryView
-from .models.topic import LastTopicView, Topic, TopicID
+from .models.last_topic_view import LastTopicView
+from .models.topic import Topic, TopicID
 
 
 # -------------------------------------------------------------------- #

@@ -7,7 +7,7 @@ byceps.services.board.models.topic
 """
 
 from datetime import datetime
-from typing import NewType, Optional
+from typing import NewType
 from uuid import UUID
 
 from flask import url_for
@@ -133,31 +133,3 @@ class Topic(db.Model):
             builder.add_custom('pinned by {}'.format(self.pinned_by.screen_name))
 
         return builder.build()
-
-
-class LastTopicView(db.Model):
-    """The last time a user looked into specific topic."""
-    __tablename__ = 'board_topics_lastviews'
-
-    user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
-    topic_id = db.Column(db.Uuid, db.ForeignKey('board_topics.id'), primary_key=True)
-    topic = db.relationship(Topic)
-    occured_at = db.Column(db.DateTime, nullable=False)
-
-    def __init__(self, user_id: UserID, topic_id: TopicID) -> None:
-        self.user_id = user_id
-        self.topic_id = topic_id
-
-    @classmethod
-    def find(cls, user_id: UserID, topic_id: TopicID
-            ) -> Optional['LastTopicView']:
-        return cls.query \
-            .filter_by(user_id=user_id, topic_id=topic_id) \
-            .first()
-
-    def __repr__(self) -> str:
-        return ReprBuilder(self) \
-            .add_with_lookup('user_id') \
-            .add('topic', self.topic.title) \
-            .add_with_lookup('occured_at') \
-            .build()
