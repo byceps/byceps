@@ -113,14 +113,6 @@ class Topic(db.Model):
         """Return the absolute URL of this topic."""
         return url_for('board.topic_view', topic_id=self.id, _external=True)
 
-    def contains_unseen_postings(self, user_id: UserID) -> bool:
-        """Return `True` if the topic contains postings created after
-        the last time the user viewed it.
-        """
-        last_viewed_at = self.find_last_viewed_at(user_id)
-        return last_viewed_at is None \
-            or self.last_updated_at > last_viewed_at
-
     def find_last_viewed_at(self, user_id: UserID) -> Optional[datetime]:
         """Return the time this topic was last viewed by the user (or
         nothing, if it hasn't been viewed by the user yet).

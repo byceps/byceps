@@ -12,7 +12,7 @@ from ...database import db
 from ...typing import UserID
 
 from .models.category import Category, CategoryID, LastCategoryView
-from .models.topic import LastTopicView, TopicID
+from .models.topic import LastTopicView, Topic, TopicID
 
 
 # -------------------------------------------------------------------- #
@@ -51,6 +51,16 @@ def mark_category_as_just_viewed(category_id: CategoryID, user_id: UserID
 
 # -------------------------------------------------------------------- #
 # topics
+
+
+def contains_topic_unseen_postings(topic: Topic, user_id: UserID) -> bool:
+    """Return `True` if the topic contains postings created after the
+    last time the user viewed it.
+    """
+    last_viewed_at = topic.find_last_viewed_at(user_id)
+
+    return last_viewed_at is None \
+        or topic.last_updated_at > last_viewed_at
 
 
 def mark_topic_as_just_viewed(topic_id: TopicID, user_id: UserID) -> None:

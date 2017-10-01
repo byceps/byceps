@@ -87,6 +87,11 @@ def category_view(slug, page):
     topics = board_topic_service.paginate_topics(category.id, user._user, page,
                                                  topics_per_page)
 
+    for topic in topics.items:
+        topic.contains_unseen_postings = not user.is_anonymous \
+            and board_last_view_service.contains_topic_unseen_postings(
+                topic, user.id)
+
     return {
         'category': category,
         'topics': topics,
