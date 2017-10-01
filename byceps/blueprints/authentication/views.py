@@ -16,7 +16,6 @@ from ...services.authentication.password import \
     reset_service as password_reset_service
 from ...services.authentication.session import service as session_service
 from ...services.authorization import service as authorization_service
-from ...services.orga_team import service as orga_team_service
 from ...services.terms import service as terms_service
 from ...services.user import service as user_service
 from ...services.user_avatar import service as user_avatar_service
@@ -55,7 +54,7 @@ class CurrentUser:
 
     @property
     def is_orga(self):
-        return orga_team_service.is_orga_for_party(self.id, g.party.id)
+        return self._user.is_orga
 
     def has_permission(self, permission):
         return self._user.has_permission(permission)
