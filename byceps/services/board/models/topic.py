@@ -113,23 +113,19 @@ class Topic(db.Model):
         """Return the absolute URL of this topic."""
         return url_for('board.topic_view', topic_id=self.id, _external=True)
 
-    def contains_unseen_postings(self, user: User) -> bool:
+    def contains_unseen_postings(self, user_id: UserID) -> bool:
         """Return `True` if the topic contains postings created after
         the last time the user viewed it.
         """
-        # Don't display as new to a guest.
-        if user.is_anonymous:
-            return False
-
-        last_viewed_at = self.find_last_viewed_at(user)
+        last_viewed_at = self.find_last_viewed_at(user_id)
         return last_viewed_at is None \
             or self.last_updated_at > last_viewed_at
 
-    def find_last_viewed_at(self, user: User) -> Optional[datetime]:
+    def find_last_viewed_at(self, user_id: UserID) -> Optional[datetime]:
         """Return the time this topic was last viewed by the user (or
         nothing, if it hasn't been viewed by the user yet).
         """
-        last_view = LastTopicView.find(user, self.id)
+        last_view = LastTopicView.find(user_id, self.id)
         return last_view.occured_at if last_view is not None else None
 
     def __eq__(self, other) -> bool:
@@ -168,12 +164,10 @@ class LastTopicView(db.Model):
         self.topic_id = topic_id
 
     @classmethod
-    def find(cls, user: User, topic_id: TopicID) -> Optional['LastTopicView']:
-        if user.is_anonymous:
-            return None
-
+    def find(cls, user_id: UserID, topic_id: TopicID
+            ) -> Optional['LastTopicView']:
         return cls.query \
-            .filter_by(user_id=user.id, topic_id=topic_id) \
+            .filter_by(user_id=user_id, topic_id=topic_id) \
             .first()
 
     def __repr__(self) -> str:

@@ -61,18 +61,14 @@ class Category(db.Model):
         self.title = title
         self.description = description
 
-    def contains_unseen_postings(self, user: User) -> bool:
+    def contains_unseen_postings(self, user_id: UserID) -> bool:
         """Return `True` if the category contains postings created after
         the last time the user viewed it.
         """
-        # Don't display as new to a guest.
-        if user.is_anonymous:
-            return False
-
         if self.last_posting_updated_at is None:
             return False
 
-        last_view = LastCategoryView.find(user, self.id)
+        last_view = LastCategoryView.find(user_id, self.id)
 
         if last_view is None:
             return True
@@ -105,13 +101,10 @@ class LastCategoryView(db.Model):
         self.category_id = category_id
 
     @classmethod
-    def find(cls, user: User, category_id: CategoryID
+    def find(cls, user_id: UserID, category_id: CategoryID
             ) -> Optional['LastCategoryView']:
-        if user.is_anonymous:
-            return None
-
         return cls.query \
-            .filter_by(user_id=user.id, category_id=category_id) \
+            .filter_by(user_id=user_id, category_id=category_id) \
             .first()
 
     def __repr__(self) -> str:

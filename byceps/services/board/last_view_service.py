@@ -23,7 +23,7 @@ def mark_category_as_just_viewed(category_id: CategoryID, user: User) -> None:
     if user.is_anonymous:
         return
 
-    last_view = LastCategoryView.find(user, category_id)
+    last_view = LastCategoryView.find(user.id, category_id)
     if last_view is None:
         last_view = LastCategoryView(user.id, category_id)
         db.session.add(last_view)
@@ -39,7 +39,7 @@ def mark_topic_as_just_viewed(topic_id: TopicID, user: User) -> None:
     if user.is_anonymous:
         return
 
-    last_view = LastTopicView.find(user, topic_id)
+    last_view = LastTopicView.find(user.id, topic_id)
     if last_view is None:
         last_view = LastTopicView(user.id, topic_id)
         db.session.add(last_view)

@@ -101,7 +101,7 @@ def topic_view(topic_id, page):
 
     # Copy last view timestamp for later use to compare postings
     # against it.
-    last_viewed_at = topic.find_last_viewed_at(g.current_user._user)
+    last_viewed_at = topic.find_last_viewed_at(g.current_user.id)
 
     postings_per_page = _get_postings_per_page_value()
     if page == 0:
