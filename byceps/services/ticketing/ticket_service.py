@@ -26,17 +26,21 @@ from .models.ticket_bundle import TicketBundle
 # creation
 
 
-def create_ticket(category_id: CategoryID, owned_by_id: UserID
+def create_ticket(category_id: CategoryID, owned_by_id: UserID,
+                  *, order_number: Optional[OrderNumber]=None
                  ) -> Sequence[Ticket]:
     """Create a single ticket."""
-    tickets = create_tickets(category_id, owned_by_id, 1)
+    tickets = create_tickets(category_id, owned_by_id, 1,
+                             order_number=order_number)
     return tickets[0]
 
 
-def create_tickets(category_id: CategoryID, owned_by_id: UserID, quantity: int
+def create_tickets(category_id: CategoryID, owned_by_id: UserID, quantity: int,
+                   *, order_number: Optional[OrderNumber]=None
                   ) -> Sequence[Ticket]:
     """Create a number of tickets of the same category for a single owner."""
-    tickets = list(build_tickets(category_id, owned_by_id, quantity))
+    tickets = list(build_tickets(category_id, owned_by_id, quantity,
+                                 order_number=order_number))
 
     db.session.add_all(tickets)
     db.session.commit()
@@ -45,7 +49,8 @@ def create_tickets(category_id: CategoryID, owned_by_id: UserID, quantity: int
 
 
 def build_tickets(category_id: CategoryID, owned_by_id: UserID, quantity: int,
-                  *, bundle: Optional[TicketBundle]=None) -> Iterator[Ticket]:
+                  *, bundle: Optional[TicketBundle]=None,
+                  order_number: Optional[OrderNumber]=None) -> Iterator[Ticket]:
     if quantity < 1:
         raise ValueError('Ticket quantity must be positive.')
 
@@ -55,7 +60,8 @@ def build_tickets(category_id: CategoryID, owned_by_id: UserID, quantity: int,
         code = _generate_ticket_code_not_in(codes)
         codes.add(code)
 
-        yield Ticket(code, category_id, owned_by_id, bundle=bundle)
+        yield Ticket(code, category_id, owned_by_id, bundle=bundle,
+                     order_number=order_number)
 
 
 _CODE_ALPHABET = 'BCDFGHJKLMNPQRSTVWXYZ'
