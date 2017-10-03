@@ -14,6 +14,7 @@ from ...services.shop.order import action_service as order_action_service
 from ...services.shop.order import service as order_service
 from ...services.shop.order.export import service as order_export_service
 from ...services.shop.sequence import service as sequence_service
+from ...services.ticketing import ticket_service
 from ...services.user import service as user_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_error, flash_success
@@ -119,6 +120,8 @@ def view(order_id):
 
     events = _get_events(order)
 
+    tickets = ticket_service.find_tickets_created_by_order(order.order_number)
+
     return {
         'order': order_tuple,
         'placed_by': placed_by,
@@ -127,6 +130,7 @@ def view(order_id):
         'events': events,
         'PaymentMethod': PaymentMethod,
         'PaymentState': PaymentState,
+        'tickets': tickets,
     }
 
 

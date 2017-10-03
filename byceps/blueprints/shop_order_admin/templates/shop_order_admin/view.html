@@ -1,4 +1,5 @@
 {% extends 'layouts/shop_order_admin.html' %}
+{% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/datetime.html' import render_date, render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/shop_article_admin.html' import render_article_link %}
@@ -255,6 +256,9 @@
       </table>
     </li>
   </ol>
+
+  <h2>Tickets {{ render_extra_in_heading(tickets|length) }}</h1>
+{%- include 'ticketing_admin/_ticket_list.html' %}
 
 {%- endblock %}
 

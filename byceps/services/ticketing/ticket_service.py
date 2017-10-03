@@ -17,6 +17,7 @@ from ...typing import PartyID, UserID
 from ..party.models.party import Party
 from ..seating.models.category import Category, CategoryID
 from ..seating.models.seat import Seat, SeatID
+from ..shop.order.models.order import OrderNumber
 
 from .models.ticket import Ticket, TicketID
 from .models.ticket_bundle import TicketBundle
@@ -91,6 +92,15 @@ def _generate_ticket_code_not_in(codes: Set[str]) -> str:
 def find_ticket(ticket_id: TicketID) -> Optional[Ticket]:
     """Return the ticket with that id, or `None` if not found."""
     return Ticket.query.get(ticket_id)
+
+
+def find_tickets_created_by_order(order_number: OrderNumber
+                                 ) -> Sequence[Ticket]:
+    """Return the tickets created by this order (as it was marked as paid)."""
+    return Ticket.query \
+        .filter_by(order_number=order_number) \
+        .order_by(Ticket.created_at) \
+        .all()
 
 
 def find_tickets_related_to_user(user_id: UserID) -> Sequence[Ticket]:
