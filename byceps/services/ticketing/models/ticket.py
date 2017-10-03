@@ -16,6 +16,7 @@ from ....util.instances import ReprBuilder
 
 from ...seating.models.category import Category, CategoryID
 from ...seating.models.seat import Seat
+from ...shop.order.models.order import OrderNumber
 from ...user.models.user import User
 
 from .ticket_bundle import TicketBundle
@@ -51,6 +52,7 @@ class Ticket(db.Model):
     category = db.relationship(Category)
     owned_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=False)
     owned_by = db.relationship(User, foreign_keys=[owned_by_id])
+    order_number = db.Column(db.Unicode(13), db.ForeignKey('shop_orders.order_number'), index=True, nullable=True)
     seat_managed_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=True)
     seat_managed_by = db.relationship(User, foreign_keys=[seat_managed_by_id])
     user_managed_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=True)
@@ -62,14 +64,13 @@ class Ticket(db.Model):
     revoked = db.Column(db.Boolean, default=False, nullable=False)
 
     def __init__(self, code: str, category_id: CategoryID, owned_by_id: UserID,
-                 *, bundle: Optional[TicketBundle]=None) -> None:
+                 *, bundle: Optional[TicketBundle]=None,
+                 order_number: Optional[OrderNumber]=None) -> None:
         self.code = code
-
-        if bundle is not None:
-            self.bundle = bundle
-
+        self.bundle = bundle
         self.category_id = category_id
         self.owned_by_id = owned_by_id
+        self.order_number = order_number
 
     def get_seat_manager(self) -> User:
         """Return the user that may choose the seat for this ticket."""
