@@ -160,27 +160,31 @@ span[title] .icon {
   justify-content: center;
 }
 
-.tabs a,
-.tabs .current {
+.tabs-tab {
   border-color: transparent;
   border-style: solid;
   border-width: 0 0 1px 0;
-  display: block;
   color: #888888;
+  cursor: pointer;
+  display: block;
   flex: 1 0 auto;
   margin-bottom: -1px;
   padding: 0.5rem 1rem;
   text-decoration: none;
 }
 
-.tabs a:hover,
-.tabs .current {
+.tabs-tab:hover,
+.tabs-tab--current {
   border-color: #333333;
   color: currentColor;
 }
 
-.tabs a:hover {
+.tabs-tab:hover {
   background-color: #e8e8e8;
+}
+
+.tabs-tab--current {
+  cursor: default;
 }
 
 
