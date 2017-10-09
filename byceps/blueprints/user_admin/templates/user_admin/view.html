@@ -13,14 +13,33 @@
 
 {% block head %}
 <style>
-  ol.toc li {
-    display: inline;
-    font-size: 0.75rem; /* 12px / 16px */
-  }
-  ol.toc li:not(:last-child)::after {
-    content: " \00b7";
-    opacity: 0.5;
-  }
+.radio-tab-component > input[type='radio'] {
+  position: absolute;
+  left: -10000px;
+}
+
+#tabs-rb-account:checked ~ .radio-tabs #tabs-tab-account,
+#tabs-rb-personal:checked ~ .radio-tabs #tabs-tab-personal,
+#tabs-rb-orders:checked ~ .radio-tabs #tabs-tab-orders,
+#tabs-rb-tickets:checked ~ .radio-tabs #tabs-tab-tickets,
+#tabs-rb-badges:checked ~ .radio-tabs #tabs-tab-badges {
+  /* copied from `.tabs-tab--current` */
+  border-color: #333333;
+  color: currentColor;
+  cursor: default;
+}
+
+.radio-panel {
+  display: none;
+}
+
+#tabs-rb-account:checked ~ .radio-panels #tabs-panel-account,
+#tabs-rb-personal:checked ~ .radio-panels #tabs-panel-personal,
+#tabs-rb-orders:checked ~ .radio-panels #tabs-panel-orders,
+#tabs-rb-tickets:checked ~ .radio-panels #tabs-panel-tickets,
+#tabs-rb-badges:checked ~ .radio-panels #tabs-panel-badges {
+  display: block;
+}
 </style>
 {% endblock %}
 
@@ -36,37 +55,62 @@
     {%- if user.deleted %} {{ render_user_deleted_flag() }}{% endif -%}
   </h1>
 
-  <nav>
-    <ol class="toc">
-      <li><a href="#account">Benutzerkonto</a></li>
-      <li><a href="#personal">Persönliche Daten</a></li>
-      <li><a href="#orders">Bestellungen</a></li>
-      <li><a href="#tickets">Tickets</a></li>
-      <li><a href="#badges">Abzeichen</a></li>
+  <style>
+  </style>
+
+  <div class="radio-tab-component">
+
+    <input type="radio" name="user-sections-state" id="tabs-rb-account" checked>
+    <input type="radio" name="user-sections-state" id="tabs-rb-personal">
+    <input type="radio" name="user-sections-state" id="tabs-rb-orders">
+    <input type="radio" name="user-sections-state" id="tabs-rb-tickets">
+    <input type="radio" name="user-sections-state" id="tabs-rb-badges">
+
+    <ol class="radio-tabs tabs">
+      <li><label class="radio-tab tabs-tab" for="tabs-rb-account" id="tabs-tab-account">Benutzerkonto</label></li>
+      <li><label class="radio-tab tabs-tab" for="tabs-rb-personal" id="tabs-tab-personal">Persönliche Daten</label></li>
+      <li><label class="radio-tab tabs-tab" for="tabs-rb-orders" id="tabs-tab-orders">Bestellungen</label></li>
+      <li><label class="radio-tab tabs-tab" for="tabs-rb-tickets" id="tabs-tab-tickets">Tickets</label></li>
+      <li><label class="radio-tab tabs-tab" for="tabs-rb-badges" id="tabs-tab-badges">Abzeichen</label></li>
     </ol>
-  </nav>
 
-  <h2 id="account">Benutzerkonto</h2>
-  <div style="float: right; margin-left: 40px;">
-    {{ render_user_avatar_128(user) }}
-  </div>
+    <div class="radio-panels">
+
+      <div class="radio-panel" id="tabs-panel-account">
+        <h2>Benutzerkonto</h2>
+        <div style="float: right; margin-left: 40px;">
+          {{ render_user_avatar_128(user) }}
+        </div>
 {%- include 'user_admin/_view_account.html' %}
+      </div>
 
-  <h2 id="personal">Persönliche Daten</h2>
+      <div class="radio-panel" id="tabs-panel-personal">
+        <h2>Persönliche Daten</h2>
 {%- include 'user_admin/_view_personal.html' %}
+      </div>
 
-  <h2 id="orders">Bestellungen {{ render_extra_in_heading(orders|length) }}</h2>
+      <div class="radio-panel" id="tabs-panel-orders">
+        <h2>Bestellungen {{ render_extra_in_heading(orders|length) }}</h2>
 {%- include 'user_admin/_view_orders.html' %}
+      </div>
 
-  <h2 id="tickets">Tickets</h2>
+      <div class="radio-panel" id="tabs-panel-tickets">
+        <h2>Tickets</h2>
 {%- include 'user_admin/_view_tickets.html' %}
+      </div>
 
-  <h2 id="badges">Abzeichen {{ render_extra_in_heading(badges_with_awarding_quantity|length) }}</h2>
-  {%- if badges_with_awarding_quantity %}
+      <div class="radio-panel" id="tabs-panel-badges">
+        <h2>Abzeichen {{ render_extra_in_heading(badges_with_awarding_quantity|length) }}</h2>
+        {%- if badges_with_awarding_quantity %}
 {{ render_user_badges_list(badges_with_awarding_quantity) }}
-  {%- else %}
-  {{ 'keine'|dim }}
-  {%- endif %}
+        {%- else %}
+        {{ 'keine'|dim }}
+        {%- endif %}
+      </div>
+
+    </div>
+
+  </div>
 
 {%- endblock %}
 
