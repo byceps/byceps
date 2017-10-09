@@ -606,7 +606,7 @@ table.activity-stream-item td:first-child {
   }
 
   #page {
-    max-width: auto;
+    max-width: none;
     width: auto;
   }
 
