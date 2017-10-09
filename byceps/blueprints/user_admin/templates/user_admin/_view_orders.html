@@ -1,0 +1,28 @@
+{%- from 'macros/datetime.html' import render_datetime %}
+{%- from 'macros/shop_order_admin.html' import render_order_payment_state %}
+
+  {%- if orders %}
+  <table class="index">
+    <thead>
+      <tr>
+        <th>Zeitpunkt</th>
+        <th>Party</th>
+        <th>Bestellnr.</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for order in orders %}
+      <tr>
+        <td>{{ render_datetime(order.created_at) }}</td>
+        <td>{{ order_parties_by_id[order.party_id].title }}</td>
+        <td><a href="{{ url_for('shop_order_admin.view', order_id=order.id) }}">{{ order.order_number }}</a></td>
+        <td class="centered">{{ render_order_payment_state(order.payment_state) }}</td>
+      </tr>
+      {%- endfor %}
+      <tr>
+    </tbody>
+  </table>
+  {%- else %}
+  {{ 'keine'|dim }}
+  {%- endif %}
