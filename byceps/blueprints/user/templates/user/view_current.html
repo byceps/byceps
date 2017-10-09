@@ -26,18 +26,25 @@
     <tr>
       <th>Avatar</th>
       <td>
-        {{ render_user_avatar_128(user) }}
-      {%- if g.current_user.id == user.id %}
-        <div class="button-row" style="margin-bottom: 4px; margin-top: 0;">
-          <a class="button" href="{{ url_for('user_avatar.update_form') }}">{{ render_icon('upload') }} hochladen</a>
-          {%- if user.avatar %}
-          <a class="button" data-action="avatar-delete" href="{{ url_for('user_avatar.delete', _method='DELETE') }}">{{ render_icon('delete') }} entfernen</a>
-          {%- endif %}
+        <div style="margin-bottom: 0.5rem;">
+          {{ render_user_avatar_128(user) }}
         </div>
-      {%- endif %}
+
+        {%- if g.current_user.id == user.id %}
+        <div class="dropdown">
+          <button class="dropdown-toggle button">bearbeiten {{ render_icon('caret-down') -}}</button>
+          <ol>
+            <li><a href="{{ url_for('user_avatar.update_form') }}">{{ render_icon('upload') }} hochladen</a></li>
+            {%- if user.avatar %}
+            <li><a data-action="avatar-delete" href="{{ url_for('user_avatar.delete', _method='DELETE') }}">{{ render_icon('delete') }} entfernen</a></li>
+            {%- endif %}
+          </ol>
+        </div>
+        {%- endif %}
       </td>
     </tr>
   </table>
+
   <div class="button-row">
     {%- if g.site_mode.is_public() %}
     <a class="button" href="{{ url_for('.view', user_id=user.id) }}">{{ render_icon('view') }} öffentliches Profil ansehen</a>
