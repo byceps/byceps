@@ -262,7 +262,7 @@ fieldset li {
   padding: 0.2rem 0;
 }
 
-label,
+form label,
 fieldset .label {
   display: inline-block;
   font-weight: bold;
@@ -307,7 +307,7 @@ fieldset .supplement {
 }
 
 @media (min-width: 45rem) { /* 720px / 16px */
-  label,
+  form label,
   fieldset .label {
     width: 22%;
   }
