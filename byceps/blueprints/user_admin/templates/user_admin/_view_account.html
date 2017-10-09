@@ -43,9 +43,9 @@
     <tr>
       <th>Orga-Teams</th>
       <td>
-        {%- if user.orga_team_memberships %}
+        {%- if orga_team_memberships %}
         <ol>
-          {%- for membership in user.orga_team_memberships|sort(attribute='orga_team.party.starts_at', reverse=True) %}
+          {%- for membership in orga_team_memberships|sort(attribute='orga_team.party.starts_at', reverse=True) %}
           <li>
             {{- membership.orga_team.party.title }} – {{ membership.orga_team.title }}
             {%- if membership.duties %} ({{ membership.duties }}){% endif -%}

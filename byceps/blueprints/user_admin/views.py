@@ -11,6 +11,7 @@ from collections import defaultdict
 from flask import abort, request
 
 from ...services.authorization import service as authorization_service
+from ...services.orga_team import service as orga_team_service
 from ...services.party import service as party_service
 from ...services.shop.order import service as order_service
 from ...services.ticketing import ticket_service
@@ -78,6 +79,8 @@ def view(user_id):
     """Show a user's interal profile."""
     user = _get_user_or_404(user_id)
 
+    orga_team_memberships = orga_team_service.get_memberships_for_user(user.id)
+
     badges_with_awarding_quantity = badge_service.get_badges_for_user(user.id)
 
     orders = order_service.get_orders_placed_by_user(user.id)
@@ -88,6 +91,7 @@ def view(user_id):
 
     return {
         'user': user,
+        'orga_team_memberships': orga_team_memberships,
         'badges_with_awarding_quantity': badges_with_awarding_quantity,
         'orders': orders,
         'order_parties_by_id': order_parties_by_id,

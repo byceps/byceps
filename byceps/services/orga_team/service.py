@@ -119,6 +119,16 @@ def get_memberships_for_party(party_id: PartyID) -> Sequence[Membership]:
         .all()
 
 
+def get_memberships_for_user(user_id: UserID) -> Sequence[Membership]:
+    """Return all orga team memberships for that user."""
+    return Membership.query \
+        .options(
+            db.joinedload('orga_team').joinedload('party'),
+        ) \
+        .filter_by(user_id=user_id) \
+        .all()
+
+
 # -------------------------------------------------------------------- #
 # organizers
 
