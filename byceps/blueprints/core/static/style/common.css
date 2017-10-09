@@ -171,6 +171,10 @@ span[title] .icon {
   margin-bottom: -1px;
   padding: 0.5rem 1rem;
   text-decoration: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .tabs-tab:hover,
