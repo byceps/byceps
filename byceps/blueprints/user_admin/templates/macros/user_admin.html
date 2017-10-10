@@ -27,12 +27,12 @@
 {%- endmacro %}
 
 
-{% macro render_user_deleted_flag() -%}
+{% macro render_user_flag_deleted() -%}
   {{ render_tag('gelöscht', class='color-danger', icon='delete') }}
 {%- endmacro %}
 
 
-{% macro render_user_disabled_flag() -%}
+{% macro render_user_flag_disabled() -%}
   {{ render_tag('deaktiviert', class='color-warning', icon='disabled') }}
 {%- endmacro %}
 
