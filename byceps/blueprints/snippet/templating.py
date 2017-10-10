@@ -57,7 +57,7 @@ def render_snippet_as_partial(name, *, ignore_if_unknown=False):
     return the result.
     """
     current_version = snippet_service \
-        .find_current_version_of_snippet_with_name(g.party.id, name)
+        .find_current_version_of_snippet_with_name(g.party_id, name)
 
     if current_version is None:
         if ignore_if_unknown:

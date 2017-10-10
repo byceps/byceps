@@ -32,7 +32,7 @@ blueprint = create_blueprint('shop_order', __name__)
 def order_form(erroneous_form=None):
     """Show a form to order articles."""
     article_compilation = article_service \
-        .get_article_compilation_for_orderable_articles(g.party.id)
+        .get_article_compilation_for_orderable_articles(g.party_id)
 
     if article_compilation.is_empty():
         flash_error('Es sind keine Artikel verfügbar.')
@@ -60,7 +60,7 @@ def order_form(erroneous_form=None):
 def order():
     """Order articles."""
     article_compilation = article_service \
-        .get_article_compilation_for_orderable_articles(g.party.id)
+        .get_article_compilation_for_orderable_articles(g.party_id)
 
     if article_compilation.is_empty():
         flash_error('Es sind keine Artikel verfügbar.')
@@ -112,7 +112,7 @@ def order_single_form(article_id, erroneous_form=None):
             'article': None,
         }
 
-    if order_service.has_user_placed_orders(user.id, g.party.id):
+    if order_service.has_user_placed_orders(user.id, g.party_id):
         flash_error('Du kannst keine weitere Bestellung aufgeben.')
         return {
             'form': form,
@@ -151,7 +151,7 @@ def order_single(article_id):
 
     user = g.current_user._user
 
-    if order_service.has_user_placed_orders(user.id, g.party.id):
+    if order_service.has_user_placed_orders(user.id, g.party_id):
         flash_error('Du kannst keine weitere Bestellung aufgeben.')
         return order_single_form(article.id)
 
@@ -192,7 +192,7 @@ def _get_article_or_404(article_id):
 def _submit_order(orderer, cart):
     payment_method = PaymentMethod.bank_transfer
 
-    return order_service.create_order(g.party.id, orderer, payment_method, cart)
+    return order_service.create_order(g.party_id, orderer, payment_method, cart)
 
 
 def _flash_order_success(order):

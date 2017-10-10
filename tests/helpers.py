@@ -28,6 +28,7 @@ def app_context(*, config_filename=CONFIG_FILENAME_TEST_PARTY):
 def current_party_set(app, party):
     def handler(sender, **kwargs):
         g.party = party.to_tuple()
+        g.party_id = g.party.id
         g.brand_id = g.party.brand_id
 
     with appcontext_pushed.connected_to(handler, app):

@@ -42,7 +42,6 @@ def index():
 def view(order_id):
     """Show a single order (if it belongs to the current user and party)."""
     current_user = g.current_user
-    current_party = g.party
 
     order = order_service.find_order_with_details(order_id)
 
@@ -55,7 +54,7 @@ def view(order_id):
         # Order was not placed by the current user.
         abort(404)
 
-    if order.party_id != current_party.id:
+    if order.party_id != g.party_id:
         # Order was not placed by the current user.
         abort(404)
 

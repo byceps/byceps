@@ -43,8 +43,8 @@ def view(slug):
     recipients = user_service.find_users(recipient_ids)
 
     # Find out which user is an organizer of this party.
-    orga_ids = orga_team_service.select_orgas_for_party(recipient_ids,
-                                                        g.party.id)
+    orga_ids = orga_team_service.select_orgas_for_party(
+        recipient_ids, g.party_id)
 
     # Update organizer flags.
     recipients = {r._replace(is_orga=(r.id in orga_ids)) for r in recipients}

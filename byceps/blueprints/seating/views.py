@@ -21,7 +21,7 @@ blueprint = create_blueprint('seating', __name__)
 @templated
 def index():
     """List areas."""
-    areas = seating_area_service.get_areas_for_party(g.party.id)
+    areas = seating_area_service.get_areas_for_party(g.party_id)
 
     return {
         'areas': areas,
@@ -32,7 +32,7 @@ def index():
 @templated
 def view_area(slug):
     """View area."""
-    area = seating_area_service.find_area_for_party_by_slug(g.party.id, slug)
+    area = seating_area_service.find_area_for_party_by_slug(g.party_id, slug)
     if area is None:
         abort(404)
 

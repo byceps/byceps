@@ -63,4 +63,4 @@ def _find_current_snippet_version(name):
     `None` if it does not exist.
     """
     return snippet_service.find_current_version_of_snippet_with_name(
-        g.party.id, name)
+        g.party_id, name)

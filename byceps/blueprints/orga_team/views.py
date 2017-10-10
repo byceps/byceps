@@ -26,7 +26,7 @@ blueprint = create_blueprint('orga_team', __name__)
 @templated
 def index():
     """List all organizers for the current party."""
-    memberships = orga_team_service.get_memberships_for_party(g.party.id)
+    memberships = orga_team_service.get_memberships_for_party(g.party_id)
 
     users_by_id = _get_users_by_id(memberships)
 
