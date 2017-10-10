@@ -21,12 +21,13 @@ blueprint = create_blueprint('ticketing', __name__)
 @templated
 def index_mine():
     """List tickets related to the current user."""
-    me = get_current_user_or_403()
+    current_user = _get_current_user_or_403()
 
     tickets = ticket_service.find_tickets_related_to_user_for_party(
-        me.id, g.party.id)
+        current_user.id, g.party.id)
 
-    current_user_uses_any_ticket = find(lambda t: t.used_by_id == me.id, tickets)
+    current_user_uses_any_ticket = find(
+        lambda t: t.used_by_id == current_user.id, tickets)
 
     return {
         'tickets': tickets,
@@ -34,8 +35,9 @@ def index_mine():
     }
 
 
-def get_current_user_or_403():
+def _get_current_user_or_403():
     user = g.current_user
+
     if not user.is_active:
         abort(403)
 
