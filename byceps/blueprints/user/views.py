@@ -97,9 +97,8 @@ def view_current():
         abort(404)
 
     if get_site_mode().is_public():
-        brand_id = g.party.brand_id
-        subscribed_to_newsletter = newsletter_service.is_subscribed(user.id,
-                                                                    brand_id)
+        subscribed_to_newsletter = newsletter_service.is_subscribed(
+            user.id, g.brand_id)
     else:
         subscribed_to_newsletter = None
 
@@ -134,8 +133,7 @@ def create_form(erroneous_form=None):
         flash_error('Das Erstellen von Benutzerkonten ist deaktiviert.')
         abort(403)
 
-    brand_id = g.party.brand_id
-    terms_version = terms_service.get_current_version(brand_id)
+    terms_version = terms_service.get_current_version(g.brand_id)
 
     form = erroneous_form if erroneous_form \
         else UserCreateForm(terms_version_id=terms_version.id)
@@ -173,16 +171,14 @@ def create():
             'Diese E-Mail-Adresse ist bereits einem Benutzerkonto zugeordnet.')
         return create_form(form)
 
-    brand_id = g.party.brand_id
-
     terms_version = terms_service.find_version(terms_version_id)
-    if terms_version.brand_id != brand_id:
+    if terms_version.brand_id != g.brand_id:
         abort(400, 'Die AGB-Version gehört nicht zu dieser Veranstaltung.')
 
     try:
         user = user_creation_service.create_user(screen_name, email_address,
                                                  password, first_names,
-                                                 last_name, brand_id,
+                                                 last_name, g.brand_id,
                                                  terms_version.id,
                                                  subscribe_to_newsletter)
     except user_creation_service.UserCreationFailed:
@@ -237,7 +233,7 @@ def request_email_address_confirmation_email():
     verification_token = verification_token_service \
         .find_or_create_for_email_address_confirmation(user.id)
     user_service.send_email_address_confirmation_email(
-        user, verification_token, g.party.brand_id)
+        user, verification_token, g.brand_id)
 
     flash_success(
         'Der Link zur Bestätigung der für den Benutzernamen "{}" '

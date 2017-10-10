@@ -21,9 +21,8 @@ blueprint = create_blueprint('newsletter', __name__)
 @respond_no_content
 def subscribe():
     user = _get_current_user_or_404()
-    brand_id = g.party.brand_id
 
-    newsletter_service.subscribe(user.id, brand_id)
+    newsletter_service.subscribe(user.id, g.brand_id)
 
     flash_success('Du hast dich zum Newsletter angemeldet.')
 
@@ -32,9 +31,8 @@ def subscribe():
 @respond_no_content
 def unsubscribe():
     user = _get_current_user_or_404()
-    brand_id = g.party.brand_id
 
-    newsletter_service.unsubscribe(user.id, brand_id)
+    newsletter_service.unsubscribe(user.id, g.brand_id)
 
     flash_success('Du hast dich vom Newsletter abgemeldet.')
 

@@ -147,14 +147,12 @@ def login():
             abort(403)
 
     if not in_admin_mode:
-        brand_id = g.party.brand_id
-
-        terms_version = terms_service.find_current_version(brand_id)
+        terms_version = terms_service.find_current_version(g.brand_id)
 
         if not terms_version:
             raise Exception(
                 'No terms of service defined for brand "{}", denying login.'
-                .format(brand_id))
+                .format(g.brand_id))
 
         if not terms_service.has_user_accepted_version(user.id, terms_version.id):
             verification_token = verification_token_service \
@@ -252,7 +250,7 @@ def request_password_reset():
                     'noch nicht bestätigt.', screen_name)
         return redirect_to('user.request_email_address_confirmation_email')
 
-    password_reset_service.prepare_password_reset(user, g.party.brand_id)
+    password_reset_service.prepare_password_reset(user, g.brand_id)
 
     flash_success(
         'Ein Link zum Setzen eines neuen Passworts für den Benutzernamen "{}" '

@@ -28,6 +28,7 @@ def before_request():
         raise Exception('Unknown party ID "{}".'.format(party_id))
 
     g.party = party.to_tuple()
+    g.brand_id = party.brand_id
 
 
 @blueprint.route('/info')
@@ -43,8 +44,7 @@ def info():
 @templated
 def archive():
     """Show archived parties."""
-    brand_id = g.party.brand_id
-    archived_parties = party_service.get_archived_parties_for_brand(brand_id)
+    archived_parties = party_service.get_archived_parties_for_brand(g.brand_id)
 
     party_ids = {party.id for party in archived_parties}
     attendees_by_party_id = attendance_service.get_attendees_by_party(party_ids)
