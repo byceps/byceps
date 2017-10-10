@@ -65,7 +65,7 @@
   <table class="index wide">
     <thead>
       <tr>
-        <th>Benutzername</th>
+        <th colspan="2">Benutzername</th>
         <th>Voller Name</th>
         <th>Erstellt</th>
         <th>aktiv</th>
@@ -74,9 +74,11 @@
     <tbody>
       {%- for user in users.items %}
       <tr{% if user.deleted %} class="dimmed"{% endif %}>
+        <td>{{ render_user_avatar_16_and_link(user) }}</td>
         <td>
-          {%- if user.deleted %}{{ render_tag('', class='color-danger', icon='delete', title='gelöscht') }} {% endif -%}
-          {{- render_user_avatar_16_and_link(user) -}}
+          {%- if user.deleted %}
+          {{- render_tag('', class='color-danger', icon='delete', title='gelöscht') }}
+          {%- endif -%}
         </td>
         <td>{{ user.detail.full_name|fallback }}</td>
         <td>{{ render_datetime(user.created_at) }}</td>
