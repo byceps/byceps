@@ -25,10 +25,10 @@ blueprint = create_blueprint('shop_orders', __name__)
 def index():
     """List orders placed by the current user for the current party."""
     current_user = g.current_user
-    current_party_id = g.party.id
+    current_party = g.party
 
     orders = order_service.get_orders_placed_by_user_for_party(current_user.id,
-                                                               current_party_id)
+                                                               current_party.id)
 
     return {
         'orders': orders,
@@ -41,7 +41,7 @@ def index():
 def view(order_id):
     """Show a single order (if it belongs to the current user and party)."""
     current_user = g.current_user
-    current_party_id = g.party.id
+    current_party = g.party
 
     order = order_service.find_order_with_details(order_id)
 
@@ -54,7 +54,7 @@ def view(order_id):
         # Order was not placed by the current user.
         abort(404)
 
-    if order.party_id != current_party_id:
+    if order.party_id != current_party.id:
         # Order was not placed by the current user.
         abort(404)
 

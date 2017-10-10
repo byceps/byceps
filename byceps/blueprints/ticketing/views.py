@@ -22,9 +22,10 @@ blueprint = create_blueprint('ticketing', __name__)
 def index_mine():
     """List tickets related to the current user."""
     current_user = _get_current_user_or_403()
+    current_party = g.party
 
     tickets = ticket_service.find_tickets_related_to_user_for_party(
-        current_user.id, g.party.id)
+        current_user.id, current_party.id)
 
     current_user_uses_any_ticket = find(
         lambda t: t.used_by_id == current_user.id, tickets)
