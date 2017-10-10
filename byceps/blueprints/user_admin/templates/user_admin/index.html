@@ -71,7 +71,7 @@
     </thead>
     <tbody>
       {%- for user in users.items %}
-      <tr{% if user.deleted %} class="dimmed"{% endif %}>
+      <tr{% if not user.enabled or user.deleted %} class="dimmed"{% endif %}>
         <td>{{ render_user_avatar_16_and_link(user) }}</td>
         <td>
           {%- if not user.enabled %}
