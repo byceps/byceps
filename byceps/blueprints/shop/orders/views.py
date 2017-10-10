@@ -8,6 +8,7 @@ byceps.blueprints.shop.orders.views
 
 from flask import abort, g
 
+from ....services.party import service as party_service
 from ....services.shop.order import service as order_service
 from ....services.user import service as user_service
 from ....util.framework.blueprint import create_blueprint
@@ -25,13 +26,14 @@ blueprint = create_blueprint('shop_orders', __name__)
 def index():
     """List orders placed by the current user for the current party."""
     current_user = g.current_user
-    current_party = g.party
 
-    orders = order_service.get_orders_placed_by_user_for_party(current_user.id,
-                                                               current_party.id)
+    party = party_service.find_party(g.party_id)
+
+    orders = order_service.get_orders_placed_by_user_for_party(
+        current_user.id, party.id)
 
     return {
-        'party_title': current_party.title,
+        'party_title': party.title,
         'orders': orders,
     }
 

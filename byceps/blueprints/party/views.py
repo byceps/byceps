@@ -36,8 +36,10 @@ def before_request():
 @templated
 def info():
     """Show information about the current party."""
+    party = party_service.find_party(g.party_id)
+
     return {
-        'party': g.party,
+        'party': party.to_tuple(),
     }
 
 
