@@ -34,6 +34,9 @@ def before_request():
 @templated
 def info():
     """Show information about the current party."""
+    return {
+        'party': g.party,
+    }
 
 
 @blueprint.route('/archive')
