@@ -3,7 +3,7 @@
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
 {% from 'macros/stats.html' import render_bigstats_item %}
-{% from 'macros/user_admin.html' import render_user_avatar_16_and_link, render_user_flag_deleted, render_user_state_filter %}
+{% from 'macros/user_admin.html' import render_user_avatar_16_and_link, render_user_flag_deleted, render_user_flag_disabled, render_user_state_filter %}
 {% set current_page = 'user_admin' %}
 {% set title = 'Benutzer' %}
 
@@ -67,7 +67,6 @@
         <th colspan="2">Benutzername</th>
         <th>Voller Name</th>
         <th>Erstellt</th>
-        <th>aktiv</th>
       </tr>
     </thead>
     <tbody>
@@ -75,13 +74,15 @@
       <tr{% if user.deleted %} class="dimmed"{% endif %}>
         <td>{{ render_user_avatar_16_and_link(user) }}</td>
         <td>
+          {%- if not user.enabled %}
+          {{- render_user_flag_disabled(show_label=False) }}
+          {%- endif -%}
           {%- if user.deleted %}
           {{- render_user_flag_deleted(show_label=False) }}
           {%- endif -%}
         </td>
         <td>{{ user.detail.full_name|fallback }}</td>
         <td>{{ render_datetime(user.created_at) }}</td>
-        <td>{{ render_icon('enabled' if user.enabled else 'disabled') }}</td>
       </tr>
       {%- endfor %}
       <tr>
