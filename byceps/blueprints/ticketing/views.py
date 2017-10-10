@@ -31,6 +31,7 @@ def index_mine():
         lambda t: t.used_by_id == current_user.id, tickets)
 
     return {
+        'party_title': current_party.title,
         'tickets': tickets,
         'current_user_uses_any_ticket': current_user_uses_any_ticket,
     }

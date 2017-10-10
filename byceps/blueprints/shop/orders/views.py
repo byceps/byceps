@@ -31,6 +31,7 @@ def index():
                                                                current_party.id)
 
     return {
+        'party_title': current_party.title,
         'orders': orders,
     }
 
