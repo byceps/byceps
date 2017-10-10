@@ -1,4 +1,4 @@
-{%- from 'macros/user_admin.html' import render_user_deleted_flag %}
+{%- from 'macros/user_admin.html' import render_user_deleted_flag, render_user_disabled_flag %}
 {%- from 'macros/user_avatar.html' import render_user_avatar_96 %}
 
 <style>
@@ -33,6 +33,7 @@
     <div>
       <h1 class="title">
         {{ user.screen_name -}}
+        {%- if not user.enabled %} {{ render_user_disabled_flag() }}{% endif -%}
         {%- if user.deleted %} {{ render_user_deleted_flag() }}{% endif -%}
       </h1>
       <div class="subtitle">
