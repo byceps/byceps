@@ -334,6 +334,9 @@ def get_orders_for_party_paginated(party_id: PartyID, page: int, per_page: int, 
 def get_orders_placed_by_user(user_id: UserID) -> Sequence[Order]:
     """Return orders placed by the user."""
     return Order.query \
+        .options(
+            db.joinedload('items'),
+        ) \
         .placed_by_id(user_id) \
         .order_by(Order.created_at.desc()) \
         .all()
@@ -343,6 +346,9 @@ def get_orders_placed_by_user_for_party(user_id: UserID, party_id: PartyID
                                        ) -> Sequence[OrderTuple]:
     """Return orders placed by the user for that party."""
     orders = Order.query \
+        .options(
+            db.joinedload('items'),
+        ) \
         .for_party_id(party_id) \
         .placed_by_id(user_id) \
         .order_by(Order.created_at.desc()) \
