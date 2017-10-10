@@ -13,10 +13,6 @@ body {
 
 /* layout */
 
-.container {
-  margin: 0 auto;
-}
-
 @media (min-width: 60rem) { /* 960px / 16px */
   .container {
     max-width: 960px;

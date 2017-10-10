@@ -94,6 +94,13 @@ img {
 }
 
 
+/* layout */
+
+.container {
+  margin: 0 auto;
+}
+
+
 /* icons */
 
 .icon {
