@@ -13,10 +13,15 @@ body {
 
 /* layout */
 
-#page,
-#topbar-body {
+.container {
   margin: 0 auto;
-  max-width: 960px;
+}
+
+@media (min-width: 60rem) { /* 960px / 16px */
+  .container {
+    max-width: 960px;
+    width: 960px;
+  }
 }
 
 @media (min-width: 36rem) { /* 576px / 16px */
@@ -669,8 +674,8 @@ table.index td.bignumber {
     text-shadow: none !important;
   }
 
-  #page {
-    margin: 0;
+  .container {
+    max-width: none;
     width: auto;
   }
 
