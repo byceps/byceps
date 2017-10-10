@@ -1,4 +1,3 @@
-{% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_tag %}
 {% from 'macros/user_avatar.html' import render_user_avatar_16, render_user_avatar_20 %}
 
@@ -29,12 +28,12 @@
 
 
 {% macro render_user_deleted_flag() -%}
-  {{ render_tag(render_icon('delete') ~ ' gelöscht', class='color-danger') }}
+  {{ render_tag('gelöscht', class='color-danger', icon='delete') }}
 {%- endmacro %}
 
 
 {% macro render_user_disabled_flag() -%}
-  {{ render_tag(render_icon('disabled') ~ ' deaktiviert', class='color-warning') }}
+  {{ render_tag('deaktiviert', class='color-warning', icon='disabled') }}
 {%- endmacro %}
 
 
