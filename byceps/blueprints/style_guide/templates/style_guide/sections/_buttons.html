@@ -1,0 +1,58 @@
+  <p>Buttons with different styles and states:</p>
+
+  {%- set example_buttons -%}
+<div class="button-row">
+  <button class="button">Form Button</button>
+  <a href="#" class="button">Link Button</a>
+  <a href="#" class="button button--outlined">Outlined</a>
+  <a href="#" class="button button--clear">Clear</a>
+  <button class="button" disabled>Disabled Form Button</button>
+  <a href="#" class="button button--disabled">Disabled Link Button</a>
+</div>
+
+<p><a href="#" class="button button--compact">Compact</a></p>
+<p><a href="#" class="button button--inline">Inline</a></p>
+  {%- endset %}
+
+  {% call render_code_block() -%}
+{{ example_buttons }}
+  {%- endcall %}
+
+  <div class="result">
+{{ example_buttons }}
+  </div>
+
+  <p>Different colors:</p>
+
+  {%- set example_buttons_colored -%}
+<div class="button-row">
+  <a href="#" class="button color-primary">Primary</a>
+  <a href="#" class="button color-info">Info</a>
+  <a href="#" class="button color-success">Success</a>
+  <a href="#" class="button color-warning">Warning</a>
+  <a href="#" class="button color-danger">Danger</a>
+</div>
+  {%- endset %}
+
+  {% call render_code_block() -%}
+{{ example_buttons_colored }}
+  {%- endcall %}
+
+  <div class="result">
+{{ example_buttons_colored }}
+  </div>
+
+  <p>Label wrapping:</p>
+
+  {%- set example_buttons_label_wrap -%}
+<p><a href="#" class="button">A button with a rather long label, not wrapping by default</a></p>
+<p><a href="#" class="button button--wrapping" style="width: 12rem;">A button with a rather long label, wrapping</a></p>
+  {%- endset %}
+
+  {% call render_code_block() -%}
+{{ example_buttons_label_wrap }}
+  {%- endcall %}
+
+  <div class="result">
+{{ example_buttons_label_wrap }}
+  </div>

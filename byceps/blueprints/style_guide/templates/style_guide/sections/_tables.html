@@ -1,0 +1,79 @@
+  <h2 id="tables">Tables</h2>
+
+  <p>With class <code>index</code>:</p>
+
+  {%- set example_table_index -%}
+<table class="index">
+  <thead>
+    <tr>
+      <th>One</th>
+      <th>Two</th>
+      <th>Three</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>a1</td>
+      <td>a2</td>
+      <td>a3</td>
+    </tr>
+    <tr>
+      <td>b1</td>
+      <td>b2</td>
+      <td>b3</td>
+    </tr>
+    <tr>
+      <td>c1</td>
+      <td>c2</td>
+      <td>c3</td>
+    </tr>
+  </tbody>
+</table>
+  {%- endset %}
+
+  {% call render_code_block() -%}
+{{ example_table_index }}
+  {%- endcall %}
+
+  <div class="result">
+{{ example_table_index }}
+  </div>
+
+  <p>With classes <code>index wide</code>:</p>
+
+  {%- set example_table_index_wide -%}
+<table class="index wide">
+  <thead>
+    <tr>
+      <th>One</th>
+      <th>Two</th>
+      <th>Three</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>a1</td>
+      <td>a2</td>
+      <td>a3</td>
+    </tr>
+    <tr>
+      <td>b1</td>
+      <td>b2</td>
+      <td>b3</td>
+    </tr>
+    <tr>
+      <td>c1</td>
+      <td>c2</td>
+      <td>c3</td>
+    </tr>
+  </tbody>
+</table>
+  {%- endset %}
+
+  {% call render_code_block() -%}
+{{ example_table_index_wide }}
+  {%- endcall %}
+
+  <div class="result">
+{{ example_table_index_wide }}
+  </div>
