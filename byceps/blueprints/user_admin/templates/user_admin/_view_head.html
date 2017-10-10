@@ -1,0 +1,12 @@
+{%- from 'macros/icons.html' import render_icon %}
+{%- from 'macros/user_admin.html' import render_user_deleted_flag %}
+
+  <nav class="breadcrumbs">
+    <ol>
+      <li><a href="{{ url_for('.index') }}">Benutzer</a></li>
+    </ol>
+  </nav>
+  <h1>
+    {{- render_icon('user') }} {{ user.screen_name -}}
+    {%- if user.deleted %} {{ render_user_deleted_flag() }}{% endif -%}
+  </h1>

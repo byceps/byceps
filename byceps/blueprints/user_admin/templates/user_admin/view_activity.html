@@ -3,7 +3,7 @@
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_tag %}
 {% from 'macros/shop_order_admin.html' import render_order_link %}
-{% from 'macros/user_admin.html' import render_user_deleted_flag, render_user_avatar_20_and_link %}
+{% from 'macros/user_admin.html' import render_user_avatar_20_and_link %}
 {% set current_tab = 'activities' %}
 {% set current_tab_user_id = user.id %}
 {% set title = 'Benutzer - Aktivität - %s'|format(user.screen_name) %}
@@ -21,15 +21,7 @@
 
 {% block body %}
 
-  <nav class="breadcrumbs">
-    <ol>
-      <li><a href="{{ url_for('.index') }}">Benutzer</a></li>
-    </ol>
-  </nav>
-  <h1>
-    {{- render_icon('user') }} {{ user.screen_name -}}
-    {%- if user.deleted %} {{ render_user_deleted_flag() }}{% endif -%}
-  </h1>
+{%- include 'user_admin/_view_head.html' %}
 
   <h2>Aktivität</h2>
   <ol class="activity-stream">
