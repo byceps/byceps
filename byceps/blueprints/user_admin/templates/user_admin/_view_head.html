@@ -1,12 +1,42 @@
-{%- from 'macros/icons.html' import render_icon %}
 {%- from 'macros/user_admin.html' import render_user_deleted_flag %}
+{%- from 'macros/user_avatar.html' import render_user_avatar_96 %}
+
+<style>
+.user-head {
+  display: flex;
+  align-items: center;
+  margin-top: 0.75rem;
+}
+
+.user-head .avatar {
+  margin-right: 0.75rem;
+}
+
+.user-head .title {
+  margin: 0;
+  padding: 0;
+}
+
+.user-head .subtitle {
+  font-size: 1.125rem; /* 18px / 16px */
+  opacity: 0.7;
+}
+</style>
 
   <nav class="breadcrumbs">
     <ol>
       <li><a href="{{ url_for('.index') }}">Benutzer</a></li>
     </ol>
   </nav>
-  <h1>
-    {{- render_icon('user') }} {{ user.screen_name -}}
-    {%- if user.deleted %} {{ render_user_deleted_flag() }}{% endif -%}
-  </h1>
+  <div class="user-head">
+    <div>{{ render_user_avatar_96(user) }}</div>
+    <div>
+      <h1 class="title">
+        {{ user.screen_name -}}
+        {%- if user.deleted %} {{ render_user_deleted_flag() }}{% endif -%}
+      </h1>
+      <div class="subtitle">
+        {{ user.detail.full_name|fallback }}
+      </div>
+    </div>
+  </div>

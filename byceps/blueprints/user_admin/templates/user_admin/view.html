@@ -3,7 +3,6 @@
 {% from 'macros/datetime.html' import render_date, render_datetime %}
 {% from 'macros/misc.html' import render_tag %}
 {% from 'macros/shop_order_admin.html' import render_order_payment_state %}
-{% from 'macros/user_avatar.html' import render_user_avatar_128 %}
 {% from 'macros/user_badge_admin.html' import render_user_badges_list %}
 {% set current_tab = 'profile' %}
 {% set current_tab_user_id = user.id %}
@@ -11,6 +10,10 @@
 
 {% block head %}
 <style>
+.radio-tab-component {
+  margin-top: 2rem;
+}
+
 .radio-tab-component > input[type='radio'] {
   position: absolute;
   left: -10000px;
@@ -65,9 +68,6 @@
 
       <div class="radio-panel" id="tabs-panel-account">
         <h2>Benutzerkonto</h2>
-        <div style="float: right; margin-left: 40px;">
-          {{ render_user_avatar_128(user) }}
-        </div>
 {%- include 'user_admin/_view_account.html' %}
       </div>
 
