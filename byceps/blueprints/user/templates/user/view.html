@@ -70,7 +70,7 @@
             {%- if attended_parties %}
             <ol class="user-profile-attended-parties">
               {%- for party in attended_parties %}
-              <li>{% if party == g.party %}<strong>{% endif %}{{ party.title }}{% if party == g.party %}</strong>{% endif %}</li>
+              <li>{{ party.title }}</li>
               {%- endfor %}
             </ol>
             {%- else %}
