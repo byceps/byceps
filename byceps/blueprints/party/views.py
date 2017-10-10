@@ -27,7 +27,6 @@ def before_request():
     if party is None:
         raise Exception('Unknown party ID "{}".'.format(party_id))
 
-    g.party = party.to_tuple()
     g.party_id = party.id
     g.brand_id = party.brand_id
 
