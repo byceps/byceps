@@ -99,10 +99,11 @@ class AbstractAppTestCase(TestCase):
         db.session.add(party)
         db.session.commit()
 
-        return party
+        return party.to_tuple()
 
     def set_brand_email_sender_address(self, brand_id, sender_address):
         email_config = EmailConfig(brand_id, sender_address)
+
         db.session.add(email_config)
         db.session.commit()
 

@@ -27,7 +27,7 @@ def before_request():
     if party is None:
         raise Exception('Unknown party ID "{}".'.format(party_id))
 
-    g.party = party
+    g.party = party.to_tuple()
 
 
 @blueprint.route('/info')

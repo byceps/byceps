@@ -27,7 +27,7 @@ def app_context(*, config_filename=CONFIG_FILENAME_TEST_PARTY):
 @contextmanager
 def current_party_set(app, party):
     def handler(sender, **kwargs):
-        g.party = party
+        g.party = party.to_tuple()
 
     with appcontext_pushed.connected_to(handler, app):
         yield
