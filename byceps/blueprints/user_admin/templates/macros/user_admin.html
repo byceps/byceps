@@ -27,13 +27,13 @@
 {%- endmacro %}
 
 
-{% macro render_user_flag_deleted() -%}
-  {{ render_tag('gelöscht', class='color-danger', icon='delete') }}
+{% macro render_user_flag_deleted(label='gelöscht', show_label=True) -%}
+  {{ render_tag(label if show_label else '', class='color-danger', icon='delete', title=None if show_label else label) }}
 {%- endmacro %}
 
 
-{% macro render_user_flag_disabled() -%}
-  {{ render_tag('deaktiviert', class='color-warning', icon='disabled') }}
+{% macro render_user_flag_disabled(label='deaktiviert', show_label=True) -%}
+  {{ render_tag(label if show_label else '', class='color-warning', icon='disabled', title=None if show_label else label) }}
 {%- endmacro %}
 
 
