@@ -1,6 +1,7 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
+{% from 'macros/misc.html' import render_tag %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
 {% from 'macros/stats.html' import render_bigstats_item %}
 {% from 'macros/user_admin.html' import render_user_avatar_16_and_link, render_user_state_filter %}
@@ -74,7 +75,7 @@
       {%- for user in users.items %}
       <tr{% if user.deleted %} class="dimmed"{% endif %}>
         <td>
-          {%- if user.deleted %}{{ render_icon('delete', title='gelöscht') }} {% endif -%}
+          {%- if user.deleted %}{{ render_tag('', class='color-danger', icon='delete', title='gelöscht') }} {% endif -%}
           {{- render_user_avatar_16_and_link(user) -}}
         </td>
         <td>{{ user.detail.full_name|fallback }}</td>
