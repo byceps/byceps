@@ -111,7 +111,7 @@ def set_invoiced_flag(order: Order, initiator_id: UserID) -> None:
         'initiator_id': str(initiator_id),
     }
 
-    event = OrderEvent(now, event_type, order.id, **data)
+    event = OrderEvent(now, event_type, order.id, data)
     db.session.add(event)
 
     order.invoice_created_at = now
@@ -127,7 +127,7 @@ def unset_invoiced_flag(order: Order, initiator_id: UserID) -> None:
         'initiator_id': str(initiator_id),
     }
 
-    event = OrderEvent(now, event_type, order.id, **data)
+    event = OrderEvent(now, event_type, order.id, data)
     db.session.add(event)
 
     order.invoice_created_at = None
@@ -146,7 +146,7 @@ def set_shipped_flag(order: Order, initiator_id: UserID) -> None:
         'initiator_id': str(initiator_id),
     }
 
-    event = OrderEvent(now, event_type, order.id, **data)
+    event = OrderEvent(now, event_type, order.id, data)
     db.session.add(event)
 
     order.shipped_at = now
@@ -165,7 +165,7 @@ def unset_shipped_flag(order: Order, initiator_id: UserID) -> None:
         'initiator_id': str(initiator_id),
     }
 
-    event = OrderEvent(now, event_type, order.id, **data)
+    event = OrderEvent(now, event_type, order.id, data)
     db.session.add(event)
 
     order.shipped_at = None
@@ -208,7 +208,7 @@ def cancel_order(order: Order, updated_by_id: UserID, reason: str) -> None:
         'reason': reason,
     }
 
-    event = OrderEvent(now, event_type, order.id, **data)
+    event = OrderEvent(now, event_type, order.id, data)
     db.session.add(event)
 
     # Make the reserved quantity of articles available again.
@@ -239,7 +239,7 @@ def mark_order_as_paid(order: Order, payment_method: PaymentMethod,
         'payment_method': payment_method.name,
     }
 
-    event = OrderEvent(now, event_type, order.id, **data)
+    event = OrderEvent(now, event_type, order.id, data)
     db.session.add(event)
 
     db.session.commit()

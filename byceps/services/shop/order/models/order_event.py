@@ -7,11 +7,15 @@ byceps.services.shop.order.models.order_event
 """
 
 from datetime import datetime
+from typing import Any, Dict
 
 from .....database import db, generate_uuid
 from .....util.instances import ReprBuilder
 
 from .order import OrderID
+
+
+OrderEventData = Dict[str, Any]
 
 
 class OrderEvent(db.Model):
@@ -25,7 +29,7 @@ class OrderEvent(db.Model):
     data = db.Column(db.JSONB)
 
     def __init__(self, occured_at: datetime, event_type: str, order_id: OrderID,
-                 **data) -> None:
+                 data: OrderEventData) -> None:
         self.occured_at = occured_at
         self.event_type = event_type
         self.order_id = order_id
