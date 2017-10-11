@@ -12,11 +12,12 @@ from typing import Any, Dict
 
 from flask import current_app
 
+from .....services.user import service as user_service
 from .....util.money import to_two_places
 from .....util.templating import load_template
 
 from .. import service as order_service
-from ..models.order import Order, OrderID
+from ..models.order import OrderID, OrderTuple
 
 
 def export_order_as_xml(order_id: OrderID) -> Dict[str, str]:
@@ -35,16 +36,17 @@ def export_order_as_xml(order_id: OrderID) -> Dict[str, str]:
     }
 
 
-def _assemble_context(order: Order) -> Dict[str, Any]:
+def _assemble_context(order: OrderTuple) -> Dict[str, Any]:
     """Assemble template context."""
-    order_tuple = order.to_tuple()
+    placed_by = user_service.find_user(order.placed_by_id)
+    email_address = placed_by.email_address
 
     now = datetime.now()
 
     return {
-        'order': order_tuple,
-        'email_address': order.placed_by.email_address,
-        'order_items': order_tuple.items,
+        'order': order,
+        'email_address': email_address,
+        'order_items': order.items,
         'now': now,
         'format_export_amount': _format_export_amount,
         'format_export_datetime': _format_export_datetime,

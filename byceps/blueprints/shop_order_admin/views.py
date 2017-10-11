@@ -114,20 +114,18 @@ def view(order_id):
     if order is None:
         abort(404)
 
-    placed_by = order.placed_by
-
-    order_tuple = order.to_tuple()
+    placed_by = user_service.find_user(order.placed_by_id)
 
     party = party_service.find_party(order.party_id)
 
-    articles_by_item_number = _get_articles_by_item_number(order_tuple)
+    articles_by_item_number = _get_articles_by_item_number(order)
 
     events = _get_events(order.id)
 
     tickets = ticket_service.find_tickets_created_by_order(order.order_number)
 
     return {
-        'order': order_tuple,
+        'order': order,
         'placed_by': placed_by,
         'party': party,
         'articles_by_item_number': articles_by_item_number,

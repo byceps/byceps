@@ -265,13 +265,18 @@ def find_order(order_id: OrderID) -> Optional[Order]:
     return Order.query.get(order_id)
 
 
-def find_order_with_details(order_id: OrderID) -> Optional[Order]:
+def find_order_with_details(order_id: OrderID) -> Optional[OrderTuple]:
     """Return the order with that id, or `None` if not found."""
-    return Order.query \
+    order = Order.query \
         .options(
             db.joinedload('items'),
         ) \
         .get(order_id)
+
+    if order is None:
+        return None
+
+    return order.to_tuple()
 
 
 def find_order_by_order_number(order_number: OrderNumber) -> Optional[Order]:

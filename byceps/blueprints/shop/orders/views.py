@@ -50,8 +50,6 @@ def view(order_id):
     if order is None:
         abort(404)
 
-    order = order.to_tuple()
-
     if order.placed_by_id != current_user.id:
         # Order was not placed by the current user.
         abort(404)

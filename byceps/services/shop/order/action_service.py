@@ -41,7 +41,7 @@ def create_order_action(article_number: ArticleNumber, procedure: str,
 
 def execute_order_actions(order_id: OrderID) -> None:
     """Execute relevant actions for order."""
-    order = order_service.find_order_with_details(order_id).to_tuple()
+    order = order_service.find_order_with_details(order_id)
 
     article_numbers = {item.article_number for item in order.items}
 
