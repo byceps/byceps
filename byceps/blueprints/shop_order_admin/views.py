@@ -23,6 +23,7 @@ from ...services.shop.sequence import service as sequence_service
 from ...services.ticketing import ticket_service
 from ...services.user.models.user import UserTuple
 from ...services.user import service as user_service
+from ...services.user_badge import service as user_badge_service
 from ...typing import UserID
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_error, flash_success
@@ -163,8 +164,12 @@ def _get_events(order_id):
             'data': event.data,
         }
 
-        additional_data = _provide_additional_data_for_standard_event(
-            event, users_by_id)
+        if event.event_type == 'badge-awarded':
+            additional_data = _provide_additional_data_for_badge_awarded(event)
+        else:
+            additional_data = _provide_additional_data_for_standard_event(
+                event, users_by_id)
+
         data.update(additional_data)
 
         yield data
@@ -177,6 +182,20 @@ def _provide_additional_data_for_standard_event(
 
     return {
         'initiator': users_by_id[initiator_id],
+    }
+
+
+def _provide_additional_data_for_badge_awarded(event: OrderEvent
+                                              ) -> OrderEventData:
+    badge_id = event.data['badge_id']
+    badge = user_badge_service.find_badge(badge_id)
+
+    recipient_id = event.data['recipient_id']
+    recipient = user_service.find_user(recipient_id)
+
+    return {
+        'badge_label': badge.label,
+        'recipient': recipient,
     }
 
 

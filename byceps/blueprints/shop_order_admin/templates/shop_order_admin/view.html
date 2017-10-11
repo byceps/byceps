@@ -228,6 +228,12 @@
             <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
             hat die Lieferung als <strong>doch nicht versendet</strong> markiert.
           {%- endset %}
+        {%- elif event.event == 'badge-awarded' %}
+          {%- set icon_name = 'badge' %}
+          {%- set body %}
+            Das <strong>Badge &quot;{{ event.badge_label }}&quot;</strong> ist an
+            {{ render_user_avatar_20_and_link(event.recipient) }} verliehen worden.
+          {%- endset %}
         {%- else %}
           {%- set icon_name = 'disabled' %}
           {%- set body %}
