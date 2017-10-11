@@ -39,3 +39,11 @@ def _build_event(event_type: str, order_id: OrderID, data: OrderEventData
     now = datetime.utcnow()
 
     return OrderEvent(now, event_type, order_id, data)
+
+
+def find_events(order_id: OrderID, event_type: str) -> Sequence[OrderEvent]:
+    """Return all events of that type for that order."""
+    return OrderEvent.query \
+        .filter_by(order_id=order_id) \
+        .filter_by(event_type=event_type) \
+        .all()
