@@ -47,6 +47,8 @@ def get_events(order_id):
             additional_data = _provide_additional_data_for_badge_awarded(event)
         elif event.event_type == 'ticket-created':
             additional_data = _provide_additional_data_for_ticket_created(event)
+        elif event.event_type == 'ticket-revoked':
+            additional_data = _provide_additional_data_for_ticket_revoked(event)
         else:
             additional_data = _provide_additional_data_for_standard_event(
                 event, users_by_id)
@@ -87,6 +89,16 @@ def _provide_additional_data_for_ticket_created(event: OrderEvent
     ticket_code = event.data['ticket_code']
     category_id = event.data['ticket_category_id']
     owner_id = event.data['ticket_owner_id']
+
+    return {
+        'ticket_code': ticket_code,
+    }
+
+
+def _provide_additional_data_for_ticket_revoked(event: OrderEvent
+                                               ) -> OrderEventData:
+    ticket_id = event.data['ticket_id']
+    ticket_code = event.data['ticket_code']
 
     return {
         'ticket_code': ticket_code,
