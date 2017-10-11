@@ -234,6 +234,11 @@
             Das <strong>Badge &quot;{{ event.badge_label }}&quot;</strong> ist an
             {{ render_user_avatar_20_and_link(event.recipient) }} verliehen worden.
           {%- endset %}
+        {%- elif event.event == 'ticket-created' %}
+          {%- set icon_name = 'ticket' %}
+          {%- set body %}
+            Das <strong>Ticket &quot;{{ event.ticket_code }}&quot;</strong> ist erzeugt worden.
+          {%- endset %}
         {%- else %}
           {%- set icon_name = 'disabled' %}
           {%- set body %}
