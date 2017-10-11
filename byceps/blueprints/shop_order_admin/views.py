@@ -6,10 +6,15 @@ byceps.blueprints.shop_order_admin.views
 :License: Modified BSD, see LICENSE for details.
 """
 
+from typing import Dict
+
 from flask import abort, g, request, Response
 
 from ...services.party import service as party_service
-from ...services.shop.order.models.order import PaymentMethod, PaymentState
+from ...services.shop.article.models.article import Article, ArticleNumber
+from ...services.shop.article import service as article_service
+from ...services.shop.order.models.order import OrderTuple, PaymentMethod, \
+    PaymentState
 from ...services.shop.order import action_service as order_action_service
 from ...services.shop.order import service as order_service
 from ...services.shop.order.export import service as order_export_service
@@ -115,8 +120,7 @@ def view(order_id):
 
     party = party_service.find_party(order.party_id)
 
-    articles_by_item_number = {item.article.item_number: item.article
-                               for item in order.items}
+    articles_by_item_number = _get_articles_by_item_number(order_tuple)
 
     events = _get_events(order.id)
 
@@ -132,6 +136,15 @@ def view(order_id):
         'PaymentState': PaymentState,
         'tickets': tickets,
     }
+
+
+def _get_articles_by_item_number(order: OrderTuple
+                                ) -> Dict[ArticleNumber, Article]:
+    numbers = {item.article_number for item in order.items}
+
+    articles = article_service.get_articles_by_numbers(numbers)
+
+    return {article.item_number: article for article in articles}
 
 
 def _get_events(order_id):

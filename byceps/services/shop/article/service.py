@@ -8,7 +8,7 @@ byceps.services.shop.article.service
 
 from datetime import datetime
 from decimal import Decimal
-from typing import Dict, Optional, Sequence
+from typing import Dict, Optional, Sequence, Set
 
 from flask_sqlalchemy import Pagination
 
@@ -110,6 +110,17 @@ def get_article_count_by_party_id() -> Dict[PartyID, int]:
         .outerjoin(Article) \
         .group_by(Party.id) \
         .all())
+
+
+def get_articles_by_numbers(article_numbers: Set[ArticleNumber]
+                           ) -> Sequence[Article]:
+    """Return the articles with those numbers."""
+    if not article_numbers:
+        return []
+
+    return Article.query \
+        .filter(Article.item_number.in_(article_numbers)) \
+        .all()
 
 
 def get_articles_for_party(party_id: PartyID) -> Sequence[Article]:
