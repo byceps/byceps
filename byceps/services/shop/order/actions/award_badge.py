@@ -21,13 +21,13 @@ def award_badge(order: OrderTuple, article_number: ArticleNumber,
     badge_id = parameters['badge_id']
     user_id = order.placed_by_id
 
-    verify_badge_id(badge_id)
+    _verify_badge_id(badge_id)
 
     for _ in range(quantity):
         badge_service.award_badge_to_user(badge_id, user_id)
 
 
-def verify_badge_id(badge_id: BadgeID) -> None:
+def _verify_badge_id(badge_id: BadgeID) -> None:
     """Raise exception if no badge with that ID is known."""
     badge = badge_service.find_badge(badge_id)
 
