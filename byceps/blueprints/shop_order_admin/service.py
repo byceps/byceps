@@ -43,19 +43,22 @@ def get_events(order_id):
             'data': event.data,
         }
 
-        if event.event_type == 'badge-awarded':
-            additional_data = _get_additional_data_for_badge_awarded(event)
-        elif event.event_type == 'ticket-created':
-            additional_data = _get_additional_data_for_ticket_created(event)
-        elif event.event_type == 'ticket-revoked':
-            additional_data = _get_additional_data_for_ticket_revoked(event)
-        else:
-            additional_data = _get_additional_data_for_standard_event(
-                event, users_by_id)
-
+        additional_data = _get_additional_data(event, users_by_id)
         data.update(additional_data)
 
         yield data
+
+
+def _get_additional_data(event: OrderEvent, users_by_id: Dict[UserID, UserTuple]
+                        ) -> OrderEventData:
+    if event.event_type == 'badge-awarded':
+        return _get_additional_data_for_badge_awarded(event)
+    elif event.event_type == 'ticket-created':
+        return _get_additional_data_for_ticket_created(event)
+    elif event.event_type == 'ticket-revoked':
+        return _get_additional_data_for_ticket_revoked(event)
+    else:
+        return _get_additional_data_for_standard_event(event, users_by_id)
 
 
 def _get_additional_data_for_standard_event(event: OrderEvent,
