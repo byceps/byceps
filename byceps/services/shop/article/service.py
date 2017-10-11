@@ -80,7 +80,7 @@ def unattach_article(attached_article: Article) -> None:
 
 
 def find_article(article_id: ArticleID) -> Optional[Article]:
-    """Return the article with that id, or `None` if not found."""
+    """Return the article with that ID, or `None` if not found."""
     return Article.query.get(article_id)
 
 
@@ -96,7 +96,7 @@ def find_article_with_details(article_id: ArticleID) -> Optional[Article]:
 
 
 def find_attached_article(attached_article_id) -> Optional[AttachedArticle]:
-    """Return the attached article with that id, or `None` if not found."""
+    """Return the attached article with that ID, or `None` if not found."""
     return AttachedArticle.query.get(attached_article_id)
 
 
