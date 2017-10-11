@@ -51,13 +51,7 @@ def execute_order_actions(order_id: OrderID) -> None:
     actions = _get_actions(article_numbers)
 
     for action in actions:
-        article_number = action.article_number
-        procedure_name = action.procedure
-        params = action.parameters
-
-        procedure = _get_procedure(procedure_name)
-
-        procedure(order, article_number, params)
+        _execute_procedure(order, action)
 
 
 def _get_actions(article_numbers: Set[ArticleNumber]) -> Sequence[OrderAction]:
@@ -65,6 +59,17 @@ def _get_actions(article_numbers: Set[ArticleNumber]) -> Sequence[OrderAction]:
     return OrderAction.query \
         .filter(OrderAction.article_number.in_(article_numbers)) \
         .all()
+
+
+def _execute_procedure(order: OrderTuple, action: OrderAction) -> None:
+    """Execute the procedure configured for that order action."""
+    article_number = action.article_number
+    procedure_name = action.procedure
+    params = action.parameters
+
+    procedure = _get_procedure(procedure_name)
+
+    procedure(order, article_number, params)
 
 
 def _get_procedure(name: str) -> OrderActionType:
