@@ -1,0 +1,31 @@
+{%- from 'macros/icons.html' import render_icon %}
+
+
+        <ol class="order-status-bar list-grid">
+          <li class="order-status-flag {{ 'set' if order.is_invoiced else '' }}">
+            {{- render_icon('invoice') }}<br>
+            {%- if order.is_invoiced -%}
+            Rechnung<br>versendet
+            {%- else -%}
+            Rechnung<br>noch nicht<br>versendet
+            {%- endif -%}
+          </li>
+          <li class="order-status-flag {{ 'set' if order.is_paid else '' }}">
+            {{- render_icon('payment') }}<br>
+            {%- if order.is_paid -%}
+            bezahlt
+            {%- else -%}
+            noch nicht<br>bezahlt
+            {%- endif -%}
+          </li>
+          {%- if order.is_shipping_required %}
+          <li class="order-status-flag {{ 'set' if order.is_shipped else '' }}">
+            {{- render_icon('shipping') }}<br>
+            {%- if order.is_shipped -%}
+            Ware<br>versendet
+            {%- else -%}
+            Ware noch<br>nicht<br>versendet
+            {%- endif -%}
+          </li>
+          {%- endif %}
+        </ol>

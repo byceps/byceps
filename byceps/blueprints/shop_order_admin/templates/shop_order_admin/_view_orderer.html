@@ -1,0 +1,22 @@
+{%- from 'macros/user_admin.html' import render_user_avatar_20_and_link %}
+
+
+  <h2>Auftraggeber/in</h2>
+  <table class="index">
+    <tr>
+      <th>Benutzer</th>
+      <td>{{ render_user_avatar_20_and_link(placed_by) }}</td>
+    </tr>
+    <tr>
+      <th>Name</th>
+      <td>{{ order.first_names }} {{ order.last_name }}</td>
+    </tr>
+    <tr>
+      <th>Anschrift</th>
+      <td>{{ order.street }}, {{ order.zip_code }} {{ order.city }}, {{ order.country }}</td>
+    </tr>
+    <tr>
+      <th>E-Mail-Adresse</th>
+      <td>{{ placed_by.email_address }}</td>
+    </tr>
+  </table>

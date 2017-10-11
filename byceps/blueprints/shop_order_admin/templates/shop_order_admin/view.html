@@ -1,10 +1,7 @@
 {% extends 'layouts/shop_order_admin.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
-{% from 'macros/datetime.html' import render_date, render_datetime %}
-{% from 'macros/icons.html' import render_icon %}
-{% from 'macros/shop_article_admin.html' import render_article_link %}
+{% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/shop_order_admin.html' import render_order_payment_method, render_order_payment_state %}
-{% from 'macros/user_admin.html' import render_user_avatar_20_and_link %}
 {% set current_page_party = party %}
 {% set title = 'Bestellung ' ~ order.order_number %}
 
@@ -41,70 +38,14 @@
 
   {%- if g.current_user.has_permission(ShopOrderPermission.update) %}
   <div style="float: right; margin-left: 40px;">
-    <div class="dropdown left">
-      <button class="dropdown-toggle button">Aktionen {{ render_icon('caret-down') }}</button>
-      <ol>
-        <li><a href="{{ url_for('.export', order_id=order.id) }}" download="{{ order.order_number }}.xml">{{ render_icon('download') }} für Lexware exportieren (XML)</a></li>
-
-        {%- if order.is_invoiced %}
-        <li><a data-action="order-unflag-invoiced" href="{{ url_for('.unset_invoiced_flag', order_id=order.id) }}">{{ render_icon('invoice') }} Rechnung wurde <strong>nicht</strong> versendet</a></li>
-        {%- else %}
-        <li><a data-action="order-flag-invoiced" href="{{ url_for('.set_invoiced_flag', order_id=order.id) }}">{{ render_icon('invoice') }} Rechnung wurde versendet</a></li>
-        {%- endif %}
-
-        {%- if not order.is_canceled %}
-        <li class="divider"></li>
-          {%- if order.is_open %}
-        <li><a href="{{ url_for('.mark_as_paid_form', order_id=order.id) }}">{{ render_icon('payment') }} Bestellung als bezahlt markieren</a></li>
-          {%- endif %}
-        <li><a href="{{ url_for('.cancel_form', order_id=order.id) }}">{{ render_icon('disabled') }} Bestellung stornieren</a></li>
-        {%- endif %}
-
-        {%- if order.is_shipping_required %}
-        <li class="divider"></li>
-          {%- if order.is_shipped %}
-        <li><a data-action="order-unflag-shipped" href="{{ url_for('.unset_shipped_flag', order_id=order.id) }}">{{ render_icon('shipping') }} Bestellung wurde <strong>nicht</strong> versendet</a></li>
-          {%- else %}
-        <li><a data-action="order-flag-shipped" href="{{ url_for('.set_shipped_flag', order_id=order.id) }}">{{ render_icon('shipping') }} Bestellung wurde versendet</a></li>
-          {%- endif %}
-        {%- endif %}
-
-      </ol>
-    </div>
+{%- include 'shop_order_admin/_view_actions.html' %}
   </div>
   {%- endif %}
 
   <table class="index">
     <tr>
       <td colspan="2">
-        <ol class="order-status-bar list-grid">
-          <li class="order-status-flag {{ 'set' if order.is_invoiced else '' }}">
-            {{- render_icon('invoice') }}<br>
-            {%- if order.is_invoiced -%}
-            Rechnung<br>versendet
-            {%- else -%}
-            Rechnung<br>noch nicht<br>versendet
-            {%- endif -%}
-          </li>
-          <li class="order-status-flag {{ 'set' if order.is_paid else '' }}">
-            {{- render_icon('payment') }}<br>
-            {%- if order.is_paid -%}
-            bezahlt
-            {%- else -%}
-            noch nicht<br>bezahlt
-            {%- endif -%}
-          </li>
-          {%- if order.is_shipping_required %}
-          <li class="order-status-flag {{ 'set' if order.is_shipped else '' }}">
-            {{- render_icon('shipping') }}<br>
-            {%- if order.is_shipped -%}
-            Ware<br>versendet
-            {%- else -%}
-            Ware noch<br>nicht<br>versendet
-            {%- endif -%}
-          </li>
-          {%- endif %}
-        </ol>
+{%- include 'shop_order_admin/_view_status_flags.html' %}
       </td>
     </tr>
     <tr>
@@ -127,146 +68,11 @@
     {%- endif %}
   </table>
 
-  <h2>Auftraggeber/in</h2>
-  <table class="index">
-    <tr>
-      <th>Benutzer</th>
-      <td>{{ render_user_avatar_20_and_link(placed_by) }}</td>
-    </tr>
-    <tr>
-      <th>Name</th>
-      <td>{{ order.first_names }} {{ order.last_name }}</td>
-    </tr>
-    <tr>
-      <th>Anschrift</th>
-      <td>{{ order.street }}, {{ order.zip_code }} {{ order.city }}, {{ order.country }}</td>
-    </tr>
-    <tr>
-      <th>E-Mail-Adresse</th>
-      <td>{{ placed_by.email_address }}</td>
-    </tr>
-  </table>
+{%- include 'shop_order_admin/_view_orderer.html' %}
 
-  <h2>Artikel</h2>
-  <table class="index" style="margin: 0 auto;">
-    <thead>
-      <tr>
-        <th>Anzahl</th>
-        <th>Artikelnr.</th>
-        <th>Beschreibung</th>
-        <th>Stückpreis</th>
-      </tr>
-    </thead>
-    <tfoot>
-      <tr>
-        <th colspan="3">Gesamtbetrag</th>
-        <td class="number"><strong>{{ order.total_price|format_euro_amount }}</strong></td>
-      </tr>
-    </tfoot>
-    <tbody>
-      {%- for item in order.items|sort(attribute='article_number') %}
-      <tr>
-        <td class="number">{{ item.quantity }}</td>
-        <td class="nowrap">{{ render_article_link(articles_by_item_number[item.article_number]) }}</td>
-        <td><strong>{{ item.description }}</strong></td>
-        <td class="number">{{ item.unit_price|format_euro_amount }}</td>
-      </tr>
-      {%- endfor %}
-    </tbody>
-  </table>
+{%- include 'shop_order_admin/_view_articles.html' %}
 
-  <h2>Verlauf</h2>
-  <ol class="activity-stream">
-    {%- for event in events|sort(attribute='occured_at', reverse=True) %}
-      {%- with %}
-        {%- if event.event == 'order-canceled-before-paid' %}
-          {%- set icon_name = 'disabled' %}
-          {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
-            hat die Bestellung {{ render_order_payment_state(PaymentState.canceled_before_paid) }}
-            (war vorher {{ render_order_payment_state(PaymentState[event.data['former_payment_state']]) }}).
-            Begründung:<br>
-            <blockquote><pre>{{ event.data['reason'] }}</pre></blockquote>
-          {%- endset %}
-        {%- elif event.event == 'order-paid' %}
-          {%- set icon_name = 'success' %}
-          {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
-            hat die Bestellung als {{ render_order_payment_state(PaymentState.paid) }}
-            mittels {{ render_order_payment_method(PaymentMethod[event.data['payment_method']]) }} markiert.
-          {%- endset %}
-        {%- elif event.event == 'order-canceled-after-paid' %}
-          {%- set icon_name = 'disabled' %}
-          {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
-            hat die Bestellung {{ render_order_payment_state(PaymentState.canceled_after_paid) }}
-            (war vorher {{ render_order_payment_state(PaymentState[event.data['former_payment_state']]) }}).
-            Begründung:<br>
-            <blockquote><pre>{{ event.data['reason'] }}</pre></blockquote>
-          {%- endset %}
-        {%- elif event.event == 'order-invoiced' %}
-          {%- set icon_name = 'invoice' %}
-          {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
-            hat die Rechnung als <strong>erstellt</strong> markiert.
-          {%- endset %}
-        {%- elif event.event == 'order-invoiced-withdrawn' %}
-          {%- set icon_name = 'remove' %}
-          {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
-            hat die Rechnung als <strong>doch nicht erstellt</strong> markiert.
-          {%- endset %}
-        {%- elif event.event == 'order-shipped' %}
-          {%- set icon_name = 'shipping' %}
-          {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
-            hat die Lieferung als <strong>versendet</strong> markiert.
-          {%- endset %}
-        {%- elif event.event == 'order-shipped-withdrawn' %}
-          {%- set icon_name = 'remove' %}
-          {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
-            hat die Lieferung als <strong>doch nicht versendet</strong> markiert.
-          {%- endset %}
-        {%- elif event.event == 'badge-awarded' %}
-          {%- set icon_name = 'badge' %}
-          {%- set body %}
-            Das <strong>Badge &quot;{{ event.badge_label }}&quot;</strong> ist an
-            {{ render_user_avatar_20_and_link(event.recipient) }} verliehen worden.
-          {%- endset %}
-        {%- elif event.event == 'ticket-created' %}
-          {%- set icon_name = 'ticket' %}
-          {%- set body %}
-            Das <strong>Ticket &quot;{{ event.ticket_code }}&quot;</strong> ist erzeugt worden.
-          {%- endset %}
-        {%- else %}
-          {%- set icon_name = 'disabled' %}
-          {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
-            hat die <strong>unbekannte Aktion '{{ event.event }}'</strong> ausgelöst.
-          {%- endset %}
-        {%- endif %}
-    <li>
-      <table class="activity-stream-item">
-        <tr>
-          <td><span class="icon-container">{{ render_icon(icon_name) }}</span></td>
-          <td>{{ body|safe }}</td>
-          <td class="timestamp">{{ render_datetime(event.occured_at) }}</td>
-        </tr>
-      </table>
-    </li>
-      {%- endwith %}
-    {%- endfor %}
-    <li>
-      <table class="activity-stream-item">
-        <tr>
-          <td><span class="icon-container">{{ render_icon('add') }}</span></td>
-          <td><span class="user-link">{{ render_user_avatar_20_and_link(placed_by) }}</span> hat die Bestellung <strong>{{ order.order_number }}</strong> aufgegeben.</td>
-          <td class="timestamp">{{ render_datetime(order.created_at) }}</td>
-        </tr>
-      </table>
-    </li>
-  </ol>
+{%- include 'shop_order_admin/_view_activity_stream.html' %}
 
   <h2>Tickets {{ render_extra_in_heading(tickets|length) }}</h1>
 {%- include 'ticketing_admin/_ticket_list.html' %}
