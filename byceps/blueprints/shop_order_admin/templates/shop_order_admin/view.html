@@ -9,14 +9,13 @@
   <style>
     .order-status-bar {
       display: flex;
-      margin: -1rem 0 0 -1rem;
+      flex-direction: column;
     }
 
     .order-status-flag {
-      min-width: 6rem;
+      align-items: center;
+      display: flex;
       opacity: 0.25;
-      padding: 1rem 0 0 1rem;
-      text-align: center;
     }
     .order-status-flag.set {
       opacity: 1;
@@ -24,6 +23,7 @@
 
     .order-status-flag-icon {
       font-size: 200%;
+      margin-right: 0.75rem;
     }
   </style>
 {%- endblock %}
