@@ -15,12 +15,15 @@ from ...services.shop.article.models.article import Article, ArticleNumber
 from ...services.shop.article import service as article_service
 from ...services.shop.order.models.order import OrderTuple, PaymentMethod, \
     PaymentState
+from ...services.shop.order.models.order_event import OrderEvent, OrderEventData
 from ...services.shop.order import action_service as order_action_service
 from ...services.shop.order import service as order_service
 from ...services.shop.order.export import service as order_export_service
 from ...services.shop.sequence import service as sequence_service
 from ...services.ticketing import ticket_service
+from ...services.user.models.user import UserTuple
 from ...services.user import service as user_service
+from ...typing import UserID
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_error, flash_success
 from ...util.framework.templating import templated
@@ -148,20 +151,33 @@ def _get_articles_by_item_number(order: OrderTuple
 def _get_events(order_id):
     events = order_service.get_order_events(order_id)
 
-    user_ids = frozenset(event.data['initiator_id'] for event in events)
+    user_ids = {event.data['initiator_id'] for event in events
+                if 'initiator_id' in event.data}
     users = user_service.find_users(user_ids)
     users_by_id = {str(user.id): user for user in users}
 
     for event in events:
-        initiator_id = event.data.pop('initiator_id')
-        initiator = users_by_id[initiator_id]
-
-        yield {
+        data = {
             'event': event.event_type,
             'occured_at': event.occured_at,
-            'initiator': initiator,
             'data': event.data,
         }
+
+        additional_data = _provide_additional_data_for_standard_event(
+            event, users_by_id)
+        data.update(additional_data)
+
+        yield data
+
+
+def _provide_additional_data_for_standard_event(
+        event: OrderEvent, users_by_id: Dict[UserID, UserTuple]
+        ) -> OrderEventData:
+    initiator_id = event.data['initiator_id']
+
+    return {
+        'initiator': users_by_id[initiator_id],
+    }
 
 
 @blueprint.route('/<uuid:order_id>/export')
