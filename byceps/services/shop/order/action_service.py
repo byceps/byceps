@@ -6,7 +6,7 @@ byceps.services.shop.order.action_service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import Any, Callable, Dict, Sequence, Set
+from typing import Callable, Dict, Sequence, Set
 
 from ....database import db
 
@@ -15,11 +15,9 @@ from ..article.models.article import ArticleNumber
 from .actions.award_badge import award_badge
 from .actions.create_tickets import create_tickets
 from .models.order import OrderID, OrderTuple
-from .models.order_action import OrderAction
+from .models.order_action import OrderAction, Parameters
 from . import service as order_service
 
-
-Parameters = Dict[str, Any]
 
 OrderActionType = Callable[[OrderTuple, ArticleNumber, int, Parameters], None]
 

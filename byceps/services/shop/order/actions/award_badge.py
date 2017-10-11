@@ -6,18 +6,17 @@ byceps.services.shop.order.actions.award_badge
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import Any, Dict
-
 from ....user_badge.models.badge import BadgeID
 from ....user_badge import service as badge_service
 
 from ...article.models.article import ArticleNumber
 
 from ..models.order import OrderTuple
+from ..models.order_action import Parameters
 
 
 def award_badge(order: OrderTuple, article_number: ArticleNumber,
-                quantity: int, parameters: Dict[str, Any]) -> None:
+                quantity: int, parameters: Parameters) -> None:
     """Award badge to user."""
     badge_id = parameters['badge_id']
     user_id = order.placed_by_id

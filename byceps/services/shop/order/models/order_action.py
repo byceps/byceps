@@ -13,6 +13,9 @@ from .....database import db, generate_uuid
 from ...article.models.article import Article, ArticleNumber
 
 
+Parameters = Dict[str, Any]
+
+
 class OrderAction(db.Model):
     """A procedure to execute when an order for that article is marked
     as paid.
@@ -26,7 +29,7 @@ class OrderAction(db.Model):
     parameters = db.Column(db.JSONB, nullable=False)
 
     def __init__(self, article_number: ArticleNumber, procedure: str,
-                 parameters: Dict[str, Any]) -> None:
+                 parameters: Parameters) -> None:
         self.article_number = article_number
         self.procedure = procedure
         self.parameters = parameters
