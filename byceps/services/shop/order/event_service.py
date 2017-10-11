@@ -7,6 +7,7 @@ byceps.services.shop.order.event_service
 """
 
 from datetime import datetime
+from typing import Sequence
 
 from ....database import db
 
@@ -20,6 +21,15 @@ def create_event(event_type: str, order_id: OrderID, data: OrderEventData
     event = _build_event(event_type, order_id, data)
 
     db.session.add(event)
+    db.session.commit()
+
+
+def create_events(event_type: str, order_id: OrderID,
+                  datas: Sequence[OrderEventData]) -> None:
+    """Create a sequence of order events."""
+    events = [_build_event(event_type, order_id, data) for data in datas]
+
+    db.session.add_all(events)
     db.session.commit()
 
 
