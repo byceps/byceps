@@ -21,7 +21,7 @@ from . import service as order_service
 
 Parameters = Dict[str, Any]
 
-OrderActionType = Callable[[OrderTuple, ArticleNumber, Parameters], None]
+OrderActionType = Callable[[OrderTuple, ArticleNumber, int, Parameters], None]
 
 
 PROCEDURES_BY_NAME = {
@@ -48,10 +48,16 @@ def execute_order_actions(order_id: OrderID) -> None:
     if not article_numbers:
         return
 
+    quantities_by_article_number = {
+        item.article_number: item.quantity for item in order.items
+    }
+
     actions = _get_actions(article_numbers)
 
     for action in actions:
-        _execute_procedure(order, action)
+        article_quantity = quantities_by_article_number[action.article_number]
+
+        _execute_procedure(order, action, article_quantity)
 
 
 def _get_actions(article_numbers: Set[ArticleNumber]) -> Sequence[OrderAction]:
@@ -61,7 +67,8 @@ def _get_actions(article_numbers: Set[ArticleNumber]) -> Sequence[OrderAction]:
         .all()
 
 
-def _execute_procedure(order: OrderTuple, action: OrderAction) -> None:
+def _execute_procedure(order: OrderTuple, action: OrderAction,
+                       article_quantity: int) -> None:
     """Execute the procedure configured for that order action."""
     article_number = action.article_number
     procedure_name = action.procedure
@@ -69,7 +76,7 @@ def _execute_procedure(order: OrderTuple, action: OrderAction) -> None:
 
     procedure = _get_procedure(procedure_name)
 
-    procedure(order, article_number, params)
+    procedure(order, article_number, article_quantity, params)
 
 
 def _get_procedure(name: str) -> OrderActionType:
