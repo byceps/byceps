@@ -24,6 +24,12 @@ Parameters = Dict[str, Any]
 OrderActionType = Callable[[Order, ArticleNumber, Parameters], None]
 
 
+PROCEDURES_BY_NAME = {
+    'award_badge': award_badge,
+    'create_tickets': create_tickets,
+}  # type: Dict[str, OrderActionType]
+
+
 def create_order_action(article_number: ArticleNumber, procedure: str,
                         parameters: Dict[str, Any]) -> None:
     """Create an order action."""
@@ -57,9 +63,4 @@ def execute_order_actions(order_id: OrderID) -> None:
 
 
 def find_procedure(name: str) -> Optional[OrderActionType]:
-    procedures_by_name = {
-        'award_badge': award_badge,
-        'create_tickets': create_tickets,
-    }  # type: Dict[str, OrderActionType]
-
-    return procedures_by_name.get(name)
+    return PROCEDURES_BY_NAME.get(name)
