@@ -6,7 +6,7 @@ byceps.services.shop.order.action_service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import Any, Callable, Dict
+from typing import Any, Callable, Dict, Sequence, Set
 
 from ....database import db
 
@@ -48,9 +48,7 @@ def execute_order_actions(order_id: OrderID) -> None:
     if not article_numbers:
         return
 
-    actions = OrderAction.query \
-        .filter(OrderAction.article_number.in_(article_numbers)) \
-        .all()
+    actions = _get_actions(article_numbers)
 
     for action in actions:
         article_number = action.article_number
@@ -60,6 +58,13 @@ def execute_order_actions(order_id: OrderID) -> None:
         procedure = _get_procedure(procedure_name)
 
         procedure(order, article_number, params)
+
+
+def _get_actions(article_numbers: Set[ArticleNumber]) -> Sequence[OrderAction]:
+    """Return the order actions for those article numbers."""
+    return OrderAction.query \
+        .filter(OrderAction.article_number.in_(article_numbers)) \
+        .all()
 
 
 def _get_procedure(name: str) -> OrderActionType:
