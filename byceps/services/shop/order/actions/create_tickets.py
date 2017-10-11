@@ -14,10 +14,10 @@ from ....ticketing import ticket_service
 
 from ...article.models.article import ArticleNumber
 
-from ..models.order import Order
+from ..models.order import OrderTuple
 
 
-def create_tickets(order: Order, article_number: ArticleNumber,
+def create_tickets(order: OrderTuple, article_number: ArticleNumber,
                    parameters: Dict[str, Any]) -> None:
     """Create tickets."""
     category_id = parameters['category_id']
@@ -29,7 +29,8 @@ def create_tickets(order: Order, article_number: ArticleNumber,
                                             order_number=order_number)
 
 
-def get_article_quantity(article_number: ArticleNumber, order: Order) -> int:
+def get_article_quantity(article_number: ArticleNumber, order: OrderTuple
+                        ) -> int:
     """Return the quantity of the article in that order."""
     relevant_order_item = find(
         lambda item: item.article_number == article_number, order.items)
