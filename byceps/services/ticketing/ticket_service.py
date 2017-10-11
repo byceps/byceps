@@ -86,12 +86,45 @@ def _generate_ticket_code_not_in(codes: Set[str]) -> str:
 
 
 # -------------------------------------------------------------------- #
+# revocation
+
+
+def revoke_ticket(ticket_id: TicketID) -> None:
+    """Revoke the ticket."""
+    ticket = find_ticket(ticket_id)
+
+    if ticket is None:
+        raise ValueError('Unknown ticket ID.')
+
+    ticket.revoked = True
+
+    db.session.commit()
+
+
+def revoke_tickets(ticket_ids: Set[TicketID]) -> None:
+    """Revoke the tickets."""
+    tickets = find_tickets(ticket_ids)
+
+    for ticket in tickets:
+        ticket.revoked = True
+
+    db.session.commit()
+
+
+# -------------------------------------------------------------------- #
 # lookup
 
 
 def find_ticket(ticket_id: TicketID) -> Optional[Ticket]:
     """Return the ticket with that id, or `None` if not found."""
     return Ticket.query.get(ticket_id)
+
+
+def find_tickets(ticket_ids: Set[TicketID]) -> Sequence[Ticket]:
+    """Return the tickets with those ids."""
+    return Ticket.query \
+        .filter(Ticket.id.in_(ticket_ids)) \
+        .all()
 
 
 def find_tickets_created_by_order(order_number: OrderNumber

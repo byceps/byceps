@@ -9,7 +9,7 @@ from byceps.services.ticketing import ticket_bundle_service as bundle_service
 from tests.base import AbstractAppTestCase
 
 
-class TicketBundleRevokeTestCase(AbstractAppTestCase):
+class TicketBundleRevocationTestCase(AbstractAppTestCase):
 
     def setUp(self):
         super().setUp()
