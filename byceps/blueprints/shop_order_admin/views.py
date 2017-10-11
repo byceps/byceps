@@ -118,7 +118,7 @@ def view(order_id):
     articles_by_item_number = {item.article.item_number: item.article
                                for item in order.items}
 
-    events = _get_events(order)
+    events = _get_events(order.id)
 
     tickets = ticket_service.find_tickets_created_by_order(order.order_number)
 
@@ -134,8 +134,8 @@ def view(order_id):
     }
 
 
-def _get_events(order):
-    events = order_service.get_order_events(order.id)
+def _get_events(order_id):
+    events = order_service.get_order_events(order_id)
 
     user_ids = frozenset(event.data['initiator_id'] for event in events)
     users = user_service.find_users(user_ids)
