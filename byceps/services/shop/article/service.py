@@ -17,7 +17,7 @@ from ....typing import PartyID
 
 from ...party.models.party import Party
 
-from .models.article import Article, ArticleNumber
+from .models.article import Article, ArticleID, ArticleNumber
 from .models.attached_article import AttachedArticle
 from .models.compilation import ArticleCompilation, ArticleCompilationItem
 
@@ -79,12 +79,12 @@ def unattach_article(attached_article: Article) -> None:
     db.session.commit()
 
 
-def find_article(article_id) -> Optional[Article]:
+def find_article(article_id: ArticleID) -> Optional[Article]:
     """Return the article with that id, or `None` if not found."""
     return Article.query.get(article_id)
 
 
-def find_article_with_details(article_id) -> Optional[Article]:
+def find_article_with_details(article_id: ArticleID) -> Optional[Article]:
     """Return the article with that ID, or `None` if not found."""
     return Article.query \
         .options(
