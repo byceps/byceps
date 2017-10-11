@@ -3,29 +3,35 @@
 
         <ol class="order-status-bar">
           <li class="order-status-flag {{ 'set' if order.is_invoiced else '' }}">
-            {{- render_icon('invoice') }}<br>
-            {%- if order.is_invoiced -%}
-            Rechnung<br>versendet
-            {%- else -%}
-            Rechnung<br>noch nicht<br>versendet
-            {%- endif -%}
+            <div class="order-status-flag-icon">{{ render_icon('invoice') }}</div>
+            <div class="order-status-flag-label">
+              {%- if order.is_invoiced -%}
+              Rechnung<br>versendet
+              {%- else -%}
+              Rechnung<br>noch nicht<br>versendet
+              {%- endif -%}
+            </div>
           </li>
           <li class="order-status-flag {{ 'set' if order.is_paid else '' }}">
-            {{- render_icon('payment') }}<br>
-            {%- if order.is_paid -%}
-            bezahlt
-            {%- else -%}
-            noch nicht<br>bezahlt
-            {%- endif -%}
+            <div class="order-status-flag-icon">{{ render_icon('payment') }}</div>
+            <div class="order-status-flag-label">
+              {%- if order.is_paid -%}
+              bezahlt
+              {%- else -%}
+              noch nicht<br>bezahlt
+              {%- endif -%}
+            </div>
           </li>
           {%- if order.is_shipping_required %}
           <li class="order-status-flag {{ 'set' if order.is_shipped else '' }}">
-            {{- render_icon('shipping') }}<br>
-            {%- if order.is_shipped -%}
-            Ware<br>versendet
-            {%- else -%}
-            Ware noch<br>nicht<br>versendet
-            {%- endif -%}
+            <div class="order-status-flag-icon">{{ render_icon('shipping') }}</div>
+            <div class="order-status-flag-label">
+              {%- if order.is_shipped -%}
+              Ware<br>versendet
+              {%- else -%}
+              Ware noch<br>nicht<br>versendet
+              {%- endif -%}
+            </div>
           </li>
           {%- endif %}
         </ol>
