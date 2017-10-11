@@ -31,7 +31,7 @@ PROCEDURES_BY_NAME = {
 
 
 def create_order_action(article_number: ArticleNumber, procedure: str,
-                        parameters: Dict[str, Any]) -> None:
+                        parameters: Parameters) -> None:
     """Create an order action."""
     action = OrderAction(article_number, procedure, parameters)
 
