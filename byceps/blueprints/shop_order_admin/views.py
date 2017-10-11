@@ -6,25 +6,16 @@ byceps.blueprints.shop_order_admin.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import Dict
-
 from flask import abort, g, request, Response
 
 from ...services.party import service as party_service
-from ...services.shop.article.models.article import Article, ArticleNumber
-from ...services.shop.article import service as article_service
-from ...services.shop.order.models.order import OrderTuple, PaymentMethod, \
-    PaymentState
-from ...services.shop.order.models.order_event import OrderEvent, OrderEventData
+from ...services.shop.order.models.order import PaymentMethod, PaymentState
 from ...services.shop.order import action_service as order_action_service
 from ...services.shop.order import service as order_service
 from ...services.shop.order.export import service as order_export_service
 from ...services.shop.sequence import service as sequence_service
 from ...services.ticketing import ticket_service
-from ...services.user.models.user import UserTuple
 from ...services.user import service as user_service
-from ...services.user_badge import service as user_badge_service
-from ...typing import UserID
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_error, flash_success
 from ...util.framework.templating import templated
@@ -37,6 +28,7 @@ from ..shop_order.signals import order_canceled, order_paid
 from .authorization import ShopOrderPermission
 from .forms import CancelForm
 from .models import OrderStateFilter
+from . import service
 
 
 blueprint = create_blueprint('shop_order_admin', __name__)
@@ -122,9 +114,9 @@ def view(order_id):
 
     party = party_service.find_party(order.party_id)
 
-    articles_by_item_number = _get_articles_by_item_number(order)
+    articles_by_item_number = service.get_articles_by_item_number(order)
 
-    events = _get_events(order.id)
+    events = service.get_events(order.id)
 
     tickets = ticket_service.find_tickets_created_by_order(order.order_number)
 
@@ -137,79 +129,6 @@ def view(order_id):
         'PaymentMethod': PaymentMethod,
         'PaymentState': PaymentState,
         'tickets': tickets,
-    }
-
-
-def _get_articles_by_item_number(order: OrderTuple
-                                ) -> Dict[ArticleNumber, Article]:
-    numbers = {item.article_number for item in order.items}
-
-    articles = article_service.get_articles_by_numbers(numbers)
-
-    return {article.item_number: article for article in articles}
-
-
-def _get_events(order_id):
-    events = order_service.get_order_events(order_id)
-
-    user_ids = {event.data['initiator_id'] for event in events
-                if 'initiator_id' in event.data}
-    users = user_service.find_users(user_ids)
-    users_by_id = {str(user.id): user for user in users}
-
-    for event in events:
-        data = {
-            'event': event.event_type,
-            'occured_at': event.occured_at,
-            'data': event.data,
-        }
-
-        if event.event_type == 'badge-awarded':
-            additional_data = _provide_additional_data_for_badge_awarded(event)
-        elif event.event_type == 'ticket-created':
-            additional_data = _provide_additional_data_for_ticket_created(event)
-        else:
-            additional_data = _provide_additional_data_for_standard_event(
-                event, users_by_id)
-
-        data.update(additional_data)
-
-        yield data
-
-
-def _provide_additional_data_for_standard_event(
-        event: OrderEvent, users_by_id: Dict[UserID, UserTuple]
-        ) -> OrderEventData:
-    initiator_id = event.data['initiator_id']
-
-    return {
-        'initiator': users_by_id[initiator_id],
-    }
-
-
-def _provide_additional_data_for_badge_awarded(event: OrderEvent
-                                              ) -> OrderEventData:
-    badge_id = event.data['badge_id']
-    badge = user_badge_service.find_badge(badge_id)
-
-    recipient_id = event.data['recipient_id']
-    recipient = user_service.find_user(recipient_id)
-
-    return {
-        'badge_label': badge.label,
-        'recipient': recipient,
-    }
-
-
-def _provide_additional_data_for_ticket_created(event: OrderEvent
-                                               ) -> OrderEventData:
-    ticket_id = event.data['ticket_id']
-    ticket_code = event.data['ticket_code']
-    category_id = event.data['ticket_category_id']
-    owner_id = event.data['ticket_owner_id']
-
-    return {
-        'ticket_code': ticket_code,
     }
 
 
