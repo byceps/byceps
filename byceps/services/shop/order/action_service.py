@@ -59,6 +59,11 @@ def execute_order_actions(order_id: OrderID) -> None:
 
         procedure = find_procedure(procedure_name)
 
+        if procedure is None:
+            raise Exception(
+                "Unknown procedure '{}' configured for article number '{}'."
+                    .format(procedure_name, article_number))
+
         procedure(order, article_number, params)
 
 
