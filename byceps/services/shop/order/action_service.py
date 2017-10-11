@@ -13,6 +13,7 @@ from ....database import db
 from ..article.models.article import ArticleNumber
 
 from .actions.award_badge import award_badge
+from .actions.create_tickets import create_tickets
 from .models.order import Order, OrderID
 from .models.order_action import OrderAction
 from . import service as order_service
@@ -58,6 +59,7 @@ def execute_order_actions(order_id: OrderID) -> None:
 def find_procedure(name: str) -> Optional[OrderActionType]:
     procedures_by_name = {
         'award_badge': award_badge,
+        'create_tickets': create_tickets,
     }  # type: Dict[str, OrderActionType]
 
     return procedures_by_name.get(name)
