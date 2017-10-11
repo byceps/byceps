@@ -6,7 +6,7 @@ byceps.services.shop.order.action_service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import Any, Callable, Dict, Optional
+from typing import Any, Callable, Dict
 
 from ....database import db
 
@@ -57,15 +57,20 @@ def execute_order_actions(order_id: OrderID) -> None:
         procedure_name = action.procedure
         params = action.parameters
 
-        procedure = find_procedure(procedure_name)
-
-        if procedure is None:
-            raise Exception(
-                "Unknown procedure '{}' configured for article number '{}'."
-                    .format(procedure_name, article_number))
+        procedure = _get_procedure(procedure_name)
 
         procedure(order, article_number, params)
 
 
-def find_procedure(name: str) -> Optional[OrderActionType]:
-    return PROCEDURES_BY_NAME.get(name)
+def _get_procedure(name: str) -> OrderActionType:
+    """Return procedure with that name, or raise an exception if the
+    name is not registerd.
+    """
+    procedure = PROCEDURES_BY_NAME.get(name)
+
+    if procedure is None:
+        raise Exception(
+            "Unknown procedure '{}' configured for article number '{}'."
+                .format(procedure_name, article_number))
+
+    return procedure
