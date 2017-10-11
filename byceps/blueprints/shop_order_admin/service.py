@@ -44,13 +44,13 @@ def get_events(order_id):
         }
 
         if event.event_type == 'badge-awarded':
-            additional_data = _provide_additional_data_for_badge_awarded(event)
+            additional_data = _get_additional_data_for_badge_awarded(event)
         elif event.event_type == 'ticket-created':
-            additional_data = _provide_additional_data_for_ticket_created(event)
+            additional_data = _get_additional_data_for_ticket_created(event)
         elif event.event_type == 'ticket-revoked':
-            additional_data = _provide_additional_data_for_ticket_revoked(event)
+            additional_data = _get_additional_data_for_ticket_revoked(event)
         else:
-            additional_data = _provide_additional_data_for_standard_event(
+            additional_data = _get_additional_data_for_standard_event(
                 event, users_by_id)
 
         data.update(additional_data)
@@ -58,9 +58,9 @@ def get_events(order_id):
         yield data
 
 
-def _provide_additional_data_for_standard_event(
-        event: OrderEvent, users_by_id: Dict[UserID, UserTuple]
-        ) -> OrderEventData:
+def _get_additional_data_for_standard_event(event: OrderEvent,
+                                            users_by_id: Dict[UserID, UserTuple]
+                                           ) -> OrderEventData:
     initiator_id = event.data['initiator_id']
 
     return {
@@ -68,8 +68,7 @@ def _provide_additional_data_for_standard_event(
     }
 
 
-def _provide_additional_data_for_badge_awarded(event: OrderEvent
-                                              ) -> OrderEventData:
+def _get_additional_data_for_badge_awarded(event: OrderEvent) -> OrderEventData:
     badge_id = event.data['badge_id']
     badge = user_badge_service.find_badge(badge_id)
 
@@ -83,8 +82,8 @@ def _provide_additional_data_for_badge_awarded(event: OrderEvent
     }
 
 
-def _provide_additional_data_for_ticket_created(event: OrderEvent
-                                               ) -> OrderEventData:
+def _get_additional_data_for_ticket_created(event: OrderEvent
+                                           ) -> OrderEventData:
     ticket_id = event.data['ticket_id']
     ticket_code = event.data['ticket_code']
     category_id = event.data['ticket_category_id']
@@ -95,8 +94,8 @@ def _provide_additional_data_for_ticket_created(event: OrderEvent
     }
 
 
-def _provide_additional_data_for_ticket_revoked(event: OrderEvent
-                                               ) -> OrderEventData:
+def _get_additional_data_for_ticket_revoked(event: OrderEvent
+                                           ) -> OrderEventData:
     ticket_id = event.data['ticket_id']
     ticket_code = event.data['ticket_code']
 
