@@ -8,6 +8,8 @@ byceps.services.shop.order.models.order_action
 
 from typing import Any, Dict
 
+from sqlalchemy.ext.hybrid import hybrid_property
+
 from .....database import db, generate_uuid
 
 from ...article.models.article import Article, ArticleNumber
