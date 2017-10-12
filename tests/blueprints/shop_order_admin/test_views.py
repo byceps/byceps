@@ -4,7 +4,8 @@
 """
 
 from byceps.services.shop.article.models.article import Article
-from byceps.services.shop.order.models.order import Order, PaymentState
+from byceps.services.shop.order.models.order import Order
+from byceps.services.shop.order.models.payment import PaymentState
 
 from testfixtures.shop_article import create_article
 from testfixtures.shop_order import create_order, create_order_item

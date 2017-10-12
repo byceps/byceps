@@ -10,7 +10,7 @@ from enum import Enum
 
 from ...util import iterables
 
-from ...services.shop.order.models.order import PaymentState
+from ...services.shop.order.models.payment import PaymentState
 
 
 IGNORED = None

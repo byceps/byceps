@@ -9,7 +9,6 @@ byceps.services.shop.order.models.order.order
 from collections import namedtuple
 from datetime import datetime
 from decimal import Decimal
-from enum import Enum
 from typing import NewType, Set
 from uuid import UUID
 
@@ -23,22 +22,13 @@ from ....user.models.user import User
 
 from ...article.models.article import Article
 
+from .payment import PaymentMethod, PaymentState
+
 
 OrderID = NewType('OrderID', UUID)
 
 
 OrderNumber = NewType('OrderNumber', str)
-
-
-PaymentMethod = Enum('PaymentMethod', ['bank_transfer', 'cash', 'direct_debit'])
-
-
-PaymentState = Enum('PaymentState', [
-    'open',
-    'canceled_before_paid',
-    'paid',
-    'canceled_after_paid',
-])
 
 
 OrderTuple = namedtuple('OrderTuple', [

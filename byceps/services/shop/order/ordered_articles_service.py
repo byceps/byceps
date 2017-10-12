@@ -13,8 +13,8 @@ from ....database import db
 
 from ..article.models.article import Article
 
-from .models.order import PaymentState
 from .models.order_item import OrderItem
+from .models.payment import PaymentState
 
 
 def count_ordered_articles(article: Article) -> Dict[PaymentState, int]:

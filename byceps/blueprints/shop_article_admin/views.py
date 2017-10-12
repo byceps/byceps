@@ -13,7 +13,7 @@ from flask import abort, request
 
 from ...services.party import service as party_service
 from ...services.shop.article import service as article_service
-from ...services.shop.order.models.order import PaymentState
+from ...services.shop.order.models.payment import PaymentState
 from ...services.shop.order import ordered_articles_service
 from ...services.shop.sequence import service as sequence_service
 from ...services.ticketing import ticket_service

@@ -11,9 +11,10 @@ from byceps.database import db
 from byceps.services.brand.models.brand import Brand
 from byceps.services.party.models.party import Party
 from byceps.services.shop.article.models.article import Article
-from byceps.services.shop.order.models.order import Order, \
-    PaymentState as OrderPaymentState
+from byceps.services.shop.order.models.order import Order
 from byceps.services.shop.order.models.order_item import OrderItem
+from byceps.services.shop.order.models.payment import \
+    PaymentState as OrderPaymentState
 from byceps.services.user.models.detail import UserDetail
 from byceps.services.user.models.user import User
 from byceps.services.user.service import find_user_by_screen_name
