@@ -33,9 +33,8 @@ PROCEDURES_BY_NAME = {
 # creation
 
 
-def create_order_action(article_number: ArticleNumber,
-                        payment_state: PaymentState, procedure: str,
-                        parameters: Parameters) -> None:
+def create_action(article_number: ArticleNumber, payment_state: PaymentState,
+                  procedure: str, parameters: Parameters) -> None:
     """Create an order action."""
     action = OrderAction(article_number, payment_state, procedure, parameters)
 
@@ -46,8 +45,7 @@ def create_order_action(article_number: ArticleNumber,
 # -------------------------------------------------------------------- #
 # execution
 
-def execute_order_actions(order_id: OrderID, payment_state: PaymentState
-                         ) -> None:
+def execute_actions(order_id: OrderID, payment_state: PaymentState) -> None:
     """Execute relevant actions for this order in its new payment state."""
     order = order_service.find_order_with_details(order_id)
 
