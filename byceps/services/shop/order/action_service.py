@@ -16,6 +16,7 @@ from .actions.award_badge import award_badge
 from .actions.create_tickets import create_tickets
 from .models.order import OrderID, OrderTuple
 from .models.order_action import OrderAction, Parameters
+from .models.payment import PaymentState
 from . import service as order_service
 
 
@@ -28,17 +29,19 @@ PROCEDURES_BY_NAME = {
 }  # type: Dict[str, OrderActionType]
 
 
-def create_order_action(article_number: ArticleNumber, procedure: str,
+def create_order_action(article_number: ArticleNumber,
+                        payment_state: PaymentState, procedure: str,
                         parameters: Parameters) -> None:
     """Create an order action."""
-    action = OrderAction(article_number, procedure, parameters)
+    action = OrderAction(article_number, payment_state, procedure, parameters)
 
     db.session.add(action)
     db.session.commit()
 
 
-def execute_order_actions(order_id: OrderID) -> None:
-    """Execute relevant actions for order."""
+def execute_order_actions(order_id: OrderID, payment_state: PaymentState
+                         ) -> None:
+    """Execute relevant actions for this order in its new payment state."""
     order = order_service.find_order_with_details(order_id)
 
     article_numbers = {item.article_number for item in order.items}
@@ -50,7 +53,7 @@ def execute_order_actions(order_id: OrderID) -> None:
         item.article_number: item.quantity for item in order.items
     }
 
-    actions = _get_actions(article_numbers)
+    actions = _get_actions(article_numbers, payment_state)
 
     for action in actions:
         article_quantity = quantities_by_article_number[action.article_number]
@@ -58,10 +61,12 @@ def execute_order_actions(order_id: OrderID) -> None:
         _execute_procedure(order, action, article_quantity)
 
 
-def _get_actions(article_numbers: Set[ArticleNumber]) -> Sequence[OrderAction]:
+def _get_actions(article_numbers: Set[ArticleNumber],
+                 payment_state: PaymentState) -> Sequence[OrderAction]:
     """Return the order actions for those article numbers."""
     return OrderAction.query \
         .filter(OrderAction.article_number.in_(article_numbers)) \
+        .filter_by(_payment_state=payment_state.name) \
         .all()
 
 

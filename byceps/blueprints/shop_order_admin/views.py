@@ -44,7 +44,7 @@ permission_registry.register_enum(ShopOrderPermission)
 @order_paid.connect
 def execute_order_actions(sender, *, order_id=None):
     """Execute relevant actions for order."""
-    order_action_service.execute_order_actions(order_id)
+    order_action_service.execute_order_actions(order_id, PaymentState.paid)
 
 
 # -------------------------------------------------------------------- #
