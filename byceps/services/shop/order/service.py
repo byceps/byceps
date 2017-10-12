@@ -219,6 +219,8 @@ def cancel_order(order: Order, updated_by_id: UserID, reason: str) -> None:
 
     db.session.commit()
 
+    action_service.execute_actions(order, payment_state_to)
+
 
 def mark_order_as_paid(order: Order, payment_method: PaymentMethod,
                        updated_by_id: UserID) -> None:
