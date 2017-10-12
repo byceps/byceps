@@ -6,6 +6,9 @@ byceps.services.shop.order.models.order.orderer
 :License: Modified BSD, see LICENSE for details.
 """
 
+from ....user.models.user import User
+
+
 class Orderer:
     """Someone who orders articles."""
 
