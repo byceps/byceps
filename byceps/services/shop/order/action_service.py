@@ -29,6 +29,10 @@ PROCEDURES_BY_NAME = {
 }  # type: Dict[str, OrderActionType]
 
 
+# -------------------------------------------------------------------- #
+# creation
+
+
 def create_order_action(article_number: ArticleNumber,
                         payment_state: PaymentState, procedure: str,
                         parameters: Parameters) -> None:
@@ -38,6 +42,9 @@ def create_order_action(article_number: ArticleNumber,
     db.session.add(action)
     db.session.commit()
 
+
+# -------------------------------------------------------------------- #
+# execution
 
 def execute_order_actions(order_id: OrderID, payment_state: PaymentState
                          ) -> None:
