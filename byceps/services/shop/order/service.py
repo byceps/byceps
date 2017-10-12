@@ -28,6 +28,7 @@ from .models.order_event import OrderEvent
 from .models.order_item import OrderItem
 from .models.orderer import Orderer
 from .models.payment import PaymentMethod, PaymentState
+from . import action_service
 
 
 class OrderFailed(Exception):
@@ -244,6 +245,8 @@ def mark_order_as_paid(order: Order, payment_method: PaymentMethod,
     db.session.add(event)
 
     db.session.commit()
+
+    action_service.execute_actions(order, payment_state_to)
 
 
 def _update_payment_state(order: Order, state: PaymentState,

@@ -14,7 +14,7 @@ from ..article.models.article import ArticleNumber
 
 from .actions.award_badge import award_badge
 from .actions.create_tickets import create_tickets
-from .models.order import OrderID, OrderTuple
+from .models.order import OrderTuple
 from .models.order_action import OrderAction, Parameters
 from .models.payment import PaymentState
 from . import service as order_service
@@ -45,10 +45,8 @@ def create_action(article_number: ArticleNumber, payment_state: PaymentState,
 # -------------------------------------------------------------------- #
 # execution
 
-def execute_actions(order_id: OrderID, payment_state: PaymentState) -> None:
+def execute_actions(order: OrderTuple, payment_state: PaymentState) -> None:
     """Execute relevant actions for this order in its new payment state."""
-    order = order_service.find_order_with_details(order_id)
-
     article_numbers = {item.article_number for item in order.items}
 
     if not article_numbers:
