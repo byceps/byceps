@@ -1,0 +1,50 @@
+{%- from 'macros/icons.html' import render_icon %}
+
+
+  {%- set example_icons -%}
+{{ render_icon('success') }}
+  {%- endset %}
+
+  {% call render_code_block() -%}
+{{ example_icons }}
+  {%- endcall %}
+
+  <div class="result">
+{{ example_icons }}
+  </div>
+
+  <style>
+    .icon-list {
+      columns: 12rem auto;
+      /* Try to trigger Chrome to re-calculate the column layout to
+         avoid split content at column breaks. */
+      -webkit-perspective: 1;
+    }
+
+    .icon-list li {
+      align-items: center;
+      display: flex;
+      padding: 0.5rem 1rem;
+    }
+
+    .icon-list li:hover {
+      background-color: #333333;
+      border-radius: 0.2rem;
+      color: #ffffff;
+    }
+
+    .icon-list li + li {
+      margin-top: 0.25rem;
+    }
+
+    .icon-list .icon {
+      font-size: 2rem;
+      margin-right: 0.75rem;
+    }
+  </style>
+
+  <ol class="icon-list">
+    {%- for icon_name in icon_names %}
+    <li>{{ render_icon(icon_name) }} {{ icon_name }}</li>
+    {%- endfor %}
+  </ol>
