@@ -107,13 +107,13 @@ class User(db.Model):
 
     @cached_property
     def is_orga(self) -> bool:
-        party = getattr(g, 'party', None)
+        party_id = getattr(g, 'party_id', None)
 
-        if party is None:
+        if party_id is None:
             return False
 
         from ...orga_team import service as orga_team_service
-        return orga_team_service.is_orga_for_party(self.id, party.id)
+        return orga_team_service.is_orga_for_party(self.id, party_id)
 
     def __eq__(self, other) -> bool:
         return (other is not None) and (self.id == other.id)
