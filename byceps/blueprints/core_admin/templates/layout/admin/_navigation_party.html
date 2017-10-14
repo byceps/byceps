@@ -2,8 +2,11 @@
 
 
 {%- if party %}
-<section>
-  <h1><small>Party</small><br>{{ party.title }}</h1>
+<section class="sidebar-section">
+  <header class="sidebar-section-header">
+    <div class="sidebar-section-category">Party</div>
+    <div class="sidebar-section-title">{{ party.title }}</div>
+  </header>
   {%- set navigation = Navigation('Party')
       .add_item(url_for('admin_dashboard.view_party', party_id=party.id), 'Dashboard', id='admin_dashboard_party', required_permission=AdminDashboardPermission.view_party, icon='dashboard')
       .add_item(url_for('snippet_admin.index_for_party', party_id=party.id), 'Snippets', id='snippet_admin', required_permission=SnippetPermission.list, icon='snippet')
@@ -18,8 +21,10 @@
 {{ render_navigation(navigation, current_page) }}
 </section>
 {%- elif brand %}
-<section>
-  <h1>Partys</h1>
+<section class="sidebar-section">
+  <header class="sidebar-section-header">
+    <div class="sidebar-section-title">Partys</div>
+  </header>
   <nav class="main">
     {%- if brand.parties %}
     <ol>

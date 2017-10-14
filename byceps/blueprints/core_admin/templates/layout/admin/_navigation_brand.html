@@ -1,9 +1,12 @@
 {%- from 'macros/admin.html' import render_navigation %}
 
 
-<section>
+<section class="sidebar-section">
 {%- if brand %}
-  <h1><small>Marke</small><br>{{ brand.title }}</h1>
+  <header class="sidebar-section-header">
+    <div class="sidebar-section-category">Marke</div>
+    <div class="sidebar-section-title">{{ brand.title }}</div>
+  </header>
   {%- set navigation = Navigation('Marke')
       .add_item(url_for('admin_dashboard.view_brand', brand_id=brand.id), 'Dashboard', id='admin_dashboard_brand', required_permission=AdminDashboardPermission.view_brand, icon='dashboard')
       .add_item(url_for('party_admin.index_for_brand', brand_id=brand.id), 'Partys', id='party_admin', required_permission=PartyPermission.list, icon='date')
@@ -15,7 +18,9 @@
   -%}
 {{ render_navigation(navigation, current_page) }}
 {%- else %}
-  <h1>Marken</h1>
+  <header class="sidebar-section-header">
+    <div class="sidebar-section-title">Marken</div>
+  </header>
   <nav class="main">
     {%- if all_brands %}
     <ol>

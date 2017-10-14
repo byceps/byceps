@@ -207,26 +207,41 @@ main {
   flex-wrap: wrap;
   margin: -20px 0 0 -20px;
 }
-#sidebar section {
+
+.sidebar-section {
   font-size: 0.875rem; /* 14px / 16px */
   flex: 1;
   margin: 20px 0 0 20px;
   overflow: hidden;
   padding-bottom: 12px;
 }
-#sidebar section h1 {
+
+.sidebar-section-header {
   background-color: #555555;
   border-bottom: #cccccc solid 1px;
-  color: #f8f8f8;
-  font-size: 1rem; /* 16px */
-  font-weight: normal;
-  margin: 0 0 10px 0;
-  padding: 10px 15px;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem 1rem;
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
 }
-#sidebar section h1 small {
-  font-size: 0.75rem; /* 12px / 16px */
+
+.sidebar-section-category,
+.sidebar-section-title {
+  color: #f8f8f8;
 }
+
+.sidebar-section-category {
+  font-size: 0.75rem; /* 12px / 16px */
+  margin-bottom: -0.125rem;
+  margin-top: 0.25rem;
+  opacity: 0.5;
+}
+
+.sidebar-section-title {
+  font-size: 1rem; /* 16px */
+  font-weight: normal;
+  margin: 0;
+}
+
 #sidebar section p {
   margin: 0;
   padding: 0 15px;

@@ -1,8 +1,10 @@
 {%- from 'macros/admin.html' import render_navigation %}
 
 
-<section>
-  <h1>Global</h1>
+<section class="sidebar-section">
+  <header class="sidebar-section-header">
+    <div class="sidebar-section-title">Global</div>
+  </header>
   {%- set navigation = Navigation('global')
       .add_item(url_for('admin_dashboard.view_global'), 'Dashboard', id='admin_dashboard_global', required_permission=AdminDashboardPermission.view_global, icon='dashboard')
       .add_item(url_for('user_admin.index'), 'Benutzer', id='user_admin', required_permission=UserPermission.list, icon='users')
