@@ -29,7 +29,7 @@ class OrderAction(db.Model):
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     article_number = db.Column(db.Unicode(20), db.ForeignKey('shop_articles.item_number'), index=True, nullable=False)
     article = db.relationship(Article, backref='order_actions')
-    _payment_state = db.Column('payment_state', db.Unicode(20), nullable=False)
+    _payment_state = db.Column('payment_state', db.Unicode(20), index=True, nullable=False)
     procedure = db.Column(db.Unicode(40), nullable=False)
     parameters = db.Column(db.JSONB, nullable=False)
 

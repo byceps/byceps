@@ -88,7 +88,7 @@ class Order(db.Model):
     street = db.Column(db.Unicode(40), nullable=False)
     invoice_created_at = db.Column(db.DateTime, nullable=True)
     _payment_method = db.Column('payment_method', db.Unicode(20), nullable=False)
-    _payment_state = db.Column('payment_state', db.Unicode(20), nullable=False)
+    _payment_state = db.Column('payment_state', db.Unicode(20), index=True, nullable=False)
     payment_state_updated_at = db.Column(db.DateTime, nullable=True)
     payment_state_updated_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=True)
     payment_state_updated_by = db.relationship(User, foreign_keys=[payment_state_updated_by_id])
