@@ -13,6 +13,8 @@ from ..article.models.article import ArticleNumber
 
 from .models.payment import PaymentState
 
+from . import action_service
+
 
 def register_badge_awarding(article_number: ArticleNumber, badge_id: BadgeID
                            ) -> None:
