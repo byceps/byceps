@@ -1,0 +1,22 @@
+{%- from 'macros/admin.html' import render_navigation_brand with context %}
+
+
+<section>
+{%- if brand %}
+  <h1><small>Marke</small><br>{{ brand.title }}</h1>
+{{ render_navigation_brand(brand, current_page) }}
+{%- else %}
+  <h1>Marken</h1>
+  <nav class="main">
+    {%- if all_brands %}
+    <ol>
+      {%- for brand in all_brands|sort(attribute='title') %}
+      <li><a href="{{ url_for('admin_dashboard.view_brand', brand_id=brand.id) }}" class="nav-item"><span class="nav-item-label">{{ brand.title }}</span></a></li>
+      {%- endfor %}
+    </ol>
+    {%- else %}
+    <p>{{ 'keine'|dim }}</p>
+    {%- endif %}
+  </nav>
+{%- endif %}
+</section>

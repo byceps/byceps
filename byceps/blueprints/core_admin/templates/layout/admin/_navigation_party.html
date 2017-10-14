@@ -1,0 +1,34 @@
+{%- from 'macros/admin.html' import render_navigation_party with context %}
+
+
+{%- if party %}
+<section>
+  <h1><small>Party</small><br>{{ party.title }}</h1>
+{{ render_navigation_party(party, current_page) }}
+</section>
+{%- elif brand %}
+<section>
+  <h1>Partys</h1>
+  <nav class="main">
+    {%- if brand.parties %}
+    <ol>
+    {%- for party in brand.parties|sort(attribute='starts_at', reverse=True) %}
+      <li>
+        <a href="{{ url_for('admin_dashboard.view_party', party_id=party.id) }}" class="nav-item">
+          <span class="nav-item-label">
+          {%- if party.is_archived -%}
+            {{ party.title|dim }}
+          {%- else -%}
+            {{ party.title }}
+          {%- endif -%}
+          </span>
+        </a>
+      </li>
+    {%- endfor %}
+    </ol>
+    {%- else %}
+    <p>{{ 'keine'|dim }}</p>
+    {%- endif %}
+  </nav>
+</section>
+{%- endif %}
