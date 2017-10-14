@@ -1,10 +1,21 @@
-{%- from 'macros/admin.html' import render_navigation_party with context %}
+{%- from 'macros/admin.html' import render_navigation %}
 
 
 {%- if party %}
 <section>
   <h1><small>Party</small><br>{{ party.title }}</h1>
-{{ render_navigation_party(party, current_page) }}
+  {%- set navigation = Navigation('Party')
+      .add_item(url_for('admin_dashboard.view_party', party_id=party.id), 'Dashboard', id='admin_dashboard_party', required_permission=AdminDashboardPermission.view_party, icon='dashboard')
+      .add_item(url_for('snippet_admin.index_for_party', party_id=party.id), 'Snippets', id='snippet_admin', required_permission=SnippetPermission.list, icon='snippet')
+      .add_item(url_for('seating_admin.index_for_party', party_id=party.id), 'Sitzpläne', id='seating_admin', required_permission=SeatingPermission.view, icon='seating-area')
+      .add_item(url_for('shop_article_admin.index_for_party', party_id=party.id), 'Shop-Artikel', id='shop_article_admin', required_permission=ShopArticlePermission.list, icon='shopping-cart')
+      .add_item(url_for('shop_order_admin.index_for_party', party_id=party.id), 'Shop-Bestellungen', id='shop_order_admin', required_permission=ShopOrderPermission.list, icon='payment')
+      .add_item(url_for('ticketing_admin.index_for_party', party_id=party.id), 'Tickets', id='ticketing_admin', required_permission=TicketingPermission.view, icon='ticket')
+      .add_item(url_for('orga_team_admin.teams_for_party', party_id=party.id), 'Orga-Teams', id='orga_admin.teams', required_permission=OrgaTeamPermission.list, icon='users')
+      .add_item(url_for('orga_presence.view', party_id=party.id), 'Orga-Anwesenheit', id='orga_presence', required_permission=OrgaPresencePermission.list, icon='date-okay')
+      .add_item(url_for('tourney_admin.category_index_for_party', party_id=party.id), 'Turniere', id='tourney_admin', required_permission=TourneyCategoryPermission.list, icon='trophy')
+  -%}
+{{ render_navigation(navigation, current_page) }}
 </section>
 {%- elif brand %}
 <section>

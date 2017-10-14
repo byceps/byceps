@@ -1,7 +1,15 @@
-{%- from 'macros/admin.html' import render_navigation_global with context %}
+{%- from 'macros/admin.html' import render_navigation %}
 
 
 <section>
   <h1>Global</h1>
-{{ render_navigation_global(current_page) }}
+  {%- set navigation = Navigation('global')
+      .add_item(url_for('admin_dashboard.view_global'), 'Dashboard', id='admin_dashboard_global', required_permission=AdminDashboardPermission.view_global, icon='dashboard')
+      .add_item(url_for('user_admin.index'), 'Benutzer', id='user_admin', required_permission=UserPermission.list, icon='users')
+      .add_item(url_for('authorization_admin.role_index'), 'Berechtigungen', id='authorization_admin', required_permission=RolePermission.list, icon='permission')
+      .add_item(url_for('user_badge_admin.index'), 'Abzeichen', id='user_badge_admin', icon='badge')
+      .add_item(url_for('orga_admin.birthdays'), 'Geburtstage', id='orga_admin.birthdays', required_permission=OrgaBirthdayPermission.list, icon='birthday')
+      .add_item(url_for('brand_admin.index'), 'Marken', id='brand_admin', required_permission=BrandPermission.view, icon='brand')
+  -%}
+{{ render_navigation(navigation, current_page) }}
 </section>
