@@ -1,4 +1,3 @@
-{%- from 'macros/admin.html' import render_brand_head, render_navigation, render_party_head %}
 {%- from 'macros/icons.html' import render_icon %}
 <!DOCTYPE html>
 <html lang="de">
@@ -33,22 +32,18 @@
           </div><!-- /.column -->
           <div class="column">
 
+            <div class="head">
 {%- with
-  current_page = current_page|default,
   brand = current_page_brand|default,
   party = current_page_party|default
 %}
-            <div class="head">
-
-  {%- if brand %}
-{{ render_brand_head(brand, all_brands) }}
-  {%- elif party %}
-{{ render_party_head(party, all_brands) }}
+  {%- if party %}
+    {{ party.title }}
+  {%- elif brand %}
+    {{ brand.title }}
   {%- endif %}
-
-            </div><!-- /.head -->
-
 {%- endwith %}
+            </div><!-- /.head -->
 
           </div><!-- /.column -->
         </div><!-- /#header-grid -->

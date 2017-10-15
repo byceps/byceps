@@ -141,20 +141,8 @@ main {
 }
 
 #header-content .head {
-  flex: 1;
-  font-size: 0.875rem; /* 14px / 16px */
+  font-size: 1.125rem; /* 18px / 16px */
   font-weight: bold;
-}
-
-#header-content .head-label {
-  margin-left: 1px;
-  padding-left: 0.3rem;
-}
-
-@media (min-width: 60rem) { /* 960px / 16px */
-  #header-content .head strong.big {
-    font-size: 1.125rem; /* 18px / 16px */
-  }
 }
 
 #header-content .current-user .label-and-name {
