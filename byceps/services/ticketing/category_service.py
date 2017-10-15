@@ -6,7 +6,7 @@ byceps.services.ticketing.category_service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import Sequence
+from typing import Optional, Sequence
 
 from ...database import db
 from ...typing import PartyID
