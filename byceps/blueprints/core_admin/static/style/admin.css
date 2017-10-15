@@ -18,28 +18,6 @@ a {
 }
 
 
-/* grid */
-
-.row {
-  align-items: baseline;
-  display: flex;
-  flex-wrap: wrap;
-  margin: -20px 0 0 -20px;
-}
-
-.row--space-around {
-  justify-content: space-around;
-}
-
-.row--space-between {
-  justify-content: space-between;
-}
-
-.column-auto {
-  padding: 20px 0 0 20px;
-}
-
-
 /* layout */
 
 @media (min-width: 60rem) { /* 960px / 16px */
