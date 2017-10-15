@@ -70,9 +70,6 @@ class Order(db.Model):
     """An order for articles, placed by a user."""
     __tablename__ = 'shop_orders'
     query_class = OrderQuery
-    __table_args__ = (
-        db.UniqueConstraint('party_id', 'order_number'),
-    )
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.now, nullable=False)
