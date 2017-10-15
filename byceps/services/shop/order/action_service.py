@@ -13,6 +13,7 @@ from ....database import db
 from ..article.models.article import ArticleNumber
 
 from .actions.award_badge import award_badge
+from .actions.create_ticket_bundles import create_ticket_bundles
 from .actions.create_tickets import create_tickets
 from .actions.revoke_tickets import revoke_tickets
 from .models.order import OrderTuple
@@ -25,6 +26,7 @@ OrderActionType = Callable[[OrderTuple, ArticleNumber, int, Parameters], None]
 
 PROCEDURES_BY_NAME = {
     'award_badge': award_badge,
+    'create_ticket_bundles': create_ticket_bundles,
     'create_tickets': create_tickets,
     'revoke_tickets': revoke_tickets,
 }  # type: Dict[str, OrderActionType]
