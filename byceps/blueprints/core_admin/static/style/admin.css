@@ -447,30 +447,6 @@ ol.index.fully-linked a:hover {
 
 /* forms */
 
-form.single-row {
-  display: flex;
-  margin-left: -0.25rem;
-}
-
-form.single-row .button,
-form.single-row input {
-  font-size: 0.875rem; /* 14px / 16px */
-  margin-left: 0.25rem;
-  padding-bottom: 0.2rem;
-  padding-top: 0.2rem;
-}
-
-form.unobtrusive .button,
-form.unobtrusive input {
-  opacity: 0.7;
-}
-
-form.unobtrusive:hover .button,
-form.unobtrusive:hover input,
-form.unobtrusive input:focus ~ .button {
-  opacity: 1;
-}
-
 fieldset.buttons {
   background-color: #e8e8e8;
   border-color: #cccccc;
