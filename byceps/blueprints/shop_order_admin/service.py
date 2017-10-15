@@ -13,6 +13,7 @@ from ...services.shop.article import service as article_service
 from ...services.shop.order.models.order import OrderTuple
 from ...services.shop.order.models.order_event import OrderEvent, OrderEventData
 from ...services.shop.order import service as order_service
+from ...services.ticketing import category_service as ticket_category_service
 from ...services.user.models.user import User, UserTuple
 from ...services.user import service as user_service
 from ...services.user_badge import service as user_badge_service
@@ -53,6 +54,8 @@ def _get_additional_data(event: OrderEvent, users_by_id: Dict[UserID, UserTuple]
                         ) -> OrderEventData:
     if event.event_type == 'badge-awarded':
         return _get_additional_data_for_badge_awarded(event)
+    elif event.event_type == 'ticket-bundle-created':
+        return _get_additional_data_for_ticket_bundle_created(event)
     elif event.event_type == 'ticket-created':
         return _get_additional_data_for_ticket_created(event)
     elif event.event_type == 'ticket-revoked':
@@ -82,6 +85,23 @@ def _get_additional_data_for_badge_awarded(event: OrderEvent) -> OrderEventData:
     return {
         'badge_label': badge.label,
         'recipient': recipient,
+    }
+
+
+def _get_additional_data_for_ticket_bundle_created(event: OrderEvent
+                                                  ) -> OrderEventData:
+    bundle_id = event.data['ticket_bundle_id']
+    category_id = event.data['ticket_bundle_category_id']
+    ticket_quantity = event.data['ticket_bundle_ticket_quantity']
+    owner_id = event.data['ticket_bundle_owner_id']
+
+    category = ticket_category_service.find_category(category_id)
+    category_title = category.title if (category is not None) else None
+
+    return {
+        'bundle_id': bundle_id,
+        'ticket_category_title': category_title,
+        'ticket_quantity': ticket_quantity,
     }
 
 

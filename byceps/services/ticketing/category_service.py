@@ -11,7 +11,7 @@ from typing import Sequence
 from ...database import db
 from ...typing import PartyID
 
-from .models.category import Category
+from .models.category import Category, CategoryID
 
 
 def create_category(party_id: PartyID, title: str) -> Category:
@@ -29,6 +29,11 @@ def count_categories_for_party(party_id: PartyID) -> int:
     return Category.query \
         .for_party_id(party_id) \
         .count()
+
+
+def find_category(category_id: CategoryID) -> Optional[Category]:
+    """Return the category with that ID, or `None` if not found."""
+    return Category.query.get(category_id)
 
 
 def get_categories_for_party(party_id: PartyID) -> Sequence[Category]:

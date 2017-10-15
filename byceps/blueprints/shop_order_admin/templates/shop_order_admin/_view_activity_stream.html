@@ -64,6 +64,11 @@
             Das <strong>Badge &quot;{{ event.badge_label }}&quot;</strong> ist an
             {{ render_user_avatar_20_and_link(event.recipient) }} verliehen worden.
           {%- endset %}
+        {%- elif event.event == 'ticket-bundle-created' %}
+          {%- set icon_name = 'ticket' %}
+          {%- set body %}
+            Ein <strong><a href="{{ url_for('ticketing_admin.view_bundle', bundle_id=event.bundle_id) }}">Ticket Bundle</a></strong> mit {{ event.ticket_quantity }} Tickets der Kategorie &quot;{{ event.ticket_category_title|fallback('unbekannt') }}&quot; ist erzeugt worden.
+          {%- endset %}
         {%- elif event.event == 'ticket-created' %}
           {%- set icon_name = 'ticket' %}
           {%- set body %}
