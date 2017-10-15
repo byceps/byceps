@@ -212,7 +212,6 @@ main {
   font-size: 0.875rem; /* 14px / 16px */
   flex: 1;
   margin: 20px 0 0 20px;
-  overflow: hidden;
   padding-bottom: 12px;
 }
 
@@ -240,6 +239,19 @@ main {
   font-size: 1rem; /* 16px */
   font-weight: normal;
   margin: 0;
+}
+
+.button .sidebar-section-title {
+  text-align: left;
+  white-space: normal;
+}
+
+.sidebar-section-header .dropdown {
+  margin-left: calc(-0.3rem - 1px);
+}
+
+.sidebar-section-title .dropdown > ol {
+  color: #333333;
 }
 
 #sidebar section p {

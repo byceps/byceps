@@ -1,11 +1,21 @@
 {%- from 'macros/admin.html' import render_navigation %}
+{%- from 'macros/brand_admin.html' import render_brand_admin_link %}
 
 
 <section class="sidebar-section">
 {%- if brand %}
   <header class="sidebar-section-header">
     <div class="sidebar-section-category">Marke</div>
-    <div class="sidebar-section-title">{{ brand.title }}</div>
+    <div class="dropdown">
+      <button class="dropdown-toggle button button--clear button--inline">
+        <div class="sidebar-section-title">{{ brand.title }} {{ render_icon('caret-down') }}</div>
+      </button>
+      <ol>
+        {%- for brand in all_brands|sort(attribute='title') %}
+        <li>{{ render_brand_admin_link(brand) }}</li>
+        {%- endfor %}
+      </ol>
+    </div>
   </header>
   {%- set navigation = Navigation('Marke')
       .add_item(url_for('admin_dashboard.view_brand', brand_id=brand.id), 'Dashboard', id='admin_dashboard_brand', required_permission=AdminDashboardPermission.view_brand, icon='dashboard')
