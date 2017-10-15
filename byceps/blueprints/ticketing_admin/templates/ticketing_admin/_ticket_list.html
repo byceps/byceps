@@ -1,4 +1,5 @@
 {%- from 'macros/misc.html' import render_tag %}
+{%- from 'macros/ticketing_admin.html' import render_ticket_flag_revoked %}
 {%- from 'macros/user_admin.html' import render_user_avatar_16_and_link %}
 
 {%- if tickets %}
@@ -17,7 +18,7 @@
     <tr>
       <td>
         <a href="{{ url_for('ticketing_admin.view_ticket', ticket_id=ticket.id) }}"><strong>{{ ticket.code }}</strong></a>
-        {%- if ticket.revoked %}<br>{{ render_tag('widerrufen', class='color-danger', title='Dieses Ticket ist nicht mehr gültig.') }}{% endif %}
+        {%- if ticket.revoked %}<br>{{ render_ticket_flag_revoked() }}{% endif %}
       </td>
       <td>{{ render_user_avatar_16_and_link(ticket.owned_by) }}</td>
       <td>{{ ticket.category.title }}</td>
