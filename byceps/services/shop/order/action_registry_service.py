@@ -19,7 +19,7 @@ from . import action_service
 def register_badge_awarding(article_number: ArticleNumber, badge_id: BadgeID
                            ) -> None:
     # Award badge to orderer when order is marked as paid.
-    params = {
+    params_create = {
         'badge_id': str(badge_id),
     }
     action_service.create_action(article_number, PaymentState.paid,
