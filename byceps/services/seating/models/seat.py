@@ -37,7 +37,7 @@ class Seat(db.Model):
     coord_x = db.Column(db.Integer, nullable=False)
     coord_y = db.Column(db.Integer, nullable=False)
     category_id = db.Column(db.Uuid, db.ForeignKey('seat_categories.id'), index=True, nullable=False)
-    category = db.relationship(Category, backref='seats')
+    category = db.relationship(Category)
     label = db.Column(db.Unicode(40), nullable=True)
 
     def __init__(self, area: Area, category: Category, *, coord_x: int=0,
