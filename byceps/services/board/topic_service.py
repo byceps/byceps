@@ -7,7 +7,7 @@ byceps.services.board.topic_service
 """
 
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Set
 
 from flask_sqlalchemy import Pagination
 
@@ -47,6 +47,16 @@ def find_topic_visible_for_user(topic_id: TopicID, user: User
         .only_visible_for_user(user) \
         .filter_by(id=topic_id) \
         .first()
+
+
+def get_all_topic_ids_in_category(category_id: CategoryID) -> Set[TopicID]:
+    """Return the IDs of all topics in the category."""
+    rows = db.session \
+        .query(Topic.id) \
+        .filter(Topic.category_id == category_id) \
+        .all()
+
+    return {row[0] for row in rows}
 
 
 def paginate_topics(category_id: CategoryID, user: User, page: int,

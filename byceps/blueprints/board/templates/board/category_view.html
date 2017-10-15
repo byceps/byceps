@@ -54,11 +54,22 @@
   {%- set current_user_may_create_topic = g.current_user.has_permission(BoardTopicPermission.create) %}
 
   <div class="button-row button-row--right">
+
     {%- if current_user_may_create_topic %}
     <a class="button" href="{{ url_for('.topic_create_form', category_id=category.id) }}">{{ render_icon('add') }} Thema hinzufügen</a>
     {%- else %}
     <span class="button button--disabled">{{ render_icon('add') }} Thema hinzufügen</span>
     {%- endif %}
+
+    {%- if not g.current_user.is_anonymous %}
+    <div class="dropdown left">
+      <button class="dropdown-toggle button">mehr {{ render_icon('caret-down') }}</button>
+      <ol>
+        <li><a data-action="mark-all-topics-in-category-as-viewed" href="{{ url_for('.mark_all_topics_in_category_as_viewed', category_id=category.id) }}">{{ render_icon('view') }} alle Themen in dieser Kategorie als gelesen markieren</a></li>
+      </ol>
+    </div>
+    {%- endif %}
+
   </div>
 
   {%- if not current_user_may_create_topic %}
@@ -67,4 +78,12 @@
   </small>
   {%- endif %}
 
+{%- endblock %}
+
+{% block scripts %}
+    <script>
+      onDomReady(function() {
+        confirmed_post_on_click('[data-action="mark-all-topics-in-category-as-viewed"]', 'Alle Themen in dieser Kategorie als gelesen markieren?');
+      });
+    </script>
 {%- endblock %}

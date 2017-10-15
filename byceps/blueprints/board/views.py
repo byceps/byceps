@@ -95,6 +95,19 @@ def category_view(slug, page):
     }
 
 
+@blueprint.route('/categories/<category_id>/mark_all_topics_as_read', methods=['POST'])
+@respond_no_content_with_location
+def mark_all_topics_in_category_as_viewed(category_id):
+    category = board_category_service.find_category_by_id(category_id)
+    if category is None:
+        abort(404)
+
+    board_last_view_service.mark_all_topics_in_category_as_viewed(
+        category_id, g.current_user.id)
+
+    return url_for('.category_view', slug=category.slug)
+
+
 # -------------------------------------------------------------------- #
 # topic
 
