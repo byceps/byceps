@@ -1,4 +1,5 @@
 <h2>Aktive Partys</h2>
+
 {%- if active_parties %}
 <ol class="active-parties">
   {%- for party in active_parties %}
@@ -16,4 +17,8 @@
 </ol>
 {%- else %}
 <p>{{ 'keine aktiven Partys'|dim }}</p>
+{%- endif %}
+
+{%- if brand|default %}
+<p style="float: right;"><a href="{{ url_for('party_admin.index_for_brand', brand_id=brand.id) }}">alle Partys &rarr;</a></p>
 {%- endif %}
