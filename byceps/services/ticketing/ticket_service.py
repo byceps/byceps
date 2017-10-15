@@ -17,6 +17,7 @@ from ...typing import PartyID, UserID
 from ..party.models.party import Party
 from ..seating.models.seat import Seat, SeatID
 from ..shop.order.models.order import OrderNumber
+from ..user.models.user import User
 
 from .models.category import Category, CategoryID
 from .models.ticket import Ticket, TicketID
@@ -226,6 +227,28 @@ def get_tickets_with_details_for_party_paginated(party_id: PartyID, page: int,
             db.joinedload('occupied_seat').joinedload('area'),
         ) \
         .order_by(Ticket.created_at) \
+        .paginate(page, per_page)
+
+
+def get_tickets_in_use_for_party_paginated(party_id: PartyID, page: int,
+                                           per_page: int,
+                                           *, search_term: Optional[str]=None
+                                          ) -> Pagination:
+    """Return the party's tickets which have a user assigned."""
+    ticket_user = db.aliased(User)
+
+    query = Ticket.query \
+        .for_party_id(party_id) \
+        .filter(Ticket.revoked == False) \
+        .filter(Ticket.used_by_id.isnot(None))
+
+    if search_term:
+        query = query \
+            .filter(ticket_user.screen_name.ilike('%{}%'.format(search_term)))
+
+    return query \
+        .join(ticket_user, Ticket.used_by_id == ticket_user.id) \
+        .order_by(db.func.lower(ticket_user.screen_name), Ticket.created_at) \
         .paginate(page, per_page)
 
 

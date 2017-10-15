@@ -72,6 +72,7 @@ def _get_blueprints(app):
 
     blueprints = [
         ('admin_dashboard',     '/admin/dashboard',     site_mode_admin ),
+        ('attendance',          '/attendance',          site_mode_public),
         ('authentication',      '/authentication',      always          ),
         ('authorization',       None,                   always          ),
         ('authorization_admin', '/admin/authorization', site_mode_admin ),
