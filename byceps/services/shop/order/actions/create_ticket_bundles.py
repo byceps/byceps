@@ -35,7 +35,7 @@ def create_ticket_bundles(order: OrderTuple, article_number: ArticleNumber,
 def _create_order_event(order_id: OrderID, ticket_bundle: TicketBundle) -> None:
     event_type = 'ticket-bundle-created'
 
-    datas = {
+    data = {
         'ticket_bundle_id': str(ticket_bundle.id),
         'ticket_bundle_category_id': str(ticket_bundle.ticket_category_id),
         'ticket_bundle_ticket_quantity': ticket_bundle.ticket_quantity,
