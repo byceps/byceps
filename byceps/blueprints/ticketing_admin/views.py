@@ -9,6 +9,7 @@ byceps.blueprints.ticketing_admin.views
 from flask import abort, request
 
 from ...services.party import service as party_service
+from ...services.shop.order import service as order_service
 from ...services.ticketing import ticket_bundle_service, ticket_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.templating import templated
@@ -57,9 +58,15 @@ def view_ticket(ticket_id):
 
     party = party_service.find_party(ticket.category.party_id)
 
+    if ticket.order_number:
+        order = order_service.find_order_by_order_number(ticket.order_number)
+    else:
+        order = None
+
     return {
         'party': party,
         'ticket': ticket,
+        'order': order,
     }
 
 
