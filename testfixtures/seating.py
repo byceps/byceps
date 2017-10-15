@@ -14,5 +14,5 @@ def create_seat_category(party_id, title):
     return Category(party_id, title)
 
 
-def create_seat_group(party_id, seat_category, title, *, seat_quantity=4):
-    return SeatGroup(party_id, seat_category, seat_quantity, title)
+def create_seat_group(party_id, seat_category_id, title, *, seat_quantity=4):
+    return SeatGroup(party_id, seat_category_id, seat_quantity, title)

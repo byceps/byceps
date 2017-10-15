@@ -17,7 +17,7 @@ from ....util.instances import ReprBuilder
 
 from ...ticketing.models.ticket_bundle import TicketBundle, TicketBundleID
 
-from .category import Category
+from .category import Category, CategoryID
 from .seat import Seat
 
 
@@ -40,10 +40,10 @@ class SeatGroup(db.Model):
 
     seats = association_proxy('assignments', 'seat')
 
-    def __init__(self, party_id: PartyID, seat_category: Category,
+    def __init__(self, party_id: PartyID, seat_category_id: CategoryID,
                  seat_quantity: int, title: str) -> None:
         self.party_id = party_id
-        self.seat_category = seat_category
+        self.seat_category_id = seat_category_id
         self.seat_quantity = seat_quantity
         self.title = title
 
