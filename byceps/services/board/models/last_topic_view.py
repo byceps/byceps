@@ -6,6 +6,8 @@ byceps.services.board.models.last_topic_view
 :License: Modified BSD, see LICENSE for details.
 """
 
+from datetime import datetime
+
 from ....database import db
 from ....typing import UserID
 from ....util.instances import ReprBuilder
@@ -22,9 +24,11 @@ class LastTopicView(db.Model):
     topic = db.relationship(Topic)
     occured_at = db.Column(db.DateTime, nullable=False)
 
-    def __init__(self, user_id: UserID, topic_id: TopicID) -> None:
+    def __init__(self, user_id: UserID, topic_id: TopicID, occured_at: datetime
+                ) -> None:
         self.user_id = user_id
         self.topic_id = topic_id
+        self.occured_at = occured_at
 
     def __repr__(self) -> str:
         return ReprBuilder(self) \
