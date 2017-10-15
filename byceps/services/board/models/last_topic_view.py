@@ -6,8 +6,6 @@ byceps.services.board.models.last_topic_view
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import Optional
-
 from ....database import db
 from ....typing import UserID
 from ....util.instances import ReprBuilder
@@ -27,13 +25,6 @@ class LastTopicView(db.Model):
     def __init__(self, user_id: UserID, topic_id: TopicID) -> None:
         self.user_id = user_id
         self.topic_id = topic_id
-
-    @classmethod
-    def find(cls, user_id: UserID, topic_id: TopicID
-            ) -> Optional['LastTopicView']:
-        return cls.query \
-            .filter_by(user_id=user_id, topic_id=topic_id) \
-            .first()
 
     def __repr__(self) -> str:
         return ReprBuilder(self) \

@@ -30,7 +30,7 @@ def contains_category_unseen_postings(category: Category, user_id: UserID
     if category.last_posting_updated_at is None:
         return False
 
-    last_view = LastCategoryView.find(user_id, category.id)
+    last_view = find_last_category_view(user_id, category.id)
 
     if last_view is None:
         return True
@@ -38,12 +38,20 @@ def contains_category_unseen_postings(category: Category, user_id: UserID
     return category.last_posting_updated_at > last_view.occured_at
 
 
+def find_last_category_view(user_id: UserID, category_id: CategoryID
+                           ) -> Optional[LastCategoryView]:
+    """Return the user's last view of the category, or `None` if not found."""
+    return LastCategoryView.query \
+        .filter_by(user_id=user_id, category_id=category_id) \
+        .first()
+
+
 def mark_category_as_just_viewed(category_id: CategoryID, user_id: UserID
                                 ) -> None:
     """Mark the category as last viewed by the user (if logged in) at
     the current time.
     """
-    last_view = LastCategoryView.find(user_id, category_id)
+    last_view = find_last_category_view(user_id, category_id)
     if last_view is None:
         last_view = LastCategoryView(user_id, category_id)
         db.session.add(last_view)
@@ -66,12 +74,20 @@ def contains_topic_unseen_postings(topic: Topic, user_id: UserID) -> bool:
         or topic.last_updated_at > last_viewed_at
 
 
+def find_last_topic_view(user_id: UserID, topic_id: TopicID
+                        ) -> Optional[LastTopicView]:
+    """Return the user's last view of the topic, or `None` if not found."""
+    return LastTopicView.query \
+        .filter_by(user_id=user_id, topic_id=topic_id) \
+        .first()
+
+
 def find_topic_last_viewed_at(topic_id: TopicID, user_id: UserID
                              ) -> Optional[datetime]:
     """Return the time the topic was last viewed by the user (or
     nothing, if it hasn't been viewed by the user yet).
     """
-    last_view = LastTopicView.find(user_id, topic_id)
+    last_view = find_last_topic_view(user_id, topic_id)
     return last_view.occured_at if (last_view is not None) else None
 
 
@@ -79,7 +95,7 @@ def mark_topic_as_just_viewed(topic_id: TopicID, user_id: UserID) -> None:
     """Mark the topic as last viewed by the user (if logged in) at the
     current time.
     """
-    last_view = LastTopicView.find(user_id, topic_id)
+    last_view = find_last_topic_view(user_id, topic_id)
     if last_view is None:
         last_view = LastTopicView(user_id, topic_id)
         db.session.add(last_view)
