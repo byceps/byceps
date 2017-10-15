@@ -29,6 +29,8 @@ def index_mine():
     tickets = ticket_service.find_tickets_related_to_user_for_party(
         current_user.id, party.id)
 
+    tickets = [ticket for ticket in tickets if not ticket.revoked]
+
     current_user_uses_any_ticket = find(
         lambda t: t.used_by_id == current_user.id, tickets)
 
