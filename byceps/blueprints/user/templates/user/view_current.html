@@ -45,12 +45,12 @@
     </tr>
   </table>
 
+  {%- if g.site_mode.is_public() %}
+  <h2>Profil</h2>
   <div class="button-row">
-    {%- if g.site_mode.is_public() %}
     <a class="button" href="{{ url_for('.view', user_id=user.id) }}">{{ render_icon('view') }} öffentliches Profil ansehen</a>
-    {%- endif %}
-    <a class="button" href="{{ url_for('authentication.password_update_form') }}">{{ render_icon('password') }} Passwort ändern</a>
   </div>
+  {%- endif %}
 
   <h2>Persönliche Daten</h2>
   <table class="index">
@@ -117,6 +117,11 @@
     </tr>
   </table>
   {%- endif %}
+
+  <h2>Sicherheit</h2>
+  <div class="button-row">
+    <a class="button" href="{{ url_for('authentication.password_update_form') }}">{{ render_icon('password') }} Passwort ändern</a>
+  </div>
 
 {%- endblock %}
 
