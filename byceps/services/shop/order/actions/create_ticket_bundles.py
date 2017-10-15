@@ -24,7 +24,7 @@ def create_ticket_bundles(order: OrderTuple, article_number: ArticleNumber,
     owned_by_id = order.placed_by_id
     order_number = order.order_number
 
-    for _ in bundle_quantity:
+    for _ in range(bundle_quantity):
         bundle = ticket_bundle_service.create_bundle(
             category_id, ticket_quantity, owned_by_id,
             order_number=order_number)
