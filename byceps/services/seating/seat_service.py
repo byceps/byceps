@@ -12,14 +12,14 @@ from ...database import db
 from ...typing import PartyID
 
 from .models.area import Area, AreaID
-from .models.category import Category
+from .models.category import CategoryID
 from .models.seat import Seat
 
 
-def create_seat(area: Area, coord_x: int, coord_y: int, category: Category
+def create_seat(area: Area, coord_x: int, coord_y: int, category_id: CategoryID
                ) -> Seat:
     """Create a seat."""
-    seat = Seat(area, category, coord_x=coord_x, coord_y=coord_y)
+    seat = Seat(area, category_id, coord_x=coord_x, coord_y=coord_y)
 
     db.session.add(seat)
     db.session.commit()

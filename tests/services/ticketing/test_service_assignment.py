@@ -18,9 +18,9 @@ class TicketAssignmentServiceTestCase(AbstractAppTestCase):
 
         self.create_brand_and_party()
 
-        self.category = self.create_category('Premium')
+        self.category_id = self.create_category('Premium').id
 
-        self.ticket = ticket_service.create_ticket(self.category.id,
+        self.ticket = ticket_service.create_ticket(self.category_id,
                                                    self.owner.id)
 
     def test_appoint_and_withdraw_user_manager(self):
@@ -58,7 +58,7 @@ class TicketAssignmentServiceTestCase(AbstractAppTestCase):
 
     def test_occupy_and_release_seat(self):
         area = self.create_area('main', 'Main Hall')
-        seat = seat_service.create_seat(area, 0, 0, self.category)
+        seat = seat_service.create_seat(area, 0, 0, self.category_id)
 
         self.assertIsNone(self.ticket.occupied_seat_id)
 

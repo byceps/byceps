@@ -18,7 +18,7 @@ from ....util.instances import ReprBuilder
 from ...user.models.user import User
 
 from .area import Area
-from .category import Category
+from .category import Category, CategoryID
 
 
 Point = namedtuple('Point', ['x', 'y'])
@@ -40,12 +40,12 @@ class Seat(db.Model):
     category = db.relationship(Category)
     label = db.Column(db.Unicode(40), nullable=True)
 
-    def __init__(self, area: Area, category: Category, *, coord_x: int=0,
+    def __init__(self, area: Area, category_id: CategoryID, *, coord_x: int=0,
                  coord_y: int=0) -> None:
         self.area = area
         self.coord_x = coord_x
         self.coord_y = coord_y
-        self.category = category
+        self.category_id = category_id
 
     @hybrid_property
     def coords(self) -> Point:
