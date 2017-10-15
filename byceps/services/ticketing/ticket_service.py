@@ -15,10 +15,10 @@ from ...database import db
 from ...typing import PartyID, UserID
 
 from ..party.models.party import Party
-from ..seating.models.category import Category, CategoryID
 from ..seating.models.seat import Seat, SeatID
 from ..shop.order.models.order import OrderNumber
 
+from .models.category import Category, CategoryID
 from .models.ticket import Ticket, TicketID
 from .models.ticket_bundle import TicketBundle
 

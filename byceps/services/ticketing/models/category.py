@@ -1,6 +1,6 @@
 """
-byceps.services.seating.models.category
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.ticketing.models.category
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2017 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -24,10 +24,8 @@ class CategoryQuery(BaseQuery):
 
 
 class Category(db.Model):
-    """A seat's category which may (indirectly) indicate its price and
-    features.
-    """
-    __tablename__ = 'seat_categories'
+    """A ticket category."""
+    __tablename__ = 'ticket_categories'
     __table_args__ = (
         db.UniqueConstraint('party_id', 'title'),
     )

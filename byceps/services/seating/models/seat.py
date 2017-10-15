@@ -15,10 +15,10 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from ....database import db, generate_uuid
 from ....util.instances import ReprBuilder
 
+from ...ticketing.models.category import Category, CategoryID
 from ...user.models.user import User
 
 from .area import Area
-from .category import Category, CategoryID
 
 
 Point = namedtuple('Point', ['x', 'y'])
@@ -36,7 +36,7 @@ class Seat(db.Model):
     area = db.relationship(Area, backref='seats')
     coord_x = db.Column(db.Integer, nullable=False)
     coord_y = db.Column(db.Integer, nullable=False)
-    category_id = db.Column(db.Uuid, db.ForeignKey('seat_categories.id'), index=True, nullable=False)
+    category_id = db.Column(db.Uuid, db.ForeignKey('ticket_categories.id'), index=True, nullable=False)
     category = db.relationship(Category)
     label = db.Column(db.Unicode(40), nullable=True)
 

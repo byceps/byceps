@@ -14,11 +14,11 @@ from ....database import BaseQuery, db, generate_uuid
 from ....typing import PartyID, UserID
 from ....util.instances import ReprBuilder
 
-from ...seating.models.category import Category, CategoryID
 from ...seating.models.seat import Seat
 from ...shop.order.models.order import OrderNumber
 from ...user.models.user import User
 
+from .category import Category, CategoryID
 from .ticket_bundle import TicketBundle
 
 
@@ -48,7 +48,7 @@ class Ticket(db.Model):
     code = db.Column(db.Unicode(5), unique=True, index=True, nullable=False)
     bundle_id = db.Column(db.Uuid, db.ForeignKey('ticket_bundles.id'), index=True, nullable=True)
     bundle = db.relationship(TicketBundle, backref='tickets')
-    category_id = db.Column(db.Uuid, db.ForeignKey('seat_categories.id'), index=True, nullable=False)
+    category_id = db.Column(db.Uuid, db.ForeignKey('ticket_categories.id'), index=True, nullable=False)
     category = db.relationship(Category)
     owned_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=False)
     owned_by = db.relationship(User, foreign_keys=[owned_by_id])

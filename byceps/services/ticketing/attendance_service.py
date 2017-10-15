@@ -16,11 +16,11 @@ from ...typing import PartyID, UserID
 
 from ..party.models.party import Party, PartyTuple
 from ..party import service as party_service
-from ..seating.models.category import Category
 from ..user.models.user import UserTuple
 from ..user import service as user_service
 
 from .models.archived_attendance import ArchivedAttendance
+from .models.category import Category
 from .models.ticket import Ticket
 
 

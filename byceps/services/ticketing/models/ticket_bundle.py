@@ -14,8 +14,9 @@ from ....database import db, generate_uuid
 from ....typing import UserID
 from ....util.instances import ReprBuilder
 
-from ...seating.models.category import Category, CategoryID
 from ...user.models.user import User
+
+from .category import Category, CategoryID
 
 
 TicketBundleID = NewType('TicketBundleID', UUID)
@@ -29,7 +30,7 @@ class TicketBundle(db.Model):
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
-    ticket_category_id = db.Column(db.Uuid, db.ForeignKey('seat_categories.id'), index=True, nullable=False)
+    ticket_category_id = db.Column(db.Uuid, db.ForeignKey('ticket_categories.id'), index=True, nullable=False)
     ticket_category = db.relationship(Category)
     ticket_quantity = db.Column(db.Integer, nullable=False)
     owned_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=False)

@@ -3,8 +3,8 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.services.seating import category_service
-from byceps.services.ticketing import ticket_bundle_service as bundle_service
+from byceps.services.ticketing import category_service, \
+    ticket_bundle_service as bundle_service
 
 from tests.base import AbstractAppTestCase
 

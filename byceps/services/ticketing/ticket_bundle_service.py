@@ -11,8 +11,7 @@ from typing import Optional, Sequence
 from ...database import db
 from ...typing import UserID
 
-from ..seating.models.category import CategoryID
-
+from .models.category import CategoryID
 from .models.ticket import Ticket
 from .models.ticket_bundle import TicketBundle, TicketBundleID
 from .ticket_service import build_tickets

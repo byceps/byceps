@@ -11,8 +11,9 @@ from typing import Dict
 from ...database import db
 from ...typing import PartyID
 
+from ..ticketing.models.category import CategoryID
+
 from .models.area import Area, AreaID
-from .models.category import CategoryID
 from .models.seat import Seat
 
 

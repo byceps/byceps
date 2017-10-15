@@ -6,7 +6,7 @@ byceps.services.shop.order.action_registry_service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from ...seating.models.category import CategoryID
+from ...ticketing.models.category import CategoryID
 from ...user_badge.models.badge import BadgeID
 
 from ..article.models.article import ArticleNumber

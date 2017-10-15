@@ -15,9 +15,9 @@ from ....database import db, generate_uuid
 from ....typing import PartyID
 from ....util.instances import ReprBuilder
 
+from ...ticketing.models.category import Category, CategoryID
 from ...ticketing.models.ticket_bundle import TicketBundle, TicketBundleID
 
-from .category import Category, CategoryID
 from .seat import Seat
 
 
@@ -33,17 +33,17 @@ class SeatGroup(db.Model):
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     party_id = db.Column(db.Unicode(40), db.ForeignKey('parties.id'), index=True, nullable=False)
-    seat_category_id = db.Column(db.Uuid, db.ForeignKey('seat_categories.id'), nullable=False)
-    seat_category = db.relationship(Category)
+    ticket_category_id = db.Column(db.Uuid, db.ForeignKey('ticket_categories.id'), nullable=False)
+    ticket_category = db.relationship(Category)
     seat_quantity = db.Column(db.Integer, nullable=False)
     title = db.Column(db.Unicode(40), nullable=False)
 
     seats = association_proxy('assignments', 'seat')
 
-    def __init__(self, party_id: PartyID, seat_category_id: CategoryID,
+    def __init__(self, party_id: PartyID, ticket_category_id: CategoryID,
                  seat_quantity: int, title: str) -> None:
         self.party_id = party_id
-        self.seat_category_id = seat_category_id
+        self.ticket_category_id = ticket_category_id
         self.seat_quantity = seat_quantity
         self.title = title
 
@@ -54,7 +54,7 @@ class SeatGroup(db.Model):
         return ReprBuilder(self) \
             .add('id', str(self.id)) \
             .add('party', self.party_id) \
-            .add('seat_category', self.seat_category.title) \
+            .add('ticket_category', self.ticket_category.title) \
             .add_with_lookup('seat_quantity') \
             .add_with_lookup('title') \
             .add_with_lookup('is_occupied') \
