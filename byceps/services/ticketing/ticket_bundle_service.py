@@ -11,6 +11,8 @@ from typing import Optional, Sequence
 from ...database import db
 from ...typing import UserID
 
+from ..shop.order.models.order import OrderNumber
+
 from .models.category import CategoryID
 from .models.ticket import Ticket
 from .models.ticket_bundle import TicketBundle, TicketBundleID
@@ -18,7 +20,9 @@ from .ticket_service import build_tickets
 
 
 def create_bundle(category_id: CategoryID, ticket_quantity: int,
-                  owned_by_id: UserID) -> TicketBundle:
+                  owned_by_id: UserID,
+                  *, order_number: Optional[OrderNumber]=None
+                 ) -> TicketBundle:
     """Create a ticket bundle and the given quantity of tickets."""
     if ticket_quantity < 1:
         raise ValueError('Ticket quantity must be positive.')
@@ -27,7 +31,7 @@ def create_bundle(category_id: CategoryID, ticket_quantity: int,
     db.session.add(bundle)
 
     tickets = list(build_tickets(category_id, owned_by_id, ticket_quantity,
-                                 bundle=bundle))
+                                 bundle=bundle, order_number=order_number))
     db.session.add_all(tickets)
 
     db.session.commit()
