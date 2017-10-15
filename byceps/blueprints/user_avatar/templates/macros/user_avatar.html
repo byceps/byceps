@@ -1,13 +1,13 @@
 {% macro render_user_avatar_16(user) -%}
 <div class="avatar size-16" title="{{ user.screen_name }}">
-  {{ _render_user_avatar_image_with_fallback(user) }}
+  {{- _render_user_avatar_image_with_fallback(user) -}}
 </div>
 {%- endmacro %}
 
 
 {% macro render_user_avatar_20(user) -%}
 <div class="avatar size-20" title="{{ user.screen_name }}">
-  {{ _render_user_avatar_image_with_fallback(user) }}
+  {{- _render_user_avatar_image_with_fallback(user) -}}
 </div>
 {%- endmacro %}
 
@@ -39,15 +39,15 @@
 
 {% macro _render_user_avatar(user, size_name) -%}
 <div class="avatar size-{{ size_name }}{% if user.is_orga %} orga{% endif %}" title="{{ user.screen_name }}">
-  {{ _render_user_avatar_image_with_fallback(user) }}
-  {%- if user.is_orga %}
+  {{- _render_user_avatar_image_with_fallback(user) }}
+  {%- if user.is_orga -%}
   <div class="avatar-orga-overlay"></div>
-  {%- endif %}
+  {%- endif -%}
 </div>
 {%- endmacro %}
 
 
 {% macro _render_user_avatar_image_with_fallback(user) -%}
-  {%- set avatar_url = user.avatar_url or url_for('core.static', filename='avatar_fallback.svg') %}
+  {%- set avatar_url = user.avatar_url or url_for('core.static', filename='avatar_fallback.svg') -%}
   <img src="{{ avatar_url }}" alt="Avatar von {{ user.screen_name }}">
 {%- endmacro %}
