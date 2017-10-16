@@ -43,7 +43,7 @@
     <tbody>
       {%- for ticket in tickets.items %}
       <tr>
-        <td>{{ render_user_avatar_32_and_link(ticket.used_by) }}</td>
+        <td>{{ render_user_avatar_32_and_link(ticket.user) }}</td>
         <td>{{ 'nicht ausgewählt'|dim }}</td>
       </tr>
       {%- endfor %}
