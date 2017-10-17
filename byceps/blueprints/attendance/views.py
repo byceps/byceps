@@ -22,7 +22,7 @@ blueprint = create_blueprint('attendance', __name__)
 @templated
 def attendees(page):
     """List all attendees of the current party."""
-    per_page = request.args.get('per_page', type=int, default=50)
+    per_page = request.args.get('per_page', type=int, default=30)
     search_term = request.args.get('search_term', default='').strip()
 
     tickets = ticket_service.get_tickets_in_use_for_party_paginated(
