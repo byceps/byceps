@@ -44,7 +44,7 @@
       {%- for ticket in tickets.items %}
       <tr>
         <td>{{ render_user_avatar_32_and_link(ticket.user) }}</td>
-        <td>{{ 'nicht ausgewählt'|dim }}</td>
+        <td>{{ ticket.seat.label if ticket.seat else 'nicht ausgewählt'|dim }}</td>
       </tr>
       {%- endfor %}
     </tbody>

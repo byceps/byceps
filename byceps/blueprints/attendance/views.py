@@ -7,6 +7,7 @@ byceps.blueprints.attendance.views
 
 from flask import g, request
 
+from ...services.seating import seat_service
 from ...services.ticketing import ticket_service
 from ...services.user import service as user_service
 from ...util.framework.blueprint import create_blueprint
@@ -31,9 +32,14 @@ def attendees(page):
     users = user_service.find_users(user_ids)
     users_by_id = user_service.index_users_by_id(users)
 
+    seat_ids = {t.occupied_seat_id for t in tickets.items}
+    seats = seat_service.find_seats(seat_ids)
+    seats_by_id = {seat.id: seat for seat in seats}
+
     tickets.items = [
         {
             'user': users_by_id[t.used_by_id],
+            'seat': seats_by_id.get(t.occupied_seat_id),
         }
         for t in tickets.items
     ]
