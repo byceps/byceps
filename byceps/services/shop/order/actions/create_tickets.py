@@ -28,6 +28,9 @@ def create_tickets(order: OrderTuple, article_number: ArticleNumber,
     tickets = ticket_service.create_tickets(category_id, owned_by_id, quantity,
                                             order_number=order_number)
 
+    for ticket in tickets:
+        ticket.used_by_id = owned_by_id
+
     _create_order_events(order.id, tickets)
 
 

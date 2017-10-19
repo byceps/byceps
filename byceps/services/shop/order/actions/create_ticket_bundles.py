@@ -29,6 +29,9 @@ def create_ticket_bundles(order: OrderTuple, article_number: ArticleNumber,
             category_id, ticket_quantity, owned_by_id,
             order_number=order_number)
 
+        for ticket in bundle.tickets:
+            ticket.used_by_id = owned_by_id
+
         _create_order_event(order.id, bundle)
 
 

@@ -42,6 +42,7 @@ class CreateTicketsActionTest(OrderActionTestBase):
 
         for ticket in tickets_after_paid:
             assert ticket.owned_by_id == self.buyer.id
+            assert ticket.used_by_id == self.buyer.id
 
         events = order_event_service.get_events_for_order(self.order.id)
         ticket_created_events = {event for event in events
