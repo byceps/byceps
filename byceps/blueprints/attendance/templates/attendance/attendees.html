@@ -50,6 +50,6 @@
     </tbody>
   </table>
 
-{{ render_pagination_nav(tickets, '.attendees', {'search_term': search_term}, centered=True) }}
+{{ render_pagination_nav(tickets, '.attendees', {'search_term': search_term if search_term else None}, centered=True) }}
 
 {%- endblock %}
