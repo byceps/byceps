@@ -381,11 +381,3 @@ def has_user_placed_orders(user_id: UserID, party_id: PartyID) -> bool:
         .count()
 
     return orders_total > 0
-
-
-def get_order_events(order_id) -> Sequence[OrderEvent]:
-    """Return the events for that order."""
-    return OrderEvent.query \
-        .filter_by(order_id=order_id) \
-        .order_by(OrderEvent.occured_at) \
-        .all()
