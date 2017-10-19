@@ -3,37 +3,20 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.services.shop.cart.models import Cart
-from byceps.services.shop.order.models.payment import PaymentMethod
 from byceps.services.shop.order import action_registry_service
 from byceps.services.shop.order import event_service as order_event_service
-from byceps.services.shop.order import service as order_service
-from byceps.services.shop.sequence.models import Purpose
-from byceps.services.shop.sequence import service as shop_sequence_service
 from byceps.services.ticketing import \
     category_service as ticket_category_service, ticket_service
 
 from testfixtures.shop_article import create_article
-from testfixtures.shop_order import create_orderer
 
-from tests.base import AbstractAppTestCase
-
-
-ANY_PAYMENT_METHOD = PaymentMethod.bank_transfer
+from .base import OrderActionTestBase
 
 
-class CreateTicketsActionTest(AbstractAppTestCase):
+class CreateTicketsActionTest(OrderActionTestBase):
 
     def setUp(self):
         super().setUp()
-
-        self.create_brand_and_party()
-
-        self.admin = self.create_user_with_detail('Admin')
-        self.buyer = self.create_user_with_detail('Buyer')
-
-        shop_sequence_service.create_party_sequence(self.party.id,
-            Purpose.order, prefix='article-')
 
         self.article = self.create_article()
 
@@ -46,7 +29,8 @@ class CreateTicketsActionTest(AbstractAppTestCase):
         action_registry_service.register_tickets_creation(
             self.article.item_number, self.ticket_category.id)
 
-        self.order = self.create_order(ticket_quantity)
+        articles_with_quantity = [(self.article, ticket_quantity)]
+        self.order = self.create_order(articles_with_quantity)
 
         tickets_before_paid = self.get_tickets_for_order()
         assert len(tickets_before_paid) == 0
@@ -74,19 +58,6 @@ class CreateTicketsActionTest(AbstractAppTestCase):
         self.db.session.commit()
 
         return article
-
-    def create_order(self, ticket_quantity):
-        orderer = create_orderer(self.buyer)
-
-        cart = Cart()
-        cart.add_item(self.article, ticket_quantity)
-
-        return order_service.create_order(self.party.id, orderer,
-            ANY_PAYMENT_METHOD, cart)
-
-    def mark_order_as_paid(self):
-        order_service.mark_order_as_paid(self.order.id, ANY_PAYMENT_METHOD,
-            self.admin.id)
 
     def get_tickets_for_order(self):
         return ticket_service.find_tickets_created_by_order(
