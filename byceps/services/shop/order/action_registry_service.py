@@ -26,9 +26,9 @@ def register_badge_awarding(article_number: ArticleNumber, badge_id: BadgeID
                                  'create_tickets', params_create)
 
 
-def register_ticket_bundle_creation(article_number: ArticleNumber,
-                                    ticket_category_id: CategoryID,
-                                    ticket_quantity: int) -> None:
+def register_ticket_bundles_creation(article_number: ArticleNumber,
+                                     ticket_category_id: CategoryID,
+                                     ticket_quantity: int) -> None:
     # Create ticket bundle(s) for order when it is marked as paid.
     params_create = {
         'category_id': str(ticket_category_id),
