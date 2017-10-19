@@ -272,7 +272,8 @@ def mark_as_paid(order_id):
     updated_by_id = g.current_user.id
 
     try:
-        order_service.mark_order_as_paid(order, payment_method, updated_by_id)
+        order_service.mark_order_as_paid(order.id, payment_method,
+                                         updated_by_id)
     except order_service.OrderAlreadyMarkedAsPaid:
         flash_error('Die Bestellung ist bereits als bezahlt markiert worden.')
         return redirect_to('.view', order_id=order.id)

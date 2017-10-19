@@ -222,9 +222,14 @@ def cancel_order(order: Order, updated_by_id: UserID, reason: str) -> None:
     action_service.execute_actions(order, payment_state_to)
 
 
-def mark_order_as_paid(order: Order, payment_method: PaymentMethod,
+def mark_order_as_paid(order_id: OrderID, payment_method: PaymentMethod,
                        updated_by_id: UserID) -> None:
     """Mark the order as paid."""
+    order = find_order(order_id)
+
+    if order is None:
+        raise ValueError('Unknown order ID')
+
     if order.is_paid:
         raise OrderAlreadyMarkedAsPaid()
 
