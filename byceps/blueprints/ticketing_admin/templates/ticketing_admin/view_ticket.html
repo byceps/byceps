@@ -28,6 +28,16 @@
       <td>{{ ticket.code }}</td>
     </tr>
     <tr>
+      <th>Bundle</th>
+      <td>
+        {%- if ticket.bundle_id %}
+        <a href="{{ url_for('.view_bundle', bundle_id=ticket.bundle_id) }}">Bundle</a>
+        {%- else %}
+        {{ 'eigenständig'|dim }}
+        {%- endif %}
+      </td>
+    </tr>
+    <tr>
       <th>Erstellt</th>
       <td>{{ render_datetime(ticket.created_at) }}</td>
     </tr>
