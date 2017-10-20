@@ -1,7 +1,8 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
-{% from 'macros/user.html' import render_user_avatar_32_and_link %}
+{% from 'macros/user.html' import render_user_link %}
+{% from 'macros/user_avatar.html' import render_user_avatar_32 %}
 {% set current_page = 'attendees' %}
 {% set title = 'Teilnehmer' %}
 
@@ -15,8 +16,13 @@
         vertical-align: middle;
       }
 
-      .attendees-list .avatar {
-        margin-right: 0.25rem;
+      .attendee {
+        align-items: center;
+        display: flex;
+      }
+
+      .attendee-avatar {
+        margin-right: 0.75rem;
       }
     </style>
 {%- endblock %}
@@ -43,7 +49,12 @@
     <tbody>
       {%- for ticket in tickets.items %}
       <tr>
-        <td>{{ render_user_avatar_32_and_link(ticket.user) }}</td>
+        <td>
+          <div class="attendee">
+            <div class="attendee-avatar">{{ render_user_avatar_32(ticket.user) }}</div>
+            <div class="attendee-name">{{ render_user_link(ticket.user) }}</div>
+          </div>
+        </td>
         <td>{{ ticket.seat.label if ticket.seat else 'nicht ausgewählt'|dim }}</td>
       </tr>
       {%- endfor %}
