@@ -5,6 +5,8 @@ byceps.blueprints.attendance.views
 :Copyright: 2006-2017 Jochen Kupperschmidt
 """
 
+from collections import namedtuple
+
 from flask import g, request
 
 from ...services.seating import seat_service
@@ -15,6 +17,9 @@ from ...util.framework.templating import templated
 
 
 blueprint = create_blueprint('attendance', __name__)
+
+
+Attendee = namedtuple('Attendee', ['user', 'seat'])
 
 
 @blueprint.route('/attendees', defaults={'page': 1})
@@ -39,10 +44,10 @@ def attendees(page):
     seats_by_id = {seat.id: seat for seat in seats}
 
     attendees = [
-        {
-            'user': users_by_id[t.used_by_id],
-            'seat': seats_by_id.get(t.occupied_seat_id),
-        }
+        Attendee(
+            users_by_id[t.used_by_id],
+            seats_by_id.get(t.occupied_seat_id),
+        )
         for t in tickets
     ]
 
