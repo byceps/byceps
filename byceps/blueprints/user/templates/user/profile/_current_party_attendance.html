@@ -8,7 +8,7 @@
     <td>
       <ol>
       {%- for ticket in current_party_tickets %}
-        <li>{{ render_seating_area_link(ticket.occupied_seat.area) if ticket.occupied_seat else 'nicht ausgewählt'|dim }}</li>
+        <li>{{ render_seating_area_link(ticket.occupied_seat.area, ticket.occupied_seat.label) if ticket.occupied_seat else 'nicht ausgewählt'|dim }}</li>
       {%- endfor %}
       </ol>
     </td>
