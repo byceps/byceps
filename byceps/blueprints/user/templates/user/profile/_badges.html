@@ -1,0 +1,10 @@
+{%- from 'macros/user_badge.html' import render_user_badges_list %}
+
+
+{%- if badges_with_awarding_quantity %}
+<div class="user-profile-detail-block">
+  <h2>Abzeichen</h2>
+
+  {{ render_user_badges_list(badges_with_awarding_quantity) }}
+</div>
+{%- endif %}

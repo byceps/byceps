@@ -1,6 +1,5 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/user_avatar.html' import render_user_avatar_128 %}
-{% from 'macros/user_badge.html' import render_user_badges_list %}
 {% set current_page = 'user.view' %}
 {% set title = '%s - Benutzer'|format(user.screen_name) %}
 
@@ -59,35 +58,13 @@
 
       <div class="user-profile-secondary">
 
-{% include 'user/profile/_current_party_attendance.html' %}
+{%- include 'user/profile/_current_party_attendance.html' %}
 
         <div class="user-profile-details">
 
-          {# attended parties #}
-          <div class="user-profile-detail-block">
-            <h2>Besuchte Partys</h2>
+{%- include 'user/profile/_attended_parties.html' %}
 
-            {%- if attended_parties %}
-            <ol class="user-profile-attended-parties">
-              {%- for party in attended_parties %}
-              <li>{{ party.title }}</li>
-              {%- endfor %}
-            </ol>
-            {%- else %}
-              {{- 'keine'|dim -}}
-            {%- endif %}
-          </div>
-          {# /attended parties #}
-
-          {# badges #}
-          {%- if badges_with_awarding_quantity %}
-          <div class="user-profile-detail-block">
-            <h2>Abzeichen</h2>
-
-            {{ render_user_badges_list(badges_with_awarding_quantity) }}
-          </div>
-          {%- endif %}
-          {# /badges #}
+{%- include 'user/profile/_badges.html' %}
 
         </div>
 

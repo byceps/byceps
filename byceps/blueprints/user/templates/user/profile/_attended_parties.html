@@ -1,0 +1,13 @@
+<div class="user-profile-detail-block">
+  <h2>Besuchte Partys</h2>
+
+  {%- if attended_parties %}
+  <ol class="user-profile-attended-parties">
+    {%- for party in attended_parties %}
+    <li>{{ party.title }}</li>
+    {%- endfor %}
+  </ol>
+  {%- else %}
+    {{- 'keine'|dim -}}
+  {%- endif %}
+</div>
