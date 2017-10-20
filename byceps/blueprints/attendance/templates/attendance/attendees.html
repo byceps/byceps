@@ -47,20 +47,20 @@
       </tr>
     </thead>
     <tbody>
-      {%- for ticket in tickets.items %}
+      {%- for attendee in attendees.items %}
       <tr>
         <td>
           <div class="attendee">
-            <div class="attendee-avatar">{{ render_user_avatar_32(ticket.user) }}</div>
-            <div class="attendee-name">{{ render_user_link(ticket.user) }}</div>
+            <div class="attendee-avatar">{{ render_user_avatar_32(attendee.user) }}</div>
+            <div class="attendee-name">{{ render_user_link(attendee.user) }}</div>
           </div>
         </td>
-        <td>{{ ticket.seat.label if ticket.seat else 'nicht ausgewählt'|dim }}</td>
+        <td>{{ attendee.seat.label if attendee.seat else 'nicht ausgewählt'|dim }}</td>
       </tr>
       {%- endfor %}
     </tbody>
   </table>
 
-{{ render_pagination_nav(tickets, '.attendees', {'search_term': search_term if search_term else None}, centered=True) }}
+{{ render_pagination_nav(attendees, '.attendees', {'search_term': search_term if search_term else None}, centered=True) }}
 
 {%- endblock %}

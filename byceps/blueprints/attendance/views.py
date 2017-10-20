@@ -25,26 +25,30 @@ def attendees(page):
     per_page = request.args.get('per_page', type=int, default=30)
     search_term = request.args.get('search_term', default='').strip()
 
-    tickets = ticket_service.get_tickets_in_use_for_party_paginated(
+    pagination = ticket_service.get_tickets_in_use_for_party_paginated(
         g.party_id, page, per_page, search_term=search_term)
 
-    user_ids = {t.used_by_id for t in tickets.items}
+    tickets = pagination.items
+
+    user_ids = {t.used_by_id for t in tickets}
     users = user_service.find_users(user_ids)
     users_by_id = user_service.index_users_by_id(users)
 
-    seat_ids = {t.occupied_seat_id for t in tickets.items}
+    seat_ids = {t.occupied_seat_id for t in tickets}
     seats = seat_service.find_seats(seat_ids)
     seats_by_id = {seat.id: seat for seat in seats}
 
-    tickets.items = [
+    attendees = [
         {
             'user': users_by_id[t.used_by_id],
             'seat': seats_by_id.get(t.occupied_seat_id),
         }
-        for t in tickets.items
+        for t in tickets
     ]
+
+    pagination.items = attendees
 
     return {
         'search_term': search_term,
-        'tickets': tickets,
+        'attendees': pagination,
     }
