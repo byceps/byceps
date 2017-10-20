@@ -18,7 +18,7 @@
     <tr>
       <td>
         <a href="{{ url_for('ticketing_admin.view_ticket', ticket_id=ticket.id) }}"><strong>{{ ticket.code }}</strong></a>
-        {%- if ticket.revoked %}<br>{{ render_ticket_flag_revoked() }}{% endif %}
+        {%- if ticket.revoked %}<br><span class="nowrap">{{ render_ticket_flag_revoked() }}</span>{% endif %}
       </td>
       <td>{{ render_user_avatar_16_and_link(ticket.owned_by) }}</td>
       <td>{{ ticket.category.title }}</td>
