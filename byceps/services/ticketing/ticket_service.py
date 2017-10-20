@@ -261,6 +261,7 @@ def get_ticket_count_by_party_id() -> Dict[PartyID, int]:
         ) \
         .outerjoin(Category) \
         .outerjoin(Ticket) \
+        .filter(Ticket.revoked == False) \
         .group_by(Party.id) \
         .all())
 
