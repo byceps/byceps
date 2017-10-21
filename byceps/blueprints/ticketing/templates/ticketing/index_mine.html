@@ -47,20 +47,32 @@
       border-color: #999999;
     }
 
-    .ticket-card-row .label {
-      color: #888888;
-      display: block;
-      font-size: 0.625rem; /* 10px / 16px */
+    .ticket-card-row .label-row {
+      display: flex;
+      justify-content: space-between;
       margin-bottom: 5px;
       margin-top: 10px;
+    }
+
+    .ticket-card-row .label {
+      color: #888888;
+      font-size: 0.625rem; /* 10px / 16px */
       text-transform: uppercase;
     }
+
+    .ticket-card-row .label-buttons {
+      margin-top: -3px;
+    }
+
     .ticket-card-row a {
       color: currentColor;
       text-decoration: none;
     }
     .ticket-card-row a:hover {
       text-decoration: underline;
+    }
+    .ticket-card-row .dropdown a:hover {
+      text-decoration: none;
     }
 
     .ticket-card-row .avatar.size-96,
@@ -103,17 +115,23 @@
       <div class="ticket-card{% if ticket.used_by_id == g.current_user.id %} ticket-used-by-me{% endif %}">
 
         <div class="ticket-card-row">
-          <span class="label">Kategorie</span>
+          <div class="label-row">
+            <span class="label">Kategorie</span>
+          </div>
           {{ ticket.category.title }}
         </div>
 
         <div class="ticket-card-row">
-          <span class="label">Käufer/in</span>
+          <div class="label-row">
+            <span class="label">Käufer/in</span>
+          </div>
           {{ render_user_avatar_16_and_link(ticket.owned_by) }}
         </div>
 
         <div class="ticket-card-row">
-          <span class="label">Sitzplatz</span>
+          <div class="label-row">
+            <span class="label">Sitzplatz</span>
+          </div>
           <div class="centered">
             {%- if ticket.occupied_seat -%}
             {{ render_seating_area_link(ticket.occupied_seat.area) }}
@@ -124,14 +142,26 @@
 
           {%- with seat_manager = ticket.get_seat_manager() %}
             {%- if seat_manager != ticket.owned_by %}
-          <span class="label">Verwalter/in</span>
+          <div class="label-row">
+            <span class="label">Verwalter/in</span>
+          </div>
           {{ render_user_avatar_16_and_link(seat_manager) }}
             {%- endif %}
           {%- endwith %}
         </div>
 
         <div class="ticket-card-row">
-          <span class="label">Nutzer/in</span>
+          <div class="label-row">
+            <span class="label">Nutzer/in</span>
+            <span class="label-buttons">
+              <div class="dropdown left">
+                <button class="dropdown-toggle button button--clear button--compact button--icon-only">{{ render_icon('caret-down') -}}</button>
+                <ol>
+                  <li><a href="{{ url_for('.appoint_user', ticket_id=ticket.id) }}">{{ render_icon('edit') }} Nutzer/in zuweisen</a></li>
+                </ol>
+              </div>
+            </span>
+          </div>
           {%- if ticket.used_by -%}
           {{ render_user_avatar_96(ticket.used_by) }}
           <div class="centered">
@@ -146,7 +176,9 @@
 
           {%- with user_manager = ticket.get_user_manager() %}
             {%- if user_manager != ticket.owned_by %}
-          <span class="label">Verwalter/in</span>
+          <div class="label-row">
+            <span class="label">Verwalter/in</span>
+          </div>
           {{ render_user_avatar_16_and_link(user_manager) }}
             {%- endif %}
           {%- endwith %}

@@ -6,13 +6,16 @@ byceps.blueprints.ticketing.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from flask import abort, g
+from flask import abort, g, redirect, request, url_for
 
 from ...services.party import service as party_service
 from ...services.ticketing import ticket_service
 from ...util.framework.blueprint import create_blueprint
+from ...util.framework.flash import flash_success
 from ...util.iterables import find
 from ...util.framework.templating import templated
+
+from .forms import SpecifyUserForm
 
 
 blueprint = create_blueprint('ticketing', __name__)
@@ -41,6 +44,45 @@ def index_mine():
     }
 
 
+# -------------------------------------------------------------------- #
+
+
+@blueprint.route('/tickets/<uuid:ticket_id>/appoint_user')
+@templated
+def appoint_user_form(ticket_id, erroneous_form=None):
+    """Show a form to select a user to appoint for the ticket."""
+    ticket = _get_ticket_or_404(ticket_id)
+
+    form = erroneous_form if erroneous_form else SpecifyUserForm()
+
+    return {
+        'ticket': ticket,
+        'form': form,
+    }
+
+
+@blueprint.route('/tickets/<uuid:ticket_id>/appoint_user', methods=['POST'])
+def appoint_user(ticket_id):
+    """Appoint a user for the ticket."""
+    form = SpecifyUserForm(request.form)
+    if not form.validate():
+        return appoint_user_form(ticket_id, form)
+
+    ticket = _get_ticket_or_404(ticket_id)
+
+    user = form.user.data
+
+    ticket_service.appoint_user(ticket.id, user.id)
+
+    flash_success('{} wurde als Nutzer/in von Ticket {} eingetragen.',
+        user.screen_name, ticket.code)
+
+    return redirect(url_for('.index_mine'))
+
+
+# -------------------------------------------------------------------- #
+
+
 def _get_current_user_or_403():
     user = g.current_user
 
@@ -48,3 +90,12 @@ def _get_current_user_or_403():
         abort(403)
 
     return user
+
+
+def _get_ticket_or_404(ticket_id):
+    ticket = ticket_service.find_ticket(ticket_id)
+
+    if (ticket is None) or ticket.revoked:
+        abort(404)
+
+    return ticket
