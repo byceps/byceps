@@ -14,6 +14,7 @@ from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_success
 from ...util.iterables import find
 from ...util.framework.templating import templated
+from ...util.views import respond_no_content
 
 from .forms import SpecifyUserForm
 
@@ -78,6 +79,17 @@ def appoint_user(ticket_id):
         user.screen_name, ticket.code)
 
     return redirect(url_for('.index_mine'))
+
+
+@blueprint.route('/tickets/<uuid:ticket_id>/user', methods=['DELETE'])
+@respond_no_content
+def withdraw_user(ticket_id):
+    """Withdraw the ticket's user."""
+    ticket = _get_ticket_or_404(ticket_id)
+
+    ticket_service.withdraw_user(ticket.id)
+
+    flash_success('Der Nutzer von Ticket {} wurde entfernt.', ticket.code)
 
 
 # -------------------------------------------------------------------- #
