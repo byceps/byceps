@@ -57,6 +57,10 @@ def appoint_user_form(ticket_id, erroneous_form=None):
 
     ticket = _get_ticket_or_404(ticket_id)
 
+    manager = g.current_user
+    if not ticket.is_user_managed_by(manager.id):
+        abort(403)
+
     form = erroneous_form if erroneous_form else SpecifyUserForm()
 
     return {
@@ -76,6 +80,10 @@ def appoint_user(ticket_id):
 
     ticket = _get_ticket_or_404(ticket_id)
 
+    manager = g.current_user
+    if not ticket.is_user_managed_by(manager.id):
+        abort(403)
+
     user = form.user.data
 
     ticket_service.appoint_user(ticket.id, user.id)
@@ -93,6 +101,10 @@ def withdraw_user(ticket_id):
     _abort_if_ticket_management_disabled()
 
     ticket = _get_ticket_or_404(ticket_id)
+
+    manager = g.current_user
+    if not ticket.is_user_managed_by(manager.id):
+        abort(403)
 
     ticket_service.withdraw_user(ticket.id)
 
