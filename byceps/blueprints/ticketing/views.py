@@ -81,12 +81,13 @@ def appoint_user(ticket_id):
     ticket = _get_ticket_or_404(ticket_id)
 
     manager = g.current_user
+
     if not ticket.is_user_managed_by(manager.id):
         abort(403)
 
     user = form.user.data
 
-    ticket_service.appoint_user(ticket.id, user.id)
+    ticket_service.appoint_user(ticket.id, user.id, manager.id)
 
     flash_success('{} wurde als Nutzer/in von Ticket {} eingetragen.',
         user.screen_name, ticket.code)
@@ -103,10 +104,11 @@ def withdraw_user(ticket_id):
     ticket = _get_ticket_or_404(ticket_id)
 
     manager = g.current_user
+
     if not ticket.is_user_managed_by(manager.id):
         abort(403)
 
-    ticket_service.withdraw_user(ticket.id)
+    ticket_service.withdraw_user(ticket.id, manager.id)
 
     flash_success('Der Nutzer von Ticket {} wurde entfernt.', ticket.code)
 

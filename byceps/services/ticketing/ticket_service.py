@@ -308,7 +308,7 @@ def withdraw_user_manager(ticket_id: TicketID):
     db.session.commit()
 
 
-def appoint_user(ticket_id: TicketID, user_id: UserID):
+def appoint_user(ticket_id: TicketID, user_id: UserID, initiator_id: UserID):
     """Appoint the user as the ticket's user."""
     ticket = find_ticket(ticket_id)
 
@@ -316,19 +316,22 @@ def appoint_user(ticket_id: TicketID, user_id: UserID):
 
     event = event_service._build_event('user-appointed', ticket.id, {
         'appointed_user_id': str(user_id),
+        'initiator_id': str(initiator_id),
     })
     db.session.add(event)
 
     db.session.commit()
 
 
-def withdraw_user(ticket_id: TicketID):
+def withdraw_user(ticket_id: TicketID, initiator_id: UserID):
     """Withdraw the ticket's user."""
     ticket = find_ticket(ticket_id)
 
     ticket.used_by_id = None
 
-    event = event_service._build_event('user-withdrawn', ticket.id, {})
+    event = event_service._build_event('user-withdrawn', ticket.id, {
+        'initiator_id': str(initiator_id),
+    })
     db.session.add(event)
 
     db.session.commit()
