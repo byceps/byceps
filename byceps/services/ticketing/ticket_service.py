@@ -254,15 +254,24 @@ def get_tickets_in_use_for_party_paginated(party_id: PartyID, page: int,
 
 def get_ticket_count_by_party_id() -> Dict[PartyID, int]:
     """Return ticket count (including 0) per party, indexed by party ID."""
-    return dict(db.session \
+    party = db.aliased(Party)
+
+    subquery = db.session \
         .query(
-            Party.id,
             db.func.count(Ticket.id)
         ) \
-        .outerjoin(Category) \
-        .outerjoin(Ticket) \
+        .join(Category) \
+        .join(Party) \
+        .filter(Party.id == party.id) \
         .filter(Ticket.revoked == False) \
-        .group_by(Party.id) \
+        .subquery() \
+        .as_scalar()
+
+    return dict(db.session \
+        .query(
+            party.id,
+            subquery
+        ) \
         .all())
 
 
