@@ -161,6 +161,7 @@
         <div class="ticket-card-row">
           <div class="label-row">
             <span class="label">Nutzer/in</span>
+            {%- if ticket.is_user_managed_by(g.current_user.id) %}
             <span class="label-buttons">
               <div class="dropdown left">
                 <button class="dropdown-toggle button button--clear button--compact button--icon-only">{{ render_icon('caret-down') -}}</button>
@@ -172,6 +173,7 @@
                 </ol>
               </div>
             </span>
+            {%- endif %}
           </div>
           {%- if ticket.used_by -%}
           {{ render_user_avatar_96(ticket.used_by) }}
