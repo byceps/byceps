@@ -22,6 +22,7 @@ from ..user.models.user import User
 from .models.category import Category, CategoryID
 from .models.ticket import Ticket, TicketID
 from .models.ticket_bundle import TicketBundle
+from . import event_service
 
 
 # -------------------------------------------------------------------- #
@@ -313,6 +314,11 @@ def appoint_user(ticket_id: TicketID, user_id: UserID):
 
     ticket.used_by_id = user_id
 
+    event = event_service._build_event('user-appointed', ticket.id, {
+        'appointed_user_id': str(user_id),
+    })
+    db.session.add(event)
+
     db.session.commit()
 
 
@@ -321,6 +327,9 @@ def withdraw_user(ticket_id: TicketID):
     ticket = find_ticket(ticket_id)
 
     ticket.used_by_id = None
+
+    event = event_service._build_event('user-withdrawn', ticket.id, {})
+    db.session.add(event)
 
     db.session.commit()
 

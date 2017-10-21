@@ -4,7 +4,8 @@
 """
 
 from byceps.services.seating import area_service, seat_service
-from byceps.services.ticketing import category_service, ticket_service
+from byceps.services.ticketing import category_service, event_service, \
+    ticket_service
 
 from tests.base import AbstractAppTestCase
 
@@ -26,47 +27,63 @@ class TicketAssignmentServiceTestCase(AbstractAppTestCase):
     def test_appoint_and_withdraw_user_manager(self):
         manager = self.create_user('Ticket_Manager')
 
-        self.assertIsNone(self.ticket.user_managed_by_id)
+        assert self.ticket.user_managed_by_id is None
 
         ticket_service.appoint_user_manager(self.ticket.id, manager.id)
-        self.assertEqual(self.ticket.user_managed_by_id, manager.id)
+        assert self.ticket.user_managed_by_id == manager.id
 
         ticket_service.withdraw_user_manager(self.ticket.id)
-        self.assertIsNone(self.ticket.user_managed_by_id)
+        assert self.ticket.user_managed_by_id is None
 
     def test_appoint_and_withdraw_user(self):
         user = self.create_user('Ticket_User')
 
-        self.assertIsNone(self.ticket.used_by_id)
+        assert self.ticket.used_by_id is None
 
         ticket_service.appoint_user(self.ticket.id, user.id)
-        self.assertEqual(self.ticket.used_by_id, user.id)
+        assert self.ticket.used_by_id == user.id
+
+        events_after_appointment = event_service.get_events_for_ticket(
+            self.ticket.id)
+        assert len(events_after_appointment) == 1
+        appointment_event = events_after_appointment[0]
+        assert appointment_event.event_type == 'user-appointed'
+        assert appointment_event.data == {
+            'appointed_user_id': str(user.id),
+        }
 
         ticket_service.withdraw_user(self.ticket.id)
-        self.assertIsNone(self.ticket.used_by_id)
+        assert self.ticket.used_by_id is None
+
+        events_after_withdrawal = event_service.get_events_for_ticket(
+            self.ticket.id)
+        assert len(events_after_withdrawal) == 2
+        withdrawal_event = events_after_withdrawal[1]
+        assert withdrawal_event.event_type == 'user-withdrawn'
+        assert withdrawal_event.data == {}
 
     def test_appoint_and_withdraw_seat_manager(self):
         manager = self.create_user('Ticket_Manager')
 
-        self.assertIsNone(self.ticket.seat_managed_by_id)
+        assert self.ticket.seat_managed_by_id is None
 
         ticket_service.appoint_seat_manager(self.ticket.id, manager.id)
-        self.assertEqual(self.ticket.seat_managed_by_id, manager.id)
+        assert self.ticket.seat_managed_by_id == manager.id
 
         ticket_service.withdraw_seat_manager(self.ticket.id)
-        self.assertIsNone(self.ticket.seat_managed_by_id)
+        assert self.ticket.seat_managed_by_id is None
 
     def test_occupy_and_release_seat(self):
         area = self.create_area('main', 'Main Hall')
         seat = seat_service.create_seat(area, 0, 0, self.category_id)
 
-        self.assertIsNone(self.ticket.occupied_seat_id)
+        assert self.ticket.occupied_seat_id is None
 
         ticket_service.occupy_seat(self.ticket.id, seat.id)
-        self.assertEqual(self.ticket.occupied_seat_id, seat.id)
+        assert self.ticket.occupied_seat_id == seat.id
 
         ticket_service.release_seat(self.ticket.id)
-        self.assertIsNone(self.ticket.occupied_seat_id)
+        assert self.ticket.occupied_seat_id is None
 
     # -------------------------------------------------------------------- #
     # helpers
