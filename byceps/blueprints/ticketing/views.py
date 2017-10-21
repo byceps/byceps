@@ -8,10 +8,11 @@ byceps.blueprints.ticketing.views
 
 from flask import abort, g, redirect, request, url_for
 
+from ...config import get_ticket_management_enabled
 from ...services.party import service as party_service
 from ...services.ticketing import ticket_service
 from ...util.framework.blueprint import create_blueprint
-from ...util.framework.flash import flash_success
+from ...util.framework.flash import flash_error, flash_success
 from ...util.iterables import find
 from ...util.framework.templating import templated
 from ...util.views import respond_no_content
@@ -52,6 +53,8 @@ def index_mine():
 @templated
 def appoint_user_form(ticket_id, erroneous_form=None):
     """Show a form to select a user to appoint for the ticket."""
+    _abort_if_ticket_management_disabled()
+
     ticket = _get_ticket_or_404(ticket_id)
 
     form = erroneous_form if erroneous_form else SpecifyUserForm()
@@ -65,6 +68,8 @@ def appoint_user_form(ticket_id, erroneous_form=None):
 @blueprint.route('/tickets/<uuid:ticket_id>/appoint_user', methods=['POST'])
 def appoint_user(ticket_id):
     """Appoint a user for the ticket."""
+    _abort_if_ticket_management_disabled()
+
     form = SpecifyUserForm(request.form)
     if not form.validate():
         return appoint_user_form(ticket_id, form)
@@ -85,6 +90,8 @@ def appoint_user(ticket_id):
 @respond_no_content
 def withdraw_user(ticket_id):
     """Withdraw the ticket's user."""
+    _abort_if_ticket_management_disabled()
+
     ticket = _get_ticket_or_404(ticket_id)
 
     ticket_service.withdraw_user(ticket.id)
@@ -102,6 +109,12 @@ def _get_current_user_or_403():
         abort(403)
 
     return user
+
+
+def _abort_if_ticket_management_disabled():
+    if not get_ticket_management_enabled():
+        flash_error('Tickets können derzeit nicht verändert werden.')
+        abort(403)
 
 
 def _get_ticket_or_404(ticket_id):
