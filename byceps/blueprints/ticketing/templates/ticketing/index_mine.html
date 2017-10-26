@@ -118,6 +118,9 @@
 {% macro render_tickets(tickets) -%}
   <ol class="ticket-grid">
     {%- for ticket in tickets|sort(attribute='created_at') %}
+      {%- with seat_manager = ticket.get_seat_manager(),
+               user_manager = ticket.get_user_manager()
+       %}
     <li>
       <div class="ticket-code">{{ ticket.code }}</div>
       <div class="ticket-card{% if ticket.used_by_id == g.current_user.id %} ticket-used-by-me{% endif %}">
@@ -148,14 +151,12 @@
             {%- endif -%}
           </div>
 
-          {%- with seat_manager = ticket.get_seat_manager() %}
-            {%- if seat_manager != ticket.owned_by %}
+          {%- if seat_manager != ticket.owned_by %}
           <div class="label-row">
             <span class="label">Verwalter/in</span>
           </div>
           {{ render_user_avatar_16_and_link(seat_manager) }}
-            {%- endif %}
-          {%- endwith %}
+          {%- endif %}
         </div>
 
         <div class="ticket-card-row">
@@ -187,18 +188,17 @@
           </div>
           {%- endif %}
 
-          {%- with user_manager = ticket.get_user_manager() %}
-            {%- if user_manager != ticket.owned_by %}
+          {%- if user_manager != ticket.owned_by %}
           <div class="label-row">
             <span class="label">Verwalter/in</span>
           </div>
           {{ render_user_avatar_16_and_link(user_manager) }}
-            {%- endif %}
-          {%- endwith %}
+          {%- endif %}
         </div>
 
       </div>
     </li>
+      {%- endwith %}
     {%- endfor %}
   </ol>
 {%- endmacro %}
