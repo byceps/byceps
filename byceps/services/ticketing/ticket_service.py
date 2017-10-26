@@ -290,12 +290,12 @@ def count_tickets_for_party(party_id: PartyID) -> int:
 # user
 
 
-def appoint_user_manager(ticket_id: TicketID, user_id: UserID,
+def appoint_user_manager(ticket_id: TicketID, manager_id: UserID,
                          initiator_id: UserID):
     """Appoint the user as the ticket's user manager."""
     ticket = find_ticket(ticket_id)
 
-    ticket.user_managed_by_id = user_id
+    ticket.user_managed_by_id = manager_id
 
     db.session.commit()
 
@@ -342,12 +342,12 @@ def withdraw_user(ticket_id: TicketID, initiator_id: UserID):
 # seat
 
 
-def appoint_seat_manager(ticket_id: TicketID, user_id: UserID,
+def appoint_seat_manager(ticket_id: TicketID, manager_id: UserID,
                          initiator_id: UserID):
     """Appoint the user as the ticket's seat manager."""
     ticket = find_ticket(ticket_id)
 
-    ticket.seat_managed_by_id = user_id
+    ticket.seat_managed_by_id = manager_id
 
     db.session.commit()
 
