@@ -167,7 +167,7 @@
               <div class="dropdown left">
                 <button class="dropdown-toggle button button--clear button--compact button--icon-only">{{ render_icon('caret-down') -}}</button>
                 <ol>
-                  <li><a href="{{ url_for('.appoint_user', ticket_id=ticket.id) }}">{{ render_icon('edit') }} Nutzer/in zuweisen</a></li>
+                  <li><a href="{{ url_for('.appoint_user', ticket_id=ticket.id) }}">{{ render_icon('arrow-right') }} Nutzer/in zuweisen</a></li>
                   {%- if ticket.used_by %}
                   <li><a href="{{ url_for('.withdraw_user', ticket_id=ticket.id, _method='DELETE') }}" data-action="withdraw-user">{{ render_icon('remove') }} Nutzer/in entfernen</a></li>
                   {%- endif %}
