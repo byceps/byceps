@@ -72,6 +72,10 @@ class Ticket(db.Model):
         self.owned_by_id = owned_by_id
         self.order_number = order_number
 
+    def is_owned_by(self, user_id: UserID):
+        """Return `True` if the user owns this ticket."""
+        return self.owned_by_id == user_id
+
     def get_seat_manager(self) -> User:
         """Return the user that may choose the seat for this ticket."""
         return self.seat_managed_by or self.owned_by
@@ -89,12 +93,12 @@ class Ticket(db.Model):
 
     def is_seat_managed_by(self, user_id: UserID) -> bool:
         """Return `True` if the user may choose the seat for this ticket."""
-        return ((self.seat_managed_by_id is None) and (self.owned_by_id == user_id)) or \
+        return ((self.seat_managed_by_id is None) and self.is_owned_by(user_id)) or \
             (self.seat_managed_by_id == user_id)
 
     def is_user_managed_by(self, user_id: UserID) -> bool:
         """Return `True` if the user may choose the user of this ticket."""
-        return ((self.user_managed_by_id is None) and (self.owned_by_id == user_id)) or \
+        return ((self.user_managed_by_id is None) and self.is_owned_by(user_id)) or \
             (self.user_managed_by_id == user_id)
 
     def __repr__(self) -> str:

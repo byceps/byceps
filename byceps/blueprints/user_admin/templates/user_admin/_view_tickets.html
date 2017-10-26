@@ -31,7 +31,7 @@
             {%- endif %}
           {%- endwith %}
         </td>
-        <td>{% if ticket.owned_by_id == user.id %}{{ render_icon('payment', title='gekauft') }}{% endif %}</td>
+        <td>{% if ticket.is_owned_by(user.id) %}{{ render_icon('payment', title='gekauft') }}{% endif %}</td>
         <td>{% if ticket.is_seat_managed_by(user.id) %}{{ render_icon('seating-area', title='verwaltet Sitzplatz') }}{% endif %}</td>
         <td>{% if ticket.is_user_managed_by(user.id) %}{{ render_icon('user', title='verwaltet Nutzer/in') }}{% endif %}</td>
       </tr>
