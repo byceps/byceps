@@ -29,17 +29,44 @@ class TicketAssignmentServiceTestCase(AbstractAppTestCase):
 
         assert self.ticket.user_managed_by_id is None
 
+        # appoint user manager
+
         ticket_service.appoint_user_manager(self.ticket.id, manager.id,
                                             self.owner.id)
         assert self.ticket.user_managed_by_id == manager.id
 
+        events_after_appointment = event_service.get_events_for_ticket(
+            self.ticket.id)
+        assert len(events_after_appointment) == 1
+
+        appointment_event = events_after_appointment[0]
+        assert appointment_event.event_type == 'user-manager-appointed'
+        assert appointment_event.data == {
+            'appointed_user_manager_id': str(manager.id),
+            'initiator_id': str(self.owner.id),
+        }
+
+        # withdraw user manager
+
         ticket_service.withdraw_user_manager(self.ticket.id, self.owner.id)
         assert self.ticket.user_managed_by_id is None
+
+        events_after_withdrawal = event_service.get_events_for_ticket(
+            self.ticket.id)
+        assert len(events_after_withdrawal) == 2
+
+        withdrawal_event = events_after_withdrawal[1]
+        assert withdrawal_event.event_type == 'user-manager-withdrawn'
+        assert withdrawal_event.data == {
+            'initiator_id': str(self.owner.id),
+        }
 
     def test_appoint_and_withdraw_user(self):
         user = self.create_user('Ticket_User')
 
         assert self.ticket.used_by_id is None
+
+        # appoint user
 
         ticket_service.appoint_user(self.ticket.id, user.id, self.owner.id)
         assert self.ticket.used_by_id == user.id
@@ -47,6 +74,7 @@ class TicketAssignmentServiceTestCase(AbstractAppTestCase):
         events_after_appointment = event_service.get_events_for_ticket(
             self.ticket.id)
         assert len(events_after_appointment) == 1
+
         appointment_event = events_after_appointment[0]
         assert appointment_event.event_type == 'user-appointed'
         assert appointment_event.data == {
@@ -54,12 +82,15 @@ class TicketAssignmentServiceTestCase(AbstractAppTestCase):
             'initiator_id': str(self.owner.id),
         }
 
+        # withdraw user
+
         ticket_service.withdraw_user(self.ticket.id, self.owner.id)
         assert self.ticket.used_by_id is None
 
         events_after_withdrawal = event_service.get_events_for_ticket(
             self.ticket.id)
         assert len(events_after_withdrawal) == 2
+
         withdrawal_event = events_after_withdrawal[1]
         assert withdrawal_event.event_type == 'user-withdrawn'
         assert withdrawal_event.data == {
@@ -71,12 +102,37 @@ class TicketAssignmentServiceTestCase(AbstractAppTestCase):
 
         assert self.ticket.seat_managed_by_id is None
 
+        # appoint seat manager
+
         ticket_service.appoint_seat_manager(self.ticket.id, manager.id,
                                             self.owner.id)
         assert self.ticket.seat_managed_by_id == manager.id
 
+        events_after_appointment = event_service.get_events_for_ticket(
+            self.ticket.id)
+        assert len(events_after_appointment) == 1
+
+        appointment_event = events_after_appointment[0]
+        assert appointment_event.event_type == 'seat-manager-appointed'
+        assert appointment_event.data == {
+            'appointed_seat_manager_id': str(manager.id),
+            'initiator_id': str(self.owner.id),
+        }
+
+        # withdraw seat manager
+
         ticket_service.withdraw_seat_manager(self.ticket.id, self.owner.id)
         assert self.ticket.seat_managed_by_id is None
+
+        events_after_withdrawal = event_service.get_events_for_ticket(
+            self.ticket.id)
+        assert len(events_after_withdrawal) == 2
+
+        withdrawal_event = events_after_withdrawal[1]
+        assert withdrawal_event.event_type == 'seat-manager-withdrawn'
+        assert withdrawal_event.data == {
+            'initiator_id': str(self.owner.id),
+        }
 
     def test_occupy_and_release_seat(self):
         area = self.create_area('main', 'Main Hall')
@@ -84,11 +140,36 @@ class TicketAssignmentServiceTestCase(AbstractAppTestCase):
 
         assert self.ticket.occupied_seat_id is None
 
+        # occupy seat
+
         ticket_service.occupy_seat(self.ticket.id, seat.id, self.owner.id)
         assert self.ticket.occupied_seat_id == seat.id
 
+        events_after_occupation = event_service.get_events_for_ticket(
+            self.ticket.id)
+        assert len(events_after_occupation) == 1
+
+        occupation_event = events_after_occupation[0]
+        assert occupation_event.event_type == 'seat-occupied'
+        assert occupation_event.data == {
+            'seat_id': str(seat.id),
+            'initiator_id': str(self.owner.id),
+        }
+
+        # release seat
+
         ticket_service.release_seat(self.ticket.id, self.owner.id)
         assert self.ticket.occupied_seat_id is None
+
+        events_after_release = event_service.get_events_for_ticket(
+            self.ticket.id)
+        assert len(events_after_release) == 2
+
+        release_event = events_after_release[1]
+        assert release_event.event_type == 'seat-released'
+        assert release_event.data == {
+            'initiator_id': str(self.owner.id),
+        }
 
     # -------------------------------------------------------------------- #
     # helpers

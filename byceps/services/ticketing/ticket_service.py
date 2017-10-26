@@ -297,6 +297,12 @@ def appoint_user_manager(ticket_id: TicketID, manager_id: UserID,
 
     ticket.user_managed_by_id = manager_id
 
+    event = event_service._build_event('user-manager-appointed', ticket.id, {
+        'appointed_user_manager_id': str(manager_id),
+        'initiator_id': str(initiator_id),
+    })
+    db.session.add(event)
+
     db.session.commit()
 
 
@@ -305,6 +311,11 @@ def withdraw_user_manager(ticket_id: TicketID, initiator_id: UserID):
     ticket = find_ticket(ticket_id)
 
     ticket.user_managed_by_id = None
+
+    event = event_service._build_event('user-manager-withdrawn', ticket.id, {
+        'initiator_id': str(initiator_id),
+    })
+    db.session.add(event)
 
     db.session.commit()
 
@@ -349,6 +360,12 @@ def appoint_seat_manager(ticket_id: TicketID, manager_id: UserID,
 
     ticket.seat_managed_by_id = manager_id
 
+    event = event_service._build_event('seat-manager-appointed', ticket.id, {
+        'appointed_seat_manager_id': str(manager_id),
+        'initiator_id': str(initiator_id),
+    })
+    db.session.add(event)
+
     db.session.commit()
 
 
@@ -357,6 +374,11 @@ def withdraw_seat_manager(ticket_id: TicketID, initiator_id: UserID):
     ticket = find_ticket(ticket_id)
 
     ticket.seat_managed_by_id = None
+
+    event = event_service._build_event('seat-manager-withdrawn', ticket.id, {
+        'initiator_id': str(initiator_id),
+    })
+    db.session.add(event)
 
     db.session.commit()
 
@@ -367,6 +389,12 @@ def occupy_seat(ticket_id: TicketID, seat_id: SeatID, initiator_id: UserID):
 
     ticket.occupied_seat_id = seat_id
 
+    event = event_service._build_event('seat-occupied', ticket.id, {
+        'seat_id': str(seat_id),
+        'initiator_id': str(initiator_id),
+    })
+    db.session.add(event)
+
     db.session.commit()
 
 
@@ -375,5 +403,10 @@ def release_seat(ticket_id: TicketID, initiator_id: UserID):
     ticket = find_ticket(ticket_id)
 
     ticket.occupied_seat_id = None
+
+    event = event_service._build_event('seat-released', ticket.id, {
+        'initiator_id': str(initiator_id),
+    })
+    db.session.add(event)
 
     db.session.commit()
