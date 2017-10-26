@@ -47,6 +47,7 @@ def index_mine():
 
 
 # -------------------------------------------------------------------- #
+# user
 
 
 @blueprint.route('/tickets/<uuid:ticket_id>/appoint_user')
@@ -69,7 +70,7 @@ def appoint_user_form(ticket_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/tickets/<uuid:ticket_id>/appoint_user', methods=['POST'])
+@blueprint.route('/tickets/<uuid:ticket_id>/user', methods=['POST'])
 def appoint_user(ticket_id):
     """Appoint a user for the ticket."""
     _abort_if_ticket_management_disabled()
@@ -111,6 +112,133 @@ def withdraw_user(ticket_id):
     ticket_service.withdraw_user(ticket.id, manager.id)
 
     flash_success('Der Nutzer von Ticket {} wurde entfernt.', ticket.code)
+
+
+# -------------------------------------------------------------------- #
+# user manager
+
+
+@blueprint.route('/tickets/<uuid:ticket_id>/appoint_user_manager')
+@templated
+def appoint_user_manager_form(ticket_id, erroneous_form=None):
+    """Show a form to select a user to appoint as user manager for the ticket."""
+    _abort_if_ticket_management_disabled()
+
+    ticket = _get_ticket_or_404(ticket_id)
+
+    if not ticket.is_owned_by(g.current_user.id):
+        abort(403)
+
+    form = erroneous_form if erroneous_form else SpecifyUserForm()
+
+    return {
+        'ticket': ticket,
+        'form': form,
+    }
+
+
+@blueprint.route('/tickets/<uuid:ticket_id>/user_manager', methods=['POST'])
+def appoint_user_manager(ticket_id):
+    """Appoint a user manager for the ticket."""
+    _abort_if_ticket_management_disabled()
+
+    form = SpecifyUserForm(request.form)
+    if not form.validate():
+        return appoint_user_manager_form(ticket_id, form)
+
+    ticket = _get_ticket_or_404(ticket_id)
+
+    if not ticket.is_owned_by(g.current_user.id):
+        abort(403)
+
+    user = form.user.data
+
+    ticket_service.appoint_user_manager(ticket.id, user.id, g.current_user.id)
+
+    flash_success('{} wurde als Nutzer-Verwalter/in von Ticket {} eingetragen.',
+        user.screen_name, ticket.code)
+
+    return redirect(url_for('.index_mine'))
+
+
+@blueprint.route('/tickets/<uuid:ticket_id>/user_manager', methods=['DELETE'])
+@respond_no_content
+def withdraw_user_manager(ticket_id):
+    """Withdraw the ticket's user manager."""
+    _abort_if_ticket_management_disabled()
+
+    ticket = _get_ticket_or_404(ticket_id)
+
+    if not ticket.is_owned_by(g.current_user.id):
+        abort(403)
+
+    ticket_service.withdraw_user_manager(ticket.id, g.current_user.id)
+
+    flash_success('Der Nutzer-Verwalter von Ticket {} wurde entfernt.', ticket.code)
+
+
+# -------------------------------------------------------------------- #
+# seat manager
+
+
+@blueprint.route('/tickets/<uuid:ticket_id>/appoint_seat_manager')
+@templated
+def appoint_seat_manager_form(ticket_id, erroneous_form=None):
+    """Show a form to select a user to appoint as seat manager for the ticket."""
+    _abort_if_ticket_management_disabled()
+
+    ticket = _get_ticket_or_404(ticket_id)
+
+    if not ticket.is_owned_by(g.current_user.id):
+        abort(403)
+
+    form = erroneous_form if erroneous_form else SpecifyUserForm()
+
+    return {
+        'ticket': ticket,
+        'form': form,
+    }
+
+
+@blueprint.route('/tickets/<uuid:ticket_id>/seat_manager', methods=['POST'])
+def appoint_seat_manager(ticket_id):
+    """Appoint a seat manager for the ticket."""
+    _abort_if_ticket_management_disabled()
+
+    form = SpecifyUserForm(request.form)
+    if not form.validate():
+        return appoint_seat_manager_form(ticket_id, form)
+
+    ticket = _get_ticket_or_404(ticket_id)
+
+    if not ticket.is_owned_by(g.current_user.id):
+        abort(403)
+
+    user = form.user.data
+
+    ticket_service.appoint_seat_manager(ticket.id, user.id, g.current_user.id)
+
+    flash_success(
+        '{} wurde als Sitzplatz-Verwalter/in von Ticket {} eingetragen.',
+        user.screen_name, ticket.code)
+
+    return redirect(url_for('.index_mine'))
+
+
+@blueprint.route('/tickets/<uuid:ticket_id>/seat_manager', methods=['DELETE'])
+@respond_no_content
+def withdraw_seat_manager(ticket_id):
+    """Withdraw the ticket's seat manager."""
+    _abort_if_ticket_management_disabled()
+
+    ticket = _get_ticket_or_404(ticket_id)
+
+    if not ticket.is_owned_by(g.current_user.id):
+        abort(403)
+
+    ticket_service.withdraw_seat_manager(ticket.id, g.current_user.id)
+
+    flash_success('Der Sitzplatz-Verwalter von Ticket {} wurde entfernt.', ticket.code)
 
 
 # -------------------------------------------------------------------- #

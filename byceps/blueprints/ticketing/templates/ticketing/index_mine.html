@@ -110,6 +110,8 @@
     <script>
       onDomReady(function() {
         confirmed_delete_on_click_then_reload('[data-action="withdraw-user"]', 'Nutzer/in entfernen?');
+        confirmed_delete_on_click_then_reload('[data-action="withdraw-user-manager"]', 'Nutzer-Verwalter/in entfernen?');
+        confirmed_delete_on_click_then_reload('[data-action="withdraw-seat-manager"]', 'Sitzplatz-Verwalter/in entfernen?');
       });
     </script>
 {% endblock %}
@@ -142,6 +144,20 @@
         <div class="ticket-card-row">
           <div class="label-row">
             <span class="label">Sitzplatz</span>
+            {%- if ticket.owned_by_id == g.current_user.id %}
+            <span class="label-buttons">
+              <div class="dropdown left">
+                <button class="dropdown-toggle button button--clear button--compact button--icon-only">{{ render_icon('caret-down') -}}</button>
+                <ol>
+                  {%- if seat_manager == g.current_user %}
+                  <li><a href="{{ url_for('.appoint_seat_manager_form', ticket_id=ticket.id) }}">{{ render_icon('arrow-right') }} Sitzplatz-Verwaltung übertragen</a></li>
+                  {%- else %}
+                  <li><a href="{{ url_for('.withdraw_seat_manager', ticket_id=ticket.id, _method='DELETE') }}" data-action="withdraw-seat-manager">{{ render_icon('remove') }} Sitzplatz-Verwaltung zurückholen</a></li>
+                  {%- endif %}
+                </ol>
+              </div>
+            </span>
+            {%- endif %}
           </div>
           <div class="centered">
             {%- if ticket.occupied_seat -%}
@@ -162,14 +178,28 @@
         <div class="ticket-card-row">
           <div class="label-row">
             <span class="label">Nutzer/in</span>
-            {%- if ticket.is_user_managed_by(g.current_user.id) %}
+            {%- if ticket.owned_by_id == g.current_user.id or user_manager == g.current_user %}
             <span class="label-buttons">
               <div class="dropdown left">
                 <button class="dropdown-toggle button button--clear button--compact button--icon-only">{{ render_icon('caret-down') -}}</button>
                 <ol>
-                  <li><a href="{{ url_for('.appoint_user', ticket_id=ticket.id) }}">{{ render_icon('arrow-right') }} Nutzer/in zuweisen</a></li>
-                  {%- if ticket.used_by %}
+                  {%- if user_manager == g.current_user %}
+                  <li><a href="{{ url_for('.appoint_user_form', ticket_id=ticket.id) }}">{{ render_icon('arrow-right') }} Nutzer/in zuweisen</a></li>
+                    {%- if ticket.used_by_id %}
                   <li><a href="{{ url_for('.withdraw_user', ticket_id=ticket.id, _method='DELETE') }}" data-action="withdraw-user">{{ render_icon('remove') }} Nutzer/in entfernen</a></li>
+                    {%- endif %}
+                  {%- endif %}
+
+                  {%- if user_manager == g.current_user and ticket.owned_by == g.current_user %}
+                  <li class="divider"></li>
+                  {%- endif %}
+
+                  {%- if ticket.owned_by == g.current_user %}
+                    {%- if user_manager == g.current_user %}
+                  <li><a href="{{ url_for('.appoint_user_manager_form', ticket_id=ticket.id) }}">{{ render_icon('arrow-right') }} Nutzer-Verwaltung übertragen</a></li>
+                    {%- else %}
+                  <li><a href="{{ url_for('.withdraw_user_manager', ticket_id=ticket.id, _method='DELETE') }}" data-action="withdraw-user-manager">{{ render_icon('remove') }} Nutzer-Verwaltung zurückholen</a></li>
+                    {%- endif %}
                   {%- endif %}
                 </ol>
               </div>

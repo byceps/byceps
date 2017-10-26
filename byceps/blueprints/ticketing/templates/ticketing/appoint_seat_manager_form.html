@@ -1,0 +1,18 @@
+{% extends 'layout/base.html' %}
+{% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
+{% set current_page = 'ticket' %}
+{% set title = 'Sitzplatz-Verwaltung von Ticket %s an Benutzer zuweisen'|format(ticket.code) %}
+
+{% block body %}
+
+  <h1>{{ title }}</h1>
+
+  <form action="{{ url_for('.appoint_seat_manager', ticket_id=ticket.id) }}" method="post">
+    {%- call form_fieldset() %}
+      {{ form_field(form.user, maxlength=40, required='required', autofocus='autofocus') }}
+    {%- endcall %}
+
+    {{ form_buttons('Sitzplatz-Verwaltung zuweisen') }}
+  </form>
+
+{%- endblock %}
