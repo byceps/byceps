@@ -29,10 +29,11 @@ class TicketAssignmentServiceTestCase(AbstractAppTestCase):
 
         assert self.ticket.user_managed_by_id is None
 
-        ticket_service.appoint_user_manager(self.ticket.id, manager.id)
+        ticket_service.appoint_user_manager(self.ticket.id, manager.id,
+                                            self.owner.id)
         assert self.ticket.user_managed_by_id == manager.id
 
-        ticket_service.withdraw_user_manager(self.ticket.id)
+        ticket_service.withdraw_user_manager(self.ticket.id, self.owner.id)
         assert self.ticket.user_managed_by_id is None
 
     def test_appoint_and_withdraw_user(self):
@@ -70,10 +71,11 @@ class TicketAssignmentServiceTestCase(AbstractAppTestCase):
 
         assert self.ticket.seat_managed_by_id is None
 
-        ticket_service.appoint_seat_manager(self.ticket.id, manager.id)
+        ticket_service.appoint_seat_manager(self.ticket.id, manager.id,
+                                            self.owner.id)
         assert self.ticket.seat_managed_by_id == manager.id
 
-        ticket_service.withdraw_seat_manager(self.ticket.id)
+        ticket_service.withdraw_seat_manager(self.ticket.id, self.owner.id)
         assert self.ticket.seat_managed_by_id is None
 
     def test_occupy_and_release_seat(self):
@@ -82,10 +84,10 @@ class TicketAssignmentServiceTestCase(AbstractAppTestCase):
 
         assert self.ticket.occupied_seat_id is None
 
-        ticket_service.occupy_seat(self.ticket.id, seat.id)
+        ticket_service.occupy_seat(self.ticket.id, seat.id, self.owner.id)
         assert self.ticket.occupied_seat_id == seat.id
 
-        ticket_service.release_seat(self.ticket.id)
+        ticket_service.release_seat(self.ticket.id, self.owner.id)
         assert self.ticket.occupied_seat_id is None
 
     # -------------------------------------------------------------------- #
