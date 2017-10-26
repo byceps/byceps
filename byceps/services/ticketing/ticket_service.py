@@ -398,6 +398,26 @@ def occupy_seat(ticket_id: TicketID, seat_id: SeatID, initiator_id: UserID):
     db.session.commit()
 
 
+def switch_seat(ticket_id: TicketID, new_seat_id: SeatID, initiator_id: UserID):
+    """Release the seat occupied by this ticket and occupy the new seat
+    in a single step.
+    """
+    ticket = find_ticket(ticket_id)
+
+    old_seat_id = ticket.occupied_seat_id
+
+    ticket.occupied_seat_id = new_seat_id
+
+    event = event_service._build_event('seat-switched', ticket.id, {
+        'old_seat_id': str(old_seat_id),
+        'new_seat_id': str(new_seat_id),
+        'initiator_id': str(initiator_id),
+    })
+    db.session.add(event)
+
+    db.session.commit()
+
+
 def release_seat(ticket_id: TicketID, initiator_id: UserID):
     """Release the seat occupied by this ticket."""
     ticket = find_ticket(ticket_id)

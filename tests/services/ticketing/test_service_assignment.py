@@ -171,6 +171,29 @@ class TicketAssignmentServiceTestCase(AbstractAppTestCase):
             'initiator_id': str(self.owner.id),
         }
 
+    def test_switch_seat(self):
+        area = self.create_area('main', 'Main Hall')
+        seat1 = seat_service.create_seat(area, 0, 1, self.category_id)
+        seat2 = seat_service.create_seat(area, 0, 2, self.category_id)
+
+        self.ticket.occupied_seat_id = seat1.id
+
+        # switch seat
+
+        ticket_service.switch_seat(self.ticket.id, seat2.id, self.owner.id)
+        assert self.ticket.occupied_seat_id == seat2.id
+
+        events_after_switch = event_service.get_events_for_ticket(
+            self.ticket.id)
+        assert len(events_after_switch) == 1
+
+        switch_event = events_after_switch[0]
+        assert switch_event.event_type == 'seat-switched'
+        assert switch_event.data == {
+            'old_seat_id': str(seat1.id),
+            'new_seat_id': str(seat2.id),
+            'initiator_id': str(self.owner.id),
+        }
     # -------------------------------------------------------------------- #
     # helpers
 
