@@ -28,8 +28,8 @@ def validate_user(form, field):
 
     if not terms_service.has_user_accepted_version(user.id, terms_version.id):
         raise ValidationError(
-            'Der Benutzer hat die aktuellen AGB der {} noch nicht akzeptiert.'
-                .format(terms_version.brand.title))
+            'Der Benutzer "{}" hat die aktuellen AGB der {} noch nicht akzeptiert.'
+                .format(user.screen_name, terms_version.brand.title))
 
     field.data = user
 
