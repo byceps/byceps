@@ -175,17 +175,17 @@
             </span>
             {%- endif %}
           </div>
-          {%- if ticket.used_by -%}
+          {%- if ticket.used_by %}
           {{ render_user_avatar_96(ticket.used_by) }}
           <div class="centered">
             {{ render_user_link(ticket.used_by) }}
           </div>
-            {%- else -%}
+          {%- else %}
           <div class="centered">
             <div class="ticket-user-placeholder"></div>
             {{ render_tag('frei', class='available') }}
           </div>
-            {%- endif -%}
+          {%- endif %}
 
           {%- with user_manager = ticket.get_user_manager() %}
             {%- if user_manager != ticket.owned_by %}
