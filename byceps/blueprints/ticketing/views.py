@@ -112,6 +112,8 @@ def withdraw_user(ticket_id):
     if not ticket.is_user_managed_by(manager.id):
         abort(403)
 
+    user = ticket.used_by
+
     ticket_service.withdraw_user(ticket.id, manager.id)
 
     flash_success('Der Nutzer von Ticket {} wurde entfernt.', ticket.code)
@@ -179,6 +181,8 @@ def withdraw_user_manager(ticket_id):
 
     if not ticket.is_owned_by(g.current_user.id):
         abort(403)
+
+    user = ticket.user_managed_by
 
     ticket_service.withdraw_user_manager(ticket.id, g.current_user.id)
 
@@ -250,6 +254,8 @@ def withdraw_seat_manager(ticket_id):
 
     if not ticket.is_owned_by(g.current_user.id):
         abort(403)
+
+    user = ticket.seat_managed_by
 
     ticket_service.withdraw_seat_manager(ticket.id, g.current_user.id)
 
