@@ -43,7 +43,7 @@ def get_seat_total_per_area(party_id: PartyID) -> Dict[AreaID, int]:
             db.func.count(Seat.id)
         ) \
         .filter_by(party_id=party_id) \
-        .join(Seat) \
+        .outerjoin(Seat) \
         .group_by(Area.id) \
         .all())
 
