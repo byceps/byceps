@@ -18,6 +18,7 @@ from ...util.framework.templating import templated
 from ...util.views import respond_no_content
 
 from .forms import SpecifyUserForm
+from . import notification_service
 
 
 blueprint = create_blueprint('ticketing', __name__)
@@ -93,6 +94,8 @@ def appoint_user(ticket_id):
     flash_success('{} wurde als Nutzer/in von Ticket {} eingetragen.',
         user.screen_name, ticket.code)
 
+    notification_service.notify_appointed_user(ticket, user, manager)
+
     return redirect(url_for('.index_mine'))
 
 
@@ -112,6 +115,8 @@ def withdraw_user(ticket_id):
     ticket_service.withdraw_user(ticket.id, manager.id)
 
     flash_success('Der Nutzer von Ticket {} wurde entfernt.', ticket.code)
+
+    notification_service.notify_withdrawn_user(ticket, user, manager)
 
 
 # -------------------------------------------------------------------- #
@@ -158,6 +163,9 @@ def appoint_user_manager(ticket_id):
     flash_success('{} wurde als Nutzer-Verwalter/in von Ticket {} eingetragen.',
         user.screen_name, ticket.code)
 
+    notification_service.notify_appointed_user_manager(ticket, user,
+                                                       g.current_user)
+
     return redirect(url_for('.index_mine'))
 
 
@@ -174,7 +182,11 @@ def withdraw_user_manager(ticket_id):
 
     ticket_service.withdraw_user_manager(ticket.id, g.current_user.id)
 
-    flash_success('Der Nutzer-Verwalter von Ticket {} wurde entfernt.', ticket.code)
+    flash_success('Der Nutzer-Verwalter von Ticket {} wurde entfernt.',
+                  ticket.code)
+
+    notification_service.notify_withdrawn_user_manager(ticket, user,
+                                                       g.current_user)
 
 
 # -------------------------------------------------------------------- #
@@ -222,6 +234,9 @@ def appoint_seat_manager(ticket_id):
         '{} wurde als Sitzplatz-Verwalter/in von Ticket {} eingetragen.',
         user.screen_name, ticket.code)
 
+    notification_service.notify_appointed_seat_manager(ticket, user,
+                                                       g.current_user)
+
     return redirect(url_for('.index_mine'))
 
 
@@ -238,7 +253,11 @@ def withdraw_seat_manager(ticket_id):
 
     ticket_service.withdraw_seat_manager(ticket.id, g.current_user.id)
 
-    flash_success('Der Sitzplatz-Verwalter von Ticket {} wurde entfernt.', ticket.code)
+    flash_success('Der Sitzplatz-Verwalter von Ticket {} wurde entfernt.',
+                  ticket.code)
+
+    notification_service.notify_withdrawn_seat_manager(ticket, user,
+                                                       g.current_user)
 
 
 # -------------------------------------------------------------------- #
