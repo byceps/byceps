@@ -103,7 +103,7 @@ def _enqueue_email(recipient: User, subject: str, body: str) -> None:
 
     recipients = [recipient.email_address]
 
-    salutation = 'Hallo {},\n\n'.format(user.screen_name)
+    salutation = 'Hallo {},\n\n'.format(recipient.screen_name)
     body = salutation + body
 
     email_service.enqueue_email(sender_address, recipients, subject, body)
