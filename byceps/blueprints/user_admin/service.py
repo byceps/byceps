@@ -13,6 +13,7 @@ from ...services.user import event_service
 from ...services.user.models.detail import UserDetail
 from ...services.user.models.event import UserEvent, UserEventData
 from ...services.user.models.user import User
+from ...services.user import service as user_service
 from ...typing import UserID
 
 from .models import UserEnabledFilter
@@ -60,6 +61,7 @@ def _filter_by_enabled_flag(query, enabled_filter):
 
 def get_events(user_id: UserID) -> Iterator[UserEventData]:
     events = event_service.get_events_for_user(user_id)
+    events.insert(0, _fake_user_creation_event(user_id))
 
     for event in events:
         yield {
@@ -67,3 +69,17 @@ def get_events(user_id: UserID) -> Iterator[UserEventData]:
             'occurred_at': event.occurred_at,
             'data': event.data,
         }
+
+
+def _fake_user_creation_event(user_id: UserID) -> UserEvent:
+    user = user_service.find_user(user_id)
+    if user is None:
+        raise ValueError('Unknown user ID')
+
+    data = {
+        # This must be adjusted as soon as existing users (admins) are
+        # allowed to create users.
+        'initiator_id': str(user.id),
+    }
+
+    return UserEvent(user.created_at, 'user-created', user.id, data)
