@@ -6,11 +6,11 @@ byceps.blueprints.shop_order_admin.service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import Dict
+from typing import Dict, Iterator
 
 from ...services.shop.article.models.article import Article, ArticleNumber
 from ...services.shop.article import service as article_service
-from ...services.shop.order.models.order import OrderTuple
+from ...services.shop.order.models.order import OrderID, OrderTuple
 from ...services.shop.order.models.order_event import OrderEvent, OrderEventData
 from ...services.shop.order import event_service as order_event_service
 from ...services.ticketing import category_service as ticket_category_service
@@ -29,7 +29,7 @@ def get_articles_by_item_number(order: OrderTuple
     return {article.item_number: article for article in articles}
 
 
-def get_events(order_id):
+def get_events(order_id: OrderID) -> Iterator[OrderEventData]:
     events = order_event_service.get_events_for_order(order_id)
 
     user_ids = {event.data['initiator_id'] for event in events
