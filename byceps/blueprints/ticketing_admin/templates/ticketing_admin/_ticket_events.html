@@ -1,0 +1,41 @@
+{%- from 'macros/datetime.html' import render_datetime %}
+{%- from 'macros/icons.html' import render_icon %}
+{%- from 'macros/ticketing_admin.html' import render_ticket_flag_revoked %}
+
+
+  <h2>Verlauf</h2>
+  <ol class="activity-stream">
+    {%- for event in events|sort(attribute='occured_at', reverse=True) %}
+      {%- with %}
+        {%- if event.event == 'ticket-revoked' %}
+          {%- set icon_name = 'disabled' %}
+          {%- set body %}
+            Das Ticket ist {{ render_ticket_flag_revoked() }} worden.
+          {%- endset %}
+        {%- else %}
+          {%- set icon_name = 'disabled' %}
+          {%- set body %}
+            <strong>Unbekannte Aktion '{{ event.event }}'</strong> ist ausgelöst worden.
+          {%- endset %}
+        {%- endif %}
+    <li>
+      <table class="activity-stream-item">
+        <tr>
+          <td><span class="icon-container">{{ render_icon(icon_name) }}</span></td>
+          <td>{{ body|safe }}</td>
+          <td class="timestamp">{{ render_datetime(event.occured_at) }}</td>
+        </tr>
+      </table>
+    </li>
+      {%- endwith %}
+    {%- endfor %}
+    <li>
+      <table class="activity-stream-item">
+        <tr>
+          <td><span class="icon-container">{{ render_icon('add') }}</span></td>
+          <td>Das Ticket ist <strong>erzeugt worden</strong>.</td>
+          <td class="timestamp">{{ render_datetime(order.created_at) }}</td>
+        </tr>
+      </table>
+    </li>
+  </ol>

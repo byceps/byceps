@@ -18,6 +18,7 @@ from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 
 from .authorization import TicketingPermission
+from . import service
 
 
 blueprint = create_blueprint('ticketing_admin', __name__)
@@ -63,10 +64,13 @@ def view_ticket(ticket_id):
     else:
         order = None
 
+    events = service.get_events(ticket.id)
+
     return {
         'party': party,
         'ticket': ticket,
         'order': order,
+        'events': events,
     }
 
 
