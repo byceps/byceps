@@ -6,13 +6,13 @@ byceps.blueprints.user_admin.service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import Iterator
+from typing import Dict, Iterator
 
 from ...database import db
 from ...services.user import event_service
 from ...services.user.models.detail import UserDetail
 from ...services.user.models.event import UserEvent, UserEventData
-from ...services.user.models.user import User
+from ...services.user.models.user import User, UserTuple
 from ...services.user import service as user_service
 from ...typing import UserID
 
@@ -63,12 +63,23 @@ def get_events(user_id: UserID) -> Iterator[UserEventData]:
     events = event_service.get_events_for_user(user_id)
     events.insert(0, _fake_user_creation_event(user_id))
 
+    user_ids = {event.data['initiator_id']
+                for event in events
+                if 'initiator_id' in event.data}
+    users = user_service.find_users(user_ids)
+    users_by_id = {str(user.id): user for user in users}
+
     for event in events:
-        yield {
+        data = {
             'event': event.event_type,
             'occurred_at': event.occurred_at,
             'data': event.data,
         }
+
+        additional_data = _get_additional_data(event, users_by_id)
+        data.update(additional_data)
+
+        yield data
 
 
 def _fake_user_creation_event(user_id: UserID) -> UserEvent:
@@ -83,3 +94,20 @@ def _fake_user_creation_event(user_id: UserID) -> UserEvent:
     }
 
     return UserEvent(user.created_at, 'user-created', user.id, data)
+
+
+def _get_additional_data(event: UserEvent, users_by_id: Dict[UserID, UserTuple]
+                        ) -> UserEventData:
+    if event.event_type == 'user-created':
+        return _get_additional_data_for_user_creation_event(event, users_by_id)
+    else:
+        return {}
+
+
+def _get_additional_data_for_user_creation_event(event: UserEvent,
+        users_by_id: Dict[UserID, UserTuple]) -> UserEventData:
+    initiator_id = event.data['initiator_id']
+
+    return {
+        'initiator': users_by_id[initiator_id],
+    }
