@@ -9,7 +9,7 @@ byceps.services.shop.order.actions.revoke_tickets
 from typing import Sequence
 
 from ....ticketing.models.ticket import Ticket
-from ....ticketing import ticket_service
+from ....ticketing import event_service as ticket_event_service, ticket_service
 
 from ...article.models.article import ArticleNumber
 
@@ -26,7 +26,17 @@ def revoke_tickets(order: OrderTuple, article_number: ArticleNumber,
     ticket_ids = {t.id for t in tickets}
     ticket_service.revoke_tickets(ticket_ids)
 
+    _create_ticket_events(tickets)
+
     _create_order_events(order.id, tickets)
+
+
+def _create_ticket_events(tickets: Sequence[Ticket]) -> None:
+    event_type = 'ticket-revoked'
+
+    for ticket in tickets:
+        data = {}
+        ticket_event_service.create_event(event_type, ticket.id, data)
 
 
 def _create_order_events(order_id: OrderID, tickets: Sequence[Ticket]) -> None:
