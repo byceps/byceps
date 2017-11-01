@@ -13,6 +13,7 @@ from ...services.shop.article import service as article_service
 from ...services.shop.order.models.order import OrderID, OrderTuple
 from ...services.shop.order.models.order_event import OrderEvent, OrderEventData
 from ...services.shop.order import event_service as order_event_service
+from ...services.shop.order import service as order_service
 from ...services.ticketing import category_service as ticket_category_service
 from ...services.user.models.user import User, UserTuple
 from ...services.user import service as user_service
@@ -31,8 +32,10 @@ def get_articles_by_item_number(order: OrderTuple
 
 def get_events(order_id: OrderID) -> Iterator[OrderEventData]:
     events = order_event_service.get_events_for_order(order_id)
+    events.insert(0, _fake_order_placement_event(order_id))
 
-    user_ids = {event.data['initiator_id'] for event in events
+    user_ids = {event.data['initiator_id']
+                for event in events
                 if 'initiator_id' in event.data}
     users = user_service.find_users(user_ids)
     users_by_id = {str(user.id): user for user in users}
@@ -48,6 +51,18 @@ def get_events(order_id: OrderID) -> Iterator[OrderEventData]:
         data.update(additional_data)
 
         yield data
+
+
+def _fake_order_placement_event(order_id: OrderID) -> OrderEvent:
+    order = order_service.find_order_with_details(order_id)
+    if order is None:
+        raise ValueError('Unknown order ID')
+
+    data = {
+        'initiator_id': str(order.placed_by_id),
+    }
+
+    return OrderEvent(order.created_at, 'order-placed', order.id, data)
 
 
 def _get_additional_data(event: OrderEvent, users_by_id: Dict[UserID, UserTuple]

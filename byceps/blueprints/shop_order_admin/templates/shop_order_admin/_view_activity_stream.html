@@ -9,7 +9,12 @@
   <ol class="activity-stream">
     {%- for event in events|sort(attribute='occured_at', reverse=True) %}
       {%- with %}
-        {%- if event.event == 'order-canceled-before-paid' %}
+        {%- if event.event == 'order-placed' %}
+          {%- set icon_name = 'add' %}
+          {%- set body %}
+            <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span> hat die Bestellung <strong>aufgegeben</strong>.
+          {%- endset %}
+        {%- elif event.event == 'order-canceled-before-paid' %}
           {%- set icon_name = 'disabled' %}
           {%- set body %}
             <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
@@ -97,13 +102,4 @@
     </li>
       {%- endwith %}
     {%- endfor %}
-    <li>
-      <table class="activity-stream-item">
-        <tr>
-          <td><span class="icon-container">{{ render_icon('add') }}</span></td>
-          <td><span class="user-link">{{ render_user_avatar_20_and_link(placed_by) }}</span> hat die Bestellung <strong>{{ order.order_number }}</strong> aufgegeben.</td>
-          <td class="timestamp">{{ render_datetime(order.created_at) }}</td>
-        </tr>
-      </table>
-    </li>
   </ol>
