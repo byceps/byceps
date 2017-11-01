@@ -202,9 +202,12 @@ def view_activity(user_id):
 
     activities = activity_service.get_activities_for_user(user.id)
 
+    events = service.get_events(user.id)
+
     return {
         'user': user,
         'activities': activities,
+        'events': events,
     }
 
 

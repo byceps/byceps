@@ -6,9 +6,14 @@ byceps.blueprints.user_admin.service
 :License: Modified BSD, see LICENSE for details.
 """
 
+from typing import Iterator
+
 from ...database import db
+from ...services.user import event_service
 from ...services.user.models.detail import UserDetail
+from ...services.user.models.event import UserEvent, UserEventData
 from ...services.user.models.user import User
+from ...typing import UserID
 
 from .models import UserEnabledFilter
 
@@ -51,3 +56,14 @@ def _filter_by_enabled_flag(query, enabled_filter):
         return query.filter_by(enabled=False)
     else:
         return query
+
+
+def get_events(user_id: UserID) -> Iterator[UserEventData]:
+    events = event_service.get_events_for_user(user_id)
+
+    for event in events:
+        yield {
+            'event': event.event_type,
+            'occurred_at': event.occurred_at,
+            'data': event.data,
+        }
