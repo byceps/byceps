@@ -7,7 +7,12 @@
   <ol class="activity-stream">
     {%- for event in events|sort(attribute='occured_at', reverse=True) %}
       {%- with %}
-        {%- if event.event == 'ticket-revoked' %}
+        {%- if event.event == 'ticket-created' %}
+          {%- set icon_name = 'add' %}
+          {%- set body %}
+            Das Ticket ist <strong>erzeugt worden</strong>.
+          {%- endset %}
+        {%- elif event.event == 'ticket-revoked' %}
           {%- set icon_name = 'disabled' %}
           {%- set body %}
             Das Ticket ist {{ render_ticket_flag_revoked() }} worden.
@@ -29,13 +34,4 @@
     </li>
       {%- endwith %}
     {%- endfor %}
-    <li>
-      <table class="activity-stream-item">
-        <tr>
-          <td><span class="icon-container">{{ render_icon('add') }}</span></td>
-          <td>Das Ticket ist <strong>erzeugt worden</strong>.</td>
-          <td class="timestamp">{{ render_datetime(ticket.created_at) }}</td>
-        </tr>
-      </table>
-    </li>
   </ol>
