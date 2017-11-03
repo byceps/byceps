@@ -19,7 +19,7 @@
     }
   </style>
 
-  {%- if not error_occured and snippet_head %}
+  {%- if not error_occurred and snippet_head %}
 {{ snippet_head|safe }}
   {%- endif %}
 {% endblock %}
@@ -70,7 +70,7 @@
 
   </div>
 
-  {%- if error_occured %}
+  {%- if error_occurred %}
 
     {%- set notification_body %}
         Entschuldigung, es ist ein Fehler aufgetreten.<br>

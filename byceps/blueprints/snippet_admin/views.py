@@ -66,12 +66,12 @@ def view_version(snippet_version_id):
             'snippet_title': snippet_context['title'],
             'snippet_head': snippet_context['head'],
             'snippet_body': snippet_context['body'],
-            'error_occured': False,
+            'error_occurred': False,
         }
     except Exception as e:
         context = {
             'version': version,
-            'error_occured': True,
+            'error_occurred': True,
             'error_message': str(e),
         }
 
