@@ -17,9 +17,11 @@ from ...services.authentication.password import \
 from ...services.authentication.session import service as session_service
 from ...services.authorization import service as authorization_service
 from ...services.terms import service as terms_service
+from ...services.user import event_service as user_event_service
 from ...services.user import service as user_service
 from ...services.user_avatar import service as user_avatar_service
 from ...services.verification_token import service as verification_token_service
+from ...typing import UserID
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_error, flash_notice, flash_success
 from ...util.framework.templating import templated
@@ -173,8 +175,18 @@ def login():
             'No session token found for user %s on attempted login.', user)
         abort(500)
 
+    _create_login_event(user.id)
+
     user_session.start(user.id, session_token.token, permanent=permanent)
     flash_success('Erfolgreich eingeloggt als {}.', user.screen_name)
+
+
+def _create_login_event(user_id: UserID) -> None:
+    data = {
+        'ip_address': request.remote_addr,
+    }
+
+    user_event_service.create_event('user-logged-in', user_id, data)
 
 
 @blueprint.route('/logout', methods=['POST'])

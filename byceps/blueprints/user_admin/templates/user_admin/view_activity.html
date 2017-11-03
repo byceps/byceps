@@ -32,6 +32,12 @@
           {%- set body %}
             Der Benutzer ist von <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span> angelegt worden.
           {%- endset %}
+        {%- elif event.event == 'user-logged-in' %}
+          {%- set icon_name = 'log-in' %}
+          {%- set body %}
+            <span class="user-link">{{ render_user_avatar_20_and_link(user) }}</span>
+            hat sich von IP-Adresse {{ event.data.ip_address }} <strong>erfolgreich angemeldet</strong>.
+          {%- endset %}
         {%- else %}
           {%- set icon_name = 'disabled' %}
           {%- set body %}
