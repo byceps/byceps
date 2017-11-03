@@ -43,7 +43,7 @@ def get_events(order_id: OrderID) -> Iterator[OrderEventData]:
     for event in events:
         data = {
             'event': event.event_type,
-            'occured_at': event.occured_at,
+            'occurred_at': event.occurred_at,
             'data': event.data,
         }
 

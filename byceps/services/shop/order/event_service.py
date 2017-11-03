@@ -45,5 +45,5 @@ def get_events_for_order(order_id: OrderID) -> Sequence[OrderEvent]:
     """Return the events for that order."""
     return OrderEvent.query \
         .filter_by(order_id=order_id) \
-        .order_by(OrderEvent.occured_at) \
+        .order_by(OrderEvent.occurred_at) \
         .all()
