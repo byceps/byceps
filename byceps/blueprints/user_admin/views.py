@@ -192,11 +192,11 @@ def role_deassign(user_id, role_id):
                   user.screen_name, role.title)
 
 
-@blueprint.route('/<uuid:user_id>/activity')
+@blueprint.route('/<uuid:user_id>/events')
 @permission_required(UserPermission.view)
 @templated
-def view_activity(user_id):
-    """Show user's activity."""
+def view_events(user_id):
+    """Show user's events."""
     user = _get_user_or_404(user_id)
 
     events = service.get_events(user.id)
