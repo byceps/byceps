@@ -36,7 +36,7 @@ def contains_category_unseen_postings(category: Category, user_id: UserID
     if last_view is None:
         return True
 
-    return category.last_posting_updated_at > last_view.occured_at
+    return category.last_posting_updated_at > last_view.occurred_at
 
 
 def find_last_category_view(user_id: UserID, category_id: CategoryID
@@ -57,7 +57,7 @@ def mark_category_as_just_viewed(category_id: CategoryID, user_id: UserID
     last_view = find_last_category_view(user_id, category_id)
 
     if last_view is not None:
-        last_view.occured_at = now
+        last_view.occurred_at = now
     else:
         last_view = LastCategoryView(user_id, category_id, now)
         db.session.add(last_view)
@@ -93,7 +93,7 @@ def find_topic_last_viewed_at(topic_id: TopicID, user_id: UserID
     nothing, if it hasn't been viewed by the user yet).
     """
     last_view = find_last_topic_view(user_id, topic_id)
-    return last_view.occured_at if (last_view is not None) else None
+    return last_view.occurred_at if (last_view is not None) else None
 
 
 def mark_topic_as_just_viewed(topic_id: TopicID, user_id: UserID) -> None:
@@ -105,7 +105,7 @@ def mark_topic_as_just_viewed(topic_id: TopicID, user_id: UserID) -> None:
     last_view = find_last_topic_view(user_id, topic_id)
 
     if last_view is not None:
-        last_view.occured_at = now
+        last_view.occurred_at = now
     else:
         last_view = LastTopicView(user_id, topic_id, now)
         db.session.add(last_view)
@@ -134,7 +134,7 @@ def mark_all_topics_in_category_as_viewed(category_id: CategoryID,
 
     # Update existing last views.
     for last_view in last_views:
-        last_view.occured_at = now
+        last_view.occurred_at = now
 
     # Create last views for remaining topics.
     last_view_topic_ids = {last_view.topic_id for last_view in last_views}

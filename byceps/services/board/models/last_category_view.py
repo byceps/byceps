@@ -22,17 +22,17 @@ class LastCategoryView(db.Model):
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
     category_id = db.Column(db.Uuid, db.ForeignKey('board_categories.id'), primary_key=True)
     category = db.relationship(Category)
-    occured_at = db.Column(db.DateTime, nullable=False)
+    occurred_at = db.Column(db.DateTime, nullable=False)
 
     def __init__(self, user_id: UserID, category_id: CategoryID,
-                 occured_at: datetime) -> None:
+                 occurred_at: datetime) -> None:
         self.user_id = user_id
         self.category_id = category_id
-        self.occured_at = occured_at
+        self.occurred_at = occurred_at
 
     def __repr__(self) -> str:
         return ReprBuilder(self) \
             .add_with_lookup('user_id') \
             .add('category', self.category.title) \
-            .add_with_lookup('occured_at') \
+            .add_with_lookup('occurred_at') \
             .build()
