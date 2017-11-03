@@ -36,5 +36,5 @@ def get_events_for_ticket(ticket_id: TicketID) -> Sequence[TicketEvent]:
     """Return the events for that ticket."""
     return TicketEvent.query \
         .filter_by(ticket_id=ticket_id) \
-        .order_by(TicketEvent.occured_at) \
+        .order_by(TicketEvent.occurred_at) \
         .all()

@@ -23,14 +23,14 @@ class TicketEvent(db.Model):
     __tablename__ = 'ticket_events'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    occured_at = db.Column(db.DateTime, nullable=False)
+    occurred_at = db.Column(db.DateTime, nullable=False)
     event_type = db.Column(db.Unicode(40), index=True, nullable=False)
     ticket_id = db.Column(db.Uuid, db.ForeignKey('tickets.id'), index=True, nullable=False)
     data = db.Column(db.JSONB)
 
-    def __init__(self, occured_at: datetime, event_type: str,
+    def __init__(self, occurred_at: datetime, event_type: str,
                  ticket_id: TicketID, data: TicketEventData) -> None:
-        self.occured_at = occured_at
+        self.occurred_at = occurred_at
         self.event_type = event_type
         self.ticket_id = ticket_id
         self.data = data

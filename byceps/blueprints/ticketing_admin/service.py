@@ -22,7 +22,7 @@ def get_events(ticket_id: TicketID) -> Iterator[TicketEventData]:
     for event in events:
         yield {
             'event': event.event_type,
-            'occured_at': event.occured_at,
+            'occurred_at': event.occurred_at,
             'data': event.data,
         }
 
