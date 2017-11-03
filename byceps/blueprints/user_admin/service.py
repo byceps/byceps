@@ -106,14 +106,14 @@ def _fake_newsletter_subscription_update_events(user_id: UserID) \
     updates = newsletter_service.get_subscription_updates_for_user(user_id)
 
     for update in updates:
+        event_type = 'newsletter-{}'.format(update.state.name)
+
         data = {
             'brand_id': update.brand_id,
             'initiator_id': str(user_id),
-            'state': update.state,
         }
 
-        yield UserEvent(update.expressed_at, 'newsletter-subscription-updated',
-                        user_id, data)
+        yield UserEvent(update.expressed_at, event_type, user_id, data)
 
 
 def _fake_terms_consent_events(user_id: UserID) -> Iterator[UserEvent]:
@@ -134,7 +134,8 @@ def _get_additional_data(event: UserEvent, users_by_id: Dict[UserID, UserTuple]
                         ) -> UserEventData:
     if event.event_type in (
             'user-created',
-            'newsletter-subscription-updated',
+            'newsletter-requested',
+            'newsletter-declined',
             'terms-consent-expressed',
     ):
         return _get_additional_data_for_user_creation_event(event, users_by_id)
