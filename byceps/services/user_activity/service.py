@@ -11,7 +11,6 @@ from typing import Iterator, List
 
 from ...typing import UserID
 
-from ..newsletter import service as newsletter_service
 from ..shop.order import service as order_service
 from ..user_avatar import service as avatar_service
 
@@ -21,7 +20,6 @@ from .models import Activity, ActivityType
 def get_activities_for_user(user_id: UserID) -> List[Activity]:
     activities = list(chain(
         get_avatar_updates_for_user(user_id),
-        get_newsletter_subscription_updates_for_user(user_id),
         get_orders_for_user(user_id),
     ))
 
@@ -38,17 +36,6 @@ def get_avatar_updates_for_user(user_id: UserID) -> Iterator[Activity]:
         type_ = ActivityType.avatar_update
 
         yield Activity(avatar.created_at, type_, avatar)
-
-
-def get_newsletter_subscription_updates_for_user(user_id: UserID) \
-                                                 -> Iterator[Activity]:
-    """Yield the user's newsletter subscription updates as activities."""
-    updates = newsletter_service.get_subscription_updates_for_user(user_id)
-
-    for update in updates:
-        type_ = ActivityType.newsletter_subscription_update
-
-        yield Activity(update.expressed_at, type_, update)
 
 
 def get_orders_for_user(user_id: UserID) -> Iterator[Activity]:
