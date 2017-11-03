@@ -13,7 +13,6 @@ from ...typing import UserID
 
 from ..newsletter import service as newsletter_service
 from ..shop.order import service as order_service
-from ..terms import service as terms_service
 from ..user_avatar import service as avatar_service
 
 from .models import Activity, ActivityType
@@ -24,7 +23,6 @@ def get_activities_for_user(user_id: UserID) -> List[Activity]:
         get_avatar_updates_for_user(user_id),
         get_newsletter_subscription_updates_for_user(user_id),
         get_orders_for_user(user_id),
-        get_terms_consents_for_user(user_id),
     ))
 
     _sort_activities(activities)
@@ -61,16 +59,6 @@ def get_orders_for_user(user_id: UserID) -> Iterator[Activity]:
         type_ = ActivityType.order_placement
 
         yield Activity(order.created_at, type_, order)
-
-
-def get_terms_consents_for_user(user_id: UserID) -> Iterator[Activity]:
-    """Yield the user's consents to terms as activities."""
-    consents = terms_service.get_consents_by_user(user_id)
-
-    for consent in consents:
-        type_ = ActivityType.terms_consent
-
-        yield Activity(consent.expressed_at, type_, consent)
 
 
 def _sort_activities(activities: List[Activity]) -> None:

@@ -9,6 +9,7 @@ byceps.blueprints.user_admin.service
 from typing import Dict, Iterator
 
 from ...database import db
+from ...services.terms import service as terms_service
 from ...services.user import event_service
 from ...services.user.models.detail import UserDetail
 from ...services.user.models.event import UserEvent, UserEventData
@@ -62,6 +63,7 @@ def _filter_by_enabled_flag(query, enabled_filter):
 def get_events(user_id: UserID) -> Iterator[UserEventData]:
     events = event_service.get_events_for_user(user_id)
     events.insert(0, _fake_user_creation_event(user_id))
+    events.extend(_fake_terms_consent_events(user_id))
 
     user_ids = {event.data['initiator_id']
                 for event in events
@@ -96,9 +98,23 @@ def _fake_user_creation_event(user_id: UserID) -> UserEvent:
     return UserEvent(user.created_at, 'user-created', user.id, data)
 
 
+def _fake_terms_consent_events(user_id: UserID) -> Iterator[UserEvent]:
+    """Yield the user's consents to terms as volatile events."""
+    consents = terms_service.get_consents_by_user(user_id)
+
+    for consent in consents:
+        data = {
+            'initiator_id': str(user_id),
+            'version_title': consent.version.title,
+        }
+
+        yield UserEvent(consent.expressed_at, 'terms-consent-expressed',
+                        user_id, data)
+
+
 def _get_additional_data(event: UserEvent, users_by_id: Dict[UserID, UserTuple]
                         ) -> UserEventData:
-    if event.event_type == 'user-created':
+    if event.event_type in ('user-created', 'terms-consent-expressed'):
         return _get_additional_data_for_user_creation_event(event, users_by_id)
     else:
         return {}

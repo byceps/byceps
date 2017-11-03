@@ -38,6 +38,12 @@
             <span class="user-link">{{ render_user_avatar_20_and_link(user) }}</span>
             hat sich von IP-Adresse {{ event.data.ip_address }} <strong>erfolgreich angemeldet</strong>.
           {%- endset %}
+        {%- elif event.event == 'terms-consent-expressed' %}
+          {%- set icon_name = 'legal' %}
+          {%- set body %}
+            <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
+            hat die aktuellen <strong>AGB</strong> (&quot;{{ event.data.version_title }}&quot;) <strong>angenommen</strong>.
+          {%- endset %}
         {%- else %}
           {%- set icon_name = 'disabled' %}
           {%- set body %}
@@ -79,8 +85,6 @@
     {{ render_icon('email') }}
   {%- elif type_name == 'order_placement' -%}
     {{ render_icon('shopping-cart') }}
-  {%- elif type_name == 'terms_consent' -%}
-    {{ render_icon('legal') }}
   {%- else -%}
     ?
   {%- endif -%}
@@ -95,8 +99,6 @@
     {{ render_newsletter_subscription_update_activity_label(activity) }}
   {%- elif type_name == 'order_placement' -%}
     {{ render_order_placement_label(activity) }}
-  {%- elif type_name == 'terms_consent' -%}
-    {{ render_terms_consent_activity_label(activity) }}
   {%- else -%}
     ?
   {%- endif -%}
@@ -127,9 +129,4 @@ hat den Newsletter zur Marke &quot;{{ activity.object.brand_id }}&quot; {{ rende
 
 {% macro render_order_placement_label(activity) -%}
 hat Bestellung {{ render_order_link(activity.object) }} aufgegeben.
-{%- endmacro %}
-
-
-{% macro render_terms_consent_activity_label(activity) -%}
-hat die aktuellen AGB (&quot;{{ activity.object.version.title }}&quot;) angenommen.
 {%- endmacro %}
