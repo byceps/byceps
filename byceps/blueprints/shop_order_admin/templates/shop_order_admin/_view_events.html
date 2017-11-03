@@ -6,7 +6,7 @@
 
 
   <h2>Verlauf</h2>
-  <ol class="activity-stream">
+  <ol class="event-stream">
     {%- for event in events|sort(attribute='occurred_at', reverse=True) %}
       {%- with %}
         {%- if event.event == 'order-placed' %}
@@ -92,7 +92,7 @@
           {%- endset %}
         {%- endif %}
     <li>
-      <table class="activity-stream-item">
+      <table class="event-stream-item">
         <tr>
           <td><span class="icon-container">{{ render_icon(icon_name) }}</span></td>
           <td>{{ body|safe }}</td>
