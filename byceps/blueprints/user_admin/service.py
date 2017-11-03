@@ -10,6 +10,7 @@ from typing import Dict, Iterator
 
 from ...database import db
 from ...services.newsletter import service as newsletter_service
+from ...services.shop.order import service as order_service
 from ...services.terms import service as terms_service
 from ...services.user import event_service
 from ...services.user.models.detail import UserDetail
@@ -67,6 +68,7 @@ def get_events(user_id: UserID) -> Iterator[UserEventData]:
     events.insert(0, _fake_user_creation_event(user_id))
     events.extend(_fake_avatar_update_events(user_id))
     events.extend(_fake_newsletter_subscription_update_events(user_id))
+    events.extend(_fake_order_events(user_id))
     events.extend(_fake_terms_consent_events(user_id))
 
     user_ids = {event.data['initiator_id']
@@ -131,6 +133,19 @@ def _fake_newsletter_subscription_update_events(user_id: UserID) \
         yield UserEvent(update.expressed_at, event_type, user_id, data)
 
 
+def _fake_order_events(user_id: UserID) -> Iterator[UserEvent]:
+    """Yield the orders placed by the user as volatile events."""
+    orders = order_service.get_orders_placed_by_user(user_id)
+
+    for order in orders:
+        data = {
+            'initiator_id': str(user_id),
+            'order': order.to_tuple(),
+        }
+
+        yield UserEvent(order.created_at, 'order-placed', user_id, data)
+
+
 def _fake_terms_consent_events(user_id: UserID) -> Iterator[UserEvent]:
     """Yield the user's consents to terms as volatile events."""
     consents = terms_service.get_consents_by_user(user_id)
@@ -152,6 +167,7 @@ def _get_additional_data(event: UserEvent, users_by_id: Dict[UserID, UserTuple]
             'avatar-updated',
             'newsletter-requested',
             'newsletter-declined',
+            'order-placed',
             'terms-consent-expressed',
     ):
         return _get_additional_data_for_user_creation_event(event, users_by_id)

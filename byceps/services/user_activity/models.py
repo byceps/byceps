@@ -14,5 +14,5 @@ Activity = namedtuple('Activity', ['occured_at', 'type', 'object'])
 
 
 ActivityType = Enum('ActivityType', [
-    'order_placement',
+    'none'
 ])

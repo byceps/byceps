@@ -55,6 +55,11 @@
             <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
             hat den Newsletter zur Marke &quot;{{ event.data.brand_id }}&quot; {{ render_tag('abbestellt', icon='disabled', class='newsletter-unsubscribed') }}.
           {%- endset %}
+        {%- elif event.event == 'order-placed' %}
+          {%- set icon_name = 'shopping-cart' %}
+          {%- set body %}
+            <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span> hat Bestellung {{ render_order_link(event.data.order) }} aufgegeben.
+          {%- endset %}
         {%- elif event.event == 'terms-consent-expressed' %}
           {%- set icon_name = 'legal' %}
           {%- set body %}
@@ -96,24 +101,11 @@
 
 {% macro render_activity_icon(activity) -%}
   {%- set type_name = activity.type.name %}
-  {%- if type_name == 'order_placement' -%}
-    {{ render_icon('shopping-cart') }}
-  {%- else -%}
-    ?
-  {%- endif -%}
+  ?
 {%- endmacro %}
 
 
 {% macro render_activity_label(activity) -%}
   {%- set type_name = activity.type.name %}
-  {%- if type_name == 'order_placement' -%}
-    {{ render_order_placement_label(activity) }}
-  {%- else -%}
-    ?
-  {%- endif -%}
-{%- endmacro %}
-
-
-{% macro render_order_placement_label(activity) -%}
-hat Bestellung {{ render_order_link(activity.object) }} aufgegeben.
+  ?
 {%- endmacro %}
