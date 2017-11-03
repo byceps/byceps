@@ -12,30 +12,18 @@ from typing import Iterator, List
 from ...typing import UserID
 
 from ..shop.order import service as order_service
-from ..user_avatar import service as avatar_service
 
 from .models import Activity, ActivityType
 
 
 def get_activities_for_user(user_id: UserID) -> List[Activity]:
     activities = list(chain(
-        get_avatar_updates_for_user(user_id),
         get_orders_for_user(user_id),
     ))
 
     _sort_activities(activities)
 
     return activities
-
-
-def get_avatar_updates_for_user(user_id: UserID) -> Iterator[Activity]:
-    """Yield the user's avatar updates as activities."""
-    avatars = avatar_service.get_avatars_uploaded_by_user(user_id)
-
-    for avatar in avatars:
-        type_ = ActivityType.avatar_update
-
-        yield Activity(avatar.created_at, type_, avatar)
 
 
 def get_orders_for_user(user_id: UserID) -> Iterator[Activity]:

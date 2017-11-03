@@ -38,6 +38,11 @@
             <span class="user-link">{{ render_user_avatar_20_and_link(user) }}</span>
             hat sich von IP-Adresse {{ event.data.ip_address }} <strong>erfolgreich angemeldet</strong>.
           {%- endset %}
+        {%- elif event.event == 'avatar-updated' %}
+          {%- set icon_name = 'upload' %}
+          {%- set body %}
+            <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span> hat ein <a href="{{ event.data.url }}">neues Avatarbild</a> hochgeladen.
+          {%- endset %}
         {%- elif event.event == 'newsletter-requested' %}
           {%- set icon_name = 'email' %}
           {%- set body %}
@@ -91,9 +96,7 @@
 
 {% macro render_activity_icon(activity) -%}
   {%- set type_name = activity.type.name %}
-  {%- if type_name == 'avatar_update' -%}
-    {{ render_icon('upload') }}
-  {%- elif type_name == 'order_placement' -%}
+  {%- if type_name == 'order_placement' -%}
     {{ render_icon('shopping-cart') }}
   {%- else -%}
     ?
@@ -103,18 +106,11 @@
 
 {% macro render_activity_label(activity) -%}
   {%- set type_name = activity.type.name %}
-  {%- if type_name == 'avatar_update' -%}
-    {{ render_avatar_update_label(activity) }}
-  {%- elif type_name == 'order_placement' -%}
+  {%- if type_name == 'order_placement' -%}
     {{ render_order_placement_label(activity) }}
   {%- else -%}
     ?
   {%- endif -%}
-{%- endmacro %}
-
-
-{% macro render_avatar_update_label(activity) -%}
-hat ein <a href="{{ activity.object.url }}">neues Avatarbild</a> hochgeladen.
 {%- endmacro %}
 
 

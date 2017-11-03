@@ -16,6 +16,7 @@ from ...services.user.models.detail import UserDetail
 from ...services.user.models.event import UserEvent, UserEventData
 from ...services.user.models.user import User, UserTuple
 from ...services.user import service as user_service
+from ...services.user_avatar import service as avatar_service
 from ...typing import UserID
 
 from .models import UserEnabledFilter
@@ -64,6 +65,7 @@ def _filter_by_enabled_flag(query, enabled_filter):
 def get_events(user_id: UserID) -> Iterator[UserEventData]:
     events = event_service.get_events_for_user(user_id)
     events.insert(0, _fake_user_creation_event(user_id))
+    events.extend(_fake_avatar_update_events(user_id))
     events.extend(_fake_newsletter_subscription_update_events(user_id))
     events.extend(_fake_terms_consent_events(user_id))
 
@@ -100,6 +102,19 @@ def _fake_user_creation_event(user_id: UserID) -> UserEvent:
     return UserEvent(user.created_at, 'user-created', user.id, data)
 
 
+def _fake_avatar_update_events(user_id: UserID) -> Iterator[UserEvent]:
+    """Yield the user's avatar updates as volatile events."""
+    avatars = avatar_service.get_avatars_uploaded_by_user(user_id)
+
+    for avatar in avatars:
+        data = {
+            'initiator_id': str(user_id),
+            'url': avatar.url,
+        }
+
+        yield UserEvent(avatar.created_at, 'avatar-updated', user_id, data)
+
+
 def _fake_newsletter_subscription_update_events(user_id: UserID) \
         -> Iterator[UserEvent]:
     """Yield the user's newsletter subscription updates as volatile events."""
@@ -134,6 +149,7 @@ def _get_additional_data(event: UserEvent, users_by_id: Dict[UserID, UserTuple]
                         ) -> UserEventData:
     if event.event_type in (
             'user-created',
+            'avatar-updated',
             'newsletter-requested',
             'newsletter-declined',
             'terms-consent-expressed',
