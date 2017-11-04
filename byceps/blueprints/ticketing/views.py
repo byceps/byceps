@@ -102,7 +102,7 @@ def appoint_user(ticket_id):
 @blueprint.route('/tickets/<uuid:ticket_id>/user', methods=['DELETE'])
 @respond_no_content
 def withdraw_user(ticket_id):
-    """Withdraw the ticket's user."""
+    """Withdraw the ticket's user and appoint its owner instead."""
     _abort_if_ticket_management_disabled()
 
     ticket = _get_ticket_or_404(ticket_id)
@@ -112,13 +112,10 @@ def withdraw_user(ticket_id):
     if not ticket.is_user_managed_by(manager.id):
         abort(403)
 
-    user = ticket.used_by
+    ticket_service.appoint_user(ticket.id, manager.id, manager.id)
 
-    ticket_service.withdraw_user(ticket.id, manager.id)
-
-    flash_success('Der Nutzer von Ticket {} wurde entfernt.', ticket.code)
-
-    notification_service.notify_withdrawn_user(ticket, user, manager)
+    flash_success('Du wurdest als Nutzer/in von Ticket {} eingetragen.',
+        ticket.code)
 
 
 # -------------------------------------------------------------------- #

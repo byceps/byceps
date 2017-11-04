@@ -27,7 +27,7 @@
 {% block scripts %}
     <script>
       onDomReady(function() {
-        confirmed_delete_on_click_then_reload('[data-action="withdraw-user"]', 'Nutzer/in entfernen?');
+        confirmed_delete_on_click_then_reload('[data-action="withdraw-user"]', 'Dieses Ticket selbst nutzen?');
         confirmed_delete_on_click_then_reload('[data-action="withdraw-user-manager"]', 'Nutzer-Verwaltung zurückholen?');
         confirmed_delete_on_click_then_reload('[data-action="withdraw-seat-manager"]', 'Sitzplatz-Verwaltung zurückholen?');
       });
@@ -88,8 +88,8 @@
                   <button class="dropdown-toggle button button--clear button--compact button--icon-only">{{ render_icon('caret-down') -}}</button>
                   <ol>
                     <li><a href="{{ url_for('.appoint_user_form', ticket_id=ticket.id) }}">{{ render_icon('arrow-right') }} Nutzer/in zuweisen</a></li>
-                    {%- if ticket.used_by_id %}
-                    <li><a href="{{ url_for('.withdraw_user', ticket_id=ticket.id, _method='DELETE') }}" data-action="withdraw-user">{{ render_icon('remove') }} Nutzer/in entfernen</a></li>
+                    {%- if ticket.used_by_id != g.current_user.id %}
+                    <li><a href="{{ url_for('.withdraw_user', ticket_id=ticket.id, _method='DELETE') }}" data-action="withdraw-user">{{ render_icon('arrow-left') }} selbst nutzen</a></li>
                     {%- endif %}
                   </ol>
                 </div>
