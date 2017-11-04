@@ -499,15 +499,22 @@ fieldset.buttons {
   --icon-container-size: 1.75rem;
   --icon-size: 0.75rem;
 
-  border-left: var(--path-color) solid var(--path-width);
-  margin-left: 0.75rem;
-  padding-left: 1.125rem;
+  --half-path-width: calc(var(--path-width) / 2);
+  --half-icon-container-width: calc(var(--icon-container-size) / 2);
+  --path-gradient-color-stop-1: calc(var(--half-icon-container-width) - var(--half-path-width));
+  --path-gradient-color-stop-2: calc(var(--half-icon-container-width) + var(--half-path-width));
+
+  background: linear-gradient(90deg,
+    transparent var(--path-gradient-color-stop-1),
+    var(--path-color) var(--path-gradient-color-stop-1),
+    var(--path-color) var(--path-gradient-color-stop-2),
+    transparent var(--path-gradient-color-stop-2)
+  );
 }
 
 
 .event {
   display: flex;
-  margin-left: -2.0625rem;
   padding: 0.25rem 0;
 }
 
