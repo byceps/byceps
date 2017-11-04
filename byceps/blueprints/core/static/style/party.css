@@ -612,6 +612,102 @@ form.board-posting-create-form-inline .label {
 }
 
 
+/* tickets */
+
+.ticket-grid {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  margin: 0 0 0 -1.25rem;
+  padding: 0;
+}
+
+.ticket-grid > li {
+  padding: 1.25rem 0 0 1.25rem;
+}
+
+.ticket-card {
+  border: #dddddd solid 1px;
+  border-radius: 1rem;
+  display: flex;
+}
+
+.ticket-card-cell {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.8125rem; /* 13px / 16px */
+  justify-content: space-between;
+  width: 128px;
+}
+
+.ticket-card-cell + .ticket-card-cell {
+  border-left: #dddddd solid 1px;
+}
+
+.ticket-card.ticket-used-by-me,
+.ticket-card.ticket-used-by-me .ticket-card-cell {
+  border-color: #999999;
+}
+
+.ticket-card-cell-block {
+  margin: 1rem;
+}
+
+.ticket-card-cell-block + .ticket-card-cell-block {
+  margin-top: 0;
+}
+
+.ticket-icon {
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.ticket-card-cell .label-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.25rem;
+}
+
+.ticket-card-cell .label {
+  color: #888888;
+  font-size: 0.625rem; /* 10px / 16px */
+  text-transform: uppercase;
+}
+
+.ticket-card-cell .label-buttons {
+  margin-top: -3px;
+}
+
+.ticket-card-cell a {
+  color: currentColor;
+  text-decoration: none;
+}
+.ticket-card-cell a:hover {
+  text-decoration: underline;
+}
+.ticket-card-cell .dropdown a:hover {
+  text-decoration: none;
+}
+
+.ticket-code {
+  font-size: 1.25rem; /* 20px / 16px */
+  font-weight: bold;
+}
+
+.ticket-card-cell .avatar.size-96,
+.ticket-user-placeholder {
+  margin-bottom: 0.3rem;
+}
+
+.ticket-user-placeholder {
+  background-color: #f4f4f4;
+  border: #dddddd dashed 1px;
+  border-radius: 3px;
+  height: 94px;
+  width: 94px;
+}
+
+
 /* links */
 
 a.disguised {
