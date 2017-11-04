@@ -19,6 +19,10 @@
       <th>E-Mail-Adresse</th>
       <td>{{ user.email_address }}</td>
     </tr>
+    <tr>
+      <th>Sicherheit</th>
+      <td><a class="button button--inline" href="{{ url_for('authentication.password_update_form') }}">{{ render_icon('password') }} Passwort ändern</a></td>
+    </tr>
   </table>
 
   <h2>Profil</h2>
@@ -116,11 +120,6 @@
     </tr>
   </table>
   {%- endif %}
-
-  <h2>Sicherheit</h2>
-  <div class="button-row">
-    <a class="button" href="{{ url_for('authentication.password_update_form') }}">{{ render_icon('password') }} Passwort ändern</a>
-  </div>
 
 {%- endblock %}
 
