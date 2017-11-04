@@ -493,7 +493,12 @@ fieldset.buttons {
 /* events */
 
 .events {
-  border-left: #eeeeee solid 0.125rem;
+  --path-width: 0.125rem;
+  --icon-container-border-width: var(--path-width);
+  --icon-container-size: 1.75rem;
+  --icon-size: 0.75rem;
+
+  border-left: #eeeeee solid var(--path-width);
   margin-left: 0.75rem;
   padding-left: 1.125rem;
 }
@@ -508,19 +513,19 @@ fieldset.buttons {
 .event-icon {
   align-items: center;
   background-color: #eeeeee;
-  border: #ffffff solid 0.125rem;
+  border: #ffffff solid var(--icon-container-border-width);
   border-radius: 50%;
   display: flex;
   flex: 0 0 auto;
-  height: 1.75rem;
+  height: var(--icon-container-size);
   justify-content: center;
-  width: 1.75rem;
+  width: var(--icon-container-size);
 }
 
 .event-icon .icon {
   fill: #666666;
-  height: 0.75rem;
-  width: 0.75rem;
+  height: var(--icon-size);
+  width: var(--icon-size);
 }
 
 .event-body,
