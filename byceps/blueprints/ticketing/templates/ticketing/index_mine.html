@@ -142,40 +142,7 @@
           {{ render_user_avatar_16_and_link(ticket.owned_by) }}
         </div>
 
-        <div class="ticket-card-cell">
-          <div class="label-row">
-            <span class="label">Sitzplatz</span>
-            {%- if ticket.owned_by_id == g.current_user.id %}
-            <span class="label-buttons">
-              <div class="dropdown left">
-                <button class="dropdown-toggle button button--clear button--compact button--icon-only">{{ render_icon('caret-down') -}}</button>
-                <ol>
-                  {%- if seat_manager == g.current_user %}
-                  <li><a href="{{ url_for('.appoint_seat_manager_form', ticket_id=ticket.id) }}">{{ render_icon('arrow-right') }} Sitzplatz-Verwaltung übertragen</a></li>
-                  {%- else %}
-                  <li><a href="{{ url_for('.withdraw_seat_manager', ticket_id=ticket.id, _method='DELETE') }}" data-action="withdraw-seat-manager">{{ render_icon('remove') }} Sitzplatz-Verwaltung zurückholen</a></li>
-                  {%- endif %}
-                </ol>
-              </div>
-            </span>
-            {%- endif %}
-          </div>
-          <div class="centered">
-            {%- if ticket.occupied_seat -%}
-            {{ render_seating_area_link(ticket.occupied_seat.area) }}
-            {%- else -%}
-            {{ render_tag('keiner', class='available') }}
-            {%- endif -%}
-          </div>
-
-          {%- if seat_manager != ticket.owned_by %}
-          <div class="label-row">
-            <span class="label">Verwalter/in</span>
-          </div>
-          {{ render_user_avatar_16_and_link(seat_manager) }}
-          {%- endif %}
-        </div>
-
+        {# user #}
         <div class="ticket-card-cell">
           <div class="label-row">
             <span class="label">Nutzer/in</span>
@@ -226,6 +193,43 @@
           {{ render_user_avatar_16_and_link(user_manager) }}
           {%- endif %}
         </div>
+        {# /user #}
+
+        {# seat #}
+        <div class="ticket-card-cell">
+          <div class="label-row">
+            <span class="label">Sitzplatz</span>
+            {%- if ticket.owned_by_id == g.current_user.id %}
+            <span class="label-buttons">
+              <div class="dropdown left">
+                <button class="dropdown-toggle button button--clear button--compact button--icon-only">{{ render_icon('caret-down') -}}</button>
+                <ol>
+                  {%- if seat_manager == g.current_user %}
+                  <li><a href="{{ url_for('.appoint_seat_manager_form', ticket_id=ticket.id) }}">{{ render_icon('arrow-right') }} Sitzplatz-Verwaltung übertragen</a></li>
+                  {%- else %}
+                  <li><a href="{{ url_for('.withdraw_seat_manager', ticket_id=ticket.id, _method='DELETE') }}" data-action="withdraw-seat-manager">{{ render_icon('remove') }} Sitzplatz-Verwaltung zurückholen</a></li>
+                  {%- endif %}
+                </ol>
+              </div>
+            </span>
+            {%- endif %}
+          </div>
+          <div class="centered">
+            {%- if ticket.occupied_seat -%}
+            {{ render_seating_area_link(ticket.occupied_seat.area) }}
+            {%- else -%}
+            {{ render_tag('keiner', class='available') }}
+            {%- endif -%}
+          </div>
+
+          {%- if seat_manager != ticket.owned_by %}
+          <div class="label-row">
+            <span class="label">Verwalter/in</span>
+          </div>
+          {{ render_user_avatar_16_and_link(seat_manager) }}
+          {%- endif %}
+        </div>
+        {# /seat #}
 
       </div>
     </li>
