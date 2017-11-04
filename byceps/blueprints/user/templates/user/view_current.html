@@ -19,6 +19,16 @@
       <th>E-Mail-Adresse</th>
       <td>{{ user.email_address }}</td>
     </tr>
+  </table>
+
+  <h2>Profil</h2>
+  <table class="index">
+    {%- if g.site_mode.is_public() %}
+    <tr>
+      <th>öffentliches Profil</th>
+      <td><a href="{{ url_for('.view', user_id=user.id) }}">ansehen</a></td>
+    </tr>
+    {%- endif %}
     <tr>
       <th>Avatar</th>
       <td>
@@ -40,13 +50,6 @@
       </td>
     </tr>
   </table>
-
-  {%- if g.site_mode.is_public() %}
-  <h2>Profil</h2>
-  <div class="button-row">
-    <a class="button" href="{{ url_for('.view', user_id=user.id) }}">{{ render_icon('view') }} öffentliches Profil ansehen</a>
-  </div>
-  {%- endif %}
 
   <h2>Persönliche Daten</h2>
   <table class="index">
