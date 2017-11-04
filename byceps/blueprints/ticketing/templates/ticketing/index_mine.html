@@ -20,13 +20,6 @@
       padding: 20px 0 0 20px;
     }
 
-    .ticket-code {
-      color: #888888;
-      font-size: 0.625rem; /* 10px / 16px */
-      margin-bottom: 5px;
-      text-align: center;
-    }
-
     .ticket-card {
       border: #dddddd solid 1px;
       border-radius: 15px;
@@ -124,8 +117,14 @@
                user_manager = ticket.get_user_manager()
        %}
     <li>
-      <div class="ticket-code">{{ ticket.code }}</div>
       <div class="ticket-card{% if ticket.used_by_id == g.current_user.id %} ticket-used-by-me{% endif %}">
+
+        <div class="ticket-card-row">
+          <div class="label-row">
+            <span class="label">Code</span>
+          </div>
+          <strong>{{ ticket.code }}</strong>
+        </div>
 
         <div class="ticket-card-row">
           <div class="label-row">
