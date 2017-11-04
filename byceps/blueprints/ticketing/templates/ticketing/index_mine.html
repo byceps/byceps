@@ -25,7 +25,6 @@
       border: #dddddd solid 1px;
       border-radius: 1rem;
       display: flex;
-      flex-direction: column;
     }
 
     .ticket-card-cell {
@@ -37,7 +36,7 @@
     }
 
     .ticket-card-cell + .ticket-card-cell {
-      border-top: #dddddd solid 1px;
+      border-left: #dddddd solid 1px;
     }
 
     .ticket-card.ticket-used-by-me,
@@ -137,7 +136,7 @@
     <li>
       <div class="ticket-card{% if ticket.used_by_id == g.current_user.id %} ticket-used-by-me{% endif %}">
 
-        {# code #}
+        {# code, category, owner #}
         <div class="ticket-card-cell">
 
           <div class="ticket-card-cell-block">
@@ -147,24 +146,12 @@
             <span class="ticket-code">{{ ticket.code }}</span>
           </div>
 
-        </div>
-        {# /code #}
-
-        {# category #}
-        <div class="ticket-card-cell">
-
           <div class="ticket-card-cell-block">
             <div class="label-row">
               <span class="label">Kategorie</span>
             </div>
             {{ ticket.category.title }}
           </div>
-
-        </div>
-        {# /category #}
-
-        {# owner #}
-        <div class="ticket-card-cell">
 
           <div class="ticket-card-cell-block">
             <div class="label-row">
@@ -174,7 +161,7 @@
           </div>
 
         </div>
-        {# /owner #}
+        {# /code, category, owner #}
 
         {# user #}
         <div class="ticket-card-cell">
