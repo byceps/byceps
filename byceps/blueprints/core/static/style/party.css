@@ -624,12 +624,14 @@ form.board-posting-create-form-inline .label {
 
 .ticket-grid > li {
   padding: 1.25rem 0 0 1.25rem;
+  width: 100%;
 }
 
 .ticket-card {
   border: #dddddd solid 1px;
   border-radius: 1rem;
   display: flex;
+  width: 90%;
 }
 
 .ticket-card-cell {
@@ -637,7 +639,7 @@ form.board-posting-create-form-inline .label {
   flex-direction: column;
   font-size: 0.8125rem; /* 13px / 16px */
   justify-content: space-between;
-  width: 128px;
+  width: 25%;
 }
 
 .ticket-card-cell + .ticket-card-cell {
