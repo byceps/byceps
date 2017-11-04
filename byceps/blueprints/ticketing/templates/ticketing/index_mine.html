@@ -70,6 +70,11 @@
       text-decoration: none;
     }
 
+    .ticket-code {
+      font-size: 1.25rem; /* 20px / 16px */
+      font-weight: bold;
+    }
+
     .ticket-card-cell .avatar.size-96,
     .ticket-user-placeholder {
       margin-bottom: 0.3rem;
@@ -125,7 +130,7 @@
           <div class="label-row">
             <span class="label">Code</span>
           </div>
-          <strong>{{ ticket.code }}</strong>
+          <span class="ticket-code">{{ ticket.code }}</span>
         </div>
 
         <div class="ticket-card-cell">
