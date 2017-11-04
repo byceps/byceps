@@ -4,7 +4,7 @@
 
 
   <h2>Verlauf</h2>
-  <ol class="event-stream">
+  <div class="events">
     {%- for event in events|sort(attribute='occurred_at', reverse=True) %}
       {%- with %}
         {%- if event.event == 'ticket-created' %}
@@ -23,15 +23,11 @@
             <strong>Unbekannte Aktion '{{ event.event }}'</strong> ist ausgelöst worden.
           {%- endset %}
         {%- endif %}
-    <li>
-      <table class="event-stream-item">
-        <tr>
-          <td><span class="icon-container">{{ render_icon(icon_name) }}</span></td>
-          <td>{{ body|safe }}</td>
-          <td class="timestamp">{{ render_datetime(event.occurred_at) }}</td>
-        </tr>
-      </table>
-    </li>
+    <div class="event">
+      <div class="event-icon">{{ render_icon(icon_name) }}</div>
+      <div class="event-body">{{ body|safe }}</div>
+      <div class="event-timestamp">{{ render_datetime(event.occurred_at) }}</div>
+    </div>
       {%- endwith %}
     {%- endfor %}
-  </ol>
+  </div>
