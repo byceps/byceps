@@ -26,49 +26,49 @@
       padding: 5px 0;
     }
 
-    .ticket-card-row {
+    .ticket-card-cell {
       font-size: 0.8125rem; /* 13px / 16px */
       padding: 0 15px 10px 15px;
       width: 126px;
     }
-    .ticket-card-row + .ticket-card-row {
+    .ticket-card-cell + .ticket-card-cell {
       border-top: #dddddd solid 1px;
     }
 
     .ticket-card.ticket-used-by-me,
-    .ticket-card.ticket-used-by-me .ticket-card-row {
+    .ticket-card.ticket-used-by-me .ticket-card-cell {
       border-color: #999999;
     }
 
-    .ticket-card-row .label-row {
+    .ticket-card-cell .label-row {
       display: flex;
       justify-content: space-between;
       margin-bottom: 5px;
       margin-top: 10px;
     }
 
-    .ticket-card-row .label {
+    .ticket-card-cell .label {
       color: #888888;
       font-size: 0.625rem; /* 10px / 16px */
       text-transform: uppercase;
     }
 
-    .ticket-card-row .label-buttons {
+    .ticket-card-cell .label-buttons {
       margin-top: -3px;
     }
 
-    .ticket-card-row a {
+    .ticket-card-cell a {
       color: currentColor;
       text-decoration: none;
     }
-    .ticket-card-row a:hover {
+    .ticket-card-cell a:hover {
       text-decoration: underline;
     }
-    .ticket-card-row .dropdown a:hover {
+    .ticket-card-cell .dropdown a:hover {
       text-decoration: none;
     }
 
-    .ticket-card-row .avatar.size-96,
+    .ticket-card-cell .avatar.size-96,
     .ticket-user-placeholder {
       margin-bottom: 0.3rem;
     }
@@ -119,28 +119,28 @@
     <li>
       <div class="ticket-card{% if ticket.used_by_id == g.current_user.id %} ticket-used-by-me{% endif %}">
 
-        <div class="ticket-card-row">
+        <div class="ticket-card-cell">
           <div class="label-row">
             <span class="label">Code</span>
           </div>
           <strong>{{ ticket.code }}</strong>
         </div>
 
-        <div class="ticket-card-row">
+        <div class="ticket-card-cell">
           <div class="label-row">
             <span class="label">Kategorie</span>
           </div>
           {{ ticket.category.title }}
         </div>
 
-        <div class="ticket-card-row">
+        <div class="ticket-card-cell">
           <div class="label-row">
             <span class="label">Käufer/in</span>
           </div>
           {{ render_user_avatar_16_and_link(ticket.owned_by) }}
         </div>
 
-        <div class="ticket-card-row">
+        <div class="ticket-card-cell">
           <div class="label-row">
             <span class="label">Sitzplatz</span>
             {%- if ticket.owned_by_id == g.current_user.id %}
@@ -174,7 +174,7 @@
           {%- endif %}
         </div>
 
-        <div class="ticket-card-row">
+        <div class="ticket-card-cell">
           <div class="label-row">
             <span class="label">Nutzer/in</span>
             {%- if ticket.owned_by_id == g.current_user.id or user_manager == g.current_user %}
