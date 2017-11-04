@@ -40,7 +40,6 @@
           {{ render_user_avatar_128(user) }}
         </div>
 
-        {%- if g.current_user.id == user.id %}
         <div class="dropdown">
           <button class="dropdown-toggle button">bearbeiten {{ render_icon('caret-down') -}}</button>
           <ol>
@@ -50,7 +49,6 @@
             {%- endif %}
           </ol>
         </div>
-        {%- endif %}
       </td>
     </tr>
   </table>
