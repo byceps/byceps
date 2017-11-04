@@ -77,12 +77,12 @@
         {%- elif event.event == 'ticket-created' %}
           {%- set icon_name = 'ticket' %}
           {%- set body %}
-            Das <strong>Ticket &quot;{{ event.ticket_code }}&quot;</strong> ist erzeugt worden.
+            Das <strong>Ticket {{ event.ticket_code }}</strong> ist erzeugt worden.
           {%- endset %}
         {%- elif event.event == 'ticket-revoked' %}
           {%- set icon_name = 'ticket' %}
           {%- set body %}
-            Das <strong>Ticket &quot;{{ event.ticket_code }}&quot;</strong> ist {{ render_ticket_flag_revoked() }} worden.
+            Das <strong>Ticket {{ event.ticket_code }}</strong> ist {{ render_ticket_flag_revoked() }} worden.
           {%- endset %}
         {%- else %}
           {%- set icon_name = 'disabled' %}
