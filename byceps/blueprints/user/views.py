@@ -51,8 +51,9 @@ def view(user_id):
     orga_team_membership = orga_team_service.find_membership_for_party(user.id,
         g.party_id)
 
-    current_party_tickets = ticket_service.find_tickets_used_by_user(user.id,
+    _current_party_tickets = ticket_service.find_tickets_used_by_user(user.id,
         g.party_id)
+    current_party_tickets = [t for t in _current_party_tickets if not t.revoked]
 
     attended_parties = attendance_service.get_attended_parties(user.id)
     attended_parties.sort(key=attrgetter('starts_at'), reverse=True)
