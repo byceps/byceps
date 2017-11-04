@@ -496,8 +496,8 @@ fieldset.buttons {
   --path-color: #eeeeee;
   --path-width: 0.125rem;
   --icon-container-border-width: var(--path-width);
-  --icon-container-size: 1.75rem;
-  --icon-size: 0.75rem;
+  --icon-container-size: 2rem;
+  --icon-size: 1rem;
 
   --half-path-width: calc(var(--path-width) / 2);
   --half-icon-container-width: calc(var(--icon-container-size) / 2);
