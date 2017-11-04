@@ -52,6 +52,11 @@
       margin-top: 0;
     }
 
+    .ticket-icon {
+      font-size: 1.5rem;
+      text-align: center;
+    }
+
     .ticket-card-cell .label-row {
       display: flex;
       justify-content: space-between;
@@ -138,6 +143,10 @@
 
         {# code, category, owner #}
         <div class="ticket-card-cell">
+
+          <div class="ticket-card-cell-block">
+            <div class="ticket-icon">{{ render_icon('ticket') }}</div>
+          </div>
 
           <div class="ticket-card-cell-block">
             <div class="label-row">
