@@ -3,7 +3,7 @@
 {% from 'macros/misc.html' import render_notification, render_tag %}
 {% from 'macros/seating.html' import render_seating_area_link %}
 {% from 'macros/user.html' import render_user_link, render_user_avatar_16_and_link %}
-{% from 'macros/user_avatar.html' import render_user_avatar_96 %}
+{% from 'macros/user_avatar.html' import render_user_avatar_48 %}
 {% set current_page = 'ticket' %}
 {% set title = 'Tickets' %}
 
@@ -44,7 +44,7 @@
     <li>
       <div class="ticket-card{% if ticket.used_by_id == g.current_user.id %} ticket-used-by-me{% endif %}">
 
-        {# code, category, owner #}
+        {# icon, code #}
         <div class="ticket-card-cell">
 
           <div class="ticket-card-cell-block">
@@ -57,6 +57,12 @@
             </div>
             <span class="ticket-code">{{ ticket.code }}</span>
           </div>
+
+        </div>
+        {# /icon, code #}
+
+        {# category, owner #}
+        <div class="ticket-card-cell">
 
           <div class="ticket-card-cell-block">
             <div class="label-row">
@@ -73,7 +79,7 @@
           </div>
 
         </div>
-        {# /code, category, owner #}
+        {# /category, owner #}
 
         {# user #}
         <div class="ticket-card-cell">
@@ -97,9 +103,9 @@
               {%- endif %}
             </div>
 
-            <div class="centered">
+            <div class="ticket-user centered">
               {%- if ticket.used_by %}
-              <div>{{ render_user_avatar_96(ticket.used_by) }}</div>
+              <div>{{ render_user_avatar_48(ticket.used_by) }}</div>
               {{ render_user_link(ticket.used_by) }}
               {%- else %}
               <div><div class="ticket-user-placeholder"></div></div>

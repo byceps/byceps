@@ -658,7 +658,7 @@ form.board-posting-create-form-inline .label {
 }
 
 .ticket-icon {
-  font-size: 1.5rem;
+  font-size: 4rem;
   text-align: center;
 }
 
@@ -694,7 +694,11 @@ form.board-posting-create-form-inline .label {
   font-weight: bold;
 }
 
-.ticket-card-cell .avatar.size-96,
+.ticket-user {
+  margin-bottom: -0.5rem;
+}
+
+.ticket-user .avatar,
 .ticket-user-placeholder {
   margin-bottom: 0.3rem;
 }
@@ -704,8 +708,8 @@ form.board-posting-create-form-inline .label {
   border: #dddddd dashed 1px;
   border-radius: 3px;
   display: inline-block;
-  height: 94px;
-  width: 94px;
+  height: 46px;
+  width: 46px;
 }
 
 
