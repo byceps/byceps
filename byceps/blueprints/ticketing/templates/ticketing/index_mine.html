@@ -186,12 +186,10 @@
           </div>
           {%- endif %}
 
-          {%- if user_manager != ticket.owned_by %}
           <div class="label-row">
             <span class="label">Verwalter/in</span>
           </div>
           {{ render_user_avatar_16_and_link(user_manager) }}
-          {%- endif %}
         </div>
         {# /user #}
 
@@ -222,12 +220,10 @@
             {%- endif -%}
           </div>
 
-          {%- if seat_manager != ticket.owned_by %}
           <div class="label-row">
             <span class="label">Verwalter/in</span>
           </div>
           {{ render_user_avatar_16_and_link(seat_manager) }}
-          {%- endif %}
         </div>
         {# /seat #}
 
