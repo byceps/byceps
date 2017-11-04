@@ -41,7 +41,7 @@
         </div>
 
         <div class="dropdown">
-          <button class="dropdown-toggle button">bearbeiten {{ render_icon('caret-down') -}}</button>
+          <button class="dropdown-toggle button button--inline">bearbeiten {{ render_icon('caret-down') -}}</button>
           <ol>
             <li><a href="{{ url_for('user_avatar.update_form') }}">{{ render_icon('upload') }} hochladen</a></li>
             {%- if user.avatar %}
@@ -53,7 +53,7 @@
     </tr>
   </table>
 
-  <h2>Persönliche Daten</h2>
+  <h2>Persönliche Daten <a class="button button--inline" href="{{ url_for('.details_update_form') }}">{{ render_icon('edit') }} bearbeiten</a></h2>
   <table class="index">
     <tr>
       <th>Voller Name</th>
@@ -87,9 +87,6 @@
       <td>{{ user.detail.phone_number|fallback }}</td>
     </tr>
   </table>
-  <div class="button-row">
-    <a class="button" href="{{ url_for('.details_update_form') }}">{{ render_icon('edit') }} bearbeiten</a>
-  </div>
 
   {%- if g.site_mode.is_public() %}
   <h2>Newsletter</h2>
