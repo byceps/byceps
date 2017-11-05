@@ -5,7 +5,8 @@
 
 from byceps.services.shop.article.models.article import Article
 from byceps.services.shop.order.models.order import Order
-from byceps.services.shop.order.models.payment import PaymentState
+from byceps.services.shop.order.models.payment import PaymentMethod, \
+    PaymentState
 
 from testfixtures.shop_article import create_article
 from testfixtures.shop_order import create_order, create_order_item
@@ -65,16 +66,19 @@ class ShopAdminTestCase(AbstractAppTestCase):
         order_before = self.create_order([])
         self.db.session.commit()
 
+        self.assertEqual(order_before.payment_method, PaymentMethod.bank_transfer)
         self.assertEqual(order_before.payment_state, PaymentState.open)
         self.assertIsNone(order_before.payment_state_updated_at)
         self.assertIsNone(order_before.payment_state_updated_by)
 
         url = '/admin/shop/orders/{}/mark_as_paid'.format(order_before.id)
+        form_data = {'payment_method': 'direct_debit'}
         with self.client(user=self.admin) as client:
-            response = client.post(url)
+            response = client.post(url, data=form_data)
 
         order_afterwards = Order.query.get(order_before.id)
         self.assertEqual(response.status_code, 302)
+        self.assertEqual(order_afterwards.payment_method, PaymentMethod.direct_debit)
         self.assertEqual(order_afterwards.payment_state, PaymentState.paid)
         self.assertIsNotNone(order_afterwards.payment_state_updated_at)
         self.assertEqual(order_afterwards.payment_state_updated_by, self.admin)
@@ -92,8 +96,9 @@ class ShopAdminTestCase(AbstractAppTestCase):
         self.assertIsNone(order_before.payment_state_updated_by)
 
         url = '/admin/shop/orders/{}/mark_as_paid'.format(order_before.id)
+        form_data = {'payment_method': 'bank_transfer'}
         with self.client(user=self.admin) as client:
-            response = client.post(url)
+            response = client.post(url, data=form_data)
 
         url = '/admin/shop/orders/{}/cancel'.format(order_before.id)
         form_data = {'reason': 'Dein Vorname ist albern!'}
