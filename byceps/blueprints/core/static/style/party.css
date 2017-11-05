@@ -624,26 +624,26 @@ form.board-posting-create-form-inline .label {
 
 .ticket-grid > li {
   padding: 1.25rem 0 0 1.25rem;
-  width: 100%;
 }
 
 .ticket-card {
   border: #dddddd solid 1px;
   border-radius: 1rem;
   display: flex;
-  width: 90%;
+  flex-direction: column;
+  width: auto;
 }
 
 .ticket-card-cell {
+  border:  #dddddd solid 0;
   display: flex;
   flex-direction: column;
   font-size: 0.8125rem; /* 13px / 16px */
   justify-content: space-between;
-  width: 25%;
 }
 
 .ticket-card-cell + .ticket-card-cell {
-  border-left: #dddddd solid 1px;
+  border-width: 1px 0 0 0;
 }
 
 .ticket-card.ticket-used-by-me,
@@ -660,6 +660,7 @@ form.board-posting-create-form-inline .label {
 }
 
 .ticket-icon {
+  display: none;
   font-size: 4rem;
   text-align: center;
 }
@@ -711,6 +712,30 @@ form.board-posting-create-form-inline .label {
   display: inline-block;
   height: 46px;
   width: 46px;
+}
+
+@media (min-width: 40rem) { /* 640px / 16px */
+
+  .ticket-grid > li {
+    width: 100%;
+  }
+
+  .ticket-card {
+    flex-direction: row;
+    width: 90%;
+  }
+
+  .ticket-card-cell {
+    width: 25%;
+  }
+
+  .ticket-card-cell + .ticket-card-cell {
+    border-width: 0 0 0 1px;
+  }
+
+  .ticket-icon {
+    display: block;
+  }
 }
 
 
