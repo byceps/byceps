@@ -11,6 +11,7 @@ from ...user_badge.models.badge import BadgeID
 
 from ..article.models.article import ArticleNumber
 
+from .models.order_action import Parameters
 from .models.payment import PaymentState
 
 from . import action_service
@@ -49,6 +50,6 @@ def register_tickets_creation(article_number: ArticleNumber,
 
     # Revoke tickets that have been created for order when it is
     # canceled after being marked as paid.
-    params_revoke = {}
+    params_revoke = {}  # type: Parameters
     action_service.create_action(article_number, PaymentState.canceled_after_paid,
                                  'revoke_tickets', params_revoke)

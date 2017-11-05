@@ -57,7 +57,7 @@ def build_tickets(category_id: CategoryID, owned_by_id: UserID, quantity: int,
     if quantity < 1:
         raise ValueError('Ticket quantity must be positive.')
 
-    codes = set()
+    codes = set()  # type: Set[str]
 
     for _ in range(quantity):
         code = _generate_ticket_code_not_in(codes)
