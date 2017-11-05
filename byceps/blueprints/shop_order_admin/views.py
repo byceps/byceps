@@ -25,7 +25,7 @@ from ..authorization.registry import permission_registry
 from ..shop_order.signals import order_canceled, order_paid
 
 from .authorization import ShopOrderPermission
-from .forms import CancelForm
+from .forms import CancelForm, MarkAsPaidForm
 from .models import OrderStateFilter
 from . import service
 
@@ -247,7 +247,7 @@ def cancel(order_id):
 @blueprint.route('/<uuid:order_id>/mark_as_paid')
 @permission_required(ShopOrderPermission.update)
 @templated
-def mark_as_paid_form(order_id):
+def mark_as_paid_form(order_id, erroneous_form=None):
     """Show form to mark an order as paid."""
     order = _get_order_or_404(order_id)
 
@@ -257,9 +257,12 @@ def mark_as_paid_form(order_id):
 
     party = party_service.find_party(order.party_id)
 
+    form = erroneous_form if erroneous_form else MarkAsPaidForm()
+
     return {
         'order': order,
         'party': party,
+        'form': form,
     }
 
 
@@ -268,7 +271,12 @@ def mark_as_paid_form(order_id):
 def mark_as_paid(order_id):
     """Set the payment status of a single order to 'paid'."""
     order = _get_order_or_404(order_id)
-    payment_method = PaymentMethod.bank_transfer
+
+    form = MarkAsPaidForm(request.form)
+    if not form.validate():
+        return mark_as_paid_form(order_id, form)
+
+    payment_method = PaymentMethod[form.payment_method.data]
     updated_by_id = g.current_user.id
 
     try:
