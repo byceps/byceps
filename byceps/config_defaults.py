@@ -54,3 +54,6 @@ SHOP_ORDER_EXPORT_TIMEZONE = timezone('Europe/Berlin')
 
 # ticketing
 TICKET_MANAGEMENT_ENABLED = True
+
+# seating
+SEAT_MANAGEMENT_ENABLED = True

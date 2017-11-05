@@ -8,7 +8,7 @@ byceps.blueprints.seating.views
 
 from flask import abort, g
 
-from ...config import get_ticket_management_enabled
+from ...config import get_seat_management_enabled, get_ticket_management_enabled
 from ...services.seating import area_service as seating_area_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.templating import templated
@@ -36,9 +36,11 @@ def view_area(slug):
     if area is None:
         abort(404)
 
+    seat_management_enabled = get_seat_management_enabled()
     ticket_management_enabled = get_ticket_management_enabled()
 
     return {
         'area': area,
+        'seat_management_enabled': seat_management_enabled,
         'ticket_management_enabled': ticket_management_enabled,
     }

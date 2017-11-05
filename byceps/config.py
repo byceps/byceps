@@ -18,6 +18,7 @@ STATIC_URL_PREFIX_PARTY = '/party'
 EXTENSION_KEY = 'byceps_config'
 KEY_SITE_MODE = 'site_mode'
 KEY_PARTY_ID = 'party_id'
+KEY_SEAT_MANAGEMENT_ENABLED = 'seat_management_enabled'
 KEY_TICKET_MANAGEMENT_ENABLED = 'ticket_management_enabled'
 KEY_USER_REGISTRATION_ENABLED = 'user_registration_enabled'
 
@@ -46,6 +47,10 @@ def init_app(app):
                                                                     site_mode)
     update_extension_value(app, KEY_TICKET_MANAGEMENT_ENABLED,
                            ticket_management_enabled)
+
+    seat_management_enabled = determine_seat_management_enabled(app, site_mode)
+    update_extension_value(app, KEY_SEAT_MANAGEMENT_ENABLED,
+                           seat_management_enabled)
 
 
 def update_extension_value(app, key, value):
@@ -122,6 +127,22 @@ def determine_ticket_management_enabled(app, site_mode):
 def get_ticket_management_enabled(app=None):
     """Return `True` if users may manage tickets."""
     return _get_config_dict(app)[KEY_TICKET_MANAGEMENT_ENABLED]
+
+
+# -------------------------------------------------------------------- #
+# seat management
+
+
+def determine_seat_management_enabled(app, site_mode):
+    if site_mode.is_admin():
+        return False
+
+    return app.config['SEAT_MANAGEMENT_ENABLED']
+
+
+def get_seat_management_enabled(app=None):
+    """Return `True` if users may manage seats."""
+    return _get_config_dict(app)[KEY_SEAT_MANAGEMENT_ENABLED]
 
 
 # -------------------------------------------------------------------- #
