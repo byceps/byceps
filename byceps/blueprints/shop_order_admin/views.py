@@ -197,7 +197,7 @@ def cancel_form(order_id, erroneous_form=None):
 
     party = party_service.find_party(order.party_id)
 
-    cancel_form = erroneous_form if erroneous_form else CancelForm()
+    form = erroneous_form if erroneous_form else CancelForm()
 
     if order.is_canceled:
         flash_error(
@@ -208,7 +208,7 @@ def cancel_form(order_id, erroneous_form=None):
     return {
         'order': order,
         'party': party,
-        'cancel_form': cancel_form,
+        'form': form,
     }
 
 
