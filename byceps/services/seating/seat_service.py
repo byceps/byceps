@@ -6,7 +6,7 @@ byceps.services.seating.seat_service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import Dict, Set
+from typing import Dict, Optional, Set
 
 from ...database import db
 from ...typing import PartyID
@@ -46,6 +46,11 @@ def get_seat_total_per_area(party_id: PartyID) -> Dict[AreaID, int]:
         .outerjoin(Seat) \
         .group_by(Area.id) \
         .all())
+
+
+def find_seat(seat_id: SeatID) -> Optional[Seat]:
+    """Return the seat with that id, or `None` if not found."""
+    return Seat.query.get(seat_id)
 
 
 def find_seats(seat_ids: Set[SeatID]) -> Set[Seat]:
