@@ -83,12 +83,12 @@ def _execute_procedure(order: OrderTuple, action: OrderAction,
     procedure_name = action.procedure
     params = action.parameters
 
-    procedure = _get_procedure(procedure_name)
+    procedure = _get_procedure(procedure_name, article_number)
 
     procedure(order, article_number, article_quantity, params)
 
 
-def _get_procedure(name: str) -> OrderActionType:
+def _get_procedure(name: str, article_number: ArticleNumber) -> OrderActionType:
     """Return procedure with that name, or raise an exception if the
     name is not registerd.
     """
@@ -97,6 +97,6 @@ def _get_procedure(name: str) -> OrderActionType:
     if procedure is None:
         raise Exception(
             "Unknown procedure '{}' configured for article number '{}'."
-                .format(procedure_name, article_number))
+                .format(name, article_number))
 
     return procedure
