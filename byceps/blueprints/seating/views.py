@@ -6,7 +6,7 @@ byceps.blueprints.seating.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import Optional
+from typing import Dict, Optional, Sequence
 
 from flask import abort, g, request
 
@@ -16,6 +16,9 @@ from ...services.seating.models.seat import Seat, SeatID
 from ...services.seating import seat_service
 from ...services.ticketing.models.ticket import Ticket, TicketID
 from ...services.ticketing import ticket_service
+from ...services.user.models.user import UserTuple
+from ...services.user import service as user_service
+from ...typing import UserID
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_error, flash_success
 from ...util.framework.templating import templated
@@ -47,6 +50,8 @@ def view_area(slug):
     seat_management_enabled = get_seat_management_enabled()
     ticket_management_enabled = get_ticket_management_enabled()
 
+    seats = []
+
     if ticket_management_enabled:
         tickets = ticket_service.find_tickets_for_seat_manager(
             g.current_user.id, g.party_id)
@@ -55,12 +60,16 @@ def view_area(slug):
 
     current_ticket_id = _find_current_ticket_id()
 
+    users_by_id = _get_users(seats, tickets)
+
     return {
         'area': area,
         'seat_management_enabled': seat_management_enabled,
         'ticket_management_enabled': ticket_management_enabled,
+        'seats': seats,
         'tickets': tickets,
         'current_ticket_id': current_ticket_id,
+        'users_by_id': users_by_id,
     }
 
 
@@ -82,6 +91,23 @@ def _find_current_ticket_id() -> Optional[TicketID]:
         return None
 
     return ticket.id
+
+
+def _get_users(seats: Sequence[Seat], tickets: Sequence[Ticket]
+              ) -> Dict[UserID, UserTuple]:
+    user_ids = set()
+
+    for seat in seats:
+        if seat.has_user:
+            user_ids.add(seat.occupied_by_ticket.used_by_id)
+
+    for ticket in tickets:
+        user_id = ticket.used_by_id
+        if user_id is not None:
+            user_ids.add(user_id)
+
+    users = user_service.find_users(user_ids)
+    return user_service.index_users_by_id(users)
 
 
 @blueprint.route('/ticket/<uuid:ticket_id>/seat/<uuid:seat_id>', methods=['POST'])
