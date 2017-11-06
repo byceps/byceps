@@ -20,7 +20,7 @@ from ..shop.order.models.order import OrderNumber
 from ..user.models.user import User
 
 from .models.category import Category, CategoryID
-from .models.ticket import Ticket, TicketID
+from .models.ticket import Ticket, TicketCode, TicketID
 from .models.ticket_bundle import TicketBundle
 from . import event_service
 
@@ -57,7 +57,7 @@ def build_tickets(category_id: CategoryID, owned_by_id: UserID, quantity: int,
     if quantity < 1:
         raise ValueError('Ticket quantity must be positive.')
 
-    codes = set()  # type: Set[str]
+    codes = set()  # type: Set[TicketCode]
 
     for _ in range(quantity):
         code = _generate_ticket_code_not_in(codes)
@@ -71,15 +71,15 @@ _CODE_ALPHABET = 'BCDFGHJKLMNPQRSTVWXYZ'
 _CODE_LENGTH = 5
 
 
-def _generate_ticket_code() -> str:
+def _generate_ticket_code() -> TicketCode:
     """Generate a ticket code.
 
     Generated codes are not necessarily unique!
     """
-    return ''.join(sample(_CODE_ALPHABET, _CODE_LENGTH))
+    return TicketCode(''.join(sample(_CODE_ALPHABET, _CODE_LENGTH)))
 
 
-def _generate_ticket_code_not_in(codes: Set[str]) -> str:
+def _generate_ticket_code_not_in(codes: Set[TicketCode]) -> TicketCode:
     """Generate ticket codes and return the first one not in the set."""
     while True:
         code = _generate_ticket_code()

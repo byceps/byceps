@@ -25,6 +25,9 @@ from .ticket_bundle import TicketBundle
 TicketID = NewType('TicketID', UUID)
 
 
+TicketCode = NewType('TicketCode', str)
+
+
 class TicketQuery(BaseQuery):
 
     def for_party_id(self, party_id: PartyID) -> BaseQuery:
@@ -63,8 +66,8 @@ class Ticket(db.Model):
     used_by = db.relationship(User, foreign_keys=[used_by_id])
     revoked = db.Column(db.Boolean, default=False, nullable=False)
 
-    def __init__(self, code: str, category_id: CategoryID, owned_by_id: UserID,
-                 *, bundle: Optional[TicketBundle]=None,
+    def __init__(self, code: TicketCode, category_id: CategoryID,
+                 owned_by_id: UserID, *, bundle: Optional[TicketBundle]=None,
                  order_number: Optional[OrderNumber]=None) -> None:
         self.code = code
         self.bundle = bundle
