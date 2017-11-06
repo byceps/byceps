@@ -6,7 +6,7 @@ byceps.services.seating.seat_service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import Dict, Optional, Set
+from typing import Dict, Optional, Sequence, Set
 
 from ...database import db
 from ...typing import PartyID
@@ -63,3 +63,15 @@ def find_seats(seat_ids: Set[SeatID]) -> Set[Seat]:
         .all()
 
     return set(seats)
+
+
+def get_seats_with_tickets_for_area(area_id: AreaID) -> Sequence[Seat]:
+    """Return the seats and their associated tickets (if available) for
+    that area.
+    """
+    return Seat.query \
+        .filter_by(area_id=area_id) \
+        .options(
+            db.joinedload('occupied_by_ticket'),
+        ) \
+        .all()
