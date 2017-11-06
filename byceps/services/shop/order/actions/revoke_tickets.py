@@ -46,7 +46,7 @@ def _create_order_events(order_id: OrderID, tickets: Sequence[Ticket]) -> None:
     datas = [
         {
             'ticket_id': str(ticket.id),
-            'ticket_code': str(ticket.code),
+            'ticket_code': ticket.code,
         }
         for ticket in tickets
     ]
