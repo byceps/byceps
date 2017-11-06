@@ -47,12 +47,19 @@ def view_area(slug):
     seat_management_enabled = get_seat_management_enabled()
     ticket_management_enabled = get_ticket_management_enabled()
 
+    if ticket_management_enabled:
+        tickets = ticket_service.find_tickets_for_seat_manager(
+            g.current_user.id, g.party_id)
+    else:
+        tickets = None
+
     current_ticket_id = _find_current_ticket_id()
 
     return {
         'area': area,
         'seat_management_enabled': seat_management_enabled,
         'ticket_management_enabled': ticket_management_enabled,
+        'tickets': tickets,
         'current_ticket_id': current_ticket_id,
     }
 
