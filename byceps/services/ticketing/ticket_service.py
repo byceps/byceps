@@ -122,6 +122,13 @@ def find_ticket(ticket_id: TicketID) -> Optional[Ticket]:
     return Ticket.query.get(ticket_id)
 
 
+def find_ticket_by_code(code: TicketCode) -> Optional[Ticket]:
+    """Return the ticket with that code, or `None` if not found."""
+    return Ticket.query \
+        .filter_by(code=code) \
+        .one_or_none()
+
+
 def find_tickets(ticket_ids: Set[TicketID]) -> Sequence[Ticket]:
     """Return the tickets with those ids."""
     return Ticket.query \
