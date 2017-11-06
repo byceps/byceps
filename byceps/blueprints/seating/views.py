@@ -6,7 +6,9 @@ byceps.blueprints.seating.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from flask import abort, g
+from typing import Optional
+
+from flask import abort, g, request
 
 from ...config import get_seat_management_enabled, get_ticket_management_enabled
 from ...services.seating import area_service as seating_area_service
@@ -15,7 +17,7 @@ from ...services.seating import seat_service
 from ...services.ticketing.models.ticket import Ticket, TicketID
 from ...services.ticketing import ticket_service
 from ...util.framework.blueprint import create_blueprint
-from ...util.framework.flash import flash_success
+from ...util.framework.flash import flash_error, flash_success
 from ...util.framework.templating import templated
 from ...util.views import respond_no_content
 
@@ -45,11 +47,34 @@ def view_area(slug):
     seat_management_enabled = get_seat_management_enabled()
     ticket_management_enabled = get_ticket_management_enabled()
 
+    current_ticket_id = _find_current_ticket_id()
+
     return {
         'area': area,
         'seat_management_enabled': seat_management_enabled,
         'ticket_management_enabled': ticket_management_enabled,
+        'current_ticket_id': current_ticket_id,
     }
+
+
+def _find_current_ticket_id() -> Optional[TicketID]:
+    ticket_code = request.args.get('ticket')
+    if ticket_code is None:
+        return None
+
+    ticket = ticket_service.find_ticket_by_code(ticket_code)
+    if ticket is None:
+        flash_error('Unbekannte Ticket-ID')
+        return None
+
+    if not ticket.is_seat_managed_by(g.current_user.id):
+        flash_error(
+            'Du bist nicht berechtigt, den Sitzplatz '
+            'für Ticket {} zu verwalten.',
+            ticket.code)
+        return None
+
+    return ticket.id
 
 
 @blueprint.route('/ticket/<uuid:ticket_id>/seat/<uuid:seat_id>', methods=['POST'])
