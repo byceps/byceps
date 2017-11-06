@@ -138,6 +138,24 @@ def find_tickets_created_by_order(order_number: OrderNumber
         .all()
 
 
+def find_tickets_for_seat_manager(user_id: UserID, party_id: PartyID
+                                 ) -> Sequence[Ticket]:
+    """Return the tickets for that party whose respective seats the user
+    is entitled to manage.
+    """
+    return Ticket.query \
+        .for_party_id(party_id) \
+        .filter(Ticket.revoked == False) \
+        .filter(
+            (
+                (Ticket.seat_managed_by_id == None) &
+                (Ticket.owned_by_id == user_id)
+            ) |
+            (Ticket.seat_managed_by_id == user_id)
+        ) \
+        .all()
+
+
 def find_tickets_related_to_user(user_id: UserID) -> Sequence[Ticket]:
     """Return tickets related to the user."""
     return Ticket.query \
