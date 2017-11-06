@@ -160,6 +160,9 @@ def find_tickets_for_seat_manager(user_id: UserID, party_id: PartyID
             ) |
             (Ticket.seat_managed_by_id == user_id)
         ) \
+        .options(
+            db.joinedload('occupied_seat'),
+        ) \
         .all()
 
 
