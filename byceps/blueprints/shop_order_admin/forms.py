@@ -25,4 +25,7 @@ PAYMENT_METHOD_CHOICES = [
 
 
 class MarkAsPaidForm(LocalizedForm):
-    payment_method = RadioField('Zahlungsart', choices=PAYMENT_METHOD_CHOICES , validators=[InputRequired()])
+    payment_method = RadioField('Zahlungsart',
+        choices=PAYMENT_METHOD_CHOICES,
+        default=PAYMENT_METHOD_CHOICES[0][0],
+        validators=[InputRequired()])
