@@ -16,6 +16,7 @@ from byceps.services.shop.order.models.order_item import OrderItem
 from byceps.services.shop.order.models.payment import \
     PaymentState as OrderPaymentState
 from byceps.services.shop.order.service import find_order_by_order_number
+from byceps.services.ticketing.ticket_service import find_ticket_by_code
 from byceps.services.user.models.detail import UserDetail
 from byceps.services.user.models.user import User
 from byceps.services.user.service import find_user_by_screen_name
@@ -41,6 +42,7 @@ def extend_shell_context():
         'OrderItem': OrderItem,
         'OrderPaymentState': OrderPaymentState,
         'Party': Party,
+        'find_ticket_by_code': find_ticket_by_code,
         'User': User,
         'UserDetail': UserDetail,
         'find_user_by_screen_name': find_user_by_screen_name,
