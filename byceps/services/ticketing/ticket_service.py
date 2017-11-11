@@ -153,6 +153,7 @@ def find_tickets_for_seat_manager(user_id: UserID, party_id: PartyID
     return Ticket.query \
         .for_party_id(party_id) \
         .filter(Ticket.revoked == False) \
+        .filter(Ticket.bundle_id == None) \
         .filter(
             (
                 (Ticket.seat_managed_by_id == None) &
