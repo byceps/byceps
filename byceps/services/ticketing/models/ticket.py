@@ -75,6 +75,13 @@ class Ticket(db.Model):
         self.owned_by_id = owned_by_id
         self.order_number = order_number
 
+    @property
+    def belongs_to_bundle(self) -> bool:
+        """Return `True` if this ticket is part of a ticket bundle, or
+        `False` if it is stand-alone.
+        """
+        return self.bundle_id is not None
+
     def is_owned_by(self, user_id: UserID):
         """Return `True` if the user owns this ticket."""
         return self.owned_by_id == user_id
