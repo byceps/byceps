@@ -319,7 +319,7 @@ def count_tickets_for_party(party_id: PartyID) -> int:
 
 
 def appoint_user_manager(ticket_id: TicketID, manager_id: UserID,
-                         initiator_id: UserID):
+                         initiator_id: UserID) -> None:
     """Appoint the user as the ticket's user manager."""
     ticket = find_ticket(ticket_id)
 
@@ -334,7 +334,7 @@ def appoint_user_manager(ticket_id: TicketID, manager_id: UserID,
     db.session.commit()
 
 
-def withdraw_user_manager(ticket_id: TicketID, initiator_id: UserID):
+def withdraw_user_manager(ticket_id: TicketID, initiator_id: UserID) -> None:
     """Withdraw the ticket's custom user manager."""
     ticket = find_ticket(ticket_id)
 
@@ -348,7 +348,8 @@ def withdraw_user_manager(ticket_id: TicketID, initiator_id: UserID):
     db.session.commit()
 
 
-def appoint_user(ticket_id: TicketID, user_id: UserID, initiator_id: UserID):
+def appoint_user(ticket_id: TicketID, user_id: UserID, initiator_id: UserID
+                ) -> None:
     """Appoint the user as the ticket's user."""
     ticket = find_ticket(ticket_id)
 
@@ -363,7 +364,7 @@ def appoint_user(ticket_id: TicketID, user_id: UserID, initiator_id: UserID):
     db.session.commit()
 
 
-def withdraw_user(ticket_id: TicketID, initiator_id: UserID):
+def withdraw_user(ticket_id: TicketID, initiator_id: UserID) -> None:
     """Withdraw the ticket's user."""
     ticket = find_ticket(ticket_id)
 
@@ -382,7 +383,7 @@ def withdraw_user(ticket_id: TicketID, initiator_id: UserID):
 
 
 def appoint_seat_manager(ticket_id: TicketID, manager_id: UserID,
-                         initiator_id: UserID):
+                         initiator_id: UserID) -> None:
     """Appoint the user as the ticket's seat manager."""
     ticket = find_ticket(ticket_id)
 
@@ -397,7 +398,7 @@ def appoint_seat_manager(ticket_id: TicketID, manager_id: UserID,
     db.session.commit()
 
 
-def withdraw_seat_manager(ticket_id: TicketID, initiator_id: UserID):
+def withdraw_seat_manager(ticket_id: TicketID, initiator_id: UserID) -> None:
     """Withdraw the ticket's custom seat manager."""
     ticket = find_ticket(ticket_id)
 
@@ -411,7 +412,8 @@ def withdraw_seat_manager(ticket_id: TicketID, initiator_id: UserID):
     db.session.commit()
 
 
-def occupy_seat(ticket_id: TicketID, seat_id: SeatID, initiator_id: UserID):
+def occupy_seat(ticket_id: TicketID, seat_id: SeatID, initiator_id: UserID
+               ) -> None:
     """Occupy the seat with this ticket."""
     ticket = find_ticket(ticket_id)
 
@@ -426,7 +428,8 @@ def occupy_seat(ticket_id: TicketID, seat_id: SeatID, initiator_id: UserID):
     db.session.commit()
 
 
-def switch_seat(ticket_id: TicketID, new_seat_id: SeatID, initiator_id: UserID):
+def switch_seat(ticket_id: TicketID, new_seat_id: SeatID, initiator_id: UserID
+               ) -> None:
     """Release the seat occupied by this ticket and occupy the new seat
     in a single step.
     """
@@ -446,7 +449,7 @@ def switch_seat(ticket_id: TicketID, new_seat_id: SeatID, initiator_id: UserID):
     db.session.commit()
 
 
-def release_seat(ticket_id: TicketID, initiator_id: UserID):
+def release_seat(ticket_id: TicketID, initiator_id: UserID) -> None:
     """Release the seat occupied by this ticket."""
     ticket = find_ticket(ticket_id)
 
