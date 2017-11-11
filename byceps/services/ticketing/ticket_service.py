@@ -417,6 +417,8 @@ def occupy_seat(ticket_id: TicketID, seat_id: SeatID, initiator_id: UserID
     """Occupy the seat with this ticket."""
     ticket = find_ticket(ticket_id)
 
+    _deny_seat_management_if_ticket_belongs_to_bundle(ticket)
+
     ticket.occupied_seat_id = seat_id
 
     event = event_service._build_event('seat-occupied', ticket.id, {
@@ -434,6 +436,8 @@ def switch_seat(ticket_id: TicketID, new_seat_id: SeatID, initiator_id: UserID
     in a single step.
     """
     ticket = find_ticket(ticket_id)
+
+    _deny_seat_management_if_ticket_belongs_to_bundle(ticket)
 
     old_seat_id = ticket.occupied_seat_id
 
@@ -453,6 +457,8 @@ def release_seat(ticket_id: TicketID, initiator_id: UserID) -> None:
     """Release the seat occupied by this ticket."""
     ticket = find_ticket(ticket_id)
 
+    _deny_seat_management_if_ticket_belongs_to_bundle(ticket)
+
     ticket.occupied_seat_id = None
 
     event = event_service._build_event('seat-released', ticket.id, {
@@ -461,3 +467,22 @@ def release_seat(ticket_id: TicketID, initiator_id: UserID) -> None:
     db.session.add(event)
 
     db.session.commit()
+
+
+class SeatChangeDeniedForBundledTicket(Exception):
+    """Indicate that the ticket belongs to a bundle and, thus, must not
+    be used to occupy (or release) a single seat.
+    """
+
+
+def _deny_seat_management_if_ticket_belongs_to_bundle(ticket: Ticket) -> None:
+    """Raise an exception if this ticket belongs to a bundle.
+
+    A ticket bundle is meant to occupy a matching seat group with the
+    appropriate mechanism, not to separately occupy single seats.
+    """
+    if ticket.belongs_to_bundle:
+        raise SeatChangeDeniedForBundledTicket(
+            "Ticket '{}' belongs to a bundle and, thus, "
+            'must not be used to occupy a single seat.'
+            .format(ticket.code))

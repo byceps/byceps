@@ -128,7 +128,10 @@ def occupy_seat(ticket_id, seat_id):
     if seat.is_occupied:
         abort(403)
 
-    ticket_service.occupy_seat(ticket.id, seat.id, manager.id)
+    try:
+        ticket_service.occupy_seat(ticket.id, seat.id, manager.id)
+    except ticket_service.SeatChangeDeniedForBundledTicket:
+        abort(403)
 
     flash_success('{} wurde mit Ticket {} reserviert.', seat.label, ticket.code)
 
@@ -151,7 +154,10 @@ def release_seat(ticket_id):
 
     seat = ticket.occupied_seat
 
-    ticket_service.release_seat(ticket.id, manager.id)
+    try:
+        ticket_service.release_seat(ticket.id, manager.id)
+    except ticket_service.SeatChangeDeniedForBundledTicket:
+        abort(403)
 
     flash_success('{} wurde freigegeben.', seat.label)
 
