@@ -11,7 +11,7 @@
   <h1>{{ title }}</h1>
 
   <ol class="seats">
-    {%- for seat in area.seats|sort(attribute='coords') -%}
+    {%- for seat in seats|sort(attribute='coords') -%}
     <li><a href="#" title="{{ '(%d, %d)'|format(seat.coords.x, seat.coords.y) }}"></a></li>
     {%- endfor %}
   </ol>

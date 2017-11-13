@@ -50,7 +50,7 @@ def view_area(slug):
     seat_management_enabled = get_seat_management_enabled()
     ticket_management_enabled = get_ticket_management_enabled()
 
-    seats = []
+    seats = seat_service.get_seats_with_tickets_for_area(area.id)
 
     if ticket_management_enabled:
         tickets = ticket_service.find_tickets_for_seat_manager(

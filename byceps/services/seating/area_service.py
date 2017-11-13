@@ -38,7 +38,6 @@ def find_area_for_party_by_slug(party_id: PartyID, slug: str) -> Optional[Area]:
     return Area.query \
         .for_party_id(party_id) \
         .filter_by(slug=slug) \
-        .options(db.joinedload('seats')) \
         .first()
 
 
