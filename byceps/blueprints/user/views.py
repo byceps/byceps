@@ -16,8 +16,9 @@ from ...services.newsletter import service as newsletter_service
 from ...services.orga_team import service as orga_team_service
 from ...services.terms import service as terms_service
 from ...services.ticketing import attendance_service, ticket_service
-from ...services.user import service as user_service
 from ...services.user import creation_service as user_creation_service
+from ...services.user import event_service as user_event_service
+from ...services.user import service as user_service
 from ...services.user_badge import service as badge_service
 from ...services.verification_token import service as verification_token_service
 from ...util.framework.blueprint import create_blueprint
@@ -255,6 +256,13 @@ def confirm_email_address(token):
     user = verification_token.user
 
     user_service.confirm_email_address(verification_token)
+
+    # Currently, the user's e-mail address cannot be changed, but that
+    # might be allowed in the future. At that point, the verification
+    # token should be extended to include the e-mail address it refers
+    # to, and that value should be persisted with user event instead.
+    data = {'email_address': user.email_address}
+    user_event_service.create_event('email-address-confirmed', user.id, data)
 
     flash_success(
         'Die E-Mail-Adresse wurde bestätigt. Das Benutzerkonto "{}" ist nun aktiviert.',
