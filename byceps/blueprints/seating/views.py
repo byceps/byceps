@@ -10,7 +10,7 @@ from typing import Dict, Optional, Sequence
 
 from flask import abort, g, request
 
-from ...config import get_seat_management_enabled, get_ticket_management_enabled
+from ...config import get_seat_management_enabled
 from ...services.seating import area_service as seating_area_service
 from ...services.seating.models.seat import Seat, SeatID
 from ...services.seating import seat_service
@@ -48,11 +48,10 @@ def view_area(slug):
         abort(404)
 
     seat_management_enabled = get_seat_management_enabled()
-    ticket_management_enabled = get_ticket_management_enabled()
 
     seats = seat_service.get_seats_with_tickets_for_area(area.id)
 
-    if ticket_management_enabled:
+    if seat_management_enabled:
         tickets = ticket_service.find_tickets_for_seat_manager(
             g.current_user.id, g.party_id)
     else:
@@ -65,7 +64,6 @@ def view_area(slug):
     return {
         'area': area,
         'seat_management_enabled': seat_management_enabled,
-        'ticket_management_enabled': ticket_management_enabled,
         'seats': seats,
         'tickets': tickets,
         'current_ticket_id': current_ticket_id,
