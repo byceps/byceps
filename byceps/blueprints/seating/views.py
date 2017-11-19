@@ -6,9 +6,9 @@ byceps.blueprints.seating.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import Dict, Optional, Sequence
+from typing import Dict, Sequence
 
-from flask import abort, g, request
+from flask import abort, g
 
 from ...config import get_seat_management_enabled
 from ...services.seating import area_service as seating_area_service
@@ -57,8 +57,6 @@ def view_area(slug):
     else:
         tickets = None
 
-    current_ticket_id = _find_current_ticket_id()
-
     users_by_id = _get_users(seats, tickets)
 
     return {
@@ -66,29 +64,8 @@ def view_area(slug):
         'seat_management_enabled': seat_management_enabled,
         'seats': seats,
         'tickets': tickets,
-        'current_ticket_id': current_ticket_id,
         'users_by_id': users_by_id,
     }
-
-
-def _find_current_ticket_id() -> Optional[TicketID]:
-    ticket_code = request.args.get('ticket')
-    if ticket_code is None:
-        return None
-
-    ticket = ticket_service.find_ticket_by_code(ticket_code)
-    if ticket is None:
-        flash_error('Unbekannte Ticket-ID')
-        return None
-
-    if not ticket.is_seat_managed_by(g.current_user.id):
-        flash_error(
-            'Du bist nicht berechtigt, den Sitzplatz '
-            'für Ticket {} zu verwalten.',
-            ticket.code)
-        return None
-
-    return ticket.id
 
 
 def _get_users(seats: Sequence[Seat], tickets: Sequence[Ticket]
