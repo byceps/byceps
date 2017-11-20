@@ -148,6 +148,7 @@ span[title] .icon {
 }
 .block-with-icon-body {
   flex: 1;
+  text-align: left;
 }
 
 
