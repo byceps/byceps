@@ -106,7 +106,6 @@ img {
 .row {
   align-items: baseline;
   display: flex;
-  flex-wrap: wrap;
   margin: -1rem 0 0 -1rem;
 }
 
@@ -116,6 +115,10 @@ img {
 
 .row--space-between {
   justify-content: space-between;
+}
+
+.row--wrap {
+  flex-wrap: wrap;
 }
 
 .column-auto {
