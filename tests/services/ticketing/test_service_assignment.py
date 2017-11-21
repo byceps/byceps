@@ -6,6 +6,7 @@
 from byceps.services.seating import area_service, seat_service
 from byceps.services.ticketing import category_service, event_service, \
     ticket_service
+from byceps.services.ticketing.ticket_service import TicketCategoryMismatch
 
 from tests.base import AbstractAppTestCase
 
@@ -195,6 +196,17 @@ class TicketAssignmentServiceTestCase(AbstractAppTestCase):
         with self.assertRaises(ValueError):
             ticket_service.occupy_seat(self.ticket.id, invalid_seat_id,
                                        self.owner.id)
+
+    def test_occupy_seat_with_wrong_category(self):
+        other_category_id = self.create_category('Economy').id
+
+        area = self.create_area('main', 'Main Hall')
+        seat = seat_service.create_seat(area, 0, 0, other_category_id)
+
+        assert self.ticket.category_id != other_category_id
+
+        with self.assertRaises(TicketCategoryMismatch):
+            ticket_service.occupy_seat(self.ticket.id, seat.id, self.owner.id)
 
     # -------------------------------------------------------------------- #
     # helpers

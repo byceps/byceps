@@ -425,6 +425,10 @@ def occupy_seat(ticket_id: TicketID, seat_id: SeatID, initiator_id: UserID
     if seat is None:
         raise ValueError('Invalid seat ID')
 
+    if seat.category_id != ticket.category_id:
+        raise TicketCategoryMismatch(
+            'Ticket and seat belong to different categories.')
+
     previous_seat_id = ticket.occupied_seat_id
 
     ticket.occupied_seat_id = seat.id
@@ -475,3 +479,9 @@ def _deny_seat_management_if_ticket_belongs_to_bundle(ticket: Ticket) -> None:
             "Ticket '{}' belongs to a bundle and, thus, "
             'must not be used to occupy a single seat.'
             .format(ticket.code))
+
+
+class TicketCategoryMismatch(Exception):
+    """Indicate that the provided ticket category does not match the one
+    of the target item.
+    """
