@@ -24,6 +24,8 @@ from ...util.framework.flash import flash_error, flash_success
 from ...util.framework.templating import templated
 from ...util.views import respond_no_content
 
+from ..authentication.decorators import login_required
+
 
 blueprint = create_blueprint('seating', __name__)
 
@@ -86,6 +88,7 @@ def _get_users(seats: Sequence[Seat], tickets: Sequence[Ticket]
 
 
 @blueprint.route('/ticket/<uuid:ticket_id>/seat/<uuid:seat_id>', methods=['POST'])
+@login_required
 @respond_no_content
 def occupy_seat(ticket_id, seat_id):
     """Use ticket to occupy seat."""
@@ -112,6 +115,7 @@ def occupy_seat(ticket_id, seat_id):
 
 
 @blueprint.route('/ticket/<uuid:ticket_id>/seat', methods=['DELETE'])
+@login_required
 @respond_no_content
 def release_seat(ticket_id):
     """Release the seat."""
