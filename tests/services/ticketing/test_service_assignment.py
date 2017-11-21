@@ -136,14 +136,15 @@ class TicketAssignmentServiceTestCase(AbstractAppTestCase):
 
     def test_occupy_and_release_seat(self):
         area = self.create_area('main', 'Main Hall')
-        seat = seat_service.create_seat(area, 0, 0, self.category_id)
+        seat1 = seat_service.create_seat(area, 0, 1, self.category_id)
+        seat2 = seat_service.create_seat(area, 0, 2, self.category_id)
 
         assert self.ticket.occupied_seat_id is None
 
         # occupy seat
 
-        ticket_service.occupy_seat(self.ticket.id, seat.id, self.owner.id)
-        assert self.ticket.occupied_seat_id == seat.id
+        ticket_service.occupy_seat(self.ticket.id, seat1.id, self.owner.id)
+        assert self.ticket.occupied_seat_id == seat1.id
 
         events_after_occupation = event_service.get_events_for_ticket(
             self.ticket.id)
@@ -152,7 +153,24 @@ class TicketAssignmentServiceTestCase(AbstractAppTestCase):
         occupation_event = events_after_occupation[0]
         assert occupation_event.event_type == 'seat-occupied'
         assert occupation_event.data == {
-            'seat_id': str(seat.id),
+            'seat_id': str(seat1.id),
+            'initiator_id': str(self.owner.id),
+        }
+
+        # switch to another seat
+
+        ticket_service.occupy_seat(self.ticket.id, seat2.id, self.owner.id)
+        assert self.ticket.occupied_seat_id == seat2.id
+
+        events_after_switch = event_service.get_events_for_ticket(
+            self.ticket.id)
+        assert len(events_after_switch) == 2
+
+        switch_event = events_after_switch[1]
+        assert switch_event.event_type == 'seat-occupied'
+        assert switch_event.data == {
+            'previous_seat_id': str(seat1.id),
+            'seat_id': str(seat2.id),
             'initiator_id': str(self.owner.id),
         }
 
@@ -163,37 +181,14 @@ class TicketAssignmentServiceTestCase(AbstractAppTestCase):
 
         events_after_release = event_service.get_events_for_ticket(
             self.ticket.id)
-        assert len(events_after_release) == 2
+        assert len(events_after_release) == 3
 
-        release_event = events_after_release[1]
+        release_event = events_after_release[2]
         assert release_event.event_type == 'seat-released'
         assert release_event.data == {
             'initiator_id': str(self.owner.id),
         }
 
-    def test_switch_seat(self):
-        area = self.create_area('main', 'Main Hall')
-        seat1 = seat_service.create_seat(area, 0, 1, self.category_id)
-        seat2 = seat_service.create_seat(area, 0, 2, self.category_id)
-
-        self.ticket.occupied_seat_id = seat1.id
-
-        # switch seat
-
-        ticket_service.switch_seat(self.ticket.id, seat2.id, self.owner.id)
-        assert self.ticket.occupied_seat_id == seat2.id
-
-        events_after_switch = event_service.get_events_for_ticket(
-            self.ticket.id)
-        assert len(events_after_switch) == 1
-
-        switch_event = events_after_switch[0]
-        assert switch_event.event_type == 'seat-switched'
-        assert switch_event.data == {
-            'old_seat_id': str(seat1.id),
-            'new_seat_id': str(seat2.id),
-            'initiator_id': str(self.owner.id),
-        }
     # -------------------------------------------------------------------- #
     # helpers
 

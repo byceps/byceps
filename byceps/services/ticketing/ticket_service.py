@@ -420,35 +420,18 @@ def occupy_seat(ticket_id: TicketID, seat_id: SeatID, initiator_id: UserID
 
     _deny_seat_management_if_ticket_belongs_to_bundle(ticket)
 
+    previous_seat_id = ticket.occupied_seat_id
+
     ticket.occupied_seat_id = seat_id
 
-    event = event_service._build_event('seat-occupied', ticket.id, {
+    event_data = {
         'seat_id': str(seat_id),
         'initiator_id': str(initiator_id),
-    })
-    db.session.add(event)
+    }
+    if previous_seat_id is not None:
+        event_data['previous_seat_id'] = str(previous_seat_id)
 
-    db.session.commit()
-
-
-def switch_seat(ticket_id: TicketID, new_seat_id: SeatID, initiator_id: UserID
-               ) -> None:
-    """Release the seat occupied by this ticket and occupy the new seat
-    in a single step.
-    """
-    ticket = find_ticket(ticket_id)
-
-    _deny_seat_management_if_ticket_belongs_to_bundle(ticket)
-
-    old_seat_id = ticket.occupied_seat_id
-
-    ticket.occupied_seat_id = new_seat_id
-
-    event = event_service._build_event('seat-switched', ticket.id, {
-        'old_seat_id': str(old_seat_id),
-        'new_seat_id': str(new_seat_id),
-        'initiator_id': str(initiator_id),
-    })
+    event = event_service._build_event('seat-occupied', ticket.id, event_data)
     db.session.add(event)
 
     db.session.commit()
