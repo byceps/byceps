@@ -49,7 +49,7 @@ class TicketRevocationTestCase(AbstractAppTestCase):
         return category_service.create_category(self.party.id, title)
 
     def assertNotRevoked(self, ticket):
-        self.assertFalse(ticket.revoked)
+        assert not ticket.revoked
 
     def assertRevoked(self, ticket):
-        self.assertTrue(ticket.revoked)
+        assert ticket.revoked

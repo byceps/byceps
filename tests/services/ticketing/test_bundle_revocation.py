@@ -46,12 +46,12 @@ class TicketBundleRevocationTestCase(AbstractAppTestCase):
         return category_service.create_category(self.party.id, title)
 
     def assertLength(self, collection, expected_length):
-        self.assertEqual(len(collection), expected_length)
+        assert len(collection) == expected_length
 
     def assertNotRevoked(self, tickets):
         for ticket in tickets:
-            self.assertFalse(ticket.revoked)
+            assert not ticket.revoked
 
     def assertRevoked(self, tickets):
         for ticket in tickets:
-            self.assertTrue(ticket.revoked)
+            assert ticket.revoked
