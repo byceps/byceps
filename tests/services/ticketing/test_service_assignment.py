@@ -5,8 +5,9 @@
 
 from byceps.services.seating import area_service, seat_service
 from byceps.services.ticketing import category_service, event_service, \
-    ticket_service
-from byceps.services.ticketing.ticket_service import TicketCategoryMismatch
+    ticket_bundle_service, ticket_service
+from byceps.services.ticketing.ticket_service import \
+    SeatChangeDeniedForBundledTicket, TicketCategoryMismatch
 
 from tests.base import AbstractAppTestCase
 
@@ -195,6 +196,21 @@ class TicketAssignmentServiceTestCase(AbstractAppTestCase):
 
         with self.assertRaises(ValueError):
             ticket_service.occupy_seat(self.ticket.id, invalid_seat_id,
+                                       self.owner.id)
+
+    def test_occupy_seat_with_bundled_ticket(self):
+        ticket_quantity = 1
+        ticket_bundle = ticket_bundle_service.create_bundle(self.category_id,
+                                                            ticket_quantity,
+                                                            self.owner.id)
+
+        bundled_ticket = ticket_bundle.tickets[0]
+
+        area = self.create_area('main', 'Main Hall')
+        seat = seat_service.create_seat(area, 0, 0, self.category_id)
+
+        with self.assertRaises(SeatChangeDeniedForBundledTicket):
+            ticket_service.occupy_seat(bundled_ticket.id, seat.id,
                                        self.owner.id)
 
     def test_occupy_seat_with_wrong_category(self):
