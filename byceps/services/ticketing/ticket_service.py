@@ -16,6 +16,7 @@ from ...typing import PartyID, UserID
 
 from ..party.models.party import Party
 from ..seating.models.seat import Seat, SeatID
+from ..seating import seat_service
 from ..shop.order.models.order import OrderNumber
 from ..user.models.user import User
 
@@ -420,12 +421,16 @@ def occupy_seat(ticket_id: TicketID, seat_id: SeatID, initiator_id: UserID
 
     _deny_seat_management_if_ticket_belongs_to_bundle(ticket)
 
+    seat = seat_service.find_seat(seat_id)
+    if seat is None:
+        raise ValueError('Invalid seat ID')
+
     previous_seat_id = ticket.occupied_seat_id
 
-    ticket.occupied_seat_id = seat_id
+    ticket.occupied_seat_id = seat.id
 
     event_data = {
-        'seat_id': str(seat_id),
+        'seat_id': str(seat.id),
         'initiator_id': str(initiator_id),
     }
     if previous_seat_id is not None:

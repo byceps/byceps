@@ -189,6 +189,13 @@ class TicketAssignmentServiceTestCase(AbstractAppTestCase):
             'initiator_id': str(self.owner.id),
         }
 
+    def test_occupy_seat_with_invalid_id(self):
+        invalid_seat_id = 'ffffffff-ffff-ffff-ffff-ffffffffffff'
+
+        with self.assertRaises(ValueError):
+            ticket_service.occupy_seat(self.ticket.id, invalid_seat_id,
+                                       self.owner.id)
+
     # -------------------------------------------------------------------- #
     # helpers
 
