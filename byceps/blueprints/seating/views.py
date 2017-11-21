@@ -110,6 +110,10 @@ def occupy_seat(ticket_id, seat_id):
         ticket_service.occupy_seat(ticket.id, seat.id, manager.id)
     except ticket_service.SeatChangeDeniedForBundledTicket:
         abort(403)
+    except ticket_service.TicketCategoryMismatch:
+        abort(403)
+    except ValueError:
+        abort(404)
 
     flash_success('{} wurde mit Ticket {} reserviert.', seat.label, ticket.code)
 
