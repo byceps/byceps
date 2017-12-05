@@ -1,4 +1,5 @@
 {% extends 'layout/admin/base.html' %}
+{% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
@@ -14,7 +15,7 @@
       <li>{{ brand.title }}</li>
     </ol>
   </nav>
-  <h1>Partys</h1>
+  <h1>Partys {{ render_extra_in_heading(parties.items|length) }}</h1>
 
   {%- if g.current_user.has_permission(PartyPermission.create) %}
   <div class="button-row">
