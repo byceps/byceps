@@ -5,13 +5,13 @@
 <p>Just a {{ render_tag('tag') }} to attach to things or to represent state.</p>
   {%- endset %}
 
-  {% call render_code_block() -%}
-{{ example_tags }}
-  {%- endcall %}
-
   <div class="result">
 {{ example_tags }}
   </div>
+
+  {% call render_code_block() -%}
+{{ example_tags }}
+  {%- endcall %}
 
   <p>With pre-defined colors:</p>
 
@@ -23,10 +23,10 @@
 </p>
   {%- endset %}
 
-  {% call render_code_block() -%}
-{{ example_tags_colored }}
-  {%- endcall %}
-
   <div class="result">
 {{ example_tags_colored }}
   </div>
+
+  {% call render_code_block() -%}
+{{ example_tags_colored }}
+  {%- endcall %}

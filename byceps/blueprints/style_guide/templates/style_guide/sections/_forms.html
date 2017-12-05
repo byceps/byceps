@@ -30,10 +30,10 @@
 </form>
   {%- endset %}
 
-  {% call render_code_block() -%}
-{{ example_form }}
-  {%- endcall %}
-
   <div class="result">
 {{ example_form }}
   </div>
+
+  {% call render_code_block() -%}
+{{ example_form }}
+  {%- endcall %}

@@ -11,10 +11,10 @@
 {{ render_notification('success', 'success', 'The action was <strong>successful</strong>.', text_is_safe=true) }}
   {%- endset %}
 
-  {% call render_code_block() -%}
-{{ example_notifications }}
-  {%- endcall %}
-
   <div class="result">
 {{ example_notifications }}
   </div>
+
+  {% call render_code_block() -%}
+{{ example_notifications }}
+  {%- endcall %}

@@ -5,13 +5,13 @@
 {{ render_icon('success') }}
   {%- endset %}
 
-  {% call render_code_block() -%}
-{{ example_icons }}
-  {%- endcall %}
-
   <div class="result">
 {{ example_icons }}
   </div>
+
+  {% call render_code_block() -%}
+{{ example_icons }}
+  {%- endcall %}
 
   <style>
     .icon-list {
