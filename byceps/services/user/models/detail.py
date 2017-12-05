@@ -29,7 +29,7 @@ class UserDetail(db.Model):
     street = db.Column(db.Unicode(40))
     phone_number = db.Column(db.Unicode(20))
     internal_comment = db.Column(db.Unicode(200))
-    various = db.Column(db.JSONB)
+    extras = db.Column(db.JSONB)
 
     @property
     def full_name(self) -> str:
