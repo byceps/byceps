@@ -135,22 +135,24 @@ main {
 nav.main ol {
   width: 100%;
 }
+
 nav.main li {
   display: block;
   margin: 0;
   padding: 0;
   white-space: nowrap;
 }
+
 nav.main a {
   color: currentColor;
   display: block;
   line-height: 1.5;
   padding: 0 20px;
+}
+nav.main a:not(:hover) {
   text-decoration: none;
 }
-nav.main a:hover {
-  text-decoration: underline;
-}
+
 nav.main .current a {
   font-weight: bold;
 }
@@ -321,10 +323,9 @@ form.board-posting-create-form-inline .label {
 
 .user-comment-meta-top a {
   border: none;
-  text-decoration: none;
 }
-.user-comment-meta-top a:hover {
-  text-decoration: underline;
+.user-comment-meta-top a:not(:hover) {
+  text-decoration: none;
 }
 
 .user-comment-meta-top .user-link a {
@@ -401,10 +402,9 @@ form.board-posting-create-form-inline .label {
 .user-comment footer a {
   border: none;
   color: currentColor;
-  text-decoration: none;
 }
-.user-comment footer a:hover {
-  text-decoration: underline;
+.user-comment footer a:not(:hover) {
+  text-decoration: none;
 }
 
 .user-comment .quote-intro {
@@ -683,10 +683,9 @@ form.board-posting-create-form-inline .label {
 
 .ticket-card-cell a {
   color: currentColor;
-  text-decoration: none;
 }
-.ticket-card-cell a:hover {
-  text-decoration: underline;
+.ticket-card-cell a:not(:hover) {
+  text-decoration: none;
 }
 .ticket-card-cell .dropdown a:hover {
   text-decoration: none;
@@ -743,18 +742,16 @@ form.board-posting-create-form-inline .label {
 
 a.disguised {
   color: currentColor;
-  text-decoration: none;
 }
-a.disguised:hover {
-  text-decoration: underline;
+a.disguised:not(:hover) {
+  text-decoration: none;
 }
 
 main h1 a {
   color: currentColor;
-  text-decoration: none;
 }
-main h1 a:hover {
-  text-decoration: underline;
+main h1 a:not(:hover) {
+  text-decoration: none;
 }
 
 
