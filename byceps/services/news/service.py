@@ -76,12 +76,18 @@ def find_item_by_slug(brand_id: BrandID, slug: str) -> Optional[Item]:
         .first()
 
 
-def get_items_paginated(brand_id: BrandID, page: int, items_per_page: int
+def get_items_paginated(brand_id: BrandID, page: int, items_per_page: int,
+                        published_only: bool=False
                        ) -> Pagination:
     """Return the news items to show on the specified page."""
-    return Item.query \
+    query = Item.query \
         .for_brand_id(brand_id) \
-        .with_current_version() \
+        .with_current_version()
+
+    if published_only:
+        query = query.published()
+
+    return query \
         .order_by(Item.published_at.desc()) \
         .paginate(page, items_per_page)
 

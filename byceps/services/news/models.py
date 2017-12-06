@@ -30,6 +30,10 @@ class ItemQuery(BaseQuery):
     def for_brand_id(self, brand_id: BrandID) -> BaseQuery:
         return self.filter_by(brand_id=brand_id)
 
+    def published(self) -> BaseQuery:
+        """Return items that have been published."""
+        return self.filter(Item.published_at <= datetime.now())
+
     def with_current_version(self) -> BaseQuery:
         return self.options(
             db.joinedload('current_version_association').joinedload('version'),

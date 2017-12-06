@@ -23,7 +23,8 @@ def index(page):
     """Show a page of news items."""
     items_per_page = _get_items_per_page_value()
 
-    items = news_service.get_items_paginated(g.brand_id, page, items_per_page)
+    items = news_service.get_items_paginated(g.brand_id, page, items_per_page,
+                                             published_only=True)
 
     return {
         'items': items,
