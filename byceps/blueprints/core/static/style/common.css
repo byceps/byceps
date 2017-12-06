@@ -126,6 +126,16 @@ img {
 }
 
 
+/* links */
+
+a.disguised {
+  color: currentColor;
+}
+a.disguised:not(:hover) {
+  text-decoration: none;
+}
+
+
 /* icons */
 
 .icon {

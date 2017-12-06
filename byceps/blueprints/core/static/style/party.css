@@ -740,13 +740,6 @@ form.board-posting-create-form-inline .label {
 
 /* links */
 
-a.disguised {
-  color: currentColor;
-}
-a.disguised:not(:hover) {
-  text-decoration: none;
-}
-
 main h1 a {
   color: currentColor;
 }
