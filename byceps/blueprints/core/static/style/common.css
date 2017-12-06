@@ -799,7 +799,6 @@ img {
 }
 
 .hyphenate {
-  -moz-hyphens: auto;
   -webkit-hyphens: auto;
   hyphens: auto;
 }

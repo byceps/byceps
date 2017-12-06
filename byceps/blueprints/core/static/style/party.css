@@ -181,7 +181,6 @@ h2 {
 /* news */
 
 .news-item {
-  -moz-hyphens: auto;
   -webkit-hyphens: auto;
   hyphens: auto;
 }
