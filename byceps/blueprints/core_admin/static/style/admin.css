@@ -556,7 +556,7 @@ fieldset.buttons {
 
 
 .event-body .user-link a {
-  color: #333333;
+  color: currentColor;
   font-weight: bold;
 }
 .event-body .user-link a:not(:hover) {
