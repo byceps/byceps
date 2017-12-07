@@ -57,12 +57,16 @@ def _get_additional_data(event: TicketEvent,
     if event.event_type in {
             'seat-occupied',
             'seat-released',
+            'ticket-revoked',
     }:
         yield from _get_additional_data_for_user_initiated_event(event,
                                                                  users_by_id)
 
     if event.event_type == 'seat-occupied':
         yield from _get_additional_data_for_seat_occupied_event(event)
+
+    if event.event_type == 'ticket-revoked':
+        yield from _get_additional_data_for_ticket_revoked_event(event)
 
 
 def _get_additional_data_for_user_initiated_event(event: TicketEvent,
@@ -81,3 +85,10 @@ def _get_additional_data_for_seat_occupied_event(event: TicketEvent
     if previous_seat_id:
         previous_seat = seat_service.find_seat(previous_seat_id)
         yield 'previous_seat_label', previous_seat.label
+
+
+def _get_additional_data_for_ticket_revoked_event(event: TicketEvent
+                                                 ) -> Iterator[Tuple[str, Any]]:
+    reason = event.data.get('reason')
+    if reason:
+        yield 'reason', reason

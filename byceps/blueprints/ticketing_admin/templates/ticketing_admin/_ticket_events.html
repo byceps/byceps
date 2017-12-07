@@ -16,7 +16,16 @@
         {%- elif event.event == 'ticket-revoked' %}
           {%- set icon_name = 'disabled' %}
           {%- set body %}
-            Das Ticket ist {{ render_ticket_flag_revoked() }} worden.
+            {%- if event.initiator is defined %}
+            <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
+            {%- else %}
+            Jemand
+            {%- endif %}
+            hat das Ticket {{ render_ticket_flag_revoked() }}
+            {%- if event.reason is defined %}
+            (Begründung: &quot;{{ event.reason }}&quot;)
+            {%- endif -%}
+            .
           {%- endset %}
         {%- elif event.event == 'seat-occupied' %}
           {%- set icon_name = 'seating-area' %}
