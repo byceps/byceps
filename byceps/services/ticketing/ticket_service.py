@@ -21,6 +21,7 @@ from ..shop.order.models.order import OrderNumber
 from ..user.models.user import User
 
 from . import event_service
+from .event_service import TicketEvent
 from .models.category import Category, CategoryID
 from .models.ticket import Ticket, TicketCode, TicketID
 from .models.ticket_bundle import TicketBundle
@@ -101,7 +102,7 @@ def revoke_ticket(ticket_id: TicketID) -> None:
 
     ticket.revoked = True
 
-    event = event_service._build_event('ticket-revoked', ticket.id, {})
+    event = _build_ticket_revoked_event(ticket.id)
     db.session.add(event)
 
     db.session.commit()
@@ -114,10 +115,14 @@ def revoke_tickets(ticket_ids: Set[TicketID]) -> None:
     for ticket in tickets:
         ticket.revoked = True
 
-        event = event_service._build_event('ticket-revoked', ticket.id, {})
+        event = _build_ticket_revoked_event(ticket.id)
         db.session.add(event)
 
     db.session.commit()
+
+
+def _build_ticket_revoked_event(ticket_id: TicketID) -> TicketEvent:
+    return event_service._build_event('ticket-revoked', ticket_id, {})
 
 
 # -------------------------------------------------------------------- #
