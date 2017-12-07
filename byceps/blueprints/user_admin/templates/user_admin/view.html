@@ -103,8 +103,8 @@
 
 {% block scripts %}
 <script>
-  var field = document.querySelector('#user-id-field');
-  var trigger = document.querySelector('#user-id-copy-trigger');
+  var field = document.getElementById('user-id-field');
+  var trigger = document.getElementById('user-id-copy-trigger');
 
   enableCopyToClipboard(field, trigger);
 </script>
