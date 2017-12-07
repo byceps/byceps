@@ -173,7 +173,9 @@ onDomReady(function() {
  * Register an element as click trigger to copy the value of a field to
  * the clipboard.
  */
-function enableCopyToClipboard(triggerElement) {
+function enableCopyToClipboard(triggerElementId) {
+  const triggerElement = document.getElementById(triggerElementId);
+
   triggerElement.addEventListener('click', function() {
     const fieldId = this.dataset.fieldId;
     const field = document.getElementById(fieldId);
