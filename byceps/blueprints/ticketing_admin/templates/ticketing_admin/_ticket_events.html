@@ -1,6 +1,7 @@
 {%- from 'macros/datetime.html' import render_datetime %}
 {%- from 'macros/icons.html' import render_icon %}
 {%- from 'macros/ticketing_admin.html' import render_ticket_flag_revoked %}
+{%- from 'macros/user_admin.html' import render_user_avatar_20_and_link %}
 
 
   <h2>Verlauf</h2>
@@ -16,6 +17,22 @@
           {%- set icon_name = 'disabled' %}
           {%- set body %}
             Das Ticket ist {{ render_ticket_flag_revoked() }} worden.
+          {%- endset %}
+        {%- elif event.event == 'seat-occupied' %}
+          {%- set icon_name = 'seating-area' %}
+          {%- set body %}
+            <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
+            hat Sitzplatz <strong>{{ event.seat_label }}</strong>
+            {%- if event.previous_seat_label is defined %}
+            (vorher <strong>{{ event.previous_seat_label }}</strong>)
+            {%- endif %}
+            reserviert.
+          {%- endset %}
+        {%- elif event.event == 'seat-released' %}
+          {%- set icon_name = 'disabled' %}
+          {%- set body %}
+            <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
+            hat den Sitzplatz freigegeben.
           {%- endset %}
         {%- else %}
           {%- set icon_name = 'disabled' %}
