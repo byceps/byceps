@@ -3,7 +3,7 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.services.ticketing import category_service, \
+from byceps.services.ticketing import category_service, event_service, \
     ticket_bundle_service as bundle_service
 
 from tests.base import AbstractAppTestCase
@@ -25,13 +25,31 @@ class TicketBundleRevocationTestCase(AbstractAppTestCase):
     def test_revoke_bundle(self):
         tickets_before = bundle_service.find_tickets_for_bundle(self.bundle_id)
         self.assertLength(tickets_before, self.quantity)
-        self.assertNotRevoked(tickets_before)
+
+        for ticket_before in tickets_before:
+            self.assertNotRevoked(ticket_before)
+
+            events_before = event_service.get_events_for_ticket(ticket_before.id)
+            assert len(events_before) == 0
+
+        # -------------------------------- #
 
         bundle_service.revoke_bundle(self.bundle_id)
 
+        # -------------------------------- #
+
         tickets_after = bundle_service.find_tickets_for_bundle(self.bundle_id)
         self.assertLength(tickets_after, self.quantity)
-        self.assertRevoked(tickets_after)
+
+        for ticket_after in tickets_after:
+            self.assertRevoked(ticket_after)
+
+            events_after = event_service.get_events_for_ticket(ticket_after.id)
+            assert len(events_after) == 1
+
+            ticket_revoked_event = events_after[0]
+            assert ticket_revoked_event.event_type == 'ticket-revoked'
+            assert ticket_revoked_event.data == {}
 
     # -------------------------------------------------------------------- #
     # helpers
@@ -48,10 +66,8 @@ class TicketBundleRevocationTestCase(AbstractAppTestCase):
     def assertLength(self, collection, expected_length):
         assert len(collection) == expected_length
 
-    def assertNotRevoked(self, tickets):
-        for ticket in tickets:
-            assert not ticket.revoked
+    def assertNotRevoked(self, ticket):
+        assert not ticket.revoked
 
-    def assertRevoked(self, tickets):
-        for ticket in tickets:
-            assert ticket.revoked
+    def assertRevoked(self, ticket):
+        assert ticket.revoked

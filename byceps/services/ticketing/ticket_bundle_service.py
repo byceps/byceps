@@ -13,6 +13,7 @@ from ...typing import UserID
 
 from ..shop.order.models.order import OrderNumber
 
+from . import event_service
 from .models.category import CategoryID
 from .models.ticket import Ticket
 from .models.ticket_bundle import TicketBundle, TicketBundleID
@@ -48,6 +49,9 @@ def revoke_bundle(bundle_id: TicketBundleID) -> None:
 
     for ticket in bundle.tickets:
         ticket.revoked = True
+
+        event = event_service._build_event('ticket-revoked', ticket.id, {})
+        db.session.add(event)
 
     db.session.commit()
 
