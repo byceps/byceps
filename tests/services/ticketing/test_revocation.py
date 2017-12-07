@@ -21,7 +21,7 @@ class TicketRevocationTestCase(AbstractAppTestCase):
 
     def test_revoke_ticket(self):
         ticket_before = ticket_service.create_ticket(self.category_id, self.owner_id)
-        self.assertNotRevoked(ticket_before)
+        assert not ticket_before.revoked
 
         events_before = event_service.get_events_for_ticket(ticket_before.id)
         assert len(events_before) == 0
@@ -35,7 +35,7 @@ class TicketRevocationTestCase(AbstractAppTestCase):
         # -------------------------------- #
 
         ticket_after = ticket_service.find_ticket(ticket_id)
-        self.assertRevoked(ticket_after)
+        assert ticket_after.revoked
 
         events_after = event_service.get_events_for_ticket(ticket_after.id)
         assert len(events_after) == 1
@@ -47,7 +47,7 @@ class TicketRevocationTestCase(AbstractAppTestCase):
     def test_revoke_tickets(self):
         tickets_before = ticket_service.create_tickets(self.category_id, self.owner_id, 3)
         for ticket_before in tickets_before:
-            self.assertNotRevoked(ticket_before)
+            assert not ticket_before.revoked
 
             events_before = event_service.get_events_for_ticket(ticket_before.id)
             assert len(events_before) == 0
@@ -62,7 +62,7 @@ class TicketRevocationTestCase(AbstractAppTestCase):
 
         tickets_after = ticket_service.find_tickets(ticket_ids)
         for ticket_after in tickets_after:
-            self.assertRevoked(ticket_after)
+            assert ticket_after.revoked
 
             events_after = event_service.get_events_for_ticket(ticket_after.id)
             assert len(events_after) == 1
@@ -76,9 +76,3 @@ class TicketRevocationTestCase(AbstractAppTestCase):
 
     def create_category(self, title):
         return category_service.create_category(self.party.id, title)
-
-    def assertNotRevoked(self, ticket):
-        assert not ticket.revoked
-
-    def assertRevoked(self, ticket):
-        assert ticket.revoked

@@ -24,10 +24,10 @@ class TicketBundleRevocationTestCase(AbstractAppTestCase):
 
     def test_revoke_bundle(self):
         tickets_before = bundle_service.find_tickets_for_bundle(self.bundle_id)
-        self.assertLength(tickets_before, self.quantity)
+        assert len(tickets_before) == self.quantity
 
         for ticket_before in tickets_before:
-            self.assertNotRevoked(ticket_before)
+            assert not ticket_before.revoked
 
             events_before = event_service.get_events_for_ticket(ticket_before.id)
             assert len(events_before) == 0
@@ -39,10 +39,10 @@ class TicketBundleRevocationTestCase(AbstractAppTestCase):
         # -------------------------------- #
 
         tickets_after = bundle_service.find_tickets_for_bundle(self.bundle_id)
-        self.assertLength(tickets_after, self.quantity)
+        assert len(tickets_after) == self.quantity
 
         for ticket_after in tickets_after:
-            self.assertRevoked(ticket_after)
+            assert ticket_after.revoked
 
             events_after = event_service.get_events_for_ticket(ticket_after.id)
             assert len(events_after) == 1
@@ -62,12 +62,3 @@ class TicketBundleRevocationTestCase(AbstractAppTestCase):
 
     def create_category(self, title):
         return category_service.create_category(self.party.id, title)
-
-    def assertLength(self, collection, expected_length):
-        assert len(collection) == expected_length
-
-    def assertNotRevoked(self, ticket):
-        assert not ticket.revoked
-
-    def assertRevoked(self, ticket):
-        assert ticket.revoked
