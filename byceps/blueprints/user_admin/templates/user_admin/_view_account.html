@@ -8,7 +8,7 @@
       <td>
         {{ user.id }}
         <input id="user-id-field" value="{{ user.id }}" style="position: fixed; top: -1000px;" readonly>
-        <button id="user-id-copy-trigger" class="button button--icon-only" title="In die Zwischenablage kopieren">{{ render_icon('clipboard') }}</button>
+        <button id="user-id-copy-trigger" data-field-id="user-id-field" class="button button--icon-only" title="In die Zwischenablage kopieren">{{ render_icon('clipboard') }}</button>
       </td>
     </tr>
     <tr>
