@@ -162,14 +162,14 @@ def _fake_terms_consent_events(user_id: UserID) -> Iterator[UserEvent]:
 
 def _get_additional_data(event: UserEvent, users_by_id: Dict[UserID, UserTuple]
                         ) -> UserEventData:
-    if event.event_type in (
+    if event.event_type in {
             'user-created',
             'avatar-updated',
             'newsletter-requested',
             'newsletter-declined',
             'order-placed',
             'terms-consent-expressed',
-    ):
+    }:
         return _get_additional_data_for_user_creation_event(event, users_by_id)
     else:
         return {}
