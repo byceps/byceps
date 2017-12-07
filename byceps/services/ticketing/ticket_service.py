@@ -93,7 +93,10 @@ def _generate_ticket_code_not_in(codes: Set[TicketCode]) -> TicketCode:
 # revocation
 
 
-def revoke_ticket(ticket_id: TicketID) -> None:
+def revoke_ticket(ticket_id: TicketID, *,
+                  initiator_id: Optional[UserID]=None,
+                  reason: Optional[str]=None
+                 ) -> None:
     """Revoke the ticket."""
     ticket = find_ticket(ticket_id)
 
@@ -102,27 +105,41 @@ def revoke_ticket(ticket_id: TicketID) -> None:
 
     ticket.revoked = True
 
-    event = _build_ticket_revoked_event(ticket.id)
+    event = _build_ticket_revoked_event(ticket.id, initiator_id, reason)
     db.session.add(event)
 
     db.session.commit()
 
 
-def revoke_tickets(ticket_ids: Set[TicketID]) -> None:
+def revoke_tickets(ticket_ids: Set[TicketID], *,
+                   initiator_id: Optional[UserID]=None,
+                   reason: Optional[str]=None
+                  ) -> None:
     """Revoke the tickets."""
     tickets = find_tickets(ticket_ids)
 
     for ticket in tickets:
         ticket.revoked = True
 
-        event = _build_ticket_revoked_event(ticket.id)
+        event = _build_ticket_revoked_event(ticket.id, initiator_id, reason)
         db.session.add(event)
 
     db.session.commit()
 
 
-def _build_ticket_revoked_event(ticket_id: TicketID) -> TicketEvent:
-    return event_service._build_event('ticket-revoked', ticket_id, {})
+def _build_ticket_revoked_event(ticket_id: TicketID,
+                                initiator_id: Optional[UserID]=None,
+                                reason: Optional[str]=None
+                               ) -> TicketEvent:
+    data = {}
+
+    if initiator_id is not None:
+        data['initiator_id'] = str(initiator_id)
+
+    if reason:
+        data['reason'] = reason
+
+    return event_service._build_event('ticket-revoked', ticket_id, data)
 
 
 # -------------------------------------------------------------------- #
