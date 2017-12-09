@@ -21,11 +21,10 @@
             {%- else %}
             Jemand
             {%- endif %}
-            hat das Ticket {{ render_ticket_flag_revoked() }}
+            hat das Ticket {{ render_ticket_flag_revoked() }}.
             {%- if event.reason is defined %}
-            (Begründung: &quot;{{ event.reason }}&quot;)
+            Begründung: &quot;{{ event.reason }}&quot;
             {%- endif -%}
-            .
           {%- endset %}
         {%- elif event.event == 'seat-occupied' %}
           {%- set icon_name = 'seating-area' %}
