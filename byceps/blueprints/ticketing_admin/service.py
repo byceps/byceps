@@ -71,8 +71,9 @@ def _get_additional_data(event: TicketEvent,
 
 def _get_additional_data_for_user_initiated_event(event: TicketEvent,
         users_by_id: Dict[UserID, UserTuple]) -> Iterator[Tuple[str, Any]]:
-    initiator_id = event.data['initiator_id']
-    yield 'initiator', users_by_id[initiator_id]
+    initiator_id = event.data.get('initiator_id')
+    if initiator_id is not None:
+        yield 'initiator', users_by_id[initiator_id]
 
 
 def _get_additional_data_for_seat_occupied_event(event: TicketEvent
