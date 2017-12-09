@@ -3,6 +3,12 @@
 {%- from 'macros/user_admin.html' import render_user_avatar_16_and_link %}
 
 {%- if tickets %}
+<style>
+  .ticket-manager {
+    margin-top: 0.3rem;
+  }
+</style>
+
 <table class="index wide">
   <thead>
     <tr>
@@ -28,8 +34,7 @@
         {%- else -%}
         {{ render_tag('keiner', class='available') }}
         {%- endif -%}
-        <br>
-        {{ 'verwaltet durch'|dim  }} {{ render_user_avatar_16_and_link(ticket.get_seat_manager()) }}
+        <div class="ticket-manager">{{ render_icon('administrate', title='verwaltet durch') }} {{ render_user_avatar_16_and_link(ticket.get_seat_manager()) }}</div>
       </td>
       <td>
         {%- if ticket.used_by -%}
@@ -37,8 +42,7 @@
         {%- else -%}
         {{ render_tag('frei', class='available') }}
         {%- endif -%}
-        <br>
-        {{ 'verwaltet durch'|dim }} {{ render_user_avatar_16_and_link(ticket.get_user_manager()) }}
+        <div class="ticket-manager">{{ render_icon('administrate', title='verwaltet durch') }} {{ render_user_avatar_16_and_link(ticket.get_user_manager()) }}</div>
       </td>
     </tr>
     {%- endfor %}
