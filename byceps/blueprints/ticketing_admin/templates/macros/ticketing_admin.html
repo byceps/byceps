@@ -1,6 +1,6 @@
 {% from 'macros/misc.html' import render_tag %}
 
 
-{% macro render_ticket_flag_revoked() -%}
-  {{ render_tag('widerrufen', class='color-danger', icon='disabled', title='Dieses Ticket ist nicht mehr gültig.') }}
+{% macro render_ticket_flag_revoked(hide_label=False) -%}
+  {{ render_tag('' if hide_label else 'widerrufen', class='color-danger', icon='disabled', title='Dieses Ticket ist nicht mehr gültig.') }}
 {%- endmacro %}
