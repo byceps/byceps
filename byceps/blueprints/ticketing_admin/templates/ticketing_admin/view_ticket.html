@@ -16,7 +16,7 @@
       <li>{{ party.title }}</li>
     </ol>
   </nav>
-  <h1>{{ render_icon('ticket') }} {{ ticket.code }}</h1>
+  <h1>{{ render_icon('ticket') }} {{ ticket.code }}{% if ticket.revoked %} {{ render_ticket_flag_revoked() }}{% endif %}</h1>
 
   <table class="index">
     <tr>
@@ -83,16 +83,6 @@
         {%- endif -%}
         <br>
         {{ 'verwaltet durch'|dim }} {{ render_user_avatar_20_and_link(ticket.get_user_manager()) }}
-      </td>
-    </tr>
-    <tr>
-      <th>Markierungen</th>
-      <td>
-        {%- if ticket.revoked %}
-        {{ render_ticket_flag_revoked() }}
-        {%- else %}
-        {{ 'keine'|dim }}
-        {%- endif %}
       </td>
     </tr>
   </table>
