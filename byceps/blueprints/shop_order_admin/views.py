@@ -48,6 +48,8 @@ def index_for_party(party_id, page):
 
     per_page = request.args.get('per_page', type=int, default=15)
 
+    search_term = request.args.get('search_term', default='').strip()
+
     only_payment_state = request.args.get('only_payment_state',
                                           type=PaymentState.__getitem__)
 
@@ -63,6 +65,7 @@ def index_for_party(party_id, page):
 
     orders = order_service \
         .get_orders_for_party_paginated(party.id, page, per_page,
+                                        search_term=search_term,
                                         only_payment_state=only_payment_state,
                                         only_shipped=only_shipped)
 
@@ -76,6 +79,7 @@ def index_for_party(party_id, page):
     return {
         'party': party,
         'order_number_prefix': order_number_prefix,
+        'search_term': search_term,
         'PaymentState': PaymentState,
         'only_payment_state': only_payment_state,
         'only_shipped': only_shipped,

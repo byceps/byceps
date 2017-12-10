@@ -321,6 +321,7 @@ def get_order_count_by_party_id() -> Dict[PartyID, int]:
 
 
 def get_orders_for_party_paginated(party_id: PartyID, page: int, per_page: int, *,
+                                   search_term=None,
                                    only_payment_state: Optional[PaymentState]=None,
                                    only_shipped: Optional[bool]=None
                                   ) -> Pagination:
@@ -332,6 +333,11 @@ def get_orders_for_party_paginated(party_id: PartyID, page: int, per_page: int, 
     query = Order.query \
         .for_party_id(party_id) \
         .order_by(Order.created_at.desc())
+
+    if search_term:
+        ilike_pattern = '%{}%'.format(search_term)
+        query = query \
+            .filter(Order.order_number.ilike(ilike_pattern))
 
     if only_payment_state is not None:
         query = query.filter_by(_payment_state=only_payment_state.name)
