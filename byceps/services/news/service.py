@@ -15,7 +15,8 @@ from ...typing import BrandID, UserID
 
 from ..brand.models.brand import Brand
 
-from .models import CurrentVersionAssociation, Item, ItemID, ItemVersion
+from .models import CurrentVersionAssociation, Item, ItemID, ItemVersion, \
+    ItemVersionID
 
 
 def create_item(brand_id: BrandID, slug: str, creator_id: UserID, title: str,
@@ -90,6 +91,11 @@ def get_items_paginated(brand_id: BrandID, page: int, items_per_page: int,
     return query \
         .order_by(Item.published_at.desc()) \
         .paginate(page, items_per_page)
+
+
+def find_item_version(version_id: ItemVersionID) -> ItemVersion:
+    """Return the item version with that ID, or `None` if not found."""
+    return ItemVersion.query.get(version_id)
 
 
 def count_items_for_brand(brand_id: BrandID) -> int:

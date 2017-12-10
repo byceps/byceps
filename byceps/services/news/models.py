@@ -24,6 +24,8 @@ from ..user.models.user import User
 
 ItemID = NewType('ItemID', UUID)
 
+ItemVersionID = NewType('ItemVersionID', UUID)
+
 
 class ItemQuery(BaseQuery):
 
@@ -67,8 +69,7 @@ class Item(db.Model):
         return self.current_version.title
 
     def render_body(self) -> str:
-        template = load_template(self.current_version.body)
-        return template.render(url_for=url_for)
+        return self.current_version.render_body()
 
     @property
     def external_url(self) -> str:
@@ -130,6 +131,10 @@ class ItemVersion(db.Model):
         item it belongs to.
         """
         return self.id == self.item.current_version.id
+
+    def render_body(self) -> str:
+        template = load_template(self.body)
+        return template.render(url_for=url_for)
 
     def __repr__(self) -> str:
         return ReprBuilder(self) \

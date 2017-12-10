@@ -43,7 +43,7 @@
     {%- for item in items.items|sort(attribute='published_at', reverse=True) %}
       <tr>
         <td>
-          <strong>{{ item.title }}</strong><br>
+          <a href="{{ url_for('.view_version', version_id=item.current_version.id) }}"><strong>{{ item.title }}</strong></a><br>
           {{ item.slug|dim }}
         </td>
         <td>{% if item.current_version.image_url_path %} {{ render_icon('image', title='Bild festgelegt') }}{% endif %}</td>

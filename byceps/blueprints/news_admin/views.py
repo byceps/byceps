@@ -49,6 +49,18 @@ def index_for_brand(brand_id, page):
     }
 
 
+@blueprint.route('/versions/<uuid:version_id>')
+@permission_required(NewsItemPermission.list)
+@templated
+def view_version(version_id):
+    """Show the news item with the given version."""
+    version = news_service.find_item_version(version_id)
+
+    return {
+        'version': version,
+    }
+
+
 @blueprint.route('/for_brand/<brand_id>/create')
 @permission_required(NewsItemPermission.create)
 @templated

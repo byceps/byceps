@@ -1,0 +1,59 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/datetime.html' import render_datetime %}
+{% from 'macros/user_admin.html' import render_user_avatar_16_and_name %}
+{% set current_page = 'news_admin' %}
+{% set current_page_brand = brand %}
+{% set title = 'Newspostversion ansehen' %}
+
+{% block head %}
+  <style>
+    .newspost-head {
+      background-color: #eeeeee;
+      border-bottom: #cccccc solid 1px;
+      margin-bottom: 40px;
+      margin-left: -40px;
+      margin-right: -40px;
+      margin-top: -20px;
+      padding: 20px 40px;
+    }
+  </style>
+{% endblock %}
+
+{% block body %}
+
+  <div class="newspost-head">
+
+    {%- if g.current_user.has_permission(NewsItemPermission.update) -%}
+    <div class="button-row button-row--compact" style="float: right;">
+      <a class="button" href="{{ url_for('.update_form', item_id=version.item.id) }}">{{ render_icon('edit') }} bearbeiten</a>
+    </div>
+    {%- endif -%}
+
+    <table>
+      <tr>
+        <th>Marke:</th>
+        <td><a href="{{ url_for('.index_for_brand', brand_id=version.item.brand_id) }}">{{ version.item.brand.title }}</a></td>
+      </tr>
+      <tr>
+        <th>Slug:</th>
+        <td>{{ version.item.slug }}</td>
+      </tr>
+      <tr>
+        <th>Version:</th>
+        <td>{{ version.id }}</td>
+      </tr>
+      <tr>
+        <th>Erstellt:</th>
+        <td>
+          {{ render_datetime(version.created_at) }} von {{ render_user_avatar_16_and_name(version.creator) }}
+        </td>
+      </tr>
+    </table>
+
+  </div>
+
+  <h1>{{ version.title }}</h1>
+
+{{ version.render_body()|safe }}
+
+{%- endblock %}
