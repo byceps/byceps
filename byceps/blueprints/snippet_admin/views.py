@@ -6,7 +6,7 @@ byceps.blueprints.snippet_admin.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from flask import abort, g, render_template, request
+from flask import abort, g, request
 
 from ...services.party import service as party_service
 from ...services.snippet import service as snippet_service
@@ -54,6 +54,7 @@ def index_for_party(party_id):
 
 @blueprint.route('/versions/<uuid:snippet_version_id>')
 @permission_required(SnippetPermission.view_history)
+@templated
 def view_version(snippet_version_id):
     """Show the snippet with the given id."""
     version = _find_version(snippet_version_id)
@@ -75,7 +76,7 @@ def view_version(snippet_version_id):
             'error_message': str(e),
         }
 
-    return render_template('snippet_admin/view_version.html', **context)
+    return context
 
 
 @blueprint.route('/snippets/<uuid:snippet_id>/history')
