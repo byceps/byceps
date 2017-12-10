@@ -9,8 +9,8 @@
 
   <nav class="breadcrumbs">
     <ol>
-      <li>Forum</li>
-      <li><a href="{{ url_for('.index_for_brand', brand_id=category.brand.id) }}">{{ category.brand.title }}</a></li>
+      <li>Foren</li>
+      <li><a href="{{ url_for('.index_for_brand', brand_id=brand.id) }}">{{ brand.title }}</a></li>
     </ol>
   </nav>
   <h1>{{ render_icon('edit') }} {{ title }}</h1>
@@ -22,7 +22,7 @@
       {{ form_field(form.description, maxlength=80, required='required') }}
     {% endcall %}
 
-    {{ form_buttons('Speichern', cancel_url=url_for('.index_for_brand', brand_id=category.brand.id)) }}
+    {{ form_buttons('Speichern', cancel_url=url_for('.view', board_id=category.board_id)) }}
   </form>
 
 {%- endblock %}

@@ -49,8 +49,9 @@ blueprint.add_app_template_filter(render_html, 'bbcode')
 @templated
 def category_index():
     """List categories."""
+    board_id = _get_board_id()
     categories = board_category_service.get_categories_with_last_updates(
-        g.brand_id)
+        board_id)
 
     user = g.current_user
 
@@ -69,7 +70,8 @@ def category_index():
 @templated
 def category_view(slug, page):
     """List latest topics in the category."""
-    category = board_category_service.find_category_by_slug(g.brand_id, slug)
+    board_id = _get_board_id()
+    category = board_category_service.find_category_by_slug(board_id, slug)
     if category is None:
         abort(404)
 
@@ -309,9 +311,10 @@ def topic_update(topic_id):
 @templated
 def topic_moderate_form(topic_id):
     """Show a form to moderate the topic."""
+    board_id = _get_board_id()
     topic = _get_topic_or_404(topic_id)
 
-    categories = board_category_service.get_categories_excluding(g.brand_id,
+    categories = board_category_service.get_categories_excluding(board_id,
         topic.category_id)
 
     return {
@@ -693,6 +696,10 @@ def posting_unhide(posting_id):
                    topic_id=posting.topic.id,
                    page=page,
                    _anchor=posting.anchor)
+
+
+def _get_board_id():
+    return current_app.config['BOARD_ID']
 
 
 def _get_topic_or_404(topic_id):

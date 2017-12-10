@@ -6,18 +6,16 @@ testfixtures.board
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.services.board import category_service, posting_service, \
-    topic_service
-
-from .brand import create_brand
+from byceps.services.board import board_service, category_service, \
+    posting_service, topic_service
 
 
-def create_category(*, brand_id=None, number=1, slug=None, title=None,
+def create_board(brand_id, board_id):
+    return board_service.create_board(brand_id, board_id)
+
+
+def create_category(board_id, *, number=1, slug=None, title=None,
                     description=None):
-    if brand_id is None:
-        brand = create_brand()
-        brand_id = brand.id
-
     if slug is None:
         slug = 'category-{}'.format(number)
 
@@ -27,7 +25,7 @@ def create_category(*, brand_id=None, number=1, slug=None, title=None,
     if description is None:
         description = 'Hier geht es um Kategorie {}'.format(number)
 
-    return category_service.create_category(brand_id, slug, title, description)
+    return category_service.create_category(board_id, slug, title, description)
 
 
 def create_topic(category_id, creator_id, *, number=1, title=None, body=None):

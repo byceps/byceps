@@ -6,7 +6,7 @@
 from byceps.services.board.models.topic import Topic
 from byceps.services.board import topic_service as board_topic_service
 
-from testfixtures.board import create_category, create_topic
+from testfixtures.board import create_board, create_category, create_topic
 
 from tests.base import AbstractAppTestCase
 from tests.helpers import assign_permissions_to_user
@@ -23,6 +23,8 @@ class BoardModerationTestCase(AbstractAppTestCase):
         self.user = self.create_user('User')
 
         self.create_brand_and_party()
+
+        self.board = self.create_board()
 
     def test_hide_topic(self):
         self.setup_admin_with_permission('board.hide')
@@ -173,8 +175,11 @@ class BoardModerationTestCase(AbstractAppTestCase):
         permission_ids = {'admin.access', permission_id}
         assign_permissions_to_user(self.admin.id, 'admin', permission_ids)
 
+    def create_board(self):
+        return create_board(self.brand.id, 'some-board')
+
     def create_category(self, number):
-        return create_category(brand_id=self.brand.id, number=number)
+        return create_category(self.board.id, number=number)
 
     def create_topic(self, category_id, creator_id, number):
         return create_topic(category_id, creator_id, number=number)

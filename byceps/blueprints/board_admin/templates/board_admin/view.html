@@ -1,0 +1,68 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/icons.html' import render_icon %}
+{% set current_page = 'board_admin' %}
+{% set current_page_brand = brand %}
+{% set title = '%s - Forum'|format(board.id) %}
+
+{% block body %}
+
+  <nav class="breadcrumbs">
+    <ol>
+      <li>Foren</li>
+      <li><a href="{{ url_for('.index_for_brand', brand_id=board.brand_id) }}">{{ brand.title }}</a></li>
+    </ol>
+  </nav>
+  <h1>{{ board.id }}</h1>
+
+  {%- if g.current_user.has_permission(BoardCategoryPermission.create) %}
+  <div class="button-row">
+    <a class="button" href="{{ url_for('.category_create_form', board_id=board.id) }}">{{ render_icon('add') }} Kategorie erstellen</a>
+  </div>
+  {%- endif %}
+
+  <table class="index wide">
+    <thead>
+      <tr>
+        <th>Position</th>
+        <th>Titel, Slug</th>
+        <th>Beschreibung</th>
+        <th class="centered">Themen</th>
+        <th class="centered">Beiträge</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+    {%- for category in categories|sort(attribute='position') %}
+      <tr>
+        <td class="centered">{{ category.position }}</td>
+        <td><strong>{{ category.title }}</strong><br>{{ category.slug|dim }}</td>
+        <td>{{ category.description }}</td>
+        <td class="centered bignumber">{{ category.topic_count }}</td>
+        <td class="centered bignumber">{{ category.posting_count }}</td>
+        <td>
+          {%- if g.current_user.has_permission(BoardCategoryPermission.update) -%}
+          <div class="dropdown left">
+            <button class="dropdown-toggle button button--compact">{{ render_icon('caret-down') }}</button>
+            <ol>
+              <li><a href="{{ url_for('.category_update_form', category_id=category.id) }}">{{ render_icon('edit') }} bearbeiten</a></li>
+              <li><a data-action="category-move-up" href="{{ url_for('.category_move_up', category_id=category.id) }}">{{ render_icon('arrow-up') }} nach oben schieben</a></li>
+              <li><a data-action="category-move-down" href="{{ url_for('.category_move_down', category_id=category.id) }}">{{ render_icon('arrow-down') }} nach unten schieben</a></li>
+            </ol>
+          </div>
+          {%- endif -%}
+        </td>
+      </tr>
+    {%- endfor %}
+    </tbody>
+  </table>
+
+{%- endblock %}
+
+{% block scripts %}
+    <script>
+      onDomReady(function() {
+        post_on_click_then_reload('[data-action="category-move-up"]');
+        post_on_click_then_reload('[data-action="category-move-down"]');
+      });
+    </script>
+{%- endblock %}

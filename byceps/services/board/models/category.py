@@ -12,11 +12,11 @@ from typing import NewType
 from sqlalchemy.ext.orderinglist import ordering_list
 
 from ....database import BaseQuery, db, generate_uuid
-from ....typing import BrandID
 from ....util.instances import ReprBuilder
 
-from ...brand.models.brand import Brand
 from ...user.models.user import User
+
+from .board import Board, BoardID
 
 
 CategoryID = NewType('CategoryID', UUID)
@@ -24,21 +24,21 @@ CategoryID = NewType('CategoryID', UUID)
 
 class CategoryQuery(BaseQuery):
 
-    def for_brand_id(self, brand_id: BrandID) -> BaseQuery:
-        return self.filter_by(brand_id=brand_id)
+    def for_board_id(self, board_id: BoardID) -> BaseQuery:
+        return self.filter_by(board_id=board_id)
 
 
 class Category(db.Model):
     """A category for topics."""
     __tablename__ = 'board_categories'
     __table_args__ = (
-        db.UniqueConstraint('brand_id', 'slug'),
-        db.UniqueConstraint('brand_id', 'title'),
+        db.UniqueConstraint('board_id', 'slug'),
+        db.UniqueConstraint('board_id', 'title'),
     )
     query_class = CategoryQuery
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    brand_id = db.Column(db.Unicode(20), db.ForeignKey('brands.id'), index=True, nullable=False)
+    board_id = db.Column(db.Unicode(40), db.ForeignKey('boards.id'), index=True, nullable=False)
     position = db.Column(db.Integer, nullable=False)
     slug = db.Column(db.Unicode(40), nullable=False)
     title = db.Column(db.Unicode(40), nullable=False)
@@ -49,14 +49,14 @@ class Category(db.Model):
     last_posting_updated_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
     last_posting_updated_by = db.relationship(User)
 
-    brand = db.relationship(Brand,
-                            backref=db.backref('board_categories',
+    board = db.relationship(Board,
+                            backref=db.backref('categories',
                                                order_by=position,
                                                collection_class=ordering_list('position', count_from=1)))
 
-    def __init__(self, brand_id: BrandID, slug: str, title: str,
+    def __init__(self, board_id: BoardID, slug: str, title: str,
                  description: str) -> None:
-        self.brand_id = brand_id
+        self.board_id = board_id
         self.slug = slug
         self.title = title
         self.description = description
@@ -67,7 +67,7 @@ class Category(db.Model):
     def __repr__(self) -> str:
         return ReprBuilder(self) \
             .add_with_lookup('id') \
-            .add('brand', self.brand_id) \
+            .add('board', self.board_id) \
             .add_with_lookup('slug') \
             .add_with_lookup('title') \
             .build()

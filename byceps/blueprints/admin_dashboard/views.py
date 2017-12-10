@@ -10,10 +10,6 @@ from datetime import date, timedelta
 
 from flask import abort
 
-from ...services.board import \
-    category_service as board_category_service, \
-    posting_service as board_posting_service, \
-    topic_service as board_topic_service
 from ...services.brand import service as brand_service
 from ...services.news import service as news_service
 from ...services.newsletter import service as newsletter_service
@@ -103,12 +99,6 @@ def view_brand(brand_id):
 
     current_terms_version = terms_service.find_current_version(brand.id)
 
-    board_category_count = board_category_service.count_categories_for_brand(
-        brand.id)
-    board_topic_count = board_topic_service.count_topics_for_brand(brand.id)
-    board_posting_count = board_posting_service.count_postings_for_brand(
-        brand.id)
-
     return {
         'brand': brand,
 
@@ -123,10 +113,6 @@ def view_brand(brand_id):
         'newsletter_subscriber_count': newsletter_subscriber_count,
 
         'current_terms_version': current_terms_version,
-
-        'board_category_count': board_category_count,
-        'board_topic_count': board_topic_count,
-        'board_posting_count': board_posting_count,
     }
 
 

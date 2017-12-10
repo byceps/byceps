@@ -9,20 +9,20 @@
 
   <nav class="breadcrumbs">
     <ol>
-      <li>Forum</li>
+      <li>Foren</li>
       <li><a href="{{ url_for('.index_for_brand', brand_id=brand.id) }}">{{ brand.title }}</a></li>
     </ol>
   </nav>
   <h1>{{ render_icon('add') }} {{ title }}</h1>
 
-  <form action="{{ url_for('.category_create', brand_id=brand.id) }}" method="post">
+  <form action="{{ url_for('.category_create', board_id=board.id) }}" method="post">
     {% call form_fieldset() %}
       {{ form_field(form.slug, maxlength=40, required='required', autofocus='autofocus') }}
       {{ form_field(form.title, maxlength=40, required='required') }}
       {{ form_field(form.description, maxlength=80, required='required') }}
     {% endcall %}
 
-    {{ form_buttons('Erstellen', cancel_url=url_for('.index_for_brand', brand_id=brand.id)) }}
+    {{ form_buttons('Erstellen', cancel_url=url_for('.view', board_id=board.id)) }}
   </form>
 
 {%- endblock %}

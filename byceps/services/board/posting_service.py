@@ -12,21 +12,22 @@ from typing import Optional
 from flask_sqlalchemy import Pagination
 
 from ...database import db
-from ...typing import BrandID, UserID
+from ...typing import UserID
 from ...util.iterables import index_of
 
 from ..user.models.user import User
 
 from .aggregation_service import aggregate_topic
+from .models.board import BoardID
 from .models.category import Category
 from .models.posting import Posting, PostingID
 from .models.topic import Topic, TopicID
 
 
-def count_postings_for_brand(brand_id: BrandID) -> int:
-    """Return the number of postings for that brand."""
+def count_postings_for_board(board_id: BoardID) -> int:
+    """Return the number of postings for that board."""
     return Posting.query \
-        .join(Topic).join(Category).filter(Category.brand_id == brand_id) \
+        .join(Topic).join(Category).filter(Category.board_id == board_id) \
         .count()
 
 
