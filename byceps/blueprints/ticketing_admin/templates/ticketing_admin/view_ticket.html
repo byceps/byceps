@@ -65,7 +65,7 @@
       <th>Sitzplatz</th>
       <td>
         {%- if ticket.occupied_seat -%}
-        {{ ticket.occupied_seat.area.title }}
+        {{ ticket.occupied_seat.label }}
         {%- else -%}
         {{ 'keiner'|dim }}
         {%- endif -%}
