@@ -176,7 +176,8 @@ class BoardModerationTestCase(AbstractAppTestCase):
         assign_permissions_to_user(self.admin.id, 'admin', permission_ids)
 
     def create_board(self):
-        return create_board(self.brand.id, 'some-board')
+        board_id = self.brand.id
+        return create_board(self.brand.id, board_id)
 
     def create_category(self, number):
         return create_category(self.board.id, number=number)
