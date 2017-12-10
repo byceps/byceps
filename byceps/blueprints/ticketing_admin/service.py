@@ -24,7 +24,7 @@ def get_events(ticket_id: TicketID) -> Iterator[TicketEventData]:
     events.insert(0, _fake_ticket_creation_event(ticket_id))
 
     user_ids = set(_find_values_for_keys(events, [
-        'initator_id',
+        'initiator_id',
         'appointed_seat_manager_id',
         'appointed_user_manager_id',
         'appointed_user_id',
