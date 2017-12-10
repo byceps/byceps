@@ -12,7 +12,7 @@
 <table class="index wide">
   <thead>
     <tr>
-      <th>Code</th>
+      <th colspan="2">Code</th>
       <th>Besitzer</th>
       <th>Kategorie</th>
       <th>Sitzplatz</th>
@@ -21,11 +21,9 @@
   </thead>
   <tbody>
     {%- for ticket in tickets|sort(attribute='created_at') %}
-    <tr>
-      <td class="nowrap">
-        {%- if ticket.revoked %}{{ render_ticket_flag_revoked(hide_label=True) }}{% endif %}
-        <a href="{{ url_for('ticketing_admin.view_ticket', ticket_id=ticket.id) }}"><strong>{{ ticket.code }}</strong></a>
-      </td>
+    <tr{% if ticket.revoked %} class="dimmed"{% endif %}>
+      <td><a href="{{ url_for('ticketing_admin.view_ticket', ticket_id=ticket.id) }}"><strong>{{ ticket.code }}</strong></a></td>
+      <td>{% if ticket.revoked %}{{ render_ticket_flag_revoked(hide_label=True) }}{% endif %}</td>
       <td>{{ render_user_avatar_16_and_link(ticket.owned_by) }}</td>
       <td>{{ ticket.category.title }}</td>
       <td>
