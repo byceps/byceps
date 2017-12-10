@@ -276,15 +276,24 @@ def get_ticket_with_details(ticket_id: TicketID) -> Optional[Ticket]:
 
 
 def get_tickets_with_details_for_party_paginated(party_id: PartyID, page: int,
-                                                 per_page: int) -> Pagination:
+                                                 per_page: int,
+                                                 *, search_term=None
+                                                ) -> Pagination:
     """Return the party's tickets to show on the specified page."""
-    return Ticket.query \
+    query = Ticket.query \
         .for_party_id(party_id) \
         .options(
             db.joinedload('category'),
             db.joinedload('owned_by'),
             db.joinedload('occupied_seat').joinedload('area'),
-        ) \
+        )
+
+    if search_term:
+        ilike_pattern = '%{}%'.format(search_term)
+        query = query \
+            .filter(Ticket.code.ilike(ilike_pattern))
+
+    return query \
         .order_by(Ticket.created_at) \
         .paginate(page, per_page)
 
