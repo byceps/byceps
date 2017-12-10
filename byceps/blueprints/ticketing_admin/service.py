@@ -6,7 +6,7 @@ byceps.blueprints.ticketing_admin.service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import Any, Dict, Iterator, Tuple
+from typing import Any, Dict, Iterator, Sequence, Set, Tuple
 
 from ...services.seating import seat_service
 from ...services.ticketing import event_service
@@ -23,9 +23,12 @@ def get_events(ticket_id: TicketID) -> Iterator[TicketEventData]:
     events = event_service.get_events_for_ticket(ticket_id)
     events.insert(0, _fake_ticket_creation_event(ticket_id))
 
-    user_ids = {event.data['initiator_id']
-                for event in events
-                if 'initiator_id' in event.data}
+    user_ids = set(_find_values_for_keys(events, [
+        'initator_id',
+        'appointed_seat_manager_id',
+        'appointed_user_manager_id',
+        'appointed_user_id',
+        ]))
     users = user_service.find_users(user_ids)
     users_by_id = {str(user.id): user for user in users}
 
@@ -51,22 +54,48 @@ def _fake_ticket_creation_event(ticket_id: TicketID) -> TicketEvent:
     return TicketEvent(ticket.created_at, 'ticket-created', ticket.id, data)
 
 
+def _find_values_for_keys(events: Sequence[TicketEvent], keys: Set[str]):
+    for event in events:
+        for key in keys:
+            value = event.data.get(key)
+            if value is not None:
+                yield value
+
+
 def _get_additional_data(event: TicketEvent,
                          users_by_id: Dict[UserID, UserTuple]
                         ) -> Iterator[Tuple[str, Any]]:
     if event.event_type in {
+            'seat-manager-appointed',
+            'seat-manager-withdrawn',
             'seat-occupied',
             'seat-released',
             'ticket-revoked',
+            'user-appointed',
+            'user-manager-appointed',
+            'user-manager-withdrawn',
+            'user-withdrawn',
     }:
         yield from _get_additional_data_for_user_initiated_event(event,
                                                                  users_by_id)
+
+    if event.event_type == 'seat-manager-appointed':
+        yield _look_up_user_for_id(event, users_by_id,
+            'appointed_seat_manager_id', 'appointed_seat_manager')
 
     if event.event_type == 'seat-occupied':
         yield from _get_additional_data_for_seat_occupied_event(event)
 
     if event.event_type == 'ticket-revoked':
         yield from _get_additional_data_for_ticket_revoked_event(event)
+
+    if event.event_type == 'user-appointed':
+        yield _look_up_user_for_id(event, users_by_id,
+            'appointed_user_id', 'appointed_user')
+
+    if event.event_type == 'user-manager-appointed':
+        yield _look_up_user_for_id(event, users_by_id,
+            'appointed_user_manager_id', 'appointed_user_manager')
 
 
 def _get_additional_data_for_user_initiated_event(event: TicketEvent,
@@ -93,3 +122,11 @@ def _get_additional_data_for_ticket_revoked_event(event: TicketEvent
     reason = event.data.get('reason')
     if reason:
         yield 'reason', reason
+
+
+def _look_up_user_for_id(event: TicketEvent,
+                         users_by_id: Dict[UserID, UserTuple],
+                         user_id_key, user_key
+                        ) -> Iterator[Tuple[str, Any]]:
+    user_id = event.data[user_id_key]
+    return user_key, users_by_id[user_id]
