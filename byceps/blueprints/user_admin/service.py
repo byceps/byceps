@@ -47,6 +47,7 @@ def _filter_by_search_term(query, search_term):
         .join(UserDetail) \
         .filter(
             db.or_(
+                User.email_address.ilike(ilike_pattern),
                 User.screen_name.ilike(ilike_pattern),
                 UserDetail.first_names.ilike(ilike_pattern),
                 UserDetail.last_name.ilike(ilike_pattern)
