@@ -1,6 +1,7 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
+{% from 'macros/seating.html' import render_seat_link %}
 {% from 'macros/user.html' import render_user_link %}
 {% from 'macros/user_avatar.html' import render_user_avatar_32 %}
 {% set current_page = 'attendees' %}
@@ -55,7 +56,7 @@
             <div class="attendee-name">{{ render_user_link(attendee.user) }}</div>
           </div>
         </td>
-        <td>{{ attendee.seat.label if attendee.seat else 'nicht ausgewählt'|dim }}</td>
+        <td>{{ render_seat_link(attendee.seat.area, attendee.seat) if attendee.seat else 'nicht ausgewählt'|dim }}</td>
       </tr>
       {%- endfor %}
     </tbody>
