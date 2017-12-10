@@ -127,6 +127,9 @@ def topic_view(topic_id, page):
     if topic is None:
         abort(404)
 
+    if topic.category.board_id != _get_board_id():
+        abort(404)
+
     # Copy last view timestamp for later use to compare postings
     # against it.
     last_viewed_at = board_last_view_service.find_topic_last_viewed_at(
@@ -706,6 +709,9 @@ def _get_topic_or_404(topic_id):
     topic = board_topic_service.find_topic_by_id(topic_id)
 
     if topic is None:
+        abort(404)
+
+    if topic.category.board_id != _get_board_id():
         abort(404)
 
     return topic
