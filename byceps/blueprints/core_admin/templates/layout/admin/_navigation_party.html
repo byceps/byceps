@@ -24,6 +24,7 @@
       .add_item(url_for('shop_article_admin.index_for_party', party_id=party.id), 'Shop-Artikel', id='shop_article_admin', required_permission=ShopArticlePermission.list, icon='shopping-cart')
       .add_item(url_for('shop_order_admin.index_for_party', party_id=party.id), 'Shop-Bestellungen', id='shop_order_admin', required_permission=ShopOrderPermission.list, icon='payment')
       .add_item(url_for('ticketing_admin.index_for_party', party_id=party.id), 'Tickets', id='ticketing_admin', required_permission=TicketingPermission.view, icon='ticket')
+      .add_item(url_for('ticketing_checkin.index', party_id=party.id), 'Check-In', id='ticketing_checkin', required_permission=TicketingPermission.checkin, icon='ticketing-checkin')
       .add_item(url_for('orga_team_admin.teams_for_party', party_id=party.id), 'Orga-Teams', id='orga_admin.teams', required_permission=OrgaTeamPermission.list, icon='users')
       .add_item(url_for('orga_presence.view', party_id=party.id), 'Orga-Anwesenheit', id='orga_presence', required_permission=OrgaPresencePermission.list, icon='date-okay')
       .add_item(url_for('tourney_admin.category_index_for_party', party_id=party.id), 'Turniere', id='tourney_admin', required_permission=TourneyCategoryPermission.list, icon='trophy')
