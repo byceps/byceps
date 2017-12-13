@@ -401,6 +401,9 @@ def appoint_user(ticket_id: TicketID, user_id: UserID, initiator_id: UserID
     if ticket.revoked:
         raise TicketIsRevoked('Ticket {} has been revoked.'.format(ticket_id))
 
+    if ticket.user_checked_in:
+        raise UserAlreadyCheckIn('Ticket user has already been checked in.')
+
     ticket.used_by_id = user_id
 
     event = event_service._build_event('user-appointed', ticket.id, {
@@ -418,6 +421,9 @@ def withdraw_user(ticket_id: TicketID, initiator_id: UserID) -> None:
 
     if ticket.revoked:
         raise TicketIsRevoked('Ticket {} has been revoked.'.format(ticket_id))
+
+    if ticket.user_checked_in:
+        raise UserAlreadyCheckIn('Ticket user has already been checked in.')
 
     ticket.used_by_id = None
 
