@@ -428,6 +428,11 @@ def check_in_user(ticket_id: TicketID, initiator_id: UserID) -> None:
         raise TicketLacksUser(
             'Ticket {} has no user assigned.'.format(ticket_id))
 
+    if ticket.user_checked_in:
+        raise UserAlreadyCheckIn(
+            'Ticket {} has already been used to check in a user.'
+                .format(ticket_id))
+
     ticket.user_checked_in = True
 
     event = event_service._build_event('user-checked-in', ticket.id, {
@@ -446,6 +451,12 @@ class TicketIsRevoked(Exception):
 class TicketLacksUser(Exception):
     """Indicate a (failed) attempt to check a user in with a ticket
     which has no user set.
+    """
+
+
+class UserAlreadyCheckIn(Exception):
+    """Indicate that user check-in failed because a user has already
+    been checked in with the ticket.
     """
 
 
