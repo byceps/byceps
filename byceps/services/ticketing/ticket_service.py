@@ -462,6 +462,25 @@ def check_in_user(ticket_id: TicketID, initiator_id: UserID) -> None:
     db.session.commit()
 
 
+def revert_user_check_in(ticket_id: TicketID, initiator_id: UserID) -> None:
+    """Revert a user check-in that was done by mistake."""
+    ticket = find_ticket(ticket_id)
+
+    if not ticket.user_checked_in:
+        raise ValueError(
+            'User of ticket {} has not been checked in.'.format(ticket_id))
+
+    ticket.user_checked_in = False
+
+    event = event_service._build_event('user-check-in-reverted', ticket.id, {
+        'checked_in_user_id': str(ticket.used_by_id),
+        'initiator_id': str(initiator_id),
+    })
+    db.session.add(event)
+
+    db.session.commit()
+
+
 class TicketIsRevoked(Exception):
     """Indicate an error caused by the ticket being revoked."""
 

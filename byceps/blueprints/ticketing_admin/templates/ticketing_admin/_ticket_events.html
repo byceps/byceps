@@ -88,6 +88,13 @@
             <span class="user-link">{{ render_user_avatar_20_and_link(event.checked_in_user) }}</span>
             für die Veranstaltung <strong>eingecheckt</strong>.
           {%- endset %}
+        {%- elif event.event == 'user-check-in-reverted' %}
+          {%- set icon_name = 'success' %}
+          {%- set body %}
+          <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span> hat den <strong>Check-In</strong> von
+            Ticketnutzer <span class="user-link">{{ render_user_avatar_20_and_link(event.checked_in_user) }}</span>
+            <strong>rückgangig gemacht</strong>.
+          {%- endset %}
         {%- else %}
           {%- set icon_name = 'disabled' %}
           {%- set body %}

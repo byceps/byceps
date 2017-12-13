@@ -73,6 +73,7 @@ def _get_additional_data(event: TicketEvent,
             'ticket-revoked',
             'user-appointed',
             'user-checked-in',
+            'user-check-in-reverted',
             'user-manager-appointed',
             'user-manager-withdrawn',
             'user-withdrawn',
@@ -94,7 +95,7 @@ def _get_additional_data(event: TicketEvent,
         yield _look_up_user_for_id(event, users_by_id,
             'appointed_user_id', 'appointed_user')
 
-    if event.event_type == 'user-checked-in':
+    if event.event_type in {'user-checked-in', 'user-check-in-reverted'}:
         yield _look_up_user_for_id(event, users_by_id,
             'checked_in_user_id', 'checked_in_user')
 
