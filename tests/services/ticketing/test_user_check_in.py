@@ -5,7 +5,6 @@
 
 from byceps.services.ticketing import category_service, event_service, \
     ticket_service
-from byceps.database import db
 
 from tests.base import AbstractAppTestCase
 
@@ -26,7 +25,7 @@ class UserCheckInTest(AbstractAppTestCase):
         ticket_before = ticket_service.create_ticket(self.category_id, self.owner_id)
 
         ticket_before.used_by_id = self.user_id
-        db.session.commit()
+        self.db.session.commit()
 
         assert not ticket_before.user_checked_in
 
