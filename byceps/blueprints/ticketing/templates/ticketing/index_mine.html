@@ -54,6 +54,12 @@
           <div class="ticket-card-cell-block">
             <div class="label-row">
               <span class="label">Code</span>
+
+              <span class="label-buttons">
+                {%- if ticket.user_checked_in %}
+                {{ render_tag('eingecheckt') }}
+                {%- endif %}
+              </span>
             </div>
             <span class="ticket-code">{{ ticket.code }}</span>
           </div>
