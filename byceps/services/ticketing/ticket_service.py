@@ -362,6 +362,9 @@ def appoint_user_manager(ticket_id: TicketID, manager_id: UserID,
     """Appoint the user as the ticket's user manager."""
     ticket = find_ticket(ticket_id)
 
+    if ticket.revoked:
+        raise TicketIsRevoked('Ticket {} has been revoked.'.format(ticket_id))
+
     ticket.user_managed_by_id = manager_id
 
     event = event_service._build_event('user-manager-appointed', ticket.id, {
@@ -376,6 +379,9 @@ def appoint_user_manager(ticket_id: TicketID, manager_id: UserID,
 def withdraw_user_manager(ticket_id: TicketID, initiator_id: UserID) -> None:
     """Withdraw the ticket's custom user manager."""
     ticket = find_ticket(ticket_id)
+
+    if ticket.revoked:
+        raise TicketIsRevoked('Ticket {} has been revoked.'.format(ticket_id))
 
     ticket.user_managed_by_id = None
 
@@ -392,6 +398,9 @@ def appoint_user(ticket_id: TicketID, user_id: UserID, initiator_id: UserID
     """Appoint the user as the ticket's user."""
     ticket = find_ticket(ticket_id)
 
+    if ticket.revoked:
+        raise TicketIsRevoked('Ticket {} has been revoked.'.format(ticket_id))
+
     ticket.used_by_id = user_id
 
     event = event_service._build_event('user-appointed', ticket.id, {
@@ -406,6 +415,9 @@ def appoint_user(ticket_id: TicketID, user_id: UserID, initiator_id: UserID
 def withdraw_user(ticket_id: TicketID, initiator_id: UserID) -> None:
     """Withdraw the ticket's user."""
     ticket = find_ticket(ticket_id)
+
+    if ticket.revoked:
+        raise TicketIsRevoked('Ticket {} has been revoked.'.format(ticket_id))
 
     ticket.used_by_id = None
 
@@ -469,6 +481,9 @@ def appoint_seat_manager(ticket_id: TicketID, manager_id: UserID,
     """Appoint the user as the ticket's seat manager."""
     ticket = find_ticket(ticket_id)
 
+    if ticket.revoked:
+        raise TicketIsRevoked('Ticket {} has been revoked.'.format(ticket_id))
+
     ticket.seat_managed_by_id = manager_id
 
     event = event_service._build_event('seat-manager-appointed', ticket.id, {
@@ -484,6 +499,9 @@ def withdraw_seat_manager(ticket_id: TicketID, initiator_id: UserID) -> None:
     """Withdraw the ticket's custom seat manager."""
     ticket = find_ticket(ticket_id)
 
+    if ticket.revoked:
+        raise TicketIsRevoked('Ticket {} has been revoked.'.format(ticket_id))
+
     ticket.seat_managed_by_id = None
 
     event = event_service._build_event('seat-manager-withdrawn', ticket.id, {
@@ -498,6 +516,9 @@ def occupy_seat(ticket_id: TicketID, seat_id: SeatID, initiator_id: UserID
                ) -> None:
     """Occupy the seat with this ticket."""
     ticket = find_ticket(ticket_id)
+
+    if ticket.revoked:
+        raise TicketIsRevoked('Ticket {} has been revoked.'.format(ticket_id))
 
     _deny_seat_management_if_ticket_belongs_to_bundle(ticket)
 
@@ -529,6 +550,9 @@ def occupy_seat(ticket_id: TicketID, seat_id: SeatID, initiator_id: UserID
 def release_seat(ticket_id: TicketID, initiator_id: UserID) -> None:
     """Release the seat occupied by this ticket."""
     ticket = find_ticket(ticket_id)
+
+    if ticket.revoked:
+        raise TicketIsRevoked('Ticket {} has been revoked.'.format(ticket_id))
 
     _deny_seat_management_if_ticket_belongs_to_bundle(ticket)
 
