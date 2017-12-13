@@ -4,3 +4,8 @@
 {% macro render_ticket_flag_revoked(hide_label=False) -%}
   {{ render_tag('' if hide_label else 'widerrufen', class='color-danger', icon='disabled', title='Dieses Ticket ist nicht mehr gültig.') }}
 {%- endmacro %}
+
+
+{% macro render_ticket_flag_user_checked_in(hide_label=False) -%}
+  {{ render_tag('' if hide_label else 'eingecheckt', class='color-success', icon='success', title='Mit diesem Ticket wurde ein Benutzer eingecheckt.') }}
+{%- endmacro %}

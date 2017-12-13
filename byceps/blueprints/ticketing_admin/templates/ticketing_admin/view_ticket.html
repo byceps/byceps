@@ -2,7 +2,7 @@
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/shop_order_admin.html' import render_order_link %}
-{% from 'macros/ticketing_admin.html' import render_ticket_flag_revoked %}
+{% from 'macros/ticketing_admin.html' import render_ticket_flag_revoked, render_ticket_flag_user_checked_in %}
 {% from 'macros/user_admin.html' import render_user_avatar_20_and_link %}
 {% set current_page = 'ticketing_admin' %}
 {% set current_page_party = party %}
@@ -16,7 +16,11 @@
       <li>{{ party.title }}</li>
     </ol>
   </nav>
-  <h1>{{ render_icon('ticket') }} {{ ticket.code }}{% if ticket.revoked %} {{ render_ticket_flag_revoked() }}{% endif %}</h1>
+  <h1>
+    {{- render_icon('ticket') }} {{ ticket.code }}
+    {%- if ticket.revoked %} {{ render_ticket_flag_revoked() }}{% endif -%}
+    {%- if ticket.user_checked_in %} {{ render_ticket_flag_user_checked_in() }}{% endif -%}
+  </h1>
 
   <table class="index">
     <tr>
