@@ -5,7 +5,8 @@
 
 from byceps.services.ticketing import category_service, event_service, \
     ticket_service
-from byceps.services.ticketing.ticket_service import TicketIsRevoked
+from byceps.services.ticketing.ticket_service import TicketIsRevoked, \
+    TicketLacksUser
 
 from tests.base import AbstractAppTestCase
 
@@ -62,6 +63,12 @@ class UserCheckInTest(AbstractAppTestCase):
         self.db.session.commit()
 
         with self.assertRaises(TicketIsRevoked):
+            ticket_service.check_in_user(ticket.id, self.orga_id)
+
+    def test_check_in_user_with_ticket_without_user(self):
+        ticket = ticket_service.create_ticket(self.category_id, self.owner_id)
+
+        with self.assertRaises(TicketLacksUser):
             ticket_service.check_in_user(ticket.id, self.orga_id)
 
     # -------------------------------------------------------------------- #
