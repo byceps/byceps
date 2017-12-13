@@ -72,6 +72,7 @@ def _get_additional_data(event: TicketEvent,
             'seat-released',
             'ticket-revoked',
             'user-appointed',
+            'user-checked-in',
             'user-manager-appointed',
             'user-manager-withdrawn',
             'user-withdrawn',
@@ -92,6 +93,10 @@ def _get_additional_data(event: TicketEvent,
     if event.event_type == 'user-appointed':
         yield _look_up_user_for_id(event, users_by_id,
             'appointed_user_id', 'appointed_user')
+
+    if event.event_type == 'user-checked-in':
+        yield _look_up_user_for_id(event, users_by_id,
+            'checked_in_user_id', 'checked_in_user')
 
     if event.event_type == 'user-manager-appointed':
         yield _look_up_user_for_id(event, users_by_id,

@@ -81,6 +81,13 @@
             <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
             hat sich selbst als <strong>Ticketnutzer</strong> eingetragen.
           {%- endset %}
+        {%- elif event.event == 'user-checked-in' %}
+          {%- set icon_name = 'success' %}
+          {%- set body %}
+            <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span> hat
+            <span class="user-link">{{ render_user_avatar_20_and_link(event.checked_in_user) }}</span>
+            für die Veranstaltung <strong>eingecheckt</strong>.
+          {%- endset %}
         {%- else %}
           {%- set icon_name = 'disabled' %}
           {%- set body %}
