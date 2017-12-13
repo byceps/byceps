@@ -72,9 +72,7 @@ def index_for_party(party_id, page):
     # Replace order objects in pagination object with order tuples.
     orders.items = [order.to_tuple() for order in orders.items]
 
-    orderer_ids = {order.placed_by_id for order in orders.items}
-    orderers = user_service.find_users(orderer_ids)
-    orderers_by_id = user_service.index_users_by_id(orderers)
+    orders.items = list(service.extend_order_tuples_with_orderer(orders.items))
 
     return {
         'party': party,
@@ -86,7 +84,6 @@ def index_for_party(party_id, page):
         'OrderStateFilter': OrderStateFilter,
         'order_state_filter': order_state_filter,
         'orders': orders,
-        'orderers_by_id': orderers_by_id,
     }
 
 
