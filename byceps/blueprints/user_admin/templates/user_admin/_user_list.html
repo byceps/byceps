@@ -1,0 +1,34 @@
+{%- from 'macros/datetime.html' import render_datetime %}
+{%- from 'macros/user_admin.html' import render_user_avatar_16_and_link, render_user_flag_deleted, render_user_flag_disabled %}
+
+{%- if users %}
+<table class="index wide">
+  <thead>
+    <tr>
+      <th colspan="2">Benutzername</th>
+      <th>Voller Name</th>
+      <th>Erstellt</th>
+    </tr>
+  </thead>
+  <tbody>
+    {%- for user in users %}
+    <tr{% if not user.enabled or user.deleted %} class="dimmed"{% endif %}>
+      <td>{{ render_user_avatar_16_and_link(user) }}</td>
+      <td>
+        {%- if not user.enabled %}
+        {{- render_user_flag_disabled(show_label=False) }}
+        {%- endif -%}
+        {%- if user.deleted %}
+        {{- render_user_flag_deleted(show_label=False) }}
+        {%- endif -%}
+      </td>
+      <td>{{ user.detail.full_name|fallback }}</td>
+      <td>{{ render_datetime(user.created_at) }}</td>
+    </tr>
+    {%- endfor %}
+    <tr>
+  </tbody>
+</table>
+{%- else %}
+<p>{{ 'keine'|dim }}</p>
+{%- endif %}
