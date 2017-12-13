@@ -1,0 +1,59 @@
+{%- from 'macros/datetime.html' import render_datetime %}
+{%- from 'macros/icons.html' import render_icon %}
+{%- from 'macros/shop_order_admin.html' import render_order_link, render_order_payment_method, render_order_payment_state %}
+{%- from 'macros/user_admin.html' import render_user_avatar_16_and_link %}
+
+
+{%- if orders %}
+<table class="index wide">
+  <thead>
+    <tr>
+      <th>Bestellnummer<br>Zeitpunkt</th>
+      <th>Besteller</th>
+      <th>Betrag</th>
+      <th colspan="2"></th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    {%- for order in orders %}
+    <tr>
+      <td>
+        <strong>{{- render_order_link(order) -}}</strong><br>
+        {{- render_datetime(order.created_at)|dim -}}
+      </td>
+      <td>
+        {{- render_user_avatar_16_and_link(orderers_by_id[order.placed_by_id]) -}}<br>
+        {%- filter dim %}
+          {{- order.first_names }} {{ order.last_name -}}
+        {%- endfilter %}
+      </td>
+      <td class="number">{{ order.total_price|format_euro_amount }}</td>
+      <td class="centered">
+        {%- if order.is_invoiced %}
+        {{- render_icon('invoice', title='Rechnung erstellt') -}}
+        {%- endif -%}
+      </td>
+      <td>
+        {%- if order.is_shipping_required %}
+          {%- if order.is_shipped %}
+            {{- render_icon('shipping', title='Lieferung versendet') -}}
+          {%- else -%}
+            {%- filter dim %}
+              {{- render_icon('shipping', title='Versand erforderlich') -}}
+            {%- endfilter %}
+          {%- endif -%}
+        {%- endif -%}
+      </td>
+      <td>
+        {{ render_order_payment_state(order.payment_state) }}<br>
+        {{ render_order_payment_method(order.payment_method)|dim }}
+      </td>
+    </tr>
+    {%- endfor %}
+    <tr>
+  </tbody>
+</table>
+{%- else %}
+<p>{{ 'keine'|dim }}</p>
+{%- endif %}
