@@ -1,37 +1,74 @@
 {% extends 'layout/admin/base.html' %}
+{% from 'macros/admin.html' import render_extra_in_heading %}
 {% set current_page = 'ticketing_checkin' %}
 {% set current_page_party = party %}
 {% set title = 'Check-In - %s'|format(party.title) %}
+{% set layout_main_raw = True %}
+
+{% block head %}
+    <style>
+      .box--clear {
+        padding: 0 20px;
+      }
+
+      .box + .box {
+        margin-top: 20px;
+      }
+
+      .box h2 {
+        margin-top: 0;
+      }
+    </style>
+{%- endblock %}
 
 {% block body %}
 
-  <nav class="breadcrumbs">
-    <ol>
-      <li>Ticketing</li>
-      <li>{{ party.title }}</li>
-    </ol>
-  </nav>
-  <h1>Check-In</h1>
-
-  <div class="row row--space-between filters">
-    <div class="column-auto">
-
-      <form action="{{ url_for('.index', party_id=party.id) }}" class="single-row unobtrusive">
-          <input type="search" name="search_term" placeholder="Ticketcode, Bestellnummer, Benutzer-, Vor-, Nachname, E-Mail-Adresse"{%- if search_term %} value="{{ search_term }}"{% endif %}>
-          <button type="submit" class="button" title="Suchen">{{ render_icon('search') }}</button>
-          <a href="{{ url_for('.index', party_id=party.id) }}" class="button{% if not search_term %} dimmed{% endif %}" title="Einschränkung auf Suchbegriff aufheben">{{ render_icon('remove') }}</a>
-      </form>
-
-      <small>
-        <p>Suche nach:</p>
-        <ul>
-          <li>Tickets (via Ticketcode)</li>
-          <li>Bestellungen (via Bestellnummer)</li>
-          <li>Benutzern (via Benutzer-, Vor-, Nachname, E-Mail-Adresse)</li>
-        </ul>
-      </small>
-
-    </div>
+  <div class="box--clear">
+    <nav class="breadcrumbs">
+      <ol>
+        <li>Ticketing</li>
+        <li>{{ party.title }}</li>
+      </ol>
+    </nav>
+    <h1>Check-In</h1>
   </div>
+
+  <div class="box">
+    <form action="{{ url_for('.index', party_id=party.id) }}" class="single-row unobtrusive">
+        <input type="search" name="search_term" placeholder="Ticketcode, Bestellnummer, Benutzer-, Vor-, Nachname, E-Mail-Adresse"{%- if search_term %} value="{{ search_term }}"{% endif %}>
+        <button type="submit" class="button" title="Suchen">{{ render_icon('search') }}</button>
+        <a href="{{ url_for('.index', party_id=party.id) }}" class="button{% if not search_term %} dimmed{% endif %}" title="Einschränkung auf Suchbegriff aufheben">{{ render_icon('remove') }}</a>
+    </form>
+  </div>
+
+  <div class="box--clear">
+    <small>
+      <p>Suche nach:</p>
+      <ul>
+        <li>Tickets (via Ticketcode)</li>
+        <li>Bestellungen (via Bestellnummer)</li>
+        <li>Benutzern (via Benutzer-, Vor-, Nachname, E-Mail-Adresse)</li>
+      </ul>
+    </small>
+  </div>
+
+  {%- if search_term %}
+
+  <div class="box">
+    <h2>Tickets {{ render_extra_in_heading(tickets|length) }}</h2>
+    {%- include 'ticketing_admin/_ticket_list.html' %}
+  </div>
+
+  <div class="box">
+    <h2>Bestellungen {{ render_extra_in_heading(orders|length) }}</h2>
+    {%- include 'shop_order_admin/_order_list.html' %}
+  </div>
+
+  <div class="box">
+    <h2>Benutzer {{ render_extra_in_heading(users|length) }}</h2>
+    {%- include 'user_admin/_user_list.html' %}
+  </div>
+
+  {%- endif %}
 
 {%- endblock %}
