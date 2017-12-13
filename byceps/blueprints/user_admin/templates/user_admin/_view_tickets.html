@@ -14,7 +14,7 @@
     {%- for party, tickets in parties_and_tickets %}
     <tbody>
       <tr>
-        <th colspan="6"><h3>{{ party.title }}</h3></th>
+        <th colspan="7"><h3>{{ party.title }}</h3></th>
       </tr>
       {%- for ticket in tickets|sort(attribute='created_at') %}
       <tr>
