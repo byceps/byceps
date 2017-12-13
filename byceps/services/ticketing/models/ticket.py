@@ -65,6 +65,7 @@ class Ticket(db.Model):
     used_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=True)
     used_by = db.relationship(User, foreign_keys=[used_by_id])
     revoked = db.Column(db.Boolean, default=False, nullable=False)
+    user_checked_in = db.Column(db.Boolean, default=False, nullable=False)
 
     def __init__(self, code: TicketCode, category_id: CategoryID,
                  owned_by_id: UserID, *, bundle: Optional[TicketBundle]=None,

@@ -417,6 +417,31 @@ def withdraw_user(ticket_id: TicketID, initiator_id: UserID) -> None:
     db.session.commit()
 
 
+def check_in_user(ticket_id: TicketID, initiator_id: UserID) -> None:
+    """Record that the ticket was used to check in its user."""
+    ticket = find_ticket(ticket_id)
+
+    if ticket.used_by_id is None:
+        raise TicketLacksUser(
+            'Ticket {} has no user assigned.'.format(ticket_id))
+
+    ticket.user_checked_in = True
+
+    event = event_service._build_event('user-checked-in', ticket.id, {
+        'checked_in_user_id': str(ticket.used_by_id),
+        'initiator_id': str(initiator_id),
+    })
+    db.session.add(event)
+
+    db.session.commit()
+
+
+class TicketLacksUser(Exception):
+    """Indicate a (failed) attempt to check a user in with a ticket
+    which has no user set.
+    """
+
+
 # -------------------------------------------------------------------- #
 # seat
 
