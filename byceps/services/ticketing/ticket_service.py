@@ -421,6 +421,9 @@ def check_in_user(ticket_id: TicketID, initiator_id: UserID) -> None:
     """Record that the ticket was used to check in its user."""
     ticket = find_ticket(ticket_id)
 
+    if ticket.revoked:
+        raise TicketIsRevoked('Ticket {} has been revoked.'.format(ticket_id))
+
     if ticket.used_by_id is None:
         raise TicketLacksUser(
             'Ticket {} has no user assigned.'.format(ticket_id))
@@ -434,6 +437,10 @@ def check_in_user(ticket_id: TicketID, initiator_id: UserID) -> None:
     db.session.add(event)
 
     db.session.commit()
+
+
+class TicketIsRevoked(Exception):
+    """Indicate an error caused by the ticket being revoked."""
 
 
 class TicketLacksUser(Exception):
