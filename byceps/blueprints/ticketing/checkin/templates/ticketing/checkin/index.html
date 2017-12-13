@@ -34,22 +34,30 @@
   </div>
 
   <div class="box">
-    <form action="{{ url_for('.index', party_id=party.id) }}" class="single-row unobtrusive">
-        <input type="search" name="search_term" placeholder="Ticketcode, Bestellnummer, Benutzer-, Vor-, Nachname, E-Mail-Adresse"{%- if search_term %} value="{{ search_term }}"{% endif %}>
-        <button type="submit" class="button" title="Suchen">{{ render_icon('search') }}</button>
-        <a href="{{ url_for('.index', party_id=party.id) }}" class="button{% if not search_term %} dimmed{% endif %}" title="Einschränkung auf Suchbegriff aufheben">{{ render_icon('remove') }}</a>
-    </form>
-  </div>
 
-  <div class="box--clear">
-    <small>
-      <p>Suche nach:</p>
-      <ul>
-        <li>Tickets (via Ticketcode)</li>
-        <li>Bestellungen (via Bestellnummer)</li>
-        <li>Benutzern (via Benutzer-, Vor-, Nachname, E-Mail-Adresse)</li>
-      </ul>
-    </small>
+    <div class="row row--space-between row--wrap" style="align-items: center;">
+      <div class="column-auto">
+
+        <form action="{{ url_for('.index', party_id=party.id) }}" class="single-row unobtrusive">
+            <input type="search" name="search_term" placeholder="Ticketcode, Bestellnummer, Benutzer-, Vor-, Nachname, E-Mail-Adresse"{%- if search_term %} value="{{ search_term }}"{% endif %}>
+            <button type="submit" class="button" title="Suchen">{{ render_icon('search') }}</button>
+            <a href="{{ url_for('.index', party_id=party.id) }}" class="button{% if not search_term %} dimmed{% endif %}" title="Einschränkung auf Suchbegriff aufheben">{{ render_icon('remove') }}</a>
+        </form>
+
+      </div>
+      <div class="column-auto">
+
+        <small>
+          <ul style="margin: 0; padding-left: 1rem;">
+            <li><strong>Tickets</strong> via Ticketcode</li>
+            <li><strong>Bestellungen</strong> via Bestellnummer</li>
+            <li><strong>Benutzer</strong> via Benutzer-, Vor-, Nachname, E-Mail-Adresse</li>
+          </ul>
+        </small>
+
+      </div>
+    </div>
+
   </div>
 
   {%- if search_term %}
