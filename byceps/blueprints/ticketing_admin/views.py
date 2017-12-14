@@ -6,18 +6,20 @@ byceps.blueprints.ticketing_admin.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from flask import abort, request
+from flask import abort, g, redirect, request, url_for
 
 from ...services.party import service as party_service
 from ...services.shop.order import service as order_service
 from ...services.ticketing import ticket_bundle_service, ticket_service
 from ...util.framework.blueprint import create_blueprint
+from ...util.framework.flash import flash_success
 from ...util.framework.templating import templated
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 
 from .authorization import TicketingPermission
+from .forms import SpecifyUserForm
 from . import service
 
 
@@ -77,6 +79,41 @@ def view_ticket(ticket_id):
     }
 
 
+@blueprint.route('/tickets/<uuid:ticket_id>/appoint_user')
+@permission_required(TicketingPermission.view)
+@templated
+def appoint_user_form(ticket_id, erroneous_form=None):
+    """Show a form to select a user to appoint for the ticket."""
+    ticket = _get_ticket_or_404(ticket_id)
+
+    form = erroneous_form if erroneous_form else SpecifyUserForm()
+
+    return {
+        'ticket': ticket,
+        'form': form,
+    }
+
+
+@blueprint.route('/tickets/<uuid:ticket_id>/user', methods=['POST'])
+@permission_required(TicketingPermission.view)
+def appoint_user(ticket_id):
+    """Appoint a user for the ticket."""
+    form = SpecifyUserForm(request.form)
+    if not form.validate():
+        return appoint_user_form(ticket_id, form)
+
+    ticket = _get_ticket_or_404(ticket_id)
+    user = form.user.data
+    manager = g.current_user
+
+    ticket_service.appoint_user(ticket.id, user.id, manager.id)
+
+    flash_success('{} wurde als Nutzer/in von Ticket {} eingetragen.',
+        user.screen_name, ticket.code)
+
+    return redirect(url_for('.view_ticket', ticket_id=ticket.id))
+
+
 @blueprint.route('/bundles/<uuid:bundle_id>')
 @permission_required(TicketingPermission.view)
 @templated
@@ -95,3 +132,12 @@ def view_bundle(bundle_id):
         'bundle': bundle,
         'tickets': tickets,
     }
+
+
+def _get_ticket_or_404(ticket_id):
+    ticket = ticket_service.find_ticket(ticket_id)
+
+    if ticket is None:
+        abort(404)
+
+    return ticket

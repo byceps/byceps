@@ -60,6 +60,17 @@
     {%- if ticket.user_checked_in %} {{ render_ticket_flag_user_checked_in() }}{% endif -%}
   </h1>
 
+  {%- if g.current_user.has_permission(TicketingPermission.checkin) %}
+  <div style="float: right; margin-left: 40px;">
+    <div class="dropdown left">
+      <button class="dropdown-toggle button">Aktionen {{ render_icon('caret-down') }}</button>
+      <ol>
+        <li><a href="{{ url_for('.appoint_user_form', ticket_id=ticket.id) }}">{{ render_icon('arrow-right') }} Nutzer/in zuweisen</a></li>
+      </ol>
+    </div>
+  </div>
+  {%- endif %}
+
   <table class="index">
     <tr>
       <th>ID</th>
