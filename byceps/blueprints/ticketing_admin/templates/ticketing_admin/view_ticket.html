@@ -81,7 +81,7 @@
       <th>Nutzer/in</th>
       <td>
         {%- if ticket.used_by -%}
-        {{ render_user_avatar_20_and_link(ticket.used_by) }} ({{ ticket.owned_by.detail.full_name }})
+        {{ render_user_avatar_20_and_link(ticket.used_by) }} ({{ ticket.used_by.detail.full_name }})
         {%- else -%}
         {{ 'keine/r'|dim }}
         {%- endif -%}
