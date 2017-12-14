@@ -1,5 +1,7 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
+{% from 'macros/datetime.html' import render_date %}
+{% from 'macros/misc.html' import render_notification %}
 {% set current_page = 'ticketing_checkin' %}
 {% set current_page_party = party %}
 {% set title = 'Check-In - %s'|format(party.title) %}
@@ -11,6 +13,7 @@
         padding: 0 20px;
       }
 
+      .box + .notification,
       .box + .box {
         margin-top: 20px;
       }
@@ -61,6 +64,8 @@
   </div>
 
   {%- if search_term %}
+
+  {{ render_notification('warning', 'warning', 'Die Person muss spätestens am <strong>{}</strong> geboren sein.'.format(render_date(latest_dob_for_checkin, smart=False))|safe) }}
 
   <div class="box">
     <h2>Tickets {{ render_extra_in_heading(tickets|length) }}</h2>

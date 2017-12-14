@@ -6,6 +6,8 @@ byceps.blueprints.ticketing.checkin.views
 :License: Modified BSD, see LICENSE for details.
 """
 
+from datetime import date
+
 from flask import abort, request
 
 from ....services.party import service as party_service
@@ -25,6 +27,9 @@ from ...user_admin import service as user_blueprint_service
 blueprint = create_blueprint('ticketing_checkin', __name__)
 
 
+MINIMUM_AGE_IN_YEARS = 18
+
+
 @blueprint.route('/for_party/<party_id>')
 @permission_required(TicketingPermission.checkin)
 @templated
@@ -39,10 +44,12 @@ def index(party_id):
     limit = 10
 
     if search_term:
+        latest_dob_for_checkin = _get_latest_date_of_birth_for_checkin()
         tickets = _search_tickets(party.id, search_term, limit)
         orders = _search_orders(party.id, search_term, limit)
         users = _search_users(party.id, search_term, limit)
     else:
+        latest_dob_for_checkin = None
         tickets = None
         orders = None
         orderers_by_id = None
@@ -50,11 +57,17 @@ def index(party_id):
 
     return {
         'party': party,
+        'latest_dob_for_checkin': latest_dob_for_checkin,
         'search_term': search_term,
         'tickets': tickets,
         'orders': orders,
         'users': users,
     }
+
+
+def _get_latest_date_of_birth_for_checkin():
+    today = date.today()
+    return today.replace(year=today.year - MINIMUM_AGE_IN_YEARS)
 
 
 def _search_tickets(party_id, search_term, limit):
