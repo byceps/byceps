@@ -502,6 +502,11 @@ fieldset.buttons {
   width: 2.5rem;
 }
 
+.user-microcard--tiny-avatar .user-microcard-avatar {
+  height: 1rem;
+  width: 1rem;
+}
+
 .user-microcard-names {
   display: flex;
   flex-direction: column;
