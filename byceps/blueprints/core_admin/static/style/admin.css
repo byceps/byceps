@@ -510,7 +510,7 @@ fieldset.buttons {
 .user-microcard-names {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-around;
   white-space: nowrap;
 }
 
