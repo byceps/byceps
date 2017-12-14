@@ -2,6 +2,21 @@
 {%- from 'macros/icons.html' import render_icon %}
 {%- from 'macros/misc.html' import render_tag %}
 
+  {%- if g.current_user.has_permission(UserPermission.administrate) %}
+  <div style="float: right; margin-left: 40px;">
+    <div class="dropdown left">
+      <button class="dropdown-toggle button">Aktionen {{ render_icon('caret-down') }}</button>
+      <ol>
+        {%- if not user.enabled %}
+        <li><a data-action="user-enable" href="{{ url_for('.set_enabled_flag', user_id=user.id) }}">{{ render_icon('enabled') }} aktivieren</a></li>
+        {%- else %}
+        <li><a data-action="user-disable" href="{{ url_for('.unset_enabled_flag', user_id=user.id) }}">{{ render_icon('disabled') }} deaktivieren</a></li>
+        {%- endif %}
+      </ol>
+    </div>
+  </div>
+  {%- endif %}
+
   <table class="index">
     <tr>
       <th>ID</th>

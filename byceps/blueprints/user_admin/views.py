@@ -8,7 +8,7 @@ byceps.blueprints.user_admin.views
 
 from collections import defaultdict
 
-from flask import abort, request
+from flask import abort, g, request
 
 from ...services.authorization import service as authorization_service
 from ...services.orga_team import service as orga_team_service
@@ -127,6 +127,34 @@ def _group_tickets_by_party_id(tickets):
 def _get_parties_by_id(party_ids):
     parties = party_service.get_parties(party_ids)
     return {p.id: p for p in parties}
+
+
+@blueprint.route('/<uuid:user_id>/flags/enabled', methods=['POST'])
+@permission_required(UserPermission.administrate)
+@respond_no_content
+def set_enabled_flag(user_id):
+    """Enable the user."""
+    user = _get_user_or_404(user_id)
+
+    initiator_id = g.current_user.id
+
+    user_service.enable_user(user.id, initiator_id)
+
+    flash_success("Das Benutzerkonto '{}' wurde aktiviert.", user.screen_name)
+
+
+@blueprint.route('/<uuid:user_id>/flags/enabled', methods=['DELETE'])
+@permission_required(UserPermission.administrate)
+@respond_no_content
+def unset_enabled_flag(user_id):
+    """Disable the user."""
+    user = _get_user_or_404(user_id)
+
+    initiator_id = g.current_user.id
+
+    user_service.disable_user(user.id, initiator_id)
+
+    flash_success("Das Benutzerkonto '{}' wurde deaktiviert.", user.screen_name)
 
 
 @blueprint.route('/<uuid:user_id>/permissions')
