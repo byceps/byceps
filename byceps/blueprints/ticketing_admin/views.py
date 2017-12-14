@@ -80,7 +80,7 @@ def view_ticket(ticket_id):
 
 
 @blueprint.route('/tickets/<uuid:ticket_id>/appoint_user')
-@permission_required(TicketingPermission.view)
+@permission_required(TicketingPermission.checkin)
 @templated
 def appoint_user_form(ticket_id, erroneous_form=None):
     """Show a form to select a user to appoint for the ticket."""
@@ -95,7 +95,7 @@ def appoint_user_form(ticket_id, erroneous_form=None):
 
 
 @blueprint.route('/tickets/<uuid:ticket_id>/user', methods=['POST'])
-@permission_required(TicketingPermission.view)
+@permission_required(TicketingPermission.checkin)
 def appoint_user(ticket_id):
     """Appoint a user for the ticket."""
     form = SpecifyUserForm(request.form)
