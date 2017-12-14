@@ -51,3 +51,8 @@
   {%- set avatar_url = user.avatar_url or url_for('core.static', filename='avatar_fallback.svg') -%}
   <img src="{{ avatar_url }}" alt="Avatar von {{ user.screen_name }}">
 {%- endmacro %}
+
+
+{% macro render_user_avatar_image_with_fallback(user) -%}
+  {{ _render_user_avatar_image_with_fallback(user) }}
+{%- endmacro %}
