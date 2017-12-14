@@ -28,6 +28,7 @@ def get_events(ticket_id: TicketID) -> Iterator[TicketEventData]:
         'appointed_seat_manager_id',
         'appointed_user_manager_id',
         'appointed_user_id',
+        'checked_in_user_id',
         ]))
     users = user_service.find_users(user_ids)
     users_by_id = {str(user.id): user for user in users}
