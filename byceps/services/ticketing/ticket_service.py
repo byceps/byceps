@@ -252,6 +252,18 @@ def find_tickets_used_by_user(user_id: UserID, party_id: PartyID
         .all()
 
 
+def find_tickets_used_by_user_simplified(user_id: UserID, party_id: PartyID
+                                        ) -> Sequence[Ticket]:
+    """Return the tickets (if any) used by the user for that party."""
+    return Ticket.query \
+        .for_party_id(party_id) \
+        .filter(Ticket.used_by_id == user_id) \
+        .options(
+            db.joinedload('occupied_seat').joinedload('area'),
+        ) \
+        .all()
+
+
 def uses_any_ticket_for_party(user_id: UserID, party_id: PartyID) -> bool:
     """Return `True` if the user uses any ticket for that party."""
     count = Ticket.query \

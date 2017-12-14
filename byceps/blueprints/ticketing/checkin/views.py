@@ -48,6 +48,8 @@ def index(party_id):
         tickets = _search_tickets(party.id, search_term, limit)
         orders = _search_orders(party.id, search_term, limit)
         users = _search_users(party.id, search_term, limit)
+
+        tickets += list(_get_tickets_for_users(party.id, users))
     else:
         latest_dob_for_checkin = None
         tickets = None
@@ -104,3 +106,9 @@ def _search_users(party_id, search_term, limit):
         page, per_page, search_term=search_term)
 
     return users_pagination.items
+
+
+def _get_tickets_for_users(party_id, users):
+    for user in users:
+        yield from ticket_service.find_tickets_used_by_user_simplified(
+            user.id, party_id)
