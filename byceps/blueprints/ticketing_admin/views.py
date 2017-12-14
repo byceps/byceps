@@ -14,6 +14,7 @@ from ...services.ticketing import ticket_bundle_service, ticket_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_success
 from ...util.framework.templating import templated
+from ...util.views import respond_no_content
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
@@ -112,6 +113,34 @@ def appoint_user(ticket_id):
         user.screen_name, ticket.code)
 
     return redirect(url_for('.view_ticket', ticket_id=ticket.id))
+
+
+@blueprint.route('/tickets/<uuid:ticket_id>/flags/user_checked_in', methods=['POST'])
+@permission_required(TicketingPermission.checkin)
+@respond_no_content
+def set_user_checked_in_flag(ticket_id):
+    """Check the user in."""
+    ticket = _get_ticket_or_404(ticket_id)
+
+    initiator_id = g.current_user.id
+
+    ticket_service.check_in_user(ticket.id, initiator_id)
+
+    flash_success("Benutzer '{}' wurde eingecheckt.", ticket.used_by.screen_name)
+
+
+@blueprint.route('/tickets/<uuid:ticket_id>/flags/user_checked_in', methods=['DELETE'])
+@permission_required(TicketingPermission.checkin)
+@respond_no_content
+def unset_user_checked_in_flag(ticket_id):
+    """Revert the user check-in state."""
+    ticket = _get_ticket_or_404(ticket_id)
+
+    initiator_id = g.current_user.id
+
+    ticket_service.revert_user_check_in(ticket.id, initiator_id)
+
+    flash_success('Der Check-In wurde rückgängig gemacht.')
 
 
 @blueprint.route('/bundles/<uuid:bundle_id>')

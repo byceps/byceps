@@ -60,12 +60,20 @@
     {%- if ticket.user_checked_in %} {{ render_ticket_flag_user_checked_in() }}{% endif -%}
   </h1>
 
-  {%- if g.current_user.has_permission(TicketingPermission.checkin) %}
+  {%- if not ticket.revoked and g.current_user.has_permission(TicketingPermission.checkin) %}
   <div style="float: right; margin-left: 40px;">
     <div class="dropdown left">
       <button class="dropdown-toggle button">Aktionen {{ render_icon('caret-down') }}</button>
       <ol>
         <li><a href="{{ url_for('.appoint_user_form', ticket_id=ticket.id) }}">{{ render_icon('arrow-right') }} Nutzer/in zuweisen</a></li>
+        <li class="divider"></li>
+        {%- if not ticket.user_checked_in %}
+          {%- if ticket.used_by_id %}
+        <li><a data-action="check-in-user" href="{{ url_for('.set_user_checked_in_flag', ticket_id=ticket.id) }}">{{ render_icon('enabled') }} Benutzer einchecken</a></li>
+          {%- endif %}
+        {%- else %}
+        <li><a data-action="revert-user-check-in" href="{{ url_for('.unset_user_checked_in_flag', ticket_id=ticket.id) }}">{{ render_icon('disabled') }} Check-In rückgängig machen</a></li>
+        {%- endif %}
       </ol>
     </div>
   </div>
@@ -137,5 +145,10 @@
 {% block scripts %}
 <script>
   enableCopyToClipboard('ticket-id-copy-trigger');
+
+  onDomReady(function() {
+    confirmed_post_on_click_then_reload('[data-action="check-in-user"]', 'Benutzer einchecken?');
+    confirmed_delete_on_click_then_reload('[data-action="revert-user-check-in"]', 'Check-In rückgängig machen?');
+  });
 </script>
 {% endblock %}
