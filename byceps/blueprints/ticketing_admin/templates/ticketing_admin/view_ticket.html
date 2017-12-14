@@ -70,10 +70,6 @@
       </td>
     </tr>
     <tr>
-      <th>Code</th>
-      <td>{{ ticket.code }}</td>
-    </tr>
-    <tr>
       <th>Bundle</th>
       <td>
         {%- if ticket.bundle_id %}
@@ -94,10 +90,6 @@
     <tr>
       <th>Bestellung</th>
       <td>{{ render_order_link(order) if order else None|fallback('nicht hinterlegt') }}</td>
-    </tr>
-    <tr>
-      <th>Party</th>
-      <td>{{ party.title }}</td>
     </tr>
     <tr>
       <th>Kategorie</th>
