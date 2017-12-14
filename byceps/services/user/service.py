@@ -19,6 +19,7 @@ from ..user_avatar.models import Avatar, AvatarSelection
 from ..verification_token.models import Token
 
 from .models.user import AnonymousUser, User, UserTuple
+from . import event_service
 
 
 def count_users() -> int:
@@ -165,3 +166,41 @@ def update_user_details(user: User, first_names: str, last_name: str,
     user.detail.phone_number = phone_number
 
     db.session.commit()
+
+
+def enable_user(user_id: UserID, initiator_id: UserID) -> None:
+    """Enable the user account."""
+    user = _get_user(user_id)
+
+    user.enabled = True
+
+    event = event_service._build_event('user-enabled', user.id, {
+        'initiator_id': str(initiator_id),
+    })
+    db.session.add(event)
+
+    db.session.commit()
+
+
+def disable_user(user_id: UserID, initiator_id: UserID) -> None:
+    """Disable the user account."""
+    user = _get_user(user_id)
+
+    user.enabled = False
+
+    event = event_service._build_event('user-disabled', user.id, {
+        'initiator_id': str(initiator_id),
+    })
+    db.session.add(event)
+
+    db.session.commit()
+
+
+def _get_user(user_id: UserID) -> User:
+    """Return the user with that ID, or raise an exception."""
+    user = find_user(user_id)
+
+    if user is None:
+        raise ValueError("Unknown user ID '{}'.".format(user_id))
+
+    return user
