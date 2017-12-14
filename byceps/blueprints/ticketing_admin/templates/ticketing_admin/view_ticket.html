@@ -70,6 +70,14 @@
       </td>
     </tr>
     <tr>
+      <th>Erstellt</th>
+      <td>{{ render_datetime(ticket.created_at) }}</td>
+    </tr>
+    <tr>
+      <th>Kategorie</th>
+      <td>{{ ticket.category.title }}</td>
+    </tr>
+    <tr>
       <th>Bundle</th>
       <td>
         {%- if ticket.bundle_id %}
@@ -80,31 +88,12 @@
       </td>
     </tr>
     <tr>
-      <th>Erstellt</th>
-      <td>{{ render_datetime(ticket.created_at) }}</td>
-    </tr>
-    <tr>
-      <th>Besitzer/in</th>
-      <td>{{ render_user_microcard(ticket.owned_by) }}</td>
-    </tr>
-    <tr>
       <th>Bestellung</th>
       <td>{{ render_order_link(order) if order else None|fallback('nicht hinterlegt') }}</td>
     </tr>
     <tr>
-      <th>Kategorie</th>
-      <td>{{ ticket.category.title }}</td>
-    </tr>
-    <tr>
-      <th>Sitzplatz</th>
-      <td>
-        {%- if ticket.occupied_seat -%}
-        {{ ticket.occupied_seat.label }}
-        {%- else -%}
-        {{ 'keiner'|dim }}
-        {%- endif -%}
-        <div class="managed-by">{{ 'verwaltet durch'|dim  }} {{ render_user_avatar_20_and_link(ticket.get_seat_manager()) }}</div>
-      </td>
+      <th>Besitzer/in</th>
+      <td>{{ render_user_microcard(ticket.owned_by) }}</td>
     </tr>
     <tr>
       <th>Nutzer/in</th>
@@ -115,6 +104,17 @@
         {{ 'keine/r'|dim }}
         {%- endif -%}
         <div class="managed-by">{{ 'verwaltet durch'|dim }} {{ render_user_avatar_20_and_link(ticket.get_user_manager()) }}</div>
+      </td>
+    </tr>
+    <tr>
+      <th>Sitzplatz</th>
+      <td>
+        {%- if ticket.occupied_seat -%}
+        {{ ticket.occupied_seat.label }}
+        {%- else -%}
+        {{ 'keiner'|dim }}
+        {%- endif -%}
+        <div class="managed-by">{{ 'verwaltet durch'|dim  }} {{ render_user_avatar_20_and_link(ticket.get_seat_manager()) }}</div>
       </td>
     </tr>
   </table>
