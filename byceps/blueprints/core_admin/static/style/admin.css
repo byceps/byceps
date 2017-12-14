@@ -490,6 +490,30 @@ fieldset.buttons {
 }
 
 
+/* users */
+
+.user-microcard {
+  display: flex;
+}
+
+.user-microcard-avatar {
+  height: 2.5rem;
+  margin-right: 0.4rem;
+  width: 2.5rem;
+}
+
+.user-microcard-names {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  white-space: nowrap;
+}
+
+.user-microcard-screen-name {
+  font-weight: bold;
+}
+
+
 /* events */
 
 .events {

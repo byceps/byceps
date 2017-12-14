@@ -1,5 +1,5 @@
 {% from 'macros/misc.html' import render_tag %}
-{% from 'macros/user_avatar.html' import render_user_avatar_16, render_user_avatar_20 %}
+{% from 'macros/user_avatar.html' import render_user_avatar_16, render_user_avatar_20, render_user_avatar_image_with_fallback %}
 
 
 {% macro render_user_admin_link(user) -%}
@@ -24,6 +24,19 @@
 
 {% macro render_user_avatar_20_and_name(user) -%}
 <span class="nowrap">{{ render_user_avatar_20(user) }} {{ user.screen_name }}</span>
+{%- endmacro %}
+
+
+{% macro render_user_microcard(user) -%}
+<div class="user-microcard">
+  <div class="user-microcard-avatar">
+    <div class="avatar">{{ render_user_avatar_image_with_fallback(user) }}</div>
+  </div>
+  <div class="user-microcard-names">
+    <div class="user-microcard-screen-name">{{ render_user_admin_link(user) }}</div>
+    <div class="user-microcard-full-name">{{ user.detail.full_name }}</div>
+  </div>
+</div>
 {%- endmacro %}
 
 
