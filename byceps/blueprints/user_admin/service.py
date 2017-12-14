@@ -165,6 +165,8 @@ def _get_additional_data(event: UserEvent, users_by_id: Dict[UserID, UserTuple]
                         ) -> UserEventData:
     if event.event_type in {
             'user-created',
+            'user-disabled',
+            'user-enabled',
             'avatar-updated',
             'newsletter-requested',
             'newsletter-declined',
