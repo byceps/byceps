@@ -34,7 +34,7 @@
       </td>
       <td>
         {%- if ticket.used_by -%}
-        {{ render_user_microcard(ticket.owned_by) }}
+        {{ render_user_microcard(ticket.used_by) }}
         {%- else -%}
         {{ render_tag('frei', class='available') }}
         {%- endif -%}
