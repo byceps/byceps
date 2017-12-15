@@ -224,7 +224,7 @@ def password_update():
 
     password = form.new_password.data
 
-    password_service.update_password_hash(user.id, password)
+    password_service.update_password_hash(user.id, password, user.id)
 
     flash_success('Das Passwort wurde geändert.')
     return redirect_to('.login_form')

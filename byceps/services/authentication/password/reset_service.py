@@ -58,4 +58,4 @@ def reset_password(verification_token: Token, password: str) -> None:
     db.session.delete(verification_token)
     db.session.commit()
 
-    password_service.update_password_hash(user.id, password)
+    password_service.update_password_hash(user.id, password, user.id)

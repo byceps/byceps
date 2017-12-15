@@ -14,6 +14,8 @@ from werkzeug.security import check_password_hash as _check_password_hash, \
 from ....database import db
 from ....typing import UserID
 
+from ...user import event_service as user_event_service
+
 from ..session import service as session_service
 
 from .models import Credential
@@ -43,7 +45,8 @@ def create_password_hash(user_id: UserID, password: str) -> None:
     db.session.commit()
 
 
-def update_password_hash(user_id: UserID, password: str) -> None:
+def update_password_hash(user_id: UserID, password: str, initiator_id: UserID
+                        ) -> None:
     """Update the password hash and set a newly-generated authentication
     token for the user.
     """
@@ -64,6 +67,11 @@ def update_password_hash(user_id: UserID, password: str) -> None:
         # to login with.
         session_token = session_service.create_session_token(user_id, now)
         db.session.add(session_token)
+
+    event = user_event_service._build_event('password-updated', user_id, {
+        'initiator_id': str(initiator_id),
+    })
+    db.session.add(event)
 
     db.session.commit()
 
