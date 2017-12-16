@@ -99,7 +99,7 @@ def _fake_user_creation_event(user_id: UserID) -> UserEvent:
     data = {
         # This must be adjusted as soon as existing users (admins) are
         # allowed to create users.
-        'initiator_id': str(user.id),
+        #'initiator_id': str(initiator.id),
     }
 
     return UserEvent(user.created_at, 'user-created', user.id, data)
