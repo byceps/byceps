@@ -6,7 +6,7 @@ byceps.blueprints.user_admin.service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import Dict, Iterator
+from typing import Any, Dict, Iterator, Tuple
 
 from ...database import db
 from ...services.newsletter import service as newsletter_service
@@ -162,7 +162,7 @@ def _fake_terms_consent_events(user_id: UserID) -> Iterator[UserEvent]:
 
 
 def _get_additional_data(event: UserEvent, users_by_id: Dict[UserID, UserTuple]
-                        ) -> UserEventData:
+                        ) -> Iterator[Tuple[str, Any]]:
     if event.event_type in {
             'user-created',
             'user-disabled',
@@ -174,15 +174,12 @@ def _get_additional_data(event: UserEvent, users_by_id: Dict[UserID, UserTuple]
             'order-placed',
             'terms-consent-expressed',
     }:
-        return _get_additional_data_for_user_creation_event(event, users_by_id)
-    else:
-        return {}
+        yield from _get_additional_data_for_user_initiated_event(
+            event, users_by_id)
 
 
-def _get_additional_data_for_user_creation_event(event: UserEvent,
-        users_by_id: Dict[UserID, UserTuple]) -> UserEventData:
-    initiator_id = event.data['initiator_id']
-
-    return {
-        'initiator': users_by_id[initiator_id],
-    }
+def _get_additional_data_for_user_initiated_event(event: UserEvent,
+        users_by_id: Dict[UserID, UserTuple]) -> Iterator[Tuple[str, Any]]:
+    initiator_id = event.data.get('initiator_id')
+    if initiator_id is not None:
+        yield 'initiator', users_by_id[initiator_id]
