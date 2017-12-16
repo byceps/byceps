@@ -24,13 +24,13 @@
 
   <div class="row row--space-around row--wrap bigstats">
     <div class="column-auto">
-      {{ render_bigstats_item(total_enabled, 'aktiviert', icon_name='enabled', color='#008800') }}
+      {{ render_bigstats_item('{:n}'.format(total_enabled), 'aktiviert', icon_name='enabled', color='#008800') }}
     </div>
     <div class="column-auto">
-      {{ render_bigstats_item(total_disabled, 'nicht aktiviert', icon_name='disabled', color='#cc0000') }}
+      {{ render_bigstats_item('{:n}'.format(total_disabled), 'nicht aktiviert', icon_name='disabled', color='#cc0000') }}
     </div>
     <div class="column-auto">
-      {{ render_bigstats_item(total_overall, '&sum; gesamt'|safe) }}
+      {{ render_bigstats_item('{:n}'.format(total_overall), '&sum; gesamt'|safe) }}
     </div>
   </div>
 
