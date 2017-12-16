@@ -137,6 +137,8 @@ def view_party(party_id):
     article_count = article_service.count_articles_for_party(party.id)
     open_order_count = order_service.count_open_orders_for_party(party.id)
     tickets_sold = ticket_service.count_tickets_for_party(party.id)
+    tickets_checked_in = ticket_service.count_tickets_checked_in_for_party(
+        party.id)
 
     return {
         'party': party,
@@ -152,4 +154,5 @@ def view_party(party_id):
         'open_order_count': open_order_count,
 
         'tickets_sold': tickets_sold,
+        'tickets_checked_in': tickets_checked_in,
     }

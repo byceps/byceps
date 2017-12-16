@@ -365,6 +365,16 @@ def count_tickets_for_party(party_id: PartyID) -> int:
         .count()
 
 
+def count_tickets_checked_in_for_party(party_id: PartyID) -> int:
+    """Return the number tickets for that party that were used to check
+    in their respective user.
+    """
+    return Ticket.query \
+        .for_party_id(party_id) \
+        .filter(Ticket.user_checked_in == True) \
+        .count()
+
+
 # -------------------------------------------------------------------- #
 # user
 
