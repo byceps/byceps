@@ -167,6 +167,7 @@ def _get_additional_data(event: UserEvent, users_by_id: Dict[UserID, UserTuple]
             'user-created',
             'user-disabled',
             'user-enabled',
+            'password-updated',
             'avatar-updated',
             'newsletter-requested',
             'newsletter-declined',
