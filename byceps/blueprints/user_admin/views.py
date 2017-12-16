@@ -8,8 +8,9 @@ byceps.blueprints.user_admin.views
 
 from collections import defaultdict
 
-from flask import abort, g, request
+from flask import abort, g, redirect, request, url_for
 
+from ...services.authentication.password import service as password_service
 from ...services.authorization import service as authorization_service
 from ...services.orga_team import service as orga_team_service
 from ...services.party import service as party_service
@@ -27,6 +28,7 @@ from ..authorization.registry import permission_registry
 from ..authorization_admin.authorization import RolePermission
 
 from .authorization import UserPermission
+from .forms import SetPasswordForm
 from .models import UserEnabledFilter, UserStateFilter
 from . import service
 
@@ -127,6 +129,41 @@ def _group_tickets_by_party_id(tickets):
 def _get_parties_by_id(party_ids):
     parties = party_service.get_parties(party_ids)
     return {p.id: p for p in parties}
+
+
+@blueprint.route('/<uuid:user_id>/password')
+@permission_required(UserPermission.set_password)
+@templated
+def set_password_form(user_id, erroneous_form=None):
+    """Show a form to set a new password for the user."""
+    user = _get_user_or_404(user_id)
+
+    form = erroneous_form if erroneous_form else SetPasswordForm()
+
+    return {
+        'user': user,
+        'form': form,
+    }
+
+
+@blueprint.route('/<uuid:user_id>/password', methods=['POST'])
+@permission_required(UserPermission.set_password)
+def set_password(user_id):
+    """Set a new password for the user."""
+    form = SetPasswordForm(request.form)
+    if not form.validate():
+        return set_password_form(user_id, form)
+
+    user = _get_user_or_404(user_id)
+    new_password = form.password.data
+    initiator = g.current_user
+
+    password_service.update_password_hash(user.id, new_password, initiator.id)
+
+    flash_success("Für Benutzerkonto '{}' wurde ein neues Passwort gesetzt.",
+                  user.screen_name)
+
+    return redirect(url_for('.view', user_id=user.id))
 
 
 @blueprint.route('/<uuid:user_id>/flags/enabled', methods=['POST'])
