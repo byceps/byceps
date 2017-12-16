@@ -40,13 +40,13 @@
         {%- elif event.event == 'user-enabled' %}
           {%- set icon_name = 'enabled' %}
           {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_link(user) }}</span>
+            <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
             hat das Benutzerkonto <strong>aktiviert</strong>.
           {%- endset %}
         {%- elif event.event == 'user-disabled' %}
           {%- set icon_name = 'disabled' %}
           {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_link(user) }}</span>
+            <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
             hat das Benutzerkonto <strong>deaktiviert</strong>.
           {%- endset %}
         {%- elif event.event == 'user-logged-in' %}
