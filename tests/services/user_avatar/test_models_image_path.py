@@ -6,7 +6,7 @@
 from pathlib import Path
 from uuid import UUID
 
-from nose2.tools import params
+import pytest
 
 from byceps.util.image.models import ImageType
 
@@ -16,7 +16,7 @@ from testfixtures.user_avatar import create_avatar
 from tests.helpers import app_context
 
 
-@params(
+@pytest.mark.parametrize('avatar_images_path, avatar_id, image_type, expected', [
     (
         Path('/var/data/avatars'),
         UUID('2e17cb15-d763-4f93-882a-371296a3c63f'),
@@ -29,7 +29,7 @@ from tests.helpers import app_context
         ImageType.png,
         Path('/home/byceps/data/global/users/avatars/f0266761-c37e-4519-8cb8-5812d2bfe595.png'),
     ),
-)
+])
 def test_path(avatar_images_path, avatar_id, image_type, expected):
     user = create_user()
 

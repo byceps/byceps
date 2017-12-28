@@ -5,7 +5,7 @@
 
 from uuid import UUID
 
-from nose2.tools import params
+import pytest
 
 from byceps.services.ticketing.models.ticket import Ticket
 
@@ -20,17 +20,17 @@ user2 = create_user('User2')
 user3 = create_user('User3')
 
 
-@params(
+@pytest.mark.parametrize('bundle_id, expected', [
     (ANY_BUNDLE_ID, True ),
     (None,          False),
-)
+])
 def test_belongs_to_bundle(bundle_id, expected):
     ticket = create_ticket(user1.id, bundle_id=bundle_id)
 
     assert ticket.belongs_to_bundle == expected
 
 
-@params(
+@pytest.mark.parametrize('owned_by_id, seat_managed_by_id, user_managed_by_id, user_id, expected', [
     (user1.id, None    , None    , user1.id, True ),
     (user1.id, user1.id, None    , user1.id, True ),
     (user1.id, None    , user1.id, user1.id, True ),
@@ -44,7 +44,7 @@ def test_belongs_to_bundle(bundle_id, expected):
     (user2.id, user1.id, None    , user1.id, True ),
     (user2.id, None    , user1.id, user1.id, True ),
     (user2.id, user1.id, user1.id, user1.id, True ),
-)
+])
 def test_is_managed_by(owned_by_id, seat_managed_by_id, user_managed_by_id, user_id, expected):
     ticket = create_ticket(owned_by_id,
                            seat_managed_by_id=seat_managed_by_id,
@@ -53,7 +53,7 @@ def test_is_managed_by(owned_by_id, seat_managed_by_id, user_managed_by_id, user
     assert ticket.is_managed_by(user_id) == expected
 
 
-@params(
+@pytest.mark.parametrize('owned_by_id, seat_managed_by_id, user_id, expected', [
     (user1.id, None    , user1.id, True ),
     (user1.id, user1.id, user1.id, True ),
 
@@ -62,7 +62,7 @@ def test_is_managed_by(owned_by_id, seat_managed_by_id, user_managed_by_id, user
 
     (user2.id, None    , user1.id, False),
     (user2.id, user1.id, user1.id, True ),
-)
+])
 def test_is_seat_managed_by(owned_by_id, seat_managed_by_id, user_id, expected):
     ticket = create_ticket(owned_by_id,
                            seat_managed_by_id=seat_managed_by_id)
@@ -70,7 +70,7 @@ def test_is_seat_managed_by(owned_by_id, seat_managed_by_id, user_id, expected):
     assert ticket.is_seat_managed_by(user_id) == expected
 
 
-@params(
+@pytest.mark.parametrize('owned_by_id, user_managed_by_id, user_id, expected', [
     (user1.id, None    , user1.id, True ),
     (user1.id, user1.id, user1.id, True ),
 
@@ -79,7 +79,7 @@ def test_is_seat_managed_by(owned_by_id, seat_managed_by_id, user_id, expected):
 
     (user2.id, None    , user1.id, False),
     (user2.id, user1.id, user1.id, True ),
-)
+])
 def test_is_user_managed_by(owned_by_id, user_managed_by_id, user_id, expected):
     ticket = create_ticket(owned_by_id,
                            user_managed_by_id=user_managed_by_id)

@@ -3,7 +3,7 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from nose2.tools import params
+import pytest
 
 from byceps.services.text_markup.service import render_html
 
@@ -50,7 +50,7 @@ def test_quote_with_author():
     assert render_html(text) == expected
 
 
-@params(
+@pytest.mark.parametrize('text, expected', [
     (
         '[quote author="foo]bar"]blah[/quote]',
         '<p class="quote-intro"><cite>foo]bar</cite> schrieb:</p>\n<blockquote>blah</blockquote>',
@@ -79,6 +79,6 @@ def test_quote_with_author():
         '[quote author="<AngleBracketeer>"]careful.[/quote]',
         '<p class="quote-intro"><cite>&lt;AngleBracketeer&gt;</cite> schrieb:</p>\n<blockquote>careful.</blockquote>',
     ),
-)
+])
 def test_quote_with_author_whose_name_contains_square_brackets(text, expected):
     assert render_html(text) == expected

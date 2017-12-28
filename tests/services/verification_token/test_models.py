@@ -6,7 +6,7 @@
 from datetime import datetime
 
 from freezegun import freeze_time
-from nose2.tools import params
+import pytest
 
 from byceps.services.verification_token.models import Purpose
 
@@ -14,7 +14,7 @@ from testfixtures.user import create_user
 from testfixtures.verification_token import create_verification_token
 
 
-@params(
+@pytest.mark.parametrize('purpose, now, expected', [
     (
         Purpose.email_address_confirmation,
         datetime(2014, 11, 26, 19, 54, 38),
@@ -45,7 +45,7 @@ from testfixtures.verification_token import create_verification_token
         datetime(2014, 11, 27, 19, 54, 38),
         True,
     ),
-)
+])
 def test_is_expired(purpose, now, expected):
     user = create_user()
     created_at = datetime(2014, 11, 26, 17, 44, 53)

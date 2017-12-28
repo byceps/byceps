@@ -5,12 +5,12 @@
 
 from datetime import datetime
 
-from nose2.tools import params
+import pytest
 
 from byceps.util.datetime.range import create_adjacent_ranges, DateTimeRange
 
 
-@params(
+@pytest.mark.parametrize('starts_at, ends_at, tested_datetime, expected', [
     (
         datetime(2014,  8, 15, 12,  0,  0),
         datetime(2014,  8, 15, 19, 30,  0),
@@ -53,7 +53,7 @@ from byceps.util.datetime.range import create_adjacent_ranges, DateTimeRange
         datetime(2014,  8, 15, 19, 30,  1),
         False,
     ),
-)
+])
 def test_contains(starts_at, ends_at, tested_datetime, expected):
     date_time_range = DateTimeRange(start=starts_at, end=ends_at)
 

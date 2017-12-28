@@ -39,7 +39,7 @@ See ``docs/installation.rst``.
 Testing
 =======
 
-In the activated virtual environment, install tox_ and nose2_:
+In the activated virtual environment, install tox_ and pytest_:
 
 .. code:: sh
 
@@ -56,7 +56,7 @@ for the Python versions specified in `tox.ini`.
 
 
 .. _tox: http://tox.testrun.org/
-.. _nose2: https://github.com/nose-devs/nose2
+.. _pytest: http://pytest.org/
 
 
 Serving

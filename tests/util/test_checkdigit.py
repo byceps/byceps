@@ -3,12 +3,12 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from nose2.tools import params
+import pytest
 
 from byceps.util.checkdigit import calculate_check_digit
 
 
-@params(
+@pytest.mark.parametrize('chars, expected', [
     ('12',         5),
     ('123',        0),
     ('1245496594', 3),
@@ -30,6 +30,6 @@ from byceps.util.checkdigit import calculate_check_digit
     ('6KWKDFD79A', 8),
     ('HXNPKGY4EX', 3),
     ('91BT',       2),
-)
+])
 def test_calculate_check_digit(chars, expected):
     assert calculate_check_digit(chars) == expected

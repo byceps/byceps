@@ -3,6 +3,8 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
+from pytest import raises
+
 from byceps.services.seating import area_service, seat_service
 from byceps.services.ticketing import category_service, event_service, \
     ticket_bundle_service, ticket_service
@@ -194,7 +196,7 @@ class TicketAssignmentServiceTestCase(AbstractAppTestCase):
     def test_occupy_seat_with_invalid_id(self):
         invalid_seat_id = 'ffffffff-ffff-ffff-ffff-ffffffffffff'
 
-        with self.assertRaises(ValueError):
+        with raises(ValueError):
             ticket_service.occupy_seat(self.ticket.id, invalid_seat_id,
                                        self.owner.id)
 
@@ -209,7 +211,7 @@ class TicketAssignmentServiceTestCase(AbstractAppTestCase):
         area = self.create_area('main', 'Main Hall')
         seat = seat_service.create_seat(area, 0, 0, self.category_id)
 
-        with self.assertRaises(SeatChangeDeniedForBundledTicket):
+        with raises(SeatChangeDeniedForBundledTicket):
             ticket_service.occupy_seat(bundled_ticket.id, seat.id,
                                        self.owner.id)
 
@@ -221,7 +223,7 @@ class TicketAssignmentServiceTestCase(AbstractAppTestCase):
 
         assert self.ticket.category_id != other_category_id
 
-        with self.assertRaises(TicketCategoryMismatch):
+        with raises(TicketCategoryMismatch):
             ticket_service.occupy_seat(self.ticket.id, seat.id, self.owner.id)
 
     # -------------------------------------------------------------------- #

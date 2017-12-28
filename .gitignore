@@ -1,6 +1,8 @@
 # Python 3 bytecode
 __pycache__
 
+.eggs
+
 # virtual environment
 venv
 

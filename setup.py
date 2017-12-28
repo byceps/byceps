@@ -41,6 +41,6 @@ setup(
     ],
     packages=['byceps'],
     install_requires=requirements,
+    setup_requires=['pytest-runner'],
     tests_require=requirements_test,
-    test_suite='nose2.collector.collector',
 )

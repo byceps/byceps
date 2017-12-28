@@ -3,17 +3,17 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from nose2.tools import params
+import pytest
 
 from byceps.services.country import service as country_service
 
 from tests.helpers import app_context
 
 
-@params(
+@pytest.mark.parametrize('name, alpha2, alpha3', [
     ('Deutschland', 'DE', 'DEU'),
     ('Österreich' , 'AT', 'AUT'),
-)
+])
 def test_get_countries_contains_country(name, alpha2, alpha3):
     with app_context():
         countries = country_service.get_countries()

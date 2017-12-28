@@ -3,8 +3,6 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from nose2.tools import params
-
 from testfixtures.news import create_current_version_association, \
     create_item, create_item_version
 
@@ -21,15 +19,17 @@ class ItemTestCase(AbstractAppTestCase):
 
         self.create_brand_and_party()
 
-    @params(
-        ('without-image', None          , None                                        ),
-        ('with-image'   , 'breaking.png', 'http://example.com/brand/news/breaking.png'),
-    )
-    def test_image_url(self, slug, image_url_path, expected):
-        item = self.create_item_with_version(slug, image_url_path)
+    def test_image_url_with_image(self):
+        item = self.create_item_with_version('with-image', 'breaking.png')
 
         with current_party_set(self.app, self.party), self.app.app_context():
-            self.assertEqual(item.image_url, expected)
+            assert item.image_url == 'http://example.com/brand/news/breaking.png'
+
+    def test_image_url_without_image(self):
+        item = self.create_item_with_version('without-image', None)
+
+        with current_party_set(self.app, self.party), self.app.app_context():
+            assert item.image_url is None
 
     # -------------------------------------------------------------------- #
     # helpers
