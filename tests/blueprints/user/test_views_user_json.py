@@ -26,13 +26,13 @@ class UserJsonTestCase(AbstractAppTestCase):
 
         response = self.send_request(user_id)
 
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.content_type, CONTENT_TYPE_JSON)
-        self.assertEqual(response.mimetype, CONTENT_TYPE_JSON)
+        assert response.status_code == 200
+        assert response.content_type == CONTENT_TYPE_JSON
+        assert response.mimetype == CONTENT_TYPE_JSON
 
         response_data = decode_json_response(response)
-        self.assertEqual(response_data['id'], user_id)
-        self.assertEqual(response_data['screen_name'], screen_name)
+        assert response_data['id'] == user_id
+        assert response_data['screen_name'] == screen_name
 
     def test_with_deleted_user(self):
         screen_name = 'DeletedUser'
@@ -42,24 +42,24 @@ class UserJsonTestCase(AbstractAppTestCase):
 
         response = self.send_request(str(user.id))
 
-        self.assertEqual(response.status_code, 410)
-        self.assertEqual(response.content_type, CONTENT_TYPE_JSON)
-        self.assertEqual(response.mimetype, CONTENT_TYPE_JSON)
+        assert response.status_code == 410
+        assert response.content_type == CONTENT_TYPE_JSON
+        assert response.mimetype == CONTENT_TYPE_JSON
 
         response_data = decode_json_response(response)
-        self.assertDictEqual(response_data, {})
+        assert response_data == {}
 
     def test_with_nonexistent_user(self):
         unknown_user_id = '00000000-0000-0000-0000-000000000000'
 
         response = self.send_request(unknown_user_id)
 
-        self.assertEqual(response.status_code, 404)
-        self.assertEqual(response.content_type, CONTENT_TYPE_JSON)
-        self.assertEqual(response.mimetype, CONTENT_TYPE_JSON)
+        assert response.status_code == 404
+        assert response.content_type == CONTENT_TYPE_JSON
+        assert response.mimetype == CONTENT_TYPE_JSON
 
         response_data = decode_json_response(response)
-        self.assertDictEqual(response_data, {})
+        assert response_data == {}
 
     # helpers
 

@@ -74,10 +74,10 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
         url = '/admin/newsletter/subscriptions/{}/export'.format(self.brand.id)
         response = self.get_as_admin(url)
 
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.content_type, 'application/json')
+        assert response.status_code == 200
+        assert response.content_type == 'application/json'
         data = json.loads(response.get_data().decode('utf-8'))
-        self.assertEqual(data, expected_data)
+        assert data == expected_data
 
     def test_export_subscriber_email_addresses(self):
         expected_data = '\n'.join([
@@ -93,10 +93,10 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
         url = '/admin/newsletter/subscriptions/{}/export_email_addresses'.format(self.brand.id)
         response = self.get_as_admin(url)
 
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.content_type, 'text/plain; charset=utf-8')
-        self.assertEqual(response.mimetype, 'text/plain')
-        self.assertEqual(response.get_data(), expected_data)
+        assert response.status_code == 200
+        assert response.content_type == 'text/plain; charset=utf-8'
+        assert response.mimetype == 'text/plain'
+        assert response.get_data() == expected_data
 
     def add_subscriptions(self, user, states):
         for state in states:

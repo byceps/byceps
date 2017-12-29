@@ -17,7 +17,7 @@ class UserBadgeAwardingServiceTestCase(AbstractAppTestCase):
         with self.app.app_context():
             actual = user_badge_service.get_awardings_of_badge(unknown_badge_id)
 
-        self.assertEqual(actual, set())
+        assert actual == set()
 
     def test_get_awardings_of_unawarded_badge(self):
         with self.app.app_context():
@@ -26,7 +26,7 @@ class UserBadgeAwardingServiceTestCase(AbstractAppTestCase):
 
             actual = user_badge_service.get_awardings_of_badge(badge.id)
 
-            self.assertEqual(actual, set())
+            assert actual == set()
 
     def test_get_awardings_of_badge(self):
         user1 = self.create_user('User1')
@@ -42,7 +42,7 @@ class UserBadgeAwardingServiceTestCase(AbstractAppTestCase):
 
             actual = user_badge_service.get_awardings_of_badge(badge.id)
 
-            self.assertEqual(actual, {
+            assert actual == {
                 QuantifiedBadgeAwardingTuple(badge.id, user1.id, 2),
                 QuantifiedBadgeAwardingTuple(badge.id, user2.id, 1),
-            })
+            }

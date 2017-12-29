@@ -24,23 +24,23 @@ class CurrentUserJsonTestCase(AbstractAppTestCase):
     def test_when_logged_in(self):
         response = self.send_request(user=self.user)
 
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.content_type, CONTENT_TYPE_JSON)
-        self.assertEqual(response.mimetype, CONTENT_TYPE_JSON)
+        assert response.status_code == 200
+        assert response.content_type == CONTENT_TYPE_JSON
+        assert response.mimetype == CONTENT_TYPE_JSON
 
         response_data = decode_json_response(response)
-        self.assertEqual(response_data['id'], str(self.user.id))
-        self.assertEqual(response_data['screen_name'], self.user.screen_name)
+        assert response_data['id'] == str(self.user.id)
+        assert response_data['screen_name'] == self.user.screen_name
 
     def test_when_not_logged_in(self):
         response = self.send_request()
 
-        self.assertEqual(response.status_code, 404)
-        self.assertEqual(response.content_type, CONTENT_TYPE_JSON)
-        self.assertEqual(response.mimetype, CONTENT_TYPE_JSON)
+        assert response.status_code == 404
+        assert response.content_type == CONTENT_TYPE_JSON
+        assert response.mimetype == CONTENT_TYPE_JSON
 
         response_data = decode_json_response(response)
-        self.assertDictEqual(response_data, {})
+        assert response_data == {}
 
     # helpers
 

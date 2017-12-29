@@ -32,13 +32,13 @@ class GetCurrentVersionOfSnippetTestCase(AbstractAppTestCase):
         actual = snippet_service.find_current_version_of_snippet_with_name(
             self.party2014.id, 'info')
 
-        self.assertEqual(actual, fragment_info2014_version)
+        assert actual == fragment_info2014_version
 
     def test_unknown_name(self):
         actual = snippet_service.find_current_version_of_snippet_with_name(
             self.party2014.id, 'totally-unknown-snippet-name')
 
-        self.assertIsNone(actual)
+        assert actual is None
 
     # -------------------------------------------------------------------- #
     # helpers

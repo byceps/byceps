@@ -48,7 +48,7 @@ class OrderedArticlesServiceTestCase(AbstractAppTestCase):
 
         totals = ordered_articles_service.count_ordered_articles(self.article)
 
-        self.assertDictEqual(totals, expected)
+        assert totals == expected
 
     # -------------------------------------------------------------------- #
     # helpers

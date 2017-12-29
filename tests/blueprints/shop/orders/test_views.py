@@ -23,14 +23,14 @@ class ShopOrdersTestCase(AbstractAppTestCase):
 
         response = self.request_view(self.user1, order)
 
-        self.assertEqual(response.status_code, 200)
+        assert response.status_code == 200
 
     def test_view_matching_party_but_different_user(self):
         order = self.create_order(self.party.id, self.user1, 'LF-02-B00014')
 
         response = self.request_view(self.user2, order)
 
-        self.assertEqual(response.status_code, 404)
+        assert response.status_code == 404
 
     def test_view_matching_user_but_different_party(self):
         other_party = self.create_party(self.brand.id, 'otherlan-2013',
@@ -39,7 +39,7 @@ class ShopOrdersTestCase(AbstractAppTestCase):
 
         response = self.request_view(self.user1, order)
 
-        self.assertEqual(response.status_code, 404)
+        assert response.status_code == 404
 
     # -------------------------------------------------------------------- #
     # helpers

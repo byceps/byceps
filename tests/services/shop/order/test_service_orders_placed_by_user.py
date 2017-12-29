@@ -31,13 +31,13 @@ class ShopOrdersServiceTestCase(AbstractAppTestCase):
         order5 = self.create_order(party2.id, user1, 'LF-03-B00008')  # other party
 
         orders_user1_party2012 = service.get_orders_placed_by_user_for_party(user1.id, party1.id)
-        self.assertListEqual(orders_user1_party2012, [order4, order3, order1])
+        assert orders_user1_party2012 == [order4, order3, order1]
 
         orders_user2_party2012 = service.get_orders_placed_by_user_for_party(user2.id, party1.id)
-        self.assertListEqual(orders_user2_party2012, [order2])
+        assert orders_user2_party2012 == [order2]
 
         orders_user1_party2013 = service.get_orders_placed_by_user_for_party(user1.id, party2.id)
-        self.assertListEqual(orders_user1_party2013, [order5])
+        assert orders_user1_party2013 == [order5]
 
     # -------------------------------------------------------------------- #
     # helpers

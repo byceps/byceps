@@ -24,18 +24,18 @@ class MatchTestCase(AbstractAppTestCase):
 
         response = self.request_comment_creation(match.id, user=player)
 
-        self.assertEqual(response.status_code, 201)
+        assert response.status_code == 201
 
-        self.assertCommentCountForMatch(match, 1)
+        assert get_comment_count_for_match(match) == 1
 
     def test_create_comment_on_existent_match_as_anonymous_user(self):
         match = self.create_match()
 
         response = self.request_comment_creation(match.id)
 
-        self.assertEqual(response.status_code, 403)
+        assert response.status_code == 403
 
-        self.assertCommentCountForMatch(match, 0)
+        assert get_comment_count_for_match(match) == 0
 
     def test_create_comment_on_nonexistent_match(self):
         player = self.create_player()
@@ -44,7 +44,7 @@ class MatchTestCase(AbstractAppTestCase):
 
         response = self.request_comment_creation(unknown_match_id, user=player)
 
-        self.assertEqual(response.status_code, 404)
+        assert response.status_code == 404
 
     # helpers
 
@@ -73,6 +73,6 @@ class MatchTestCase(AbstractAppTestCase):
         with self.client(user=user) as client:
             return client.post(url, data=form_data)
 
-    def assertCommentCountForMatch(self, match, expected):
-        comment_count = MatchComment.query.for_match(match.id).count()
-        self.assertEqual(comment_count, expected)
+
+def get_comment_count_for_match(match):
+    return MatchComment.query.for_match(match.id).count()

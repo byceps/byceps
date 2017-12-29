@@ -25,12 +25,12 @@ class RoleToUserAssignmentTestCase(AbstractAppTestCase):
         user_id = self.user.id
 
         user_permission_ids_before = service.get_permission_ids_for_user(user_id)
-        self.assertNotIn(self.permission_id, user_permission_ids_before)
+        assert self.permission_id not in user_permission_ids_before
 
         service.assign_role_to_user(user_id, role_id)
 
         user_permission_ids_after = service.get_permission_ids_for_user(user_id)
-        self.assertIn(self.permission_id, user_permission_ids_after)
+        assert self.permission_id in user_permission_ids_after
 
     def test_deassign_role_from_user(self):
         role_id = self.role.id
@@ -39,12 +39,12 @@ class RoleToUserAssignmentTestCase(AbstractAppTestCase):
         service.assign_role_to_user(user_id, role_id)
 
         user_permission_ids_before = service.get_permission_ids_for_user(user_id)
-        self.assertIn(self.permission_id, user_permission_ids_before)
+        assert self.permission_id in user_permission_ids_before
 
         service.deassign_role_from_user(user_id, role_id)
 
         user_permission_ids_after = service.get_permission_ids_for_user(user_id)
-        self.assertNotIn(self.permission_id, user_permission_ids_after)
+        assert self.permission_id not in user_permission_ids_after
 
 
 def create_role_with_permission(role_id, permission_id):

@@ -53,7 +53,7 @@ class ShopTestCase(AbstractAppTestCase):
     @patch('byceps.blueprints.shop_order.signals.order_placed.send')
     def test_order(self, order_placed_mock):
         article_before = self.get_article()
-        self.assertEqual(article_before.quantity, 5)
+        assert article_before.quantity == 5
 
         url = '/shop/order'
         article_quantity_key = 'article_{}'.format(self.article_id)
@@ -69,26 +69,26 @@ class ShopTestCase(AbstractAppTestCase):
         with self.client(user=self.orderer) as client:
             response = client.post(url, data=form_data)
 
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.headers.get('Location'), 'http://example.com/shop/order_placed')
+        assert response.status_code == 302
+        assert response.headers.get('Location') == 'http://example.com/shop/order_placed'
 
         article_afterwards = self.get_article()
-        self.assertEqual(article_afterwards.quantity, 2)
+        assert article_afterwards.quantity == 2
 
         order = Order.query.filter_by(placed_by=self.orderer).one()
-        self.assertEqual(order.order_number, 'AEC-01-B00005')
-        self.assertEqual(len(order.items), 1)
-        self.assertEqual(order.items[0].article.id, self.article_id)
-        self.assertEqual(order.items[0].price, article_before.price)
-        self.assertEqual(order.items[0].tax_rate, article_before.tax_rate)
-        self.assertEqual(order.items[0].quantity, 3)
+        assert order.order_number == 'AEC-01-B00005'
+        assert len(order.items) == 1
+        assert order.items[0].article.id == self.article_id
+        assert order.items[0].price == article_before.price
+        assert order.items[0].tax_rate == article_before.tax_rate
+        assert order.items[0].quantity == 3
 
         order_placed_mock.assert_called_once_with(None, order_id=order.id)
 
     @patch('byceps.blueprints.shop_order.signals.order_placed.send')
     def test_order_single(self, order_placed_mock):
         article_before = self.get_article()
-        self.assertEqual(article_before.quantity, 5)
+        assert article_before.quantity == 5
 
         url = '/shop/order_single/{}'.format(str(self.article_id))
         form_data = {
@@ -103,19 +103,19 @@ class ShopTestCase(AbstractAppTestCase):
         with self.client(user=self.orderer) as client:
             response = client.post(url, data=form_data)
 
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.headers.get('Location'), 'http://example.com/shop/order_placed')
+        assert response.status_code == 302
+        assert response.headers.get('Location') == 'http://example.com/shop/order_placed'
 
         article_afterwards = self.get_article()
-        self.assertEqual(article_afterwards.quantity, 4)
+        assert article_afterwards.quantity == 4
 
         order = Order.query.filter_by(placed_by=self.orderer).one()
-        self.assertEqual(order.order_number, 'AEC-01-B00005')
-        self.assertEqual(len(order.items), 1)
-        self.assertEqual(order.items[0].article.id, self.article_id)
-        self.assertEqual(order.items[0].price, article_before.price)
-        self.assertEqual(order.items[0].tax_rate, article_before.tax_rate)
-        self.assertEqual(order.items[0].quantity, 1)
+        assert order.order_number == 'AEC-01-B00005'
+        assert len(order.items) == 1
+        assert order.items[0].article.id == self.article_id
+        assert order.items[0].price == article_before.price
+        assert order.items[0].tax_rate == article_before.tax_rate
+        assert order.items[0].quantity == 1
 
         order_placed_mock.assert_called_once_with(None, order_id=order.id)
 

@@ -62,41 +62,41 @@ class UserCreateTestCase(AbstractAppTestCase):
 
         response = self.send_request(form_data)
 
-        self.assertEqual(response.status_code, 302)
+        assert response.status_code == 302
 
         user_count_afterwards = self.get_user_count()
-        self.assertEqual(user_count_afterwards, user_count_before + 1)
+        assert user_count_afterwards == user_count_before + 1
 
         location = response.headers.get('Location')
         user_id = location.rpartition('/')[-1]
         user = User.query.get(user_id)
 
-        self.assertIsNotNone(user.created_at)
-        self.assertEqual(user.screen_name, 'Hiro')
-        self.assertEqual(user.email_address, 'hiro@metaverse.org')
-        self.assertFalse(user.enabled)
-        self.assertFalse(user.deleted)
+        assert user.created_at is not None
+        assert user.screen_name == 'Hiro'
+        assert user.email_address == 'hiro@metaverse.org'
+        assert not user.enabled
+        assert not user.deleted
 
         # password
         credential = Credential.query.get(user.id)
-        self.assertIsNotNone(credential)
-        self.assertTrue(credential.password_hash.startswith('pbkdf2:sha256:100000$'))
-        self.assertIsNotNone(credential.updated_at)
+        assert credential is not None
+        assert credential.password_hash.startswith('pbkdf2:sha256:100000$')
+        assert credential.updated_at is not None
 
         # session token
         session_token = SessionToken.query \
             .filter_by(user_id=user.id) \
             .one_or_none()
-        self.assertIsNotNone(session_token)
-        self.assertIsNotNone(session_token.token)
-        self.assertIsNotNone(session_token.created_at)
+        assert session_token is not None
+        assert session_token.token is not None
+        assert session_token.created_at is not None
 
         # avatar
-        self.assertIsNone(user.avatar)
+        assert user.avatar is None
 
         # details
-        self.assertEqual(user.detail.first_names, 'Hiroaki')
-        self.assertEqual(user.detail.last_name, 'Protagonist')
+        assert user.detail.first_names == 'Hiroaki'
+        assert user.detail.last_name == 'Protagonist'
 
         # authorization
         board_user_role = Role.query.get('board_user')
@@ -104,18 +104,18 @@ class UserCreateTestCase(AbstractAppTestCase):
             .join(UserRole) \
             .filter_by(user_id=user.id) \
             .all()
-        self.assertIn(board_user_role, actual_roles)
+        assert board_user_role in actual_roles
 
         # consent to terms of service
         terms_consents = terms_service.get_consents_by_user(user.id)
-        self.assertEqual(len(terms_consents), 1)
-        self.assertEqual(terms_consents[0].version_id, self.terms_version_id)
+        assert len(terms_consents) == 1
+        assert terms_consents[0].version_id == self.terms_version_id
 
         # confirmation e-mail
 
         verification_token = verification_token_service \
             .find_for_email_address_confirmation_by_user(user.id)
-        self.assertIsNotNone(verification_token)
+        assert verification_token is not None
 
         expected_sender = 'noreply@example.com'
         expected_recipients = ['hiro@metaverse.org']

@@ -43,10 +43,11 @@ class ExportTestCase(AbstractAppTestCase):
         with self.client(user=self.admin) as client:
             response = client.get(url)
 
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.content_type, 'application/xml; charset=iso-8859-1')
+        assert response.status_code == 200
+        assert response.content_type == 'application/xml; charset=iso-8859-1'
+
         body = response.get_data().decode('utf-8')
-        self.assertEqual(body, expected)
+        assert body == expected
 
     # helpers
 

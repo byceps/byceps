@@ -18,8 +18,8 @@ class OrgaServiceTestCase(AbstractAppTestCase):
     def test_is_user_orga(self):
         user = self.create_user()
 
-        self.assertFalse(orga_service.is_user_orga(user.id))
+        assert not orga_service.is_user_orga(user.id)
 
         orga_service.create_orga_flag(self.brand.id, user.id)
 
-        self.assertTrue(orga_service.is_user_orga(user.id))
+        assert orga_service.is_user_orga(user.id)

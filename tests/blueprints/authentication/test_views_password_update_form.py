@@ -19,12 +19,12 @@ class PasswordUpdateFormTestCase(AbstractAppTestCase):
 
         response = self.send_request(user=user)
 
-        self.assertEqual(response.status_code, 200)
+        assert response.status_code == 200
 
     def test_when_not_logged_in_form_is_unavailable(self):
         response = self.send_request()
 
-        self.assertEqual(response.status_code, 404)
+        assert response.status_code == 404
 
     # helpers
 
