@@ -15,8 +15,8 @@ class RoleToUserAssignmentTestCase(AbstractAppTestCase):
 
         self.permission_id = 'board_topic_hide'
 
-        self.role = self.create_role_with_permission('board_moderator',
-                                                     self.permission_id)
+        self.role = create_role_with_permission('board_moderator',
+                                                self.permission_id)
 
         self.user = self.create_user()
 
@@ -46,13 +46,11 @@ class RoleToUserAssignmentTestCase(AbstractAppTestCase):
         user_permission_ids_after = service.get_permission_ids_for_user(user_id)
         self.assertNotIn(self.permission_id, user_permission_ids_after)
 
-    # -------------------------------------------------------------------- #
-    # helpers
 
-    def create_role_with_permission(self, role_id, permission_id):
-        role = service.create_role(role_id, role_id)
+def create_role_with_permission(role_id, permission_id):
+    role = service.create_role(role_id, role_id)
 
-        permission = service.create_permission(permission_id, permission_id)
-        service.assign_permission_to_role(permission.id, role.id)
+    permission = service.create_permission(permission_id, permission_id)
+    service.assign_permission_to_role(permission.id, role.id)
 
-        return role
+    return role
