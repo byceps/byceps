@@ -2,7 +2,7 @@
 byceps.blueprints.attendance.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2006-2017 Jochen Kupperschmidt
+:Copyright: 2006-2018 Jochen Kupperschmidt
 """
 
 from flask import g, request
