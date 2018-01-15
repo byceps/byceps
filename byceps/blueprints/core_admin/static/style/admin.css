@@ -457,7 +457,6 @@ fieldset.buttons {
   margin-bottom: 2rem;
 }
 .bigstats figure {
-  font-weight: bold;
   text-align: center;
 }
 .bigstats .value,
@@ -465,7 +464,8 @@ fieldset.buttons {
   display: block;
 }
 .bigstats .value {
-  font-size: 4.5rem; /* 72px / 16px */
+  font-size: 3rem; /* 48px / 16px */
+  font-weight: bold;
   line-height: 1;
 }
 .bigstats a {
