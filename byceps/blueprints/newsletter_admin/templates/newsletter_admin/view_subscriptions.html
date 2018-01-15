@@ -18,28 +18,18 @@
 
   {%- if g.current_user.has_permission(NewsletterPermission.export_subscribers) %}
   <div class="button-row">
-    <a class="button" href="{{ url_for('.export_subscribers', brand_id=brand.id) }}">
-      <div class="block-with-icon">
-        <div class="block-with-icon-icon">
-          {{ render_icon('download') }}
+    <div class="dropdown">
+      <button class="dropdown-toggle button">
+        <div class="block-with-icon">
+          <div class="block-with-icon-icon">{{ render_icon('download') }}</div>
+          <div class="block-with-icon-body">Abonnenten {{ render_icon('caret-down') }}<br>exportieren</div>
         </div>
-        <div class="block-with-icon-body">
-          Abonnenten exportieren<br>
-          <small>{{ 'Benutzernamen und E-Mail-Adressen (als JSON)'|dim }}</small>
-        </div>
-      </div>
-    </a>
-    <a class="button" href="{{ url_for('.export_subscriber_email_addresses', brand_id=brand.id) }}">
-      <div class="block-with-icon">
-        <div class="block-with-icon-icon">
-          {{ render_icon('download') }}
-        </div>
-        <div class="block-with-icon-body">
-          Abonnenten exportieren<br>
-          <small>{{ 'nur E-Mail-Adressen (als Text)'|dim }}</small>
-        </div>
-      </div>
-    </a>
+      </button>
+      <ol>
+        <li><a href="{{ url_for('.export_subscribers', brand_id=brand.id) }}">{{ render_icon('download') }} Benutzernamen und E-Mail-Adressen (als JSON)</a></li>
+        <li><a href="{{ url_for('.export_subscriber_email_addresses', brand_id=brand.id) }}">{{ render_icon('download') }} nur E-Mail-Adressen (als Text)</a></li>
+      </ol>
+    </div>
   </div>
   {%- endif %}
 
