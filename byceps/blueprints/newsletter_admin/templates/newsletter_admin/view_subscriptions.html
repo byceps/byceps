@@ -16,6 +16,18 @@
   </nav>
   <h1>Bestellstatus</h1>
 
+  <div class="row row--space-around row--wrap bigstats">
+    <div class="column-auto">
+      {{ render_bigstats_item('{:n}'.format(totals[State.requested]), 'angefordert', icon_name='enabled', color='#008800') }}
+    </div>
+    <div class="column-auto">
+      {{ render_bigstats_item('{:n}'.format(totals[State.declined]), 'abgelehnt', icon_name='disabled', color='#cc0000') }}
+    </div>
+    <div class="column-auto">
+      {{ render_bigstats_item('{:n}'.format(totals['total']), '&sum; gesamt'|safe) }}
+    </div>
+  </div>
+
   {%- if g.current_user.has_permission(NewsletterPermission.export_subscribers) %}
   <div class="button-row">
     <div class="dropdown">
@@ -32,18 +44,6 @@
     </div>
   </div>
   {%- endif %}
-
-  <div class="row row--space-around row--wrap bigstats">
-    <div class="column-auto">
-      {{ render_bigstats_item('{:n}'.format(totals[State.requested]), 'angefordert', icon_name='enabled', color='#008800') }}
-    </div>
-    <div class="column-auto">
-      {{ render_bigstats_item('{:n}'.format(totals[State.declined]), 'abgelehnt', icon_name='disabled', color='#cc0000') }}
-    </div>
-    <div class="column-auto">
-      {{ render_bigstats_item('{:n}'.format(totals['total']), '&sum; gesamt'|safe) }}
-    </div>
-  </div>
 
   <table class="index">
     <thead>
