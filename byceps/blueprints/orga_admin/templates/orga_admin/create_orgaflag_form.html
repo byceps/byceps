@@ -17,7 +17,7 @@
 
   <form action="{{ url_for('.create_orgaflag', brand_id=brand.id) }}" method="post">
     {% call form_fieldset() %}
-      {{ form_field(form.user_id, maxlength=36, required='required', autofocus='autofocus') }}
+      {{ form_field(form.user, maxlength=36, required='required', autofocus='autofocus') }}
     {% endcall %}
 
     {{ form_buttons('Zum Orga ernennen', cancel_url=url_for('.persons_for_brand', brand_id=brand.id)) }}

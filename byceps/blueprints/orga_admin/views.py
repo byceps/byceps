@@ -66,11 +66,11 @@ def persons_for_brand(brand_id):
 @blueprint.route('/persons/<brand_id>/create')
 @permission_required(OrgaTeamPermission.administrate_memberships)
 @templated
-def create_orgaflag_form(brand_id):
+def create_orgaflag_form(brand_id, erroneous_form=None):
     """Show form to give the organizer flag to a user."""
     brand = _get_brand_or_404(brand_id)
 
-    form = OrgaFlagCreateForm()
+    form = erroneous_form if erroneous_form else OrgaFlagCreateForm()
 
     return {
         'brand': brand,
@@ -85,9 +85,10 @@ def create_orgaflag(brand_id):
     brand = _get_brand_or_404(brand_id)
 
     form = OrgaFlagCreateForm(request.form)
+    if not form.validate():
+        return create_orgaflag_form(brand.id, form)
 
-    user_id = form.user_id.data.strip()
-    user = _get_user_or_404(user_id)
+    user = form.user.data
 
     orga_flag = orga_service.create_orga_flag(brand.id, user.id)
 
