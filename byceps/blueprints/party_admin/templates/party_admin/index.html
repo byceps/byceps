@@ -1,7 +1,7 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/datetime.html' import render_datetime %}
-{% from 'macros/icons.html' import render_icon %}
+{% from 'macros/misc.html' import render_tag %}
 {% from 'macros/party_admin.html' import render_party_admin_link %}
 {% set current_page = 'party_admin' %}
 {% set title = 'Partys' %}
@@ -26,7 +26,9 @@
         <td>{{ party.brand.title }}</td>
         <td>
           <strong>{{ render_party_admin_link(party) }}</strong>
-          {%- if party.is_archived %}<br>{{ render_icon('archived', title='archiviert') }} <em>archiviert</em>{% endif -%}
+          {%- if party.is_archived %}
+          <br>{{ render_tag('archiviert', class='color-disabled', icon='archived') }}
+          {%- endif %}
         </td>
         <td>
           {{- render_datetime(party.starts_at) }} bis<br>

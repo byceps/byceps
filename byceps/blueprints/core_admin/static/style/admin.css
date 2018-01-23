@@ -395,6 +395,10 @@ ol.index.fully-linked a:hover {
 
 /* tags */
 
+.tag.color-disabled {
+  background-color: #aaaaaa;
+}
+
 .tag.order-open {
   background-color: #ee3322 !important;
 }

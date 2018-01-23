@@ -1,5 +1,7 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/datetime.html' import render_datetime %}
+{% from 'macros/icons.html' import render_icon %}
+{% from 'macros/misc.html' import render_tag %}
 {% set current_page = 'party_admin' %}
 {% set current_page_party = party %}
 {% set title = 'Partys' %}
@@ -11,7 +13,12 @@
       <li>Partys</li>
     </ol>
   </nav>
-  <h1>{{ party.title }}</h1>
+  <h1>
+    {{- party.title }}
+    {%- if party.is_archived -%}
+    <br>{{ render_tag('archiviert', class='color-disabled', icon='archived') }}
+    {%- endif -%}
+  </h1>
 
   <div class="button-row">
     {%- if g.current_user.has_permission(PartyPermission.update) %}
@@ -31,16 +38,6 @@
     <tr>
       <th>Ende</th>
       <td>{{ render_datetime(party.ends_at) }}</td>
-    </tr>
-    <tr>
-      <th>Status</th>
-      <td>
-        {%- if party.is_archived -%}
-        {{ render_icon('archived', title='archiviert') }} <em>archiviert</em>
-        {%- else -%}
-        aktiv
-        {%- endif -%}
-      </td>
     </tr>
   </table>
 
