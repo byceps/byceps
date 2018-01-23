@@ -24,18 +24,14 @@ MAXIMUM_DIMENSIONS = Dimensions(512, 512)
 
 
 def create_avatar_image(party_id: PartyID, creator_id: UserID,
-                        stream: BinaryIO,
-                        *, allowed_types: Set[ImageType]=None,
-                        maximum_dimensions: Dimensions=MAXIMUM_DIMENSIONS) \
-                        -> Avatar:
+                        stream: BinaryIO, allowed_types: Set[ImageType],
+                        *, maximum_dimensions: Dimensions=MAXIMUM_DIMENSIONS
+                       ) -> Avatar:
     """Create a new avatar image.
 
     Raise `ImageTypeProhibited` if the stream data is not of one the
     allowed types.
     """
-    if allowed_types is None:
-        allowed_types = image_service.get_all_image_types()
-
     image_type = image_service.determine_image_type(stream, allowed_types)
     image_dimensions = image_service.determine_dimensions(stream)
 

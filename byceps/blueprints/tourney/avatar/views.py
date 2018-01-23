@@ -56,8 +56,7 @@ def _create(party_id, creator_id, image):
 
     try:
         return avatar_service.create_avatar_image(
-            party_id, creator_id, image.stream,
-            allowed_types=ALLOWED_IMAGE_TYPES)
+            party_id, creator_id, image.stream, ALLOWED_IMAGE_TYPES)
     except avatar_service.ImageTypeProhibited as e:
         abort(400, str(e))
     except FileExistsError:

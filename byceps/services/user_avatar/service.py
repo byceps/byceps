@@ -24,18 +24,15 @@ from .models import Avatar, AvatarCreationTuple, AvatarSelection
 MAXIMUM_DIMENSIONS = Dimensions(512, 512)
 
 
-def update_avatar_image(user: User, stream: BinaryIO, *,
-                        allowed_types: Set[ImageType]=None,
-                        maximum_dimensions: Dimensions=MAXIMUM_DIMENSIONS) \
-                        -> None:
+def update_avatar_image(user: User, stream: BinaryIO,
+                        allowed_types: Set[ImageType],
+                        *, maximum_dimensions: Dimensions=MAXIMUM_DIMENSIONS
+                       ) -> None:
     """Set a new avatar image for the user.
 
     Raise `ImageTypeProhibited` if the stream data is not of one the
     allowed types.
     """
-    if allowed_types is None:
-        allowed_types = image_service.get_all_image_types()
-
     image_type = image_service.determine_image_type(stream, allowed_types)
     image_dimensions = image_service.determine_dimensions(stream)
 
