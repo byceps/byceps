@@ -18,8 +18,8 @@
 
   <form action="{{ url_for('.create_mountpoint', snippet_id=snippet.id) }}" method="post">
     {% call form_fieldset() %}
-      {{ form_field(form.endpoint_suffix, maxlength=40, required='required', autofocus='autofocus') }}
-      {{ form_field(form.url_path, maxlength=40, required='required') }}
+      {{ form_field(form.endpoint_suffix, value=snippet.name, maxlength=40, required='required', autofocus='autofocus') }}
+      {{ form_field(form.url_path, value='/', maxlength=40, required='required') }}
     {% endcall %}
 
     {{ form_buttons('Speichern', cancel_url=url_for('.index_for_party', party_id=party.id)) }}
