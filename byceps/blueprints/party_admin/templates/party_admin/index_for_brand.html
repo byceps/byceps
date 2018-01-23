@@ -37,7 +37,7 @@
     </thead>
     <tbody>
       {%- for party in parties.items %}
-      <tr{% if party.is_over %} class="dimmed"{% endif %}>
+      <tr>
         <td>
           <strong>{{ render_party_admin_link(party) }}</strong><br>
           {{ party.id }}
@@ -48,6 +48,9 @@
         <td>
           {{- render_datetime(party.starts_at) }} bis<br>
           {{- render_datetime(party.ends_at) -}}
+          {%- if party.is_over %}
+          <br>{{ render_tag('vorbei', class='color-disabled') }}
+          {%- endif %}
         </td>
         <td class="centered bignumber">{{ article_count_by_party_id[party.id] }}</td>
         <td class="centered bignumber">{{ order_count_by_party_id[party.id] }}</td>

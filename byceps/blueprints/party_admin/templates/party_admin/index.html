@@ -21,7 +21,7 @@
     </thead>
     <tbody>
       {%- for party in parties|sort(attribute='starts_at', reverse=True) %}
-      <tr{% if party.is_over %} class="dimmed"{% endif %}>
+      <tr>
         <td>{{ party.id }}</td>
         <td>{{ party.brand.title }}</td>
         <td>
@@ -33,6 +33,9 @@
         <td>
           {{- render_datetime(party.starts_at) }} bis<br>
           {{- render_datetime(party.ends_at) -}}
+          {%- if party.is_over %}
+          <br>{{ render_tag('vorbei', class='color-disabled') }}
+          {%- endif %}
         </td>
       </tr>
       {%- endfor %}
