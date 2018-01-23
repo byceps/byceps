@@ -5,7 +5,7 @@ Installation
 Requirements
 ------------
 
-* Python_ 3.4.2 or higher
+* Python_ 3.5.3 or higher
 * PostgreSQL_ 9.4 or higher
 * Redis_ 2.8 or higher
 
@@ -25,9 +25,9 @@ the "Jessie" release:
 * ``postgresql-9.4``
 * ``postgresql-contrib-9.4``
 * ``python3-psycopg2``
-* ``python3.4``
-* ``python3.4-dev``
-* ``python3.4-venv``
+* ``python3.5``
+* ``python3.5-dev``
+* ``python3.5-venv``
 * ``redis-server``
 
 Additional required packages should be suggested for installation by
@@ -39,7 +39,7 @@ user):
 .. code-block:: sh
 
     # aptitude update
-    # aptitude install postgresql-9.4 postgresql-contrib-9.4 python3-psycopg2 python3.4 python3.4-dev python3.4-venv redis-server
+    # aptitude install postgresql-9.4 postgresql-contrib-9.4 python3-psycopg2 python3.5 python3.5-dev python3.5-venv redis-server
 
 Refer to the Debian documentation for further details.
 
@@ -81,7 +81,7 @@ Change into the BYCEPS path and create a virtual environment (named
 .. code-block:: sh
 
     $ cd byceps
-    $ pyvenv-3.4 --system-site-packages venv
+    $ pyvenv-3.5 --system-site-packages venv
 
 Activate it (but don't change into its path):
 
@@ -104,7 +104,7 @@ Make sure the correct version of Python is used:
 .. code-block:: sh
 
     (venv)$ python -V
-    Python 3.4.2
+    Python 3.5.3
 
 It's probably a good idea to update pip_ to the current version:
 
