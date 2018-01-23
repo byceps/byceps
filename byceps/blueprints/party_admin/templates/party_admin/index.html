@@ -13,23 +13,22 @@
   <table class="index wide">
     <thead>
       <tr>
-        <th>ID</th>
+        <th>Name<br>ID</th>
         <th>Marke</th>
-        <th>Name</th>
         <th>Zeitraum</th>
       </tr>
     </thead>
     <tbody>
       {%- for party in parties|sort(attribute='starts_at', reverse=True) %}
       <tr>
-        <td>{{ party.id }}</td>
-        <td>{{ party.brand.title }}</td>
         <td>
-          <strong>{{ render_party_admin_link(party) }}</strong>
+          <strong>{{ render_party_admin_link(party) }}</strong><br>
+          {{ party.id }}
           {%- if party.is_archived %}
           <br>{{ render_tag('archiviert', class='color-disabled', icon='archived') }}
           {%- endif %}
         </td>
+        <td>{{ party.brand.title }}</td>
         <td>
           {{- render_datetime(party.starts_at) }} bis<br>
           {{- render_datetime(party.ends_at) -}}
