@@ -1,4 +1,5 @@
 {% extends 'layout/admin/base.html' %}
+{% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'terms_admin' %}
 {% set current_page_brand = brand %}
 {% set title = 'AGB-Version ansehen' %}
@@ -11,6 +12,10 @@
     </ol>
   </nav>
   <h1>{{ version.title }}</h1>
+
+  <div class="button-row">
+    <a class="button" href="{{ url_for('.view_body_html', version_id=version.id) }}">{{ render_icon('download') }} HTML</a>
+  </div>
 
 {{ version.body|safe }}
 

@@ -50,11 +50,28 @@ def index_for_brand(brand_id):
 @templated
 def view(version_id):
     """Show the terms version."""
-    version = terms_service.find_version(version_id)
-    if version is None:
-        abort(404)
+    version = _get_version_or_404(version_id)
 
     return {
         'brand': version.brand,
         'version': version,
     }
+
+
+@blueprint.route('/versions/<uuid:version_id>/body.html')
+@permission_required(TermsPermission.list)
+@templated
+def view_body_html(version_id):
+    """Show the terms version's HTML body."""
+    version = _get_version_or_404(version_id)
+
+    return version.body
+
+
+def _get_version_or_404(version_id):
+    version = terms_service.find_version(version_id)
+
+    if version is None:
+        abort(404)
+
+    return version
