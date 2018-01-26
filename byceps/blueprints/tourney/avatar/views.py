@@ -8,7 +8,6 @@ byceps.blueprints.tourney.avatar.views
 
 from flask import abort, g, request
 
-from ....services.image import service as image_service
 from ....services.tourney.avatar import service as avatar_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.image.models import ImageType

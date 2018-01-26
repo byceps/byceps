@@ -13,12 +13,10 @@ from flask import abort, request
 from ....services.party import service as party_service
 from ....services.shop.order import service as order_service
 from ....services.ticketing import ticket_service
-from ....services.user import service as user_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated
 
 from ...authorization.decorators import permission_required
-from ...authorization.registry import permission_registry
 from ...shop_order_admin import service as order_blueprint_service
 from ...ticketing_admin.authorization import TicketingPermission
 from ...user_admin import service as user_blueprint_service
@@ -54,7 +52,6 @@ def index(party_id):
         latest_dob_for_checkin = None
         tickets = None
         orders = None
-        orderers_by_id = None
         users = None
 
     return {
