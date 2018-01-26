@@ -43,3 +43,18 @@ def index_for_brand(brand_id):
         'versions': versions,
         'current_version_id': current_version_id,
     }
+
+
+@blueprint.route('/versions/<uuid:version_id>')
+@permission_required(TermsPermission.list)
+@templated
+def view(version_id):
+    """Show the terms version."""
+    version = terms_service.find_version(version_id)
+    if version is None:
+        abort(404)
+
+    return {
+        'brand': version.brand,
+        'version': version,
+    }
