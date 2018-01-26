@@ -15,7 +15,7 @@ from ..authentication.password import service as password_service
 from ..authorization.models import RoleID
 from ..authorization import service as authorization_service
 from ..newsletter import service as newsletter_service
-from ..terms.models import VersionID as TermsVersionID
+from ..terms.models.version import VersionID as TermsVersionID
 from ..terms import service as terms_service
 from ..verification_token import service as verification_token_service
 

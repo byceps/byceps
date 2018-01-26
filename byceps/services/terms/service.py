@@ -13,8 +13,8 @@ from ...typing import BrandID, UserID
 
 from ..verification_token.models import Token
 
-from .models import Consent, ConsentContext, CurrentVersionAssociation, \
-    Version, VersionID
+from .models.consent import Consent, ConsentContext
+from .models.version import CurrentVersionAssociation, Version, VersionID
 
 
 # -------------------------------------------------------------------- #
