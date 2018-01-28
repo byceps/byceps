@@ -8,6 +8,8 @@
 
 import click
 
+from byceps.database import db
+from byceps.services.user_badge.models.badge import Badge, BadgeID
 from byceps.services.user_badge import service as badge_service
 from byceps.util.system import get_config_filename_from_env_or_exit
 
@@ -19,17 +21,29 @@ from bootstrap.util import app_context
 @click.argument('badge_slug')
 @click.argument('user', callback=validate_user_screen_name)
 def execute(badge_slug, user):
-    badge = badge_service.find_badge_by_slug(badge_slug)
-
-    if badge is None:
-        raise click.BadParameter('Unknown badge slug "{}".'.format(badge_slug))
+    badge_id = find_badge_id_for_badge_slug(badge_slug)
 
     click.echo('Awarding badge "{}" to user "{}" ... '
-        .format(badge.label, user.screen_name), nl=False)
+        .format(badge_slug, user.screen_name), nl=False)
 
-    badge_service.award_badge_to_user(badge.id, user.id)
+    badge_service.award_badge_to_user(badge_id, user.id)
 
     click.secho('done.', fg='green')
+
+
+def find_badge_id_for_badge_slug(slug: str) -> BadgeID:
+    """Finde the badge with that slug and return its ID, or raise an
+    error if not found.
+    """
+    badge_id = db.session \
+        .query(Badge.id) \
+        .filter_by(slug=slug) \
+        .scalar()
+
+    if badge_id is None:
+        raise click.BadParameter('Unknown badge slug "{}".'.format(slug))
+
+    return badge_id
 
 
 if __name__ == '__main__':
