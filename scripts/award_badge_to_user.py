@@ -11,13 +11,13 @@ import click
 from byceps.services.user_badge import service as badge_service
 from byceps.util.system import get_config_filename_from_env_or_exit
 
-from bootstrap.validators import validate_user_id
+from bootstrap.validators import validate_user_screen_name
 from bootstrap.util import app_context
 
 
 @click.command()
 @click.argument('badge_slug')
-@click.argument('user', callback=validate_user_id)
+@click.argument('user', callback=validate_user_screen_name)
 def execute(badge_slug, user):
     badge = badge_service.find_badge_by_slug(badge_slug)
 
