@@ -10,19 +10,19 @@ from byceps.services.text_markup.service import render_html
 
 def test_auto_url_linking():
     text = 'before http://example.com/index.html after'
-    expected = 'before <a href="http://example.com/index.html">http://example.com/index.html</a> after'
+    expected = 'before <a rel="nofollow" href="http://example.com/index.html">http://example.com/index.html</a> after'
     assert render_html(text) == expected
 
 
 def test_explicit_url_linking():
     text = 'before [url]http://example.com/index.html[/url] after'
-    expected = 'before <a href="http://example.com/index.html">http://example.com/index.html</a> after'
+    expected = 'before <a rel="nofollow" href="http://example.com/index.html">http://example.com/index.html</a> after'
     assert render_html(text) == expected
 
 
 def test_labeled_url_linking():
     text = 'before [url=http://example.com/index.html]Example[/url] after'
-    expected = 'before <a href="http://example.com/index.html">Example</a> after'
+    expected = 'before <a rel="nofollow" href="http://example.com/index.html">Example</a> after'
     assert render_html(text) == expected
 
 
@@ -34,7 +34,7 @@ def test_image():
 
 def test_linked_image():
     text = 'before [url=http://example.com/index.html][img]http://example.com/image.png[/img][/url] after'
-    expected = 'before <a href="http://example.com/index.html"><img src="http://example.com/image.png"></a> after'
+    expected = 'before <a rel="nofollow" href="http://example.com/index.html"><img src="http://example.com/image.png"></a> after'
     assert render_html(text) == expected
 
 

@@ -12,7 +12,7 @@ Flask-SQLAlchemy >= 2.3
 SQLAlchemy >= 1.1.13
 
 Arrow >= 0.10.0
-bbcode >= 1.0.26
+bbcode >= 1.0.28
 click >= 6.7
 Flask-Mail >= 0.9.1
 hiredis >= 0.2.0
