@@ -16,21 +16,21 @@ class CurrentUserJsonTestCase(AbstractAppTestCase):
     def setUp(self):
         super().setUp()
 
-        self.user = self.create_user('McFly')
-        self.create_session_token(self.user.id)
-
         self.create_brand_and_party()
 
     def test_when_logged_in(self):
-        response = self.send_request(user=self.user)
+        user = self.create_user('McFly')
+        self.create_session_token(user.id)
+
+        response = self.send_request(user=user)
 
         assert response.status_code == 200
         assert response.content_type == CONTENT_TYPE_JSON
         assert response.mimetype == CONTENT_TYPE_JSON
 
         response_data = decode_json_response(response)
-        assert response_data['id'] == str(self.user.id)
-        assert response_data['screen_name'] == self.user.screen_name
+        assert response_data['id'] == str(user.id)
+        assert response_data['screen_name'] == user.screen_name
 
     def test_when_not_logged_in(self):
         response = self.send_request()
