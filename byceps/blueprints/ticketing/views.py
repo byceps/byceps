@@ -17,6 +17,8 @@ from ...util.iterables import find
 from ...util.framework.templating import templated
 from ...util.views import respond_no_content
 
+from ..authentication.decorators import login_required
+
 from .forms import SpecifyUserForm
 from . import notification_service
 
@@ -25,10 +27,11 @@ blueprint = create_blueprint('ticketing', __name__)
 
 
 @blueprint.route('/mine')
+@login_required
 @templated
 def index_mine():
     """List tickets related to the current user."""
-    current_user = _get_current_user_or_403()
+    current_user = g.current_user
 
     party = party_service.find_party(g.party_id)
 
@@ -264,15 +267,6 @@ def withdraw_seat_manager(ticket_id):
 
 
 # -------------------------------------------------------------------- #
-
-
-def _get_current_user_or_403():
-    user = g.current_user
-
-    if not user.is_active:
-        abort(403)
-
-    return user
 
 
 def _abort_if_ticket_management_disabled():
