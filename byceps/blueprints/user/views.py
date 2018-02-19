@@ -26,6 +26,8 @@ from ...util.framework.flash import flash_error, flash_notice, flash_success
 from ...util.framework.templating import templated
 from ...util.views import create_empty_json_response, redirect_to
 
+from ..authentication.decorators import login_required
+
 from .forms import DetailsForm, RequestConfirmationEmailForm, UserCreateForm
 from . import signals
 
@@ -89,10 +91,11 @@ def view_as_json(user_id):
 
 
 @blueprint.route('/me')
+@login_required
 @templated
 def view_current():
     """Show the current user's internal profile."""
-    current_user = get_current_user_or_404()
+    current_user = g.current_user
 
     user = user_service.find_user(current_user.id)
     if user is None:

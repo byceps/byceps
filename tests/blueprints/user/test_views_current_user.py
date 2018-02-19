@@ -25,8 +25,8 @@ class CurrentUserTestCase(AbstractAppTestCase):
     def test_when_not_logged_in(self):
         response = self.send_request()
 
-        assert response.status_code == 404
-        assert response.mimetype == 'text/html'
+        assert response.status_code == 302
+        assert 'Location' in response.headers
 
     # helpers
 
