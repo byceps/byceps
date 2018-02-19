@@ -8,7 +8,7 @@ byceps.blueprints.user.views
 
 from operator import attrgetter
 
-from flask import abort, g, jsonify, request
+from flask import abort, g, jsonify, request, Response
 
 from ...config import get_site_mode, get_user_registration_enabled
 from ...services.country import service as country_service
@@ -119,7 +119,8 @@ def view_current_as_json():
     user = g.current_user
 
     if not user.is_active:
-        return create_empty_json_response(404)
+        # Return empty response.
+        return Response(status=403)
 
     return jsonify({
         'id': user.id,

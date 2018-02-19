@@ -35,12 +35,8 @@ class CurrentUserJsonTestCase(AbstractAppTestCase):
     def test_when_not_logged_in(self):
         response = self.send_request()
 
-        assert response.status_code == 404
-        assert response.content_type == CONTENT_TYPE_JSON
-        assert response.mimetype == CONTENT_TYPE_JSON
-
-        response_data = decode_json_response(response)
-        assert response_data == {}
+        assert response.status_code == 403
+        assert response.get_data() == b''
 
     # helpers
 
