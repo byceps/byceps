@@ -15,7 +15,7 @@ from .models import UserGroup
 
 
 def create_group(creator_id: UserID, title: str, description: str) -> UserGroup:
-    """Introduce a new badge."""
+    """Introduce a new group."""
     group = UserGroup(creator_id, title, description)
 
     db.session.add(group)
