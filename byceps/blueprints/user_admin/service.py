@@ -167,6 +167,8 @@ def _get_additional_data(event: UserEvent, users_by_id: Dict[UserID, UserTuple]
             'user-created',
             'user-disabled',
             'user-enabled',
+            'user-suspended',
+            'user-unsuspended',
             'password-updated',
             'avatar-updated',
             'newsletter-requested',
@@ -176,6 +178,12 @@ def _get_additional_data(event: UserEvent, users_by_id: Dict[UserID, UserTuple]
     }:
         yield from _get_additional_data_for_user_initiated_event(
             event, users_by_id)
+
+    if event.event_type in {
+            'user-suspended',
+            'user-unsuspended',
+    }:
+        yield 'reason', event.data['reason']
 
 
 def _get_additional_data_for_user_initiated_event(event: UserEvent,

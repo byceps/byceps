@@ -19,16 +19,17 @@ from ...services.ticketing import ticket_service
 from ...services.user import service as user_service
 from ...services.user_badge import service as badge_service
 from ...util.framework.blueprint import create_blueprint
-from ...util.framework.flash import flash_success
+from ...util.framework.flash import flash_error, flash_success
 from ...util.framework.templating import templated
-from ...util.views import respond_no_content
+from ...util.views import redirect_to, respond_no_content
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 from ..authorization_admin.authorization import RolePermission
+from ..user.signals import account_suspended, account_unsuspended
 
 from .authorization import UserPermission
-from .forms import SetPasswordForm
+from .forms import SetPasswordForm, SuspendAccountForm
 from .models import UserEnabledFilter, UserStateFilter
 from . import service
 
@@ -192,6 +193,98 @@ def unset_enabled_flag(user_id):
     user_service.disable_user(user.id, initiator_id)
 
     flash_success("Das Benutzerkonto '{}' wurde deaktiviert.", user.screen_name)
+
+
+@blueprint.route('/<uuid:user_id>/suspend')
+@permission_required(UserPermission.administrate)
+@templated
+def suspend_account_form(user_id, erroneous_form=None):
+    """Show form to suspend the user account."""
+    user = _get_user_or_404(user_id)
+
+    if user.suspended:
+        flash_error("Das Benutzerkonto '{}' ist bereits gesperrt.",
+                    user.screen_name)
+        return redirect_to('.view', user_id=user.id)
+
+    form = erroneous_form if erroneous_form else SuspendAccountForm()
+
+    return {
+        'user': user,
+        'form': form,
+    }
+
+
+@blueprint.route('/<uuid:user_id>/suspend', methods=['POST'])
+@permission_required(UserPermission.administrate)
+def suspend_account(user_id):
+    """Suspend the user account."""
+    user = _get_user_or_404(user_id)
+
+    if user.suspended:
+        flash_error("Das Benutzerkonto '{}' ist bereits gesperrt.",
+                    user.screen_name)
+        return redirect_to('.view', user_id=user.id)
+
+    form = SuspendAccountForm(request.form)
+    if not form.validate():
+        return suspend_account_form(user_id, form)
+
+    initiator_id = g.current_user.id
+    reason = form.reason.data.strip()
+
+    user_service.suspend_account(user.id, initiator_id, reason)
+
+    account_suspended.send(None, user_id=user.id)
+
+    flash_success("Das Benutzerkonto '{}' wurde gesperrt.", user.screen_name)
+    return redirect_to('.view', user_id=user.id)
+
+
+@blueprint.route('/<uuid:user_id>/unsuspend')
+@permission_required(UserPermission.administrate)
+@templated
+def unsuspend_account_form(user_id, erroneous_form=None):
+    """Show form to unsuspend the user account."""
+    user = _get_user_or_404(user_id)
+
+    if not user.suspended:
+        flash_error("Das Benutzerkonto '{}' ist bereits entsperrt.",
+                    user.screen_name)
+        return redirect_to('.view', user_id=user.id)
+
+    form = erroneous_form if erroneous_form else SuspendAccountForm()
+
+    return {
+        'user': user,
+        'form': form,
+    }
+
+
+@blueprint.route('/<uuid:user_id>/unsuspend', methods=['POST'])
+@permission_required(UserPermission.administrate)
+def unsuspend_account(user_id):
+    """Unsuspend the user account."""
+    user = _get_user_or_404(user_id)
+
+    if not user.suspended:
+        flash_error("Das Benutzerkonto '{}' ist bereits entsperrt.",
+                    user.screen_name)
+        return redirect_to('.view', user_id=user.id)
+
+    form = SuspendAccountForm(request.form)
+    if not form.validate():
+        return unsuspend_account_form(user_id, form)
+
+    initiator_id = g.current_user.id
+    reason = form.reason.data.strip()
+
+    user_service.unsuspend_account(user.id, initiator_id, reason)
+
+    account_unsuspended.send(None, user_id=user.id)
+
+    flash_success("Das Benutzerkonto '{}' wurde entsperrt.", user.screen_name)
+    return redirect_to('.view', user_id=user.id)
 
 
 @blueprint.route('/<uuid:user_id>/permissions')

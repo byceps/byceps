@@ -50,6 +50,11 @@
 {%- endmacro %}
 
 
+{% macro render_user_flag_suspended(label='gesperrt', show_label=True) -%}
+  {{ render_tag(label if show_label else '', class='color-danger', icon='lock', title=None if show_label else label) }}
+{%- endmacro %}
+
+
 {% macro render_user_state_filter(user_state_filter) %}
   {%- if user_state_filter.name == 'enabled' -%}
     {{ render_tag('aktiviert', class='user-state-enabled') }}

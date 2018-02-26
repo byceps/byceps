@@ -29,6 +29,11 @@ def authenticate(screen_name: str, password: str) -> User:
         # User account is disabled.
         raise AuthenticationFailed()
 
+    # Account must not be suspended.
+    if user.suspended:
+        # User account is suspended.
+        raise AuthenticationFailed()
+
     # Account must not be deleted.
     if user.deleted:
         # User account has been deleted.

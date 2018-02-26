@@ -14,3 +14,5 @@ user_signals = Namespace()
 
 email_address_confirmed = user_signals.signal('email-address-confirmed')
 user_created = user_signals.signal('user-created')
+account_suspended = user_signals.signal('user-account-suspended')
+account_unsuspended = user_signals.signal('user-account-unsuspended')

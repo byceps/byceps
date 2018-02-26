@@ -196,6 +196,37 @@ def disable_user(user_id: UserID, initiator_id: UserID) -> None:
     db.session.commit()
 
 
+def suspend_account(user_id: UserID, initiator_id: UserID, reason: str) -> None:
+    """Suspend the user account."""
+    user = _get_user(user_id)
+
+    user.suspended = True
+
+    event = event_service._build_event('user-suspended', user.id, {
+        'initiator_id': str(initiator_id),
+        'reason': reason,
+    })
+    db.session.add(event)
+
+    db.session.commit()
+
+
+def unsuspend_account(user_id: UserID, initiator_id: UserID, reason: str
+                     ) -> None:
+    """Unsuspend the user account."""
+    user = _get_user(user_id)
+
+    user.suspended = False
+
+    event = event_service._build_event('user-unsuspended', user.id, {
+        'initiator_id': str(initiator_id),
+        'reason': reason,
+    })
+    db.session.add(event)
+
+    db.session.commit()
+
+
 def _get_user(user_id: UserID) -> User:
     """Return the user with that ID, or raise an exception."""
     user = find_user(user_id)
