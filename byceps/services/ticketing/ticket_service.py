@@ -19,6 +19,7 @@ from ..seating.models.seat import Seat, SeatID
 from ..seating import seat_service
 from ..shop.order.models.order import OrderNumber
 from ..user.models.user import User
+from ..user import service as user_service
 
 from . import event_service
 from .event_service import TicketEvent
@@ -426,6 +427,14 @@ def appoint_user(ticket_id: TicketID, user_id: UserID, initiator_id: UserID
     if ticket.user_checked_in:
         raise UserAlreadyCheckIn('Ticket user has already been checked in.')
 
+    user = user_service.find_user(user_id)
+    if user is None:
+        raise UserIdUnknown("Unknown user ID '{}'.".format(user_id))
+
+    if user.suspended:
+        raise UserAccountSuspended(
+            'User account {} is suspended.'.format(user.screen_name))
+
     ticket.used_by_id = user_id
 
     event = event_service._build_event('user-appointed', ticket.id, {
@@ -473,6 +482,14 @@ def check_in_user(ticket_id: TicketID, initiator_id: UserID) -> None:
             'Ticket {} has already been used to check in a user.'
                 .format(ticket_id))
 
+    user = user_service.find_user(ticket.used_by_id)
+    if user is None:
+        raise UserIdUnknown("Unknown user ID '{}'.".format(user_id))
+
+    if user.suspended:
+        raise UserAccountSuspended(
+            'User account {} is suspended.'.format(user.screen_name))
+
     ticket.user_checked_in = True
 
     event = event_service._build_event('user-checked-in', ticket.id, {
@@ -513,10 +530,18 @@ class TicketLacksUser(Exception):
     """
 
 
+class UserAccountSuspended(Exception):
+    """Indicate that an action failed because the user account is suspended."""
+
+
 class UserAlreadyCheckIn(Exception):
     """Indicate that user check-in failed because a user has already
     been checked in with the ticket.
     """
+
+
+class UserIdUnknown(Exception):
+    """Indicate that a user ID is unknown."""
 
 
 # -------------------------------------------------------------------- #

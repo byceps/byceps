@@ -33,7 +33,7 @@
     <div class="avatar">{{ render_user_avatar_image_with_fallback(user) }}</div>
   </div>
   <div class="user-microcard-names">
-    <div class="user-microcard-screen-name">{{ render_user_admin_link(user) }}</div>
+    <div class="user-microcard-screen-name">{{ render_user_admin_link(user) }}{% if user.suspended %} {{ render_user_flag_suspended(show_label=False) }}{% endif %}</div>
     <div class="user-microcard-full-name">{{ user.detail.full_name }}</div>
   </div>
 </div>
