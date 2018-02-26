@@ -24,14 +24,14 @@ def authenticate(screen_name: str, password: str) -> User:
         # Screen name is unknown.
         raise AuthenticationFailed()
 
-    # Verify credentials.
-    if not password_service.is_password_valid_for_user(user.id, password):
-        # Password does not match.
-        raise AuthenticationFailed()
-
     # Account must be active.
     if not user.is_active:
         # User account is disabled.
+        raise AuthenticationFailed()
+
+    # Verify credentials.
+    if not password_service.is_password_valid_for_user(user.id, password):
+        # Password does not match.
         raise AuthenticationFailed()
 
     return user
