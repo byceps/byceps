@@ -29,6 +29,11 @@ def authenticate(screen_name: str, password: str) -> User:
         # User account is disabled.
         raise AuthenticationFailed()
 
+    # Account must not be deleted.
+    if user.deleted:
+        # User account has been deleted.
+        raise AuthenticationFailed()
+
     # Verify credentials.
     if not password_service.is_password_valid_for_user(user.id, password):
         # Password does not match.
