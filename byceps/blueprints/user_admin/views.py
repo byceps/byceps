@@ -30,7 +30,7 @@ from ..user.signals import account_suspended, account_unsuspended
 
 from .authorization import UserPermission
 from .forms import SetPasswordForm, SuspendAccountForm
-from .models import UserFlagFilter, UserStateFilter
+from .models import UserStateFilter
 from . import service
 
 
@@ -50,13 +50,12 @@ def index(page):
     search_term = request.args.get('search_term', default='').strip()
     only = request.args.get('only')
 
-    flag_filter = UserFlagFilter.__members__.get(only)
-
-    user_state_filter = UserStateFilter.find(flag_filter)
+    user_state_filter = UserStateFilter.__members__.get(only,
+                                                        UserStateFilter.none)
 
     users = service.get_users_paginated(page, per_page,
                                         search_term=search_term,
-                                        flag_filter=flag_filter)
+                                        state_filter=user_state_filter)
 
     total_enabled = user_service.count_enabled_users()
     total_disabled = user_service.count_disabled_users()

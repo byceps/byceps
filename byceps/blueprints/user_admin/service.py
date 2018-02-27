@@ -20,10 +20,10 @@ from ...services.user import service as user_service
 from ...services.user_avatar import service as avatar_service
 from ...typing import UserID
 
-from .models import UserFlagFilter
+from .models import UserStateFilter
 
 
-def get_users_paginated(page, per_page, *, search_term=None, flag_filter=None):
+def get_users_paginated(page, per_page, *, search_term=None, state_filter=None):
     """Return the users to show on the specified page, optionally
     filtered by search term or 'enabled' flag.
     """
@@ -31,7 +31,7 @@ def get_users_paginated(page, per_page, *, search_term=None, flag_filter=None):
         .options(db.joinedload('detail')) \
         .order_by(User.created_at.desc())
 
-    query = _filter_by_flag(query, flag_filter)
+    query = _filter_by_state(query, state_filter)
 
     if search_term:
         query = _filter_by_search_term(query, search_term)
@@ -54,14 +54,14 @@ def _filter_by_search_term(query, search_term):
         )
 
 
-def _filter_by_flag(query, flag_filter):
-    if flag_filter == UserFlagFilter.enabled:
+def _filter_by_state(query, state_filter):
+    if state_filter == UserStateFilter.enabled:
         return query.filter_by(enabled=True)
-    elif flag_filter == UserFlagFilter.disabled:
+    elif state_filter == UserStateFilter.disabled:
         return query.filter_by(enabled=False)
-    elif flag_filter == UserFlagFilter.suspended:
+    elif state_filter == UserStateFilter.suspended:
         return query.filter_by(suspended=True)
-    elif flag_filter == UserFlagFilter.deleted:
+    elif state_filter == UserStateFilter.deleted:
         return query.filter_by(deleted=True)
     else:
         return query
