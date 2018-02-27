@@ -60,6 +60,8 @@
     {{ render_tag('aktiviert', class='color-success') }}
   {%- elif user_state_filter.name == 'disabled' -%}
     {{ render_tag('deaktiviert', class='color-warning') }}
+  {%- elif user_state_filter.name == 'suspended' -%}
+    {{ render_tag('gesperrt', class='color-danger') }}
   {%- else -%}
     {{ render_tag('keine', class='color-default') }}
   {%- endif -%}

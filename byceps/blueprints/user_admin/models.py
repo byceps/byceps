@@ -9,17 +9,23 @@ byceps.blueprints.user_admin.models
 from enum import Enum
 
 
-UserFlagFilter = Enum('UserFlagFilter', ['enabled', 'disabled'])
+UserFlagFilter = Enum('UserFlagFilter', [
+    'enabled',
+    'disabled',
+    'suspended',
+])
 
 
 class UserStateFilter(Enum):
 
-    none     = (None,)
-    enabled  = (UserFlagFilter.enabled,)
-    disabled = (UserFlagFilter.disabled,)
+    none      = (None                   , None)
+    enabled   = (UserFlagFilter.enabled , None)
+    disabled  = (UserFlagFilter.disabled, None)
+    suspended = (None                   , True)
 
-    def __init__(self, enabled):
+    def __init__(self, enabled, suspended):
         self.enabled = enabled
+        self.suspended = suspended
 
     @classmethod
     def find(cls, flag_filter):
@@ -27,5 +33,7 @@ class UserStateFilter(Enum):
             return cls.enabled
         elif flag_filter == UserFlagFilter.disabled:
             return cls.disabled
+        elif flag_filter == UserFlagFilter.suspended:
+            return cls.suspended
         else:
             return cls.none
