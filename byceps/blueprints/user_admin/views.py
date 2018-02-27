@@ -239,7 +239,7 @@ def suspend_account(user_id):
 
     user_service.suspend_account(user.id, initiator_id, reason)
 
-    account_suspended.send(None, user_id=user.id)
+    account_suspended.send(None, user_id=user.id, initiator_id=initiator_id)
 
     flash_success("Das Benutzerkonto '{}' wurde gesperrt.", user.screen_name)
     return redirect_to('.view', user_id=user.id)
@@ -285,7 +285,7 @@ def unsuspend_account(user_id):
 
     user_service.unsuspend_account(user.id, initiator_id, reason)
 
-    account_unsuspended.send(None, user_id=user.id)
+    account_unsuspended.send(None, user_id=user.id, initiator_id=initiator_id)
 
     flash_success("Das Benutzerkonto '{}' wurde entsperrt.", user.screen_name)
     return redirect_to('.view', user_id=user.id)
@@ -331,7 +331,7 @@ def delete_account(user_id):
 
     user_service.delete_account(user.id, initiator_id, reason)
 
-    account_deleted.send(None, user_id=user.id)
+    account_deleted.send(None, user_id=user.id, initiator_id=initiator_id)
 
     flash_success("Das Benutzerkonto '{}' wurde gelöscht.", user.screen_name)
     return redirect_to('.view', user_id=user.id)
