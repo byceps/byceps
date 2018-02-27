@@ -58,6 +58,13 @@ def count_suspended_users() -> int:
         .count()
 
 
+def count_deleted_users() -> int:
+    """Return the number of deleted user accounts."""
+    return User.query \
+        .filter_by(deleted=True) \
+        .count()
+
+
 def find_user(user_id: UserID) -> Optional[User]:
     """Return the user with that ID, or `None` if not found."""
     return User.query.get(user_id)

@@ -61,6 +61,7 @@ def index(page):
     total_enabled = user_service.count_enabled_users()
     total_disabled = user_service.count_disabled_users()
     total_suspended = user_service.count_suspended_users()
+    total_deleted = user_service.count_deleted_users()
     total_overall = total_enabled + total_disabled
 
     return {
@@ -68,6 +69,7 @@ def index(page):
         'total_enabled': total_enabled,
         'total_disabled': total_disabled,
         'total_suspended': total_suspended,
+        'total_deleted': total_deleted,
         'total_overall': total_overall,
         'search_term': search_term,
         'only': only,
