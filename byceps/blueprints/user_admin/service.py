@@ -61,6 +61,8 @@ def _filter_by_flag(query, flag_filter):
         return query.filter_by(enabled=False)
     elif flag_filter == UserFlagFilter.suspended:
         return query.filter_by(suspended=True)
+    elif flag_filter == UserFlagFilter.deleted:
+        return query.filter_by(deleted=True)
     else:
         return query
 

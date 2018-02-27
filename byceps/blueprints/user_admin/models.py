@@ -13,19 +13,22 @@ UserFlagFilter = Enum('UserFlagFilter', [
     'enabled',
     'disabled',
     'suspended',
+    'deleted',
 ])
 
 
 class UserStateFilter(Enum):
 
-    none      = (None                   , None)
-    enabled   = (UserFlagFilter.enabled , None)
-    disabled  = (UserFlagFilter.disabled, None)
-    suspended = (None                   , True)
+    none      = (None                   , None, None)
+    enabled   = (UserFlagFilter.enabled , None, None)
+    disabled  = (UserFlagFilter.disabled, None, None)
+    suspended = (None                   , True, None)
+    deleted   = (None                   , None, True)
 
-    def __init__(self, enabled, suspended):
+    def __init__(self, enabled, suspended, deleted):
         self.enabled = enabled
         self.suspended = suspended
+        self.deleted = deleted
 
     @classmethod
     def find(cls, flag_filter):
@@ -35,5 +38,7 @@ class UserStateFilter(Enum):
             return cls.disabled
         elif flag_filter == UserFlagFilter.suspended:
             return cls.suspended
+        elif flag_filter == UserFlagFilter.deleted:
+            return cls.deleted
         else:
             return cls.none

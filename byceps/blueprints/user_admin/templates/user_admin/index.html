@@ -51,6 +51,7 @@
             <li><a href="{{ url_for('.index', only='enabled') }}">{{ render_user_state_filter(UserStateFilter.enabled) }}</a></li>
             <li><a href="{{ url_for('.index', only='disabled') }}">{{ render_user_state_filter(UserStateFilter.disabled) }}</a></li>
             <li><a href="{{ url_for('.index', only='suspended') }}">{{ render_user_state_filter(UserStateFilter.suspended) }}</a></li>
+            <li><a href="{{ url_for('.index', only='deleted') }}">{{ render_user_state_filter(UserStateFilter.deleted) }}</a></li>
           </ol>
         </div>
       </div>
