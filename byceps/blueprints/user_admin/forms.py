@@ -6,10 +6,19 @@ byceps.blueprints.user_admin.forms
 :License: Modified BSD, see LICENSE for details.
 """
 
-from wtforms import PasswordField, TextAreaField
-from wtforms.validators import InputRequired, Length
+from wtforms import PasswordField, StringField, TextAreaField
+from wtforms.validators import InputRequired, Length, ValidationError
 
 from ...util.l10n import LocalizedForm
+
+
+class DeleteAccountForm(LocalizedForm):
+    reason = TextAreaField('Begründung', validators=[InputRequired(), Length(max=200)])
+    verification = StringField('Bestätigung', validators=[InputRequired()])
+
+    def validate_verification(form, field):
+        if field.data != 'löschen':
+            raise ValidationError('Ungültiges Bestätigungswort')
 
 
 class SetPasswordForm(LocalizedForm):

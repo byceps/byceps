@@ -3,7 +3,7 @@
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_tag %}
 {% from 'macros/shop_order_admin.html' import render_order_link %}
-{% from 'macros/user_admin.html' import render_user_avatar_20_and_link, render_user_flag_suspended %}
+{% from 'macros/user_admin.html' import render_user_avatar_20_and_link, render_user_flag_deleted, render_user_flag_suspended %}
 {% set current_tab = 'events' %}
 {% set current_tab_user_id = user.id %}
 {% set title = 'Benutzer - Ereignisse - %s'|format(user.screen_name) %}
@@ -61,6 +61,13 @@
           {%- set body %}
             <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
             hat das Benutzerkonto {{ render_tag('entsperrt', icon='unlock', class='color-success') }}.
+            <div style="margin-top: 0.5rem;">Begründung: <em>{{ event.data.reason }}</em></div>
+          {%- endset %}
+        {%- elif event.event == 'user-deleted' %}
+          {%- set icon_name = 'delete' %}
+          {%- set body %}
+            <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
+            hat das Benutzerkonto {{ render_user_flag_deleted() }}.
             <div style="margin-top: 0.5rem;">Begründung: <em>{{ event.data.reason }}</em></div>
           {%- endset %}
         {%- elif event.event == 'user-logged-in' %}

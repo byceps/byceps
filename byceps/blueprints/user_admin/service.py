@@ -168,6 +168,7 @@ def _get_additional_data(event: UserEvent, users_by_id: Dict[UserID, UserTuple]
                         ) -> Iterator[Tuple[str, Any]]:
     if event.event_type in {
             'user-created',
+            'user-deleted',
             'user-disabled',
             'user-enabled',
             'user-suspended',
@@ -183,6 +184,7 @@ def _get_additional_data(event: UserEvent, users_by_id: Dict[UserID, UserTuple]
             event, users_by_id)
 
     if event.event_type in {
+            'user-deleted',
             'user-suspended',
             'user-unsuspended',
     }:

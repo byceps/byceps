@@ -26,10 +26,11 @@ from ...util.views import redirect_to, respond_no_content
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 from ..authorization_admin.authorization import RolePermission
-from ..user.signals import account_suspended, account_unsuspended
+from ..user.signals import account_deleted, account_suspended, \
+    account_unsuspended
 
 from .authorization import UserPermission
-from .forms import SetPasswordForm, SuspendAccountForm
+from .forms import DeleteAccountForm, SetPasswordForm, SuspendAccountForm
 from .models import UserStateFilter
 from . import service
 
@@ -287,6 +288,52 @@ def unsuspend_account(user_id):
     account_unsuspended.send(None, user_id=user.id)
 
     flash_success("Das Benutzerkonto '{}' wurde entsperrt.", user.screen_name)
+    return redirect_to('.view', user_id=user.id)
+
+
+@blueprint.route('/<uuid:user_id>/delete')
+@permission_required(UserPermission.administrate)
+@templated
+def delete_account_form(user_id, erroneous_form=None):
+    """Show form to delete the user account."""
+    user = _get_user_or_404(user_id)
+
+    if user.deleted:
+        flash_error("Das Benutzerkonto '{}' ist bereits gelöscht worden.",
+                    user.screen_name)
+        return redirect_to('.view', user_id=user.id)
+
+    form = erroneous_form if erroneous_form else DeleteAccountForm()
+
+    return {
+        'user': user,
+        'form': form,
+    }
+
+
+@blueprint.route('/<uuid:user_id>/delete', methods=['POST'])
+@permission_required(UserPermission.administrate)
+def delete_account(user_id):
+    """Delete the user account."""
+    user = _get_user_or_404(user_id)
+
+    if user.deleted:
+        flash_error("Das Benutzerkonto '{}' ist bereits gelöscht worden.",
+                    user.screen_name)
+        return redirect_to('.view', user_id=user.id)
+
+    form = DeleteAccountForm(request.form)
+    if not form.validate():
+        return delete_account_form(user_id, form)
+
+    initiator_id = g.current_user.id
+    reason = form.reason.data.strip()
+
+    user_service.delete_account(user.id, initiator_id, reason)
+
+    account_deleted.send(None, user_id=user.id)
+
+    flash_success("Das Benutzerkonto '{}' wurde gelöscht.", user.screen_name)
     return redirect_to('.view', user_id=user.id)
 
 

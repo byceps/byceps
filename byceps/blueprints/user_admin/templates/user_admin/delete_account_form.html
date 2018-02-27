@@ -1,0 +1,23 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
+{% from 'macros/icons.html' import render_icon %}
+{% from 'macros/misc.html' import render_notification %}
+{% set current_page = 'user' %}
+{% set title = 'Benutzerkonto \'%s\' löschen'|format(user.screen_name) %}
+
+{% block body %}
+
+  <h1>{{ render_icon('delete') }} {{ title }}</h1>
+
+  {{ render_notification('danger', 'warning', 'Achtung: Das Löschen des Benutzerkontos geschieht unwiderruflich!') }}
+
+  <form action="{{ url_for('.delete_account', user_id=user.id) }}" method="post">
+    {% call form_fieldset() %}
+      {{ form_field(form.reason, maxlength=200, required='required', note='Die Begründung wird als <em>interner</em> Vermerk gespeichert.') }}
+      {{ form_field(form.verification, required='required', note='Bitte zur Bestätigung "löschen" eingeben.') }}
+    {% endcall %}
+
+    {{ form_buttons('Löschen', icon='delete', color='danger', cancel_url=url_for('.view', user_id=user.id)) }}
+  </form>
+
+{%- endblock %}

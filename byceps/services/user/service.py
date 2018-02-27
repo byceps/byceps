@@ -241,6 +241,42 @@ def unsuspend_account(user_id: UserID, initiator_id: UserID, reason: str
     db.session.commit()
 
 
+def delete_account(user_id: UserID, initiator_id: UserID, reason: str) -> None:
+    """Delete the user account."""
+    user = _get_user(user_id)
+
+    user.deleted = True
+    _anonymize_account(user)
+
+    event = event_service._build_event('user-deleted', user.id, {
+        'initiator_id': str(initiator_id),
+        'reason': reason,
+    })
+    db.session.add(event)
+
+    db.session.commit()
+
+
+def _anonymize_account(user: User) -> None:
+    """Remove or replace user details of the account."""
+    user.screen_name = 'deleted-{}'.format(user.id.hex)
+    user.email_address = '{}@user.invalid'.format(user.id.hex)
+
+    # Remove details.
+    user.detail.first_names = None
+    user.detail.last_name = None
+    user.detail.date_of_birth = None
+    user.detail.country = None
+    user.detail.zip_code = None
+    user.detail.city = None
+    user.detail.street = None
+    user.detail.phone_number = None
+
+    # Remove avatar association.
+    if user.avatar_selection is not None:
+        db.session.delete(user.avatar_selection)
+
+
 def _get_user(user_id: UserID) -> User:
     """Return the user with that ID, or raise an exception."""
     user = find_user(user_id)
