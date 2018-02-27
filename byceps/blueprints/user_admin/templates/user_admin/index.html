@@ -64,4 +64,8 @@
     'search_term': search_term if search_term else None,
 }) }}
 
+  <small>
+    <p>{{ users.total }} {{ 'Ergebnis' if (users.total == 1) else 'Ergebnisse' }}</p>
+  </small>
+
 {%- endblock %}
