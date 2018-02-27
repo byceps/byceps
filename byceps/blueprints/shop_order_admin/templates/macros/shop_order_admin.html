@@ -36,7 +36,7 @@
 
 {% macro render_order_state_filter(order_state_filter) %}
   {%- if order_state_filter.name == 'none' -%}
-    {{ render_tag('keine') }}
+    {{ render_tag('keine', class='color-default') }}
   {%- elif order_state_filter.name == 'waiting_for_shipping' -%}
     {{ render_tag('auf Versand wartend', icon='shipping', class='order-waiting-for-shipping') }}
   {%- else -%}

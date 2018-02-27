@@ -61,6 +61,6 @@
   {%- elif user_state_filter.name == 'disabled' -%}
     {{ render_tag('nicht aktiviert', class='user-state-disabled') }}
   {%- else -%}
-    {{ render_tag('keine') }}
+    {{ render_tag('keine', class='color-default') }}
   {%- endif -%}
 {%- endmacro %}

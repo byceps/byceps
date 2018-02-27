@@ -450,7 +450,7 @@ fieldset.buttons {
   white-space: nowrap;
 }
 
-.filter .tag {
+.filter .tag.color-default {
   background-color: #666666;
 }
 
