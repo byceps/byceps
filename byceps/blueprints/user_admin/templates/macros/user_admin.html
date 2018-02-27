@@ -59,7 +59,7 @@
   {%- if user_state_filter.name == 'enabled' -%}
     {{ render_tag('aktiviert', class='user-state-enabled') }}
   {%- elif user_state_filter.name == 'disabled' -%}
-    {{ render_tag('nicht aktiviert', class='user-state-disabled') }}
+    {{ render_tag('deaktiviert', class='user-state-disabled') }}
   {%- else -%}
     {{ render_tag('keine', class='color-default') }}
   {%- endif -%}
