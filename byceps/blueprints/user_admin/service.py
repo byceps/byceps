@@ -20,11 +20,10 @@ from ...services.user import service as user_service
 from ...services.user_avatar import service as avatar_service
 from ...typing import UserID
 
-from .models import UserEnabledFilter
+from .models import UserFlagFilter
 
 
-def get_users_paginated(page, per_page, *, search_term=None,
-                        enabled_filter=None):
+def get_users_paginated(page, per_page, *, search_term=None, flag_filter=None):
     """Return the users to show on the specified page, optionally
     filtered by search term or 'enabled' flag.
     """
@@ -32,7 +31,7 @@ def get_users_paginated(page, per_page, *, search_term=None,
         .options(db.joinedload('detail')) \
         .order_by(User.created_at.desc())
 
-    query = _filter_by_enabled_flag(query, enabled_filter)
+    query = _filter_by_flag(query, flag_filter)
 
     if search_term:
         query = _filter_by_search_term(query, search_term)
@@ -55,10 +54,10 @@ def _filter_by_search_term(query, search_term):
         )
 
 
-def _filter_by_enabled_flag(query, enabled_filter):
-    if enabled_filter == UserEnabledFilter.enabled:
+def _filter_by_flag(query, flag_filter):
+    if flag_filter == UserFlagFilter.enabled:
         return query.filter_by(enabled=True)
-    elif enabled_filter == UserEnabledFilter.disabled:
+    elif flag_filter == UserFlagFilter.disabled:
         return query.filter_by(enabled=False)
     else:
         return query
