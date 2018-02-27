@@ -14,13 +14,13 @@
 
   <div class="row row--space-around row--wrap bigstats">
     <div class="column-auto">
+      {{ render_bigstats_item('{:n}'.format(total_overall), '&sum; gesamt'|safe) }}
+    </div>
+    <div class="column-auto">
       {{ render_bigstats_item('{:n}'.format(total_enabled), render_tag('aktiviert', class='color-success', icon='enabled')) }}
     </div>
     <div class="column-auto">
       {{ render_bigstats_item('{:n}'.format(total_disabled), render_user_flag_disabled()) }}
-    </div>
-    <div class="column-auto">
-      {{ render_bigstats_item('{:n}'.format(total_overall), '&sum; gesamt'|safe) }}
     </div>
   </div>
 
