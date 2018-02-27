@@ -51,6 +51,13 @@ def count_disabled_users() -> int:
         .count()
 
 
+def count_suspended_users() -> int:
+    """Return the number of suspended user accounts."""
+    return User.query \
+        .filter_by(suspended=True) \
+        .count()
+
+
 def find_user(user_id: UserID) -> Optional[User]:
     """Return the user with that ID, or `None` if not found."""
     return User.query.get(user_id)

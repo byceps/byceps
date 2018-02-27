@@ -4,7 +4,7 @@
 {% from 'macros/misc.html' import render_tag %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
 {% from 'macros/stats.html' import render_bigstats_item %}
-{% from 'macros/user_admin.html' import render_user_avatar_16_and_link, render_user_flag_deleted, render_user_flag_disabled, render_user_state_filter %}
+{% from 'macros/user_admin.html' import render_user_avatar_16_and_link, render_user_flag_deleted, render_user_flag_disabled, render_user_flag_suspended, render_user_state_filter %}
 {% set current_page = 'user_admin' %}
 {% set title = 'Benutzer' %}
 
@@ -21,6 +21,9 @@
     </div>
     <div class="column-auto">
       {{ render_bigstats_item('{:n}'.format(total_disabled), render_user_flag_disabled()) }}
+    </div>
+    <div class="column-auto">
+      {{ render_bigstats_item('{:n}'.format(total_suspended), render_user_flag_suspended()) }}
     </div>
   </div>
 
