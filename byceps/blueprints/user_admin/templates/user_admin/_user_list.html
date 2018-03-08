@@ -15,15 +15,13 @@
     <tr{% if not user.enabled or user.deleted %} class="dimmed"{% endif %}>
       <td>{{ render_user_avatar_16_and_link(user) }}</td>
       <td>
-        {%- if not user.enabled %}
-        {{- render_user_flag_disabled(show_label=False) }}
-        {%- endif -%}
-        {%- if user.suspended %}
-        {{- render_user_flag_suspended(show_label=False) }}
-        {%- endif -%}
-        {%- if user.deleted %}
-        {{- render_user_flag_deleted(show_label=False) }}
-        {%- endif -%}
+      {%- if user.deleted %}
+        {{ render_user_flag_deleted(show_label=False) }}
+      {%- elif user.suspended %}
+        {{ render_user_flag_suspended(show_label=False) }}
+      {%- elif not user.enabled %}
+        {{ render_user_flag_disabled(show_label=False) }}
+      {%- endif %}
       </td>
       <td>{{ user.detail.full_name|fallback }}</td>
       <td>{{ render_datetime(user.created_at) }}</td>
