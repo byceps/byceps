@@ -56,13 +56,22 @@ def _filter_by_search_term(query, search_term):
 
 def _filter_by_state(query, state_filter):
     if state_filter == UserStateFilter.enabled:
-        return query.filter_by(enabled=True)
+        return query \
+            .filter_by(enabled=True) \
+            .filter_by(suspended=False) \
+            .filter_by(deleted=False)
     elif state_filter == UserStateFilter.disabled:
-        return query.filter_by(enabled=False)
+        return query \
+            .filter_by(enabled=False) \
+            .filter_by(suspended=False) \
+            .filter_by(deleted=False)
     elif state_filter == UserStateFilter.suspended:
-        return query.filter_by(suspended=True)
+        return query \
+            .filter_by(suspended=True) \
+            .filter_by(deleted=False)
     elif state_filter == UserStateFilter.deleted:
-        return query.filter_by(deleted=True)
+        return query \
+            .filter_by(deleted=True)
     else:
         return query
 
