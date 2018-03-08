@@ -18,7 +18,7 @@ from ...services.user_badge import service as badge_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_error, flash_success
 from ...util.framework.templating import templated
-from ...util.views import redirect_to, respond_no_content_with_location
+from ...util.views import respond_no_content_with_location
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
@@ -472,9 +472,9 @@ def topic_move(topic_id):
                              moderator_id=moderator_id,
                              url=topic.external_url)
 
-    return redirect_to('.category_view',
-                       slug=topic.category.slug,
-                       _anchor=topic.anchor)
+    return redirect(url_for('.category_view',
+                            slug=topic.category.slug,
+                            _anchor=topic.anchor))
 
 
 # -------------------------------------------------------------------- #
@@ -490,11 +490,11 @@ def posting_view(posting_id):
 
     page = calculate_posting_page_number(posting)
 
-    return redirect_to('.topic_view',
-                       topic_id=posting.topic.id,
-                       page=page,
-                       _anchor=posting.anchor,
-                       _external=True)
+    return redirect(url_for('.topic_view',
+                            topic_id=posting.topic.id,
+                            page=page,
+                            _anchor=posting.anchor,
+                            _external=True))
 
 
 @blueprint.route('/topics/<uuid:topic_id>/create')
@@ -564,10 +564,10 @@ def posting_create(topic_id):
     postings_per_page = _get_postings_per_page_value()
     page_count = topic.count_pages(postings_per_page)
 
-    return redirect_to('.topic_view',
-                       topic_id=topic.id,
-                       page=page_count,
-                       _anchor=posting.anchor)
+    return redirect(url_for('.topic_view',
+                            topic_id=topic.id,
+                            page=page_count,
+                            _anchor=posting.anchor))
 
 
 @blueprint.route('/postings/<uuid:posting_id>/update')
