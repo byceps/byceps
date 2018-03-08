@@ -7,10 +7,10 @@
   <thead>
     <tr>
       <th>Code</th>
+      <th>Nutzer</th>
       <th>Besitzer</th>
       <th>Kategorie</th>
       <th>Sitzplatz</th>
-      <th>Nutzer</th>
     </tr>
   </thead>
   <tbody>
@@ -21,6 +21,13 @@
         {%- if ticket.revoked %}<br>{{ render_ticket_flag_revoked() }}{% endif -%}
         {%- if ticket.user_checked_in %}<br>{{ render_ticket_flag_user_checked_in() }}{% endif -%}
       </td>
+      <td>
+        {%- if ticket.used_by -%}
+        {{ render_user_microcard(ticket.used_by) }}
+        {%- else -%}
+        {{ render_tag('frei', class='available') }}
+        {%- endif -%}
+      </td>
       <td>{{ render_user_microcard(ticket.owned_by, tiny_avatar=True) }}</td>
       <td>{{ ticket.category.title }}</td>
       <td>
@@ -28,13 +35,6 @@
         {{ ticket.occupied_seat.label }}
         {%- else -%}
         {{ render_tag('keiner', class='available') }}
-        {%- endif -%}
-      </td>
-      <td>
-        {%- if ticket.used_by -%}
-        {{ render_user_microcard(ticket.used_by) }}
-        {%- else -%}
-        {{ render_tag('frei', class='available') }}
         {%- endif -%}
       </td>
     </tr>
