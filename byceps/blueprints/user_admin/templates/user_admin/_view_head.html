@@ -21,6 +21,10 @@
   font-size: 1.125rem; /* 18px / 16px */
   opacity: 0.7;
 }
+
+.user-head .flags {
+  margin-top: 0.25rem;
+}
 </style>
 
   <nav class="breadcrumbs">
@@ -31,14 +35,12 @@
   <div class="user-head">
     <div>{{ render_user_avatar_96(user) }}</div>
     <div>
-      <h1 class="title">
-        {{ user.screen_name -}}
+      <h1 class="title">{{ user.screen_name -}}</h1>
+      <div class="subtitle">{{ user.detail.full_name|fallback }}</div>
+      <div class="flags">
         {%- if not user.enabled %} {{ render_user_flag_disabled() }}{% endif -%}
         {%- if user.suspended %} {{ render_user_flag_suspended() }}{% endif -%}
         {%- if user.deleted %} {{ render_user_flag_deleted() }}{% endif -%}
-      </h1>
-      <div class="subtitle">
-        {{ user.detail.full_name|fallback }}
       </div>
     </div>
   </div>
