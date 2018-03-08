@@ -1,6 +1,6 @@
 {%- from 'macros/misc.html' import render_tag %}
 {%- from 'macros/ticketing_admin.html' import render_ticket_flag_revoked, render_ticket_flag_user_checked_in %}
-{%- from 'macros/user_admin.html' import render_user_avatar_16_and_link %}
+{%- from 'macros/user_admin.html' import render_user_microcard %}
 
 {%- if tickets %}
 <table class="index wide">
@@ -21,7 +21,7 @@
         {%- if ticket.revoked %}{{ render_ticket_flag_revoked(hide_label=True) }}{% endif -%}
         {%- if ticket.user_checked_in %}{{ render_ticket_flag_user_checked_in(hide_label=True) }}{% endif -%}
       </td>
-      <td>{{ render_user_avatar_16_and_link(ticket.owned_by) }}</td>
+      <td>{{ render_user_microcard(ticket.owned_by, tiny_avatar=True) }}</td>
       <td>{{ ticket.category.title }}</td>
       <td>
         {%- if ticket.occupied_seat -%}
@@ -32,7 +32,7 @@
       </td>
       <td>
         {%- if ticket.used_by -%}
-        {{ render_user_avatar_16_and_link(ticket.used_by) }}
+        {{ render_user_microcard(ticket.used_by) }}
         {%- else -%}
         {{ render_tag('frei', class='available') }}
         {%- endif -%}
