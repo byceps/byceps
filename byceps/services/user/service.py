@@ -261,6 +261,7 @@ def _anonymize_account(user: User) -> None:
     """Remove or replace user details of the account."""
     user.screen_name = 'deleted-{}'.format(user.id.hex)
     user.email_address = '{}@user.invalid'.format(user.id.hex)
+    user.legacy_id = None
 
     # Remove details.
     user.detail.first_names = None
