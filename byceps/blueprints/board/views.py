@@ -145,10 +145,7 @@ def topic_view(topic_id, page):
         else:
             page = calculate_posting_page_number(posting)
             # Jump to a specific posting. This requires a redirect.
-            url = url_for('.topic_view',
-                          topic_id=posting.topic.id,
-                          page=page,
-                          _anchor=posting.anchor)
+            url = _build_url_for_posting_in_topic_view(posting, page)
             return redirect(url, code=307)
 
     if not user.is_anonymous:
@@ -488,11 +485,8 @@ def posting_view(posting_id):
 
     page = calculate_posting_page_number(posting)
 
-    return redirect(url_for('.topic_view',
-                            topic_id=posting.topic.id,
-                            page=page,
-                            _anchor=posting.anchor,
-                            _external=True))
+    return redirect(
+        _build_url_for_posting_in_topic_view(posting, page, _external=True))
 
 
 @blueprint.route('/topics/<uuid:topic_id>/create')
@@ -562,10 +556,7 @@ def posting_create(topic_id):
     postings_per_page = _get_postings_per_page_value()
     page_count = topic.count_pages(postings_per_page)
 
-    return redirect(url_for('.topic_view',
-                            topic_id=posting.topic.id,
-                            page=page_count,
-                            _anchor=posting.anchor))
+    return redirect(_build_url_for_posting_in_topic_view(posting, page_count))
 
 
 @blueprint.route('/postings/<uuid:posting_id>/update')
@@ -576,7 +567,7 @@ def posting_update_form(posting_id, erroneous_form=None):
     posting = _get_posting_or_404(posting_id)
 
     page = calculate_posting_page_number(posting)
-    url = url_for('.topic_view', topic_id=posting.topic.id, page=page)
+    url = _build_url_for_posting_in_topic_view(posting, page)
 
     user_may_update = posting.may_be_updated_by_user(g.current_user._user)
 
@@ -610,7 +601,7 @@ def posting_update(posting_id):
     posting = _get_posting_or_404(posting_id)
 
     page = calculate_posting_page_number(posting)
-    url = url_for('.topic_view', topic_id=posting.topic.id, page=page)
+    url = _build_url_for_posting_in_topic_view(posting, page)
 
     user_may_update = posting.may_be_updated_by_user(g.current_user._user)
 
@@ -669,10 +660,7 @@ def posting_hide(posting_id):
                                 moderator_id=moderator_id,
                                 url=posting.external_url)
 
-    return url_for('.topic_view',
-                   topic_id=posting.topic.id,
-                   page=page,
-                   _anchor=posting.anchor)
+    return _build_url_for_posting_in_topic_view(posting, page)
 
 
 @blueprint.route('/postings/<uuid:posting_id>/flags/hidden', methods=['DELETE'])
@@ -693,10 +681,7 @@ def posting_unhide(posting_id):
                                   moderator_id=moderator_id,
                                   url=posting.external_url)
 
-    return url_for('.topic_view',
-                   topic_id=posting.topic.id,
-                   page=page,
-                   _anchor=posting.anchor)
+    return _build_url_for_posting_in_topic_view(posting, page)
 
 
 def _get_board_id():
@@ -743,3 +728,11 @@ def _build_url_for_topic_in_category_view(topic):
     return url_for('.category_view',
                    slug=topic.category.slug,
                    _anchor=topic.anchor)
+
+
+def _build_url_for_posting_in_topic_view(posting, page, **kwargs):
+    return url_for('.topic_view',
+                   topic_id=posting.topic.id,
+                   page=page,
+                   _anchor=posting.anchor,
+                   **kwargs)
