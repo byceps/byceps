@@ -41,7 +41,7 @@
 
 
 {% macro render_user_flag_deleted(label='gelöscht', show_label=True) -%}
-  {{ render_tag(label if show_label else '', class='color-danger', icon='delete', title=None if show_label else label) }}
+  {{ render_tag(label if show_label else '', class='color-disabled', icon='delete', title=None if show_label else label) }}
 {%- endmacro %}
 
 
@@ -63,7 +63,7 @@
   {%- elif user_state_filter.name == 'suspended' -%}
     {{ render_tag('gesperrt', class='color-danger') }}
   {%- elif user_state_filter.name == 'deleted' -%}
-    {{ render_tag('gelöscht', class='color-danger') }}
+    {{ render_tag('gelöscht', class='color-disabled') }}
   {%- else -%}
     {{ render_tag('keine', class='color-default') }}
   {%- endif -%}
