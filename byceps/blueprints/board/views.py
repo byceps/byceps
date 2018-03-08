@@ -342,7 +342,7 @@ def topic_hide(topic_id):
                               moderator_id=moderator_id,
                               url=topic.external_url)
 
-    return url_for('.category_view', slug=topic.category.slug, _anchor=topic.anchor)
+    return _build_url_for_topic_in_category_view(topic)
 
 
 @blueprint.route('/topics/<uuid:topic_id>/flags/hidden', methods=['DELETE'])
@@ -362,7 +362,7 @@ def topic_unhide(topic_id):
                                 moderator_id=moderator_id,
                                 url=topic.external_url)
 
-    return url_for('.category_view', slug=topic.category.slug, _anchor=topic.anchor)
+    return _build_url_for_topic_in_category_view(topic)
 
 
 @blueprint.route('/topics/<uuid:topic_id>/flags/locked', methods=['POST'])
@@ -381,7 +381,7 @@ def topic_lock(topic_id):
                               moderator_id=moderator_id,
                               url=topic.external_url)
 
-    return url_for('.category_view', slug=topic.category.slug, _anchor=topic.anchor)
+    return _build_url_for_topic_in_category_view(topic)
 
 
 @blueprint.route('/topics/<uuid:topic_id>/flags/locked', methods=['DELETE'])
@@ -401,7 +401,7 @@ def topic_unlock(topic_id):
                                 moderator_id=moderator_id,
                                 url=topic.external_url)
 
-    return url_for('.category_view', slug=topic.category.slug, _anchor=topic.anchor)
+    return _build_url_for_topic_in_category_view(topic)
 
 
 @blueprint.route('/topics/<uuid:topic_id>/flags/pinned', methods=['POST'])
@@ -420,7 +420,7 @@ def topic_pin(topic_id):
                               moderator_id=moderator_id,
                               url=topic.external_url)
 
-    return url_for('.category_view', slug=topic.category.slug, _anchor=topic.anchor)
+    return _build_url_for_topic_in_category_view(topic)
 
 
 @blueprint.route('/topics/<uuid:topic_id>/flags/pinned', methods=['DELETE'])
@@ -439,7 +439,7 @@ def topic_unpin(topic_id):
                                 moderator_id=moderator_id,
                                 url=topic.external_url)
 
-    return url_for('.category_view', slug=topic.category.slug, _anchor=topic.anchor)
+    return _build_url_for_topic_in_category_view(topic)
 
 
 @blueprint.route('/topics/<uuid:topic_id>/move', methods=['POST'])
@@ -472,9 +472,7 @@ def topic_move(topic_id):
                              moderator_id=moderator_id,
                              url=topic.external_url)
 
-    return redirect(url_for('.category_view',
-                            slug=topic.category.slug,
-                            _anchor=topic.anchor))
+    return redirect(_build_url_for_topic_in_category_view(topic))
 
 
 # -------------------------------------------------------------------- #
@@ -739,3 +737,9 @@ def _get_topics_per_page_value():
 
 def _get_postings_per_page_value():
     return int(current_app.config['BOARD_POSTINGS_PER_PAGE'])
+
+
+def _build_url_for_topic_in_category_view(topic):
+    return url_for('.category_view',
+                   slug=topic.category.slug,
+                   _anchor=topic.anchor)
