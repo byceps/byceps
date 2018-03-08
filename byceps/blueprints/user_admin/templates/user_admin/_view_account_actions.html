@@ -1,6 +1,6 @@
 {%- from 'macros/icons.html' import render_icon %}
 
-  {%- if g.current_user.has_any_permission(UserPermission.administrate, UserPermission.set_password) %}
+  {%- if not user.deleted and g.current_user.has_any_permission(UserPermission.administrate, UserPermission.set_password) %}
   <div style="float: right; margin-left: 40px;">
     <div class="dropdown left">
       <button class="dropdown-toggle button">Aktionen {{ render_icon('caret-down') }}</button>
@@ -22,9 +22,7 @@
         <li><a href="{{ url_for('.unsuspend_account', user_id=user.id) }}">{{ render_icon('unlock') }} entsperren</a></li>
           {%- endif %}
 
-          {%- if not user.deleted %}
         <li><a href="{{ url_for('.delete_account', user_id=user.id) }}">{{ render_icon('delete') }} löschen</a></li>
-          {%- endif %}
 
         {%- endif %}
       </ol>
