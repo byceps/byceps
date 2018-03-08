@@ -3,7 +3,20 @@
 {%- from 'macros/user_admin.html' import render_user_microcard %}t s
 
 {%- if tickets %}
-<table class="index wide">
+<style>
+  table.tickets td {
+    vertical-align: middle;
+  }
+
+  .tickets a {
+    color: currentColor;
+  }
+  .tickets a:not(:hover) {
+    text-decoration: none;
+  }
+</style>
+
+<table class="index wide tickets">
   <thead>
     <tr>
       <th>Code</th>
