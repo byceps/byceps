@@ -168,6 +168,7 @@ def _to_user_tuple(user: User) -> UserTuple:
     return UserTuple(
         user.id,
         user.screen_name,
+        user.suspended,
         user.deleted,
         avatar_url,
         is_orga,

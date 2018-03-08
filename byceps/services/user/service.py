@@ -76,21 +76,22 @@ def find_users(user_ids: Set[UserID]) -> Set[UserTuple]:
         return set()
 
     rows = db.session \
-        .query(User.id, User.screen_name, User.deleted, Avatar) \
+        .query(User.id, User.screen_name, User.suspended, User.deleted, Avatar) \
         .outerjoin(AvatarSelection) \
         .outerjoin(Avatar) \
         .filter(User.id.in_(frozenset(user_ids))) \
         .all()
 
     def to_tuples() -> Iterator[UserTuple]:
-        for user_id, screen_name, is_deleted, avatar in rows:
+        for user_id, screen_name, suspended, deleted, avatar in rows:
             avatar_url = avatar.url if avatar else None
             is_orga = False  # Information is not available here by design.
 
             yield UserTuple(
                 user_id,
                 screen_name,
-                is_deleted,
+                suspended,
+                deleted,
                 avatar_url,
                 is_orga
             )
