@@ -55,6 +55,17 @@
 {%- endmacro %}
 
 
+{% macro render_most_important_user_flag(user, show_label=True) -%}
+  {%- if user.deleted -%}
+    {{ render_user_flag_deleted(show_label=show_label) }}
+  {%- elif user.suspended -%}
+    {{ render_user_flag_suspended(show_label=show_label) }}
+  {%- elif not user.enabled -%}
+    {{ render_user_flag_disabled(show_label=show_label) }}
+  {%- endif -%}
+{%- endmacro %}
+
+
 {% macro render_user_state_filter(user_state_filter) %}
   {%- if user_state_filter.name == 'enabled' -%}
     {{ render_tag('aktiviert', class='color-success') }}

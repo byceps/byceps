@@ -1,4 +1,4 @@
-{%- from 'macros/user_admin.html' import render_user_flag_deleted, render_user_flag_disabled, render_user_flag_suspended %}
+{%- from 'macros/user_admin.html' import render_most_important_user_flag %}
 {%- from 'macros/user_avatar.html' import render_user_avatar_96 %}
 
 <style>
@@ -37,14 +37,6 @@
     <div>
       <h1 class="title">{{ user.screen_name -}}</h1>
       <div class="subtitle">{{ user.detail.full_name|fallback }}</div>
-      <div class="flags">
-      {%- if user.deleted %}
-        {{ render_user_flag_deleted() }}
-      {%- elif user.suspended %}
-        {{ render_user_flag_suspended() }}
-      {%- elif not user.enabled %}
-        {{ render_user_flag_disabled() }}
-      {%- endif %}
-      </div>
+      <div class="flags">{{ render_most_important_user_flag(user) }}</div>
     </div>
   </div>
