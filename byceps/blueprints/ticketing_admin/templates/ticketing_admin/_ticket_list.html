@@ -15,7 +15,7 @@
   </thead>
   <tbody>
     {%- for ticket in tickets|sort(attribute='created_at') %}
-    <tr{% if ticket.revoked %} class="dimmed"{% endif %}>
+    <tr>
       <td><a href="{{ url_for('ticketing_admin.view_ticket', ticket_id=ticket.id) }}"><strong>{{ ticket.code }}</strong></a></td>
       <td>
         {%- if ticket.revoked %}{{ render_ticket_flag_revoked(hide_label=True) }}{% endif -%}
