@@ -146,7 +146,7 @@ def topic_view(topic_id, page):
             page = calculate_posting_page_number(posting)
             # Jump to a specific posting. This requires a redirect.
             url = url_for('.topic_view',
-                          topic_id=topic.id,
+                          topic_id=posting.topic.id,
                           page=page,
                           _anchor=posting.anchor)
             return redirect(url, code=307)
@@ -563,7 +563,7 @@ def posting_create(topic_id):
     page_count = topic.count_pages(postings_per_page)
 
     return redirect(url_for('.topic_view',
-                            topic_id=topic.id,
+                            topic_id=posting.topic.id,
                             page=page_count,
                             _anchor=posting.anchor))
 
