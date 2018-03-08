@@ -1,12 +1,12 @@
 {%- from 'macros/misc.html' import render_tag %}
 {%- from 'macros/ticketing_admin.html' import render_ticket_flag_revoked, render_ticket_flag_user_checked_in %}
-{%- from 'macros/user_admin.html' import render_user_microcard %}
+{%- from 'macros/user_admin.html' import render_user_microcard %}t s
 
 {%- if tickets %}
 <table class="index wide">
   <thead>
     <tr>
-      <th colspan="2">Code</th>
+      <th>Code</th>
       <th>Besitzer</th>
       <th>Kategorie</th>
       <th>Sitzplatz</th>
@@ -16,10 +16,10 @@
   <tbody>
     {%- for ticket in tickets|sort(attribute='created_at') %}
     <tr>
-      <td><a href="{{ url_for('ticketing_admin.view_ticket', ticket_id=ticket.id) }}"><strong>{{ ticket.code }}</strong></a></td>
       <td>
-        {%- if ticket.revoked %}{{ render_ticket_flag_revoked(hide_label=True) }}{% endif -%}
-        {%- if ticket.user_checked_in %}{{ render_ticket_flag_user_checked_in(hide_label=True) }}{% endif -%}
+        <a href="{{ url_for('ticketing_admin.view_ticket', ticket_id=ticket.id) }}"><strong>{{ ticket.code }}</strong></a>
+        {%- if ticket.revoked %}<br>{{ render_ticket_flag_revoked() }}{% endif -%}
+        {%- if ticket.user_checked_in %}<br>{{ render_ticket_flag_user_checked_in() }}{% endif -%}
       </td>
       <td>{{ render_user_microcard(ticket.owned_by, tiny_avatar=True) }}</td>
       <td>{{ ticket.category.title }}</td>
