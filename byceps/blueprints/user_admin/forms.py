@@ -13,7 +13,7 @@ from ...util.l10n import LocalizedForm
 
 
 class DeleteAccountForm(LocalizedForm):
-    reason = TextAreaField('Begründung', validators=[InputRequired(), Length(max=200)])
+    reason = TextAreaField('Begründung', validators=[InputRequired(), Length(max=400)])
     verification = StringField('Bestätigung', validators=[InputRequired()])
 
     def validate_verification(form, field):
@@ -26,4 +26,4 @@ class SetPasswordForm(LocalizedForm):
 
 
 class SuspendAccountForm(LocalizedForm):
-    reason = TextAreaField('Begründung', validators=[InputRequired(), Length(max=200)])
+    reason = TextAreaField('Begründung', validators=[InputRequired(), Length(max=400)])
