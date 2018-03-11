@@ -56,14 +56,22 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
                     'screen_name': 'User-1',
                     'email_address': 'user001@example.com',
                 },
-                # User #2 has declined a subscription.
-                # User #3 is not enabled.
-                # User #4 has initially declined, but later requested a subscription.
+
+                # User #2 has declined a subscription, and thus should be
+                # excluded.
+
+                # User #3 is not enabled, and thus should be excluded.
+
+                # User #4 has initially declined, but later requested a
+                # subscription, so it should be included.
                 {
                     'screen_name': 'User-4',
                     'email_address': 'user004@example.com',
                 },
-                # User #5 has initially requested, but later declined a subscription.
+
+                # User #5 has initially requested, but later declined a
+                # subscription, so it should be excluded.
+
                 {
                     'screen_name': 'User-6',
                     'email_address': 'user006@example.com',
