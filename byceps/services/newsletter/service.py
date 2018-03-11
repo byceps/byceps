@@ -90,6 +90,7 @@ def _get_subscriber_details(user_ids: Set[UserID]) -> Iterator[Subscriber]:
         ) \
         .filter(User.id.in_(user_ids)) \
         .filter_by(enabled=True) \
+        .filter_by(suspended=False) \
         .all()
 
     for row in rows:

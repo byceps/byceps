@@ -34,18 +34,23 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
         return admin
 
     def setup_subscribers(self):
-        for number, enabled, states in [
-            (1, True,  [SubscriptionState.requested                             ]),
-            (2, True,  [SubscriptionState.declined                              ]),
-            (3, False, [SubscriptionState.requested                             ]),
-            (4, True,  [SubscriptionState.declined,  SubscriptionState.requested]),
-            (5, True,  [SubscriptionState.requested, SubscriptionState.declined ]),
-            (6, True,  [SubscriptionState.requested                             ]),
+        for number, enabled, suspended, states in [
+            (1, True,  False, [SubscriptionState.requested                             ]),
+            (2, True,  False, [SubscriptionState.declined                              ]),
+            (3, False, False, [SubscriptionState.requested                             ]),
+            (4, True,  False, [SubscriptionState.declined,  SubscriptionState.requested]),
+            (5, True,  False, [SubscriptionState.requested, SubscriptionState.declined ]),
+            (6, True,  False, [SubscriptionState.requested                             ]),
+            (7, True,  True , [SubscriptionState.requested                             ]),
         ]:
             user = self.create_user(
                 screen_name='User-{:d}'.format(number),
                 email_address='user{:03d}@example.com'.format(number),
                 enabled=enabled)
+
+            if suspended:
+                user.suspended = True
+                self.db.session.commit()
 
             self.add_subscriptions(user, states)
 
@@ -76,6 +81,9 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
                     'screen_name': 'User-6',
                     'email_address': 'user006@example.com',
                 },
+
+                # User #7 has been suspended and should be excluded, regardless
+                # of subscription state.
             ],
         }
 
@@ -96,6 +104,7 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
             'user004@example.com',
             # User #5 has initially requested, but later declined a subscription.
             'user006@example.com',
+            # User #7 has been suspended, and thus should be excluded.
         ]).encode('utf-8')
 
         url = '/admin/newsletter/subscriptions/{}/export_email_addresses'.format(self.brand.id)
