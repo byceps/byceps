@@ -3,8 +3,6 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.services.board import topic_service as board_topic_service
-
 from .topic_moderation_base import AbstractTopicModerationTest
 
 
