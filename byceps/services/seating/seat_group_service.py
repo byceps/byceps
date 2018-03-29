@@ -76,7 +76,7 @@ def switch_seat_group(occupancy: SeatGroupOccupancy, to_group: SeatGroup
     _ensure_quantities_match(to_group, ticket_bundle)
     _ensure_actual_quantities_match(seats, tickets)
 
-    occupancy.seat_group.id = to_group.id
+    occupancy.seat_group_id = to_group.id
 
     _occupy_seats(seats, tickets)
 
