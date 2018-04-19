@@ -87,7 +87,7 @@ def get_active_parties(brand_id: Optional[BrandID]=None) -> List[PartyTuple]:
 
     parties = query \
         .filter_by(is_archived=False) \
-        .order_by(Party.starts_at.desc()) \
+        .order_by(Party.starts_at) \
         .all()
 
     return [party.to_tuple() for party in parties]
