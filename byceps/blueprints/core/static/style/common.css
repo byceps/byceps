@@ -446,6 +446,7 @@ form.unobtrusive input:focus ~ .button {
 /* buttons */
 
 .button {
+  align-items: center;
   -moz-appearance: none;
   background-color: #eeeeee;
   border-color: #cccccc;
@@ -454,7 +455,7 @@ form.unobtrusive input:focus ~ .button {
   border-radius: 3px;
   color: currentColor;
   cursor: pointer;
-  display: inline-block;
+  display: inline-flex;
   font-size: 1rem; /* 16px */
   font-weight: normal;
   line-height: 1.3;
@@ -465,7 +466,6 @@ form.unobtrusive input:focus ~ .button {
   -moz-user-select: none;
   -webkit-user-select: none;
   user-select: none;
-  vertical-align: middle;
   white-space: nowrap;
 }
 .button--compact {
