@@ -45,7 +45,7 @@
       <td>{{ ticket.category.title }}</td>
       <td>
         {%- if ticket.occupied_seat -%}
-        {{ ticket.occupied_seat.label }}
+        {{ ticket.occupied_seat.label|fallback('unbenannt') }}
         {%- else -%}
         {{ render_tag('keiner', class='available') }}
         {%- endif -%}
