@@ -40,6 +40,7 @@
     {%- endif %}
   </form>
 
+  {%- if attendees.items %}
   <table class="index wide attendees-list">
     <thead>
       <tr>
@@ -61,6 +62,9 @@
       {%- endfor %}
     </tbody>
   </table>
+  {%- else %}
+  <p class="dimmed">Keine Teilnehmer gefunden.</p>
+  {%- endif %}
 
 {{ render_pagination_nav(attendees, '.attendees', {'search_term': search_term if search_term else None}, centered=True) }}
 
