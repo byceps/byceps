@@ -3,6 +3,7 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
+from datetime import datetime
 import json
 
 from byceps.services.newsletter.models import Subscription
@@ -131,7 +132,8 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
         self.db.session.commit()
 
     def add_subscription(self, user, state):
-        subscription = Subscription(user.id, self.brand.id, state)
+        expressed_at = datetime.now()
+        subscription = Subscription(user.id, self.brand.id, expressed_at, state)
         self.db.session.add(subscription)
 
     def get_as_admin(self, url):

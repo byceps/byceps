@@ -7,6 +7,7 @@ byceps.services.newsletter.service
 """
 
 from collections import Counter
+from datetime import datetime
 from operator import itemgetter
 from typing import Any, Dict, Iterable, Iterator, Sequence, Set, Tuple, Union
 
@@ -219,20 +220,25 @@ def is_subscribed(user_id: UserID, brand_id: BrandID) -> bool:
     return subscription_state == SubscriptionState.requested
 
 
-def subscribe(user_id: UserID, brand_id: BrandID) -> None:
+def subscribe(user_id: UserID, brand_id: BrandID, expressed_at: datetime
+             ) -> None:
     """Subscribe the user to that brand's newsletter."""
-    _update_subscription_state(user_id, brand_id, SubscriptionState.requested)
+    _update_subscription_state(user_id, brand_id, expressed_at,
+                               SubscriptionState.requested)
 
 
-def unsubscribe(user_id: UserID, brand_id: BrandID) -> None:
+def unsubscribe(user_id: UserID, brand_id: BrandID, expressed_at: datetime
+               ) -> None:
     """Unsubscribe the user from that brand's newsletter."""
-    _update_subscription_state(user_id, brand_id, SubscriptionState.declined)
+    _update_subscription_state(user_id, brand_id, expressed_at,
+                               SubscriptionState.declined)
 
 
 def _update_subscription_state(user_id: UserID, brand_id: BrandID,
-                               state: SubscriptionState) -> None:
+                               expressed_at: datetime, state: SubscriptionState
+                              ) -> None:
     """Update the user's subscription state for that brand."""
-    subscription = Subscription(user_id, brand_id, state)
+    subscription = Subscription(user_id, brand_id, expressed_at, state)
 
     db.session.add(subscription)
     db.session.commit()

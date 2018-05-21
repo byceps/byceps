@@ -6,6 +6,8 @@ byceps.services.user.creation_service
 :License: Modified BSD, see LICENSE for details.
 """
 
+from datetime import datetime
+
 from flask import current_app
 
 from ...database import db
@@ -31,7 +33,8 @@ class UserCreationFailed(Exception):
 def create_user(screen_name: str, email_address: str, password: str,
                 first_names: str, last_name: str, brand_id: BrandID,
                 terms_version_id: TermsVersionID,
-                subscribe_to_newsletter: bool) -> User:
+                subscribe_to_newsletter: bool,
+                newsletter_subscription_state_expressed_at: datetime) -> User:
     """Create a user account and related records."""
     # user with details
     user = build_user(screen_name, email_address)
@@ -60,7 +63,9 @@ def create_user(screen_name: str, email_address: str, password: str,
     db.session.commit()
 
     # newsletter subscription (optional)
-    _create_newsletter_subscription(user.id, brand_id, subscribe_to_newsletter)
+    _create_newsletter_subscription(user.id, brand_id,
+                                    newsletter_subscription_state_expressed_at,
+                                    subscribe_to_newsletter)
 
     # verification_token for email address confirmation
     verification_token = verification_token_service \
@@ -106,8 +111,9 @@ def _normalize_email_address(email_address: str) -> str:
 
 
 def _create_newsletter_subscription(user_id: UserID, brand_id: BrandID,
+                                    expressed_at: datetime,
                                     subscribe_to_newsletter: bool) -> None:
     if subscribe_to_newsletter:
-        newsletter_service.subscribe(user_id, brand_id)
+        newsletter_service.subscribe(user_id, brand_id, expressed_at)
     else:
-        newsletter_service.unsubscribe(user_id, brand_id)
+        newsletter_service.unsubscribe(user_id, brand_id, expressed_at)

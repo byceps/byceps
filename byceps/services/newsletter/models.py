@@ -26,13 +26,14 @@ class Subscription(db.Model):
 
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
     brand_id = db.Column(db.Unicode(20), db.ForeignKey('brands.id'), primary_key=True)
-    expressed_at = db.Column(db.DateTime, default=datetime.now, primary_key=True)
+    expressed_at = db.Column(db.DateTime, primary_key=True)
     _state = db.Column('state', db.Unicode(20), nullable=False)
 
     def __init__(self, user_id: UserID, brand_id: BrandID,
-                 state: SubscriptionState) -> None:
+                 expressed_at: datetime, state: SubscriptionState) -> None:
         self.user_id = user_id
         self.brand_id = brand_id
+        self.expressed_at = expressed_at
         self.state = state
 
     @hybrid_property

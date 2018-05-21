@@ -6,6 +6,8 @@ byceps.blueprints.newsletter.views
 :License: Modified BSD, see LICENSE for details.
 """
 
+from datetime import datetime
+
 from flask import abort, g
 
 from ...services.newsletter import service as newsletter_service
@@ -21,8 +23,9 @@ blueprint = create_blueprint('newsletter', __name__)
 @respond_no_content
 def subscribe():
     user = _get_current_user_or_404()
+    expressed_at = datetime.now()
 
-    newsletter_service.subscribe(user.id, g.brand_id)
+    newsletter_service.subscribe(user.id, g.brand_id, expressed_at)
 
     flash_success('Du hast dich zum Newsletter angemeldet.')
 
@@ -31,8 +34,9 @@ def subscribe():
 @respond_no_content
 def unsubscribe():
     user = _get_current_user_or_404()
+    expressed_at = datetime.now()
 
-    newsletter_service.unsubscribe(user.id, g.brand_id)
+    newsletter_service.unsubscribe(user.id, g.brand_id, expressed_at)
 
     flash_success('Du hast dich vom Newsletter abgemeldet.')
 
