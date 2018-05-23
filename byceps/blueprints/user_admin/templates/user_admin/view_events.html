@@ -110,6 +110,12 @@
           {%- set body %}
             <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span> hat Bestellung {{ render_order_link(event.data.order) }} aufgegeben.
           {%- endset %}
+        {%- elif event.event == 'privacy-policy-accepted' %}
+          {%- set icon_name = 'legal' %}
+          {%- set body %}
+            <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
+            hat die <strong>Datenschutzbestimmungen akzeptiert</strong>.
+          {%- endset %}
         {%- elif event.event == 'terms-consent-expressed' %}
           {%- set icon_name = 'legal' %}
           {%- set body %}

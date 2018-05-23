@@ -31,6 +31,7 @@ class UserCreateForm(LocalizedForm):
     password = PasswordField('Passwort', [InputRequired(), Length(min=8)])
     terms_version_id = HiddenField('AGB-Version', [InputRequired()])
     consent_to_terms = BooleanField('AGB', [InputRequired()])
+    consent_to_privacy_policy = BooleanField('Datenschutzbestimmungen', [InputRequired()])
     subscribe_to_newsletter = BooleanField('Newsletter')
 
     def validate_screen_name(form, field):

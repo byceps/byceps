@@ -183,14 +183,18 @@ def create():
         abort(400, 'Die AGB-Version gehört nicht zu dieser Veranstaltung.')
 
     now = datetime.now()
+    now_utc = datetime.utcnow()
+
     terms_consent_expressed_at = now
+    privacy_policy_consent_expressed_at = now_utc
     newsletter_subscription_state_expressed_at = now
 
     try:
         user = user_creation_service.create_user(
             screen_name, email_address, password, first_names, last_name,
             g.brand_id, terms_version.id, terms_consent_expressed_at,
-            subscribe_to_newsletter, newsletter_subscription_state_expressed_at)
+            privacy_policy_consent_expressed_at, subscribe_to_newsletter,
+            newsletter_subscription_state_expressed_at)
     except user_creation_service.UserCreationFailed:
         flash_error('Das Benutzerkonto für "{}" konnte nicht angelegt werden.',
                     screen_name)

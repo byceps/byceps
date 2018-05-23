@@ -187,6 +187,7 @@ def _get_additional_data(event: UserEvent, users_by_id: Dict[UserID, UserTuple]
             'newsletter-requested',
             'newsletter-declined',
             'order-placed',
+            'privacy-policy-accepted',
             'terms-consent-expressed',
     }:
         yield from _get_additional_data_for_user_initiated_event(

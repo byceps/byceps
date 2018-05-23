@@ -21,6 +21,7 @@ from ..terms.models.version import VersionID as TermsVersionID
 from ..terms import service as terms_service
 from ..verification_token import service as verification_token_service
 
+from . import event_service
 from .models.detail import UserDetail
 from .models.user import User
 from . import service as user_service
@@ -34,6 +35,7 @@ def create_user(screen_name: str, email_address: str, password: str,
                 first_names: str, last_name: str, brand_id: BrandID,
                 terms_version_id: TermsVersionID,
                 terms_consent_expressed_at: datetime,
+                privacy_policy_consent_expressed_at: datetime,
                 subscribe_to_newsletter: bool,
                 newsletter_subscription_state_expressed_at: datetime) -> User:
     """Create a user account and related records."""
@@ -61,6 +63,13 @@ def create_user(screen_name: str, email_address: str, password: str,
     terms_consent = terms_service.build_consent_on_account_creation(
         user.id, terms_version_id, terms_consent_expressed_at)
     db.session.add(terms_consent)
+
+    # consent to privacy policy (required)
+    event = event_service._build_event('privacy-policy-accepted', user.id, {
+        'initiator_id': str(user.id),
+    }, occurred_at=privacy_policy_consent_expressed_at)
+    db.session.add(event)
+
     db.session.commit()
 
     # newsletter subscription (optional)
