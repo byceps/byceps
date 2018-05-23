@@ -7,7 +7,7 @@ byceps.services.user.event_service
 """
 
 from datetime import datetime
-from typing import Sequence
+from typing import Optional, Sequence
 
 from ...database import db
 from ...typing import UserID
@@ -23,12 +23,13 @@ def create_event(event_type: str, user_id: UserID, data: UserEventData) -> None:
     db.session.commit()
 
 
-def _build_event(event_type: str, user_id: UserID, data: UserEventData
-                ) -> UserEvent:
+def _build_event(event_type: str, user_id: UserID, data: UserEventData,
+                 occurred_at: Optional[datetime]=None) -> UserEvent:
     """Assemble, but not persist, a user event."""
-    now = datetime.utcnow()
+    if occurred_at is None:
+        occurred_at = datetime.utcnow()
 
-    return UserEvent(now, event_type, user_id, data)
+    return UserEvent(occurred_at, event_type, user_id, data)
 
 
 def get_events_for_user(user_id: UserID) -> Sequence[UserEvent]:
