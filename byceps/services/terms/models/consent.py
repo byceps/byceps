@@ -32,13 +32,14 @@ class Consent(db.Model):
     user = db.relationship(User)
     version_id = db.Column(db.Uuid, db.ForeignKey('terms_versions.id'), primary_key=True)
     version = db.relationship(Version)
-    expressed_at = db.Column(db.DateTime, default=datetime.now, primary_key=True)
+    expressed_at = db.Column(db.DateTime, primary_key=True)
     _context = db.Column('context', db.Unicode(20), primary_key=True)
 
     def __init__(self, user_id: UserID, version_id: VersionID,
-                 context: ConsentContext) -> None:
+                 expressed_at: datetime, context: ConsentContext) -> None:
         self.user_id = user_id
         self.version_id = version_id
+        self.expressed_at = expressed_at
         self.context = context
 
     @hybrid_property

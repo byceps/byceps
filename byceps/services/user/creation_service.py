@@ -33,6 +33,7 @@ class UserCreationFailed(Exception):
 def create_user(screen_name: str, email_address: str, password: str,
                 first_names: str, last_name: str, brand_id: BrandID,
                 terms_version_id: TermsVersionID,
+                terms_consent_expressed_at: datetime,
                 subscribe_to_newsletter: bool,
                 newsletter_subscription_state_expressed_at: datetime) -> User:
     """Create a user account and related records."""
@@ -57,8 +58,8 @@ def create_user(screen_name: str, email_address: str, password: str,
     authorization_service.assign_role_to_user(user.id, board_user_role.id)
 
     # consent to terms of service (required)
-    terms_consent = terms_service.build_consent_on_account_creation(user.id,
-                                                                    terms_version_id)
+    terms_consent = terms_service.build_consent_on_account_creation(
+        user.id, terms_version_id, terms_consent_expressed_at)
     db.session.add(terms_consent)
     db.session.commit()
 

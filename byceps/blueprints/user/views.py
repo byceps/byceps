@@ -167,7 +167,6 @@ def create():
     terms_version_id = form.terms_version_id.data
     consent_to_terms = form.consent_to_terms.data
     subscribe_to_newsletter = form.subscribe_to_newsletter.data
-    newsletter_subscription_state_expressed_at = datetime.now()
 
     if user_service.is_screen_name_already_assigned(screen_name):
         flash_error(
@@ -183,13 +182,15 @@ def create():
     if terms_version.brand_id != g.brand_id:
         abort(400, 'Die AGB-Version gehört nicht zu dieser Veranstaltung.')
 
+    now = datetime.now()
+    terms_consent_expressed_at = now
+    newsletter_subscription_state_expressed_at = now
+
     try:
-        user = user_creation_service.create_user(screen_name, email_address,
-                                                 password, first_names,
-                                                 last_name, g.brand_id,
-                                                 terms_version.id,
-                                                 subscribe_to_newsletter,
-                                                 newsletter_subscription_state_expressed_at)
+        user = user_creation_service.create_user(
+            screen_name, email_address, password, first_names, last_name,
+            g.brand_id, terms_version.id, terms_consent_expressed_at,
+            subscribe_to_newsletter, newsletter_subscription_state_expressed_at)
     except user_creation_service.UserCreationFailed:
         flash_error('Das Benutzerkonto für "{}" konnte nicht angelegt werden.',
                     screen_name)

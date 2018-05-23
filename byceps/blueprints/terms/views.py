@@ -6,6 +6,8 @@ byceps.blueprints.terms.views
 :License: Modified BSD, see LICENSE for details.
 """
 
+from datetime import datetime
+
 from flask import abort, g, request
 
 from ...services.terms import service as terms_service
@@ -70,8 +72,9 @@ def consent(version_id, token):
     if not form.validate():
         return consent_form(version_id, token, erroneous_form=form)
 
-    terms_service.consent_to_version_on_separate_action(version.id,
-                                                        verification_token)
+    terms_consent_expressed_at = datetime.now()
+    terms_service.consent_to_version_on_separate_action(
+        version.id, terms_consent_expressed_at, verification_token)
 
     flash_success('Du hast die AGB akzeptiert.')
     return redirect_to('authentication.login_form')

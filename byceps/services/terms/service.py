@@ -6,6 +6,7 @@ byceps.services.terms.service
 :License: Modified BSD, see LICENSE for details.
 """
 
+from datetime import datetime
 from typing import Optional, Sequence
 
 from ...database import db
@@ -87,23 +88,24 @@ def get_versions_for_brand(brand_id: BrandID) -> Sequence[Version]:
 # consent
 
 
-def build_consent_on_account_creation(user_id: UserID, version_id: VersionID) \
-                                      -> Consent:
+def build_consent_on_account_creation(user_id: UserID, version_id: VersionID,
+                                      expressed_at: datetime) -> Consent:
     """Create user's consent to that version expressed on account creation."""
     context = ConsentContext.account_creation
-    return Consent(user_id, version_id, context)
+    return Consent(user_id, version_id, expressed_at, context)
 
 
-def build_consent_on_separate_action(user_id: UserID, version_id: VersionID) \
-                                     -> Consent:
+def build_consent_on_separate_action(user_id: UserID, version_id: VersionID,
+                                     expressed_at: datetime) -> Consent:
     """Create user's consent to that version expressed through a
     separate action.
     """
     context = ConsentContext.separate_action
-    return Consent(user_id, version_id, context)
+    return Consent(user_id, version_id, expressed_at, context)
 
 
 def consent_to_version_on_separate_action(version_id: VersionID,
+                                          expressed_at: datetime,
                                           verification_token: Token) -> None:
     """Store the user's consent to that version, and invalidate the
     verification token.
@@ -111,7 +113,7 @@ def consent_to_version_on_separate_action(version_id: VersionID,
     user_id = verification_token.user_id
     db.session.delete(verification_token)
 
-    consent = build_consent_on_separate_action(user_id, version_id)
+    consent = build_consent_on_separate_action(user_id, version_id, expressed_at)
     db.session.add(consent)
 
     db.session.commit()
