@@ -188,7 +188,7 @@ span[title] .icon {
   padding-bottom: 0;
 }
 
-.notification {
+.notification a {
   color: currentColor;
 }
 
