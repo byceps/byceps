@@ -188,6 +188,10 @@ span[title] .icon {
   padding-bottom: 0;
 }
 
+.notification {
+  color: currentColor;
+}
+
 
 /* tabs */
 
