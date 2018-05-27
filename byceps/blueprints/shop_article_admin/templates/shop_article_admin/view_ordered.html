@@ -34,7 +34,7 @@
       </tr>
     </thead>
     <tbody>
-    {%- for user, tickets, quantity, order in users_tickets_quantities_orders|sort(attribute='0.screen_name') %}
+    {%- for user, tickets, quantity, order in users_tickets_quantities_orders|sort(attribute='0.order_number', reverse=True) %}
       <tr>
         {%- if tickets %}
         <td class="nowrap">
