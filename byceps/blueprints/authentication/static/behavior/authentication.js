@@ -23,13 +23,18 @@ onDomReady(function() {
   });
 
   // Log out.
-  $('[data-action="logout"]').click(function() {
-    if (confirm('Wirklich abmelden?')) {
-      $.post($(this).attr('href'), function() {
-        location.href = '/';
-      });
-    };
-    return false;
-  });
+  forEach(
+    document.querySelectorAll('a[data-action="logout"]'),
+    function(anchor) {
+      anchor.addEventListener('click', function(event) {
+        if (confirm('Wirklich abmelden?')) {
+          const href = anchor.getAttribute('href');
+          send_post_request(href, function() {
+            location.href = '/';
+          });
+        };
 
+        event.preventDefault();
+      });
+    });
 });
