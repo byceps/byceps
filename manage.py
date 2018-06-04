@@ -9,10 +9,7 @@ Run the application, take administrative action.
 :License: Modified BSD, see LICENSE for details.
 """
 
-import ssl
-
 from flask_script import Manager
-from flask_script.commands import Server
 from werkzeug.wsgi import SharedDataMiddleware
 
 from byceps.application import create_app, init_app
@@ -51,22 +48,8 @@ if app.debug:
     app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
     toolbar = DebugToolbarExtension(app)
 
+
 manager = Manager(app)
-
-
-class SslServer(Server):
-
-    def __init__(self, **kwargs):
-        ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
-        ssl_context.load_cert_chain(
-            'keys/development.cert',
-            'keys/development.key')
-        kwargs['ssl_context'] = ssl_context
-
-        super().__init__(**kwargs)
-
-
-manager.add_command('runserver_ssl', SslServer())
 
 
 if __name__ == '__main__':
