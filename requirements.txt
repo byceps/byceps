@@ -2,7 +2,6 @@ typing >= 3.5.3.0
 
 blinker >= 1.4
 Flask >= 1.0.2
-Flask-Script >= 2.0.5
 Jinja2 >= 2.10
 Werkzeug >= 0.14.1
 WTForms >= 2.1

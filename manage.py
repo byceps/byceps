@@ -9,7 +9,6 @@ Run the application, take administrative action.
 :License: Modified BSD, see LICENSE for details.
 """
 
-from flask_script import Manager
 from werkzeug.wsgi import SharedDataMiddleware
 
 from byceps.application import create_app, init_app
@@ -49,8 +48,5 @@ if app.debug:
     toolbar = DebugToolbarExtension(app)
 
 
-manager = Manager(app)
-
-
 if __name__ == '__main__':
-    manager.run()
+    app.run()
