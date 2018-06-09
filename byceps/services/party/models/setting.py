@@ -6,14 +6,9 @@ byceps.services.party.models.setting
 :License: Modified BSD, see LICENSE for details.
 """
 
-from collections import namedtuple
-
 from ....database import db
 from ....typing import PartyID
 from ....util.instances import ReprBuilder
-
-
-SettingTuple = namedtuple('PartySettingTuple', 'party_id, name, value')
 
 
 class Setting(db.Model):
@@ -28,14 +23,6 @@ class Setting(db.Model):
         self.party_id = party_id
         self.name = name
         self.value = value
-
-    def to_tuple(self) -> SettingTuple:
-        """Return a tuple representation of this entity."""
-        return SettingTuple(
-            self.party_id,
-            self.name,
-            self.value,
-        )
 
     def __repr__(self) -> str:
         return ReprBuilder(self) \

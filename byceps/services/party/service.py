@@ -17,7 +17,8 @@ from ...typing import BrandID, PartyID
 from ..brand.models.brand import Brand
 
 from .models.party import Party, PartyTuple
-from .models.setting import Setting, SettingTuple
+from .models.setting import Setting
+from .transfer.models import PartySetting
 
 
 class UnknownPartyId(Exception):
@@ -137,7 +138,7 @@ def get_party_count_by_brand_id() -> Dict[BrandID, int]:
         .all())
 
 
-def find_setting(party_id: PartyID, name: str) -> Optional[SettingTuple]:
+def find_setting(party_id: PartyID, name: str) -> Optional[PartySetting]:
     """Return the setting for that party and with that name, or `None`
     if not found.
     """
@@ -146,4 +147,12 @@ def find_setting(party_id: PartyID, name: str) -> Optional[SettingTuple]:
     if setting is None:
         return None
 
-    return setting.to_tuple()
+    return _db_entity_to_party_setting(setting)
+
+
+def _db_entity_to_party_setting(setting: Setting) -> PartySetting:
+    return PartySetting(
+        setting.party_id,
+        setting.name,
+        setting.value,
+    )
