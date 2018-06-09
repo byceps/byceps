@@ -48,18 +48,19 @@ def index_for_brand(brand_id):
     brand = _get_brand_or_404(brand_id)
 
     boards = board_service.get_boards_for_brand(brand.id)
+    board_ids = [board.id for board in boards]
 
     stats_by_board_id = {
-        board.id: BoardStats(
-            board_category_service.count_categories_for_board(board.id),
-            board_topic_service.count_topics_for_board(board.id),
-            board_posting_service.count_postings_for_board(board.id),
+        board_id: BoardStats(
+            board_category_service.count_categories_for_board(board_id),
+            board_topic_service.count_topics_for_board(board_id),
+            board_posting_service.count_postings_for_board(board_id),
         )
-        for board in boards}
+        for board_id in board_ids}
 
     return {
+        'board_ids': board_ids,
         'brand': brand,
-        'boards': boards,
         'stats_by_board_id': stats_by_board_id,
     }
 
@@ -76,7 +77,8 @@ def view(board_id):
     categories = board_category_service.get_categories(board.id)
 
     return {
-        'board': board,
+        'board_id': board.id,
+        'board_brand_id': board.brand_id,
         'brand': brand,
         'categories': categories,
     }
@@ -94,7 +96,7 @@ def category_create_form(board_id, erroneous_form=None):
     form = erroneous_form if erroneous_form else CategoryCreateForm()
 
     return {
-        'board': board,
+        'board_id': board_id,
         'brand': brand,
         'form': form,
     }
