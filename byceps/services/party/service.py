@@ -16,9 +16,9 @@ from ...typing import BrandID, PartyID
 
 from ..brand.models.brand import Brand as DbBrand
 
-from .models.party import Party as DbParty, PartyTuple
+from .models.party import Party as DbParty
 from .models.setting import Setting as DbSetting
-from .transfer.models import PartySetting
+from .transfer.models import Party, PartySetting
 
 
 class UnknownPartyId(Exception):
@@ -26,18 +26,18 @@ class UnknownPartyId(Exception):
 
 
 def create_party(party_id: PartyID, brand_id: BrandID, title: str,
-                 starts_at: datetime, ends_at: datetime) -> PartyTuple:
+                 starts_at: datetime, ends_at: datetime) -> Party:
     """Create a party."""
     party = DbParty(party_id, brand_id, title, starts_at, ends_at)
 
     db.session.add(party)
     db.session.commit()
 
-    return party.to_tuple()
+    return _db_entity_to_party(party)
 
 
 def update_party(party_id: PartyID, title: str, starts_at: datetime,
-                 ends_at: datetime, is_archived: bool) -> PartyTuple:
+                 ends_at: datetime, is_archived: bool) -> Party:
     """Update a party."""
     party = find_party(party_id)
 
@@ -51,7 +51,7 @@ def update_party(party_id: PartyID, title: str, starts_at: datetime,
 
     db.session.commit()
 
-    return party.to_tuple()
+    return _db_entity_to_party(party)
 
 
 def count_parties() -> int:
@@ -78,7 +78,7 @@ def get_all_parties_with_brands() -> List[DbParty]:
         .all()
 
 
-def get_active_parties(brand_id: Optional[BrandID]=None) -> List[PartyTuple]:
+def get_active_parties(brand_id: Optional[BrandID]=None) -> List[Party]:
     """Return active (i.e. non-archived) parties."""
     query = DbParty.query
 
@@ -91,10 +91,10 @@ def get_active_parties(brand_id: Optional[BrandID]=None) -> List[PartyTuple]:
         .order_by(DbParty.starts_at) \
         .all()
 
-    return [party.to_tuple() for party in parties]
+    return [_db_entity_to_party(party) for party in parties]
 
 
-def get_archived_parties_for_brand(brand_id: BrandID) -> List[PartyTuple]:
+def get_archived_parties_for_brand(brand_id: BrandID) -> List[Party]:
     """Return archived parties for that brand."""
     parties = DbParty.query \
         .filter_by(brand_id=brand_id) \
@@ -102,10 +102,10 @@ def get_archived_parties_for_brand(brand_id: BrandID) -> List[PartyTuple]:
         .order_by(DbParty.starts_at.desc()) \
         .all()
 
-    return [party.to_tuple() for party in parties]
+    return [_db_entity_to_party(party) for party in parties]
 
 
-def get_parties(party_ids: Set[PartyID]) -> List[PartyTuple]:
+def get_parties(party_ids: Set[PartyID]) -> List[Party]:
     """Return the parties with those IDs."""
     if not party_ids:
         return []
@@ -114,7 +114,7 @@ def get_parties(party_ids: Set[PartyID]) -> List[PartyTuple]:
         .filter(DbParty.id.in_(party_ids)) \
         .all()
 
-    return [party.to_tuple() for party in parties]
+    return [_db_entity_to_party(party) for party in parties]
 
 
 def get_parties_for_brand_paginated(brand_id: BrandID, page: int,
@@ -148,6 +148,16 @@ def find_setting(party_id: PartyID, name: str) -> Optional[PartySetting]:
         return None
 
     return _db_entity_to_party_setting(setting)
+
+
+def _db_entity_to_party(party: DbSetting) -> Party:
+    return Party(
+        party.id,
+        party.brand_id,
+        party.title,
+        party.starts_at,
+        party.ends_at,
+    )
 
 
 def _db_entity_to_party_setting(setting: DbSetting) -> PartySetting:

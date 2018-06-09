@@ -6,9 +6,20 @@ byceps.services.party.transfer.models
 :License: Modified BSD, see LICENSE for details.
 """
 
+from datetime import datetime
+
 from attr import attrib, attrs
 
-from ....typing import PartyID
+from ....typing import BrandID, PartyID
+
+
+@attrs(frozen=True, slots=True)
+class Party:
+    id = attrib(type=PartyID)
+    brand_id = attrib(type=BrandID)
+    title = attrib(type=str)
+    starts_at = attrib(type=datetime)
+    ends_at = attrib(type=datetime)
 
 
 @attrs(frozen=True, slots=True)

@@ -14,8 +14,9 @@ from typing import Dict, Sequence, Set
 from ...database import db
 from ...typing import PartyID, UserID
 
-from ..party.models.party import Party, PartyTuple
+from ..party.models.party import Party as DbParty
 from ..party import service as party_service
+from ..party.transfer.models import Party
 from ..user.models.user import UserTuple
 from ..user import service as user_service
 
@@ -35,7 +36,7 @@ def create_archived_attendance(user_id: UserID, party_id: PartyID
     return attendance
 
 
-def get_attended_parties(user_id: UserID) -> Sequence[PartyTuple]:
+def get_attended_parties(user_id: UserID) -> Sequence[Party]:
     """Return the parties the user has attended in the past."""
     ticket_attendance_party_ids = _get_attended_party_ids(user_id)
     archived_attendance_party_ids = _get_archived_attendance_party_ids(user_id)
@@ -50,8 +51,8 @@ def _get_attended_party_ids(user_id: UserID) -> Set[PartyID]:
     """Return the IDs of the non-legacy parties the user has attended."""
     # Note: Party dates aren't UTC, yet.
     party_id_rows = db.session \
-        .query(Party.id) \
-        .filter(Party.ends_at < datetime.now()) \
+        .query(DbParty.id) \
+        .filter(DbParty.ends_at < datetime.now()) \
         .join(Category).join(Ticket).filter(Ticket.used_by_id == user_id) \
         .all()
 
