@@ -12,7 +12,8 @@ from ...typing import BrandID
 from ...database import db
 
 from .models.brand import Brand
-from .models.setting import Setting, SettingTuple
+from .models.setting import Setting
+from .transfer.models import BrandSetting
 
 
 def create_brand(brand_id: BrandID, title: str) -> Brand:
@@ -42,7 +43,7 @@ def count_brands() -> int:
     return Brand.query.count()
 
 
-def find_setting(brand_id: BrandID, name: str) -> Optional[SettingTuple]:
+def find_setting(brand_id: BrandID, name: str) -> Optional[BrandSetting]:
     """Return the setting for that brand and with that name, or `None`
     if not found.
     """
@@ -51,4 +52,12 @@ def find_setting(brand_id: BrandID, name: str) -> Optional[SettingTuple]:
     if setting is None:
         return None
 
-    return setting.to_tuple()
+    return _db_entity_to_brand_setting(setting)
+
+
+def _db_entity_to_brand_setting(setting: Setting) -> BrandSetting:
+    return BrandSetting(
+        setting.brand_id,
+        setting.name,
+        setting.value,
+    )
