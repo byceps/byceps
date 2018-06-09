@@ -14,10 +14,10 @@ from flask_sqlalchemy import Pagination
 from ...database import db
 from ...typing import BrandID, PartyID
 
-from ..brand.models.brand import Brand
+from ..brand.models.brand import Brand as DbBrand
 
-from .models.party import Party, PartyTuple
-from .models.setting import Setting
+from .models.party import Party as DbParty, PartyTuple
+from .models.setting import Setting as DbSetting
 from .transfer.models import PartySetting
 
 
@@ -28,7 +28,7 @@ class UnknownPartyId(Exception):
 def create_party(party_id: PartyID, brand_id: BrandID, title: str,
                  starts_at: datetime, ends_at: datetime) -> PartyTuple:
     """Create a party."""
-    party = Party(party_id, brand_id, title, starts_at, ends_at)
+    party = DbParty(party_id, brand_id, title, starts_at, ends_at)
 
     db.session.add(party)
     db.session.commit()
@@ -56,31 +56,31 @@ def update_party(party_id: PartyID, title: str, starts_at: datetime,
 
 def count_parties() -> int:
     """Return the number of parties (of all brands)."""
-    return Party.query.count()
+    return DbParty.query.count()
 
 
 def count_parties_for_brand(brand_id: BrandID) -> int:
     """Return the number of parties for that brand."""
-    return Party.query \
+    return DbParty.query \
         .filter_by(brand_id=brand_id) \
         .count()
 
 
-def find_party(party_id: PartyID) -> Optional[Party]:
+def find_party(party_id: PartyID) -> Optional[DbParty]:
     """Return the party with that id, or `None` if not found."""
-    return Party.query.get(party_id)
+    return DbParty.query.get(party_id)
 
 
-def get_all_parties_with_brands() -> List[Party]:
+def get_all_parties_with_brands() -> List[DbParty]:
     """Return all parties."""
-    return Party.query \
+    return DbParty.query \
         .options(db.joinedload('brand')) \
         .all()
 
 
 def get_active_parties(brand_id: Optional[BrandID]=None) -> List[PartyTuple]:
     """Return active (i.e. non-archived) parties."""
-    query = Party.query
+    query = DbParty.query
 
     if brand_id is not None:
         query = query \
@@ -88,7 +88,7 @@ def get_active_parties(brand_id: Optional[BrandID]=None) -> List[PartyTuple]:
 
     parties = query \
         .filter_by(is_archived=False) \
-        .order_by(Party.starts_at) \
+        .order_by(DbParty.starts_at) \
         .all()
 
     return [party.to_tuple() for party in parties]
@@ -96,10 +96,10 @@ def get_active_parties(brand_id: Optional[BrandID]=None) -> List[PartyTuple]:
 
 def get_archived_parties_for_brand(brand_id: BrandID) -> List[PartyTuple]:
     """Return archived parties for that brand."""
-    parties = Party.query \
+    parties = DbParty.query \
         .filter_by(brand_id=brand_id) \
         .filter_by(is_archived=True) \
-        .order_by(Party.starts_at.desc()) \
+        .order_by(DbParty.starts_at.desc()) \
         .all()
 
     return [party.to_tuple() for party in parties]
@@ -110,8 +110,8 @@ def get_parties(party_ids: Set[PartyID]) -> List[PartyTuple]:
     if not party_ids:
         return []
 
-    parties = Party.query \
-        .filter(Party.id.in_(party_ids)) \
+    parties = DbParty.query \
+        .filter(DbParty.id.in_(party_ids)) \
         .all()
 
     return [party.to_tuple() for party in parties]
@@ -120,9 +120,9 @@ def get_parties(party_ids: Set[PartyID]) -> List[PartyTuple]:
 def get_parties_for_brand_paginated(brand_id: BrandID, page: int,
                                     per_page: int) -> Pagination:
     """Return the parties for that brand to show on the specified page."""
-    return Party.query \
+    return DbParty.query \
         .filter_by(brand_id=brand_id) \
-        .order_by(Party.starts_at.desc()) \
+        .order_by(DbParty.starts_at.desc()) \
         .paginate(page, per_page)
 
 
@@ -130,11 +130,11 @@ def get_party_count_by_brand_id() -> Dict[BrandID, int]:
     """Return party count (including 0) per brand, indexed by brand ID."""
     return dict(db.session \
         .query(
-            Brand.id,
-            db.func.count(Party.id)
+            DbBrand.id,
+            db.func.count(DbParty.id)
         ) \
-        .outerjoin(Party) \
-        .group_by(Brand.id) \
+        .outerjoin(DbParty) \
+        .group_by(DbBrand.id) \
         .all())
 
 
@@ -142,7 +142,7 @@ def find_setting(party_id: PartyID, name: str) -> Optional[PartySetting]:
     """Return the setting for that party and with that name, or `None`
     if not found.
     """
-    setting = Setting.query.get((party_id, name))
+    setting = DbSetting.query.get((party_id, name))
 
     if setting is None:
         return None
@@ -150,7 +150,7 @@ def find_setting(party_id: PartyID, name: str) -> Optional[PartySetting]:
     return _db_entity_to_party_setting(setting)
 
 
-def _db_entity_to_party_setting(setting: Setting) -> PartySetting:
+def _db_entity_to_party_setting(setting: DbSetting) -> PartySetting:
     return PartySetting(
         setting.party_id,
         setting.name,
