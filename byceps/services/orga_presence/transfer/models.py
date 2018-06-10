@@ -21,7 +21,7 @@ TimeSlotType = Enum('TimeSlotType', ['party', 'presence', 'task'])
 
 
 @attrs(frozen=True, slots=True)
-class _AbstractTimeSlot:
+class TimeSlot:
     type = attrib(type=TimeSlotType)
     starts_at = attrib(type=datetime)
     ends_at = attrib(type=datetime)
@@ -32,7 +32,7 @@ class _AbstractTimeSlot:
 
 
 @attrs(frozen=True, slots=True)
-class PartyTimeSlot(_AbstractTimeSlot):
+class PartyTimeSlot(TimeSlot):
     party = attrib(type=Party)
 
     @classmethod
@@ -46,7 +46,7 @@ class PartyTimeSlot(_AbstractTimeSlot):
 
 
 @attrs(frozen=True, slots=True)
-class PresenceTimeSlot(_AbstractTimeSlot):
+class PresenceTimeSlot(TimeSlot):
     orga = attrib(type=UserTuple)
 
     @classmethod
@@ -60,7 +60,7 @@ class PresenceTimeSlot(_AbstractTimeSlot):
 
 
 @attrs(frozen=True, slots=True)
-class TaskTimeSlot(_AbstractTimeSlot):
+class TaskTimeSlot(TimeSlot):
     title = attrib(type=str)
 
     @classmethod
