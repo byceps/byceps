@@ -17,28 +17,48 @@ from ...typing import PartyID
 from ...util.datetime.range import create_adjacent_ranges, DateTimeRange
 
 from .models import Presence, Task
-from .transfer.models import PartyTimeSlot
+from .transfer.models import PartyTimeSlot, PresenceTimeSlot, TaskTimeSlot
 
 
-def get_presences(party_id: PartyID) -> List[Presence]:
+def get_presences(party_id: PartyID) -> List[PresenceTimeSlot]:
     """Return all presences for that party."""
-    return Presence.query \
+    presences = Presence.query \
         .for_party_id(party_id) \
         .options(db.joinedload('orga')) \
         .all()
 
+    return [_presence_to_time_slot(presence) for presence in presences]
 
-def get_tasks(party_id: PartyID) -> List[Task]:
+
+def get_tasks(party_id: PartyID) -> List[TaskTimeSlot]:
     """Return all tasks for that party."""
-    return Task.query \
+    tasks = Task.query \
         .for_party_id(party_id) \
         .all()
+
+    return [_task_to_time_slot(task) for task in tasks]
+
+
+def _presence_to_time_slot(presence: Presence) -> PresenceTimeSlot:
+    return PresenceTimeSlot.from_(
+        presence.orga,
+        presence.starts_at,
+        presence.ends_at,
+    )
+
+
+def _task_to_time_slot(task: Task) -> TaskTimeSlot:
+    return TaskTimeSlot.from_(
+        task.title,
+        task.starts_at,
+        task.ends_at,
+    )
 
 
 # -------------------------------------------------------------------- #
 
 
-def get_hour_ranges(party: PartyTimeSlot, tasks: List[Task]
+def get_hour_ranges(party: PartyTimeSlot, tasks: List[TaskTimeSlot]
                    ) -> Iterator[DateTimeRange]:
     """Yield our ranges based on the party and tasks."""
     time_slot_ranges = list(_get_time_slot_ranges(party, tasks))
@@ -46,7 +66,7 @@ def get_hour_ranges(party: PartyTimeSlot, tasks: List[Task]
     return create_adjacent_ranges(hour_starts)
 
 
-def _get_time_slot_ranges(party: PartyTimeSlot, tasks: List[Task]
+def _get_time_slot_ranges(party: PartyTimeSlot, tasks: List[TaskTimeSlot]
                          ) -> Iterator[DateTimeRange]:
     time_slots = [party] + tasks
     for time_slot in time_slots:

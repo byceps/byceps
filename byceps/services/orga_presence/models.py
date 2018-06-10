@@ -6,11 +6,7 @@ byceps.services.orga_presence.models
 :License: Modified BSD, see LICENSE for details.
 """
 
-from sqlalchemy.ext.hybrid import hybrid_property
-
 from ...database import BaseQuery, db, generate_uuid
-from ...util.datetime.range import DateTimeRange
-
 from ..user.models.user import User
 
 
@@ -34,10 +30,6 @@ class TimeSlot(db.Model):
     type = db.Column(db.Unicode(13), index=True, nullable=False)
     starts_at = db.Column(db.DateTime, nullable=False)
     ends_at = db.Column(db.DateTime, nullable=False)
-
-    @hybrid_property
-    def range(self) -> DateTimeRange:
-        return DateTimeRange(self.starts_at, self.ends_at)
 
 
 class Presence(TimeSlot):
