@@ -72,7 +72,7 @@
 
 {% macro render_bar_columns(time_slot) -%}
       {%- for hour_range in hour_ranges %}
-        {%- if time_slot.range.contains(hour_range.start) %}
+        {%- if is_instant_contained_in_time_slot(hour_range.start, time_slot) %}
           <td class="bar-column"><span class="bar"></span></td>
         {%- else %}
           <td></td>
