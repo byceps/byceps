@@ -145,7 +145,7 @@ def membership_create(team_id):
     flash_success('{} wurde in das Team "{}" aufgenommen.',
                   membership.user.screen_name, membership.orga_team.title)
     return redirect_to('.teams_for_party',
-                       party_id=membership.orga_team.party.id)
+                       party_id=membership.orga_team.party_id)
 
 
 @blueprint.route('/memberships/<uuid:membership_id>/update')
@@ -190,7 +190,7 @@ def membership_update(membership_id):
     flash_success('Die Teammitgliedschaft von {} wurde aktualisiert.',
                   membership.user.screen_name)
     return redirect_to('.teams_for_party',
-                       party_id=membership.orga_team.party.id)
+                       party_id=membership.orga_team.party_id)
 
 
 @blueprint.route('/memberships/<uuid:membership_id>', methods=['DELETE'])
