@@ -27,7 +27,7 @@ def create_category(party_id: PartyID, title: str) -> TourneyCategory:
     if party is None:
         raise ValueError('Unknown party ID "{}"'.format(party_id))
 
-    category = TourneyCategory(party, title)
+    category = TourneyCategory(party.id, title)
     party.tourney_categories.append(category)
 
     db.session.commit()

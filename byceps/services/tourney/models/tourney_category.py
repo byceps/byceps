@@ -12,6 +12,7 @@ from uuid import UUID
 from sqlalchemy.ext.orderinglist import ordering_list
 
 from ....database import db, generate_uuid
+from ....typing import PartyID
 from ....util.instances import ReprBuilder
 
 from ...party.models.party import Party
@@ -36,8 +37,8 @@ class TourneyCategory(db.Model):
     position = db.Column(db.Integer, nullable=False)
     title = db.Column(db.Unicode(40), nullable=False)
 
-    def __init__(self, party: Party, title: str) -> None:
-        self.party = party
+    def __init__(self, party_id: PartyID, title: str) -> None:
+        self.party_id = party_id
         self.title = title
 
     def __repr__(self) -> str:
