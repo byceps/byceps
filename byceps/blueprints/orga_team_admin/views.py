@@ -106,12 +106,19 @@ def membership_create_form(team_id, erroneous_form=None):
     unassigned_orgas = orga_team_service.get_unassigned_orgas_for_party(
         team.party_id)
 
+    if not unassigned_orgas:
+        return {
+            'team': team,
+            'unassigned_orgas_available': False,
+        }
+
     form = erroneous_form if erroneous_form else MembershipCreateForm()
     form.set_user_choices(unassigned_orgas)
 
     return {
         'form': form,
         'team': team,
+        'unassigned_orgas_available': True,
     }
 
 

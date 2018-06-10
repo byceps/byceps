@@ -1,5 +1,6 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
+{% from 'macros/misc.html' import render_notification %}
 {% set current_page = 'orga_team_admin.teams' %}
 {% set current_page_party = team.party %}
 {% set title = 'Orga zu Team hinzufügen' %}
@@ -14,6 +15,7 @@
   </nav>
   <h1>{{ title }}</h1>
 
+  {%- if unassigned_orgas_available %}
   <form action="{{ url_for('.membership_create', team_id=team.id) }}" method="post">
     {% call form_fieldset() %}
       {{ form_field(form.user_id, required='required', autofocus='autofocus') }}
@@ -22,5 +24,8 @@
 
     {{ form_buttons('Speichern', cancel_url=url_for('.teams_for_party', party_id=team.party.id)) }}
   </form>
+  {%- else %}
+  {{ render_notification('info', 'info', 'Es sind keine Orgas vorhanden, die noch keinem Team dieser Party zugewiesen sind.') }}
+  {%- endif %}
 
 {%- endblock %}
