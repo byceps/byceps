@@ -41,20 +41,20 @@
         <tr class="party">
           <td class="nowrap"><strong>{{ party_time_slot.party.title }}</strong></td>
           {{ render_range_columns(party_time_slot) }}
-          {{ render_bar_columns(party_time_slot) }}
+          {{ render_bar_columns([party_time_slot]) }}
         </tr>
         {%- for task in tasks|sort(attribute='starts_at') %}
         <tr class="task">
           <td>{{ task.title }}</td>
           {{ render_range_columns(task) }}
-          {{ render_bar_columns(task) }}
+          {{ render_bar_columns([task]) }}
         </tr>
         {%- endfor %}
-        {%- for presence in presences|sort(attribute='orga.screen_name') %}
+        {%- for orga, presences in presences_by_orga|dictsort(by='key') %}
         <tr class="presence">
-          <td>{{ render_user_avatar_16_and_link(presence.orga) }}</td>
-          {{ render_range_columns(presence) }}
-          {{ render_bar_columns(presence) }}
+          <td>{{ render_user_avatar_16_and_link(orga) }}</td>
+          <td colspan="2"></td>
+          {{ render_bar_columns(presences) }}
         </tr>
         {%- endfor %}
       </tbody>
@@ -70,9 +70,9 @@
 {%- endmacro %}
 
 
-{% macro render_bar_columns(time_slot) -%}
+{% macro render_bar_columns(time_slots) -%}
       {%- for hour_range in hour_ranges %}
-        {%- if is_instant_contained_in_time_slot(hour_range.start, time_slot) %}
+        {%- if is_instant_contained_in_time_slots(hour_range.start, time_slots) %}
           <td class="bar-column"><span class="bar"></span></td>
         {%- else %}
           <td></td>
