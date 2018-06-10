@@ -76,8 +76,10 @@ def index_for_brand(brand_id, page):
 def view(party_id):
     """Show a party."""
     party = _get_party_or_404(party_id)
+    brand = brand_service.find_brand(party.brand_id)
 
     return {
+        'brand': brand,
         'party': party,
     }
 

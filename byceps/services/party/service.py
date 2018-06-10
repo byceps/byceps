@@ -157,6 +157,7 @@ def _db_entity_to_party(party: DbSetting) -> Party:
         party.title,
         party.starts_at,
         party.ends_at,
+        party.is_archived,
     )
 
 
