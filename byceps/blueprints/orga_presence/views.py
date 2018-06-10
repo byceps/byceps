@@ -40,7 +40,7 @@ def view(party_id):
     presences = orga_presence_service.get_presences(party.id)
     tasks = orga_presence_service.get_tasks(party.id)
 
-    time_slots = [party_time_slot] + tasks
+    time_slots = [party_time_slot] + presences + tasks
     hour_ranges = list(orga_presence_service.get_hour_ranges(time_slots))
 
     days_and_hour_totals = list(orga_presence_service \
