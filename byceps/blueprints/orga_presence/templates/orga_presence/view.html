@@ -33,7 +33,7 @@
           <th>Beginn</th>
           <th>Ende</th>
           {%- for hour_range in hour_ranges %}
-          <th class="bar-column">{{ render_datetime_custom(hour_range.start, '%H') }}</th>
+          <th class="bar-column">{{ render_datetime_custom(hour_range.start, '%H') }}:00</th>
           {%- endfor %}
         </tr>
       </thead>
