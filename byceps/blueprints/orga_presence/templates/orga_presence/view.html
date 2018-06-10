@@ -39,9 +39,9 @@
       </thead>
       <tbody>
         <tr class="party">
-          <td class="nowrap"><strong>{{ party.title }}</strong></td>
-          {{ render_range_columns(party) }}
-          {{ render_bar_columns(party) }}
+          <td class="nowrap"><strong>{{ party_time_slot.party.title }}</strong></td>
+          {{ render_range_columns(party_time_slot) }}
+          {{ render_bar_columns(party_time_slot) }}
         </tr>
         {%- for task in tasks|sort(attribute='starts_at') %}
         <tr class="task">

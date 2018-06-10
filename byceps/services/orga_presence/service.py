@@ -16,9 +16,8 @@ from ...database import db
 from ...typing import PartyID
 from ...util.datetime.range import create_adjacent_ranges, DateTimeRange
 
-from ..party.models.party import Party
-
 from .models import Presence, Task
+from .transfer.models import PartyTimeSlot
 
 
 def get_presences(party_id: PartyID) -> List[Presence]:
@@ -39,15 +38,16 @@ def get_tasks(party_id: PartyID) -> List[Task]:
 # -------------------------------------------------------------------- #
 
 
-def get_hour_ranges(party: Party, tasks: List[Task]) -> Iterator[DateTimeRange]:
+def get_hour_ranges(party: PartyTimeSlot, tasks: List[Task]
+                   ) -> Iterator[DateTimeRange]:
     """Yield our ranges based on the party and tasks."""
     time_slot_ranges = list(_get_time_slot_ranges(party, tasks))
     hour_starts = _get_hour_starts(time_slot_ranges)
     return create_adjacent_ranges(hour_starts)
 
 
-def _get_time_slot_ranges(party: Party, tasks: List[Task]) \
-                          -> Iterator[DateTimeRange]:
+def _get_time_slot_ranges(party: PartyTimeSlot, tasks: List[Task]
+                         ) -> Iterator[DateTimeRange]:
     time_slots = [party] + tasks
     for time_slot in time_slots:
         yield time_slot.range

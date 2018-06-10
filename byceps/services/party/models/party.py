@@ -8,11 +8,8 @@ byceps.services.party.models.party
 
 from datetime import datetime
 
-from sqlalchemy.ext.hybrid import hybrid_property
-
 from ....database import db
 from ....typing import BrandID, PartyID
-from ....util.datetime.range import DateTimeRange
 from ....util.instances import ReprBuilder
 
 from ...brand.models.brand import Brand
@@ -37,10 +34,6 @@ class Party(db.Model):
         self.title = title
         self.starts_at = starts_at
         self.ends_at = ends_at
-
-    @hybrid_property
-    def range(self) -> DateTimeRange:
-        return DateTimeRange(self.starts_at, self.ends_at)
 
     @property
     def is_over(self) -> bool:

@@ -9,6 +9,7 @@ byceps.blueprints.orga_presence.views
 from flask import abort
 
 from ...services.orga_presence import service as orga_presence_service
+from ...services.orga_presence.transfer.models import PartyTimeSlot
 from ...services.party import service as party_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.templating import templated
@@ -35,10 +36,12 @@ def view(party_id):
     if party is None:
         abort(404)
 
+    party_time_slot = PartyTimeSlot.from_party(party)
     presences = orga_presence_service.get_presences(party.id)
     tasks = orga_presence_service.get_tasks(party.id)
 
-    hour_ranges = list(orga_presence_service.get_hour_ranges(party, tasks))
+    hour_ranges = list(orga_presence_service
+        .get_hour_ranges(party_time_slot, tasks))
 
     days_and_hour_totals = list(orga_presence_service \
         .get_days_and_hour_totals(hour_ranges))
@@ -47,6 +50,7 @@ def view(party_id):
         'party': party,
         'days_and_hour_totals': days_and_hour_totals,
         'hour_ranges': hour_ranges,
+        'party_time_slot': party_time_slot,
         'presences': presences,
         'tasks': tasks,
     }
