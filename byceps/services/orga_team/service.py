@@ -46,7 +46,7 @@ def find_team(team_id: OrgaTeamID) -> Optional[OrgaTeam]:
 def get_teams_for_party(party: Party) -> Sequence[OrgaTeam]:
     """Return orga teams for that party, ordered by title."""
     return OrgaTeam.query \
-        .filter_by(party=party) \
+        .filter_by(party_id=party.id) \
         .order_by(OrgaTeam.title) \
         .all()
 
@@ -55,7 +55,7 @@ def get_teams_for_party_with_memberships(party: Party) -> Sequence[OrgaTeam]:
     """Return all orga teams for that party, with memberships."""
     return OrgaTeam.query \
         .options(db.joinedload('memberships')) \
-        .filter_by(party=party) \
+        .filter_by(party_id=party.id) \
         .all()
 
 
@@ -153,7 +153,7 @@ def get_unassigned_orgas_for_party(party: Party) -> Sequence[User]:
     assigned_orgas = User.query \
         .join(Membership) \
         .join(OrgaTeam) \
-        .filter(OrgaTeam.party == party) \
+        .filter(OrgaTeam.party_id == party.id) \
         .options(db.load_only(User.id)) \
         .all()
     assigned_orga_ids = frozenset(user.id for user in assigned_orgas)
@@ -165,7 +165,7 @@ def get_unassigned_orgas_for_party(party: Party) -> Sequence[User]:
             .filter(db.not_(User.id.in_(assigned_orga_ids)))
 
     unassigned_orgas = unassigned_orgas_query \
-        .join(OrgaFlag).filter(OrgaFlag.brand == party.brand) \
+        .join(OrgaFlag).filter(OrgaFlag.brand_id == party.brand_id) \
         .options(
             db.load_only('screen_name')
         ) \
