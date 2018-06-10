@@ -26,8 +26,9 @@ nav.breadcrumbs {
 
 .bar {
   display: inline-block;
-  height: 8px;
-  width: 40px;
+  height: 0.75rem;
+  vertical-align: middle;
+  width: 3rem;
 }
 
 .party .bar {
@@ -40,6 +41,7 @@ nav.breadcrumbs {
   background-color: orange;
 }
 
-td:hover .bar {
+.bar:hover {
   background-color: red;
+  cursor: pointer;
 }
