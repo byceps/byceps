@@ -7,7 +7,7 @@ byceps.blueprints.orga_presence.views
 """
 
 from collections import defaultdict
-from datetime import date, datetime
+from datetime import datetime
 from typing import Dict, Iterable
 
 from flask import abort

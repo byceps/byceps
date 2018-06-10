@@ -17,8 +17,7 @@ from ...typing import PartyID
 from ...util.datetime.range import create_adjacent_ranges, DateTimeRange
 
 from .models import Presence, Task
-from .transfer.models import PartyTimeSlot, PresenceTimeSlot, TaskTimeSlot, \
-    TimeSlot
+from .transfer.models import PresenceTimeSlot, TaskTimeSlot, TimeSlot
 
 
 def get_presences(party_id: PartyID) -> List[PresenceTimeSlot]:
