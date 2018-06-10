@@ -68,7 +68,7 @@ def team_create(party_id):
 
     form = OrgaTeamCreateForm(request.form)
     if not form.validate():
-        return team_create_form(party_id, form)
+        return team_create_form(party.id, form)
 
     title = form.title.data.strip()
 
@@ -135,7 +135,7 @@ def membership_create(team_id):
     form.set_user_choices(unassigned_orgas)
 
     if not form.validate():
-        return membership_create_form(team_id, form)
+        return membership_create_form(team.id, form)
 
     user = user_service.find_user(form.user_id.data)
     duties = form.duties.data.strip()
@@ -179,7 +179,7 @@ def membership_update(membership_id):
     form.set_orga_team_choices(teams)
 
     if not form.validate():
-        return membership_update_form(membership_id, form)
+        return membership_update_form(membership.id, form)
 
     team_id = form.orga_team_id.data
     team = orga_team_service.find_team(team_id)
