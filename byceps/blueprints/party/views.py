@@ -38,7 +38,7 @@ def info():
     party = party_service.find_party(g.party_id)
 
     return {
-        'party': party.to_tuple(),
+        'party': party,
     }
 
 
