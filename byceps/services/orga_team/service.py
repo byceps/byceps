@@ -12,7 +12,7 @@ from ...database import db
 from ...typing import PartyID, UserID
 
 from ..orga.models import OrgaFlag
-from ..party.models.party import Party
+from ..party import service as party_service
 from ..user.models.user import User
 
 from .models import Membership, MembershipID, OrgaTeam, OrgaTeamID
@@ -43,19 +43,20 @@ def find_team(team_id: OrgaTeamID) -> Optional[OrgaTeam]:
     return OrgaTeam.query.get(team_id)
 
 
-def get_teams_for_party(party: Party) -> Sequence[OrgaTeam]:
+def get_teams_for_party(party_id: PartyID) -> Sequence[OrgaTeam]:
     """Return orga teams for that party, ordered by title."""
     return OrgaTeam.query \
-        .filter_by(party_id=party.id) \
+        .filter_by(party_id=party_id) \
         .order_by(OrgaTeam.title) \
         .all()
 
 
-def get_teams_for_party_with_memberships(party: Party) -> Sequence[OrgaTeam]:
+def get_teams_for_party_with_memberships(party_id: PartyID
+                                        ) -> Sequence[OrgaTeam]:
     """Return all orga teams for that party, with memberships."""
     return OrgaTeam.query \
         .options(db.joinedload('memberships')) \
-        .filter_by(party_id=party.id) \
+        .filter_by(party_id=party_id) \
         .all()
 
 
@@ -148,8 +149,10 @@ def select_orgas_for_party(user_ids: Set[UserID], party_id: PartyID
     return {row[0] for row in orga_id_rows}
 
 
-def get_unassigned_orgas_for_party(party: Party) -> Sequence[User]:
+def get_unassigned_orgas_for_party(party_id: PartyID) -> Sequence[User]:
     """Return organizers that are not assigned to a team for the party."""
+    party = party_service.find_party(party_id)
+
     assigned_orgas = User.query \
         .join(Membership) \
         .join(OrgaTeam) \

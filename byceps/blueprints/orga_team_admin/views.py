@@ -37,7 +37,7 @@ def teams_for_party(party_id):
     """List organizer teams for that party."""
     party = _get_party_or_404(party_id)
 
-    teams = orga_team_service.get_teams_for_party_with_memberships(party)
+    teams = orga_team_service.get_teams_for_party_with_memberships(party.id)
 
     return {
         'party': party,
@@ -104,7 +104,8 @@ def membership_create_form(team_id, erroneous_form=None):
     team = _get_team_or_404(team_id)
 
     form = erroneous_form if erroneous_form else MembershipCreateForm()
-    form.set_user_choices(orga_team_service.get_unassigned_orgas_for_party(team.party))
+    form.set_user_choices(
+        orga_team_service.get_unassigned_orgas_for_party(team.party_id))
 
     return {
         'form': form,
@@ -119,7 +120,8 @@ def membership_create(team_id):
     team = _get_team_or_404(team_id)
 
     form = MembershipCreateForm(request.form)
-    form.set_user_choices(orga_team_service.get_unassigned_orgas_for_party(team.party))
+    form.set_user_choices(
+        orga_team_service.get_unassigned_orgas_for_party(team.party_id))
 
     if not form.validate():
         return membership_create_form(team_id, form)
@@ -142,7 +144,7 @@ def membership_update_form(membership_id, erroneous_form=None):
     """Show form to update a membership."""
     membership = _get_membership_or_404(membership_id)
 
-    teams = orga_team_service.get_teams_for_party(membership.orga_team.party)
+    teams = orga_team_service.get_teams_for_party(membership.orga_team.party_id)
 
     form = erroneous_form if erroneous_form \
            else MembershipUpdateForm(obj=membership)
@@ -160,7 +162,7 @@ def membership_update(membership_id):
     """Update a membership."""
     membership = _get_membership_or_404(membership_id)
 
-    teams = orga_team_service.get_teams_for_party(membership.orga_team.party)
+    teams = orga_team_service.get_teams_for_party(membership.orga_team.party_id)
 
     form = MembershipUpdateForm(request.form)
     form.set_orga_team_choices(teams)

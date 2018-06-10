@@ -127,7 +127,7 @@ def view_party(party_id):
 
     days_until_party = (party.starts_at.date() - date.today()).days
 
-    orga_teams = orga_team_service.get_teams_for_party(party)
+    orga_teams = orga_team_service.get_teams_for_party(party.id)
     orga_team_count = len(orga_teams)
     orga_count = sum(len(team.memberships) for team in orga_teams)
 
