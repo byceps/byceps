@@ -103,9 +103,11 @@ def membership_create_form(team_id, erroneous_form=None):
     """Show form to assign an organizer to that team."""
     team = _get_team_or_404(team_id)
 
+    unassigned_orgas = orga_team_service.get_unassigned_orgas_for_party(
+        team.party_id)
+
     form = erroneous_form if erroneous_form else MembershipCreateForm()
-    form.set_user_choices(
-        orga_team_service.get_unassigned_orgas_for_party(team.party_id))
+    form.set_user_choices(unassigned_orgas)
 
     return {
         'form': form,
@@ -119,9 +121,11 @@ def membership_create(team_id):
     """Assign an organizer to that team."""
     team = _get_team_or_404(team_id)
 
+    unassigned_orgas = orga_team_service.get_unassigned_orgas_for_party(
+        team.party_id)
+
     form = MembershipCreateForm(request.form)
-    form.set_user_choices(
-        orga_team_service.get_unassigned_orgas_for_party(team.party_id))
+    form.set_user_choices(unassigned_orgas)
 
     if not form.validate():
         return membership_create_form(team_id, form)
