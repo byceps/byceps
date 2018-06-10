@@ -126,12 +126,14 @@ def create(brand_id):
 def update_form(party_id, erroneous_form=None):
     """Show form to update the party."""
     party = _get_party_or_404(party_id)
+    brand = brand_service.find_brand(party.brand_id)
 
     form = erroneous_form if erroneous_form else UpdateForm(obj=party)
 
     return {
-        'form': form,
+        'brand': brand,
         'party': party,
+        'form': form,
     }
 
 

@@ -8,8 +8,8 @@
 
   <nav class="breadcrumbs">
     <ol>
-      <li>{{ party.brand.title }}</li>
-      <li><a href="{{ url_for('.index_for_brand', brand_id=party.brand.id) }}">Partys</a></li>
+      <li>{{ brand.title }}</li>
+      <li><a href="{{ url_for('.index_for_brand', brand_id=brand.id) }}">Partys</a></li>
     </ol>
   </nav>
   <h1>{{ render_icon('add') }} {{ title }}</h1>
@@ -22,7 +22,7 @@
       {{ form_field_checkbox(form.is_archived, form.is_archived.label.text) }}
     {% endcall %}
 
-    {{ form_buttons('Speichern', cancel_url=url_for('.index_for_brand', brand_id=party.brand.id)) }}
+    {{ form_buttons('Speichern', cancel_url=url_for('.index_for_brand', brand_id=brand.id)) }}
   </form>
 
 {%- endblock %}
