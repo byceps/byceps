@@ -139,9 +139,11 @@ def update_form(party_id, erroneous_form=None):
 @permission_required(PartyPermission.update)
 def update(party_id):
     """Update a party."""
+    party = _get_party_or_404(party_id)
+
     form = UpdateForm(request.form)
     if not form.validate():
-        return update_form(party_id, form)
+        return update_form(party.id, form)
 
     title = form.title.data.strip()
     starts_at = form.starts_at.data
@@ -149,7 +151,7 @@ def update(party_id):
     is_archived = form.is_archived.data
 
     try:
-        party = party_service.update_party(party_id, title, starts_at, ends_at,
+        party = party_service.update_party(party.id, title, starts_at, ends_at,
                                            is_archived)
     except party_service.UnknownPartyId:
         abort(404, 'Unknown party ID "{}".'.format(party_id))
