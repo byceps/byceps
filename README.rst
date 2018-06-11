@@ -67,7 +67,7 @@ debugging middleware and in-browser code evaluation:
 
 .. code:: sh
 
-    $ BYCEPS_CONFIG=../config/development_admin.py ./manage.py runserver -p 8080
+    $ BYCEPS_CONFIG=../config/development_admin.py FLASK_ENV=development flask run -p 8080
 
 In a production environment, it is recommended to have the application
 served by uWSGI_ or Gunicorn_.

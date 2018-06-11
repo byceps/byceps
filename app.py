@@ -6,7 +6,11 @@ application instance
 :License: Modified BSD, see LICENSE for details.
 """
 
+from werkzeug.wsgi import SharedDataMiddleware
+
 from byceps.application import create_app, init_app
+from byceps.config import STATIC_URL_PREFIX_BRAND, STATIC_URL_PREFIX_GLOBAL, \
+    STATIC_URL_PREFIX_PARTY
 from byceps.database import db
 from byceps.services.brand.models.brand import Brand
 from byceps.services.party.models.party import Party
@@ -27,6 +31,33 @@ config_filename = get_config_filename_from_env_or_exit()
 
 app = create_app(config_filename)
 init_app(app)
+
+
+def _assemble_exports():
+    exports = {}
+
+    _export_path_if_configured(exports, 'PATH_GLOBAL', STATIC_URL_PREFIX_GLOBAL)
+    _export_path_if_configured(exports, 'PATH_BRAND', STATIC_URL_PREFIX_BRAND)
+    _export_path_if_configured(exports, 'PATH_PARTY', STATIC_URL_PREFIX_PARTY)
+
+    return exports
+
+
+def _export_path_if_configured(exports, config_key, url_path):
+    path = app.config.get(config_key)
+    if path:
+        exports[url_path] = str(path)
+
+
+if app.env == 'development':
+    # Share static files.
+    exports = _assemble_exports()
+    app.wsgi_app = SharedDataMiddleware(app.wsgi_app, exports)
+
+    # Enable debug toolbar.
+    from flask_debugtoolbar import DebugToolbarExtension
+    app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
+    toolbar = DebugToolbarExtension(app)
 
 
 @app.shell_context_processor
