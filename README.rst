@@ -62,12 +62,12 @@ for the Python versions specified in `tox.ini`.
 Serving
 =======
 
-To spin up a server (only for development purposes!) on port 8080 with
-debugging middleware and in-browser code evaluation:
+To spin up a local server (only for development purposes!) on port 5000
+with debugging middleware and in-browser code evaluation:
 
 .. code:: sh
 
-    $ BYCEPS_CONFIG=../config/development_admin.py FLASK_ENV=development flask run -p 8080
+    $ BYCEPS_CONFIG=../config/development_admin.py FLASK_ENV=development flask run
 
 In a production environment, it is recommended to have the application
 served by uWSGI_ or Gunicorn_.
