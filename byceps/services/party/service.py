@@ -39,7 +39,7 @@ def create_party(party_id: PartyID, brand_id: BrandID, title: str,
 def update_party(party_id: PartyID, title: str, starts_at: datetime,
                  ends_at: datetime, is_archived: bool) -> Party:
     """Update a party."""
-    party = find_party(party_id)
+    party = DbParty.query.get(party_id)
 
     if party is None:
         raise UnknownPartyId(party_id)
