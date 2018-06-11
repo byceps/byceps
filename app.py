@@ -36,14 +36,14 @@ init_app(app)
 def _assemble_exports():
     exports = {}
 
-    _export_path_if_configured(exports, 'PATH_GLOBAL', STATIC_URL_PREFIX_GLOBAL)
-    _export_path_if_configured(exports, 'PATH_BRAND', STATIC_URL_PREFIX_BRAND)
-    _export_path_if_configured(exports, 'PATH_PARTY', STATIC_URL_PREFIX_PARTY)
+    _export_path_if_configured(exports, STATIC_URL_PREFIX_GLOBAL, 'PATH_GLOBAL')
+    _export_path_if_configured(exports, STATIC_URL_PREFIX_BRAND, 'PATH_BRAND')
+    _export_path_if_configured(exports, STATIC_URL_PREFIX_PARTY, 'PATH_PARTY')
 
     return exports
 
 
-def _export_path_if_configured(exports, config_key, url_path):
+def _export_path_if_configured(exports, url_path, config_key):
     path = app.config.get(config_key)
     if path:
         exports[url_path] = str(path)
