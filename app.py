@@ -33,25 +33,21 @@ app = create_app(config_filename)
 init_app(app)
 
 
-def _assemble_exports():
-    exports = {}
-
-    _export_path_if_configured(exports, STATIC_URL_PREFIX_GLOBAL, 'PATH_GLOBAL')
-    _export_path_if_configured(exports, STATIC_URL_PREFIX_BRAND, 'PATH_BRAND')
-    _export_path_if_configured(exports, STATIC_URL_PREFIX_PARTY, 'PATH_PARTY')
-
-    return exports
-
-
-def _export_path_if_configured(exports, url_path, config_key):
-    path = app.config.get(config_key)
-    if path:
-        exports[url_path] = str(path)
+def _generate_static_files_exports():
+    """Yield static files exports."""
+    for url_path, config_key in [
+        (STATIC_URL_PREFIX_GLOBAL, 'PATH_GLOBAL'),
+        (STATIC_URL_PREFIX_BRAND, 'PATH_BRAND'),
+        (STATIC_URL_PREFIX_PARTY, 'PATH_PARTY'),
+    ]:
+        path = app.config.get(config_key)
+        if path:
+            yield url_path, str(path)
 
 
 if app.env == 'development':
     # Share static files.
-    exports = _assemble_exports()
+    exports = dict(_generate_static_files_exports())
     app.wsgi_app = SharedDataMiddleware(app.wsgi_app, exports)
 
     # Enable debug toolbar.
