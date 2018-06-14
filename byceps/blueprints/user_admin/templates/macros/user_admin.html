@@ -2,8 +2,8 @@
 {% from 'macros/user_avatar.html' import render_user_avatar_16, render_user_avatar_20, render_user_avatar_image_with_fallback %}
 
 
-{% macro render_user_admin_link(user) -%}
-<a href="{{ url_for('user_admin.view', user_id=user.id) }}">{{ user.screen_name }}</a>
+{% macro render_user_admin_link(user, label=None) -%}
+<a href="{{ url_for('user_admin.view', user_id=user.id) }}">{{ label if label else user.screen_name }}</a>
 {%- endmacro %}
 
 
@@ -34,7 +34,7 @@
   </div>
   <div class="user-microcard-names">
     <div class="user-microcard-screen-name">
-      {{- render_user_admin_link(user) -}}
+      {{- render_user_admin_link(user, label=(user.screen_name|truncate(16, end='…') if user.deleted else None)) -}}
       {%- if user.deleted %} {{ render_user_flag_deleted(show_label=False) }}{% endif -%}
       {%- if user.suspended %} {{ render_user_flag_suspended(show_label=False) }}{% endif -%}
     </div>
