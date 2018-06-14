@@ -38,7 +38,13 @@
       {%- if user.deleted %} {{ render_user_flag_deleted(show_label=False) }}{% endif -%}
       {%- if user.suspended %} {{ render_user_flag_suspended(show_label=False) }}{% endif -%}
     </div>
-    <div class="user-microcard-full-name">{{ user.detail.full_name }}</div>
+    <div class="user-microcard-full-name">
+      {%- if not user.deleted -%}
+      {{ user.detail.full_name }}
+      {%- else -%}
+      <em>gelöscht</em>
+      {%- endif -%}
+    </div>
   </div>
 </div>
 {%- endmacro %}
