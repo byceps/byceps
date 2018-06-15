@@ -27,7 +27,7 @@
 {%- endmacro %}
 
 
-{% macro render_user_microcard(user, tiny_avatar=False) -%}
+{% macro render_user_microcard(user, full_name=None, tiny_avatar=False) -%}
 <div class="user-microcard{% if tiny_avatar %} user-microcard--tiny-avatar{% endif %}{% if user.deleted %} dimmed{% endif %}">
   <div class="user-microcard-avatar">
     <div class="avatar">{{ render_user_avatar_image_with_fallback(user) }}</div>
@@ -40,7 +40,7 @@
     </div>
     <div class="user-microcard-full-name">
       {%- if not user.deleted -%}
-      {{ user.detail.full_name }}
+      {{ full_name if full_name is not none else user.detail.full_name }}
       {%- else -%}
       <em>gelöscht</em>
       {%- endif -%}
