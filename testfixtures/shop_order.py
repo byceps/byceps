@@ -32,7 +32,7 @@ def create_order(party_id, placed_by, *, order_number=ANY_ORDER_NUMBER,
     order = Order(
         party_id,
         order_number,
-        placed_by,
+        placed_by.id,
         placed_by.detail.first_names,
         placed_by.detail.last_name,
         placed_by.detail.country,

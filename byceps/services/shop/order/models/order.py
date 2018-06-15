@@ -94,12 +94,12 @@ class Order(db.Model):
     shipped_at = db.Column(db.DateTime, nullable=True)
 
     def __init__(self, party_id: PartyID, order_number: OrderNumber,
-                 placed_by: User, first_names: str, last_name: str,
+                 placed_by_id: UserID, first_names: str, last_name: str,
                  country: str, zip_code: str, city: str, street,
                  payment_method: PaymentMethod) -> None:
         self.party_id = party_id
         self.order_number = order_number
-        self.placed_by = placed_by
+        self.placed_by_id = placed_by_id
         self.first_names = first_names
         self.last_name = last_name
         self.country = country

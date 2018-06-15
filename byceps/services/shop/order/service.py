@@ -67,7 +67,7 @@ def _build_order(party_id: PartyID, order_number: OrderNumber, orderer: Orderer,
     return Order(
         party_id,
         order_number,
-        orderer.user,
+        orderer.user.id,
         orderer.first_names,
         orderer.last_name,
         orderer.country,
