@@ -17,7 +17,7 @@ ANY_ORDER_NUMBER = 'AEC-03-B00074'
 
 def create_orderer(user):
     return Orderer(
-        user,
+        user.id,
         user.detail.first_names,
         user.detail.last_name,
         user.detail.country,

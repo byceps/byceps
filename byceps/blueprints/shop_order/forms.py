@@ -22,9 +22,9 @@ class OrderForm(LocalizedForm):
     city = StringField('Stadt', validators=[Length(min=2)])
     street = StringField('Straße', validators=[Length(min=2)])
 
-    def get_orderer(self, user):
+    def get_orderer(self, user_id):
         return Orderer(
-            user,
+            user_id,
             self.first_names.data.strip(),
             self.last_name.data.strip(),
             self.country.data.strip(),

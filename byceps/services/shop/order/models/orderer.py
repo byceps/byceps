@@ -6,15 +6,15 @@ byceps.services.shop.order.models.order.orderer
 :License: Modified BSD, see LICENSE for details.
 """
 
-from ....user.models.user import User
+from .....typing import UserID
 
 
 class Orderer:
     """Someone who orders articles."""
 
-    def __init__(self, user: User, first_names: str, last_name: str,
+    def __init__(self, user_id: UserID, first_names: str, last_name: str,
                  country: str, zip_code: str, city: str, street: str) -> None:
-        self.user = user
+        self.user_id = user_id
         self.first_names = first_names
         self.last_name = last_name
         self.country = country

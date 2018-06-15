@@ -78,7 +78,7 @@ def order():
         flash_error('Es wurden keine Artikel ausgewählt.')
         return order_form(form)
 
-    orderer = form.get_orderer(g.current_user._user)
+    orderer = form.get_orderer(g.current_user.id)
 
     try:
         order = _submit_order(orderer, cart)
@@ -149,7 +149,7 @@ def order_single(article_id):
         .get_article_compilation_for_single_article(article,
                                                     fixed_quantity=quantity)
 
-    user = g.current_user._user
+    user = g.current_user
 
     if order_service.has_user_placed_orders(user.id, g.party_id):
         flash_error('Du kannst keine weitere Bestellung aufgeben.')
@@ -163,7 +163,7 @@ def order_single(article_id):
     if not form.validate():
         return order_single_form(article.id, form)
 
-    orderer = form.get_orderer(user)
+    orderer = form.get_orderer(user.id)
 
     cart = Cart()
     for item in article_compilation:
