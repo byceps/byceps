@@ -12,7 +12,6 @@ services:
 install:
   - "pip install --upgrade pip"
   - "pip install --upgrade pytest"
-  - "pip install psycopg2"
 before_script:
   - psql -U postgres -c "CREATE DATABASE byceps_test;"
   - psql -U postgres -c "CREATE ROLE byceps_test WITH LOGIN PASSWORD 'test';"
