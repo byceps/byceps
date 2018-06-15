@@ -6,7 +6,7 @@ Requirements
 ------------
 
 * Python_ 3.5.3 or higher
-* PostgreSQL_ 9.4 or higher
+* PostgreSQL_ 9.6 or higher
 * Redis_ 2.8 or higher
 
 .. _Python: http://www.python.org/
@@ -20,10 +20,10 @@ Debian
 `Debian Linux`_ is the recommended operating system to run BYCEPS on.
 
 The following packages are available in the Debian repository as part of
-the "Jessie" release:
+the "Stretch" release:
 
-* ``postgresql-9.4``
-* ``postgresql-contrib-9.4``
+* ``postgresql-9.6``
+* ``postgresql-contrib-9.6``
 * ``python3.5``
 * ``python3.5-dev``
 * ``python3.5-venv``
