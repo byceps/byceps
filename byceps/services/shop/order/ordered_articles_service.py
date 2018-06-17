@@ -46,8 +46,4 @@ def get_order_items_for_article(article_number: ArticleNumber
     """Return all order items for that article."""
     return OrderItem.query \
         .filter_by(article_number=article_number) \
-        .options(
-            db.joinedload('order.placed_by').joinedload('detail'),
-            db.joinedload('order'),
-        ) \
         .all()

@@ -37,7 +37,7 @@
       <tr>
         <td>
           {{- render_user_avatar_16_and_link(user) }}<br>
-          {{- user.detail.full_name|fallback -}}
+          {{- '%s %s'|format(order.first_names, order.last_name) -}}
         </td>
         <td class="centered">{{ quantity }}</td>
         <td>

@@ -14,8 +14,10 @@ from flask import abort, request
 from ...services.party import service as party_service
 from ...services.shop.article import service as article_service
 from ...services.shop.order.models.payment import PaymentState
-from ...services.shop.order import ordered_articles_service
+from ...services.shop.order import ordered_articles_service, \
+    service as order_service
 from ...services.shop.sequence import service as sequence_service
+from ...services.user import service as user_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_success
 from ...util.framework.templating import templated
@@ -89,10 +91,18 @@ def view_ordered(article_id):
 
     quantity_total = sum(item.quantity for item in order_items)
 
+    order_numbers = {item.order_number for item in order_items}
+    orders = order_service.find_orders_by_order_numbers(order_numbers)
+    orders_by_order_numbers = {order.order_number: order for order in orders}
+
+    user_ids = {order.placed_by_id for order in orders}
+    users = user_service.find_users(user_ids)
+    users_by_id = {user.id: user for user in users}
+
     def transform(order_item):
         quantity = order_item.quantity
-        order = order_item.order
-        user = order.placed_by
+        order = orders_by_order_numbers[order_item.order_number]
+        user = users_by_id[order.placed_by_id]
 
         return quantity, order, user
 
