@@ -27,26 +27,14 @@
   <table class="index wide">
     <thead>
       <tr>
-        <th>Sitzplatz</th>
         <th>Benutzername<br>Vor- und Nachname</th>
         <th>Anzahl</th>
         <th colspan="2">Bestellung</th>
       </tr>
     </thead>
     <tbody>
-    {%- for user, tickets, quantity, order in users_tickets_quantities_orders|sort(attribute='3.order_number', reverse=True) %}
+    {%- for user, quantity, order in users_quantities_orders|sort(attribute='2.order_number', reverse=True) %}
       <tr>
-        {%- if tickets %}
-        <td class="nowrap">
-          <ol>
-          {%- for ticket in tickets %}
-            <li>{{ ticket.occupied_seat.area.title if ticket.occupied_seat else 'nicht ausgewählt'|dim}}</li>
-          {%- endfor %}
-          </ol>
-        </td>
-        {%- else %}
-        <td>{{ 'keiner'|dim }}</td>
-        {%- endif %}
         <td>
           {{- render_user_avatar_16_and_link(user) }}<br>
           {{- user.detail.full_name|fallback -}}

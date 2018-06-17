@@ -16,7 +16,6 @@ from ...services.shop.article import service as article_service
 from ...services.shop.order.models.payment import PaymentState
 from ...services.shop.order import ordered_articles_service
 from ...services.shop.sequence import service as sequence_service
-from ...services.ticketing import ticket_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_success
 from ...util.framework.templating import templated
@@ -92,18 +91,16 @@ def view_ordered(article_id):
 
     def transform(order_item):
         user = order_item.order.placed_by
-        tickets = ticket_service.find_tickets_used_by_user(
-            user.id, article.party.id)
         quantity = order_item.quantity
         order = order_item.order
-        return user, tickets, quantity, order
+        return user, quantity, order
 
-    users_tickets_quantities_orders = map(transform, order_items)
+    users_quantities_orders = map(transform, order_items)
 
     return {
         'article': article,
         'quantity_total': quantity_total,
-        'users_tickets_quantities_orders': users_tickets_quantities_orders,
+        'users_quantities_orders': users_quantities_orders,
         'now': datetime.now(),
     }
 
