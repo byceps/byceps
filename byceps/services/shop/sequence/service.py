@@ -12,7 +12,7 @@ from ....database import db
 from ....typing import PartyID
 
 from ..article.models.article import ArticleNumber
-from ..order.models.order import OrderNumber
+from ..order.transfer.models import OrderNumber
 
 from .models import PartySequence, Purpose
 

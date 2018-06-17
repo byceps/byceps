@@ -22,13 +22,12 @@ from ....user.models.user import User
 
 from ...article.models.article import Article
 
+from ..transfer.models import OrderNumber
+
 from .payment import PaymentMethod, PaymentState
 
 
 OrderID = NewType('OrderID', UUID)
-
-
-OrderNumber = NewType('OrderNumber', str)
 
 
 OrderTuple = namedtuple('OrderTuple', [

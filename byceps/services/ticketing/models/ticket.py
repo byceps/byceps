@@ -15,7 +15,7 @@ from ....typing import PartyID, UserID
 from ....util.instances import ReprBuilder
 
 from ...seating.models.seat import Seat
-from ...shop.order.models.order import OrderNumber
+from ...shop.order.transfer.models import OrderNumber
 from ...user.models.user import User
 
 from .category import Category, CategoryID

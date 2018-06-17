@@ -11,7 +11,7 @@ from typing import Optional, Sequence
 from ...database import db
 from ...typing import UserID
 
-from ..shop.order.models.order import OrderNumber
+from ..shop.order.transfer.models import OrderNumber
 
 from . import event_service
 from .models.category import CategoryID

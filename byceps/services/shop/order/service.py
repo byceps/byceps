@@ -23,12 +23,13 @@ from ..article.models.article import Article
 from ..cart.models import Cart
 from ..sequence import service as sequence_service
 
-from .models.order import Order, OrderID, OrderNumber, OrderTuple
+from .models.order import Order, OrderID, OrderTuple
 from .models.order_event import OrderEvent
 from .models.order_item import OrderItem
 from .models.orderer import Orderer
 from .models.payment import PaymentMethod, PaymentState
 from . import action_service
+from .transfer.models import OrderNumber
 
 
 class OrderFailed(Exception):
