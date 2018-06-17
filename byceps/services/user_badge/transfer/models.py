@@ -9,5 +9,20 @@ byceps.services.user_badge.transfer.models
 from typing import NewType
 from uuid import UUID
 
+from attr import attrib, attrs
+
+from ....typing import BrandID
+
 
 BadgeID = NewType('BadgeID', UUID)
+
+
+@attrs(frozen=True, slots=True)
+class Badge:
+    id = attrib(type=BadgeID)
+    brand_id = attrib(type=BrandID)
+    slug = attrib(type=str)
+    label = attrib(type=str)
+    description = attrib(type=str)
+    image_url = attrib(type=str)
+    featured = attrib(type=bool)

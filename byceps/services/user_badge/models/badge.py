@@ -6,7 +6,6 @@ byceps.services.user_badge.models.badge
 :License: Modified BSD, see LICENSE for details.
 """
 
-from collections import namedtuple
 from typing import Optional
 
 from flask import url_for
@@ -14,17 +13,6 @@ from flask import url_for
 from ....database import db, generate_uuid
 from ....typing import BrandID
 from ....util.instances import ReprBuilder
-
-
-BadgeTuple = namedtuple('BadgeTuple', [
-    'id',
-    'brand_id',
-    'slug',
-    'label',
-    'description',
-    'image_url',
-    'featured',
-])
 
 
 class Badge(db.Model):
@@ -54,18 +42,6 @@ class Badge(db.Model):
     def image_url(self) -> str:
         filename = 'users/badges/{}'.format(self.image_filename)
         return url_for('global_file', filename=filename)
-
-    def to_tuple(self) -> BadgeTuple:
-        """Return a tuple representation of this entity."""
-        return BadgeTuple(
-            self.id,
-            self.brand_id,
-            self.slug,
-            self.label,
-            self.description,
-            self.image_url,
-            self.featured
-        )
 
     def __repr__(self) -> str:
         return ReprBuilder(self) \

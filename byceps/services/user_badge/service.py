@@ -14,14 +14,14 @@ from ...typing import BrandID, UserID
 
 from .models.awarding import BadgeAwarding as DbBadgeAwarding, \
     BadgeAwardingTuple, QuantifiedBadgeAwardingTuple
-from .models.badge import Badge as DbBadge, BadgeTuple
-from .transfer.models import BadgeID
+from .models.badge import Badge as DbBadge
+from .transfer.models import Badge, BadgeID
 
 
 def create_badge(slug: str, label: str, image_filename: str, *,
                  brand_id: Optional[BrandID]=None,
                  description: Optional[str]=None,
-                 featured: bool=False) -> BadgeTuple:
+                 featured: bool=False) -> Badge:
     """Introduce a new badge."""
     badge = DbBadge(slug, label, image_filename, brand_id=brand_id,
                     description=description, featured=featured)
@@ -29,20 +29,20 @@ def create_badge(slug: str, label: str, image_filename: str, *,
     db.session.add(badge)
     db.session.commit()
 
-    return badge.to_tuple()
+    return _db_entity_to_badge(badge)
 
 
-def find_badge(badge_id: BadgeID) -> Optional[BadgeTuple]:
+def find_badge(badge_id: BadgeID) -> Optional[Badge]:
     """Return the badge with that id, or `None` if not found."""
     badge = DbBadge.query.get(badge_id)
 
     if badge is None:
         return None
 
-    return badge.to_tuple()
+    return _db_entity_to_badge(badge)
 
 
-def find_badge_by_slug(slug: str) -> Optional[BadgeTuple]:
+def find_badge_by_slug(slug: str) -> Optional[Badge]:
     """Return the badge with that slug, or `None` if not found."""
     badge = DbBadge.query \
         .filter_by(slug=slug) \
@@ -51,11 +51,11 @@ def find_badge_by_slug(slug: str) -> Optional[BadgeTuple]:
     if badge is None:
         return None
 
-    return badge.to_tuple()
+    return _db_entity_to_badge(badge)
 
 
 def get_badges(badge_ids: Set[BadgeID], *, featured_only: bool=False
-              ) -> Set[BadgeTuple]:
+              ) -> Set[Badge]:
     """Return the badges with those IDs.
 
     If `featured_only` is `True`, only return featured badges.
@@ -71,10 +71,10 @@ def get_badges(badge_ids: Set[BadgeID], *, featured_only: bool=False
 
     badges = query.all()
 
-    return {badge.to_tuple() for badge in badges}
+    return {_db_entity_to_badge(badge) for badge in badges}
 
 
-def get_badges_for_user(user_id: UserID) -> Dict[BadgeTuple, int]:
+def get_badges_for_user(user_id: UserID) -> Dict[Badge, int]:
     """Return all badges that have been awarded to the user (and how often)."""
     rows = db.session \
         .query(
@@ -101,13 +101,13 @@ def get_badges_for_user(user_id: UserID) -> Dict[BadgeTuple, int]:
     badges_with_awarding_quantity = {}
     for badge in badges:
         quantity = badge_ids_with_awarding_quantity[badge.id]
-        badges_with_awarding_quantity[badge.to_tuple()] = quantity
+        badges_with_awarding_quantity[_db_entity_to_badge(badge)] = quantity
 
     return badges_with_awarding_quantity
 
 
 def get_badges_for_users(user_ids: Set[UserID], *, featured_only: bool=False
-                        ) -> Dict[UserID, Set[BadgeTuple]]:
+                        ) -> Dict[UserID, Set[Badge]]:
     """Return all badges that have been awarded to the users, indexed
     by user ID.
 
@@ -124,7 +124,7 @@ def get_badges_for_users(user_ids: Set[UserID], *, featured_only: bool=False
     badges = get_badges(badge_ids, featured_only=featured_only)
     badges_by_id = {badge.id: badge for badge in badges}
 
-    badges_by_user_id = defaultdict(set)  # type: Dict[UserID, Set[BadgeTuple]]
+    badges_by_user_id = defaultdict(set)  # type: Dict[UserID, Set[Badge]]
     for awarding in awardings:
         badge = badges_by_id.get(awarding.badge_id)
         if badge:
@@ -133,11 +133,11 @@ def get_badges_for_users(user_ids: Set[UserID], *, featured_only: bool=False
     return dict(badges_by_user_id)
 
 
-def get_all_badges() -> Set[BadgeTuple]:
+def get_all_badges() -> Set[Badge]:
     """Return all badges."""
     badges = DbBadge.query.all()
 
-    return {badge.to_tuple() for badge in badges}
+    return {_db_entity_to_badge(badge) for badge in badges}
 
 
 def award_badge_to_user(badge_id: BadgeID, user_id: UserID) \
@@ -169,3 +169,15 @@ def get_awardings_of_badge(badge_id: BadgeID) \
 
     return {QuantifiedBadgeAwardingTuple(badge_id, user_id, quantity)
             for badge_id, user_id, quantity in rows}
+
+
+def _db_entity_to_badge(entity: DbBadge) -> Badge:
+    return Badge(
+        entity.id,
+        entity.brand_id,
+        entity.slug,
+        entity.label,
+        entity.description,
+        entity.image_url,
+        entity.featured,
+    )
