@@ -6,9 +6,8 @@ byceps.services.shop.order.actions.award_badge
 :License: Modified BSD, see LICENSE for details.
 """
 
-from ....user_badge.models.awarding import BadgeAwardingTuple
 from ....user_badge import service as badge_service
-from ....user_badge.transfer.models import BadgeID
+from ....user_badge.transfer.models import BadgeAwarding, BadgeID
 
 from ...article.models.article import ArticleNumber
 
@@ -39,8 +38,7 @@ def _verify_badge_id(badge_id: BadgeID) -> None:
         raise ValueError('Unknown badge ID "{}".'.format(badge_id))
 
 
-def _create_order_event(order_id: OrderID, awarding: BadgeAwardingTuple
-                       ) -> None:
+def _create_order_event(order_id: OrderID, awarding: BadgeAwarding) -> None:
     event_type = 'badge-awarded'
     data = {
         'awarding_id': str(awarding.id),

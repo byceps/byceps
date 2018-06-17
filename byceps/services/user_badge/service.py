@@ -15,9 +15,9 @@ from ...database import db
 from ...typing import BrandID, UserID
 
 from .models.awarding import BadgeAwarding as DbBadgeAwarding, \
-    BadgeAwardingTuple, QuantifiedBadgeAwardingTuple
+    QuantifiedBadgeAwardingTuple
 from .models.badge import Badge as DbBadge
-from .transfer.models import Badge, BadgeID
+from .transfer.models import Badge, BadgeAwarding, BadgeID
 
 
 def create_badge(slug: str, label: str, image_filename: str, *,
@@ -142,15 +142,14 @@ def get_all_badges() -> Set[Badge]:
     return {_db_entity_to_badge(badge) for badge in badges}
 
 
-def award_badge_to_user(badge_id: BadgeID, user_id: UserID) \
-                        -> BadgeAwardingTuple:
+def award_badge_to_user(badge_id: BadgeID, user_id: UserID) -> BadgeAwarding:
     """Award the badge to the user."""
     awarding = DbBadgeAwarding(badge_id, user_id)
 
     db.session.add(awarding)
     db.session.commit()
 
-    return awarding.to_tuple()
+    return _db_entity_to_badge_awarding(awarding)
 
 
 def get_awardings_of_badge(badge_id: BadgeID) \
@@ -190,3 +189,12 @@ def _db_entity_to_badge(entity: DbBadge) -> Badge:
 def _build_image_url(image_filename: str) -> str:
     filename = 'users/badges/{}'.format(image_filename)
     return url_for('global_file', filename=filename)
+
+
+def _db_entity_to_badge_awarding(entity: DbBadgeAwarding) -> BadgeAwarding:
+    return BadgeAwarding(
+        entity.id,
+        entity.badge_id,
+        entity.user_id,
+        entity.awarded_at
+    )

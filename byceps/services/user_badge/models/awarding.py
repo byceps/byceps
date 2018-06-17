@@ -15,10 +15,6 @@ from ....typing import UserID
 from ..transfer.models import BadgeID
 
 
-BadgeAwardingTuple = namedtuple('BadgeAwardingTuple',
-    'id, badge_id, user_id, awarded_at')
-
-
 QuantifiedBadgeAwardingTuple = namedtuple('BadgeAwardingTuple',
     'badge_id, user_id, quantity')
 
@@ -35,12 +31,3 @@ class BadgeAwarding(db.Model):
     def __init__(self, badge_id: BadgeID, user_id: UserID) -> None:
         self.badge_id = badge_id
         self.user_id = user_id
-
-    def to_tuple(self) -> BadgeAwardingTuple:
-        """Return a tuple representation of this entity."""
-        return BadgeAwardingTuple(
-            self.id,
-            self.badge_id,
-            self.user_id,
-            self.awarded_at
-        )
