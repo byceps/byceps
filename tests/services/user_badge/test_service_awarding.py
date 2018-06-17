@@ -3,8 +3,8 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.services.user_badge.models.awarding import QuantifiedBadgeAwardingTuple
 from byceps.services.user_badge import service as user_badge_service
+from byceps.services.user_badge.transfer.models import QuantifiedBadgeAwarding
 
 from tests.base import AbstractAppTestCase
 
@@ -43,6 +43,6 @@ class UserBadgeAwardingServiceTestCase(AbstractAppTestCase):
             actual = user_badge_service.get_awardings_of_badge(badge.id)
 
             assert actual == {
-                QuantifiedBadgeAwardingTuple(badge.id, user1.id, 2),
-                QuantifiedBadgeAwardingTuple(badge.id, user2.id, 1),
+                QuantifiedBadgeAwarding(badge.id, user1.id, 2),
+                QuantifiedBadgeAwarding(badge.id, user2.id, 1),
             }

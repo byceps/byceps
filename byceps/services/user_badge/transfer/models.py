@@ -35,3 +35,10 @@ class BadgeAwarding:
     badge_id = attrib(type=BadgeID)
     user_id = attrib(type=UserID)
     awarded_at = attrib(type=datetime)
+
+
+@attrs(frozen=True, slots=True)
+class QuantifiedBadgeAwarding:
+    badge_id = attrib(type=BadgeID)
+    user_id = attrib(type=UserID)
+    quantity = attrib(type=int)

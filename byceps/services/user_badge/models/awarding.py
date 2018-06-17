@@ -6,17 +6,12 @@ byceps.services.user_badge.models.awarding
 :License: Modified BSD, see LICENSE for details.
 """
 
-from collections import namedtuple
 from datetime import datetime
 
 from ....database import db, generate_uuid
 from ....typing import UserID
 
 from ..transfer.models import BadgeID
-
-
-QuantifiedBadgeAwardingTuple = namedtuple('BadgeAwardingTuple',
-    'badge_id, user_id, quantity')
 
 
 class BadgeAwarding(db.Model):

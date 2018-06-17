@@ -14,10 +14,10 @@ from flask import url_for
 from ...database import db
 from ...typing import BrandID, UserID
 
-from .models.awarding import BadgeAwarding as DbBadgeAwarding, \
-    QuantifiedBadgeAwardingTuple
+from .models.awarding import BadgeAwarding as DbBadgeAwarding
 from .models.badge import Badge as DbBadge
-from .transfer.models import Badge, BadgeAwarding, BadgeID
+from .transfer.models import Badge, BadgeAwarding, BadgeID, \
+    QuantifiedBadgeAwarding
 
 
 def create_badge(slug: str, label: str, image_filename: str, *,
@@ -152,8 +152,7 @@ def award_badge_to_user(badge_id: BadgeID, user_id: UserID) -> BadgeAwarding:
     return _db_entity_to_badge_awarding(awarding)
 
 
-def get_awardings_of_badge(badge_id: BadgeID) \
-                           -> Set[QuantifiedBadgeAwardingTuple]:
+def get_awardings_of_badge(badge_id: BadgeID) -> Set[QuantifiedBadgeAwarding]:
     """Return the awardings (user and date) of this badge."""
     rows = db.session \
         .query(
@@ -168,7 +167,7 @@ def get_awardings_of_badge(badge_id: BadgeID) \
         ) \
         .all()
 
-    return {QuantifiedBadgeAwardingTuple(badge_id, user_id, quantity)
+    return {QuantifiedBadgeAwarding(badge_id, user_id, quantity)
             for badge_id, user_id, quantity in rows}
 
 
