@@ -8,8 +8,6 @@ byceps.services.user_badge.models.badge
 
 from typing import Optional
 
-from flask import url_for
-
 from ....database import db, generate_uuid
 from ....typing import BrandID
 from ....util.instances import ReprBuilder
@@ -37,11 +35,6 @@ class Badge(db.Model):
         self.description = description
         self.image_filename = image_filename
         self.featured = featured
-
-    @property
-    def image_url(self) -> str:
-        filename = 'users/badges/{}'.format(self.image_filename)
-        return url_for('global_file', filename=filename)
 
     def __repr__(self) -> str:
         return ReprBuilder(self) \
