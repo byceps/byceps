@@ -1,6 +1,6 @@
 """
-byceps.services.shop.order.models.order.order
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.shop.order.models.order
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2018 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
