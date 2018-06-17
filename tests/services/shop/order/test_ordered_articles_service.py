@@ -46,7 +46,8 @@ class OrderedArticlesServiceTestCase(AbstractAppTestCase):
             order_number = 'XY-01-B{:05d}'.format(next(order_number_sequence))
             self.create_order(order_number, article_quantity, payment_state)
 
-        totals = ordered_articles_service.count_ordered_articles(self.article)
+        totals = ordered_articles_service \
+            .count_ordered_articles(self.article.item_number)
 
         assert totals == expected
 

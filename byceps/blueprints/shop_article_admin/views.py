@@ -66,7 +66,8 @@ def view(article_id):
     if article is None:
         abort(404)
 
-    totals = ordered_articles_service.count_ordered_articles(article)
+    totals = ordered_articles_service \
+        .count_ordered_articles(article.item_number)
 
     return {
         'article': article,
@@ -84,7 +85,8 @@ def view_ordered(article_id):
     """
     article = _get_article_or_404(article_id)
 
-    order_items = ordered_articles_service.get_order_items_for_article(article)
+    order_items = ordered_articles_service \
+        .get_order_items_for_article(article.item_number)
 
     quantity_total = sum(item.quantity for item in order_items)
 
