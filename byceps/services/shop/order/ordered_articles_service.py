@@ -13,7 +13,7 @@ from ....database import db
 
 from ..article.models.article import ArticleNumber
 
-from .models.order_item import OrderItem
+from .models.order_item import OrderItem, OrderItemTuple
 from .models.payment import PaymentState
 
 
@@ -42,8 +42,10 @@ def count_ordered_articles(article_number: ArticleNumber
 
 
 def get_order_items_for_article(article_number: ArticleNumber
-                               ) -> Sequence[OrderItem]:
+                               ) -> Sequence[OrderItemTuple]:
     """Return all order items for that article."""
-    return OrderItem.query \
+    order_items = OrderItem.query \
         .filter_by(article_number=article_number) \
         .all()
+
+    return [item.to_tuple() for item in order_items]
