@@ -43,6 +43,9 @@ class OrderItem(db.Model):
     shipping_required = db.Column(db.Boolean, nullable=False)
 
     def __init__(self, order: Order, article: Article, quantity: int) -> None:
+        # Require order instance rather than order number as argument
+        # because order item are created together with the order and
+        # until the order is created, there is no order number assigned.
         self.order = order
         self.article = article
         self.description = article.description
