@@ -16,8 +16,15 @@ from ...article.models.article import Article
 from .order import Order
 
 
-OrderItemTuple = namedtuple('OrderItemTuple',
-    'article_number, description, unit_price, tax_rate, quantity, line_price')
+OrderItemTuple = namedtuple('OrderItemTuple', [
+    'order_number',
+    'article_number',
+    'description',
+    'unit_price',
+    'tax_rate',
+    'quantity',
+    'line_price',
+])
 
 
 class OrderItem(db.Model):
@@ -55,6 +62,7 @@ class OrderItem(db.Model):
     def to_tuple(self) -> OrderItemTuple:
         """Return a tuple representation of (parts of) this entity."""
         return OrderItemTuple(
+            self.order_number,
             self.article_number,
             self.description,
             self.unit_price,
