@@ -90,17 +90,18 @@ def view_ordered(article_id):
     quantity_total = sum(item.quantity for item in order_items)
 
     def transform(order_item):
-        user = order_item.order.placed_by
         quantity = order_item.quantity
         order = order_item.order
-        return user, quantity, order
+        user = order.placed_by
 
-    users_quantities_orders = map(transform, order_items)
+        return quantity, order, user
+
+    quantities_orders_users = map(transform, order_items)
 
     return {
         'article': article,
         'quantity_total': quantity_total,
-        'users_quantities_orders': users_quantities_orders,
+        'quantities_orders_users': quantities_orders_users,
         'now': datetime.now(),
     }
 

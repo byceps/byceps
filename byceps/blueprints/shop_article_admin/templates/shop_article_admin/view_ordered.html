@@ -33,7 +33,7 @@
       </tr>
     </thead>
     <tbody>
-    {%- for user, quantity, order in users_quantities_orders|sort(attribute='2.order_number', reverse=True) %}
+    {%- for quantity, order, user in quantities_orders_users|sort(attribute='1.order_number', reverse=True) %}
       <tr>
         <td>
           {{- render_user_avatar_16_and_link(user) }}<br>
