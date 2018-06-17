@@ -12,9 +12,9 @@ from typing import Dict, Optional, Set
 from ...database import db
 from ...typing import BrandID, UserID
 
-from .models.awarding import BadgeAwarding, BadgeAwardingTuple, \
-    QuantifiedBadgeAwardingTuple
-from .models.badge import Badge, BadgeTuple
+from .models.awarding import BadgeAwarding as DbBadgeAwarding, \
+    BadgeAwardingTuple, QuantifiedBadgeAwardingTuple
+from .models.badge import Badge as DbBadge, BadgeTuple
 from .transfer.models import BadgeID
 
 
@@ -23,8 +23,8 @@ def create_badge(slug: str, label: str, image_filename: str, *,
                  description: Optional[str]=None,
                  featured: bool=False) -> BadgeTuple:
     """Introduce a new badge."""
-    badge = Badge(slug, label, image_filename, brand_id=brand_id,
-                  description=description, featured=featured)
+    badge = DbBadge(slug, label, image_filename, brand_id=brand_id,
+                    description=description, featured=featured)
 
     db.session.add(badge)
     db.session.commit()
@@ -34,7 +34,7 @@ def create_badge(slug: str, label: str, image_filename: str, *,
 
 def find_badge(badge_id: BadgeID) -> Optional[BadgeTuple]:
     """Return the badge with that id, or `None` if not found."""
-    badge = Badge.query.get(badge_id)
+    badge = DbBadge.query.get(badge_id)
 
     if badge is None:
         return None
@@ -44,7 +44,7 @@ def find_badge(badge_id: BadgeID) -> Optional[BadgeTuple]:
 
 def find_badge_by_slug(slug: str) -> Optional[BadgeTuple]:
     """Return the badge with that slug, or `None` if not found."""
-    badge = Badge.query \
+    badge = DbBadge.query \
         .filter_by(slug=slug) \
         .one_or_none()
 
@@ -63,8 +63,8 @@ def get_badges(badge_ids: Set[BadgeID], *, featured_only: bool=False
     if not badge_ids:
         return set()
 
-    query = Badge.query \
-        .filter(Badge.id.in_(badge_ids))
+    query = DbBadge.query \
+        .filter(DbBadge.id.in_(badge_ids))
 
     if featured_only:
         query = query.filter_by(featured=True)
@@ -78,12 +78,12 @@ def get_badges_for_user(user_id: UserID) -> Dict[BadgeTuple, int]:
     """Return all badges that have been awarded to the user (and how often)."""
     rows = db.session \
         .query(
-            BadgeAwarding.badge_id,
-            db.func.count(BadgeAwarding.badge_id)
+            DbBadgeAwarding.badge_id,
+            db.func.count(DbBadgeAwarding.badge_id)
         ) \
-        .filter(BadgeAwarding.user_id == user_id) \
+        .filter(DbBadgeAwarding.user_id == user_id) \
         .group_by(
-            BadgeAwarding.badge_id,
+            DbBadgeAwarding.badge_id,
         ) \
         .all()
 
@@ -92,8 +92,8 @@ def get_badges_for_user(user_id: UserID) -> Dict[BadgeTuple, int]:
     badge_ids = set(badge_ids_with_awarding_quantity.keys())
 
     if badge_ids:
-        badges = Badge.query \
-            .filter(Badge.id.in_(badge_ids)) \
+        badges = DbBadge.query \
+            .filter(DbBadge.id.in_(badge_ids)) \
             .all()
     else:
         badges = []
@@ -116,8 +116,8 @@ def get_badges_for_users(user_ids: Set[UserID], *, featured_only: bool=False
     if not user_ids:
         return {}
 
-    awardings = BadgeAwarding.query \
-        .filter(BadgeAwarding.user_id.in_(user_ids)) \
+    awardings = DbBadgeAwarding.query \
+        .filter(DbBadgeAwarding.user_id.in_(user_ids)) \
         .all()
 
     badge_ids = {awarding.badge_id for awarding in awardings}
@@ -135,7 +135,7 @@ def get_badges_for_users(user_ids: Set[UserID], *, featured_only: bool=False
 
 def get_all_badges() -> Set[BadgeTuple]:
     """Return all badges."""
-    badges = Badge.query.all()
+    badges = DbBadge.query.all()
 
     return {badge.to_tuple() for badge in badges}
 
@@ -143,7 +143,7 @@ def get_all_badges() -> Set[BadgeTuple]:
 def award_badge_to_user(badge_id: BadgeID, user_id: UserID) \
                         -> BadgeAwardingTuple:
     """Award the badge to the user."""
-    awarding = BadgeAwarding(badge_id, user_id)
+    awarding = DbBadgeAwarding(badge_id, user_id)
 
     db.session.add(awarding)
     db.session.commit()
@@ -156,14 +156,14 @@ def get_awardings_of_badge(badge_id: BadgeID) \
     """Return the awardings (user and date) of this badge."""
     rows = db.session \
         .query(
-            BadgeAwarding.badge_id,
-            BadgeAwarding.user_id,
-            db.func.count(BadgeAwarding.badge_id)
+            DbBadgeAwarding.badge_id,
+            DbBadgeAwarding.user_id,
+            db.func.count(DbBadgeAwarding.badge_id)
         ) \
-        .filter(BadgeAwarding.badge_id == badge_id) \
+        .filter(DbBadgeAwarding.badge_id == badge_id) \
         .group_by(
-            BadgeAwarding.badge_id,
-            BadgeAwarding.user_id
+            DbBadgeAwarding.badge_id,
+            DbBadgeAwarding.user_id
         ) \
         .all()
 
