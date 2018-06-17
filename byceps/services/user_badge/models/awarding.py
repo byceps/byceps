@@ -12,7 +12,7 @@ from datetime import datetime
 from ....database import db, generate_uuid
 from ....typing import UserID
 
-from .badge import BadgeID
+from ..transfer.models import BadgeID
 
 
 BadgeAwardingTuple = namedtuple('BadgeAwardingTuple',

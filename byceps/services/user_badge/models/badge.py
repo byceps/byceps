@@ -7,17 +7,13 @@ byceps.services.user_badge.models.badge
 """
 
 from collections import namedtuple
-from typing import NewType, Optional
-from uuid import UUID
+from typing import Optional
 
 from flask import url_for
 
 from ....database import db, generate_uuid
 from ....typing import BrandID
 from ....util.instances import ReprBuilder
-
-
-BadgeID = NewType('BadgeID', UUID)
 
 
 BadgeTuple = namedtuple('BadgeTuple', [

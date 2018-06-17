@@ -7,8 +7,8 @@ byceps.services.shop.order.actions.award_badge
 """
 
 from ....user_badge.models.awarding import BadgeAwardingTuple
-from ....user_badge.models.badge import BadgeID
 from ....user_badge import service as badge_service
+from ....user_badge.transfer.models import BadgeID
 
 from ...article.models.article import ArticleNumber
 

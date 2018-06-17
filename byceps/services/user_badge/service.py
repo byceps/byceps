@@ -14,7 +14,8 @@ from ...typing import BrandID, UserID
 
 from .models.awarding import BadgeAwarding, BadgeAwardingTuple, \
     QuantifiedBadgeAwardingTuple
-from .models.badge import Badge, BadgeID, BadgeTuple
+from .models.badge import Badge, BadgeTuple
+from .transfer.models import BadgeID
 
 
 def create_badge(slug: str, label: str, image_filename: str, *,
