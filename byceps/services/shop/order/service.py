@@ -23,9 +23,9 @@ from ..article.models.article import Article
 from ..cart.models import Cart
 from ..sequence import service as sequence_service
 
-from .models.order import Order, OrderTuple
+from .models.order import Order as DbOrder, OrderTuple
 from .models.order_event import OrderEvent
-from .models.order_item import OrderItem
+from .models.order_item import OrderItem as DbOrderItem
 from .models.orderer import Orderer
 from . import action_service
 from .transfer.models import OrderID, OrderNumber, PaymentMethod, PaymentState
@@ -62,9 +62,9 @@ def create_order(party_id: PartyID, orderer: Orderer,
 
 
 def _build_order(party_id: PartyID, order_number: OrderNumber, orderer: Orderer,
-                 payment_method: PaymentMethod) -> Order:
+                 payment_method: PaymentMethod) -> DbOrder:
     """Create an order of one or more articles."""
-    return Order(
+    return DbOrder(
         party_id,
         order_number,
         orderer.user_id,
@@ -78,8 +78,8 @@ def _build_order(party_id: PartyID, order_number: OrderNumber, orderer: Orderer,
     )
 
 
-def _add_items_from_cart_to_order(cart: Cart, order: Order
-                                 ) -> Iterator[OrderItem]:
+def _add_items_from_cart_to_order(cart: Cart, order: DbOrder
+                                 ) -> Iterator[DbOrderItem]:
     """Add the items from the cart to the order.
 
     Reduce the article's quantity accordingly.
@@ -95,17 +95,17 @@ def _add_items_from_cart_to_order(cart: Cart, order: Order
         yield _add_article_to_order(order, article, quantity)
 
 
-def _add_article_to_order(order: Order, article: Article, quantity: int
-                         ) -> OrderItem:
+def _add_article_to_order(order: DbOrder, article: Article, quantity: int
+                         ) -> DbOrderItem:
     """Add an article as an item to this order.
 
     Return the resulting order item (so it can be added to the database
     session).
     """
-    return OrderItem(order, article, quantity)
+    return DbOrderItem(order, article, quantity)
 
 
-def set_invoiced_flag(order: Order, initiator_id: UserID) -> None:
+def set_invoiced_flag(order: DbOrder, initiator_id: UserID) -> None:
     """Record that the invoice for that order has been (externally) created."""
     now = datetime.utcnow()
     event_type = 'order-invoiced'
@@ -121,7 +121,7 @@ def set_invoiced_flag(order: Order, initiator_id: UserID) -> None:
     db.session.commit()
 
 
-def unset_invoiced_flag(order: Order, initiator_id: UserID) -> None:
+def unset_invoiced_flag(order: DbOrder, initiator_id: UserID) -> None:
     """Withdraw record of the invoice for that order having been created."""
     now = datetime.utcnow()
     event_type = 'order-invoiced-withdrawn'
@@ -137,7 +137,7 @@ def unset_invoiced_flag(order: Order, initiator_id: UserID) -> None:
     db.session.commit()
 
 
-def set_shipped_flag(order: Order, initiator_id: UserID) -> None:
+def set_shipped_flag(order: DbOrder, initiator_id: UserID) -> None:
     """Mark the order as shipped."""
     if not order.shipping_required:
         raise ValueError('Order contains no items that require shipping.')
@@ -156,7 +156,7 @@ def set_shipped_flag(order: Order, initiator_id: UserID) -> None:
     db.session.commit()
 
 
-def unset_shipped_flag(order: Order, initiator_id: UserID) -> None:
+def unset_shipped_flag(order: DbOrder, initiator_id: UserID) -> None:
     """Mark the order as not shipped."""
     if not order.shipping_required:
         raise ValueError('Order contains no items that require shipping.')
@@ -183,7 +183,7 @@ class OrderAlreadyMarkedAsPaid(Exception):
     pass
 
 
-def cancel_order(order: Order, updated_by_id: UserID, reason: str) -> None:
+def cancel_order(order: DbOrder, updated_by_id: UserID, reason: str) -> None:
     """Cancel the order.
 
     Reserved quantities of articles from that order are made available
@@ -256,7 +256,7 @@ def mark_order_as_paid(order_id: OrderID, payment_method: PaymentMethod,
     action_service.execute_actions(order, payment_state_to)
 
 
-def _update_payment_state(order: Order, state: PaymentState,
+def _update_payment_state(order: DbOrder, state: PaymentState,
                           updated_at: datetime, updated_by_id: UserID) -> None:
     order.payment_state = state
     order.payment_state_updated_at = updated_at
@@ -265,20 +265,20 @@ def _update_payment_state(order: Order, state: PaymentState,
 
 def count_open_orders_for_party(party_id: PartyID) -> int:
     """Return the number of open orders for that party."""
-    return Order.query \
+    return DbOrder.query \
         .for_party_id(party_id) \
         .filter_by(_payment_state=PaymentState.open.name) \
         .count()
 
 
-def find_order(order_id: OrderID) -> Optional[Order]:
+def find_order(order_id: OrderID) -> Optional[DbOrder]:
     """Return the order with that id, or `None` if not found."""
-    return Order.query.get(order_id)
+    return DbOrder.query.get(order_id)
 
 
 def find_order_with_details(order_id: OrderID) -> Optional[OrderTuple]:
     """Return the order with that id, or `None` if not found."""
-    order = Order.query \
+    order = DbOrder.query \
         .options(
             db.joinedload('items'),
         ) \
@@ -290,21 +290,21 @@ def find_order_with_details(order_id: OrderID) -> Optional[OrderTuple]:
     return order.to_tuple()
 
 
-def find_order_by_order_number(order_number: OrderNumber) -> Optional[Order]:
+def find_order_by_order_number(order_number: OrderNumber) -> Optional[DbOrder]:
     """Return the order with that order number, or `None` if not found."""
-    return Order.query \
+    return DbOrder.query \
         .filter_by(order_number=order_number) \
         .one_or_none()
 
 
 def find_orders_by_order_numbers(order_numbers: Set[OrderNumber]
-                                ) -> Sequence[Order]:
+                                ) -> Sequence[DbOrder]:
     """Return the orders with those order numbers."""
     if not order_numbers:
         return []
 
-    return Order.query \
-        .filter(Order.order_number.in_(order_numbers)) \
+    return DbOrder.query \
+        .filter(DbOrder.order_number.in_(order_numbers)) \
         .all()
 
 
@@ -313,9 +313,9 @@ def get_order_count_by_party_id() -> Dict[PartyID, int]:
     return dict(db.session \
         .query(
             Party.id,
-            db.func.count(Order.party_id)
+            db.func.count(DbOrder.party_id)
         ) \
-        .outerjoin(Order) \
+        .outerjoin(DbOrder) \
         .group_by(Party.id) \
         .all())
 
@@ -330,50 +330,50 @@ def get_orders_for_party_paginated(party_id: PartyID, page: int, per_page: int, 
     If a payment state is specified, only orders in that state are
     returned.
     """
-    query = Order.query \
+    query = DbOrder.query \
         .for_party_id(party_id) \
-        .order_by(Order.created_at.desc())
+        .order_by(DbOrder.created_at.desc())
 
     if search_term:
         ilike_pattern = '%{}%'.format(search_term)
         query = query \
-            .filter(Order.order_number.ilike(ilike_pattern))
+            .filter(DbOrder.order_number.ilike(ilike_pattern))
 
     if only_payment_state is not None:
         query = query.filter_by(_payment_state=only_payment_state.name)
 
     if only_shipped is not None:
-        query = query.filter(Order.shipping_required == True)
+        query = query.filter(DbOrder.shipping_required == True)
 
         if only_shipped:
-            query = query.filter(Order.shipped_at != None)
+            query = query.filter(DbOrder.shipped_at != None)
         else:
-            query = query.filter(Order.shipped_at == None)
+            query = query.filter(DbOrder.shipped_at == None)
 
     return query.paginate(page, per_page)
 
 
-def get_orders_placed_by_user(user_id: UserID) -> Sequence[Order]:
+def get_orders_placed_by_user(user_id: UserID) -> Sequence[DbOrder]:
     """Return orders placed by the user."""
-    return Order.query \
+    return DbOrder.query \
         .options(
             db.joinedload('items'),
         ) \
         .placed_by_id(user_id) \
-        .order_by(Order.created_at.desc()) \
+        .order_by(DbOrder.created_at.desc()) \
         .all()
 
 
 def get_orders_placed_by_user_for_party(user_id: UserID, party_id: PartyID
                                        ) -> Sequence[OrderTuple]:
     """Return orders placed by the user for that party."""
-    orders = Order.query \
+    orders = DbOrder.query \
         .options(
             db.joinedload('items'),
         ) \
         .for_party_id(party_id) \
         .placed_by_id(user_id) \
-        .order_by(Order.created_at.desc()) \
+        .order_by(DbOrder.created_at.desc()) \
         .all()
 
     return [order.to_tuple() for order in orders]
@@ -381,7 +381,7 @@ def get_orders_placed_by_user_for_party(user_id: UserID, party_id: PartyID
 
 def has_user_placed_orders(user_id: UserID, party_id: PartyID) -> bool:
     """Return `True` if the user has placed orders for that party."""
-    orders_total = Order.query \
+    orders_total = DbOrder.query \
         .for_party_id(party_id) \
         .placed_by_id(user_id) \
         .count()
