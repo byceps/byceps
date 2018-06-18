@@ -13,9 +13,9 @@ from flask import abort, request
 
 from ...services.party import service as party_service
 from ...services.shop.article import service as article_service
-from ...services.shop.order.models.payment import PaymentState
 from ...services.shop.order import ordered_articles_service, \
     service as order_service
+from ...services.shop.order.transfer.models import PaymentState
 from ...services.shop.sequence import service as sequence_service
 from ...services.user import service as user_service
 from ...util.framework.blueprint import create_blueprint

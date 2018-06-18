@@ -21,9 +21,7 @@ from ....user.models.user import User
 
 from ...article.models.article import Article
 
-from ..transfer.models import OrderNumber
-
-from .payment import PaymentMethod, PaymentState
+from ..transfer.models import OrderNumber, PaymentMethod, PaymentState
 
 
 OrderTuple = namedtuple('OrderTuple', [

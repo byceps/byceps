@@ -15,7 +15,7 @@ from .....database import db, generate_uuid
 from ...article.models.article import Article
 from ...article.transfer.models import ArticleNumber
 
-from .payment import PaymentState
+from ..transfer.models import PaymentState
 
 
 Parameters = Dict[str, Any]

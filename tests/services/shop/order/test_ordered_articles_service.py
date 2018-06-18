@@ -6,7 +6,7 @@
 from itertools import count
 
 from byceps.services.shop.order import ordered_articles_service
-from byceps.services.shop.order.models.payment import PaymentState
+from byceps.services.shop.order.transfer.models import PaymentState
 
 from testfixtures.shop_article import create_article
 from testfixtures.shop_order import create_order, create_order_item

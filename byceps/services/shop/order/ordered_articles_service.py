@@ -14,8 +14,7 @@ from ....database import db
 from ..article.transfer.models import ArticleNumber
 
 from .models.order_item import OrderItem as DbOrderItem
-from .models.payment import PaymentState
-from .transfer.models import OrderItem
+from .transfer.models import OrderItem, PaymentState
 
 
 def count_ordered_articles(article_number: ArticleNumber

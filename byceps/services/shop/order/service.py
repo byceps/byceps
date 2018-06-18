@@ -27,9 +27,8 @@ from .models.order import Order, OrderTuple
 from .models.order_event import OrderEvent
 from .models.order_item import OrderItem
 from .models.orderer import Orderer
-from .models.payment import PaymentMethod, PaymentState
 from . import action_service
-from .transfer.models import OrderID, OrderNumber
+from .transfer.models import OrderID, OrderNumber, PaymentMethod, PaymentState
 
 
 class OrderFailed(Exception):

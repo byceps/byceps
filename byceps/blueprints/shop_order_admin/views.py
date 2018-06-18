@@ -9,9 +9,9 @@ byceps.blueprints.shop_order_admin.views
 from flask import abort, g, request, Response
 
 from ...services.party import service as party_service
-from ...services.shop.order.models.payment import PaymentMethod, PaymentState
 from ...services.shop.order import service as order_service
 from ...services.shop.order.export import service as order_export_service
+from ...services.shop.order.transfer.models import PaymentMethod, PaymentState
 from ...services.shop.sequence import service as sequence_service
 from ...services.ticketing import ticket_service
 from ...services.user import service as user_service

@@ -17,9 +17,9 @@ from byceps.services.party.models.party import Party
 from byceps.services.shop.article.models.article import Article
 from byceps.services.shop.order.models.order import Order
 from byceps.services.shop.order.models.order_item import OrderItem
-from byceps.services.shop.order.models.payment import \
-    PaymentState as OrderPaymentState
 from byceps.services.shop.order.service import find_order_by_order_number
+from byceps.services.shop.order.transfer.models import \
+    PaymentState as OrderPaymentState
 from byceps.services.ticketing.ticket_service import find_ticket_by_code
 from byceps.services.user.models.detail import UserDetail
 from byceps.services.user.models.user import User

@@ -7,6 +7,7 @@ byceps.services.shop.order.transfer.models
 """
 
 from decimal import Decimal
+from enum import Enum
 from typing import NewType
 from uuid import UUID
 
@@ -19,6 +20,21 @@ OrderID = NewType('OrderID', UUID)
 
 
 OrderNumber = NewType('OrderNumber', str)
+
+
+PaymentMethod = Enum('PaymentMethod', [
+    'bank_transfer',
+    'cash',
+    'direct_debit',
+])
+
+
+PaymentState = Enum('PaymentState', [
+    'open',
+    'canceled_before_paid',
+    'paid',
+    'canceled_after_paid',
+])
 
 
 @attrs(frozen=True, slots=True)

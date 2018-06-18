@@ -5,7 +5,7 @@
 
 from byceps.services.shop.article.models.article import Article
 from byceps.services.shop.order.models.order import Order
-from byceps.services.shop.order.models.payment import PaymentMethod, \
+from byceps.services.shop.order.transfer.models import PaymentMethod, \
     PaymentState
 
 from testfixtures.shop_article import create_article

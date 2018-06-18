@@ -3,7 +3,7 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.services.shop.order.models.payment import PaymentState
+from byceps.services.shop.order.transfer.models import PaymentState
 
 from testfixtures.shop_order import create_order
 from testfixtures.user import create_user

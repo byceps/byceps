@@ -9,7 +9,7 @@ byceps.blueprints.shop_order_admin.forms
 from wtforms import RadioField, TextAreaField
 from wtforms.validators import InputRequired, Length
 
-from ...services.shop.order.models.payment import PaymentMethod
+from ...services.shop.order.transfer.models import PaymentMethod
 from ...util.l10n import LocalizedForm
 
 

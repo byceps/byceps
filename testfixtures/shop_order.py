@@ -9,7 +9,7 @@ testfixtures.shop_order
 from byceps.services.shop.order.models.order import Order
 from byceps.services.shop.order.models.order_item import OrderItem
 from byceps.services.shop.order.models.orderer import Orderer
-from byceps.services.shop.order.models.payment import PaymentMethod
+from byceps.services.shop.order.transfer.models import PaymentMethod
 
 
 ANY_ORDER_NUMBER = 'AEC-03-B00074'
