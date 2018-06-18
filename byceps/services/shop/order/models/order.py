@@ -9,8 +9,7 @@ byceps.services.shop.order.models.order
 from collections import namedtuple
 from datetime import datetime
 from decimal import Decimal
-from typing import NewType, Set
-from uuid import UUID
+from typing import Set
 
 from sqlalchemy.ext.hybrid import hybrid_property
 
@@ -25,9 +24,6 @@ from ...article.models.article import Article
 from ..transfer.models import OrderNumber
 
 from .payment import PaymentMethod, PaymentState
-
-
-OrderID = NewType('OrderID', UUID)
 
 
 OrderTuple = namedtuple('OrderTuple', [

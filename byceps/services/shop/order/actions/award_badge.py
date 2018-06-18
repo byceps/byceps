@@ -12,8 +12,9 @@ from ....user_badge.transfer.models import BadgeAwarding, BadgeID
 from ...article.transfer.models import ArticleNumber
 
 from .. import event_service
-from ..models.order import OrderID, OrderTuple
+from ..models.order import OrderTuple
 from ..models.order_action import Parameters
+from ..transfer.models import OrderID
 
 
 def award_badge(order: OrderTuple, article_number: ArticleNumber,

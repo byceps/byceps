@@ -12,7 +12,7 @@ from typing import Any, Dict
 from .....database import db, generate_uuid
 from .....util.instances import ReprBuilder
 
-from .order import OrderID
+from ..transfer.models import OrderID
 
 
 OrderEventData = Dict[str, Any]

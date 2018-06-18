@@ -8,10 +8,14 @@ byceps.services.shop.order.transfer.models
 
 from decimal import Decimal
 from typing import NewType
+from uuid import UUID
 
 from attr import attrib, attrs
 
 from ...article.transfer.models import ArticleNumber
+
+
+OrderID = NewType('OrderID', UUID)
 
 
 OrderNumber = NewType('OrderNumber', str)

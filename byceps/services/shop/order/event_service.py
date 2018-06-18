@@ -11,8 +11,8 @@ from typing import Sequence
 
 from ....database import db
 
-from .models.order import OrderID
 from .models.order_event import OrderEvent, OrderEventData
+from .transfer.models import OrderID
 
 
 def create_event(event_type: str, order_id: OrderID, data: OrderEventData

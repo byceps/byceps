@@ -14,8 +14,9 @@ from ....ticketing import ticket_service
 from ...article.transfer.models import ArticleNumber
 
 from .. import event_service
-from ..models.order import OrderID, OrderTuple
+from ..models.order import OrderTuple
 from ..models.order_action import Parameters
+from ..transfer.models import OrderID
 
 
 def create_tickets(order: OrderTuple, article_number: ArticleNumber,

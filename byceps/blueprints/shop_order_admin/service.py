@@ -13,10 +13,11 @@ from typing import Dict, Iterator, Sequence
 from ...services.shop.article.models.article import Article
 from ...services.shop.article import service as article_service
 from ...services.shop.article.transfer.models import ArticleNumber
-from ...services.shop.order.models.order import OrderID, OrderTuple
+from ...services.shop.order.models.order import OrderTuple
 from ...services.shop.order.models.order_event import OrderEvent, OrderEventData
 from ...services.shop.order import event_service as order_event_service
 from ...services.shop.order import service as order_service
+from ...services.shop.order.transfer.models import OrderID
 from ...services.ticketing import category_service as ticket_category_service
 from ...services.user.models.user import User, UserTuple
 from ...services.user import service as user_service

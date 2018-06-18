@@ -17,7 +17,8 @@ from .....util.money import to_two_places
 from .....util.templating import load_template
 
 from .. import service as order_service
-from ..models.order import OrderID, OrderTuple
+from ..models.order import OrderTuple
+from ..transfer.models import OrderID
 
 
 def export_order_as_xml(order_id: OrderID) -> Dict[str, str]:
