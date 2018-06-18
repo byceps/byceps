@@ -11,7 +11,7 @@ from typing import Dict, Sequence
 
 from ....database import db
 
-from ..article.models.article import ArticleNumber
+from ..article.transfer.models import ArticleNumber
 
 from .models.order_item import OrderItem, OrderItemTuple
 from .models.payment import PaymentState

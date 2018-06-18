@@ -11,7 +11,7 @@ from typing import Sequence
 from ....ticketing.models.ticket import Ticket
 from ....ticketing import ticket_service
 
-from ...article.models.article import ArticleNumber
+from ...article.transfer.models import ArticleNumber
 
 from .. import event_service
 from ..models.order import OrderID, OrderTuple

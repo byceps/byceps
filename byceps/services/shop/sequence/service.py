@@ -11,7 +11,7 @@ from typing import Optional
 from ....database import db
 from ....typing import PartyID
 
-from ..article.models.article import ArticleNumber
+from ..article.transfer.models import ArticleNumber
 from ..order.transfer.models import OrderNumber
 
 from .models import PartySequence, Purpose

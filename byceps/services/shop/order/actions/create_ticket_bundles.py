@@ -9,7 +9,7 @@ byceps.services.shop.order.actions.create_ticket_bundles
 from ....ticketing.models.ticket_bundle import TicketBundle
 from ....ticketing import ticket_bundle_service
 
-from ...article.models.article import ArticleNumber
+from ...article.transfer.models import ArticleNumber
 
 from .. import event_service
 from ..models.order import OrderID, OrderTuple

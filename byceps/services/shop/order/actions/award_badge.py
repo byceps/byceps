@@ -9,7 +9,7 @@ byceps.services.shop.order.actions.award_badge
 from ....user_badge import service as badge_service
 from ....user_badge.transfer.models import BadgeAwarding, BadgeID
 
-from ...article.models.article import ArticleNumber
+from ...article.transfer.models import ArticleNumber
 
 from .. import event_service
 from ..models.order import OrderID, OrderTuple

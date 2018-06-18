@@ -10,7 +10,7 @@ from typing import Callable, Dict, Sequence, Set
 
 from ....database import db
 
-from ..article.models.article import ArticleNumber
+from ..article.transfer.models import ArticleNumber
 
 from .actions.award_badge import award_badge
 from .actions.create_ticket_bundles import create_ticket_bundles

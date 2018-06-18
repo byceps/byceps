@@ -12,7 +12,8 @@ from sqlalchemy.ext.hybrid import hybrid_property
 
 from .....database import db, generate_uuid
 
-from ...article.models.article import Article, ArticleNumber
+from ...article.models.article import Article
+from ...article.transfer.models import ArticleNumber
 
 from .payment import PaymentState
 

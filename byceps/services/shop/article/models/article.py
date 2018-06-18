@@ -20,11 +20,10 @@ from .....util.instances import ReprBuilder
 
 from ....party.models.party import Party
 
+from ..transfer.models import ArticleNumber
+
 
 ArticleID = NewType('ArticleID', UUID)
-
-
-ArticleNumber = NewType('ArticleNumber', str)
 
 
 class ArticleQuery(BaseQuery):
