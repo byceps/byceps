@@ -19,25 +19,25 @@ class ShopOrdersTestCase(AbstractAppTestCase):
         self.create_brand_and_party()
 
     def test_view_matching_user_and_party(self):
-        order = self.create_order(self.party.id, self.user1, 'LF-02-B00014')
+        order_id = self.create_order(self.party.id, self.user1, 'LF-02-B00014')
 
-        response = self.request_view(self.user1, order)
+        response = self.request_view(self.user1, order_id)
 
         assert response.status_code == 200
 
     def test_view_matching_party_but_different_user(self):
-        order = self.create_order(self.party.id, self.user1, 'LF-02-B00014')
+        order_id = self.create_order(self.party.id, self.user1, 'LF-02-B00014')
 
-        response = self.request_view(self.user2, order)
+        response = self.request_view(self.user2, order_id)
 
         assert response.status_code == 404
 
     def test_view_matching_user_but_different_party(self):
         other_party = self.create_party(self.brand.id, 'otherlan-2013',
                                         'OtherLAN 2013')
-        order = self.create_order(other_party.id, self.user1, 'LF-02-B00014')
+        order_id = self.create_order(other_party.id, self.user1, 'LF-02-B00014')
 
-        response = self.request_view(self.user1, order)
+        response = self.request_view(self.user1, order_id)
 
         assert response.status_code == 404
 
@@ -50,12 +50,12 @@ class ShopOrdersTestCase(AbstractAppTestCase):
         self.db.session.add(order)
         self.db.session.commit()
 
-        return order.to_tuple()
+        return order.id
 
-    def request_view(self, current_user, order):
+    def request_view(self, current_user, order_id):
         self.create_session_token(current_user.id)
 
-        url = '/shop/orders/{}'.format(str(order.id))
+        url = '/shop/orders/{}'.format(str(order_id))
 
         with self.client(user=current_user) as client:
             response = client.get(url)
