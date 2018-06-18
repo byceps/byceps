@@ -72,5 +72,3 @@ class OrderedArticlesServiceTestCase(AbstractAppTestCase):
         self.db.session.add(order_item)
 
         self.db.session.commit()
-
-        return order.to_tuple()
