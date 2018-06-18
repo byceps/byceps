@@ -12,12 +12,11 @@ from ....ticketing import ticket_bundle_service
 from ...article.transfer.models import ArticleNumber
 
 from .. import event_service
-from ..models.order import OrderTuple
 from ..models.order_action import Parameters
-from ..transfer.models import OrderID
+from ..transfer.models import Order, OrderID
 
 
-def create_ticket_bundles(order: OrderTuple, article_number: ArticleNumber,
+def create_ticket_bundles(order: Order, article_number: ArticleNumber,
                           bundle_quantity: int, parameters: Parameters) -> None:
     """Create ticket bundles."""
     category_id = parameters['category_id']

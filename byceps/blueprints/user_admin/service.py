@@ -153,7 +153,7 @@ def _fake_order_events(user_id: UserID) -> Iterator[UserEvent]:
     for order in orders:
         data = {
             'initiator_id': str(user_id),
-            'order': order.to_tuple(),
+            'order': order.to_transfer_object(),
         }
 
         yield UserEvent(order.created_at, 'order-placed', user_id, data)

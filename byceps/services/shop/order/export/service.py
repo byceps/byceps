@@ -17,8 +17,7 @@ from .....util.money import to_two_places
 from .....util.templating import load_template
 
 from .. import service as order_service
-from ..models.order import OrderTuple
-from ..transfer.models import OrderID
+from ..transfer.models import Order, OrderID
 
 
 def export_order_as_xml(order_id: OrderID) -> Dict[str, str]:
@@ -37,7 +36,7 @@ def export_order_as_xml(order_id: OrderID) -> Dict[str, str]:
     }
 
 
-def _assemble_context(order: OrderTuple) -> Dict[str, Any]:
+def _assemble_context(order: Order) -> Dict[str, Any]:
     """Assemble template context."""
     placed_by = user_service.find_user(order.placed_by_id)
     email_address = placed_by.email_address

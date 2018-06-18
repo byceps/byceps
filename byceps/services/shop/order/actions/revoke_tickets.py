@@ -14,13 +14,12 @@ from ....ticketing import ticket_service
 from ...article.transfer.models import ArticleNumber
 
 from .. import event_service
-from ..models.order import OrderTuple
 from ..models.order_action import Parameters
-from ..transfer.models import OrderID
+from ..transfer.models import Order, OrderID
 
 
-def revoke_tickets(order: OrderTuple, article_number: ArticleNumber,
-                   quantity: int, parameters: Parameters) -> None:
+def revoke_tickets(order: Order, article_number: ArticleNumber, quantity: int,
+                   parameters: Parameters) -> None:
     """Revoke tickets."""
     tickets = ticket_service.find_tickets_created_by_order(order.order_number)
 

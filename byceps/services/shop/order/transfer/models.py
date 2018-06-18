@@ -6,12 +6,15 @@ byceps.services.shop.order.transfer.models
 :License: Modified BSD, see LICENSE for details.
 """
 
+from datetime import datetime
 from decimal import Decimal
 from enum import Enum
 from typing import NewType
 from uuid import UUID
 
 from attr import attrib, attrs
+
+from .....typing import PartyID, UserID
 
 from ...article.transfer.models import ArticleNumber
 
@@ -35,6 +38,32 @@ PaymentState = Enum('PaymentState', [
     'paid',
     'canceled_after_paid',
 ])
+
+
+@attrs(frozen=True, slots=True)
+class Order:
+    id = attrib(type=OrderID)
+    party_id = attrib(type=PartyID)
+    order_number = attrib(type=OrderNumber)
+    created_at = attrib(type=datetime)
+    placed_by_id = attrib(type=UserID)
+    first_names = attrib(type=str)
+    last_name = attrib(type=str)
+    country = attrib(type=str)
+    zip_code = attrib(type=str)
+    city = attrib(type=str)
+    street = attrib(type=str)
+    payment_method = attrib(type=PaymentMethod)
+    payment_state = attrib(type=PaymentState)
+    is_open = attrib(type=bool)
+    is_canceled = attrib(type=bool)
+    is_paid = attrib(type=bool)
+    is_invoiced = attrib(type=bool)
+    is_shipping_required = attrib(type=bool)
+    is_shipped = attrib(type=bool)
+    cancelation_reason = attrib(type=str)
+    items = attrib()  # List[OrderItem]
+    total_price = attrib(type=Decimal)
 
 
 @attrs(frozen=True, slots=True)

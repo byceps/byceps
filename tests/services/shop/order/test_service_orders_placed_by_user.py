@@ -48,4 +48,4 @@ class ShopOrdersServiceTestCase(AbstractAppTestCase):
         self.db.session.add(order)
         self.db.session.commit()
 
-        return order.to_tuple()
+        return order.to_transfer_object()

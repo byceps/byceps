@@ -87,7 +87,7 @@ def _search_orders(party_id, search_term, limit):
         party_id, page, per_page, search_term=search_term)
 
     # Replace order objects with order tuples.
-    orders = [order.to_tuple() for order in orders_pagination.items]
+    orders = [order.to_transfer_object() for order in orders_pagination.items]
 
     orders = list(order_blueprint_service.extend_order_tuples_with_orderer(
         orders))

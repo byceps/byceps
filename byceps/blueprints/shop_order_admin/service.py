@@ -6,18 +6,18 @@ byceps.blueprints.shop_order_admin.service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from collections import namedtuple
-
 from typing import Dict, Iterator, Sequence
+
+import attr
+from attr import attrib, attrs
 
 from ...services.shop.article.models.article import Article
 from ...services.shop.article import service as article_service
 from ...services.shop.article.transfer.models import ArticleNumber
-from ...services.shop.order.models.order import OrderTuple
 from ...services.shop.order.models.order_event import OrderEvent, OrderEventData
 from ...services.shop.order import event_service as order_event_service
 from ...services.shop.order import service as order_service
-from ...services.shop.order.transfer.models import OrderID
+from ...services.shop.order.transfer.models import Order, OrderID
 from ...services.ticketing import category_service as ticket_category_service
 from ...services.user.models.user import User, UserTuple
 from ...services.user import service as user_service
@@ -25,24 +25,24 @@ from ...services.user_badge import service as user_badge_service
 from ...typing import UserID
 
 
-OrderTupleWithOrderer = namedtuple('OrderTupleWithOrderer',
-                                   OrderTuple._fields + ('placed_by',))
+@attrs(frozen=True, slots=True)
+class OrderWithOrderer(Order):
+    placed_by = attrib(type=User)
 
 
-def extend_order_tuples_with_orderer(orders: Sequence[OrderTuple]
-                                    ) -> Iterator[OrderTupleWithOrderer]:
+def extend_order_tuples_with_orderer(orders: Sequence[Order]
+                                    ) -> Iterator[OrderWithOrderer]:
     orderer_ids = {order.placed_by_id for order in orders}
     orderers = user_service.find_users(orderer_ids)
     orderers_by_id = user_service.index_users_by_id(orderers)
 
     for order in orders:
         orderer = orderers_by_id[order.placed_by_id]
-        fields = order + (orderer,)
-        yield OrderTupleWithOrderer(*fields)
+        values = attr.astuple(order, recurse=False) + (orderer,)
+        yield OrderWithOrderer(*values)
 
 
-def get_articles_by_item_number(order: OrderTuple
-                               ) -> Dict[ArticleNumber, Article]:
+def get_articles_by_item_number(order: Order) -> Dict[ArticleNumber, Article]:
     numbers = {item.article_number for item in order.items}
 
     articles = article_service.get_articles_by_numbers(numbers)

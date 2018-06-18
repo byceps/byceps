@@ -23,12 +23,12 @@ from ..article.models.article import Article
 from ..cart.models import Cart
 from ..sequence import service as sequence_service
 
-from .models.order import Order as DbOrder, OrderTuple
+from .models.order import Order as DbOrder
 from .models.order_event import OrderEvent
 from .models.order_item import OrderItem as DbOrderItem
 from .models.orderer import Orderer
 from . import action_service
-from .transfer.models import OrderID, OrderNumber, PaymentMethod, PaymentState
+from .transfer.models import Order, OrderID, OrderNumber, PaymentMethod, PaymentState
 
 
 class OrderFailed(Exception):
@@ -36,7 +36,7 @@ class OrderFailed(Exception):
 
 
 def create_order(party_id: PartyID, orderer: Orderer,
-                 payment_method: PaymentMethod, cart: Cart) -> OrderTuple:
+                 payment_method: PaymentMethod, cart: Cart) -> Order:
     """Create an order of one or more articles."""
     order_number = sequence_service.generate_order_number(party_id)
 
@@ -58,7 +58,7 @@ def create_order(party_id: PartyID, orderer: Orderer,
 
     order_placed.send(None, order_id=order.id)
 
-    return order.to_tuple()
+    return order.to_transfer_object()
 
 
 def _build_order(party_id: PartyID, order_number: OrderNumber, orderer: Orderer,
@@ -253,7 +253,7 @@ def mark_order_as_paid(order_id: OrderID, payment_method: PaymentMethod,
 
     db.session.commit()
 
-    action_service.execute_actions(order, payment_state_to)
+    action_service.execute_actions(order.to_transfer_object(), payment_state_to)
 
 
 def _update_payment_state(order: DbOrder, state: PaymentState,
@@ -276,7 +276,7 @@ def find_order(order_id: OrderID) -> Optional[DbOrder]:
     return DbOrder.query.get(order_id)
 
 
-def find_order_with_details(order_id: OrderID) -> Optional[OrderTuple]:
+def find_order_with_details(order_id: OrderID) -> Optional[Order]:
     """Return the order with that id, or `None` if not found."""
     order = DbOrder.query \
         .options(
@@ -287,7 +287,7 @@ def find_order_with_details(order_id: OrderID) -> Optional[OrderTuple]:
     if order is None:
         return None
 
-    return order.to_tuple()
+    return order.to_transfer_object()
 
 
 def find_order_by_order_number(order_number: OrderNumber) -> Optional[DbOrder]:
@@ -365,7 +365,7 @@ def get_orders_placed_by_user(user_id: UserID) -> Sequence[DbOrder]:
 
 
 def get_orders_placed_by_user_for_party(user_id: UserID, party_id: PartyID
-                                       ) -> Sequence[OrderTuple]:
+                                       ) -> Sequence[Order]:
     """Return orders placed by the user for that party."""
     orders = DbOrder.query \
         .options(
@@ -376,7 +376,7 @@ def get_orders_placed_by_user_for_party(user_id: UserID, party_id: PartyID
         .order_by(DbOrder.created_at.desc()) \
         .all()
 
-    return [order.to_tuple() for order in orders]
+    return [order.to_transfer_object() for order in orders]
 
 
 def has_user_placed_orders(user_id: UserID, party_id: PartyID) -> bool:

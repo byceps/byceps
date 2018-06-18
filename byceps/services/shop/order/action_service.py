@@ -16,12 +16,11 @@ from .actions.award_badge import award_badge
 from .actions.create_ticket_bundles import create_ticket_bundles
 from .actions.create_tickets import create_tickets
 from .actions.revoke_tickets import revoke_tickets
-from .models.order import OrderTuple
 from .models.order_action import OrderAction, Parameters
-from .transfer.models import PaymentState
+from .transfer.models import Order, PaymentState
 
 
-OrderActionType = Callable[[OrderTuple, ArticleNumber, int, Parameters], None]
+OrderActionType = Callable[[Order, ArticleNumber, int, Parameters], None]
 
 
 PROCEDURES_BY_NAME = {
@@ -48,7 +47,7 @@ def create_action(article_number: ArticleNumber, payment_state: PaymentState,
 # -------------------------------------------------------------------- #
 # execution
 
-def execute_actions(order: OrderTuple, payment_state: PaymentState) -> None:
+def execute_actions(order: Order, payment_state: PaymentState) -> None:
     """Execute relevant actions for this order in its new payment state."""
     article_numbers = {item.article_number for item in order.items}
 
@@ -76,8 +75,8 @@ def _get_actions(article_numbers: Set[ArticleNumber],
         .all()
 
 
-def _execute_procedure(order: OrderTuple, action: OrderAction,
-                       article_quantity: int) -> None:
+def _execute_procedure(order: Order, action: OrderAction, article_quantity: int
+                      ) -> None:
     """Execute the procedure configured for that order action."""
     article_number = action.article_number
     procedure_name = action.procedure

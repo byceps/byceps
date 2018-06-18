@@ -6,7 +6,6 @@ byceps.services.shop.order.models.order
 :License: Modified BSD, see LICENSE for details.
 """
 
-from collections import namedtuple
 from datetime import datetime
 from decimal import Decimal
 from typing import Set
@@ -21,33 +20,8 @@ from ....user.models.user import User
 
 from ...article.models.article import Article
 
-from ..transfer.models import OrderNumber, PaymentMethod, PaymentState
-
-
-OrderTuple = namedtuple('OrderTuple', [
-    'id',
-    'party_id',
-    'order_number',
-    'created_at',
-    'placed_by_id',
-    'first_names',
-    'last_name',
-    'country',
-    'zip_code',
-    'city',
-    'street',
-    'payment_method',
-    'payment_state',
-    'is_open',
-    'is_canceled',
-    'is_paid',
-    'is_invoiced',
-    'is_shipping_required',
-    'is_shipped',
-    'cancelation_reason',
-    'items',
-    'total_price',
-])
+from ..transfer.models import Order as OrderTransferObject, OrderNumber, \
+    PaymentMethod, PaymentState
 
 
 class OrderQuery(BaseQuery):
@@ -154,11 +128,10 @@ class Order(db.Model):
     def is_shipped(self) -> bool:
         return self.shipped_at is not None
 
-    def to_tuple(self) -> OrderTuple:
-        """Return a tuple representation of (parts of) this entity."""
-        items = [entity.to_transfer_object() for entity in self.items]
+    def to_transfer_object(self) -> OrderTransferObject:
+        items = [item.to_transfer_object() for item in self.items]
 
-        return OrderTuple(
+        return OrderTransferObject(
             self.id,
             self.party_id,
             self.order_number,

@@ -12,13 +12,12 @@ from ....user_badge.transfer.models import BadgeAwarding, BadgeID
 from ...article.transfer.models import ArticleNumber
 
 from .. import event_service
-from ..models.order import OrderTuple
 from ..models.order_action import Parameters
-from ..transfer.models import OrderID
+from ..transfer.models import Order, OrderID
 
 
-def award_badge(order: OrderTuple, article_number: ArticleNumber,
-                quantity: int, parameters: Parameters) -> None:
+def award_badge(order: Order, article_number: ArticleNumber, quantity: int,
+                parameters: Parameters) -> None:
     """Award badge to user."""
     badge_id = parameters['badge_id']
     user_id = order.placed_by_id
