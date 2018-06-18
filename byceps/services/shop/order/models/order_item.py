@@ -6,25 +6,15 @@ byceps.services.shop.order.models.order_item
 :License: Modified BSD, see LICENSE for details.
 """
 
-from collections import namedtuple
 from decimal import Decimal
 
 from .....database import db, generate_uuid
 
 from ...article.models.article import Article
 
+from ..transfer.models import OrderItem as OrderItemTransferObject
+
 from .order import Order
-
-
-OrderItemTuple = namedtuple('OrderItemTuple', [
-    'order_number',
-    'article_number',
-    'description',
-    'unit_price',
-    'tax_rate',
-    'quantity',
-    'line_price',
-])
 
 
 class OrderItem(db.Model):
@@ -62,9 +52,8 @@ class OrderItem(db.Model):
     def line_price(self) -> Decimal:
         return self.unit_price * self.quantity
 
-    def to_tuple(self) -> OrderItemTuple:
-        """Return a tuple representation of (parts of) this entity."""
-        return OrderItemTuple(
+    def to_transfer_object(self) -> OrderItemTransferObject:
+        return OrderItemTransferObject(
             self.order_number,
             self.article_number,
             self.description,

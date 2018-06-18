@@ -13,8 +13,9 @@ from ....database import db
 
 from ..article.transfer.models import ArticleNumber
 
-from .models.order_item import OrderItem, OrderItemTuple
+from .models.order_item import OrderItem as DbOrderItem
 from .models.payment import PaymentState
+from .transfer.models import OrderItem
 
 
 def count_ordered_articles(article_number: ArticleNumber
@@ -22,7 +23,7 @@ def count_ordered_articles(article_number: ArticleNumber
     """Count how often the article has been ordered, grouped by the
     order's payment state.
     """
-    order_items = OrderItem.query \
+    order_items = DbOrderItem.query \
         .filter_by(article_number=article_number) \
         .options(
             db.joinedload('order'),
@@ -42,10 +43,10 @@ def count_ordered_articles(article_number: ArticleNumber
 
 
 def get_order_items_for_article(article_number: ArticleNumber
-                               ) -> Sequence[OrderItemTuple]:
+                               ) -> Sequence[OrderItem]:
     """Return all order items for that article."""
-    order_items = OrderItem.query \
+    order_items = DbOrderItem.query \
         .filter_by(article_number=article_number) \
         .all()
 
-    return [item.to_tuple() for item in order_items]
+    return [item.to_transfer_object() for item in order_items]

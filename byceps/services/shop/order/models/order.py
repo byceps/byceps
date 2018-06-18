@@ -162,7 +162,7 @@ class Order(db.Model):
 
     def to_tuple(self) -> OrderTuple:
         """Return a tuple representation of (parts of) this entity."""
-        items = [item.to_tuple() for item in self.items]
+        items = [entity.to_transfer_object() for entity in self.items]
 
         return OrderTuple(
             self.id,
