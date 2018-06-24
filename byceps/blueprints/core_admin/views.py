@@ -21,7 +21,7 @@ permission_registry.register_enum(AdminPermission)
 
 
 @blueprint.app_context_processor
-def inject_brands():
+def inject_template_variables():
     brands = brand_service.get_brands()
 
     return {
