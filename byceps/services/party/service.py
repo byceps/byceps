@@ -152,7 +152,7 @@ def find_setting(party_id: PartyID, name: str) -> Optional[PartySetting]:
     return _db_entity_to_party_setting(setting)
 
 
-def _db_entity_to_party(party: DbSetting) -> Party:
+def _db_entity_to_party(party: DbParty) -> Party:
     return Party(
         party.id,
         party.brand_id,
