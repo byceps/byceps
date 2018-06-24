@@ -44,6 +44,7 @@ def create_role_with_permissions(role_id, permission_ids):
 
     return role
 
+
 def assign_roles_to_user(user_id, roles):
     for role in roles:
         authorization_service.assign_role_to_user(user_id, role.id)

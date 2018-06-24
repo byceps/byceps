@@ -55,7 +55,6 @@ def assemble_articles_order_form(article_compilation):
                 if quantity > 0:
                     yield item.article, quantity
 
-
     validators = [InputRequired()]
     for item in article_compilation:
         field_name = _generate_field_name(item.article)

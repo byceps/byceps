@@ -6,5 +6,6 @@ byceps.services.authentication.exceptions
 :License: Modified BSD, see LICENSE for details.
 """
 
+
 class AuthenticationFailed(Exception):
     pass

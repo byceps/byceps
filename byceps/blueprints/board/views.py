@@ -273,6 +273,7 @@ def topic_update_form(topic_id, erroneous_form=None):
         'smileys': get_smileys(),
     }
 
+
 @blueprint.route('/topics/<uuid:topic_id>', methods=['POST'])
 @permission_required(BoardTopicPermission.update)
 def topic_update(topic_id):
