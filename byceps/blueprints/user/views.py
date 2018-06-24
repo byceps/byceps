@@ -203,8 +203,7 @@ def create():
     flash_success(
         'Das Benutzerkonto für "{}" wurde angelegt. '
         'Bevor du dich damit anmelden kannst, muss zunächst der Link in '
-        'der an die angegebene Adresse verschickten E-Mail besucht werden.'
-        ,
+        'der an die angegebene Adresse verschickten E-Mail besucht werden.',
         user.screen_name)
     signals.user_created.send(None, user_id=user.id)
 
