@@ -30,14 +30,16 @@ def get_brands_with_person_counts() -> Iterator[Tuple[Brand, int]]:
 
 def get_person_count_by_brand_id() -> Dict[BrandID, int]:
     """Return organizer count (including 0) per brand, indexed by brand ID."""
-    return dict(db.session \
+    dbrand_ids_and_orga_flag_counts = b.session \
         .query(
             Brand.id,
             db.func.count(OrgaFlag.brand_id)
         ) \
         .outerjoin(OrgaFlag) \
         .group_by(Brand.id) \
-        .all())
+        .all()
+
+    return dict(brand_ids_and_orga_flag_counts)
 
 
 def get_orgas_for_brand(brand_id: BrandID) -> Sequence[User]:

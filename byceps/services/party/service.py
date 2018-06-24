@@ -128,14 +128,16 @@ def get_parties_for_brand_paginated(brand_id: BrandID, page: int,
 
 def get_party_count_by_brand_id() -> Dict[BrandID, int]:
     """Return party count (including 0) per brand, indexed by brand ID."""
-    return dict(db.session \
+    brand_ids_and_party_counts = db.session \
         .query(
             DbBrand.id,
             db.func.count(DbParty.id)
         ) \
         .outerjoin(DbParty) \
         .group_by(DbBrand.id) \
-        .all())
+        .all()
+
+    return dict(brand_ids_and_party_counts)
 
 
 def find_setting(party_id: PartyID, name: str) -> Optional[PartySetting]:

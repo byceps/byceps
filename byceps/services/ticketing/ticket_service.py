@@ -348,12 +348,14 @@ def get_ticket_count_by_party_id() -> Dict[PartyID, int]:
         .subquery() \
         .as_scalar()
 
-    return dict(db.session \
+    party_ids_and_ticket_counts = db.session \
         .query(
             party.id,
             subquery
         ) \
-        .all())
+        .all()
+
+    return dict(party_ids_and_ticket_counts)
 
 
 def count_tickets_for_party(party_id: PartyID) -> int:

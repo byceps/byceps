@@ -37,7 +37,7 @@ def count_seats_for_party(party_id: PartyID) -> int:
 
 def get_seat_total_per_area(party_id: PartyID) -> Dict[AreaID, int]:
     """Return the number of seats per area for that party."""
-    return dict(db.session \
+    area_ids_and_seat_counts = db.session \
         .query(
             Area.id,
             db.func.count(Seat.id)
@@ -45,7 +45,9 @@ def get_seat_total_per_area(party_id: PartyID) -> Dict[AreaID, int]:
         .filter_by(party_id=party_id) \
         .outerjoin(Seat) \
         .group_by(Area.id) \
-        .all())
+        .all()
+
+    return dict(area_ids_and_seat_counts)
 
 
 def find_seat(seat_id: SeatID) -> Optional[Seat]:

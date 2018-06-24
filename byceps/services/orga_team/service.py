@@ -186,9 +186,9 @@ def is_orga_for_party(user_id: UserID, party_id: PartyID) -> bool:
         .query(
             db.session
                 .query(Membership)
-                .filter(Membership.user_id == user_id) \
+                .filter(Membership.user_id == user_id)
                 .join(OrgaTeam)
-                .filter(OrgaTeam.party_id == party_id) \
+                .filter(OrgaTeam.party_id == party_id)
                 .exists()
         ) \
         .scalar()

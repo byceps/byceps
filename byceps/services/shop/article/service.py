@@ -103,14 +103,16 @@ def find_attached_article(attached_article_id) -> Optional[AttachedArticle]:
 
 def get_article_count_by_party_id() -> Dict[PartyID, int]:
     """Return article count (including 0) per party, indexed by party ID."""
-    return dict(db.session \
+    party_ids_and_article_counts = db.session \
         .query(
             Party.id,
             db.func.count(Article.party_id)
         ) \
         .outerjoin(Article) \
         .group_by(Party.id) \
-        .all())
+        .all()
+
+    return dict(party_ids_and_article_counts)
 
 
 def get_articles_by_numbers(article_numbers: Set[ArticleNumber]

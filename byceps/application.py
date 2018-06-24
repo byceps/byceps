@@ -149,8 +149,8 @@ def init_app(app):
             add_routes_for_snippets(party_id)
 
             # Incorporate template overrides for the current party.
-            app.template_folder = str(Path('party_template_overrides') \
-                                / party_id)
+            app.template_folder = str(
+                Path('party_template_overrides') / party_id)
         elif site_mode.is_admin() and app.config['RQ_DASHBOARD_ENABLED']:
             import rq_dashboard
             app.register_blueprint(rq_dashboard.blueprint,

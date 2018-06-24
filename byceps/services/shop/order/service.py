@@ -310,14 +310,16 @@ def find_orders_by_order_numbers(order_numbers: Set[OrderNumber]
 
 def get_order_count_by_party_id() -> Dict[PartyID, int]:
     """Return order count (including 0) per party, indexed by party ID."""
-    return dict(db.session \
+    party_ids_and_order_counts = db.session \
         .query(
             Party.id,
             db.func.count(DbOrder.party_id)
         ) \
         .outerjoin(DbOrder) \
         .group_by(Party.id) \
-        .all())
+        .all()
+
+    return dict(party_ids_and_order_counts)
 
 
 def get_orders_for_party_paginated(party_id: PartyID, page: int, per_page: int, *,

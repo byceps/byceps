@@ -107,11 +107,13 @@ def count_items_for_brand(brand_id: BrandID) -> int:
 
 def get_item_count_by_brand_id() -> Dict[BrandID, int]:
     """Return news item count (including 0) per brand, indexed by brand ID."""
-    return dict(db.session \
+    brand_ids_and_item_counts = db.session \
         .query(
             Brand.id,
             db.func.count(Item.brand_id)
         ) \
         .outerjoin(Item) \
         .group_by(Brand.id) \
-        .all())
+        .all()
+
+    return dict(brand_ids_and_item_counts)
