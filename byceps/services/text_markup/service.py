@@ -13,12 +13,14 @@ from bbcode import Parser
 try:
     from .smileys import get_smileys
 except ImportError:
-    get_smileys = lambda: []
+    def get_smileys():
+        return []
 
 try:
     from .smileys import replace_smileys as _replace_smileys
 except ImportError:
-    _replace_smileys = lambda x: x
+    def _replace_smileys(text):
+        return text
 
 
 def _create_parser() -> Parser:
