@@ -44,9 +44,7 @@ class ShopAdminTestCase(AbstractAppTestCase):
 
         assert article_before.quantity == 5
 
-        assert order_before.payment_state == PaymentState.open
-        assert order_before.payment_state_updated_at is None
-        assert order_before.payment_state_updated_by is None
+        assert_payment_is_open(order_before)
 
         url = '/admin/shop/orders/{}/cancel'.format(order_before.id)
         form_data = {'reason': 'Dein Vorname ist albern!'}
@@ -55,9 +53,8 @@ class ShopAdminTestCase(AbstractAppTestCase):
 
         order_afterwards = Order.query.get(order_before.id)
         assert response.status_code == 302
-        assert order_afterwards.payment_state == PaymentState.canceled_before_paid
-        assert order_afterwards.payment_state_updated_at is not None
-        assert order_afterwards.payment_state_updated_by == self.admin
+        assert_payment(order_afterwards, PaymentMethod.bank_transfer,
+                       PaymentState.canceled_before_paid, self.admin.id)
 
         article_afterwards = Article.query.get(article_before.id)
         assert article_afterwards.quantity == 8
@@ -66,10 +63,7 @@ class ShopAdminTestCase(AbstractAppTestCase):
         order_before = self.create_order([])
         self.db.session.commit()
 
-        assert order_before.payment_method == PaymentMethod.bank_transfer
-        assert order_before.payment_state == PaymentState.open
-        assert order_before.payment_state_updated_at is None
-        assert order_before.payment_state_updated_by is None
+        assert_payment_is_open(order_before)
 
         url = '/admin/shop/orders/{}/mark_as_paid'.format(order_before.id)
         form_data = {'payment_method': 'direct_debit'}
@@ -78,10 +72,8 @@ class ShopAdminTestCase(AbstractAppTestCase):
 
         order_afterwards = Order.query.get(order_before.id)
         assert response.status_code == 302
-        assert order_afterwards.payment_method == PaymentMethod.direct_debit
-        assert order_afterwards.payment_state == PaymentState.paid
-        assert order_afterwards.payment_state_updated_at is not None
-        assert order_afterwards.payment_state_updated_by == self.admin
+        assert_payment(order_afterwards, PaymentMethod.direct_debit,
+                       PaymentState.paid, self.admin.id)
 
     def test_cancel_after_paid(self):
         article_before = self.create_article(5)
@@ -91,9 +83,7 @@ class ShopAdminTestCase(AbstractAppTestCase):
 
         assert article_before.quantity == 5
 
-        assert order_before.payment_state == PaymentState.open
-        assert order_before.payment_state_updated_at is None
-        assert order_before.payment_state_updated_by is None
+        assert_payment_is_open(order_before)
 
         url = '/admin/shop/orders/{}/mark_as_paid'.format(order_before.id)
         form_data = {'payment_method': 'bank_transfer'}
@@ -107,9 +97,8 @@ class ShopAdminTestCase(AbstractAppTestCase):
 
         order_afterwards = Order.query.get(order_before.id)
         assert response.status_code == 302
-        assert order_afterwards.payment_state == PaymentState.canceled_after_paid
-        assert order_afterwards.payment_state_updated_at is not None
-        assert order_afterwards.payment_state_updated_by == self.admin
+        assert_payment(order_afterwards, PaymentMethod.bank_transfer,
+                       PaymentState.canceled_after_paid, self.admin.id)
 
         article_afterwards = Article.query.get(article_before.id)
         assert article_afterwards.quantity == 8
@@ -135,3 +124,17 @@ class ShopAdminTestCase(AbstractAppTestCase):
         self.db.session.commit()
 
         return order
+
+
+def assert_payment_is_open(order):
+    assert order.payment_method == PaymentMethod.bank_transfer  # default
+    assert order.payment_state == PaymentState.open
+    assert order.payment_state_updated_at is None
+    assert order.payment_state_updated_by_id is None
+
+
+def assert_payment(order, method, state, updated_by_id):
+    assert order.payment_method == method
+    assert order.payment_state == state
+    assert order.payment_state_updated_at is not None
+    assert order.payment_state_updated_by_id == updated_by_id
