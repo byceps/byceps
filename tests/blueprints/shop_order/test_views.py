@@ -69,19 +69,17 @@ class ShopTestCase(AbstractAppTestCase):
         with self.client(user=self.orderer) as client:
             response = client.post(url, data=form_data)
 
-        assert response.status_code == 302
-        assert response.headers.get('Location') == 'http://example.com/shop/order_placed'
+        assert_response_headers()
 
         article_afterwards = self.get_article()
         assert article_afterwards.quantity == 2
 
         order = Order.query.filter_by(placed_by=self.orderer).one()
-        assert order.order_number == 'AEC-01-B00005'
-        assert len(order.items) == 1
-        assert order.items[0].article.id == self.article_id
-        assert order.items[0].price == article_before.price
-        assert order.items[0].tax_rate == article_before.tax_rate
-        assert order.items[0].quantity == 3
+        assert_order('AEC-01-B00005', 1)
+
+        first_order_item = order.items[0]
+        assert_order_item(self.article_id, article_before.price,
+                          article_before.tax_rate, 3)
 
         order_placed_mock.assert_called_once_with(None, order_id=order.id)
 
@@ -103,19 +101,17 @@ class ShopTestCase(AbstractAppTestCase):
         with self.client(user=self.orderer) as client:
             response = client.post(url, data=form_data)
 
-        assert response.status_code == 302
-        assert response.headers.get('Location') == 'http://example.com/shop/order_placed'
+        assert_response_headers()
 
         article_afterwards = self.get_article()
         assert article_afterwards.quantity == 4
 
         order = Order.query.filter_by(placed_by=self.orderer).one()
-        assert order.order_number == 'AEC-01-B00005'
-        assert len(order.items) == 1
-        assert order.items[0].article.id == self.article_id
-        assert order.items[0].price == article_before.price
-        assert order.items[0].tax_rate == article_before.tax_rate
-        assert order.items[0].quantity == 1
+        assert_order('AEC-01-B00005', 1)
+
+        first_order_item = order.items[0]
+        assert_order_item(self.article_id, article_before.price,
+                          article_before.tax_rate, 1)
 
         order_placed_mock.assert_called_once_with(None, order_id=order.id)
 
@@ -123,3 +119,20 @@ class ShopTestCase(AbstractAppTestCase):
 
     def get_article(self):
         return Article.query.get(self.article_id)
+
+
+def assert_response_headers():
+    assert response.status_code == 302
+    assert response.headers.get('Location') == 'http://example.com/shop/order_placed'
+
+
+def assert_order(order_number, item_quantity):
+    assert order.order_number == order_number
+    assert len(order.items) == item_quantity
+
+
+def assert_order_item(article_id, price, tax_rate, quantity):
+    assert order_item.article.id == article_id
+    assert order_item.price == price
+    assert order_item.tax_rate == tax_rate
+    assert order_item.quantity == quantity
