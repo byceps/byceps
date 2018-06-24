@@ -199,7 +199,7 @@ def get_attachable_articles(article: Article) -> Sequence[Article]:
     """Return the articles that can be attached to that article."""
     attached_articles = {attached.article for attached in article.attached_articles}
 
-    unattachable_articles = {article} | attached_articles
+    unattachable_articles = {article}.union(attached_articles)
 
     unattachable_article_ids = {article.id for article in unattachable_articles}
 
