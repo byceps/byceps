@@ -11,7 +11,7 @@
         <div class="sidebar-section-title">{{ party.title }} {{ render_icon('caret-down') }}</div>
       </button>
       <ol>
-        {%- for party in brand.parties|sort(attribute='starts_at', reverse=True) %}
+        {%- for party in get_parties_for_brand(brand.id)|sort(attribute='starts_at', reverse=True) %}
         <li>{{ render_party_admin_link(party, dim_archived=True) }}</li>
         {%- endfor %}
       </ol>
@@ -37,9 +37,10 @@
     <div class="sidebar-section-title">Partys</div>
   </header>
   <nav class="main">
-    {%- if brand.parties %}
+  {%- with brand_parties = get_parties_for_brand(brand.id) %}
+    {%- if brand_parties %}
     <ol>
-    {%- for party in brand.parties|sort(attribute='starts_at', reverse=True) %}
+      {%- for party in brand_parties|sort(attribute='starts_at', reverse=True) %}
       <li>
         <a href="{{ url_for('admin_dashboard.view_party', party_id=party.id) }}" class="nav-item">
           <span class="nav-item-label">
@@ -51,11 +52,12 @@
           </span>
         </a>
       </li>
-    {%- endfor %}
+      {%- endfor %}
     </ol>
     {%- else %}
     <p>{{ 'keine'|dim }}</p>
     {%- endif %}
+  {%- endwith %}
   </nav>
 </section>
 {%- endif %}

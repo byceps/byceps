@@ -119,6 +119,15 @@ def get_parties(party_ids: Set[PartyID]) -> List[Party]:
     return [_db_entity_to_party(party) for party in parties]
 
 
+def get_parties_for_brand(brand_id: BrandID) -> List[Party]:
+    """Return the parties for that brand."""
+    parties = DbParty.query \
+        .filter_by(brand_id=brand_id) \
+        .all()
+
+    return [_db_entity_to_party(party) for party in parties]
+
+
 def get_parties_for_brand_paginated(brand_id: BrandID, page: int,
                                     per_page: int) -> Pagination:
     """Return the parties for that brand to show on the specified page."""

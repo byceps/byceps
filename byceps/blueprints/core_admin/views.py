@@ -7,6 +7,7 @@ byceps.blueprints.core_admin.views
 """
 
 from ...services.brand import service as brand_service
+from ...services.party import service as party_service
 from ...util.framework.blueprint import create_blueprint
 
 from ..authorization.registry import permission_registry
@@ -30,4 +31,5 @@ def inject_template_variables():
     return {
         'all_brands': brands,
         'get_brand_for_party': get_brand_for_party,
+        'get_parties_for_brand': party_service.get_parties_for_brand,
     }
