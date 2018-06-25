@@ -11,7 +11,7 @@ from typing import Optional, Sequence
 from ...database import db
 from ...typing import PartyID, UserID
 
-from ..party import service as party_service
+from ..party.models.party import Party as DbParty
 
 from .models.match import Match, MatchID, MatchComment
 from .models.tourney_category import TourneyCategory, TourneyCategoryID
@@ -23,7 +23,7 @@ from .models.tourney_category import TourneyCategory, TourneyCategoryID
 
 def create_category(party_id: PartyID, title: str) -> TourneyCategory:
     """Create a category for that party."""
-    party = party_service.find_party(party_id)
+    party = DbParty.query.get(party_id)
     if party is None:
         raise ValueError('Unknown party ID "{}"'.format(party_id))
 
