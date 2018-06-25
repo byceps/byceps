@@ -14,13 +14,13 @@ from ....typing import PartyID
 from ..article.transfer.models import ArticleNumber
 from ..order.transfer.models import OrderNumber
 
-from .models import PartySequence, Purpose
+from .models import Purpose, Sequence
 
 
-def create_party_sequence(party_id: PartyID, purpose: Purpose, prefix: str
-                         ) -> None:
+def create_sequence(party_id: PartyID, purpose: Purpose, prefix: str) -> None:
     """Create a sequence for that party and purpose."""
-    sequence = PartySequence(party_id, purpose, prefix)
+    sequence = Sequence(party_id, purpose, prefix)
+
     db.session.add(sequence)
     db.session.commit()
 
@@ -65,7 +65,7 @@ def _get_next_sequence_number(party_id: PartyID, purpose: Purpose) -> int:
     """Calculate and reserve the next sequence number for the party and
     purpose.
     """
-    sequence = PartySequence.query \
+    sequence = Sequence.query \
         .filter_by(party_id=party_id) \
         .filter_by(_purpose=purpose.name) \
         .with_for_update() \
@@ -76,7 +76,7 @@ def _get_next_sequence_number(party_id: PartyID, purpose: Purpose) -> int:
             'No sequence configured for party "{}" and purpose "{}".'
             .format(party_id, purpose.name))
 
-    sequence.value = PartySequence.value + 1
+    sequence.value = Sequence.value + 1
     db.session.commit()
     return sequence.value
 
@@ -96,5 +96,5 @@ def get_order_number_prefix(party_id: PartyID) -> Optional[str]:
 
 
 def _find_prefix_attr(party_id: PartyID, purpose: Purpose) -> Optional[str]:
-    sequence = PartySequence.query.get((party_id, purpose.name))
+    sequence = Sequence.query.get((party_id, purpose.name))
     return getattr(sequence, 'prefix', None)

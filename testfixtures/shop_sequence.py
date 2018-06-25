@@ -6,10 +6,10 @@ testfixtures.shop_sequence
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.services.shop.sequence.models import PartySequence
+from byceps.services.shop.sequence.models import Sequence
 
 
-def create_party_sequence(party_id, purpose, prefix, *, value=0):
-    sequence = PartySequence(party_id, purpose, prefix)
+def create_sequence(party_id, purpose, prefix, *, value=0):
+    sequence = Sequence(party_id, purpose, prefix)
     sequence.value = value
     return sequence

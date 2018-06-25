@@ -10,7 +10,7 @@ from byceps.services.shop.order.models.order import Order
 from byceps.services.shop.sequence.models import Purpose
 
 from testfixtures.shop_article import create_article
-from testfixtures.shop_sequence import create_party_sequence
+from testfixtures.shop_sequence import create_sequence
 
 from tests.base import AbstractAppTestCase
 
@@ -33,8 +33,7 @@ class ShopTestCase(AbstractAppTestCase):
         purpose = Purpose.order
         prefix = 'AEC-01-B'
 
-        sequence = create_party_sequence(self.party.id, purpose, prefix,
-                                         value=4)
+        sequence = create_sequence(self.party.id, purpose, prefix, value=4)
 
         self.db.session.add(sequence)
         self.db.session.commit()

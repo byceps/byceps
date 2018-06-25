@@ -27,8 +27,8 @@ class OrderActionTestBase(AbstractAppTestCase):
         self.admin = self.create_user_with_detail('Admin')
         self.buyer = self.create_user_with_detail('Buyer')
 
-        shop_sequence_service.create_party_sequence(self.party.id,
-            Purpose.order, prefix='article-')
+        shop_sequence_service.create_sequence(self.party.id, Purpose.order,
+                                              prefix='article-')
 
     # -------------------------------------------------------------------- #
     # helpers

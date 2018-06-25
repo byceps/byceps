@@ -7,7 +7,7 @@ from byceps.services.shop.sequence.service import generate_article_number, \
     generate_order_number
 from byceps.services.shop.sequence.models import Purpose
 
-from testfixtures.shop_sequence import create_party_sequence
+from testfixtures.shop_sequence import create_sequence
 
 from tests.base import AbstractAppTestCase
 
@@ -70,7 +70,7 @@ class SequenceNumberGenerationTestCase(AbstractAppTestCase):
         self._create_sequence(party_id, Purpose.order, prefix, value)
 
     def _create_sequence(self, party_id, purpose, prefix, value):
-        sequence = create_party_sequence(party_id, purpose, prefix, value=value)
+        sequence = create_sequence(party_id, purpose, prefix, value=value)
 
         self.db.session.add(sequence)
         self.db.session.commit()

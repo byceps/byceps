@@ -9,7 +9,7 @@
 import click
 
 from byceps.services.shop.sequence.models import Purpose
-from byceps.services.shop.sequence.service import create_party_sequence
+from byceps.services.shop.sequence.service import create_sequence
 from byceps.util.system import get_config_filename_from_env_or_exit
 
 from bootstrap.util import app_context
@@ -21,8 +21,8 @@ from bootstrap.validators import validate_party
 @click.argument('article_prefix')
 @click.argument('order_prefix')
 def execute(party, article_prefix, order_prefix):
-    create_party_sequence(party.id, Purpose.article, article_prefix)
-    create_party_sequence(party.id, Purpose.order, order_prefix)
+    create_sequence(party.id, Purpose.article, article_prefix)
+    create_sequence(party.id, Purpose.order, order_prefix)
 
     click.secho('Done.', fg='green')
 
