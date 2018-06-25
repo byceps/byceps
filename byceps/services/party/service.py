@@ -66,9 +66,11 @@ def count_parties_for_brand(brand_id: BrandID) -> int:
         .count()
 
 
-def find_party(party_id: PartyID) -> Optional[DbParty]:
+def find_party(party_id: PartyID) -> Optional[Party]:
     """Return the party with that id, or `None` if not found."""
-    return DbParty.query.get(party_id)
+    party = DbParty.query.get(party_id)
+
+    return _db_entity_to_party(party)
 
 
 def get_all_parties_with_brands() -> List[DbParty]:
