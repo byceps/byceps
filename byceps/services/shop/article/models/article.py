@@ -18,8 +18,6 @@ from .....database import BaseQuery, db, generate_uuid
 from .....typing import PartyID
 from .....util.instances import ReprBuilder
 
-from ....party.models.party import Party
-
 from ..transfer.models import ArticleNumber
 
 
@@ -59,7 +57,6 @@ class Article(db.Model):
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     party_id = db.Column(db.Unicode(40), db.ForeignKey('parties.id'), index=True, nullable=False)
-    party = db.relationship(Party)
     item_number = db.Column(db.Unicode(20), unique=True, nullable=False)
     description = db.Column(db.Unicode(80), nullable=False)
     price = db.Column(db.Numeric(6, 2), nullable=False)

@@ -1,7 +1,7 @@
 {% extends 'layouts/shop_article_admin.html' %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/shop_article_admin.html' import render_article_link, render_article_temporal_availability %}
-{% set current_page_party = article.party %}
+{% set current_page_party = party %}
 {% set title = 'Artikel ' ~ article.item_number %}
 
 {% block head %}
@@ -18,7 +18,7 @@
   <nav class="breadcrumbs">
     <ol>
       <li>Artikel</li>
-      <li><a href="{{ url_for('.index_for_party', party_id=article.party.id) }}">{{ article.party.title }}</a></li>
+      <li><a href="{{ url_for('.index_for_party', party_id=party.id) }}">{{ party.title }}</a></li>
     </ol>
   </nav>
   <h1>{{ title }}</h1>

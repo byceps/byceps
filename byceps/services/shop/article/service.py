@@ -89,7 +89,6 @@ def find_article_with_details(article_id: ArticleID) -> Optional[Article]:
     """Return the article with that ID, or `None` if not found."""
     return Article.query \
         .options(
-            db.joinedload('party'),
             db.joinedload('articles_attached_to').joinedload('article'),
             db.joinedload('attached_articles').joinedload('article'),
         ) \
@@ -204,7 +203,7 @@ def get_attachable_articles(article: Article) -> Sequence[Article]:
     unattachable_article_ids = {article.id for article in unattachable_articles}
 
     return Article.query \
-        .for_party_id(article.party.id) \
+        .for_party_id(article.party_id) \
         .filter(db.not_(Article.id.in_(unattachable_article_ids))) \
         .order_by(Article.item_number) \
         .all()

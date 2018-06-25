@@ -67,11 +67,14 @@ def view(article_id):
     if article is None:
         abort(404)
 
+    party = party_service.find_party(article.party_id)
+
     totals = ordered_articles_service \
         .count_ordered_articles(article.item_number)
 
     return {
         'article': article,
+        'party': party,
         'totals': totals,
         'PaymentState': PaymentState,
     }
@@ -85,6 +88,8 @@ def view_ordered(article_id):
     corresponding quantities.
     """
     article = _get_article_or_404(article_id)
+
+    party = party_service.find_party(article.party_id)
 
     order_items = ordered_articles_service \
         .get_order_items_for_article(article.item_number)
@@ -110,6 +115,7 @@ def view_ordered(article_id):
 
     return {
         'article': article,
+        'party': party,
         'quantity_total': quantity_total,
         'quantities_orders_users': quantities_orders_users,
         'now': datetime.now(),
@@ -171,11 +177,14 @@ def update_form(article_id, erroneous_form=None):
     """Show form to update an article."""
     article = _get_article_or_404(article_id)
 
+    party = party_service.find_party(article.party_id)
+
     form = erroneous_form if erroneous_form else ArticleUpdateForm(obj=article)
 
     return {
-        'form': form,
         'article': article,
+        'party': party,
+        'form': form,
     }
 
 
@@ -217,6 +226,8 @@ def attachment_create_form(article_id, erroneous_form=None):
     """Show form to attach an article to another article."""
     article = _get_article_or_404(article_id)
 
+    party = party_service.find_party(article.party_id)
+
     attachable_articles = article_service.get_attachable_articles(article)
 
     form = erroneous_form if erroneous_form else ArticleAttachmentCreateForm(
@@ -225,6 +236,7 @@ def attachment_create_form(article_id, erroneous_form=None):
 
     return {
         'article': article,
+        'party': party,
         'form': form,
     }
 

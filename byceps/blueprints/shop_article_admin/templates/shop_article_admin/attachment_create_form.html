@@ -2,7 +2,7 @@
 {% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/shop_article_admin.html' import render_article_link %}
-{% set current_page_party = article.party %}
+{% set current_page_party = party %}
 {% set title = 'Artikel anhängen' %}
 
 {% block body %}
@@ -10,7 +10,7 @@
   <nav class="breadcrumbs">
     <ol>
       <li>Artikel</li>
-      <li><a href="{{ url_for('.index_for_party', party_id=article.party.id) }}">{{ article.party.title }}</a></li>
+      <li><a href="{{ url_for('.index_for_party', party_id=party.id) }}">{{ party.title }}</a></li>
       <li>{{ render_article_link(article) }}</li>
     </ol>
   </nav>
