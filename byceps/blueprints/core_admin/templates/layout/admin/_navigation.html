@@ -4,7 +4,7 @@
     current_page = current_page|default,
     party = current_page_party|default
   %}
-    {%- with brand = current_page_brand|default(party.brand if party else None) %}
+    {%- with brand = current_page_brand|default(get_brand_for_party(party) if party else None) %}
 
       {%- include 'layout/admin/_navigation_global.html' %}
       {%- include 'layout/admin/_navigation_brand.html' %}

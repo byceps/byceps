@@ -24,6 +24,10 @@ permission_registry.register_enum(AdminPermission)
 def inject_template_variables():
     brands = brand_service.get_brands()
 
+    def get_brand_for_party(party):
+        return brand_service.find_brand(party.brand_id)
+
     return {
         'all_brands': brands,
+        'get_brand_for_party': get_brand_for_party,
     }
