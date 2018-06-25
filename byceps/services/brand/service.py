@@ -13,29 +13,33 @@ from ...database import db
 
 from .models.brand import Brand as DbBrand
 from .models.setting import Setting as DbSetting
-from .transfer.models import BrandSetting
+from .transfer.models import Brand, BrandSetting
 
 
-def create_brand(brand_id: BrandID, title: str) -> DbBrand:
+def create_brand(brand_id: BrandID, title: str) -> Brand:
     """Create a brand."""
     brand = DbBrand(brand_id, title)
 
     db.session.add(brand)
     db.session.commit()
 
-    return brand
+    return _db_entity_to_brand(brand)
 
 
-def find_brand(brand_id: BrandID) -> Optional[DbBrand]:
+def find_brand(brand_id: BrandID) -> Optional[Brand]:
     """Return the brand with that id, or `None` if not found."""
-    return DbBrand.query.get(brand_id)
+    brand = DbBrand.query.get(brand_id)
+
+    return _db_entity_to_brand(brand)
 
 
-def get_brands() -> List[DbBrand]:
+def get_brands() -> List[Brand]:
     """Return all brands, ordered by title."""
-    return DbBrand.query \
+    brands = DbBrand.query \
         .order_by(DbBrand.title) \
         .all()
+
+    return [_db_entity_to_brand(brand) for brand in brands]
 
 
 def count_brands() -> int:
@@ -53,6 +57,13 @@ def find_setting(brand_id: BrandID, name: str) -> Optional[BrandSetting]:
         return None
 
     return _db_entity_to_brand_setting(setting)
+
+
+def _db_entity_to_brand(brand: DbBrand) -> Brand:
+    return Brand(
+        brand.id,
+        brand.title,
+    )
 
 
 def _db_entity_to_brand_setting(setting: DbSetting) -> BrandSetting:

@@ -12,6 +12,12 @@ from ....typing import BrandID
 
 
 @attrs(frozen=True, slots=True)
+class Brand:
+    id = attrib(type=BrandID)
+    title = attrib(type=str)
+
+
+@attrs(frozen=True, slots=True)
 class BrandSetting:
     brand_id = attrib(type=BrandID)
     name = attrib(type=str)
