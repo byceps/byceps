@@ -108,7 +108,7 @@ def get_snippets_for_party_with_current_versions(party_id: PartyID
                                                 ) -> Sequence[Snippet]:
     """Return all snippets with their current versions for that party."""
     return Snippet.query \
-        .for_party_id(party_id) \
+        .for_party(party_id) \
         .options(
             db.joinedload('current_version_association').joinedload('version')
         ) \

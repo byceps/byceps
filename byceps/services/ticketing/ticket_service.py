@@ -181,7 +181,7 @@ def find_tickets_for_seat_manager(user_id: UserID, party_id: PartyID
     is entitled to manage.
     """
     return Ticket.query \
-        .for_party_id(party_id) \
+        .for_party(party_id) \
         .filter(Ticket.revoked == False) \
         .filter(Ticket.bundle_id == None) \
         .filter(
@@ -221,7 +221,7 @@ def find_tickets_related_to_user_for_party(user_id: UserID, party_id: PartyID
                                           ) -> Sequence[Ticket]:
     """Return tickets related to the user for the party."""
     return Ticket.query \
-        .for_party_id(party_id) \
+        .for_party(party_id) \
         .filter(
             (Ticket.owned_by_id == user_id) |
             (Ticket.seat_managed_by_id == user_id) |
@@ -243,7 +243,7 @@ def find_tickets_used_by_user(user_id: UserID, party_id: PartyID
                              ) -> Sequence[Ticket]:
     """Return the tickets (if any) used by the user for that party."""
     return Ticket.query \
-        .for_party_id(party_id) \
+        .for_party(party_id) \
         .filter(Ticket.used_by_id == user_id) \
         .outerjoin(Seat) \
         .options(
@@ -257,7 +257,7 @@ def find_tickets_used_by_user_simplified(user_id: UserID, party_id: PartyID
                                         ) -> Sequence[Ticket]:
     """Return the tickets (if any) used by the user for that party."""
     return Ticket.query \
-        .for_party_id(party_id) \
+        .for_party(party_id) \
         .filter(Ticket.used_by_id == user_id) \
         .options(
             db.joinedload('occupied_seat').joinedload('area'),
@@ -268,7 +268,7 @@ def find_tickets_used_by_user_simplified(user_id: UserID, party_id: PartyID
 def uses_any_ticket_for_party(user_id: UserID, party_id: PartyID) -> bool:
     """Return `True` if the user uses any ticket for that party."""
     count = Ticket.query \
-        .for_party_id(party_id) \
+        .for_party(party_id) \
         .filter(Ticket.used_by_id == user_id) \
         .count()
 
@@ -294,7 +294,7 @@ def get_tickets_with_details_for_party_paginated(party_id: PartyID, page: int,
                                                 ) -> Pagination:
     """Return the party's tickets to show on the specified page."""
     query = Ticket.query \
-        .for_party_id(party_id) \
+        .for_party(party_id) \
         .options(
             db.joinedload('category'),
             db.joinedload('owned_by'),
@@ -319,7 +319,7 @@ def get_tickets_in_use_for_party_paginated(party_id: PartyID, page: int,
     ticket_user = db.aliased(User)
 
     query = Ticket.query \
-        .for_party_id(party_id) \
+        .for_party(party_id) \
         .filter(Ticket.revoked == False) \
         .filter(Ticket.used_by_id.isnot(None))
 
@@ -363,7 +363,7 @@ def count_tickets_for_party(party_id: PartyID) -> int:
     tickets for that party.
     """
     return Ticket.query \
-        .for_party_id(party_id) \
+        .for_party(party_id) \
         .filter(Ticket.revoked == False) \
         .count()
 
@@ -373,7 +373,7 @@ def count_tickets_checked_in_for_party(party_id: PartyID) -> int:
     in their respective user.
     """
     return Ticket.query \
-        .for_party_id(party_id) \
+        .for_party(party_id) \
         .filter(Ticket.user_checked_in == True) \
         .count()
 

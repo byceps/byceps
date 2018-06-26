@@ -70,7 +70,9 @@ def move_category_down(category: Category) -> None:
 
 def count_categories_for_board(board_id: BoardID) -> int:
     """Return the number of categories for that board."""
-    return Category.query.for_board_id(board_id).count()
+    return Category.query \
+        .for_board(board_id) \
+        .count()
 
 
 def find_category_by_id(category_id: CategoryID) -> Optional[Category]:
@@ -81,7 +83,7 @@ def find_category_by_id(category_id: CategoryID) -> Optional[Category]:
 def find_category_by_slug(board_id: BoardID, slug: str) -> Optional[Category]:
     """Return the category for that board and slug, or `None` if not found."""
     return Category.query \
-        .for_board_id(board_id) \
+        .for_board(board_id) \
         .filter_by(slug=slug) \
         .first()
 
@@ -89,7 +91,7 @@ def find_category_by_slug(board_id: BoardID, slug: str) -> Optional[Category]:
 def get_categories(board_id: BoardID) -> Sequence[Category]:
     """Return all categories for that board, ordered by position."""
     return Category.query \
-        .for_board_id(board_id) \
+        .for_board(board_id) \
         .order_by(Category.position) \
         .all()
 
@@ -98,7 +100,7 @@ def get_categories_excluding(board_id: BoardID, category_id: CategoryID
                             ) -> Sequence[Category]:
     """Return all categories for that board except for the specified one."""
     return Category.query \
-        .for_board_id(board_id) \
+        .for_board(board_id) \
         .filter(Category.id != category_id) \
         .order_by(Category.position) \
         .all()
@@ -110,7 +112,7 @@ def get_categories_with_last_updates(board_id: BoardID) -> Sequence[Category]:
     Include the creator of the last posting in each category.
     """
     return Category.query \
-        .for_board_id(board_id) \
+        .for_board(board_id) \
         .options(
             db.joinedload(Category.last_posting_updated_by),
         ) \

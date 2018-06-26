@@ -26,10 +26,10 @@ from ..transfer.models import Order as OrderTransferObject, OrderNumber, \
 
 class OrderQuery(BaseQuery):
 
-    def for_party_id(self, party_id: PartyID) -> BaseQuery:
+    def for_party(self, party_id: PartyID) -> BaseQuery:
         return self.filter_by(party_id=party_id)
 
-    def placed_by_id(self, user_id: UserID) -> BaseQuery:
+    def placed_by(self, user_id: UserID) -> BaseQuery:
         return self.filter_by(placed_by_id=user_id)
 
 

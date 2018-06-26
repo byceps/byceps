@@ -27,7 +27,7 @@ def create_category(party_id: PartyID, title: str) -> Category:
 def count_categories_for_party(party_id: PartyID) -> int:
     """Return the number of categories for that party."""
     return Category.query \
-        .for_party_id(party_id) \
+        .for_party(party_id) \
         .count()
 
 
@@ -39,5 +39,5 @@ def find_category(category_id: CategoryID) -> Optional[Category]:
 def get_categories_for_party(party_id: PartyID) -> Sequence[Category]:
     """Return all categories for that party."""
     return Category.query \
-        .for_party_id(party_id) \
+        .for_party(party_id) \
         .all()

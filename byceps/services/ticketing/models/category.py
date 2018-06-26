@@ -19,7 +19,7 @@ CategoryID = NewType('CategoryID', UUID)
 
 class CategoryQuery(BaseQuery):
 
-    def for_party_id(self, party_id: PartyID) -> BaseQuery:
+    def for_party(self, party_id: PartyID) -> BaseQuery:
         return self.filter_by(party_id=party_id)
 
 

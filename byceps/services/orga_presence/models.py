@@ -12,7 +12,7 @@ from ..user.models.user import User
 
 class TimeSlotQuery(BaseQuery):
 
-    def for_party_id(self, party_id) -> BaseQuery:
+    def for_party(self, party_id) -> BaseQuery:
         return self.filter_by(party_id=party_id)
 
 

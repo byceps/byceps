@@ -24,7 +24,7 @@ CategoryID = NewType('CategoryID', UUID)
 
 class CategoryQuery(BaseQuery):
 
-    def for_board_id(self, board_id: BoardID) -> BaseQuery:
+    def for_board(self, board_id: BoardID) -> BaseQuery:
         return self.filter_by(board_id=board_id)
 
 

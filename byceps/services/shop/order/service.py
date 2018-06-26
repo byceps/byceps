@@ -266,7 +266,7 @@ def _update_payment_state(order: DbOrder, state: PaymentState,
 def count_open_orders_for_party(party_id: PartyID) -> int:
     """Return the number of open orders for that party."""
     return DbOrder.query \
-        .for_party_id(party_id) \
+        .for_party(party_id) \
         .filter_by(_payment_state=PaymentState.open.name) \
         .count()
 
@@ -333,7 +333,7 @@ def get_orders_for_party_paginated(party_id: PartyID, page: int, per_page: int, 
     returned.
     """
     query = DbOrder.query \
-        .for_party_id(party_id) \
+        .for_party(party_id) \
         .order_by(DbOrder.created_at.desc())
 
     if search_term:
@@ -361,7 +361,7 @@ def get_orders_placed_by_user(user_id: UserID) -> Sequence[DbOrder]:
         .options(
             db.joinedload('items'),
         ) \
-        .placed_by_id(user_id) \
+        .placed_by(user_id) \
         .order_by(DbOrder.created_at.desc()) \
         .all()
 
@@ -373,8 +373,8 @@ def get_orders_placed_by_user_for_party(user_id: UserID, party_id: PartyID
         .options(
             db.joinedload('items'),
         ) \
-        .for_party_id(party_id) \
-        .placed_by_id(user_id) \
+        .for_party(party_id) \
+        .placed_by(user_id) \
         .order_by(DbOrder.created_at.desc()) \
         .all()
 
@@ -384,8 +384,8 @@ def get_orders_placed_by_user_for_party(user_id: UserID, party_id: PartyID
 def has_user_placed_orders(user_id: UserID, party_id: PartyID) -> bool:
     """Return `True` if the user has placed orders for that party."""
     orders_total = DbOrder.query \
-        .for_party_id(party_id) \
-        .placed_by_id(user_id) \
+        .for_party(party_id) \
+        .placed_by(user_id) \
         .count()
 
     return orders_total > 0

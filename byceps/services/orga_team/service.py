@@ -104,14 +104,14 @@ def find_membership_for_party(user_id: UserID, party_id: PartyID
     """
     return Membership.query \
         .filter_by(user_id=user_id) \
-        .for_party_id(party_id) \
+        .for_party(party_id) \
         .one_or_none()
 
 
 def get_memberships_for_party(party_id: PartyID) -> Sequence[Membership]:
     """Return all orga team memberships for that party."""
     return Membership.query \
-        .for_party_id(party_id) \
+        .for_party(party_id) \
         .options(
             db.joinedload('orga_team'),
             db.joinedload('user').load_only('id'),

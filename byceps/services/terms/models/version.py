@@ -23,7 +23,7 @@ VersionID = NewType('VersionID', UUID)
 
 class VersionQuery(BaseQuery):
 
-    def for_brand_id(self, brand_id: BrandID) -> BaseQuery:
+    def for_brand(self, brand_id: BrandID) -> BaseQuery:
         return self.filter_by(brand_id=brand_id)
 
     def latest_first(self) -> BaseQuery:

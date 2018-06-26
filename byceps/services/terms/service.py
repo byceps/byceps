@@ -79,7 +79,7 @@ class NoCurrentTermsVersionSpecifiedForBrand(Exception):
 def get_versions_for_brand(brand_id: BrandID) -> Sequence[Version]:
     """Return all versions for that brand, ordered by creation date."""
     return Version.query \
-        .for_brand_id(brand_id) \
+        .for_brand(brand_id) \
         .latest_first() \
         .all()
 

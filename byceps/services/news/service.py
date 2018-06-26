@@ -71,7 +71,7 @@ def find_item(item_id: ItemID) -> Optional[Item]:
 def find_item_by_slug(brand_id: BrandID, slug: str) -> Optional[Item]:
     """Return the news item identified by that slug, or `None` if not found."""
     return Item.query \
-        .for_brand_id(brand_id) \
+        .for_brand(brand_id) \
         .with_current_version() \
         .filter_by(slug=slug) \
         .first()
@@ -82,7 +82,7 @@ def get_items_paginated(brand_id: BrandID, page: int, items_per_page: int,
                        ) -> Pagination:
     """Return the news items to show on the specified page."""
     query = Item.query \
-        .for_brand_id(brand_id) \
+        .for_brand(brand_id) \
         .with_current_version()
 
     if published_only:
@@ -101,7 +101,7 @@ def find_item_version(version_id: ItemVersionID) -> ItemVersion:
 def count_items_for_brand(brand_id: BrandID) -> int:
     """Return the number of news items for that brand."""
     return Item.query \
-        .for_brand_id(brand_id) \
+        .for_brand(brand_id) \
         .count()
 
 

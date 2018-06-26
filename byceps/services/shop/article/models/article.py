@@ -26,7 +26,7 @@ ArticleID = NewType('ArticleID', UUID)
 
 class ArticleQuery(BaseQuery):
 
-    def for_party_id(self, party_id: PartyID) -> BaseQuery:
+    def for_party(self, party_id: PartyID) -> BaseQuery:
         return self.filter_by(party_id=party_id)
 
     def currently_available(self) -> BaseQuery:

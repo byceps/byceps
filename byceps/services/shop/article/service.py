@@ -70,7 +70,7 @@ def attach_article(article_to_attach: Article, quantity: int,
 def count_articles_for_party(party_id: PartyID) -> int:
     """Return the number of articles that are assigned to that party."""
     return Article.query \
-        .for_party_id(party_id) \
+        .for_party(party_id) \
         .count()
 
 
@@ -140,7 +140,7 @@ def get_articles_for_party_paginated(party_id: PartyID, page: int, per_page: int
 
 def _get_articles_for_party_query(party_id: PartyID) -> BaseQuery:
     return Article.query \
-        .for_party_id(party_id) \
+        .for_party(party_id) \
         .order_by(Article.item_number)
 
 
@@ -151,7 +151,7 @@ def get_article_compilation_for_orderable_articles(party_id: PartyID
     order.
     """
     orderable_articles = Article.query \
-        .for_party_id(party_id) \
+        .for_party(party_id) \
         .filter_by(not_directly_orderable=False) \
         .filter_by(requires_separate_order=False) \
         .currently_available() \
@@ -203,7 +203,7 @@ def get_attachable_articles(article: Article) -> Sequence[Article]:
     unattachable_article_ids = {article.id for article in unattachable_articles}
 
     return Article.query \
-        .for_party_id(article.party_id) \
+        .for_party(article.party_id) \
         .filter(db.not_(Article.id.in_(unattachable_article_ids))) \
         .order_by(Article.item_number) \
         .all()
