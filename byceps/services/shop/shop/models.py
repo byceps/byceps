@@ -6,14 +6,11 @@ byceps.services.shop.shop.models
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import NewType
-
 from ....database import db
 from ....typing import PartyID
 from ....util.instances import ReprBuilder
 
-
-ShopID = NewType('ShopID', str)
+from .transfer.models import ShopID
 
 
 class Shop(db.Model):

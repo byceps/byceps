@@ -6,11 +6,14 @@ byceps.services.shop.shop.transfer.models
 :License: Modified BSD, see LICENSE for details.
 """
 
+from typing import NewType
+
 from attr import attrib, attrs
 
 from .....typing import PartyID
 
-from ..models import ShopID
+
+ShopID = NewType('ShopID', str)
 
 
 @attrs(frozen=True, slots=True)
