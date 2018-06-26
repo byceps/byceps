@@ -21,7 +21,7 @@ class Shop(db.Model):
     __tablename__ = 'shops'
 
     id = db.Column(db.Unicode(40), primary_key=True)
-    party_id = db.Column(db.Unicode(40), db.ForeignKey('parties.id'), index=True, nullable=False)
+    party_id = db.Column(db.Unicode(40), db.ForeignKey('parties.id'), unique=True, nullable=False)
 
     def __init__(self, shop_id: ShopID, party_id: PartyID) -> None:
         self.id = shop_id
