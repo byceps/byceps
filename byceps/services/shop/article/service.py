@@ -17,13 +17,15 @@ from ....typing import PartyID
 
 from ...party.models.party import Party
 
+from ..shop.transfer.models import ShopID
+
 from .models.article import Article, ArticleID
 from .models.attached_article import AttachedArticle
 from .models.compilation import ArticleCompilation, ArticleCompilationItem
 from .transfer.models import ArticleNumber
 
 
-def create_article(party_id: PartyID, item_number: ArticleNumber,
+def create_article(party_id: PartyID, shop_id: ShopID, item_number: ArticleNumber,
                    description: str, price: Decimal, tax_rate: Decimal,
                    quantity: int) -> Article:
     """Create an article."""

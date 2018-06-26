@@ -11,6 +11,7 @@ from freezegun import freeze_time
 
 from testfixtures.shop_article import create_article
 from testfixtures.shop_order import create_order, create_order_item
+from testfixtures.shop_shop import create_shop
 
 from tests.base import AbstractAppTestCase, CONFIG_FILENAME_TEST_ADMIN
 from tests.helpers import assign_permissions_to_user
@@ -25,6 +26,7 @@ class ExportTestCase(AbstractAppTestCase):
 
         self.create_brand_and_party()
 
+        self.create_shop()
         self.create_articles()
         self.create_order()
 
@@ -61,6 +63,12 @@ class ExportTestCase(AbstractAppTestCase):
 
         return admin
 
+    def create_shop(self):
+        self.shop = create_shop(self.party.id)
+
+        self.db.session.add(self.shop)
+        self.db.session.commit()
+
     def create_articles(self):
         self.article_table = self.build_article(
             'LR-08-A00002',
@@ -91,6 +99,7 @@ class ExportTestCase(AbstractAppTestCase):
     def build_article(self, item_number, description, price, tax_rate):
         return create_article(
             party_id=self.party.id,
+            shop_id=self.shop.id,
             item_number=item_number,
             description=description,
             price=price,

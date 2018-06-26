@@ -10,6 +10,7 @@ from byceps.services.shop.order.transfer.models import PaymentState
 
 from testfixtures.shop_article import create_article
 from testfixtures.shop_order import create_order, create_order_item
+from testfixtures.shop_shop import create_shop
 
 from tests.base import AbstractAppTestCase
 
@@ -23,6 +24,7 @@ class OrderedArticlesServiceTestCase(AbstractAppTestCase):
 
         self.create_brand_and_party()
 
+        self.shop = self.create_shop()
         self.article = self.create_article()
 
     def test_count_ordered_articles(self):
@@ -54,8 +56,16 @@ class OrderedArticlesServiceTestCase(AbstractAppTestCase):
     # -------------------------------------------------------------------- #
     # helpers
 
+    def create_shop(self):
+        shop = create_shop(self.party.id)
+
+        self.db.session.add(shop)
+        self.db.session.commit()
+
+        return shop
+
     def create_article(self):
-        article = create_article(party_id=self.party.id)
+        article = create_article(party_id=self.party.id, shop_id=self.shop.id)
 
         self.db.session.add(article)
         self.db.session.commit()

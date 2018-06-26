@@ -148,6 +148,7 @@ def create_form(party_id, erroneous_form=None):
 def create(party_id):
     """Create an article."""
     party = _get_party_or_404(party_id)
+    shop_id = party.id
 
     form = ArticleCreateForm(request.form)
     if not form.validate():
@@ -163,7 +164,7 @@ def create(party_id):
     tax_rate = form.tax_rate.data
     quantity = form.quantity.data
 
-    article = article_service.create_article(party.id, item_number, description,
+    article = article_service.create_article(party.id, shop_id, item_number, description,
                                              price, tax_rate, quantity)
 
     flash_success('Der Artikel "{}" wurde angelegt.', article.item_number)

@@ -11,17 +11,22 @@ from decimal import Decimal
 from byceps.services.shop.article.models.article import Article
 
 from .party import create_party
+from .shop_shop import create_shop
 
 
 ANY_ARTICLE_ITEM_NUMBER = 'AEC-05-A00009'
 
 
-def create_article(*, party_id=None, item_number=ANY_ARTICLE_ITEM_NUMBER,
+def create_article(*, party_id=None, shop_id=None, item_number=ANY_ARTICLE_ITEM_NUMBER,
                    description='Cool thing', price=None, tax_rate=None,
                    available_from=None, available_until=None, quantity=1):
     if party_id is None:
         party = create_party()
         party_id = party.id
+
+    if shop_id is None:
+        shop = create_shop(party_id)
+        shop_id = shop.id
 
     if price is None:
         price = Decimal('24.95')
@@ -29,6 +34,6 @@ def create_article(*, party_id=None, item_number=ANY_ARTICLE_ITEM_NUMBER,
     if tax_rate is None:
         tax_rate = Decimal('0.19')
 
-    return Article(party_id, item_number, description, price, tax_rate,
+    return Article(party_id, shop_id, item_number, description, price, tax_rate,
                    quantity, available_from=available_from,
                    available_until=available_until)
