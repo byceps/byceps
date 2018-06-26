@@ -38,16 +38,26 @@ def count_users_created_since(delta: timedelta) -> int:
 
 
 def count_enabled_users() -> int:
-    """Return the number of enabled user accounts."""
+    """Return the number of enabled user accounts.
+
+    Suspended or deleted accounts are excluded.
+    """
     return User.query \
         .filter_by(enabled=True) \
+        .filter_by(suspended=False) \
+        .filter_by(deleted=False) \
         .count()
 
 
 def count_disabled_users() -> int:
-    """Return the number of disabled user accounts."""
+    """Return the number of disabled user accounts.
+
+    Suspended or deleted accounts are excluded.
+    """
     return User.query \
         .filter_by(enabled=False) \
+        .filter_by(suspended=False) \
+        .filter_by(deleted=False) \
         .count()
 
 
@@ -55,6 +65,7 @@ def count_suspended_users() -> int:
     """Return the number of suspended user accounts."""
     return User.query \
         .filter_by(suspended=True) \
+        .filter_by(deleted=False) \
         .count()
 
 
