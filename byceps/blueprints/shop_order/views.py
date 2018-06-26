@@ -13,6 +13,7 @@ from ...services.shop.article import service as article_service
 from ...services.shop.cart.models import Cart
 from ...services.shop.order import service as order_service
 from ...services.shop.order.transfer.models import PaymentMethod
+from ...services.shop.shop import service as shop_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_error, flash_success
 from ...util.framework.templating import templated
@@ -31,8 +32,10 @@ blueprint = create_blueprint('shop_order', __name__)
 @templated
 def order_form(erroneous_form=None):
     """Show a form to order articles."""
+    shop = shop_service.find_shop_for_party(g.party_id)
+
     article_compilation = article_service \
-        .get_article_compilation_for_orderable_articles(g.party_id)
+        .get_article_compilation_for_orderable_articles(shop.id)
 
     if article_compilation.is_empty():
         flash_error('Es sind keine Artikel verfügbar.')
@@ -59,8 +62,10 @@ def order_form(erroneous_form=None):
 @login_required
 def order():
     """Order articles."""
+    shop = shop_service.find_shop_for_party(g.party_id)
+
     article_compilation = article_service \
-        .get_article_compilation_for_orderable_articles(g.party_id)
+        .get_article_compilation_for_orderable_articles(shop.id)
 
     if article_compilation.is_empty():
         flash_error('Es sind keine Artikel verfügbar.')

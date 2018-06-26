@@ -21,6 +21,7 @@ from ...services.seating import area_service as seating_area_service, \
     seat_service
 from ...services.shop.article import service as article_service
 from ...services.shop.order import service as order_service
+from ...services.shop.shop import service as shop_service
 from ...services.terms import service as terms_service
 from ...services.ticketing import ticket_service
 from ...services.user import service as user_service
@@ -134,8 +135,10 @@ def view_party(party_id):
     seating_area_count = seating_area_service.count_areas_for_party(party.id)
     seat_count = seat_service.count_seats_for_party(party.id)
 
-    article_count = article_service.count_articles_for_party(party.id)
+    shop = shop_service.find_shop_for_party(party.id)
+    article_count = article_service.count_articles_for_shop(shop.id)
     open_order_count = order_service.count_open_orders_for_party(party.id)
+
     tickets_sold = ticket_service.count_tickets_for_party(party.id)
     tickets_checked_in = ticket_service.count_tickets_checked_in_for_party(
         party.id)

@@ -28,8 +28,8 @@ ArticleID = NewType('ArticleID', UUID)
 
 class ArticleQuery(BaseQuery):
 
-    def for_party(self, party_id: PartyID) -> BaseQuery:
-        return self.filter_by(party_id=party_id)
+    def for_shop(self, shop_id: ShopID) -> BaseQuery:
+        return self.filter_by(shop_id=shop_id)
 
     def currently_available(self) -> BaseQuery:
         """Select only articles that are available in between the

@@ -69,10 +69,10 @@ def attach_article(article_to_attach: Article, quantity: int,
     db.session.commit()
 
 
-def count_articles_for_party(party_id: PartyID) -> int:
-    """Return the number of articles that are assigned to that party."""
+def count_articles_for_shop(shop_id: ShopID) -> int:
+    """Return the number of articles that are assigned to that shop."""
     return Article.query \
-        .for_party(party_id) \
+        .for_shop(shop_id) \
         .count()
 
 
@@ -127,33 +127,33 @@ def get_articles_by_numbers(article_numbers: Set[ArticleNumber]
         .all()
 
 
-def get_articles_for_party(party_id: PartyID) -> Sequence[Article]:
-    """Return all articles for that party, ordered by article number."""
-    return _get_articles_for_party_query(party_id) \
+def get_articles_for_shop(shop_id: ShopID) -> Sequence[Article]:
+    """Return all articles for that shop, ordered by article number."""
+    return _get_articles_for_shop_query(shop_id) \
         .all()
 
 
-def get_articles_for_party_paginated(party_id: PartyID, page: int, per_page: int
-                                    ) -> Pagination:
-    """Return all articles for that party, ordered by article number."""
-    return _get_articles_for_party_query(party_id) \
+def get_articles_for_shop_paginated(shop_id: ShopID, page: int, per_page: int
+                                   ) -> Pagination:
+    """Return all articles for that shop, ordered by article number."""
+    return _get_articles_for_shop_query(shop_id) \
         .paginate(page, per_page)
 
 
-def _get_articles_for_party_query(party_id: PartyID) -> BaseQuery:
+def _get_articles_for_shop_query(shop_id: ShopID) -> BaseQuery:
     return Article.query \
-        .for_party(party_id) \
+        .for_shop(shop_id) \
         .order_by(Article.item_number)
 
 
-def get_article_compilation_for_orderable_articles(party_id: PartyID
+def get_article_compilation_for_orderable_articles(shop_id: ShopID
                                                   ) -> ArticleCompilation:
-    """Return a compilation of the articles which can be ordered for
-    that party, less the ones that are only orderable in a dedicated
+    """Return a compilation of the articles which can be ordered from
+    that shop, less the ones that are only orderable in a dedicated
     order.
     """
     orderable_articles = Article.query \
-        .for_party(party_id) \
+        .for_shop(shop_id) \
         .filter_by(not_directly_orderable=False) \
         .filter_by(requires_separate_order=False) \
         .currently_available() \
@@ -205,7 +205,7 @@ def get_attachable_articles(article: Article) -> Sequence[Article]:
     unattachable_article_ids = {article.id for article in unattachable_articles}
 
     return Article.query \
-        .for_party(article.party_id) \
+        .for_shop(article.shop_id) \
         .filter(db.not_(Article.id.in_(unattachable_article_ids))) \
         .order_by(Article.item_number) \
         .all()
