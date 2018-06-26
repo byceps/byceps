@@ -29,6 +29,9 @@ def find_shop(shop_id: ShopID) -> Optional[Shop]:
     """Return the shop with that id, or `None` if not found."""
     shop = DbShop.query.get(shop_id)
 
+    if shop is None:
+        return None
+
     return _db_entity_to_shop(shop)
 
 

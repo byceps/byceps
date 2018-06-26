@@ -70,6 +70,9 @@ def find_party(party_id: PartyID) -> Optional[Party]:
     """Return the party with that id, or `None` if not found."""
     party = DbParty.query.get(party_id)
 
+    if party is None:
+        return None
+
     return _db_entity_to_party(party)
 
 

@@ -30,6 +30,9 @@ def find_brand(brand_id: BrandID) -> Optional[Brand]:
     """Return the brand with that id, or `None` if not found."""
     brand = DbBrand.query.get(brand_id)
 
+    if brand is None:
+        return None
+
     return _db_entity_to_brand(brand)
 
 
