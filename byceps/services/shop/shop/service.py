@@ -6,7 +6,7 @@ byceps.services.shop.shop.service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import Optional
+from typing import List, Optional, Set
 
 from ....database import db
 from ....typing import PartyID
@@ -45,6 +45,18 @@ def find_shop_for_party(party_id: PartyID) -> Optional[Shop]:
         return None
 
     return _db_entity_to_shop(shop)
+
+
+def find_shops(shop_ids: Set[ShopID]) -> List[Shop]:
+    """Return the shops with those IDs."""
+    if not shop_ids:
+        return []
+
+    shops = DbShop.query \
+        .filter(DbShop.id.in_(shop_ids)) \
+        .all()
+
+    return [_db_entity_to_shop(shop) for shop in shops]
 
 
 def _db_entity_to_shop(shop: DbShop) -> Shop:

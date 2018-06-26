@@ -17,6 +17,7 @@ from ....typing import PartyID
 
 from ...party.models.party import Party
 
+from ..shop.models import Shop
 from ..shop.transfer.models import ShopID
 
 from .models.article import Article, ArticleID
@@ -102,18 +103,18 @@ def find_attached_article(attached_article_id) -> Optional[AttachedArticle]:
     return AttachedArticle.query.get(attached_article_id)
 
 
-def get_article_count_by_party_id() -> Dict[PartyID, int]:
-    """Return article count (including 0) per party, indexed by party ID."""
-    party_ids_and_article_counts = db.session \
+def get_article_count_by_shop_id() -> Dict[ShopID, int]:
+    """Return article count (including 0) per shop, indexed by shop ID."""
+    shop_ids_and_article_counts = db.session \
         .query(
-            Party.id,
-            db.func.count(Article.party_id)
+            Shop.id,
+            db.func.count(Article.shop_id)
         ) \
         .outerjoin(Article) \
-        .group_by(Party.id) \
+        .group_by(Shop.id) \
         .all()
 
-    return dict(party_ids_and_article_counts)
+    return dict(shop_ids_and_article_counts)
 
 
 def get_articles_by_numbers(article_numbers: Set[ArticleNumber]
