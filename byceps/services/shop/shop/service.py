@@ -17,7 +17,7 @@ from .transfer.models import Shop, ShopID
 
 def create_shop(party_id: PartyID) -> Shop:
     """Create a shop."""
-    shop = DbShop(party_id)
+    shop = DbShop(party_id, party_id)
 
     db.session.add(shop)
     db.session.commit()
