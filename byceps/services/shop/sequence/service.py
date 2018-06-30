@@ -38,14 +38,14 @@ def generate_article_number(shop_id: ShopID) -> ArticleNumber:
     """Generate and reserve an unused, unique article number for this shop."""
     sequence = _get_next_sequence_step(shop_id, Purpose.article)
 
-    return ArticleNumber('{}{:05d}'.format(sequence.prefix, sequence.value))
+    return format_article_number(sequence)
 
 
 def generate_order_number(shop_id: ShopID) -> OrderNumber:
     """Generate and reserve an unused, unique order number for this shop."""
     sequence = _get_next_sequence_step(shop_id, Purpose.order)
 
-    return OrderNumber('{}{:05d}'.format(sequence.prefix, sequence.value))
+    return format_order_number(sequence)
 
 
 def _get_next_sequence_step(shop_id: ShopID, purpose: Purpose
@@ -68,6 +68,16 @@ def _get_next_sequence_step(shop_id: ShopID, purpose: Purpose
     db.session.commit()
 
     return sequence
+
+
+def format_article_number(sequence: NumberSequence) -> ArticleNumber:
+    """Format a number sequence step as article number."""
+    return ArticleNumber('{}{:05d}'.format(sequence.prefix, sequence.value))
+
+
+def format_order_number(sequence: NumberSequence) -> OrderNumber:
+    """Format a number sequence step as order number."""
+    return OrderNumber('{}{:05d}'.format(sequence.prefix, sequence.value))
 
 
 def find_article_number_sequence(shop_id: ShopID) -> Optional[NumberSequence]:
