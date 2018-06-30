@@ -15,7 +15,6 @@ from Ranger import Range
 from Ranger.src.Range.Cut import Cut
 
 from .....database import BaseQuery, db, generate_uuid
-from .....typing import PartyID
 from .....util.instances import ReprBuilder
 
 from ...shop.transfer.models import ShopID
@@ -52,14 +51,12 @@ class Article(db.Model):
     """An article that can be bought."""
     __tablename__ = 'shop_articles'
     __table_args__ = (
-        db.UniqueConstraint('party_id', 'description'),
         db.UniqueConstraint('shop_id', 'description'),
         db.CheckConstraint('available_from < available_until'),
     )
     query_class = ArticleQuery
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    party_id = db.Column(db.Unicode(40), db.ForeignKey('parties.id'), index=True, nullable=False)
     shop_id = db.Column(db.Unicode(40), db.ForeignKey('shops.id'), index=True, nullable=False)
     item_number = db.Column(db.Unicode(20), unique=True, nullable=False)
     description = db.Column(db.Unicode(80), nullable=False)
@@ -73,11 +70,10 @@ class Article(db.Model):
     requires_separate_order = db.Column(db.Boolean, default=False, nullable=False)
     shipping_required = db.Column(db.Boolean, default=False, nullable=False)
 
-    def __init__(self, party_id: PartyID, shop_id: ShopID, item_number: ArticleNumber,
+    def __init__(self, shop_id: ShopID, item_number: ArticleNumber,
                  description: str, price: Decimal, tax_rate: Decimal,
                  quantity: int, *, available_from: Optional[datetime]=None,
                  available_until: Optional[datetime]=None) -> None:
-        self.party_id = party_id
         self.shop_id = shop_id
         self.item_number = item_number
         self.description = description
@@ -120,7 +116,6 @@ class Article(db.Model):
     def __repr__(self) -> str:
         return ReprBuilder(self) \
             .add_with_lookup('id') \
-            .add('party', self.party_id) \
             .add('shop', self.shop_id) \
             .add_with_lookup('item_number') \
             .add_with_lookup('description') \

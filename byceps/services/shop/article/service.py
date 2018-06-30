@@ -13,7 +13,6 @@ from typing import Dict, Optional, Sequence, Set
 from flask_sqlalchemy import Pagination
 
 from ....database import BaseQuery, db
-from ....typing import PartyID
 
 from ...party.models.party import Party
 
@@ -26,12 +25,11 @@ from .models.compilation import ArticleCompilation, ArticleCompilationItem
 from .transfer.models import ArticleNumber
 
 
-def create_article(party_id: PartyID, shop_id: ShopID, item_number: ArticleNumber,
+def create_article(shop_id: ShopID, item_number: ArticleNumber,
                    description: str, price: Decimal, tax_rate: Decimal,
                    quantity: int) -> Article:
     """Create an article."""
-    article = Article(party_id, item_number, description, price, tax_rate,
-                      quantity)
+    article = Article(item_number, description, price, tax_rate, quantity)
 
     db.session.add(article)
     db.session.commit()

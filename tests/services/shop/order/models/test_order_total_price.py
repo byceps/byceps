@@ -51,7 +51,7 @@ def create_order_with_items(price_quantity_pairs):
     order = create_order(party_id, placed_by)
 
     for price, quantity in price_quantity_pairs:
-        article = create_article(price=price, quantity=quantity)
+        article = create_article('shop-123', price=price, quantity=quantity)
         order_item = create_order_item(order, article, quantity)
 
     return order

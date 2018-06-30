@@ -97,9 +97,7 @@ class ExportTestCase(AbstractAppTestCase):
         self.db.session.commit()
 
     def build_article(self, item_number, description, price, tax_rate):
-        return create_article(
-            party_id=self.party.id,
-            shop_id=self.shop.id,
+        return create_article(self.shop.id,
             item_number=item_number,
             description=description,
             price=price,

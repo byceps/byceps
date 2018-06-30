@@ -54,8 +54,7 @@ class CreateTicketsActionTest(OrderActionTestBase):
     # helpers
 
     def create_article(self):
-        article = create_article(party_id=self.party.id, shop_id=self.shop.id,
-                                 quantity=10)
+        article = create_article(self.shop.id, quantity=10)
 
         self.db.session.add(article)
         self.db.session.commit()

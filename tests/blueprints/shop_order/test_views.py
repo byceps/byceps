@@ -51,8 +51,8 @@ class ShopTestCase(AbstractAppTestCase):
         self.create_session_token(self.orderer.id)
 
     def setup_article(self):
-        article = create_article(party_id=self.party.id, shop_id=self.shop.id,
-                                 quantity=5)
+        article = create_article(self.shop.id, quantity=5)
+
         self.db.session.add(article)
         self.db.session.commit()
 

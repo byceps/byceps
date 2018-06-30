@@ -176,9 +176,8 @@ def create(party_id):
     tax_rate = form.tax_rate.data
     quantity = form.quantity.data
 
-    article = article_service.create_article(party.id, shop.id, item_number,
-                                             description, price, tax_rate,
-                                             quantity)
+    article = article_service.create_article(shop.id, item_number, description,
+                                             price, tax_rate, quantity)
 
     flash_success('Der Artikel "{}" wurde angelegt.', article.item_number)
     return redirect_to('.view', article_id=article.id)
