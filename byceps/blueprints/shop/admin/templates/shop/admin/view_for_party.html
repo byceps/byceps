@@ -1,0 +1,59 @@
+{% extends 'layouts/shop_admin.html' %}
+{% set current_page_party = party %}
+{% set current_page = 'shop_admin' %}
+{% set current_tab = 'shop' %}
+{% set title = 'Shop' %}
+
+{% block body %}
+
+  <nav class="breadcrumbs">
+    <ol>
+      <li>{{ party.title }}</li>
+    </ol>
+  </nav>
+  <h1>Shop</h1>
+
+  {%- if shop is defined %}
+
+  <table class="index">
+    <tr>
+      <th colspan="2">Shop-ID</th>
+      <td>{{ shop.id }}</td>
+    </tr>
+    <tr>
+      <th colspan="2">Artikelnummern</th>
+      <td></td>
+    </tr>
+    <tr>
+      <th></th>
+      <th>Präfix</th>
+      <td>{{ article_number_sequence.prefix }}</td>
+    </tr>
+    <tr>
+      <th></th>
+      <th>Aktueller Wert</th>
+      <td class="number">{{ article_number_sequence.value }}</td>
+    </tr>
+    <tr>
+      <th colspan="2">Bestellnummern</th>
+      <td></td>
+    </tr>
+    <tr>
+      <th></th>
+      <th>Präfix</th>
+      <td>{{ order_number_sequence.prefix }}</td>
+    </tr>
+    <tr>
+      <th></th>
+      <th>Aktueller Wert</th>
+      <td class="number">{{ order_number_sequence.value }}</td>
+    </tr>
+  </table>
+
+  {%- else %}
+
+  <div class="notification color-info">Für diese Party existiert kein Shop.</div>
+
+  {%- endif %}
+
+{%- endblock %}
