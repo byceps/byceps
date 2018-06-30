@@ -15,13 +15,13 @@ from ..order.transfer.models import OrderNumber
 
 from ..shop.transfer.models import ShopID
 
-from .models import NumberSequence
-from .transfer.models import Purpose
+from .models import NumberSequence as DbNumberSequence
+from .transfer.models import NumberSequence, Purpose
 
 
 def create_sequence(shop_id: ShopID, purpose: Purpose, prefix: str) -> None:
     """Create a sequence for that shop and purpose."""
-    sequence = NumberSequence(shop_id, purpose, prefix)
+    sequence = DbNumberSequence(shop_id, purpose, prefix)
 
     db.session.add(sequence)
     db.session.commit()
@@ -36,13 +36,14 @@ class NumberGenerationFailed(Exception):
 
 def generate_article_number(shop_id: ShopID) -> ArticleNumber:
     """Generate and reserve an unused, unique article number for this shop."""
-    prefix = get_article_number_prefix(shop_id)
+    sequence = find_article_number_sequence(shop_id)
 
-    if prefix is None:
+    if sequence is None:
         raise NumberGenerationFailed(
-            'No article number prefix is configured for shop "{}".'
+            'No article number sequence is configured for shop "{}".'
             .format(shop_id))
 
+    prefix = sequence.prefix
     article_sequence_number = _get_next_sequence_number(shop_id,
         Purpose.article)
 
@@ -51,13 +52,14 @@ def generate_article_number(shop_id: ShopID) -> ArticleNumber:
 
 def generate_order_number(shop_id: ShopID) -> OrderNumber:
     """Generate and reserve an unused, unique order number for this shop."""
-    prefix = get_order_number_prefix(shop_id)
+    sequence = find_order_number_sequence(shop_id)
 
-    if prefix is None:
+    if sequence is None:
         raise NumberGenerationFailed(
-            'No order number prefix is configured for shop "{}".'
+            'No order number sequence is configured for shop "{}".'
             .format(shop_id))
 
+    prefix = sequence.prefix
     order_sequence_number = _get_next_sequence_number(shop_id, Purpose.order)
 
     return OrderNumber('{}{:05d}'.format(prefix, order_sequence_number))
@@ -67,7 +69,7 @@ def _get_next_sequence_number(shop_id: ShopID, purpose: Purpose) -> int:
     """Calculate and reserve the next sequence number for the shop and
     purpose.
     """
-    sequence = NumberSequence.query \
+    sequence = DbNumberSequence.query \
         .filter_by(shop_id=shop_id) \
         .filter_by(_purpose=purpose.name) \
         .with_for_update() \
@@ -78,25 +80,40 @@ def _get_next_sequence_number(shop_id: ShopID, purpose: Purpose) -> int:
             'No sequence configured for shop "{}" and purpose "{}".'
             .format(shop_id, purpose.name))
 
-    sequence.value = NumberSequence.value + 1
+    sequence.value = DbNumberSequence.value + 1
     db.session.commit()
+
     return sequence.value
 
 
-def get_article_number_prefix(shop_id: ShopID) -> Optional[str]:
-    """Return the article number prefix for that shop, or `None` if
-    none is defined.
+def find_article_number_sequence(shop_id: ShopID) -> Optional[NumberSequence]:
+    """Return the article number sequence for that shop, or `None` if
+    the sequence is not defined or the shop does not exist.
     """
-    return _find_prefix_attr(shop_id, Purpose.article)
+    return _find_number_sequence(shop_id, Purpose.article)
 
 
-def get_order_number_prefix(shop_id: ShopID) -> Optional[str]:
-    """Return the order number prefix for that shop, or `None` if
-    none is defined.
+def find_order_number_sequence(shop_id: ShopID) -> Optional[NumberSequence]:
+    """Return the order number sequence for that shop, or `None` if
+    the sequence is not defined or the shop does not exist.
     """
-    return _find_prefix_attr(shop_id, Purpose.order)
+    return _find_number_sequence(shop_id, Purpose.order)
 
 
-def _find_prefix_attr(shop_id: ShopID, purpose: Purpose) -> Optional[str]:
-    sequence = NumberSequence.query.get((shop_id, purpose.name))
-    return getattr(sequence, 'prefix', None)
+def _find_number_sequence(shop_id: ShopID, purpose: Purpose
+                         ) -> Optional[NumberSequence]:
+    sequence = DbNumberSequence.query.get((shop_id, purpose.name))
+
+    if sequence is None:
+        return None
+
+    return _db_entity_to_number_sequence(sequence)
+
+
+def _db_entity_to_number_sequence(entity: DbNumberSequence) -> NumberSequence:
+    return NumberSequence(
+        entity.shop_id,
+        entity.purpose,
+        entity.prefix,
+        entity.value,
+    )

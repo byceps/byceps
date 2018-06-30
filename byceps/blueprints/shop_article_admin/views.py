@@ -53,7 +53,9 @@ def index_for_party(party_id, page):
             'shop_exists': False,
         }
 
-    article_number_prefix = sequence_service.get_article_number_prefix(shop.id)
+    article_number_sequence = sequence_service \
+        .find_article_number_sequence(shop.id)
+    article_number_prefix = article_number_sequence.prefix
 
     per_page = request.args.get('per_page', type=int, default=15)
     articles = article_service.get_articles_for_shop_paginated(shop.id, page,
@@ -141,7 +143,9 @@ def create_form(party_id, erroneous_form=None):
     party = _get_party_or_404(party_id)
     shop = shop_service.find_shop_for_party(party.id)
 
-    article_number_prefix = sequence_service.get_article_number_prefix(shop.id)
+    article_number_sequence = sequence_service \
+        .find_article_number_sequence(shop.id)
+    article_number_prefix = article_number_sequence.prefix
 
     form = erroneous_form if erroneous_form else ArticleCreateForm(
         price=Decimal('0.00'),

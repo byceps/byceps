@@ -52,7 +52,8 @@ def index_for_party(party_id, page):
             'shop_exists': False,
         }
 
-    order_number_prefix = sequence_service.get_order_number_prefix(shop.id)
+    order_number_sequence = sequence_service.find_order_number_sequence(shop.id)
+    order_number_prefix = order_number_sequence.prefix
 
     per_page = request.args.get('per_page', type=int, default=15)
 
