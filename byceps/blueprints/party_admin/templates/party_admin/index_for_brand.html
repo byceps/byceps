@@ -52,7 +52,7 @@
           <br>{{ render_tag('vorbei', class='color-disabled') }}
           {%- endif %}
         </td>
-        <td class="centered bignumber">{{ article_count_by_party_id[party.id] }}</td>
+        <td class="centered bignumber">{{ article_count_by_party_id.get(party.id, 0) }}</td>
         <td class="centered bignumber">{{ order_count_by_party_id[party.id] }}</td>
         <td class="centered bignumber">{{ ticket_count_by_party_id[party.id] }}</td>
         <td>
