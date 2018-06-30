@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-"""Create article and order sequences for a party's shop.
+"""Create a shop with article and order sequences for that party.
 
 :Copyright: 2006-2018 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -22,7 +22,7 @@ from bootstrap.validators import validate_party
 @click.argument('article_prefix')
 @click.argument('order_prefix')
 def execute(party, article_prefix, order_prefix):
-    shop = shop_service.find_shop_for_party(party.id)
+    shop = shop_service.create_shop(party.id)
 
     create_sequence(shop.id, Purpose.article, article_prefix)
     create_sequence(shop.id, Purpose.order, order_prefix)
