@@ -6,8 +6,8 @@
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order.transfer.models import PaymentMethod
 from byceps.services.shop.order import service as order_service
-from byceps.services.shop.sequence.models import Purpose
 from byceps.services.shop.sequence import service as shop_sequence_service
+from byceps.services.shop.sequence.transfer.models import Purpose
 
 from testfixtures.shop_order import create_orderer
 from testfixtures.shop_shop import create_shop

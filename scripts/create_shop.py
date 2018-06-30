@@ -8,8 +8,8 @@
 
 import click
 
-from byceps.services.shop.sequence.models import Purpose
 from byceps.services.shop.sequence.service import create_sequence
+from byceps.services.shop.sequence.transfer.models import Purpose
 from byceps.services.shop.shop import service as shop_service
 from byceps.util.system import get_config_filename_from_env_or_exit
 

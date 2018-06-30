@@ -15,7 +15,8 @@ from ..order.transfer.models import OrderNumber
 
 from ..shop.transfer.models import ShopID
 
-from .models import NumberSequence, Purpose
+from .models import NumberSequence
+from .transfer.models import Purpose
 
 
 def create_sequence(shop_id: ShopID, purpose: Purpose, prefix: str) -> None:

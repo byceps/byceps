@@ -7,7 +7,7 @@ from unittest.mock import patch
 
 from byceps.services.shop.article.models.article import Article
 from byceps.services.shop.order.models.order import Order
-from byceps.services.shop.sequence.models import Purpose
+from byceps.services.shop.sequence.transfer.models import Purpose
 
 from testfixtures.shop_article import create_article
 from testfixtures.shop_sequence import create_sequence

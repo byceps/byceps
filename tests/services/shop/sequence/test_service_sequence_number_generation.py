@@ -5,7 +5,7 @@
 
 from byceps.services.shop.sequence.service import generate_article_number, \
     generate_order_number
-from byceps.services.shop.sequence.models import Purpose
+from byceps.services.shop.sequence.transfer.models import Purpose
 
 from testfixtures.shop_sequence import create_sequence
 from testfixtures.shop_shop import create_shop

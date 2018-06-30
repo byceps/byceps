@@ -6,8 +6,6 @@ byceps.services.shop.sequence.models
 :License: Modified BSD, see LICENSE for details.
 """
 
-from enum import Enum
-
 from sqlalchemy.ext.hybrid import hybrid_property
 
 from ....database import db
@@ -15,8 +13,7 @@ from ....util.instances import ReprBuilder
 
 from ..shop.transfer.models import ShopID
 
-
-Purpose = Enum('Purpose', ['article', 'order'])
+from .transfer.models import Purpose
 
 
 class NumberSequence(db.Model):
