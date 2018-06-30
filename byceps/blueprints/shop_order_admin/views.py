@@ -13,6 +13,7 @@ from ...services.shop.order import service as order_service
 from ...services.shop.order.export import service as order_export_service
 from ...services.shop.order.transfer.models import PaymentMethod, PaymentState
 from ...services.shop.sequence import service as sequence_service
+from ...services.shop.shop import service as shop_service
 from ...services.ticketing import ticket_service
 from ...services.user import service as user_service
 from ...util.framework.blueprint import create_blueprint
@@ -43,8 +44,15 @@ permission_registry.register_enum(ShopOrderPermission)
 def index_for_party(party_id, page):
     """List orders for that party."""
     party = _get_party_or_404(party_id)
+    shop = shop_service.find_shop_for_party(party.id)
 
-    order_number_prefix = sequence_service.get_order_number_prefix(party.id)
+    if shop is None:
+        return {
+            'party': party,
+            'shop_exists': False,
+        }
+
+    order_number_prefix = sequence_service.get_order_number_prefix(shop.id)
 
     per_page = request.args.get('per_page', type=int, default=15)
 
@@ -76,6 +84,7 @@ def index_for_party(party_id, page):
 
     return {
         'party': party,
+        'shop_exists': True,
         'order_number_prefix': order_number_prefix,
         'search_term': search_term,
         'PaymentState': PaymentState,

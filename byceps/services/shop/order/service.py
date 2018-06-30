@@ -22,6 +22,7 @@ from ...party.models.party import Party
 from ..article.models.article import Article
 from ..cart.models import Cart
 from ..sequence import service as sequence_service
+from ..shop import service as shop_service
 
 from .models.order import Order as DbOrder
 from .models.order_event import OrderEvent
@@ -38,7 +39,9 @@ class OrderFailed(Exception):
 def create_order(party_id: PartyID, orderer: Orderer,
                  payment_method: PaymentMethod, cart: Cart) -> Order:
     """Create an order of one or more articles."""
-    order_number = sequence_service.generate_order_number(party_id)
+    shop = shop_service.find_shop_for_party(party_id)
+
+    order_number = sequence_service.generate_order_number(shop.id)
 
     order = _build_order(party_id, order_number, orderer, payment_method)
 

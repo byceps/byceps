@@ -41,7 +41,7 @@ class ShopTestCase(AbstractAppTestCase):
         purpose = Purpose.order
         prefix = 'AEC-01-B'
 
-        sequence = create_sequence(self.party.id, purpose, prefix, value=4)
+        sequence = create_sequence(self.shop.id, purpose, prefix, value=4)
 
         self.db.session.add(sequence)
         self.db.session.commit()

@@ -11,25 +11,25 @@ from enum import Enum
 from sqlalchemy.ext.hybrid import hybrid_property
 
 from ....database import db
-from ....typing import PartyID
 from ....util.instances import ReprBuilder
+
+from ..shop.transfer.models import ShopID
 
 
 Purpose = Enum('Purpose', ['article', 'order'])
 
 
 class NumberSequence(db.Model):
-    """A integer sequence for a party and a purpose."""
+    """A shop-specific integer sequence for a purpose."""
     __tablename__ = 'shop_sequences'
 
-    party_id = db.Column(db.Unicode(40), db.ForeignKey('parties.id'), primary_key=True)
+    shop_id = db.Column(db.Unicode(40), db.ForeignKey('shops.id'), primary_key=True)
     _purpose = db.Column('purpose', db.Unicode(20), primary_key=True)
     prefix = db.Column(db.Unicode(20), unique=True, nullable=False)
     value = db.Column(db.Integer, default=0, nullable=False)
 
-    def __init__(self, party_id: PartyID, purpose: Purpose, prefix: str
-                ) -> None:
-        self.party_id = party_id
+    def __init__(self, shop_id: ShopID, purpose: Purpose, prefix: str) -> None:
+        self.shop_id = shop_id
         self.purpose = purpose
         self.prefix = prefix
 
@@ -44,7 +44,7 @@ class NumberSequence(db.Model):
 
     def __repr__(self) -> str:
         return ReprBuilder(self) \
-            .add('party', self.party_id) \
+            .add('shop', self.shop_id) \
             .add('purpose', self.purpose.name) \
             .add_with_lookup('prefix') \
             .add_with_lookup('value') \

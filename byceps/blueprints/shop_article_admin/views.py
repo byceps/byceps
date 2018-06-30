@@ -47,7 +47,13 @@ def index_for_party(party_id, page):
     party = _get_party_or_404(party_id)
     shop = shop_service.find_shop_for_party(party.id)
 
-    article_number_prefix = sequence_service.get_article_number_prefix(party.id)
+    if shop is None:
+        return {
+            'party': party,
+            'shop_exists': False,
+        }
+
+    article_number_prefix = sequence_service.get_article_number_prefix(shop.id)
 
     per_page = request.args.get('per_page', type=int, default=15)
     articles = article_service.get_articles_for_shop_paginated(shop.id, page,
@@ -55,6 +61,7 @@ def index_for_party(party_id, page):
 
     return {
         'party': party,
+        'shop_exists': True,
         'article_number_prefix': article_number_prefix,
         'articles': articles,
     }
@@ -132,8 +139,9 @@ def view_ordered(article_id):
 def create_form(party_id, erroneous_form=None):
     """Show form to create an article."""
     party = _get_party_or_404(party_id)
+    shop = shop_service.find_shop_for_party(party.id)
 
-    article_number_prefix = sequence_service.get_article_number_prefix(party.id)
+    article_number_prefix = sequence_service.get_article_number_prefix(shop.id)
 
     form = erroneous_form if erroneous_form else ArticleCreateForm(
         price=Decimal('0.00'),
@@ -159,7 +167,7 @@ def create(party_id):
         return create_form(party_id, form)
 
     try:
-        item_number = sequence_service.generate_article_number(party.id)
+        item_number = sequence_service.generate_article_number(shop.id)
     except sequence_service.NumberGenerationFailed as e:
         abort(500, e.message)
 

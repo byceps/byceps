@@ -9,7 +9,7 @@ testfixtures.shop_sequence
 from byceps.services.shop.sequence.models import NumberSequence
 
 
-def create_sequence(party_id, purpose, prefix, *, value=0):
-    sequence = NumberSequence(party_id, purpose, prefix)
+def create_sequence(shop_id, purpose, prefix, *, value=0):
+    sequence = NumberSequence(shop_id, purpose, prefix)
     sequence.value = value
     return sequence
