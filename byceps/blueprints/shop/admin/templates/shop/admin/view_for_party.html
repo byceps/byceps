@@ -17,36 +17,16 @@
 
   <table class="index">
     <tr>
-      <th colspan="2">Shop-ID</th>
+      <th>Shop-ID</th>
       <td>{{ shop.id }}</td>
     </tr>
     <tr>
-      <th colspan="2">Artikelnummern</th>
-      <td></td>
+      <th>Letzte Artikelnummer</th>
+      <td>{{ most_recent_article_number }}</td>
     </tr>
     <tr>
-      <th></th>
-      <th>Präfix</th>
-      <td>{{ article_number_sequence.prefix }}</td>
-    </tr>
-    <tr>
-      <th></th>
-      <th>Aktueller Wert</th>
-      <td class="number">{{ article_number_sequence.value }}</td>
-    </tr>
-    <tr>
-      <th colspan="2">Bestellnummern</th>
-      <td></td>
-    </tr>
-    <tr>
-      <th></th>
-      <th>Präfix</th>
-      <td>{{ order_number_sequence.prefix }}</td>
-    </tr>
-    <tr>
-      <th></th>
-      <th>Aktueller Wert</th>
-      <td class="number">{{ order_number_sequence.value }}</td>
+      <th>Letzte Bestellnummer</th>
+      <td>{{ most_recent_order_number }}</td>
     </tr>
   </table>
 

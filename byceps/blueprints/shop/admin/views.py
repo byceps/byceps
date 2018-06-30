@@ -39,17 +39,26 @@ def view_for_party(party_id):
             'party': party,
         }
 
-    article_number_sequence = sequence_service \
-        .find_article_number_sequence(shop.id)
-
-    order_number_sequence = sequence_service.find_order_number_sequence(shop.id)
+    most_recent_article_number = _get_most_recent_article_number(shop.id)
+    most_recent_order_number = _get_most_recent_order_number(shop.id)
 
     return {
         'party': party,
         'shop': shop,
-        'article_number_sequence': article_number_sequence,
-        'order_number_sequence': order_number_sequence,
+
+        'most_recent_article_number': most_recent_article_number,
+        'most_recent_order_number': most_recent_order_number,
     }
+
+
+def _get_most_recent_article_number(shop_id):
+    sequence = sequence_service.find_article_number_sequence(shop_id)
+    return sequence_service.format_article_number(sequence)
+
+
+def _get_most_recent_order_number(shop_id):
+    sequence = sequence_service.find_order_number_sequence(shop_id)
+    return sequence_service.format_order_number(sequence)
 
 
 def _get_party_or_404(party_id):
