@@ -18,8 +18,8 @@ from ....util.instances import ReprBuilder
 Purpose = Enum('Purpose', ['article', 'order'])
 
 
-class Sequence(db.Model):
-    """A sequence for a party and a purpose."""
+class NumberSequence(db.Model):
+    """A integer sequence for a party and a purpose."""
     __tablename__ = 'shop_sequences'
 
     party_id = db.Column(db.Unicode(40), db.ForeignKey('parties.id'), primary_key=True)
