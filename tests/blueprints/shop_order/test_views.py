@@ -7,10 +7,8 @@ from unittest.mock import patch
 
 from byceps.services.shop.article.models.article import Article
 from byceps.services.shop.order.models.order import Order
-from byceps.services.shop.sequence.transfer.models import Purpose
 
 from testfixtures.shop_article import create_article
-from testfixtures.shop_sequence import create_sequence
 
 from tests.services.shop.base import ShopTestBase
 
@@ -31,13 +29,7 @@ class ShopTestCase(ShopTestBase):
         self.setup_article()
 
     def setup_order_number_prefix_and_sequence(self):
-        purpose = Purpose.order
-        prefix = 'AEC-01-B'
-
-        sequence = create_sequence(self.shop.id, purpose, prefix, value=4)
-
-        self.db.session.add(sequence)
-        self.db.session.commit()
+        self.create_order_number_sequence(self.shop.id, 'AEC-01-B', value=4)
 
     def setup_orderer(self):
         self.orderer = self.create_user()
