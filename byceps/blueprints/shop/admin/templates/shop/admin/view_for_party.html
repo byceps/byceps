@@ -1,4 +1,6 @@
 {% extends 'layouts/shop_admin.html' %}
+{% from 'macros/shop_order_admin.html' import render_order_payment_state %}
+{% from 'macros/stats.html' import render_bigstats_item %}
 {% set current_page_party = party %}
 {% set current_page = 'shop_admin' %}
 {% set current_tab = 'shop' %}
@@ -14,6 +16,24 @@
   <h1>Shop</h1>
 
   {%- if shop is defined %}
+
+  <div class="row row--equal-sized-centered-columns row--space-between row--wrap bigstats">
+    <div class="column-auto">
+      <a class="button button--clear" href="{{ url_for('shop_article_admin.index_for_party', party_id=party.id) }}">
+        {{- render_bigstats_item(article_count, 'Artikel') -}}
+      </a>
+    </div>
+    <div class="column-auto">
+      <a class="button button--clear" href="{{ url_for('shop_order_admin.index_for_party', party_id=party.id, only_payment_state='open') }}">
+        {{- render_bigstats_item(order_counts_by_payment_state[PaymentState.open], 'Bestellungen<br>'|safe ~ render_order_payment_state(PaymentState.open)) -}}
+      </a>
+    </div>
+    <div class="column-auto">
+      <a class="button button--clear" href="{{ url_for('shop_order_admin.index_for_party', party_id=party.id, only_payment_state='open') }}">
+        {{- render_bigstats_item(order_counts_by_payment_state[PaymentState.paid], 'Bestellungen<br>'|safe ~ render_order_payment_state(PaymentState.paid)) -}}
+      </a>
+    </div>
+  </div>
 
   <table class="index">
     <tr>

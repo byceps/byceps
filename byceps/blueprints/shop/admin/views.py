@@ -9,6 +9,9 @@ byceps.blueprints.shop.admin.views
 from flask import abort
 
 from ....services.party import service as party_service
+from ....services.shop.article import service as article_service
+from ....services.shop.order import service as order_service
+from ....services.shop.order.transfer.models import PaymentState
 from ....services.shop.sequence import service as sequence_service
 from ....services.shop.shop import service as shop_service
 from ....util.framework.blueprint import create_blueprint
@@ -42,12 +45,20 @@ def view_for_party(party_id):
     most_recent_article_number = _get_most_recent_article_number(shop.id)
     most_recent_order_number = _get_most_recent_order_number(shop.id)
 
+    article_count = article_service.count_articles_for_shop(shop.id)
+    order_counts_by_payment_state = order_service \
+        .count_orders_per_payment_state(party.id)
+
     return {
         'party': party,
         'shop': shop,
 
         'most_recent_article_number': most_recent_article_number,
         'most_recent_order_number': most_recent_order_number,
+
+        'article_count': article_count,
+        'order_counts_by_payment_state': order_counts_by_payment_state,
+        'PaymentState': PaymentState,
     }
 
 

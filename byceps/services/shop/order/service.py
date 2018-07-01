@@ -274,6 +274,26 @@ def count_open_orders_for_party(party_id: PartyID) -> int:
         .count()
 
 
+def count_orders_per_payment_state(party_id: PartyID
+                                  ) -> Dict[PaymentState, int]:
+    """Count orders for this party, grouped by payment state."""
+    counts_by_payment_state = dict.fromkeys(PaymentState, 0)
+
+    rows = db.session \
+        .query(
+            DbOrder._payment_state,
+            db.func.count(DbOrder.id)
+        ) \
+        .filter(DbOrder.party_id == party_id) \
+        .group_by(DbOrder._payment_state) \
+        .all()
+
+    for payment_state, count in rows:
+        counts_by_payment_state[payment_state] = count
+
+    return counts_by_payment_state
+
+
 def find_order(order_id: OrderID) -> Optional[DbOrder]:
     """Return the order with that id, or `None` if not found."""
     return DbOrder.query.get(order_id)
