@@ -78,7 +78,7 @@ def view(article_id):
     if article is None:
         abort(404)
 
-    shop = shop_service.find_shop(article.shop_id)
+    shop = shop_service.get_shop(article.shop_id)
     party = party_service.find_party(shop.party_id)
 
     totals = ordered_articles_service \
@@ -101,7 +101,7 @@ def view_ordered(article_id):
     """
     article = _get_article_or_404(article_id)
 
-    shop = shop_service.find_shop(article.shop_id)
+    shop = shop_service.get_shop(article.shop_id)
     party = party_service.find_party(shop.party_id)
 
     order_items = ordered_articles_service \
@@ -194,7 +194,7 @@ def update_form(article_id, erroneous_form=None):
     """Show form to update an article."""
     article = _get_article_or_404(article_id)
 
-    shop = shop_service.find_shop(article.shop_id)
+    shop = shop_service.get_shop(article.shop_id)
     party = party_service.find_party(shop.party_id)
 
     form = erroneous_form if erroneous_form else ArticleUpdateForm(obj=article)
@@ -244,7 +244,7 @@ def attachment_create_form(article_id, erroneous_form=None):
     """Show form to attach an article to another article."""
     article = _get_article_or_404(article_id)
 
-    shop = shop_service.find_shop(article.shop_id)
+    shop = shop_service.get_shop(article.shop_id)
     party = party_service.find_party(shop.party_id)
 
     attachable_articles = article_service.get_attachable_articles(article)

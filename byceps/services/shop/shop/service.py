@@ -15,6 +15,10 @@ from .models import Shop as DbShop
 from .transfer.models import Shop, ShopID
 
 
+class UnknownShopId(ValueError):
+    pass
+
+
 def create_shop(party_id: PartyID) -> Shop:
     """Create a shop."""
     shop = DbShop(party_id, party_id)
@@ -33,6 +37,16 @@ def find_shop(shop_id: ShopID) -> Optional[Shop]:
         return None
 
     return _db_entity_to_shop(shop)
+
+
+def get_shop(shop_id: ShopID) -> Shop:
+    """Return the shop with that id, or raise an exception."""
+    shop = find_shop(shop_id)
+
+    if shop is None:
+        raise UnknownShopId(shop_id)
+
+    return shop
 
 
 def find_shop_for_party(party_id: PartyID) -> Optional[Shop]:
