@@ -8,16 +8,15 @@ from byceps.services.shop.sequence.service import generate_article_number, \
 from byceps.services.shop.sequence.transfer.models import Purpose
 
 from testfixtures.shop_sequence import create_sequence
-from testfixtures.shop_shop import create_shop
 
-from tests.base import AbstractAppTestCase
+from tests.services.shop.base import ShopTestBase
 
 
-class SequenceNumberGenerationTestCase(AbstractAppTestCase):
+class SequenceNumberGenerationTestCase(ShopTestBase):
 
     def test_generate_article_number_default(self):
         self.create_brand_and_party()
-        shop = self.setup_shop(self.party.id)
+        shop = self.create_shop(self.party.id)
         self.setup_article_number_sequence(shop.id, 'AEC-01-A')
 
         actual = generate_article_number(shop.id)
@@ -26,7 +25,7 @@ class SequenceNumberGenerationTestCase(AbstractAppTestCase):
 
     def test_generate_article_number_custom(self):
         party = self.create_custom_brand_and_party()
-        shop = self.setup_shop(party.id)
+        shop = self.create_shop(party.id)
         last_assigned_article_sequence_number = 41
 
         self.setup_article_number_sequence(shop.id, 'XYZ-09-A',
@@ -38,7 +37,7 @@ class SequenceNumberGenerationTestCase(AbstractAppTestCase):
 
     def test_generate_order_number_default(self):
         self.create_brand_and_party()
-        shop = self.setup_shop(self.party.id)
+        shop = self.create_shop(self.party.id)
         self.setup_order_number_sequence(shop.id, 'AEC-01-B')
 
         actual = generate_order_number(shop.id)
@@ -47,7 +46,7 @@ class SequenceNumberGenerationTestCase(AbstractAppTestCase):
 
     def test_generate_order_number_custom(self):
         party = self.create_custom_brand_and_party()
-        shop = self.setup_shop(party.id)
+        shop = self.create_shop(party.id)
         last_assigned_order_sequence_number = 206
 
         self.setup_order_number_sequence(shop.id, 'LOL-03-B',
@@ -65,14 +64,6 @@ class SequenceNumberGenerationTestCase(AbstractAppTestCase):
         party = self.create_party(brand.id, 'custom-party-4', 'Custom Party 4')
 
         return party
-
-    def setup_shop(self, party_id):
-        shop = create_shop(party_id)
-
-        self.db.session.add(shop)
-        self.db.session.commit()
-
-        return shop
 
     def setup_article_number_sequence(self, shop_id, prefix, *, value=0):
         self._create_sequence(shop_id, Purpose.article, prefix, value)

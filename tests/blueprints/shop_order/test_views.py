@@ -11,12 +11,11 @@ from byceps.services.shop.sequence.transfer.models import Purpose
 
 from testfixtures.shop_article import create_article
 from testfixtures.shop_sequence import create_sequence
-from testfixtures.shop_shop import create_shop
 
-from tests.base import AbstractAppTestCase
+from tests.services.shop.base import ShopTestBase
 
 
-class ShopTestCase(AbstractAppTestCase):
+class ShopTestCase(ShopTestBase):
 
     def setUp(self):
         super().setUp()
@@ -26,16 +25,10 @@ class ShopTestCase(AbstractAppTestCase):
         self.app.add_url_rule('/shop/order_placed', 'snippet.order_placed',
                               lambda: None)
 
-        self.setup_shop()
+        self.shop = self.create_shop(self.party.id)
         self.setup_order_number_prefix_and_sequence()
         self.setup_orderer()
         self.setup_article()
-
-    def setup_shop(self):
-        self.shop = create_shop(self.party.id)
-
-        self.db.session.add(self.shop)
-        self.db.session.commit()
 
     def setup_order_number_prefix_and_sequence(self):
         purpose = Purpose.order

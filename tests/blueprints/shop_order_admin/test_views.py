@@ -10,13 +10,13 @@ from byceps.services.shop.order.transfer.models import PaymentMethod, \
 
 from testfixtures.shop_article import create_article
 from testfixtures.shop_order import create_order, create_order_item
-from testfixtures.shop_shop import create_shop
 
-from tests.base import AbstractAppTestCase, CONFIG_FILENAME_TEST_ADMIN
+from tests.base import CONFIG_FILENAME_TEST_ADMIN
 from tests.helpers import assign_permissions_to_user
+from tests.services.shop.base import ShopTestBase
 
 
-class ShopAdminTestCase(AbstractAppTestCase):
+class ShopAdminTestCase(ShopTestBase):
 
     def setUp(self):
         super().setUp(config_filename=CONFIG_FILENAME_TEST_ADMIN)
@@ -27,7 +27,7 @@ class ShopAdminTestCase(AbstractAppTestCase):
 
         self.create_brand_and_party()
 
-        self.shop = self.create_shop()
+        self.shop = self.create_shop(self.party.id)
 
     def create_admin(self):
         admin = self.create_user('Admin')
@@ -107,14 +107,6 @@ class ShopAdminTestCase(AbstractAppTestCase):
         assert article_afterwards.quantity == 8
 
     # helpers
-
-    def create_shop(self):
-        shop = create_shop(self.party.id)
-
-        self.db.session.add(shop)
-        self.db.session.commit()
-
-        return shop
 
     def create_article(self, quantity):
         article = create_article(self.shop.id, quantity=quantity)

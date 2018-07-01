@@ -9,7 +9,6 @@ from byceps.services.ticketing import \
     category_service as ticket_category_service, ticket_service
 
 from testfixtures.shop_article import create_article
-from testfixtures.shop_shop import create_shop
 
 from .base import OrderActionTestBase
 

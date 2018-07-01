@@ -10,21 +10,21 @@ from byceps.services.shop.sequence import service as shop_sequence_service
 from byceps.services.shop.sequence.transfer.models import Purpose
 
 from testfixtures.shop_order import create_orderer
-from testfixtures.shop_shop import create_shop
 
-from tests.base import AbstractAppTestCase
+from tests.services.shop.base import ShopTestBase
 
 
 ANY_PAYMENT_METHOD = PaymentMethod.bank_transfer
 
 
-class OrderActionTestBase(AbstractAppTestCase):
+class OrderActionTestBase(ShopTestBase):
 
     def setUp(self):
         super().setUp()
 
         self.create_brand_and_party()
-        self.shop = self.create_shop()
+
+        self.shop = self.create_shop(self.party.id)
 
         self.admin = self.create_user_with_detail('Admin')
         self.buyer = self.create_user_with_detail('Buyer')
@@ -34,14 +34,6 @@ class OrderActionTestBase(AbstractAppTestCase):
 
     # -------------------------------------------------------------------- #
     # helpers
-
-    def create_shop(self):
-        shop = create_shop(self.party.id)
-
-        self.db.session.add(shop)
-        self.db.session.commit()
-
-        return shop
 
     def create_order(self, articles_with_quantity):
         orderer = create_orderer(self.buyer)

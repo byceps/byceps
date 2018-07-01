@@ -4,12 +4,11 @@
 """
 
 from testfixtures.shop_order import create_order
-from testfixtures.shop_shop import create_shop
 
-from tests.base import AbstractAppTestCase
+from tests.services.shop.base import ShopTestBase
 
 
-class ShopOrdersTestCase(AbstractAppTestCase):
+class ShopOrdersTestCase(ShopTestBase):
 
     def setUp(self):
         super().setUp()
@@ -50,14 +49,6 @@ class ShopOrdersTestCase(AbstractAppTestCase):
 
     # -------------------------------------------------------------------- #
     # helpers
-
-    def create_shop(self, party_id):
-        shop = create_shop(party_id)
-
-        self.db.session.add(shop)
-        self.db.session.commit()
-
-        return shop
 
     def create_order(self, shop_id, user, order_number):
         order = create_order(shop_id, user, order_number=order_number)
