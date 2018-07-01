@@ -15,6 +15,7 @@ from ...services.authorization import service as authorization_service
 from ...services.orga_team import service as orga_team_service
 from ...services.party import service as party_service
 from ...services.shop.order import service as order_service
+from ...services.shop.shop import service as shop_service
 from ...services.ticketing import ticket_service
 from ...services.user import service as user_service
 from ...services.user_badge import service as badge_service
@@ -90,8 +91,8 @@ def view(user_id):
     badges_with_awarding_quantity = badge_service.get_badges_for_user(user.id)
 
     orders = order_service.get_orders_placed_by_user(user.id)
-    order_party_ids = {order.party_id for order in orders}
-    order_parties_by_id = _get_parties_by_id(order_party_ids)
+    order_shop_ids = {order.shop_id for order in orders}
+    order_parties_by_shop_id = _get_parties_by_shop_id(order_shop_ids)
 
     parties_and_tickets = _get_parties_and_tickets(user.id)
 
@@ -100,7 +101,7 @@ def view(user_id):
         'orga_team_memberships': orga_team_memberships,
         'badges_with_awarding_quantity': badges_with_awarding_quantity,
         'orders': orders,
-        'order_parties_by_id': order_parties_by_id,
+        'order_parties_by_shop_id': order_parties_by_shop_id,
         'parties_and_tickets': parties_and_tickets,
     }
 
@@ -134,6 +135,21 @@ def _group_tickets_by_party_id(tickets):
 def _get_parties_by_id(party_ids):
     parties = party_service.get_parties(party_ids)
     return {p.id: p for p in parties}
+
+
+def _get_parties_by_shop_id(shop_ids):
+    shops = shop_service.find_shops(shop_ids)
+    party_ids = {shop.party_id for shop in shops}
+
+    parties = party_service.get_parties(party_ids)
+    parties_by_id = {p.id: p for p in parties}
+
+    parties_by_shop_id = {}
+    for shop in shops:
+        party = parties_by_id[shop.party_id]
+        parties_by_shop_id[shop.id] = party
+
+    return parties_by_shop_id
 
 
 @blueprint.route('/<uuid:user_id>/password')

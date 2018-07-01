@@ -4,6 +4,7 @@
 """
 
 from testfixtures.shop_order import create_order
+from testfixtures.shop_shop import create_shop
 
 from tests.base import AbstractAppTestCase
 
@@ -19,14 +20,18 @@ class ShopOrdersTestCase(AbstractAppTestCase):
         self.create_brand_and_party()
 
     def test_view_matching_user_and_party(self):
-        order_id = self.create_order(self.party.id, self.user1, 'LF-02-B00014')
+        shop = self.create_shop(self.party.id)
+
+        order_id = self.create_order(shop.id, self.user1, 'LF-02-B00014')
 
         response = self.request_view(self.user1, order_id)
 
         assert response.status_code == 200
 
     def test_view_matching_party_but_different_user(self):
-        order_id = self.create_order(self.party.id, self.user1, 'LF-02-B00014')
+        shop = self.create_shop(self.party.id)
+
+        order_id = self.create_order(shop.id, self.user1, 'LF-02-B00014')
 
         response = self.request_view(self.user2, order_id)
 
@@ -35,7 +40,9 @@ class ShopOrdersTestCase(AbstractAppTestCase):
     def test_view_matching_user_but_different_party(self):
         other_party = self.create_party(self.brand.id, 'otherlan-2013',
                                         'OtherLAN 2013')
-        order_id = self.create_order(other_party.id, self.user1, 'LF-02-B00014')
+        shop = self.create_shop(other_party.id)
+
+        order_id = self.create_order(shop.id, self.user1, 'LF-02-B00014')
 
         response = self.request_view(self.user1, order_id)
 
@@ -44,8 +51,16 @@ class ShopOrdersTestCase(AbstractAppTestCase):
     # -------------------------------------------------------------------- #
     # helpers
 
-    def create_order(self, party_id, user, order_number):
-        order = create_order(party_id, user, order_number=order_number)
+    def create_shop(self, party_id):
+        shop = create_shop(party_id)
+
+        self.db.session.add(shop)
+        self.db.session.commit()
+
+        return shop
+
+    def create_order(self, shop_id, user, order_number):
+        order = create_order(shop_id, user, order_number=order_number)
 
         self.db.session.add(order)
         self.db.session.commit()

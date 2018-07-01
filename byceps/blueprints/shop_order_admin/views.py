@@ -73,10 +73,10 @@ def index_for_party(party_id, page):
     order_state_filter = OrderStateFilter.find(only_payment_state, only_shipped)
 
     orders = order_service \
-        .get_orders_for_party_paginated(party.id, page, per_page,
-                                        search_term=search_term,
-                                        only_payment_state=only_payment_state,
-                                        only_shipped=only_shipped)
+        .get_orders_for_shop_paginated(shop.id, page, per_page,
+                                       search_term=search_term,
+                                       only_payment_state=only_payment_state,
+                                       only_shipped=only_shipped)
 
     # Replace order objects in pagination object with order tuples.
     orders.items = [order.to_transfer_object() for order in orders.items]
@@ -108,7 +108,8 @@ def view(order_id):
 
     placed_by = user_service.find_user(order.placed_by_id)
 
-    party = party_service.find_party(order.party_id)
+    shop = shop_service.get_shop(order.shop_id)
+    party = party_service.find_party(shop.party_id)
 
     articles_by_item_number = service.get_articles_by_item_number(order)
 
@@ -212,7 +213,8 @@ def cancel_form(order_id, erroneous_form=None):
             'der Bezahlstatus kann nicht mehr geändert werden.')
         return redirect_to('.view', order_id=order.id)
 
-    party = party_service.find_party(order.party_id)
+    shop = shop_service.get_shop(order.shop_id)
+    party = party_service.find_party(shop.party_id)
 
     form = erroneous_form if erroneous_form else CancelForm()
 
@@ -266,7 +268,8 @@ def mark_as_paid_form(order_id, erroneous_form=None):
         flash_error('Die Bestellung ist bereits als bezahlt markiert worden.')
         return redirect_to('.view', order_id=order.id)
 
-    party = party_service.find_party(order.party_id)
+    shop = shop_service.get_shop(order.shop_id)
+    party = party_service.find_party(shop.party_id)
 
     form = erroneous_form if erroneous_form else MarkAsPaidForm()
 

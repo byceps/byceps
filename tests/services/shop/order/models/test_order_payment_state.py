@@ -58,10 +58,10 @@ def test_is_canceled_after_paid():
 def create_order_with_payment_state(payment_state):
     user = create_user()
 
-    party_id = 'acme-party-2016'
+    shop_id = 'shop-123'
     placed_by = user
 
-    order = create_order(party_id, placed_by)
+    order = create_order(shop_id, placed_by)
     order.payment_state = payment_state
 
     return order

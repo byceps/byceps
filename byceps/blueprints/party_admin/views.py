@@ -58,7 +58,7 @@ def index_for_brand(brand_id, page):
 
     article_count_by_party_id = _get_article_count_by_party_id()
 
-    order_count_by_party_id = order_service.get_order_count_by_party_id()
+    order_count_by_party_id = _get_order_count_by_party_id()
 
     ticket_count_by_party_id = ticket_service.get_ticket_count_by_party_id()
 
@@ -81,6 +81,19 @@ def _get_article_count_by_party_id():
     return {
         shop_ids_to_party_ids[shop_id]: article_count
         for shop_id, article_count in article_count_by_shop_id.items()
+    }
+
+
+def _get_order_count_by_party_id():
+    order_count_by_shop_id = order_service.get_order_count_by_shop_id()
+
+    shop_ids = order_count_by_shop_id.keys()
+    shops = shop_service.find_shops(shop_ids)
+
+    shop_ids_to_party_ids = {shop.id: shop.party_id for shop in shops}
+    return {
+        shop_ids_to_party_ids[shop_id]: order_count
+        for shop_id, order_count in order_count_by_shop_id.items()
     }
 
 

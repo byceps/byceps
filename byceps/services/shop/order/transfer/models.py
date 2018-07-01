@@ -14,9 +14,10 @@ from uuid import UUID
 
 from attr import attrib, attrs
 
-from .....typing import PartyID, UserID
+from .....typing import UserID
 
 from ...article.transfer.models import ArticleNumber
+from ...shop.transfer.models import ShopID
 
 
 OrderID = NewType('OrderID', UUID)
@@ -43,7 +44,7 @@ PaymentState = Enum('PaymentState', [
 @attrs(frozen=True, slots=True)
 class Order:
     id = attrib(type=OrderID)
-    party_id = attrib(type=PartyID)
+    shop_id = attrib(type=ShopID)
     order_number = attrib(type=OrderNumber)
     created_at = attrib(type=datetime)
     placed_by_id = attrib(type=UserID)

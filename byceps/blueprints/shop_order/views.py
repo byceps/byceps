@@ -86,7 +86,7 @@ def order():
     orderer = form.get_orderer(g.current_user.id)
 
     try:
-        order = _submit_order(orderer, cart)
+        order = _submit_order(shop.id, orderer, cart)
     except order_service.OrderFailed:
         flash_error('Die Bestellung ist fehlgeschlagen.')
         return order_form(form)
@@ -103,6 +103,8 @@ def order_single_form(article_id, erroneous_form=None):
     """Show a form to order a single article."""
     article = _get_article_or_404(article_id)
 
+    shop = shop_service.find_shop_for_party(g.party_id)
+
     article_compilation = article_service \
         .get_article_compilation_for_single_article(article, fixed_quantity=1)
 
@@ -117,7 +119,7 @@ def order_single_form(article_id, erroneous_form=None):
             'article': None,
         }
 
-    if order_service.has_user_placed_orders(user.id, g.party_id):
+    if order_service.has_user_placed_orders(user.id, shop.id):
         flash_error('Du kannst keine weitere Bestellung aufgeben.')
         return {
             'form': form,
@@ -146,6 +148,8 @@ def order_single(article_id):
     article = _get_article_or_404(article_id)
     quantity = 1
 
+    shop = shop_service.find_shop_for_party(g.party_id)
+
     if article.not_directly_orderable:
         flash_error('Der Artikel kann nicht direkt bestellt werden.')
         return order_single_form(article.id)
@@ -156,7 +160,7 @@ def order_single(article_id):
 
     user = g.current_user
 
-    if order_service.has_user_placed_orders(user.id, g.party_id):
+    if order_service.has_user_placed_orders(user.id, shop.id):
         flash_error('Du kannst keine weitere Bestellung aufgeben.')
         return order_single_form(article.id)
 
@@ -175,7 +179,7 @@ def order_single(article_id):
         cart.add_item(item.article, item.fixed_quantity)
 
     try:
-        order = _submit_order(orderer, cart)
+        order = _submit_order(shop.id, orderer, cart)
     except order_service.OrderFailed:
         flash_error('Die Bestellung ist fehlgeschlagen.')
         return order_form(form)
@@ -194,10 +198,10 @@ def _get_article_or_404(article_id):
     return article
 
 
-def _submit_order(orderer, cart):
+def _submit_order(shop_id, orderer, cart):
     payment_method = PaymentMethod.bank_transfer
 
-    return order_service.create_order(g.party_id, orderer, payment_method, cart)
+    return order_service.create_order(shop_id, orderer, payment_method, cart)
 
 
 def _flash_order_success(order):

@@ -45,13 +45,13 @@ def test_with_multiple_items():
 def create_order_with_items(price_quantity_pairs):
     user = create_user()
 
-    party_id = 'acme-party-2016'
+    shop_id = 'shop-123'
     placed_by = user
 
-    order = create_order(party_id, placed_by)
+    order = create_order(shop_id, placed_by)
 
     for price, quantity in price_quantity_pairs:
-        article = create_article('shop-123', price=price, quantity=quantity)
+        article = create_article(shop_id, price=price, quantity=quantity)
         order_item = create_order_item(order, article, quantity)
 
     return order

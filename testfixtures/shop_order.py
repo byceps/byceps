@@ -26,11 +26,11 @@ def create_orderer(user):
         user.detail.street)
 
 
-def create_order(party_id, placed_by, *, order_number=ANY_ORDER_NUMBER,
+def create_order(shop_id, placed_by, *, order_number=ANY_ORDER_NUMBER,
                  payment_method=PaymentMethod.bank_transfer,
                  shipping_required=False):
     order = Order(
-        party_id,
+        shop_id,
         order_number,
         placed_by.id,
         placed_by.detail.first_names,

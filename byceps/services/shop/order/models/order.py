@@ -13,12 +13,13 @@ from typing import Set
 from sqlalchemy.ext.hybrid import hybrid_property
 
 from .....database import BaseQuery, db, generate_uuid
-from .....typing import PartyID, UserID
+from .....typing import UserID
 from .....util.instances import ReprBuilder
 
 from ....user.models.user import User
 
 from ...article.models.article import Article
+from ...shop.transfer.models import ShopID
 
 from ..transfer.models import Order as OrderTransferObject, OrderNumber, \
     PaymentMethod, PaymentState
@@ -26,8 +27,8 @@ from ..transfer.models import Order as OrderTransferObject, OrderNumber, \
 
 class OrderQuery(BaseQuery):
 
-    def for_party(self, party_id: PartyID) -> BaseQuery:
-        return self.filter_by(party_id=party_id)
+    def for_shop(self, shop_id: ShopID) -> BaseQuery:
+        return self.filter_by(shop_id=shop_id)
 
     def placed_by(self, user_id: UserID) -> BaseQuery:
         return self.filter_by(placed_by_id=user_id)
@@ -40,7 +41,7 @@ class Order(db.Model):
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.now, nullable=False)
-    party_id = db.Column(db.Unicode(40), db.ForeignKey('parties.id'), index=True, nullable=False)
+    shop_id = db.Column(db.Unicode(40), db.ForeignKey('shops.id'), index=True, nullable=False)
     order_number = db.Column(db.Unicode(13), unique=True, nullable=False)
     placed_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=False)
     placed_by = db.relationship(User, foreign_keys=[placed_by_id])
@@ -60,11 +61,11 @@ class Order(db.Model):
     shipping_required = db.Column(db.Boolean, nullable=False)
     shipped_at = db.Column(db.DateTime, nullable=True)
 
-    def __init__(self, party_id: PartyID, order_number: OrderNumber,
+    def __init__(self, shop_id: ShopID, order_number: OrderNumber,
                  placed_by_id: UserID, first_names: str, last_name: str,
                  country: str, zip_code: str, city: str, street,
                  payment_method: PaymentMethod) -> None:
-        self.party_id = party_id
+        self.shop_id = shop_id
         self.order_number = order_number
         self.placed_by_id = placed_by_id
         self.first_names = first_names
@@ -133,7 +134,7 @@ class Order(db.Model):
 
         return OrderTransferObject(
             self.id,
-            self.party_id,
+            self.shop_id,
             self.order_number,
             self.created_at,
             self.placed_by_id,
@@ -159,7 +160,7 @@ class Order(db.Model):
     def __repr__(self) -> str:
         return ReprBuilder(self) \
             .add_with_lookup('id') \
-            .add('party', self.party_id) \
+            .add('shop', self.shop_id) \
             .add_with_lookup('order_number') \
             .add('placed_by', self.placed_by.screen_name) \
             .add_custom('{:d} items'.format(len(self.items))) \

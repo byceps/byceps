@@ -138,9 +138,10 @@ def view_party(party_id):
     shop = shop_service.find_shop_for_party(party.id)
     if shop:
         article_count = article_service.count_articles_for_shop(shop.id)
+        open_order_count = order_service.count_open_orders(shop.id)
     else:
         article_count = 0
-    open_order_count = order_service.count_open_orders_for_party(party.id)
+        open_order_count = 0
 
     tickets_sold = ticket_service.count_tickets_for_party(party.id)
     tickets_checked_in = ticket_service.count_tickets_checked_in_for_party(

@@ -50,7 +50,7 @@ class OrderActionTestBase(AbstractAppTestCase):
         for article, quantity in articles_with_quantity:
             cart.add_item(article, quantity)
 
-        return order_service.create_order(self.party.id, orderer,
+        return order_service.create_order(self.shop.id, orderer,
             ANY_PAYMENT_METHOD, cart)
 
     def mark_order_as_paid(self):

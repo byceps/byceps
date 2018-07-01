@@ -15,14 +15,14 @@ from sqlalchemy.exc import IntegrityError
 
 from ....blueprints.shop_order.signals import order_placed
 from ....database import db
-from ....typing import PartyID, UserID
-
-from ...party.models.party import Party
+from ....typing import UserID
 
 from ..article.models.article import Article
 from ..cart.models import Cart
 from ..sequence import service as sequence_service
+from ..shop.models import Shop
 from ..shop import service as shop_service
+from ..shop.transfer.models import ShopID
 
 from .models.order import Order as DbOrder
 from .models.order_event import OrderEvent
@@ -36,14 +36,14 @@ class OrderFailed(Exception):
     pass
 
 
-def create_order(party_id: PartyID, orderer: Orderer,
+def create_order(shop_id: ShopID, orderer: Orderer,
                  payment_method: PaymentMethod, cart: Cart) -> Order:
     """Create an order of one or more articles."""
-    shop = shop_service.find_shop_for_party(party_id)
+    shop = shop_service.get_shop(shop_id)
 
     order_number = sequence_service.generate_order_number(shop.id)
 
-    order = _build_order(party_id, order_number, orderer, payment_method)
+    order = _build_order(shop.id, order_number, orderer, payment_method)
 
     order_items = _add_items_from_cart_to_order(cart, order)
 
@@ -64,11 +64,11 @@ def create_order(party_id: PartyID, orderer: Orderer,
     return order.to_transfer_object()
 
 
-def _build_order(party_id: PartyID, order_number: OrderNumber, orderer: Orderer,
+def _build_order(shop_id: ShopID, order_number: OrderNumber, orderer: Orderer,
                  payment_method: PaymentMethod) -> DbOrder:
     """Create an order of one or more articles."""
     return DbOrder(
-        party_id,
+        shop_id,
         order_number,
         orderer.user_id,
         orderer.first_names,
@@ -266,17 +266,16 @@ def _update_payment_state(order: DbOrder, state: PaymentState,
     order.payment_state_updated_by_id = updated_by_id
 
 
-def count_open_orders_for_party(party_id: PartyID) -> int:
-    """Return the number of open orders for that party."""
+def count_open_orders(shop_id: ShopID) -> int:
+    """Return the number of open orders for the shop."""
     return DbOrder.query \
-        .for_party(party_id) \
+        .for_shop(shop_id) \
         .filter_by(_payment_state=PaymentState.open.name) \
         .count()
 
 
-def count_orders_per_payment_state(party_id: PartyID
-                                  ) -> Dict[PaymentState, int]:
-    """Count orders for this party, grouped by payment state."""
+def count_orders_per_payment_state(shop_id: ShopID) -> Dict[PaymentState, int]:
+    """Count orders for the shop, grouped by payment state."""
     counts_by_payment_state = dict.fromkeys(PaymentState, 0)
 
     rows = db.session \
@@ -284,7 +283,7 @@ def count_orders_per_payment_state(party_id: PartyID
             DbOrder._payment_state,
             db.func.count(DbOrder.id)
         ) \
-        .filter(DbOrder.party_id == party_id) \
+        .filter(DbOrder.shop_id == shop_id) \
         .group_by(DbOrder._payment_state) \
         .all()
 
@@ -331,32 +330,32 @@ def find_orders_by_order_numbers(order_numbers: Set[OrderNumber]
         .all()
 
 
-def get_order_count_by_party_id() -> Dict[PartyID, int]:
-    """Return order count (including 0) per party, indexed by party ID."""
-    party_ids_and_order_counts = db.session \
+def get_order_count_by_shop_id() -> Dict[ShopID, int]:
+    """Return order count (including 0) per shop, indexed by shop ID."""
+    shop_ids_and_order_counts = db.session \
         .query(
-            Party.id,
-            db.func.count(DbOrder.party_id)
+            Shop.id,
+            db.func.count(DbOrder.shop_id)
         ) \
         .outerjoin(DbOrder) \
-        .group_by(Party.id) \
+        .group_by(Shop.id) \
         .all()
 
-    return dict(party_ids_and_order_counts)
+    return dict(shop_ids_and_order_counts)
 
 
-def get_orders_for_party_paginated(party_id: PartyID, page: int, per_page: int, *,
-                                   search_term=None,
-                                   only_payment_state: Optional[PaymentState]=None,
-                                   only_shipped: Optional[bool]=None
-                                  ) -> Pagination:
-    """Return all orders for that party, ordered by creation date.
+def get_orders_for_shop_paginated(shop_id: ShopID, page: int, per_page: int, *,
+                                  search_term=None,
+                                  only_payment_state: Optional[PaymentState]=None,
+                                  only_shipped: Optional[bool]=None
+                                 ) -> Pagination:
+    """Return all orders for that shop, ordered by creation date.
 
     If a payment state is specified, only orders in that state are
     returned.
     """
     query = DbOrder.query \
-        .for_party(party_id) \
+        .for_shop(shop_id) \
         .order_by(DbOrder.created_at.desc())
 
     if search_term:
@@ -389,14 +388,14 @@ def get_orders_placed_by_user(user_id: UserID) -> Sequence[DbOrder]:
         .all()
 
 
-def get_orders_placed_by_user_for_party(user_id: UserID, party_id: PartyID
-                                       ) -> Sequence[Order]:
-    """Return orders placed by the user for that party."""
+def get_orders_placed_by_user_for_shop(user_id: UserID, shop_id: ShopID
+                                      ) -> Sequence[Order]:
+    """Return orders placed by the user in that shop."""
     orders = DbOrder.query \
         .options(
             db.joinedload('items'),
         ) \
-        .for_party(party_id) \
+        .for_shop(shop_id) \
         .placed_by(user_id) \
         .order_by(DbOrder.created_at.desc()) \
         .all()
@@ -404,10 +403,10 @@ def get_orders_placed_by_user_for_party(user_id: UserID, party_id: PartyID
     return [order.to_transfer_object() for order in orders]
 
 
-def has_user_placed_orders(user_id: UserID, party_id: PartyID) -> bool:
-    """Return `True` if the user has placed orders for that party."""
+def has_user_placed_orders(user_id: UserID, shop_id: ShopID) -> bool:
+    """Return `True` if the user has placed orders in that shop."""
     orders_total = DbOrder.query \
-        .for_party(party_id) \
+        .for_shop(shop_id) \
         .placed_by(user_id) \
         .count()
 

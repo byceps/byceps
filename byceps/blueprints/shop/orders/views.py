@@ -10,6 +10,7 @@ from flask import abort, g
 
 from ....services.party import service as party_service
 from ....services.shop.order import service as order_service
+from ....services.shop.shop import service as shop_service
 from ....services.user import service as user_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated
@@ -29,8 +30,12 @@ def index():
 
     party = party_service.find_party(g.party_id)
 
-    orders = order_service.get_orders_placed_by_user_for_party(
-        current_user.id, party.id)
+    shop = shop_service.find_shop_for_party(party.id)
+    if shop:
+        orders = order_service.get_orders_placed_by_user_for_shop(
+            current_user.id, shop.id)
+    else:
+        orders = []
 
     return {
         'party_title': party.title,
@@ -54,8 +59,9 @@ def view(order_id):
         # Order was not placed by the current user.
         abort(404)
 
-    if order.party_id != g.party_id:
-        # Order was not placed by the current user.
+    shop = shop_service.get_shop(order.shop_id)
+    if shop.party_id != g.party_id:
+        # Order does not belong to the current party.
         abort(404)
 
     placed_by = user_service.find_user(order.placed_by_id)

@@ -12,6 +12,7 @@ from flask import abort, request
 
 from ....services.party import service as party_service
 from ....services.shop.order import service as order_service
+from ....services.shop.shop import service as shop_service
 from ....services.ticketing import ticket_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated
@@ -83,8 +84,12 @@ def _search_orders(party_id, search_term, limit):
     page = 1
     per_page = limit
 
-    orders_pagination = order_service.get_orders_for_party_paginated(
-        party_id, page, per_page, search_term=search_term)
+    shop = shop_service.find_shop_for_party(party_id)
+    if not shop:
+        return []
+
+    orders_pagination = order_service.get_orders_for_shop_paginated(
+        shop.id, page, per_page, search_term=search_term)
 
     # Replace order objects with order tuples.
     orders = [order.to_transfer_object() for order in orders_pagination.items]

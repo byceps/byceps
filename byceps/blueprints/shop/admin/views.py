@@ -47,7 +47,7 @@ def view_for_party(party_id):
 
     article_count = article_service.count_articles_for_shop(shop.id)
     order_counts_by_payment_state = order_service \
-        .count_orders_per_payment_state(party.id)
+        .count_orders_per_payment_state(shop.id)
 
     return {
         'party': party,

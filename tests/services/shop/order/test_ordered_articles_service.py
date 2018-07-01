@@ -73,8 +73,7 @@ class OrderedArticlesServiceTestCase(AbstractAppTestCase):
         return article
 
     def create_order(self, order_number, article_quantity, payment_state):
-        order = create_order(self.party.id, self.user,
-                             order_number=order_number)
+        order = create_order(self.shop.id, self.user, order_number=order_number)
         order.payment_state = payment_state
         self.db.session.add(order)
 
