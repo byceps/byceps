@@ -2,7 +2,7 @@
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/shop_article_admin.html' import render_article_link %}
 {% from 'macros/shop_order_admin.html' import render_order_link, render_order_payment_state %}
-{% from 'macros/user_admin.html' import render_user_avatar_16_and_link %}
+{% from 'macros/user_admin.html' import render_user_microcard %}
 {% set current_page_party = party %}
 {% set title = article.description %}
 
@@ -35,10 +35,7 @@
     <tbody>
     {%- for quantity, order, user in quantities_orders_users|sort(attribute='1.order_number', reverse=True) %}
       <tr>
-        <td>
-          {{- render_user_avatar_16_and_link(user) }}<br>
-          {{- '%s %s'|format(order.first_names, order.last_name) -}}
-        </td>
+        <td>{{ render_user_microcard(user, full_name='%s %s'|format(order.first_names, order.last_name)) }}</td>
         <td class="centered">{{ quantity }}</td>
         <td>
           {{- render_order_link(order) }}<br>
