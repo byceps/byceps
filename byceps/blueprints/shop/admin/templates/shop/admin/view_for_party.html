@@ -29,7 +29,7 @@
       </a>
     </div>
     <div class="column-auto">
-      <a class="button button--clear" href="{{ url_for('shop_order_admin.index_for_party', party_id=party.id, only_payment_state='open') }}">
+      <a class="button button--clear" href="{{ url_for('shop_order_admin.index_for_party', party_id=party.id, only_payment_state='paid') }}">
         {{- render_bigstats_item(order_counts_by_payment_state[PaymentState.paid], 'Bestellungen<br>'|safe ~ render_order_payment_state(PaymentState.paid)) -}}
       </a>
     </div>
