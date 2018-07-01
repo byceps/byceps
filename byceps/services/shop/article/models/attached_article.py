@@ -6,9 +6,15 @@ byceps.services.shop.article.models.attached_article
 :License: Modified BSD, see LICENSE for details.
 """
 
+from typing import NewType
+from uuid import UUID
+
 from .....database import db, generate_uuid
 
 from .article import Article
+
+
+AttachedArticleID = NewType('AttachedArticleID', UUID)
 
 
 class AttachedArticle(db.Model):

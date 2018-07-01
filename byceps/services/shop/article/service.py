@@ -18,7 +18,7 @@ from ..shop.models import Shop
 from ..shop.transfer.models import ShopID
 
 from .models.article import Article, ArticleID
-from .models.attached_article import AttachedArticle
+from .models.attached_article import AttachedArticle, AttachedArticleID
 from .models.compilation import ArticleCompilation, ArticleCompilationItem
 from .transfer.models import ArticleNumber
 
@@ -94,7 +94,8 @@ def find_article_with_details(article_id: ArticleID) -> Optional[Article]:
         .get(article_id)
 
 
-def find_attached_article(attached_article_id) -> Optional[AttachedArticle]:
+def find_attached_article(attached_article_id: AttachedArticleID
+                         ) -> Optional[AttachedArticle]:
     """Return the attached article with that ID, or `None` if not found."""
     return AttachedArticle.query.get(attached_article_id)
 
