@@ -8,7 +8,6 @@ from byceps.services.shop.order.models.order import Order
 from byceps.services.shop.order.transfer.models import PaymentMethod, \
     PaymentState
 
-from testfixtures.shop_article import create_article
 from testfixtures.shop_order import create_order, create_order_item
 
 from tests.base import CONFIG_FILENAME_TEST_ADMIN
@@ -40,7 +39,7 @@ class ShopAdminTestCase(ShopTestBase):
         return admin
 
     def test_cancel_before_paid(self):
-        article_before = self.create_article(5)
+        article_before = self.create_article(self.shop.id, quantity=5)
 
         quantified_articles_to_order = {(article_before, 3)}
         order_before = self.create_order(quantified_articles_to_order)
@@ -79,7 +78,7 @@ class ShopAdminTestCase(ShopTestBase):
                        PaymentState.paid, self.admin.id)
 
     def test_cancel_after_paid(self):
-        article_before = self.create_article(5)
+        article_before = self.create_article(self.shop.id, quantity=5)
 
         quantified_articles_to_order = {(article_before, 3)}
         order_before = self.create_order(quantified_articles_to_order)
@@ -107,14 +106,6 @@ class ShopAdminTestCase(ShopTestBase):
         assert article_afterwards.quantity == 8
 
     # helpers
-
-    def create_article(self, quantity):
-        article = create_article(self.shop.id, quantity=quantity)
-
-        self.db.session.add(article)
-        self.db.session.commit()
-
-        return article
 
     def create_order(self, quantified_articles):
         order = create_order(self.party.id, self.orderer)

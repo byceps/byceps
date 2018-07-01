@@ -8,7 +8,6 @@ from itertools import count
 from byceps.services.shop.order import ordered_articles_service
 from byceps.services.shop.order.transfer.models import PaymentState
 
-from testfixtures.shop_article import create_article
 from testfixtures.shop_order import create_order, create_order_item
 
 from tests.services.shop.base import ShopTestBase
@@ -24,7 +23,7 @@ class OrderedArticlesServiceTestCase(ShopTestBase):
         self.create_brand_and_party()
 
         self.shop = self.create_shop(self.party.id)
-        self.article = self.create_article()
+        self.article = self.create_article(self.shop.id)
 
     def test_count_ordered_articles(self):
         expected = {
@@ -54,14 +53,6 @@ class OrderedArticlesServiceTestCase(ShopTestBase):
 
     # -------------------------------------------------------------------- #
     # helpers
-
-    def create_article(self):
-        article = create_article(self.shop.id)
-
-        self.db.session.add(article)
-        self.db.session.commit()
-
-        return article
 
     def create_order(self, order_number, article_quantity, payment_state):
         order = create_order(self.shop.id, self.user, order_number=order_number)

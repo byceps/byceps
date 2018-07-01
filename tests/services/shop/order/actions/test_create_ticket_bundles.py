@@ -8,8 +8,6 @@ from byceps.services.shop.order import event_service as order_event_service
 from byceps.services.ticketing import \
     category_service as ticket_category_service, ticket_service
 
-from testfixtures.shop_article import create_article
-
 from .base import OrderActionTestBase
 
 
@@ -18,7 +16,7 @@ class CreateTicketBundlesActionTest(OrderActionTestBase):
     def setUp(self):
         super().setUp()
 
-        self.article = self.create_article()
+        self.article = self.create_article(self.shop.id, quantity=10)
 
         self.ticket_category = ticket_category_service.create_category(
             self.party.id, 'Deluxe')
@@ -54,14 +52,6 @@ class CreateTicketBundlesActionTest(OrderActionTestBase):
 
     # -------------------------------------------------------------------- #
     # helpers
-
-    def create_article(self):
-        article = create_article(self.shop.id, quantity=10)
-
-        self.db.session.add(article)
-        self.db.session.commit()
-
-        return article
 
     def get_tickets_for_order(self):
         return ticket_service.find_tickets_created_by_order(
