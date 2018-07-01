@@ -109,6 +109,11 @@ img {
   margin: -1rem 0 0 -1rem;
 }
 
+.row--equal-sized-centered-columns > * {
+  flex: 1;
+  text-align: center;
+}
+
 .row--space-around {
   justify-content: space-around;
 }

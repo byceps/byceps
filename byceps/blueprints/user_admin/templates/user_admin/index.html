@@ -12,7 +12,7 @@
 
   <h1>{{ title }}</h1>
 
-  <div class="row row--space-around row--wrap bigstats">
+  <div class="row row--equal-sized-centered-columns row--space-around row--wrap bigstats">
     <div class="column-auto">
       <a class="button button--clear" href="{{ url_for('.index') }}">
         {{- render_bigstats_item('{:n}'.format(total_overall), '&sum; gesamt'|safe) -}}
