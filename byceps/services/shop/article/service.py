@@ -14,8 +14,6 @@ from flask_sqlalchemy import Pagination
 
 from ....database import BaseQuery, db
 
-from ...party.models.party import Party
-
 from ..shop.models import Shop
 from ..shop.transfer.models import ShopID
 
