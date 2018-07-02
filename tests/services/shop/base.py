@@ -41,8 +41,8 @@ class ShopTestBase(AbstractAppTestCase):
 
         return sequence
 
-    def create_article(self, shop_id, *, quantity=1):
-        article = create_article(shop_id, quantity=quantity)
+    def create_article(self, shop_id, **kwargs):
+        article = create_article(shop_id, **kwargs)
 
         self.db.session.add(article)
         self.db.session.commit()
