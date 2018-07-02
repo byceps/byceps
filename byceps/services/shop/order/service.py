@@ -287,7 +287,8 @@ def count_orders_per_payment_state(shop_id: ShopID) -> Dict[PaymentState, int]:
         .group_by(DbOrder._payment_state) \
         .all()
 
-    for payment_state, count in rows:
+    for payment_state_str, count in rows:
+        payment_state = PaymentState[payment_state_str]
         counts_by_payment_state[payment_state] = count
 
     return counts_by_payment_state
