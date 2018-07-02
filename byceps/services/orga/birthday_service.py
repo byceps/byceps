@@ -7,19 +7,19 @@ byceps.services.orga.birthday_service
 """
 
 from itertools import islice
-from typing import Any, Dict, Iterator, Sequence
+from typing import Iterator, Sequence, Tuple
 
 from ...database import db
 
 from ..user_avatar import service as user_avatar_service
 from ..user.models.detail import UserDetail
-from ..user.models.user import User
+from ..user.models.user import User, UserTuple
 
 from .models import OrgaFlag
 
 
 def collect_orgas_with_next_birthdays(*, limit: int=None) \
-                                      -> Iterator[Dict[str, Any]]:
+                                      -> Iterator[Tuple[UserTuple, UserDetail]]:
     """Yield the next birthdays of organizers, sorted by month and day."""
     orgas_with_birthdays = _collect_orgas_with_birthdays()
 
@@ -38,13 +38,16 @@ def collect_orgas_with_next_birthdays(*, limit: int=None) \
     for user in orgas:
         avatar_url = avatar_urls_by_user_id.get(user.id)
 
-        yield {
-            'id': user.id,
-            'screen_name': user.screen_name,
-            'detail': user.detail,
-            'avatar_url': avatar_url,
-            'is_orga': False,
-        }
+        user_tuple = UserTuple(
+            user.id,
+            user.screen_name,
+            user.suspended,
+            user.deleted,
+            avatar_url,
+            True,  # is_orga
+        )
+
+        yield user_tuple, user.detail
 
 
 def _collect_orgas_with_birthdays() -> Sequence[User]:
