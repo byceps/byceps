@@ -1,5 +1,4 @@
-{% macro render_relative_days_until(user) %}
-  {%- set days_until_next_birthday = user.detail.days_until_next_birthday %}
+{% macro render_relative_days_until(days_until_next_birthday) %}
   {%- set is_soon = (days_until_next_birthday <= 7) %}
 
   {%- if is_soon %}<strong>{% endif %}
