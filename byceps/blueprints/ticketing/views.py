@@ -10,7 +10,7 @@ from flask import abort, g, redirect, request, url_for
 
 from ...config import get_ticket_management_enabled
 from ...services.party import service as party_service
-from ...services.ticketing import ticket_service
+from ...services.ticketing import barcode_service, ticket_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_error, flash_success
 from ...util.iterables import find
@@ -47,6 +47,39 @@ def index_mine():
         'party_title': party.title,
         'tickets': tickets,
         'current_user_uses_any_ticket': current_user_uses_any_ticket,
+        'is_user_allowed_to_print_ticket': _is_user_allowed_to_print_ticket,
+    }
+
+
+@blueprint.route('/tickets/<uuid:ticket_id>/printable.html')
+@templated
+def view_printable_html(ticket_id):
+    """Show a form to select a user to appoint for the ticket."""
+    ticket = _get_ticket_or_404(ticket_id)
+
+    if not _is_user_allowed_to_print_ticket(ticket, g.current_user.id):
+        # Hide ticket ID validity rather than openly denying access.
+        abort(404)
+
+    party = party_service.find_party(g.party_id)
+
+    barcode_svg = barcode_service.render_svg(ticket.code)
+
+    # Encode SVG to be used inline as part of a data URI.
+    # Replacements are not complete, but sufficient for this case.
+    #
+    # See https://codepen.io/tigt/post/optimizing-svgs-in-data-uris
+    # for details.
+    barcode_svg_inline = barcode_svg \
+            .replace('<', '%3C') \
+            .replace('>', '%3E') \
+            .replace('"', '\'') \
+            .replace('\n', '%0A')
+
+    return {
+        'ticket': ticket,
+        'party': party,
+        'barcode_svg_inline': barcode_svg_inline,
     }
 
 
@@ -282,3 +315,10 @@ def _get_ticket_or_404(ticket_id):
         abort(404)
 
     return ticket
+
+
+def _is_user_allowed_to_print_ticket(ticket, user_id):
+    """Return `True` only if the user is allowed to print the ticket."""
+    return ticket.is_owned_by(user_id) \
+        or ticket.is_managed_by(user_id) \
+        or ticket.used_by_id == user_id

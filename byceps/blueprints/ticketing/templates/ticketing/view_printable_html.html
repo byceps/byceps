@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ticket {{ ticket.code }} – {{ party.title }}</title>
+    <style>
+body {
+  font-family: sans-serif;
+}
+
+@page {
+  color: #333;
+  margin: 1cm;
+  size: A4;
+}
+
+.ticket {
+  align-items: flex-start;
+  border: #bbb solid 0.25pt;
+  display: flex;
+  flex-direction: column;
+  padding: 1cm;
+}
+
+h1 {
+  margin-top: 0;
+}
+
+.subtitle {
+  font-size: 1.4rem;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+th,
+td {
+  padding: 0.25rem 1em 0.25rem 0;
+  text-align: left;
+  vertical-align: top;
+}
+
+.dimmed {
+  opacity: 0.5;
+}
+    </style>
+  </head>
+  <body>
+    <div class="ticket">
+
+      <h1>
+        Ticket {{ ticket.code }}<br>
+        <span class="dimmed subtitle">{{ party.title }}</span>
+      </h1>
+
+
+      <img src="data:image/svg+xml,{{ barcode_svg_inline|safe }}">
+
+
+      <h2>Nutzer/in</h2>
+
+      <table>
+        <tr>
+          <th>Nickname:</th>
+          <td>{{ ticket.used_by.screen_name if ticket.used_by else 'nicht zugewiesen'|dim }}</td>
+        </tr>
+        <tr>
+          <th>Name:</th>
+          <td>{{ ticket.used_by.detail.full_name if ticket.used_by else 'nicht zugewiesen'|dim }}</td>
+        </tr>
+      </table>
+
+
+      <h2>Käufer/in</h2>
+
+      <table>
+        <tr>
+          <th>Nickname:</th>
+          <td>{{ ticket.owned_by.screen_name }}</td>
+        </tr>
+        <tr>
+          <th>Name:</th>
+          <td>{{ ticket.owned_by.detail.full_name }}</td>
+        </tr>
+      </table>
+
+
+      <h2>Sitzplatz</h2>
+      <div>{{ ticket.occupied_seat.label if ticket.occupied_seat else 'nicht zugewiesen'|dim }}</div>
+
+    </div>
+
+  </body>
+</html>

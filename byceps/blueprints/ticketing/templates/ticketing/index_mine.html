@@ -58,6 +58,8 @@
               <span class="label-buttons">
                 {%- if ticket.user_checked_in %}
                 {{ render_tag('eingecheckt') }}
+                {%- else %}
+                <a href="{{ url_for('.view_printable_html', ticket_id=ticket.id) }}">{{ render_icon('print') }}</a>
                 {%- endif %}
               </span>
             </div>
