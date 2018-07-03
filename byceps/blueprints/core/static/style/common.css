@@ -104,7 +104,6 @@ img {
 /* grid */
 
 .row {
-  align-items: baseline;
   display: flex;
   margin: -1rem 0 0 -1rem;
 }
