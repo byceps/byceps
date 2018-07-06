@@ -38,6 +38,12 @@ def register_ticket_bundles_creation(article_number: ArticleNumber,
     action_service.create_action(article_number, PaymentState.paid,
                                  'create_ticket_bundles', params_create)
 
+    # Revoke ticket bundles that have been created for the order when it
+    # is canceled after being marked as paid.
+    params_revoke = {}  # type: Parameters
+    action_service.create_action(article_number, PaymentState.canceled_after_paid,
+                                 'revoke_ticket_bundles', params_revoke)
+
 
 def register_tickets_creation(article_number: ArticleNumber,
                               ticket_category_id: CategoryID) -> None:
@@ -48,7 +54,7 @@ def register_tickets_creation(article_number: ArticleNumber,
     action_service.create_action(article_number, PaymentState.paid,
                                  'create_tickets', params_create)
 
-    # Revoke tickets that have been created for order when it is
+    # Revoke tickets that have been created for the order when it is
     # canceled after being marked as paid.
     params_revoke = {}  # type: Parameters
     action_service.create_action(article_number, PaymentState.canceled_after_paid,
