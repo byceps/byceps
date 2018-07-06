@@ -195,9 +195,11 @@ def cancel_order(order: DbOrder, updated_by_id: UserID, reason: str) -> None:
     if order.is_canceled:
         raise OrderAlreadyCanceled()
 
+    has_order_been_paid = order.is_paid
+
     updated_at = datetime.now()
     payment_state_from = order.payment_state
-    payment_state_to = PaymentState.canceled_after_paid if order.is_paid \
+    payment_state_to = PaymentState.canceled_after_paid if has_order_been_paid \
                   else PaymentState.canceled_before_paid
 
     _update_payment_state(order, payment_state_to, updated_at, updated_by_id)
@@ -205,7 +207,7 @@ def cancel_order(order: DbOrder, updated_by_id: UserID, reason: str) -> None:
     order.cancelation_reason = reason
 
     now = datetime.utcnow()
-    event_type = 'order-canceled-after-paid' if order.is_paid \
+    event_type = 'order-canceled-after-paid' if has_order_been_paid \
             else 'order-canceled-before-paid'
     data = {
         'initiator_id': str(updated_by_id),
