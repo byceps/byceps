@@ -74,6 +74,11 @@
           {%- set body %}
             Ein <strong><a href="{{ url_for('ticketing_admin.view_bundle', bundle_id=event.bundle_id) }}">Ticket Bundle</a></strong> mit {{ event.ticket_quantity }} Tickets der Kategorie &quot;{{ event.ticket_category_title|fallback('unbekannt') }}&quot; ist erzeugt worden.
           {%- endset %}
+        {%- elif event.event == 'ticket-bundle-revoked' %}
+          {%- set icon_name = 'ticket' %}
+          {%- set body %}
+            Ein <strong><a href="{{ url_for('ticketing_admin.view_bundle', bundle_id=event.bundle_id) }}">Ticket Bundle</a></strong> ist {{ render_ticket_flag_revoked() }} worden.
+          {%- endset %}
         {%- elif event.event == 'ticket-created' %}
           {%- set icon_name = 'ticket' %}
           {%- set body %}

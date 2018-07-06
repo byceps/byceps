@@ -91,6 +91,8 @@ def _get_additional_data(event: OrderEvent, users_by_id: Dict[UserID, UserTuple]
         return _get_additional_data_for_badge_awarded(event)
     elif event.event_type == 'ticket-bundle-created':
         return _get_additional_data_for_ticket_bundle_created(event)
+    elif event.event_type == 'ticket-bundle-revoked':
+        return _get_additional_data_for_ticket_bundle_revoked(event)
     elif event.event_type == 'ticket-created':
         return _get_additional_data_for_ticket_created(event)
     elif event.event_type == 'ticket-revoked':
@@ -137,6 +139,15 @@ def _get_additional_data_for_ticket_bundle_created(event: OrderEvent
         'bundle_id': bundle_id,
         'ticket_category_title': category_title,
         'ticket_quantity': ticket_quantity,
+    }
+
+
+def _get_additional_data_for_ticket_bundle_revoked(event: OrderEvent
+                                                  ) -> OrderEventData:
+    bundle_id = event.data['ticket_bundle_id']
+
+    return {
+        'bundle_id': bundle_id,
     }
 
 
