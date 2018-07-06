@@ -13,11 +13,11 @@ from ...typing import UserID
 
 from ..shop.order.transfer.models import OrderNumber
 
-from . import event_service
 from .models.category import CategoryID
 from .models.ticket import Ticket
 from .models.ticket_bundle import TicketBundle, TicketBundleID
-from .ticket_service import build_tickets
+from .ticket_service import \
+    _build_ticket_revoked_event as build_ticket_revoked_event, build_tickets
 
 
 def create_bundle(category_id: CategoryID, ticket_quantity: int,
@@ -40,7 +40,10 @@ def create_bundle(category_id: CategoryID, ticket_quantity: int,
     return bundle
 
 
-def revoke_bundle(bundle_id: TicketBundleID) -> None:
+def revoke_bundle(bundle_id: TicketBundleID, *,
+                  initiator_id: Optional[UserID]=None,
+                  reason: Optional[str]=None
+                 ) -> None:
     """Revoke the tickets included in this bundle."""
     bundle = find_bundle(bundle_id)
 
@@ -50,7 +53,7 @@ def revoke_bundle(bundle_id: TicketBundleID) -> None:
     for ticket in bundle.tickets:
         ticket.revoked = True
 
-        event = event_service._build_event('ticket-revoked', ticket.id, {})
+        event = build_ticket_revoked_event(ticket.id, initiator_id, reason)
         db.session.add(event)
 
     db.session.commit()
