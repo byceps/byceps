@@ -33,7 +33,7 @@ def _create_order_event(order_id: OrderID, bundle_id: TicketBundleID) -> None:
     event_type = 'ticket-bundle-revoked'
 
     data = {
-        'ticket_bundle_id': str(bundle.id),
+        'ticket_bundle_id': str(bundle_id),
     }
 
     event_service.create_event(event_type, order_id, data)
