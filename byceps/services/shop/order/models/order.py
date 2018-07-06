@@ -57,7 +57,7 @@ class Order(db.Model):
     payment_state_updated_at = db.Column(db.DateTime, nullable=True)
     payment_state_updated_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=True)
     payment_state_updated_by = db.relationship(User, foreign_keys=[payment_state_updated_by_id])
-    cancelation_reason = db.Column(db.Unicode(200), nullable=True)
+    cancelation_reason = db.Column(db.Unicode(800), nullable=True)
     shipping_required = db.Column(db.Boolean, nullable=False)
     shipped_at = db.Column(db.DateTime, nullable=True)
 

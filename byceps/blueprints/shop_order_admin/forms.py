@@ -14,7 +14,7 @@ from ...util.l10n import LocalizedForm
 
 
 class CancelForm(LocalizedForm):
-    reason = TextAreaField('Begründung', validators=[InputRequired(), Length(max=200)])
+    reason = TextAreaField('Begründung', validators=[InputRequired(), Length(max=800)])
 
 
 PAYMENT_METHOD_CHOICES = [
