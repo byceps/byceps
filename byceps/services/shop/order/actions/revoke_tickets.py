@@ -20,7 +20,7 @@ from ..transfer.models import Order, OrderID
 
 def revoke_tickets(order: Order, article_number: ArticleNumber, quantity: int,
                    parameters: Parameters) -> None:
-    """Revoke tickets."""
+    """Revoke all tickets in this order."""
     tickets = ticket_service.find_tickets_created_by_order(order.order_number)
 
     ticket_ids = {t.id for t in tickets}
