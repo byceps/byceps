@@ -10,7 +10,7 @@ from byceps.util.authorization import create_permission_enum
 
 
 OrgaBirthdayPermission = create_permission_enum('orga_birthday', [
-    'list',
+    'view',
 ])
 
 

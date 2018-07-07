@@ -162,7 +162,7 @@ def export_persons(brand_id):
 
 
 @blueprint.route('/birthdays')
-@permission_required(OrgaBirthdayPermission.list)
+@permission_required(OrgaBirthdayPermission.view)
 @templated
 def birthdays():
     orgas = list(
