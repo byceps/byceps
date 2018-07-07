@@ -34,7 +34,7 @@ permission_registry.register_enum(SnippetPermission)
 
 
 @blueprint.route('/for_party/<party_id>')
-@permission_required(SnippetPermission.list)
+@permission_required(SnippetPermission.view)
 @templated
 def index_for_party(party_id):
     """List snippets for that party."""

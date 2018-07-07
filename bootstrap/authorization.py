@@ -82,9 +82,9 @@ def create_roles_and_permissions():
         'snippet_editor',
         'Snippets bearbeiten',
         [
-            (SnippetPermission.list, 'Snippets auflisten'),
             (SnippetPermission.create, 'Snippets erstellen'),
             (SnippetPermission.update, 'Snippets bearbeiten'),
+            (SnippetPermission.view, 'Snippets anzeigen'),
             (SnippetPermission.view_history, 'Versionsverlauf von Snippets anzeigen'),
         ])
 

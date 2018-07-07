@@ -16,8 +16,8 @@ MountpointPermission = create_permission_enum('mountpoint', [
 
 
 SnippetPermission = create_permission_enum('snippet', [
-    'list',
     'create',
     'update',
+    'view',
     'view_history',
 ])
