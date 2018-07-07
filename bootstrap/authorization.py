@@ -100,8 +100,7 @@ def create_roles_and_permissions():
         'user_admin',
         'Benutzer verwalten',
         [
-            (UserPermission.list, 'Benutzer auflisten'),
-            (UserPermission.view, 'Benutzer ansehen'),
+            (UserPermission.view, 'Benutzer anzeigen'),
         ])
 
 

@@ -44,7 +44,7 @@ permission_registry.register_enum(UserPermission)
 
 @blueprint.route('/', defaults={'page': 1})
 @blueprint.route('/pages/<int:page>')
-@permission_required(UserPermission.list)
+@permission_required(UserPermission.view)
 @templated
 def index(page):
     """List users."""
