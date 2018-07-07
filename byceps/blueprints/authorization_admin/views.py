@@ -26,7 +26,7 @@ permission_registry.register_enum(RolePermission)
 
 
 @blueprint.route('/permissions')
-@permission_required(RolePermission.list)
+@permission_required(RolePermission.view)
 @templated
 def permission_index():
     """List permissions."""
@@ -36,7 +36,7 @@ def permission_index():
 
 
 @blueprint.route('/roles')
-@permission_required(RolePermission.list)
+@permission_required(RolePermission.view)
 @templated
 def role_index():
     """List roles."""
@@ -46,7 +46,7 @@ def role_index():
 
 
 @blueprint.route('/roles/<role_id>')
-@permission_required(RolePermission.list)
+@permission_required(RolePermission.view)
 @templated
 def role_view(role_id):
     """View role details."""

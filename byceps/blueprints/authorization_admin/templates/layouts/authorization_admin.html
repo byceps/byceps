@@ -7,8 +7,8 @@
 {{
   render_main_tabs(
     Navigation(None)
-      .add_item(url_for('.role_index'), 'Rollen', id='roles', required_permission=RolePermission.list)
-      .add_item(url_for('.permission_index'), 'Rechte', id='permissions', required_permission=RolePermission.list)
+      .add_item(url_for('.role_index'), 'Rollen', id='roles', required_permission=RolePermission.view)
+      .add_item(url_for('.permission_index'), 'Rechte', id='permissions', required_permission=RolePermission.view)
     , current_tab
   )
 }}

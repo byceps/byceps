@@ -23,7 +23,7 @@ def create_roles_and_permissions():
         'authorization_admin',
         'Rechte und Rollen verwalten',
         [
-            (RolePermission.list, 'Rollen auflisten'),
+            (RolePermission.view, 'Rollen anzeigen'),
         ])
 
     create_role_with_permissions(

@@ -10,6 +10,6 @@ from byceps.util.authorization import create_permission_enum
 
 
 RolePermission = create_permission_enum('role', [
-    'list',
     'assign',
+    'view',
 ])
