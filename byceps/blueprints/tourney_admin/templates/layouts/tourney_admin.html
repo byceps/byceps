@@ -7,7 +7,7 @@
 {{
   render_main_tabs(
     Navigation(None)
-      .add_item(url_for('.category_index_for_party', party_id=party.id), 'Kategorien', id='categories', required_permission=TourneyCategoryPermission.list)
+      .add_item(url_for('.category_index_for_party', party_id=party.id), 'Kategorien', id='categories', required_permission=TourneyCategoryPermission.view)
     , current_tab
   )
 }}

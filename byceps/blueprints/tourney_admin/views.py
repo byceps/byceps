@@ -29,7 +29,7 @@ permission_registry.register_enum(TourneyCategoryPermission)
 
 
 @blueprint.route('/parties/<party_id>/categories')
-@permission_required(TourneyCategoryPermission.list)
+@permission_required(TourneyCategoryPermission.view)
 @templated
 def category_index_for_party(party_id):
     """List tourney categories for that party."""
