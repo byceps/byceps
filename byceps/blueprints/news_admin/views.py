@@ -33,7 +33,7 @@ permission_registry.register_enum(NewsItemPermission)
 
 @blueprint.route('/brands/<brand_id>', defaults={'page': 1})
 @blueprint.route('/brands/<brand_id>/pages/<int:page>')
-@permission_required(NewsItemPermission.list)
+@permission_required(NewsItemPermission.view)
 @templated
 def index_for_brand(brand_id, page):
     """List news items for that brand."""
@@ -50,7 +50,7 @@ def index_for_brand(brand_id, page):
 
 
 @blueprint.route('/versions/<uuid:version_id>')
-@permission_required(NewsItemPermission.list)
+@permission_required(NewsItemPermission.view)
 @templated
 def view_version(version_id):
     """Show the news item with the given version."""
