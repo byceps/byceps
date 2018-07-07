@@ -92,8 +92,8 @@ def create_roles_and_permissions():
         'terms_editor',
         'AGB verwalten',
         [
-            (TermsPermission.list, 'AGB-Versionen auflisten'),
             (TermsPermission.create, 'neue AGB-Versionen erstellen'),
+            (TermsPermission.view, 'AGB-Versionen anzeigen'),
         ])
 
     create_role_with_permissions(

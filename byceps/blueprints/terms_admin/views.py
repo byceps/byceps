@@ -26,7 +26,7 @@ permission_registry.register_enum(TermsPermission)
 
 
 @blueprint.route('/brands/<brand_id>')
-@permission_required(TermsPermission.list)
+@permission_required(TermsPermission.view)
 @templated
 def index_for_brand(brand_id):
     """List terms versions for that brand."""
@@ -46,7 +46,7 @@ def index_for_brand(brand_id):
 
 
 @blueprint.route('/versions/<uuid:version_id>')
-@permission_required(TermsPermission.list)
+@permission_required(TermsPermission.view)
 @templated
 def view(version_id):
     """Show the terms version."""
@@ -59,7 +59,7 @@ def view(version_id):
 
 
 @blueprint.route('/versions/<uuid:version_id>/body.html')
-@permission_required(TermsPermission.list)
+@permission_required(TermsPermission.view)
 @templated
 def view_body_html(version_id):
     """Show the terms version's HTML body."""

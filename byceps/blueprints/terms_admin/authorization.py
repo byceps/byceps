@@ -10,6 +10,6 @@ from byceps.util.authorization import create_permission_enum
 
 
 TermsPermission = create_permission_enum('terms', [
-    'list',
     'create',
+    'view',
 ])
