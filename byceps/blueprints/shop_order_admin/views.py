@@ -39,7 +39,7 @@ permission_registry.register_enum(ShopOrderPermission)
 
 @blueprint.route('/parties/<party_id>', defaults={'page': 1})
 @blueprint.route('/parties/<party_id>/pages/<int:page>')
-@permission_required(ShopOrderPermission.list)
+@permission_required(ShopOrderPermission.view)
 @templated
 def index_for_party(party_id, page):
     """List orders for that party."""

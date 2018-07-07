@@ -8,7 +8,7 @@
     Navigation(None)
       .add_item(url_for('shop_admin.view_for_party', party_id=party.id), 'Shop', id='shop', required_permission=ShopPermission.view)
       .add_item(url_for('shop_article_admin.index_for_party', party_id=party.id), 'Artikel', id='articles', required_permission=ShopArticlePermission.view)
-      .add_item(url_for('shop_order_admin.index_for_party', party_id=party.id), 'Bestellungen', id='orders', required_permission=ShopOrderPermission.list)
+      .add_item(url_for('shop_order_admin.index_for_party', party_id=party.id), 'Bestellungen', id='orders', required_permission=ShopOrderPermission.view)
     , current_tab
   )
 }}
