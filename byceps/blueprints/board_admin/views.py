@@ -41,7 +41,7 @@ BoardStats = namedtuple('BoardStats', [
 
 
 @blueprint.route('/brands/<brand_id>')
-@permission_required(BoardCategoryPermission.list)
+@permission_required(BoardCategoryPermission.view)
 @templated
 def index_for_brand(brand_id):
     """List categories for that brand."""
@@ -66,7 +66,7 @@ def index_for_brand(brand_id):
 
 
 @blueprint.route('/boards/<board_id>')
-@permission_required(BoardCategoryPermission.list)
+@permission_required(BoardCategoryPermission.view)
 @templated
 def view(board_id):
     """List categories for that board."""
