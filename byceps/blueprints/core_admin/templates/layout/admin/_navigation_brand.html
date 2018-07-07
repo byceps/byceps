@@ -19,7 +19,7 @@
   </header>
   {%- set navigation = Navigation('Marke')
       .add_item(url_for('admin_dashboard.view_brand', brand_id=brand.id), 'Dashboard', id='admin_dashboard_brand', required_permission=AdminDashboardPermission.view_brand, icon='dashboard')
-      .add_item(url_for('party_admin.index_for_brand', brand_id=brand.id), 'Partys', id='party_admin', required_permission=PartyPermission.list, icon='date')
+      .add_item(url_for('party_admin.index_for_brand', brand_id=brand.id), 'Partys', id='party_admin', required_permission=PartyPermission.view, icon='date')
       .add_item(url_for('orga_admin.persons_for_brand', brand_id=brand.id), 'Organisatoren', id='orga_admin', required_permission=OrgaDetailPermission.view, icon='users')
       .add_item(url_for('news_admin.index_for_brand', brand_id=brand.id), 'News', id='news_admin', required_permission=NewsItemPermission.list, icon='news')
       .add_item(url_for('newsletter_admin.view_subscriptions', brand_id=brand.id), 'Newsletter', id='newsletter_admin', required_permission=NewsletterPermission.view_subscriptions, icon='email')

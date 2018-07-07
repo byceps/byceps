@@ -66,8 +66,8 @@ def create_roles_and_permissions():
         'party_admin',
         'Partys verwalten',
         [
-            (PartyPermission.list, 'Partys auflisten'),
             (PartyPermission.create, 'Partys anlegen'),
+            (PartyPermission.view, 'Partys anzeigen'),
         ])
 
     create_role_with_permissions(

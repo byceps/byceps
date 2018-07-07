@@ -33,7 +33,7 @@ permission_registry.register_enum(PartyPermission)
 
 
 @blueprint.route('/')
-@permission_required(PartyPermission.list)
+@permission_required(PartyPermission.view)
 @templated
 def index():
     """List parties."""
@@ -46,7 +46,7 @@ def index():
 
 @blueprint.route('/brands/<brand_id>', defaults={'page': 1})
 @blueprint.route('/brands/<brand_id>/pages/<int:page>')
-@permission_required(PartyPermission.list)
+@permission_required(PartyPermission.view)
 @templated
 def index_for_brand(brand_id, page):
     """List parties for this brand."""
@@ -98,7 +98,7 @@ def _get_order_count_by_party_id():
 
 
 @blueprint.route('/<party_id>')
-@permission_required(PartyPermission.list)
+@permission_required(PartyPermission.view)
 @templated
 def view(party_id):
     """Show a party."""
