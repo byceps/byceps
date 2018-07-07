@@ -33,7 +33,7 @@ permission_registry.register_enum(OrgaPresencePermission)
 
 
 @blueprint.route('/<party_id>')
-@permission_required(OrgaPresencePermission.list)
+@permission_required(OrgaPresencePermission.view)
 @templated
 def view(party_id):
     """List orga presence and task time slots for that party."""

@@ -9,6 +9,6 @@ byceps.blueprints.orga_presence.authorization
 from byceps.util.authorization import create_permission_enum
 
 OrgaPresencePermission = create_permission_enum('orga_presence', [
-    'list',
     'update',
+    'view',
 ])
