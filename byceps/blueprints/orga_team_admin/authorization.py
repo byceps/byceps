@@ -10,8 +10,8 @@ from byceps.util.authorization import create_permission_enum
 
 
 OrgaTeamPermission = create_permission_enum('orga_team', [
+    'administrate_memberships',
     'create',
     'delete',
-    'list',
-    'administrate_memberships',
+    'view',
 ])

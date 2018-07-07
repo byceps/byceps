@@ -31,7 +31,7 @@ permission_registry.register_enum(OrgaTeamPermission)
 
 
 @blueprint.route('/teams/<party_id>')
-@permission_required(OrgaTeamPermission.list)
+@permission_required(OrgaTeamPermission.view)
 @templated
 def teams_for_party(party_id):
     """List organizer teams for that party."""

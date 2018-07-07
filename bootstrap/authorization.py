@@ -56,10 +56,10 @@ def create_roles_and_permissions():
         'orga_team_admin',
         'Orgateams verwalten',
         [
-            (OrgaTeamPermission.list, 'Orga-Teams auflisten'),
+            (OrgaTeamPermission.administrate_memberships, 'Orga-Team-Mitgliedschaften verwalten'),
             (OrgaTeamPermission.create, 'Orga-Teams erstellen'),
             (OrgaTeamPermission.delete, 'Orga-Teams entfernen'),
-            (OrgaTeamPermission.administrate_memberships, 'Orga-Team-Mitgliedschaften verwalten'),
+            (OrgaTeamPermission.view, 'Orga-Teams anzeigen'),
         ])
 
     create_role_with_permissions(
