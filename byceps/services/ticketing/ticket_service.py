@@ -24,9 +24,9 @@ from ..user import service as user_service
 from . import event_service
 from .event_service import TicketEvent
 from .models.category import Category
-from .models.ticket import Ticket, TicketID
+from .models.ticket import Ticket
 from .models.ticket_bundle import TicketBundle
-from .transfer.models import TicketCategoryID, TicketCode
+from .transfer.models import TicketCategoryID, TicketCode, TicketID
 
 
 # -------------------------------------------------------------------- #

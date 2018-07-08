@@ -11,8 +11,8 @@ from typing import Sequence
 
 from ...database import db
 
-from .models.ticket import TicketID
 from .models.ticket_event import TicketEvent, TicketEventData
+from .transfer.models import TicketID
 
 
 def create_event(event_type: str, ticket_id: TicketID, data: TicketEventData

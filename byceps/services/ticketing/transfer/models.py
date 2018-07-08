@@ -14,3 +14,6 @@ TicketCategoryID = NewType('TicketCategoryID', UUID)
 
 
 TicketCode = NewType('TicketCode', str)
+
+
+TicketID = NewType('TicketID', UUID)

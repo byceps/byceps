@@ -7,8 +7,7 @@ byceps.services.ticketing.models.ticket
 """
 
 from datetime import datetime
-from typing import NewType, Optional
-from uuid import UUID
+from typing import Optional
 
 from ....database import BaseQuery, db, generate_uuid
 from ....typing import PartyID, UserID
@@ -22,9 +21,6 @@ from ..transfer.models import TicketCategoryID, TicketCode
 
 from .category import Category
 from .ticket_bundle import TicketBundle
-
-
-TicketID = NewType('TicketID', UUID)
 
 
 class TicketQuery(BaseQuery):

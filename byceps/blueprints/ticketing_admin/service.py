@@ -10,10 +10,10 @@ from typing import Any, Dict, Iterator, Sequence, Set, Tuple
 
 from ...services.seating import seat_service
 from ...services.ticketing import event_service
-from ...services.ticketing.models.ticket import TicketID
 from ...services.ticketing.models.ticket_event import TicketEvent, \
     TicketEventData
 from ...services.ticketing import ticket_service
+from ...services.ticketing.transfer.models import TicketID
 from ...services.user.models.user import UserTuple
 from ...services.user import service as user_service
 from ...typing import UserID

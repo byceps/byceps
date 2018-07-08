@@ -14,8 +14,9 @@ from ...config import get_seat_management_enabled
 from ...services.seating import area_service as seating_area_service
 from ...services.seating.models.seat import Seat, SeatID
 from ...services.seating import seat_service
-from ...services.ticketing.models.ticket import Ticket, TicketID
+from ...services.ticketing.models.ticket import Ticket
 from ...services.ticketing import ticket_service
+from ...services.ticketing.transfer.models import TicketID
 from ...services.user.models.user import UserTuple
 from ...services.user import service as user_service
 from ...typing import UserID
