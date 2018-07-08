@@ -39,6 +39,7 @@
   <h1>{{ title }}</h1>
 
   {%- if g.current_user.has_any_permission(
+    ShopOrderPermission.cancel,
     ShopOrderPermission.mark_as_paid,
     ShopOrderPermission.update
   ) %}

@@ -201,7 +201,7 @@ def unset_shipped_flag(order_id):
 
 
 @blueprint.route('/<uuid:order_id>/cancel')
-@permission_required(ShopOrderPermission.update)
+@permission_required(ShopOrderPermission.cancel)
 @templated
 def cancel_form(order_id, erroneous_form=None):
     """Show form to cancel an order."""
@@ -226,7 +226,7 @@ def cancel_form(order_id, erroneous_form=None):
 
 
 @blueprint.route('/<uuid:order_id>/cancel', methods=['POST'])
-@permission_required(ShopOrderPermission.update)
+@permission_required(ShopOrderPermission.cancel)
 def cancel(order_id):
     """Set the payment status of a single order to 'canceled' and
     release the respective article quantities.
