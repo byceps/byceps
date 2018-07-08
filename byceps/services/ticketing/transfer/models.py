@@ -11,3 +11,6 @@ from uuid import UUID
 
 
 TicketCategoryID = NewType('TicketCategoryID', UUID)
+
+
+TicketCode = NewType('TicketCode', str)

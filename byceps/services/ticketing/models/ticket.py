@@ -18,16 +18,13 @@ from ...seating.models.seat import Seat
 from ...shop.order.transfer.models import OrderNumber
 from ...user.models.user import User
 
-from ..transfer.models import TicketCategoryID
+from ..transfer.models import TicketCategoryID, TicketCode
 
 from .category import Category
 from .ticket_bundle import TicketBundle
 
 
 TicketID = NewType('TicketID', UUID)
-
-
-TicketCode = NewType('TicketCode', str)
 
 
 class TicketQuery(BaseQuery):
