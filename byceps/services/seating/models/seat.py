@@ -7,8 +7,7 @@ byceps.services.seating.models.seat
 """
 
 from collections import namedtuple
-from typing import NewType, Optional
-from uuid import UUID
+from typing import Optional
 
 from sqlalchemy.ext.hybrid import hybrid_property
 
@@ -23,9 +22,6 @@ from .area import Area
 
 
 Point = namedtuple('Point', ['x', 'y'])
-
-
-SeatID = NewType('SeatID', UUID)
 
 
 class Seat(db.Model):

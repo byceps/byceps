@@ -8,8 +8,9 @@ byceps.blueprints.attendance.service
 from collections import namedtuple
 from typing import Dict, Iterator, Sequence
 
-from ...services.seating.models.seat import Seat, SeatID
+from ...services.seating.models.seat import Seat
 from ...services.seating import seat_service
+from ...services.seating.transfer.models import SeatID
 from ...services.ticketing.models.ticket import Ticket
 from ...services.user.models.user import User
 from ...services.user import service as user_service

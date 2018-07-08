@@ -15,8 +15,9 @@ from ...database import db
 from ...typing import PartyID, UserID
 
 from ..party.models.party import Party
-from ..seating.models.seat import Seat, SeatID
+from ..seating.models.seat import Seat
 from ..seating import seat_service
+from ..seating.transfer.models import SeatID
 from ..shop.order.transfer.models import OrderNumber
 from ..user.models.user import User
 from ..user import service as user_service

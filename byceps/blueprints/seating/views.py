@@ -12,8 +12,9 @@ from flask import abort, g
 
 from ...config import get_seat_management_enabled
 from ...services.seating import area_service as seating_area_service
-from ...services.seating.models.seat import Seat, SeatID
+from ...services.seating.models.seat import Seat
 from ...services.seating import seat_service
+from ...services.seating.transfer.models import SeatID
 from ...services.ticketing.models.ticket import Ticket
 from ...services.ticketing import ticket_service
 from ...services.ticketing.transfer.models import TicketID

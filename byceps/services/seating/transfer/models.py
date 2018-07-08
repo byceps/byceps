@@ -11,3 +11,6 @@ from uuid import UUID
 
 
 AreaID = NewType('AreaID', UUID)
+
+
+SeatID = NewType('SeatID', UUID)

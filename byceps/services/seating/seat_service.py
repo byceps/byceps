@@ -14,8 +14,8 @@ from ...typing import PartyID
 from ..ticketing.transfer.models import TicketCategoryID
 
 from .models.area import Area
-from .models.seat import Seat, SeatID
-from .transfer.models import AreaID
+from .models.seat import Seat
+from .transfer.models import AreaID, SeatID
 
 
 def create_seat(area: Area, coord_x: int, coord_y: int,
