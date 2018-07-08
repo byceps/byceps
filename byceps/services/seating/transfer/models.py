@@ -14,3 +14,6 @@ AreaID = NewType('AreaID', UUID)
 
 
 SeatID = NewType('SeatID', UUID)
+
+
+SeatGroupID = NewType('SeatGroupID', UUID)

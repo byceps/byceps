@@ -6,9 +6,6 @@ byceps.services.seating.models.seat_group
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import NewType
-from uuid import UUID
-
 from sqlalchemy.ext.associationproxy import association_proxy
 
 from ....database import db, generate_uuid
@@ -20,9 +17,6 @@ from ...ticketing.models.ticket_bundle import TicketBundle
 from ...ticketing.transfer.models import TicketBundleID, TicketCategoryID
 
 from .seat import Seat
-
-
-SeatGroupID = NewType('SeatGroupID', UUID)
 
 
 class SeatGroup(db.Model):
