@@ -16,8 +16,8 @@ from ....typing import PartyID
 from ....util.instances import ReprBuilder
 
 from ...ticketing.models.category import Category
-from ...ticketing.models.ticket_bundle import TicketBundle, TicketBundleID
-from ...ticketing.transfer.models import TicketCategoryID
+from ...ticketing.models.ticket_bundle import TicketBundle
+from ...ticketing.transfer.models import TicketBundleID, TicketCategoryID
 
 from .seat import Seat
 

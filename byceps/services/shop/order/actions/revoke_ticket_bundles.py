@@ -6,8 +6,8 @@ byceps.services.shop.order.actions.revoke_ticket_bundles
 :License: Modified BSD, see LICENSE for details.
 """
 
-from ....ticketing.models.ticket_bundle import TicketBundleID
 from ....ticketing import ticket_bundle_service, ticket_service
+from ....ticketing.transfer.models import TicketBundleID
 
 from ...article.transfer.models import ArticleNumber
 

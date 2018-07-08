@@ -7,8 +7,6 @@ byceps.services.ticketing.models.ticket_bundle
 """
 
 from datetime import datetime
-from typing import NewType
-from uuid import UUID
 
 from ....database import db, generate_uuid
 from ....typing import UserID
@@ -19,9 +17,6 @@ from ...user.models.user import User
 from ..transfer.models import TicketCategoryID
 
 from .category import Category
-
-
-TicketBundleID = NewType('TicketBundleID', UUID)
 
 
 class TicketBundle(db.Model):

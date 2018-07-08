@@ -14,10 +14,10 @@ from ...typing import UserID
 from ..shop.order.transfer.models import OrderNumber
 
 from .models.ticket import Ticket
-from .models.ticket_bundle import TicketBundle, TicketBundleID
+from .models.ticket_bundle import TicketBundle
 from .ticket_service import \
     _build_ticket_revoked_event as build_ticket_revoked_event, build_tickets
-from .transfer.models import TicketCategoryID
+from .transfer.models import TicketBundleID, TicketCategoryID
 
 
 def create_bundle(category_id: TicketCategoryID, ticket_quantity: int,
