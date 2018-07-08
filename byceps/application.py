@@ -63,64 +63,65 @@ def _register_blueprints(app):
 
 def _get_blueprints(app):
     """Yield blueprints to register on the application."""
-    current_mode = config.get_site_mode(app)
-
-    always = True
-    debug = app.debug
-    site_mode_admin = current_mode.is_admin()
-    site_mode_public = current_mode.is_public()
-
-    blueprints = [
-        ('admin_dashboard',         '/admin/dashboard',         site_mode_admin     ),
-        ('attendance',              '/attendance',              site_mode_public    ),
-        ('authentication',          '/authentication',          always              ),
-        ('authorization',           None,                       always              ),
-        ('authorization_admin',     '/admin/authorization',     site_mode_admin     ),
-        ('board',                   '/board',                   site_mode_public    ),
-        ('board_admin',             '/admin/board',             site_mode_admin     ),
-        ('brand_admin',             '/admin/brands',            site_mode_admin     ),
-        ('core',                    '/core',                    always              ),
-        ('core_admin',              '/admin/core',              site_mode_admin     ),
-        ('news',                    '/news',                    site_mode_public    ),
-        ('news_admin',              '/admin/news',              site_mode_admin     ),
-        ('newsletter',              '/newsletter',              site_mode_public    ),
-        ('newsletter_admin',        '/admin/newsletter',        site_mode_admin     ),
-        ('orga_admin',              '/admin/orgas',             site_mode_admin     ),
-        ('orga_presence',           '/admin/presence',          site_mode_admin     ),
-        ('orga_team',               '/orgas',                   site_mode_public    ),
-        ('orga_team_admin',         '/admin/orga_teams',        site_mode_admin     ),
-        ('party',                   None,                       site_mode_public    ),
-        ('party_admin',             '/admin/parties',           site_mode_admin     ),
-        ('seating',                 '/seating',                 site_mode_public    ),
-        ('seating_admin',           '/admin/seating',           site_mode_admin     ),
-        ('shop.admin',              None,                       site_mode_admin     ),
-        ('shop.article_admin',      '/admin/shop/articles',     site_mode_admin     ),
-        ('shop.order_admin',        '/admin/shop/orders',       site_mode_admin     ),
-        ('shop.orders',             '/shop/orders',             site_mode_public    ),
-        ('shop.shop_admin',         '/admin/shop/shop',         site_mode_admin     ),
-        ('shop_order',              '/shop',                    site_mode_public    ),
-        ('snippet',                 '/snippets',                site_mode_public    ),
-        ('snippet_admin',           '/admin/snippets',          site_mode_admin     ),
-        ('style_guide',             '/style_guide',             debug               ),
-        ('terms',                   '/terms',                   site_mode_public    ),
-        ('terms_admin',             '/admin/terms',             site_mode_admin     ),
-        ('ticketing',               '/tickets',                 site_mode_public    ),
-        ('ticketing_admin',         '/admin/ticketing',         site_mode_admin     ),
-        ('ticketing.checkin',       '/admin/ticketing/checkin', site_mode_admin     ),
-        ('tourney',                 '/tourney',                 site_mode_public    ),
-        ('tourney_admin',           '/admin/tourney',           site_mode_admin     ),
-        ('tourney.avatar',          '/tourney/avatars',         site_mode_public    ),
-        ('user',                    '/users',                   always              ),
-        ('user_admin',              '/admin/users',             site_mode_admin     ),
-        ('user_avatar',             '/users',                   always              ),
-        ('user_badge',              '/user_badges',             site_mode_public    ),
-        ('user_badge_admin',        '/user_badges/admin',       site_mode_admin     ),
-        ('user_group',              '/user_groups',             site_mode_public    ),
+    yield from [
+        ('authentication',          '/authentication'               ),
+        ('authorization',           None                            ),
+        ('core',                    '/core'                         ),
+        ('user',                    '/users'                        ),
+        ('user_avatar',             '/users'                        ),
     ]
 
-    for name, url_prefix, include in blueprints:
-        if include:
-            yield name, url_prefix
+    current_mode = config.get_site_mode(app)
+    if current_mode.is_public():
+        yield from [
+            ('attendance',              '/attendance'               ),
+            ('board',                   '/board'                    ),
+            ('news',                    '/news'                     ),
+            ('newsletter',              '/newsletter'               ),
+            ('orga_team',               '/orgas'                    ),
+            ('party',                   None                        ),
+            ('seating',                 '/seating'                  ),
+            ('shop.orders',             '/shop/orders'              ),
+            ('shop_order',              '/shop'                     ),
+            ('snippet',                 '/snippets'                 ),
+            ('terms',                   '/terms'                    ),
+            ('ticketing',               '/tickets'                  ),
+            ('tourney',                 '/tourney'                  ),
+            ('tourney.avatar',          '/tourney/avatars'          ),
+            ('user_badge',              '/user_badges'              ),
+            ('user_group',              '/user_groups'              ),
+        ]
+    elif current_mode.is_admin():
+        yield from [
+            ('admin_dashboard',         '/admin/dashboard'          ),
+            ('authorization_admin',     '/admin/authorization'      ),
+            ('board_admin',             '/admin/board'              ),
+            ('brand_admin',             '/admin/brands'             ),
+            ('core_admin',              '/admin/core'               ),
+            ('news_admin',              '/admin/news'               ),
+            ('newsletter_admin',        '/admin/newsletter'         ),
+            ('orga_admin',              '/admin/orgas'              ),
+            ('orga_presence',           '/admin/presence'           ),
+            ('orga_team_admin',         '/admin/orga_teams'         ),
+            ('party_admin',             '/admin/parties'            ),
+            ('seating_admin',           '/admin/seating'            ),
+            ('shop.admin',              None                        ),
+            ('shop.article_admin',      '/admin/shop/articles'      ),
+            ('shop.order_admin',        '/admin/shop/orders'        ),
+            ('shop.shop_admin',         '/admin/shop/shop'          ),
+            ('snippet_admin',           '/admin/snippets'           ),
+            ('terms_admin',             '/admin/terms'              ),
+            ('ticketing_admin',         '/admin/ticketing'          ),
+            ('ticketing.checkin',       '/admin/ticketing/checkin'  ),
+            ('tourney_admin',           '/admin/tourney'            ),
+            ('user_admin',              '/admin/users'              ),
+            ('user_badge_admin',        '/user_badges/admin'        ),
+        ]
+
+    if app.debug:
+        yield from [
+            ('style_guide',             '/style_guide'              ),
+        ]
 
 
 def _add_static_file_url_rules(app):
