@@ -6,7 +6,7 @@ byceps.services.seating.seat_group_service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import Sequence
+from typing import Optional, Sequence
 
 from ...database import db
 from ...typing import PartyID
@@ -18,6 +18,7 @@ from ..ticketing.transfer.models import TicketCategoryID
 from .models.seat import Seat
 from .models.seat_group import Occupancy as SeatGroupOccupancy, SeatGroup, \
     SeatGroupAssignment
+from .transfer.models import SeatGroupID
 
 
 def create_seat_group(party_id: PartyID, ticket_category_id: TicketCategoryID,
@@ -152,6 +153,11 @@ def count_seat_groups_for_party(party_id: PartyID) -> int:
     return SeatGroup.query \
         .filter_by(party_id=party_id) \
         .count()
+
+
+def find_seat_group(seat_group_id: SeatGroupID) -> Optional[SeatGroup]:
+    """Return the seat group with that id, or `None` if not found."""
+    return SeatGroup.query.get(seat_group_id)
 
 
 def get_all_seat_groups_for_party(party_id: PartyID) -> Sequence[SeatGroup]:
