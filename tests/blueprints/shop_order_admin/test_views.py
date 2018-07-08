@@ -31,7 +31,11 @@ class ShopAdminTestCase(ShopTestBase):
     def create_admin(self):
         admin = self.create_user('Admin')
 
-        permission_ids = {'admin.access', 'shop_order.update'}
+        permission_ids = {
+            'admin.access',
+            'shop_order.cancel',
+            'shop_order.mark_as_paid',
+        }
         assign_permissions_to_user(admin.id, 'admin', permission_ids)
 
         self.create_session_token(admin.id)
