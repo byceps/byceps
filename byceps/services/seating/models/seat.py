@@ -15,7 +15,8 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from ....database import db, generate_uuid
 from ....util.instances import ReprBuilder
 
-from ...ticketing.models.category import Category, CategoryID
+from ...ticketing.models.category import Category
+from ...ticketing.transfer.models import TicketCategoryID
 from ...user.models.user import User
 
 from .area import Area
@@ -40,8 +41,8 @@ class Seat(db.Model):
     category = db.relationship(Category)
     label = db.Column(db.Unicode(40), nullable=True)
 
-    def __init__(self, area: Area, category_id: CategoryID, *, coord_x: int=0,
-                 coord_y: int=0) -> None:
+    def __init__(self, area: Area, category_id: TicketCategoryID, *,
+                 coord_x: int=0, coord_y: int=0) -> None:
         self.area = area
         self.coord_x = coord_x
         self.coord_y = coord_y

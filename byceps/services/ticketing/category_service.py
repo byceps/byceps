@@ -11,7 +11,8 @@ from typing import Optional, Sequence
 from ...database import db
 from ...typing import PartyID
 
-from .models.category import Category, CategoryID
+from .models.category import Category
+from .transfer.models import TicketCategoryID
 
 
 def create_category(party_id: PartyID, title: str) -> Category:
@@ -31,7 +32,7 @@ def count_categories_for_party(party_id: PartyID) -> int:
         .count()
 
 
-def find_category(category_id: CategoryID) -> Optional[Category]:
+def find_category(category_id: TicketCategoryID) -> Optional[Category]:
     """Return the category with that ID, or `None` if not found."""
     return Category.query.get(category_id)
 

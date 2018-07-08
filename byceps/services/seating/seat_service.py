@@ -11,13 +11,14 @@ from typing import Dict, Optional, Sequence, Set
 from ...database import db
 from ...typing import PartyID
 
-from ..ticketing.models.category import CategoryID
+from ..ticketing.transfer.models import TicketCategoryID
 
 from .models.area import Area, AreaID
 from .models.seat import Seat, SeatID
 
 
-def create_seat(area: Area, coord_x: int, coord_y: int, category_id: CategoryID
+def create_seat(area: Area, coord_x: int, coord_y: int,
+                category_id: TicketCategoryID
                ) -> Seat:
     """Create a seat."""
     seat = Seat(area, category_id, coord_x=coord_x, coord_y=coord_y)

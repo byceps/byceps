@@ -6,7 +6,7 @@ byceps.services.shop.order.action_registry_service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from ...ticketing.models.category import CategoryID
+from ...ticketing.transfer.models import TicketCategoryID
 from ...user_badge.transfer.models import BadgeID
 
 from ..article.transfer.models import ArticleNumber
@@ -28,7 +28,7 @@ def register_badge_awarding(article_number: ArticleNumber, badge_id: BadgeID
 
 
 def register_ticket_bundles_creation(article_number: ArticleNumber,
-                                     ticket_category_id: CategoryID,
+                                     ticket_category_id: TicketCategoryID,
                                      ticket_quantity: int) -> None:
     # Create ticket bundle(s) for order when it is marked as paid.
     params_create = {
@@ -46,7 +46,7 @@ def register_ticket_bundles_creation(article_number: ArticleNumber,
 
 
 def register_tickets_creation(article_number: ArticleNumber,
-                              ticket_category_id: CategoryID) -> None:
+                              ticket_category_id: TicketCategoryID) -> None:
     # Create tickets for order when it is marked as paid.
     params_create = {
         'category_id': str(ticket_category_id),

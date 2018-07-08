@@ -6,15 +6,9 @@ byceps.services.ticketing.models.category
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import NewType
-from uuid import UUID
-
 from ....database import BaseQuery, db, generate_uuid
 from ....typing import PartyID
 from ....util.instances import ReprBuilder
-
-
-CategoryID = NewType('CategoryID', UUID)
 
 
 class CategoryQuery(BaseQuery):

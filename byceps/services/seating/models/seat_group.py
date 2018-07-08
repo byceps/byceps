@@ -15,8 +15,9 @@ from ....database import db, generate_uuid
 from ....typing import PartyID
 from ....util.instances import ReprBuilder
 
-from ...ticketing.models.category import Category, CategoryID
+from ...ticketing.models.category import Category
 from ...ticketing.models.ticket_bundle import TicketBundle, TicketBundleID
+from ...ticketing.transfer.models import TicketCategoryID
 
 from .seat import Seat
 
@@ -40,7 +41,7 @@ class SeatGroup(db.Model):
 
     seats = association_proxy('assignments', 'seat')
 
-    def __init__(self, party_id: PartyID, ticket_category_id: CategoryID,
+    def __init__(self, party_id: PartyID, ticket_category_id: TicketCategoryID,
                  seat_quantity: int, title: str) -> None:
         self.party_id = party_id
         self.ticket_category_id = ticket_category_id

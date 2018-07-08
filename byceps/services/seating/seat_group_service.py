@@ -11,16 +11,16 @@ from typing import Sequence
 from ...database import db
 from ...typing import PartyID
 
-from ..ticketing.models.category import CategoryID
 from ..ticketing.models.ticket import Ticket
 from ..ticketing.models.ticket_bundle import TicketBundle
+from ..ticketing.transfer.models import TicketCategoryID
 
 from .models.seat import Seat
 from .models.seat_group import Occupancy as SeatGroupOccupancy, SeatGroup, \
     SeatGroupAssignment
 
 
-def create_seat_group(party_id: PartyID, ticket_category_id: CategoryID,
+def create_seat_group(party_id: PartyID, ticket_category_id: TicketCategoryID,
                       title: str, seats: Sequence[Seat]) -> SeatGroup:
     """Create a seat group and assign the given seats."""
     seat_quantity = len(seats)

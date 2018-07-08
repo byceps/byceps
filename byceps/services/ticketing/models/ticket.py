@@ -18,7 +18,9 @@ from ...seating.models.seat import Seat
 from ...shop.order.transfer.models import OrderNumber
 from ...user.models.user import User
 
-from .category import Category, CategoryID
+from ..transfer.models import TicketCategoryID
+
+from .category import Category
 from .ticket_bundle import TicketBundle
 
 
@@ -67,7 +69,7 @@ class Ticket(db.Model):
     revoked = db.Column(db.Boolean, default=False, nullable=False)
     user_checked_in = db.Column(db.Boolean, default=False, nullable=False)
 
-    def __init__(self, code: TicketCode, category_id: CategoryID,
+    def __init__(self, code: TicketCode, category_id: TicketCategoryID,
                  owned_by_id: UserID, *, bundle: Optional[TicketBundle]=None,
                  order_number: Optional[OrderNumber]=None) -> None:
         self.code = code

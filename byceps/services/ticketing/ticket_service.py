@@ -23,16 +23,17 @@ from ..user import service as user_service
 
 from . import event_service
 from .event_service import TicketEvent
-from .models.category import Category, CategoryID
+from .models.category import Category
 from .models.ticket import Ticket, TicketCode, TicketID
 from .models.ticket_bundle import TicketBundle
+from .transfer.models import TicketCategoryID
 
 
 # -------------------------------------------------------------------- #
 # creation
 
 
-def create_ticket(category_id: CategoryID, owned_by_id: UserID,
+def create_ticket(category_id: TicketCategoryID, owned_by_id: UserID,
                   *, order_number: Optional[OrderNumber]=None
                  ) -> Sequence[Ticket]:
     """Create a single ticket."""
@@ -41,8 +42,8 @@ def create_ticket(category_id: CategoryID, owned_by_id: UserID,
     return tickets[0]
 
 
-def create_tickets(category_id: CategoryID, owned_by_id: UserID, quantity: int,
-                   *, order_number: Optional[OrderNumber]=None
+def create_tickets(category_id: TicketCategoryID, owned_by_id: UserID,
+                   quantity: int, *, order_number: Optional[OrderNumber]=None
                   ) -> Sequence[Ticket]:
     """Create a number of tickets of the same category for a single owner."""
     tickets = list(build_tickets(category_id, owned_by_id, quantity,
@@ -54,8 +55,8 @@ def create_tickets(category_id: CategoryID, owned_by_id: UserID, quantity: int,
     return tickets
 
 
-def build_tickets(category_id: CategoryID, owned_by_id: UserID, quantity: int,
-                  *, bundle: Optional[TicketBundle]=None,
+def build_tickets(category_id: TicketCategoryID, owned_by_id: UserID,
+                  quantity: int, *, bundle: Optional[TicketBundle]=None,
                   order_number: Optional[OrderNumber]=None) -> Iterator[Ticket]:
     if quantity < 1:
         raise ValueError('Ticket quantity must be positive.')
