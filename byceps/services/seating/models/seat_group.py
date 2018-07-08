@@ -52,7 +52,7 @@ class SeatGroup(db.Model):
             .add('ticket_category', self.ticket_category.title) \
             .add_with_lookup('seat_quantity') \
             .add_with_lookup('title') \
-            .add_with_lookup('is_occupied') \
+            .add('is_occupied', self.is_occupied()) \
             .build()
 
 
