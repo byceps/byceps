@@ -1,6 +1,6 @@
 """
-byceps.blueprints.shop.admin.authorization
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.shop.shop_admin.authorization
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2018 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
