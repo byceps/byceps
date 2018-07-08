@@ -94,5 +94,7 @@
         confirmed_post_on_click_then_reload('[data-action="order-flag-shipped"]', 'Bestellung als versendet markieren?');
         confirmed_delete_on_click_then_reload('[data-action="order-unflag-shipped"]', 'Bestellung als nicht versendet markieren?');
       });
+
+      enableCopyToClipboard('order-address-copy-trigger');
     </script>
 {%- endblock %}

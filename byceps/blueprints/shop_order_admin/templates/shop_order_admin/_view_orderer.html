@@ -20,3 +20,14 @@
       <td>{{ placed_by.email_address }}</td>
     </tr>
   </table>
+
+  <div class="button-row">
+    <textarea id="order-address-field" style="position: fixed; top: -1000px;" readonly>{{
+      '%s %s\n%s\n%s %s'|format(
+        order.first_names, order.last_name,
+        order.street,
+        order.zip_code, order.city
+      )
+    }}</textarea>
+    <button id="order-address-copy-trigger" data-field-id="order-address-field" class="button" title="Anschrift in die Zwischenablage kopieren">{{ render_icon('clipboard') }} Anschrift kopieren</button>
+  </div>
