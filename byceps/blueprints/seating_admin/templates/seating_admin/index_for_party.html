@@ -9,16 +9,16 @@
 
   <table class="index">
     <tr>
-      <td class="bignumber number">{{ seat_count }}</td>
-      <td style="vertical-align: middle;">Sitzplätze</td>
+      <td class="bignumber number">{{ category_count }}</td>
+      <td style="vertical-align: middle;"><a href="{{ url_for('.seat_category_index', party_id=party.id) }}">Ticket-Kategorien</a></td>
     </tr>
     <tr>
       <td class="bignumber number">{{ area_count }}</td>
       <td style="vertical-align: middle;"><a href="{{ url_for('.area_index', party_id=party.id) }}">Bereiche</a></td>
     </tr>
     <tr>
-      <td class="bignumber number">{{ category_count }}</td>
-      <td style="vertical-align: middle;"><a href="{{ url_for('.seat_category_index', party_id=party.id) }}">Ticket-Kategorien</a></td>
+      <td class="bignumber number">{{ seat_count }}</td>
+      <td style="vertical-align: middle;">Sitzplätze</td>
     </tr>
     <tr>
       <td class="bignumber number">{{ group_count }}</td>
