@@ -656,7 +656,7 @@ def _deny_seat_management_if_ticket_belongs_to_bundle(ticket: Ticket) -> None:
     if ticket.belongs_to_bundle:
         raise SeatChangeDeniedForBundledTicket(
             "Ticket '{}' belongs to a bundle and, thus, "
-            'must not be used to occupy a single seat.'
+            'must not be used to occupy or release a single seat.'
             .format(ticket.code))
 
 
