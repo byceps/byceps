@@ -44,14 +44,14 @@
     ShopOrderPermission.update
   ) %}
   <div style="float: right; margin-left: 40px;">
-{%- include 'shop_order_admin/_view_actions.html' %}
+{%- include 'shop/order_admin/_view_actions.html' %}
   </div>
   {%- endif %}
 
   <table class="index">
     <tr>
       <td colspan="2">
-{%- include 'shop_order_admin/_view_status_flags.html' %}
+{%- include 'shop/order_admin/_view_status_flags.html' %}
       </td>
     </tr>
     <tr>
@@ -74,11 +74,11 @@
     {%- endif %}
   </table>
 
-{%- include 'shop_order_admin/_view_orderer.html' %}
+{%- include 'shop/order_admin/_view_orderer.html' %}
 
-{%- include 'shop_order_admin/_view_articles.html' %}
+{%- include 'shop/order_admin/_view_articles.html' %}
 
-{%- include 'shop_order_admin/_view_events.html' %}
+{%- include 'shop/order_admin/_view_events.html' %}
 
   <h2>Tickets {{ render_extra_in_heading(tickets|length) }}</h1>
 {%- include 'ticketing_admin/_ticket_list.html' %}

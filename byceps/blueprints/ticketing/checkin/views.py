@@ -18,7 +18,7 @@ from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated
 
 from ...authorization.decorators import permission_required
-from ...shop_order_admin import service as order_blueprint_service
+from ...shop.order_admin import service as order_blueprint_service
 from ...ticketing_admin.authorization import TicketingPermission
 from ...user_admin import service as user_blueprint_service
 

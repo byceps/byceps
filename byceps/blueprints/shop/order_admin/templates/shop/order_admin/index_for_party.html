@@ -55,7 +55,7 @@
   </div>
 
   {%- with orders = orders.items %}
-    {%- include 'shop_order_admin/_order_list.html' %}
+    {%- include 'shop/order_admin/_order_list.html' %}
   {%- endwith %}
 
 {{ render_pagination_nav(orders, '.index_for_party', {

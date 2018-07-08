@@ -1,5 +1,5 @@
 """
-byceps.blueprints.shop_order_admin.models
+byceps.blueprints.shop.order_admin.models
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2018 Jochen Kupperschmidt
@@ -8,8 +8,8 @@ byceps.blueprints.shop_order_admin.models
 
 from enum import Enum
 
-from ...services.shop.order.transfer.models import PaymentState
-from ...util import iterables
+from ....services.shop.order.transfer.models import PaymentState
+from ....util import iterables
 
 
 IGNORED = None
