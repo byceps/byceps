@@ -12,8 +12,12 @@
         <li><a data-action="order-flag-invoiced" href="{{ url_for('.set_invoiced_flag', order_id=order.id) }}">{{ render_icon('invoice') }} Rechnung wurde versendet</a></li>
         {%- endif %}
 
-        {%- if not order.is_canceled and g.current_user.has_any_permission(ShopOrderPermission.cancel, ShopOrderPermission.mark_as_paid) %}
+        {%- if not order.is_canceled %}
         <li class="divider"></li>
+
+          {%- if order.is_open %}
+        <li><a data-action="order-resend-incoming-notification" href="{{ url_for('.resend_email_for_incoming_order_to_orderer', order_id=order.id) }}">{{ render_icon('email') }} E-Mail-Bestätigung erneut senden</a></li>
+          {%- endif %}
 
           {%- if order.is_open and g.current_user.has_permission(ShopOrderPermission.mark_as_paid) %}
         <li><a href="{{ url_for('.mark_as_paid_form', order_id=order.id) }}">{{ render_icon('payment') }} Bestellung als bezahlt markieren</a></li>

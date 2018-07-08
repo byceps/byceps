@@ -10,6 +10,7 @@ from flask import abort, g, request, Response
 
 from ....services.party import service as party_service
 from ....services.shop.order import service as order_service
+from ....services.shop.order.email import service as order_email_service
 from ....services.shop.order.export import service as order_export_service
 from ....services.shop.order.transfer.models import PaymentMethod, PaymentState
 from ....services.shop.sequence import service as sequence_service
@@ -305,6 +306,19 @@ def mark_as_paid(order_id):
     order_paid.send(None, order_id=order.id)
 
     return redirect_to('.view', order_id=order.id)
+
+
+@blueprint.route('/<uuid:order_id>/resend_incoming_order_email',
+                 methods=['POST'])
+@permission_required(ShopOrderPermission.update)
+@respond_no_content
+def resend_email_for_incoming_order_to_orderer(order_id):
+    """Resend the e-mail to the orderer to confirm that the order was placed."""
+    order = _get_order_or_404(order_id)
+
+    order_email_service.send_email_for_incoming_order_to_orderer(order.id)
+
+    flash_success('Die E-Mail-Eingangsbestätigung wurde erneut versendet.')
 
 
 def _get_party_or_404(party_id):
