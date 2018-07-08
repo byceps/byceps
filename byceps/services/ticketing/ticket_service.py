@@ -605,6 +605,8 @@ def occupy_seat(ticket_id: TicketID, seat_id: SeatID, initiator_id: UserID
         raise TicketCategoryMismatch(
             'Ticket and seat belong to different categories.')
 
+    _deny_seat_management_if_seat_belongs_to_group(seat)
+
     previous_seat_id = ticket.occupied_seat_id
 
     ticket.occupied_seat_id = seat.id
@@ -630,6 +632,12 @@ def release_seat(ticket_id: TicketID, initiator_id: UserID) -> None:
         raise TicketIsRevoked('Ticket {} has been revoked.'.format(ticket_id))
 
     _deny_seat_management_if_ticket_belongs_to_bundle(ticket)
+
+    seat = seat_service.find_seat(ticket.occupied_seat_id)
+    if seat is None:
+        raise ValueError('Ticket does not occupy a seat.')
+
+    _deny_seat_management_if_seat_belongs_to_group(seat)
 
     ticket.occupied_seat_id = None
 
@@ -658,6 +666,21 @@ def _deny_seat_management_if_ticket_belongs_to_bundle(ticket: Ticket) -> None:
             "Ticket '{}' belongs to a bundle and, thus, "
             'must not be used to occupy or release a single seat.'
             .format(ticket.code))
+
+
+class SeatChangeDeniedForGroupSeat(Exception):
+    """Indicate that the seat belongs to a group and, thus, cannot be
+    occupied by a single ticket that does not belong to a bundle, and
+    cannot be released on its own.
+    """
+
+
+def _deny_seat_management_if_seat_belongs_to_group(seat: Seat) -> None:
+    if seat.assignment is not None:
+        raise SeatChangeDeniedForGroupSeat(
+            "Seat '{}' belongs to a group and, thus, "
+            'cannot be occupied by a single ticket, or removed separately.'
+            .format(seat.label))
 
 
 class TicketCategoryMismatch(Exception):

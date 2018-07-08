@@ -64,7 +64,7 @@ class SeatGroupAssignment(db.Model):
     group_id = db.Column(db.Uuid, db.ForeignKey('seat_groups.id'), index=True, nullable=False)
     group = db.relationship(SeatGroup, collection_class=set, backref='assignments')
     seat_id = db.Column(db.Uuid, db.ForeignKey('seats.id'), unique=True, index=True, nullable=False)
-    seat = db.relationship(Seat)
+    seat = db.relationship(Seat, backref=db.backref('assignment', uselist=False))
 
     def __init__(self, group: SeatGroup, seat: Seat) -> None:
         self.group = group
