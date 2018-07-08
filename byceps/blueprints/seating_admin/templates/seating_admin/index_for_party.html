@@ -10,19 +10,19 @@
   <table class="index">
     <tr>
       <td class="bignumber number">{{ category_count }}</td>
-      <td style="vertical-align: middle;"><a href="{{ url_for('.seat_category_index', party_id=party.id) }}">Ticket-Kategorien</a></td>
+      <td style="vertical-align: middle;"><a href="{{ url_for('.seat_category_index', party_id=party.id) }}">Ticket-Kategorie{% if category_count != 1 %}n{% endif %}</a></td>
     </tr>
     <tr>
       <td class="bignumber number">{{ area_count }}</td>
-      <td style="vertical-align: middle;"><a href="{{ url_for('.area_index', party_id=party.id) }}">Bereiche</a></td>
+      <td style="vertical-align: middle;"><a href="{{ url_for('.area_index', party_id=party.id) }}">Bereich{% if area_count != 1 %}e{% endif %}</a></td>
     </tr>
     <tr>
       <td class="bignumber number">{{ seat_count }}</td>
-      <td style="vertical-align: middle;">Sitzplätze</td>
+      <td style="vertical-align: middle;">{% if seat_count != 1 %}Sitzplätze{% else %}Sitzplatz{% endif %}</td>
     </tr>
     <tr>
       <td class="bignumber number">{{ group_count }}</td>
-      <td style="vertical-align: middle;"><a href="{{ url_for('.seat_group_index', party_id=party.id) }}">Sitzplatz-Gruppen</a></td>
+      <td style="vertical-align: middle;"><a href="{{ url_for('.seat_group_index', party_id=party.id) }}">Sitzplatz-Gruppe{% if group_count != 1 %}n{% endif %}</a></td>
     </tr>
   </table>
 
