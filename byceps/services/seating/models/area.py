@@ -6,15 +6,9 @@ byceps.services.seating.models.area
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import NewType
-from uuid import UUID
-
 from ....database import BaseQuery, db, generate_uuid
 from ....typing import PartyID
 from ....util.instances import ReprBuilder
-
-
-AreaID = NewType('AreaID', UUID)
 
 
 class AreaQuery(BaseQuery):
