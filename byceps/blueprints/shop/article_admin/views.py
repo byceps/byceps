@@ -1,5 +1,5 @@
 """
-byceps.blueprints.shop_article_admin.views
+byceps.blueprints.shop.article_admin.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2018 Jochen Kupperschmidt
@@ -11,21 +11,21 @@ from decimal import Decimal
 
 from flask import abort, request
 
-from ...services.party import service as party_service
-from ...services.shop.article import service as article_service
-from ...services.shop.order import ordered_articles_service, \
+from ....services.party import service as party_service
+from ....services.shop.article import service as article_service
+from ....services.shop.order import ordered_articles_service, \
     service as order_service
-from ...services.shop.order.transfer.models import PaymentState
-from ...services.shop.sequence import service as sequence_service
-from ...services.shop.shop import service as shop_service
-from ...services.user import service as user_service
-from ...util.framework.blueprint import create_blueprint
-from ...util.framework.flash import flash_success
-from ...util.framework.templating import templated
-from ...util.views import redirect_to, respond_no_content
+from ....services.shop.order.transfer.models import PaymentState
+from ....services.shop.sequence import service as sequence_service
+from ....services.shop.shop import service as shop_service
+from ....services.user import service as user_service
+from ....util.framework.blueprint import create_blueprint
+from ....util.framework.flash import flash_success
+from ....util.framework.templating import templated
+from ....util.views import redirect_to, respond_no_content
 
-from ..authorization.decorators import permission_required
-from ..authorization.registry import permission_registry
+from ...authorization.decorators import permission_required
+from ...authorization.registry import permission_registry
 
 from .authorization import ShopArticlePermission
 from .forms import ArticleCreateForm, ArticleUpdateForm, \

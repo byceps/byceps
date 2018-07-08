@@ -1,5 +1,5 @@
 """
-byceps.blueprints.shop_article_admin.forms
+byceps.blueprints.shop.article_admin.forms
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2018 Jochen Kupperschmidt
@@ -10,7 +10,7 @@ from wtforms import BooleanField, DateTimeField, DecimalField, IntegerField, \
     SelectField, StringField
 from wtforms.validators import InputRequired, Optional
 
-from ...util.l10n import LocalizedForm
+from ....util.l10n import LocalizedForm
 
 
 class ArticleCreateForm(LocalizedForm):
