@@ -38,7 +38,10 @@
   </nav>
   <h1>{{ title }}</h1>
 
-  {%- if g.current_user.has_permission(ShopOrderPermission.update) %}
+  {%- if g.current_user.has_any_permission(
+    ShopOrderPermission.mark_as_paid,
+    ShopOrderPermission.update
+  ) %}
   <div style="float: right; margin-left: 40px;">
 {%- include 'shop_order_admin/_view_actions.html' %}
   </div>

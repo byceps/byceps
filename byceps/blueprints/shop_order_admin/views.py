@@ -258,7 +258,7 @@ def cancel(order_id):
 
 
 @blueprint.route('/<uuid:order_id>/mark_as_paid')
-@permission_required(ShopOrderPermission.update)
+@permission_required(ShopOrderPermission.mark_as_paid)
 @templated
 def mark_as_paid_form(order_id, erroneous_form=None):
     """Show form to mark an order as paid."""
@@ -281,7 +281,7 @@ def mark_as_paid_form(order_id, erroneous_form=None):
 
 
 @blueprint.route('/<uuid:order_id>/mark_as_paid', methods=['POST'])
-@permission_required(ShopOrderPermission.update)
+@permission_required(ShopOrderPermission.mark_as_paid)
 def mark_as_paid(order_id):
     """Set the payment status of a single order to 'paid'."""
     order = _get_order_or_404(order_id)
