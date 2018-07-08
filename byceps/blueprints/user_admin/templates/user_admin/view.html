@@ -23,7 +23,8 @@
 #tabs-rb-personal:checked ~ .radio-tabs #tabs-tab-personal,
 #tabs-rb-orders:checked ~ .radio-tabs #tabs-tab-orders,
 #tabs-rb-tickets:checked ~ .radio-tabs #tabs-tab-tickets,
-#tabs-rb-badges:checked ~ .radio-tabs #tabs-tab-badges {
+#tabs-rb-badges:checked ~ .radio-tabs #tabs-tab-badges,
+#tabs-rb-attended-parties:checked ~ .radio-tabs #tabs-tab-attended-parties {
   /* copied from `.tabs-tab--current` */
   border-color: #333333;
   color: currentColor;
@@ -38,7 +39,8 @@
 #tabs-rb-personal:checked ~ .radio-panels #tabs-panel-personal,
 #tabs-rb-orders:checked ~ .radio-panels #tabs-panel-orders,
 #tabs-rb-tickets:checked ~ .radio-panels #tabs-panel-tickets,
-#tabs-rb-badges:checked ~ .radio-panels #tabs-panel-badges {
+#tabs-rb-badges:checked ~ .radio-panels #tabs-panel-badges,
+#tabs-rb-attended-parties:checked ~ .radio-panels #tabs-panel-attended-parties {
   display: block;
 }
 </style>
@@ -55,6 +57,7 @@
     <input type="radio" name="user-sections-state" id="tabs-rb-orders">
     <input type="radio" name="user-sections-state" id="tabs-rb-tickets">
     <input type="radio" name="user-sections-state" id="tabs-rb-badges">
+    <input type="radio" name="user-sections-state" id="tabs-rb-attended-parties">
 
     <ol class="radio-tabs tabs">
       <li><label class="radio-tab tabs-tab" for="tabs-rb-account" id="tabs-tab-account">Benutzerkonto</label></li>
@@ -62,6 +65,7 @@
       <li><label class="radio-tab tabs-tab" for="tabs-rb-orders" id="tabs-tab-orders">Bestellungen</label></li>
       <li><label class="radio-tab tabs-tab" for="tabs-rb-tickets" id="tabs-tab-tickets">Tickets</label></li>
       <li><label class="radio-tab tabs-tab" for="tabs-rb-badges" id="tabs-tab-badges">Abzeichen</label></li>
+      <li><label class="radio-tab tabs-tab" for="tabs-rb-attended-parties" id="tabs-tab-attended-parties">Besuchte Partys</label></li>
     </ol>
 
     <div class="radio-panels">
@@ -90,6 +94,21 @@
         <h2>Abzeichen {{ render_extra_in_heading(badges_with_awarding_quantity|length) }}</h2>
         {%- if badges_with_awarding_quantity %}
 {{ render_user_badges_list(badges_with_awarding_quantity) }}
+        {%- else %}
+        {{ 'keine'|dim }}
+        {%- endif %}
+      </div>
+
+      <div class="radio-panel" id="tabs-panel-attended-parties">
+        <h2>Besuchte Partys {{ render_extra_in_heading(attended_parties|length) }}</h2>
+        {%- if attended_parties %}
+        <table class="index">
+          {%- for party in attended_parties %}
+          <tr>
+            <td>{{ party.title }}</td>
+          </tr>
+          {%- endfor %}
+        </table>
         {%- else %}
         {{ 'keine'|dim }}
         {%- endif %}

@@ -7,6 +7,7 @@ byceps.blueprints.user_admin.views
 """
 
 from collections import defaultdict
+from operator import attrgetter
 
 from flask import abort, g, redirect, request, url_for
 
@@ -16,7 +17,7 @@ from ...services.orga_team import service as orga_team_service
 from ...services.party import service as party_service
 from ...services.shop.order import service as order_service
 from ...services.shop.shop import service as shop_service
-from ...services.ticketing import ticket_service
+from ...services.ticketing import attendance_service, ticket_service
 from ...services.user import service as user_service
 from ...services.user_badge import service as badge_service
 from ...util.framework.blueprint import create_blueprint
@@ -96,6 +97,9 @@ def view(user_id):
 
     parties_and_tickets = _get_parties_and_tickets(user.id)
 
+    attended_parties = attendance_service.get_attended_parties(user.id)
+    attended_parties.sort(key=attrgetter('starts_at'), reverse=True)
+
     return {
         'user': user,
         'orga_team_memberships': orga_team_memberships,
@@ -103,6 +107,7 @@ def view(user_id):
         'orders': orders,
         'order_parties_by_shop_id': order_parties_by_shop_id,
         'parties_and_tickets': parties_and_tickets,
+        'attended_parties': attended_parties,
     }
 
 

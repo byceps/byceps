@@ -219,6 +219,7 @@ span[title] .icon {
   cursor: pointer;
   display: block;
   flex: 1 0 auto;
+  height: 100%;
   margin-bottom: -1px;
   padding: 0.5rem 1rem;
   text-decoration: none;
