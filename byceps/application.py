@@ -82,6 +82,7 @@ def _get_blueprints(app):
             ('party',                   None                        ),
             ('seating',                 '/seating'                  ),
             ('shop.orders',             '/shop/orders'              ),
+            ('shop.orders.email',       None                        ),
             ('shop_order',              '/shop'                     ),
             ('snippet',                 '/snippets'                 ),
             ('terms',                   '/terms'                    ),

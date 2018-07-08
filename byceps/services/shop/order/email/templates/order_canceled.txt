@@ -1,0 +1,9 @@
+{% extends '_base.txt' %}
+
+{% block body %}
+Hallo {{ placed_by.screen_name }},
+
+deine Bestellung mit der Bestellnummer {{ order.order_number }} wurde von uns aus folgendem Grund storniert:
+
+{{ order.cancelation_reason }}
+{% endblock %}

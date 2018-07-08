@@ -3,6 +3,8 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
+from unittest.mock import patch
+
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order.transfer.models import PaymentMethod
 from byceps.services.shop.order import service as order_service
@@ -35,7 +37,8 @@ class OrderActionTestBase(ShopTestBase):
     # -------------------------------------------------------------------- #
     # helpers
 
-    def create_order(self, articles_with_quantity):
+    @patch('byceps.blueprints.shop_order.signals.order_placed.send')
+    def create_order(self, articles_with_quantity, order_placed_mock):
         orderer = create_orderer(self.buyer)
 
         cart = Cart()

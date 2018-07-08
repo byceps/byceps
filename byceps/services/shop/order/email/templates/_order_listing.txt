@@ -1,0 +1,6 @@
+{% for item in order.items|sort(attribute='description') %}
+  Bezeichnung: {{ item.description }}
+  Anzahl: {{ item.quantity }}
+  Stückpreis: {{ item.unit_price|format_euro_amount }}
+{% endfor %}
+  Gesamtbetrag: {{ order.total_price|format_euro_amount }}
