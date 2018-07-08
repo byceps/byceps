@@ -9,7 +9,10 @@
   <h1>Ticket-Kategorien {{ render_extra_in_heading(categories|length) }}</h1>
   <ol class="index">
     {%- for category in categories %}
-    <li>{{ category.title }}</li>
+    <li>
+      <strong>{{ category.title }}</strong><br>
+      {{ category.id }}
+    </li>
     {%- endfor %}
   </ol>
 
