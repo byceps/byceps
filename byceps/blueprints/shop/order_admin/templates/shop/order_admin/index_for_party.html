@@ -61,7 +61,7 @@
 {{ render_pagination_nav(orders, '.index_for_party', {
     'party_id': party.id,
     'only_payment_state': only_payment_state.name if only_payment_state else None,
-    'only_shipped': only_shipped if (only_shipped is not none) else None,
+    'only_shipped': 'false' if ((only_shipped is not none) and not only_shipped) else None,
   }) }}
 
 {%- else %}
