@@ -64,10 +64,11 @@ def index_for_party(party_id, page):
                                           type=PaymentState.__getitem__)
 
     def _str_to_bool(value):
-        return {
+        valid_values = {
             'true': True,
             'false': False,
-        }[value]
+        }
+        return valid_values.get(value, False)
 
     only_shipped = request.args.get('only_shipped', type=_str_to_bool)
 
