@@ -18,7 +18,7 @@ Parties using BYCEPS:
 - Since 2014, BYCEPS is the foundation of the public website and local
   party intranet of the LANresort_ (300+ attendees) event series.
 - In 2016, `LANresort Bostalsee`_ was launched on BYCEPS.
-- In 2017 NorthCon_ (1,300+ attendees) was relaunched on BYCEPS.
+- In 2017, NorthCon_ (1,300+ attendees) was relaunched on BYCEPS.
 
 
 .. _LANresort: https://www.lanresort.de/
