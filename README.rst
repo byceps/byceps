@@ -30,6 +30,27 @@ In 2016 and 2017, respectively, `LANresort Bostalsee`_ and NorthCon_
 :Website: http://homework.nwsnet.de/releases/b1ce/#byceps
 
 
+Code Status
+===========
+
+|badge_travisci|
+|badge_scrutinizer|
+|badge-codeclimate|
+
+
+.. |badge_travisci| image:: https://travis-ci.org/homeworkprod/byceps.svg?branch=master
+   :alt: Build Status
+   :target: https://travis-ci.org/homeworkprod/byceps
+
+.. |badge_scrutinizer| image:: https://scrutinizer-ci.com/g/homeworkprod/byceps/badges/quality-score.png?b=master
+   :alt: Scrutinizer Code Quality
+   :target: https://scrutinizer-ci.com/g/homeworkprod/byceps/?branch=master
+
+.. |badge-codeclimate| image:: https://codeclimate.com/github/codeclimate/codeclimate/badges/gpa.svg
+   :alt: Code Climate
+   :target: https://codeclimate.com/github/homeworkprod/byceps
+
+
 Installation
 ============
 
