@@ -5,7 +5,7 @@ BYCEPS
 
 BYCEPS is the Bring-Your-Computer Event Processing System.
 
-It is a tool to prepare and operate a LAN party, both online on the
+It is **a tool to prepare and operate a LAN party**, both online on the
 Internet and locally as an intranet system, for both organizers and
 attendees.
 
