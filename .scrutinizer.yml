@@ -1,0 +1,7 @@
+build:
+  nodes:
+    analysis:
+      tests:
+        override:
+          - js-scrutinizer-run
+          - py-scrutinizer-run
