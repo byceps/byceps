@@ -10,7 +10,7 @@ from datetime import datetime
 
 from flask import abort, g
 
-from ...services.newsletter import service as newsletter_service
+from ...services.newsletter import command_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_success
 from ...util.views import respond_no_content
@@ -25,7 +25,7 @@ def subscribe():
     user = _get_current_user_or_404()
     expressed_at = datetime.now()
 
-    newsletter_service.subscribe(user.id, g.brand_id, expressed_at)
+    command_service.subscribe(user.id, g.brand_id, expressed_at)
 
     flash_success('Du hast dich zum Newsletter angemeldet.')
 
@@ -36,7 +36,7 @@ def unsubscribe():
     user = _get_current_user_or_404()
     expressed_at = datetime.now()
 
-    newsletter_service.unsubscribe(user.id, g.brand_id, expressed_at)
+    command_service.unsubscribe(user.id, g.brand_id, expressed_at)
 
     flash_success('Du hast dich vom Newsletter abgemeldet.')
 

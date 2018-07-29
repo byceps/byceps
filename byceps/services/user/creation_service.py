@@ -16,7 +16,7 @@ from ...typing import BrandID, UserID
 from ..authentication.password import service as password_service
 from ..authorization.models import RoleID
 from ..authorization import service as authorization_service
-from ..newsletter import service as newsletter_service
+from ..newsletter import command_service as newsletter_command_service
 from ..terms.models.version import VersionID as TermsVersionID
 from ..terms import service as terms_service
 from ..verification_token import service as verification_token_service
@@ -124,6 +124,6 @@ def _create_newsletter_subscription(user_id: UserID, brand_id: BrandID,
                                     expressed_at: datetime,
                                     subscribe_to_newsletter: bool) -> None:
     if subscribe_to_newsletter:
-        newsletter_service.subscribe(user_id, brand_id, expressed_at)
+        newsletter_command_service.subscribe(user_id, brand_id, expressed_at)
     else:
-        newsletter_service.unsubscribe(user_id, brand_id, expressed_at)
+        newsletter_command_service.unsubscribe(user_id, brand_id, expressed_at)
