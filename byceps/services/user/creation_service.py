@@ -73,9 +73,9 @@ def create_user(screen_name: str, email_address: str, password: str,
     db.session.commit()
 
     # newsletter subscription (optional)
-    _create_newsletter_subscription(user.id, brand_id,
-                                    newsletter_subscription_state_expressed_at,
-                                    subscribe_to_newsletter)
+    if subscribe_to_newsletter:
+        newsletter_command_service.subscribe(user.id, brand_id,
+            newsletter_subscription_state_expressed_at)
 
     # verification_token for email address confirmation
     verification_token = verification_token_service \
@@ -118,12 +118,3 @@ def _normalize_email_address(email_address: str) -> str:
         raise ValueError('Invalid email address: \'{}\''.format(email_address))
 
     return normalized
-
-
-def _create_newsletter_subscription(user_id: UserID, brand_id: BrandID,
-                                    expressed_at: datetime,
-                                    subscribe_to_newsletter: bool) -> None:
-    if subscribe_to_newsletter:
-        newsletter_command_service.subscribe(user_id, brand_id, expressed_at)
-    else:
-        newsletter_command_service.unsubscribe(user_id, brand_id, expressed_at)
