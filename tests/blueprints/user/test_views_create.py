@@ -8,6 +8,7 @@ from unittest.mock import patch
 from byceps.services.authentication.password.models import Credential
 from byceps.services.authentication.session.models import SessionToken
 from byceps.services.authorization.models import Role, UserRole
+from byceps.services.newsletter import service as newsletter_service
 from byceps.services.terms.models.version import Version as TermsVersion
 from byceps.services.terms import service as terms_service
 from byceps.services.user.models.user import User
@@ -28,6 +29,7 @@ class UserCreateTestCase(AbstractAppTestCase):
 
         self.create_brand_and_party()
         self.set_brand_email_sender_address(self.brand.id, 'noreply@example.com')
+        self.brand_id = self.brand.id
 
         self.setup_terms()
         self.setup_roles()
@@ -59,10 +61,10 @@ class UserCreateTestCase(AbstractAppTestCase):
             'terms_version_id': self.terms_version_id,
             'consent_to_terms': 'y',
             'consent_to_privacy_policy': 'y',
+            'subscribe_to_newsletter': 'y',
         }
 
         response = self.send_request(form_data)
-
         assert response.status_code == 302
 
         user_count_afterwards = self.get_user_count()
@@ -110,6 +112,11 @@ class UserCreateTestCase(AbstractAppTestCase):
         assert len(terms_consents) == 1
         assert terms_consents[0].version_id == self.terms_version_id
 
+        # newsletter subscription
+        subscribed_to_newsletter = newsletter_service.is_subscribed(
+            user.id, self.brand_id)
+        assert subscribed_to_newsletter
+
         # confirmation e-mail
 
         verification_token = verification_token_service \
@@ -130,6 +137,30 @@ bitte bestätige deine E-Mail-Adresse indem du diese URL abrufst: http://example
             expected_recipients,
             expected_subject,
             expected_body)
+
+    @patch('byceps.email.send')
+    def test_create_without_newsletter_subscription(self, send_email_mock):
+        form_data = {
+            'screen_name': 'Hiro',
+            'first_names': 'Hiroaki',
+            'last_name': 'Protagonist',
+            'email_address': 'hiro@metaverse.org',
+            'password': 'Snow_Crash',
+            'terms_version_id': self.terms_version_id,
+            'consent_to_terms': 'y',
+            'consent_to_privacy_policy': 'y',
+            'subscribe_to_newsletter': '',
+        }
+
+        response = self.send_request(form_data)
+        assert response.status_code == 302
+
+        user = self.get_user(response)
+
+        # newsletter subscription
+        subscribed_to_newsletter = newsletter_service.is_subscribed(
+            user.id, self.brand_id)
+        assert not subscribed_to_newsletter
 
     # helpers
 
