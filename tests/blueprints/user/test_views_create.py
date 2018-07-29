@@ -68,9 +68,7 @@ class UserCreateTestCase(AbstractAppTestCase):
         user_count_afterwards = self.get_user_count()
         assert user_count_afterwards == user_count_before + 1
 
-        location = response.headers.get('Location')
-        user_id = location.rpartition('/')[-1]
-        user = User.query.get(user_id)
+        user = self.get_user(response)
 
         assert user.created_at is not None
         assert user.screen_name == 'Hiro'
@@ -144,3 +142,7 @@ bitte bestätige deine E-Mail-Adresse indem du diese URL abrufst: http://example
         with self.client() as client:
             return client.post(url, data=form_data)
 
+    def get_user(self, response):
+        location = response.headers.get('Location')
+        user_id = location.rpartition('/')[-1]
+        return User.query.get(user_id)
