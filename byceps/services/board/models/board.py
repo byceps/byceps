@@ -6,14 +6,11 @@ byceps.services.board.models.board
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import NewType
-
 from ....database import db
 from ....typing import BrandID
 from ....util.instances import ReprBuilder
 
-
-BoardID = NewType('BoardID', str)
+from ..transfer.models import BoardID
 
 
 class Board(db.Model):

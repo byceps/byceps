@@ -13,7 +13,8 @@ from ...typing import BrandID
 
 from ..brand import service as brand_service
 
-from .models.board import Board, BoardID
+from .models.board import Board
+from .transfer.models import BoardID
 
 
 def create_board(brand_id: BrandID, board_id: BoardID) -> Board:

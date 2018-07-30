@@ -16,7 +16,9 @@ from ....util.instances import ReprBuilder
 
 from ...user.models.user import User
 
-from .board import Board, BoardID
+from ..transfer.models import BoardID
+
+from .board import Board
 
 
 CategoryID = NewType('CategoryID', UUID)
