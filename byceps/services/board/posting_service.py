@@ -20,8 +20,8 @@ from ..user.models.user import User
 from .aggregation_service import aggregate_topic
 from .models.category import Category
 from .models.posting import Posting, PostingID
-from .models.topic import Topic, TopicID
-from .transfer.models import BoardID
+from .models.topic import Topic
+from .transfer.models import BoardID, TopicID
 
 
 def count_postings_for_board(board_id: BoardID) -> int:

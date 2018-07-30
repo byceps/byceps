@@ -12,7 +12,9 @@ from ....database import db
 from ....typing import UserID
 from ....util.instances import ReprBuilder
 
-from .topic import Topic, TopicID
+from ..transfer.models import TopicID
+
+from .topic import Topic
 
 
 class LastTopicView(db.Model):

@@ -7,8 +7,6 @@ byceps.services.board.models.topic
 """
 
 from datetime import datetime
-from typing import NewType
-from uuid import UUID
 
 from flask import url_for
 from sqlalchemy.ext.associationproxy import association_proxy
@@ -21,12 +19,9 @@ from ....util.instances import ReprBuilder
 
 from ...user.models.user import User
 
-from ..transfer.models import CategoryID
+from ..transfer.models import CategoryID, TopicID
 
 from .category import Category
-
-
-TopicID = NewType('TopicID', UUID)
 
 
 class TopicQuery(BaseQuery):

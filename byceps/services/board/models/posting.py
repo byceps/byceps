@@ -20,7 +20,9 @@ from ....util.instances import ReprBuilder
 
 from ...user.models.user import User
 
-from .topic import Topic, TopicID
+from ..transfer.models import TopicID
+
+from .topic import Topic
 
 
 PostingID = NewType('PostingID', UUID)
