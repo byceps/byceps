@@ -19,9 +19,9 @@ from ..user.models.user import User
 
 from .aggregation_service import aggregate_topic
 from .models.category import Category
-from .models.posting import Posting, PostingID
+from .models.posting import Posting
 from .models.topic import Topic
-from .transfer.models import BoardID, TopicID
+from .transfer.models import BoardID, PostingID, TopicID
 
 
 def count_postings_for_board(board_id: BoardID) -> int:

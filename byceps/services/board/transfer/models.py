@@ -16,4 +16,7 @@ BoardID = NewType('BoardID', str)
 CategoryID = NewType('CategoryID', UUID)
 
 
+PostingID = NewType('PostingID', UUID)
+
+
 TopicID = NewType('TopicID', UUID)
