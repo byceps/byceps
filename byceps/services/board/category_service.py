@@ -30,9 +30,12 @@ def create_category(board_id: BoardID, slug: str, title: str, description: str
     return category
 
 
-def update_category(category: Category, slug: str, title: str, description: str
+def update_category(category_id: CategoryID, slug: str, title: str,
+                    description: str
                    ) -> Category:
     """Update the category."""
+    category = _get_category(category_id)
+
     category.slug = slug.strip().lower()
     category.title = title.strip()
     category.description = description.strip()
@@ -42,8 +45,10 @@ def update_category(category: Category, slug: str, title: str, description: str
     return category
 
 
-def move_category_up(category: Category) -> None:
+def move_category_up(category_id: CategoryID) -> None:
     """Move a category upwards by one position."""
+    category = _get_category(category_id)
+
     category_list = category.board.categories
 
     if category.position == 1:
@@ -55,8 +60,10 @@ def move_category_up(category: Category) -> None:
     db.session.commit()
 
 
-def move_category_down(category: Category) -> None:
+def move_category_down(category_id: CategoryID) -> None:
     """Move a category downwards by one position."""
+    category = _get_category(category_id)
+
     category_list = category.board.categories
 
     if category.position == len(category_list):
@@ -66,6 +73,15 @@ def move_category_down(category: Category) -> None:
     category_list.insert(popped_category.position, popped_category)
 
     db.session.commit()
+
+
+def _get_category(category_id: CategoryID) -> Category:
+    category = Category.query.get(category_id)
+
+    if category is None:
+        raise ValueError('Unknown category ID "{}"'.format(category_id))
+
+    return category
 
 
 def count_categories_for_board(board_id: BoardID) -> int:

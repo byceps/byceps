@@ -157,7 +157,7 @@ def category_update(category_id):
     title = form.title.data
     description = form.description.data
 
-    category = board_category_service.update_category(category, slug, title,
+    category = board_category_service.update_category(category.id, slug, title,
                                                       description)
 
     flash_success('Die Kategorie "{}" wurde aktualisiert.', category.title)
@@ -172,7 +172,7 @@ def category_move_up(category_id):
     category = _get_category_or_404(category_id)
 
     try:
-        board_category_service.move_category_up(category)
+        board_category_service.move_category_up(category.id)
     except ValueError:
         flash_error('Die Kategorie "{}" befindet sich bereits ganz oben.', category.title)
     else:
@@ -187,7 +187,7 @@ def category_move_down(category_id):
     category = _get_category_or_404(category_id)
 
     try:
-        board_category_service.move_category_down(category)
+        board_category_service.move_category_down(category.id)
     except ValueError:
         flash_error('Die Kategorie "{}" befindet sich bereits ganz unten.', category.title)
     else:
