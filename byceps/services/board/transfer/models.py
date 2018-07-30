@@ -9,6 +9,10 @@ byceps.services.board.transfer.models
 from typing import NewType
 from uuid import UUID
 
+from attr import attrib, attrs
+
+from ....typing import BrandID
+
 
 BoardID = NewType('BoardID', str)
 
@@ -20,3 +24,9 @@ PostingID = NewType('PostingID', UUID)
 
 
 TopicID = NewType('TopicID', UUID)
+
+
+@attrs(frozen=True, slots=True)
+class Board:
+    id = attrib(type=BoardID)
+    brand_id = attrib(type=BrandID)

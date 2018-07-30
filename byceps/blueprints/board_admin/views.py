@@ -14,6 +14,7 @@ from ...services.board import board_service
 from ...services.board import category_service as board_category_service
 from ...services.board import posting_service as board_posting_service
 from ...services.board import topic_service as board_topic_service
+from ...services.board.transfer.models import Board
 from ...services.brand import service as brand_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_error, flash_success
@@ -202,7 +203,7 @@ def _get_brand_or_404(brand_id):
     return brand
 
 
-def _get_board_or_404(board_id):
+def _get_board_or_404(board_id) -> Board:
     board = board_service.find_board(board_id)
 
     if board is None:

@@ -14,10 +14,10 @@ from ...typing import BrandID
 from ..brand import service as brand_service
 
 from .models.board import Board as DbBoard
-from .transfer.models import BoardID
+from .transfer.models import Board, BoardID
 
 
-def create_board(brand_id: BrandID, board_id: BoardID) -> DbBoard:
+def create_board(brand_id: BrandID, board_id: BoardID) -> Board:
     """Create a board for that brand."""
     brand = brand_service.find_brand(brand_id)
     if brand is None:
@@ -28,16 +28,30 @@ def create_board(brand_id: BrandID, board_id: BoardID) -> DbBoard:
     db.session.add(board)
     db.session.commit()
 
-    return board
+    return _db_entity_to_board(board)
 
 
-def find_board(board_id: BoardID) -> Optional[DbBoard]:
+def find_board(board_id: BoardID) -> Optional[Board]:
     """Return the board with that id, or `None` if not found."""
-    return DbBoard.query.get(board_id)
+    board = DbBoard.query.get(board_id)
+
+    if board is None:
+        return None
+
+    return _db_entity_to_board(board)
 
 
-def get_boards_for_brand(brand_id: BrandID) -> Sequence[DbBoard]:
+def get_boards_for_brand(brand_id: BrandID) -> Sequence[Board]:
     """Return all boards that belong to the brand."""
-    return DbBoard.query \
+    boards = DbBoard.query \
         .filter_by(brand_id=brand_id) \
         .all()
+
+    return [_db_entity_to_board(board) for board in boards]
+
+
+def _db_entity_to_board(board: DbBoard) -> Board:
+    return Board(
+        board.id,
+        board.brand_id,
+    )
