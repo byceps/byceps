@@ -11,8 +11,8 @@ from typing import Optional, Sequence
 from ...database import db
 
 from . import board_service
-from .models.category import Category, CategoryID
-from .transfer.models import BoardID
+from .models.category import Category
+from .transfer.models import BoardID, CategoryID
 
 
 def create_category(board_id: BoardID, slug: str, title: str, description: str

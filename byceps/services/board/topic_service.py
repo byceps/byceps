@@ -17,11 +17,11 @@ from ...typing import UserID
 from ..user.models.user import User
 
 from .aggregation_service import aggregate_category, aggregate_topic
-from .models.category import Category, CategoryID
+from .models.category import Category
 from .models.posting import InitialTopicPostingAssociation, Posting
 from .models.topic import Topic, TopicID
 from .posting_service import update_posting
-from .transfer.models import BoardID
+from .transfer.models import BoardID, CategoryID
 
 
 def count_topics_for_board(board_id: BoardID) -> int:

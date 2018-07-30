@@ -6,9 +6,6 @@ byceps.services.board.models.category
 :License: Modified BSD, see LICENSE for details.
 """
 
-from uuid import UUID
-from typing import NewType
-
 from sqlalchemy.ext.orderinglist import ordering_list
 
 from ....database import BaseQuery, db, generate_uuid
@@ -16,12 +13,9 @@ from ....util.instances import ReprBuilder
 
 from ...user.models.user import User
 
-from ..transfer.models import BoardID
+from ..transfer.models import BoardID, CategoryID
 
 from .board import Board
-
-
-CategoryID = NewType('CategoryID', UUID)
 
 
 class CategoryQuery(BaseQuery):

@@ -12,11 +12,12 @@ from typing import Optional
 from ...database import db
 from ...typing import UserID
 
-from .models.category import Category, CategoryID
+from .models.category import Category
 from .models.last_category_view import LastCategoryView
 from .models.last_topic_view import LastTopicView
 from .models.topic import Topic, TopicID
 from . import topic_service
+from .transfer.models import CategoryID
 
 
 # -------------------------------------------------------------------- #

@@ -12,7 +12,9 @@ from ....database import db
 from ....typing import UserID
 from ....util.instances import ReprBuilder
 
-from .category import Category, CategoryID
+from ..transfer.models import CategoryID
+
+from .category import Category
 
 
 class LastCategoryView(db.Model):

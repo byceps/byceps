@@ -7,6 +7,10 @@ byceps.services.board.transfer.models
 """
 
 from typing import NewType
+from uuid import UUID
 
 
 BoardID = NewType('BoardID', str)
+
+
+CategoryID = NewType('CategoryID', UUID)

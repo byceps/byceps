@@ -21,7 +21,9 @@ from ....util.instances import ReprBuilder
 
 from ...user.models.user import User
 
-from .category import Category, CategoryID
+from ..transfer.models import CategoryID
+
+from .category import Category
 
 
 TopicID = NewType('TopicID', UUID)
