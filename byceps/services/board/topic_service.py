@@ -196,9 +196,10 @@ def unpin_topic(topic: Topic, unpinned_by_id: UserID) -> None:
     db.session.commit()
 
 
-def move_topic(topic: Topic, new_category: Category) -> None:
+def move_topic(topic: Topic, new_category_id: CategoryID) -> None:
     """Move the topic to another category."""
     old_category = topic.category
+    new_category = Category.query.get(new_category_id)
 
     topic.category = new_category
     db.session.commit()

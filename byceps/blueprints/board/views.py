@@ -457,7 +457,7 @@ def topic_move(topic_id):
 
     old_category = topic.category
 
-    board_topic_service.move_topic(topic, new_category)
+    board_topic_service.move_topic(topic, new_category.id)
 
     flash_success('Das Thema "{}" wurde aus der Kategorie "{}" '
                   'in die Kategorie "{}" verschoben.',
