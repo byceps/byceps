@@ -13,17 +13,17 @@ from ...typing import BrandID
 
 from ..brand import service as brand_service
 
-from .models.board import Board
+from .models.board import Board as DbBoard
 from .transfer.models import BoardID
 
 
-def create_board(brand_id: BrandID, board_id: BoardID) -> Board:
+def create_board(brand_id: BrandID, board_id: BoardID) -> DbBoard:
     """Create a board for that brand."""
     brand = brand_service.find_brand(brand_id)
     if brand is None:
         raise ValueError('Unknown brand ID "{}"'.format(brand_id))
 
-    board = Board(board_id, brand.id)
+    board = DbBoard(board_id, brand.id)
 
     db.session.add(board)
     db.session.commit()
@@ -31,13 +31,13 @@ def create_board(brand_id: BrandID, board_id: BoardID) -> Board:
     return board
 
 
-def find_board(board_id: BoardID) -> Optional[Board]:
+def find_board(board_id: BoardID) -> Optional[DbBoard]:
     """Return the board with that id, or `None` if not found."""
-    return Board.query.get(board_id)
+    return DbBoard.query.get(board_id)
 
 
-def get_boards_for_brand(brand_id: BrandID) -> Sequence[Board]:
+def get_boards_for_brand(brand_id: BrandID) -> Sequence[DbBoard]:
     """Return all boards that belong to the brand."""
-    return Board.query \
+    return DbBoard.query \
         .filter_by(brand_id=brand_id) \
         .all()
