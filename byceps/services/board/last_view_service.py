@@ -12,19 +12,19 @@ from typing import Optional
 from ...database import db
 from ...typing import UserID
 
-from .models.category import Category
 from .models.last_category_view import LastCategoryView
 from .models.last_topic_view import LastTopicView
 from .models.topic import Topic
 from . import topic_service
-from .transfer.models import CategoryID, TopicID
+from .transfer.models import CategoryID, CategoryWithLastUpdate, TopicID
 
 
 # -------------------------------------------------------------------- #
 # categories
 
 
-def contains_category_unseen_postings(category: Category, user_id: UserID
+def contains_category_unseen_postings(category: CategoryWithLastUpdate,
+                                      user_id: UserID
                                      ) -> bool:
     """Return `True` if the category contains postings created after the
     last time the user viewed it.

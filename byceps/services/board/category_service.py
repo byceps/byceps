@@ -12,11 +12,12 @@ from ...database import db
 
 from .models.board import Board as DbBoard
 from .models.category import Category as DbCategory
-from .transfer.models import BoardID, CategoryID
+from .transfer.models import BoardID, Category, CategoryID, \
+    CategoryWithLastUpdate
 
 
 def create_category(board_id: BoardID, slug: str, title: str, description: str
-                   ) -> DbCategory:
+                   ) -> Category:
     """Create a category in that board."""
     board = DbBoard.query.get(board_id)
     if board is None:
@@ -27,12 +28,12 @@ def create_category(board_id: BoardID, slug: str, title: str, description: str
 
     db.session.commit()
 
-    return category
+    return _db_entity_to_category(category)
 
 
 def update_category(category_id: CategoryID, slug: str, title: str,
                     description: str
-                   ) -> DbCategory:
+                   ) -> Category:
     """Update the category."""
     category = _get_category(category_id)
 
@@ -42,7 +43,7 @@ def update_category(category_id: CategoryID, slug: str, title: str,
 
     db.session.commit()
 
-    return category
+    return _db_entity_to_category(category)
 
 
 def move_category_up(category_id: CategoryID) -> None:
@@ -91,45 +92,92 @@ def count_categories_for_board(board_id: BoardID) -> int:
         .count()
 
 
-def find_category_by_id(category_id: CategoryID) -> Optional[DbCategory]:
+def find_category_by_id(category_id: CategoryID) -> Optional[Category]:
     """Return the category with that id, or `None` if not found."""
-    return DbCategory.query.get(category_id)
+    category = DbCategory.query.get(category_id)
+
+    if category is None:
+        return None
+
+    return _db_entity_to_category(category)
 
 
-def find_category_by_slug(board_id: BoardID, slug: str) -> Optional[DbCategory]:
+def find_category_by_slug(board_id: BoardID, slug: str) -> Optional[Category]:
     """Return the category for that board and slug, or `None` if not found."""
-    return DbCategory.query \
+    category = DbCategory.query \
         .for_board(board_id) \
         .filter_by(slug=slug) \
         .first()
 
+    if category is None:
+        return None
 
-def get_categories(board_id: BoardID) -> Sequence[DbCategory]:
+    return _db_entity_to_category(category)
+
+
+def get_categories(board_id: BoardID) -> Sequence[Category]:
     """Return all categories for that board, ordered by position."""
-    return DbCategory.query \
+    categories = DbCategory.query \
         .for_board(board_id) \
         .order_by(DbCategory.position) \
         .all()
 
+    return [_db_entity_to_category(category) for category in categories]
+
 
 def get_categories_excluding(board_id: BoardID, category_id: CategoryID
-                            ) -> Sequence[DbCategory]:
+                            ) -> Sequence[Category]:
     """Return all categories for that board except for the specified one."""
-    return DbCategory.query \
+    categories = DbCategory.query \
         .for_board(board_id) \
         .filter(DbCategory.id != category_id) \
         .order_by(DbCategory.position) \
         .all()
 
+    return [_db_entity_to_category(category) for category in categories]
 
-def get_categories_with_last_updates(board_id: BoardID) -> Sequence[DbCategory]:
+
+def get_categories_with_last_updates(board_id: BoardID
+                                    ) -> Sequence[CategoryWithLastUpdate]:
     """Return the categories for that board.
 
     Include the creator of the last posting in each category.
     """
-    return DbCategory.query \
+    categories_with_last_update = DbCategory.query \
         .for_board(board_id) \
         .options(
             db.joinedload(DbCategory.last_posting_updated_by),
         ) \
         .all()
+
+    return [_db_entity_to_category_with_last_update(category)
+            for category in categories_with_last_update]
+
+
+def _db_entity_to_category(category: DbCategory) -> Category:
+    return Category(
+        category.id,
+        category.board_id,
+        category.position,
+        category.slug,
+        category.title,
+        category.description,
+        category.topic_count,
+        category.posting_count,
+    )
+
+
+def _db_entity_to_category_with_last_update(category: DbCategory
+                                           ) -> CategoryWithLastUpdate:
+    return CategoryWithLastUpdate(
+        category.id,
+        category.board_id,
+        category.position,
+        category.slug,
+        category.title,
+        category.description,
+        category.topic_count,
+        category.posting_count,
+        category.last_posting_updated_at,
+        category.last_posting_updated_by,
+    )

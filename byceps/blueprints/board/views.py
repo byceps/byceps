@@ -6,6 +6,7 @@ byceps.blueprints.board.views
 :License: Modified BSD, see LICENSE for details.
 """
 
+from attr import attrib, attrs
 from flask import abort, current_app, g, redirect, request, url_for
 
 from ...services.board import \
@@ -13,6 +14,7 @@ from ...services.board import \
     last_view_service as board_last_view_service, \
     posting_service as board_posting_service, \
     topic_service as board_topic_service
+from ...services.board.transfer.models import CategoryWithLastUpdate
 from ...services.text_markup.service import get_smileys, render_html
 from ...services.user_badge import service as badge_service
 from ...util.framework.blueprint import create_blueprint
@@ -45,6 +47,28 @@ blueprint.add_app_template_filter(render_html, 'bbcode')
 # category
 
 
+@attrs(frozen=True, slots=True)
+class CategoryWithLastUpdateAndUnseenFlag(CategoryWithLastUpdate):
+    contains_unseen_postings = attrib(type=bool)
+
+    @classmethod
+    def from_category_with_last_update(cls, category: CategoryWithLastUpdate,
+                                       contains_unseen_postings: bool):
+        return cls(
+            category.id,
+            category.board_id,
+            category.position,
+            category.slug,
+            category.title,
+            category.description,
+            category.topic_count,
+            category.posting_count,
+            category.last_posting_updated_at,
+            category.last_posting_updated_by,
+            contains_unseen_postings,
+        )
+
+
 @blueprint.route('/')
 @templated
 def category_index():
@@ -55,13 +79,19 @@ def category_index():
 
     user = g.current_user
 
+    categories_with_flag = []
     for category in categories:
-        category.contains_unseen_postings = not user.is_anonymous \
+        contains_unseen_postings = not user.is_anonymous \
             and board_last_view_service.contains_category_unseen_postings(
                 category, user.id)
 
+        category_with_flag = CategoryWithLastUpdateAndUnseenFlag \
+            .from_category_with_last_update(category, contains_unseen_postings)
+
+        categories_with_flag.append(category_with_flag)
+
     return {
-        'categories': categories,
+        'categories': categories_with_flag,
     }
 
 

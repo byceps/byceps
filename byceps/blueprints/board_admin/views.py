@@ -14,7 +14,7 @@ from ...services.board import board_service
 from ...services.board import category_service as board_category_service
 from ...services.board import posting_service as board_posting_service
 from ...services.board import topic_service as board_topic_service
-from ...services.board.transfer.models import Board
+from ...services.board.transfer.models import Board, Category
 from ...services.brand import service as brand_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_error, flash_success
@@ -131,7 +131,8 @@ def category_update_form(category_id, erroneous_form=None):
     """Show form to update a category."""
     category = _get_category_or_404(category_id)
 
-    brand = brand_service.find_brand(category.board.brand_id)
+    board = board_service.find_board(category.board_id)
+    brand = brand_service.find_brand(board.brand_id)
 
     form = erroneous_form if erroneous_form \
            else CategoryUpdateForm(obj=category)
@@ -212,7 +213,7 @@ def _get_board_or_404(board_id) -> Board:
     return board
 
 
-def _get_category_or_404(category_id):
+def _get_category_or_404(category_id) -> Category:
     category = board_category_service.find_category_by_id(category_id)
 
     if category is None:
