@@ -10,7 +10,7 @@ from typing import Optional, Sequence
 
 from ...database import db
 
-from . import board_service
+from .models.board import Board as DbBoard
 from .models.category import Category
 from .transfer.models import BoardID, CategoryID
 
@@ -18,7 +18,7 @@ from .transfer.models import BoardID, CategoryID
 def create_category(board_id: BoardID, slug: str, title: str, description: str
                    ) -> Category:
     """Create a category in that board."""
-    board = board_service.find_board(board_id)
+    board = DbBoard.query.get(board_id)
     if board is None:
         raise ValueError('Unknown board ID "{}"'.format(board_id))
 
