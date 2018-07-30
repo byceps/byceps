@@ -18,35 +18,35 @@ from ...util.iterables import index_of
 from ..user.models.user import User
 
 from .aggregation_service import aggregate_topic
-from .models.category import Category
-from .models.posting import Posting
-from .models.topic import Topic
+from .models.category import Category as DbCategory
+from .models.posting import Posting as DbPosting
+from .models.topic import Topic as DbTopic
 from .transfer.models import BoardID, PostingID, TopicID
 
 
 def count_postings_for_board(board_id: BoardID) -> int:
     """Return the number of postings for that board."""
-    return Posting.query \
-        .join(Topic).join(Category).filter(Category.board_id == board_id) \
+    return DbPosting.query \
+        .join(DbTopic).join(DbCategory).filter(DbCategory.board_id == board_id) \
         .count()
 
 
-def find_posting_by_id(posting_id: PostingID) -> Optional[Posting]:
+def find_posting_by_id(posting_id: PostingID) -> Optional[DbPosting]:
     """Return the posting with that id, or `None` if not found."""
-    return Posting.query.get(posting_id)
+    return DbPosting.query.get(posting_id)
 
 
 def paginate_postings(topic_id: TopicID, user: User, page: int,
                       postings_per_page: int) -> Pagination:
     """Paginate postings in that topic, as visible for the user."""
-    return Posting.query \
+    return DbPosting.query \
         .options(
-            db.joinedload(Posting.topic),
+            db.joinedload(DbPosting.topic),
             db.joinedload('creator')
                 .load_only('id', 'screen_name')
                 .joinedload('orga_team_memberships'),
-            db.joinedload(Posting.last_edited_by).load_only('screen_name'),
-            db.joinedload(Posting.hidden_by).load_only('screen_name'),
+            db.joinedload(DbPosting.last_edited_by).load_only('screen_name'),
+            db.joinedload(DbPosting.hidden_by).load_only('screen_name'),
         ) \
         .for_topic(topic_id) \
         .only_visible_for_user(user) \
@@ -54,9 +54,9 @@ def paginate_postings(topic_id: TopicID, user: User, page: int,
         .paginate(page, postings_per_page)
 
 
-def create_posting(topic: Topic, creator_id: UserID, body: str) -> Posting:
+def create_posting(topic: DbTopic, creator_id: UserID, body: str) -> DbPosting:
     """Create a posting in that topic."""
-    posting = Posting(topic, creator_id, body)
+    posting = DbPosting(topic, creator_id, body)
     db.session.add(posting)
     db.session.commit()
 
@@ -65,7 +65,7 @@ def create_posting(topic: Topic, creator_id: UserID, body: str) -> Posting:
     return posting
 
 
-def update_posting(posting: Posting, editor_id: UserID, body: str, *,
+def update_posting(posting: DbPosting, editor_id: UserID, body: str, *,
                    commit: bool=True) -> None:
     """Update the posting."""
     posting.body = body.strip()
@@ -77,12 +77,12 @@ def update_posting(posting: Posting, editor_id: UserID, body: str, *,
         db.session.commit()
 
 
-def calculate_posting_page_number(posting: Posting, user: User,
+def calculate_posting_page_number(posting: DbPosting, user: User,
                                   postings_per_page: int) -> int:
     """Return the number of the page the posting should appear on when
     viewed by the user.
     """
-    topic_postings = Posting.query \
+    topic_postings = DbPosting.query \
         .for_topic(posting.topic_id) \
         .only_visible_for_user(user) \
         .earliest_to_latest() \
@@ -95,7 +95,7 @@ def calculate_posting_page_number(posting: Posting, user: User,
     return divmod(index, postings_per_page)[0] + 1
 
 
-def hide_posting(posting: Posting, hidden_by_id: UserID) -> None:
+def hide_posting(posting: DbPosting, hidden_by_id: UserID) -> None:
     """Hide the posting."""
     posting.hidden = True
     posting.hidden_at = datetime.now()
@@ -105,7 +105,7 @@ def hide_posting(posting: Posting, hidden_by_id: UserID) -> None:
     aggregate_topic(posting.topic)
 
 
-def unhide_posting(posting: Posting, unhidden_by_id: UserID) -> None:
+def unhide_posting(posting: DbPosting, unhidden_by_id: UserID) -> None:
     """Un-hide the posting."""
     # TODO: Store who un-hid the posting.
     posting.hidden = False

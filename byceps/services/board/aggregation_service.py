@@ -8,24 +8,24 @@ byceps.services.board.aggregation_service
 
 from ...database import db
 
-from .models.category import Category
-from .models.posting import Posting
-from .models.topic import Topic
+from .models.category import Category as DbCategory
+from .models.posting import Posting as DbPosting
+from .models.topic import Topic as DbTopic
 
 
-def aggregate_category(category: Category) -> None:
+def aggregate_category(category: DbCategory) -> None:
     """Update the category's count and latest fields."""
-    topic_count = Topic.query.for_category(category.id).without_hidden().count()
+    topic_count = DbTopic.query.for_category(category.id).without_hidden().count()
 
-    posting_query = Posting.query \
+    posting_query = DbPosting.query \
         .without_hidden() \
-        .join(Topic) \
+        .join(DbTopic) \
             .filter_by(category=category)
 
     posting_count = posting_query.count()
 
     latest_posting = posting_query \
-        .filter(Topic.hidden == False) \
+        .filter(DbTopic.hidden == False) \
         .latest_to_earliest() \
         .first()
 
@@ -39,9 +39,9 @@ def aggregate_category(category: Category) -> None:
     db.session.commit()
 
 
-def aggregate_topic(topic: Topic) -> None:
+def aggregate_topic(topic: DbTopic) -> None:
     """Update the topic's count and latest fields."""
-    posting_query = Posting.query.for_topic(topic.id).without_hidden()
+    posting_query = DbPosting.query.for_topic(topic.id).without_hidden()
 
     posting_count = posting_query.count()
 
