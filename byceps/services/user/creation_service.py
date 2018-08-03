@@ -11,7 +11,7 @@ from datetime import datetime
 from flask import current_app
 
 from ...database import db
-from ...typing import BrandID, UserID
+from ...typing import BrandID
 
 from ..authentication.password import service as password_service
 from ..authorization.models import RoleID

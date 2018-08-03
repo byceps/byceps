@@ -19,7 +19,7 @@ from ....util.instances import ReprBuilder
 
 from ...user.models.user import User
 
-from ..transfer.models import CategoryID, TopicID
+from ..transfer.models import CategoryID
 
 from .category import Category
 

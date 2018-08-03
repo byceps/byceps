@@ -10,8 +10,6 @@ This implementation only supports code set B.
 :License: Modified BSD, see LICENSE for details.
 """
 
-import sys
-
 from jinja2 import Template
 
 

@@ -13,7 +13,7 @@ from ....util.instances import ReprBuilder
 
 from ...user.models.user import User
 
-from ..transfer.models import BoardID, CategoryID
+from ..transfer.models import BoardID
 
 from .board import Board
 

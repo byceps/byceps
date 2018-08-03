@@ -18,7 +18,7 @@ from ....util.instances import ReprBuilder
 
 from ...user.models.user import User
 
-from ..transfer.models import PostingID, TopicID
+from ..transfer.models import TopicID
 
 from .topic import Topic
 
