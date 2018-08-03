@@ -26,8 +26,8 @@ def connection():
 
 
 def get_queue():
-    async = current_app.config['JOBS_ASYNC']
-    return Queue(async=async)
+    is_async = current_app.config['JOBS_ASYNC']
+    return Queue(is_async=is_async)
 
 
 def enqueue(*args, **kwargs):
