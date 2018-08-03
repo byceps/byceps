@@ -487,7 +487,7 @@ def check_in_user(ticket_id: TicketID, initiator_id: UserID) -> None:
 
     user = user_service.find_user(ticket.used_by_id)
     if user is None:
-        raise UserIdUnknown("Unknown user ID '{}'.".format(user_id))
+        raise UserIdUnknown("Unknown user ID '{}'.".format(ticket.used_by_id))
 
     if user.suspended:
         raise UserAccountSuspended(
