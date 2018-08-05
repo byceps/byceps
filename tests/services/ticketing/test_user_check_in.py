@@ -27,7 +27,7 @@ class UserCheckInTest(AbstractAppTestCase):
         self.user_id = self.user.id
 
     def test_check_in_user(self):
-        ticket_before = ticket_service.create_ticket(self.category_id, self.owner_id)
+        ticket_before = create_ticket(self.category_id, self.owner_id)
 
         ticket_before.used_by_id = self.user_id
         self.db.session.commit()
@@ -59,13 +59,13 @@ class UserCheckInTest(AbstractAppTestCase):
         }
 
     def test_check_in_user_with_ticket_without_assigned_user(self):
-        ticket = ticket_service.create_ticket(self.category_id, self.owner_id)
+        ticket = create_ticket(self.category_id, self.owner_id)
 
         with raises(TicketLacksUser):
             ticket_service.check_in_user(ticket.id, self.orga_id)
 
     def test_check_in_user_with_revoked_ticket(self):
-        ticket = ticket_service.create_ticket(self.category_id, self.owner_id)
+        ticket = create_ticket(self.category_id, self.owner_id)
 
         ticket.revoked = True
         ticket.used_by_id = self.user_id
@@ -75,7 +75,7 @@ class UserCheckInTest(AbstractAppTestCase):
             ticket_service.check_in_user(ticket.id, self.orga_id)
 
     def test_check_in_user_with_ticket_user_already_checked_in(self):
-        ticket = ticket_service.create_ticket(self.category_id, self.owner_id)
+        ticket = create_ticket(self.category_id, self.owner_id)
 
         ticket.used_by_id = self.user_id
         ticket.user_checked_in = True
@@ -85,7 +85,7 @@ class UserCheckInTest(AbstractAppTestCase):
             ticket_service.check_in_user(ticket.id, self.orga_id)
 
     def test_check_in_suspended_user(self):
-        ticket = ticket_service.create_ticket(self.category_id, self.owner_id)
+        ticket = create_ticket(self.category_id, self.owner_id)
 
         ticket.used_by_id = self.user_id
         self.user.suspended = True
@@ -99,3 +99,7 @@ class UserCheckInTest(AbstractAppTestCase):
 
     def create_category(self, title):
         return category_service.create_category(self.party.id, title)
+
+
+def create_ticket(category_id, owner_id):
+    return ticket_service.create_ticket(category_id, owner_id)
