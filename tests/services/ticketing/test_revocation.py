@@ -4,7 +4,7 @@
 """
 
 from byceps.services.ticketing import category_service, event_service, \
-    ticket_creation_service, ticket_service
+    ticket_creation_service, ticket_revocation_service, ticket_service
 
 from tests.base import AbstractAppTestCase
 
@@ -31,7 +31,7 @@ class TicketRevocationTestCase(AbstractAppTestCase):
 
         ticket_id = ticket_before.id
 
-        ticket_service.revoke_ticket(ticket_id)
+        ticket_revocation_service.revoke_ticket(ticket_id)
 
         # -------------------------------- #
 
@@ -59,7 +59,7 @@ class TicketRevocationTestCase(AbstractAppTestCase):
 
         ticket_ids = {ticket.id for ticket in tickets_before}
 
-        ticket_service.revoke_tickets(ticket_ids)
+        ticket_revocation_service.revoke_tickets(ticket_ids)
 
         # -------------------------------- #
 
