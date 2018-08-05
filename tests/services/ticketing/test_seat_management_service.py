@@ -8,14 +8,14 @@ from pytest import raises
 from byceps.services.seating import area_service, seat_service
 from byceps.services.ticketing import category_service, event_service, \
     ticket_bundle_service, ticket_creation_service, \
-    ticket_seat_management_service, ticket_user_management_service
+    ticket_seat_management_service
 from byceps.services.ticketing.exceptions import \
     SeatChangeDeniedForBundledTicket, TicketCategoryMismatch
 
 from tests.base import AbstractAppTestCase
 
 
-class TicketAssignmentServiceTestCase(AbstractAppTestCase):
+class TicketSeatManagementServiceTest(AbstractAppTestCase):
 
     def setUp(self):
         super().setUp()
@@ -28,78 +28,6 @@ class TicketAssignmentServiceTestCase(AbstractAppTestCase):
 
         self.ticket = ticket_creation_service \
             .create_ticket(self.category_id, self.owner.id)
-
-    def test_appoint_and_withdraw_user_manager(self):
-        manager = self.create_user('Ticket_Manager')
-
-        assert self.ticket.user_managed_by_id is None
-
-        # appoint user manager
-
-        ticket_user_management_service \
-            .appoint_user_manager(self.ticket.id, manager.id, self.owner.id)
-        assert self.ticket.user_managed_by_id == manager.id
-
-        events_after_appointment = event_service.get_events_for_ticket(
-            self.ticket.id)
-        assert len(events_after_appointment) == 1
-
-        appointment_event = events_after_appointment[0]
-        assert_event(appointment_event, 'user-manager-appointed', {
-            'appointed_user_manager_id': str(manager.id),
-            'initiator_id': str(self.owner.id),
-        })
-
-        # withdraw user manager
-
-        ticket_user_management_service \
-            .withdraw_user_manager(self.ticket.id, self.owner.id)
-        assert self.ticket.user_managed_by_id is None
-
-        events_after_withdrawal = event_service.get_events_for_ticket(
-            self.ticket.id)
-        assert len(events_after_withdrawal) == 2
-
-        withdrawal_event = events_after_withdrawal[1]
-        assert_event(withdrawal_event, 'user-manager-withdrawn', {
-            'initiator_id': str(self.owner.id),
-        })
-
-    def test_appoint_and_withdraw_user(self):
-        user = self.create_user('Ticket_User')
-
-        assert self.ticket.used_by_id is None
-
-        # appoint user
-
-        ticket_user_management_service \
-            .appoint_user(self.ticket.id, user.id, self.owner.id)
-        assert self.ticket.used_by_id == user.id
-
-        events_after_appointment = event_service.get_events_for_ticket(
-            self.ticket.id)
-        assert len(events_after_appointment) == 1
-
-        appointment_event = events_after_appointment[0]
-        assert_event(appointment_event, 'user-appointed', {
-            'appointed_user_id': str(user.id),
-            'initiator_id': str(self.owner.id),
-        })
-
-        # withdraw user
-
-        ticket_user_management_service \
-            .withdraw_user(self.ticket.id, self.owner.id)
-        assert self.ticket.used_by_id is None
-
-        events_after_withdrawal = event_service.get_events_for_ticket(
-            self.ticket.id)
-        assert len(events_after_withdrawal) == 2
-
-        withdrawal_event = events_after_withdrawal[1]
-        assert_event(withdrawal_event, 'user-withdrawn', {
-            'initiator_id': str(self.owner.id),
-        })
 
     def test_appoint_and_withdraw_seat_manager(self):
         manager = self.create_user('Ticket_Manager')
@@ -201,9 +129,8 @@ class TicketAssignmentServiceTestCase(AbstractAppTestCase):
 
     def test_occupy_seat_with_bundled_ticket(self):
         ticket_quantity = 1
-        ticket_bundle = ticket_bundle_service.create_bundle(self.category_id,
-                                                            ticket_quantity,
-                                                            self.owner.id)
+        ticket_bundle = ticket_bundle_service \
+            .create_bundle(self.category_id, ticket_quantity, self.owner.id)
 
         bundled_ticket = ticket_bundle.tickets[0]
 
@@ -226,7 +153,6 @@ class TicketAssignmentServiceTestCase(AbstractAppTestCase):
             ticket_seat_management_service \
                 .occupy_seat(self.ticket.id, seat.id, self.owner.id)
 
-    # -------------------------------------------------------------------- #
     # helpers
 
     def create_area(self, slug, title):
