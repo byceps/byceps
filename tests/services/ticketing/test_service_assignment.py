@@ -7,8 +7,8 @@ from pytest import raises
 
 from byceps.services.seating import area_service, seat_service
 from byceps.services.ticketing import category_service, event_service, \
-    ticket_bundle_service, ticket_creation_service, ticket_service, \
-    ticket_user_management_service
+    ticket_bundle_service, ticket_creation_service, \
+    ticket_seat_management_service, ticket_user_management_service
 from byceps.services.ticketing.exceptions import \
     SeatChangeDeniedForBundledTicket, TicketCategoryMismatch
 
@@ -108,8 +108,8 @@ class TicketAssignmentServiceTestCase(AbstractAppTestCase):
 
         # appoint seat manager
 
-        ticket_service.appoint_seat_manager(self.ticket.id, manager.id,
-                                            self.owner.id)
+        ticket_seat_management_service \
+            .appoint_seat_manager(self.ticket.id, manager.id, self.owner.id)
         assert self.ticket.seat_managed_by_id == manager.id
 
         events_after_appointment = event_service.get_events_for_ticket(
@@ -124,7 +124,8 @@ class TicketAssignmentServiceTestCase(AbstractAppTestCase):
 
         # withdraw seat manager
 
-        ticket_service.withdraw_seat_manager(self.ticket.id, self.owner.id)
+        ticket_seat_management_service \
+            .withdraw_seat_manager(self.ticket.id, self.owner.id)
         assert self.ticket.seat_managed_by_id is None
 
         events_after_withdrawal = event_service.get_events_for_ticket(
@@ -145,7 +146,8 @@ class TicketAssignmentServiceTestCase(AbstractAppTestCase):
 
         # occupy seat
 
-        ticket_service.occupy_seat(self.ticket.id, seat1.id, self.owner.id)
+        ticket_seat_management_service \
+            .occupy_seat(self.ticket.id, seat1.id, self.owner.id)
         assert self.ticket.occupied_seat_id == seat1.id
 
         events_after_occupation = event_service.get_events_for_ticket(
@@ -160,7 +162,8 @@ class TicketAssignmentServiceTestCase(AbstractAppTestCase):
 
         # switch to another seat
 
-        ticket_service.occupy_seat(self.ticket.id, seat2.id, self.owner.id)
+        ticket_seat_management_service \
+            .occupy_seat(self.ticket.id, seat2.id, self.owner.id)
         assert self.ticket.occupied_seat_id == seat2.id
 
         events_after_switch = event_service.get_events_for_ticket(
@@ -176,7 +179,8 @@ class TicketAssignmentServiceTestCase(AbstractAppTestCase):
 
         # release seat
 
-        ticket_service.release_seat(self.ticket.id, self.owner.id)
+        ticket_seat_management_service \
+            .release_seat(self.ticket.id, self.owner.id)
         assert self.ticket.occupied_seat_id is None
 
         events_after_release = event_service.get_events_for_ticket(
@@ -192,8 +196,8 @@ class TicketAssignmentServiceTestCase(AbstractAppTestCase):
         invalid_seat_id = 'ffffffff-ffff-ffff-ffff-ffffffffffff'
 
         with raises(ValueError):
-            ticket_service.occupy_seat(self.ticket.id, invalid_seat_id,
-                                       self.owner.id)
+            ticket_seat_management_service \
+                .occupy_seat(self.ticket.id, invalid_seat_id, self.owner.id)
 
     def test_occupy_seat_with_bundled_ticket(self):
         ticket_quantity = 1
@@ -207,8 +211,8 @@ class TicketAssignmentServiceTestCase(AbstractAppTestCase):
         seat = seat_service.create_seat(area, 0, 0, self.category_id)
 
         with raises(SeatChangeDeniedForBundledTicket):
-            ticket_service.occupy_seat(bundled_ticket.id, seat.id,
-                                       self.owner.id)
+            ticket_seat_management_service \
+                .occupy_seat(bundled_ticket.id, seat.id, self.owner.id)
 
     def test_occupy_seat_with_wrong_category(self):
         other_category_id = self.create_category('Economy').id
@@ -219,7 +223,8 @@ class TicketAssignmentServiceTestCase(AbstractAppTestCase):
         assert self.ticket.category_id != other_category_id
 
         with raises(TicketCategoryMismatch):
-            ticket_service.occupy_seat(self.ticket.id, seat.id, self.owner.id)
+            ticket_seat_management_service \
+                .occupy_seat(self.ticket.id, seat.id, self.owner.id)
 
     # -------------------------------------------------------------------- #
     # helpers

@@ -11,7 +11,7 @@ from flask import abort, g, redirect, request, url_for
 from ...config import get_ticket_management_enabled
 from ...services.party import service as party_service
 from ...services.ticketing import barcode_service, ticket_service, \
-    ticket_user_management_service
+    ticket_seat_management_service, ticket_user_management_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_error, flash_success
 from ...util.iterables import find
@@ -270,7 +270,8 @@ def appoint_seat_manager(ticket_id):
 
     user = form.user.data
 
-    ticket_service.appoint_seat_manager(ticket.id, user.id, g.current_user.id)
+    ticket_seat_management_service \
+        .appoint_seat_manager(ticket.id, user.id, g.current_user.id)
 
     flash_success(
         '{} wurde als Sitzplatz-Verwalter/in von Ticket {} eingetragen.',
@@ -295,7 +296,8 @@ def withdraw_seat_manager(ticket_id):
 
     user = ticket.seat_managed_by
 
-    ticket_service.withdraw_seat_manager(ticket.id, g.current_user.id)
+    ticket_seat_management_service \
+        .withdraw_seat_manager(ticket.id, g.current_user.id)
 
     flash_success('Der Sitzplatz-Verwalter von Ticket {} wurde entfernt.',
                   ticket.code)
