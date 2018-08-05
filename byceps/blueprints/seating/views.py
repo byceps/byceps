@@ -142,9 +142,7 @@ def release_seat(ticket_id):
     ticket = _get_ticket_or_404(ticket_id)
 
     if not ticket.occupied_seat:
-        flash_error(
-            '{} ist nicht belegt und kann deshalb nicht freigegeben werden.',
-            seat.label)
+        flash_error('Ticket {} belegt keinen Sitzplatz.', ticket.code)
         return
 
     manager = g.current_user
