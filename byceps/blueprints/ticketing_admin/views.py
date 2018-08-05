@@ -126,7 +126,7 @@ def set_user_checked_in_flag(ticket_id):
     initiator_id = g.current_user.id
 
     try:
-        ticket_service.check_in_user(ticket.id, initiator_id)
+        ticket_user_checkin_service.check_in_user(ticket.id, initiator_id)
     except ticket_exceptions.UserAccountSuspended:
         flash_error(
             'Das dem Ticket zugewiesene Benutzerkonto ist gesperrt. '
@@ -145,7 +145,7 @@ def unset_user_checked_in_flag(ticket_id):
 
     initiator_id = g.current_user.id
 
-    ticket_service.revert_user_check_in(ticket.id, initiator_id)
+    ticket_user_checkin_service.revert_user_check_in(ticket.id, initiator_id)
 
     flash_success('Der Check-In wurde rückgängig gemacht.')
 
