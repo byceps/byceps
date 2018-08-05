@@ -7,7 +7,8 @@ from pytest import raises
 
 from byceps.services.seating import area_service, seat_service
 from byceps.services.ticketing import category_service, event_service, \
-    ticket_bundle_service, ticket_creation_service, ticket_service
+    ticket_bundle_service, ticket_creation_service, ticket_service, \
+    ticket_user_management_service
 from byceps.services.ticketing.exceptions import \
     SeatChangeDeniedForBundledTicket, TicketCategoryMismatch
 
@@ -35,8 +36,8 @@ class TicketAssignmentServiceTestCase(AbstractAppTestCase):
 
         # appoint user manager
 
-        ticket_service.appoint_user_manager(self.ticket.id, manager.id,
-                                            self.owner.id)
+        ticket_user_management_service \
+            .appoint_user_manager(self.ticket.id, manager.id, self.owner.id)
         assert self.ticket.user_managed_by_id == manager.id
 
         events_after_appointment = event_service.get_events_for_ticket(
@@ -51,7 +52,8 @@ class TicketAssignmentServiceTestCase(AbstractAppTestCase):
 
         # withdraw user manager
 
-        ticket_service.withdraw_user_manager(self.ticket.id, self.owner.id)
+        ticket_user_management_service \
+            .withdraw_user_manager(self.ticket.id, self.owner.id)
         assert self.ticket.user_managed_by_id is None
 
         events_after_withdrawal = event_service.get_events_for_ticket(
@@ -70,7 +72,8 @@ class TicketAssignmentServiceTestCase(AbstractAppTestCase):
 
         # appoint user
 
-        ticket_service.appoint_user(self.ticket.id, user.id, self.owner.id)
+        ticket_user_management_service \
+            .appoint_user(self.ticket.id, user.id, self.owner.id)
         assert self.ticket.used_by_id == user.id
 
         events_after_appointment = event_service.get_events_for_ticket(
@@ -85,7 +88,8 @@ class TicketAssignmentServiceTestCase(AbstractAppTestCase):
 
         # withdraw user
 
-        ticket_service.withdraw_user(self.ticket.id, self.owner.id)
+        ticket_user_management_service \
+            .withdraw_user(self.ticket.id, self.owner.id)
         assert self.ticket.used_by_id is None
 
         events_after_withdrawal = event_service.get_events_for_ticket(

@@ -10,7 +10,8 @@ from flask import abort, g, redirect, request, url_for
 
 from ...config import get_ticket_management_enabled
 from ...services.party import service as party_service
-from ...services.ticketing import barcode_service, ticket_service
+from ...services.ticketing import barcode_service, ticket_service, \
+    ticket_user_management_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_error, flash_success
 from ...util.iterables import find
@@ -125,7 +126,8 @@ def appoint_user(ticket_id):
 
     user = form.user.data
 
-    ticket_service.appoint_user(ticket.id, user.id, manager.id)
+    ticket_user_management_service \
+        .appoint_user(ticket.id, user.id, manager.id)
 
     flash_success('{} wurde als Nutzer/in von Ticket {} eingetragen.',
         user.screen_name, ticket.code)
@@ -148,7 +150,8 @@ def withdraw_user(ticket_id):
     if not ticket.is_user_managed_by(manager.id):
         abort(403)
 
-    ticket_service.appoint_user(ticket.id, manager.id, manager.id)
+    ticket_user_management_service \
+        .appoint_user(ticket.id, manager.id, manager.id)
 
     flash_success('Du wurdest als Nutzer/in von Ticket {} eingetragen.',
         ticket.code)
@@ -193,7 +196,8 @@ def appoint_user_manager(ticket_id):
 
     user = form.user.data
 
-    ticket_service.appoint_user_manager(ticket.id, user.id, g.current_user.id)
+    ticket_user_management_service \
+        .appoint_user_manager(ticket.id, user.id, g.current_user.id)
 
     flash_success('{} wurde als Nutzer-Verwalter/in von Ticket {} eingetragen.',
         user.screen_name, ticket.code)
@@ -217,7 +221,8 @@ def withdraw_user_manager(ticket_id):
 
     user = ticket.user_managed_by
 
-    ticket_service.withdraw_user_manager(ticket.id, g.current_user.id)
+    ticket_user_management_service \
+        .withdraw_user_manager(ticket.id, g.current_user.id)
 
     flash_success('Der Nutzer-Verwalter von Ticket {} wurde entfernt.',
                   ticket.code)

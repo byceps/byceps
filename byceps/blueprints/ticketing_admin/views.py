@@ -11,7 +11,7 @@ from flask import abort, g, redirect, request, url_for
 from ...services.party import service as party_service
 from ...services.shop.order import service as order_service
 from ...services.ticketing import exceptions as ticket_exceptions, \
-    ticket_bundle_service, ticket_service
+    ticket_bundle_service, ticket_service, ticket_user_management_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_error, flash_success
 from ...util.framework.templating import templated
@@ -108,7 +108,7 @@ def appoint_user(ticket_id):
     user = form.user.data
     manager = g.current_user
 
-    ticket_service.appoint_user(ticket.id, user.id, manager.id)
+    ticket_user_management_service.appoint_user(ticket.id, user.id, manager.id)
 
     flash_success('{} wurde als Nutzer/in von Ticket {} eingetragen.',
         user.screen_name, ticket.code)
