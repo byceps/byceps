@@ -22,6 +22,9 @@ from ..user.models.user import User
 from ..user import service as user_service
 
 from . import event_service
+from .exceptions import SeatChangeDeniedForBundledTicket, \
+    SeatChangeDeniedForGroupSeat, TicketCategoryMismatch, TicketIsRevoked, \
+    TicketLacksUser, UserAccountSuspended, UserAlreadyCheckIn, UserIdUnknown
 from .models.category import Category
 from .models.ticket import Ticket
 from .transfer.models import TicketCode, TicketID
@@ -405,30 +408,6 @@ def revert_user_check_in(ticket_id: TicketID, initiator_id: UserID) -> None:
     db.session.commit()
 
 
-class TicketIsRevoked(Exception):
-    """Indicate an error caused by the ticket being revoked."""
-
-
-class TicketLacksUser(Exception):
-    """Indicate a (failed) attempt to check a user in with a ticket
-    which has no user set.
-    """
-
-
-class UserAccountSuspended(Exception):
-    """Indicate that an action failed because the user account is suspended."""
-
-
-class UserAlreadyCheckIn(Exception):
-    """Indicate that user check-in failed because a user has already
-    been checked in with the ticket.
-    """
-
-
-class UserIdUnknown(Exception):
-    """Indicate that a user ID is unknown."""
-
-
 # -------------------------------------------------------------------- #
 # seat
 
@@ -531,12 +510,6 @@ def release_seat(ticket_id: TicketID, initiator_id: UserID) -> None:
     db.session.commit()
 
 
-class SeatChangeDeniedForBundledTicket(Exception):
-    """Indicate that the ticket belongs to a bundle and, thus, must not
-    be used to occupy (or release) a single seat.
-    """
-
-
 def _deny_seat_management_if_ticket_belongs_to_bundle(ticket: Ticket) -> None:
     """Raise an exception if this ticket belongs to a bundle.
 
@@ -550,22 +523,9 @@ def _deny_seat_management_if_ticket_belongs_to_bundle(ticket: Ticket) -> None:
             .format(ticket.code))
 
 
-class SeatChangeDeniedForGroupSeat(Exception):
-    """Indicate that the seat belongs to a group and, thus, cannot be
-    occupied by a single ticket that does not belong to a bundle, and
-    cannot be released on its own.
-    """
-
-
 def _deny_seat_management_if_seat_belongs_to_group(seat: Seat) -> None:
     if seat.assignment is not None:
         raise SeatChangeDeniedForGroupSeat(
             "Seat '{}' belongs to a group and, thus, "
             'cannot be occupied by a single ticket, or removed separately.'
             .format(seat.label))
-
-
-class TicketCategoryMismatch(Exception):
-    """Indicate that the provided ticket category does not match the one
-    of the target item.
-    """

@@ -8,7 +8,7 @@ from pytest import raises
 from byceps.services.seating import area_service, seat_service
 from byceps.services.ticketing import category_service, event_service, \
     ticket_bundle_service, ticket_creation_service, ticket_service
-from byceps.services.ticketing.ticket_service import \
+from byceps.services.ticketing.exceptions import \
     SeatChangeDeniedForBundledTicket, TicketCategoryMismatch
 
 from tests.base import AbstractAppTestCase

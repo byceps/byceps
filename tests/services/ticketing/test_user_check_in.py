@@ -7,7 +7,7 @@ from pytest import raises
 
 from byceps.services.ticketing import category_service, event_service, \
     ticket_creation_service, ticket_service
-from byceps.services.ticketing.ticket_service import TicketIsRevoked, \
+from byceps.services.ticketing.exceptions import TicketIsRevoked, \
     TicketLacksUser, UserAccountSuspended, UserAlreadyCheckIn
 
 from tests.base import AbstractAppTestCase

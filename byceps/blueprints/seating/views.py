@@ -16,7 +16,8 @@ from ...services.seating.models.seat import Seat
 from ...services.seating import seat_service
 from ...services.seating.transfer.models import SeatID
 from ...services.ticketing.models.ticket import Ticket
-from ...services.ticketing import ticket_service
+from ...services.ticketing import exceptions as ticket_exceptions, \
+    ticket_service
 from ...services.ticketing.transfer.models import TicketID
 from ...services.user.models.user import UserTuple
 from ...services.user import service as user_service
@@ -110,9 +111,9 @@ def occupy_seat(ticket_id, seat_id):
 
     try:
         ticket_service.occupy_seat(ticket.id, seat.id, manager.id)
-    except ticket_service.SeatChangeDeniedForBundledTicket:
+    except ticket_exceptions.SeatChangeDeniedForBundledTicket:
         abort(403)
-    except ticket_service.TicketCategoryMismatch:
+    except ticket_exceptions.TicketCategoryMismatch:
         abort(403)
     except ValueError:
         abort(404)
@@ -141,7 +142,7 @@ def release_seat(ticket_id):
 
     try:
         ticket_service.release_seat(ticket.id, manager.id)
-    except ticket_service.SeatChangeDeniedForBundledTicket:
+    except ticket_exceptions.SeatChangeDeniedForBundledTicket:
         abort(403)
 
     flash_success('{} wurde freigegeben.', seat.label)

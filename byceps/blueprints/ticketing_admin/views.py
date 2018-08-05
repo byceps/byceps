@@ -10,7 +10,8 @@ from flask import abort, g, redirect, request, url_for
 
 from ...services.party import service as party_service
 from ...services.shop.order import service as order_service
-from ...services.ticketing import ticket_bundle_service, ticket_service
+from ...services.ticketing import exceptions as ticket_exceptions, \
+    ticket_bundle_service, ticket_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_error, flash_success
 from ...util.framework.templating import templated
@@ -126,7 +127,7 @@ def set_user_checked_in_flag(ticket_id):
 
     try:
         ticket_service.check_in_user(ticket.id, initiator_id)
-    except ticket_service.UserAccountSuspended:
+    except ticket_exceptions.UserAccountSuspended:
         flash_error(
             'Das dem Ticket zugewiesene Benutzerkonto ist gesperrt. '
             'Der Check-In ist nicht erlaubt.')
