@@ -79,18 +79,10 @@ class UserCreateTestCase(AbstractAppTestCase):
         assert not user.deleted
 
         # password
-        credential = Credential.query.get(user.id)
-        assert credential is not None
-        assert credential.password_hash.startswith('pbkdf2:sha256:100000$')
-        assert credential.updated_at is not None
+        assert_password_credentials_created(user.id)
 
         # session token
-        session_token = SessionToken.query \
-            .filter_by(user_id=user.id) \
-            .one_or_none()
-        assert session_token is not None
-        assert session_token.token is not None
-        assert session_token.created_at is not None
+        assert_session_token_created(user.id)
 
         # avatar
         assert user.avatar is None
@@ -101,26 +93,18 @@ class UserCreateTestCase(AbstractAppTestCase):
 
         # authorization
         board_user_role = Role.query.get('board_user')
-        actual_roles = Role.query \
-            .join(UserRole) \
-            .filter_by(user_id=user.id) \
-            .all()
+        actual_roles = get_user_roles(user.id)
         assert board_user_role in actual_roles
 
         # consent to terms of service
-        terms_consents = terms_service.get_consents_by_user(user.id)
-        assert len(terms_consents) == 1
-        assert terms_consents[0].version_id == self.terms_version_id
+        assert_consent_to_terms(user.id, self.terms_version_id)
 
         # newsletter subscription
-        subscribed_to_newsletter = newsletter_service.is_subscribed(
-            user.id, self.brand_id)
-        assert subscribed_to_newsletter
+        assert is_subscribed_to_newsletter(user.id, self.brand_id)
 
         # confirmation e-mail
 
-        verification_token = verification_token_service \
-            .find_for_email_address_confirmation_by_user(user.id)
+        verification_token = find_verification_token(user.id)
         assert verification_token is not None
 
         expected_sender = 'noreply@example.com'
@@ -158,9 +142,7 @@ bitte bestätige deine E-Mail-Adresse indem du diese URL abrufst: http://example
         user = get_user(response)
 
         # newsletter subscription
-        subscribed_to_newsletter = newsletter_service.is_subscribed(
-            user.id, self.brand_id)
-        assert not subscribed_to_newsletter
+        assert not is_subscribed_to_newsletter(user.id, self.brand_id)
 
     # helpers
 
@@ -179,3 +161,44 @@ def get_user(response):
 
 def get_user_count():
     return User.query.count()
+
+
+def get_user_roles(user_id):
+    return Role.query \
+        .join(UserRole) \
+        .filter_by(user_id=user_id) \
+        .all()
+
+
+def find_verification_token(user_id):
+    return verification_token_service \
+        .find_for_email_address_confirmation_by_user(user_id)
+
+
+def is_subscribed_to_newsletter(user_id, brand_id):
+    return newsletter_service.is_subscribed(user_id, brand_id)
+
+
+def assert_password_credentials_created(user_id):
+    credential = Credential.query.get(user_id)
+
+    assert credential is not None
+    assert credential.password_hash.startswith('pbkdf2:sha256:100000$')
+    assert credential.updated_at is not None
+
+
+def assert_session_token_created(user_id):
+    session_token = SessionToken.query \
+        .filter_by(user_id=user_id) \
+        .one_or_none()
+
+    assert session_token is not None
+    assert session_token.token is not None
+    assert session_token.created_at is not None
+
+
+def assert_consent_to_terms(user_id, terms_version_id):
+    terms_consents = terms_service.get_consents_by_user(user_id)
+
+    assert len(terms_consents) == 1
+    assert terms_consents[0].version_id == terms_version_id
