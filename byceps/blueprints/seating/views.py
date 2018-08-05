@@ -102,20 +102,30 @@ def occupy_seat(ticket_id, seat_id):
     manager = g.current_user
 
     if not ticket.is_seat_managed_by(manager.id):
-        abort(403)
+        flash_error(
+            'Du bist nicht berechtigt, den Sitzplatz für Ticket {} '
+            'zu verwalten.', ticket.code)
+        return
 
     seat = _get_seat_or_404(seat_id)
 
     if seat.is_occupied:
-        abort(403)
+        flash_error('{} ist bereits belegt.', seat.label)
+        return
 
     try:
         ticket_seat_management_service \
             .occupy_seat(ticket.id, seat.id, manager.id)
     except ticket_exceptions.SeatChangeDeniedForBundledTicket:
-        abort(403)
+        flash_error(
+            'Ticket {} gehört zu einem Paket und kann nicht einzeln '
+            'verwaltet werden.', ticket.code)
+        return
     except ticket_exceptions.TicketCategoryMismatch:
-        abort(403)
+        flash_error(
+            'Ticket {} und {} haben unterschiedliche Kategorien.',
+            ticket.code, seat.label)
+        return
     except ValueError:
         abort(404)
 
@@ -132,19 +142,28 @@ def release_seat(ticket_id):
     ticket = _get_ticket_or_404(ticket_id)
 
     if not ticket.occupied_seat:
-        abort(404)
+        flash_error(
+            '{} ist nicht belegt und kann deshalb nicht freigegeben werden.',
+            seat.label)
+        return
 
     manager = g.current_user
 
     if not ticket.is_seat_managed_by(manager.id):
-        abort(403)
+        flash_error(
+            'Du bist nicht berechtigt, den Sitzplatz für Ticket {} '
+            'zu verwalten.', ticket.code)
+        return
 
     seat = ticket.occupied_seat
 
     try:
         ticket_seat_management_service.release_seat(ticket.id, manager.id)
     except ticket_exceptions.SeatChangeDeniedForBundledTicket:
-        abort(403)
+        flash_error(
+            'Ticket {} gehört zu einem Paket und kann nicht einzeln '
+            'verwaltet werden.', ticket.code)
+        return
 
     flash_success('{} wurde freigegeben.', seat.label)
 
@@ -152,7 +171,7 @@ def release_seat(ticket_id):
 def _abort_if_seat_management_disabled() -> None:
     if not get_seat_management_enabled():
         flash_error('Sitzplätze können derzeit nicht verändert werden.')
-        abort(403)
+        return
 
 
 def _get_ticket_or_404(ticket_id: TicketID) -> Ticket:
