@@ -41,7 +41,7 @@ class UserCheckInTest(AbstractAppTestCase):
 
         ticket_id = ticket_before.id
 
-        ticket_service.check_in_user(ticket_id, self.orga_id)
+        self.check_in_user(ticket_id)
 
         # -------------------------------- #
 
@@ -62,7 +62,7 @@ class UserCheckInTest(AbstractAppTestCase):
         ticket = create_ticket(self.category_id, self.owner_id)
 
         with raises(TicketLacksUser):
-            ticket_service.check_in_user(ticket.id, self.orga_id)
+            self.check_in_user(ticket.id)
 
     def test_check_in_user_with_revoked_ticket(self):
         ticket = create_ticket(self.category_id, self.owner_id)
@@ -72,7 +72,7 @@ class UserCheckInTest(AbstractAppTestCase):
         self.db.session.commit()
 
         with raises(TicketIsRevoked):
-            ticket_service.check_in_user(ticket.id, self.orga_id)
+            self.check_in_user(ticket.id)
 
     def test_check_in_user_with_ticket_user_already_checked_in(self):
         ticket = create_ticket(self.category_id, self.owner_id)
@@ -82,7 +82,7 @@ class UserCheckInTest(AbstractAppTestCase):
         self.db.session.commit()
 
         with raises(UserAlreadyCheckedIn):
-            ticket_service.check_in_user(ticket.id, self.orga_id)
+            self.check_in_user(ticket.id)
 
     def test_check_in_suspended_user(self):
         ticket = create_ticket(self.category_id, self.owner_id)
@@ -92,13 +92,16 @@ class UserCheckInTest(AbstractAppTestCase):
         self.db.session.commit()
 
         with raises(UserAccountSuspended):
-            ticket_service.check_in_user(ticket.id, self.orga_id)
+            self.check_in_user(ticket.id)
 
     # -------------------------------------------------------------------- #
     # helpers
 
     def create_category(self, title):
         return category_service.create_category(self.party.id, title)
+
+    def check_in_user(self, ticket_id):
+        ticket_service.check_in_user(ticket_id, self.orga_id)
 
 
 def create_ticket(category_id, owner_id):
