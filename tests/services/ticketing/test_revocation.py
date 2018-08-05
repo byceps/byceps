@@ -4,7 +4,7 @@
 """
 
 from byceps.services.ticketing import category_service, event_service, \
-    ticket_service
+    ticket_creation_service, ticket_service
 
 from tests.base import AbstractAppTestCase
 
@@ -20,7 +20,8 @@ class TicketRevocationTestCase(AbstractAppTestCase):
         self.owner_id = self.create_user('Ticket_Owner').id
 
     def test_revoke_ticket(self):
-        ticket_before = ticket_service.create_ticket(self.category_id, self.owner_id)
+        ticket_before = ticket_creation_service \
+            .create_ticket(self.category_id, self.owner_id)
         assert not ticket_before.revoked
 
         events_before = event_service.get_events_for_ticket(ticket_before.id)
@@ -45,7 +46,9 @@ class TicketRevocationTestCase(AbstractAppTestCase):
         assert ticket_revoked_event.data == {}
 
     def test_revoke_tickets(self):
-        tickets_before = ticket_service.create_tickets(self.category_id, self.owner_id, 3)
+        tickets_before = ticket_creation_service \
+            .create_tickets(self.category_id, self.owner_id, 3)
+
         for ticket_before in tickets_before:
             assert not ticket_before.revoked
 

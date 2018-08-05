@@ -6,7 +6,7 @@
 from pytest import raises
 
 from byceps.services.ticketing import category_service, event_service, \
-    ticket_service
+    ticket_creation_service, ticket_service
 from byceps.services.ticketing.ticket_service import TicketIsRevoked, \
     TicketLacksUser, UserAccountSuspended, UserAlreadyCheckIn
 
@@ -102,4 +102,4 @@ class UserCheckInTest(AbstractAppTestCase):
 
 
 def create_ticket(category_id, owner_id):
-    return ticket_service.create_ticket(category_id, owner_id)
+    return ticket_creation_service.create_ticket(category_id, owner_id)

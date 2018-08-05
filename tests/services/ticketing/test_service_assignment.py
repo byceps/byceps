@@ -7,7 +7,7 @@ from pytest import raises
 
 from byceps.services.seating import area_service, seat_service
 from byceps.services.ticketing import category_service, event_service, \
-    ticket_bundle_service, ticket_service
+    ticket_bundle_service, ticket_creation_service, ticket_service
 from byceps.services.ticketing.ticket_service import \
     SeatChangeDeniedForBundledTicket, TicketCategoryMismatch
 
@@ -25,8 +25,8 @@ class TicketAssignmentServiceTestCase(AbstractAppTestCase):
 
         self.category_id = self.create_category('Premium').id
 
-        self.ticket = ticket_service.create_ticket(self.category_id,
-                                                   self.owner.id)
+        self.ticket = ticket_creation_service \
+            .create_ticket(self.category_id, self.owner.id)
 
     def test_appoint_and_withdraw_user_manager(self):
         manager = self.create_user('Ticket_Manager')
