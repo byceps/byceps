@@ -1,7 +1,6 @@
 from unittest.mock import patch
 
 from byceps.blueprints.shop_order.signals import order_canceled
-from byceps.database import db
 from byceps.services.shop.order import service as order_service
 
 from tests.helpers import current_party_set, current_user_set

@@ -1,6 +1,3 @@
-from byceps.database import db
-
-from testfixtures.shop_article import create_article
 from testfixtures.shop_order import create_order, create_order_item
 
 from tests.services.shop.base import ShopTestBase

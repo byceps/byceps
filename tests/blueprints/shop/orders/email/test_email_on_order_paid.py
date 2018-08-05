@@ -2,7 +2,6 @@ from datetime import datetime
 from unittest.mock import patch
 
 from byceps.blueprints.shop_order.signals import order_paid
-from byceps.database import db
 from byceps.services.shop.order import service as order_service
 from byceps.services.shop.order.transfer.models import PaymentMethod
 

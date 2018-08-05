@@ -10,8 +10,6 @@ from decimal import Decimal
 
 from byceps.services.shop.article.models.article import Article
 
-from .shop_shop import create_shop
-
 
 ANY_ARTICLE_ITEM_NUMBER = 'AEC-05-A00009'
 
