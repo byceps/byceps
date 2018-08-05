@@ -24,7 +24,7 @@ from ..user import service as user_service
 from . import event_service
 from .exceptions import SeatChangeDeniedForBundledTicket, \
     SeatChangeDeniedForGroupSeat, TicketCategoryMismatch, TicketIsRevoked, \
-    TicketLacksUser, UserAccountSuspended, UserAlreadyCheckIn, UserIdUnknown
+    TicketLacksUser, UserAccountSuspended, UserAlreadyCheckedIn, UserIdUnknown
 from .models.category import Category
 from .models.ticket import Ticket
 from .transfer.models import TicketCode, TicketID
@@ -313,7 +313,7 @@ def appoint_user(ticket_id: TicketID, user_id: UserID, initiator_id: UserID
         raise TicketIsRevoked('Ticket {} has been revoked.'.format(ticket_id))
 
     if ticket.user_checked_in:
-        raise UserAlreadyCheckIn('Ticket user has already been checked in.')
+        raise UserAlreadyCheckedIn('Ticket user has already been checked in.')
 
     user = user_service.find_user(user_id)
     if user is None:
@@ -342,7 +342,7 @@ def withdraw_user(ticket_id: TicketID, initiator_id: UserID) -> None:
         raise TicketIsRevoked('Ticket {} has been revoked.'.format(ticket_id))
 
     if ticket.user_checked_in:
-        raise UserAlreadyCheckIn('Ticket user has already been checked in.')
+        raise UserAlreadyCheckedIn('Ticket user has already been checked in.')
 
     ticket.used_by_id = None
 
@@ -366,7 +366,7 @@ def check_in_user(ticket_id: TicketID, initiator_id: UserID) -> None:
             'Ticket {} has no user assigned.'.format(ticket_id))
 
     if ticket.user_checked_in:
-        raise UserAlreadyCheckIn(
+        raise UserAlreadyCheckedIn(
             'Ticket {} has already been used to check in a user.'
                 .format(ticket_id))
 

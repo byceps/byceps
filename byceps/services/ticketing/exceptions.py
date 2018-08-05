@@ -21,7 +21,7 @@ class UserAccountSuspended(Exception):
     """Indicate that an action failed because the user account is suspended."""
 
 
-class UserAlreadyCheckIn(Exception):
+class UserAlreadyCheckedIn(Exception):
     """Indicate that user check-in failed because a user has already
     been checked in with the ticket.
     """
