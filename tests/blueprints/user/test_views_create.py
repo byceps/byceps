@@ -50,7 +50,7 @@ class UserCreateTestCase(AbstractAppTestCase):
 
     @patch('byceps.email.send')
     def test_create(self, send_email_mock):
-        user_count_before = self.get_user_count()
+        user_count_before = get_user_count()
 
         form_data = {
             'screen_name': 'Hiro',
@@ -67,10 +67,10 @@ class UserCreateTestCase(AbstractAppTestCase):
         response = self.send_request(form_data)
         assert response.status_code == 302
 
-        user_count_afterwards = self.get_user_count()
+        user_count_afterwards = get_user_count()
         assert user_count_afterwards == user_count_before + 1
 
-        user = self.get_user(response)
+        user = get_user(response)
 
         assert user.created_at is not None
         assert user.screen_name == 'Hiro'
@@ -155,7 +155,7 @@ bitte bestätige deine E-Mail-Adresse indem du diese URL abrufst: http://example
         response = self.send_request(form_data)
         assert response.status_code == 302
 
-        user = self.get_user(response)
+        user = get_user(response)
 
         # newsletter subscription
         subscribed_to_newsletter = newsletter_service.is_subscribed(
@@ -164,16 +164,18 @@ bitte bestätige deine E-Mail-Adresse indem du diese URL abrufst: http://example
 
     # helpers
 
-    def get_user_count(self):
-        return User.query.count()
-
     def send_request(self, form_data):
         url = '/users/'
 
         with self.client() as client:
             return client.post(url, data=form_data)
 
-    def get_user(self, response):
-        location = response.headers.get('Location')
-        user_id = location.rpartition('/')[-1]
-        return User.query.get(user_id)
+
+def get_user(response):
+    location = response.headers.get('Location')
+    user_id = location.rpartition('/')[-1]
+    return User.query.get(user_id)
+
+
+def get_user_count():
+    return User.query.count()
