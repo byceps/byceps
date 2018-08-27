@@ -67,6 +67,7 @@ def _get_blueprints(app):
         ('authentication',          '/authentication'               ),
         ('authorization',           None                            ),
         ('core',                    '/core'                         ),
+        ('shop.orders.email',       None                            ),
         ('user',                    '/users'                        ),
         ('user_avatar',             '/users'                        ),
     ]
@@ -82,7 +83,6 @@ def _get_blueprints(app):
             ('party',                   None                        ),
             ('seating',                 '/seating'                  ),
             ('shop.orders',             '/shop/orders'              ),
-            ('shop.orders.email',       None                        ),
             ('shop_order',              '/shop'                     ),
             ('snippet',                 '/snippets'                 ),
             ('terms',                   '/terms'                    ),
