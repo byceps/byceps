@@ -22,9 +22,9 @@
 {%- macro form_field_checkbox(field, label) -%}
   {%- set kwargs2 = kwargs %}
   {%- call _row(field) %}
-      <div class="checkbox">
-        {{- field(**kwargs2) }} {{ field.label(label) }}
-      </div>
+        <div class="checkbox">
+          {{- field(**kwargs2) }} {{ field.label(label) }}
+        </div>
   {%- endcall %}
 {%- endmacro %}
 
@@ -32,11 +32,11 @@
 {%- macro form_fields_radio(field) -%}
   {%- set kwargs2 = kwargs %}
   {%- for subfield in field %}
-      <div class="radio">
+        <div class="radio">
     {%- call _row(field) %}
-      {{- subfield(**kwargs2) }} {{ subfield.label }}
+        {{- subfield(**kwargs2) }} {{ subfield.label }}
     {%- endcall %}
-      </div>
+        </div>
   {%- endfor %}
 {%- endmacro %}
 
@@ -61,10 +61,12 @@
 
 
 {% macro form_supplement(label=None) -%}
-    <div class="label">{% if label is not none %}{{ label }}{% endif %}</div>
-    <div class="supplement">
+      <li>
+        <div class="label">{% if label is not none %}{{ label }}{% endif %}</div>
+        <div class="supplement">
 {{ caller() }}
-    </div>
+        </div>
+      </li>
 {%- endmacro %}
 
 
