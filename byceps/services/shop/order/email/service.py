@@ -18,6 +18,7 @@ from jinja2 import FileSystemLoader
 from .....services.brand import service as brand_service
 from .....services.brand.transfer.models import Brand
 from .....services.email import service as email_service
+from .....services.email.transfer.models import Message
 from .....services.party import service as party_service
 from .....services.party.transfer.models import Party
 from .....services.shop.order import service as order_service
@@ -35,14 +36,6 @@ class OrderEmailData:
     party = attrib(type=Party)
     brand = attrib(type=Brand)
     placed_by = attrib(type=User)
-
-
-@attrs(frozen=True, slots=True)
-class Message:
-    sender = attrib(type=str)
-    recipients = attrib()
-    subject = attrib(type=str)
-    body = attrib(type=str)
 
 
 def send_email_for_incoming_order_to_orderer(order_id: OrderID) -> None:
@@ -170,9 +163,5 @@ def _render_template(name: str, **context: Dict[str, Any]) -> str:
     return template.render(**context)
 
 
-def _send_email(message) -> None:
-    email_service.enqueue_email(
-        message.sender,
-        message.recipients,
-        message.subject,
-        message.body)
+def _send_email(message: Message) -> None:
+    email_service.enqueue_message(message)

@@ -13,6 +13,7 @@ from ...typing import BrandID
 from ...util.jobqueue import enqueue
 
 from .models import EmailConfig
+from .transfer.models import Message
 
 
 class EmailError(Exception):
@@ -44,11 +45,20 @@ def get_sender_address_for_brand(brand_id: BrandID) -> str:
 
 def enqueue_email(sender: str, recipients: List[str], subject: str, body: str) \
                  -> None:
-    """Enqueue an e-mail to be sent asynchronously."""
+    """Enqueue e-mail to be sent asynchronously."""
     enqueue(send_email, sender, recipients, subject, body)
 
 
 def send_email(sender: str, recipients: List[str], subject: str, body: str) \
               -> None:
-    """Send an e-mail."""
+    """Send e-mail."""
     email.send(sender, recipients, subject, body)
+
+
+def enqueue_message(message: Message) -> None:
+    """Enqueue e-mail to be sent asynchronously."""
+    enqueue_email(
+        message.sender,
+        message.recipients,
+        message.subject,
+        message.body)
