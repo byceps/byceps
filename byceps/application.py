@@ -91,6 +91,7 @@ def _get_blueprints(app):
             ('tourney.avatar',          '/tourney/avatars'          ),
             ('user_badge',              '/user_badges'              ),
             ('user_group',              '/user_groups'              ),
+            ('user_message',            '/user_messages'            ),
         ]
     elif current_mode.is_admin():
         yield from [

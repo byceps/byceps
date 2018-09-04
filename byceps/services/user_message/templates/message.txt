@@ -1,0 +1,15 @@
+{% set subject = 'Mitteilung von %s'|format(sender_screen_name) -%}
+
+
+Hallo {{ recipient_screen_name }},
+
+{{ sender_screen_name }} möchte dir folgende Mitteilung zukommen lassen:
+
+---8<-------------------------------------
+
+{{ text }}
+
+---8<-------------------------------------
+
+-- 
+Diese Mitteilung wurde über die Website der {{ brand_title }} gesendet.

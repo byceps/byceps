@@ -24,8 +24,8 @@ def load_template(source: str, *, template_globals: Dict[str, Any]=None):
     return env.from_string(source)
 
 
-def create_sandboxed_environment(*, loader: Optional[BaseLoader]=None) \
-                                -> Environment:
+def create_sandboxed_environment(*, loader: Optional[BaseLoader]=None,
+                                 autoescape: bool=True) -> Environment:
     """Create a sandboxed environment."""
     if loader is None:
         # A loader that never finds a template.
@@ -33,7 +33,7 @@ def create_sandboxed_environment(*, loader: Optional[BaseLoader]=None) \
 
     return ImmutableSandboxedEnvironment(
         loader=loader,
-        autoescape=True)
+        autoescape=autoescape)
 
 
 def get_variable_value(template: Template, name: str) -> Optional[Any]:
