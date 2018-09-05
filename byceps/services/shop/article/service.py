@@ -27,7 +27,8 @@ def create_article(shop_id: ShopID, item_number: ArticleNumber,
                    description: str, price: Decimal, tax_rate: Decimal,
                    quantity: int) -> Article:
     """Create an article."""
-    article = Article(item_number, description, price, tax_rate, quantity)
+    article = Article(shop_id, item_number, description, price, tax_rate,
+                      quantity)
 
     db.session.add(article)
     db.session.commit()
