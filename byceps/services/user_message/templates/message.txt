@@ -11,5 +11,7 @@ Hallo {{ recipient_screen_name }},
 
 ---8<-------------------------------------
 
+Du kannst {{ sender_screen_name }} hier antworten: {{ sender_contact_url }}
+
 -- 
 Diese Mitteilung wurde über die Website der {{ brand_title }} gesendet.

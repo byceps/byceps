@@ -33,21 +33,22 @@ class MessageTemplateRenderResult:
 
 
 def send_message(sender_id: UserID, recipient_id: UserID, text: str,
-                 brand_id: BrandID) -> None:
+                 sender_contact_url: str, brand_id: BrandID) -> None:
     """Create a message and send it."""
-    message = create_message(sender_id, recipient_id, text, brand_id)
+    message = create_message(sender_id, recipient_id, text, sender_contact_url,
+                             brand_id)
 
     email_service.enqueue_message(message)
 
 
 def create_message(sender_id: UserID, recipient_id: UserID, text: str,
-                 brand_id: BrandID) -> Message:
+                   sender_contact_url: str, brand_id: BrandID) -> Message:
     """Create a message."""
     sender = _get_user(sender_id)
     recipient = _get_user(recipient_id)
     brand = _get_brand(brand_id)
 
-    return _assemble_message(sender, recipient, text, brand)
+    return _assemble_message(sender, recipient, text, sender_contact_url, brand)
 
 
 def _get_user(user_id: UserID) -> User:
@@ -68,11 +69,12 @@ def _get_brand(brand_id: BrandID) -> Brand:
     return brand
 
 
-def _assemble_message(sender: User, recipient: User, text: str, brand: Brand
+def _assemble_message(sender: User, recipient: User, text: str,
+                      sender_contact_url: str, brand: Brand
                      ) -> Message:
     """Assemble an email message with the rendered template as its body."""
-    message_template_render_result = _render_message_template(sender, recipient,
-                                                              text, brand)
+    message_template_render_result = _render_message_template(
+        sender, recipient, text, sender_contact_url, brand)
 
     sender_address = email_service.get_sender_address_for_brand(brand.id)
     recipients = [recipient.email_address]
@@ -83,13 +85,15 @@ def _assemble_message(sender: User, recipient: User, text: str, brand: Brand
 
 
 def _render_message_template(sender: User, recipient: User, text: str,
-                             brand: Brand) -> MessageTemplateRenderResult:
+                             sender_contact_url: str, brand: Brand
+                            ) -> MessageTemplateRenderResult:
     template = _get_template('message.txt')
 
     context = {
         'sender_screen_name': sender.screen_name,
         'recipient_screen_name': recipient.screen_name,
         'text': text.strip(),
+        'sender_contact_url': sender_contact_url,
         'brand_title': brand.title,
     }
 

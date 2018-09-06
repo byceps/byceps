@@ -28,10 +28,11 @@ please don't forget to take out the trash.
 kthxbye,
 Alice
 '''
+        sender_contact_url = 'https://www.example.com/user_messages/to/SOME-USER-ID/create'
 
         with self.app.app_context():
             message = service.create_message(sender.id, recipient.id, text,
-                                             self.brand.id)
+                                             sender_contact_url, self.brand.id)
 
         assert message.sender == 'orga@example.com'
         assert message.recipients == ['bob@example.com']
@@ -51,6 +52,8 @@ kthxbye,
 Alice
 
 ---8<-------------------------------------
+
+Du kannst Alice hier antworten: https://www.example.com/user_messages/to/SOME-USER-ID/create
 
 -- 
 Diese Mitteilung wurde über die Website der Acme Entertainment Convention gesendet.\

@@ -8,7 +8,7 @@ Send messages from one user to another.
 :License: Modified BSD, see LICENSE for details.
 """
 
-from flask import abort, g, request
+from flask import abort, g, request, url_for
 
 from ...services.user import service as user_service
 from ...services.user_message import service as user_message_service
@@ -52,8 +52,10 @@ def create(recipient_id):
 
     sender = g.current_user
     body = form.body.data.strip()
+    sender_contact_url = url_for('.create_form', recipient_id=sender.id)
 
-    user_message_service.send_message(sender.id, recipient.id, body, g.brand_id)
+    user_message_service.send_message(sender.id, recipient.id, body,
+                                      sender_contact_url, g.brand_id)
 
     flash_success(
         'Deine Nachricht an {} wurde versendet.'.format(recipient.screen_name))
