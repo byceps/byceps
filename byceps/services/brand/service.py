@@ -50,6 +50,16 @@ def count_brands() -> int:
     return DbBrand.query.count()
 
 
+def create_setting(brand_id: BrandID, name: str, value: str) -> BrandSetting:
+    """Create a setting for that brand."""
+    setting = DbSetting(brand_id, name, value)
+
+    db.session.add(setting)
+    db.session.commit()
+
+    return _db_entity_to_brand_setting(setting)
+
+
 def find_setting(brand_id: BrandID, name: str) -> Optional[BrandSetting]:
     """Return the setting for that brand and with that name, or `None`
     if not found.
@@ -60,6 +70,18 @@ def find_setting(brand_id: BrandID, name: str) -> Optional[BrandSetting]:
         return None
 
     return _db_entity_to_brand_setting(setting)
+
+
+def find_setting_value(brand_id: BrandID, name: str) -> Optional[str]:
+    """Return the value of the setting for that brand and with that
+    name, or `None` if not found.
+    """
+    setting = find_setting(brand_id, name)
+
+    if setting is None:
+        return None
+
+    return setting.value
 
 
 def _db_entity_to_brand(brand: DbBrand) -> Brand:
