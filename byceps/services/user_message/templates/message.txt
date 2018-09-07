@@ -15,3 +15,6 @@ Du kannst {{ sender_screen_name }} hier antworten: {{ sender_contact_url }}
 
 -- 
 Diese Mitteilung wurde über die Website der {{ brand_title }} gesendet.
+{%- if brand_contact_address %}
+Bei Fragen konktaktiere uns bitte per E-Mail an: {{ brand_contact_address }}
+{%- endif %}
