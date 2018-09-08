@@ -54,7 +54,7 @@ class ShopAdminTestCase(ShopTestBase):
 
         url = '/admin/shop/orders/{}/cancel'.format(order_before.id)
         form_data = {'reason': 'Dein Vorname ist albern!'}
-        with self.client(user=self.admin) as client:
+        with self.client(user_id=self.admin.id) as client:
             response = client.post(url, data=form_data)
 
         order_afterwards = Order.query.get(order_before.id)
@@ -73,7 +73,7 @@ class ShopAdminTestCase(ShopTestBase):
 
         url = '/admin/shop/orders/{}/mark_as_paid'.format(order_before.id)
         form_data = {'payment_method': 'direct_debit'}
-        with self.client(user=self.admin) as client:
+        with self.client(user_id=self.admin.id) as client:
             response = client.post(url, data=form_data)
 
         order_afterwards = Order.query.get(order_before.id)
@@ -93,12 +93,12 @@ class ShopAdminTestCase(ShopTestBase):
 
         url = '/admin/shop/orders/{}/mark_as_paid'.format(order_before.id)
         form_data = {'payment_method': 'bank_transfer'}
-        with self.client(user=self.admin) as client:
+        with self.client(user_id=self.admin.id) as client:
             response = client.post(url, data=form_data)
 
         url = '/admin/shop/orders/{}/cancel'.format(order_before.id)
         form_data = {'reason': 'Dein Vorname ist albern!'}
-        with self.client(user=self.admin) as client:
+        with self.client(user_id=self.admin.id) as client:
             response = client.post(url, data=form_data)
 
         order_afterwards = Order.query.get(order_before.id)

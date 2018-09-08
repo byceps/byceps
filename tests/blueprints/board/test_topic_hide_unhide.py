@@ -24,7 +24,7 @@ class TopicHideTest(AbstractTopicModerationTest):
         assert_topic_is_not_hidden(topic_before)
 
         url = '/board/topics/{}/flags/hidden'.format(topic_before.id)
-        with self.client(user=self.admin) as client:
+        with self.client(user_id=self.admin.id) as client:
             response = client.post(url)
 
         assert response.status_code == 204
@@ -38,7 +38,7 @@ class TopicHideTest(AbstractTopicModerationTest):
         assert_topic_is_hidden(topic_before, self.admin.id)
 
         url = '/board/topics/{}/flags/hidden'.format(topic_before.id)
-        with self.client(user=self.admin) as client:
+        with self.client(user_id=self.admin.id) as client:
             response = client.delete(url)
 
         assert response.status_code == 204

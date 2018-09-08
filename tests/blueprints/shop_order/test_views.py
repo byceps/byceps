@@ -59,7 +59,7 @@ class ShopTestCase(ShopTestBase):
             'street': 'L33t Street 101',
             article_quantity_key: 3,
         }
-        with self.client(user=self.orderer) as client:
+        with self.client(user_id=self.orderer.id) as client:
             response = client.post(url, data=form_data)
 
         assert_response_headers(response)
@@ -91,7 +91,7 @@ class ShopTestCase(ShopTestBase):
             'street': 'L33t Street 101',
             'quantity': 1,  # TODO: Test with `3` if limitation is removed.
         }
-        with self.client(user=self.orderer) as client:
+        with self.client(user_id=self.orderer.id) as client:
             response = client.post(url, data=form_data)
 
         assert_response_headers(response)

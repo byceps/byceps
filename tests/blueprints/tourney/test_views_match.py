@@ -22,7 +22,7 @@ class MatchTestCase(AbstractAppTestCase):
 
         match = self.create_match()
 
-        response = self.request_comment_creation(match.id, user=player)
+        response = self.request_comment_creation(match.id, user_id=player.id)
 
         assert response.status_code == 201
 
@@ -42,7 +42,8 @@ class MatchTestCase(AbstractAppTestCase):
 
         unknown_match_id = '00000000-0000-0000-0000-000000000000'
 
-        response = self.request_comment_creation(unknown_match_id, user=player)
+        response = self.request_comment_creation(unknown_match_id,
+                                                 user_id=player.id)
 
         assert response.status_code == 404
 
@@ -63,14 +64,14 @@ class MatchTestCase(AbstractAppTestCase):
 
         return match
 
-    def request_comment_creation(self, match_id, *, user=None):
+    def request_comment_creation(self, match_id, *, user_id=None):
         url = '/tourney/matches/{}/comments'.format(match_id)
 
         form_data = {
             'body': 'gg',
         }
 
-        with self.client(user=user) as client:
+        with self.client(user_id=user_id) as client:
             return client.post(url, data=form_data)
 
 

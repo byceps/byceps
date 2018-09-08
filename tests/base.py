@@ -109,23 +109,23 @@ class AbstractAppTestCase(TestCase):
         db.session.commit()
 
     @contextmanager
-    def client(self, *, user=None):
+    def client(self, *, user_id=None):
         """Provide an HTTP client.
 
-        If a user is given, the client authenticates with the user's
+        If a user ID is given, the client authenticates with the user's
         credentials.
         """
         client = self.app.test_client()
 
-        if user is not None:
-            add_user_credentials_to_session(client, user)
+        if user_id is not None:
+            add_user_credentials_to_session(client, user_id)
 
         yield client
 
 
-def add_user_credentials_to_session(client, user):
-    session_token = SessionToken.query.filter_by(user_id=user.id).one_or_none()
+def add_user_credentials_to_session(client, user_id):
+    session_token = SessionToken.query.filter_by(user_id=user_id).one_or_none()
 
     with client.session_transaction() as session:
-        session['user_id'] = str(user.id)
+        session['user_id'] = str(user_id)
         session['user_auth_token'] = str(session_token.token)

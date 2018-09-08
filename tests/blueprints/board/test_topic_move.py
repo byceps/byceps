@@ -23,7 +23,7 @@ class TopicMoveTest(AbstractTopicModerationTest):
 
         url = '/board/topics/{}/move'.format(topic_before.id)
         form_data = {'category_id': self.category_id_2}
-        with self.client(user=self.admin) as client:
+        with self.client(user_id=self.admin.id) as client:
             response = client.post(url, data=form_data)
 
         assert response.status_code == 302

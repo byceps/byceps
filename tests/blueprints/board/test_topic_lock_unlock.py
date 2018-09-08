@@ -23,7 +23,7 @@ class TopicPinTest(AbstractTopicModerationTest):
         assert_topic_is_not_locked(topic_before)
 
         url = '/board/topics/{}/flags/locked'.format(topic_before.id)
-        with self.client(user=self.admin) as client:
+        with self.client(user_id=self.admin.id) as client:
             response = client.post(url)
 
         assert response.status_code == 204
@@ -37,7 +37,7 @@ class TopicPinTest(AbstractTopicModerationTest):
         assert_topic_is_locked(topic_before, self.admin.id)
 
         url = '/board/topics/{}/flags/locked'.format(topic_before.id)
-        with self.client(user=self.admin) as client:
+        with self.client(user_id=self.admin.id) as client:
             response = client.delete(url)
 
         assert response.status_code == 204

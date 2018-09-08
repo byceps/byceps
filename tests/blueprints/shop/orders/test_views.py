@@ -63,7 +63,7 @@ class ShopOrdersTestCase(ShopTestBase):
 
         url = '/shop/orders/{}'.format(str(order_id))
 
-        with self.client(user=current_user) as client:
+        with self.client(user_id=current_user.id) as client:
             response = client.get(url)
 
         return response

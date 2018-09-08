@@ -17,7 +17,7 @@ class MyTicketsTestCase(AbstractAppTestCase):
         user = self.create_user('McFly')
         self.create_session_token(user.id)
 
-        response = self.send_request(user=user)
+        response = self.send_request(user_id=user.id)
 
         assert response.status_code == 200
         assert response.mimetype == 'text/html'
@@ -30,7 +30,7 @@ class MyTicketsTestCase(AbstractAppTestCase):
 
     # helpers
 
-    def send_request(self, *, user=None):
+    def send_request(self, *, user_id=None):
         url = '/tickets/mine'
-        with self.client(user=user) as client:
+        with self.client(user_id=user_id) as client:
             return client.get(url)

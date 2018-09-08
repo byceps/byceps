@@ -138,5 +138,5 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
 
     def get_as_admin(self, url):
         """Make a GET request as the admin and return the response."""
-        with self.client(user=self.admin) as client:
+        with self.client(user_id=self.admin.id) as client:
             return client.get(url)

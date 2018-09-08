@@ -42,7 +42,7 @@ class ExportTestCase(ShopTestBase):
             expected = f.read().rstrip()
 
         url = '/admin/shop/orders/{}/export'.format(self.order.id)
-        with self.client(user=self.admin) as client:
+        with self.client(user_id=self.admin.id) as client:
             response = client.get(url)
 
         assert response.status_code == 200

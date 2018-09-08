@@ -36,7 +36,7 @@ class PasswordUpdateTestCase(AbstractAppTestCase):
             'new_password_confirmation': new_password,
         }
 
-        response = self.send_request(form_data, user=user)
+        response = self.send_request(form_data, user_id=user.id)
 
         assert response.status_code == 302
         assert response.headers.get('Location') == 'http://example.com/authentication/login'
@@ -69,7 +69,7 @@ class PasswordUpdateTestCase(AbstractAppTestCase):
             .filter_by(user_id=user_id) \
             .one()
 
-    def send_request(self, form_data, *, user=None):
+    def send_request(self, form_data, *, user_id=None):
         url = '/authentication/password'
-        with self.client(user=user) as client:
+        with self.client(user_id=user_id) as client:
             return client.post(url, data=form_data)
