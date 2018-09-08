@@ -112,5 +112,5 @@ Du kannst Bob hier antworten: https://www.example.com/user_messages/to/user-id-o
 
 -- 
 Diese Mitteilung wurde über die Website der Acme Entertainment Convention gesendet.
-Bei Fragen konktaktiere uns bitte per E-Mail an: info@example.com\
+Bei Fragen kontaktiere uns bitte per E-Mail an: info@example.com\
 '''
