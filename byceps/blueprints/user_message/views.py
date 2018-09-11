@@ -52,7 +52,8 @@ def create(recipient_id):
 
     sender = g.current_user
     body = form.body.data.strip()
-    sender_contact_url = url_for('.create_form', recipient_id=sender.id)
+    sender_contact_url = url_for('.create_form', recipient_id=sender.id,
+                                 _external=True)
 
     user_message_service.send_message(sender.id, recipient.id, body,
                                       sender_contact_url, g.brand_id)
