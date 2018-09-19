@@ -596,7 +596,10 @@ fieldset.buttons {
   text-decoration: none;
 }
 
-.event-body pre {
+.event-body blockquote {
+  background-color: #f4f4f4;
+  border-radius: 0.5rem;
+  padding: 1rem;
   white-space: pre-wrap;
 }
 
