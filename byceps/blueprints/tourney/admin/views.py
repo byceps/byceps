@@ -9,7 +9,7 @@ byceps.blueprints.tourney.admin.views
 from flask import abort, request
 
 from ....services.party import service as party_service
-from ....services.tourney import service as tourney_service
+from ....services.tourney import category_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_success
 from ....util.framework.templating import templated
@@ -35,7 +35,7 @@ def category_index_for_party(party_id):
     """List tourney categories for that party."""
     party = _get_party_or_404(party_id)
 
-    categories = tourney_service.get_categories_for_party(party.id)
+    categories = category_service.get_categories_for_party(party.id)
 
     return {
         'party': party,
@@ -70,7 +70,7 @@ def category_create(party_id):
 
     title = form.title.data.strip()
 
-    category = tourney_service.create_category(party.id, title)
+    category = category_service.create_category(party.id, title)
 
     flash_success('Die Kategorie "{}" wurde angelegt.', category.title)
     return redirect_to('.category_index_for_party', party_id=category.party.id)
@@ -102,7 +102,7 @@ def category_update(category_id):
     if not form.validate():
         return category_update_form(category_id, form)
 
-    tourney_service.update_category(category, form.title.data.strip())
+    category_service.update_category(category, form.title.data.strip())
 
     flash_success('Die Kategorie "{}" wurde aktualisiert.', category.title)
     return redirect_to('.category_index_for_party', party_id=category.party.id)
@@ -116,7 +116,7 @@ def category_move_up(category_id):
     category = _get_category_or_404(category_id)
 
     try:
-        tourney_service.move_category_up(category)
+        category_service.move_category_up(category)
     except ValueError:
         flash_error('Die Kategorie "{}" befindet sich bereits ganz oben.', category.title)
     else:
@@ -131,7 +131,7 @@ def category_move_down(category_id):
     category = _get_category_or_404(category_id)
 
     try:
-        tourney_service.move_category_down(category)
+        category_service.move_category_down(category)
     except ValueError:
         flash_error('Die Kategorie "{}" befindet sich bereits ganz unten.', category.title)
     else:
@@ -148,7 +148,7 @@ def _get_party_or_404(party_id):
 
 
 def _get_category_or_404(category_id):
-    category = tourney_service.find_category(category_id)
+    category = category_service.find_category(category_id)
 
     if category is None:
         abort(404)
