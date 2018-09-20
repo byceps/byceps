@@ -16,7 +16,7 @@ from ....util.views import respond_created
 from .forms import CreateForm
 
 
-blueprint = create_blueprint('avatar', __name__)
+blueprint = create_blueprint('tourney_avatar', __name__)
 
 
 ALLOWED_IMAGE_TYPES = frozenset([
