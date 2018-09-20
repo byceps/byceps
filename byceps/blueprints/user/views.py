@@ -43,12 +43,9 @@ def view(user_id):
     if get_site_mode().is_admin():
         abort(404)
 
-    user = user_service.find_user(user_id)
+    user = user_service.find_active_user(user_id)
     if user is None:
         abort(404)
-
-    if user.deleted:
-        abort(410, 'User account has been deleted.')
 
     badges_with_awarding_quantity = badge_service.get_badges_for_user(user.id)
 
@@ -77,13 +74,10 @@ def view_as_json(user_id):
     if get_site_mode().is_admin():
         abort(404)
 
-    user = user_service.find_user(user_id)
+    user = user_service.find_active_user(user_id)
 
-    if not user:
+    if user is None:
         return create_empty_json_response(404)
-
-    if user.deleted:
-        return create_empty_json_response(410)
 
     return jsonify({
         'id': user.id,
@@ -98,7 +92,7 @@ def view_current():
     """Show the current user's internal profile."""
     current_user = g.current_user
 
-    user = user_service.find_user(current_user.id)
+    user = user_service.find_active_user(current_user.id)
     if user is None:
         abort(404)
 

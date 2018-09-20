@@ -52,10 +52,11 @@ def create_message(sender_id: UserID, recipient_id: UserID, text: str,
 
 
 def _get_user(user_id: UserID) -> User:
-    user = user_service.find_user(user_id)
+    user = user_service.find_active_user(user_id)
 
     if user is None:
-        raise ValueError("Unknown user ID '{}'.".format(user_id))
+        raise ValueError(
+            "Unknown user ID '{}' or account not active".format(user_id))
 
     return user
 
@@ -64,7 +65,7 @@ def _get_brand(brand_id: BrandID) -> Brand:
     brand = brand_service.find_brand(brand_id)
 
     if brand is None:
-        raise ValueError("Unknown brand ID '{}'.".format(brand_id))
+        raise ValueError("Unknown brand ID '{}'".format(brand_id))
 
     return brand
 
