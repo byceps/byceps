@@ -6,12 +6,13 @@ byceps.services.tourney.match_service
 :License: Modified BSD, see LICENSE for details.
 """
 
+from datetime import datetime
 from typing import Optional, Sequence
 
 from ...database import db
 from ...typing import UserID
 
-from .models.match import Match, MatchID, MatchComment
+from .models.match import Match, MatchID, MatchComment, MatchCommentID
 
 
 # -------------------------------------------------------------------- #
@@ -57,3 +58,29 @@ def create_comment(match_id: MatchID, creator_id: UserID, body: str
     db.session.commit()
 
     return comment
+
+
+def hide_comment(comment_id: MatchCommentID, initiator_id: UserID) -> None:
+    """Hide the match comment."""
+    comment = MatchComment.query.get(comment_id)
+    if comment is None:
+        raise ValueError('Unknown match comment ID')
+
+    comment.hidden = True
+    comment.hidden_at = datetime.utcnow()
+    comment.hidden_by_id = initiator_id
+
+    db.session.commit()
+
+
+def unhide_comment(comment_id: MatchCommentID, initiator_id: UserID) -> None:
+    """Un-hide the match comment."""
+    comment = MatchComment.query.get(comment_id)
+    if comment is None:
+        raise ValueError('Unknown match comment ID')
+
+    comment.hidden = False
+    comment.hidden_at = None
+    comment.hidden_by_id = None
+
+    db.session.commit()

@@ -46,8 +46,12 @@ class MatchComment(db.Model):
     match = db.relationship(Match)
     created_at = db.Column(db.DateTime, default=datetime.now, nullable=False)
     created_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
-    created_by = db.relationship(User)
+    created_by = db.relationship(User, foreign_keys=[created_by_id])
     body = db.Column(db.UnicodeText, nullable=False)
+    hidden = db.Column(db.Boolean, default=False, nullable=False)
+    hidden_at = db.Column(db.DateTime)
+    hidden_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
+    hidden_by = db.relationship(User, foreign_keys=[hidden_by_id])
 
     def __init__(self, match_id: MatchID, creator_id: UserID, body: str
                 ) -> None:

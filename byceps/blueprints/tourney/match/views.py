@@ -11,7 +11,9 @@ from flask import abort, g, request, url_for
 from ....services.tourney import match_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated
-from ....util.views import respond_created
+from ....util.views import respond_created, respond_no_content
+
+from ...authentication.decorators import api_token_required
 
 from . import signals
 
@@ -57,6 +59,32 @@ def comment_create(match_id):
     signals.match_comment_created.send(None, comment_id=comment.id)
 
     return url_for('.comment_view', match_id=match.id, comment_id=comment.id)
+
+
+@blueprint.route('/<uuid:match_id>/comments/<uuid:comment_id>/flags/hidden',
+                 methods=['POST'])
+@api_token_required
+@respond_no_content
+def comment_hide(match_id, comment_id):
+    """Hide the match comment."""
+    initiator_id = request.form.get('initiator_id')
+    if not initiator_id:
+        abort(400, 'Initiator ID missing')
+
+    match_service.hide_comment(comment_id, initiator_id)
+
+
+@blueprint.route('/<uuid:match_id>/comments/<uuid:comment_id>/flags/hidden',
+                 methods=['DELETE'])
+@api_token_required
+@respond_no_content
+def comment_unhide(match_id, comment_id):
+    """Un-hide the match comment."""
+    initiator_id = request.form.get('initiator_id')
+    if not initiator_id:
+        abort(400, 'Initiator ID missing')
+
+    match_service.unhide_comment(comment_id, initiator_id)
 
 
 def _get_match_or_404(match_id):
