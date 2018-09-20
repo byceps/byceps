@@ -34,15 +34,48 @@ class UserJsonTestCase(AbstractAppTestCase):
         assert response_data['id'] == user_id
         assert response_data['screen_name'] == screen_name
 
+    def test_with_not_enabled_user(self):
+        screen_name = 'NotEnabledUser'
+
+        user = self.create_user(screen_name)
+        user.enabled = False
+        self.db.session.commit()
+
+        response = self.send_request(str(user.id))
+
+        assert response.status_code == 404
+        assert response.content_type == CONTENT_TYPE_JSON
+        assert response.mimetype == CONTENT_TYPE_JSON
+
+        response_data = decode_json_response(response)
+        assert response_data == {}
+
+    def test_with_suspended_user(self):
+        screen_name = 'SuspendedUser'
+
+        user = self.create_user(screen_name)
+        user.suspended = True
+        self.db.session.commit()
+
+        response = self.send_request(str(user.id))
+
+        assert response.status_code == 404
+        assert response.content_type == CONTENT_TYPE_JSON
+        assert response.mimetype == CONTENT_TYPE_JSON
+
+        response_data = decode_json_response(response)
+        assert response_data == {}
+
     def test_with_deleted_user(self):
         screen_name = 'DeletedUser'
 
         user = self.create_user(screen_name)
         user.deleted = True
+        self.db.session.commit()
 
         response = self.send_request(str(user.id))
 
-        assert response.status_code == 410
+        assert response.status_code == 404
         assert response.content_type == CONTENT_TYPE_JSON
         assert response.mimetype == CONTENT_TYPE_JSON
 
