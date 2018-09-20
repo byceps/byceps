@@ -10,7 +10,7 @@ from testfixtures.tourney import create_match
 from tests.base import AbstractAppTestCase
 
 
-class MatchTestCase(AbstractAppTestCase):
+class MatchCommentCreateTest(AbstractAppTestCase):
 
     def setUp(self):
         super().setUp()
