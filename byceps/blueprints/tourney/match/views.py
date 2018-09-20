@@ -1,6 +1,6 @@
 """
-byceps.blueprints.tourney.views
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.tourney.match.views
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2018 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -8,24 +8,24 @@ byceps.blueprints.tourney.views
 
 from flask import abort, g, request, url_for
 
-from ...services.tourney import service as tourney_service
-from ...util.framework.blueprint import create_blueprint
-from ...util.framework.templating import templated
-from ...util.views import respond_created
+from ....services.tourney import service as tourney_service
+from ....util.framework.blueprint import create_blueprint
+from ....util.framework.templating import templated
+from ....util.views import respond_created
 
 from . import signals
 
 
-blueprint = create_blueprint('tourney', __name__)
+blueprint = create_blueprint('tourney_match', __name__)
 
 
 # -------------------------------------------------------------------- #
 # match comments
 
 
-@blueprint.route('/matches/<uuid:match_id>/comments')
+@blueprint.route('/<uuid:match_id>/comments')
 @templated
-def match_comments_view(match_id):
+def comments_view(match_id):
     """Render the comments on a match."""
     match = _get_match_or_404(match_id)
 
@@ -36,15 +36,14 @@ def match_comments_view(match_id):
     }
 
 
-blueprint.add_url_rule(
-    '/matches/<uuid:match_id>/comments/<uuid:comment_id>',
-    endpoint='match_comment_view',
-    build_only=True)
+blueprint.add_url_rule('/<uuid:match_id>/comments/<uuid:comment_id>',
+                       endpoint='comment_view',
+                       build_only=True)
 
 
-@blueprint.route('/matches/<uuid:match_id>/comments', methods=['POST'])
+@blueprint.route('/<uuid:match_id>/comments', methods=['POST'])
 @respond_created
-def match_comment_create(match_id):
+def comment_create(match_id):
     """Create a comment on a match."""
     if not g.current_user.is_active:
         abort(403)
@@ -58,9 +57,7 @@ def match_comment_create(match_id):
 
     signals.match_comment_created.send(None, comment_id=comment.id)
 
-    return url_for('.match_comment_view',
-                   match_id=match.id,
-                   comment_id=comment.id)
+    return url_for('.comment_view', match_id=match.id, comment_id=comment.id)
 
 
 def _get_match_or_404(match_id):
