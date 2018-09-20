@@ -18,6 +18,16 @@ from .models.match import Match, MatchID, MatchComment
 # matches
 
 
+def create_match() -> MatchID:
+    """Create a match."""
+    match = Match()
+
+    db.session.add(match)
+    db.session.commit()
+
+    return match.id
+
+
 def find_match(match_id: MatchID) -> Optional[Match]:
     """Return the match with that id, or `None` if not found."""
     return Match.query.get(match_id)

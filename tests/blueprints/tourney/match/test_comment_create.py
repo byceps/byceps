@@ -4,8 +4,7 @@
 """
 
 from byceps.services.tourney.models.match import MatchComment
-
-from testfixtures.tourney import create_match
+from byceps.services.tourney import match_service
 
 from tests.base import AbstractAppTestCase
 
@@ -20,22 +19,22 @@ class MatchCommentCreateTest(AbstractAppTestCase):
     def test_create_comment_on_existent_match(self):
         player = self.create_player()
 
-        match = self.create_match()
+        match_id = self.create_match()
 
-        response = self.request_comment_creation(match.id, user_id=player.id)
+        response = self.request_comment_creation(match_id, user_id=player.id)
 
         assert response.status_code == 201
 
-        assert get_comment_count_for_match(match) == 1
+        assert get_comment_count_for_match(match_id) == 1
 
     def test_create_comment_on_existent_match_as_anonymous_user(self):
-        match = self.create_match()
+        match_id = self.create_match()
 
-        response = self.request_comment_creation(match.id)
+        response = self.request_comment_creation(match_id)
 
         assert response.status_code == 403
 
-        assert get_comment_count_for_match(match) == 0
+        assert get_comment_count_for_match(match_id) == 0
 
     def test_create_comment_on_nonexistent_match(self):
         player = self.create_player()
@@ -57,12 +56,7 @@ class MatchCommentCreateTest(AbstractAppTestCase):
         return player
 
     def create_match(self):
-        match = create_match()
-
-        self.db.session.add(match)
-        self.db.session.commit()
-
-        return match
+        return match_service.create_match()
 
     def request_comment_creation(self, match_id, *, user_id=None):
         url = '/tourney/matches/{}/comments'.format(match_id)
@@ -75,5 +69,5 @@ class MatchCommentCreateTest(AbstractAppTestCase):
             return client.post(url, data=form_data)
 
 
-def get_comment_count_for_match(match):
-    return MatchComment.query.for_match(match.id).count()
+def get_comment_count_for_match(match_id):
+    return MatchComment.query.for_match(match_id).count()
