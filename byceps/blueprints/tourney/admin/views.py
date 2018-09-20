@@ -1,5 +1,5 @@
 """
-byceps.blueprints.tourney_admin.views
+byceps.blueprints.tourney.admin.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2018 Jochen Kupperschmidt
@@ -8,15 +8,15 @@ byceps.blueprints.tourney_admin.views
 
 from flask import abort, request
 
-from ...services.party import service as party_service
-from ...services.tourney import service as tourney_service
-from ...util.framework.blueprint import create_blueprint
-from ...util.framework.flash import flash_error, flash_success
-from ...util.framework.templating import templated
-from ...util.views import redirect_to, respond_no_content
+from ....services.party import service as party_service
+from ....services.tourney import service as tourney_service
+from ....util.framework.blueprint import create_blueprint
+from ....util.framework.flash import flash_error, flash_success
+from ....util.framework.templating import templated
+from ....util.views import redirect_to, respond_no_content
 
-from ..authorization.decorators import permission_required
-from ..authorization.registry import permission_registry
+from ...authorization.decorators import permission_required
+from ...authorization.registry import permission_registry
 
 from .authorization import TourneyCategoryPermission
 from .forms import TourneyCategoryCreateForm, TourneyCategoryUpdateForm

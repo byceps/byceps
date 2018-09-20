@@ -1,5 +1,5 @@
 """
-byceps.blueprints.tourney_admin.forms
+byceps.blueprints.tourney.admin.forms
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2018 Jochen Kupperschmidt
@@ -9,7 +9,7 @@ byceps.blueprints.tourney_admin.forms
 from wtforms import StringField
 from wtforms.validators import InputRequired, Length
 
-from ...util.l10n import LocalizedForm
+from ....util.l10n import LocalizedForm
 
 
 class TourneyCategoryCreateForm(LocalizedForm):
