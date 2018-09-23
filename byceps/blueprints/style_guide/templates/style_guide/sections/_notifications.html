@@ -6,9 +6,11 @@
 
 {{ render_notification('info', 'info', 'Just FYI. <a href="#">Read more.</a>', text_is_safe=true) }}
 
-{{ render_notification('danger', 'error', '<p>This did not end well. :( <a href="#">Try again?</a></p><p>To explain the problem, debug information like a stack trace could follow here.</p>', text_is_safe=true) }}
-
 {{ render_notification('success', 'success', 'The action was <strong>successful</strong>. <a href="#">Get yourself something nice.</a>', text_is_safe=true) }}
+
+{{ render_notification('warning', 'warning', 'Careful, <a href="#">remember this</a>.', text_is_safe=true) }}
+
+{{ render_notification('danger', 'error', '<p>This did not end well. :( <a href="#">Try again?</a></p><p>To explain the problem, debug information like a stack trace could follow here.</p>', text_is_safe=true) }}
   {%- endset %}
 
   <div class="example">
