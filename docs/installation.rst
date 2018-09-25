@@ -38,7 +38,7 @@ user):
 .. code-block:: sh
 
     # aptitude update
-    # aptitude install postgresql-9.4 postgresql-contrib-9.4 python3.5 python3.5-dev python3.5-venv redis-server
+    # aptitude install postgresql-9.6 postgresql-contrib-9.6 python3.5 python3.5-dev python3.5-venv redis-server
 
 Refer to the Debian documentation for further details.
 
