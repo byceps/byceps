@@ -18,10 +18,12 @@ class SendUserMessageTest(AbstractAppTestCase):
 
         self.create_brand_and_party()
 
-        self.set_brand_email_sender_address(self.brand.id, 'noreply@example.com')
+        self.set_brand_email_sender_address(self.brand.id,
+                                            'noreply@example.com')
 
     @patch('byceps.email.send')
-    def test_send_when_logged_in_without_brand_contact_address(self, send_email_mock):
+    def test_send_when_logged_in_without_brand_contact_address(self,
+                                                               send_email_mock):
         sender = self.create_user('Alice',
             user_id='a4903d8f-0bc6-4af9-aeb9-d7534a0a22e8',
             email_address='alice@example.com')
@@ -36,7 +38,8 @@ kthxbye,
 Alice
 '''
 
-        expected_response_location = 'http://example.com/users/{}'.format(recipient.id)
+        expected_response_location \
+            = 'http://example.com/users/{}'.format(recipient.id)
 
         expected_email_sender = 'noreply@example.com'
         expected_email_recipients = ['bob@example.com']
@@ -76,7 +79,8 @@ Diese Mitteilung wurde über die Website der Acme Entertainment Convention gesen
             expected_email_body)
 
     @patch('byceps.email.send')
-    def test_send_when_logged_in_with_brand_contact_address(self, send_email_mock):
+    def test_send_when_logged_in_with_brand_contact_address(self,
+                                                            send_email_mock):
         brand_settings_service.create_setting(
             self.brand.id, 'contact_email_address', 'info@example.com')
 
@@ -94,7 +98,8 @@ Best,
 Bob
 '''
 
-        expected_response_location = 'http://example.com/users/{}'.format(recipient.id)
+        expected_response_location \
+            = 'http://example.com/users/{}'.format(recipient.id)
 
         expected_email_sender = 'noreply@example.com'
         expected_email_recipients = ['alice@example.com']
