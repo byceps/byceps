@@ -44,7 +44,7 @@ BoardStats = namedtuple('BoardStats', [
 @blueprint.route('/brands/<brand_id>')
 @permission_required(BoardCategoryPermission.view)
 @templated
-def index_for_brand(brand_id):
+def board_index_for_brand(brand_id):
     """List categories for that brand."""
     brand = _get_brand_or_404(brand_id)
 
@@ -69,7 +69,7 @@ def index_for_brand(brand_id):
 @blueprint.route('/boards/<board_id>')
 @permission_required(BoardCategoryPermission.view)
 @templated
-def view(board_id):
+def board_view(board_id):
     """List categories for that board."""
     board = _get_board_or_404(board_id)
 
@@ -121,7 +121,7 @@ def category_create(board_id):
                                                       description)
 
     flash_success('Die Kategorie "{}" wurde angelegt.', category.title)
-    return redirect_to('.view', board_id=board.id)
+    return redirect_to('.board_view', board_id=board.id)
 
 
 @blueprint.route('/categories/<uuid:category_id>/update')
@@ -162,7 +162,7 @@ def category_update(category_id):
                                                       description)
 
     flash_success('Die Kategorie "{}" wurde aktualisiert.', category.title)
-    return redirect_to('.view', board_id=category.board_id)
+    return redirect_to('.board_view', board_id=category.board_id)
 
 
 @blueprint.route('/categories/<uuid:category_id>/up', methods=['POST'])

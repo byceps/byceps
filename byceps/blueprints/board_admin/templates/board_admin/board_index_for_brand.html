@@ -25,7 +25,7 @@
     <tbody>
     {%- for board_id in board_ids|sort %}
       <tr>
-        <td><a href="{{ url_for('.view', board_id=board_id) }}"><strong>{{ board_id }}</strong></a></td>
+        <td><a href="{{ url_for('.board_view', board_id=board_id) }}"><strong>{{ board_id }}</strong></a></td>
         {%- with stats = stats_by_board_id[board_id] %}
         <td class="centered bignumber">{{ stats.category_count }}</td>
         <td class="centered bignumber">{{ '{:n}'.format(stats.topic_count) }}</td>
