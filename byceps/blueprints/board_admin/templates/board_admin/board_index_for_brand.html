@@ -19,7 +19,7 @@
   </div>
   {%- endif %}
 
-  <table class="index">
+  <table class="index wide">
     <thead>
       <tr>
         <th>ID</th>
@@ -37,6 +37,12 @@
         <td class="centered bignumber">{{ '{:n}'.format(stats.topic_count) }}</td>
         <td class="centered bignumber">{{ '{:n}'.format(stats.posting_count) }}</td>
         {%- endwith %}
+      </tr>
+    {%- else %}
+      <tr>
+        <td colspan="4" class="centered">
+          <p class="dimmed">Für diese Marke existieren noch keine Foren.</p>
+        </td>
       </tr>
     {%- endfor %}
     </tbody>
