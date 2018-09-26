@@ -23,7 +23,7 @@
       {{ form_field_checkbox(form.is_archived, form.is_archived.label.text) }}
     {% endcall %}
 
-    {{ form_buttons('Speichern', cancel_url=url_for('.index_for_brand', brand_id=brand.id)) }}
+    {{ form_buttons('Speichern', cancel_url=url_for('.view', party_id=party.id)) }}
   </form>
 
 {%- endblock %}
