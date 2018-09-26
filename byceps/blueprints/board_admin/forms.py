@@ -12,6 +12,10 @@ from wtforms.validators import InputRequired, Length
 from ...util.l10n import LocalizedForm
 
 
+class BoardCreateForm(LocalizedForm):
+    board_id = StringField('ID', validators=[Length(min=1, max=40)])
+
+
 class CategoryCreateForm(LocalizedForm):
     slug = StringField('Slug', [InputRequired(), Length(max=40)])
     title = StringField('Titel', [InputRequired(), Length(max=40)])

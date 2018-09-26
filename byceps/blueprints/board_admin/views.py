@@ -23,14 +23,16 @@ from ...util.views import redirect_to, respond_no_content
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
+from ..board.authorization import BoardPermission
 
 from .authorization import BoardCategoryPermission
-from .forms import CategoryCreateForm, CategoryUpdateForm
+from .forms import BoardCreateForm, CategoryCreateForm, CategoryUpdateForm
 
 
 blueprint = create_blueprint('board_admin', __name__)
 
 
+permission_registry.register_enum(BoardPermission)
 permission_registry.register_enum(BoardCategoryPermission)
 
 
@@ -39,6 +41,10 @@ BoardStats = namedtuple('BoardStats', [
     'topic_count',
     'posting_count',
 ])
+
+
+# -------------------------------------------------------------------- #
+# boards
 
 
 @blueprint.route('/brands/<brand_id>')
@@ -85,6 +91,43 @@ def board_view(board_id):
     }
 
 
+@blueprint.route('/for_brand/<brand_id>/boards/create')
+@permission_required(BoardPermission.create)
+@templated
+def board_create_form(brand_id, erroneous_form=None):
+    """Show form to create a board."""
+    brand = _get_brand_or_404(brand_id)
+
+    form = erroneous_form if erroneous_form else BoardCreateForm()
+
+    return {
+        'brand': brand,
+        'form': form,
+    }
+
+
+@blueprint.route('/for_brand/<brand_id>/boards', methods=['POST'])
+@permission_required(BoardPermission.create)
+def board_create(brand_id):
+    """Create a board."""
+    brand = _get_brand_or_404(brand_id)
+
+    form = BoardCreateForm(request.form)
+    if not form.validate():
+        return board_create_form(brand.id, form)
+
+    board_id = form.board_id.data.strip().lower()
+
+    board = board_service.create_board(brand.id, board_id)
+
+    flash_success('Das Forum mit der ID "{}" wurde angelegt.', board.id)
+    return redirect_to('.board_view', board_id=board.id)
+
+
+# -------------------------------------------------------------------- #
+# categories
+
+
 @blueprint.route('/for_board/<board_id>/create')
 @permission_required(BoardCategoryPermission.create)
 @templated
@@ -111,7 +154,7 @@ def category_create(board_id):
 
     form = CategoryCreateForm(request.form)
     if not form.validate():
-        return category_create_form(board_id, form)
+        return category_create_form(board.id, form)
 
     slug = form.slug.data.strip().lower()
     title = form.title.data.strip()
@@ -193,6 +236,10 @@ def category_move_down(category_id):
         flash_error('Die Kategorie "{}" befindet sich bereits ganz unten.', category.title)
     else:
         flash_success('Die Kategorie "{}" wurde eine Position nach unten verschoben.', category.title)
+
+
+# -------------------------------------------------------------------- #
+# helpers
 
 
 def _get_brand_or_404(brand_id):

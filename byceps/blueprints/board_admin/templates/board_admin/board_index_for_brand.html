@@ -13,6 +13,12 @@
   </nav>
   <h1>{{ brand.title }}</h1>
 
+  {%- if g.current_user.has_permission(BoardPermission.create) %}
+  <div class="button-row">
+    <a class="button" href="{{ url_for('.board_create_form', brand_id=brand.id) }}">{{ render_icon('add') }} Forum erstellen</a>
+  </div>
+  {%- endif %}
+
   <table class="index">
     <thead>
       <tr>
