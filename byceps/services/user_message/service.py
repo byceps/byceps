@@ -18,7 +18,8 @@ from jinja2 import Environment, FileSystemLoader, Template
 from ...typing import BrandID, UserID
 from ...util import templating
 
-from ..brand import service as brand_service
+from ..brand import service as brand_service, \
+    settings_service as brand_settings_service
 from ..brand.transfer.models import Brand
 from ..email import service as email_service
 from ..email.transfer.models import Message
@@ -74,7 +75,7 @@ def _assemble_message(sender: User, recipient: User, text: str,
                       sender_contact_url: str, brand: Brand
                      ) -> Message:
     """Assemble an email message with the rendered template as its body."""
-    brand_contact_address = brand_service \
+    brand_contact_address = brand_settings_service \
         .find_setting_value(brand.id, 'contact_email_address')
 
     message_template_render_result = _render_message_template(

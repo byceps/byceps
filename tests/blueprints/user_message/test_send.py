@@ -5,7 +5,7 @@
 
 from unittest.mock import patch
 
-from byceps.services.brand import service as brand_service
+from byceps.services.brand import settings_service as brand_settings_service
 from byceps.services.user_message import service as user_message_service
 
 from tests.base import AbstractAppTestCase
@@ -77,8 +77,8 @@ Diese Mitteilung wurde über die Website der Acme Entertainment Convention gesen
 
     @patch('byceps.email.send')
     def test_send_when_logged_in_with_brand_contact_address(self, send_email_mock):
-        brand_service.create_setting(self.brand.id, 'contact_email_address',
-                                     'info@example.com')
+        brand_settings_service.create_setting(
+            self.brand.id, 'contact_email_address', 'info@example.com')
 
         sender = self.create_user('Bob',
             user_id='11d72bab-3646-4199-b96c-e5e4c6f972bc',
