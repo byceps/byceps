@@ -1,4 +1,5 @@
 {% extends 'layout/admin/base.html' %}
+{% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_tag %}
@@ -39,6 +40,30 @@
       <th>Ende</th>
       <td>{{ render_datetime(party.ends_at) }}</td>
     </tr>
+  </table>
+
+  <h2>Einstellungen {{ render_extra_in_heading(settings|length) }}</h2>
+  <table class="index wide">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Wert</th>
+      </tr>
+    </thead>
+    <tbody>
+    {%- for setting in settings|sort(attribute='name') %}
+      <tr>
+        <td class="monospace">{{ setting.name }}</td>
+        <td class="monospace">{{ setting.value }}</td>
+      </tr>
+    {%- else %}
+      <tr>
+        <td colspan="2" class="centered">
+          <p class="dimmed">Für diese Party sind keine Einstellungen hinterlegt.</p>
+        </td>
+      </tr>
+    {%- endfor %}
+    </tbody>
   </table>
 
 {%- endblock %}

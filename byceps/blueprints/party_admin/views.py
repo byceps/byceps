@@ -9,7 +9,8 @@ byceps.blueprints.party_admin.views
 from flask import abort, request
 
 from ...services.brand import service as brand_service
-from ...services.party import service as party_service
+from ...services.party import service as party_service, \
+    settings_service as party_settings_service
 from ...services.shop.article import service as article_service
 from ...services.shop.order import service as order_service
 from ...services.shop.shop import service as shop_service
@@ -105,9 +106,12 @@ def view(party_id):
     party = _get_party_or_404(party_id)
     brand = brand_service.find_brand(party.brand_id)
 
+    settings = party_settings_service.get_settings(party.id)
+
     return {
         'brand': brand,
         'party': party,
+        'settings': settings,
     }
 
 
