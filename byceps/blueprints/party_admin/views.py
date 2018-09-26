@@ -97,7 +97,7 @@ def _get_order_count_by_party_id():
     }
 
 
-@blueprint.route('/<party_id>')
+@blueprint.route('/parties/<party_id>')
 @permission_required(PartyPermission.view)
 @templated
 def view(party_id):
