@@ -13,7 +13,7 @@
       <li><a href="{{ url_for('.index_for_brand', brand_id=brand.id) }}">Partys</a></li>
     </ol>
   </nav>
-  <h1>{{ render_icon('add') }} {{ title }}</h1>
+  <h1>{{ render_icon('edit') }} {{ title }}</h1>
 
   <form action="{{ url_for('.update', party_id=party.id) }}" method="post">
     {% call form_fieldset() %}
