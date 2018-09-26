@@ -22,8 +22,6 @@ PATH_BRAND = PATH_DATA / 'brands' / BRAND
 PATH_PARTY = PATH_DATA / 'parties' / PARTY
 PATH_USER_AVATAR_IMAGES = PATH_GLOBAL / 'users/avatars'
 
-BOARD_ID = BRAND
-
 MAIL_DEBUG = False
 MAIL_DEFAULT_SENDER = 'BYCEPS <noreply@example.com>'
 MAIL_SUPPRESS_SEND = True

@@ -15,6 +15,7 @@ from ...services.board import \
     posting_service as board_posting_service, \
     topic_service as board_topic_service
 from ...services.board.transfer.models import CategoryWithLastUpdate
+from ...services.party import settings_service as party_settings_service
 from ...services.text_markup.service import get_smileys, render_html
 from ...services.user_badge import service as badge_service
 from ...util.framework.blueprint import create_blueprint
@@ -716,7 +717,12 @@ def posting_unhide(posting_id):
 
 
 def _get_board_id():
-    return current_app.config['BOARD_ID']
+    board_id = party_settings_service.find_setting_value(g.party_id, 'board_id')
+
+    if board_id is None:
+        abort(404)
+
+    return board_id
 
 
 def _get_topic_or_404(topic_id):
