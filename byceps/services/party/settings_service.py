@@ -8,10 +8,21 @@ byceps.services.party.settings_service
 
 from typing import Optional
 
+from ...database import db
 from ...typing import PartyID
 
 from .models.setting import Setting as DbSetting
 from .transfer.models import PartySetting
+
+
+def create_setting(party_id: PartyID, name: str, value: str) -> PartySetting:
+    """Create a setting for that party."""
+    setting = DbSetting(party_id, name, value)
+
+    db.session.add(setting)
+    db.session.commit()
+
+    return _db_entity_to_party_setting(setting)
 
 
 def find_setting(party_id: PartyID, name: str) -> Optional[PartySetting]:
@@ -24,6 +35,18 @@ def find_setting(party_id: PartyID, name: str) -> Optional[PartySetting]:
         return None
 
     return _db_entity_to_party_setting(setting)
+
+
+def find_setting_value(party_id: PartyID, name: str) -> Optional[str]:
+    """Return the value of the setting for that party and with that
+    name, or `None` if not found.
+    """
+    setting = find_setting(party_id, name)
+
+    if setting is None:
+        return None
+
+    return setting.value
 
 
 def _db_entity_to_party_setting(setting: DbSetting) -> PartySetting:
