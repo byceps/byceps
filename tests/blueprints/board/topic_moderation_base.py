@@ -4,6 +4,7 @@
 """
 
 from byceps.services.board.models.topic import Topic
+from byceps.services.party import settings_service as party_settings_service
 
 from testfixtures.board import create_board, create_category, create_topic
 
@@ -24,6 +25,9 @@ class AbstractTopicModerationTest(AbstractAppTestCase):
         self.create_brand_and_party()
 
         self.board = self.create_board()
+
+        party_settings_service.create_setting(self.party.id, 'board_id',
+                                              self.board.id)
 
     # -------------------------------------------------------------------- #
     # helpers
