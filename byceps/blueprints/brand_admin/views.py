@@ -6,9 +6,10 @@ byceps.blueprints.brand_admin.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from flask import request
+from flask import abort, request
 
-from ...services.brand import service as brand_service
+from ...services.brand import service as brand_service, \
+    settings_service as brand_settings_service
 from ...services.news import service as news_service
 from ...services.orga import service as orga_service
 from ...services.party import service as party_service
@@ -79,3 +80,21 @@ def create():
 
     flash_success('Die Marke "{}" wurde angelegt.', brand.title)
     return redirect_to('.index')
+
+
+@blueprint.route('/brands/<brand_id>')
+@permission_required(BrandPermission.view)
+@templated
+def view(brand_id):
+    """Show a brand."""
+    brand = brand_service.find_brand(brand_id)
+
+    if brand is None:
+        abort(404)
+
+    settings = brand_settings_service.get_settings(brand.id)
+
+    return {
+        'brand': brand,
+        'settings': settings,
+    }

@@ -6,7 +6,7 @@ byceps.services.brand.settings_service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import Optional
+from typing import List, Optional
 
 from ...database import db
 from ...typing import BrandID
@@ -47,6 +47,15 @@ def find_setting_value(brand_id: BrandID, name: str) -> Optional[str]:
         return None
 
     return setting.value
+
+
+def get_settings(brand_id: BrandID) -> List[BrandSetting]:
+    """Return all settings for that brand."""
+    settings = DbSetting.query \
+        .filter_by(brand_id=brand_id) \
+        .all()
+
+    return {_db_entity_to_party_setting(setting) for setting in settings}
 
 
 def _db_entity_to_brand_setting(setting: DbSetting) -> BrandSetting:

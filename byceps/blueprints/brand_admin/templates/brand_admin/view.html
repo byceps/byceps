@@ -1,0 +1,47 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/admin.html' import render_extra_in_heading %}
+{% set current_page = 'brand_admin' %}
+{% set current_page_brand = brand %}
+{% set title = brand.title %}
+
+{% block body %}
+
+  <nav class="breadcrumbs">
+    <ol>
+      <li>Marken</li>
+    </ol>
+  </nav>
+  <h1>{{ brand.title }}</h1>
+
+  <table class="index">
+    <tr>
+      <th>ID</th>
+      <td>{{ brand.id }}</td>
+    </tr>
+  </table>
+
+  <h2>Einstellungen {{ render_extra_in_heading(settings|length) }}</h2>
+  <table class="index wide">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Wert</th>
+      </tr>
+    </thead>
+    <tbody>
+    {%- for setting in settings|sort(attribute='name') %}
+      <tr>
+        <td class="monospace">{{ setting.name }}</td>
+        <td class="monospace">{{ setting.value }}</td>
+      </tr>
+    {%- else %}
+      <tr>
+        <td colspan="2" class="centered">
+          <p class="dimmed">Für diese Marke sind keine Einstellungen hinterlegt.</p>
+        </td>
+      </tr>
+    {%- endfor %}
+    </tbody>
+  </table>
+
+{%- endblock %}
