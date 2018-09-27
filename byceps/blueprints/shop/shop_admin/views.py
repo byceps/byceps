@@ -10,7 +10,8 @@ from flask import abort
 
 from ....services.party import service as party_service
 from ....services.shop.article import service as article_service
-from ....services.shop.order import service as order_service
+from ....services.shop.order import action_service as order_action_service, \
+    service as order_service
 from ....services.shop.order.transfer.models import PaymentState
 from ....services.shop.sequence import service as sequence_service
 from ....services.shop.shop import service as shop_service
@@ -49,6 +50,8 @@ def view_for_party(party_id):
     order_counts_by_payment_state = order_service \
         .count_orders_per_payment_state(shop.id)
 
+    order_actions = order_action_service.get_actions(shop.id)
+
     return {
         'party': party,
         'shop': shop,
@@ -59,6 +62,8 @@ def view_for_party(party_id):
         'article_count': article_count,
         'order_counts_by_payment_state': order_counts_by_payment_state,
         'PaymentState': PaymentState,
+
+        'order_actions': order_actions,
     }
 
 

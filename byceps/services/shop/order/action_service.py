@@ -10,7 +10,9 @@ from typing import Callable, Dict, Sequence, Set
 
 from ....database import db
 
+from ..article.models.article import Article
 from ..article.transfer.models import ArticleNumber
+from ..shop.transfer.models import ShopID
 
 from .actions.award_badge import award_badge
 from .actions.create_ticket_bundles import create_ticket_bundles
@@ -44,6 +46,17 @@ def create_action(article_number: ArticleNumber, payment_state: PaymentState,
 
     db.session.add(action)
     db.session.commit()
+
+
+# -------------------------------------------------------------------- #
+# retrieval
+
+
+def get_actions(shop_id: ShopID) -> Sequence[OrderAction]:
+    """Return all order actions defined for articles of that shop."""
+    return OrderAction.query \
+        .join(Article).filter(Article.shop_id == shop_id) \
+        .all()
 
 
 # -------------------------------------------------------------------- #
