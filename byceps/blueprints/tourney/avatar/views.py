@@ -11,7 +11,7 @@ from flask import abort, g, request
 from ....services.tourney.avatar import service as avatar_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.image.models import ImageType
-from ....util.views import respond_created
+from ....util.views import respond_created, respond_no_content
 
 from ...authentication.decorators import api_token_required
 
