@@ -6,6 +6,7 @@ byceps.services.tourney.avatar.service
 :License: Modified BSD, see LICENSE for details.
 """
 
+from uuid import UUID
 from typing import BinaryIO, Set
 
 from ....database import db
@@ -48,3 +49,18 @@ def create_avatar_image(party_id: PartyID, creator_id: UserID,
     upload.store(stream, avatar.path)
 
     return avatar
+
+
+def delete_avatar_image(avatar_id: UUID) -> None:
+    """Delete the avatar image."""
+    avatar = Avatar.query.get(avatar_id)
+
+    if avatar is None:
+        raise ValueError('Unknown avatar ID')
+
+    # Delete file.
+    upload.delete(avatar.path)
+
+    # Delete database record.
+    db.session.delete(avatar)
+    db.session.commit()

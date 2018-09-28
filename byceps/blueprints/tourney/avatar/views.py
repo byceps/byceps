@@ -13,6 +13,8 @@ from ....util.framework.blueprint import create_blueprint
 from ....util.image.models import ImageType
 from ....util.views import respond_created
 
+from ...authentication.decorators import api_token_required
+
 from .forms import CreateForm
 
 
@@ -60,6 +62,17 @@ def _create(party_id, creator_id, image):
         abort(400, str(e))
     except FileExistsError:
         abort(409, 'File already exists, not overwriting.')
+
+
+@blueprint.route('/<uuid:avatar_id>', methods=['DELETE'])
+@api_token_required
+@respond_no_content
+def delete(avatar_id):
+    """Delete the avatar image."""
+    try:
+        avatar_service.delete_avatar_image(avatar_id)
+    except ValueError:
+        abort(404)
 
 
 def _get_current_user_id_or_404():
