@@ -55,7 +55,7 @@ def get_settings(brand_id: BrandID) -> List[BrandSetting]:
         .filter_by(brand_id=brand_id) \
         .all()
 
-    return {_db_entity_to_party_setting(setting) for setting in settings}
+    return {_db_entity_to_brand_setting(setting) for setting in settings}
 
 
 def _db_entity_to_brand_setting(setting: DbSetting) -> BrandSetting:
