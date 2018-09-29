@@ -50,10 +50,11 @@ if app.env == 'development':
     exports = dict(_generate_static_files_exports())
     app.wsgi_app = SharedDataMiddleware(app.wsgi_app, exports)
 
-    # Enable debug toolbar.
-    from flask_debugtoolbar import DebugToolbarExtension
-    app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
-    toolbar = DebugToolbarExtension(app)
+    if app.debug:
+        # Enable debug toolbar.
+        from flask_debugtoolbar import DebugToolbarExtension
+        app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
+        toolbar = DebugToolbarExtension(app)
 
 
 @app.shell_context_processor
