@@ -13,8 +13,6 @@ from datetime import timedelta
 from pytz import timezone
 
 
-DEBUG = False
-
 # database connection
 SQLALCHEMY_ECHO = False
 
