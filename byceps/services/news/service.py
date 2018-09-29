@@ -15,7 +15,7 @@ from ...typing import BrandID, UserID
 
 from ..brand.models.brand import Brand
 
-from .models import CurrentVersionAssociation, Item, ItemID, ItemVersion, \
+from .models.item import CurrentVersionAssociation, Item, ItemID, ItemVersion, \
     ItemVersionID
 
 

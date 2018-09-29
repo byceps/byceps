@@ -6,7 +6,7 @@ testfixtures.news
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.services.news.models import CurrentVersionAssociation, Item, \
+from byceps.services.news.models.item import CurrentVersionAssociation, Item, \
     ItemVersion
 
 

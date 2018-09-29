@@ -1,6 +1,6 @@
 """
-byceps.services.news.models
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.news.models.item
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2018 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -13,13 +13,13 @@ from uuid import UUID
 from flask import url_for
 from sqlalchemy.ext.associationproxy import association_proxy
 
-from ...database import BaseQuery, db, generate_uuid
-from ...typing import BrandID, UserID
-from ...util.instances import ReprBuilder
-from ...util.templating import load_template
+from ....database import BaseQuery, db, generate_uuid
+from ....typing import BrandID, UserID
+from ....util.instances import ReprBuilder
+from ....util.templating import load_template
 
-from ..brand.models.brand import Brand
-from ..user.models.user import User
+from ...brand.models.brand import Brand
+from ...user.models.user import User
 
 
 ItemID = NewType('ItemID', UUID)
