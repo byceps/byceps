@@ -76,7 +76,7 @@ def board_index_for_brand(brand_id):
 @permission_required(BoardCategoryPermission.view)
 @templated
 def board_view(board_id):
-    """List categories for that board."""
+    """View the board."""
     board = _get_board_or_404(board_id)
 
     brand = brand_service.find_brand(board.brand_id)
@@ -171,7 +171,7 @@ def category_create(board_id):
 @permission_required(BoardCategoryPermission.update)
 @templated
 def category_update_form(category_id, erroneous_form=None):
-    """Show form to update a category."""
+    """Show form to update the category."""
     category = _get_category_or_404(category_id)
 
     board = board_service.find_board(category.board_id)
@@ -190,7 +190,7 @@ def category_update_form(category_id, erroneous_form=None):
 @blueprint.route('/categories/<uuid:category_id>', methods=['POST'])
 @permission_required(BoardCategoryPermission.update)
 def category_update(category_id):
-    """Update a category."""
+    """Update the category."""
     category = _get_category_or_404(category_id)
 
     form = CategoryUpdateForm(request.form)
@@ -212,7 +212,7 @@ def category_update(category_id):
 @permission_required(BoardCategoryPermission.update)
 @respond_no_content
 def category_move_up(category_id):
-    """Move a category upwards by one position."""
+    """Move the category upwards by one position."""
     category = _get_category_or_404(category_id)
 
     try:
@@ -227,7 +227,7 @@ def category_move_up(category_id):
 @permission_required(BoardCategoryPermission.update)
 @respond_no_content
 def category_move_down(category_id):
-    """Move a category downwards by one position."""
+    """Move the category downwards by one position."""
     category = _get_category_or_404(category_id)
 
     try:
