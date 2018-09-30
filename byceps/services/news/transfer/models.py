@@ -12,11 +12,22 @@ from uuid import UUID
 
 from attr import attrib, attrs
 
+from ....typing import BrandID
+
+
+ChannelID = NewType('ChannelID', str)
+
 
 ItemID = NewType('ItemID', UUID)
 
 
 ItemVersionID = NewType('ItemVersionID', UUID)
+
+
+@attrs(frozen=True, slots=True)
+class Channel:
+    id = attrib(type=ChannelID)
+    brand_id = attrib(type=BrandID)
 
 
 @attrs(frozen=True, slots=True)
