@@ -37,7 +37,7 @@ permission_registry.register_enum(NewsItemPermission)
 @templated
 def index_for_brand(brand_id, page):
     """List news items for that brand."""
-    brand = get_brand_or_404(brand_id)
+    brand = _get_brand_or_404(brand_id)
 
     per_page = request.args.get('per_page', type=int, default=15)
 
@@ -66,7 +66,7 @@ def view_version(version_id):
 @templated
 def create_form(brand_id, erroneous_form=None):
     """Show form to create a news item."""
-    brand = get_brand_or_404(brand_id)
+    brand = _get_brand_or_404(brand_id)
 
     if erroneous_form:
         form = erroneous_form
@@ -84,7 +84,7 @@ def create_form(brand_id, erroneous_form=None):
 @permission_required(NewsItemPermission.create)
 def create(brand_id):
     """Create a news item."""
-    brand = get_brand_or_404(brand_id)
+    brand = _get_brand_or_404(brand_id)
 
     form = ItemCreateForm(request.form)
     if not form.validate():
@@ -110,7 +110,7 @@ def create(brand_id):
 @templated
 def update_form(item_id, erroneous_form=None):
     """Show form to update a news item."""
-    item = get_item_or_404(item_id)
+    item = _get_item_or_404(item_id)
 
     form = erroneous_form if erroneous_form \
             else ItemUpdateForm(obj=item.current_version, slug=item.slug)
@@ -125,7 +125,7 @@ def update_form(item_id, erroneous_form=None):
 @permission_required(NewsItemPermission.update)
 def update(item_id):
     """Update a news item."""
-    item = get_item_or_404(item_id)
+    item = _get_item_or_404(item_id)
 
     form = ItemUpdateForm(request.form)
     if not form.validate():
@@ -143,7 +143,7 @@ def update(item_id):
     return redirect_to('.index_for_brand', brand_id=item.brand.id)
 
 
-def get_brand_or_404(brand_id):
+def _get_brand_or_404(brand_id):
     brand = brand_service.find_brand(brand_id)
 
     if brand is None:
@@ -152,7 +152,7 @@ def get_brand_or_404(brand_id):
     return brand
 
 
-def get_item_or_404(item_id):
+def _get_item_or_404(item_id):
     item = news_service.find_item(item_id)
 
     if item is None:
