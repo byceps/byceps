@@ -7,8 +7,7 @@ byceps.services.news.models.item
 """
 
 from datetime import datetime
-from typing import NewType, Optional
-from uuid import UUID
+from typing import Optional
 
 from flask import url_for
 from sqlalchemy.ext.associationproxy import association_proxy
@@ -20,11 +19,6 @@ from ....util.templating import load_template
 
 from ...brand.models.brand import Brand
 from ...user.models.user import User
-
-
-ItemID = NewType('ItemID', UUID)
-
-ItemVersionID = NewType('ItemVersionID', UUID)
 
 
 class ItemQuery(BaseQuery):

@@ -15,8 +15,8 @@ from ...typing import BrandID, UserID
 
 from ..brand.models.brand import Brand
 
-from .models.item import CurrentVersionAssociation, Item, ItemID, ItemVersion, \
-    ItemVersionID
+from .models.item import CurrentVersionAssociation, Item, ItemVersion
+from .transfer.models import ItemID, ItemVersionID
 
 
 def create_item(brand_id: BrandID, slug: str, creator_id: UserID, title: str,
