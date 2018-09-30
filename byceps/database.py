@@ -8,11 +8,18 @@ Database utilities.
 :License: Modified BSD, see LICENSE for details.
 """
 
+from typing import Callable, TypeVar
 import uuid
 
 from flask_sqlalchemy import BaseQuery, Pagination, SQLAlchemy
 from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Query
+
+
+F = TypeVar('F')
+T = TypeVar('T')
+
+Mapper = Callable[[F], T]
 
 
 db = SQLAlchemy(session_options={'autoflush': False})
@@ -35,7 +42,8 @@ def generate_uuid() -> uuid.UUID:
     return uuid.uuid4()
 
 
-def paginate(query: Query, page: int, per_page: int) -> Pagination:
+def paginate(query: Query, page: int, per_page: int,
+             *, item_mapper: Mapper=None) -> Pagination:
     """Return `per_page` items from page `page`."""
     if page < 1:
         page = 1
@@ -55,6 +63,9 @@ def paginate(query: Query, page: int, per_page: int) -> Pagination:
         total = item_count
     else:
         total = query.order_by(None).count()
+
+    if item_mapper is not None:
+        items = [item_mapper(item) for item in items]
 
     # Intentionally pass no query object.
     return Pagination(None, page, per_page, total, items)
