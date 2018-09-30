@@ -62,26 +62,6 @@ class Item(db.Model):
     def title(self) -> str:
         return self.current_version.title
 
-    def render_body(self) -> str:
-        return self.current_version.render_body()
-
-    @property
-    def external_url(self) -> str:
-        return url_for('news.view', slug=self.slug, _external=True)
-
-    @property
-    def image_url(self) -> Optional[str]:
-        url_path = self.current_version.image_url_path
-
-        if not url_path:
-            return None
-
-        filename = 'news/{}'.format(url_path)
-        return url_for('brand_file',
-                       filename=filename,
-                       _method='GET',
-                       _external=True)
-
     def __repr__(self) -> str:
         return ReprBuilder(self) \
             .add_with_lookup('id') \

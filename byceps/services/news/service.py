@@ -8,6 +8,7 @@ byceps.services.news.service
 
 from typing import Dict, Optional
 
+from flask import url_for
 from flask_sqlalchemy import Pagination
 
 from ...database import db, paginate, Query
@@ -139,12 +140,29 @@ def get_item_count_by_brand_id() -> Dict[BrandID, int]:
 
 
 def _db_entity_to_item(item: DbItem) -> Item:
+    body = item.current_version.render_body()
+    external_url = url_for('news.view', slug=item.slug, _external=True)
+    image_url = _assemble_image_url(item)
+
     return Item(
         id=item.id,
         slug=item.slug,
         published_at=item.published_at,
         title=item.title,
-        body=item.render_body(),
-        external_url=item.external_url,
-        image_url=item.image_url,
+        body=body,
+        external_url=external_url,
+        image_url=image_url,
     )
+
+
+def _assemble_image_url(item: DbItem) -> Optional[str]:
+    url_path = item.current_version.image_url_path
+
+    if not url_path:
+        return None
+
+    filename = 'news/{}'.format(url_path)
+    return url_for('brand_file',
+                   filename=filename,
+                   _method='GET',
+                   _external=True)

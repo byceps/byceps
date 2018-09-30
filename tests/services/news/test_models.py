@@ -19,20 +19,21 @@ class ItemTestCase(AbstractAppTestCase):
         self.create_brand_and_party()
 
     def test_image_url_with_image(self):
-        item = self.create_item('with-image', 'breaking.png')
-
         with current_party_set(self.app, self.party), self.app.app_context():
+            item = self.create_item('with-image', 'breaking.png')
             assert item.image_url == 'http://example.com/brand/news/breaking.png'
 
     def test_image_url_without_image(self):
-        item = self.create_item('without-image', None)
-
         with current_party_set(self.app, self.party), self.app.app_context():
+            item = self.create_item('without-image', None)
             assert item.image_url is None
 
     # helpers
 
     def create_item(self, slug, image_url_path):
-        return news_service.create_item(self.brand.id, slug, self.editor.id,
+        item = news_service.create_item(self.brand.id, slug, self.editor.id,
                                         'the title', 'the body',
                                         image_url_path=image_url_path)
+
+        # Return aggregated version of item.
+        return news_service.find_aggregated_item_by_slug(self.brand.id, slug)
