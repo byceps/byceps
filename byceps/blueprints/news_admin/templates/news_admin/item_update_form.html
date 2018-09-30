@@ -10,7 +10,7 @@
   <nav class="breadcrumbs">
     <ol>
       <li>News</li>
-      <li><a href="{{ url_for('.item_index_for_brand', brand_id=item.brand.id) }}">{{ item.brand.title }}</a></li>
+      <li>Kanal <a href="{{ url_for('.channel_view', channel_id=item.channel_id) }}">{{ item.channel_id }}</a></li>
     </ol>
   </nav>
   <h1>{{ render_icon('edit') }} {{ title }}</h1>
@@ -23,7 +23,7 @@
       {{ form_field(form.image_url_path, maxlength=80) }}
     {% endcall %}
 
-    {{ form_buttons('Speichern', cancel_url=url_for('.item_index_for_brand', brand_id=item.brand.id)) }}
+    {{ form_buttons('Speichern', cancel_url=url_for('.channel_view', channel_id=item.channel_id)) }}
   </form>
 
 {%- endblock %}

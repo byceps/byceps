@@ -13,14 +13,15 @@
   <nav class="breadcrumbs">
     <ol>
       <li>News</li>
-      <li>{{ brand.title }}</li>
+      <li>Marke {{ brand.title }}</li>
+      <li>Kanal {{ channel.id }}</li>
     </ol>
   </nav>
   <h1>Newsposts {{ render_extra_in_heading(items.total) }}</h1>
 
   {%- if g.current_user.has_permission(NewsItemPermission.create) %}
   <div class="button-row">
-    <a class="button" href="{{ url_for('.item_create_form', brand_id=brand.id) }}">{{ render_icon('add') }} Newspost erstellen</a>
+    <a class="button" href="{{ url_for('.item_create_form', channel_id=channel.id) }}">{{ render_icon('add') }} Newspost erstellen</a>
   </div>
   {%- endif %}
 
@@ -64,6 +65,6 @@
     </tbody>
   </table>
 
-{{ render_pagination_nav(items, '.item_index_for_brand', {'brand_id': brand.id}) }}
+{{ render_pagination_nav(items, '.channel_view', {'channel_id': channel.id}) }}
 
 {%- endblock %}

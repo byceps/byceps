@@ -16,10 +16,11 @@ from ...typing import BrandID, UserID
 
 from ..brand.models.brand import Brand as DbBrand
 
+from .models.channel import Channel as DbChannel
 from .models.item import \
     CurrentVersionAssociation as DbCurrentVersionAssociation, \
     Item as DbItem, ItemVersion as DbItemVersion
-from .transfer.models import Item, ItemID, ItemVersionID
+from .transfer.models import ChannelID, Item, ItemID, ItemVersionID
 
 
 def create_item(brand_id: BrandID, slug: str, creator_id: UserID, title: str,
@@ -71,11 +72,11 @@ def find_item(item_id: ItemID) -> Optional[DbItem]:
     return DbItem.query.get(item_id)
 
 
-def find_aggregated_item_by_slug(brand_id: BrandID, slug: str
+def find_aggregated_item_by_slug(channel_id: ChannelID, slug: str
                                 ) -> Optional[Item]:
     """Return the news item identified by that slug, or `None` if not found."""
     item = DbItem.query \
-        .for_brand(brand_id) \
+        .for_channel(channel_id) \
         .with_current_version() \
         .filter_by(slug=slug) \
         .first()
@@ -86,12 +87,12 @@ def find_aggregated_item_by_slug(brand_id: BrandID, slug: str
     return _db_entity_to_item(item)
 
 
-def get_aggregated_items_paginated(brand_id: BrandID, page: int,
+def get_aggregated_items_paginated(channel_id: ChannelID, page: int,
                                    items_per_page: int,
                                    *, published_only: bool=False
                                   ) -> Pagination:
     """Return the news items to show on the specified page."""
-    query = _get_items_query(brand_id)
+    query = _get_items_query(channel_id)
 
     if published_only:
         query = query.published()
@@ -99,16 +100,16 @@ def get_aggregated_items_paginated(brand_id: BrandID, page: int,
     return paginate(query, page, items_per_page, item_mapper=_db_entity_to_item)
 
 
-def get_items_paginated(brand_id: BrandID, page: int, items_per_page: int
+def get_items_paginated(channel_id: ChannelID, page: int, items_per_page: int
                        ) -> Pagination:
     """Return the news items to show on the specified page."""
-    return _get_items_query(brand_id) \
+    return _get_items_query(channel_id) \
         .paginate(page, items_per_page)
 
 
-def _get_items_query(brand_id: BrandID) -> Query:
+def _get_items_query(channel_id: ChannelID) -> Query:
     return DbItem.query \
-        .for_brand(brand_id) \
+        .for_channel(channel_id) \
         .with_current_version() \
         .order_by(DbItem.published_at.desc())
 
@@ -121,7 +122,8 @@ def find_item_version(version_id: ItemVersionID) -> DbItemVersion:
 def count_items_for_brand(brand_id: BrandID) -> int:
     """Return the number of news items for that brand."""
     return DbItem.query \
-        .for_brand(brand_id) \
+        .join(DbChannel) \
+        .filter(DbChannel.brand_id == brand_id) \
         .count()
 
 

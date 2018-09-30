@@ -1,0 +1,44 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/admin.html' import render_extra_in_heading %}
+{% from 'macros/icons.html' import render_icon %}
+{% set current_page = 'news_admin' %}
+{% set current_page_brand = brand %}
+{% set title = '%s - News-Kanäle'|format(brand.title) %}
+
+{% block body %}
+
+  <nav class="breadcrumbs">
+    <ol>
+      <li>News-Kanäle</li>
+    </ol>
+  </nav>
+  <h1>{{ brand.title }} {{ render_extra_in_heading(channels|length) }}</h1>
+
+  {%- if g.current_user.has_permission(NewsChannelPermission.create) %}
+  <div class="button-row">
+    <a class="button" href="{{ url_for('.channel_create_form', brand_id=brand.id) }}">{{ render_icon('add') }} News-Kanal erstellen</a>
+  </div>
+  {%- endif %}
+
+  <table class="index wide">
+    <thead>
+      <tr>
+        <th>ID</th>
+      </tr>
+    </thead>
+    <tbody>
+    {%- for channel in channels|sort(attribute='id') %}
+      <tr>
+        <td><a href="{{ url_for('.channel_view', channel_id=channel.id) }}"><strong>{{ channel.id }}</strong></a></td>
+      </tr>
+    {%- else %}
+      <tr>
+        <td class="centered">
+          <p class="dimmed">Für diese Marke existieren noch keine News-Kanäle.</p>
+        </td>
+      </tr>
+    {%- endfor %}
+    </tbody>
+  </table>
+
+{%- endblock %}

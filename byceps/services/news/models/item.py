@@ -12,18 +12,21 @@ from typing import Optional
 from sqlalchemy.ext.associationproxy import association_proxy
 
 from ....database import BaseQuery, db, generate_uuid
-from ....typing import BrandID, UserID
+from ....typing import UserID
 from ....util.instances import ReprBuilder
 from ....util.templating import load_template
 
-from ...brand.models.brand import Brand
 from ...user.models.user import User
+
+from ..transfer.models import ChannelID
+
+from .channel import Channel
 
 
 class ItemQuery(BaseQuery):
 
-    def for_brand(self, brand_id: BrandID) -> BaseQuery:
-        return self.filter_by(brand_id=brand_id)
+    def for_channel(self, channel_id: ChannelID) -> BaseQuery:
+        return self.filter_by(channel_id=channel_id)
 
     def published(self) -> BaseQuery:
         """Return items that have been published."""
@@ -42,19 +45,19 @@ class Item(db.Model):
     """
     __tablename__ = 'news_items'
     __table_args__ = (
-        db.UniqueConstraint('brand_id', 'slug'),
+        db.UniqueConstraint('channel_id', 'slug'),
     )
     query_class = ItemQuery
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    brand_id = db.Column(db.Unicode(20), db.ForeignKey('brands.id'), index=True, nullable=False)
-    brand = db.relationship(Brand)
+    channel_id = db.Column(db.Unicode(20), db.ForeignKey('news_channels.id'), index=True, nullable=False)
+    channel = db.relationship(Channel)
     slug = db.Column(db.Unicode(80), index=True, nullable=False)
     published_at = db.Column(db.DateTime, default=datetime.now, nullable=False)
     current_version = association_proxy('current_version_association', 'version')
 
-    def __init__(self, brand_id: BrandID, slug: str) -> None:
-        self.brand_id = brand_id
+    def __init__(self, channel_id: ChannelID, slug: str) -> None:
+        self.channel_id = channel_id
         self.slug = slug
 
     @property
@@ -64,7 +67,7 @@ class Item(db.Model):
     def __repr__(self) -> str:
         return ReprBuilder(self) \
             .add_with_lookup('id') \
-            .add('brand', self.brand_id) \
+            .add('channel', self.channel_id) \
             .add_with_lookup('slug') \
             .add_with_lookup('published_at') \
             .build()

@@ -17,6 +17,10 @@ from ...util.l10n import LocalizedForm
 SLUG_REGEX = re.compile('^[a-z0-9-]+$')
 
 
+class ChannelCreateForm(LocalizedForm):
+    channel_id = StringField('ID', validators=[Length(min=1, max=40)])
+
+
 class ItemCreateForm(LocalizedForm):
     slug = StringField('Slug', [InputRequired(), Length(max=80), Regexp(SLUG_REGEX, message='Nur Kleinbuchstaben, Ziffern und Bindestrich sind erlaubt.')])
     title = StringField('Titel', [InputRequired(), Length(max=80)])

@@ -9,6 +9,7 @@ byceps.blueprints.news.views
 from flask import abort, current_app, g
 
 from ...services.news import service as news_service
+from ...services.party import settings_service as party_settings_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.templating import templated
 
@@ -21,9 +22,10 @@ blueprint = create_blueprint('news', __name__)
 @templated
 def index(page):
     """Show a page of news items."""
+    channel_id = _get_channel_id()
     items_per_page = _get_items_per_page_value()
 
-    items = news_service.get_aggregated_items_paginated(g.brand_id, page,
+    items = news_service.get_aggregated_items_paginated(channel_id, page,
                                                         items_per_page,
                                                         published_only=True)
 
@@ -37,7 +39,9 @@ def index(page):
 @templated
 def view(slug):
     """Show a single news item."""
-    item = news_service.find_aggregated_item_by_slug(g.brand_id, slug)
+    channel_id = _get_channel_id()
+
+    item = news_service.find_aggregated_item_by_slug(channel_id, slug)
 
     if item is None:
         abort(404)
@@ -45,6 +49,16 @@ def view(slug):
     return {
         'item': item,
     }
+
+
+def _get_channel_id():
+    channel_id = party_settings_service \
+        .find_setting_value(g.party_id, 'news_channel_id')
+
+    if channel_id is None:
+        abort(404)
+
+    return channel_id
 
 
 def _get_items_per_page_value():
