@@ -22,7 +22,7 @@
       .add_item(url_for('brand_admin.view', brand_id=brand.id), 'Einstellungen', id='brand_admin', required_permission=BrandPermission.view, icon='settings')
       .add_item(url_for('party_admin.index_for_brand', brand_id=brand.id), 'Partys', id='partys_admin', required_permission=PartyPermission.view, icon='date')
       .add_item(url_for('orga_admin.persons_for_brand', brand_id=brand.id), 'Organisatoren', id='orga_admin', required_permission=OrgaDetailPermission.view, icon='users')
-      .add_item(url_for('news_admin.index_for_brand', brand_id=brand.id), 'News', id='news_admin', required_permission=NewsItemPermission.view, icon='news')
+      .add_item(url_for('news_admin.item_index_for_brand', brand_id=brand.id), 'News', id='news_admin', required_permission=NewsItemPermission.view, icon='news')
       .add_item(url_for('newsletter_admin.view_subscriptions', brand_id=brand.id), 'Newsletter', id='newsletter_admin', required_permission=NewsletterPermission.view_subscriptions, icon='email')
       .add_item(url_for('terms_admin.index_for_brand', brand_id=brand.id), 'AGB', id='terms_admin', required_permission=TermsPermission.view, icon='legal')
       .add_item(url_for('board_admin.board_index_for_brand', brand_id=brand.id), 'Foren', id='board_admin', required_permission=BoardCategoryPermission.view, icon='board')

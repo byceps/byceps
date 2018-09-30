@@ -31,11 +31,15 @@ blueprint = create_blueprint('news_admin', __name__)
 permission_registry.register_enum(NewsItemPermission)
 
 
+# -------------------------------------------------------------------- #
+# items
+
+
 @blueprint.route('/brands/<brand_id>', defaults={'page': 1})
 @blueprint.route('/brands/<brand_id>/pages/<int:page>')
 @permission_required(NewsItemPermission.view)
 @templated
-def index_for_brand(brand_id, page):
+def item_index_for_brand(brand_id, page):
     """List news items for that brand."""
     brand = _get_brand_or_404(brand_id)
 
@@ -52,7 +56,7 @@ def index_for_brand(brand_id, page):
 @blueprint.route('/versions/<uuid:version_id>')
 @permission_required(NewsItemPermission.view)
 @templated
-def view_version(version_id):
+def item_view_version(version_id):
     """Show the news item with the given version."""
     version = news_service.find_item_version(version_id)
 
@@ -64,7 +68,7 @@ def view_version(version_id):
 @blueprint.route('/for_brand/<brand_id>/create')
 @permission_required(NewsItemPermission.create)
 @templated
-def create_form(brand_id, erroneous_form=None):
+def item_create_form(brand_id, erroneous_form=None):
     """Show form to create a news item."""
     brand = _get_brand_or_404(brand_id)
 
@@ -82,13 +86,13 @@ def create_form(brand_id, erroneous_form=None):
 
 @blueprint.route('/for_brand/<brand_id>', methods=['POST'])
 @permission_required(NewsItemPermission.create)
-def create(brand_id):
+def item_create(brand_id):
     """Create a news item."""
     brand = _get_brand_or_404(brand_id)
 
     form = ItemCreateForm(request.form)
     if not form.validate():
-        return create_form(brand.id, form)
+        return item_create_form(brand.id, form)
 
     slug = form.slug.data.strip().lower()
     creator = g.current_user
@@ -102,13 +106,13 @@ def create(brand_id):
     flash_success('Die News "{}" wurde angelegt.', item.title)
     signals.item_published.send(None, item_id=item.id)
 
-    return redirect_to('.index_for_brand', brand_id=brand.id)
+    return redirect_to('.item_index_for_brand', brand_id=brand.id)
 
 
 @blueprint.route('/items/<uuid:item_id>/update')
 @permission_required(NewsItemPermission.update)
 @templated
-def update_form(item_id, erroneous_form=None):
+def item_update_form(item_id, erroneous_form=None):
     """Show form to update a news item."""
     item = _get_item_or_404(item_id)
 
@@ -123,7 +127,7 @@ def update_form(item_id, erroneous_form=None):
 
 @blueprint.route('/items/<uuid:item_id>', methods=['POST'])
 @permission_required(NewsItemPermission.update)
-def update(item_id):
+def item_update(item_id):
     """Update a news item."""
     item = _get_item_or_404(item_id)
 
@@ -140,7 +144,11 @@ def update(item_id):
                              image_url_path=image_url_path)
 
     flash_success('Die News "{}" wurde aktualisiert.', item.title)
-    return redirect_to('.index_for_brand', brand_id=item.brand.id)
+    return redirect_to('.item_index_for_brand', brand_id=item.brand.id)
+
+
+# -------------------------------------------------------------------- #
+# helpers
 
 
 def _get_brand_or_404(brand_id):

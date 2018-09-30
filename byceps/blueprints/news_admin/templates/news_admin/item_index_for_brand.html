@@ -20,7 +20,7 @@
 
   {%- if g.current_user.has_permission(NewsItemPermission.create) %}
   <div class="button-row">
-    <a class="button" href="{{ url_for('.create_form', brand_id=brand.id) }}">{{ render_icon('add') }} Newspost erstellen</a>
+    <a class="button" href="{{ url_for('.item_create_form', brand_id=brand.id) }}">{{ render_icon('add') }} Newspost erstellen</a>
   </div>
   {%- endif %}
 
@@ -43,7 +43,7 @@
     {%- for item in items.items|sort(attribute='published_at', reverse=True) %}
       <tr>
         <td>
-          <a href="{{ url_for('.view_version', version_id=item.current_version.id) }}"><strong>{{ item.title }}</strong></a><br>
+          <a href="{{ url_for('.item_view_version', version_id=item.current_version.id) }}"><strong>{{ item.title }}</strong></a><br>
           {{ item.slug|dim }}
         </td>
         <td>{% if item.current_version.image_url_path %} {{ render_icon('image', title='Bild festgelegt') }}{% endif %}</td>
@@ -56,7 +56,7 @@
         </td>
         <td>
           {%- if g.current_user.has_permission(NewsItemPermission.update) -%}
-          <a class="button button--inline" href="{{ url_for('.update_form', item_id=item.id) }}">{{ render_icon('edit') }} bearbeiten</a>
+          <a class="button button--inline" href="{{ url_for('.item_update_form', item_id=item.id) }}">{{ render_icon('edit') }} bearbeiten</a>
           {%- endif -%}
         </td>
       </tr>
@@ -64,6 +64,6 @@
     </tbody>
   </table>
 
-{{ render_pagination_nav(items, '.index_for_brand', {'brand_id': brand.id}) }}
+{{ render_pagination_nav(items, '.item_index_for_brand', {'brand_id': brand.id}) }}
 
 {%- endblock %}

@@ -25,14 +25,14 @@
 
     {%- if g.current_user.has_permission(NewsItemPermission.update) -%}
     <div class="button-row button-row--compact" style="float: right;">
-      <a class="button" href="{{ url_for('.update_form', item_id=version.item.id) }}">{{ render_icon('edit') }} bearbeiten</a>
+      <a class="button" href="{{ url_for('.item_update_form', item_id=version.item.id) }}">{{ render_icon('edit') }} bearbeiten</a>
     </div>
     {%- endif -%}
 
     <table>
       <tr>
         <th>Marke:</th>
-        <td><a href="{{ url_for('.index_for_brand', brand_id=version.item.brand_id) }}">{{ version.item.brand.title }}</a></td>
+        <td><a href="{{ url_for('.item_index_for_brand', brand_id=version.item.brand_id) }}">{{ version.item.brand.title }}</a></td>
       </tr>
       <tr>
         <th>Slug:</th>
