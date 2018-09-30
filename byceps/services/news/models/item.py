@@ -9,7 +9,6 @@ byceps.services.news.models.item
 from datetime import datetime
 from typing import Optional
 
-from flask import url_for
 from sqlalchemy.ext.associationproxy import association_proxy
 
 from ....database import BaseQuery, db, generate_uuid
@@ -108,7 +107,7 @@ class ItemVersion(db.Model):
 
     def render_body(self) -> str:
         template = load_template(self.body)
-        return template.render(url_for=url_for)
+        return template.render()
 
     def __repr__(self) -> str:
         return ReprBuilder(self) \
