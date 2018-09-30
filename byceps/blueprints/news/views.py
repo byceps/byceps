@@ -23,8 +23,9 @@ def index(page):
     """Show a page of news items."""
     items_per_page = _get_items_per_page_value()
 
-    items = news_service.get_items_paginated(g.brand_id, page, items_per_page,
-                                             published_only=True)
+    items = news_service.get_aggregated_items_paginated(g.brand_id, page,
+                                                        items_per_page,
+                                                        published_only=True)
 
     return {
         'items': items,
@@ -36,7 +37,7 @@ def index(page):
 @templated
 def view(slug):
     """Show a single news item."""
-    item = news_service.find_item_by_slug(g.brand_id, slug)
+    item = news_service.find_aggregated_item_by_slug(g.brand_id, slug)
 
     if item is None:
         abort(404)

@@ -10,7 +10,7 @@ from typing import Dict, Optional
 
 from flask_sqlalchemy import Pagination
 
-from ...database import db
+from ...database import db, paginate, Query
 from ...typing import BrandID, UserID
 
 from ..brand.models.brand import Brand as DbBrand
@@ -18,7 +18,7 @@ from ..brand.models.brand import Brand as DbBrand
 from .models.item import \
     CurrentVersionAssociation as DbCurrentVersionAssociation, \
     Item as DbItem, ItemVersion as DbItemVersion
-from .transfer.models import ItemID, ItemVersionID
+from .transfer.models import Item, ItemID, ItemVersionID
 
 
 def create_item(brand_id: BrandID, slug: str, creator_id: UserID, title: str,
@@ -70,29 +70,46 @@ def find_item(item_id: ItemID) -> Optional[DbItem]:
     return DbItem.query.get(item_id)
 
 
-def find_item_by_slug(brand_id: BrandID, slug: str) -> Optional[DbItem]:
+def find_aggregated_item_by_slug(brand_id: BrandID, slug: str
+                                ) -> Optional[Item]:
     """Return the news item identified by that slug, or `None` if not found."""
-    return DbItem.query \
+    item = DbItem.query \
         .for_brand(brand_id) \
         .with_current_version() \
         .filter_by(slug=slug) \
         .first()
 
+    if item is None:
+        return None
 
-def get_items_paginated(brand_id: BrandID, page: int, items_per_page: int,
-                        published_only: bool=False
-                       ) -> Pagination:
+    return _db_entity_to_item(item)
+
+
+def get_aggregated_items_paginated(brand_id: BrandID, page: int,
+                                   items_per_page: int,
+                                   *, published_only: bool=False
+                                  ) -> Pagination:
     """Return the news items to show on the specified page."""
-    query = DbItem.query \
-        .for_brand(brand_id) \
-        .with_current_version()
+    query = _get_items_query(brand_id)
 
     if published_only:
         query = query.published()
 
-    return query \
-        .order_by(DbItem.published_at.desc()) \
+    return paginate(query, page, items_per_page, item_mapper=_db_entity_to_item)
+
+
+def get_items_paginated(brand_id: BrandID, page: int, items_per_page: int
+                       ) -> Pagination:
+    """Return the news items to show on the specified page."""
+    return _get_items_query(brand_id) \
         .paginate(page, items_per_page)
+
+
+def _get_items_query(brand_id: BrandID) -> Query:
+    return DbItem.query \
+        .for_brand(brand_id) \
+        .with_current_version() \
+        .order_by(DbItem.published_at.desc())
 
 
 def find_item_version(version_id: ItemVersionID) -> DbItemVersion:
@@ -119,3 +136,15 @@ def get_item_count_by_brand_id() -> Dict[BrandID, int]:
         .all()
 
     return dict(brand_ids_and_item_counts)
+
+
+def _db_entity_to_item(item: DbItem) -> Item:
+    return Item(
+        id=item.id,
+        slug=item.slug,
+        published_at=item.published_at,
+        title=item.title,
+        body=item.render_body(),
+        external_url=item.external_url,
+        image_url=item.image_url,
+    )
