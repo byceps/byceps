@@ -10,8 +10,9 @@ Database utilities.
 
 import uuid
 
-from flask_sqlalchemy import BaseQuery, SQLAlchemy
+from flask_sqlalchemy import BaseQuery, Pagination, SQLAlchemy
 from sqlalchemy.dialects.postgresql import JSONB, UUID
+from sqlalchemy.orm import Query
 
 
 db = SQLAlchemy(session_options={'autoflush': False})
@@ -32,3 +33,28 @@ db.Uuid = Uuid
 def generate_uuid() -> uuid.UUID:
     """Generate a random UUID (Universally Unique IDentifier)."""
     return uuid.uuid4()
+
+
+def paginate(query: Query, page: int, per_page: int) -> Pagination:
+    """Return `per_page` items from page `page`."""
+    if page < 1:
+        page = 1
+
+    if per_page < 1:
+        raise ValueError('The number of items per page must be positive.')
+
+    offset = (page - 1) * per_page
+
+    items = query \
+        .limit(per_page) \
+        .offset(offset) \
+        .all()
+
+    item_count = len(items)
+    if page == 1 and item_count < per_page:
+        total = item_count
+    else:
+        total = query.order_by(None).count()
+
+    # Intentionally pass no query object.
+    return Pagination(None, page, per_page, total, items)
