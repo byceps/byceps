@@ -29,6 +29,6 @@ class Uuid(UUID):
 db.Uuid = Uuid
 
 
-def generate_uuid():
+def generate_uuid() -> uuid.UUID:
     """Generate a random UUID (Universally Unique IDentifier)."""
     return uuid.uuid4()
