@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+
 """Create a seating area.
 
 :Copyright: 2006-2018 Jochen Kupperschmidt

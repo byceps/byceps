@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+
 """Generate the SQL statements to remove a user and his/her various
 traces from the database.
 

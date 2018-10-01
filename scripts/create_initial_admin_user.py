@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+
 """Create an initial user with admin privileges to begin BYCEPS setup.
 
 :Copyright: 2006-2018 Jochen Kupperschmidt
