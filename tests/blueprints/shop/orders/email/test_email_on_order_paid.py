@@ -32,7 +32,7 @@ class EmailOnOrderPaidSignalTest(OrderEmailTestBase):
                                          self.admin.id)
 
     @patch('byceps.email.send')
-    def test_email_on_order_canceled(self, send_email_mock):
+    def test_email_on_order_paid(self, send_email_mock):
         self.send_event(self.order.id)
 
         expected_sender = 'acmecon@example.com'
