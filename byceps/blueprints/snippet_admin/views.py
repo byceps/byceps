@@ -10,6 +10,7 @@ from flask import abort, g, request
 
 from ...services.party import service as party_service
 from ...services.snippet import service as snippet_service
+from ...services.text_diff import service as text_diff_service
 from ...util.datetime.format import format_datetime_short
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_success
@@ -403,5 +404,5 @@ def _create_html_diff(from_version, to_version, attribute_name):
     from_text = getattr(from_version, attribute_name)
     to_text = getattr(to_version, attribute_name)
 
-    return snippet_service.create_html_diff(from_text, to_text,
-                                            from_description, to_description)
+    return text_diff_service.create_html_diff(from_text, to_text,
+                                              from_description, to_description)
