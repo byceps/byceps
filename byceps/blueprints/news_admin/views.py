@@ -118,8 +118,12 @@ def item_view_version(version_id):
     """Show the news item with the given version."""
     version = news_service.find_item_version(version_id)
 
+    channel = version.item.channel
+    brand = brand_service.find_brand(channel.brand_id)
+
     return {
         'version': version,
+        'brand': brand,
     }
 
 

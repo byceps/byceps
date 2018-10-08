@@ -32,7 +32,11 @@
     <table>
       <tr>
         <th>Marke:</th>
-        <td><a href="{{ url_for('.item_index_for_brand', brand_id=version.item.brand_id) }}">{{ version.item.brand.title }}</a></td>
+        <td><a href="{{ url_for('.channel_index_for_brand', brand_id=brand.id) }}">{{ brand.title }}</a></td>
+      </tr>
+      <tr>
+        <th>Kanal:</th>
+        <td><a href="{{ url_for('.channel_view', channel_id=version.item.channel.id) }}">{{ version.item.channel.id }}</a></td>
       </tr>
       <tr>
         <th>Slug:</th>
