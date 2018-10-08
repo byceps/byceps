@@ -36,7 +36,7 @@ class EmailOnOrderCanceledSignalTest(OrderEmailTestBase):
 
         expected_sender = 'acmecon@example.com'
         expected_recipients = [self.user.email_address]
-        expected_subject = 'Deine Bestellung (AC-14-B00017) wurde storniert.'
+        expected_subject = '\u274c Deine Bestellung (AC-14-B00017) wurde storniert.'
         expected_body = '''
 Hallo Versager,
 

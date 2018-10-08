@@ -37,7 +37,7 @@ class EmailOnOrderPaidSignalTest(OrderEmailTestBase):
 
         expected_sender = 'acmecon@example.com'
         expected_recipients = [self.user.email_address]
-        expected_subject = 'Deine Bestellung (AC-14-B00022) ist bezahlt worden.'
+        expected_subject = '\u2705 Deine Bestellung (AC-14-B00022) ist bezahlt worden.'
         expected_body = '''
 Hallo Vorbild,
 
