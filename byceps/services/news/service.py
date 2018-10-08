@@ -132,8 +132,9 @@ def get_item_count_by_brand_id() -> Dict[BrandID, int]:
     brand_ids_and_item_counts = db.session \
         .query(
             DbBrand.id,
-            db.func.count(DbItem.brand_id)
+            db.func.count(DbItem.id)
         ) \
+        .outerjoin(DbChannel) \
         .outerjoin(DbItem) \
         .group_by(DbBrand.id) \
         .all()
