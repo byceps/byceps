@@ -16,7 +16,7 @@ from ...util import upload
 
 from ..image import service as image_service
 from ..image.service import ImageTypeProhibited  # Provide to view functions.
-from ..user.models.user import User
+from ..user.models.user import User as DbUser
 
 from .models import Avatar, AvatarCreationTuple, AvatarSelection
 
@@ -24,7 +24,7 @@ from .models import Avatar, AvatarCreationTuple, AvatarSelection
 MAXIMUM_DIMENSIONS = Dimensions(512, 512)
 
 
-def update_avatar_image(user: User, stream: BinaryIO,
+def update_avatar_image(user: DbUser, stream: BinaryIO,
                         allowed_types: Set[ImageType],
                         *, maximum_dimensions: Dimensions=MAXIMUM_DIMENSIONS
                        ) -> None:
@@ -52,7 +52,7 @@ def update_avatar_image(user: User, stream: BinaryIO,
     db.session.commit()
 
 
-def remove_avatar_image(user: User) -> None:
+def remove_avatar_image(user: DbUser) -> None:
     """Remove the user's avatar image.
 
     The avatar will be unlinked from the user, but the database record

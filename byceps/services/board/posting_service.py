@@ -15,7 +15,7 @@ from ...database import db
 from ...typing import UserID
 from ...util.iterables import index_of
 
-from ..user.models.user import User
+from ..user.models.user import User as DbUser
 
 from .aggregation_service import aggregate_topic
 from .models.category import Category as DbCategory
@@ -36,7 +36,7 @@ def find_posting_by_id(posting_id: PostingID) -> Optional[DbPosting]:
     return DbPosting.query.get(posting_id)
 
 
-def paginate_postings(topic_id: TopicID, user: User, page: int,
+def paginate_postings(topic_id: TopicID, user: DbUser, page: int,
                       postings_per_page: int) -> Pagination:
     """Paginate postings in that topic, as visible for the user."""
     return DbPosting.query \
@@ -77,7 +77,7 @@ def update_posting(posting: DbPosting, editor_id: UserID, body: str, *,
         db.session.commit()
 
 
-def calculate_posting_page_number(posting: DbPosting, user: User,
+def calculate_posting_page_number(posting: DbPosting, user: DbUser,
                                   postings_per_page: int) -> int:
     """Return the number of the page the posting should appear on when
     viewed by the user.

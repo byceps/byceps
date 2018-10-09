@@ -14,7 +14,7 @@ from flask_sqlalchemy import Pagination
 from ...database import db
 from ...typing import UserID
 
-from ..user.models.user import User
+from ..user.models.user import User as DbUser
 
 from .aggregation_service import aggregate_category, aggregate_topic
 from .models.category import Category as DbCategory
@@ -36,7 +36,7 @@ def find_topic_by_id(topic_id: TopicID) -> Optional[DbTopic]:
     return DbTopic.query.get(topic_id)
 
 
-def find_topic_visible_for_user(topic_id: TopicID, user: User
+def find_topic_visible_for_user(topic_id: TopicID, user: DbUser
                                ) -> Optional[DbTopic]:
     """Return the topic with that id, or `None` if not found or
     invisible for the user.
@@ -60,7 +60,7 @@ def get_all_topic_ids_in_category(category_id: CategoryID) -> Set[TopicID]:
     return {row[0] for row in rows}
 
 
-def paginate_topics(category_id: CategoryID, user: User, page: int,
+def paginate_topics(category_id: CategoryID, user: DbUser, page: int,
                     topics_per_page: int) -> Pagination:
     """Paginate topics in that category, as visible for the user.
 
@@ -109,7 +109,7 @@ def update_topic(topic: DbTopic, editor_id: UserID, title: str, body: str
     db.session.commit()
 
 
-def find_default_posting_to_jump_to(topic_id: TopicID, user: User,
+def find_default_posting_to_jump_to(topic_id: TopicID, user: DbUser,
                                     last_viewed_at: Optional[datetime]
                                    ) -> Optional[DbPosting]:
     """Return the posting of the topic to show by default, or `None`."""

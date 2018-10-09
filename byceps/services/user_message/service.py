@@ -23,7 +23,7 @@ from ..brand import service as brand_service, \
 from ..brand.transfer.models import Brand
 from ..email import service as email_service
 from ..email.transfer.models import Message
-from ..user.models.user import User
+from ..user.models.user import User as DbUser
 from ..user import service as user_service
 
 
@@ -52,7 +52,7 @@ def create_message(sender_id: UserID, recipient_id: UserID, text: str,
     return _assemble_message(sender, recipient, text, sender_contact_url, brand)
 
 
-def _get_user(user_id: UserID) -> User:
+def _get_user(user_id: UserID) -> DbUser:
     user = user_service.find_active_user(user_id)
 
     if user is None:
@@ -71,7 +71,7 @@ def _get_brand(brand_id: BrandID) -> Brand:
     return brand
 
 
-def _assemble_message(sender: User, recipient: User, text: str,
+def _assemble_message(sender: DbUser, recipient: DbUser, text: str,
                       sender_contact_url: str, brand: Brand
                      ) -> Message:
     """Assemble an email message with the rendered template as its body."""
@@ -90,7 +90,7 @@ def _assemble_message(sender: User, recipient: User, text: str,
     return Message(sender_address, recipients, subject, body)
 
 
-def _render_message_template(sender: User, recipient: User, text: str,
+def _render_message_template(sender: DbUser, recipient: DbUser, text: str,
                              sender_contact_url: str, brand: Brand,
                              brand_contact_address: Optional[str]
                             ) -> MessageTemplateRenderResult:

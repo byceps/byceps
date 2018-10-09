@@ -18,13 +18,13 @@ from ..email import service as email_service
 from ..user_avatar.models import Avatar, AvatarSelection
 from ..verification_token.models import Token
 
-from .models.user import AnonymousUser, User, UserTuple
+from .models.user import AnonymousUser, User as DbUser, UserTuple
 from . import event_service
 
 
 def count_users() -> int:
     """Return the number of users."""
-    return User.query \
+    return DbUser.query \
         .count()
 
 
@@ -32,8 +32,8 @@ def count_users_created_since(delta: timedelta) -> int:
     """Return the number of user accounts created since `delta` ago."""
     filter_starts_at = datetime.now() - delta
 
-    return User.query \
-        .filter(User.created_at >= filter_starts_at) \
+    return DbUser.query \
+        .filter(DbUser.created_at >= filter_starts_at) \
         .count()
 
 
@@ -42,7 +42,7 @@ def count_enabled_users() -> int:
 
     Suspended or deleted accounts are excluded.
     """
-    return User.query \
+    return DbUser.query \
         .filter_by(enabled=True) \
         .filter_by(suspended=False) \
         .filter_by(deleted=False) \
@@ -54,7 +54,7 @@ def count_disabled_users() -> int:
 
     Suspended or deleted accounts are excluded.
     """
-    return User.query \
+    return DbUser.query \
         .filter_by(enabled=False) \
         .filter_by(suspended=False) \
         .filter_by(deleted=False) \
@@ -63,7 +63,7 @@ def count_disabled_users() -> int:
 
 def count_suspended_users() -> int:
     """Return the number of suspended user accounts."""
-    return User.query \
+    return DbUser.query \
         .filter_by(suspended=True) \
         .filter_by(deleted=False) \
         .count()
@@ -71,12 +71,12 @@ def count_suspended_users() -> int:
 
 def count_deleted_users() -> int:
     """Return the number of deleted user accounts."""
-    return User.query \
+    return DbUser.query \
         .filter_by(deleted=True) \
         .count()
 
 
-def find_active_user(user_id: UserID) -> Optional[User]:
+def find_active_user(user_id: UserID) -> Optional[DbUser]:
     """Return the user with that ID if the account is "active", or
     `None` if:
     - the ID is unknown.
@@ -84,7 +84,7 @@ def find_active_user(user_id: UserID) -> Optional[User]:
     - the account is currently suspended.
     - the account is marked as deleted.
     """
-    return User.query \
+    return DbUser.query \
         .filter_by(enabled=True) \
         .filter_by(suspended=False) \
         .filter_by(deleted=False) \
@@ -92,9 +92,9 @@ def find_active_user(user_id: UserID) -> Optional[User]:
         .one_or_none()
 
 
-def find_user(user_id: UserID) -> Optional[User]:
+def find_user(user_id: UserID) -> Optional[DbUser]:
     """Return the user with that ID, or `None` if not found."""
-    return User.query.get(user_id)
+    return DbUser.query.get(user_id)
 
 
 def find_users(user_ids: Set[UserID]) -> Set[UserTuple]:
@@ -103,10 +103,16 @@ def find_users(user_ids: Set[UserID]) -> Set[UserTuple]:
         return set()
 
     rows = db.session \
-        .query(User.id, User.screen_name, User.suspended, User.deleted, Avatar) \
+        .query(
+            DbUser.id,
+            DbUser.screen_name,
+            DbUser.suspended,
+            DbUser.deleted,
+            Avatar
+        ) \
         .outerjoin(AvatarSelection) \
         .outerjoin(Avatar) \
-        .filter(User.id.in_(frozenset(user_ids))) \
+        .filter(DbUser.id.in_(frozenset(user_ids))) \
         .all()
 
     def to_tuples() -> Iterator[UserTuple]:
@@ -126,9 +132,9 @@ def find_users(user_ids: Set[UserID]) -> Set[UserTuple]:
     return set(to_tuples())
 
 
-def find_user_by_screen_name(screen_name: str) -> Optional[User]:
+def find_user_by_screen_name(screen_name: str) -> Optional[DbUser]:
     """Return the user with that screen name, or `None` if not found."""
-    return User.query \
+    return DbUser.query \
         .filter_by(screen_name=screen_name) \
         .one_or_none()
 
@@ -145,26 +151,28 @@ def index_users_by_id(users: Set[UserTuple]) -> Dict[UserID, UserTuple]:
 
 def is_screen_name_already_assigned(screen_name: str) -> bool:
     """Return `True` if a user with that screen name exists."""
-    return _do_users_matching_filter_exist(User.screen_name, screen_name)
+    return _do_users_matching_filter_exist(DbUser.screen_name, screen_name)
 
 
 def is_email_address_already_assigned(email_address: str) -> bool:
     """Return `True` if a user with that email address exists."""
-    return _do_users_matching_filter_exist(User.email_address, email_address)
+    return _do_users_matching_filter_exist(DbUser.email_address, email_address)
 
 
-def _do_users_matching_filter_exist(model_attribute: str, search_value: str) -> bool:
+def _do_users_matching_filter_exist(model_attribute: str, search_value: str
+                                   ) -> bool:
     """Return `True` if any users match the filter.
 
     Comparison is done case-insensitively.
     """
-    user_count = User.query \
+    user_count = DbUser.query \
         .filter(db.func.lower(model_attribute) == search_value.lower()) \
         .count()
     return user_count > 0
 
 
-def send_email_address_confirmation_email(user: User, verification_token: Token,
+def send_email_address_confirmation_email(user: DbUser,
+                                          verification_token: Token,
                                           brand_id: BrandID) -> None:
     sender_address = email_service.get_sender_address_for_brand(brand_id)
 
@@ -194,7 +202,7 @@ def confirm_email_address(verification_token: Token) -> None:
     db.session.commit()
 
 
-def update_user_details(user: User, first_names: str, last_name: str,
+def update_user_details(user: DbUser, first_names: str, last_name: str,
                         date_of_birth: date, country: str, zip_code, city: str,
                         street: str, phone_number: str) -> None:
     """Update the user's details."""
@@ -285,7 +293,7 @@ def delete_account(user_id: UserID, initiator_id: UserID, reason: str) -> None:
     db.session.commit()
 
 
-def _anonymize_account(user: User) -> None:
+def _anonymize_account(user: DbUser) -> None:
     """Remove or replace user details of the account."""
     user.screen_name = 'deleted-{}'.format(user.id.hex)
     user.email_address = '{}@user.invalid'.format(user.id.hex)
@@ -306,7 +314,7 @@ def _anonymize_account(user: User) -> None:
         db.session.delete(user.avatar_selection)
 
 
-def _get_user(user_id: UserID) -> User:
+def _get_user(user_id: UserID) -> DbUser:
     """Return the user with that ID, or raise an exception."""
     user = find_user(user_id)
 

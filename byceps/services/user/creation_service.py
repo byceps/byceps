@@ -22,8 +22,8 @@ from ..terms import service as terms_service
 from ..verification_token import service as verification_token_service
 
 from . import event_service
-from .models.detail import UserDetail
-from .models.user import User
+from .models.detail import UserDetail as DbUserDetail
+from .models.user import User as DbUser
 from . import service as user_service
 
 
@@ -37,7 +37,7 @@ def create_user(screen_name: str, email_address: str, password: str,
                 terms_consent_expressed_at: datetime,
                 privacy_policy_consent_expressed_at: datetime,
                 subscribe_to_newsletter: bool,
-                newsletter_subscription_state_expressed_at: datetime) -> User:
+                newsletter_subscription_state_expressed_at: datetime) -> DbUser:
     """Create a user account and related records."""
     # user with details
     user = build_user(screen_name, email_address)
@@ -89,13 +89,13 @@ def create_user(screen_name: str, email_address: str, password: str,
     return user
 
 
-def build_user(screen_name: str, email_address: str) -> User:
+def build_user(screen_name: str, email_address: str) -> DbUser:
     normalized_screen_name = _normalize_screen_name(screen_name)
     normalized_email_address = _normalize_email_address(email_address)
 
-    user = User(normalized_screen_name, normalized_email_address)
+    user = DbUser(normalized_screen_name, normalized_email_address)
 
-    detail = UserDetail(user=user)
+    detail = DbUserDetail(user=user)
 
     return user
 
