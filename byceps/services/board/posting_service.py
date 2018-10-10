@@ -7,7 +7,7 @@ byceps.services.board.posting_service
 """
 
 from datetime import datetime
-from typing import Optional
+from typing import Dict, Optional, Set
 
 from flask_sqlalchemy import Pagination
 
@@ -39,12 +39,9 @@ def find_posting_by_id(posting_id: PostingID) -> Optional[DbPosting]:
 def paginate_postings(topic_id: TopicID, user: DbUser, page: int,
                       postings_per_page: int) -> Pagination:
     """Paginate postings in that topic, as visible for the user."""
-    return DbPosting.query \
+    postings = DbPosting.query \
         .options(
             db.joinedload(DbPosting.topic),
-            db.joinedload('creator')
-                .load_only('id', 'screen_name', 'deleted')
-                .joinedload('orga_team_memberships'),
             db.joinedload(DbPosting.last_edited_by).load_only('screen_name'),
             db.joinedload(DbPosting.hidden_by).load_only('screen_name'),
         ) \
@@ -52,6 +49,26 @@ def paginate_postings(topic_id: TopicID, user: DbUser, page: int,
         .only_visible_for_user(user) \
         .earliest_to_latest() \
         .paginate(page, postings_per_page)
+
+    creator_ids = {posting.creator_id for posting in postings.items}
+    creators_by_id = _get_users_by_id(creator_ids)
+
+    for posting in postings.items:
+        posting.creator = creators_by_id[posting.creator_id]
+
+    return postings
+
+
+def _get_users_by_id(user_ids: Set[UserID]) -> Dict[UserID, DbUser]:
+    users = DbUser.query \
+        .options(
+            db.load_only('id', 'screen_name', 'deleted')
+                .joinedload('orga_team_memberships'),
+        ) \
+        .filter(DbUser.id.in_(user_ids)) \
+        .all()
+
+    return {user.id: user for user in users}
 
 
 def create_posting(topic: DbTopic, creator_id: UserID, body: str) -> DbPosting:
