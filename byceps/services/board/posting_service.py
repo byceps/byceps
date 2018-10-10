@@ -43,7 +43,7 @@ def paginate_postings(topic_id: TopicID, user: DbUser, page: int,
         .options(
             db.joinedload(DbPosting.topic),
             db.joinedload('creator')
-                .load_only('id', 'screen_name')
+                .load_only('id', 'screen_name', 'deleted')
                 .joinedload('orga_team_memberships'),
             db.joinedload(DbPosting.last_edited_by).load_only('screen_name'),
             db.joinedload(DbPosting.hidden_by).load_only('screen_name'),
