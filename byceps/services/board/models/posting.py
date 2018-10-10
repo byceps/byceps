@@ -79,7 +79,7 @@ class Posting(db.Model):
         return (
             (
                 not self.topic.locked
-                    and user == self.creator
+                    and user.id == self.creator_id
                     and user.has_permission(BoardPostingPermission.update)
             )
             or user.has_permission(BoardPermission.update_of_others)
@@ -91,7 +91,7 @@ class Posting(db.Model):
             return False
 
         # Don't display the author's own posting as new to him/her.
-        if self.creator == user:
+        if self.creator_id == user.id:
             return False
 
         return (last_viewed_at is None) or (self.created_at > last_viewed_at)

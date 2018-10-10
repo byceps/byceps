@@ -81,7 +81,7 @@ class Topic(db.Model):
         return (
             (
                 not self.locked
-                    and user == self.creator
+                    and user.id == self.creator_id
                     and user.has_permission(BoardTopicPermission.update)
             )
             or user.has_permission(BoardPermission.update_of_others)
