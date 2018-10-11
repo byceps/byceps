@@ -13,13 +13,14 @@ from ...database import db
 
 from ..user_avatar import service as user_avatar_service
 from ..user.models.detail import UserDetail
-from ..user.models.user import User as DbUser, UserTuple
+from ..user.models.user import User as DbUser
+from ..user.transfer.models import User
 
 from .models import OrgaFlag
 
 
 def collect_orgas_with_next_birthdays(*, limit: int=None) \
-                                      -> Iterator[Tuple[UserTuple, UserDetail]]:
+                                      -> Iterator[Tuple[User, UserDetail]]:
     """Yield the next birthdays of organizers, sorted by month and day."""
     orgas_with_birthdays = _collect_orgas_with_birthdays()
 
@@ -38,7 +39,7 @@ def collect_orgas_with_next_birthdays(*, limit: int=None) \
     for user in orgas:
         avatar_url = avatar_urls_by_user_id.get(user.id)
 
-        user_tuple = UserTuple(
+        user_dto = User(
             user.id,
             user.screen_name,
             user.suspended,
@@ -47,7 +48,7 @@ def collect_orgas_with_next_birthdays(*, limit: int=None) \
             True,  # is_orga
         )
 
-        yield user_tuple, user.detail
+        yield user_dto, user.detail
 
 
 def _collect_orgas_with_birthdays() -> Sequence[DbUser]:

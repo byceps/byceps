@@ -16,7 +16,7 @@ from ...services.orga_presence import service as orga_presence_service
 from ...services.orga_presence.transfer.models import PartyTimeSlot, \
     PresenceTimeSlot, TimeSlot
 from ...services.party import service as party_service
-from ...services.user.models.user import UserTuple
+from ...services.user.transfer.models import User
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.templating import templated
 
@@ -66,7 +66,7 @@ def view(party_id):
 
 
 def _group_presences_by_orga(presences: Iterable[PresenceTimeSlot]
-                            ) -> Dict[UserTuple, PresenceTimeSlot]:
+                            ) -> Dict[User, PresenceTimeSlot]:
     d = defaultdict(set)
 
     for presence in presences:

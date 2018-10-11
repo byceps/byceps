@@ -14,7 +14,8 @@ from ...database import BaseQuery, db
 from ...typing import BrandID, UserID
 
 from ..user import service as user_service
-from ..user.models.user import User as DbUser, UserTuple
+from ..user.models.user import User as DbUser
+from ..user.transfer.models import User
 
 from .models import Subscriber, Subscription
 from .types import SubscriptionState
@@ -99,7 +100,7 @@ def _get_subscriber_details(user_ids: Set[UserID]) -> Iterator[Subscriber]:
 
 
 def get_user_subscription_states_for_brand(brand_id: BrandID) \
-        -> Iterator[Tuple[UserTuple, SubscriptionState]]:
+        -> Iterator[Tuple[User, SubscriptionState]]:
     """Return subscriptions as (user, state) pairs for the brand."""
     subscription_states = _build_query_for_current_state() \
         .filter_by(brand_id=brand_id) \

@@ -18,8 +18,9 @@ from ..email import service as email_service
 from ..user_avatar.models import Avatar, AvatarSelection
 from ..verification_token.models import Token
 
-from .models.user import AnonymousUser, User as DbUser, UserTuple
 from . import event_service
+from .models.user import AnonymousUser, User as DbUser
+from .transfer.models import User
 
 
 def find_active_user(user_id: UserID) -> Optional[DbUser]:
@@ -43,7 +44,7 @@ def find_user(user_id: UserID) -> Optional[DbUser]:
     return DbUser.query.get(user_id)
 
 
-def find_users(user_ids: Set[UserID]) -> Set[UserTuple]:
+def find_users(user_ids: Set[UserID]) -> Set[User]:
     """Return the users and their current avatars' URLs with those IDs."""
     if not user_ids:
         return set()
@@ -61,21 +62,21 @@ def find_users(user_ids: Set[UserID]) -> Set[UserTuple]:
         .filter(DbUser.id.in_(frozenset(user_ids))) \
         .all()
 
-    def to_tuples() -> Iterator[UserTuple]:
+    def to_dtos() -> Iterator[User]:
         for user_id, screen_name, suspended, deleted, avatar in rows:
             avatar_url = avatar.url if avatar else None
             is_orga = False  # Information is not available here by design.
 
-            yield UserTuple(
+            yield User(
                 user_id,
                 screen_name,
                 suspended,
                 deleted,
                 avatar_url,
-                is_orga
+                is_orga,
             )
 
-    return set(to_tuples())
+    return set(to_dtos())
 
 
 def find_user_by_screen_name(screen_name: str) -> Optional[DbUser]:
@@ -90,7 +91,7 @@ def get_anonymous_user() -> AnonymousUser:
     return AnonymousUser()
 
 
-def index_users_by_id(users: Set[UserTuple]) -> Dict[UserID, UserTuple]:
+def index_users_by_id(users: Set[User]) -> Dict[UserID, User]:
     """Map the users' IDs to the corresponding user objects."""
     return {user.id: user for user in users}
 

@@ -19,8 +19,8 @@ from ...services.ticketing.models.ticket import Ticket
 from ...services.ticketing import exceptions as ticket_exceptions, \
     ticket_seat_management_service, ticket_service
 from ...services.ticketing.transfer.models import TicketID
-from ...services.user.models.user import UserTuple
 from ...services.user import service as user_service
+from ...services.user.transfer.models import User
 from ...typing import UserID
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_error, flash_success
@@ -74,7 +74,7 @@ def view_area(slug):
 
 
 def _get_users(seats: Sequence[Seat], tickets: Sequence[Ticket]
-              ) -> Dict[UserID, UserTuple]:
+              ) -> Dict[UserID, User]:
     user_ids = set()
 
     for seat in seats:

@@ -12,7 +12,7 @@ from enum import Enum
 from attr import attrib, attrs
 
 from ...party.transfer.models import Party
-from ...user.models.user import UserTuple
+from ...user.transfer.models import User
 
 from ....util.datetime.range import DateTimeRange
 
@@ -47,10 +47,10 @@ class PartyTimeSlot(TimeSlot):
 
 @attrs(frozen=True, slots=True)
 class PresenceTimeSlot(TimeSlot):
-    orga = attrib(type=UserTuple)
+    orga = attrib(type=User)
 
     @classmethod
-    def from_(cls, orga: UserTuple, starts_at: datetime, ends_at: datetime):
+    def from_(cls, orga: User, starts_at: datetime, ends_at: datetime):
         return cls(
             type=TimeSlotType.presence,
             starts_at=starts_at,

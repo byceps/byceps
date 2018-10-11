@@ -15,8 +15,9 @@ from ...services.terms import service as terms_service
 from ...services.user import event_service
 from ...services.user.models.detail import UserDetail
 from ...services.user.models.event import UserEvent, UserEventData
-from ...services.user.models.user import User as DbUser, UserTuple
+from ...services.user.models.user import User as DbUser
 from ...services.user import service as user_service
+from ...services.user.transfer.models import User
 from ...services.user_avatar import service as avatar_service
 from ...typing import UserID
 
@@ -173,7 +174,7 @@ def _fake_terms_consent_events(user_id: UserID) -> Iterator[UserEvent]:
                         user_id, data)
 
 
-def _get_additional_data(event: UserEvent, users_by_id: Dict[UserID, UserTuple]
+def _get_additional_data(event: UserEvent, users_by_id: Dict[UserID, User]
                         ) -> Iterator[Tuple[str, Any]]:
     if event.event_type in {
             'user-created',
@@ -202,7 +203,7 @@ def _get_additional_data(event: UserEvent, users_by_id: Dict[UserID, UserTuple]
 
 
 def _get_additional_data_for_user_initiated_event(event: UserEvent,
-        users_by_id: Dict[UserID, UserTuple]) -> Iterator[Tuple[str, Any]]:
+        users_by_id: Dict[UserID, User]) -> Iterator[Tuple[str, Any]]:
     initiator_id = event.data.get('initiator_id')
     if initiator_id is not None:
         yield 'initiator', users_by_id[initiator_id]

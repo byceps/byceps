@@ -17,8 +17,8 @@ from ...typing import PartyID, UserID
 from ..party.models.party import Party as DbParty
 from ..party import service as party_service
 from ..party.transfer.models import Party
-from ..user.models.user import UserTuple
 from ..user import service as user_service
+from ..user.transfer.models import User
 
 from .models.archived_attendance import ArchivedAttendance
 from .models.category import Category
@@ -69,8 +69,7 @@ def _get_archived_attendance_party_ids(user_id: UserID) -> Set[PartyID]:
     return {row[0] for row in party_id_rows}
 
 
-def get_attendees_by_party(party_ids: Set[PartyID]
-                          ) -> Dict[PartyID, Set[UserTuple]]:
+def get_attendees_by_party(party_ids: Set[PartyID]) -> Dict[PartyID, Set[User]]:
     """Return the parties' attendees, indexed by party."""
     if not party_ids:
         return {}

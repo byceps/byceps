@@ -6,7 +6,6 @@ byceps.services.user.models.user
 :License: Modified BSD, see LICENSE for details.
 """
 
-from collections import namedtuple
 from datetime import datetime
 from enum import Enum
 from typing import Optional, Set
@@ -130,6 +129,3 @@ class User(db.Model):
             .add_with_lookup('id') \
             .add_with_lookup('screen_name') \
             .build()
-
-
-UserTuple = namedtuple('UserTuple', 'id, screen_name, suspended, deleted, avatar_url, is_orga')

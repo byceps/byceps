@@ -14,8 +14,8 @@ from ...services.ticketing.models.ticket_event import TicketEvent, \
     TicketEventData
 from ...services.ticketing import ticket_service
 from ...services.ticketing.transfer.models import TicketID
-from ...services.user.models.user import UserTuple
 from ...services.user import service as user_service
+from ...services.user.transfer.models import User
 from ...typing import UserID
 
 
@@ -63,8 +63,7 @@ def _find_values_for_keys(events: Sequence[TicketEvent], keys: Set[str]):
                 yield value
 
 
-def _get_additional_data(event: TicketEvent,
-                         users_by_id: Dict[UserID, UserTuple]
+def _get_additional_data(event: TicketEvent, users_by_id: Dict[UserID, User]
                         ) -> Iterator[Tuple[str, Any]]:
     if event.event_type in {
             'seat-manager-appointed',
@@ -106,7 +105,7 @@ def _get_additional_data(event: TicketEvent,
 
 
 def _get_additional_data_for_user_initiated_event(event: TicketEvent,
-        users_by_id: Dict[UserID, UserTuple]) -> Iterator[Tuple[str, Any]]:
+        users_by_id: Dict[UserID, User]) -> Iterator[Tuple[str, Any]]:
     initiator_id = event.data.get('initiator_id')
     if initiator_id is not None:
         yield 'initiator', users_by_id[initiator_id]
@@ -131,8 +130,7 @@ def _get_additional_data_for_ticket_revoked_event(event: TicketEvent
         yield 'reason', reason
 
 
-def _look_up_user_for_id(event: TicketEvent,
-                         users_by_id: Dict[UserID, UserTuple],
+def _look_up_user_for_id(event: TicketEvent, users_by_id: Dict[UserID, User],
                          user_id_key, user_key
                         ) -> Iterator[Tuple[str, Any]]:
     user_id = event.data[user_id_key]

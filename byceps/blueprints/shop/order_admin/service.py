@@ -19,8 +19,9 @@ from ....services.shop.order import event_service as order_event_service
 from ....services.shop.order import service as order_service
 from ....services.shop.order.transfer.models import Order, OrderID
 from ....services.ticketing import category_service as ticket_category_service
-from ....services.user.models.user import User as DbUser, UserTuple
+from ....services.user.models.user import User as DbUser
 from ....services.user import service as user_service
+from ....services.user.transfer.models import User
 from ....services.user_badge import service as user_badge_service
 from ....typing import UserID
 
@@ -85,7 +86,7 @@ def _fake_order_placement_event(order_id: OrderID) -> OrderEvent:
     return OrderEvent(order.created_at, 'order-placed', order.id, data)
 
 
-def _get_additional_data(event: OrderEvent, users_by_id: Dict[UserID, UserTuple]
+def _get_additional_data(event: OrderEvent, users_by_id: Dict[UserID, User]
                         ) -> OrderEventData:
     if event.event_type == 'badge-awarded':
         return _get_additional_data_for_badge_awarded(event)
@@ -102,7 +103,7 @@ def _get_additional_data(event: OrderEvent, users_by_id: Dict[UserID, UserTuple]
 
 
 def _get_additional_data_for_standard_event(event: OrderEvent,
-                                            users_by_id: Dict[UserID, UserTuple]
+                                            users_by_id: Dict[UserID, User]
                                            ) -> OrderEventData:
     initiator_id = event.data['initiator_id']
 
@@ -117,7 +118,7 @@ def _get_additional_data_for_badge_awarded(event: OrderEvent) -> OrderEventData:
 
     recipient_id = event.data['recipient_id']
     recipient = user_service.find_user(recipient_id)
-    recipient = _to_user_tuple(recipient)
+    recipient = _to_user_dto(recipient)
 
     return {
         'badge_label': badge.label,
@@ -174,12 +175,12 @@ def _get_additional_data_for_ticket_revoked(event: OrderEvent
     }
 
 
-def _to_user_tuple(user: DbUser) -> UserTuple:
-    """Create an immutable tuple with selected values from user entity."""
+def _to_user_dto(user: DbUser) -> User:
+    """Create an immutable user object with selected values from user entity."""
     avatar_url = user.avatar.url if user.avatar else None
     is_orga = False
 
-    return UserTuple(
+    return User(
         user.id,
         user.screen_name,
         user.suspended,
