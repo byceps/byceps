@@ -15,7 +15,7 @@ from ...services.terms import service as terms_service
 from ...services.user import event_service
 from ...services.user.models.detail import UserDetail
 from ...services.user.models.event import UserEvent, UserEventData
-from ...services.user.models.user import User, UserTuple
+from ...services.user.models.user import User as DbUser, UserTuple
 from ...services.user import service as user_service
 from ...services.user_avatar import service as avatar_service
 from ...typing import UserID
@@ -27,9 +27,9 @@ def get_users_paginated(page, per_page, *, search_term=None, state_filter=None):
     """Return the users to show on the specified page, optionally
     filtered by search term or 'enabled' flag.
     """
-    query = User.query \
+    query = DbUser.query \
         .options(db.joinedload('detail')) \
-        .order_by(User.created_at.desc())
+        .order_by(DbUser.created_at.desc())
 
     query = _filter_by_state(query, state_filter)
 
@@ -46,8 +46,8 @@ def _filter_by_search_term(query, search_term):
         .join(UserDetail) \
         .filter(
             db.or_(
-                User.email_address.ilike(ilike_pattern),
-                User.screen_name.ilike(ilike_pattern),
+                DbUser.email_address.ilike(ilike_pattern),
+                DbUser.screen_name.ilike(ilike_pattern),
                 UserDetail.first_names.ilike(ilike_pattern),
                 UserDetail.last_name.ilike(ilike_pattern)
             )

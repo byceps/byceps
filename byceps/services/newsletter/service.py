@@ -14,7 +14,7 @@ from ...database import BaseQuery, db
 from ...typing import BrandID, UserID
 
 from ..user import service as user_service
-from ..user.models.user import User, UserTuple
+from ..user.models.user import User as DbUser, UserTuple
 
 from .models import Subscriber, Subscription
 from .types import SubscriptionState
@@ -85,10 +85,10 @@ def _get_subscriber_details(user_ids: Set[UserID]) -> Iterator[Subscriber]:
 
     rows = db.session \
         .query(
-            User.screen_name,
-            User.email_address,
+            DbUser.screen_name,
+            DbUser.email_address,
         ) \
-        .filter(User.id.in_(user_ids)) \
+        .filter(DbUser.id.in_(user_ids)) \
         .filter_by(enabled=True) \
         .filter_by(suspended=False) \
         .filter_by(deleted=False) \

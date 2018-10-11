@@ -19,7 +19,7 @@ from ....services.shop.order import event_service as order_event_service
 from ....services.shop.order import service as order_service
 from ....services.shop.order.transfer.models import Order, OrderID
 from ....services.ticketing import category_service as ticket_category_service
-from ....services.user.models.user import User, UserTuple
+from ....services.user.models.user import User as DbUser, UserTuple
 from ....services.user import service as user_service
 from ....services.user_badge import service as user_badge_service
 from ....typing import UserID
@@ -27,7 +27,7 @@ from ....typing import UserID
 
 @attrs(frozen=True, slots=True)
 class OrderWithOrderer(Order):
-    placed_by = attrib(type=User)
+    placed_by = attrib(type=DbUser)
 
 
 def extend_order_tuples_with_orderer(orders: Sequence[Order]
@@ -174,7 +174,7 @@ def _get_additional_data_for_ticket_revoked(event: OrderEvent
     }
 
 
-def _to_user_tuple(user: User) -> UserTuple:
+def _to_user_tuple(user: DbUser) -> UserTuple:
     """Create an immutable tuple with selected values from user entity."""
     avatar_url = user.avatar.url if user.avatar else None
     is_orga = False

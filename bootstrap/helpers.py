@@ -6,7 +6,7 @@ bootstrap.helpers
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.services.user.models.user import User
+from byceps.services.user.models.user import User as DbUser
 from byceps.services.user import creation_service as user_creation_service
 
 from .util import add_to_database
@@ -24,4 +24,6 @@ def create_user(screen_name, email_address, *, enabled=False):
 
 
 def get_user(screen_name):
-    return User.query.filter_by(screen_name=screen_name).one()
+    return DbUser.query \
+        .filter_by(screen_name=screen_name) \
+        .one()

@@ -13,7 +13,7 @@ from ...database import db
 
 from ..user_avatar import service as user_avatar_service
 from ..user.models.detail import UserDetail
-from ..user.models.user import User, UserTuple
+from ..user.models.user import User as DbUser, UserTuple
 
 from .models import OrgaFlag
 
@@ -50,9 +50,9 @@ def collect_orgas_with_next_birthdays(*, limit: int=None) \
         yield user_tuple, user.detail
 
 
-def _collect_orgas_with_birthdays() -> Sequence[User]:
+def _collect_orgas_with_birthdays() -> Sequence[DbUser]:
     """Return all organizers whose birthday is known."""
-    return User.query \
+    return DbUser.query \
         .join(OrgaFlag) \
         .join(UserDetail) \
         .filter(UserDetail.date_of_birth != None) \
@@ -60,7 +60,7 @@ def _collect_orgas_with_birthdays() -> Sequence[User]:
         .all()
 
 
-def sort_users_by_next_birthday(users: Sequence[User]) -> Sequence[User]:
+def sort_users_by_next_birthday(users: Sequence[DbUser]) -> Sequence[DbUser]:
     return sorted(users,
                   key=lambda user: (
                     user.detail.days_until_next_birthday,

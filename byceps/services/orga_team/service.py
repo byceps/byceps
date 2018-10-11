@@ -13,7 +13,7 @@ from ...typing import PartyID, UserID
 
 from ..orga.models import OrgaFlag
 from ..party import service as party_service
-from ..user.models.user import User
+from ..user.models.user import User as DbUser
 
 from .models import Membership, MembershipID, OrgaTeam, OrgaTeamID
 
@@ -149,23 +149,23 @@ def select_orgas_for_party(user_ids: Set[UserID], party_id: PartyID
     return {row[0] for row in orga_id_rows}
 
 
-def get_unassigned_orgas_for_party(party_id: PartyID) -> Sequence[User]:
+def get_unassigned_orgas_for_party(party_id: PartyID) -> Sequence[DbUser]:
     """Return organizers that are not assigned to a team for the party."""
     party = party_service.find_party(party_id)
 
-    assigned_orgas = User.query \
+    assigned_orgas = DbUser.query \
         .join(Membership) \
         .join(OrgaTeam) \
         .filter(OrgaTeam.party_id == party.id) \
-        .options(db.load_only(User.id)) \
+        .options(db.load_only(DbUser.id)) \
         .all()
     assigned_orga_ids = frozenset(user.id for user in assigned_orgas)
 
-    unassigned_orgas_query = User.query
+    unassigned_orgas_query = DbUser.query
 
     if assigned_orga_ids:
         unassigned_orgas_query = unassigned_orgas_query \
-            .filter(db.not_(User.id.in_(assigned_orga_ids)))
+            .filter(db.not_(DbUser.id.in_(assigned_orga_ids)))
 
     unassigned_orgas = unassigned_orgas_query \
         .join(OrgaFlag).filter(OrgaFlag.brand_id == party.brand_id) \

@@ -12,7 +12,7 @@ from ...database import db
 from ...typing import BrandID, UserID
 
 from ..brand.models.brand import Brand
-from ..user.models.user import User
+from ..user.models.user import User as DbUser
 
 from .models import OrgaFlag
 
@@ -42,9 +42,9 @@ def get_person_count_by_brand_id() -> Dict[BrandID, int]:
     return dict(brand_ids_and_orga_flag_counts)
 
 
-def get_orgas_for_brand(brand_id: BrandID) -> Sequence[User]:
+def get_orgas_for_brand(brand_id: BrandID) -> Sequence[DbUser]:
     """Return all users flagged as organizers for the brand."""
-    return User.query \
+    return DbUser.query \
         .join(OrgaFlag).filter(OrgaFlag.brand_id == brand_id) \
         .options(db.joinedload('detail')) \
         .all()
@@ -52,8 +52,8 @@ def get_orgas_for_brand(brand_id: BrandID) -> Sequence[User]:
 
 def count_orgas() -> int:
     """Return the number of organizers with the organizer flag set."""
-    return User.query \
-        .distinct(User.id) \
+    return DbUser.query \
+        .distinct(DbUser.id) \
         .join(OrgaFlag) \
         .count()
 
@@ -62,8 +62,8 @@ def count_orgas_for_brand(brand_id: BrandID) -> int:
     """Return the number of organizers with the organizer flag set for
     that brand.
     """
-    return User.query \
-        .distinct(User.id) \
+    return DbUser.query \
+        .distinct(DbUser.id) \
         .join(OrgaFlag).filter(OrgaFlag.brand_id == brand_id) \
         .count()
 
