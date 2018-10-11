@@ -18,7 +18,8 @@ from ...services.party import service as party_service
 from ...services.shop.order import service as order_service
 from ...services.shop.shop import service as shop_service
 from ...services.ticketing import attendance_service, ticket_service
-from ...services.user import service as user_service
+from ...services.user import service as user_service, \
+        stats_service as user_stats_service
 from ...services.user_badge import service as badge_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_error, flash_success
@@ -60,10 +61,10 @@ def index(page):
                                         search_term=search_term,
                                         state_filter=user_state_filter)
 
-    total_enabled = user_service.count_enabled_users()
-    total_disabled = user_service.count_disabled_users()
-    total_suspended = user_service.count_suspended_users()
-    total_deleted = user_service.count_deleted_users()
+    total_enabled = user_stats_service.count_enabled_users()
+    total_disabled = user_stats_service.count_disabled_users()
+    total_suspended = user_stats_service.count_suspended_users()
+    total_deleted = user_stats_service.count_deleted_users()
     total_overall = total_enabled + total_disabled
 
     return {

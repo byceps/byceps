@@ -24,7 +24,7 @@ from ...services.shop.order import service as order_service
 from ...services.shop.shop import service as shop_service
 from ...services.terms import service as terms_service
 from ...services.ticketing import ticket_service
-from ...services.user import service as user_service
+from ...services.user import stats_service as user_stats_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.templating import templated
 
@@ -52,12 +52,12 @@ def view_global():
 
     orga_count = orga_service.count_orgas()
 
-    user_count = user_service.count_users()
+    user_count = user_stats_service.count_users()
 
     one_week_ago = timedelta(days=7)
-    recent_users_count = user_service.count_users_created_since(one_week_ago)
+    recent_users_count = user_stats_service.count_users_created_since(one_week_ago)
 
-    disabled_user_count = user_service.count_disabled_users()
+    disabled_user_count = user_stats_service.count_disabled_users()
 
     orgas_with_next_birthdays = list(
         orga_birthday_service.collect_orgas_with_next_birthdays(limit=3))
