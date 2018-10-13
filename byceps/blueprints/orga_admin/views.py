@@ -13,7 +13,6 @@ from flask import abort, request
 from ...services.brand import service as brand_service
 from ...services.orga import service as orga_service
 from ...services.orga import birthday_service as orga_birthday_service
-from ...services.user import service as user_service
 from ...util.export import serialize_to_csv
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_success
@@ -180,12 +179,3 @@ def _get_brand_or_404(brand_id):
         abort(404)
 
     return brand
-
-
-def _get_user_or_404(user_id):
-    user = user_service.find_user(user_id)
-
-    if user is None:
-        abort(404)
-
-    return user
