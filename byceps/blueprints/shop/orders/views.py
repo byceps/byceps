@@ -11,7 +11,6 @@ from flask import abort, g
 from ....services.party import service as party_service
 from ....services.shop.order import service as order_service
 from ....services.shop.shop import service as shop_service
-from ....services.user import service as user_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated
 
@@ -64,9 +63,6 @@ def view(order_id):
         # Order does not belong to the current party.
         abort(404)
 
-    placed_by = user_service.find_user(order.placed_by_id)
-
     return {
         'order': order,
-        'placed_by': placed_by,
     }
