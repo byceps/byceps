@@ -61,7 +61,7 @@ def _load_user(user_id: str, auth_token: str) -> Union[AnonymousUser, User]:
     if user_id is None:
         return user_service.get_anonymous_user()
 
-    user = user_service.find_user(user_id)
+    user = user_service.find_active_user(user_id)
 
     if (user is None) or not user.enabled:
         return user_service.get_anonymous_user()
