@@ -24,6 +24,8 @@ def validate_user(form, field):
     if user is None:
         raise ValidationError('Unbekannter Benutzername')
 
+    user = user.to_dto()
+
     terms_version = terms_service.get_current_version(g.brand_id)
 
     if not terms_service.has_user_accepted_version(user.id, terms_version.id):

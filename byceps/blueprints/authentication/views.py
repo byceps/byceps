@@ -19,6 +19,7 @@ from ...services.authorization import service as authorization_service
 from ...services.terms import service as terms_service
 from ...services.user import event_service as user_event_service
 from ...services.user import service as user_service
+from ...services.user.transfer.models import User
 from ...services.user_avatar import service as user_avatar_service
 from ...services.verification_token import service as verification_token_service
 from ...typing import UserID
@@ -63,6 +64,18 @@ class CurrentUser:
 
     def has_any_permission(self, *permissions):
         return self._user.has_any_permission(*permissions)
+
+    def to_dto(self):
+        is_orga = False  # Information is deliberately not obtained here.
+
+        return User(
+            self.id,
+            self.screen_name,
+            self._user.suspended,
+            self._user.deleted,
+            self.avatar_url,
+            is_orga,
+        )
 
     def __eq__(self, other):
         return (other is not None) and (self.id == other.id)

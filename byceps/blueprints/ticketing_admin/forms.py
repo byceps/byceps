@@ -21,7 +21,7 @@ def validate_user(form, field):
     if user is None:
         raise ValidationError('Unbekannter Benutzername')
 
-    field.data = user
+    field.data = user.to_dto()
 
 
 class SpecifyUserForm(LocalizedForm):

@@ -6,8 +6,8 @@ byceps.services.authentication.service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from ..user.models.user import User
 from ..user import service as user_service
+from ..user.transfer.models import User
 
 from .exceptions import AuthenticationFailed
 from .password import service as password_service
@@ -44,4 +44,4 @@ def authenticate(screen_name: str, password: str) -> User:
         # Password does not match.
         raise AuthenticationFailed()
 
-    return user
+    return user.to_dto()

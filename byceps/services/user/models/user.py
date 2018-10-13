@@ -20,6 +20,8 @@ from ....util.instances import ReprBuilder
 
 from ...user_avatar.models import AvatarSelection
 
+from ..transfer.models import User as UserDTO
+
 
 GUEST_USER_ID = UUID('00000000-0000-0000-0000-000000000000')
 
@@ -114,6 +116,19 @@ class User(db.Model):
 
         from ...orga_team import service as orga_team_service
         return orga_team_service.is_orga_for_party(self.id, party_id)
+
+    def to_dto(self):
+        avatar_url = None
+        is_orga = False  # Information is deliberately not obtained here.
+
+        return UserDTO(
+            self.id,
+            self.screen_name,
+            self.suspended,
+            self.deleted,
+            avatar_url,
+            is_orga,
+        )
 
     def __eq__(self, other) -> bool:
         return (other is not None) and (self.id == other.id)

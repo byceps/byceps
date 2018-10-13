@@ -23,8 +23,8 @@ from ..brand import service as brand_service, \
 from ..brand.transfer.models import Brand
 from ..email import service as email_service
 from ..email.transfer.models import Message
-from ..user.models.user import User as DbUser
 from ..user import service as user_service
+from ..user.transfer.models import User
 
 
 @attrs(frozen=True, slots=True)
@@ -52,14 +52,14 @@ def create_message(sender_id: UserID, recipient_id: UserID, text: str,
     return _assemble_message(sender, recipient, text, sender_contact_url, brand)
 
 
-def _get_user(user_id: UserID) -> DbUser:
+def _get_user(user_id: UserID) -> User:
     user = user_service.find_active_user(user_id)
 
     if user is None:
         raise ValueError(
             "Unknown user ID '{}' or account not active".format(user_id))
 
-    return user
+    return user.to_dto()
 
 
 def _get_brand(brand_id: BrandID) -> Brand:
@@ -71,7 +71,7 @@ def _get_brand(brand_id: BrandID) -> Brand:
     return brand
 
 
-def _assemble_message(sender: DbUser, recipient: DbUser, text: str,
+def _assemble_message(sender: User, recipient: User, text: str,
                       sender_contact_url: str, brand: Brand
                      ) -> Message:
     """Assemble an email message with the rendered template as its body."""
@@ -100,7 +100,7 @@ def _to_name_and_address_string(name: str, address: str) -> str:
     return '{} <{}>'.format(name, address)
 
 
-def _render_message_template(sender: DbUser, recipient: DbUser, text: str,
+def _render_message_template(sender: User, recipient: User, text: str,
                              sender_contact_url: str, brand: Brand,
                              brand_contact_address: Optional[str]
                             ) -> MessageTemplateRenderResult:

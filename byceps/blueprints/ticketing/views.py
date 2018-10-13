@@ -96,7 +96,7 @@ def appoint_user_form(ticket_id, erroneous_form=None):
 
     ticket = _get_ticket_or_404(ticket_id)
 
-    manager = g.current_user
+    manager = g.current_user.to_dto()
 
     if not ticket.is_user_managed_by(manager.id):
         abort(403)
@@ -120,7 +120,7 @@ def appoint_user(ticket_id):
 
     ticket = _get_ticket_or_404(ticket_id)
 
-    manager = g.current_user
+    manager = g.current_user.to_dto()
 
     if not ticket.is_user_managed_by(manager.id):
         abort(403)
@@ -146,7 +146,7 @@ def withdraw_user(ticket_id):
 
     ticket = _get_ticket_or_404(ticket_id)
 
-    manager = g.current_user
+    manager = g.current_user.to_dto()
 
     if not ticket.is_user_managed_by(manager.id):
         abort(403)
@@ -170,7 +170,7 @@ def appoint_user_manager_form(ticket_id, erroneous_form=None):
 
     ticket = _get_ticket_or_404(ticket_id)
 
-    manager = g.current_user
+    manager = g.current_user.to_dto()
 
     if not ticket.is_owned_by(manager.id):
         abort(403)
@@ -194,7 +194,7 @@ def appoint_user_manager(ticket_id):
 
     ticket = _get_ticket_or_404(ticket_id)
 
-    manager = g.current_user
+    manager = g.current_user.to_dto()
 
     if not ticket.is_owned_by(manager.id):
         abort(403)
@@ -220,7 +220,7 @@ def withdraw_user_manager(ticket_id):
 
     ticket = _get_ticket_or_404(ticket_id)
 
-    manager = g.current_user
+    manager = g.current_user.to_dto()
 
     if not ticket.is_owned_by(manager.id):
         abort(403)
@@ -247,7 +247,7 @@ def appoint_seat_manager_form(ticket_id, erroneous_form=None):
 
     ticket = _get_ticket_or_404(ticket_id)
 
-    manager = g.current_user
+    manager = g.current_user.to_dto()
 
     if not ticket.is_owned_by(manager.id):
         abort(403)
@@ -271,7 +271,7 @@ def appoint_seat_manager(ticket_id):
 
     ticket = _get_ticket_or_404(ticket_id)
 
-    manager = g.current_user
+    manager = g.current_user.to_dto()
 
     if not ticket.is_owned_by(manager.id):
         abort(403)
@@ -298,7 +298,7 @@ def withdraw_seat_manager(ticket_id):
 
     ticket = _get_ticket_or_404(ticket_id)
 
-    manager = g.current_user
+    manager = g.current_user.to_dto()
 
     if not ticket.is_owned_by(manager.id):
         abort(403)
