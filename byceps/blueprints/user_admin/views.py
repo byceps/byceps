@@ -416,7 +416,7 @@ def role_deassign(user_id, role_id):
     user = _get_user_or_404(user_id)
     role = _get_role_or_404(role_id)
 
-    authorization_service.deassign_role_from_user(user_id, role_id)
+    authorization_service.deassign_role_from_user(user.id, role.id)
 
     flash_success('{} wurde die Rolle "{}" genommen.',
                   user.screen_name, role.title)
