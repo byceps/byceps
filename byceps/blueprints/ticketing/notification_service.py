@@ -12,6 +12,7 @@ from ...services.email import service as email_service
 from ...services.party import service as party_service
 from ...services.ticketing.models.ticket import Ticket
 from ...services.user.models.user import User
+from ...services.user import service as user_service
 
 
 def notify_appointed_user(ticket: Ticket, user: User, manager: User) -> None:
@@ -106,7 +107,8 @@ def _get_party_title():
 def _enqueue_email(recipient: User, subject: str, body: str) -> None:
     sender_address = email_service.get_sender_address_for_brand(g.brand_id)
 
-    recipients = [recipient.email_address]
+    recipient_address = user_service.get_email_address(recipient.id)
+    recipients = [recipient_address]
 
     salutation = 'Hallo {},\n\n'.format(recipient.screen_name)
     body = salutation + body

@@ -83,7 +83,8 @@ def _assemble_message(sender: DbUser, recipient: DbUser, text: str,
         brand_contact_address)
 
     sender_address = email_service.get_sender_address_for_brand(brand.id)
-    recipients = [recipient.email_address]
+    recipient_address = user_service.get_email_address(recipient.id)
+    recipients = [recipient_address]
     subject = message_template_render_result.subject
     body = message_template_render_result.body
 
