@@ -8,6 +8,7 @@ byceps.blueprints.orga_team.views
 
 from collections import namedtuple
 
+import attr
 from flask import g
 
 from ...services.orga_team import service as orga_team_service
@@ -52,6 +53,6 @@ def _get_users_by_id(memberships):
     users = user_service.find_users(user_ids)
 
     # Each of these users is an organizer.
-    users = {u._replace(is_orga=True) for u in users}
+    users = {attr.evolve(u, is_orga=True) for u in users}
 
     return {user.id: user for user in users}

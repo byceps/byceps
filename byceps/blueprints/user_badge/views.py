@@ -6,6 +6,7 @@ byceps.blueprints.user_badge.views
 :License: Modified BSD, see LICENSE for details.
 """
 
+import attr
 from flask import abort, g
 
 from ...services.orga_team import service as orga_team_service
@@ -47,7 +48,8 @@ def view(slug):
         recipient_ids, g.party_id)
 
     # Update organizer flags.
-    recipients = {r._replace(is_orga=(r.id in orga_ids)) for r in recipients}
+    recipients = {attr.evolve(r, is_orga=(r.id in orga_ids))
+                  for r in recipients}
 
     return {
         'badge': badge,
