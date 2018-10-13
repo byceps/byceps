@@ -271,7 +271,7 @@ def _anonymize_account(user: DbUser) -> None:
 
 def _get_user(user_id: UserID) -> DbUser:
     """Return the user with that ID, or raise an exception."""
-    user = find_user(user_id)
+    user = DbUser.query.get(user_id)
 
     if user is None:
         raise ValueError("Unknown user ID '{}'.".format(user_id))
