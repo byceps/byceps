@@ -232,8 +232,8 @@ def request_email_address_confirmation_email():
 
     if user.email_address_verified:
         flash_notice(
-            'Das Benutzerkonto mit dem Namen "{}" ist bereits aktiviert und '
-            'muss nicht mehr bestätigt werden.',
+            'Die E-Mail-Adresse für den Benutzernamen "{}" wurde bereits '
+            'bestätigt.',
             user.screen_name)
         return request_email_address_confirmation_email_form()
 
