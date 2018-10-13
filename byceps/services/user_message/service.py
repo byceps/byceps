@@ -83,12 +83,21 @@ def _assemble_message(sender: DbUser, recipient: DbUser, text: str,
         brand_contact_address)
 
     sender_address = email_service.get_sender_address_for_brand(brand.id)
+    sender_str = _to_name_and_address_string(brand.title, sender_address)
+
     recipient_address = user_service.get_email_address(recipient.id)
-    recipients = [recipient_address]
+    recipient_str = _to_name_and_address_string(recipient.screen_name,
+                                                recipient_address)
+    recipient_strs = [recipient_str]
+
     subject = message_template_render_result.subject
     body = message_template_render_result.body
 
-    return Message(sender_address, recipients, subject, body)
+    return Message(sender_str, recipient_strs, subject, body)
+
+
+def _to_name_and_address_string(name: str, address: str) -> str:
+    return '{} <{}>'.format(name, address)
 
 
 def _render_message_template(sender: DbUser, recipient: DbUser, text: str,

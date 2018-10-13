@@ -41,8 +41,8 @@ Alice
         expected_response_location \
             = 'http://example.com/users/{}'.format(recipient.id)
 
-        expected_email_sender = 'noreply@example.com'
-        expected_email_recipients = ['bob@example.com']
+        expected_email_sender = 'Acme Entertainment Convention <noreply@example.com>'
+        expected_email_recipients = ['Bob <bob@example.com>']
         expected_email_subject = 'Mitteilung von Alice'
         expected_email_body = '''\
 Hallo Bob,
@@ -101,8 +101,8 @@ Bob
         expected_response_location \
             = 'http://example.com/users/{}'.format(recipient.id)
 
-        expected_email_sender = 'noreply@example.com'
-        expected_email_recipients = ['alice@example.com']
+        expected_email_sender = 'Acme Entertainment Convention <noreply@example.com>'
+        expected_email_recipients = ['Alice <alice@example.com>']
         expected_email_subject = 'Mitteilung von Bob'
         expected_email_body = '''\
 Hallo Alice,
