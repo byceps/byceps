@@ -13,7 +13,7 @@ from ...services.user import service as user_service
 from ...util.l10n import LocalizedForm
 
 
-def validate_user_scren_name(form, field):
+def validate_user_screen_name(form, field):
     screen_name = field.data.strip()
 
     user = user_service.find_user_by_screen_name(screen_name)
@@ -25,4 +25,4 @@ def validate_user_scren_name(form, field):
 
 
 class OrgaFlagCreateForm(LocalizedForm):
-    user = StringField('Benutzername', [InputRequired(), validate_user_scren_name])
+    user = StringField('Benutzername', [InputRequired(), validate_user_screen_name])
