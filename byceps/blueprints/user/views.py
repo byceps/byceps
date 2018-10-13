@@ -230,7 +230,7 @@ def request_email_address_confirmation_email():
         flash_error('Der Benutzername "{}" ist unbekannt.', screen_name)
         return request_email_address_confirmation_email_form(form)
 
-    if user.enabled:
+    if user.email_address_verified:
         flash_notice(
             'Das Benutzerkonto mit dem Namen "{}" ist bereits aktiviert und '
             'muss nicht mehr bestätigt werden.',
