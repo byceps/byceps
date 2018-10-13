@@ -18,7 +18,7 @@ class UserEnabledFlagTest(AbstractAppTestCase):
     def test_enable(self):
         user_id = self.create_user(enabled=False).id
 
-        user_before = user_service.find_user(user_id)
+        user_before = user_service._get_user(user_id)
         assert not user_before.enabled
 
         events_before = event_service.get_events_for_user(user_before.id)
@@ -30,7 +30,7 @@ class UserEnabledFlagTest(AbstractAppTestCase):
 
         # -------------------------------- #
 
-        user_after = user_service.find_user(user_id)
+        user_after = user_service._get_user(user_id)
         assert user_after.enabled
 
         events_after = event_service.get_events_for_user(user_after.id)
@@ -45,7 +45,7 @@ class UserEnabledFlagTest(AbstractAppTestCase):
     def test_disable(self):
         user_id = self.create_user(enabled=True).id
 
-        user_before = user_service.find_user(user_id)
+        user_before = user_service._get_user(user_id)
         assert user_before.enabled
 
         events_before = event_service.get_events_for_user(user_before.id)
@@ -57,7 +57,7 @@ class UserEnabledFlagTest(AbstractAppTestCase):
 
         # -------------------------------- #
 
-        user_after = user_service.find_user(user_id)
+        user_after = user_service._get_user(user_id)
         assert not user_after.enabled
 
         events_after = event_service.get_events_for_user(user_after.id)
