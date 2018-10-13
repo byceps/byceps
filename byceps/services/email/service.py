@@ -43,6 +43,15 @@ def get_sender_address_for_brand(brand_id: BrandID) -> str:
     return sender_address
 
 
+def enqueue_message(message: Message) -> None:
+    """Enqueue e-mail to be sent asynchronously."""
+    enqueue_email(
+        message.sender,
+        message.recipients,
+        message.subject,
+        message.body)
+
+
 def enqueue_email(sender: str, recipients: List[str], subject: str, body: str) \
                  -> None:
     """Enqueue e-mail to be sent asynchronously."""
@@ -53,12 +62,3 @@ def send_email(sender: str, recipients: List[str], subject: str, body: str) \
               -> None:
     """Send e-mail."""
     email.send(sender, recipients, subject, body)
-
-
-def enqueue_message(message: Message) -> None:
-    """Enqueue e-mail to be sent asynchronously."""
-    enqueue_email(
-        message.sender,
-        message.recipients,
-        message.subject,
-        message.body)
