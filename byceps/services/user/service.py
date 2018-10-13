@@ -39,9 +39,14 @@ def find_active_user(user_id: UserID) -> Optional[DbUser]:
         .one_or_none()
 
 
-def find_user(user_id: UserID) -> Optional[DbUser]:
+def find_user(user_id: UserID) -> Optional[User]:
     """Return the user with that ID, or `None` if not found."""
-    return DbUser.query.get(user_id)
+    user = DbUser.query.get(user_id)
+
+    if user is None:
+        return None
+
+    return _db_entity_to_user_dto(user)
 
 
 def find_users(user_ids: Set[UserID], *, include_avatars=False) -> Set[User]:
@@ -99,6 +104,20 @@ def find_user_with_details(user_id: UserID) -> Optional[DbUser]:
     return DbUser.query \
         .options(db.joinedload('detail')) \
         .get(user_id)
+
+
+def _db_entity_to_user_dto(user: DbUser) -> User:
+    avatar_url = None
+    is_orga = False  # Information is not available here by design.
+
+    return User(
+        user.id,
+        user.screen_name,
+        user.suspended,
+        user.deleted,
+        avatar_url,
+        is_orga,
+    )
 
 
 def get_anonymous_user() -> AnonymousUser:

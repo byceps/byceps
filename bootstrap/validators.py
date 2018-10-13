@@ -16,8 +16,9 @@ from byceps.services.brand.models.brand import Brand
 from byceps.services.brand import service as brand_service
 from byceps.services.party.models.party import Party
 from byceps.services.party import service as party_service
-from byceps.services.user.models.user import User
+from byceps.services.user.models.user import User as DbUser
 from byceps.services.user import service as user_service
+from byceps.services.user.transfer.models import User
 from byceps.typing import BrandID, PartyID, UserID
 
 
@@ -48,7 +49,7 @@ def validate_user_id(ctx, param, user_id: UserID) -> User:
     return user
 
 
-def validate_user_screen_name(ctx, param, screen_name: str) -> User:
+def validate_user_screen_name(ctx, param, screen_name: str) -> DbUser:
     user = user_service.find_user_by_screen_name(screen_name)
 
     if not user:
