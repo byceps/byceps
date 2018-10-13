@@ -56,7 +56,6 @@ class Posting(db.Model):
     topic = db.relationship(Topic, backref='postings')
     created_at = db.Column(db.DateTime, default=datetime.now, nullable=False)
     creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
-    creator = db.relationship(User, foreign_keys=[creator_id])
     body = db.Column(db.UnicodeText, nullable=False)
     last_edited_at = db.Column(db.DateTime)
     last_edited_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
@@ -112,8 +111,7 @@ class Posting(db.Model):
     def __repr__(self) -> str:
         builder = ReprBuilder(self) \
             .add_with_lookup('id') \
-            .add('topic', self.topic.title) \
-            .add('creator', self.creator.screen_name)
+            .add('topic', self.topic.title)
 
         if self.hidden:
             builder.add_custom('hidden by {}'.format(self.hidden_by.screen_name))

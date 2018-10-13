@@ -559,8 +559,10 @@ def quote_posting_as_bbcode():
         flash_error('Der zu zitierende Beitrag wurde nicht gefunden.')
         return
 
-    return '[quote author="{}"]{}[/quote]'.format(
-        posting.creator.screen_name, posting.body)
+    creator = user_service.find_user(posting.creator_id)
+
+    return '[quote author="{}"]{}[/quote]'.format(creator.screen_name,
+                                                  posting.body)
 
 
 @blueprint.route('/topics/<uuid:topic_id>/create', methods=['POST'])
@@ -676,6 +678,8 @@ def posting_update(posting_id):
 def posting_moderate_form(posting_id):
     """Show a form to moderate the posting."""
     posting = _get_posting_or_404(posting_id)
+
+    posting.creator = user_service.find_user(posting.creator_id)
 
     return {
         'posting': posting,
