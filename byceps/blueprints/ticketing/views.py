@@ -97,6 +97,7 @@ def appoint_user_form(ticket_id, erroneous_form=None):
     ticket = _get_ticket_or_404(ticket_id)
 
     manager = g.current_user
+
     if not ticket.is_user_managed_by(manager.id):
         abort(403)
 
@@ -169,7 +170,9 @@ def appoint_user_manager_form(ticket_id, erroneous_form=None):
 
     ticket = _get_ticket_or_404(ticket_id)
 
-    if not ticket.is_owned_by(g.current_user.id):
+    manager = g.current_user
+
+    if not ticket.is_owned_by(manager.id):
         abort(403)
 
     form = erroneous_form if erroneous_form else SpecifyUserForm()
@@ -191,19 +194,20 @@ def appoint_user_manager(ticket_id):
 
     ticket = _get_ticket_or_404(ticket_id)
 
-    if not ticket.is_owned_by(g.current_user.id):
+    manager = g.current_user
+
+    if not ticket.is_owned_by(manager.id):
         abort(403)
 
     user = form.user.data
 
     ticket_user_management_service \
-        .appoint_user_manager(ticket.id, user.id, g.current_user.id)
+        .appoint_user_manager(ticket.id, user.id, manager.id)
 
     flash_success('{} wurde als Nutzer-Verwalter/in von Ticket {} eingetragen.',
         user.screen_name, ticket.code)
 
-    notification_service.notify_appointed_user_manager(ticket, user,
-                                                       g.current_user)
+    notification_service.notify_appointed_user_manager(ticket, user, manager)
 
     return redirect(url_for('.index_mine'))
 
@@ -216,19 +220,19 @@ def withdraw_user_manager(ticket_id):
 
     ticket = _get_ticket_or_404(ticket_id)
 
-    if not ticket.is_owned_by(g.current_user.id):
+    manager = g.current_user
+
+    if not ticket.is_owned_by(manager.id):
         abort(403)
 
     user = ticket.user_managed_by
 
-    ticket_user_management_service \
-        .withdraw_user_manager(ticket.id, g.current_user.id)
+    ticket_user_management_service.withdraw_user_manager(ticket.id, manager.id)
 
     flash_success('Der Nutzer-Verwalter von Ticket {} wurde entfernt.',
                   ticket.code)
 
-    notification_service.notify_withdrawn_user_manager(ticket, user,
-                                                       g.current_user)
+    notification_service.notify_withdrawn_user_manager(ticket, user, manager)
 
 
 # -------------------------------------------------------------------- #
@@ -243,7 +247,9 @@ def appoint_seat_manager_form(ticket_id, erroneous_form=None):
 
     ticket = _get_ticket_or_404(ticket_id)
 
-    if not ticket.is_owned_by(g.current_user.id):
+    manager = g.current_user
+
+    if not ticket.is_owned_by(manager.id):
         abort(403)
 
     form = erroneous_form if erroneous_form else SpecifyUserForm()
@@ -265,20 +271,21 @@ def appoint_seat_manager(ticket_id):
 
     ticket = _get_ticket_or_404(ticket_id)
 
-    if not ticket.is_owned_by(g.current_user.id):
+    manager = g.current_user
+
+    if not ticket.is_owned_by(manager.id):
         abort(403)
 
     user = form.user.data
 
     ticket_seat_management_service \
-        .appoint_seat_manager(ticket.id, user.id, g.current_user.id)
+        .appoint_seat_manager(ticket.id, user.id, manager.id)
 
     flash_success(
         '{} wurde als Sitzplatz-Verwalter/in von Ticket {} eingetragen.',
         user.screen_name, ticket.code)
 
-    notification_service.notify_appointed_seat_manager(ticket, user,
-                                                       g.current_user)
+    notification_service.notify_appointed_seat_manager(ticket, user, manager)
 
     return redirect(url_for('.index_mine'))
 
@@ -291,19 +298,19 @@ def withdraw_seat_manager(ticket_id):
 
     ticket = _get_ticket_or_404(ticket_id)
 
-    if not ticket.is_owned_by(g.current_user.id):
+    manager = g.current_user
+
+    if not ticket.is_owned_by(manager.id):
         abort(403)
 
     user = ticket.seat_managed_by
 
-    ticket_seat_management_service \
-        .withdraw_seat_manager(ticket.id, g.current_user.id)
+    ticket_seat_management_service.withdraw_seat_manager(ticket.id, manager.id)
 
     flash_success('Der Sitzplatz-Verwalter von Ticket {} wurde entfernt.',
                   ticket.code)
 
-    notification_service.notify_withdrawn_seat_manager(ticket, user,
-                                                       g.current_user)
+    notification_service.notify_withdrawn_seat_manager(ticket, user, manager)
 
 
 # -------------------------------------------------------------------- #
