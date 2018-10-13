@@ -70,7 +70,6 @@ def paginate_topics(category_id: CategoryID, user: DbUser, page: int,
         .for_category(category_id) \
         .options(
             db.joinedload(DbTopic.category),
-            db.joinedload(DbTopic.creator),
             db.joinedload(DbTopic.last_updated_by),
             db.joinedload(DbTopic.hidden_by),
             db.joinedload(DbTopic.locked_by),

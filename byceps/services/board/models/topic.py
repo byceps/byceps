@@ -51,7 +51,6 @@ class Topic(db.Model):
     category = db.relationship(Category)
     created_at = db.Column(db.DateTime, default=datetime.now, nullable=False)
     creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
-    creator = db.relationship(User, foreign_keys=[creator_id])
     title = db.Column(db.Unicode(80), nullable=False)
     posting_count = db.Column(db.Integer, default=0, nullable=False)
     last_updated_at = db.Column(db.DateTime, default=datetime.now)

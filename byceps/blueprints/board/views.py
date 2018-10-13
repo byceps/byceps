@@ -17,6 +17,7 @@ from ...services.board import \
 from ...services.board.transfer.models import CategoryWithLastUpdate
 from ...services.party import settings_service as party_settings_service
 from ...services.text_markup.service import get_smileys, render_html
+from ...services.user import service as user_service
 from ...services.user_badge import service as badge_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_error, flash_success
@@ -117,7 +118,12 @@ def category_view(slug, page):
     topics = board_topic_service.paginate_topics(category.id, user._user, page,
                                                  topics_per_page)
 
+    topic_creator_ids = {t.creator_id for t in topics.items}
+    topic_creators = user_service.find_users(topic_creator_ids)
+    topic_creators_by_id = user_service.index_users_by_id(topic_creators)
+
     for topic in topics.items:
+        topic.creator = topic_creators_by_id[topic.creator_id]
         topic.contains_unseen_postings = not user.is_anonymous \
             and board_last_view_service.contains_topic_unseen_postings(
                 topic, user.id)
@@ -345,6 +351,8 @@ def topic_moderate_form(topic_id):
     """Show a form to moderate the topic."""
     board_id = _get_board_id()
     topic = _get_topic_or_404(topic_id)
+
+    topic.creator = user_service.find_user(topic.creator_id)
 
     categories = board_category_service.get_categories_excluding(board_id,
         topic.category_id)
