@@ -86,7 +86,9 @@ def index(page):
 @templated
 def view(user_id):
     """Show a user's interal profile."""
-    user = _get_user_or_404(user_id)
+    user = user_service.find_user_with_details(user_id)
+    if user is None:
+        abort(404)
 
     orga_team_memberships = orga_team_service.get_memberships_for_user(user.id)
 
@@ -438,7 +440,7 @@ def view_events(user_id):
 
 
 def _get_user_or_404(user_id):
-    user = user_service.find_user(user_id)
+    user = user_service.find_user_with_details(user_id)
 
     if user is None:
         abort(404)

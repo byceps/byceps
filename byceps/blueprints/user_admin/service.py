@@ -105,7 +105,7 @@ def get_events(user_id: UserID) -> Iterator[UserEventData]:
 
 
 def _fake_user_creation_event(user_id: UserID) -> UserEvent:
-    user = user_service.find_user(user_id)
+    user = user_service.find_user_with_details(user_id)
     if user is None:
         raise ValueError('Unknown user ID')
 

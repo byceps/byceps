@@ -94,6 +94,13 @@ def find_user_by_screen_name(screen_name: str) -> Optional[DbUser]:
         .one_or_none()
 
 
+def find_user_with_details(user_id: UserID) -> Optional[DbUser]:
+    """Return the user and its details."""
+    return DbUser.query \
+        .options(db.joinedload('detail')) \
+        .get(user_id)
+
+
 def get_anonymous_user() -> AnonymousUser:
     """Return the anonymous user."""
     return AnonymousUser()
