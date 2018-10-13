@@ -88,7 +88,7 @@ def get_events(user_id: UserID) -> Iterator[UserEventData]:
     user_ids = {event.data['initiator_id']
                 for event in events
                 if 'initiator_id' in event.data}
-    users = user_service.find_users(user_ids)
+    users = user_service.find_users(user_ids, include_avatars=True)
     users_by_id = {str(user.id): user for user in users}
 
     for event in events:

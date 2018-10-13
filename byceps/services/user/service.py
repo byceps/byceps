@@ -44,21 +44,29 @@ def find_user(user_id: UserID) -> Optional[DbUser]:
     return DbUser.query.get(user_id)
 
 
-def find_users(user_ids: Set[UserID]) -> Set[User]:
-    """Return the users and their current avatars' URLs with those IDs."""
+def find_users(user_ids: Set[UserID], *, include_avatars=False) -> Set[User]:
+    """Return the users with those IDs.
+
+    Their respective avatars' URLs are included, if requested.
+    """
     if not user_ids:
         return set()
 
-    rows = db.session \
+    query = db.session \
         .query(
             DbUser.id,
             DbUser.screen_name,
             DbUser.suspended,
             DbUser.deleted,
-            Avatar
-        ) \
-        .outerjoin(AvatarSelection) \
-        .outerjoin(Avatar) \
+            Avatar if include_avatars else db.null(),
+        )
+
+    if include_avatars:
+        query = query \
+            .outerjoin(AvatarSelection) \
+            .outerjoin(Avatar)
+
+    rows = query \
         .filter(DbUser.id.in_(frozenset(user_ids))) \
         .all()
 

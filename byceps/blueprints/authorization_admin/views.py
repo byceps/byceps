@@ -59,7 +59,7 @@ def role_view(role_id):
         .get_permissions_with_title_for_role(role.id)
 
     user_ids = authorization_service.find_user_ids_for_role(role.id)
-    users = user_service.find_users(user_ids)
+    users = user_service.find_users(user_ids, include_avatars=True)
 
     return {
         'role': role,

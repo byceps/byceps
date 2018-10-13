@@ -78,7 +78,8 @@ def get_attendees_by_party(party_ids: Set[PartyID]) -> Dict[PartyID, Set[User]]:
 
     all_attendee_ids = set(
         chain.from_iterable(attendee_ids_by_party_id.values()))
-    all_attendees = user_service.find_users(all_attendee_ids)
+    all_attendees = user_service.find_users(all_attendee_ids,
+                                            include_avatars=True)
     all_attendees_by_id = user_service.index_users_by_id(all_attendees)
 
     attendees_by_party_id = {}

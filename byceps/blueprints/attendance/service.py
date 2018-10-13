@@ -33,7 +33,7 @@ def get_attendees(tickets: Sequence[Ticket]) -> Iterator[Attendee]:
 
 def _get_users_by_id(tickets) -> Dict[UserID, User]:
     user_ids = {t.used_by_id for t in tickets}
-    users = user_service.find_users(user_ids)
+    users = user_service.find_users(user_ids, include_avatars=True)
     return {user.id: user for user in users}
 
 

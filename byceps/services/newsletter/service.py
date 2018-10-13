@@ -107,7 +107,7 @@ def get_user_subscription_states_for_brand(brand_id: BrandID) \
         .all()
 
     user_ids = set(map(itemgetter(0), subscription_states))
-    users = user_service.find_users(user_ids)
+    users = user_service.find_users(user_ids, include_avatars=True)
     users_by_id = user_service.index_users_by_id(users)
 
     for user_id, brand_id, state_name in subscription_states:

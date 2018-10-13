@@ -41,7 +41,7 @@ def view(slug):
 
     awardings = badge_service.get_awardings_of_badge(badge.id)
     recipient_ids = [awarding.user_id for awarding in awardings]
-    recipients = user_service.find_users(recipient_ids)
+    recipients = user_service.find_users(recipient_ids, include_avatars=True)
 
     # Find out which user is an organizer of this party.
     orga_ids = orga_team_service.select_orgas_for_party(

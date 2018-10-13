@@ -50,7 +50,7 @@ def index():
 def _get_users_by_id(memberships):
     user_ids = {ms.user_id for ms in memberships}
 
-    users = user_service.find_users(user_ids)
+    users = user_service.find_users(user_ids, include_avatars=True)
 
     # Each of these users is an organizer.
     users = {attr.evolve(u, is_orga=True) for u in users}

@@ -86,7 +86,7 @@ def _get_users(seats: Sequence[Seat], tickets: Sequence[Ticket]
         if user_id is not None:
             user_ids.add(user_id)
 
-    users = user_service.find_users(user_ids)
+    users = user_service.find_users(user_ids, include_avatars=True)
     return user_service.index_users_by_id(users)
 
 
