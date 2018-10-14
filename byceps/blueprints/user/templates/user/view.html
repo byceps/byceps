@@ -55,21 +55,16 @@
     </div>
 
     <div class="user-profile-layout">
-
       <div class="user-profile-secondary">
-
-{%- include 'user/profile/_current_party_attendance.html' %}
-
         <div class="user-profile-details">
-
-{%- include 'user/profile/_attended_parties.html' %}
-
-{%- include 'user/profile/_badges.html' %}
-
+{%- include 'user/profile/_current_party_attendance.html' %}
+{%- include 'user/profile/_contact.html' %}
         </div>
-
+        <div class="user-profile-details">
+{%- include 'user/profile/_attended_parties.html' %}
+{%- include 'user/profile/_badges.html' %}
+        </div>
       </div>
-
     </div>
 
   </div>

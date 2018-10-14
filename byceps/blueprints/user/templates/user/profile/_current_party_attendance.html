@@ -1,8 +1,8 @@
 {%- from 'macros/seating.html' import render_seating_area_link %}
 
 
-{%- if current_party_tickets %}
 <div class="user-profile-detail-block">
+  {%- if current_party_tickets %}
   <h2>{{ 'Sitzplätze' if (current_party_tickets|length > 1) else 'Sitzplatz' }}</h2>
 
   <ol>
@@ -10,5 +10,5 @@
     <li>{{ render_seating_area_link(ticket.occupied_seat.area, ticket.occupied_seat.label) if ticket.occupied_seat else 'nicht ausgewählt'|dim }}</li>
     {%- endfor %}
   </ol>
+  {%- endif %}
 </div>
-{%- endif %}

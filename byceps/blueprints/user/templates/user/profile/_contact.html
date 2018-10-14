@@ -1,0 +1,8 @@
+{%- from 'macros/icons.html' import render_icon %}
+
+
+<div class="user-profile-detail-block">
+  <h2>Kontakt</h2>
+
+  <p><a class="button" href="{{ url_for('user_message.create_form', recipient_id=user.id) }}">{{ render_icon('email') }} Mitteilung senden</a></p>
+</div>
