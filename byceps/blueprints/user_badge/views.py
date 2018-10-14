@@ -6,10 +6,8 @@ byceps.blueprints.user_badge.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-import attr
 from flask import abort, g
 
-from ...services.orga_team import service as orga_team_service
 from ...services.user import service as user_service
 from ...services.user_badge import service as badge_service
 from ...util.framework.blueprint import create_blueprint
@@ -41,15 +39,9 @@ def view(slug):
 
     awardings = badge_service.get_awardings_of_badge(badge.id)
     recipient_ids = [awarding.user_id for awarding in awardings]
-    recipients = user_service.find_users(recipient_ids, include_avatars=True)
-
-    # Find out which user is an organizer of this party.
-    orga_ids = orga_team_service.select_orgas_for_party(
-        recipient_ids, g.party_id)
-
-    # Update organizer flags.
-    recipients = {attr.evolve(r, is_orga=(r.id in orga_ids))
-                  for r in recipients}
+    recipients = user_service.find_users(
+        recipient_ids, include_avatars=True,
+        include_orga_flags_for_party_id=g.party_id)
 
     return {
         'badge': badge,
