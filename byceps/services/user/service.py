@@ -12,9 +12,10 @@ from typing import Dict, Iterator, Optional, Set
 from flask import url_for
 
 from ...database import db
-from ...typing import BrandID, UserID
+from ...typing import BrandID, PartyID, UserID
 
 from ..email import service as email_service
+from ..orga_team.models import OrgaTeam, Membership as OrgaTeamMembership
 from ..user_avatar.models import Avatar, AvatarSelection
 from ..verification_token.models import Token
 
@@ -49,13 +50,19 @@ def find_user(user_id: UserID) -> Optional[User]:
     return _db_entity_to_user_dto(user)
 
 
-def find_users(user_ids: Set[UserID], *, include_avatars=False) -> Set[User]:
+def find_users(user_ids: Set[UserID], *, include_avatars=False,
+               include_orga_flags_for_party_id: PartyID=None) -> Set[User]:
     """Return the users with those IDs.
 
     Their respective avatars' URLs are included, if requested.
     """
     if not user_ids:
         return set()
+
+    orga_flag_expression = db.false()
+    if include_orga_flags_for_party_id is not None:
+        orga_flag_expression = _get_orga_flag_subquery(
+            include_orga_flags_for_party_id)
 
     query = db.session \
         .query(
@@ -64,6 +71,7 @@ def find_users(user_ids: Set[UserID], *, include_avatars=False) -> Set[User]:
             DbUser.suspended,
             DbUser.deleted,
             Avatar if include_avatars else db.null(),
+            orga_flag_expression,
         )
 
     if include_avatars:
@@ -76,9 +84,8 @@ def find_users(user_ids: Set[UserID], *, include_avatars=False) -> Set[User]:
         .all()
 
     def to_dtos() -> Iterator[User]:
-        for user_id, screen_name, suspended, deleted, avatar in rows:
+        for user_id, screen_name, suspended, deleted, avatar, is_orga in rows:
             avatar_url = avatar.url if avatar else None
-            is_orga = False  # Information is not available here by design.
 
             yield User(
                 user_id,
@@ -90,6 +97,17 @@ def find_users(user_ids: Set[UserID], *, include_avatars=False) -> Set[User]:
             )
 
     return set(to_dtos())
+
+
+def _get_orga_flag_subquery(party_id: PartyID):
+    return db.session \
+        .query(
+            db.func.count(OrgaTeamMembership.id)
+        ) \
+        .join(OrgaTeam) \
+        .filter(OrgaTeam.party_id == party_id) \
+        .filter(OrgaTeamMembership.user_id == DbUser.id) \
+        .exists()
 
 
 def find_user_by_screen_name(screen_name: str) -> Optional[DbUser]:
