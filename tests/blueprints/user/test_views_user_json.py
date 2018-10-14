@@ -33,6 +33,7 @@ class UserJsonTestCase(AbstractAppTestCase):
         response_data = decode_json_response(response)
         assert response_data['id'] == user_id
         assert response_data['screen_name'] == screen_name
+        assert response_data['avatar_url'] is None
 
     def test_with_not_enabled_user(self):
         screen_name = 'NotEnabledUser'

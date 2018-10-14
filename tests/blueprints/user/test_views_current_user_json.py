@@ -31,6 +31,7 @@ class CurrentUserJsonTestCase(AbstractAppTestCase):
         response_data = decode_json_response(response)
         assert response_data['id'] == str(user.id)
         assert response_data['screen_name'] == user.screen_name
+        assert response_data['avatar_url'] is None
 
     def test_when_not_logged_in(self):
         response = self.send_request()

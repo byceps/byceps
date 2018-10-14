@@ -81,11 +81,12 @@ def view_as_json(user_id):
     if user is None:
         return create_empty_json_response(404)
 
-    user = user.to_dto()
+    user = user.to_dto(with_avatar=True)
 
     return jsonify({
         'id': user.id,
         'screen_name': user.screen_name,
+        'avatar_url': user.avatar_url,
     })
 
 
@@ -127,6 +128,7 @@ def view_current_as_json():
     return jsonify({
         'id': user.id,
         'screen_name': user.screen_name,
+        'avatar_url': user.avatar_url,
     })
 
 
