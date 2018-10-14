@@ -195,7 +195,7 @@ def item_update(item_id):
 
     form = ItemUpdateForm(request.form)
     if not form.validate():
-        return update_form(item.id, form)
+        return item_update_form(item.id, form)
 
     creator = g.current_user
     title = form.title.data.strip()
