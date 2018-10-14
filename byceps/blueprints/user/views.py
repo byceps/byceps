@@ -47,6 +47,8 @@ def view(user_id):
     if user is None:
         abort(404)
 
+    user = user.to_dto(with_avatar=True)
+
     badges_with_awarding_quantity = badge_service.get_badges_for_user(user.id)
 
     orga_team_membership = orga_team_service.find_membership_for_party(user.id,
@@ -78,6 +80,8 @@ def view_as_json(user_id):
 
     if user is None:
         return create_empty_json_response(404)
+
+    user = user.to_dto()
 
     return jsonify({
         'id': user.id,
