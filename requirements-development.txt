@@ -1,4 +1,4 @@
 Flask-DebugToolbar >= 0.10.1
 flask-shell-ipython >= 0.3
-mypy >= 0.521
+mypy >= 0.630
 python-dotenv >= 0.8.2
