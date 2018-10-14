@@ -12,10 +12,12 @@ from typing import Dict, Optional, Set
 from flask_sqlalchemy import Pagination
 
 from ...database import db
-from ...typing import UserID
+from ...typing import PartyID, UserID
 from ...util.iterables import index_of
 
 from ..user.models.user import User as DbUser
+from ..user import service as user_service
+from ..user.transfer.models import User
 
 from .aggregation_service import aggregate_topic
 from .models.category import Category as DbCategory
@@ -36,8 +38,8 @@ def find_posting_by_id(posting_id: PostingID) -> Optional[DbPosting]:
     return DbPosting.query.get(posting_id)
 
 
-def paginate_postings(topic_id: TopicID, user: DbUser, page: int,
-                      postings_per_page: int) -> Pagination:
+def paginate_postings(topic_id: TopicID, user: DbUser, party_id: PartyID,
+                      page: int, postings_per_page: int) -> Pagination:
     """Paginate postings in that topic, as visible for the user."""
     postings = DbPosting.query \
         .options(
@@ -51,7 +53,7 @@ def paginate_postings(topic_id: TopicID, user: DbUser, page: int,
         .paginate(page, postings_per_page)
 
     creator_ids = {posting.creator_id for posting in postings.items}
-    creators_by_id = _get_users_by_id(creator_ids)
+    creators_by_id = _get_users_by_id(creator_ids, party_id)
 
     for posting in postings.items:
         posting.creator = creators_by_id[posting.creator_id]
@@ -59,16 +61,11 @@ def paginate_postings(topic_id: TopicID, user: DbUser, page: int,
     return postings
 
 
-def _get_users_by_id(user_ids: Set[UserID]) -> Dict[UserID, DbUser]:
-    users = DbUser.query \
-        .options(
-            db.load_only('id', 'screen_name', 'deleted')
-                .joinedload('orga_team_memberships'),
-        ) \
-        .filter(DbUser.id.in_(user_ids)) \
-        .all()
-
-    return {user.id: user for user in users}
+def _get_users_by_id(user_ids: Set[UserID], party_id: PartyID
+                    ) -> Dict[UserID, User]:
+    users = user_service.find_users(user_ids, include_avatars=True,
+                                    include_orga_flags_for_party_id=party_id)
+    return user_service.index_users_by_id(users)
 
 
 def create_posting(topic: DbTopic, creator_id: UserID, body: str) -> DbPosting:

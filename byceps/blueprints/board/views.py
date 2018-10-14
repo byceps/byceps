@@ -191,7 +191,8 @@ def topic_view(topic_id, page):
         board_last_view_service.mark_topic_as_just_viewed(topic.id, user.id)
 
     postings = board_posting_service.paginate_postings(topic.id, user._user,
-                                                       page, postings_per_page)
+                                                       g.party_id, page,
+                                                       postings_per_page)
 
     add_unseen_flag_to_postings(postings.items, user._user, last_viewed_at)
 
