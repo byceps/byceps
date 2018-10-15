@@ -83,7 +83,7 @@ def create_orgaflag(brand_id):
     """Give the organizer flag to a user."""
     brand = _get_brand_or_404(brand_id)
 
-    form = OrgaFlagCreateForm(request.form)
+    form = OrgaFlagCreateForm(request.form, brand_id=brand.id)
     if not form.validate():
         return create_orgaflag_form(brand.id, form)
 
