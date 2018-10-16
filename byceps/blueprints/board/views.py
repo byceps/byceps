@@ -6,6 +6,8 @@ byceps.blueprints.board.views
 :License: Modified BSD, see LICENSE for details.
 """
 
+from typing import Set
+
 from attr import attrib, attrs
 from flask import abort, current_app, g, redirect, request, url_for
 
@@ -18,7 +20,9 @@ from ...services.board.transfer.models import CategoryWithLastUpdate
 from ...services.party import settings_service as party_settings_service
 from ...services.text_markup.service import get_smileys, render_html
 from ...services.user import service as user_service
+from ...services.user.transfer.models import User
 from ...services.user_badge import service as badge_service
+from ...services.user_badge.transfer.models import Badge
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_error, flash_success
 from ...util.framework.templating import templated
@@ -151,6 +155,23 @@ def mark_all_topics_in_category_as_viewed(category_id):
 # topic
 
 
+@attrs(frozen=True, slots=True)
+class Creator(User):
+    badges = attrib(type=Set[Badge])
+
+    @classmethod
+    def from_(cls, user: User, badges: Set[Badge]):
+        return cls(
+            user.id,
+            user.screen_name,
+            user.suspended,
+            user.deleted,
+            user.avatar_url,
+            user.is_orga,
+            badges,
+        )
+
+
 @blueprint.route('/topics/<uuid:topic_id>', defaults={'page': 0})
 @blueprint.route('/topics/<uuid:topic_id>/pages/<int:page>')
 @templated
@@ -204,11 +225,14 @@ def topic_view(topic_id, page):
     badges_by_user_id = _select_global_and_brand_badges(badges_by_user_id,
                                                         g.brand_id)
 
+    for posting in postings.items:
+        badges = badges_by_user_id.get(posting.creator_id, frozenset())
+        posting.creator = Creator.from_(posting.creator, badges)
+
     context = {
         'topic': topic,
         'postings': postings,
         'is_last_page': is_last_page,
-        'badges_by_user_id': badges_by_user_id,
     }
 
     if is_last_page:
