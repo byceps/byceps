@@ -6,8 +6,6 @@ byceps.blueprints.board.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import Set
-
 from attr import attrib, attrs
 from flask import abort, current_app, g, redirect, request, url_for
 
@@ -20,9 +18,6 @@ from ...services.board.transfer.models import CategoryWithLastUpdate
 from ...services.party import settings_service as party_settings_service
 from ...services.text_markup.service import get_smileys, render_html
 from ...services.user import service as user_service
-from ...services.user.transfer.models import User
-from ...services.user_badge import service as badge_service
-from ...services.user_badge.transfer.models import Badge
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_error, flash_success
 from ...util.framework.templating import templated
@@ -35,7 +30,7 @@ from .authorization import BoardPermission, BoardPostingPermission, \
     BoardTopicPermission
 from .forms import PostingCreateForm, PostingUpdateForm, TopicCreateForm, \
     TopicUpdateForm
-from . import signals
+from . import service, signals
 
 
 blueprint = create_blueprint('board', __name__)
@@ -155,23 +150,6 @@ def mark_all_topics_in_category_as_viewed(category_id):
 # topic
 
 
-@attrs(frozen=True, slots=True)
-class Creator(User):
-    badges = attrib(type=Set[Badge])
-
-    @classmethod
-    def from_(cls, user: User, badges: Set[Badge]):
-        return cls(
-            user.id,
-            user.screen_name,
-            user.suspended,
-            user.deleted,
-            user.avatar_url,
-            user.is_orga,
-            badges,
-        )
-
-
 @blueprint.route('/topics/<uuid:topic_id>', defaults={'page': 0})
 @blueprint.route('/topics/<uuid:topic_id>/pages/<int:page>')
 @templated
@@ -219,15 +197,7 @@ def topic_view(topic_id, page):
 
     is_last_page = not postings.has_next
 
-    creator_ids = {posting.creator_id for posting in postings.items}
-    badges_by_user_id = badge_service.get_badges_for_users(creator_ids,
-                                                           featured_only=True)
-    badges_by_user_id = _select_global_and_brand_badges(badges_by_user_id,
-                                                        g.brand_id)
-
-    for posting in postings.items:
-        badges = badges_by_user_id.get(posting.creator_id, frozenset())
-        posting.creator = Creator.from_(posting.creator, badges)
+    service.enrich_creators(postings.items, g.brand_id)
 
     context = {
         'topic': topic,
@@ -242,17 +212,6 @@ def topic_view(topic_id, page):
         })
 
     return context
-
-
-def _select_global_and_brand_badges(badges_by_user_id, brand_id):
-    """Keep only badges that are global or belong to the given brand."""
-    def generate_items():
-        for user_id, badges in badges_by_user_id.items():
-            selected_badges = {badge for badge in badges
-                               if badge.brand_id in {None, brand_id}}
-            yield user_id, selected_badges
-
-    return dict(generate_items())
 
 
 def add_unseen_flag_to_postings(postings, user, last_viewed_at):
