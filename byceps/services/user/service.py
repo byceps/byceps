@@ -50,7 +50,7 @@ def find_user(user_id: UserID) -> Optional[User]:
     return _db_entity_to_user_dto(user)
 
 
-def find_users(user_ids: Set[UserID], *, include_avatars=False,
+def find_users(user_ids: Set[UserID], *, include_avatars: bool=False,
                include_orga_flags_for_party_id: PartyID=None) -> Set[User]:
     """Return the users with those IDs.
 
