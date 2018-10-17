@@ -7,11 +7,11 @@ byceps.services.user.service
 """
 
 from datetime import date
-from typing import Dict, Iterator, Optional, Set
+from typing import Dict, Optional, Set, Tuple
 
 from flask import url_for
 
-from ...database import db
+from ...database import db, Query
 from ...typing import BrandID, PartyID, UserID
 
 from ..email import service as email_service
@@ -59,6 +59,17 @@ def find_users(user_ids: Set[UserID], *, include_avatars: bool=False,
     if not user_ids:
         return set()
 
+    query = _get_user_query(include_avatars, include_orga_flags_for_party_id)
+
+    rows = query \
+        .filter(DbUser.id.in_(frozenset(user_ids))) \
+        .all()
+
+    return {_user_row_to_dto(row) for row in rows}
+
+
+def _get_user_query(include_avatar: bool,
+                    include_orga_flags_for_party_id: PartyID=None) -> Query:
     orga_flag_expression = db.false()
     if include_orga_flags_for_party_id is not None:
         orga_flag_expression = _get_orga_flag_subquery(
@@ -70,33 +81,16 @@ def find_users(user_ids: Set[UserID], *, include_avatars: bool=False,
             DbUser.screen_name,
             DbUser.suspended,
             DbUser.deleted,
-            Avatar if include_avatars else db.null(),
+            Avatar if include_avatar else db.null(),
             orga_flag_expression,
         )
 
-    if include_avatars:
+    if include_avatar:
         query = query \
             .outerjoin(AvatarSelection) \
             .outerjoin(Avatar)
 
-    rows = query \
-        .filter(DbUser.id.in_(frozenset(user_ids))) \
-        .all()
-
-    def to_dtos() -> Iterator[User]:
-        for user_id, screen_name, suspended, deleted, avatar, is_orga in rows:
-            avatar_url = avatar.url if avatar else None
-
-            yield User(
-                user_id,
-                screen_name,
-                suspended,
-                deleted,
-                avatar_url,
-                is_orga,
-            )
-
-    return set(to_dtos())
+    return query
 
 
 def _get_orga_flag_subquery(party_id: PartyID):
@@ -108,6 +102,22 @@ def _get_orga_flag_subquery(party_id: PartyID):
         .filter(OrgaTeam.party_id == party_id) \
         .filter(OrgaTeamMembership.user_id == DbUser.id) \
         .exists()
+
+
+def _user_row_to_dto(
+        row: Tuple[UserID, str, bool, bool, Optional[Avatar], bool]
+        ) -> User:
+    user_id, screen_name, suspended, deleted, avatar, is_orga = row
+    avatar_url = avatar.url if avatar else None
+
+    return User(
+        user_id,
+        screen_name,
+        suspended,
+        deleted,
+        avatar_url,
+        is_orga,
+    )
 
 
 def find_user_by_screen_name(screen_name: str) -> Optional[DbUser]:
