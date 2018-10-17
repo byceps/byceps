@@ -145,12 +145,11 @@ def find_tickets_used_by_user_simplified(user_id: UserID, party_id: PartyID
 
 def uses_any_ticket_for_party(user_id: UserID, party_id: PartyID) -> bool:
     """Return `True` if the user uses any ticket for that party."""
-    count = Ticket.query \
+    q = Ticket.query \
         .for_party(party_id) \
-        .filter(Ticket.used_by_id == user_id) \
-        .count()
+        .filter(Ticket.used_by_id == user_id)
 
-    return count > 0
+    return db.session.query(q.exists()).scalar()
 
 
 def get_ticket_with_details(ticket_id: TicketID) -> Optional[Ticket]:
