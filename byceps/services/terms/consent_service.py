@@ -74,8 +74,12 @@ def count_user_consents_for_versions_of_brand(brand_id: BrandID
 
 def has_user_accepted_version(user_id: UserID, version_id: VersionID) -> bool:
     """Tell if the user has accepted the specified version of the terms."""
-    count = Consent.query \
-        .filter_by(user_id=user_id) \
-        .filter_by(version_id=version_id) \
-        .count()
-    return count > 0
+    return db.session \
+        .query(
+            db.session \
+                .query(Consent) \
+                .filter_by(user_id=user_id) \
+                .filter_by(version_id=version_id) \
+                .exists()
+        ) \
+        .scalar()
