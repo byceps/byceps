@@ -170,10 +170,14 @@ def _do_users_matching_filter_exist(model_attribute: str, search_value: str
 
     Comparison is done case-insensitively.
     """
-    user_count = DbUser.query \
-        .filter(db.func.lower(model_attribute) == search_value.lower()) \
-        .count()
-    return user_count > 0
+    return db.session \
+        .query(
+            db.session \
+                .query(DbUser) \
+                .filter(db.func.lower(model_attribute) == search_value.lower()) \
+                .exists()
+        ) \
+        .scalar()
 
 
 def send_email_address_confirmation_email(user: DbUser,
