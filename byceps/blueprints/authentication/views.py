@@ -54,10 +54,12 @@ def before_request():
 def _get_current_user(is_admin_mode: bool) -> CurrentUser:
     user = user_session.get_user()
 
+    permissions = frozenset()
     if not user.is_anonymous:
-        user.permissions = _get_permissions_for_user(user.id)
+        permissions = _get_permissions_for_user(user.id)
+    user.permissions = permissions
 
-    if is_admin_mode() and not user.has_permission(AdminPermission.access):
+    if is_admin_mode and not _has_admin_access(permissions):
         # The user lacks the admin access permission which is
         # required to enter the admin area.
         user = user_service.get_anonymous_user()
@@ -116,7 +118,7 @@ def login():
 
     if in_admin_mode:
         permissions = _get_permissions_for_user(user.id)
-        if AdminPermission.access not in permissions:
+        if not _has_admin_access(permissions):
             # The user lacks the admin access permission which is required
             # to enter the admin area.
             abort(403)
@@ -304,6 +306,11 @@ def _get_current_user_or_404():
 def _get_permissions_for_user(user_id):
     permission_ids = authorization_service.get_permission_ids_for_user(user_id)
     return permission_registry.get_enum_members(permission_ids)
+
+
+def _has_admin_access(permissions):
+    """Return `True` if the permissions include administrator access."""
+    return AdminPermission.access in permissions
 
 
 def _is_admin_mode():
