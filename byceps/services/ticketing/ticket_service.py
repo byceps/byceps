@@ -37,6 +37,9 @@ def find_ticket_by_code(code: TicketCode) -> Optional[Ticket]:
 
 def find_tickets(ticket_ids: Set[TicketID]) -> Sequence[Ticket]:
     """Return the tickets with those ids."""
+    if not ticket_ids:
+        return []
+
     return Ticket.query \
         .filter(Ticket.id.in_(ticket_ids)) \
         .all()
