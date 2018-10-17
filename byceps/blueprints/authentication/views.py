@@ -46,27 +46,27 @@ blueprint = create_blueprint('authentication', __name__)
 
 @blueprint.before_app_request
 def before_request():
-    user = _get_current_user()
+    is_admin_mode = _is_admin_mode()
 
-    avatar_url = None
-    if not user.is_anonymous:
-        avatar_url = user_avatar_service.get_avatar_url_for_user(user.id)
-
-    g.current_user = CurrentUser(user, avatar_url)
+    g.current_user = _get_current_user(is_admin_mode)
 
 
-def _get_current_user():
+def _get_current_user(is_admin_mode: bool) -> CurrentUser:
     user = user_session.get_user()
 
     if not user.is_anonymous:
         user.permissions = _get_permissions_for_user(user.id)
 
-    if _is_admin_mode() and not user.has_permission(AdminPermission.access):
+    if is_admin_mode() and not user.has_permission(AdminPermission.access):
         # The user lacks the admin access permission which is
         # required to enter the admin area.
-        return user_service.get_anonymous_user()
+        user = user_service.get_anonymous_user()
 
-    return user
+    avatar_url = None
+    if not user.is_anonymous:
+        avatar_url = user_avatar_service.get_avatar_url_for_user(user.id)
+
+    return CurrentUser(user, avatar_url)
 
 
 # -------------------------------------------------------------------- #
