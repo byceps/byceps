@@ -10,7 +10,8 @@ from datetime import datetime
 
 from flask import abort, g, request
 
-from ...services.terms import service as terms_service
+from ...services.terms import consent_service as terms_consent_service, \
+    version_service as terms_version_service
 from ...services.verification_token import service as verification_token_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_error, flash_success
@@ -27,7 +28,7 @@ blueprint = create_blueprint('terms', __name__)
 @templated
 def view_current():
     """Show the current version of this brand's terms and conditions."""
-    version = terms_service.get_current_version(g.brand_id)
+    version = terms_version_service.get_current_version(g.brand_id)
 
     return {
         'version': version,
@@ -73,7 +74,7 @@ def consent(version_id, token):
         return consent_form(version_id, token, erroneous_form=form)
 
     terms_consent_expressed_at = datetime.now()
-    terms_service.consent_to_version_on_separate_action(
+    terms_consent_service.consent_to_version_on_separate_action(
         version.id, terms_consent_expressed_at, verification_token)
 
     flash_success('Du hast die AGB akzeptiert.')
@@ -81,7 +82,7 @@ def consent(version_id, token):
 
 
 def _get_version_or_404(version_id):
-    version = terms_service.find_version(version_id)
+    version = terms_version_service.find_version(version_id)
 
     if version is None:
         abort(404)

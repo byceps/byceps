@@ -22,7 +22,7 @@ from ...services.seating import area_service as seating_area_service, \
 from ...services.shop.article import service as article_service
 from ...services.shop.order import service as order_service
 from ...services.shop.shop import service as shop_service
-from ...services.terms import service as terms_service
+from ...services.terms import version_service as terms_version_service
 from ...services.ticketing import ticket_service
 from ...services.user import stats_service as user_stats_service
 from ...util.framework.blueprint import create_blueprint
@@ -98,7 +98,7 @@ def view_brand(brand_id):
     newsletter_subscriber_count = newsletter_service \
         .count_subscribers_for_brand(brand.id)
 
-    current_terms_version = terms_service.find_current_version(brand.id)
+    current_terms_version = terms_version_service.find_current_version(brand.id)
 
     return {
         'brand': brand,

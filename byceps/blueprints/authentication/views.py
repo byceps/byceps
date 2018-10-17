@@ -16,7 +16,8 @@ from ...services.authentication.password import \
     reset_service as password_reset_service
 from ...services.authentication.session import service as session_service
 from ...services.authorization import service as authorization_service
-from ...services.terms import service as terms_service
+from ...services.terms import consent_service as terms_consent_service, \
+    version_service as terms_version_service
 from ...services.user import event_service as user_event_service
 from ...services.user import service as user_service
 from ...services.user.transfer.models import User
@@ -162,14 +163,15 @@ def login():
             abort(403)
 
     if not in_admin_mode:
-        terms_version = terms_service.find_current_version(g.brand_id)
+        terms_version = terms_version_service.find_current_version(g.brand_id)
 
         if not terms_version:
             raise Exception(
                 'No terms of service defined for brand "{}", denying login.'
                 .format(g.brand_id))
 
-        if not terms_service.has_user_accepted_version(user.id, terms_version.id):
+        if not terms_consent_service.has_user_accepted_version(user.id,
+                                                               terms_version.id):
             verification_token = verification_token_service \
                 .find_or_create_for_terms_consent(user.id)
             consent_form_url = url_for('terms.consent_form',

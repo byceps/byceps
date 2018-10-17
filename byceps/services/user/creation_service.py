@@ -18,7 +18,7 @@ from ..authorization.models import RoleID
 from ..authorization import service as authorization_service
 from ..newsletter import command_service as newsletter_command_service
 from ..terms.models.version import VersionID as TermsVersionID
-from ..terms import service as terms_service
+from ..terms import consent_service as terms_consent_service
 from ..verification_token import service as verification_token_service
 
 from . import event_service
@@ -60,7 +60,7 @@ def create_user(screen_name: str, email_address: str, password: str,
     authorization_service.assign_role_to_user(user.id, board_user_role.id)
 
     # consent to terms of service (required)
-    terms_consent = terms_service.build_consent_on_account_creation(
+    terms_consent = terms_consent_service.build_consent_on_account_creation(
         user.id, terms_version_id, terms_consent_expressed_at)
     db.session.add(terms_consent)
 

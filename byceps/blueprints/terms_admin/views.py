@@ -9,7 +9,7 @@ byceps.blueprints.terms_admin.views
 from flask import abort
 
 from ...services.brand import service as brand_service
-from ...services.terms import service as terms_service
+from ...services.terms import version_service as terms_version_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.templating import templated
 
@@ -34,9 +34,9 @@ def index_for_brand(brand_id):
     if brand is None:
         abort(404)
 
-    versions = terms_service.get_versions_for_brand(brand.id)
+    versions = terms_version_service.get_versions_for_brand(brand.id)
 
-    current_version_id = terms_service.find_current_version_id(brand.id)
+    current_version_id = terms_version_service.find_current_version_id(brand.id)
 
     return {
         'brand': brand,
@@ -69,7 +69,7 @@ def view_body_html(version_id):
 
 
 def _get_version_or_404(version_id):
-    version = terms_service.find_version(version_id)
+    version = terms_version_service.find_version(version_id)
 
     if version is None:
         abort(404)

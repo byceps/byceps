@@ -15,7 +15,7 @@ from ...config import get_site_mode, get_user_registration_enabled
 from ...services.country import service as country_service
 from ...services.newsletter import service as newsletter_service
 from ...services.orga_team import service as orga_team_service
-from ...services.terms import service as terms_service
+from ...services.terms import version_service as terms_version_service
 from ...services.ticketing import attendance_service, ticket_service
 from ...services.user import creation_service as user_creation_service
 from ...services.user import event_service as user_event_service
@@ -140,7 +140,7 @@ def create_form(erroneous_form=None):
         flash_error('Das Erstellen von Benutzerkonten ist deaktiviert.')
         abort(403)
 
-    terms_version = terms_service.get_current_version(g.brand_id)
+    terms_version = terms_version_service.get_current_version(g.brand_id)
 
     form = erroneous_form if erroneous_form \
         else UserCreateForm(terms_version_id=terms_version.id)
@@ -178,7 +178,7 @@ def create():
             'Diese E-Mail-Adresse ist bereits einem Benutzerkonto zugeordnet.')
         return create_form(form)
 
-    terms_version = terms_service.find_version(terms_version_id)
+    terms_version = terms_version_service.find_version(terms_version_id)
     if terms_version.brand_id != g.brand_id:
         abort(400, 'Die AGB-Version gehört nicht zu dieser Veranstaltung.')
 

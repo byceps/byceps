@@ -11,7 +11,7 @@ from typing import Any, Dict, Iterator, Tuple
 from ...database import db
 from ...services.newsletter import service as newsletter_service
 from ...services.shop.order import service as order_service
-from ...services.terms import service as terms_service
+from ...services.terms import consent_service as terms_consent_service
 from ...services.user import event_service
 from ...services.user.models.detail import UserDetail
 from ...services.user.models.event import UserEvent, UserEventData
@@ -162,7 +162,7 @@ def _fake_order_events(user_id: UserID) -> Iterator[UserEvent]:
 
 def _fake_terms_consent_events(user_id: UserID) -> Iterator[UserEvent]:
     """Yield the user's consents to terms as volatile events."""
-    consents = terms_service.get_consents_by_user(user_id)
+    consents = terms_consent_service.get_consents_by_user(user_id)
 
     for consent in consents:
         data = {

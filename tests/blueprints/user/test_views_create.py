@@ -10,7 +10,7 @@ from byceps.services.authentication.session.models import SessionToken
 from byceps.services.authorization.models import Role, UserRole
 from byceps.services.newsletter import service as newsletter_service
 from byceps.services.terms.models.version import Version as TermsVersion
-from byceps.services.terms import service as terms_service
+from byceps.services.terms import consent_service as terms_consent_service
 from byceps.services.user.models.user import User
 from byceps.services.verification_token import service as \
     verification_token_service
@@ -198,7 +198,7 @@ def assert_session_token_created(user_id):
 
 
 def assert_consent_to_terms(user_id, terms_version_id):
-    terms_consents = terms_service.get_consents_by_user(user_id)
+    terms_consents = terms_consent_service.get_consents_by_user(user_id)
 
     assert len(terms_consents) == 1
     assert terms_consents[0].version_id == terms_version_id

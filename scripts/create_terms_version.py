@@ -11,7 +11,7 @@ However, do not set the new version as the current version for the brand.
 import click
 
 from byceps.database import db
-from byceps.services.terms import service as terms_service
+from byceps.services.terms import version_service as terms_version_service
 from byceps.util.system import get_config_filename_from_env_or_exit
 
 from bootstrap.util import app_context
@@ -26,7 +26,7 @@ from bootstrap.validators import validate_brand, validate_user_screen_name
 def execute(brand, creator, title, f):
     body = f.read()
 
-    terms_service.create_version(brand.id, creator.id, title, body)
+    terms_version_service.create_version(brand.id, creator.id, title, body)
     db.session.commit()
 
     click.secho('Done.', fg='green')

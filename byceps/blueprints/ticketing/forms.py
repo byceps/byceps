@@ -11,7 +11,8 @@ from flask import g
 from wtforms import StringField
 from wtforms.validators import InputRequired, ValidationError
 
-from ...services.terms import service as terms_service
+from ...services.terms import consent_service as terms_consent_service, \
+    version_service as terms_version_service
 from ...services.user import service as user_service
 from ...util.l10n import LocalizedForm
 
@@ -26,9 +27,10 @@ def validate_user(form, field):
 
     user = user.to_dto()
 
-    terms_version = terms_service.get_current_version(g.brand_id)
+    terms_version = terms_version_service.get_current_version(g.brand_id)
 
-    if not terms_service.has_user_accepted_version(user.id, terms_version.id):
+    if not terms_consent_service.has_user_accepted_version(user.id,
+                                                           terms_version.id):
         raise ValidationError(
             'Der Benutzer "{}" hat die aktuellen AGB der {} noch nicht akzeptiert.'
                 .format(user.screen_name, terms_version.brand.title))
