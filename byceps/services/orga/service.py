@@ -94,8 +94,11 @@ def find_orga_flag(brand_id: BrandID, user_id: UserID) -> Optional[OrgaFlag]:
 
 def is_user_orga(user_id: UserID) -> bool:
     """Return `True` if the user is an organizer."""
-    flag_count = OrgaFlag.query \
-        .filter_by(user_id=user_id) \
-        .count()
-
-    return flag_count > 0
+    return db.session \
+        .query(
+            db.session \
+                .query(OrgaFlag) \
+                .filter_by(user_id=user_id) \
+                .exists()
+        ) \
+        .scalar()
