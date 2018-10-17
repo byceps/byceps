@@ -9,7 +9,8 @@ byceps.blueprints.terms_admin.views
 from flask import abort
 
 from ...services.brand import service as brand_service
-from ...services.terms import version_service as terms_version_service
+from ...services.terms import consent_service as terms_consent_service, \
+    version_service as terms_version_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.templating import templated
 
@@ -35,6 +36,12 @@ def index_for_brand(brand_id):
         abort(404)
 
     versions = terms_version_service.get_versions_for_brand(brand.id)
+
+    consent_counts_by_version_id = terms_consent_service \
+        .count_user_consents_for_versions_of_brand(brand.id)
+
+    for version in versions:
+        version.consent_count = consent_counts_by_version_id[version.id]
 
     current_version_id = terms_version_service.find_current_version_id(brand.id)
 

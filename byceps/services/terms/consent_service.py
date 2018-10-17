@@ -7,15 +7,15 @@ byceps.services.terms.consent_service
 """
 
 from datetime import datetime
-from typing import Sequence
+from typing import Dict, Sequence
 
 from ...database import db
-from ...typing import UserID
+from ...typing import BrandID, UserID
 
 from ..verification_token.models import Token
 
 from .models.consent import Consent, ConsentContext
-from .models.version import VersionID
+from .models.version import Version, VersionID
 
 
 def build_consent_on_account_creation(user_id: UserID, version_id: VersionID,
@@ -54,6 +54,22 @@ def get_consents_by_user(user_id: UserID) -> Sequence[Consent]:
     return Consent.query \
         .filter_by(user_id=user_id) \
         .all()
+
+
+def count_user_consents_for_versions_of_brand(brand_id: BrandID
+                                             ) -> Dict[VersionID, int]:
+    """Return the number of user consents for each version of that brand."""
+    rows = db.session \
+        .query(
+            Version.id,
+            db.func.count(Consent.version_id)
+        ) \
+        .outerjoin(Consent) \
+        .group_by(Version.id) \
+        .filter(Version.brand_id == brand_id) \
+        .all()
+
+    return dict(rows)
 
 
 def has_user_accepted_version(user_id: UserID, version_id: VersionID) -> bool:
