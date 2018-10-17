@@ -1,0 +1,15 @@
+{%- from 'macros/user_avatar.html' import render_user_avatar_96 %}
+{%- from 'macros/user_badge.html' import render_user_badges %}
+
+
+    <div class="creator">
+      {{ render_user_avatar_96(posting.creator) }}
+    </div>
+
+    {%- with badges = posting.creator.badges %}
+      {%- if badges %}
+    <div class="user-badges">
+{{ render_user_badges(badges, size=24) }}
+    </div>
+      {%- endif %}
+    {%- endwith %}

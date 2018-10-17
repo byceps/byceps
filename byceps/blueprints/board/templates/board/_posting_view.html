@@ -1,75 +1,15 @@
-{%- from 'macros/board.html' import render_flag_hidden, render_flag_new %}
 {%- from 'macros/datetime.html' import render_datetime %}
-{%- from 'macros/icons.html' import render_icon %}
 {%- from 'macros/user.html' import render_user_link %}
-{%- from 'macros/user_avatar.html' import render_user_avatar_96 %}
-{%- from 'macros/user_badge.html' import render_user_badges %}
+
 
 <article class="user-comment{% if posting.hidden %} dimmed{% endif %}" id="posting-{{ posting.id }}">
   <aside class="user-comment-aside">
-    <div class="creator">
-      {{ render_user_avatar_96(posting.creator) }}
-    </div>
-
-    {%- with badges = posting.creator.badges %}
-      {%- if badges %}
-    <div class="user-badges">
-{{ render_user_badges(badges, size=24) }}
-    </div>
-      {%- endif %}
-    {%- endwith %}
+{%- include 'board/_posting_view_aside.html' %}
   </aside>
   <div class="user-comment-main">
     <header>
-      <div class="user-comment-meta-top">
-        <span class="user-link">
-          {{- render_user_link(posting.creator) -}}
-          {%- if posting.creator.uses_ticket %}
-          {{- ' ' }}<span title="Nutzt ein Ticket für die {{ party_title }}">{{ render_icon('ticket') }}</span>
-          {%- endif -%}
-        </span>
-
-        <a href="{{ posting.external_url }}" class="user-comment-permalink" title="Permalink zu diesem Beitrag">{{ render_datetime(posting.created_at)|replace(', ', ' um ') }}</a>
-
-        {%- if posting.unseen %}
-        <span>{{ render_flag_new() }}</span>
-        {%- endif %}
-
-        {%- if posting.hidden %}
-        <span>{{ render_flag_hidden(posting.hidden_by) }}</span>
-        {%- endif %}
-      </div>
-
-      {%- set is_initial_topic_posting = posting.is_initial_topic_posting(posting.topic) %}
-
-      {%- set user_may_reply = (not topic.locked and g.current_user.has_permission(BoardPostingPermission.create)) %}
-      {%- set user_may_update = (topic.may_be_updated_by_user(g.current_user) if is_initial_topic_posting else posting.may_be_updated_by_user(g.current_user)) %}
-      {%- set user_may_hide = g.current_user.has_permission(BoardPermission.hide) %}
-
-      {%- if user_may_reply or user_may_update or user_may_hide %}
-      <div class="user-comment-actions">
-        <div class="dropdown left">
-          <button class="dropdown-toggle" title="Beitrags-Aktionen">{{ render_icon('user-comment') }} {{ render_icon('caret-down') }}</button>
-          <ol>
-            {%- if user_may_reply %}
-            <li><a href="{{ url_for('.posting_create_form', topic_id=topic.id, quote=posting.id) }}" title="diesen Beitrag zitieren">{{ render_icon('quote') }} Beitrag zitieren</a></li>
-            {%- endif %}
-
-            {%- if user_may_update %}
-              {%- if is_initial_topic_posting %}
-            <li><a href="{{ url_for('.topic_update_form', topic_id=topic.id) }}" title="dieses Thema bearbeiten">{{ render_icon('edit') }} Thema bearbeiten</a></li>
-              {%- else %}
-            <li><a href="{{ url_for('.posting_update_form', posting_id=posting.id) }}" title="diesen Beitrag bearbeiten">{{ render_icon('edit') }} Beitrag bearbeiten</a></li>
-              {%- endif %}
-            {%- endif %}
-
-            {%- if user_may_hide %}
-            <li><a href="{{ url_for('.posting_moderate_form', posting_id=posting.id) }}" title="diesen Beitrag moderieren">{{ render_icon('moderate') }} moderieren</a></li>
-            {%- endif %}
-          </ol>
-        </div>
-      </div>
-      {%- endif %}
+{%- include 'board/_posting_view_meta.html' %}
+{%- include 'board/_posting_view_actions.html' %}
     </header>
     <div class="body">
 {{ posting.body|bbcode|safe }}
