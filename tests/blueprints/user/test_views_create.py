@@ -6,7 +6,8 @@
 from unittest.mock import patch
 
 from byceps.services.authentication.password.models import Credential
-from byceps.services.authentication.session.models import SessionToken
+from byceps.services.authentication.session.models.session_token \
+    import SessionToken
 from byceps.services.authorization.models import Role, UserRole
 from byceps.services.newsletter import service as newsletter_service
 from byceps.services.terms.models.version import Version as TermsVersion

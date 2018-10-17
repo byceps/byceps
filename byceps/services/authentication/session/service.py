@@ -14,7 +14,7 @@ from ....typing import UserID
 
 from ..exceptions import AuthenticationFailed
 
-from .models import SessionToken
+from .models.session_token import SessionToken
 
 
 def create_session_token(user_id: UserID, created_at: datetime) -> SessionToken:

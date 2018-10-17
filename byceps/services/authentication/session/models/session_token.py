@@ -1,6 +1,6 @@
 """
-byceps.services.authentication.session.models
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.authentication.session.models.session_token
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2018 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -9,8 +9,8 @@ byceps.services.authentication.session.models
 from datetime import datetime
 from uuid import UUID
 
-from ....database import db
-from ....typing import UserID
+from .....database import db
+from .....typing import UserID
 
 
 class SessionToken(db.Model):

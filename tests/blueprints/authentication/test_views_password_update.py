@@ -5,7 +5,8 @@
 
 from byceps.services.authentication.password.models import Credential
 from byceps.services.authentication.password import service as password_service
-from byceps.services.authentication.session.models import SessionToken
+from byceps.services.authentication.session.models.session_token \
+    import SessionToken
 
 from tests.base import AbstractAppTestCase
 

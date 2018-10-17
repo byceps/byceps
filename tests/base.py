@@ -16,7 +16,8 @@ from unittest.mock import patch
 
 from byceps.application import create_app
 from byceps.database import db
-from byceps.services.authentication.session.models import SessionToken
+from byceps.services.authentication.session.models.session_token \
+    import SessionToken
 from byceps.services.email.models import EmailConfig
 from byceps.services.party import service as party_service
 
