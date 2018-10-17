@@ -22,7 +22,13 @@
   <div class="user-comment-main">
     <header>
       <div class="user-comment-meta-top">
-        <span class="user-link">{{ render_user_link(posting.creator) }}</span>
+        <span class="user-link">
+          {{- render_user_link(posting.creator) -}}
+          {%- if posting.creator.uses_ticket %}
+          {{- ' ' }}<span title="Nutzt ein Ticket für die {{ party_title }}">{{ render_icon('ticket') }}</span>
+          {%- endif -%}
+        </span>
+
         <a href="{{ posting.external_url }}" class="user-comment-permalink" title="Permalink zu diesem Beitrag">{{ render_datetime(posting.created_at)|replace(', ', ' um ') }}</a>
 
         {%- if posting.unseen %}

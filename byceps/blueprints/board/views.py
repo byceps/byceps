@@ -15,7 +15,8 @@ from ...services.board import \
     posting_service as board_posting_service, \
     topic_service as board_topic_service
 from ...services.board.transfer.models import CategoryWithLastUpdate
-from ...services.party import settings_service as party_settings_service
+from ...services.party import settings_service as party_settings_service, \
+    service as party_service
 from ...services.text_markup.service import get_smileys, render_html
 from ...services.user import service as user_service
 from ...util.framework.blueprint import create_blueprint
@@ -197,12 +198,15 @@ def topic_view(topic_id, page):
 
     is_last_page = not postings.has_next
 
-    service.enrich_creators(postings.items, g.brand_id)
+    service.enrich_creators(postings.items, g.brand_id, g.party_id)
+
+    party = party_service.find_party(g.party_id)
 
     context = {
         'topic': topic,
         'postings': postings,
         'is_last_page': is_last_page,
+        'party_title': party.title,
     }
 
     if is_last_page:
