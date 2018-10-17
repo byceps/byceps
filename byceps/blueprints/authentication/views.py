@@ -14,13 +14,13 @@ from ...services.authentication import service as authentication_service
 from ...services.authentication.password import service as password_service
 from ...services.authentication.password import \
     reset_service as password_reset_service
+from ...services.authentication.session.models.current_user import CurrentUser
 from ...services.authentication.session import service as session_service
 from ...services.authorization import service as authorization_service
 from ...services.terms import consent_service as terms_consent_service, \
     version_service as terms_version_service
 from ...services.user import event_service as user_event_service
 from ...services.user import service as user_service
-from ...services.user.transfer.models import User
 from ...services.user_avatar import service as user_avatar_service
 from ...services.verification_token import service as verification_token_service
 from ...typing import UserID
@@ -42,47 +42,6 @@ blueprint = create_blueprint('authentication', __name__)
 
 # -------------------------------------------------------------------- #
 # current user
-
-
-class CurrentUser:
-
-    def __init__(self, user, avatar_url):
-        self._user = user
-
-        self.id = user.id
-        self.screen_name = user.screen_name if not user.is_anonymous else None
-        self.is_active = user.is_active
-        self.is_anonymous = user.is_anonymous
-
-        self.avatar_url = avatar_url
-
-    @property
-    def is_orga(self):
-        return self._user.is_orga
-
-    def has_permission(self, permission):
-        return self._user.has_permission(permission)
-
-    def has_any_permission(self, *permissions):
-        return self._user.has_any_permission(*permissions)
-
-    def to_dto(self):
-        is_orga = False  # Information is deliberately not obtained here.
-
-        return User(
-            self.id,
-            self.screen_name,
-            self._user.suspended,
-            self._user.deleted,
-            self.avatar_url,
-            is_orga,
-        )
-
-    def __eq__(self, other):
-        return (other is not None) and (self.id == other.id)
-
-    def __hash__(self):
-        return hash(self._user)
 
 
 @blueprint.before_app_request
