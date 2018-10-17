@@ -57,18 +57,18 @@ def _get_current_user(is_admin_mode: bool) -> CurrentUser:
     permissions = frozenset()
     if not user.is_anonymous:
         permissions = _get_permissions_for_user(user.id)
-    user.permissions = permissions
 
     if is_admin_mode and not _has_admin_access(permissions):
         # The user lacks the admin access permission which is
         # required to enter the admin area.
         user = user_service.get_anonymous_user()
+        permissions = frozenset()
 
     avatar_url = None
     if not user.is_anonymous:
         avatar_url = user_avatar_service.get_avatar_url_for_user(user.id)
 
-    return CurrentUser(user, avatar_url)
+    return CurrentUser(user, avatar_url, permissions)
 
 
 # -------------------------------------------------------------------- #

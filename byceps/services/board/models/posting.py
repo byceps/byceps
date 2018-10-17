@@ -16,6 +16,7 @@ from ....database import BaseQuery, db, generate_uuid
 from ....typing import UserID
 from ....util.instances import ReprBuilder
 
+from ...authentication.session.models.current_user import CurrentUser
 from ...user.models.user import User
 
 from ..transfer.models import TopicID
@@ -28,7 +29,7 @@ class PostingQuery(BaseQuery):
     def for_topic(self, topic_id: TopicID) -> BaseQuery:
         return self.filter_by(topic_id=topic_id)
 
-    def only_visible_for_user(self, user: User) -> BaseQuery:
+    def only_visible_for_user(self, user: CurrentUser) -> BaseQuery:
         """Only return postings the user may see."""
         if not user.has_permission(BoardPermission.view_hidden):
             return self.without_hidden()
@@ -84,7 +85,7 @@ class Posting(db.Model):
             or user.has_permission(BoardPermission.update_of_others)
         )
 
-    def is_unseen(self, user: User, last_viewed_at: datetime) -> bool:
+    def is_unseen(self, user: CurrentUser, last_viewed_at: datetime) -> bool:
         # Don't display any posting as new to a guest.
         if user.is_anonymous:
             return False

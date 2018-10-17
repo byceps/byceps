@@ -115,7 +115,7 @@ def category_view(slug, page):
 
     topics_per_page = _get_topics_per_page_value()
 
-    topics = board_topic_service.paginate_topics(category.id, user._user, page,
+    topics = board_topic_service.paginate_topics(category.id, user, page,
                                                  topics_per_page)
 
     topic_creator_ids = {t.creator_id for t in topics.items}
@@ -158,8 +158,7 @@ def topic_view(topic_id, page):
     """List postings for the topic."""
     user = g.current_user
 
-    topic = board_topic_service.find_topic_visible_for_user(topic_id,
-        user._user)
+    topic = board_topic_service.find_topic_visible_for_user(topic_id, user)
 
     if topic is None:
         abort(404)
@@ -175,7 +174,7 @@ def topic_view(topic_id, page):
     postings_per_page = _get_postings_per_page_value()
     if page == 0:
         posting = board_topic_service.find_default_posting_to_jump_to(
-            topic.id, user._user, last_viewed_at)
+            topic.id, user, last_viewed_at)
 
         if posting is None:
             page = 1
@@ -190,11 +189,11 @@ def topic_view(topic_id, page):
         # 'new' tag from a locked topic.
         board_last_view_service.mark_topic_as_just_viewed(topic.id, user.id)
 
-    postings = board_posting_service.paginate_postings(topic.id, user._user,
+    postings = board_posting_service.paginate_postings(topic.id, user,
                                                        g.party_id, page,
                                                        postings_per_page)
 
-    add_unseen_flag_to_postings(postings.items, user._user, last_viewed_at)
+    add_unseen_flag_to_postings(postings.items, user, last_viewed_at)
 
     is_last_page = not postings.has_next
 
@@ -274,7 +273,7 @@ def topic_update_form(topic_id, erroneous_form=None):
     topic = _get_topic_or_404(topic_id)
     url = topic.external_url
 
-    user_may_update = topic.may_be_updated_by_user(g.current_user._user)
+    user_may_update = topic.may_be_updated_by_user(g.current_user)
 
     if topic.locked and not user_may_update:
         flash_error(
@@ -306,7 +305,7 @@ def topic_update(topic_id):
     topic = _get_topic_or_404(topic_id)
     url = topic.external_url
 
-    user_may_update = topic.may_be_updated_by_user(g.current_user._user)
+    user_may_update = topic.may_be_updated_by_user(g.current_user)
 
     if topic.locked and not user_may_update:
         flash_error(
@@ -599,7 +598,7 @@ def posting_update_form(posting_id, erroneous_form=None):
     page = calculate_posting_page_number(posting)
     url = _build_url_for_posting_in_topic_view(posting, page)
 
-    user_may_update = posting.may_be_updated_by_user(g.current_user._user)
+    user_may_update = posting.may_be_updated_by_user(g.current_user)
 
     if posting.topic.locked and not user_may_update:
         flash_error(
@@ -633,7 +632,7 @@ def posting_update(posting_id):
     page = calculate_posting_page_number(posting)
     url = _build_url_for_posting_in_topic_view(posting, page)
 
-    user_may_update = posting.may_be_updated_by_user(g.current_user._user)
+    user_may_update = posting.may_be_updated_by_user(g.current_user)
 
     if posting.topic.locked and not user_may_update:
         flash_error(
@@ -750,7 +749,7 @@ def calculate_posting_page_number(posting):
     postings_per_page = _get_postings_per_page_value()
 
     return board_posting_service.calculate_posting_page_number(
-        posting, g.current_user._user, postings_per_page)
+        posting, g.current_user, postings_per_page)
 
 
 def _get_topics_per_page_value():

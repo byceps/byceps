@@ -7,8 +7,7 @@ byceps.services.user.models.user
 """
 
 from datetime import datetime
-from enum import Enum
-from typing import Optional, Set
+from typing import Optional
 from uuid import UUID
 
 from flask import g
@@ -37,12 +36,6 @@ class AnonymousUser:
 
     @property
     def is_active(self) -> bool:
-        return False
-
-    def has_permission(self, permission: Enum) -> bool:
-        return False
-
-    def has_any_permission(self, *permissions: Set[Enum]) -> bool:
         return False
 
     @property
@@ -100,12 +93,6 @@ class User(db.Model):
     def avatar_url(self) -> Optional[str]:
         avatar = self.avatar
         return avatar.url if (avatar is not None) else None
-
-    def has_permission(self, permission: Enum) -> bool:
-        return permission in self.permissions
-
-    def has_any_permission(self, *permissions: Enum) -> bool:
-        return any(map(self.has_permission, permissions))
 
     @cached_property
     def is_orga(self) -> bool:

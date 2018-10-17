@@ -17,6 +17,7 @@ from ....database import BaseQuery, db, generate_uuid
 from ....typing import UserID
 from ....util.instances import ReprBuilder
 
+from ...authentication.session.models.current_user import CurrentUser
 from ...user.models.user import User
 
 from ..transfer.models import CategoryID
@@ -29,7 +30,7 @@ class TopicQuery(BaseQuery):
     def for_category(self, category_id: CategoryID) -> BaseQuery:
         return self.filter_by(category_id=category_id)
 
-    def only_visible_for_user(self, user: User) -> BaseQuery:
+    def only_visible_for_user(self, user: CurrentUser) -> BaseQuery:
         """Only return topics the user may see."""
         if not user.has_permission(BoardPermission.view_hidden):
             return self.without_hidden()
@@ -76,7 +77,7 @@ class Topic(db.Model):
         self.creator_id = creator_id
         self.title = title
 
-    def may_be_updated_by_user(self, user: User) -> bool:
+    def may_be_updated_by_user(self, user: CurrentUser) -> bool:
         return (
             (
                 not self.locked

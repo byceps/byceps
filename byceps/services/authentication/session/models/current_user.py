@@ -15,7 +15,8 @@ from .....services.user.transfer.models import User
 
 class CurrentUser:
 
-    def __init__(self, user: DbUser, avatar_url: str) -> None:
+    def __init__(self, user: DbUser, avatar_url: str, permissions: Set[Enum]
+                ) -> None:
         self._user = user
 
         self.id = user.id
@@ -25,15 +26,17 @@ class CurrentUser:
 
         self.avatar_url = avatar_url
 
+        self.permissions = permissions
+
     @property
     def is_orga(self) -> bool:
         return self._user.is_orga
 
     def has_permission(self, permission: Enum) -> bool:
-        return self._user.has_permission(permission)
+        return permission in self.permissions
 
     def has_any_permission(self, *permissions: Set[Enum]) -> bool:
-        return self._user.has_any_permission(*permissions)
+        return any(map(self.has_permission, permissions))
 
     def to_dto(self) -> User:
         is_orga = False  # Information is deliberately not obtained here.

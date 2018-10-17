@@ -15,7 +15,7 @@ from ...database import db
 from ...typing import PartyID, UserID
 from ...util.iterables import index_of
 
-from ..user.models.user import User as DbUser
+from ..authentication.session.models.current_user import CurrentUser
 from ..user import service as user_service
 from ..user.transfer.models import User
 
@@ -38,7 +38,7 @@ def find_posting_by_id(posting_id: PostingID) -> Optional[DbPosting]:
     return DbPosting.query.get(posting_id)
 
 
-def paginate_postings(topic_id: TopicID, user: DbUser, party_id: PartyID,
+def paginate_postings(topic_id: TopicID, user: CurrentUser, party_id: PartyID,
                       page: int, postings_per_page: int) -> Pagination:
     """Paginate postings in that topic, as visible for the user."""
     postings = DbPosting.query \
@@ -91,7 +91,7 @@ def update_posting(posting: DbPosting, editor_id: UserID, body: str, *,
         db.session.commit()
 
 
-def calculate_posting_page_number(posting: DbPosting, user: DbUser,
+def calculate_posting_page_number(posting: DbPosting, user: CurrentUser,
                                   postings_per_page: int) -> int:
     """Return the number of the page the posting should appear on when
     viewed by the user.
