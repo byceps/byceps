@@ -49,7 +49,7 @@ def update_form(erroneous_form=None):
 @blueprint.route('/me/avatar', methods=['POST'])
 def update():
     """Update the current user's avatar image."""
-    user = _get_current_user_or_404()._user
+    user = _get_current_user_or_404()
 
     # Make `InputRequired` work on `FileField`.
     form_fields = request.form.copy()
@@ -63,7 +63,7 @@ def update():
 
     image = request.files.get('image')
 
-    _update(user, image)
+    _update(user.id, image)
 
     flash_success('Dein Avatarbild wurde aktualisiert.', icon='upload')
     signals.avatar_updated.send(None, user_id=user.id)
@@ -71,13 +71,15 @@ def update():
     return redirect_to('user.view_current')
 
 
-def _update(user, image):
+def _update(user_id, image):
     if not image or not image.filename:
         abort(400, 'No file to upload has been specified.')
 
     try:
-        avatar_service.update_avatar_image(user, image.stream,
+        avatar_service.update_avatar_image(user_id, image.stream,
                                            ALLOWED_IMAGE_TYPES)
+    except avatar_service.UnknownUserId as e:
+        abort(404)
     except avatar_service.ImageTypeProhibited as e:
         abort(400, str(e))
     except FileExistsError:

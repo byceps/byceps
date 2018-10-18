@@ -24,7 +24,11 @@ from .models import Avatar, AvatarCreationTuple, AvatarSelection
 MAXIMUM_DIMENSIONS = Dimensions(512, 512)
 
 
-def update_avatar_image(user: DbUser, stream: BinaryIO,
+class UnknownUserId(Exception):
+    """Indicate that the given user ID is not known."""
+
+
+def update_avatar_image(user_id: UserID, stream: BinaryIO,
                         allowed_types: Set[ImageType],
                         *, maximum_dimensions: Dimensions=MAXIMUM_DIMENSIONS
                        ) -> None:
@@ -33,6 +37,10 @@ def update_avatar_image(user: DbUser, stream: BinaryIO,
     Raise `ImageTypeProhibited` if the stream data is not of one the
     allowed types.
     """
+    user = DbUser.query.get(user_id)
+    if user is None:
+        raise UnknownUserId(user_id)
+
     image_type = image_service.determine_image_type(stream, allowed_types)
     image_dimensions = image_service.determine_dimensions(stream)
 
