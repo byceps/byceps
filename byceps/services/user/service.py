@@ -40,7 +40,8 @@ def find_active_db_user(user_id: UserID) -> Optional[DbUser]:
         .one_or_none()
 
 
-def find_active_user(user_id: UserID) -> Optional[User]:
+def find_active_user(user_id: UserID, *, include_avatar: bool=False
+                    ) -> Optional[User]:
     """Return the user with that ID if the account is "active", or
     `None` if:
     - the ID is unknown.
@@ -48,7 +49,6 @@ def find_active_user(user_id: UserID) -> Optional[User]:
     - the account is currently suspended.
     - the account is marked as deleted.
     """
-    include_avatar = False  # Not yet supported.
     include_orga_flags_for_party_id = None  # Not yet supported.
 
     query = _get_user_query(include_avatar, include_orga_flags_for_party_id)
