@@ -54,6 +54,9 @@ def before_request():
 def _get_current_user(is_admin_mode: bool) -> CurrentUser:
     user = user_session.get_user()
 
+    if user is None:
+        user = user_service.get_anonymous_user()
+
     permissions = frozenset()
     if not user.is_anonymous:
         permissions = _get_permissions_for_user(user.id)

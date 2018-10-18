@@ -6,13 +6,13 @@ byceps.blueprints.authentication.session
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import Optional, Union
+from typing import Optional
 
 from flask import session
 
 from ...services.authentication.exceptions import AuthenticationFailed
 from ...services.authentication.session import service as session_service
-from ...services.user.models.user import AnonymousUser, User
+from ...services.user.models.user import User
 from ...services.user import service as user_service
 from ...typing import UserID
 
@@ -37,8 +37,8 @@ def end() -> None:
     session.permanent = False
 
 
-def get_user() -> Union[AnonymousUser, User]:
-    """Return the current user, falling back to the anonymous user."""
+def get_user() -> Optional[User]:
+    """Return the current user if authenticated, `None` if not."""
     return _load_user(_get_user_id(), _get_auth_token())
 
 
@@ -53,24 +53,26 @@ def _get_auth_token() -> Optional[str]:
 
 
 def _load_user(user_id: Optional[str], auth_token: Optional[str]
-              ) -> Union[AnonymousUser, User]:
+              ) -> Optional[User]:
     """Load the user with that ID.
 
-    Fall back to the anonymous user if the ID is unknown, the account is
-    not enabled, or the auth token is invalid.
+    Return `None` if:
+    - the ID is unknown.
+    - the account is not enabled.
+    - the auth token is invalid.
     """
     if user_id is None:
-        return user_service.get_anonymous_user()
+        return None
 
     user = user_service.find_active_db_user(user_id)
 
     if user is None:
-        return user_service.get_anonymous_user()
+        return None
 
     # Validate auth token.
     if (auth_token is None) or not _is_auth_token_valid(user.id, auth_token):
         # Bad auth token, not logging in.
-        return user_service.get_anonymous_user()
+        return None
 
     return user
 
