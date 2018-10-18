@@ -283,7 +283,7 @@ def confirm_email_address(token):
 @templated
 def details_update_form(erroneous_form=None):
     """Show a form to update the current user's details."""
-    user = get_current_user_or_404()._user
+    user = _get_current_user_or_404()._user
 
     form = erroneous_form if erroneous_form else DetailsForm(obj=user.detail)
     country_names = country_service.get_country_names()
@@ -297,7 +297,7 @@ def details_update_form(erroneous_form=None):
 @blueprint.route('/me/details', methods=['POST'])
 def details_update():
     """Update the current user's details."""
-    user = get_current_user_or_404()._user
+    user = _get_current_user_or_404()._user
     form = DetailsForm(request.form)
 
     if not form.validate():
@@ -320,7 +320,7 @@ def details_update():
     return redirect_to('.view_current')
 
 
-def get_current_user_or_404():
+def _get_current_user_or_404():
     user = g.current_user
     if not user.is_active:
         abort(404)
