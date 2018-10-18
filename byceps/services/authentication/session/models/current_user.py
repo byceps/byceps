@@ -12,6 +12,7 @@ from typing import Optional, Set, Union
 from .....services.user.models.user import AnonymousUser, User as DbUser
 from .....services.user import service as user_service
 from .....services.user.transfer.models import User
+from .....services.user_avatar import service as user_avatar_service
 
 
 class CurrentUser:
@@ -39,9 +40,10 @@ class CurrentUser:
         return CurrentUser(user, is_anonymous, avatar_url, permissions)
 
     @classmethod
-    def create_from_user(self, user: DbUser, avatar_url: Optional[str],
-                         permissions: Set[Enum]) -> 'CurrentUser':
+    def create_from_user(self, user: DbUser, permissions: Set[Enum]
+                        ) -> 'CurrentUser':
         is_anonymous = False
+        avatar_url = user_avatar_service.get_avatar_url_for_user(user.id)
 
         return CurrentUser(user, is_anonymous, avatar_url, permissions)
 

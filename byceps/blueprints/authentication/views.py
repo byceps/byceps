@@ -21,7 +21,6 @@ from ...services.terms import consent_service as terms_consent_service, \
     version_service as terms_version_service
 from ...services.user import event_service as user_event_service
 from ...services.user import service as user_service
-from ...services.user_avatar import service as user_avatar_service
 from ...services.verification_token import service as verification_token_service
 from ...typing import UserID
 from ...util.framework.blueprint import create_blueprint
@@ -64,9 +63,7 @@ def _get_current_user(is_admin_mode: bool) -> CurrentUser:
         # required to enter the admin area.
         return CurrentUser.create_anonymous()
 
-    avatar_url = user_avatar_service.get_avatar_url_for_user(user.id)
-
-    return CurrentUser.create_from_user(user, avatar_url, permissions)
+    return CurrentUser.create_from_user(user, permissions)
 
 
 # -------------------------------------------------------------------- #
