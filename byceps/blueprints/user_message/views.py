@@ -65,7 +65,7 @@ def create(recipient_id):
 
 
 def _get_user_or_404(user_id):
-    user = user_service.find_active_user(user_id)
+    user = user_service.find_active_db_user(user_id)
 
     if user is None:
         abort(404)

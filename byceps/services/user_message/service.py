@@ -59,7 +59,7 @@ def _get_user(user_id: UserID) -> User:
         raise ValueError(
             "Unknown user ID '{}' or account not active".format(user_id))
 
-    return user.to_dto()
+    return user
 
 
 def _get_brand(brand_id: BrandID) -> Brand:

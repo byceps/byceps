@@ -43,7 +43,7 @@ def view(user_id):
     if get_site_mode().is_admin():
         abort(404)
 
-    user = user_service.find_active_user(user_id)
+    user = user_service.find_active_db_user(user_id)
     if user is None:
         abort(404)
 
@@ -76,7 +76,7 @@ def view_as_json(user_id):
     if get_site_mode().is_admin():
         abort(404)
 
-    user = user_service.find_active_user(user_id)
+    user = user_service.find_active_db_user(user_id)
 
     if user is None:
         return create_empty_json_response(404)
@@ -97,7 +97,7 @@ def view_current():
     """Show the current user's internal profile."""
     current_user = g.current_user
 
-    user = user_service.find_active_user(current_user.id)
+    user = user_service.find_active_db_user(current_user.id)
     if user is None:
         abort(404)
 
