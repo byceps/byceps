@@ -15,14 +15,14 @@ from .....services.user.transfer.models import User
 
 class CurrentUser:
 
-    def __init__(self, user: DbUser, avatar_url: str, permissions: Set[Enum]
-                ) -> None:
+    def __init__(self, user: DbUser, is_anonymous: bool, avatar_url: str,
+                 permissions: Set[Enum]) -> None:
         self._user = user
 
         self.id = user.id
-        self.screen_name = user.screen_name if not user.is_anonymous else None
-        self.is_active = user.enabled if not user.is_anonymous else False
-        self.is_anonymous = user.is_anonymous
+        self.screen_name = user.screen_name if not is_anonymous else None
+        self.is_active = user.enabled if not is_anonymous else False
+        self.is_anonymous = is_anonymous
 
         self.avatar_url = avatar_url
 

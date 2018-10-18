@@ -31,10 +31,6 @@ class AnonymousUser:
     enabled = False
 
     @property
-    def is_anonymous(self) -> bool:
-        return True
-
-    @property
     def avatar(self) -> None:
         return None
 
@@ -76,10 +72,6 @@ class User(db.Model):
     def __init__(self, screen_name: str, email_address: str) -> None:
         self.screen_name = screen_name
         self.email_address = email_address
-
-    @property
-    def is_anonymous(self) -> bool:
-        return False
 
     @property
     def avatar_url(self) -> Optional[str]:
