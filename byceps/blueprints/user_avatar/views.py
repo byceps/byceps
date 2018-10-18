@@ -11,7 +11,7 @@ from flask import abort, g, request
 from ...services.image import service as image_service
 from ...services.user_avatar import service as avatar_service
 from ...util.framework.blueprint import create_blueprint
-from ...util.framework.flash import flash_success
+from ...util.framework.flash import flash_notice, flash_success
 from ...util.image.models import ImageType
 from ...util.framework.templating import templated
 from ...util.views import redirect_to, respond_no_content
@@ -88,11 +88,17 @@ def _update(user, image):
 @respond_no_content
 def delete():
     """Remove the current user's avatar image."""
-    user = _get_current_user_or_404()._user
+    user = _get_current_user_or_404()
 
-    avatar_service.remove_avatar_image(user)
-
-    flash_success('Dein Avatarbild wurde entfernt.')
+    try:
+        avatar_service.remove_avatar_image(user.id)
+    except ValueError as e:
+        # No avatar selected.
+        # But that's ok, deletions should be idempotent.
+        flash_notice(
+            'Es ist kein Avatarbild gesetzt, das entfernt werden könnte.')
+    else:
+        flash_success('Dein Avatarbild wurde entfernt.')
 
 
 def _get_current_user_or_404():

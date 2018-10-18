@@ -52,13 +52,18 @@ def update_avatar_image(user: DbUser, stream: BinaryIO,
     db.session.commit()
 
 
-def remove_avatar_image(user: DbUser) -> None:
+def remove_avatar_image(user_id: UserID) -> None:
     """Remove the user's avatar image.
 
     The avatar will be unlinked from the user, but the database record
     as well as the image file itself won't be removed, though.
     """
-    db.session.delete(user.avatar_selection)
+    selection = AvatarSelection.query.get(user_id)
+
+    if selection is None:
+        raise ValueError('No avatar set for user ID {}.'.format(user_id))
+
+    db.session.delete(selection)
     db.session.commit()
 
 
