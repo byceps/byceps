@@ -56,13 +56,15 @@ class CurrentUser:
         return any(map(self.has_permission, permissions))
 
     def to_dto(self) -> User:
+        suspended = False  # Current user cannot be suspended.
+        deleted = False  # Current user cannot be deleted.
         is_orga = False  # Information is deliberately not obtained here.
 
         return User(
             self.id,
             self.screen_name,
-            self._user.suspended,
-            self._user.deleted,
+            suspended,
+            deleted,
             self.avatar_url,
             is_orga,
         )
