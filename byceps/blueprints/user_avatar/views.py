@@ -33,7 +33,7 @@ ALLOWED_IMAGE_TYPES = frozenset([
 @templated
 def update_form(erroneous_form=None):
     """Show a form to update the current user's avatar image."""
-    get_current_user_or_404()
+    _get_current_user_or_404()
 
     form = erroneous_form if erroneous_form else UpdateForm()
 
@@ -49,7 +49,7 @@ def update_form(erroneous_form=None):
 @blueprint.route('/me/avatar', methods=['POST'])
 def update():
     """Update the current user's avatar image."""
-    user = get_current_user_or_404()._user
+    user = _get_current_user_or_404()._user
 
     # Make `InputRequired` work on `FileField`.
     form_fields = request.form.copy()
@@ -88,14 +88,14 @@ def _update(user, image):
 @respond_no_content
 def delete():
     """Remove the current user's avatar image."""
-    user = get_current_user_or_404()._user
+    user = _get_current_user_or_404()._user
 
     avatar_service.remove_avatar_image(user)
 
     flash_success('Dein Avatarbild wurde entfernt.')
 
 
-def get_current_user_or_404():
+def _get_current_user_or_404():
     user = g.current_user
 
     if not user.is_active:
