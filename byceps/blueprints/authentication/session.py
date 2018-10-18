@@ -63,7 +63,7 @@ def _load_user(user_id: str, auth_token: str) -> Union[AnonymousUser, User]:
 
     user = user_service.find_active_db_user(user_id)
 
-    if (user is None) or not user.enabled:
+    if user is None:
         return user_service.get_anonymous_user()
 
     # Validate auth token.
