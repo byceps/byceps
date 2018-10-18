@@ -14,6 +14,7 @@ from ...services.shop.cart.models import Cart
 from ...services.shop.order import service as order_service
 from ...services.shop.order.transfer.models import PaymentMethod
 from ...services.shop.shop import service as shop_service
+from ...services.user import service as user_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_error, flash_success
 from ...util.framework.templating import templated
@@ -41,7 +42,7 @@ def order_form(erroneous_form=None):
         flash_error('Es sind keine Artikel verfügbar.')
         return {'article_compilation': None}
 
-    user = g.current_user._user
+    user = user_service.find_user_with_details(g.current_user.id)
 
     if erroneous_form:
         form = erroneous_form
@@ -108,7 +109,8 @@ def order_single_form(article_id, erroneous_form=None):
     article_compilation = article_service \
         .get_article_compilation_for_single_article(article, fixed_quantity=1)
 
-    user = g.current_user._user
+    user = user_service.find_user_with_details(g.current_user.id)
+
     form = erroneous_form if erroneous_form else OrderForm(obj=user.detail)
     country_names = country_service.get_country_names()
 
