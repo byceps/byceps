@@ -7,16 +7,16 @@ byceps.services.authentication.session.models.current_user
 """
 
 from enum import Enum
-from typing import Optional, Set
+from typing import Optional, Set, Union
 
-from .....services.user.models.user import User as DbUser
+from .....services.user.models.user import AnonymousUser, User as DbUser
 from .....services.user import service as user_service
 from .....services.user.transfer.models import User
 
 
 class CurrentUser:
 
-    def __init__(self, user: DbUser, is_anonymous: bool,
+    def __init__(self, user: Union[AnonymousUser, DbUser], is_anonymous: bool,
                  avatar_url: Optional[str], permissions: Set[Enum]) -> None:
         self._user = user
 
