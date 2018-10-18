@@ -147,7 +147,8 @@ def uses_any_ticket_for_party(user_id: UserID, party_id: PartyID) -> bool:
     """Return `True` if the user uses any ticket for that party."""
     q = Ticket.query \
         .for_party(party_id) \
-        .filter(Ticket.used_by_id == user_id)
+        .filter(Ticket.used_by_id == user_id) \
+        .filter(Ticket.revoked == False)
 
     return db.session.query(q.exists()).scalar()
 
@@ -160,7 +161,8 @@ def select_ticket_users_for_party(user_ids: Set[UserID], party_id: PartyID
 
     q = Ticket.query \
         .for_party(party_id) \
-        .filter(Ticket.used_by_id == User.id)
+        .filter(Ticket.used_by_id == User.id) \
+        .filter(Ticket.revoked == False)
 
     rows = db.session.query(User.id) \
         .filter(q.exists()) \
