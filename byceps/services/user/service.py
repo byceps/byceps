@@ -48,17 +48,22 @@ def find_active_user(user_id: UserID) -> Optional[User]:
     - the account is currently suspended.
     - the account is marked as deleted.
     """
-    user = DbUser.query \
-        .filter_by(enabled=True) \
-        .filter_by(suspended=False) \
-        .filter_by(deleted=False) \
-        .filter_by(id=user_id) \
+    include_avatar = False  # Not yet supported.
+    include_orga_flags_for_party_id = None  # Not yet supported.
+
+    query = _get_user_query(include_avatar, include_orga_flags_for_party_id)
+
+    row = query \
+        .filter(DbUser.enabled == True) \
+        .filter(DbUser.suspended == False) \
+        .filter(DbUser.deleted == False) \
+        .filter(DbUser.id == user_id) \
         .one_or_none()
 
-    if user is None:
+    if row is None:
         return None
 
-    return user.to_dto()
+    return _user_row_to_dto(row)
 
 
 def find_user(user_id: UserID) -> Optional[User]:
