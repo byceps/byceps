@@ -24,7 +24,8 @@ def create_session_token(user_id: UserID, created_at: datetime) -> SessionToken:
     return SessionToken(token, user_id, created_at)
 
 
-def update_session_token(session_token: SessionToken, updated_at) -> None:
+def update_session_token(session_token: SessionToken, updated_at: datetime
+                        ) -> None:
     """Update, but do not persist, the session token entity."""
     session_token.token = _generate_auth_token()
     session_token.created_at = updated_at

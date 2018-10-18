@@ -52,7 +52,8 @@ def _get_auth_token() -> Optional[str]:
     return session.get(KEY_USER_AUTH_TOKEN)
 
 
-def _load_user(user_id: str, auth_token: str) -> Union[AnonymousUser, User]:
+def _load_user(user_id: Optional[str], auth_token: Optional[str]
+              ) -> Union[AnonymousUser, User]:
     """Load the user with that ID.
 
     Fall back to the anonymous user if the ID is unknown, the account is
@@ -74,7 +75,7 @@ def _load_user(user_id: str, auth_token: str) -> Union[AnonymousUser, User]:
     return user
 
 
-def _is_auth_token_valid(user_id: UserID, auth_token) -> bool:
+def _is_auth_token_valid(user_id: UserID, auth_token: str) -> bool:
     try:
         session_service.authenticate_session(user_id, auth_token)
     except AuthenticationFailed:
