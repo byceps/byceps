@@ -10,6 +10,7 @@ from enum import Enum
 from typing import Set
 
 from .....services.user.models.user import User as DbUser
+from .....services.user import service as user_service
 from .....services.user.transfer.models import User
 
 
@@ -27,6 +28,15 @@ class CurrentUser:
         self.avatar_url = avatar_url
 
         self.permissions = permissions
+
+    @classmethod
+    def create_anonymous(self) -> 'CurrentUser':
+        user = user_service.get_anonymous_user()
+        is_anonymous = True
+        avatar_url = None
+        permissions = frozenset()
+
+        return CurrentUser(user, is_anonymous, avatar_url, permissions)
 
     @property
     def is_orga(self) -> bool:
