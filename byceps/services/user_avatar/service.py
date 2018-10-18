@@ -6,7 +6,7 @@ byceps.services.user_avatar.service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import BinaryIO, Dict, List, Set
+from typing import BinaryIO, Dict, List, Optional, Set
 
 from ...database import db
 from ...typing import UserID
@@ -72,7 +72,7 @@ def get_avatars_uploaded_by_user(user_id: UserID) -> List[AvatarCreationTuple]:
             for avatar in avatars]
 
 
-def get_avatar_url_for_user(user_id: UserID) -> str:
+def get_avatar_url_for_user(user_id: UserID) -> Optional[str]:
     """Return the URL of the user's current avatar, or `None` if not set."""
     avatar_urls_by_user_id = get_avatar_urls_for_users({user_id})
     return avatar_urls_by_user_id.get(user_id)
