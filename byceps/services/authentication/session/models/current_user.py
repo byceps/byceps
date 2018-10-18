@@ -38,6 +38,13 @@ class CurrentUser:
 
         return CurrentUser(user, is_anonymous, avatar_url, permissions)
 
+    @classmethod
+    def create_from_user(self, user: DbUser, avatar_url: Optional[str],
+                         permissions: Set[Enum]) -> 'CurrentUser':
+        is_anonymous = False
+
+        return CurrentUser(user, is_anonymous, avatar_url, permissions)
+
     @property
     def is_orga(self) -> bool:
         return self._user.is_orga

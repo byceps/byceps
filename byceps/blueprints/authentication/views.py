@@ -64,10 +64,9 @@ def _get_current_user(is_admin_mode: bool) -> CurrentUser:
         # required to enter the admin area.
         return CurrentUser.create_anonymous()
 
-    is_anonymous = False
     avatar_url = user_avatar_service.get_avatar_url_for_user(user.id)
 
-    return CurrentUser(user, is_anonymous, avatar_url, permissions)
+    return CurrentUser.create_from_user(user, avatar_url, permissions)
 
 
 # -------------------------------------------------------------------- #
