@@ -68,7 +68,7 @@ def _load_user(user_id: Optional[str], auth_token: Optional[str]
         return user_service.get_anonymous_user()
 
     # Validate auth token.
-    if not _is_auth_token_valid(user.id, auth_token):
+    if (auth_token is None) or not _is_auth_token_valid(user.id, auth_token):
         # Bad auth token, not logging in.
         return user_service.get_anonymous_user()
 
