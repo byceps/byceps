@@ -45,7 +45,7 @@ def find_session_token_for_user(user_id: UserID) -> Optional[SessionToken]:
         .one_or_none()
 
 
-def authenticate_session(user_id: UserID, auth_token: UUID) -> None:
+def authenticate_session(user_id: UserID, auth_token: str) -> None:
     """Check the client session's validity.
 
     Return nothing on success, or raise an exception on failure.
@@ -64,7 +64,7 @@ def authenticate_session(user_id: UserID, auth_token: UUID) -> None:
         raise AuthenticationFailed()
 
 
-def _is_token_valid_for_user(token: UUID, user_id: UserID) -> bool:
+def _is_token_valid_for_user(token: str, user_id: UserID) -> bool:
     """Return `True` if a session token with that ID exists for that user."""
     if not user_id:
         raise ValueError('User ID is invalid.')
