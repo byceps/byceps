@@ -21,7 +21,7 @@ class CurrentUser:
 
         self.id = user.id
         self.screen_name = user.screen_name if not user.is_anonymous else None
-        self.is_active = user.is_active
+        self.is_active = user.enabled if not user.is_anonymous else False
         self.is_anonymous = user.is_anonymous
 
         self.avatar_url = avatar_url

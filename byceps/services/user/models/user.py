@@ -35,10 +35,6 @@ class AnonymousUser:
         return True
 
     @property
-    def is_active(self) -> bool:
-        return False
-
-    @property
     def avatar(self) -> None:
         return None
 
@@ -84,10 +80,6 @@ class User(db.Model):
     @property
     def is_anonymous(self) -> bool:
         return False
-
-    @property
-    def is_active(self) -> bool:
-        return self.enabled
 
     @property
     def avatar_url(self) -> Optional[str]:
