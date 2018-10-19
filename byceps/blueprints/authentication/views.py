@@ -45,7 +45,7 @@ blueprint = create_blueprint('authentication', __name__)
 
 @blueprint.before_app_request
 def before_request():
-    is_admin_mode = _is_admin_mode()
+    is_admin_mode = get_site_mode().is_admin()
 
     g.current_user = _get_current_user(is_admin_mode)
 
@@ -109,7 +109,7 @@ def login():
     except AuthenticationFailed:
         abort(403)
 
-    in_admin_mode = _is_admin_mode()
+    in_admin_mode = get_site_mode().is_admin()
 
     if in_admin_mode:
         permissions = _get_permissions_for_user(user.id)
@@ -301,7 +301,3 @@ def _get_current_user_or_404():
 def _get_permissions_for_user(user_id):
     permission_ids = authorization_service.get_permission_ids_for_user(user_id)
     return permission_registry.get_enum_members(permission_ids)
-
-
-def _is_admin_mode():
-    return get_site_mode().is_admin()
