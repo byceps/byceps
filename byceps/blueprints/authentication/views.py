@@ -14,7 +14,6 @@ from ...services.authentication import service as authentication_service
 from ...services.authentication.password import service as password_service
 from ...services.authentication.password import \
     reset_service as password_reset_service
-from ...services.authentication.session.models.current_user import CurrentUser
 from ...services.authentication.session import service as session_service
 from ...services.terms import consent_service as terms_consent_service, \
     version_service as terms_version_service
@@ -43,23 +42,7 @@ blueprint = create_blueprint('authentication', __name__)
 def before_request():
     is_admin_mode = get_site_mode().is_admin()
 
-    g.current_user = _get_current_user(is_admin_mode)
-
-
-def _get_current_user(is_admin_mode: bool) -> CurrentUser:
-    user = user_session.get_user()
-
-    if user is None:
-        return CurrentUser.create_anonymous()
-
-    permissions = service.get_permissions_for_user(user.id)
-
-    if is_admin_mode and (AdminPermission.access not in permissions):
-        # The user lacks the admin access permission which is
-        # required to enter the admin area.
-        return CurrentUser.create_anonymous()
-
-    return CurrentUser.create_from_user(user, permissions)
+    g.current_user = service.get_current_user(is_admin_mode)
 
 
 # -------------------------------------------------------------------- #
