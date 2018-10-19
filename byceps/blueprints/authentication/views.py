@@ -16,24 +16,20 @@ from ...services.authentication.password import \
     reset_service as password_reset_service
 from ...services.authentication.session.models.current_user import CurrentUser
 from ...services.authentication.session import service as session_service
-from ...services.authorization import service as authorization_service
 from ...services.terms import consent_service as terms_consent_service, \
     version_service as terms_version_service
-from ...services.user import event_service as user_event_service
 from ...services.user import service as user_service
 from ...services.verification_token import service as verification_token_service
-from ...typing import UserID
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_error, flash_notice, flash_success
 from ...util.framework.templating import templated
 from ...util.views import redirect_to, respond_no_content
 
-from ..authorization.registry import permission_registry
 from ..core_admin.authorization import AdminPermission
 
 from .forms import LoginForm, RequestPasswordResetForm, ResetPasswordForm, \
     UpdatePasswordForm
-from . import session as user_session
+from . import service, session as user_session
 
 
 blueprint = create_blueprint('authentication', __name__)
@@ -56,7 +52,7 @@ def _get_current_user(is_admin_mode: bool) -> CurrentUser:
     if user is None:
         return CurrentUser.create_anonymous()
 
-    permissions = _get_permissions_for_user(user.id)
+    permissions = service.get_permissions_for_user(user.id)
 
     if is_admin_mode and (AdminPermission.access not in permissions):
         # The user lacks the admin access permission which is
@@ -112,7 +108,7 @@ def login():
     in_admin_mode = get_site_mode().is_admin()
 
     if in_admin_mode:
-        permissions = _get_permissions_for_user(user.id)
+        permissions = service.get_permissions_for_user(user.id)
         if AdminPermission.access not in permissions:
             # The user lacks the admin access permission which is required
             # to enter the admin area.
@@ -146,18 +142,10 @@ def login():
             'No session token found for user %s on attempted login.', user)
         abort(500)
 
-    _create_login_event(user.id)
+    service.create_login_event(user.id, request.remote_addr)
 
     user_session.start(user.id, session_token.token, permanent=permanent)
     flash_success('Erfolgreich eingeloggt als {}.', user.screen_name)
-
-
-def _create_login_event(user_id: UserID) -> None:
-    data = {
-        'ip_address': request.remote_addr,
-    }
-
-    user_event_service.create_event('user-logged-in', user_id, data)
 
 
 @blueprint.route('/logout', methods=['POST'])
@@ -296,8 +284,3 @@ def _get_current_user_or_404():
         abort(404)
 
     return user
-
-
-def _get_permissions_for_user(user_id):
-    permission_ids = authorization_service.get_permission_ids_for_user(user_id)
-    return permission_registry.get_enum_members(permission_ids)
