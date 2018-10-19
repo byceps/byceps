@@ -58,7 +58,7 @@ def _get_current_user(is_admin_mode: bool) -> CurrentUser:
 
     permissions = _get_permissions_for_user(user.id)
 
-    if is_admin_mode and not _has_admin_access(permissions):
+    if is_admin_mode and (AdminPermission.access not in permissions):
         # The user lacks the admin access permission which is
         # required to enter the admin area.
         return CurrentUser.create_anonymous()
@@ -113,7 +113,7 @@ def login():
 
     if in_admin_mode:
         permissions = _get_permissions_for_user(user.id)
-        if not _has_admin_access(permissions):
+        if AdminPermission.access not in permissions:
             # The user lacks the admin access permission which is required
             # to enter the admin area.
             abort(403)
@@ -301,11 +301,6 @@ def _get_current_user_or_404():
 def _get_permissions_for_user(user_id):
     permission_ids = authorization_service.get_permission_ids_for_user(user_id)
     return permission_registry.get_enum_members(permission_ids)
-
-
-def _has_admin_access(permissions):
-    """Return `True` if the permissions include administrator access."""
-    return AdminPermission.access in permissions
 
 
 def _is_admin_mode():
