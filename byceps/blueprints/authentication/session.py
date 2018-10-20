@@ -14,7 +14,7 @@ from ...services.authentication.exceptions import AuthenticationFailed
 from ...services.authentication.session import service as session_service
 from ...services.user import service as user_service
 from ...services.user.transfer.models import User
-from ...typing import UserID
+from ...typing import PartyID, UserID
 
 
 KEY_USER_ID = 'user_id'
@@ -37,12 +37,12 @@ def end() -> None:
     session.permanent = False
 
 
-def get_user() -> Optional[User]:
+def get_user(*, party_id: Optional[PartyID]=None) -> Optional[User]:
     """Return the current user if authenticated, `None` if not."""
     user_id = _get_user_id()
     auth_token = _get_auth_token()
 
-    return _load_user(user_id, auth_token)
+    return _load_user(user_id, auth_token, party_id=party_id)
 
 
 def _get_user_id() -> Optional[str]:
@@ -55,7 +55,8 @@ def _get_auth_token() -> Optional[str]:
     return session.get(KEY_USER_AUTH_TOKEN)
 
 
-def _load_user(user_id: Optional[str], auth_token: Optional[str]
+def _load_user(user_id: Optional[str], auth_token: Optional[str],
+               *, party_id: Optional[PartyID]=None
               ) -> Optional[User]:
     """Load the user with that ID.
 
@@ -67,7 +68,8 @@ def _load_user(user_id: Optional[str], auth_token: Optional[str]
     if user_id is None:
         return None
 
-    user = user_service.find_active_user(user_id, include_avatar=True)
+    user = user_service.find_active_user(user_id, include_avatar=True,
+                                         include_orga_flag_for_party_id=party_id)
 
     if user is None:
         return None
