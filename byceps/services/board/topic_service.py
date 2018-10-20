@@ -11,7 +11,7 @@ from typing import Optional, Set
 
 from flask_sqlalchemy import Pagination
 
-from ...database import db
+from ...database import db, Query
 from ...typing import UserID
 
 from ..authentication.session.models.current_user import CurrentUser
@@ -50,6 +50,17 @@ def find_topic_visible_for_user(topic_id: TopicID, user: CurrentUser
         .first()
 
 
+def paginate_topics(board_id: BoardID, user: CurrentUser, page: int,
+                    topics_per_page: int) -> Pagination:
+    """Paginate topics in that board, as visible for the user.
+
+    Pinned topics are returned first.
+    """
+    return _query_topics(user) \
+        .join(DbCategory).filter(DbCategory.board_id == board_id) \
+        .paginate(page, topics_per_page)
+
+
 def get_all_topic_ids_in_category(category_id: CategoryID) -> Set[TopicID]:
     """Return the IDs of all topics in the category."""
     rows = db.session \
@@ -66,8 +77,13 @@ def paginate_topics_of_category(category_id: CategoryID, user: CurrentUser,
 
     Pinned topics are returned first.
     """
-    return DbTopic.query \
+    return _query_topics(user) \
         .for_category(category_id) \
+        .paginate(page, topics_per_page)
+
+
+def _query_topics(user: CurrentUser) -> Query:
+    return DbTopic.query \
         .options(
             db.joinedload(DbTopic.category),
             db.joinedload(DbTopic.last_updated_by),
@@ -76,8 +92,7 @@ def paginate_topics_of_category(category_id: CategoryID, user: CurrentUser,
             db.joinedload(DbTopic.pinned_by),
         ) \
         .only_visible_for_user(user) \
-        .order_by(DbTopic.pinned.desc(), DbTopic.last_updated_at.desc()) \
-        .paginate(page, topics_per_page)
+        .order_by(DbTopic.pinned.desc(), DbTopic.last_updated_at.desc())
 
 
 def create_topic(category_id: CategoryID, creator_id: UserID, title: str,

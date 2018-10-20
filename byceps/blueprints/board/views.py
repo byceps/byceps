@@ -153,6 +153,36 @@ def mark_all_topics_in_category_as_viewed(category_id):
 # topic
 
 
+@blueprint.route('/topics', defaults={'page': 1})
+@blueprint.route('/topics/pages/<int:page>')
+@templated
+def topic_index(page):
+    """List latest topics in all categories."""
+    board_id = _get_board_id()
+    user = g.current_user
+
+    _require_board_access(board_id, user.id)
+
+    topics_per_page = _get_topics_per_page_value()
+
+    topics = board_topic_service.paginate_topics(board_id, user, page,
+                                                 topics_per_page)
+
+    topic_creator_ids = {t.creator_id for t in topics.items}
+    topic_creators = user_service.find_users(topic_creator_ids)
+    topic_creators_by_id = user_service.index_users_by_id(topic_creators)
+
+    for topic in topics.items:
+        topic.creator = topic_creators_by_id[topic.creator_id]
+        topic.contains_unseen_postings = not user.is_anonymous \
+            and board_last_view_service.contains_topic_unseen_postings(
+                topic, user.id)
+
+    return {
+        'topics': topics,
+    }
+
+
 @blueprint.route('/topics/<uuid:topic_id>', defaults={'page': 0})
 @blueprint.route('/topics/<uuid:topic_id>/pages/<int:page>')
 @templated
