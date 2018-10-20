@@ -30,8 +30,8 @@
             <div class="board-category-description">{{ category.description }}</div>
           </a>
         </td>
-        <td class="centered bignumber">{{ category.topic_count }}</td>
-        <td class="centered bignumber">{{ category.posting_count }}</td>
+        <td class="centered bignumber">{{ category.topic_count|separate_thousands }}</td>
+        <td class="centered bignumber">{{ category.posting_count|separate_thousands }}</td>
         <td class="nowrap">
           {%- if category.last_posting_updated_at and category.last_posting_updated_by -%}
             {{ render_datetime(category.last_posting_updated_at) }}<br>
