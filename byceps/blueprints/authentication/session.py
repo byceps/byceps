@@ -39,7 +39,10 @@ def end() -> None:
 
 def get_user() -> Optional[User]:
     """Return the current user if authenticated, `None` if not."""
-    return _load_user(_get_user_id(), _get_auth_token())
+    user_id = _get_user_id()
+    auth_token = _get_auth_token()
+
+    return _load_user(user_id, auth_token)
 
 
 def _get_user_id() -> Optional[str]:
