@@ -22,8 +22,6 @@ class CurrentUser:
     def __init__(self, user: Union[AnonymousUser, DbUser], is_anonymous: bool,
                  avatar_url: Optional[str], is_orga: bool,
                  permissions: Set[Enum]) -> None:
-        self._user = user
-
         self.id = user.id
         self.screen_name = user.screen_name if not is_anonymous else None
         self.is_active = user.enabled if not is_anonymous else False
@@ -78,6 +76,3 @@ class CurrentUser:
 
     def __eq__(self, other) -> bool:
         return (other is not None) and (self.id == other.id)
-
-    def __hash__(self) -> str:
-        return hash(self._user)
