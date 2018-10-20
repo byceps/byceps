@@ -9,7 +9,7 @@ byceps.blueprints.board.views
 from attr import attrib, attrs
 from flask import abort, current_app, g, redirect, request, url_for
 
-from ...services.board import \
+from ...services.board import access_control_service, \
     category_service as board_category_service, \
     last_view_service as board_last_view_service, \
     posting_service as board_posting_service, \
@@ -76,10 +76,12 @@ class CategoryWithLastUpdateAndUnseenFlag(CategoryWithLastUpdate):
 def category_index():
     """List categories."""
     board_id = _get_board_id()
+    user = g.current_user
+
+    _require_board_access(board_id, user.id)
+
     categories = board_category_service.get_categories_with_last_updates(
         board_id)
-
-    user = g.current_user
 
     categories_with_flag = []
     for category in categories:
@@ -103,11 +105,13 @@ def category_index():
 def category_view(slug, page):
     """List latest topics in the category."""
     board_id = _get_board_id()
+    user = g.current_user
+
+    _require_board_access(board_id, user.id)
+
     category = board_category_service.find_category_by_slug(board_id, slug)
     if category is None:
         abort(404)
-
-    user = g.current_user
 
     if not user.is_anonymous:
         board_last_view_service.mark_category_as_just_viewed(category.id,
@@ -161,8 +165,12 @@ def topic_view(topic_id, page):
     if topic is None:
         abort(404)
 
-    if topic.category.board_id != _get_board_id():
+    board_id = _get_board_id()
+
+    if topic.category.board_id != board_id:
         abort(404)
+
+    _require_board_access(board_id, user.id)
 
     # Copy last view timestamp for later use to compare postings
     # against it.
@@ -722,8 +730,12 @@ def _get_category_or_404(category_id):
     if category is None:
         abort(404)
 
-    if category.board_id != _get_board_id():
+    board_id = _get_board_id()
+
+    if category.board_id != board_id:
         abort(404)
+
+    _require_board_access(board_id, g.current_user.id)
 
     return category
 
@@ -734,8 +746,12 @@ def _get_topic_or_404(topic_id):
     if topic is None:
         abort(404)
 
-    if topic.category.board_id != _get_board_id():
+    board_id = _get_board_id()
+
+    if topic.category.board_id != board_id:
         abort(404)
+
+    _require_board_access(board_id, g.current_user.id)
 
     return topic
 
@@ -746,10 +762,21 @@ def _get_posting_or_404(posting_id):
     if posting is None:
         abort(404)
 
-    if posting.topic.category.board_id != _get_board_id():
+    board_id = _get_board_id()
+
+    if posting.topic.category.board_id != board_id:
         abort(404)
 
+    _require_board_access(board_id, g.current_user.id)
+
     return posting
+
+
+def _require_board_access(board_id, user_id):
+    has_access = access_control_service.has_user_access_to_board(user_id,
+                                                                 board_id)
+    if not has_access:
+        abort(404)
 
 
 def calculate_posting_page_number(posting):
