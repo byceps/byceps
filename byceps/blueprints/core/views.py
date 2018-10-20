@@ -67,6 +67,7 @@ def provide_site_mode():
     g.site_mode = site_mode
 
     # current party and brand
+    party_id = None
     if site_mode.is_public():
         party_id = config.get_current_party_id()
 
@@ -74,10 +75,12 @@ def provide_site_mode():
         if party is None:
             raise Exception('Unknown party ID "{}".'.format(party_id))
 
+        party_id = party.id
+
         g.party_id = party.id
         g.brand_id = party.brand_id
 
     # current user
     is_admin_mode = site_mode.is_admin()
     g.current_user = authentication_blueprint_service \
-        .get_current_user(is_admin_mode)
+        .get_current_user(is_admin_mode, party_id=party_id)

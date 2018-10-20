@@ -9,16 +9,19 @@ byceps.services.authentication.session.models.current_user
 from enum import Enum
 from typing import Optional, Set, Union
 
+from .....services.orga_team import service as orga_team_service
 from .....services.user.models.user import AnonymousUser, User as DbUser
 from .....services.user import service as user_service
 from .....services.user.transfer.models import User
 from .....services.user_avatar import service as user_avatar_service
+from .....typing import PartyID
 
 
 class CurrentUser:
 
     def __init__(self, user: Union[AnonymousUser, DbUser], is_anonymous: bool,
-                 avatar_url: Optional[str], permissions: Set[Enum]) -> None:
+                 avatar_url: Optional[str], is_orga: bool,
+                 permissions: Set[Enum]) -> None:
         self._user = user
 
         self.id = user.id
@@ -27,6 +30,7 @@ class CurrentUser:
         self.is_anonymous = is_anonymous
 
         self.avatar_url = avatar_url
+        self.is_orga = is_orga
 
         self.permissions = permissions
 
@@ -35,21 +39,23 @@ class CurrentUser:
         user = user_service.get_anonymous_user()
         is_anonymous = True
         avatar_url = None
+        is_orga = False
         permissions = frozenset()
 
-        return CurrentUser(user, is_anonymous, avatar_url, permissions)
+        return CurrentUser(user, is_anonymous, avatar_url, is_orga, permissions)
 
     @classmethod
-    def create_from_user(self, user: DbUser, permissions: Set[Enum]
+    def create_from_user(self, user: DbUser, permissions: Set[Enum],
+                         *, party_id: Optional[PartyID]=None
                         ) -> 'CurrentUser':
         is_anonymous = False
         avatar_url = user_avatar_service.get_avatar_url_for_user(user.id)
+        if party_id is not None:
+            is_orga = orga_team_service.is_orga_for_party(user.id, party_id)
+        else:
+            is_orga = False
 
-        return CurrentUser(user, is_anonymous, avatar_url, permissions)
-
-    @property
-    def is_orga(self) -> bool:
-        return self._user.is_orga
+        return CurrentUser(user, is_anonymous, avatar_url, is_orga, permissions)
 
     def has_permission(self, permission: Enum) -> bool:
         return permission in self.permissions
@@ -60,7 +66,6 @@ class CurrentUser:
     def to_dto(self) -> User:
         suspended = False  # Current user cannot be suspended.
         deleted = False  # Current user cannot be deleted.
-        is_orga = False  # Information is deliberately not obtained here.
 
         return User(
             self.id,
@@ -68,7 +73,7 @@ class CurrentUser:
             suspended,
             deleted,
             self.avatar_url,
-            is_orga,
+            self.is_orga,
         )
 
     def __eq__(self, other) -> bool:
