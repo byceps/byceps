@@ -14,6 +14,8 @@ from ... import config
 from ...util.framework.blueprint import create_blueprint
 from ...util.navigation import Navigation
 
+from ..authentication import service as authentication_blueprint_service
+
 
 blueprint = create_blueprint('core', __name__)
 
@@ -59,4 +61,10 @@ def is_current_page(nav_item_path, current_page=None):
 
 @blueprint.before_app_request
 def provide_site_mode():
-    g.site_mode = config.get_site_mode()
+    site_mode = config.get_site_mode()
+
+    g.site_mode = site_mode
+
+    is_admin_mode = site_mode.is_admin()
+    g.current_user = authentication_blueprint_service \
+        .get_current_user(is_admin_mode)

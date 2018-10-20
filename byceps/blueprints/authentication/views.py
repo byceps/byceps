@@ -35,17 +35,6 @@ blueprint = create_blueprint('authentication', __name__)
 
 
 # -------------------------------------------------------------------- #
-# current user
-
-
-@blueprint.before_app_request
-def before_request():
-    is_admin_mode = get_site_mode().is_admin()
-
-    g.current_user = service.get_current_user(is_admin_mode)
-
-
-# -------------------------------------------------------------------- #
 # log in/out
 
 
