@@ -36,16 +36,10 @@ def view_subscriptions(brand_id):
     """Show user subscription states for that brand."""
     brand = _get_brand_or_404(brand_id)
 
-    subscription_states = list(newsletter_service
-        .get_user_subscription_states_for_brand(brand.id))
-    subscription_states.sort(
-        key=lambda user_and_state: user_and_state[0].screen_name.lower())
-
-    totals = newsletter_service.count_subscriptions_by_state(subscription_states)
+    totals = newsletter_service.count_subscriptions_by_state(brand.id)
 
     return {
         'brand': brand,
-        'subscription_states': subscription_states,
         'totals': totals,
         'State': SubscriptionState,
     }

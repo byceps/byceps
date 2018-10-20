@@ -13,7 +13,6 @@ from typing import Any, Dict, Iterable, Iterator, Sequence, Set, Tuple, Union
 from ...database import BaseQuery, db
 from ...typing import BrandID, UserID
 
-from ..user import service as user_service
 from ..user.models.user import User as DbUser
 from ..user.transfer.models import User
 
@@ -99,32 +98,32 @@ def _get_subscriber_details(user_ids: Set[UserID]) -> Iterator[Subscriber]:
         yield Subscriber(row.screen_name, row.email_address)
 
 
-def get_user_subscription_states_for_brand(brand_id: BrandID) \
-        -> Iterator[Tuple[User, SubscriptionState]]:
-    """Return subscriptions as (user, state) pairs for the brand."""
-    subscription_states = _build_query_for_current_state() \
-        .filter_by(brand_id=brand_id) \
+def count_subscriptions_by_state(brand_id: BrandID
+                                ) -> Dict[Union[SubscriptionState, str], int]:
+    """Return the totals for each state as well as an overall total."""
+    rows = _build_query_for_current_state(brand_id) \
         .all()
 
-    user_ids = set(map(itemgetter(0), subscription_states))
-    users = user_service.find_users(user_ids, include_avatars=True)
-    users_by_id = user_service.index_users_by_id(users)
+    totals = {state: 0 for state in SubscriptionState}
 
-    for user_id, brand_id, state_name in subscription_states:
+    for state_name, count in rows:
         state = SubscriptionState[state_name]
-        yield users_by_id[user_id], state
+        totals[state] = count
+
+    totals['total'] = sum(totals.values())
+
+    return totals
 
 
-def _build_query_for_current_state() -> BaseQuery:
-    """Build a query to return the most recent subscription state
-    (grouped by user and brand).
+def _build_query_for_current_state(brand_id: BrandID) -> BaseQuery:
+    """Build a query to return the number of currently requested and
+    declined subscription states for that brand.
 
     The generated SQL should be equivalent to this:
 
         SELECT
-          nso.user_id,
-          nso.brand_id,
-          nso.state
+          nso.state,
+          COUNT(nso.state)
         FROM newsletter_subscriptions AS nso
           JOIN (
             SELECT
@@ -139,20 +138,28 @@ def _build_query_for_current_state() -> BaseQuery:
             ON nso.user_id = nsi.user_id
               AND nso.brand_id = nsi.brand_id
               AND nso.expressed_at = nsi.latest_expressed_at
+        WHERE brand_id = {brand_id}
+        GROUP BY
+          brand_id,
+          state
     """
     subquery = _build_query_for_latest_expressed_at().subquery()
 
     return db.session \
         .query(
-            Subscription.user_id,
-            Subscription.brand_id,
-            Subscription._state
+            Subscription._state,
+            db.func.count(Subscription._state),
         ) \
         .join(subquery, db.and_(
             Subscription.user_id == subquery.c.user_id,
             Subscription.brand_id == subquery.c.brand_id,
             Subscription.expressed_at == subquery.c.latest_expressed_at
-        ))
+        )) \
+        .filter_by(brand_id=brand_id) \
+        .group_by(
+            Subscription.brand_id,
+            Subscription._state,
+        )
 
 
 def _build_query_for_latest_expressed_at() -> BaseQuery:
@@ -175,20 +182,6 @@ def _build_query_for_latest_expressed_at() -> BaseQuery:
             Subscription.user_id,
             Subscription.brand_id
         )
-
-
-def count_subscriptions_by_state(
-        subscriptions: Iterable[Tuple[Any, SubscriptionState]]
-        ) -> Dict[Union[SubscriptionState, str], int]:
-    """Return the totals for each state as well as an overall total."""
-    counter = Counter(state for _, state in subscriptions)
-
-    totals = {}
-    for state in SubscriptionState:
-        totals[state] = counter.get(state, 0)
-    totals['total'] = sum(totals.values())
-
-    return totals
 
 
 def get_subscription_state(user_id: UserID, brand_id: BrandID
