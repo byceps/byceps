@@ -137,9 +137,7 @@ def category_view(slug, page):
 @blueprint.route('/categories/<category_id>/mark_all_topics_as_read', methods=['POST'])
 @respond_no_content_with_location
 def mark_all_topics_in_category_as_viewed(category_id):
-    category = board_category_service.find_category_by_id(category_id)
-    if category is None:
-        abort(404)
+    category = _get_category_or_404(category_id)
 
     board_last_view_service.mark_all_topics_in_category_as_viewed(
         category_id, g.current_user.id)
@@ -228,9 +226,7 @@ def add_unseen_flag_to_postings(postings, user, last_viewed_at):
 @templated
 def topic_create_form(category_id, erroneous_form=None):
     """Show a form to create a topic in the category."""
-    category = board_category_service.find_category_by_id(category_id)
-    if category is None:
-        abort(404)
+    category = _get_category_or_404(category_id)
 
     form = erroneous_form if erroneous_form else TopicCreateForm()
 
@@ -249,9 +245,7 @@ def topic_create(category_id):
     if not form.validate():
         return topic_create_form(category_id, form)
 
-    category = board_category_service.find_category_by_id(category_id)
-    if category is None:
-        abort(404)
+    category = _get_category_or_404(category_id)
 
     creator = g.current_user
     title = form.title.data.strip()
@@ -477,9 +471,7 @@ def topic_move(topic_id):
     if not new_category_id:
         abort(400, 'No target category ID given.')
 
-    new_category = board_category_service.find_category_by_id(new_category_id)
-    if new_category is None:
-        abort(404)
+    new_category = _get_category_or_404(new_category_id)
 
     old_category = topic.category
 
@@ -722,6 +714,15 @@ def _get_board_id():
         abort(404)
 
     return board_id
+
+
+def _get_category_or_404(category_id):
+    category = board_category_service.find_category_by_id(category_id)
+
+    if category is None:
+        abort(404)
+
+    return category
 
 
 def _get_topic_or_404(topic_id):
