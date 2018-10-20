@@ -19,6 +19,7 @@ class Board(db.Model):
 
     id = db.Column(db.Unicode(40), primary_key=True)
     brand_id = db.Column(db.Unicode(20), db.ForeignKey('brands.id'), index=True, nullable=False)
+    access_restricted = db.Column(db.Boolean, default=False, nullable=False)
 
     def __init__(self, board_id: BoardID, brand_id: BrandID) -> None:
         self.id = board_id
