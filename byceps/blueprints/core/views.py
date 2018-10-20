@@ -11,6 +11,7 @@ from datetime import date, datetime
 from flask import g, render_template
 
 from ... import config
+from ...services.party import service as party_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.navigation import Navigation
 
@@ -61,10 +62,22 @@ def is_current_page(nav_item_path, current_page=None):
 
 @blueprint.before_app_request
 def provide_site_mode():
+    # site mode
     site_mode = config.get_site_mode()
-
     g.site_mode = site_mode
 
+    # current party and brand
+    if site_mode.is_public():
+        party_id = config.get_current_party_id()
+
+        party = party_service.find_party(party_id)
+        if party is None:
+            raise Exception('Unknown party ID "{}".'.format(party_id))
+
+        g.party_id = party.id
+        g.brand_id = party.brand_id
+
+    # current user
     is_admin_mode = site_mode.is_admin()
     g.current_user = authentication_blueprint_service \
         .get_current_user(is_admin_mode)
