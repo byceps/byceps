@@ -746,6 +746,9 @@ def _get_posting_or_404(posting_id):
     if posting is None:
         abort(404)
 
+    if posting.topic.category.board_id != _get_board_id():
+        abort(404)
+
     return posting
 
 
