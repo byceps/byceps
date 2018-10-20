@@ -60,8 +60,8 @@ def get_all_topic_ids_in_category(category_id: CategoryID) -> Set[TopicID]:
     return {row[0] for row in rows}
 
 
-def paginate_topics(category_id: CategoryID, user: CurrentUser, page: int,
-                    topics_per_page: int) -> Pagination:
+def paginate_topics_of_category(category_id: CategoryID, user: CurrentUser,
+                                page: int, topics_per_page: int) -> Pagination:
     """Paginate topics in that category, as visible for the user.
 
     Pinned topics are returned first.

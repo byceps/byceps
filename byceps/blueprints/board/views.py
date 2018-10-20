@@ -119,8 +119,8 @@ def category_view(slug, page):
 
     topics_per_page = _get_topics_per_page_value()
 
-    topics = board_topic_service.paginate_topics(category.id, user, page,
-                                                 topics_per_page)
+    topics = board_topic_service.paginate_topics_of_category(
+        category.id, user, page, topics_per_page)
 
     topic_creator_ids = {t.creator_id for t in topics.items}
     topic_creators = user_service.find_users(topic_creator_ids)
