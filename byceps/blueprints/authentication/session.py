@@ -64,7 +64,7 @@ def _load_user(user_id: Optional[str], auth_token: Optional[str]
     if user_id is None:
         return None
 
-    user = user_service.find_active_user(user_id)
+    user = user_service.find_active_user(user_id, include_avatar=True)
 
     if user is None:
         return None
