@@ -10,7 +10,7 @@ from enum import Enum
 from typing import Optional, Set, Union
 
 from .....services.orga_team import service as orga_team_service
-from .....services.user.models.user import AnonymousUser, User as DbUser
+from .....services.user.models.user import AnonymousUser
 from .....services.user import service as user_service
 from .....services.user.transfer.models import User
 from .....services.user_avatar import service as user_avatar_service
@@ -19,7 +19,7 @@ from .....typing import PartyID
 
 class CurrentUser:
 
-    def __init__(self, user: Union[AnonymousUser, DbUser], is_anonymous: bool,
+    def __init__(self, user: Union[AnonymousUser, User], is_anonymous: bool,
                  avatar_url: Optional[str], is_orga: bool,
                  permissions: Set[Enum]) -> None:
         self.id = user.id
@@ -43,7 +43,7 @@ class CurrentUser:
         return CurrentUser(user, is_anonymous, avatar_url, is_orga, permissions)
 
     @classmethod
-    def create_from_user(self, user: DbUser, permissions: Set[Enum],
+    def create_from_user(self, user: User, permissions: Set[Enum],
                          *, party_id: Optional[PartyID]=None
                         ) -> 'CurrentUser':
         is_anonymous = False

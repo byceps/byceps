@@ -12,8 +12,8 @@ from flask import session
 
 from ...services.authentication.exceptions import AuthenticationFailed
 from ...services.authentication.session import service as session_service
-from ...services.user.models.user import User
 from ...services.user import service as user_service
+from ...services.user.transfer.models import User
 from ...typing import UserID
 
 
@@ -64,7 +64,7 @@ def _load_user(user_id: Optional[str], auth_token: Optional[str]
     if user_id is None:
         return None
 
-    user = user_service.find_active_db_user(user_id)
+    user = user_service.find_active_user(user_id)
 
     if user is None:
         return None
