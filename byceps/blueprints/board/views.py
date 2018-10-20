@@ -241,11 +241,11 @@ def topic_create_form(category_id, erroneous_form=None):
 @permission_required(BoardTopicPermission.create)
 def topic_create(category_id):
     """Create a topic in the category."""
+    category = _get_category_or_404(category_id)
+
     form = TopicCreateForm(request.form)
     if not form.validate():
-        return topic_create_form(category_id, form)
-
-    category = _get_category_or_404(category_id)
+        return topic_create_form(category.id, form)
 
     creator = g.current_user
     title = form.title.data.strip()
