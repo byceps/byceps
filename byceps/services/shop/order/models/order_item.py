@@ -37,7 +37,7 @@ class OrderItem(db.Model):
         # because order items are created together with the order – and
         # until the order is created, there is no order number assigned.
         self.order = order
-        self.article = article
+        self.article_number = article.item_number
         self.description = article.description
         self.price = article.price
         self.tax_rate = article.tax_rate
