@@ -34,8 +34,8 @@
         <td><a href="{{ url_for('.board_view', board_id=board_id) }}"><strong>{{ board_id }}</strong></a></td>
         {%- with stats = stats_by_board_id[board_id] %}
         <td class="centered bignumber">{{ stats.category_count }}</td>
-        <td class="centered bignumber">{{ '{:n}'.format(stats.topic_count) }}</td>
-        <td class="centered bignumber">{{ '{:n}'.format(stats.posting_count) }}</td>
+        <td class="centered bignumber">{{ stats.topic_count|separate_thousands }}</td>
+        <td class="centered bignumber">{{ stats.posting_count|separate_thousands }}</td>
         {%- endwith %}
       </tr>
     {%- else %}

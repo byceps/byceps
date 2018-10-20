@@ -37,6 +37,11 @@ def _wrap_markup_on_autoescape(eval_ctx, value):
     return Markup(value) if eval_ctx.autoescape else value
 
 
+def separate_thousands(number: int) -> str:
+    """Insert locale-specific characters to separate thousands."""
+    return '{:n}'.format(number)
+
+
 def register(app):
     """Make functions available as template filters."""
     functions = [
@@ -51,6 +56,7 @@ def register(app):
         dim,
         fallback,
         money.format_euro_amount,
+        separate_thousands,
     ]
 
     for f in functions:
