@@ -1,0 +1,38 @@
+{% extends 'layouts/shop_shipping_admin.html' %}
+{% set current_page_party = party %}
+{% set title = 'Versandartikel' %}
+
+{% block body %}
+
+  <h1>{{ title }}</h1>
+
+  <table class="index">
+    <thead>
+      <tr>
+        <th>Artikelnummer</th>
+        <th>Beschreibung</th>
+        <th class="number">Bezahlt</th>
+        <th class="number">Offen</th>
+        <th class="number">Summe</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for article_to_ship in articles_to_ship %}
+      <tr>
+        <td>{{ article_to_ship.article_number }}</td>
+        <td>{{ article_to_ship.description }}</td>
+        <td class="number">{{ article_to_ship.quantity_paid }}</td>
+        <td class="number">{{ article_to_ship.quantity_open }}</td>
+        <td class="number">{{ article_to_ship.quantity_total }}</td>
+      </tr>
+      {%- else %}
+      <tr>
+        <td colspan="5" class="centered">
+          <p class="dimmed">Derzeit sind keine Artikel bestellt oder bezahlt, die versendet werden müssen.</p>
+        </td>
+      </tr>
+      {%- endfor %}
+    </tbody>
+  </table>
+
+{%- endblock %}
