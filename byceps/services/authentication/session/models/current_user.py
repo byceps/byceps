@@ -24,7 +24,7 @@ class CurrentUser:
                  permissions: Set[Enum]) -> None:
         self.id = user.id
         self.screen_name = user.screen_name if not is_anonymous else None
-        self.is_active = user.enabled if not is_anonymous else False
+        self.is_active = not is_anonymous
         self.is_anonymous = is_anonymous
 
         self.avatar_url = avatar_url
