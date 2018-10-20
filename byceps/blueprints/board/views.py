@@ -722,6 +722,9 @@ def _get_category_or_404(category_id):
     if category is None:
         abort(404)
 
+    if category.board_id != _get_board_id():
+        abort(404)
+
     return category
 
 
