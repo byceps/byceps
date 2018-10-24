@@ -61,7 +61,7 @@ def index_for_party(party_id, page):
     search_term = request.args.get('search_term', default='').strip()
 
     only_payment_state = request.args.get('only_payment_state',
-                                          type=PaymentState.__getitem__)
+                                          type=PaymentState.__members__.get)
 
     def _str_to_bool(value):
         valid_values = {
