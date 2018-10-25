@@ -28,13 +28,13 @@ class OrderItem(db.Model):
     article_number = db.Column(db.Unicode(20), db.ForeignKey('shop_articles.item_number'), index=True, nullable=False)
     article = db.relationship(Article, backref='order_items')
     description = db.Column(db.Unicode(80), nullable=False)
-    price = db.Column(db.Numeric(6, 2), nullable=False)
+    unit_price = db.Column(db.Numeric(6, 2), nullable=False)
     tax_rate = db.Column(db.Numeric(3, 3), nullable=False)
     quantity = db.Column(db.Integer, db.CheckConstraint('quantity > 0'), nullable=False)
     shipping_required = db.Column(db.Boolean, nullable=False)
 
     def __init__(self, order: Order, article_number: ArticleNumber,
-                 description: str, price: Decimal, tax_rate: Decimal,
+                 description: str, unit_price: Decimal, tax_rate: Decimal,
                  quantity: int, shipping_required: bool) -> None:
         # Require order instance rather than order number as argument
         # because order items are created together with the order – and
@@ -42,7 +42,7 @@ class OrderItem(db.Model):
         self.order = order
         self.article_number = article_number
         self.description = description
-        self.price = price
+        self.unit_price = unit_price
         self.tax_rate = tax_rate
         self.quantity = quantity
         self.shipping_required = shipping_required
@@ -59,11 +59,6 @@ class OrderItem(db.Model):
             quantity,
             article.shipping_required,
         )
-
-
-    @property
-    def unit_price(self) -> Decimal:
-        return self.price
 
     @property
     def line_price(self) -> Decimal:
