@@ -52,12 +52,10 @@ def find_topic_visible_for_user(topic_id: TopicID, user: CurrentUser
 
 def paginate_topics(board_id: BoardID, user: CurrentUser, page: int,
                     topics_per_page: int) -> Pagination:
-    """Paginate topics in that board, as visible for the user.
-
-    Pinned topics are returned first.
-    """
+    """Paginate topics in that board, as visible for the user."""
     return _query_topics(user) \
         .join(DbCategory).filter(DbCategory.board_id == board_id) \
+        .order_by(DbTopic.last_updated_at.desc()) \
         .paginate(page, topics_per_page)
 
 
@@ -79,6 +77,7 @@ def paginate_topics_of_category(category_id: CategoryID, user: CurrentUser,
     """
     return _query_topics(user) \
         .for_category(category_id) \
+        .order_by(DbTopic.pinned.desc(), DbTopic.last_updated_at.desc()) \
         .paginate(page, topics_per_page)
 
 
@@ -91,8 +90,7 @@ def _query_topics(user: CurrentUser) -> Query:
             db.joinedload(DbTopic.locked_by),
             db.joinedload(DbTopic.pinned_by),
         ) \
-        .only_visible_for_user(user) \
-        .order_by(DbTopic.pinned.desc(), DbTopic.last_updated_at.desc())
+        .only_visible_for_user(user)
 
 
 def create_topic(category_id: CategoryID, creator_id: UserID, title: str,
