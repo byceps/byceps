@@ -9,7 +9,6 @@ from decimal import Decimal
 
 from freezegun import freeze_time
 
-from testfixtures.shop_article import create_article
 from testfixtures.shop_order import create_order, create_order_item
 
 from tests.base import CONFIG_FILENAME_TEST_ADMIN
@@ -64,34 +63,30 @@ class ExportTestCase(ShopTestBase):
         return admin
 
     def create_articles(self):
-        self.article_table = self.build_article(
+        self.article_table = self.create_article(
             'LR-08-A00002',
             'Tisch (zur Miete), 200 x 80 cm',
             Decimal('20.00'),
             Decimal('0.19'),
         )
 
-        self.article_bungalow = self.build_article(
+        self.article_bungalow = self.create_article(
             'LR-08-A00003',
             'LANresort 2015: Bungalow 4 Plätze',
             Decimal('355.00'),
             Decimal('0.07'),
         )
 
-        self.article_guest_fee = self.build_article(
+        self.article_guest_fee = self.create_article(
             'LR-08-A00006',
             'Touristische Gästeabgabe (BispingenCard), pauschal für 4 Personen',
             Decimal('6.00'),
             Decimal('0.19'),
         )
 
-        self.db.session.add(self.article_table)
-        self.db.session.add(self.article_bungalow)
-        self.db.session.add(self.article_guest_fee)
-        self.db.session.commit()
-
-    def build_article(self, item_number, description, price, tax_rate):
-        return create_article(self.shop.id,
+    def create_article(self, item_number, description, price, tax_rate):
+        return super().create_article(
+            self.shop.id,
             item_number=item_number,
             description=description,
             price=price,
