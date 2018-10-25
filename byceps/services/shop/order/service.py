@@ -105,7 +105,7 @@ def _add_article_to_order(order: DbOrder, article: Article, quantity: int
     Return the resulting order item (so it can be added to the database
     session).
     """
-    return DbOrderItem(order, article, quantity)
+    return DbOrderItem.from_article(order, article, quantity)
 
 
 def set_invoiced_flag(order: DbOrder, initiator_id: UserID) -> None:

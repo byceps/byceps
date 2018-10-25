@@ -48,4 +48,4 @@ def create_order(shop_id, placed_by, *, order_number=ANY_ORDER_NUMBER,
 
 
 def create_order_item(order, article, quantity):
-    return OrderItem(order, article, quantity)
+    return OrderItem.from_article(order, article, quantity)
