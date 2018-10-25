@@ -124,8 +124,8 @@ def assert_order(order, order_number, item_quantity):
     assert len(order.items) == item_quantity
 
 
-def assert_order_item(order_item, article_id, price, tax_rate, quantity):
+def assert_order_item(order_item, article_id, unit_price, tax_rate, quantity):
     assert order_item.article.id == article_id
-    assert order_item.price == price
+    assert order_item.unit_price == unit_price
     assert order_item.tax_rate == tax_rate
     assert order_item.quantity == quantity

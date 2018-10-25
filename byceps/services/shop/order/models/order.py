@@ -115,7 +115,8 @@ class Order(db.Model):
         return {item.article for item in self.items}
 
     def calculate_total_price(self) -> Decimal:
-        return Decimal(sum(item.price * item.quantity for item in self.items))
+        return Decimal(sum(
+            item.unit_price * item.quantity for item in self.items))
 
     @property
     def is_invoiced(self) -> bool:
