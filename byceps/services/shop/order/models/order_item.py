@@ -31,11 +31,13 @@ class OrderItem(db.Model):
     unit_price = db.Column(db.Numeric(6, 2), nullable=False)
     tax_rate = db.Column(db.Numeric(3, 3), nullable=False)
     quantity = db.Column(db.Integer, db.CheckConstraint('quantity > 0'), nullable=False)
+    line_price = db.Column(db.Numeric(7, 2), nullable=False)
     shipping_required = db.Column(db.Boolean, nullable=False)
 
     def __init__(self, order: Order, article_number: ArticleNumber,
                  description: str, unit_price: Decimal, tax_rate: Decimal,
-                 quantity: int, shipping_required: bool) -> None:
+                 quantity: int, line_price: Decimal, shipping_required: bool
+                ) -> None:
         # Require order instance rather than order number as argument
         # because order items are created together with the order – and
         # until the order is created, there is no order number assigned.
@@ -45,11 +47,14 @@ class OrderItem(db.Model):
         self.unit_price = unit_price
         self.tax_rate = tax_rate
         self.quantity = quantity
+        self.line_price = line_price
         self.shipping_required = shipping_required
 
     @classmethod
     def from_article(cls, order: Order, article: Article, quantity: int
                     ) -> 'OrderItem':
+        line_price = article.price * quantity
+
         return cls(
             order,
             article.item_number,
@@ -57,12 +62,9 @@ class OrderItem(db.Model):
             article.price,
             article.tax_rate,
             quantity,
+            line_price,
             article.shipping_required,
         )
-
-    @property
-    def line_price(self) -> Decimal:
-        return self.unit_price * self.quantity
 
     def to_transfer_object(self) -> OrderItemTransferObject:
         return OrderItemTransferObject(
