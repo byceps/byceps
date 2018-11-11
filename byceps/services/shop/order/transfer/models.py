@@ -75,4 +75,4 @@ class OrderItem:
     unit_price = attrib(type=Decimal)
     tax_rate = attrib(type=Decimal)
     quantity = attrib(type=int)
-    line_price = attrib(type=Decimal)
+    line_amount = attrib(type=Decimal)

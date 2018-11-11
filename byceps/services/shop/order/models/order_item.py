@@ -31,12 +31,12 @@ class OrderItem(db.Model):
     unit_price = db.Column(db.Numeric(6, 2), nullable=False)
     tax_rate = db.Column(db.Numeric(3, 3), nullable=False)
     quantity = db.Column(db.Integer, db.CheckConstraint('quantity > 0'), nullable=False)
-    line_price = db.Column(db.Numeric(7, 2), nullable=False)
+    line_amount = db.Column(db.Numeric(7, 2), nullable=False)
     shipping_required = db.Column(db.Boolean, nullable=False)
 
     def __init__(self, order: Order, article_number: ArticleNumber,
                  description: str, unit_price: Decimal, tax_rate: Decimal,
-                 quantity: int, line_price: Decimal, shipping_required: bool
+                 quantity: int, line_amount: Decimal, shipping_required: bool
                 ) -> None:
         # Require order instance rather than order number as argument
         # because order items are created together with the order – and
@@ -47,13 +47,13 @@ class OrderItem(db.Model):
         self.unit_price = unit_price
         self.tax_rate = tax_rate
         self.quantity = quantity
-        self.line_price = line_price
+        self.line_amount = line_amount
         self.shipping_required = shipping_required
 
     @classmethod
     def from_article(cls, order: Order, article: Article, quantity: int
                     ) -> 'OrderItem':
-        line_price = article.price * quantity
+        line_amount = article.price * quantity
 
         return cls(
             order,
@@ -62,7 +62,7 @@ class OrderItem(db.Model):
             article.price,
             article.tax_rate,
             quantity,
-            line_price,
+            line_amount,
             article.shipping_required,
         )
 
@@ -74,5 +74,5 @@ class OrderItem(db.Model):
             self.unit_price,
             self.tax_rate,
             self.quantity,
-            self.line_price,
+            self.line_amount,
         )
