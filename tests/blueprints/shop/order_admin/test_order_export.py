@@ -6,10 +6,16 @@
 import codecs
 from datetime import datetime
 from decimal import Decimal
+from unittest.mock import patch
 
 from freezegun import freeze_time
 
-from testfixtures.shop_order import create_order, create_order_item
+from byceps.services.shop.cart.models import Cart
+from byceps.services.shop.order.models.orderer import Orderer
+from byceps.services.shop.order import service as order_service
+from byceps.services.shop.order.transfer.models import PaymentMethod
+
+from testfixtures.shop_order import create_order
 
 from tests.base import CONFIG_FILENAME_TEST_ADMIN
 from tests.helpers import assign_permissions_to_user
@@ -22,18 +28,13 @@ class ExportTestCase(ShopTestBase):
         super().setUp(config_filename=CONFIG_FILENAME_TEST_ADMIN)
 
         self.admin = self.create_admin()
-        self.orderer = self.create_orderer()
 
         self.create_brand_and_party()
 
         self.shop = self.create_shop(self.party.id)
+        self.create_order_number_sequence(self.shop.id, 'LR-08-B', value=26)
         self.create_articles()
-        self.create_order()
-
-    def create_brand_and_party(self):
-        self.brand = self.create_brand('lanresort', 'LANresort')
-        self.party = self.create_party(self.brand.id, 'lanresort-2015',
-                                       'LANresort 2015')
+        self.order = self.create_order()
 
     @freeze_time('2015-04-15 09:54:18')
     def test_serialize_order(self):
@@ -63,21 +64,10 @@ class ExportTestCase(ShopTestBase):
 
         return admin
 
-    def create_orderer(self):
-        orderer = self.create_user_with_detail('Besteller',
-           email_address='h-w.mustermann@example.com')
-
-        orderer.detail.last_name = 'Mustermann'
-        orderer.detail.first_names = 'Hans-Werner'
-        orderer.detail.country = 'Deutschland'
-        orderer.detail.zip_code = '42000'
-        orderer.detail.city = 'Hauptstadt'
-        orderer.detail.street = 'Nebenstraße 23a'
-        orderer.detail.phone_number = '555-1234'
-
-        self.db.session.commit()
-
-        return orderer
+    def create_brand_and_party(self):
+        self.brand = self.create_brand('lanresort', 'LANresort')
+        self.party = self.create_party(self.brand.id, 'lanresort-2015',
+                                       'LANresort 2015')
 
     def create_articles(self):
         self.article_table = self.create_article(
@@ -110,21 +100,35 @@ class ExportTestCase(ShopTestBase):
             tax_rate=tax_rate,
             quantity=10)
 
-    def create_order(self):
-        self.order = create_order(self.party.id, self.orderer,
-                                  order_number='LR-08-B00027')
-        self.order.created_at = datetime(2015, 2, 26, 13, 26, 24)
-        self.db.session.add(self.order)
+    @patch('byceps.blueprints.shop_order.signals.order_placed.send')
+    def create_order(self, order_placed_mock):
+        orderer = self.create_orderer()
+        payment_method = PaymentMethod.bank_transfer
+        cart = self.create_cart()
+        created_at = datetime(2015, 2, 26, 13, 26, 24)
 
-        order_items = self.build_order_items()
-        self.db.session.add_all(order_items)
+        return order_service.create_order(self.shop.id, orderer, payment_method,
+                                          cart, created_at=created_at)
 
-        self.db.session.commit()
+    def create_orderer(self):
+        user = self.create_user('Besteller',
+                                email_address='h-w.mustermann@example.com')
 
-    def build_order_items(self):
-        for article, quantity in [
-            (self.article_bungalow, 1),
-            (self.article_guest_fee, 1),
-            (self.article_table, 2),
-        ]:
-            yield create_order_item(self.order, article, quantity)
+        return Orderer(
+            user.id,
+            'Hans-Werner',
+            'Mustermann',
+            'Deutschland',
+            '42000',
+            'Hauptstadt',
+            'Nebenstraße 23a'
+        )
+
+    def create_cart(self):
+        cart = Cart()
+
+        cart.add_item(self.article_bungalow, 1)
+        cart.add_item(self.article_guest_fee, 1)
+        cart.add_item(self.article_table, 2)
+
+        return cart
