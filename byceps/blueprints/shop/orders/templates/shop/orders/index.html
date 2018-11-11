@@ -29,7 +29,7 @@
       <tr>
         <td>{{ render_datetime(order.created_at) }}</td>
         <td><strong><a href="{{ url_for('.view', order_id=order.id) }}">{{ order.order_number }}</a></strong></td>
-        <td class="number">{{ order.total_price|format_euro_amount }}</td>
+        <td class="number">{{ order.total_amount|format_euro_amount }}</td>
         <td>{{ render_order_payment_state(order.payment_state) }}</td>
       </tr>
       {%- endfor %}

@@ -3,4 +3,4 @@
   Anzahl: {{ item.quantity }}
   Stückpreis: {{ item.unit_price|format_euro_amount }}
 {% endfor %}
-  Gesamtbetrag: {{ order.total_price|format_euro_amount }}
+  Gesamtbetrag: {{ order.total_amount|format_euro_amount }}

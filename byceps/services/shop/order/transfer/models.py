@@ -64,7 +64,7 @@ class Order:
     is_shipped = attrib(type=bool)
     cancelation_reason = attrib(type=str)
     items = attrib()  # List[OrderItem]
-    total_price = attrib(type=Decimal)
+    total_amount = attrib(type=Decimal)
 
 
 @attrs(frozen=True, slots=True)

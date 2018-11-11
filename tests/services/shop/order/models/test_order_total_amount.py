@@ -13,7 +13,7 @@ from testfixtures.user import create_user
 def test_without_any_items():
     order = create_order_with_items([])
 
-    actual = order.calculate_total_price()
+    actual = order.calculate_total_amount()
 
     assert_decimal_equal(actual, Decimal('0.00'))
 
@@ -23,7 +23,7 @@ def test_with_single_item():
         (Decimal('49.95'), 1),
     ])
 
-    actual = order.calculate_total_price()
+    actual = order.calculate_total_amount()
 
     assert_decimal_equal(actual, Decimal('49.95'))
 
@@ -35,7 +35,7 @@ def test_with_multiple_items():
         (Decimal('12.53'), 4),
     ])
 
-    actual = order.calculate_total_price()
+    actual = order.calculate_total_amount()
 
     assert_decimal_equal(actual, Decimal('206.17'))
 

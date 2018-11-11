@@ -114,7 +114,7 @@ class Order(db.Model):
         """Return the articles associated with this order."""
         return {item.article for item in self.items}
 
-    def calculate_total_price(self) -> Decimal:
+    def calculate_total_amount(self) -> Decimal:
         return Decimal(sum(item.line_amount for item in self.items))
 
     @property
@@ -154,7 +154,7 @@ class Order(db.Model):
             self.is_shipped,
             self.cancelation_reason,
             items,
-            self.calculate_total_price(),
+            self.calculate_total_amount(),
         )
 
     def __repr__(self) -> str:
