@@ -22,6 +22,7 @@ class ExportTestCase(ShopTestBase):
         super().setUp(config_filename=CONFIG_FILENAME_TEST_ADMIN)
 
         self.admin = self.create_admin()
+        self.orderer = self.create_orderer()
 
         self.create_brand_and_party()
 
@@ -62,6 +63,22 @@ class ExportTestCase(ShopTestBase):
 
         return admin
 
+    def create_orderer(self):
+        orderer = self.create_user_with_detail('Besteller',
+           email_address='h-w.mustermann@example.com')
+
+        orderer.detail.last_name = 'Mustermann'
+        orderer.detail.first_names = 'Hans-Werner'
+        orderer.detail.country = 'Deutschland'
+        orderer.detail.zip_code = '42000'
+        orderer.detail.city = 'Hauptstadt'
+        orderer.detail.street = 'Nebenstraße 23a'
+        orderer.detail.phone_number = '555-1234'
+
+        self.db.session.commit()
+
+        return orderer
+
     def create_articles(self):
         self.article_table = self.create_article(
             'LR-08-A00002',
@@ -94,10 +111,7 @@ class ExportTestCase(ShopTestBase):
             quantity=10)
 
     def create_order(self):
-        orderer = self.build_orderer()
-        self.db.session.add(orderer)
-
-        self.order = create_order(self.party.id, orderer,
+        self.order = create_order(self.party.id, self.orderer,
                                   order_number='LR-08-B00027')
         self.order.created_at = datetime(2015, 2, 26, 13, 26, 24)
         self.db.session.add(self.order)
@@ -106,19 +120,6 @@ class ExportTestCase(ShopTestBase):
         self.db.session.add_all(order_items)
 
         self.db.session.commit()
-
-    def build_orderer(self):
-        email_address = 'h-w.mustermann@example.com'
-        orderer = self.create_user_with_detail('Besteller',
-                                               email_address=email_address)
-        orderer.detail.last_name = 'Mustermann'
-        orderer.detail.first_names = 'Hans-Werner'
-        orderer.detail.country = 'Deutschland'
-        orderer.detail.zip_code = '42000'
-        orderer.detail.city = 'Hauptstadt'
-        orderer.detail.street = 'Nebenstraße 23a'
-        orderer.detail.phone_number = '555-1234'
-        return orderer
 
     def build_order_items(self):
         for article, quantity in [
