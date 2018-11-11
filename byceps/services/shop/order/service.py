@@ -37,13 +37,15 @@ class OrderFailed(Exception):
 
 
 def create_order(shop_id: ShopID, orderer: Orderer,
-                 payment_method: PaymentMethod, cart: Cart) -> Order:
+                 payment_method: PaymentMethod, cart: Cart,
+                 *, created_at: Optional[datetime]=None) -> Order:
     """Create an order of one or more articles."""
     shop = shop_service.get_shop(shop_id)
 
     order_number = sequence_service.generate_order_number(shop.id)
 
-    order = _build_order(shop.id, order_number, orderer, payment_method)
+    order = _build_order(shop.id, order_number, orderer, payment_method,
+                         created_at)
 
     order_items = _add_items_from_cart_to_order(cart, order)
 
@@ -65,7 +67,8 @@ def create_order(shop_id: ShopID, orderer: Orderer,
 
 
 def _build_order(shop_id: ShopID, order_number: OrderNumber, orderer: Orderer,
-                 payment_method: PaymentMethod) -> DbOrder:
+                 payment_method: PaymentMethod, created_at: datetime
+                ) -> DbOrder:
     """Create an order of one or more articles."""
     return DbOrder(
         shop_id,
@@ -78,6 +81,7 @@ def _build_order(shop_id: ShopID, order_number: OrderNumber, orderer: Orderer,
         orderer.city,
         orderer.street,
         payment_method,
+        created_at=created_at,
     )
 
 

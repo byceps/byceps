@@ -8,7 +8,7 @@ byceps.services.shop.order.models.order
 
 from datetime import datetime
 from decimal import Decimal
-from typing import Set
+from typing import Optional, Set
 
 from sqlalchemy.ext.hybrid import hybrid_property
 
@@ -40,7 +40,7 @@ class Order(db.Model):
     query_class = OrderQuery
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    created_at = db.Column(db.DateTime, default=datetime.now, nullable=False)
+    created_at = db.Column(db.DateTime, nullable=False)
     shop_id = db.Column(db.Unicode(40), db.ForeignKey('shops.id'), index=True, nullable=False)
     order_number = db.Column(db.Unicode(13), unique=True, nullable=False)
     placed_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=False)
@@ -64,7 +64,11 @@ class Order(db.Model):
     def __init__(self, shop_id: ShopID, order_number: OrderNumber,
                  placed_by_id: UserID, first_names: str, last_name: str,
                  country: str, zip_code: str, city: str, street,
-                 payment_method: PaymentMethod) -> None:
+                 payment_method: PaymentMethod,
+                 *, created_at: Optional[datetime]=None) -> None:
+        if created_at is None:
+            created_at = datetime.now()
+        self.created_at = created_at
         self.shop_id = shop_id
         self.order_number = order_number
         self.placed_by_id = placed_by_id
