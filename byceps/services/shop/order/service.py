@@ -36,10 +36,10 @@ class OrderFailed(Exception):
     pass
 
 
-def create_order(shop_id: ShopID, orderer: Orderer,
-                 payment_method: PaymentMethod, cart: Cart,
-                 *, created_at: Optional[datetime]=None) -> Order:
-    """Create an order of one or more articles."""
+def place_order(shop_id: ShopID, orderer: Orderer,
+                payment_method: PaymentMethod, cart: Cart,
+                *, created_at: Optional[datetime]=None) -> Order:
+    """Place an order for one or more articles."""
     shop = shop_service.get_shop(shop_id)
 
     order_number = sequence_service.generate_order_number(shop.id)

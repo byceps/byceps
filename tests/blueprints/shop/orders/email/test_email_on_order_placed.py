@@ -28,7 +28,7 @@ class EmailOnOrderPlacedSignalTest(OrderEmailTestBase):
 
         self.user = self.create_user_with_detail('Interessent')
 
-        self.order = self.create_order(self.user)
+        self.order = self.place_order(self.user)
 
         order_service.mark_order_as_paid(self.order.id,
                                          PaymentMethod.bank_transfer,
@@ -94,7 +94,7 @@ E-Mail: acmecon@example.com
         self.article2 = self.create_article(self.shop.id, 'AC-14-A00007', 'T-Shirt, Größe L', Decimal('14.95'), 50)
 
     @patch('byceps.blueprints.shop_order.signals.order_placed.send')
-    def create_order(self, orderer, order_placed_mock):
+    def place_order(self, orderer, order_placed_mock):
         created_at = datetime(2014, 8, 15, 20, 7, 43)
 
         items_with_quantity = [
@@ -102,9 +102,9 @@ E-Mail: acmecon@example.com
             (self.article2, 2),
         ]
 
-        return self.create_order_with_items(self.party.id, orderer,
-                                            'AC-14-B00253', created_at,
-                                            items_with_quantity)
+        return self.place_order_with_items(self.party.id, orderer,
+                                           'AC-14-B00253', created_at,
+                                           items_with_quantity)
 
     def send_event(self, order_id):
         with \

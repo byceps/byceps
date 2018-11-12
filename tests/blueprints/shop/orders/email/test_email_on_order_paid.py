@@ -25,7 +25,7 @@ class EmailOnOrderPaidSignalTest(OrderEmailTestBase):
 
         self.user = self.create_user_with_detail('Vorbild')
 
-        self.order = self.create_order(self.user)
+        self.order = self.place_order(self.user)
 
         order_service.mark_order_as_paid(self.order.id,
                                          PaymentMethod.bank_transfer,
@@ -65,11 +65,11 @@ E-Mail: acmecon@example.com
     # helpers
 
     @patch('byceps.blueprints.shop_order.signals.order_placed.send')
-    def create_order(self, orderer, order_placed_mock):
+    def place_order(self, orderer, order_placed_mock):
         created_at = datetime(2014, 9, 23, 18, 40, 53)
 
-        return self.create_order_with_items(self.shop.id, orderer,
-                                            'AC-14-B00022', created_at, [])
+        return self.place_order_with_items(self.shop.id, orderer,
+                                           'AC-14-B00022', created_at, [])
 
     def send_event(self, order_id):
         with \

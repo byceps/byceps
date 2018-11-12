@@ -47,7 +47,7 @@ class OrderedArticlesServiceTestCase(ShopTestBase):
             (2, PaymentState.canceled_before_paid),
             (7, PaymentState.open),
         ]:
-            order = self.create_order(article_quantity)
+            order = self.place_order(article_quantity)
             self.set_payment_state(order.order_number, payment_state)
 
         totals = ordered_articles_service \
@@ -59,14 +59,14 @@ class OrderedArticlesServiceTestCase(ShopTestBase):
     # helpers
 
     @patch('byceps.blueprints.shop_order.signals.order_placed.send')
-    def create_order(self, article_quantity, order_placed_mock):
+    def place_order(self, article_quantity, order_placed_mock):
         payment_method = PaymentMethod.bank_transfer
 
         cart = Cart()
         cart.add_item(self.article, article_quantity)
 
-        return order_service.create_order(self.shop.id, self.orderer,
-                                          payment_method, cart)
+        return order_service.place_order(self.shop.id, self.orderer,
+                                         payment_method, cart)
 
     def set_payment_state(self, order_number, payment_state):
         order = order_service.find_order_by_order_number(order_number)

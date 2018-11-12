@@ -27,11 +27,11 @@ class ShopOrdersServiceTestCase(ShopTestBase):
         user1 = self.create_user_with_detail('User1')
         user2 = self.create_user_with_detail('User2')
 
-        order1 = self.create_order(shop1.id, user1, 'LF-02-B00014')
-        order2 = self.create_order(shop1.id, user2, 'LF-02-B00015')  # other user
-        order3 = self.create_order(shop1.id, user1, 'LF-02-B00016')
-        order4 = self.create_order(shop1.id, user1, 'LF-02-B00023')
-        order5 = self.create_order(shop2.id, user1, 'LF-03-B00008')  # other party
+        order1 = self.place_order(shop1.id, user1, 'LF-02-B00014')
+        order2 = self.place_order(shop1.id, user2, 'LF-02-B00015')  # other user
+        order3 = self.place_order(shop1.id, user1, 'LF-02-B00016')
+        order4 = self.place_order(shop1.id, user1, 'LF-02-B00023')
+        order5 = self.place_order(shop2.id, user1, 'LF-03-B00008')  # other party
 
         orders_user1_shop1 = service.get_orders_placed_by_user_for_shop(
             user1.id, shop1.id)
@@ -48,7 +48,7 @@ class ShopOrdersServiceTestCase(ShopTestBase):
     # -------------------------------------------------------------------- #
     # helpers
 
-    def create_order(self, shop_id, user, order_number):
+    def place_order(self, shop_id, user, order_number):
         order = create_order(shop_id, user, order_number=order_number)
 
         self.db.session.add(order)

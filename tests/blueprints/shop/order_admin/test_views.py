@@ -46,7 +46,7 @@ class ShopAdminTestCase(ShopTestBase):
         article_before = self.create_article(self.shop.id, quantity=5)
 
         quantified_articles_to_order = {(article_before, 3)}
-        order_before = self.create_order(quantified_articles_to_order)
+        order_before = self.place_order(quantified_articles_to_order)
 
         assert article_before.quantity == 5
 
@@ -66,7 +66,7 @@ class ShopAdminTestCase(ShopTestBase):
         assert article_afterwards.quantity == 8
 
     def test_mark_order_as_paid(self):
-        order_before = self.create_order([])
+        order_before = self.place_order([])
         self.db.session.commit()
 
         assert_payment_is_open(order_before)
@@ -85,7 +85,7 @@ class ShopAdminTestCase(ShopTestBase):
         article_before = self.create_article(self.shop.id, quantity=5)
 
         quantified_articles_to_order = {(article_before, 3)}
-        order_before = self.create_order(quantified_articles_to_order)
+        order_before = self.place_order(quantified_articles_to_order)
 
         assert article_before.quantity == 5
 
@@ -111,7 +111,7 @@ class ShopAdminTestCase(ShopTestBase):
 
     # helpers
 
-    def create_order(self, quantified_articles):
+    def place_order(self, quantified_articles):
         order = create_order(self.party.id, self.orderer)
         self.db.session.add(order)
 

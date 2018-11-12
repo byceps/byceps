@@ -28,7 +28,7 @@ class CreateTicketsActionTest(OrderActionTestBase):
             self.article.item_number, self.ticket_category.id)
 
         articles_with_quantity = [(self.article, ticket_quantity)]
-        self.order = self.create_order(articles_with_quantity)
+        self.order = self.place_order(articles_with_quantity)
 
         tickets_before_paid = self.get_tickets_for_order()
         assert len(tickets_before_paid) == 0

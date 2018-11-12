@@ -21,7 +21,7 @@ class ShopOrdersTestCase(ShopTestBase):
     def test_view_matching_user_and_party(self):
         shop = self.create_shop(self.party.id)
 
-        order_id = self.create_order(shop.id, self.user1, 'LF-02-B00014')
+        order_id = self.place_order(shop.id, self.user1, 'LF-02-B00014')
 
         response = self.request_view(self.user1, order_id)
 
@@ -30,7 +30,7 @@ class ShopOrdersTestCase(ShopTestBase):
     def test_view_matching_party_but_different_user(self):
         shop = self.create_shop(self.party.id)
 
-        order_id = self.create_order(shop.id, self.user1, 'LF-02-B00014')
+        order_id = self.place_order(shop.id, self.user1, 'LF-02-B00014')
 
         response = self.request_view(self.user2, order_id)
 
@@ -41,7 +41,7 @@ class ShopOrdersTestCase(ShopTestBase):
                                         'OtherLAN 2013')
         shop = self.create_shop(other_party.id)
 
-        order_id = self.create_order(shop.id, self.user1, 'LF-02-B00014')
+        order_id = self.place_order(shop.id, self.user1, 'LF-02-B00014')
 
         response = self.request_view(self.user1, order_id)
 
@@ -50,7 +50,7 @@ class ShopOrdersTestCase(ShopTestBase):
     # -------------------------------------------------------------------- #
     # helpers
 
-    def create_order(self, shop_id, user, order_number):
+    def place_order(self, shop_id, user, order_number):
         order = create_order(shop_id, user, order_number=order_number)
 
         self.db.session.add(order)

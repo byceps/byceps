@@ -18,8 +18,8 @@ class OrderEmailTestBase(ShopTestBase):
                                       description=description, price=price,
                                       quantity=quantity)
 
-    def create_order_with_items(self, shop_id, orderer, order_number,
-                                created_at, items_with_quantity):
+    def place_order_with_items(self, shop_id, orderer, order_number,
+                               created_at, items_with_quantity):
         order = create_order(shop_id, orderer, order_number=order_number)
 
         if created_at is not None:

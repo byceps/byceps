@@ -87,7 +87,7 @@ def order():
     orderer = form.get_orderer(g.current_user.id)
 
     try:
-        order = _submit_order(shop.id, orderer, cart)
+        order = _place_order(shop.id, orderer, cart)
     except order_service.OrderFailed:
         flash_error('Die Bestellung ist fehlgeschlagen.')
         return order_form(form)
@@ -181,7 +181,7 @@ def order_single(article_id):
         cart.add_item(item.article, item.fixed_quantity)
 
     try:
-        order = _submit_order(shop.id, orderer, cart)
+        order = _place_order(shop.id, orderer, cart)
     except order_service.OrderFailed:
         flash_error('Die Bestellung ist fehlgeschlagen.')
         return order_form(form)
@@ -209,10 +209,10 @@ def _get_article_or_404(article_id):
     return article
 
 
-def _submit_order(shop_id, orderer, cart):
+def _place_order(shop_id, orderer, cart):
     payment_method = PaymentMethod.bank_transfer
 
-    return order_service.create_order(shop_id, orderer, payment_method, cart)
+    return order_service.place_order(shop_id, orderer, payment_method, cart)
 
 
 def _flash_order_success(order):

@@ -34,7 +34,7 @@ class ExportTestCase(ShopTestBase):
         self.shop = self.create_shop(self.party.id)
         self.create_order_number_sequence(self.shop.id, 'LR-08-B', value=26)
         self.create_articles()
-        self.order = self.create_order()
+        self.order = self.place_order()
 
     @freeze_time('2015-04-15 09:54:18')
     def test_serialize_order(self):
@@ -101,14 +101,14 @@ class ExportTestCase(ShopTestBase):
             quantity=10)
 
     @patch('byceps.blueprints.shop_order.signals.order_placed.send')
-    def create_order(self, order_placed_mock):
+    def place_order(self, order_placed_mock):
         orderer = self.create_orderer()
         payment_method = PaymentMethod.bank_transfer
         cart = self.create_cart()
         created_at = datetime(2015, 2, 26, 13, 26, 24)
 
-        return order_service.create_order(self.shop.id, orderer, payment_method,
-                                          cart, created_at=created_at)
+        return order_service.place_order(self.shop.id, orderer, payment_method,
+                                         cart, created_at=created_at)
 
     def create_orderer(self):
         user = self.create_user('Besteller',
