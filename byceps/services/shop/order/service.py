@@ -38,7 +38,8 @@ class OrderFailed(Exception):
 
 def place_order(shop_id: ShopID, orderer: Orderer,
                 payment_method: PaymentMethod, cart: Cart,
-                *, created_at: Optional[datetime]=None) -> Order:
+                *, created_at: Optional[datetime]=None, send_signal: bool=True
+               ) -> Order:
     """Place an order for one or more articles."""
     shop = shop_service.get_shop(shop_id)
 
@@ -61,7 +62,8 @@ def place_order(shop_id: ShopID, orderer: Orderer,
         db.session.rollback()
         raise OrderFailed()
 
-    order_placed.send(None, order_id=order.id)
+    if send_signal:
+        order_placed.send(None, order_id=order.id)
 
     return order.to_transfer_object()
 

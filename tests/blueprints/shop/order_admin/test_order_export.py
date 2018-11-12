@@ -6,7 +6,6 @@
 import codecs
 from datetime import datetime
 from decimal import Decimal
-from unittest.mock import patch
 
 from freezegun import freeze_time
 
@@ -100,15 +99,15 @@ class ExportTestCase(ShopTestBase):
             tax_rate=tax_rate,
             quantity=10)
 
-    @patch('byceps.blueprints.shop_order.signals.order_placed.send')
-    def place_order(self, order_placed_mock):
+    def place_order(self):
         orderer = self.create_orderer()
         payment_method = PaymentMethod.bank_transfer
         cart = self.create_cart()
         created_at = datetime(2015, 2, 26, 13, 26, 24)
 
         return order_service.place_order(self.shop.id, orderer, payment_method,
-                                         cart, created_at=created_at)
+                                         cart, created_at=created_at,
+                                         send_signal=False)
 
     def create_orderer(self):
         user = self.create_user('Besteller',
