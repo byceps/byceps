@@ -93,8 +93,7 @@ E-Mail: acmecon@example.com
         self.article1 = self.create_article(self.shop.id, 'AC-14-A00003', 'Einzelticket, Kategorie Loge', Decimal('99.00'), 123)
         self.article2 = self.create_article(self.shop.id, 'AC-14-A00007', 'T-Shirt, Größe L', Decimal('14.95'), 50)
 
-    @patch('byceps.blueprints.shop_order.signals.order_placed.send')
-    def place_order(self, orderer, order_placed_mock):
+    def place_order(self, orderer):
         created_at = datetime(2014, 8, 15, 20, 7, 43)
 
         items_with_quantity = [

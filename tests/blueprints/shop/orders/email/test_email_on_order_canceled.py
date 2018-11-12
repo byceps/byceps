@@ -63,8 +63,7 @@ E-Mail: acmecon@example.com
 
     # helpers
 
-    @patch('byceps.blueprints.shop_order.signals.order_placed.send')
-    def place_order(self, orderer, order_placed_mock):
+    def place_order(self, orderer):
         return self.place_order_with_items(self.shop.id, orderer,
                                            'AC-14-B00017', None, [])
 
