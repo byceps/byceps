@@ -14,8 +14,6 @@ from byceps.services.shop.order.models.orderer import Orderer
 from byceps.services.shop.order import service as order_service
 from byceps.services.shop.order.transfer.models import PaymentMethod
 
-from testfixtures.shop_order import create_order
-
 from tests.base import CONFIG_FILENAME_TEST_ADMIN
 from tests.helpers import assign_permissions_to_user
 from tests.services.shop.base import ShopTestBase
