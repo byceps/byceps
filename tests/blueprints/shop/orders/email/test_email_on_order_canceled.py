@@ -1,3 +1,8 @@
+"""
+:Copyright: 2006-2018 Jochen Kupperschmidt
+:License: Modified BSD, see LICENSE for details.
+"""
+
 from unittest.mock import patch
 
 from byceps.blueprints.shop_order.signals import order_canceled

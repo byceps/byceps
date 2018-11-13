@@ -1,3 +1,8 @@
+"""
+:Copyright: 2006-2018 Jochen Kupperschmidt
+:License: Modified BSD, see LICENSE for details.
+"""
+
 from testfixtures.shop_order import create_order, create_order_item
 
 from tests.services.shop.base import ShopTestBase

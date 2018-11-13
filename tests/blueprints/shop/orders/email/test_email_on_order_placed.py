@@ -1,3 +1,8 @@
+"""
+:Copyright: 2006-2018 Jochen Kupperschmidt
+:License: Modified BSD, see LICENSE for details.
+"""
+
 from datetime import datetime
 from decimal import Decimal
 from unittest.mock import patch
