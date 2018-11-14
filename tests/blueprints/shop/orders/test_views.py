@@ -3,7 +3,12 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from testfixtures.shop_order import create_order
+from byceps.services.shop.cart.models import Cart
+from byceps.services.shop.order.models.orderer import Orderer
+from byceps.services.shop.order import service as order_service
+from byceps.services.shop.order.transfer.models import PaymentMethod
+
+from testfixtures.shop_order import create_orderer
 
 from tests.services.shop.base import ShopTestBase
 
@@ -20,8 +25,9 @@ class ShopOrdersTestCase(ShopTestBase):
 
     def test_view_matching_user_and_party(self):
         shop = self.create_shop(self.party.id)
+        self.create_order_number_sequence(shop.id, 'LF-02-B')
 
-        order_id = self.place_order(shop.id, self.user1, 'LF-02-B00014')
+        order_id = self.place_order(shop.id, self.user1)
 
         response = self.request_view(self.user1, order_id)
 
@@ -29,8 +35,9 @@ class ShopOrdersTestCase(ShopTestBase):
 
     def test_view_matching_party_but_different_user(self):
         shop = self.create_shop(self.party.id)
+        self.create_order_number_sequence(shop.id, 'LF-02-B')
 
-        order_id = self.place_order(shop.id, self.user1, 'LF-02-B00014')
+        order_id = self.place_order(shop.id, self.user1)
 
         response = self.request_view(self.user2, order_id)
 
@@ -39,22 +46,25 @@ class ShopOrdersTestCase(ShopTestBase):
     def test_view_matching_user_but_different_party(self):
         other_party = self.create_party(self.brand.id, 'otherlan-2013',
                                         'OtherLAN 2013')
-        shop = self.create_shop(other_party.id)
 
-        order_id = self.place_order(shop.id, self.user1, 'LF-02-B00014')
+        shop = self.create_shop(other_party.id)
+        self.create_order_number_sequence(shop.id, 'LF-02-B')
+
+        order_id = self.place_order(shop.id, self.user1)
 
         response = self.request_view(self.user1, order_id)
 
         assert response.status_code == 404
 
-    # -------------------------------------------------------------------- #
     # helpers
 
-    def place_order(self, shop_id, user, order_number):
-        order = create_order(shop_id, user, order_number=order_number)
+    def place_order(self, shop_id, user):
+        orderer = create_orderer(user)
+        payment_method = PaymentMethod.bank_transfer
+        cart = Cart()
 
-        self.db.session.add(order)
-        self.db.session.commit()
+        order = order_service.place_order(shop_id, orderer, payment_method,
+                                         cart, send_signal=False)
 
         return order.id
 
