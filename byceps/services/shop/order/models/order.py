@@ -148,6 +148,8 @@ class Order(db.Model):
             self.zip_code,
             self.city,
             self.street,
+            self.calculate_total_amount(),
+            items,
             self.payment_method,
             self.payment_state,
             self.is_open,
@@ -157,8 +159,6 @@ class Order(db.Model):
             self.is_shipping_required,
             self.is_shipped,
             self.cancelation_reason,
-            items,
-            self.calculate_total_amount(),
         )
 
     def __repr__(self) -> str:

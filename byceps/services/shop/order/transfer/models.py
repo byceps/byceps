@@ -54,6 +54,8 @@ class Order:
     zip_code = attrib(type=str)
     city = attrib(type=str)
     street = attrib(type=str)
+    total_amount = attrib(type=Decimal)
+    items = attrib()  # List[OrderItem]
     payment_method = attrib(type=PaymentMethod)
     payment_state = attrib(type=PaymentState)
     is_open = attrib(type=bool)
@@ -63,8 +65,6 @@ class Order:
     is_shipping_required = attrib(type=bool)
     is_shipped = attrib(type=bool)
     cancelation_reason = attrib(type=str)
-    items = attrib()  # List[OrderItem]
-    total_amount = attrib(type=Decimal)
 
 
 @attrs(frozen=True, slots=True)
