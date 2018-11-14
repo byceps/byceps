@@ -3,9 +3,11 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.services.shop.order import service
+from byceps.services.shop.cart.models import Cart
+from byceps.services.shop.order import service as order_service
+from byceps.services.shop.order.transfer.models import PaymentMethod
 
-from testfixtures.shop_order import create_order
+from testfixtures.shop_order import create_orderer
 
 from tests.services.shop.base import ShopTestBase
 
@@ -17,41 +19,47 @@ class ShopOrdersServiceTestCase(ShopTestBase):
 
         self.create_brand_and_party()
 
-    def test_get_orders_placed_by_user_for_party(self):
         party1 = self.create_party(self.brand.id, 'lafiesta-2012', 'La Fiesta 2012')
         party2 = self.create_party(self.brand.id, 'lafiesta-2013', 'La Fiesta 2013')
 
-        shop1 = self.create_shop(party1.id)
-        shop2 = self.create_shop(party2.id)
+        self.shop1_id = self.create_shop(party1.id).id
+        self.shop2_id = self.create_shop(party2.id).id
 
-        user1 = self.create_user_with_detail('User1')
-        user2 = self.create_user_with_detail('User2')
+        self.create_order_number_sequence(self.shop1_id, 'LF-02-B')
+        self.create_order_number_sequence(self.shop2_id, 'LF-03-B')
 
-        order1 = self.place_order(shop1.id, user1, 'LF-02-B00014')
-        order2 = self.place_order(shop1.id, user2, 'LF-02-B00015')  # other user
-        order3 = self.place_order(shop1.id, user1, 'LF-02-B00016')
-        order4 = self.place_order(shop1.id, user1, 'LF-02-B00023')
-        order5 = self.place_order(shop2.id, user1, 'LF-03-B00008')  # other party
+        self.user1 = self.create_user_with_detail('User1')
+        self.user2 = self.create_user_with_detail('User2')
 
-        orders_user1_shop1 = service.get_orders_placed_by_user_for_shop(
-            user1.id, shop1.id)
-        assert orders_user1_shop1 == [order4, order3, order1]
+    def test_get_orders_placed_by_user_for_party(self):
+        orderer1 = create_orderer(self.user1)
+        orderer2 = create_orderer(self.user2)
 
-        orders_user2_shop1 = service.get_orders_placed_by_user_for_shop(
-            user2.id, shop1.id)
-        assert orders_user2_shop1 == [order2]
+        order1 = self.place_order(self.shop1_id, orderer1)
+        order2 = self.place_order(self.shop1_id, orderer2)  # different user
+        order3 = self.place_order(self.shop1_id, orderer1)
+        order4 = self.place_order(self.shop1_id, orderer1)
+        order5 = self.place_order(self.shop2_id, orderer1)  # different shop
 
-        orders_user1_shop2 = service.get_orders_placed_by_user_for_shop(
-            user1.id, shop2.id)
-        assert orders_user1_shop2 == [order5]
+        orders_orderer1_shop1 = self.get_orders_by_user(orderer1, self.shop1_id)
+        assert orders_orderer1_shop1 == [order4, order3, order1]
 
-    # -------------------------------------------------------------------- #
+        orders_orderer2_shop1 = self.get_orders_by_user(orderer2, self.shop1_id)
+        assert orders_orderer2_shop1 == [order2]
+
+        orders_orderer1_shop2 = self.get_orders_by_user(orderer1, self.shop2_id)
+        assert orders_orderer1_shop2 == [order5]
+
     # helpers
 
-    def place_order(self, shop_id, user, order_number):
-        order = create_order(shop_id, user, order_number=order_number)
+    def place_order(self, shop_id, orderer):
+        payment_method = PaymentMethod.bank_transfer
 
-        self.db.session.add(order)
-        self.db.session.commit()
+        cart = Cart()
 
-        return order.to_transfer_object()
+        return order_service.place_order(shop_id, orderer, payment_method, cart,
+                                         send_signal=False)
+
+    def get_orders_by_user(self, orderer, shop_id):
+        return order_service \
+            .get_orders_placed_by_user_for_shop(orderer.user_id, shop_id)
