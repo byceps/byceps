@@ -3,7 +3,12 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from testfixtures.shop_order import create_order, create_order_item
+from byceps.services.shop.cart.models import Cart
+from byceps.services.shop.order.models.order import Order
+from byceps.services.shop.order import service as order_service
+from byceps.services.shop.order.transfer.models import PaymentMethod
+
+from testfixtures.shop_order import create_orderer
 
 from tests.services.shop.base import ShopTestBase
 
@@ -25,16 +30,20 @@ class OrderEmailTestBase(ShopTestBase):
 
     def place_order_with_items(self, shop_id, orderer, order_number,
                                created_at, items_with_quantity):
-        order = create_order(shop_id, orderer, order_number=order_number)
-
-        if created_at is not None:
-            order.created_at = created_at
+        orderer = create_orderer(orderer)
+        payment_method = PaymentMethod.bank_transfer
+        cart = Cart()
 
         if items_with_quantity is not None:
             for article, quantity in items_with_quantity:
-                create_order_item(order, article, quantity)
+                cart.add_item(article, quantity)
 
-        self.db.session.add(order)
-        self.db.session.commit()
+        order = order_service.place_order(self.shop.id, orderer, payment_method,
+                                         cart, send_signal=False)
 
-        return order
+        if created_at is not None:
+            db_order = Order.query.get(order.id)
+            db_order.created_at = created_at
+            self.db.session.commit()
+
+        return order.id

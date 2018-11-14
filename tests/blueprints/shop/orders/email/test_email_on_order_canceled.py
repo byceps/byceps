@@ -26,17 +26,18 @@ class EmailOnOrderCanceledSignalTest(OrderEmailTestBase):
                                        'Acme Entertainment Convention 2014')
 
         self.shop = self.create_shop(self.party.id)
+        self.create_order_number_sequence(self.shop.id, 'AC-14-B', value=16)
 
         self.user = self.create_user_with_detail('Versager')
 
-        self.order = self.place_order(self.user)
+        self.order_id = self.place_order(self.user)
 
         reason = 'Du hast nicht rechtzeitig bezahlt.'
-        order_service.cancel_order(self.order.id, self.admin.id, reason)
+        order_service.cancel_order(self.order_id, self.admin.id, reason)
 
     @patch('byceps.email.send')
     def test_email_on_order_canceled(self, send_email_mock):
-        self.send_event(self.order.id)
+        self.send_event(self.order_id)
 
         expected_sender = 'acmecon@example.com'
         expected_recipients = [self.user.email_address]
