@@ -31,7 +31,7 @@ class EmailOnOrderCanceledSignalTest(OrderEmailTestBase):
 
         self.order = self.place_order(self.user)
 
-        order_service.cancel_order(self.order, self.admin.id, 'dubious reason')
+        order_service.cancel_order(self.order.id, self.admin.id, 'dubious reason')
 
     @patch('byceps.email.send')
     def test_email_on_order_canceled(self, send_email_mock):

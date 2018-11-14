@@ -242,7 +242,7 @@ def cancel(order_id):
     reason = form.reason.data.strip()
 
     try:
-        order_service.cancel_order(order, g.current_user.id, reason)
+        order_service.cancel_order(order.id, g.current_user.id, reason)
     except order_service.OrderAlreadyCanceled:
         flash_error(
             'Die Bestellung ist bereits storniert worden; '

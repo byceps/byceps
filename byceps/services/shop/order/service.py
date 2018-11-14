@@ -192,12 +192,17 @@ class OrderAlreadyMarkedAsPaid(Exception):
     pass
 
 
-def cancel_order(order: DbOrder, updated_by_id: UserID, reason: str) -> None:
+def cancel_order(order_id: OrderID, updated_by_id: UserID, reason: str) -> None:
     """Cancel the order.
 
     Reserved quantities of articles from that order are made available
     again.
     """
+    order = find_order(order_id)
+
+    if order is None:
+        raise ValueError('Unknown order ID')
+
     if order.is_canceled:
         raise OrderAlreadyCanceled()
 
