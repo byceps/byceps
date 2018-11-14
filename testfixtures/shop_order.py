@@ -7,8 +7,8 @@ testfixtures.shop_order
 """
 
 from byceps.services.shop.order.models.order import Order
-from byceps.services.shop.order.models.order_item import OrderItem
 from byceps.services.shop.order.models.orderer import Orderer
+from byceps.services.shop.order import service
 from byceps.services.shop.order.transfer.models import PaymentMethod
 
 
@@ -48,4 +48,4 @@ def create_order(shop_id, placed_by, *, order_number=ANY_ORDER_NUMBER,
 
 
 def create_order_item(order, article, quantity):
-    return OrderItem.from_article(order, article, quantity)
+    return service._add_article_to_order(order, article, quantity)

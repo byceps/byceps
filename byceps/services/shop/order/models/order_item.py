@@ -50,22 +50,6 @@ class OrderItem(db.Model):
         self.line_amount = line_amount
         self.shipping_required = shipping_required
 
-    @classmethod
-    def from_article(cls, order: Order, article: Article, quantity: int
-                    ) -> 'OrderItem':
-        line_amount = article.price * quantity
-
-        return cls(
-            order,
-            article.item_number,
-            article.description,
-            article.price,
-            article.tax_rate,
-            quantity,
-            line_amount,
-            article.shipping_required,
-        )
-
     def to_transfer_object(self) -> OrderItemTransferObject:
         return OrderItemTransferObject(
             self.order_number,

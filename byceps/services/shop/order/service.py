@@ -29,7 +29,8 @@ from .models.order_event import OrderEvent
 from .models.order_item import OrderItem as DbOrderItem
 from .models.orderer import Orderer
 from . import action_service
-from .transfer.models import Order, OrderID, OrderNumber, PaymentMethod, PaymentState
+from .transfer.models import Order, OrderID, OrderNumber, PaymentMethod, \
+    PaymentState
 
 
 class OrderFailed(Exception):
@@ -111,7 +112,18 @@ def _add_article_to_order(order: DbOrder, article: Article, quantity: int
     Return the resulting order item (so it can be added to the database
     session).
     """
-    return DbOrderItem.from_article(order, article, quantity)
+    line_amount = article.price * quantity
+
+    return DbOrderItem(
+        order,
+        article.item_number,
+        article.description,
+        article.price,
+        article.tax_rate,
+        quantity,
+        line_amount,
+        article.shipping_required,
+    )
 
 
 def set_invoiced_flag(order: DbOrder, initiator_id: UserID) -> None:
