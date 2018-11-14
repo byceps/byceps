@@ -73,8 +73,8 @@ E-Mail: acmecon@example.com
     def place_order(self, orderer):
         created_at = datetime(2014, 9, 23, 18, 40, 53)
 
-        return self.place_order_with_items(self.shop.id, orderer,
-                                           'AC-14-B00022', created_at, [])
+        return self.place_order_with_items(self.shop.id, orderer, created_at,
+                                           [])
 
     def send_event(self, order_id):
         with \

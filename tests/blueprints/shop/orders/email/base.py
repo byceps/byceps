@@ -28,8 +28,8 @@ class OrderEmailTestBase(ShopTestBase):
                                       description=description, price=price,
                                       quantity=quantity)
 
-    def place_order_with_items(self, shop_id, orderer, order_number,
-                               created_at, items_with_quantity):
+    def place_order_with_items(self, shop_id, orderer, created_at,
+                               items_with_quantity):
         orderer = create_orderer(orderer)
         payment_method = PaymentMethod.bank_transfer
         cart = Cart()

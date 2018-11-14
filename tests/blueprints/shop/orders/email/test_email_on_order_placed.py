@@ -107,8 +107,7 @@ E-Mail: acmecon@example.com
             (self.article2, 2),
         ]
 
-        return self.place_order_with_items(self.party.id, orderer,
-                                           'AC-14-B00253', created_at,
+        return self.place_order_with_items(self.party.id, orderer, created_at,
                                            items_with_quantity)
 
     def send_event(self, order_id):

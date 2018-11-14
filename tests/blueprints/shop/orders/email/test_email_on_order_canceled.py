@@ -69,8 +69,7 @@ E-Mail: acmecon@example.com
     # helpers
 
     def place_order(self, orderer):
-        return self.place_order_with_items(self.shop.id, orderer,
-                                           'AC-14-B00017', None, [])
+        return self.place_order_with_items(self.shop.id, orderer, None, [])
 
     def send_event(self, order_id):
         with \
