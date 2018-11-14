@@ -5,50 +5,75 @@
 
 from decimal import Decimal
 
-from testfixtures.shop_article import create_article
-from testfixtures.shop_order import create_order, create_order_item
-from testfixtures.user import create_user
+from byceps.services.shop.cart.models import Cart
+from byceps.services.shop.order import service as order_service
+from byceps.services.shop.order.transfer.models import PaymentMethod
+
+from testfixtures.shop_order import create_orderer
+
+from tests.services.shop.base import ShopTestBase
 
 
-def test_without_any_items():
-    order = create_order_with_items([])
+class OrderTotalAmountTest(ShopTestBase):
 
-    assert_decimal_equal(order.total_amount, Decimal('0.00'))
+    def setUp(self):
+        super().setUp()
 
+        user = self.create_user_with_detail()
+        self.orderer = create_orderer(user)
 
-def test_with_single_item():
-    order = create_order_with_items([
-        (Decimal('49.95'), 1),
-    ])
+        self.create_brand_and_party()
 
-    assert_decimal_equal(order.total_amount, Decimal('49.95'))
+        self.shop = self.create_shop(self.party.id)
+        self.create_order_number_sequence(self.shop.id, 'LF-01-B')
 
+        self.article1 = self.create_article(1, Decimal('49.95'))
+        self.article2 = self.create_article(2, Decimal( '6.20'))
+        self.article3 = self.create_article(3, Decimal('12.53'))
 
-def test_with_multiple_items():
-    order = create_order_with_items([
-        (Decimal('49.95'), 3),
-        (Decimal( '6.20'), 1),
-        (Decimal('12.53'), 4),
-    ])
+    def test_without_any_items(self):
+        order = self.place_order([])
 
-    assert_decimal_equal(order.total_amount, Decimal('206.17'))
+        assert_decimal_equal(order.total_amount, Decimal('0.00'))
 
+    def test_with_single_item(self):
+        order = self.place_order([
+            (self.article1, 1),
+        ])
 
-# helpers
+        assert_decimal_equal(order.total_amount, Decimal('49.95'))
 
-def create_order_with_items(price_quantity_pairs):
-    user = create_user()
+    def test_with_multiple_items(self):
+        order = self.place_order([
+            (self.article1, 3),
+            (self.article2, 1),
+            (self.article3, 4),
+        ])
 
-    shop_id = 'shop-123'
-    placed_by = user
+        assert_decimal_equal(order.total_amount, Decimal('206.17'))
 
-    order = create_order(shop_id, placed_by)
+    # helpers
 
-    for price, quantity in price_quantity_pairs:
-        article = create_article(shop_id, price=price, quantity=quantity)
-        order_item = create_order_item(order, article, quantity)
+    def create_article(self, number, price):
+        item_number = 'LF-01-A{:05d}'.format(number)
+        description = 'Artikel #{:d}'.format(number)
 
-    return order.to_transfer_object()
+        return super().create_article(self.shop.id,
+                item_number=item_number,
+                description=description,
+                price=price,
+                quantity=50)
+
+    def place_order(self, articles):
+        payment_method = PaymentMethod.bank_transfer
+
+        cart = Cart()
+        for article, quantity in articles:
+            cart.add_item(article, quantity)
+
+        return order_service.place_order(self.shop.id, self.orderer,
+                                         payment_method, cart,
+                                         send_signal=False)
 
 
 def assert_decimal_equal(actual, expected):
