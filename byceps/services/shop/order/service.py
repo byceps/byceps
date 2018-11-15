@@ -7,6 +7,7 @@ byceps.services.shop.order.service
 """
 
 from datetime import datetime
+from decimal import Decimal
 from typing import Dict, Iterator, Optional, Sequence, Set
 
 from flask import current_app
@@ -49,7 +50,8 @@ def place_order(shop_id: ShopID, orderer: Orderer,
     order = _build_order(shop.id, order_number, orderer, payment_method,
                          created_at)
 
-    order_items = _add_items_from_cart_to_order(cart, order)
+    order_items = list(_add_items_from_cart_to_order(cart, order))
+    order.total_amount = Decimal(sum(item.line_amount for item in order_items))
 
     order.shipping_required = any(item.shipping_required for item in order_items)
 

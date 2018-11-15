@@ -51,6 +51,7 @@ class Order(db.Model):
     zip_code = db.Column(db.Unicode(5), nullable=False)
     city = db.Column(db.Unicode(40), nullable=False)
     street = db.Column(db.Unicode(40), nullable=False)
+    total_amount = db.Column(db.Numeric(7, 2), nullable=False)
     invoice_created_at = db.Column(db.DateTime, nullable=True)
     _payment_method = db.Column('payment_method', db.Unicode(20), nullable=False)
     _payment_state = db.Column('payment_state', db.Unicode(20), index=True, nullable=False)
@@ -118,9 +119,6 @@ class Order(db.Model):
         """Return the articles associated with this order."""
         return {item.article for item in self.items}
 
-    def calculate_total_amount(self) -> Decimal:
-        return Decimal(sum(item.line_amount for item in self.items))
-
     @property
     def is_invoiced(self) -> bool:
         return self.invoice_created_at is not None
@@ -148,7 +146,7 @@ class Order(db.Model):
             self.zip_code,
             self.city,
             self.street,
-            self.calculate_total_amount(),
+            self.total_amount,
             items,
             self.payment_method,
             self.payment_state,

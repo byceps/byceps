@@ -6,6 +6,8 @@ testfixtures.shop_order
 :License: Modified BSD, see LICENSE for details.
 """
 
+from decimal import Decimal
+
 from byceps.services.shop.order.models.order import Order
 from byceps.services.shop.order.models.orderer import Orderer
 from byceps.services.shop.order.transfer.models import PaymentMethod
@@ -26,8 +28,11 @@ def create_orderer(user):
 
 
 def create_order(shop_id, placed_by, *, order_number=ANY_ORDER_NUMBER,
-                 payment_method=PaymentMethod.bank_transfer,
+                 total_amount=None, payment_method=PaymentMethod.bank_transfer,
                  shipping_required=False):
+    if total_amount is None:
+        total_amount = Decimal('23.42')
+
     order = Order(
         shop_id,
         order_number,
@@ -41,6 +46,7 @@ def create_order(shop_id, placed_by, *, order_number=ANY_ORDER_NUMBER,
         payment_method,
     )
 
+    order.total_amount = total_amount
     order.shipping_required = shipping_required
 
     return order
