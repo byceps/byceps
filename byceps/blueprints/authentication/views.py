@@ -87,19 +87,14 @@ def login():
             abort(403)
 
     if not in_admin_mode:
-        terms_version = terms_version_service.find_current_version(g.brand_id)
+        terms_version_id = _get_current_terms_version_id(g.brand_id)
 
-        if not terms_version:
-            raise Exception(
-                'No terms of service defined for brand "{}", denying login.'
-                .format(g.brand_id))
-
-        if not terms_consent_service.has_user_accepted_version(user.id,
-                                                               terms_version.id):
+        if not terms_consent_service
+                .has_user_accepted_version(user.id, terms_version_id):
             verification_token = verification_token_service \
                 .find_or_create_for_terms_consent(user.id)
             consent_form_url = url_for('terms.consent_form',
-                                       version_id=terms_version.id,
+                                       version_id=terms_version_id,
                                        token=verification_token.token)
             flash_notice(
                 'Bitte <a href="{}">akzeptiere zunächst die aktuellen AGB</a>.',
@@ -118,6 +113,17 @@ def login():
 
     user_session.start(user.id, session_token.token, permanent=permanent)
     flash_success('Erfolgreich eingeloggt als {}.', user.screen_name)
+
+
+def _get_current_terms_version_id(brand_id):
+    terms_version = terms_version_service.find_current_version(brand_id)
+
+    if not terms_version:
+        raise Exception(
+            'No terms of service defined for brand "{}", denying login.'
+            .format(brand_id))
+
+    return terms_version.id
 
 
 @blueprint.route('/logout', methods=['POST'])
