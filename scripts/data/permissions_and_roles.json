@@ -29,6 +29,10 @@
       "title": "Foren-Kategorien anzeigen"
     },
     {
+      "id": "board.create",
+      "title": "Foren erstellen"
+    },
+    {
       "id": "board.hide",
       "title": "Themen und Beitr\u00e4ge im Forum verstecken"
     },
@@ -274,7 +278,8 @@
       "assigned_permissions": [
         "board_category.create",
         "board_category.update",
-        "board_category.view"
+        "board_category.view",
+        "board.create"
       ],
       "id": "board_admin",
       "title": "Forum verwalten"
