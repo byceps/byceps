@@ -86,7 +86,8 @@ def login():
             # to enter the admin area.
             abort(403)
 
-    if not in_admin_mode:
+    if not in_admin_mode and \
+            terms_consent_service.is_consent_required_for_brand(g.brand_id):
         terms_version_id = _get_current_terms_version_id(g.brand_id)
 
         if not terms_consent_service \

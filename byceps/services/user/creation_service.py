@@ -34,8 +34,9 @@ class UserCreationFailed(Exception):
 
 def create_user(screen_name: str, email_address: str, password: str,
                 first_names: str, last_name: str, brand_id: BrandID,
-                terms_version_id: TermsVersionID,
-                terms_consent_expressed_at: datetime,
+                terms_consent_required: bool,
+                terms_version_id: Optional[TermsVersionID],
+                terms_consent_expressed_at: Optional[datetime],
                 privacy_policy_consent_required: bool,
                 privacy_policy_consent_expressed_at: Optional[datetime],
                 subscribe_to_newsletter: bool,
@@ -61,10 +62,11 @@ def create_user(screen_name: str, email_address: str, password: str,
     board_user_role = authorization_service.find_role(RoleID('board_user'))
     authorization_service.assign_role_to_user(user.id, board_user_role.id)
 
-    # consent to terms of service (required)
-    terms_consent = terms_consent_service.build_consent_on_account_creation(
-        user.id, terms_version_id, terms_consent_expressed_at)
-    db.session.add(terms_consent)
+    # consent to terms of service
+    if terms_consent_required:
+        terms_consent = terms_consent_service.build_consent_on_account_creation(
+            user.id, terms_version_id, terms_consent_expressed_at)
+        db.session.add(terms_consent)
 
     # consent to privacy policy
     if privacy_policy_consent_required:

@@ -16,7 +16,8 @@ from ...services.brand import settings_service as brand_settings_service
 from ...services.country import service as country_service
 from ...services.newsletter import service as newsletter_service
 from ...services.orga_team import service as orga_team_service
-from ...services.terms import version_service as terms_version_service
+from ...services.terms import consent_service as terms_consent_service, \
+    version_service as terms_version_service
 from ...services.ticketing import attendance_service, ticket_service
 from ...services.user import creation_service as user_creation_service
 from ...services.user import event_service as user_event_service
@@ -137,12 +138,23 @@ def create_form(erroneous_form=None):
         flash_error('Das Erstellen von Benutzerkonten ist deaktiviert.')
         abort(403)
 
-    terms_version = terms_version_service.get_current_version(g.brand_id)
-
+    terms_consent_required = _is_terms_consent_required()
     privacy_policy_consent_required = _is_privacy_policy_consent_required()
 
+    if terms_consent_required:
+        terms_version_id = terms_version_service \
+            .get_current_version(g.brand_id) \
+            .id
+    else:
+        terms_version_id = None
+
+
     form = erroneous_form if erroneous_form \
-        else UserCreateForm(terms_version_id=terms_version.id)
+        else UserCreateForm(terms_version_id=terms_version_id)
+
+    if not terms_consent_required:
+        del form.terms_version_id
+        del form.consent_to_terms
 
     if not privacy_policy_consent_required:
         del form.consent_to_privacy_policy
@@ -157,9 +169,14 @@ def create():
         flash_error('Das Erstellen von Benutzerkonten ist deaktiviert.')
         abort(403)
 
+    terms_consent_required = _is_terms_consent_required()
     privacy_policy_consent_required = _is_privacy_policy_consent_required()
 
     form = UserCreateForm(request.form)
+
+    if not terms_consent_required:
+        del form.terms_version_id
+        del form.consent_to_terms
 
     if not privacy_policy_consent_required:
         del form.consent_to_privacy_policy
@@ -172,8 +189,6 @@ def create():
     last_name = form.last_name.data.strip()
     email_address = form.email_address.data.lower()
     password = form.password.data
-    terms_version_id = form.terms_version_id.data
-    consent_to_terms = form.consent_to_terms.data
     subscribe_to_newsletter = form.subscribe_to_newsletter.data
 
     if user_service.is_screen_name_already_assigned(screen_name):
@@ -186,14 +201,25 @@ def create():
             'Diese E-Mail-Adresse ist bereits einem Benutzerkonto zugeordnet.')
         return create_form(form)
 
-    terms_version = terms_version_service.find_version(terms_version_id)
-    if terms_version.brand_id != g.brand_id:
-        abort(400, 'Die AGB-Version gehört nicht zu dieser Veranstaltung.')
+    if terms_consent_required:
+        terms_version_id = form.terms_version_id.data
+        consent_to_terms = form.consent_to_terms.data
+
+        terms_version = terms_version_service.find_version(terms_version_id)
+        if terms_version.brand_id != g.brand_id:
+            abort(400, 'Die AGB-Version gehört nicht zu dieser Veranstaltung.')
+
+        terms_version_id = terms_version.id
+    else:
+        terms_version_id = None
 
     now = datetime.now()
     now_utc = datetime.utcnow()
 
-    terms_consent_expressed_at = now
+    if terms_consent_required:
+        terms_consent_expressed_at = now
+    else:
+        terms_consent_expressed_at = None
 
     if privacy_policy_consent_required:
         privacy_policy_consent_expressed_at = now_utc
@@ -205,8 +231,8 @@ def create():
     try:
         user = user_creation_service.create_user(
             screen_name, email_address, password, first_names, last_name,
-            g.brand_id, terms_version.id, terms_consent_expressed_at,
-            privacy_policy_consent_required,
+            g.brand_id, terms_consent_required, terms_version_id,
+            terms_consent_expressed_at, privacy_policy_consent_required,
             privacy_policy_consent_expressed_at, subscribe_to_newsletter,
             newsletter_subscription_state_expressed_at)
     except user_creation_service.UserCreationFailed:
@@ -347,6 +373,10 @@ def _get_current_user_or_404():
         abort(404)
 
     return user
+
+
+def _is_terms_consent_required():
+    return terms_consent_service.is_consent_required_for_brand(g.brand_id)
 
 
 def _is_privacy_policy_consent_required():

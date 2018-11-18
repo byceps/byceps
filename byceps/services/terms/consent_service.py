@@ -12,10 +12,24 @@ from typing import Dict, Sequence
 from ...database import db
 from ...typing import BrandID, UserID
 
+from ..brand import settings_service as brand_settings_service
 from ..verification_token.models import Token
 
 from .models.consent import Consent, ConsentContext
 from .models.version import Version, VersionID
+
+
+def is_consent_required_for_brand(brand_id: BrandID) -> bool:
+    """Return `True` if consent to the brand's terms of service is
+    required.
+
+    By default, consent is required. It can be disabled by configuring
+    the string `false` for the brand setting `terms_consent_required`.
+    """
+    value = brand_settings_service \
+        .find_setting_value(brand_id, 'terms_consent_required')
+
+    return value != 'false'
 
 
 def build_consent_on_account_creation(user_id: UserID, version_id: VersionID,
