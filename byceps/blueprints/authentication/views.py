@@ -89,7 +89,7 @@ def login():
     if not in_admin_mode:
         terms_version_id = _get_current_terms_version_id(g.brand_id)
 
-        if not terms_consent_service
+        if not terms_consent_service \
                 .has_user_accepted_version(user.id, terms_version_id):
             verification_token = verification_token_service \
                 .find_or_create_for_terms_consent(user.id)
