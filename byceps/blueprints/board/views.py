@@ -123,11 +123,7 @@ def category_view(slug, page):
         category.id, user, page, topics_per_page)
 
     _add_topic_creators(topics.items)
-
-    for topic in topics.items:
-        topic.contains_unseen_postings = not user.is_anonymous \
-            and board_last_view_service.contains_topic_unseen_postings(
-                topic, user.id)
+    _add_topic_unseen_flag(topics.items, user)
 
     return {
         'category': category,
@@ -166,11 +162,7 @@ def topic_index(page):
                                                  topics_per_page)
 
     _add_topic_creators(topics.items)
-
-    for topic in topics.items:
-        topic.contains_unseen_postings = not user.is_anonymous \
-            and board_last_view_service.contains_topic_unseen_postings(
-                topic, user.id)
+    _add_topic_unseen_flag(topics.items, user)
 
     return {
         'topics': topics,
@@ -839,3 +831,10 @@ def _add_topic_creators(topics):
 
     for topic in topics:
         topic.creator = creators_by_id[topic.creator_id]
+
+
+def _add_topic_unseen_flag(topics, user):
+    for topic in topics:
+        topic.contains_unseen_postings = not user.is_anonymous \
+            and board_last_view_service.contains_topic_unseen_postings(
+                topic, user.id)
