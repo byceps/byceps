@@ -33,7 +33,9 @@
       <h3>{{ render_icon('users') }} Teilnehmer</h3>
       <ol class="attendees">
         {%- for user in attendees -%}
+          {%- if not user.deleted %}
         <li>{{- render_user_avatar_20_and_link(user) -}}</li>
+          {%- endif %}
         {%- endfor %}
       </ol>
       {%- endif %}
