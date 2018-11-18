@@ -16,7 +16,7 @@
       <li>{{ brand.title }}</li>
     </ol>
   </nav>
-  <h1>Partys {{ render_extra_in_heading(parties.items|length) }}</h1>
+  <h1>Partys {{ render_extra_in_heading(parties.total) }}</h1>
 
   {%- if g.current_user.has_permission(PartyPermission.create) %}
   <div class="button-row">
