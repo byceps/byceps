@@ -123,7 +123,8 @@ def category_view(slug, page):
         category.id, user, page, topics_per_page)
 
     topic_creator_ids = {t.creator_id for t in topics.items}
-    topic_creators = user_service.find_users(topic_creator_ids)
+    topic_creators = user_service.find_users(topic_creator_ids,
+                                             include_avatars=True)
     topic_creators_by_id = user_service.index_users_by_id(topic_creators)
 
     for topic in topics.items:
@@ -169,7 +170,8 @@ def topic_index(page):
                                                  topics_per_page)
 
     topic_creator_ids = {t.creator_id for t in topics.items}
-    topic_creators = user_service.find_users(topic_creator_ids)
+    topic_creators = user_service.find_users(topic_creator_ids,
+                                             include_avatars=True)
     topic_creators_by_id = user_service.index_users_by_id(topic_creators)
 
     for topic in topics.items:
