@@ -122,13 +122,9 @@ def category_view(slug, page):
     topics = board_topic_service.paginate_topics_of_category(
         category.id, user, page, topics_per_page)
 
-    topic_creator_ids = {t.creator_id for t in topics.items}
-    topic_creators = user_service.find_users(topic_creator_ids,
-                                             include_avatars=True)
-    topic_creators_by_id = user_service.index_users_by_id(topic_creators)
+    _add_topic_creators(topics.items)
 
     for topic in topics.items:
-        topic.creator = topic_creators_by_id[topic.creator_id]
         topic.contains_unseen_postings = not user.is_anonymous \
             and board_last_view_service.contains_topic_unseen_postings(
                 topic, user.id)
@@ -169,13 +165,9 @@ def topic_index(page):
     topics = board_topic_service.paginate_topics(board_id, user, page,
                                                  topics_per_page)
 
-    topic_creator_ids = {t.creator_id for t in topics.items}
-    topic_creators = user_service.find_users(topic_creator_ids,
-                                             include_avatars=True)
-    topic_creators_by_id = user_service.index_users_by_id(topic_creators)
+    _add_topic_creators(topics.items)
 
     for topic in topics.items:
-        topic.creator = topic_creators_by_id[topic.creator_id]
         topic.contains_unseen_postings = not user.is_anonymous \
             and board_last_view_service.contains_topic_unseen_postings(
                 topic, user.id)
@@ -838,3 +830,12 @@ def _build_url_for_posting_in_topic_view(posting, page, **kwargs):
                    page=page,
                    _anchor=posting.anchor,
                    **kwargs)
+
+
+def _add_topic_creators(topics):
+    creator_ids = {t.creator_id for t in topics}
+    creators = user_service.find_users(creator_ids, include_avatars=True)
+    creators_by_id = user_service.index_users_by_id(creators)
+
+    for topic in topics:
+        topic.creator = creators_by_id[topic.creator_id]
