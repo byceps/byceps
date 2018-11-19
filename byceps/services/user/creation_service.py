@@ -33,8 +33,8 @@ class UserCreationFailed(Exception):
 
 
 def create_user(screen_name: str, email_address: str, password: str,
-                first_names: str, last_name: str, brand_id: BrandID,
-                terms_consent_required: bool,
+                first_names: Optional[str], last_name: Optional[str],
+                brand_id: BrandID, terms_consent_required: bool,
                 terms_version_id: Optional[TermsVersionID],
                 terms_consent_expressed_at: Optional[datetime],
                 privacy_policy_consent_required: bool,

@@ -138,6 +138,7 @@ def create_form(erroneous_form=None):
         flash_error('Das Erstellen von Benutzerkonten ist deaktiviert.')
         abort(403)
 
+    real_name_required = _is_real_name_required()
     terms_consent_required = _is_terms_consent_required()
     privacy_policy_consent_required = _is_privacy_policy_consent_required()
 
@@ -151,6 +152,10 @@ def create_form(erroneous_form=None):
 
     form = erroneous_form if erroneous_form \
         else UserCreateForm(terms_version_id=terms_version_id)
+
+    if not real_name_required:
+        del form.first_names
+        del form.last_name
 
     if not terms_consent_required:
         del form.terms_version_id
@@ -169,10 +174,15 @@ def create():
         flash_error('Das Erstellen von Benutzerkonten ist deaktiviert.')
         abort(403)
 
+    real_name_required = _is_real_name_required()
     terms_consent_required = _is_terms_consent_required()
     privacy_policy_consent_required = _is_privacy_policy_consent_required()
 
     form = UserCreateForm(request.form)
+
+    if not real_name_required:
+        del form.first_names
+        del form.last_name
 
     if not terms_consent_required:
         del form.terms_version_id
@@ -185,8 +195,6 @@ def create():
         return create_form(form)
 
     screen_name = form.screen_name.data.strip()
-    first_names = form.first_names.data.strip()
-    last_name = form.last_name.data.strip()
     email_address = form.email_address.data.lower()
     password = form.password.data
     subscribe_to_newsletter = form.subscribe_to_newsletter.data
@@ -200,6 +208,13 @@ def create():
         flash_error(
             'Diese E-Mail-Adresse ist bereits einem Benutzerkonto zugeordnet.')
         return create_form(form)
+
+    if real_name_required:
+        first_names = form.first_names.data.strip()
+        last_name = form.last_name.data.strip()
+    else:
+        first_names = None
+        last_name = None
 
     if terms_consent_required:
         terms_version_id = form.terms_version_id.data
@@ -373,6 +388,18 @@ def _get_current_user_or_404():
         abort(404)
 
     return user
+
+
+def _is_real_name_required():
+    """Return `True` if real name is required.
+
+    By default, real name is required. It can be disabled by configuring
+    the string `false` for the brand setting `real_name_required`.
+    """
+    value = brand_settings_service \
+        .find_setting_value(g.brand_id, 'real_name_required')
+
+    return value != 'false'
 
 
 def _is_terms_consent_required():
