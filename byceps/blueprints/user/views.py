@@ -12,6 +12,7 @@ from operator import attrgetter
 from flask import abort, g, jsonify, request, Response
 
 from ...config import get_site_mode, get_user_registration_enabled
+from ...services.brand import settings_service as brand_settings_service
 from ...services.country import service as country_service
 from ...services.newsletter import service as newsletter_service
 from ...services.orga_team import service as orga_team_service
@@ -138,8 +139,13 @@ def create_form(erroneous_form=None):
 
     terms_version = terms_version_service.get_current_version(g.brand_id)
 
+    privacy_policy_consent_required = _is_privacy_policy_consent_required()
+
     form = erroneous_form if erroneous_form \
         else UserCreateForm(terms_version_id=terms_version.id)
+
+    if not privacy_policy_consent_required:
+        del form.consent_to_privacy_policy
 
     return {'form': form}
 
@@ -151,7 +157,13 @@ def create():
         flash_error('Das Erstellen von Benutzerkonten ist deaktiviert.')
         abort(403)
 
+    privacy_policy_consent_required = _is_privacy_policy_consent_required()
+
     form = UserCreateForm(request.form)
+
+    if not privacy_policy_consent_required:
+        del form.consent_to_privacy_policy
+
     if not form.validate():
         return create_form(form)
 
@@ -182,13 +194,19 @@ def create():
     now_utc = datetime.utcnow()
 
     terms_consent_expressed_at = now
-    privacy_policy_consent_expressed_at = now_utc
+
+    if privacy_policy_consent_required:
+        privacy_policy_consent_expressed_at = now_utc
+    else:
+        privacy_policy_consent_expressed_at = None
+
     newsletter_subscription_state_expressed_at = now
 
     try:
         user = user_creation_service.create_user(
             screen_name, email_address, password, first_names, last_name,
             g.brand_id, terms_version.id, terms_consent_expressed_at,
+            privacy_policy_consent_required,
             privacy_policy_consent_expressed_at, subscribe_to_newsletter,
             newsletter_subscription_state_expressed_at)
     except user_creation_service.UserCreationFailed:
@@ -329,3 +347,16 @@ def _get_current_user_or_404():
         abort(404)
 
     return user
+
+
+def _is_privacy_policy_consent_required():
+    """Return `True` if consent to the privacy policy is required.
+
+    By default, consent is required. It can be disabled by configuring
+    the string `false` for the brand setting
+    `privacy_policy_consent_required`.
+    """
+    value = brand_settings_service \
+        .find_setting_value(g.brand_id, 'privacy_policy_consent_required')
+
+    return value != 'false'

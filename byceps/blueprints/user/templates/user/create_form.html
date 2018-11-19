@@ -18,9 +18,11 @@
       {{ form_field_checkbox(form.consent_to_terms,
         'Ich akzeptiere die <a href="%s" target="_blank">Allgemeinen Geschäftsbedingungen</a>.'|format(url_for('terms.view_current'))
       ) }}
+      {%- if form.consent_to_privacy_policy %}
       {{ form_field_checkbox(form.consent_to_privacy_policy,
         'Ich akzeptiere die <a href="%s" target="_blank">Datenschutzbestimmungen</a>.'|format(url_for('snippet.privacy_policy'))
       ) }}
+      {%- endif %}
       {{ form_field_checkbox(form.subscribe_to_newsletter, 'Ich möchte den Newsletter erhalten.') }}
     {%- endcall %}
 

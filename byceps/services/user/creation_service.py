@@ -7,6 +7,7 @@ byceps.services.user.creation_service
 """
 
 from datetime import datetime
+from typing import Optional
 
 from flask import current_app
 
@@ -35,7 +36,8 @@ def create_user(screen_name: str, email_address: str, password: str,
                 first_names: str, last_name: str, brand_id: BrandID,
                 terms_version_id: TermsVersionID,
                 terms_consent_expressed_at: datetime,
-                privacy_policy_consent_expressed_at: datetime,
+                privacy_policy_consent_required: bool,
+                privacy_policy_consent_expressed_at: Optional[datetime],
                 subscribe_to_newsletter: bool,
                 newsletter_subscription_state_expressed_at: datetime) -> DbUser:
     """Create a user account and related records."""
@@ -64,11 +66,12 @@ def create_user(screen_name: str, email_address: str, password: str,
         user.id, terms_version_id, terms_consent_expressed_at)
     db.session.add(terms_consent)
 
-    # consent to privacy policy (required)
-    event = event_service._build_event('privacy-policy-accepted', user.id, {
-        'initiator_id': str(user.id),
-    }, occurred_at=privacy_policy_consent_expressed_at)
-    db.session.add(event)
+    # consent to privacy policy
+    if privacy_policy_consent_required:
+        event = event_service._build_event('privacy-policy-accepted', user.id, {
+            'initiator_id': str(user.id),
+        }, occurred_at=privacy_policy_consent_expressed_at)
+        db.session.add(event)
 
     db.session.commit()
 
