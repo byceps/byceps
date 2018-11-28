@@ -43,17 +43,7 @@ def create_user(screen_name: str, email_address: str, password: str,
                 newsletter_subscription_state_expressed_at: datetime) -> DbUser:
     """Create a user account and related records."""
     # user with details
-    user = build_user(screen_name, email_address)
-    user.detail.first_names = first_names
-    user.detail.last_name = last_name
-    db.session.add(user)
-
-    try:
-        db.session.commit()
-    except Exception as e:
-        current_app.logger.error('User creation failed: %s', e)
-        db.session.rollback()
-        raise UserCreationFailed()
+    user = _create_user(screen_name, email_address, first_names, last_name)
 
     # password
     password_service.create_password_hash(user.id, password)
@@ -116,6 +106,26 @@ def _normalize_email_address(email_address: str) -> str:
         raise ValueError('Invalid email address: \'{}\''.format(email_address))
 
     return normalized
+
+
+def _create_user(screen_name: str, email_address: str,
+                 first_names: Optional[str], last_name: Optional[str]
+                ) -> DbUser:
+    user = build_user(screen_name, email_address)
+
+    user.detail.first_names = first_names
+    user.detail.last_name = last_name
+
+    db.session.add(user)
+
+    try:
+        db.session.commit()
+    except Exception as e:
+        current_app.logger.error('User creation failed: %s', e)
+        db.session.rollback()
+        raise UserCreationFailed()
+
+    return user
 
 
 def _assign_roles(user_id: UserID) -> None:
