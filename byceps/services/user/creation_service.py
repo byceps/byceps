@@ -12,7 +12,7 @@ from typing import Optional
 from flask import current_app
 
 from ...database import db
-from ...typing import BrandID
+from ...typing import BrandID, UserID
 
 from ..authentication.password import service as password_service
 from ..authorization.models import RoleID
@@ -59,8 +59,7 @@ def create_user(screen_name: str, email_address: str, password: str,
     password_service.create_password_hash(user.id, password)
 
     # roles
-    board_user_role = authorization_service.find_role(RoleID('board_user'))
-    authorization_service.assign_role_to_user(user.id, board_user_role.id)
+    _assign_roles(user.id)
 
     # consent to terms of service
     if terms_consent_required:
@@ -117,6 +116,12 @@ def _normalize_email_address(email_address: str) -> str:
         raise ValueError('Invalid email address: \'{}\''.format(email_address))
 
     return normalized
+
+
+def _assign_roles(user_id: UserID) -> None:
+    board_user_role = authorization_service.find_role(RoleID('board_user'))
+
+    authorization_service.assign_role_to_user(user_id, board_user_role.id)
 
 
 def _request_email_address_verification(user: DbUser, brand_id: BrandID
