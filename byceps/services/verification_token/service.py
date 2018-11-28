@@ -53,6 +53,11 @@ def _create_token(user_id: UserID, purpose: Purpose) -> Token:
     return token
 
 
+def delete_token(token: Token) -> None:
+    db.session.delete(token)
+    db.session.commit()
+
+
 def find_for_email_address_confirmation_by_token(token: Token) -> Token:
     purpose = Purpose.email_address_confirmation
     return find_for_purpose_by_token(token, purpose)

@@ -18,6 +18,7 @@ from ..email import service as email_service
 from ..orga_team.models import OrgaTeam, Membership as OrgaTeamMembership
 from ..user_avatar.models import Avatar, AvatarSelection
 from ..verification_token.models import Token
+from ..verification_token import service as verification_token_service
 
 from . import event_service
 from .models.user import AnonymousUser, User as DbUser
@@ -242,8 +243,9 @@ def confirm_email_address(verification_token: Token) -> None:
 
     user.email_address_verified = True
     user.enabled = True
-    db.session.delete(verification_token)
     db.session.commit()
+
+    verification_token_service.delete_token(verification_token)
 
 
 def update_user_details(user: DbUser, first_names: str, last_name: str,
