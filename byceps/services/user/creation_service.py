@@ -82,12 +82,8 @@ def create_user(screen_name: str, email_address: str, password: str,
         newsletter_command_service.subscribe(user.id, brand_id,
             newsletter_subscription_state_expressed_at)
 
-    # verification_token for email address confirmation
-    verification_token = verification_token_service \
-        .create_for_email_address_confirmation(user.id)
-
-    user_service.send_email_address_confirmation_email(user.email_address,
-        user.screen_name, verification_token, brand_id)
+    # e-mail address confirmation
+    _request_email_address_verification(user, brand_id)
 
     return user
 
@@ -121,3 +117,12 @@ def _normalize_email_address(email_address: str) -> str:
         raise ValueError('Invalid email address: \'{}\''.format(email_address))
 
     return normalized
+
+
+def _request_email_address_verification(user: DbUser, brand_id: BrandID
+                                       ) -> None:
+    verification_token = verification_token_service \
+        .create_for_email_address_confirmation(user.id)
+
+    user_service.send_email_address_confirmation_email(user.email_address,
+        user.screen_name, verification_token, brand_id)
