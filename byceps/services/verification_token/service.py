@@ -19,8 +19,7 @@ def find_or_create_for_email_address_confirmation(user_id: UserID) -> Token:
 
     if token is None:
         token = build_for_email_address_confirmation(user_id)
-        db.session.add(token)
-        db.session.commit()
+        _persist_token(token)
 
     return token
 
@@ -30,8 +29,7 @@ def find_or_create_for_terms_consent(user_id: UserID) -> Token:
 
     if token is None:
         token = build_for_terms_consent(user_id)
-        db.session.add(token)
-        db.session.commit()
+        _persist_token(token)
 
     return token
 
@@ -46,6 +44,11 @@ def build_for_password_reset(user_id: UserID) -> Token:
 
 def build_for_terms_consent(user_id: UserID) -> Token:
     return Token(user_id, Purpose.terms_consent)
+
+
+def _persist_token(token: Token) -> None:
+    db.session.add(token)
+    db.session.commit()
 
 
 def find_for_email_address_confirmation_by_token(token: Token) -> Token:
