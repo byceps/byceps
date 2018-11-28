@@ -26,6 +26,7 @@ from . import event_service
 from .models.detail import UserDetail as DbUserDetail
 from .models.user import User as DbUser
 from . import service as user_service
+from .transfer.models import User
 
 
 class UserCreationFailed(Exception):
@@ -40,7 +41,7 @@ def create_user(screen_name: str, email_address: str, password: str,
                 privacy_policy_consent_required: bool,
                 privacy_policy_consent_expressed_at: Optional[datetime],
                 subscribe_to_newsletter: bool,
-                newsletter_subscription_state_expressed_at: datetime) -> DbUser:
+                newsletter_subscription_state_expressed_at: datetime) -> User:
     """Create a user account and related records."""
     # user with details
     user = _create_user(screen_name, email_address, first_names, last_name)
@@ -74,7 +75,7 @@ def create_user(screen_name: str, email_address: str, password: str,
     # e-mail address confirmation
     _request_email_address_verification(user, brand_id)
 
-    return user
+    return user_service._db_entity_to_user_dto(user)
 
 
 def build_user(screen_name: str, email_address: str) -> DbUser:
