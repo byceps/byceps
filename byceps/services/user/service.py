@@ -216,7 +216,8 @@ def _do_users_matching_filter_exist(model_attribute: str, search_value: str
         .scalar()
 
 
-def send_email_address_confirmation_email(user: DbUser,
+def send_email_address_confirmation_email(recipient_email_address: str,
+                                          recipient_screen_name: str,
                                           verification_token: Token,
                                           brand_id: BrandID) -> None:
     sender_address = email_service.get_sender_address_for_brand(brand_id)
@@ -225,12 +226,13 @@ def send_email_address_confirmation_email(user: DbUser,
                                token=verification_token.token,
                                _external=True)
 
-    subject = '{0.screen_name}, bitte bestätige deine E-Mail-Adresse'.format(user)
+    subject = '{}, bitte bestätige deine E-Mail-Adresse' \
+        .format(recipient_screen_name)
     body = (
-        'Hallo {0.screen_name},\n\n'
+        'Hallo {0},\n\n'
         'bitte bestätige deine E-Mail-Adresse indem du diese URL abrufst: {1}'
-    ).format(user, confirmation_url)
-    recipients = [user.email_address]
+    ).format(recipient_screen_name, confirmation_url)
+    recipients = [recipient_email_address]
 
     email_service.enqueue_email(sender_address, recipients, subject, body)
 
