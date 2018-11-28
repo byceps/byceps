@@ -18,8 +18,7 @@ def find_or_create_for_email_address_confirmation(user_id: UserID) -> Token:
     token = find_for_email_address_confirmation_by_user(user_id)
 
     if token is None:
-        token = build_for_email_address_confirmation(user_id)
-        _persist_token(token)
+        token = create_for_email_address_confirmation(user_id)
 
     return token
 
@@ -28,27 +27,30 @@ def find_or_create_for_terms_consent(user_id: UserID) -> Token:
     token = find_for_terms_consent_by_user(user_id)
 
     if token is None:
-        token = build_for_terms_consent(user_id)
-        _persist_token(token)
+        token = create_for_terms_consent(user_id)
 
     return token
 
 
-def build_for_email_address_confirmation(user_id: UserID) -> Token:
-    return Token(user_id, Purpose.email_address_confirmation)
+def create_for_email_address_confirmation(user_id: UserID) -> Token:
+    return _create_token(user_id, Purpose.email_address_confirmation)
 
 
-def build_for_password_reset(user_id: UserID) -> Token:
-    return Token(user_id, Purpose.password_reset)
+def create_for_password_reset(user_id: UserID) -> Token:
+    return _create_token(user_id, Purpose.password_reset)
 
 
-def build_for_terms_consent(user_id: UserID) -> Token:
-    return Token(user_id, Purpose.terms_consent)
+def create_for_terms_consent(user_id: UserID) -> Token:
+    return _create_token(user_id, Purpose.terms_consent)
 
 
-def _persist_token(token: Token) -> None:
+def _create_token(user_id: UserID, purpose: Purpose) -> Token:
+    token = Token(user_id, purpose)
+
     db.session.add(token)
     db.session.commit()
+
+    return token
 
 
 def find_for_email_address_confirmation_by_token(token: Token) -> Token:

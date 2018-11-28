@@ -84,9 +84,7 @@ def create_user(screen_name: str, email_address: str, password: str,
 
     # verification_token for email address confirmation
     verification_token = verification_token_service \
-        .build_for_email_address_confirmation(user.id)
-    db.session.add(verification_token)
-    db.session.commit()
+        .create_for_email_address_confirmation(user.id)
 
     user_service.send_email_address_confirmation_email(
         user, verification_token, brand_id)

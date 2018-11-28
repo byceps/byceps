@@ -24,10 +24,7 @@ def prepare_password_reset(user: User, brand_id: BrandID) -> None:
     the user's address.
     """
     verification_token = verification_token_service \
-        .build_for_password_reset(user.id)
-
-    db.session.add(verification_token)
-    db.session.commit()
+        .create_for_password_reset(user.id)
 
     _send_password_reset_email(user, verification_token, brand_id)
 
