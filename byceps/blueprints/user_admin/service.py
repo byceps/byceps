@@ -167,6 +167,7 @@ def _fake_terms_consent_events(user_id: UserID) -> Iterator[UserEvent]:
     for consent in consents:
         data = {
             'initiator_id': str(user_id),
+            'brand_id': consent.version.brand_id,
             'version_title': consent.version.title,
         }
 

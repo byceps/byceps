@@ -120,7 +120,7 @@
           {%- set icon_name = 'legal' %}
           {%- set body %}
             <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
-            hat die aktuellen <strong>AGB</strong> (&quot;{{ event.data.version_title }}&quot;) <strong>angenommen</strong>.
+            hat die aktuellen <strong>AGB</strong> (&quot;{{ event.data.version_title }}&quot;) der Marke &quot;{{ event.data.brand_id }}&quot; <strong>angenommen</strong>.
           {%- endset %}
         {%- else %}
           {%- set icon_name = 'disabled' %}
