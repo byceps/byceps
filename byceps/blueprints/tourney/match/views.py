@@ -53,10 +53,20 @@ def comments_view_as_json(match_id):
 
 
 def _comment_to_json(comment):
+    creator = comment.creator
+
     return {
         'comment_id': str(comment.id),
         'match_id': str(comment.match_id),
         'created_at': comment.created_at.isoformat(),
+        'creator': {
+            'user_id': creator.id,
+            'screen_name': creator.screen_name,
+            'suspended': creator.suspended,
+            'deleted': creator.deleted,
+            'avatar_url': creator.avatar_url,
+            'is_orga': creator.is_orga,
+        },
         'body': comment.body,
         'hidden': comment.hidden,
         'hidden_at': comment.hidden_at,
