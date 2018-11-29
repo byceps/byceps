@@ -73,7 +73,7 @@ def _comment_to_json(comment):
         },
         'body': comment.body_rendered,
         'hidden': comment.hidden,
-        'hidden_at': comment.hidden_at,
+        'hidden_at': comment.hidden_at.isoformat(),
         'hidden_by_id': comment.hidden_by_id,
     }
 
