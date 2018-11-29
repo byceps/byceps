@@ -10,6 +10,7 @@ from datetime import datetime
 from typing import Dict, Optional, Sequence, Set
 
 from ...database import db
+from ...services.text_markup import service as text_markup_service
 from ...services.user import service as user_service
 from ...services.user.transfer.models import User
 from ...typing import PartyID, UserID
@@ -53,6 +54,10 @@ def get_comments(match_id: MatchID, party_id: PartyID
     creators_by_id = _get_users_by_id(creator_ids, party_id)
     for comment in comments:
         comment.creator = creators_by_id[comment.created_by_id]
+
+    # Add rendered bodies.
+    for comment in comments:
+        comment.body_rendered = text_markup_service.render_html(comment.body)
 
     return comments
 
