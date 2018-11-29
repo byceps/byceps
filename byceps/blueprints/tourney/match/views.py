@@ -39,6 +39,7 @@ def comments_view(match_id):
 
 
 @blueprint.route('/<uuid:match_id>/comments.json')
+@api_token_required
 def comments_view_as_json(match_id):
     """Render the comments on a match as JSON."""
     match = _get_match_or_404(match_id)
