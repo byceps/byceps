@@ -67,7 +67,7 @@ def _comment_to_json(comment):
             'avatar_url': creator.avatar_url,
             'is_orga': creator.is_orga,
         },
-        'body': comment.body,
+        'body': comment.body_rendered,
         'hidden': comment.hidden,
         'hidden_at': comment.hidden_at,
         'hidden_by_id': comment.hidden_by_id,
