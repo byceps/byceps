@@ -73,7 +73,8 @@ def _comment_to_json(comment):
         },
         'body': comment.body_rendered,
         'hidden': comment.hidden,
-        'hidden_at': comment.hidden_at.isoformat(),
+        'hidden_at': comment.hidden_at.isoformat() \
+                     if (comment.hidden_at is not None) else None,
         'hidden_by_id': comment.hidden_by_id,
     }
 
