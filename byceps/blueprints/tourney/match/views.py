@@ -33,6 +33,9 @@ def comments_view(match_id):
 
     comments = match_service.get_comments(match.id, g.party_id)
 
+    # Drop hidden comments from output.
+    comments = [comment for comment in comments if not comment.hidden]
+
     return {
         'comments': comments,
     }
