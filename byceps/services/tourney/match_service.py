@@ -7,10 +7,12 @@ byceps.services.tourney.match_service
 """
 
 from datetime import datetime
-from typing import Optional, Sequence
+from typing import Dict, Optional, Sequence, Set
 
 from ...database import db
-from ...typing import UserID
+from ...services.user import service as user_service
+from ...services.user.transfer.models import User
+from ...typing import PartyID, UserID
 
 from .models.match import Match, MatchID, MatchComment, MatchCommentID
 
@@ -38,15 +40,29 @@ def find_match(match_id: MatchID) -> Optional[Match]:
 # comments
 
 
-def get_comments(match_id: MatchID) -> Sequence[MatchComment]:
+def get_comments(match_id: MatchID, party_id: PartyID
+                ) -> Sequence[MatchComment]:
     """Return comments on the match, ordered chronologically."""
-    return MatchComment.query \
+    comments = MatchComment.query \
         .for_match(match_id) \
-        .options(
-            db.joinedload(MatchComment.created_by),
-        ) \
         .order_by(MatchComment.created_at) \
         .all()
+
+    # Add creator objects.
+    creator_ids = {comment.created_by_id for comment in comments}
+    creators_by_id = _get_users_by_id(creator_ids, party_id)
+    for comment in comments:
+        comment.creator = creators_by_id[comment.created_by_id]
+
+    return comments
+
+
+def _get_users_by_id(user_ids: Set[UserID], party_id: PartyID
+                    ) -> Dict[UserID, User]:
+    users = user_service.find_users(user_ids, include_avatars=True,
+                                    include_orga_flags_for_party_id=party_id)
+
+    return user_service.index_users_by_id(users)
 
 
 def create_comment(match_id: MatchID, creator_id: UserID, body: str

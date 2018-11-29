@@ -31,7 +31,7 @@ def comments_view(match_id):
     """Render the comments on a match."""
     match = _get_match_or_404(match_id)
 
-    comments = match_service.get_comments(match.id)
+    comments = match_service.get_comments(match.id, g.party_id)
 
     return {
         'comments': comments,
@@ -43,7 +43,7 @@ def comments_view_as_json(match_id):
     """Render the comments on a match as JSON."""
     match = _get_match_or_404(match_id)
 
-    comments = match_service.get_comments(match.id)
+    comments = match_service.get_comments(match.id, g.party_id)
 
     comment_dtos = list(map(_comment_to_json, comments))
 

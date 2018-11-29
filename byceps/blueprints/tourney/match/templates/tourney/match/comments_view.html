@@ -7,13 +7,13 @@
     <article class="user-comment" id="tourney-match-comment-{{ comment.id }}">
       <aside class="user-comment-aside">
         <div class="creator">
-          {{ render_user_avatar_96(comment.created_by) }}
+          {{ render_user_avatar_96(comment.creator) }}
         </div>
       </aside>
       <div class="user-comment-main">
         <header>
           <div class="user-comment-meta-top">
-            <span class="user-link">{{ render_user_link(comment.created_by) }}</span>
+            <span class="user-link">{{ render_user_link(comment.creator) }}</span>
             {{ render_datetime(comment.created_at)|replace(', ', ' um ') }}
           </div>
         </header>
