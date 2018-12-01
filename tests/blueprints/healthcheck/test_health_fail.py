@@ -3,6 +3,8 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
+from unittest.mock import patch
+
 from tests.base import AbstractAppTestCase, CONFIG_FILENAME_TEST_ADMIN
 
 
@@ -14,12 +16,11 @@ class HealthcheckFailTest(AbstractAppTestCase):
         # After all, both admin and party apps should react the same.
         super().setUp(config_filename=CONFIG_FILENAME_TEST_ADMIN)
 
-        self.original_database_uri = self.app.config['SQLALCHEMY_DATABASE_URI']
-        self.app.config['SQLALCHEMY_DATABASE_URI'] \
-            = 'postgresql+psycopg2://byceps_test:WRONG_PASSWORD@127.0.0.1/byceps_test'
-
-    def test_healthcheck_fail(self):
+    @patch('byceps.blueprints.healthcheck.views._is_rdbms_ok')
+    def test_healthcheck_fail(self, is_rdbms_ok_mock):
         expected_media_type = 'application/health+json'
+
+        is_rdbms_ok_mock.return_value = False
 
         with self.client() as client:
             response = client.get('/health')
@@ -33,7 +34,3 @@ class HealthcheckFailTest(AbstractAppTestCase):
                 'rdbms': [{'status': 'fail'}],
             },
         }
-
-    def tearDown(self):
-        # Restore working database connection for post-test clean up.
-        self.app.config['SQLALCHEMY_DATABASE_URI'] = self.original_database_uri
