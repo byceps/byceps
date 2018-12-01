@@ -1,0 +1,51 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/datetime.html' import render_datetime %}
+{% from 'macros/icons.html' import render_icon %}
+{% from 'macros/user_admin.html' import render_user_avatar_20_and_name %}
+{% set current_page = 'news_admin' %}
+{% set current_page_brand = brand %}
+{% set title = 'Änderungshistorie' %}
+
+{% block body %}
+
+  <nav class="breadcrumbs">
+    <ol>
+      <li>News</li>
+      <li>Marke {{ brand.title }}</li>
+      <li>Kanal <a href="{{ url_for('.channel_view', channel_id=item.channel_id) }}">{{ item.channel_id }}</a></li>
+    </ol>
+  </nav>
+  <h1>{{ render_icon('history') }} {{ title }}</h1>
+
+  <table class="index wide">
+    <thead>
+      <tr>
+        <th></th>
+        <th>geändert</th>
+        <th>durch</th>
+        <th>Unterschiede</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for version, previous_version in versions_pairwise %}
+      <tr>
+        <td>
+          {%- if version.is_current -%}
+          {{ render_icon('published', title='öffentlich') }}
+          {%- else -%}
+          {{ render_icon('archived', title='archiviert') }}
+          {%- endif -%}
+        </td>
+        <td class="nowrap"><a href="{{ url_for('.item_view_version', version_id=version.id) }}">{{ render_datetime(version.created_at) }}</a></td>
+        <td>{{ render_user_avatar_20_and_name(version.creator) }}</td>
+        <td>
+          {%- if previous_version -%}
+          <a href="{{ url_for('.item_compare_versions', from_version_id=previous_version.id, to_version_id=version.id) }}" title="Änderungen im Vergleich zur vorigen Version anzeigen">Änderungen zeigen</a>
+          {%- endif -%}
+        </td>
+      </tr>
+      {%- endfor %}
+    </tbody>
+  </table>
+
+{%- endblock %}

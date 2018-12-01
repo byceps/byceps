@@ -18,7 +18,7 @@ from ....util.templating import load_template
 
 from ...user.models.user import User
 
-from ..transfer.models import ChannelID
+from ..transfer.models import ChannelID, ItemID
 
 from .channel import Channel
 
@@ -75,8 +75,8 @@ class Item(db.Model):
 
 class ItemVersionQuery(BaseQuery):
 
-    def for_item(self, item: Item) -> BaseQuery:
-        return self.filter_by(item=item)
+    def for_item(self, item_id: ItemID) -> BaseQuery:
+        return self.filter_by(item_id=item_id)
 
 
 class ItemVersion(db.Model):

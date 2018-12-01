@@ -6,7 +6,7 @@ byceps.services.news.service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import Dict, Optional
+from typing import Dict, Optional, Sequence
 
 from flask import url_for
 from flask_sqlalchemy import Pagination
@@ -112,6 +112,14 @@ def _get_items_query(channel_id: ChannelID) -> Query:
         .for_channel(channel_id) \
         .with_current_version() \
         .order_by(DbItem.published_at.desc())
+
+
+def get_item_versions(item_id: ItemID) -> Sequence[DbItemVersion]:
+    """Return all item versions, sorted from most recent to oldest."""
+    return DbItemVersion.query \
+        .for_item(item_id) \
+        .order_by(DbItemVersion.created_at.desc()) \
+        .all()
 
 
 def find_item_version(version_id: ItemVersionID) -> DbItemVersion:

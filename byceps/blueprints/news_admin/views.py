@@ -14,9 +14,12 @@ from ...services.brand import service as brand_service
 from ...services.news import service as news_service, \
     channel_service as news_channel_service
 from ...services.news.transfer.models import Channel
+from ...services.text_diff import service as text_diff_service
+from ...util.datetime.format import format_datetime_short
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_success
 from ...util.framework.templating import templated
+from ...util.iterables import pairwise
 from ...util.views import redirect_to
 
 from ..authorization.decorators import permission_required
@@ -124,6 +127,54 @@ def item_view_version(version_id):
     return {
         'version': version,
         'brand': brand,
+    }
+
+
+@blueprint.route('/items/<uuid:item_id>/versions')
+@permission_required(NewsItemPermission.view)
+@templated
+def item_list_versions(item_id):
+    """List news item's versions."""
+    item = _get_item_or_404(item_id)
+
+    channel = item.channel
+    brand = brand_service.find_brand(channel.brand_id)
+
+    versions = news_service.get_item_versions(item.id)
+    versions_pairwise = list(pairwise(versions + [None]))
+
+    return {
+        'item': item,
+        'brand': brand,
+        'versions_pairwise': versions_pairwise,
+    }
+
+
+@blueprint.route('/items/<uuid:from_version_id>/compare_to/<uuid:to_version_id>')
+@permission_required(NewsItemPermission.view)
+@templated
+def item_compare_versions(from_version_id, to_version_id):
+    """Show the difference between two news item versions."""
+    from_version = _find_version(from_version_id)
+    to_version = _find_version(to_version_id)
+
+    if from_version.item_id != to_version.item_id:
+        abort(400, 'The versions do not belong to the same item.')
+
+    item = news_service.find_item(from_version.item_id)
+    channel = item.channel
+    brand = brand_service.find_brand(channel.brand_id)
+
+    html_diff_title = _create_html_diff(from_version, to_version, 'title')
+    html_diff_body = _create_html_diff(from_version, to_version, 'body')
+    html_diff_image_url_path = _create_html_diff(from_version, to_version,
+                                                 'image_url_path')
+
+    return {
+        'brand': brand,
+        'diff_title': html_diff_title,
+        'diff_body': html_diff_body,
+        'diff_image_url_path': html_diff_image_url_path,
     }
 
 
@@ -238,3 +289,26 @@ def _get_item_or_404(item_id):
         abort(404)
 
     return item
+
+
+def _find_version(version_id):
+    version = news_service.find_item_version(version_id)
+
+    if version is None:
+        abort(404)
+
+    return version
+
+
+def _create_html_diff(from_version, to_version, attribute_name):
+    """Create an HTML diff between the named attribute's value of each
+    of the two versions.
+    """
+    from_description = format_datetime_short(from_version.created_at)
+    to_description = format_datetime_short(to_version.created_at)
+
+    from_text = getattr(from_version, attribute_name)
+    to_text = getattr(to_version, attribute_name)
+
+    return text_diff_service.create_html_diff(from_text, to_text,
+                                              from_description, to_description)
