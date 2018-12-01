@@ -67,6 +67,7 @@ def _get_blueprints(app):
         ('authentication',          '/authentication'               ),
         ('authorization',           None                            ),
         ('core',                    '/core'                         ),
+        ('healthcheck',             '/health'                       ),
         ('shop.orders.email',       None                            ),
         ('user',                    '/users'                        ),
         ('user_avatar',             '/users'                        ),
