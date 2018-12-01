@@ -250,22 +250,6 @@ def confirm_email_address(verification_token: Token) -> None:
     verification_token_service.delete_token(verification_token)
 
 
-def update_user_details(user: DbUser, first_names: str, last_name: str,
-                        date_of_birth: date, country: str, zip_code, city: str,
-                        street: str, phone_number: str) -> None:
-    """Update the user's details."""
-    user.detail.first_names = first_names
-    user.detail.last_name = last_name
-    user.detail.date_of_birth = date_of_birth
-    user.detail.country = country
-    user.detail.zip_code = zip_code
-    user.detail.city = city
-    user.detail.street = street
-    user.detail.phone_number = phone_number
-
-    db.session.commit()
-
-
 def enable_user(user_id: UserID, initiator_id: UserID) -> None:
     """Enable the user account."""
     user = _get_user(user_id)
@@ -337,6 +321,22 @@ def delete_account(user_id: UserID, initiator_id: UserID, reason: str) -> None:
         'reason': reason,
     })
     db.session.add(event)
+
+    db.session.commit()
+
+
+def update_user_details(user: DbUser, first_names: str, last_name: str,
+                        date_of_birth: date, country: str, zip_code, city: str,
+                        street: str, phone_number: str) -> None:
+    """Update the user's details."""
+    user.detail.first_names = first_names
+    user.detail.last_name = last_name
+    user.detail.date_of_birth = date_of_birth
+    user.detail.country = country
+    user.detail.zip_code = zip_code
+    user.detail.city = city
+    user.detail.street = street
+    user.detail.phone_number = phone_number
 
     db.session.commit()
 
