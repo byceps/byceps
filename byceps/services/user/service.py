@@ -21,6 +21,7 @@ from ..verification_token.models import Token
 from ..verification_token import service as verification_token_service
 
 from . import event_service
+from .models.detail import UserDetail as DbUserDetail
 from .models.user import AnonymousUser, User as DbUser
 from .transfer.models import User
 
@@ -325,18 +326,20 @@ def delete_account(user_id: UserID, initiator_id: UserID, reason: str) -> None:
     db.session.commit()
 
 
-def update_user_details(user: DbUser, first_names: str, last_name: str,
+def update_user_details(user_id: UserID, first_names: str, last_name: str,
                         date_of_birth: date, country: str, zip_code, city: str,
                         street: str, phone_number: str) -> None:
     """Update the user's details."""
-    user.detail.first_names = first_names
-    user.detail.last_name = last_name
-    user.detail.date_of_birth = date_of_birth
-    user.detail.country = country
-    user.detail.zip_code = zip_code
-    user.detail.city = city
-    user.detail.street = street
-    user.detail.phone_number = phone_number
+    detail = _get_user_detail(user_id)
+
+    detail.first_names = first_names
+    detail.last_name = last_name
+    detail.date_of_birth = date_of_birth
+    detail.country = country
+    detail.zip_code = zip_code
+    detail.city = city
+    detail.street = street
+    detail.phone_number = phone_number
 
     db.session.commit()
 
@@ -370,3 +373,15 @@ def _get_user(user_id: UserID) -> DbUser:
         raise ValueError("Unknown user ID '{}'.".format(user_id))
 
     return user
+
+
+def _get_user_detail(user_id: UserID) -> DbUserDetail:
+    """Return the user's details, or raise an exception."""
+    detail = DbUserDetail.query \
+        .filter_by(user_id=user_id) \
+        .one_or_none()
+
+    if detail is None:
+        raise ValueError("Unknown user ID '{}'.".format(user_id))
+
+    return detail

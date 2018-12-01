@@ -358,7 +358,6 @@ def details_update_form(erroneous_form=None):
 def details_update():
     """Update the current user's details."""
     current_user = _get_current_user_or_404()
-    user = user_service.find_user_with_details(current_user.id)
 
     form = DetailsForm(request.form)
 
@@ -374,7 +373,7 @@ def details_update():
     street = form.street.data.strip()
     phone_number = form.phone_number.data.strip()
 
-    user_service.update_user_details(user, first_names, last_name,
+    user_service.update_user_details(current_user.id, first_names, last_name,
                                      date_of_birth, country, zip_code, city,
                                      street, phone_number)
 
