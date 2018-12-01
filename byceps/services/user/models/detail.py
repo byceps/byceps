@@ -8,6 +8,8 @@ byceps.services.user.models.detail
 
 from datetime import date
 
+from sqlalchemy.ext.mutable import MutableDict
+
 from ....database import db
 from ....util.datetime.calc import calculate_age, calculate_days_until
 from ....util.datetime.monthday import MonthDay
@@ -29,7 +31,7 @@ class UserDetail(db.Model):
     street = db.Column(db.Unicode(40))
     phone_number = db.Column(db.Unicode(20))
     internal_comment = db.Column(db.Unicode(200))
-    extras = db.Column(db.JSONB)
+    extras = db.Column(MutableDict.as_mutable(db.JSONB))
 
     @property
     def full_name(self) -> str:

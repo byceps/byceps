@@ -344,6 +344,20 @@ def update_user_details(user_id: UserID, first_names: str, last_name: str,
     db.session.commit()
 
 
+def set_user_detail_extra(user_id: UserID, key: str, value: str) -> None:
+    """Set a value for a key in the user's detail extras map."""
+    detail = _get_user_detail(user_id)
+    detail.extras[key] = value
+    db.session.commit()
+
+
+def remove_user_detail_extra(user_id: UserID, key: str) -> None:
+    """Remove the entry with that key from the user's detail extras map."""
+    detail = _get_user_detail(user_id)
+    del detail.extras[key]
+    db.session.commit()
+
+
 def _anonymize_account(user: DbUser) -> None:
     """Remove or replace user details of the account."""
     user.screen_name = 'deleted-{}'.format(user.id.hex)
