@@ -347,13 +347,22 @@ def update_user_details(user_id: UserID, first_names: str, last_name: str,
 def set_user_detail_extra(user_id: UserID, key: str, value: str) -> None:
     """Set a value for a key in the user's detail extras map."""
     detail = _get_user_detail(user_id)
+
+    if detail.extras is None:
+        detail.extras = {}
+
     detail.extras[key] = value
+
     db.session.commit()
 
 
 def remove_user_detail_extra(user_id: UserID, key: str) -> None:
     """Remove the entry with that key from the user's detail extras map."""
     detail = _get_user_detail(user_id)
+
+    if (detail.extras is None) or (key not in detail.extras):
+        return
+
     del detail.extras[key]
     db.session.commit()
 
