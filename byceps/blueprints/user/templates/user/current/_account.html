@@ -1,0 +1,18 @@
+{% from 'macros/icons.html' import render_icon %}
+
+
+  <h2>Benutzerkonto</h2>
+  <table class="index">
+    <tr>
+      <th>Benutzername</th>
+      <td>{{ user.screen_name }}</td>
+    </tr>
+    <tr>
+      <th>E-Mail-Adresse</th>
+      <td>{{ user.email_address }}</td>
+    </tr>
+    <tr>
+      <th>Sicherheit</th>
+      <td><a class="button button--inline" href="{{ url_for('authentication.password_update_form') }}">{{ render_icon('password') }} Passwort ändern</a></td>
+    </tr>
+  </table>

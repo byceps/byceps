@@ -1,7 +1,4 @@
 {% extends 'layout/base_auto.html' %}
-{% from 'macros/datetime.html' import render_date, render_datetime %}
-{% from 'macros/icons.html' import render_icon %}
-{% from 'macros/user_avatar.html' import render_user_avatar_128 %}
 {% set current_page = 'user' %}
 {% set title = 'Deine Daten' %}
 
@@ -9,111 +6,12 @@
 
   <h1>{{ title }}</h1>
 
-  <h2>Benutzerkonto</h2>
-  <table class="index">
-    <tr>
-      <th>Benutzername</th>
-      <td>{{ user.screen_name }}</td>
-    </tr>
-    <tr>
-      <th>E-Mail-Adresse</th>
-      <td>{{ user.email_address }}</td>
-    </tr>
-    <tr>
-      <th>Sicherheit</th>
-      <td><a class="button button--inline" href="{{ url_for('authentication.password_update_form') }}">{{ render_icon('password') }} Passwort ändern</a></td>
-    </tr>
-  </table>
-
-  <h2>Profil</h2>
-  <table class="index">
-    {%- if g.site_mode.is_public() %}
-    <tr>
-      <th>öffentliches Profil</th>
-      <td><a href="{{ url_for('.view', user_id=user.id) }}">ansehen</a></td>
-    </tr>
-    {%- endif %}
-    <tr>
-      <th>Avatar</th>
-      <td>
-        <div style="margin-bottom: 0.5rem;">
-          {{ render_user_avatar_128(user) }}
-        </div>
-
-        <div class="dropdown">
-          <button class="dropdown-toggle button button--inline">bearbeiten {{ render_icon('caret-down') -}}</button>
-          <ol>
-            <li><a href="{{ url_for('user_avatar.update_form') }}">{{ render_icon('upload') }} hochladen</a></li>
-            {%- if user.avatar %}
-            <li><a data-action="avatar-delete" href="{{ url_for('user_avatar.delete', _method='DELETE') }}">{{ render_icon('delete') }} entfernen</a></li>
-            {%- endif %}
-          </ol>
-        </div>
-      </td>
-    </tr>
-  </table>
-
-  <h2>Persönliche Daten <a class="button button--inline" href="{{ url_for('.details_update_form') }}">{{ render_icon('edit') }} bearbeiten</a></h2>
-  <table class="index">
-    <tr>
-      <th>Voller Name</th>
-      <td>{{ user.detail.full_name|fallback }}</td>
-    </tr>
-    <tr>
-      <th>Geburtsdatum</th>
-      <td>
-        {%- if user.detail.date_of_birth -%}
-          {{ render_date(user.detail.date_of_birth, smart=False) }}
-        {%- else -%}
-          {{ 'nicht angegeben'|dim }}
-        {%- endif -%}
-      </td>
-    </tr>
-    <tr>
-      <th>Anschrift</th>
-      <td>
-        {%- if user.detail.street or user.detail.zip_code or user.detail.city or user.detail.country %}
-          {%- if user.detail.street %}{{ user.detail.street }}<br>{% endif -%}
-          {%- if user.detail.zip_code %}{{ user.detail.zip_code }} {% endif %}
-          {%- if user.detail.city %}{{ user.detail.city }}{% endif -%}
-          {%- if user.detail.country %}<br>{{ user.detail.country }}{% endif -%}
-        {%- else -%}
-          {{ 'nicht angegeben'|dim }}
-        {%- endif -%}
-      </td>
-    </tr>
-    <tr>
-      <th>Telefonnummer</th>
-      <td>{{ user.detail.phone_number|fallback }}</td>
-    </tr>
-  </table>
+{%- include 'user/current/_account.html' %}
+{%- include 'user/current/_profile.html' %}
+{%- include 'user/current/_details_personal.html' %}
 
   {%- if g.site_mode.is_public() %}
-  <h2>Newsletter</h2>
-  <table class="index">
-    <tr>
-      <th>Status</th>
-      <td>
-        <div class="dropdown left">
-          <button class="dropdown-toggle button button--inline">
-            {%- if subscribed_to_newsletter -%}
-            {{ render_icon('enabled', color='#009900') }} abonniert
-            {%- else -%}
-            {{ render_icon('disabled', color='#cc0000') }} nicht abonniert
-            {%- endif -%}
-            {{ ' ' }}{{ render_icon('caret-down') -}}
-          </button>
-          <ol>
-            {% if subscribed_to_newsletter -%}
-            <li><a data-action="newsletter-unsubscribe" href="{{ url_for('newsletter.unsubscribe') }}">{{ render_icon('disabled', color='#cc0000') }} abmelden</a></li>
-            {%- else -%}
-            <li><a data-action="newsletter-subscribe" href="{{ url_for('newsletter.subscribe') }}">{{ render_icon('enabled', color='#009900') }} abonnieren</a></li>
-            {%- endif %}
-          </ol>
-        </div>
-      </td>
-    </tr>
-  </table>
+{%- include 'user/current/_newsletter.html' %}
   {%- endif %}
 
 {%- endblock %}

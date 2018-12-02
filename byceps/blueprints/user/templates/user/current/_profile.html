@@ -1,0 +1,31 @@
+{% from 'macros/icons.html' import render_icon %}
+{% from 'macros/user_avatar.html' import render_user_avatar_128 %}
+
+
+  <h2>Profil</h2>
+  <table class="index">
+    {%- if g.site_mode.is_public() %}
+    <tr>
+      <th>öffentliches Profil</th>
+      <td><a href="{{ url_for('.view', user_id=user.id) }}">ansehen</a></td>
+    </tr>
+    {%- endif %}
+    <tr>
+      <th>Avatar</th>
+      <td>
+        <div style="margin-bottom: 0.5rem;">
+          {{ render_user_avatar_128(user) }}
+        </div>
+
+        <div class="dropdown">
+          <button class="dropdown-toggle button button--inline">bearbeiten {{ render_icon('caret-down') -}}</button>
+          <ol>
+            <li><a href="{{ url_for('user_avatar.update_form') }}">{{ render_icon('upload') }} hochladen</a></li>
+            {%- if user.avatar %}
+            <li><a data-action="avatar-delete" href="{{ url_for('user_avatar.delete', _method='DELETE') }}">{{ render_icon('delete') }} entfernen</a></li>
+            {%- endif %}
+          </ol>
+        </div>
+      </td>
+    </tr>
+  </table>
