@@ -231,7 +231,7 @@ def send_email_address_confirmation_email(recipient_email_address: str,
         .format(recipient_screen_name)
     body = (
         'Hallo {0},\n\n'
-        'bitte bestätige deine E-Mail-Adresse indem du diese URL abrufst: {1}'
+        'bitte bestätige deine E-Mail-Adresse, indem du diese URL abrufst: {1}'
     ).format(recipient_screen_name, confirmation_url)
     recipients = [recipient_email_address]
 

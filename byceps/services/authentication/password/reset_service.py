@@ -41,7 +41,7 @@ def _send_password_reset_email(user: User, verification_token: Token,
         .format(user)
     body = (
         'Hallo {0.screen_name},\n\n'
-        'du kannst ein neues Passwort festlegen indem du diese URL abrufst: {1}'
+        'du kannst ein neues Passwort festlegen, indem du diese URL abrufst: {1}'
     ).format(user, confirmation_url)
     recipients = [user.email_address]
 
