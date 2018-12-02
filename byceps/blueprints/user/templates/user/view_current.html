@@ -17,5 +17,14 @@
 {%- endblock %}
 
 {% block scripts %}
-    <script src="{{ url_for('.static', filename='behavior/user.js') }}"></script>
+    <script>
+      onDomReady(function() {
+        // avatar
+        confirmed_delete_on_click_then_reload('[data-action="avatar-delete"]', 'Avatarbild entfernen?');
+
+        // newsletter
+        post_on_click_then_reload('[data-action="newsletter-subscribe"]');
+        confirmed_delete_on_click_then_reload('[data-action="newsletter-unsubscribe"]', 'Wirklich vom Newsletter abmelden?');
+      });
+    </script>
 {% endblock %}
