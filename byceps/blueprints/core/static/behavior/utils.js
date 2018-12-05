@@ -53,6 +53,14 @@ function confirmed_post_on_click_then_reload(selector, confirmation_label) {
   _confirmed_request_on_click_then_reload(selector, confirmation_label, 'POST');
 }
 
+function delete_on_click(selector) {
+  _request_on_click(selector, 'DELETE');
+}
+
+function delete_on_click_then_reload(selector) {
+  _request_on_click_then_reload(selector, 'DELETE');
+}
+
 function confirmed_delete_on_click(selector, confirmation_label) {
   _confirmed_request_on_click(selector, confirmation_label, 'DELETE');
 }
