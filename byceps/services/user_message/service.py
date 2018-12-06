@@ -8,6 +8,7 @@ Send an e-mail message from one user to another.
 :License: Modified BSD, see LICENSE for details.
 """
 
+from email.utils import formataddr
 import os.path
 from typing import Any, Dict, Optional
 
@@ -97,7 +98,7 @@ def _assemble_message(sender: User, recipient: User, text: str,
 
 
 def _to_name_and_address_string(name: str, address: str) -> str:
-    return '{} <{}>'.format(name, address)
+    return formataddr((name, address))
 
 
 def _render_message_template(sender: User, recipient: User, text: str,
