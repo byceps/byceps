@@ -58,7 +58,12 @@ class AbstractAppTestCase(TestCase):
 
     def create_brand_and_party(self):
         self.brand = create_brand()
+        db.session.add(self.brand)
+
         self.party = create_party(brand_id=self.brand.id)
+        db.session.add(self.party)
+
+        db.session.commit()
 
     def create_user(self, *args, **kwargs):
         user = create_user(*args, **kwargs)
