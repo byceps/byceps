@@ -123,9 +123,13 @@ main {
   font-weight: bold;
 }
 
+#header-content .current-user .dropdown-toggle {
+  padding: 0.375rem;
+}
+
 #header-content .current-user .label-and-name {
   display: inline-block;
-  margin: 0 0.3rem 0 0.1rem;
+  margin: 0 0.375rem;
   text-align: left;
   vertical-align: middle;
 }
