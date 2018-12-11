@@ -1,16 +1,25 @@
+{%- from 'macros/icons.html' import render_icon %}
+
+
   <p>Buttons with different styles and states:</p>
 
   {%- set example_buttons -%}
 <div class="button-row">
   <button class="button">Form Button</button>
   <a href="#" class="button">Link Button</a>
+  <a href="#" class="button">{{ render_icon('shopping-cart') }} <span>Buy</span></a>
+  <a href="#" class="button">{{ render_icon('caret-down') }} </a>
   <a href="#" class="button button--outlined">Outlined</a>
   <a href="#" class="button button--clear">Clear</a>
   <button class="button" disabled>Disabled Form Button</button>
   <a href="#" class="button button--disabled">Disabled Link Button</a>
 </div>
 
-<p><a href="#" class="button button--compact">Compact</a></p>
+<div class="button-row">
+  <a href="#" class="button button--compact">Compact</a>
+  <a href="#" class="button button--compact">{{ render_icon('shopping-cart') }} <span>Buy</span></a>
+  <a href="#" class="button button--compact">{{ render_icon('caret-down') }} </a>
+</div>
   {%- endset %}
 
   <div class="example">
