@@ -477,28 +477,26 @@ form.unobtrusive input:focus ~ .button {
   user-select: none;
   white-space: nowrap;
 }
+
 .button--compact {
   font-size: 0.875rem; /* 14px / 16px */
-  padding: 0;
+  padding: 0.125rem 0.25rem;
 }
+
 button.button[disabled],
 .button--disabled {
   cursor: not-allowed;
   opacity: 0.5;
 }
-.button--icon-only {
-  padding: 0 0.15rem;
-}
-.button--inline {
-  font-size: 0.875rem; /* 14px / 16px */
-  padding: 0 0.3rem;
-}
+
 .button.button--outlined {
   background-color: transparent;
 }
+
 .button:hover {
   box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.2);
 }
+
 .button:active {
   box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
@@ -510,6 +508,7 @@ button.button[disabled],
   border-color: transparent;
   box-shadow: none;
 }
+
 .button.button--clear:hover {
   border-color: #cccccc;
 }

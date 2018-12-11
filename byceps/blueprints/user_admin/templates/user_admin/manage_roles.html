@@ -38,9 +38,9 @@
         <td>
           {%- if g.current_user.has_permission(RolePermission.assign) %}
             {%- if user_has_role %}
-          <a class="button button--inline" style="float: right;" data-action="role-deassign" href="{{ url_for('.role_deassign', user_id=user.id, role_id=role.id) }}" title="Rolle entfernen">{{ render_icon('remove') }}</a>
+          <a class="button button--compact" style="float: right;" data-action="role-deassign" href="{{ url_for('.role_deassign', user_id=user.id, role_id=role.id) }}" title="Rolle entfernen">{{ render_icon('remove') }}</a>
             {%- else %}
-          <a class="button button--inline" style="float: right;" data-action="role-assign" href="{{ url_for('.role_assign', user_id=user.id, role_id=role.id) }}" title="Rolle zuweisen">{{ render_icon('add') }}</a>
+          <a class="button button--compact" style="float: right;" data-action="role-assign" href="{{ url_for('.role_assign', user_id=user.id, role_id=role.id) }}" title="Rolle zuweisen">{{ render_icon('add') }}</a>
             {%- endif %}
           {%- endif %}
           <strong>{{ role.title }}</strong><br>

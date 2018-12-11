@@ -59,7 +59,7 @@
                 {%- if ticket.user_checked_in %}
                 {{ render_tag('eingecheckt') }}
                 {%- else %}
-                <a class="button button--outline button--inline" style="padding: 0.15rem 0.25rem;" href="{{ url_for('.view_printable_html', ticket_id=ticket.id) }}">{{ render_icon('print') }}</a>
+                <a class="button button--outline button--compact" href="{{ url_for('.view_printable_html', ticket_id=ticket.id) }}">{{ render_icon('print') }}</a>
                 {%- endif %}
               </span>
             </div>
@@ -99,7 +99,7 @@
               {%- if user_manager == g.current_user %}
               <span class="label-buttons">
                 <div class="dropdown left">
-                  <button class="dropdown-toggle button button--outline button--compact button--icon-only">{{ render_icon('caret-down') -}}</button>
+                  <button class="dropdown-toggle button button--outline button--compact">{{ render_icon('caret-down') -}}</button>
                   <ol>
                     <li><a href="{{ url_for('.appoint_user_form', ticket_id=ticket.id) }}">{{ render_icon('arrow-right') }} Nutzer/in zuweisen</a></li>
                     {%- if ticket.used_by_id != g.current_user.id %}
@@ -129,7 +129,7 @@
               {%- if ticket.owned_by_id == g.current_user.id %}
               <span class="label-buttons">
                 <div class="dropdown left">
-                  <button class="dropdown-toggle button button--outline button--compact button--icon-only">{{ render_icon('caret-down') -}}</button>
+                  <button class="dropdown-toggle button button--outline button--compact">{{ render_icon('caret-down') -}}</button>
                   <ol>
                     <li><a href="{{ url_for('.appoint_user_manager_form', ticket_id=ticket.id) }}">{{ render_icon('arrow-right') }} Nutzer-Verwaltung übertragen</a></li>
                     {%- if user_manager != g.current_user %}
@@ -170,7 +170,7 @@
               {%- if ticket.owned_by_id == g.current_user.id %}
               <span class="label-buttons">
                 <div class="dropdown left">
-                  <button class="dropdown-toggle button button--outline button--compact button--icon-only">{{ render_icon('caret-down') -}}</button>
+                  <button class="dropdown-toggle button button--outline button--compact">{{ render_icon('caret-down') -}}</button>
                   <ol>
                     <li><a href="{{ url_for('.appoint_seat_manager_form', ticket_id=ticket.id) }}">{{ render_icon('arrow-right') }} Sitzplatz-Verwaltung übertragen</a></li>
                     {%- if seat_manager != g.current_user %}
