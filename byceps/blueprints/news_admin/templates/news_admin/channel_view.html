@@ -62,7 +62,7 @@
         </td>
         <td>
           {%- if g.current_user.has_permission(NewsItemPermission.update) -%}
-          <a class="button button--inline" href="{{ url_for('.item_update_form', item_id=item.id) }}">{{ render_icon('edit') }} bearbeiten</a>
+          <a class="button button--inline" href="{{ url_for('.item_update_form', item_id=item.id) }}">{{ render_icon('edit') }} Bearbeiten</a>
           {%- endif -%}
         </td>
       </tr>

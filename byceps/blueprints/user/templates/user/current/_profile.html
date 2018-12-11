@@ -7,7 +7,7 @@
     {%- if g.site_mode.is_public() %}
     <tr>
       <th>öffentliches Profil</th>
-      <td><a href="{{ url_for('.view', user_id=user.id) }}">ansehen</a></td>
+      <td><a href="{{ url_for('.view', user_id=user.id) }}">Ansehen</a></td>
     </tr>
     {%- endif %}
     <tr>
@@ -18,11 +18,11 @@
         </div>
 
         <div class="dropdown">
-          <button class="dropdown-toggle button button--inline">bearbeiten {{ render_icon('caret-down') -}}</button>
+          <button class="dropdown-toggle button button--inline">Bearbeiten {{ render_icon('caret-down') -}}</button>
           <ol>
-            <li><a href="{{ url_for('user_avatar.update_form') }}">{{ render_icon('upload') }} hochladen</a></li>
+            <li><a href="{{ url_for('user_avatar.update_form') }}">{{ render_icon('upload') }} Hochladen</a></li>
             {%- if user.avatar %}
-            <li><a data-action="avatar-delete" href="{{ url_for('user_avatar.delete', _method='DELETE') }}">{{ render_icon('delete') }} entfernen</a></li>
+            <li><a data-action="avatar-delete" href="{{ url_for('user_avatar.delete', _method='DELETE') }}">{{ render_icon('delete') }} Entfernen</a></li>
             {%- endif %}
           </ol>
         </div>

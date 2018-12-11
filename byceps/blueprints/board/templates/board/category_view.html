@@ -67,9 +67,9 @@
 
     {%- if not g.current_user.is_anonymous %}
     <div class="dropdown left">
-      <button class="dropdown-toggle button">mehr {{ render_icon('caret-down') }}</button>
+      <button class="dropdown-toggle button">Mehr {{ render_icon('caret-down') }}</button>
       <ol>
-        <li><a data-action="mark-all-topics-in-category-as-viewed" href="{{ url_for('.mark_all_topics_in_category_as_viewed', category_id=category.id) }}">{{ render_icon('view') }} alle Themen in dieser Kategorie als gelesen markieren</a></li>
+        <li><a data-action="mark-all-topics-in-category-as-viewed" href="{{ url_for('.mark_all_topics_in_category_as_viewed', category_id=category.id) }}">{{ render_icon('view') }} Alle Themen in dieser Kategorie als gelesen markieren</a></li>
       </ol>
     </div>
     {%- endif %}
