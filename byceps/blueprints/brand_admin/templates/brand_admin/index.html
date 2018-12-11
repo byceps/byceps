@@ -9,7 +9,7 @@
 
   {%- if g.current_user.has_permission(BrandPermission.create) %}
   <div class="button-row">
-    <a class="button" href="{{ url_for('.create_form') }}">{{ render_icon('add') }} Marke erstellen</a>
+    <a class="button" href="{{ url_for('.create_form') }}">{{ render_icon('add') }} <span>Marke erstellen</span></a>
   </div>
   {%- endif %}
 

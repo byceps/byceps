@@ -21,7 +21,7 @@
 
   {%- if g.current_user.has_permission(NewsItemPermission.create) %}
   <div class="button-row">
-    <a class="button" href="{{ url_for('.item_create_form', channel_id=channel.id) }}">{{ render_icon('add') }} Newspost erstellen</a>
+    <a class="button" href="{{ url_for('.item_create_form', channel_id=channel.id) }}">{{ render_icon('add') }} <span>Newspost erstellen</span></a>
   </div>
   {%- endif %}
 
@@ -62,7 +62,7 @@
         </td>
         <td>
           {%- if g.current_user.has_permission(NewsItemPermission.update) -%}
-          <a class="button button--inline" href="{{ url_for('.item_update_form', item_id=item.id) }}">{{ render_icon('edit') }} Bearbeiten</a>
+          <a class="button button--inline" href="{{ url_for('.item_update_form', item_id=item.id) }}">{{ render_icon('edit') }} <span>Bearbeiten</span></a>
           {%- endif -%}
         </td>
       </tr>

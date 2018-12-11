@@ -15,7 +15,7 @@
 
   {%- if g.current_user.has_permission(BoardPermission.create) %}
   <div class="button-row">
-    <a class="button" href="{{ url_for('.board_create_form', brand_id=brand.id) }}">{{ render_icon('add') }} Forum erstellen</a>
+    <a class="button" href="{{ url_for('.board_create_form', brand_id=brand.id) }}">{{ render_icon('add') }} <span>Forum erstellen</span></a>
   </div>
   {%- endif %}
 

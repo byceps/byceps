@@ -28,7 +28,7 @@
 
   {%- if g.current_user.has_any_permission(BoardPermission.hide, BoardTopicPermission.lock, BoardTopicPermission.move, BoardTopicPermission.pin) %}
   <div class="button-row button-row--right">
-    <a class="button" href="{{ url_for('.topic_moderate_form', topic_id=topic.id) }}" title="Thema moderieren">{{ render_icon('moderate') }} Moderieren</a>
+    <a class="button" href="{{ url_for('.topic_moderate_form', topic_id=topic.id) }}" title="Thema moderieren">{{ render_icon('moderate') }} <span>Moderieren</span></a>
   </div>
   {%- endif %}
 
@@ -56,13 +56,13 @@
   </small>
   {%- elif topic.locked %}
   <div class="button-row button-row--right">
-    <span class="button button--disabled">{{ render_icon('reply') }} Antworten</span>
+    <span class="button button--disabled">{{ render_icon('reply') }} <span>Antworten</span></span>
   </div>
   {%- elif is_last_page %}
 {%- include 'board/_posting_inline_create_form.html' %}
   {%- else %}
   <div class="button-row button-row--right">
-    <a class="button" href="{{ url_for('.posting_create_form', topic_id=topic.id) }}">{{ render_icon('reply') }} Antworten</a>
+    <a class="button" href="{{ url_for('.posting_create_form', topic_id=topic.id) }}">{{ render_icon('reply') }} <span>Antworten</span></a>
   </div>
   {%- endif %}
 

@@ -33,9 +33,9 @@
   {%- if g.current_user.has_permission(ShopArticlePermission.create) %}
   <div class="button-row">
     {%- if article_number_prefix %}
-    <a class="button" href="{{ url_for('.create_form', party_id=party.id) }}">{{ render_icon('add') }} Artikel anlegen</a>
+    <a class="button" href="{{ url_for('.create_form', party_id=party.id) }}">{{ render_icon('add') }} <span>Artikel anlegen</span></a>
     {%- else %}
-    <span class="button button--disabled">{{ render_icon('add') }} Artikel anlegen</span>
+    <span class="button button--disabled">{{ render_icon('add') }} <span>Artikel anlegen</span></span>
     {%- endif %}
   </div>
   {%- endif %}

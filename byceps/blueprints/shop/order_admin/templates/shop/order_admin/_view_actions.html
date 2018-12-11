@@ -2,7 +2,7 @@
 
 
     <div class="dropdown left">
-      <button class="dropdown-toggle button">Aktionen {{ render_icon('caret-down') }}</button>
+      <button class="dropdown-toggle button"><span>Aktionen</span> {{ render_icon('caret-down') }}</button>
       <ol>
         <li><a href="{{ url_for('.export', order_id=order.id) }}" download="{{ order.order_number }}.xml">{{ render_icon('download') }} für Lexware exportieren (XML)</a></li>
 

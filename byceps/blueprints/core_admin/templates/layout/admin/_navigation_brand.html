@@ -8,7 +8,7 @@
     <div class="sidebar-section-category">Marke</div>
     <div class="dropdown">
       <button class="dropdown-toggle button button--clear button--inline">
-        <div class="sidebar-section-title">{{ brand.title }} {{ render_icon('caret-down') }}</div>
+        <div class="sidebar-section-title"><span>{{ brand.title }}</span> {{ render_icon('caret-down') }}</div>
       </button>
       <ol>
         {%- for brand in all_brands|sort(attribute='title') %}

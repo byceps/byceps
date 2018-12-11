@@ -55,7 +55,7 @@
         {%- elif ticket.used_by and ticket.used_by.suspended -%}
         <button class="button color-danger" disabled>Kein Einlass!<br><small>Nutzer gesperrt</small></button>
         {%- elif ticket.used_by -%}
-        <a class="button color-primary" data-action="check-in-user" href="{{ url_for('ticketing_admin.set_user_checked_in_flag', ticket_id=ticket.id) }}">{{ render_icon('log-in') }} Einchecken</a>
+        <a class="button color-primary" data-action="check-in-user" href="{{ url_for('ticketing_admin.set_user_checked_in_flag', ticket_id=ticket.id) }}">{{ render_icon('log-in') }} <span>Einchecken</span></a>
         {%- endif -%}
       </td>
     </tr>

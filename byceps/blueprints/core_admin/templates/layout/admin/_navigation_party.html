@@ -8,7 +8,7 @@
     <div class="sidebar-section-category">Party</div>
     <div class="dropdown">
       <button class="dropdown-toggle button button--clear button--inline">
-        <div class="sidebar-section-title">{{ party.title }} {{ render_icon('caret-down') }}</div>
+        <div class="sidebar-section-title"><span>{{ party.title }}</span> {{ render_icon('caret-down') }}</div>
       </button>
       <ol>
         {%- for party in get_parties_for_brand(brand.id)|sort(attribute='starts_at', reverse=True) %}

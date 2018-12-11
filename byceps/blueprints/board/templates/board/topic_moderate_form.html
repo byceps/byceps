@@ -21,11 +21,11 @@
   <p>Das Thema &quot;{{ topic.title }}&quot; von {{ render_user_link(topic.creator) }} ist {% if topic.hidden %}<strong>versteckt</strong> ({{ render_datetime(topic.hidden_at) }} durch {{ topic.hidden_by.screen_name }}){% else %}<strong>sichtbar</strong>{% endif %}.</p>
   <div class="button-row">
   {%- if topic.hidden %}
-    <span class="button button--disabled">{{ render_icon('hidden') }} Verstecken</span>
-    <a class="button" data-action="topic-unhide" href="{{ url_for('.topic_unhide', topic_id=topic.id) }}">{{ render_icon('view') }} Sichtbar machen</a>
+    <span class="button button--disabled">{{ render_icon('hidden') }} <span>Verstecken</span></span>
+    <a class="button" data-action="topic-unhide" href="{{ url_for('.topic_unhide', topic_id=topic.id) }}">{{ render_icon('view') }} <span>Sichtbar machen</span></a>
   {%- else %}
-    <a class="button" data-action="topic-hide" href="{{ url_for('.topic_hide', topic_id=topic.id) }}">{{ render_icon('hidden') }} Verstecken</a>
-    <span class="button button--disabled">{{ render_icon('view') }} Sichtbar machen</span>
+    <a class="button" data-action="topic-hide" href="{{ url_for('.topic_hide', topic_id=topic.id) }}">{{ render_icon('hidden') }} <span>Verstecken</span></a>
+    <span class="button button--disabled">{{ render_icon('view') }} <span>Sichtbar machen</span></span>
   {%- endif %}
   </div>
   {%- endif %}
@@ -35,11 +35,11 @@
   <p>Das Thema &quot;{{ topic.title }}&quot; von {{ render_user_link(topic.creator) }} ist {% if topic.locked %}<strong>geschlossen</strong> ({{ render_datetime(topic.locked_at) }} durch {{ topic.locked_by.screen_name }}){% else %}<strong>offen</strong>{% endif %}.</p>
   <div class="button-row">
   {%- if topic.locked %}
-    <span class="button button--disabled">{{ render_icon('lock') }} Schließen</span>
-    <a class="button" data-action="topic-unlock" href="{{ url_for('.topic_unlock', topic_id=topic.id) }}">{{ render_icon('unlock') }} Öffnen</a>
+    <span class="button button--disabled">{{ render_icon('lock') }} <span>Schließen</span></span>
+    <a class="button" data-action="topic-unlock" href="{{ url_for('.topic_unlock', topic_id=topic.id) }}">{{ render_icon('unlock') }} <span>Öffnen</span></a>
   {%- else %}
-    <a class="button" data-action="topic-lock" href="{{ url_for('.topic_lock', topic_id=topic.id) }}">{{ render_icon('lock') }} Schließen</a>
-    <span class="button button--disabled">{{ render_icon('unlock') }} Öffnen</span>
+    <a class="button" data-action="topic-lock" href="{{ url_for('.topic_lock', topic_id=topic.id) }}">{{ render_icon('lock') }} <span>Schließen</span></a>
+    <span class="button button--disabled">{{ render_icon('unlock') }} <span>Öffnen</span></span>
   {%- endif %}
   </div>
   {%- endif %}
@@ -49,11 +49,11 @@
   <p>Das Thema &quot;{{ topic.title }}&quot; von {{ render_user_link(topic.creator) }} ist {% if topic.pinned %}<strong>angepinnt</strong> ({{ render_datetime(topic.pinned_at) }} durch {{ topic.pinned_by.screen_name }}){% else %}<strong>nicht angepinnt</strong>{% endif %}.</p>
   <div class="button-row">
   {%- if topic.pinned %}
-    <span class="button button--disabled">{{ render_icon('pin') }} Anpinnen</span>
-    <a class="button" data-action="topic-unpin" href="{{ url_for('.topic_unpin', topic_id=topic.id) }}">{{ render_icon('sorted') }} Lösen</a>
+    <span class="button button--disabled">{{ render_icon('pin') }} <span>Anpinnen</span></span>
+    <a class="button" data-action="topic-unpin" href="{{ url_for('.topic_unpin', topic_id=topic.id) }}">{{ render_icon('sorted') }} <span>Lösen</span></a>
   {%- else %}
-    <a class="button" data-action="topic-pin" href="{{ url_for('.topic_pin', topic_id=topic.id) }}">{{ render_icon('pin') }} Anpinnen</a>
-    <span class="button button--disabled">{{ render_icon('sorted') }} Lösen</span>
+    <a class="button" data-action="topic-pin" href="{{ url_for('.topic_pin', topic_id=topic.id) }}">{{ render_icon('pin') }} <span>Anpinnen</span></a>
+    <span class="button button--disabled">{{ render_icon('sorted') }} <span>Lösen</span></span>
   {%- endif %}
   </div>
   {%- endif %}
@@ -70,7 +70,7 @@
         <option value="{{ category.id }}">{{ category.title }}</option>
       {%- endfor %}
       </select>
-      <button type="submit" class="button">{{ render_icon('move') }} Verschieben</button>
+      <button type="submit" class="button">{{ render_icon('move') }} <span>Verschieben</span></button>
     </form>
   </div>
     {%- else %}

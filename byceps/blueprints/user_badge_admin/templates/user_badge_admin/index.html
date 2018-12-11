@@ -19,7 +19,7 @@
 
   {%- if g.current_user.has_permission(UserBadgePermission.create) %}
   <div class="button-row">
-    <a class="button" href="{{ url_for('.create_form') }}">{{ render_icon('add') }} Abzeichen erstellen</a>
+    <a class="button" href="{{ url_for('.create_form') }}">{{ render_icon('add') }} <span>Abzeichen erstellen</span></a>
   </div>
   {%- endif %}
 

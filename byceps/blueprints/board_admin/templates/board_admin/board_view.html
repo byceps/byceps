@@ -16,7 +16,7 @@
 
   {%- if g.current_user.has_permission(BoardCategoryPermission.create) %}
   <div class="button-row">
-    <a class="button" href="{{ url_for('.category_create_form', board_id=board_id) }}">{{ render_icon('add') }} Kategorie erstellen</a>
+    <a class="button" href="{{ url_for('.category_create_form', board_id=board_id) }}">{{ render_icon('add') }} <span>Kategorie erstellen</span></a>
   </div>
   {%- endif %}
 
