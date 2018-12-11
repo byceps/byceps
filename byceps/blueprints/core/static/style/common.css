@@ -517,6 +517,14 @@ button.button[disabled],
   white-space: normal;
 }
 
+.button .icon:not(:last-child) {
+  margin-right: 0.25rem;
+}
+
+.button .icon:not(:first-child) {
+  margin-left: 0.25rem;
+}
+
 
 /* dropdowns */
 
