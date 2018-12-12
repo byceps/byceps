@@ -24,10 +24,10 @@ class AuthorizationServiceTestCase(AbstractAppTestCase):
         assign_permissions_to_user(self.user_id, 'board_moderator', {
             'board_topic_hide',
             'board_topic_pin',
-        }, self.initiator_id)
+        }, initiator_id=self.initiator_id)
         assign_permissions_to_user(self.user_id, 'news_editor', {
             'news_item_create',
-        }, self.initiator_id)
+        }, initiator_id=self.initiator_id)
 
         permissions_after = authorization_service.get_permission_ids_for_user(self.user_id)
         assert permissions_after == {
