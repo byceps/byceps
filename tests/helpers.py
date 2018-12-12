@@ -43,7 +43,8 @@ def current_user_set(app, user):
         yield
 
 
-def assign_permissions_to_user(user_id, role_id, permission_ids):
+def assign_permissions_to_user(user_id, role_id, permission_ids,
+                               *, initiator_id=None):
     """Create the role and permissions, assign the permissions to the
     role, and assign the role to the user.
     """
@@ -54,4 +55,5 @@ def assign_permissions_to_user(user_id, role_id, permission_ids):
                                                              permission_id)
         authorization_service.assign_permission_to_role(permission.id, role.id)
 
-    authorization_service.assign_role_to_user(user_id, role.id)
+    authorization_service.assign_role_to_user(user_id, role.id,
+                                              initiator_id=initiator_id)
