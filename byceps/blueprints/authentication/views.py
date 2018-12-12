@@ -201,7 +201,11 @@ def request_password_reset():
                     'noch nicht bestätigt.', screen_name)
         return redirect_to('user.request_email_address_confirmation_email')
 
-    sender_address = email_service.get_sender_address_for_brand(g.brand_id)
+    if get_site_mode().is_admin():
+        sender_address = current_app.config['EMAIL_SENDER_ADDRESS']
+    else:
+        sender_address = email_service.get_sender_address_for_brand(g.brand_id)
+
     password_reset_service.prepare_password_reset(user, sender_address)
 
     flash_success(
