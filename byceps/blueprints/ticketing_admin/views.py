@@ -14,7 +14,7 @@ from ...services.ticketing import exceptions as ticket_exceptions, \
     ticket_bundle_service, ticket_service, ticket_user_checkin_service, \
     ticket_user_management_service
 from ...util.framework.blueprint import create_blueprint
-from ...util.framework.flash import flash_error, flash_success
+from ...util.framework.flash import flash_error, flash_notice, flash_success
 from ...util.framework.templating import templated
 from ...util.views import respond_no_content
 
@@ -140,6 +140,10 @@ def set_user_checked_in_flag(ticket_id):
         return
 
     flash_success("Benutzer '{}' wurde eingecheckt.", ticket.used_by.screen_name)
+
+    occupies_seat = (ticket.occupied_seat_id is not None)
+    if not occupies_seat:
+        flash_notice('Das Ticket belegt noch keinen Sitzplatz.', icon='warning')
 
 
 @blueprint.route('/tickets/<uuid:ticket_id>/flags/user_checked_in', methods=['DELETE'])
