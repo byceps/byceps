@@ -185,9 +185,9 @@ def set_password(user_id):
 
     user = _get_user_or_404(user_id)
     new_password = form.password.data
-    initiator = g.current_user
+    initiator_id = g.current_user.id
 
-    password_service.update_password_hash(user.id, new_password, initiator.id)
+    password_service.update_password_hash(user.id, new_password, initiator_id)
 
     flash_success("Für Benutzerkonto '{}' wurde ein neues Passwort gesetzt.",
                   user.screen_name)
