@@ -128,6 +128,11 @@ def set_user_checked_in_flag(ticket_id):
 
     try:
         ticket_user_checkin_service.check_in_user(ticket.id, initiator_id)
+    except ticket_exceptions.UserAccountDeleted:
+        flash_error(
+            'Das dem Ticket zugewiesene Benutzerkonto ist gelöscht worden. '
+            'Der Check-In ist nicht erlaubt.')
+        return
     except ticket_exceptions.UserAccountSuspended:
         flash_error(
             'Das dem Ticket zugewiesene Benutzerkonto ist gesperrt. '

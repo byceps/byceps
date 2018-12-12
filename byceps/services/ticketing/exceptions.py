@@ -17,6 +17,12 @@ class TicketLacksUser(Exception):
     """
 
 
+class UserAccountDeleted(Exception):
+    """Indicate that an action failed because the user account has been
+    deleted.
+    """
+
+
 class UserAccountSuspended(Exception):
     """Indicate that an action failed because the user account is suspended."""
 

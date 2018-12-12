@@ -13,7 +13,8 @@ from ..user import service as user_service
 
 from . import event_service
 from .exceptions import TicketIsRevoked, TicketLacksUser, \
-    UserAccountSuspended, UserAlreadyCheckedIn, UserIdUnknown
+    UserAccountDeleted, UserAccountSuspended, UserAlreadyCheckedIn, \
+    UserIdUnknown
 from . import ticket_service
 from .transfer.models import TicketID
 
@@ -37,6 +38,10 @@ def check_in_user(ticket_id: TicketID, initiator_id: UserID) -> None:
     user = user_service.find_user(ticket.used_by_id)
     if user is None:
         raise UserIdUnknown("Unknown user ID '{}'.".format(ticket.used_by_id))
+
+    if user.deleted:
+        raise UserAccountDeleted(
+            'User account {} has been deleted.'.format(user.screen_name))
 
     if user.suspended:
         raise UserAccountSuspended(
