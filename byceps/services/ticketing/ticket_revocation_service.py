@@ -63,4 +63,4 @@ def _build_ticket_revoked_event(ticket_id: TicketID,
     if reason:
         data['reason'] = reason
 
-    return event_service._build_event('ticket-revoked', ticket_id, data)
+    return event_service.build_event('ticket-revoked', ticket_id, data)

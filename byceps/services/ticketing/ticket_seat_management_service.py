@@ -31,7 +31,7 @@ def appoint_seat_manager(ticket_id: TicketID, manager_id: UserID,
 
     ticket.seat_managed_by_id = manager_id
 
-    event = event_service._build_event('seat-manager-appointed', ticket.id, {
+    event = event_service.build_event('seat-manager-appointed', ticket.id, {
         'appointed_seat_manager_id': str(manager_id),
         'initiator_id': str(initiator_id),
     })
@@ -49,7 +49,7 @@ def withdraw_seat_manager(ticket_id: TicketID, initiator_id: UserID) -> None:
 
     ticket.seat_managed_by_id = None
 
-    event = event_service._build_event('seat-manager-withdrawn', ticket.id, {
+    event = event_service.build_event('seat-manager-withdrawn', ticket.id, {
         'initiator_id': str(initiator_id),
     })
     db.session.add(event)
@@ -88,7 +88,7 @@ def occupy_seat(ticket_id: TicketID, seat_id: SeatID, initiator_id: UserID
     if previous_seat_id is not None:
         event_data['previous_seat_id'] = str(previous_seat_id)
 
-    event = event_service._build_event('seat-occupied', ticket.id, event_data)
+    event = event_service.build_event('seat-occupied', ticket.id, event_data)
     db.session.add(event)
 
     db.session.commit()
@@ -111,7 +111,7 @@ def release_seat(ticket_id: TicketID, initiator_id: UserID) -> None:
 
     ticket.occupied_seat_id = None
 
-    event = event_service._build_event('seat-released', ticket.id, {
+    event = event_service.build_event('seat-released', ticket.id, {
         'initiator_id': str(initiator_id),
     })
     db.session.add(event)

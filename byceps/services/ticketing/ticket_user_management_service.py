@@ -28,7 +28,7 @@ def appoint_user_manager(ticket_id: TicketID, manager_id: UserID,
 
     ticket.user_managed_by_id = manager_id
 
-    event = event_service._build_event('user-manager-appointed', ticket.id, {
+    event = event_service.build_event('user-manager-appointed', ticket.id, {
         'appointed_user_manager_id': str(manager_id),
         'initiator_id': str(initiator_id),
     })
@@ -46,7 +46,7 @@ def withdraw_user_manager(ticket_id: TicketID, initiator_id: UserID) -> None:
 
     ticket.user_managed_by_id = None
 
-    event = event_service._build_event('user-manager-withdrawn', ticket.id, {
+    event = event_service.build_event('user-manager-withdrawn', ticket.id, {
         'initiator_id': str(initiator_id),
     })
     db.session.add(event)
@@ -75,7 +75,7 @@ def appoint_user(ticket_id: TicketID, user_id: UserID, initiator_id: UserID
 
     ticket.used_by_id = user_id
 
-    event = event_service._build_event('user-appointed', ticket.id, {
+    event = event_service.build_event('user-appointed', ticket.id, {
         'appointed_user_id': str(user_id),
         'initiator_id': str(initiator_id),
     })
@@ -96,7 +96,7 @@ def withdraw_user(ticket_id: TicketID, initiator_id: UserID) -> None:
 
     ticket.used_by_id = None
 
-    event = event_service._build_event('user-withdrawn', ticket.id, {
+    event = event_service.build_event('user-withdrawn', ticket.id, {
         'initiator_id': str(initiator_id),
     })
     db.session.add(event)

@@ -44,7 +44,7 @@ def check_in_user(ticket_id: TicketID, initiator_id: UserID) -> None:
 
     ticket.user_checked_in = True
 
-    event = event_service._build_event('user-checked-in', ticket.id, {
+    event = event_service.build_event('user-checked-in', ticket.id, {
         'checked_in_user_id': str(ticket.used_by_id),
         'initiator_id': str(initiator_id),
     })
@@ -63,7 +63,7 @@ def revert_user_check_in(ticket_id: TicketID, initiator_id: UserID) -> None:
 
     ticket.user_checked_in = False
 
-    event = event_service._build_event('user-check-in-reverted', ticket.id, {
+    event = event_service.build_event('user-check-in-reverted', ticket.id, {
         'checked_in_user_id': str(ticket.used_by_id),
         'initiator_id': str(initiator_id),
     })
