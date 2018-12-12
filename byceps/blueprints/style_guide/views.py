@@ -17,7 +17,7 @@ from ...util.framework.templating import templated
 blueprint = create_blueprint('style_guide', __name__)
 
 
-ICONS_FILENAME = 'blueprints/core/static/style/icons.svg'
+ICONS_FILENAME = 'static/style/icons.svg'
 
 
 @blueprint.route('/')

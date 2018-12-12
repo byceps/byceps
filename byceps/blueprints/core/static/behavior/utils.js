@@ -224,7 +224,7 @@ onDomReady(function() {
     form.onsubmit = function() {
       const submitButton = form.querySelector('button[type="submit"]');
       submitButton.disabled = true;
-      submitButton.innerHTML += ' <svg class="icon spinning"><use xlink:href="/core/static/style/icons.svg#spinner"></use></svg>';
+      submitButton.innerHTML += ' <svg class="icon spinning"><use xlink:href="/static/style/icons.svg#spinner"></use></svg>';
     };
   });
 });
