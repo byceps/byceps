@@ -14,6 +14,14 @@
   .tickets a:not(:hover) {
     text-decoration: none;
   }
+
+  .button.button-check-in:focus,
+  .button.button-check-in:hover {
+    background-color: #ffe777;
+    box-shadow: 0 0 0 0.125rem #666666;
+    color: currentColor;
+    outline: none;
+  }
 </style>
 
 <table class="index wide tickets">
@@ -57,7 +65,7 @@
         {%- elif ticket.used_by and ticket.used_by.suspended -%}
         <div class="button color-danger button--disabled"><div>Kein Einlass!<br><small>Nutzer gesperrt</small></div></div>
         {%- elif ticket.used_by -%}
-        <a class="button color-primary" data-action="check-in-user" href="{{ url_for('ticketing_admin.set_user_checked_in_flag', ticket_id=ticket.id) }}">{{ render_icon('log-in') }} <span>Einchecken</span></a>
+        <a class="button color-primary button-check-in" data-action="check-in-user" href="{{ url_for('ticketing_admin.set_user_checked_in_flag', ticket_id=ticket.id) }}">{{ render_icon('log-in') }} <span>Einchecken</span></a>
         {%- endif -%}
       </td>
     </tr>
