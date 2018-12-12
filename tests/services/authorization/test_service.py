@@ -11,21 +11,24 @@ from tests.helpers import assign_permissions_to_user
 
 class AuthorizationServiceTestCase(AbstractAppTestCase):
 
-    def test_get_permission_ids_for_user(self):
-        user = self.create_user()
+    def setUp(self):
+        super().setUp()
 
-        permissions_before = authorization_service.get_permission_ids_for_user(user.id)
+        self.user_id = self.create_user().id
+
+    def test_get_permission_ids_for_user(self):
+        permissions_before = authorization_service.get_permission_ids_for_user(self.user_id)
         assert permissions_before == frozenset()
 
-        assign_permissions_to_user(user.id, 'board_moderator', {
+        assign_permissions_to_user(self.user_id, 'board_moderator', {
             'board_topic_hide',
             'board_topic_pin',
         })
-        assign_permissions_to_user(user.id, 'news_editor', {
+        assign_permissions_to_user(self.user_id, 'news_editor', {
             'news_item_create',
         })
 
-        permissions_after = authorization_service.get_permission_ids_for_user(user.id)
+        permissions_after = authorization_service.get_permission_ids_for_user(self.user_id)
         assert permissions_after == {
             'board_topic_hide',
             'board_topic_pin',
