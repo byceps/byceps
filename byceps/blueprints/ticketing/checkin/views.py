@@ -107,6 +107,10 @@ def _search_users(party_id, search_term, limit):
     users_pagination = user_blueprint_service.get_users_paginated(
         page, per_page, search_term=search_term)
 
+    # Exclude deleted users.
+    users_pagination.items = [user for user in users_pagination.items
+                              if not user.deleted]
+
     return users_pagination.items
 
 
