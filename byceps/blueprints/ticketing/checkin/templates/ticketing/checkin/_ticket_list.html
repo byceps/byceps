@@ -53,7 +53,7 @@
         {%- elif ticket.user_checked_in -%}
         <div class="button color-warning button--disabled">Bereits eingecheckt!</div>
         {%- elif ticket.used_by and ticket.used_by.suspended -%}
-        <div class="button color-danger button--disabled">Kein Einlass!<br><small>Nutzer gesperrt</small></div>
+        <div class="button color-danger button--disabled"><div>Kein Einlass!<br><small>Nutzer gesperrt</small></div></div>
         {%- elif ticket.used_by -%}
         <a class="button color-primary" data-action="check-in-user" href="{{ url_for('ticketing_admin.set_user_checked_in_flag', ticket_id=ticket.id) }}">{{ render_icon('log-in') }} <span>Einchecken</span></a>
         {%- endif -%}
