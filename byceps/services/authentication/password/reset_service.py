@@ -9,7 +9,6 @@ byceps.services.authentication.password.reset_service
 from flask import url_for
 
 from ....database import db
-from ....typing import BrandID
 
 from ...email import service as email_service
 from ...user.models.user import User
@@ -19,19 +18,12 @@ from ...verification_token import service as verification_token_service
 from . import service as password_service
 
 
-def prepare_password_reset(user: User, brand_id: BrandID) -> None:
+def prepare_password_reset(user: User, sender_address: str) -> None:
     """Create a verification token for password reset and email it to
     the user's address.
     """
     verification_token = verification_token_service \
         .create_for_password_reset(user.id)
-
-    _send_password_reset_email(user, verification_token, brand_id)
-
-
-def _send_password_reset_email(user: User, verification_token: Token,
-                               brand_id: BrandID) -> None:
-    sender_address = email_service.get_sender_address_for_brand(brand_id)
 
     confirmation_url = url_for('authentication.password_reset_form',
                                token=verification_token.token,

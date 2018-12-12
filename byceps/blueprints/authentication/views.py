@@ -15,6 +15,7 @@ from ...services.authentication.password import service as password_service
 from ...services.authentication.password import \
     reset_service as password_reset_service
 from ...services.authentication.session import service as session_service
+from ...services.email import service as email_service
 from ...services.terms import consent_service as terms_consent_service, \
     version_service as terms_version_service
 from ...services.user import service as user_service
@@ -200,7 +201,8 @@ def request_password_reset():
                     'noch nicht bestätigt.', screen_name)
         return redirect_to('user.request_email_address_confirmation_email')
 
-    password_reset_service.prepare_password_reset(user, g.brand_id)
+    sender_address = email_service.get_sender_address_for_brand(g.brand_id)
+    password_reset_service.prepare_password_reset(user, sender_address)
 
     flash_success(
         'Ein Link zum Setzen eines neuen Passworts für den Benutzernamen "{}" '
