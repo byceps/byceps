@@ -257,7 +257,7 @@ def enable_user(user_id: UserID, initiator_id: UserID) -> None:
 
     user.enabled = True
 
-    event = event_service._build_event('user-enabled', user.id, {
+    event = event_service.build_event('user-enabled', user.id, {
         'initiator_id': str(initiator_id),
     })
     db.session.add(event)
@@ -271,7 +271,7 @@ def disable_user(user_id: UserID, initiator_id: UserID) -> None:
 
     user.enabled = False
 
-    event = event_service._build_event('user-disabled', user.id, {
+    event = event_service.build_event('user-disabled', user.id, {
         'initiator_id': str(initiator_id),
     })
     db.session.add(event)
@@ -285,7 +285,7 @@ def suspend_account(user_id: UserID, initiator_id: UserID, reason: str) -> None:
 
     user.suspended = True
 
-    event = event_service._build_event('user-suspended', user.id, {
+    event = event_service.build_event('user-suspended', user.id, {
         'initiator_id': str(initiator_id),
         'reason': reason,
     })
@@ -301,7 +301,7 @@ def unsuspend_account(user_id: UserID, initiator_id: UserID, reason: str
 
     user.suspended = False
 
-    event = event_service._build_event('user-unsuspended', user.id, {
+    event = event_service.build_event('user-unsuspended', user.id, {
         'initiator_id': str(initiator_id),
         'reason': reason,
     })
@@ -317,7 +317,7 @@ def delete_account(user_id: UserID, initiator_id: UserID, reason: str) -> None:
     user.deleted = True
     _anonymize_account(user)
 
-    event = event_service._build_event('user-deleted', user.id, {
+    event = event_service.build_event('user-deleted', user.id, {
         'initiator_id': str(initiator_id),
         'reason': reason,
     })

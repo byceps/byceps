@@ -68,7 +68,7 @@ def update_password_hash(user_id: UserID, password: str, initiator_id: UserID
         session_token = session_service.create_session_token(user_id, now)
         db.session.add(session_token)
 
-    event = user_event_service._build_event('password-updated', user_id, {
+    event = user_event_service.build_event('password-updated', user_id, {
         'initiator_id': str(initiator_id),
     })
     db.session.add(event)

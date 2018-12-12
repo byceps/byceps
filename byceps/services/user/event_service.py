@@ -17,13 +17,13 @@ from .models.event import UserEvent, UserEventData
 
 def create_event(event_type: str, user_id: UserID, data: UserEventData) -> None:
     """Create a user event."""
-    event = _build_event(event_type, user_id, data)
+    event = build_event(event_type, user_id, data)
 
     db.session.add(event)
     db.session.commit()
 
 
-def _build_event(event_type: str, user_id: UserID, data: UserEventData,
+def build_event(event_type: str, user_id: UserID, data: UserEventData,
                  occurred_at: Optional[datetime]=None) -> UserEvent:
     """Assemble, but not persist, a user event."""
     if occurred_at is None:

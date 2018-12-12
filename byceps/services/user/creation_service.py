@@ -60,7 +60,7 @@ def create_user(screen_name: str, email_address: str, password: str,
 
     # consent to privacy policy
     if privacy_policy_consent_required:
-        event = event_service._build_event('privacy-policy-accepted', user.id, {
+        event = event_service.build_event('privacy-policy-accepted', user.id, {
             'initiator_id': str(user.id),
         }, occurred_at=privacy_policy_consent_expressed_at)
         db.session.add(event)
