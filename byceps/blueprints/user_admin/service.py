@@ -190,6 +190,8 @@ def _get_additional_data(event: UserEvent, users_by_id: Dict[UserID, User]
             'newsletter-declined',
             'order-placed',
             'privacy-policy-accepted',
+            'role-assigned',
+            'role-deassigned',
             'terms-consent-expressed',
     }:
         yield from _get_additional_data_for_user_initiated_event(

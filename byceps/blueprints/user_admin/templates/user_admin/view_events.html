@@ -116,6 +116,26 @@
             <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
             hat die <strong>Datenschutzbestimmungen akzeptiert</strong>.
           {%- endset %}
+        {%- elif event.event == 'role-assigned' %}
+          {%- set icon_name = 'permission' %}
+          {%- set body %}
+            {%- if event.initiator is defined %}
+            <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
+            {%- else %}
+            Jemand
+            {%- endif %}
+            hat
+            <span class="user-link">{{ render_user_avatar_20_and_link(user) }}</span>
+            die Rolle <strong>{{ event.data.role_id }}</strong> zugewiesen.
+          {%- endset %}
+        {%- elif event.event == 'role-deassigned' %}
+          {%- set icon_name = 'permission' %}
+          {%- set body %}
+            <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
+            hat
+            <span class="user-link">{{ render_user_avatar_20_and_link(user) }}</span>
+            die Rolle <strong>{{ event.data.role_id }}</strong> genommen.
+          {%- endset %}
         {%- elif event.event == 'terms-consent-expressed' %}
           {%- set icon_name = 'legal' %}
           {%- set body %}
