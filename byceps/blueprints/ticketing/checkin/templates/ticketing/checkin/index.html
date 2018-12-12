@@ -43,8 +43,8 @@
 
         <form action="{{ url_for('.index', party_id=party.id) }}" class="single-row unobtrusive">
             <input type="search" name="search_term" placeholder="Ticketcode, Bestellnummer, Benutzer-, Vor-, Nachname, E-Mail-Adresse" autofocus>
-            <button type="submit" class="button" title="Suchen">{{ render_icon('search') }}</button>
-            <a href="{{ url_for('.index', party_id=party.id) }}" class="button{% if not search_term %} dimmed{% endif %}" title="Einschränkung auf Suchbegriff aufheben">{{ render_icon('remove') }}</a>
+            <button type="submit" class="button" title="Suchen" tabindex="-1">{{ render_icon('search') }}</button>
+            <a href="{{ url_for('.index', party_id=party.id) }}" class="button{% if not search_term %} dimmed{% endif %}" title="Einschränkung auf Suchbegriff aufheben" tabindex="-1">{{ render_icon('remove') }}</a>
         </form>
 
       </div>
