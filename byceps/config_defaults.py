@@ -22,6 +22,9 @@ SQLALCHEMY_TRACK_MODIFICATIONS = False
 # job queue
 JOBS_ASYNC = True
 
+# metrics
+METRICS_ENABLED = False
+
 # RQ dashboard (for job queue)
 RQ_DASHBOARD_ENABLED = False
 RQ_POLL_INTERVAL = 2500

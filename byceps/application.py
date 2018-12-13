@@ -122,6 +122,11 @@ def _get_blueprints(app):
             ('user_badge_admin',        '/admin/user_badges'        ),
         ]
 
+    if app.config['METRICS_ENABLED']:
+        yield from [
+            ('metrics',                 '/metrics'                  ),
+        ]
+
     if app.debug:
         yield from [
             ('style_guide',             '/style_guide'              ),
