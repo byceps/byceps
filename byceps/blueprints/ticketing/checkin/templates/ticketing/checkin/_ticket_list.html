@@ -57,15 +57,15 @@
       </td>
       <td style="text-align: right;">
         {%- if ticket.revoked -%}
-        <div class="button color-danger button--disabled">Kein Einlass!</div>
+        <div class="button button--compact button--disabled color-danger">Kein Einlass!</div>
         {%- elif ticket.user_checked_in -%}
-        <div class="button color-warning button--disabled">Bereits eingecheckt!</div>
+        <div class="button button--compact button--disabled color-warning">Bereits eingecheckt!</div>
         {%- elif ticket.used_by and ticket.used_by.deleted -%}
-        <div class="button color-danger button--disabled"><div>Kein Einlass!<br><small>Nutzer gelöscht</small></div></div>
+        <div class="button button--compact button--disabled color-danger"><div>Kein Einlass!<br><small>Nutzer gelöscht</small></div></div>
         {%- elif ticket.used_by and ticket.used_by.suspended -%}
-        <div class="button color-danger button--disabled"><div>Kein Einlass!<br><small>Nutzer gesperrt</small></div></div>
+        <div class="button button--compact button--disabled color-danger"><div>Kein Einlass!<br><small>Nutzer gesperrt</small></div></div>
         {%- elif ticket.used_by -%}
-        <a class="button color-primary button-check-in" data-action="check-in-user" href="{{ url_for('ticketing_admin.set_user_checked_in_flag', ticket_id=ticket.id) }}">{{ render_icon('log-in') }} <span>Einchecken</span></a>
+        <a class="button button-check-in color-primary" data-action="check-in-user" href="{{ url_for('ticketing_admin.set_user_checked_in_flag', ticket_id=ticket.id) }}">{{ render_icon('log-in') }} <span>Einchecken</span></a>
         {%- endif -%}
       </td>
     </tr>
