@@ -14,6 +14,7 @@ from ...services.brand import service as brand_service
 from ...services.board import board_service, \
     topic_service as board_topic_service, \
     posting_service as board_posting_service
+from ...services.party import service as party_service
 from ...services.ticketing import ticket_service
 from ...services.user import stats_service as user_stats_service
 from ...util.framework.blueprint import create_blueprint
@@ -62,9 +63,14 @@ def _collect_board_metrics(brand_ids):
 
 
 def _collect_ticket_metrics():
-    ticket_counts_by_party_id = ticket_service.get_ticket_count_by_party_id()
-    for party_id, count in ticket_counts_by_party_id.items():
-        yield 'ticket_count{{party="{}"}}'.format(party_id), count
+    """Provide ticket counts for active parties."""
+    active_parties = party_service.get_active_parties()
+    active_party_ids = [p.id for p in active_parties]
+
+    for party_id in active_party_ids:
+        tickets_sold_count = ticket_service.count_tickets_for_party(party_id)
+        yield 'tickets_sold_count{{party="{}"}}'.format(party_id), \
+            tickets_sold_count
 
 
 def _collect_user_metrics():
