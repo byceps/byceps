@@ -255,6 +255,14 @@ def get_ticket_count_by_party_id() -> Dict[PartyID, int]:
     return dict(party_ids_and_ticket_counts)
 
 
+def count_revoked_tickets_for_party(party_id: PartyID) -> int:
+    """Return the number of revoked tickets for that party."""
+    return Ticket.query \
+        .for_party(party_id) \
+        .filter(Ticket.revoked == True) \
+        .count()
+
+
 def count_tickets_for_party(party_id: PartyID) -> int:
     """Return the number of "sold" (i.e. generated and not revoked)
     tickets for that party.

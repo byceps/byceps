@@ -68,6 +68,11 @@ def _collect_ticket_metrics():
     active_party_ids = [p.id for p in active_parties]
 
     for party_id in active_party_ids:
+        tickets_revoked_count = ticket_service \
+            .count_revoked_tickets_for_party(party_id)
+        yield 'tickets_revoked_count{{party="{}"}}'.format(party_id), \
+            tickets_revoked_count
+
         tickets_sold_count = ticket_service.count_tickets_for_party(party_id)
         yield 'tickets_sold_count{{party="{}"}}'.format(party_id), \
             tickets_sold_count
