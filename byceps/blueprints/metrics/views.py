@@ -72,6 +72,11 @@ def _collect_ticket_metrics():
         yield 'tickets_sold_count{{party="{}"}}'.format(party_id), \
             tickets_sold_count
 
+        tickets_checked_in_count = ticket_service \
+            .count_tickets_checked_in_for_party(party_id)
+        yield 'tickets_checked_in_count{{party="{}"}}'.format(party_id), \
+            tickets_checked_in_count
+
 
 def _collect_user_metrics():
     users_enabled = user_stats_service.count_enabled_users()
