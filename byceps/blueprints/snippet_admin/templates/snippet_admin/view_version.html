@@ -74,7 +74,7 @@
 
     {%- set notification_body %}
         Entschuldigung, es ist ein Fehler aufgetreten.<br>
-        <pre>{{ error_message }}</pre>
+        <pre style="white-space: pre-wrap;">{{ error_message }}</pre>
     {%- endset %}
     {{ render_notification('danger', 'warning', notification_body, text_is_safe=True) }}
 
