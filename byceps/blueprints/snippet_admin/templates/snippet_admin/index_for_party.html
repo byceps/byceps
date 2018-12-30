@@ -60,7 +60,7 @@
               {%- with endpoint = '.update_fragment_form' if snippet.is_fragment else '.update_document_form' %}
               <li><a href="{{ url_for(endpoint, snippet_id=snippet.id) }}">{{ render_icon('edit') }} bearbeiten</a></li>
               {%- endwith %}
-              {%- if snippet.is_document and g.current_user.has_permission(MountpointPermission.create) %}
+              {%- if snippet.is_document and g.current_user.has_permission(SnippetMountpointPermission.create) %}
               <li class="divider"></li>
               <li><a href="{{ url_for('.create_mountpoint_form', snippet_id=snippet.id) }}">{{ render_icon('add') }} Mountpoint erstellen</a></li>
               {%- endif %}
@@ -90,7 +90,7 @@
         <td>{{ mountpoint.endpoint_suffix }}</td>
         <td>{{ mountpoint.snippet.name }}</td>
         <td>
-        {%- if g.current_user.has_permission(MountpointPermission.delete) %}
+        {%- if g.current_user.has_permission(SnippetMountpointPermission.delete) %}
           <div class="dropdown left">
             <button class="dropdown-toggle button button--compact">{{ render_icon('caret-down') }}</button>
             <ol>

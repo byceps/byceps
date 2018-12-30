@@ -23,14 +23,14 @@ from ..authorization.registry import permission_registry
 from ..snippet import signals
 from ..snippet.templating import get_snippet_context
 
-from .authorization import MountpointPermission, SnippetPermission
+from .authorization import SnippetMountpointPermission, SnippetPermission
 from .forms import DocumentCreateForm, DocumentUpdateForm, \
     FragmentCreateForm, FragmentUpdateForm, MountpointCreateForm
 
 blueprint = create_blueprint('snippet_admin', __name__)
 
 
-permission_registry.register_enum(MountpointPermission)
+permission_registry.register_enum(SnippetMountpointPermission)
 permission_registry.register_enum(SnippetPermission)
 
 
@@ -309,7 +309,7 @@ def compare_fragments(from_version_id, to_version_id):
 
 
 @blueprint.route('/snippets/<uuid:snippet_id>/mountpoints/create')
-@permission_required(MountpointPermission.create)
+@permission_required(SnippetMountpointPermission.create)
 @templated
 def create_mountpoint_form(snippet_id):
     """Show form to create a mountpoint."""
@@ -326,7 +326,7 @@ def create_mountpoint_form(snippet_id):
 
 
 @blueprint.route('/snippets/<uuid:snippet_id>/mountpoints', methods=['POST'])
-@permission_required(MountpointPermission.create)
+@permission_required(SnippetMountpointPermission.create)
 def create_mountpoint(snippet_id):
     """Create a mountpoint."""
     snippet = _find_snippet_by_id(snippet_id)
@@ -347,7 +347,7 @@ def create_mountpoint(snippet_id):
 
 
 @blueprint.route('/mountpoints/<uuid:mountpoint_id>', methods=['DELETE'])
-@permission_required(MountpointPermission.delete)
+@permission_required(SnippetMountpointPermission.delete)
 @respond_no_content
 def delete_mountpoint(mountpoint_id):
     """Delete a mountpoint."""

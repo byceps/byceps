@@ -9,7 +9,7 @@ byceps.blueprints.snippet_admin.authorization
 from byceps.util.authorization import create_permission_enum
 
 
-MountpointPermission = create_permission_enum('mountpoint', [
+SnippetMountpointPermission = create_permission_enum('snippet_mountpoint', [
     'create',
     'delete',
 ])

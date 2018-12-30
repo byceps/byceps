@@ -81,14 +81,6 @@
       "title": "Marken ansehen"
     },
     {
-      "id": "mountpoint.create",
-      "title": "Snippet-Mounpoints erstellen"
-    },
-    {
-      "id": "mountpoint.delete",
-      "title": "Snippet-Mounpoints l\u00f6schen"
-    },
-    {
       "id": "news_channel.create",
       "title": "News-Kan\u00e4le erstellen"
     },
@@ -203,6 +195,14 @@
     {
       "id": "shop.view",
       "title": "Shop ansehen"
+    },
+    {
+      "id": "snippet_mountpoint.create",
+      "title": "Snippet-Mountpoints erstellen"
+    },
+    {
+      "id": "snippet_mountpoint.delete",
+      "title": "Snippet-Mountpoints l\u00f6schen"
     },
     {
       "id": "snippet.create",
@@ -434,8 +434,8 @@
     },
     {
       "assigned_permissions": [
-        "mountpoint.create",
-        "mountpoint.delete"
+        "snippet_mountpoint.create",
+        "snippet_mountpoint.delete"
       ],
       "id": "snippet_admin",
       "title": "Snippets verwalten"
