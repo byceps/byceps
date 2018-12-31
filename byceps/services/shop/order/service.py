@@ -7,7 +7,6 @@ byceps.services.shop.order.service
 """
 
 from datetime import datetime
-from decimal import Decimal
 from typing import Dict, Iterator, Optional, Sequence, Set
 
 from flask import current_app
