@@ -105,27 +105,16 @@ def _add_items_from_cart_to_order(cart: Cart, order: DbOrder
 
         article.quantity = Article.quantity - quantity
 
-        yield _add_article_to_order(order, article, quantity, line_amount)
-
-
-def _add_article_to_order(order: DbOrder, article: Article, quantity: int,
-                          line_amount: Decimal
-                         ) -> DbOrderItem:
-    """Add an article as an item to this order.
-
-    Return the resulting order item (so it can be added to the database
-    session).
-    """
-    return DbOrderItem(
-        order,
-        article.item_number,
-        article.description,
-        article.price,
-        article.tax_rate,
-        quantity,
-        line_amount,
-        article.shipping_required,
-    )
+        yield DbOrderItem(
+            order,
+            article.item_number,
+            article.description,
+            article.price,
+            article.tax_rate,
+            quantity,
+            line_amount,
+            article.shipping_required,
+        )
 
 
 def set_invoiced_flag(order: DbOrder, initiator_id: UserID) -> None:
