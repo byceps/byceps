@@ -22,11 +22,13 @@ class CartItem:
 
         self.article = article
         self.quantity = quantity
+        self.line_amount = article.price * quantity
 
     def __repr__(self) -> str:
         return ReprBuilder(self) \
             .add('article', self.article.item_number) \
             .add_with_lookup('quantity') \
+            .add_with_lookup('line_amount') \
             .build()
 
 
