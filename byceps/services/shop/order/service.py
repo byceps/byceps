@@ -51,7 +51,7 @@ def place_order(shop_id: ShopID, orderer: Orderer,
                          created_at)
 
     order_items = list(_add_items_from_cart_to_order(cart, order))
-    order.total_amount = Decimal(sum(item.line_amount for item in order_items))
+    order.total_amount = cart.calculate_total_amount()
 
     order.shipping_required = any(item.shipping_required for item in order_items)
 

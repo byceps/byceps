@@ -6,6 +6,7 @@ byceps.services.shop.cart.models
 :License: Modified BSD, see LICENSE for details.
 """
 
+from decimal import Decimal
 from typing import List, Sequence
 
 from ....util.instances import ReprBuilder
@@ -44,6 +45,9 @@ class Cart:
 
     def get_items(self) -> Sequence[CartItem]:
         return self._items
+
+    def calculate_total_amount(self) -> Decimal:
+        return sum(item.line_amount for item in self._items)
 
     def is_empty(self) -> bool:
         return not self._items
