@@ -98,9 +98,9 @@ def _add_items_from_cart_to_order(cart: Cart, order: DbOrder
 
     Yield the created order items.
     """
-    for article_item in cart.get_items():
-        article = article_item.article
-        quantity = article_item.quantity
+    for cart_item in cart.get_items():
+        article = cart_item.article
+        quantity = cart_item.quantity
 
         article.quantity = Article.quantity - quantity
 
