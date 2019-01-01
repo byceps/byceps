@@ -6,15 +6,15 @@
     },
     {
       "id": "admin_dashboard.view_brand",
-      "title": "Admin-Dashboard f\u00fcr Marken ansehen"
+      "title": "Admin-Dashboard f\u00fcr Marken anzeigen"
     },
     {
       "id": "admin_dashboard.view_global",
-      "title": "globales Admin-Dashboard ansehen"
+      "title": "globales Admin-Dashboard anzeigen"
     },
     {
       "id": "admin_dashboard.view_party",
-      "title": "Admin-Dashboard f\u00fcr Partys ansehen"
+      "title": "Admin-Dashboard f\u00fcr Partys anzeigen"
     },
     {
       "id": "board_category.create",
@@ -78,7 +78,7 @@
     },
     {
       "id": "brand.view",
-      "title": "Marken ansehen"
+      "title": "Marken anzeigen"
     },
     {
       "id": "news_channel.create",
@@ -110,7 +110,7 @@
     },
     {
       "id": "orga_detail.view",
-      "title": "Orga-Details ansehen"
+      "title": "Orga-Details anzeigen"
     },
     {
       "id": "orga_presence.update",
@@ -174,7 +174,7 @@
     },
     {
       "id": "shop_article.view",
-      "title": "Shop-Artikel ansehen"
+      "title": "Shop-Artikel anzeigen"
     },
     {
       "id": "shop_order.cancel",
@@ -190,11 +190,11 @@
     },
     {
       "id": "shop_order.view",
-      "title": "Shop-Bestellungen ansehen"
+      "title": "Shop-Bestellungen anzeigen"
     },
     {
       "id": "shop.view",
-      "title": "Shop ansehen"
+      "title": "Shops anzeigen"
     },
     {
       "id": "site.view",
@@ -238,7 +238,7 @@
     },
     {
       "id": "ticketing.view",
-      "title": "Tickets ansehen"
+      "title": "Tickets anzeigen"
     },
     {
       "id": "tourney_category.create",
@@ -266,7 +266,7 @@
     },
     {
       "id": "user.view",
-      "title": "Benutzerdetails ansehen"
+      "title": "Benutzerdetails anzeigen"
     }
   ],
   "roles": [
@@ -408,7 +408,7 @@
         "shop.view"
       ],
       "id": "shop_admin",
-      "title": "Shop verwalten"
+      "title": "Shops verwalten"
     },
     {
       "assigned_permissions": [
