@@ -6,7 +6,7 @@ This is meant to be used when new terms of service are published so
 users have to log in again and are presented the form to accept the new
 terms of service.
 
-:Copyright: 2006-2018 Jochen Kupperschmidt
+:Copyright: 2006-2019 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
 """
 

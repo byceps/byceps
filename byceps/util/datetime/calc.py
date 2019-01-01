@@ -4,7 +4,7 @@ byceps.util.datetime.calc
 
 Date/time calculations.
 
-:Copyright: 2006-2018 Jochen Kupperschmidt
+:Copyright: 2006-2019 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
 """
 

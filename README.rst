@@ -26,7 +26,7 @@ Parties using BYCEPS:
 .. _NorthCon: https://www.northcon.de/
 
 
-:Copyright: 2006-2018 Jochen Kupperschmidt
+:Copyright: 2006-2019 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
 :Website: http://homework.nwsnet.de/releases/b1ce/#byceps
 

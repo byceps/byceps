@@ -2,7 +2,7 @@
 byceps.blueprints.attendance.service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2006-2018 Jochen Kupperschmidt
+:Copyright: 2006-2019 Jochen Kupperschmidt
 """
 
 from collections import namedtuple
