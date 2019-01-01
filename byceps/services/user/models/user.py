@@ -57,6 +57,12 @@ class User(db.Model):
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.now, nullable=False)
+    # 40 characters are required to fit the current replacement screen
+    # names of user accounts marked as deleted which have the pattern
+    # `deleted-<UUID without dashes>` (i.e. 8 + 32 = 40 characters).
+    #
+    # However, screen names can be (and are) limited further via the
+    # maximum value of the form's length validator.
     screen_name = db.Column(db.Unicode(40), unique=True, nullable=False)
     email_address = db.Column(db.Unicode(80), unique=True, nullable=False)
     email_address_verified = db.Column(db.Boolean, default=False, nullable=False)
