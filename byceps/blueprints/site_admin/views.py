@@ -1,0 +1,49 @@
+"""
+byceps.blueprints.site_admin.views
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:Copyright: 2006-2019 Jochen Kupperschmidt
+:License: Modified BSD, see LICENSE for details.
+"""
+
+from collections import defaultdict
+
+from flask import abort, request
+
+from ...services.site import settings_service as site_settings_service
+from ...util.framework.blueprint import create_blueprint
+from ...util.framework.templating import templated
+
+from ..authorization.decorators import permission_required
+from ..authorization.registry import permission_registry
+
+from .authorization import SitePermission
+
+
+blueprint = create_blueprint('site_admin', __name__)
+
+
+permission_registry.register_enum(SitePermission)
+
+
+@blueprint.route('/')
+@permission_required(SitePermission.view)
+@templated
+def index():
+    """List site settings."""
+    settings = site_settings_service.get_all_settings()
+
+    settings_by_site = _group_settings_by_site(settings)
+
+    return {
+        'settings_by_site': settings_by_site,
+    }
+
+
+def _group_settings_by_site(settings):
+    settings_by_site = defaultdict(list)
+
+    for setting in settings:
+        settings_by_site[setting.site_id].append(setting)
+
+    return dict(settings_by_site)

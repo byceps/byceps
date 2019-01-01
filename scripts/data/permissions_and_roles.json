@@ -197,6 +197,10 @@
       "title": "Shop ansehen"
     },
     {
+      "id": "site.view",
+      "title": "Sites anzeigen"
+    },
+    {
       "id": "snippet_mountpoint.create",
       "title": "Snippet-Mountpoints erstellen"
     },
@@ -431,6 +435,13 @@
       ],
       "id": "shop_order_payment_approver",
       "title": "Zahlungseing\u00e4nge best\u00e4tigen"
+    },
+    {
+      "assigned_permissions": [
+        "site.view"
+      ],
+      "id": "site_admin",
+      "title": "Sites verwalten"
     },
     {
       "assigned_permissions": [
