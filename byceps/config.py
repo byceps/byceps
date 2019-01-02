@@ -17,6 +17,7 @@ STATIC_URL_PREFIX_PARTY = '/party'
 
 EXTENSION_KEY = 'byceps_config'
 KEY_SITE_MODE = 'site_mode'
+KEY_SITE_ID = 'site_id'
 KEY_PARTY_ID = 'party_id'
 KEY_SEAT_MANAGEMENT_ENABLED = 'seat_management_enabled'
 KEY_TICKET_MANAGEMENT_ENABLED = 'ticket_management_enabled'
@@ -35,6 +36,9 @@ def init_app(app):
     update_extension_value(app, KEY_SITE_MODE, site_mode)
 
     if site_mode.is_public():
+        site_id = determine_site_id(app)
+        update_extension_value(app, KEY_SITE_ID, site_id)
+
         party_id = determine_party_id(app)
         update_extension_value(app, KEY_PARTY_ID, party_id)
 
@@ -78,6 +82,23 @@ def determine_site_mode(app):
 def get_site_mode(app=None):
     """Return the mode the site should run in."""
     return _get_config_dict(app)[KEY_SITE_MODE]
+
+
+# -------------------------------------------------------------------- #
+# site ID
+
+
+def determine_site_id(app):
+    site_id = app.config.get('SITE_ID')
+    if site_id is None:
+        raise Exception('No site ID configured.')
+
+    return site_id
+
+
+def get_current_site_id(app=None):
+    """Return the id of the current site."""
+    return _get_config_dict(app)[KEY_SITE_ID]
 
 
 # -------------------------------------------------------------------- #

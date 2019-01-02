@@ -12,6 +12,7 @@ SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://byceps:boioioing@127.0.0.1/byce
 REDIS_URL = 'redis://127.0.0.1:6379/0'
 
 MODE = 'public'
+SITE_ID = 'example-dev'
 BRAND = 'example-brand'
 PARTY = 'example-party-1'
 

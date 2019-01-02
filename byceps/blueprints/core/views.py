@@ -66,6 +66,10 @@ def provide_site_mode():
     site_mode = config.get_site_mode()
     g.site_mode = site_mode
 
+    # site ID
+    if site_mode.is_public():
+        g.site_id = config.get_current_site_id()
+
     # current party and brand
     party_id = None
     if site_mode.is_public():
