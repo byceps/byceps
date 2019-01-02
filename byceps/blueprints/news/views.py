@@ -9,7 +9,7 @@ byceps.blueprints.news.views
 from flask import abort, current_app, g
 
 from ...services.news import service as news_service
-from ...services.party import settings_service as party_settings_service
+from ...services.site import settings_service as site_settings_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.templating import templated
 
@@ -52,7 +52,7 @@ def view(slug):
 
 
 def _get_channel_id():
-    channel_id = party_settings_service \
+    channel_id = site_settings_service \
         .find_setting_value(g.party_id, 'news_channel_id')
 
     if channel_id is None:
