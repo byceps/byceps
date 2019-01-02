@@ -29,6 +29,10 @@ SiteMode.is_admin = lambda self: self == SiteMode.admin
 SiteMode.is_public = lambda self: self == SiteMode.public
 
 
+class ConfigurationError(Exception):
+    pass
+
+
 def init_app(app):
     app.extensions[EXTENSION_KEY] = {}
 
@@ -71,12 +75,13 @@ def update_extension_value(app, key, value):
 def determine_site_mode(app):
     value = app.config.get('SITE_MODE')
     if value is None:
-        raise Exception('No site mode configured.')
+        raise ConfigurationError('No site mode configured.')
 
     try:
         return SiteMode[value]
     except KeyError:
-        raise Exception('Invalid site mode "{}" configured.'.format(value))
+        raise ConfigurationError(
+            'Invalid site mode "{}" configured.'.format(value))
 
 
 def get_site_mode(app=None):
@@ -91,7 +96,7 @@ def get_site_mode(app=None):
 def determine_site_id(app):
     site_id = app.config.get('SITE_ID')
     if site_id is None:
-        raise Exception('No site ID configured.')
+        raise ConfigurationError('No site ID configured.')
 
     return site_id
 
@@ -108,7 +113,7 @@ def get_current_site_id(app=None):
 def determine_party_id(app):
     party_id = app.config.get('PARTY')
     if party_id is None:
-        raise Exception('No party configured.')
+        raise ConfigurationError('No party configured.')
 
     return party_id
 
