@@ -15,8 +15,8 @@ from ...services.board import access_control_service, \
     posting_service as board_posting_service, \
     topic_service as board_topic_service
 from ...services.board.transfer.models import CategoryWithLastUpdate
-from ...services.party import settings_service as party_settings_service, \
-    service as party_service
+from ...services.party import service as party_service
+from ...services.site import settings_service as site_settings_service
 from ...services.text_markup.service import get_smileys, render_html
 from ...services.user import service as user_service
 from ...util.framework.blueprint import create_blueprint
@@ -732,7 +732,7 @@ def posting_unhide(posting_id):
 
 
 def _get_board_id():
-    board_id = party_settings_service.find_setting_value(g.party_id, 'board_id')
+    board_id = site_settings_service.find_setting_value(g.site_id, 'board_id')
 
     if board_id is None:
         abort(404)
