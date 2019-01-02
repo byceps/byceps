@@ -10,7 +10,7 @@ REDIS_URL = 'redis://127.0.0.1:6379/0'
 
 RQ_DASHBOARD_ENABLED = True
 
-MODE = 'admin'
+SITE_MODE = 'admin'
 
 PATH_DATA = Path('./data')
 PATH_GLOBAL = PATH_DATA / 'global'

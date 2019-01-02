@@ -12,7 +12,7 @@ SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://byceps_test:test@127.0.0.1/byce
 
 REDIS_URL = 'redis://127.0.0.1:6379/0'
 
-MODE = 'public'
+SITE_MODE = 'public'
 SITE_ID = 'acme'
 BRAND = 'acme'
 PARTY = 'acme-2014'

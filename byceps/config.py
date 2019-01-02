@@ -69,7 +69,7 @@ def update_extension_value(app, key, value):
 
 
 def determine_site_mode(app):
-    value = app.config.get('MODE')
+    value = app.config.get('SITE_MODE')
     if value is None:
         raise Exception('No site mode configured.')
 
