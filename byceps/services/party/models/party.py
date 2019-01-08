@@ -25,7 +25,7 @@ class Party(db.Model):
     title = db.Column(db.Unicode(40), unique=True, nullable=False)
     starts_at = db.Column(db.DateTime, nullable=False)
     ends_at = db.Column(db.DateTime, nullable=False)
-    is_archived = db.Column(db.Boolean, default=False, nullable=False)
+    archived = db.Column(db.Boolean, default=False, nullable=False)
 
     def __init__(self, party_id: PartyID, brand_id: BrandID, title: str,
                  starts_at: datetime, ends_at: datetime) -> None:

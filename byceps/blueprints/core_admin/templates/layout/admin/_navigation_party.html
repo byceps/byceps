@@ -46,7 +46,7 @@
       <li>
         <a href="{{ url_for('admin_dashboard.view_party', party_id=party.id) }}" class="nav-item">
           <span class="nav-item-label">
-          {%- if party.is_archived -%}
+          {%- if party.archived -%}
             {{ party.title|dim }}
           {%- else -%}
             {{ party.title }}

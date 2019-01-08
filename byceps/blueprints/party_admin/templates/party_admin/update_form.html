@@ -21,7 +21,7 @@
       {{ form_field(form.title, maxlength=40, required='required', autofocus='autofocus') }}
       {{ form_field(form.starts_at, size=16, maxlength=16, required='required', note='Format: <kbd>TT.MM.JJJJ hh:mm</kbd>'|safe) }}
       {{ form_field(form.ends_at, size=16, maxlength=16, required='required', note='Format: <kbd>TT.MM.JJJJ hh:mm</kbd>'|safe) }}
-      {{ form_field_checkbox(form.is_archived, form.is_archived.label.text) }}
+      {{ form_field_checkbox(form.archived, form.archived.label.text) }}
     {% endcall %}
 
     {{ form_buttons('Speichern', cancel_url=url_for('.view', party_id=party.id)) }}

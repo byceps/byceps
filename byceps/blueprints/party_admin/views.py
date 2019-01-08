@@ -183,11 +183,11 @@ def update(party_id):
     title = form.title.data.strip()
     starts_at = form.starts_at.data
     ends_at = form.ends_at.data
-    is_archived = form.is_archived.data
+    archived = form.archived.data
 
     try:
         party = party_service.update_party(party.id, title, starts_at, ends_at,
-                                           is_archived)
+                                           archived)
     except party_service.UnknownPartyId:
         abort(404, 'Unknown party ID "{}".'.format(party_id))
 

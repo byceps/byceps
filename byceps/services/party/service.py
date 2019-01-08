@@ -36,7 +36,7 @@ def create_party(party_id: PartyID, brand_id: BrandID, title: str,
 
 
 def update_party(party_id: PartyID, title: str, starts_at: datetime,
-                 ends_at: datetime, is_archived: bool) -> Party:
+                 ends_at: datetime, archived: bool) -> Party:
     """Update a party."""
     party = DbParty.query.get(party_id)
 
@@ -46,7 +46,7 @@ def update_party(party_id: PartyID, title: str, starts_at: datetime,
     party.title = title
     party.starts_at = starts_at
     party.ends_at = ends_at
-    party.is_archived = is_archived
+    party.archived = archived
 
     db.session.commit()
 
@@ -91,7 +91,7 @@ def get_active_parties(brand_id: Optional[BrandID]=None) -> List[Party]:
             .filter_by(brand_id=brand_id)
 
     parties = query \
-        .filter_by(is_archived=False) \
+        .filter_by(archived=False) \
         .order_by(DbParty.starts_at) \
         .all()
 
@@ -102,7 +102,7 @@ def get_archived_parties_for_brand(brand_id: BrandID) -> List[Party]:
     """Return archived parties for that brand."""
     parties = DbParty.query \
         .filter_by(brand_id=brand_id) \
-        .filter_by(is_archived=True) \
+        .filter_by(archived=True) \
         .order_by(DbParty.starts_at.desc()) \
         .all()
 
@@ -160,5 +160,5 @@ def _db_entity_to_party(party: DbParty) -> Party:
         party.title,
         party.starts_at,
         party.ends_at,
-        party.is_archived,
+        party.archived,
     )

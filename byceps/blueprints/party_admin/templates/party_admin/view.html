@@ -17,7 +17,7 @@
   </nav>
   <h1>
     {{- party.title }}
-    {%- if party.is_archived -%}
+    {%- if party.archived -%}
     <br>{{ render_tag('archiviert', class='color-disabled', icon='archived') }}
     {%- endif -%}
   </h1>

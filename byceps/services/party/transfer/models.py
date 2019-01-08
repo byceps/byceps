@@ -20,7 +20,7 @@ class Party:
     title = attrib(type=str)
     starts_at = attrib(type=datetime)
     ends_at = attrib(type=datetime)
-    is_archived = attrib(type=bool)
+    archived = attrib(type=bool)
 
 
 @attrs(frozen=True, slots=True)
