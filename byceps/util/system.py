@@ -20,12 +20,21 @@ def get_config_filename_from_env() -> str:
 
     Raise an exception if it isn't set.
     """
-    env = os.environ.get(CONFIG_VAR_NAME)
+    error_message = "No configuration file was specified via the '{}' " \
+                    "environment variable.".format(CONFIG_VAR_NAME)
+
+    return get_env_value(CONFIG_VAR_NAME, error_message)
+
+
+def get_env_value(name: str, error_message: str) -> str:
+    """Return the value of the environment variable.
+
+    Raise an exception if it isn't set or if it is empty.
+    """
+    env = os.environ.get(name)
 
     if not env:
-        raise ConfigurationError(
-            "No configuration file was specified via the '{}' "
-            "environment variable.".format(CONFIG_VAR_NAME))
+        raise ConfigurationError(error_message)
 
     return env
 
