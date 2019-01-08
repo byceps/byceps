@@ -9,6 +9,8 @@ byceps.util.system
 import os
 import sys
 
+from ..config import ConfigurationError
+
 
 CONFIG_VAR_NAME = 'BYCEPS_CONFIG'
 
@@ -21,7 +23,7 @@ def get_config_filename_from_env() -> str:
     env = os.environ.get(CONFIG_VAR_NAME)
 
     if not env:
-        raise Exception(
+        raise ConfigurationError(
             "No configuration file was specified via the '{}' "
             "environment variable.".format(CONFIG_VAR_NAME))
 
@@ -35,6 +37,6 @@ def get_config_filename_from_env_or_exit() -> str:
     """
     try:
         return get_config_filename_from_env()
-    except Exception as e:
+    except ConfigurationError as e:
         sys.stderr.write("{}\n".format(e))
         sys.exit(1)
