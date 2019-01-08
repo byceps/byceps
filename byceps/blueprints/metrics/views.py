@@ -15,6 +15,8 @@ from ...services.board import board_service, \
     topic_service as board_topic_service, \
     posting_service as board_posting_service
 from ...services.party import service as party_service
+# Load order model so the ticket's foreign key can find the referenced table.
+from ...services.shop.order.models import order
 from ...services.ticketing import ticket_service
 from ...services.user import stats_service as user_stats_service
 from ...util.framework.blueprint import create_blueprint
