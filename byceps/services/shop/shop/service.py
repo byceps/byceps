@@ -73,8 +73,18 @@ def find_shops(shop_ids: Set[ShopID]) -> List[Shop]:
     return [_db_entity_to_shop(shop) for shop in shops]
 
 
+def get_active_shops() -> List[Shop]:
+    """Return all shops that are not archived."""
+    shops = DbShop.query \
+        .filter_by(archived=False) \
+        .all()
+
+    return [_db_entity_to_shop(shop) for shop in shops]
+
+
 def _db_entity_to_shop(shop: DbShop) -> Shop:
     return Shop(
         shop.id,
         shop.party_id,
+        shop.archived,
     )

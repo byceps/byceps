@@ -20,3 +20,4 @@ ShopID = NewType('ShopID', str)
 class Shop:
     id = attrib(type=ShopID)
     party_id = attrib(type=PartyID)
+    archived = attrib(type=bool)
