@@ -78,7 +78,7 @@
           {{ '%d %s'|format(member_total, 'Person' if member_total == 1 else 'Personen')|dim }}
         </td>
         {%- if memberships %}
-        <td colspan="2">
+        <td>
           <ol class="list-grid members">
           {%- for membership in memberships|sort(attribute='user.screen_name') %}
             <li>
