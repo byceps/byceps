@@ -74,7 +74,7 @@ def _collect_shop_metrics():
     for shop in shops:
         articles = shop_article_service.get_articles_for_shop(shop.id)
         for article in articles:
-            name = 'shop_article_quantity{{shop="{}", item_numnber="{}"}}' \
+            name = 'shop_article_quantity{{shop="{}", item_number="{}"}}' \
                 .format(article.shop_id, article.item_number)
             yield name, article.quantity
 
