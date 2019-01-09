@@ -17,6 +17,8 @@ from ...services.board import board_service, \
 from ...services.party import service as party_service
 # Load order model so the ticket's foreign key can find the referenced table.
 from ...services.shop.order.models import order
+from ...services.shop.article import service as shop_article_service
+from ...services.shop.shop import service as shop_service
 from ...services.ticketing import ticket_service
 from ...services.user import stats_service as user_stats_service
 from ...util.framework.blueprint import create_blueprint
@@ -44,6 +46,7 @@ def _collect_metrics():
     brand_ids = [brand.id for brand in brand_service.get_brands()]
 
     yield from _collect_board_metrics(brand_ids)
+    yield from _collect_shop_metrics()
     yield from _collect_ticket_metrics()
     yield from _collect_user_metrics()
 
@@ -62,6 +65,18 @@ def _collect_board_metrics(brand_ids):
                 .count_postings_for_board(board_id)
             yield 'board_posting_count{{board="{}"}}'.format(board_id), \
                 posting_count
+
+
+def _collect_shop_metrics():
+    """Provide article counts for non-archived shops."""
+    shops = shop_service.get_active_shops()
+
+    for shop in shops:
+        articles = shop_article_service.get_articles_for_shop(shop.id)
+        for article in articles:
+            name = 'shop_article_quantity{{shop="{}", item_numnber="{}"}}' \
+                .format(article.shop_id, article.item_number)
+            yield name, article.quantity
 
 
 def _collect_ticket_metrics():
