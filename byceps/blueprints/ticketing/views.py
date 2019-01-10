@@ -53,6 +53,7 @@ def index_mine():
 
 
 @blueprint.route('/tickets/<uuid:ticket_id>/printable.html')
+@login_required
 @templated
 def view_printable_html(ticket_id):
     """Show a form to select a user to appoint for the ticket."""
@@ -89,6 +90,7 @@ def view_printable_html(ticket_id):
 
 
 @blueprint.route('/tickets/<uuid:ticket_id>/appoint_user')
+@login_required
 @templated
 def appoint_user_form(ticket_id, erroneous_form=None):
     """Show a form to select a user to appoint for the ticket."""
@@ -163,6 +165,7 @@ def withdraw_user(ticket_id):
 
 
 @blueprint.route('/tickets/<uuid:ticket_id>/appoint_user_manager')
+@login_required
 @templated
 def appoint_user_manager_form(ticket_id, erroneous_form=None):
     """Show a form to select a user to appoint as user manager for the ticket."""
@@ -240,6 +243,7 @@ def withdraw_user_manager(ticket_id):
 
 
 @blueprint.route('/tickets/<uuid:ticket_id>/appoint_seat_manager')
+@login_required
 @templated
 def appoint_seat_manager_form(ticket_id, erroneous_form=None):
     """Show a form to select a user to appoint as seat manager for the ticket."""
