@@ -89,7 +89,7 @@ td {
 
 
       <h2>Sitzplatz</h2>
-      <div>{{ ticket.occupied_seat.label if ticket.occupied_seat else 'nicht zugewiesen'|dim }}</div>
+      <div>{{ ticket.occupied_seat.label|fallback('unbenannt') if ticket.occupied_seat else 'nicht zugewiesen'|dim }}</div>
 
     </div>
 
