@@ -10,7 +10,8 @@ from flask import abort, g, redirect, request, url_for
 
 from ...config import get_ticket_management_enabled
 from ...services.party import service as party_service
-from ...services.ticketing import barcode_service, ticket_service, \
+from ...services.ticketing import barcode_service, \
+    category_service as ticket_category_service, ticket_service, \
     ticket_seat_management_service, ticket_user_management_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_error, flash_success
@@ -63,7 +64,8 @@ def view_printable_html(ticket_id):
         # Hide ticket ID validity rather than openly denying access.
         abort(404)
 
-    party = party_service.find_party(g.party_id)
+    ticket_category = ticket_category_service.find_category(ticket.category_id)
+    party = party_service.find_party(ticket_category.party_id)
 
     barcode_svg = barcode_service.render_svg(ticket.code)
 
