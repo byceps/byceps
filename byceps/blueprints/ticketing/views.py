@@ -82,6 +82,7 @@ def view_printable_html(ticket_id):
 
     return {
         'ticket': ticket,
+        'ticket_category': ticket_category,
         'party': party,
         'barcode_svg_inline': barcode_svg_inline,
     }

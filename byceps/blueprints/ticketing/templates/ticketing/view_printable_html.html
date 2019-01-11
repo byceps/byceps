@@ -56,12 +56,9 @@ td {
         <span class="dimmed subtitle">{{ party.title }}</span>
       </h1>
 
-
       <img src="data:image/svg+xml,{{ barcode_svg_inline|safe }}">
 
-
       <h2>Nutzer/in</h2>
-
       <table>
         <tr>
           <th>Nickname:</th>
@@ -73,9 +70,7 @@ td {
         </tr>
       </table>
 
-
       <h2>Käufer/in</h2>
-
       <table>
         <tr>
           <th>Nickname:</th>
@@ -87,6 +82,8 @@ td {
         </tr>
       </table>
 
+      <h2>Kategorie</h2>
+      <div>{{ ticket_category.title }}</div>
 
       <h2>Sitzplatz</h2>
       <div>{{ ticket.occupied_seat.label|fallback('unbenannt') if ticket.occupied_seat else 'nicht zugewiesen'|dim }}</div>
