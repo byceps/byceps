@@ -24,6 +24,7 @@ class CurrentUser:
         self.is_active = not is_anonymous
         self.is_anonymous = is_anonymous
 
+        self.deleted = user.deleted
         self.avatar_url = user.avatar_url
         self.is_orga = user.is_orga
 

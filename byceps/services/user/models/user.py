@@ -29,6 +29,7 @@ class AnonymousUser:
 
     id = GUEST_USER_ID
     enabled = False
+    deleted = False
 
     @property
     def avatar(self) -> None:
