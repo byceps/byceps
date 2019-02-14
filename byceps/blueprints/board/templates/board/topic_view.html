@@ -14,7 +14,7 @@
       <li><a href="{{ url_for('.category_view', slug=topic.category.slug) }}">{{ topic.category.title }}</a></li>
     </ol>
   </nav>
-  <h1><a href="{{ topic.external_url }}">{{ topic.title }}</a></h1>
+  <h1><a href="{{ url_for('.topic_view', topic_id=topic.id) }}">{{ topic.title }}</a></h1>
 
 {%- if topic.hidden or topic.locked%}
   <div class="notifications">

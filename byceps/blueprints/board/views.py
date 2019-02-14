@@ -276,11 +276,12 @@ def topic_create(category_id):
     body = form.body.data.strip()
 
     topic = board_topic_service.create_topic(category.id, creator.id, title, body)
+    topic_url = _build_external_url_for_topic(topic.id)
 
     flash_success('Das Thema "{}" wurde hinzugefügt.', topic.title)
-    signals.topic_created.send(None, topic_id=topic.id, url=topic.external_url)
+    signals.topic_created.send(None, topic_id=topic.id, url=topic_url)
 
-    return redirect(topic.external_url)
+    return redirect(topic_url)
 
 
 @blueprint.route('/topics/<uuid:topic_id>/update')
@@ -289,7 +290,7 @@ def topic_create(category_id):
 def topic_update_form(topic_id, erroneous_form=None):
     """Show form to update a topic."""
     topic = _get_topic_or_404(topic_id)
-    url = topic.external_url
+    url = _build_url_for_topic(topic.id)
 
     user_may_update = topic.may_be_updated_by_user(g.current_user)
 
@@ -321,7 +322,7 @@ def topic_update_form(topic_id, erroneous_form=None):
 def topic_update(topic_id):
     """Update a topic."""
     topic = _get_topic_or_404(topic_id)
-    url = topic.external_url
+    url = _build_url_for_topic(topic.id)
 
     user_may_update = topic.may_be_updated_by_user(g.current_user)
 
@@ -382,7 +383,7 @@ def topic_hide(topic_id):
 
     signals.topic_hidden.send(None, topic_id=topic.id,
                               moderator_id=moderator_id,
-                              url=topic.external_url)
+                              url=_build_external_url_for_topic(topic.id))
 
     return _build_url_for_topic_in_category_view(topic)
 
@@ -402,7 +403,7 @@ def topic_unhide(topic_id):
 
     signals.topic_unhidden.send(None, topic_id=topic.id,
                                 moderator_id=moderator_id,
-                                url=topic.external_url)
+                                url=_build_external_url_for_topic(topic.id))
 
     return _build_url_for_topic_in_category_view(topic)
 
@@ -421,7 +422,7 @@ def topic_lock(topic_id):
 
     signals.topic_locked.send(None, topic_id=topic.id,
                               moderator_id=moderator_id,
-                              url=topic.external_url)
+                              url=_build_external_url_for_topic(topic.id))
 
     return _build_url_for_topic_in_category_view(topic)
 
@@ -441,7 +442,7 @@ def topic_unlock(topic_id):
 
     signals.topic_unlocked.send(None, topic_id=topic.id,
                                 moderator_id=moderator_id,
-                                url=topic.external_url)
+                                url=_build_external_url_for_topic(topic.id))
 
     return _build_url_for_topic_in_category_view(topic)
 
@@ -460,7 +461,7 @@ def topic_pin(topic_id):
 
     signals.topic_pinned.send(None, topic_id=topic.id,
                               moderator_id=moderator_id,
-                              url=topic.external_url)
+                              url=_build_external_url_for_topic(topic.id))
 
     return _build_url_for_topic_in_category_view(topic)
 
@@ -479,7 +480,7 @@ def topic_unpin(topic_id):
 
     signals.topic_unpinned.send(None, topic_id=topic.id,
                                 moderator_id=moderator_id,
-                                url=topic.external_url)
+                                url=_build_external_url_for_topic(topic.id))
 
     return _build_url_for_topic_in_category_view(topic)
 
@@ -510,7 +511,7 @@ def topic_move(topic_id):
                              old_category_id=old_category.id,
                              new_category_id=new_category.id,
                              moderator_id=moderator_id,
-                             url=topic.external_url)
+                             url=_build_external_url_for_topic(topic.id))
 
     return redirect(_build_url_for_topic_in_category_view(topic))
 
@@ -586,7 +587,7 @@ def posting_create(topic_id):
             'Das Thema ist geschlossen. '
             'Es können keine Beiträge mehr hinzugefügt werden.',
             icon='lock')
-        return redirect(topic.external_url)
+        return redirect(_build_url_for_topic(topic.id))
 
     posting = board_posting_service.create_posting(topic, creator.id, body)
 
@@ -808,6 +809,16 @@ def _get_topics_per_page_value():
 
 def _get_postings_per_page_value():
     return int(current_app.config['BOARD_POSTINGS_PER_PAGE'])
+
+
+def _build_external_url_for_topic(topic_id):
+    return _build_url_for_topic(topic_id, external=True)
+
+
+def _build_url_for_topic(topic_id, *, external=False):
+    return url_for('.topic_view',
+                   topic_id=topic_id,
+                   _external=external)
 
 
 def _build_url_for_topic_in_category_view(topic):

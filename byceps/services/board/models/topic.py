@@ -8,7 +8,6 @@ byceps.services.board.models.topic
 
 from datetime import datetime
 
-from flask import url_for
 from sqlalchemy.ext.associationproxy import association_proxy
 
 from ....blueprints.board.authorization import BoardPermission, \
@@ -104,11 +103,6 @@ class Topic(db.Model):
     def anchor(self) -> str:
         """Return the URL anchor for this topic."""
         return 'topic-{}'.format(self.id)
-
-    @property
-    def external_url(self) -> str:
-        """Return the absolute URL of this topic."""
-        return url_for('board.topic_view', topic_id=self.id, _external=True)
 
     def __eq__(self, other) -> bool:
         return self.id == other.id
