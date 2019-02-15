@@ -99,11 +99,6 @@ class Topic(db.Model):
         else:
             return full_page_count
 
-    @property
-    def anchor(self) -> str:
-        """Return the URL anchor for this topic."""
-        return 'topic-{}'.format(self.id)
-
     def __eq__(self, other) -> bool:
         return self.id == other.id
 

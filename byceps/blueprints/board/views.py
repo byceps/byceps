@@ -824,7 +824,7 @@ def _build_url_for_topic(topic_id, *, external=False):
 def _build_url_for_topic_in_category_view(topic):
     return url_for('.category_view',
                    slug=topic.category.slug,
-                   _anchor=topic.anchor)
+                   _anchor='topic-{}'.format(topic.id))
 
 
 def _build_external_url_for_posting(posting_id):
@@ -841,7 +841,7 @@ def _build_url_for_posting_in_topic_view(posting, page, **kwargs):
     return url_for('.topic_view',
                    topic_id=posting.topic.id,
                    page=page,
-                   _anchor=posting.anchor,
+                   _anchor='posting-{}'.format(posting.id),
                    **kwargs)
 
 

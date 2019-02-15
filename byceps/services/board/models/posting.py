@@ -94,11 +94,6 @@ class Posting(db.Model):
 
         return (last_viewed_at is None) or (self.created_at > last_viewed_at)
 
-    @property
-    def anchor(self) -> str:
-        """Return the URL anchor for this posting."""
-        return 'posting-{}'.format(self.id)
-
     def __eq__(self, other) -> bool:
         return self.id == other.id
 
