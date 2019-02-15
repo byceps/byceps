@@ -8,8 +8,6 @@ byceps.services.board.models.posting
 
 from datetime import datetime
 
-from flask import url_for
-
 from ....blueprints.board.authorization import BoardPermission, \
     BoardPostingPermission
 from ....database import BaseQuery, db, generate_uuid
@@ -100,11 +98,6 @@ class Posting(db.Model):
     def anchor(self) -> str:
         """Return the URL anchor for this posting."""
         return 'posting-{}'.format(self.id)
-
-    @property
-    def external_url(self) -> str:
-        """Return the absolute URL of this posting (in its topic)."""
-        return url_for('board.posting_view', posting_id=self.id, _external=True)
 
     def __eq__(self, other) -> bool:
         return self.id == other.id

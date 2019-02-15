@@ -597,7 +597,7 @@ def posting_create(topic_id):
 
     flash_success('Deine Antwort wurde hinzugefügt.')
     signals.posting_created.send(None, posting_id=posting.id,
-                                 url=posting.external_url)
+                                 url=_build_external_url_for_posting(posting.id))
 
     postings_per_page = _get_postings_per_page_value()
     page_count = topic.count_pages(postings_per_page)
@@ -706,7 +706,7 @@ def posting_hide(posting_id):
 
     signals.posting_hidden.send(None, posting_id=posting.id,
                                 moderator_id=moderator_id,
-                                url=posting.external_url)
+                                url=_build_external_url_for_posting(posting.id))
 
     return _build_url_for_posting_in_topic_view(posting, page)
 
@@ -727,7 +727,7 @@ def posting_unhide(posting_id):
 
     signals.posting_unhidden.send(None, posting_id=posting.id,
                                   moderator_id=moderator_id,
-                                  url=posting.external_url)
+                                  url=_build_external_url_for_posting(posting.id))
 
     return _build_url_for_posting_in_topic_view(posting, page)
 
@@ -825,6 +825,16 @@ def _build_url_for_topic_in_category_view(topic):
     return url_for('.category_view',
                    slug=topic.category.slug,
                    _anchor=topic.anchor)
+
+
+def _build_external_url_for_posting(posting_id):
+    return _build_url_for_posting(posting_id, external=True)
+
+
+def _build_url_for_posting(posting_id, *, external=False):
+    return url_for('.posting_view',
+                   posting_id=posting_id,
+                   _external=external)
 
 
 def _build_url_for_posting_in_topic_view(posting, page, **kwargs):
