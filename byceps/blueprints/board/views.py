@@ -10,7 +10,7 @@ from attr import attrib, attrs
 from flask import abort, current_app, g, redirect, request, url_for
 
 from ...services.board import access_control_service, \
-    category_service as board_category_service, \
+    category_query_service as board_category_query_service, \
     last_view_service as board_last_view_service, \
     posting_service as board_posting_service, \
     topic_service as board_topic_service
@@ -80,8 +80,8 @@ def category_index():
 
     _require_board_access(board_id, user.id)
 
-    categories = board_category_service.get_categories_with_last_updates(
-        board_id)
+    categories = board_category_query_service \
+        .get_categories_with_last_updates( board_id)
 
     categories_with_flag = []
     for category in categories:
@@ -109,7 +109,8 @@ def category_view(slug, page):
 
     _require_board_access(board_id, user.id)
 
-    category = board_category_service.find_category_by_slug(board_id, slug)
+    category = board_category_query_service \
+        .find_category_by_slug(board_id, slug)
     if category is None:
         abort(404)
 
@@ -360,8 +361,8 @@ def topic_moderate_form(topic_id):
 
     topic.creator = user_service.find_user(topic.creator_id)
 
-    categories = board_category_service.get_categories_excluding(board_id,
-        topic.category_id)
+    categories = board_category_query_service \
+        .get_categories_excluding(board_id, topic.category_id)
 
     return {
         'topic': topic,
@@ -742,7 +743,7 @@ def _get_board_id():
 
 
 def _get_category_or_404(category_id):
-    category = board_category_service.find_category_by_id(category_id)
+    category = board_category_query_service.find_category_by_id(category_id)
 
     if category is None:
         abort(404)

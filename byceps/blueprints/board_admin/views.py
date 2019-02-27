@@ -11,7 +11,9 @@ from collections import namedtuple
 from flask import abort, request
 
 from ...services.board import board_service
-from ...services.board import category_service as board_category_service
+from ...services.board import \
+    category_command_service as board_category_command_service, \
+    category_query_service as board_category_query_service
 from ...services.board import posting_service as board_posting_service
 from ...services.board import topic_service as board_topic_service
 from ...services.board.transfer.models import Board, Category
@@ -59,7 +61,7 @@ def board_index_for_brand(brand_id):
 
     stats_by_board_id = {
         board_id: BoardStats(
-            board_category_service.count_categories_for_board(board_id),
+            board_category_query_service.count_categories_for_board(board_id),
             board_topic_service.count_topics_for_board(board_id),
             board_posting_service.count_postings_for_board(board_id),
         )
@@ -81,7 +83,7 @@ def board_view(board_id):
 
     brand = brand_service.find_brand(board.brand_id)
 
-    categories = board_category_service.get_categories(board.id)
+    categories = board_category_query_service.get_categories(board.id)
 
     return {
         'board_id': board.id,
@@ -160,8 +162,8 @@ def category_create(board_id):
     title = form.title.data.strip()
     description = form.description.data.strip()
 
-    category = board_category_service.create_category(board.id, slug, title,
-                                                      description)
+    category = board_category_command_service \
+        .create_category(board.id, slug, title, description)
 
     flash_success('Die Kategorie "{}" wurde angelegt.', category.title)
     return redirect_to('.board_view', board_id=board.id)
@@ -201,8 +203,8 @@ def category_update(category_id):
     title = form.title.data
     description = form.description.data
 
-    category = board_category_service.update_category(category.id, slug, title,
-                                                      description)
+    category = board_category_command_service \
+        .update_category(category.id, slug, title, description)
 
     flash_success('Die Kategorie "{}" wurde aktualisiert.', category.title)
     return redirect_to('.board_view', board_id=category.board_id)
@@ -216,7 +218,7 @@ def category_move_up(category_id):
     category = _get_category_or_404(category_id)
 
     try:
-        board_category_service.move_category_up(category.id)
+        board_category_command_service.move_category_up(category.id)
     except ValueError:
         flash_error('Die Kategorie "{}" befindet sich bereits ganz oben.', category.title)
     else:
@@ -231,7 +233,7 @@ def category_move_down(category_id):
     category = _get_category_or_404(category_id)
 
     try:
-        board_category_service.move_category_down(category.id)
+        board_category_command_service.move_category_down(category.id)
     except ValueError:
         flash_error('Die Kategorie "{}" befindet sich bereits ganz unten.', category.title)
     else:
@@ -261,7 +263,7 @@ def _get_board_or_404(board_id) -> Board:
 
 
 def _get_category_or_404(category_id) -> Category:
-    category = board_category_service.find_category_by_id(category_id)
+    category = board_category_query_service.find_category_by_id(category_id)
 
     if category is None:
         abort(404)
