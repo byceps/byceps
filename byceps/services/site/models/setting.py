@@ -16,7 +16,7 @@ class Setting(db.Model):
     """A site-specific setting."""
     __tablename__ = 'site_settings'
 
-    site_id = db.Column(db.Unicode(40), primary_key=True)
+    site_id = db.Column(db.Unicode(40), db.ForeignKey('sites.id'), primary_key=True)
     name = db.Column(db.Unicode(40), primary_key=True)
     value = db.Column(db.Unicode(200))
 

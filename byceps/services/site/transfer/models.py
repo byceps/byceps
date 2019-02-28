@@ -11,7 +11,16 @@ from typing import NewType
 from attr import attrib, attrs
 
 
+from ....typing import PartyID
+
+
 SiteID = NewType('SiteID', str)
+
+
+@attrs(frozen=True, slots=True)
+class Site:
+    id = attrib(type=SiteID)
+    party_id = attrib(type=PartyID)
 
 
 @attrs(frozen=True, slots=True)
