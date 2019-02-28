@@ -12,7 +12,8 @@ from flask import abort, current_app, g, redirect, request, url_for
 from ...services.board import access_control_service, \
     category_query_service as board_category_query_service, \
     last_view_service as board_last_view_service, \
-    posting_service as board_posting_service, \
+    posting_command_service as board_posting_command_service, \
+    posting_query_service as board_posting_query_service, \
     topic_command_service as board_topic_command_service, \
     topic_query_service as board_topic_query_service
 from ...services.board.transfer.models import CategoryWithLastUpdate
@@ -214,9 +215,8 @@ def topic_view(topic_id, page):
         # 'new' tag from a locked topic.
         board_last_view_service.mark_topic_as_just_viewed(topic.id, user.id)
 
-    postings = board_posting_service.paginate_postings(topic.id, user,
-                                                       g.party_id, page,
-                                                       postings_per_page)
+    postings = board_posting_query_service \
+        .paginate_postings(topic.id, user, g.party_id, page, postings_per_page)
 
     add_unseen_flag_to_postings(postings.items, user, last_viewed_at)
 
@@ -562,7 +562,7 @@ def quote_posting_as_bbcode():
     if not posting_id:
         return
 
-    posting = board_posting_service.find_posting_by_id(posting_id)
+    posting = board_posting_query_service.find_posting_by_id(posting_id)
     if posting is None:
         flash_error('Der zu zitierende Beitrag wurde nicht gefunden.')
         return
@@ -593,7 +593,8 @@ def posting_create(topic_id):
             icon='lock')
         return redirect(_build_url_for_topic(topic.id))
 
-    posting = board_posting_service.create_posting(topic, creator.id, body)
+    posting = board_posting_command_service \
+        .create_posting(topic, creator.id, body)
 
     if not g.current_user.is_anonymous:
         board_last_view_service.mark_category_as_just_viewed(topic.category.id,
@@ -673,8 +674,8 @@ def posting_update(posting_id):
     if not form.validate():
         return posting_update_form(posting_id, form)
 
-    board_posting_service.update_posting(posting, g.current_user.id,
-        form.body.data)
+    board_posting_command_service \
+        .update_posting(posting, g.current_user.id, form.body.data)
 
     flash_success('Der Beitrag wurde aktualisiert.')
     return redirect(url)
@@ -702,7 +703,7 @@ def posting_hide(posting_id):
     posting = _get_posting_or_404(posting_id)
     moderator_id = g.current_user.id
 
-    board_posting_service.hide_posting(posting, moderator_id)
+    board_posting_command_service.hide_posting(posting, moderator_id)
 
     page = calculate_posting_page_number(posting)
 
@@ -723,7 +724,7 @@ def posting_unhide(posting_id):
     posting = _get_posting_or_404(posting_id)
     moderator_id = g.current_user.id
 
-    board_posting_service.unhide_posting(posting, moderator_id)
+    board_posting_command_service.unhide_posting(posting, moderator_id)
 
     page = calculate_posting_page_number(posting)
 
@@ -778,7 +779,7 @@ def _get_topic_or_404(topic_id):
 
 
 def _get_posting_or_404(posting_id):
-    posting = board_posting_service.find_posting_by_id(posting_id)
+    posting = board_posting_query_service.find_posting_by_id(posting_id)
 
     if posting is None:
         abort(404)
@@ -803,8 +804,9 @@ def _require_board_access(board_id, user_id):
 def calculate_posting_page_number(posting):
     postings_per_page = _get_postings_per_page_value()
 
-    return board_posting_service.calculate_posting_page_number(
-        posting, g.current_user, postings_per_page)
+    return board_posting_query_service \
+        .calculate_posting_page_number(posting, g.current_user,
+                                       postings_per_page)
 
 
 def _get_topics_per_page_value():

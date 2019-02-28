@@ -15,7 +15,7 @@ from .aggregation_service import aggregate_category, aggregate_topic
 from .models.category import Category as DbCategory
 from .models.posting import InitialTopicPostingAssociation, Posting as DbPosting
 from .models.topic import Topic as DbTopic
-from .posting_service import update_posting
+from .posting_command_service import update_posting
 from .transfer.models import CategoryID
 
 
