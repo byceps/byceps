@@ -12,7 +12,7 @@
       .add_item(url_for('user_badge_admin.index'), 'Abzeichen', id='user_badge_admin', icon='badge')
       .add_item(url_for('orga_admin.birthdays'), 'Geburtstage', id='orga_admin.birthdays', required_permission=OrgaBirthdayPermission.view, icon='birthday')
       .add_item(url_for('brand_admin.index'), 'Marken', id='brands_admin', required_permission=BrandPermission.view, icon='brand')
-      .add_item(url_for('site_admin.index'), 'Sites', id='site_admin', required_permission=SitePermission.view, icon='settings')
+      .add_item(url_for('site_admin.index'), 'Sites', id='site_admin', required_permission=SitePermission.view, icon='site')
   -%}
 {{ render_navigation(navigation, current_page) }}
 </section>
