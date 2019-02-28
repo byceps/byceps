@@ -12,7 +12,7 @@ from flask import Response
 
 from ...services.brand import service as brand_service
 from ...services.board import board_service, \
-    topic_service as board_topic_service, \
+    topic_query_service as board_topic_query_service, \
     posting_service as board_posting_service
 from ...services.party import service as party_service
 # Load order model so the ticket's foreign key can find the referenced table.
@@ -57,7 +57,8 @@ def _collect_board_metrics(brand_ids):
         board_ids = [board.id for board in boards]
 
         for board_id in board_ids:
-            topic_count = board_topic_service.count_topics_for_board(board_id)
+            topic_count = board_topic_query_service \
+                .count_topics_for_board(board_id)
             yield 'board_topic_count{{board="{}"}}'.format(board_id), \
                 topic_count
 

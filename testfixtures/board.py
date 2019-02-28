@@ -7,7 +7,7 @@ testfixtures.board
 """
 
 from byceps.services.board import board_service, category_command_service, \
-    posting_service, topic_service
+    posting_service, topic_command_service
 
 
 def create_board(brand_id, board_id):
@@ -36,7 +36,8 @@ def create_topic(category_id, creator_id, *, number=1, title=None, body=None):
     if body is None:
         body = 'Inhalt von Thema {}'.format(number)
 
-    return topic_service.create_topic(category_id, creator_id, title, body)
+    return topic_command_service \
+        .create_topic(category_id, creator_id, title, body)
 
 
 def create_posting(topic, creator_id, *, number=1, body=None):

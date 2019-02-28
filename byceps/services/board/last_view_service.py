@@ -15,7 +15,7 @@ from ...typing import UserID
 from .models.last_category_view import LastCategoryView
 from .models.last_topic_view import LastTopicView
 from .models.topic import Topic as DbTopic
-from . import topic_service
+from . import topic_query_service
 from .transfer.models import CategoryID, CategoryWithLastUpdate, TopicID
 
 
@@ -120,7 +120,7 @@ def mark_topic_as_just_viewed(topic_id: TopicID, user_id: UserID) -> None:
 def mark_all_topics_in_category_as_viewed(category_id: CategoryID,
                                           user_id: UserID) -> None:
     """Mark all topics in the category as viewed."""
-    topic_ids = topic_service.get_all_topic_ids_in_category(category_id)
+    topic_ids = topic_query_service.get_all_topic_ids_in_category(category_id)
 
     if not topic_ids:
         return

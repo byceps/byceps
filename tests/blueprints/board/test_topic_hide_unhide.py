@@ -3,7 +3,8 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.services.board import topic_service as board_topic_service
+from byceps.services.board import \
+    topic_command_service as board_topic_command_service
 
 from .topic_moderation_base import AbstractTopicModerationTest
 
@@ -33,7 +34,7 @@ class TopicHideTest(AbstractTopicModerationTest):
 
     def test_unhide_topic(self):
         topic_before = self.create_topic(self.category_id, self.user.id, 1)
-        board_topic_service.hide_topic(topic_before, self.admin.id)
+        board_topic_command_service.hide_topic(topic_before, self.admin.id)
 
         assert_topic_is_hidden(topic_before, self.admin.id)
 

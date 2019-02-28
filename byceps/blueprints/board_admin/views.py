@@ -13,9 +13,9 @@ from flask import abort, request
 from ...services.board import board_service
 from ...services.board import \
     category_command_service as board_category_command_service, \
-    category_query_service as board_category_query_service
+    category_query_service as board_category_query_service, \
+    topic_query_service as board_topic_query_service
 from ...services.board import posting_service as board_posting_service
-from ...services.board import topic_service as board_topic_service
 from ...services.board.transfer.models import Board, Category
 from ...services.brand import service as brand_service
 from ...util.framework.blueprint import create_blueprint
@@ -62,7 +62,7 @@ def board_index_for_brand(brand_id):
     stats_by_board_id = {
         board_id: BoardStats(
             board_category_query_service.count_categories_for_board(board_id),
-            board_topic_service.count_topics_for_board(board_id),
+            board_topic_query_service.count_topics_for_board(board_id),
             board_posting_service.count_postings_for_board(board_id),
         )
         for board_id in board_ids}
