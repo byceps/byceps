@@ -1,0 +1,48 @@
+{% extends 'layout/admin/base.html' %}
+{% set current_page = 'site_admin' %}
+{% set title = '%s - Site'|format(site.id) %}
+
+{% block body %}
+
+  <h1>Site</h1>
+
+  <table class="index">
+    <tr>
+      <th>ID</th>
+      <td>{{ site.id }}</td>
+    </tr>
+    <tr>
+      <th>Name</th>
+      <td>{{ site.title }}</td>
+    </tr>
+    <tr>
+      <th>Party</th>
+      <td>{{ site.party_id }}</td>
+    </tr>
+  </table>
+
+  <h2>Einstellungen</h2>
+  <table class="index">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Wert</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for setting in settings|sort(attribute='name') %}
+      <tr>
+        <td class="monospace">{{ setting.name }}</td>
+        <td class="monospace">{{ setting.value }}</td>
+      </tr>
+      {%- else %}
+      <tr>
+        <td colspan="2" class="centered">
+          <p class="dimmed">Es sind keine Einstellungen hinterlegt.</p>
+        </td>
+      </tr>
+    {%- endfor %}
+    </tbody>
+  </table>
+
+{%- endblock %}

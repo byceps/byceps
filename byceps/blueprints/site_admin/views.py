@@ -51,3 +51,20 @@ def _group_settings_by_site(settings):
         settings_by_site[setting.site_id].append(setting)
 
     return dict(settings_by_site)
+
+
+@blueprint.route('/sites/<site_id>')
+@permission_required(SitePermission.view)
+@templated
+def view(site_id):
+    """Show a site's settings."""
+    site = site_service.find_site(site_id)
+    if site is None:
+        abort(404)
+
+    settings = site_settings_service.get_settings(site.id)
+
+    return {
+        'site': site,
+        'settings': settings,
+    }
