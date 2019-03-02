@@ -162,7 +162,7 @@ def init_app(app):
 
             # Incorporate template overrides for the configured site ID.
             site_id = config.get_current_site_id()
-            app.template_folder = str(Path('template_overrides') / site_id)
+            app.template_folder = str(Path('..') / 'sites' / site_id / 'template_overrides')
         elif site_mode.is_admin() and app.config['RQ_DASHBOARD_ENABLED']:
             import rq_dashboard
             app.register_blueprint(rq_dashboard.blueprint,
