@@ -9,8 +9,10 @@ byceps.services.site.settings_service
 from typing import List, Optional
 
 from ...database import db
+from ...typing import PartyID
 
 from .models.setting import Setting as DbSetting
+from .models.site import Site as DbSite
 from .transfer.models import SiteID, SiteSetting
 
 
@@ -48,9 +50,10 @@ def find_setting_value(site_id: SiteID, name: str) -> Optional[str]:
     return setting.value
 
 
-def get_all_settings() -> List[SiteSetting]:
-    """Return all settings for all sites."""
+def get_settings_for_party(party_id: PartyID) -> List[SiteSetting]:
+    """Return all settings for that party's sites."""
     settings = DbSetting.query \
+        .join(DbSite).filter(DbSite.party_id == party_id) \
         .order_by(DbSetting.site_id, DbSetting.name) \
         .all()
 

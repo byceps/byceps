@@ -10,6 +10,7 @@ from collections import defaultdict
 
 from flask import abort, request
 
+from ...services.party import service as party_service
 from ...services.site import \
     service as site_service, \
     settings_service as site_settings_service
@@ -28,17 +29,22 @@ blueprint = create_blueprint('site_admin', __name__)
 permission_registry.register_enum(SitePermission)
 
 
-@blueprint.route('/')
+@blueprint.route('/parties/<party_id>')
 @permission_required(SitePermission.view)
 @templated
-def index():
-    """List sites and their settings."""
-    sites = site_service.get_all_sites()
-    settings = site_settings_service.get_all_settings()
+def index(party_id):
+    """List sites and their settings for this party."""
+    party = party_service.find_party(party_id)
+    if party is None:
+        abort(404)
+
+    sites = site_service.get_sites_for_party(party.id)
+    settings = site_settings_service.get_settings_for_party(party.id)
 
     settings_by_site = _group_settings_by_site(settings)
 
     return {
+        'party': party,
         'sites': sites,
         'settings_by_site': settings_by_site,
     }
@@ -62,9 +68,12 @@ def view(site_id):
     if site is None:
         abort(404)
 
+    party = party_service.find_party(site.party_id)
+
     settings = site_settings_service.get_settings(site.id)
 
     return {
+        'party': party,
         'site': site,
         'settings': settings,
     }
