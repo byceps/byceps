@@ -21,6 +21,7 @@ SiteID = NewType('SiteID', str)
 class Site:
     id = attrib(type=SiteID)
     party_id = attrib(type=PartyID)
+    title = attrib(type=str)
 
 
 @attrs(frozen=True, slots=True)
