@@ -6,11 +6,13 @@ application instance
 :License: Modified BSD, see LICENSE for details.
 """
 
+from pathlib import Path
+
 from werkzeug.wsgi import SharedDataMiddleware
 
 from byceps.application import create_app, init_app
 from byceps.config import STATIC_URL_PREFIX_BRAND, STATIC_URL_PREFIX_GLOBAL, \
-    STATIC_URL_PREFIX_PARTY
+    STATIC_URL_PREFIX_PARTY, STATIC_URL_PREFIX_SITE
 from byceps.database import db
 from byceps.services.brand.models.brand import Brand
 from byceps.services.party.models.party import Party
@@ -35,6 +37,7 @@ init_app(app)
 
 def _generate_static_files_exports():
     """Yield static files exports."""
+    # global, brand-specific, and party-specific files
     for url_path, config_key in [
         (STATIC_URL_PREFIX_GLOBAL, 'PATH_GLOBAL'),
         (STATIC_URL_PREFIX_BRAND, 'PATH_BRAND'),
@@ -43,6 +46,11 @@ def _generate_static_files_exports():
         path = app.config.get(config_key)
         if path:
             yield url_path, str(path)
+
+    # site-specific files
+    site_id = app.config.get('SITE_ID')
+    site_files_path = Path('sites') / site_id / 'static'
+    yield STATIC_URL_PREFIX_SITE, str(site_files_path)
 
 
 if app.env == 'development':
