@@ -8,10 +8,21 @@ byceps.services.site.service
 
 from typing import List, Optional
 
+from ...database import db
 from ...typing import PartyID
 
 from .models.site import Site as DbSite
 from .transfer.models import Site, SiteID
+
+
+def create_site(site_id: SiteID, party_id: PartyID, title: str) -> Site:
+    """Create a site for that party."""
+    site = DbSite(site_id, party_id, title)
+
+    db.session.add(site)
+    db.session.commit()
+
+    return _db_entity_to_site(site)
 
 
 def find_site(site_id: SiteID) -> Optional[Site]:
