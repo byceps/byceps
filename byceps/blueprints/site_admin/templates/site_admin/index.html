@@ -6,6 +6,31 @@
 
   <h1>{{ title }}</h1>
 
+  <table class="index">
+    <thead>
+      <tr>
+        <th>Party</th>
+        <th>ID</th>
+        <th>Name</th>
+      </tr>
+    </thead>
+    <tbody>
+    {%- for site in sites|sort(attribute='title')|sort(attribute='party_id') %}
+      <tr>
+        <td class="monospace">{{ site.party_id }}</td>
+        <td class="monospace">{{ site.id }}</td>
+        <td>{{ site.title }}</td>
+      </tr>
+    {%- else %}
+      <tr>
+        <td colspan="2" class="centered">
+          <p class="dimmed">Es sind keine Sites hinterlegt.</p>
+        </td>
+      </tr>
+    {%- endfor %}
+    </tbody>
+  </table>
+
   <h2>Einstellungen</h2>
   <table class="index wide">
     <thead>

@@ -10,7 +10,9 @@ from collections import defaultdict
 
 from flask import abort, request
 
-from ...services.site import settings_service as site_settings_service
+from ...services.site import \
+    service as site_service, \
+    settings_service as site_settings_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.templating import templated
 
@@ -30,12 +32,14 @@ permission_registry.register_enum(SitePermission)
 @permission_required(SitePermission.view)
 @templated
 def index():
-    """List site settings."""
+    """List sites and their settings."""
+    sites = site_service.get_all_sites()
     settings = site_settings_service.get_all_settings()
 
     settings_by_site = _group_settings_by_site(settings)
 
     return {
+        'sites': sites,
         'settings_by_site': settings_by_site,
     }
 
