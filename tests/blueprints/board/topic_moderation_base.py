@@ -4,7 +4,9 @@
 """
 
 from byceps.services.board.models.topic import Topic
-from byceps.services.site import settings_service as site_settings_service
+from byceps.services.site import \
+    service as site_service, \
+    settings_service as site_settings_service
 
 from testfixtures.board import create_board, create_category, create_topic
 
@@ -26,7 +28,9 @@ class AbstractTopicModerationTest(AbstractAppTestCase):
 
         self.board = self.create_board()
 
-        site_settings_service.create_setting('acme', 'board_id', self.board.id)
+        site_service.create_site('acme-2014-website', self.party.id, 'Website')
+        site_settings_service \
+            .create_setting('acme-2014-website', 'board_id', self.board.id)
 
     # -------------------------------------------------------------------- #
     # helpers
