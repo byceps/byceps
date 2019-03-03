@@ -26,12 +26,6 @@ from ...user.models.user import User
 from ..transfer.models import Scope, SnippetType
 
 
-class SnippetQuery(BaseQuery):
-
-    def for_party(self, party_id: PartyID) -> BaseQuery:
-        return self.filter_by(party_id=party_id)
-
-
 class Snippet(db.Model):
     """A snippet.
 
@@ -44,7 +38,6 @@ class Snippet(db.Model):
         db.UniqueConstraint('scope_type', 'scope_name', 'name'),
         db.UniqueConstraint('party_id', 'name'),
     )
-    query_class = SnippetQuery
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     scope_type = db.Column(db.Unicode(20), nullable=False)

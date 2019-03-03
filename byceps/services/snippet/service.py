@@ -108,8 +108,11 @@ def find_snippet(snippet_id: SnippetID) -> Optional[Snippet]:
 def get_snippets_for_party_with_current_versions(party_id: PartyID
                                                 ) -> Sequence[Snippet]:
     """Return all snippets with their current versions for that party."""
+    scope = Scope.for_party(party_id)
+
     return Snippet.query \
-        .for_party(party_id) \
+        .filter_by(scope_type=scope.type_) \
+        .filter_by(scope_name=scope.name) \
         .options(
             db.joinedload('current_version_association').joinedload('version')
         ) \
@@ -127,10 +130,13 @@ def find_current_version_of_snippet_with_name(party_id: PartyID, name: str
     """Return the current version of the snippet with that name for that
     party, or `None` if not found.
     """
+    scope = Scope.for_party(party_id)
+
     return SnippetVersion.query \
         .join(CurrentVersionAssociation) \
         .join(Snippet) \
-            .filter(Snippet.party_id == party_id) \
+            .filter(Snippet.scope_type == scope.type_) \
+            .filter(Snippet.scope_name == scope.name) \
             .filter(Snippet.name == name) \
         .one_or_none()
 
@@ -169,6 +175,10 @@ def find_mountpoint(mountpoint_id: MountpointID) -> Optional[Mountpoint]:
 
 def get_mountpoints_for_party(party_id: PartyID) -> Sequence[Mountpoint]:
     """Return all mountpoints for that party."""
+    scope = Scope.for_party(party_id)
+
     return Mountpoint.query \
-        .join(Snippet).filter_by(party_id=party_id) \
+        .join(Snippet) \
+            .filter_by(scope_type=scope.type_) \
+            .filter_by(scope_name=scope.name) \
         .all()
