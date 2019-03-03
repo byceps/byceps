@@ -8,7 +8,7 @@ testfixtures.snippet
 
 from byceps.services.snippet.models.snippet import \
     CurrentVersionAssociation, Snippet, SnippetVersion
-from byceps.services.snippet.transfer.models import SnippetType
+from byceps.services.snippet.transfer.models import Scope, SnippetType
 
 
 def create_document(party_id, name):
@@ -20,7 +20,8 @@ def create_fragment(party_id, name):
 
 
 def _create_snippet(party_id, name, type_):
-    return Snippet('party', party_id, party_id, name, type_)
+    scope = Scope.for_party(party_id)
+    return Snippet(scope, party_id, name, type_)
 
 
 def create_snippet_version(snippet, creator_id, *, created_at=None,

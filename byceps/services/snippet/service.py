@@ -13,7 +13,7 @@ from ...typing import PartyID, UserID
 
 from .models.mountpoint import Mountpoint
 from .models.snippet import CurrentVersionAssociation, Snippet, SnippetVersion
-from .transfer.models import MountpointID, SnippetID, SnippetType, \
+from .transfer.models import MountpointID, Scope, SnippetID, SnippetType, \
     SnippetVersionID
 
 
@@ -69,7 +69,8 @@ def _create_snippet(party_id: PartyID, name: str, type_: SnippetType,
                     head: Optional[str]=None, image_url_path: Optional[str]=None
                    ) -> SnippetVersion:
     """Create a snippet and its initial version, and return that version."""
-    snippet = Snippet('party', party_id, party_id, name, type_)
+    scope = Scope.for_party(party_id)
+    snippet = Snippet(scope, party_id, name, type_)
     db.session.add(snippet)
 
     version = SnippetVersion(snippet, creator_id, title, head, body,

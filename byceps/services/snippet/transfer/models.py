@@ -10,6 +10,20 @@ from enum import Enum
 from typing import NewType
 from uuid import UUID
 
+from attr import attrib, attrs
+
+from ....typing import PartyID
+
+
+@attrs(frozen=True, slots=True)
+class Scope:
+    type_ = attrib(type=str)
+    name = attrib(type=str)
+
+    @classmethod
+    def for_party(cls, party_id: PartyID):
+        return cls('party', str(party_id))
+
 
 SnippetID = NewType('SnippetID', UUID)
 
