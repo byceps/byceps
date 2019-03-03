@@ -40,18 +40,25 @@ class Snippet(db.Model):
     """
     __tablename__ = 'snippets'
     __table_args__ = (
+        db.Index('ix_snippets_scope', 'scope_type', 'scope_name'),
+        db.UniqueConstraint('scope_type', 'scope_name', 'name'),
         db.UniqueConstraint('party_id', 'name'),
     )
     query_class = SnippetQuery
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    scope_type = db.Column(db.Unicode(20), nullable=False)
+    scope_name = db.Column(db.Unicode(40), nullable=False)
     party_id = db.Column(db.Unicode(40), db.ForeignKey('parties.id'), index=True, nullable=False)
     party = db.relationship(Party)
     name = db.Column(db.Unicode(40), index=True, nullable=False)
     _type = db.Column('type', db.Unicode(8), nullable=False)
     current_version = association_proxy('current_version_association', 'version')
 
-    def __init__(self, party_id: PartyID, name: str, type_: SnippetType) -> None:
+    def __init__(self, scope_type: str, scope_name: str, party_id: PartyID,
+                 name: str, type_: SnippetType) -> None:
+        self.scope_type = scope_type
+        self.scope_name = scope_name
         self.party_id = party_id
         self.name = name
         self.type_ = type_
@@ -80,6 +87,8 @@ class Snippet(db.Model):
     def __repr__(self) -> str:
         return ReprBuilder(self) \
             .add_with_lookup('id') \
+            .add_with_lookup('scope_type') \
+            .add_with_lookup('scope_name') \
             .add('party', self.party_id) \
             .add_with_lookup('name') \
             .add('type', self._type) \

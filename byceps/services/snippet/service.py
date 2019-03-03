@@ -69,7 +69,7 @@ def _create_snippet(party_id: PartyID, name: str, type_: SnippetType,
                     head: Optional[str]=None, image_url_path: Optional[str]=None
                    ) -> SnippetVersion:
     """Create a snippet and its initial version, and return that version."""
-    snippet = Snippet(party_id, name, type_)
+    snippet = Snippet('party', party_id, party_id, name, type_)
     db.session.add(snippet)
 
     version = SnippetVersion(snippet, creator_id, title, head, body,

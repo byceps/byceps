@@ -12,11 +12,15 @@ from byceps.services.snippet.transfer.models import SnippetType
 
 
 def create_document(party_id, name):
-    return Snippet(party_id, name, SnippetType.document)
+    return _create_snippet(party_id, name, SnippetType.document)
 
 
 def create_fragment(party_id, name):
-    return Snippet(party_id, name, SnippetType.fragment)
+    return _create_snippet(party_id, name, SnippetType.fragment)
+
+
+def _create_snippet(party_id, name, type_):
+    return Snippet('party', party_id, party_id, name, type_)
 
 
 def create_snippet_version(snippet, creator_id, *, created_at=None,
