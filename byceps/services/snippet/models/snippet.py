@@ -11,9 +11,7 @@ page.
 """
 
 from datetime import datetime
-from enum import Enum
-from typing import NewType, Optional, Sequence
-from uuid import UUID
+from typing import Optional, Sequence
 
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
@@ -25,11 +23,7 @@ from ....util.instances import ReprBuilder
 from ...party.models.party import Party
 from ...user.models.user import User
 
-
-SnippetType = Enum('SnippetType', ['document', 'fragment'])
-
-
-SnippetID = NewType('SnippetID', UUID)
+from ..transfer.models import SnippetType
 
 
 class SnippetQuery(BaseQuery):
@@ -90,9 +84,6 @@ class Snippet(db.Model):
             .add_with_lookup('name') \
             .add('type', self._type) \
             .build()
-
-
-SnippetVersionID = NewType('SnippetVersionID', UUID)
 
 
 class SnippetVersionQuery(BaseQuery):

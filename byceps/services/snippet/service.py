@@ -11,9 +11,10 @@ from typing import Optional, Sequence
 from ...database import db
 from ...typing import PartyID, UserID
 
-from .models.mountpoint import Mountpoint, MountpointID
-from .models.snippet import CurrentVersionAssociation, Snippet, SnippetID, \
-    SnippetType, SnippetVersion, SnippetVersionID
+from .models.mountpoint import Mountpoint
+from .models.snippet import CurrentVersionAssociation, Snippet, SnippetVersion
+from .transfer.models import MountpointID, SnippetID, SnippetType, \
+    SnippetVersionID
 
 
 # -------------------------------------------------------------------- #

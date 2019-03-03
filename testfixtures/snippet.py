@@ -7,7 +7,8 @@ testfixtures.snippet
 """
 
 from byceps.services.snippet.models.snippet import \
-    CurrentVersionAssociation, Snippet, SnippetType, SnippetVersion
+    CurrentVersionAssociation, Snippet, SnippetVersion
+from byceps.services.snippet.transfer.models import SnippetType
 
 
 def create_document(party_id, name):

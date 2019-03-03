@@ -6,8 +6,7 @@ byceps.services.snippet.models.mountpoint
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import NewType, Optional
-from uuid import UUID
+from typing import Optional
 
 from flask import url_for
 from werkzeug.routing import BuildError
@@ -16,9 +15,6 @@ from ....database import db, generate_uuid
 from ....util.instances import ReprBuilder
 
 from .snippet import Snippet
-
-
-MountpointID = NewType('MountpointID', UUID)
 
 
 class Mountpoint(db.Model):

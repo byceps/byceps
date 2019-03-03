@@ -8,7 +8,7 @@
 
 import click
 
-from byceps.services.snippet.models.snippet import SnippetType
+from byceps.services.snippet.transfer.models import SnippetType
 from byceps.services.snippet import service as snippet_service
 from byceps.util.system import get_config_filename_from_env_or_exit
 
