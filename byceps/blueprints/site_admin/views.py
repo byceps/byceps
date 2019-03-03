@@ -68,12 +68,9 @@ def view(site_id):
     if site is None:
         abort(404)
 
-    party = party_service.find_party(site.party_id)
-
     settings = site_settings_service.get_settings(site.id)
 
     return {
-        'party': party,
         'site': site,
         'settings': settings,
     }
