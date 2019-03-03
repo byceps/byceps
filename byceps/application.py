@@ -13,8 +13,6 @@ import jinja2
 
 from .blueprints.snippet.init import add_routes_for_snippets
 from . import config, config_defaults
-from .config import STATIC_URL_PREFIX_BRAND, STATIC_URL_PREFIX_GLOBAL, \
-    STATIC_URL_PREFIX_PARTY, STATIC_URL_PREFIX_SITE
 from .database import db
 from . import email
 from .redis import redis
@@ -137,10 +135,10 @@ def _get_blueprints(app):
 def _add_static_file_url_rules(app):
     """Add URL rules to for static files."""
     for rule_prefix, endpoint in [
-        (STATIC_URL_PREFIX_GLOBAL, 'global_file'),
-        (STATIC_URL_PREFIX_BRAND, 'brand_file'),
-        (STATIC_URL_PREFIX_PARTY, 'party_file'),
-        (STATIC_URL_PREFIX_SITE, 'site_file'),
+        (config.STATIC_URL_PREFIX_GLOBAL, 'global_file'),
+        (config.STATIC_URL_PREFIX_BRAND, 'brand_file'),
+        (config.STATIC_URL_PREFIX_PARTY, 'party_file'),
+        (config.STATIC_URL_PREFIX_SITE, 'site_file'),
     ]:
         rule = rule_prefix + '/<path:filename>'
         app.add_url_rule(rule,
