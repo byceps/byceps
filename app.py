@@ -47,9 +47,10 @@ def _generate_static_files_exports():
             yield url_path, str(path)
 
     # site-specific files
-    site_id = config.get_current_site_id(app)
-    site_files_path = Path('sites') / site_id / 'static'
-    yield config.STATIC_URL_PREFIX_SITE, str(site_files_path)
+    if config.get_site_mode(app).is_public():
+        site_id = config.get_current_site_id(app)
+        site_files_path = Path('sites') / site_id / 'static'
+        yield config.STATIC_URL_PREFIX_SITE, str(site_files_path)
 
 
 if app.env == 'development':
