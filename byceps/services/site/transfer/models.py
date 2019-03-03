@@ -10,7 +10,6 @@ from typing import NewType
 
 from attr import attrib, attrs
 
-
 from ....typing import PartyID
 
 
