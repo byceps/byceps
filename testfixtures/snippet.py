@@ -11,17 +11,16 @@ from byceps.services.snippet.models.snippet import \
 from byceps.services.snippet.transfer.models import Scope, SnippetType
 
 
-def create_document(party_id, name):
-    return _create_snippet(party_id, name, SnippetType.document)
+def create_document(scope, name):
+    return _create_snippet(scope, name, SnippetType.document)
 
 
-def create_fragment(party_id, name):
-    return _create_snippet(party_id, name, SnippetType.fragment)
+def create_fragment(scope, name):
+    return _create_snippet(scope, name, SnippetType.fragment)
 
 
-def _create_snippet(party_id, name, type_):
-    scope = Scope.for_party(party_id)
-    return Snippet(scope, party_id, name, type_)
+def _create_snippet(scope, name, type_):
+    return Snippet(scope, name, type_)
 
 
 def create_snippet_version(snippet, creator_id, *, created_at=None,

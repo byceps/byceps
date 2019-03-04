@@ -8,8 +8,8 @@
 
 import click
 
-from byceps.services.snippet.transfer.models import SnippetType
 from byceps.services.snippet import service as snippet_service
+from byceps.services.snippet.transfer.models import Scope, SnippetType
 from byceps.util.system import get_config_filename_from_env_or_exit
 
 from bootstrap.util import app_context
@@ -22,9 +22,11 @@ from bootstrap.validators import validate_party
 @click.argument('target_party', callback=validate_party)
 @click.argument('snippet_name')
 def execute(ctx, source_party, target_party, snippet_name):
+    source_scope = Scope.for_party(source_party.id)
+    target_scope = Scope.for_party(target_party.id)
+
     snippet_version = snippet_service \
-        .find_current_version_of_snippet_with_name(
-            source_party.id, snippet_name)
+        .find_current_version_of_snippet_with_name(source_scope, snippet_name)
 
     if snippet_version is None:
         raise click.BadParameter('Unknown snippet name "{}" for party "{}".'
@@ -34,7 +36,7 @@ def execute(ctx, source_party, target_party, snippet_name):
 
     if snippet.type_ == SnippetType.document:
         snippet_service.create_document(
-            target_party.id,
+            target_scope,
             snippet.name,
             snippet_version.creator_id,
             snippet_version.title,
@@ -44,7 +46,7 @@ def execute(ctx, source_party, target_party, snippet_name):
         )
     elif snippet.type_ == SnippetType.fragment:
         snippet_service.create_fragment(
-            target_party.id,
+            target_scope,
             snippet.name,
             snippet_version.creator_id,
             snippet_version.body

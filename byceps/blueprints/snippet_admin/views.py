@@ -10,6 +10,7 @@ from flask import abort, g, request
 
 from ...services.party import service as party_service
 from ...services.snippet import service as snippet_service
+from ...services.snippet.transfer.models import Scope
 from ...services.text_diff import service as text_diff_service
 from ...util.datetime.format import format_datetime_short
 from ...util.framework.blueprint import create_blueprint
@@ -40,11 +41,12 @@ permission_registry.register_enum(SnippetPermission)
 def index_for_party(party_id):
     """List snippets for that party."""
     party = _get_party_or_404(party_id)
+    scope = Scope.for_party(party.id)
 
-    snippets = snippet_service.get_snippets_for_party_with_current_versions(
-        party.id)
+    snippets = snippet_service \
+        .get_snippets_for_scope_with_current_versions(scope)
 
-    mountpoints = snippet_service.get_mountpoints_for_party(party.id)
+    mountpoints = snippet_service.get_mountpoints_for_scope(scope)
 
     return {
         'party': party,
@@ -122,15 +124,15 @@ def create_document(party_id):
 
     form = DocumentCreateForm(request.form)
 
+    scope = Scope.for_party(party.id)
     name = form.name.data.strip().lower()
-
     creator = g.current_user
     title = form.title.data.strip()
     head = form.head.data.strip()
     body = form.body.data.strip()
     image_url_path = form.image_url_path.data.strip()
 
-    version = snippet_service.create_document(party.id, name, creator.id, title,
+    version = snippet_service.create_document(scope, name, creator.id, title,
                                               body, head=head,
                                               image_url_path=image_url_path)
 
@@ -236,11 +238,11 @@ def create_fragment(party_id):
     form = FragmentCreateForm(request.form)
 
     name = form.name.data.strip().lower()
-
+    scope = Scope.for_party(party.id)
     creator = g.current_user
     body = form.body.data.strip()
 
-    version = snippet_service.create_fragment(party.id, name, creator.id, body)
+    version = snippet_service.create_fragment(scope, name, creator.id, body)
 
     flash_success('Das Fragment "{}" wurde angelegt.', version.snippet.name)
     signals.snippet_created.send(None, snippet_version_id=version.id)

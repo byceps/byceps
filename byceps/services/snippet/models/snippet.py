@@ -48,11 +48,10 @@ class Snippet(db.Model):
     _type = db.Column('type', db.Unicode(8), nullable=False)
     current_version = association_proxy('current_version_association', 'version')
 
-    def __init__(self, scope: Scope, party_id: PartyID, name: str,
-                 type_: SnippetType) -> None:
+    def __init__(self, scope: Scope, name: str, type_: SnippetType) -> None:
         self.scope_type = scope.type_
         self.scope_name = scope.name
-        self.party_id = party_id
+        self.party_id = scope.name
         self.name = name
         self.type_ = type_
 

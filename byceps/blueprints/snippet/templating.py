@@ -14,6 +14,7 @@ from jinja2 import TemplateNotFound
 
 from ...services.snippet import service as snippet_service
 from ...services.snippet.service import SnippetNotFound
+from ...services.snippet.transfer.models import Scope
 from ...util.templating import get_variable_value, load_template
 
 
@@ -56,8 +57,10 @@ def render_snippet_as_partial(name, *, ignore_if_unknown=False):
     """Render the latest version of the snippet with the given name and
     return the result.
     """
+    scope = Scope.for_party(g.party_id)
+
     current_version = snippet_service \
-        .find_current_version_of_snippet_with_name(g.party_id, name)
+        .find_current_version_of_snippet_with_name(scope, name)
 
     if current_version is None:
         if ignore_if_unknown:

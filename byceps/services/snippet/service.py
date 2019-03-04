@@ -9,7 +9,7 @@ byceps.services.snippet.service
 from typing import Optional, Sequence
 
 from ...database import db
-from ...typing import PartyID, UserID
+from ...typing import UserID
 
 from .models.mountpoint import Mountpoint
 from .models.snippet import CurrentVersionAssociation, Snippet, SnippetVersion
@@ -21,12 +21,12 @@ from .transfer.models import MountpointID, Scope, SnippetID, SnippetType, \
 # document
 
 
-def create_document(party_id: PartyID, name: str, creator_id: UserID,
-                    title: str, body: str, *, head: Optional[str]=None,
+def create_document(scope: Scope, name: str, creator_id: UserID, title: str,
+                    body: str, *, head: Optional[str]=None,
                     image_url_path: Optional[str]=None) -> SnippetVersion:
     """Create a document and its initial version, and return that version."""
-    return _create_snippet(party_id, name, SnippetType.document, creator_id,
-                           body, title=title, head=head,
+    return _create_snippet(scope, name, SnippetType.document, creator_id, body,
+                           title=title, head=head,
                            image_url_path=image_url_path)
 
 
@@ -42,11 +42,10 @@ def update_document(document: Snippet, creator_id: UserID, title: str,
 # fragment
 
 
-def create_fragment(party_id: PartyID, name: str, creator_id: UserID, body: str
+def create_fragment(scope: Scope, name: str, creator_id: UserID, body: str
                    ) -> SnippetVersion:
     """Create a fragment and its initial version, and return that version."""
-    return _create_snippet(party_id, name, SnippetType.fragment, creator_id,
-                           body)
+    return _create_snippet(scope, name, SnippetType.fragment, creator_id, body)
 
 
 def update_fragment(fragment: Snippet, creator_id: UserID, body: str
@@ -64,13 +63,12 @@ def update_fragment(fragment: Snippet, creator_id: UserID, body: str
 # snippet
 
 
-def _create_snippet(party_id: PartyID, name: str, type_: SnippetType,
+def _create_snippet(scope: Scope, name: str, type_: SnippetType,
                     creator_id: UserID, body: str, *, title: Optional[str]=None,
                     head: Optional[str]=None, image_url_path: Optional[str]=None
                    ) -> SnippetVersion:
     """Create a snippet and its initial version, and return that version."""
-    scope = Scope.for_party(party_id)
-    snippet = Snippet(scope, party_id, name, type_)
+    snippet = Snippet(scope, name, type_)
     db.session.add(snippet)
 
     version = SnippetVersion(snippet, creator_id, title, head, body,
@@ -105,11 +103,9 @@ def find_snippet(snippet_id: SnippetID) -> Optional[Snippet]:
     return Snippet.query.get(snippet_id)
 
 
-def get_snippets_for_party_with_current_versions(party_id: PartyID
+def get_snippets_for_scope_with_current_versions(scope: Scope
                                                 ) -> Sequence[Snippet]:
-    """Return all snippets with their current versions for that party."""
-    scope = Scope.for_party(party_id)
-
+    """Return all snippets with their current versions for that scope."""
     return Snippet.query \
         .filter_by(scope_type=scope.type_) \
         .filter_by(scope_name=scope.name) \
@@ -125,13 +121,11 @@ def find_snippet_version(version_id: SnippetVersionID
     return SnippetVersion.query.get(version_id)
 
 
-def find_current_version_of_snippet_with_name(party_id: PartyID, name: str
+def find_current_version_of_snippet_with_name(scope: Scope, name: str
                                              ) -> SnippetVersion:
-    """Return the current version of the snippet with that name for that
-    party, or `None` if not found.
+    """Return the current version of the snippet with that name in that
+    scope, or `None` if not found.
     """
-    scope = Scope.for_party(party_id)
-
     return SnippetVersion.query \
         .join(CurrentVersionAssociation) \
         .join(Snippet) \
@@ -173,10 +167,8 @@ def find_mountpoint(mountpoint_id: MountpointID) -> Optional[Mountpoint]:
     return Mountpoint.query.get(mountpoint_id)
 
 
-def get_mountpoints_for_party(party_id: PartyID) -> Sequence[Mountpoint]:
-    """Return all mountpoints for that party."""
-    scope = Scope.for_party(party_id)
-
+def get_mountpoints_for_scope(scope: Scope) -> Sequence[Mountpoint]:
+    """Return all mountpoints for that scope."""
     return Mountpoint.query \
         .join(Snippet) \
             .filter_by(scope_type=scope.type_) \

@@ -9,6 +9,7 @@ byceps.blueprints.snippet.views
 from flask import abort, g, jsonify
 
 from ...services.snippet import service as snippet_service
+from ...services.snippet.transfer.models import Scope
 from ...util.framework.blueprint import create_blueprint
 from ...util.views import create_empty_json_response
 
@@ -62,5 +63,7 @@ def _find_current_snippet_version(name):
     """Return the current version of the snippet with that name, or
     `None` if it does not exist.
     """
-    return snippet_service.find_current_version_of_snippet_with_name(
-        g.party_id, name)
+    scope = Scope.for_party(g.party_id)
+
+    return snippet_service \
+        .find_current_version_of_snippet_with_name(scope, name)
