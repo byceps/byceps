@@ -17,10 +17,9 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
 
 from ....database import BaseQuery, db, generate_uuid
-from ....typing import PartyID, UserID
+from ....typing import UserID
 from ....util.instances import ReprBuilder
 
-from ...party.models.party import Party
 from ...user.models.user import User
 
 from ..transfer.models import Scope, SnippetType
@@ -36,14 +35,11 @@ class Snippet(db.Model):
     __table_args__ = (
         db.Index('ix_snippets_scope', 'scope_type', 'scope_name'),
         db.UniqueConstraint('scope_type', 'scope_name', 'name'),
-        db.UniqueConstraint('party_id', 'name'),
     )
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     scope_type = db.Column(db.Unicode(20), nullable=False)
     scope_name = db.Column(db.Unicode(40), nullable=False)
-    party_id = db.Column(db.Unicode(40), db.ForeignKey('parties.id'), index=True, nullable=False)
-    party = db.relationship(Party)
     name = db.Column(db.Unicode(40), index=True, nullable=False)
     _type = db.Column('type', db.Unicode(8), nullable=False)
     current_version = association_proxy('current_version_association', 'version')
@@ -51,7 +47,6 @@ class Snippet(db.Model):
     def __init__(self, scope: Scope, name: str, type_: SnippetType) -> None:
         self.scope_type = scope.type_
         self.scope_name = scope.name
-        self.party_id = scope.name
         self.name = name
         self.type_ = type_
 
@@ -81,7 +76,6 @@ class Snippet(db.Model):
             .add_with_lookup('id') \
             .add_with_lookup('scope_type') \
             .add_with_lookup('scope_name') \
-            .add('party', self.party_id) \
             .add_with_lookup('name') \
             .add('type', self._type) \
             .build()
