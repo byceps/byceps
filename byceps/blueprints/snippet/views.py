@@ -63,7 +63,7 @@ def _find_current_snippet_version(name):
     """Return the current version of the snippet with that name, or
     `None` if it does not exist.
     """
-    scope = Scope.for_party(g.party_id)
+    scope = Scope.for_site(g.site_id)
 
     return snippet_service \
         .find_current_version_of_snippet_with_name(scope, name)

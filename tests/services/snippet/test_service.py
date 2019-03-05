@@ -24,25 +24,25 @@ class GetCurrentVersionOfSnippetTestCase(AbstractAppTestCase):
         party2014 = self.create_party(self.brand.id, 'lafiesta-2014', 'La Fiesta 2014')
         party2015 = self.create_party(self.brand.id, 'lafiesta-2015', 'La Fiesta 2015')
 
-        self.scope_party2014 = Scope.for_party(party2014.id)
-        self.scope_party2015 = Scope.for_party(party2015.id)
+        self.scope_site2014 = Scope.for_site(party2014.id)
+        self.scope_site2015 = Scope.for_site(party2015.id)
 
         self.creator = self.create_user()
 
     def test_current_party_is_considered(self):
         fragment_info2014_version = self.create_fragment_with_version(
-                self.scope_party2014, 'info', '2014-10-23 14:55:00')
+                self.scope_site2014, 'info', '2014-10-23 14:55:00')
         fragment_info2015_version = self.create_fragment_with_version(
-                self.scope_party2015, 'info', '2014-10-23 18:21:00')
+                self.scope_site2015, 'info', '2014-10-23 18:21:00')
 
         actual = snippet_service.find_current_version_of_snippet_with_name(
-            self.scope_party2014, 'info')
+            self.scope_site2014, 'info')
 
         assert actual == fragment_info2014_version
 
     def test_unknown_name(self):
         actual = snippet_service.find_current_version_of_snippet_with_name(
-            self.scope_party2014, 'totally-unknown-snippet-name')
+            self.scope_site2014, 'totally-unknown-snippet-name')
 
         assert actual is None
 

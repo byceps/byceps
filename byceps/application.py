@@ -156,8 +156,8 @@ def init_app(app):
         site_mode = config.get_site_mode()
         if site_mode.is_public():
             # Mount snippets.
-            party_id = config.get_current_party_id()
-            scope = Scope.for_party(party_id)
+            site_id = config.get_current_site_id()
+            scope = Scope.for_site(site_id)
             add_routes_for_snippets(scope)
 
             # Incorporate template overrides for the configured site ID.

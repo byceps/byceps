@@ -4,8 +4,8 @@
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/user_admin.html' import render_user_avatar_20_and_name %}
 {% set current_page = 'snippet_admin' %}
-{% if party %}
-  {% set current_page_party = party %}
+{% if site %}
+  {% set current_page_site = site %}
 {% endif %}
 {% set title = '%s/%s - Snippets'|format(scope.type_, scope.name) %}
 

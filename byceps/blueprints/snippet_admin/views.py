@@ -8,7 +8,7 @@ byceps.blueprints.snippet_admin.views
 
 from flask import abort, g, request
 
-from ...services.party import service as party_service
+from ...services.site import service as site_service
 from ...services.snippet import service as snippet_service
 from ...services.snippet.transfer.models import Scope
 from ...services.text_diff import service as text_diff_service
@@ -47,13 +47,13 @@ def index_for_scope(scope_type, scope_name):
 
     mountpoints = snippet_service.get_mountpoints_for_scope(scope)
 
-    party = _find_party_for_scope(scope)
+    site = _find_site_for_scope(scope)
 
     return {
         'scope': scope,
         'snippets': snippets,
         'mountpoints': mountpoints,
-        'party': party,
+        'site': site,
     }
 
 
@@ -81,7 +81,7 @@ def view_version(snippet_version_id):
             'error_message': str(e),
         }
 
-    context['party'] = _find_party_for_scope(version.snippet.scope)
+    context['site'] = _find_site_for_scope(version.snippet.scope)
 
     return context
 
@@ -95,12 +95,12 @@ def history(snippet_id):
     versions = snippet.get_versions()
     versions_pairwise = list(pairwise(versions + [None]))
 
-    party = _find_party_for_scope(snippet.scope)
+    site = _find_site_for_scope(snippet.scope)
 
     return {
         'snippet': snippet,
         'versions_pairwise': versions_pairwise,
-        'party': party,
+        'site': site,
     }
 
 
@@ -117,12 +117,12 @@ def create_document_form(scope_type, scope_name):
 
     form = DocumentCreateForm()
 
-    party = _find_party_for_scope(scope)
+    site = _find_site_for_scope(scope)
 
     return {
         'scope': scope,
         'form': form,
-        'party': party,
+        'site': site,
     }
 
 
@@ -163,12 +163,12 @@ def update_document_form(snippet_id):
         obj=current_version,
         name=snippet.name)
 
-    party = _find_party_for_scope(snippet.scope)
+    site = _find_site_for_scope(snippet.scope)
 
     return {
         'form': form,
         'snippet': snippet,
-        'party': party,
+        'site': site,
     }
 
 
@@ -213,14 +213,14 @@ def compare_documents(from_version_id, to_version_id):
     html_diff_image_url_path = _create_html_diff(from_version, to_version,
                                                  'image_url_path')
 
-    party = _find_party_for_scope(from_version.snippet.scope)
+    site = _find_site_for_scope(from_version.snippet.scope)
 
     return {
         'diff_title': html_diff_title,
         'diff_head': html_diff_head,
         'diff_body': html_diff_body,
         'diff_image_url_path': html_diff_image_url_path,
-        'party': party,
+        'site': site,
     }
 
 
@@ -237,12 +237,12 @@ def create_fragment_form(scope_type, scope_name):
 
     form = FragmentCreateForm()
 
-    party = _find_party_for_scope(scope)
+    site = _find_site_for_scope(scope)
 
     return {
         'scope': scope,
         'form': form,
-        'party': party,
+        'site': site,
     }
 
 
@@ -278,12 +278,12 @@ def update_fragment_form(snippet_id):
         obj=current_version,
         name=snippet.name)
 
-    party = _find_party_for_scope(snippet.scope)
+    site = _find_site_for_scope(snippet.scope)
 
     return {
         'form': form,
         'snippet': snippet,
-        'party': party,
+        'site': site,
     }
 
 
@@ -319,11 +319,11 @@ def compare_fragments(from_version_id, to_version_id):
 
     html_diff_body = _create_html_diff(from_version, to_version, 'body')
 
-    party = _find_party_for_scope(from_version.snippet.scope)
+    site = _find_site_for_scope(from_version.snippet.scope)
 
     return {
         'diff_body': html_diff_body,
-        'party': party,
+        'site': site,
     }
 
 
@@ -340,12 +340,12 @@ def create_mountpoint_form(snippet_id):
 
     form = MountpointCreateForm()
 
-    party = _find_party_for_scope(snippet.scope)
+    site = _find_site_for_scope(snippet.scope)
 
     return {
         'snippet': snippet,
         'form': form,
-        'party': party,
+        'site': site,
     }
 
 
@@ -425,8 +425,8 @@ def _create_html_diff(from_version, to_version, attribute_name):
                                               from_description, to_description)
 
 
-def _find_party_for_scope(scope):
-    if scope.type_ != 'party':
+def _find_site_for_scope(scope):
+    if scope.type_ != 'site':
         return None
 
-    return party_service.find_party(scope.name)
+    return site_service.find_site(scope.name)

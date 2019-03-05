@@ -12,7 +12,7 @@ from uuid import UUID
 
 from attr import attrib, attrs
 
-from ....typing import PartyID
+from ...site.transfer.models import SiteID
 
 
 @attrs(frozen=True, slots=True)
@@ -21,8 +21,8 @@ class Scope:
     name = attrib(type=str)
 
     @classmethod
-    def for_party(cls, party_id: PartyID):
-        return cls('party', str(party_id))
+    def for_site(cls, site_id: SiteID):
+        return cls('site', str(site_id))
 
 
 SnippetID = NewType('SnippetID', UUID)

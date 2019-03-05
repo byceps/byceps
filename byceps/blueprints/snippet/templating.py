@@ -57,7 +57,7 @@ def render_snippet_as_partial(name, *, ignore_if_unknown=False):
     """Render the latest version of the snippet with the given name and
     return the result.
     """
-    scope = Scope.for_party(g.party_id)
+    scope = Scope.for_site(g.site_id)
 
     current_version = snippet_service \
         .find_current_version_of_snippet_with_name(scope, name)
