@@ -3,7 +3,9 @@
 {% from 'macros/misc.html' import render_notification %}
 {% from 'macros/user_admin.html' import render_user_avatar_16_and_name %}
 {% set current_page = 'snippet_admin' %}
-{% set current_page_party = version.snippet.party %}
+{% if party %}
+  {% set current_page_party = party %}
+{% endif %}
 {% set title = 'Snippetversion ansehen' %}
 
 {% block head %}
@@ -38,8 +40,8 @@
 
     <table>
       <tr>
-        <th>Party:</th>
-        <td><a href="{{ url_for('.index_for_party', party_id=version.snippet.party_id) }}">{{ version.snippet.party.title }}</a></td>
+        <th>Scope:</th>
+        <td><a href="{{ url_for('.index_for_scope', scope_type=version.snippet.scope_type, scope_name=version.snippet.scope_name) }}">{{ version.snippet.scope_type }}/{{ version.snippet.scope_name }}</a></td>
       </tr>
       <tr>
         <th>Snippet:</th>

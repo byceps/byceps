@@ -3,7 +3,9 @@
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/user_admin.html' import render_user_avatar_20_and_name %}
 {% set current_page = 'snippet_admin' %}
-{% set current_page_party = snippet.party %}
+{% if party %}
+  {% set current_page_party = party %}
+{% endif %}
 {% set title = 'Versionshistorie' %}
 
 {% block body %}
@@ -11,7 +13,7 @@
   <nav class="breadcrumbs">
     <ol>
       <li>Snippets</li>
-      <li><a href="{{ url_for('.index_for_party', party_id=snippet.party.id) }}">{{ snippet.party.title }}</a></li>
+      <li><a href="{{ url_for('.index_for_scope', scope_type=snippet.scope.type_, scope_name=snippet.scope.name) }}">{{ snippet.scope.type_ }}/{{ snippet.scope.name }}</a></li>
       <li>{{ snippet.name }}</li>
     </ol>
   </nav>

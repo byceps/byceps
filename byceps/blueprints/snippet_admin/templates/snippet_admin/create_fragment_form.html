@@ -2,7 +2,9 @@
 {% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'snippet_admin' %}
-{% set current_page_party = party %}
+{% if party %}
+  {% set current_page_party = party %}
+{% endif %}
 {% set title = 'Fragment erstellen' %}
 
 {% block body %}
@@ -10,18 +12,18 @@
   <nav class="breadcrumbs">
     <ol>
       <li>Snippets</li>
-      <li><a href="{{ url_for('.index_for_party', party_id=party.id) }}">{{ party.title }}</a></li>
+      <li><a href="{{ url_for('.index_for_scope', scope_type=scope.type_, scope_name=scope.name) }}">{{ scope.type_ }}/{{ scope.name }}</a></li>
     </ol>
   </nav>
   <h1>{{ render_icon('add') }} {{ title }}</h1>
 
-  <form action="{{ url_for('.create_fragment', party_id=party.id) }}" method="post">
+  <form action="{{ url_for('.create_fragment', scope_type=scope.type_, scope_name=scope.name) }}" method="post">
     {% call form_fieldset() %}
       {{ form_field(form.name, maxlength=40, required='required', autofocus='autofocus') }}
       {{ form_field(form.body, required='required', class='monospace wide') }}
     {% endcall %}
 
-    {{ form_buttons('Speichern', cancel_url=url_for('.index_for_party', party_id=party.id)) }}
+    {{ form_buttons('Speichern', cancel_url=url_for('.index_for_scope', scope_type=scope.type_, scope_name=scope.name)) }}
   </form>
 
 {%- endblock %}

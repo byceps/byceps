@@ -1,7 +1,9 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/text_diff.html' import render_difference, render_difference_styles  %}
 {% set current_page = 'snippet_admin' %}
-{% set current_page_party = party %}
+{% if party %}
+  {% set current_page_party = party %}
+{% endif %}
 {% set title = 'Änderungen ansehen' %}
 
 {%- block head %}

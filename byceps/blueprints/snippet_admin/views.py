@@ -35,23 +35,25 @@ permission_registry.register_enum(SnippetMountpointPermission)
 permission_registry.register_enum(SnippetPermission)
 
 
-@blueprint.route('/for_party/<party_id>')
+@blueprint.route('/for_scope/<scope_type>/<scope_name>')
 @permission_required(SnippetPermission.view)
 @templated
-def index_for_party(party_id):
-    """List snippets for that party."""
-    party = _get_party_or_404(party_id)
-    scope = Scope.for_party(party.id)
+def index_for_scope(scope_type, scope_name):
+    """List snippets for that scope."""
+    scope = Scope(scope_type, scope_name)
 
     snippets = snippet_service \
         .get_snippets_for_scope_with_current_versions(scope)
 
     mountpoints = snippet_service.get_mountpoints_for_scope(scope)
 
+    party = _find_party_for_scope(scope)
+
     return {
-        'party': party,
+        'scope': scope,
         'snippets': snippets,
         'mountpoints': mountpoints,
+        'party': party,
     }
 
 
@@ -79,6 +81,8 @@ def view_version(snippet_version_id):
             'error_message': str(e),
         }
 
+    context['party'] = _find_party_for_scope(version.snippet.scope)
+
     return context
 
 
@@ -91,9 +95,12 @@ def history(snippet_id):
     versions = snippet.get_versions()
     versions_pairwise = list(pairwise(versions + [None]))
 
+    party = _find_party_for_scope(snippet.scope)
+
     return {
         'snippet': snippet,
         'versions_pairwise': versions_pairwise,
+        'party': party,
     }
 
 
@@ -101,30 +108,32 @@ def history(snippet_id):
 # document
 
 
-@blueprint.route('/for_party/<party_id>/documents/create')
+@blueprint.route('/for_scope/<scope_type>/<scope_name>/documents/create')
 @permission_required(SnippetPermission.create)
 @templated
-def create_document_form(party_id):
+def create_document_form(scope_type, scope_name):
     """Show form to create a document."""
-    party = _get_party_or_404(party_id)
+    scope = Scope(scope_type, scope_name)
 
     form = DocumentCreateForm()
 
+    party = _find_party_for_scope(scope)
+
     return {
-        'party': party,
+        'scope': scope,
         'form': form,
+        'party': party,
     }
 
 
-@blueprint.route('/for_party/<party_id>/documents', methods=['POST'])
+@blueprint.route('/for_scope/<scope_type>/<scope_name>/documents', methods=['POST'])
 @permission_required(SnippetPermission.create)
-def create_document(party_id):
+def create_document(scope_type, scope_name):
     """Create a document."""
-    party = _get_party_or_404(party_id)
+    scope = Scope(scope_type, scope_name)
 
     form = DocumentCreateForm(request.form)
 
-    scope = Scope.for_party(party.id)
     name = form.name.data.strip().lower()
     creator = g.current_user
     title = form.title.data.strip()
@@ -154,9 +163,12 @@ def update_document_form(snippet_id):
         obj=current_version,
         name=snippet.name)
 
+    party = _find_party_for_scope(snippet.scope)
+
     return {
         'form': form,
         'snippet': snippet,
+        'party': party,
     }
 
 
@@ -201,12 +213,14 @@ def compare_documents(from_version_id, to_version_id):
     html_diff_image_url_path = _create_html_diff(from_version, to_version,
                                                  'image_url_path')
 
+    party = _find_party_for_scope(from_version.snippet.scope)
+
     return {
-        'party': from_version.snippet.party,
         'diff_title': html_diff_title,
         'diff_head': html_diff_head,
         'diff_body': html_diff_body,
         'diff_image_url_path': html_diff_image_url_path,
+        'party': party,
     }
 
 
@@ -214,31 +228,33 @@ def compare_documents(from_version_id, to_version_id):
 # fragment
 
 
-@blueprint.route('/for_party/<party_id>/fragments/create')
+@blueprint.route('/for_scope/<scope_type>/<scope_name>/fragments/create')
 @permission_required(SnippetPermission.create)
 @templated
-def create_fragment_form(party_id):
+def create_fragment_form(scope_type, scope_name):
     """Show form to create a fragment."""
-    party = _get_party_or_404(party_id)
+    scope = Scope(scope_type, scope_name)
 
     form = FragmentCreateForm()
 
+    party = _find_party_for_scope(scope)
+
     return {
-        'party': party,
+        'scope': scope,
         'form': form,
+        'party': party,
     }
 
 
-@blueprint.route('/for_party/<party_id>/fragments', methods=['POST'])
+@blueprint.route('/for_scope/<scope_type>/<scope_name>/fragments', methods=['POST'])
 @permission_required(SnippetPermission.create)
-def create_fragment(party_id):
+def create_fragment(scope_type, scope_name):
     """Create a fragment."""
-    party = _get_party_or_404(party_id)
+    scope = Scope(scope_type, scope_name)
 
     form = FragmentCreateForm(request.form)
 
     name = form.name.data.strip().lower()
-    scope = Scope.for_party(party.id)
     creator = g.current_user
     body = form.body.data.strip()
 
@@ -262,9 +278,12 @@ def update_fragment_form(snippet_id):
         obj=current_version,
         name=snippet.name)
 
+    party = _find_party_for_scope(snippet.scope)
+
     return {
         'form': form,
         'snippet': snippet,
+        'party': party,
     }
 
 
@@ -300,9 +319,11 @@ def compare_fragments(from_version_id, to_version_id):
 
     html_diff_body = _create_html_diff(from_version, to_version, 'body')
 
+    party = _find_party_for_scope(from_version.snippet.scope)
+
     return {
-        'party': from_version.snippet.party,
         'diff_body': html_diff_body,
+        'party': party,
     }
 
 
@@ -316,14 +337,15 @@ def compare_fragments(from_version_id, to_version_id):
 def create_mountpoint_form(snippet_id):
     """Show form to create a mountpoint."""
     snippet = _find_snippet_by_id(snippet_id)
-    party = party_service.find_party(snippet.party_id)
 
     form = MountpointCreateForm()
 
+    party = _find_party_for_scope(snippet.scope)
+
     return {
-        'party': party,
         'snippet': snippet,
         'form': form,
+        'party': party,
     }
 
 
@@ -345,7 +367,9 @@ def create_mountpoint(snippet_id):
 
     flash_success('Der Mountpoint für "{}" wurde angelegt.',
                   mountpoint.url_path)
-    return redirect_to('.index_for_party', party_id=snippet.party_id)
+    return redirect_to('.index_for_scope',
+                       scope_type=snippet.scope.type_,
+                       scope_name=snippet.scope.name)
 
 
 @blueprint.route('/mountpoints/<uuid:mountpoint_id>', methods=['DELETE'])
@@ -367,15 +391,6 @@ def delete_mountpoint(mountpoint_id):
 
 # -------------------------------------------------------------------- #
 # helpers
-
-
-def _get_party_or_404(party_id):
-    party = party_service.find_party(party_id)
-
-    if party is None:
-        abort(404)
-
-    return party
 
 
 def _find_snippet_by_id(snippet_id):
@@ -408,3 +423,10 @@ def _create_html_diff(from_version, to_version, attribute_name):
 
     return text_diff_service.create_html_diff(from_text, to_text,
                                               from_description, to_description)
+
+
+def _find_party_for_scope(scope):
+    if scope.type_ != 'party':
+        return None
+
+    return party_service.find_party(scope.name)

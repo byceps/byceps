@@ -4,8 +4,10 @@
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/user_admin.html' import render_user_avatar_20_and_name %}
 {% set current_page = 'snippet_admin' %}
-{% set current_page_party = party %}
-{% set title = '%s - Snippets'|format(party.title) %}
+{% if party %}
+  {% set current_page_party = party %}
+{% endif %}
+{% set title = '%s/%s - Snippets'|format(scope.type_, scope.name) %}
 
 {% block body %}
 
@@ -14,14 +16,14 @@
       <li>Snippets</li>
     </ol>
   </nav>
-  <h1>{{ party.title }}</h1>
+  <h1>{{ scope.type_ }}/{{ scope.name }}</h1>
 
   <h2>Snippets {{ render_extra_in_heading(snippets|length) }}</h2>
 
   {%- if g.current_user.has_permission(SnippetPermission.create) %}
   <div class="button-row">
-    <a class="button" href="{{ url_for('.create_document_form', party_id=party.id) }}">{{ render_icon('snippet-document') }} <span>Dokument erstellen</span></a>
-    <a class="button" href="{{ url_for('.create_fragment_form', party_id=party.id) }}">{{ render_icon('snippet-fragment') }} <span>Fragment erstellen</span></a>
+    <a class="button" href="{{ url_for('.create_document_form', scope_type=scope.type_, scope_name=scope.name) }}">{{ render_icon('snippet-document') }} <span>Dokument erstellen</span></a>
+    <a class="button" href="{{ url_for('.create_fragment_form', scope_type=scope.type_, scope_name=scope.name) }}">{{ render_icon('snippet-fragment') }} <span>Fragment erstellen</span></a>
   </div>
   {%- endif %}
 

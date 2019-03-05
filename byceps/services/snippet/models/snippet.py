@@ -50,6 +50,10 @@ class Snippet(db.Model):
         self.name = name
         self.type_ = type_
 
+    @property
+    def scope(self) -> Scope:
+        return Scope(self.scope_type, self.scope_name)
+
     @hybrid_property
     def type_(self) -> SnippetType:
         return SnippetType[self._type]
