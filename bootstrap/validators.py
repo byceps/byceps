@@ -12,9 +12,9 @@ Validators for use with Click_.
 
 import click
 
-from byceps.services.brand.models.brand import Brand
+from byceps.services.brand.transfer.models import Brand
 from byceps.services.brand import service as brand_service
-from byceps.services.party.models.party import Party
+from byceps.services.party.transfer.models import Party
 from byceps.services.party import service as party_service
 from byceps.services.site.transfer.models import Site, SiteID
 from byceps.services.site import service as site_service
