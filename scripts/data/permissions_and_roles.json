@@ -453,6 +453,7 @@
     },
     {
       "assigned_permissions": [
+        "site.view",
         "snippet.create",
         "snippet.update",
         "snippet.view",
