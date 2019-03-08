@@ -16,6 +16,8 @@ from byceps.services.brand.models.brand import Brand
 from byceps.services.brand import service as brand_service
 from byceps.services.party.models.party import Party
 from byceps.services.party import service as party_service
+from byceps.services.site.transfer.models import Site, SiteID
+from byceps.services.site import service as site_service
 from byceps.services.user.models.user import User as DbUser
 from byceps.services.user import service as user_service
 from byceps.services.user.transfer.models import User
@@ -38,6 +40,15 @@ def validate_party(ctx, param, party_id: PartyID) -> Party:
         raise click.BadParameter('Unknown party ID "{}".'.format(party_id))
 
     return party
+
+
+def validate_site(ctx, param, site_id: SiteID) -> Site:
+    site = site_service.find_site(site_id)
+
+    if not site:
+        raise click.BadParameter('Unknown site ID "{}".'.format(site_id))
+
+    return site
 
 
 def validate_user_id(ctx, param, user_id: UserID) -> User:

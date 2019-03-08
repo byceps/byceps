@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-"""Copy a snippet (in its latest version) from one party to another.
+"""Copy a snippet (in its latest version) from one site to another.
 
 :Copyright: 2006-2019 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -13,24 +13,24 @@ from byceps.services.snippet.transfer.models import Scope, SnippetType
 from byceps.util.system import get_config_filename_from_env_or_exit
 
 from bootstrap.util import app_context
-from bootstrap.validators import validate_party
+from bootstrap.validators import validate_site
 
 
 @click.command()
 @click.pass_context
-@click.argument('source_party', callback=validate_party)
-@click.argument('target_party', callback=validate_party)
+@click.argument('source_site', callback=validate_site)
+@click.argument('target_site', callback=validate_site)
 @click.argument('snippet_name')
-def execute(ctx, source_party, target_party, snippet_name):
-    source_scope = Scope.for_party(source_party.id)
-    target_scope = Scope.for_party(target_party.id)
+def execute(ctx, source_site, target_site, snippet_name):
+    source_scope = Scope.for_site(source_site.id)
+    target_scope = Scope.for_site(target_site.id)
 
     snippet_version = snippet_service \
         .find_current_version_of_snippet_with_name(source_scope, snippet_name)
 
     if snippet_version is None:
-        raise click.BadParameter('Unknown snippet name "{}" for party "{}".'
-            .format(snippet_name, source_party.id))
+        raise click.BadParameter('Unknown snippet name "{}" for site "{}".'
+            .format(snippet_name, source_site.id))
 
     snippet = snippet_version.snippet
 
