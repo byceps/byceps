@@ -6,7 +6,7 @@ byceps.services.snippet.service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import Optional, Sequence
+from typing import List, Optional, Sequence
 
 from ...database import db
 from ...typing import UserID
@@ -131,6 +131,24 @@ def find_current_version_of_snippet_with_name(scope: Scope, name: str
             .filter(Snippet.scope_name == scope.name) \
             .filter(Snippet.name == name) \
         .one_or_none()
+
+
+def search_snippets(search_term: str, scope: Scope) -> List[SnippetVersion]:
+    """Search in (the latest versions of) snippets."""
+    return SnippetVersion.query \
+        .join(CurrentVersionAssociation) \
+        .join(Snippet) \
+            .filter(Snippet.scope_type == scope.type_) \
+            .filter(Snippet.scope_name == scope.name) \
+            .filter(
+                db.or_(
+                    SnippetVersion.title.contains(search_term),
+                    SnippetVersion.head.contains(search_term),
+                    SnippetVersion.body.contains(search_term),
+                    SnippetVersion.image_url_path.contains(search_term),
+                )
+            ) \
+        .all()
 
 
 class SnippetNotFound(Exception):
