@@ -133,13 +133,19 @@ def find_current_version_of_snippet_with_name(scope: Scope, name: str
         .one_or_none()
 
 
-def search_snippets(search_term: str, scope: Scope) -> List[SnippetVersion]:
+def search_snippets(search_term: str, scope: Optional[Scope]
+                   ) -> List[SnippetVersion]:
     """Search in (the latest versions of) snippets."""
-    return SnippetVersion.query \
+    q = SnippetVersion.query \
         .join(CurrentVersionAssociation) \
-        .join(Snippet) \
+        .join(Snippet)
+
+    if scope is not None:
+        q = q \
             .filter(Snippet.scope_type == scope.type_) \
-            .filter(Snippet.scope_name == scope.name) \
+            .filter(Snippet.scope_name == scope.name)
+
+    return q \
             .filter(
                 db.or_(
                     SnippetVersion.title.contains(search_term),

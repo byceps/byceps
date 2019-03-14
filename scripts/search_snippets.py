@@ -16,10 +16,17 @@ from bootstrap.util import app_context
 from bootstrap.validators import validate_site
 
 
+def validate_site_if_given(ctx, param, value):
+    if value is None:
+        return None
+
+    return validate_site(ctx, param, value)
+
+
 @click.command()
 @click.pass_context
 @click.argument('search_term')
-@click.argument('site', callback=validate_site)
+@click.option('--site', callback=validate_site_if_given)
 @click.option('-v', '--verbose', is_flag=True)
 def execute(ctx, search_term, site, verbose):
     scope = None
@@ -28,11 +35,11 @@ def execute(ctx, search_term, site, verbose):
 
     if verbose:
         if scope is not None:
-            scope_label = 'scope "{}/{}"'.format(scope.type_, scope.name)
+            scope_label = 'scope "{}"'.format(format_scope(scope))
         else:
             scope_label = 'any scope'
 
-    matches = snippet_service.search_snippets(search_term, scope)
+    matches = snippet_service.search_snippets(search_term, scope=scope)
 
     if not matches:
         if verbose:
@@ -43,13 +50,18 @@ def execute(ctx, search_term, site, verbose):
         return
 
     for version in matches:
-        click.secho(version.snippet.name)
+        snippet = version.snippet
+        click.secho('{}\t{}'.format(format_scope(snippet.scope), snippet.name))
 
     if verbose:
         click.secho(
             '\n{:d} matching snippet(s) for {} and search term "{}".'
                 .format(len(matches), scope_label, search_term),
             fg='green')
+
+
+def format_scope(scope):
+    return '{}/{}'.format(scope.type_, scope.name)
 
 
 if __name__ == '__main__':
