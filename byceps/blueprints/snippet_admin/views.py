@@ -363,7 +363,7 @@ def create_mountpoint(snippet_id):
         abort(400, 'URL path must start with a slash.')
 
     mountpoint = mountpoint_service \
-        .create_mountpoint(endpoint_suffix, url_path, snippet)
+        .create_mountpoint(endpoint_suffix, url_path, snippet.id)
 
     flash_success('Der Mountpoint für "{}" wurde angelegt.',
                   mountpoint.url_path)

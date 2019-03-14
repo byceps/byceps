@@ -14,6 +14,8 @@ from werkzeug.routing import BuildError
 from ....database import db, generate_uuid
 from ....util.instances import ReprBuilder
 
+from ..transfer.models import SnippetID
+
 from .snippet import Snippet
 
 
@@ -31,11 +33,11 @@ class Mountpoint(db.Model):
     snippet_id = db.Column(db.Uuid, db.ForeignKey('snippets.id'), index=True, nullable=False)
     snippet = db.relationship(Snippet)
 
-    def __init__(self, endpoint_suffix: str, url_path: str, snippet: Snippet
-                ) -> None:
+    def __init__(self, endpoint_suffix: str, url_path: str,
+                 snippet_id: SnippetID) -> None:
         self.endpoint_suffix = endpoint_suffix
         self.url_path = url_path
-        self.snippet = snippet
+        self.snippet_id = snippet_id
 
     def generate_url(self) -> Optional[str]:
         try:

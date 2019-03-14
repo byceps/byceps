@@ -12,13 +12,13 @@ from ...database import db
 
 from .models.mountpoint import Mountpoint
 from .models.snippet import Snippet
-from .transfer.models import MountpointID, Scope
+from .transfer.models import MountpointID, Scope, SnippetID
 
 
-def create_mountpoint(endpoint_suffix: str, url_path: str, snippet: Snippet
+def create_mountpoint(endpoint_suffix: str, url_path: str, snippet_id: SnippetID
                      ) -> Mountpoint:
     """Create a mountpoint."""
-    mountpoint = Mountpoint(endpoint_suffix, url_path, snippet)
+    mountpoint = Mountpoint(endpoint_suffix, url_path, snippet_id)
 
     db.session.add(mountpoint)
     db.session.commit()
