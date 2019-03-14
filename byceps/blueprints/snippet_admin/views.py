@@ -9,7 +9,7 @@ byceps.blueprints.snippet_admin.views
 from flask import abort, g, request
 
 from ...services.site import service as site_service
-from ...services.snippet import service as snippet_service
+from ...services.snippet import mountpoint_service, service as snippet_service
 from ...services.snippet.transfer.models import Scope
 from ...services.text_diff import service as text_diff_service
 from ...util.datetime.format import format_datetime_short
@@ -45,7 +45,7 @@ def index_for_scope(scope_type, scope_name):
     snippets = snippet_service \
         .get_snippets_for_scope_with_current_versions(scope)
 
-    mountpoints = snippet_service.get_mountpoints_for_scope(scope)
+    mountpoints = mountpoint_service.get_mountpoints_for_scope(scope)
 
     site = _find_site_for_scope(scope)
 
@@ -362,8 +362,8 @@ def create_mountpoint(snippet_id):
     if not url_path.startswith('/'):
         abort(400, 'URL path must start with a slash.')
 
-    mountpoint = snippet_service.create_mountpoint(endpoint_suffix, url_path,
-                                                   snippet)
+    mountpoint = mountpoint_service \
+        .create_mountpoint(endpoint_suffix, url_path, snippet)
 
     flash_success('Der Mountpoint für "{}" wurde angelegt.',
                   mountpoint.url_path)
@@ -377,14 +377,14 @@ def create_mountpoint(snippet_id):
 @respond_no_content
 def delete_mountpoint(mountpoint_id):
     """Delete a mountpoint."""
-    mountpoint = snippet_service.find_mountpoint(mountpoint_id)
+    mountpoint = mountpoint_service.find_mountpoint(mountpoint_id)
 
     if mountpoint is None:
         abort(404)
 
     url_path = mountpoint.url_path
 
-    snippet_service.delete_mountpoint(mountpoint)
+    mountpoint_service.delete_mountpoint(mountpoint)
 
     flash_success('Der Mountpoint für "{}" wurde entfernt.', url_path)
 
