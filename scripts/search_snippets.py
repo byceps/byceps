@@ -22,15 +22,23 @@ from bootstrap.validators import validate_site
 @click.argument('site', callback=validate_site)
 @click.option('-v', '--verbose', is_flag=True)
 def execute(ctx, search_term, site, verbose):
-    scope = Scope.for_site(site.id)
+    scope = None
+    if site is not None:
+        scope = Scope.for_site(site.id)
+
+    if verbose:
+        if scope is not None:
+            scope_label = 'scope "{}/{}"'.format(scope.type_, scope.name)
+        else:
+            scope_label = 'any scope'
 
     matches = snippet_service.search_snippets(search_term, scope)
 
     if not matches:
         if verbose:
             click.secho(
-                'No matching snippets for site "{}" and search term "{}".'
-                    .format(site.id, search_term),
+                'No matching snippets for {} and search term "{}".'
+                    .format(scope_label, search_term),
                 fg='yellow')
         return
 
@@ -39,8 +47,8 @@ def execute(ctx, search_term, site, verbose):
 
     if verbose:
         click.secho(
-            '\n{:d} matching snippet(s) for site "{}" and search term "{}".'
-                .format(len(matches), site.id, search_term),
+            '\n{:d} matching snippet(s) for {} and search term "{}".'
+                .format(len(matches), scope_label, search_term),
             fg='green')
 
 
