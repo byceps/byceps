@@ -13,7 +13,8 @@ from byceps.services.snippet.transfer.models import Scope, SnippetType
 from byceps.util.system import get_config_filename_from_env_or_exit
 
 from bootstrap.util import app_context
-from bootstrap.validators import validate_site
+
+from _validators import validate_site
 
 
 @click.command()

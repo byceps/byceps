@@ -12,8 +12,9 @@ from byceps.services.ticketing import attendance_service
 from byceps.services.user import service as user_service
 from byceps.util.system import get_config_filename_from_env_or_exit
 
-from bootstrap.validators import validate_party, validate_user_id
 from bootstrap.util import app_context
+
+from _validators import validate_party, validate_user_id
 
 
 @click.command()

@@ -1,6 +1,6 @@
 """
-bootstrap.validators
-~~~~~~~~~~~~~~~~~~~~
+byceps.scripts.validators
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Validators for use with Click_.
 

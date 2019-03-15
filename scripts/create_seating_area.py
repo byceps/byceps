@@ -11,8 +11,9 @@ import click
 from byceps.services.seating import area_service
 from byceps.util.system import get_config_filename_from_env_or_exit
 
-from bootstrap.validators import validate_party
 from bootstrap.util import app_context
+
+from _validators import validate_party
 
 
 @click.command()
