@@ -28,7 +28,7 @@ Parties using BYCEPS:
 
 :Copyright: 2006-2019 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
-:Website: http://homework.nwsnet.de/releases/b1ce/#byceps
+:Website: https://byceps.nwsnet.de/
 
 
 Code Status
