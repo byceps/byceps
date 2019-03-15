@@ -39,17 +39,17 @@ Code Status
 |badge-codeclimate|
 
 
-.. |badge_travisci| image:: https://travis-ci.org/homeworkprod/byceps.svg?branch=master
+.. |badge_travisci| image:: https://travis-ci.org/byceps/byceps.svg?branch=master
    :alt: Build Status
-   :target: https://travis-ci.org/homeworkprod/byceps
+   :target: https://travis-ci.org/byceps/byceps
 
-.. |badge_scrutinizer| image:: https://scrutinizer-ci.com/g/homeworkprod/byceps/badges/quality-score.png?b=master
+.. |badge_scrutinizer| image:: https://scrutinizer-ci.com/g/byceps/byceps/badges/quality-score.png?b=master
    :alt: Scrutinizer Code Quality
-   :target: https://scrutinizer-ci.com/g/homeworkprod/byceps/?branch=master
+   :target: https://scrutinizer-ci.com/g/byceps/byceps/?branch=master
 
 .. |badge-codeclimate| image:: https://codeclimate.com/github/codeclimate/codeclimate/badges/gpa.svg
    :alt: Code Climate
-   :target: https://codeclimate.com/github/homeworkprod/byceps
+   :target: https://codeclimate.com/github/byceps/byceps
 
 
 Installation
