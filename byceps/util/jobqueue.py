@@ -13,7 +13,6 @@ An asynchronously processed job queue based on Redis_ and RQ_.
 
 from contextlib import contextmanager
 
-from flask import current_app
 from rq import Connection, Queue
 
 from byceps.redis import redis
@@ -25,8 +24,8 @@ def connection():
         yield
 
 
-def get_queue():
-    is_async = current_app.config['JOBS_ASYNC']
+def get_queue(app):
+    is_async = app.config['JOBS_ASYNC']
     return Queue(is_async=is_async)
 
 

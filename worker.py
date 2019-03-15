@@ -19,7 +19,7 @@ if __name__ == '__main__':
 
     with app.app_context():
         with connection():
-            queues = [get_queue()]
+            queues = [get_queue(app)]
 
             worker = Worker(queues)
             worker.work()
