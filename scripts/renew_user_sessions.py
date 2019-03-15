@@ -19,7 +19,7 @@ from byceps.services.authentication.session import service as session_service
 from byceps.services.user.models.user import User
 from byceps.util.system import get_config_filename_from_env_or_exit
 
-from bootstrap.util import app_context
+from _util import app_context
 
 
 @click.command()

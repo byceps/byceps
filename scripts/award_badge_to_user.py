@@ -14,8 +14,7 @@ from byceps.services.user_badge import service as badge_service
 from byceps.services.user_badge.transfer.models import BadgeID
 from byceps.util.system import get_config_filename_from_env_or_exit
 
-from bootstrap.util import app_context
-
+from _util import app_context
 from _validators import validate_user_screen_name
 
 

@@ -12,7 +12,7 @@ from byceps.services.seating import seat_group_service
 from byceps.services.ticketing import ticket_bundle_service
 from byceps.util.system import get_config_filename_from_env_or_exit
 
-from bootstrap.util import app_context
+from _util import app_context
 
 
 def get_seat_group(ctx, param, seat_group_id):

@@ -6,21 +6,9 @@ bootstrap.util
 :License: Modified BSD, see LICENSE for details.
 """
 
-from contextlib import contextmanager
 from itertools import count, islice
 
-from byceps.application import create_app
 from byceps.database import db
-
-
-@contextmanager
-def app_context(config_filename):
-    """Provide a context in which the application is available with the
-    specified configuration.
-    """
-    app = create_app(config_filename)
-    with app.app_context():
-        yield app
 
 
 def add_to_database(f):

@@ -12,8 +12,7 @@ from byceps.services.snippet import service as snippet_service
 from byceps.services.snippet.transfer.models import Scope, SnippetType
 from byceps.util.system import get_config_filename_from_env_or_exit
 
-from bootstrap.util import app_context
-
+from _util import app_context
 from _validators import validate_site
 
 

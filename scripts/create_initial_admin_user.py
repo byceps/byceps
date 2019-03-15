@@ -13,7 +13,7 @@ from byceps.services.authentication.password import service as password_service
 from byceps.services.user import creation_service as user_creation_service
 from byceps.util.system import get_config_filename_from_env_or_exit
 
-from bootstrap.util import app_context
+from _util import app_context
 
 
 @click.command()

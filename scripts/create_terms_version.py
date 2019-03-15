@@ -14,8 +14,7 @@ from byceps.database import db
 from byceps.services.terms import version_service as terms_version_service
 from byceps.util.system import get_config_filename_from_env_or_exit
 
-from bootstrap.util import app_context
-
+from _util import app_context
 from _validators import validate_brand, validate_user_screen_name
 
 
