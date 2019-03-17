@@ -10,8 +10,8 @@ from byceps.services.authentication.session.models.session_token \
     import SessionToken
 from byceps.services.authorization.models import Role, UserRole
 from byceps.services.newsletter import service as newsletter_service
-from byceps.services.terms.models.version import Version as TermsVersion
-from byceps.services.terms import consent_service as terms_consent_service
+from byceps.services.terms import consent_service as terms_consent_service, \
+    version_service as terms_version_service
 from byceps.services.user.models.user import User
 from byceps.services.verification_token import service as \
     verification_token_service
@@ -36,11 +36,8 @@ class UserCreateTestCase(AbstractAppTestCase):
         self.setup_roles()
 
     def setup_terms(self):
-        terms_version = TermsVersion(self.brand.id, self.admin.id,
-                                     '01-Jan-2016', 'ToS')
-
-        self.db.session.add(terms_version)
-        self.db.session.commit()
+        terms_version = terms_version_service.create_version(
+            self.brand.id, self.admin.id, '01-Jan-2016', 'ToS')
 
         self.terms_version_id = terms_version.id
 
