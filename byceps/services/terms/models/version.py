@@ -11,10 +11,12 @@ from typing import NewType
 from uuid import UUID
 
 from ....database import BaseQuery, db, generate_uuid
-from ....typing import BrandID, UserID
+from ....typing import BrandID
 from ....util.instances import ReprBuilder
 
 from ...brand.models.brand import Brand
+from ...snippet.models.snippet import SnippetVersion
+from ...snippet.transfer.models import SnippetVersionID
 from ...user.models.user import User
 
 
@@ -42,17 +44,20 @@ class Version(db.Model):
     brand_id = db.Column(db.Unicode(20), db.ForeignKey('brands.id'), nullable=False)
     brand = db.relationship(Brand)
     created_at = db.Column(db.DateTime, default=datetime.now, nullable=False)
-    creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
-    creator = db.relationship(User)
     title = db.Column(db.Unicode(40), nullable=False)
-    body = db.Column(db.UnicodeText, nullable=False)
+    snippet_version_id = db.Column(db.Uuid, db.ForeignKey('snippet_versions.id'), index=True, nullable=False)
+    snippet_version = db.relationship(SnippetVersion)
 
-    def __init__(self, brand_id: BrandID, creator_id: UserID, title: str,
-                 body: str) -> None:
+    def __init__(self, brand_id: BrandID, title: str,
+                 snippet_version_id: SnippetVersionID
+                ) -> None:
         self.brand_id = brand_id
-        self.creator_id = creator_id
         self.title = title
-        self.body = body
+        self.snippet_version_id = snippet_version_id
+
+    @property
+    def body(self) -> str:
+        return self.snippet_version.body
 
     def __repr__(self) -> str:
         return ReprBuilder(self) \

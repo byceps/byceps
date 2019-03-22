@@ -9,15 +9,18 @@ byceps.services.terms.version_service
 from typing import Optional, Sequence
 
 from ...database import db
-from ...typing import BrandID, UserID
+from ...typing import BrandID
+
+from ..snippet.transfer.models import SnippetVersionID
 
 from .models.version import CurrentVersionAssociation, Version, VersionID
 
 
-def create_version(brand_id: BrandID, creator_id: UserID, title: str, body: str
+def create_version(brand_id: BrandID, title: str,
+                   snippet_version_id: SnippetVersionID
                   ) -> Version:
     """Create a new version of the terms for that brand."""
-    version = Version(brand_id, creator_id, title, body)
+    version = Version(brand_id, title, snippet_version_id)
 
     db.session.add(version)
     db.session.commit()
@@ -72,5 +75,8 @@ def get_versions_for_brand(brand_id: BrandID) -> Sequence[Version]:
     """Return all versions for that brand, ordered by creation date."""
     return Version.query \
         .for_brand(brand_id) \
+        .options(
+            db.joinedload('snippet_version')
+        ) \
         .latest_first() \
         .all()

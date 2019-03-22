@@ -11,6 +11,7 @@ from flask import abort
 from ...services.brand import service as brand_service
 from ...services.terms import consent_service as terms_consent_service, \
     version_service as terms_version_service
+from ...services.user import service as user_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.templating import templated
 
@@ -37,6 +38,8 @@ def index_for_brand(brand_id):
 
     versions = terms_version_service.get_versions_for_brand(brand.id)
 
+    _add_version_creators(versions)
+
     consent_counts_by_version_id = terms_consent_service \
         .count_user_consents_for_versions_of_brand(brand.id)
 
@@ -50,6 +53,15 @@ def index_for_brand(brand_id):
         'versions': versions,
         'current_version_id': current_version_id,
     }
+
+
+def _add_version_creators(versions):
+    creator_ids = {v.snippet_version.creator_id for v in versions}
+    creators = user_service.find_users(creator_ids, include_avatars=True)
+    creators_by_id = user_service.index_users_by_id(creators)
+
+    for version in versions:
+        version.creator = creators_by_id[version.snippet_version.creator_id]
 
 
 @blueprint.route('/versions/<uuid:version_id>')
