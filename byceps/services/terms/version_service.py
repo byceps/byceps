@@ -71,6 +71,14 @@ class NoCurrentTermsVersionSpecifiedForBrand(Exception):
         self.brand_id = brand_id
 
 
+def set_current_version(brand_id: BrandID, version_id: VersionID) -> None:
+    """Set the current version of the terms for that brand."""
+    CurrentVersionAssociation.query \
+        .filter_by(brand_id=brand_id) \
+        .update({CurrentVersionAssociation.version_id: str(version_id)})
+    db.session.commit()
+
+
 def get_versions_for_brand(brand_id: BrandID) -> Sequence[Version]:
     """Return all versions for that brand, ordered by creation date."""
     return Version.query \
