@@ -14,11 +14,17 @@ from attr import attrib, attrs
 
 from ...site.transfer.models import SiteID
 
+from ....typing import BrandID
+
 
 @attrs(frozen=True, slots=True)
 class Scope:
     type_ = attrib(type=str)
     name = attrib(type=str)
+
+    @classmethod
+    def for_brand(cls, brand_id: BrandID):
+        return cls('brand', str(brand_id))
 
     @classmethod
     def for_site(cls, site_id: SiteID):

@@ -10,6 +10,8 @@ from byceps.services.authentication.session.models.session_token \
     import SessionToken
 from byceps.services.authorization.models import Role, UserRole
 from byceps.services.newsletter import service as newsletter_service
+from byceps.services.snippet import service as snippet_service
+from byceps.services.snippet.transfer.models import Scope
 from byceps.services.terms import consent_service as terms_consent_service, \
     version_service as terms_version_service
 from byceps.services.user.models.user import User
@@ -36,8 +38,14 @@ class UserCreateTestCase(AbstractAppTestCase):
         self.setup_roles()
 
     def setup_terms(self):
+        scope = Scope.for_brand(self.brand_id)
+
+        snippet = snippet_service.create_fragment(
+            scope, 'terms_of_service', self.admin.id,
+            'Don\'t do anything stupid!')
+
         terms_version = terms_version_service.create_version(
-            self.brand.id, self.admin.id, '01-Jan-2016', 'ToS')
+            self.brand.id, '01-Jan-2016', snippet.id)
 
         self.terms_version_id = terms_version.id
 
