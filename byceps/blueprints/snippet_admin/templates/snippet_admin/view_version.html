@@ -3,7 +3,9 @@
 {% from 'macros/misc.html' import render_notification %}
 {% from 'macros/user_admin.html' import render_user_avatar_16_and_name %}
 {% set current_page = 'snippet_admin' %}
-{% if site %}
+{% if brand %}
+  {% set current_page_brand = brand %}
+{% elif site %}
   {% set current_page_site = site %}
 {% endif %}
 {% set title = 'Snippetversion ansehen' %}

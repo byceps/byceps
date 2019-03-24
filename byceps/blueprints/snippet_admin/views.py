@@ -8,6 +8,7 @@ byceps.blueprints.snippet_admin.views
 
 from flask import abort, g, request
 
+from ...services.brand import service as brand_service
 from ...services.site import service as site_service
 from ...services.snippet import mountpoint_service, service as snippet_service
 from ...services.snippet.transfer.models import Scope
@@ -47,12 +48,14 @@ def index_for_scope(scope_type, scope_name):
 
     mountpoints = mountpoint_service.get_mountpoints_for_scope(scope)
 
+    brand = _find_brand_for_scope(scope)
     site = _find_site_for_scope(scope)
 
     return {
         'scope': scope,
         'snippets': snippets,
         'mountpoints': mountpoints,
+        'brand': brand,
         'site': site,
     }
 
@@ -63,6 +66,8 @@ def index_for_scope(scope_type, scope_name):
 def view_version(snippet_version_id):
     """Show the snippet with the given id."""
     version = _find_version(snippet_version_id)
+
+    scope = version.snippet.scope
 
     try:
         snippet_context = get_snippet_context(version)
@@ -81,7 +86,8 @@ def view_version(snippet_version_id):
             'error_message': str(e),
         }
 
-    context['site'] = _find_site_for_scope(version.snippet.scope)
+    context['brand'] = _find_brand_for_scope(scope)
+    context['site'] = _find_site_for_scope(scope)
 
     return context
 
@@ -92,14 +98,18 @@ def view_version(snippet_version_id):
 def history(snippet_id):
     snippet = _find_snippet_by_id(snippet_id)
 
+    scope = snippet.scope
+
     versions = snippet.get_versions()
     versions_pairwise = list(pairwise(versions + [None]))
 
-    site = _find_site_for_scope(snippet.scope)
+    brand = _find_brand_for_scope(scope)
+    site = _find_site_for_scope(scope)
 
     return {
         'snippet': snippet,
         'versions_pairwise': versions_pairwise,
+        'brand': brand,
         'site': site,
     }
 
@@ -117,11 +127,13 @@ def create_document_form(scope_type, scope_name):
 
     form = DocumentCreateForm()
 
+    brand = _find_brand_for_scope(scope)
     site = _find_site_for_scope(scope)
 
     return {
         'scope': scope,
         'form': form,
+        'brand': brand,
         'site': site,
     }
 
@@ -159,15 +171,19 @@ def update_document_form(snippet_id):
     snippet = _find_snippet_by_id(snippet_id)
     current_version = snippet.current_version
 
+    scope = snippet.scope
+
     form = DocumentUpdateForm(
         obj=current_version,
         name=snippet.name)
 
-    site = _find_site_for_scope(snippet.scope)
+    brand = _find_brand_for_scope(scope)
+    site = _find_site_for_scope(scope)
 
     return {
         'form': form,
         'snippet': snippet,
+        'brand': brand,
         'site': site,
     }
 
@@ -204,6 +220,8 @@ def compare_documents(from_version_id, to_version_id):
     from_version = _find_version(from_version_id)
     to_version = _find_version(to_version_id)
 
+    scope = from_version.snippet.scope
+
     if from_version.snippet_id != to_version.snippet_id:
         abort(400, 'The versions do not belong to the same snippet.')
 
@@ -213,13 +231,15 @@ def compare_documents(from_version_id, to_version_id):
     html_diff_image_url_path = _create_html_diff(from_version, to_version,
                                                  'image_url_path')
 
-    site = _find_site_for_scope(from_version.snippet.scope)
+    brand = _find_brand_for_scope(scope)
+    site = _find_site_for_scope(scope)
 
     return {
         'diff_title': html_diff_title,
         'diff_head': html_diff_head,
         'diff_body': html_diff_body,
         'diff_image_url_path': html_diff_image_url_path,
+        'brand': brand,
         'site': site,
     }
 
@@ -237,11 +257,13 @@ def create_fragment_form(scope_type, scope_name):
 
     form = FragmentCreateForm()
 
+    brand = _find_brand_for_scope(scope)
     site = _find_site_for_scope(scope)
 
     return {
         'scope': scope,
         'form': form,
+        'brand': brand,
         'site': site,
     }
 
@@ -274,15 +296,19 @@ def update_fragment_form(snippet_id):
     snippet = _find_snippet_by_id(snippet_id)
     current_version = snippet.current_version
 
+    scope = snippet.scope
+
     form = FragmentUpdateForm(
         obj=current_version,
         name=snippet.name)
 
-    site = _find_site_for_scope(snippet.scope)
+    brand = _find_brand_for_scope(scope)
+    site = _find_site_for_scope(scope)
 
     return {
         'form': form,
         'snippet': snippet,
+        'brand': brand,
         'site': site,
     }
 
@@ -314,15 +340,19 @@ def compare_fragments(from_version_id, to_version_id):
     from_version = _find_version(from_version_id)
     to_version = _find_version(to_version_id)
 
+    scope = from_version.snippet.scope
+
     if from_version.snippet_id != to_version.snippet_id:
         abort(400, 'The versions do not belong to the same snippet.')
 
     html_diff_body = _create_html_diff(from_version, to_version, 'body')
 
-    site = _find_site_for_scope(from_version.snippet.scope)
+    brand = _find_brand_for_scope(scope)
+    site = _find_site_for_scope(scope)
 
     return {
         'diff_body': html_diff_body,
+        'brand': brand,
         'site': site,
     }
 
@@ -338,13 +368,17 @@ def create_mountpoint_form(snippet_id):
     """Show form to create a mountpoint."""
     snippet = _find_snippet_by_id(snippet_id)
 
+    scope = snippet.scope
+
     form = MountpointCreateForm()
 
-    site = _find_site_for_scope(snippet.scope)
+    brand = _find_brand_for_scope(scope)
+    site = _find_site_for_scope(scope)
 
     return {
         'snippet': snippet,
         'form': form,
+        'brand': brand,
         'site': site,
     }
 
@@ -423,6 +457,13 @@ def _create_html_diff(from_version, to_version, attribute_name):
 
     return text_diff_service.create_html_diff(from_text, to_text,
                                               from_description, to_description)
+
+
+def _find_brand_for_scope(scope):
+    if scope.type_ != 'brand':
+        return None
+
+    return brand_service.find_brand(scope.name)
 
 
 def _find_site_for_scope(scope):

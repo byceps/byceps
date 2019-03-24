@@ -3,7 +3,9 @@
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/user_admin.html' import render_user_avatar_20_and_name %}
 {% set current_page = 'snippet_admin' %}
-{% if site %}
+{% if brand %}
+  {% set current_page_brand = brand %}
+{% elif site %}
   {% set current_page_site = site %}
 {% endif %}
 {% set title = 'Versionshistorie' %}
