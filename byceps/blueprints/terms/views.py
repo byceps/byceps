@@ -74,7 +74,7 @@ def consent(version_id, token):
         return consent_form(version_id, token, erroneous_form=form)
 
     terms_consent_expressed_at = datetime.now()
-    terms_consent_service.consent_to_version_on_separate_action(
+    terms_consent_service.consent_to_version(
         version.id, terms_consent_expressed_at, verification_token)
 
     flash_success('Du hast die AGB akzeptiert.')

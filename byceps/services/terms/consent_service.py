@@ -15,7 +15,7 @@ from ...typing import BrandID, UserID
 from ..brand import settings_service as brand_settings_service
 from ..verification_token.models import Token
 
-from .models.consent import Consent, ConsentContext
+from .models.consent import Consent
 from .models.version import Version, VersionID
 
 
@@ -32,32 +32,22 @@ def is_consent_required_for_brand(brand_id: BrandID) -> bool:
     return value != 'false'
 
 
-def build_consent_on_account_creation(user_id: UserID, version_id: VersionID,
-                                      expressed_at: datetime) -> Consent:
-    """Create user's consent to that version expressed on account creation."""
-    context = ConsentContext.account_creation
-    return Consent(user_id, version_id, expressed_at, context)
+def build_consent(user_id: UserID, version_id: VersionID, expressed_at: datetime
+                 ) -> Consent:
+    """Create user's consent to that version."""
+    return Consent(user_id, version_id, expressed_at)
 
 
-def build_consent_on_separate_action(user_id: UserID, version_id: VersionID,
-                                     expressed_at: datetime) -> Consent:
-    """Create user's consent to that version expressed through a
-    separate action.
-    """
-    context = ConsentContext.separate_action
-    return Consent(user_id, version_id, expressed_at, context)
-
-
-def consent_to_version_on_separate_action(version_id: VersionID,
-                                          expressed_at: datetime,
-                                          verification_token: Token) -> None:
+def consent_to_version(version_id: VersionID, expressed_at: datetime,
+                       verification_token: Token
+                      ) -> None:
     """Store the user's consent to that version, and invalidate the
     verification token.
     """
     user_id = verification_token.user_id
     db.session.delete(verification_token)
 
-    consent = build_consent_on_separate_action(user_id, version_id, expressed_at)
+    consent = build_consent(user_id, version_id, expressed_at)
     db.session.add(consent)
 
     db.session.commit()

@@ -54,7 +54,7 @@ def create_user(screen_name: str, email_address: str, password: str,
 
     # consent to terms of service
     if terms_consent_required:
-        terms_consent = terms_consent_service.build_consent_on_account_creation(
+        terms_consent = terms_consent_service.build_consent(
             user.id, terms_version_id, terms_consent_expressed_at)
         db.session.add(terms_consent)
 

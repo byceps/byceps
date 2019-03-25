@@ -7,7 +7,6 @@ byceps.services.terms.models.consent
 """
 
 from datetime import datetime
-from enum import Enum
 
 from sqlalchemy.ext.hybrid import hybrid_property
 
@@ -17,9 +16,6 @@ from ....typing import UserID
 from ...user.models.user import User
 
 from .version import Version, VersionID
-
-
-ConsentContext = Enum('ConsentContext', ['account_creation', 'separate_action'])
 
 
 class Consent(db.Model):
@@ -33,20 +29,9 @@ class Consent(db.Model):
     version_id = db.Column(db.Uuid, db.ForeignKey('terms_versions.id'), primary_key=True)
     version = db.relationship(Version)
     expressed_at = db.Column(db.DateTime, primary_key=True)
-    _context = db.Column('context', db.Unicode(20), primary_key=True)
 
     def __init__(self, user_id: UserID, version_id: VersionID,
-                 expressed_at: datetime, context: ConsentContext) -> None:
+                 expressed_at: datetime) -> None:
         self.user_id = user_id
         self.version_id = version_id
         self.expressed_at = expressed_at
-        self.context = context
-
-    @hybrid_property
-    def context(self) -> ConsentContext:
-        return ConsentContext[self._context]
-
-    @context.setter
-    def context(self, context: ConsentContext) -> None:
-        assert context is not None
-        self._context = context.name
