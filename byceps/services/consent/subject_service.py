@@ -10,20 +10,32 @@ from typing import Optional
 
 from ...database import db
 
-from .models.subject import Subject
-from .transfer.models import SubjectID
+from .models.subject import Subject as DbSubject
+from .transfer.models import Subject, SubjectID
 
 
 def create_subject(name: str) -> SubjectID:
     """Create a new subject."""
-    subject = Subject(name)
+    subject = DbSubject(name)
 
     db.session.add(subject)
     db.session.commit()
 
-    return subject
+    return _db_entity_to_subject(subject)
 
 
 def find_subject(subject_id: SubjectID) -> Optional[Subject]:
     """Return the subject with that id, or `None` if not found."""
-    return Subject.query.get(subject_id)
+    subject = DbSubject.query.get(subject_id)
+
+    if subject is None:
+        return None
+
+    return _db_entity_to_subject(subject)
+
+
+def _db_entity_to_subject(subject: DbSubject) -> Subject:
+    return Subject(
+        subject.id,
+        subject.name,
+    )
