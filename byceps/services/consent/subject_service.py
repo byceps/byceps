@@ -9,15 +9,14 @@ byceps.services.consent.subject_service
 from typing import Optional
 
 from ...database import db
-from ...typing import BrandID
 
 from .models.subject import Subject
 from .transfer.models import SubjectID
 
 
-def create_subject(brand_id: BrandID, name: str) -> SubjectID:
+def create_subject(name: str) -> SubjectID:
     """Create a new subject."""
-    subject = Subject(brand_id, name)
+    subject = Subject(name)
 
     db.session.add(subject)
     db.session.commit()
