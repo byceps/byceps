@@ -30,7 +30,7 @@ class Consent(db.Model):
     user = db.relationship(User)
     version_id = db.Column(db.Uuid, db.ForeignKey('terms_versions.id'), primary_key=True)
     version = db.relationship(Version)
-    expressed_at = db.Column(db.DateTime, primary_key=True)
+    expressed_at = db.Column(db.DateTime, nullable=False)
 
     def __init__(self, user_id: UserID, version_id: VersionID,
                  expressed_at: datetime) -> None:
