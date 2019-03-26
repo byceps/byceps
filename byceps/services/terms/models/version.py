@@ -7,8 +7,6 @@ byceps.services.terms.models.version
 """
 
 from datetime import datetime
-from typing import NewType
-from uuid import UUID
 
 from ....database import BaseQuery, db, generate_uuid
 from ....typing import BrandID
@@ -19,8 +17,7 @@ from ...snippet.models.snippet import SnippetVersion
 from ...snippet.transfer.models import SnippetVersionID
 from ...user.models.user import User
 
-
-VersionID = NewType('VersionID', UUID)
+from ..transfer.models import VersionID
 
 
 class VersionQuery(BaseQuery):

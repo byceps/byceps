@@ -11,7 +11,8 @@ from typing import Dict, List, Optional
 import click
 from pick import pick
 
-from byceps.services.terms.models.version import Version, VersionID
+from byceps.services.terms.models.version import Version
+from byceps.services.terms.transfer.models import VersionID
 from byceps.services.terms import version_service
 from byceps.util.datetime.format import format_datetime_short
 from byceps.util.system import get_config_filename_from_env_or_exit

@@ -15,7 +15,9 @@ from ....typing import UserID
 
 from ...user.models.user import User
 
-from .version import Version, VersionID
+from ..transfer.models import VersionID
+
+from .version import Version
 
 
 class Consent(db.Model):

@@ -13,7 +13,8 @@ from ...typing import BrandID
 
 from ..snippet.transfer.models import SnippetVersionID
 
-from .models.version import CurrentVersionAssociation, Version, VersionID
+from .models.version import CurrentVersionAssociation, Version
+from .transfer.models import VersionID
 
 
 def create_version(brand_id: BrandID, title: str,

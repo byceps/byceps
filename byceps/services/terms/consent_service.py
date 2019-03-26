@@ -16,7 +16,8 @@ from ..brand import settings_service as brand_settings_service
 from ..verification_token.models import Token
 
 from .models.consent import Consent
-from .models.version import Version, VersionID
+from .models.version import Version
+from .transfer.models import VersionID
 
 
 def is_consent_required_for_brand(brand_id: BrandID) -> bool:
