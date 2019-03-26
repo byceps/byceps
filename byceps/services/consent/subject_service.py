@@ -11,7 +11,7 @@ from typing import Optional
 from ...database import db
 from ...typing import BrandID
 
-from .models.version import Subject
+from .models.subject import Subject
 from .transfer.models import SubjectID
 
 
