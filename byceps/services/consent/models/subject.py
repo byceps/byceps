@@ -25,7 +25,7 @@ class Subject(db.Model):
     brand = db.relationship(Brand)
     name = db.Column(db.Unicode(40), nullable=False)
 
-    def __init__(brand_id: BrandID, name: str) -> None:
+    def __init__(self, brand_id: BrandID, name: str) -> None:
         self.brand_id = brand_id
         self.name = name
 
