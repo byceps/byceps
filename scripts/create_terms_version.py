@@ -38,8 +38,10 @@ def execute(brand, title, snippet_version_id, consent_subject_name_suffix):
     consent_subject_name = '{}_terms-of-service_{}'.format(
         brand.id, consent_subject_name_suffix)
 
+    consent_subject_title = 'AGB {} / {}'.format(brand.title, title)
+
     consent_subject = consent_subject_service \
-        .create_subject(consent_subject_name)
+        .create_subject(consent_subject_name, consent_subject_title)
 
     terms_version_service \
         .create_version(brand.id, title, snippet_version_id, consent_subject.id)

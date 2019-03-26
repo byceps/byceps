@@ -19,3 +19,4 @@ SubjectID = NewType('SubjectID', UUID)
 class Subject:
     id = attrib(type=SubjectID)
     name = attrib(type=str)
+    title = attrib(type=str)

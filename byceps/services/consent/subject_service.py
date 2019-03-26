@@ -14,9 +14,9 @@ from .models.subject import Subject as DbSubject
 from .transfer.models import Subject, SubjectID
 
 
-def create_subject(name: str) -> SubjectID:
+def create_subject(name: str, title: str) -> SubjectID:
     """Create a new subject."""
-    subject = DbSubject(name)
+    subject = DbSubject(name, title)
 
     db.session.add(subject)
     db.session.commit()
@@ -38,4 +38,5 @@ def _db_entity_to_subject(subject: DbSubject) -> Subject:
     return Subject(
         subject.id,
         subject.name,
+        subject.title,
     )
