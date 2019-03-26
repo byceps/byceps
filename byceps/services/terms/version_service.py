@@ -11,6 +11,7 @@ from typing import Optional, Sequence
 from ...database import db
 from ...typing import BrandID
 
+from ..consent.transfer.models import SubjectID as ConsentSubjectID
 from ..snippet.transfer.models import SnippetVersionID
 
 from .models.version import CurrentVersionAssociation, Version
@@ -18,10 +19,11 @@ from .transfer.models import VersionID
 
 
 def create_version(brand_id: BrandID, title: str,
-                   snippet_version_id: SnippetVersionID
+                   snippet_version_id: SnippetVersionID,
+                   consent_subject_id: ConsentSubjectID
                   ) -> Version:
     """Create a new version of the terms for that brand."""
-    version = Version(brand_id, title, snippet_version_id)
+    version = Version(brand_id, title, snippet_version_id, consent_subject_id)
 
     db.session.add(version)
     db.session.commit()

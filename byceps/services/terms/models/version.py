@@ -13,6 +13,8 @@ from ....typing import BrandID
 from ....util.instances import ReprBuilder
 
 from ...brand.models.brand import Brand
+from ...consent.models.subject import Subject as ConsentSubject
+from ...consent.transfer.models import SubjectID as ConsentSubjectID
 from ...snippet.models.snippet import SnippetVersion
 from ...snippet.transfer.models import SnippetVersionID
 from ...user.models.user import User
@@ -44,13 +46,18 @@ class Version(db.Model):
     title = db.Column(db.Unicode(40), nullable=False)
     snippet_version_id = db.Column(db.Uuid, db.ForeignKey('snippet_versions.id'), index=True, nullable=False)
     snippet_version = db.relationship(SnippetVersion)
+    consent_subject_id = db.Column(db.Uuid, db.ForeignKey('consent_subjects.id'), nullable=False)
+    consent_subject = db.relationship(ConsentSubject)
+
 
     def __init__(self, brand_id: BrandID, title: str,
-                 snippet_version_id: SnippetVersionID
+                 snippet_version_id: SnippetVersionID,
+                 consent_subject_id: ConsentSubjectID
                 ) -> None:
         self.brand_id = brand_id
         self.title = title
         self.snippet_version_id = snippet_version_id
+        self.consent_subject_id = consent_subject_id
 
     @property
     def body(self) -> str:

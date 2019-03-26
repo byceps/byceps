@@ -10,6 +10,7 @@ However, do not set the new version as the current version for the brand.
 
 import click
 
+from byceps.services.consent import subject_service as consent_subject_service
 from byceps.services.snippet import service as snippet_service
 from byceps.services.snippet.transfer.models import SnippetVersionID
 from byceps.services.terms import version_service as terms_version_service
@@ -32,8 +33,16 @@ def validate_snippet_version_id(ctx, param, value) -> SnippetVersionID:
 @click.argument('brand', callback=validate_brand)
 @click.argument('title')
 @click.argument('snippet_version_id', callback=validate_snippet_version_id)
-def execute(brand, title, snippet_version_id):
-    terms_version_service.create_version(brand.id, title, snippet_version_id)
+@click.argument('consent_subject_name_suffix')
+def execute(brand, title, snippet_version_id, consent_subject_name_suffix):
+    consent_subject_name = '{}_terms-of-service_{}'.format(
+        brand.id, consent_subject_name_suffix)
+
+    consent_subject = consent_subject_service \
+        .create_subject(consent_subject_name)
+
+    terms_version_service \
+        .create_version(brand.id, title, snippet_version_id, consent_subject.id)
 
     click.secho('Done.', fg='green')
 

@@ -9,6 +9,7 @@ from byceps.services.authentication.password.models import Credential
 from byceps.services.authentication.session.models.session_token \
     import SessionToken
 from byceps.services.authorization.models import Role, UserRole
+from byceps.services.consent import subject_service as consent_subject_service
 from byceps.services.newsletter import service as newsletter_service
 from byceps.services.snippet import service as snippet_service
 from byceps.services.snippet.transfer.models import Scope
@@ -44,8 +45,11 @@ class UserCreateTestCase(AbstractAppTestCase):
             scope, 'terms_of_service', self.admin.id,
             'Don\'t do anything stupid!')
 
+        consent_subject = consent_subject_service.create_subject(
+                '{}_terms-of-service_v1'.format(self.brand_id))
+
         terms_version = terms_version_service.create_version(
-            self.brand.id, '01-Jan-2016', snippet.id)
+            self.brand_id, '01-Jan-2016', snippet.id, consent_subject.id)
 
         self.terms_version_id = terms_version.id
 
