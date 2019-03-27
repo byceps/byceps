@@ -93,6 +93,12 @@
           {%- set body %}
             <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span> hat ein <a href="{{ event.data.url }}">neues Avatarbild</a> hochgeladen.
           {%- endset %}
+        {%- elif event.event == 'consent-expressed' %}
+          {%- set icon_name = 'legal' %}
+          {%- set body %}
+            <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
+            hat &quot;{{ event.data.subject_title }}&quot; <strong>akzeptiert</strong>.
+          {%- endset %}
         {%- elif event.event == 'newsletter-requested' %}
           {%- set icon_name = 'email' %}
           {%- set body %}
@@ -135,12 +141,6 @@
             hat
             <span class="user-link">{{ render_user_avatar_20_and_link(user) }}</span>
             die Rolle <strong>{{ event.data.role_id }}</strong> genommen.
-          {%- endset %}
-        {%- elif event.event == 'consent-expressed' %}
-          {%- set icon_name = 'legal' %}
-          {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
-            hat &quot;{{ event.data.subject_title }}&quot; <strong>akzeptiert</strong>.
           {%- endset %}
         {%- else %}
           {%- set icon_name = 'disabled' %}

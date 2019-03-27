@@ -81,9 +81,9 @@ def get_events(user_id: UserID) -> Iterator[UserEventData]:
     events = event_service.get_events_for_user(user_id)
     events.insert(0, _fake_user_creation_event(user_id))
     events.extend(_fake_avatar_update_events(user_id))
+    events.extend(_fake_consent_events(user_id))
     events.extend(_fake_newsletter_subscription_update_events(user_id))
     events.extend(_fake_order_events(user_id))
-    events.extend(_fake_consent_events(user_id))
 
     user_ids = {event.data['initiator_id']
                 for event in events
@@ -131,6 +131,20 @@ def _fake_avatar_update_events(user_id: UserID) -> Iterator[UserEvent]:
         yield UserEvent(avatar.created_at, 'avatar-updated', user_id, data)
 
 
+def _fake_consent_events(user_id: UserID) -> Iterator[UserEvent]:
+    """Yield the user's consents as volatile events."""
+    consents = consent_service.get_consents_by_user(user_id)
+
+    for consent in consents:
+        data = {
+            'initiator_id': str(user_id),
+            'subject_title': consent.subject.title,
+        }
+
+        yield UserEvent(consent.expressed_at, 'consent-expressed', user_id,
+                        data)
+
+
 def _fake_newsletter_subscription_update_events(user_id: UserID) \
         -> Iterator[UserEvent]:
     """Yield the user's newsletter subscription updates as volatile events."""
@@ -160,20 +174,6 @@ def _fake_order_events(user_id: UserID) -> Iterator[UserEvent]:
         yield UserEvent(order.created_at, 'order-placed', user_id, data)
 
 
-def _fake_consent_events(user_id: UserID) -> Iterator[UserEvent]:
-    """Yield the user's consents as volatile events."""
-    consents = consent_service.get_consents_by_user(user_id)
-
-    for consent in consents:
-        data = {
-            'initiator_id': str(user_id),
-            'subject_title': consent.subject.title,
-        }
-
-        yield UserEvent(consent.expressed_at, 'consent-expressed', user_id,
-                        data)
-
-
 def _get_additional_data(event: UserEvent, users_by_id: Dict[UserID, User]
                         ) -> Iterator[Tuple[str, Any]]:
     if event.event_type in {
@@ -185,13 +185,13 @@ def _get_additional_data(event: UserEvent, users_by_id: Dict[UserID, User]
             'user-unsuspended',
             'password-updated',
             'avatar-updated',
+            'consent-expressed',
             'newsletter-requested',
             'newsletter-declined',
             'order-placed',
             'privacy-policy-accepted',
             'role-assigned',
             'role-deassigned',
-            'consent-expressed',
     }:
         yield from _get_additional_data_for_user_initiated_event(
             event, users_by_id)
