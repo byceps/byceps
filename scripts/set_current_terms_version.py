@@ -55,7 +55,10 @@ def _request_version_id(versions_by_id: Dict[VersionID, Version],
         return '"{}"\t\t{}'.format(
             version.title, format_datetime_short(version.created_at))
 
-    current_version_option_index = version_ids.index(current_version_id)
+    if current_version_id is not None:
+        current_version_option_index = version_ids.index(current_version_id)
+    else:
+        current_version_option_index = 0
 
     selection = pick(
         version_ids,
