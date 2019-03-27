@@ -8,6 +8,8 @@ byceps.services.party.settings_service
 
 from typing import Optional, Set
 
+from sqlalchemy.dialects.postgresql import insert
+
 from ...database import db
 from ...typing import PartyID
 
@@ -23,6 +25,29 @@ def create_setting(party_id: PartyID, name: str, value: str) -> PartySetting:
     db.session.commit()
 
     return _db_entity_to_party_setting(setting)
+
+
+def create_or_update_setting(party_id: PartyID, name: str, value: str
+                            ) -> PartySetting:
+    """Create or update a setting for that party, depending on whether
+    it already exists or not.
+    """
+    table = DbSetting.__table__
+
+    # UPSERT
+    query = insert(table) \
+        .values(
+            party_id=party_id,
+            name=name,
+            value=value
+        ) \
+        .on_conflict_do_update(
+            constraint=table.primary_key,
+            set_={'value': value})
+
+    db.session.execute(query)
+
+    return find_setting(party_id, name)
 
 
 def find_setting(party_id: PartyID, name: str) -> Optional[PartySetting]:

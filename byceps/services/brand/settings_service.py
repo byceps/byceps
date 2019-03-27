@@ -8,6 +8,8 @@ byceps.services.brand.settings_service
 
 from typing import Optional, Set
 
+from sqlalchemy.dialects.postgresql import insert
+
 from ...database import db
 from ...typing import BrandID
 
@@ -23,6 +25,29 @@ def create_setting(brand_id: BrandID, name: str, value: str) -> BrandSetting:
     db.session.commit()
 
     return _db_entity_to_brand_setting(setting)
+
+
+def create_or_update_setting(brand_id: BrandID, name: str, value: str
+                            ) -> BrandSetting:
+    """Create or update a setting for that brand, depending on whether
+    it already exists or not.
+    """
+    table = DbSetting.__table__
+
+    # UPSERT
+    query = insert(table) \
+        .values(
+            brand_id=brand_id,
+            name=name,
+            value=value
+        ) \
+        .on_conflict_do_update(
+            constraint=table.primary_key,
+            set_={'value': value})
+
+    db.session.execute(query)
+
+    return find_setting(brand_id, name)
 
 
 def find_setting(brand_id: BrandID, name: str) -> Optional[BrandSetting]:

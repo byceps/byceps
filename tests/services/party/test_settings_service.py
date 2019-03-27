@@ -30,6 +30,28 @@ class PartySettingsServiceTest(AbstractAppTestCase):
         assert setting.name == name
         assert setting.value == value
 
+    def test_create_or_update(self):
+        party_id = self.party.id
+        name = 'name'
+        value1 = 'value1'
+        value2 = 'value2'
+
+        assert service.find_setting(party_id, name) is None
+
+        created_setting = service.create_or_update_setting(party_id, name, value1)
+
+        assert created_setting is not None
+        assert created_setting.party_id == party_id
+        assert created_setting.name == name
+        assert created_setting.value == value1
+
+        updated_setting = service.create_or_update_setting(party_id, name, value2)
+
+        assert updated_setting is not None
+        assert updated_setting.party_id == party_id
+        assert updated_setting.name == name
+        assert updated_setting.value == value2
+
     def test_find(self):
         party_id = self.party.id
         name = 'name'
