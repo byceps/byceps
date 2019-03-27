@@ -7,6 +7,7 @@ byceps.services.terms.version_service
 """
 
 from typing import Optional, Sequence
+from uuid import UUID
 
 from ...database import db
 from ...typing import BrandID
@@ -15,8 +16,11 @@ from ..brand import settings_service as brand_settings_service
 from ..consent.transfer.models import SubjectID as ConsentSubjectID
 from ..snippet.transfer.models import SnippetVersionID
 
-from .models.version import CurrentVersionAssociation, Version
+from .models.version import Version
 from .transfer.models import VersionID
+
+
+BRAND_SETTING_KEY_CURRENT_VERSION_ID = 'terms_current_version_id'
 
 
 def create_version(brand_id: BrandID, title: str,
@@ -41,10 +45,13 @@ def find_current_version_id(brand_id: BrandID) -> Optional[VersionID]:
     """Return the ID of the current version of the terms for that brand,
     or `None` if no current version is defined.
     """
-    return db.session \
-        .query(CurrentVersionAssociation.version_id) \
-        .filter(CurrentVersionAssociation.brand_id == brand_id) \
-        .scalar()
+    value = brand_settings_service \
+        .find_setting_value(brand_id, BRAND_SETTING_KEY_CURRENT_VERSION_ID)
+
+    if value is None:
+        return None
+
+    return VersionID(UUID(value))
 
 
 def find_current_version(brand_id: BrandID) -> Optional[Version]:
@@ -79,10 +86,8 @@ class NoCurrentTermsVersionSpecifiedForBrand(Exception):
 
 def set_current_version(brand_id: BrandID, version_id: VersionID) -> None:
     """Set the current version of the terms for that brand."""
-    CurrentVersionAssociation.query \
-        .filter_by(brand_id=brand_id) \
-        .update({CurrentVersionAssociation.version_id: str(version_id)})
-    db.session.commit()
+    brand_settings_service.create_or_update_setting(
+        brand_id, BRAND_SETTING_KEY_CURRENT_VERSION_ID, str(version_id))
 
 
 def get_versions_for_brand(brand_id: BrandID) -> Sequence[Version]:
