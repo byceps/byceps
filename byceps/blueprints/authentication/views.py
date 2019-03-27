@@ -15,6 +15,7 @@ from ...services.authentication.password import service as password_service
 from ...services.authentication.password import \
     reset_service as password_reset_service
 from ...services.authentication.session import service as session_service
+from ...services.consent import consent_service
 from ...services.email import service as email_service
 from ...services.terms import consent_service as terms_consent_service, \
     version_service as terms_version_service
@@ -89,14 +90,15 @@ def login():
 
     if not in_admin_mode and \
             terms_consent_service.is_consent_required_for_brand(g.brand_id):
-        terms_version_id = _get_current_terms_version_id(g.brand_id)
+        terms_version = _get_current_terms_version(g.brand_id)
 
-        if not terms_consent_service \
-                .has_user_accepted_version(user.id, terms_version_id):
+        if not consent_service \
+                .has_user_consented_to_subject(
+                    user.id, terms_version.consent_subject_id):
             verification_token = verification_token_service \
                 .find_or_create_for_terms_consent(user.id)
             consent_form_url = url_for('terms.consent_form',
-                                       version_id=terms_version_id,
+                                       version_id=terms_version.id,
                                        token=verification_token.token)
             flash_notice(
                 'Bitte <a href="{}">akzeptiere zunächst die aktuellen AGB</a>.',
@@ -117,7 +119,7 @@ def login():
     flash_success('Erfolgreich eingeloggt als {}.', user.screen_name)
 
 
-def _get_current_terms_version_id(brand_id):
+def _get_current_terms_version(brand_id):
     terms_version = terms_version_service.find_current_version(brand_id)
 
     if not terms_version:
@@ -125,7 +127,7 @@ def _get_current_terms_version_id(brand_id):
             'No terms of service defined for brand "{}", denying login.'
             .format(brand_id))
 
-    return terms_version.id
+    return terms_version
 
 
 @blueprint.route('/logout', methods=['POST'])

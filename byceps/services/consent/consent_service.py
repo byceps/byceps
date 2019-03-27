@@ -44,3 +44,17 @@ def get_consents_by_user(user_id: UserID) -> Sequence[Consent]:
     return Consent.query \
         .filter_by(user_id=user_id) \
         .all()
+
+
+def has_user_consented_to_subject(user_id: UserID, subject_id: SubjectID
+                                 ) -> bool:
+    """Determine if the user has consented to the subject."""
+    return db.session \
+        .query(
+            db.session
+                .query(Consent)
+                .filter_by(user_id=user_id)
+                .filter_by(subject_id=subject_id)
+                .exists()
+        ) \
+        .scalar()

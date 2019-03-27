@@ -9,7 +9,7 @@ byceps.services.terms.consent_service
 from typing import Dict
 
 from ...database import db
-from ...typing import BrandID, UserID
+from ...typing import BrandID
 
 from ..brand import settings_service as brand_settings_service
 from ..consent.models.consent import Consent
@@ -47,18 +47,3 @@ def count_user_consents_for_versions_of_brand(brand_id: BrandID
         .all()
 
     return dict(rows)
-
-
-def has_user_accepted_version(user_id: UserID, version_id: VersionID) -> bool:
-    """Tell if the user has accepted the specified version of the terms."""
-    return db.session \
-        .query(
-            db.session
-                .query(Consent)
-                .join(Subject)
-                .join(Version)
-                .filter(Consent.user_id == user_id)
-                .filter(Version.id == version_id)
-                .exists()
-        ) \
-        .scalar()
