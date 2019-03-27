@@ -9,12 +9,12 @@ from byceps.services.authentication.password.models import Credential
 from byceps.services.authentication.session.models.session_token \
     import SessionToken
 from byceps.services.authorization.models import Role, UserRole
-from byceps.services.consent import subject_service as consent_subject_service
+from byceps.services.consent import consent_service, \
+    subject_service as consent_subject_service
 from byceps.services.newsletter import service as newsletter_service
 from byceps.services.snippet import service as snippet_service
 from byceps.services.snippet.transfer.models import Scope
-from byceps.services.terms import consent_service as terms_consent_service, \
-    version_service as terms_version_service
+from byceps.services.terms import version_service as terms_version_service
 from byceps.services.user.models.user import User
 from byceps.services.verification_token import service as \
     verification_token_service
@@ -53,6 +53,7 @@ class UserCreateTestCase(AbstractAppTestCase):
             self.brand_id, '01-Jan-2016', snippet.id, consent_subject.id)
 
         self.terms_version_id = terms_version.id
+        self.terms_consent_subject_id = terms_version.consent_subject_id
 
     def setup_roles(self):
         self.board_user_role = create_role('board_user')
@@ -108,7 +109,7 @@ class UserCreateTestCase(AbstractAppTestCase):
         assert board_user_role in actual_roles
 
         # consent to terms of service
-        assert_consent_to_terms(user.id, self.terms_version_id)
+        assert_consent_to_terms(user.id, self.terms_consent_subject_id)
 
         # newsletter subscription
         assert is_subscribed_to_newsletter(user.id, self.brand_id)
@@ -208,8 +209,8 @@ def assert_session_token_created(user_id):
     assert session_token.created_at is not None
 
 
-def assert_consent_to_terms(user_id, terms_version_id):
-    terms_consents = terms_consent_service.get_consents_by_user(user_id)
+def assert_consent_to_terms(user_id, terms_subject_id):
+    consents = consent_service.get_consents_by_user(user_id)
 
-    assert len(terms_consents) == 1
-    assert terms_consents[0].version_id == terms_version_id
+    assert len(consents) == 1
+    assert consents[0].subject_id == terms_subject_id

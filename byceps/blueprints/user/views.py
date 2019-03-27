@@ -224,9 +224,9 @@ def create():
         if terms_version.brand_id != g.brand_id:
             abort(400, 'Die AGB-Version gehört nicht zu dieser Veranstaltung.')
 
-        terms_version_id = terms_version.id
+        terms_consent_subject_id = terms_version.consent_subject_id
     else:
-        terms_version_id = None
+        terms_consent_subject_id = None
 
     now = datetime.now()
     now_utc = datetime.utcnow()
@@ -246,7 +246,7 @@ def create():
     try:
         user = user_creation_service.create_user(
             screen_name, email_address, password, first_names, last_name,
-            g.brand_id, terms_consent_required, terms_version_id,
+            g.brand_id, terms_consent_required, terms_consent_subject_id,
             terms_consent_expressed_at, privacy_policy_consent_required,
             privacy_policy_consent_expressed_at, subscribe_to_newsletter,
             newsletter_subscription_state_expressed_at)

@@ -10,8 +10,8 @@ from datetime import datetime
 
 from flask import abort, g, request
 
-from ...services.terms import consent_service as terms_consent_service, \
-    version_service as terms_version_service
+from ...services.consent import consent_service
+from ...services.terms import version_service as terms_version_service
 from ...services.verification_token import service as verification_token_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_error, flash_success
@@ -73,9 +73,9 @@ def consent(version_id, token):
     if not form.validate():
         return consent_form(version_id, token, erroneous_form=form)
 
-    terms_consent_expressed_at = datetime.now()
-    terms_consent_service.consent_to_version(
-        version.id, terms_consent_expressed_at, verification_token)
+    expressed_at = datetime.now()
+    consent_service.consent_to_subject(
+        version.consent_subject_id, expressed_at, verification_token)
 
     flash_success('Du hast die AGB akzeptiert.')
     return redirect_to('authentication.login_form')

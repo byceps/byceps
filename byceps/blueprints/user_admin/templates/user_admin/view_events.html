@@ -136,11 +136,11 @@
             <span class="user-link">{{ render_user_avatar_20_and_link(user) }}</span>
             die Rolle <strong>{{ event.data.role_id }}</strong> genommen.
           {%- endset %}
-        {%- elif event.event == 'terms-consent-expressed' %}
+        {%- elif event.event == 'consent-expressed' %}
           {%- set icon_name = 'legal' %}
           {%- set body %}
             <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
-            hat die aktuellen <strong>AGB</strong> (&quot;{{ event.data.version_title }}&quot;) der Marke &quot;{{ event.data.brand_id }}&quot; <strong>angenommen</strong>.
+            hat &quot;{{ event.data.subject_title }}&quot; <strong>akzeptiert</strong>.
           {%- endset %}
         {%- else %}
           {%- set icon_name = 'disabled' %}
