@@ -11,6 +11,7 @@ from typing import Optional, Sequence
 from ...database import db
 from ...typing import BrandID
 
+from ..brand import settings_service as brand_settings_service
 from ..consent.transfer.models import SubjectID as ConsentSubjectID
 from ..snippet.transfer.models import SnippetVersionID
 
@@ -50,10 +51,12 @@ def find_current_version(brand_id: BrandID) -> Optional[Version]:
     """Return the current version of the terms for that brand, or `None`
     if none is defined.
     """
-    return Version.query \
-        .join(CurrentVersionAssociation) \
-        .filter(CurrentVersionAssociation.brand_id == brand_id) \
-        .one_or_none()
+    current_version_id = find_current_version_id(brand_id)
+
+    if current_version_id is None:
+        return None
+
+    return find_version(current_version_id)
 
 
 def get_current_version(brand_id: BrandID) -> Version:
