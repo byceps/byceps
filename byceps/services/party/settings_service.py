@@ -6,7 +6,7 @@ byceps.services.party.settings_service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import List, Optional
+from typing import Optional, Set
 
 from ...database import db
 from ...typing import PartyID
@@ -49,7 +49,7 @@ def find_setting_value(party_id: PartyID, name: str) -> Optional[str]:
     return setting.value
 
 
-def get_settings(party_id: PartyID) -> List[PartySetting]:
+def get_settings(party_id: PartyID) -> Set[PartySetting]:
     """Return all settings for that party."""
     settings = DbSetting.query \
         .filter_by(party_id=party_id) \
