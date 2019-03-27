@@ -18,8 +18,8 @@ class BrandSettingsServiceTest(AbstractAppTestCase):
 
     def test_create(self):
         brand_id = self.brand.id
-        name = 'create-name'
-        value = 'create-value'
+        name = 'name'
+        value = 'value'
 
         assert service.find_setting(brand_id, name) is None
 
@@ -32,8 +32,8 @@ class BrandSettingsServiceTest(AbstractAppTestCase):
 
     def test_find(self):
         brand_id = self.brand.id
-        name = 'find-name'
-        value = 'find-value'
+        name = 'name'
+        value = 'value'
 
         setting_before_create = service.find_setting(brand_id, name)
         assert setting_before_create is None
@@ -48,8 +48,8 @@ class BrandSettingsServiceTest(AbstractAppTestCase):
 
     def test_find_value(self):
         brand_id = self.brand.id
-        name = 'find_value-name'
-        value = 'find_value-value'
+        name = 'name'
+        value = 'value'
 
         value_before_create = service.find_setting_value(brand_id, name)
         assert value_before_create is None
@@ -66,15 +66,15 @@ class BrandSettingsServiceTest(AbstractAppTestCase):
         assert all_settings_before_create == set()
 
         for name, value in {
-            ('key1', 'value1'),
-            ('key2', 'value2'),
-            ('key3', 'value3'),
+            ('name1', 'value1'),
+            ('name2', 'value2'),
+            ('name3', 'value3'),
         }:
             service.create_setting(brand_id, name, value)
 
         all_settings_after_create = service.get_settings(brand_id)
         assert all_settings_after_create == {
-            BrandSetting(brand_id, 'key1', 'value1'),
-            BrandSetting(brand_id, 'key2', 'value2'),
-            BrandSetting(brand_id, 'key3', 'value3'),
+            BrandSetting(brand_id, 'name1', 'value1'),
+            BrandSetting(brand_id, 'name2', 'value2'),
+            BrandSetting(brand_id, 'name3', 'value3'),
         }

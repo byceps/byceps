@@ -18,8 +18,8 @@ class PartySettingsServiceTest(AbstractAppTestCase):
 
     def test_create(self):
         party_id = self.party.id
-        name = 'create-name'
-        value = 'create-value'
+        name = 'name'
+        value = 'value'
 
         assert service.find_setting(party_id, name) is None
 
@@ -32,8 +32,8 @@ class PartySettingsServiceTest(AbstractAppTestCase):
 
     def test_find(self):
         party_id = self.party.id
-        name = 'find-name'
-        value = 'find-value'
+        name = 'name'
+        value = 'value'
 
         setting_before_create = service.find_setting(party_id, name)
         assert setting_before_create is None
@@ -48,8 +48,8 @@ class PartySettingsServiceTest(AbstractAppTestCase):
 
     def test_find_value(self):
         party_id = self.party.id
-        name = 'find_value-name'
-        value = 'find_value-value'
+        name = 'name'
+        value = 'value'
 
         value_before_create = service.find_setting_value(party_id, name)
         assert value_before_create is None
@@ -66,15 +66,15 @@ class PartySettingsServiceTest(AbstractAppTestCase):
         assert all_settings_before_create == set()
 
         for name, value in {
-            ('key1', 'value1'),
-            ('key2', 'value2'),
-            ('key3', 'value3'),
+            ('name1', 'value1'),
+            ('name2', 'value2'),
+            ('name3', 'value3'),
         }:
             service.create_setting(party_id, name, value)
 
         all_settings_after_create = service.get_settings(party_id)
         assert all_settings_after_create == {
-            PartySetting(party_id, 'key1', 'value1'),
-            PartySetting(party_id, 'key2', 'value2'),
-            PartySetting(party_id, 'key3', 'value3'),
+            PartySetting(party_id, 'name1', 'value1'),
+            PartySetting(party_id, 'name2', 'value2'),
+            PartySetting(party_id, 'name3', 'value3'),
         }
