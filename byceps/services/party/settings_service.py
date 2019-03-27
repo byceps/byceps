@@ -46,6 +46,7 @@ def create_or_update_setting(party_id: PartyID, name: str, value: str
             set_={'value': value})
 
     db.session.execute(query)
+    db.session.commit()
 
     return find_setting(party_id, name)
 
