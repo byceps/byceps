@@ -5,7 +5,7 @@
   <header class="sidebar-section-header">
     <div class="sidebar-section-title">Global</div>
   </header>
-  {%- set navigation = Navigation('global')
+  {%- with navigation = Navigation('global')
       .add_item(url_for('admin_dashboard.view_global'), 'Dashboard', id='admin_dashboard_global', required_permission=AdminDashboardPermission.view_global, icon='dashboard')
       .add_item(url_for('user_admin.index'), 'Benutzer', id='user_admin', required_permission=UserPermission.view, icon='users')
       .add_item(url_for('authorization_admin.role_index'), 'Berechtigungen', id='authorization_admin', required_permission=RolePermission.view, icon='permission')
@@ -14,4 +14,5 @@
       .add_item(url_for('brand_admin.index'), 'Marken', id='brands_admin', required_permission=BrandPermission.view, icon='brand')
   -%}
 {{ render_navigation(navigation, current_page) }}
+  {%- endwith %}
 </section>

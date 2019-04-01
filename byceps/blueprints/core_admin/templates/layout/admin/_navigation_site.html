@@ -16,11 +16,12 @@
       </ol>
     </div>
   </header>
-  {%- set navigation = Navigation('Site')
+  {%- with navigation = Navigation('Site')
       .add_item(url_for('site_admin.index', party_id=party.id), 'Einstellungen', id='site_admin', required_permission=SitePermission.view, icon='site')
       .add_item(url_for('snippet_admin.index_for_scope', scope_type='site', scope_name=site.id), 'Snippets', id='snippet_admin', required_permission=SnippetPermission.view, icon='snippet')
   -%}
 {{ render_navigation(navigation, current_page) }}
+  {%- endwith %}
 </section>
 {%- elif party %}
 <section class="sidebar-section">

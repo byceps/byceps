@@ -17,7 +17,7 @@
       </ol>
     </div>
   </header>
-  {%- set navigation = Navigation('Party')
+  {%- with navigation = Navigation('Party')
       .add_item(url_for('admin_dashboard.view_party', party_id=party.id), 'Dashboard', id='admin_dashboard_party', required_permission=AdminDashboardPermission.view_party, icon='dashboard')
       .add_item(url_for('party_admin.view', party_id=party.id), 'Einstellungen', id='party_admin', required_permission=PartyPermission.view, icon='settings')
       .add_item(url_for('site_admin.index', party_id=party.id), 'Sites', id='sites_admin', required_permission=SitePermission.view, icon='site')
@@ -32,6 +32,7 @@
       .add_item(url_for('tourney_admin.category_index_for_party', party_id=party.id), 'Turniere', id='tourney_admin', required_permission=TourneyCategoryPermission.view, icon='trophy')
   -%}
 {{ render_navigation(navigation, current_page) }}
+  {%- endwith %}
 </section>
 {%- elif brand %}
 <section class="sidebar-section">
