@@ -20,6 +20,7 @@ from byceps.services.authentication.session.models.session_token \
     import SessionToken
 from byceps.services.email.models import EmailConfig
 from byceps.services.party import service as party_service
+from byceps.services.site import service as site_service
 
 from testfixtures.authentication import create_session_token
 from testfixtures.brand import create_brand
@@ -102,6 +103,13 @@ class AbstractAppTestCase(TestCase):
         db.session.commit()
 
         return party_service._db_entity_to_party(party)
+
+    def create_site(self, site_id='acme-2014-website', party_id=None,
+                    title='Website'):
+        if party_id is None:
+            party_id = self.party.id
+
+        return site_service.create_site(site_id, party_id, title)
 
     def set_brand_email_sender_address(self, brand_id, sender_address):
         email_config = EmailConfig(brand_id, sender_address)
