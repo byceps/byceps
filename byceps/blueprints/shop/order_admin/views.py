@@ -24,7 +24,7 @@ from ....util.views import redirect_to, respond_no_content
 
 from ...authorization.decorators import permission_required
 from ...authorization.registry import permission_registry
-from ...shop_order.signals import order_canceled, order_paid
+from ...shop.order.signals import order_canceled, order_paid
 
 from .authorization import ShopOrderPermission
 from .forms import CancelForm, MarkAsPaidForm

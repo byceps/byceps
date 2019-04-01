@@ -43,7 +43,7 @@ class ShopTestCase(ShopTestBase):
 
         self.article_id = article.id
 
-    @patch('byceps.blueprints.shop_order.signals.order_placed.send')
+    @patch('byceps.blueprints.shop.order.signals.order_placed.send')
     def test_order(self, order_placed_mock):
         article_before = self.get_article()
         assert article_before.quantity == 5
@@ -76,7 +76,7 @@ class ShopTestCase(ShopTestBase):
 
         order_placed_mock.assert_called_once_with(None, order_id=order.id)
 
-    @patch('byceps.blueprints.shop_order.signals.order_placed.send')
+    @patch('byceps.blueprints.shop.order.signals.order_placed.send')
     def test_order_single(self, order_placed_mock):
         article_before = self.get_article()
         assert article_before.quantity == 5

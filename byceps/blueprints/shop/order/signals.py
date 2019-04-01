@@ -1,5 +1,5 @@
 """
-byceps.blueprints.shop_order.signals
+byceps.blueprints.shop.order.signals
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2019 Jochen Kupperschmidt

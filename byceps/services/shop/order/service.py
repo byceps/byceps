@@ -13,7 +13,7 @@ from flask import current_app
 from flask_sqlalchemy import Pagination
 from sqlalchemy.exc import IntegrityError
 
-from ....blueprints.shop_order.signals import order_placed
+from ....blueprints.shop.order.signals import order_placed
 from ....database import db
 from ....typing import UserID
 

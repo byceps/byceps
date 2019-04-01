@@ -8,7 +8,7 @@ byceps.blueprints.shop.orders.email.views
 from .....services.shop.order.email import service as order_email_service
 from .....util.framework.blueprint import create_blueprint
 
-from ....shop_order.signals import order_canceled, order_paid, order_placed
+from ...order.signals import order_canceled, order_paid, order_placed
 
 
 blueprint = create_blueprint('shop_orders_email', __name__)
