@@ -8,6 +8,8 @@ byceps.services.site.settings_service
 
 from typing import List, Optional
 
+from sqlalchemy.dialects.postgresql import insert
+
 from ...database import db
 from ...typing import PartyID
 
@@ -24,6 +26,30 @@ def create_setting(site_id: SiteID, name: str, value: str) -> SiteSetting:
     db.session.commit()
 
     return _db_entity_to_site_setting(setting)
+
+
+def create_or_update_setting(site_id: SiteID, name: str, value: str
+                            ) -> SiteSetting:
+    """Create or update a setting for that site, depending on whether
+    it already exists or not.
+    """
+    table = DbSetting.__table__
+
+    # UPSERT
+    query = insert(table) \
+        .values(
+            site_id=site_id,
+            name=name,
+            value=value
+        ) \
+        .on_conflict_do_update(
+            constraint=table.primary_key,
+            set_={'value': value})
+
+    db.session.execute(query)
+    db.session.commit()
+
+    return find_setting(site_id, name)
 
 
 def find_setting(site_id: SiteID, name: str) -> Optional[SiteSetting]:
