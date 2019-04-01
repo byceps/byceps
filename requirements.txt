@@ -7,7 +7,7 @@ WTForms == 2.2.1
 # data persistence
 Flask-SQLAlchemy == 2.3.2
 psycopg2-binary == 2.7.6.1
-SQLAlchemy == 1.2.14
+SQLAlchemy == 1.2.18
 
 # command line
 click == 7.0
