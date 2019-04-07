@@ -18,7 +18,7 @@
   <div class="notification color-danger">Der Artikelnummer-Präfix für diese Party muss erst konfiguriert werden bevor Artikel angelegt werden können.</div>
   {%- endif %}
 
-  <form action="{{ url_for('.create', party_id=party.id) }}" method="post">
+  <form action="{{ url_for('.create', shop_id=shop.id) }}" method="post">
     {% call form_fieldset() %}
       {{ form_field(form.description, maxlength=80, required='required', autofocus='autofocus') }}
       {{ form_field(form.price, size=7, maxlength=7, style='text-align: right; width: 5.5rem;', required='required', note='€') }}

@@ -62,6 +62,7 @@ def index_for_party(party_id, page):
                                                                per_page)
 
     return {
+        'shop': shop,
         'party': party,
         'shop_exists': True,
         'article_number_prefix': article_number_prefix,
@@ -135,13 +136,14 @@ def view_ordered(article_id):
     }
 
 
-@blueprint.route('/for_party/<party_id>/create')
+@blueprint.route('/for_shop/<shop_id>/create')
 @permission_required(ShopArticlePermission.create)
 @templated
-def create_form(party_id, erroneous_form=None):
+def create_form(shop_id, erroneous_form=None):
     """Show form to create an article."""
-    party = _get_party_or_404(party_id)
-    shop = shop_service.find_shop_for_party(party.id)
+    shop = _get_shop_or_404(shop_id)
+
+    party = party_service.find_party(shop.party_id)
 
     article_number_sequence = sequence_service \
         .find_article_number_sequence(shop.id)
@@ -153,22 +155,22 @@ def create_form(party_id, erroneous_form=None):
         quantity=0)
 
     return {
+        'shop': shop,
         'party': party,
         'article_number_prefix': article_number_prefix,
         'form': form,
     }
 
 
-@blueprint.route('/for_party/<party_id>', methods=['POST'])
+@blueprint.route('/for_shop/<shop_id>', methods=['POST'])
 @permission_required(ShopArticlePermission.create)
-def create(party_id):
+def create(shop_id):
     """Create an article."""
-    party = _get_party_or_404(party_id)
-    shop = shop_service.find_shop_for_party(party.id)
+    shop = _get_shop_or_404(shop_id)
 
     form = ArticleCreateForm(request.form)
     if not form.validate():
-        return create_form(party_id, form)
+        return create_form(shop_id, form)
 
     try:
         item_number = sequence_service.generate_article_number(shop.id)
@@ -312,6 +314,15 @@ def _get_party_or_404(party_id):
         abort(404)
 
     return party
+
+
+def _get_shop_or_404(shop_id):
+    shop = shop_service.find_shop(shop_id)
+
+    if shop is None:
+        abort(404)
+
+    return shop
 
 
 def _get_article_or_404(article_id):
