@@ -22,15 +22,14 @@ from ..order_admin.authorization import ShopOrderPermission
 blueprint = create_blueprint('shop_shipping_admin', __name__)
 
 
-@blueprint.route('/for_party/<party_id>')
+@blueprint.route('/for_shop/<shop_id>')
 @permission_required(ShopOrderPermission.view)
 @templated
-def view_for_party(party_id):
-    """List the articles to ship, or likely to ship, for that party's
-    shop.
-    """
-    party = _get_party_or_404(party_id)
-    shop = shop_service.find_shop_for_party(party.id)
+def view_for_shop(shop_id):
+    """List the articles to ship, or likely to ship, for that shop."""
+    shop = _get_shop_or_404(shop_id)
+
+    party = party_service.find_party(shop.party_id)
 
     articles_to_ship = shipping_service.get_articles_to_ship(shop.id)
 
@@ -40,10 +39,10 @@ def view_for_party(party_id):
     }
 
 
-def _get_party_or_404(party_id):
-    party = party_service.find_party(party_id)
+def _get_shop_or_404(shop_id):
+    shop = shop_service.find_shop(shop_id)
 
-    if party is None:
+    if shop is None:
         abort(404)
 
-    return party
+    return shop
