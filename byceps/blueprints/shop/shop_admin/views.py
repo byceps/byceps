@@ -30,18 +30,14 @@ blueprint = create_blueprint('shop_shop_admin', __name__)
 permission_registry.register_enum(ShopPermission)
 
 
-@blueprint.route('/for_party/<party_id>')
+@blueprint.route('/for_shop/<shop_id>')
 @permission_required(ShopPermission.view)
 @templated
-def view_for_party(party_id):
-    """Show the shop for that party."""
-    party = _get_party_or_404(party_id)
-    shop = shop_service.find_shop_for_party(party.id)
+def view_for_shop(shop_id):
+    """Show the shop."""
+    shop = _get_shop_or_404(shop_id)
 
-    if shop is None:
-        return {
-            'party': party,
-        }
+    party = party_service.find_party(shop.party_id)
 
     most_recent_article_number = _get_most_recent_article_number(shop.id)
     most_recent_order_number = _get_most_recent_order_number(shop.id)
@@ -77,10 +73,10 @@ def _get_most_recent_order_number(shop_id):
     return sequence_service.format_order_number(sequence)
 
 
-def _get_party_or_404(party_id):
-    party = party_service.find_party(party_id)
+def _get_shop_or_404(shop_id):
+    shop = shop_service.find_shop(shop_id)
 
-    if party is None:
+    if shop is None:
         abort(404)
 
-    return party
+    return shop

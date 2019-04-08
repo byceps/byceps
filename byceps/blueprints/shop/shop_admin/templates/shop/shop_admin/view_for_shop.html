@@ -16,9 +16,7 @@
       <li>{{ party.title }}</li>
     </ol>
   </nav>
-  <h1>Shop{% if shop is defined and shop.archived %} {{ render_tag('archiviert', class='color-disabled', icon='archived') }}{% endif %}</h1>
-
-  {%- if shop is defined %}
+  <h1>Shop{% if shop.archived %} {{ render_tag('archiviert', class='color-disabled', icon='archived') }}{% endif %}</h1>
 
   <div class="row row--equal-sized-centered-columns row--space-between row--wrap bigstats">
     <div class="column-auto">
@@ -82,11 +80,5 @@
     {%- endfor %}
     </tbody>
   </table>
-
-  {%- else %}
-
-  <div class="notification color-info">Für diese Party existiert kein Shop.</div>
-
-  {%- endif %}
 
 {%- endblock %}
