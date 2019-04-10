@@ -15,8 +15,6 @@
       <li>Shop</li>
     </ol>
   </nav>
-{%- if shop_exists %}
-
   <h1>{{ title }} {{ render_extra_in_heading(articles.total) }}</h1>
 
   {%- if article_number_prefix %}
@@ -27,7 +25,7 @@
     </tr>
   </table>
   {%- else %}
-  <div class="notification color-danger">Der Artikelnummer-Präfix für diese Party muss erst konfiguriert werden bevor Artikel angelegt werden können.</div>
+  <div class="notification color-danger">Der Artikelnummer-Präfix für diesen Shop muss erst konfiguriert werden, bevor Artikel angelegt werden können.</div>
   {%- endif %}
 
   {%- if g.current_user.has_permission(ShopArticlePermission.create) %}
@@ -90,13 +88,6 @@
     </tbody>
   </table>
 
-{{ render_pagination_nav(articles, '.index_for_party', {'party_id': party.id}) }}
-
-{%- else %}
-
-  <h1>{{ title }}</h1>
-  <div class="notification color-info">Für diese Party existiert kein Shop.</div>
-
-{%- endif %}{# shop_exists #}
+{{ render_pagination_nav(articles, '.index_for_shop', {'shop_id': shop.id}) }}
 
 {%- endblock %}

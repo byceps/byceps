@@ -157,6 +157,7 @@ def view_party(party_id):
         'seating_area_count': seating_area_count,
         'seat_count': seat_count,
 
+        'shop': shop,
         'article_count': article_count,
         'open_order_count': open_order_count,
 

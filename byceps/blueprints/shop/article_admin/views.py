@@ -38,20 +38,15 @@ blueprint = create_blueprint('shop_article_admin', __name__)
 permission_registry.register_enum(ShopArticlePermission)
 
 
-@blueprint.route('/parties/<party_id>', defaults={'page': 1})
-@blueprint.route('/parties/<party_id>/pages/<int:page>')
+@blueprint.route('/shops/<shop_id>', defaults={'page': 1})
+@blueprint.route('/shops/<shop_id>/pages/<int:page>')
 @permission_required(ShopArticlePermission.view)
 @templated
-def index_for_party(party_id, page):
-    """List articles for that party."""
-    party = _get_party_or_404(party_id)
-    shop = shop_service.find_shop_for_party(party.id)
+def index_for_shop(shop_id, page):
+    """List articles for that shop."""
+    shop = _get_shop_or_404(shop_id)
 
-    if shop is None:
-        return {
-            'party': party,
-            'shop_exists': False,
-        }
+    party = party_service.find_party(shop.party_id)
 
     article_number_sequence = sequence_service \
         .find_article_number_sequence(shop.id)
@@ -64,7 +59,6 @@ def index_for_party(party_id, page):
     return {
         'shop': shop,
         'party': party,
-        'shop_exists': True,
         'article_number_prefix': article_number_prefix,
         'articles': articles,
     }
@@ -305,15 +299,6 @@ def attachment_remove(article_id):
 
     flash_success('Artikel "{}" ist nun nicht mehr an Artikel "{}" angehängt.',
                   article.item_number, attached_to_article.item_number)
-
-
-def _get_party_or_404(party_id):
-    party = party_service.find_party(party_id)
-
-    if party is None:
-        abort(404)
-
-    return party
 
 
 def _get_shop_or_404(shop_id):

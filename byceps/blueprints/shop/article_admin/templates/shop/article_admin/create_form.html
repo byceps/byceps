@@ -9,13 +9,12 @@
   <nav class="breadcrumbs">
     <ol>
       <li>Artikel</li>
-      <li><a href="{{ url_for('.index_for_party', party_id=party.id) }}">{{ party.title }}</a></li>
     </ol>
   </nav>
   <h1>{{ render_icon('add') }} {{ title }}</h1>
 
   {%- if not article_number_prefix %}
-  <div class="notification color-danger">Der Artikelnummer-Präfix für diese Party muss erst konfiguriert werden bevor Artikel angelegt werden können.</div>
+  <div class="notification color-danger">Der Artikelnummer-Präfix für diesen Shop muss erst konfiguriert werden, bevor Artikel angelegt werden können.</div>
   {%- endif %}
 
   <form action="{{ url_for('.create', shop_id=shop.id) }}" method="post">
@@ -27,7 +26,7 @@
       {{ form_field(form.quantity, type='number', min=0, max=99999, style='width: 5.5rem;', required='required') }}
     {% endcall %}
 
-    {{ form_buttons('Speichern', cancel_url=url_for('.index_for_party', party_id=party.id)) }}
+    {{ form_buttons('Speichern', cancel_url=url_for('.index_for_shop', shop_id=shop.id)) }}
   </form>
 
 {%- endblock %}
