@@ -11,6 +11,7 @@
       .add_item(url_for('shop_article_admin.index_for_shop', shop_id=shop.id), 'Artikel', id='articles', required_permission=ShopArticlePermission.view)
       .add_item(url_for('shop_order_admin.index_for_shop', shop_id=shop.id), 'Bestellungen', id='orders', required_permission=ShopOrderPermission.view)
       .add_item(url_for('shop_shipping_admin.view_for_shop', shop_id=shop.id), 'Versand', id='shipping', required_permission=ShopOrderPermission.view)
+      .add_item(url_for('snippet_admin.index_for_scope', scope_type='shop', scope_name=shop.id), 'Snippets', id='snippets', required_permission=SnippetPermission.view)
     , current_tab
   )
 }}
