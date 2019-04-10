@@ -38,20 +38,15 @@ blueprint = create_blueprint('shop_order_admin', __name__)
 permission_registry.register_enum(ShopOrderPermission)
 
 
-@blueprint.route('/parties/<party_id>', defaults={'page': 1})
-@blueprint.route('/parties/<party_id>/pages/<int:page>')
+@blueprint.route('/parties/<shop_id>', defaults={'page': 1})
+@blueprint.route('/parties/<shop_id>/pages/<int:page>')
 @permission_required(ShopOrderPermission.view)
 @templated
-def index_for_party(party_id, page):
-    """List orders for that party."""
-    party = _get_party_or_404(party_id)
-    shop = shop_service.find_shop_for_party(party.id)
+def index_for_shop(shop_id, page):
+    """List orders for that shop."""
+    shop = _get_shop_or_404(shop_id)
 
-    if shop is None:
-        return {
-            'party': party,
-            'shop_exists': False,
-        }
+    party = party_service.find_party(shop.party_id)
 
     order_number_sequence = sequence_service.find_order_number_sequence(shop.id)
     order_number_prefix = order_number_sequence.prefix
@@ -86,8 +81,8 @@ def index_for_party(party_id, page):
     orders.items = list(service.extend_order_tuples_with_orderer(orders.items))
 
     return {
+        'shop': shop,
         'party': party,
-        'shop_exists': True,
         'order_number_prefix': order_number_prefix,
         'search_term': search_term,
         'PaymentState': PaymentState,
@@ -322,13 +317,13 @@ def resend_email_for_incoming_order_to_orderer(order_id):
     flash_success('Die E-Mail-Eingangsbestätigung wurde erneut versendet.')
 
 
-def _get_party_or_404(party_id):
-    party = party_service.find_party(party_id)
+def _get_shop_or_404(shop_id):
+    shop = shop_service.find_shop(shop_id)
 
-    if party is None:
+    if shop is None:
         abort(404)
 
-    return party
+    return shop
 
 
 def _get_order_or_404(order_id):

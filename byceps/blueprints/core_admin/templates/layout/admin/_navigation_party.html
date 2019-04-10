@@ -40,7 +40,7 @@
     {%- with navigation = Navigation('Shop')
         .add_item(url_for('shop_shop_admin.view_for_shop', shop_id=shop.id), 'Shop', id='shop_shop_admin', required_permission=ShopPermission.view, icon='shopping-cart')
         .add_item(url_for('shop_article_admin.index_for_shop', shop_id=shop.id), 'Artikel', id='shop_article_admin', required_permission=ShopArticlePermission.view, icon='shopping-cart')
-        .add_item(url_for('shop_order_admin.index_for_party', party_id=party.id), 'Bestellungen', id='shop_order_admin', required_permission=ShopOrderPermission.view, icon='payment')
+        .add_item(url_for('shop_order_admin.index_for_shop', shop_id=shop.id), 'Bestellungen', id='shop_order_admin', required_permission=ShopOrderPermission.view, icon='payment')
     -%}
 {{ render_navigation(navigation, current_page) }}
     {%- endwith %}

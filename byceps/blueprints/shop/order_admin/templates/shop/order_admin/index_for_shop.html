@@ -14,8 +14,6 @@
       <li>Shop</li>
     </ol>
   </nav>
-{%- if shop_exists %}
-
   <h1>{{ title }} {{ render_extra_in_heading(orders.total) }}</h1>
 
   <table class="index" style="margin-bottom: 20px;">
@@ -28,10 +26,10 @@
   <div class="row row--space-between filters">
     <div class="column-auto">
 
-      <form action="{{ url_for('.index_for_party', party_id=party.id) }}" class="single-row unobtrusive">
+      <form action="{{ url_for('.index_for_shop', shop_id=shop.id) }}" class="single-row unobtrusive">
         <input type="search" name="search_term" placeholder="Bestellnummer"{%- if search_term %} value="{{ search_term }}"{% endif %}>
         <button type="submit" class="button" title="Suchen">{{ render_icon('search') }}</button>
-        <a href="{{ url_for('.index_for_party', party_id=party.id) }}" class="button{% if not search_term %} dimmed{% endif %}" title="Einschränkung auf Suchbegriff aufheben">{{ render_icon('remove') }}</a>
+        <a href="{{ url_for('.index_for_shop', shop_id=shop.id) }}" class="button{% if not search_term %} dimmed{% endif %}" title="Einschränkung auf Suchbegriff aufheben">{{ render_icon('remove') }}</a>
       </form>
 
     </div>
@@ -42,11 +40,11 @@
         <div class="dropdown left">
           <button class="dropdown-toggle button button--clear">{{ render_order_state_filter(order_state_filter) }} {{ render_icon('caret-down') }}</button>
           <ol>
-            <li><a href="{{ url_for('.index_for_party', party_id=party.id) }}">{{ render_order_state_filter(OrderStateFilter.none) }}</a></li>
+            <li><a href="{{ url_for('.index_for_shop', shop_id=shop.id) }}">{{ render_order_state_filter(OrderStateFilter.none) }}</a></li>
             {%- for payment_state in PaymentState %}
-            <li><a href="{{ url_for('.index_for_party', party_id=party.id, only_payment_state=payment_state.name) }}">{{ render_order_payment_state(payment_state) }}</a></li>
+            <li><a href="{{ url_for('.index_for_shop', shop_id=shop.id, only_payment_state=payment_state.name) }}">{{ render_order_payment_state(payment_state) }}</a></li>
             {%- endfor %}
-            <li><a href="{{ url_for('.index_for_party', party_id=party.id, only_payment_state=PaymentState.paid.name, only_shipped='false') }}">{{ render_order_state_filter(OrderStateFilter.waiting_for_shipping) }}</a></li>
+            <li><a href="{{ url_for('.index_for_shop', shop_id=shop.id, only_payment_state=PaymentState.paid.name, only_shipped='false') }}">{{ render_order_state_filter(OrderStateFilter.waiting_for_shipping) }}</a></li>
           </ol>
         </div>
       </div>
@@ -58,17 +56,10 @@
     {%- include 'shop/order_admin/_order_list.html' %}
   {%- endwith %}
 
-{{ render_pagination_nav(orders, '.index_for_party', {
-    'party_id': party.id,
+{{ render_pagination_nav(orders, '.index_for_shop', {
+    'shop_id': shop.id,
     'only_payment_state': only_payment_state.name if only_payment_state else None,
     'only_shipped': 'false' if ((only_shipped is not none) and not only_shipped) else None,
   }) }}
-
-{%- else %}
-
-  <h1>{{ title }}</h1>
-  <div class="notification color-info">Für diese Party existiert kein Shop.</div>
-
-{%- endif %}{# shop_exists #}
 
 {%- endblock %}
