@@ -8,7 +8,7 @@ byceps.blueprints.shop.article_admin.forms
 
 from wtforms import BooleanField, DateTimeField, DecimalField, IntegerField, \
     SelectField, StringField
-from wtforms.validators import InputRequired, Optional
+from wtforms.validators import InputRequired, Optional, ValidationError
 
 from ....util.l10n import LocalizedForm
 
@@ -27,6 +27,16 @@ class ArticleUpdateForm(ArticleCreateForm):
     not_directly_orderable = BooleanField('nur indirekt bestellbar')
     requires_separate_order = BooleanField('muss separat bestellt werden')
     shipping_required = BooleanField('Versand erforderlich')
+
+    def validate_available_until(form, field):
+        """Ensure that the availability range's begin is before its end."""
+        begin = form.available_from.data
+        end = field.data
+
+        if (begin is not None) and (begin >= end):
+            raise ValidationError(
+                'Das Ende des Verfügbarkeitszeitraums muss nach dessen Beginn '
+                'liegen.')
 
 
 class ArticleAttachmentCreateForm(LocalizedForm):
