@@ -66,7 +66,7 @@ def render_snippet_as_partial(name, *, ignore_if_unknown=False):
         if ignore_if_unknown:
             return ''
         else:
-            raise SnippetNotFound('name')
+            raise SnippetNotFound(name)
 
     return _render_template(current_version.body)
 
