@@ -1,6 +1,6 @@
 blinker == 1.4
 Flask == 1.0.2
-Jinja2 == 2.10
+Jinja2 == 2.10.1
 Werkzeug == 0.15.1
 WTForms == 2.2.1
 
