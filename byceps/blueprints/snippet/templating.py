@@ -53,11 +53,12 @@ def get_snippet_context(version):
     }
 
 
-def render_snippet_as_partial(name, *, ignore_if_unknown=False):
+def render_snippet_as_partial(name, *, scope=None, ignore_if_unknown=False):
     """Render the latest version of the snippet with the given name and
     return the result.
     """
-    scope = Scope.for_site(g.site_id)
+    if scope is None:
+        scope = Scope.for_site(g.site_id)
 
     current_version = snippet_service \
         .find_current_version_of_snippet_with_name(scope, name)
