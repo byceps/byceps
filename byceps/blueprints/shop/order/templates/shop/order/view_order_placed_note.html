@@ -1,0 +1,13 @@
+{% extends 'layout/base.html' %}
+{% set current_page = 'shop_order' %}
+{% set title = 'Bestellung abgeschlossen' %}
+
+{% block body %}
+
+  <h1>{{ title }}</h1>
+
+{{ body|safe }}
+
+  <p>Die Bestellung wurde zur <a href="{{ url_for('shop_orders.index') }}">Liste deiner Bestellungen</a> hinzugefügt. Du erreichst die Liste über das Benutzermenü.</p>
+
+{%- endblock %}
