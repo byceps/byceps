@@ -20,9 +20,6 @@ class ShopTestCase(ShopTestBase):
 
         self.create_brand_and_party()
 
-        self.app.add_url_rule('/shop/order_placed', 'snippet.order_placed',
-                              lambda: None)
-
         self.shop = self.create_shop(self.party.id)
         self.setup_order_number_prefix_and_sequence()
         self.setup_orderer()
@@ -116,7 +113,7 @@ class ShopTestCase(ShopTestBase):
 
 def assert_response_headers(response):
     assert response.status_code == 302
-    assert response.headers.get('Location') == 'http://example.com/shop/order_placed'
+    assert response.headers.get('Location') == 'http://example.com/shop/order/placed'
 
 
 def assert_order(order, order_number, item_quantity):
