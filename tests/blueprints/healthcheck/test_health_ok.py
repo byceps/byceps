@@ -23,7 +23,7 @@ class HealthcheckOkTest(AbstractAppTestCase):
         assert response.status_code == 200
         assert response.content_type == expected_media_type
         assert response.mimetype == expected_media_type
-        assert response.get_json() == {
+        assert response.json == {
             'status': 'ok',
             'details': {
                 'rdbms': [{'status': 'ok'}],

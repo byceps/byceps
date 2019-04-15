@@ -3,8 +3,6 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-import json
-
 from tests.base import AbstractAppTestCase
 
 
@@ -28,7 +26,7 @@ class CurrentUserJsonTestCase(AbstractAppTestCase):
         assert response.content_type == CONTENT_TYPE_JSON
         assert response.mimetype == CONTENT_TYPE_JSON
 
-        response_data = decode_json_response(response)
+        response_data = response.json
         assert response_data['id'] == str(user.id)
         assert response_data['screen_name'] == user.screen_name
         assert response_data['avatar_url'] is None
@@ -45,7 +43,3 @@ class CurrentUserJsonTestCase(AbstractAppTestCase):
         url = '/users/me.json'
         with self.client(user_id=user_id) as client:
             return client.get(url)
-
-
-def decode_json_response(response):
-    return json.loads(response.get_data(as_text=True))

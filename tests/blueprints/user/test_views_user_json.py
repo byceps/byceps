@@ -3,8 +3,6 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-import json
-
 from tests.base import AbstractAppTestCase
 
 
@@ -30,7 +28,7 @@ class UserJsonTestCase(AbstractAppTestCase):
         assert response.content_type == CONTENT_TYPE_JSON
         assert response.mimetype == CONTENT_TYPE_JSON
 
-        response_data = decode_json_response(response)
+        response_data = response.json
         assert response_data['id'] == user_id
         assert response_data['screen_name'] == screen_name
         assert response_data['avatar_url'] is None
@@ -47,9 +45,7 @@ class UserJsonTestCase(AbstractAppTestCase):
         assert response.status_code == 404
         assert response.content_type == CONTENT_TYPE_JSON
         assert response.mimetype == CONTENT_TYPE_JSON
-
-        response_data = decode_json_response(response)
-        assert response_data == {}
+        assert response.json == {}
 
     def test_with_suspended_user(self):
         screen_name = 'SuspendedUser'
@@ -63,9 +59,7 @@ class UserJsonTestCase(AbstractAppTestCase):
         assert response.status_code == 404
         assert response.content_type == CONTENT_TYPE_JSON
         assert response.mimetype == CONTENT_TYPE_JSON
-
-        response_data = decode_json_response(response)
-        assert response_data == {}
+        assert response.json == {}
 
     def test_with_deleted_user(self):
         screen_name = 'DeletedUser'
@@ -79,9 +73,7 @@ class UserJsonTestCase(AbstractAppTestCase):
         assert response.status_code == 404
         assert response.content_type == CONTENT_TYPE_JSON
         assert response.mimetype == CONTENT_TYPE_JSON
-
-        response_data = decode_json_response(response)
-        assert response_data == {}
+        assert response.json == {}
 
     def test_with_nonexistent_user(self):
         unknown_user_id = '00000000-0000-0000-0000-000000000000'
@@ -91,9 +83,7 @@ class UserJsonTestCase(AbstractAppTestCase):
         assert response.status_code == 404
         assert response.content_type == CONTENT_TYPE_JSON
         assert response.mimetype == CONTENT_TYPE_JSON
-
-        response_data = decode_json_response(response)
-        assert response_data == {}
+        assert response.json == {}
 
     # helpers
 
@@ -101,7 +91,3 @@ class UserJsonTestCase(AbstractAppTestCase):
         url = '/users/{}.json'.format(user_id)
         with self.client() as client:
             return client.get(url)
-
-
-def decode_json_response(response):
-    return json.loads(response.get_data(as_text=True))

@@ -4,7 +4,6 @@
 """
 
 from datetime import datetime
-import json
 
 from byceps.services.newsletter.models import Subscription
 from byceps.services.newsletter.types import SubscriptionState
@@ -101,8 +100,7 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
 
         assert response.status_code == 200
         assert response.content_type == 'application/json'
-        data = json.loads(response.get_data().decode('utf-8'))
-        assert data == expected_data
+        assert response.json == expected_data
 
     def test_export_subscriber_email_addresses(self):
         expected_data = '\n'.join([

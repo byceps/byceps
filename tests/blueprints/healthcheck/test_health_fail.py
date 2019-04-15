@@ -28,7 +28,7 @@ class HealthcheckFailTest(AbstractAppTestCase):
         assert response.status_code == 503
         assert response.content_type == expected_media_type
         assert response.mimetype == expected_media_type
-        assert response.get_json() == {
+        assert response.json == {
             'status': 'ok',
             'details': {
                 'rdbms': [{'status': 'fail'}],
