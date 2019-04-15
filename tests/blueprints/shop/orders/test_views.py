@@ -7,6 +7,8 @@ from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order.models.orderer import Orderer
 from byceps.services.shop.order import service as order_service
 from byceps.services.shop.order.transfer.models import PaymentMethod
+from byceps.services.snippet import service as snippet_service
+from byceps.services.snippet.transfer.models import Scope
 
 from testfixtures.shop_order import create_orderer
 
@@ -18,6 +20,7 @@ class ShopOrdersTestCase(ShopTestBase):
     def setUp(self):
         super().setUp()
 
+        self.admin = self.create_user('Admin')
         self.user1 = self.create_user_with_detail('User1')
         self.user2 = self.create_user_with_detail('User2')
 
@@ -26,6 +29,7 @@ class ShopOrdersTestCase(ShopTestBase):
     def test_view_matching_user_and_party(self):
         shop = self.create_shop(self.party.id)
         self.create_order_number_sequence(shop.id, 'LF-02-B')
+        self.create_payment_instructions_snippet(shop.id)
 
         order_id = self.place_order(shop.id, self.user1)
 
@@ -36,6 +40,7 @@ class ShopOrdersTestCase(ShopTestBase):
     def test_view_matching_party_but_different_user(self):
         shop = self.create_shop(self.party.id)
         self.create_order_number_sequence(shop.id, 'LF-02-B')
+        self.create_payment_instructions_snippet(shop.id)
 
         order_id = self.place_order(shop.id, self.user1)
 
@@ -49,6 +54,7 @@ class ShopOrdersTestCase(ShopTestBase):
 
         shop = self.create_shop(other_party.id)
         self.create_order_number_sequence(shop.id, 'LF-02-B')
+        self.create_payment_instructions_snippet(shop.id)
 
         order_id = self.place_order(shop.id, self.user1)
 
@@ -57,6 +63,12 @@ class ShopOrdersTestCase(ShopTestBase):
         assert response.status_code == 404
 
     # helpers
+
+    def create_payment_instructions_snippet(self, shop_id):
+        scope = Scope('shop', shop_id)
+
+        snippet_service.create_fragment(scope, 'payment_instructions',
+                                        self.admin.id, 'Send all ur moneyz!')
 
     def place_order(self, shop_id, user):
         orderer = create_orderer(user)
