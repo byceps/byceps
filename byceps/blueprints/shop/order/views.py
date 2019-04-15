@@ -14,7 +14,6 @@ from ....services.shop.cart.models import Cart
 from ....services.shop.order import service as order_service
 from ....services.shop.order.transfer.models import PaymentMethod
 from ....services.shop.shop import service as shop_service
-from ....services.snippet.transfer.models import Scope
 from ....services.user import service as user_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_success
@@ -22,7 +21,6 @@ from ....util.framework.templating import templated
 from ....util.views import redirect_to
 
 from ...authentication.decorators import login_required
-from ...snippet.templating import render_snippet_as_partial
 
 from .forms import assemble_articles_order_form, OrderForm
 
@@ -96,7 +94,7 @@ def order():
 
     _flash_order_success(order)
 
-    return redirect_to('.view_order_placed_note')
+    return redirect_to('shop_orders.view', order_id=order.id)
 
 
 @blueprint.route('/order_single/<uuid:article_id>')
@@ -190,23 +188,7 @@ def order_single(article_id):
 
     _flash_order_success(order)
 
-    return redirect_to('.view_order_placed_note')
-
-
-@blueprint.route('/order/placed')
-@templated
-def view_order_placed_note():
-    """Display note after order has been placed."""
-    shop = _get_shop_or_404(g.party_id)
-
-    scope = Scope('shop', str(shop.id))
-
-    payment_instructions = render_snippet_as_partial('payment_instructions',
-                                                     scope=scope)
-
-    return {
-        'payment_instructions': payment_instructions,
-    }
+    return redirect_to('shop_orders.view', order_id=order.id)
 
 
 def _get_shop_or_404(party_id):

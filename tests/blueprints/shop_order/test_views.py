@@ -70,8 +70,6 @@ class ShopTestCase(ShopTestBase):
         with self.client(user_id=self.orderer.id) as client:
             response = client.post(url, data=form_data)
 
-        assert_response_headers(response)
-
         article_afterwards = self.get_article()
         assert article_afterwards.quantity == 2
 
@@ -84,8 +82,14 @@ class ShopTestCase(ShopTestBase):
 
         order_placed_mock.assert_called_once_with(None, order_id=order.id)
 
+        order_detail_page_url = 'http://example.com/shop/orders/{}' \
+            .format(order.id)
+
+        assert_response_headers(response, order_detail_page_url)
+
         with self.client(user_id=self.orderer.id) as client:
-            assert_order_placed_note_view_works(client)
+            assert_order_detail_page_works(client, order_detail_page_url,
+                                           order.order_number)
 
     @patch('byceps.blueprints.shop.order.signals.order_placed.send')
     def test_order_single(self, order_placed_mock):
@@ -105,8 +109,6 @@ class ShopTestCase(ShopTestBase):
         with self.client(user_id=self.orderer.id) as client:
             response = client.post(url, data=form_data)
 
-        assert_response_headers(response)
-
         article_afterwards = self.get_article()
         assert article_afterwards.quantity == 4
 
@@ -119,8 +121,14 @@ class ShopTestCase(ShopTestBase):
 
         order_placed_mock.assert_called_once_with(None, order_id=order.id)
 
+        order_detail_page_url = 'http://example.com/shop/orders/{}' \
+            .format(order.id)
+
+        assert_response_headers(response, order_detail_page_url)
+
         with self.client(user_id=self.orderer.id) as client:
-            assert_order_placed_note_view_works(client)
+            assert_order_detail_page_works(client, order_detail_page_url,
+                                           order.order_number)
 
     # helpers
 
@@ -128,9 +136,9 @@ class ShopTestCase(ShopTestBase):
         return Article.query.get(self.article_id)
 
 
-def assert_response_headers(response):
+def assert_response_headers(response, order_detail_page_url):
     assert response.status_code == 302
-    assert response.headers.get('Location') == 'http://example.com/shop/order/placed'
+    assert response.headers.get('Location') == order_detail_page_url
 
 
 def assert_order(order, order_number, item_quantity):
@@ -145,6 +153,7 @@ def assert_order_item(order_item, article_id, unit_price, tax_rate, quantity):
     assert order_item.quantity == quantity
 
 
-def assert_order_placed_note_view_works(client):
-    response = client.get('http://example.com/shop/order/placed')
+def assert_order_detail_page_works(client, order_detail_page_url, order_number):
+    response = client.get(order_detail_page_url)
     assert response.status_code == 200
+    assert 'AEC-01-B00005' in response.get_data(as_text=True)
