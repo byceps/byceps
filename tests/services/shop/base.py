@@ -4,6 +4,8 @@
 """
 
 from byceps.services.shop.sequence.transfer.models import Purpose
+from byceps.services.snippet import service as snippet_service
+from byceps.services.snippet.transfer.models import Scope
 
 from testfixtures.shop_article import create_article
 from testfixtures.shop_sequence import create_sequence
@@ -40,6 +42,12 @@ class ShopTestBase(AbstractAppTestCase):
         self.db.session.commit()
 
         return sequence
+
+    def create_payment_instructions_snippet(self, shop_id, creator_id):
+        scope = Scope('shop', shop_id)
+
+        snippet_service.create_fragment(scope, 'payment_instructions',
+                                        creator_id, 'Send all ur moneyz!')
 
     def create_article(self, shop_id, **kwargs):
         article = create_article(shop_id, **kwargs)

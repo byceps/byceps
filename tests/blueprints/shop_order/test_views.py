@@ -7,8 +7,6 @@ from unittest.mock import patch
 
 from byceps.services.shop.article.models.article import Article
 from byceps.services.shop.order.models.order import Order
-from byceps.services.snippet import service as snippet_service
-from byceps.services.snippet.transfer.models import Scope
 
 from testfixtures.shop_article import create_article
 
@@ -27,17 +25,11 @@ class ShopTestCase(ShopTestBase):
 
         self.shop = self.create_shop(self.party.id)
         self.setup_order_number_prefix_and_sequence()
-        self.setup_order_placed_note()
+        self.create_payment_instructions_snippet(self.shop.id, self.admin.id)
         self.setup_article()
 
     def setup_order_number_prefix_and_sequence(self):
         self.create_order_number_sequence(self.shop.id, 'AEC-01-B', value=4)
-
-    def setup_order_placed_note(self):
-        scope = Scope('shop', self.shop.id)
-
-        snippet_service.create_fragment(scope, 'payment_instructions',
-                                        self.admin.id, 'Send all ur moneyz!')
 
     def setup_orderer(self):
         self.orderer = self.create_user()
