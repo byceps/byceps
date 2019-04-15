@@ -7,6 +7,8 @@ from unittest.mock import patch
 
 from byceps.services.shop.article.models.article import Article
 from byceps.services.shop.order.models.order import Order
+from byceps.services.snippet import service as snippet_service
+from byceps.services.snippet.transfer.models import Scope
 
 from testfixtures.shop_article import create_article
 
@@ -20,13 +22,22 @@ class ShopTestCase(ShopTestBase):
 
         self.create_brand_and_party()
 
+        self.admin = self.create_user('Admin')
+        self.setup_orderer()
+
         self.shop = self.create_shop(self.party.id)
         self.setup_order_number_prefix_and_sequence()
-        self.setup_orderer()
+        self.setup_order_placed_note()
         self.setup_article()
 
     def setup_order_number_prefix_and_sequence(self):
         self.create_order_number_sequence(self.shop.id, 'AEC-01-B', value=4)
+
+    def setup_order_placed_note(self):
+        scope = Scope('shop', self.shop.id)
+
+        snippet_service.create_fragment(scope, 'order_placed', self.admin.id,
+                                        'Send all ur moneyz!')
 
     def setup_orderer(self):
         self.orderer = self.create_user()
@@ -73,6 +84,9 @@ class ShopTestCase(ShopTestBase):
 
         order_placed_mock.assert_called_once_with(None, order_id=order.id)
 
+        with self.client(user_id=self.orderer.id) as client:
+            assert_order_placed_note_view_works(client)
+
     @patch('byceps.blueprints.shop.order.signals.order_placed.send')
     def test_order_single(self, order_placed_mock):
         article_before = self.get_article()
@@ -105,6 +119,9 @@ class ShopTestCase(ShopTestBase):
 
         order_placed_mock.assert_called_once_with(None, order_id=order.id)
 
+        with self.client(user_id=self.orderer.id) as client:
+            assert_order_placed_note_view_works(client)
+
     # helpers
 
     def get_article(self):
@@ -126,3 +143,8 @@ def assert_order_item(order_item, article_id, unit_price, tax_rate, quantity):
     assert order_item.unit_price == unit_price
     assert order_item.tax_rate == tax_rate
     assert order_item.quantity == quantity
+
+
+def assert_order_placed_note_view_works(client):
+    response = client.get('http://example.com/shop/order/placed')
+    assert response.status_code == 200
