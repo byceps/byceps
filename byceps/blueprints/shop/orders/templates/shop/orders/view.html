@@ -30,6 +30,11 @@
     {%- endif %}
   </table>
 
+  {%- if order.is_open %}
+  <h2>Zahlungshinweis</h2>
+{{ payment_instructions|safe }}
+  {%- endif %}
+
   <h2>Auftraggeber/in</h2>
   <table class="index">
     <tr>

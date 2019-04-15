@@ -11,10 +11,12 @@ from flask import abort, g
 from ....services.party import service as party_service
 from ....services.shop.order import service as order_service
 from ....services.shop.shop import service as shop_service
+from ....services.snippet.transfer.models import Scope
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated
 
 from ...authentication.decorators import login_required
+from ...snippet.templating import render_snippet_as_partial
 
 
 blueprint = create_blueprint('shop_orders', __name__)
@@ -63,6 +65,16 @@ def view(order_id):
         # Order does not belong to the current party.
         abort(404)
 
-    return {
+    template_context = {
         'order': order,
     }
+
+    if order.is_open:
+        # Obtain payment instructions.
+        scope = Scope('shop', str(shop.id))
+        payment_instructions = render_snippet_as_partial(
+            'payment_instructions', scope=scope)
+
+        template_context['payment_instructions'] = payment_instructions
+
+    return template_context
