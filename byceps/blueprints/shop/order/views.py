@@ -201,10 +201,11 @@ def view_order_placed_note():
 
     scope = Scope('shop', str(shop.id))
 
-    body = render_snippet_as_partial('order_placed', scope=scope)
+    payment_instructions = render_snippet_as_partial('payment_instructions',
+                                                     scope=scope)
 
     return {
-        'body': body,
+        'payment_instructions': payment_instructions,
     }
 
 

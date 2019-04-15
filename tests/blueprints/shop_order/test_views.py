@@ -36,8 +36,8 @@ class ShopTestCase(ShopTestBase):
     def setup_order_placed_note(self):
         scope = Scope('shop', self.shop.id)
 
-        snippet_service.create_fragment(scope, 'order_placed', self.admin.id,
-                                        'Send all ur moneyz!')
+        snippet_service.create_fragment(scope, 'payment_instructions',
+                                        self.admin.id, 'Send all ur moneyz!')
 
     def setup_orderer(self):
         self.orderer = self.create_user()
