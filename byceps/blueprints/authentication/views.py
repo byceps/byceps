@@ -17,6 +17,7 @@ from ...services.authentication.password import \
 from ...services.authentication.session import service as session_service
 from ...services.consent import consent_service
 from ...services.email import service as email_service
+from ...services.site import settings_service as site_settings_service
 from ...services.terms import consent_service as terms_consent_service, \
     version_service as terms_version_service
 from ...services.user import service as user_service
@@ -65,6 +66,9 @@ def login():
     """Allow the user to authenticate with e-mail address and password."""
     if g.current_user.is_active:
         return
+
+    if not _is_login_allowed():
+        abort(403, 'Log in to this site is generally disabled.')
 
     form = LoginForm(request.form)
 
@@ -117,6 +121,11 @@ def login():
 
     user_session.start(user.id, session_token.token, permanent=permanent)
     flash_success('Erfolgreich eingeloggt als {}.', user.screen_name)
+
+
+def _is_login_allowed():
+    value = site_settings_service.find_setting_value(g.site_id, 'login_enabled')
+    return value != 'false'
 
 
 def _get_current_terms_version(brand_id):
