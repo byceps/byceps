@@ -13,7 +13,7 @@ from testfixtures.shop_article import create_article
 from tests.services.shop.base import ShopTestBase
 
 
-class ShopTestCase(ShopTestBase):
+class ShopOrderTestCase(ShopTestBase):
 
     def setUp(self):
         super().setUp()
