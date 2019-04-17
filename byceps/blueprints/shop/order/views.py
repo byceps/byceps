@@ -35,6 +35,10 @@ def order_form(erroneous_form=None):
     """Show a form to order articles."""
     shop = _get_shop_or_404(g.party_id)
 
+    if shop.closed:
+        flash_error('Der Shop ist derzeit geschlossen.')
+        return {'article_compilation': None}
+
     article_compilation = article_service \
         .get_article_compilation_for_orderable_articles(shop.id)
 
@@ -64,6 +68,10 @@ def order_form(erroneous_form=None):
 def order():
     """Order articles."""
     shop = _get_shop_or_404(g.party_id)
+
+    if shop.closed:
+        flash_error('Der Shop ist derzeit geschlossen.')
+        return order_form()
 
     article_compilation = article_service \
         .get_article_compilation_for_orderable_articles(shop.id)
@@ -105,6 +113,13 @@ def order_single_form(article_id, erroneous_form=None):
     article = _get_article_or_404(article_id)
 
     shop = _get_shop_or_404(g.party_id)
+
+    if shop.closed:
+        flash_error('Der Shop ist derzeit geschlossen.')
+        return {
+            'form': form,
+            'article': None,
+        }
 
     article_compilation = article_service \
         .get_article_compilation_for_single_article(article, fixed_quantity=1)
@@ -151,6 +166,10 @@ def order_single(article_id):
     quantity = 1
 
     shop = _get_shop_or_404(g.party_id)
+
+    if shop.closed:
+        flash_error('Der Shop ist derzeit geschlossen.')
+        return order_single_form(article.id)
 
     if article.not_directly_orderable:
         flash_error('Der Artikel kann nicht direkt bestellt werden.')
