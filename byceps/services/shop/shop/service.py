@@ -86,5 +86,6 @@ def _db_entity_to_shop(shop: DbShop) -> Shop:
     return Shop(
         shop.id,
         shop.party_id,
+        shop.closed,
         shop.archived,
     )

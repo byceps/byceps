@@ -20,4 +20,5 @@ ShopID = NewType('ShopID', str)
 class Shop:
     id = attrib(type=ShopID)
     party_id = attrib(type=PartyID)
+    closed = attrib(type=bool)
     archived = attrib(type=bool)

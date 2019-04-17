@@ -49,6 +49,10 @@
       <th>Letzte Bestellnummer</th>
       <td>{{ most_recent_order_number }}</td>
     </tr>
+    <tr>
+      <th>Status</th>
+      <td>{{ render_tag('geschlossen', icon='disabled', class='color-danger') if shop.closed else render_tag('geöffnet', icon='success', class='color-success') }}</td>
+    </tr>
   </table>
 
   <h2>Aktionen {{ render_extra_in_heading(order_actions|length) }}</h2>
