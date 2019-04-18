@@ -1,0 +1,11 @@
+Bitte überweise den Gesamtbetrag auf folgendes Konto:
+
+  Zahlungsempfänger: <Name>
+  IBAN: <IBAN>
+  BIC: <BIC>
+  Bank: <Kreditinstitut>
+  Verwendungszweck: {{ order.order_number }}
+
+Wir werden dich informieren, sobald wir deine Zahlung erhalten haben.
+
+Hier kannst du deine Bestellungen einsehen: https://www.example.com/shop/orders

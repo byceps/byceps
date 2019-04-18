@@ -8,15 +8,5 @@ vielen Dank für deine Bestellung mit der Nummer {{ order.order_number }} am {{ 
 Folgende Artikel hast du bestellt:
 {% include '_order_listing.txt' %}
 
-Bitte überweise den Gesamtbetrag auf folgendes Konto:
-
-  Zahlungsempfänger: <Name>
-  IBAN: <IBAN>
-  BIC: <BIC>
-  Bank: <Kreditinstitut>
-  Verwendungszweck: {{ order.order_number }}
-
-Wir werden dich informieren, sobald wir deine Zahlung erhalten haben.
-
-Hier kannst du deine Bestellungen einsehen: https://www.example.com/shop/orders
+{% include '_payment_instructions.txt' %}
 {% endblock %}
