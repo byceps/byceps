@@ -67,7 +67,9 @@ def login():
     if g.current_user.is_active:
         return
 
-    if not _is_login_allowed():
+    in_admin_mode = get_site_mode().is_admin()
+
+    if not in_admin_mode and not _is_login_allowed():
         abort(403, 'Log in to this site is generally disabled.')
 
     form = LoginForm(request.form)
@@ -82,8 +84,6 @@ def login():
         user = authentication_service.authenticate(screen_name, password)
     except AuthenticationFailed:
         abort(403)
-
-    in_admin_mode = get_site_mode().is_admin()
 
     if in_admin_mode:
         permissions = service.get_permissions_for_user(user.id)
