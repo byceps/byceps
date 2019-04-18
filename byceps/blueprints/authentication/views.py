@@ -50,10 +50,18 @@ def login_form():
         flash_notice('Du bist bereits als Benutzer "{}" angemeldet.',
                      g.current_user.screen_name)
 
+    in_admin_mode = get_site_mode().is_admin()
+
+    if not in_admin_mode and not _is_login_allowed():
+        return {
+            'login_enabled': False,
+        }
+
     form = LoginForm()
     user_registration_enabled = get_user_registration_enabled()
 
     return {
+        'login_enabled': True,
         'logged_in': logged_in,
         'form': form,
         'user_registration_enabled': user_registration_enabled,
