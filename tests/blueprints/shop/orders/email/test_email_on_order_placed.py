@@ -47,7 +47,7 @@ class EmailOnOrderPlacedSignalTest(OrderEmailTestBase):
     def create_payment_instructions_email_snippet(self):
         scope = Scope('shop', self.shop.id)
         name = 'email_payment_instructions'
-        body = '''\
+        body = '''
 Bitte überweise den Gesamtbetrag auf folgendes Konto:
 
   Zahlungsempfänger: <Name>
