@@ -30,7 +30,7 @@ class EmailOnOrderPlacedSignalTest(OrderEmailTestBase):
         self.shop = self.create_shop(self.party.id)
         self.create_order_number_sequence(self.shop.id, 'AC-14-B', value=252)
 
-        self.create_payment_instructions_email_snippet()
+        self.create_email_payment_instructions_snippet()
 
         self.create_articles()
 
@@ -42,7 +42,7 @@ class EmailOnOrderPlacedSignalTest(OrderEmailTestBase):
                                          PaymentMethod.bank_transfer,
                                          self.admin.id)
 
-    def create_payment_instructions_email_snippet(self):
+    def create_email_payment_instructions_snippet(self):
         self.create_shop_fragment(self.shop.id, 'email_payment_instructions',
                                   '''
 Bitte überweise den Gesamtbetrag auf folgendes Konto:
