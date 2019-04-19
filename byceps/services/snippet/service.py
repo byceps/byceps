@@ -159,5 +159,6 @@ def search_snippets(search_term: str, scope: Optional[Scope]
 
 class SnippetNotFound(Exception):
 
-    def __init__(self, name: str) -> None:
+    def __init__(self, scope: Scope, name: str) -> None:
+        self.scope = scope
         self.name = name
