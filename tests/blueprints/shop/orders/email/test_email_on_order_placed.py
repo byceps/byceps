@@ -10,6 +10,8 @@ from unittest.mock import patch
 from byceps.blueprints.shop.order.signals import order_placed
 from byceps.services.shop.order import service as order_service
 from byceps.services.shop.order.transfer.models import PaymentMethod
+from byceps.services.snippet import service as snippet_service
+from byceps.services.snippet.transfer.models import Scope
 
 from tests.helpers import current_party_set, current_user_set
 
@@ -30,6 +32,8 @@ class EmailOnOrderPlacedSignalTest(OrderEmailTestBase):
         self.shop = self.create_shop(self.party.id)
         self.create_order_number_sequence(self.shop.id, 'AC-14-B', value=252)
 
+        self.create_payment_instructions_email_snippet()
+
         self.create_articles()
 
         self.user = self.create_user_with_detail('Interessent')
@@ -39,6 +43,25 @@ class EmailOnOrderPlacedSignalTest(OrderEmailTestBase):
         order_service.mark_order_as_paid(self.order_id,
                                          PaymentMethod.bank_transfer,
                                          self.admin.id)
+
+    def create_payment_instructions_email_snippet(self):
+        scope = Scope('shop', self.shop.id)
+        name = 'email_payment_instructions'
+        body = '''\
+Bitte überweise den Gesamtbetrag auf folgendes Konto:
+
+  Zahlungsempfänger: <Name>
+  IBAN: <IBAN>
+  BIC: <BIC>
+  Bank: <Kreditinstitut>
+  Verwendungszweck: {{ order_number }}
+
+Wir werden dich informieren, sobald wir deine Zahlung erhalten haben.
+
+Hier kannst du deine Bestellungen einsehen: https://www.example.com/shop/orders
+'''
+
+        snippet_service.create_fragment(scope, name, self.admin.id, body)
 
     @patch('byceps.email.send')
     def test_email_on_order_placed(self, send_email_mock):

@@ -24,10 +24,15 @@ from .....services.party.transfer.models import Party
 from .....services.shop.order import service as order_service
 from .....services.shop.order.transfer.models import Order, OrderID
 from .....services.shop.shop import service as shop_service
+from .....services.snippet import service as snippet_service
+from .....services.snippet.service import SnippetNotFound
+from .....services.snippet.transfer.models import Scope
 from .....services.user.models.user import User
 from .....typing import BrandID
 from .....util.money import format_euro_amount
-from .....util.templating import create_sandboxed_environment
+from .....util.templating import create_sandboxed_environment, load_template
+
+from ...shop.transfer.models import ShopID
 
 
 @attrs(frozen=True, slots=True)
@@ -59,14 +64,24 @@ def send_email_for_paid_order_to_orderer(order_id: OrderID) -> None:
 def _assemble_email_for_incoming_order_to_orderer(order_id: OrderID) -> Message:
     data = _get_order_email_data(order_id)
 
+    order = data.order
+
     subject = 'Deine Bestellung ({}) ist eingegangen.' \
-        .format(data.order.order_number)
+        .format(order.order_number)
     template_name = 'order_placed.txt'
     template_context = _get_template_context(data)
+    template_context['payment_instructions'] = _get_payment_instructions(order)
     recipient_address = data.placed_by.email_address
 
     return _assemble_email_to_orderer(subject, template_name, template_context,
                                       data.party, recipient_address)
+
+
+def _get_payment_instructions(order: Order) -> str:
+    fragment = _get_snippet_body(order.shop_id, 'email_payment_instructions')
+
+    template = load_template(fragment)
+    return template.render(order_number=order.order_number)
 
 
 def _assemble_email_for_canceled_order_to_orderer(order_id: OrderID) -> Message:
@@ -146,6 +161,18 @@ def _get_sender_address_for_brand(brand_id: BrandID) -> Optional[str]:
             'No e-mail sender address configured for brand ID "%s".', brand_id)
 
     return sender_address
+
+
+def _get_snippet_body(shop_id: ShopID, name: str) -> str:
+    scope = Scope('shop', str(shop_id))
+
+    version = snippet_service \
+        .find_current_version_of_snippet_with_name(scope, name)
+
+    if not version:
+        raise SnippetNotFound(scope, name)
+
+    return version.body
 
 
 def _render_template(name: str, **context: Dict[str, Any]) -> str:

@@ -8,5 +8,5 @@ vielen Dank für deine Bestellung mit der Nummer {{ order.order_number }} am {{ 
 Folgende Artikel hast du bestellt:
 {% include '_order_listing.txt' %}
 
-{% include '_payment_instructions.txt' %}
+{{ payment_instructions|safe }}
 {% endblock %}
