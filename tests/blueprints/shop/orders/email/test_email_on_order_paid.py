@@ -29,6 +29,8 @@ class EmailOnOrderPaidSignalTest(OrderEmailTestBase):
         self.shop = self.create_shop(self.party.id)
         self.create_order_number_sequence(self.shop.id, 'AC-14-B', value=21)
 
+        self.create_email_footer_snippet()
+
         self.user = self.create_user_with_detail('Vorbild')
 
         self.order_id = self.place_order(self.user)
@@ -36,6 +38,19 @@ class EmailOnOrderPaidSignalTest(OrderEmailTestBase):
         order_service.mark_order_as_paid(self.order_id,
                                          PaymentMethod.bank_transfer,
                                          self.admin.id)
+
+    def create_email_footer_snippet(self):
+        self.create_shop_fragment(self.shop.id, 'email_footer', '''
+Für Fragen stehen wir gerne zur Verfügung.
+
+Viele Grüße,
+das Team der Acme Entertainment Convention
+
+-- 
+Acme Entertainment Convention
+
+E-Mail: acmecon@example.com
+''')
 
     @patch('byceps.email.send')
     def test_email_on_order_paid(self, send_email_mock):

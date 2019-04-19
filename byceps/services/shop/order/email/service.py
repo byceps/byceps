@@ -15,8 +15,6 @@ from attr import attrib, attrs
 from flask import current_app
 from jinja2 import FileSystemLoader
 
-from .....services.brand import service as brand_service
-from .....services.brand.transfer.models import Brand
 from .....services.email import service as email_service
 from .....services.email.transfer.models import Message
 from .....services.party import service as party_service
@@ -39,7 +37,6 @@ from ...shop.transfer.models import ShopID
 class OrderEmailData:
     order = attrib(type=Order)
     party = attrib(type=Party)
-    brand = attrib(type=Brand)
     placed_by = attrib(type=User)
 
 
@@ -117,37 +114,40 @@ def _get_order_email_data(order_id: OrderID) -> OrderEmailData:
     order = order_entity.to_transfer_object()
     shop = shop_service.get_shop(order.shop_id)
     party = party_service.find_party(shop.party_id)
-    brand = brand_service.find_brand(party.brand_id)
     placed_by = order_entity.placed_by
 
     return OrderEmailData(
         order=order,
         party=party,
-        brand=brand,
         placed_by=placed_by,
     )
 
 
 def _get_template_context(order_email_data: OrderEmailData) -> Dict[str, Any]:
     """Collect data required for an order e-mail template."""
+    footer = _get_footer(order_email_data.order)
+
     return {
         'order': order_email_data.order,
         'party': order_email_data.party,
-        'brand': order_email_data.brand,
         'placed_by': order_email_data.placed_by,
+        'footer': footer,
     }
+
+
+def _get_footer(order: Order) -> str:
+    fragment = _get_snippet_body(order.shop_id, 'email_footer')
+
+    template = load_template(fragment)
+    return template.render()
 
 
 def _assemble_email_to_orderer(subject: str, template_name: str,
                                template_context: Dict[str, Any], party: Party,
                                recipient_address: str) -> Message:
     """Assemble an email message with the rendered template as its body."""
-    sender_address = _get_sender_address_for_brand(party.brand_id)
-
-    template_context['contact_email_address'] = sender_address
-
+    sender = _get_sender_address_for_brand(party.brand_id)
     body = _render_template(template_name, **template_context)
-    sender = sender_address
     recipients = [recipient_address]
 
     return Message(sender, recipients, subject, body)

@@ -2,12 +2,4 @@
 {% block body %}{% endblock %}
 {% endfilter %}
 
-Für Fragen stehen wir gerne zur Verfügung.
-
-Viele Grüße,
-das Team der {{ brand.title }}
-
--- 
-{{ brand.title }}
-
-E-Mail: {{ contact_email_address }}
+{{ footer|trim|safe }}

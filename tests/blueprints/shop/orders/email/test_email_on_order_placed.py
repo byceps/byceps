@@ -31,6 +31,7 @@ class EmailOnOrderPlacedSignalTest(OrderEmailTestBase):
         self.create_order_number_sequence(self.shop.id, 'AC-14-B', value=252)
 
         self.create_email_payment_instructions_snippet()
+        self.create_email_footer_snippet()
 
         self.create_articles()
 
@@ -56,6 +57,19 @@ Bitte überweise den Gesamtbetrag auf folgendes Konto:
 Wir werden dich informieren, sobald wir deine Zahlung erhalten haben.
 
 Hier kannst du deine Bestellungen einsehen: https://www.example.com/shop/orders
+''')
+
+    def create_email_footer_snippet(self):
+        self.create_shop_fragment(self.shop.id, 'email_footer', '''
+Für Fragen stehen wir gerne zur Verfügung.
+
+Viele Grüße,
+das Team der Acme Entertainment Convention
+
+-- 
+Acme Entertainment Convention
+
+E-Mail: acmecon@example.com
 ''')
 
     @patch('byceps.email.send')
