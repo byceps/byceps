@@ -30,6 +30,7 @@ class ShopAdminTestCase(ShopTestBase):
 
         self.shop = self.create_shop(self.party.id)
         self.create_order_number_sequence(self.shop.id, 'AEC-05-B')
+        self.create_shop_fragment(self.shop.id, 'email_footer', 'kthxbye')
 
     def create_admin(self):
         admin = self.create_user('Admin')
