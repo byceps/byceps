@@ -43,11 +43,15 @@ class ShopTestBase(AbstractAppTestCase):
 
         return sequence
 
-    def create_payment_instructions_snippet(self, shop_id, creator_id):
+    def create_shop_fragment(self, shop_id, name, body):
         scope = Scope('shop', shop_id)
 
-        snippet_service.create_fragment(scope, 'payment_instructions',
-                                        creator_id, 'Send all ur moneyz!')
+        try:
+            self.admin
+        except AttributeError:
+            self.admin = self.create_user('Admin')
+
+        snippet_service.create_fragment(scope, name, self.admin.id, body)
 
     def create_article(self, shop_id, **kwargs):
         article = create_article(shop_id, **kwargs)

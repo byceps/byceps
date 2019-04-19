@@ -10,8 +10,6 @@ from unittest.mock import patch
 from byceps.blueprints.shop.order.signals import order_placed
 from byceps.services.shop.order import service as order_service
 from byceps.services.shop.order.transfer.models import PaymentMethod
-from byceps.services.snippet import service as snippet_service
-from byceps.services.snippet.transfer.models import Scope
 
 from tests.helpers import current_party_set, current_user_set
 
@@ -45,9 +43,8 @@ class EmailOnOrderPlacedSignalTest(OrderEmailTestBase):
                                          self.admin.id)
 
     def create_payment_instructions_email_snippet(self):
-        scope = Scope('shop', self.shop.id)
-        name = 'email_payment_instructions'
-        body = '''
+        self.create_shop_fragment(self.shop.id, 'email_payment_instructions',
+                                  '''
 Bitte überweise den Gesamtbetrag auf folgendes Konto:
 
   Zahlungsempfänger: <Name>
@@ -59,9 +56,7 @@ Bitte überweise den Gesamtbetrag auf folgendes Konto:
 Wir werden dich informieren, sobald wir deine Zahlung erhalten haben.
 
 Hier kannst du deine Bestellungen einsehen: https://www.example.com/shop/orders
-'''
-
-        snippet_service.create_fragment(scope, name, self.admin.id, body)
+''')
 
     @patch('byceps.email.send')
     def test_email_on_order_placed(self, send_email_mock):

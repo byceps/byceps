@@ -18,7 +18,6 @@ class ShopOrdersTestCase(ShopTestBase):
     def setUp(self):
         super().setUp()
 
-        self.admin = self.create_user('Admin')
         self.user1 = self.create_user_with_detail('User1')
         self.user2 = self.create_user_with_detail('User2')
 
@@ -27,7 +26,7 @@ class ShopOrdersTestCase(ShopTestBase):
     def test_view_matching_user_and_party(self):
         shop = self.create_shop(self.party.id)
         self.create_order_number_sequence(shop.id, 'LF-02-B')
-        self.create_payment_instructions_snippet(shop.id, self.admin.id)
+        self.create_payment_instructions_snippet(shop.id)
 
         order_id = self.place_order(shop.id, self.user1)
 
@@ -38,7 +37,7 @@ class ShopOrdersTestCase(ShopTestBase):
     def test_view_matching_party_but_different_user(self):
         shop = self.create_shop(self.party.id)
         self.create_order_number_sequence(shop.id, 'LF-02-B')
-        self.create_payment_instructions_snippet(shop.id, self.admin.id)
+        self.create_payment_instructions_snippet(shop.id)
 
         order_id = self.place_order(shop.id, self.user1)
 
@@ -52,7 +51,7 @@ class ShopOrdersTestCase(ShopTestBase):
 
         shop = self.create_shop(other_party.id)
         self.create_order_number_sequence(shop.id, 'LF-02-B')
-        self.create_payment_instructions_snippet(shop.id, self.admin.id)
+        self.create_payment_instructions_snippet(shop.id)
 
         order_id = self.place_order(shop.id, self.user1)
 
@@ -61,6 +60,10 @@ class ShopOrdersTestCase(ShopTestBase):
         assert response.status_code == 404
 
     # helpers
+
+    def create_payment_instructions_snippet(self, shop_id):
+        self.create_shop_fragment(shop_id, 'payment_instructions',
+                                  'Send all ur moneyz!')
 
     def place_order(self, shop_id, user):
         orderer = create_orderer(user)

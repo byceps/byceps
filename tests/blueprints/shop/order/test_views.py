@@ -20,12 +20,12 @@ class ShopOrderTestCase(ShopTestBase):
 
         self.create_brand_and_party()
 
-        self.admin = self.create_user('Admin')
         self.setup_orderer()
 
         self.shop = self.create_shop(self.party.id)
         self.setup_order_number_prefix_and_sequence()
-        self.create_payment_instructions_snippet(self.shop.id, self.admin.id)
+        self.create_shop_fragment(self.shop.id, 'payment_instructions',
+                                  'Send all ur moneyz!')
         self.setup_article()
 
     def setup_order_number_prefix_and_sequence(self):
