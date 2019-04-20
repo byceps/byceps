@@ -16,9 +16,9 @@
 								<NAME></NAME>
 								<NAME2>{{ order.last_name }}</NAME2>
 								<NAME3>{{ order.first_names }}</NAME3>
-								<STREET>{{ order.street }}</STREET>
-								<ZIP>{{ order.zip_code }}</ZIP>
-								<CITY>{{ order.city }}</CITY>
+								<STREET>{{ order.address.street }}</STREET>
+								<ZIP>{{ order.address.zip_code }}</ZIP>
+								<CITY>{{ order.address.city }}</CITY>
 								<COUNTRY>DE</COUNTRY>
 							</ADDRESS>
 						</PARTY>
@@ -29,9 +29,9 @@
 								<NAME></NAME>
 								<NAME2>{{ order.last_name }}</NAME2>
 								<NAME3>{{ order.first_names }}</NAME3>
-								<STREET>{{ order.street }}</STREET>
-								<ZIP>{{ order.zip_code }}</ZIP>
-								<CITY>{{ order.city }}</CITY>
+								<STREET>{{ order.address.street }}</STREET>
+								<ZIP>{{ order.address.zip_code }}</ZIP>
+								<CITY>{{ order.address.city }}</CITY>
 								<COUNTRY>DE</COUNTRY>
 								<PHONE/>
 								<FAX/>

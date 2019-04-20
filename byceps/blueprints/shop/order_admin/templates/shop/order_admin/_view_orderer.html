@@ -13,7 +13,7 @@
     </tr>
     <tr>
       <th>Anschrift</th>
-      <td>{{ order.street }}, {{ order.zip_code }} {{ order.city }}, {{ order.country }}</td>
+      <td>{{ order.address.street }}, {{ order.address.zip_code }} {{ order.address.city }}, {{ order.address.country }}</td>
     </tr>
   </table>
 
@@ -21,8 +21,8 @@
     <textarea id="order-address-field" style="position: fixed; top: -1000px;" readonly>{{
       '%s %s\n%s\n%s %s'|format(
         order.first_names, order.last_name,
-        order.street,
-        order.zip_code, order.city
+        order.address.street,
+        order.address.zip_code, address.order.city
       )
     }}</textarea>
     <button id="order-address-copy-trigger" data-field-id="order-address-field" class="button" title="Anschrift in die Zwischenablage kopieren">{{ render_icon('clipboard') }} <span>Anschrift kopieren</span></button>

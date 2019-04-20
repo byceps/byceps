@@ -21,8 +21,8 @@ from ....user.models.user import User
 from ...article.models.article import Article
 from ...shop.transfer.models import ShopID
 
-from ..transfer.models import Order as OrderTransferObject, OrderNumber, \
-    PaymentMethod, PaymentState
+from ..transfer.models import Address, Order as OrderTransferObject, \
+    OrderNumber, PaymentMethod, PaymentState
 
 
 class OrderQuery(BaseQuery):
@@ -132,6 +132,13 @@ class Order(db.Model):
         return self.shipped_at is not None
 
     def to_transfer_object(self) -> OrderTransferObject:
+        address = Address(
+            self.country,
+            self.zip_code,
+            self.city,
+            self.street,
+        )
+
         items = [item.to_transfer_object() for item in self.items]
 
         return OrderTransferObject(
@@ -142,10 +149,7 @@ class Order(db.Model):
             self.placed_by_id,
             self.first_names,
             self.last_name,
-            self.country,
-            self.zip_code,
-            self.city,
-            self.street,
+            address,
             self.total_amount,
             items,
             self.payment_method,

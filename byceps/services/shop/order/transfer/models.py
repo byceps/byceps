@@ -42,6 +42,14 @@ PaymentState = Enum('PaymentState', [
 
 
 @attrs(frozen=True, slots=True)
+class Address:
+    country = attrib(type=str)
+    zip_code = attrib(type=str)
+    city = attrib(type=str)
+    street = attrib(type=str)
+
+
+@attrs(frozen=True, slots=True)
 class Order:
     id = attrib(type=OrderID)
     shop_id = attrib(type=ShopID)
@@ -50,10 +58,7 @@ class Order:
     placed_by_id = attrib(type=UserID)
     first_names = attrib(type=str)
     last_name = attrib(type=str)
-    country = attrib(type=str)
-    zip_code = attrib(type=str)
-    city = attrib(type=str)
-    street = attrib(type=str)
+    address = attrib(type=Address)
     total_amount = attrib(type=Decimal)
     items = attrib()  # List[OrderItem]
     payment_method = attrib(type=PaymentMethod)
