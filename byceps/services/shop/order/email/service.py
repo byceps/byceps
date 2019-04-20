@@ -98,8 +98,7 @@ def _assemble_email_for_canceled_order_to_orderer(data: OrderEmailData
                                       data.brand_id, recipient_address)
 
 
-    def _assemble_email_for_paid_order_to_orderer(data: OrderEmailData
-                                                 ) -> Message:
+def _assemble_email_for_paid_order_to_orderer(data: OrderEmailData) -> Message:
     subject = '\u2705 Deine Bestellung ({}) ist bezahlt worden.' \
         .format(data.order.order_number)
     template_name = 'order_paid.txt'
