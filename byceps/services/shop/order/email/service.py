@@ -37,7 +37,8 @@ from ...shop.transfer.models import ShopID
 class OrderEmailData:
     order = attrib(type=Order)
     party = attrib(type=Party)
-    placed_by = attrib(type=User)
+    orderer_screen_name = attrib(type=str)
+    orderer_email_address = attrib(type=str)
 
 
 def send_email_for_incoming_order_to_orderer(order_id: OrderID) -> None:
@@ -68,7 +69,7 @@ def _assemble_email_for_incoming_order_to_orderer(order_id: OrderID) -> Message:
     template_name = 'order_placed.txt'
     template_context = _get_template_context(data)
     template_context['payment_instructions'] = _get_payment_instructions(order)
-    recipient_address = data.placed_by.email_address
+    recipient_address = data.orderer_email_address
 
     return _assemble_email_to_orderer(subject, template_name, template_context,
                                       data.party, recipient_address)
@@ -88,7 +89,7 @@ def _assemble_email_for_canceled_order_to_orderer(order_id: OrderID) -> Message:
         .format(data.order.order_number)
     template_name = 'order_canceled.txt'
     template_context = _get_template_context(data)
-    recipient_address = data.placed_by.email_address
+    recipient_address = data.orderer_email_address
 
     return _assemble_email_to_orderer(subject, template_name, template_context,
                                       data.party, recipient_address)
@@ -101,7 +102,7 @@ def _assemble_email_for_paid_order_to_orderer(order_id: OrderID) -> Message:
         .format(data.order.order_number)
     template_name = 'order_paid.txt'
     template_context = _get_template_context(data)
-    recipient_address = data.placed_by.email_address
+    recipient_address = data.orderer_email_address
 
     return _assemble_email_to_orderer(subject, template_name, template_context,
                                       data.party, recipient_address)
@@ -119,7 +120,8 @@ def _get_order_email_data(order_id: OrderID) -> OrderEmailData:
     return OrderEmailData(
         order=order,
         party=party,
-        placed_by=placed_by,
+        orderer_screen_name=placed_by.screen_name,
+        orderer_email_address=placed_by.email_address,
     )
 
 
@@ -130,7 +132,7 @@ def _get_template_context(order_email_data: OrderEmailData) -> Dict[str, Any]:
     return {
         'order': order_email_data.order,
         'party': order_email_data.party,
-        'orderer_screen_name': order_email_data.placed_by.screen_name,
+        'orderer_screen_name': order_email_data.orderer_screen_name,
         'footer': footer,
     }
 
