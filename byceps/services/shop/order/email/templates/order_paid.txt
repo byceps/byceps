@@ -1,7 +1,7 @@
 {% extends '_base.txt' %}
 
 {% block body %}
-Hallo {{ placed_by.screen_name }},
+Hallo {{ orderer_screen_name }},
 
 vielen Dank für deine Bestellung mit der Nummer {{ order.order_number }} am {{ order.created_at.strftime('%d.%m.%Y') }} über unsere Website.
 

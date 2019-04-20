@@ -130,7 +130,7 @@ def _get_template_context(order_email_data: OrderEmailData) -> Dict[str, Any]:
     return {
         'order': order_email_data.order,
         'party': order_email_data.party,
-        'placed_by': order_email_data.placed_by,
+        'orderer_screen_name': order_email_data.placed_by.screen_name,
         'footer': footer,
     }
 
