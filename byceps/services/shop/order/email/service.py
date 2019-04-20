@@ -18,7 +18,6 @@ from jinja2 import FileSystemLoader
 from .....services.email import service as email_service
 from .....services.email.transfer.models import Message
 from .....services.party import service as party_service
-from .....services.party.transfer.models import Party
 from .....services.shop.order import service as order_service
 from .....services.shop.order.transfer.models import Order, OrderID
 from .....services.shop.shop import service as shop_service
@@ -36,7 +35,7 @@ from ...shop.transfer.models import ShopID
 @attrs(frozen=True, slots=True)
 class OrderEmailData:
     order = attrib(type=Order)
-    party = attrib(type=Party)
+    brand_id = attrib(type=BrandID)
     orderer_screen_name = attrib(type=str)
     orderer_email_address = attrib(type=str)
 
@@ -72,7 +71,7 @@ def _assemble_email_for_incoming_order_to_orderer(order_id: OrderID) -> Message:
     recipient_address = data.orderer_email_address
 
     return _assemble_email_to_orderer(subject, template_name, template_context,
-                                      data.party, recipient_address)
+                                      data.brand_id, recipient_address)
 
 
 def _get_payment_instructions(order: Order) -> str:
@@ -92,7 +91,7 @@ def _assemble_email_for_canceled_order_to_orderer(order_id: OrderID) -> Message:
     recipient_address = data.orderer_email_address
 
     return _assemble_email_to_orderer(subject, template_name, template_context,
-                                      data.party, recipient_address)
+                                      data.brand_id, recipient_address)
 
 
 def _assemble_email_for_paid_order_to_orderer(order_id: OrderID) -> Message:
@@ -105,7 +104,7 @@ def _assemble_email_for_paid_order_to_orderer(order_id: OrderID) -> Message:
     recipient_address = data.orderer_email_address
 
     return _assemble_email_to_orderer(subject, template_name, template_context,
-                                      data.party, recipient_address)
+                                      data.brand_id, recipient_address)
 
 
 def _get_order_email_data(order_id: OrderID) -> OrderEmailData:
@@ -119,7 +118,7 @@ def _get_order_email_data(order_id: OrderID) -> OrderEmailData:
 
     return OrderEmailData(
         order=order,
-        party=party,
+        brand_id=party.brand_id,
         orderer_screen_name=placed_by.screen_name,
         orderer_email_address=placed_by.email_address,
     )
@@ -131,7 +130,6 @@ def _get_template_context(order_email_data: OrderEmailData) -> Dict[str, Any]:
 
     return {
         'order': order_email_data.order,
-        'party': order_email_data.party,
         'orderer_screen_name': order_email_data.orderer_screen_name,
         'footer': footer,
     }
@@ -145,10 +143,11 @@ def _get_footer(order: Order) -> str:
 
 
 def _assemble_email_to_orderer(subject: str, template_name: str,
-                               template_context: Dict[str, Any], party: Party,
-                               recipient_address: str) -> Message:
+                               template_context: Dict[str, Any],
+                               brand_id: BrandID, recipient_address: str
+                              ) -> Message:
     """Assemble an email message with the rendered template as its body."""
-    sender = _get_sender_address_for_brand(party.brand_id)
+    sender = _get_sender_address_for_brand(brand_id)
     body = _render_template(template_name, **template_context)
     recipients = [recipient_address]
 
