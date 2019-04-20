@@ -41,26 +41,31 @@ class OrderEmailData:
 
 
 def send_email_for_incoming_order_to_orderer(order_id: OrderID) -> None:
-    message = _assemble_email_for_incoming_order_to_orderer(order_id)
+    data = _get_order_email_data(order_id)
+
+    message = _assemble_email_for_incoming_order_to_orderer(data)
 
     _send_email(message)
 
 
 def send_email_for_canceled_order_to_orderer(order_id: OrderID) -> None:
-    message = _assemble_email_for_canceled_order_to_orderer(order_id)
+    data = _get_order_email_data(order_id)
+
+    message = _assemble_email_for_canceled_order_to_orderer(data)
 
     _send_email(message)
 
 
 def send_email_for_paid_order_to_orderer(order_id: OrderID) -> None:
-    message = _assemble_email_for_paid_order_to_orderer(order_id)
+    data = _get_order_email_data(order_id)
+
+    message = _assemble_email_for_paid_order_to_orderer(data)
 
     _send_email(message)
 
 
-def _assemble_email_for_incoming_order_to_orderer(order_id: OrderID) -> Message:
-    data = _get_order_email_data(order_id)
-
+def _assemble_email_for_incoming_order_to_orderer(data: OrderEmailData
+                                                 ) -> Message:
     order = data.order
 
     subject = 'Deine Bestellung ({}) ist eingegangen.' \
@@ -81,9 +86,8 @@ def _get_payment_instructions(order: Order) -> str:
     return template.render(order_number=order.order_number)
 
 
-def _assemble_email_for_canceled_order_to_orderer(order_id: OrderID) -> Message:
-    data = _get_order_email_data(order_id)
-
+def _assemble_email_for_canceled_order_to_orderer(data: OrderEmailData
+                                                 ) -> Message:
     subject = '\u274c Deine Bestellung ({}) wurde storniert.' \
         .format(data.order.order_number)
     template_name = 'order_canceled.txt'
@@ -94,9 +98,8 @@ def _assemble_email_for_canceled_order_to_orderer(order_id: OrderID) -> Message:
                                       data.brand_id, recipient_address)
 
 
-def _assemble_email_for_paid_order_to_orderer(order_id: OrderID) -> Message:
-    data = _get_order_email_data(order_id)
-
+    def _assemble_email_for_paid_order_to_orderer(data: OrderEmailData
+                                                 ) -> Message:
     subject = '\u2705 Deine Bestellung ({}) ist bezahlt worden.' \
         .format(data.order.order_number)
     template_name = 'order_paid.txt'
