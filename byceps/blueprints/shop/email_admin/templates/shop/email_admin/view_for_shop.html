@@ -1,0 +1,23 @@
+{% extends 'layouts/shop_admin.html' %}
+{% set current_page_party = party %}
+{% set current_page = 'shop_email_admin' %}
+{% set current_tab = 'email' %}
+{% set title = 'E-Mail' %}
+
+{% block body %}
+
+  <nav class="breadcrumbs">
+    <ol>
+      <li>{{ party.title }}</li>
+    </ol>
+  </nav>
+  <h1>E-Mail</h1>
+
+  <p>Beispiele:
+  <ul>
+    <li><a href="{{ url_for('.view_example_order_placed', shop_id=shop.id) }}">Bestellbestätigung</a></li>
+    <li><a href="{{ url_for('.view_example_order_paid', shop_id=shop.id) }}">Zahlungseingang</a></li>
+    <li><a href="{{ url_for('.view_example_order_canceled', shop_id=shop.id) }}">Stornierung</a></li>
+  </ul>
+
+{%- endblock %}
