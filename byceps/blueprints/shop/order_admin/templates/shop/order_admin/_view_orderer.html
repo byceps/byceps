@@ -22,7 +22,7 @@
       '%s %s\n%s\n%s %s'|format(
         order.first_names, order.last_name,
         order.address.street,
-        order.address.zip_code, address.order.city
+        order.address.zip_code, order.address.city
       )
     }}</textarea>
     <button id="order-address-copy-trigger" data-field-id="order-address-field" class="button" title="Anschrift in die Zwischenablage kopieren">{{ render_icon('clipboard') }} <span>Anschrift kopieren</span></button>
