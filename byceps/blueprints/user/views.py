@@ -233,19 +233,20 @@ def create():
             subject_id=terms_version.consent_subject_id,
             expressed_at=now)
 
+    privacy_policy_consent = None
     if privacy_policy_consent_required:
-        privacy_policy_consent_expressed_at = now_utc
-    else:
-        privacy_policy_consent_expressed_at = None
+        privacy_policy_consent = Consent(
+            user_id=None,  # not available at this point
+            subject_id=None,  # not available yet, requires structural change
+            expressed_at=now_utc)
 
     newsletter_subscription_state_expressed_at = now
 
     try:
         user = user_creation_service.create_user(
             screen_name, email_address, password, first_names, last_name,
-            g.brand_id, terms_consent, privacy_policy_consent_required,
-            privacy_policy_consent_expressed_at, subscribe_to_newsletter,
-            newsletter_subscription_state_expressed_at)
+            g.brand_id, terms_consent, privacy_policy_consent,
+            subscribe_to_newsletter, newsletter_subscription_state_expressed_at)
     except user_creation_service.UserCreationFailed:
         flash_error('Das Benutzerkonto für "{}" konnte nicht angelegt werden.',
                     screen_name)

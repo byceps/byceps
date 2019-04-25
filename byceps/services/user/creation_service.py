@@ -36,8 +36,7 @@ class UserCreationFailed(Exception):
 def create_user(screen_name: str, email_address: str, password: str,
                 first_names: Optional[str], last_name: Optional[str],
                 brand_id: BrandID, terms_consent: Optional[Consent],
-                privacy_policy_consent_required: bool,
-                privacy_policy_consent_expressed_at: Optional[datetime],
+                privacy_policy_consent: Optional[Consent],
                 subscribe_to_newsletter: bool,
                 newsletter_subscription_state_expressed_at: datetime) -> User:
     """Create a user account and related records."""
@@ -57,10 +56,10 @@ def create_user(screen_name: str, email_address: str, password: str,
         db.session.add(terms_consent)
 
     # consent to privacy policy
-    if privacy_policy_consent_required:
+    if privacy_policy_consent:
         event = event_service.build_event('privacy-policy-accepted', user.id, {
             'initiator_id': str(user.id),
-        }, occurred_at=privacy_policy_consent_expressed_at)
+        }, occurred_at=privacy_policy_consent.expressed_at)
         db.session.add(event)
 
     db.session.commit()
