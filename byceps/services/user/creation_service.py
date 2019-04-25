@@ -18,7 +18,7 @@ from ..authentication.password import service as password_service
 from ..authorization.models import RoleID
 from ..authorization import service as authorization_service
 from ..consent import consent_service
-from ..consent.transfer.models import SubjectID as ConsentSubjectID
+from ..consent.transfer.models import Consent
 from ..newsletter import command_service as newsletter_command_service
 from ..verification_token import service as verification_token_service
 
@@ -35,9 +35,7 @@ class UserCreationFailed(Exception):
 
 def create_user(screen_name: str, email_address: str, password: str,
                 first_names: Optional[str], last_name: Optional[str],
-                brand_id: BrandID, terms_consent_required: bool,
-                terms_consent_subject_id: Optional[ConsentSubjectID],
-                terms_consent_expressed_at: Optional[datetime],
+                brand_id: BrandID, terms_consent: Optional[Consent],
                 privacy_policy_consent_required: bool,
                 privacy_policy_consent_expressed_at: Optional[datetime],
                 subscribe_to_newsletter: bool,
@@ -53,9 +51,9 @@ def create_user(screen_name: str, email_address: str, password: str,
     _assign_roles(user.id)
 
     # consent to terms of service
-    if terms_consent_required:
+    if terms_consent:
         terms_consent = consent_service.build_consent(
-            user.id, terms_consent_subject_id, terms_consent_expressed_at)
+            user.id, terms_consent.subject_id, terms_consent.expressed_at)
         db.session.add(terms_consent)
 
     # consent to privacy policy

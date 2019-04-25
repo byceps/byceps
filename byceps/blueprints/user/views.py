@@ -13,6 +13,7 @@ from flask import abort, g, jsonify, request, Response
 
 from ...config import get_site_mode, get_user_registration_enabled
 from ...services.brand import settings_service as brand_settings_service
+from ...services.consent.transfer.models import Consent
 from ...services.country import service as country_service
 from ...services.newsletter import service as newsletter_service
 from ...services.orga_team import service as orga_team_service
@@ -149,7 +150,6 @@ def create_form(erroneous_form=None):
     else:
         terms_version_id = None
 
-
     form = erroneous_form if erroneous_form \
         else UserCreateForm(terms_version_id=terms_version_id)
 
@@ -199,6 +199,9 @@ def create():
     password = form.password.data
     subscribe_to_newsletter = form.subscribe_to_newsletter.data
 
+    now = datetime.now()
+    now_utc = datetime.utcnow()
+
     if user_service.is_screen_name_already_assigned(screen_name):
         flash_error(
             'Dieser Benutzername ist bereits einem Benutzerkonto zugeordnet.')
@@ -216,6 +219,7 @@ def create():
         first_names = None
         last_name = None
 
+    terms_consent = None
     if terms_consent_required:
         terms_version_id = form.terms_version_id.data
         consent_to_terms = form.consent_to_terms.data
@@ -224,17 +228,10 @@ def create():
         if terms_version.brand_id != g.brand_id:
             abort(400, 'Die AGB-Version gehört nicht zu dieser Veranstaltung.')
 
-        terms_consent_subject_id = terms_version.consent_subject_id
-    else:
-        terms_consent_subject_id = None
-
-    now = datetime.now()
-    now_utc = datetime.utcnow()
-
-    if terms_consent_required:
-        terms_consent_expressed_at = now
-    else:
-        terms_consent_expressed_at = None
+        terms_consent = Consent(
+            user_id=None,  # not available at this point
+            subject_id=terms_version.consent_subject_id,
+            expressed_at=now)
 
     if privacy_policy_consent_required:
         privacy_policy_consent_expressed_at = now_utc
@@ -246,8 +243,7 @@ def create():
     try:
         user = user_creation_service.create_user(
             screen_name, email_address, password, first_names, last_name,
-            g.brand_id, terms_consent_required, terms_consent_subject_id,
-            terms_consent_expressed_at, privacy_policy_consent_required,
+            g.brand_id, terms_consent, privacy_policy_consent_required,
             privacy_policy_consent_expressed_at, subscribe_to_newsletter,
             newsletter_subscription_state_expressed_at)
     except user_creation_service.UserCreationFailed:
