@@ -199,7 +199,6 @@ def create():
     password = form.password.data
     subscribe_to_newsletter = form.subscribe_to_newsletter.data
 
-    now = datetime.now()
     now_utc = datetime.utcnow()
 
     if user_service.is_screen_name_already_assigned(screen_name):
@@ -240,7 +239,7 @@ def create():
             subject_id=None,  # not available yet, requires structural change
             expressed_at=now_utc)
 
-    newsletter_subscription_state_expressed_at = now
+    newsletter_subscription_state_expressed_at = now_utc
 
     try:
         user = user_creation_service.create_user(
