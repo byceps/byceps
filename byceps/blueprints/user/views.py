@@ -231,7 +231,7 @@ def create():
         terms_consent = Consent(
             user_id=None,  # not available at this point
             subject_id=terms_version.consent_subject_id,
-            expressed_at=now)
+            expressed_at=now_utc)
 
     privacy_policy_consent = None
     if privacy_policy_consent_required:
