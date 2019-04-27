@@ -16,6 +16,8 @@ from ...services.brand import settings_service as brand_settings_service
 from ...services.consent.transfer.models import Consent
 from ...services.country import service as country_service
 from ...services.newsletter import service as newsletter_service
+from ...services.newsletter.transfer.models import \
+    Subscription as NewsletterSubscription
 from ...services.orga_team import service as orga_team_service
 from ...services.terms import consent_service as terms_consent_service, \
     version_service as terms_version_service
@@ -239,13 +241,18 @@ def create():
             subject_id=None,  # not available yet, requires structural change
             expressed_at=now_utc)
 
-    newsletter_subscription_state_expressed_at = now_utc
+    newsletter_subscription = None
+    if subscribe_to_newsletter:
+        newsletter_subscription = NewsletterSubscription(
+            user_id=None,  # not available at this point
+            brand_id=g.brand_id,
+            expressed_at=now_utc)
 
     try:
         user = user_creation_service.create_user(
             screen_name, email_address, password, first_names, last_name,
             g.brand_id, terms_consent, privacy_policy_consent,
-            subscribe_to_newsletter, newsletter_subscription_state_expressed_at)
+            newsletter_subscription)
     except user_creation_service.UserCreationFailed:
         flash_error('Das Benutzerkonto für "{}" konnte nicht angelegt werden.',
                     screen_name)

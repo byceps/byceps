@@ -6,7 +6,6 @@ byceps.services.user.creation_service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from datetime import datetime
 from typing import Optional
 
 from flask import current_app
@@ -20,6 +19,7 @@ from ..authorization import service as authorization_service
 from ..consent import consent_service
 from ..consent.transfer.models import Consent
 from ..newsletter import command_service as newsletter_command_service
+from ..newsletter.transfer.models import Subscription as NewsletterSubscription
 from ..verification_token import service as verification_token_service
 
 from . import event_service
@@ -37,8 +37,8 @@ def create_user(screen_name: str, email_address: str, password: str,
                 first_names: Optional[str], last_name: Optional[str],
                 brand_id: BrandID, terms_consent: Optional[Consent],
                 privacy_policy_consent: Optional[Consent],
-                subscribe_to_newsletter: bool,
-                newsletter_subscription_state_expressed_at: datetime) -> User:
+                newsletter_subscription: Optional[NewsletterSubscription]
+               ) -> User:
     """Create a user account and related records."""
     # user with details
     user = _create_user(screen_name, email_address, first_names, last_name)
@@ -65,9 +65,10 @@ def create_user(screen_name: str, email_address: str, password: str,
     db.session.commit()
 
     # newsletter subscription (optional)
-    if subscribe_to_newsletter:
-        newsletter_command_service.subscribe(user.id, brand_id,
-            newsletter_subscription_state_expressed_at)
+    if newsletter_subscription:
+        newsletter_command_service.subscribe(user.id,
+            newsletter_subscription.brand_id,
+            newsletter_subscription.expressed_at)
 
     # e-mail address confirmation
     _request_email_address_verification(user, brand_id)
