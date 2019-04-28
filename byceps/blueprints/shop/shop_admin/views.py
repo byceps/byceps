@@ -6,6 +6,8 @@ byceps.blueprints.shop.shop_admin.views
 :License: Modified BSD, see LICENSE for details.
 """
 
+from collections import defaultdict
+
 from flask import abort
 
 from ....services.party import service as party_service
@@ -46,7 +48,8 @@ def view_for_shop(shop_id):
     order_counts_by_payment_state = order_service \
         .count_orders_per_payment_state(shop.id)
 
-    order_actions = order_action_service.get_actions(shop.id)
+    order_actions_by_article_number = \
+        _get_order_actions_by_article_number(shop.id)
 
     return {
         'party': party,
@@ -59,7 +62,7 @@ def view_for_shop(shop_id):
         'order_counts_by_payment_state': order_counts_by_payment_state,
         'PaymentState': PaymentState,
 
-        'order_actions': order_actions,
+        'order_actions_by_article_number': order_actions_by_article_number,
     }
 
 
@@ -71,6 +74,19 @@ def _get_most_recent_article_number(shop_id):
 def _get_most_recent_order_number(shop_id):
     sequence = sequence_service.find_order_number_sequence(shop_id)
     return sequence_service.format_order_number(sequence)
+
+
+def _get_order_actions_by_article_number(shop_id):
+    actions = order_action_service.get_actions(shop_id)
+
+    actions.sort(key=lambda a: a.payment_state.name, reverse=True)
+    actions.sort(key=lambda a: a.article_number)
+
+    actions_by_article_number = defaultdict(list)
+    for action in actions:
+        actions_by_article_number[action.article_number].append(action)
+
+    return actions_by_article_number
 
 
 def _get_shop_or_404(shop_id):
