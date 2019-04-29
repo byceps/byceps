@@ -35,11 +35,11 @@ def view_current():
     }
 
 
-@blueprint.route('/<uuid:version_id>/consent/<uuid:token>')
+@blueprint.route('/consent/<uuid:token>')
 @templated
-def consent_form(version_id, token, *, erroneous_form=None):
+def consent_form(token, *, erroneous_form=None):
     """Show that version of the terms, and a form to consent to it."""
-    version = _get_version_or_404(version_id)
+    terms_version = terms_version_service.find_current_version(g.brand_id)
 
     verification_token = verification_token_service \
         .find_for_terms_consent_by_token(token)
@@ -48,20 +48,19 @@ def consent_form(version_id, token, *, erroneous_form=None):
         flash_error('Unbekannter Bestätigungscode.')
         abort(404)
 
-    form = erroneous_form if erroneous_form else ConsentForm()
+    form = erroneous_form if erroneous_form \
+        else ConsentForm(terms_version_id=terms_version.id)
 
     return {
-        'version': version,
+        'terms_version': terms_version,
         'token': token,
         'form': form,
     }
 
 
-@blueprint.route('/<uuid:version_id>/consent/<uuid:token>', methods=['POST'])
-def consent(version_id, token):
+@blueprint.route('/consent/<uuid:token>', methods=['POST'])
+def consent(token):
     """Consent to that version of the terms."""
-    version = _get_version_or_404(version_id)
-
     verification_token = verification_token_service \
         .find_for_terms_consent_by_token(token)
 
@@ -71,20 +70,17 @@ def consent(version_id, token):
 
     form = ConsentForm(request.form)
     if not form.validate():
-        return consent_form(version_id, token, erroneous_form=form)
+        return consent_form(token, erroneous_form=form)
+
+    terms_version_id = form.terms_version_id.data
+    terms_version = terms_version_service.find_version(terms_version_id)
+    if terms_version is None:
+        flash_error('Unbekannte AGB-Version.')
+        abort(404)
 
     expressed_at = datetime.utcnow()
     consent_service.consent_to_subject(
-        version.consent_subject_id, expressed_at, verification_token)
+        terms_version.consent_subject_id, expressed_at, verification_token)
 
     flash_success('Du hast die AGB akzeptiert.')
     return redirect_to('authentication.login_form')
-
-
-def _get_version_or_404(version_id):
-    version = terms_version_service.find_version(version_id)
-
-    if version is None:
-        abort(404)
-
-    return version

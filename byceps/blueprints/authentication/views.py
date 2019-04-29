@@ -110,7 +110,6 @@ def login():
             verification_token = verification_token_service \
                 .find_or_create_for_terms_consent(user.id)
             consent_form_url = url_for('terms.consent_form',
-                                       version_id=terms_version.id,
                                        token=verification_token.token)
             flash_notice(
                 'Bitte <a href="{}">akzeptiere zunächst die aktuellen AGB</a>.',

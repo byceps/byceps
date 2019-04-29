@@ -1,5 +1,5 @@
 {% extends 'layout/base.html' %}
-{% from 'macros/forms.html' import form_buttons, form_field_checkbox, form_fieldset %}
+{% from 'macros/forms.html' import form_buttons, form_field, form_field_checkbox, form_fieldset %}
 {% set current_page = 'terms.consent' %}
 {% set title = 'Allgemeine Geschäftsbedingungen' %}
 
@@ -8,11 +8,12 @@
   <h1>{{ title }}</h1>
 
   <div class="terms" style="border-color: #cccccc; border-style: solid; border-width: 1px 0; height: 32rem; margin-left: -40px; margin-right: -40px; padding: 0 40px; overflow-y: scroll;">
-{{ version.body|safe }}
+{{ terms_version.body|safe }}
   </div>
 
-  <form action="{{ url_for('.consent', version_id=version.id, token=token) }}" method="post" class="disable-submit-button-on-submit" style="margin-top: 1rem;">
+  <form action="{{ url_for('.consent', token=token) }}" method="post" class="disable-submit-button-on-submit" style="margin-top: 1rem;">
     {%- call form_fieldset() %}
+      {{ form_field(form.terms_version_id, show_label=False, required='required') }}
       {{ form_field_checkbox(form.consent_to_terms, '<strong>Ich akzeptiere die Allgemeinen Geschäftsbedingungen.</strong>') }}
     {%- endcall %}
 
