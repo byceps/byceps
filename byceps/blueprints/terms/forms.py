@@ -13,5 +13,5 @@ from ...util.l10n import LocalizedForm
 
 
 class ConsentForm(LocalizedForm):
-    terms_version_id = HiddenField('AGB-Version', [InputRequired()])
+    terms_consent_subject_id = HiddenField(None, [InputRequired()])
     consent_to_terms = BooleanField('AGB', [InputRequired()])

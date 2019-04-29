@@ -49,7 +49,8 @@ def consent_form(token, *, erroneous_form=None):
         abort(404)
 
     form = erroneous_form if erroneous_form \
-        else ConsentForm(terms_version_id=terms_version.id)
+        else ConsentForm(
+            terms_consent_subject_id=terms_version.consent_subject_id)
 
     return {
         'terms_version': terms_version,
@@ -72,15 +73,16 @@ def consent(token):
     if not form.validate():
         return consent_form(token, erroneous_form=form)
 
-    terms_version_id = form.terms_version_id.data
-    terms_version = terms_version_service.find_version(terms_version_id)
+    terms_consent_subject_id = form.terms_consent_subject_id.data
+    terms_version = terms_version_service \
+        .find_version_for_consent_subject_id(terms_consent_subject_id)
     if terms_version is None:
         flash_error('Unbekannte AGB-Version.')
         abort(404)
 
     expressed_at = datetime.utcnow()
     consent_service.consent_to_subject(
-        terms_version.consent_subject_id, expressed_at, verification_token)
+        terms_consent_subject_id, expressed_at, verification_token)
 
     flash_success('Du hast die AGB akzeptiert.')
     return redirect_to('authentication.login_form')

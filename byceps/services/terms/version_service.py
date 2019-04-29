@@ -37,8 +37,18 @@ def create_version(brand_id: BrandID, title: str,
 
 
 def find_version(version_id: VersionID) -> Optional[Version]:
-    """Return the version with that id, or `None` if not found."""
+    """Return the version with that ID, or `None` if not found."""
     return Version.query.get(version_id)
+
+
+def find_version_for_consent_subject_id(consent_subject_id: ConsentSubjectID
+                                       ) -> Optional[Version]:
+    """Return the version with that consent subject ID, or `None` if
+    not found.
+    """
+    return Version.query \
+        .filter_by(consent_subject_id=consent_subject_id) \
+        .one_or_none()
 
 
 def find_current_version_id(brand_id: BrandID) -> Optional[VersionID]:

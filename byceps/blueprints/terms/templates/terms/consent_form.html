@@ -13,7 +13,7 @@
 
   <form action="{{ url_for('.consent', token=token) }}" method="post" class="disable-submit-button-on-submit" style="margin-top: 1rem;">
     {%- call form_fieldset() %}
-      {{ form_field(form.terms_version_id, show_label=False, required='required') }}
+      {{ form_field(form.terms_consent_subject_id, show_label=False, required='required') }}
       {{ form_field_checkbox(form.consent_to_terms, '<strong>Ich akzeptiere die Allgemeinen Geschäftsbedingungen.</strong>') }}
     {%- endcall %}
 
