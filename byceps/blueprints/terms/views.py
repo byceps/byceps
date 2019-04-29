@@ -73,7 +73,7 @@ def consent(version_id, token):
     if not form.validate():
         return consent_form(version_id, token, erroneous_form=form)
 
-    expressed_at = datetime.now()
+    expressed_at = datetime.utcnow()
     consent_service.consent_to_subject(
         version.consent_subject_id, expressed_at, verification_token)
 
