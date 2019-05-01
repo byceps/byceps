@@ -41,12 +41,9 @@ def create_user(screen_name: str, email_address: str, password: str,
                 newsletter_subscription: Optional[NewsletterSubscription]=None
                ) -> User:
     """Create a user account and related records."""
-    # user with details
-    user = _create_user(screen_name, email_address, first_names=first_names,
-                        last_name=last_name)
-
-    # password
-    password_service.create_password_hash(user.id, password)
+    # user with details and password
+    user = create_basic_user(screen_name, email_address, password,
+                             first_names=first_names, last_name=last_name)
 
     # roles
     _assign_roles(user.id)
@@ -76,6 +73,20 @@ def create_user(screen_name: str, email_address: str, password: str,
     _request_email_address_verification(user, brand_id)
 
     return user_service._db_entity_to_user_dto(user)
+
+
+def create_basic_user(screen_name: str, email_address: str, password: str, *,
+                      first_names: Optional[str]=None,
+                      last_name: Optional[str]=None
+                     ) -> DbUser:
+    # user with details
+    user = _create_user(screen_name, email_address, first_names=first_names,
+                        last_name=last_name)
+
+    # password
+    password_service.create_password_hash(user.id, password)
+
+    return user
 
 
 def _create_user(screen_name: str, email_address: str, *,
