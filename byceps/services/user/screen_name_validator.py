@@ -15,7 +15,7 @@ MIN_LENGTH = 4
 MAX_LENGTH = 24
 
 GERMAN_CHARS = 'äöüß'
-SPECIAL_CHARS = '!$&*-./<=>?[]_'
+SPECIAL_CHARS = '!$*-./<=>[]_'
 
 VALID_CHARS = frozenset(chain(
     ascii_letters, digits, GERMAN_CHARS, SPECIAL_CHARS))
