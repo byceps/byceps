@@ -78,7 +78,7 @@ def create_user(screen_name: str, email_address: str, password: str,
 
 
 def build_user(screen_name: str, email_address: str) -> DbUser:
-    created_at = datetime.now()
+    created_at = datetime.utcnow()
     normalized_screen_name = _normalize_screen_name(screen_name)
     normalized_email_address = _normalize_email_address(email_address)
 
