@@ -35,9 +35,9 @@ class UserCreationFailed(Exception):
 
 def create_user(screen_name: str, email_address: str, password: str,
                 first_names: Optional[str], last_name: Optional[str],
-                brand_id: BrandID, terms_consent: Optional[Consent],
-                privacy_policy_consent: Optional[Consent],
-                newsletter_subscription: Optional[NewsletterSubscription]
+                brand_id: BrandID, *, terms_consent: Optional[Consent]=None,
+                privacy_policy_consent: Optional[Consent]=None,
+                newsletter_subscription: Optional[NewsletterSubscription]=None
                ) -> User:
     """Create a user account and related records."""
     # user with details

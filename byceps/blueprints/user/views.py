@@ -251,8 +251,9 @@ def create():
     try:
         user = user_creation_service.create_user(
             screen_name, email_address, password, first_names, last_name,
-            g.brand_id, terms_consent, privacy_policy_consent,
-            newsletter_subscription)
+            g.brand_id, terms_consent=terms_consent,
+            privacy_policy_consent=privacy_policy_consent,
+            newsletter_subscription=newsletter_subscription)
     except user_creation_service.UserCreationFailed:
         flash_error('Das Benutzerkonto für "{}" konnte nicht angelegt werden.',
                     screen_name)
