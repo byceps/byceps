@@ -8,8 +8,8 @@
 
 import click
 
-from byceps.database import db
 from byceps.services.user import creation_service as user_creation_service
+from byceps.services.user import service as user_service
 from byceps.util.system import get_config_filename_from_env_or_exit
 
 from _util import app_context
@@ -24,21 +24,17 @@ def execute(screen_name, email_address, password):
 
     user = _create_user(screen_name, email_address, password)
 
+    user_service.enable_user(user.id, user.id)
+
     click.secho('done.', fg='green')
 
 
 def _create_user(screen_name, email_address, password):
     try:
-        user = user_creation_service \
+        return user_creation_service \
             .create_basic_user(screen_name, email_address, password)
     except ValueError as e:
         raise click.UsageError(e)
-
-    user.enabled = True
-    db.session.add(user)
-    db.session.commit()
-
-    return user
 
 
 if __name__ == '__main__':
