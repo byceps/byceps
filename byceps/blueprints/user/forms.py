@@ -36,7 +36,7 @@ class UserCreateForm(LocalizedForm):
             raise ValidationError(
                 'Enthält ungültige Zeichen. Erlaubt sind Buchstaben, '
                 ' Ziffern und diese Sonderzeichen: {}' \
-                    .format(screen_name_validator.SPECIAL_CHARS))
+                    .format(' '.join(screen_name_validator.SPECIAL_CHARS)))
 
     def validate_terms_version_id(form, field):
         try:
