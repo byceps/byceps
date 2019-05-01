@@ -6,21 +6,14 @@ byceps.blueprints.user.forms
 :License: Modified BSD, see LICENSE for details.
 """
 
-from itertools import chain
-from string import ascii_letters, digits
 from uuid import UUID
 
 from wtforms import BooleanField, DateField, HiddenField, PasswordField, \
     StringField
 from wtforms.validators import InputRequired, Length, Optional, ValidationError
 
+from ...services.user import screen_name_validator
 from ...util.l10n import LocalizedForm
-
-
-GERMAN_CHARS = 'äöüß'
-SPECIAL_CHARS = '!$&*-./<=>?[]_'
-VALID_SCREEN_NAME_CHARS = frozenset(chain(
-    ascii_letters, digits, GERMAN_CHARS, SPECIAL_CHARS))
 
 
 class UserCreateForm(LocalizedForm):
@@ -35,10 +28,11 @@ class UserCreateForm(LocalizedForm):
     subscribe_to_newsletter = BooleanField('Newsletter')
 
     def validate_screen_name(form, field):
-        if not all(map(VALID_SCREEN_NAME_CHARS.__contains__, field.data)):
+        if not screen_name_validator.is_screen_name_valid(field.data):
             raise ValidationError(
                 'Enthält ungültige Zeichen. Erlaubt sind Buchstaben, '
-                ' Ziffern und diese Sonderzeichen: {}'.format(SPECIAL_CHARS))
+                ' Ziffern und diese Sonderzeichen: {}' \
+                    .format(screen_name_validator.SPECIAL_CHARS))
 
     def validate_terms_version_id(form, field):
         try:
