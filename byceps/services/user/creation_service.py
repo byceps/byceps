@@ -77,6 +77,26 @@ def create_user(screen_name: str, email_address: str, password: str,
     return user_service._db_entity_to_user_dto(user)
 
 
+def _create_user(screen_name: str, email_address: str,
+                 first_names: Optional[str], last_name: Optional[str]
+                ) -> DbUser:
+    user = build_user(screen_name, email_address)
+
+    user.detail.first_names = first_names
+    user.detail.last_name = last_name
+
+    db.session.add(user)
+
+    try:
+        db.session.commit()
+    except Exception as e:
+        current_app.logger.error('User creation failed: %s', e)
+        db.session.rollback()
+        raise UserCreationFailed()
+
+    return user
+
+
 def build_user(screen_name: str, email_address: str) -> DbUser:
     created_at = datetime.utcnow()
     normalized_screen_name = _normalize_screen_name(screen_name)
@@ -107,26 +127,6 @@ def _normalize_email_address(email_address: str) -> str:
         raise ValueError('Invalid email address: \'{}\''.format(email_address))
 
     return normalized
-
-
-def _create_user(screen_name: str, email_address: str,
-                 first_names: Optional[str], last_name: Optional[str]
-                ) -> DbUser:
-    user = build_user(screen_name, email_address)
-
-    user.detail.first_names = first_names
-    user.detail.last_name = last_name
-
-    db.session.add(user)
-
-    try:
-        db.session.commit()
-    except Exception as e:
-        current_app.logger.error('User creation failed: %s', e)
-        db.session.rollback()
-        raise UserCreationFailed()
-
-    return user
 
 
 def _assign_roles(user_id: UserID) -> None:
