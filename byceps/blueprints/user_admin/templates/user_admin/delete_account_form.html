@@ -7,6 +7,11 @@
 
 {% block body %}
 
+  <nav class="breadcrumbs">
+    <ol>
+      <li><a href="{{ url_for('.index') }}">Benutzer</a></li>
+    </ol>
+  </nav>
   <h1>{{ render_icon('delete') }} {{ title }}</h1>
 
   {{ render_notification('danger', 'warning', 'Achtung: Das Löschen des Benutzerkontos geschieht unwiderruflich!') }}
