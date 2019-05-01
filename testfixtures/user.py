@@ -6,22 +6,26 @@ testfixtures.user
 :License: Modified BSD, see LICENSE for details.
 """
 
-from datetime import date
+from datetime import date, datetime
 
 from byceps.database import generate_uuid
 from byceps.services.user.models.detail import UserDetail
 from byceps.services.user import creation_service as user_creation_service
 
 
-def create_user(screen_name='Faith', *, user_id=None, email_address=None,
-                enabled=True):
+def create_user(screen_name='Faith', *, user_id=None, created_at=None,
+                email_address=None, enabled=True):
     if not user_id:
         user_id = generate_uuid()
+
+    if not created_at:
+        created_at = datetime.utcnow()
 
     if not email_address:
         email_address = 'user{}@example.com'.format(user_id)
 
-    user = user_creation_service.build_user(screen_name, email_address)
+    user = user_creation_service.build_user(created_at, screen_name,
+                                            email_address)
     user.id = user_id
     user.enabled = enabled
 

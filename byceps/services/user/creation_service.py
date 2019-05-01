@@ -92,7 +92,9 @@ def create_basic_user(screen_name: str, email_address: str, password: str, *,
 def _create_user(screen_name: str, email_address: str, *,
                  first_names: Optional[str]=None, last_name: Optional[str]=None
                 ) -> DbUser:
-    user = build_user(screen_name, email_address)
+    created_at = datetime.utcnow()
+
+    user = build_user(created_at, screen_name, email_address)
 
     user.detail.first_names = first_names
     user.detail.last_name = last_name
@@ -109,8 +111,8 @@ def _create_user(screen_name: str, email_address: str, *,
     return user
 
 
-def build_user(screen_name: str, email_address: str) -> DbUser:
-    created_at = datetime.utcnow()
+def build_user(created_at: datetime, screen_name: str, email_address: str
+              ) -> DbUser:
     normalized_screen_name = _normalize_screen_name(screen_name)
     normalized_email_address = _normalize_email_address(email_address)
 
