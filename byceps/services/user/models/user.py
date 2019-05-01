@@ -57,7 +57,7 @@ class User(db.Model):
     __tablename__ = 'users'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    created_at = db.Column(db.DateTime, default=datetime.now, nullable=False)
+    created_at = db.Column(db.DateTime, nullable=False)
     # 40 characters are required to fit the current replacement screen
     # names of user accounts marked as deleted which have the pattern
     # `deleted-<UUID without dashes>` (i.e. 8 + 32 = 40 characters).
@@ -76,7 +76,9 @@ class User(db.Model):
                                creator=lambda avatar:
                                     AvatarSelection(None, avatar.id))
 
-    def __init__(self, screen_name: str, email_address: str) -> None:
+    def __init__(self, created_at: datetime, screen_name: str,
+                 email_address: str) -> None:
+        self.created_at = created_at
         self.screen_name = screen_name
         self.email_address = email_address
 

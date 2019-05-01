@@ -6,6 +6,7 @@ byceps.services.user.creation_service
 :License: Modified BSD, see LICENSE for details.
 """
 
+from datetime import datetime
 from typing import Optional
 
 from flask import current_app
@@ -77,10 +78,11 @@ def create_user(screen_name: str, email_address: str, password: str,
 
 
 def build_user(screen_name: str, email_address: str) -> DbUser:
+    created_at = datetime.now()
     normalized_screen_name = _normalize_screen_name(screen_name)
     normalized_email_address = _normalize_email_address(email_address)
 
-    user = DbUser(normalized_screen_name, normalized_email_address)
+    user = DbUser(created_at, normalized_screen_name, normalized_email_address)
 
     detail = DbUserDetail(user=user)
 
