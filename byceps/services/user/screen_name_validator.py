@@ -11,6 +11,8 @@ Validate screen names regarding their contained characters
 from itertools import chain
 from string import ascii_letters, digits
 
+MIN_LENGTH = 4
+MAX_LENGTH = 24
 
 GERMAN_CHARS = 'äöüß'
 SPECIAL_CHARS = '!$&*-./<=>?[]_'
@@ -21,4 +23,7 @@ VALID_CHARS = frozenset(chain(
 
 def is_screen_name_valid(screen_name: str) -> bool:
     """Return `True` if the screen name contains only permitted characters."""
+    if not MIN_LENGTH <= len(screen_name) <= MAX_LENGTH:
+        return False
+
     return all(map(VALID_CHARS.__contains__, screen_name))

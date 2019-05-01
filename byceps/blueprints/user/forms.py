@@ -17,7 +17,11 @@ from ...util.l10n import LocalizedForm
 
 
 class UserCreateForm(LocalizedForm):
-    screen_name = StringField('Benutzername', [InputRequired(), Length(min=4, max=24)])
+    screen_name = StringField('Benutzername', [
+        InputRequired(),
+        Length(min=screen_name_validator.MIN_LENGTH,
+               max=screen_name_validator.MAX_LENGTH),
+    ])
     first_names = StringField('Vorname(n)', [InputRequired(), Length(min=2, max=40)])
     last_name = StringField('Nachname', [InputRequired(), Length(min=2, max=40)])
     email_address = StringField('E-Mail-Adresse', [InputRequired(), Length(min=6)])
