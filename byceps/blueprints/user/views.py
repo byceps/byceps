@@ -264,7 +264,7 @@ def create():
         'Bevor du dich damit anmelden kannst, muss zunächst der Link in '
         'der an die angegebene Adresse verschickten E-Mail besucht werden.',
         user.screen_name)
-    signals.user_created.send(None, user_id=user.id)
+    signals.account_created.send(None, user_id=user.id)
 
     return redirect_to('.view', user_id=user.id)
 
