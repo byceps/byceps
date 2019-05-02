@@ -17,6 +17,10 @@
       "title": "Admin-Dashboard f\u00fcr Partys anzeigen"
     },
     {
+      "id": "board.announce",
+      "title": "Ankündigungen erstellen"
+    },
+    {
       "id": "board_category.create",
       "title": "Foren-Kategorien erstellen"
     },
@@ -298,6 +302,7 @@
     },
     {
       "assigned_permissions": [
+        "board.announce",
         "board.hide",
         "board.update_of_others",
         "board.view_hidden",

@@ -40,6 +40,14 @@
 {%- include 'board/_posting_view.html' %}
   {%- endfor %}
 
+  {%- if topic.posting_limited_to_moderators %}
+    <div style="margin-bottom: 2.5rem;">
+    {%- call render_event_row('announce') %}
+      Dieses Thema ist für Ankündigungen gedacht. Nur <strong>Moderatoren</strong> dürfen Beiträge hinzufügen.
+    {%- endcall %}
+    </div>
+  {%- endif %}
+
   {%- if topic.locked %}
     {%- call render_event_row('lock') %}
       Dieses Thema ist <strong>geschlossen</strong>. Es können keine Beiträge mehr hinzugefügt werden.
@@ -54,7 +62,7 @@
   <small>
     <p style="text-align: right;">Du musst <a href="{{ url_for('authentication.login_form') }}">angemeldet</a> sein um antworten zu können.</p>
   </small>
-  {%- elif topic.locked %}
+  {%- elif topic.locked or (topic.posting_limited_to_moderators and not g.current_user.has_permission(BoardPermission.announce)) %}
   <div class="button-row button-row--right">
     <span class="button button--disabled">{{ render_icon('reply') }} <span>Antworten</span></span>
   </div>

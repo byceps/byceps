@@ -31,6 +31,7 @@
         <td>
           <a class="board-topic-link disguised" href="{{ url_for('.topic_view', topic_id=topic.id) }}">
             <div class="board-topic-title">
+              {%- if topic.posting_limited_to_moderators %}{{ render_icon('announce', title='Ankündigungen') }} {% endif -%}
               {%- if topic.hidden %}{{ render_icon('hidden', title='versteckt (durch %s)'|format(topic.hidden_by.screen_name)) }} {% endif -%}
               {%- if topic.locked %}{{ render_icon('lock', title='geschlossen') }} {% endif -%}
               {%- if topic.pinned %}{{ render_icon('pin', title='angeheftet') }} {% endif -%}

@@ -593,6 +593,13 @@ def posting_create(topic_id):
             icon='lock')
         return redirect(_build_url_for_topic(topic.id))
 
+    if topic.posting_limited_to_moderators \
+            and not g.current_user.has_permission(BoardPermission.announce):
+        flash_error(
+            'In diesem Thema dürfen nur Moderatoren Beiträge hinzufügen.',
+            icon='announce')
+        return redirect(_build_url_for_topic(topic.id))
+
     posting = board_posting_command_service \
         .create_posting(topic, creator.id, body)
 

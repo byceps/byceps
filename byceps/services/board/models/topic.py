@@ -69,6 +69,7 @@ class Topic(db.Model):
     pinned_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
     pinned_by = db.relationship(User, foreign_keys=[pinned_by_id])
     initial_posting = association_proxy('initial_topic_posting_association', 'posting')
+    posting_limited_to_moderators = db.Column(db.Boolean, default=False, nullable=False)
 
     def __init__(self, category_id: CategoryID, creator_id: UserID, title: str
                 ) -> None:
