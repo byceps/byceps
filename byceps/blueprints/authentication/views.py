@@ -111,10 +111,8 @@ def login():
                 .find_or_create_for_terms_consent(user.id)
             consent_form_url = url_for('terms.consent_form',
                                        token=verification_token.token)
-            flash_notice(
-                'Bitte <a href="{}">akzeptiere zunächst die aktuellen AGB</a>.',
-                consent_form_url, text_is_safe=True)
-            return
+            flash_notice('Bitte akzeptiere zunächst die aktuellen AGB.')
+            return [('Location', consent_form_url)]
 
     # Authorization succeeded.
 

@@ -7,7 +7,14 @@ onDomReady(function() {
       type: 'POST',
       url: $(this).attr('action'),
       data: $(this).serializeArray(),
-      success: function() {
+      success: function(data, text_status, xhr) {
+        // Redirect to location specified via header.
+        var redirect_url = _get_location(xhr);
+        if (redirect_url !== null) {
+          location.href = redirect_url;
+          return;
+        }
+
         // Redirect to referrer if available.
         var referrer = document.createElement('a');
         referrer.href = document.referrer;
