@@ -10,11 +10,10 @@ from datetime import datetime
 from typing import Dict, Iterator, Optional, Sequence, Set
 
 from flask import current_app
-from flask_sqlalchemy import Pagination
 from sqlalchemy.exc import IntegrityError
 
 from ....blueprints.shop.order.signals import order_placed
-from ....database import db
+from ....database import db, Pagination
 from ....typing import UserID
 
 from ..article.models.article import Article

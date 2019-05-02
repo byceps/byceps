@@ -8,9 +8,7 @@ byceps.services.ticketing.ticket_service
 
 from typing import Dict, Optional, Sequence, Set
 
-from flask_sqlalchemy import Pagination
-
-from ...database import db
+from ...database import db, Pagination
 from ...typing import PartyID, UserID
 
 from ..party.models.party import Party

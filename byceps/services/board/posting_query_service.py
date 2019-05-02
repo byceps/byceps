@@ -8,9 +8,7 @@ byceps.services.board.posting_query_service
 
 from typing import Dict, Optional, Set
 
-from flask_sqlalchemy import Pagination
-
-from ...database import db
+from ...database import db, Pagination
 from ...typing import PartyID, UserID
 from ...util.iterables import index_of
 

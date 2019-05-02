@@ -8,9 +8,7 @@ byceps.services.seating.area_service
 
 from typing import Optional
 
-from flask_sqlalchemy import Pagination
-
-from ...database import db
+from ...database import db, Pagination
 from ...typing import PartyID
 
 from .models.area import Area

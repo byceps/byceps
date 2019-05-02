@@ -9,9 +9,7 @@ byceps.services.party.service
 from datetime import datetime
 from typing import Dict, List, Optional, Set
 
-from flask_sqlalchemy import Pagination
-
-from ...database import db
+from ...database import db, Pagination
 from ...typing import BrandID, PartyID
 
 from ..brand.models.brand import Brand as DbBrand

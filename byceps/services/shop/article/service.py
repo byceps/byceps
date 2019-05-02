@@ -10,9 +10,7 @@ from datetime import datetime
 from decimal import Decimal
 from typing import Dict, Optional, Sequence, Set
 
-from flask_sqlalchemy import Pagination
-
-from ....database import BaseQuery, db
+from ....database import BaseQuery, db, Pagination
 
 from ..shop.models import Shop
 from ..shop.transfer.models import ShopID

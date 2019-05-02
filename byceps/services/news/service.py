@@ -9,9 +9,8 @@ byceps.services.news.service
 from typing import Dict, Optional, Sequence
 
 from flask import url_for
-from flask_sqlalchemy import Pagination
 
-from ...database import db, paginate, Query
+from ...database import db, paginate, Pagination, Query
 from ...typing import BrandID, UserID
 
 from ..brand.models.brand import Brand as DbBrand

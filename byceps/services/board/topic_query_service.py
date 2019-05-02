@@ -9,9 +9,7 @@ byceps.services.board.topic_query_service
 from datetime import datetime
 from typing import Optional, Set
 
-from flask_sqlalchemy import Pagination
-
-from ...database import db, Query
+from ...database import db, Pagination, Query
 
 from ..authentication.session.models.current_user import CurrentUser
 
