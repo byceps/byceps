@@ -30,7 +30,7 @@ class ItemQuery(BaseQuery):
 
     def published(self) -> BaseQuery:
         """Return items that have been published."""
-        return self.filter(Item.published_at <= datetime.now())
+        return self.filter(Item.published_at <= datetime.utcnow())
 
     def with_current_version(self) -> BaseQuery:
         return self.options(
@@ -53,7 +53,7 @@ class Item(db.Model):
     channel_id = db.Column(db.Unicode(20), db.ForeignKey('news_channels.id'), index=True, nullable=False)
     channel = db.relationship(Channel)
     slug = db.Column(db.Unicode(80), index=True, nullable=False)
-    published_at = db.Column(db.DateTime, default=datetime.now, nullable=False)
+    published_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     current_version = association_proxy('current_version_association', 'version')
 
     def __init__(self, channel_id: ChannelID, slug: str) -> None:
@@ -87,7 +87,7 @@ class ItemVersion(db.Model):
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     item_id = db.Column(db.Uuid, db.ForeignKey('news_items.id'), index=True, nullable=False)
     item = db.relationship(Item)
-    created_at = db.Column(db.DateTime, default=datetime.now, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
     creator = db.relationship(User)
     title = db.Column(db.Unicode(80))
