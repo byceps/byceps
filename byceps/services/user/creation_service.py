@@ -70,15 +70,16 @@ def create_user(screen_name: str, email_address: str, password: str,
             newsletter_subscription.expressed_at)
 
     # e-mail address confirmation
-    _request_email_address_verification(user, brand_id)
+    normalized_email_address = _normalize_email_address(email_address)
+    _request_email_address_verification(user, email_address, brand_id)
 
-    return user_service._db_entity_to_user_dto(user)
+    return user
 
 
 def create_basic_user(screen_name: str, email_address: str, password: str, *,
                       first_names: Optional[str]=None,
                       last_name: Optional[str]=None
-                     ) -> DbUser:
+                     ) -> User:
     # user with details
     user = _create_user(screen_name, email_address, first_names=first_names,
                         last_name=last_name)
@@ -91,7 +92,7 @@ def create_basic_user(screen_name: str, email_address: str, password: str, *,
 
 def _create_user(screen_name: str, email_address: str, *,
                  first_names: Optional[str]=None, last_name: Optional[str]=None
-                ) -> DbUser:
+                ) -> User:
     created_at = datetime.utcnow()
 
     user = build_user(created_at, screen_name, email_address)
@@ -113,7 +114,7 @@ def _create_user(screen_name: str, email_address: str, *,
     event_service.create_event('user-created', user.id, {},
                                occurred_at=created_at)
 
-    return user
+    return user_service._db_entity_to_user_dto(user)
 
 
 def build_user(created_at: datetime, screen_name: str, email_address: str
@@ -154,10 +155,10 @@ def _assign_roles(user_id: UserID) -> None:
     authorization_service.assign_role_to_user(user_id, board_user_role.id)
 
 
-def _request_email_address_verification(user: DbUser, brand_id: BrandID
-                                       ) -> None:
+def _request_email_address_verification(user: User, email_address: str,
+                                        brand_id: BrandID) -> None:
     verification_token = verification_token_service \
         .create_for_email_address_confirmation(user.id)
 
-    user_service.send_email_address_confirmation_email(user.email_address,
+    user_service.send_email_address_confirmation_email(email_address,
         user.screen_name, verification_token, brand_id)
