@@ -28,6 +28,7 @@ METRICS_ENABLED = False
 # RQ dashboard (for job queue)
 RQ_DASHBOARD_ENABLED = False
 RQ_POLL_INTERVAL = 2500
+WEB_BACKGROUND = 'white'
 
 # user accounts
 USER_REGISTRATION_ENABLED = True
