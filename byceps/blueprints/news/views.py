@@ -61,7 +61,7 @@ def view(slug):
 
 def _get_channel_id():
     channel_id = site_settings_service \
-        .find_setting_value(g.party_id, 'news_channel_id')
+        .find_setting_value(g.site_id, 'news_channel_id')
 
     if channel_id is None:
         abort(404)
