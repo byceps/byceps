@@ -140,7 +140,7 @@ def _normalize_screen_name(screen_name: str) -> str:
 
 def _normalize_email_address(email_address: str) -> str:
     """Normalize the e-mail address, or raise an exception if invalid."""
-    normalized = email_address.strip()
+    normalized = email_address.strip().lower()
 
     if not normalized or (' ' in normalized) or ('@' not in normalized):
         raise ValueError('Invalid email address: \'{}\''.format(email_address))

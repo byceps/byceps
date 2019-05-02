@@ -197,7 +197,7 @@ def create():
         return create_form(form)
 
     screen_name = form.screen_name.data.strip()
-    email_address = form.email_address.data.lower()
+    email_address = form.email_address.data.strip().lower()
     password = form.password.data
     subscribe_to_newsletter = form.subscribe_to_newsletter.data
 
