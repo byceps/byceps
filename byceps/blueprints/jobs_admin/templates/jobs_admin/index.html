@@ -1,0 +1,11 @@
+{% extends 'layout/admin/base.html' %}
+{% set current_page = 'jobs_admin' %}
+{% set title = 'Jobs' %}
+{% set layout_sidebar_hide = True %}
+{% set layout_main_raw = True %}
+
+{% block body %}
+
+  <object data="/admin/rq/" type="text/html" class="box" style="height: 1200px; padding: 0; width: 942px;"></object>
+
+{%- endblock %}
