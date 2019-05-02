@@ -15,6 +15,7 @@ from byceps.services.newsletter import service as newsletter_service
 from byceps.services.snippet import service as snippet_service
 from byceps.services.snippet.transfer.models import Scope
 from byceps.services.terms import version_service as terms_version_service
+from byceps.services.user import event_service
 from byceps.services.user.models.user import User
 from byceps.services.verification_token import service as \
     verification_token_service
@@ -89,6 +90,9 @@ class UserCreateTestCase(AbstractAppTestCase):
         assert user.email_address == 'hiro@metaverse.org'
         assert not user.enabled
         assert not user.deleted
+
+        # events
+        assert_creation_event_created(user.id)
 
         # password
         assert_password_credentials_created(user.id)
@@ -189,6 +193,15 @@ def find_verification_token(user_id):
 
 def is_subscribed_to_newsletter(user_id, brand_id):
     return newsletter_service.is_subscribed(user_id, brand_id)
+
+
+def assert_creation_event_created(user_id):
+    events = event_service.get_events_of_type_for_user('user-created', user_id)
+    assert len(events) == 1
+
+    first_event = events[0]
+    assert first_event.event_type == 'user-created'
+    assert first_event.data == {}
 
 
 def assert_password_credentials_created(user_id):

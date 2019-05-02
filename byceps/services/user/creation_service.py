@@ -108,6 +108,11 @@ def _create_user(screen_name: str, email_address: str, *,
         db.session.rollback()
         raise UserCreationFailed()
 
+
+    # Create event in separate step as user ID is not available earlier.
+    event_service.create_event('user-created', user.id, {},
+                               occurred_at=created_at)
+
     return user
 
 

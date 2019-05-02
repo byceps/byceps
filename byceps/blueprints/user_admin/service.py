@@ -79,7 +79,6 @@ def _filter_by_state(query, state_filter):
 
 def get_events(user_id: UserID) -> Iterator[UserEventData]:
     events = event_service.get_events_for_user(user_id)
-    events.insert(0, _fake_user_creation_event(user_id))
     events.extend(_fake_avatar_update_events(user_id))
     events.extend(_fake_consent_events(user_id))
     events.extend(_fake_newsletter_subscription_update_events(user_id))
@@ -102,20 +101,6 @@ def get_events(user_id: UserID) -> Iterator[UserEventData]:
         data.update(additional_data)
 
         yield data
-
-
-def _fake_user_creation_event(user_id: UserID) -> UserEvent:
-    user = user_service.find_user_with_details(user_id)
-    if user is None:
-        raise ValueError('Unknown user ID')
-
-    data = {
-        # This must be adjusted as soon as existing users (admins) are
-        # allowed to create users.
-        #'initiator_id': str(initiator.id),
-    }
-
-    return UserEvent(user.created_at, 'user-created', user.id, data)
 
 
 def _fake_avatar_update_events(user_id: UserID) -> Iterator[UserEvent]:

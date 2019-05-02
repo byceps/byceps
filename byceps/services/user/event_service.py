@@ -39,3 +39,13 @@ def get_events_for_user(user_id: UserID) -> Sequence[UserEvent]:
         .filter_by(user_id=user_id) \
         .order_by(UserEvent.occurred_at) \
         .all()
+
+
+def get_events_of_type_for_user(event_type: str, user_id: UserID
+                               ) -> Sequence[UserEvent]:
+    """Return the events of that type for that user."""
+    return UserEvent.query \
+        .filter_by(user_id=user_id) \
+        .filter_by(event_type=event_type) \
+        .order_by(UserEvent.occurred_at) \
+        .all()
