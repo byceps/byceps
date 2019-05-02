@@ -6,6 +6,8 @@ onDomReady(function() {
   confirmed_delete_on_click('[data-action="topic-unlock"]', 'Thema wieder öffnen?');
   confirmed_post_on_click('[data-action="topic-pin"]', 'Thema anpinnen?');
   confirmed_delete_on_click('[data-action="topic-unpin"]', 'Thema wieder lösen?');
+  confirmed_post_on_click('[data-action="topic-limit-to-announcements"]', 'Thema auf Ankündigungen beschränken?');
+  confirmed_delete_on_click('[data-action="topic-remove-limit-to-announcements"]', 'Thema wieder für alle Beiträge öffnen?');
 
   confirmed_post_on_click('[data-action="posting-hide"]', 'Beitrag verstecken?');
   confirmed_delete_on_click('[data-action="posting-unhide"]', 'Beitrag wieder anzeigen?');

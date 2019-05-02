@@ -80,6 +80,20 @@
     {%- endif %}
   {%- endif %}
 
+  {%- if g.current_user.has_permission(BoardPermission.announce) %}
+  <h2>{{ render_icon('announce') }} Ankündigungen</h2>
+  <p>Das Thema &quot;{{ topic.title }}&quot; von {{ render_user_link(topic.creator) }} ist {% if not topic.posting_limited_to_moderators %}<strong>nicht</strong> {% endif %} auf Ankündigungen durch Moderatoren beschränkt.</p>
+  <div class="button-row">
+  {%- if topic.posting_limited_to_moderators %}
+    <span class="button button--disabled">{{ render_icon('announce') }} <span>Auf Ankündigungen beschränken</span></span>
+    <a class="button" data-action="topic-remove-limit-to-announcements" href="{{ url_for('.topic_remove_limit_to_announcements', topic_id=topic.id) }}">{{ render_icon('board') }} <span>Für alle Beiträge öffnen</span></a>
+  {%- else %}
+    <a class="button" data-action="topic-limit-to-announcements" href="{{ url_for('.topic_limit_to_announcements', topic_id=topic.id) }}">{{ render_icon('announce') }} <span>Auf Ankündigungen beschränken</span></a>
+    <span class="button button--disabled">{{ render_icon('board') }} <span>Für alle Beiträge öffnen</span></span>
+  {%- endif %}
+  </div>
+  {%- endif %}
+
 {%- endblock %}
 
 {% block scripts %}

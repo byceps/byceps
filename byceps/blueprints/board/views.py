@@ -520,6 +520,36 @@ def topic_move(topic_id):
     return redirect(_build_url_for_topic_in_category_view(topic))
 
 
+@blueprint.route('/topics/<uuid:topic_id>/flags/announcements', methods=['POST'])
+@permission_required(BoardPermission.announce)
+@respond_no_content_with_location
+def topic_limit_to_announcements(topic_id):
+    """Limit posting in the topic to moderators."""
+    topic = _get_topic_or_404(topic_id)
+
+    board_topic_command_service.limit_topic_to_announcements(topic)
+
+    flash_success('Das Thema "{}" wurde auf Ankündigungen beschränkt.',
+                  topic.title, icon='announce')
+
+    return _build_url_for_topic_in_category_view(topic)
+
+
+@blueprint.route('/topics/<uuid:topic_id>/flags/announcements', methods=['DELETE'])
+@permission_required(BoardPermission.announce)
+@respond_no_content_with_location
+def topic_remove_limit_to_announcements(topic_id):
+    """Allow non-moderators to post in the topic again."""
+    topic = _get_topic_or_404(topic_id)
+
+    board_topic_command_service.remove_limit_of_topic_to_announcements(topic)
+
+    flash_success('Das Thema "{}" wurde für normale Beiträge geöffnet.',
+                  topic.title)
+
+    return _build_url_for_topic_in_category_view(topic)
+
+
 # -------------------------------------------------------------------- #
 # posting
 

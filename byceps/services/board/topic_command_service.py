@@ -112,3 +112,15 @@ def move_topic(topic: DbTopic, new_category_id: CategoryID) -> None:
 
     for category in old_category, new_category:
         aggregate_category(category)
+
+
+def limit_topic_to_announcements(topic: DbTopic) -> None:
+    """Limit posting in the topic to moderators."""
+    topic.posting_limited_to_moderators = True
+    db.session.commit()
+
+
+def remove_limit_of_topic_to_announcements(topic: DbTopic) -> None:
+    """Allow non-moderators to post in the topic again."""
+    topic.posting_limited_to_moderators = False
+    db.session.commit()
