@@ -2,6 +2,7 @@
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
+{% from 'macros/misc.html' import render_tag %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
 {% from 'macros/user_admin.html' import render_user_avatar_16_and_name %}
 {% set current_page = 'news_admin' %}
@@ -41,7 +42,7 @@
       </tr>
     </thead>
     <tbody>
-    {%- for item in items.items|sort(attribute='published_at', reverse=True) %}
+    {%- for item in items.items|sort(attribute='created_at', reverse=True) %}
       <tr>
         <td>
           <a href="{{ url_for('.item_view_version', version_id=item.current_version.id) }}"><strong>{{ item.title }}</strong></a><br>
@@ -49,7 +50,12 @@
         </td>
         <td>{% if item.current_version.image_url_path %} {{ render_icon('image', title='Bild festgelegt') }}{% endif %}</td>
         <td class="nowrap">
-          <strong>{{ render_datetime(item.published_at) }}</strong><br>
+          {%- if item.published %}
+          <strong>{{ render_datetime(item.published_at) }}</strong>
+          {%- else %}
+          {{ render_tag('Entwurf') }}
+          {%- endif %}
+          <br>
         {%- filter dim %}
           {%- if g.current_user.has_permission(NewsItemPermission.view) %}
           {{ render_icon('history') }} <a href="{{ url_for('.item_list_versions', item_id=item.id) }}" title="Änderungshistorie ansehen">{{ render_datetime(item.current_version.created_at) }}</a>

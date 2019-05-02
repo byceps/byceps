@@ -16,6 +16,7 @@ NewsChannelPermission = create_permission_enum('news_channel', [
 
 NewsItemPermission = create_permission_enum('news_item', [
     'create',
+    'publish',
     'update',
     'view',
 ])

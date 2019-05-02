@@ -50,10 +50,11 @@ class Item(db.Model):
     query_class = ItemQuery
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     channel_id = db.Column(db.Unicode(20), db.ForeignKey('news_channels.id'), index=True, nullable=False)
     channel = db.relationship(Channel)
     slug = db.Column(db.Unicode(80), index=True, nullable=False)
-    published_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    published_at = db.Column(db.DateTime, nullable=True)
     current_version = association_proxy('current_version_association', 'version')
 
     def __init__(self, channel_id: ChannelID, slug: str) -> None:
@@ -63,6 +64,10 @@ class Item(db.Model):
     @property
     def title(self) -> str:
         return self.current_version.title
+
+    @property
+    def published(self) -> bool:
+        return self.published_at is not None
 
     def __repr__(self) -> str:
         return ReprBuilder(self) \

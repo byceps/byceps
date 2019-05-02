@@ -89,6 +89,10 @@
       "title": "News erstellen"
     },
     {
+      "id": "news_item.publish",
+      "title": "News veröffentlichen"
+    },
+    {
       "id": "news_item.update",
       "title": "News bearbeiten"
     },
@@ -340,6 +344,7 @@
     {
       "assigned_permissions": [
         "news_item.create",
+        "news_item.publish",
         "news_item.update",
         "news_item.view"
       ],

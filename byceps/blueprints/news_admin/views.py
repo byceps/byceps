@@ -20,7 +20,7 @@ from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_success
 from ...util.framework.templating import templated
 from ...util.iterables import pairwise
-from ...util.views import redirect_to
+from ...util.views import redirect_to, respond_no_content
 
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
@@ -217,7 +217,6 @@ def item_create(channel_id):
                                     image_url_path=image_url_path)
 
     flash_success('Die News "{}" wurde angelegt.', item.title)
-    signals.item_published.send(None, item_id=item.id)
 
     return redirect_to('.channel_view', channel_id=channel.id)
 
@@ -258,6 +257,19 @@ def item_update(item_id):
 
     flash_success('Die News "{}" wurde aktualisiert.', item.title)
     return redirect_to('.channel_view', channel_id=item.channel.id)
+
+
+@blueprint.route('/items/<uuid:item_id>/publish', methods=['POST'])
+@permission_required(NewsItemPermission.publish)
+@respond_no_content
+def item_publish(item_id):
+    """Publish a news item."""
+    item = _get_item_or_404(item_id)
+
+    news_service.publish_item(item.id)
+    signals.item_published.send(None, item_id=item.id)
+
+    flash_success('Die News "{}" wurde veröffentlicht.', item.title)
 
 
 # -------------------------------------------------------------------- #

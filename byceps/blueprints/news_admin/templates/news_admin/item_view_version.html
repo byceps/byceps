@@ -1,5 +1,6 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/datetime.html' import render_datetime %}
+{% from 'macros/misc.html' import render_tag %}
 {% from 'macros/user_admin.html' import render_user_avatar_16_and_name %}
 {% set current_page = 'news_admin' %}
 {% set current_page_brand = brand %}
@@ -24,11 +25,19 @@
   <div class="newspost-head">
   {%- with item = version.item %}
 
-    {%- if g.current_user.has_permission(NewsItemPermission.update) -%}
     <div class="button-row button-row--compact" style="float: right;">
+      {%- if g.current_user.has_permission(NewsItemPermission.update) -%}
       <a class="button" href="{{ url_for('.item_update_form', item_id=item.id) }}">{{ render_icon('edit') }} <span>Bearbeiten</span></a>
+      {%- endif -%}
+      {%- if not item.published and g.current_user.has_permission(NewsItemPermission.publish) -%}
+      <div class="dropdown left">
+        <button class="dropdown-toggle button"><span>{{ render_icon('caret-down') }}</span></button>
+        <ol>
+          <li><a data-action="item-publish" href="{{ url_for('.item_publish', item_id=item.id) }}">{{ render_icon('published') }} veröffentlichen</a></li>
+        </ol>
+      </div>
+      {%- endif -%}
     </div>
-    {%- endif -%}
 
     <table>
       <tr>
@@ -53,6 +62,16 @@
           {{ render_datetime(version.created_at) }} von {{ render_user_avatar_16_and_name(version.creator) }}
         </td>
       </tr>
+      <tr>
+        <th>Veröffentlicht:</th>
+        <td>
+          {%- if version.item.published %}
+          {{- render_datetime(version.item.published_at) }}
+          {%- else %}
+          {{- render_tag('Entwurf') }}
+          {%- endif -%}
+        </td>
+      </tr>
     </table>
 
   {%- endwith %}
@@ -63,3 +82,11 @@
 {{ version.render_body()|safe }}
 
 {%- endblock %}
+
+{% block scripts %}
+<script>
+  onDomReady(function() {
+    confirmed_post_on_click_then_reload('[data-action="item-publish"]', 'Newspost veröffentlichen?');
+  });
+</script>
+{% endblock %}

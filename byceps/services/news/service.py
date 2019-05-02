@@ -6,6 +6,7 @@ byceps.services.news.service
 :License: Modified BSD, see LICENSE for details.
 """
 
+from datetime import datetime
 from typing import Dict, Optional, Sequence
 
 from flask import url_for
@@ -66,19 +67,34 @@ def _create_version(item: DbItem, creator_id: UserID, title: str, body: str, *,
     return version
 
 
+def publish_item(item_id: ItemID) -> None:
+    """Publish a news item."""
+    item = find_item(item_id)
+    if item is None:
+        raise ValueError('Unknown news item ID "{}".'.format(item_id))
+
+    item.published_at = datetime.utcnow()
+    db.session.commit()
+
+
 def find_item(item_id: ItemID) -> Optional[DbItem]:
     """Return the item with that id, or `None` if not found."""
     return DbItem.query.get(item_id)
 
 
-def find_aggregated_item_by_slug(channel_id: ChannelID, slug: str
+def find_aggregated_item_by_slug(channel_id: ChannelID, slug: str,
+                                 *, published_only: bool=False
                                 ) -> Optional[Item]:
     """Return the news item identified by that slug, or `None` if not found."""
-    item = DbItem.query \
+    query = DbItem.query \
         .for_channel(channel_id) \
         .with_current_version() \
-        .filter_by(slug=slug) \
-        .first()
+        .filter_by(slug=slug)
+
+    if published_only:
+        query = query.published()
+
+    item = query.one_or_none()
 
     if item is None:
         return None

@@ -41,7 +41,8 @@ def view(slug):
     """Show a single news item."""
     channel_id = _get_channel_id()
 
-    item = news_service.find_aggregated_item_by_slug(channel_id, slug)
+    item = news_service.find_aggregated_item_by_slug(channel_id, slug,
+                                                     published_only=True)
 
     if item is None:
         abort(404)
