@@ -223,7 +223,7 @@ def send_email_address_confirmation_email(recipient_email_address: str,
                                           brand_id: BrandID) -> None:
     sender_address = email_service.get_sender_address_for_brand(brand_id)
 
-    confirmation_url = url_for('.confirm_email_address',
+    confirmation_url = url_for('user.confirm_email_address',
                                token=verification_token.token,
                                _external=True)
 
