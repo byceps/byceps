@@ -22,10 +22,11 @@
 {% block body %}
 
   <div class="newspost-head">
+  {%- with item = version.item %}
 
     {%- if g.current_user.has_permission(NewsItemPermission.update) -%}
     <div class="button-row button-row--compact" style="float: right;">
-      <a class="button" href="{{ url_for('.item_update_form', item_id=version.item.id) }}">{{ render_icon('edit') }} <span>Bearbeiten</span></a>
+      <a class="button" href="{{ url_for('.item_update_form', item_id=item.id) }}">{{ render_icon('edit') }} <span>Bearbeiten</span></a>
     </div>
     {%- endif -%}
 
@@ -36,11 +37,11 @@
       </tr>
       <tr>
         <th>Kanal:</th>
-        <td><a href="{{ url_for('.channel_view', channel_id=version.item.channel.id) }}">{{ version.item.channel.id }}</a></td>
+        <td><a href="{{ url_for('.channel_view', channel_id=item.channel.id) }}">{{ item.channel.id }}</a></td>
       </tr>
       <tr>
         <th>Slug:</th>
-        <td>{{ version.item.slug }}</td>
+        <td>{{ item.slug }}</td>
       </tr>
       <tr>
         <th>Version:</th>
@@ -54,6 +55,7 @@
       </tr>
     </table>
 
+  {%- endwith %}
   </div>
 
   <h1>{{ version.title }}</h1>
