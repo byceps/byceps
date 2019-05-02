@@ -15,7 +15,8 @@ from ...typing import UserID
 from .models.event import UserEvent, UserEventData
 
 
-def create_event(event_type: str, user_id: UserID, data: UserEventData) -> None:
+def create_event(event_type: str, user_id: UserID, data: UserEventData,
+                 *, occurred_at: Optional[datetime]=None) -> None:
     """Create a user event."""
     event = build_event(event_type, user_id, data)
 
@@ -24,7 +25,7 @@ def create_event(event_type: str, user_id: UserID, data: UserEventData) -> None:
 
 
 def build_event(event_type: str, user_id: UserID, data: UserEventData,
-                 occurred_at: Optional[datetime]=None) -> UserEvent:
+                 *, occurred_at: Optional[datetime]=None) -> UserEvent:
     """Assemble, but not persist, a user event."""
     if occurred_at is None:
         occurred_at = datetime.utcnow()
