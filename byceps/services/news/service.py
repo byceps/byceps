@@ -174,6 +174,7 @@ def _db_entity_to_item(item: DbItem) -> Item:
         id=item.id,
         slug=item.slug,
         published_at=item.published_at,
+        published=item.published_at is not None,
         title=item.title,
         body=body,
         external_url=external_url,

@@ -105,6 +105,10 @@
       "title": "News anzeigen"
     },
     {
+      "id": "news_item.view_draft",
+      "title": "News-Entwürfe anzeigen"
+    },
+    {
       "id": "newsletter.export_subscribers",
       "title": "Abonnenten exportieren"
     },
@@ -351,7 +355,8 @@
         "news_item.create",
         "news_item.publish",
         "news_item.update",
-        "news_item.view"
+        "news_item.view",
+        "news_item.view_draft"
       ],
       "id": "news_editor",
       "title": "Newsredakteur"

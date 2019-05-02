@@ -19,4 +19,5 @@ NewsItemPermission = create_permission_enum('news_item', [
     'publish',
     'update',
     'view',
+    'view_draft',
 ])

@@ -35,6 +35,7 @@ class Item:
     id = attrib(type=ItemID)
     slug = attrib(type=str)
     published_at = attrib(type=datetime)
+    published = attrib(type=bool)
     title = attrib(type=str)
     body = attrib(type=str)
     external_url = attrib(type=str)

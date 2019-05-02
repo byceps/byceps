@@ -13,8 +13,14 @@ from ...services.site import settings_service as site_settings_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.templating import templated
 
+from ..authorization.registry import permission_registry
+from ..news_admin.authorization import NewsItemPermission
+
 
 blueprint = create_blueprint('news', __name__)
+
+
+permission_registry.register_enum(NewsItemPermission)
 
 
 @blueprint.route('/', defaults={'page': 1})
@@ -24,10 +30,10 @@ def index(page):
     """Show a page of news items."""
     channel_id = _get_channel_id()
     items_per_page = _get_items_per_page_value()
+    published_only = not _may_view_drafts(g.current_user)
 
-    items = news_service.get_aggregated_items_paginated(channel_id, page,
-                                                        items_per_page,
-                                                        published_only=True)
+    items = news_service.get_aggregated_items_paginated(
+        channel_id, page, items_per_page, published_only=published_only)
 
     return {
         'items': items,
@@ -40,9 +46,10 @@ def index(page):
 def view(slug):
     """Show a single news item."""
     channel_id = _get_channel_id()
+    published_only = not _may_view_drafts(g.current_user)
 
-    item = news_service.find_aggregated_item_by_slug(channel_id, slug,
-                                                     published_only=True)
+    item = news_service.find_aggregated_item_by_slug(
+        channel_id, slug, published_only=published_only)
 
     if item is None:
         abort(404)
@@ -64,3 +71,7 @@ def _get_channel_id():
 
 def _get_items_per_page_value():
     return int(current_app.config['NEWS_ITEMS_PER_PAGE'])
+
+
+def _may_view_drafts(user):
+    return user.has_permission(NewsItemPermission.view_draft)
