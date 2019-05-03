@@ -28,13 +28,16 @@ class Image(db.Model):
     item_id = db.Column(db.Uuid, db.ForeignKey('news_items.id'), index=True, nullable=False)
     item = db.relationship(Item, backref='images')
     filename = db.Column(db.Unicode(80), nullable=False)
+    alt_text = db.Column(db.Unicode(200), nullable=True)
     caption = db.Column(db.Unicode(200), nullable=True)
 
     def __init__(self, creator_id: UserID, item_id: ItemID, filename: str,
-                 *, caption: Optional[str]=None) -> None:
+                 *, alt_text: Optional[str]=None, caption: Optional[str]=None
+                ) -> None:
         self.creator_id = creator_id
         self.item_id = item_id
         self.filename = filename
+        self.alt_text = alt_text
         self.caption = caption
 
     def __repr__(self) -> str:

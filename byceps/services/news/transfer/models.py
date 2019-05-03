@@ -53,4 +53,5 @@ class Image:
     creator_id = attrib(type=UserID)
     item_id = attrib(type=ItemID)
     filename = attrib(type=str)
+    alt_text = attrib(type=str)
     caption = attrib(type=str)

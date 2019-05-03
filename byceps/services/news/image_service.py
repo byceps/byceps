@@ -16,9 +16,11 @@ from .transfer.models import Image, ItemID
 
 
 def create_image(creator_id: UserID, item_id: ItemID, filename: str,
-                 *, caption: Optional[str]=None) -> Image:
+                 *, alt_text: Optional[str]=None, caption: Optional[str]=None
+                ) -> Image:
     """Create an image for a news item."""
-    image = DbImage(creator_id, item_id, filename, caption=caption)
+    image = DbImage(creator_id, item_id, filename, alt_text=alt_text,
+                    caption=caption)
 
     db.session.add(image)
     db.session.commit()
@@ -33,5 +35,6 @@ def _db_entity_to_image(image: DbImage) -> Image:
         creator_id=image.creator_id,
         item_id=image.item_id,
         filename=image.filename,
+        alt_text=image.alt_text,
         caption=image.caption,
     )
