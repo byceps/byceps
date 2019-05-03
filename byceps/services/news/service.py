@@ -20,6 +20,7 @@ from .models.channel import Channel as DbChannel
 from .models.item import \
     CurrentVersionAssociation as DbCurrentVersionAssociation, \
     Item as DbItem, ItemVersion as DbItemVersion
+from . import image_service
 from .transfer.models import ChannelID, Item, ItemID, ItemVersionID
 
 
@@ -169,6 +170,7 @@ def _db_entity_to_item(item: DbItem) -> Item:
     body = item.current_version.render_body()
     external_url = url_for('news.view', slug=item.slug, _external=True)
     image_url = _assemble_image_url(item)
+    images = [image_service._db_entity_to_image(image) for image in item.images]
 
     return Item(
         id=item.id,
@@ -179,6 +181,7 @@ def _db_entity_to_item(item: DbItem) -> Item:
         body=body,
         external_url=external_url,
         image_url=image_url,
+        images=images,
     )
 
 
