@@ -41,12 +41,9 @@ def create_user(screen_name: str, email_address: str, password: str,
                 newsletter_subscription: Optional[NewsletterSubscription]=None
                ) -> User:
     """Create a user account and related records."""
-    # user with details and password
+    # user with details, password, and roles
     user = create_basic_user(screen_name, email_address, password,
                              first_names=first_names, last_name=last_name)
-
-    # roles
-    _assign_roles(user.id)
 
     # consent to terms of service
     if terms_consent:
@@ -86,6 +83,9 @@ def create_basic_user(screen_name: str, email_address: str, password: str, *,
 
     # password
     password_service.create_password_hash(user.id, password)
+
+    # roles
+    _assign_roles(user.id)
 
     return user
 
