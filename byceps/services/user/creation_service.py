@@ -76,7 +76,7 @@ def create_user(screen_name: str, email_address: str, password: str,
 def create_basic_user(screen_name: str, email_address: str, password: str, *,
                       first_names: Optional[str]=None,
                       last_name: Optional[str]=None,
-                      creator_id: Optional[UserID]
+                      creator_id: Optional[UserID]=None
                      ) -> User:
     # user with details
     user = _create_user(screen_name, email_address, first_names=first_names,
@@ -93,7 +93,7 @@ def create_basic_user(screen_name: str, email_address: str, password: str, *,
 
 def _create_user(screen_name: str, email_address: str, *,
                  first_names: Optional[str]=None, last_name: Optional[str]=None,
-                 creator_id: Optional[UserID]
+                 creator_id: Optional[UserID]=None
                 ) -> User:
     created_at = datetime.utcnow()
 
@@ -114,7 +114,7 @@ def _create_user(screen_name: str, email_address: str, *,
 
     # Create event in separate step as user ID is not available earlier.
     event_data = {}
-    if creator_id:
+    if creator_id is not None:
         event_data['initiator_id'] = str(creator_id)
     event_service.create_event('user-created', user.id, event_data,
                                occurred_at=created_at)
