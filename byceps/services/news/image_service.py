@@ -6,6 +6,8 @@ byceps.services.news.image_service
 :License: Modified BSD, see LICENSE for details.
 """
 
+from typing import Optional
+
 from ...database import db
 from ...typing import UserID
 
@@ -14,9 +16,9 @@ from .transfer.models import Image, ItemID
 
 
 def create_image(creator_id: UserID, item_id: ItemID, filename: str,
-                 caption: str) -> Image:
+                 *, caption: Optional[str]=None) -> Image:
     """Create an image for a news item."""
-    image = DbImage(creator_id, item_id, filename, caption)
+    image = DbImage(creator_id, item_id, filename, caption=caption)
 
     db.session.add(image)
     db.session.commit()
