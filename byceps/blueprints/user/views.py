@@ -155,16 +155,8 @@ def create_form(erroneous_form=None):
     form = erroneous_form if erroneous_form \
         else UserCreateForm(terms_version_id=terms_version_id)
 
-    if not real_name_required:
-        del form.first_names
-        del form.last_name
-
-    if not terms_consent_required:
-        del form.terms_version_id
-        del form.consent_to_terms
-
-    if not privacy_policy_consent_required:
-        del form.consent_to_privacy_policy
+    _adjust_create_form(form, real_name_required, terms_consent_required,
+                        privacy_policy_consent_required)
 
     return {'form': form}
 
@@ -182,16 +174,8 @@ def create():
 
     form = UserCreateForm(request.form)
 
-    if not real_name_required:
-        del form.first_names
-        del form.last_name
-
-    if not terms_consent_required:
-        del form.terms_version_id
-        del form.consent_to_terms
-
-    if not privacy_policy_consent_required:
-        del form.consent_to_privacy_policy
+    _adjust_create_form(form, real_name_required, terms_consent_required,
+                        privacy_policy_consent_required)
 
     if not form.validate():
         return create_form(form)
@@ -267,6 +251,20 @@ def create():
     signals.account_created.send(None, user_id=user.id)
 
     return redirect_to('.view', user_id=user.id)
+
+
+def _adjust_create_form(form, real_name_required, terms_consent_required,
+                        privacy_policy_consent_required):
+    if not real_name_required:
+        del form.first_names
+        del form.last_name
+
+    if not terms_consent_required:
+        del form.terms_version_id
+        del form.consent_to_terms
+
+    if not privacy_policy_consent_required:
+        del form.consent_to_privacy_policy
 
 
 @blueprint.route('/email_address_confirmations/request')
