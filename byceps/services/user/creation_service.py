@@ -75,11 +75,12 @@ def create_user(screen_name: str, email_address: str, password: str,
 
 def create_basic_user(screen_name: str, email_address: str, password: str, *,
                       first_names: Optional[str]=None,
-                      last_name: Optional[str]=None
+                      last_name: Optional[str]=None,
+                      creator_id: Optional[UserID]
                      ) -> User:
     # user with details
     user = _create_user(screen_name, email_address, first_names=first_names,
-                        last_name=last_name)
+                        last_name=last_name, creator_id=creator_id)
 
     # password
     password_service.create_password_hash(user.id, password)
@@ -91,7 +92,8 @@ def create_basic_user(screen_name: str, email_address: str, password: str, *,
 
 
 def _create_user(screen_name: str, email_address: str, *,
-                 first_names: Optional[str]=None, last_name: Optional[str]=None
+                 first_names: Optional[str]=None, last_name: Optional[str]=None,
+                 creator_id: Optional[UserID]
                 ) -> User:
     created_at = datetime.utcnow()
 
@@ -111,7 +113,10 @@ def _create_user(screen_name: str, email_address: str, *,
 
 
     # Create event in separate step as user ID is not available earlier.
-    event_service.create_event('user-created', user.id, {},
+    event_data = {}
+    if creator_id:
+        event_data['initiator_id'] = str(creator_id)
+    event_service.create_event('user-created', user.id, event_data,
                                occurred_at=created_at)
 
     return user_service._db_entity_to_user_dto(user)

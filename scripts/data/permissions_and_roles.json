@@ -273,6 +273,10 @@
       "title": "Benutzer verwalten"
     },
     {
+      "id": "user.create",
+      "title": "Benutzer erstellen"
+    },
+    {
       "id": "user_badge.create",
       "title": "Abzeichen erstellen"
     },
@@ -338,7 +342,8 @@
     {
       "assigned_permissions": [
         "seating.administrate",
-        "user.administrate"
+        "user.administrate",
+        "user.create"
       ],
       "id": "checkin_boss",
       "title": "Abendkasse und Nutzerzuweisung"
@@ -523,6 +528,7 @@
     {
       "assigned_permissions": [
         "user.administrate",
+        "user.create",
         "user.view"
       ],
       "id": "user_admin",

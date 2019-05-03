@@ -18,8 +18,9 @@ from ...services.party import service as party_service
 from ...services.shop.order import service as order_service
 from ...services.shop.shop import service as shop_service
 from ...services.ticketing import attendance_service, ticket_service
-from ...services.user import service as user_service, \
-        stats_service as user_stats_service
+from ...services.user import creation_service as user_creation_service
+from ...services.user import service as user_service
+from ...services.user import stats_service as user_stats_service
 from ...services.user_badge import service as badge_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_error, flash_success
@@ -29,11 +30,12 @@ from ...util.views import redirect_to, respond_no_content
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 from ..authorization_admin.authorization import RolePermission
-from ..user.signals import account_deleted, account_suspended, \
-    account_unsuspended
+from ..user.signals import account_created, account_deleted, \
+    account_suspended, account_unsuspended
 
 from .authorization import UserPermission
-from .forms import DeleteAccountForm, SetPasswordForm, SuspendAccountForm
+from .forms import CreateAccountForm, DeleteAccountForm, SetPasswordForm, \
+    SuspendAccountForm
 from .models import UserStateFilter
 from . import service
 
@@ -158,6 +160,56 @@ def _get_parties_by_shop_id(shop_ids):
         parties_by_shop_id[shop.id] = party
 
     return parties_by_shop_id
+
+
+@blueprint.route('/create')
+@permission_required(UserPermission.create)
+@templated
+def create_account_form(erroneous_form=None):
+    """Show a form to create a user account."""
+    form = erroneous_form if erroneous_form else CreateAccountForm()
+
+    return {'form': form}
+
+
+@blueprint.route('/', methods=['POST'])
+@permission_required(UserPermission.create)
+def create_account():
+    """Create a user account."""
+    form = CreateAccountForm(request.form)
+
+    if not form.validate():
+        return create_account_form(form)
+
+    screen_name = form.screen_name.data.strip()
+    first_names = form.first_names.data.strip()
+    last_name = form.last_name.data.strip()
+    email_address = form.email_address.data.lower()
+    password = form.password.data
+
+    if user_service.is_screen_name_already_assigned(screen_name):
+        flash_error(
+            'Dieser Benutzername ist bereits einem Benutzerkonto zugeordnet.')
+        return create_account_form(form)
+
+    if user_service.is_email_address_already_assigned(email_address):
+        flash_error(
+            'Diese E-Mail-Adresse ist bereits einem Benutzerkonto zugeordnet.')
+        return create_account_form(form)
+
+    try:
+        user = user_creation_service.create_basic_user(
+            screen_name, email_address, password, first_names=first_names,
+            last_name=last_name, creator_id=g.current_user.id)
+    except user_creation_service.UserCreationFailed:
+        flash_error('Das Benutzerkonto für "{}" konnte nicht angelegt werden.',
+                    screen_name)
+        return create_account_form(form)
+
+    flash_success('Das Benutzerkonto "{}" wurde angelegt.', user.screen_name)
+    account_created.send(None, user_id=user.id)
+
+    return redirect_to('.view', user_id=user.id)
 
 
 @blueprint.route('/<uuid:user_id>/password')
