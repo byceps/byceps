@@ -40,6 +40,19 @@
     {%- endif %}
   </form>
 
+  {%- if search_term %}
+  <small>
+    <div class="row row--space-between" style="margin-bottom: 1rem;">
+      <div class="column-auto">
+        <p><strong>{{ attendees.total }}</strong> Treffer für Suchbegriff &quot;<strong>{{ search_term }}</strong>&quot;</p>
+      </div>
+      <div class="column-auto">
+        <p><a href="{{ url_for('.attendees') }}">alle Teilnehmer</a></p>
+      </div>
+    </div>
+  </small>
+  {%- endif %}
+
   {%- if attendees.items %}
   <table class="index wide attendees-list">
     <thead>
