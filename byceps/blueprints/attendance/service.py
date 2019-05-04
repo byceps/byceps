@@ -6,7 +6,7 @@ byceps.blueprints.attendance.service
 """
 
 from collections import namedtuple
-from typing import Dict, Iterator, Sequence
+from typing import Dict, List, Sequence
 
 from ...services.seating.models.seat import Seat
 from ...services.seating import seat_service
@@ -20,15 +20,17 @@ from ...typing import UserID
 Attendee = namedtuple('Attendee', ['user', 'seat'])
 
 
-def get_attendees(tickets: Sequence[Ticket]) -> Iterator[Attendee]:
+def get_attendees(tickets: Sequence[Ticket]) -> List[Attendee]:
     users_by_id = _get_users_by_id(tickets)
     seats_by_id = _get_seats_by_id(tickets)
 
-    for t in tickets:
-        yield Attendee(
-            users_by_id[t.used_by_id],
-            seats_by_id.get(t.occupied_seat_id),
+    def to_attendee(ticket):
+        return Attendee(
+            users_by_id[ticket.used_by_id],
+            seats_by_id.get(ticket.occupied_seat_id),
         )
+
+    return [to_attendee(t) for t in tickets]
 
 
 def _get_users_by_id(tickets) -> Dict[UserID, User]:
