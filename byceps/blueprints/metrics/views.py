@@ -8,7 +8,7 @@ Metrics export for `Prometheus <https://prometheus.io/>`_
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import Iterator
+from typing import Iterator, List
 
 from flask import Response
 
@@ -20,8 +20,10 @@ from ...services.metrics.models import Label, Metric
 from ...services.party import service as party_service
 # Load order model so the ticket's foreign key can find the referenced table.
 from ...services.shop.order.models import order
+from ...services.shop.order import service as order_service
 from ...services.shop.article import service as shop_article_service
 from ...services.shop.shop import service as shop_service
+from ...services.shop.transfer.models import Shop
 from ...services.ticketing import ticket_service
 from ...services.user import stats_service as user_stats_service
 from ...util.framework.blueprint import create_blueprint
@@ -47,9 +49,11 @@ def _to_lines() -> Iterator[str]:
 
 def _collect_metrics() -> Iterator[Metric]:
     brand_ids = [brand.id for brand in brand_service.get_brands()]
+    active_shops = shop_service.get_active_shops()
 
     yield from _collect_board_metrics(brand_ids)
-    yield from _collect_shop_metrics()
+    yield from _collect_shop_article_metrics(active_shops)
+    yield from _collect_shop_order_metrics(active_shops)
     yield from _collect_ticket_metrics()
     yield from _collect_user_metrics()
 
@@ -71,10 +75,8 @@ def _collect_board_metrics(brand_ids) -> Iterator[Metric]:
                          labels=[Label('board', board_id)])
 
 
-def _collect_shop_metrics() -> Iterator[Metric]:
-    """Provide article counts for non-archived shops."""
-    shops = shop_service.get_active_shops()
-
+def _collect_shop_article_metrics(shops: List[Shop]):
+    """Provide article counts for shops."""
     for shop in shops:
         articles = shop_article_service.get_articles_for_shop(shop.id)
         for article in articles:
@@ -82,6 +84,20 @@ def _collect_shop_metrics() -> Iterator[Metric]:
                          labels=[
                              Label('shop', article.shop_id),
                              Label('item_number', article.item_number),
+                         ])
+
+
+def _collect_shop_order_metrics(shops: List[Shop]):
+    """Provide order counts grouped by payment state for shops."""
+    for shop in shops:
+        order_counts_per_payment_state = order_service \
+            .count_orders_per_payment_state(shop.id)
+
+        for payment_state, quantity in order_counts_per_payment_state:
+            yield Metric('shop_order_quantity', quantity,
+                         labels=[
+                             Label('shop', article.shop_id),
+                             Label('payment_state', payment_state.name),
                          ])
 
 
