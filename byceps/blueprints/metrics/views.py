@@ -8,12 +8,15 @@ Metrics export for `Prometheus <https://prometheus.io/>`_
 :License: Modified BSD, see LICENSE for details.
 """
 
+from typing import Iterator
+
 from flask import Response
 
 from ...services.brand import service as brand_service
 from ...services.board import board_service, \
     topic_query_service as board_topic_query_service, \
     posting_query_service as board_posting_query_service
+from ...services.metrics.models import Label, Metric
 from ...services.party import service as party_service
 # Load order model so the ticket's foreign key can find the referenced table.
 from ...services.shop.order.models import order
@@ -37,12 +40,12 @@ def metrics():
                     mimetype='text/plain; version=0.0.4')
 
 
-def _to_lines():
-    for metric_name, value in _collect_metrics():
-        yield metric_name + ' ' + str(value) + '\n'
+def _to_lines() -> Iterator[str]:
+    for metric in _collect_metrics():
+        yield metric.serialize() + '\n'
 
 
-def _collect_metrics():
+def _collect_metrics() -> Iterator[Metric]:
     brand_ids = [brand.id for brand in brand_service.get_brands()]
 
     yield from _collect_board_metrics(brand_ids)
@@ -51,7 +54,7 @@ def _collect_metrics():
     yield from _collect_user_metrics()
 
 
-def _collect_board_metrics(brand_ids):
+def _collect_board_metrics(brand_ids) -> Iterator[Metric]:
     for brand_id in brand_ids:
         boards = board_service.get_boards_for_brand(brand_id)
         board_ids = [board.id for board in boards]
@@ -59,28 +62,30 @@ def _collect_board_metrics(brand_ids):
         for board_id in board_ids:
             topic_count = board_topic_query_service \
                 .count_topics_for_board(board_id)
-            yield 'board_topic_count{{board="{}"}}'.format(board_id), \
-                topic_count
+            yield Metric('board_topic_count', topic_count,
+                         labels=[Label('board', board_id)])
 
             posting_count = board_posting_query_service \
                 .count_postings_for_board(board_id)
-            yield 'board_posting_count{{board="{}"}}'.format(board_id), \
-                posting_count
+            yield Metric('board_posting_count', posting_count,
+                         labels=[Label('board', board_id)])
 
 
-def _collect_shop_metrics():
+def _collect_shop_metrics() -> Iterator[Metric]:
     """Provide article counts for non-archived shops."""
     shops = shop_service.get_active_shops()
 
     for shop in shops:
         articles = shop_article_service.get_articles_for_shop(shop.id)
         for article in articles:
-            name = 'shop_article_quantity{{shop="{}", item_number="{}"}}' \
-                .format(article.shop_id, article.item_number)
-            yield name, article.quantity
+            yield Metric('shop_article_quantity', article.quantity,
+                         labels=[
+                             Label('shop', article.shop_id),
+                             Label('item_number', article.item_number),
+                         ])
 
 
-def _collect_ticket_metrics():
+def _collect_ticket_metrics() -> Iterator[Metric]:
     """Provide ticket counts for active parties."""
     active_parties = party_service.get_active_parties()
     active_party_ids = [p.id for p in active_parties]
@@ -88,28 +93,29 @@ def _collect_ticket_metrics():
     for party_id in active_party_ids:
         tickets_revoked_count = ticket_service \
             .count_revoked_tickets_for_party(party_id)
-        yield 'tickets_revoked_count{{party="{}"}}'.format(party_id), \
-            tickets_revoked_count
+        yield Metric('tickets_revoked_count', tickets_revoked_count,
+                     labels=[Label('party', party_id)])
+
 
         tickets_sold_count = ticket_service.count_tickets_for_party(party_id)
-        yield 'tickets_sold_count{{party="{}"}}'.format(party_id), \
-            tickets_sold_count
+        yield Metric('tickets_sold_count', tickets_sold_count,
+                     labels=[Label('party', party_id)])
 
         tickets_checked_in_count = ticket_service \
             .count_tickets_checked_in_for_party(party_id)
-        yield 'tickets_checked_in_count{{party="{}"}}'.format(party_id), \
-            tickets_checked_in_count
+        yield Metric('tickets_checked_in_count', tickets_checked_in_count,
+                     labels=[Label('party', party_id)])
 
 
-def _collect_user_metrics():
+def _collect_user_metrics() -> Iterator[Metric]:
     users_enabled = user_stats_service.count_enabled_users()
     users_disabled = user_stats_service.count_disabled_users()
     users_suspended = user_stats_service.count_suspended_users()
     users_deleted = user_stats_service.count_deleted_users()
     users_total = users_enabled + users_disabled
 
-    yield 'users_enabled_count', users_enabled
-    yield 'users_disabled_count', users_disabled
-    yield 'users_suspended_count', users_suspended
-    yield 'users_deleted_count', users_deleted
-    yield 'users_total_count', users_total
+    yield Metric('users_enabled_count', users_enabled)
+    yield Metric('users_disabled_count', users_disabled)
+    yield Metric('users_suspended_count', users_suspended)
+    yield Metric('users_deleted_count', users_deleted)
+    yield Metric('users_total_count', users_total)
