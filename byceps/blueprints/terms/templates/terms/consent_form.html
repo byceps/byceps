@@ -1,9 +1,12 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/forms.html' import form_buttons, form_field, form_field_checkbox, form_fieldset %}
+{% from 'macros/misc.html' import render_notification %}
 {% set current_page = 'terms.consent' %}
 {% set title = 'Allgemeine Geschäftsbedingungen' %}
 
 {% block body %}
+
+  {{ render_notification('warning', 'warning', 'Bitte akzeptiere zunächst die aktuellen AGB.') }}
 
   <h1>{{ title }}</h1>
 
