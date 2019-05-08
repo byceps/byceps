@@ -20,6 +20,6 @@ class OrgaServiceTestCase(AbstractAppTestCase):
 
         assert not orga_service.is_user_orga(user.id)
 
-        orga_service.create_orga_flag(self.brand.id, user.id)
+        orga_service.add_orga_flag(self.brand.id, user.id)
 
         assert orga_service.is_user_orga(user.id)

@@ -68,8 +68,8 @@ def count_orgas_for_brand(brand_id: BrandID) -> int:
         .count()
 
 
-def create_orga_flag(brand_id: BrandID, user_id: UserID) -> OrgaFlag:
-    """Create an orga flag for a user for brand."""
+def add_orga_flag(brand_id: BrandID, user_id: UserID) -> OrgaFlag:
+    """Add an orga flag for a user for that brand."""
     orga_flag = OrgaFlag(brand_id, user_id)
 
     db.session.add(orga_flag)
@@ -78,8 +78,8 @@ def create_orga_flag(brand_id: BrandID, user_id: UserID) -> OrgaFlag:
     return orga_flag
 
 
-def delete_orga_flag(orga_flag: OrgaFlag) -> None:
-    """Delete the orga flag."""
+def remove_orga_flag(orga_flag: OrgaFlag) -> None:
+    """Remove the orga flag."""
     db.session.delete(orga_flag)
     db.session.commit()
 
