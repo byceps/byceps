@@ -116,6 +116,20 @@
           {%- set body %}
             <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span> hat Bestellung {{ render_order_link(event.data.order) }} aufgegeben.
           {%- endset %}
+        {%- elif event.event == 'orgaflag-added' %}
+          {%- set icon_name = 'enabled' %}
+          {%- set body %}
+            <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
+            hat <span class="user-link">{{ render_user_avatar_20_and_link(user) }}</span>
+            für die Marke <strong>{{ event.data.brand_id }}</strong> zum Orga ernannt.
+          {%- endset %}
+        {%- elif event.event == 'orgaflag-removed' %}
+          {%- set icon_name = 'disabled' %}
+          {%- set body %}
+            <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
+            hat <span class="user-link">{{ render_user_avatar_20_and_link(user) }}</span>
+            für die Marke <strong>{{ event.data.brand_id }}</strong> den Orgastatus entzogen.
+          {%- endset %}
         {%- elif event.event == 'privacy-policy-accepted' %}
           {%- set icon_name = 'legal' %}
           {%- set body %}

@@ -8,7 +8,7 @@ byceps.blueprints.orga_admin.views
 
 from operator import attrgetter
 
-from flask import abort, request
+from flask import abort, g, request
 
 from ...services.brand import service as brand_service
 from ...services.orga import service as orga_service
@@ -88,8 +88,9 @@ def create_orgaflag(brand_id):
         return create_orgaflag_form(brand.id, form)
 
     user = form.user.data
+    initiator = g.current_user
 
-    orga_flag = orga_service.add_orga_flag(brand.id, user.id)
+    orga_flag = orga_service.add_orga_flag(brand.id, user.id, initiator.id)
 
     flash_success('{} wurde das Orga-Flag für die Marke {} gegeben.',
                   orga_flag.user.screen_name, orga_flag.brand.title)
@@ -108,8 +109,9 @@ def remove_orgaflag(brand_id, user_id):
 
     brand = orga_flag.brand
     user = orga_flag.user
+    initiator = g.current_user
 
-    orga_service.remove_orga_flag(orga_flag)
+    orga_service.remove_orga_flag(orga_flag, initiator.id)
 
     flash_success('{} wurde das Orga-Flag für die Marke {} entzogen.',
                   user.screen_name, brand.title)

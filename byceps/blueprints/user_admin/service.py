@@ -174,6 +174,8 @@ def _get_additional_data(event: UserEvent, users_by_id: Dict[UserID, User]
             'newsletter-requested',
             'newsletter-declined',
             'order-placed',
+            'orgaflag-added',
+            'orgaflag-removed',
             'privacy-policy-accepted',
             'role-assigned',
             'role-deassigned',

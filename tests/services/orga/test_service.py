@@ -17,13 +17,14 @@ class OrgaServiceTestCase(AbstractAppTestCase):
 
     def test_flag_changes(self):
         user = self.create_user()
+        admin = self.create_user('Admin')
 
         assert not orga_service.is_user_orga(user.id)
 
-        flag = orga_service.add_orga_flag(self.brand.id, user.id)
+        flag = orga_service.add_orga_flag(self.brand.id, user.id, admin.id)
 
         assert orga_service.is_user_orga(user.id)
 
-        orga_service.remove_orga_flag(flag)
+        orga_service.remove_orga_flag(flag, admin.id)
 
         assert not orga_service.is_user_orga(user.id)

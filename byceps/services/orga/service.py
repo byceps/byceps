@@ -12,6 +12,7 @@ from ...database import db
 from ...typing import BrandID, UserID
 
 from ..brand.models.brand import Brand
+from ..user import event_service as user_event_service
 from ..user.models.user import User as DbUser
 
 from .models import OrgaFlag
@@ -68,19 +69,34 @@ def count_orgas_for_brand(brand_id: BrandID) -> int:
         .count()
 
 
-def add_orga_flag(brand_id: BrandID, user_id: UserID) -> OrgaFlag:
+def add_orga_flag(brand_id: BrandID, user_id: UserID, initiator_id: UserID \
+                 ) -> OrgaFlag:
     """Add an orga flag for a user for that brand."""
     orga_flag = OrgaFlag(brand_id, user_id)
-
     db.session.add(orga_flag)
+
+    event = user_event_service.build_event('orgaflag-added', user_id, {
+        'brand_id': str(brand_id),
+        'initiator_id': str(initiator_id),
+    })
+    db.session.add(event)
+
     db.session.commit()
 
     return orga_flag
 
 
-def remove_orga_flag(orga_flag: OrgaFlag) -> None:
+def remove_orga_flag(orga_flag: OrgaFlag, initiator_id: UserID) -> None:
     """Remove the orga flag."""
     db.session.delete(orga_flag)
+
+    user_id = orga_flag.user_id
+    event = user_event_service.build_event('orgaflag-removed', user_id, {
+        'brand_id': str(orga_flag.brand_id),
+        'initiator_id': str(initiator_id),
+    })
+    db.session.add(event)
+
     db.session.commit()
 
 
