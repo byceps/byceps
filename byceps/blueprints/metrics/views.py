@@ -23,7 +23,7 @@ from ...services.shop.order.models import order
 from ...services.shop.order import service as order_service
 from ...services.shop.article import service as shop_article_service
 from ...services.shop.shop import service as shop_service
-from ...services.shop.transfer.models import Shop
+from ...services.shop.shop.transfer.models import Shop
 from ...services.ticketing import ticket_service
 from ...services.user import stats_service as user_stats_service
 from ...util.framework.blueprint import create_blueprint
@@ -93,10 +93,10 @@ def _collect_shop_order_metrics(shops: List[Shop]):
         order_counts_per_payment_state = order_service \
             .count_orders_per_payment_state(shop.id)
 
-        for payment_state, quantity in order_counts_per_payment_state:
+        for payment_state, quantity in order_counts_per_payment_state.items():
             yield Metric('shop_order_quantity', quantity,
                          labels=[
-                             Label('shop', article.shop_id),
+                             Label('shop', shop.id),
                              Label('payment_state', payment_state.name),
                          ])
 
