@@ -39,14 +39,14 @@ def view_current():
 @templated
 def consent_form(token, *, erroneous_form=None):
     """Show that version of the terms, and a form to consent to it."""
-    terms_version = terms_version_service.find_current_version(g.brand_id)
-
     verification_token = verification_token_service \
         .find_for_terms_consent_by_token(token)
 
     if verification_token is None:
         flash_error('Unbekannter Bestätigungscode.')
         abort(404)
+
+    terms_version = terms_version_service.find_current_version(g.brand_id)
 
     form = erroneous_form if erroneous_form \
         else ConsentForm(
