@@ -39,12 +39,7 @@ def view_current():
 @templated
 def consent_form(token, *, erroneous_form=None):
     """Show that version of the terms, and a form to consent to it."""
-    verification_token = verification_token_service \
-        .find_for_terms_consent_by_token(token)
-
-    if verification_token is None:
-        flash_error('Unbekannter Bestätigungscode.')
-        abort(404)
+    verification_token = _get_verification_token_or_404(token)
 
     terms_version = terms_version_service.find_current_version(g.brand_id)
 
@@ -62,12 +57,7 @@ def consent_form(token, *, erroneous_form=None):
 @blueprint.route('/consent/<uuid:token>', methods=['POST'])
 def consent(token):
     """Consent to that version of the terms."""
-    verification_token = verification_token_service \
-        .find_for_terms_consent_by_token(token)
-
-    if verification_token is None:
-        flash_error('Unbekannter Bestätigungscode.')
-        abort(404)
+    verification_token = _get_verification_token_or_404(token)
 
     form = ConsentForm(request.form)
     if not form.validate():
@@ -86,3 +76,14 @@ def consent(token):
 
     flash_success('Du hast die AGB akzeptiert.')
     return redirect_to('authentication.login_form')
+
+
+def _get_verification_token_or_404(token_str):
+    verification_token = verification_token_service \
+        .find_for_terms_consent_by_token(token_str)
+
+    if verification_token is None:
+        flash_error('Unbekannter Bestätigungscode.')
+        abort(404)
+
+    return verification_token
