@@ -19,7 +19,7 @@ from ...util.framework.flash import flash_error, flash_success
 from ...util.framework.templating import templated
 from ...util.views import redirect_to
 
-from .forms import create_consent_form
+from .forms import create_consent_form, get_subject_field_name
 
 
 blueprint = create_blueprint('terms', __name__)
@@ -48,8 +48,8 @@ def consent_form(token, *, erroneous_form=None):
     ConsentForm = create_consent_form(subjects)
     form = erroneous_form if erroneous_form else ConsentForm()
 
-    fields = [getattr(form, 'subject_{}'.format(subject.id.hex))
-              for subject in subjects]
+    field_names = [get_subject_field_name(subject) for subject in subjects]
+    fields = [getattr(form, field_name) for field_name in field_names]
 
     return {
         'terms_version': terms_version,

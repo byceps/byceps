@@ -20,8 +20,12 @@ def create_consent_form(subjects):
                                   default=subject_ids_str)
 
     for subject in subjects:
-        field_name = 'subject_{}'.format(subject.id.hex)
+        field_name = get_subject_field_name(subject)
         field = BooleanField(None, [InputRequired()])
         setattr(ConsentForm, field_name, field)
 
     return ConsentForm
+
+
+def get_subject_field_name(subject):
+    return 'subject_{}'.format(subject.id.hex)
