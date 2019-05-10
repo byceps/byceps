@@ -7,10 +7,11 @@ byceps.blueprints.terms.views
 """
 
 from datetime import datetime
+from uuid import UUID
 
 from flask import abort, g, request
 
-from ...services.consent import consent_service
+from ...services.consent import consent_service, subject_service
 from ...services.terms import version_service as terms_version_service
 from ...services.verification_token import service as verification_token_service
 from ...util.framework.blueprint import create_blueprint
@@ -18,7 +19,7 @@ from ...util.framework.flash import flash_error, flash_success
 from ...util.framework.templating import templated
 from ...util.views import redirect_to
 
-from .forms import ConsentForm
+from .forms import create_consent_form
 
 
 blueprint = create_blueprint('terms', __name__)
@@ -42,15 +43,19 @@ def consent_form(token, *, erroneous_form=None):
     verification_token = _get_verification_token_or_404(token)
 
     terms_version = terms_version_service.find_current_version(g.brand_id)
+    subject_ids = [terms_version.consent_subject.id]
 
-    form = erroneous_form if erroneous_form \
-        else ConsentForm(
-            terms_consent_subject_id=terms_version.consent_subject_id)
+    ConsentForm = create_consent_form(subject_ids)
+    form = erroneous_form if erroneous_form else ConsentForm()
+
+    fields = [getattr(form, 'subject_{}'.format(subject_id.hex))
+              for subject_id in subject_ids]
 
     return {
         'terms_version': terms_version,
         'token': token,
         'form': form,
+        'fields': fields,
     }
 
 
@@ -59,22 +64,28 @@ def consent(token):
     """Consent to that version of the terms."""
     verification_token = _get_verification_token_or_404(token)
 
+    terms_version = terms_version_service.find_current_version(g.brand_id)
+    subject_ids_for_form = [terms_version.consent_subject.id]
+
+    ConsentForm = create_consent_form(subject_ids_for_form)
     form = ConsentForm(request.form)
     if not form.validate():
         return consent_form(token, erroneous_form=form)
 
-    terms_consent_subject_id = form.terms_consent_subject_id.data
-    terms_version = terms_version_service \
-        .find_version_for_consent_subject_id(terms_consent_subject_id)
-    if terms_version is None:
-        flash_error('Unbekannte AGB-Version.')
-        abort(404)
+    subject_ids_from_form = [UUID(id_str)
+                             for id_str in form.subject_ids.data.split(',')]
+
+    for subject_id in subject_ids_from_form:
+        subject = subject_service.find_subject(subject_id)
+        if subject is None:
+            flash_error('Unbekanntes Zustimmungsthema')
+            return consent_form(token, erroneous_form=form)
 
     expressed_at = datetime.utcnow()
-    consent_service.consent_to_subject(
-        terms_consent_subject_id, expressed_at, verification_token)
+    consent_service.consent_to_subjects(subject_ids_from_form, expressed_at,
+                                        verification_token)
 
-    flash_success('Du hast die AGB akzeptiert.')
+    flash_success('Vielen Dank für deine Zustimmung.')
     return redirect_to('authentication.login_form')
 
 

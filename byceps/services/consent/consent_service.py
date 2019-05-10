@@ -30,11 +30,21 @@ def consent_to_subject(subject_id: SubjectID, expressed_at: datetime,
     """Store the user's consent to that subject, and invalidate the
     verification token.
     """
+    consent_to_subjects([subject_id], expressed_at, verification_token)
+
+
+def consent_to_subjects(subject_ids: Sequence[SubjectID],
+                        expressed_at: datetime, verification_token: Token
+                      ) -> None:
+    """Store the user's consent to these subjects, and invalidate the
+    verification token.
+    """
     user_id = verification_token.user_id
     db.session.delete(verification_token)
 
-    consent = build_consent(user_id, subject_id, expressed_at)
-    db.session.add(consent)
+    for subject_id in subject_ids:
+        consent = build_consent(user_id, subject_id, expressed_at)
+        db.session.add(consent)
 
     db.session.commit()
 
