@@ -12,6 +12,7 @@ from ...services.brand import service as brand_service
 from ...services.board import board_service, \
     topic_query_service as board_topic_query_service, \
     posting_query_service as board_posting_query_service
+from ...services.consent import consent_service
 from ...services.metrics.models import Label, Metric
 from ...services.party import service as party_service
 from ...services.shop.order import service as order_service
@@ -34,6 +35,7 @@ def collect_metrics() -> Iterator[Metric]:
     active_shops = shop_service.get_active_shops()
 
     yield from _collect_board_metrics(brand_ids)
+    yield from _collect_consent_metrics()
     yield from _collect_shop_article_metrics(active_shops)
     yield from _collect_shop_order_metrics(active_shops)
     yield from _collect_ticket_metrics()
@@ -55,6 +57,13 @@ def _collect_board_metrics(brand_ids: List[BrandID]) -> Iterator[Metric]:
                 .count_postings_for_board(board_id)
             yield Metric('board_posting_count', posting_count,
                          labels=[Label('board', board_id)])
+
+
+def _collect_consent_metrics() -> Iterator[Metric]:
+    consents_per_subject = consent_service.count_consents_by_subject()
+    for subject_name, consent_count in consents_per_subject.items():
+        yield Metric('consent_count', consent_count,
+                     labels=[Label('subject_name', subject_name)])
 
 
 def _collect_shop_article_metrics(shops: List[Shop]):

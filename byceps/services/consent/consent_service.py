@@ -7,7 +7,7 @@ byceps.services.consent.consent_service
 """
 
 from datetime import datetime
-from typing import Sequence
+from typing import Dict, Sequence
 
 from ...database import db
 from ...typing import UserID
@@ -15,6 +15,7 @@ from ...typing import UserID
 from ..verification_token.models import Token
 
 from .models.consent import Consent as DbConsent
+from .models.subject import Subject as DbSubject
 from .transfer.models import SubjectID
 
 
@@ -47,6 +48,20 @@ def consent_to_subjects(subject_ids: Sequence[SubjectID],
         db.session.add(consent)
 
     db.session.commit()
+
+
+def count_consents_by_subject() -> Dict[str, int]:
+    """Return the number of given consents per subject."""
+    rows = db.session \
+        .query(
+            DbSubject.name,
+            db.func.count(DbConsent.user_id)
+        ) \
+        .outerjoin(DbConsent) \
+        .group_by(DbSubject.name) \
+        .all()
+
+    return dict(rows)
 
 
 def get_consents_by_user(user_id: UserID) -> Sequence[DbConsent]:
