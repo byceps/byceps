@@ -43,13 +43,13 @@ def consent_form(token, *, erroneous_form=None):
     verification_token = _get_verification_token_or_404(token)
 
     terms_version = terms_version_service.find_current_version(g.brand_id)
-    subject_ids = [terms_version.consent_subject.id]
+    subjects = [terms_version.consent_subject]
 
-    ConsentForm = create_consent_form(subject_ids)
+    ConsentForm = create_consent_form(subjects)
     form = erroneous_form if erroneous_form else ConsentForm()
 
-    fields = [getattr(form, 'subject_{}'.format(subject_id.hex))
-              for subject_id in subject_ids]
+    fields = [getattr(form, 'subject_{}'.format(subject.id.hex))
+              for subject in subjects]
 
     return {
         'terms_version': terms_version,
@@ -65,9 +65,9 @@ def consent(token):
     verification_token = _get_verification_token_or_404(token)
 
     terms_version = terms_version_service.find_current_version(g.brand_id)
-    subject_ids_for_form = [terms_version.consent_subject.id]
+    subjects_for_form = [terms_version.consent_subject]
 
-    ConsentForm = create_consent_form(subject_ids_for_form)
+    ConsentForm = create_consent_form(subjects_for_form)
     form = ConsentForm(request.form)
     if not form.validate():
         return consent_form(token, erroneous_form=form)
