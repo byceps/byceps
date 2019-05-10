@@ -14,14 +14,14 @@ from ...typing import UserID
 
 from ..verification_token.models import Token
 
-from .models.consent import Consent
+from .models.consent import Consent as DbConsent
 from .transfer.models import SubjectID
 
 
 def build_consent(user_id: UserID, subject_id: SubjectID, expressed_at: datetime
-                 ) -> Consent:
+                 ) -> DbConsent:
     """Create user's consent to that subject."""
-    return Consent(user_id, subject_id, expressed_at)
+    return DbConsent(user_id, subject_id, expressed_at)
 
 
 def consent_to_subject(subject_id: SubjectID, expressed_at: datetime,
@@ -49,9 +49,9 @@ def consent_to_subjects(subject_ids: Sequence[SubjectID],
     db.session.commit()
 
 
-def get_consents_by_user(user_id: UserID) -> Sequence[Consent]:
+def get_consents_by_user(user_id: UserID) -> Sequence[DbConsent]:
     """Return the consents the user submitted."""
-    return Consent.query \
+    return DbConsent.query \
         .filter_by(user_id=user_id) \
         .all()
 
@@ -62,7 +62,7 @@ def has_user_consented_to_subject(user_id: UserID, subject_id: SubjectID
     return db.session \
         .query(
             db.session
-                .query(Consent)
+                .query(DbConsent)
                 .filter_by(user_id=user_id)
                 .filter_by(subject_id=subject_id)
                 .exists()
