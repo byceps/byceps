@@ -11,13 +11,13 @@ from typing import Optional, Sequence
 from ...database import db
 from ...typing import PartyID
 
-from .models.category import Category
+from .models.category import Category as DbCategory
 from .transfer.models import TicketCategoryID
 
 
-def create_category(party_id: PartyID, title: str) -> Category:
+def create_category(party_id: PartyID, title: str) -> DbCategory:
     """Create a category."""
-    category = Category(party_id, title)
+    category = DbCategory(party_id, title)
 
     db.session.add(category)
     db.session.commit()
@@ -27,18 +27,18 @@ def create_category(party_id: PartyID, title: str) -> Category:
 
 def count_categories_for_party(party_id: PartyID) -> int:
     """Return the number of categories for that party."""
-    return Category.query \
+    return DbCategory.query \
         .for_party(party_id) \
         .count()
 
 
-def find_category(category_id: TicketCategoryID) -> Optional[Category]:
+def find_category(category_id: TicketCategoryID) -> Optional[DbCategory]:
     """Return the category with that ID, or `None` if not found."""
-    return Category.query.get(category_id)
+    return DbCategory.query.get(category_id)
 
 
-def get_categories_for_party(party_id: PartyID) -> Sequence[Category]:
+def get_categories_for_party(party_id: PartyID) -> Sequence[DbCategory]:
     """Return all categories for that party."""
-    return Category.query \
+    return DbCategory.query \
         .for_party(party_id) \
         .all()

@@ -13,8 +13,8 @@ from ...typing import UserID
 
 from ..shop.order.transfer.models import OrderNumber
 
-from .models.ticket import Ticket
-from .models.ticket_bundle import TicketBundle
+from .models.ticket import Ticket as DbTicket
+from .models.ticket_bundle import TicketBundle as DbTicketBundle
 from .ticket_creation_service import build_tickets
 from .ticket_revocation_service import \
     _build_ticket_revoked_event as build_ticket_revoked_event
@@ -24,12 +24,12 @@ from .transfer.models import TicketBundleID, TicketCategoryID
 def create_bundle(category_id: TicketCategoryID, ticket_quantity: int,
                   owned_by_id: UserID,
                   *, order_number: Optional[OrderNumber]=None
-                 ) -> TicketBundle:
+                 ) -> DbTicketBundle:
     """Create a ticket bundle and the given quantity of tickets."""
     if ticket_quantity < 1:
         raise ValueError('Ticket quantity must be positive.')
 
-    bundle = TicketBundle(category_id, ticket_quantity, owned_by_id)
+    bundle = DbTicketBundle(category_id, ticket_quantity, owned_by_id)
     db.session.add(bundle)
 
     tickets = list(build_tickets(category_id, owned_by_id, ticket_quantity,
@@ -60,13 +60,13 @@ def revoke_bundle(bundle_id: TicketBundleID, *,
     db.session.commit()
 
 
-def find_bundle(bundle_id: TicketBundleID) -> Optional[TicketBundle]:
+def find_bundle(bundle_id: TicketBundleID) -> Optional[DbTicketBundle]:
     """Return the ticket bundle with that id, or `None` if not found."""
-    return TicketBundle.query.get(bundle_id)
+    return DbTicketBundle.query.get(bundle_id)
 
 
-def find_tickets_for_bundle(bundle_id: TicketBundleID) -> Sequence[Ticket]:
+def find_tickets_for_bundle(bundle_id: TicketBundleID) -> Sequence[DbTicket]:
     """Return all tickets included in this bundle."""
-    return Ticket.query \
-        .filter(Ticket.bundle_id == bundle_id) \
+    return DbTicket.query \
+        .filter(DbTicket.bundle_id == bundle_id) \
         .all()

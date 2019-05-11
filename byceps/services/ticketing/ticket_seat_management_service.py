@@ -9,14 +9,14 @@ byceps.services.ticketing.ticket_seat_management_service
 from ...database import db
 from ...typing import UserID
 
-from ..seating.models.seat import Seat
+from ..seating.models.seat import Seat as DbSeat
 from ..seating import seat_service
 from ..seating.transfer.models import SeatID
 
 from . import event_service
 from .exceptions import SeatChangeDeniedForBundledTicket, \
     SeatChangeDeniedForGroupSeat, TicketCategoryMismatch, TicketIsRevoked
-from .models.ticket import Ticket
+from .models.ticket import Ticket as DbTicket
 from . import ticket_service
 from .transfer.models import TicketID
 
@@ -119,7 +119,7 @@ def release_seat(ticket_id: TicketID, initiator_id: UserID) -> None:
     db.session.commit()
 
 
-def _deny_seat_management_if_ticket_belongs_to_bundle(ticket: Ticket) -> None:
+def _deny_seat_management_if_ticket_belongs_to_bundle(ticket: DbTicket) -> None:
     """Raise an exception if this ticket belongs to a bundle.
 
     A ticket bundle is meant to occupy a matching seat group with the
@@ -132,7 +132,7 @@ def _deny_seat_management_if_ticket_belongs_to_bundle(ticket: Ticket) -> None:
             .format(ticket.code))
 
 
-def _deny_seat_management_if_seat_belongs_to_group(seat: Seat) -> None:
+def _deny_seat_management_if_seat_belongs_to_group(seat: DbSeat) -> None:
     if seat.assignment is not None:
         raise SeatChangeDeniedForGroupSeat(
             "Seat '{}' belongs to a group and, thus, "

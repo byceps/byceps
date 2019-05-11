@@ -14,14 +14,14 @@ from ...typing import UserID
 
 from ..shop.order.transfer.models import OrderNumber
 
-from .models.ticket import Ticket
-from .models.ticket_bundle import TicketBundle
+from .models.ticket import Ticket as DbTicket
+from .models.ticket_bundle import TicketBundle as DbTicketBundle
 from .transfer.models import TicketCategoryID, TicketCode
 
 
 def create_ticket(category_id: TicketCategoryID, owned_by_id: UserID,
                   *, order_number: Optional[OrderNumber]=None
-                 ) -> Sequence[Ticket]:
+                 ) -> Sequence[DbTicket]:
     """Create a single ticket."""
     tickets = create_tickets(category_id, owned_by_id, 1,
                              order_number=order_number)
@@ -30,7 +30,7 @@ def create_ticket(category_id: TicketCategoryID, owned_by_id: UserID,
 
 def create_tickets(category_id: TicketCategoryID, owned_by_id: UserID,
                    quantity: int, *, order_number: Optional[OrderNumber]=None
-                  ) -> Sequence[Ticket]:
+                  ) -> Sequence[DbTicket]:
     """Create a number of tickets of the same category for a single owner."""
     tickets = list(build_tickets(category_id, owned_by_id, quantity,
                                  order_number=order_number))
@@ -42,8 +42,9 @@ def create_tickets(category_id: TicketCategoryID, owned_by_id: UserID,
 
 
 def build_tickets(category_id: TicketCategoryID, owned_by_id: UserID,
-                  quantity: int, *, bundle: Optional[TicketBundle]=None,
-                  order_number: Optional[OrderNumber]=None) -> Iterator[Ticket]:
+                  quantity: int, *, bundle: Optional[DbTicketBundle]=None,
+                  order_number: Optional[OrderNumber]=None
+                 ) -> Iterator[DbTicket]:
     if quantity < 1:
         raise ValueError('Ticket quantity must be positive.')
 
@@ -53,8 +54,8 @@ def build_tickets(category_id: TicketCategoryID, owned_by_id: UserID,
         code = _generate_ticket_code_not_in(codes)
         codes.add(code)
 
-        yield Ticket(code, category_id, owned_by_id, bundle=bundle,
-                     order_number=order_number)
+        yield DbTicket(code, category_id, owned_by_id, bundle=bundle,
+                       order_number=order_number)
 
 
 _CODE_ALPHABET = 'BCDFGHJKLMNPQRSTVWXYZ'

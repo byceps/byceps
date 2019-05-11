@@ -20,15 +20,16 @@ from ..party.transfer.models import Party
 from ..user import service as user_service
 from ..user.transfer.models import User
 
-from .models.archived_attendance import ArchivedAttendance
-from .models.category import Category
-from .models.ticket import Ticket
+from .models.archived_attendance import \
+    ArchivedAttendance as DbArchivedAttendance
+from .models.category import Category as DbCategory
+from .models.ticket import Ticket as DbTicket
 
 
 def create_archived_attendance(user_id: UserID, party_id: PartyID
-                              ) -> ArchivedAttendance:
+                              ) -> DbArchivedAttendance:
     """Create an archived attendance of the user at the party."""
-    attendance = ArchivedAttendance(user_id, party_id)
+    attendance = DbArchivedAttendance(user_id, party_id)
 
     db.session.add(attendance)
     db.session.commit()
@@ -53,7 +54,9 @@ def _get_attended_party_ids(user_id: UserID) -> Set[PartyID]:
     party_id_rows = db.session \
         .query(DbParty.id) \
         .filter(DbParty.ends_at < datetime.now()) \
-        .join(Category).join(Ticket).filter(Ticket.used_by_id == user_id) \
+        .join(DbCategory) \
+        .join(DbTicket) \
+        .filter(DbTicket.used_by_id == user_id) \
         .all()
 
     return {row[0] for row in party_id_rows}
@@ -62,8 +65,8 @@ def _get_attended_party_ids(user_id: UserID) -> Set[PartyID]:
 def _get_archived_attendance_party_ids(user_id: UserID) -> Set[PartyID]:
     """Return the IDs of the legacy parties the user has attended."""
     party_id_rows = db.session \
-        .query(ArchivedAttendance.party_id) \
-        .filter(ArchivedAttendance.user_id == user_id) \
+        .query(DbArchivedAttendance.party_id) \
+        .filter(DbArchivedAttendance.user_id == user_id) \
         .all()
 
     return {row[0] for row in party_id_rows}
@@ -101,15 +104,18 @@ def get_attendee_ids_for_parties(party_ids: Set[PartyID]
         return {}
 
     ticket_rows = db.session \
-        .query(Category.party_id, Ticket.used_by_id) \
-        .filter(Category.party_id.in_(party_ids)) \
-        .join(Ticket) \
-        .filter(Ticket.used_by_id != None) \
+        .query(DbCategory.party_id, DbTicket.used_by_id) \
+        .filter(DbCategory.party_id.in_(party_ids)) \
+        .join(DbTicket) \
+        .filter(DbTicket.used_by_id != None) \
         .all()
 
     archived_attendance_rows = db.session \
-        .query(ArchivedAttendance.party_id, ArchivedAttendance.user_id) \
-        .filter(ArchivedAttendance.party_id.in_(party_ids)) \
+        .query(
+            DbArchivedAttendance.party_id,
+            DbArchivedAttendance.user_id
+        ) \
+        .filter(DbArchivedAttendance.party_id.in_(party_ids)) \
         .all()
 
     rows = ticket_rows + archived_attendance_rows
