@@ -46,15 +46,12 @@ def index_for_scope(scope_type, scope_name):
     snippets = snippet_service \
         .get_snippets_for_scope_with_current_versions(scope)
 
-    mountpoints = mountpoint_service.get_mountpoints_for_scope(scope)
-
     brand = _find_brand_for_scope(scope)
     site = _find_site_for_scope(scope)
 
     return {
         'scope': scope,
         'snippets': snippets,
-        'mountpoints': mountpoints,
         'brand': brand,
         'site': site,
     }
@@ -376,6 +373,24 @@ def compare_fragments(from_version_id, to_version_id):
 
 # -------------------------------------------------------------------- #
 # mountpoint
+
+
+@blueprint.route('/mountpoints/<site_id>')
+@permission_required(SnippetPermission.view)
+@templated
+def index_mountpoints(site_id):
+    """List mountpoints for that site."""
+    scope = Scope.for_site(site_id)
+
+    mountpoints = mountpoint_service.get_mountpoints_for_scope(scope)
+
+    site = _find_site_for_scope(scope)
+
+    return {
+        'scope': scope,
+        'mountpoints': mountpoints,
+        'site': site,
+    }
 
 
 @blueprint.route('/snippets/<uuid:snippet_id>/mountpoints/create')

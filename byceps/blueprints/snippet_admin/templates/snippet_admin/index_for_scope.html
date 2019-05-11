@@ -5,6 +5,27 @@
 {% from 'macros/user_admin.html' import render_user_avatar_20_and_name %}
 {% set title = '%s/%s - Snippets'|format(scope.type_, scope.name) %}
 
+{% block before_body %}
+  {% if scope.type_ == 'site' %}
+    {%- from 'macros/admin.html' import render_main_tabs %}
+    {%- set current_tab = 'snippets' %}
+    {{ render_main_tabs(
+      Navigation(None)
+        .add_item(
+          url_for('.index_for_scope', scope_type=scope.type_, scope_name=scope.name),
+          'Snippets',
+          id='snippets',
+          required_permission=SnippetPermission.view)
+        .add_item(
+          url_for('.index_mountpoints', site_id=site.id),
+          'Mountpoints',
+          id='mountpoints',
+          required_permission=SnippetPermission.view)
+      , current_tab
+    ) }}
+  {% endif %}
+{%- endblock %}
+
 {% block body %}
 
   <nav class="breadcrumbs">
@@ -70,44 +91,4 @@
     </tbody>
   </table>
 
-  <h2>Mountpoints {{ render_extra_in_heading(mountpoints|length) }}</h2>
-
-  <table class="index wide">
-    <thead>
-      <tr>
-        <th>URL-Pfad</th>
-        <th>Bezeichner</th>
-        <th>Snippet</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      {%- for mountpoint in mountpoints|sort(attribute='url_path') %}
-      <tr>
-        <td>{{ mountpoint.url_path }}</td>
-        <td>{{ mountpoint.endpoint_suffix }}</td>
-        <td>{{ mountpoint.snippet.name }}</td>
-        <td>
-        {%- if g.current_user.has_permission(SnippetMountpointPermission.delete) %}
-          <div class="dropdown left">
-            <button class="dropdown-toggle button button--compact">{{ render_icon('caret-down') }}</button>
-            <ol>
-              <li><a data-action="mountpoint-delete" href="{{ url_for('.delete_mountpoint', mountpoint_id=mountpoint.id) }}">{{ render_icon('remove') }} Mountpoint entfernen</a></li>
-            </ol>
-          </div>
-        {%- endif %}
-        </td>
-      </tr>
-    {%- endfor %}
-    </tbody>
-  </table>
-
-{%- endblock %}
-
-{% block scripts %}
-    <script>
-      onDomReady(function() {
-        confirmed_delete_on_click_then_reload('[data-action="mountpoint-delete"]', 'Mountpoint entfernen?');
-      });
-    </script>
 {%- endblock %}
