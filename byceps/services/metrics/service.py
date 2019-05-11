@@ -15,13 +15,14 @@ from ...services.board import board_service, \
 from ...services.consent import consent_service
 from ...services.metrics.models import Label, Metric
 from ...services.party import service as party_service
+from ...services.seating import seat_service
 from ...services.shop.order import service as order_service
 from ...services.shop.article import service as shop_article_service
 from ...services.shop.shop import service as shop_service
 from ...services.shop.shop.transfer.models import Shop
 from ...services.ticketing import ticket_service
 from ...services.user import stats_service as user_stats_service
-from ...typing import BrandID
+from ...typing import BrandID, PartyID
 
 
 def serialize(metrics: Iterator[Metric]) -> str:
@@ -32,13 +33,18 @@ def serialize(metrics: Iterator[Metric]) -> str:
 
 def collect_metrics() -> Iterator[Metric]:
     brand_ids = [brand.id for brand in brand_service.get_brands()]
+
+    active_parties = party_service.get_active_parties()
+    active_party_ids = [p.id for p in active_parties]
+
     active_shops = shop_service.get_active_shops()
 
     yield from _collect_board_metrics(brand_ids)
     yield from _collect_consent_metrics()
     yield from _collect_shop_article_metrics(active_shops)
     yield from _collect_shop_order_metrics(active_shops)
-    yield from _collect_ticket_metrics()
+    yield from _collect_seating_metrics(active_party_ids)
+    yield from _collect_ticket_metrics(active_party_ids)
     yield from _collect_user_metrics()
 
 
@@ -92,11 +98,22 @@ def _collect_shop_order_metrics(shops: List[Shop]):
                          ])
 
 
-def _collect_ticket_metrics() -> Iterator[Metric]:
-    """Provide ticket counts for active parties."""
-    active_parties = party_service.get_active_parties()
-    active_party_ids = [p.id for p in active_parties]
+def _collect_seating_metrics(active_party_ids: List[PartyID]):
+    """Provide seat occupation counts per party and category."""
+    for party_id in active_party_ids:
+        occupied_seat_counts_by_category = seat_service \
+            .count_occupied_seats_by_category(party_id)
 
+        for category, count in occupied_seat_counts_by_category:
+            yield Metric('occupied_seat_count', count,
+                         labels=[
+                             Label('party', party_id),
+                             Label('category_title', category.title),
+                         ])
+
+
+def _collect_ticket_metrics(active_party_ids: List[PartyID]) -> Iterator[Metric]:
+    """Provide ticket counts for active parties."""
     for party_id in active_party_ids:
         tickets_revoked_count = ticket_service \
             .count_revoked_tickets_for_party(party_id)

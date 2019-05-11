@@ -6,12 +6,14 @@ byceps.services.seating.seat_service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import Dict, Optional, Sequence, Set
+from typing import Dict, List, Optional, Sequence, Set, Tuple
 
 from ...database import db
 from ...typing import PartyID
 
-from ..ticketing.transfer.models import TicketCategoryID
+from ..ticketing.models.category import Category as DbTicketCategory
+from ..ticketing.models.ticket import Ticket as DbTicket
+from ..ticketing.transfer.models import TicketCategory, TicketCategoryID
 
 from .models.area import Area as DbArea
 from .models.seat import Seat as DbSeat
@@ -28,6 +30,34 @@ def create_seat(area: DbArea, coord_x: int, coord_y: int,
     db.session.commit()
 
     return seat
+
+
+def count_occupied_seats_by_category(party_id: PartyID
+                                    ) -> List[Tuple[TicketCategory, int]]:
+    """Count occupied seats for the party, grouped by ticket category."""
+    subquery = db.session \
+        .query(
+            DbSeat.id,
+            DbSeat.category_id
+        ) \
+        .join(DbTicket) \
+        .filter_by(revoked=False) \
+        .subquery()
+
+    rows = db.session \
+        .query(
+            DbTicketCategory.id,
+            DbTicketCategory.party_id,
+            DbTicketCategory.title,
+            db.func.count(subquery.c.id)
+        ) \
+        .outerjoin(subquery, db.and_(DbTicketCategory.id == subquery.c.category_id)) \
+        .filter(DbTicketCategory.party_id == party_id) \
+        .group_by(DbTicketCategory.id) \
+        .order_by(DbTicketCategory.id) \
+        .all()
+
+    return [(TicketCategory(row[0], row[1], row[2]), row[3]) for row in rows]
 
 
 def count_seats_for_party(party_id: PartyID) -> int:
