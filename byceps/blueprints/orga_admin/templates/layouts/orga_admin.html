@@ -6,8 +6,18 @@
 {{
   render_main_tabs(
     Navigation(None)
-      .add_item(url_for('.persons'), 'Personen', id='persons', required_permission=OrgaDetailPermission.view, icon='users')
-      .add_item(url_for('.birthdays'), 'Geburtstage', id='birthdays', required_permission=OrgaBirthdayPermission.view, icon='birthday')
+      .add_item(
+        url_for('.persons'),
+        'Personen',
+        id='persons',
+        required_permission=OrgaDetailPermission.view,
+        icon='users')
+      .add_item(
+        url_for('.birthdays'),
+        'Geburtstage',
+        id='birthdays',
+        required_permission=OrgaBirthdayPermission.view,
+        icon='birthday')
     , current_tab
   )
 }}
