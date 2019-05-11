@@ -13,6 +13,7 @@ from ...util.l10n import LocalizedForm
 
 
 class MountpointCreateForm(LocalizedForm):
+    site_id = StringField('Site-ID', [InputRequired()])
     endpoint_suffix = StringField('Bezeichner', [InputRequired()])
     url_path = StringField('URL-Pfad', [InputRequired()])
 

@@ -426,17 +426,16 @@ def create_mountpoint(snippet_id):
     if not form.validate():
         return create_mountpoint_form(snippet.id, erroneous_form=form)
 
+    site_id = form.site_id.data
     endpoint_suffix = form.endpoint_suffix.data.strip()
     url_path = form.url_path.data.strip()
 
     mountpoint = mountpoint_service \
-        .create_mountpoint(endpoint_suffix, url_path, snippet.id)
+        .create_mountpoint(site_id, endpoint_suffix, url_path, snippet.id)
 
     flash_success('Der Mountpoint für "{}" wurde angelegt.',
                   mountpoint.url_path)
-    return redirect_to('.index_for_scope',
-                       scope_type=snippet.scope.type_,
-                       scope_name=snippet.scope.name)
+    return redirect_to('.index_mountpoints', site_id=site_id)
 
 
 @blueprint.route('/mountpoints/<uuid:mountpoint_id>', methods=['DELETE'])

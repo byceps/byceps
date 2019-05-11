@@ -17,10 +17,10 @@ from .models.snippet import CurrentVersionAssociation, Snippet, SnippetVersion
 from .transfer.models import MountpointID, SnippetID
 
 
-def create_mountpoint(endpoint_suffix: str, url_path: str, snippet_id: SnippetID
-                     ) -> Mountpoint:
+def create_mountpoint(site_id: SiteID, endpoint_suffix: str, url_path: str,
+                      snippet_id: SnippetID) -> Mountpoint:
     """Create a mountpoint."""
-    mountpoint = Mountpoint(endpoint_suffix, url_path, snippet_id)
+    mountpoint = Mountpoint(site_id, endpoint_suffix, url_path, snippet_id)
 
     db.session.add(mountpoint)
     db.session.commit()
@@ -42,9 +42,8 @@ def find_mountpoint(mountpoint_id: MountpointID) -> Optional[Mountpoint]:
 def get_mountpoints_for_site(site_id: SiteID) -> Sequence[Mountpoint]:
     """Return all mountpoints for that site."""
     return Mountpoint.query \
+        .filter_by(site_id=site_id) \
         .join(Snippet) \
-            .filter_by(scope_type='site') \
-            .filter_by(scope_name=site_id) \
         .all()
 
 def find_current_snippet_version_for_mountpoint(site_id: SiteID,
