@@ -3,7 +3,6 @@
 {% set current_page = 'authorization_admin' %}
 
 {% block before_body %}
-  {%- with party = current_page_party %}
 {{
   render_main_tabs(
     Navigation(None)
@@ -20,5 +19,4 @@
     , current_tab
   )
 }}
-  {%- endwith %}
 {%- endblock %}
