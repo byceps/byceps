@@ -1,6 +1,8 @@
 {% extends 'layout/admin/base.html' %}
 
-{% if scope.type_ == 'brand' %}
+{% if scope.type_ == 'global' %}
+  {% set current_page = 'snippet_admin_for_global' %}
+{% elif scope.type_ == 'brand' %}
   {% set current_page = 'snippet_admin_for_brand' %}
   {% set current_page_brand = brand %}
 {% elif scope.type_ == 'site' %}

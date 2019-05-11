@@ -30,6 +30,12 @@
         id='user_badge_admin',
         icon='badge')
       .add_item(
+        url_for('snippet_admin.index_for_scope', scope_type='global', scope_name='global'),
+        'Snippets',
+        id='snippet_admin_for_global',
+        required_permission=SnippetPermission.view,
+        icon='snippet')
+      .add_item(
         url_for('orga_admin.birthdays'),
         'Geburtstage',
         id='orga_admin.birthdays',

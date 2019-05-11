@@ -23,6 +23,10 @@ class Scope:
     name = attrib(type=str)
 
     @classmethod
+    def for_global(cls) -> 'Scope':
+        return cls('global', 'global')
+
+    @classmethod
     def for_brand(cls, brand_id: BrandID) -> 'Scope':
         return cls('brand', str(brand_id))
 
