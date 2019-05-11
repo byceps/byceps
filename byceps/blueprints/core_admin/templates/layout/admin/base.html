@@ -37,9 +37,15 @@
 
 {%- with
   brand = current_page_brand|default,
-  party = current_page_party|default
+  party = current_page_party|default,
+  site = current_page_site|default
 %}
-  {%- if party %}
+  {%- if site %}
+            <span class="label-and-name">
+              <span class="label">Site</span>
+              <span class="name">{{ site.title }}</span>
+            </span>
+  {%- elif party %}
             <span class="label-and-name">
               <span class="label">Party</span>
               <span class="name">{{ party.title }}</span>
