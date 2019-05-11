@@ -40,7 +40,7 @@
       <tr>
         <th>URL-Pfad</th>
         <th>Bezeichner</th>
-        <th>Snippet</th>
+        <th>Snippet<br>Scope</th>
         <th></th>
       </tr>
     </thead>
@@ -49,7 +49,10 @@
       <tr>
         <td>{{ mountpoint.url_path }}</td>
         <td>{{ mountpoint.endpoint_suffix }}</td>
-        <td>{{ mountpoint.snippet.name }}</td>
+        <td>
+          {{- mountpoint.snippet.name }}<br>
+          <span class="dimmed">{{ mountpoint.snippet.scope.type_ }}/{{ mountpoint.snippet.scope.name }}</span>
+        </td>
         <td>
         {%- if g.current_user.has_permission(SnippetMountpointPermission.delete) %}
           <div class="dropdown left">
