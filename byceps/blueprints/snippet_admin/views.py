@@ -382,7 +382,7 @@ def index_mountpoints(site_id):
     """List mountpoints for that site."""
     scope = Scope.for_site(site_id)
 
-    mountpoints = mountpoint_service.get_mountpoints_for_scope(scope)
+    mountpoints = mountpoint_service.get_mountpoints_for_site(site_id)
 
     site = _find_site_for_scope(scope)
 

@@ -13,9 +13,9 @@ from ...services.snippet import mountpoint_service
 from .views import blueprint, view_latest_by_name
 
 
-def add_routes_for_snippets(scope):
+def add_routes_for_snippets(site_id):
     """Register routes for snippets with the application."""
-    mountpoints = mountpoint_service.get_mountpoints_for_scope(scope)
+    mountpoints = mountpoint_service.get_mountpoints_for_site(site_id)
 
     for mountpoint in mountpoints:
         add_route_for_snippet(mountpoint)

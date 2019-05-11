@@ -10,9 +10,11 @@ from typing import Optional, Sequence
 
 from ...database import db
 
+from ..site.transfer.models import SiteID
+
 from .models.mountpoint import Mountpoint
 from .models.snippet import Snippet
-from .transfer.models import MountpointID, Scope, SnippetID
+from .transfer.models import MountpointID, SnippetID
 
 
 def create_mountpoint(endpoint_suffix: str, url_path: str, snippet_id: SnippetID
@@ -37,10 +39,10 @@ def find_mountpoint(mountpoint_id: MountpointID) -> Optional[Mountpoint]:
     return Mountpoint.query.get(mountpoint_id)
 
 
-def get_mountpoints_for_scope(scope: Scope) -> Sequence[Mountpoint]:
-    """Return all mountpoints for that scope."""
+def get_mountpoints_for_site(site_id: SiteID) -> Sequence[Mountpoint]:
+    """Return all mountpoints for that site."""
     return Mountpoint.query \
         .join(Snippet) \
-            .filter_by(scope_type=scope.type_) \
-            .filter_by(scope_name=scope.name) \
+            .filter_by(scope_type='site') \
+            .filter_by(scope_name=site_id) \
         .all()

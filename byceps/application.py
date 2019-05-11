@@ -16,7 +16,6 @@ from . import config, config_defaults
 from .database import db
 from . import email
 from .redis import redis
-from .services.snippet.transfer.models import Scope
 from .util.framework.blueprint import register_blueprint
 from .util.l10n import set_locale
 from .util import templatefilters
@@ -159,8 +158,7 @@ def init_app(app):
         if site_mode.is_public():
             # Mount snippets.
             site_id = config.get_current_site_id()
-            scope = Scope.for_site(site_id)
-            add_routes_for_snippets(scope)
+            add_routes_for_snippets(site_id)
 
             # Incorporate template overrides for the configured site ID.
             site_id = config.get_current_site_id()
