@@ -15,8 +15,8 @@
 
   <form action="{{ url_for('.update_fragment', snippet_id=snippet.id) }}" method="post">
     {% call form_fieldset() %}
-      {{ form_field(form.name, maxlength=40, required='required', readonly='readonly', autofocus='autofocus') }}
-      {{ form_field(form.body, required='required', class='monospace wide') }}
+      {{ form_field(form.name, maxlength=40, readonly='readonly', autofocus='autofocus') }}
+      {{ form_field(form.body, class='monospace wide') }}
     {% endcall %}
 
     {{ form_buttons('Speichern', cancel_url=url_for('.index_for_scope', scope_type=snippet.scope.type_, scope_name=snippet.scope.name)) }}

@@ -7,14 +7,14 @@ byceps.blueprints.snippet_admin.forms
 """
 
 from wtforms import StringField, TextAreaField
-from wtforms.validators import ValidationError
+from wtforms.validators import InputRequired, ValidationError
 
 from ...util.l10n import LocalizedForm
 
 
 class MountpointCreateForm(LocalizedForm):
-    endpoint_suffix = StringField('Bezeichner')
-    url_path = StringField('URL-Pfad')
+    endpoint_suffix = StringField('Bezeichner', [InputRequired()])
+    url_path = StringField('URL-Pfad', [InputRequired()])
 
     def validate_url_path(form, field):
         if not field.data.startswith('/'):
@@ -26,8 +26,8 @@ class MountpointUpdateForm(MountpointCreateForm):
 
 
 class FragmentCreateForm(LocalizedForm):
-    name = StringField('Bezeichner')
-    body = TextAreaField('Text')
+    name = StringField('Bezeichner', [InputRequired()])
+    body = TextAreaField('Text', [InputRequired()])
 
 
 class FragmentUpdateForm(FragmentCreateForm):
@@ -35,7 +35,7 @@ class FragmentUpdateForm(FragmentCreateForm):
 
 
 class DocumentCreateForm(FragmentCreateForm):
-    title = StringField('Titel')
+    title = StringField('Titel', [InputRequired()])
     head = TextAreaField('Seitenkopf')
     image_url_path = StringField('Bild-URL-Pfad')
 
