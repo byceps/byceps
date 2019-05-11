@@ -10,7 +10,7 @@ from flask import current_app
 
 from ...services.snippet import mountpoint_service
 
-from .views import blueprint, view_latest_by_name
+from .views import blueprint as snippet_blueprint, view_current_version_by_name
 
 
 def add_routes_for_snippets(site_id):
@@ -23,11 +23,12 @@ def add_routes_for_snippets(site_id):
 
 def add_route_for_snippet(mountpoint):
     """Register a route for the snippet."""
-    endpoint = '{}.{}'.format(blueprint.name, mountpoint.endpoint_suffix)
+    endpoint = '{}.{}'.format(snippet_blueprint.name,
+                              mountpoint.endpoint_suffix)
     defaults = {'name': mountpoint.snippet.name}
 
     current_app.add_url_rule(
         mountpoint.url_path,
         endpoint,
-        view_func=view_latest_by_name,
+        view_func=view_current_version_by_name,
         defaults=defaults)

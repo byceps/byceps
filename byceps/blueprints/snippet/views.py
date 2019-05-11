@@ -22,8 +22,10 @@ blueprint = create_blueprint('snippet', __name__)
 blueprint.add_app_template_global(render_snippet_as_partial, 'render_snippet')
 
 
-def view_latest_by_name(name):
-    """Show the latest version of the snippet with the given name."""
+def view_current_version_by_name(name):
+    """Show the current version of the snippet that is mounted with that
+    name.
+    """
     # TODO: Fetch snippet via mountpoint
     # endpoint suffix != snippet name
     version = _find_current_snippet_version(name)
