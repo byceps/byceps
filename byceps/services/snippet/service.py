@@ -133,6 +133,16 @@ def find_current_version_of_snippet_with_name(scope: Scope, name: str
         .one_or_none()
 
 
+def get_versions(snippet_id: SnippetID) -> Sequence[SnippetVersion]:
+    """Return all versions of that snippet, sorted from most recent to
+    oldest.
+    """
+    return SnippetVersion.query \
+        .filter_by(snippet_id=snippet_id) \
+        .latest_first() \
+        .all()
+
+
 def search_snippets(search_term: str, scope: Optional[Scope]
                    ) -> List[SnippetVersion]:
     """Search in (the latest versions of) snippets."""

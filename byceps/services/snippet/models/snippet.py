@@ -11,7 +11,7 @@ page.
 """
 
 from datetime import datetime
-from typing import Optional, Sequence
+from typing import Optional
 
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
@@ -71,10 +71,6 @@ class Snippet(db.Model):
     def is_fragment(self) -> bool:
         return self.type_ == SnippetType.fragment
 
-    def get_versions(self) -> Sequence['SnippetVersion']:
-        """Return all versions, sorted from most recent to oldest."""
-        return SnippetVersion.query.for_snippet(self).latest_first().all()
-
     def __repr__(self) -> str:
         return ReprBuilder(self) \
             .add_with_lookup('id') \
@@ -86,9 +82,6 @@ class Snippet(db.Model):
 
 
 class SnippetVersionQuery(BaseQuery):
-
-    def for_snippet(self, snippet: Snippet) -> BaseQuery:
-        return self.filter_by(snippet=snippet)
 
     def latest_first(self) -> BaseQuery:
         return self.order_by(SnippetVersion.created_at.desc())

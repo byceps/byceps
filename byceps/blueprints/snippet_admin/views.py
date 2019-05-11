@@ -109,7 +109,7 @@ def history(snippet_id):
 
     scope = snippet.scope
 
-    versions = snippet.get_versions()
+    versions = snippet_service.get_versions(snippet.id)
     versions_pairwise = list(pairwise(versions + [None]))
 
     brand = _find_brand_for_scope(scope)
