@@ -1,9 +1,9 @@
 {% extends 'layout/admin/base.html' %}
 
-{% if brand %}
+{% if scope.type_ == 'brand' %}
   {% set current_page = 'snippet_admin_for_brand' %}
   {% set current_page_brand = brand %}
-{% elif site %}
+{% elif scope.type_ == 'site' %}
   {% set current_page = 'snippet_admin_for_site' %}
   {% set current_page_site = site %}
 {% endif %}

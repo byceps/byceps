@@ -97,6 +97,7 @@ def view_version(snippet_version_id):
             'error_message': str(e),
         }
 
+    context['scope'] = scope
     context['brand'] = _find_brand_for_scope(scope)
     context['site'] = _find_site_for_scope(scope)
 
@@ -118,6 +119,7 @@ def history(snippet_id):
     site = _find_site_for_scope(scope)
 
     return {
+        'scope': scope,
         'snippet': snippet,
         'versions_pairwise': versions_pairwise,
         'brand': brand,
@@ -192,6 +194,7 @@ def update_document_form(snippet_id):
     site = _find_site_for_scope(scope)
 
     return {
+        'scope': scope,
         'form': form,
         'snippet': snippet,
         'brand': brand,
@@ -246,6 +249,7 @@ def compare_documents(from_version_id, to_version_id):
     site = _find_site_for_scope(scope)
 
     return {
+        'scope': scope,
         'diff_title': html_diff_title,
         'diff_head': html_diff_head,
         'diff_body': html_diff_body,
@@ -317,6 +321,7 @@ def update_fragment_form(snippet_id):
     site = _find_site_for_scope(scope)
 
     return {
+        'scope': scope,
         'form': form,
         'snippet': snippet,
         'brand': brand,
@@ -362,6 +367,7 @@ def compare_fragments(from_version_id, to_version_id):
     site = _find_site_for_scope(scope)
 
     return {
+        'scope': scope,
         'diff_body': html_diff_body,
         'brand': brand,
         'site': site,
@@ -387,6 +393,7 @@ def create_mountpoint_form(snippet_id):
     site = _find_site_for_scope(scope)
 
     return {
+        'scope': scope,
         'snippet': snippet,
         'form': form,
         'brand': brand,
