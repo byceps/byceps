@@ -35,18 +35,22 @@
           </div><!-- /.column -->
           <div class="column">
 
-            <div class="head">
 {%- with
   brand = current_page_brand|default,
   party = current_page_party|default
 %}
   {%- if party %}
-    {{ party.title }}
+            <span class="label-and-name">
+              <span class="label">Party</span>
+              <span class="name">{{ party.title }}</span>
+            </span>
   {%- elif brand %}
-    {{ brand.title }}
+            <span class="label-and-name">
+              <span class="label">Marke</span>
+              <span class="name">{{ brand.title }}</span>
+            </span>
   {%- endif %}
 {%- endwith %}
-            </div><!-- /.head -->
 
           </div><!-- /.column -->
         </div><!-- /#header-grid -->
