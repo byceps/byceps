@@ -12,17 +12,17 @@ from ...database import db
 from ...typing import PartyID
 
 from .models.category import Category as DbCategory
-from .transfer.models import TicketCategoryID
+from .transfer.models import TicketCategory, TicketCategoryID
 
 
-def create_category(party_id: PartyID, title: str) -> DbCategory:
+def create_category(party_id: PartyID, title: str) -> TicketCategory:
     """Create a category."""
     category = DbCategory(party_id, title)
 
     db.session.add(category)
     db.session.commit()
 
-    return category
+    return _db_entity_to_category(category)
 
 
 def count_categories_for_party(party_id: PartyID) -> int:
@@ -32,13 +32,25 @@ def count_categories_for_party(party_id: PartyID) -> int:
         .count()
 
 
-def find_category(category_id: TicketCategoryID) -> Optional[DbCategory]:
+def find_category(category_id: TicketCategoryID) -> Optional[TicketCategory]:
     """Return the category with that ID, or `None` if not found."""
-    return DbCategory.query.get(category_id)
+    category = DbCategory.query.get(category_id)
+
+    return _db_entity_to_category(category)
 
 
-def get_categories_for_party(party_id: PartyID) -> Sequence[DbCategory]:
+def get_categories_for_party(party_id: PartyID) -> Sequence[TicketCategory]:
     """Return all categories for that party."""
-    return DbCategory.query \
+    categories = DbCategory.query \
         .for_party(party_id) \
         .all()
+
+    return [_db_entity_to_category(category) for category in categories]
+
+
+def _db_entity_to_category(category: DbCategory) -> TicketCategory:
+    return TicketCategory(
+        category.id,
+        category.party_id,
+        category.title,
+    )
