@@ -60,6 +60,17 @@ def index_for_scope(scope_type, scope_name):
     }
 
 
+@blueprint.route('/snippets/<uuid:snippet_id>/current_version')
+@permission_required(SnippetPermission.view)
+def view_current_version(snippet_id):
+    """Show the current version of the snippet."""
+    snippet = _find_snippet_by_id(snippet_id)
+
+    version = snippet.current_version
+
+    return view_version(version.id)
+
+
 @blueprint.route('/versions/<uuid:snippet_version_id>')
 @permission_required(SnippetPermission.view_history)
 @templated
