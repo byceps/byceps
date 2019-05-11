@@ -23,11 +23,11 @@ class Scope:
     name = attrib(type=str)
 
     @classmethod
-    def for_brand(cls, brand_id: BrandID):
+    def for_brand(cls, brand_id: BrandID) -> 'Scope':
         return cls('brand', str(brand_id))
 
     @classmethod
-    def for_site(cls, site_id: SiteID):
+    def for_site(cls, site_id: SiteID) -> 'Scope':
         return cls('site', str(site_id))
 
 
