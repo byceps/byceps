@@ -1,12 +1,6 @@
-{% extends 'layout/admin/base.html' %}
+{% extends 'layout/snippet_admin.html' %}
 {% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
 {% from 'macros/icons.html' import render_icon %}
-{% set current_page = 'snippet_admin' %}
-{% if brand %}
-  {% set current_page_brand = brand %}
-{% elif site %}
-  {% set current_page_site = site %}
-{% endif %}
 {% set title = 'Dokument erstellen' %}
 
 {% block body %}

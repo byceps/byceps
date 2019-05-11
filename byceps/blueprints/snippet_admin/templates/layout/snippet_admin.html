@@ -1,0 +1,8 @@
+{% extends 'layout/admin/base.html' %}
+
+{% set current_page = 'snippet_admin' %}
+{% if brand %}
+  {% set current_page_brand = brand %}
+{% elif site %}
+  {% set current_page_site = site %}
+{% endif %}

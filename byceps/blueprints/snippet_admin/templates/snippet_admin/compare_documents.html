@@ -1,11 +1,5 @@
-{% extends 'layout/admin/base.html' %}
+{% extends 'layout/snippet_admin.html' %}
 {% from 'macros/text_diff.html' import render_difference, render_difference_styles  %}
-{% set current_page = 'snippet_admin' %}
-{% if brand %}
-  {% set current_page_brand = brand %}
-{% elif site %}
-  {% set current_page_site = site %}
-{% endif %}
 {% set title = 'Änderungen ansehen' %}
 
 {%- block head %}
