@@ -8,7 +8,7 @@ byceps.blueprints.snippet.views
 
 from flask import abort, g, jsonify
 
-from ...services.snippet import service as snippet_service
+from ...services.snippet import mountpoint_service, service as snippet_service
 from ...services.snippet.transfer.models import Scope
 from ...util.framework.blueprint import create_blueprint
 from ...util.views import create_empty_json_response
@@ -26,9 +26,10 @@ def view_current_version_by_name(name):
     """Show the current version of the snippet that is mounted with that
     name.
     """
-    # TODO: Fetch snippet via mountpoint
-    # endpoint suffix != snippet name
-    version = _find_current_snippet_version(name)
+    # Note: endpoint suffix != snippet name
+    version = mountpoint_service \
+        .find_current_snippet_version_for_mountpoint(g.site_id, name)
+
     if version is None:
         abort(404)
 

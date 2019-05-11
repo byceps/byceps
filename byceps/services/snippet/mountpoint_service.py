@@ -13,7 +13,7 @@ from ...database import db
 from ..site.transfer.models import SiteID
 
 from .models.mountpoint import Mountpoint
-from .models.snippet import Snippet
+from .models.snippet import CurrentVersionAssociation, Snippet, SnippetVersion
 from .transfer.models import MountpointID, SnippetID
 
 
@@ -46,3 +46,18 @@ def get_mountpoints_for_site(site_id: SiteID) -> Sequence[Mountpoint]:
             .filter_by(scope_type='site') \
             .filter_by(scope_name=site_id) \
         .all()
+
+def find_current_snippet_version_for_mountpoint(site_id: SiteID,
+                                                endpoint_suffix: str
+                                               ) -> SnippetVersion:
+    """Return the current version of the snippet mounted at that
+    endpoint, or `None` if not found.
+    """
+    return SnippetVersion.query \
+        .join(CurrentVersionAssociation) \
+        .join(Snippet) \
+        .join(Mountpoint) \
+        .filter(Mountpoint.endpoint_suffix == endpoint_suffix) \
+        .filter(Snippet.scope_type == 'site') \
+        .filter(Snippet.scope_name == site_id) \
+        .one_or_none()
