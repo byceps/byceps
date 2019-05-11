@@ -26,7 +26,7 @@
       .add_item(
         url_for('snippet_admin.index_for_scope', scope_type='site', scope_name=site.id),
         'Snippets',
-        id='snippet_admin',
+        id='snippet_admin_for_site',
         required_permission=SnippetPermission.view,
         icon='snippet')
   -%}
