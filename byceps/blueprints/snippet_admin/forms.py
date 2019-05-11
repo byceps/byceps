@@ -7,6 +7,7 @@ byceps.blueprints.snippet_admin.forms
 """
 
 from wtforms import StringField, TextAreaField
+from wtforms.validators import ValidationError
 
 from ...util.l10n import LocalizedForm
 
@@ -14,6 +15,10 @@ from ...util.l10n import LocalizedForm
 class MountpointCreateForm(LocalizedForm):
     endpoint_suffix = StringField('Bezeichner')
     url_path = StringField('URL-Pfad')
+
+    def validate_url_path(form, field):
+        if not field.data.startswith('/'):
+            raise ValidationError('Der URL-Pfad muss mit einem Slash beginnen.')
 
 
 class MountpointUpdateForm(MountpointCreateForm):

@@ -381,13 +381,13 @@ def compare_fragments(from_version_id, to_version_id):
 @blueprint.route('/snippets/<uuid:snippet_id>/mountpoints/create')
 @permission_required(SnippetMountpointPermission.create)
 @templated
-def create_mountpoint_form(snippet_id):
+def create_mountpoint_form(snippet_id, *, erroneous_form=None):
     """Show form to create a mountpoint."""
     snippet = _find_snippet_by_id(snippet_id)
 
     scope = snippet.scope
 
-    form = MountpointCreateForm()
+    form = erroneous_form if erroneous_form else MountpointCreateForm()
 
     brand = _find_brand_for_scope(scope)
     site = _find_site_for_scope(scope)
@@ -408,11 +408,11 @@ def create_mountpoint(snippet_id):
     snippet = _find_snippet_by_id(snippet_id)
 
     form = MountpointCreateForm(request.form)
+    if not form.validate():
+        return create_mountpoint_form(snippet.id, erroneous_form=form)
 
     endpoint_suffix = form.endpoint_suffix.data.strip()
     url_path = form.url_path.data.strip()
-    if not url_path.startswith('/'):
-        abort(400, 'URL path must start with a slash.')
 
     mountpoint = mountpoint_service \
         .create_mountpoint(endpoint_suffix, url_path, snippet.id)
