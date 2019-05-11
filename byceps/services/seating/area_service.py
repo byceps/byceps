@@ -11,12 +11,12 @@ from typing import Optional
 from ...database import db, Pagination
 from ...typing import PartyID
 
-from .models.area import Area
+from .models.area import Area as DbArea
 
 
-def create_area(party_id: PartyID, slug: str, title: str) -> Area:
+def create_area(party_id: PartyID, slug: str, title: str) -> DbArea:
     """Create an area."""
-    area = Area(party_id, slug, title)
+    area = DbArea(party_id, slug, title)
 
     db.session.add(area)
     db.session.commit()
@@ -26,22 +26,23 @@ def create_area(party_id: PartyID, slug: str, title: str) -> Area:
 
 def count_areas_for_party(party_id: PartyID) -> int:
     """Return the number of seating areas for that party."""
-    return Area.query \
+    return DbArea.query \
         .for_party(party_id) \
         .count()
 
 
-def find_area_for_party_by_slug(party_id: PartyID, slug: str) -> Optional[Area]:
+def find_area_for_party_by_slug(party_id: PartyID, slug: str
+                               ) -> Optional[DbArea]:
     """Return the area for that party with that slug, or `None` if not found."""
-    return Area.query \
+    return DbArea.query \
         .for_party(party_id) \
         .filter_by(slug=slug) \
         .first()
 
 
-def get_areas_for_party(party_id: PartyID) -> Area:
+def get_areas_for_party(party_id: PartyID) -> DbArea:
     """Return all areas for that party."""
-    return Area.query \
+    return DbArea.query \
         .for_party(party_id) \
         .all()
 
@@ -49,7 +50,7 @@ def get_areas_for_party(party_id: PartyID) -> Area:
 def get_areas_for_party_paginated(party_id: PartyID, page: int, per_page: int
                                  ) -> Pagination:
     """Return the areas for that party to show on the specified page."""
-    return Area.query \
+    return DbArea.query \
         .for_party(party_id) \
-        .order_by(Area.title) \
+        .order_by(DbArea.title) \
         .paginate(page, per_page)
