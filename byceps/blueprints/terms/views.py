@@ -84,7 +84,7 @@ def consent(token):
     consent_service.consent_to_subjects(subject_ids_from_form, expressed_at,
                                         verification_token)
 
-    flash_success('Vielen Dank für deine Zustimmung.')
+    flash_success('Vielen Dank für deine Zustimmung. Bitte melde dich erneut an.')
     return redirect_to('authentication.login_form')
 
 
