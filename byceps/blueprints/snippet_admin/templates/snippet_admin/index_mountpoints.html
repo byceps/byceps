@@ -50,7 +50,7 @@
         <td>{{ mountpoint.url_path }}</td>
         <td>{{ mountpoint.endpoint_suffix }}</td>
         <td>
-          {{- mountpoint.snippet.name }}<br>
+          <a href="{{ url_for('.view_current_version', snippet_id=mountpoint.snippet.id) }}">{{- mountpoint.snippet.name }}</a><br>
           <span class="dimmed">{{ mountpoint.snippet.scope.type_ }}/{{ mountpoint.snippet.scope.name }}</span>
         </td>
         <td>
