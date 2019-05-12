@@ -23,6 +23,7 @@ class Subject:
     id = attrib(type=SubjectID)
     name = attrib(type=str)
     title = attrib(type=str)
+    type_ = attrib(type=str)
 
 
 @attrs(frozen=True, slots=True)

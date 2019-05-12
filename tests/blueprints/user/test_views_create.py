@@ -48,7 +48,8 @@ class UserCreateTestCase(AbstractAppTestCase):
 
         consent_subject = consent_subject_service.create_subject(
                 '{}_terms-of-service_v1'.format(self.brand_id),
-                'Terms of service for {} / v1'.format(self.brand.title))
+                'Terms of service for {} / v1'.format(self.brand.title),
+                'terms_of_service')
 
         terms_version = terms_version_service.create_version(
             self.brand_id, '01-Jan-2016', snippet.id, consent_subject.id)
