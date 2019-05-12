@@ -42,15 +42,14 @@ def consent_form(token, *, erroneous_form=None):
     """Show that version of the terms, and a form to consent to it."""
     verification_token = _get_verification_token_or_404(token)
 
-    terms_version = terms_version_service.find_current_version(g.brand_id)
-    subjects = [terms_version.consent_subject]
+    user_id = verification_token.user_id
 
-    ConsentForm = create_consent_form(subjects)
+    unconsented_subjects = _get_unconsented_subjects_for_user(user_id)
+
+    ConsentForm = create_consent_form(unconsented_subjects)
     form = erroneous_form if erroneous_form else ConsentForm()
 
-    field_names = [get_subject_field_name(subject) for subject in subjects]
-    fields = [getattr(form, field_name) for field_name in field_names]
-    subjects_and_fields = list(zip(subjects, fields))
+    subjects_and_fields = _get_subjects_and_fields(unconsented_subjects, form)
 
     return {
         'token': token,
@@ -59,15 +58,22 @@ def consent_form(token, *, erroneous_form=None):
     }
 
 
+def _get_subjects_and_fields(subjects, form):
+    field_names = [get_subject_field_name(subject) for subject in subjects]
+    fields = [getattr(form, field_name) for field_name in field_names]
+    return list(zip(subjects, fields))
+
+
 @blueprint.route('/consent/<uuid:token>', methods=['POST'])
 def consent(token):
     """Consent to that version of the terms."""
     verification_token = _get_verification_token_or_404(token)
 
-    terms_version = terms_version_service.find_current_version(g.brand_id)
-    subjects_for_form = [terms_version.consent_subject]
+    user_id = verification_token.user_id
 
-    ConsentForm = create_consent_form(subjects_for_form)
+    unconsented_subjects = _get_unconsented_subjects_for_user(user_id)
+
+    ConsentForm = create_consent_form(unconsented_subjects)
     form = ConsentForm(request.form)
     if not form.validate():
         return consent_form(token, erroneous_form=form)
@@ -87,6 +93,11 @@ def consent(token):
 
     flash_success('Vielen Dank für deine Zustimmung. Bitte melde dich erneut an.')
     return redirect_to('authentication.login_form')
+
+
+def _get_unconsented_subjects_for_user(user_id):
+    terms_version = terms_version_service.find_current_version(g.brand_id)
+    return [terms_version.consent_subject]
 
 
 def _get_verification_token_or_404(token_str):
