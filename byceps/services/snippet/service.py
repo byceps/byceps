@@ -96,6 +96,34 @@ def _update_snippet(snippet: Snippet, creator_id: UserID, title: Optional[str],
     return version
 
 
+def delete_snippet(snippet_id: SnippetID) -> bool:
+    """Delete the snippet and its versions.
+
+    It is expected that no database records (mountpoints, consents,
+    etc.) refer to the snippet anymore.
+
+    Return `True` on success, or `False` if an error occured.
+    """
+    snippet = find_snippet(snippet_id)
+    if snippet is None:
+        raise ValueError('Unknown snippet ID')
+
+    db.session.delete(snippet.current_version_association)
+
+    versions = get_versions(snippet_id)
+    for version in versions:
+        db.session.delete(version)
+
+    db.session.delete(snippet)
+
+    try:
+        db.session.commit()
+        return True
+    except:
+        db.session.rollback()
+        return False
+
+
 def find_snippet(snippet_id: SnippetID) -> Optional[Snippet]:
     """Return the snippet with that id, or `None` if not found."""
     return Snippet.query.get(snippet_id)
