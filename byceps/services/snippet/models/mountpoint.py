@@ -25,8 +25,8 @@ class Mountpoint(db.Model):
     """The exposition of a snippet at a certain URL path of a site."""
     __tablename__ = 'snippet_mountpoints'
     __table_args__ = (
-        db.UniqueConstraint('snippet_id', 'endpoint_suffix'),
-        db.UniqueConstraint('snippet_id', 'url_path'),
+        db.UniqueConstraint('site_id', 'endpoint_suffix'),
+        db.UniqueConstraint('site_id', 'url_path'),
     )
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
