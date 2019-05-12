@@ -50,11 +50,12 @@ def consent_form(token, *, erroneous_form=None):
 
     field_names = [get_subject_field_name(subject) for subject in subjects]
     fields = [getattr(form, field_name) for field_name in field_names]
+    subjects_and_fields = list(zip(subjects, fields))
 
     return {
         'token': token,
         'form': form,
-        'fields': fields,
+        'subjects_and_fields': subjects_and_fields,
     }
 
 
