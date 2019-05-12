@@ -113,8 +113,8 @@ class UserCreateTestCase(AbstractAppTestCase):
         actual_roles = get_user_roles(user.id)
         assert board_user_role in actual_roles
 
-        # consent to terms of service
-        assert_consent_to_terms(user.id, self.terms_consent_subject_id)
+        # consents
+        assert_consent(user.id, self.terms_consent_subject_id)
 
         # newsletter subscription
         assert is_subscribed_to_newsletter(user.id, self.brand_id)
@@ -223,8 +223,5 @@ def assert_session_token_created(user_id):
     assert session_token.created_at is not None
 
 
-def assert_consent_to_terms(user_id, terms_subject_id):
-    consents = consent_service.get_consents_by_user(user_id)
-
-    assert len(consents) == 1
-    assert consents[0].subject_id == terms_subject_id
+def assert_consent(user_id, subject_id):
+    assert consent_service.has_user_consented_to_subject(user_id, subject_id)
