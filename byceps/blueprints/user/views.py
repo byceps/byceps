@@ -391,7 +391,7 @@ def _get_current_user_or_404():
     return user
 
 
-def _is_real_name_required():
+def _is_real_name_required() -> bool:
     """Return `True` if real name is required.
 
     By default, real name is required. It can be disabled by configuring
@@ -403,11 +403,11 @@ def _is_real_name_required():
     return value != 'false'
 
 
-def _is_terms_consent_required():
+def _is_terms_consent_required() -> bool:
     return terms_consent_service.is_consent_required_for_brand(g.brand_id)
 
 
-def _is_privacy_policy_consent_required():
+def _is_privacy_policy_consent_required() -> bool:
     """Return `True` if consent to the privacy policy is required.
 
     By default, consent is required. It can be disabled by configuring
