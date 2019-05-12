@@ -53,10 +53,9 @@ def create_user(screen_name: str, email_address: str, password: str,
 
     # consent to privacy policy
     if privacy_policy_consent:
-        event = event_service.build_event('privacy-policy-accepted', user.id, {
-            'initiator_id': str(user.id),
-        }, occurred_at=privacy_policy_consent.expressed_at)
-        db.session.add(event)
+        privacy_policy_consent = consent_service.build_consent(
+            user.id, privacy_policy_consent.subject_id, privacy_policy_consent.expressed_at)
+        db.session.add(privacy_policy_consent)
 
     db.session.commit()
 

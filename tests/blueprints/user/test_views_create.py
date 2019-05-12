@@ -9,6 +9,7 @@ from byceps.services.authentication.password.models import Credential
 from byceps.services.authentication.session.models.session_token \
     import SessionToken
 from byceps.services.authorization.models import Role, UserRole
+from byceps.services.brand import settings_service as brand_settings_service
 from byceps.services.consent import consent_service, \
     subject_service as consent_subject_service
 from byceps.services.newsletter import service as newsletter_service
@@ -37,6 +38,7 @@ class UserCreateTestCase(AbstractAppTestCase):
         self.brand_id = self.brand.id
 
         self.setup_terms()
+        self.setup_privacy_policy()
         self.setup_roles()
 
     def setup_terms(self):
@@ -56,6 +58,17 @@ class UserCreateTestCase(AbstractAppTestCase):
 
         self.terms_version_id = terms_version.id
         self.terms_consent_subject_id = terms_version.consent_subject_id
+
+    def setup_privacy_policy(self):
+        consent_subject = consent_subject_service.create_subject(
+                '{}_privacy_policy_v1'.format(self.brand_id),
+                'Privacy policy for {} / v1'.format(self.brand.title),
+                'privacy_policy')
+
+        brand_settings_service.create_setting(self.brand.id,
+            'privacy_policy_consent_subject_id', str(consent_subject.id))
+
+        self.privacy_policy_consent_subject_id = consent_subject.id
 
     def setup_roles(self):
         self.board_user_role = create_role('board_user')
@@ -115,6 +128,7 @@ class UserCreateTestCase(AbstractAppTestCase):
 
         # consents
         assert_consent(user.id, self.terms_consent_subject_id)
+        assert_consent(user.id, self.privacy_policy_consent_subject_id)
 
         # newsletter subscription
         assert is_subscribed_to_newsletter(user.id, self.brand_id)

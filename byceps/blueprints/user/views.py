@@ -13,7 +13,7 @@ from flask import abort, g, jsonify, request, Response
 
 from ...config import get_site_mode, get_user_registration_enabled
 from ...services.brand import settings_service as brand_settings_service
-from ...services.consent.transfer.models import Consent
+from ...services.consent.transfer.models import Consent, SubjectID
 from ...services.country import service as country_service
 from ...services.newsletter import service as newsletter_service
 from ...services.newsletter.transfer.models import \
@@ -158,6 +158,13 @@ def create_form(erroneous_form=None):
     _adjust_create_form(form, real_name_required, terms_consent_required,
                         privacy_policy_consent_required)
 
+    if privacy_policy_consent_required:
+        privacy_policy_consent_subject_id \
+            = _find_privacy_policy_consent_subject_id()
+        if not privacy_policy_consent_subject_id:
+            flash_error(
+                'Es ist keine Version der Datenschutzbestimmungen konfiguriert.')
+
     return {'form': form}
 
 
@@ -176,6 +183,14 @@ def create():
 
     _adjust_create_form(form, real_name_required, terms_consent_required,
                         privacy_policy_consent_required)
+
+    if privacy_policy_consent_required:
+        privacy_policy_consent_subject_id \
+            = _find_privacy_policy_consent_subject_id()
+        if not privacy_policy_consent_subject_id:
+            flash_error(
+                'Es ist keine Version der Datenschutzbestimmungen konfiguriert.')
+            return create_form(form)
 
     if not form.validate():
         return create_form(form)
@@ -222,7 +237,7 @@ def create():
     if privacy_policy_consent_required:
         privacy_policy_consent = Consent(
             user_id=None,  # not available at this point
-            subject_id=None,  # not available yet, requires structural change
+            subject_id=privacy_policy_consent_subject_id,
             expressed_at=now_utc)
 
     newsletter_subscription = None
@@ -418,3 +433,16 @@ def _is_privacy_policy_consent_required() -> bool:
         .find_setting_value(g.brand_id, 'privacy_policy_consent_required')
 
     return value != 'false'
+
+
+def _find_privacy_policy_consent_subject_id() -> SubjectID:
+    """Return the privacy policy consent subject ID configured for this
+    brand, or `None` if none is configured.
+    """
+    value = brand_settings_service \
+        .find_setting_value(g.brand_id, 'privacy_policy_consent_subject_id')
+
+    if not value:
+        return None
+
+    return SubjectID(value)

@@ -130,12 +130,6 @@
             hat <span class="user-link">{{ render_user_avatar_20_and_link(user) }}</span>
             für die Marke <strong>{{ event.data.brand_id }}</strong> den Orgastatus entzogen.
           {%- endset %}
-        {%- elif event.event == 'privacy-policy-accepted' %}
-          {%- set icon_name = 'legal' %}
-          {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
-            hat die <strong>Datenschutzbestimmungen akzeptiert</strong>.
-          {%- endset %}
         {%- elif event.event == 'role-assigned' %}
           {%- set icon_name = 'permission' %}
           {%- set body %}
