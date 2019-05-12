@@ -52,7 +52,6 @@ def consent_form(token, *, erroneous_form=None):
     fields = [getattr(form, field_name) for field_name in field_names]
 
     return {
-        'terms_version': terms_version,
         'token': token,
         'form': form,
         'fields': fields,
