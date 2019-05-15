@@ -15,10 +15,10 @@ from ....database import BaseQuery, db, Pagination
 from ..shop.models import Shop
 from ..shop.transfer.models import ShopID
 
-from .models.article import Article, ArticleID
-from .models.attached_article import AttachedArticle, AttachedArticleID
+from .models.article import Article
+from .models.attached_article import AttachedArticle
 from .models.compilation import ArticleCompilation, ArticleCompilationItem
-from .transfer.models import ArticleNumber
+from .transfer.models import ArticleID, ArticleNumber, AttachedArticleID
 
 
 def create_article(shop_id: ShopID, item_number: ArticleNumber,

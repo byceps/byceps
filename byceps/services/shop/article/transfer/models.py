@@ -7,6 +7,13 @@ byceps.services.shop.article.transfer.models
 """
 
 from typing import NewType
+from uuid import UUID
+
+
+ArticleID = NewType('ArticleID', UUID)
 
 
 ArticleNumber = NewType('ArticleNumber', str)
+
+
+AttachedArticleID = NewType('AttachedArticleID', UUID)

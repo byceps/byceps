@@ -8,8 +8,7 @@ byceps.services.shop.article.models.article
 
 from datetime import datetime
 from decimal import Decimal
-from typing import Any, NewType, Optional
-from uuid import UUID
+from typing import Any, Optional
 
 from Ranger import Range
 from Ranger.src.Range.Cut import Cut
@@ -20,9 +19,6 @@ from .....util.instances import ReprBuilder
 from ...shop.transfer.models import ShopID
 
 from ..transfer.models import ArticleNumber
-
-
-ArticleID = NewType('ArticleID', UUID)
 
 
 class ArticleQuery(BaseQuery):
