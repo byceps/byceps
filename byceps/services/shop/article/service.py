@@ -12,21 +12,21 @@ from typing import Dict, Optional, Sequence, Set
 
 from ....database import BaseQuery, db, Pagination
 
-from ..shop.models import Shop
+from ..shop.models import Shop as DbShop
 from ..shop.transfer.models import ShopID
 
-from .models.article import Article
-from .models.attached_article import AttachedArticle
+from .models.article import Article as DbArticle
+from .models.attached_article import AttachedArticle as DbAttachedArticle
 from .models.compilation import ArticleCompilation, ArticleCompilationItem
 from .transfer.models import ArticleID, ArticleNumber, AttachedArticleID
 
 
 def create_article(shop_id: ShopID, item_number: ArticleNumber,
                    description: str, price: Decimal, tax_rate: Decimal,
-                   quantity: int) -> Article:
+                   quantity: int) -> DbArticle:
     """Create an article."""
-    article = Article(shop_id, item_number, description, price, tax_rate,
-                      quantity)
+    article = DbArticle(shop_id, item_number, description, price, tax_rate,
+                        quantity)
 
     db.session.add(article)
     db.session.commit()
@@ -34,7 +34,7 @@ def create_article(shop_id: ShopID, item_number: ArticleNumber,
     return article
 
 
-def update_article(article: Article, description: str, price: Decimal,
+def update_article(article: DbArticle, description: str, price: Decimal,
                    tax_rate: Decimal, available_from: Optional[datetime],
                    available_until: Optional[datetime], quantity: int,
                    max_quantity_per_order: int, not_directly_orderable: bool,
@@ -55,11 +55,11 @@ def update_article(article: Article, description: str, price: Decimal,
     db.session.commit()
 
 
-def attach_article(article_to_attach: Article, quantity: int,
-                   article_to_attach_to: Article) -> None:
+def attach_article(article_to_attach: DbArticle, quantity: int,
+                   article_to_attach_to: DbArticle) -> None:
     """Attach an article to another article."""
-    attached_article = AttachedArticle(article_to_attach, quantity,
-                                       article_to_attach_to)
+    attached_article = DbAttachedArticle(article_to_attach, quantity,
+                                         article_to_attach_to)
 
     db.session.add(attached_article)
     db.session.commit()
@@ -67,25 +67,25 @@ def attach_article(article_to_attach: Article, quantity: int,
 
 def count_articles_for_shop(shop_id: ShopID) -> int:
     """Return the number of articles that are assigned to that shop."""
-    return Article.query \
+    return DbArticle.query \
         .for_shop(shop_id) \
         .count()
 
 
-def unattach_article(attached_article: Article) -> None:
+def unattach_article(attached_article: DbArticle) -> None:
     """Unattach an article from another."""
     db.session.delete(attached_article)
     db.session.commit()
 
 
-def find_article(article_id: ArticleID) -> Optional[Article]:
+def find_article(article_id: ArticleID) -> Optional[DbArticle]:
     """Return the article with that ID, or `None` if not found."""
-    return Article.query.get(article_id)
+    return DbArticle.query.get(article_id)
 
 
-def find_article_with_details(article_id: ArticleID) -> Optional[Article]:
+def find_article_with_details(article_id: ArticleID) -> Optional[DbArticle]:
     """Return the article with that ID, or `None` if not found."""
-    return Article.query \
+    return DbArticle.query \
         .options(
             db.joinedload('articles_attached_to').joinedload('article'),
             db.joinedload('attached_articles').joinedload('article'),
@@ -94,37 +94,37 @@ def find_article_with_details(article_id: ArticleID) -> Optional[Article]:
 
 
 def find_attached_article(attached_article_id: AttachedArticleID
-                         ) -> Optional[AttachedArticle]:
+                         ) -> Optional[DbAttachedArticle]:
     """Return the attached article with that ID, or `None` if not found."""
-    return AttachedArticle.query.get(attached_article_id)
+    return DbAttachedArticle.query.get(attached_article_id)
 
 
 def get_article_count_by_shop_id() -> Dict[ShopID, int]:
     """Return article count (including 0) per shop, indexed by shop ID."""
     shop_ids_and_article_counts = db.session \
         .query(
-            Shop.id,
-            db.func.count(Article.shop_id)
+            DbShop.id,
+            db.func.count(DbArticle.shop_id)
         ) \
-        .outerjoin(Article) \
-        .group_by(Shop.id) \
+        .outerjoin(DbArticle) \
+        .group_by(DbShop.id) \
         .all()
 
     return dict(shop_ids_and_article_counts)
 
 
 def get_articles_by_numbers(article_numbers: Set[ArticleNumber]
-                           ) -> Sequence[Article]:
+                           ) -> Sequence[DbArticle]:
     """Return the articles with those numbers."""
     if not article_numbers:
         return []
 
-    return Article.query \
-        .filter(Article.item_number.in_(article_numbers)) \
+    return DbArticle.query \
+        .filter(DbArticle.item_number.in_(article_numbers)) \
         .all()
 
 
-def get_articles_for_shop(shop_id: ShopID) -> Sequence[Article]:
+def get_articles_for_shop(shop_id: ShopID) -> Sequence[DbArticle]:
     """Return all articles for that shop, ordered by article number."""
     return _get_articles_for_shop_query(shop_id) \
         .all()
@@ -138,9 +138,9 @@ def get_articles_for_shop_paginated(shop_id: ShopID, page: int, per_page: int
 
 
 def _get_articles_for_shop_query(shop_id: ShopID) -> BaseQuery:
-    return Article.query \
+    return DbArticle.query \
         .for_shop(shop_id) \
-        .order_by(Article.item_number)
+        .order_by(DbArticle.item_number)
 
 
 def get_article_compilation_for_orderable_articles(shop_id: ShopID
@@ -149,12 +149,12 @@ def get_article_compilation_for_orderable_articles(shop_id: ShopID
     that shop, less the ones that are only orderable in a dedicated
     order.
     """
-    orderable_articles = Article.query \
+    orderable_articles = DbArticle.query \
         .for_shop(shop_id) \
         .filter_by(not_directly_orderable=False) \
         .filter_by(requires_separate_order=False) \
         .currently_available() \
-        .order_by(Article.description) \
+        .order_by(DbArticle.description) \
         .all()
 
     compilation = ArticleCompilation()
@@ -167,7 +167,7 @@ def get_article_compilation_for_orderable_articles(shop_id: ShopID
     return compilation
 
 
-def get_article_compilation_for_single_article(article: Article, *,
+def get_article_compilation_for_single_article(article: DbArticle, *,
                                                fixed_quantity: Optional[int]=None
                                               ) -> ArticleCompilation:
     """Return a compilation built from just the given article plus the
@@ -184,7 +184,7 @@ def get_article_compilation_for_single_article(article: Article, *,
 
 
 def _add_attached_articles(compilation: ArticleCompilation,
-                           attached_articles: Sequence[AttachedArticle]
+                           attached_articles: Sequence[DbAttachedArticle]
                           ) -> None:
     """Add the attached articles to the compilation."""
     for attached_article in attached_articles:
@@ -193,7 +193,7 @@ def _add_attached_articles(compilation: ArticleCompilation,
                                    fixed_quantity=attached_article.quantity))
 
 
-def get_attachable_articles(article: Article) -> Sequence[Article]:
+def get_attachable_articles(article: DbArticle) -> Sequence[DbArticle]:
     """Return the articles that can be attached to that article."""
     attached_articles = {attached.article for attached in article.attached_articles}
 
@@ -201,8 +201,8 @@ def get_attachable_articles(article: Article) -> Sequence[Article]:
 
     unattachable_article_ids = {article.id for article in unattachable_articles}
 
-    return Article.query \
+    return DbArticle.query \
         .for_shop(article.shop_id) \
-        .filter(db.not_(Article.id.in_(unattachable_article_ids))) \
-        .order_by(Article.item_number) \
+        .filter(db.not_(DbArticle.id.in_(unattachable_article_ids))) \
+        .order_by(DbArticle.item_number) \
         .all()
