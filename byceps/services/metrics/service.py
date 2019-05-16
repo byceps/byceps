@@ -72,7 +72,7 @@ def _collect_consent_metrics() -> Iterator[Metric]:
                      labels=[Label('subject_name', subject_name)])
 
 
-def _collect_shop_article_metrics(shops: List[Shop]):
+def _collect_shop_article_metrics(shops: List[Shop]) -> Iterator[Metric]:
     """Provide article counts for shops."""
     for shop in shops:
         articles = shop_article_service.get_articles_for_shop(shop.id)
@@ -84,7 +84,7 @@ def _collect_shop_article_metrics(shops: List[Shop]):
                          ])
 
 
-def _collect_shop_order_metrics(shops: List[Shop]):
+def _collect_shop_order_metrics(shops: List[Shop]) -> Iterator[Metric]:
     """Provide order counts grouped by payment state for shops."""
     for shop in shops:
         order_counts_per_payment_state = order_service \
@@ -98,7 +98,8 @@ def _collect_shop_order_metrics(shops: List[Shop]):
                          ])
 
 
-def _collect_seating_metrics(active_party_ids: List[PartyID]):
+def _collect_seating_metrics(active_party_ids: List[PartyID]
+                            ) -> Iterator[Metric]:
     """Provide seat occupation counts per party and category."""
     for party_id in active_party_ids:
         occupied_seat_counts_by_category = seat_service \
