@@ -25,7 +25,7 @@ def add_route_for_snippet(mountpoint):
     """Register a route for the snippet."""
     endpoint = '{}.{}'.format(snippet_blueprint.name,
                               mountpoint.endpoint_suffix)
-    defaults = {'name': mountpoint.snippet.name}
+    defaults = {'name': mountpoint.endpoint_suffix}
 
     current_app.add_url_rule(
         mountpoint.url_path,
