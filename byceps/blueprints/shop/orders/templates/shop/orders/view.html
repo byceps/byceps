@@ -51,14 +51,14 @@
   <table class="index wide">
     <thead>
       <tr>
-        <th>Anzahl</th>
-        <th>Beschreibung</th>
+        <th class="number">Anzahl</th>
+        <th style="width: 100%;">Beschreibung</th>
         <th class="number">Stückpreis</th>
       </tr>
     </thead>
     <tfoot>
       <tr>
-        <th colspan="2">Gesamtbetrag</th>
+        <th colspan="2" style="text-align: right;">Gesamtbetrag</th>
         <td class="number"><strong>{{ order.total_amount|format_euro_amount }}</strong></td>
       </tr>
     </tfoot>
@@ -66,7 +66,7 @@
       {%- for item in order.items|sort(attribute='article_number') %}
       <tr>
         <td class="number">{{ item.quantity }}</td>
-        <td><strong>{{ item.description }}</strong></td>
+        <td>{{ item.description }}</td>
         <td class="number">{{ item.unit_price|format_euro_amount }}</td>
       </tr>
       {%- endfor %}
