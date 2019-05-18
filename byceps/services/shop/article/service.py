@@ -8,10 +8,13 @@ byceps.services.shop.article.service
 
 from datetime import datetime
 from decimal import Decimal
-from typing import Dict, Optional, Sequence, Set
+from typing import Dict, List, Optional, Sequence, Set, Tuple
 
 from ....database import BaseQuery, db, Pagination
 
+from ..order.models.order import Order as DbOrder
+from ..order.models.order_item import OrderItem as DbOrderItem
+from ..order.transfer.models import PaymentState
 from ..shop.models import Shop as DbShop
 from ..shop.transfer.models import ShopID
 
@@ -206,3 +209,58 @@ def get_attachable_articles(article: DbArticle) -> Sequence[DbArticle]:
         .filter(db.not_(DbArticle.id.in_(unattachable_article_ids))) \
         .order_by(DbArticle.item_number) \
         .all()
+
+
+def sum_ordered_articles_by_payment_state(shop_ids: Set[ShopID]) \
+        -> List[Tuple[ShopID, ArticleNumber, str, PaymentState, int]]:
+    """Sum ordered articles for those shops, grouped by order payment state."""
+    subquery = db.session \
+        .query(
+            DbOrderItem.article_number,
+            DbOrder._payment_state.label('payment_state'),
+            db.func.sum(DbOrderItem.quantity).label('quantity')
+        ) \
+        .join(DbOrder) \
+        .group_by(DbOrderItem.article_number, DbOrder._payment_state) \
+        .subquery()
+
+    rows = db.session \
+        .query(
+            DbArticle.shop_id,
+            DbArticle.item_number,
+            DbArticle.description,
+            subquery.c.payment_state,
+            subquery.c.quantity
+        ) \
+        .outerjoin(subquery,
+            db.and_(DbArticle.item_number == subquery.c.article_number)) \
+        .filter(DbArticle.shop_id.in_(shop_ids)) \
+        .order_by(DbArticle.item_number, subquery.c.payment_state) \
+        .all()
+
+    shop_ids_and_article_numbers_and_descriptions \
+        = {(row[0], row[1], row[2]) for row in rows}  # Remove duplicates.
+
+    quantities = {}
+
+    for shop_id, article_number, description, payment_state_name, quantity \
+            in rows:
+        if payment_state_name is None:
+            continue
+
+        payment_state = PaymentState[payment_state_name]
+        key = (shop_id, article_number, description, payment_state)
+
+        quantities[key] = quantity
+
+    def generate():
+        for shop_id, article_number, description \
+                in sorted(shop_ids_and_article_numbers_and_descriptions):
+            for payment_state in PaymentState:
+                key = (shop_id, article_number, description, payment_state)
+                quantity = quantities.get(key, 0)
+
+                yield shop_id, article_number, description, payment_state, \
+                    quantity
+
+    return list(generate())

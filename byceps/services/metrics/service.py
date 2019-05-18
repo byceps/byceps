@@ -6,7 +6,7 @@ byceps.metrics.service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import Iterator, List
+from typing import Iterator, List, Set
 
 from ...services.brand import service as brand_service
 from ...services.board import board_service, \
@@ -19,7 +19,7 @@ from ...services.seating import seat_service
 from ...services.shop.order import service as order_service
 from ...services.shop.article import service as shop_article_service
 from ...services.shop.shop import service as shop_service
-from ...services.shop.shop.transfer.models import Shop
+from ...services.shop.shop.transfer.models import Shop, ShopID
 from ...services.ticketing import ticket_service
 from ...services.user import stats_service as user_stats_service
 from ...typing import BrandID, PartyID
@@ -38,10 +38,11 @@ def collect_metrics() -> Iterator[Metric]:
     active_party_ids = [p.id for p in active_parties]
 
     active_shops = shop_service.get_active_shops()
+    active_shop_ids = {shop.id for shop in active_shops}
 
     yield from _collect_board_metrics(brand_ids)
     yield from _collect_consent_metrics()
-    yield from _collect_shop_article_metrics(active_shops)
+    yield from _collect_shop_ordered_article_metrics(active_shop_ids)
     yield from _collect_shop_order_metrics(active_shops)
     yield from _collect_seating_metrics(active_party_ids)
     yield from _collect_ticket_metrics(active_party_ids)
@@ -72,16 +73,18 @@ def _collect_consent_metrics() -> Iterator[Metric]:
                      labels=[Label('subject_name', subject_name)])
 
 
-def _collect_shop_article_metrics(shops: List[Shop]) -> Iterator[Metric]:
-    """Provide article counts for shops."""
-    for shop in shops:
-        articles = shop_article_service.get_articles_for_shop(shop.id)
-        for article in articles:
-            yield Metric('shop_article_quantity', article.quantity,
-                         labels=[
-                             Label('shop', article.shop_id),
-                             Label('item_number', article.item_number),
-                         ])
+def _collect_shop_ordered_article_metrics(shop_ids: Set[ShopID]) -> Iterator[Metric]:
+    """Provide ordered article quantities for shops."""
+    stats = shop_article_service.sum_ordered_articles_by_payment_state(shop_ids)
+
+    for shop_id, article_number, description, payment_state, quantity in stats:
+        yield Metric('shop_ordered_article_quantity', quantity,
+                     labels=[
+                         Label('shop', shop_id),
+                         Label('article_number', article_number),
+                         Label('description', description),
+                         Label('payment_state', payment_state.name),
+                     ])
 
 
 def _collect_shop_order_metrics(shops: List[Shop]) -> Iterator[Metric]:
