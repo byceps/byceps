@@ -18,8 +18,8 @@
   <table class="index wide">
     <thead>
       <tr>
-        <th>Zeitpunkt</th>
         <th>Bestellnummer</th>
+        <th>Zeitpunkt</th>
         <th class="number">Betrag</th>
         <th>Status</th>
       </tr>
@@ -27,8 +27,8 @@
     <tbody>
       {%- for order in orders %}
       <tr>
-        <td>{{ render_datetime(order.created_at) }}</td>
         <td><strong><a href="{{ url_for('.view', order_id=order.id) }}">{{ order.order_number }}</a></strong></td>
+        <td>{{ render_datetime(order.created_at) }}</td>
         <td class="number">{{ order.total_amount|format_euro_amount }}</td>
         <td>{{ render_order_payment_state(order.payment_state) }}</td>
       </tr>
