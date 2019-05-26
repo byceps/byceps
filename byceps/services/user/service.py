@@ -182,8 +182,15 @@ def get_anonymous_user() -> AnonymousUser:
 
 def get_email_address(user_id: UserID) -> str:
     """Return the user's e-mail address."""
-    user = _get_user(user_id)
-    return user.email_address
+    email_address = db.session \
+        .query(DbUser.email_address) \
+        .filter_by(id=user_id) \
+        .scalar()
+
+    if email_address is None:
+        raise ValueError("Unknown user ID '{}'.".format(user_id))
+
+    return email_address
 
 
 def index_users_by_id(users: Set[User]) -> Dict[UserID, User]:
