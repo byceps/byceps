@@ -4,8 +4,8 @@
 """
 
 from byceps.database import db
+from byceps.services.user import command_service as user_command_service
 from byceps.services.user.models.detail import UserDetail
-from byceps.services.user import service as user_service
 
 from tests.base import AbstractAppTestCase
 
@@ -22,32 +22,32 @@ class UserDetailExtrasTest(AbstractAppTestCase):
         assert self.get_extras() is None
 
         # Add first entry.
-        user_service.set_user_detail_extra(self.user_id, 'hobbies', 'Science!')
+        user_command_service.set_user_detail_extra(self.user_id, 'hobbies', 'Science!')
         assert self.get_extras() == {'hobbies': 'Science!'}
 
         # Add second entry.
-        user_service.set_user_detail_extra(self.user_id, 'size_of_shoes', 42)
+        user_command_service.set_user_detail_extra(self.user_id, 'size_of_shoes', 42)
         assert self.get_extras() == {'hobbies': 'Science!', 'size_of_shoes': 42}
 
         # Remove first entry.
-        user_service.remove_user_detail_extra(self.user_id, 'hobbies')
+        user_command_service.remove_user_detail_extra(self.user_id, 'hobbies')
         assert self.get_extras() == {'size_of_shoes': 42}
 
         # Remove second entry.
-        user_service.remove_user_detail_extra(self.user_id, 'size_of_shoes')
+        user_command_service.remove_user_detail_extra(self.user_id, 'size_of_shoes')
         assert self.get_extras() == {}
 
     def test_remove_unknown_key_from_null_extras(self):
         assert self.get_extras() is None
 
-        user_service.remove_user_detail_extra(self.user_id, 'dunno')
+        user_command_service.remove_user_detail_extra(self.user_id, 'dunno')
         assert self.get_extras() is None
 
     def test_remove_unknown_key_from_empty_extras(self):
         self.set_extras_to_empty_dict()
         assert self.get_extras() == {}
 
-        user_service.remove_user_detail_extra(self.user_id, 'dunno')
+        user_command_service.remove_user_detail_extra(self.user_id, 'dunno')
         assert self.get_extras() == {}
 
     def get_extras(self):

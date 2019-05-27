@@ -18,6 +18,7 @@ from ...services.party import service as party_service
 from ...services.shop.order import service as order_service
 from ...services.shop.shop import service as shop_service
 from ...services.ticketing import attendance_service, ticket_service
+from ...services.user import command_service as user_command_service
 from ...services.user import creation_service as user_creation_service
 from ...services.user import service as user_service
 from ...services.user import stats_service as user_stats_service
@@ -256,7 +257,7 @@ def set_enabled_flag(user_id):
 
     initiator_id = g.current_user.id
 
-    user_service.enable_user(user.id, initiator_id)
+    user_command_service.enable_user(user.id, initiator_id)
 
     flash_success("Das Benutzerkonto '{}' wurde aktiviert.", user.screen_name)
 
@@ -270,7 +271,7 @@ def unset_enabled_flag(user_id):
 
     initiator_id = g.current_user.id
 
-    user_service.disable_user(user.id, initiator_id)
+    user_command_service.disable_user(user.id, initiator_id)
 
     flash_success("Das Benutzerkonto '{}' wurde deaktiviert.", user.screen_name)
 
@@ -313,7 +314,7 @@ def suspend_account(user_id):
     initiator_id = g.current_user.id
     reason = form.reason.data.strip()
 
-    user_service.suspend_account(user.id, initiator_id, reason)
+    user_command_service.suspend_account(user.id, initiator_id, reason)
 
     account_suspended.send(None, user_id=user.id, initiator_id=initiator_id)
 
@@ -359,7 +360,7 @@ def unsuspend_account(user_id):
     initiator_id = g.current_user.id
     reason = form.reason.data.strip()
 
-    user_service.unsuspend_account(user.id, initiator_id, reason)
+    user_command_service.unsuspend_account(user.id, initiator_id, reason)
 
     account_unsuspended.send(None, user_id=user.id, initiator_id=initiator_id)
 
@@ -405,7 +406,7 @@ def delete_account(user_id):
     initiator_id = g.current_user.id
     reason = form.reason.data.strip()
 
-    user_service.delete_account(user.id, initiator_id, reason)
+    user_command_service.delete_account(user.id, initiator_id, reason)
 
     account_deleted.send(None, user_id=user.id, initiator_id=initiator_id)
 

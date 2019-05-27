@@ -5,7 +5,9 @@
 
 from byceps.typing import UserID
 
-from byceps.services.user import event_service, service as user_service
+from byceps.services.user import command_service as user_command_service
+from byceps.services.user import event_service
+from byceps.services.user import service as user_service
 
 from tests.base import AbstractAppTestCase
 
@@ -31,7 +33,7 @@ class UserSuspendedFlagTest(AbstractAppTestCase):
 
         # -------------------------------- #
 
-        user_service.suspend_account(self.user.id, ADMIN_ID, reason)
+        user_command_service.suspend_account(self.user.id, ADMIN_ID, reason)
 
         # -------------------------------- #
 
@@ -61,7 +63,7 @@ class UserSuspendedFlagTest(AbstractAppTestCase):
 
         # -------------------------------- #
 
-        user_service.unsuspend_account(self.user.id, ADMIN_ID, reason)
+        user_command_service.unsuspend_account(self.user.id, ADMIN_ID, reason)
 
         # -------------------------------- #
 

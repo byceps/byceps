@@ -22,6 +22,7 @@ from ...services.orga_team import service as orga_team_service
 from ...services.terms import consent_service as terms_consent_service, \
     version_service as terms_version_service
 from ...services.ticketing import attendance_service, ticket_service
+from ...services.user import command_service as user_command_service
 from ...services.user import creation_service as user_creation_service
 from ...services.user import event_service as user_event_service
 from ...services.user import service as user_service
@@ -390,9 +391,10 @@ def details_update():
     street = form.street.data.strip()
     phone_number = form.phone_number.data.strip()
 
-    user_service.update_user_details(current_user.id, first_names, last_name,
-                                     date_of_birth, country, zip_code, city,
-                                     street, phone_number)
+    user_command_service.update_user_details(current_user.id, first_names,
+                                             last_name, date_of_birth, country,
+                                             zip_code, city, street,
+                                             phone_number)
 
     flash_success('Deine Daten wurden gespeichert.')
     return redirect_to('.view_current')
