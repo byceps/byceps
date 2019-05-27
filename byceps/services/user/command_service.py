@@ -7,6 +7,7 @@ byceps.services.user.command_service
 """
 
 from datetime import date
+from typing import Optional
 
 from ...database import db
 from ...typing import UserID
@@ -86,6 +87,31 @@ def delete_account(user_id: UserID, initiator_id: UserID, reason: str) -> None:
         'initiator_id': str(initiator_id),
         'reason': reason,
     })
+    db.session.add(event)
+
+    db.session.commit()
+
+
+def change_screen_name(user_id: UserID, new_screen_name: str,
+                       initiator_id: UserID, *, reason: Optional[str]=None
+                      ) -> None:
+    """Change the user's screen name."""
+    user = _get_user(user_id)
+
+    old_screen_name = user.screen_name
+
+    user.screen_name = new_screen_name
+
+    event_data = {
+        'old_screen_name': old_screen_name,
+        'new_screen_name': new_screen_name,
+        'initiator_id': str(initiator_id),
+    }
+    if reason:
+        event_data['reason'] = reason
+
+    event = event_service.build_event('user-screen-name-changed', user.id,
+                                      event_data)
     db.session.add(event)
 
     db.session.commit()
