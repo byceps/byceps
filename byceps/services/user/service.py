@@ -8,16 +8,11 @@ byceps.services.user.service
 
 from typing import Dict, Optional, Set, Tuple
 
-from flask import url_for
-
 from ...database import db, Query
-from ...typing import BrandID, PartyID, UserID
+from ...typing import PartyID, UserID
 
-from ..email import service as email_service
 from ..orga_team.models import OrgaTeam, Membership as OrgaTeamMembership
 from ..user_avatar.models import Avatar, AvatarSelection
-from ..verification_token.models import Token
-from ..verification_token import service as verification_token_service
 
 from .models.user import AnonymousUser, User as DbUser
 from .transfer.models import User
@@ -219,37 +214,3 @@ def _do_users_matching_filter_exist(model_attribute: str, search_value: str
                 .exists()
         ) \
         .scalar()
-
-
-def send_email_address_confirmation_email(recipient_email_address: str,
-                                          recipient_screen_name: str,
-                                          verification_token: Token,
-                                          brand_id: BrandID) -> None:
-    sender_address = email_service.get_sender_address_for_brand(brand_id)
-
-    confirmation_url = url_for('user.confirm_email_address',
-                               token=verification_token.token,
-                               _external=True)
-
-    subject = '{}, bitte bestätige deine E-Mail-Adresse' \
-        .format(recipient_screen_name)
-    body = (
-        'Hallo {0},\n\n'
-        'bitte bestätige deine E-Mail-Adresse, indem du diese URL abrufst: {1}'
-    ).format(recipient_screen_name, confirmation_url)
-    recipients = [recipient_email_address]
-
-    email_service.enqueue_email(sender_address, recipients, subject, body)
-
-
-def confirm_email_address(verification_token: Token) -> None:
-    """Confirm the email address of the user assigned with that
-    verification token.
-    """
-    user = verification_token.user
-
-    user.email_address_verified = True
-    user.enabled = True
-    db.session.commit()
-
-    verification_token_service.delete_token(verification_token)

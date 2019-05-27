@@ -24,6 +24,7 @@ from ...services.terms import consent_service as terms_consent_service, \
 from ...services.ticketing import attendance_service, ticket_service
 from ...services.user import command_service as user_command_service
 from ...services.user import creation_service as user_creation_service
+from ...services.user import email_address_confirmation_service
 from ...services.user import event_service as user_event_service
 from ...services.user import service as user_service
 from ...services.user_badge import service as badge_service
@@ -318,8 +319,8 @@ def request_email_address_confirmation_email():
 
     verification_token = verification_token_service \
         .find_or_create_for_email_address_confirmation(user.id)
-    user_service.send_email_address_confirmation_email(user.email_address,
-        user.screen_name, verification_token, g.brand_id)
+    email_address_confirmation_service.send_email_address_confirmation_email(
+        user.email_address, user.screen_name, verification_token, g.brand_id)
 
     flash_success(
         'Der Link zur Bestätigung der für den Benutzernamen "{}" '
@@ -333,13 +334,14 @@ def confirm_email_address(token):
     """Confirm e-mail address of the user account assigned with the
     verification token.
     """
-    verification_token = verification_token_service.find_for_email_address_confirmation_by_token(token)
+    verification_token = verification_token_service \
+        .find_for_email_address_confirmation_by_token(token)
     if verification_token is None:
         abort(404)
 
     user = verification_token.user
 
-    user_service.confirm_email_address(verification_token)
+    email_address_confirmation_service.confirm_email_address(verification_token)
 
     # Currently, the user's e-mail address cannot be changed, but that
     # might be allowed in the future. At that point, the verification

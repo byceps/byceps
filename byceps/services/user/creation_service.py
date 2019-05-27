@@ -23,6 +23,7 @@ from ..newsletter import command_service as newsletter_command_service
 from ..newsletter.transfer.models import Subscription as NewsletterSubscription
 from ..verification_token import service as verification_token_service
 
+from . import email_address_confirmation_service
 from . import event_service
 from .models.detail import UserDetail as DbUserDetail
 from .models.user import User as DbUser
@@ -164,5 +165,5 @@ def _request_email_address_verification(user: User, email_address: str,
     verification_token = verification_token_service \
         .create_for_email_address_confirmation(user.id)
 
-    user_service.send_email_address_confirmation_email(email_address,
-        user.screen_name, verification_token, brand_id)
+    email_address_confirmation_service.send_email_address_confirmation_email(
+        email_address, user.screen_name, verification_token, brand_id)
