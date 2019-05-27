@@ -76,6 +76,15 @@
             <span class="user-link">{{ render_user_avatar_20_and_link(user) }}</span>
             hat sich von IP-Adresse {{ event.data.ip_address }} <strong>erfolgreich angemeldet</strong>.
           {%- endset %}
+        {%- elif event.event == 'user-screen-name-changed' %}
+          {%- set icon_name = 'user' %}
+          {%- set body %}
+            <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
+            hat das Benutzerkonto &quot;{{ event.data.old_screen_name }}&quot; umbenannt in &quot;{{ event.data.new_screen_name }}&quot;.
+            {%- if 'reason' in event.data %}
+            <div style="margin-top: 0.5rem;">Begründung: <em>{{ event.data.reason }}</em></div>
+            {%- endif %}
+          {%- endset %}
         {%- elif event.event == 'email-address-confirmed' %}
           {%- set icon_name = 'email' %}
           {%- set body %}
