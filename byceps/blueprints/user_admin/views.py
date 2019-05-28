@@ -232,11 +232,12 @@ def set_password_form(user_id, erroneous_form=None):
 @permission_required(UserPermission.set_password)
 def set_password(user_id):
     """Set a new password for the user."""
+    user = _get_user_or_404(user_id)
+
     form = SetPasswordForm(request.form)
     if not form.validate():
-        return set_password_form(user_id, form)
+        return set_password_form(user.id, form)
 
-    user = _get_user_or_404(user_id)
     new_password = form.password.data
     initiator_id = g.current_user.id
 
@@ -309,7 +310,7 @@ def suspend_account(user_id):
 
     form = SuspendAccountForm(request.form)
     if not form.validate():
-        return suspend_account_form(user_id, form)
+        return suspend_account_form(user.id, form)
 
     initiator_id = g.current_user.id
     reason = form.reason.data.strip()
@@ -355,7 +356,7 @@ def unsuspend_account(user_id):
 
     form = SuspendAccountForm(request.form)
     if not form.validate():
-        return unsuspend_account_form(user_id, form)
+        return unsuspend_account_form(user.id, form)
 
     initiator_id = g.current_user.id
     reason = form.reason.data.strip()
@@ -401,7 +402,7 @@ def delete_account(user_id):
 
     form = DeleteAccountForm(request.form)
     if not form.validate():
-        return delete_account_form(user_id, form)
+        return delete_account_form(user.id, form)
 
     initiator_id = g.current_user.id
     reason = form.reason.data.strip()
