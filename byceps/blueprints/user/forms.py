@@ -16,11 +16,22 @@ from ...services.user import screen_name_validator
 from ...util.l10n import LocalizedForm
 
 
+class ScreenNameValidator:
+
+    def __call__(self, form, field):
+        if not screen_name_validator.is_screen_name_valid(field.data):
+            raise ValidationError(
+                'Enthält ungültige Zeichen. Erlaubt sind Buchstaben, '
+                ' Ziffern und diese Sonderzeichen: {}' \
+                    .format(' '.join(screen_name_validator.SPECIAL_CHARS)))
+
+
 class UserCreateForm(LocalizedForm):
     screen_name = StringField('Benutzername', [
         InputRequired(),
         Length(min=screen_name_validator.MIN_LENGTH,
                max=screen_name_validator.MAX_LENGTH),
+        ScreenNameValidator(),
     ])
     first_names = StringField('Vorname(n)', [InputRequired(), Length(min=2, max=40)])
     last_name = StringField('Nachname', [InputRequired(), Length(min=2, max=40)])
@@ -30,13 +41,6 @@ class UserCreateForm(LocalizedForm):
     consent_to_terms = BooleanField('AGB', [InputRequired()])
     consent_to_privacy_policy = BooleanField('Datenschutzbestimmungen', [InputRequired()])
     subscribe_to_newsletter = BooleanField('Newsletter')
-
-    def validate_screen_name(form, field):
-        if not screen_name_validator.is_screen_name_valid(field.data):
-            raise ValidationError(
-                'Enthält ungültige Zeichen. Erlaubt sind Buchstaben, '
-                ' Ziffern und diese Sonderzeichen: {}' \
-                    .format(' '.join(screen_name_validator.SPECIAL_CHARS)))
 
     def validate_terms_version_id(form, field):
         try:
