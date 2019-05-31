@@ -115,6 +115,7 @@ def view(order_id):
     tickets = ticket_service.find_tickets_created_by_order(order.order_number)
 
     return {
+        'shop': shop,
         'order': order,
         'placed_by': placed_by,
         'party': party,
@@ -216,6 +217,7 @@ def cancel_form(order_id, erroneous_form=None):
     form = erroneous_form if erroneous_form else CancelForm()
 
     return {
+        'shop': shop,
         'order': order,
         'party': party,
         'form': form,
@@ -271,6 +273,7 @@ def mark_as_paid_form(order_id, erroneous_form=None):
     form = erroneous_form if erroneous_form else MarkAsPaidForm()
 
     return {
+        'shop': shop,
         'order': order,
         'party': party,
         'form': form,
