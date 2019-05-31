@@ -32,11 +32,11 @@ from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
 from ..authorization_admin.authorization import RolePermission
 from ..user.signals import account_created, account_deleted, \
-    account_suspended, account_unsuspended
+    account_suspended, account_unsuspended, screen_name_changed
 
 from .authorization import UserPermission
-from .forms import CreateAccountForm, DeleteAccountForm, SetPasswordForm, \
-    SuspendAccountForm
+from .forms import ChangeScreenNameForm, CreateAccountForm, \
+    DeleteAccountForm, SetPasswordForm, SuspendAccountForm
 from .models import UserStateFilter
 from . import service
 
@@ -412,6 +412,49 @@ def delete_account(user_id):
     account_deleted.send(None, user_id=user.id, initiator_id=initiator_id)
 
     flash_success("Das Benutzerkonto '{}' wurde gelöscht.", user.screen_name)
+    return redirect_to('.view', user_id=user.id)
+
+
+@blueprint.route('/<uuid:user_id>/change_screen_name')
+@permission_required(UserPermission.administrate)
+@templated
+def change_screen_name_form(user_id, erroneous_form=None):
+    """Show form to change the user's screen name."""
+    user = _get_user_or_404(user_id)
+
+    form = erroneous_form if erroneous_form else ChangeScreenNameForm()
+
+    return {
+        'user': user,
+        'form': form,
+    }
+
+
+@blueprint.route('/<uuid:user_id>/change_screen_name', methods=['POST'])
+@permission_required(UserPermission.administrate)
+def change_screen_name(user_id):
+    """Change the user's screen name."""
+    user = _get_user_or_404(user_id)
+
+    form = ChangeScreenNameForm(request.form)
+    if not form.validate():
+        return change_screen_name_form(user.id, form)
+
+    old_screen_name = user.screen_name
+    new_screen_name = form.screen_name.data.strip()
+    initiator_id = g.current_user.id
+    reason = form.reason.data.strip()
+
+    user_command_service.change_screen_name(user.id, new_screen_name,
+                                            initiator_id, reason=reason)
+
+    screen_name_changed.send(None, user_id=user.id,
+                             old_screen_name=old_screen_name,
+                             new_screen_name=new_screen_name,
+                             initiator_id=initiator_id, reason=reason)
+
+    flash_success("Das Benutzerkonto '{}' wurde umbenannt in '{}'.",
+                  old_screen_name, new_screen_name)
     return redirect_to('.view', user_id=user.id)
 
 

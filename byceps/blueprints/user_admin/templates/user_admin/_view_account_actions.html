@@ -22,6 +22,7 @@
         <li><a href="{{ url_for('.unsuspend_account', user_id=user.id) }}">{{ render_icon('unlock') }} Entsperren</a></li>
           {%- endif %}
 
+        <li><a href="{{ url_for('.change_screen_name_form', user_id=user.id) }}">{{ render_icon('edit') }} Umbenennen</a></li>
         <li><a href="{{ url_for('.delete_account_form', user_id=user.id) }}">{{ render_icon('delete') }} Löschen</a></li>
 
         {%- endif %}

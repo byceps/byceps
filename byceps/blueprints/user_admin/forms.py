@@ -15,6 +15,16 @@ from ...util.l10n import LocalizedForm
 from ..user.forms import ScreenNameValidator
 
 
+class ChangeScreenNameForm(LocalizedForm):
+    screen_name = StringField('Neuer Benutzername', [
+        InputRequired(),
+        Length(min=screen_name_validator.MIN_LENGTH,
+               max=screen_name_validator.MAX_LENGTH),
+        ScreenNameValidator(),
+    ])
+    reason = TextAreaField('Begründung', validators=[InputRequired(), Length(max=400)])
+
+
 class CreateAccountForm(LocalizedForm):
     screen_name = StringField('Benutzername', [
         InputRequired(),
