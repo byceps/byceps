@@ -449,8 +449,11 @@ fieldset.buttons {
   white-space: nowrap;
 }
 
-.filter .tag.color-default {
-  background-color: #666666;
+.filter .tag.color-none {
+  background-color: #ffffff;
+  border: #cccccc solid 1px;
+  color: #666666;
+  text-shadow: none;
 }
 
 

@@ -86,6 +86,6 @@
   {%- elif user_state_filter.name == 'deleted' -%}
     {{ render_tag('gelöscht', class='color-disabled') }}
   {%- else -%}
-    {{ render_tag('keine', class='color-default') }}
+    {{ render_tag('keine', class='color-none') }}
   {%- endif -%}
 {%- endmacro %}
