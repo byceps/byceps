@@ -401,11 +401,14 @@ ol.index.fully-linked a:hover {
 .tag.order-open {
   background-color: #ee3322 !important;
 }
+.tag.order-canceled-before-paid {
+  background-color: #999999 !important;
+}
 .tag.order-paid {
   background-color: #11aa22 !important;
 }
-.tag.order-canceled {
-  background-color: #999999 !important;
+.tag.order-canceled-after-paid {
+  background-color: #666666 !important;
 }
 .tag.order-waiting-for-shipping {
   background-color: #eecc00 !important;

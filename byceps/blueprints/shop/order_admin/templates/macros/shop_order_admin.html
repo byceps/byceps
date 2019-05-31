@@ -25,9 +25,9 @@
   {%- if state_name == 'paid' -%}
     {{ render_tag('bezahlt', icon='success', class='order-paid') }}
   {%- elif state_name == 'canceled_before_paid' -%}
-    {{ render_tag('storniert (v. B.)', icon='disabled', class='order-canceled', title='storniert vor Bezahlung') }}
+    {{ render_tag('storniert (v. B.)', icon='disabled', class='order-canceled-before-paid', title='storniert vor Bezahlung') }}
   {%- elif state_name == 'canceled_after_paid' -%}
-    {{ render_tag('storniert (n. B.)', icon='disabled', class='order-canceled', title='storniert nach Bezahlung') }}
+    {{ render_tag('storniert (n. B.)', icon='disabled', class='order-canceled-after-paid', title='storniert nach Bezahlung') }}
   {%- else -%}
     {{ render_tag('offen', icon='pending', class='order-open') }}
   {%- endif -%}
