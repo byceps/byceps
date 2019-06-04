@@ -81,6 +81,7 @@ def view(article_id):
 
     return {
         'article': article,
+        'shop': shop,
         'party': party,
         'totals': totals,
         'PaymentState': PaymentState,
@@ -123,6 +124,7 @@ def view_ordered(article_id):
 
     return {
         'article': article,
+        'shop': shop,
         'party': party,
         'quantity_total': quantity_total,
         'quantities_orders_users': quantities_orders_users,
@@ -197,6 +199,7 @@ def update_form(article_id, erroneous_form=None):
 
     return {
         'article': article,
+        'shop': shop,
         'party': party,
         'form': form,
     }
@@ -251,6 +254,7 @@ def attachment_create_form(article_id, erroneous_form=None):
 
     return {
         'article': article,
+        'shop': shop,
         'party': party,
         'form': form,
     }
