@@ -451,7 +451,7 @@ def change_screen_name(user_id):
     screen_name_changed.send(None, user_id=user.id,
                              old_screen_name=old_screen_name,
                              new_screen_name=new_screen_name,
-                             initiator_id=initiator_id, reason=reason)
+                             initiator_id=initiator_id)
 
     flash_success("Das Benutzerkonto '{}' wurde umbenannt in '{}'.",
                   old_screen_name, new_screen_name)
