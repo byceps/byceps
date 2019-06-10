@@ -106,7 +106,7 @@ def _get_user_query(include_avatar: bool,
 
     if include_avatar:
         query = query \
-            .outerjoin(AvatarSelection) \
+            .outerjoin(AvatarSelection, DbUser.avatar_selection) \
             .outerjoin(Avatar)
 
     return query
