@@ -3,6 +3,8 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
+from unittest.mock import patch
+
 from byceps.services.shop.article.models.article import Article
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order.models.order import Order
@@ -46,7 +48,8 @@ class ShopAdminTestCase(ShopTestBase):
 
         return admin
 
-    def test_cancel_before_paid(self):
+    @patch('byceps.blueprints.shop.order.signals.order_canceled.send')
+    def test_cancel_before_paid(self, order_canceled_signal_send_mock):
         article_before = self.create_article(self.shop.id, quantity=8)
 
         quantified_articles_to_order = {(article_before, 3)}
@@ -70,7 +73,11 @@ class ShopAdminTestCase(ShopTestBase):
         article_afterwards = Article.query.get(article_before.id)
         assert article_afterwards.quantity == 8
 
-    def test_mark_order_as_paid(self):
+        order_canceled_signal_send_mock \
+            .assert_called_once_with(None, order_id=placed_order.id)
+
+    @patch('byceps.blueprints.shop.order.signals.order_paid.send')
+    def test_mark_order_as_paid(self, order_paid_signal_send_mock):
         placed_order = self.place_order([])
         order_before = get_order(placed_order.id)
 
@@ -86,7 +93,13 @@ class ShopAdminTestCase(ShopTestBase):
         assert_payment(order_afterwards, PaymentMethod.direct_debit,
                        PaymentState.paid, self.admin.id)
 
-    def test_cancel_after_paid(self):
+        order_paid_signal_send_mock \
+            .assert_called_once_with(None, order_id=placed_order.id)
+
+    @patch('byceps.blueprints.shop.order.signals.order_canceled.send')
+    @patch('byceps.blueprints.shop.order.signals.order_paid.send')
+    def test_cancel_after_paid(self, order_paid_signal_send_mock,
+                               order_canceled_signal_send_mock):
         article_before = self.create_article(self.shop.id, quantity=8)
 
         quantified_articles_to_order = {(article_before, 3)}
@@ -114,6 +127,9 @@ class ShopAdminTestCase(ShopTestBase):
 
         article_afterwards = Article.query.get(article_before.id)
         assert article_afterwards.quantity == 8
+
+        order_canceled_signal_send_mock \
+            .assert_called_once_with(None, order_id=placed_order.id)
 
     # helpers
 
