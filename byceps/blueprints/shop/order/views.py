@@ -11,6 +11,7 @@ from flask import abort, g, request
 from ....services.country import service as country_service
 from ....services.shop.article import service as article_service
 from ....services.shop.cart.models import Cart
+from ....services.shop.order.email import service as order_email_service
 from ....services.shop.order import service as order_service
 from ....services.shop.order.transfer.models import PaymentMethod
 from ....services.shop.shop import service as shop_service
@@ -233,6 +234,8 @@ def _place_order(shop_id, orderer, cart):
     payment_method = PaymentMethod.bank_transfer
 
     order = order_service.place_order(shop_id, orderer, payment_method, cart)
+
+    order_email_service.send_email_for_incoming_order_to_orderer(order.id)
 
     order_placed.send(None, order_id=order.id)
 

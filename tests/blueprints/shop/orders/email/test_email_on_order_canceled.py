@@ -5,7 +5,7 @@
 
 from unittest.mock import patch
 
-from byceps.blueprints.shop.order.signals import order_canceled
+from byceps.services.shop.order.email import service as order_email_service
 from byceps.services.shop.order import service as order_service
 
 from tests.helpers import current_party_set, current_user_set
@@ -13,7 +13,7 @@ from tests.helpers import current_party_set, current_user_set
 from .base import OrderEmailTestBase
 
 
-class EmailOnOrderCanceledSignalTest(OrderEmailTestBase):
+class EmailOnOrderCanceledTest(OrderEmailTestBase):
 
     def setUp(self):
         super().setUp()
@@ -52,7 +52,12 @@ E-Mail: acmecon@example.com
 
     @patch('byceps.email.send')
     def test_email_on_order_canceled(self, send_email_mock):
-        self.send_event(self.order_id)
+        with \
+                current_party_set(self.app, self.party), \
+                current_user_set(self.app, self.user), \
+                self.app.app_context():
+            order_email_service \
+                .send_email_for_canceled_order_to_orderer(self.order_id)
 
         expected_sender = 'acmecon@example.com'
         expected_recipients = [self.user.email_address]
@@ -85,10 +90,3 @@ E-Mail: acmecon@example.com
 
     def place_order(self, orderer):
         return self.place_order_with_items(self.shop.id, orderer, None, [])
-
-    def send_event(self, order_id):
-        with \
-                current_party_set(self.app, self.party), \
-                current_user_set(self.app, self.user), \
-                self.app.app_context():
-            order_canceled.send(None, order_id=order_id)

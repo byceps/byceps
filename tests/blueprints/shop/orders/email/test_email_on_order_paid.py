@@ -6,7 +6,7 @@
 from datetime import datetime
 from unittest.mock import patch
 
-from byceps.blueprints.shop.order.signals import order_paid
+from byceps.services.shop.order.email import service as order_email_service
 from byceps.services.shop.order import service as order_service
 from byceps.services.shop.order.transfer.models import PaymentMethod
 
@@ -15,7 +15,7 @@ from tests.helpers import current_party_set, current_user_set
 from .base import OrderEmailTestBase
 
 
-class EmailOnOrderPaidSignalTest(OrderEmailTestBase):
+class EmailOnOrderPaidTest(OrderEmailTestBase):
 
     def setUp(self):
         super().setUp()
@@ -54,7 +54,12 @@ E-Mail: acmecon@example.com
 
     @patch('byceps.email.send')
     def test_email_on_order_paid(self, send_email_mock):
-        self.send_event(self.order_id)
+        with \
+                current_party_set(self.app, self.party), \
+                current_user_set(self.app, self.user), \
+                self.app.app_context():
+            order_email_service \
+                .send_email_for_paid_order_to_orderer(self.order_id)
 
         expected_sender = 'acmecon@example.com'
         expected_recipients = [self.user.email_address]
@@ -90,10 +95,3 @@ E-Mail: acmecon@example.com
 
         return self.place_order_with_items(self.shop.id, orderer, created_at,
                                            [])
-
-    def send_event(self, order_id):
-        with \
-                current_party_set(self.app, self.party), \
-                current_user_set(self.app, self.user), \
-                self.app.app_context():
-            order_paid.send(None, order_id=order_id)

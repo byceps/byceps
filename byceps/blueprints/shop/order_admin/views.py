@@ -251,6 +251,8 @@ def cancel(order_id):
         'Artikel in den entsprechenden Stückzahlen wieder zur Bestellung '
         'freigegeben.')
 
+    order_email_service.send_email_for_canceled_order_to_orderer(order.id)
+
     order_canceled.send(None, order_id=order.id)
 
     return redirect_to('.view', order_id=order.id)
@@ -301,6 +303,8 @@ def mark_as_paid(order_id):
         return redirect_to('.view', order_id=order.id)
 
     flash_success('Die Bestellung wurde als bezahlt markiert.')
+
+    order_email_service.send_email_for_paid_order_to_orderer(order.id)
 
     order_paid.send(None, order_id=order.id)
 

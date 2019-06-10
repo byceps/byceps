@@ -44,7 +44,8 @@ class ShopOrderTestCase(ShopTestBase):
         self.article_id = article.id
 
     @patch('byceps.blueprints.shop.order.signals.order_placed.send')
-    def test_order(self, order_placed_mock):
+    @patch('byceps.blueprints.shop.order.views.order_email_service')
+    def test_order(self, order_email_service_mock, order_placed_mock):
         article_before = self.get_article()
         assert article_before.quantity == 5
 
@@ -72,6 +73,9 @@ class ShopOrderTestCase(ShopTestBase):
         assert_order_item(first_order_item, self.article_id,
                           article_before.price, article_before.tax_rate, 3)
 
+        order_email_service_mock.send_email_for_incoming_order_to_orderer \
+            .assert_called_once_with(order.id)
+
         order_placed_mock.assert_called_once_with(None, order_id=order.id)
 
         order_detail_page_url = 'http://example.com/shop/orders/{}' \
@@ -84,7 +88,8 @@ class ShopOrderTestCase(ShopTestBase):
                                            order.order_number)
 
     @patch('byceps.blueprints.shop.order.signals.order_placed.send')
-    def test_order_single(self, order_placed_mock):
+    @patch('byceps.blueprints.shop.order.views.order_email_service')
+    def test_order_single(self, order_email_service_mock, order_placed_mock):
         article_before = self.get_article()
         assert article_before.quantity == 5
 
@@ -110,6 +115,9 @@ class ShopOrderTestCase(ShopTestBase):
         first_order_item = order.items[0]
         assert_order_item(first_order_item, self.article_id,
                           article_before.price, article_before.tax_rate, 1)
+
+        order_email_service_mock.send_email_for_incoming_order_to_orderer \
+            .assert_called_once_with(order.id)
 
         order_placed_mock.assert_called_once_with(None, order_id=order.id)
 
