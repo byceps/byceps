@@ -63,8 +63,7 @@ class OrderedArticlesServiceTestCase(ShopTestBase):
         cart.add_item(self.article, article_quantity)
 
         return order_service.place_order(self.shop.id, self.orderer,
-                                         payment_method, cart,
-                                         send_signal=False)
+                                         payment_method, cart)
 
     def set_payment_state(self, order_number, payment_state):
         order = order_service.find_order_by_order_number(order_number)

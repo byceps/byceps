@@ -71,7 +71,7 @@ class ShopOrdersTestCase(ShopTestBase):
         cart = Cart()
 
         order = order_service.place_order(shop_id, orderer, payment_method,
-                                         cart, send_signal=False)
+                                         cart)
 
         return order.id
 

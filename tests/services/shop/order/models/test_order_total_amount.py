@@ -72,8 +72,7 @@ class OrderTotalAmountTest(ShopTestBase):
             cart.add_item(article, quantity)
 
         return order_service.place_order(self.shop.id, self.orderer,
-                                         payment_method, cart,
-                                         send_signal=False)
+                                         payment_method, cart)
 
 
 def assert_decimal_equal(actual, expected):

@@ -39,7 +39,7 @@ class OrderEmailTestBase(ShopTestBase):
                 cart.add_item(article, quantity)
 
         order = order_service.place_order(self.shop.id, orderer, payment_method,
-                                         cart, send_signal=False)
+                                         cart)
 
         if created_at is not None:
             db_order = Order.query.get(order.id)

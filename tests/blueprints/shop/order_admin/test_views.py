@@ -126,7 +126,7 @@ class ShopAdminTestCase(ShopTestBase):
             cart.add_item(article, quantity_to_order)
 
         return order_service.place_order(self.shop.id, orderer, payment_method,
-                                         cart, send_signal=False)
+                                         cart)
 
 
 def assert_payment_is_open(order):

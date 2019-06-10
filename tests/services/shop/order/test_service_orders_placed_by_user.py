@@ -57,8 +57,7 @@ class ShopOrdersServiceTestCase(ShopTestBase):
 
         cart = Cart()
 
-        return order_service.place_order(shop_id, orderer, payment_method, cart,
-                                         send_signal=False)
+        return order_service.place_order(shop_id, orderer, payment_method, cart)
 
     def get_orders_by_user(self, orderer, shop_id):
         return order_service \

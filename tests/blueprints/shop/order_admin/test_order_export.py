@@ -104,8 +104,7 @@ class ExportTestCase(ShopTestBase):
         created_at = datetime(2015, 2, 26, 13, 26, 24)
 
         return order_service.place_order(self.shop.id, orderer, payment_method,
-                                         cart, created_at=created_at,
-                                         send_signal=False)
+                                         cart, created_at=created_at)
 
     def create_orderer(self):
         user = self.create_user('Besteller',

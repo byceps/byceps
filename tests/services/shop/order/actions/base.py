@@ -43,8 +43,7 @@ class OrderActionTestBase(ShopTestBase):
             cart.add_item(article, quantity)
 
         return order_service.place_order(self.shop.id, orderer,
-                                         ANY_PAYMENT_METHOD, cart,
-                                         send_signal=False)
+                                         ANY_PAYMENT_METHOD, cart)
 
     def mark_order_as_paid(self):
         order_service.mark_order_as_paid(self.order.id, ANY_PAYMENT_METHOD,

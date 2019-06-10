@@ -23,6 +23,7 @@ from ....util.views import redirect_to
 from ...authentication.decorators import login_required
 
 from .forms import assemble_articles_order_form, OrderForm
+from .signals import order_placed
 
 
 blueprint = create_blueprint('shop_order', __name__)
@@ -231,7 +232,11 @@ def _get_article_or_404(article_id):
 def _place_order(shop_id, orderer, cart):
     payment_method = PaymentMethod.bank_transfer
 
-    return order_service.place_order(shop_id, orderer, payment_method, cart)
+    order = order_service.place_order(shop_id, orderer, payment_method, cart)
+
+    order_placed.send(None, order_id=order.id)
+
+    return order
 
 
 def _flash_order_success(order):

@@ -12,7 +12,6 @@ from typing import Dict, Iterator, Optional, Sequence, Set
 from flask import current_app
 from sqlalchemy.exc import IntegrityError
 
-from ....blueprints.shop.order.signals import order_placed
 from ....database import db, Pagination
 from ....typing import UserID
 
@@ -38,7 +37,7 @@ class OrderFailed(Exception):
 
 def place_order(shop_id: ShopID, orderer: Orderer,
                 payment_method: PaymentMethod, cart: Cart,
-                *, created_at: Optional[datetime]=None, send_signal: bool=True
+                *, created_at: Optional[datetime]=None
                ) -> Order:
     """Place an order for one or more articles."""
     shop = shop_service.get_shop(shop_id)
@@ -62,9 +61,6 @@ def place_order(shop_id: ShopID, orderer: Orderer,
         current_app.logger.error('Order %s failed: %s', order_number, e)
         db.session.rollback()
         raise OrderFailed()
-
-    if send_signal:
-        order_placed.send(None, order_id=order.id)
 
     return order.to_transfer_object()
 
