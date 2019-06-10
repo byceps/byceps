@@ -9,7 +9,6 @@ from unittest.mock import patch
 
 from byceps.blueprints.shop.order.signals import order_placed
 from byceps.services.shop.order import service as order_service
-from byceps.services.shop.order.transfer.models import PaymentMethod
 
 from tests.helpers import current_party_set, current_user_set
 
@@ -38,10 +37,6 @@ class EmailOnOrderPlacedSignalTest(OrderEmailTestBase):
         self.user = self.create_user_with_detail('Interessent')
 
         self.order_id = self.place_order(self.user)
-
-        order_service.mark_order_as_paid(self.order_id,
-                                         PaymentMethod.bank_transfer,
-                                         self.admin.id)
 
     def create_email_payment_instructions_snippet(self):
         self.create_shop_fragment(self.shop.id, 'email_payment_instructions',
