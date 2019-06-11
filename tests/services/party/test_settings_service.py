@@ -3,100 +3,112 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.services.party import settings_service as service
+from datetime import datetime
+
+import pytest
+
+from byceps.services.brand import service as brand_service
+from byceps.services.party import service as party_service, settings_service
 from byceps.services.party.transfer.models import PartySetting
 
-from tests.base import AbstractAppTestCase
+
+@pytest.fixture
+def app(party_app_with_db):
+    _app = party_app_with_db
+
+    brand = brand_service.create_brand('acme', 'ACME')
+
+    now = datetime.now()
+    party = party_service.create_party('acmeparty', brand.id, 'ACME Party',
+                                       now, now)
+    _app.party_id = party.id
+
+    yield _app
 
 
-class PartySettingsServiceTest(AbstractAppTestCase):
+def test_create(app):
+    party_id = app.party_id
+    name = 'name'
+    value = 'value'
 
-    def setUp(self):
-        super().setUp()
+    assert settings_service.find_setting(party_id, name) is None
 
-        self.create_brand_and_party()
+    setting = settings_service.create_setting(party_id, name, value)
 
-    def test_create(self):
-        party_id = self.party.id
-        name = 'name'
-        value = 'value'
+    assert setting is not None
+    assert setting.party_id == party_id
+    assert setting.name == name
+    assert setting.value == value
 
-        assert service.find_setting(party_id, name) is None
+def test_create_or_update(app):
+    party_id = app.party_id
+    name = 'name'
+    value1 = 'value1'
+    value2 = 'value2'
 
-        setting = service.create_setting(party_id, name, value)
+    assert settings_service.find_setting(party_id, name) is None
 
-        assert setting is not None
-        assert setting.party_id == party_id
-        assert setting.name == name
-        assert setting.value == value
+    created_setting = settings_service \
+        .create_or_update_setting(party_id, name, value1)
 
-    def test_create_or_update(self):
-        party_id = self.party.id
-        name = 'name'
-        value1 = 'value1'
-        value2 = 'value2'
+    assert created_setting is not None
+    assert created_setting.party_id == party_id
+    assert created_setting.name == name
+    assert created_setting.value == value1
 
-        assert service.find_setting(party_id, name) is None
+    updated_setting = settings_service \
+        .create_or_update_setting(party_id, name, value2)
 
-        created_setting = service.create_or_update_setting(party_id, name, value1)
+    assert updated_setting is not None
+    assert updated_setting.party_id == party_id
+    assert updated_setting.name == name
+    assert updated_setting.value == value2
 
-        assert created_setting is not None
-        assert created_setting.party_id == party_id
-        assert created_setting.name == name
-        assert created_setting.value == value1
+def test_find(app):
+    party_id = app.party_id
+    name = 'name'
+    value = 'value'
 
-        updated_setting = service.create_or_update_setting(party_id, name, value2)
+    setting_before_create = settings_service.find_setting(party_id, name)
+    assert setting_before_create is None
 
-        assert updated_setting is not None
-        assert updated_setting.party_id == party_id
-        assert updated_setting.name == name
-        assert updated_setting.value == value2
+    settings_service.create_setting(party_id, name, value)
 
-    def test_find(self):
-        party_id = self.party.id
-        name = 'name'
-        value = 'value'
+    setting_after_create = settings_service.find_setting(party_id, name)
+    assert setting_after_create is not None
+    assert setting_after_create.party_id == party_id
+    assert setting_after_create.name == name
+    assert setting_after_create.value == value
 
-        setting_before_create = service.find_setting(party_id, name)
-        assert setting_before_create is None
+def test_find_value(app):
+    party_id = app.party_id
+    name = 'name'
+    value = 'value'
 
-        service.create_setting(party_id, name, value)
+    value_before_create = settings_service.find_setting_value(party_id, name)
+    assert value_before_create is None
 
-        setting_after_create = service.find_setting(party_id, name)
-        assert setting_after_create is not None
-        assert setting_after_create.party_id == party_id
-        assert setting_after_create.name == name
-        assert setting_after_create.value == value
+    settings_service.create_setting(party_id, name, value)
 
-    def test_find_value(self):
-        party_id = self.party.id
-        name = 'name'
-        value = 'value'
+    value_after_create = settings_service.find_setting_value(party_id, name)
+    assert value_after_create == value
 
-        value_before_create = service.find_setting_value(party_id, name)
-        assert value_before_create is None
+def test_get_settings(app):
+    party_id = app.party_id
 
-        service.create_setting(party_id, name, value)
+    all_settings_before_create = settings_service.get_settings(party_id)
+    assert all_settings_before_create == set()
 
-        value_after_create = service.find_setting_value(party_id, name)
-        assert value_after_create == value
+    for name, value in {
+        ('name1', 'value1'),
+        ('name2', 'value2'),
+        ('name3', 'value3'),
+    }:
+        settings_service.create_setting(party_id, name, value)
 
-    def test_get_settings(self):
-        party_id = self.party.id
-
-        all_settings_before_create = service.get_settings(party_id)
-        assert all_settings_before_create == set()
-
-        for name, value in {
-            ('name1', 'value1'),
-            ('name2', 'value2'),
-            ('name3', 'value3'),
-        }:
-            service.create_setting(party_id, name, value)
-
-        all_settings_after_create = service.get_settings(party_id)
-        assert all_settings_after_create == {
-            PartySetting(party_id, 'name1', 'value1'),
-            PartySetting(party_id, 'name2', 'value2'),
-            PartySetting(party_id, 'name3', 'value3'),
-        }
+    all_settings_after_create = settings_service.get_settings(party_id)
+    assert all_settings_after_create == {
+        PartySetting(party_id, 'name1', 'value1'),
+        PartySetting(party_id, 'name2', 'value2'),
+        PartySetting(party_id, 'name3', 'value3'),
+    }

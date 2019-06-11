@@ -3,101 +3,116 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.services.site import settings_service as service
+from datetime import datetime
+
+import pytest
+
+from byceps.services.brand import service as brand_service
+from byceps.services.party import service as party_service
+from byceps.services.site import service as site_service, settings_service
 from byceps.services.site.transfer.models import SiteSetting
 
-from tests.base import AbstractAppTestCase
+
+@pytest.fixture
+def app(party_app_with_db):
+    _app = party_app_with_db
+
+    brand = brand_service.create_brand('acme', 'ACME')
+
+    now = datetime.now()
+    party = party_service.create_party('acmeparty', brand.id, 'ACME Party',
+                                       now, now)
+
+    site = site_service.create_site('acme-intranet', party.id,
+                                    'ACME Party Intranet')
+    _app.site_id = site.id
+
+    yield _app
 
 
-class SiteSettingsServiceTest(AbstractAppTestCase):
+def test_create(app):
+    site_id = app.site_id
+    name = 'name'
+    value = 'value'
 
-    def setUp(self):
-        super().setUp()
+    assert settings_service.find_setting(site_id, name) is None
 
-        self.create_brand_and_party()
-        self.site = self.create_site()
+    setting = settings_service.create_setting(site_id, name, value)
 
-    def test_create(self):
-        site_id = self.site.id
-        name = 'name'
-        value = 'value'
+    assert setting is not None
+    assert setting.site_id == site_id
+    assert setting.name == name
+    assert setting.value == value
 
-        assert service.find_setting(site_id, name) is None
+def test_create_or_update(app):
+    site_id = app.site_id
+    name = 'name'
+    value1 = 'value1'
+    value2 = 'value2'
 
-        setting = service.create_setting(site_id, name, value)
+    assert settings_service.find_setting(site_id, name) is None
 
-        assert setting is not None
-        assert setting.site_id == site_id
-        assert setting.name == name
-        assert setting.value == value
+    created_setting = settings_service \
+        .create_or_update_setting(site_id, name, value1)
 
-    def test_create_or_update(self):
-        site_id = self.site.id
-        name = 'name'
-        value1 = 'value1'
-        value2 = 'value2'
+    assert created_setting is not None
+    assert created_setting.site_id == site_id
+    assert created_setting.name == name
+    assert created_setting.value == value1
 
-        assert service.find_setting(site_id, name) is None
+    updated_setting = settings_service \
+        .create_or_update_setting(site_id, name, value2)
 
-        created_setting = service.create_or_update_setting(site_id, name, value1)
+    assert updated_setting is not None
+    assert updated_setting.site_id == site_id
+    assert updated_setting.name == name
+    assert updated_setting.value == value2
 
-        assert created_setting is not None
-        assert created_setting.site_id == site_id
-        assert created_setting.name == name
-        assert created_setting.value == value1
+def test_find(app):
+    site_id = app.site_id
+    name = 'name'
+    value = 'value'
 
-        updated_setting = service.create_or_update_setting(site_id, name, value2)
+    setting_before_create = settings_service.find_setting(site_id, name)
+    assert setting_before_create is None
 
-        assert updated_setting is not None
-        assert updated_setting.site_id == site_id
-        assert updated_setting.name == name
-        assert updated_setting.value == value2
+    settings_service.create_setting(site_id, name, value)
 
-    def test_find(self):
-        site_id = self.site.id
-        name = 'name'
-        value = 'value'
+    setting_after_create = settings_service.find_setting(site_id, name)
+    assert setting_after_create is not None
+    assert setting_after_create.site_id == site_id
+    assert setting_after_create.name == name
+    assert setting_after_create.value == value
 
-        setting_before_create = service.find_setting(site_id, name)
-        assert setting_before_create is None
+def test_find_value(app):
+    site_id = app.site_id
+    name = 'name'
+    value = 'value'
 
-        service.create_setting(site_id, name, value)
+    value_before_create = settings_service.find_setting_value(site_id, name)
+    assert value_before_create is None
 
-        setting_after_create = service.find_setting(site_id, name)
-        assert setting_after_create is not None
-        assert setting_after_create.site_id == site_id
-        assert setting_after_create.name == name
-        assert setting_after_create.value == value
+    settings_service.create_setting(site_id, name, value)
 
-    def test_find_value(self):
-        site_id = self.site.id
-        name = 'name'
-        value = 'value'
+    value_after_create = settings_service.find_setting_value(site_id, name)
+    assert value_after_create == value
 
-        value_before_create = service.find_setting_value(site_id, name)
-        assert value_before_create is None
+def test_get_settings(app):
+    site_id = app.site_id
 
-        service.create_setting(site_id, name, value)
+    all_settings_before_create = settings_service.get_settings(site_id)
+    assert all_settings_before_create == set()
 
-        value_after_create = service.find_setting_value(site_id, name)
-        assert value_after_create == value
+    for name, value in {
+        ('name1', 'value1'),
+        ('name2', 'value2'),
+        ('name3', 'value3'),
+    }:
+        settings_service.create_setting(site_id, name, value)
 
-    def test_get_settings(self):
-        site_id = self.site.id
-
-        all_settings_before_create = service.get_settings(site_id)
-        assert all_settings_before_create == set()
-
-        for name, value in {
-            ('name1', 'value1'),
-            ('name2', 'value2'),
-            ('name3', 'value3'),
-        }:
-            service.create_setting(site_id, name, value)
-
-        all_settings_after_create = service.get_settings(site_id)
-        assert all_settings_after_create == {
-            SiteSetting(site_id, 'name1', 'value1'),
-            SiteSetting(site_id, 'name2', 'value2'),
-            SiteSetting(site_id, 'name3', 'value3'),
-        }
+    all_settings_after_create = settings_service.get_settings(site_id)
+    assert all_settings_after_create == {
+        SiteSetting(site_id, 'name1', 'value1'),
+        SiteSetting(site_id, 'name2', 'value2'),
+        SiteSetting(site_id, 'name3', 'value3'),
+    }

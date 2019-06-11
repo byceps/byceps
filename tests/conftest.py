@@ -5,6 +5,8 @@
 
 import pytest
 
+from byceps.database import db
+
 from tests.base import CONFIG_FILENAME_TEST_ADMIN, \
     CONFIG_FILENAME_TEST_PARTY, create_app
 
@@ -27,3 +29,16 @@ def party_app():
     """Provide a party web application."""
     app = create_app(CONFIG_FILENAME_TEST_PARTY)
     yield app
+
+
+@pytest.fixture
+def party_app_with_db(party_app):
+    with party_app.app_context():
+        db.reflect()
+        db.drop_all()
+
+        db.create_all()
+
+        yield party_app
+
+        db.session.remove()
