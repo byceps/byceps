@@ -11,7 +11,7 @@ from tests.base import CONFIG_FILENAME_TEST_ADMIN, \
     CONFIG_FILENAME_TEST_PARTY, create_app
 
 
-@pytest.fixture
+@pytest.fixture(scope='session')
 def admin_app():
     """Provide the admin web application."""
     app = create_app(CONFIG_FILENAME_TEST_ADMIN)
@@ -24,7 +24,7 @@ def admin_client(admin_app):
     return admin_app.test_client()
 
 
-@pytest.fixture
+@pytest.fixture(scope='session')
 def party_app():
     """Provide a party web application."""
     app = create_app(CONFIG_FILENAME_TEST_PARTY)
