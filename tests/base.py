@@ -64,14 +64,6 @@ class AbstractAppTestCase(TestCase):
 
         db.session.commit()
 
-    def create_brand(self, brand_id, title):
-        brand = create_brand(id=brand_id, title=title)
-
-        db.session.add(brand)
-        db.session.commit()
-
-        return brand
-
     def create_party(self, brand_id, party_id, title):
         party = create_party(id=party_id, title=title, brand_id=brand_id)
 

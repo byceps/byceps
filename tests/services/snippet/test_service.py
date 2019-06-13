@@ -12,7 +12,7 @@ from testfixtures.snippet import create_current_version_association, \
     create_fragment, create_snippet_version
 
 from tests.base import AbstractAppTestCase
-from tests.helpers import create_user
+from tests.helpers import create_brand, create_user
 
 
 class GetCurrentVersionOfSnippetTestCase(AbstractAppTestCase):
@@ -20,7 +20,7 @@ class GetCurrentVersionOfSnippetTestCase(AbstractAppTestCase):
     def setUp(self):
         super().setUp()
 
-        self.brand = self.create_brand('lafiesta', 'La Fiesta')
+        self.brand = create_brand('lafiesta', 'La Fiesta')
 
         party2014 = self.create_party(self.brand.id, 'lafiesta-2014', 'La Fiesta 2014')
         party2015 = self.create_party(self.brand.id, 'lafiesta-2015', 'La Fiesta 2015')

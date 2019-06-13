@@ -9,8 +9,8 @@ from byceps.services.newsletter.models import Subscription
 from byceps.services.newsletter.types import SubscriptionState
 
 from tests.base import AbstractAppTestCase, CONFIG_FILENAME_TEST_ADMIN
-from tests.helpers import assign_permissions_to_user, create_session_token, \
-    create_user
+from tests.helpers import assign_permissions_to_user, create_brand, \
+    create_session_token, create_user
 
 
 class NewsletterAdminTestCase(AbstractAppTestCase):
@@ -20,7 +20,7 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
 
         self.admin = self.create_admin()
 
-        self.brand = self.create_brand('example', 'Example')
+        self.brand = create_brand('example', 'Example')
 
         self.setup_subscribers()
 

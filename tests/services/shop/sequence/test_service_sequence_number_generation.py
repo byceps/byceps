@@ -6,6 +6,7 @@
 from byceps.services.shop.sequence.service import generate_article_number, \
     generate_order_number
 
+from tests.helpers import create_brand
 from tests.services.shop.base import ShopTestBase
 
 
@@ -57,7 +58,7 @@ class SequenceNumberGenerationTestCase(ShopTestBase):
     # helpers
 
     def create_custom_brand_and_party(self):
-        brand = self.create_brand('custom', 'Custom Events')
+        brand = create_brand('custom', 'Custom Events')
         party = self.create_party(brand.id, 'custom-party-4', 'Custom Party 4')
 
         return party

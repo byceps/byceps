@@ -16,6 +16,7 @@ from byceps.services.authorization import service as authorization_service
 
 from testfixtures.authentication import create_session_token \
     as _create_session_token
+from testfixtures.brand import create_brand as _create_brand
 from testfixtures.user import create_user as _create_user, \
     create_user_with_detail as _create_user_with_detail
 
@@ -88,3 +89,12 @@ def create_session_token(user_id):
 
     db.session.add(session_token)
     db.session.commit()
+
+
+def create_brand(brand_id, title):
+    brand = _create_brand(id=brand_id, title=title)
+
+    db.session.add(brand)
+    db.session.commit()
+
+    return brand
