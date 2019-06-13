@@ -4,7 +4,7 @@
 """
 
 from tests.base import AbstractAppTestCase
-from tests.helpers import create_user
+from tests.helpers import create_session_token, create_user
 
 
 class CurrentUserTestCase(AbstractAppTestCase):
@@ -16,7 +16,7 @@ class CurrentUserTestCase(AbstractAppTestCase):
 
     def test_when_logged_in(self):
         user = create_user('McFly')
-        self.create_session_token(user.id)
+        create_session_token(user.id)
 
         response = self.send_request(user_id=user.id)
 

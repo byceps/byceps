@@ -22,7 +22,6 @@ from byceps.services.email.models import EmailConfig
 from byceps.services.party import service as party_service
 from byceps.services.site import service as site_service
 
-from testfixtures.authentication import create_session_token
 from testfixtures.brand import create_brand
 from testfixtures.party import create_party
 
@@ -64,12 +63,6 @@ class AbstractAppTestCase(TestCase):
         db.session.add(self.party)
 
         db.session.commit()
-
-    def create_session_token(self, user_id):
-        session_token = create_session_token(user_id)
-
-        self.db.session.add(session_token)
-        self.db.session.commit()
 
     def create_brand(self, brand_id, title):
         brand = create_brand(id=brand_id, title=title)

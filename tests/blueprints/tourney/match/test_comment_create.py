@@ -7,7 +7,7 @@ from byceps.services.tourney.models.match import MatchComment
 from byceps.services.tourney import match_service
 
 from tests.base import AbstractAppTestCase
-from tests.helpers import create_user
+from tests.helpers import create_session_token, create_user
 
 
 class MatchCommentCreateTest(AbstractAppTestCase):
@@ -52,7 +52,7 @@ class MatchCommentCreateTest(AbstractAppTestCase):
     def create_player(self):
         player = create_user()
 
-        self.create_session_token(player.id)
+        create_session_token(player.id)
 
         return player
 

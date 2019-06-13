@@ -9,7 +9,8 @@ from byceps.services.site import settings_service as site_settings_service
 from testfixtures.board import create_board, create_category, create_topic
 
 from tests.base import AbstractAppTestCase
-from tests.helpers import assign_permissions_to_user, create_user
+from tests.helpers import assign_permissions_to_user, create_session_token, \
+    create_user
 
 
 class AbstractTopicModerationTest(AbstractAppTestCase):
@@ -18,7 +19,7 @@ class AbstractTopicModerationTest(AbstractAppTestCase):
         super().setUp()
 
         self.admin = create_user('Admin')
-        self.create_session_token(self.admin.id)
+        create_session_token(self.admin.id)
 
         self.user = create_user('User')
 

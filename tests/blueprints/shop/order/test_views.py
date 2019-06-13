@@ -10,7 +10,7 @@ from byceps.services.shop.order.models.order import Order
 
 from testfixtures.shop_article import create_article
 
-from tests.helpers import create_user
+from tests.helpers import create_session_token, create_user
 from tests.services.shop.base import ShopTestBase
 
 
@@ -34,7 +34,7 @@ class ShopOrderTestCase(ShopTestBase):
 
     def setup_orderer(self):
         self.orderer = create_user()
-        self.create_session_token(self.orderer.id)
+        create_session_token(self.orderer.id)
 
     def setup_article(self):
         article = create_article(self.shop.id, quantity=5)

@@ -15,7 +15,8 @@ from byceps.services.shop.order import service as order_service
 from byceps.services.shop.order.transfer.models import PaymentMethod
 
 from tests.base import CONFIG_FILENAME_TEST_ADMIN
-from tests.helpers import assign_permissions_to_user, create_user
+from tests.helpers import assign_permissions_to_user, create_session_token, \
+    create_user
 from tests.services.shop.base import ShopTestBase
 
 
@@ -57,7 +58,7 @@ class ExportTestCase(ShopTestBase):
         permission_ids = {'admin.access', 'shop_order.view'}
         assign_permissions_to_user(admin.id, 'admin', permission_ids)
 
-        self.create_session_token(admin.id)
+        create_session_token(admin.id)
 
         return admin
 

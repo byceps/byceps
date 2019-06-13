@@ -4,7 +4,7 @@
 """
 
 from tests.base import AbstractAppTestCase
-from tests.helpers import create_user
+from tests.helpers import create_session_token, create_user
 
 
 class PasswordUpdateFormTestCase(AbstractAppTestCase):
@@ -16,7 +16,7 @@ class PasswordUpdateFormTestCase(AbstractAppTestCase):
 
     def test_when_logged_in_form_is_available(self):
         user = create_user()
-        self.create_session_token(user.id)
+        create_session_token(user.id)
 
         response = self.send_request(user_id=user.id)
 

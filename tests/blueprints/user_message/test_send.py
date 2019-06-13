@@ -9,7 +9,7 @@ from byceps.services.brand import settings_service as brand_settings_service
 from byceps.services.user_message import service as user_message_service
 
 from tests.base import AbstractAppTestCase
-from tests.helpers import create_user
+from tests.helpers import create_session_token, create_user
 
 
 class SendUserMessageTest(AbstractAppTestCase):
@@ -159,7 +159,7 @@ Bei Fragen kontaktiere uns bitte per E-Mail an: info@example.com\
         }
 
         if current_user_id is not None:
-            self.create_session_token(current_user_id)
+            create_session_token(current_user_id)
 
         with self.client(user_id=current_user_id) as client:
             return client.post(url, data=form_data)
