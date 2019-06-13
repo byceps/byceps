@@ -58,7 +58,7 @@ class SequenceNumberGenerationTestCase(ShopTestBase):
     # helpers
 
     def create_custom_brand_and_party(self):
-        brand = create_brand('custom', 'Custom Events')
+        brand = create_brand()
         party = create_party(brand.id, 'custom-party-4', 'Custom Party 4')
 
         return party

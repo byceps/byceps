@@ -94,7 +94,7 @@ def create_session_token(user_id):
     db.session.commit()
 
 
-def create_brand(brand_id, title):
+def create_brand(brand_id='acmecon', title='ACME Entertainment Convention'):
     brand = _create_brand(id=brand_id, title=title)
 
     db.session.add(brand)

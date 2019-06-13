@@ -19,7 +19,7 @@ class EmailOnOrderCanceledTest(OrderEmailTestBase):
     def setUp(self):
         super().setUp()
 
-        brand = create_brand('acmecon', 'Acme Entertainment Convention')
+        brand = create_brand()
         self.set_brand_email_sender_address(brand.id, 'acmecon@example.com')
 
         self.party = create_party(brand.id, 'acmecon-2014',
