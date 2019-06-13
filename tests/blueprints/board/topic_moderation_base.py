@@ -10,7 +10,7 @@ from testfixtures.board import create_board, create_category, create_topic
 
 from tests.base import AbstractAppTestCase
 from tests.helpers import assign_permissions_to_user, create_session_token, \
-    create_user
+    create_site, create_user
 
 
 class AbstractTopicModerationTest(AbstractAppTestCase):
@@ -24,7 +24,7 @@ class AbstractTopicModerationTest(AbstractAppTestCase):
         self.user = create_user('User')
 
         self.create_brand_and_party()
-        self.create_site()
+        create_site(self.party.id)
         self.board = self.create_board()
 
         site_settings_service \

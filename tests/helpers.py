@@ -14,6 +14,7 @@ from byceps.application import create_app
 from byceps.database import db
 from byceps.services.authorization import service as authorization_service
 from byceps.services.party import service as party_service
+from byceps.services.site import service as site_service
 
 from testfixtures.authentication import create_session_token \
     as _create_session_token
@@ -109,3 +110,7 @@ def create_party(brand_id, party_id, title):
     db.session.commit()
 
     return party_service._db_entity_to_party(party)
+
+
+def create_site(party_id, *, site_id='acme-2014-website', title='Website'):
+    return site_service.create_site(site_id, party_id, title)
