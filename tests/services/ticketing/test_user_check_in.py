@@ -11,6 +11,7 @@ from byceps.services.ticketing.exceptions import TicketIsRevoked, \
     TicketLacksUser, UserAccountSuspended, UserAlreadyCheckedIn
 
 from tests.base import AbstractAppTestCase
+from tests.helpers import create_user
 
 
 class UserCheckInTest(AbstractAppTestCase):
@@ -21,9 +22,9 @@ class UserCheckInTest(AbstractAppTestCase):
         self.create_brand_and_party()
 
         self.category_id = self.create_category('Premium').id
-        self.orga_id = self.create_user('Party_Orga').id
-        self.owner_id = self.create_user('Ticket_Owner').id
-        self.user = self.create_user('Ticket_User')
+        self.orga_id = create_user('Party_Orga').id
+        self.owner_id = create_user('Ticket_Owner').id
+        self.user = create_user('Ticket_User')
         self.user_id = self.user.id
 
     def test_check_in_user(self):

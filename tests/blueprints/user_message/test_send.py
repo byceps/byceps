@@ -9,6 +9,7 @@ from byceps.services.brand import settings_service as brand_settings_service
 from byceps.services.user_message import service as user_message_service
 
 from tests.base import AbstractAppTestCase
+from tests.helpers import create_user
 
 
 class SendUserMessageTest(AbstractAppTestCase):
@@ -24,10 +25,10 @@ class SendUserMessageTest(AbstractAppTestCase):
     @patch('byceps.email.send')
     def test_send_when_logged_in_without_brand_contact_address(self,
                                                                send_email_mock):
-        sender = self.create_user('Alice',
+        sender = create_user('Alice',
             user_id='a4903d8f-0bc6-4af9-aeb9-d7534a0a22e8',
             email_address='alice@example.com')
-        recipient = self.create_user('Bob',
+        recipient = create_user('Bob',
             email_address='bob@example.com')
         text = '''\
 Hi Bob,
@@ -84,10 +85,10 @@ Diese Mitteilung wurde über die Website der Acme Entertainment Convention gesen
         brand_settings_service.create_setting(
             self.brand.id, 'contact_email_address', 'info@example.com')
 
-        sender = self.create_user('Bob',
+        sender = create_user('Bob',
             user_id='11d72bab-3646-4199-b96c-e5e4c6f972bc',
             email_address='bob@example.com')
-        recipient = self.create_user('Alice',
+        recipient = create_user('Alice',
             email_address='alice@example.com')
         text = '''\
 Hey Alice,

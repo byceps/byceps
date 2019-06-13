@@ -12,6 +12,7 @@ from testfixtures.shop_sequence import create_sequence
 from testfixtures.shop_shop import create_shop
 
 from tests.base import AbstractAppTestCase
+from tests.helpers import create_user
 
 
 class ShopTestBase(AbstractAppTestCase):
@@ -49,7 +50,7 @@ class ShopTestBase(AbstractAppTestCase):
         try:
             self.admin
         except AttributeError:
-            self.admin = self.create_user('Admin')
+            self.admin = create_user('Admin')
 
         snippet_service.create_fragment(scope, name, self.admin.id, body)
 

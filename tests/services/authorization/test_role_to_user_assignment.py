@@ -6,6 +6,7 @@
 from byceps.services.authorization import service
 
 from tests.base import AbstractAppTestCase
+from tests.helpers import create_user
 
 
 class RoleToUserAssignmentTestCase(AbstractAppTestCase):
@@ -13,14 +14,14 @@ class RoleToUserAssignmentTestCase(AbstractAppTestCase):
     def setUp(self):
         super().setUp()
 
-        self.user = self.create_user()
+        self.user = create_user()
 
         self.permission_id = 'board_topic_hide'
 
         self.role = create_role_with_permission('board_moderator',
                                                 self.permission_id)
 
-        self.initiator_id = self.create_user('Admin').id
+        self.initiator_id = create_user('Admin').id
 
     def test_assign_role_to_user(self):
         user_id = self.user.id

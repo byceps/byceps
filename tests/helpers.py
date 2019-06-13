@@ -11,7 +11,10 @@ from contextlib import contextmanager
 from flask import appcontext_pushed, g
 
 from byceps.application import create_app
+from byceps.database import db
 from byceps.services.authorization import service as authorization_service
+
+from testfixtures.user import create_user as _create_user
 
 from .base import CONFIG_FILENAME_TEST_PARTY
 
@@ -41,6 +44,15 @@ def current_user_set(app, user):
 
     with appcontext_pushed.connected_to(handler, app):
         yield
+
+
+def create_user(*args, **kwargs):
+    user = _create_user(*args, **kwargs)
+
+    db.session.add(user)
+    db.session.commit()
+
+    return user
 
 
 def assign_permissions_to_user(user_id, role_id, permission_ids,

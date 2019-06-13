@@ -10,6 +10,7 @@ from byceps.services.shop.order.models.order import Order
 
 from testfixtures.shop_article import create_article
 
+from tests.helpers import create_user
 from tests.services.shop.base import ShopTestBase
 
 
@@ -32,7 +33,7 @@ class ShopOrderTestCase(ShopTestBase):
         self.create_order_number_sequence(self.shop.id, 'AEC-01-B', value=4)
 
     def setup_orderer(self):
-        self.orderer = self.create_user()
+        self.orderer = create_user()
         self.create_session_token(self.orderer.id)
 
     def setup_article(self):

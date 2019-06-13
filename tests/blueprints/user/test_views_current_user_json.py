@@ -4,6 +4,7 @@
 """
 
 from tests.base import AbstractAppTestCase
+from tests.helpers import create_user
 
 
 CONTENT_TYPE_JSON = 'application/json'
@@ -17,7 +18,7 @@ class CurrentUserJsonTestCase(AbstractAppTestCase):
         self.create_brand_and_party()
 
     def test_when_logged_in(self):
-        user = self.create_user('McFly')
+        user = create_user('McFly')
         self.create_session_token(user.id)
 
         response = self.send_request(user_id=user.id)

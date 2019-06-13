@@ -7,6 +7,7 @@ from byceps.services.user_badge import service as user_badge_service
 from byceps.services.user_badge.transfer.models import QuantifiedBadgeAwarding
 
 from tests.base import AbstractAppTestCase
+from tests.helpers import create_user
 
 
 class UserBadgeAwardingServiceTestCase(AbstractAppTestCase):
@@ -29,8 +30,8 @@ class UserBadgeAwardingServiceTestCase(AbstractAppTestCase):
             assert actual == set()
 
     def test_get_awardings_of_badge(self):
-        user1 = self.create_user('User1')
-        user2 = self.create_user('User2')
+        user1 = create_user('User1')
+        user2 = create_user('User2')
 
         with self.app.app_context():
             badge = user_badge_service.create_badge(

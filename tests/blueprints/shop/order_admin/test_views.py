@@ -15,7 +15,7 @@ from byceps.services.shop.order.transfer.models import PaymentMethod, \
 from testfixtures.shop_order import create_orderer
 
 from tests.base import CONFIG_FILENAME_TEST_ADMIN
-from tests.helpers import assign_permissions_to_user
+from tests.helpers import assign_permissions_to_user, create_user
 from tests.services.shop.base import ShopTestBase
 
 
@@ -35,7 +35,7 @@ class ShopAdminTestCase(ShopTestBase):
         self.create_shop_fragment(self.shop.id, 'email_footer', 'kthxbye')
 
     def create_admin(self):
-        admin = self.create_user('Admin')
+        admin = create_user('Admin')
 
         permission_ids = {
             'admin.access',

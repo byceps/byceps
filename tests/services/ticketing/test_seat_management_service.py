@@ -13,6 +13,7 @@ from byceps.services.ticketing.exceptions import \
     SeatChangeDeniedForBundledTicket, TicketCategoryMismatch
 
 from tests.base import AbstractAppTestCase
+from tests.helpers import create_user
 
 
 class TicketSeatManagementServiceTest(AbstractAppTestCase):
@@ -20,7 +21,7 @@ class TicketSeatManagementServiceTest(AbstractAppTestCase):
     def setUp(self):
         super().setUp()
 
-        self.owner = self.create_user('Ticket_Owner')
+        self.owner = create_user('Ticket_Owner')
 
         self.create_brand_and_party()
 
@@ -30,7 +31,7 @@ class TicketSeatManagementServiceTest(AbstractAppTestCase):
             .create_ticket(self.category_id, self.owner.id)
 
     def test_appoint_and_withdraw_seat_manager(self):
-        manager = self.create_user('Ticket_Manager')
+        manager = create_user('Ticket_Manager')
 
         assert self.ticket.seat_managed_by_id is None
 

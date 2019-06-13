@@ -7,6 +7,7 @@ from byceps.services.ticketing import category_service, event_service, \
     ticket_bundle_service as bundle_service
 
 from tests.base import AbstractAppTestCase
+from tests.helpers import create_user
 
 
 class TicketBundleRevocationTestCase(AbstractAppTestCase):
@@ -56,7 +57,7 @@ class TicketBundleRevocationTestCase(AbstractAppTestCase):
 
     def create_bundle(self, quantity):
         category = self.create_category('Premium')
-        owner = self.create_user('Ticket_Owner')
+        owner = create_user('Ticket_Owner')
 
         return bundle_service.create_bundle(category.id, quantity, owner.id)
 

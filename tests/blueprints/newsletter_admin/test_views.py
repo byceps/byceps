@@ -9,7 +9,7 @@ from byceps.services.newsletter.models import Subscription
 from byceps.services.newsletter.types import SubscriptionState
 
 from tests.base import AbstractAppTestCase, CONFIG_FILENAME_TEST_ADMIN
-from tests.helpers import assign_permissions_to_user
+from tests.helpers import assign_permissions_to_user, create_user
 
 
 class NewsletterAdminTestCase(AbstractAppTestCase):
@@ -24,7 +24,7 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
         self.setup_subscribers()
 
     def create_admin(self):
-        admin = self.create_user('Admin')
+        admin = create_user('Admin')
 
         permission_ids = {'admin.access', 'newsletter.export_subscribers'}
         assign_permissions_to_user(admin.id, 'admin', permission_ids)
@@ -44,7 +44,7 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
             (7, True,  True , False, [SubscriptionState.requested                             ]),
             (8, True,  False, True , [SubscriptionState.requested                             ]),
         ]:
-            user = self.create_user(
+            user = create_user(
                 screen_name='User-{:d}'.format(number),
                 email_address='user{:03d}@example.com'.format(number),
                 enabled=enabled)

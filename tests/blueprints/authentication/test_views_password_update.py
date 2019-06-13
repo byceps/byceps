@@ -9,6 +9,7 @@ from byceps.services.authentication.session.models.session_token \
     import SessionToken
 
 from tests.base import AbstractAppTestCase
+from tests.helpers import create_user
 
 
 class PasswordUpdateTestCase(AbstractAppTestCase):
@@ -22,7 +23,7 @@ class PasswordUpdateTestCase(AbstractAppTestCase):
         old_password = 'LekkerBratworsten'
         new_password = 'EvenMoreSecure!!1'
 
-        user = self.create_user()
+        user = create_user()
         password_service.create_password_hash(user.id, old_password)
 
         credential_before = self.find_credential(user.id)

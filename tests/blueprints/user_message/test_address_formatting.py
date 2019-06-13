@@ -12,9 +12,8 @@ from byceps.services.email.models import EmailConfig
 from byceps.services.user_message import service as user_message_service
 
 from testfixtures.brand import create_brand as _create_brand
-from testfixtures.user import create_user as _create_user
 
-from tests.helpers import app_context
+from tests.helpers import app_context, create_user
 
 
 def test_recipient_formatting(application, params):
@@ -73,12 +72,3 @@ def create_brand():
     db.session.commit()
 
     return brand
-
-
-def create_user(*args, **kwargs):
-    user = _create_user(*args, **kwargs)
-
-    db.session.add(user)
-    db.session.commit()
-
-    return user

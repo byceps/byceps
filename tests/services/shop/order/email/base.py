@@ -10,6 +10,7 @@ from byceps.services.shop.order.transfer.models import PaymentMethod
 
 from testfixtures.shop_order import create_orderer
 
+from tests.helpers import create_user
 from tests.services.shop.base import ShopTestBase
 
 
@@ -18,7 +19,7 @@ class OrderEmailTestBase(ShopTestBase):
     def setUp(self):
         super().setUp()
 
-        self.admin = self.create_user('Admin')
+        self.admin = create_user('Admin')
 
     # helpers
 

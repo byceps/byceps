@@ -8,14 +8,15 @@ from byceps.services.authentication.password import service as password_service
 from byceps.services.user import event_service
 
 from tests.base import AbstractAppTestCase
+from tests.helpers import create_user
 
 
 class UpdatePasswordHashTest(AbstractAppTestCase):
 
     def test_update_password_hash(self):
-        orga_id = self.create_user('Party_Orga').id
+        orga_id = create_user('Party_Orga').id
 
-        user = self.create_user('Party_User')
+        user = create_user('Party_User')
         user_id = user.id
         password_service.create_password_hash(user_id, 'InitialPassw0rd')
 

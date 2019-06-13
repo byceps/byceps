@@ -9,6 +9,7 @@ from byceps.services.user import command_service as user_command_service
 from byceps.services.user import event_service
 
 from tests.base import AbstractAppTestCase
+from tests.helpers import create_user
 
 
 ADMIN_ID = UserID('5a4e04b4-7258-4e61-9f36-090baa683150')
@@ -17,7 +18,7 @@ ADMIN_ID = UserID('5a4e04b4-7258-4e61-9f36-090baa683150')
 class UserEnabledFlagTest(AbstractAppTestCase):
 
     def test_enable(self):
-        user_id = self.create_user(enabled=False).id
+        user_id = create_user(enabled=False).id
 
         user_before = user_command_service._get_user(user_id)
         assert not user_before.enabled
@@ -44,7 +45,7 @@ class UserEnabledFlagTest(AbstractAppTestCase):
         }
 
     def test_disable(self):
-        user_id = self.create_user(enabled=True).id
+        user_id = create_user(enabled=True).id
 
         user_before = user_command_service._get_user(user_id)
         assert user_before.enabled

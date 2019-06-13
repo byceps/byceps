@@ -6,7 +6,7 @@
 from byceps.services.authorization import service as authorization_service
 
 from tests.base import AbstractAppTestCase
-from tests.helpers import assign_permissions_to_user
+from tests.helpers import assign_permissions_to_user, create_user
 
 
 class AuthorizationServiceTestCase(AbstractAppTestCase):
@@ -14,8 +14,8 @@ class AuthorizationServiceTestCase(AbstractAppTestCase):
     def setUp(self):
         super().setUp()
 
-        self.user_id = self.create_user().id
-        self.initiator_id = self.create_user('Admin').id
+        self.user_id = create_user().id
+        self.initiator_id = create_user('Admin').id
 
     def test_get_permission_ids_for_user(self):
         permissions_before = authorization_service.get_permission_ids_for_user(self.user_id)

@@ -25,7 +25,7 @@ from byceps.services.site import service as site_service
 from testfixtures.authentication import create_session_token
 from testfixtures.brand import create_brand
 from testfixtures.party import create_party
-from testfixtures.user import create_user, create_user_with_detail
+from testfixtures.user import create_user_with_detail
 
 from tests import mocks
 
@@ -65,14 +65,6 @@ class AbstractAppTestCase(TestCase):
         db.session.add(self.party)
 
         db.session.commit()
-
-    def create_user(self, *args, **kwargs):
-        user = create_user(*args, **kwargs)
-
-        self.db.session.add(user)
-        self.db.session.commit()
-
-        return user
 
     def create_user_with_detail(self, *args, **kwargs):
         user = create_user_with_detail(*args, **kwargs)

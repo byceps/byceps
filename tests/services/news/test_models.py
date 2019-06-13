@@ -7,7 +7,7 @@ from byceps.services.news import channel_service as news_channel_service, \
     service as news_service
 
 from tests.base import AbstractAppTestCase
-from tests.helpers import current_party_set
+from tests.helpers import create_user, current_party_set
 
 
 class ItemTestCase(AbstractAppTestCase):
@@ -15,7 +15,7 @@ class ItemTestCase(AbstractAppTestCase):
     def setUp(self):
         super().setUp()
 
-        self.editor = self.create_user()
+        self.editor = create_user()
 
         self.create_brand_and_party()
 

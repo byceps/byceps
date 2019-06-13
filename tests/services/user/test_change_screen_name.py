@@ -9,6 +9,7 @@ from byceps.services.user import command_service as user_command_service
 from byceps.services.user import event_service
 
 from tests.base import AbstractAppTestCase
+from tests.helpers import create_user
 
 
 ADMIN_ID = UserID('5a4e04b4-7258-4e61-9f36-090baa683150')
@@ -21,7 +22,7 @@ class UserChangeScreenNameTest(AbstractAppTestCase):
         new_screen_name = 'Crash_Override'
         reason = 'Do not reveal to Acid Burn.'
 
-        user_id = self.create_user(old_screen_name).id
+        user_id = create_user(old_screen_name).id
 
         user_before = user_command_service._get_user(user_id)
         assert user_before.screen_name == old_screen_name
@@ -55,7 +56,7 @@ class UserChangeScreenNameTest(AbstractAppTestCase):
         old_screen_name = 'Zero_Cool'
         new_screen_name = 'Crash_Override'
 
-        user_id = self.create_user(old_screen_name).id
+        user_id = create_user(old_screen_name).id
 
         # -------------------------------- #
 

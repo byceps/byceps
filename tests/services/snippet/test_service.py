@@ -12,6 +12,7 @@ from testfixtures.snippet import create_current_version_association, \
     create_fragment, create_snippet_version
 
 from tests.base import AbstractAppTestCase
+from tests.helpers import create_user
 
 
 class GetCurrentVersionOfSnippetTestCase(AbstractAppTestCase):
@@ -27,7 +28,7 @@ class GetCurrentVersionOfSnippetTestCase(AbstractAppTestCase):
         self.scope_site2014 = Scope.for_site(party2014.id)
         self.scope_site2015 = Scope.for_site(party2015.id)
 
-        self.creator = self.create_user()
+        self.creator = create_user()
 
     def test_current_party_is_considered(self):
         fragment_info2014_version = self.create_fragment_with_version(

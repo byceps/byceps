@@ -7,6 +7,7 @@ from byceps.services.ticketing import category_service, event_service, \
     ticket_creation_service, ticket_user_management_service
 
 from tests.base import AbstractAppTestCase
+from tests.helpers import create_user
 
 
 class TicketUserManagementServiceTest(AbstractAppTestCase):
@@ -14,7 +15,7 @@ class TicketUserManagementServiceTest(AbstractAppTestCase):
     def setUp(self):
         super().setUp()
 
-        self.owner = self.create_user('Ticket_Owner')
+        self.owner = create_user('Ticket_Owner')
 
         self.create_brand_and_party()
 
@@ -24,7 +25,7 @@ class TicketUserManagementServiceTest(AbstractAppTestCase):
             .create_ticket(self.category_id, self.owner.id)
 
     def test_appoint_and_withdraw_user_manager(self):
-        manager = self.create_user('Ticket_Manager')
+        manager = create_user('Ticket_Manager')
 
         assert self.ticket.user_managed_by_id is None
 
@@ -60,7 +61,7 @@ class TicketUserManagementServiceTest(AbstractAppTestCase):
         })
 
     def test_appoint_and_withdraw_user(self):
-        user = self.create_user('Ticket_User')
+        user = create_user('Ticket_User')
 
         assert self.ticket.used_by_id is None
 

@@ -10,6 +10,7 @@ from pytest import raises
 from byceps.services.user import service as user_service
 
 from tests.base import AbstractAppTestCase
+from tests.helpers import create_user
 
 
 class UserQueryTest(AbstractAppTestCase):
@@ -17,7 +18,7 @@ class UserQueryTest(AbstractAppTestCase):
     def test_find_user_by_screen_name_found(self):
         screen_name = 'ghost'
 
-        user = self.create_user(screen_name)
+        user = create_user(screen_name)
 
         actual = user_service.find_user_by_screen_name(screen_name)
 
@@ -44,7 +45,7 @@ class UserQueryTest(AbstractAppTestCase):
     def test_get_email_address_found(self):
         email_address = 'lanparty@lar.ge'
 
-        user = self.create_user('xpandr', email_address=email_address)
+        user = create_user('xpandr', email_address=email_address)
 
         actual = user_service.get_email_address(user.id)
 

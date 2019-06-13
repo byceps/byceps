@@ -4,6 +4,7 @@
 """
 
 from tests.base import AbstractAppTestCase
+from tests.helpers import create_user
 
 
 CONTENT_TYPE_JSON = 'application/json'
@@ -19,7 +20,7 @@ class UserJsonTestCase(AbstractAppTestCase):
     def test_with_existent_user(self):
         screen_name = 'Gemüsefrau'
 
-        user = self.create_user(screen_name)
+        user = create_user(screen_name)
         user_id = str(user.id)
 
         response = self.send_request(user_id)
@@ -36,7 +37,7 @@ class UserJsonTestCase(AbstractAppTestCase):
     def test_with_not_enabled_user(self):
         screen_name = 'NotEnabledUser'
 
-        user = self.create_user(screen_name)
+        user = create_user(screen_name)
         user.enabled = False
         self.db.session.commit()
 
@@ -50,7 +51,7 @@ class UserJsonTestCase(AbstractAppTestCase):
     def test_with_suspended_user(self):
         screen_name = 'SuspendedUser'
 
-        user = self.create_user(screen_name)
+        user = create_user(screen_name)
         user.suspended = True
         self.db.session.commit()
 
@@ -64,7 +65,7 @@ class UserJsonTestCase(AbstractAppTestCase):
     def test_with_deleted_user(self):
         screen_name = 'DeletedUser'
 
-        user = self.create_user(screen_name)
+        user = create_user(screen_name)
         user.deleted = True
         self.db.session.commit()
 

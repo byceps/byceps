@@ -4,6 +4,7 @@
 """
 
 from tests.base import AbstractAppTestCase
+from tests.helpers import create_user
 
 
 class UserProfileTest(AbstractAppTestCase):
@@ -13,7 +14,7 @@ class UserProfileTest(AbstractAppTestCase):
 
         self.create_brand_and_party()
 
-        self.user = self.create_user()
+        self.user = create_user()
 
     def test_view_profile(self):
         url = '/users/{}'.format(self.user.id)

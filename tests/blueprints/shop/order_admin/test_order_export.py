@@ -15,7 +15,7 @@ from byceps.services.shop.order import service as order_service
 from byceps.services.shop.order.transfer.models import PaymentMethod
 
 from tests.base import CONFIG_FILENAME_TEST_ADMIN
-from tests.helpers import assign_permissions_to_user
+from tests.helpers import assign_permissions_to_user, create_user
 from tests.services.shop.base import ShopTestBase
 
 
@@ -52,7 +52,7 @@ class ExportTestCase(ShopTestBase):
     # helpers
 
     def create_admin(self):
-        admin = self.create_user('Admin')
+        admin = create_user('Admin')
 
         permission_ids = {'admin.access', 'shop_order.view'}
         assign_permissions_to_user(admin.id, 'admin', permission_ids)
@@ -107,8 +107,8 @@ class ExportTestCase(ShopTestBase):
                                          cart, created_at=created_at)
 
     def create_orderer(self):
-        user = self.create_user('Besteller',
-                                email_address='h-w.mustermann@example.com')
+        user = create_user('Besteller',
+                           email_address='h-w.mustermann@example.com')
 
         return Orderer(
             user.id,

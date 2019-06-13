@@ -6,6 +6,7 @@
 from byceps.services.orga import service as orga_service
 
 from tests.base import AbstractAppTestCase
+from tests.helpers import create_user
 
 
 class OrgaServiceTestCase(AbstractAppTestCase):
@@ -16,8 +17,8 @@ class OrgaServiceTestCase(AbstractAppTestCase):
         self.create_brand_and_party()
 
     def test_flag_changes(self):
-        user = self.create_user()
-        admin = self.create_user('Admin')
+        user = create_user()
+        admin = create_user('Admin')
 
         assert not orga_service.is_user_orga(user.id)
 

@@ -10,6 +10,7 @@ from byceps.services.user import event_service
 from byceps.services.user import service as user_service
 
 from tests.base import AbstractAppTestCase
+from tests.helpers import create_user
 
 
 ADMIN_ID = UserID('5a4e04b4-7258-4e61-9f36-090baa683150')
@@ -20,7 +21,7 @@ class UserSuspendedFlagTest(AbstractAppTestCase):
     def setUp(self):
         super().setUp()
 
-        self.user = self.create_user()
+        self.user = create_user()
 
     def test_suspend(self):
         reason = 'User has been caught cheating.'
