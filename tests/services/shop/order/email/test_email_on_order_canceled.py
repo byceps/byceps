@@ -22,8 +22,7 @@ class EmailOnOrderCanceledTest(OrderEmailTestBase):
         brand = create_brand()
         self.set_brand_email_sender_address(brand.id, 'acmecon@example.com')
 
-        self.party = create_party(brand.id, 'acmecon-2014',
-                                  'Acme Entertainment Convention 2014')
+        self.party = create_party(brand.id)
 
         self.shop = self.create_shop(self.party.id)
         self.create_order_number_sequence(self.shop.id, 'AC-14-B', value=16)
