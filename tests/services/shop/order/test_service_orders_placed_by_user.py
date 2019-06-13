@@ -9,7 +9,7 @@ from byceps.services.shop.order.transfer.models import PaymentMethod
 
 from testfixtures.shop_order import create_orderer
 
-from tests.helpers import create_user_with_detail
+from tests.helpers import create_party, create_user_with_detail
 from tests.services.shop.base import ShopTestBase
 
 
@@ -20,8 +20,8 @@ class ShopOrdersServiceTestCase(ShopTestBase):
 
         self.create_brand_and_party()
 
-        party1 = self.create_party(self.brand.id, 'lafiesta-2012', 'La Fiesta 2012')
-        party2 = self.create_party(self.brand.id, 'lafiesta-2013', 'La Fiesta 2013')
+        party1 = create_party(self.brand.id, 'lafiesta-2012', 'La Fiesta 2012')
+        party2 = create_party(self.brand.id, 'lafiesta-2013', 'La Fiesta 2013')
 
         self.shop1_id = self.create_shop(party1.id).id
         self.shop2_id = self.create_shop(party2.id).id

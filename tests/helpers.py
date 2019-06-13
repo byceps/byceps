@@ -13,10 +13,12 @@ from flask import appcontext_pushed, g
 from byceps.application import create_app
 from byceps.database import db
 from byceps.services.authorization import service as authorization_service
+from byceps.services.party import service as party_service
 
 from testfixtures.authentication import create_session_token \
     as _create_session_token
 from testfixtures.brand import create_brand as _create_brand
+from testfixtures.party import create_party as _create_party
 from testfixtures.user import create_user as _create_user, \
     create_user_with_detail as _create_user_with_detail
 
@@ -98,3 +100,12 @@ def create_brand(brand_id, title):
     db.session.commit()
 
     return brand
+
+
+def create_party(brand_id, party_id, title):
+    party = _create_party(id=party_id, title=title, brand_id=brand_id)
+
+    db.session.add(party)
+    db.session.commit()
+
+    return party_service._db_entity_to_party(party)

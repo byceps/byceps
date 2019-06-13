@@ -10,7 +10,8 @@ from byceps.services.shop.order.transfer.models import PaymentMethod
 
 from testfixtures.shop_order import create_orderer
 
-from tests.helpers import create_session_token, create_user_with_detail
+from tests.helpers import create_party, create_session_token, \
+    create_user_with_detail
 from tests.services.shop.base import ShopTestBase
 
 
@@ -47,8 +48,8 @@ class ShopOrdersTestCase(ShopTestBase):
         assert response.status_code == 404
 
     def test_view_matching_user_but_different_party(self):
-        other_party = self.create_party(self.brand.id, 'otherlan-2013',
-                                        'OtherLAN 2013')
+        other_party = create_party(self.brand.id, 'otherlan-2013',
+                                   'OtherLAN 2013')
 
         shop = self.create_shop(other_party.id)
         self.create_order_number_sequence(shop.id, 'LF-02-B')

@@ -10,7 +10,7 @@ from unittest.mock import patch
 from byceps.services.shop.order.email import service as order_email_service
 from byceps.services.shop.order import service as order_service
 
-from tests.helpers import create_brand, create_user_with_detail, \
+from tests.helpers import create_brand, create_party, create_user_with_detail, \
     current_party_set, current_user_set
 
 from .base import OrderEmailTestBase
@@ -24,8 +24,8 @@ class EmailOnOrderPlacedTest(OrderEmailTestBase):
         brand = create_brand('acmecon', 'Acme Entertainment Convention')
         self.set_brand_email_sender_address(brand.id, 'acmecon@example.com')
 
-        self.party = self.create_party(brand.id, 'acmecon-2014',
-                                       'Acme Entertainment Convention 2014')
+        self.party = create_party(brand.id, 'acmecon-2014',
+                                  'Acme Entertainment Convention 2014')
 
         self.shop = self.create_shop(self.party.id)
         self.create_order_number_sequence(self.shop.id, 'AC-14-B', value=252)
