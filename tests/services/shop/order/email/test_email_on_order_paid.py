@@ -10,7 +10,8 @@ from byceps.services.shop.order.email import service as order_email_service
 from byceps.services.shop.order import service as order_service
 from byceps.services.shop.order.transfer.models import PaymentMethod
 
-from tests.helpers import current_party_set, current_user_set
+from tests.helpers import create_user_with_detail, current_party_set, \
+    current_user_set
 
 from .base import OrderEmailTestBase
 
@@ -31,7 +32,7 @@ class EmailOnOrderPaidTest(OrderEmailTestBase):
 
         self.create_email_footer_snippet()
 
-        self.user = self.create_user_with_detail('Vorbild')
+        self.user = create_user_with_detail('Vorbild')
 
         self.order_id = self.place_order(self.user)
 

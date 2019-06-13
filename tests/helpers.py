@@ -14,7 +14,8 @@ from byceps.application import create_app
 from byceps.database import db
 from byceps.services.authorization import service as authorization_service
 
-from testfixtures.user import create_user as _create_user
+from testfixtures.user import create_user as _create_user, \
+    create_user_with_detail as _create_user_with_detail
 
 from .base import CONFIG_FILENAME_TEST_PARTY
 
@@ -48,6 +49,15 @@ def current_user_set(app, user):
 
 def create_user(*args, **kwargs):
     user = _create_user(*args, **kwargs)
+
+    db.session.add(user)
+    db.session.commit()
+
+    return user
+
+
+def create_user_with_detail(*args, **kwargs):
+    user = _create_user_with_detail(*args, **kwargs)
 
     db.session.add(user)
     db.session.commit()

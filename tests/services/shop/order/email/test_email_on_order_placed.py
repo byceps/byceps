@@ -10,7 +10,8 @@ from unittest.mock import patch
 from byceps.services.shop.order.email import service as order_email_service
 from byceps.services.shop.order import service as order_service
 
-from tests.helpers import current_party_set, current_user_set
+from tests.helpers import create_user_with_detail, current_party_set, \
+    current_user_set
 
 from .base import OrderEmailTestBase
 
@@ -34,7 +35,7 @@ class EmailOnOrderPlacedTest(OrderEmailTestBase):
 
         self.create_articles()
 
-        self.user = self.create_user_with_detail('Interessent')
+        self.user = create_user_with_detail('Interessent')
 
         self.order_id = self.place_order(self.user)
 

@@ -11,6 +11,7 @@ from byceps.services.shop.order.transfer.models import PaymentMethod
 
 from testfixtures.shop_order import create_orderer
 
+from tests.helpers import create_user_with_detail
 from tests.services.shop.base import ShopTestBase
 
 
@@ -19,7 +20,7 @@ class OrderTotalAmountTest(ShopTestBase):
     def setUp(self):
         super().setUp()
 
-        user = self.create_user_with_detail()
+        user = create_user_with_detail()
         self.orderer = create_orderer(user)
 
         self.create_brand_and_party()

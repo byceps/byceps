@@ -11,6 +11,7 @@ from byceps.services.shop.sequence.transfer.models import Purpose
 
 from testfixtures.shop_order import create_orderer
 
+from tests.helpers import create_user_with_detail
 from tests.services.shop.base import ShopTestBase
 
 
@@ -26,8 +27,8 @@ class OrderActionTestBase(ShopTestBase):
 
         self.shop = self.create_shop(self.party.id)
 
-        self.admin = self.create_user_with_detail('Admin')
-        self.buyer = self.create_user_with_detail('Buyer')
+        self.admin = create_user_with_detail('Admin')
+        self.buyer = create_user_with_detail('Buyer')
 
         shop_sequence_service.create_sequence(self.shop.id, Purpose.order,
                                               prefix='article-')

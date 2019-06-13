@@ -9,6 +9,7 @@ from byceps.services.shop.order.transfer.models import PaymentMethod
 
 from testfixtures.shop_order import create_orderer
 
+from tests.helpers import create_user_with_detail
 from tests.services.shop.base import ShopTestBase
 
 
@@ -28,8 +29,8 @@ class ShopOrdersServiceTestCase(ShopTestBase):
         self.create_order_number_sequence(self.shop1_id, 'LF-02-B')
         self.create_order_number_sequence(self.shop2_id, 'LF-03-B')
 
-        self.user1 = self.create_user_with_detail('User1')
-        self.user2 = self.create_user_with_detail('User2')
+        self.user1 = create_user_with_detail('User1')
+        self.user2 = create_user_with_detail('User2')
 
     def test_get_orders_placed_by_user_for_party(self):
         orderer1 = create_orderer(self.user1)

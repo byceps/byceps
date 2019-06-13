@@ -8,6 +8,7 @@ from byceps.services.user import command_service as user_command_service
 from byceps.services.user.models.detail import UserDetail
 
 from tests.base import AbstractAppTestCase
+from tests.helpers import create_user_with_detail
 
 
 class UserDetailExtrasTest(AbstractAppTestCase):
@@ -15,7 +16,7 @@ class UserDetailExtrasTest(AbstractAppTestCase):
     def setUp(self):
         super().setUp()
 
-        self.user_id = self.create_user_with_detail().id
+        self.user_id = create_user_with_detail().id
 
     def test_set_and_remove(self):
         # Make sure field is `NULL`.
