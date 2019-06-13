@@ -16,7 +16,7 @@ from byceps.services.shop.order.transfer.models import PaymentMethod
 
 from tests.base import CONFIG_FILENAME_TEST_ADMIN
 from tests.helpers import assign_permissions_to_user, create_brand, \
-    create_session_token, create_user
+    create_party, create_session_token, create_user
 from tests.services.shop.base import ShopTestBase
 
 
@@ -64,8 +64,8 @@ class ExportTestCase(ShopTestBase):
 
     def create_brand_and_party(self):
         self.brand = create_brand('lanresort', 'LANresort')
-        self.party = self.create_party(self.brand.id, 'lanresort-2015',
-                                       'LANresort 2015')
+        self.party = create_party(self.brand.id, 'lanresort-2015',
+                                  'LANresort 2015')
 
     def create_articles(self):
         self.article_table = self.create_article(
