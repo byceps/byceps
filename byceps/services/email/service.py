@@ -12,7 +12,7 @@ from ... import email
 from ...typing import BrandID
 from ...util.jobqueue import enqueue
 
-from .models import EmailConfig
+from .models import EmailConfig as DbEmailConfig
 from .transfer.models import Message
 
 
@@ -22,7 +22,7 @@ class EmailError(Exception):
 
 def find_sender_address_for_brand(brand_id: BrandID) -> Optional[str]:
     """Return the configured sender e-mail address for the brand."""
-    config = EmailConfig.query.get(brand_id)
+    config = DbEmailConfig.query.get(brand_id)
 
     if config is None:
         return None
