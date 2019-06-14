@@ -6,6 +6,7 @@
 from unittest.mock import patch
 
 from byceps.services.brand import settings_service as brand_settings_service
+from byceps.services.email import service as email_service
 from byceps.services.user_message import service as user_message_service
 
 from tests.base import AbstractAppTestCase
@@ -19,8 +20,8 @@ class SendUserMessageTest(AbstractAppTestCase):
 
         self.create_brand_and_party()
 
-        self.set_brand_email_sender_address(self.brand.id,
-                                            'noreply@example.com')
+        email_service.set_sender_address_for_brand(self.brand.id,
+                                                   'noreply@example.com')
 
     @patch('byceps.email.send')
     def test_send_when_logged_in_without_brand_contact_address(self,

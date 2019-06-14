@@ -12,6 +12,7 @@ from byceps.services.authorization.models import Role, UserRole
 from byceps.services.brand import settings_service as brand_settings_service
 from byceps.services.consent import consent_service, \
     subject_service as consent_subject_service
+from byceps.services.email import service as email_service
 from byceps.services.newsletter import service as newsletter_service
 from byceps.services.snippet import service as snippet_service
 from byceps.services.snippet.transfer.models import Scope
@@ -35,7 +36,8 @@ class UserCreateTestCase(AbstractAppTestCase):
         self.admin = create_user('Admin')
 
         self.create_brand_and_party()
-        self.set_brand_email_sender_address(self.brand.id, 'noreply@example.com')
+        email_service.set_sender_address_for_brand(self.brand.id,
+                                                   'noreply@example.com')
         self.brand_id = self.brand.id
 
         self.setup_terms()

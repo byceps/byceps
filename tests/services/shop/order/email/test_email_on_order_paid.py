@@ -6,6 +6,7 @@
 from datetime import datetime
 from unittest.mock import patch
 
+from byceps.services.email import service as email_service
 from byceps.services.shop.order.email import service as order_email_service
 from byceps.services.shop.order import service as order_service
 from byceps.services.shop.order.transfer.models import PaymentMethod
@@ -22,7 +23,8 @@ class EmailOnOrderPaidTest(OrderEmailTestBase):
         super().setUp()
 
         brand = create_brand()
-        self.set_brand_email_sender_address(brand.id, 'acmecon@example.com')
+        email_service.set_sender_address_for_brand(brand.id,
+                                                   'acmecon@example.com')
 
         self.party = create_party(brand.id)
 
