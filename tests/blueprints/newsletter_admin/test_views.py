@@ -10,7 +10,7 @@ from byceps.services.newsletter.types import SubscriptionState
 
 from tests.base import AbstractAppTestCase, CONFIG_FILENAME_TEST_ADMIN
 from tests.helpers import assign_permissions_to_user, create_brand, \
-    create_session_token, create_user
+    create_session_token, create_user, http_client
 
 
 class NewsletterAdminTestCase(AbstractAppTestCase):
@@ -137,5 +137,5 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
 
     def get_as_admin(self, url):
         """Make a GET request as the admin and return the response."""
-        with self.client(user_id=self.admin.id) as client:
+        with http_client(self.app, user_id=self.admin.id) as client:
             return client.get(url)

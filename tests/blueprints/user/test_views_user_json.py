@@ -4,7 +4,7 @@
 """
 
 from tests.base import AbstractAppTestCase
-from tests.helpers import create_brand, create_party, create_user
+from tests.helpers import create_brand, create_party, create_user, http_client
 
 
 CONTENT_TYPE_JSON = 'application/json'
@@ -91,5 +91,5 @@ class UserJsonTestCase(AbstractAppTestCase):
 
     def send_request(self, user_id):
         url = '/users/{}.json'.format(user_id)
-        with self.client() as client:
+        with http_client(self.app) as client:
             return client.get(url)

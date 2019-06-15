@@ -8,7 +8,7 @@ from byceps.services.tourney import match_service
 
 from tests.base import AbstractAppTestCase
 from tests.helpers import create_brand, create_party, create_session_token, \
-    create_user
+    create_user, http_client
 
 
 class MatchCommentCreateTest(AbstractAppTestCase):
@@ -68,7 +68,7 @@ class MatchCommentCreateTest(AbstractAppTestCase):
             'body': 'gg',
         }
 
-        with self.client(user_id=user_id) as client:
+        with http_client(self.app, user_id=user_id) as client:
             return client.post(url, data=form_data)
 
 

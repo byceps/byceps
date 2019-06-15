@@ -6,7 +6,7 @@
 from datetime import datetime
 
 from tests.base import AbstractAppTestCase
-from tests.helpers import create_brand, create_party, create_user
+from tests.helpers import create_brand, create_party, create_user, http_client
 
 from testfixtures.verification_token import \
     create_verification_token_for_email_address_confirmation \
@@ -52,5 +52,5 @@ class EmailAddressConfirmationTestCase(AbstractAppTestCase):
     def _confirm(self, verification_token):
         url = '/users/email_address_confirmations/{}' \
             .format(verification_token.token)
-        with self.client() as client:
+        with http_client(self.app) as client:
             return client.get(url)

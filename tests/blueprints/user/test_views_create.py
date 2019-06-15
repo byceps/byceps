@@ -23,7 +23,7 @@ from byceps.services.verification_token import service as \
     verification_token_service
 
 from tests.base import AbstractAppTestCase
-from tests.helpers import create_brand, create_party, create_user
+from tests.helpers import create_brand, create_party, create_user, http_client
 
 from testfixtures.authorization import create_role
 
@@ -185,7 +185,7 @@ bitte bestätige deine E-Mail-Adresse, indem du diese URL abrufst: http://exampl
     def send_request(self, form_data):
         url = '/users/'
 
-        with self.client() as client:
+        with http_client(self.app) as client:
             return client.post(url, data=form_data)
 
 

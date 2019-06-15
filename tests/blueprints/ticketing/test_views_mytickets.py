@@ -5,7 +5,7 @@
 
 from tests.base import AbstractAppTestCase
 from tests.helpers import create_brand, create_party, create_session_token, \
-    create_user
+    create_user, http_client
 
 
 class MyTicketsTestCase(AbstractAppTestCase):
@@ -35,5 +35,5 @@ class MyTicketsTestCase(AbstractAppTestCase):
 
     def send_request(self, *, user_id=None):
         url = '/tickets/mine'
-        with self.client(user_id=user_id) as client:
+        with http_client(self.app, user_id=user_id) as client:
             return client.get(url)

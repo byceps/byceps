@@ -11,7 +11,7 @@ from byceps.services.shop.order.models.order import Order
 from testfixtures.shop_article import create_article
 
 from tests.helpers import create_brand, create_party, create_session_token, \
-    create_user
+    create_user, http_client
 from tests.services.shop.base import ShopTestBase
 
 
@@ -63,7 +63,7 @@ class ShopOrderTestCase(ShopTestBase):
             'street': 'L33t Street 101',
             article_quantity_key: 3,
         }
-        with self.client(user_id=self.orderer.id) as client:
+        with http_client(self.app, user_id=self.orderer.id) as client:
             response = client.post(url, data=form_data)
 
         article_afterwards = self.get_article()
@@ -86,7 +86,7 @@ class ShopOrderTestCase(ShopTestBase):
 
         assert_response_headers(response, order_detail_page_url)
 
-        with self.client(user_id=self.orderer.id) as client:
+        with http_client(self.app, user_id=self.orderer.id) as client:
             assert_order_detail_page_works(client, order_detail_page_url,
                                            order.order_number)
 
@@ -106,7 +106,7 @@ class ShopOrderTestCase(ShopTestBase):
             'street': 'L33t Street 101',
             'quantity': 1,  # TODO: Test with `3` if limitation is removed.
         }
-        with self.client(user_id=self.orderer.id) as client:
+        with http_client(self.app, user_id=self.orderer.id) as client:
             response = client.post(url, data=form_data)
 
         article_afterwards = self.get_article()
@@ -129,7 +129,7 @@ class ShopOrderTestCase(ShopTestBase):
 
         assert_response_headers(response, order_detail_page_url)
 
-        with self.client(user_id=self.orderer.id) as client:
+        with http_client(self.app, user_id=self.orderer.id) as client:
             assert_order_detail_page_works(client, order_detail_page_url,
                                            order.order_number)
 

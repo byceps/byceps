@@ -9,7 +9,7 @@ from byceps.services.authentication.session.models.session_token \
     import SessionToken
 
 from tests.base import AbstractAppTestCase
-from tests.helpers import create_brand, create_party, create_user
+from tests.helpers import create_brand, create_party, create_user, http_client
 
 
 class PasswordUpdateTestCase(AbstractAppTestCase):
@@ -74,5 +74,5 @@ class PasswordUpdateTestCase(AbstractAppTestCase):
 
     def send_request(self, form_data, *, user_id=None):
         url = '/authentication/password'
-        with self.client(user_id=user_id) as client:
+        with http_client(self.app, user_id=user_id) as client:
             return client.post(url, data=form_data)

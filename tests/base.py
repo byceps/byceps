@@ -8,7 +8,6 @@ Base classes for test cases
 :License: Modified BSD, see LICENSE for details.
 """
 
-from contextlib import contextmanager
 import os
 from pathlib import Path
 from unittest import TestCase
@@ -16,8 +15,6 @@ from unittest.mock import patch
 
 from byceps.application import create_app
 from byceps.database import db
-from byceps.services.authentication.session.service \
-    import find_session_token_for_user
 
 from tests import mocks
 
@@ -48,25 +45,3 @@ class AbstractAppTestCase(TestCase):
     def tearDown(self):
         db.session.remove()
         db.drop_all()
-
-    @contextmanager
-    def client(self, *, user_id=None):
-        """Provide an HTTP client.
-
-        If a user ID is given, the client authenticates with the user's
-        credentials.
-        """
-        client = self.app.test_client()
-
-        if user_id is not None:
-            add_user_credentials_to_session(client, user_id)
-
-        yield client
-
-
-def add_user_credentials_to_session(client, user_id):
-    session_token = find_session_token_for_user(user_id)
-
-    with client.session_transaction() as session:
-        session['user_id'] = str(user_id)
-        session['user_auth_token'] = str(session_token.token)

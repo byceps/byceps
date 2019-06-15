@@ -4,7 +4,7 @@
 """
 
 from tests.base import AbstractAppTestCase
-from tests.helpers import create_brand, create_party, create_user
+from tests.helpers import create_brand, create_party, create_user, http_client
 
 
 class UserProfileTest(AbstractAppTestCase):
@@ -20,7 +20,7 @@ class UserProfileTest(AbstractAppTestCase):
     def test_view_profile(self):
         url = '/users/{}'.format(self.user.id)
 
-        with self.client() as client:
+        with http_client(self.app) as client:
             response = client.get(url)
 
         assert response.status_code == 200

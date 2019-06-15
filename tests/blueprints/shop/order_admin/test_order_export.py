@@ -16,7 +16,7 @@ from byceps.services.shop.order.transfer.models import PaymentMethod
 
 from tests.base import CONFIG_FILENAME_TEST_ADMIN
 from tests.helpers import assign_permissions_to_user, create_brand, \
-    create_party, create_session_token, create_user
+    create_party, create_session_token, create_user, http_client
 from tests.services.shop.base import ShopTestBase
 
 
@@ -41,7 +41,7 @@ class ExportTestCase(ShopTestBase):
             expected = f.read().rstrip()
 
         url = '/admin/shop/orders/{}/export'.format(self.order.id)
-        with self.client(user_id=self.admin.id) as client:
+        with http_client(self.app, user_id=self.admin.id) as client:
             response = client.get(url)
 
         assert response.status_code == 200

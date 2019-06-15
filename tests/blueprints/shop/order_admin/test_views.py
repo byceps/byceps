@@ -16,7 +16,8 @@ from testfixtures.shop_order import create_orderer
 
 from tests.base import CONFIG_FILENAME_TEST_ADMIN
 from tests.helpers import assign_permissions_to_user, create_brand, \
-    create_party, create_session_token, create_user, create_user_with_detail
+    create_party, create_session_token, create_user, create_user_with_detail, \
+    http_client
 from tests.services.shop.base import ShopTestBase
 
 
@@ -66,7 +67,7 @@ class ShopAdminTestCase(ShopTestBase):
 
         url = '/admin/shop/orders/{}/cancel'.format(order_before.id)
         form_data = {'reason': 'Dein Vorname ist albern!'}
-        with self.client(user_id=self.admin.id) as client:
+        with http_client(self.app, user_id=self.admin.id) as client:
             response = client.post(url, data=form_data)
 
         order_afterwards = get_order(order_before.id)
@@ -94,7 +95,7 @@ class ShopAdminTestCase(ShopTestBase):
 
         url = '/admin/shop/orders/{}/mark_as_paid'.format(order_before.id)
         form_data = {'payment_method': 'direct_debit'}
-        with self.client(user_id=self.admin.id) as client:
+        with http_client(self.app, user_id=self.admin.id) as client:
             response = client.post(url, data=form_data)
 
         order_afterwards = get_order(order_before.id)
@@ -126,12 +127,12 @@ class ShopAdminTestCase(ShopTestBase):
 
         url = '/admin/shop/orders/{}/mark_as_paid'.format(order_before.id)
         form_data = {'payment_method': 'bank_transfer'}
-        with self.client(user_id=self.admin.id) as client:
+        with http_client(self.app, user_id=self.admin.id) as client:
             response = client.post(url, data=form_data)
 
         url = '/admin/shop/orders/{}/cancel'.format(order_before.id)
         form_data = {'reason': 'Dein Vorname ist albern!'}
-        with self.client(user_id=self.admin.id) as client:
+        with http_client(self.app, user_id=self.admin.id) as client:
             response = client.post(url, data=form_data)
 
         order_afterwards = get_order(order_before.id)

@@ -12,6 +12,7 @@ from flask import appcontext_pushed, g
 
 from byceps.application import create_app
 from byceps.database import db
+from byceps.services.authentication.session import service as session_service
 from byceps.services.authorization import service as authorization_service
 from byceps.services.party import service as party_service
 from byceps.services.site import service as site_service
@@ -114,3 +115,26 @@ def create_party(brand_id, party_id='acmecon-2014', title='ACMECon 2014'):
 
 def create_site(party_id, *, site_id='acmecon-2014-website', title='Website'):
     return site_service.create_site(site_id, party_id, title)
+
+
+@contextmanager
+def http_client(app, *, user_id=None):
+    """Provide an HTTP client.
+
+    If a user ID is given, the client authenticates with the user's
+    credentials.
+    """
+    client = app.test_client()
+
+    if user_id is not None:
+        _add_user_credentials_to_session(client, user_id)
+
+    yield client
+
+
+def _add_user_credentials_to_session(client, user_id):
+    session_token = session_service.find_session_token_for_user(user_id)
+
+    with client.session_transaction() as session:
+        session['user_id'] = str(user_id)
+        session['user_auth_token'] = str(session_token.token)

@@ -11,7 +11,7 @@ from byceps.services.user_message import service as user_message_service
 
 from tests.base import AbstractAppTestCase
 from tests.helpers import create_brand, create_party, create_session_token, \
-    create_user
+    create_user, http_client
 
 
 class SendUserMessageTest(AbstractAppTestCase):
@@ -164,5 +164,5 @@ Bei Fragen kontaktiere uns bitte per E-Mail an: info@example.com\
         if current_user_id is not None:
             create_session_token(current_user_id)
 
-        with self.client(user_id=current_user_id) as client:
+        with http_client(self.app, user_id=current_user_id) as client:
             return client.post(url, data=form_data)

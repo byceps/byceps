@@ -6,6 +6,8 @@
 from byceps.services.board import \
     topic_command_service as board_topic_command_service
 
+from tests.helpers import http_client
+
 from .topic_moderation_base import AbstractTopicModerationTest
 
 
@@ -24,7 +26,7 @@ class TopicLockTest(AbstractTopicModerationTest):
         assert_topic_is_not_locked(topic_before)
 
         url = '/board/topics/{}/flags/locked'.format(topic_before.id)
-        with self.client(user_id=self.admin.id) as client:
+        with http_client(self.app, user_id=self.admin.id) as client:
             response = client.post(url)
 
         assert response.status_code == 204
@@ -38,7 +40,7 @@ class TopicLockTest(AbstractTopicModerationTest):
         assert_topic_is_locked(topic_before, self.admin.id)
 
         url = '/board/topics/{}/flags/locked'.format(topic_before.id)
-        with self.client(user_id=self.admin.id) as client:
+        with http_client(self.app, user_id=self.admin.id) as client:
             response = client.delete(url)
 
         assert response.status_code == 204
