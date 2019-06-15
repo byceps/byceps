@@ -13,9 +13,9 @@ SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://byceps_test:test@127.0.0.1/byce
 REDIS_URL = 'redis://127.0.0.1:6379/0'
 
 SITE_MODE = 'public'
-SITE_ID = 'acme-2014-website'
-BRAND = 'acme'
-PARTY = 'acme-2014'
+SITE_ID = 'acmecon-2014-website'
+BRAND = 'acmecon'
+PARTY = 'acmecon-2014'
 
 PATH_DATA = Path('./data')
 PATH_GLOBAL = PATH_DATA / 'global'

@@ -9,5 +9,5 @@ testfixtures.brand
 from byceps.services.brand.models.brand import Brand
 
 
-def create_brand(*, id='acme', title='Acme Entertainment Convention'):
+def create_brand(*, id='acmecon', title='Acme Entertainment Convention'):
     return Brand(id, title)

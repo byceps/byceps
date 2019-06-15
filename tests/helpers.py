@@ -112,5 +112,5 @@ def create_party(brand_id, party_id='acmecon-2017', title='ACMECon 2017'):
     return party_service._db_entity_to_party(party)
 
 
-def create_site(party_id, *, site_id='acme-2014-website', title='Website'):
+def create_site(party_id, *, site_id='acmecon-2014-website', title='Website'):
     return site_service.create_site(site_id, party_id, title)

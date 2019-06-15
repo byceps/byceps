@@ -28,7 +28,7 @@ class AbstractTopicModerationTest(AbstractAppTestCase):
         self.board = self.create_board()
 
         site_settings_service \
-            .create_setting('acme-2014-website', 'board_id', self.board.id)
+            .create_setting('acmecon-2014-website', 'board_id', self.board.id)
 
     # -------------------------------------------------------------------- #
     # helpers
