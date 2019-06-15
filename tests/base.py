@@ -16,8 +16,8 @@ from unittest.mock import patch
 
 from byceps.application import create_app
 from byceps.database import db
-from byceps.services.authentication.session.models.session_token \
-    import SessionToken
+from byceps.services.authentication.session.service \
+    import find_session_token_for_user
 
 from tests import mocks
 
@@ -65,7 +65,7 @@ class AbstractAppTestCase(TestCase):
 
 
 def add_user_credentials_to_session(client, user_id):
-    session_token = SessionToken.query.filter_by(user_id=user_id).one_or_none()
+    session_token = find_session_token_for_user(user_id)
 
     with client.session_transaction() as session:
         session['user_id'] = str(user_id)
