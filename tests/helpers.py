@@ -103,7 +103,7 @@ def create_brand(brand_id='acmecon', title='ACME Entertainment Convention'):
     return brand
 
 
-def create_party(brand_id, party_id='acmecon-2017', title='ACMECon 2017'):
+def create_party(brand_id, party_id='acmecon-2014', title='ACMECon 2014'):
     party = _create_party(id=party_id, title=title, brand_id=brand_id)
 
     db.session.add(party)
