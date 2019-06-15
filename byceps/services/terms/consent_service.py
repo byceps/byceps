@@ -40,7 +40,7 @@ def count_user_consents_for_versions_of_brand(brand_id: BrandID
             Version.id,
             db.func.count(Consent.subject_id)
         ) \
-        .outerjoin(Subject) \
+        .outerjoin(Subject, Version.consent_subject) \
         .outerjoin(Consent) \
         .group_by(Version.id) \
         .filter(Version.brand_id == brand_id) \
