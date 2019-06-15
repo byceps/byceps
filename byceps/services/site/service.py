@@ -15,11 +15,29 @@ from .models.site import Site as DbSite
 from .transfer.models import Site, SiteID
 
 
+class UnknownSiteId(Exception):
+    pass
+
+
 def create_site(site_id: SiteID, party_id: PartyID, title: str) -> Site:
     """Create a site for that party."""
     site = DbSite(site_id, party_id, title)
 
     db.session.add(site)
+    db.session.commit()
+
+    return _db_entity_to_site(site)
+
+
+def update_site(site_id: SiteID, title: str) -> Site:
+    """Update the site."""
+    site = DbSite.query.get(site_id)
+
+    if site is None:
+        raise UnknownSiteId(site_id)
+
+    site.title = title
+
     db.session.commit()
 
     return _db_entity_to_site(site)

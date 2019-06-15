@@ -1,0 +1,27 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/forms.html' import form_buttons, form_field, form_field_checkbox, form_fieldset %}
+{% from 'macros/icons.html' import render_icon %}
+{% set current_page = 'site_admin' %}
+{% set current_page_site = site %}
+{% set title = 'Site bearbeiten' %}
+
+{% block body %}
+
+  <nav class="breadcrumbs">
+    <ol>
+      <li>{{ party.title }}</li>
+      <li><a href="{{ url_for('.index', party_id=party.id) }}">Sites</a></li>
+      <li><a href="{{ url_for('.view', site_id=site.id) }}">{{ site.title }}</a></li>
+    </ol>
+  </nav>
+  <h1>{{ render_icon('edit') }} {{ title }}</h1>
+
+  <form action="{{ url_for('.update', site_id=site.id) }}" method="post">
+    {% call form_fieldset() %}
+      {{ form_field(form.title, maxlength=40, required='required', autofocus='autofocus') }}
+    {% endcall %}
+
+    {{ form_buttons('Speichern', cancel_url=url_for('.view', site_id=site.id)) }}
+  </form>
+
+{%- endblock %}

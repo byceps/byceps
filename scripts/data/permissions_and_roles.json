@@ -209,6 +209,14 @@
       "title": "Shop-Bestellungen anzeigen"
     },
     {
+      "id": "site.create",
+      "title": "Sites erstellen"
+    },
+    {
+      "id": "site.update",
+      "title": "Sites bearbeiten"
+    },
+    {
       "id": "shop.view",
       "title": "Shops anzeigen"
     },
@@ -469,6 +477,8 @@
     },
     {
       "assigned_permissions": [
+        "site.create",
+        "site.update",
         "site.view"
       ],
       "id": "site_admin",

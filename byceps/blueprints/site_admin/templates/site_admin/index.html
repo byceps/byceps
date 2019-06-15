@@ -7,6 +7,12 @@
 
   <h1>{{ title }}</h1>
 
+  {%- if g.current_user.has_permission(SitePermission.create) %}
+  <div class="button-row">
+    <a class="button" href="{{ url_for('.create_form', party_id=party.id) }}">{{ render_icon('add') }} <span>Site erstellen</span></a>
+  </div>
+  {%- endif %}
+
   <table class="index">
     <thead>
       <tr>
