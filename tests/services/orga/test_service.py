@@ -5,27 +5,21 @@
 
 from byceps.services.orga import service as orga_service
 
-from tests.base import AbstractAppTestCase
 from tests.helpers import create_brand, create_user
 
 
-class OrgaServiceTestCase(AbstractAppTestCase):
+def test_flag_changes(admin_app_with_db):
+    brand = create_brand()
 
-    def setUp(self):
-        super().setUp()
+    user = create_user()
+    admin = create_user('Admin')
 
-        self.brand = create_brand()
+    assert not orga_service.is_user_orga(user.id)
 
-    def test_flag_changes(self):
-        user = create_user()
-        admin = create_user('Admin')
+    flag = orga_service.add_orga_flag(brand.id, user.id, admin.id)
 
-        assert not orga_service.is_user_orga(user.id)
+    assert orga_service.is_user_orga(user.id)
 
-        flag = orga_service.add_orga_flag(self.brand.id, user.id, admin.id)
+    orga_service.remove_orga_flag(flag, admin.id)
 
-        assert orga_service.is_user_orga(user.id)
-
-        orga_service.remove_orga_flag(flag, admin.id)
-
-        assert not orga_service.is_user_orga(user.id)
+    assert not orga_service.is_user_orga(user.id)

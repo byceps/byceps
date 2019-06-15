@@ -6,61 +6,55 @@
 from byceps.services.ticketing import category_service, event_service, \
     ticket_bundle_service as bundle_service
 
-from tests.base import AbstractAppTestCase
 from tests.helpers import create_brand, create_party, create_user
 
 
-class TicketBundleRevocationTestCase(AbstractAppTestCase):
+def test_revoke_bundle(admin_app_with_db):
+    brand = create_brand()
+    party = create_party(brand_id=brand.id)
 
-    def setUp(self):
-        super().setUp()
+    quantity = 4
 
-        brand = create_brand()
-        self.party = create_party(brand_id=brand.id)
+    bundle = create_bundle(party.id, quantity)
 
-        self.quantity = 4
+    tickets_before = bundle_service.find_tickets_for_bundle(bundle.id)
+    assert len(tickets_before) == quantity
 
-        bundle = self.create_bundle(self.quantity)
+    for ticket_before in tickets_before:
+        assert not ticket_before.revoked
 
-        self.bundle_id = bundle.id
+        events_before = event_service.get_events_for_ticket(ticket_before.id)
+        assert len(events_before) == 0
 
-    def test_revoke_bundle(self):
-        tickets_before = bundle_service.find_tickets_for_bundle(self.bundle_id)
-        assert len(tickets_before) == self.quantity
+    # -------------------------------- #
 
-        for ticket_before in tickets_before:
-            assert not ticket_before.revoked
+    bundle_service.revoke_bundle(bundle.id)
 
-            events_before = event_service.get_events_for_ticket(ticket_before.id)
-            assert len(events_before) == 0
+    # -------------------------------- #
 
-        # -------------------------------- #
+    tickets_after = bundle_service.find_tickets_for_bundle(bundle.id)
+    assert len(tickets_after) == quantity
 
-        bundle_service.revoke_bundle(self.bundle_id)
+    for ticket_after in tickets_after:
+        assert ticket_after.revoked
 
-        # -------------------------------- #
+        events_after = event_service.get_events_for_ticket(ticket_after.id)
+        assert len(events_after) == 1
 
-        tickets_after = bundle_service.find_tickets_for_bundle(self.bundle_id)
-        assert len(tickets_after) == self.quantity
+        ticket_revoked_event = events_after[0]
+        assert ticket_revoked_event.event_type == 'ticket-revoked'
+        assert ticket_revoked_event.data == {}
 
-        for ticket_after in tickets_after:
-            assert ticket_after.revoked
 
-            events_after = event_service.get_events_for_ticket(ticket_after.id)
-            assert len(events_after) == 1
+# helpers
 
-            ticket_revoked_event = events_after[0]
-            assert ticket_revoked_event.event_type == 'ticket-revoked'
-            assert ticket_revoked_event.data == {}
 
-    # -------------------------------------------------------------------- #
-    # helpers
+def create_bundle(party_id, quantity):
+    category = create_category(party_id, 'Premium')
+    owner = create_user('Ticket_Owner')
 
-    def create_bundle(self, quantity):
-        category = self.create_category('Premium')
-        owner = create_user('Ticket_Owner')
+    return bundle_service.create_bundle(category.id, quantity, owner.id)
 
-        return bundle_service.create_bundle(category.id, quantity, owner.id)
 
-    def create_category(self, title):
-        return category_service.create_category(self.party.id, title)
+def create_category(party_id, title):
+    return category_service.create_category(party_id, title)

@@ -5,33 +5,29 @@
 
 from byceps.services.authorization import service as authorization_service
 
-from tests.base import AbstractAppTestCase
 from tests.helpers import assign_permissions_to_user, create_user
 
 
-class AuthorizationServiceTestCase(AbstractAppTestCase):
+def test_get_permission_ids_for_user(party_app_with_db):
+    user_id = create_user().id
+    initiator_id = create_user('Admin').id
 
-    def setUp(self):
-        super().setUp()
+    permissions_before = authorization_service \
+        .get_permission_ids_for_user(user_id)
+    assert permissions_before == frozenset()
 
-        self.user_id = create_user().id
-        self.initiator_id = create_user('Admin').id
+    assign_permissions_to_user(user_id, 'board_moderator', {
+        'board_topic_hide',
+        'board_topic_pin',
+    }, initiator_id=initiator_id)
+    assign_permissions_to_user(user_id, 'news_editor', {
+        'news_item_create',
+    }, initiator_id=initiator_id)
 
-    def test_get_permission_ids_for_user(self):
-        permissions_before = authorization_service.get_permission_ids_for_user(self.user_id)
-        assert permissions_before == frozenset()
-
-        assign_permissions_to_user(self.user_id, 'board_moderator', {
-            'board_topic_hide',
-            'board_topic_pin',
-        }, initiator_id=self.initiator_id)
-        assign_permissions_to_user(self.user_id, 'news_editor', {
-            'news_item_create',
-        }, initiator_id=self.initiator_id)
-
-        permissions_after = authorization_service.get_permission_ids_for_user(self.user_id)
-        assert permissions_after == {
-            'board_topic_hide',
-            'board_topic_pin',
-            'news_item_create',
-        }
+    permissions_after = authorization_service \
+        .get_permission_ids_for_user(user_id)
+    assert permissions_after == {
+        'board_topic_hide',
+        'board_topic_pin',
+        'news_item_create',
+    }

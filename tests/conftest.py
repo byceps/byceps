@@ -19,6 +19,19 @@ def admin_app():
 
 
 @pytest.fixture
+def admin_app_with_db(admin_app):
+    with admin_app.app_context():
+        db.reflect()
+        db.drop_all()
+
+        db.create_all()
+
+        yield admin_app
+
+        db.session.remove()
+
+
+@pytest.fixture
 def admin_client(admin_app):
     """Provide a test HTTP client against the admin web application."""
     return admin_app.test_client()
