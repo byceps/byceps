@@ -5,8 +5,7 @@
 
 from byceps.services.authentication.password.models import Credential
 from byceps.services.authentication.password import service as password_service
-from byceps.services.authentication.session.models.session_token \
-    import SessionToken
+from byceps.services.authentication.session import service as session_service
 
 from tests.base import AbstractAppTestCase
 from tests.helpers import create_brand, create_party, create_user, http_client
@@ -68,9 +67,7 @@ class PasswordUpdateTestCase(AbstractAppTestCase):
         return Credential.query.get(user_id)
 
     def find_session_token(self, user_id):
-        return SessionToken.query \
-            .filter_by(user_id=user_id) \
-            .one()
+        return session_service.find_session_token_for_user(user_id)
 
     def send_request(self, form_data, *, user_id=None):
         url = '/authentication/password'
