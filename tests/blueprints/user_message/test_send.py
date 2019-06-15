@@ -19,8 +19,8 @@ class SendUserMessageTest(AbstractAppTestCase):
     def setUp(self):
         super().setUp()
 
-        brand = create_brand()
-        create_party(brand_id=brand.id)
+        self.brand = create_brand()
+        create_party(brand_id=self.brand.id)
 
         email_service.set_sender_address_for_brand(self.brand.id,
                                                    'noreply@example.com')
@@ -45,7 +45,7 @@ Alice
         expected_response_location \
             = 'http://example.com/users/{}'.format(recipient.id)
 
-        expected_email_sender = 'Acme Entertainment Convention <noreply@example.com>'
+        expected_email_sender = 'ACME Entertainment Convention <noreply@example.com>'
         expected_email_recipients = ['Bob <bob@example.com>']
         expected_email_subject = 'Mitteilung von Alice'
         expected_email_body = '''\
@@ -67,7 +67,7 @@ Alice
 Du kannst Alice hier antworten: http://example.com/user_messages/to/a4903d8f-0bc6-4af9-aeb9-d7534a0a22e8/create
 
 -- 
-Diese Mitteilung wurde über die Website der Acme Entertainment Convention gesendet.\
+Diese Mitteilung wurde über die Website der ACME Entertainment Convention gesendet.\
 '''
 
         response = self.send_request(recipient.id, text,
@@ -105,7 +105,7 @@ Bob
         expected_response_location \
             = 'http://example.com/users/{}'.format(recipient.id)
 
-        expected_email_sender = 'Acme Entertainment Convention <noreply@example.com>'
+        expected_email_sender = 'ACME Entertainment Convention <noreply@example.com>'
         expected_email_recipients = ['Alice <alice@example.com>']
         expected_email_subject = 'Mitteilung von Bob'
         expected_email_body = '''\
@@ -127,7 +127,7 @@ Bob
 Du kannst Bob hier antworten: http://example.com/user_messages/to/11d72bab-3646-4199-b96c-e5e4c6f972bc/create
 
 -- 
-Diese Mitteilung wurde über die Website der Acme Entertainment Convention gesendet.
+Diese Mitteilung wurde über die Website der ACME Entertainment Convention gesendet.
 Bei Fragen kontaktiere uns bitte per E-Mail an: info@example.com\
 '''
 
