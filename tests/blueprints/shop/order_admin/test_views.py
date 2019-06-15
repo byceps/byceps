@@ -15,8 +15,8 @@ from byceps.services.shop.order.transfer.models import PaymentMethod, \
 from testfixtures.shop_order import create_orderer
 
 from tests.base import CONFIG_FILENAME_TEST_ADMIN
-from tests.helpers import assign_permissions_to_user, create_session_token, \
-    create_user, create_user_with_detail
+from tests.helpers import assign_permissions_to_user, create_brand, \
+    create_party, create_session_token, create_user, create_user_with_detail
 from tests.services.shop.base import ShopTestBase
 
 
@@ -29,9 +29,10 @@ class ShopAdminTestCase(ShopTestBase):
 
         self.orderer = create_user_with_detail('Besteller')
 
-        self.create_brand_and_party()
+        brand = create_brand()
+        party = create_party(brand_id=brand.id)
 
-        self.shop = self.create_shop(self.party.id)
+        self.shop = self.create_shop(party.id)
         self.create_order_number_sequence(self.shop.id, 'AEC-05-B')
         self.create_shop_fragment(self.shop.id, 'email_footer', 'kthxbye')
 

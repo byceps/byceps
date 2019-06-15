@@ -23,7 +23,7 @@ from byceps.services.verification_token import service as \
     verification_token_service
 
 from tests.base import AbstractAppTestCase
-from tests.helpers import create_user
+from tests.helpers import create_brand, create_party, create_user
 
 from testfixtures.authorization import create_role
 
@@ -35,10 +35,12 @@ class UserCreateTestCase(AbstractAppTestCase):
 
         self.admin = create_user('Admin')
 
-        self.create_brand_and_party()
+        self.brand = create_brand()
         email_service.set_sender_address_for_brand(self.brand.id,
                                                    'noreply@example.com')
         self.brand_id = self.brand.id
+
+        create_party(brand_id=self.brand.id)
 
         self.setup_terms()
         self.setup_privacy_policy()

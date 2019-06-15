@@ -7,7 +7,7 @@ from byceps.services.ticketing import category_service, event_service, \
     ticket_creation_service, ticket_user_management_service
 
 from tests.base import AbstractAppTestCase
-from tests.helpers import create_user
+from tests.helpers import create_brand, create_party, create_user
 
 
 class TicketUserManagementServiceTest(AbstractAppTestCase):
@@ -17,7 +17,8 @@ class TicketUserManagementServiceTest(AbstractAppTestCase):
 
         self.owner = create_user('Ticket_Owner')
 
-        self.create_brand_and_party()
+        brand = create_brand()
+        self.party = create_party(brand_id=brand.id)
 
         self.category_id = self.create_category('Premium').id
 

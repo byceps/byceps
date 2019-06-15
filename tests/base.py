@@ -19,9 +19,6 @@ from byceps.database import db
 from byceps.services.authentication.session.models.session_token \
     import SessionToken
 
-from testfixtures.brand import create_brand
-from testfixtures.party import create_party
-
 from tests import mocks
 
 
@@ -51,15 +48,6 @@ class AbstractAppTestCase(TestCase):
     def tearDown(self):
         db.session.remove()
         db.drop_all()
-
-    def create_brand_and_party(self):
-        self.brand = create_brand()
-        db.session.add(self.brand)
-
-        self.party = create_party(brand_id=self.brand.id)
-        db.session.add(self.party)
-
-        db.session.commit()
 
     @contextmanager
     def client(self, *, user_id=None):

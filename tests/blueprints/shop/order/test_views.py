@@ -10,7 +10,8 @@ from byceps.services.shop.order.models.order import Order
 
 from testfixtures.shop_article import create_article
 
-from tests.helpers import create_session_token, create_user
+from tests.helpers import create_brand, create_party, create_session_token, \
+    create_user
 from tests.services.shop.base import ShopTestBase
 
 
@@ -19,11 +20,12 @@ class ShopOrderTestCase(ShopTestBase):
     def setUp(self):
         super().setUp()
 
-        self.create_brand_and_party()
+        brand = create_brand()
+        party = create_party(brand_id=brand.id)
 
         self.setup_orderer()
 
-        self.shop = self.create_shop(self.party.id)
+        self.shop = self.create_shop(party.id)
         self.setup_order_number_prefix_and_sequence()
         self.create_shop_fragment(self.shop.id, 'payment_instructions',
                                   'Send all ur moneyz!')

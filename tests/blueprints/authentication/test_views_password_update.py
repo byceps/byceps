@@ -9,7 +9,7 @@ from byceps.services.authentication.session.models.session_token \
     import SessionToken
 
 from tests.base import AbstractAppTestCase
-from tests.helpers import create_user
+from tests.helpers import create_brand, create_party, create_user
 
 
 class PasswordUpdateTestCase(AbstractAppTestCase):
@@ -17,7 +17,8 @@ class PasswordUpdateTestCase(AbstractAppTestCase):
     def setUp(self):
         super().setUp()
 
-        self.create_brand_and_party()
+        brand = create_brand()
+        create_party(brand_id=brand.id)
 
     def test_when_logged_in_endpoint_is_available(self):
         old_password = 'LekkerBratworsten'

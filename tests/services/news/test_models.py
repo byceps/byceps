@@ -7,7 +7,8 @@ from byceps.services.news import channel_service as news_channel_service, \
     service as news_service
 
 from tests.base import AbstractAppTestCase
-from tests.helpers import create_user, current_party_set
+from tests.helpers import create_brand, create_party, create_user, \
+    current_party_set
 
 
 class ItemTestCase(AbstractAppTestCase):
@@ -17,11 +18,11 @@ class ItemTestCase(AbstractAppTestCase):
 
         self.editor = create_user()
 
-        self.create_brand_and_party()
+        brand = create_brand()
+        self.party = create_party(brand_id=brand.id)
 
-        channel_id = '{}-test'.format(self.brand.id)
-        self.channel = news_channel_service.create_channel(self.brand.id,
-                                                           channel_id)
+        channel_id = '{}-test'.format(brand.id)
+        self.channel = news_channel_service.create_channel(brand.id, channel_id)
 
     def test_image_url_with_image(self):
         with current_party_set(self.app, self.party), self.app.app_context():

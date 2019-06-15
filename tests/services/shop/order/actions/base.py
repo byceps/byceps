@@ -11,7 +11,7 @@ from byceps.services.shop.sequence.transfer.models import Purpose
 
 from testfixtures.shop_order import create_orderer
 
-from tests.helpers import create_user_with_detail
+from tests.helpers import create_brand, create_party, create_user_with_detail
 from tests.services.shop.base import ShopTestBase
 
 
@@ -23,7 +23,8 @@ class OrderActionTestBase(ShopTestBase):
     def setUp(self):
         super().setUp()
 
-        self.create_brand_and_party()
+        brand = create_brand()
+        self.party = create_party(brand_id=brand.id)
 
         self.shop = self.create_shop(self.party.id)
 
