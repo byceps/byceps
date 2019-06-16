@@ -6,16 +6,17 @@
 from byceps.services.ticketing import category_service, event_service, \
     ticket_bundle_service as bundle_service
 
-from tests.helpers import create_brand, create_party, create_user
+from tests.helpers import create_brand, create_party
 
 
-def test_revoke_bundle(admin_app_with_db):
+def test_revoke_bundle(admin_app_with_db, normal_user):
     brand = create_brand()
     party = create_party(brand_id=brand.id)
 
     quantity = 4
+    owner = normal_user
 
-    bundle = create_bundle(party.id, quantity)
+    bundle = create_bundle(party.id, quantity, owner)
 
     tickets_before = bundle_service.find_tickets_for_bundle(bundle.id)
     assert len(tickets_before) == quantity
@@ -49,9 +50,8 @@ def test_revoke_bundle(admin_app_with_db):
 # helpers
 
 
-def create_bundle(party_id, quantity):
+def create_bundle(party_id, quantity, owner):
     category = create_category(party_id, 'Premium')
-    owner = create_user('Ticket_Owner')
 
     return bundle_service.create_bundle(category.id, quantity, owner.id)
 

@@ -11,6 +11,7 @@ from byceps.database import db as _db
 
 from tests.base import CONFIG_FILENAME_TEST_ADMIN, \
     CONFIG_FILENAME_TEST_PARTY, create_app
+from tests.helpers import create_user
 
 
 @pytest.fixture(scope='session')
@@ -62,3 +63,13 @@ def party_app_with_db(party_app, db):
         with database_recreated(db):
             yield party_app
         db.session.remove()
+
+
+@pytest.fixture
+def admin_user():
+    return create_user('Admin')
+
+
+@pytest.fixture
+def normal_user():
+    return create_user()

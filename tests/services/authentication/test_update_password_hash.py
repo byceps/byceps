@@ -7,14 +7,11 @@ from byceps.services.authentication.password.models import Credential
 from byceps.services.authentication.password import service as password_service
 from byceps.services.user import event_service
 
-from tests.helpers import create_user
 
+def test_update_password_hash(party_app_with_db, admin_user, normal_user):
+    admin_id = admin_user.id
+    user_id = normal_user.id
 
-def test_update_password_hash(party_app_with_db):
-    orga_id = create_user('Party_Orga').id
-
-    user = create_user('Party_User')
-    user_id = user.id
     password_service.create_password_hash(user_id, 'InitialPassw0rd')
 
     password_hash_before = get_password_hash(user_id)
@@ -25,7 +22,8 @@ def test_update_password_hash(party_app_with_db):
 
     # -------------------------------- #
 
-    password_service.update_password_hash(user_id, 'ReplacementPassw0rd', orga_id)
+    password_service.update_password_hash(user_id, 'ReplacementPassw0rd',
+                                          admin_id)
 
     # -------------------------------- #
 
@@ -39,7 +37,7 @@ def test_update_password_hash(party_app_with_db):
     password_updated_event = events_after[0]
     assert password_updated_event.event_type == 'password-updated'
     assert password_updated_event.data == {
-        'initiator_id': str(orga_id),
+        'initiator_id': str(admin_id),
     }
 
 
