@@ -22,4 +22,12 @@ data
 keys
 
 # documentation
-docs/_build
+/docs/_build
+
+# configs
+/config/*
+!/config/development_admin.py
+!/config/development_party.py
+!/config/production_party.py
+!/config/test_admin.py
+!/config/test_party.py
