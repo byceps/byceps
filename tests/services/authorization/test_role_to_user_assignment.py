@@ -3,60 +3,50 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
+import pytest
+
 from byceps.services.authorization import service
 
-from tests.base import AbstractAppTestCase
-from tests.helpers import create_user
+
+PERMISSION_ID = 'board_topic_hide'
 
 
-class RoleToUserAssignmentTestCase(AbstractAppTestCase):
+def test_assign_role_to_user(admin_app_with_db, normal_user, admin_user, role):
+    user_id = normal_user.id
+    initiator_id = admin_user.id
 
-    def setUp(self):
-        super().setUp()
+    user_permission_ids_before = service.get_permission_ids_for_user(user_id)
+    assert PERMISSION_ID not in user_permission_ids_before
 
-        self.user = create_user()
+    service.assign_role_to_user(user_id, role.id, initiator_id=initiator_id)
 
-        self.permission_id = 'board_topic_hide'
-
-        self.role = create_role_with_permission('board_moderator',
-                                                self.permission_id)
-
-        self.initiator_id = create_user('Admin').id
-
-    def test_assign_role_to_user(self):
-        user_id = self.user.id
-        role_id = self.role.id
-
-        user_permission_ids_before = service.get_permission_ids_for_user(user_id)
-        assert self.permission_id not in user_permission_ids_before
-
-        service.assign_role_to_user(user_id, role_id,
-                                    initiator_id=self.initiator_id)
-
-        user_permission_ids_after = service.get_permission_ids_for_user(user_id)
-        assert self.permission_id in user_permission_ids_after
-
-    def test_deassign_role_from_user(self):
-        user_id = self.user.id
-        role_id = self.role.id
-
-        service.assign_role_to_user(user_id, role_id,
-                                    initiator_id=self.initiator_id)
-
-        user_permission_ids_before = service.get_permission_ids_for_user(user_id)
-        assert self.permission_id in user_permission_ids_before
-
-        service.deassign_role_from_user(user_id, role_id,
-                                        initiator_id=self.initiator_id)
-
-        user_permission_ids_after = service.get_permission_ids_for_user(user_id)
-        assert self.permission_id not in user_permission_ids_after
+    user_permission_ids_after = service.get_permission_ids_for_user(user_id)
+    assert PERMISSION_ID in user_permission_ids_after
 
 
-def create_role_with_permission(role_id, permission_id):
-    role = service.create_role(role_id, role_id)
+def test_deassign_role_from_user(admin_app_with_db, normal_user, admin_user,
+                                 role):
+    user_id = normal_user.id
+    initiator_id = admin_user.id
 
-    permission = service.create_permission(permission_id, permission_id)
+    service.assign_role_to_user(user_id, role.id, initiator_id=initiator_id)
+
+    user_permission_ids_before = service.get_permission_ids_for_user(user_id)
+    assert PERMISSION_ID in user_permission_ids_before
+
+    service.deassign_role_from_user(user_id, role.id, initiator_id=initiator_id)
+
+    user_permission_ids_after = service.get_permission_ids_for_user(user_id)
+    assert PERMISSION_ID not in user_permission_ids_after
+
+
+@pytest.fixture
+def permission():
+    return service.create_permission(PERMISSION_ID, 'Hide board topics')
+
+
+@pytest.fixture
+def role(permission):
+    role = service.create_role('board_moderator', 'Board Moderator')
     service.assign_permission_to_role(permission.id, role.id)
-
     return role
