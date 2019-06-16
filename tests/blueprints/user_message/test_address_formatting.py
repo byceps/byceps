@@ -8,18 +8,19 @@ from unittest.mock import patch
 import pytest
 
 from byceps.database import db
-from byceps.services.email.models import EmailConfig
+from byceps.services.email import service as email_service
 from byceps.services.user_message import service as user_message_service
 
-from testfixtures.brand import create_brand as _create_brand
-
-from tests.helpers import app_context, create_user
+from tests.helpers import app_context, create_brand, create_user
 
 
 def test_recipient_formatting(application, params):
     screen_name, email_address, expected = params
 
     brand = create_brand()
+
+    sender_address = '{}@example.com'.format(brand.id)
+    email_service.set_sender_address_for_brand(brand.id, sender_address)
 
     user = create_user(screen_name, email_address=email_address)
 
@@ -59,16 +60,3 @@ def set_up_database():
 def tear_down_database():
     db.session.remove()
     db.drop_all()
-
-
-def create_brand():
-    brand = _create_brand()
-    db.session.add(brand)
-    db.session.commit()
-
-    sender_address = '{}@example.com'.format(brand.id)
-    email_config = EmailConfig(brand.id, sender_address)
-    db.session.add(email_config)
-    db.session.commit()
-
-    return brand
