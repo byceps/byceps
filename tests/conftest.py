@@ -7,10 +7,15 @@ from contextlib import contextmanager
 
 import pytest
 
-from byceps.database import db
+from byceps.database import db as _db
 
 from tests.base import CONFIG_FILENAME_TEST_ADMIN, \
     CONFIG_FILENAME_TEST_PARTY, create_app
+
+
+@pytest.fixture(scope='session')
+def db():
+    return _db
 
 
 @contextmanager
@@ -31,7 +36,7 @@ def admin_app():
 
 
 @pytest.fixture
-def admin_app_with_db(admin_app):
+def admin_app_with_db(admin_app, db):
     with admin_app.app_context():
         with database_recreated(db):
             yield admin_app
@@ -52,7 +57,7 @@ def party_app():
 
 
 @pytest.fixture
-def party_app_with_db(party_app):
+def party_app_with_db(party_app, db):
     with party_app.app_context():
         with database_recreated(db):
             yield party_app
