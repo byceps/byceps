@@ -24,12 +24,12 @@ class PermissionToRoleAssignmentTestCase(AbstractAppTestCase):
         permission_id = self.permission.id
         role_id = self.role.id
 
-        role_permission_ids_before = self.get_permission_ids_for_role(role_id)
+        role_permission_ids_before = get_permission_ids_for_role(self.role)
         assert self.permission_id not in role_permission_ids_before
 
         service.assign_permission_to_role(permission_id, role_id)
 
-        role_permission_ids_after = self.get_permission_ids_for_role(role_id)
+        role_permission_ids_after = get_permission_ids_for_role(self.role)
         assert self.permission_id in role_permission_ids_after
 
     def test_deassign_permission_from_role(self):
@@ -38,16 +38,14 @@ class PermissionToRoleAssignmentTestCase(AbstractAppTestCase):
 
         service.assign_permission_to_role(permission_id, role_id)
 
-        role_permission_ids_before = self.get_permission_ids_for_role(role_id)
+        role_permission_ids_before = get_permission_ids_for_role(self.role)
         assert self.permission_id in role_permission_ids_before
 
         service.deassign_permission_from_role(permission_id, role_id)
 
-        role_permission_ids_after = self.get_permission_ids_for_role(role_id)
+        role_permission_ids_after = get_permission_ids_for_role(self.role)
         assert self.permission_id not in role_permission_ids_after
 
-    # -------------------------------------------------------------------- #
-    # helpers
 
-    def get_permission_ids_for_role(self, role_id):
-        return {p.id for p in self.role.permissions}
+def get_permission_ids_for_role(role):
+    return {p.id for p in role.permissions}
