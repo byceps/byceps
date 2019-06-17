@@ -5,7 +5,8 @@
 
 from tests.helpers import http_client
 
-from .topic_moderation_base import AbstractTopicModerationTest
+from .topic_moderation_base import AbstractTopicModerationTest, \
+    create_category, create_topic, find_topic, setup_admin_with_permission
 
 
 class TopicMoveTest(AbstractTopicModerationTest):
@@ -13,13 +14,13 @@ class TopicMoveTest(AbstractTopicModerationTest):
     def setUp(self):
         super().setUp()
 
-        self.setup_admin_with_permission('board_topic.move')
+        setup_admin_with_permission(self.admin.id, 'board_topic.move')
 
-        self.category_id_1 = self.create_category(1).id
-        self.category_id_2 = self.create_category(2).id
+        self.category_id_1 = create_category(self.board.id, 1).id
+        self.category_id_2 = create_category(self.board.id, 2).id
 
     def test_move_topic(self):
-        topic_before = self.create_topic(self.category_id_1, self.user.id, 1)
+        topic_before = create_topic(self.category_id_1, self.user.id, 1)
 
         assert topic_before.category.id == self.category_id_1
 
@@ -29,5 +30,5 @@ class TopicMoveTest(AbstractTopicModerationTest):
             response = client.post(url, data=form_data)
 
         assert response.status_code == 302
-        topic_afterwards = self.find_topic(topic_before.id)
+        topic_afterwards = find_topic(topic_before.id)
         assert topic_afterwards.category.id == self.category_id_2

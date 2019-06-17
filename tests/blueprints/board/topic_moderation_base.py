@@ -6,7 +6,8 @@
 from byceps.services.board.models.topic import Topic
 from byceps.services.site import settings_service as site_settings_service
 
-from testfixtures.board import create_board, create_category, create_topic
+from testfixtures.board import create_board as _create_board, \
+    create_category as _create_category, create_topic as _create_topic
 
 from tests.base import AbstractAppTestCase
 from tests.helpers import assign_permissions_to_user, create_brand, \
@@ -27,27 +28,32 @@ class AbstractTopicModerationTest(AbstractAppTestCase):
         party = create_party(brand_id=self.brand.id)
         create_site(party.id)
 
-        self.board = self.create_board()
+        self.board = create_board(self.brand.id)
 
         site_settings_service \
             .create_setting('acmecon-2014-website', 'board_id', self.board.id)
 
-    # -------------------------------------------------------------------- #
-    # helpers
 
-    def setup_admin_with_permission(self, permission_id):
-        permission_ids = {'admin.access', permission_id}
-        assign_permissions_to_user(self.admin.id, 'admin', permission_ids)
+# helpers
 
-    def create_board(self):
-        board_id = self.brand.id
-        return create_board(self.brand.id, board_id)
 
-    def create_category(self, number):
-        return create_category(self.board.id, number=number)
+def setup_admin_with_permission(admin_id, permission_id):
+    permission_ids = {'admin.access', permission_id}
+    assign_permissions_to_user(admin_id, 'admin', permission_ids)
 
-    def create_topic(self, category_id, creator_id, number):
-        return create_topic(category_id, creator_id, number=number)
 
-    def find_topic(self, id):
-        return Topic.query.get(id)
+def create_board(brand_id):
+    board_id = brand_id
+    return _create_board(brand_id, board_id)
+
+
+def create_category(board_id, number):
+    return _create_category(board_id, number=number)
+
+
+def create_topic(category_id, creator_id, number):
+    return _create_topic(category_id, creator_id, number=number)
+
+
+def find_topic(topic_id):
+    return Topic.query.get(topic_id)
