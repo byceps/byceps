@@ -3,48 +3,41 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
+import pytest
+
 from byceps.services.authorization import service
 
-from tests.base import AbstractAppTestCase
+
+def test_assign_permission_to_role(admin_app_with_db, permission, role):
+    role_permission_ids_before = get_permission_ids_for_role(role)
+    assert permission.id not in role_permission_ids_before
+
+    service.assign_permission_to_role(permission.id, role.id)
+
+    role_permission_ids_after = get_permission_ids_for_role(role)
+    assert permission.id in role_permission_ids_after
 
 
-class PermissionToRoleAssignmentTestCase(AbstractAppTestCase):
+def test_deassign_permission_from_role(admin_app_with_db, permission, role):
+    service.assign_permission_to_role(permission.id, role.id)
 
-    def setUp(self):
-        super().setUp()
+    role_permission_ids_before = get_permission_ids_for_role(role)
+    assert permission.id in role_permission_ids_before
 
-        self.permission_id = 'board_topic_hide'
-        self.permission = service.create_permission(self.permission_id,
-                                                    self.permission_id)
+    service.deassign_permission_from_role(permission.id, role.id)
 
-        self.role_id = 'board_moderator'
-        self.role = service.create_role(self.role_id, self.role_id)
+    role_permission_ids_after = get_permission_ids_for_role(role)
+    assert permission.id not in role_permission_ids_after
 
-    def test_assign_permission_to_role(self):
-        permission_id = self.permission.id
-        role_id = self.role.id
 
-        role_permission_ids_before = get_permission_ids_for_role(self.role)
-        assert self.permission_id not in role_permission_ids_before
+@pytest.fixture
+def permission():
+    return service.create_permission('board_topic_hide', 'Hide board topics')
 
-        service.assign_permission_to_role(permission_id, role_id)
 
-        role_permission_ids_after = get_permission_ids_for_role(self.role)
-        assert self.permission_id in role_permission_ids_after
-
-    def test_deassign_permission_from_role(self):
-        permission_id = self.permission.id
-        role_id = self.role.id
-
-        service.assign_permission_to_role(permission_id, role_id)
-
-        role_permission_ids_before = get_permission_ids_for_role(self.role)
-        assert self.permission_id in role_permission_ids_before
-
-        service.deassign_permission_from_role(permission_id, role_id)
-
-        role_permission_ids_after = get_permission_ids_for_role(self.role)
-        assert self.permission_id not in role_permission_ids_after
+@pytest.fixture
+def role():
+    return service.create_role('board_moderator', 'Board Moderator')
 
 
 def get_permission_ids_for_role(role):
