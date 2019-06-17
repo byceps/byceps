@@ -3,37 +3,42 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
+import pytest
+
 from byceps.services.news import channel_service as news_channel_service, \
     service as news_service
 
-from tests.base import AbstractAppTestCase
-from tests.helpers import create_brand, create_party, create_user, \
-    current_party_set
+from tests.helpers import create_brand, create_party, current_party_set
 
 
-class ItemTestCase(AbstractAppTestCase):
+def test_image_url_with_image(party_app_with_db, party, admin_user):
+    channel = create_channel(party.brand_id)
+    editor = admin_user
 
-    def setUp(self):
-        super().setUp()
+    item = create_item(channel.id, 'with-image', editor.id,
+                       image_url_path='breaking.png')
 
-        self.editor = create_user()
+    assert item.image_url == 'http://example.com/brand/news/breaking.png'
 
-        brand = create_brand()
-        self.party = create_party(brand_id=brand.id)
 
-        channel_id = '{}-test'.format(brand.id)
-        self.channel = news_channel_service.create_channel(brand.id, channel_id)
+def test_image_url_without_image(party_app_with_db, party, admin_user):
+    channel = create_channel(party.brand_id)
+    editor = admin_user
 
-    def test_image_url_with_image(self):
-        with current_party_set(self.app, self.party), self.app.app_context():
-            item = create_item(self.channel.id, 'with-image', self.editor.id,
-                               image_url_path='breaking.png')
-            assert item.image_url == 'http://example.com/brand/news/breaking.png'
+    item = create_item(channel.id, 'without-image', editor.id)
 
-    def test_image_url_without_image(self):
-        with current_party_set(self.app, self.party), self.app.app_context():
-            item = create_item(self.channel.id, 'without-image', self.editor.id)
-            assert item.image_url is None
+    assert item.image_url is None
+
+
+@pytest.fixture
+def party():
+    brand = create_brand()
+    return create_party(brand_id=brand.id)
+
+
+def create_channel(brand_id):
+    channel_id = '{}-test'.format(brand_id)
+    return news_channel_service.create_channel(brand_id, channel_id)
 
 
 def create_item(channel_id, slug, editor_id, *, image_url_path=None):
