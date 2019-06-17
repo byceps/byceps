@@ -5,61 +5,64 @@
 
 from datetime import datetime
 
+from byceps.database import db
 from byceps.services.snippet import service as snippet_service
 from byceps.services.snippet.transfer.models import Scope
 
 from testfixtures.snippet import create_current_version_association, \
     create_fragment, create_snippet_version
 
-from tests.base import AbstractAppTestCase
 from tests.helpers import create_brand, create_party, create_user
 
 
-class GetCurrentVersionOfSnippetTestCase(AbstractAppTestCase):
+def test_current_party_is_considered(admin_app_with_db, admin_user):
+    brand = create_brand('lafiesta', 'La Fiesta')
 
-    def setUp(self):
-        super().setUp()
+    party2014 = create_party(brand.id, 'lafiesta-2014', 'La Fiesta 2014')
+    party2015 = create_party(brand.id, 'lafiesta-2015', 'La Fiesta 2015')
 
-        self.brand = create_brand('lafiesta', 'La Fiesta')
+    scope_site2014 = Scope.for_site(party2014.id)
+    scope_site2015 = Scope.for_site(party2015.id)
 
-        party2014 = create_party(self.brand.id, 'lafiesta-2014', 'La Fiesta 2014')
-        party2015 = create_party(self.brand.id, 'lafiesta-2015', 'La Fiesta 2015')
+    creator = admin_user
 
-        self.scope_site2014 = Scope.for_site(party2014.id)
-        self.scope_site2015 = Scope.for_site(party2015.id)
+    fragment_info2014_version = create_fragment_with_version(
+            scope_site2014, 'info', creator.id, '2014-10-23 14:55:00')
+    fragment_info2015_version = create_fragment_with_version(
+            scope_site2015, 'info', creator.id, '2014-10-23 18:21:00')
 
-        self.creator = create_user()
+    actual = snippet_service.find_current_version_of_snippet_with_name(
+        scope_site2014, 'info')
 
-    def test_current_party_is_considered(self):
-        fragment_info2014_version = self.create_fragment_with_version(
-                self.scope_site2014, 'info', '2014-10-23 14:55:00')
-        fragment_info2015_version = self.create_fragment_with_version(
-                self.scope_site2015, 'info', '2014-10-23 18:21:00')
+    assert actual == fragment_info2014_version
 
-        actual = snippet_service.find_current_version_of_snippet_with_name(
-            self.scope_site2014, 'info')
 
-        assert actual == fragment_info2014_version
+def test_unknown_name(admin_app_with_db):
+    brand = create_brand('lafiesta', 'La Fiesta')
 
-    def test_unknown_name(self):
-        actual = snippet_service.find_current_version_of_snippet_with_name(
-            self.scope_site2014, 'totally-unknown-snippet-name')
+    party = create_party(brand.id, 'lafiesta-2014', 'La Fiesta 2014')
 
-        assert actual is None
+    scope = Scope.for_site(party.id)
 
-    # -------------------------------------------------------------------- #
-    # helpers
+    actual = snippet_service.find_current_version_of_snippet_with_name(
+        scope, 'totally-unknown-snippet-name')
 
-    def create_fragment_with_version(self, scope, name, created_at_text):
-        snippet = create_fragment(scope, name)
-        self.db.session.add(snippet)
+    assert actual is None
 
-        created_at = datetime.strptime(created_at_text, '%Y-%m-%d %H:%M:%S')
-        version = create_snippet_version(snippet, self.creator.id, created_at=created_at)
-        self.db.session.add(version)
 
-        current_version_association = create_current_version_association(snippet, version)
-        self.db.session.add(current_version_association)
+# helpers
 
-        self.db.session.commit()
-        return version
+
+def create_fragment_with_version(scope, name, creator_id, created_at_text):
+    snippet = create_fragment(scope, name)
+    db.session.add(snippet)
+
+    created_at = datetime.strptime(created_at_text, '%Y-%m-%d %H:%M:%S')
+    version = create_snippet_version(snippet, creator_id, created_at=created_at)
+    db.session.add(version)
+
+    current_version_association = create_current_version_association(snippet, version)
+    db.session.add(current_version_association)
+
+    db.session.commit()
+    return version
