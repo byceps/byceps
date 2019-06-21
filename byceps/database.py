@@ -8,8 +8,12 @@ Database utilities.
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import Callable, TypeVar
+from typing import Any, Callable, Dict, Iterable, TypeVar
 import uuid
+
+from sqlalchemy.dialects.postgresql import insert
+from sqlalchemy.sql.dml import Insert
+from sqlalchemy.sql.schema import Table
 
 from flask_sqlalchemy import BaseQuery, Pagination, SQLAlchemy
 from sqlalchemy.dialects.postgresql import JSONB, UUID
@@ -69,3 +73,36 @@ def paginate(query: Query, page: int, per_page: int,
 
     # Intentionally pass no query object.
     return Pagination(None, page, per_page, total, items)
+
+
+def upsert(table: Table, identifier: Dict[str, Any],
+           replacement: Dict[str, Any]) -> None:
+    """Insert or update the record identified by `identifier` with value
+    `replacement`.
+    """
+    query = _build_upsert_query(table, identifier, replacement)
+    db.session.execute(query)
+    db.session.commit()
+
+
+def upsert_many(table: Table, identifiers: Iterable[Dict[str, Any]],
+                replacement: Dict[str, Any]) -> None:
+    """Insert or update the record identified by `identifier` with value
+    `replacement`.
+    """
+    for identifier in identifiers:
+        query = _build_upsert_query(table, identifier, replacement)
+        db.session.execute(query)
+    db.session.commit()
+
+
+def _build_upsert_query(table: Table, identifier: Dict[str, Any],
+                        replacement: Dict[str, Any]) -> Insert:
+    values = identifier.copy()
+    values.update(replacement)
+
+    return insert(table) \
+        .values(**values) \
+        .on_conflict_do_update(
+            constraint=table.primary_key,
+            set_=replacement)

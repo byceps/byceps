@@ -9,9 +9,7 @@ byceps.services.board.last_view_service
 from datetime import datetime
 from typing import Optional
 
-from sqlalchemy.dialects.postgresql import insert
-
-from ...database import db
+from ...database import upsert, upsert_many
 from ...typing import UserID
 
 from .models.last_category_view import LastCategoryView
@@ -56,21 +54,15 @@ def mark_category_as_just_viewed(category_id: CategoryID, user_id: UserID
     the current time.
     """
     table = LastCategoryView.__table__
-    now = datetime.now()
+    identifier = {
+        'user_id': user_id,
+        'category_id': category_id,
+    }
+    replacement = {
+        'occurred_at': datetime.now(),
+    }
 
-    # UPSERT
-    query = insert(table) \
-        .values(
-            user_id=user_id,
-            category_id=category_id,
-            occurred_at=now,
-        ) \
-        .on_conflict_do_update(
-            constraint=table.primary_key,
-            set_={'occurred_at': now})
-
-    db.session.execute(query)
-    db.session.commit()
+    upsert(table, identifier, replacement)
 
 
 # -------------------------------------------------------------------- #
@@ -109,21 +101,15 @@ def mark_topic_as_just_viewed(topic_id: TopicID, user_id: UserID) -> None:
     current time.
     """
     table = LastTopicView.__table__
-    now = datetime.now()
+    identifier = {
+        'user_id': user_id,
+        'topic_id': topic_id,
+    }
+    replacement = {
+        'occurred_at': datetime.now(),
+    }
 
-    # UPSERT
-    query = insert(table) \
-        .values(
-            user_id=user_id,
-            topic_id=topic_id,
-            occurred_at=now,
-        ) \
-        .on_conflict_do_update(
-            constraint=table.primary_key,
-            set_={'occurred_at': now})
-
-    db.session.execute(query)
-    db.session.commit()
+    upsert(table, identifier, replacement)
 
 
 def mark_all_topics_in_category_as_viewed(category_id: CategoryID,
@@ -135,20 +121,14 @@ def mark_all_topics_in_category_as_viewed(category_id: CategoryID,
         return
 
     table = LastTopicView.__table__
-    now = datetime.now()
+    replacement = {
+        'occurred_at': datetime.now(),
+    }
 
     for topic_id in topic_ids:
-        # UPSERT
-        query = insert(table) \
-            .values(
-                user_id=user_id,
-                topic_id=topic_id,
-                occurred_at=now,
-            ) \
-            .on_conflict_do_update(
-                constraint=table.primary_key,
-                set_={'occurred_at': now})
+        identifier = {
+            'user_id': user_id,
+            'topic_id': topic_id,
+        }
 
-        db.session.execute(query)
-
-    db.session.commit()
+        upsert(table, identifier, replacement)

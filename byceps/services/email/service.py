@@ -8,9 +8,7 @@ byceps.services.email.service
 
 from typing import List, Optional
 
-from sqlalchemy.dialects.postgresql import insert
-
-from ...database import db
+from ...database import db, upsert
 from ... import email
 from ...typing import BrandID
 from ...util.jobqueue import enqueue
@@ -50,19 +48,15 @@ def set_sender_address_for_brand(brand_id: BrandID, sender_address: str
                                 ) -> None:
     """Set the sender e-mail address for the brand."""
     table = DbEmailConfig.__table__
+    identifier = {
+        'brand_id': brand_id,
+        'name': name,
+    }
+    replacement = {
+        'sender_address': sender_address,
+    }
 
-    # UPSERT
-    query = insert(table) \
-        .values(
-            brand_id=brand_id,
-            sender_address=sender_address
-        ) \
-        .on_conflict_do_update(
-            constraint=table.primary_key,
-            set_={'sender_address': sender_address})
-
-    db.session.execute(query)
-    db.session.commit()
+    upsert(table, identifier, replacement)
 
 
 def enqueue_message(message: Message) -> None:

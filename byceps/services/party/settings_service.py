@@ -8,9 +8,7 @@ byceps.services.party.settings_service
 
 from typing import Optional, Set
 
-from sqlalchemy.dialects.postgresql import insert
-
-from ...database import db
+from ...database import db, upsert
 from ...typing import PartyID
 
 from .models.setting import Setting as DbSetting
@@ -33,20 +31,15 @@ def create_or_update_setting(party_id: PartyID, name: str, value: str
     it already exists or not.
     """
     table = DbSetting.__table__
+    identifier = {
+        'party_id': party_id,
+        'name': name,
+    }
+    replacement = {
+        'value': value,
+    }
 
-    # UPSERT
-    query = insert(table) \
-        .values(
-            party_id=party_id,
-            name=name,
-            value=value
-        ) \
-        .on_conflict_do_update(
-            constraint=table.primary_key,
-            set_={'value': value})
-
-    db.session.execute(query)
-    db.session.commit()
+    upsert(table, identifier, replacement)
 
     return find_setting(party_id, name)
 

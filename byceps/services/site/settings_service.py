@@ -8,9 +8,7 @@ byceps.services.site.settings_service
 
 from typing import List, Optional
 
-from sqlalchemy.dialects.postgresql import insert
-
-from ...database import db
+from ...database import db, upsert
 from ...typing import PartyID
 
 from .models.setting import Setting as DbSetting
@@ -34,20 +32,15 @@ def create_or_update_setting(site_id: SiteID, name: str, value: str
     it already exists or not.
     """
     table = DbSetting.__table__
+    identifier = {
+        'site_id': site_id,
+        'name': name,
+    }
+    replacement = {
+        'value': value,
+    }
 
-    # UPSERT
-    query = insert(table) \
-        .values(
-            site_id=site_id,
-            name=name,
-            value=value
-        ) \
-        .on_conflict_do_update(
-            constraint=table.primary_key,
-            set_={'value': value})
-
-    db.session.execute(query)
-    db.session.commit()
+    upsert(table, identifier, replacement)
 
     return find_setting(site_id, name)
 
