@@ -18,6 +18,10 @@ onDomReady(function() {
         // Redirect to referrer if available.
         var referrer = document.createElement('a');
         referrer.href = document.referrer;
+        // Exclude selected referrer paths.
+        if (/^\/(authentication|consent)\//.test(referrer.pathname)) {
+          referrer.pathname = '/';
+        }
         location.href = (referrer.hostname == location.hostname) ? referrer.pathname : '/';
       },
       error: function() {
