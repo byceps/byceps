@@ -75,6 +75,7 @@ def _get_blueprints(app):
         yield from [
             ('attendance',              '/attendance'               ),
             ('board',                   '/board'                    ),
+            ('consent',                 '/consent'                  ),
             ('news',                    '/news'                     ),
             ('newsletter',              '/newsletter'               ),
             ('orga_team',               '/orgas'                    ),

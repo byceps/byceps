@@ -1,6 +1,6 @@
 """
-byceps.blueprints.terms.forms
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.consent.forms
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2019 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.

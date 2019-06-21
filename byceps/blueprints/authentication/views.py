@@ -109,7 +109,7 @@ def login():
             verification_token = verification_token_service \
                 .find_or_create_for_terms_consent(user.id)
 
-            consent_form_url = url_for('terms.consent_form',
+            consent_form_url = url_for('consent.consent_form',
                                        token=verification_token.token)
 
             return [('Location', consent_form_url)]
