@@ -8,7 +8,8 @@ byceps.blueprints.authentication.views
 
 from flask import abort, current_app, g, request, url_for
 
-from ...config import get_site_mode, get_user_registration_enabled
+from ...config import ConfigurationError, get_site_mode, \
+    get_user_registration_enabled
 from ...services.authentication.exceptions import AuthenticationFailed
 from ...services.authentication import service as authentication_service
 from ...services.authentication.password import service as password_service
@@ -28,6 +29,8 @@ from ...util.framework.templating import templated
 from ...util.views import redirect_to, respond_no_content
 
 from ..core_admin.authorization import AdminPermission
+from ..user.views import _find_privacy_policy_consent_subject_id, \
+    _is_privacy_policy_consent_required
 
 from .forms import LoginForm, RequestPasswordResetForm, ResetPasswordForm, \
     UpdatePasswordForm
@@ -100,17 +103,15 @@ def login():
             # to enter the admin area.
             abort(403)
 
-    if not in_admin_mode and \
-            terms_consent_service.is_consent_required_for_brand(g.brand_id):
-        terms_version = _get_current_terms_version(g.brand_id)
-
-        if not consent_service \
-                .has_user_consented_to_subject(
-                    user.id, terms_version.consent_subject_id):
+    if not in_admin_mode:
+        required_consent_subject_ids = _get_required_consent_subject_ids()
+        if _is_consent_required(user.id, required_consent_subject_ids):
             verification_token = verification_token_service \
                 .find_or_create_for_terms_consent(user.id)
+
             consent_form_url = url_for('terms.consent_form',
                                        token=verification_token.token)
+
             return [('Location', consent_form_url)]
 
     # Authorization succeeded.
@@ -130,6 +131,34 @@ def login():
 def _is_login_allowed():
     value = site_settings_service.find_setting_value(g.site_id, 'login_enabled')
     return value != 'false'
+
+
+def _get_required_consent_subject_ids():
+    subject_ids = []
+
+    if terms_consent_service.is_consent_required_for_brand(g.brand_id):
+        terms_version = _get_current_terms_version(g.brand_id)
+        subject_ids.append(terms_version.consent_subject_id)
+
+    if _is_privacy_policy_consent_required():
+        privacy_policy_consent_subject_id \
+            = _find_privacy_policy_consent_subject_id()
+
+        if not privacy_policy_consent_subject_id:
+            raise ConfigurationError(
+                'No privacy policy consent subject ID configured for brand.')
+
+        subject_ids.append(privacy_policy_consent_subject_id)
+
+    return subject_ids
+
+
+def _is_consent_required(user_id, subject_ids):
+    for subject_id in subject_ids:
+        if not consent_service.has_user_consented_to_subject(user_id, subject_id):
+            return True
+
+    return False
 
 
 def _get_current_terms_version(brand_id):
