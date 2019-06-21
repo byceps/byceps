@@ -9,6 +9,8 @@ byceps.services.board.last_view_service
 from datetime import datetime
 from typing import Optional
 
+from sqlalchemy.dialects.postgresql import insert
+
 from ...database import db
 from ...typing import UserID
 
@@ -53,16 +55,21 @@ def mark_category_as_just_viewed(category_id: CategoryID, user_id: UserID
     """Mark the category as last viewed by the user (if logged in) at
     the current time.
     """
+    table = LastCategoryView.__table__
     now = datetime.now()
 
-    last_view = find_last_category_view(user_id, category_id)
+    # UPSERT
+    query = insert(table) \
+        .values(
+            user_id=user_id,
+            category_id=category_id,
+            occurred_at=now,
+        ) \
+        .on_conflict_do_update(
+            constraint=table.primary_key,
+            set_={'occurred_at': now})
 
-    if last_view is not None:
-        last_view.occurred_at = now
-    else:
-        last_view = LastCategoryView(user_id, category_id, now)
-        db.session.add(last_view)
-
+    db.session.execute(query)
     db.session.commit()
 
 
@@ -101,20 +108,22 @@ def mark_topic_as_just_viewed(topic_id: TopicID, user_id: UserID) -> None:
     """Mark the topic as last viewed by the user (if logged in) at the
     current time.
     """
+    table = LastTopicView.__table__
     now = datetime.now()
 
-    last_view = find_last_topic_view(user_id, topic_id)
+    # UPSERT
+    query = insert(table) \
+        .values(
+            user_id=user_id,
+            topic_id=topic_id,
+            occurred_at=now,
+        ) \
+        .on_conflict_do_update(
+            constraint=table.primary_key,
+            set_={'occurred_at': now})
 
-    if last_view is not None:
-        last_view.occurred_at = now
-    else:
-        last_view = LastTopicView(user_id, topic_id, now)
-        db.session.add(last_view)
-
+    db.session.execute(query)
     db.session.commit()
-
-
-# -------------------------------------------------------------------- #
 
 
 def mark_all_topics_in_category_as_viewed(category_id: CategoryID,
@@ -125,23 +134,21 @@ def mark_all_topics_in_category_as_viewed(category_id: CategoryID,
     if not topic_ids:
         return
 
+    table = LastTopicView.__table__
     now = datetime.now()
 
-    # Fetch existing last views.
-    last_views = LastTopicView.query \
-        .filter_by(user_id=user_id) \
-        .filter(LastTopicView.topic_id.in_(topic_ids)) \
-        .all()
+    for topic_id in topic_ids:
+        # UPSERT
+        query = insert(table) \
+            .values(
+                user_id=user_id,
+                topic_id=topic_id,
+                occurred_at=now,
+            ) \
+            .on_conflict_do_update(
+                constraint=table.primary_key,
+                set_={'occurred_at': now})
 
-    # Update existing last views.
-    for last_view in last_views:
-        last_view.occurred_at = now
-
-    # Create last views for remaining topics.
-    last_view_topic_ids = {last_view.topic_id for last_view in last_views}
-    remaining_topic_ids = topic_ids - last_view_topic_ids
-    for topic_id in remaining_topic_ids:
-        last_view = LastTopicView(user_id, topic_id, now)
-        db.session.add(last_view)
+        db.session.execute(query)
 
     db.session.commit()
