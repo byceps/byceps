@@ -19,6 +19,8 @@ from ...util.framework.flash import flash_error, flash_success
 from ...util.framework.templating import templated
 from ...util.views import redirect_to
 
+from ..authentication.views import _get_required_consent_subject_ids
+
 from .forms import create_consent_form, get_subject_field_name
 
 
@@ -96,8 +98,27 @@ def consent(token):
 
 
 def _get_unconsented_subjects_for_user(user_id):
-    terms_version = terms_version_service.find_current_version(g.brand_id)
-    return [terms_version.consent_subject]
+    required_consent_subject_ids = _get_required_consent_subject_ids()
+
+    unconsented_subject_ids = _get_unconsented_subject_ids(
+        user_id, required_consent_subject_ids)
+
+    return _get_subjects(unconsented_subject_ids)
+
+
+def _get_unconsented_subject_ids(user_id, required_subject_ids):
+    subject_ids = []
+
+    for subject_id in required_subject_ids:
+        if not consent_service.has_user_consented_to_subject(user_id, subject_id):
+            subject_ids.append(subject_id)
+
+    return subject_ids
+
+
+def _get_subjects(subject_ids):
+    return [subject_service.find_subject(subject_id)
+            for subject_id in subject_ids]
 
 
 def _get_verification_token_or_404(token_str):
