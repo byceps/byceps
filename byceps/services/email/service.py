@@ -50,7 +50,7 @@ def set_sender_address_for_brand(brand_id: BrandID, sender_address: str
     table = DbEmailConfig.__table__
     identifier = {
         'brand_id': brand_id,
-        'name': name,
+        'sender_address': sender_address,
     }
     replacement = {
         'sender_address': sender_address,
