@@ -25,6 +25,12 @@
         required_permission=RolePermission.view,
         icon='permission')
       .add_item(
+        url_for('consent_admin.index'),
+        'Zustimmungen',
+        id='consent_admin',
+        required_permission=ConsentPermission.administrate,
+        icon='legal')
+      .add_item(
         url_for('user_badge_admin.index'),
         'Abzeichen',
         id='user_badge_admin',

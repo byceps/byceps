@@ -98,6 +98,7 @@ def _get_blueprints(app):
             ('authorization_admin',     '/admin/authorization'      ),
             ('board_admin',             '/admin/board'              ),
             ('brand_admin',             '/admin/brands'             ),
+            ('consent_admin',           '/admin/consent'            ),
             ('core_admin',              '/admin/core'               ),
             ('news_admin',              '/admin/news'               ),
             ('newsletter_admin',        '/admin/newsletter'         ),

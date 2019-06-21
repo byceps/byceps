@@ -6,10 +6,11 @@ byceps.services.consent.subject_service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import Optional
+from typing import Dict, Optional
 
 from ...database import db
 
+from .models.consent import Consent as DbConsent
 from .models.subject import Subject as DbSubject
 from .transfer.models import Subject, SubjectID
 
@@ -32,6 +33,21 @@ def find_subject(subject_id: SubjectID) -> Optional[Subject]:
         return None
 
     return _db_entity_to_subject(subject)
+
+
+def get_subjects_with_consent_counts() -> Dict[Subject, int]:
+    """Return all subjects."""
+    rows = db.session \
+        .query(
+            DbSubject,
+            db.func.count(DbConsent.user_id)
+        ) \
+        .outerjoin(DbConsent) \
+        .group_by(DbSubject.id) \
+        .all()
+
+    return {_db_entity_to_subject(subject): consent_count
+            for subject, consent_count in rows}
 
 
 def _db_entity_to_subject(subject: DbSubject) -> Subject:

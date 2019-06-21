@@ -85,6 +85,10 @@
       "title": "Marken anzeigen"
     },
     {
+      "id": "consent.administrate",
+      "title": "Zustimmungen verwalten"
+    },
+    {
       "id": "news_channel.create",
       "title": "News-Kan\u00e4le erstellen"
     },
@@ -355,6 +359,13 @@
       ],
       "id": "checkin_boss",
       "title": "Abendkasse und Nutzerzuweisung"
+    },
+    {
+      "assigned_permissions": [
+        "consent.administrate"
+      ],
+      "id": "consent_admin",
+      "title": "Zustimmungen verwalten"
     },
     {
       "assigned_permissions": [
