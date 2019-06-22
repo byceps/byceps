@@ -7,17 +7,18 @@
 
 {% block body %}
 
-  <h1>Bereiche {{ render_extra_in_heading(areas.total) }}</h1>
+  <h1>Bereiche {{ render_extra_in_heading(areas_with_occupied_seat_counts.total) }}</h1>
   <table class="index wide">
     <thead>
       <tr>
         <th>Titel<br>Slug</th>
         <th>Hintergrundbild<br>Größe</th>
-        <th class="centered">Plätze</th>
+        <th class="number">Plätze<br>belegt</th>
+        <th class="number">Plätze<br>verfügbar</th>
       </tr>
     </thead>
     <tbody>
-      {%- for area in areas.items %}
+      {%- for area, occupied_seat_count in areas_with_occupied_seat_counts.items|sort(attribute='0.title') %}
       <tr>
         <td>
           {{ area.title }}<br>
@@ -31,13 +32,14 @@
           {{ 'nicht angegeben'|dim }}
           {%- endif %}
         </td>
-        <td class="centered bignumber">{{ seat_total_per_area[area.id] }}</td>
+        <td class="bignumber number">{{ occupied_seat_count }}</td>
+        <td class="bignumber number">{{ seat_total_per_area[area.id] }}</td>
       </tr>
       {%- endfor %}
       <tr>
     </tbody>
   </table>
 
-{{ render_pagination_nav(areas, '.index_for_party', {'party_id': party.id}) }}
+{{ render_pagination_nav(areas_with_occupied_seat_counts, '.index_for_party', {'party_id': party.id}) }}
 
 {%- endblock %}
