@@ -85,7 +85,7 @@ def login():
 
     form = LoginForm(request.form)
 
-    screen_name = form.screen_name.data
+    screen_name = form.screen_name.data.strip()
     password = form.password.data
     permanent = form.permanent.data
     if not all([screen_name, password]):
