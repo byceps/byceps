@@ -7,11 +7,10 @@ byceps.blueprints.attendance.views
 
 from flask import g, request
 
+from ...services.attendance import service as attendance_service
 from ...services.ticketing import ticket_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.templating import templated
-
-from . import service
 
 
 blueprint = create_blueprint('attendance', __name__)
@@ -30,7 +29,7 @@ def attendees(page):
 
     tickets = pagination.items
 
-    pagination.items = service.get_attendees(tickets)
+    pagination.items = attendance_service.get_attendees(tickets)
 
     return {
         'search_term': search_term,

@@ -1,11 +1,10 @@
 """
-byceps.blueprints.attendance.service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.attendance.service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2019 Jochen Kupperschmidt
 """
 
-from collections import namedtuple
 from typing import Dict, List, Sequence
 
 from ...services.seating.models.seat import Seat
@@ -16,8 +15,7 @@ from ...services.user.models.user import User
 from ...services.user import service as user_service
 from ...typing import UserID
 
-
-Attendee = namedtuple('Attendee', ['user', 'seat'])
+from .transfer.models import Attendee
 
 
 def get_attendees(tickets: Sequence[Ticket]) -> List[Attendee]:
@@ -25,10 +23,10 @@ def get_attendees(tickets: Sequence[Ticket]) -> List[Attendee]:
     seats_by_id = _get_seats_by_id(tickets)
 
     def to_attendee(ticket):
-        return Attendee(
-            users_by_id[ticket.used_by_id],
-            seats_by_id.get(ticket.occupied_seat_id),
-        )
+        user = users_by_id[ticket.used_by_id]
+        seat = seats_by_id.get(ticket.occupied_seat_id)
+
+        return Attendee(user, seat)
 
     return [to_attendee(t) for t in tickets]
 
