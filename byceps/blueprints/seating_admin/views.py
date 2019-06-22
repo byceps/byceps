@@ -78,11 +78,12 @@ def seat_category_index(party_id):
     """List seat categories for that party."""
     party = _get_party_or_404(party_id)
 
-    categories = ticketing_category_service.get_categories_for_party(party.id)
+    categories_with_ticket_counts = list(ticketing_category_service \
+        .get_categories_with_ticket_counts_for_party(party.id).items())
 
     return {
         'party': party,
-        'categories': categories,
+        'categories_with_ticket_counts': categories_with_ticket_counts,
     }
 
 

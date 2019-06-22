@@ -6,14 +6,30 @@
 
 {% block body %}
 
-  <h1>Ticket-Kategorien {{ render_extra_in_heading(categories|length) }}</h1>
-  <ol class="index">
-    {%- for category in categories %}
-    <li>
-      <strong>{{ category.title }}</strong><br>
-      {{ category.id }}
-    </li>
-    {%- endfor %}
-  </ol>
+  <h1>Ticket-Kategorien {{ render_extra_in_heading(categories_with_ticket_counts|length) }}</h1>
+
+  {%- if categories_with_ticket_counts %}
+  <table class="index wide">
+    <thead>
+      <tr>
+        <th>Titel<br>ID</th>
+        <th class="number">Tickets<sup>*</sup></th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for category, ticket_count in categories_with_ticket_counts|sort(attribute='0.title') %}
+        <tr>
+          <td><strong>{{ category.title }}</strong><br><span class="dimmed">{{ category.id }}</span></td>
+          <td class="bignumber number">{{ ticket_count }}</td>
+        </tr>
+      {%- endfor %}
+    </tbody>
+  </table>
+  <small>
+    <p style="margin-top: 1.5rem;"><sup>*)</sup> erstellte, nicht widerrufene Tickets</p>
+  </small>
+  {%- else %}
+  <p class="dimmed">Es sind keine Ticket-Kategorien für diese Party definiert.</p>
+  {%- endif %}
 
 {%- endblock %}
