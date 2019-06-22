@@ -239,8 +239,7 @@ def get_ticket_count_by_party_id() -> Dict[PartyID, int]:
             db.func.count(DbTicket.id)
         ) \
         .join(DbCategory) \
-        .join(DbParty) \
-        .filter(DbParty.id == party.id) \
+        .filter(DbCategory.party_id == party.id) \
         .filter(DbTicket.revoked == False) \
         .subquery() \
         .as_scalar()
