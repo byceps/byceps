@@ -16,3 +16,4 @@ from ....services.user.models.user import User
 class Attendee:
     user = attrib(type=User)
     seat = attrib(type=Seat)
+    checked_in = attrib(type=bool)

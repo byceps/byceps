@@ -25,8 +25,9 @@ def get_attendees(tickets: Sequence[Ticket]) -> List[Attendee]:
     def to_attendee(ticket):
         user = users_by_id[ticket.used_by_id]
         seat = seats_by_id.get(ticket.occupied_seat_id)
+        checked_in = ticket.user_checked_in
 
-        return Attendee(user, seat)
+        return Attendee(user, seat, checked_in)
 
     return [to_attendee(t) for t in tickets]
 

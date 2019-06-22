@@ -1,5 +1,6 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/icons.html' import render_icon %}
+{% from 'macros/misc.html' import render_tag %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
 {% from 'macros/seating.html' import render_seat_link %}
 {% from 'macros/user.html' import render_user_link %}
@@ -59,6 +60,7 @@
       <tr>
         <th>Benutzer</th>
         <th>Sitzplatz</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -71,6 +73,7 @@
           </div>
         </td>
         <td>{{ render_seat_link(attendee.seat.area, attendee.seat) if attendee.seat else 'nicht ausgewählt'|dim }}</td>
+        <td>{% if attendee.checked_in %}{{ render_tag('eingecheckt') }}{% endif %}</td>
       </tr>
       {%- endfor %}
     </tbody>
