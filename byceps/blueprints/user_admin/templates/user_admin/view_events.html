@@ -85,6 +85,15 @@
             <div style="margin-top: 0.5rem;">Begründung: <em>{{ event.data.reason }}</em></div>
             {%- endif %}
           {%- endset %}
+        {%- elif event.event == 'user-email-address-changed' %}
+          {%- set icon_name = 'user' %}
+          {%- set body %}
+            <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
+            hat die E-Mail-Adresse von &quot;{{ event.data.old_email_address }}&quot; in &quot;{{ event.data.new_email_address }}&quot; geändert.
+            {%- if 'reason' in event.data %}
+            <div style="margin-top: 0.5rem;">Begründung: <em>{{ event.data.reason }}</em></div>
+            {%- endif %}
+          {%- endset %}
         {%- elif event.event == 'email-address-confirmed' %}
           {%- set icon_name = 'email' %}
           {%- set body %}
