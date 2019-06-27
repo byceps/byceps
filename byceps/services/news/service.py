@@ -158,7 +158,7 @@ def get_item_count_by_brand_id() -> Dict[BrandID, int]:
             DbBrand.id,
             db.func.count(DbItem.id)
         ) \
-        .outerjoin(DbChannel) \
+        .outerjoin(DbChannel, DbChannel.brand_id == DbBrand.id) \
         .outerjoin(DbItem) \
         .group_by(DbBrand.id) \
         .all()
