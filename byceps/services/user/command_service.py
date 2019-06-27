@@ -117,6 +117,32 @@ def change_screen_name(user_id: UserID, new_screen_name: str,
     db.session.commit()
 
 
+def change_email_address(user_id: UserID, new_email_address: str,
+                         initiator_id: UserID, *, reason: Optional[str]=None
+                        ) -> None:
+    """Change the user's e-mail address."""
+    user = _get_user(user_id)
+
+    old_email_address = user.email_address
+
+    user.email_address = new_email_address
+    user.email_address_verified = False
+
+    event_data = {
+        'old_email_address': old_email_address,
+        'new_email_address': new_email_address,
+        'initiator_id': str(initiator_id),
+    }
+    if reason:
+        event_data['reason'] = reason
+
+    event = event_service.build_event('user-email-address-changed', user.id,
+                                      event_data)
+    db.session.add(event)
+
+    db.session.commit()
+
+
 def update_user_details(user_id: UserID, first_names: str, last_name: str,
                         date_of_birth: date, country: str, zip_code, city: str,
                         street: str, phone_number: str) -> None:
