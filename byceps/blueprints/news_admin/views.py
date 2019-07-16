@@ -252,7 +252,7 @@ def item_update(item_id):
     body = form.body.data.strip()
     image_url_path = form.image_url_path.data.strip()
 
-    news_service.update_item(item, creator.id, title, body,
+    news_service.update_item(item.id, creator.id, title, body,
                              image_url_path=image_url_path)
 
     flash_success('Die News "{}" wurde aktualisiert.', item.title)

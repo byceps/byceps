@@ -44,11 +44,15 @@ def create_item(brand_id: BrandID, slug: str, creator_id: UserID, title: str,
     return item
 
 
-def update_item(item: DbItem, creator_id: UserID, title: str, body: str, *,
+def update_item(item_id: ItemID, creator_id: UserID, title: str, body: str, *,
                 image_url_path: Optional[str]=None) -> None:
     """Update a news item by creating a new version of it and setting
     the new version as the current one.
     """
+    item = find_item(item_id)
+    if item is None:
+        raise ValueError('Unknown news item ID "{}".'.format(item_id))
+
     version = _create_version(item, creator_id, title, body,
                               image_url_path=image_url_path)
     db.session.add(version)
