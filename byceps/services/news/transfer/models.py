@@ -31,6 +31,7 @@ ImageID = NewType('ImageID', UUID)
 class Channel:
     id = attrib(type=ChannelID)
     brand_id = attrib(type=BrandID)
+    url_prefix = attrib(type=str)
 
 
 @attrs(frozen=True, slots=True)

@@ -82,8 +82,9 @@ def channel_create(brand_id):
         return channel_create_form(brand.id, form)
 
     channel_id = form.channel_id.data.strip().lower()
+    url_prefix = form.url_prefix.data.strip()
 
-    channel = news_channel_service.create_channel(brand.id, channel_id)
+    channel = news_channel_service.create_channel(brand.id, channel_id, url_prefix)
 
     flash_success('Der News-Kanal mit der ID "{}" wurde angelegt.', channel.id)
     return redirect_to('.channel_view', channel_id=channel.id)

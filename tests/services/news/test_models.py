@@ -38,7 +38,8 @@ def party():
 
 def create_channel(brand_id):
     channel_id = '{}-test'.format(brand_id)
-    return news_channel_service.create_channel(brand_id, channel_id)
+    url_prefix = 'https://example.com/news/'
+    return news_channel_service.create_channel(brand_id, channel_id, url_prefix)
 
 
 def create_item(channel_id, slug, editor_id, *, image_url_path=None):

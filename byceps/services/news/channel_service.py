@@ -17,13 +17,14 @@ from .models.channel import Channel as DbChannel
 from .transfer.models import Channel, ChannelID
 
 
-def create_channel(brand_id: BrandID, channel_id: ChannelID) -> Channel:
+def create_channel(brand_id: BrandID, channel_id: ChannelID, url_prefix: str
+                  ) -> Channel:
     """Create a channel for that brand."""
     brand = brand_service.find_brand(brand_id)
     if brand is None:
         raise ValueError('Unknown brand ID "{}"'.format(brand_id))
 
-    channel = DbChannel(channel_id, brand.id)
+    channel = DbChannel(channel_id, brand.id, url_prefix)
 
     db.session.add(channel)
     db.session.commit()
@@ -55,4 +56,5 @@ def _db_entity_to_channel(channel: DbChannel) -> Channel:
     return Channel(
         channel.id,
         channel.brand_id,
+        channel.url_prefix,
     )

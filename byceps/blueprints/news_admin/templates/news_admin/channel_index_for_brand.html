@@ -24,12 +24,14 @@
     <thead>
       <tr>
         <th>ID</th>
+        <th>URL-Präfix</th>
       </tr>
     </thead>
     <tbody>
     {%- for channel in channels|sort(attribute='id') %}
       <tr>
         <td><a href="{{ url_for('.channel_view', channel_id=channel.id) }}"><strong>{{ channel.id }}</strong></a></td>
+        <td class="monospace">{{ channel.url_prefix }}</td>
       </tr>
     {%- else %}
       <tr>

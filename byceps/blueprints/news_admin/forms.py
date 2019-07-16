@@ -19,6 +19,7 @@ SLUG_REGEX = re.compile('^[a-z0-9-]+$')
 
 class ChannelCreateForm(LocalizedForm):
     channel_id = StringField('ID', validators=[Length(min=1, max=40)])
+    url_prefix = StringField('URL-Präfix', [InputRequired(), Length(max=80)])
 
 
 class ItemCreateForm(LocalizedForm):

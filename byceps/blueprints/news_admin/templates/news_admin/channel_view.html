@@ -19,6 +19,13 @@
   </nav>
   <h1>Kanal &quot;{{ channel.id }}&quot;</h1>
 
+  <table class="index">
+    <tr>
+      <th>URL-Präfix</th>
+      <td>{{ channel.url_prefix }}</td>
+    </tr>
+  </table>
+
   <h2>Newsposts {{ render_extra_in_heading(items.total) }}</h2>
 
   {%- if g.current_user.has_permission(NewsItemPermission.create) %}
