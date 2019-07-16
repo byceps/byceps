@@ -1,0 +1,38 @@
+{% extends 'layout/base.html' %}
+{% from 'macros/misc.html' import render_notification %}
+{% set current_page = 'shop_order' %}
+{% set title = 'Bestellen' %}
+
+{% block body %}
+
+  <h1>{{ title }}</h1>
+
+{{ render_notification('info', 'info', '<a href="%s">Melde dich an</a>, um bestellen zu können.'|format(url_for('authentication.login_form'))|safe) }}
+
+{{ render_snippet('shop_order_intro', ignore_if_unknown=True)|safe }}
+
+  <h2>Artikel</h2>
+  <table class="index wide">
+    <thead>
+      <tr>
+        <th>Beschreibung</th>
+        <th class="number" style="width: 15%;">Stückpreis</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for item in article_compilation %}
+        {%- with is_available = (item.article.quantity > 0) %}
+      <tr{% if not is_available %} class="dimmed"{% endif %}>
+        <td><strong>{{ item.article.description }}</strong>
+          {%- if not is_available %}
+          <br><em>derzeit nicht verfügbar</em>
+          {%- endif -%}
+        </td>
+        <td class="number">{{ item.article.price|format_euro_amount }}</td>
+      </tr>
+        {%- endwith %}
+      {%- endfor %}
+    </tbody>
+  </table>
+
+{%- endblock %}

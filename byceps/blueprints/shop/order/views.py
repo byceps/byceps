@@ -31,7 +31,6 @@ blueprint = create_blueprint('shop_order', __name__)
 
 
 @blueprint.route('/order')
-@login_required
 @templated
 def order_form(erroneous_form=None):
     """Show a form to order articles."""
@@ -48,6 +47,10 @@ def order_form(erroneous_form=None):
         flash_error('Es sind keine Artikel verfügbar.')
         return {'article_compilation': None}
 
+    is_logged_in = g.current_user.is_active
+    if not is_logged_in:
+        return list_articles(article_compilation)
+
     user = user_service.find_user_with_details(g.current_user.id)
 
     if erroneous_form:
@@ -61,6 +64,15 @@ def order_form(erroneous_form=None):
     return {
         'form': form,
         'country_names': country_names,
+        'article_compilation': article_compilation,
+    }
+
+
+# No route registered. Intended to be called from another view function.
+@templated
+def list_articles(article_compilation):
+    """List articles for anonymous users to view."""
+    return {
         'article_compilation': article_compilation,
     }
 
