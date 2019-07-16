@@ -15,10 +15,11 @@
     <ol>
       <li>News</li>
       <li><a href="{{ url_for('.channel_index_for_brand', brand_id=brand.id) }}">Marke {{ brand.title }}</a></li>
-      <li>Kanal {{ channel.id }}</li>
     </ol>
   </nav>
-  <h1>Newsposts {{ render_extra_in_heading(items.total) }}</h1>
+  <h1>Kanal &quot;{{ channel.id }}&quot;</h1>
+
+  <h2>Newsposts {{ render_extra_in_heading(items.total) }}</h2>
 
   {%- if g.current_user.has_permission(NewsItemPermission.create) %}
   <div class="button-row">
