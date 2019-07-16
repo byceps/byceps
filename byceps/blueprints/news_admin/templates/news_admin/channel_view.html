@@ -14,7 +14,7 @@
   <nav class="breadcrumbs">
     <ol>
       <li>News</li>
-      <li>Marke {{ brand.title }}</li>
+      <li><a href="{{ url_for('.channel_index_for_brand', brand_id=brand.id) }}">Marke {{ brand.title }}</a></li>
       <li>Kanal {{ channel.id }}</li>
     </ol>
   </nav>
