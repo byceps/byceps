@@ -17,7 +17,7 @@ from ....services.shop.order.transfer.models import PaymentMethod
 from ....services.shop.shop import service as shop_service
 from ....services.user import service as user_service
 from ....util.framework.blueprint import create_blueprint
-from ....util.framework.flash import flash_error, flash_success
+from ....util.framework.flash import flash_error, flash_notice, flash_success
 from ....util.framework.templating import templated
 from ....util.views import redirect_to
 
@@ -37,7 +37,7 @@ def order_form(erroneous_form=None):
     shop = _get_shop_or_404(g.party_id)
 
     if shop.closed:
-        flash_error('Der Shop ist derzeit geschlossen.')
+        flash_notice('Der Shop ist derzeit geschlossen.')
         return {'article_compilation': None}
 
     article_compilation = article_service \
@@ -84,7 +84,7 @@ def order():
     shop = _get_shop_or_404(g.party_id)
 
     if shop.closed:
-        flash_error('Der Shop ist derzeit geschlossen.')
+        flash_notice('Der Shop ist derzeit geschlossen.')
         return order_form()
 
     article_compilation = article_service \
@@ -129,7 +129,7 @@ def order_single_form(article_id, erroneous_form=None):
     shop = _get_shop_or_404(g.party_id)
 
     if shop.closed:
-        flash_error('Der Shop ist derzeit geschlossen.')
+        flash_notice('Der Shop ist derzeit geschlossen.')
         return {
             'form': form,
             'article': None,
@@ -182,7 +182,7 @@ def order_single(article_id):
     shop = _get_shop_or_404(g.party_id)
 
     if shop.closed:
-        flash_error('Der Shop ist derzeit geschlossen.')
+        flash_notice('Der Shop ist derzeit geschlossen.')
         return order_single_form(article.id)
 
     if article.not_directly_orderable:
