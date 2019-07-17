@@ -53,7 +53,7 @@ clone the Git repository from GitHub:
 
 .. code-block:: sh
 
-    $ git clone https://github.com/homeworkprod/byceps.git
+    $ git clone https://github.com/byceps/byceps.git
 
 A new directory, ``byceps``, should have been created.
 
