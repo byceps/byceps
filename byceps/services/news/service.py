@@ -26,7 +26,7 @@ from .transfer.models import ChannelID, Item, ItemID, ItemVersionID
 
 
 def create_item(brand_id: BrandID, slug: str, creator_id: UserID, title: str,
-                body: str, *, image_url_path: Optional[str]=None) -> DbItem:
+                body: str, *, image_url_path: Optional[str]=None) -> Item:
     """Create a news item, a version, and set the version as the item's
     current one.
     """
@@ -42,7 +42,7 @@ def create_item(brand_id: BrandID, slug: str, creator_id: UserID, title: str,
 
     db.session.commit()
 
-    return item
+    return _db_entity_to_item(item)
 
 
 def update_item(item_id: ItemID, creator_id: UserID, title: str, body: str, *,
