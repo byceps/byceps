@@ -50,9 +50,7 @@ def update_item(item_id: ItemID, creator_id: UserID, title: str, body: str, *,
     """Update a news item by creating a new version of it and setting
     the new version as the current one.
     """
-    item = _find_db_item(item_id)
-    if item is None:
-        raise ValueError('Unknown news item ID "{}".'.format(item_id))
+    item = _get_db_item(item_id)
 
     version = _create_version(item, creator_id, title, body,
                               image_url_path=image_url_path)
@@ -75,9 +73,7 @@ def _create_version(item: DbItem, creator_id: UserID, title: str, body: str, *,
 
 def publish_item(item_id: ItemID) -> None:
     """Publish a news item."""
-    item = _find_db_item(item_id)
-    if item is None:
-        raise ValueError('Unknown news item ID "{}".'.format(item_id))
+    item = _get_db_item(item_id)
 
     item.published_at = datetime.utcnow()
     db.session.commit()
@@ -98,6 +94,16 @@ def _find_db_item(item_id: ItemID) -> Optional[DbItem]:
     return DbItem.query \
         .with_channel() \
         .get(item_id)
+
+
+def _get_db_item(item_id: ItemID) -> DbItem:
+    """Return the item with that id, or raise an exception."""
+    item = _find_db_item(item_id)
+
+    if item is None:
+        raise ValueError('Unknown news item ID "{}".'.format(item_id))
+
+    return item
 
 
 def find_aggregated_item_by_slug(channel_id: ChannelID, slug: str,
@@ -159,9 +165,7 @@ def get_item_versions(item_id: ItemID) -> Sequence[DbItemVersion]:
 
 def get_current_item_version(item_id: ItemID) -> DbItemVersion:
     """Return the item's current version."""
-    item = _find_db_item(item_id)
-    if item is None:
-        raise ValueError('Unknown news item ID "{}".'.format(item_id))
+    item = _get_db_item(item_id)
 
     return item.current_version
 
