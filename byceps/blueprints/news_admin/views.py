@@ -229,8 +229,10 @@ def item_update_form(item_id, erroneous_form=None):
     """Show form to update a news item."""
     item = _get_item_or_404(item_id)
 
+    current_version = news_service.get_current_item_version(item.id)
+
     form = erroneous_form if erroneous_form \
-            else ItemUpdateForm(obj=item.current_version, slug=item.slug)
+            else ItemUpdateForm(obj=current_version, slug=item.slug)
 
     return {
         'item': item,

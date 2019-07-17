@@ -12,7 +12,7 @@
     <ol>
       <li>News</li>
       <li>Marke {{ brand.title }}</li>
-      <li>Kanal <a href="{{ url_for('.channel_view', channel_id=item.channel_id) }}">{{ item.channel_id }}</a></li>
+      <li>Kanal <a href="{{ url_for('.channel_view', channel_id=item.channel.id) }}">{{ item.channel.id }}</a></li>
     </ol>
   </nav>
   <h1>{{ render_icon('history') }} {{ title }}</h1>
