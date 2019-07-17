@@ -53,7 +53,8 @@ def get_snippet_context(version):
     }
 
 
-def render_snippet_as_partial(name, *, scope=None, ignore_if_unknown=False):
+def render_snippet_as_partial(name, *, scope=None, ignore_if_unknown=False,
+                              context=None):
     """Render the latest version of the snippet with the given name and
     return the result.
     """
@@ -69,12 +70,19 @@ def render_snippet_as_partial(name, *, scope=None, ignore_if_unknown=False):
         else:
             raise SnippetNotFound(scope, name)
 
-    return _render_template(current_version.body)
+    if context is None:
+        context = {}
+
+    return _render_template(current_version.body, context=context)
 
 
-def _render_template(source):
+def _render_template(source, *, context=None):
     template = _load_template_with_globals(source)
-    return template.render()
+
+    if context is None:
+        context = {}
+
+    return template.render(**context)
 
 
 def _load_template_with_globals(source):
