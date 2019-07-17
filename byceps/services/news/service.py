@@ -176,7 +176,7 @@ def get_item_count_by_brand_id() -> Dict[BrandID, int]:
 def _db_entity_to_item(item: DbItem) -> Item:
     channel = _db_entity_to_channel(item.channel)
     body = item.current_version.render_body()
-    external_url = url_for('news.view', slug=item.slug, _external=True)
+    external_url = item.channel.url_prefix + item.slug
     image_url = _assemble_image_url(item)
     images = [image_service._db_entity_to_image(image) for image in item.images]
 
