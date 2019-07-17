@@ -37,6 +37,7 @@ class Channel:
 @attrs(frozen=True, slots=True)
 class Item:
     id = attrib(type=ItemID)
+    channel = attrib(type=Channel)
     slug = attrib(type=str)
     published_at = attrib(type=datetime)
     published = attrib(type=bool)

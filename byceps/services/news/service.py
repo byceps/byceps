@@ -16,6 +16,7 @@ from ...typing import BrandID, UserID
 
 from ..brand.models.brand import Brand as DbBrand
 
+from .channel_service import _db_entity_to_channel
 from .models.channel import Channel as DbChannel
 from .models.item import \
     CurrentVersionAssociation as DbCurrentVersionAssociation, \
@@ -93,6 +94,7 @@ def find_aggregated_item_by_slug(channel_id: ChannelID, slug: str,
     """Return the news item identified by that slug, or `None` if not found."""
     query = DbItem.query \
         .for_channel(channel_id) \
+        .with_channel() \
         .with_current_version() \
         .filter_by(slug=slug)
 
@@ -130,6 +132,7 @@ def get_items_paginated(channel_id: ChannelID, page: int, items_per_page: int
 def _get_items_query(channel_id: ChannelID) -> Query:
     return DbItem.query \
         .for_channel(channel_id) \
+        .with_channel() \
         .with_current_version() \
         .order_by(DbItem.published_at.desc())
 
@@ -171,6 +174,7 @@ def get_item_count_by_brand_id() -> Dict[BrandID, int]:
 
 
 def _db_entity_to_item(item: DbItem) -> Item:
+    channel = _db_entity_to_channel(item.channel)
     body = item.current_version.render_body()
     external_url = url_for('news.view', slug=item.slug, _external=True)
     image_url = _assemble_image_url(item)
@@ -178,6 +182,7 @@ def _db_entity_to_item(item: DbItem) -> Item:
 
     return Item(
         id=item.id,
+        channel=channel,
         slug=item.slug,
         published_at=item.published_at,
         published=item.published_at is not None,

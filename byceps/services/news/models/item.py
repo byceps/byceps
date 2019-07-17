@@ -28,6 +28,11 @@ class ItemQuery(BaseQuery):
     def for_channel(self, channel_id: ChannelID) -> BaseQuery:
         return self.filter_by(channel_id=channel_id)
 
+    def with_channel(self) -> BaseQuery:
+        return self.options(
+            db.joinedload('channel'),
+        )
+
     def published(self) -> BaseQuery:
         """Return items that have been published."""
         return self.filter(Item.published_at <= datetime.utcnow())
