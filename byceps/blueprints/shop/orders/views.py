@@ -70,11 +70,13 @@ def view(order_id):
     }
 
     if order.is_open:
-        # Obtain payment instructions.
-        scope = Scope('shop', str(shop.id))
-        payment_instructions = render_snippet_as_partial(
-            'payment_instructions', scope=scope)
-
-        template_context['payment_instructions'] = payment_instructions
+        template_context['payment_instructions'] \
+            = _get_payment_instructions(shop.id)
 
     return template_context
+
+
+def _get_payment_instructions(shop_id):
+    scope = Scope('shop', str(shop_id))
+
+    return render_snippet_as_partial('payment_instructions', scope=scope)
