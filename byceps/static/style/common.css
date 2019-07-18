@@ -791,8 +791,8 @@ table.user-badges-list td {
 }
 
 .spinning {
-  -webkit-animation: spin 500ms infinite linear;
-  animation: spin 500ms infinite linear;
+  -webkit-animation: spin 900ms infinite linear;
+  animation: spin 900ms infinite linear;
 }
 
 
