@@ -23,10 +23,10 @@ class ChannelCreateForm(LocalizedForm):
 
 
 class ItemCreateForm(LocalizedForm):
-    slug = StringField('Slug', [InputRequired(), Length(max=80), Regexp(SLUG_REGEX, message='Nur Kleinbuchstaben, Ziffern und Bindestrich sind erlaubt.')])
-    title = StringField('Titel', [InputRequired(), Length(max=80)])
+    slug = StringField('Slug', [InputRequired(), Length(max=100), Regexp(SLUG_REGEX, message='Nur Kleinbuchstaben, Ziffern und Bindestrich sind erlaubt.')])
+    title = StringField('Titel', [InputRequired(), Length(max=100)])
     body = TextAreaField('Text', [InputRequired()])
-    image_url_path = StringField('Bild-URL-Pfad', [Optional(), Length(max=80)])
+    image_url_path = StringField('Bild-URL-Pfad', [Optional(), Length(max=100)])
 
 
 class ItemUpdateForm(ItemCreateForm):
