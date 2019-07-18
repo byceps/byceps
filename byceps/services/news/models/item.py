@@ -56,9 +56,9 @@ class Item(db.Model):
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
-    channel_id = db.Column(db.Unicode(20), db.ForeignKey('news_channels.id'), index=True, nullable=False)
+    channel_id = db.Column(db.UnicodeText, db.ForeignKey('news_channels.id'), index=True, nullable=False)
     channel = db.relationship(Channel)
-    slug = db.Column(db.Unicode(80), index=True, nullable=False)
+    slug = db.Column(db.UnicodeText, index=True, nullable=False)
     published_at = db.Column(db.DateTime, nullable=True)
     current_version = association_proxy('current_version_association', 'version')
 
@@ -100,9 +100,9 @@ class ItemVersion(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
     creator = db.relationship(User)
-    title = db.Column(db.Unicode(80))
+    title = db.Column(db.UnicodeText)
     body = db.Column(db.UnicodeText, nullable=False)
-    image_url_path = db.Column(db.Unicode(80), nullable=True)
+    image_url_path = db.Column(db.UnicodeText, nullable=True)
 
     def __init__(self, item: Item, creator_id: UserID, title: str, body: str
                 ) -> None:

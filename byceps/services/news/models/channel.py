@@ -17,7 +17,7 @@ class Channel(db.Model):
     """A channel to which news items can be published."""
     __tablename__ = 'news_channels'
 
-    id = db.Column(db.Unicode(40), primary_key=True)
+    id = db.Column(db.UnicodeText, primary_key=True)
     brand_id = db.Column(db.Unicode(20), db.ForeignKey('brands.id'), index=True, nullable=False)
     url_prefix = db.Column(db.UnicodeText, nullable=False)
 
