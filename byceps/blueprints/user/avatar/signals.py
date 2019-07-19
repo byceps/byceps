@@ -1,5 +1,5 @@
 """
-byceps.blueprints.user_avatar.signals
+byceps.blueprints.user.avatar.signals
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2019 Jochen Kupperschmidt

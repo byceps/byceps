@@ -69,7 +69,7 @@ def _get_blueprints(app):
         ('user',                    '/users'                        ),
         ('user.creation',           '/users'                        ),
         ('user.email_address',      '/users/email_address'          ),
-        ('user_avatar',             '/users'                        ),
+        ('user.avatar',             '/users'                        ),
     ]
 
     current_mode = config.get_site_mode(app)

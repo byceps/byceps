@@ -1,5 +1,5 @@
 """
-byceps.blueprints.user_avatar.forms
+byceps.blueprints.user.avatar.forms
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2019 Jochen Kupperschmidt
@@ -9,7 +9,7 @@ byceps.blueprints.user_avatar.forms
 from wtforms import FileField
 from wtforms.validators import InputRequired
 
-from ...util.l10n import LocalizedForm
+from ....util.l10n import LocalizedForm
 
 
 class UpdateForm(LocalizedForm):
