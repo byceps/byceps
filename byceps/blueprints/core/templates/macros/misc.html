@@ -4,7 +4,11 @@
 {% macro render_notification(category, icon, text) -%}
   <div class="notification{% if category %} color-{{ category }}{% endif %} block-with-icon">
     <div class="block-with-icon-icon">
+    {%- if icon %}
       {{ render_icon(icon) }}
+    {%- else %}
+      <span class="icon"></span>
+    {%- endif %}
     </div>
     <div class="block-with-icon-body">
 {{ text }}
