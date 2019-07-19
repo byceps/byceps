@@ -59,7 +59,7 @@
     <tfoot>
       <tr>
         <th colspan="2" style="text-align: right;">Gesamtbetrag</th>
-        <td class="number"><strong>{{ order.total_amount|format_euro_amount }}</strong></td>
+        <td class="number nowrap"><strong>{{ order.total_amount|format_euro_amount }}</strong></td>
       </tr>
     </tfoot>
     <tbody>
@@ -67,7 +67,7 @@
       <tr>
         <td class="number">{{ item.quantity }}</td>
         <td>{{ item.description }}</td>
-        <td class="number">{{ item.unit_price|format_euro_amount }}</td>
+        <td class="number nowrap">{{ item.unit_price|format_euro_amount }}</td>
       </tr>
       {%- endfor %}
     </tbody>
