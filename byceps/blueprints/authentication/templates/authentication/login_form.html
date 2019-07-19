@@ -18,7 +18,7 @@
       {%- endcall %}
 
       <div id="login-failed" style="display: none;">
-{{ render_notification('danger', 'warning', 'Die Anmeldung ist fehlgeschlagen.') }}
+{{ render_notification('Die Anmeldung ist fehlgeschlagen.', category='danger', icon='warning') }}
       </div>
 
       {{ form_buttons('Anmelden') }}
@@ -31,7 +31,7 @@
     <p>Du hast dein Passwort vergessen? Dann <a href="{{ url_for('.request_password_reset_form') }}">setze ein neues</a>.</p>
     {%- endif %}
   {%- else %}
-{{ render_notification('warning', 'warning', 'Die Anmeldung ist deaktiviert.') }}
+{{ render_notification('Die Anmeldung ist deaktiviert.', category='warning', icon='warning') }}
   {%- endif %}
 
 {%- endblock %}

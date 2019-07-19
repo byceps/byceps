@@ -17,7 +17,7 @@
   <h1>{{ render_icon('edit') }} {{ title }}</h1>
 
   {%- if posting.creator_id != g.current_user.id %}
-  {{ render_notification('info', 'warning', 'Du bist im Begriff, einen Beitrag von jemand anderem zu verändern.') }}
+  {{ render_notification('Du bist im Begriff, einen Beitrag von jemand anderem zu verändern.', category='info', icon='warning') }}
   {%- endif %}
 
   <form action="{{ url_for('.posting_update', posting_id=posting.id) }}" method="post">

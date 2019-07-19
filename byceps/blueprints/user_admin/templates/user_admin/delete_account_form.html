@@ -14,7 +14,7 @@
   </nav>
   <h1>{{ render_icon('delete') }} {{ title }}</h1>
 
-  {{ render_notification('danger', 'warning', 'Achtung: Das Löschen des Benutzerkontos geschieht unwiderruflich!') }}
+  {{ render_notification('Achtung: Das Löschen des Benutzerkontos geschieht unwiderruflich!', category='danger', icon='warning') }}
 
   <form action="{{ url_for('.delete_account', user_id=user.id) }}" method="post">
     {% call form_fieldset() %}

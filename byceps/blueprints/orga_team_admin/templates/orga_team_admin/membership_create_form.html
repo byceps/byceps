@@ -25,7 +25,7 @@
     {{ form_buttons('Speichern', cancel_url=url_for('.teams_for_party', party_id=team.party.id)) }}
   </form>
   {%- else %}
-  {{ render_notification('info', 'info', 'Es sind keine Orgas vorhanden, die noch keinem Team dieser Party zugewiesen sind.') }}
+  {{ render_notification('Es sind keine Orgas vorhanden, die noch keinem Team dieser Party zugewiesen sind.', category='info', icon='info') }}
   {%- endif %}
 
 {%- endblock %}

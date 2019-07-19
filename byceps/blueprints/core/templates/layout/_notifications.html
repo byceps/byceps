@@ -5,7 +5,7 @@
   {%- if flashed_messages %}
 <div class="notifications">
 {%- for text, text_is_safe, category, icon in flashed_messages %}
-  {{ render_notification(category, icon if icon is not none else category, text|safe if text_is_safe else text) }}
+  {{ render_notification(text|safe if text_is_safe else text, category=category, icon=icon if (icon is not none) else category) }}
 {%- endfor %}
 </div>
   {%- endif %}

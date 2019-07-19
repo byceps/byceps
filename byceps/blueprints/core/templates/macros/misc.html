@@ -1,7 +1,7 @@
 {%- from 'macros/icons.html' import render_icon %}
 
 
-{% macro render_notification(category, icon, text) -%}
+{% macro render_notification(text, category=None, icon=None) -%}
   <div class="notification{% if category %} color-{{ category }}{% endif %} block-with-icon">
     <div class="block-with-icon-icon">
     {%- if icon %}
@@ -11,7 +11,7 @@
     {%- endif %}
     </div>
     <div class="block-with-icon-body">
-{{ text }}
+      {{ text }}
     </div>
   </div>
 {%- endmacro %}
