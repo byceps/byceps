@@ -47,7 +47,7 @@
   <h2>an {{ recipients|length }} Personen verliehen</h2>
   <ul class="list-grid">
     {%- for user in recipients|sort(attribute='screen_name') %}
-    <li><a class="recipient" href="{{ url_for('user.view', user_id=user.id) }}">
+    <li><a class="recipient" href="{{ url_for('user_profile.view', user_id=user.id) }}">
 {{ render_user_avatar_64(user) }}
     </a></li>
     {%- endfor %}

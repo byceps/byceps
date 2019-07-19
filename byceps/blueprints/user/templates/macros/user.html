@@ -5,7 +5,7 @@
   {%- if user.deleted -%}
 {{ user.screen_name|dim }}
   {%- else -%}
-<a href="{{ url_for('user.view', user_id=user.id) }}">{{ user.screen_name }}</a>
+<a href="{{ url_for('user_profile.view', user_id=user.id) }}">{{ user.screen_name }}</a>
   {%- endif -%}
 {%- endmacro %}
 

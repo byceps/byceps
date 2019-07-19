@@ -7,7 +7,6 @@ byceps.blueprints.user.views
 """
 
 from datetime import datetime
-from operator import attrgetter
 
 from flask import abort, g, jsonify, request, Response
 
@@ -18,16 +17,13 @@ from ...services.country import service as country_service
 from ...services.newsletter import service as newsletter_service
 from ...services.newsletter.transfer.models import \
     Subscription as NewsletterSubscription
-from ...services.orga_team import service as orga_team_service
 from ...services.terms import consent_service as terms_consent_service, \
     version_service as terms_version_service
-from ...services.ticketing import attendance_service, ticket_service
 from ...services.user import command_service as user_command_service
 from ...services.user import creation_service as user_creation_service
 from ...services.user import email_address_confirmation_service
 from ...services.user import event_service as user_event_service
 from ...services.user import service as user_service
-from ...services.user_badge import service as badge_service
 from ...services.verification_token import service as verification_token_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_error, flash_notice, flash_success
@@ -41,38 +37,6 @@ from . import signals
 
 
 blueprint = create_blueprint('user', __name__)
-
-
-@blueprint.route('/<uuid:user_id>')
-@templated
-def view(user_id):
-    """Show a user's profile."""
-    if get_site_mode().is_admin():
-        abort(404)
-
-    user = user_service.find_active_user(user_id, include_avatar=True)
-    if user is None:
-        abort(404)
-
-    badges_with_awarding_quantity = badge_service.get_badges_for_user(user.id)
-
-    orga_team_membership = orga_team_service.find_membership_for_party(user.id,
-        g.party_id)
-
-    _current_party_tickets = ticket_service.find_tickets_used_by_user(user.id,
-        g.party_id)
-    current_party_tickets = [t for t in _current_party_tickets if not t.revoked]
-
-    attended_parties = attendance_service.get_attended_parties(user.id)
-    attended_parties.sort(key=attrgetter('starts_at'), reverse=True)
-
-    return {
-        'user': user,
-        'badges_with_awarding_quantity': badges_with_awarding_quantity,
-        'orga_team_membership': orga_team_membership,
-        'current_party_tickets': current_party_tickets,
-        'attended_parties': attended_parties,
-    }
 
 
 @blueprint.route('/<uuid:user_id>.json')

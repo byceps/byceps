@@ -88,6 +88,7 @@ def _get_blueprints(app):
             ('ticketing',               '/tickets'                  ),
             ('tourney.avatar',          '/tourney/avatars'          ),
             ('tourney.match',           '/tourney/matches'          ),
+            ('user.profile',            '/users'                    ),
             ('user_badge',              '/user_badges'              ),
             ('user_group',              '/user_groups'              ),
             ('user_message',            '/user_messages'            ),
