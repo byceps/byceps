@@ -19,6 +19,7 @@ from ....services.shop.sequence import service as sequence_service
 from ....services.shop.shop import service as shop_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated
+from ....util.views import redirect_to
 
 from ...authorization.decorators import permission_required
 from ...authorization.registry import permission_registry
@@ -30,6 +31,23 @@ blueprint = create_blueprint('shop_shop_admin', __name__)
 
 
 permission_registry.register_enum(ShopPermission)
+
+
+@blueprint.route('/for_party/<party_id>')
+@permission_required(ShopPermission.view)
+@templated
+def view_for_party(party_id):
+    party = party_service.find_party(party_id)
+    if party is None:
+        abort(404)
+
+    shop = shop_service.find_shop_for_party(party.id)
+    if shop:
+        return redirect_to('.view_for_shop', shop_id=shop.id)
+
+    return {
+        'party': party,
+    }
 
 
 @blueprint.route('/for_shop/<shop_id>')
