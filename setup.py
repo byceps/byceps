@@ -18,7 +18,7 @@ setup(
     description='the Bring-Your-Computer Event Processing System',
     author='Jochen "Y0Gi" Kupperschmidt',
     author_email='homework@nwsnet.de',
-    url='http://homework.nwsnet.de/',
+    url='https://byceps.nwsnet.de/',
     license='Modified BSD',
     classifiers=[
         'Environment :: Web Environment',
