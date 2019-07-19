@@ -16,8 +16,8 @@ class Setting(db.Model):
     __tablename__ = 'party_settings'
 
     party_id = db.Column(db.Unicode(40), db.ForeignKey('parties.id'), primary_key=True)
-    name = db.Column(db.Unicode(40), primary_key=True)
-    value = db.Column(db.Unicode(200))
+    name = db.Column(db.UnicodeText, primary_key=True)
+    value = db.Column(db.UnicodeText)
 
     def __init__(self, party_id: PartyID, name: str, value: str) -> None:
         self.party_id = party_id

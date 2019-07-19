@@ -17,8 +17,8 @@ class Setting(db.Model):
     __tablename__ = 'site_settings'
 
     site_id = db.Column(db.Unicode(40), db.ForeignKey('sites.id'), primary_key=True, index=True)
-    name = db.Column(db.Unicode(40), primary_key=True)
-    value = db.Column(db.Unicode(200))
+    name = db.Column(db.UnicodeText, primary_key=True)
+    value = db.Column(db.UnicodeText)
 
     def __init__(self, site_id: SiteID, name: str, value: str) -> None:
         self.site_id = site_id

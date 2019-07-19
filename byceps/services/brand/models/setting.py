@@ -16,8 +16,8 @@ class Setting(db.Model):
     __tablename__ = 'brand_settings'
 
     brand_id = db.Column(db.Unicode(20), db.ForeignKey('brands.id'), primary_key=True)
-    name = db.Column(db.Unicode(40), primary_key=True)
-    value = db.Column(db.Unicode(200))
+    name = db.Column(db.UnicodeText, primary_key=True)
+    value = db.Column(db.UnicodeText)
 
     def __init__(self, brand_id: BrandID, name: str, value: str) -> None:
         self.brand_id = brand_id
