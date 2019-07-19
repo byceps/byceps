@@ -68,6 +68,7 @@ def _get_blueprints(app):
         ('healthcheck',             '/health'                       ),
         ('user',                    '/users'                        ),
         ('user.creation',           '/users'                        ),
+        ('user.email_address',      '/users/email_address'          ),
         ('user_avatar',             '/users'                        ),
     ]
 

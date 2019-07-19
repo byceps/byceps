@@ -243,7 +243,7 @@ def request_password_reset():
     if not user.enabled:
         flash_error('Die E-Mail-Adresse für das Benutzerkonto "{}" wurde '
                     'noch nicht bestätigt.', screen_name)
-        return redirect_to('user.request_email_address_confirmation_email')
+        return redirect_to('user_email_address.request_confirmation_email')
 
     if get_site_mode().is_admin():
         sender_address = current_app.config['EMAIL_SENDER_ADDRESS']

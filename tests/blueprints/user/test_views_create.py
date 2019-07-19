@@ -149,7 +149,7 @@ class UserCreateTestCase(AbstractAppTestCase):
         expected_body = '''
 Hallo Hiro,
 
-bitte bestätige deine E-Mail-Adresse, indem du diese URL abrufst: http://example.com/users/email_address_confirmations/{}
+bitte bestätige deine E-Mail-Adresse, indem du diese URL abrufst: http://example.com/users/email_address/confirmation/{}
         '''.strip().format(verification_token.token)
 
         send_email_mock.assert_called_once_with(

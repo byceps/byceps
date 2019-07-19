@@ -8,6 +8,9 @@ byceps.services.user.email_address_confirmation_service
 
 from flask import url_for
 
+
+from ...blueprints.user.email_address import views  # Make `url_for` work.
+
 from ...database import db
 from ...typing import BrandID
 
@@ -22,7 +25,7 @@ def send_email_address_confirmation_email(recipient_email_address: str,
                                           brand_id: BrandID) -> None:
     sender_address = email_service.get_sender_address_for_brand(brand_id)
 
-    confirmation_url = url_for('user.confirm_email_address',
+    confirmation_url = url_for('user_email_address.confirm',
                                token=verification_token.token,
                                _external=True)
 

@@ -23,7 +23,3 @@ class DetailsForm(LocalizedForm):
     city = StringField('Stadt', [Optional()])
     street = StringField('Straße', [Optional()])
     phone_number = StringField('Telefonnummer', [Optional(), Length(max=20)])
-
-
-class RequestConfirmationEmailForm(LocalizedForm):
-    screen_name = StringField('Benutzername', [InputRequired()])

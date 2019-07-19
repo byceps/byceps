@@ -50,7 +50,7 @@ class EmailAddressConfirmationTestCase(AbstractAppTestCase):
         assert not self.user.enabled
 
     def _confirm(self, verification_token):
-        url = '/users/email_address_confirmations/{}' \
+        url = '/users/email_address/confirmation/{}' \
             .format(verification_token.token)
         with http_client(self.app) as client:
             return client.get(url)
