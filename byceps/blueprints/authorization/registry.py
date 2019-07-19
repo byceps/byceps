@@ -45,7 +45,7 @@ class PermissionRegistry:
             return None
 
     def get_enum_members(self, permission_ids):
-        """Return the nums that are registered for the permission IDs.
+        """Return the enums that are registered for the permission IDs.
 
         If no enum is found for a permission ID, it is silently ignored.
         """
