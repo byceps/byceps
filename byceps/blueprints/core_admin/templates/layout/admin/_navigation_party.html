@@ -94,13 +94,13 @@
           'Artikel',
           id='shop_article_admin',
           required_permission=ShopArticlePermission.view,
-          icon='shopping-cart')
+          icon='shop-articles')
         .add_item(
           url_for('shop_order_admin.index_for_shop', shop_id=shop.id),
           'Bestellungen',
           id='shop_order_admin',
           required_permission=ShopOrderPermission.view,
-          icon='payment')
+          icon='shop-order')
     -%}
 {{ render_navigation(navigation, current_page) }}
     {%- endwith %}

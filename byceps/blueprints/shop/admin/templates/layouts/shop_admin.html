@@ -18,13 +18,13 @@
         'Artikel',
         id='articles',
         required_permission=ShopArticlePermission.view,
-        icon='shopping-cart')
+        icon='shop-articles')
       .add_item(
         url_for('shop_order_admin.index_for_shop', shop_id=shop.id),
         'Bestellungen',
         id='orders',
         required_permission=ShopOrderPermission.view,
-        icon='payment')
+        icon='shop-order')
       .add_item(
         url_for('shop_shipping_admin.view_for_shop', shop_id=shop.id),
         'Versand',
