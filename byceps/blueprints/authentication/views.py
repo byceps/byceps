@@ -29,7 +29,7 @@ from ...util.framework.templating import templated
 from ...util.views import redirect_to, respond_no_content
 
 from ..core_admin.authorization import AdminPermission
-from ..user.views import _find_privacy_policy_consent_subject_id, \
+from ..user.creation.views import _find_privacy_policy_consent_subject_id, \
     _is_privacy_policy_consent_required
 
 from .forms import LoginForm, RequestPasswordResetForm, ResetPasswordForm, \

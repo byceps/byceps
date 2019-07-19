@@ -12,7 +12,7 @@ from wtforms.validators import InputRequired, Length, ValidationError
 from ...services.user import screen_name_validator
 from ...util.l10n import LocalizedForm
 
-from ..user.forms import ScreenNameValidator
+from ..user.creation.forms import ScreenNameValidator
 
 
 class ChangeScreenNameForm(LocalizedForm):
