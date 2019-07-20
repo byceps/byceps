@@ -252,10 +252,9 @@ nav.main li {
   border-color: transparent;
   border-style: solid;
   border-width: 1px 0;
-  color: currentColor;
+  color: #5c5c5c;
   display: flex;
   line-height: 1.2;
-  opacity: 0.8;
   padding: 0.2rem 15px;
   text-decoration: none;
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
@@ -264,7 +263,7 @@ nav.main li {
 .nav-item--current {
   background-color: #eeeeee;
   border-color: #cccccc;
-  opacity: 1;
+  color: currentColor;
 }
 
 .nav-item-icon {
