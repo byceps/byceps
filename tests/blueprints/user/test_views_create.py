@@ -23,7 +23,8 @@ from byceps.services.verification_token import service as \
     verification_token_service
 
 from tests.base import AbstractAppTestCase
-from tests.helpers import create_brand, create_party, create_user, http_client
+from tests.helpers import create_brand, create_party, create_site, \
+    create_user, http_client
 
 from testfixtures.authorization import create_role
 
@@ -40,7 +41,8 @@ class UserCreateTestCase(AbstractAppTestCase):
                                                    'noreply@example.com')
         self.brand_id = self.brand.id
 
-        create_party(brand_id=self.brand.id)
+        party = create_party(brand_id=self.brand.id)
+        create_site(party.id)
 
         self.setup_terms()
         self.setup_privacy_policy()
@@ -149,7 +151,7 @@ class UserCreateTestCase(AbstractAppTestCase):
         expected_body = '''
 Hallo Hiro,
 
-bitte bestätige deine E-Mail-Adresse, indem du diese URL abrufst: http://example.com/users/email_address/confirmation/{}
+bitte bestätige deine E-Mail-Adresse, indem du diese URL abrufst: https://www.example.com/users/email_address/confirmation/{}
         '''.strip().format(verification_token.token)
 
         send_email_mock.assert_called_once_with(

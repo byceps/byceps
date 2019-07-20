@@ -149,7 +149,7 @@ def create():
     try:
         user = user_creation_service.create_user(
             screen_name, email_address, password, first_names, last_name,
-            g.brand_id, terms_consent=terms_consent,
+            g.brand_id, g.site_id, terms_consent=terms_consent,
             privacy_policy_consent=privacy_policy_consent,
             newsletter_subscription=newsletter_subscription)
     except user_creation_service.UserCreationFailed:

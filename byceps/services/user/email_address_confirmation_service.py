@@ -6,15 +6,12 @@ byceps.services.user.email_address_confirmation_service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from flask import url_for
-
-
-from ...blueprints.user.email_address import views  # Make `url_for` work.
-
 from ...database import db
 from ...typing import BrandID
 
 from ..email import service as email_service
+from ..site import service as site_service
+from ..site.transfer.models import SiteID
 from ..verification_token.models import Token
 from ..verification_token import service as verification_token_service
 
@@ -22,12 +19,16 @@ from ..verification_token import service as verification_token_service
 def send_email_address_confirmation_email(recipient_email_address: str,
                                           recipient_screen_name: str,
                                           verification_token: Token,
-                                          brand_id: BrandID) -> None:
+                                          brand_id: BrandID, site_id: SiteID
+                                         ) -> None:
     sender_address = email_service.get_sender_address_for_brand(brand_id)
 
-    confirmation_url = url_for('user_email_address.confirm',
-                               token=verification_token.token,
-                               _external=True)
+    site = site_service.find_site(site_id)
+    if site is None:
+        raise ValueError('Unknown site ID "{}"'.format(site_id))
+
+    confirmation_url = 'https://{}/users/email_address/confirmation/{}' \
+        .format(site.server_name, verification_token.token)
 
     subject = '{}, bitte bestätige deine E-Mail-Adresse' \
         .format(recipient_screen_name)

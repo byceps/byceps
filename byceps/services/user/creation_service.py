@@ -21,6 +21,7 @@ from ..consent import consent_service
 from ..consent.transfer.models import Consent
 from ..newsletter import command_service as newsletter_command_service
 from ..newsletter.transfer.models import Subscription as NewsletterSubscription
+from ..site.transfer.models import SiteID
 from ..verification_token import service as verification_token_service
 
 from . import email_address_confirmation_service
@@ -37,7 +38,8 @@ class UserCreationFailed(Exception):
 
 def create_user(screen_name: str, email_address: str, password: str,
                 first_names: Optional[str], last_name: Optional[str],
-                brand_id: BrandID, *, terms_consent: Optional[Consent]=None,
+                brand_id: BrandID, site_id: SiteID, *,
+                terms_consent: Optional[Consent]=None,
                 privacy_policy_consent: Optional[Consent]=None,
                 newsletter_subscription: Optional[NewsletterSubscription]=None
                ) -> User:
@@ -68,7 +70,7 @@ def create_user(screen_name: str, email_address: str, password: str,
 
     # e-mail address confirmation
     normalized_email_address = _normalize_email_address(email_address)
-    _request_email_address_verification(user, email_address, brand_id)
+    _request_email_address_verification(user, email_address, brand_id, site_id)
 
     return user
 
@@ -161,9 +163,10 @@ def _assign_roles(user_id: UserID) -> None:
 
 
 def _request_email_address_verification(user: User, email_address: str,
-                                        brand_id: BrandID) -> None:
+                                        brand_id: BrandID, site_id: SiteID
+                                       ) -> None:
     verification_token = verification_token_service \
         .create_for_email_address_confirmation(user.id)
 
     email_address_confirmation_service.send_email_address_confirmation_email(
-        email_address, user.screen_name, verification_token, brand_id)
+        email_address, user.screen_name, verification_token, brand_id, site_id)
