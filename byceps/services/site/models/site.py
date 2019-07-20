@@ -22,7 +22,7 @@ class Site(db.Model):
 
     id = db.Column(db.Unicode(40), primary_key=True)
     party_id = db.Column(db.Unicode(40), db.ForeignKey('parties.id'), index=True, nullable=False)
-    title = db.Column(db.Unicode(20), nullable=False)
+    title = db.Column(db.UnicodeText, nullable=False)
 
     def __init__(self, site_id: SiteID, party_id: PartyID, title: str) -> None:
         self.id = site_id

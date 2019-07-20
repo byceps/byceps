@@ -16,7 +16,7 @@ class Brand(db.Model):
     __tablename__ = 'brands'
 
     id = db.Column(db.Unicode(20), primary_key=True)
-    title = db.Column(db.Unicode(40), unique=True, nullable=False)
+    title = db.Column(db.UnicodeText, unique=True, nullable=False)
 
     def __init__(self, brand_id: BrandID, title: str) -> None:
         self.id = brand_id
