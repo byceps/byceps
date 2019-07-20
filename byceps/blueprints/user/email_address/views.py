@@ -68,7 +68,8 @@ def request_confirmation_email():
         'Der Link zur Bestätigung der für den Benutzernamen "{}" '
         'hinterlegten E-Mail-Adresse wurde erneut versendet.',
         user.screen_name)
-    return request_confirmation_email_form()
+
+    return redirect_to('.request_confirmation_email_form')
 
 
 @blueprint.route('/confirmation/<uuid:token>')
