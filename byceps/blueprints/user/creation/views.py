@@ -164,7 +164,7 @@ def create():
         user.screen_name)
     signals.account_created.send(None, user_id=user.id)
 
-    return redirect_to('user_profile.view', user_id=user.id)
+    return redirect_to('authentication.login_form')
 
 
 def _adjust_create_form(form, real_name_required, terms_consent_required,
