@@ -19,9 +19,10 @@ class UnknownSiteId(Exception):
     pass
 
 
-def create_site(site_id: SiteID, party_id: PartyID, title: str) -> Site:
+def create_site(site_id: SiteID, party_id: PartyID, title: str,
+                server_name: str) -> Site:
     """Create a site for that party."""
-    site = DbSite(site_id, party_id, title)
+    site = DbSite(site_id, party_id, title, server_name)
 
     db.session.add(site)
     db.session.commit()
@@ -29,7 +30,7 @@ def create_site(site_id: SiteID, party_id: PartyID, title: str) -> Site:
     return _db_entity_to_site(site)
 
 
-def update_site(site_id: SiteID, title: str) -> Site:
+def update_site(site_id: SiteID, title: str, server_name: str) -> Site:
     """Update the site."""
     site = DbSite.query.get(site_id)
 
@@ -37,6 +38,7 @@ def update_site(site_id: SiteID, title: str) -> Site:
         raise UnknownSiteId(site_id)
 
     site.title = title
+    site.server_name = server_name
 
     db.session.commit()
 
@@ -67,4 +69,5 @@ def _db_entity_to_site(site: DbSite) -> Site:
         site.id,
         site.party_id,
         site.title,
+        site.server_name,
     )

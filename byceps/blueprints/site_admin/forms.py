@@ -7,13 +7,14 @@ byceps.blueprints.site_admin.forms
 """
 
 from wtforms import StringField
-from wtforms.validators import Length
+from wtforms.validators import InputRequired, Length
 
 from ...util.l10n import LocalizedForm
 
 
 class UpdateForm(LocalizedForm):
     title = StringField('Titel', validators=[Length(min=1, max=20)])
+    server_name = StringField('Servername', validators=[InputRequired()])
 
 
 class CreateForm(UpdateForm):

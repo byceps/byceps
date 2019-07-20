@@ -107,8 +107,9 @@ def create(party_id):
 
     site_id = form.id.data.strip().lower()
     title = form.title.data.strip()
+    server_name = form.server_name.data.strip()
 
-    site = site_service.create_site(site_id, party.id, title)
+    site = site_service.create_site(site_id, party.id, title, server_name)
 
     flash_success('Die Site "{}" wurde angelegt.', site.title)
     return redirect_to('.index', party_id=party.id)
@@ -142,9 +143,10 @@ def update(site_id):
         return update_form(site.id, form)
 
     title = form.title.data.strip()
+    server_name = form.server_name.data.strip()
 
     try:
-        site = site_service.update_site(site.id, title)
+        site = site_service.update_site(site.id, title, server_name)
     except site_service.UnknownSiteId:
         abort(404, 'Unknown site ID "{}".'.format(site_id))
 

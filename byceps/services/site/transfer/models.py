@@ -21,6 +21,7 @@ class Site:
     id = attrib(type=SiteID)
     party_id = attrib(type=PartyID)
     title = attrib(type=str)
+    server_name = attrib(type=str)
 
 
 @attrs(frozen=True, slots=True)

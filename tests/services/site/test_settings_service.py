@@ -24,7 +24,7 @@ def app(party_app_with_db):
                                        now, now)
 
     site = site_service.create_site('acme-intranet', party.id,
-                                    'ACME Party Intranet')
+                                    'ACME Party Intranet', 'www.example.com')
     _app.site_id = site.id
 
     yield _app
