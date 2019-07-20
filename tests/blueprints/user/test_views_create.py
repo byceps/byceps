@@ -17,7 +17,7 @@ from byceps.services.newsletter import service as newsletter_service
 from byceps.services.snippet import service as snippet_service
 from byceps.services.snippet.transfer.models import Scope
 from byceps.services.terms import version_service as terms_version_service
-from byceps.services.user import event_service
+from byceps.services.user import event_service, service as user_service
 from byceps.services.user.models.user import User
 from byceps.services.verification_token import service as \
     verification_token_service
@@ -84,10 +84,13 @@ class UserCreateTestCase(AbstractAppTestCase):
 
     @patch('byceps.email.send')
     def test_create(self, send_email_mock):
+        screen_name = 'Hiro'
+
         user_count_before = get_user_count()
+        assert find_user(screen_name) is None
 
         form_data = {
-            'screen_name': 'Hiro',
+            'screen_name': screen_name,
             'first_names': 'Hiroaki',
             'last_name': 'Protagonist',
             'email_address': 'hiro@metaverse.org',
@@ -104,7 +107,8 @@ class UserCreateTestCase(AbstractAppTestCase):
         user_count_afterwards = get_user_count()
         assert user_count_afterwards == user_count_before + 1
 
-        user = get_user(response)
+        user = find_user(screen_name)
+        assert user is not None
 
         assert user.created_at is not None
         assert user.screen_name == 'Hiro'
@@ -162,8 +166,10 @@ bitte bestätige deine E-Mail-Adresse, indem du diese URL abrufst: https://www.e
 
     @patch('byceps.email.send')
     def test_create_without_newsletter_subscription(self, send_email_mock):
+        screen_name = 'Hiro'
+
         form_data = {
-            'screen_name': 'Hiro',
+            'screen_name': screen_name,
             'first_names': 'Hiroaki',
             'last_name': 'Protagonist',
             'email_address': 'hiro@metaverse.org',
@@ -177,7 +183,8 @@ bitte bestätige deine E-Mail-Adresse, indem du diese URL abrufst: https://www.e
         response = self.send_request(form_data)
         assert response.status_code == 302
 
-        user = get_user(response)
+        user = find_user(screen_name)
+        assert user is not None
 
         # newsletter subscription
         assert not is_subscribed_to_newsletter(user.id, self.brand_id)
@@ -191,10 +198,8 @@ bitte bestätige deine E-Mail-Adresse, indem du diese URL abrufst: https://www.e
             return client.post(url, data=form_data)
 
 
-def get_user(response):
-    location = response.headers.get('Location')
-    user_id = location.rpartition('/')[-1]
-    return User.query.get(user_id)
+def find_user(screen_name):
+    return user_service.find_user_by_screen_name(screen_name)
 
 
 def get_user_count():
