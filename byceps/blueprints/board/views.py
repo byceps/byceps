@@ -6,7 +6,6 @@ byceps.blueprints.board.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from attr import attrib, attrs
 from flask import abort, current_app, g, redirect, request, url_for
 
 from ...services.board import access_control_service, \
@@ -16,7 +15,6 @@ from ...services.board import access_control_service, \
     posting_query_service as board_posting_query_service, \
     topic_command_service as board_topic_command_service, \
     topic_query_service as board_topic_query_service
-from ...services.board.transfer.models import CategoryWithLastUpdate
 from ...services.party import service as party_service
 from ...services.site import settings_service as site_settings_service
 from ...services.text_markup.service import get_smileys, render_html
@@ -33,6 +31,7 @@ from .authorization import BoardPermission, BoardPostingPermission, \
     BoardTopicPermission
 from .forms import PostingCreateForm, PostingUpdateForm, TopicCreateForm, \
     TopicUpdateForm
+from .models import CategoryWithLastUpdateAndUnseenFlag
 from . import service, signals
 
 
@@ -49,28 +48,6 @@ blueprint.add_app_template_filter(render_html, 'bbcode')
 
 # -------------------------------------------------------------------- #
 # category
-
-
-@attrs(frozen=True, slots=True)
-class CategoryWithLastUpdateAndUnseenFlag(CategoryWithLastUpdate):
-    contains_unseen_postings = attrib(type=bool)
-
-    @classmethod
-    def from_category_with_last_update(cls, category: CategoryWithLastUpdate,
-                                       contains_unseen_postings: bool):
-        return cls(
-            category.id,
-            category.board_id,
-            category.position,
-            category.slug,
-            category.title,
-            category.description,
-            category.topic_count,
-            category.posting_count,
-            category.last_posting_updated_at,
-            category.last_posting_updated_by,
-            contains_unseen_postings,
-        )
 
 
 @blueprint.route('/')

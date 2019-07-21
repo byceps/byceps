@@ -8,33 +8,13 @@ byceps.blueprints.board.service
 
 from typing import Dict, Optional, Sequence, Set
 
-from attr import attrib, attrs
-
 from ...services.board.models.posting import Posting
 from ...services.ticketing import ticket_service
-from ...services.user.transfer.models import User
 from ...services.user_badge import service as badge_service
 from ...services.user_badge.transfer.models import Badge
 from ...typing import BrandID, PartyID, UserID
 
-
-@attrs(frozen=True, slots=True)
-class Creator(User):
-    badges = attrib(type=Set[Badge])
-    uses_ticket = attrib(type=bool)
-
-    @classmethod
-    def from_(cls, user: User, badges: Set[Badge], uses_ticket: bool):
-        return cls(
-            user.id,
-            user.screen_name,
-            user.suspended,
-            user.deleted,
-            user.avatar_url,
-            user.is_orga,
-            badges,
-            uses_ticket,
-        )
+from .models import Creator
 
 
 def enrich_creators(postings: Sequence[Posting], brand_id: BrandID,
