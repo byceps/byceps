@@ -60,9 +60,19 @@ def category_index():
     _require_board_access(board_id, user.id)
 
     categories = board_category_query_service \
-        .get_categories_with_last_updates( board_id)
+        .get_categories_with_last_updates(board_id)
 
+    categories_with_flag = _add_unseen_postings_flag_to_categories(categories,
+                                                                   user)
+
+    return {
+        'categories': categories_with_flag,
+    }
+
+
+def _add_unseen_postings_flag_to_categories(categories, user):
     categories_with_flag = []
+
     for category in categories:
         contains_unseen_postings = not user.is_anonymous \
             and board_last_view_service.contains_category_unseen_postings(
@@ -73,9 +83,7 @@ def category_index():
 
         categories_with_flag.append(category_with_flag)
 
-    return {
-        'categories': categories_with_flag,
-    }
+    return category_with_flag
 
 
 @blueprint.route('/categories/<slug>', defaults={'page': 1})
