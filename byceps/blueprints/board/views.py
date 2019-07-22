@@ -6,7 +6,7 @@ byceps.blueprints.board.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from flask import abort, current_app, g, redirect, request, url_for
+from flask import abort, g, redirect, request, url_for
 
 from ...services.board import access_control_service, \
     category_query_service as board_category_query_service, \
@@ -62,28 +62,12 @@ def category_index():
     categories = board_category_query_service \
         .get_categories_with_last_updates(board_id)
 
-    categories_with_flag = _add_unseen_postings_flag_to_categories(categories,
-                                                                   user)
+    categories_with_flag = service.add_unseen_postings_flag_to_categories(
+        categories, user)
 
     return {
         'categories': categories_with_flag,
     }
-
-
-def _add_unseen_postings_flag_to_categories(categories, user):
-    categories_with_flag = []
-
-    for category in categories:
-        contains_unseen_postings = not user.is_anonymous \
-            and board_last_view_service.contains_category_unseen_postings(
-                category, user.id)
-
-        category_with_flag = CategoryWithLastUpdateAndUnseenFlag \
-            .from_category_with_last_update(category, contains_unseen_postings)
-
-        categories_with_flag.append(category_with_flag)
-
-    return category_with_flag
 
 
 @blueprint.route('/categories/<slug>', defaults={'page': 1})
@@ -105,13 +89,13 @@ def category_view(slug, page):
         board_last_view_service.mark_category_as_just_viewed(category.id,
                                                              user.id)
 
-    topics_per_page = _get_topics_per_page_value()
+    topics_per_page = service.get_topics_per_page_value()
 
     topics = board_topic_query_service \
         .paginate_topics_of_category(category.id, user, page, topics_per_page)
 
-    _add_topic_creators(topics.items)
-    _add_topic_unseen_flag(topics.items, user)
+    service.add_topic_creators(topics.items)
+    service.add_topic_unseen_flag(topics.items, user)
 
     return {
         'category': category,
@@ -144,13 +128,13 @@ def topic_index(page):
 
     _require_board_access(board_id, user.id)
 
-    topics_per_page = _get_topics_per_page_value()
+    topics_per_page = service.get_topics_per_page_value()
 
     topics = board_topic_query_service \
         .paginate_topics(board_id, user, page, topics_per_page)
 
-    _add_topic_creators(topics.items)
-    _add_topic_unseen_flag(topics.items, user)
+    service.add_topic_creators(topics.items)
+    service.add_topic_unseen_flag(topics.items, user)
 
     return {
         'topics': topics,
@@ -182,7 +166,7 @@ def topic_view(topic_id, page):
     last_viewed_at = board_last_view_service.find_topic_last_viewed_at(
         topic.id, user.id)
 
-    postings_per_page = _get_postings_per_page_value()
+    postings_per_page = service.get_postings_per_page_value()
     if page == 0:
         posting = board_topic_query_service \
             .find_default_posting_to_jump_to(topic.id, user, last_viewed_at)
@@ -190,7 +174,8 @@ def topic_view(topic_id, page):
         if posting is None:
             page = 1
         else:
-            page = calculate_posting_page_number(posting)
+            page = service.calculate_posting_page_number(posting,
+                                                         g.current_user)
             # Jump to a specific posting. This requires a redirect.
             url = _build_url_for_posting_in_topic_view(posting, page)
             return redirect(url, code=307)
@@ -203,7 +188,7 @@ def topic_view(topic_id, page):
     postings = board_posting_query_service \
         .paginate_postings(topic.id, user, g.party_id, page, postings_per_page)
 
-    add_unseen_flag_to_postings(postings.items, user, last_viewed_at)
+    service.add_unseen_flag_to_postings(postings.items, user, last_viewed_at)
 
     is_last_page = not postings.has_next
 
@@ -225,12 +210,6 @@ def topic_view(topic_id, page):
         })
 
     return context
-
-
-def add_unseen_flag_to_postings(postings, user, last_viewed_at):
-    """Add the attribute 'unseen' to each posting."""
-    for posting in postings:
-        posting.unseen = posting.is_unseen(user, last_viewed_at)
 
 
 @blueprint.route('/categories/<category_id>/create')
@@ -546,7 +525,7 @@ def posting_view(posting_id):
     """
     posting = _get_posting_or_404(posting_id)
 
-    page = calculate_posting_page_number(posting)
+    page = service.calculate_posting_page_number(posting, g.current_user)
 
     return redirect(
         _build_url_for_posting_in_topic_view(posting, page, _external=True))
@@ -626,7 +605,7 @@ def posting_create(topic_id):
     signals.posting_created.send(None, posting_id=posting.id,
                                  url=_build_external_url_for_posting(posting.id))
 
-    postings_per_page = _get_postings_per_page_value()
+    postings_per_page = service.get_postings_per_page_value()
     page_count = topic.count_pages(postings_per_page)
 
     return redirect(_build_url_for_posting_in_topic_view(posting, page_count))
@@ -639,7 +618,7 @@ def posting_update_form(posting_id, erroneous_form=None):
     """Show form to update a posting."""
     posting = _get_posting_or_404(posting_id)
 
-    page = calculate_posting_page_number(posting)
+    page = service.calculate_posting_page_number(posting, g.current_user)
     url = _build_url_for_posting_in_topic_view(posting, page)
 
     user_may_update = posting.may_be_updated_by_user(g.current_user)
@@ -673,7 +652,7 @@ def posting_update(posting_id):
     """Update a posting."""
     posting = _get_posting_or_404(posting_id)
 
-    page = calculate_posting_page_number(posting)
+    page = service.calculate_posting_page_number(posting, g.current_user)
     url = _build_url_for_posting_in_topic_view(posting, page)
 
     user_may_update = posting.may_be_updated_by_user(g.current_user)
@@ -727,7 +706,7 @@ def posting_hide(posting_id):
 
     board_posting_command_service.hide_posting(posting, moderator_id)
 
-    page = calculate_posting_page_number(posting)
+    page = service.calculate_posting_page_number(posting, g.current_user)
 
     flash_success('Der Beitrag wurde versteckt.', icon='hidden')
 
@@ -748,7 +727,7 @@ def posting_unhide(posting_id):
 
     board_posting_command_service.unhide_posting(posting, moderator_id)
 
-    page = calculate_posting_page_number(posting)
+    page = service.calculate_posting_page_number(posting, g.current_user)
 
     flash_success('Der Beitrag wurde wieder sichtbar gemacht.', icon='view')
 
@@ -823,22 +802,6 @@ def _require_board_access(board_id, user_id):
         abort(404)
 
 
-def calculate_posting_page_number(posting):
-    postings_per_page = _get_postings_per_page_value()
-
-    return board_posting_query_service \
-        .calculate_posting_page_number(posting, g.current_user,
-                                       postings_per_page)
-
-
-def _get_topics_per_page_value():
-    return int(current_app.config['BOARD_TOPICS_PER_PAGE'])
-
-
-def _get_postings_per_page_value():
-    return int(current_app.config['BOARD_POSTINGS_PER_PAGE'])
-
-
 def _build_external_url_for_topic(topic_id):
     return _build_url_for_topic(topic_id, external=True)
 
@@ -871,19 +834,3 @@ def _build_url_for_posting_in_topic_view(posting, page, **kwargs):
                    page=page,
                    _anchor='posting-{}'.format(posting.id),
                    **kwargs)
-
-
-def _add_topic_creators(topics):
-    creator_ids = {t.creator_id for t in topics}
-    creators = user_service.find_users(creator_ids, include_avatars=True)
-    creators_by_id = user_service.index_users_by_id(creators)
-
-    for topic in topics:
-        topic.creator = creators_by_id[topic.creator_id]
-
-
-def _add_topic_unseen_flag(topics, user):
-    for topic in topics:
-        topic.contains_unseen_postings = not user.is_anonymous \
-            and board_last_view_service.contains_topic_unseen_postings(
-                topic, user.id)
