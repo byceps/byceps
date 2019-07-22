@@ -6,12 +6,20 @@ byceps.blueprints.user_admin.service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import Any, Dict, Iterator, Tuple
+from collections import defaultdict
+from operator import attrgetter
+from typing import Any, Dict, Iterator, List, Sequence, Set, Tuple
 
 from ...database import db
 from ...services.consent import consent_service
 from ...services.newsletter import service as newsletter_service
+from ...services.party import service as party_service
+from ...services.party.transfer.models import Party
 from ...services.shop.order import service as order_service
+from ...services.shop.shop import service as shop_service
+from ...services.shop.shop.transfer.models import ShopID
+from ...services.ticketing.models.ticket import Ticket as DbTicket
+from ...services.ticketing import attendance_service, ticket_service
 from ...services.user import event_service
 from ...services.user.models.detail import UserDetail
 from ...services.user.models.event import UserEvent, UserEventData
@@ -19,7 +27,7 @@ from ...services.user.models.user import User as DbUser
 from ...services.user import service as user_service
 from ...services.user.transfer.models import User
 from ...services.user_avatar import service as avatar_service
-from ...typing import UserID
+from ...typing import PartyID, UserID
 
 from .models import UserStateFilter
 
@@ -38,21 +46,6 @@ def get_users_paginated(page, per_page, *, search_term=None, state_filter=None):
         query = _filter_by_search_term(query, search_term)
 
     return query.paginate(page, per_page)
-
-
-def _filter_by_search_term(query, search_term):
-    ilike_pattern = '%{}%'.format(search_term)
-
-    return query \
-        .join(UserDetail) \
-        .filter(
-            db.or_(
-                DbUser.email_address.ilike(ilike_pattern),
-                DbUser.screen_name.ilike(ilike_pattern),
-                UserDetail.first_names.ilike(ilike_pattern),
-                UserDetail.last_name.ilike(ilike_pattern)
-            )
-        )
 
 
 def _filter_by_state(query, state_filter):
@@ -75,6 +68,78 @@ def _filter_by_state(query, state_filter):
             .filter_by(deleted=True)
     else:
         return query
+
+
+def _filter_by_search_term(query, search_term):
+    ilike_pattern = '%{}%'.format(search_term)
+
+    return query \
+        .join(UserDetail) \
+        .filter(
+            db.or_(
+                DbUser.email_address.ilike(ilike_pattern),
+                DbUser.screen_name.ilike(ilike_pattern),
+                UserDetail.first_names.ilike(ilike_pattern),
+                UserDetail.last_name.ilike(ilike_pattern)
+            )
+        )
+
+
+def get_parties_by_shop_id(shop_ids: Set[ShopID]) -> Dict[ShopID, Party]:
+    """Return the parties associated with the given shops."""
+    shops = shop_service.find_shops(shop_ids)
+    party_ids = {shop.party_id for shop in shops}
+
+    parties = party_service.get_parties(party_ids)
+    parties_by_id = {p.id: p for p in parties}
+
+    parties_by_shop_id = {}
+    for shop in shops:
+        party = parties_by_id[shop.party_id]
+        parties_by_shop_id[shop.id] = party
+
+    return parties_by_shop_id
+
+
+def get_parties_and_tickets(user_id: UserID
+                           ) -> Sequence[Tuple[Party, List[DbTicket]]]:
+    """Return tickets the user uses or manages, and the related parties."""
+    tickets = ticket_service.find_tickets_related_to_user(user_id)
+
+    tickets_by_party_id = _group_tickets_by_party_id(tickets)
+
+    party_ids = tickets_by_party_id.keys()
+    parties_by_id = _get_parties_by_id(party_ids)
+
+    parties_and_tickets = [
+        (parties_by_id[party_id], tickets)
+        for party_id, tickets in tickets_by_party_id.items()]
+
+    parties_and_tickets.sort(key=lambda x: x[0].starts_at, reverse=True)
+
+    return parties_and_tickets
+
+
+def _group_tickets_by_party_id(tickets: Sequence[DbTicket]
+                              ) -> Dict[PartyID, List[DbTicket]]:
+    tickets_by_party_id = defaultdict(list)
+
+    for ticket in tickets:
+        tickets_by_party_id[ticket.category.party_id].append(ticket)
+
+    return tickets_by_party_id
+
+
+def _get_parties_by_id(party_ids: Set[PartyID]) -> Dict[PartyID, Party]:
+    parties = party_service.get_parties(party_ids)
+    return {p.id: p for p in parties}
+
+
+def get_attended_parties(user_id: UserID) -> List[Party]:
+    """Return the parties attended by the user, in order."""
+    attended_parties = attendance_service.get_attended_parties(user_id)
+    attended_parties.sort(key=attrgetter('starts_at'), reverse=True)
+    return attended_parties
 
 
 def get_events(user_id: UserID) -> Iterator[UserEventData]:
