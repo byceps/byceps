@@ -8,7 +8,7 @@ byceps.blueprints.board.service
 
 from typing import Dict, Optional, Sequence, Set
 
-from ...services.board.models.posting import Posting
+from ...services.board.models.posting import Posting as DbPosting
 from ...services.ticketing import ticket_service
 from ...services.user_badge import service as badge_service
 from ...services.user_badge.transfer.models import Badge
@@ -17,7 +17,7 @@ from ...typing import BrandID, PartyID, UserID
 from .models import Creator
 
 
-def enrich_creators(postings: Sequence[Posting], brand_id: BrandID,
+def enrich_creators(postings: Sequence[DbPosting], brand_id: BrandID,
                     party_id: Optional[PartyID]) -> None:
     """Enrich creators with their badges."""
     creator_ids = {posting.creator_id for posting in postings}
