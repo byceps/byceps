@@ -7,7 +7,6 @@ byceps.services.shop.order.models.order
 """
 
 from datetime import datetime
-from decimal import Decimal
 from typing import Optional, Set
 
 from sqlalchemy.ext.hybrid import hybrid_property
