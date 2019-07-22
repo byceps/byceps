@@ -8,7 +8,7 @@ byceps.blueprints.board.views
 
 from flask import abort, g, redirect, request, url_for
 
-from ...services.board import access_control_service, \
+from ...services.board import \
     category_query_service as board_category_query_service, \
     last_view_service as board_last_view_service, \
     posting_command_service as board_posting_command_service, \
@@ -16,7 +16,6 @@ from ...services.board import access_control_service, \
     topic_command_service as board_topic_command_service, \
     topic_query_service as board_topic_query_service
 from ...services.party import service as party_service
-from ...services.site import settings_service as site_settings_service
 from ...services.text_markup.service import get_smileys, render_html
 from ...services.user import service as user_service
 from ...util.framework.blueprint import create_blueprint
@@ -31,8 +30,7 @@ from .authorization import BoardPermission, BoardPostingPermission, \
     BoardTopicPermission
 from .forms import PostingCreateForm, PostingUpdateForm, TopicCreateForm, \
     TopicUpdateForm
-from .models import CategoryWithLastUpdateAndUnseenFlag
-from . import service, signals
+from . import _helpers as h, service, signals
 
 
 blueprint = create_blueprint('board', __name__)
@@ -54,10 +52,10 @@ blueprint.add_app_template_filter(render_html, 'bbcode')
 @templated
 def category_index():
     """List categories."""
-    board_id = _get_board_id()
+    board_id = h.get_board_id()
     user = g.current_user
 
-    _require_board_access(board_id, user.id)
+    h.require_board_access(board_id, user.id)
 
     categories = board_category_query_service \
         .get_categories_with_last_updates(board_id)
@@ -75,10 +73,10 @@ def category_index():
 @templated
 def category_view(slug, page):
     """List latest topics in the category."""
-    board_id = _get_board_id()
+    board_id = h.get_board_id()
     user = g.current_user
 
-    _require_board_access(board_id, user.id)
+    h.require_board_access(board_id, user.id)
 
     category = board_category_query_service \
         .find_category_by_slug(board_id, slug)
@@ -106,7 +104,7 @@ def category_view(slug, page):
 @blueprint.route('/categories/<category_id>/mark_all_topics_as_read', methods=['POST'])
 @respond_no_content_with_location
 def mark_all_topics_in_category_as_viewed(category_id):
-    category = _get_category_or_404(category_id)
+    category = h.get_category_or_404(category_id)
 
     board_last_view_service.mark_all_topics_in_category_as_viewed(
         category_id, g.current_user.id)
@@ -123,10 +121,10 @@ def mark_all_topics_in_category_as_viewed(category_id):
 @templated
 def topic_index(page):
     """List latest topics in all categories."""
-    board_id = _get_board_id()
+    board_id = h.get_board_id()
     user = g.current_user
 
-    _require_board_access(board_id, user.id)
+    h.require_board_access(board_id, user.id)
 
     topics_per_page = service.get_topics_per_page_value()
 
@@ -154,12 +152,12 @@ def topic_view(topic_id, page):
     if topic is None:
         abort(404)
 
-    board_id = _get_board_id()
+    board_id = h.get_board_id()
 
     if topic.category.board_id != board_id:
         abort(404)
 
-    _require_board_access(board_id, user.id)
+    h.require_board_access(board_id, user.id)
 
     # Copy last view timestamp for later use to compare postings
     # against it.
@@ -177,7 +175,7 @@ def topic_view(topic_id, page):
             page = service.calculate_posting_page_number(posting,
                                                          g.current_user)
             # Jump to a specific posting. This requires a redirect.
-            url = _build_url_for_posting_in_topic_view(posting, page)
+            url = h.build_url_for_posting_in_topic_view(posting, page)
             return redirect(url, code=307)
 
     if not user.is_anonymous:
@@ -217,7 +215,7 @@ def topic_view(topic_id, page):
 @templated
 def topic_create_form(category_id, erroneous_form=None):
     """Show a form to create a topic in the category."""
-    category = _get_category_or_404(category_id)
+    category = h.get_category_or_404(category_id)
 
     form = erroneous_form if erroneous_form else TopicCreateForm()
 
@@ -232,7 +230,7 @@ def topic_create_form(category_id, erroneous_form=None):
 @permission_required(BoardTopicPermission.create)
 def topic_create(category_id):
     """Create a topic in the category."""
-    category = _get_category_or_404(category_id)
+    category = h.get_category_or_404(category_id)
 
     form = TopicCreateForm(request.form)
     if not form.validate():
@@ -244,7 +242,7 @@ def topic_create(category_id):
 
     topic = board_topic_command_service \
         .create_topic(category.id, creator.id, title, body)
-    topic_url = _build_external_url_for_topic(topic.id)
+    topic_url = h.build_external_url_for_topic(topic.id)
 
     flash_success('Das Thema "{}" wurde hinzugefügt.', topic.title)
     signals.topic_created.send(None, topic_id=topic.id, url=topic_url)
@@ -257,8 +255,8 @@ def topic_create(category_id):
 @templated
 def topic_update_form(topic_id, erroneous_form=None):
     """Show form to update a topic."""
-    topic = _get_topic_or_404(topic_id)
-    url = _build_url_for_topic(topic.id)
+    topic = h.get_topic_or_404(topic_id)
+    url = h.build_url_for_topic(topic.id)
 
     user_may_update = topic.may_be_updated_by_user(g.current_user)
 
@@ -289,8 +287,8 @@ def topic_update_form(topic_id, erroneous_form=None):
 @permission_required(BoardTopicPermission.update)
 def topic_update(topic_id):
     """Update a topic."""
-    topic = _get_topic_or_404(topic_id)
-    url = _build_url_for_topic(topic.id)
+    topic = h.get_topic_or_404(topic_id)
+    url = h.build_url_for_topic(topic.id)
 
     user_may_update = topic.may_be_updated_by_user(g.current_user)
 
@@ -323,8 +321,8 @@ def topic_update(topic_id):
 @templated
 def topic_moderate_form(topic_id):
     """Show a form to moderate the topic."""
-    board_id = _get_board_id()
-    topic = _get_topic_or_404(topic_id)
+    board_id = h.get_board_id()
+    topic = h.get_topic_or_404(topic_id)
 
     topic.creator = user_service.find_user(topic.creator_id)
 
@@ -342,7 +340,7 @@ def topic_moderate_form(topic_id):
 @respond_no_content_with_location
 def topic_hide(topic_id):
     """Hide a topic."""
-    topic = _get_topic_or_404(topic_id)
+    topic = h.get_topic_or_404(topic_id)
     moderator_id = g.current_user.id
 
     board_topic_command_service.hide_topic(topic, moderator_id)
@@ -351,9 +349,9 @@ def topic_hide(topic_id):
 
     signals.topic_hidden.send(None, topic_id=topic.id,
                               moderator_id=moderator_id,
-                              url=_build_external_url_for_topic(topic.id))
+                              url=h.build_external_url_for_topic(topic.id))
 
-    return _build_url_for_topic_in_category_view(topic)
+    return h.build_url_for_topic_in_category_view(topic)
 
 
 @blueprint.route('/topics/<uuid:topic_id>/flags/hidden', methods=['DELETE'])
@@ -361,7 +359,7 @@ def topic_hide(topic_id):
 @respond_no_content_with_location
 def topic_unhide(topic_id):
     """Un-hide a topic."""
-    topic = _get_topic_or_404(topic_id)
+    topic = h.get_topic_or_404(topic_id)
     moderator_id = g.current_user.id
 
     board_topic_command_service.unhide_topic(topic, moderator_id)
@@ -371,9 +369,9 @@ def topic_unhide(topic_id):
 
     signals.topic_unhidden.send(None, topic_id=topic.id,
                                 moderator_id=moderator_id,
-                                url=_build_external_url_for_topic(topic.id))
+                                url=h.build_external_url_for_topic(topic.id))
 
-    return _build_url_for_topic_in_category_view(topic)
+    return h.build_url_for_topic_in_category_view(topic)
 
 
 @blueprint.route('/topics/<uuid:topic_id>/flags/locked', methods=['POST'])
@@ -381,7 +379,7 @@ def topic_unhide(topic_id):
 @respond_no_content_with_location
 def topic_lock(topic_id):
     """Lock a topic."""
-    topic = _get_topic_or_404(topic_id)
+    topic = h.get_topic_or_404(topic_id)
     moderator_id = g.current_user.id
 
     board_topic_command_service.lock_topic(topic, moderator_id)
@@ -390,9 +388,9 @@ def topic_lock(topic_id):
 
     signals.topic_locked.send(None, topic_id=topic.id,
                               moderator_id=moderator_id,
-                              url=_build_external_url_for_topic(topic.id))
+                              url=h.build_external_url_for_topic(topic.id))
 
-    return _build_url_for_topic_in_category_view(topic)
+    return h.build_url_for_topic_in_category_view(topic)
 
 
 @blueprint.route('/topics/<uuid:topic_id>/flags/locked', methods=['DELETE'])
@@ -400,7 +398,7 @@ def topic_lock(topic_id):
 @respond_no_content_with_location
 def topic_unlock(topic_id):
     """Unlock a topic."""
-    topic = _get_topic_or_404(topic_id)
+    topic = h.get_topic_or_404(topic_id)
     moderator_id = g.current_user.id
 
     board_topic_command_service.unlock_topic(topic, moderator_id)
@@ -410,9 +408,9 @@ def topic_unlock(topic_id):
 
     signals.topic_unlocked.send(None, topic_id=topic.id,
                                 moderator_id=moderator_id,
-                                url=_build_external_url_for_topic(topic.id))
+                                url=h.build_external_url_for_topic(topic.id))
 
-    return _build_url_for_topic_in_category_view(topic)
+    return h.build_url_for_topic_in_category_view(topic)
 
 
 @blueprint.route('/topics/<uuid:topic_id>/flags/pinned', methods=['POST'])
@@ -420,7 +418,7 @@ def topic_unlock(topic_id):
 @respond_no_content_with_location
 def topic_pin(topic_id):
     """Pin a topic."""
-    topic = _get_topic_or_404(topic_id)
+    topic = h.get_topic_or_404(topic_id)
     moderator_id = g.current_user.id
 
     board_topic_command_service.pin_topic(topic, moderator_id)
@@ -429,9 +427,9 @@ def topic_pin(topic_id):
 
     signals.topic_pinned.send(None, topic_id=topic.id,
                               moderator_id=moderator_id,
-                              url=_build_external_url_for_topic(topic.id))
+                              url=h.build_external_url_for_topic(topic.id))
 
-    return _build_url_for_topic_in_category_view(topic)
+    return h.build_url_for_topic_in_category_view(topic)
 
 
 @blueprint.route('/topics/<uuid:topic_id>/flags/pinned', methods=['DELETE'])
@@ -439,7 +437,7 @@ def topic_pin(topic_id):
 @respond_no_content_with_location
 def topic_unpin(topic_id):
     """Unpin a topic."""
-    topic = _get_topic_or_404(topic_id)
+    topic = h.get_topic_or_404(topic_id)
     moderator_id = g.current_user.id
 
     board_topic_command_service.unpin_topic(topic, moderator_id)
@@ -448,23 +446,23 @@ def topic_unpin(topic_id):
 
     signals.topic_unpinned.send(None, topic_id=topic.id,
                                 moderator_id=moderator_id,
-                                url=_build_external_url_for_topic(topic.id))
+                                url=h.build_external_url_for_topic(topic.id))
 
-    return _build_url_for_topic_in_category_view(topic)
+    return h.build_url_for_topic_in_category_view(topic)
 
 
 @blueprint.route('/topics/<uuid:topic_id>/move', methods=['POST'])
 @permission_required(BoardTopicPermission.move)
 def topic_move(topic_id):
     """Move a topic from one category to another."""
-    topic = _get_topic_or_404(topic_id)
+    topic = h.get_topic_or_404(topic_id)
     moderator_id = g.current_user.id
 
     new_category_id = request.form.get('category_id')
     if not new_category_id:
         abort(400, 'No target category ID given.')
 
-    new_category = _get_category_or_404(new_category_id)
+    new_category = h.get_category_or_404(new_category_id)
 
     old_category = topic.category
 
@@ -479,9 +477,9 @@ def topic_move(topic_id):
                              old_category_id=old_category.id,
                              new_category_id=new_category.id,
                              moderator_id=moderator_id,
-                             url=_build_external_url_for_topic(topic.id))
+                             url=h.build_external_url_for_topic(topic.id))
 
-    return redirect(_build_url_for_topic_in_category_view(topic))
+    return redirect(h.build_url_for_topic_in_category_view(topic))
 
 
 @blueprint.route('/topics/<uuid:topic_id>/flags/announcements', methods=['POST'])
@@ -489,14 +487,14 @@ def topic_move(topic_id):
 @respond_no_content_with_location
 def topic_limit_to_announcements(topic_id):
     """Limit posting in the topic to moderators."""
-    topic = _get_topic_or_404(topic_id)
+    topic = h.get_topic_or_404(topic_id)
 
     board_topic_command_service.limit_topic_to_announcements(topic)
 
     flash_success('Das Thema "{}" wurde auf Ankündigungen beschränkt.',
                   topic.title, icon='announce')
 
-    return _build_url_for_topic_in_category_view(topic)
+    return h.build_url_for_topic_in_category_view(topic)
 
 
 @blueprint.route('/topics/<uuid:topic_id>/flags/announcements', methods=['DELETE'])
@@ -504,14 +502,14 @@ def topic_limit_to_announcements(topic_id):
 @respond_no_content_with_location
 def topic_remove_limit_to_announcements(topic_id):
     """Allow non-moderators to post in the topic again."""
-    topic = _get_topic_or_404(topic_id)
+    topic = h.get_topic_or_404(topic_id)
 
     board_topic_command_service.remove_limit_of_topic_to_announcements(topic)
 
     flash_success('Das Thema "{}" wurde für normale Beiträge geöffnet.',
                   topic.title)
 
-    return _build_url_for_topic_in_category_view(topic)
+    return h.build_url_for_topic_in_category_view(topic)
 
 
 # -------------------------------------------------------------------- #
@@ -523,12 +521,12 @@ def posting_view(posting_id):
     """Show the page of the posting's topic that contains the posting,
     as seen by the current user.
     """
-    posting = _get_posting_or_404(posting_id)
+    posting = h.get_posting_or_404(posting_id)
 
     page = service.calculate_posting_page_number(posting, g.current_user)
 
     return redirect(
-        _build_url_for_posting_in_topic_view(posting, page, _external=True))
+        h.build_url_for_posting_in_topic_view(posting, page, _external=True))
 
 
 @blueprint.route('/topics/<uuid:topic_id>/create')
@@ -536,7 +534,7 @@ def posting_view(posting_id):
 @templated
 def posting_create_form(topic_id, erroneous_form=None):
     """Show a form to create a posting to the topic."""
-    topic = _get_topic_or_404(topic_id)
+    topic = h.get_topic_or_404(topic_id)
 
     form = erroneous_form if erroneous_form else PostingCreateForm()
 
@@ -571,7 +569,7 @@ def quote_posting_as_bbcode():
 @permission_required(BoardPostingPermission.create)
 def posting_create(topic_id):
     """Create a posting to the topic."""
-    topic = _get_topic_or_404(topic_id)
+    topic = h.get_topic_or_404(topic_id)
 
     form = PostingCreateForm(request.form)
     if not form.validate():
@@ -585,14 +583,14 @@ def posting_create(topic_id):
             'Das Thema ist geschlossen. '
             'Es können keine Beiträge mehr hinzugefügt werden.',
             icon='lock')
-        return redirect(_build_url_for_topic(topic.id))
+        return redirect(h.build_url_for_topic(topic.id))
 
     if topic.posting_limited_to_moderators \
             and not g.current_user.has_permission(BoardPermission.announce):
         flash_error(
             'In diesem Thema dürfen nur Moderatoren Beiträge hinzufügen.',
             icon='announce')
-        return redirect(_build_url_for_topic(topic.id))
+        return redirect(h.build_url_for_topic(topic.id))
 
     posting = board_posting_command_service \
         .create_posting(topic, creator.id, body)
@@ -603,12 +601,12 @@ def posting_create(topic_id):
 
     flash_success('Deine Antwort wurde hinzugefügt.')
     signals.posting_created.send(None, posting_id=posting.id,
-                                 url=_build_external_url_for_posting(posting.id))
+                                 url=h.build_external_url_for_posting(posting.id))
 
     postings_per_page = service.get_postings_per_page_value()
     page_count = topic.count_pages(postings_per_page)
 
-    return redirect(_build_url_for_posting_in_topic_view(posting, page_count))
+    return redirect(h.build_url_for_posting_in_topic_view(posting, page_count))
 
 
 @blueprint.route('/postings/<uuid:posting_id>/update')
@@ -616,10 +614,10 @@ def posting_create(topic_id):
 @templated
 def posting_update_form(posting_id, erroneous_form=None):
     """Show form to update a posting."""
-    posting = _get_posting_or_404(posting_id)
+    posting = h.get_posting_or_404(posting_id)
 
     page = service.calculate_posting_page_number(posting, g.current_user)
-    url = _build_url_for_posting_in_topic_view(posting, page)
+    url = h.build_url_for_posting_in_topic_view(posting, page)
 
     user_may_update = posting.may_be_updated_by_user(g.current_user)
 
@@ -650,10 +648,10 @@ def posting_update_form(posting_id, erroneous_form=None):
 @permission_required(BoardPostingPermission.update)
 def posting_update(posting_id):
     """Update a posting."""
-    posting = _get_posting_or_404(posting_id)
+    posting = h.get_posting_or_404(posting_id)
 
     page = service.calculate_posting_page_number(posting, g.current_user)
-    url = _build_url_for_posting_in_topic_view(posting, page)
+    url = h.build_url_for_posting_in_topic_view(posting, page)
 
     user_may_update = posting.may_be_updated_by_user(g.current_user)
 
@@ -687,7 +685,7 @@ def posting_update(posting_id):
 @templated
 def posting_moderate_form(posting_id):
     """Show a form to moderate the posting."""
-    posting = _get_posting_or_404(posting_id)
+    posting = h.get_posting_or_404(posting_id)
 
     posting.creator = user_service.find_user(posting.creator_id)
 
@@ -701,7 +699,7 @@ def posting_moderate_form(posting_id):
 @respond_no_content_with_location
 def posting_hide(posting_id):
     """Hide a posting."""
-    posting = _get_posting_or_404(posting_id)
+    posting = h.get_posting_or_404(posting_id)
     moderator_id = g.current_user.id
 
     board_posting_command_service.hide_posting(posting, moderator_id)
@@ -712,9 +710,9 @@ def posting_hide(posting_id):
 
     signals.posting_hidden.send(None, posting_id=posting.id,
                                 moderator_id=moderator_id,
-                                url=_build_external_url_for_posting(posting.id))
+                                url=h.build_external_url_for_posting(posting.id))
 
-    return _build_url_for_posting_in_topic_view(posting, page)
+    return h.build_url_for_posting_in_topic_view(posting, page)
 
 
 @blueprint.route('/postings/<uuid:posting_id>/flags/hidden', methods=['DELETE'])
@@ -722,7 +720,7 @@ def posting_hide(posting_id):
 @respond_no_content_with_location
 def posting_unhide(posting_id):
     """Un-hide a posting."""
-    posting = _get_posting_or_404(posting_id)
+    posting = h.get_posting_or_404(posting_id)
     moderator_id = g.current_user.id
 
     board_posting_command_service.unhide_posting(posting, moderator_id)
@@ -733,104 +731,6 @@ def posting_unhide(posting_id):
 
     signals.posting_unhidden.send(None, posting_id=posting.id,
                                   moderator_id=moderator_id,
-                                  url=_build_external_url_for_posting(posting.id))
+                                  url=h.build_external_url_for_posting(posting.id))
 
-    return _build_url_for_posting_in_topic_view(posting, page)
-
-
-def _get_board_id():
-    board_id = site_settings_service.find_setting_value(g.site_id, 'board_id')
-
-    if board_id is None:
-        abort(404)
-
-    return board_id
-
-
-def _get_category_or_404(category_id):
-    category = board_category_query_service.find_category_by_id(category_id)
-
-    if category is None:
-        abort(404)
-
-    board_id = _get_board_id()
-
-    if category.board_id != board_id:
-        abort(404)
-
-    _require_board_access(board_id, g.current_user.id)
-
-    return category
-
-
-def _get_topic_or_404(topic_id):
-    topic = board_topic_query_service.find_topic_by_id(topic_id)
-
-    if topic is None:
-        abort(404)
-
-    board_id = _get_board_id()
-
-    if topic.category.board_id != board_id:
-        abort(404)
-
-    _require_board_access(board_id, g.current_user.id)
-
-    return topic
-
-
-def _get_posting_or_404(posting_id):
-    posting = board_posting_query_service.find_posting_by_id(posting_id)
-
-    if posting is None:
-        abort(404)
-
-    board_id = _get_board_id()
-
-    if posting.topic.category.board_id != board_id:
-        abort(404)
-
-    _require_board_access(board_id, g.current_user.id)
-
-    return posting
-
-
-def _require_board_access(board_id, user_id):
-    has_access = access_control_service.has_user_access_to_board(user_id,
-                                                                 board_id)
-    if not has_access:
-        abort(404)
-
-
-def _build_external_url_for_topic(topic_id):
-    return _build_url_for_topic(topic_id, external=True)
-
-
-def _build_url_for_topic(topic_id, *, external=False):
-    return url_for('.topic_view',
-                   topic_id=topic_id,
-                   _external=external)
-
-
-def _build_url_for_topic_in_category_view(topic):
-    return url_for('.category_view',
-                   slug=topic.category.slug,
-                   _anchor='topic-{}'.format(topic.id))
-
-
-def _build_external_url_for_posting(posting_id):
-    return _build_url_for_posting(posting_id, external=True)
-
-
-def _build_url_for_posting(posting_id, *, external=False):
-    return url_for('.posting_view',
-                   posting_id=posting_id,
-                   _external=external)
-
-
-def _build_url_for_posting_in_topic_view(posting, page, **kwargs):
-    return url_for('.topic_view',
-                   topic_id=posting.topic.id,
-                   page=page,
-                   _anchor='posting-{}'.format(posting.id),
-                   **kwargs)
+    return h.build_url_for_posting_in_topic_view(posting, page)
