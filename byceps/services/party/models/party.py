@@ -7,6 +7,7 @@ byceps.services.party.models.party
 """
 
 from datetime import datetime
+from typing import Optional
 
 from ....database import db
 from ....typing import BrandID, PartyID
@@ -25,15 +26,18 @@ class Party(db.Model):
     title = db.Column(db.UnicodeText, unique=True, nullable=False)
     starts_at = db.Column(db.DateTime, nullable=False)
     ends_at = db.Column(db.DateTime, nullable=False)
+    max_ticket_quantity = db.Column(db.Integer, nullable=True)
     archived = db.Column(db.Boolean, default=False, nullable=False)
 
     def __init__(self, party_id: PartyID, brand_id: BrandID, title: str,
-                 starts_at: datetime, ends_at: datetime) -> None:
+                 starts_at: datetime, ends_at: datetime,
+                 *, max_ticket_quantity: Optional[int]=None) -> None:
         self.id = party_id
         self.brand_id = brand_id
         self.title = title
         self.starts_at = starts_at
         self.ends_at = ends_at
+        self.max_ticket_quantity = max_ticket_quantity
 
     @property
     def is_over(self) -> bool:

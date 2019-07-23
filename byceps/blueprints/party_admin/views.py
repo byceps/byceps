@@ -145,9 +145,11 @@ def create(brand_id):
     title = form.title.data.strip()
     starts_at = form.starts_at.data
     ends_at = form.ends_at.data
+    max_ticket_quantity = form.max_ticket_quantity.data
 
     party = party_service.create_party(party_id, brand.id, title, starts_at,
-                                       ends_at)
+                                       ends_at,
+                                       max_ticket_quantity=max_ticket_quantity)
 
     flash_success('Die Party "{}" wurde angelegt.', party.title)
     return redirect_to('.index_for_brand', brand_id=brand.id)
@@ -183,11 +185,12 @@ def update(party_id):
     title = form.title.data.strip()
     starts_at = form.starts_at.data
     ends_at = form.ends_at.data
+    max_ticket_quantity = form.max_ticket_quantity.data
     archived = form.archived.data
 
     try:
         party = party_service.update_party(party.id, title, starts_at, ends_at,
-                                           archived)
+                                           max_ticket_quantity, archived)
     except party_service.UnknownPartyId:
         abort(404, 'Unknown party ID "{}".'.format(party_id))
 

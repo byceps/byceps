@@ -20,6 +20,7 @@ class Party:
     title = attrib(type=str)
     starts_at = attrib(type=datetime)
     ends_at = attrib(type=datetime)
+    max_ticket_quantity = attrib(type=int)
     archived = attrib(type=bool)
 
 

@@ -27,12 +27,17 @@
   <table class="index wide">
     <thead>
       <tr>
-        <th>Name<br>ID</th>
-        <th>Zeitraum</th>
-        <th class="centered">Artikel</th>
-        <th class="centered">Bestellungen</th>
-        <th class="centered">Tickets</th>
-        <th></th>
+        <th>Name</th>
+        <th rowspan="2">Zeitraum</th>
+        <th rowspan="2" class="centered">Artikel</th>
+        <th rowspan="2" class="centered">Bestellungen</th>
+        <th colspan="2" class="centered">Tickets</th>
+        <th rowspan="2"></th>
+      </tr>
+      <tr>
+        <th>ID</th>
+        <th>verkauft</th>
+        <th>maximal</th>
       </tr>
     </thead>
     <tbody>
@@ -55,6 +60,7 @@
         <td class="centered bignumber">{{ article_count_by_party_id.get(party.id, 0) }}</td>
         <td class="centered bignumber">{{ order_count_by_party_id.get(party.id, 0) }}</td>
         <td class="centered bignumber">{{ ticket_count_by_party_id[party.id] }}</td>
+        <td class="centered bignumber">{{ party.max_ticket_quantity|separate_thousands if (party.max_ticket_quantity is not none) else '?'|dim }}</td>
         <td>
           {%- if g.current_user.has_permission(PartyPermission.update) %}
           <div class="dropdown left">

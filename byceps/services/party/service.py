@@ -23,9 +23,11 @@ class UnknownPartyId(Exception):
 
 
 def create_party(party_id: PartyID, brand_id: BrandID, title: str,
-                 starts_at: datetime, ends_at: datetime) -> Party:
+                 starts_at: datetime, ends_at: datetime,
+                 *, max_ticket_quantity: Optional[int]=None) -> Party:
     """Create a party."""
-    party = DbParty(party_id, brand_id, title, starts_at, ends_at)
+    party = DbParty(party_id, brand_id, title, starts_at, ends_at,
+                    max_ticket_quantity=max_ticket_quantity)
 
     db.session.add(party)
     db.session.commit()
@@ -34,7 +36,8 @@ def create_party(party_id: PartyID, brand_id: BrandID, title: str,
 
 
 def update_party(party_id: PartyID, title: str, starts_at: datetime,
-                 ends_at: datetime, archived: bool) -> Party:
+                 ends_at: datetime, max_ticket_quantity: Optional[int],
+                 archived: bool) -> Party:
     """Update a party."""
     party = DbParty.query.get(party_id)
 
@@ -44,6 +47,7 @@ def update_party(party_id: PartyID, title: str, starts_at: datetime,
     party.title = title
     party.starts_at = starts_at
     party.ends_at = ends_at
+    party.max_ticket_quantity = max_ticket_quantity
     party.archived = archived
 
     db.session.commit()
@@ -158,5 +162,6 @@ def _db_entity_to_party(party: DbParty) -> Party:
         party.title,
         party.starts_at,
         party.ends_at,
+        party.max_ticket_quantity,
         party.archived,
     )

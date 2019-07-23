@@ -45,6 +45,10 @@
       <th>Ende</th>
       <td>{{ render_datetime(party.ends_at) }}</td>
     </tr>
+    <tr>
+      <th>Maximale Anzahl Tickets</th>
+      <td>{{ party.max_ticket_quantity|separate_thousands if (party.max_ticket_quantity is not none) else 'nicht festgelegt'|dim }}</td>
+    </tr>
   </table>
 
   <h2>Einstellungen {{ render_extra_in_heading(settings|length) }}</h2>
