@@ -232,7 +232,7 @@ def cancel_order(order_id: OrderID, updated_by_id: UserID, reason: str) -> None:
 
     db.session.commit()
 
-    action_service.execute_actions(order, payment_state_to)
+    action_service.execute_actions(order.to_transfer_object(), payment_state_to)
 
 
 def mark_order_as_paid(order_id: OrderID, payment_method: PaymentMethod,
