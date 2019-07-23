@@ -56,15 +56,15 @@ def _collect_board_metrics(brand_ids: List[BrandID]) -> Iterator[Metric]:
         board_ids = [board.id for board in boards]
 
         for board_id in board_ids:
+            labels = [Label('board', board_id)]
+
             topic_count = board_topic_query_service \
                 .count_topics_for_board(board_id)
-            yield Metric('board_topic_count', topic_count,
-                         labels=[Label('board', board_id)])
+            yield Metric('board_topic_count', topic_count, labels=labels)
 
             posting_count = board_posting_query_service \
                 .count_postings_for_board(board_id)
-            yield Metric('board_posting_count', posting_count,
-                         labels=[Label('board', board_id)])
+            yield Metric('board_posting_count', posting_count, labels=labels)
 
 
 def _collect_consent_metrics() -> Iterator[Metric]:
@@ -121,25 +121,24 @@ def _collect_ticket_metrics(active_parties: List[Party]) -> Iterator[Metric]:
     """Provide ticket counts for active parties."""
     for party in active_parties:
         party_id = party.id
+        labels = [Label('party', party_id)]
 
         max_ticket_quantity = party.max_ticket_quantity
         if max_ticket_quantity is not None:
-            yield Metric('tickets_max', max_ticket_quantity,
-                         labels=[Label('party', party_id)])
+            yield Metric('tickets_max', max_ticket_quantity, labels=labels)
 
         tickets_revoked_count = ticket_service \
             .count_revoked_tickets_for_party(party_id)
         yield Metric('tickets_revoked_count', tickets_revoked_count,
-                     labels=[Label('party', party_id)])
+                     labels=labels)
 
         tickets_sold_count = ticket_service.count_tickets_for_party(party_id)
-        yield Metric('tickets_sold_count', tickets_sold_count,
-                     labels=[Label('party', party_id)])
+        yield Metric('tickets_sold_count', tickets_sold_count, labels=labels)
 
         tickets_checked_in_count = ticket_service \
             .count_tickets_checked_in_for_party(party_id)
         yield Metric('tickets_checked_in_count', tickets_checked_in_count,
-                     labels=[Label('party', party_id)])
+                     labels=labels)
 
 
 def _collect_user_metrics() -> Iterator[Metric]:
