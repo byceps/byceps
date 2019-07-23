@@ -14,6 +14,7 @@ from ...services.board import board_service, \
     posting_query_service as board_posting_query_service
 from ...services.consent import consent_service
 from ...services.metrics.models import Label, Metric
+from ...services.party.transfer.models import Party
 from ...services.party import service as party_service
 from ...services.seating import seat_service
 from ...services.shop.order import service as order_service
@@ -45,7 +46,7 @@ def collect_metrics() -> Iterator[Metric]:
     yield from _collect_shop_ordered_article_metrics(active_shop_ids)
     yield from _collect_shop_order_metrics(active_shops)
     yield from _collect_seating_metrics(active_party_ids)
-    yield from _collect_ticket_metrics(active_party_ids)
+    yield from _collect_ticket_metrics(active_parties)
     yield from _collect_user_metrics()
 
 
@@ -116,14 +117,20 @@ def _collect_seating_metrics(active_party_ids: List[PartyID]
                          ])
 
 
-def _collect_ticket_metrics(active_party_ids: List[PartyID]) -> Iterator[Metric]:
+def _collect_ticket_metrics(active_parties: List[Party]) -> Iterator[Metric]:
     """Provide ticket counts for active parties."""
-    for party_id in active_party_ids:
+    for party in active_parties:
+        party_id = party.id
+
+        max_ticket_quantity = party.max_ticket_quantity
+        if max_ticket_quantity is not None:
+            yield Metric('tickets_max', max_ticket_quantity,
+                         labels=[Label('party', party_id)])
+
         tickets_revoked_count = ticket_service \
             .count_revoked_tickets_for_party(party_id)
         yield Metric('tickets_revoked_count', tickets_revoked_count,
                      labels=[Label('party', party_id)])
-
 
         tickets_sold_count = ticket_service.count_tickets_for_party(party_id)
         yield Metric('tickets_sold_count', tickets_sold_count,
