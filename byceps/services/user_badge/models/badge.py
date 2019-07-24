@@ -19,10 +19,10 @@ class Badge(db.Model):
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     brand_id = db.Column(db.Unicode(20), db.ForeignKey('brands.id'), nullable=True)
-    slug = db.Column(db.Unicode(40), unique=True, index=True, nullable=False)
-    label = db.Column(db.Unicode(80), unique=True, nullable=False)
+    slug = db.Column(db.UnicodeText, unique=True, index=True, nullable=False)
+    label = db.Column(db.UnicodeText, unique=True, nullable=False)
     description = db.Column(db.UnicodeText, nullable=True)
-    image_filename = db.Column(db.Unicode(80), nullable=False)
+    image_filename = db.Column(db.UnicodeText, nullable=False)
     featured = db.Column(db.Boolean, default=False, nullable=False)
 
     def __init__(self, slug: str, label: str, image_filename: str, *,

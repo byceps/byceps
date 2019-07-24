@@ -22,15 +22,15 @@ class UserDetail(db.Model):
 
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
     user = db.relationship('User', backref=db.backref('detail', uselist=False))
-    first_names = db.Column(db.Unicode(40))
-    last_name = db.Column(db.Unicode(40))
+    first_names = db.Column(db.UnicodeText)
+    last_name = db.Column(db.UnicodeText)
     date_of_birth = db.Column(db.Date)
-    country = db.Column(db.Unicode(60))
-    zip_code = db.Column(db.Unicode(5))
-    city = db.Column(db.Unicode(40))
-    street = db.Column(db.Unicode(40))
-    phone_number = db.Column(db.Unicode(20))
-    internal_comment = db.Column(db.Unicode(200))
+    country = db.Column(db.UnicodeText)
+    zip_code = db.Column(db.UnicodeText)
+    city = db.Column(db.UnicodeText)
+    street = db.Column(db.UnicodeText)
+    phone_number = db.Column(db.UnicodeText)
+    internal_comment = db.Column(db.UnicodeText)
     extras = db.Column(MutableDict.as_mutable(db.JSONB))
 
     @property

@@ -25,8 +25,8 @@ class UserGroup(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.now)
     creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), unique=True)
     creator = db.relationship(User)
-    title = db.Column(db.Unicode(40), unique=True)
-    description = db.Column(db.Unicode(200))
+    title = db.Column(db.UnicodeText, unique=True)
+    description = db.Column(db.UnicodeText)
 
     members = association_proxy('memberships', 'user')
 

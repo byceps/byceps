@@ -29,8 +29,8 @@ class Permission(db.Model):
     """
     __tablename__ = 'authz_permissions'
 
-    id = db.Column(db.Unicode(40), primary_key=True)
-    title = db.deferred(db.Column(db.Unicode(80), unique=True, nullable=False))
+    id = db.Column(db.UnicodeText, primary_key=True)
+    title = db.deferred(db.Column(db.UnicodeText, unique=True, nullable=False))
 
     roles = association_proxy('role_permissions', 'role')
 

@@ -39,7 +39,7 @@ class Token(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.now, nullable=False)
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=False)
     user = db.relationship(User)
-    _purpose = db.Column('purpose', db.Unicode(40), index=True, nullable=False)
+    _purpose = db.Column('purpose', db.UnicodeText, index=True, nullable=False)
 
     def __init__(self, user_id: UserID, purpose: Purpose) -> None:
         self.user_id = user_id
