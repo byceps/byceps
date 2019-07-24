@@ -7,7 +7,7 @@ byceps.services.shop.order.event_service
 """
 
 from datetime import datetime
-from typing import Sequence
+from typing import List
 
 from ....database import db
 
@@ -41,7 +41,7 @@ def build_event(event_type: str, order_id: OrderID, data: OrderEventData
     return OrderEvent(now, event_type, order_id, data)
 
 
-def get_events_for_order(order_id: OrderID) -> Sequence[OrderEvent]:
+def get_events_for_order(order_id: OrderID) -> List[OrderEvent]:
     """Return the events for that order."""
     return OrderEvent.query \
         .filter_by(order_id=order_id) \

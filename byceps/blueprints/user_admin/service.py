@@ -102,13 +102,13 @@ def get_parties_by_shop_id(shop_ids: Set[ShopID]) -> Dict[ShopID, Party]:
 
 
 def get_parties_and_tickets(user_id: UserID
-                           ) -> Sequence[Tuple[Party, List[DbTicket]]]:
+                           ) -> List[Tuple[Party, List[DbTicket]]]:
     """Return tickets the user uses or manages, and the related parties."""
     tickets = ticket_service.find_tickets_related_to_user(user_id)
 
     tickets_by_party_id = _group_tickets_by_party_id(tickets)
 
-    party_ids = tickets_by_party_id.keys()
+    party_ids = set(tickets_by_party_id.keys())
     parties_by_id = _get_parties_by_id(party_ids)
 
     parties_and_tickets = [
@@ -122,7 +122,7 @@ def get_parties_and_tickets(user_id: UserID
 
 def _group_tickets_by_party_id(tickets: Sequence[DbTicket]
                               ) -> Dict[PartyID, List[DbTicket]]:
-    tickets_by_party_id = defaultdict(list)
+    tickets_by_party_id = defaultdict(list)  # type: Dict[PartyID, List[DbTicket]]
 
     for ticket in tickets:
         tickets_by_party_id[ticket.category.party_id].append(ticket)
@@ -224,7 +224,7 @@ def _fake_order_events(user_id: UserID) -> Iterator[UserEvent]:
         yield UserEvent(order.created_at, 'order-placed', user_id, data)
 
 
-def _get_additional_data(event: UserEvent, users_by_id: Dict[UserID, User]
+def _get_additional_data(event: UserEvent, users_by_id: Dict[str, User]
                         ) -> Iterator[Tuple[str, Any]]:
     if event.event_type in {
             'user-created',
@@ -259,7 +259,7 @@ def _get_additional_data(event: UserEvent, users_by_id: Dict[UserID, User]
 
 
 def _get_additional_data_for_user_initiated_event(event: UserEvent,
-        users_by_id: Dict[UserID, User]) -> Iterator[Tuple[str, Any]]:
+        users_by_id: Dict[str, User]) -> Iterator[Tuple[str, Any]]:
     initiator_id = event.data.get('initiator_id')
     if initiator_id is not None:
         yield 'initiator', users_by_id[initiator_id]

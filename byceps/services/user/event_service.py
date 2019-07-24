@@ -7,7 +7,7 @@ byceps.services.user.event_service
 """
 
 from datetime import datetime
-from typing import Optional, Sequence
+from typing import List, Optional
 
 from ...database import db
 from ...typing import UserID
@@ -33,7 +33,7 @@ def build_event(event_type: str, user_id: UserID, data: UserEventData,
     return UserEvent(occurred_at, event_type, user_id, data)
 
 
-def get_events_for_user(user_id: UserID) -> Sequence[UserEvent]:
+def get_events_for_user(user_id: UserID) -> List[UserEvent]:
     """Return the events for that user."""
     return UserEvent.query \
         .filter_by(user_id=user_id) \
@@ -42,7 +42,7 @@ def get_events_for_user(user_id: UserID) -> Sequence[UserEvent]:
 
 
 def get_events_of_type_for_user(event_type: str, user_id: UserID
-                               ) -> Sequence[UserEvent]:
+                               ) -> List[UserEvent]:
     """Return the events of that type for that user."""
     return UserEvent.query \
         .filter_by(user_id=user_id) \

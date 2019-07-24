@@ -26,7 +26,7 @@ from ...services.user import stats_service as user_stats_service
 from ...typing import BrandID, PartyID
 
 
-def serialize(metrics: Iterator[Metric]) -> str:
+def serialize(metrics: Iterator[Metric]) -> Iterator[str]:
     """Serialize metric objects to text lines."""
     for metric in metrics:
         yield metric.serialize() + '\n'

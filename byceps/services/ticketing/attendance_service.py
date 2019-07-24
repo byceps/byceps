@@ -9,7 +9,7 @@ byceps.services.ticketing.attendance_service
 from collections import defaultdict
 from datetime import datetime
 from itertools import chain
-from typing import Dict, Sequence, Set
+from typing import Dict, List, Set
 
 from ...database import db
 from ...typing import PartyID, UserID
@@ -37,7 +37,7 @@ def create_archived_attendance(user_id: UserID, party_id: PartyID
     return attendance
 
 
-def get_attended_parties(user_id: UserID) -> Sequence[Party]:
+def get_attended_parties(user_id: UserID) -> List[Party]:
     """Return the parties the user has attended in the past."""
     ticket_attendance_party_ids = _get_attended_party_ids(user_id)
     archived_attendance_party_ids = _get_archived_attendance_party_ids(user_id)

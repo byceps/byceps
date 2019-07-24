@@ -7,7 +7,7 @@ byceps.services.ticketing.event_service
 """
 
 from datetime import datetime
-from typing import Sequence
+from typing import List
 
 from ...database import db
 
@@ -32,7 +32,7 @@ def build_event(event_type: str, ticket_id: TicketID, data: TicketEventData
     return TicketEvent(now, event_type, ticket_id, data)
 
 
-def get_events_for_ticket(ticket_id: TicketID) -> Sequence[TicketEvent]:
+def get_events_for_ticket(ticket_id: TicketID) -> List[TicketEvent]:
     """Return the events for that ticket."""
     return TicketEvent.query \
         .filter_by(ticket_id=ticket_id) \
