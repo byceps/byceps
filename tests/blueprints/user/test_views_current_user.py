@@ -5,7 +5,7 @@
 
 from tests.base import AbstractAppTestCase
 from tests.helpers import create_brand, create_party, create_session_token, \
-    create_user, http_client
+    create_site, create_user, http_client
 
 
 class CurrentUserTestCase(AbstractAppTestCase):
@@ -14,7 +14,8 @@ class CurrentUserTestCase(AbstractAppTestCase):
         super().setUp()
 
         brand = create_brand()
-        create_party(brand_id=brand.id)
+        party = create_party(brand.id)
+        create_site(party.id)
 
     def test_when_logged_in(self):
         user = create_user('McFly')

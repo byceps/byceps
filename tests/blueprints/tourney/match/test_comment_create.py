@@ -8,7 +8,7 @@ from byceps.services.tourney import match_service
 
 from tests.base import AbstractAppTestCase
 from tests.helpers import create_brand, create_party, create_session_token, \
-    create_user, http_client
+    create_site, create_user, http_client
 
 
 class MatchCommentCreateTest(AbstractAppTestCase):
@@ -17,7 +17,8 @@ class MatchCommentCreateTest(AbstractAppTestCase):
         super().setUp()
 
         brand = create_brand()
-        create_party(brand_id=brand.id)
+        party = create_party(brand.id)
+        create_site(party.id)
 
     def test_create_comment_on_existent_match(self):
         player = self.create_player()

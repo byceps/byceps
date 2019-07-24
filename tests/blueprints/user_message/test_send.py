@@ -11,7 +11,7 @@ from byceps.services.user_message import service as user_message_service
 
 from tests.base import AbstractAppTestCase
 from tests.helpers import create_brand, create_party, create_session_token, \
-    create_user, http_client
+    create_site, create_user, http_client
 
 
 class SendUserMessageTest(AbstractAppTestCase):
@@ -20,7 +20,8 @@ class SendUserMessageTest(AbstractAppTestCase):
         super().setUp()
 
         self.brand = create_brand()
-        create_party(brand_id=self.brand.id)
+        party = create_party(self.brand.id)
+        create_site(party.id)
 
         email_service.set_sender_address_for_brand(self.brand.id,
                                                    'noreply@example.com')

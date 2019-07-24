@@ -11,7 +11,7 @@ from byceps.services.shop.order.transfer.models import PaymentMethod
 from testfixtures.shop_order import create_orderer
 
 from tests.helpers import create_brand, create_party, create_session_token, \
-    create_user_with_detail, http_client
+    create_site, create_user_with_detail, http_client
 from tests.services.shop.base import ShopTestBase
 
 
@@ -24,7 +24,8 @@ class ShopOrdersTestCase(ShopTestBase):
         self.user2 = create_user_with_detail('User2')
 
         self.brand = create_brand()
-        self.party = create_party(brand_id=self.brand.id)
+        self.party = create_party(self.brand.id)
+        create_site(self.party.id)
 
     def test_view_matching_user_and_party(self):
         shop = self.create_shop(self.party.id)

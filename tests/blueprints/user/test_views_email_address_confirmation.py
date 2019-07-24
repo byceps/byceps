@@ -6,7 +6,8 @@
 from datetime import datetime
 
 from tests.base import AbstractAppTestCase
-from tests.helpers import create_brand, create_party, create_user, http_client
+from tests.helpers import create_brand, create_party, create_site, \
+    create_user, http_client
 
 from testfixtures.verification_token import \
     create_verification_token_for_email_address_confirmation \
@@ -24,7 +25,8 @@ class EmailAddressConfirmationTestCase(AbstractAppTestCase):
         self.user = create_user(enabled=False)
 
         brand = create_brand()
-        create_party(brand_id=brand.id)
+        party = create_party(brand.id)
+        create_site(party.id)
 
     def test_confirm_email_address_with_valid_token(self):
         verification_token = create_confirmation_token(self.user.id)

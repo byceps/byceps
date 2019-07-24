@@ -4,7 +4,8 @@
 """
 
 from tests.base import AbstractAppTestCase
-from tests.helpers import create_brand, create_party, create_user, http_client
+from tests.helpers import create_brand, create_party, create_site, \
+    create_user, http_client
 
 
 class UserProfileTest(AbstractAppTestCase):
@@ -13,7 +14,8 @@ class UserProfileTest(AbstractAppTestCase):
         super().setUp()
 
         brand = create_brand()
-        create_party(brand_id=brand.id)
+        party = create_party(brand.id)
+        create_site(party.id)
 
         self.user = create_user()
 
