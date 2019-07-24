@@ -7,7 +7,7 @@ byceps.services.shop.order.event_service
 """
 
 from datetime import datetime
-from typing import List
+from typing import List, Sequence
 
 from ....database import db
 
