@@ -12,6 +12,7 @@ from flask import g, render_template
 
 from ... import config
 from ...services.party import service as party_service
+from ...services.site import service as site_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.navigation import Navigation
 
@@ -68,18 +69,19 @@ def provide_site_mode():
 
     # site ID
     if site_mode.is_public():
-        g.site_id = config.get_current_site_id()
+        site_id = config.get_current_site_id()
+        g.site_id = site_id
 
     # current party and brand
     party_id = None
     if site_mode.is_public():
-        party_id = config.get_current_party_id()
+        site = site_service.find_site(site_id)
+        if site is None:
+            raise Exception('Unknown site ID "{}".'.format(site_id))
+
+        party_id = site.party_id
 
         party = party_service.find_party(party_id)
-        if party is None:
-            raise Exception('Unknown party ID "{}".'.format(party_id))
-
-        party_id = party.id
 
         g.party_id = party.id
         g.brand_id = party.brand_id

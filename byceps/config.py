@@ -19,7 +19,6 @@ STATIC_URL_PREFIX_SITE = '/site'
 EXTENSION_KEY = 'byceps_config'
 KEY_SITE_MODE = 'site_mode'
 KEY_SITE_ID = 'site_id'
-KEY_PARTY_ID = 'party_id'
 KEY_SEAT_MANAGEMENT_ENABLED = 'seat_management_enabled'
 KEY_TICKET_MANAGEMENT_ENABLED = 'ticket_management_enabled'
 KEY_USER_REGISTRATION_ENABLED = 'user_registration_enabled'
@@ -43,9 +42,6 @@ def init_app(app):
     if site_mode.is_public():
         site_id = determine_site_id(app)
         update_extension_value(app, KEY_SITE_ID, site_id)
-
-        party_id = determine_party_id(app)
-        update_extension_value(app, KEY_PARTY_ID, party_id)
 
     user_registration_enabled = determine_user_registration_enabled(app,
                                                                     site_mode)
@@ -105,23 +101,6 @@ def determine_site_id(app):
 def get_current_site_id(app=None):
     """Return the id of the current site."""
     return _get_config_dict(app)[KEY_SITE_ID]
-
-
-# -------------------------------------------------------------------- #
-# party ID
-
-
-def determine_party_id(app):
-    party_id = app.config.get('PARTY')
-    if party_id is None:
-        raise ConfigurationError('No party configured.')
-
-    return party_id
-
-
-def get_current_party_id(app=None):
-    """Return the id of the current party."""
-    return _get_config_dict(app)[KEY_PARTY_ID]
 
 
 # -------------------------------------------------------------------- #
