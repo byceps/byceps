@@ -124,7 +124,7 @@ def _get_blueprints(app):
             ('admin.ticketing.checkin', '/admin/ticketing/checkin'  ),
             ('admin.tourney',           '/admin/tourney'            ),
             ('admin.user',              '/admin/users'              ),
-            ('user_badge_admin',        '/admin/user_badges'        ),
+            ('admin.user_badge',        '/admin/user_badges'        ),
         ]
 
     if app.config['METRICS_ENABLED']:

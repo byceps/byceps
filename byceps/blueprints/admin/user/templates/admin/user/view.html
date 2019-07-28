@@ -1,9 +1,9 @@
 {% extends 'layouts/admin/user.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
+{% from 'macros/admin/user_badge.html' import render_user_badges_list %}
 {% from 'macros/datetime.html' import render_date, render_datetime %}
 {% from 'macros/misc.html' import render_tag %}
 {% from 'macros/shop_order_admin.html' import render_order_payment_state %}
-{% from 'macros/user_badge_admin.html' import render_user_badges_list %}
 {% set current_tab = 'profile' %}
 {% set current_tab_user_id = user.id %}
 {% set title = 'Benutzer - %s'|format(user.screen_name) %}

@@ -1,5 +1,5 @@
 """
-byceps.blueprints.user_badge_admin.views
+byceps.blueprints.admin.user_badge.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2019 Jochen Kupperschmidt
@@ -8,16 +8,16 @@ byceps.blueprints.user_badge_admin.views
 
 from flask import abort, request
 
-from ...services.brand import service as brand_service
-from ...services.user import service as user_service
-from ...services.user_badge import service as badge_service
-from ...util.framework.blueprint import create_blueprint
-from ...util.framework.flash import flash_success
-from ...util.framework.templating import templated
-from ...util.views import redirect_to
+from ....services.brand import service as brand_service
+from ....services.user import service as user_service
+from ....services.user_badge import service as badge_service
+from ....util.framework.blueprint import create_blueprint
+from ....util.framework.flash import flash_success
+from ....util.framework.templating import templated
+from ....util.views import redirect_to
 
-from ..authorization.decorators import permission_required
-from ..authorization.registry import permission_registry
+from ...authorization.decorators import permission_required
+from ...authorization.registry import permission_registry
 
 from .authorization import UserBadgePermission
 from .forms import CreateForm

@@ -1,5 +1,5 @@
 """
-byceps.blueprints.user_badge_admin.forms
+byceps.blueprints.admin.user_badge.forms
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2019 Jochen Kupperschmidt
@@ -11,7 +11,7 @@ import re
 from wtforms import BooleanField, SelectField, StringField, TextAreaField
 from wtforms.validators import InputRequired, Length, Regexp
 
-from ...util.l10n import LocalizedForm
+from ....util.l10n import LocalizedForm
 
 
 SLUG_REGEX = re.compile('^[a-z0-9-]+$')
