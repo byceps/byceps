@@ -1,5 +1,5 @@
 """
-byceps.blueprints.shop.shop_admin.views
+byceps.blueprints.admin.shop.shop.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2019 Jochen Kupperschmidt
@@ -10,19 +10,19 @@ from collections import defaultdict
 
 from flask import abort
 
-from ....services.party import service as party_service
-from ....services.shop.article import service as article_service
-from ....services.shop.order import action_service as order_action_service, \
+from .....services.party import service as party_service
+from .....services.shop.article import service as article_service
+from .....services.shop.order import action_service as order_action_service, \
     service as order_service
-from ....services.shop.order.transfer.models import PaymentState
-from ....services.shop.sequence import service as sequence_service
-from ....services.shop.shop import service as shop_service
-from ....util.framework.blueprint import create_blueprint
-from ....util.framework.templating import templated
-from ....util.views import redirect_to
+from .....services.shop.order.transfer.models import PaymentState
+from .....services.shop.sequence import service as sequence_service
+from .....services.shop.shop import service as shop_service
+from .....util.framework.blueprint import create_blueprint
+from .....util.framework.templating import templated
+from .....util.views import redirect_to
 
-from ...authorization.decorators import permission_required
-from ...authorization.registry import permission_registry
+from ....authorization.decorators import permission_required
+from ....authorization.registry import permission_registry
 
 from .authorization import ShopPermission
 

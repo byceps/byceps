@@ -23,10 +23,9 @@ from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated
 from ....util.views import textified
 
+from ...admin.shop.shop.authorization import ShopPermission
 from ...authorization.decorators import permission_required
 from ...authorization.registry import permission_registry
-
-from ..shop_admin.authorization import ShopPermission
 
 
 blueprint = create_blueprint('shop_email_admin', __name__)
