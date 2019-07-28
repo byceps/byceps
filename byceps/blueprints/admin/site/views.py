@@ -1,5 +1,5 @@
 """
-byceps.blueprints.site_admin.views
+byceps.blueprints.admin.site.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2019 Jochen Kupperschmidt
@@ -10,17 +10,17 @@ from collections import defaultdict
 
 from flask import abort, request
 
-from ...services.party import service as party_service
-from ...services.site import \
+from ....services.party import service as party_service
+from ....services.site import \
     service as site_service, \
     settings_service as site_settings_service
-from ...util.framework.blueprint import create_blueprint
-from ...util.framework.flash import flash_success
-from ...util.framework.templating import templated
-from ...util.views import redirect_to
+from ....util.framework.blueprint import create_blueprint
+from ....util.framework.flash import flash_success
+from ....util.framework.templating import templated
+from ....util.views import redirect_to
 
-from ..authorization.decorators import permission_required
-from ..authorization.registry import permission_registry
+from ...authorization.decorators import permission_required
+from ...authorization.registry import permission_registry
 
 from .authorization import SitePermission
 from .forms import CreateForm, UpdateForm

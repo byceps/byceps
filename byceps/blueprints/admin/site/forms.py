@@ -1,5 +1,5 @@
 """
-byceps.blueprints.site_admin.forms
+byceps.blueprints.admin.site.forms
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2019 Jochen Kupperschmidt
@@ -9,7 +9,7 @@ byceps.blueprints.site_admin.forms
 from wtforms import StringField
 from wtforms.validators import InputRequired, Length
 
-from ...util.l10n import LocalizedForm
+from ....util.l10n import LocalizedForm
 
 
 class UpdateForm(LocalizedForm):
