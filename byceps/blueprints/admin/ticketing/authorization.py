@@ -1,5 +1,5 @@
 """
-byceps.blueprints.ticketing_admin.authorization
+byceps.blueprints.admin.ticketing.authorization
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2019 Jochen Kupperschmidt

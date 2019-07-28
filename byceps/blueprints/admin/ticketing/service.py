@@ -1,5 +1,5 @@
 """
-byceps.blueprints.ticketing_admin.service
+byceps.blueprints.admin.ticketing.service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2019 Jochen Kupperschmidt
@@ -8,14 +8,14 @@ byceps.blueprints.ticketing_admin.service
 
 from typing import Any, Dict, Iterator, Sequence, Set, Tuple
 
-from ...services.seating import seat_service
-from ...services.ticketing import event_service
-from ...services.ticketing.models.ticket_event import TicketEvent, \
+from ....services.seating import seat_service
+from ....services.ticketing import event_service
+from ....services.ticketing.models.ticket_event import TicketEvent, \
     TicketEventData
-from ...services.ticketing import ticket_service
-from ...services.ticketing.transfer.models import TicketID
-from ...services.user import service as user_service
-from ...services.user.transfer.models import User
+from ....services.ticketing import ticket_service
+from ....services.ticketing.transfer.models import TicketID
+from ....services.user import service as user_service
+from ....services.user.transfer.models import User
 
 
 def get_events(ticket_id: TicketID) -> Iterator[TicketEventData]:

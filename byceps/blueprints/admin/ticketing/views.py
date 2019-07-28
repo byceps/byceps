@@ -1,5 +1,5 @@
 """
-byceps.blueprints.ticketing_admin.views
+byceps.blueprints.admin.ticketing.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2019 Jochen Kupperschmidt
@@ -8,18 +8,18 @@ byceps.blueprints.ticketing_admin.views
 
 from flask import abort, g, redirect, request, url_for
 
-from ...services.party import service as party_service
-from ...services.shop.order import service as order_service
-from ...services.ticketing import exceptions as ticket_exceptions, \
+from ....services.party import service as party_service
+from ....services.shop.order import service as order_service
+from ....services.ticketing import exceptions as ticket_exceptions, \
     ticket_bundle_service, ticket_service, ticket_user_checkin_service, \
     ticket_user_management_service
-from ...util.framework.blueprint import create_blueprint
-from ...util.framework.flash import flash_error, flash_notice, flash_success
-from ...util.framework.templating import templated
-from ...util.views import respond_no_content
+from ....util.framework.blueprint import create_blueprint
+from ....util.framework.flash import flash_error, flash_notice, flash_success
+from ....util.framework.templating import templated
+from ....util.views import respond_no_content
 
-from ..authorization.decorators import permission_required
-from ..authorization.registry import permission_registry
+from ...authorization.decorators import permission_required
+from ...authorization.registry import permission_registry
 
 from .authorization import TicketingPermission
 from .forms import SpecifyUserForm

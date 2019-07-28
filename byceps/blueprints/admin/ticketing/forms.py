@@ -1,5 +1,5 @@
 """
-byceps.blueprints.ticketing_admin.forms
+byceps.blueprints.admin.ticketing.forms
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2019 Jochen Kupperschmidt
@@ -9,8 +9,8 @@ byceps.blueprints.ticketing_admin.forms
 from wtforms import StringField
 from wtforms.validators import InputRequired, ValidationError
 
-from ...services.user import service as user_service
-from ...util.l10n import LocalizedForm
+from ....services.user import service as user_service
+from ....util.l10n import LocalizedForm
 
 
 def validate_user(form, field):
