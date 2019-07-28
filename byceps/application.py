@@ -101,7 +101,7 @@ def _get_blueprints(app):
             ('admin.board',             '/admin/board'              ),
             ('admin.brand',             '/admin/brands'             ),
             ('admin.consent',           '/admin/consent'            ),
-            ('core_admin',              '/admin/core'               ),
+            ('admin.core',              '/admin/core'               ),
             ('admin.dashboard',         '/admin/dashboard'          ),
             ('admin.news',              '/admin/news'               ),
             ('admin.newsletter',        '/admin/newsletter'         ),

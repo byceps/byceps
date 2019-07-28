@@ -1,18 +1,18 @@
 """
-byceps.blueprints.core_admin.views
+byceps.blueprints.admin.core.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2019 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
 """
 
-from ...services.brand import service as brand_service
-from ...services.party import service as party_service
-from ...services.shop.shop import service as shop_service
-from ...services.site import service as site_service
-from ...util.framework.blueprint import create_blueprint
+from ....services.brand import service as brand_service
+from ....services.party import service as party_service
+from ....services.shop.shop import service as shop_service
+from ....services.site import service as site_service
+from ....util.framework.blueprint import create_blueprint
 
-from ..authorization.registry import permission_registry
+from ...authorization.registry import permission_registry
 
 from .authorization import AdminPermission
 

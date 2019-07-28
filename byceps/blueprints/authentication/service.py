@@ -14,8 +14,8 @@ from ...services.authorization import service as authorization_service
 from ...services.user import event_service as user_event_service
 from ...typing import PartyID, UserID
 
+from ..admin.core.authorization import AdminPermission
 from ..authorization.registry import permission_registry
-from ..core_admin.authorization import AdminPermission
 
 from . import session as user_session
 
