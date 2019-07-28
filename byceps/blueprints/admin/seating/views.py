@@ -1,5 +1,5 @@
 """
-byceps.blueprints.seating_admin.views
+byceps.blueprints.admin.seating.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2019 Jochen Kupperschmidt
@@ -8,16 +8,16 @@ byceps.blueprints.seating_admin.views
 
 from flask import abort, request
 
-from ...services.party import service as party_service
-from ...services.seating import \
+from ....services.party import service as party_service
+from ....services.seating import \
     area_service as seating_area_service, \
     seat_group_service, seat_service
-from ...services.ticketing import category_service as ticketing_category_service
-from ...util.framework.blueprint import create_blueprint
-from ...util.framework.templating import templated
+from ....services.ticketing import category_service as ticketing_category_service
+from ....util.framework.blueprint import create_blueprint
+from ....util.framework.templating import templated
 
-from ..authorization.decorators import permission_required
-from ..authorization.registry import permission_registry
+from ...authorization.decorators import permission_required
+from ...authorization.registry import permission_registry
 
 from .authorization import SeatingPermission
 
