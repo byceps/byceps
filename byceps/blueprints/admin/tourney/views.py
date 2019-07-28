@@ -1,5 +1,5 @@
 """
-byceps.blueprints.tourney.admin.views
+byceps.blueprints.admin.tourney.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2019 Jochen Kupperschmidt
