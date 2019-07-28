@@ -1,5 +1,5 @@
 """
-byceps.blueprints.shop.shipping_admin.views
+byceps.blueprints.admin.shop.shipping.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2019 Jochen Kupperschmidt
@@ -8,14 +8,15 @@ byceps.blueprints.shop.shipping_admin.views
 
 from flask import abort
 
-from ....services.party import service as party_service
-from ....services.shop.shipping import service as shipping_service
-from ....services.shop.shop import service as shop_service
-from ....util.framework.blueprint import create_blueprint
-from ....util.framework.templating import templated
+from .....services.party import service as party_service
+from .....services.shop.shipping import service as shipping_service
+from .....services.shop.shop import service as shop_service
+from .....util.framework.blueprint import create_blueprint
+from .....util.framework.templating import templated
 
-from ...admin.shop.order.authorization import ShopOrderPermission
-from ...authorization.decorators import permission_required
+from ....authorization.decorators import permission_required
+
+from ..order.authorization import ShopOrderPermission
 
 
 blueprint = create_blueprint('shop_shipping_admin', __name__)
