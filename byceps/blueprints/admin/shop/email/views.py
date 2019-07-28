@@ -1,5 +1,5 @@
 """
-byceps.blueprints.shop.email_admin.views
+byceps.blueprints.admin.shop.email.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2019 Jochen Kupperschmidt
@@ -11,21 +11,22 @@ from decimal import Decimal
 
 from flask import abort
 
-from ....config import ConfigurationError
-from ....database import generate_uuid
-from ....services.party import service as party_service
-from ....services.shop.order.email import service as email_service
-from ....services.shop.order.transfer.models import Order, PaymentMethod, \
+from .....config import ConfigurationError
+from .....database import generate_uuid
+from .....services.party import service as party_service
+from .....services.shop.order.email import service as email_service
+from .....services.shop.order.transfer.models import Order, PaymentMethod, \
     PaymentState
-from ....services.shop.sequence import service as sequence_service
-from ....services.shop.shop import service as shop_service
-from ....util.framework.blueprint import create_blueprint
-from ....util.framework.templating import templated
-from ....util.views import textified
+from .....services.shop.sequence import service as sequence_service
+from .....services.shop.shop import service as shop_service
+from .....util.framework.blueprint import create_blueprint
+from .....util.framework.templating import templated
+from .....util.views import textified
 
-from ...admin.shop.shop.authorization import ShopPermission
-from ...authorization.decorators import permission_required
-from ...authorization.registry import permission_registry
+from ....authorization.decorators import permission_required
+from ....authorization.registry import permission_registry
+
+from ..shop.authorization import ShopPermission
 
 
 blueprint = create_blueprint('shop_email_admin', __name__)

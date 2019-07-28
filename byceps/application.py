@@ -113,7 +113,7 @@ def _get_blueprints(app):
             ('admin.seating',           '/admin/seating'            ),
             ('admin.shop',              None                        ),
             ('admin.shop.article',      '/admin/shop/articles'      ),
-            ('shop.email_admin',        '/admin/shop/email'         ),
+            ('admin.shop.email',        '/admin/shop/email'         ),
             ('admin.shop.order',        '/admin/shop/orders'        ),
             ('shop.shipping_admin',     '/admin/shop/shipping'      ),
             ('admin.shop.shop',         '/admin/shop/shop'          ),
