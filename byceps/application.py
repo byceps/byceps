@@ -100,7 +100,7 @@ def _get_blueprints(app):
             ('admin_dashboard',         '/admin/dashboard'          ),
             ('admin.authorization',     '/admin/authorization'      ),
             ('admin.board',             '/admin/board'              ),
-            ('brand_admin',             '/admin/brands'             ),
+            ('admin.brand',             '/admin/brands'             ),
             ('consent_admin',           '/admin/consent'            ),
             ('core_admin',              '/admin/core'               ),
             ('news_admin',              '/admin/news'               ),
