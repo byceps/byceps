@@ -18,8 +18,8 @@ from .....util.framework.blueprint import create_blueprint
 from .....util.framework.templating import templated
 
 from ....authorization.decorators import permission_required
-from ....shop.order_admin import service as order_blueprint_service
 
+from ...shop.order import service as order_blueprint_service
 from ...ticketing.authorization import TicketingPermission
 from ...user import service as user_blueprint_service
 

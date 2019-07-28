@@ -1,5 +1,5 @@
 """
-byceps.blueprints.shop.order_admin.service
+byceps.blueprints.admin.shop.order.service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2019 Jochen Kupperschmidt
@@ -11,19 +11,19 @@ from typing import Dict, Iterator, Sequence
 import attr
 from attr import attrib, attrs
 
-from ....services.shop.article.models.article import Article
-from ....services.shop.article import service as article_service
-from ....services.shop.article.transfer.models import ArticleNumber
-from ....services.shop.order.models.order_event import OrderEvent, OrderEventData
-from ....services.shop.order import event_service as order_event_service
-from ....services.shop.order import service as order_service
-from ....services.shop.order.transfer.models import Order, OrderID
-from ....services.ticketing import category_service as ticket_category_service
-from ....services.user.models.user import User as DbUser
-from ....services.user import service as user_service
-from ....services.user.transfer.models import User
-from ....services.user_badge import service as user_badge_service
-from ....typing import UserID
+from .....services.shop.article.models.article import Article
+from .....services.shop.article import service as article_service
+from .....services.shop.article.transfer.models import ArticleNumber
+from .....services.shop.order.models.order_event import OrderEvent, OrderEventData
+from .....services.shop.order import event_service as order_event_service
+from .....services.shop.order import service as order_service
+from .....services.shop.order.transfer.models import Order, OrderID
+from .....services.ticketing import category_service as ticket_category_service
+from .....services.user.models.user import User as DbUser
+from .....services.user import service as user_service
+from .....services.user.transfer.models import User
+from .....services.user_badge import service as user_badge_service
+from .....typing import UserID
 
 
 @attrs(frozen=True, slots=True)

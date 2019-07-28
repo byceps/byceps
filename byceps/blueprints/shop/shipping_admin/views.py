@@ -14,9 +14,8 @@ from ....services.shop.shop import service as shop_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated
 
+from ...admin.shop.order.authorization import ShopOrderPermission
 from ...authorization.decorators import permission_required
-
-from ..order_admin.authorization import ShopOrderPermission
 
 
 blueprint = create_blueprint('shop_shipping_admin', __name__)

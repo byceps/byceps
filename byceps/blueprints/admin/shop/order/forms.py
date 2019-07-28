@@ -1,5 +1,5 @@
 """
-byceps.blueprints.shop.order_admin.forms
+byceps.blueprints.admin.shop.order.forms
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2019 Jochen Kupperschmidt
@@ -9,8 +9,8 @@ byceps.blueprints.shop.order_admin.forms
 from wtforms import RadioField, TextAreaField
 from wtforms.validators import InputRequired, Length
 
-from ....services.shop.order.transfer.models import PaymentMethod
-from ....util.l10n import LocalizedForm
+from .....services.shop.order.transfer.models import PaymentMethod
+from .....util.l10n import LocalizedForm
 
 
 class CancelForm(LocalizedForm):

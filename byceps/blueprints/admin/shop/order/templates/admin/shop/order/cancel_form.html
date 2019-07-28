@@ -1,6 +1,6 @@
-{% extends 'layouts/shop_order_admin.html' %}
+{% extends 'layouts/admin/shop/order.html' %}
+{% from 'macros/admin/shop/order.html' import render_order_link %}
 {% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
-{% from 'macros/shop_order_admin.html' import render_order_link %}
 {% set current_page_party = party %}
 {% set title = 'Bestellung stornieren' %}
 

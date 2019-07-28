@@ -1,9 +1,9 @@
 {% extends 'layouts/admin/user.html' %}
+{% from 'macros/admin/shop/order.html' import render_order_link %}
 {% from 'macros/admin/user.html' import render_user_avatar_20_and_link, render_user_flag_deleted, render_user_flag_suspended %}
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_tag %}
-{% from 'macros/shop_order_admin.html' import render_order_link %}
 {% set current_tab = 'events' %}
 {% set current_tab_user_id = user.id %}
 {% set title = 'Benutzer - Ereignisse - %s'|format(user.screen_name) %}

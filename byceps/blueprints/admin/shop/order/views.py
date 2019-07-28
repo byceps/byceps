@@ -1,5 +1,5 @@
 """
-byceps.blueprints.shop.order_admin.views
+byceps.blueprints.admin.shop.order.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2019 Jochen Kupperschmidt
@@ -8,23 +8,23 @@ byceps.blueprints.shop.order_admin.views
 
 from flask import abort, g, request, Response
 
-from ....services.party import service as party_service
-from ....services.shop.order import service as order_service
-from ....services.shop.order.email import service as order_email_service
-from ....services.shop.order.export import service as order_export_service
-from ....services.shop.order.transfer.models import PaymentMethod, PaymentState
-from ....services.shop.sequence import service as sequence_service
-from ....services.shop.shop import service as shop_service
-from ....services.ticketing import ticket_service
-from ....services.user import service as user_service
-from ....util.framework.blueprint import create_blueprint
-from ....util.framework.flash import flash_error, flash_success
-from ....util.framework.templating import templated
-from ....util.views import redirect_to, respond_no_content
+from .....services.party import service as party_service
+from .....services.shop.order import service as order_service
+from .....services.shop.order.email import service as order_email_service
+from .....services.shop.order.export import service as order_export_service
+from .....services.shop.order.transfer.models import PaymentMethod, PaymentState
+from .....services.shop.sequence import service as sequence_service
+from .....services.shop.shop import service as shop_service
+from .....services.ticketing import ticket_service
+from .....services.user import service as user_service
+from .....util.framework.blueprint import create_blueprint
+from .....util.framework.flash import flash_error, flash_success
+from .....util.framework.templating import templated
+from .....util.views import redirect_to, respond_no_content
 
-from ...authorization.decorators import permission_required
-from ...authorization.registry import permission_registry
-from ...shop.order.signals import order_canceled, order_paid
+from ....authorization.decorators import permission_required
+from ....authorization.registry import permission_registry
+from ....shop.order.signals import order_canceled, order_paid
 
 from .authorization import ShopOrderPermission
 from .forms import CancelForm, MarkAsPaidForm

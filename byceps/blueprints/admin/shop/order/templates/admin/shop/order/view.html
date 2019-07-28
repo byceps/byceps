@@ -1,7 +1,7 @@
-{% extends 'layouts/shop_order_admin.html' %}
+{% extends 'layouts/admin/shop/order.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
+{% from 'macros/admin/shop/order.html' import render_order_payment_method, render_order_payment_state %}
 {% from 'macros/datetime.html' import render_datetime %}
-{% from 'macros/shop_order_admin.html' import render_order_payment_method, render_order_payment_state %}
 {% set current_page_party = party %}
 {% set title = 'Bestellung ' ~ order.order_number %}
 
@@ -43,14 +43,14 @@
     ShopOrderPermission.update
   ) %}
   <div style="float: right; margin-left: 40px;">
-{%- include 'shop/order_admin/_view_actions.html' %}
+{%- include 'admin/shop/order/_view_actions.html' %}
   </div>
   {%- endif %}
 
   <table class="index">
     <tr>
       <td colspan="2">
-{%- include 'shop/order_admin/_view_status_flags.html' %}
+{%- include 'admin/shop/order/_view_status_flags.html' %}
       </td>
     </tr>
     <tr>
@@ -73,11 +73,11 @@
     {%- endif %}
   </table>
 
-{%- include 'shop/order_admin/_view_orderer.html' %}
+{%- include 'admin/shop/order/_view_orderer.html' %}
 
-{%- include 'shop/order_admin/_view_articles.html' %}
+{%- include 'admin/shop/order/_view_articles.html' %}
 
-{%- include 'shop/order_admin/_view_events.html' %}
+{%- include 'admin/shop/order/_view_events.html' %}
 
   <h2>Tickets {{ render_extra_in_heading(tickets|length) }}</h1>
 {%- include 'admin/ticketing/_ticket_list.html' %}

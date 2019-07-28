@@ -1,8 +1,8 @@
-{% extends 'layouts/shop_order_admin.html' %}
+{% extends 'layouts/admin/shop/order.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
+{% from 'macros/admin/shop/order.html' import render_order_payment_state, render_order_state_filter %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
-{% from 'macros/shop_order_admin.html' import render_order_payment_state, render_order_state_filter %}
 {% set current_page_party = party %}
 {% set title = 'Bestellungen' %}
 
@@ -57,7 +57,7 @@
   </div>
 
   {%- with orders = orders.items %}
-    {%- include 'shop/order_admin/_order_list.html' %}
+    {%- include 'admin/shop/order/_order_list.html' %}
   {%- endwith %}
 
 {{ render_pagination_nav(orders, '.index_for_shop', {
