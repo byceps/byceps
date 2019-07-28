@@ -97,12 +97,12 @@ def _get_blueprints(app):
         ]
     elif current_mode.is_admin():
         yield from [
-            ('admin_dashboard',         '/admin/dashboard'          ),
             ('admin.authorization',     '/admin/authorization'      ),
             ('admin.board',             '/admin/board'              ),
             ('admin.brand',             '/admin/brands'             ),
             ('admin.consent',           '/admin/consent'            ),
             ('core_admin',              '/admin/core'               ),
+            ('admin.dashboard',         '/admin/dashboard'          ),
             ('admin.news',              '/admin/news'               ),
             ('admin.newsletter',        '/admin/newsletter'         ),
             ('admin.jobs',              '/admin/jobs'               ),

@@ -1,5 +1,5 @@
 """
-byceps.blueprints.admin_dashboard.views
+byceps.blueprints.admin.dashboard.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2019 Jochen Kupperschmidt
@@ -10,26 +10,26 @@ from datetime import date, timedelta
 
 from flask import abort
 
-from ...services.brand import service as brand_service
-from ...services.news import service as news_service
-from ...services.newsletter import service as newsletter_service
-from ...services.orga import service as orga_service
-from ...services.orga import birthday_service as orga_birthday_service
-from ...services.orga_team import service as orga_team_service
-from ...services.party import service as party_service
-from ...services.seating import area_service as seating_area_service, \
+from ....services.brand import service as brand_service
+from ....services.news import service as news_service
+from ....services.newsletter import service as newsletter_service
+from ....services.orga import service as orga_service
+from ....services.orga import birthday_service as orga_birthday_service
+from ....services.orga_team import service as orga_team_service
+from ....services.party import service as party_service
+from ....services.seating import area_service as seating_area_service, \
     seat_service
-from ...services.shop.article import service as article_service
-from ...services.shop.order import service as order_service
-from ...services.shop.shop import service as shop_service
-from ...services.terms import version_service as terms_version_service
-from ...services.ticketing import ticket_service
-from ...services.user import stats_service as user_stats_service
-from ...util.framework.blueprint import create_blueprint
-from ...util.framework.templating import templated
+from ....services.shop.article import service as article_service
+from ....services.shop.order import service as order_service
+from ....services.shop.shop import service as shop_service
+from ....services.terms import version_service as terms_version_service
+from ....services.ticketing import ticket_service
+from ....services.user import stats_service as user_stats_service
+from ....util.framework.blueprint import create_blueprint
+from ....util.framework.templating import templated
 
-from ..authorization.decorators import permission_required
-from ..authorization.registry import permission_registry
+from ...authorization.decorators import permission_required
+from ...authorization.registry import permission_registry
 
 from .authorization import AdminDashboardPermission
 
