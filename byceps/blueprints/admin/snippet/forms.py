@@ -1,5 +1,5 @@
 """
-byceps.blueprints.snippet_admin.forms
+byceps.blueprints.admin.snippet.forms
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2019 Jochen Kupperschmidt
@@ -9,7 +9,7 @@ byceps.blueprints.snippet_admin.forms
 from wtforms import StringField, TextAreaField
 from wtforms.validators import InputRequired, ValidationError
 
-from ...util.l10n import LocalizedForm
+from ....util.l10n import LocalizedForm
 
 
 class MountpointCreateForm(LocalizedForm):

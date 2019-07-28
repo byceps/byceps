@@ -1,5 +1,5 @@
 """
-byceps.blueprints.snippet_admin.views
+byceps.blueprints.admin.snippet.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2019 Jochen Kupperschmidt
@@ -8,22 +8,22 @@ byceps.blueprints.snippet_admin.views
 
 from flask import abort, g, request
 
-from ...services.brand import service as brand_service
-from ...services.site import service as site_service
-from ...services.snippet import mountpoint_service, service as snippet_service
-from ...services.snippet.transfer.models import Scope
-from ...services.text_diff import service as text_diff_service
-from ...util.datetime.format import format_datetime_short
-from ...util.framework.blueprint import create_blueprint
-from ...util.framework.flash import flash_success
-from ...util.iterables import pairwise
-from ...util.framework.templating import templated
-from ...util.views import redirect_to, respond_no_content
+from ....services.brand import service as brand_service
+from ....services.site import service as site_service
+from ....services.snippet import mountpoint_service, service as snippet_service
+from ....services.snippet.transfer.models import Scope
+from ....services.text_diff import service as text_diff_service
+from ....util.datetime.format import format_datetime_short
+from ....util.framework.blueprint import create_blueprint
+from ....util.framework.flash import flash_success
+from ....util.iterables import pairwise
+from ....util.framework.templating import templated
+from ....util.views import redirect_to, respond_no_content
 
-from ..authorization.decorators import permission_required
-from ..authorization.registry import permission_registry
-from ..snippet import signals
-from ..snippet.templating import get_snippet_context
+from ...authorization.decorators import permission_required
+from ...authorization.registry import permission_registry
+from ...snippet import signals
+from ...snippet.templating import get_snippet_context
 
 from .authorization import SnippetMountpointPermission, SnippetPermission
 from .forms import DocumentCreateForm, DocumentUpdateForm, \

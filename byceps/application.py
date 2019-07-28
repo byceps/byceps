@@ -118,7 +118,7 @@ def _get_blueprints(app):
             ('shop.shipping_admin',     '/admin/shop/shipping'      ),
             ('shop.shop_admin',         '/admin/shop/shop'          ),
             ('admin.site',              '/admin/sites'              ),
-            ('snippet_admin',           '/admin/snippets'           ),
+            ('admin.snippet',           '/admin/snippets'           ),
             ('terms_admin',             '/admin/terms'              ),
             ('ticketing_admin',         '/admin/ticketing'          ),
             ('ticketing.checkin',       '/admin/ticketing/checkin'  ),
