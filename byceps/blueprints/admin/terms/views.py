@@ -1,5 +1,5 @@
 """
-byceps.blueprints.terms_admin.views
+byceps.blueprints.admin.terms.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2019 Jochen Kupperschmidt
@@ -8,15 +8,15 @@ byceps.blueprints.terms_admin.views
 
 from flask import abort
 
-from ...services.brand import service as brand_service
-from ...services.terms import consent_service as terms_consent_service, \
+from ....services.brand import service as brand_service
+from ....services.terms import consent_service as terms_consent_service, \
     version_service as terms_version_service
-from ...services.user import service as user_service
-from ...util.framework.blueprint import create_blueprint
-from ...util.framework.templating import templated
+from ....services.user import service as user_service
+from ....util.framework.blueprint import create_blueprint
+from ....util.framework.templating import templated
 
-from ..authorization.decorators import permission_required
-from ..authorization.registry import permission_registry
+from ...authorization.decorators import permission_required
+from ...authorization.registry import permission_registry
 
 from .authorization import TermsPermission
 
