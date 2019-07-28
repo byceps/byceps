@@ -1,5 +1,5 @@
 """
-byceps.blueprints.consent_admin.authorization
+byceps.blueprints.admin.consent.authorization
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2019 Jochen Kupperschmidt
