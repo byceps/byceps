@@ -1,5 +1,5 @@
 """
-byceps.blueprints.orga_admin.views
+byceps.blueprints.admin.orga.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2019 Jochen Kupperschmidt
@@ -10,18 +10,18 @@ from operator import attrgetter
 
 from flask import abort, g, request
 
-from ...services.brand import service as brand_service
-from ...services.orga import service as orga_service
-from ...services.orga import birthday_service as orga_birthday_service
-from ...util.export import serialize_to_csv
-from ...util.framework.blueprint import create_blueprint
-from ...util.framework.flash import flash_success
-from ...util.framework.templating import templated
-from ...util.views import redirect_to, respond_no_content, textified
+from ....services.brand import service as brand_service
+from ....services.orga import service as orga_service
+from ....services.orga import birthday_service as orga_birthday_service
+from ....util.export import serialize_to_csv
+from ....util.framework.blueprint import create_blueprint
+from ....util.framework.flash import flash_success
+from ....util.framework.templating import templated
+from ....util.views import redirect_to, respond_no_content, textified
 
-from ..authorization.decorators import permission_required
-from ..authorization.registry import permission_registry
-from ..orga_team_admin.authorization import OrgaTeamPermission
+from ...authorization.decorators import permission_required
+from ...authorization.registry import permission_registry
+from ...orga_team_admin.authorization import OrgaTeamPermission
 
 from .authorization import OrgaBirthdayPermission, OrgaDetailPermission
 from .forms import OrgaFlagCreateForm
