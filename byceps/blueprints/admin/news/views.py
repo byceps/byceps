@@ -1,5 +1,5 @@
 """
-byceps.blueprints.news_admin.views
+byceps.blueprints.admin.news.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2019 Jochen Kupperschmidt
@@ -10,21 +10,21 @@ from datetime import date
 
 from flask import abort, g, request
 
-from ...services.brand import service as brand_service
-from ...services.news import service as news_service, \
+from ....services.brand import service as brand_service
+from ....services.news import service as news_service, \
     channel_service as news_channel_service
-from ...services.news.transfer.models import Channel
-from ...services.text_diff import service as text_diff_service
-from ...util.datetime.format import format_datetime_short
-from ...util.framework.blueprint import create_blueprint
-from ...util.framework.flash import flash_success
-from ...util.framework.templating import templated
-from ...util.iterables import pairwise
-from ...util.views import redirect_to, respond_no_content
+from ....services.news.transfer.models import Channel
+from ....services.text_diff import service as text_diff_service
+from ....util.datetime.format import format_datetime_short
+from ....util.framework.blueprint import create_blueprint
+from ....util.framework.flash import flash_success
+from ....util.framework.templating import templated
+from ....util.iterables import pairwise
+from ....util.views import redirect_to, respond_no_content
 
-from ..authorization.decorators import permission_required
-from ..authorization.registry import permission_registry
-from ..news import signals
+from ...authorization.decorators import permission_required
+from ...authorization.registry import permission_registry
+from ...news import signals
 
 from .authorization import NewsChannelPermission, NewsItemPermission
 from .forms import ChannelCreateForm, ItemCreateForm, ItemUpdateForm

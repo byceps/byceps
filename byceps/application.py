@@ -103,7 +103,7 @@ def _get_blueprints(app):
             ('admin.brand',             '/admin/brands'             ),
             ('admin.consent',           '/admin/consent'            ),
             ('core_admin',              '/admin/core'               ),
-            ('news_admin',              '/admin/news'               ),
+            ('admin.news',              '/admin/news'               ),
             ('newsletter_admin',        '/admin/newsletter'         ),
             ('jobs_admin',              '/admin/jobs'               ),
             ('orga_admin',              '/admin/orgas'              ),
