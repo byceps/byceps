@@ -121,7 +121,7 @@ def _get_blueprints(app):
             ('admin.snippet',           '/admin/snippets'           ),
             ('admin.terms',             '/admin/terms'              ),
             ('admin.ticketing',         '/admin/ticketing'          ),
-            ('ticketing.checkin',       '/admin/ticketing/checkin'  ),
+            ('admin.ticketing.checkin', '/admin/ticketing/checkin'  ),
             ('tourney.admin',           '/admin/tourney'            ),
             ('user_admin',              '/admin/users'              ),
             ('user_badge_admin',        '/admin/user_badges'        ),

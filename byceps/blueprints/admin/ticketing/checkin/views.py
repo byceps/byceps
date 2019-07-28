@@ -1,6 +1,6 @@
 """
-byceps.blueprints.ticketing.checkin.views
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.admin.ticketing.checkin.views
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2019 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -10,17 +10,18 @@ from datetime import date
 
 from flask import abort, request
 
-from ....services.party import service as party_service
-from ....services.shop.order import service as order_service
-from ....services.shop.shop import service as shop_service
-from ....services.ticketing import ticket_service
-from ....util.framework.blueprint import create_blueprint
-from ....util.framework.templating import templated
+from .....services.party import service as party_service
+from .....services.shop.order import service as order_service
+from .....services.shop.shop import service as shop_service
+from .....services.ticketing import ticket_service
+from .....util.framework.blueprint import create_blueprint
+from .....util.framework.templating import templated
 
-from ...admin.ticketing.authorization import TicketingPermission
-from ...authorization.decorators import permission_required
-from ...shop.order_admin import service as order_blueprint_service
-from ...user_admin import service as user_blueprint_service
+from ....authorization.decorators import permission_required
+from ....shop.order_admin import service as order_blueprint_service
+from ....user_admin import service as user_blueprint_service
+
+from ...ticketing.authorization import TicketingPermission
 
 
 blueprint = create_blueprint('ticketing_checkin', __name__)
