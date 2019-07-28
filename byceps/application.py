@@ -112,7 +112,7 @@ def _get_blueprints(app):
             ('admin.party',             '/admin/parties'            ),
             ('admin.seating',           '/admin/seating'            ),
             ('admin.shop',              None                        ),
-            ('shop.article_admin',      '/admin/shop/articles'      ),
+            ('admin.shop.article',      '/admin/shop/articles'      ),
             ('shop.email_admin',        '/admin/shop/email'         ),
             ('shop.order_admin',        '/admin/shop/orders'        ),
             ('shop.shipping_admin',     '/admin/shop/shipping'      ),
