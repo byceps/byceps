@@ -1,5 +1,5 @@
 """
-byceps.blueprints.newsletter_admin.views
+byceps.blueprints.admin.newsletter.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2019 Jochen Kupperschmidt
@@ -10,15 +10,15 @@ from operator import attrgetter
 
 from flask import abort
 
-from ...services.brand import service as brand_service
-from ...services.newsletter import service as newsletter_service
-from ...services.newsletter.types import SubscriptionState
-from ...util.framework.blueprint import create_blueprint
-from ...util.framework.templating import templated
-from ...util.views import jsonified, textified
+from ....services.brand import service as brand_service
+from ....services.newsletter import service as newsletter_service
+from ....services.newsletter.types import SubscriptionState
+from ....util.framework.blueprint import create_blueprint
+from ....util.framework.templating import templated
+from ....util.views import jsonified, textified
 
-from ..authorization.decorators import permission_required
-from ..authorization.registry import permission_registry
+from ...authorization.decorators import permission_required
+from ...authorization.registry import permission_registry
 
 from .authorization import NewsletterPermission
 

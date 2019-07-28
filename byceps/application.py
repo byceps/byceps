@@ -104,7 +104,7 @@ def _get_blueprints(app):
             ('admin.consent',           '/admin/consent'            ),
             ('core_admin',              '/admin/core'               ),
             ('admin.news',              '/admin/news'               ),
-            ('newsletter_admin',        '/admin/newsletter'         ),
+            ('admin.newsletter',        '/admin/newsletter'         ),
             ('jobs_admin',              '/admin/jobs'               ),
             ('orga_admin',              '/admin/orgas'              ),
             ('orga_presence',           '/admin/presence'           ),
