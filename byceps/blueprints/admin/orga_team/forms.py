@@ -1,5 +1,5 @@
 """
-byceps.blueprints.orga_team_admin.forms
+byceps.blueprints.admin.orga_team.forms
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2019 Jochen Kupperschmidt
@@ -9,7 +9,7 @@ byceps.blueprints.orga_team_admin.forms
 from wtforms import SelectField, StringField
 from wtforms.validators import Length
 
-from ...util.l10n import LocalizedForm
+from ....util.l10n import LocalizedForm
 
 
 class OrgaTeamCreateForm(LocalizedForm):

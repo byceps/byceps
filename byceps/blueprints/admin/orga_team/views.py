@@ -1,5 +1,5 @@
 """
-byceps.blueprints.orga_team_admin.views
+byceps.blueprints.admin.orga_team.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2019 Jochen Kupperschmidt
@@ -8,16 +8,16 @@ byceps.blueprints.orga_team_admin.views
 
 from flask import abort, request
 
-from ...services.orga_team import service as orga_team_service
-from ...services.party import service as party_service
-from ...services.user import service as user_service
-from ...util.framework.blueprint import create_blueprint
-from ...util.framework.flash import flash_success
-from ...util.framework.templating import templated
-from ...util.views import redirect_to, respond_no_content
+from ....services.orga_team import service as orga_team_service
+from ....services.party import service as party_service
+from ....services.user import service as user_service
+from ....util.framework.blueprint import create_blueprint
+from ....util.framework.flash import flash_success
+from ....util.framework.templating import templated
+from ....util.views import redirect_to, respond_no_content
 
-from ..authorization.decorators import permission_required
-from ..authorization.registry import permission_registry
+from ...authorization.decorators import permission_required
+from ...authorization.registry import permission_registry
 
 from .authorization import OrgaTeamPermission
 from .forms import MembershipCreateForm, MembershipUpdateForm, \

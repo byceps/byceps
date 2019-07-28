@@ -21,7 +21,8 @@ from ....util.views import redirect_to, respond_no_content, textified
 
 from ...authorization.decorators import permission_required
 from ...authorization.registry import permission_registry
-from ...orga_team_admin.authorization import OrgaTeamPermission
+
+from ..orga_team.authorization import OrgaTeamPermission
 
 from .authorization import OrgaBirthdayPermission, OrgaDetailPermission
 from .forms import OrgaFlagCreateForm
