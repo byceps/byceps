@@ -1,5 +1,5 @@
 """
-byceps.blueprints.party_admin.views
+byceps.blueprints.admin.party.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2019 Jochen Kupperschmidt
@@ -8,20 +8,20 @@ byceps.blueprints.party_admin.views
 
 from flask import abort, request
 
-from ...services.brand import service as brand_service
-from ...services.party import service as party_service, \
+from ....services.brand import service as brand_service
+from ....services.party import service as party_service, \
     settings_service as party_settings_service
-from ...services.shop.article import service as article_service
-from ...services.shop.order import service as order_service
-from ...services.shop.shop import service as shop_service
-from ...services.ticketing import ticket_service
-from ...util.framework.blueprint import create_blueprint
-from ...util.framework.flash import flash_success
-from ...util.framework.templating import templated
-from ...util.views import redirect_to
+from ....services.shop.article import service as article_service
+from ....services.shop.order import service as order_service
+from ....services.shop.shop import service as shop_service
+from ....services.ticketing import ticket_service
+from ....util.framework.blueprint import create_blueprint
+from ....util.framework.flash import flash_success
+from ....util.framework.templating import templated
+from ....util.views import redirect_to
 
-from ..authorization.decorators import permission_required
-from ..authorization.registry import permission_registry
+from ...authorization.decorators import permission_required
+from ...authorization.registry import permission_registry
 
 from .authorization import PartyPermission
 from .forms import CreateForm, UpdateForm

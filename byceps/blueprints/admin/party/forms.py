@@ -1,5 +1,5 @@
 """
-byceps.blueprints.party_admin.forms
+byceps.blueprints.admin.party.forms
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2019 Jochen Kupperschmidt
@@ -9,7 +9,7 @@ byceps.blueprints.party_admin.forms
 from wtforms import BooleanField, DateTimeField, IntegerField, StringField
 from wtforms.validators import InputRequired, Length, Optional
 
-from ...util.l10n import LocalizedForm
+from ....util.l10n import LocalizedForm
 
 
 class UpdateForm(LocalizedForm):
