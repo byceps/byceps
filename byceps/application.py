@@ -111,7 +111,7 @@ def _get_blueprints(app):
             ('admin.orga_team',         '/admin/orga_teams'         ),
             ('admin.party',             '/admin/parties'            ),
             ('admin.seating',           '/admin/seating'            ),
-            ('shop.admin',              None                        ),
+            ('admin.shop',              None                        ),
             ('shop.article_admin',      '/admin/shop/articles'      ),
             ('shop.email_admin',        '/admin/shop/email'         ),
             ('shop.order_admin',        '/admin/shop/orders'        ),
