@@ -1,5 +1,5 @@
 """
-byceps.blueprints.user_admin.service
+byceps.blueprints.admin.user.service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2019 Jochen Kupperschmidt
@@ -10,24 +10,24 @@ from collections import defaultdict
 from operator import attrgetter
 from typing import Any, Dict, Iterator, List, Sequence, Set, Tuple
 
-from ...database import db
-from ...services.consent import consent_service
-from ...services.newsletter import service as newsletter_service
-from ...services.party import service as party_service
-from ...services.party.transfer.models import Party
-from ...services.shop.order import service as order_service
-from ...services.shop.shop import service as shop_service
-from ...services.shop.shop.transfer.models import ShopID
-from ...services.ticketing.models.ticket import Ticket as DbTicket
-from ...services.ticketing import attendance_service, ticket_service
-from ...services.user import event_service
-from ...services.user.models.detail import UserDetail
-from ...services.user.models.event import UserEvent, UserEventData
-from ...services.user.models.user import User as DbUser
-from ...services.user import service as user_service
-from ...services.user.transfer.models import User
-from ...services.user_avatar import service as avatar_service
-from ...typing import PartyID, UserID
+from ....database import db
+from ....services.consent import consent_service
+from ....services.newsletter import service as newsletter_service
+from ....services.party import service as party_service
+from ....services.party.transfer.models import Party
+from ....services.shop.order import service as order_service
+from ....services.shop.shop import service as shop_service
+from ....services.shop.shop.transfer.models import ShopID
+from ....services.ticketing.models.ticket import Ticket as DbTicket
+from ....services.ticketing import attendance_service, ticket_service
+from ....services.user import event_service
+from ....services.user.models.detail import UserDetail
+from ....services.user.models.event import UserEvent, UserEventData
+from ....services.user.models.user import User as DbUser
+from ....services.user import service as user_service
+from ....services.user.transfer.models import User
+from ....services.user_avatar import service as avatar_service
+from ....typing import PartyID, UserID
 
 from .models import UserStateFilter
 

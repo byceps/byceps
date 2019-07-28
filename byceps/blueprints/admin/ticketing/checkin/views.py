@@ -19,9 +19,9 @@ from .....util.framework.templating import templated
 
 from ....authorization.decorators import permission_required
 from ....shop.order_admin import service as order_blueprint_service
-from ....user_admin import service as user_blueprint_service
 
 from ...ticketing.authorization import TicketingPermission
+from ...user import service as user_blueprint_service
 
 
 blueprint = create_blueprint('ticketing_checkin', __name__)

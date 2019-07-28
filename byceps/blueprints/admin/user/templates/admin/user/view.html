@@ -1,4 +1,4 @@
-{% extends 'layouts/user_admin.html' %}
+{% extends 'layouts/admin/user.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/datetime.html' import render_date, render_datetime %}
 {% from 'macros/misc.html' import render_tag %}
@@ -48,7 +48,7 @@
 
 {% block body %}
 
-{%- include 'user_admin/_view_head.html' %}
+{%- include 'admin/user/_view_head.html' %}
 
   <div class="radio-tab-component">
 
@@ -72,22 +72,22 @@
 
       <div class="radio-panel" id="tabs-panel-account">
         <h2>Benutzerkonto</h2>
-{%- include 'user_admin/_view_account.html' %}
+{%- include 'admin/user/_view_account.html' %}
       </div>
 
       <div class="radio-panel" id="tabs-panel-personal">
         <h2>Persönliche Daten</h2>
-{%- include 'user_admin/_view_personal.html' %}
+{%- include 'admin/user/_view_personal.html' %}
       </div>
 
       <div class="radio-panel" id="tabs-panel-orders">
         <h2>Bestellungen {{ render_extra_in_heading(orders|length) }}</h2>
-{%- include 'user_admin/_view_orders.html' %}
+{%- include 'admin/user/_view_orders.html' %}
       </div>
 
       <div class="radio-panel" id="tabs-panel-tickets">
         <h2>Tickets</h2>
-{%- include 'user_admin/_view_tickets.html' %}
+{%- include 'admin/user/_view_tickets.html' %}
       </div>
 
       <div class="radio-panel" id="tabs-panel-badges">

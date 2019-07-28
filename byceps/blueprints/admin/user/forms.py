@@ -1,5 +1,5 @@
 """
-byceps.blueprints.user_admin.forms
+byceps.blueprints.admin.user.forms
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2019 Jochen Kupperschmidt
@@ -9,10 +9,10 @@ byceps.blueprints.user_admin.forms
 from wtforms import PasswordField, StringField, TextAreaField
 from wtforms.validators import InputRequired, Length, ValidationError
 
-from ...services.user import screen_name_validator
-from ...util.l10n import LocalizedForm
+from ....services.user import screen_name_validator
+from ....util.l10n import LocalizedForm
 
-from ..user.creation.forms import ScreenNameValidator
+from ...user.creation.forms import ScreenNameValidator
 
 
 class ChangeScreenNameForm(LocalizedForm):

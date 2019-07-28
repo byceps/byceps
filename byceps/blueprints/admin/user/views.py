@@ -1,5 +1,5 @@
 """
-byceps.blueprints.user_admin.views
+byceps.blueprints.admin.user.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2019 Jochen Kupperschmidt
@@ -8,25 +8,26 @@ byceps.blueprints.user_admin.views
 
 from flask import abort, g, redirect, request, url_for
 
-from ...services.authentication.password import service as password_service
-from ...services.authorization import service as authorization_service
-from ...services.orga_team import service as orga_team_service
-from ...services.shop.order import service as order_service
-from ...services.user import command_service as user_command_service
-from ...services.user import creation_service as user_creation_service
-from ...services.user import service as user_service
-from ...services.user import stats_service as user_stats_service
-from ...services.user_badge import service as badge_service
-from ...util.framework.blueprint import create_blueprint
-from ...util.framework.flash import flash_error, flash_success
-from ...util.framework.templating import templated
-from ...util.views import redirect_to, respond_no_content
+from ....services.authentication.password import service as password_service
+from ....services.authorization import service as authorization_service
+from ....services.orga_team import service as orga_team_service
+from ....services.shop.order import service as order_service
+from ....services.user import command_service as user_command_service
+from ....services.user import creation_service as user_creation_service
+from ....services.user import service as user_service
+from ....services.user import stats_service as user_stats_service
+from ....services.user_badge import service as badge_service
+from ....util.framework.blueprint import create_blueprint
+from ....util.framework.flash import flash_error, flash_success
+from ....util.framework.templating import templated
+from ....util.views import redirect_to, respond_no_content
 
-from ..admin.authorization.authorization import RolePermission
-from ..authorization.decorators import permission_required
-from ..authorization.registry import permission_registry
-from ..user.signals import account_created, account_deleted, \
+from ...authorization.decorators import permission_required
+from ...authorization.registry import permission_registry
+from ...user.signals import account_created, account_deleted, \
     account_suspended, account_unsuspended, screen_name_changed
+
+from ..authorization.authorization import RolePermission
 
 from .authorization import UserPermission
 from .forms import ChangeScreenNameForm, CreateAccountForm, \

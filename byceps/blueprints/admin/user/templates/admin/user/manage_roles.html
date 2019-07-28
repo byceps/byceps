@@ -1,4 +1,4 @@
-{% extends 'layouts/user_admin.html' %}
+{% extends 'layouts/admin/user.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
@@ -21,7 +21,7 @@
 
 {% block body %}
 
-{%- include 'user_admin/_view_head.html' %}
+{%- include 'admin/user/_view_head.html' %}
 
   <h2>Berechtigungen</h2>
   <table class="index wide">

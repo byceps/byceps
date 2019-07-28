@@ -1,6 +1,6 @@
 {% extends 'layout/admin/base.html' %}
+{% from 'macros/admin/user.html' import render_user_admin_link %}
 {% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
-{% from 'macros/user_admin.html' import render_user_admin_link %}
 {% set current_page = 'orga_team_admin.teams' %}
 {% set current_page_party = membership.orga_team.party %}
 {% set title = 'Orga-Team-Mitgliedschaft bearbeiten' %}
