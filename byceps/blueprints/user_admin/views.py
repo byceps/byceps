@@ -22,9 +22,9 @@ from ...util.framework.flash import flash_error, flash_success
 from ...util.framework.templating import templated
 from ...util.views import redirect_to, respond_no_content
 
+from ..admin.authorization.authorization import RolePermission
 from ..authorization.decorators import permission_required
 from ..authorization.registry import permission_registry
-from ..authorization_admin.authorization import RolePermission
 from ..user.signals import account_created, account_deleted, \
     account_suspended, account_unsuspended, screen_name_changed
 
