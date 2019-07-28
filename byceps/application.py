@@ -99,7 +99,7 @@ def _get_blueprints(app):
         yield from [
             ('admin_dashboard',         '/admin/dashboard'          ),
             ('admin.authorization',     '/admin/authorization'      ),
-            ('board_admin',             '/admin/board'              ),
+            ('admin.board',             '/admin/board'              ),
             ('brand_admin',             '/admin/brands'             ),
             ('consent_admin',           '/admin/consent'            ),
             ('core_admin',              '/admin/core'               ),

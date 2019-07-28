@@ -1,5 +1,5 @@
 """
-byceps.blueprints.board_admin.views
+byceps.blueprints.admin.board.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2019 Jochen Kupperschmidt
@@ -10,22 +10,22 @@ from collections import namedtuple
 
 from flask import abort, request
 
-from ...services.board import board_service
-from ...services.board import \
+from ....services.board import board_service
+from ....services.board import \
     category_command_service as board_category_command_service, \
     category_query_service as board_category_query_service, \
     posting_query_service as board_posting_query_service, \
     topic_query_service as board_topic_query_service
-from ...services.board.transfer.models import Board, Category
-from ...services.brand import service as brand_service
-from ...util.framework.blueprint import create_blueprint
-from ...util.framework.flash import flash_error, flash_success
-from ...util.framework.templating import templated
-from ...util.views import redirect_to, respond_no_content
+from ....services.board.transfer.models import Board, Category
+from ....services.brand import service as brand_service
+from ....util.framework.blueprint import create_blueprint
+from ....util.framework.flash import flash_error, flash_success
+from ....util.framework.templating import templated
+from ....util.views import redirect_to, respond_no_content
 
-from ..authorization.decorators import permission_required
-from ..authorization.registry import permission_registry
-from ..board.authorization import BoardPermission
+from ...authorization.decorators import permission_required
+from ...authorization.registry import permission_registry
+from ...board.authorization import BoardPermission
 
 from .authorization import BoardCategoryPermission
 from .forms import BoardCreateForm, CategoryCreateForm, CategoryUpdateForm
