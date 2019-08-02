@@ -89,7 +89,6 @@ def _get_blueprints(app):
             ('snippet',                 '/snippets'                 ),
             ('terms',                   '/terms'                    ),
             ('ticketing',               '/tickets'                  ),
-            ('tourney.avatar',          '/tourney/avatars'          ),
             ('tourney.match',           '/tourney/matches'          ),
             ('user.profile',            '/users'                    ),
             ('user_badge',              '/user_badges'              ),
@@ -128,6 +127,12 @@ def _get_blueprints(app):
             ('admin.user_badge',        '/admin/user_badges'        ),
         ]
 
+    # API
+    yield from [
+        ('api.tourney.avatar',          '/api/tourney/avatars'      ),
+    ]
+
+    # metrics
     if app.config['METRICS_ENABLED']:
         yield from [
             ('metrics',                 '/metrics'                  ),

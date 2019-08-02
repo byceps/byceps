@@ -1,6 +1,6 @@
 """
-byceps.blueprints.tourney.avatar.views
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.api.tourney.avatar.views
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2019 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -8,12 +8,12 @@ byceps.blueprints.tourney.avatar.views
 
 from flask import abort, g, request
 
-from ....services.tourney.avatar import service as avatar_service
-from ....util.framework.blueprint import create_blueprint
-from ....util.image.models import ImageType
-from ....util.views import respond_created, respond_no_content
+from .....services.tourney.avatar import service as avatar_service
+from .....util.framework.blueprint import create_blueprint
+from .....util.image.models import ImageType
+from .....util.views import respond_created, respond_no_content
 
-from ...authentication.decorators import api_token_required
+from ....authentication.decorators import api_token_required
 
 from .forms import CreateForm
 
