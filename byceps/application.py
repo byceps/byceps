@@ -6,6 +6,7 @@ byceps.application
 :License: Modified BSD, see LICENSE for details.
 """
 
+from importlib import import_module
 from pathlib import Path
 
 from flask import Flask, redirect
@@ -167,6 +168,9 @@ def init_app(app):
 
             # Incorporate template overrides for the configured site ID.
             app.template_folder = str(Path('..') / 'sites' / site_id / 'template_overrides')
+
+            # Import site-specific code.
+            _load_site_extension(app, site_id)
         elif site_mode.is_admin() and app.config['RQ_DASHBOARD_ENABLED']:
             import rq_dashboard
             app.register_blueprint(rq_dashboard.blueprint,
@@ -189,3 +193,33 @@ def _set_url_root_path(app):
         return redirect(target_url, status_code)
 
     app.add_url_rule('/', endpoint='root', view_func=_redirect)
+
+
+def _load_site_extension(app, site_id):
+    """Import and call custom extension code from the site's package, if
+    available.
+
+    If a site package contains a module named `extension` and it
+    contains a top-level callable named `init`, then that callable is
+    called with the application as its sole argument.
+
+    The application object can then be used to register, for example, a
+    context processor.
+    """
+    module_name = 'sites.{}.extension'.format(site_id)
+    try:
+        module = import_module(module_name)
+    except ImportError:
+        # No extension module found in site package.
+        return
+
+    entry_point = getattr(module, 'init', None)
+    if entry_point is None:
+        # Entry point not found in module.
+        return
+
+    if not callable(entry_point):
+        # Entry point object is not callable.
+        return
+
+    entry_point(app)
