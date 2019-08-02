@@ -160,12 +160,12 @@ def init_app(app):
 
         site_mode = config.get_site_mode()
         if site_mode.is_public():
-            # Mount snippets.
             site_id = config.get_current_site_id()
+
+            # Mount snippets.
             add_routes_for_snippets(site_id)
 
             # Incorporate template overrides for the configured site ID.
-            site_id = config.get_current_site_id()
             app.template_folder = str(Path('..') / 'sites' / site_id / 'template_overrides')
         elif site_mode.is_admin() and app.config['RQ_DASHBOARD_ENABLED']:
             import rq_dashboard
