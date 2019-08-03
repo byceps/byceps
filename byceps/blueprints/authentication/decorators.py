@@ -12,21 +12,10 @@ from functools import wraps
 import hmac
 from typing import Optional
 
-from flask import current_app, g, request
-from werkzeug.exceptions import Unauthorized
+from flask import abort, current_app, g, request
 
 from ...util.framework.flash import flash_notice
 from ...util.views import redirect_to
-
-
-# Workaround until Werkzeug 0.15 is released.
-# Replace with `abort(401, www_authenticate='Bearer')` then.
-class UnauthorizedWithWwwAuthenticateHeader(Unauthorized):
-
-    def get_headers(self, environ=None):
-        return super().get_headers(environ) + [
-            ('WWW-Authenticate', 'Bearer'),
-        ]
 
 
 def api_token_required(func):
@@ -34,7 +23,7 @@ def api_token_required(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
         if not _has_valid_api_token():
-            raise UnauthorizedWithWwwAuthenticateHeader()
+            abort(401, www_authenticate='Bearer')
         return func(*args, **kwargs)
     return wrapper
 
