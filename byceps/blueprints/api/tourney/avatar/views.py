@@ -28,6 +28,7 @@ ALLOWED_IMAGE_TYPES = frozenset([
 
 
 @blueprint.route('', methods=['POST'])
+@api_token_required
 @respond_created
 def create():
     """Create an avatar image."""
