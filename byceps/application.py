@@ -89,7 +89,6 @@ def _get_blueprints(app):
             ('snippet',                 '/snippets'                 ),
             ('terms',                   '/terms'                    ),
             ('ticketing',               '/tickets'                  ),
-            ('tourney.match',           '/tourney/matches'          ),
             ('user.profile',            '/users'                    ),
             ('user_badge',              '/user_badges'              ),
             ('user_group',              '/user_groups'              ),
@@ -130,6 +129,7 @@ def _get_blueprints(app):
     # API
     yield from [
         ('api.tourney.avatar',          '/api/tourney/avatars'      ),
+        ('api.tourney.match',           '/api/tourney/matches'      ),
     ]
 
     # metrics
