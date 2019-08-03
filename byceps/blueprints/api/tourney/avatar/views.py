@@ -13,7 +13,7 @@ from .....util.framework.blueprint import create_blueprint
 from .....util.image.models import ImageType
 from .....util.views import respond_created, respond_no_content
 
-from ....authentication.decorators import api_token_required
+from ...decorators import api_token_required
 
 from .forms import CreateForm
 
