@@ -3,10 +3,13 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
+from base64 import b64encode
+
 from byceps.services.tourney.models.match import MatchComment
 from byceps.services.tourney import match_service
 
 from tests.base import AbstractAppTestCase
+from tests.api_helpers import assemble_authorization_header
 from tests.helpers import create_brand, create_party, create_session_token, \
     create_site, create_user, http_client
 
@@ -65,12 +68,16 @@ class MatchCommentCreateTest(AbstractAppTestCase):
     def request_comment_creation(self, match_id, *, user_id=None):
         url = '/api/tourney/matches/{}/comments'.format(match_id)
 
+        headers = [
+            assemble_authorization_header('just-say-PLEASE'),
+        ]
+
         form_data = {
             'body': 'gg',
         }
 
         with http_client(self.app, user_id=user_id) as client:
-            return client.post(url, data=form_data)
+            return client.post(url, headers=headers, data=form_data)
 
 
 def get_comment_count_for_match(match_id):
