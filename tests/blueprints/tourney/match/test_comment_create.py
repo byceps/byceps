@@ -63,7 +63,7 @@ class MatchCommentCreateTest(AbstractAppTestCase):
         return match_service.create_match()
 
     def request_comment_creation(self, match_id, *, user_id=None):
-        url = '/tourney/matches/{}/comments'.format(match_id)
+        url = '/api/tourney/matches/{}/comments'.format(match_id)
 
         form_data = {
             'body': 'gg',
