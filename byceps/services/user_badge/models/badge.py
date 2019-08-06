@@ -18,7 +18,7 @@ class Badge(db.Model):
     __tablename__ = 'user_badges'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    brand_id = db.Column(db.Unicode(20), db.ForeignKey('brands.id'), nullable=True)
+    brand_id = db.Column(db.UnicodeText, db.ForeignKey('brands.id'), nullable=True)
     slug = db.Column(db.UnicodeText, unique=True, index=True, nullable=False)
     label = db.Column(db.UnicodeText, unique=True, nullable=False)
     description = db.Column(db.UnicodeText, nullable=True)

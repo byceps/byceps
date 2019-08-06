@@ -15,7 +15,7 @@ class Setting(db.Model):
     """A brand-specific setting."""
     __tablename__ = 'brand_settings'
 
-    brand_id = db.Column(db.Unicode(20), db.ForeignKey('brands.id'), primary_key=True)
+    brand_id = db.Column(db.UnicodeText, db.ForeignKey('brands.id'), primary_key=True)
     name = db.Column(db.UnicodeText, primary_key=True)
     value = db.Column(db.UnicodeText)
 

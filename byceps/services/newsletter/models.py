@@ -25,7 +25,7 @@ class Subscription(db.Model):
     __tablename__ = 'newsletter_subscriptions'
 
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
-    brand_id = db.Column(db.Unicode(20), db.ForeignKey('brands.id'), primary_key=True)
+    brand_id = db.Column(db.UnicodeText, db.ForeignKey('brands.id'), primary_key=True)
     expressed_at = db.Column(db.DateTime, primary_key=True)
     _state = db.Column('state', db.Unicode(20), nullable=False)
 

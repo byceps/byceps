@@ -18,7 +18,7 @@ class Channel(db.Model):
     __tablename__ = 'news_channels'
 
     id = db.Column(db.UnicodeText, primary_key=True)
-    brand_id = db.Column(db.Unicode(20), db.ForeignKey('brands.id'), index=True, nullable=False)
+    brand_id = db.Column(db.UnicodeText, db.ForeignKey('brands.id'), index=True, nullable=False)
     url_prefix = db.Column(db.UnicodeText, nullable=False)
 
     def __init__(self, channel_id: ChannelID, brand_id: BrandID,

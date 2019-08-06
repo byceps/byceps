@@ -15,7 +15,7 @@ class Brand(db.Model):
     """A party brand."""
     __tablename__ = 'brands'
 
-    id = db.Column(db.Unicode(20), primary_key=True)
+    id = db.Column(db.UnicodeText, primary_key=True)
     title = db.Column(db.UnicodeText, unique=True, nullable=False)
 
     def __init__(self, brand_id: BrandID, title: str) -> None:

@@ -15,7 +15,7 @@ class EmailConfig(db.Model):
     """E-mail configuration for a brand."""
     __tablename__ = 'email_configs'
 
-    brand_id = db.Column(db.Unicode(20), db.ForeignKey('brands.id'), primary_key=True)
+    brand_id = db.Column(db.UnicodeText, db.ForeignKey('brands.id'), primary_key=True)
     sender_address = db.Column(db.Unicode(80), nullable=False)
 
     def __init__(self, brand_id: BrandID, sender_address: str) -> None:

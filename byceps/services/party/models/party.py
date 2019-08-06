@@ -21,7 +21,7 @@ class Party(db.Model):
     __tablename__ = 'parties'
 
     id = db.Column(db.Unicode(40), primary_key=True)
-    brand_id = db.Column(db.Unicode(20), db.ForeignKey('brands.id'), index=True, nullable=False)
+    brand_id = db.Column(db.UnicodeText, db.ForeignKey('brands.id'), index=True, nullable=False)
     brand = db.relationship(Brand, backref='parties')
     title = db.Column(db.UnicodeText, unique=True, nullable=False)
     starts_at = db.Column(db.DateTime, nullable=False)

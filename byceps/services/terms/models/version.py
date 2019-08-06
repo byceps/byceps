@@ -37,7 +37,7 @@ class Version(db.Model):
     query_class = VersionQuery
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    brand_id = db.Column(db.Unicode(20), db.ForeignKey('brands.id'), nullable=False)
+    brand_id = db.Column(db.UnicodeText, db.ForeignKey('brands.id'), nullable=False)
     brand = db.relationship(Brand)
     created_at = db.Column(db.DateTime, default=datetime.now, nullable=False)
     title = db.Column(db.Unicode(40), nullable=False)
