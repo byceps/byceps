@@ -125,8 +125,9 @@ class UserCreateTestCase(AbstractAppTestCase):
         # password
         assert_password_credentials_created(user.id)
 
-        # session token
-        assert_session_token_created(user.id)
+        # Session token should not have been created at this point.
+        session_token = find_session_token(user.id)
+        assert session_token is None
 
         # avatar
         assert user.avatar is None
@@ -242,14 +243,10 @@ def assert_password_credentials_created(user_id):
     assert credential.updated_at is not None
 
 
-def assert_session_token_created(user_id):
-    session_token = SessionToken.query \
+def find_session_token(user_id):
+    return SessionToken.query \
         .filter_by(user_id=user_id) \
         .one_or_none()
-
-    assert session_token is not None
-    assert session_token.token is not None
-    assert session_token.created_at is not None
 
 
 def assert_consent(user_id, subject_id):

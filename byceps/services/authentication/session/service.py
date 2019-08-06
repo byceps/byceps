@@ -10,6 +10,7 @@ from datetime import datetime
 from typing import Optional
 from uuid import UUID, uuid4
 
+from ....database import db
 from ....typing import UserID
 
 from ..exceptions import AuthenticationFailed
@@ -22,6 +23,20 @@ def build_session_token(user_id: UserID, created_at: datetime) -> SessionToken:
     token = _generate_auth_token()
 
     return SessionToken(token, user_id, created_at)
+
+
+def create_session_token(user_id: UserID, created_at: Optional[datetime]=None
+                        ) -> SessionToken:
+    """Create a session token."""
+    if created_at is None:
+        created_at = datetime.utcnow()
+
+    session_token = build_session_token(user_id, created_at)
+
+    db.session.add(session_token)
+    db.session.commit()
+
+    return session_token
 
 
 def update_session_token(session_token: SessionToken, updated_at: datetime

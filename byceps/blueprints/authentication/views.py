@@ -116,9 +116,7 @@ def login():
 
     session_token = session_service.find_session_token_for_user(user.id)
     if session_token is None:
-        current_app.logger.error(
-            'No session token found for user %s on attempted login.', user)
-        abort(500)
+        session_token = session_service.create_session_token(user.id)
 
     service.create_login_event(user.id, request.remote_addr)
 
