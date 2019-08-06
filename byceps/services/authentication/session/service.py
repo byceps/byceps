@@ -31,16 +31,17 @@ def create_session_token(user_id: UserID) -> SessionToken:
     return session_token
 
 
-def update_session_token(session_token: SessionToken, updated_at: datetime
-                        ) -> None:
-    """Update, but do not persist, the session token entity."""
-    session_token.token = _generate_auth_token()
-    session_token.created_at = updated_at
-
-
 def _generate_auth_token() -> UUID:
     """Generate an authentication token."""
     return uuid4()
+
+
+def delete_session_tokens_for_user(user_id: UserID) -> None:
+    """Delete all session tokens that belong to the user."""
+    db.session.query(SessionToken) \
+        .filter_by(user_id=user_id) \
+        .delete()
+    db.session.commit()
 
 
 def delete_all_session_tokens() -> int:

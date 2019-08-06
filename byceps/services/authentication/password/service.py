@@ -55,20 +55,14 @@ def update_password_hash(user_id: UserID, password: str, initiator_id: UserID
     credential.password_hash = password_hash
     credential.updated_at = now
 
-    session_token = session_service.find_session_token_for_user(user_id)
-    if session_token:
-        session_service.update_session_token(session_token, now)
-    else:
-        # No session token is stored for the user. That's okay; a new
-        # one will be created on successful login.
-        pass
-
     event = user_event_service.build_event('password-updated', user_id, {
         'initiator_id': str(initiator_id),
     })
     db.session.add(event)
 
     db.session.commit()
+
+    session_service.delete_session_tokens_for_user(user_id)
 
 
 def is_password_valid_for_user(user_id: UserID, password: str) -> bool:
