@@ -8,7 +8,7 @@ byceps.services.authentication.session.service
 
 from datetime import datetime
 from typing import Optional
-from uuid import UUID, uuid4
+from uuid import uuid4
 
 from ....database import db
 from ....typing import UserID
