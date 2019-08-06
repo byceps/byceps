@@ -48,6 +48,9 @@ def renew_session_tokens(user_ids):
 
 def renew_session_token(user_id, updated_at):
     token = session_service.find_session_token_for_user(user_id)
+    if not token:
+        token = session_service.create_session_token(user_id)
+
     session_service.update_session_token(token, updated_at)
 
 
