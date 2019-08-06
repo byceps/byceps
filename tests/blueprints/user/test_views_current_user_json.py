@@ -3,9 +3,11 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
+from byceps.services.authentication.session import service as session_service
+
 from tests.base import AbstractAppTestCase
-from tests.helpers import create_brand, create_party, create_session_token, \
-    create_site, create_user, http_client
+from tests.helpers import create_brand, create_party, create_site, \
+    create_user, http_client
 
 
 CONTENT_TYPE_JSON = 'application/json'
@@ -22,7 +24,7 @@ class CurrentUserJsonTestCase(AbstractAppTestCase):
 
     def test_when_logged_in(self):
         user = create_user('McFly')
-        create_session_token(user.id)
+        session_service.create_session_token(user.id)
 
         response = self.send_request(user_id=user.id)
 

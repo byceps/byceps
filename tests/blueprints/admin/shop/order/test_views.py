@@ -5,6 +5,7 @@
 
 from unittest.mock import patch
 
+from byceps.services.authentication.session import service as session_service
 from byceps.services.shop.article.models.article import Article
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order.models.order import Order
@@ -16,8 +17,7 @@ from testfixtures.shop_order import create_orderer
 
 from tests.base import CONFIG_FILENAME_TEST_ADMIN
 from tests.helpers import assign_permissions_to_user, create_brand, \
-    create_party, create_session_token, create_user, create_user_with_detail, \
-    http_client
+    create_party, create_user, create_user_with_detail, http_client
 from tests.services.shop.base import ShopTestBase
 
 
@@ -47,7 +47,7 @@ class ShopAdminTestCase(ShopTestBase):
         }
         assign_permissions_to_user(admin.id, 'admin', permission_ids)
 
-        create_session_token(admin.id)
+        session_service.create_session_token(admin.id)
 
         return admin
 

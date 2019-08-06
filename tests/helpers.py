@@ -17,8 +17,6 @@ from byceps.services.authorization import service as authorization_service
 from byceps.services.party import service as party_service
 from byceps.services.site import service as site_service
 
-from testfixtures.authentication import create_session_token \
-    as _create_session_token
 from testfixtures.brand import create_brand as _create_brand
 from testfixtures.party import create_party as _create_party
 from testfixtures.user import create_user as _create_user, \
@@ -86,13 +84,6 @@ def assign_permissions_to_user(user_id, role_id, permission_ids,
 
     authorization_service.assign_role_to_user(user_id, role.id,
                                               initiator_id=initiator_id)
-
-
-def create_session_token(user_id):
-    session_token = _create_session_token(user_id)
-
-    db.session.add(session_token)
-    db.session.commit()
 
 
 def create_brand(brand_id='acmecon', title='ACME Entertainment Convention'):

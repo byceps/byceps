@@ -3,6 +3,7 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
+from byceps.services.authentication.session import service as session_service
 from byceps.services.board.models.topic import Topic
 from byceps.services.site import settings_service as site_settings_service
 
@@ -11,7 +12,7 @@ from testfixtures.board import create_board as _create_board, \
 
 from tests.base import AbstractAppTestCase
 from tests.helpers import assign_permissions_to_user, create_brand, \
-    create_party, create_session_token, create_site, create_user
+    create_party, create_site, create_user
 
 
 class AbstractTopicModerationTest(AbstractAppTestCase):
@@ -20,7 +21,7 @@ class AbstractTopicModerationTest(AbstractAppTestCase):
         super().setUp()
 
         self.admin = create_user('Admin')
-        create_session_token(self.admin.id)
+        session_service.create_session_token(self.admin.id)
 
         self.user = create_user('User')
 

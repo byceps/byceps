@@ -5,12 +5,13 @@
 
 from datetime import datetime
 
+from byceps.services.authentication.session import service as session_service
 from byceps.services.newsletter.models import Subscription
 from byceps.services.newsletter.types import SubscriptionState
 
 from tests.base import AbstractAppTestCase, CONFIG_FILENAME_TEST_ADMIN
 from tests.helpers import assign_permissions_to_user, create_brand, \
-    create_session_token, create_user, http_client
+    create_user, http_client
 
 
 class NewsletterAdminTestCase(AbstractAppTestCase):
@@ -30,7 +31,7 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
         permission_ids = {'admin.access', 'newsletter.export_subscribers'}
         assign_permissions_to_user(admin.id, 'admin', permission_ids)
 
-        create_session_token(admin.id)
+        session_service.create_session_token(admin.id)
 
         return admin
 

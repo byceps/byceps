@@ -5,13 +5,14 @@
 
 from unittest.mock import patch
 
+from byceps.services.authentication.session import service as session_service
 from byceps.services.shop.article.models.article import Article
 from byceps.services.shop.order.models.order import Order
 
 from testfixtures.shop_article import create_article
 
-from tests.helpers import create_brand, create_party, create_session_token, \
-    create_site, create_user, http_client
+from tests.helpers import create_brand, create_party, create_site, \
+    create_user, http_client
 from tests.services.shop.base import ShopTestBase
 
 
@@ -37,7 +38,7 @@ class ShopOrderTestCase(ShopTestBase):
 
     def setup_orderer(self):
         self.orderer = create_user()
-        create_session_token(self.orderer.id)
+        session_service.create_session_token(self.orderer.id)
 
     def setup_article(self):
         article = create_article(self.shop.id, quantity=5)

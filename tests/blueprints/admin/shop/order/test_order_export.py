@@ -9,6 +9,7 @@ from decimal import Decimal
 
 from freezegun import freeze_time
 
+from byceps.services.authentication.session import service as session_service
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order.models.orderer import Orderer
 from byceps.services.shop.order import service as order_service
@@ -16,7 +17,7 @@ from byceps.services.shop.order.transfer.models import PaymentMethod
 
 from tests.base import CONFIG_FILENAME_TEST_ADMIN
 from tests.helpers import assign_permissions_to_user, create_brand, \
-    create_party, create_session_token, create_user, http_client
+    create_party, create_user, http_client
 from tests.services.shop.base import ShopTestBase
 
 
@@ -58,7 +59,7 @@ class ExportTestCase(ShopTestBase):
         permission_ids = {'admin.access', 'shop_order.view'}
         assign_permissions_to_user(admin.id, 'admin', permission_ids)
 
-        create_session_token(admin.id)
+        session_service.create_session_token(admin.id)
 
         return admin
 
