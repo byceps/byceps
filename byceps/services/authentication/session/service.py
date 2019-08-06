@@ -18,20 +18,14 @@ from ..exceptions import AuthenticationFailed
 from .models.session_token import SessionToken
 
 
-def build_session_token(user_id: UserID, created_at: datetime) -> SessionToken:
-    """Build a session token entity."""
-    token = _generate_auth_token()
-
-    return SessionToken(token, user_id, created_at)
-
-
 def create_session_token(user_id: UserID, created_at: Optional[datetime]=None
                         ) -> SessionToken:
     """Create a session token."""
     if created_at is None:
         created_at = datetime.utcnow()
 
-    session_token = build_session_token(user_id, created_at)
+    token = _generate_auth_token()
+    session_token = SessionToken(token, user_id, created_at)
 
     db.session.add(session_token)
     db.session.commit()
