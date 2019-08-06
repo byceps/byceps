@@ -18,7 +18,7 @@ from ...user import event_service as user_event_service
 
 from ..session import service as session_service
 
-from .models import Credential
+from .models import Credential as DbCredential
 
 
 PASSWORD_HASH_ITERATIONS = 150000
@@ -36,7 +36,7 @@ def create_password_hash(user_id: UserID, password: str) -> None:
 
     password_hash = generate_password_hash(password)
 
-    credential = Credential(user_id, password_hash, now)
+    credential = DbCredential(user_id, password_hash, now)
     db.session.add(credential)
     db.session.commit()
 
@@ -50,7 +50,7 @@ def update_password_hash(user_id: UserID, password: str, initiator_id: UserID
 
     password_hash = generate_password_hash(password)
 
-    credential = Credential.query.get(user_id)
+    credential = DbCredential.query.get(user_id)
 
     credential.password_hash = password_hash
     credential.updated_at = now
@@ -69,7 +69,7 @@ def is_password_valid_for_user(user_id: UserID, password: str) -> bool:
     """Return `True` if the password is valid for the user, or `False`
     otherwise.
     """
-    credential = Credential.query.get(user_id)
+    credential = DbCredential.query.get(user_id)
 
     if credential is None:
         # no password stored for user

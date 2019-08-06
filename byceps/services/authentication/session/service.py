@@ -15,10 +15,10 @@ from ....typing import UserID
 
 from ..exceptions import AuthenticationFailed
 
-from .models.session_token import SessionToken
+from .models.session_token import SessionToken as DbSessionToken
 
 
-def get_session_token(user_id: UserID) -> SessionToken:
+def get_session_token(user_id: UserID) -> DbSessionToken:
     """Return existing session token or create a new one."""
     session_token = find_session_token_for_user(user_id)
 
@@ -28,12 +28,12 @@ def get_session_token(user_id: UserID) -> SessionToken:
     return session_token
 
 
-def create_session_token(user_id: UserID) -> SessionToken:
+def create_session_token(user_id: UserID) -> DbSessionToken:
     """Create a session token."""
     token = uuid4()
     created_at = datetime.utcnow()
 
-    session_token = SessionToken(user_id, token, created_at)
+    session_token = DbSessionToken(user_id, token, created_at)
 
     db.session.add(session_token)
     db.session.commit()
@@ -43,7 +43,7 @@ def create_session_token(user_id: UserID) -> SessionToken:
 
 def delete_session_tokens_for_user(user_id: UserID) -> None:
     """Delete all session tokens that belong to the user."""
-    db.session.query(SessionToken) \
+    db.session.query(DbSessionToken) \
         .filter_by(user_id=user_id) \
         .delete()
     db.session.commit()
@@ -54,17 +54,17 @@ def delete_all_session_tokens() -> int:
 
     Return the number of records deleted.
     """
-    deleted_total = db.session.query(SessionToken).delete()
+    deleted_total = db.session.query(DbSessionToken).delete()
     db.session.commit()
 
     return deleted_total
 
 
-def find_session_token_for_user(user_id: UserID) -> Optional[SessionToken]:
+def find_session_token_for_user(user_id: UserID) -> Optional[DbSessionToken]:
     """Return the session token for the user with that ID, or `None` if
     not found.
     """
-    return SessionToken.query \
+    return DbSessionToken.query \
         .filter_by(user_id=user_id) \
         .one_or_none()
 
@@ -93,7 +93,7 @@ def _is_token_valid_for_user(token: str, user_id: UserID) -> bool:
     if not user_id:
         raise ValueError('User ID is invalid.')
 
-    subquery = SessionToken.query \
+    subquery = DbSessionToken.query \
         .filter_by(token=token, user_id=user_id) \
         .exists()
 
