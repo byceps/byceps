@@ -40,9 +40,13 @@ def create_form(erroneous_form=None):
         flash_error('Das Erstellen von Benutzerkonten ist deaktiviert.')
         abort(403)
 
+    privacy_policy_consent_subject_id \
+        = _find_privacy_policy_consent_subject_id()
+
     real_name_required = _is_real_name_required()
     terms_consent_required = _is_terms_consent_required()
-    privacy_policy_consent_required = _is_privacy_policy_consent_required()
+    privacy_policy_consent_required \
+        = (privacy_policy_consent_subject_id is not None)
 
     if terms_consent_required:
         terms_version_id = terms_version_service \
@@ -57,13 +61,6 @@ def create_form(erroneous_form=None):
     _adjust_create_form(form, real_name_required, terms_consent_required,
                         privacy_policy_consent_required)
 
-    if privacy_policy_consent_required:
-        privacy_policy_consent_subject_id \
-            = _find_privacy_policy_consent_subject_id()
-        if not privacy_policy_consent_subject_id:
-            flash_error(
-                'Es ist keine Version der Datenschutzbestimmungen konfiguriert.')
-
     return {'form': form}
 
 
@@ -74,22 +71,18 @@ def create():
         flash_error('Das Erstellen von Benutzerkonten ist deaktiviert.')
         abort(403)
 
+    privacy_policy_consent_subject_id \
+        = _find_privacy_policy_consent_subject_id()
+
     real_name_required = _is_real_name_required()
     terms_consent_required = _is_terms_consent_required()
-    privacy_policy_consent_required = _is_privacy_policy_consent_required()
+    privacy_policy_consent_required \
+        = (privacy_policy_consent_subject_id is not None)
 
     form = UserCreateForm(request.form)
 
     _adjust_create_form(form, real_name_required, terms_consent_required,
                         privacy_policy_consent_required)
-
-    if privacy_policy_consent_required:
-        privacy_policy_consent_subject_id \
-            = _find_privacy_policy_consent_subject_id()
-        if not privacy_policy_consent_subject_id:
-            flash_error(
-                'Es ist keine Version der Datenschutzbestimmungen konfiguriert.')
-            return create_form(form)
 
     if not form.validate():
         return create_form(form)
@@ -195,19 +188,6 @@ def _is_real_name_required() -> bool:
 
 def _is_terms_consent_required() -> bool:
     return terms_consent_service.is_consent_required_for_brand(g.brand_id)
-
-
-def _is_privacy_policy_consent_required() -> bool:
-    """Return `True` if consent to the privacy policy is required.
-
-    By default, consent is not required. It can be required by
-    configuring the string `true` for the brand setting
-    `privacy_policy_consent_required`.
-    """
-    value = brand_settings_service \
-        .find_setting_value(g.brand_id, 'privacy_policy_consent_required')
-
-    return value == 'true'
 
 
 def _find_privacy_policy_consent_subject_id() -> SubjectID:

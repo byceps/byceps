@@ -8,8 +8,7 @@ byceps.blueprints.authentication.views
 
 from flask import abort, current_app, g, request, url_for
 
-from ...config import ConfigurationError, get_site_mode, \
-    get_user_registration_enabled
+from ...config import get_site_mode, get_user_registration_enabled
 from ...services.authentication.exceptions import AuthenticationFailed
 from ...services.authentication import service as authentication_service
 from ...services.authentication.password import service as password_service
@@ -29,8 +28,7 @@ from ...util.framework.templating import templated
 from ...util.views import redirect_to, respond_no_content
 
 from ..admin.core.authorization import AdminPermission
-from ..user.creation.views import _find_privacy_policy_consent_subject_id, \
-    _is_privacy_policy_consent_required
+from ..user.creation.views import _find_privacy_policy_consent_subject_id
 
 from .forms import LoginForm, RequestPasswordResetForm, ResetPasswordForm, \
     UpdatePasswordForm
@@ -140,14 +138,10 @@ def _get_required_consent_subject_ids():
         terms_version = _get_current_terms_version(g.brand_id)
         subject_ids.append(terms_version.consent_subject_id)
 
-    if _is_privacy_policy_consent_required():
-        privacy_policy_consent_subject_id \
-            = _find_privacy_policy_consent_subject_id()
+    privacy_policy_consent_subject_id \
+        = _find_privacy_policy_consent_subject_id()
 
-        if not privacy_policy_consent_subject_id:
-            raise ConfigurationError(
-                'No privacy policy consent subject ID configured for brand.')
-
+    if privacy_policy_consent_subject_id:
         subject_ids.append(privacy_policy_consent_subject_id)
 
     return subject_ids
