@@ -93,6 +93,8 @@ def _is_token_valid_for_user(token: str, user_id: UserID) -> bool:
     if not user_id:
         raise ValueError('User ID is invalid.')
 
-    session_token = SessionToken.query.get(token)
+    subquery = SessionToken.query \
+        .filter_by(token=token, user_id=user_id) \
+        .exists()
 
-    return (session_token is not None) and (session_token.user_id == user_id)
+    return db.session.query(subquery).scalar()
