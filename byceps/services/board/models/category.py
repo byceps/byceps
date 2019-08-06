@@ -34,11 +34,11 @@ class Category(db.Model):
     query_class = CategoryQuery
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    board_id = db.Column(db.Unicode(40), db.ForeignKey('boards.id'), index=True, nullable=False)
+    board_id = db.Column(db.UnicodeText, db.ForeignKey('boards.id'), index=True, nullable=False)
     position = db.Column(db.Integer, nullable=False)
-    slug = db.Column(db.Unicode(40), nullable=False)
-    title = db.Column(db.Unicode(40), nullable=False)
-    description = db.Column(db.Unicode(80))
+    slug = db.Column(db.UnicodeText, nullable=False)
+    title = db.Column(db.UnicodeText, nullable=False)
+    description = db.Column(db.UnicodeText)
     topic_count = db.Column(db.Integer, default=0, nullable=False)
     posting_count = db.Column(db.Integer, default=0, nullable=False)
     last_posting_updated_at = db.Column(db.DateTime)

@@ -17,7 +17,7 @@ class Board(db.Model):
     """A board."""
     __tablename__ = 'boards'
 
-    id = db.Column(db.Unicode(40), primary_key=True)
+    id = db.Column(db.UnicodeText, primary_key=True)
     brand_id = db.Column(db.Unicode(20), db.ForeignKey('brands.id'), index=True, nullable=False)
     access_restricted = db.Column(db.Boolean, default=False, nullable=False)
 
