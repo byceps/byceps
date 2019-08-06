@@ -53,8 +53,8 @@ class Role(db.Model):
     """
     __tablename__ = 'authz_roles'
 
-    id = db.Column(db.Unicode(40), primary_key=True)
-    title = db.deferred(db.Column(db.Unicode(80), unique=True, nullable=False))
+    id = db.Column(db.UnicodeText, primary_key=True)
+    title = db.deferred(db.Column(db.UnicodeText, unique=True, nullable=False))
 
     permissions = association_proxy('role_permissions', 'permission')
     users = association_proxy('user_roles', 'user')
@@ -73,11 +73,11 @@ class RolePermission(db.Model):
     """The assignment of a permission to a role."""
     __tablename__ = 'authz_role_permissions'
 
-    role_id = db.Column(db.Unicode(40), db.ForeignKey('authz_roles.id'), primary_key=True)
+    role_id = db.Column(db.UnicodeText, db.ForeignKey('authz_roles.id'), primary_key=True)
     role = db.relationship(Role,
                            backref=db.backref('role_permissions', collection_class=set, lazy='joined'),
                            collection_class=set)
-    permission_id = db.Column(db.Unicode(40), db.ForeignKey('authz_permissions.id'), primary_key=True)
+    permission_id = db.Column(db.UnicodeText, db.ForeignKey('authz_permissions.id'), primary_key=True)
     permission = db.relationship(Permission, backref='role_permissions', collection_class=set, lazy='joined')
 
     def __init__(self, role_id: RoleID, permission_id: PermissionID) -> None:
@@ -99,7 +99,7 @@ class UserRole(db.Model):
     user = db.relationship(User,
                            backref=db.backref('user_roles', collection_class=set),
                            collection_class=set)
-    role_id = db.Column(db.Unicode(40), db.ForeignKey('authz_roles.id'), primary_key=True)
+    role_id = db.Column(db.UnicodeText, db.ForeignKey('authz_roles.id'), primary_key=True)
     role = db.relationship(Role,
                            backref=db.backref('user_roles', collection_class=set),
                            collection_class=set,
