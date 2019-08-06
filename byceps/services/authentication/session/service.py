@@ -43,6 +43,17 @@ def _generate_auth_token() -> UUID:
     return uuid4()
 
 
+def delete_all_session_tokens() -> int:
+    """Delete all users' session tokens.
+
+    Return the number of records deleted.
+    """
+    deleted_total = db.session.query(SessionToken).delete()
+    db.session.commit()
+
+    return deleted_total
+
+
 def find_session_token_for_user(user_id: UserID) -> Optional[SessionToken]:
     """Return the session token for the user with that ID, or `None` if
     not found.
