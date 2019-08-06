@@ -33,7 +33,7 @@ def create_session_token(user_id: UserID) -> SessionToken:
     token = uuid4()
     created_at = datetime.utcnow()
 
-    session_token = SessionToken(token, user_id, created_at)
+    session_token = SessionToken(user_id, token, created_at)
 
     db.session.add(session_token)
     db.session.commit()
