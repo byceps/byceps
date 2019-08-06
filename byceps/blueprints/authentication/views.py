@@ -190,7 +190,7 @@ def password_update():
 
     password_service.update_password_hash(user.id, password, user.id)
 
-    flash_success('Das Passwort wurde geändert.')
+    flash_success('Dein Passwort wurde geändert. Bitte melde dich erneut an.')
     return redirect_to('.login_form')
 
 
