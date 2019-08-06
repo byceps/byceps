@@ -15,8 +15,7 @@ from ....services.brand import settings_service as brand_settings_service
 from ....services.consent.transfer.models import Consent, SubjectID
 from ....services.newsletter.transfer.models import \
     Subscription as NewsletterSubscription
-from ....services.terms import consent_service as terms_consent_service, \
-    version_service as terms_version_service
+from ....services.terms import version_service as terms_version_service
 from ....services.user import creation_service as user_creation_service
 from ....services.user import service as user_service
 from ....util.framework.blueprint import create_blueprint
@@ -40,18 +39,18 @@ def create_form(erroneous_form=None):
         flash_error('Das Erstellen von Benutzerkonten ist deaktiviert.')
         abort(403)
 
+    terms_version = terms_version_service.find_current_version(g.brand_id)
+
     privacy_policy_consent_subject_id \
         = _find_privacy_policy_consent_subject_id()
 
     real_name_required = _is_real_name_required()
-    terms_consent_required = _is_terms_consent_required()
+    terms_consent_required = (terms_version is not None)
     privacy_policy_consent_required \
         = (privacy_policy_consent_subject_id is not None)
 
     if terms_consent_required:
-        terms_version_id = terms_version_service \
-            .get_current_version(g.brand_id) \
-            .id
+        terms_version_id = terms_version.id
     else:
         terms_version_id = None
 
@@ -71,11 +70,13 @@ def create():
         flash_error('Das Erstellen von Benutzerkonten ist deaktiviert.')
         abort(403)
 
+    terms_version = terms_version_service.find_current_version(g.brand_id)
+
     privacy_policy_consent_subject_id \
         = _find_privacy_policy_consent_subject_id()
 
     real_name_required = _is_real_name_required()
-    terms_consent_required = _is_terms_consent_required()
+    terms_consent_required = (terms_version is not None)
     privacy_policy_consent_required \
         = (privacy_policy_consent_subject_id is not None)
 
@@ -184,10 +185,6 @@ def _is_real_name_required() -> bool:
         .find_setting_value(g.brand_id, 'real_name_required')
 
     return value != 'false'
-
-
-def _is_terms_consent_required() -> bool:
-    return terms_consent_service.is_consent_required_for_brand(g.brand_id)
 
 
 def _find_privacy_policy_consent_subject_id() -> SubjectID:

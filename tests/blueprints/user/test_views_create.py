@@ -63,11 +63,11 @@ class UserCreateTestCase(AbstractAppTestCase):
         terms_version = terms_version_service.create_version(
             self.brand_id, '01-Jan-2016', snippet.id, consent_subject.id)
 
+        terms_version_service.set_current_version(self.brand.id,
+                                                  terms_version.id)
+
         self.terms_version_id = terms_version.id
         self.terms_consent_subject_id = terms_version.consent_subject_id
-
-        brand_settings_service.create_setting(self.brand.id,
-            'terms_consent_required', 'true')
 
     def setup_privacy_policy(self):
         consent_subject = consent_subject_service.create_subject(

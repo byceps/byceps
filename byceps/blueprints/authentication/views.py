@@ -134,8 +134,8 @@ def _is_login_allowed():
 def _get_required_consent_subject_ids():
     subject_ids = []
 
-    if terms_consent_service.is_consent_required_for_brand(g.brand_id):
-        terms_version = _get_current_terms_version(g.brand_id)
+    terms_version = terms_version_service.find_current_version(g.brand_id)
+    if terms_version:
         subject_ids.append(terms_version.consent_subject_id)
 
     privacy_policy_consent_subject_id \
@@ -153,17 +153,6 @@ def _is_consent_required(user_id, subject_ids):
             return True
 
     return False
-
-
-def _get_current_terms_version(brand_id):
-    terms_version = terms_version_service.find_current_version(brand_id)
-
-    if not terms_version:
-        raise Exception(
-            'No terms of service defined for brand "{}", denying login.'
-            .format(brand_id))
-
-    return terms_version
 
 
 @blueprint.route('/logout', methods=['POST'])
