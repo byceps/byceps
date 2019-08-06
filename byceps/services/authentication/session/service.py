@@ -18,6 +18,16 @@ from ..exceptions import AuthenticationFailed
 from .models.session_token import SessionToken
 
 
+def get_session_token(user_id: UserID) -> SessionToken:
+    """Return existing session token or create a new one."""
+    session_token = find_session_token_for_user(user.id)
+
+    if session_token is None:
+        session_token = create_session_token(user.id)
+
+    return session_token
+
+
 def create_session_token(user_id: UserID) -> SessionToken:
     """Create a session token."""
     token = uuid4()

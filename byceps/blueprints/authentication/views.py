@@ -114,9 +114,7 @@ def login():
 
     # Authorization succeeded.
 
-    session_token = session_service.find_session_token_for_user(user.id)
-    if session_token is None:
-        session_token = session_service.create_session_token(user.id)
+    session_token = session_service.get_session_token(user.id)
 
     service.create_login_event(user.id, request.remote_addr)
 
