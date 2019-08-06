@@ -27,6 +27,7 @@ class PasswordUpdateTestCase(AbstractAppTestCase):
 
         user = create_user()
         password_service.create_password_hash(user.id, old_password)
+        session_service.create_session_token(user.id)
 
         credential_before = self.find_credential(user.id)
         assert credential_before is not None
