@@ -20,7 +20,7 @@ from .models.session_token import SessionToken
 
 def create_session_token(user_id: UserID) -> SessionToken:
     """Create a session token."""
-    token = _generate_auth_token()
+    token = uuid4()
     created_at = datetime.utcnow()
 
     session_token = SessionToken(token, user_id, created_at)
@@ -29,11 +29,6 @@ def create_session_token(user_id: UserID) -> SessionToken:
     db.session.commit()
 
     return session_token
-
-
-def _generate_auth_token() -> UUID:
-    """Generate an authentication token."""
-    return uuid4()
 
 
 def delete_session_tokens_for_user(user_id: UserID) -> None:
