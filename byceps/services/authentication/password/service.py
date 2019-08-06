@@ -39,7 +39,7 @@ def create_password_hash(user_id: UserID, password: str) -> None:
     credential = Credential(user_id, password_hash, now)
     db.session.add(credential)
 
-    session_token = session_service.create_session_token(user_id, now)
+    session_token = session_service.build_session_token(user_id, now)
     db.session.add(session_token)
 
     db.session.commit()
@@ -65,7 +65,7 @@ def update_password_hash(user_id: UserID, password: str, initiator_id: UserID
     else:
         # No session token is stored for the user, so create a new one
         # to login with.
-        session_token = session_service.create_session_token(user_id, now)
+        session_token = session_service.build_session_token(user_id, now)
         db.session.add(session_token)
 
     event = user_event_service.build_event('password-updated', user_id, {

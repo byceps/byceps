@@ -17,8 +17,8 @@ from ..exceptions import AuthenticationFailed
 from .models.session_token import SessionToken
 
 
-def create_session_token(user_id: UserID, created_at: datetime) -> SessionToken:
-    """Create, but do not persist, a session token entity."""
+def build_session_token(user_id: UserID, created_at: datetime) -> SessionToken:
+    """Build a session token entity."""
     token = _generate_auth_token()
 
     return SessionToken(token, user_id, created_at)
