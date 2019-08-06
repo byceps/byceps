@@ -53,9 +53,8 @@ class PasswordUpdateTestCase(AbstractAppTestCase):
         assert credential_before.password_hash != credential_after.password_hash
         assert credential_before.updated_at != credential_after.updated_at
 
-        assert session_token_after is not None
-        assert session_token_before.token != session_token_after.token
-        assert session_token_before.created_at != session_token_after.created_at
+        # Session token should have been removed after password change.
+        assert session_token_after is None
 
     def test_when_not_logged_in_endpoint_is_unavailable(self):
         form_data = {}
