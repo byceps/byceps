@@ -200,14 +200,14 @@ def _is_terms_consent_required() -> bool:
 def _is_privacy_policy_consent_required() -> bool:
     """Return `True` if consent to the privacy policy is required.
 
-    By default, consent is required. It can be disabled by configuring
-    the string `false` for the brand setting
+    By default, consent is not required. It can be required by
+    configuring the string `true` for the brand setting
     `privacy_policy_consent_required`.
     """
     value = brand_settings_service \
         .find_setting_value(g.brand_id, 'privacy_policy_consent_required')
 
-    return value != 'false'
+    return value == 'true'
 
 
 def _find_privacy_policy_consent_subject_id() -> SubjectID:

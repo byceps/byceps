@@ -73,6 +73,9 @@ class UserCreateTestCase(AbstractAppTestCase):
                 'privacy_policy')
 
         brand_settings_service.create_setting(self.brand.id,
+            'privacy_policy_consent_required', 'true')
+
+        brand_settings_service.create_setting(self.brand.id,
             'privacy_policy_consent_subject_id', str(consent_subject.id))
 
         self.privacy_policy_consent_subject_id = consent_subject.id
