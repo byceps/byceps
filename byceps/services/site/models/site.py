@@ -20,7 +20,7 @@ class Site(db.Model):
         db.UniqueConstraint('party_id', 'title'),
     )
 
-    id = db.Column(db.Unicode(40), primary_key=True)
+    id = db.Column(db.UnicodeText, primary_key=True)
     party_id = db.Column(db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False)
     title = db.Column(db.UnicodeText, nullable=False)
     server_name = db.Column(db.UnicodeText, nullable=False)
