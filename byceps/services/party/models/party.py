@@ -20,7 +20,7 @@ class Party(db.Model):
     """A party."""
     __tablename__ = 'parties'
 
-    id = db.Column(db.Unicode(40), primary_key=True)
+    id = db.Column(db.UnicodeText, primary_key=True)
     brand_id = db.Column(db.UnicodeText, db.ForeignKey('brands.id'), index=True, nullable=False)
     brand = db.relationship(Brand, backref='parties')
     title = db.Column(db.UnicodeText, unique=True, nullable=False)

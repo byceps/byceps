@@ -28,7 +28,7 @@ class Avatar(db.Model):
     __tablename__ = 'tourney_avatars'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    party_id = db.Column(db.Unicode(40), db.ForeignKey('parties.id'), index=True, nullable=False)
+    party_id = db.Column(db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
     _image_type = db.Column('image_type', db.Unicode(4), nullable=False)

@@ -18,7 +18,7 @@ class Shop(db.Model):
     __tablename__ = 'shops'
 
     id = db.Column(db.Unicode(40), primary_key=True)
-    party_id = db.Column(db.Unicode(40), db.ForeignKey('parties.id'), unique=True, nullable=False)
+    party_id = db.Column(db.UnicodeText, db.ForeignKey('parties.id'), unique=True, nullable=False)
     closed = db.Column(db.Boolean, default=False, nullable=False)
     archived = db.Column(db.Boolean, default=False, nullable=False)
 

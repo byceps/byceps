@@ -21,7 +21,7 @@ class Site(db.Model):
     )
 
     id = db.Column(db.Unicode(40), primary_key=True)
-    party_id = db.Column(db.Unicode(40), db.ForeignKey('parties.id'), index=True, nullable=False)
+    party_id = db.Column(db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False)
     title = db.Column(db.UnicodeText, nullable=False)
     server_name = db.Column(db.UnicodeText, nullable=False)
 

@@ -27,7 +27,7 @@ class SeatGroup(db.Model):
     )
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    party_id = db.Column(db.Unicode(40), db.ForeignKey('parties.id'), index=True, nullable=False)
+    party_id = db.Column(db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False)
     ticket_category_id = db.Column(db.Uuid, db.ForeignKey('ticket_categories.id'), nullable=False)
     ticket_category = db.relationship(Category)
     seat_quantity = db.Column(db.Integer, nullable=False)

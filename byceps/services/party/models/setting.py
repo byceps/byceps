@@ -15,7 +15,7 @@ class Setting(db.Model):
     """A party-specific setting."""
     __tablename__ = 'party_settings'
 
-    party_id = db.Column(db.Unicode(40), db.ForeignKey('parties.id'), primary_key=True)
+    party_id = db.Column(db.UnicodeText, db.ForeignKey('parties.id'), primary_key=True)
     name = db.Column(db.UnicodeText, primary_key=True)
     value = db.Column(db.UnicodeText)
 
