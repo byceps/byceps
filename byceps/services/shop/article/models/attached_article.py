@@ -19,13 +19,13 @@ class AttachedArticle(db.Model):
     )
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    article_number = db.Column(db.Unicode(20),
+    article_number = db.Column(db.UnicodeText,
                                db.ForeignKey('shop_articles.item_number'),
                                nullable=False, index=True)
     article = db.relationship(Article, foreign_keys=[article_number],
                               backref=db.backref('articles_attached_to', collection_class=set))
     quantity = db.Column(db.Integer, db.CheckConstraint('quantity > 0'), nullable=False)
-    attached_to_article_number = db.Column(db.Unicode(20),
+    attached_to_article_number = db.Column(db.UnicodeText,
                                            db.ForeignKey('shop_articles.item_number'),
                                            nullable=False, index=True)
     attached_to_article = db.relationship(Article, foreign_keys=[attached_to_article_number],

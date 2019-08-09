@@ -23,11 +23,11 @@ class OrderItem(db.Model):
     __tablename__ = 'shop_order_items'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    order_number = db.Column(db.Unicode(13), db.ForeignKey('shop_orders.order_number'), index=True, nullable=False)
+    order_number = db.Column(db.UnicodeText, db.ForeignKey('shop_orders.order_number'), index=True, nullable=False)
     order = db.relationship(Order, backref='items')
-    article_number = db.Column(db.Unicode(20), db.ForeignKey('shop_articles.item_number'), index=True, nullable=False)
+    article_number = db.Column(db.UnicodeText, db.ForeignKey('shop_articles.item_number'), index=True, nullable=False)
     article = db.relationship(Article, backref='order_items')
-    description = db.Column(db.Unicode(80), nullable=False)
+    description = db.Column(db.UnicodeText, nullable=False)
     unit_price = db.Column(db.Numeric(6, 2), nullable=False)
     tax_rate = db.Column(db.Numeric(3, 3), nullable=False)
     quantity = db.Column(db.Integer, db.CheckConstraint('quantity > 0'), nullable=False)

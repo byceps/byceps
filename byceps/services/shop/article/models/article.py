@@ -53,9 +53,9 @@ class Article(db.Model):
     query_class = ArticleQuery
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    shop_id = db.Column(db.Unicode(40), db.ForeignKey('shops.id'), index=True, nullable=False)
-    item_number = db.Column(db.Unicode(20), unique=True, nullable=False)
-    description = db.Column(db.Unicode(80), nullable=False)
+    shop_id = db.Column(db.UnicodeText, db.ForeignKey('shops.id'), index=True, nullable=False)
+    item_number = db.Column(db.UnicodeText, unique=True, nullable=False)
+    description = db.Column(db.UnicodeText, nullable=False)
     price = db.Column(db.Numeric(6, 2), nullable=False)
     tax_rate = db.Column(db.Numeric(3, 3), nullable=False)
     available_from = db.Column(db.DateTime, nullable=True)

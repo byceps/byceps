@@ -24,7 +24,7 @@ class OrderEvent(db.Model):
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     occurred_at = db.Column(db.DateTime, nullable=False)
-    event_type = db.Column(db.Unicode(40), index=True, nullable=False)
+    event_type = db.Column(db.UnicodeText, index=True, nullable=False)
     order_id = db.Column(db.Uuid, db.ForeignKey('shop_orders.id'), index=True, nullable=False)
     data = db.Column(db.JSONB)
 

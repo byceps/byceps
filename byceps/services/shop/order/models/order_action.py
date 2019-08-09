@@ -28,10 +28,10 @@ class OrderAction(db.Model):
     __tablename__ = 'shop_order_actions'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    article_number = db.Column(db.Unicode(20), db.ForeignKey('shop_articles.item_number'), index=True, nullable=False)
+    article_number = db.Column(db.UnicodeText, db.ForeignKey('shop_articles.item_number'), index=True, nullable=False)
     article = db.relationship(Article, backref='order_actions')
-    _payment_state = db.Column('payment_state', db.Unicode(20), index=True, nullable=False)
-    procedure = db.Column(db.Unicode(40), nullable=False)
+    _payment_state = db.Column('payment_state', db.UnicodeText, index=True, nullable=False)
+    procedure = db.Column(db.UnicodeText, nullable=False)
     parameters = db.Column(db.JSONB, nullable=False)
 
     def __init__(self, article_number: ArticleNumber,

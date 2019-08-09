@@ -20,9 +20,9 @@ class NumberSequence(db.Model):
     """A shop-specific integer sequence for a purpose."""
     __tablename__ = 'shop_sequences'
 
-    shop_id = db.Column(db.Unicode(40), db.ForeignKey('shops.id'), primary_key=True)
-    _purpose = db.Column('purpose', db.Unicode(20), primary_key=True)
-    prefix = db.Column(db.Unicode(20), unique=True, nullable=False)
+    shop_id = db.Column(db.UnicodeText, db.ForeignKey('shops.id'), primary_key=True)
+    _purpose = db.Column('purpose', db.UnicodeText, primary_key=True)
+    prefix = db.Column(db.UnicodeText, unique=True, nullable=False)
     value = db.Column(db.Integer, default=0, nullable=False)
 
     def __init__(self, shop_id: ShopID, purpose: Purpose, prefix: str) -> None:
