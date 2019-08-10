@@ -6,7 +6,7 @@ byceps.services.shop.order.action_service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import Callable, Dict, Sequence, Set
+from typing import Callable, Sequence, Set
 
 from ....database import db
 
@@ -32,7 +32,7 @@ PROCEDURES_BY_NAME = {
     'revoke_ticket_bundles': revoke_ticket_bundles,
     'create_tickets': create_tickets,
     'revoke_tickets': revoke_tickets,
-}  # type: Dict[str, OrderActionType]
+}
 
 
 # -------------------------------------------------------------------- #
