@@ -49,7 +49,7 @@ def _fake_ticket_creation_event(ticket_id: TicketID) -> TicketEvent:
     if ticket is None:
         raise ValueError('Unknown ticket ID')
 
-    data = {}  # type: TicketEventData
+    data: TicketEventData = {}
 
     return TicketEvent(ticket.created_at, 'ticket-created', ticket.id, data)
 

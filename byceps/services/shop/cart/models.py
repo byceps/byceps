@@ -37,7 +37,7 @@ class Cart:
     """A shopping cart."""
 
     def __init__(self) -> None:
-        self._items = []  # type: List[CartItem]
+        self._items: List[CartItem] = []
 
     def add_item(self, article: Article, quantity: int) -> None:
         item = CartItem(article, quantity)

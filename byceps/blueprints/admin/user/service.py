@@ -122,7 +122,7 @@ def get_parties_and_tickets(user_id: UserID
 
 def _group_tickets_by_party_id(tickets: Sequence[DbTicket]
                               ) -> Dict[PartyID, List[DbTicket]]:
-    tickets_by_party_id = defaultdict(list)  # type: Dict[PartyID, List[DbTicket]]
+    tickets_by_party_id: Dict[PartyID, List[DbTicket]] = defaultdict(list)
 
     for ticket in tickets:
         tickets_by_party_id[ticket.category.party_id].append(ticket)

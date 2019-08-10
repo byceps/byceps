@@ -126,7 +126,7 @@ def get_badges_for_users(user_ids: Set[UserID], *, featured_only: bool=False
     badges = get_badges(badge_ids, featured_only=featured_only)
     badges_by_id = {badge.id: badge for badge in badges}
 
-    badges_by_user_id = defaultdict(set)  # type: Dict[UserID, Set[Badge]]
+    badges_by_user_id: Dict[UserID, Set[Badge]] = defaultdict(set)
     for awarding in awardings:
         badge = badges_by_id.get(awarding.badge_id)
         if badge:

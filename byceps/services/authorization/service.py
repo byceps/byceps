@@ -168,7 +168,7 @@ def get_permissions_by_roles_with_titles() -> Dict[Role, Set[Permission]]:
         ) \
         .all()
 
-    permissions_by_role = {r: set() for r in roles}  # type: Dict[Role, Set[Permission]]
+    permissions_by_role: Dict[Role, Set[Permission]] = {r: set() for r in roles}
 
     for permission in permissions:
         for role in permission.roles:
@@ -213,7 +213,7 @@ def get_permissions_by_roles_for_user_with_titles(user_id: UserID) \
 def _index_permissions_by_role(permissions: List[Permission],
                                roles: List[Role]) \
                                -> Dict[Role, Set[Permission]]:
-    permissions_by_role = {r: set() for r in roles}  # type: Dict[Role, Set[Permission]]
+    permissions_by_role: Dict[Role, Set[Permission]] = {r: set() for r in roles}
 
     for permission in permissions:
         for role in permission.roles:

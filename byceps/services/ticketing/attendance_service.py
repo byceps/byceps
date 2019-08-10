@@ -120,7 +120,7 @@ def get_attendee_ids_for_parties(party_ids: Set[PartyID]
 
     rows = ticket_rows + archived_attendance_rows
 
-    attendee_ids_by_party_id = defaultdict(set)  # type: Dict[PartyID, Set[UserID]]
+    attendee_ids_by_party_id: Dict[PartyID, Set[UserID]] = defaultdict(set)
     for party_id, attendee_id in rows:
         attendee_ids_by_party_id[party_id].add(attendee_id)
 

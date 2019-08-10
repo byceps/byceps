@@ -29,7 +29,7 @@ class ArticleCompilationItem:
 class ArticleCompilation:
 
     def __init__(self) -> None:
-        self._items = []  # type: List[ArticleCompilationItem]
+        self._items: List[ArticleCompilationItem] = []
 
     def append(self, item: ArticleCompilationItem) -> None:
         self._items.append(item)

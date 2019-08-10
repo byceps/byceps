@@ -28,7 +28,7 @@ class Navigation:
 
     def __init__(self, title: str) -> None:
         self.title = title
-        self.items = []  # type: List[NavigationItem]
+        self.items: List[NavigationItem] = []
 
     def add_item(self, endpoint: str, label: str, *, id: str=None,
                  required_permission: Enum=None, icon: str=None) -> object:
