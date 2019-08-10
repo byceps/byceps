@@ -30,7 +30,7 @@ class OrgaTeam(db.Model):
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     party_id = db.Column(db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False)
     party = db.relationship(Party)
-    title = db.Column(db.Unicode(40), nullable=False)
+    title = db.Column(db.UnicodeText, nullable=False)
 
     def __init__(self, party_id: PartyID, title: str) -> None:
         self.party_id = party_id
@@ -67,7 +67,7 @@ class Membership(db.Model):
     orga_team = db.relationship(OrgaTeam, collection_class=set, backref='memberships')
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=False)
     user = db.relationship(User, collection_class=set, backref='orga_team_memberships')
-    duties = db.Column(db.Unicode(40))
+    duties = db.Column(db.UnicodeText)
 
     def __init__(self, orga_team_id: OrgaTeamID, user_id: UserID) -> None:
         self.orga_team_id = orga_team_id
