@@ -75,12 +75,25 @@ def paginate(query: Query, page: int, per_page: int,
     return Pagination(None, page, per_page, total, items)
 
 
+def insert_ignore_on_conflict(table: Table, values: Dict[str, Any]) -> None:
+    """Insert the record identified by the primary key (specified as
+    part of the values), or do nothing on conflict.
+    """
+    query = insert(table) \
+        .values(**values) \
+        .on_conflict_do_nothing(constraint=table.primary_key)
+
+    db.session.execute(query)
+    db.session.commit()
+
+
 def upsert(table: Table, identifier: Dict[str, Any],
            replacement: Dict[str, Any]) -> None:
     """Insert or update the record identified by `identifier` with value
     `replacement`.
     """
     query = _build_upsert_query(table, identifier, replacement)
+
     db.session.execute(query)
     db.session.commit()
 
@@ -93,6 +106,7 @@ def upsert_many(table: Table, identifiers: Iterable[Dict[str, Any]],
     for identifier in identifiers:
         query = _build_upsert_query(table, identifier, replacement)
         db.session.execute(query)
+
     db.session.commit()
 
 

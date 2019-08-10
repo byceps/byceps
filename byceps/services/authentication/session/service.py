@@ -10,7 +10,7 @@ from datetime import datetime
 from typing import Optional
 from uuid import uuid4
 
-from ....database import db
+from ....database import db, insert_ignore_on_conflict
 from ....typing import UserID
 
 from ..exceptions import AuthenticationFailed
@@ -19,19 +19,27 @@ from .models.session_token import SessionToken as DbSessionToken
 
 
 def get_session_token(user_id: UserID) -> DbSessionToken:
-    """Return existing session token or create a new one."""
-    session_token = find_session_token_for_user(user_id)
+    """Return session token.
 
-    if session_token is None:
-        session_token = create_session_token(user_id)
+    Create one if none exists for the user.
+    """
+    table = DbSessionToken.__table__
 
-    return session_token
+    values = {
+        'user_id': user_id,
+        'token': uuid4(),
+        'created_at': datetime.utcnow(),
+    }
+
+    insert_ignore_on_conflict(table, values)
+
+    return DbSessionToken.query \
+        .filter_by(user_id=user_id) \
+        .one()
 
 
 def create_session_token(user_id: UserID) -> DbSessionToken:
     """Create a session token."""
-    token = uuid4()
-    created_at = datetime.utcnow()
 
     session_token = DbSessionToken(user_id, token, created_at)
 
