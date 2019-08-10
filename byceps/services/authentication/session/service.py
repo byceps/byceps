@@ -40,6 +40,8 @@ def get_session_token(user_id: UserID) -> DbSessionToken:
 
 def create_session_token(user_id: UserID) -> DbSessionToken:
     """Create a session token."""
+    token = uuid4()
+    created_at = datetime.utcnow()
 
     session_token = DbSessionToken(user_id, token, created_at)
 
