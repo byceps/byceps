@@ -8,13 +8,13 @@ byceps.services.newsletter.transfer.models
 
 from datetime import datetime
 
-from attr import attrib, attrs
+from attr import attrs
 
 from ....typing import BrandID, UserID
 
 
-@attrs(frozen=True, slots=True)
+@attrs(auto_attribs=True, frozen=True, slots=True)
 class Subscription:
-    user_id = attrib(type=UserID)
-    brand_id = attrib(type=BrandID)
-    expressed_at = attrib(type=datetime)
+    user_id: UserID
+    brand_id: BrandID
+    expressed_at: datetime

@@ -8,7 +8,7 @@ byceps.services.site.transfer.models
 
 from typing import NewType
 
-from attr import attrib, attrs
+from attr import attrs
 
 from ....typing import PartyID
 
@@ -16,16 +16,16 @@ from ....typing import PartyID
 SiteID = NewType('SiteID', str)
 
 
-@attrs(frozen=True, slots=True)
+@attrs(auto_attribs=True, frozen=True, slots=True)
 class Site:
-    id = attrib(type=SiteID)
-    party_id = attrib(type=PartyID)
-    title = attrib(type=str)
-    server_name = attrib(type=str)
+    id: SiteID
+    party_id: PartyID
+    title: str
+    server_name: str
 
 
-@attrs(frozen=True, slots=True)
+@attrs(auto_attribs=True, frozen=True, slots=True)
 class SiteSetting:
-    site_id = attrib(type=SiteID)
-    name = attrib(type=str)
-    value = attrib(type=str)
+    site_id: SiteID
+    name: str
+    value: str

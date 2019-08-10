@@ -9,7 +9,7 @@ byceps.services.orga_presence.transfer.models
 from datetime import datetime
 from enum import Enum
 
-from attr import attrib, attrs
+from attr import attrs
 
 from ...party.transfer.models import Party
 from ...user.transfer.models import User
@@ -20,20 +20,20 @@ from ....util.datetime.range import DateTimeRange
 TimeSlotType = Enum('TimeSlotType', ['party', 'presence', 'task'])
 
 
-@attrs(frozen=True, slots=True)
+@attrs(auto_attribs=True, frozen=True, slots=True)
 class TimeSlot:
-    type = attrib(type=TimeSlotType)
-    starts_at = attrib(type=datetime)
-    ends_at = attrib(type=datetime)
+    type: TimeSlotType
+    starts_at: datetime
+    ends_at: datetime
 
     @property
     def range(self) -> DateTimeRange:
         return DateTimeRange(self.starts_at, self.ends_at)
 
 
-@attrs(frozen=True, slots=True)
+@attrs(auto_attribs=True, frozen=True, slots=True)
 class PartyTimeSlot(TimeSlot):
-    party = attrib(type=Party)
+    party: Party
 
     @classmethod
     def from_party(cls, party: Party) -> 'PartyTimeSlot':
@@ -45,9 +45,9 @@ class PartyTimeSlot(TimeSlot):
         )
 
 
-@attrs(frozen=True, slots=True)
+@attrs(auto_attribs=True, frozen=True, slots=True)
 class PresenceTimeSlot(TimeSlot):
-    orga = attrib(type=User)
+    orga: User
 
     @classmethod
     def from_(cls, orga: User, starts_at: datetime, ends_at: datetime) -> 'PresenceTimeSlot':
@@ -59,9 +59,9 @@ class PresenceTimeSlot(TimeSlot):
         )
 
 
-@attrs(frozen=True, slots=True)
+@attrs(auto_attribs=True, frozen=True, slots=True)
 class TaskTimeSlot(TimeSlot):
-    title = attrib(type=str)
+    title: str
 
     @classmethod
     def from_(cls, title: str, starts_at: datetime, ends_at: datetime) -> 'TaskTimeSlot':

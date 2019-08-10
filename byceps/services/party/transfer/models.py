@@ -8,24 +8,24 @@ byceps.services.party.transfer.models
 
 from datetime import datetime
 
-from attr import attrib, attrs
+from attr import attrs
 
 from ....typing import BrandID, PartyID
 
 
-@attrs(frozen=True, slots=True)
+@attrs(auto_attribs=True, frozen=True, slots=True)
 class Party:
-    id = attrib(type=PartyID)
-    brand_id = attrib(type=BrandID)
-    title = attrib(type=str)
-    starts_at = attrib(type=datetime)
-    ends_at = attrib(type=datetime)
-    max_ticket_quantity = attrib(type=int)
-    archived = attrib(type=bool)
+    id: PartyID
+    brand_id: BrandID
+    title: str
+    starts_at: datetime
+    ends_at: datetime
+    max_ticket_quantity: int
+    archived: bool
 
 
-@attrs(frozen=True, slots=True)
+@attrs(auto_attribs=True, frozen=True, slots=True)
 class PartySetting:
-    party_id = attrib(type=PartyID)
-    name = attrib(type=str)
-    value = attrib(type=str)
+    party_id: PartyID
+    name: str
+    value: str

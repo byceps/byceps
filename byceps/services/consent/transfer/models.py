@@ -10,7 +10,7 @@ from datetime import datetime
 from typing import NewType
 from uuid import UUID
 
-from attr import attrib, attrs
+from attr import attrs
 
 from ....typing import UserID
 
@@ -18,16 +18,16 @@ from ....typing import UserID
 SubjectID = NewType('SubjectID', UUID)
 
 
-@attrs(frozen=True, slots=True)
+@attrs(auto_attribs=True, frozen=True, slots=True)
 class Subject:
-    id = attrib(type=SubjectID)
-    name = attrib(type=str)
-    title = attrib(type=str)
-    type_ = attrib(type=str)
+    id: SubjectID
+    name: str
+    title: str
+    type_: str
 
 
-@attrs(frozen=True, slots=True)
+@attrs(auto_attribs=True, frozen=True, slots=True)
 class Consent:
-    user_id = attrib(type=UserID)
-    subject_id = attrib(type=SubjectID)
-    expressed_at = attrib(type=datetime)
+    user_id: UserID
+    subject_id: SubjectID
+    expressed_at: datetime

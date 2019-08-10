@@ -6,19 +6,19 @@ byceps.services.brand.transfer.models
 :License: Modified BSD, see LICENSE for details.
 """
 
-from attr import attrib, attrs
+from attr import attrs
 
 from ....typing import BrandID
 
 
-@attrs(frozen=True, slots=True)
+@attrs(auto_attribs=True, frozen=True, slots=True)
 class Brand:
-    id = attrib(type=BrandID)
-    title = attrib(type=str)
+    id: BrandID
+    title: str
 
 
-@attrs(frozen=True, slots=True)
+@attrs(auto_attribs=True, frozen=True, slots=True)
 class BrandSetting:
-    brand_id = attrib(type=BrandID)
-    name = attrib(type=str)
-    value = attrib(type=str)
+    brand_id: BrandID
+    name: str
+    value: str

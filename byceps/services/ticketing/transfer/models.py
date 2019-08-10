@@ -9,7 +9,7 @@ byceps.services.ticketing.transfer.models
 from typing import NewType
 from uuid import UUID
 
-from attr import attrib, attrs
+from attr import attrs
 
 from ....typing import PartyID
 
@@ -17,11 +17,11 @@ from ....typing import PartyID
 TicketCategoryID = NewType('TicketCategoryID', UUID)
 
 
-@attrs(frozen=True, slots=True)
+@attrs(auto_attribs=True, frozen=True, slots=True)
 class TicketCategory:
-    id = attrib(type=TicketCategoryID)
-    party_id = attrib(type=PartyID)
-    title = attrib(type=str)
+    id: TicketCategoryID
+    party_id: PartyID
+    title: str
 
 
 TicketCode = NewType('TicketCode', str)

@@ -11,7 +11,7 @@ Notification e-mails about shop orders
 import os.path
 from typing import Any, Dict, Optional
 
-from attr import attrib, attrs
+from attr import attrs
 from flask import current_app
 from jinja2 import FileSystemLoader
 
@@ -32,12 +32,12 @@ from .....util.templating import create_sandboxed_environment, load_template
 from ...shop.transfer.models import ShopID
 
 
-@attrs(frozen=True, slots=True)
+@attrs(auto_attribs=True, frozen=True, slots=True)
 class OrderEmailData:
-    order = attrib(type=Order)
-    brand_id = attrib(type=BrandID)
-    orderer_screen_name = attrib(type=str)
-    orderer_email_address = attrib(type=str)
+    order: Order
+    brand_id: BrandID
+    orderer_screen_name: str
+    orderer_email_address: str
 
 
 def send_email_for_incoming_order_to_orderer(order_id: OrderID) -> None:

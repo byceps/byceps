@@ -6,12 +6,14 @@ byceps.services.email.transfer.models
 :License: Modified BSD, see LICENSE for details.
 """
 
-from attr import attrib, attrs
+from typing import List
+
+from attr import attrs
 
 
-@attrs(frozen=True, slots=True)
+@attrs(auto_attribs=True, frozen=True, slots=True)
 class Message:
-    sender = attrib(type=str)
-    recipients = attrib()
-    subject = attrib(type=str)
-    body = attrib(type=str)
+    sender: str
+    recipients: List[str]
+    subject: str
+    body: str

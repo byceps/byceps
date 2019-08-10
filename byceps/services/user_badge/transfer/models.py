@@ -10,7 +10,7 @@ from datetime import datetime
 from typing import NewType
 from uuid import UUID
 
-from attr import attrib, attrs
+from attr import attrs
 
 from ....typing import BrandID, UserID
 
@@ -18,27 +18,27 @@ from ....typing import BrandID, UserID
 BadgeID = NewType('BadgeID', UUID)
 
 
-@attrs(frozen=True, slots=True)
+@attrs(auto_attribs=True, frozen=True, slots=True)
 class Badge:
-    id = attrib(type=BadgeID)
-    brand_id = attrib(type=BrandID)
-    slug = attrib(type=str)
-    label = attrib(type=str)
-    description = attrib(type=str)
-    image_url = attrib(type=str)
-    featured = attrib(type=bool)
+    id: BadgeID
+    brand_id: BrandID
+    slug: str
+    label: str
+    description: str
+    image_url: str
+    featured: bool
 
 
-@attrs(frozen=True, slots=True)
+@attrs(auto_attribs=True, frozen=True, slots=True)
 class BadgeAwarding:
-    id = attrib(type=UUID)
-    badge_id = attrib(type=BadgeID)
-    user_id = attrib(type=UserID)
-    awarded_at = attrib(type=datetime)
+    id: UUID
+    badge_id: BadgeID
+    user_id: UserID
+    awarded_at: datetime
 
 
-@attrs(frozen=True, slots=True)
+@attrs(auto_attribs=True, frozen=True, slots=True)
 class QuantifiedBadgeAwarding:
-    badge_id = attrib(type=BadgeID)
-    user_id = attrib(type=UserID)
-    quantity = attrib(type=int)
+    badge_id: BadgeID
+    user_id: UserID
+    quantity: int

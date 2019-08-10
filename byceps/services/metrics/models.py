@@ -11,10 +11,10 @@ from typing import List
 from attr import attrib, attrs
 
 
-@attrs(frozen=True, slots=True)
+@attrs(auto_attribs=True, frozen=True, slots=True)
 class Label:
-    name = attrib(type=str)
-    value = attrib(type=str)
+    name: str
+    value: str
 
     def serialize(self) -> str:
         escaped_value = _escape_label_value(self.value)
@@ -35,11 +35,11 @@ def _escape_label_value(value: str) -> str:
     return ''.join(map(escape, value))
 
 
-@attrs(frozen=True, slots=True)
+@attrs(auto_attribs=True, frozen=True, slots=True)
 class Metric:
-    name = attrib(type=str)
-    value = attrib(type=float)
-    labels = attrib(factory=dict, kw_only=True, type=List[Label])
+    name: str
+    value: float
+    labels: List[Label] = attrib(factory=dict, kw_only=True)
 
     def serialize(self) -> str:
         labels_str = ''

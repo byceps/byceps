@@ -7,10 +7,10 @@ byceps.services.news.transfer.models
 """
 
 from datetime import datetime
-from typing import NewType
+from typing import List, NewType
 from uuid import UUID
 
-from attr import attrib, attrs
+from attr import attrs
 
 from ....typing import BrandID, UserID
 
@@ -27,33 +27,33 @@ ItemVersionID = NewType('ItemVersionID', UUID)
 ImageID = NewType('ImageID', UUID)
 
 
-@attrs(frozen=True, slots=True)
+@attrs(auto_attribs=True, frozen=True, slots=True)
 class Channel:
-    id = attrib(type=ChannelID)
-    brand_id = attrib(type=BrandID)
-    url_prefix = attrib(type=str)
+    id: ChannelID
+    brand_id: BrandID
+    url_prefix: str
 
 
-@attrs(frozen=True, slots=True)
-class Item:
-    id = attrib(type=ItemID)
-    channel = attrib(type=Channel)
-    slug = attrib(type=str)
-    published_at = attrib(type=datetime)
-    published = attrib(type=bool)
-    title = attrib(type=str)
-    body = attrib(type=str)
-    external_url = attrib(type=str)
-    image_url = attrib(type=str)
-    images = attrib()  # List[Image]
-
-
-@attrs(frozen=True, slots=True)
+@attrs(auto_attribs=True, frozen=True, slots=True)
 class Image:
-    id = attrib(type=ImageID)
-    created_at = attrib(type=datetime)
-    creator_id = attrib(type=UserID)
-    item_id = attrib(type=ItemID)
-    filename = attrib(type=str)
-    alt_text = attrib(type=str)
-    caption = attrib(type=str)
+    id: ImageID
+    created_at: datetime
+    creator_id: UserID
+    item_id: ItemID
+    filename: str
+    alt_text: str
+    caption: str
+
+
+@attrs(auto_attribs=True, frozen=True, slots=True)
+class Item:
+    id: ItemID
+    channel: Channel
+    slug: str
+    published_at: datetime
+    published: bool
+    title: str
+    body: str
+    external_url: str
+    image_url: str
+    images: List[Image]

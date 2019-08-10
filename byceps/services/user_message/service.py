@@ -12,7 +12,7 @@ from email.utils import formataddr
 import os.path
 from typing import Any, Dict, Optional
 
-from attr import attrib, attrs
+from attr import attrs
 from flask import current_app
 from jinja2 import Environment, FileSystemLoader, Template
 
@@ -28,10 +28,10 @@ from ..user import service as user_service
 from ..user.transfer.models import User
 
 
-@attrs(frozen=True, slots=True)
+@attrs(auto_attribs=True, frozen=True, slots=True)
 class MessageTemplateRenderResult:
-    subject = attrib(type=str)
-    body = attrib(type=str)
+    subject: str
+    body: str
 
 
 def send_message(sender_id: UserID, recipient_id: UserID, text: str,

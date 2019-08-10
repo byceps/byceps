@@ -10,9 +10,11 @@ from datetime import datetime
 from typing import NewType
 from uuid import UUID
 
-from attr import attrib, attrs
+from attr import attrs
 
 from ....typing import BrandID
+
+from ...user.transfer.models import User
 
 
 BoardID = NewType('BoardID', str)
@@ -27,25 +29,25 @@ PostingID = NewType('PostingID', UUID)
 TopicID = NewType('TopicID', UUID)
 
 
-@attrs(frozen=True, slots=True)
+@attrs(auto_attribs=True, frozen=True, slots=True)
 class Board:
-    id = attrib(type=BoardID)
-    brand_id = attrib(type=BrandID)
+    id: BoardID
+    brand_id: BrandID
 
 
-@attrs(frozen=True, slots=True)
+@attrs(auto_attribs=True, frozen=True, slots=True)
 class Category:
-    id = attrib(type=CategoryID)
-    board_id = attrib(type=BoardID)
-    position = attrib(type=int)
-    slug = attrib(type=str)
-    title = attrib(type=str)
-    description = attrib(type=str)
-    topic_count = attrib(type=int)
-    posting_count = attrib(type=int)
+    id: CategoryID
+    board_id: BoardID
+    position: int
+    slug: str
+    title: str
+    description: str
+    topic_count: int
+    posting_count: int
 
 
-@attrs(frozen=True, slots=True)
+@attrs(auto_attribs=True, frozen=True, slots=True)
 class CategoryWithLastUpdate(Category):
-    last_posting_updated_at = attrib(type=datetime)
-    last_posting_updated_by = attrib()
+    last_posting_updated_at: datetime
+    last_posting_updated_by: User

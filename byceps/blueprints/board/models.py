@@ -8,16 +8,16 @@ byceps.blueprints.board.models
 
 from typing import Set
 
-from attr import attrib, attrs
+from attr import attrs
 
 from ...services.board.transfer.models import CategoryWithLastUpdate
 from ...services.user.transfer.models import User
 from ...services.user_badge.transfer.models import Badge
 
 
-@attrs(frozen=True, slots=True)
+@attrs(auto_attribs=True, frozen=True, slots=True)
 class CategoryWithLastUpdateAndUnseenFlag(CategoryWithLastUpdate):
-    contains_unseen_postings = attrib(type=bool)
+    contains_unseen_postings: bool
 
     @classmethod
     def from_category_with_last_update(cls, category: CategoryWithLastUpdate,
@@ -38,10 +38,10 @@ class CategoryWithLastUpdateAndUnseenFlag(CategoryWithLastUpdate):
         )
 
 
-@attrs(frozen=True, slots=True)
+@attrs(auto_attribs=True, frozen=True, slots=True)
 class Creator(User):
-    badges = attrib(type=Set[Badge])
-    uses_ticket = attrib(type=bool)
+    badges: Set[Badge]
+    uses_ticket: bool
 
     @classmethod
     def from_(cls, user: User, badges: Set[Badge], uses_ticket: bool

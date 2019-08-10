@@ -10,17 +10,17 @@ from enum import Enum
 from typing import NewType
 from uuid import UUID
 
-from attr import attrib, attrs
+from attr import attrs
 
 from ...site.transfer.models import SiteID
 
 from ....typing import BrandID
 
 
-@attrs(frozen=True, slots=True)
+@attrs(auto_attribs=True, frozen=True, slots=True)
 class Scope:
-    type_ = attrib(type=str)
-    name = attrib(type=str)
+    type_: str
+    name: str
 
     @classmethod
     def for_global(cls) -> 'Scope':

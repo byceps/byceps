@@ -6,19 +6,19 @@ byceps.services.shop.order.models.order.orderer
 :License: Modified BSD, see LICENSE for details.
 """
 
-from attr import attrib, attrs
+from attr import attrs
 
 from .....typing import UserID
 
 
-@attrs(frozen=True, slots=True)
+@attrs(auto_attribs=True, frozen=True, slots=True)
 class Orderer:
     """Someone who orders articles."""
 
-    user_id = attrib(type=UserID)
-    first_names = attrib(type=str)
-    last_name = attrib(type=str)
-    country = attrib(type=str)
-    zip_code = attrib(type=str)
-    city = attrib(type=str)
-    street = attrib(type=str)
+    user_id: UserID
+    first_names: str
+    last_name: str
+    country: str
+    zip_code: str
+    city: str
+    street: str

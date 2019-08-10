@@ -8,7 +8,7 @@ byceps.services.shop.shop.transfer.models
 
 from typing import NewType
 
-from attr import attrib, attrs
+from attr import attrs
 
 from .....typing import PartyID
 
@@ -16,9 +16,9 @@ from .....typing import PartyID
 ShopID = NewType('ShopID', str)
 
 
-@attrs(frozen=True, slots=True)
+@attrs(auto_attribs=True, frozen=True, slots=True)
 class Shop:
-    id = attrib(type=ShopID)
-    party_id = attrib(type=PartyID)
-    closed = attrib(type=bool)
-    archived = attrib(type=bool)
+    id: ShopID
+    party_id: PartyID
+    closed: bool
+    archived: bool

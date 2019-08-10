@@ -6,15 +6,15 @@ byceps.services.shop.shipping.transfer.models
 :License: Modified BSD, see LICENSE for details.
 """
 
-from attr import attrib, attrs
+from attr import attrs
 
 from ...article.transfer.models import ArticleNumber
 
 
-@attrs(frozen=True, slots=True)
+@attrs(auto_attribs=True, frozen=True, slots=True)
 class ArticleToShip:
-    article_number = attrib(type=ArticleNumber)
-    description = attrib(type=str)
-    quantity_paid = attrib(type=int)
-    quantity_open = attrib(type=int)
-    quantity_total = attrib(type=int)
+    article_number: ArticleNumber
+    description: str
+    quantity_paid: int
+    quantity_open: int
+    quantity_total: int

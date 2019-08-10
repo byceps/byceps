@@ -9,10 +9,10 @@ byceps.services.shop.order.transfer.models
 from datetime import datetime
 from decimal import Decimal
 from enum import Enum
-from typing import NewType
+from typing import List, NewType
 from uuid import UUID
 
-from attr import attrib, attrs
+from attr import attrs
 
 from .....typing import UserID
 
@@ -41,43 +41,43 @@ PaymentState = Enum('PaymentState', [
 ])
 
 
-@attrs(frozen=True, slots=True)
+@attrs(auto_attribs=True, frozen=True, slots=True)
 class Address:
-    country = attrib(type=str)
-    zip_code = attrib(type=str)
-    city = attrib(type=str)
-    street = attrib(type=str)
+    country: str
+    zip_code: str
+    city: str
+    street: str
 
 
-@attrs(frozen=True, slots=True)
+@attrs(auto_attribs=True, frozen=True, slots=True)
 class Order:
-    id = attrib(type=OrderID)
-    shop_id = attrib(type=ShopID)
-    order_number = attrib(type=OrderNumber)
-    created_at = attrib(type=datetime)
-    placed_by_id = attrib(type=UserID)
-    first_names = attrib(type=str)
-    last_name = attrib(type=str)
-    address = attrib(type=Address)
-    total_amount = attrib(type=Decimal)
-    items = attrib()  # List[OrderItem]
-    payment_method = attrib(type=PaymentMethod)
-    payment_state = attrib(type=PaymentState)
-    is_open = attrib(type=bool)
-    is_canceled = attrib(type=bool)
-    is_paid = attrib(type=bool)
-    is_invoiced = attrib(type=bool)
-    is_shipping_required = attrib(type=bool)
-    is_shipped = attrib(type=bool)
-    cancelation_reason = attrib(type=str)
+    id: OrderID
+    shop_id: ShopID
+    order_number: OrderNumber
+    created_at: datetime
+    placed_by_id: UserID
+    first_names: str
+    last_name: str
+    address: Address
+    total_amount: Decimal
+    items: List[OrderItem]
+    payment_method: PaymentMethod
+    payment_state: PaymentState
+    is_open: bool
+    is_canceled: bool
+    is_paid: bool
+    is_invoiced: bool
+    is_shipping_required: bool
+    is_shipped: bool
+    cancelation_reason: str
 
 
-@attrs(frozen=True, slots=True)
+@attrs(auto_attribs=True, frozen=True, slots=True)
 class OrderItem:
-    order_number = attrib(type=OrderNumber)
-    article_number = attrib(type=ArticleNumber)
-    description = attrib(type=str)
-    unit_price = attrib(type=Decimal)
-    tax_rate = attrib(type=Decimal)
-    quantity = attrib(type=int)
-    line_amount = attrib(type=Decimal)
+    order_number: OrderNumber
+    article_number: ArticleNumber
+    description: str
+    unit_price: Decimal
+    tax_rate: Decimal
+    quantity: int
+    line_amount: Decimal
