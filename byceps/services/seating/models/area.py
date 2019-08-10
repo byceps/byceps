@@ -32,9 +32,9 @@ class Area(db.Model):
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     party_id = db.Column(db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False)
-    slug = db.Column(db.Unicode(40), nullable=False)
-    title = db.Column(db.Unicode(40), nullable=False)
-    image_filename = db.Column(db.Unicode(40), nullable=True)
+    slug = db.Column(db.UnicodeText, nullable=False)
+    title = db.Column(db.UnicodeText, nullable=False)
+    image_filename = db.Column(db.UnicodeText, nullable=True)
     image_width = db.Column(db.Integer, nullable=True)
     image_height = db.Column(db.Integer, nullable=True)
 
