@@ -24,7 +24,7 @@ class Message(db.Model):
     sender = db.relationship(User, foreign_keys=[sender_id])
     recipient_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=False)
     recipient = db.relationship(User, foreign_keys=[recipient_id])
-    subject = db.Column(db.Unicode(40), nullable=True)
+    subject = db.Column(db.UnicodeText, nullable=True)
     body = db.Column(db.UnicodeText, nullable=False)
     is_read = db.Column(db.Boolean, default=False, nullable=False)
 

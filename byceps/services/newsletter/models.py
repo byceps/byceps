@@ -27,7 +27,7 @@ class Subscription(db.Model):
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
     brand_id = db.Column(db.UnicodeText, db.ForeignKey('brands.id'), primary_key=True)
     expressed_at = db.Column(db.DateTime, primary_key=True)
-    _state = db.Column('state', db.Unicode(20), nullable=False)
+    _state = db.Column('state', db.UnicodeText, nullable=False)
 
     def __init__(self, user_id: UserID, brand_id: BrandID,
                  expressed_at: datetime, state: SubscriptionState) -> None:
