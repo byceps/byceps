@@ -19,14 +19,13 @@ Debian
 
 `Debian Linux`_ is the recommended operating system to run BYCEPS on.
 
-The following packages are available in the Debian repository as part of
-the "Stretch" release:
+The following packages are available as part of the current (as of
+August 2019) Debian "Buster" release:
 
-* ``postgresql-9.6``
-* ``postgresql-contrib-9.6``
-* ``python3.5``
-* ``python3.5-dev``
-* ``python3.5-venv``
+* ``postgresql-11``
+* ``python3.7``
+* ``python3.7-dev``
+* ``python3.7-venv``
 * ``redis-server``
 
 Additional required packages should be suggested for installation by
@@ -38,7 +37,7 @@ user):
 .. code-block:: sh
 
     # aptitude update
-    # aptitude install postgresql-9.6 postgresql-contrib-9.6 python3.5 python3.5-dev python3.5-venv redis-server
+    # aptitude install postgresql-11 python3.7 python3.7-dev python3.7-venv redis-server
 
 Refer to the Debian documentation for further details.
 
@@ -80,7 +79,7 @@ Change into the BYCEPS path and create a virtual environment (named
 .. code-block:: sh
 
     $ cd byceps
-    $ pyvenv-3.5 --system-site-packages venv
+    $ pyvenv-3.7 --system-site-packages venv
 
 Activate it (but don't change into its path):
 
@@ -103,7 +102,7 @@ Make sure the correct version of Python is used:
 .. code-block:: sh
 
     (venv)$ python -V
-    Python 3.5.3
+    Python 3.7.3
 
 It's probably a good idea to update pip_ to the current version:
 
