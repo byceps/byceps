@@ -31,7 +31,7 @@ class Team(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.now, nullable=False)
     created_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
     created_by = db.relationship(User)
-    title = db.Column(db.Unicode(32), nullable=False)
+    title = db.Column(db.UnicodeText, nullable=False)
     max_size = db.Column(db.Integer, nullable=True)
 
     def __init__(self, tourney: Tourney, title: str, max_size: int) -> None:

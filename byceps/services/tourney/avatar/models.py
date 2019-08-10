@@ -31,7 +31,7 @@ class Avatar(db.Model):
     party_id = db.Column(db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
-    _image_type = db.Column('image_type', db.Unicode(4), nullable=False)
+    _image_type = db.Column('image_type', db.UnicodeText, nullable=False)
 
     def __init__(self, party_id: PartyID, creator_id: UserID,
                  image_type: ImageType

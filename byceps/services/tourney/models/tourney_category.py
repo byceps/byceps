@@ -35,7 +35,7 @@ class TourneyCategory(db.Model):
                                                order_by='TourneyCategory.position',
                                                collection_class=ordering_list('position', count_from=1)))
     position = db.Column(db.Integer, nullable=False)
-    title = db.Column(db.Unicode(40), nullable=False)
+    title = db.Column(db.UnicodeText, nullable=False)
 
     def __init__(self, party_id: PartyID, title: str) -> None:
         self.party_id = party_id
