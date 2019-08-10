@@ -214,7 +214,7 @@ def _load_site_extension(app, site_id):
     module_name = 'sites.{}.extension'.format(site_id)
     try:
         module = import_module(module_name)
-    except ImportError:
+    except ModuleNotFoundError:
         # No extension module found in site package.
         return
 
