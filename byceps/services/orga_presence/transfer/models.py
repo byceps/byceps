@@ -36,7 +36,7 @@ class PartyTimeSlot(TimeSlot):
     party = attrib(type=Party)
 
     @classmethod
-    def from_party(cls, party: Party):
+    def from_party(cls, party: Party) -> 'PartyTimeSlot':
         return cls(
             type=TimeSlotType.party,
             starts_at=party.starts_at,
@@ -50,7 +50,7 @@ class PresenceTimeSlot(TimeSlot):
     orga = attrib(type=User)
 
     @classmethod
-    def from_(cls, orga: User, starts_at: datetime, ends_at: datetime):
+    def from_(cls, orga: User, starts_at: datetime, ends_at: datetime) -> 'PresenceTimeSlot':
         return cls(
             type=TimeSlotType.presence,
             starts_at=starts_at,
@@ -64,7 +64,7 @@ class TaskTimeSlot(TimeSlot):
     title = attrib(type=str)
 
     @classmethod
-    def from_(cls, title: str, starts_at: datetime, ends_at: datetime):
+    def from_(cls, title: str, starts_at: datetime, ends_at: datetime) -> 'TaskTimeSlot':
         return cls(
             type=TimeSlotType.task,
             starts_at=starts_at,
