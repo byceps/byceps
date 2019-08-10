@@ -40,7 +40,7 @@ class Version(db.Model):
     brand_id = db.Column(db.UnicodeText, db.ForeignKey('brands.id'), nullable=False)
     brand = db.relationship(Brand)
     created_at = db.Column(db.DateTime, default=datetime.now, nullable=False)
-    title = db.Column(db.Unicode(40), nullable=False)
+    title = db.Column(db.UnicodeText, nullable=False)
     snippet_version_id = db.Column(db.Uuid, db.ForeignKey('snippet_versions.id'), index=True, nullable=False)
     snippet_version = db.relationship(SnippetVersion)
     consent_subject_id = db.Column(db.Uuid, db.ForeignKey('consent_subjects.id'), nullable=False)

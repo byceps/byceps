@@ -15,9 +15,9 @@ class Subject(db.Model):
     __tablename__ = 'consent_subjects'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    name = db.Column(db.Unicode(80), unique=True, nullable=False)
-    title = db.Column(db.Unicode(80), unique=True, nullable=False)
-    type_ = db.Column('type', db.Unicode, nullable=True)
+    name = db.Column(db.UnicodeText, unique=True, nullable=False)
+    title = db.Column(db.UnicodeText, unique=True, nullable=False)
+    type_ = db.Column('type', db.UnicodeText, nullable=True)
 
     def __init__(self, name: str, title: str, type_: str) -> None:
         self.name = name
