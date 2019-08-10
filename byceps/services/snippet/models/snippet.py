@@ -38,10 +38,10 @@ class Snippet(db.Model):
     )
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    scope_type = db.Column(db.Unicode(20), nullable=False)
-    scope_name = db.Column(db.Unicode(40), nullable=False)
-    name = db.Column(db.Unicode(40), index=True, nullable=False)
-    _type = db.Column('type', db.Unicode(8), nullable=False)
+    scope_type = db.Column(db.UnicodeText, nullable=False)
+    scope_name = db.Column(db.UnicodeText, nullable=False)
+    name = db.Column(db.UnicodeText, index=True, nullable=False)
+    _type = db.Column('type', db.UnicodeText, nullable=False)
     current_version = association_proxy('current_version_association', 'version')
 
     def __init__(self, scope: Scope, name: str, type_: SnippetType) -> None:
@@ -98,10 +98,10 @@ class SnippetVersion(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.now, nullable=False)
     creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
     creator = db.relationship(User)
-    title = db.Column(db.Unicode(80), nullable=True)
+    title = db.Column(db.UnicodeText, nullable=True)
     head = db.Column(db.UnicodeText, nullable=True)
     body = db.Column(db.UnicodeText, nullable=False)
-    image_url_path = db.Column(db.Unicode(80), nullable=True)
+    image_url_path = db.Column(db.UnicodeText, nullable=True)
 
     def __init__(self, snippet: Snippet, creator_id: UserID,
                  title: Optional[str], head: Optional[str], body: str,

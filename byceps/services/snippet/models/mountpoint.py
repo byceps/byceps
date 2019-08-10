@@ -31,8 +31,8 @@ class Mountpoint(db.Model):
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     site_id = db.Column(db.UnicodeText, db.ForeignKey('sites.id'), index=True, nullable=False)
-    endpoint_suffix = db.Column(db.Unicode(40), nullable=False)
-    url_path = db.Column(db.Unicode(40), nullable=False)
+    endpoint_suffix = db.Column(db.UnicodeText, nullable=False)
+    url_path = db.Column(db.UnicodeText, nullable=False)
     snippet_id = db.Column(db.Uuid, db.ForeignKey('snippets.id'), index=True, nullable=False)
     snippet = db.relationship(Snippet)
 
