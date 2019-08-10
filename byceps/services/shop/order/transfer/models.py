@@ -50,6 +50,17 @@ class Address:
 
 
 @attrs(auto_attribs=True, frozen=True, slots=True)
+class OrderItem:
+    order_number: OrderNumber
+    article_number: ArticleNumber
+    description: str
+    unit_price: Decimal
+    tax_rate: Decimal
+    quantity: int
+    line_amount: Decimal
+
+
+@attrs(auto_attribs=True, frozen=True, slots=True)
 class Order:
     id: OrderID
     shop_id: ShopID
@@ -70,14 +81,3 @@ class Order:
     is_shipping_required: bool
     is_shipped: bool
     cancelation_reason: str
-
-
-@attrs(auto_attribs=True, frozen=True, slots=True)
-class OrderItem:
-    order_number: OrderNumber
-    article_number: ArticleNumber
-    description: str
-    unit_price: Decimal
-    tax_rate: Decimal
-    quantity: int
-    line_amount: Decimal
