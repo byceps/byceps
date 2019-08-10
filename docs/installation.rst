@@ -79,7 +79,7 @@ Change into the BYCEPS path and create a virtual environment (named
 .. code-block:: sh
 
     $ cd byceps
-    $ pyvenv-3.7 --system-site-packages venv
+    $ python3.7 -m venv --system-site-packages venv
 
 Activate it (but don't change into its path):
 
