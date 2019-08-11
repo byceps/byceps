@@ -38,19 +38,6 @@ def get_session_token(user_id: UserID) -> DbSessionToken:
         .one()
 
 
-def create_session_token(user_id: UserID) -> DbSessionToken:
-    """Create a session token."""
-    token = uuid4()
-    created_at = datetime.utcnow()
-
-    session_token = DbSessionToken(user_id, token, created_at)
-
-    db.session.add(session_token)
-    db.session.commit()
-
-    return session_token
-
-
 def delete_session_tokens_for_user(user_id: UserID) -> None:
     """Delete all session tokens that belong to the user."""
     db.session.query(DbSessionToken) \

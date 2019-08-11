@@ -134,4 +134,4 @@ def _add_user_credentials_to_session(client, user_id):
 
 def login_user(user_id):
     """Authenticate the user to create a session."""
-    session_service.create_session_token(user_id)
+    session_service.get_session_token(user_id)
