@@ -3,7 +3,6 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.services.authentication.session import service as session_service
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order.models.orderer import Orderer
 from byceps.services.shop.order import service as order_service
@@ -12,7 +11,7 @@ from byceps.services.shop.order.transfer.models import PaymentMethod
 from testfixtures.shop_order import create_orderer
 
 from tests.helpers import create_brand, create_party, create_site, \
-    create_user_with_detail, http_client
+    create_user_with_detail, http_client, login_user
 from tests.services.shop.base import ShopTestBase
 
 
@@ -81,7 +80,7 @@ class ShopOrdersTestCase(ShopTestBase):
         return order.id
 
     def request_view(self, current_user, order_id):
-        session_service.create_session_token(current_user.id)
+        login_user(current_user.id)
 
         url = '/shop/orders/{}'.format(str(order_id))
 

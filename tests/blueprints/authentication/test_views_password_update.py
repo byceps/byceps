@@ -9,7 +9,7 @@ from byceps.services.authentication.session import service as session_service
 
 from tests.base import AbstractAppTestCase
 from tests.helpers import create_brand, create_party, create_site, \
-    create_user, http_client
+    create_user, http_client, login_user
 
 
 class PasswordUpdateTestCase(AbstractAppTestCase):
@@ -27,7 +27,7 @@ class PasswordUpdateTestCase(AbstractAppTestCase):
 
         user = create_user()
         password_service.create_password_hash(user.id, old_password)
-        session_service.create_session_token(user.id)
+        login_user(user.id)
 
         credential_before = self.find_credential(user.id)
         assert credential_before is not None

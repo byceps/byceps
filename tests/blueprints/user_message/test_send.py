@@ -5,14 +5,13 @@
 
 from unittest.mock import patch
 
-from byceps.services.authentication.session import service as session_service
 from byceps.services.brand import settings_service as brand_settings_service
 from byceps.services.email import service as email_service
 from byceps.services.user_message import service as user_message_service
 
 from tests.base import AbstractAppTestCase
 from tests.helpers import create_brand, create_party, create_site, \
-    create_user, http_client
+    create_user, http_client, login_user
 
 
 class SendUserMessageTest(AbstractAppTestCase):
@@ -164,7 +163,7 @@ Bei Fragen kontaktiere uns bitte per E-Mail an: info@example.com\
         }
 
         if current_user_id is not None:
-            session_service.create_session_token(current_user_id)
+            login_user(current_user_id)
 
         with http_client(self.app, user_id=current_user_id) as client:
             return client.post(url, data=form_data)

@@ -130,3 +130,8 @@ def _add_user_credentials_to_session(client, user_id):
     with client.session_transaction() as session:
         session['user_id'] = str(user_id)
         session['user_auth_token'] = str(session_token.token)
+
+
+def login_user(user_id):
+    """Authenticate the user to create a session."""
+    session_service.create_session_token(user_id)
