@@ -1,6 +1,7 @@
 {% extends 'layouts/admin/shop/order.html' %}
 {% from 'macros/admin/shop/order.html' import render_order_link %}
 {% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
+{% from 'macros/misc.html' import render_notification %}
 {% set current_page_party = party %}
 {% set title = 'Bestellung stornieren' %}
 
@@ -17,8 +18,8 @@
   <form action="{{ url_for('.cancel', order_id=order.id) }}" method="post">
     {% call form_fieldset() %}
       {{ form_field(form.reason, maxlength=200, required='required') }}
+      {{ render_notification('Die Begründung wird an die bestellende Person weitergegeben.<br>Es handelt sich <em>nicht</em> um einen internen Vermerk.'|safe, category='warning', icon='warning') }}
     {% endcall %}
-    <small><p>Die Begründung wird an die bestellende Person weitergegeben.<br>Es handelt sich <em>nicht</em> um einen internen Vermerk.</p></small>
 
     {{ form_buttons('Stornieren', icon='disabled', cancel_url=url_for('.view', order_id=order.id)) }}
   </form>
