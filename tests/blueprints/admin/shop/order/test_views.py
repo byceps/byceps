@@ -65,7 +65,10 @@ class ShopAdminTestCase(ShopTestBase):
         assert_payment_is_open(order_before)
 
         url = '/admin/shop/orders/{}/cancel'.format(order_before.id)
-        form_data = {'reason': 'Dein Vorname ist albern!'}
+        form_data = {
+            'reason': 'Dein Vorname ist albern!',
+            'send_email': 'y',
+        }
         with http_client(self.app, user_id=self.admin.id) as client:
             response = client.post(url, data=form_data)
 
@@ -79,6 +82,31 @@ class ShopAdminTestCase(ShopTestBase):
 
         order_email_service_mock.send_email_for_canceled_order_to_orderer \
             .assert_called_once_with(placed_order.id)
+
+        order_canceled_signal_send_mock \
+            .assert_called_once_with(None, order_id=placed_order.id)
+
+    @patch('byceps.blueprints.shop.order.signals.order_canceled.send')
+    @patch('byceps.blueprints.admin.shop.order.views.order_email_service')
+    def test_cancel_before_paid_without_sending_email(self,
+            order_email_service_mock, order_canceled_signal_send_mock):
+        article_before = self.create_article(self.shop.id, quantity=8)
+        quantified_articles_to_order = {(article_before, 3)}
+        placed_order = self.place_order(quantified_articles_to_order)
+
+        url = '/admin/shop/orders/{}/cancel'.format(placed_order.id)
+        form_data = {
+            'reason': 'Dein Vorname ist albern!',
+            # Sending e-mail is not requested.
+        }
+        with http_client(self.app, user_id=self.admin.id) as client:
+            response = client.post(url, data=form_data)
+
+        assert response.status_code == 302
+
+        # No e-mail should be send.
+        order_email_service_mock.send_email_for_canceled_order_to_orderer \
+            .assert_not_called()
 
         order_canceled_signal_send_mock \
             .assert_called_once_with(None, order_id=placed_order.id)
@@ -130,7 +158,10 @@ class ShopAdminTestCase(ShopTestBase):
             response = client.post(url, data=form_data)
 
         url = '/admin/shop/orders/{}/cancel'.format(order_before.id)
-        form_data = {'reason': 'Dein Vorname ist albern!'}
+        form_data = {
+            'reason': 'Dein Vorname ist albern!',
+            'send_email': 'n',
+        }
         with http_client(self.app, user_id=self.admin.id) as client:
             response = client.post(url, data=form_data)
 
@@ -141,6 +172,9 @@ class ShopAdminTestCase(ShopTestBase):
 
         article_afterwards = Article.query.get(article_before.id)
         assert article_afterwards.quantity == 8
+
+        order_email_service_mock.send_email_for_canceled_order_to_orderer \
+            .assert_called_once_with(placed_order.id)
 
         order_canceled_signal_send_mock \
             .assert_called_once_with(None, order_id=placed_order.id)
