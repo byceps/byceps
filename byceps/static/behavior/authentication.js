@@ -41,7 +41,7 @@ onDomReady(function() {
         if (confirm('Wirklich abmelden?')) {
           const href = anchor.getAttribute('href');
           send_post_request(href, function() {
-            location.href = '/';
+            location.href = '/authentication/login';
           });
         };
 
