@@ -18,7 +18,7 @@ from .....services.shop.shop import service as shop_service
 from .....services.ticketing import ticket_service
 from .....services.user import service as user_service
 from .....util.framework.blueprint import create_blueprint
-from .....util.framework.flash import flash_error, flash_success
+from .....util.framework.flash import flash_error, flash_notice, flash_success
 from .....util.framework.templating import templated
 from .....util.views import redirect_to, respond_no_content
 
@@ -237,6 +237,7 @@ def cancel(order_id):
         return cancel_form(order_id, form)
 
     reason = form.reason.data.strip()
+    send_email = form.send_email.data
 
     try:
         order_service.cancel_order(order.id, g.current_user.id, reason)
@@ -251,7 +252,11 @@ def cancel(order_id):
         'Artikel in den entsprechenden Stückzahlen wieder zur Bestellung '
         'freigegeben.')
 
-    order_email_service.send_email_for_canceled_order_to_orderer(order.id)
+    if send_email:
+        order_email_service.send_email_for_canceled_order_to_orderer(order.id)
+    else:
+        flash_notice(
+            'Es wurde keine E-Mail an den/die Auftraggeber/in versendet.')
 
     order_canceled.send(None, order_id=order.id)
 

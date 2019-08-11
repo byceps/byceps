@@ -1,6 +1,6 @@
 {% extends 'layouts/admin/shop/order.html' %}
 {% from 'macros/admin/shop/order.html' import render_order_link %}
-{% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
+{% from 'macros/forms.html' import form_buttons, form_field, form_field_checkbox, form_fieldset %}
 {% from 'macros/misc.html' import render_notification %}
 {% set current_page_party = party %}
 {% set title = 'Bestellung stornieren' %}
@@ -19,6 +19,7 @@
     {% call form_fieldset() %}
       {{ form_field(form.reason, maxlength=200, required='required') }}
       {{ render_notification('Die Begründung wird an die bestellende Person weitergegeben.<br>Es handelt sich <em>nicht</em> um einen internen Vermerk.'|safe, category='warning', icon='warning') }}
+      {{ form_field_checkbox(form.send_email, form.send_email.label.text, checked='checked') }}
     {% endcall %}
 
     {{ form_buttons('Stornieren', icon='disabled', cancel_url=url_for('.view', order_id=order.id)) }}

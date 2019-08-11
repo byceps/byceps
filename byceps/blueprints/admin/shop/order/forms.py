@@ -6,7 +6,7 @@ byceps.blueprints.admin.shop.order.forms
 :License: Modified BSD, see LICENSE for details.
 """
 
-from wtforms import RadioField, TextAreaField
+from wtforms import BooleanField, RadioField, TextAreaField
 from wtforms.validators import InputRequired, Length
 
 from .....services.shop.order.transfer.models import PaymentMethod
@@ -15,6 +15,7 @@ from .....util.l10n import LocalizedForm
 
 class CancelForm(LocalizedForm):
     reason = TextAreaField('Begründung', validators=[InputRequired(), Length(max=800)])
+    send_email = BooleanField('Auftraggeber/in per E-Mail über Stornierung informieren')
 
 
 PAYMENT_METHOD_CHOICES = [
