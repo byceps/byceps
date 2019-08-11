@@ -77,8 +77,7 @@ def determine_site_mode(app):
     try:
         return SiteMode[value]
     except KeyError:
-        raise ConfigurationError(
-            'Invalid site mode "{}" configured.'.format(value))
+        raise ConfigurationError(f'Invalid site mode "{value}" configured.')
 
 
 def get_site_mode(app=None):

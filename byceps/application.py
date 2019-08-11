@@ -211,7 +211,7 @@ def _load_site_extension(app, site_id):
     The application object can then be used to register, for example, a
     context processor.
     """
-    module_name = 'sites.{}.extension'.format(site_id)
+    module_name = f'sites.{site_id}.extension'
     try:
         module = import_module(module_name)
     except ModuleNotFoundError:
