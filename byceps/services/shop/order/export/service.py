@@ -11,6 +11,7 @@ from decimal import Decimal
 from typing import Any, Dict
 
 from flask import current_app
+from pytz import timezone
 
 from .....services.user import service as user_service
 from .....util.money import to_two_places
@@ -63,8 +64,8 @@ def _format_export_amount(amount: Decimal) -> str:
 
 def _format_export_datetime(dt: datetime) -> str:
     """Format date and time as required by the export format specification."""
-    timezone = current_app.config['SHOP_ORDER_EXPORT_TIMEZONE']
-    localized_dt = timezone.localize(dt)
+    tz = timezone(current_app.config['SHOP_ORDER_EXPORT_TIMEZONE'])
+    localized_dt = tz.localize(dt)
 
     date_time, utc_offset = localized_dt.strftime('%Y-%m-%dT%H:%M:%S|%z') \
                                         .split('|', 1)

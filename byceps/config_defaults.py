@@ -10,8 +10,6 @@ Default configuration values
 
 from datetime import timedelta
 
-from pytz import timezone
-
 
 # database connection
 SQLALCHEMY_ECHO = False
@@ -52,7 +50,7 @@ BOARD_TOPICS_PER_PAGE = 10
 BOARD_POSTINGS_PER_PAGE = 10
 
 # shop
-SHOP_ORDER_EXPORT_TIMEZONE = timezone('Europe/Berlin')
+SHOP_ORDER_EXPORT_TIMEZONE = 'Europe/Berlin'
 
 # ticketing
 TICKET_MANAGEMENT_ENABLED = True
