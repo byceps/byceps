@@ -6,8 +6,7 @@
 from unittest.mock import patch
 
 from byceps.services.authentication.password.models import Credential
-from byceps.services.authentication.session.models.session_token \
-    import SessionToken
+from byceps.services.authentication.session import service as session_service
 from byceps.services.authorization.models import Role, UserRole
 from byceps.services.brand import settings_service as brand_settings_service
 from byceps.services.consent import consent_service, \
@@ -126,7 +125,7 @@ class UserCreateTestCase(AbstractAppTestCase):
         assert_password_credentials_created(user.id)
 
         # Session token should not have been created at this point.
-        session_token = find_session_token(user.id)
+        session_token = session_service.find_session_token_for_user(user.id)
         assert session_token is None
 
         # avatar
@@ -241,12 +240,6 @@ def assert_password_credentials_created(user_id):
     assert credential is not None
     assert credential.password_hash.startswith('pbkdf2:sha256:150000$')
     assert credential.updated_at is not None
-
-
-def find_session_token(user_id):
-    return SessionToken.query \
-        .filter_by(user_id=user_id) \
-        .one_or_none()
 
 
 def assert_consent(user_id, subject_id):
