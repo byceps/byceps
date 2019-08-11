@@ -49,6 +49,10 @@ def _request_version_id(versions_by_id: Dict[VersionID, Version],
                        ) -> VersionID:
     version_ids = _get_version_ids_latest_first(versions_by_id)
 
+    if not version_ids:
+        raise click.BadParameter(
+            'No versions for brand available to choose from.')
+
     def get_option_title(version_id):
         version = versions_by_id[version_id]
 
