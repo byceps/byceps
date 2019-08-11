@@ -18,7 +18,8 @@ from _validators import validate_user_screen_name
 @click.command()
 @click.argument('user', callback=validate_user_screen_name)
 def execute(user):
-    click.echo('Generating SQL statements to delete user "{}" ...'.format(user.screen_name))
+    click.echo(
+        f'Generating SQL statements to delete user "{user.screen_name}" ...')
 
     statements = generate_delete_statements(user.id)
     for statement in statements:
@@ -38,8 +39,7 @@ def generate_delete_statements(user_id):
         ('user_details', 'user_id'),
         ('users', 'id'),
     ]:
-        yield "DELETE FROM {} WHERE {} = '{}';".format(
-            table, user_id_column, user_id)
+        yield f"DELETE FROM {table} WHERE {user_id_column} = '{user_id}';"
 
 
 if __name__ == '__main__':

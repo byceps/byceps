@@ -24,7 +24,7 @@ def validate_snippet_version_id(ctx, param, value) -> SnippetVersionID:
     snippet_version = snippet_service.find_snippet_version(value)
 
     if not snippet_version:
-        raise click.BadParameter('Unknown snippet_version ID "{}".'.format(value))
+        raise click.BadParameter(f'Unknown snippet_version ID "{value}".')
 
     return snippet_version.id
 
@@ -35,10 +35,10 @@ def validate_snippet_version_id(ctx, param, value) -> SnippetVersionID:
 @click.argument('snippet_version_id', callback=validate_snippet_version_id)
 @click.argument('consent_subject_name_suffix')
 def execute(brand, title, snippet_version_id, consent_subject_name_suffix):
-    consent_subject_name = '{}_terms-of-service_{}'.format(
-        brand.id, consent_subject_name_suffix)
+    consent_subject_name \
+        = f'{brand.id}_terms-of-service_{consent_subject_name_suffix}'
 
-    consent_subject_title = 'AGB {} / {}'.format(brand.title, title)
+    consent_subject_title = f'AGB {brand.title} / {title}'
 
     consent_subject = consent_subject_service.create_subject(
         consent_subject_name, consent_subject_title, 'terms_of_service')

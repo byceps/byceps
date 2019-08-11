@@ -29,8 +29,9 @@ def execute(ctx, source_site, target_site, snippet_name):
         .find_current_version_of_snippet_with_name(source_scope, snippet_name)
 
     if snippet_version is None:
-        raise click.BadParameter('Unknown snippet name "{}" for site "{}".'
-            .format(snippet_name, source_site.id))
+        raise click.BadParameter(
+            f'Unknown snippet name "{snippet_name}" '
+            f'for site "{source_site.id}".')
 
     snippet = snippet_version.snippet
 
@@ -52,7 +53,7 @@ def execute(ctx, source_site, target_site, snippet_name):
             snippet_version.body
         )
     else:
-        ctx.fail("Unknown snippet type '{}'.".format(snippet.type_))
+        ctx.fail(f"Unknown snippet type '{snippet.type_}'.")
 
     click.secho('Done.', fg='green')
 

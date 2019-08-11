@@ -24,8 +24,9 @@ from _validators import validate_user_screen_name
 def execute(badge_slug, user):
     badge_id = find_badge_id_for_badge_slug(badge_slug)
 
-    click.echo('Awarding badge "{}" to user "{}" ... '
-        .format(badge_slug, user.screen_name), nl=False)
+    click.echo(
+        f'Awarding badge "{badge_slug}" to user "{user.screen_name}" ... ',
+        nl=False)
 
     badge_service.award_badge_to_user(badge_id, user.id)
 
@@ -42,7 +43,7 @@ def find_badge_id_for_badge_slug(slug: str) -> BadgeID:
         .scalar()
 
     if badge_id is None:
-        raise click.BadParameter('Unknown badge slug "{}".'.format(slug))
+        raise click.BadParameter(f'Unknown badge slug "{slug}".')
 
     return badge_id
 

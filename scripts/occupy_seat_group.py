@@ -19,8 +19,7 @@ def get_seat_group(ctx, param, seat_group_id):
     seat_group = seat_group_service.find_seat_group(seat_group_id)
 
     if not seat_group:
-        raise click.BadParameter(
-            'Unknown seat group ID "{}".'.format(seat_group_id))
+        raise click.BadParameter(f'Unknown seat group ID "{seat_group_id}".')
 
     return seat_group
 
@@ -30,7 +29,7 @@ def get_ticket_bundle(ctx, param, ticket_bundle_id):
 
     if not ticket_bundle:
         raise click.BadParameter(
-            'Unknown ticket bundle ID "{}".'.format(ticket_bundle_id))
+            f'Unknown ticket bundle ID "{ticket_bundle_id}".')
 
     return ticket_bundle
 

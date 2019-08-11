@@ -44,8 +44,8 @@ def execute(ctx, search_term, site, verbose):
     if not matches:
         if verbose:
             click.secho(
-                'No matching snippets for {} and search term "{}".'
-                    .format(scope_label, search_term),
+                f'No matching snippets for {scope_label} '
+                f'and search term "{search_term}".',
                 fg='yellow')
         return
 
@@ -61,7 +61,7 @@ def execute(ctx, search_term, site, verbose):
 
 
 def format_scope(scope):
-    return '{}/{}'.format(scope.type_, scope.name)
+    return f'{scope.type_}/{scope.name}'
 
 
 if __name__ == '__main__':

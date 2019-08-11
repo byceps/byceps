@@ -26,7 +26,7 @@ def execute():
     click.secho('Removing all user sessions ... ', nl=False)
 
     deleted_total = session_service.delete_all_session_tokens()
-    click.secho('{} sessions removed.'.format(deleted_total ), fg='green')
+    click.secho(f'{deleted_total} sessions removed.', fg='green')
 
 
 if __name__ == '__main__':

@@ -38,8 +38,8 @@ def execute(brand):
     # Confirm update to user.
     selected_version_title = versions_by_id[selected_version_id].title
     click.secho(
-        'Current version for brand ID "{}" was set to "{}".'.format(
-            brand.id, selected_version_title),
+        f'Current version for brand ID "{brand.id}" '
+        f'was set to "{selected_version_title}".',
         fg='green')
 
 
@@ -54,9 +54,9 @@ def _request_version_id(versions_by_id: Dict[VersionID, Version],
 
     def get_option_title(version_id):
         version = versions_by_id[version_id]
+        created_at_str = version.created_at.strftime('%Y-%m-%d %H:%M:%S')
 
-        return '"{}"\t\t{}'.format(
-            version.title, version.created_at.strftime('%Y-%m-%d %H:%M:%S'))
+        return f'"{version.title}"\t\t{created_at_str}'
 
     if current_version_id is not None:
         current_version_option_index = version_ids.index(current_version_id)

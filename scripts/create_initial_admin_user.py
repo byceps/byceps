@@ -20,7 +20,7 @@ from _util import app_context
 @click.option('--email_address', prompt=True)
 @click.option('--password', prompt=True, hide_input=True)
 def execute(screen_name, email_address, password):
-    click.echo('Creating user "{}" ... '.format(screen_name), nl=False)
+    click.echo(f'Creating user "{screen_name}" ... ', nl=False)
 
     user = _create_user(screen_name, email_address, password)
 

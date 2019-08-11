@@ -20,8 +20,8 @@ from _validators import validate_party, validate_user_id
 @click.argument('user', callback=validate_user_id)
 @click.argument('party', callback=validate_party)
 def execute(user, party):
-    click.echo('Adding attendance of user "{}" at party "{}" ... '
-        .format(user.screen_name, party.title), nl=False)
+    click.echo(f'Adding attendance of user "{user.screen_name}" '
+               f'at party "{party.title}" ... ', nl=False)
 
     attendance_service.create_archived_attendance(user.id, party.id)
 
