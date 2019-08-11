@@ -14,7 +14,6 @@ from pick import pick
 from byceps.services.terms.models.version import Version
 from byceps.services.terms.transfer.models import VersionID
 from byceps.services.terms import version_service
-from byceps.util.datetime.format import format_datetime_short
 from byceps.util.system import get_config_filename_from_env_or_exit
 
 from _util import app_context
@@ -57,7 +56,7 @@ def _request_version_id(versions_by_id: Dict[VersionID, Version],
         version = versions_by_id[version_id]
 
         return '"{}"\t\t{}'.format(
-            version.title, format_datetime_short(version.created_at))
+            version.title, version.created_at.strftime('%Y-%m-%d %H:%M:%S'))
 
     if current_version_id is not None:
         current_version_option_index = version_ids.index(current_version_id)
