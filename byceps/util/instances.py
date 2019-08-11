@@ -21,7 +21,7 @@ class ReprBuilder:
 
     def add(self, name, value):
         """Add the attribute with the given value."""
-        return self.add_custom('{}={!r}'.format(name, value))
+        return self.add_custom(f'{name}={value!r}')
 
     def add_custom(self, value):
         """Add a custom value."""
@@ -32,4 +32,4 @@ class ReprBuilder:
         """Assemble the full textual representation."""
         class_name = type(self.instance).__name__
         attributes = ', '.join(self.attributes)
-        return '<{}({})>'.format(class_name, attributes)
+        return f'<{class_name}({attributes})>'

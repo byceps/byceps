@@ -39,14 +39,14 @@ def format_datetime_short(dt: datetime, *, smart: bool=True) -> str:
     date_string = format_date_short(dt.date(), smart=smart)
     time_string = format_time(dt.time())
 
-    return '{}, {}'.format(date_string, time_string)
+    return f'{date_string}, {time_string}'
 
 
 def format_datetime_long(dt: datetime, *, smart: bool=True) -> str:
     date_string = format_date_long(dt.date(), smart=smart)
     time_string = format_time(dt.time())
 
-    return '{}, {}'.format(date_string, time_string)
+    return f'{date_string}, {time_string}'
 
 
 def format_time(t: time) -> str:

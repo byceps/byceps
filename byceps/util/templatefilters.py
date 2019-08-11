@@ -23,7 +23,7 @@ def dim(eval_ctx, value):
 
 
 def _dim(value):
-    return '<span class="dimmed">{}</span>'.format(value)
+    return f'<span class="dimmed">{value}</span>'
 
 
 @evalcontextfilter
@@ -39,7 +39,7 @@ def _wrap_markup_on_autoescape(eval_ctx, value):
 
 def separate_thousands(number: int) -> str:
     """Insert locale-specific characters to separate thousands."""
-    return '{:n}'.format(number)
+    return f'{number:n}'
 
 
 def register(app):

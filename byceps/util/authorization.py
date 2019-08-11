@@ -16,7 +16,7 @@ def create_permission_enum(key: str, member_names: List[str]) -> Enum:
 
     permission_enum = Enum(name, list(member_names))
     permission_enum.__key__ = key
-    permission_enum.__repr__ = lambda self: '<{}>'.format(self)
+    permission_enum.__repr__ = lambda self: f'<{self}>'
 
     return permission_enum
 

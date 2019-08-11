@@ -37,4 +37,4 @@ def _get_blueprint_views_module(name):
     """Import and return the 'views' module located in the specified
     blueprint package.
     """
-    return import_module('byceps.blueprints.{}.views'.format(name))
+    return import_module(f'byceps.blueprints.{name}.views')

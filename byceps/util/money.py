@@ -22,7 +22,7 @@ def format_euro_amount(x: Decimal) -> str:
     """
     quantized = to_two_places(x)
     formatted_number = locale.format('%.2f', quantized, grouping=True)
-    return '{} €'.format(formatted_number)
+    return f'{formatted_number} €'
 
 
 def to_two_places(x: Decimal) -> Decimal:

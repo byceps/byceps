@@ -22,7 +22,7 @@ class DateTimeRange(namedtuple('DateTimeRange', ['start', 'end'])):
         return self.start <= datetime < self.end
 
     def __repr__(self) -> str:
-        return '[{0.start}..{0.end})'.format(self)
+        return f'[{self.start}..{self.end})'
 
 
 def create_adjacent_ranges(dts: Iterable[datetime]) -> Iterator[DateTimeRange]:

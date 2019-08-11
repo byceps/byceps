@@ -47,7 +47,7 @@ def calculate_weights(chars: str) -> Iterator[int]:
 def calculate_weight(position: int, char: str) -> int:
     """Calculate the current digit's contribution to the total weight."""
     if char not in VALID_CHARS:
-        raise ValueError("Invalid character '{}'.".format(char))
+        raise ValueError(f"Invalid character '{char}'.")
 
     digit = ord(char) - 48
     if is_even(position):

@@ -20,8 +20,8 @@ def get_config_filename_from_env() -> str:
 
     Raise an exception if it isn't set.
     """
-    error_message = "No configuration file was specified via the '{}' " \
-                    "environment variable.".format(CONFIG_VAR_NAME)
+    error_message = "No configuration file was specified via the " \
+                    f"'{CONFIG_VAR_NAME}' environment variable."
 
     return get_env_value(CONFIG_VAR_NAME, error_message)
 
