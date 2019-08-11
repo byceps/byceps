@@ -19,29 +19,16 @@ def format_custom(dt: DateOrDateTime, pattern: str) -> str:
     return dt.strftime(pattern)
 
 
-def format_day_smart(d: DateOrDateTime) -> str:
-    if isinstance(d, datetime):
-        d = d.date()
-
-    today = date.today()
-    if d == today:
-        return 'heute'
-    elif d == (today - timedelta(days=1)):
-        return 'gestern'
-    else:
-        return None
-
-
 def format_date_iso(d: date) -> str:
     return d.strftime('%Y-%m-%d')
 
 
 def format_date_short(d: date, *, smart: bool=True) -> str:
-    return (smart and format_day_smart(d)) or d.strftime('%d.%m.%Y')
+    return (smart and _format_date_smart(d)) or d.strftime('%d.%m.%Y')
 
 
 def format_date_long(d: date, *, smart: bool=True) -> str:
-    return (smart and format_day_smart(d)) or d.strftime('%A, %d. %B %Y')
+    return (smart and _format_date_smart(d)) or d.strftime('%A, %d. %B %Y')
 
 
 def format_datetime_iso(dt: datetime) -> str:
@@ -64,3 +51,19 @@ def format_datetime_long(dt: datetime, *, smart: bool=True) -> str:
 
 def format_time(t: time) -> str:
     return t.strftime('%H:%M Uhr')
+
+
+# helpers
+
+
+def _format_date_smart(d: DateOrDateTime) -> str:
+    if isinstance(d, datetime):
+        d = d.date()
+
+    today = date.today()
+    if d == today:
+        return 'heute'
+    elif d == (today - timedelta(days=1)):
+        return 'gestern'
+    else:
+        return None
