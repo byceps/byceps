@@ -8,7 +8,6 @@ venv
 
 # test-related
 .pytest_cache
-.tox
 *.egg-info
 
 # cache data

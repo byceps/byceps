@@ -61,23 +61,20 @@ See ``docs/installation.rst``.
 Testing
 =======
 
-In the activated virtual environment, install tox_ and pytest_:
+In the activated virtual environment, install pytest_ and other test
+dependencies:
 
 .. code:: sh
 
     (venv)$ pip install -r requirements-test.txt
 
-Have tox run the tests:
+Run the tests:
 
 .. code:: sh
 
-    (venv)$ tox
-
-If run for the first time, tox will first create virtual environments
-for the Python versions specified in `tox.ini`.
+    (venv)$ python setup.py test
 
 
-.. _tox: http://tox.testrun.org/
 .. _pytest: http://pytest.org/
 
 
