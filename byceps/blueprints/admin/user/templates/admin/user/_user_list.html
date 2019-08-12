@@ -16,7 +16,7 @@
       <td>{{ render_user_avatar_16_and_link(user) }}</td>
       <td>{{ render_most_important_user_flag(user, show_label=False) }}</td>
       <td>{{ user.detail.full_name|fallback }}</td>
-      <td>{{ render_datetime(user.created_at) }}</td>
+      <td>{{ render_datetime(user.created_at|utc_to_local_tz) }}</td>
     </tr>
     {%- endfor %}
   </tbody>
