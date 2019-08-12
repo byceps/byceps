@@ -61,8 +61,7 @@ See ``docs/installation.rst``.
 Testing
 =======
 
-In the activated virtual environment, install pytest_ and other test
-dependencies:
+In the activated virtual environment, install the testing dependencies:
 
 .. code:: sh
 
@@ -72,10 +71,7 @@ Run the tests:
 
 .. code:: sh
 
-    (venv)$ python setup.py test
-
-
-.. _pytest: http://pytest.org/
+    (venv)$ pytest
 
 
 Serving
