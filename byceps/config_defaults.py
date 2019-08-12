@@ -37,6 +37,7 @@ PERMANENT_SESSION_LIFETIME = timedelta(14)
 # localization
 LOCALE = 'de_DE.UTF-8'
 LOCALES_FORMS = ['de']
+TIMEZONE = 'Europe/Berlin'
 
 # home page
 ROOT_REDIRECT_TARGET = None

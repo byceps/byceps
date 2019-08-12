@@ -36,7 +36,7 @@
           {{ render_icon('archived', title='archiviert') }}
           {%- endif -%}
         </td>
-        <td class="nowrap"><a href="{{ url_for('.item_view_version', version_id=version.id) }}">{{ render_datetime(version.created_at) }}</a></td>
+        <td class="nowrap"><a href="{{ url_for('.item_view_version', version_id=version.id) }}">{{ render_datetime(version.created_at|utc_to_local_tz) }}</a></td>
         <td>{{ render_user_avatar_20_and_name(version.creator) }}</td>
         <td>
           {%- if previous_version -%}

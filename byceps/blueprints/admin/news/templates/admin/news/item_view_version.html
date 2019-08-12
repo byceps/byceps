@@ -59,7 +59,7 @@
       <tr>
         <th>Erstellt:</th>
         <td>
-          {{ render_datetime(version.created_at) }} von {{ render_user_avatar_16_and_name(version.creator) }}<br>
+          {{ render_datetime(version.created_at|utc_to_local_tz) }} von {{ render_user_avatar_16_and_name(version.creator) }}<br>
           <a href="{{ url_for('.item_list_versions', item_id=item.id) }}">{{ render_icon('history') }} Änderungshistorie ansehen</a>
         </td>
       </tr>
@@ -67,7 +67,7 @@
         <th>Veröffentlicht:</th>
         <td>
           {%- if version.item.published %}
-          {{- render_datetime(version.item.published_at) }}
+          {{- render_datetime(version.item.published_at|utc_to_local_tz) }}
           {%- else %}
           {{- render_tag('Entwurf') }}
           {%- endif -%}

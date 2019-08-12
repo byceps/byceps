@@ -59,16 +59,16 @@
         <td>{% if item.current_version.image_url_path %} {{ render_icon('image', title='Bild festgelegt') }}{% endif %}</td>
         <td class="nowrap">
           {%- if item.published %}
-          <strong>{{ render_datetime(item.published_at) }}</strong>
+          <strong>{{ render_datetime(item.published_at|utc_to_local_tz) }}</strong>
           {%- else %}
           {{ render_tag('Entwurf') }}
           {%- endif %}
           <br>
         {%- filter dim %}
           {%- if g.current_user.has_permission(NewsItemPermission.view) %}
-          {{ render_icon('history') }} <a href="{{ url_for('.item_list_versions', item_id=item.id) }}" title="Änderungshistorie ansehen">{{ render_datetime(item.current_version.created_at) }}</a>
+          {{ render_icon('history') }} <a href="{{ url_for('.item_list_versions', item_id=item.id) }}" title="Änderungshistorie ansehen">{{ render_datetime(item.current_version.created_at|utc_to_local_tz) }}</a>
           {%- else %}
-          {{ render_datetime(item.current_version.created_at) }}
+          {{ render_datetime(item.current_version.created_at|utc_to_local_tz) }}
           {%- endif -%}
           <br>
           von {{ render_user_avatar_16_and_name(item.current_version.creator) }}

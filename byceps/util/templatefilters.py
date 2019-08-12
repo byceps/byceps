@@ -8,8 +8,12 @@ Provide and register custom template filters.
 :License: Modified BSD, see LICENSE for details.
 """
 
+from datetime import datetime
+
+from flask import current_app
 from jinja2 import evalcontextfilter, Markup
 from jinja2.filters import do_default, do_trim
+from pytz import timezone, UTC
 
 from .datetime import format as dateformat
 from . import money
@@ -42,6 +46,12 @@ def separate_thousands(number: int) -> str:
     return f'{number:n}'
 
 
+def utc_to_local_tz(dt: datetime) -> datetime:
+    """Convert naive date/time object from UTC to configured time zone."""
+    tz = timezone(current_app.config['TIMEZONE'])
+    return UTC.localize(dt).astimezone(tz)
+
+
 def register(app):
     """Make functions available as template filters."""
     functions = [
@@ -57,6 +67,7 @@ def register(app):
         fallback,
         money.format_euro_amount,
         separate_thousands,
+        utc_to_local_tz,
     ]
 
     for f in functions:
