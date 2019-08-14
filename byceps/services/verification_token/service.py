@@ -60,7 +60,7 @@ def delete_token(token: Token) -> None:
 
 def find_for_email_address_confirmation_by_token(token_value: str) -> Token:
     purpose = Purpose.email_address_confirmation
-    return find_for_purpose_by_token(token_value, purpose)
+    return _find_for_purpose_by_token(token_value, purpose)
 
 
 def find_for_email_address_confirmation_by_user(user_id: UserID
@@ -73,12 +73,12 @@ def find_for_email_address_confirmation_by_user(user_id: UserID
 
 def find_for_password_reset_by_token(token_value: str) -> Token:
     purpose = Purpose.password_reset
-    return find_for_purpose_by_token(token_value, purpose)
+    return _find_for_purpose_by_token(token_value, purpose)
 
 
 def find_for_terms_consent_by_token(token_value: str) -> Token:
     purpose = Purpose.terms_consent
-    return find_for_purpose_by_token(token, purpose)
+    return _find_for_purpose_by_token(token, purpose)
 
 
 def find_for_terms_consent_by_user(user_id: UserID) -> Optional[Token]:
@@ -88,7 +88,7 @@ def find_for_terms_consent_by_user(user_id: UserID) -> Optional[Token]:
         .first()
 
 
-def find_for_purpose_by_token(token_value: str, purpose: Purpose
+def _find_for_purpose_by_token(token_value: str, purpose: Purpose
                              ) -> Optional[Token]:
     return Token.query \
         .filter_by(token=token_value) \
