@@ -238,7 +238,7 @@ def request_password_reset():
     return request_password_reset_form()
 
 
-@blueprint.route('/password/reset/token/<uuid:token>')
+@blueprint.route('/password/reset/token/<token>')
 @templated
 def password_reset_form(token, erroneous_form=None):
     """Show a form to reset the current user's password."""
@@ -255,7 +255,7 @@ def password_reset_form(token, erroneous_form=None):
     }
 
 
-@blueprint.route('/password/reset/token/<uuid:token>', methods=['POST'])
+@blueprint.route('/password/reset/token/<token>', methods=['POST'])
 def password_reset(token):
     """Reset the current user's password."""
     verification_token = verification_token_service \

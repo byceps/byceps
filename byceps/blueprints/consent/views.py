@@ -26,7 +26,7 @@ from .forms import create_consent_form, get_subject_field_name
 blueprint = create_blueprint('consent', __name__)
 
 
-@blueprint.route('/consent/<uuid:token>')
+@blueprint.route('/consent/<token>')
 @templated
 def consent_form(token, *, erroneous_form=None):
     """Show form requiring consent to required subjects to which the
@@ -56,7 +56,7 @@ def _get_subjects_and_fields(subjects, form):
     return list(zip(subjects, fields))
 
 
-@blueprint.route('/consent/<uuid:token>', methods=['POST'])
+@blueprint.route('/consent/<token>', methods=['POST'])
 def consent(token):
     """Consent to the specified subjects."""
     verification_token = _get_verification_token_or_404(token)
@@ -111,9 +111,9 @@ def _get_subjects(subject_ids):
             for subject_id in subject_ids]
 
 
-def _get_verification_token_or_404(token_str):
+def _get_verification_token_or_404(token_value):
     verification_token = verification_token_service \
-        .find_for_terms_consent_by_token(token_str)
+        .find_for_terms_consent_by_token(token_value)
 
     if verification_token is None:
         flash_error('Unbekannter Bestätigungscode.')

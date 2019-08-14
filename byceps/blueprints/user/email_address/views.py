@@ -72,13 +72,14 @@ def request_confirmation_email():
     return redirect_to('.request_confirmation_email_form')
 
 
-@blueprint.route('/confirmation/<uuid:token>')
+@blueprint.route('/confirmation/<token>')
 def confirm(token):
     """Confirm e-mail address of the user account assigned with the
     verification token.
     """
     verification_token = verification_token_service \
         .find_for_email_address_confirmation_by_token(token)
+
     if verification_token is None:
         abort(404)
 
