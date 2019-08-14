@@ -66,9 +66,9 @@
         </td>
         <td class="nowrap">
           {%- if g.current_user.has_permission(SnippetPermission.view_history) %}
-          {{ render_icon('history') }} <a href="{{ url_for('.history', snippet_id=snippet.id) }}" title="Änderungshistorie ansehen">{{ render_datetime(snippet.current_version.created_at) }}</a>
+          {{ render_icon('history') }} <a href="{{ url_for('.history', snippet_id=snippet.id) }}" title="Änderungshistorie ansehen">{{ render_datetime(snippet.current_version.created_at|utc_to_local_tz) }}</a>
           {%- else %}
-          {{ render_datetime(snippet.current_version.created_at) }}
+          {{ render_datetime(snippet.current_version.created_at|utc_to_local_tz) }}
           {%- endif %}
         </td>
         <td>{{ render_user_avatar_20_and_name(snippet.current_version.creator) }}</td>

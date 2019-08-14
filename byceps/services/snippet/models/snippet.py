@@ -95,7 +95,7 @@ class SnippetVersion(db.Model):
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     snippet_id = db.Column(db.Uuid, db.ForeignKey('snippets.id'), index=True, nullable=False)
     snippet = db.relationship(Snippet)
-    created_at = db.Column(db.DateTime, default=datetime.now, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
     creator = db.relationship(User)
     title = db.Column(db.UnicodeText, nullable=True)
