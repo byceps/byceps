@@ -32,6 +32,7 @@ class CategoryWithLastUpdateAndUnseenFlag(CategoryWithLastUpdate):
             category.description,
             category.topic_count,
             category.posting_count,
+            category.hidden,
             category.last_posting_updated_at,
             category.last_posting_updated_by,
             contains_unseen_postings,

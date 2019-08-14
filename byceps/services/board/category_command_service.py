@@ -43,6 +43,22 @@ def update_category(category_id: CategoryID, slug: str, title: str,
     return _db_entity_to_category(category)
 
 
+def hide_category(category_id: CategoryID) -> None:
+    """Hide the category."""
+    category = _get_category(category_id)
+
+    category.hidden = True
+    db.session.commit()
+
+
+def unhide_category(category_id: CategoryID) -> None:
+    """Un-hide the category."""
+    category = _get_category(category_id)
+
+    category.hidden = False
+    db.session.commit()
+
+
 def move_category_up(category_id: CategoryID) -> None:
     """Move a category upwards by one position."""
     category = _get_category(category_id)
@@ -92,4 +108,5 @@ def _db_entity_to_category(category: DbCategory) -> Category:
         category.description,
         category.topic_count,
         category.posting_count,
+        category.hidden,
     )

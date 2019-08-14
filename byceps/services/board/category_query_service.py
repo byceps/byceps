@@ -75,6 +75,7 @@ def get_categories_with_last_updates(board_id: BoardID
     """
     categories_with_last_update = DbCategory.query \
         .for_board(board_id) \
+        .filter_by(hidden=False) \
         .options(
             db.joinedload(DbCategory.last_posting_updated_by),
         ) \
@@ -94,6 +95,7 @@ def _db_entity_to_category(category: DbCategory) -> Category:
         category.description,
         category.topic_count,
         category.posting_count,
+        category.hidden,
     )
 
 
@@ -108,6 +110,7 @@ def _db_entity_to_category_with_last_update(category: DbCategory
         category.description,
         category.topic_count,
         category.posting_count,
+        category.hidden,
         category.last_posting_updated_at,
         category.last_posting_updated_by,
     )

@@ -67,6 +67,9 @@ def topic_view(topic_id, page):
 
     board_id = h.get_board_id()
 
+    if topic.category.hidden:
+        abort(404)
+
     if topic.category.board_id != board_id:
         abort(404)
 

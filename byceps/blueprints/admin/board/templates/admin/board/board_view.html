@@ -1,5 +1,6 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/icons.html' import render_icon %}
+{% from 'macros/misc.html' import render_tag %}
 {% set current_page = 'board_admin' %}
 {% set current_page_brand = brand %}
 {% set title = '%s - Forum'|format(board_id) %}
@@ -35,7 +36,13 @@
     {%- for category in categories|sort(attribute='position') %}
       <tr>
         <td class="centered">{{ category.position }}</td>
-        <td><strong>{{ category.title }}</strong><br>{{ category.slug|dim }}</td>
+        <td>
+          <strong>{{ category.title }}</strong><br>
+          {{ category.slug|dim }}
+          {%- if category.hidden %}
+          <br>{{ render_tag('versteckt', class='color-disabled', icon='hidden') }}
+          {%- endif %}
+        </td>
         <td>{{ category.description }}</td>
         <td class="centered bignumber">{{ category.topic_count|separate_thousands }}</td>
         <td class="centered bignumber">{{ category.posting_count|separate_thousands }}</td>
@@ -47,6 +54,11 @@
               <li><a href="{{ url_for('.category_update_form', category_id=category.id) }}">{{ render_icon('edit') }} Bearbeiten</a></li>
               <li><a data-action="category-move-up" href="{{ url_for('.category_move_up', category_id=category.id) }}">{{ render_icon('arrow-up') }} Nach oben schieben</a></li>
               <li><a data-action="category-move-down" href="{{ url_for('.category_move_down', category_id=category.id) }}">{{ render_icon('arrow-down') }} Nach unten schieben</a></li>
+              {%- if category.hidden %}
+              <li><a data-action="category-unhide" href="{{ url_for('.category_unhide', category_id=category.id) }}">{{ render_icon('view') }} Sichtbar machen</a></li>
+              {%- else %}
+              <li><a data-action="category-hide" href="{{ url_for('.category_hide', category_id=category.id) }}">{{ render_icon('hidden') }} Verstecken</a></li>
+              {%- endif %}
             </ol>
           </div>
           {%- endif -%}
@@ -69,6 +81,8 @@
       onDomReady(function() {
         post_on_click_then_reload('[data-action="category-move-up"]');
         post_on_click_then_reload('[data-action="category-move-down"]');
+        post_on_click_then_reload('[data-action="category-hide"]');
+        delete_on_click_then_reload('[data-action="category-unhide"]');
       });
     </script>
 {%- endblock %}

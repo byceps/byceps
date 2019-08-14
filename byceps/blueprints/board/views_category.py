@@ -51,7 +51,11 @@ def category_view(slug, page):
 
     category = board_category_query_service \
         .find_category_by_slug(board_id, slug)
+
     if category is None:
+        abort(404)
+
+    if category.hidden:
         abort(404)
 
     if not user.is_anonymous:

@@ -210,6 +210,32 @@ def category_update(category_id):
     return redirect_to('.board_view', board_id=category.board_id)
 
 
+@blueprint.route('/categories/<uuid:category_id>/flags/hidden',
+                 methods=['POST'])
+@permission_required(BoardCategoryPermission.update)
+@respond_no_content
+def category_hide(category_id):
+    """Hide the category."""
+    category = _get_category_or_404(category_id)
+
+    board_category_command_service.hide_category(category.id)
+
+    flash_success('Die Kategorie "{}" wurde versteckt.', category.title)
+
+
+@blueprint.route('/categories/<uuid:category_id>/flags/hidden',
+                 methods=['DELETE'])
+@permission_required(BoardCategoryPermission.update)
+@respond_no_content
+def category_unhide(category_id):
+    """Un-hide the category."""
+    category = _get_category_or_404(category_id)
+
+    board_category_command_service.unhide_category(category.id)
+
+    flash_success('Die Kategorie "{}" wurde sichtbar gemacht.', category.title)
+
+
 @blueprint.route('/categories/<uuid:category_id>/up', methods=['POST'])
 @permission_required(BoardCategoryPermission.update)
 @respond_no_content

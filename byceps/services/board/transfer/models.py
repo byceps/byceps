@@ -45,6 +45,7 @@ class Category:
     description: str
     topic_count: int
     posting_count: int
+    hidden: bool
 
 
 @attrs(auto_attribs=True, frozen=True, slots=True)

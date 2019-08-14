@@ -44,6 +44,7 @@ class Category(db.Model):
     last_posting_updated_at = db.Column(db.DateTime)
     last_posting_updated_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
     last_posting_updated_by = db.relationship(User)
+    hidden = db.Column(db.Boolean, default=False, nullable=False)
 
     board = db.relationship(Board,
                             backref=db.backref('categories',

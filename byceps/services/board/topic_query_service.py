@@ -22,7 +22,8 @@ from .transfer.models import BoardID, CategoryID, TopicID
 def count_topics_for_board(board_id: BoardID) -> int:
     """Return the number of topics for that board."""
     return DbTopic.query \
-        .join(DbCategory).filter(DbCategory.board_id == board_id) \
+        .join(DbCategory) \
+            .filter(DbCategory.board_id == board_id) \
         .count()
 
 
@@ -49,7 +50,9 @@ def paginate_topics(board_id: BoardID, user: CurrentUser, page: int,
                     topics_per_page: int) -> Pagination:
     """Paginate topics in that board, as visible for the user."""
     return _query_topics(user) \
-        .join(DbCategory).filter(DbCategory.board_id == board_id) \
+        .join(DbCategory) \
+            .filter(DbCategory.board_id == board_id) \
+            .filter(DbCategory.hidden == False) \
         .order_by(DbTopic.last_updated_at.desc()) \
         .paginate(page, topics_per_page)
 
