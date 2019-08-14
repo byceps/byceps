@@ -42,7 +42,7 @@ class Token(db.Model):
     query_class = TokenQuery
 
     token = db.Column(db.UnicodeText, default=_generate_token_value, primary_key=True)
-    created_at = db.Column(db.DateTime, default=datetime.now, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=False)
     user = db.relationship(User)
     _purpose = db.Column('purpose', db.UnicodeText, index=True, nullable=False)
@@ -64,7 +64,7 @@ class Token(db.Model):
     def is_expired(self) -> bool:
         """Return `True` if expired, i.e. it is no longer valid."""
         if self.purpose == Purpose.password_reset:
-            now = datetime.now()
+            now = datetime.utcnow()
             expires_after = timedelta(hours=24)
             return now >= (self.created_at + expires_after)
         else:
