@@ -42,7 +42,7 @@ class EmailAddressConfirmationTestCase(AbstractAppTestCase):
 
     def test_confirm_email_address_with_unknown_token(self):
         verification_token = create_confirmation_token(self.user.id)
-        verification_token.token = '879fa007-5fbc-412e-8ec1-b7f140807631'
+        verification_token.token = 'wZdSLzkT-zRf2x2T6AR7yGa3Nc_X3Nn3F3XGPvPtOhw'
 
         assert not self.user.enabled
 
