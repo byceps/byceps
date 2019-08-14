@@ -8,10 +8,11 @@ byceps.services.verification_token.models
 
 from datetime import datetime, timedelta
 from enum import Enum
+import secrets
 
 from sqlalchemy.ext.hybrid import hybrid_property
 
-from ...database import BaseQuery, db, generate_uuid
+from ...database import BaseQuery, db
 from ...typing import UserID
 from ...util.instances import ReprBuilder
 
@@ -20,6 +21,11 @@ from ..user.models.user import User
 
 Purpose = Enum('Purpose',
     ['email_address_confirmation', 'password_reset', 'terms_consent'])
+
+
+def _generate_token_value():
+    """Return a cryptographic, URL-safe token."""
+    return secrets.token_urlsafe()
 
 
 class TokenQuery(BaseQuery):
@@ -35,7 +41,7 @@ class Token(db.Model):
     __tablename__ = 'verification_tokens'
     query_class = TokenQuery
 
-    token = db.Column(db.UnicodeText, default=generate_uuid, primary_key=True)
+    token = db.Column(db.UnicodeText, default=_generate_token_value, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.now, nullable=False)
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=False)
     user = db.relationship(User)
