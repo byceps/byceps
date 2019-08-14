@@ -35,7 +35,7 @@ class Token(db.Model):
     __tablename__ = 'verification_tokens'
     query_class = TokenQuery
 
-    token = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    token = db.Column(db.UnicodeText, default=generate_uuid, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.now, nullable=False)
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=False)
     user = db.relationship(User)
