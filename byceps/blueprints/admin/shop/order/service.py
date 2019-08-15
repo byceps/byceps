@@ -177,7 +177,8 @@ def _get_additional_data_for_ticket_revoked(event: OrderEvent
 
 def _to_user_dto(user: DbUser) -> User:
     """Create an immutable user object with selected values from user entity."""
-    avatar_url = user.avatar.url if user.avatar else None
+    avatar = getattr(user, 'avatar', None)
+    avatar_url = avatar.url if avatar else None
     is_orga = False
 
     return User(
