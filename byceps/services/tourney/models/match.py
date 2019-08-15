@@ -44,7 +44,7 @@ class MatchComment(db.Model):
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     match_id = db.Column(db.Uuid, db.ForeignKey('tourney_matches.id'), index=True, nullable=False)
     match = db.relationship(Match)
-    created_at = db.Column(db.DateTime, default=datetime.now, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     created_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
     created_by = db.relationship(User, foreign_keys=[created_by_id])
     body = db.Column(db.UnicodeText, nullable=False)

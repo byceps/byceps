@@ -28,7 +28,7 @@ class Team(db.Model):
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     tourney_id = db.Column(db.Uuid, db.ForeignKey('tourneys.id'), index=True, nullable=False)
     tourney = db.relationship(Tourney)
-    created_at = db.Column(db.DateTime, default=datetime.now, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     created_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
     created_by = db.relationship(User)
     title = db.Column(db.UnicodeText, nullable=False)

@@ -14,7 +14,7 @@
         <header>
           <div class="user-comment-meta-top">
             <span class="user-link">{{ render_user_link(comment.creator) }}</span>
-            {{ render_datetime(comment.created_at)|replace(', ', ' um ') }}
+            {{ render_datetime(comment.created_at|utc_to_local_tz)|replace(', ', ' um ') }}
           </div>
         </header>
         <div class="body">
