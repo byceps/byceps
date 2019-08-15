@@ -70,11 +70,11 @@
           {%- set time_range = article.availability_range %}
 
           {%- if time_range.hasLowerBound() %}
-          <br>{{ render_icon('time') }} {{ 'ab ' + render_datetime(time_range.lowerEndpoint(), smart=False)|dim }}
+          <br>{{ render_icon('time') }} {{ 'ab ' + render_datetime(time_range.lowerEndpoint()|utc_to_local_tz, smart=False)|dim }}
           {%- endif %}
 
           {%- if time_range.hasUpperBound() %}
-          <br>{{ render_icon('time') }} {{ 'bis ' + render_datetime(time_range.upperEndpoint(), smart=False)|dim }}
+          <br>{{ render_icon('time') }} {{ 'bis ' + render_datetime(time_range.upperEndpoint()|utc_to_local_tz, smart=False)|dim }}
           {%- endif %}
         </td>
         <td class="nowrap number">

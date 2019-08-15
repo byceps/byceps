@@ -30,7 +30,7 @@ class ArticleQuery(BaseQuery):
         """Select only articles that are available in between the
         temporal boundaries for this article, if specified.
         """
-        now = datetime.now()
+        now = datetime.utcnow()
 
         return self \
             .filter(db.or_(
@@ -106,7 +106,7 @@ class Article(db.Model):
     @property
     def is_available(self) -> bool:
         """Return `True` if the article is available at this moment in time."""
-        now = datetime.now()
+        now = datetime.utcnow()
         return self.availability_range.contains(now)
 
     def __repr__(self) -> str:

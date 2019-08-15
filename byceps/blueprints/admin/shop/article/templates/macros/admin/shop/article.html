@@ -9,12 +9,12 @@
 {% macro render_article_temporal_availability(article) -%}
   {%- set range = article.availability_range %}
   {%- if range.hasLowerBound() and range.hasUpperBound() -%}
-    {{ render_datetime(article.available_from, smart=False) }} –<br>
-    {{- render_datetime(article.available_until, smart=False) }}
+    {{ render_datetime(article.available_from|utc_to_local_tz, smart=False) }} –<br>
+    {{- render_datetime(article.available_until|utc_to_local_tz, smart=False) }}
   {%- elif range.hasLowerBound() and not range.hasUpperBound() -%}
-    ab {{ render_datetime(range.lowerEndpoint(), smart=False) }}
+    ab {{ render_datetime(range.lowerEndpoint()|utc_to_local_tz, smart=False) }}
   {%- elif not range.hasLowerBound() and range.hasUpperBound() -%}
-    bis {{ render_datetime(range.upperEndpoint(), smart=False) }}
+    bis {{ render_datetime(range.upperEndpoint()|utc_to_local_tz, smart=False) }}
   {%- else -%}
     {{ 'unbegrenzt'|dim }}
   {%- endif -%}

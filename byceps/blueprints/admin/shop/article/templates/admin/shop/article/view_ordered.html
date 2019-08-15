@@ -18,7 +18,7 @@
 
   <p style="margin: 2rem 0;">
     <small>
-      <span style="float: right;"><strong>Stand:</strong> {{ render_datetime(now, smart=False) }}</span>
+      <span style="float: right;"><strong>Stand:</strong> {{ render_datetime(now|utc_to_local_tz, smart=False) }}</span>
       <span><strong>{{ quantity_total }}</strong> Stück insgesamt</span>
     </small>
   </p>
@@ -38,7 +38,7 @@
         <td class="bignumber centered">{{ quantity }}</td>
         <td>
           {{- render_order_link(order) }}<br>
-          {{- render_datetime(order.created_at)|dim -}}
+          {{- render_datetime(order.created_at|utc_to_local_tz)|dim -}}
         </td>
         <td>{{ render_order_payment_state(order.payment_state) }}</td>
       </tr>

@@ -128,7 +128,7 @@ def view_ordered(article_id):
         'party': party,
         'quantity_total': quantity_total,
         'quantities_orders_users': quantities_orders_users,
-        'now': datetime.now(),
+        'now': datetime.utcnow(),
     }
 
 
