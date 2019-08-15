@@ -102,7 +102,7 @@
       <div class="event-icon">{{ render_icon(icon_name) }}</div>
       <div class="event-data">
         <div class="event-body">{{ body|safe }}</div>
-        <div class="event-timestamp">{{ render_datetime(event.occurred_at) }}</div>
+        <div class="event-timestamp">{{ render_datetime(event.occurred_at|utc_to_local_tz) }}</div>
       </div>
     </div>
       {%- endwith %}
