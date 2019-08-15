@@ -205,7 +205,9 @@ def cancel_order(order_id: OrderID, updated_by_id: UserID, reason: str) -> None:
 
     has_order_been_paid = order.is_paid
 
-    updated_at = datetime.now()
+    now = datetime.utcnow()
+
+    updated_at = now
     payment_state_from = order.payment_state
     payment_state_to = PaymentState.canceled_after_paid if has_order_been_paid \
                   else PaymentState.canceled_before_paid
@@ -214,7 +216,6 @@ def cancel_order(order_id: OrderID, updated_by_id: UserID, reason: str) -> None:
     order.payment_method = PaymentMethod.bank_transfer
     order.cancelation_reason = reason
 
-    now = datetime.utcnow()
     event_type = 'order-canceled-after-paid' if has_order_been_paid \
             else 'order-canceled-before-paid'
     data = {
@@ -246,14 +247,15 @@ def mark_order_as_paid(order_id: OrderID, payment_method: PaymentMethod,
     if order.is_paid:
         raise OrderAlreadyMarkedAsPaid()
 
-    updated_at = datetime.now()
+    now = datetime.utcnow()
+
+    updated_at = now
     payment_state_from = order.payment_state
     payment_state_to = PaymentState.paid
 
     order.payment_method = payment_method
     _update_payment_state(order, payment_state_to, updated_at, updated_by_id)
 
-    now = datetime.utcnow()
     event_type = 'order-paid'
     data = {
         'initiator_id': str(updated_by_id),
