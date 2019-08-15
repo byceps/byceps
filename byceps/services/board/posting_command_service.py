@@ -31,7 +31,7 @@ def update_posting(posting: DbPosting, editor_id: UserID, body: str, *,
                    commit: bool=True) -> None:
     """Update the posting."""
     posting.body = body.strip()
-    posting.last_edited_at = datetime.now()
+    posting.last_edited_at = datetime.utcnow()
     posting.last_edited_by_id = editor_id
     posting.edit_count += 1
 
@@ -42,7 +42,7 @@ def update_posting(posting: DbPosting, editor_id: UserID, body: str, *,
 def hide_posting(posting: DbPosting, hidden_by_id: UserID) -> None:
     """Hide the posting."""
     posting.hidden = True
-    posting.hidden_at = datetime.now()
+    posting.hidden_at = datetime.utcnow()
     posting.hidden_by_id = hidden_by_id
     db.session.commit()
 

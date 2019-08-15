@@ -59,7 +59,7 @@ def mark_category_as_just_viewed(category_id: CategoryID, user_id: UserID
         'category_id': category_id,
     }
     replacement = {
-        'occurred_at': datetime.now(),
+        'occurred_at': datetime.utcnow(),
     }
 
     upsert(table, identifier, replacement)
@@ -106,7 +106,7 @@ def mark_topic_as_just_viewed(topic_id: TopicID, user_id: UserID) -> None:
         'topic_id': topic_id,
     }
     replacement = {
-        'occurred_at': datetime.now(),
+        'occurred_at': datetime.utcnow(),
     }
 
     upsert(table, identifier, replacement)
@@ -122,7 +122,7 @@ def mark_all_topics_in_category_as_viewed(category_id: CategoryID,
 
     table = LastTopicView.__table__
     replacement = {
-        'occurred_at': datetime.now(),
+        'occurred_at': datetime.utcnow(),
     }
 
     for topic_id in topic_ids:

@@ -12,7 +12,7 @@
           {%- endif -%}
         </span>
 
-        <a href="{{ url_for('.posting_view', posting_id=posting.id, _external=True) }}" class="user-comment-permalink" title="Permalink zu diesem Beitrag">{{ render_datetime(posting.created_at)|replace(', ', ' um ') }}</a>
+        <a href="{{ url_for('.posting_view', posting_id=posting.id, _external=True) }}" class="user-comment-permalink" title="Permalink zu diesem Beitrag">{{ render_datetime(posting.created_at|utc_to_local_tz)|replace(', ', ' um ') }}</a>
 
         {%- if posting.unseen %}
         <span>{{ render_flag_new() }}</span>

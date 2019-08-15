@@ -16,7 +16,7 @@
     </div>
     {%- if posting.edit_count %}
     <footer>
-      <p>{{ posting.edit_count }} mal bearbeitet, zuletzt: {{ render_datetime(posting.last_edited_at) }} von {{ render_user_link(posting.last_edited_by) }}</p>
+      <p>{{ posting.edit_count }} mal bearbeitet, zuletzt: {{ render_datetime(posting.last_edited_at|utc_to_local_tz) }} von {{ render_user_link(posting.last_edited_by) }}</p>
     </footer>
     {%- endif %}
   </div>

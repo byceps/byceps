@@ -50,7 +50,7 @@ def update_topic(topic: DbTopic, editor_id: UserID, title: str, body: str
 def hide_topic(topic: DbTopic, hidden_by_id: UserID) -> None:
     """Hide the topic."""
     topic.hidden = True
-    topic.hidden_at = datetime.now()
+    topic.hidden_at = datetime.utcnow()
     topic.hidden_by_id = hidden_by_id
     db.session.commit()
 
@@ -71,7 +71,7 @@ def unhide_topic(topic: DbTopic, unhidden_by_id: UserID) -> None:
 def lock_topic(topic: DbTopic, locked_by_id: UserID) -> None:
     """Lock the topic."""
     topic.locked = True
-    topic.locked_at = datetime.now()
+    topic.locked_at = datetime.utcnow()
     topic.locked_by_id = locked_by_id
     db.session.commit()
 
@@ -88,7 +88,7 @@ def unlock_topic(topic: DbTopic, unlocked_by_id: UserID) -> None:
 def pin_topic(topic: DbTopic, pinned_by_id: UserID) -> None:
     """Pin the topic."""
     topic.pinned = True
-    topic.pinned_at = datetime.now()
+    topic.pinned_at = datetime.utcnow()
     topic.pinned_by_id = pinned_by_id
     db.session.commit()
 

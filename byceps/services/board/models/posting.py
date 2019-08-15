@@ -53,7 +53,7 @@ class Posting(db.Model):
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     topic_id = db.Column(db.Uuid, db.ForeignKey('board_topics.id'), index=True, nullable=False)
     topic = db.relationship(Topic, backref='postings')
-    created_at = db.Column(db.DateTime, default=datetime.now, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
     body = db.Column(db.UnicodeText, nullable=False)
     last_edited_at = db.Column(db.DateTime)

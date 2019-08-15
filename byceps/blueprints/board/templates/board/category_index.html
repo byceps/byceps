@@ -34,7 +34,7 @@
         <td class="centered bignumber">{{ category.posting_count|separate_thousands }}</td>
         <td class="nowrap">
           {%- if category.last_posting_updated_at and category.last_posting_updated_by -%}
-            {{ render_datetime(category.last_posting_updated_at) }}<br>
+            {{ render_datetime(category.last_posting_updated_at|utc_to_local_tz) }}<br>
             von {{ render_user_avatar_16_and_name(category.last_posting_updated_by) }}
           {%- endif -%}
         </td>

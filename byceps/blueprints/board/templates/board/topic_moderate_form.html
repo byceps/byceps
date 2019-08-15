@@ -18,7 +18,7 @@
 
   {%- if g.current_user.has_permission(BoardPermission.hide) %}
   <h2>{{ render_icon('view') }} Sichtbarkeit</h2>
-  <p>Das Thema &quot;{{ topic.title }}&quot; von {{ render_user_link(topic.creator) }} ist {% if topic.hidden %}<strong>versteckt</strong> ({{ render_datetime(topic.hidden_at) }} durch {{ topic.hidden_by.screen_name }}){% else %}<strong>sichtbar</strong>{% endif %}.</p>
+  <p>Das Thema &quot;{{ topic.title }}&quot; von {{ render_user_link(topic.creator) }} ist {% if topic.hidden %}<strong>versteckt</strong> ({{ render_datetime(topic.hidden_at|utc_to_local_tz) }} durch {{ topic.hidden_by.screen_name }}){% else %}<strong>sichtbar</strong>{% endif %}.</p>
   <div class="button-row">
   {%- if topic.hidden %}
     <span class="button button--disabled">{{ render_icon('hidden') }} <span>Verstecken</span></span>
@@ -32,7 +32,7 @@
 
   {%- if g.current_user.has_permission(BoardTopicPermission.lock) %}
   <h2>{{ render_icon('lock') }} Schreibsperre</h2>
-  <p>Das Thema &quot;{{ topic.title }}&quot; von {{ render_user_link(topic.creator) }} ist {% if topic.locked %}<strong>geschlossen</strong> ({{ render_datetime(topic.locked_at) }} durch {{ topic.locked_by.screen_name }}){% else %}<strong>offen</strong>{% endif %}.</p>
+  <p>Das Thema &quot;{{ topic.title }}&quot; von {{ render_user_link(topic.creator) }} ist {% if topic.locked %}<strong>geschlossen</strong> ({{ render_datetime(topic.locked_at|utc_to_local_tz) }} durch {{ topic.locked_by.screen_name }}){% else %}<strong>offen</strong>{% endif %}.</p>
   <div class="button-row">
   {%- if topic.locked %}
     <span class="button button--disabled">{{ render_icon('lock') }} <span>Schließen</span></span>
@@ -46,7 +46,7 @@
 
   {%- if g.current_user.has_permission(BoardTopicPermission.pin) %}
   <h2>{{ render_icon('pin') }} Anheften</h2>
-  <p>Das Thema &quot;{{ topic.title }}&quot; von {{ render_user_link(topic.creator) }} ist {% if topic.pinned %}<strong>angepinnt</strong> ({{ render_datetime(topic.pinned_at) }} durch {{ topic.pinned_by.screen_name }}){% else %}<strong>nicht angepinnt</strong>{% endif %}.</p>
+  <p>Das Thema &quot;{{ topic.title }}&quot; von {{ render_user_link(topic.creator) }} ist {% if topic.pinned %}<strong>angepinnt</strong> ({{ render_datetime(topic.pinned_at|utc_to_local_tz) }} durch {{ topic.pinned_by.screen_name }}){% else %}<strong>nicht angepinnt</strong>{% endif %}.</p>
   <div class="button-row">
   {%- if topic.pinned %}
     <span class="button button--disabled">{{ render_icon('pin') }} <span>Anpinnen</span></span>

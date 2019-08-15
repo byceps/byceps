@@ -44,7 +44,7 @@
           </a>
         </td>
         <td class="centered bignumber">{{ topic.reply_count|separate_thousands }}</td>
-        <td class="nowrap">{{ render_datetime(topic.last_updated_at) }}<br>von {{ render_user_avatar_16_and_name(topic.last_updated_by) }}</td>
+        <td class="nowrap">{{ render_datetime(topic.last_updated_at|utc_to_local_tz) }}<br>von {{ render_user_avatar_16_and_name(topic.last_updated_by) }}</td>
       </tr>
       {%- endfor %}
       <tr>
