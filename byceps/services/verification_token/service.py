@@ -78,7 +78,7 @@ def find_for_password_reset_by_token(token_value: str) -> Token:
 
 def find_for_terms_consent_by_token(token_value: str) -> Token:
     purpose = Purpose.terms_consent
-    return _find_for_purpose_by_token(token, purpose)
+    return _find_for_purpose_by_token(token_value, purpose)
 
 
 def find_for_terms_consent_by_user(user_id: UserID) -> Optional[Token]:
