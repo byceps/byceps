@@ -22,7 +22,7 @@ class UserGroup(db.Model):
     __tablename__ = 'user_groups'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    created_at = db.Column(db.DateTime, default=datetime.now)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
     creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), unique=True)
     creator = db.relationship(User)
     title = db.Column(db.UnicodeText, unique=True)
@@ -60,7 +60,7 @@ class Membership(db.Model):
     group = db.relationship(UserGroup, collection_class=set, backref='memberships')
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), unique=True)
     user = db.relationship(User, backref='group_membership')
-    created_at = db.Column(db.DateTime, default=datetime.now)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __repr__(self) -> str:
         return ReprBuilder(self) \
