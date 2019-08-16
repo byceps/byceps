@@ -35,7 +35,7 @@
             {{ version.id|dim }}
           </td>
           <td>
-            <span class="nowrap">{{ render_datetime(version.created_at) }}</span><br>
+            <span class="nowrap">{{ render_datetime(version.created_at|utc_to_local_tz) }}</span><br>
             von {{ render_user_avatar_16_and_link(version.creator) }}
           </td>
           <td class="number bignumber">{{ version.consent_count }}</td>
