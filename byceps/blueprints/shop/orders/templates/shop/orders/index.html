@@ -28,7 +28,7 @@
       {%- for order in orders %}
       <tr>
         <td><strong><a href="{{ url_for('.view', order_id=order.id) }}">{{ order.order_number }}</a></strong></td>
-        <td>{{ render_datetime(order.created_at) }}</td>
+        <td>{{ render_datetime(order.created_at|utc_to_local_tz) }}</td>
         <td class="number nowrap">{{ order.total_amount|format_euro_amount }}</td>
         <td class="nowrap">{{ render_order_payment_state(order.payment_state) }}</td>
       </tr>

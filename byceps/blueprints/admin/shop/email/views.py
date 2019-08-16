@@ -122,7 +122,7 @@ def _build_order(shop_id, payment_state, *, is_open=False, is_canceled=False,
     order_numer_seq = sequence_service.find_order_number_sequence(shop_id)
     order_number = sequence_service.format_order_number(order_numer_seq)
 
-    created_at = datetime.now()
+    created_at = datetime.utcnow()
     placed_by_id = None
 
     first_names = 'Bella-Bernadine'

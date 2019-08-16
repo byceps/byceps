@@ -67,7 +67,7 @@ class Order(db.Model):
                  payment_method: PaymentMethod,
                  *, created_at: Optional[datetime]=None) -> None:
         if created_at is None:
-            created_at = datetime.now()
+            created_at = datetime.utcnow()
         self.created_at = created_at
         self.shop_id = shop_id
         self.order_number = order_number

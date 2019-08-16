@@ -3,7 +3,7 @@
 {% block body %}
 Hallo {{ orderer_screen_name }},
 
-vielen Dank für deine Bestellung mit der Nummer {{ order.order_number }} am {{ order.created_at.strftime('%d.%m.%Y') }} über unsere Website.
+vielen Dank für deine Bestellung mit der Nummer {{ order.order_number }} am {{ (order.created_at|utc_to_local_tz).strftime('%d.%m.%Y') }} über unsere Website.
 
 Wir haben deine Zahlung erhalten und deine Bestellung als „bezahlt“ erfasst.
 {% endblock %}

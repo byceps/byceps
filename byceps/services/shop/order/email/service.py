@@ -27,6 +27,7 @@ from .....services.snippet.transfer.models import Scope
 from .....services.user.models.user import User
 from .....typing import BrandID
 from .....util.money import format_euro_amount
+from .....util.templatefilters import utc_to_local_tz
 from .....util.templating import create_sandboxed_environment, load_template
 
 from ...shop.transfer.models import ShopID
@@ -187,6 +188,7 @@ def _render_template(name: str, **context: Dict[str, Any]) -> str:
 
     env = create_sandboxed_environment(loader=loader)
     env.filters['format_euro_amount'] = format_euro_amount
+    env.filters['utc_to_local_tz'] = utc_to_local_tz
 
     template = env.get_template(name)
 

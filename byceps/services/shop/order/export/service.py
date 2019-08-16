@@ -11,7 +11,7 @@ from decimal import Decimal
 from typing import Any, Dict
 
 from flask import current_app
-from pytz import timezone
+from pytz import timezone, UTC
 
 from .....services.user import service as user_service
 from .....util.money import to_two_places
@@ -42,7 +42,7 @@ def _assemble_context(order: Order) -> Dict[str, Any]:
     placed_by = user_service.find_user(order.placed_by_id)
     email_address = user_service.get_email_address(placed_by.id)
 
-    now = datetime.now()
+    now = datetime.utcnow()
 
     return {
         'order': order,
@@ -65,7 +65,7 @@ def _format_export_amount(amount: Decimal) -> str:
 def _format_export_datetime(dt: datetime) -> str:
     """Format date and time as required by the export format specification."""
     tz = timezone(current_app.config['SHOP_ORDER_EXPORT_TIMEZONE'])
-    localized_dt = tz.localize(dt)
+    localized_dt = UTC.localize(dt).astimezone(tz)
 
     date_time, utc_offset = localized_dt.strftime('%Y-%m-%dT%H:%M:%S|%z') \
                                         .split('|', 1)

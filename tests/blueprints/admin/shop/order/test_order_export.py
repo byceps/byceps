@@ -34,7 +34,7 @@ class ExportTestCase(ShopTestBase):
         self.create_articles()
         self.order = self.place_order()
 
-    @freeze_time('2015-04-15 09:54:18')
+    @freeze_time('2015-04-15 07:54:18')  # UTC
     def test_serialize_order(self):
         filename = 'testfixtures/shop/order_export.xml'
         with codecs.open(filename, encoding='iso-8859-1') as f:
@@ -102,7 +102,7 @@ class ExportTestCase(ShopTestBase):
         orderer = self.create_orderer()
         payment_method = PaymentMethod.bank_transfer
         cart = self.create_cart()
-        created_at = datetime(2015, 2, 26, 13, 26, 24)
+        created_at = datetime(2015, 2, 26, 12, 26, 24)  # UTC
 
         return order_service.place_order(self.shop.id, orderer, payment_method,
                                          cart, created_at=created_at)
