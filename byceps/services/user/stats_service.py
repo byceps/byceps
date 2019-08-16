@@ -19,7 +19,7 @@ def count_users() -> int:
 
 def count_users_created_since(delta: timedelta) -> int:
     """Return the number of user accounts created since `delta` ago."""
-    filter_starts_at = datetime.now() - delta
+    filter_starts_at = datetime.utcnow() - delta
 
     return DbUser.query \
         .filter(DbUser.created_at >= filter_starts_at) \
