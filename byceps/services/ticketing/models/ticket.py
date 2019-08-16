@@ -42,7 +42,7 @@ class Ticket(db.Model):
     query_class = TicketQuery
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    created_at = db.Column(db.DateTime, default=datetime.now, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     code = db.Column(db.UnicodeText, unique=True, index=True, nullable=False)
     bundle_id = db.Column(db.Uuid, db.ForeignKey('ticket_bundles.id'), index=True, nullable=True)
     bundle = db.relationship(TicketBundle, backref='tickets')
