@@ -3,6 +3,7 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
+from datetime import datetime
 from unittest.mock import patch
 
 from byceps.services.email import service as email_service
@@ -66,7 +67,7 @@ E-Mail: acmecon@example.com
         expected_body = '''
 Hallo Versager,
 
-deine Bestellung mit der Bestellnummer AC-14-B00017 wurde von uns aus folgendem Grund storniert:
+deine Bestellung mit der Nummer AC-14-B00017 vom 06.11.2014 wurde von uns aus folgendem Grund storniert:
 
 Du hast nicht rechtzeitig bezahlt.
 
@@ -90,4 +91,7 @@ E-Mail: acmecon@example.com
     # helpers
 
     def place_order(self, orderer):
-        return self.place_order_with_items(self.shop.id, orderer, None, [])
+        created_at = datetime(2014, 11, 5, 23, 32, 9)
+
+        return self.place_order_with_items(self.shop.id, orderer, created_at,
+                                           [])
