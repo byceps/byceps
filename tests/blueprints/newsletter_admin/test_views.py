@@ -131,7 +131,7 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
         self.db.session.commit()
 
     def add_subscription(self, user, state):
-        expressed_at = datetime.now()
+        expressed_at = datetime.utcnow()
         subscription = Subscription(user.id, self.brand.id, expressed_at, state)
         self.db.session.add(subscription)
 
