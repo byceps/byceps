@@ -112,7 +112,7 @@ def create(party_id):
     site = site_service.create_site(site_id, party.id, title, server_name)
 
     flash_success('Die Site "{}" wurde angelegt.', site.title)
-    return redirect_to('.index', party_id=party.id)
+    return redirect_to('.view', site_id=site.id)
 
 
 @blueprint.route('/sites/<site_id>/update')
