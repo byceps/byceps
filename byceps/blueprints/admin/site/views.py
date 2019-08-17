@@ -32,6 +32,18 @@ blueprint = create_blueprint('site_admin', __name__)
 permission_registry.register_enum(SitePermission)
 
 
+@blueprint.route('/')
+@permission_required(SitePermission.view)
+@templated
+def index():
+    """List all sites."""
+    sites = site_service.get_all_sites()
+
+    return {
+        'sites': sites,
+    }
+
+
 @blueprint.route('/parties/<party_id>')
 @permission_required(SitePermission.view)
 @templated

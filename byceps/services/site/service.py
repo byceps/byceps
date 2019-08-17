@@ -55,6 +55,13 @@ def find_site(site_id: SiteID) -> Optional[Site]:
     return _db_entity_to_site(site)
 
 
+def get_all_sites() -> List[Site]:
+    """Return all sites."""
+    sites = DbSite.query.all()
+
+    return [_db_entity_to_site(site) for site in sites]
+
+
 def get_sites_for_party(party_id: PartyID) -> List[Site]:
     """Return the sites for that party."""
     sites = DbSite.query \
