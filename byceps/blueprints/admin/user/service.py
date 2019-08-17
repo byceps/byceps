@@ -198,13 +198,18 @@ def _fake_consent_events(user_id: UserID) -> Iterator[UserEvent]:
 def _fake_newsletter_subscription_update_events(user_id: UserID) \
         -> Iterator[UserEvent]:
     """Yield the user's newsletter subscription updates as volatile events."""
+    lists = newsletter_service.get_all_lists()
+    lists_by_id = {list_.id: list_ for list_ in lists}
+
     updates = newsletter_service.get_subscription_updates_for_user(user_id)
 
     for update in updates:
         event_type = 'newsletter-{}'.format(update.state.name)
 
+        list_ = lists_by_id[update.list_id]
+
         data = {
-            'brand_id': update.brand_id,
+            'list_': list_,
             'initiator_id': str(user_id),
         }
 

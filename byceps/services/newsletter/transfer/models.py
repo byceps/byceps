@@ -7,14 +7,24 @@ byceps.services.newsletter.transfer.models
 """
 
 from datetime import datetime
+from typing import NewType
 
 from attr import attrs
 
-from ....typing import BrandID, UserID
+from ....typing import UserID
+
+
+ListID = NewType('ListID', str)
+
+
+@attrs(auto_attribs=True, frozen=True, slots=True)
+class List:
+    id: ListID
+    title: str
 
 
 @attrs(auto_attribs=True, frozen=True, slots=True)
 class Subscription:
     user_id: UserID
-    brand_id: BrandID
+    list_id: ListID
     expressed_at: datetime

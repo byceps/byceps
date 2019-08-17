@@ -121,13 +121,13 @@
           {%- set icon_name = 'email' %}
           {%- set body %}
             <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
-            hat den Newsletter zur Marke &quot;{{ event.data.brand_id }}&quot; {{ render_tag('angefordert', icon='success', class='newsletter-subscribed') }}.
+            hat den Newsletter &quot;{{ event.data.list_.title }}&quot; {{ render_tag('angefordert', icon='success', class='newsletter-subscribed') }}.
           {%- endset %}
         {%- elif event.event == 'newsletter-declined' %}
           {%- set icon_name = 'email' %}
           {%- set body %}
             <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
-            hat den Newsletter zur Marke &quot;{{ event.data.brand_id }}&quot; {{ render_tag('abbestellt', icon='disabled', class='newsletter-unsubscribed') }}.
+            hat den Newsletter &quot;{{ event.data.list_.title }}&quot; {{ render_tag('abbestellt', icon='disabled', class='newsletter-unsubscribed') }}.
           {%- endset %}
         {%- elif event.event == 'order-placed' %}
           {%- set icon_name = 'shopping-cart' %}

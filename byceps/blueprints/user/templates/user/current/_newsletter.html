@@ -17,9 +17,9 @@
           </button>
           <ol>
             {% if subscribed_to_newsletter -%}
-            <li><a data-action="newsletter-unsubscribe" href="{{ url_for('newsletter.unsubscribe') }}">{{ render_icon('disabled', color='#cc0000') }} Abmelden</a></li>
+            <li><a data-action="newsletter-unsubscribe" href="{{ url_for('newsletter.unsubscribe', list_id=g.brand_id) }}">{{ render_icon('disabled', color='#cc0000') }} Abmelden</a></li>
             {%- else -%}
-            <li><a data-action="newsletter-subscribe" href="{{ url_for('newsletter.subscribe') }}">{{ render_icon('enabled', color='#009900') }} Abonnieren</a></li>
+            <li><a data-action="newsletter-subscribe" href="{{ url_for('newsletter.subscribe', list_id=g.brand_id) }}">{{ render_icon('enabled', color='#009900') }} Abonnieren</a></li>
             {%- endif %}
           </ol>
         </div>

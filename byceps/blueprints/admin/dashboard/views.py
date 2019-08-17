@@ -95,8 +95,11 @@ def view_brand(brand_id):
 
     news_item_count = news_service.count_items_for_brand(brand.id)
 
+    # Consider that there could be a newsletter list with the same ID as
+    # the brand. This is technical debt and should be solved in a
+    # different way.
     newsletter_subscriber_count = newsletter_service \
-        .count_subscribers_for_brand(brand.id)
+        .count_subscribers_for_list(brand.id)
 
     current_terms_version = terms_version_service.find_current_version(brand.id)
 

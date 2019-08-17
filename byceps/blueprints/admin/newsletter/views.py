@@ -10,7 +10,6 @@ from operator import attrgetter
 
 from flask import abort
 
-from ....services.brand import service as brand_service
 from ....services.newsletter import service as newsletter_service
 from ....services.newsletter.types import SubscriptionState
 from ....util.framework.blueprint import create_blueprint
@@ -29,33 +28,32 @@ blueprint = create_blueprint('newsletter_admin', __name__)
 permission_registry.register_enum(NewsletterPermission)
 
 
-@blueprint.route('/subscriptions/<brand_id>')
+@blueprint.route('/lists/<list_id>/subscriptions')
 @permission_required(NewsletterPermission.view_subscriptions)
 @templated
-def view_subscriptions(brand_id):
-    """Show user subscription states for that brand."""
-    brand = _get_brand_or_404(brand_id)
+def view_subscriptions(list_id):
+    """Show user subscription states for that list."""
+    list_ = _get_list_or_404(list_id)
 
-    totals = newsletter_service.count_subscriptions_by_state(brand.id)
+    totals = newsletter_service.count_subscriptions_by_state(list_.id)
 
     return {
-        'brand': brand,
+        'list_': list_,
         'totals': totals,
         'State': SubscriptionState,
     }
 
 
-@blueprint.route('/subscriptions/<brand_id>/export')
+@blueprint.route('/lists/<list_id>/subscriptions/export')
 @permission_required(NewsletterPermission.export_subscribers)
 @jsonified
-def export_subscribers(brand_id):
+def export_subscribers(list_id):
     """Export the screen names and email addresses of enabled users
-    which are currently subscribed to the newsletter for this brand
-    as JSON.
+    which are currently subscribed to that list as JSON.
     """
-    brand = _get_brand_or_404(brand_id)
+    list_ = _get_list_or_404(list_id)
 
-    subscribers = newsletter_service.get_subscribers(brand.id)
+    subscribers = newsletter_service.get_subscribers(list_.id)
 
     exports = list(map(assemble_subscriber_export, subscribers))
 
@@ -69,25 +67,24 @@ def assemble_subscriber_export(subscriber):
     }
 
 
-@blueprint.route('/subscriptions/<brand_id>/export_email_addresses')
+@blueprint.route('/lists/<list_id>/subscriptions/email_addresses/export')
 @permission_required(NewsletterPermission.export_subscribers)
 @textified
-def export_subscriber_email_addresses(brand_id):
+def export_subscriber_email_addresses(list_id):
     """Export the email addresses of enabled users which are currently
-    subscribed to the newsletter for this brand as plaintext, with one
-    address per row.
+    subscribed to that list as plaintext, with one address per row.
     """
-    brand = _get_brand_or_404(brand_id)
+    list_ = _get_list_or_404(list_id)
 
-    subscribers = newsletter_service.get_subscribers(brand.id)
+    subscribers = newsletter_service.get_subscribers(list_.id)
     email_addresses = map(attrgetter('email_address'), subscribers)
     return '\n'.join(email_addresses)
 
 
-def _get_brand_or_404(brand_id):
-    brand = brand_service.find_brand(brand_id)
+def _get_list_or_404(list_id):
+    list_ = newsletter_service.find_list(list_id)
 
-    if brand is None:
+    if list_ is None:
         abort(404)
 
-    return brand
+    return list_

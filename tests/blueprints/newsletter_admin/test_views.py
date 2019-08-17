@@ -6,11 +6,12 @@
 from datetime import datetime
 
 from byceps.services.newsletter.models import Subscription
+from byceps.services.newsletter import command_service
 from byceps.services.newsletter.types import SubscriptionState
 
 from tests.base import AbstractAppTestCase, CONFIG_FILENAME_TEST_ADMIN
-from tests.helpers import assign_permissions_to_user, create_brand, \
-    create_user, http_client, login_user
+from tests.helpers import assign_permissions_to_user, create_user, \
+    http_client, login_user
 
 
 class NewsletterAdminTestCase(AbstractAppTestCase):
@@ -20,7 +21,7 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
 
         self.admin = self.create_admin()
 
-        self.brand = create_brand('example', 'Example')
+        self.list_id = command_service.create_list('example', 'Example').id
 
         self.setup_subscribers()
 
@@ -96,7 +97,7 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
             ],
         }
 
-        url = '/admin/newsletter/subscriptions/{}/export'.format(self.brand.id)
+        url = f'/admin/newsletter/lists/{self.list_id}/subscriptions/export'
         response = self.get_as_admin(url)
 
         assert response.status_code == 200
@@ -116,7 +117,7 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
             # User #8 has been deleted, and thus should be excluded.
         ]).encode('utf-8')
 
-        url = '/admin/newsletter/subscriptions/{}/export_email_addresses'.format(self.brand.id)
+        url = f'/admin/newsletter/lists/{self.list_id}/subscriptions/email_addresses/export'
         response = self.get_as_admin(url)
 
         assert response.status_code == 200
@@ -132,7 +133,7 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
 
     def add_subscription(self, user, state):
         expressed_at = datetime.utcnow()
-        subscription = Subscription(user.id, self.brand.id, expressed_at, state)
+        subscription = Subscription(user.id, self.list_id, expressed_at, state)
         self.db.session.add(subscription)
 
     def get_as_admin(self, url):

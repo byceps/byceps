@@ -19,7 +19,7 @@
     {{ render_bigstats_cell(party_count, 'Partys', href=url_for('party_admin.index_for_brand', brand_id=brand.id), icon_name='date') }}
     {{ render_bigstats_cell(orga_count, 'Organisatoren', href=url_for('orga_admin.persons_for_brand', brand_id=brand.id), icon_name='users') }}
     {{ render_bigstats_cell(news_item_count|separate_thousands, 'Newsposts veröffentlicht', href=url_for('news_admin.channel_index_for_brand', brand_id=brand.id), icon_name='news') }}
-    {{ render_bigstats_cell(newsletter_subscriber_count|separate_thousands, 'Newsletter-Abonnenten', href=url_for('newsletter_admin.view_subscriptions', brand_id=brand.id), icon_name='email', color='#008800') }}
+    {{ render_bigstats_cell(newsletter_subscriber_count|separate_thousands, 'Newsletter-Abonnenten', href=url_for('newsletter_admin.view_subscriptions', list_id=brand.id), icon_name='email', color='#008800') }}
     {%- call render_cell('legal') %}
       <h2 class="hyphenate">Stand aktuelle AGB</h2>
       <p class="centered">

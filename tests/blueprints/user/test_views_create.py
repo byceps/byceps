@@ -12,7 +12,8 @@ from byceps.services.brand import settings_service as brand_settings_service
 from byceps.services.consent import consent_service, \
     subject_service as consent_subject_service
 from byceps.services.email import service as email_service
-from byceps.services.newsletter import service as newsletter_service
+from byceps.services.newsletter import \
+    command_service as newsletter_command_service, service as newsletter_service
 from byceps.services.snippet import service as snippet_service
 from byceps.services.snippet.transfer.models import Scope
 from byceps.services.terms import version_service as terms_version_service
@@ -45,6 +46,7 @@ class UserCreateTestCase(AbstractAppTestCase):
 
         self.setup_terms()
         self.setup_privacy_policy()
+        self.setup_newsletter_list()
         self.setup_roles()
 
     def setup_terms(self):
@@ -78,6 +80,9 @@ class UserCreateTestCase(AbstractAppTestCase):
             'privacy_policy_consent_subject_id', str(consent_subject.id))
 
         self.privacy_policy_consent_subject_id = consent_subject.id
+
+    def setup_newsletter_list(self):
+        newsletter_command_service.create_list(self.brand.id, self.brand.title)
 
     def setup_roles(self):
         self.board_user_role = create_role('board_user')

@@ -50,7 +50,7 @@
         required_permission=NewsItemPermission.view,
         icon='news')
       .add_item(
-        url_for('newsletter_admin.view_subscriptions', brand_id=brand.id),
+        url_for('newsletter_admin.view_subscriptions', list_id=brand.id),
         'Newsletter',
         id='newsletter_admin',
         required_permission=NewsletterPermission.view_subscriptions,

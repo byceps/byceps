@@ -65,7 +65,7 @@ def create_user(screen_name: str, email_address: str, password: str,
     # newsletter subscription (optional)
     if newsletter_subscription:
         newsletter_command_service.subscribe(user.id,
-            newsletter_subscription.brand_id,
+            newsletter_subscription.list_id,
             newsletter_subscription.expressed_at)
 
     # e-mail address confirmation
