@@ -30,8 +30,8 @@
         </td>
         <td>{{ party.brand.title }}</td>
         <td>
-          {{- render_datetime(party.starts_at) }} bis<br>
-          {{- render_datetime(party.ends_at) -}}
+          {{- render_datetime(party.starts_at|utc_to_local_tz) }} bis<br>
+          {{- render_datetime(party.ends_at|utc_to_local_tz) -}}
           {%- if party.is_over %}
           <br>{{ render_tag('vorbei', class='color-disabled') }}
           {%- endif %}

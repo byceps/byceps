@@ -26,7 +26,7 @@
   <div class="party-archive">
   {%- for party in parties %}
     <h2>{{ party.title }}</h2>
-    <p class="meta"><time datetime="{{ party.starts_at|format_date_iso }}">{{ party.starts_at|format_date_long }} – {{ party.ends_at|format_date_long }}</time></p>
+    <p class="meta"><time datetime="{{ party.starts_at|format_date_iso }}">{{ party.starts_at|utc_to_local_tz|format_date_long }} – {{ party.ends_at|utc_to_local_tz|format_date_long }}</time></p>
 
     {%- with attendees = attendees_by_party_id[party.id]|sort(attribute='screen_name') %}
       {%- if attendees %}

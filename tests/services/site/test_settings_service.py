@@ -19,7 +19,7 @@ def app(party_app_with_db):
 
     brand = brand_service.create_brand('acme', 'ACME')
 
-    now = datetime.now()
+    now = datetime.utcnow()
     party = party_service.create_party('acmeparty', brand.id, 'ACME Party',
                                        now, now)
 

@@ -42,7 +42,7 @@ class Party(db.Model):
     @property
     def is_over(self) -> bool:
         """Returns true if the party has ended."""
-        return self.ends_at < datetime.now()
+        return self.ends_at < datetime.utcnow()
 
     def __repr__(self) -> str:
         return ReprBuilder(self) \

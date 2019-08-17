@@ -51,8 +51,8 @@
           {%- endif %}
         </td>
         <td>
-          {{- render_datetime(party.starts_at, smart=False) }} bis<br>
-          {{- render_datetime(party.ends_at, smart=False) -}}
+          {{- render_datetime(party.starts_at|utc_to_local_tz, smart=False) }} bis<br>
+          {{- render_datetime(party.ends_at|utc_to_local_tz, smart=False) -}}
           {%- if party.is_over %}
           <br>{{ render_tag('vorbei', class='color-disabled') }}
           {%- endif %}

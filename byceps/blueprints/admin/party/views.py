@@ -6,6 +6,7 @@ byceps.blueprints.admin.party.views
 :License: Modified BSD, see LICENSE for details.
 """
 
+import attr
 from flask import abort, request
 
 from ....services.brand import service as brand_service
@@ -18,6 +19,7 @@ from ....services.ticketing import ticket_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_success
 from ....util.framework.templating import templated
+from ....util.templatefilters import local_tz_to_utc, utc_to_local_tz
 from ....util.views import redirect_to
 
 from ...authorization.decorators import permission_required
@@ -143,8 +145,8 @@ def create(brand_id):
 
     party_id = form.id.data.strip().lower()
     title = form.title.data.strip()
-    starts_at = form.starts_at.data
-    ends_at = form.ends_at.data
+    starts_at = local_tz_to_utc(form.starts_at.data)
+    ends_at = local_tz_to_utc(form.ends_at.data)
     max_ticket_quantity = form.max_ticket_quantity.data
 
     party = party_service.create_party(party_id, brand.id, title, starts_at,
@@ -162,6 +164,10 @@ def update_form(party_id, erroneous_form=None):
     """Show form to update the party."""
     party = _get_party_or_404(party_id)
     brand = brand_service.find_brand(party.brand_id)
+
+    party = attr.evolve(party,
+        starts_at=utc_to_local_tz(party.starts_at),
+        ends_at=utc_to_local_tz(party.ends_at))
 
     form = erroneous_form if erroneous_form else UpdateForm(obj=party)
 
@@ -183,8 +189,8 @@ def update(party_id):
         return update_form(party.id, form)
 
     title = form.title.data.strip()
-    starts_at = form.starts_at.data
-    ends_at = form.ends_at.data
+    starts_at = local_tz_to_utc(form.starts_at.data)
+    ends_at = local_tz_to_utc(form.ends_at.data)
     max_ticket_quantity = form.max_ticket_quantity.data
     archived = form.archived.data
 

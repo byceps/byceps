@@ -39,11 +39,11 @@
     </tr>
     <tr>
       <th>Beginn</th>
-      <td>{{ render_datetime(party.starts_at) }}</td>
+      <td>{{ render_datetime(party.starts_at|utc_to_local_tz) }}</td>
     </tr>
     <tr>
       <th>Ende</th>
-      <td>{{ render_datetime(party.ends_at) }}</td>
+      <td>{{ render_datetime(party.ends_at|utc_to_local_tz) }}</td>
     </tr>
     <tr>
       <th>Maximale Anzahl Tickets</th>

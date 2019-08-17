@@ -14,11 +14,11 @@
     </tr>
     <tr>
       <th>Beginn</th>
-      <td>{{ render_datetime_long(party.starts_at, smart=False) }}</td>
+      <td>{{ render_datetime_long(party.starts_at|utc_to_local_tz, smart=False) }}</td>
     </tr>
     <tr>
       <th>Ende</th>
-      <td>{{ render_datetime_long(party.ends_at, smart=False) }}</td>
+      <td>{{ render_datetime_long(party.ends_at|utc_to_local_tz, smart=False) }}</td>
     </tr>
   </table>
 
