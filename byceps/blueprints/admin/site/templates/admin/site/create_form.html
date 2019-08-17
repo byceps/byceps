@@ -9,7 +9,7 @@
 
   <nav class="breadcrumbs">
     <ol>
-      <li><a href="{{ url_for('.index', party_id=party.id) }}">{{ party.title }}</a></li>
+      <li><a href="{{ url_for('.index_for_party', party_id=party.id) }}">{{ party.title }}</a></li>
     </ol>
   </nav>
   <h1>{{ render_icon('add') }} {{ title }}</h1>
@@ -21,7 +21,7 @@
       {{ form_field(form.server_name, required='required', placeholder='www.example.com') }}
     {% endcall %}
 
-    {{ form_buttons('Erstellen', cancel_url=url_for('.index', party_id=party.id)) }}
+    {{ form_buttons('Erstellen', cancel_url=url_for('.index_for_party', party_id=party.id)) }}
   </form>
 
 {%- endblock %}

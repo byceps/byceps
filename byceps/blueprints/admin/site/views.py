@@ -35,7 +35,7 @@ permission_registry.register_enum(SitePermission)
 @blueprint.route('/parties/<party_id>')
 @permission_required(SitePermission.view)
 @templated
-def index(party_id):
+def index_for_party(party_id):
     """List sites and their settings for this party."""
     party = party_service.find_party(party_id)
     if party is None:
