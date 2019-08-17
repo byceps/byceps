@@ -9,7 +9,7 @@ Date/time formatting.
 """
 
 from datetime import date, datetime, time, timedelta
-from typing import Union
+from typing import Optional, Union
 
 
 DateOrDateTime = Union[date, datetime]
@@ -56,7 +56,7 @@ def format_time(t: time) -> str:
 # helpers
 
 
-def _format_date_smart(d: DateOrDateTime) -> str:
+def _format_date_smart(d: DateOrDateTime) -> Optional[str]:
     if isinstance(d, datetime):
         d = d.date()
 
