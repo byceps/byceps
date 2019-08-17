@@ -22,6 +22,7 @@ from .....services.user import service as user_service
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_success
 from .....util.framework.templating import templated
+from .....util.templatefilters import local_tz_to_utc, utc_to_local_tz
 from .....util.views import redirect_to, respond_no_content
 
 from ....authorization.decorators import permission_required
@@ -195,6 +196,11 @@ def update_form(article_id, erroneous_form=None):
     shop = shop_service.get_shop(article.shop_id)
     party = party_service.find_party(shop.party_id)
 
+    if article.available_from:
+        article.available_from = utc_to_local_tz(article.available_from)
+    if article.available_until:
+        article.available_until = utc_to_local_tz(article.available_until)
+
     form = erroneous_form if erroneous_form else ArticleUpdateForm(obj=article)
 
     return {
@@ -225,6 +231,11 @@ def update(article_id):
     not_directly_orderable = form.not_directly_orderable.data
     requires_separate_order = form.requires_separate_order.data
     shipping_required = form.shipping_required.data
+
+    if available_from:
+        available_from = local_tz_to_utc(available_from)
+    if available_until:
+        available_until = local_tz_to_utc(available_until)
 
     article_service.update_article(article, description, price, tax_rate,
                                    available_from, available_until, quantity,

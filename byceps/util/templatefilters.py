@@ -46,10 +46,22 @@ def separate_thousands(number: int) -> str:
     return f'{number:n}'
 
 
+def local_tz_to_utc(dt: datetime):
+    return (_get_timezone()
+        .localize(dt)
+        .astimezone(UTC)
+        # Keep SQLAlchemy from converting it to another zone.
+        .replace(tzinfo=None))
+
+
 def utc_to_local_tz(dt: datetime) -> datetime:
     """Convert naive date/time object from UTC to configured time zone."""
-    tz = timezone(current_app.config['TIMEZONE'])
+    tz = _get_timezone()
     return UTC.localize(dt).astimezone(tz)
+
+
+def _get_timezone():
+    return timezone(current_app.config['TIMEZONE'])
 
 
 def register(app):
