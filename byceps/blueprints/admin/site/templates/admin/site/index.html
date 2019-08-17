@@ -1,0 +1,34 @@
+{% extends 'layout/admin/base.html' %}
+{% set current_page = 'sites_admin' %}
+{% set title = 'Sites' %}
+
+{% block body %}
+
+  <h1>{{ title }}</h1>
+
+  <table class="index wide">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Party</th>
+      </tr>
+    </thead>
+    <tbody>
+    {%- for site in sites|sort(attribute='title')|sort(attribute='party_id') %}
+      <tr>
+        <td class="monospace"><a href="{{ url_for('.view', site_id=site.id) }}">{{ site.id }}</a></td>
+        <td>{{ site.title }}</td>
+        <td class="monospace">{{ site.party_id }}</td>
+      </tr>
+    {%- else %}
+      <tr>
+        <td colspan="2" class="centered">
+          <p class="dimmed">Es sind keine Sites hinterlegt.</p>
+        </td>
+      </tr>
+    {%- endfor %}
+    </tbody>
+  </table>
+
+{%- endblock %}
