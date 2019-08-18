@@ -7,6 +7,7 @@ byceps.blueprints.user.creation.views
 """
 
 from datetime import datetime
+from typing import Optional
 
 from flask import abort, g, request
 
@@ -187,7 +188,7 @@ def _is_real_name_required() -> bool:
     return value != 'false'
 
 
-def _find_privacy_policy_consent_subject_id() -> SubjectID:
+def _find_privacy_policy_consent_subject_id() -> Optional[SubjectID]:
     """Return the privacy policy consent subject ID configured for this
     brand, or `None` if none is configured.
     """
