@@ -29,10 +29,10 @@
       </tr>
     </thead>
     <tbody>
-    {%- for board_id in board_ids|sort %}
+    {%- for board in boards|sort(attribute='id') %}
       <tr>
-        <td><a href="{{ url_for('.board_view', board_id=board_id) }}"><strong>{{ board_id }}</strong></a></td>
-        {%- with stats = stats_by_board_id[board_id] %}
+        <td><a href="{{ url_for('.board_view', board_id=board.id) }}"><strong>{{ board.id }}</strong></a></td>
+        {%- with stats = stats_by_board_id[board.id] %}
         <td class="centered bignumber">{{ stats.category_count }}</td>
         <td class="centered bignumber">{{ stats.topic_count|separate_thousands }}</td>
         <td class="centered bignumber">{{ stats.posting_count|separate_thousands }}</td>

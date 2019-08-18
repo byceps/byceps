@@ -68,7 +68,7 @@ def board_index_for_brand(brand_id):
         for board_id in board_ids}
 
     return {
-        'board_ids': board_ids,
+        'boards': boards,
         'brand': brand,
         'stats_by_board_id': stats_by_board_id,
     }
