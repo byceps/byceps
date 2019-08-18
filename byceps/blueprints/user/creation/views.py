@@ -182,8 +182,7 @@ def _is_real_name_required() -> bool:
     By default, real name is required. It can be disabled by configuring
     the string `false` for the brand setting `real_name_required`.
     """
-    value = brand_settings_service \
-        .find_setting_value(g.brand_id, 'real_name_required')
+    value = _find_brand_setting_value('real_name_required')
 
     return value != 'false'
 
@@ -192,10 +191,16 @@ def _find_privacy_policy_consent_subject_id() -> Optional[SubjectID]:
     """Return the privacy policy consent subject ID configured for this
     brand, or `None` if none is configured.
     """
-    value = brand_settings_service \
-        .find_setting_value(g.brand_id, 'privacy_policy_consent_subject_id')
+    value = _find_brand_setting_value('privacy_policy_consent_subject_id')
 
     if not value:
         return None
 
     return SubjectID(value)
+
+
+def _find_brand_setting_value(setting_name: str) -> Optional[str]:
+    """Return the value configured for this brand and the given setting
+    name, or `None` if not configured.
+    """
+    return brand_settings_service.find_setting_value(g.brand_id, setting_name)
