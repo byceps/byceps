@@ -54,4 +54,5 @@ def _db_entity_to_board(board: DbBoard) -> Board:
     return Board(
         board.id,
         board.brand_id,
+        board.access_restricted,
     )

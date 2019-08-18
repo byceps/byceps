@@ -33,6 +33,7 @@ TopicID = NewType('TopicID', UUID)
 class Board:
     id: BoardID
     brand_id: BrandID
+    access_restricted: bool
 
 
 @attrs(auto_attribs=True, frozen=True, slots=True)

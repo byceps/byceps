@@ -1,5 +1,6 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/icons.html' import render_icon %}
+{% from 'macros/misc.html' import render_tag %}
 {% set current_page = 'board_admin' %}
 {% set current_page_brand = brand %}
 {% set title = '%s - Forum'|format(brand.title) %}
@@ -31,7 +32,12 @@
     <tbody>
     {%- for board in boards|sort(attribute='id') %}
       <tr>
-        <td><a href="{{ url_for('.board_view', board_id=board.id) }}"><strong>{{ board.id }}</strong></a></td>
+        <td>
+          <a href="{{ url_for('.board_view', board_id=board.id) }}"><strong>{{ board.id }}</strong></a>
+          {%- if board.access_restricted %}
+          <br>{{ render_tag('zugriffsbeschränkt') }}
+          {%- endif %}
+        </td>
         {%- with stats = stats_by_board_id[board.id] %}
         <td class="centered bignumber">{{ stats.category_count }}</td>
         <td class="centered bignumber">{{ stats.topic_count|separate_thousands }}</td>
