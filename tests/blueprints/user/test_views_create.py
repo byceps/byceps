@@ -82,7 +82,11 @@ class UserCreateTestCase(AbstractAppTestCase):
         self.privacy_policy_consent_subject_id = consent_subject.id
 
     def setup_newsletter_list(self):
-        newsletter_command_service.create_list(self.brand.id, self.brand.title)
+        list_ = newsletter_command_service \
+            .create_list(self.brand.id, self.brand.title)
+
+        brand_settings_service \
+            .create_setting(self.brand.id, 'newsletter_list_id', str(list_.id))
 
     def setup_roles(self):
         self.board_user_role = create_role('board_user')
