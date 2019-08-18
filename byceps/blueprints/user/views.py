@@ -21,6 +21,7 @@ from ...util.views import create_empty_json_response, redirect_to
 from ..authentication.decorators import login_required
 
 from .forms import DetailsForm
+from .creation.views import _find_newsletter_list_for_brand
 
 
 blueprint = create_blueprint('user', __name__)
@@ -56,13 +57,20 @@ def view_current():
         abort(404)
 
     if get_site_mode().is_public():
+        newsletter_list_id = _find_newsletter_list_for_brand()
+        newsletter_offered = (newsletter_list_id is not None)
+
         subscribed_to_newsletter = newsletter_service.is_subscribed(
-            user.id, g.brand_id)
+            user.id, newsletter_list_id)
     else:
+        newsletter_list_id = None
+        newsletter_offered = False
         subscribed_to_newsletter = None
 
     return {
         'user': user,
+        'newsletter_offered': newsletter_offered,
+        'newsletter_list_id': newsletter_list_id,
         'subscribed_to_newsletter': subscribed_to_newsletter,
     }
 

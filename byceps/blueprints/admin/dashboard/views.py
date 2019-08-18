@@ -10,7 +10,8 @@ from datetime import date, timedelta
 
 from flask import abort
 
-from ....services.brand import service as brand_service
+from ....services.brand import service as brand_service, \
+    settings_service as brand_settings_service
 from ....services.news import service as news_service
 from ....services.newsletter import service as newsletter_service
 from ....services.orga import service as orga_service
@@ -95,11 +96,15 @@ def view_brand(brand_id):
 
     news_item_count = news_service.count_items_for_brand(brand.id)
 
-    # Consider that there could be a newsletter list with the same ID as
-    # the brand. This is technical debt and should be solved in a
-    # different way.
-    newsletter_subscriber_count = newsletter_service \
-        .count_subscribers_for_list(brand.id)
+    newsletter_list_id = brand_settings_service \
+        .find_setting_value(brand.id, 'newsletter_list_id')
+    newsletter_list = None
+    if newsletter_list_id:
+        newsletter_list = newsletter_service.find_list(newsletter_list_id)
+        newsletter_subscriber_count = newsletter_service \
+            .count_subscribers_for_list(newsletter_list.id)
+    else:
+        newsletter_subscriber_count = None
 
     current_terms_version = terms_version_service.find_current_version(brand.id)
 
@@ -114,6 +119,7 @@ def view_brand(brand_id):
 
         'news_item_count': news_item_count,
 
+        'newsletter_list': newsletter_list,
         'newsletter_subscriber_count': newsletter_subscriber_count,
 
         'current_terms_version': current_terms_version,

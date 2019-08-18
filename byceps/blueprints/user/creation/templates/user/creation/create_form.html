@@ -29,7 +29,9 @@
         'Ich akzeptiere die <a href="%s" target="_blank">Datenschutzbestimmungen</a>.'|format(url_for('snippet.privacy_policy'))
       ) }}
       {%- endif %}
+      {%- if form.subscribe_to_newsletter %}
       {{ form_field_checkbox(form.subscribe_to_newsletter, 'Ich möchte den Newsletter erhalten.') }}
+      {%- endif %}
     {%- endcall %}
 
     {{ form_buttons('Anlegen') }}

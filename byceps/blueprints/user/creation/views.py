@@ -15,7 +15,7 @@ from ....config import get_user_registration_enabled
 from ....services.brand import settings_service as brand_settings_service
 from ....services.consent.transfer.models import Consent, SubjectID
 from ....services.newsletter.transfer.models import \
-    Subscription as NewsletterSubscription
+    ListID as NewsletterListID, Subscription as NewsletterSubscription
 from ....services.terms import version_service as terms_version_service
 from ....services.user import creation_service as user_creation_service
 from ....services.user import service as user_service
@@ -45,10 +45,13 @@ def create_form(erroneous_form=None):
     privacy_policy_consent_subject_id \
         = _find_privacy_policy_consent_subject_id()
 
+    newsletter_list_id = _find_newsletter_list_for_brand()
+
     real_name_required = _is_real_name_required()
     terms_consent_required = (terms_version is not None)
     privacy_policy_consent_required \
         = (privacy_policy_consent_subject_id is not None)
+    newsletter_offered = (newsletter_list_id is not None)
 
     if terms_consent_required:
         terms_version_id = terms_version.id
@@ -59,7 +62,7 @@ def create_form(erroneous_form=None):
         else UserCreateForm(terms_version_id=terms_version_id)
 
     _adjust_create_form(form, real_name_required, terms_consent_required,
-                        privacy_policy_consent_required)
+                        privacy_policy_consent_required, newsletter_offered)
 
     return {'form': form}
 
@@ -76,15 +79,18 @@ def create():
     privacy_policy_consent_subject_id \
         = _find_privacy_policy_consent_subject_id()
 
+    newsletter_list_id = _find_newsletter_list_for_brand()
+
     real_name_required = _is_real_name_required()
     terms_consent_required = (terms_version is not None)
     privacy_policy_consent_required \
         = (privacy_policy_consent_subject_id is not None)
+    newsletter_offered = (newsletter_list_id is not None)
 
     form = UserCreateForm(request.form)
 
     _adjust_create_form(form, real_name_required, terms_consent_required,
-                        privacy_policy_consent_required)
+                        privacy_policy_consent_required, newsletter_offered)
 
     if not form.validate():
         return create_form(form)
@@ -92,7 +98,6 @@ def create():
     screen_name = form.screen_name.data.strip()
     email_address = form.email_address.data.strip().lower()
     password = form.password.data
-    subscribe_to_newsletter = form.subscribe_to_newsletter.data
 
     now_utc = datetime.utcnow()
 
@@ -135,11 +140,13 @@ def create():
             expressed_at=now_utc)
 
     newsletter_subscription = None
-    if subscribe_to_newsletter:
-        newsletter_subscription = NewsletterSubscription(
-            user_id=None,  # not available at this point
-            list_id=g.brand_id,  # Expect a list of that name to exist.
-            expressed_at=now_utc)
+    if newsletter_offered:
+        subscribe_to_newsletter = form.subscribe_to_newsletter.data
+        if subscribe_to_newsletter:
+            newsletter_subscription = NewsletterSubscription(
+                user_id=None,  # not available at this point
+                list_id=g.brand_id,  # Expect a list of that name to exist.
+                expressed_at=now_utc)
 
     try:
         user = user_creation_service.create_user(
@@ -163,7 +170,7 @@ def create():
 
 
 def _adjust_create_form(form, real_name_required, terms_consent_required,
-                        privacy_policy_consent_required):
+                        privacy_policy_consent_required, newsletter_offered):
     if not real_name_required:
         del form.first_names
         del form.last_name
@@ -174,6 +181,9 @@ def _adjust_create_form(form, real_name_required, terms_consent_required,
 
     if not privacy_policy_consent_required:
         del form.consent_to_privacy_policy
+
+    if not newsletter_offered:
+        del form.subscribe_to_newsletter
 
 
 def _is_real_name_required() -> bool:
@@ -197,6 +207,18 @@ def _find_privacy_policy_consent_subject_id() -> Optional[SubjectID]:
         return None
 
     return SubjectID(value)
+
+
+def _find_newsletter_list_for_brand() -> Optional[NewsletterListID]:
+    """Return the newsletter list configured for this brand, or `None`
+    if none is configured.
+    """
+    value = _find_brand_setting_value('newsletter_list_id')
+
+    if not value:
+        return None
+
+    return NewsletterListID(value)
 
 
 def _find_brand_setting_value(setting_name: str) -> Optional[str]:

@@ -10,7 +10,7 @@
 {%- include 'user/current/_profile.html' %}
 {%- include 'user/current/_details_personal.html' %}
 
-  {%- if g.site_mode.is_public() %}
+  {%- if g.site_mode.is_public() and newsletter_offered %}
 {%- include 'user/current/_newsletter.html' %}
   {%- endif %}
 
