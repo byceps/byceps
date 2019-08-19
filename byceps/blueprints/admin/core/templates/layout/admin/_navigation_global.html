@@ -31,6 +31,12 @@
         required_permission=ConsentPermission.administrate,
         icon='consent')
       .add_item(
+        url_for('newsletter_admin.index'),
+        'Newsletter',
+        id='newsletter_admin',
+        required_permission=NewsletterPermission.view_subscriptions,
+        icon='email')
+      .add_item(
         url_for('user_badge_admin.index'),
         'Abzeichen',
         id='user_badge_admin',

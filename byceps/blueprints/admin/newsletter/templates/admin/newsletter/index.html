@@ -1,0 +1,31 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/misc.html' import render_tag %}
+{% set current_page = 'newsletter_admin' %}
+{% set title = 'Newsletter' %}
+
+{% block body %}
+
+  <h1>{{ title }}</h1>
+
+  {%- if lists %}
+  <table class="index">
+    <thead>
+      <tr>
+        <th>Titel<br>ID</th>
+        <th class="number">Abonnenten</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for list in lists %}
+        <tr>
+          <td>{{ list.title }}<br><span class="dimmed">{{ list.id }}</span></td>
+          <td class="bignumber number">{{ list.subscriber_count }}</td>
+        </tr>
+      {%- endfor %}
+    </tbody>
+  </table>
+  {%- else %}
+  <p class="dimmed">Es sind keine Newsletter-Listen hinterlegt.</p>
+  {%- endif %}
+
+{%- endblock %}

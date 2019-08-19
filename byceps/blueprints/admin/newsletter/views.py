@@ -8,9 +8,11 @@ byceps.blueprints.admin.newsletter.views
 
 from operator import attrgetter
 
+from attr import attrs
 from flask import abort
 
 from ....services.newsletter import service as newsletter_service
+from ....services.newsletter.transfer.models import List
 from ....services.newsletter.types import SubscriptionState
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated
@@ -26,6 +28,31 @@ blueprint = create_blueprint('newsletter_admin', __name__)
 
 
 permission_registry.register_enum(NewsletterPermission)
+
+
+@attrs(auto_attribs=True, frozen=True, slots=True)
+class ListWithStats(List):
+    subscriber_count: int
+
+
+@blueprint.route('/lists')
+@permission_required(NewsletterPermission.view_subscriptions)
+@templated
+def index():
+    """List all lists."""
+    lists = newsletter_service.get_all_lists()
+
+    lists_with_stats = list(map(_add_subscriber_count, lists))
+
+    return {
+        'lists': lists_with_stats,
+    }
+
+
+def _add_subscriber_count(list_):
+    subscriber_count = newsletter_service.count_subscribers_for_list(list_.id)
+
+    return ListWithStats(list_.id, list_.title, subscriber_count)
 
 
 @blueprint.route('/lists/<list_id>/subscriptions')
