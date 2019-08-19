@@ -90,8 +90,6 @@ def view(user_id):
 
     orga_team_memberships = orga_team_service.get_memberships_for_user(user.id)
 
-    badges_with_awarding_quantity = badge_service.get_badges_for_user(user.id)
-
     orders = order_service.get_orders_placed_by_user(user.id)
     order_shop_ids = {order.shop_id for order in orders}
     order_parties_by_shop_id = service.get_parties_by_shop_id(order_shop_ids)
@@ -100,14 +98,16 @@ def view(user_id):
 
     attended_parties = service.get_attended_parties(user.id)
 
+    badges_with_awarding_quantity = badge_service.get_badges_for_user(user.id)
+
     return {
         'user': user,
         'orga_team_memberships': orga_team_memberships,
-        'badges_with_awarding_quantity': badges_with_awarding_quantity,
         'orders': orders,
         'order_parties_by_shop_id': order_parties_by_shop_id,
         'parties_and_tickets': parties_and_tickets,
         'attended_parties': attended_parties,
+        'badges_with_awarding_quantity': badges_with_awarding_quantity,
     }
 
 

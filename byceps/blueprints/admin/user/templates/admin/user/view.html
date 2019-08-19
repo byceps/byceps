@@ -55,16 +55,16 @@
     <input type="radio" name="user-sections-state" id="tabs-rb-personal">
     <input type="radio" name="user-sections-state" id="tabs-rb-orders">
     <input type="radio" name="user-sections-state" id="tabs-rb-tickets">
-    <input type="radio" name="user-sections-state" id="tabs-rb-badges">
     <input type="radio" name="user-sections-state" id="tabs-rb-attended-parties">
+    <input type="radio" name="user-sections-state" id="tabs-rb-badges">
 
     <ol class="radio-tabs tabs">
       <li><label class="radio-tab tabs-tab" for="tabs-rb-account" id="tabs-tab-account">Benutzerkonto</label></li>
       <li><label class="radio-tab tabs-tab" for="tabs-rb-personal" id="tabs-tab-personal">Persönliche Daten</label></li>
       <li><label class="radio-tab tabs-tab" for="tabs-rb-orders" id="tabs-tab-orders">Bestellungen</label></li>
       <li><label class="radio-tab tabs-tab" for="tabs-rb-tickets" id="tabs-tab-tickets">Tickets</label></li>
-      <li><label class="radio-tab tabs-tab" for="tabs-rb-badges" id="tabs-tab-badges">Abzeichen</label></li>
       <li><label class="radio-tab tabs-tab" for="tabs-rb-attended-parties" id="tabs-tab-attended-parties">Besuchte Partys</label></li>
+      <li><label class="radio-tab tabs-tab" for="tabs-rb-badges" id="tabs-tab-badges">Abzeichen</label></li>
     </ol>
 
     <div class="radio-panels">
@@ -89,15 +89,6 @@
 {%- include 'admin/user/_view_tickets.html' %}
       </div>
 
-      <div class="radio-panel" id="tabs-panel-badges">
-        <h2>Abzeichen {{ render_extra_in_heading(badges_with_awarding_quantity|length) }}</h2>
-        {%- if badges_with_awarding_quantity %}
-{{ render_user_badges_list(badges_with_awarding_quantity) }}
-        {%- else %}
-        {{ 'keine'|dim }}
-        {%- endif %}
-      </div>
-
       <div class="radio-panel" id="tabs-panel-attended-parties">
         <h2>Besuchte Partys {{ render_extra_in_heading(attended_parties|length) }}</h2>
         {%- if attended_parties %}
@@ -108,6 +99,15 @@
           </tr>
           {%- endfor %}
         </table>
+        {%- else %}
+        {{ 'keine'|dim }}
+        {%- endif %}
+      </div>
+
+      <div class="radio-panel" id="tabs-panel-badges">
+        <h2>Abzeichen {{ render_extra_in_heading(badges_with_awarding_quantity|length) }}</h2>
+        {%- if badges_with_awarding_quantity %}
+{{ render_user_badges_list(badges_with_awarding_quantity) }}
         {%- else %}
         {{ 'keine'|dim }}
         {%- endif %}
