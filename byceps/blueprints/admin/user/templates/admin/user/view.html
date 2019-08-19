@@ -2,7 +2,6 @@
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/admin/shop/order.html' import render_order_payment_state %}
 {% from 'macros/admin/user_badge.html' import render_user_badges_list %}
-{% from 'macros/misc.html' import render_tag %}
 {% set current_tab = 'profile' %}
 {% set current_tab_user_id = user.id %}
 {% set title = 'Benutzer - %s'|format(user.screen_name) %}
@@ -20,6 +19,7 @@
 
 #tabs-rb-account:checked ~ .radio-tabs #tabs-tab-account,
 #tabs-rb-personal:checked ~ .radio-tabs #tabs-tab-personal,
+#tabs-rb-newsletter:checked ~ .radio-tabs #tabs-tab-newsletter,
 #tabs-rb-orders:checked ~ .radio-tabs #tabs-tab-orders,
 #tabs-rb-tickets:checked ~ .radio-tabs #tabs-tab-tickets,
 #tabs-rb-badges:checked ~ .radio-tabs #tabs-tab-badges,
@@ -36,6 +36,7 @@
 
 #tabs-rb-account:checked ~ .radio-panels #tabs-panel-account,
 #tabs-rb-personal:checked ~ .radio-panels #tabs-panel-personal,
+#tabs-rb-newsletter:checked ~ .radio-panels #tabs-panel-newsletter,
 #tabs-rb-orders:checked ~ .radio-panels #tabs-panel-orders,
 #tabs-rb-tickets:checked ~ .radio-panels #tabs-panel-tickets,
 #tabs-rb-badges:checked ~ .radio-panels #tabs-panel-badges,
@@ -53,18 +54,20 @@
 
     <input type="radio" name="user-sections-state" id="tabs-rb-account" checked>
     <input type="radio" name="user-sections-state" id="tabs-rb-personal">
+    <input type="radio" name="user-sections-state" id="tabs-rb-newsletter">
     <input type="radio" name="user-sections-state" id="tabs-rb-orders">
     <input type="radio" name="user-sections-state" id="tabs-rb-tickets">
     <input type="radio" name="user-sections-state" id="tabs-rb-attended-parties">
     <input type="radio" name="user-sections-state" id="tabs-rb-badges">
 
     <ol class="radio-tabs tabs">
-      <li><label class="radio-tab tabs-tab" for="tabs-rb-account" id="tabs-tab-account">Benutzerkonto</label></li>
+      <li><label class="radio-tab tabs-tab" for="tabs-rb-account" id="tabs-tab-account">Benutzer&shy;konto</label></li>
       <li><label class="radio-tab tabs-tab" for="tabs-rb-personal" id="tabs-tab-personal">Persönliche Daten</label></li>
-      <li><label class="radio-tab tabs-tab" for="tabs-rb-orders" id="tabs-tab-orders">Bestellungen</label></li>
+      <li><label class="radio-tab tabs-tab" for="tabs-rb-newsletter" id="tabs-tab-newsletter">News&shy;letter</label></li>
+      <li><label class="radio-tab tabs-tab" for="tabs-rb-orders" id="tabs-tab-orders">Bestel&shy;lungen</label></li>
       <li><label class="radio-tab tabs-tab" for="tabs-rb-tickets" id="tabs-tab-tickets">Tickets</label></li>
       <li><label class="radio-tab tabs-tab" for="tabs-rb-attended-parties" id="tabs-tab-attended-parties">Besuchte Partys</label></li>
-      <li><label class="radio-tab tabs-tab" for="tabs-rb-badges" id="tabs-tab-badges">Abzeichen</label></li>
+      <li><label class="radio-tab tabs-tab" for="tabs-rb-badges" id="tabs-tab-badges">Abzei&shy;chen</label></li>
     </ol>
 
     <div class="radio-panels">
@@ -77,6 +80,11 @@
       <div class="radio-panel" id="tabs-panel-personal">
         <h2>Persönliche Daten</h2>
 {%- include 'admin/user/_view_personal.html' %}
+      </div>
+
+      <div class="radio-panel" id="tabs-panel-newsletter">
+        <h2>Newsletter-Abonnements</h2>
+{%- include 'admin/user/_view_newsletter.html' %}
       </div>
 
       <div class="radio-panel" id="tabs-panel-orders">

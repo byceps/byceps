@@ -13,6 +13,7 @@ from typing import Any, Dict, Iterator, List, Sequence, Set, Tuple
 from ....database import db
 from ....services.consent import consent_service
 from ....services.newsletter import service as newsletter_service
+from ....services.newsletter.transfer.models import List as NewsletterList
 from ....services.party import service as party_service
 from ....services.party.transfer.models import Party
 from ....services.shop.order import service as order_service
@@ -140,6 +141,14 @@ def get_attended_parties(user_id: UserID) -> List[Party]:
     attended_parties = attendance_service.get_attended_parties(user_id)
     attended_parties.sort(key=attrgetter('starts_at'), reverse=True)
     return attended_parties
+
+
+def get_newsletter_subscriptions(user_id: UserID
+                                ) -> Iterator[Tuple[NewsletterList, bool]]:
+    lists = newsletter_service.get_all_lists()
+    for list_ in lists:
+        is_subscribed = newsletter_service.is_subscribed(user_id, list_.id)
+        yield list_, is_subscribed
 
 
 def get_events(user_id: UserID) -> Iterator[UserEventData]:

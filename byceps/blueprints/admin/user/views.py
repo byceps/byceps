@@ -90,6 +90,8 @@ def view(user_id):
 
     orga_team_memberships = orga_team_service.get_memberships_for_user(user.id)
 
+    newsletter_subscriptions = service.get_newsletter_subscriptions(user.id)
+
     orders = order_service.get_orders_placed_by_user(user.id)
     order_shop_ids = {order.shop_id for order in orders}
     order_parties_by_shop_id = service.get_parties_by_shop_id(order_shop_ids)
@@ -103,6 +105,7 @@ def view(user_id):
     return {
         'user': user,
         'orga_team_memberships': orga_team_memberships,
+        'newsletter_subscriptions': newsletter_subscriptions,
         'orders': orders,
         'order_parties_by_shop_id': order_parties_by_shop_id,
         'parties_and_tickets': parties_and_tickets,
