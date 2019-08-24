@@ -18,7 +18,7 @@ def test_assign_role_to_user(admin_app_with_db, normal_user, admin_user, role):
     user_permission_ids_before = service.get_permission_ids_for_user(user_id)
     assert PERMISSION_ID not in user_permission_ids_before
 
-    service.assign_role_to_user(user_id, role.id, initiator_id=initiator_id)
+    service.assign_role_to_user(role.id, user_id, initiator_id=initiator_id)
 
     user_permission_ids_after = service.get_permission_ids_for_user(user_id)
     assert PERMISSION_ID in user_permission_ids_after
@@ -29,12 +29,12 @@ def test_deassign_role_from_user(admin_app_with_db, normal_user, admin_user,
     user_id = normal_user.id
     initiator_id = admin_user.id
 
-    service.assign_role_to_user(user_id, role.id, initiator_id=initiator_id)
+    service.assign_role_to_user(role.id, user_id, initiator_id=initiator_id)
 
     user_permission_ids_before = service.get_permission_ids_for_user(user_id)
     assert PERMISSION_ID in user_permission_ids_before
 
-    service.deassign_role_from_user(user_id, role.id, initiator_id=initiator_id)
+    service.deassign_role_from_user(role.id, user_id, initiator_id=initiator_id)
 
     user_permission_ids_after = service.get_permission_ids_for_user(user_id)
     assert PERMISSION_ID not in user_permission_ids_after

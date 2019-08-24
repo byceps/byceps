@@ -453,7 +453,7 @@ def role_assign(user_id, role_id):
     role = _get_role_or_404(role_id)
     initiator_id = g.current_user.id
 
-    authorization_service.assign_role_to_user(user.id, role.id,
+    authorization_service.assign_role_to_user(role.id, user.id,
                                               initiator_id=initiator_id)
 
     flash_success('{} wurde die Rolle "{}" zugewiesen.',
@@ -469,7 +469,7 @@ def role_deassign(user_id, role_id):
     role = _get_role_or_404(role_id)
     initiator_id = g.current_user.id
 
-    authorization_service.deassign_role_from_user(user.id, role.id,
+    authorization_service.deassign_role_from_user(role.id, user.id,
                                                   initiator_id=initiator_id)
 
     flash_success('{} wurde die Rolle "{}" genommen.',

@@ -159,7 +159,7 @@ def _normalize_email_address(email_address: str) -> str:
 def _assign_roles(user_id: UserID) -> None:
     board_user_role = authorization_service.find_role(RoleID('board_user'))
 
-    authorization_service.assign_role_to_user(user_id, board_user_role.id)
+    authorization_service.assign_role_to_user(board_user_role.id, user_id)
 
 
 def _request_email_address_verification(user: User, email_address: str,

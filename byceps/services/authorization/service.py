@@ -83,7 +83,7 @@ def deassign_permission_from_role(permission_id: PermissionID, role_id: RoleID
     db.session.commit()
 
 
-def assign_role_to_user(user_id: UserID, role_id: RoleID,
+def assign_role_to_user(role_id: RoleID, user_id: UserID,
                         *, initiator_id: Optional[UserID]=None) -> None:
     """Assign the role to the user."""
     user_role = UserRole(user_id, role_id)
@@ -98,7 +98,7 @@ def assign_role_to_user(user_id: UserID, role_id: RoleID,
     db.session.commit()
 
 
-def deassign_role_from_user(user_id: UserID, role_id: RoleID,
+def deassign_role_from_user(role_id: RoleID, user_id: UserID,
                             initiator_id: Optional[UserID]=None) -> None:
     """Deassign the role from the user."""
     user_role = UserRole.query.get((user_id, role_id))
