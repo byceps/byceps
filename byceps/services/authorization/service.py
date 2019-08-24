@@ -86,6 +86,10 @@ def deassign_permission_from_role(permission_id: PermissionID, role_id: RoleID
 def assign_role_to_user(role_id: RoleID, user_id: UserID,
                         *, initiator_id: Optional[UserID]=None) -> None:
     """Assign the role to the user."""
+    if _is_role_assigned_to_user(role_id, user_id):
+        # Role is already assigned to user. Nothing to do.
+        return
+
     user_role = UserRole(user_id, role_id)
     db.session.add(user_role)
 
@@ -115,6 +119,16 @@ def deassign_role_from_user(role_id: RoleID, user_id: UserID,
     db.session.add(event)
 
     db.session.commit()
+
+
+def _is_role_assigned_to_user(role_id: RoleID, user_id: UserID) -> bool:
+    """Determine if the role is assigned to the user or not."""
+    subquery = UserRole.query \
+        .filter_by(user_id=user_id) \
+        .filter_by(role_id=role_id) \
+        .exists()
+
+    return db.session.query(subquery).scalar()
 
 
 def get_permission_ids_for_user(user_id: UserID) -> FrozenSet[PermissionID]:
