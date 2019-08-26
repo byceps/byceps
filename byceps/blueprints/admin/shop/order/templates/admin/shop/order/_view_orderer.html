@@ -13,7 +13,11 @@
     </tr>
     <tr>
       <th>Anschrift</th>
-      <td>{{ order.address.street }}, {{ order.address.zip_code }} {{ order.address.city }}, {{ order.address.country }}</td>
+      <td>
+        {{ order.address.street }}<br>
+        {{ order.address.zip_code }} {{ order.address.city }}<br>
+        {{ order.address.country }}
+      </td>
     </tr>
   </table>
 
