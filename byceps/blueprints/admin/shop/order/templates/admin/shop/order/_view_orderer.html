@@ -5,11 +5,11 @@
   <table class="index">
     <tr>
       <th>Benutzer</th>
-      <td>{{ render_user_avatar_20_and_link(placed_by) }}</td>
+      <td colspan="2">{{ render_user_avatar_20_and_link(placed_by) }}</td>
     </tr>
     <tr>
       <th>Name</th>
-      <td>{{ order.first_names }} {{ order.last_name }}</td>
+      <td colspan="2">{{ order.first_names }} {{ order.last_name }}</td>
     </tr>
     <tr>
       <th>Anschrift</th>
@@ -18,16 +18,15 @@
         {{ order.address.zip_code }} {{ order.address.city }}<br>
         {{ order.address.country }}
       </td>
+      <td>
+          <textarea id="order-address-field" style="position: fixed; top: -1000px;" readonly>{{
+            '%s %s\n%s\n%s %s'|format(
+              order.first_names, order.last_name,
+              order.address.street,
+              order.address.zip_code, order.address.city
+            )
+          }}</textarea>
+          <button id="order-address-copy-trigger" data-field-id="order-address-field" class="button button--compact" title="Anschrift in die Zwischenablage kopieren">{{ render_icon('clipboard') }} <span>Kopieren</span></button>
+      </td>
     </tr>
   </table>
-
-  <div class="button-row">
-    <textarea id="order-address-field" style="position: fixed; top: -1000px;" readonly>{{
-      '%s %s\n%s\n%s %s'|format(
-        order.first_names, order.last_name,
-        order.address.street,
-        order.address.zip_code, order.address.city
-      )
-    }}</textarea>
-    <button id="order-address-copy-trigger" data-field-id="order-address-field" class="button" title="Anschrift in die Zwischenablage kopieren">{{ render_icon('clipboard') }} <span>Anschrift kopieren</span></button>
-  </div>
