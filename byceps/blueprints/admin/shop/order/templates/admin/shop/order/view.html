@@ -3,10 +3,20 @@
 {% from 'macros/admin/shop/order.html' import render_order_payment_method, render_order_payment_state %}
 {% from 'macros/datetime.html' import render_datetime %}
 {% set current_page_party = party %}
-{% set title = 'Bestellung ' ~ order.order_number %}
+{% set title = order.order_number %}
 
 {% block head %}
   <style>
+    h1 .tag {
+      font-size: 0.75rem !important; /* 12px / 16px */
+      padding: 0.4rem 0.6rem;
+      vertical-align: 0.4rem;
+    }
+
+    h1 .tag .icon {
+      margin-right: 0.25rem;
+    }
+
     .order-status-bar {
       display: flex;
       flex-direction: column;
@@ -35,7 +45,7 @@
       <li><a href="{{ url_for('.index_for_shop', shop_id=shop.id) }}">Bestellungen</a></li>
     </ol>
   </nav>
-  <h1>{{ title }}</h1>
+  <h1>{{ render_order_payment_state(order.payment_state) }} {{ title }}</h1>
 
   {%- if g.current_user.has_any_permission(
     ShopOrderPermission.cancel,
@@ -60,10 +70,6 @@
     <tr>
       <th>Zahlungsart</th>
       <td>{{ render_order_payment_method(order.payment_method) }}</td>
-    </tr>
-    <tr>
-      <th>Bezahlstatus</th>
-      <td>{{ render_order_payment_state(order.payment_state) }}</td>
     </tr>
     {%- if order.is_canceled %}
     <tr>
