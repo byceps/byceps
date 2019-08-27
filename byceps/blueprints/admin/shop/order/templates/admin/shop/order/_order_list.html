@@ -13,6 +13,7 @@
       <th>Betrag</th>
       <th colspan="2"></th>
       <th>Status</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -43,6 +44,11 @@
       <td>
         {{ render_order_payment_state(order.payment_state) }}<br>
         {{ render_order_payment_method(order.payment_method)|dim }}
+      </td>
+      <td>
+        {%- if order.is_open and g.current_user.has_permission(ShopOrderPermission.mark_as_paid) %}
+        <a class="button button--compact" href="{{ url_for('.mark_as_paid_form', order_id=order.id) }}" title="Bestellung als bezahlt markieren">{{ render_icon('payment') }}</a>
+        {%- endif %}
       </td>
     </tr>
     {%- endfor %}
