@@ -11,7 +11,7 @@ from typing import Optional, Set
 from ...database import db
 from ...typing import UserID
 
-from . import event_service
+from . import event_service, ticket_seat_management_service
 from .event_service import TicketEvent
 from . import ticket_service
 from .transfer.models import TicketID
@@ -27,6 +27,10 @@ def revoke_ticket(ticket_id: TicketID, *,
     if ticket is None:
         raise ValueError('Unknown ticket ID.')
 
+    # Release seat.
+    if ticket.occupied_seat_id:
+        ticket_seat_management_service.release_seat(ticket.id, initiator_id)
+
     ticket.revoked = True
 
     event = _build_ticket_revoked_event(ticket.id, initiator_id, reason)
@@ -41,6 +45,11 @@ def revoke_tickets(ticket_ids: Set[TicketID], *,
                   ) -> None:
     """Revoke the tickets."""
     tickets = ticket_service.find_tickets(ticket_ids)
+
+    # Release seats.
+    for ticket in tickets:
+        if ticket.occupied_seat_id:
+            ticket_seat_management_service.release_seat(ticket.id, initiator_id)
 
     for ticket in tickets:
         ticket.revoked = True
