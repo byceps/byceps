@@ -189,7 +189,7 @@ class OrderAlreadyMarkedAsPaid(Exception):
     pass
 
 
-def cancel_order(order_id: OrderID, updated_by_id: UserID, reason: str) -> None:
+def cancel_order(order_id: OrderID, initiator_id: UserID, reason: str) -> None:
     """Cancel the order.
 
     Reserved quantities of articles from that order are made available
@@ -212,14 +212,14 @@ def cancel_order(order_id: OrderID, updated_by_id: UserID, reason: str) -> None:
     payment_state_to = PaymentState.canceled_after_paid if has_order_been_paid \
                   else PaymentState.canceled_before_paid
 
-    _update_payment_state(order, payment_state_to, updated_at, updated_by_id)
+    _update_payment_state(order, payment_state_to, updated_at, initiator_id)
     order.payment_method = PaymentMethod.bank_transfer
     order.cancelation_reason = reason
 
     event_type = 'order-canceled-after-paid' if has_order_been_paid \
             else 'order-canceled-before-paid'
     data = {
-        'initiator_id': str(updated_by_id),
+        'initiator_id': str(initiator_id),
         'former_payment_state': payment_state_from.name,
         'reason': reason,
     }
@@ -237,7 +237,7 @@ def cancel_order(order_id: OrderID, updated_by_id: UserID, reason: str) -> None:
 
 
 def mark_order_as_paid(order_id: OrderID, payment_method: PaymentMethod,
-                       updated_by_id: UserID) -> None:
+                       initiator_id: UserID) -> None:
     """Mark the order as paid."""
     order = find_order(order_id)
 
@@ -254,11 +254,11 @@ def mark_order_as_paid(order_id: OrderID, payment_method: PaymentMethod,
     payment_state_to = PaymentState.paid
 
     order.payment_method = payment_method
-    _update_payment_state(order, payment_state_to, updated_at, updated_by_id)
+    _update_payment_state(order, payment_state_to, updated_at, initiator_id)
 
     event_type = 'order-paid'
     data = {
-        'initiator_id': str(updated_by_id),
+        'initiator_id': str(initiator_id),
         'former_payment_state': payment_state_from.name,
         'payment_method': payment_method.name,
     }
@@ -272,10 +272,10 @@ def mark_order_as_paid(order_id: OrderID, payment_method: PaymentMethod,
 
 
 def _update_payment_state(order: DbOrder, state: PaymentState,
-                          updated_at: datetime, updated_by_id: UserID) -> None:
+                          updated_at: datetime, initiator_id: UserID) -> None:
     order.payment_state = state
     order.payment_state_updated_at = updated_at
-    order.payment_state_updated_by_id = updated_by_id
+    order.payment_state_updated_by_id = initiator_id
 
 
 def count_open_orders(shop_id: ShopID) -> int:
