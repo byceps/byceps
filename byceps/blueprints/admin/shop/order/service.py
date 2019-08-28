@@ -147,12 +147,16 @@ def _get_additional_data_for_ticket_bundle_revoked(event: OrderEvent,
                                                    users_by_id: Dict[UserID, User]
                                                   ) -> OrderEventData:
     bundle_id = event.data['ticket_bundle_id']
-    initiator_id = event.data['initiator_id']
 
-    return {
+    data = {
         'bundle_id': bundle_id,
-        'initiator': users_by_id[initiator_id],
     }
+
+    initiator_id = event.data.get('initiator_id')
+    if initiator_id:
+        data['initiator'] = users_by_id[initiator_id]
+
+    return data
 
 
 def _get_additional_data_for_ticket_created(event: OrderEvent
@@ -173,12 +177,16 @@ def _get_additional_data_for_ticket_revoked(event: OrderEvent,
                                            ) -> OrderEventData:
     ticket_id = event.data['ticket_id']
     ticket_code = event.data['ticket_code']
-    initiator_id = event.data['initiator_id']
 
-    return {
+    data = {
         'ticket_code': ticket_code,
-        'initiator': users_by_id[initiator_id],
     }
+
+    initiator_id = event.data.get('initiator_id')
+    if initiator_id:
+        data['initiator'] = users_by_id[initiator_id]
+
+    return data
 
 
 def _to_user_dto(user: DbUser) -> User:
