@@ -19,7 +19,7 @@
       {{ form_field(form.first_names, maxlength=40) }}
       {{ form_field(form.last_name, maxlength=40) }}
       {{ form_field(form.email_address, type='email', maxlength=80, required='required') }}
-      {{ form_field(form.password, type='password', maxlength=40, required='required') }}
+      {{ form_field(form.password, maxlength=40, required='required') }}
     {%- endcall %}
 
     {{ form_buttons('Erstellen') }}
