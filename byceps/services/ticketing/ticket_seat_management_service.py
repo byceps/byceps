@@ -112,6 +112,7 @@ def release_seat(ticket_id: TicketID, initiator_id: UserID) -> None:
     ticket.occupied_seat_id = None
 
     event = event_service.build_event('seat-released', ticket.id, {
+        'seat_id': str(seat.id),
         'initiator_id': str(initiator_id),
     })
     db.session.add(event)

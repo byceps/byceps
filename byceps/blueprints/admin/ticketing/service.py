@@ -88,6 +88,9 @@ def _get_additional_data(event: TicketEvent, users_by_id: Dict[str, User]
     if event.event_type == 'seat-occupied':
         yield from _get_additional_data_for_seat_occupied_event(event)
 
+    if event.event_type == 'seat-released':
+        yield from _get_additional_data_for_seat_released_event(event)
+
     if event.event_type == 'ticket-revoked':
         yield from _get_additional_data_for_ticket_revoked_event(event)
 
@@ -121,6 +124,13 @@ def _get_additional_data_for_seat_occupied_event(event: TicketEvent
     if previous_seat_id:
         previous_seat = seat_service.find_seat(previous_seat_id)
         yield 'previous_seat_label', previous_seat.label
+
+
+def _get_additional_data_for_seat_released_event(event: TicketEvent
+                                                ) -> Iterator[Tuple[str, Any]]:
+    seat_id = event.data['seat_id']
+    seat = seat_service.find_seat(seat_id)
+    yield 'seat_label', seat.label
 
 
 def _get_additional_data_for_ticket_revoked_event(event: TicketEvent
