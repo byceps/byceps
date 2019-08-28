@@ -128,9 +128,10 @@ def _get_additional_data_for_seat_occupied_event(event: TicketEvent
 
 def _get_additional_data_for_seat_released_event(event: TicketEvent
                                                 ) -> Iterator[Tuple[str, Any]]:
-    seat_id = event.data['seat_id']
-    seat = seat_service.find_seat(seat_id)
-    yield 'seat_label', seat.label
+    seat_id = event.data.get('seat_id')
+    if seat_id:
+        seat = seat_service.find_seat(seat_id)
+        yield 'seat_label', seat.label
 
 
 def _get_additional_data_for_ticket_revoked_event(event: TicketEvent

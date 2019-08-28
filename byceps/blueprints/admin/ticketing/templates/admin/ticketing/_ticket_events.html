@@ -35,7 +35,13 @@
           {%- set icon_name = 'disabled' %}
           {%- set body %}
             <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
-            hat Sitzplatz <strong>{{ event.seat_label }}</strong> freigegeben.
+            hat
+            {%- if event.seat_label is defined %}
+            Sitzplatz <strong>{{ event.seat_label }}</strong>
+            {%- else %}
+            den Sitzplatz
+            {%- endif %}
+            freigegeben.
           {%- endset %}
         {%- elif event.event == 'ticket-created' %}
           {%- set icon_name = 'add' %}
