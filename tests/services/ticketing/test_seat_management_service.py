@@ -12,6 +12,10 @@ from byceps.services.ticketing import category_service, event_service, \
 from byceps.services.ticketing.exceptions import \
     SeatChangeDeniedForBundledTicket, TicketCategoryMismatch
 
+# Import models to ensure the corresponding tables are created so
+# `Seat.assignment` is available.
+import byceps.services.seating.models.seat_group
+
 from tests.base import AbstractAppTestCase
 from tests.helpers import create_brand, create_party, create_user
 
@@ -119,6 +123,7 @@ class TicketSeatManagementServiceTest(AbstractAppTestCase):
 
         release_event = events_after_release[2]
         assert_event(release_event, 'seat-released', {
+            'seat_id': str(seat2.id),
             'initiator_id': str(self.owner.id),
         })
 
