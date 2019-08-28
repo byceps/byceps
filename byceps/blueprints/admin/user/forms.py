@@ -16,6 +16,7 @@ from ...user.creation.forms import ScreenNameValidator
 
 
 MINIMUM_PASSWORD_LENGTH = 10
+MAXIMUM_PASSWORD_LENGTH = 100
 
 
 class ChangeScreenNameForm(LocalizedForm):
@@ -38,7 +39,7 @@ class CreateAccountForm(LocalizedForm):
     first_names = StringField('Vorname(n)', [InputRequired(), Length(min=2, max=40)])
     last_name = StringField('Nachname', [InputRequired(), Length(min=2, max=40)])
     email_address = StringField('E-Mail-Adresse', [InputRequired(), Length(min=6)])
-    password = PasswordField('Passwort', [InputRequired(), Length(min=MINIMUM_PASSWORD_LENGTH)])
+    password = PasswordField('Passwort', [InputRequired(), Length(min=MINIMUM_PASSWORD_LENGTH, max=MAXIMUM_PASSWORD_LENGTH)])
 
 
 class DeleteAccountForm(LocalizedForm):
@@ -51,7 +52,7 @@ class DeleteAccountForm(LocalizedForm):
 
 
 class SetPasswordForm(LocalizedForm):
-    password = PasswordField('Passwort', [InputRequired(), Length(min=MINIMUM_PASSWORD_LENGTH)])
+    password = PasswordField('Passwort', [InputRequired(), Length(min=MINIMUM_PASSWORD_LENGTH, max=MAXIMUM_PASSWORD_LENGTH)])
 
 
 class SuspendAccountForm(LocalizedForm):

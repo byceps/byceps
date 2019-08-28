@@ -15,6 +15,7 @@ from ...util.l10n import LocalizedForm
 
 
 MINIMUM_PASSWORD_LENGTH = 10
+MAXIMUM_PASSWORD_LENGTH = 100
 
 
 class LoginForm(LocalizedForm):
@@ -32,7 +33,7 @@ def _get_new_password_validators(companion_field_name):
         InputRequired(),
         EqualTo(companion_field_name,
                 message='Das neue Passwort muss mit der Wiederholung übereinstimmen.'),
-        Length(min=MINIMUM_PASSWORD_LENGTH),
+        Length(min=MINIMUM_PASSWORD_LENGTH, max=MAXIMUM_PASSWORD_LENGTH),
     ]
 
 
