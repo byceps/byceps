@@ -16,6 +16,7 @@ from unittest.mock import patch
 from byceps.application import create_app
 from byceps.database import db
 
+from tests.database import set_up_database, tear_down_database
 from tests import mocks
 
 
@@ -38,10 +39,7 @@ class AbstractAppTestCase(TestCase):
         self.db = db
         db.app = self.app
 
-        db.reflect()
-        db.drop_all()
-        db.create_all()
+        set_up_database(db)
 
     def tearDown(self):
-        db.session.remove()
-        db.drop_all()
+        tear_down_database(db)
