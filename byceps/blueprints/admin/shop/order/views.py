@@ -103,7 +103,7 @@ def view(order_id):
     if order is None:
         abort(404)
 
-    placed_by = user_service.find_user(order.placed_by_id)
+    placed_by = user_service.find_user(order.placed_by_id, include_avatar=True)
 
     shop = shop_service.get_shop(order.shop_id)
     party = party_service.find_party(shop.party_id)
