@@ -59,14 +59,20 @@ def find_active_user(user_id: UserID, *, include_avatar: bool=False,
     return _user_row_to_dto(row)
 
 
-def find_user(user_id: UserID) -> Optional[User]:
-    """Return the user with that ID, or `None` if not found."""
-    user = DbUser.query.get(user_id)
+def find_user(user_id: UserID, *, include_avatar: bool=False,
+              include_orga_flag_for_party_id: PartyID=None) -> Optional[User]:
+    """Return the user with that ID, or `None` if not found.
 
-    if user is None:
+    Include avatar URLs if requested.
+    """
+    row = _get_user_query(include_avatar, include_orga_flag_for_party_id) \
+        .filter(DbUser.id == user_id) \
+        .one_or_none()
+
+    if row is None:
         return None
 
-    return _db_entity_to_user_dto(user)
+    return _user_row_to_dto(row)
 
 
 def find_users(user_ids: Set[UserID], *, include_avatars: bool=False,
