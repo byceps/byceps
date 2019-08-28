@@ -44,15 +44,15 @@ class UserSuspendedFlagTest(AbstractAppTestCase):
         events_after = event_service.get_events_for_user(user_after.id)
         assert len(events_after) == 1
 
-        user_enabled_event = events_after[0]
-        assert user_enabled_event.event_type == 'user-suspended'
-        assert user_enabled_event.data == {
+        suspended_event = events_after[0]
+        assert suspended_event.event_type == 'user-suspended'
+        assert suspended_event.data == {
             'initiator_id': str(ADMIN_ID),
             'reason': reason,
         }
 
     def test_unsuspend(self):
-        self.user.suspended = True
+        user_command_service.suspend_account(self.user.id, ADMIN_ID, 'Annoying')
 
         reason = 'User showed penitence. Drop the ban.'
 
@@ -60,7 +60,7 @@ class UserSuspendedFlagTest(AbstractAppTestCase):
         assert user_before.suspended
 
         events_before = event_service.get_events_for_user(user_before.id)
-        assert len(events_before) == 0
+        assert len(events_before) == 1
 
         # -------------------------------- #
 
@@ -72,11 +72,11 @@ class UserSuspendedFlagTest(AbstractAppTestCase):
         assert not user_after.suspended
 
         events_after = event_service.get_events_for_user(user_after.id)
-        assert len(events_after) == 1
+        assert len(events_after) == 2
 
-        user_disabled_event = events_after[0]
-        assert user_disabled_event.event_type == 'user-unsuspended'
-        assert user_disabled_event.data == {
+        unsuspended_event = events_after[1]
+        assert unsuspended_event.event_type == 'user-unsuspended'
+        assert unsuspended_event.data == {
             'initiator_id': str(ADMIN_ID),
             'reason': reason,
         }
