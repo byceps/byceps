@@ -28,6 +28,9 @@ def database_recreated(db):
 
     yield
 
+    db.session.remove()
+    db.drop_all()
+
 
 @pytest.fixture(scope='session')
 def admin_app():
@@ -41,7 +44,6 @@ def admin_app_with_db(admin_app, db):
     with admin_app.app_context():
         with database_recreated(db):
             yield admin_app
-        db.session.remove()
 
 
 @pytest.fixture
@@ -62,7 +64,6 @@ def party_app_with_db(party_app, db):
     with party_app.app_context():
         with database_recreated(db):
             yield party_app
-        db.session.remove()
 
 
 @pytest.fixture
