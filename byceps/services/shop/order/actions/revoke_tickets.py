@@ -8,6 +8,8 @@ byceps.services.shop.order.actions.revoke_tickets
 
 from typing import Sequence
 
+from .....typing import UserID
+
 from ....ticketing.models.ticket import Ticket
 from ....ticketing import ticket_revocation_service, ticket_service
 
@@ -19,7 +21,7 @@ from ..transfer.models import Order, OrderID
 
 
 def revoke_tickets(order: Order, article_number: ArticleNumber, quantity: int,
-                   parameters: Parameters) -> None:
+                   initiator_id: UserID, parameters: Parameters) -> None:
     """Revoke all tickets in this order."""
     tickets = ticket_service.find_tickets_created_by_order(order.order_number)
 

@@ -8,6 +8,8 @@ byceps.services.shop.order.actions.create_tickets
 
 from typing import Sequence
 
+from .....typing import UserID
+
 from ....ticketing.models.ticket import Ticket
 from ....ticketing import ticket_creation_service
 
@@ -19,7 +21,7 @@ from ..transfer.models import Order, OrderID
 
 
 def create_tickets(order: Order, article_number: ArticleNumber, quantity: int,
-                   parameters: Parameters) -> None:
+                   initiator_id: UserID, parameters: Parameters) -> None:
     """Create tickets."""
     category_id = parameters['category_id']
     owned_by_id = order.placed_by_id

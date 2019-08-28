@@ -233,7 +233,8 @@ def cancel_order(order_id: OrderID, initiator_id: UserID, reason: str) -> None:
 
     db.session.commit()
 
-    action_service.execute_actions(order.to_transfer_object(), payment_state_to)
+    action_service.execute_actions(order.to_transfer_object(), payment_state_to,
+                                   initiator_id)
 
 
 def mark_order_as_paid(order_id: OrderID, payment_method: PaymentMethod,
@@ -268,7 +269,8 @@ def mark_order_as_paid(order_id: OrderID, payment_method: PaymentMethod,
 
     db.session.commit()
 
-    action_service.execute_actions(order.to_transfer_object(), payment_state_to)
+    action_service.execute_actions(order.to_transfer_object(), payment_state_to,
+                                   initiator_id)
 
 
 def _update_payment_state(order: DbOrder, state: PaymentState,

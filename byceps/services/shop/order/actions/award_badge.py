@@ -6,6 +6,8 @@ byceps.services.shop.order.actions.award_badge
 :License: Modified BSD, see LICENSE for details.
 """
 
+from .....typing import UserID
+
 from ....user_badge import service as badge_service
 from ....user_badge.transfer.models import BadgeAwarding, BadgeID
 
@@ -17,7 +19,7 @@ from ..transfer.models import Order, OrderID
 
 
 def award_badge(order: Order, article_number: ArticleNumber, quantity: int,
-                parameters: Parameters) -> None:
+                initiator_id: UserID, parameters: Parameters) -> None:
     """Award badge to user."""
     badge_id = parameters['badge_id']
     user_id = order.placed_by_id

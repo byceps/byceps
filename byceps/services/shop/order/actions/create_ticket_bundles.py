@@ -6,6 +6,8 @@ byceps.services.shop.order.actions.create_ticket_bundles
 :License: Modified BSD, see LICENSE for details.
 """
 
+from .....typing import UserID
+
 from ....ticketing.models.ticket_bundle import TicketBundle
 from ....ticketing import ticket_bundle_service
 
@@ -17,7 +19,8 @@ from ..transfer.models import Order, OrderID
 
 
 def create_ticket_bundles(order: Order, article_number: ArticleNumber,
-                          bundle_quantity: int, parameters: Parameters) -> None:
+                          bundle_quantity: int, initiator_id: UserID,
+                          parameters: Parameters) -> None:
     """Create ticket bundles."""
     category_id = parameters['category_id']
     ticket_quantity = parameters['ticket_quantity']

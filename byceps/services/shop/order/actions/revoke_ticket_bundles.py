@@ -6,6 +6,8 @@ byceps.services.shop.order.actions.revoke_ticket_bundles
 :License: Modified BSD, see LICENSE for details.
 """
 
+from .....typing import UserID
+
 from ....ticketing import ticket_bundle_service, ticket_service
 from ....ticketing.transfer.models import TicketBundleID
 
@@ -17,7 +19,8 @@ from ..transfer.models import Order, OrderID
 
 
 def revoke_ticket_bundles(order: Order, article_number: ArticleNumber,
-                          bundle_quantity: int, parameters: Parameters) -> None:
+                          bundle_quantity: int, initiator_id: UserID,
+                          parameters: Parameters) -> None:
     """Revoke all ticket bundles in this order."""
     # Fetch all tickets, bundled or not.
     tickets = ticket_service.find_tickets_created_by_order(order.order_number)

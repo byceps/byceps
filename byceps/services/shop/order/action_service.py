@@ -9,6 +9,7 @@ byceps.services.shop.order.action_service
 from typing import Callable, Sequence, Set
 
 from ....database import db
+from ....typing import UserID
 
 from ..article.models.article import Article
 from ..article.transfer.models import ArticleNumber
@@ -62,7 +63,8 @@ def get_actions(shop_id: ShopID) -> Sequence[OrderAction]:
 # -------------------------------------------------------------------- #
 # execution
 
-def execute_actions(order: Order, payment_state: PaymentState) -> None:
+def execute_actions(order: Order, payment_state: PaymentState,
+                    initiator_id: UserID) -> None:
     """Execute relevant actions for this order in its new payment state."""
     article_numbers = {item.article_number for item in order.items}
 
@@ -78,7 +80,7 @@ def execute_actions(order: Order, payment_state: PaymentState) -> None:
     for action in actions:
         article_quantity = quantities_by_article_number[action.article_number]
 
-        _execute_procedure(order, action, article_quantity)
+        _execute_procedure(order, action, article_quantity, initiator_id)
 
 
 def _get_actions(article_numbers: Set[ArticleNumber],
@@ -90,8 +92,8 @@ def _get_actions(article_numbers: Set[ArticleNumber],
         .all()
 
 
-def _execute_procedure(order: Order, action: OrderAction, article_quantity: int
-                      ) -> None:
+def _execute_procedure(order: Order, action: OrderAction, article_quantity: int,
+                       initiator_id: UserID) -> None:
     """Execute the procedure configured for that order action."""
     article_number = action.article_number
     procedure_name = action.procedure
@@ -99,7 +101,7 @@ def _execute_procedure(order: Order, action: OrderAction, article_quantity: int
 
     procedure = _get_procedure(procedure_name, article_number)
 
-    procedure(order, article_number, article_quantity, params)
+    procedure(order, article_number, article_quantity, initiator_id, params)
 
 
 def _get_procedure(name: str, article_number: ArticleNumber) -> OrderActionType:
