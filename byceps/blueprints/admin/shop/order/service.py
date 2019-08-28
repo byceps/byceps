@@ -93,11 +93,11 @@ def _get_additional_data(event: OrderEvent, users_by_id: Dict[UserID, User]
     elif event.event_type == 'ticket-bundle-created':
         return _get_additional_data_for_ticket_bundle_created(event)
     elif event.event_type == 'ticket-bundle-revoked':
-        return _get_additional_data_for_ticket_bundle_revoked(event)
+        return _get_additional_data_for_ticket_bundle_revoked(event, users_by_id)
     elif event.event_type == 'ticket-created':
         return _get_additional_data_for_ticket_created(event)
     elif event.event_type == 'ticket-revoked':
-        return _get_additional_data_for_ticket_revoked(event)
+        return _get_additional_data_for_ticket_revoked(event, users_by_id)
     else:
         return _get_additional_data_for_standard_event(event, users_by_id)
 
@@ -143,12 +143,15 @@ def _get_additional_data_for_ticket_bundle_created(event: OrderEvent
     }
 
 
-def _get_additional_data_for_ticket_bundle_revoked(event: OrderEvent
+def _get_additional_data_for_ticket_bundle_revoked(event: OrderEvent,
+                                                   users_by_id: Dict[UserID, User]
                                                   ) -> OrderEventData:
     bundle_id = event.data['ticket_bundle_id']
+    initiator_id = event.data['initiator_id']
 
     return {
         'bundle_id': bundle_id,
+        'initiator': users_by_id[initiator_id],
     }
 
 
@@ -165,13 +168,16 @@ def _get_additional_data_for_ticket_created(event: OrderEvent
     }
 
 
-def _get_additional_data_for_ticket_revoked(event: OrderEvent
+def _get_additional_data_for_ticket_revoked(event: OrderEvent,
+                                            users_by_id: Dict[UserID, User]
                                            ) -> OrderEventData:
     ticket_id = event.data['ticket_id']
     ticket_code = event.data['ticket_code']
+    initiator_id = event.data['initiator_id']
 
     return {
         'ticket_code': ticket_code,
+        'initiator': users_by_id[initiator_id],
     }
 
 

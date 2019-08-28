@@ -28,16 +28,18 @@ def revoke_tickets(order: Order, article_number: ArticleNumber, quantity: int,
     ticket_ids = {t.id for t in tickets}
     ticket_revocation_service.revoke_tickets(ticket_ids, initiator_id)
 
-    _create_order_events(order.id, tickets)
+    _create_order_events(order.id, tickets, initiator_id)
 
 
-def _create_order_events(order_id: OrderID, tickets: Sequence[Ticket]) -> None:
+def _create_order_events(order_id: OrderID, tickets: Sequence[Ticket],
+                         initiator_id: UserID) -> None:
     event_type = 'ticket-revoked'
 
     datas = [
         {
             'ticket_id': str(ticket.id),
             'ticket_code': ticket.code,
+            'initiator_id': str(initiator_id),
         }
         for ticket in tickets
     ]

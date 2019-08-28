@@ -29,14 +29,16 @@ def revoke_ticket_bundles(order: Order, article_number: ArticleNumber,
 
     for bundle_id in bundle_ids:
         ticket_bundle_service.revoke_bundle(bundle_id, initiator_id)
-        _create_order_event(order.id, bundle_id)
+        _create_order_event(order.id, bundle_id, initiator_id)
 
 
-def _create_order_event(order_id: OrderID, bundle_id: TicketBundleID) -> None:
+def _create_order_event(order_id: OrderID, bundle_id: TicketBundleID,
+                        initiator_id: UserID) -> None:
     event_type = 'ticket-bundle-revoked'
 
     data = {
         'ticket_bundle_id': str(bundle_id),
+        'initiator_id': str(initiator_id),
     }
 
     event_service.create_event(event_type, order_id, data)

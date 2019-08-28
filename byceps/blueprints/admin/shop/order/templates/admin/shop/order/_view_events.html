@@ -79,7 +79,12 @@
         {%- elif event.event == 'ticket-bundle-revoked' %}
           {%- set icon_name = 'ticket' %}
           {%- set body %}
-            Ein <strong><a href="{{ url_for('ticketing_admin.view_bundle', bundle_id=event.bundle_id) }}">Ticket Bundle</a></strong> ist {{ render_ticket_flag_revoked() }} worden.
+            {%- if event.initiator is defined %}
+            <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
+            {%- else %}
+            Jemand
+            {%- endif %}
+            hat das <strong><a href="{{ url_for('ticketing_admin.view_bundle', bundle_id=event.bundle_id) }}">Ticket Bundle</a></strong> {{ render_ticket_flag_revoked() }}.
           {%- endset %}
         {%- elif event.event == 'ticket-created' %}
           {%- set icon_name = 'ticket' %}
@@ -89,7 +94,12 @@
         {%- elif event.event == 'ticket-revoked' %}
           {%- set icon_name = 'ticket' %}
           {%- set body %}
-            Das <strong>Ticket {{ event.ticket_code }}</strong> ist {{ render_ticket_flag_revoked() }} worden.
+            {%- if event.initiator is defined %}
+            <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
+            {%- else %}
+            Jemand
+            {%- endif %}
+            hat das <strong>Ticket {{ event.ticket_code }}</strong> {{ render_ticket_flag_revoked() }}.
           {%- endset %}
         {%- else %}
           {%- set icon_name = 'disabled' %}
