@@ -17,10 +17,8 @@ from . import ticket_service
 from .transfer.models import TicketID
 
 
-def revoke_ticket(ticket_id: TicketID, *,
-                  initiator_id: Optional[UserID]=None,
-                  reason: Optional[str]=None
-                 ) -> None:
+def revoke_ticket(ticket_id: TicketID, initiator_id: UserID,
+                  *, reason: Optional[str]=None) -> None:
     """Revoke the ticket."""
     ticket = ticket_service.find_ticket(ticket_id)
 
@@ -39,10 +37,8 @@ def revoke_ticket(ticket_id: TicketID, *,
     db.session.commit()
 
 
-def revoke_tickets(ticket_ids: Set[TicketID], *,
-                   initiator_id: Optional[UserID]=None,
-                   reason: Optional[str]=None
-                  ) -> None:
+def revoke_tickets(ticket_ids: Set[TicketID], initiator_id: UserID,
+                   *, reason: Optional[str]=None) -> None:
     """Revoke the tickets."""
     tickets = ticket_service.find_tickets(ticket_ids)
 
@@ -60,14 +56,12 @@ def revoke_tickets(ticket_ids: Set[TicketID], *,
     db.session.commit()
 
 
-def _build_ticket_revoked_event(ticket_id: TicketID,
-                                initiator_id: Optional[UserID]=None,
+def _build_ticket_revoked_event(ticket_id: TicketID, initiator_id: UserID,
                                 reason: Optional[str]=None
                                ) -> TicketEvent:
-    data = {}
-
-    if initiator_id is not None:
-        data['initiator_id'] = str(initiator_id)
+    data = {
+        'initiator_id': str(initiator_id),
+    }
 
     if reason:
         data['reason'] = reason

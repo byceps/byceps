@@ -28,6 +28,7 @@ class TicketRevocationTestCase(AbstractAppTestCase):
 
         self.category_id = self.create_category('Premium').id
         self.owner_id = create_user('Ticket_Owner').id
+        self.admin_id = create_user('Orga').id
 
     def test_revoke_ticket(self):
         ticket_before = ticket_creation_service \
@@ -41,7 +42,7 @@ class TicketRevocationTestCase(AbstractAppTestCase):
 
         ticket_id = ticket_before.id
 
-        ticket_revocation_service.revoke_ticket(ticket_id)
+        ticket_revocation_service.revoke_ticket(ticket_id, self.admin_id)
 
         # -------------------------------- #
 
@@ -53,7 +54,9 @@ class TicketRevocationTestCase(AbstractAppTestCase):
 
         ticket_revoked_event = events_after[0]
         assert ticket_revoked_event.event_type == 'ticket-revoked'
-        assert ticket_revoked_event.data == {}
+        assert ticket_revoked_event.data == {
+                'initiator_id': str(self.admin_id),
+            }
 
     def test_revoke_tickets(self):
         tickets_before = ticket_creation_service \
@@ -69,7 +72,7 @@ class TicketRevocationTestCase(AbstractAppTestCase):
 
         ticket_ids = {ticket.id for ticket in tickets_before}
 
-        ticket_revocation_service.revoke_tickets(ticket_ids)
+        ticket_revocation_service.revoke_tickets(ticket_ids, self.admin_id)
 
         # -------------------------------- #
 
@@ -82,7 +85,9 @@ class TicketRevocationTestCase(AbstractAppTestCase):
 
             ticket_revoked_event = events_after[0]
             assert ticket_revoked_event.event_type == 'ticket-revoked'
-            assert ticket_revoked_event.data == {}
+            assert ticket_revoked_event.data == {
+                'initiator_id': str(self.admin_id),
+            }
 
     def test_revoke_ticket_with_seat(self):
         area = seating_area_service.create_area(self.party.id, 'main', 'Main')
@@ -102,7 +107,7 @@ class TicketRevocationTestCase(AbstractAppTestCase):
 
         # -------------------------------- #
 
-        ticket_revocation_service.revoke_ticket(ticket.id)
+        ticket_revocation_service.revoke_ticket(ticket.id, self.admin_id)
 
         # -------------------------------- #
 
@@ -130,7 +135,7 @@ class TicketRevocationTestCase(AbstractAppTestCase):
 
         # -------------------------------- #
 
-        ticket_revocation_service.revoke_tickets(ticket_ids)
+        ticket_revocation_service.revoke_tickets(ticket_ids, self.admin_id)
 
         # -------------------------------- #
 

@@ -9,7 +9,7 @@ from byceps.services.ticketing import category_service, event_service, \
 from tests.helpers import create_brand, create_party
 
 
-def test_revoke_bundle(admin_app_with_db, normal_user):
+def test_revoke_bundle(admin_app_with_db, normal_user, admin_user):
     brand = create_brand()
     party = create_party(brand_id=brand.id)
 
@@ -29,7 +29,7 @@ def test_revoke_bundle(admin_app_with_db, normal_user):
 
     # -------------------------------- #
 
-    bundle_service.revoke_bundle(bundle.id)
+    bundle_service.revoke_bundle(bundle.id, admin_user.id)
 
     # -------------------------------- #
 
@@ -44,7 +44,9 @@ def test_revoke_bundle(admin_app_with_db, normal_user):
 
         ticket_revoked_event = events_after[0]
         assert ticket_revoked_event.event_type == 'ticket-revoked'
-        assert ticket_revoked_event.data == {}
+        assert ticket_revoked_event.data == {
+            'initiator_id': str(admin_user.id),
+        }
 
 
 # helpers

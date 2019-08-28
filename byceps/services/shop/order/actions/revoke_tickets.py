@@ -26,7 +26,7 @@ def revoke_tickets(order: Order, article_number: ArticleNumber, quantity: int,
     tickets = ticket_service.find_tickets_created_by_order(order.order_number)
 
     ticket_ids = {t.id for t in tickets}
-    ticket_revocation_service.revoke_tickets(ticket_ids)
+    ticket_revocation_service.revoke_tickets(ticket_ids, initiator_id)
 
     _create_order_events(order.id, tickets)
 

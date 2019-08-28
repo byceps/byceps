@@ -28,7 +28,7 @@ def revoke_ticket_bundles(order: Order, article_number: ArticleNumber,
     bundle_ids = {t.bundle_id for t in tickets if t.bundle_id}
 
     for bundle_id in bundle_ids:
-        ticket_bundle_service.revoke_bundle(bundle_id)
+        ticket_bundle_service.revoke_bundle(bundle_id, initiator_id)
         _create_order_event(order.id, bundle_id)
 
 

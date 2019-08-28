@@ -41,10 +41,8 @@ def create_bundle(category_id: TicketCategoryID, ticket_quantity: int,
     return bundle
 
 
-def revoke_bundle(bundle_id: TicketBundleID, *,
-                  initiator_id: Optional[UserID]=None,
-                  reason: Optional[str]=None
-                 ) -> None:
+def revoke_bundle(bundle_id: TicketBundleID, initiator_id: UserID,
+                  *, reason: Optional[str]=None) -> None:
     """Revoke the tickets included in this bundle."""
     bundle = find_bundle(bundle_id)
 
