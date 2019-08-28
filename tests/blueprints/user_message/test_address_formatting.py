@@ -7,10 +7,10 @@ from unittest.mock import patch
 
 import pytest
 
-from byceps.database import db
 from byceps.services.email import service as email_service
 from byceps.services.user_message import service as user_message_service
 
+from tests.conftest import database_recreated
 from tests.helpers import app_context, create_brand, create_user
 
 
@@ -39,24 +39,7 @@ def params(request):
 
 
 @pytest.fixture
-def application():
+def application(db):
     with app_context():
-        set_up_database()
-
-        yield
-
-        tear_down_database()
-
-
-# helpers
-
-
-def set_up_database():
-    db.reflect()
-    db.drop_all()
-    db.create_all()
-
-
-def tear_down_database():
-    db.session.remove()
-    db.drop_all()
+        with database_recreated(db):
+            yield
