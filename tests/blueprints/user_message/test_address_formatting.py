@@ -19,9 +19,10 @@ def test_recipient_formatting(application, params):
 
     brand = create_brand()
 
+    email_config_id = brand.id
     sender_address = '{}@example.com'.format(brand.id)
-    email_service.set_sender_for_brand(brand.id, sender_address,
-                                       sender_name=brand.title)
+    email_service.set_sender(email_config_id, sender_address,
+                             sender_name=brand.title)
 
     user = create_user(screen_name, email_address=email_address)
 

@@ -7,7 +7,6 @@ byceps.services.user.email_address_confirmation_service
 """
 
 from ...database import db
-from ...typing import BrandID
 
 from ..email import service as email_service
 from ..site import service as site_service
@@ -19,9 +18,9 @@ from ..verification_token import service as verification_token_service
 def send_email_address_confirmation_email(recipient_email_address: str,
                                           recipient_screen_name: str,
                                           verification_token: Token,
-                                          brand_id: BrandID, site_id: SiteID
+                                          email_config_id: str, site_id: SiteID
                                          ) -> None:
-    sender = email_service.get_sender_for_brand(brand_id)
+    sender = email_service.get_sender(email_config_id)
 
     site = site_service.find_site(site_id)
     if site is None:

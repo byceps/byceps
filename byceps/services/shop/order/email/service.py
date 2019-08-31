@@ -25,7 +25,6 @@ from .....services.snippet import service as snippet_service
 from .....services.snippet.service import SnippetNotFound
 from .....services.snippet.transfer.models import Scope
 from .....services.user.models.user import User
-from .....typing import BrandID
 from .....util.money import format_euro_amount
 from .....util.templatefilters import utc_to_local_tz
 from .....util.templating import create_sandboxed_environment, load_template
@@ -36,7 +35,7 @@ from ...shop.transfer.models import ShopID
 @attrs(auto_attribs=True, frozen=True, slots=True)
 class OrderEmailData:
     order: Order
-    brand_id: BrandID
+    email_config_id: str
     orderer_screen_name: str
     orderer_email_address: str
 
@@ -77,7 +76,7 @@ def _assemble_email_for_incoming_order_to_orderer(data: OrderEmailData
     recipient_address = data.orderer_email_address
 
     return _assemble_email_to_orderer(subject, template_name, template_context,
-                                      data.brand_id, recipient_address)
+                                      data.email_config_id, recipient_address)
 
 
 def _get_payment_instructions(order: Order) -> str:
@@ -96,7 +95,7 @@ def _assemble_email_for_canceled_order_to_orderer(data: OrderEmailData
     recipient_address = data.orderer_email_address
 
     return _assemble_email_to_orderer(subject, template_name, template_context,
-                                      data.brand_id, recipient_address)
+                                      data.email_config_id, recipient_address)
 
 
 def _assemble_email_for_paid_order_to_orderer(data: OrderEmailData) -> Message:
@@ -107,7 +106,7 @@ def _assemble_email_for_paid_order_to_orderer(data: OrderEmailData) -> Message:
     recipient_address = data.orderer_email_address
 
     return _assemble_email_to_orderer(subject, template_name, template_context,
-                                      data.brand_id, recipient_address)
+                                      data.email_config_id, recipient_address)
 
 
 def _get_order_email_data(order_id: OrderID) -> OrderEmailData:
@@ -121,7 +120,7 @@ def _get_order_email_data(order_id: OrderID) -> OrderEmailData:
 
     return OrderEmailData(
         order=order,
-        brand_id=party.brand_id,
+        email_config_id=party.brand_id,
         orderer_screen_name=placed_by.screen_name,
         orderer_email_address=placed_by.email_address,
     )
@@ -147,22 +146,22 @@ def _get_footer(order: Order) -> str:
 
 def _assemble_email_to_orderer(subject: str, template_name: str,
                                template_context: Dict[str, Any],
-                               brand_id: BrandID, recipient_address: str
+                               email_config_id: str, recipient_address: str
                               ) -> Message:
     """Assemble an email message with the rendered template as its body."""
-    sender = _get_sender_address_for_brand(brand_id)
+    sender = _get_sender_address(email_config_id)
     body = _render_template(template_name, **template_context)
     recipients = [recipient_address]
 
     return Message(sender, recipients, subject, body)
 
 
-def _get_sender_address_for_brand(brand_id: BrandID) -> Optional[Sender]:
-    sender = email_service.find_sender_for_brand(brand_id)
+def _get_sender_address(email_config_id: str) -> Optional[Sender]:
+    sender = email_service.find_sender(email_config_id)
 
     if not sender:
         current_app.logger.warning(
-            'No e-mail sender configured for brand ID "%s".', brand_id)
+            'No e-mail sender configured for ID "%s".', email_config_id)
 
     return sender
 

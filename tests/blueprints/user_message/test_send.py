@@ -23,8 +23,9 @@ class SendUserMessageTest(AbstractAppTestCase):
         party = create_party(self.brand.id)
         create_site(party.id)
 
-        email_service.set_sender_for_brand(self.brand.id, 'noreply@example.com',
-                                           sender_name='ACME Entertainment Convention')
+        email_config_id = self.brand.id
+        email_service.set_sender(email_config_id, 'noreply@example.com',
+                                 sender_name='ACME Entertainment Convention')
 
     @patch('byceps.email.send')
     def test_send_when_logged_in_without_brand_contact_address(self,

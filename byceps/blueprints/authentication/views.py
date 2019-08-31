@@ -230,7 +230,7 @@ def request_password_reset():
         sender_name = None
         sender = Sender(sender_address, sender_name)
     else:
-        sender = email_service.get_sender_for_brand(g.brand_id)
+        sender = email_service.get_sender(g.brand_id)
 
     password_reset_service.prepare_password_reset(user, sender)
 

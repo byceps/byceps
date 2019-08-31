@@ -10,7 +10,6 @@ from typing import List, Optional
 
 from ...database import db, upsert
 from ... import email
-from ...typing import BrandID
 from ...util.jobqueue import enqueue
 
 from .models import EmailConfig as DbEmailConfig
@@ -21,9 +20,9 @@ class EmailError(Exception):
     pass
 
 
-def find_sender_for_brand(brand_id: BrandID) -> Optional[Sender]:
-    """Return the configured sender for the brand."""
-    config = DbEmailConfig.query.get(brand_id)
+def find_sender(config_id: str) -> Optional[Sender]:
+    """Return the configured sender."""
+    config = DbEmailConfig.query.get(config_id)
 
     if config is None:
         return None
@@ -34,25 +33,24 @@ def find_sender_for_brand(brand_id: BrandID) -> Optional[Sender]:
     )
 
 
-def get_sender_for_brand(brand_id: BrandID) -> Sender:
-    """Return the configured sender for the brand, or raise an error if
-    none is configured for that brand ID.
+def get_sender(config_id: str) -> Sender:
+    """Return the configured sender, or raise an error if none is
+    configured for that ID.
     """
-    sender = find_sender_for_brand(brand_id)
+    sender = find_sender(config_id)
 
     if not sender:
-        raise EmailError(
-            'No sender configured for brand "{}".'.format(brand_id))
+        raise EmailError('No sender configured for ID "{}".'.format(config_id))
 
     return sender
 
 
-def set_sender_for_brand(brand_id: BrandID, sender_address: str,
-                         *, sender_name: Optional[str]=None) -> None:
-    """Set the sender e-mail address for the brand."""
+def set_sender(config_id: str, sender_address: str,
+               *, sender_name: Optional[str]=None) -> None:
+    """Set sender e-mail address and name for a config."""
     table = DbEmailConfig.__table__
     identifier = {
-        'brand_id': brand_id,
+        'id': config_id,
         'sender_address': sender_address,
     }
     replacement = {

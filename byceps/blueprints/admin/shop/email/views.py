@@ -159,7 +159,7 @@ def _build_order(shop_id, payment_state, *, is_open=False, is_canceled=False,
 def _build_email_data(order, party):
     return email_service.OrderEmailData(
         order=order,
-        brand_id=party.brand_id,
+        email_config_id=party.brand_id,
         orderer_screen_name='Besteller',
         orderer_email_address='besteller@example.com',
     )

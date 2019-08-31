@@ -22,7 +22,9 @@ class EmailOnOrderCanceledTest(OrderEmailTestBase):
         super().setUp()
 
         brand = create_brand()
-        email_service.set_sender_for_brand(brand.id, 'acmecon@example.com')
+
+        email_config_id = brand.id
+        email_service.set_sender(email_config_id, 'acmecon@example.com')
 
         self.party = create_party(brand.id)
 
