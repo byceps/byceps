@@ -168,8 +168,7 @@ def _build_email_data(order, party):
 def _render_message(message):
     if not message.sender:
         raise ConfigurationError(
-            'No e-mail sender address configured for brand ID "{}".'
-            .format(data.brand_id))
+            'No e-mail sender address configured for message.')
 
     yield 'From: {}\n'.format(message.sender)
     yield 'To: {}\n'.format(message.recipients)
