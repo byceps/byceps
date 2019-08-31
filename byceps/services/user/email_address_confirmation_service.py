@@ -21,7 +21,7 @@ def send_email_address_confirmation_email(recipient_email_address: str,
                                           verification_token: Token,
                                           brand_id: BrandID, site_id: SiteID
                                          ) -> None:
-    sender_address = email_service.get_sender_address_for_brand(brand_id)
+    sender = email_service.get_sender_for_brand(brand_id)
 
     site = site_service.find_site(site_id)
     if site is None:
@@ -38,7 +38,7 @@ def send_email_address_confirmation_email(recipient_email_address: str,
     ).format(recipient_screen_name, confirmation_url)
     recipients = [recipient_email_address]
 
-    email_service.enqueue_email(sender_address, recipients, subject, body)
+    email_service.enqueue_email(sender, recipients, subject, body)
 
 
 def confirm_email_address(verification_token: Token) -> None:

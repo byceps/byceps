@@ -11,6 +11,7 @@ from flask import url_for
 from ....database import db
 
 from ...email import service as email_service
+from ...email.transfer.models import Sender
 from ...user.models.user import User
 from ...verification_token.models import Token
 from ...verification_token import service as verification_token_service
@@ -18,7 +19,7 @@ from ...verification_token import service as verification_token_service
 from . import service as password_service
 
 
-def prepare_password_reset(user: User, sender_address: str) -> None:
+def prepare_password_reset(user: User, sender: Sender) -> None:
     """Create a verification token for password reset and email it to
     the user's address.
     """
@@ -29,15 +30,15 @@ def prepare_password_reset(user: User, sender_address: str) -> None:
                                token=verification_token.token,
                                _external=True)
 
+    recipients = [user.email_address]
     subject = '{0.screen_name}, so kannst du ein neues Passwort festlegen' \
         .format(user)
     body = (
         'Hallo {0.screen_name},\n\n'
         'du kannst ein neues Passwort festlegen, indem du diese URL abrufst: {1}'
     ).format(user, confirmation_url)
-    recipients = [user.email_address]
 
-    email_service.enqueue_email(sender_address, recipients, subject, body)
+    email_service.enqueue_email(sender, recipients, subject, body)
 
 
 def reset_password(verification_token: Token, password: str) -> None:

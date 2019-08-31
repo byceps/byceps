@@ -17,6 +17,7 @@ from ...services.authentication.password import \
 from ...services.authentication.session import service as session_service
 from ...services.consent import consent_service
 from ...services.email import service as email_service
+from ...services.email.transfer.models import Sender
 from ...services.site import settings_service as site_settings_service
 from ...services.terms import consent_service as terms_consent_service, \
     version_service as terms_version_service
@@ -226,10 +227,12 @@ def request_password_reset():
 
     if get_site_mode().is_admin():
         sender_address = current_app.config['EMAIL_SENDER_ADDRESS']
+        sender_name = None
+        sender = Sender(sender_address, sender_name)
     else:
-        sender_address = email_service.get_sender_address_for_brand(g.brand_id)
+        sender = email_service.get_sender_for_brand(g.brand_id)
 
-    password_reset_service.prepare_password_reset(user, sender_address)
+    password_reset_service.prepare_password_reset(user, sender)
 
     flash_success(
         'Ein Link zum Setzen eines neuen Passworts für den Benutzernamen "{}" '

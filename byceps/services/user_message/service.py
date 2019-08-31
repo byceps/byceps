@@ -72,7 +72,7 @@ def _get_brand(brand_id: BrandID) -> Brand:
     return brand
 
 
-def _assemble_message(sender: User, recipient: User, text: str,
+def _assemble_message(sender_user: User, recipient: User, text: str,
                       sender_contact_url: str, brand: Brand
                      ) -> Message:
     """Assemble an email message with the rendered template as its body."""
@@ -80,11 +80,10 @@ def _assemble_message(sender: User, recipient: User, text: str,
         .find_setting_value(brand.id, 'contact_email_address')
 
     message_template_render_result = _render_message_template(
-        sender, recipient, text, sender_contact_url, brand,
+        sender_user, recipient, text, sender_contact_url, brand,
         brand_contact_address)
 
-    sender_address = email_service.get_sender_address_for_brand(brand.id)
-    sender_str = _to_name_and_address_string(brand.title, sender_address)
+    sender = email_service.get_sender_for_brand(brand.id)
 
     recipient_address = user_service.get_email_address(recipient.id)
     recipient_str = _to_name_and_address_string(recipient.screen_name,
@@ -94,7 +93,7 @@ def _assemble_message(sender: User, recipient: User, text: str,
     subject = message_template_render_result.subject
     body = message_template_render_result.body
 
-    return Message(sender_str, recipient_strs, subject, body)
+    return Message(sender, recipient_strs, subject, body)
 
 
 def _to_name_and_address_string(name: str, address: str) -> str:

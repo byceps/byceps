@@ -16,7 +16,7 @@ from flask import current_app
 from jinja2 import FileSystemLoader
 
 from .....services.email import service as email_service
-from .....services.email.transfer.models import Message
+from .....services.email.transfer.models import Message, Sender
 from .....services.party import service as party_service
 from .....services.shop.order import service as order_service
 from .....services.shop.order.transfer.models import Order, OrderID
@@ -157,14 +157,14 @@ def _assemble_email_to_orderer(subject: str, template_name: str,
     return Message(sender, recipients, subject, body)
 
 
-def _get_sender_address_for_brand(brand_id: BrandID) -> Optional[str]:
-    sender_address = email_service.find_sender_address_for_brand(brand_id)
+def _get_sender_address_for_brand(brand_id: BrandID) -> Optional[Sender]:
+    sender = email_service.find_sender_for_brand(brand_id)
 
-    if not sender_address:
+    if not sender:
         current_app.logger.warning(
-            'No e-mail sender address configured for brand ID "%s".', brand_id)
+            'No e-mail sender configured for brand ID "%s".', brand_id)
 
-    return sender_address
+    return sender
 
 
 def _get_snippet_body(shop_id: ShopID, name: str) -> str:
