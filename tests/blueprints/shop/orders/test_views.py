@@ -3,6 +3,7 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
+from byceps.services.email import service as email_service
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order.models.orderer import Orderer
 from byceps.services.shop.order import service as order_service
@@ -27,8 +28,11 @@ class ShopOrdersTestCase(ShopTestBase):
         self.party = create_party(self.brand.id)
         create_site(self.party.id)
 
+        self.email_config_id = self.brand.id
+        email_service.set_sender(self.email_config_id, 'shop@example.com')
+
     def test_view_matching_user_and_party(self):
-        shop = self.create_shop(self.party.id)
+        shop = self.create_shop(self.party.id, self.email_config_id)
         self.create_order_number_sequence(shop.id, 'LF-02-B')
         self.create_payment_instructions_snippet(shop.id)
 
@@ -39,7 +43,7 @@ class ShopOrdersTestCase(ShopTestBase):
         assert response.status_code == 200
 
     def test_view_matching_party_but_different_user(self):
-        shop = self.create_shop(self.party.id)
+        shop = self.create_shop(self.party.id, self.email_config_id)
         self.create_order_number_sequence(shop.id, 'LF-02-B')
         self.create_payment_instructions_snippet(shop.id)
 
@@ -53,7 +57,7 @@ class ShopOrdersTestCase(ShopTestBase):
         other_party = create_party(self.brand.id, 'otherlan-2013',
                                    'OtherLAN 2013')
 
-        shop = self.create_shop(other_party.id)
+        shop = self.create_shop(other_party.id, self.email_config_id)
         self.create_order_number_sequence(shop.id, 'LF-02-B')
         self.create_payment_instructions_snippet(shop.id)
 

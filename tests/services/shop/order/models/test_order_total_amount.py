@@ -5,6 +5,7 @@
 
 from decimal import Decimal
 
+from byceps.services.email import service as email_service
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import service as order_service
 from byceps.services.shop.order.transfer.models import PaymentMethod
@@ -26,7 +27,10 @@ class OrderTotalAmountTest(ShopTestBase):
         brand = create_brand()
         party = create_party(brand_id=brand.id)
 
-        self.shop = self.create_shop(party.id)
+        email_config_id = brand.id
+        email_service.set_sender(email_config_id, 'shop@example.com')
+
+        self.shop = self.create_shop(party.id, email_config_id)
         self.create_order_number_sequence(self.shop.id, 'LF-01-B')
 
         self.article1 = self.create_article(1, Decimal('49.95'))

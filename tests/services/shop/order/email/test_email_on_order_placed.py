@@ -29,7 +29,7 @@ class EmailOnOrderPlacedTest(OrderEmailTestBase):
 
         self.party = create_party(brand.id)
 
-        self.shop = self.create_shop(self.party.id)
+        self.shop = self.create_shop(self.party.id, email_config_id)
         self.create_order_number_sequence(self.shop.id, 'AC-14-B', value=252)
 
         self.create_email_payment_instructions_snippet()

@@ -20,8 +20,8 @@ class ShopTestBase(AbstractAppTestCase):
     # -------------------------------------------------------------------- #
     # helpers
 
-    def create_shop(self, party_id):
-        shop = create_shop(party_id)
+    def create_shop(self, party_id, email_config_id):
+        shop = create_shop(party_id, email_config_id)
 
         self.db.session.add(shop)
         self.db.session.commit()

@@ -9,6 +9,7 @@ from decimal import Decimal
 
 from freezegun import freeze_time
 
+from byceps.services.email import service as email_service
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order.models.orderer import Orderer
 from byceps.services.shop.order import service as order_service
@@ -29,7 +30,10 @@ class ExportTestCase(ShopTestBase):
 
         self.create_brand_and_party()
 
-        self.shop = self.create_shop(self.party.id)
+        email_config_id = self.brand.id
+        email_service.set_sender(email_config_id, 'shop@example.com')
+
+        self.shop = self.create_shop(self.party.id, email_config_id)
         self.create_order_number_sequence(self.shop.id, 'LR-08-B', value=26)
         self.create_articles()
         self.order = self.place_order()

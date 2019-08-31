@@ -3,6 +3,7 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
+from byceps.services.email import service as email_service
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import ordered_articles_service
 from byceps.services.shop.order import service as order_service
@@ -26,7 +27,10 @@ class OrderedArticlesServiceTestCase(ShopTestBase):
         brand = create_brand()
         party = create_party(brand_id=brand.id)
 
-        self.shop = self.create_shop(party.id)
+        email_config_id = brand.id
+        email_service.set_sender(email_config_id, 'shop@example.com')
+
+        self.shop = self.create_shop(party.id, email_config_id)
         self.create_order_number_sequence(self.shop.id, 'ABC-01-B')
         self.article = self.create_article(self.shop.id, quantity=100)
 

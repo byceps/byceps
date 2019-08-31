@@ -5,6 +5,7 @@
 
 from unittest.mock import patch
 
+from byceps.services.email import service as email_service
 from byceps.services.shop.article.models.article import Article
 from byceps.services.shop.order.models.order import Order
 
@@ -24,9 +25,12 @@ class ShopOrderTestCase(ShopTestBase):
         party = create_party(brand.id)
         create_site(party.id)
 
+        email_config_id = brand.id
+        email_service.set_sender(email_config_id, 'shop@example.com')
+
         self.setup_orderer()
 
-        self.shop = self.create_shop(party.id)
+        self.shop = self.create_shop(party.id, email_config_id)
         self.setup_order_number_prefix_and_sequence()
         self.create_shop_fragment(self.shop.id, 'payment_instructions',
                                   'Send all ur moneyz!')
