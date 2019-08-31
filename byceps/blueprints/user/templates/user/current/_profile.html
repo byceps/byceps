@@ -4,12 +4,6 @@
 
   <h2>Profil</h2>
   <table class="index">
-    {%- if g.site_mode.is_public() %}
-    <tr>
-      <th>öffentliches Profil</th>
-      <td><a href="{{ url_for('user_profile.view', user_id=user.id) }}">Ansehen</a></td>
-    </tr>
-    {%- endif %}
     <tr>
       <th>Avatar</th>
       <td>
