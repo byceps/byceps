@@ -19,12 +19,15 @@ class Shop(db.Model):
 
     id = db.Column(db.UnicodeText, primary_key=True)
     party_id = db.Column(db.UnicodeText, db.ForeignKey('parties.id'), unique=True, nullable=False)
+    email_config_id = db.Column(db.UnicodeText, db.ForeignKey('email_configs.id'), nullable=False)
     closed = db.Column(db.Boolean, default=False, nullable=False)
     archived = db.Column(db.Boolean, default=False, nullable=False)
 
-    def __init__(self, shop_id: ShopID, party_id: PartyID) -> None:
+    def __init__(self, shop_id: ShopID, party_id: PartyID, email_config_id: str
+                ) -> None:
         self.id = shop_id
         self.party_id = party_id
+        self.email_config_id = email_config_id
 
     def __repr__(self) -> str:
         return ReprBuilder(self) \

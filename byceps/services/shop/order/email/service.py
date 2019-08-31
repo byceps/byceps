@@ -17,7 +17,6 @@ from jinja2 import FileSystemLoader
 
 from .....services.email import service as email_service
 from .....services.email.transfer.models import Message, Sender
-from .....services.party import service as party_service
 from .....services.shop.order import service as order_service
 from .....services.shop.order.transfer.models import Order, OrderID
 from .....services.shop.shop import service as shop_service
@@ -115,12 +114,11 @@ def _get_order_email_data(order_id: OrderID) -> OrderEmailData:
 
     order = order_entity.to_transfer_object()
     shop = shop_service.get_shop(order.shop_id)
-    party = party_service.find_party(shop.party_id)
     placed_by = order_entity.placed_by
 
     return OrderEmailData(
         order=order,
-        email_config_id=party.brand_id,
+        email_config_id=shop.email_config_id,
         orderer_screen_name=placed_by.screen_name,
         orderer_email_address=placed_by.email_address,
     )

@@ -20,5 +20,6 @@ ShopID = NewType('ShopID', str)
 class Shop:
     id: ShopID
     party_id: PartyID
+    email_config_id: str
     closed: bool
     archived: bool
