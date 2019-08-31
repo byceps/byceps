@@ -170,7 +170,7 @@ def _render_message(message):
         raise ConfigurationError(
             'No e-mail sender address configured for message.')
 
-    yield 'From: {}\n'.format(message.sender)
-    yield 'To: {}\n'.format(message.recipients)
-    yield 'Subject: {}\n'.format(message.subject)
-    yield '\n\n' + message.body + '\n'
+    yield f'From: {message.sender}\n'
+    yield f'To: {message.recipients}\n'
+    yield f'Subject: {message.subject}\n'
+    yield f'\n\n{message.body}\n'
