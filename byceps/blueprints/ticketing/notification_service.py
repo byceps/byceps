@@ -10,6 +10,7 @@ from flask import g
 
 from ...services.email import service as email_service
 from ...services.party import service as party_service
+from ...services.site import service as site_service
 from ...services.ticketing.models.ticket import Ticket
 from ...services.user import service as user_service
 from ...services.user.transfer.models import User
@@ -105,7 +106,8 @@ def _get_party_title():
 
 
 def _enqueue_email(recipient: User, subject: str, body: str) -> None:
-    sender = email_service.get_sender(g.brand_id)
+    site = site_service.get_site(g.site_id)
+    sender = email_service.get_sender(site.email_config_id)
 
     recipient_address = user_service.get_email_address(recipient.id)
     recipients = [recipient_address]

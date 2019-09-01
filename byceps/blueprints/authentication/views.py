@@ -18,7 +18,8 @@ from ...services.authentication.session import service as session_service
 from ...services.consent import consent_service
 from ...services.email import service as email_service
 from ...services.email.transfer.models import Sender
-from ...services.site import settings_service as site_settings_service
+from ...services.site import service as site_service, \
+    settings_service as site_settings_service
 from ...services.terms import consent_service as terms_consent_service, \
     version_service as terms_version_service
 from ...services.user import service as user_service
@@ -230,7 +231,8 @@ def request_password_reset():
         sender_name = None
         sender = Sender(sender_address, sender_name)
     else:
-        sender = email_service.get_sender(g.brand_id)
+        site = site_service.get_site(g.site_id)
+        sender = email_service.get_sender(site.email_config_id)
 
     password_reset_service.prepare_password_reset(user, sender)
 
