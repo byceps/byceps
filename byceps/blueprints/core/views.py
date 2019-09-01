@@ -75,9 +75,7 @@ def provide_site_mode():
     # current party and brand
     party_id = None
     if site_mode.is_public():
-        site = site_service.find_site(site_id)
-        if site is None:
-            raise Exception('Unknown site ID "{}".'.format(site_id))
+        site = site_service.get_site(site_id)
 
         party_id = site.party_id
 

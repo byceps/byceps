@@ -48,13 +48,23 @@ def update_site(site_id: SiteID, title: str, server_name: str,
 
 
 def find_site(site_id: SiteID) -> Optional[Site]:
-    """Return the site with that id, or `None` if not found."""
+    """Return the site with that ID, or `None` if not found."""
     site = DbSite.query.get(site_id)
 
     if site is None:
         return None
 
     return _db_entity_to_site(site)
+
+
+def get_site(site_id: SiteID) -> Site:
+    """Return the site with that ID."""
+    site = find_site(site_id)
+
+    if site is None:
+        raise UnknownSiteId(site_id)
+
+    return site
 
 
 def get_all_sites() -> List[Site]:

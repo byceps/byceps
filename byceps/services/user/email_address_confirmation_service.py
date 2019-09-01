@@ -22,9 +22,7 @@ def send_email_address_confirmation_email(recipient_email_address: str,
                                          ) -> None:
     sender = email_service.get_sender(email_config_id)
 
-    site = site_service.find_site(site_id)
-    if site is None:
-        raise ValueError('Unknown site ID "{}"'.format(site_id))
+    site = site_service.get_site(site_id)
 
     confirmation_url = 'https://{}/users/email_address/confirmation/{}' \
         .format(site.server_name, verification_token.token)
