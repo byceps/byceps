@@ -22,6 +22,7 @@ class Site:
     party_id: PartyID
     title: str
     server_name: str
+    email_config_id: str
 
 
 @attrs(auto_attribs=True, frozen=True, slots=True)

@@ -4,8 +4,8 @@
 """
 
 from tests.base import AbstractAppTestCase
-from tests.helpers import create_brand, create_party, create_site, \
-    create_user, http_client
+from tests.helpers import create_brand, create_email_config, create_party, \
+    create_site, create_user, http_client
 
 from testfixtures.verification_token import \
     create_verification_token_for_email_address_confirmation \
@@ -21,6 +21,7 @@ class EmailAddressConfirmationTestCase(AbstractAppTestCase):
 
         brand = create_brand()
         party = create_party(brand.id)
+        create_email_config()
         create_site(party.id)
 
     def test_confirm_email_address_with_valid_token(self):

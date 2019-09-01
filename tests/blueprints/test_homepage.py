@@ -4,8 +4,8 @@
 """
 
 from tests.base import AbstractAppTestCase
-from tests.helpers import create_brand, create_party, create_site, \
-    create_user, http_client
+from tests.helpers import create_brand, create_email_config, create_party, \
+    create_site, create_user, http_client
 
 
 class HomePageTest(AbstractAppTestCase):
@@ -15,6 +15,7 @@ class HomePageTest(AbstractAppTestCase):
 
         brand = create_brand()
         party = create_party(brand.id)
+        create_email_config()
         create_site(party.id)
 
     def test_homepage(self):

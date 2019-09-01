@@ -120,8 +120,10 @@ def create(party_id):
     site_id = form.id.data.strip().lower()
     title = form.title.data.strip()
     server_name = form.server_name.data.strip()
+    email_config_id = form.email_config_id.data.strip()
 
-    site = site_service.create_site(site_id, party.id, title, server_name)
+    site = site_service.create_site(site_id, party.id, title, server_name,
+                                    email_config_id)
 
     flash_success('Die Site "{}" wurde angelegt.', site.title)
     return redirect_to('.view', site_id=site.id)
@@ -156,13 +158,15 @@ def update(site_id):
 
     title = form.title.data.strip()
     server_name = form.server_name.data.strip()
+    email_config_id = form.email_config_id.data.strip()
 
     try:
-        site = site_service.update_site(site.id, title, server_name)
+        site = site_service.update_site(site.id, title, server_name,
+                                        email_config_id)
     except site_service.UnknownSiteId:
         abort(404, 'Unknown site ID "{}".'.format(site_id))
 
-    flash_success('Der Site "{}" wurde aktualisiert.', site.title)
+    flash_success('Die Site "{}" wurde aktualisiert.', site.title)
 
     return redirect_to('.view', site_id=site.id)
 

@@ -11,8 +11,8 @@ from byceps.services.shop.order.transfer.models import PaymentMethod
 
 from testfixtures.shop_order import create_orderer
 
-from tests.helpers import create_brand, create_party, create_site, \
-    create_user_with_detail, http_client, login_user
+from tests.helpers import create_brand, create_email_config, create_party, \
+    create_site, create_user_with_detail, http_client, login_user
 from tests.services.shop.base import ShopTestBase
 
 
@@ -26,6 +26,7 @@ class ShopOrdersTestCase(ShopTestBase):
 
         self.brand = create_brand()
         self.party = create_party(self.brand.id)
+        create_email_config()
         create_site(self.party.id)
 
         self.email_config_id = self.brand.id

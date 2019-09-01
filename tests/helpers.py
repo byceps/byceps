@@ -14,6 +14,7 @@ from byceps.application import create_app
 from byceps.database import db
 from byceps.services.authentication.session import service as session_service
 from byceps.services.authorization import service as authorization_service
+from byceps.services.email import service as email_service
 from byceps.services.party import service as party_service
 from byceps.services.site import service as site_service
 
@@ -105,8 +106,14 @@ def create_party(brand_id, party_id='acmecon-2014', title='ACMECon 2014'):
 
 
 def create_site(party_id, *, site_id='acmecon-2014-website', title='Website',
-                server_name='www.example.com'):
-    return site_service.create_site(site_id, party_id, title, server_name)
+                server_name='www.example.com', email_config_id='acmecon'):
+    return site_service.create_site(site_id, party_id, title, server_name,
+                                    email_config_id)
+
+
+def create_email_config(config_id='acmecon', sender_address='info@example.com',
+                        sender_name='ACMECon'):
+    email_service.set_sender(config_id, sender_address, sender_name=sender_name)
 
 
 @contextmanager

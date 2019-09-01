@@ -24,13 +24,15 @@ class Site(db.Model):
     party_id = db.Column(db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False)
     title = db.Column(db.UnicodeText, nullable=False)
     server_name = db.Column(db.UnicodeText, nullable=False)
+    email_config_id = db.Column(db.UnicodeText, db.ForeignKey('email_configs.id'), nullable=False)
 
     def __init__(self, site_id: SiteID, party_id: PartyID, title: str,
-                 server_name: str) -> None:
+                 server_name: str, email_config_id: str) -> None:
         self.id = site_id
         self.party_id = party_id
         self.title = title
         self.server_name = server_name
+        self.email_config_id = email_config_id
 
     def __repr__(self) -> str:
         return ReprBuilder(self) \

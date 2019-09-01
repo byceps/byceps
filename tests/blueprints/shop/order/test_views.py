@@ -11,8 +11,8 @@ from byceps.services.shop.order.models.order import Order
 
 from testfixtures.shop_article import create_article
 
-from tests.helpers import create_brand, create_party, create_site, \
-    create_user, http_client, login_user
+from tests.helpers import create_brand, create_email_config, create_party, \
+    create_site, create_user, http_client, login_user
 from tests.services.shop.base import ShopTestBase
 
 
@@ -23,6 +23,7 @@ class ShopOrderTestCase(ShopTestBase):
 
         brand = create_brand()
         party = create_party(brand.id)
+        create_email_config()
         create_site(party.id)
 
         email_config_id = brand.id

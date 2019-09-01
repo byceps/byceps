@@ -8,6 +8,7 @@ from datetime import datetime
 import pytest
 
 from byceps.services.brand import service as brand_service
+from byceps.services.email import service as email_service
 from byceps.services.party import service as party_service
 from byceps.services.site import service as site_service, settings_service
 from byceps.services.site.transfer.models import SiteSetting
@@ -23,8 +24,13 @@ def app(party_app_with_db):
     party = party_service.create_party('acmeparty', brand.id, 'ACME Party',
                                        now, now)
 
+    email_config_id = 'acme'
+    email_service.set_sender(email_config_id, 'info@example.com',
+                             sender_name='ACME')
+
     site = site_service.create_site('acme-intranet', party.id,
-                                    'ACME Party Intranet', 'www.example.com')
+                                    'ACME Party Intranet', 'www.example.com',
+                                    email_config_id)
     _app.site_id = site.id
 
     yield _app
