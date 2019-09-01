@@ -20,13 +20,14 @@ def test_recipient_formatting(application, params):
     brand = create_brand()
 
     email_config_id = brand.id
-    sender_address = '{}@example.com'.format(brand.id)
+    sender_address = f'{brand.id}@example.com'
     email_service.set_sender(email_config_id, sender_address,
                              sender_name=brand.title)
 
     user = create_user(screen_name, email_address=email_address)
 
-    message = user_message_service.create_message(user.id, user.id, '', '', brand.id)
+    message = user_message_service.create_message(user.id, user.id, '', '',
+                                                  brand.id, email_config_id)
 
     assert message.recipients == [expected]
 

@@ -35,22 +35,25 @@ class MessageTemplateRenderResult:
 
 
 def send_message(sender_id: UserID, recipient_id: UserID, text: str,
-                 sender_contact_url: str, brand_id: BrandID) -> None:
+                 sender_contact_url: str, brand_id: BrandID,
+                 email_config_id: str) -> None:
     """Create a message and send it."""
     message = create_message(sender_id, recipient_id, text, sender_contact_url,
-                             brand_id)
+                             brand_id, email_config_id)
 
     email_service.enqueue_message(message)
 
 
 def create_message(sender_id: UserID, recipient_id: UserID, text: str,
-                   sender_contact_url: str, brand_id: BrandID) -> Message:
+                   sender_contact_url: str, brand_id: BrandID,
+                   email_config_id: str) -> Message:
     """Create a message."""
     sender = _get_user(sender_id)
     recipient = _get_user(recipient_id)
     brand = _get_brand(brand_id)
 
-    return _assemble_message(sender, recipient, text, sender_contact_url, brand)
+    return _assemble_message(sender, recipient, text, sender_contact_url, brand,
+                             email_config_id)
 
 
 def _get_user(user_id: UserID) -> User:
@@ -73,8 +76,8 @@ def _get_brand(brand_id: BrandID) -> Brand:
 
 
 def _assemble_message(sender_user: User, recipient: User, text: str,
-                      sender_contact_url: str, brand: Brand
-                     ) -> Message:
+                      sender_contact_url: str, brand: Brand,
+                      email_config_id: str) -> Message:
     """Assemble an email message with the rendered template as its body."""
     brand_contact_address = brand_settings_service \
         .find_setting_value(brand.id, 'contact_email_address')
@@ -83,7 +86,7 @@ def _assemble_message(sender_user: User, recipient: User, text: str,
         sender_user, recipient, text, sender_contact_url, brand,
         brand_contact_address)
 
-    sender = email_service.get_sender(brand.id)
+    sender = email_service.get_sender(email_config_id)
 
     recipient_address = user_service.get_email_address(recipient.id)
     recipient_str = _to_name_and_address_string(recipient.screen_name,
