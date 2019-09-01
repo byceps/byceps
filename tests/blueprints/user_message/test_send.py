@@ -10,8 +10,8 @@ from byceps.services.email import service as email_service
 from byceps.services.user_message import service as user_message_service
 
 from tests.base import AbstractAppTestCase
-from tests.helpers import create_brand, create_party, create_site, \
-    create_user, http_client, login_user
+from tests.helpers import create_brand, create_email_config, create_party, \
+    create_site, create_user, http_client, login_user
 
 
 class SendUserMessageTest(AbstractAppTestCase):
@@ -21,11 +21,12 @@ class SendUserMessageTest(AbstractAppTestCase):
 
         self.brand = create_brand()
         party = create_party(self.brand.id)
-        create_site(party.id)
 
         email_config_id = self.brand.id
-        email_service.set_sender(email_config_id, 'noreply@example.com',
-                                 sender_name='ACME Entertainment Convention')
+        create_email_config(email_config_id, 'noreply@example.com',
+                            'ACME Entertainment Convention')
+
+        create_site(party.id)
 
     @patch('byceps.email.send')
     def test_send_when_logged_in_without_brand_contact_address(self,
