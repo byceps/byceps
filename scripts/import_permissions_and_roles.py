@@ -24,8 +24,13 @@ def execute(json_file):
     permissions = data['permissions']
     roles = data['roles']
 
+    click.echo(f'Importing {len(permissions)} permissions ... ', nl=False)
     create_permissions(permissions)
+    click.secho('done.', fg='green')
+
+    click.echo(f'Importing {len(roles)} roles ... ', nl=False)
     create_roles(roles)
+    click.secho('done.', fg='green')
 
 
 def create_permissions(permissions):
