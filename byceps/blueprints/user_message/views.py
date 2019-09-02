@@ -10,7 +10,6 @@ Send messages from one user to another.
 
 from flask import abort, g, request, url_for
 
-from ...services.site import service as site_service
 from ...services.user import service as user_service
 from ...services.user_message import service as user_message_service
 from ...util.framework.blueprint import create_blueprint
@@ -55,11 +54,9 @@ def create(recipient_id):
     body = form.body.data.strip()
     sender_contact_url = url_for('.create_form', recipient_id=sender.id,
                                  _external=True)
-    site = site_service.get_site(g.site_id)
 
     user_message_service.send_message(sender.id, recipient.id, body,
-                                      sender_contact_url, g.brand_id,
-                                      site.email_config_id)
+                                      sender_contact_url, g.brand_id, g.site_id)
 
     flash_success(
         'Deine Nachricht an {} wurde versendet.'.format(recipient.screen_name))

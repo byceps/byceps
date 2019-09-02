@@ -24,6 +24,8 @@ from ..brand import service as brand_service, \
 from ..brand.transfer.models import Brand
 from ..email import service as email_service
 from ..email.transfer.models import Message
+from ..site import service as site_service
+from ..site.transfer.models import Site, SiteID
 from ..user import service as user_service
 from ..user.transfer.models import User
 
@@ -35,25 +37,26 @@ class MessageTemplateRenderResult:
 
 
 def send_message(sender_id: UserID, recipient_id: UserID, text: str,
-                 sender_contact_url: str, brand_id: BrandID,
-                 email_config_id: str) -> None:
+                 sender_contact_url: str, brand_id: BrandID, site_id: SiteID
+                ) -> None:
     """Create a message and send it."""
     message = create_message(sender_id, recipient_id, text, sender_contact_url,
-                             brand_id, email_config_id)
+                             brand_id, site_id)
 
     email_service.enqueue_message(message)
 
 
 def create_message(sender_id: UserID, recipient_id: UserID, text: str,
-                   sender_contact_url: str, brand_id: BrandID,
-                   email_config_id: str) -> Message:
+                   sender_contact_url: str, brand_id: BrandID, site_id: SiteID
+                  ) -> Message:
     """Create a message."""
     sender = _get_user(sender_id)
     recipient = _get_user(recipient_id)
     brand = _get_brand(brand_id)
+    site = site_service.get_site(site_id)
 
     return _assemble_message(sender, recipient, text, sender_contact_url, brand,
-                             email_config_id)
+                             site)
 
 
 def _get_user(user_id: UserID) -> User:
@@ -76,8 +79,8 @@ def _get_brand(brand_id: BrandID) -> Brand:
 
 
 def _assemble_message(sender_user: User, recipient: User, text: str,
-                      sender_contact_url: str, brand: Brand,
-                      email_config_id: str) -> Message:
+                      sender_contact_url: str, brand: Brand, site: Site
+                     ) -> Message:
     """Assemble an email message with the rendered template as its body."""
     brand_contact_address = brand_settings_service \
         .find_setting_value(brand.id, 'contact_email_address')
@@ -86,7 +89,7 @@ def _assemble_message(sender_user: User, recipient: User, text: str,
         sender_user, recipient, text, sender_contact_url, brand,
         brand_contact_address)
 
-    sender = email_service.get_sender(email_config_id)
+    sender = email_service.get_sender(site.email_config_id)
 
     recipient_address = user_service.get_email_address(recipient.id)
     recipient_str = _to_name_and_address_string(recipient.screen_name,
