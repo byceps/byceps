@@ -43,7 +43,7 @@ def _create_user(screen_name, email_address, password):
 def _assign_roles(user_id):
     roles = authorization_service.get_all_roles_with_titles()
     for role in roles:
-        authorization_service.assign_role_to_user(user.id, role.id)
+        authorization_service.assign_role_to_user(role.id, user_id)
 
 
 if __name__ == '__main__':
