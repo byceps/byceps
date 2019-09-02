@@ -22,13 +22,17 @@ from _util import app_context
 @click.option('--password', prompt=True, hide_input=True)
 def execute(screen_name, email_address, password):
     click.echo(f'Creating user "{screen_name}" ... ', nl=False)
-
     user = _create_user(screen_name, email_address, password)
+    click.secho('done.', fg='green')
 
+    click.echo(f'Enabling user "{screen_name}" ... ', nl=False)
     user_command_service.enable_user(user.id, user.id)
+    click.secho('done.', fg='green')
 
-    _assign_roles(user.id)
-
+    roles = _get_roles()
+    click.echo(f'Assigning {len(roles)} roles to user "{screen_name}" ... ',
+               nl=False)
+    _assign_roles_to_user(roles, user.id)
     click.secho('done.', fg='green')
 
 
@@ -40,8 +44,11 @@ def _create_user(screen_name, email_address, password):
         raise click.UsageError(e)
 
 
-def _assign_roles(user_id):
-    roles = authorization_service.get_all_roles_with_titles()
+def _get_roles():
+    return authorization_service.get_all_roles_with_titles()
+
+
+def _assign_roles_to_user(roles, user_id):
     for role in roles:
         authorization_service.assign_role_to_user(role.id, user_id)
 
