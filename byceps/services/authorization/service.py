@@ -124,8 +124,8 @@ def deassign_role_from_user(role_id: RoleID, user_id: UserID,
 def _is_role_assigned_to_user(role_id: RoleID, user_id: UserID) -> bool:
     """Determine if the role is assigned to the user or not."""
     subquery = UserRole.query \
-        .filter_by(user_id=user_id) \
         .filter_by(role_id=role_id) \
+        .filter_by(user_id=user_id) \
         .exists()
 
     return db.session.query(subquery).scalar()
