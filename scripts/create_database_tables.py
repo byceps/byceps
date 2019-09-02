@@ -18,7 +18,7 @@ from _util import app_context
 
 @click.command()
 def execute():
-    click.echo('Creating database ... ', nl=False)
+    click.echo('Creating database tables ... ', nl=False)
 
     db.create_all()
 
