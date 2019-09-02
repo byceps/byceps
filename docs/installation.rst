@@ -122,7 +122,7 @@ Install the Python depdendencies via pip_:
 Database
 --------
 
-There should already be a system user, likely 'postgres'.
+There should already be a system user, likely ``postgres``.
 
 Become root:
 
@@ -131,13 +131,13 @@ Become root:
     $ su
     <enter root password>
 
-Switch to the 'postgres' user:
+Switch to the ``postgres`` user:
 
 .. code-block:: sh
 
     # su postgres
 
-Create a database user named 'byceps':
+Create a database user named ``byceps``:
 
 .. code-block:: sh
 
@@ -145,7 +145,7 @@ Create a database user named 'byceps':
 
 You should be prompted to enter a password. Do that.
 
-Create a schema, also named 'byceps':
+Create a schema, also named ``byceps``:
 
 .. code-block:: sh
 
@@ -164,7 +164,7 @@ Connect to the database:
 
     $ psql
 
-Load the 'pgcrypto' extension:
+Load the ``pgcrypto`` extension:
 
 .. code-block:: psql
 
