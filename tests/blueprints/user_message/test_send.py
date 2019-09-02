@@ -26,7 +26,7 @@ class SendUserMessageTest(AbstractAppTestCase):
         create_email_config(email_config_id, 'noreply@example.com',
                             'ACME Entertainment Convention')
 
-        create_site(party.id)
+        create_site(party.id, server_name='acme.example.com')
 
     @patch('byceps.email.send')
     def test_send_when_logged_in_without_brand_contact_address(self,
@@ -72,7 +72,7 @@ Alice
 ---8<-------------------------------------
 
 -- 
-Diese Mitteilung wurde über die Website der ACME Entertainment Convention gesendet.\
+Diese Mitteilung wurde über die Website acme.example.com gesendet.\
 '''
 
         response = self.send_request(recipient.id, text,
@@ -134,7 +134,7 @@ Bob
 ---8<-------------------------------------
 
 -- 
-Diese Mitteilung wurde über die Website der ACME Entertainment Convention gesendet.
+Diese Mitteilung wurde über die Website acme.example.com gesendet.
 Bei Fragen kontaktiere uns bitte per E-Mail an: info@example.com\
 '''
 

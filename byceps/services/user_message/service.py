@@ -86,7 +86,7 @@ def _assemble_message(sender_user: User, recipient: User, text: str,
         .find_setting_value(brand.id, 'contact_email_address')
 
     message_template_render_result = _render_message_template(
-        sender_user, recipient, text, sender_contact_url, brand,
+        sender_user, recipient, text, sender_contact_url, site,
         brand_contact_address)
 
     sender = email_service.get_sender(site.email_config_id)
@@ -107,7 +107,7 @@ def _to_name_and_address_string(name: str, address: str) -> str:
 
 
 def _render_message_template(sender: User, recipient: User, text: str,
-                             sender_contact_url: str, brand: Brand,
+                             sender_contact_url: str, site: Site,
                              brand_contact_address: Optional[str]
                             ) -> MessageTemplateRenderResult:
     template = _get_template('message.txt')
@@ -117,7 +117,7 @@ def _render_message_template(sender: User, recipient: User, text: str,
         'recipient_screen_name': recipient.screen_name,
         'text': text.strip(),
         'sender_contact_url': sender_contact_url,
-        'brand_title': brand.title,
+        'website_server_name': site.server_name,
         'brand_contact_address': brand_contact_address,
     }
 
