@@ -54,7 +54,11 @@ Alice
         expected_email_body = '''\
 Hallo Bob,
 
-Alice möchte dir folgende Mitteilung zukommen lassen:
+Alice möchte dir die folgende Mitteilung zukommen lassen.
+
+Du kannst Alice hier antworten: http://example.com/user_messages/to/a4903d8f-0bc6-4af9-aeb9-d7534a0a22e8/create
+
+ACHTUNG: Antworte *nicht* auf diese E-Mail, sondern folge dem Link.
 
 ---8<-------------------------------------
 
@@ -66,8 +70,6 @@ kthxbye,
 Alice
 
 ---8<-------------------------------------
-
-Du kannst Alice hier antworten: http://example.com/user_messages/to/a4903d8f-0bc6-4af9-aeb9-d7534a0a22e8/create
 
 -- 
 Diese Mitteilung wurde über die Website der ACME Entertainment Convention gesendet.\
@@ -114,7 +116,11 @@ Bob
         expected_email_body = '''\
 Hallo Alice,
 
-Bob möchte dir folgende Mitteilung zukommen lassen:
+Bob möchte dir die folgende Mitteilung zukommen lassen.
+
+Du kannst Bob hier antworten: http://example.com/user_messages/to/11d72bab-3646-4199-b96c-e5e4c6f972bc/create
+
+ACHTUNG: Antworte *nicht* auf diese E-Mail, sondern folge dem Link.
 
 ---8<-------------------------------------
 
@@ -126,8 +132,6 @@ Best,
 Bob
 
 ---8<-------------------------------------
-
-Du kannst Bob hier antworten: http://example.com/user_messages/to/11d72bab-3646-4199-b96c-e5e4c6f972bc/create
 
 -- 
 Diese Mitteilung wurde über die Website der ACME Entertainment Convention gesendet.

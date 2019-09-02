@@ -3,15 +3,17 @@
 
 Hallo {{ recipient_screen_name }},
 
-{{ sender_screen_name }} möchte dir folgende Mitteilung zukommen lassen:
+{{ sender_screen_name }} möchte dir die folgende Mitteilung zukommen lassen.
+
+Du kannst {{ sender_screen_name }} hier antworten: {{ sender_contact_url }}
+
+ACHTUNG: Antworte *nicht* auf diese E-Mail, sondern folge dem Link.
 
 ---8<-------------------------------------
 
 {{ text }}
 
 ---8<-------------------------------------
-
-Du kannst {{ sender_screen_name }} hier antworten: {{ sender_contact_url }}
 
 -- 
 Diese Mitteilung wurde über die Website der {{ brand_title }} gesendet.
