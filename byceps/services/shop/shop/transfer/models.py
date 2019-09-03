@@ -19,6 +19,7 @@ ShopID = NewType('ShopID', str)
 @attrs(auto_attribs=True, frozen=True, slots=True)
 class Shop:
     id: ShopID
+    title: str
     party_id: PartyID
     email_config_id: str
     closed: bool

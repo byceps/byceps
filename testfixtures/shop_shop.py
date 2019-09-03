@@ -12,5 +12,6 @@ from byceps.typing import PartyID
 
 def create_shop(party_id: PartyID, email_config_id: str) -> Shop:
     shop_id = party_id
+    title = shop_id
 
-    return Shop(shop_id, party_id, email_config_id)
+    return Shop(shop_id, title, party_id, email_config_id)
