@@ -12,6 +12,7 @@ from ....services.authentication.password import service as password_service
 from ....services.authorization import service as authorization_service
 from ....services.orga_team import service as orga_team_service
 from ....services.shop.order import service as order_service
+from ....services.shop.shop import service as shop_service
 from ....services.user import command_service as user_command_service
 from ....services.user import creation_service as user_creation_service
 from ....services.user import service as user_service
@@ -93,8 +94,10 @@ def view(user_id):
     newsletter_subscriptions = service.get_newsletter_subscriptions(user.id)
 
     orders = order_service.get_orders_placed_by_user(user.id)
+
     order_shop_ids = {order.shop_id for order in orders}
-    order_parties_by_shop_id = service.get_parties_by_shop_id(order_shop_ids)
+    shops = shop_service.find_shops(order_shop_ids)
+    shops_by_id = {shop.id: shop for shop in shops}
 
     parties_and_tickets = service.get_parties_and_tickets(user.id)
 
@@ -107,7 +110,7 @@ def view(user_id):
         'orga_team_memberships': orga_team_memberships,
         'newsletter_subscriptions': newsletter_subscriptions,
         'orders': orders,
-        'order_parties_by_shop_id': order_parties_by_shop_id,
+        'shops_by_id': shops_by_id,
         'parties_and_tickets': parties_and_tickets,
         'attended_parties': attended_parties,
         'badges_with_awarding_quantity': badges_with_awarding_quantity,

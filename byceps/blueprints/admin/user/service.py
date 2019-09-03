@@ -17,8 +17,6 @@ from ....services.newsletter.transfer.models import List as NewsletterList
 from ....services.party import service as party_service
 from ....services.party.transfer.models import Party
 from ....services.shop.order import service as order_service
-from ....services.shop.shop import service as shop_service
-from ....services.shop.shop.transfer.models import ShopID
 from ....services.ticketing.models.ticket import Ticket as DbTicket
 from ....services.ticketing import attendance_service, ticket_service
 from ....services.user import event_service
@@ -84,22 +82,6 @@ def _filter_by_search_term(query, search_term):
                 UserDetail.last_name.ilike(ilike_pattern)
             )
         )
-
-
-def get_parties_by_shop_id(shop_ids: Set[ShopID]) -> Dict[ShopID, Party]:
-    """Return the parties associated with the given shops."""
-    shops = shop_service.find_shops(shop_ids)
-    party_ids = {shop.party_id for shop in shops}
-
-    parties = party_service.get_parties(party_ids)
-    parties_by_id = {p.id: p for p in parties}
-
-    parties_by_shop_id = {}
-    for shop in shops:
-        party = parties_by_id[shop.party_id]
-        parties_by_shop_id[shop.id] = party
-
-    return parties_by_shop_id
 
 
 def get_parties_and_tickets(user_id: UserID
