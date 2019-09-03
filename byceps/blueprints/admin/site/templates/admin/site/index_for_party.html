@@ -1,11 +1,12 @@
 {% extends 'layout/admin/base.html' %}
+{% from 'macros/admin.html' import render_extra_in_heading %}
 {% set current_page = 'sites_admin_party' %}
 {% set current_page_party = party %}
 {% set title = 'Sites' %}
 
 {% block body %}
 
-  <h1>{{ title }}</h1>
+  <h1>{{ title }} {{ render_extra_in_heading(sites|length) }}</h1>
 
   {%- if g.current_user.has_permission(SitePermission.create) %}
   <div class="button-row">
