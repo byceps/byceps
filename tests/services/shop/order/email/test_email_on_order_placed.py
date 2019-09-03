@@ -25,7 +25,7 @@ class EmailOnOrderPlacedTest(OrderEmailTestBase):
         brand = create_brand()
 
         email_config_id = brand.id
-        email_service.set_sender(email_config_id, 'acmecon@example.com')
+        email_service.set_config(email_config_id, 'acmecon@example.com')
 
         self.party = create_party(brand.id)
 

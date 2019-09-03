@@ -40,7 +40,7 @@ class UserCreateTestCase(AbstractAppTestCase):
         self.brand_id = self.brand.id
 
         email_config_id = self.brand.id
-        email_service.set_sender(email_config_id, 'noreply@example.com')
+        email_service.set_config(email_config_id, 'noreply@example.com')
 
         party = create_party(brand_id=self.brand.id)
         create_site(party.id)

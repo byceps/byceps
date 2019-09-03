@@ -20,7 +20,7 @@ class SequenceNumberGenerationTestCase(ShopTestBase):
         self.party = create_party(brand_id=brand.id)
 
         self.email_config_id = brand.id
-        email_service.set_sender(self.email_config_id, 'shop@example.com')
+        email_service.set_config(self.email_config_id, 'shop@example.com')
 
     def test_generate_article_number_default(self):
         shop = self.create_shop(self.party.id, self.email_config_id)

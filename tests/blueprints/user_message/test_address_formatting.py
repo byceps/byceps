@@ -23,7 +23,7 @@ def test_recipient_formatting(application, params):
 
     email_config_id = brand.id
     sender_address = f'{brand.id}@example.com'
-    email_service.set_sender(email_config_id, sender_address,
+    email_service.set_config(email_config_id, sender_address,
                              sender_name=brand.title)
 
     site = create_site(party.id)

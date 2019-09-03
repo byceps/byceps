@@ -113,7 +113,7 @@ def create_site(party_id, *, site_id='acmecon-2014-website', title='Website',
 
 def create_email_config(config_id='acmecon', sender_address='info@example.com',
                         sender_name='ACMECon'):
-    email_service.set_sender(config_id, sender_address, sender_name=sender_name)
+    email_service.set_config(config_id, sender_address, sender_name=sender_name)
 
 
 @contextmanager

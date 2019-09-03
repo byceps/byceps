@@ -30,7 +30,7 @@ class ShopOrdersTestCase(ShopTestBase):
         create_site(self.party.id)
 
         self.email_config_id = self.brand.id
-        email_service.set_sender(self.email_config_id, 'shop@example.com')
+        email_service.set_config(self.email_config_id, 'shop@example.com')
 
     def test_view_matching_user_and_party(self):
         shop = self.create_shop(self.party.id, self.email_config_id)

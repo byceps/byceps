@@ -28,7 +28,7 @@ class OrderActionTestBase(ShopTestBase):
         self.party = create_party(brand_id=brand.id)
 
         email_config_id = brand.id
-        email_service.set_sender(email_config_id, 'shop@example.com')
+        email_service.set_config(email_config_id, 'shop@example.com')
 
         self.shop = self.create_shop(self.party.id, email_config_id)
 

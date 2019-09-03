@@ -25,7 +25,7 @@ def app(party_app_with_db):
                                        now, now)
 
     email_config_id = 'acme'
-    email_service.set_sender(email_config_id, 'info@example.com',
+    email_service.set_config(email_config_id, 'info@example.com',
                              sender_name='ACME')
 
     site = site_service.create_site('acme-intranet', party.id,

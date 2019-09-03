@@ -22,7 +22,7 @@ class ShopOrdersServiceTestCase(ShopTestBase):
         brand = create_brand()
 
         email_config_id = brand.id
-        email_service.set_sender(email_config_id, 'shop@example.com')
+        email_service.set_config(email_config_id, 'shop@example.com')
 
         party1 = create_party(brand.id, 'lafiesta-2012', 'La Fiesta 2012')
         party2 = create_party(brand.id, 'lafiesta-2013', 'La Fiesta 2013')

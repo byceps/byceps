@@ -27,7 +27,7 @@ class ShopOrderTestCase(ShopTestBase):
         create_site(party.id)
 
         email_config_id = brand.id
-        email_service.set_sender(email_config_id, 'shop@example.com')
+        email_service.set_config(email_config_id, 'shop@example.com')
 
         self.setup_orderer()
 

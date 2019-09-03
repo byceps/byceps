@@ -42,9 +42,9 @@ def get_config(config_id: str) -> Sender:
     return config
 
 
-def set_sender(config_id: str, sender_address: str,
+def set_config(config_id: str, sender_address: str,
                *, sender_name: Optional[str]=None) -> None:
-    """Set sender e-mail address and name for a config."""
+    """Add or update configuration for that ID."""
     table = DbEmailConfig.__table__
     identifier = {
         'id': config_id,

@@ -31,7 +31,7 @@ class ExportTestCase(ShopTestBase):
         self.create_brand_and_party()
 
         email_config_id = self.brand.id
-        email_service.set_sender(email_config_id, 'shop@example.com')
+        email_service.set_config(email_config_id, 'shop@example.com')
 
         self.shop = self.create_shop(self.party.id, email_config_id)
         self.create_order_number_sequence(self.shop.id, 'LR-08-B', value=26)
