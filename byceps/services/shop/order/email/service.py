@@ -155,13 +155,13 @@ def _assemble_email_to_orderer(subject: str, template_name: str,
 
 
 def _get_sender_address(email_config_id: str) -> Optional[Sender]:
-    sender = email_service.find_sender(email_config_id)
+    config = email_service.find_config(email_config_id)
 
-    if not sender:
+    if not config:
         current_app.logger.warning(
             'No e-mail sender configured for ID "%s".', email_config_id)
 
-    return sender
+    return config.sender
 
 
 def _get_snippet_body(shop_id: ShopID, name: str) -> str:

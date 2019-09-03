@@ -107,7 +107,8 @@ def _get_party_title():
 
 def _enqueue_email(recipient: User, subject: str, body: str) -> None:
     site = site_service.get_site(g.site_id)
-    sender = email_service.get_sender(site.email_config_id)
+    email_config = email_service.get_config(site.email_config_id)
+    sender = email_config.sender
 
     recipient_address = user_service.get_email_address(recipient.id)
     recipients = [recipient_address]

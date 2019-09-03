@@ -20,7 +20,8 @@ def send_email_address_confirmation_email(recipient_email_address: str,
                                           verification_token: Token,
                                           email_config_id: str, site_id: SiteID
                                          ) -> None:
-    sender = email_service.get_sender(email_config_id)
+    email_config = email_service.get_config(email_config_id)
+    sender = email_config.sender
 
     site = site_service.get_site(site_id)
 

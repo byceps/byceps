@@ -24,6 +24,12 @@ class Sender:
 
 
 @attrs(auto_attribs=True, frozen=True, slots=True)
+class EmailConfig:
+    id: str
+    sender: Sender
+
+
+@attrs(auto_attribs=True, frozen=True, slots=True)
 class Message:
     sender: Sender
     recipients: List[str]

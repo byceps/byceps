@@ -232,7 +232,8 @@ def request_password_reset():
         sender = Sender(sender_address, sender_name)
     else:
         site = site_service.get_site(g.site_id)
-        sender = email_service.get_sender(site.email_config_id)
+        email_config = email_service.get_config(site.email_config_id)
+        sender = email_config.sender
 
     password_reset_service.prepare_password_reset(user, sender)
 

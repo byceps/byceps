@@ -13,36 +13,33 @@ from ... import email
 from ...util.jobqueue import enqueue
 
 from .models import EmailConfig as DbEmailConfig
-from .transfer.models import Message, Sender
+from .transfer.models import EmailConfig, Message, Sender
 
 
 class EmailError(Exception):
     pass
 
 
-def find_sender(config_id: str) -> Optional[Sender]:
-    """Return the configured sender."""
+def find_config(config_id: str) -> Optional[Sender]:
+    """Return the configuration, or `None` if not found."""
     config = DbEmailConfig.query.get(config_id)
 
     if config is None:
         return None
 
-    return Sender(
-        config.sender_address,
-        config.sender_name,
-    )
+    return _db_entity_to_config(config)
 
 
-def get_sender(config_id: str) -> Sender:
-    """Return the configured sender, or raise an error if none is
+def get_config(config_id: str) -> Sender:
+    """Return the configuration, or raise an error if none is
     configured for that ID.
     """
-    sender = find_sender(config_id)
+    config = find_config(config_id)
 
-    if not sender:
-        raise EmailError('No sender configured for ID "{}".'.format(config_id))
+    if not config:
+        raise EmailError('No e-mail config for ID "{}".'.format(config_id))
 
-    return sender
+    return config
 
 
 def set_sender(config_id: str, sender_address: str,
@@ -79,3 +76,15 @@ def send_email(sender: str, recipients: List[str], subject: str, body: str) \
               -> None:
     """Send e-mail."""
     email.send(sender, recipients, subject, body)
+
+
+def _db_entity_to_config(config: DbEmailConfig) -> EmailConfig:
+    sender = Sender(
+        config.sender_address,
+        config.sender_name,
+    )
+
+    return EmailConfig(
+        config.id,
+        sender,
+    )

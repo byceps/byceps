@@ -89,7 +89,8 @@ def _assemble_message(sender_user: User, recipient: User, text: str,
         sender_user, recipient, text, sender_contact_url, site,
         brand_contact_address)
 
-    sender = email_service.get_sender(site.email_config_id)
+    email_config = email_service.get_config(site.email_config_id)
+    sender = email_config.sender
 
     recipient_address = user_service.get_email_address(recipient.id)
     recipient_str = _to_name_and_address_string(recipient.screen_name,
