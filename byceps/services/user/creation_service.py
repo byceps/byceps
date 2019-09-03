@@ -38,8 +38,7 @@ class UserCreationFailed(Exception):
 
 def create_user(screen_name: str, email_address: str, password: str,
                 first_names: Optional[str], last_name: Optional[str],
-                email_config_id: str, site_id: SiteID, *,
-                terms_consent: Optional[Consent]=None,
+                site_id: SiteID, *, terms_consent: Optional[Consent]=None,
                 privacy_policy_consent: Optional[Consent]=None,
                 newsletter_subscription: Optional[NewsletterSubscription]=None
                ) -> User:
@@ -70,8 +69,7 @@ def create_user(screen_name: str, email_address: str, password: str,
 
     # e-mail address confirmation
     normalized_email_address = _normalize_email_address(email_address)
-    _request_email_address_verification(user, email_address, email_config_id,
-                                        site_id)
+    _request_email_address_verification(user, email_address, site_id)
 
     return user
 
@@ -164,11 +162,9 @@ def _assign_roles(user_id: UserID) -> None:
 
 
 def _request_email_address_verification(user: User, email_address: str,
-                                        email_config_id: str, site_id: SiteID
-                                       ) -> None:
+                                        site_id: SiteID) -> None:
     verification_token = verification_token_service \
         .create_for_email_address_confirmation(user.id)
 
     email_address_confirmation_service.send_email_address_confirmation_email(
-        email_address, user.screen_name, verification_token, email_config_id,
-        site_id)
+        email_address, user.screen_name, verification_token, site_id)

@@ -118,8 +118,6 @@ def create():
         first_names = None
         last_name = None
 
-    email_config_id = g.brand_id
-
     terms_consent = None
     if terms_consent_required:
         terms_version_id = form.terms_version_id.data
@@ -153,7 +151,7 @@ def create():
     try:
         user = user_creation_service.create_user(
             screen_name, email_address, password, first_names, last_name,
-            email_config_id, g.site_id, terms_consent=terms_consent,
+            g.site_id, terms_consent=terms_consent,
             privacy_policy_consent=privacy_policy_consent,
             newsletter_subscription=newsletter_subscription)
     except user_creation_service.UserCreationFailed:

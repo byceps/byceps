@@ -18,12 +18,11 @@ from ..verification_token import service as verification_token_service
 def send_email_address_confirmation_email(recipient_email_address: str,
                                           recipient_screen_name: str,
                                           verification_token: Token,
-                                          email_config_id: str, site_id: SiteID
-                                         ) -> None:
-    email_config = email_service.get_config(email_config_id)
-    sender = email_config.sender
-
+                                          site_id: SiteID) -> None:
     site = site_service.get_site(site_id)
+
+    email_config = email_service.get_config(site.email_config_id)
+    sender = email_config.sender
 
     confirmation_url = 'https://{}/users/email_address/confirmation/{}' \
         .format(site.server_name, verification_token.token)

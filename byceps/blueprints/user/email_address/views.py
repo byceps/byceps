@@ -60,11 +60,9 @@ def request_confirmation_email():
 
     verification_token = verification_token_service \
         .find_or_create_for_email_address_confirmation(user.id)
-    email_config_id = g.brand_id
 
     email_address_confirmation_service.send_email_address_confirmation_email(
-        user.email_address, user.screen_name, verification_token,
-        email_config_id, g.site_id)
+        user.email_address, user.screen_name, verification_token, g.site_id)
 
     flash_success(
         'Der Link zur Bestätigung der für den Benutzernamen "{}" '
