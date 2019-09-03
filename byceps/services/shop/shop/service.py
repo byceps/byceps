@@ -19,9 +19,10 @@ class UnknownShopId(ValueError):
     pass
 
 
-def create_shop(party_id: PartyID, email_config_id: str) -> Shop:
+def create_shop(shop_id: ShopID, party_id: PartyID, email_config_id: str
+               ) -> Shop:
     """Create a shop."""
-    shop = DbShop(party_id, party_id, email_config_id)
+    shop = DbShop(shop_id, party_id, email_config_id)
 
     db.session.add(shop)
     db.session.commit()

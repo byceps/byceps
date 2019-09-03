@@ -22,7 +22,7 @@ from _validators import validate_party
 @click.argument('article_prefix')
 @click.argument('order_prefix')
 def execute(party, article_prefix, order_prefix):
-    shop = shop_service.create_shop(party.id)
+    shop = shop_service.create_shop(party.id, party.id)
 
     create_sequence(shop.id, Purpose.article, article_prefix)
     create_sequence(shop.id, Purpose.order, order_prefix)
