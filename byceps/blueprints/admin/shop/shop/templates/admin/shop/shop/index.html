@@ -1,0 +1,33 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/admin.html' import render_extra_in_heading %}
+{% set current_page = 'shops_admin' %}
+{% set title = 'Shops' %}
+
+{% block body %}
+
+  <h1>{{ title }} {{ render_extra_in_heading(shops|length) }}</h1>
+
+  <table class="index wide">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+      </tr>
+    </thead>
+    <tbody>
+    {%- for shop in shops|sort(attribute='title')|sort(attribute='title') %}
+      <tr>
+        <td class="monospace"><a href="{{ url_for('.view_for_shop', shop_id=shop.id) }}">{{ shop.id }}</a></td>
+        <td>{{ shop.title }}</td>
+      </tr>
+    {%- else %}
+      <tr>
+        <td colspan="2" class="centered">
+          <p class="dimmed">Es sind keine Shops hinterlegt.</p>
+        </td>
+      </tr>
+    {%- endfor %}
+    </tbody>
+  </table>
+
+{%- endblock %}

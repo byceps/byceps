@@ -74,6 +74,13 @@ def find_shops(shop_ids: Set[ShopID]) -> List[Shop]:
     return [_db_entity_to_shop(shop) for shop in shops]
 
 
+def get_all_shops() -> List[Shop]:
+    """Return all shops."""
+    shops = DbShop.query.all()
+
+    return [_db_entity_to_shop(shop) for shop in shops]
+
+
 def get_active_shops() -> List[Shop]:
     """Return all shops that are not archived."""
     shops = DbShop.query \

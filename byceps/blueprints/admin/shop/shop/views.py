@@ -33,6 +33,18 @@ blueprint = create_blueprint('shop_shop_admin', __name__)
 permission_registry.register_enum(ShopPermission)
 
 
+@blueprint.route('/')
+@permission_required(ShopPermission.view)
+@templated
+def index():
+    """List all shops."""
+    shops = shop_service.get_all_shops()
+
+    return {
+        'shops': shops,
+    }
+
+
 @blueprint.route('/for_party/<party_id>')
 @permission_required(ShopPermission.view)
 @templated
