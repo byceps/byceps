@@ -147,7 +147,7 @@ def create():
         if subscribe_to_newsletter:
             newsletter_subscription = NewsletterSubscription(
                 user_id=None,  # not available at this point
-                list_id=g.brand_id,  # Expect a list of that name to exist.
+                list_id=newsletter_list_id,
                 expressed_at=now_utc)
 
     try:
