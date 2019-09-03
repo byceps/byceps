@@ -17,6 +17,6 @@ ACHTUNG: Antworte *nicht* auf diese E-Mail, sondern folge dem Link.
 
 -- 
 Diese Mitteilung wurde über die Website {{ website_server_name }} gesendet.
-{%- if brand_contact_address %}
-Bei Fragen kontaktiere uns bitte per E-Mail an: {{ brand_contact_address }}
+{%- if website_contact_address %}
+Bei Fragen kontaktiere uns bitte per E-Mail an: {{ website_contact_address }}
 {%- endif %}

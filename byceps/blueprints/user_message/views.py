@@ -56,7 +56,7 @@ def create(recipient_id):
                                  _external=True)
 
     user_message_service.send_message(sender.id, recipient.id, body,
-                                      sender_contact_url, g.brand_id, g.site_id)
+                                      sender_contact_url, g.site_id)
 
     flash_success(
         'Deine Nachricht an {} wurde versendet.'.format(recipient.screen_name))
