@@ -48,7 +48,7 @@ Alice
 
         expected_email_sender = 'ACME Entertainment Convention <noreply@example.com>'
         expected_email_recipients = ['Bob <bob@example.com>']
-        expected_email_subject = 'Mitteilung von Alice'
+        expected_email_subject = 'Mitteilung von Alice (über acme.example.com)'
         expected_email_body = '''\
 Hallo Bob,
 
@@ -110,7 +110,7 @@ Bob
 
         expected_email_sender = 'ACME Entertainment Convention <noreply@example.com>'
         expected_email_recipients = ['Alice <alice@example.com>']
-        expected_email_subject = 'Mitteilung von Bob'
+        expected_email_subject = 'Mitteilung von Bob (über acme.example.com)'
         expected_email_body = '''\
 Hallo Alice,
 

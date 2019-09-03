@@ -1,4 +1,4 @@
-{% set subject = 'Mitteilung von %s'|format(sender_screen_name) -%}
+{% set subject = 'Mitteilung von %s (über %s)'|format(sender_screen_name, website_server_name) -%}
 
 
 Hallo {{ recipient_screen_name }},
