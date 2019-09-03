@@ -221,7 +221,7 @@ will get all available roles assigned):
 
 .. code-block:: sh
 
-   $ PYTHONPATH=.. BYCEPS_CONFIG=../config/yourconfig.py ./create_initial_admin_user.py                                                  ~/projects/byceps/scripts
+   $ PYTHONPATH=.. BYCEPS_CONFIG=../config/yourconfig.py ./create_initial_admin_user.py
    Screen name: Flynn
    Email address: flynn@flynns-arcade.net
    Password:
