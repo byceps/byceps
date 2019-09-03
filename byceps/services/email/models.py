@@ -19,12 +19,15 @@ class EmailConfig(db.Model):
     id = db.Column(db.UnicodeText, primary_key=True)
     sender_address = db.Column(db.UnicodeText, nullable=False)
     sender_name = db.Column(db.UnicodeText, nullable=True)
+    contact_address = db.Column(db.UnicodeText, nullable=True)
 
     def __init__(self, config_id: str, sender_address: str,
-                 *, sender_name: Optional[str]=None) -> None:
+                 *, sender_name: Optional[str]=None,
+                 contact_address: Optional[str]=None) -> None:
         self.id = config_id
         self.sender_address = sender_address
         self.sender_name = sender_name
+        self.contact_address = contact_address
 
     def __repr__(self) -> str:
         return ReprBuilder(self) \

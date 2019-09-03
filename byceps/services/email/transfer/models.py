@@ -27,6 +27,7 @@ class Sender:
 class EmailConfig:
     id: str
     sender: Sender
+    contact_address: str
 
 
 @attrs(auto_attribs=True, frozen=True, slots=True)

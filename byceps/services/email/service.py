@@ -43,7 +43,8 @@ def get_config(config_id: str) -> Sender:
 
 
 def set_config(config_id: str, sender_address: str,
-               *, sender_name: Optional[str]=None) -> None:
+               *, sender_name: Optional[str]=None,
+               contact_address: Optional[str]=None) -> None:
     """Add or update configuration for that ID."""
     table = DbEmailConfig.__table__
     identifier = {
@@ -52,6 +53,7 @@ def set_config(config_id: str, sender_address: str,
     }
     replacement = {
         'sender_name': sender_name,
+        'contact_address': contact_address,
     }
 
     upsert(table, identifier, replacement)
@@ -87,4 +89,5 @@ def _db_entity_to_config(config: DbEmailConfig) -> EmailConfig:
     return EmailConfig(
         config.id,
         sender,
+        config.contact_address,
     )
