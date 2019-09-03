@@ -6,8 +6,6 @@
 from unittest.mock import patch
 
 from byceps.services.brand import settings_service as brand_settings_service
-from byceps.services.email import service as email_service
-from byceps.services.user_message import service as user_message_service
 
 from tests.base import AbstractAppTestCase
 from tests.helpers import create_brand, create_email_config, create_party, \
