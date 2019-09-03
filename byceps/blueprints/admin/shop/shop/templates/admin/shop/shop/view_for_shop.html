@@ -12,10 +12,10 @@
 
   <nav class="breadcrumbs">
     <ol>
-      <li>{{ party.title }}</li>
+      <li><a href="{{ url_for('shop_shop_admin.index') }}">Shops</a></li>
     </ol>
   </nav>
-  <h1>Shop{% if shop.archived %} {{ render_tag('archiviert', class='color-disabled', icon='archived') }}{% endif %}</h1>
+  <h1>{{ shop.title }}{% if shop.archived %} {{ render_tag('archiviert', class='color-disabled', icon='archived') }}{% endif %}</h1>
 
   <div class="row row--equal-sized-centered-columns row--space-between row--wrap bigstats">
     <div class="column-auto">

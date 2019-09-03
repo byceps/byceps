@@ -34,6 +34,7 @@ def view_for_shop(shop_id):
     articles_to_ship = shipping_service.get_articles_to_ship(shop.id)
 
     return {
+        'shop': shop,
         'party': party,
         'articles_to_ship': articles_to_ship,
     }

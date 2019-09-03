@@ -4,6 +4,12 @@
 
 {% block body %}
 
+  <nav class="breadcrumbs">
+    <ol>
+      <li><a href="{{ url_for('shop_shop_admin.index') }}">Shops</a></li>
+      <li><a href="{{ url_for('shop_shop_admin.view_for_shop', shop_id=shop.id) }}">{{ shop.title }}</a></li>
+    </ol>
+  </nav>
   <h1>{{ title }}</h1>
 
   <table class="index">
