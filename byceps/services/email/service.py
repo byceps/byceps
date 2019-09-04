@@ -59,6 +59,13 @@ def set_config(config_id: str, sender_address: str,
     upsert(table, identifier, replacement)
 
 
+def get_all_configs() -> List[EmailConfig]:
+    """Return all configurations."""
+    configs = DbEmailConfig.query.all()
+
+    return [_db_entity_to_config(config) for config in configs]
+
+
 def enqueue_message(message: Message) -> None:
     """Enqueue e-mail to be sent asynchronously."""
     enqueue_email(

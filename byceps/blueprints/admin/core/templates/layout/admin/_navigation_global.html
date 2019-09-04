@@ -54,6 +54,12 @@
         required_permission=OrgaBirthdayPermission.view,
         icon='birthday')
       .add_item(
+        url_for('email_admin.index'),
+        'E-Mail',
+        id='email_admin',
+        required_permission=EmailConfigPermission.view,
+        icon='email')
+      .add_item(
         url_for('brand_admin.index'),
         'Marken',
         id='brands_admin',

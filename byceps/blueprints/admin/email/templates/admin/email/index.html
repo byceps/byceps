@@ -1,0 +1,42 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/admin.html' import render_extra_in_heading %}
+{% set current_page = 'email_admin' %}
+{% set title = 'E-Mail-Konfigurationen' %}
+
+{% block body %}
+
+  <h1>{{ title }} {{ render_extra_in_heading(configs|length) }}</h1>
+
+  <table class="index wide">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th colspan="2">Absender</th>
+        <th>Kontaktadresse</th>
+      </tr>
+      <tr>
+        <th></th>
+        <th>Adresse</th>
+        <th>Name</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+    {%- for config in configs|sort(attribute='id') %}
+      <tr>
+        <td class="monospace">{{ config.id }}</td>
+        <td>{{ config.sender.address }}</td>
+        <td>{{ config.sender.name|fallback }}</td>
+        <td>{{ config.contact_address|fallback }}</td>
+      </tr>
+    {%- else %}
+      <tr>
+        <td colspan="4" class="centered">
+          <p class="dimmed">Es sind keine E-Mail-Konfigurationen hinterlegt.</p>
+        </td>
+      </tr>
+    {%- endfor %}
+    </tbody>
+  </table>
+
+{%- endblock %}

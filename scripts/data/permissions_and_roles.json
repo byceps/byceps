@@ -89,6 +89,10 @@
       "title": "Zustimmungen verwalten"
     },
     {
+      "id": "email_config.view",
+      "title": "E-Mail-Konfigurationen ansehen"
+    },
+    {
       "id": "news_channel.create",
       "title": "News-Kan\u00e4le erstellen"
     },
@@ -366,6 +370,13 @@
       ],
       "id": "consent_admin",
       "title": "Zustimmungen verwalten"
+    },
+    {
+      "assigned_permissions": [
+        "email_config.view"
+      ],
+      "id": "email_admin",
+      "title": "E-Mail-Konfigurationen verwalten"
     },
     {
       "assigned_permissions": [
