@@ -3,9 +3,27 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-def test_metrics(make_admin_app):
-    client = _get_test_client(make_admin_app, True)
+import pytest
 
+from ...conftest import database_recreated
+
+
+# To be overridden by test parametrization
+@pytest.fixture
+def config_overrides():
+    return {}
+
+
+@pytest.fixture
+def client(config_overrides, make_admin_app, db):
+    app = make_admin_app(**config_overrides)
+    with app.app_context():
+        with database_recreated(db):
+            yield app.test_client()
+
+
+@pytest.mark.parametrize('config_overrides', [{'METRICS_ENABLED': True}])
+def test_metrics(client):
     response = client.get('/metrics')
 
     assert response.status_code == 200
@@ -20,16 +38,8 @@ def test_metrics(make_admin_app):
     )
 
 
-def test_disabled_metrics(make_admin_app):
-    client = _get_test_client(make_admin_app, False)
-
+@pytest.mark.parametrize('config_overrides', [{'METRICS_ENABLED': False}])
+def test_disabled_metrics(client):
     response = client.get('/metrics')
 
     assert response.status_code == 404
-
-
-def _get_test_client(make_admin_app, metrics_enabled):
-    config_overrides = {'METRICS_ENABLED': metrics_enabled}
-    app = make_admin_app(**config_overrides)
-
-    return app.test_client()
