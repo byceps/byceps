@@ -21,7 +21,7 @@ def test_healthcheck_fail(is_rdbms_ok_mock, admin_client):
     assert response.status_code == 503
     assert response.content_type == expected_media_type
     assert response.mimetype == expected_media_type
-    assert response.json == {
+    assert response.get_json() == {
         'status': 'ok',
         'details': {
             'rdbms': [{'status': 'fail'}],

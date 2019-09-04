@@ -15,7 +15,7 @@ def test_healthcheck_ok(admin_client):
     assert response.status_code == 200
     assert response.content_type == expected_media_type
     assert response.mimetype == expected_media_type
-    assert response.json == {
+    assert response.get_json() == {
         'status': 'ok',
         'details': {
             'rdbms': [{'status': 'ok'}],
