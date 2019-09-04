@@ -93,6 +93,10 @@
       "title": "E-Mail-Konfigurationen ansehen"
     },
     {
+      "id": "jobs.view",
+      "title": "Jobs anzeigen"
+    },
+    {
       "id": "news_channel.create",
       "title": "News-Kan\u00e4le erstellen"
     },
@@ -123,10 +127,6 @@
     {
       "id": "newsletter.view_subscriptions",
       "title": "Newsletter-Bestellstatus einsehen"
-    },
-    {
-      "id": "jobs.view",
-      "title": "Jobs anzeigen"
     },
     {
       "id": "orga_birthday.view",
