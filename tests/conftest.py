@@ -29,6 +29,15 @@ def database_recreated(db):
     tear_down_database(db)
 
 
+@pytest.fixture
+def make_admin_app():
+    """Provide the admin web application."""
+    def _wrapper(**config_overrides):
+        return create_app(CONFIG_FILENAME_TEST_ADMIN, config_overrides)
+
+    return _wrapper
+
+
 @pytest.fixture(scope='session')
 def admin_app():
     """Provide the admin web application."""

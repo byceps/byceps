@@ -22,12 +22,14 @@ from .util.l10n import set_locale
 from .util import templatefilters
 
 
-def create_app(config_filename):
+def create_app(config_filename, config_overrides=None):
     """Create the actual Flask application."""
     app = Flask(__name__)
 
     app.config.from_object(config_defaults)
     app.config.from_pyfile(str(config_filename))
+    if config_overrides is not None:
+        app.config.from_mapping(config_overrides)
 
     # Throw an exception when an undefined name is referenced in a template.
     app.jinja_env.undefined = jinja2.StrictUndefined
