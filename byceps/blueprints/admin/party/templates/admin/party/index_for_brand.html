@@ -27,16 +27,11 @@
   <table class="index wide">
     <thead>
       <tr>
-        <th>Name</th>
-        <th rowspan="2"></th>
-        <th rowspan="2">Zeitraum</th>
-        <th colspan="2" class="centered">Tickets</th>
-        <th rowspan="2"></th>
-      </tr>
-      <tr>
-        <th>ID</th>
-        <th>verkauft</th>
-        <th>maximal</th>
+        <th>Name<br>ID<br>Zeitraum</th>
+        <th></th>
+        <th class="centered">Tickets<br>verkauft</th>
+        <th class="centered">Tickets<br>maximal</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -44,18 +39,16 @@
       <tr>
         <td>
           <strong>{{ render_party_admin_link(party) }}</strong><br>
-          {{ party.id }}
+          {{ party.id }}<br>
+          {{- render_datetime(party.starts_at|utc_to_local_tz, smart=False) }} bis<br>
+          {{- render_datetime(party.ends_at|utc_to_local_tz, smart=False) -}}
+          {%- if party.is_over %}
+          {{ render_tag('vorbei', class='color-disabled') }}
+          {%- endif %}
         </td>
         <td>
           {%- if party.archived %}
           {{ render_tag('', class='color-disabled', icon='archived', title='archiviert') }}
-          {%- endif %}
-        </td>
-        <td>
-          {{- render_datetime(party.starts_at|utc_to_local_tz, smart=False) }} bis<br>
-          {{- render_datetime(party.ends_at|utc_to_local_tz, smart=False) -}}
-          {%- if party.is_over %}
-          <br>{{ render_tag('vorbei', class='color-disabled') }}
           {%- endif %}
         </td>
         <td class="centered bignumber">{{ ticket_count_by_party_id[party.id] }}</td>
