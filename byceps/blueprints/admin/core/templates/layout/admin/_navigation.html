@@ -5,8 +5,7 @@
     site = current_page_site|default
   %}
     {%- with party = current_page_party|default(get_party_for_site(site) if site else None) %}
-      {%- with brand = current_page_brand|default(get_brand_for_party(party) if party else None),
-               shop = current_page_shop|default(get_shop_for_party(party) if party else None) %}
+    {%- with brand = current_page_brand|default(get_brand_for_party(party) if party else None) %}
 
         {%- include 'layout/admin/_navigation_global.html' %}
         {%- include 'layout/admin/_navigation_brand.html' %}
