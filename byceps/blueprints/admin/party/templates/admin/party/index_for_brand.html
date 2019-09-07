@@ -31,6 +31,7 @@
         <th></th>
         <th class="centered">Tickets<br>verkauft</th>
         <th class="centered">Tickets<br>maximal</th>
+        <th>Shop</th>
         <th></th>
       </tr>
     </thead>
@@ -53,6 +54,15 @@
         </td>
         <td class="centered bignumber">{{ ticket_count_by_party_id[party.id] }}</td>
         <td class="centered bignumber">{{ party.max_ticket_quantity|separate_thousands if (party.max_ticket_quantity is not none) else '?'|dim }}</td>
+        <td>
+          {%- if party.shop_id is not none %}
+            {%- with shop = shops_by_party_id.get(party.shop_id) %}
+          <a href="{{ url_for('shop_shop_admin.view_for_shop', shop_id=shop.id) }}">{{ shop.title }}</a>
+            {%- endwith %}
+          {%- else %}
+          {{ 'keiner'|dim }}
+          {%- endif %}
+        </td>
         <td>
           {%- if g.current_user.has_permission(PartyPermission.update) %}
           <div class="dropdown left">

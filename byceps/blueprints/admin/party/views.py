@@ -57,13 +57,23 @@ def index_for_brand(brand_id, page):
     parties = party_service.get_parties_for_brand_paginated(brand.id, page,
                                                             per_page)
 
+    shops_by_party_id = _get_shops_by_party_id(parties.items)
+
     ticket_count_by_party_id = ticket_service.get_ticket_count_by_party_id()
 
     return {
         'brand': brand,
         'parties': parties,
+        'shops_by_party_id': shops_by_party_id,
         'ticket_count_by_party_id': ticket_count_by_party_id,
     }
+
+
+def _get_shops_by_party_id(parties):
+    shop_ids = {party.shop_id for party in parties if party.shop_id is not None}
+    shops = shop_service.find_shops(shop_ids)
+    shops_by_id = {shop.id: shop for shop in shops}
+    return {party.id: shops_by_id.get(party.shop_id) for party in parties}
 
 
 @blueprint.route('/parties/<party_id>')
