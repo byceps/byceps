@@ -14,6 +14,7 @@
     <thead>
       <tr>
         <th>Name<br>ID</th>
+        <th></th>
         <th>Marke</th>
         <th>Zeitraum</th>
       </tr>
@@ -24,8 +25,10 @@
         <td>
           <strong>{{ render_party_admin_link(party) }}</strong><br>
           {{ party.id }}
+        </td>
+        <td>
           {%- if party.archived %}
-          <br>{{ render_tag('archiviert', class='color-disabled', icon='archived') }}
+          {{ render_tag('', class='color-disabled', icon='archived', title='archiviert') }}
           {%- endif %}
         </td>
         <td>{{ party.brand.title }}</td>

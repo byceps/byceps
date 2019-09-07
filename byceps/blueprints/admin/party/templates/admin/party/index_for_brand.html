@@ -28,6 +28,7 @@
     <thead>
       <tr>
         <th>Name</th>
+        <th rowspan="2"></th>
         <th rowspan="2">Zeitraum</th>
         <th colspan="2" class="centered">Tickets</th>
         <th rowspan="2"></th>
@@ -44,8 +45,10 @@
         <td>
           <strong>{{ render_party_admin_link(party) }}</strong><br>
           {{ party.id }}
+        </td>
+        <td>
           {%- if party.archived %}
-          <br>{{ render_tag('archiviert', class='color-disabled', icon='archived') }}
+          {{ render_tag('', class='color-disabled', icon='archived', title='archiviert') }}
           {%- endif %}
         </td>
         <td>
