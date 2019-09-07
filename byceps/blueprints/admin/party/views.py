@@ -12,9 +12,6 @@ from flask import abort, request
 from ....services.brand import service as brand_service
 from ....services.party import service as party_service, \
     settings_service as party_settings_service
-from ....services.shop.article import service as article_service
-from ....services.shop.order import service as order_service
-from ....services.shop.shop import service as shop_service
 from ....services.ticketing import ticket_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_success
@@ -59,44 +56,12 @@ def index_for_brand(brand_id, page):
     parties = party_service.get_parties_for_brand_paginated(brand.id, page,
                                                             per_page)
 
-    article_count_by_party_id = _get_article_count_by_party_id()
-
-    order_count_by_party_id = _get_order_count_by_party_id()
-
     ticket_count_by_party_id = ticket_service.get_ticket_count_by_party_id()
 
     return {
         'brand': brand,
         'parties': parties,
-        'article_count_by_party_id': article_count_by_party_id,
-        'order_count_by_party_id': order_count_by_party_id,
         'ticket_count_by_party_id': ticket_count_by_party_id,
-    }
-
-
-def _get_article_count_by_party_id():
-    article_count_by_shop_id = article_service.get_article_count_by_shop_id()
-
-    shop_ids = article_count_by_shop_id.keys()
-    shops = shop_service.find_shops(shop_ids)
-
-    shop_ids_to_party_ids = {shop.id: shop.party_id for shop in shops}
-    return {
-        shop_ids_to_party_ids[shop_id]: article_count
-        for shop_id, article_count in article_count_by_shop_id.items()
-    }
-
-
-def _get_order_count_by_party_id():
-    order_count_by_shop_id = order_service.get_order_count_by_shop_id()
-
-    shop_ids = order_count_by_shop_id.keys()
-    shops = shop_service.find_shops(shop_ids)
-
-    shop_ids_to_party_ids = {shop.id: shop.party_id for shop in shops}
-    return {
-        shop_ids_to_party_ids[shop_id]: order_count
-        for shop_id, order_count in order_count_by_shop_id.items()
     }
 
 
