@@ -60,9 +60,7 @@ def view_example_order_placed(shop_id):
 
     order = _build_order(shop.id, PaymentState.open, is_open=True)
 
-    party = party_service.find_party(shop.party_id)
-
-    data = _build_email_data(order, party)
+    data = _build_email_data(order, shop)
 
     message = shop_order_email_service \
         ._assemble_email_for_incoming_order_to_orderer(data)
@@ -79,9 +77,7 @@ def view_example_order_paid(shop_id):
 
     order = _build_order(shop.id, PaymentState.paid, is_paid=True)
 
-    party = party_service.find_party(shop.party_id)
-
-    data = _build_email_data(order, party)
+    data = _build_email_data(order, shop)
 
     message = shop_order_email_service \
         ._assemble_email_for_paid_order_to_orderer(data)
@@ -100,9 +96,7 @@ def view_example_order_canceled(shop_id):
         is_canceled=True,
         cancelation_reason='Kein fristgerechter Geldeingang feststellbar')
 
-    party = party_service.find_party(shop.party_id)
-
-    data = _build_email_data(order, party)
+    data = _build_email_data(order, shop)
 
     message = shop_order_email_service \
         ._assemble_email_for_canceled_order_to_orderer(data)
@@ -160,10 +154,10 @@ def _build_order(shop_id, payment_state, *, is_open=False, is_canceled=False,
     )
 
 
-def _build_email_data(order, party):
+def _build_email_data(order, shop):
     return OrderEmailData(
         order=order,
-        email_config_id=party.brand_id,
+        email_config_id=shop.email_config_id,
         orderer_screen_name='Besteller',
         orderer_email_address='besteller@example.com',
     )
