@@ -12,6 +12,7 @@ from flask import abort, request
 from ....services.brand import service as brand_service
 from ....services.party import service as party_service, \
     settings_service as party_settings_service
+from ....services.shop.shop import service as shop_service
 from ....services.ticketing import ticket_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_success
@@ -73,11 +74,17 @@ def view(party_id):
     party = _get_party_or_404(party_id)
     brand = brand_service.find_brand(party.brand_id)
 
+    if party.shop_id:
+        shop = shop_service.get_shop(party.shop_id)
+    else:
+        shop = None
+
     settings = party_settings_service.get_settings(party.id)
 
     return {
         'brand': brand,
         'party': party,
+        'shop': shop,
         'settings': settings,
     }
 
@@ -113,10 +120,14 @@ def create(brand_id):
     starts_at = local_tz_to_utc(form.starts_at.data)
     ends_at = local_tz_to_utc(form.ends_at.data)
     max_ticket_quantity = form.max_ticket_quantity.data
+    shop_id = form.shop_id.data.strip()
+    if not shop_id:
+        shop_id = None
 
     party = party_service.create_party(party_id, brand.id, title, starts_at,
                                        ends_at,
-                                       max_ticket_quantity=max_ticket_quantity)
+                                       max_ticket_quantity=max_ticket_quantity,
+                                       shop_id=shop_id)
 
     flash_success('Die Party "{}" wurde angelegt.', party.title)
     return redirect_to('.index_for_brand', brand_id=brand.id)
@@ -157,11 +168,15 @@ def update(party_id):
     starts_at = local_tz_to_utc(form.starts_at.data)
     ends_at = local_tz_to_utc(form.ends_at.data)
     max_ticket_quantity = form.max_ticket_quantity.data
+    shop_id = form.shop_id.data.strip()
+    if not shop_id:
+        shop_id = None
     archived = form.archived.data
 
     try:
         party = party_service.update_party(party.id, title, starts_at, ends_at,
-                                           max_ticket_quantity, archived)
+                                           max_ticket_quantity, shop_id,
+                                           archived)
     except party_service.UnknownPartyId:
         abort(404, 'Unknown party ID "{}".'.format(party_id))
 

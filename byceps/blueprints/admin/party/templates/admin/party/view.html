@@ -49,6 +49,16 @@
       <th>Maximale Anzahl Tickets</th>
       <td>{{ party.max_ticket_quantity|separate_thousands if (party.max_ticket_quantity is not none) else 'nicht festgelegt'|dim }}</td>
     </tr>
+    <tr>
+      <th>Shop</th>
+      <td>
+        {%- if shop %}
+        <a href="{{ url_for('shop_shop_admin.view_for_shop', shop_id=shop.id) }}">{{ shop.title }}</a>
+        {%- else %}
+        {{ 'kein Shop verknüpft'|dim }}
+        {%- endif %}
+      </td>
+    </tr>
   </table>
 
   <h2>Einstellungen {{ render_extra_in_heading(settings|length) }}</h2>

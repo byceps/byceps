@@ -14,7 +14,8 @@ from .brand import create_brand
 
 
 def create_party(*, id='acmecon-2014', brand_id=None,
-                 title='Acme Entertainment Convention 2014'):
+                 title='Acme Entertainment Convention 2014',
+                 shop_id=None):
     if brand_id is None:
         brand = create_brand()
         brand_id = brand.id
@@ -22,4 +23,4 @@ def create_party(*, id='acmecon-2014', brand_id=None,
     starts_at = datetime(2014, 10, 24, 16, 0)
     ends_at = datetime(2014, 10, 26, 13, 0)
 
-    return Party(id, brand_id, title, starts_at, ends_at)
+    return Party(id, brand_id, title, starts_at, ends_at, shop_id=shop_id)

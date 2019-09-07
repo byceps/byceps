@@ -12,6 +12,8 @@ from attr import attrs
 
 from ....typing import BrandID, PartyID
 
+from ...shop.shop.transfer.models import ShopID
+
 
 @attrs(auto_attribs=True, frozen=True, slots=True)
 class Party:
@@ -21,6 +23,7 @@ class Party:
     starts_at: datetime
     ends_at: datetime
     max_ticket_quantity: int
+    shop_id: ShopID
     archived: bool
 
 

@@ -13,6 +13,7 @@ from ...database import db, Pagination
 from ...typing import BrandID, PartyID
 
 from ..brand.models.brand import Brand as DbBrand
+from ..shop.shop.transfer.models import ShopID
 
 from .models.party import Party as DbParty
 from .transfer.models import Party
@@ -24,10 +25,11 @@ class UnknownPartyId(Exception):
 
 def create_party(party_id: PartyID, brand_id: BrandID, title: str,
                  starts_at: datetime, ends_at: datetime,
-                 *, max_ticket_quantity: Optional[int]=None) -> Party:
+                 *, max_ticket_quantity: Optional[int]=None,
+                 shop_id: Optional[ShopID]=None) -> Party:
     """Create a party."""
     party = DbParty(party_id, brand_id, title, starts_at, ends_at,
-                    max_ticket_quantity=max_ticket_quantity)
+                    max_ticket_quantity=max_ticket_quantity, shop_id=shop_id)
 
     db.session.add(party)
     db.session.commit()
@@ -37,7 +39,7 @@ def create_party(party_id: PartyID, brand_id: BrandID, title: str,
 
 def update_party(party_id: PartyID, title: str, starts_at: datetime,
                  ends_at: datetime, max_ticket_quantity: Optional[int],
-                 archived: bool) -> Party:
+                 shop_id: ShopID, archived: bool) -> Party:
     """Update a party."""
     party = DbParty.query.get(party_id)
 
@@ -48,6 +50,7 @@ def update_party(party_id: PartyID, title: str, starts_at: datetime,
     party.starts_at = starts_at
     party.ends_at = ends_at
     party.max_ticket_quantity = max_ticket_quantity
+    party.shop_id = shop_id
     party.archived = archived
 
     db.session.commit()
@@ -173,5 +176,6 @@ def _db_entity_to_party(party: DbParty) -> Party:
         party.starts_at,
         party.ends_at,
         party.max_ticket_quantity,
+        party.shop_id,
         party.archived,
     )
