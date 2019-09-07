@@ -29,7 +29,7 @@ def index():
     """List orders placed by the current user for the current party."""
     current_user = g.current_user
 
-    party = party_service.find_party(g.party_id)
+    party = party_service.get_party(g.party_id)
 
     shop = shop_service.find_shop_for_party(party.id)
     if shop:

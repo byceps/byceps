@@ -79,7 +79,7 @@ def provide_site_mode():
 
         party_id = site.party_id
 
-        party = party_service.find_party(party_id)
+        party = party_service.get_party(party_id)
 
         g.party_id = party.id
         g.brand_id = party.brand_id

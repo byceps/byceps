@@ -65,7 +65,7 @@ def view_ticket(ticket_id):
     if ticket is None:
         abort(404)
 
-    party = party_service.find_party(ticket.category.party_id)
+    party = party_service.get_party(ticket.category.party_id)
 
     if ticket.order_number:
         order = order_service.find_order_by_order_number(ticket.order_number)
@@ -169,7 +169,7 @@ def view_bundle(bundle_id):
     if bundle is None:
         abort(404)
 
-    party = party_service.find_party(bundle.ticket_category.party_id)
+    party = party_service.get_party(bundle.ticket_category.party_id)
 
     tickets = ticket_bundle_service.find_tickets_for_bundle(bundle.id)
 

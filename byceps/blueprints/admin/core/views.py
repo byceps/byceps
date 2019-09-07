@@ -30,7 +30,7 @@ def inject_template_variables():
         return brand_service.find_brand(party.brand_id)
 
     def get_party_for_site(site):
-        return party_service.find_party(site.party_id)
+        return party_service.get_party(site.party_id)
 
     return {
         'all_brands': brands,

@@ -35,7 +35,7 @@ def index_mine():
     """List tickets related to the current user."""
     current_user = g.current_user
 
-    party = party_service.find_party(g.party_id)
+    party = party_service.get_party(g.party_id)
 
     tickets = ticket_service.find_tickets_related_to_user_for_party(
         current_user.id, party.id)
@@ -65,7 +65,7 @@ def view_printable_html(ticket_id):
         abort(404)
 
     ticket_category = ticket_category_service.find_category(ticket.category_id)
-    party = party_service.find_party(ticket_category.party_id)
+    party = party_service.get_party(ticket_category.party_id)
 
     barcode_svg = barcode_service.render_svg(ticket.code)
 

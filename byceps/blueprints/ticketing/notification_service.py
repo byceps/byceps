@@ -101,7 +101,7 @@ def notify_withdrawn_seat_manager(ticket: Ticket, user: User, manager: User
 
 
 def _get_party_title():
-    party = party_service.find_party(g.party_id)
+    party = party_service.get_party(g.party_id)
     return party.title
 
 

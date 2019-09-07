@@ -77,6 +77,16 @@ def find_party(party_id: PartyID) -> Optional[Party]:
     return _db_entity_to_party(party)
 
 
+def get_party(party_id: PartyID) -> Party:
+    """Return the party with that id, or `None` if not found."""
+    party = find_party(party_id)
+
+    if party is None:
+        raise UnknownPartyId(party_id)
+
+    return party
+
+
 def get_all_parties_with_brands() -> List[DbParty]:
     """Return all parties."""
     return DbParty.query \

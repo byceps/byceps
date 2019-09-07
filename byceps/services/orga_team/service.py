@@ -136,7 +136,7 @@ def get_memberships_for_user(user_id: UserID) -> Sequence[Membership]:
 
 def get_unassigned_orgas_for_party(party_id: PartyID) -> Sequence[DbUser]:
     """Return organizers that are not assigned to a team for the party."""
-    party = party_service.find_party(party_id)
+    party = party_service.get_party(party_id)
 
     assigned_orgas = DbUser.query \
         .join(Membership) \

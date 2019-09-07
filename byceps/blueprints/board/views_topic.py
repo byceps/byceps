@@ -108,7 +108,7 @@ def topic_view(topic_id, page):
 
     service.enrich_creators(postings.items, g.brand_id, g.party_id)
 
-    party = party_service.find_party(g.party_id)
+    party = party_service.get_party(g.party_id)
 
     context = {
         'topic': topic,

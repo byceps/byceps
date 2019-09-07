@@ -21,7 +21,7 @@ blueprint = create_blueprint('party', __name__)
 @templated
 def info():
     """Show information about the current party."""
-    party = party_service.find_party(g.party_id)
+    party = party_service.get_party(g.party_id)
 
     return {
         'party': party,
