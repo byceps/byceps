@@ -53,8 +53,8 @@ def view_for_party(party_id):
     if party is None:
         abort(404)
 
-    shop = shop_service.find_shop_for_party(party.id)
-    if shop:
+    if party.shop_id is not None:
+        shop = shop_service.get_shop(party.id)
         return redirect_to('.view_for_shop', shop_id=shop.id)
 
     return {

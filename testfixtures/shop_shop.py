@@ -7,11 +7,11 @@ testfixtures.shop_shop
 """
 
 from byceps.services.shop.shop.models import Shop
-from byceps.typing import PartyID
+from byceps.services.shop.shop.transfer.models import ShopID
 
 
-def create_shop(party_id: PartyID, email_config_id: str) -> Shop:
-    shop_id = party_id
+def create_shop(shop_id: ShopID, email_config_id: str) -> Shop:
+    party_id = shop_id
     title = shop_id
 
     return Shop(shop_id, title, party_id, email_config_id)

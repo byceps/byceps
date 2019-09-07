@@ -50,18 +50,6 @@ def get_shop(shop_id: ShopID) -> Shop:
     return shop
 
 
-def find_shop_for_party(party_id: PartyID) -> Optional[Shop]:
-    """Return the shop for that party, or `None` if not found."""
-    shop = DbShop.query \
-        .filter_by(party_id=party_id) \
-        .one_or_none()
-
-    if shop is None:
-        return None
-
-    return _db_entity_to_shop(shop)
-
-
 def find_shops(shop_ids: Set[ShopID]) -> List[Shop]:
     """Return the shops with those IDs."""
     if not shop_ids:

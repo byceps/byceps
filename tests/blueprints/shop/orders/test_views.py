@@ -23,43 +23,48 @@ class ShopOrdersTestCase(ShopTestBase):
         self.user1 = create_user_with_detail('User1')
         self.user2 = create_user_with_detail('User2')
 
-        create_email_config(sender_address='shop@example.com')
+        create_email_config()
+
+        self.shop = self.create_shop('shop-1')
 
         self.brand = create_brand()
-        self.party = create_party(self.brand.id)
-        create_site(self.party.id)
 
-    def test_view_matching_user_and_party(self):
-        shop = self.create_shop(self.party.id)
-        self.create_order_number_sequence(shop.id, 'LF-02-B')
-        self.create_payment_instructions_snippet(shop.id)
+    def test_view_matching_user_and_party_and_shop(self):
+        party = create_party(self.brand.id, shop_id=self.shop.id)
+        create_site(party.id)
 
-        order_id = self.place_order(shop.id, self.user1)
+        self.create_order_number_sequence(self.shop.id, 'LF-02-B')
+        self.create_payment_instructions_snippet(self.shop.id)
+
+        order_id = self.place_order(self.shop.id, self.user1)
 
         response = self.request_view(self.user1, order_id)
 
         assert response.status_code == 200
 
-    def test_view_matching_party_but_different_user(self):
-        shop = self.create_shop(self.party.id)
-        self.create_order_number_sequence(shop.id, 'LF-02-B')
-        self.create_payment_instructions_snippet(shop.id)
+    def test_view_matching_party_and_shop_but_different_user(self):
+        party = create_party(self.brand.id, shop_id=self.shop.id)
+        create_site(party.id)
 
-        order_id = self.place_order(shop.id, self.user1)
+        self.create_order_number_sequence(self.shop.id, 'LF-02-B')
+        self.create_payment_instructions_snippet(self.shop.id)
+
+        order_id = self.place_order(self.shop.id, self.user1)
 
         response = self.request_view(self.user2, order_id)
 
         assert response.status_code == 404
 
-    def test_view_matching_user_but_different_party(self):
+    def test_view_matching_user_but_different_party_and_shop(self):
+        shop = self.create_shop('shop-2')
         other_party = create_party(self.brand.id, 'otherlan-2013',
-                                   'OtherLAN 2013')
+                                   'OtherLAN 2013', shop_id=shop.id)
+        create_site(other_party.id)
 
-        shop = self.create_shop(other_party.id)
-        self.create_order_number_sequence(shop.id, 'LF-02-B')
-        self.create_payment_instructions_snippet(shop.id)
+        self.create_order_number_sequence(self.shop.id, 'LF-02-B')
+        self.create_payment_instructions_snippet(self.shop.id)
 
-        order_id = self.place_order(shop.id, self.user1)
+        order_id = self.place_order(self.shop.id, self.user1)
 
         response = self.request_view(self.user1, order_id)
 

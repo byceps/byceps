@@ -20,19 +20,21 @@ class ShopOrderTestCase(ShopTestBase):
     def setUp(self):
         super().setUp()
 
-        create_email_config(sender_address='shop@example.com')
-
-        brand = create_brand()
-        party = create_party(brand.id)
-        create_site(party.id)
+        create_email_config()
 
         self.setup_orderer()
 
-        self.shop = self.create_shop(party.id)
+        party_id = 'some-party-2019'
+
+        self.shop = self.create_shop(party_id)
         self.setup_order_number_prefix_and_sequence()
         self.create_shop_fragment(self.shop.id, 'payment_instructions',
                                   'Send all ur moneyz!')
         self.setup_article()
+
+        brand = create_brand()
+        party = create_party(brand.id, party_id, shop_id=self.shop.id)
+        create_site(party.id)
 
     def setup_order_number_prefix_and_sequence(self):
         self.create_order_number_sequence(self.shop.id, 'AEC-01-B', value=4)

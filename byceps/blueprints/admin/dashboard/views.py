@@ -144,11 +144,14 @@ def view_party(party_id):
     seating_area_count = seating_area_service.count_areas_for_party(party.id)
     seat_count = seat_service.count_seats_for_party(party.id)
 
-    shop = shop_service.find_shop_for_party(party.id)
-    if shop:
+    if party.shop_id:
+        shop = shop_service.get_shop(party.shop_id)
+
         article_count = article_service.count_articles_for_shop(shop.id)
         open_order_count = order_service.count_open_orders(shop.id)
     else:
+        shop = None
+
         article_count = 0
         open_order_count = 0
 

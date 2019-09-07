@@ -9,6 +9,7 @@ byceps.blueprints.shop.order.views
 from flask import abort, g, request
 
 from ....services.country import service as country_service
+from ....services.party import service as party_service
 from ....services.shop.article import service as article_service
 from ....services.shop.cart.models import Cart
 from ....services.shop.order.email import service as order_email_service
@@ -225,12 +226,12 @@ def order_single(article_id):
 
 
 def _get_shop_or_404(party_id):
-    shop = shop_service.find_shop_for_party(g.party_id)
+    party = party_service.get_party(party_id)
 
-    if shop is None:
+    if party.shop_id is None:
         abort(404)
 
-    return shop
+    return shop_service.get_shop(party.shop_id)
 
 
 def _get_article_or_404(article_id):
