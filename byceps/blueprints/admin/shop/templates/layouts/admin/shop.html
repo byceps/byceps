@@ -2,8 +2,7 @@
 {% from 'macros/admin.html' import render_main_tabs %}
 
 {% block before_body %}
-  {%- with party = current_page_party %}
-    {%- with shop = current_page_shop|default(get_shop_for_party(party)) %}
+  {%- with shop = current_page_shop %}
 {{
   render_main_tabs(
     Navigation(None)
@@ -46,6 +45,5 @@
     , current_tab
   )
 }}
-    {%- endwith %}
   {%- endwith %}
 {%- endblock %}

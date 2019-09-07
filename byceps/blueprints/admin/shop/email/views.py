@@ -13,7 +13,6 @@ from flask import abort
 
 from .....config import ConfigurationError
 from .....database import generate_uuid
-from .....services.party import service as party_service
 from .....services.shop.order.email import service as shop_order_email_service
 from .....services.shop.order.email.service import OrderEmailData
 from .....services.shop.order.transfer.models import Order, PaymentMethod, \
@@ -43,10 +42,7 @@ def view_for_shop(shop_id):
     """Show e-mail examples."""
     shop = _get_shop_or_404(shop_id)
 
-    party = party_service.find_party(shop.party_id)
-
     return {
-        'party': party,
         'shop': shop,
     }
 

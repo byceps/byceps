@@ -11,7 +11,6 @@ from decimal import Decimal
 
 from flask import abort, request
 
-from .....services.party import service as party_service
 from .....services.shop.article import service as article_service
 from .....services.shop.order import ordered_articles_service, \
     service as order_service
@@ -47,8 +46,6 @@ def index_for_shop(shop_id, page):
     """List articles for that shop."""
     shop = _get_shop_or_404(shop_id)
 
-    party = party_service.find_party(shop.party_id)
-
     article_number_sequence = sequence_service \
         .find_article_number_sequence(shop.id)
     article_number_prefix = article_number_sequence.prefix
@@ -59,7 +56,6 @@ def index_for_shop(shop_id, page):
 
     return {
         'shop': shop,
-        'party': party,
         'article_number_prefix': article_number_prefix,
         'articles': articles,
     }
@@ -75,7 +71,6 @@ def view(article_id):
         abort(404)
 
     shop = shop_service.get_shop(article.shop_id)
-    party = party_service.find_party(shop.party_id)
 
     totals = ordered_articles_service \
         .count_ordered_articles(article.item_number)
@@ -83,7 +78,6 @@ def view(article_id):
     return {
         'article': article,
         'shop': shop,
-        'party': party,
         'totals': totals,
         'PaymentState': PaymentState,
     }
@@ -99,7 +93,6 @@ def view_ordered(article_id):
     article = _get_article_or_404(article_id)
 
     shop = shop_service.get_shop(article.shop_id)
-    party = party_service.find_party(shop.party_id)
 
     order_items = ordered_articles_service \
         .get_order_items_for_article(article.item_number)
@@ -126,7 +119,6 @@ def view_ordered(article_id):
     return {
         'article': article,
         'shop': shop,
-        'party': party,
         'quantity_total': quantity_total,
         'quantities_orders_users': quantities_orders_users,
         'now': datetime.utcnow(),
@@ -140,8 +132,6 @@ def create_form(shop_id, erroneous_form=None):
     """Show form to create an article."""
     shop = _get_shop_or_404(shop_id)
 
-    party = party_service.find_party(shop.party_id)
-
     article_number_sequence = sequence_service \
         .find_article_number_sequence(shop.id)
     article_number_prefix = article_number_sequence.prefix
@@ -153,7 +143,6 @@ def create_form(shop_id, erroneous_form=None):
 
     return {
         'shop': shop,
-        'party': party,
         'article_number_prefix': article_number_prefix,
         'form': form,
     }
@@ -194,7 +183,6 @@ def update_form(article_id, erroneous_form=None):
     article = _get_article_or_404(article_id)
 
     shop = shop_service.get_shop(article.shop_id)
-    party = party_service.find_party(shop.party_id)
 
     if article.available_from:
         article.available_from = utc_to_local_tz(article.available_from)
@@ -206,7 +194,6 @@ def update_form(article_id, erroneous_form=None):
     return {
         'article': article,
         'shop': shop,
-        'party': party,
         'form': form,
     }
 
@@ -255,7 +242,6 @@ def attachment_create_form(article_id, erroneous_form=None):
     article = _get_article_or_404(article_id)
 
     shop = shop_service.get_shop(article.shop_id)
-    party = party_service.find_party(shop.party_id)
 
     attachable_articles = article_service.get_attachable_articles(article)
 
@@ -266,7 +252,6 @@ def attachment_create_form(article_id, erroneous_form=None):
     return {
         'article': article,
         'shop': shop,
-        'party': party,
         'form': form,
     }
 

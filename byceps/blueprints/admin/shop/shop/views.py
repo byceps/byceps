@@ -69,8 +69,6 @@ def view_for_shop(shop_id):
     """Show the shop."""
     shop = _get_shop_or_404(shop_id)
 
-    party = party_service.find_party(shop.party_id)
-
     most_recent_article_number = _get_most_recent_article_number(shop.id)
     most_recent_order_number = _get_most_recent_order_number(shop.id)
 
@@ -82,7 +80,6 @@ def view_for_shop(shop_id):
         _get_order_actions_by_article_number(shop.id)
 
     return {
-        'party': party,
         'shop': shop,
 
         'most_recent_article_number': most_recent_article_number,

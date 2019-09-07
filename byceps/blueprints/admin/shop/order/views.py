@@ -8,7 +8,6 @@ byceps.blueprints.admin.shop.order.views
 
 from flask import abort, g, request, Response
 
-from .....services.party import service as party_service
 from .....services.shop.order import service as order_service
 from .....services.shop.order.email import service as order_email_service
 from .....services.shop.order.export import service as order_export_service
@@ -46,8 +45,6 @@ def index_for_shop(shop_id, page):
     """List orders for that shop."""
     shop = _get_shop_or_404(shop_id)
 
-    party = party_service.find_party(shop.party_id)
-
     order_number_sequence = sequence_service.find_order_number_sequence(shop.id)
     order_number_prefix = order_number_sequence.prefix
 
@@ -82,7 +79,6 @@ def index_for_shop(shop_id, page):
 
     return {
         'shop': shop,
-        'party': party,
         'order_number_prefix': order_number_prefix,
         'search_term': search_term,
         'PaymentState': PaymentState,
@@ -106,7 +102,6 @@ def view(order_id):
     placed_by = user_service.find_user(order.placed_by_id, include_avatar=True)
 
     shop = shop_service.get_shop(order.shop_id)
-    party = party_service.find_party(shop.party_id)
 
     articles_by_item_number = service.get_articles_by_item_number(order)
 
@@ -118,7 +113,6 @@ def view(order_id):
         'shop': shop,
         'order': order,
         'placed_by': placed_by,
-        'party': party,
         'articles_by_item_number': articles_by_item_number,
         'events': events,
         'PaymentMethod': PaymentMethod,
@@ -212,14 +206,12 @@ def cancel_form(order_id, erroneous_form=None):
         return redirect_to('.view', order_id=order.id)
 
     shop = shop_service.get_shop(order.shop_id)
-    party = party_service.find_party(shop.party_id)
 
     form = erroneous_form if erroneous_form else CancelForm()
 
     return {
         'shop': shop,
         'order': order,
-        'party': party,
         'form': form,
     }
 
@@ -275,14 +267,12 @@ def mark_as_paid_form(order_id, erroneous_form=None):
         return redirect_to('.view', order_id=order.id)
 
     shop = shop_service.get_shop(order.shop_id)
-    party = party_service.find_party(shop.party_id)
 
     form = erroneous_form if erroneous_form else MarkAsPaidForm()
 
     return {
         'shop': shop,
         'order': order,
-        'party': party,
         'form': form,
     }
 
