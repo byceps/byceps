@@ -14,7 +14,8 @@ from flask import abort
 from .....config import ConfigurationError
 from .....database import generate_uuid
 from .....services.party import service as party_service
-from .....services.shop.order.email import service as email_service
+from .....services.shop.order.email import service as shop_order_email_service
+from .....services.shop.order.email.service import OrderEmailData
 from .....services.shop.order.transfer.models import Order, PaymentMethod, \
     PaymentState
 from .....services.shop.sequence import service as sequence_service
@@ -63,7 +64,8 @@ def view_example_order_placed(shop_id):
 
     data = _build_email_data(order, party)
 
-    message = email_service._assemble_email_for_incoming_order_to_orderer(data)
+    message = shop_order_email_service \
+        ._assemble_email_for_incoming_order_to_orderer(data)
 
     yield from _render_message(message)
 
@@ -81,7 +83,8 @@ def view_example_order_paid(shop_id):
 
     data = _build_email_data(order, party)
 
-    message = email_service._assemble_email_for_paid_order_to_orderer(data)
+    message = shop_order_email_service \
+        ._assemble_email_for_paid_order_to_orderer(data)
 
     yield from _render_message(message)
 
@@ -101,7 +104,8 @@ def view_example_order_canceled(shop_id):
 
     data = _build_email_data(order, party)
 
-    message = email_service._assemble_email_for_canceled_order_to_orderer(data)
+    message = shop_order_email_service \
+        ._assemble_email_for_canceled_order_to_orderer(data)
 
     yield from _render_message(message)
 
@@ -157,7 +161,7 @@ def _build_order(shop_id, payment_state, *, is_open=False, is_canceled=False,
 
 
 def _build_email_data(order, party):
-    return email_service.OrderEmailData(
+    return OrderEmailData(
         order=order,
         email_config_id=party.brand_id,
         orderer_screen_name='Besteller',
