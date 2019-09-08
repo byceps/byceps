@@ -14,15 +14,8 @@ from tests.helpers import app_context, create_brand, create_email_config, \
     create_party, create_site, create_user
 
 
-def test_recipient_formatting(application, params):
+def test_recipient_formatting(site, params):
     screen_name, email_address, expected = params
-
-    create_email_config()
-
-    brand = create_brand()
-    party = create_party(brand.id)
-
-    site = create_site(party.id)
 
     user = create_user(screen_name, email_address=email_address)
 
@@ -41,8 +34,15 @@ def params(request):
     yield request.param
 
 
-@pytest.fixture
-def application(db):
+@pytest.fixture(scope='module')
+def site(db):
     with app_context():
         with database_recreated(db):
-            yield
+            create_email_config()
+
+            brand = create_brand()
+            party = create_party(brand.id)
+
+            site = create_site(party.id)
+
+            yield site
