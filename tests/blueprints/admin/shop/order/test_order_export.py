@@ -31,7 +31,7 @@ class ExportTestCase(ShopTestBase):
 
         self.create_brand_and_party()
 
-        self.shop = self.create_shop(self.party.id)
+        self.shop = self.create_shop()
         self.create_order_number_sequence(self.shop.id, 'LR-08-B', value=26)
         self.create_articles()
         self.order = self.place_order()

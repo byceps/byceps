@@ -24,18 +24,18 @@ class OrderActionTestBase(ShopTestBase):
     def setUp(self):
         super().setUp()
 
-        create_email_config()
-
-        brand = create_brand()
-        self.party = create_party(brand_id=brand.id)
-
-        self.shop = self.create_shop(self.party.id)
-
         self.admin = create_user_with_detail('Admin')
         self.buyer = create_user_with_detail('Buyer')
 
+        create_email_config()
+
+        self.shop = self.create_shop()
+
         shop_sequence_service.create_sequence(self.shop.id, Purpose.order,
                                               prefix='article-')
+
+        brand = create_brand()
+        self.party = create_party(brand_id=brand.id)
 
     # -------------------------------------------------------------------- #
     # helpers

@@ -24,16 +24,14 @@ class ShopOrderTestCase(ShopTestBase):
 
         self.setup_orderer()
 
-        party_id = 'some-party-2019'
-
-        self.shop = self.create_shop(party_id)
+        self.shop = self.create_shop()
         self.setup_order_number_prefix_and_sequence()
         self.create_shop_fragment(self.shop.id, 'payment_instructions',
                                   'Send all ur moneyz!')
         self.setup_article()
 
         brand = create_brand()
-        party = create_party(brand.id, party_id, shop_id=self.shop.id)
+        party = create_party(brand.id, shop_id=self.shop.id)
         create_site(party.id)
 
     def setup_order_number_prefix_and_sequence(self):

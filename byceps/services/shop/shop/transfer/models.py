@@ -10,8 +10,6 @@ from typing import NewType
 
 from attr import attrs
 
-from .....typing import PartyID
-
 
 ShopID = NewType('ShopID', str)
 
@@ -20,7 +18,6 @@ ShopID = NewType('ShopID', str)
 class Shop:
     id: ShopID
     title: str
-    party_id: PartyID
     email_config_id: str
     closed: bool
     archived: bool

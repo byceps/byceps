@@ -23,14 +23,14 @@ class EmailOnOrderPaidTest(OrderEmailTestBase):
 
         create_email_config(sender_address='acmecon@example.com')
 
-        brand = create_brand()
-
-        self.party = create_party(brand.id)
-
-        self.shop = self.create_shop(self.party.id)
+        self.shop = self.create_shop()
         self.create_order_number_sequence(self.shop.id, 'AC-14-B', value=21)
 
         self.create_email_footer_snippet()
+
+        brand = create_brand()
+
+        self.party = create_party(brand.id)
 
         self.user = create_user_with_detail('Vorbild')
 

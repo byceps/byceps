@@ -26,10 +26,11 @@ class OrderedArticlesServiceTestCase(ShopTestBase):
 
         create_email_config()
 
+        self.shop = self.create_shop()
+
         brand = create_brand()
         party = create_party(brand.id)
 
-        self.shop = self.create_shop(party.id)
         self.create_order_number_sequence(self.shop.id, 'ABC-01-B')
         self.article = self.create_article(self.shop.id, quantity=100)
 

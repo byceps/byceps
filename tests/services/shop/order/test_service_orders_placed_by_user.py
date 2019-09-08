@@ -21,13 +21,13 @@ class ShopOrdersServiceTestCase(ShopTestBase):
 
         create_email_config()
 
+        self.shop1_id = self.create_shop('shop-1').id
+        self.shop2_id = self.create_shop('shop-2').id
+
         brand = create_brand()
 
         party1 = create_party(brand.id, 'lafiesta-2012', 'La Fiesta 2012')
         party2 = create_party(brand.id, 'lafiesta-2013', 'La Fiesta 2013')
-
-        self.shop1_id = self.create_shop(party1.id).id
-        self.shop2_id = self.create_shop(party2.id).id
 
         self.create_order_number_sequence(self.shop1_id, 'LF-02-B')
         self.create_order_number_sequence(self.shop2_id, 'LF-03-B')
