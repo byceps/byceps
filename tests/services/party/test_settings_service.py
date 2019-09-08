@@ -3,24 +3,21 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from datetime import datetime
-
 import pytest
 
-from byceps.services.brand import service as brand_service
-from byceps.services.party import service as party_service, settings_service
+from byceps.services.party import settings_service
 from byceps.services.party.transfer.models import PartySetting
+
+from tests.helpers import create_brand, create_party
 
 
 @pytest.fixture
 def app(party_app_with_db):
     _app = party_app_with_db
 
-    brand = brand_service.create_brand('acme', 'ACME')
+    brand = create_brand()
+    party = create_party(brand.id)
 
-    now = datetime.utcnow()
-    party = party_service.create_party('acmeparty', brand.id, 'ACME Party',
-                                       now, now)
     _app.party_id = party.id
 
     yield _app
@@ -39,6 +36,7 @@ def test_create(app):
     assert setting.party_id == party_id
     assert setting.name == name
     assert setting.value == value
+
 
 def test_create_or_update(app):
     party_id = app.party_id
@@ -64,6 +62,7 @@ def test_create_or_update(app):
     assert updated_setting.name == name
     assert updated_setting.value == value2
 
+
 def test_find(app):
     party_id = app.party_id
     name = 'name'
@@ -80,6 +79,7 @@ def test_find(app):
     assert setting_after_create.name == name
     assert setting_after_create.value == value
 
+
 def test_find_value(app):
     party_id = app.party_id
     name = 'name'
@@ -92,6 +92,7 @@ def test_find_value(app):
 
     value_after_create = settings_service.find_setting_value(party_id, name)
     assert value_after_create == value
+
 
 def test_get_settings(app):
     party_id = app.party_id

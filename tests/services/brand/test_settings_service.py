@@ -5,15 +5,18 @@
 
 import pytest
 
-from byceps.services.brand import service as brand_service, settings_service
+from byceps.services.brand import settings_service
 from byceps.services.brand.transfer.models import BrandSetting
+
+from tests.helpers import create_brand
 
 
 @pytest.fixture
 def app(party_app_with_db):
     _app = party_app_with_db
 
-    brand = brand_service.create_brand('acme', 'ACME')
+    brand = create_brand()
+
     _app.brand_id = brand.id
 
     yield _app

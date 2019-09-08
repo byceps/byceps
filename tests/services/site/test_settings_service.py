@@ -3,34 +3,25 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from datetime import datetime
-
 import pytest
 
-from byceps.services.brand import service as brand_service
-from byceps.services.email import service as email_service
-from byceps.services.party import service as party_service
-from byceps.services.site import service as site_service, settings_service
+from byceps.services.site import settings_service
 from byceps.services.site.transfer.models import SiteSetting
+
+from tests.helpers import create_brand, create_email_config, create_party, \
+    create_site
 
 
 @pytest.fixture
 def app(party_app_with_db):
     _app = party_app_with_db
 
-    brand = brand_service.create_brand('acme', 'ACME')
+    create_email_config()
 
-    now = datetime.utcnow()
-    party = party_service.create_party('acmeparty', brand.id, 'ACME Party',
-                                       now, now)
+    brand = create_brand()
+    party = create_party(brand.id)
+    site = create_site(party.id)
 
-    email_config_id = 'acme'
-    email_service.set_config(email_config_id, 'info@example.com',
-                             sender_name='ACME')
-
-    site = site_service.create_site('acme-intranet', party.id,
-                                    'ACME Party Intranet', 'www.example.com',
-                                    email_config_id)
     _app.site_id = site.id
 
     yield _app
@@ -49,6 +40,7 @@ def test_create(app):
     assert setting.site_id == site_id
     assert setting.name == name
     assert setting.value == value
+
 
 def test_create_or_update(app):
     site_id = app.site_id
@@ -74,6 +66,7 @@ def test_create_or_update(app):
     assert updated_setting.name == name
     assert updated_setting.value == value2
 
+
 def test_find(app):
     site_id = app.site_id
     name = 'name'
@@ -90,6 +83,7 @@ def test_find(app):
     assert setting_after_create.name == name
     assert setting_after_create.value == value
 
+
 def test_find_value(app):
     site_id = app.site_id
     name = 'name'
@@ -102,6 +96,7 @@ def test_find_value(app):
 
     value_after_create = settings_service.find_setting_value(site_id, name)
     assert value_after_create == value
+
 
 def test_get_settings(app):
     site_id = app.site_id
