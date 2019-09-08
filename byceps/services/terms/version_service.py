@@ -17,18 +17,19 @@ from ..consent.transfer.models import SubjectID as ConsentSubjectID
 from ..snippet.transfer.models import SnippetVersionID
 
 from .models.version import Version
-from .transfer.models import VersionID
+from .transfer.models import DocumentID, VersionID
 
 
 BRAND_SETTING_KEY_CURRENT_VERSION_ID = 'terms_current_version_id'
 
 
-def create_version(brand_id: BrandID, title: str,
+def create_version(brand_id: BrandID, document_id: DocumentID, title: str,
                    snippet_version_id: SnippetVersionID,
                    consent_subject_id: ConsentSubjectID
                   ) -> Version:
     """Create a new version of the terms for that brand."""
-    version = Version(brand_id, title, snippet_version_id, consent_subject_id)
+    version = Version(brand_id, document_id, title, snippet_version_id,
+                      consent_subject_id)
 
     db.session.add(version)
     db.session.commit()

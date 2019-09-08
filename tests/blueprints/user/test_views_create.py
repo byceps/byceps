@@ -15,6 +15,7 @@ from byceps.services.newsletter import \
     command_service as newsletter_command_service, service as newsletter_service
 from byceps.services.snippet import service as snippet_service
 from byceps.services.snippet.transfer.models import Scope
+from byceps.services.terms import document_service as terms_document_service
 from byceps.services.terms import version_service as terms_version_service
 from byceps.services.user import event_service, service as user_service
 from byceps.services.user.models.user import User
@@ -60,8 +61,13 @@ class UserCreateTestCase(AbstractAppTestCase):
                 'Terms of service for {} / v1'.format(self.brand.title),
                 'terms_of_service')
 
+        terms_document_id = self.brand_id
+        terms_document = terms_document_service \
+            .create_document(terms_document_id, terms_document_id)
+
         terms_version = terms_version_service.create_version(
-            self.brand_id, '01-Jan-2016', snippet.id, consent_subject.id)
+            self.brand_id, terms_document.id, '01-Jan-2016', snippet.id,
+            consent_subject.id)
 
         terms_version_service.set_current_version(self.brand.id,
                                                   terms_version.id)
