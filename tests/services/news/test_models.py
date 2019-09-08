@@ -8,30 +8,37 @@ import pytest
 from byceps.services.news import channel_service as news_channel_service, \
     service as news_service
 
-from tests.helpers import create_brand
+from tests.helpers import create_brand, create_user
+
+from ...conftest import database_recreated
 
 
-def test_image_url_with_image(party_app_with_db, channel, admin_user):
-    editor = admin_user
-
-    item = create_item(channel.id, 'with-image', editor.id,
+def test_image_url_with_image(app):
+    item = create_item(app.channel.id, 'with-image', app.editor.id,
                        image_url_path='breaking.png')
 
     assert item.image_url == 'http://example.com/brand/news/breaking.png'
 
 
-def test_image_url_without_image(party_app_with_db, channel, admin_user):
-    editor = admin_user
-
-    item = create_item(channel.id, 'without-image', editor.id)
+def test_image_url_without_image(app):
+    item = create_item(app.channel.id, 'without-image', app.editor.id)
 
     assert item.image_url is None
 
 
-@pytest.fixture
-def channel():
-    brand = create_brand()
-    return create_channel(brand.id)
+@pytest.fixture(scope='module')
+def app(party_app, db):
+    with party_app.app_context():
+        with database_recreated(db):
+            _app = party_app
+
+            brand = create_brand()
+
+            _app.channel = create_channel(brand.id)
+
+            _app.editor = create_user('Editor')
+
+            yield _app
 
 
 def create_channel(brand_id):
