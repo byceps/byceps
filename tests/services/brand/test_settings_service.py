@@ -5,27 +5,32 @@
 
 import pytest
 
+from byceps.services.brand.models.setting import Setting as DbSetting
 from byceps.services.brand import settings_service
 from byceps.services.brand.transfer.models import BrandSetting
 
 from tests.helpers import create_brand
 
+from ...conftest import database_recreated
 
-@pytest.fixture
-def app(party_app_with_db):
-    _app = party_app_with_db
 
-    brand = create_brand()
+@pytest.fixture(scope='module')
+def app(party_app, db):
+    with party_app.app_context():
+        with database_recreated(db):
+            _app = party_app
 
-    _app.brand_id = brand.id
+            brand = create_brand()
 
-    yield _app
+            _app.brand_id = brand.id
+
+            yield _app
 
 
 def test_create(app):
     brand_id = app.brand_id
-    name = 'name'
-    value = 'value'
+    name = 'name1'
+    value = 'value1'
 
     assert settings_service.find_setting(brand_id, name) is None
 
@@ -39,9 +44,9 @@ def test_create(app):
 
 def test_create_or_update(app):
     brand_id = app.brand_id
-    name = 'name'
-    value1 = 'value1'
-    value2 = 'value2'
+    name = 'name2'
+    value1 = 'value2a'
+    value2 = 'value2b'
 
     assert settings_service.find_setting(brand_id, name) is None
 
@@ -64,8 +69,8 @@ def test_create_or_update(app):
 
 def test_find(app):
     brand_id = app.brand_id
-    name = 'name'
-    value = 'value'
+    name = 'name3'
+    value = 'value3'
 
     setting_before_create = settings_service.find_setting(brand_id, name)
     assert setting_before_create is None
@@ -81,8 +86,8 @@ def test_find(app):
 
 def test_find_value(app):
     brand_id = app.brand_id
-    name = 'name'
-    value = 'value'
+    name = 'name4'
+    value = 'value4'
 
     value_before_create = settings_service.find_setting_value(brand_id, name)
     assert value_before_create is None
@@ -96,19 +101,22 @@ def test_find_value(app):
 def test_get_settings(app):
     brand_id = app.brand_id
 
+    # Clean up.
+    DbSetting.query.delete()
+
     all_settings_before_create = settings_service.get_settings(brand_id)
     assert all_settings_before_create == set()
 
     for name, value in {
-        ('name1', 'value1'),
-        ('name2', 'value2'),
-        ('name3', 'value3'),
+        ('name5a', 'value5a'),
+        ('name5b', 'value5b'),
+        ('name5c', 'value5c'),
     }:
         settings_service.create_setting(brand_id, name, value)
 
     all_settings_after_create = settings_service.get_settings(brand_id)
     assert all_settings_after_create == {
-        BrandSetting(brand_id, 'name1', 'value1'),
-        BrandSetting(brand_id, 'name2', 'value2'),
-        BrandSetting(brand_id, 'name3', 'value3'),
+        BrandSetting(brand_id, 'name5a', 'value5a'),
+        BrandSetting(brand_id, 'name5b', 'value5b'),
+        BrandSetting(brand_id, 'name5c', 'value5c'),
     }

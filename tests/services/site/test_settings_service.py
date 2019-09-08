@@ -5,32 +5,37 @@
 
 import pytest
 
+from byceps.services.site.models.setting import Setting as DbSetting
 from byceps.services.site import settings_service
 from byceps.services.site.transfer.models import SiteSetting
 
 from tests.helpers import create_brand, create_email_config, create_party, \
     create_site
 
+from ...conftest import database_recreated
 
-@pytest.fixture
-def app(party_app_with_db):
-    _app = party_app_with_db
 
-    create_email_config()
+@pytest.fixture(scope='module')
+def app(party_app, db):
+    with party_app.app_context():
+        with database_recreated(db):
+            _app = party_app
 
-    brand = create_brand()
-    party = create_party(brand.id)
-    site = create_site(party.id)
+            create_email_config()
 
-    _app.site_id = site.id
+            brand = create_brand()
+            party = create_party(brand.id)
+            site = create_site(party.id)
 
-    yield _app
+            _app.site_id = site.id
+
+            yield _app
 
 
 def test_create(app):
     site_id = app.site_id
-    name = 'name'
-    value = 'value'
+    name = 'name1'
+    value = 'value1'
 
     assert settings_service.find_setting(site_id, name) is None
 
@@ -44,9 +49,9 @@ def test_create(app):
 
 def test_create_or_update(app):
     site_id = app.site_id
-    name = 'name'
-    value1 = 'value1'
-    value2 = 'value2'
+    name = 'name2'
+    value1 = 'value2a'
+    value2 = 'value2b'
 
     assert settings_service.find_setting(site_id, name) is None
 
@@ -69,8 +74,8 @@ def test_create_or_update(app):
 
 def test_find(app):
     site_id = app.site_id
-    name = 'name'
-    value = 'value'
+    name = 'name3'
+    value = 'value3'
 
     setting_before_create = settings_service.find_setting(site_id, name)
     assert setting_before_create is None
@@ -86,8 +91,8 @@ def test_find(app):
 
 def test_find_value(app):
     site_id = app.site_id
-    name = 'name'
-    value = 'value'
+    name = 'name4'
+    value = 'value4'
 
     value_before_create = settings_service.find_setting_value(site_id, name)
     assert value_before_create is None
@@ -101,19 +106,22 @@ def test_find_value(app):
 def test_get_settings(app):
     site_id = app.site_id
 
+    # Clean up.
+    DbSetting.query.delete()
+
     all_settings_before_create = settings_service.get_settings(site_id)
     assert all_settings_before_create == set()
 
     for name, value in {
-        ('name1', 'value1'),
-        ('name2', 'value2'),
-        ('name3', 'value3'),
+        ('name5a', 'value5a'),
+        ('name5b', 'value5b'),
+        ('name5c', 'value5c'),
     }:
         settings_service.create_setting(site_id, name, value)
 
     all_settings_after_create = settings_service.get_settings(site_id)
     assert all_settings_after_create == {
-        SiteSetting(site_id, 'name1', 'value1'),
-        SiteSetting(site_id, 'name2', 'value2'),
-        SiteSetting(site_id, 'name3', 'value3'),
+        SiteSetting(site_id, 'name5a', 'value5a'),
+        SiteSetting(site_id, 'name5b', 'value5b'),
+        SiteSetting(site_id, 'name5c', 'value5c'),
     }

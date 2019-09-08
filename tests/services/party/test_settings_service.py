@@ -5,28 +5,33 @@
 
 import pytest
 
+from byceps.services.party.models.setting import Setting as DbSetting
 from byceps.services.party import settings_service
 from byceps.services.party.transfer.models import PartySetting
 
 from tests.helpers import create_brand, create_party
 
+from ...conftest import database_recreated
 
-@pytest.fixture
-def app(party_app_with_db):
-    _app = party_app_with_db
 
-    brand = create_brand()
-    party = create_party(brand.id)
+@pytest.fixture(scope='module')
+def app(party_app, db):
+    with party_app.app_context():
+        with database_recreated(db):
+            _app = party_app
 
-    _app.party_id = party.id
+            brand = create_brand()
+            party = create_party(brand.id)
 
-    yield _app
+            _app.party_id = party.id
+
+            yield _app
 
 
 def test_create(app):
     party_id = app.party_id
-    name = 'name'
-    value = 'value'
+    name = 'name1'
+    value = 'value1'
 
     assert settings_service.find_setting(party_id, name) is None
 
@@ -40,9 +45,9 @@ def test_create(app):
 
 def test_create_or_update(app):
     party_id = app.party_id
-    name = 'name'
-    value1 = 'value1'
-    value2 = 'value2'
+    name = 'name2'
+    value1 = 'value2a'
+    value2 = 'value2b'
 
     assert settings_service.find_setting(party_id, name) is None
 
@@ -65,8 +70,8 @@ def test_create_or_update(app):
 
 def test_find(app):
     party_id = app.party_id
-    name = 'name'
-    value = 'value'
+    name = 'name3'
+    value = 'value3'
 
     setting_before_create = settings_service.find_setting(party_id, name)
     assert setting_before_create is None
@@ -82,8 +87,8 @@ def test_find(app):
 
 def test_find_value(app):
     party_id = app.party_id
-    name = 'name'
-    value = 'value'
+    name = 'name4'
+    value = 'value4'
 
     value_before_create = settings_service.find_setting_value(party_id, name)
     assert value_before_create is None
@@ -97,19 +102,22 @@ def test_find_value(app):
 def test_get_settings(app):
     party_id = app.party_id
 
+    # Clean up.
+    DbSetting.query.delete()
+
     all_settings_before_create = settings_service.get_settings(party_id)
     assert all_settings_before_create == set()
 
     for name, value in {
-        ('name1', 'value1'),
-        ('name2', 'value2'),
-        ('name3', 'value3'),
+        ('name5a', 'value5a'),
+        ('name5b', 'value5b'),
+        ('name5c', 'value5c'),
     }:
         settings_service.create_setting(party_id, name, value)
 
     all_settings_after_create = settings_service.get_settings(party_id)
     assert all_settings_after_create == {
-        PartySetting(party_id, 'name1', 'value1'),
-        PartySetting(party_id, 'name2', 'value2'),
-        PartySetting(party_id, 'name3', 'value3'),
+        PartySetting(party_id, 'name5a', 'value5a'),
+        PartySetting(party_id, 'name5b', 'value5b'),
+        PartySetting(party_id, 'name5c', 'value5c'),
     }
