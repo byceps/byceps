@@ -8,11 +8,10 @@ import pytest
 from byceps.services.news import channel_service as news_channel_service, \
     service as news_service
 
-from tests.helpers import create_brand, create_party, current_party_set
+from tests.helpers import create_brand
 
 
-def test_image_url_with_image(party_app_with_db, party, admin_user):
-    channel = create_channel(party.brand_id)
+def test_image_url_with_image(party_app_with_db, channel, admin_user):
     editor = admin_user
 
     item = create_item(channel.id, 'with-image', editor.id,
@@ -21,8 +20,7 @@ def test_image_url_with_image(party_app_with_db, party, admin_user):
     assert item.image_url == 'http://example.com/brand/news/breaking.png'
 
 
-def test_image_url_without_image(party_app_with_db, party, admin_user):
-    channel = create_channel(party.brand_id)
+def test_image_url_without_image(party_app_with_db, channel, admin_user):
     editor = admin_user
 
     item = create_item(channel.id, 'without-image', editor.id)
@@ -31,9 +29,9 @@ def test_image_url_without_image(party_app_with_db, party, admin_user):
 
 
 @pytest.fixture
-def party():
+def channel():
     brand = create_brand()
-    return create_party(brand_id=brand.id)
+    return create_channel(brand.id)
 
 
 def create_channel(brand_id):
