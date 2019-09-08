@@ -9,7 +9,6 @@ from decimal import Decimal
 
 from freezegun import freeze_time
 
-from byceps.services.email import service as email_service
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order.models.orderer import Orderer
 from byceps.services.shop.order import service as order_service
@@ -17,7 +16,7 @@ from byceps.services.shop.order.transfer.models import PaymentMethod
 
 from tests.base import CONFIG_FILENAME_TEST_ADMIN
 from tests.helpers import assign_permissions_to_user, create_brand, \
-    create_party, create_user, http_client, login_user
+    create_email_config, create_party, create_user, http_client, login_user
 from tests.services.shop.base import ShopTestBase
 
 
@@ -28,12 +27,11 @@ class ExportTestCase(ShopTestBase):
 
         self.admin = self.create_admin()
 
+        create_email_config()
+
         self.create_brand_and_party()
 
-        email_config_id = self.brand.id
-        email_service.set_config(email_config_id, 'shop@example.com')
-
-        self.shop = self.create_shop(self.party.id, email_config_id)
+        self.shop = self.create_shop(self.party.id)
         self.create_order_number_sequence(self.shop.id, 'LR-08-B', value=26)
         self.create_articles()
         self.order = self.place_order()

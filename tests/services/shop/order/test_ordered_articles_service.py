@@ -3,7 +3,6 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.services.email import service as email_service
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import ordered_articles_service
 from byceps.services.shop.order import service as order_service
@@ -12,7 +11,8 @@ from byceps.services.shop.order.transfer.models import PaymentMethod, \
 
 from testfixtures.shop_order import create_orderer
 
-from tests.helpers import create_brand, create_party, create_user_with_detail
+from tests.helpers import create_brand, create_email_config, create_party, \
+    create_user_with_detail
 from tests.services.shop.base import ShopTestBase
 
 
@@ -24,13 +24,12 @@ class OrderedArticlesServiceTestCase(ShopTestBase):
         user = create_user_with_detail()
         self.orderer = create_orderer(user)
 
+        create_email_config()
+
         brand = create_brand()
-        party = create_party(brand_id=brand.id)
+        party = create_party(brand.id)
 
-        email_config_id = brand.id
-        email_service.set_config(email_config_id, 'shop@example.com')
-
-        self.shop = self.create_shop(party.id, email_config_id)
+        self.shop = self.create_shop(party.id)
         self.create_order_number_sequence(self.shop.id, 'ABC-01-B')
         self.article = self.create_article(self.shop.id, quantity=100)
 

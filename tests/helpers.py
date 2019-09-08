@@ -26,6 +26,9 @@ from testfixtures.user import create_user as _create_user, \
 from .base import CONFIG_FILENAME_TEST_PARTY
 
 
+DEFAULT_EMAIL_CONFIG_ID = 'email-config-1'
+
+
 @contextmanager
 def app_context(*, config_filename=CONFIG_FILENAME_TEST_PARTY):
     app = create_app(config_filename)
@@ -106,13 +109,15 @@ def create_party(brand_id, party_id='acmecon-2014', title='ACMECon 2014'):
 
 
 def create_site(party_id, *, site_id='acmecon-2014-website', title='Website',
-                server_name='www.example.com', email_config_id='acmecon'):
+                server_name='www.example.com',
+                email_config_id=DEFAULT_EMAIL_CONFIG_ID):
     return site_service.create_site(site_id, party_id, title, server_name,
                                     email_config_id)
 
 
-def create_email_config(config_id='acmecon', sender_address='info@example.com',
-                        sender_name='ACMECon', contact_address=None):
+def create_email_config(config_id=DEFAULT_EMAIL_CONFIG_ID,
+                        sender_address='info@example.com',
+                        sender_name=None, contact_address=None):
     email_service.set_config(config_id, sender_address, sender_name=sender_name,
                              contact_address=contact_address)
 

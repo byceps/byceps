@@ -12,7 +12,7 @@ from testfixtures.shop_sequence import create_sequence
 from testfixtures.shop_shop import create_shop
 
 from tests.base import AbstractAppTestCase
-from tests.helpers import create_user
+from tests.helpers import create_user, DEFAULT_EMAIL_CONFIG_ID
 
 
 class ShopTestBase(AbstractAppTestCase):
@@ -20,7 +20,7 @@ class ShopTestBase(AbstractAppTestCase):
     # -------------------------------------------------------------------- #
     # helpers
 
-    def create_shop(self, party_id, email_config_id):
+    def create_shop(self, party_id, email_config_id=DEFAULT_EMAIL_CONFIG_ID):
         shop = create_shop(party_id, email_config_id)
 
         self.db.session.add(shop)

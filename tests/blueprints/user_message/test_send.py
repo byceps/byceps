@@ -17,12 +17,11 @@ class SendUserMessageTest(AbstractAppTestCase):
     def setUp(self):
         super().setUp()
 
+        create_email_config(sender_address='noreply@example.com',
+                            sender_name='ACME Entertainment Convention')
+
         self.brand = create_brand()
         party = create_party(self.brand.id)
-
-        self.email_config_id = self.brand.id
-        create_email_config(self.email_config_id, 'noreply@example.com',
-                            'ACME Entertainment Convention')
 
         create_site(party.id, server_name='acme.example.com')
 
@@ -88,8 +87,9 @@ Diese Mitteilung wurde über die Website acme.example.com gesendet.\
     @patch('byceps.email.send')
     def test_send_when_logged_in_with_brand_contact_address(self,
                                                             send_email_mock):
-        create_email_config(self.email_config_id, 'noreply@example.com',
-                            'ACME Entertainment Convention', 'help@example.com')
+        create_email_config(sender_address='noreply@example.com',
+                            sender_name='ACME Entertainment Convention',
+                            contact_address='help@example.com')
 
         sender = create_user('Bob',
             user_id='11d72bab-3646-4199-b96c-e5e4c6f972bc',

@@ -11,7 +11,6 @@ from byceps.services.authorization.models import Role, UserRole
 from byceps.services.brand import settings_service as brand_settings_service
 from byceps.services.consent import consent_service, \
     subject_service as consent_subject_service
-from byceps.services.email import service as email_service
 from byceps.services.newsletter import \
     command_service as newsletter_command_service, service as newsletter_service
 from byceps.services.snippet import service as snippet_service
@@ -23,8 +22,8 @@ from byceps.services.verification_token import service as \
     verification_token_service
 
 from tests.base import AbstractAppTestCase
-from tests.helpers import create_brand, create_party, create_site, \
-    create_user, http_client
+from tests.helpers import create_brand, create_email_config, create_party, \
+    create_site, create_user, http_client
 
 from testfixtures.authorization import create_role
 
@@ -36,11 +35,10 @@ class UserCreateTestCase(AbstractAppTestCase):
 
         self.admin = create_user('Admin')
 
+        create_email_config(sender_address='noreply@example.com')
+
         self.brand = create_brand()
         self.brand_id = self.brand.id
-
-        email_config_id = self.brand.id
-        email_service.set_config(email_config_id, 'noreply@example.com')
 
         party = create_party(brand_id=self.brand.id)
         create_site(party.id)

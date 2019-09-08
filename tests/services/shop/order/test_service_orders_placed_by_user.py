@@ -3,14 +3,14 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.services.email import service as email_service
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import service as order_service
 from byceps.services.shop.order.transfer.models import PaymentMethod
 
 from testfixtures.shop_order import create_orderer
 
-from tests.helpers import create_brand, create_party, create_user_with_detail
+from tests.helpers import create_brand, create_email_config, create_party, \
+    create_user_with_detail
 from tests.services.shop.base import ShopTestBase
 
 
@@ -19,16 +19,15 @@ class ShopOrdersServiceTestCase(ShopTestBase):
     def setUp(self):
         super().setUp()
 
-        brand = create_brand()
+        create_email_config()
 
-        email_config_id = brand.id
-        email_service.set_config(email_config_id, 'shop@example.com')
+        brand = create_brand()
 
         party1 = create_party(brand.id, 'lafiesta-2012', 'La Fiesta 2012')
         party2 = create_party(brand.id, 'lafiesta-2013', 'La Fiesta 2013')
 
-        self.shop1_id = self.create_shop(party1.id, email_config_id).id
-        self.shop2_id = self.create_shop(party2.id, email_config_id).id
+        self.shop1_id = self.create_shop(party1.id).id
+        self.shop2_id = self.create_shop(party2.id).id
 
         self.create_order_number_sequence(self.shop1_id, 'LF-02-B')
         self.create_order_number_sequence(self.shop2_id, 'LF-03-B')

@@ -7,12 +7,11 @@ from datetime import datetime
 from decimal import Decimal
 from unittest.mock import patch
 
-from byceps.services.email import service as email_service
 from byceps.services.shop.order.email import service as order_email_service
 from byceps.services.shop.order import service as order_service
 
-from tests.helpers import create_brand, create_party, create_user_with_detail, \
-    current_party_set, current_user_set
+from tests.helpers import create_brand, create_email_config, create_party, \
+    create_user_with_detail, current_party_set, current_user_set
 
 from .base import OrderEmailTestBase
 
@@ -22,14 +21,13 @@ class EmailOnOrderPlacedTest(OrderEmailTestBase):
     def setUp(self):
         super().setUp()
 
-        brand = create_brand()
+        create_email_config(sender_address='acmecon@example.com')
 
-        email_config_id = brand.id
-        email_service.set_config(email_config_id, 'acmecon@example.com')
+        brand = create_brand()
 
         self.party = create_party(brand.id)
 
-        self.shop = self.create_shop(self.party.id, email_config_id)
+        self.shop = self.create_shop(self.party.id)
         self.create_order_number_sequence(self.shop.id, 'AC-14-B', value=252)
 
         self.create_email_payment_instructions_snippet()
