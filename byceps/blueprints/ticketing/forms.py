@@ -27,11 +27,10 @@ def validate_user(form, field):
 
     user = user.to_dto()
 
-    terms_version = terms_version_service.get_current_version(g.brand_id)
+    terms_version = terms_version_service.find_current_version(g.brand_id)
 
-    if not consent_service \
-            .has_user_consented_to_subject(user.id,
-                                           terms_version.consent_subject_id):
+    if terms_version and not consent_service.has_user_consented_to_subject(
+                user.id, terms_version.consent_subject_id):
         raise ValidationError(
             'Der Benutzer "{}" hat die aktuellen AGB der {} noch nicht akzeptiert.'
                 .format(user.screen_name, terms_version.brand.title))
