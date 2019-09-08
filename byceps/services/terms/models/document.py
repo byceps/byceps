@@ -18,6 +18,7 @@ class Document(db.Model):
 
     id = db.Column(db.UnicodeText, primary_key=True)
     title = db.Column(db.UnicodeText, unique=True, nullable=False)
+    current_version_id = db.Column(db.Uuid, db.ForeignKey('terms_versions.id'), nullable=True)
 
     def __init__(self, document_id: DocumentID, title: str) -> None:
         self.id = document_id
