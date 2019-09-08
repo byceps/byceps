@@ -8,7 +8,7 @@ byceps.services.terms.models.version
 
 from datetime import datetime
 
-from ....database import BaseQuery, db, generate_uuid
+from ....database import db, generate_uuid
 from ....typing import BrandID
 from ....util.instances import ReprBuilder
 
@@ -23,22 +23,12 @@ from ..transfer.models import DocumentID
 from . import document  # Make reference table available.
 
 
-class VersionQuery(BaseQuery):
-
-    def for_brand(self, brand_id: BrandID) -> BaseQuery:
-        return self.filter_by(brand_id=brand_id)
-
-    def latest_first(self) -> BaseQuery:
-        return self.order_by(Version.created_at.desc())
-
-
 class Version(db.Model):
     """A specific version of a specific brand's terms and conditions."""
     __tablename__ = 'terms_versions'
     __table_args__ = (
         db.UniqueConstraint('brand_id', 'title'),
     )
-    query_class = VersionQuery
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     brand_id = db.Column(db.UnicodeText, db.ForeignKey('brands.id'), nullable=False)

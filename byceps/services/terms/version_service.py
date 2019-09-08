@@ -84,11 +84,13 @@ def set_current_version(brand_id: BrandID, version_id: VersionID) -> None:
 
 
 def get_versions_for_brand(brand_id: BrandID) -> Sequence[Version]:
-    """Return all versions for that brand, ordered by creation date."""
+    """Return all versions for that brand, ordered by creation date,
+    latest first.
+    """
     return Version.query \
-        .for_brand(brand_id) \
+        .filter_by(brand_id=brand_id) \
         .options(
             db.joinedload('snippet_version')
         ) \
-        .latest_first() \
+        .order_by(Version.created_at.desc()) \
         .all()
