@@ -6,7 +6,7 @@ byceps.blueprints.terms.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from flask import g
+from flask import abort, g
 
 from ...services.terms import version_service as terms_version_service
 from ...util.framework.blueprint import create_blueprint
@@ -20,7 +20,10 @@ blueprint = create_blueprint('terms', __name__)
 @templated
 def view_current():
     """Show the current version of this brand's terms and conditions."""
-    version = terms_version_service.get_current_version(g.brand_id)
+    version = terms_version_service.find_current_version(g.brand_id)
+
+    if version is None:
+        abort(404)
 
     return {
         'version': version,

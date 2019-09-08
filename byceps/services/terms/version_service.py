@@ -76,24 +76,6 @@ def find_current_version(brand_id: BrandID) -> Optional[Version]:
     return find_version(current_version_id)
 
 
-def get_current_version(brand_id: BrandID) -> Version:
-    """Return the current version of the terms for that brand, or raise
-    an exception if none is defined.
-    """
-    current_version = find_current_version(brand_id)
-
-    if current_version is None:
-        raise NoCurrentTermsVersionSpecifiedForBrand(brand_id)
-
-    return current_version
-
-
-class NoCurrentTermsVersionSpecifiedForBrand(Exception):
-
-    def __init__(self, brand_id: BrandID) -> None:
-        self.brand_id = brand_id
-
-
 def set_current_version(brand_id: BrandID, version_id: VersionID) -> None:
     """Set the current version of the terms for that brand."""
     brand_settings_service.create_or_update_setting(
