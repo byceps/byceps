@@ -58,12 +58,13 @@ def find_current_version(document_id: DocumentID) -> Optional[DbVersion]:
         .one_or_none()
 
 
-def get_versions_for_brand(brand_id: BrandID) -> Sequence[DbVersion]:
-    """Return all versions for that brand, ordered by creation date,
+def get_versions(document_id: DocumentID) -> Sequence[DbVersion]:
+    """Return all versions of the document, ordered by creation date,
     latest first.
     """
     return DbVersion.query \
-        .filter_by(brand_id=brand_id) \
+        .join(DbDocument, DbVersion.document_id == DbDocument.id) \
+        .filter(DbDocument.id == document_id) \
         .options(
             db.joinedload('snippet_version')
         ) \

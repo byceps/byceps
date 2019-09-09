@@ -36,7 +36,8 @@ def index_for_brand(brand_id):
     if brand is None:
         abort(404)
 
-    versions = terms_version_service.get_versions_for_brand(brand.id)
+    document_id = brand.id
+    versions = terms_version_service.get_versions(document_id)
 
     _add_version_creators(versions)
 

@@ -25,7 +25,7 @@ from _validators import validate_brand
 def execute(brand):
     document_id = brand.id
 
-    versions = version_service.get_versions_for_brand(brand.id)
+    versions = version_service.get_versions(document_id)
     document = document_service.find_document(document_id)
 
     versions_by_id = {v.id: v for v in versions}
