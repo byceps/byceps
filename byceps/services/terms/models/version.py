@@ -20,7 +20,7 @@ from ...snippet.transfer.models import SnippetVersionID
 
 from ..transfer.models import DocumentID
 
-from . import document  # Make reference table available.
+from .document import Document
 
 
 class Version(db.Model):
@@ -33,7 +33,8 @@ class Version(db.Model):
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     brand_id = db.Column(db.UnicodeText, db.ForeignKey('brands.id'), nullable=False)
     brand = db.relationship(Brand)
-    document_id = db.Column(db.UnicodeText, db.ForeignKey('terms_documents.id'), index=True, nullable=False)
+    document_id = db.Column(db.UnicodeText, db.ForeignKey('terms_documents.id', name='terms_versions_document_id_fkey'), index=True, nullable=False)
+    document = db.relationship(Document, foreign_keys=[document_id])
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     title = db.Column(db.UnicodeText, nullable=False)
     snippet_version_id = db.Column(db.Uuid, db.ForeignKey('snippet_versions.id'), index=True, nullable=False)
