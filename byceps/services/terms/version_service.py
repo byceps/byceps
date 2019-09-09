@@ -16,7 +16,7 @@ from ..brand import settings_service as brand_settings_service
 from ..consent.transfer.models import SubjectID as ConsentSubjectID
 from ..snippet.transfer.models import SnippetVersionID
 
-from .models.version import Version
+from .models.version import Version as DbVersion
 from .transfer.models import DocumentID, VersionID
 
 
@@ -26,10 +26,10 @@ BRAND_SETTING_KEY_CURRENT_VERSION_ID = 'terms_current_version_id'
 def create_version(brand_id: BrandID, document_id: DocumentID, title: str,
                    snippet_version_id: SnippetVersionID,
                    consent_subject_id: ConsentSubjectID
-                  ) -> Version:
+                  ) -> DbVersion:
     """Create a new version of the terms for that brand."""
-    version = Version(brand_id, document_id, title, snippet_version_id,
-                      consent_subject_id)
+    version = DbVersion(brand_id, document_id, title, snippet_version_id,
+                        consent_subject_id)
 
     db.session.add(version)
     db.session.commit()
@@ -37,17 +37,17 @@ def create_version(brand_id: BrandID, document_id: DocumentID, title: str,
     return version
 
 
-def find_version(version_id: VersionID) -> Optional[Version]:
+def find_version(version_id: VersionID) -> Optional[DbVersion]:
     """Return the version with that ID, or `None` if not found."""
-    return Version.query.get(version_id)
+    return DbVersion.query.get(version_id)
 
 
 def find_version_for_consent_subject_id(consent_subject_id: ConsentSubjectID
-                                       ) -> Optional[Version]:
+                                       ) -> Optional[DbVersion]:
     """Return the version with that consent subject ID, or `None` if
     not found.
     """
-    return Version.query \
+    return DbVersion.query \
         .filter_by(consent_subject_id=consent_subject_id) \
         .one_or_none()
 
@@ -65,7 +65,7 @@ def find_current_version_id(brand_id: BrandID) -> Optional[VersionID]:
     return VersionID(UUID(value))
 
 
-def find_current_version(brand_id: BrandID) -> Optional[Version]:
+def find_current_version(brand_id: BrandID) -> Optional[DbVersion]:
     """Return the current version of the terms for that brand, or `None`
     if none is defined.
     """
@@ -83,14 +83,14 @@ def set_current_version(brand_id: BrandID, version_id: VersionID) -> None:
         brand_id, BRAND_SETTING_KEY_CURRENT_VERSION_ID, str(version_id))
 
 
-def get_versions_for_brand(brand_id: BrandID) -> Sequence[Version]:
+def get_versions_for_brand(brand_id: BrandID) -> Sequence[DbVersion]:
     """Return all versions for that brand, ordered by creation date,
     latest first.
     """
-    return Version.query \
+    return DbVersion.query \
         .filter_by(brand_id=brand_id) \
         .options(
             db.joinedload('snippet_version')
         ) \
-        .order_by(Version.created_at.desc()) \
+        .order_by(DbVersion.created_at.desc()) \
         .all()
