@@ -13,7 +13,7 @@ from pick import pick
 
 from byceps.services.terms.models.version import Version
 from byceps.services.terms.transfer.models import VersionID
-from byceps.services.terms import version_service
+from byceps.services.terms import document_service, version_service
 from byceps.util.system import get_config_filename_from_env_or_exit
 
 from _util import app_context
@@ -23,17 +23,19 @@ from _validators import validate_brand
 @click.command()
 @click.argument('brand', callback=validate_brand)
 def execute(brand):
+    document_id = brand.id
+
     versions = version_service.get_versions_for_brand(brand.id)
-    current_version_id = version_service.find_current_version_id(brand.id)
+    document = document_service.find_document(document_id)
 
     versions_by_id = {v.id: v for v in versions}
 
     # Ask user which version to set as the current one.
     selected_version_id = _request_version_id(versions_by_id,
-                                              current_version_id)
+                                              document.current_version_id)
 
     # Set current version.
-    version_service.set_current_version(brand.id, selected_version_id)
+    document_service.set_current_version(document_id, selected_version_id)
 
     # Confirm update to user.
     selected_version_title = versions_by_id[selected_version_id].title

@@ -7,20 +7,16 @@ byceps.services.terms.version_service
 """
 
 from typing import Optional, Sequence
-from uuid import UUID
 
 from ...database import db
 from ...typing import BrandID
 
-from ..brand import settings_service as brand_settings_service
 from ..consent.transfer.models import SubjectID as ConsentSubjectID
 from ..snippet.transfer.models import SnippetVersionID
 
+from .models.document import Document as DbDocument
 from .models.version import Version as DbVersion
 from .transfer.models import DocumentID, VersionID
-
-
-BRAND_SETTING_KEY_CURRENT_VERSION_ID = 'terms_current_version_id'
 
 
 def create_version(brand_id: BrandID, document_id: DocumentID, title: str,
@@ -52,35 +48,14 @@ def find_version_for_consent_subject_id(consent_subject_id: ConsentSubjectID
         .one_or_none()
 
 
-def find_current_version_id(brand_id: BrandID) -> Optional[VersionID]:
-    """Return the ID of the current version of the terms for that brand,
-    or `None` if no current version is defined.
+def find_current_version(document_id: DocumentID) -> Optional[DbVersion]:
+    """Return the current version of the document, or `None` if none is
+    configured.
     """
-    value = brand_settings_service \
-        .find_setting_value(brand_id, BRAND_SETTING_KEY_CURRENT_VERSION_ID)
-
-    if value is None:
-        return None
-
-    return VersionID(UUID(value))
-
-
-def find_current_version(brand_id: BrandID) -> Optional[DbVersion]:
-    """Return the current version of the terms for that brand, or `None`
-    if none is defined.
-    """
-    current_version_id = find_current_version_id(brand_id)
-
-    if current_version_id is None:
-        return None
-
-    return find_version(current_version_id)
-
-
-def set_current_version(brand_id: BrandID, version_id: VersionID) -> None:
-    """Set the current version of the terms for that brand."""
-    brand_settings_service.create_or_update_setting(
-        brand_id, BRAND_SETTING_KEY_CURRENT_VERSION_ID, str(version_id))
+    return DbVersion.query \
+        .join(DbDocument, DbDocument.current_version_id == DbVersion.id) \
+        .filter(DbDocument.id == document_id) \
+        .one_or_none()
 
 
 def get_versions_for_brand(brand_id: BrandID) -> Sequence[DbVersion]:

@@ -41,7 +41,7 @@ class UserCreateTestCase(AbstractAppTestCase):
         self.brand = create_brand()
         self.brand_id = self.brand.id
 
-        party = create_party(brand_id=self.brand.id)
+        party = create_party(self.brand.id)
         create_site(party.id)
 
         self.setup_terms()
@@ -69,8 +69,8 @@ class UserCreateTestCase(AbstractAppTestCase):
             self.brand_id, terms_document.id, '01-Jan-2016', snippet.id,
             consent_subject.id)
 
-        terms_version_service.set_current_version(self.brand.id,
-                                                  terms_version.id)
+        terms_document_service.set_current_version(terms_document_id,
+                                                   terms_version.id)
 
         self.terms_version_id = terms_version.id
         self.terms_consent_subject_id = terms_version.consent_subject_id

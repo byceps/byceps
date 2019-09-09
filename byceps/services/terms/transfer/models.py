@@ -22,3 +22,4 @@ VersionID = NewType('VersionID', UUID)
 class Document:
     id: DocumentID
     title: str
+    current_version_id: VersionID
