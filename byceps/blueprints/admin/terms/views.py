@@ -66,8 +66,8 @@ def _add_version_creators(versions):
 @blueprint.route('/versions/<uuid:version_id>')
 @permission_required(TermsPermission.view)
 @templated
-def view(version_id):
-    """Show the terms version."""
+def view_version(version_id):
+    """Show the version."""
     version = _get_version_or_404(version_id)
 
     return {
@@ -78,8 +78,8 @@ def view(version_id):
 @blueprint.route('/versions/<uuid:version_id>/body.html')
 @permission_required(TermsPermission.view)
 @templated
-def view_body_html(version_id):
-    """Show the terms version's HTML body."""
+def view_version_body_html(version_id):
+    """Show the version's HTML body."""
     version = _get_version_or_404(version_id)
 
     return version.body

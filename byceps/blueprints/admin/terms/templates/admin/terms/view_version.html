@@ -13,7 +13,7 @@
   <h1>{{ version.title }}</h1>
 
   <div class="button-row">
-    <a class="button" href="{{ url_for('.view_body_html', version_id=version.id) }}">{{ render_icon('download') }} <span>HTML</span></a>
+    <a class="button" href="{{ url_for('.view_version_body_html', version_id=version.id) }}">{{ render_icon('download') }} <span>HTML</span></a>
   </div>
 
 {{ version.body|safe }}
