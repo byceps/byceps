@@ -43,7 +43,7 @@ def index_for_brand(brand_id):
     _add_version_creators(versions)
 
     consent_counts_by_version_id = terms_consent_service \
-        .count_user_consents_for_versions_of_brand(brand.id)
+        .count_consents_for_document_versions(document_id)
 
     for version in versions:
         version.consent_count = consent_counts_by_version_id[version.id]

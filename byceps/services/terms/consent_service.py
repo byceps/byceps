@@ -9,18 +9,17 @@ byceps.services.terms.consent_service
 from typing import Dict
 
 from ...database import db
-from ...typing import BrandID
 
 from ..consent.models.consent import Consent
 from ..consent.models.subject import Subject
 
 from .models.version import Version
-from .transfer.models import VersionID
+from .transfer.models import DocumentID, VersionID
 
 
-def count_user_consents_for_versions_of_brand(brand_id: BrandID
-                                             ) -> Dict[VersionID, int]:
-    """Return the number of user consents for each version of that brand."""
+def count_consents_for_document_versions(document_id: DocumentID
+                                        ) -> Dict[VersionID, int]:
+    """Return the number of consents for each version of the document."""
     rows = db.session \
         .query(
             Version.id,
@@ -29,7 +28,7 @@ def count_user_consents_for_versions_of_brand(brand_id: BrandID
         .outerjoin(Subject, Version.consent_subject) \
         .outerjoin(Consent) \
         .group_by(Version.id) \
-        .filter(Version.brand_id == brand_id) \
+        .filter(Version.document_id == document_id) \
         .all()
 
     return dict(rows)
