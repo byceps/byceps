@@ -8,7 +8,6 @@ byceps.blueprints.admin.terms.views
 
 from flask import abort
 
-from ....services.brand import service as brand_service
 from ....services.terms import consent_service as terms_consent_service
 from ....services.terms import document_service as terms_document_service
 from ....services.terms import version_service as terms_version_service
@@ -28,32 +27,30 @@ blueprint = create_blueprint('terms_admin', __name__)
 permission_registry.register_enum(TermsPermission)
 
 
-@blueprint.route('/brands/<brand_id>')
+@blueprint.route('/documents/<document_id>')
 @permission_required(TermsPermission.view)
 @templated
-def index_for_brand(brand_id):
-    """List terms versions for that brand."""
-    brand = brand_service.find_brand(brand_id)
-    if brand is None:
+def view_document(document_id):
+    """Show the document's attributes and versions."""
+    document = terms_document_service.find_document(document_id)
+    if document is None:
         abort(404)
 
-    document_id = brand.id
-    versions = terms_version_service.get_versions(document_id)
+    versions = terms_version_service.get_versions(document.id)
 
     _add_version_creators(versions)
 
     consent_counts_by_version_id = terms_consent_service \
-        .count_consents_for_document_versions(document_id)
+        .count_consents_for_document_versions(document.id)
 
     for version in versions:
         version.consent_count = consent_counts_by_version_id[version.id]
 
-    document = terms_document_service.find_document(document_id)
+    document = terms_document_service.find_document(document.id)
 
     return {
-        'brand': brand,
+        'document': document,
         'versions': versions,
-        'current_version_id': document.current_version_id,
     }
 
 
@@ -74,7 +71,6 @@ def view(version_id):
     version = _get_version_or_404(version_id)
 
     return {
-        'brand': version.brand,
         'version': version,
     }
 

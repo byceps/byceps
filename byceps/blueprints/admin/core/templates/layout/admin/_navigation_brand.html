@@ -62,7 +62,7 @@
         required_permission=SnippetPermission.view,
         icon='snippet')
       .add_item(
-        url_for('terms_admin.index_for_brand', brand_id=brand.id),
+        url_for('terms_admin.view_document', document_id=brand.id),
         'AGB',
         id='terms_admin',
         required_permission=TermsPermission.view,

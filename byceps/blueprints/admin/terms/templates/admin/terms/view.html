@@ -1,14 +1,13 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'terms_admin' %}
-{% set current_page_brand = brand %}
 {% set title = 'AGB-Version ansehen' %}
 
 {% block body %}
 
   <nav class="breadcrumbs">
     <ol>
-      <li><a href="{{ url_for('.index_for_brand', brand_id=brand.id) }}">Versionen</a></li>
+      <li><a href="{{ url_for('.view_document', document_id=version.document_id) }}">Versionen</a></li>
     </ol>
   </nav>
   <h1>{{ version.title }}</h1>

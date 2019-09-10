@@ -3,15 +3,28 @@
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/misc.html' import render_tag %}
 {% set current_page = 'terms_admin' %}
-{% set current_page_brand = brand %}
-{% set title = 'Allgemeine Geschäftsbedingungen' %}
+{% set title = document.title %}
 
 {% block body %}
 
-  <h1>{{ title }}</h1>
+  <nav class="breadcrumbs">
+    <ol>
+      <li>Allgemeine Geschäftsbedingungen</li>
+    </ol>
+  </nav>
+  <h1>{{ document.title }}</h1>
 
-  {%- if not current_version_id %}
-  <div class="notification color-danger"><strong>Achtung:</strong> Es ist keine aktuelle AGB-Version für diese Marke festgelegt.</div>
+  <table class="index">
+    <tr>
+      <th>ID</th>
+      <td>{{ document.id }}</td>
+    </tr>
+  </table>
+
+  <h2>Versionen</h2>
+
+  {%- if not document.current_version_id %}
+  <div class="notification color-danger"><strong>Achtung:</strong> Es ist keine aktuelle Version für dieses Dokument festgelegt.</div>
   {%- endif %}
 
   {%- if versions %}
@@ -28,7 +41,7 @@
         <tr>
           <td>
             <strong><a href="{{ url_for('.view', version_id=version.id) }}">{{ version.title }}</a></strong>
-            {%- if version.id == current_version_id %}
+            {%- if version.id == document.current_version_id %}
             {{ render_tag('aktuelle Version') }}
             {%- endif %}
             <br>
@@ -44,7 +57,7 @@
     </tbody>
   </table>
   {%- else %}
-  <p>Es sind keine AGB-Versionen hinterlegt.</p>
+  <p>Es sind keine Versionen hinterlegt.</p>
   {%- endif %}
 
 {%- endblock %}
