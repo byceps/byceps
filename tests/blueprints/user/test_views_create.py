@@ -66,8 +66,7 @@ class UserCreateTestCase(AbstractAppTestCase):
             .create_document(terms_document_id, terms_document_id)
 
         terms_version = terms_version_service.create_version(
-            self.brand_id, terms_document.id, '01-Jan-2016', snippet.id,
-            consent_subject.id)
+            terms_document.id, '01-Jan-2016', snippet.id, consent_subject.id)
 
         terms_document_service.set_current_version(terms_document_id,
                                                    terms_version.id)

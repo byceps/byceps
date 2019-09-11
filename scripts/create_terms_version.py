@@ -57,7 +57,7 @@ def execute(brand, document_id, title, snippet_version_id,
         consent_subject_name, consent_subject_title, 'terms_of_service')
 
     terms_version_service \
-        .create_version(brand.id, document_id, title, snippet_version_id, consent_subject.id)
+        .create_version(document_id, title, snippet_version_id, consent_subject.id)
 
     click.secho('Done.', fg='green')
 
