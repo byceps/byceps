@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-"""Set the current version of the terms of service for a brand.
+"""Set the current version of a terms of service document.
 
 :Copyright: 2006-2019 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -11,20 +11,27 @@ from typing import Dict, List, Optional
 import click
 from pick import pick
 
+from byceps.services.terms import document_service as terms_document_service
 from byceps.services.terms.models.version import Version
-from byceps.services.terms.transfer.models import VersionID
+from byceps.services.terms.transfer.models import DocumentID, VersionID
 from byceps.services.terms import document_service, version_service
 from byceps.util.system import get_config_filename_from_env_or_exit
 
 from _util import app_context
-from _validators import validate_brand
+
+
+def validate_document_id(ctx, param, value) -> DocumentID:
+    document = terms_document_service.find_document(value)
+
+    if not document:
+        raise click.BadParameter(f'Unknown document ID "{value}".')
+
+    return document.id
 
 
 @click.command()
-@click.argument('brand', callback=validate_brand)
-def execute(brand):
-    document_id = brand.id
-
+@click.argument('document_id', callback=validate_document_id)
+def execute(document_id):
     versions = version_service.get_versions(document_id)
     document = document_service.find_document(document_id)
 
@@ -40,7 +47,7 @@ def execute(brand):
     # Confirm update to user.
     selected_version_title = versions_by_id[selected_version_id].title
     click.secho(
-        f'Current version for brand ID "{brand.id}" '
+        f'Current version for document ID "{document.id}" '
         f'was set to "{selected_version_title}".',
         fg='green')
 
@@ -51,8 +58,7 @@ def _request_version_id(versions_by_id: Dict[VersionID, Version],
     version_ids = _get_version_ids_latest_first(versions_by_id)
 
     if not version_ids:
-        raise click.BadParameter(
-            'No versions for brand available to choose from.')
+        raise click.BadParameter('No versions available to choose from.')
 
     def get_option_title(version_id):
         version = versions_by_id[version_id]
