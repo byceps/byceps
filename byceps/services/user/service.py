@@ -35,7 +35,7 @@ def find_active_db_user(user_id: UserID) -> Optional[DbUser]:
 
 
 def find_active_user(user_id: UserID, *, include_avatar: bool=False,
-                     include_orga_flag_for_party_id: PartyID=None
+                     include_orga_flag_for_party_id: Optional[PartyID]=None
                     ) -> Optional[User]:
     """Return the user with that ID if the account is "active", or
     `None` if:
@@ -60,7 +60,8 @@ def find_active_user(user_id: UserID, *, include_avatar: bool=False,
 
 
 def find_user(user_id: UserID, *, include_avatar: bool=False,
-              include_orga_flag_for_party_id: PartyID=None) -> Optional[User]:
+              include_orga_flag_for_party_id: Optional[PartyID]=None
+             ) -> Optional[User]:
     """Return the user with that ID, or `None` if not found.
 
     Include avatar URLs if requested.
@@ -76,7 +77,8 @@ def find_user(user_id: UserID, *, include_avatar: bool=False,
 
 
 def find_users(user_ids: Set[UserID], *, include_avatars: bool=False,
-               include_orga_flags_for_party_id: PartyID=None) -> Set[User]:
+               include_orga_flags_for_party_id: Optional[PartyID]=None
+              ) -> Set[User]:
     """Return the users with those IDs.
 
     Their respective avatars' URLs are included, if requested.
@@ -94,7 +96,8 @@ def find_users(user_ids: Set[UserID], *, include_avatars: bool=False,
 
 
 def _get_user_query(include_avatar: bool,
-                    include_orga_flags_for_party_id: PartyID=None) -> Query:
+                    include_orga_flags_for_party_id: Optional[PartyID]=None
+                   ) -> Query:
     orga_flag_expression = db.false()
     if include_orga_flags_for_party_id is not None:
         orga_flag_expression = _get_orga_flag_subquery(
