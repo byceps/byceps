@@ -32,9 +32,8 @@ def validate_user(form, field):
 
     if terms_version and not consent_service.has_user_consented_to_subject(
                 user.id, terms_version.consent_subject_id):
-        raise ValidationError(
-            'Der Benutzer "{}" hat die aktuellen AGB der {} noch nicht akzeptiert.'
-                .format(user.screen_name, terms_version.brand.title))
+        raise ValidationError(f'Der Benutzer "{user.screen_name}" '
+                               'hat die aktuellen AGB noch nicht akzeptiert.')
 
     field.data = user
 
