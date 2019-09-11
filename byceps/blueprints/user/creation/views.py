@@ -16,6 +16,7 @@ from ....services.brand import settings_service as brand_settings_service
 from ....services.consent.transfer.models import Consent, SubjectID
 from ....services.newsletter.transfer.models import \
     ListID as NewsletterListID, Subscription as NewsletterSubscription
+from ....services.terms import document_service as terms_document_service
 from ....services.terms import version_service as terms_version_service
 from ....services.user import creation_service as user_creation_service
 from ....services.user import service as user_service
@@ -40,7 +41,8 @@ def create_form(erroneous_form=None):
         flash_error('Das Erstellen von Benutzerkonten ist deaktiviert.')
         abort(403)
 
-    terms_version = terms_version_service.find_current_version(g.brand_id)
+    terms_version = terms_version_service \
+        .find_current_version_for_brand(g.brand_id)
 
     privacy_policy_consent_subject_id \
         = _find_privacy_policy_consent_subject_id()
@@ -74,7 +76,8 @@ def create():
         flash_error('Das Erstellen von Benutzerkonten ist deaktiviert.')
         abort(403)
 
-    terms_version = terms_version_service.find_current_version(g.brand_id)
+    terms_document_id = terms_document_service \
+        .find_document_id_for_brand(g.brand_id)
 
     privacy_policy_consent_subject_id \
         = _find_privacy_policy_consent_subject_id()
@@ -82,7 +85,7 @@ def create():
     newsletter_list_id = _find_newsletter_list_for_brand()
 
     real_name_required = _is_real_name_required()
-    terms_consent_required = (terms_version is not None)
+    terms_consent_required = (terms_document_id is not None)
     privacy_policy_consent_required \
         = (privacy_policy_consent_subject_id is not None)
     newsletter_offered = (newsletter_list_id is not None)
@@ -124,7 +127,7 @@ def create():
         consent_to_terms = form.consent_to_terms.data
 
         terms_version = terms_version_service.find_version(terms_version_id)
-        if terms_version.brand_id != g.brand_id:
+        if terms_version.document_id != terms_document_id:
             abort(400, 'Die AGB-Version gehört nicht zu dieser Veranstaltung.')
 
         terms_consent = Consent(

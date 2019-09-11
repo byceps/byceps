@@ -132,7 +132,8 @@ def _is_login_allowed():
 def _get_required_consent_subject_ids():
     subject_ids = []
 
-    terms_version = terms_version_service.find_current_version(g.brand_id)
+    terms_version = terms_version_service \
+        .find_current_version_for_brand(g.brand_id)
     if terms_version:
         subject_ids.append(terms_version.consent_subject_id)
 

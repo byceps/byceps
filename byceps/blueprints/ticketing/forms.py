@@ -27,7 +27,8 @@ def validate_user(form, field):
 
     user = user.to_dto()
 
-    terms_version = terms_version_service.find_current_version(g.brand_id)
+    terms_version = terms_version_service \
+        .find_current_version_for_brand(g.brand_id)
 
     if terms_version and not consent_service.has_user_consented_to_subject(
                 user.id, terms_version.consent_subject_id):

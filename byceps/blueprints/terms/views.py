@@ -20,7 +20,7 @@ blueprint = create_blueprint('terms', __name__)
 @templated
 def view_current():
     """Show the current version of this brand's terms and conditions."""
-    version = terms_version_service.find_current_version(g.brand_id)
+    version = terms_version_service.find_current_version_for_brand(g.brand_id)
 
     if version is None:
         abort(404)

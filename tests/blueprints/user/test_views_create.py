@@ -72,6 +72,9 @@ class UserCreateTestCase(AbstractAppTestCase):
         terms_document_service.set_current_version(terms_document_id,
                                                    terms_version.id)
 
+        brand_settings_service.create_setting(self.brand.id,
+            'terms_document_id', str(terms_document.id))
+
         self.terms_version_id = terms_version.id
         self.terms_consent_subject_id = terms_version.consent_subject_id
 
