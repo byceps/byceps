@@ -14,7 +14,6 @@ from ...services.board import \
     posting_query_service as board_posting_query_service, \
     topic_command_service as board_topic_command_service, \
     topic_query_service as board_topic_query_service
-from ...services.party import service as party_service
 from ...services.text_markup.service import get_smileys
 from ...services.user import service as user_service
 from ...util.framework.flash import flash_error, flash_success
@@ -108,13 +107,10 @@ def topic_view(topic_id, page):
 
     service.enrich_creators(postings.items, g.brand_id, g.party_id)
 
-    party = party_service.get_party(g.party_id)
-
     context = {
         'topic': topic,
         'postings': postings,
         'is_last_page': is_last_page,
-        'party_title': party.title,
     }
 
     if is_last_page:

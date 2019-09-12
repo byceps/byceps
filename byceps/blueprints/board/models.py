@@ -6,7 +6,7 @@ byceps.blueprints.board.models
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import Set
+from typing import Optional, Set
 
 from attr import attrs
 
@@ -40,12 +40,17 @@ class CategoryWithLastUpdateAndUnseenFlag(CategoryWithLastUpdate):
 
 
 @attrs(auto_attribs=True, frozen=True, slots=True)
+class Ticket:
+    party_title: str
+
+
+@attrs(auto_attribs=True, frozen=True, slots=True)
 class Creator(User):
     badges: Set[Badge]
-    uses_ticket: bool
+    ticket: Ticket
 
     @classmethod
-    def from_(cls, user: User, badges: Set[Badge], uses_ticket: bool
+    def from_(cls, user: User, badges: Set[Badge], ticket: Optional[Ticket]
              ) -> 'Creator':
         return cls(
             user.id,
@@ -55,5 +60,5 @@ class Creator(User):
             user.avatar_url,
             user.is_orga,
             badges,
-            uses_ticket,
+            ticket,
         )

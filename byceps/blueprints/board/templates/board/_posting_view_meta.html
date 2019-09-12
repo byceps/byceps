@@ -7,8 +7,9 @@
       <div class="user-comment-meta-top">
         <span class="user-link">
           {{- render_user_link(posting.creator) -}}
-          {%- if posting.creator.uses_ticket %}
-          {{- ' ' }}<span title="Nutzt ein Ticket für die {{ party_title }}">{{ render_icon('ticket') }}</span>
+
+          {%- if posting.creator.ticket %}
+          {{- ' ' }}<span title="Nutzt ein Ticket für die {{ posting.creator.ticket.party_title }}">{{ render_icon('ticket') }}</span>
           {%- endif -%}
         </span>
 

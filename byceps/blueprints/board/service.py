@@ -18,13 +18,14 @@ from ...services.board import \
     last_view_service as board_last_view_service, \
     posting_query_service as board_posting_query_service
 from ...services.board.transfer.models import CategoryWithLastUpdate
+from ...services.party import service as party_service
 from ...services.ticketing import ticket_service
 from ...services.user import service as user_service
 from ...services.user_badge import service as badge_service
 from ...services.user_badge.transfer.models import Badge
 from ...typing import BrandID, PartyID, UserID
 
-from .models import CategoryWithLastUpdateAndUnseenFlag, Creator
+from .models import CategoryWithLastUpdateAndUnseenFlag, Creator, Ticket
 
 
 def add_unseen_postings_flag_to_categories(
@@ -82,18 +83,24 @@ def enrich_creators(postings: Sequence[DbPosting], brand_id: BrandID,
     badges_by_user_id = _get_badges(creator_ids, brand_id)
 
     if party_id is not None:
+        party = party_service.get_party(party_id)
         ticket_users = ticket_service.select_ticket_users_for_party(
-            creator_ids, party_id)
+            creator_ids, party.id)
     else:
+        party = None
         ticket_users = set()
 
     for posting in postings:
         user_id = posting.creator_id
 
         badges = badges_by_user_id.get(user_id, frozenset())
-        uses_ticket = (user_id in ticket_users)
 
-        posting.creator = Creator.from_(posting.creator, badges, uses_ticket)
+        if user_id in ticket_users:
+            ticket = Ticket(party.title)
+        else:
+            ticket = None
+
+        posting.creator = Creator.from_(posting.creator, badges, ticket)
 
 
 def _get_badges(user_ids: Set[UserID], brand_id: BrandID
