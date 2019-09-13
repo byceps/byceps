@@ -10,18 +10,19 @@ Sending e-mail.
 
 from typing import List
 
-from flask_marrowmailer import Mailer
-
-
-_mailer = Mailer()
+from flask import current_app
+from marrow.mailer import Mailer
 
 
 def init_app(app):
     marrowmailer_config_key = 'MARROWMAILER_CONFIG'
+
     if marrowmailer_config_key not in app.config:
         app.config[marrowmailer_config_key] = _get_config(app)
 
-    _mailer.init_app(app)
+    mailer_config = app.config.get(marrowmailer_config_key)
+
+    app.marrowmailer = Mailer(mailer_config)
 
 
 def _get_config(app):
@@ -57,11 +58,15 @@ def _get_config(app):
 
 def send(sender: str, recipients: List[str], subject: str, body: str) -> None:
     """Assemble and send an e-mail."""
-    message = _mailer.new(
+    mailer = current_app.marrowmailer
+
+    message = mailer.new(
         author=sender,
         to=recipients,
         subject=subject,
         plain=body,
         brand=False)
 
-    _mailer.send(message)
+    mailer.start()
+    mailer.send(message)
+    mailer.stop()
