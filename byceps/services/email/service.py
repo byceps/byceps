@@ -75,14 +75,16 @@ def enqueue_message(message: Message) -> None:
         message.body)
 
 
-def enqueue_email(sender: Sender, recipients: List[str], subject: str,
+def enqueue_email(sender: Optional[Sender], recipients: List[str], subject: str,
                   body: str) -> None:
     """Enqueue e-mail to be sent asynchronously."""
-    enqueue(send_email, sender.format(), recipients, subject, body)
+    sender_str = sender.format() if (sender is not None) else None
+
+    enqueue(send_email, sender_str, recipients, subject, body)
 
 
-def send_email(sender: str, recipients: List[str], subject: str, body: str) \
-              -> None:
+def send_email(sender: Optional[str], recipients: List[str], subject: str,
+               body: str) -> None:
     """Send e-mail."""
     email.send(sender, recipients, subject, body)
 

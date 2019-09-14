@@ -8,7 +8,7 @@ Sending e-mail.
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import List
+from typing import List, Optional
 
 from flask import current_app
 from marrow.mailer import Mailer
@@ -56,7 +56,8 @@ def _get_config(app):
     return config
 
 
-def send(sender: str, recipients: List[str], subject: str, body: str) -> None:
+def send(sender: Optional[str], recipients: List[str], subject: str, body: str
+        ) -> None:
     """Assemble and send an e-mail."""
     mailer = current_app.marrowmailer
 

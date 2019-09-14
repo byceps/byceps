@@ -236,7 +236,7 @@ def request_password_reset():
         email_config = email_service.get_config(site.email_config_id)
         sender = email_config.sender
 
-    password_reset_service.prepare_password_reset(user, sender)
+    password_reset_service.prepare_password_reset(user, sender=sender)
 
     flash_success(
         'Ein Link zum Setzen eines neuen Passworts für den Benutzernamen "{}" '
