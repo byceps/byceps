@@ -11,7 +11,7 @@ from datetime import datetime
 from ...database import db
 from ...typing import UserID
 
-from .models import List as DbList, Subscription as DbSubscription
+from .models import List as DbList, SubscriptionUpdate as DbSubscriptionUpdate
 from .service import find_list, _db_entity_to_list
 from .transfer.models import List, ListID
 from .types import SubscriptionState
@@ -53,7 +53,8 @@ def _update_subscription_state(user_id: UserID, list_id: ListID,
     if list_ is None:
         raise UnknownListId(list_id)
 
-    subscription = DbSubscription(user_id, list_.id, expressed_at, state)
+    subscription_update = DbSubscriptionUpdate(user_id, list_.id, expressed_at,
+                                               state)
 
-    db.session.add(subscription)
+    db.session.add(subscription_update)
     db.session.commit()

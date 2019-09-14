@@ -5,7 +5,8 @@
 
 from datetime import datetime
 
-from byceps.services.newsletter.models import Subscription
+from byceps.services.newsletter.models import \
+    SubscriptionUpdate as DbSubscriptionUpdate
 from byceps.services.newsletter import command_service
 from byceps.services.newsletter.types import SubscriptionState
 
@@ -133,8 +134,9 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
 
     def add_subscription(self, user, state):
         expressed_at = datetime.utcnow()
-        subscription = Subscription(user.id, self.list_id, expressed_at, state)
-        self.db.session.add(subscription)
+        subscription_update = DbSubscriptionUpdate(user.id, self.list_id,
+                                                   expressed_at, state)
+        self.db.session.add(subscription_update)
 
     def get_as_admin(self, url):
         """Make a GET request as the admin and return the response."""

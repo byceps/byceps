@@ -33,7 +33,7 @@ def generate_delete_statements(user_id):
         ('authz_user_roles', 'user_id'),
         ('board_categories_lastviews', 'user_id'),
         ('board_topics_lastviews', 'user_id'),
-        ('newsletter_subscriptions', 'user_id'),
+        ('newsletter_subscription_updates', 'user_id'),
         ('terms_consents', 'user_id'),
         ('verification_tokens', 'user_id'),
         ('user_details', 'user_id'),
