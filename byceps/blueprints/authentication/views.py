@@ -6,7 +6,7 @@ byceps.blueprints.authentication.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from flask import abort, current_app, g, request, url_for
+from flask import abort, g, request, url_for
 
 from ...config import get_site_mode, get_user_registration_enabled
 from ...services.authentication.exceptions import AuthenticationFailed
@@ -17,7 +17,6 @@ from ...services.authentication.password import \
 from ...services.authentication.session import service as session_service
 from ...services.consent import consent_service
 from ...services.email import service as email_service
-from ...services.email.transfer.models import Sender
 from ...services.site import service as site_service, \
     settings_service as site_settings_service
 from ...services.terms import consent_service as terms_consent_service, \
@@ -227,11 +226,8 @@ def request_password_reset():
                     'noch nicht bestätigt.', screen_name)
         return redirect_to('user_email_address.request_confirmation_email')
 
-    if get_site_mode().is_admin():
-        sender_address = current_app.config['EMAIL_SENDER_ADDRESS']
-        sender_name = None
-        sender = Sender(sender_address, sender_name)
-    else:
+    sender = None
+    if get_site_mode().is_public():
         site = site_service.get_site(g.site_id)
         email_config = email_service.get_config(site.email_config_id)
         sender = email_config.sender
