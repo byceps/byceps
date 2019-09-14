@@ -17,7 +17,7 @@ from ...typing import UserID
 from ..user.models.user import User as DbUser
 from ..user.transfer.models import User
 
-from .models import List as DbList, Subscriber, Subscription
+from .models import List as DbList, Subscriber, Subscription as DbSubscription
 from .transfer.models import List, ListID
 from .types import SubscriptionState
 
@@ -84,15 +84,15 @@ def _build_query_for_current_subscribers(list_id: ListID) -> BaseQuery:
 
     return db.session \
         .query(
-            Subscription.user_id
+            DbSubscription.user_id
         ) \
         .join(subquery, db.and_(
-            Subscription.user_id == subquery.c.user_id,
-            Subscription.list_id == subquery.c.list_id,
-            Subscription.expressed_at == subquery.c.latest_expressed_at
+            DbSubscription.user_id == subquery.c.user_id,
+            DbSubscription.list_id == subquery.c.list_id,
+            DbSubscription.expressed_at == subquery.c.latest_expressed_at
         )) \
-        .filter(Subscription._state == SubscriptionState.requested.name) \
-        .filter(Subscription.list_id == list_id)
+        .filter(DbSubscription._state == SubscriptionState.requested.name) \
+        .filter(DbSubscription.list_id == list_id)
 
 
 def _get_subscriber_details(user_ids: Set[UserID]) -> Iterator[Subscriber]:
@@ -164,18 +164,18 @@ def _build_query_for_current_state(list_id: ListID) -> BaseQuery:
 
     return db.session \
         .query(
-            Subscription._state,
-            db.func.count(Subscription._state),
+            DbSubscription._state,
+            db.func.count(DbSubscription._state),
         ) \
         .join(subquery, db.and_(
-            Subscription.user_id == subquery.c.user_id,
-            Subscription.list_id == subquery.c.list_id,
-            Subscription.expressed_at == subquery.c.latest_expressed_at
+            DbSubscription.user_id == subquery.c.user_id,
+            DbSubscription.list_id == subquery.c.list_id,
+            DbSubscription.expressed_at == subquery.c.latest_expressed_at
         )) \
         .filter_by(list_id=list_id) \
         .group_by(
-            Subscription.list_id,
-            Subscription._state,
+            DbSubscription.list_id,
+            DbSubscription._state,
         )
 
 
@@ -191,23 +191,24 @@ def _build_query_for_latest_expressed_at() -> BaseQuery:
     """
     return db.session \
         .query(
-            Subscription.user_id,
-            Subscription.list_id,
-            db.func.max(Subscription.expressed_at).label('latest_expressed_at')
+            DbSubscription.user_id,
+            DbSubscription.list_id,
+            db.func.max(DbSubscription.expressed_at)
+                .label('latest_expressed_at')
         ) \
         .group_by(
-            Subscription.user_id,
-            Subscription.list_id
+            DbSubscription.user_id,
+            DbSubscription.list_id
         )
 
 
 def get_subscription_state(user_id: UserID, list_id: ListID
                           ) -> SubscriptionState:
     """Return the user's current subscription state for that list."""
-    current_subscription = Subscription.query \
+    current_subscription = DbSubscription.query \
         .filter_by(user_id=user_id) \
         .filter_by(list_id=list_id) \
-        .order_by(Subscription.expressed_at.desc()) \
+        .order_by(DbSubscription.expressed_at.desc()) \
         .first()
 
     if current_subscription is None:
@@ -217,9 +218,9 @@ def get_subscription_state(user_id: UserID, list_id: ListID
 
 
 def get_subscription_updates_for_user(user_id: UserID
-                                     ) -> Sequence[Subscription]:
+                                     ) -> Sequence[DbSubscription]:
     """Return subscription updates made by the user, for any list."""
-    return Subscription.query \
+    return DbSubscription.query \
         .filter_by(user_id=user_id) \
         .all()
 
