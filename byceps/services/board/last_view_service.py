@@ -125,10 +125,9 @@ def mark_all_topics_in_category_as_viewed(category_id: CategoryID,
         'occurred_at': datetime.utcnow(),
     }
 
-    for topic_id in topic_ids:
-        identifier = {
-            'user_id': user_id,
-            'topic_id': topic_id,
-        }
+    identifiers = [{
+        'user_id': user_id,
+        'topic_id': topic_id,
+    } for topic_id in topic_ids]
 
-        upsert(table, identifier, replacement)
+    upsert_many(table, identifiers, replacement)
