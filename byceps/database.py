@@ -92,9 +92,7 @@ def upsert(table: Table, identifier: Dict[str, Any],
     """Insert or update the record identified by `identifier` with value
     `replacement`.
     """
-    query = _build_upsert_query(table, identifier, replacement)
-
-    db.session.execute(query)
+    execute_upsert(table, identifier, replacement)
     db.session.commit()
 
 
@@ -104,10 +102,16 @@ def upsert_many(table: Table, identifiers: Iterable[Dict[str, Any]],
     `replacement`.
     """
     for identifier in identifiers:
-        query = _build_upsert_query(table, identifier, replacement)
-        db.session.execute(query)
+        execute_upsert(table, identifier, replacement)
 
     db.session.commit()
+
+
+def execute_upsert(table: Table, identifier: Dict[str, Any],
+                   replacement: Dict[str, Any]) -> None:
+    """Execute, but do not commit, an UPSERT."""
+    query = _build_upsert_query(table, identifier, replacement)
+    db.session.execute(query)
 
 
 def _build_upsert_query(table: Table, identifier: Dict[str, Any],
