@@ -12,6 +12,7 @@ from ...services.board import \
     category_query_service as board_category_query_service, \
     last_view_service as board_last_view_service, \
     topic_query_service as board_topic_query_service
+from ...util.framework.flash import flash_success
 from ...util.framework.templating import templated
 from ...util.views import respond_no_content_with_location
 
@@ -83,5 +84,8 @@ def mark_all_topics_in_category_as_viewed(category_id):
 
     board_last_view_service.mark_all_topics_in_category_as_viewed(
         category_id, g.current_user.id)
+
+    flash_success(
+        'Alle Themen in dieser Kategorie wurden als gelesen markiert.')
 
     return url_for('.category_view', slug=category.slug)
