@@ -5,11 +5,9 @@
 
 from unittest.mock import patch
 
-from byceps.services.brand import settings_service as brand_settings_service
-
 from tests.base import AbstractAppTestCase
-from tests.helpers import create_brand, create_email_config, create_party, \
-    create_site, create_user, http_client, login_user
+from tests.helpers import create_email_config, create_site, create_user, \
+    http_client, login_user
 
 
 class SendUserMessageTest(AbstractAppTestCase):
@@ -20,10 +18,7 @@ class SendUserMessageTest(AbstractAppTestCase):
         create_email_config(sender_address='noreply@example.com',
                             sender_name='ACME Entertainment Convention')
 
-        self.brand = create_brand()
-        party = create_party(self.brand.id)
-
-        create_site(party.id, server_name='acme.example.com')
+        create_site(server_name='acme.example.com')
 
     @patch('byceps.email.send')
     def test_send_when_logged_in_without_brand_contact_address(self,

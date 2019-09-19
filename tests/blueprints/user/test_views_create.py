@@ -42,7 +42,7 @@ class UserCreateTestCase(AbstractAppTestCase):
         self.brand_id = self.brand.id
 
         party = create_party(self.brand.id)
-        create_site(party.id)
+        create_site(party_id=party.id)
 
         self.setup_terms()
         self.setup_privacy_policy()

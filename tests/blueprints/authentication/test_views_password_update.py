@@ -8,8 +8,8 @@ from byceps.services.authentication.password import service as password_service
 from byceps.services.authentication.session import service as session_service
 
 from tests.base import AbstractAppTestCase
-from tests.helpers import create_brand, create_email_config, create_party, \
-    create_site, create_user, http_client, login_user
+from tests.helpers import create_email_config, create_site, create_user, \
+    http_client, login_user
 
 
 class PasswordUpdateTestCase(AbstractAppTestCase):
@@ -17,10 +17,8 @@ class PasswordUpdateTestCase(AbstractAppTestCase):
     def setUp(self):
         super().setUp()
 
-        brand = create_brand()
-        party = create_party(brand.id)
         create_email_config()
-        create_site(party.id)
+        create_site()
 
     def test_when_logged_in_endpoint_is_available(self):
         old_password = 'LekkerBratworsten'

@@ -9,8 +9,7 @@ from byceps.services.site.models.setting import Setting as DbSetting
 from byceps.services.site import settings_service
 from byceps.services.site.transfer.models import SiteSetting
 
-from tests.helpers import create_brand, create_email_config, create_party, \
-    create_site
+from tests.helpers import create_email_config, create_site
 
 from ...conftest import database_recreated
 
@@ -23,9 +22,7 @@ def app(party_app, db):
 
             create_email_config()
 
-            brand = create_brand()
-            party = create_party(brand.id)
-            site = create_site(party.id)
+            site = create_site()
 
             _app.site_id = site.id
 

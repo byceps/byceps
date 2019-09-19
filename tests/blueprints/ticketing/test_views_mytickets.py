@@ -16,7 +16,7 @@ class MyTicketsTestCase(AbstractAppTestCase):
         brand = create_brand()
         party = create_party(brand.id)
         create_email_config()
-        create_site(party.id)
+        create_site(party_id=party.id)
 
     def test_when_logged_in(self):
         user = create_user('McFly')

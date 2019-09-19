@@ -10,8 +10,8 @@ from byceps.services.tourney import match_service
 
 from tests.base import AbstractAppTestCase
 from tests.api_helpers import assemble_authorization_header
-from tests.helpers import create_brand, create_email_config, create_party, \
-    create_site, create_user, http_client, login_user
+from tests.helpers import create_email_config, create_site, create_user, \
+    http_client, login_user
 
 
 class MatchCommentCreateTest(AbstractAppTestCase):
@@ -19,10 +19,8 @@ class MatchCommentCreateTest(AbstractAppTestCase):
     def setUp(self):
         super().setUp()
 
-        brand = create_brand()
-        party = create_party(brand.id)
         create_email_config()
-        create_site(party.id)
+        create_site()
 
     def test_create_comment_on_existent_match(self):
         player = self.create_player()

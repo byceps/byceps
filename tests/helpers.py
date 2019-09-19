@@ -110,8 +110,8 @@ def create_party(brand_id, party_id='acmecon-2014', title='ACMECon 2014',
     return party_service._db_entity_to_party(party)
 
 
-def create_site(party_id, *, site_id='acmecon-2014-website', title='Website',
-                server_name='www.example.com',
+def create_site(*, site_id='acmecon-2014-website', party_id=None,
+                title='Website', server_name='www.example.com',
                 email_config_id=DEFAULT_EMAIL_CONFIG_ID):
     return site_service.create_site(site_id, party_id, title, server_name,
                                     email_config_id)

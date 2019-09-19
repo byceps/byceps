@@ -11,7 +11,7 @@ from testfixtures.board import create_board as _create_board, \
 
 from tests.base import AbstractAppTestCase
 from tests.helpers import assign_permissions_to_user, create_brand, \
-    create_email_config, create_party, create_site, create_user, login_user
+    create_email_config, create_site, create_user, login_user
 
 
 class AbstractTopicModerationTest(AbstractAppTestCase):
@@ -25,9 +25,8 @@ class AbstractTopicModerationTest(AbstractAppTestCase):
         self.user = create_user('User')
 
         self.brand = create_brand()
-        party = create_party(brand_id=self.brand.id)
         create_email_config()
-        create_site(party.id)
+        create_site()
 
         self.board = create_board(self.brand.id)
 

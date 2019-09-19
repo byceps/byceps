@@ -31,7 +31,7 @@ class ShopOrdersTestCase(ShopTestBase):
 
     def test_view_matching_user_and_party_and_shop(self):
         party = create_party(self.brand.id, shop_id=self.shop.id)
-        create_site(party.id)
+        create_site(party_id=party.id)
 
         self.create_order_number_sequence(self.shop.id, 'LF-02-B')
         self.create_payment_instructions_snippet(self.shop.id)
@@ -44,7 +44,7 @@ class ShopOrdersTestCase(ShopTestBase):
 
     def test_view_matching_party_and_shop_but_different_user(self):
         party = create_party(self.brand.id, shop_id=self.shop.id)
-        create_site(party.id)
+        create_site(party_id=party.id)
 
         self.create_order_number_sequence(self.shop.id, 'LF-02-B')
         self.create_payment_instructions_snippet(self.shop.id)
@@ -59,7 +59,7 @@ class ShopOrdersTestCase(ShopTestBase):
         shop = self.create_shop('shop-2')
         other_party = create_party(self.brand.id, 'otherlan-2013',
                                    'OtherLAN 2013', shop_id=shop.id)
-        create_site(other_party.id)
+        create_site(party_id=other_party.id)
 
         self.create_order_number_sequence(self.shop.id, 'LF-02-B')
         self.create_payment_instructions_snippet(self.shop.id)

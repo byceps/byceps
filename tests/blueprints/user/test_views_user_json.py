@@ -4,8 +4,8 @@
 """
 
 from tests.base import AbstractAppTestCase
-from tests.helpers import create_brand, create_email_config, create_party, \
-    create_site, create_user, http_client
+from tests.helpers import create_email_config, create_site, create_user, \
+    http_client
 
 
 CONTENT_TYPE_JSON = 'application/json'
@@ -16,10 +16,8 @@ class UserJsonTestCase(AbstractAppTestCase):
     def setUp(self):
         super().setUp()
 
-        brand = create_brand()
-        party = create_party(brand.id)
         create_email_config()
-        create_site(party.id)
+        create_site()
 
     def test_with_existent_user(self):
         screen_name = 'Gemüsefrau'

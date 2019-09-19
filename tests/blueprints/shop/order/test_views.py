@@ -32,7 +32,7 @@ class ShopOrderTestCase(ShopTestBase):
 
         brand = create_brand()
         party = create_party(brand.id, shop_id=self.shop.id)
-        create_site(party.id)
+        create_site(party_id=party.id)
 
     def setup_order_number_prefix_and_sequence(self):
         self.create_order_number_sequence(self.shop.id, 'AEC-01-B', value=4)
