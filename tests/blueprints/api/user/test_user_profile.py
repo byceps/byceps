@@ -3,103 +3,113 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
+import pytest
+
 from tests.base import AbstractAppTestCase
 from tests.helpers import create_email_config, create_site, create_user, \
     http_client
+
+from ....conftest import database_recreated
 
 
 CONTENT_TYPE_JSON = 'application/json'
 
 
-class UserJsonTestCase(AbstractAppTestCase):
+@pytest.fixture(scope='module')
+def client(party_app, db):
+    app = party_app
+    with app.app_context():
+        with database_recreated(db):
+            create_email_config()
+            create_site()
 
-    def setUp(self):
-        super().setUp()
+            yield app.test_client()
 
-        create_email_config()
-        create_site()
 
-    def test_with_existent_user(self):
-        screen_name = 'Gemüsefrau'
+def test_with_existent_user(client):
+    screen_name = 'Gemüsefrau'
 
-        user = create_user(screen_name)
-        user_id = str(user.id)
+    user = create_user(screen_name)
+    user_id = str(user.id)
 
-        response = self.send_request(user_id)
+    response = send_request(client, user_id)
 
-        assert response.status_code == 200
-        assert response.content_type == CONTENT_TYPE_JSON
-        assert response.mimetype == CONTENT_TYPE_JSON
+    assert response.status_code == 200
+    assert response.content_type == CONTENT_TYPE_JSON
+    assert response.mimetype == CONTENT_TYPE_JSON
 
-        response_data = response.json
-        assert response_data['id'] == user_id
-        assert response_data['screen_name'] == screen_name
-        assert response_data['avatar_url'] is None
+    response_data = response.json
+    assert response_data['id'] == user_id
+    assert response_data['screen_name'] == screen_name
+    assert response_data['avatar_url'] is None
 
-    def test_with_not_uninitialized_user(self):
-        screen_name = 'UninitializedUser'
 
-        user = create_user(screen_name, initialized=False)
+def test_with_not_uninitialized_user(client):
+    screen_name = 'UninitializedUser'
 
-        response = self.send_request(str(user.id))
+    user = create_user(screen_name, initialized=False)
 
-        assert response.status_code == 404
-        assert response.content_type == CONTENT_TYPE_JSON
-        assert response.mimetype == CONTENT_TYPE_JSON
-        assert response.json == {}
+    response = send_request(client, str(user.id))
 
-    def test_with_disabled_user(self):
-        screen_name = 'DisabledUser'
+    assert response.status_code == 404
+    assert response.content_type == CONTENT_TYPE_JSON
+    assert response.mimetype == CONTENT_TYPE_JSON
+    assert response.json == {}
 
-        user = create_user(screen_name, enabled=False)
 
-        response = self.send_request(str(user.id))
+def test_with_disabled_user(client):
+    screen_name = 'DisabledUser'
 
-        assert response.status_code == 404
-        assert response.content_type == CONTENT_TYPE_JSON
-        assert response.mimetype == CONTENT_TYPE_JSON
-        assert response.json == {}
+    user = create_user(screen_name, enabled=False)
 
-    def test_with_suspended_user(self):
-        screen_name = 'SuspendedUser'
+    response = send_request(client, str(user.id))
 
-        user = create_user(screen_name)
-        user.suspended = True
-        self.db.session.commit()
+    assert response.status_code == 404
+    assert response.content_type == CONTENT_TYPE_JSON
+    assert response.mimetype == CONTENT_TYPE_JSON
+    assert response.json == {}
 
-        response = self.send_request(str(user.id))
 
-        assert response.status_code == 404
-        assert response.content_type == CONTENT_TYPE_JSON
-        assert response.mimetype == CONTENT_TYPE_JSON
-        assert response.json == {}
+def test_with_suspended_user(client, db):
+    screen_name = 'SuspendedUser'
 
-    def test_with_deleted_user(self):
-        screen_name = 'DeletedUser'
+    user = create_user(screen_name)
+    user.suspended = True
+    db.session.commit()
 
-        user = create_user(screen_name)
-        user.deleted = True
-        self.db.session.commit()
+    response = send_request(client, str(user.id))
 
-        response = self.send_request(str(user.id))
+    assert response.status_code == 404
+    assert response.content_type == CONTENT_TYPE_JSON
+    assert response.mimetype == CONTENT_TYPE_JSON
+    assert response.json == {}
 
-        assert response.status_code == 404
-        assert response.content_type == CONTENT_TYPE_JSON
-        assert response.mimetype == CONTENT_TYPE_JSON
-        assert response.json == {}
 
-    def test_with_nonexistent_user(self):
-        unknown_user_id = '00000000-0000-0000-0000-000000000000'
+def test_with_deleted_user(client, db):
+    screen_name = 'DeletedUser'
 
-        response = self.send_request(unknown_user_id)
+    user = create_user(screen_name)
+    user.deleted = True
+    db.session.commit()
 
-        assert response.status_code == 404
-        assert response.content_type == CONTENT_TYPE_JSON
-        assert response.mimetype == CONTENT_TYPE_JSON
-        assert response.json == {}
+    response = send_request(client, str(user.id))
 
-    # helpers
+    assert response.status_code == 404
+    assert response.content_type == CONTENT_TYPE_JSON
+    assert response.mimetype == CONTENT_TYPE_JSON
+    assert response.json == {}
 
-    def send_request(self, user_id):
-        with http_client(self.app) as client:
-            return client.get(f'/api/users/{user_id}/profile')
+
+def test_with_nonexistent_user(client):
+    unknown_user_id = '00000000-0000-0000-0000-000000000000'
+
+    response = send_request(client, unknown_user_id)
+
+    assert response.status_code == 404
+    assert response.content_type == CONTENT_TYPE_JSON
+    assert response.mimetype == CONTENT_TYPE_JSON
+    assert response.json == {}
+
+
+def send_request(client, user_id):
+    return client.get(f'/api/users/{user_id}/profile')
