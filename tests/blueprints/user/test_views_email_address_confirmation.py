@@ -22,7 +22,8 @@ class EmailAddressConfirmationTestCase(AbstractAppTestCase):
         create_email_config()
         create_site(party.id)
 
-        self.user = create_user(enabled=False)
+        self.user = create_user(initialized=False, enabled=False)
+        assert not self.user.initialized
         assert not self.user.enabled
 
     def test_confirm_email_address_with_valid_token(self):
@@ -33,6 +34,7 @@ class EmailAddressConfirmationTestCase(AbstractAppTestCase):
         response = self._confirm(verification_token)
 
         assert response.status_code == 302
+        assert self.user.initialized
         assert self.user.enabled
 
     def test_confirm_email_address_with_unknown_token(self):
@@ -42,6 +44,7 @@ class EmailAddressConfirmationTestCase(AbstractAppTestCase):
         response = self._confirm(verification_token)
 
         assert response.status_code == 404
+        assert not self.user.initialized
         assert not self.user.enabled
 
     def _confirm(self, verification_token):

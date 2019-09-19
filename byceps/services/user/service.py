@@ -27,6 +27,7 @@ def find_active_db_user(user_id: UserID) -> Optional[DbUser]:
     - the account is marked as deleted.
     """
     return DbUser.query \
+        .filter_by(initialized=True) \
         .filter_by(enabled=True) \
         .filter_by(suspended=False) \
         .filter_by(deleted=False) \
@@ -47,6 +48,7 @@ def find_active_user(user_id: UserID, *, include_avatar: bool=False,
     query = _get_user_query(include_avatar, include_orga_flag_for_party_id)
 
     row = query \
+        .filter(DbUser.initialized == True) \
         .filter(DbUser.enabled == True) \
         .filter(DbUser.suspended == False) \
         .filter(DbUser.deleted == False) \

@@ -14,7 +14,7 @@ from byceps.services.user import creation_service as user_creation_service
 
 
 def create_user(screen_name='Faith', *, user_id=None, created_at=None,
-                email_address=None, enabled=True):
+                email_address=None, initialized=True, enabled=True):
     if not user_id:
         user_id = generate_uuid()
 
@@ -27,6 +27,7 @@ def create_user(screen_name='Faith', *, user_id=None, created_at=None,
     user = user_creation_service.build_user(created_at, screen_name,
                                             email_address)
     user.id = user_id
+    user.initialized = initialized
     user.enabled = enabled
 
     return user
@@ -34,12 +35,13 @@ def create_user(screen_name='Faith', *, user_id=None, created_at=None,
 
 def create_user_with_detail(screen_name='Faith', *,
                             email_address=None,
+                            initialized=True,
                             enabled=True,
                             first_names='John Joseph',
                             last_name='Doe',
                             date_of_birth=None):
     user = create_user(screen_name, email_address=email_address,
-                       enabled=enabled)
+                       initialized=initialized, enabled=enabled)
 
     detail = UserDetail(user=user)
     detail.first_names = first_names

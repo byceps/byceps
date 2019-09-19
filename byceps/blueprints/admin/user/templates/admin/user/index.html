@@ -1,5 +1,5 @@
 {% extends 'layout/admin/base.html' %}
-{% from 'macros/admin/user.html' import render_user_avatar_16_and_link, render_user_flag_deleted, render_user_flag_disabled, render_user_flag_suspended, render_user_state_filter %}
+{% from 'macros/admin/user.html' import render_user_avatar_16_and_link, render_user_flag_deleted, render_user_flag_disabled, render_user_flag_suspended, render_user_flag_uninitialized, render_user_state_filter %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_tag %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
@@ -20,6 +20,11 @@
     <div class="column-auto">
       <a class="button button--clear" href="{{ url_for('.index', only='enabled') }}">
         {{- render_bigstats_item(total_enabled|separate_thousands, render_tag('aktiviert', class='color-success', icon='enabled')) -}}
+      </a>
+    </div>
+    <div class="column-auto">
+      <a class="button button--clear" href="{{ url_for('.index', only='uninitialized') }}">
+        {{- render_bigstats_item(total_disabled|separate_thousands, render_user_flag_uninitialized()) -}}
       </a>
     </div>
     <div class="column-auto">
@@ -64,6 +69,7 @@
           <ol>
             <li><a href="{{ url_for('.index') }}">{{ render_user_state_filter(UserStateFilter.none) }}</a></li>
             <li><a href="{{ url_for('.index', only='enabled') }}">{{ render_user_state_filter(UserStateFilter.enabled) }}</a></li>
+            <li><a href="{{ url_for('.index', only='uninitialized') }}">{{ render_user_state_filter(UserStateFilter.uninitialized) }}</a></li>
             <li><a href="{{ url_for('.index', only='disabled') }}">{{ render_user_state_filter(UserStateFilter.disabled) }}</a></li>
             <li><a href="{{ url_for('.index', only='suspended') }}">{{ render_user_state_filter(UserStateFilter.suspended) }}</a></li>
             <li><a href="{{ url_for('.index', only='deleted') }}">{{ render_user_state_filter(UserStateFilter.deleted) }}</a></li>

@@ -38,6 +38,18 @@ class UserJsonTestCase(AbstractAppTestCase):
         assert response_data['screen_name'] == screen_name
         assert response_data['avatar_url'] is None
 
+    def test_with_not_uninitialized_user(self):
+        screen_name = 'UninitializedUser'
+
+        user = create_user(screen_name, initialized=False)
+
+        response = self.send_request(str(user.id))
+
+        assert response.status_code == 404
+        assert response.content_type == CONTENT_TYPE_JSON
+        assert response.mimetype == CONTENT_TYPE_JSON
+        assert response.json == {}
+
     def test_with_disabled_user(self):
         screen_name = 'DisabledUser'
 

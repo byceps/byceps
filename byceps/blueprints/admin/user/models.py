@@ -11,6 +11,7 @@ from enum import Enum
 
 UserStateFilter = Enum('UserStateFilter', [
     'none',
+    'uninitialized',
     'enabled',
     'disabled',
     'suspended',

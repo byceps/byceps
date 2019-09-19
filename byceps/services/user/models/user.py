@@ -61,6 +61,7 @@ class User(db.Model):
     screen_name = db.Column(db.UnicodeText, unique=True, nullable=False)
     email_address = db.Column(db.UnicodeText, unique=True, nullable=False)
     email_address_verified = db.Column(db.Boolean, default=False, nullable=False)
+    initialized = db.Column(db.Boolean, default=False, nullable=False)
     enabled = db.Column(db.Boolean, default=False, nullable=False)
     suspended = db.Column(db.Boolean, default=False, nullable=False)
     deleted = db.Column(db.Boolean, default=False, nullable=False)

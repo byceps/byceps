@@ -45,6 +45,7 @@ def confirm_email_address(verification_token: Token) -> None:
     user = verification_token.user
 
     user.email_address_verified = True
+    user.initialized = True
     user.enabled = True
     db.session.commit()
 
