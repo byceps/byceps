@@ -17,19 +17,18 @@ class EmailAddressConfirmationTestCase(AbstractAppTestCase):
     def setUp(self):
         super().setUp()
 
-        self.user = create_user(enabled=False)
-
         brand = create_brand()
         party = create_party(brand.id)
         create_email_config()
         create_site(party.id)
 
+        self.user = create_user(enabled=False)
+        assert not self.user.enabled
+
     def test_confirm_email_address_with_valid_token(self):
         verification_token = create_confirmation_token(self.user.id)
         self.db.session.add(verification_token)
         self.db.session.commit()
-
-        assert not self.user.enabled
 
         response = self._confirm(verification_token)
 
@@ -39,8 +38,6 @@ class EmailAddressConfirmationTestCase(AbstractAppTestCase):
     def test_confirm_email_address_with_unknown_token(self):
         verification_token = create_confirmation_token(self.user.id)
         verification_token.token = 'wZdSLzkT-zRf2x2T6AR7yGa3Nc_X3Nn3F3XGPvPtOhw'
-
-        assert not self.user.enabled
 
         response = self._confirm(verification_token)
 
