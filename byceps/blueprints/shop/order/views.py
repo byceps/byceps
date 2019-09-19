@@ -35,7 +35,7 @@ blueprint = create_blueprint('shop_order', __name__)
 @templated
 def order_form(erroneous_form=None):
     """Show a form to order articles."""
-    shop = _get_shop_or_404(g.party_id)
+    shop = _get_shop_or_404()
 
     if shop.closed:
         flash_notice('Der Shop ist derzeit geschlossen.')
@@ -82,7 +82,7 @@ def list_articles(article_compilation):
 @login_required
 def order():
     """Order articles."""
-    shop = _get_shop_or_404(g.party_id)
+    shop = _get_shop_or_404()
 
     if shop.closed:
         flash_notice('Der Shop ist derzeit geschlossen.')
@@ -127,7 +127,7 @@ def order_single_form(article_id, erroneous_form=None):
     """Show a form to order a single article."""
     article = _get_article_or_404(article_id)
 
-    shop = _get_shop_or_404(g.party_id)
+    shop = _get_shop_or_404()
 
     if shop.closed:
         flash_notice('Der Shop ist derzeit geschlossen.')
@@ -180,7 +180,7 @@ def order_single(article_id):
     article = _get_article_or_404(article_id)
     quantity = 1
 
-    shop = _get_shop_or_404(g.party_id)
+    shop = _get_shop_or_404()
 
     if shop.closed:
         flash_notice('Der Shop ist derzeit geschlossen.')
@@ -225,8 +225,8 @@ def order_single(article_id):
     return redirect_to('shop_orders.view', order_id=order.id)
 
 
-def _get_shop_or_404(party_id):
-    party = party_service.get_party(party_id)
+def _get_shop_or_404():
+    party = party_service.get_party(g.party_id)
 
     if party.shop_id is None:
         abort(404)
