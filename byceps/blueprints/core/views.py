@@ -79,10 +79,14 @@ def provide_site_mode():
 
         party_id = site.party_id
 
-        party = party_service.get_party(party_id)
+        if party_id is not None:
+            party = party_service.get_party(party_id)
 
-        g.party_id = party.id
-        g.brand_id = party.brand_id
+            g.party_id = party.id
+            g.brand_id = party.brand_id
+        else:
+            g.party_id = None
+            g.brand_id = None
 
     # current user
     is_admin_mode = site_mode.is_admin()

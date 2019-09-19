@@ -19,7 +19,7 @@ class UnknownSiteId(Exception):
     pass
 
 
-def create_site(site_id: SiteID, party_id: PartyID, title: str,
+def create_site(site_id: SiteID, party_id: Optional[PartyID], title: str,
                 server_name: str, email_config_id: str) -> Site:
     """Create a site for that party."""
     site = DbSite(site_id, party_id, title, server_name, email_config_id)
