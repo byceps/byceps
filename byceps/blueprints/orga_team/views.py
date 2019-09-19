@@ -9,7 +9,7 @@ byceps.blueprints.orga_team.views
 from collections import namedtuple
 
 import attr
-from flask import g
+from flask import abort, g
 
 from ...services.orga_team import service as orga_team_service
 from ...services.user import service as user_service
@@ -27,6 +27,10 @@ blueprint = create_blueprint('orga_team', __name__)
 @templated
 def index():
     """List all organizers for the current party."""
+    if g.party_id is None:
+        # No party is configured for the current site.
+        abort(404)
+
     memberships = orga_team_service.get_memberships_for_party(g.party_id)
 
     users_by_id = _get_users_by_id(memberships)

@@ -226,6 +226,10 @@ def order_single(article_id):
 
 
 def _get_shop_or_404():
+    if g.party_id is None:
+        # No party is configured for the current site.
+        abort(404)
+
     party = party_service.get_party(g.party_id)
 
     if party.shop_id is None:

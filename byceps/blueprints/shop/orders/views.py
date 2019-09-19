@@ -29,6 +29,10 @@ def index():
     """List orders placed by the current user in the shop assigned to
     the current party.
     """
+    if g.party_id is None:
+        # No party is configured for the current site.
+        abort(404)
+
     current_user = g.current_user
 
     party = party_service.get_party(g.party_id)
@@ -62,6 +66,10 @@ def view(order_id):
 
     if order.placed_by_id != current_user.id:
         # Order was not placed by the current user.
+        abort(404)
+
+    if g.party_id is None:
+        # No party is configured for the current site.
         abort(404)
 
     party = party_service.get_party(g.party_id)
