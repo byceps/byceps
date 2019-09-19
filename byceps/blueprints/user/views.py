@@ -16,7 +16,7 @@ from ...services.user import service as user_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_success
 from ...util.framework.templating import templated
-from ...util.views import create_empty_json_response, redirect_to
+from ...util.views import redirect_to
 
 from ..authentication.decorators import login_required
 
@@ -25,24 +25,6 @@ from .creation.views import _find_newsletter_list_for_brand
 
 
 blueprint = create_blueprint('user', __name__)
-
-
-@blueprint.route('/<uuid:user_id>.json')
-def view_as_json(user_id):
-    """Show selected attributes of a user's profile as JSON."""
-    if get_site_mode().is_admin():
-        abort(404)
-
-    user = user_service.find_active_user(user_id, include_avatar=True)
-
-    if user is None:
-        return create_empty_json_response(404)
-
-    return jsonify({
-        'id': user.id,
-        'screen_name': user.screen_name,
-        'avatar_url': user.avatar_url,
-    })
 
 
 @blueprint.route('/me')

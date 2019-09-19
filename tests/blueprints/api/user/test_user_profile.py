@@ -101,6 +101,5 @@ class UserJsonTestCase(AbstractAppTestCase):
     # helpers
 
     def send_request(self, user_id):
-        url = '/users/{}.json'.format(user_id)
         with http_client(self.app) as client:
-            return client.get(url)
+            return client.get(f'/api/users/{user_id}/profile')
