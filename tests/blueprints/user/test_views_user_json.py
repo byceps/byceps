@@ -38,12 +38,10 @@ class UserJsonTestCase(AbstractAppTestCase):
         assert response_data['screen_name'] == screen_name
         assert response_data['avatar_url'] is None
 
-    def test_with_not_enabled_user(self):
-        screen_name = 'NotEnabledUser'
+    def test_with_disabled_user(self):
+        screen_name = 'DisabledUser'
 
-        user = create_user(screen_name)
-        user.enabled = False
-        self.db.session.commit()
+        user = create_user(screen_name, enabled=False)
 
         response = self.send_request(str(user.id))
 
