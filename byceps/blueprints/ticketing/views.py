@@ -33,9 +33,13 @@ blueprint = create_blueprint('ticketing', __name__)
 @templated
 def index_mine():
     """List tickets related to the current user."""
-    current_user = g.current_user
+    if g.party_id is None:
+        # No party is configured for the current site.
+        abort(404)
 
     party = party_service.get_party(g.party_id)
+
+    current_user = g.current_user
 
     tickets = ticket_service.find_tickets_related_to_user_for_party(
         current_user.id, party.id)

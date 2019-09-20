@@ -6,7 +6,7 @@ byceps.blueprints.party.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from flask import g
+from flask import abort, g
 
 from ...services.party import service as party_service
 from ...services.ticketing import attendance_service
@@ -21,6 +21,10 @@ blueprint = create_blueprint('party', __name__)
 @templated
 def info():
     """Show information about the current party."""
+    if g.party_id is None:
+        # No party is configured for the current site.
+        abort(404)
+
     party = party_service.get_party(g.party_id)
 
     return {
