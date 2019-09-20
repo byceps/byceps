@@ -50,7 +50,9 @@ def get_users_paginated(page, per_page, *, search_term=None, state_filter=None):
 def _filter_by_state(query, state_filter):
     if state_filter == UserStateFilter.uninitialized:
         return query \
-            .filter_by(initialized=False)
+            .filter_by(initialized=False) \
+            .filter_by(suspended=False) \
+            .filter_by(deleted=False)
     elif state_filter == UserStateFilter.enabled:
         return query \
             .filter_by(enabled=True) \
