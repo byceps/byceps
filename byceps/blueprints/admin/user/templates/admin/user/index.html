@@ -24,7 +24,7 @@
     </div>
     <div class="column-auto">
       <a class="button button--clear" href="{{ url_for('.index', only='uninitialized') }}">
-        {{- render_bigstats_item(total_disabled|separate_thousands, render_user_flag_uninitialized()) -}}
+        {{- render_bigstats_item(total_uninitialized|separate_thousands, render_user_flag_uninitialized()) -}}
       </a>
     </div>
     <div class="column-auto">

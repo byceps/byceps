@@ -26,6 +26,18 @@ def count_users_created_since(delta: timedelta) -> int:
         .count()
 
 
+def count_uninitialized_users() -> int:
+    """Return the number of uninitialized user accounts.
+
+    Suspended or deleted accounts are excluded.
+    """
+    return DbUser.query \
+        .filter_by(initialized=False) \
+        .filter_by(suspended=False) \
+        .filter_by(deleted=False) \
+        .count()
+
+
 def count_enabled_users() -> int:
     """Return the number of enabled user accounts.
 
