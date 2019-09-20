@@ -71,12 +71,12 @@
 
 
 {% macro render_most_important_user_flag(user, show_label=True) -%}
-  {%- if not user.initialized -%}
-    {{ render_user_flag_uninitialized(show_label=show_label) }}
-  {%- elif user.deleted -%}
+  {%- if user.deleted -%}
     {{ render_user_flag_deleted(show_label=show_label) }}
   {%- elif user.suspended -%}
     {{ render_user_flag_suspended(show_label=show_label) }}
+  {%- elif not user.initialized -%}
+    {{ render_user_flag_uninitialized(show_label=show_label) }}
   {%- elif not user.enabled -%}
     {{ render_user_flag_disabled(show_label=show_label) }}
   {%- endif -%}
