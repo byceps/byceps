@@ -58,7 +58,7 @@ def view_global():
     one_week_ago = timedelta(days=7)
     recent_users_count = user_stats_service.count_users_created_since(one_week_ago)
 
-    disabled_user_count = user_stats_service.count_disabled_users()
+    uninitialized_user_count = user_stats_service.count_uninitialized_users()
 
     orgas_with_next_birthdays = list(
         orga_birthday_service.collect_orgas_with_next_birthdays(limit=3))
@@ -73,7 +73,7 @@ def view_global():
 
         'user_count': user_count,
         'recent_users_count': recent_users_count,
-        'disabled_user_count': disabled_user_count,
+        'uninitialized_user_count': uninitialized_user_count,
 
         'orgas_with_next_birthdays': orgas_with_next_birthdays,
     }

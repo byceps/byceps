@@ -22,7 +22,7 @@
     {{ render_bigstats_cell(orga_count, 'Organisatoren', href=url_for('orga_admin.persons'), icon_name='users') }}
     {{ render_bigstats_cell(user_count|separate_thousands, 'Benutzer', href=url_for('user_admin.index'), icon_name='users') }}
     {{ render_bigstats_cell(recent_users_count, 'neue Benutzer in den letzten 7 Tagen', href=url_for('user_admin.index'), icon_name='users', color='#008800') }}
-    {{ render_bigstats_cell(disabled_user_count, 'deaktivierte Benutzer', href=url_for('user_admin.index', only='disabled'), icon_name='users', color='#cc0000') }}
+    {{ render_bigstats_cell(uninitialized_user_count, 'noch nicht aktivierte Benutzer', href=url_for('user_admin.index', only='disabled'), icon_name='users', color='#1199ff') }}
   </div>
 
 {%- endblock %}
