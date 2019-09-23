@@ -10,6 +10,8 @@ Validators for use with Click_.
 :License: Modified BSD, see LICENSE for details.
 """
 
+from uuid import UUID
+
 import click
 
 from byceps.services.brand.transfer.models import Brand
@@ -52,6 +54,11 @@ def validate_site(ctx, param, site_id: SiteID) -> Site:
 
 
 def validate_user_id(ctx, param, user_id: UserID) -> User:
+    try:
+        user_id = UUID(user_id)
+    except ValueError as e:
+        raise click.BadParameter(f'Invalid user ID "{user_id}": {e}')
+
     user = user_service.find_user(user_id)
 
     if not user:
