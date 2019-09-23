@@ -24,6 +24,11 @@ def authenticate(screen_name: str, password: str) -> User:
         # Screen name is unknown.
         raise AuthenticationFailed()
 
+    # Account must be initialized.
+    if not user.initialized:
+        # User account is not initialized.
+        raise AuthenticationFailed()
+
     # Account must be enabled.
     if not user.enabled:
         # User account is disabled.
