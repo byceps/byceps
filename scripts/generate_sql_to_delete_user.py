@@ -12,21 +12,20 @@ import click
 from byceps.util.system import get_config_filename_from_env_or_exit
 
 from _util import app_context
-from _validators import validate_user_screen_name
+from _validators import validate_user_id
 
 
-def validate_user_screen_names(ctx, param, screen_names):
+def validate_user_ids(ctx, param, user_ids):
     def _validate():
-        for screen_name in screen_names:
-            yield validate_user_screen_name(ctx, param, screen_name)
+        for user_id in user_ids:
+            yield validate_user_id(ctx, param, user_id)
 
     return list(_validate())
 
 
 @click.command()
-@click.argument('users', callback=validate_user_screen_names, nargs=-1)
-def execute(users):
-    user_ids = [u.id for u in users]
+@click.argument('user_ids', callback=validate_user_ids, nargs=-1)
+def execute(user_ids):
     statements = generate_delete_statements_for_users(user_ids)
     for statement in statements:
         print(statement)
