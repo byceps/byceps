@@ -37,6 +37,12 @@
             {%- endif %}
             hat das Benutzerkonto <strong>angelegt</strong>.
           {%- endset %}
+        {%- elif event.event == 'user-initialized' %}
+          {%- set icon_name = 'enabled' %}
+          {%- set body %}
+            <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
+            hat das Benutzerkonto <strong>initialisiert</strong>.
+          {%- endset %}
         {%- elif event.event == 'user-enabled' %}
           {%- set icon_name = 'enabled' %}
           {%- set body %}

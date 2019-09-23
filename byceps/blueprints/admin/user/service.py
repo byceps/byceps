@@ -233,6 +233,7 @@ def _get_additional_data(event: UserEvent, users_by_id: Dict[str, User]
             'user-disabled',
             'user-email-address-changed',
             'user-enabled',
+            'user-initialized',
             'user-screen-name-changed',
             'user-suspended',
             'user-unsuspended',

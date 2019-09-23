@@ -19,6 +19,26 @@ from .models.detail import UserDetail as DbUserDetail
 from .models.user import User as DbUser
 
 
+def initialize_account(user_id: UserID, initiator_id: UserID) -> None:
+    """Initialize the user account.
+
+    This is meant to happen only once at most, and can not be undone.
+    """
+    user = _get_user(user_id)
+
+    if user.initialized:
+        raise ValueError(f'Account is already initialized.')
+
+    user.initialized = True
+
+    event = event_service.build_event('user-initialized', user.id, {
+        'initiator_id': str(initiator_id),
+    })
+    db.session.add(event)
+
+    db.session.commit()
+
+
 def enable_user(user_id: UserID, initiator_id: UserID) -> None:
     """Enable the user account."""
     user = _get_user(user_id)

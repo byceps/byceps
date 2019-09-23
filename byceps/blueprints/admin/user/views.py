@@ -205,6 +205,20 @@ def set_password(user_id):
     return redirect(url_for('.view', user_id=user.id))
 
 
+@blueprint.route('/<uuid:user_id>/initialize', methods=['POST'])
+@permission_required(UserPermission.administrate)
+@respond_no_content
+def initialize_account(user_id):
+    """Initialize the user account."""
+    user = _get_user_or_404(user_id)
+
+    initiator_id = g.current_user.id
+
+    user_command_service.initialize_account(user.id, initiator_id)
+
+    flash_success("Das Benutzerkonto '{}' wurde initialisiert.", user.screen_name)
+
+
 @blueprint.route('/<uuid:user_id>/flags/enabled', methods=['POST'])
 @permission_required(UserPermission.administrate)
 @respond_no_content

@@ -10,6 +10,10 @@
         {%- endif %}
         {%- if g.current_user.has_permission(UserPermission.administrate) %}
 
+          {%- if not user.initialized %}
+        <li><a data-action="user-initialize" href="{{ url_for('.initialize_account', user_id=user.id) }}">{{ render_icon('enabled') }} Initialisieren</a></li>
+          {%- endif %}
+
           {%- if not user.enabled %}
         <li><a data-action="user-enable" href="{{ url_for('.set_enabled_flag', user_id=user.id) }}">{{ render_icon('enabled') }} Aktivieren</a></li>
           {%- else %}
