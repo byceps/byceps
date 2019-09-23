@@ -46,7 +46,7 @@ def count_subscribers_for_list(list_id: ListID) -> int:
 
 
 def get_subscribers(list_id: ListID) -> Iterable[Subscriber]:
-    """Yield screen name and email address of the enabled users that
+    """Yield screen name and email address of the initialized users that
     are currently subscribed to the list.
     """
     subscriber_id_rows = _build_query_for_current_subscribers(list_id).all()
@@ -97,7 +97,7 @@ def _build_query_for_current_subscribers(list_id: ListID) -> BaseQuery:
 
 
 def _get_subscriber_details(user_ids: Set[UserID]) -> Iterator[Subscriber]:
-    """Yield screen name and email address of each user (if enabled)."""
+    """Yield screen name and email address of each user (if initialized)."""
     if not user_ids:
         return []
 
@@ -107,7 +107,7 @@ def _get_subscriber_details(user_ids: Set[UserID]) -> Iterator[Subscriber]:
             DbUser.email_address,
         ) \
         .filter(DbUser.id.in_(user_ids)) \
-        .filter_by(enabled=True) \
+        .filter_by(initialized=True) \
         .filter_by(suspended=False) \
         .filter_by(deleted=False) \
         .all()
