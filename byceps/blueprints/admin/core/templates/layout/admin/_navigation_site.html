@@ -10,15 +10,17 @@
         <span>{{ site.title }}</span> {{ render_icon('caret-down') }}
       </button>
       <ol>
-        {%- for site in get_sites_for_party(party.id)|sort(attribute='title') %}
+      {%- with sites = get_sites_for_party(party.id) if party else get_all_sites() %}
+        {%- for site in sites|sort(attribute='title') %}
         <li><a href="{{ url_for('site_admin.view', site_id=site.id) }}">{{ site.title }}</a></li>
         {%- endfor %}
+      {%- endwith %}
       </ol>
     </div>
   </header>
   {%- with navigation = Navigation('Site')
       .add_item(
-        url_for('site_admin.index_for_party', party_id=party.id),
+        url_for('site_admin.index_for_party', party_id=party.id) if party else url_for('site_admin.index'),
         'Einstellungen',
         id='site_admin',
         required_permission=SitePermission.view,
