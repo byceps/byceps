@@ -147,7 +147,7 @@ def _collect_user_metrics() -> Iterator[Metric]:
     users_disabled = user_stats_service.count_disabled_users()
     users_suspended = user_stats_service.count_suspended_users()
     users_deleted = user_stats_service.count_deleted_users()
-    users_total = users_enabled + users_disabled
+    users_total = user_stats_service.count_users()
 
     yield Metric('users_uninitialized_count', users_uninitialized)
     yield Metric('users_enabled_count', users_enabled)
