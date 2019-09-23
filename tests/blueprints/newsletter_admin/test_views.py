@@ -37,7 +37,7 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
         return admin
 
     def setup_subscribers(self):
-        for number, enabled, suspended, deleted, states in [
+        for number, initialized, suspended, deleted, states in [
             (1, True,  False, False, [SubscriptionState.requested                             ]),
             (2, True,  False, False, [SubscriptionState.declined                              ]),
             (3, False, False, False, [SubscriptionState.requested                             ]),
@@ -50,7 +50,7 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
             user = create_user(
                 screen_name='User-{:d}'.format(number),
                 email_address='user{:03d}@example.com'.format(number),
-                enabled=enabled)
+                initialized=initialized)
 
             if suspended:
                 user.suspended = True
@@ -73,7 +73,7 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
                 # User #2 has declined a subscription, and thus should be
                 # excluded.
 
-                # User #3 is not enabled, and thus should be excluded.
+                # User #3 is not initialized, and thus should be excluded.
 
                 # User #4 has initially declined, but later requested a
                 # subscription, so it should be included.
@@ -109,7 +109,7 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
         expected_data = '\n'.join([
             'user001@example.com',
             # User #2 has declined a subscription.
-            # User #3 is not enabled.
+            # User #3 is not initialized.
             # User #4 has initially declined, but later requested a subscription.
             'user004@example.com',
             # User #5 has initially requested, but later declined a subscription.
