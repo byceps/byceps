@@ -12,6 +12,8 @@ from typing import Optional
 from ...database import db
 from ...typing import UserID
 
+from ..authorization import service as authorization_service
+
 from . import event_service
 from .models.detail import UserDetail as DbUserDetail
 from .models.user import User as DbUser
@@ -88,6 +90,10 @@ def delete_account(user_id: UserID, initiator_id: UserID, reason: str) -> None:
         'reason': reason,
     })
     db.session.add(event)
+
+    # Deassign authorization roles.
+    authorization_service.deassign_all_roles_from_user(user.id, initiator_id,
+                                                       commit=False)
 
     db.session.commit()
 

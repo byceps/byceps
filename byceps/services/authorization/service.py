@@ -122,13 +122,16 @@ def deassign_role_from_user(role_id: RoleID, user_id: UserID,
 
 
 def deassign_all_roles_from_user(user_id: UserID,
-                                 initiator_id: Optional[UserID]=None) -> None:
+                                 initiator_id: Optional[UserID]=None,
+                                 commit=True) -> None:
     """Deassign all roles from the user."""
     table = UserRole.__table__
     delete_query = table.delete() \
         .where(table.c.user_id == user_id)
     db.session.execute(delete_query)
-    db.session.commit()
+
+    if commit:
+        db.session.commit()
 
 
 def _is_role_assigned_to_user(role_id: RoleID, user_id: UserID) -> bool:
