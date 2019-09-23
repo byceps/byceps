@@ -11,8 +11,8 @@ from datetime import date
 from flask import abort, g, request
 
 from ....services.brand import service as brand_service
-from ....services.news import service as news_service, \
-    channel_service as news_channel_service
+from ....services.news import channel_service as news_channel_service
+from ....services.news import service as news_item_service
 from ....services.news.transfer.models import Channel
 from ....services.text_diff import service as text_diff_service
 from ....util.datetime.format import format_datetime_short
@@ -102,7 +102,7 @@ def channel_view(channel_id, page):
 
     per_page = request.args.get('per_page', type=int, default=15)
 
-    items = news_service.get_items_paginated(channel.id, page, per_page)
+    items = news_item_service.get_items_paginated(channel.id, page, per_page)
 
     return {
         'channel': channel,
@@ -120,7 +120,7 @@ def channel_view(channel_id, page):
 @templated
 def item_view_version(version_id):
     """Show the news item with the given version."""
-    version = news_service.find_item_version(version_id)
+    version = news_item_service.find_item_version(version_id)
 
     channel = version.item.channel
     brand = brand_service.find_brand(channel.brand_id)
@@ -141,7 +141,7 @@ def item_list_versions(item_id):
     channel = item.channel
     brand = brand_service.find_brand(channel.brand_id)
 
-    versions = news_service.get_item_versions(item.id)
+    versions = news_item_service.get_item_versions(item.id)
     versions_pairwise = list(pairwise(versions + [None]))
 
     return {
@@ -162,7 +162,7 @@ def item_compare_versions(from_version_id, to_version_id):
     if from_version.item_id != to_version.item_id:
         abort(400, 'The versions do not belong to the same item.')
 
-    item = news_service.find_item(from_version.item_id)
+    item = news_item_service.find_item(from_version.item_id)
     channel = item.channel
     brand = brand_service.find_brand(channel.brand_id)
 
@@ -214,8 +214,8 @@ def item_create(channel_id):
     body = form.body.data.strip()
     image_url_path = form.image_url_path.data.strip()
 
-    item = news_service.create_item(channel.id, slug, creator.id, title, body,
-                                    image_url_path=image_url_path)
+    item = news_item_service.create_item(channel.id, slug, creator.id, title,
+                                         body, image_url_path=image_url_path)
 
     flash_success('Die News "{}" wurde angelegt.', item.title)
 
@@ -229,7 +229,7 @@ def item_update_form(item_id, erroneous_form=None):
     """Show form to update a news item."""
     item = _get_item_or_404(item_id)
 
-    current_version = news_service.get_current_item_version(item.id)
+    current_version = news_item_service.get_current_item_version(item.id)
 
     form = erroneous_form if erroneous_form \
             else ItemUpdateForm(obj=current_version, slug=item.slug)
@@ -255,8 +255,8 @@ def item_update(item_id):
     body = form.body.data.strip()
     image_url_path = form.image_url_path.data.strip()
 
-    news_service.update_item(item.id, creator.id, title, body,
-                             image_url_path=image_url_path)
+    news_item_service.update_item(item.id, creator.id, title, body,
+                                  image_url_path=image_url_path)
 
     flash_success('Die News "{}" wurde aktualisiert.', item.title)
     return redirect_to('.channel_view', channel_id=item.channel.id)
@@ -269,7 +269,7 @@ def item_publish(item_id):
     """Publish a news item."""
     item = _get_item_or_404(item_id)
 
-    news_service.publish_item(item.id)
+    news_item_service.publish_item(item.id)
     signals.item_published.send(None, item_id=item.id)
 
     flash_success('Die News "{}" wurde veröffentlicht.', item.title)
@@ -298,7 +298,7 @@ def _get_channel_or_404(channel_id) -> Channel:
 
 
 def _get_item_or_404(item_id):
-    item = news_service.find_item(item_id)
+    item = news_item_service.find_item(item_id)
 
     if item is None:
         abort(404)
@@ -307,7 +307,7 @@ def _get_item_or_404(item_id):
 
 
 def _find_version(version_id):
-    version = news_service.find_item_version(version_id)
+    version = news_item_service.find_item_version(version_id)
 
     if version is None:
         abort(404)
