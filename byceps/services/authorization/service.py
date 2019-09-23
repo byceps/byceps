@@ -6,7 +6,7 @@ byceps.services.authorization.service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import Dict, FrozenSet, List, Optional, Sequence, Set
+from typing import Dict, List, Optional, Sequence, Set
 
 from ...database import db
 from ...typing import UserID
@@ -141,7 +141,7 @@ def _is_role_assigned_to_user(role_id: RoleID, user_id: UserID) -> bool:
     return db.session.query(subquery).scalar()
 
 
-def get_permission_ids_for_user(user_id: UserID) -> FrozenSet[PermissionID]:
+def get_permission_ids_for_user(user_id: UserID) -> Set[PermissionID]:
     """Return the IDs of all permissions the user has through the roles
     assigned to it.
     """
@@ -151,7 +151,7 @@ def get_permission_ids_for_user(user_id: UserID) -> FrozenSet[PermissionID]:
         .filter_by(user_id=user_id) \
         .all()
 
-    return frozenset(rp.permission_id for rp in role_permissions)
+    return {rp.permission_id for rp in role_permissions}
 
 
 def get_all_permissions_with_titles() -> Sequence[Permission]:
