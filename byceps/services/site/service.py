@@ -32,7 +32,8 @@ def create_site(site_id: SiteID, title: str, server_name: str,
 
 
 def update_site(site_id: SiteID, title: str, server_name: str,
-                email_config_id: str) -> Site:
+                email_config_id: str, *, party_id: Optional[PartyID]=None
+               ) -> Site:
     """Update the site."""
     site = DbSite.query.get(site_id)
 
@@ -42,6 +43,7 @@ def update_site(site_id: SiteID, title: str, server_name: str,
     site.title = title
     site.server_name = server_name
     site.email_config_id = email_config_id
+    site.party_id = party_id
 
     db.session.commit()
 
