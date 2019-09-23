@@ -124,8 +124,8 @@ def create(party_id):
     server_name = form.server_name.data.strip()
     email_config_id = form.email_config_id.data.strip()
 
-    site = site_service.create_site(site_id, party.id, title, server_name,
-                                    email_config_id)
+    site = site_service.create_site(site_id, title, server_name,
+                                    email_config_id, party_id=party.id)
 
     flash_success('Die Site "{}" wurde angelegt.', site.title)
     return redirect_to('.view', site_id=site.id)
