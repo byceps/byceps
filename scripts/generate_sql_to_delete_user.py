@@ -37,6 +37,7 @@ def generate_delete_statements(user_id):
         ('consents', 'user_id'),
         ('verification_tokens', 'user_id'),
         ('user_details', 'user_id'),
+        ('user_events', 'user_id'),
         ('users', 'id'),
     ]:
         yield f"DELETE FROM {table} WHERE {user_id_column} = '{user_id}';"
