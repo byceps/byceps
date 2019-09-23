@@ -32,8 +32,6 @@ def test_metrics(client):
     assert response.get_data(as_text=True) == (
         'users_active_count 0\n'
         'users_uninitialized_count 0\n'
-        'users_enabled_count 0\n'
-        'users_disabled_count 0\n'
         'users_suspended_count 0\n'
         'users_deleted_count 0\n'
         'users_total_count 0\n'

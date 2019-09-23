@@ -57,19 +57,6 @@ def test_with_not_uninitialized_user(client):
     assert response.json == {}
 
 
-def test_with_disabled_user(client):
-    screen_name = 'DisabledUser'
-
-    user = create_user(screen_name, enabled=False)
-
-    response = send_request(client, str(user.id))
-
-    assert response.status_code == 404
-    assert response.content_type == CONTENT_TYPE_JSON
-    assert response.mimetype == CONTENT_TYPE_JSON
-    assert response.json == {}
-
-
 def test_with_suspended_user(client, db):
     screen_name = 'SuspendedUser'
 
