@@ -5,54 +5,65 @@
 
 from uuid import UUID
 
+import pytest
 from pytest import raises
 
 from byceps.services.user import service as user_service
 
-from tests.base import AbstractAppTestCase
 from tests.helpers import create_user
 
+from ...conftest import database_recreated
 
-class UserQueryTest(AbstractAppTestCase):
 
-    def test_find_user_by_screen_name_found(self):
-        screen_name = 'ghost'
+@pytest.fixture(scope='module')
+def app(admin_app, db):
+    with admin_app.app_context():
+        with database_recreated(db):
+            yield
 
-        user = create_user(screen_name)
 
-        actual = user_service.find_user_by_screen_name(screen_name)
+def test_find_user_by_screen_name_found(app):
+    screen_name = 'ghost'
 
-        assert actual.id == user.id
+    user = create_user(screen_name)
 
-    def test_find_user_by_screen_name_not_found(self):
-        actual = user_service.find_user_by_screen_name('unknown_dude')
+    actual = user_service.find_user_by_screen_name(screen_name)
 
-        assert actual is None
+    assert actual.id == user.id
 
-    def test_get_anonymous_user(self):
-        user = user_service.get_anonymous_user()
 
-        assert user.id == UUID('00000000-0000-0000-0000-000000000000')
+def test_find_user_by_screen_name_not_found(app):
+    actual = user_service.find_user_by_screen_name('unknown_dude')
 
-        assert not user.enabled
-        assert not user.deleted
+    assert actual is None
 
-        assert user.avatar is None
-        assert user.avatar_url is None
 
-        assert not user.is_orga
+def test_get_anonymous_user(app):
+    user = user_service.get_anonymous_user()
 
-    def test_get_email_address_found(self):
-        email_address = 'lanparty@lar.ge'
+    assert user.id == UUID('00000000-0000-0000-0000-000000000000')
 
-        user = create_user('xpandr', email_address=email_address)
+    assert not user.enabled
+    assert not user.deleted
 
-        actual = user_service.get_email_address(user.id)
+    assert user.avatar is None
+    assert user.avatar_url is None
 
-        assert actual == email_address
+    assert not user.is_orga
 
-    def test_get_email_address_not_found(self):
-        unknown_user_id = UUID('00000000-0000-0000-0000-000000000001')
 
-        with raises(ValueError):
-            user_service.get_email_address(unknown_user_id)
+def test_get_email_address_found(app):
+    email_address = 'lanparty@lar.ge'
+
+    user = create_user('xpandr', email_address=email_address)
+
+    actual = user_service.get_email_address(user.id)
+
+    assert actual == email_address
+
+
+def test_get_email_address_not_found(app):
+    unknown_user_id = UUID('00000000-0000-0000-0000-000000000001')
+
+    with raises(ValueError):
+        user_service.get_email_address(unknown_user_id)
