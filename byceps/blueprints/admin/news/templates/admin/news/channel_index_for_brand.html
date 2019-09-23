@@ -25,6 +25,7 @@
       <tr>
         <th>ID</th>
         <th>URL-Präfix</th>
+        <th class="centered">Posts</th>
       </tr>
     </thead>
     <tbody>
@@ -32,10 +33,11 @@
       <tr>
         <td><a href="{{ url_for('.channel_view', channel_id=channel.id) }}"><strong>{{ channel.id }}</strong></a></td>
         <td class="monospace">{{ channel.url_prefix }}</td>
+        <td class="centered bignumber">{{ item_count_by_channel_id[channel.id]|separate_thousands }}</td>
       </tr>
     {%- else %}
       <tr>
-        <td class="centered">
+        <td colspan="3" class="centered">
           <p class="dimmed">Für diese Marke existieren noch keine News-Kanäle.</p>
         </td>
       </tr>

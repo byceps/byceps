@@ -50,9 +50,12 @@ def channel_index_for_brand(brand_id):
 
     channels = news_channel_service.get_channels_for_brand(brand.id)
 
+    item_count_by_channel_id = news_item_service.get_item_count_by_channel_id()
+
     return {
-        'channels': channels,
         'brand': brand,
+        'channels': channels,
+        'item_count_by_channel_id': item_count_by_channel_id,
     }
 
 

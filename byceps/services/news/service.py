@@ -198,6 +198,22 @@ def get_item_count_by_brand_id() -> Dict[BrandID, int]:
     return dict(brand_ids_and_item_counts)
 
 
+def get_item_count_by_channel_id() -> Dict[ChannelID, int]:
+    """Return news item count (including 0) per channel, indexed by
+    channel ID.
+    """
+    channel_ids_and_item_counts = db.session \
+        .query(
+            DbChannel.id,
+            db.func.count(DbItem.id)
+        ) \
+        .outerjoin(DbItem) \
+        .group_by(DbChannel.id) \
+        .all()
+
+    return dict(channel_ids_and_item_counts)
+
+
 def _db_entity_to_item(item: DbItem) -> Item:
     channel = _db_entity_to_channel(item.channel)
     body = item.current_version.render_body()
