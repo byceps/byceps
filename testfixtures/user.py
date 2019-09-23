@@ -53,5 +53,6 @@ def create_user_with_detail(screen_name='Faith', *,
     detail.zip_code = '31337'
     detail.city = 'Atrocity'
     detail.street = 'Elite Street 1337'
+    detail.phone_number = '555-CALL-ME-MAYBE'
 
     return user
