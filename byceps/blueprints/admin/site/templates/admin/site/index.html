@@ -16,11 +16,11 @@
       </tr>
     </thead>
     <tbody>
-    {%- for site in sites|sort(attribute='title')|sort(attribute='party_id') %}
+    {%- for site in sites %}
       <tr>
         <td class="monospace"><a href="{{ url_for('.view', site_id=site.id) }}">{{ site.id }}</a></td>
         <td>{{ site.title }}</td>
-        <td class="monospace">{{ site.party_id }}</td>
+        <td class="monospace">{{ site.party_id|fallback }}</td>
       </tr>
     {%- else %}
       <tr>

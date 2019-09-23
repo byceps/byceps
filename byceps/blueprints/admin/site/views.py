@@ -39,6 +39,8 @@ def index():
     """List all sites."""
     sites = site_service.get_all_sites()
 
+    sites.sort(key=lambda site: (site.title, site.party_id))
+
     return {
         'sites': sites,
     }
