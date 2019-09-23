@@ -1,28 +1,28 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
 {% from 'macros/icons.html' import render_icon %}
-{% set current_page = 'sites_admin_party' %}
-{% set current_page_party = party %}
+{% set current_page = 'sites_admin' %}
 {% set title = 'Site erstellen' %}
 
 {% block body %}
 
   <nav class="breadcrumbs">
     <ol>
-      <li><a href="{{ url_for('.index_for_party', party_id=party.id) }}">{{ party.title }}</a></li>
+      <li><a href="{{ url_for('.index') }}">Sites</a></li>
     </ol>
   </nav>
   <h1>{{ render_icon('add') }} {{ title }}</h1>
 
-  <form action="{{ url_for('.create', party_id=party.id) }}" method="post">
+  <form action="{{ url_for('.create') }}" method="post">
     {% call form_fieldset() %}
-      {{ form_field(form.id, maxlength=40, required='required', placeholder='%s-intranet'|format(party.id), autofocus='autofocus') }}
+      {{ form_field(form.id, maxlength=40, required='required', placeholder='intranet', autofocus='autofocus') }}
       {{ form_field(form.title, maxlength=40, required='required', placeholder='Intranet') }}
       {{ form_field(form.server_name, required='required', placeholder='www.example.com') }}
       {{ form_field(form.email_config_id, required='required') }}
+      {{ form_field(form.party_id) }}
     {% endcall %}
 
-    {{ form_buttons('Erstellen', cancel_url=url_for('.index_for_party', party_id=party.id)) }}
+    {{ form_buttons('Erstellen', cancel_url=url_for('.index')) }}
   </form>
 
 {%- endblock %}

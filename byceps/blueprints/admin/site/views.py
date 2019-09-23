@@ -93,39 +93,37 @@ def view(site_id):
     }
 
 
-@blueprint.route('/for_party/<party_id>/create')
+@blueprint.route('/sites/create')
 @permission_required(SitePermission.create)
 @templated
-def create_form(party_id, erroneous_form=None):
-    """Show form to create a site for that party."""
-    party = _get_party_or_404(party_id)
+def create_form(erroneous_form=None):
+    """Show form to create a site."""
+    party_id = request.args.get('party_id')
 
-    form = erroneous_form if erroneous_form else CreateForm()
+    form = erroneous_form if erroneous_form else CreateForm(party_id=party_id)
 
     return {
-        'party': party,
         'form': form,
     }
 
 
-@blueprint.route('/for_party/<party_id>', methods=['POST'])
+@blueprint.route('/sites', methods=['POST'])
 @permission_required(SitePermission.create)
-def create(party_id):
-    """Create a site for that party."""
-    party = _get_party_or_404(party_id)
-
+def create():
+    """Create a site."""
     form = CreateForm(request.form)
 
     if not form.validate():
-        return create_form(party.id, form)
+        return create_form(form)
 
     site_id = form.id.data.strip().lower()
     title = form.title.data.strip()
     server_name = form.server_name.data.strip()
     email_config_id = form.email_config_id.data.strip()
+    party_id = form.party_id.data.strip()
 
     site = site_service.create_site(site_id, title, server_name,
-                                    email_config_id, party_id=party.id)
+                                    email_config_id, party_id=party_id)
 
     flash_success('Die Site "{}" wurde angelegt.', site.title)
     return redirect_to('.view', site_id=site.id)
@@ -161,25 +159,17 @@ def update(site_id):
     title = form.title.data.strip()
     server_name = form.server_name.data.strip()
     email_config_id = form.email_config_id.data.strip()
+    party_id = form.party_id.data.strip()
 
     try:
         site = site_service.update_site(site.id, title, server_name,
-                                        email_config_id)
+                                        email_config_id, party_id=party_id)
     except site_service.UnknownSiteId:
         abort(404, 'Unknown site ID "{}".'.format(site_id))
 
     flash_success('Die Site "{}" wurde aktualisiert.', site.title)
 
     return redirect_to('.view', site_id=site.id)
-
-
-def _get_party_or_404(party_id):
-    party = party_service.find_party(party_id)
-
-    if party is None:
-        abort(404)
-
-    return party
 
 
 def _get_site_or_404(site_id):
