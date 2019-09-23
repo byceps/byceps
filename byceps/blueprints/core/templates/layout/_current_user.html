@@ -5,7 +5,7 @@
 <div class="current-user">
   {%- if g.current_user.is_active %}
   <div class="dropdown left">
-    <a href="{{ url_for('user.view_current') }}" class="dropdown-toggle">
+    <a href="{{ url_for('user_current.view') }}" class="dropdown-toggle">
       {{ render_user_avatar_32(g.current_user) }}
       <span class="label-and-name">
         <span class="label">Angemeldet als</span>

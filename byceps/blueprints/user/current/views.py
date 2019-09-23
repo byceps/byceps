@@ -1,6 +1,6 @@
 """
-byceps.blueprints.user.views
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.user.current.views
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2019 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -8,29 +8,30 @@ byceps.blueprints.user.views
 
 from flask import abort, g, jsonify, request, Response
 
-from ...config import get_site_mode
-from ...services.country import service as country_service
-from ...services.newsletter import service as newsletter_service
-from ...services.user import command_service as user_command_service
-from ...services.user import service as user_service
-from ...util.framework.blueprint import create_blueprint
-from ...util.framework.flash import flash_success
-from ...util.framework.templating import templated
-from ...util.views import redirect_to
+from ....config import get_site_mode
+from ....services.country import service as country_service
+from ....services.newsletter import service as newsletter_service
+from ....services.user import command_service as user_command_service
+from ....services.user import service as user_service
+from ....util.framework.blueprint import create_blueprint
+from ....util.framework.flash import flash_success
+from ....util.framework.templating import templated
+from ....util.views import redirect_to
 
-from ..authentication.decorators import login_required
+from ...authentication.decorators import login_required
+
+from ..creation.views import _find_newsletter_list_for_brand
 
 from .forms import DetailsForm
-from .creation.views import _find_newsletter_list_for_brand
 
 
-blueprint = create_blueprint('user', __name__)
+blueprint = create_blueprint('user_current', __name__)
 
 
 @blueprint.route('/me')
 @login_required
 @templated
-def view_current():
+def view():
     """Show the current user's internal profile."""
     current_user = g.current_user
 
@@ -58,7 +59,7 @@ def view_current():
 
 
 @blueprint.route('/me.json')
-def view_current_as_json():
+def view_as_json():
     """Show selected attributes of the current user's profile as JSON."""
     if get_site_mode().is_admin():
         abort(404)
@@ -117,7 +118,7 @@ def details_update():
                                              phone_number)
 
     flash_success('Deine Daten wurden gespeichert.')
-    return redirect_to('.view_current')
+    return redirect_to('.view')
 
 
 def _get_current_user_or_404():

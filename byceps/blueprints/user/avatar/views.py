@@ -68,7 +68,7 @@ def update():
     flash_success('Dein Avatarbild wurde aktualisiert.', icon='upload')
     signals.avatar_updated.send(None, user_id=user.id)
 
-    return redirect_to('user.view_current')
+    return redirect_to('user_current.view')
 
 
 def _update(user_id, image):

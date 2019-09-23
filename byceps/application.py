@@ -69,7 +69,7 @@ def _get_blueprints(app):
         ('authorization',           None                            ),
         ('core',                    '/core'                         ),
         ('healthcheck',             '/health'                       ),
-        ('user',                    '/users'                        ),
+        ('user.current',            '/users'                        ),
         ('user.creation',           '/users'                        ),
         ('user.email_address',      '/users/email_address'          ),
         ('user.avatar',             '/users'                        ),

@@ -21,7 +21,7 @@
       {{ form_field(form.phone_number, maxlength=20) }}
     {%- endcall %}
 
-    {{ form_buttons('Speichern', cancel_url=url_for('.view_current')) }}
+    {{ form_buttons('Speichern', cancel_url=url_for('.view')) }}
   </form>
 
 {%- endblock %}

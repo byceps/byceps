@@ -1,6 +1,6 @@
 """
-byceps.blueprints.user.forms
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.user.current.forms
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2019 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -9,7 +9,7 @@ byceps.blueprints.user.forms
 from wtforms import DateField, StringField
 from wtforms.validators import InputRequired, Length, Optional
 
-from ...util.l10n import LocalizedForm
+from ....util.l10n import LocalizedForm
 
 
 class DetailsForm(LocalizedForm):
