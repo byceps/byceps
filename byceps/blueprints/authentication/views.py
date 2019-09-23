@@ -221,7 +221,7 @@ def request_password_reset():
         flash_error('Der Benutzername "{}" ist unbekannt.', screen_name)
         return request_password_reset_form(form)
 
-    if not user.enabled:
+    if not user.email_address_verified:
         flash_error('Die E-Mail-Adresse für das Benutzerkonto "{}" wurde '
                     'noch nicht bestätigt.', screen_name)
         return redirect_to('user_email_address.request_confirmation_email')
