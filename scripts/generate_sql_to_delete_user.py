@@ -18,12 +18,9 @@ from _validators import validate_user_screen_name
 @click.command()
 @click.argument('user', callback=validate_user_screen_name)
 def execute(user):
-    click.echo(
-        f'Generating SQL statements to delete user "{user.screen_name}" ...')
-
     statements = generate_delete_statements(user.id)
     for statement in statements:
-        click.secho(statement, fg='red')
+        print(statement)
 
 
 def generate_delete_statements(user_id):
