@@ -85,7 +85,9 @@
 
 
 {% macro render_user_state_filter(user_state_filter) %}
-  {%- if user_state_filter.name == 'uninitialized' -%}
+  {%- if user_state_filter.name == 'active' -%}
+    {{ render_tag('aktiv', class='color-success') }}
+  {%- elif user_state_filter.name == 'uninitialized' -%}
     {{ render_tag('nicht aktiviert', class='color-info') }}
   {%- elif user_state_filter.name == 'enabled' -%}
     {{ render_tag('aktiviert', class='color-success') }}

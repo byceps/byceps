@@ -60,6 +60,7 @@ def index(page):
                                         search_term=search_term,
                                         state_filter=user_state_filter)
 
+    total_active = user_stats_service.count_active_users()
     total_uninitialized = user_stats_service.count_uninitialized_users()
     total_enabled = user_stats_service.count_enabled_users()
     total_disabled = user_stats_service.count_disabled_users()
@@ -69,6 +70,7 @@ def index(page):
 
     return {
         'users': users,
+        'total_active': total_active,
         'total_uninitialized': total_uninitialized,
         'total_enabled': total_enabled,
         'total_disabled': total_disabled,

@@ -30,6 +30,7 @@ def test_metrics(client):
     assert response.content_type == 'text/plain; version=0.0.4; charset=utf-8'
     assert response.mimetype == 'text/plain'
     assert response.get_data(as_text=True) == (
+        'users_active_count 0\n'
         'users_uninitialized_count 0\n'
         'users_enabled_count 0\n'
         'users_disabled_count 0\n'
