@@ -59,6 +59,9 @@
               {%- else %}
               <li><a data-action="category-hide" href="{{ url_for('.category_hide', category_id=category.id) }}">{{ render_icon('hidden') }} Verstecken</a></li>
               {%- endif %}
+              {%- if category.topic_count == 0 %}
+              <li><a data-action="category-delete" href="{{ url_for('.category_delete', category_id=category.id) }}">{{ render_icon('delete') }} Löschen</a></li>
+              {%- endif %}
             </ol>
           </div>
           {%- endif -%}
@@ -83,6 +86,7 @@
         post_on_click_then_reload('[data-action="category-move-down"]');
         post_on_click_then_reload('[data-action="category-hide"]');
         delete_on_click_then_reload('[data-action="category-unhide"]');
+        confirmed_delete_on_click_then_reload('[data-action="category-delete"]', 'Kategorie entfernen?');
       });
     </script>
 {%- endblock %}

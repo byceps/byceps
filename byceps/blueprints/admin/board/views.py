@@ -266,6 +266,21 @@ def category_move_down(category_id):
         flash_success('Die Kategorie "{}" wurde eine Position nach unten verschoben.', category.title)
 
 
+@blueprint.route('/categories/<uuid:category_id>', methods=['DELETE'])
+@permission_required(BoardCategoryPermission.create)
+@respond_no_content
+def category_delete(category_id):
+    """Delete a category."""
+    category = _get_category_or_404(category_id)
+
+    try:
+        board_category_command_service.delete_category(category.id)
+    except:
+        flash_error('Die Kategorie "{}" konnte nicht gelöscht werden.', category.title)
+    else:
+        flash_success('Die Kategorie "{}" wurde gelöscht.', category.title)
+
+
 # -------------------------------------------------------------------- #
 # helpers
 

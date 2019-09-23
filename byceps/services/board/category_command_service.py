@@ -11,6 +11,7 @@ from ...database import db
 from .models.board import Board as DbBoard
 from .models.category import Category as DbCategory
 from .transfer.models import BoardID, Category, CategoryID
+from . import topic_query_service
 
 
 def create_category(board_id: BoardID, slug: str, title: str, description: str
@@ -86,6 +87,20 @@ def move_category_down(category_id: CategoryID) -> None:
     popped_category = category_list.pop(category.position - 1)
     category_list.insert(popped_category.position, popped_category)
 
+    db.session.commit()
+
+
+def delete_category(category_id: CategoryID) -> None:
+    """Delete category."""
+    category = _get_category(category_id)
+
+    topic_ids = topic_query_service.get_all_topic_ids_in_category(category.id)
+    if topic_ids:
+        raise ValueError(
+            f'Category "{category.title}" in board "{category.board_id}" '
+            'contains topics. It will not be deleted because of that.')
+
+    db.session.delete(category)
     db.session.commit()
 
 
