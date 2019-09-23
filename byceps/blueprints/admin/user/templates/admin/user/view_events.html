@@ -43,18 +43,6 @@
             <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
             hat das Benutzerkonto <strong>initialisiert</strong>.
           {%- endset %}
-        {%- elif event.event == 'user-enabled' %}
-          {%- set icon_name = 'enabled' %}
-          {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
-            hat das Benutzerkonto <strong>aktiviert</strong>.
-          {%- endset %}
-        {%- elif event.event == 'user-disabled' %}
-          {%- set icon_name = 'disabled' %}
-          {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
-            hat das Benutzerkonto <strong>deaktiviert</strong>.
-          {%- endset %}
         {%- elif event.event == 'user-suspended' %}
           {%- set icon_name = 'lock' %}
           {%- set body %}

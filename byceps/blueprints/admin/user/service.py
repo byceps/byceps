@@ -33,7 +33,7 @@ from .models import UserStateFilter
 
 def get_users_paginated(page, per_page, *, search_term=None, state_filter=None):
     """Return the users to show on the specified page, optionally
-    filtered by search term or 'enabled' flag.
+    filtered by search term or flags.
     """
     query = DbUser.query \
         .options(db.joinedload('detail')) \
@@ -56,16 +56,6 @@ def _filter_by_state(query, state_filter):
     elif state_filter == UserStateFilter.uninitialized:
         return query \
             .filter_by(initialized=False) \
-            .filter_by(suspended=False) \
-            .filter_by(deleted=False)
-    elif state_filter == UserStateFilter.enabled:
-        return query \
-            .filter_by(enabled=True) \
-            .filter_by(suspended=False) \
-            .filter_by(deleted=False)
-    elif state_filter == UserStateFilter.disabled:
-        return query \
-            .filter_by(enabled=False) \
             .filter_by(suspended=False) \
             .filter_by(deleted=False)
     elif state_filter == UserStateFilter.suspended:
@@ -235,9 +225,7 @@ def _get_additional_data(event: UserEvent, users_by_id: Dict[str, User]
     if event.event_type in {
             'user-created',
             'user-deleted',
-            'user-disabled',
             'user-email-address-changed',
-            'user-enabled',
             'user-initialized',
             'user-screen-name-changed',
             'user-suspended',

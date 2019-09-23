@@ -43,7 +43,6 @@ def test_get_anonymous_user(app):
 
     assert user.id == UUID('00000000-0000-0000-0000-000000000000')
 
-    assert not user.enabled
     assert not user.deleted
 
     assert user.avatar is None

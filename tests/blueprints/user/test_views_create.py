@@ -132,7 +132,6 @@ class UserCreateTestCase(AbstractAppTestCase):
         assert user.screen_name == 'Hiro'
         assert user.email_address == 'hiro@metaverse.org'
         assert not user.initialized
-        assert not user.enabled
         assert not user.deleted
 
         # events

@@ -56,11 +56,6 @@
 {%- endmacro %}
 
 
-{% macro render_user_flag_disabled(label='deaktiviert', show_label=True) -%}
-  {{ render_tag(label if show_label else '', class='color-warning', icon='disabled', title=None if show_label else label) }}
-{%- endmacro %}
-
-
 {% macro render_user_flag_suspended(label='gesperrt', show_label=True) -%}
   {{ render_tag(label if show_label else '', class='color-danger', icon='lock', title=None if show_label else label) }}
 {%- endmacro %}
@@ -78,8 +73,6 @@
     {{ render_user_flag_suspended(show_label=show_label) }}
   {%- elif not user.initialized -%}
     {{ render_user_flag_uninitialized(show_label=show_label) }}
-  {%- elif not user.enabled -%}
-    {{ render_user_flag_disabled(show_label=show_label) }}
   {%- endif -%}
 {%- endmacro %}
 
@@ -89,10 +82,6 @@
     {{ render_tag('aktiv', class='color-success') }}
   {%- elif user_state_filter.name == 'uninitialized' -%}
     {{ render_tag('nicht aktiviert', class='color-info') }}
-  {%- elif user_state_filter.name == 'enabled' -%}
-    {{ render_tag('aktiviert', class='color-success') }}
-  {%- elif user_state_filter.name == 'disabled' -%}
-    {{ render_tag('deaktiviert', class='color-warning') }}
   {%- elif user_state_filter.name == 'suspended' -%}
     {{ render_tag('gesperrt', class='color-danger') }}
   {%- elif user_state_filter.name == 'deleted' -%}

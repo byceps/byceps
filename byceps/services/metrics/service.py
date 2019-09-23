@@ -144,16 +144,12 @@ def _collect_ticket_metrics(active_parties: List[Party]) -> Iterator[Metric]:
 def _collect_user_metrics() -> Iterator[Metric]:
     users_active = user_stats_service.count_active_users()
     users_uninitialized = user_stats_service.count_uninitialized_users()
-    users_enabled = user_stats_service.count_enabled_users()
-    users_disabled = user_stats_service.count_disabled_users()
     users_suspended = user_stats_service.count_suspended_users()
     users_deleted = user_stats_service.count_deleted_users()
     users_total = user_stats_service.count_users()
 
     yield Metric('users_active_count', users_active)
     yield Metric('users_uninitialized_count', users_uninitialized)
-    yield Metric('users_enabled_count', users_enabled)
-    yield Metric('users_disabled_count', users_disabled)
     yield Metric('users_suspended_count', users_suspended)
     yield Metric('users_deleted_count', users_deleted)
     yield Metric('users_total_count', users_total)

@@ -39,34 +39,6 @@ def initialize_account(user_id: UserID, initiator_id: UserID) -> None:
     db.session.commit()
 
 
-def enable_user(user_id: UserID, initiator_id: UserID) -> None:
-    """Enable the user account."""
-    user = _get_user(user_id)
-
-    user.enabled = True
-
-    event = event_service.build_event('user-enabled', user.id, {
-        'initiator_id': str(initiator_id),
-    })
-    db.session.add(event)
-
-    db.session.commit()
-
-
-def disable_user(user_id: UserID, initiator_id: UserID) -> None:
-    """Disable the user account."""
-    user = _get_user(user_id)
-
-    user.enabled = False
-
-    event = event_service.build_event('user-disabled', user.id, {
-        'initiator_id': str(initiator_id),
-    })
-    db.session.add(event)
-
-    db.session.commit()
-
-
 def suspend_account(user_id: UserID, initiator_id: UserID, reason: str) -> None:
     """Suspend the user account."""
     user = _get_user(user_id)

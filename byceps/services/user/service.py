@@ -28,7 +28,6 @@ def find_active_db_user(user_id: UserID) -> Optional[DbUser]:
     """
     return DbUser.query \
         .filter_by(initialized=True) \
-        .filter_by(enabled=True) \
         .filter_by(suspended=False) \
         .filter_by(deleted=False) \
         .filter_by(id=user_id) \
@@ -49,7 +48,6 @@ def find_active_user(user_id: UserID, *, include_avatar: bool=False,
 
     row = query \
         .filter(DbUser.initialized == True) \
-        .filter(DbUser.enabled == True) \
         .filter(DbUser.suspended == False) \
         .filter(DbUser.deleted == False) \
         .filter(DbUser.id == user_id) \

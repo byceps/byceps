@@ -50,30 +50,6 @@ def count_uninitialized_users() -> int:
         .count()
 
 
-def count_enabled_users() -> int:
-    """Return the number of enabled user accounts.
-
-    Suspended or deleted accounts are excluded.
-    """
-    return DbUser.query \
-        .filter_by(enabled=True) \
-        .filter_by(suspended=False) \
-        .filter_by(deleted=False) \
-        .count()
-
-
-def count_disabled_users() -> int:
-    """Return the number of disabled user accounts.
-
-    Suspended or deleted accounts are excluded.
-    """
-    return DbUser.query \
-        .filter_by(enabled=False) \
-        .filter_by(suspended=False) \
-        .filter_by(deleted=False) \
-        .count()
-
-
 def count_suspended_users() -> int:
     """Return the number of suspended user accounts."""
     return DbUser.query \

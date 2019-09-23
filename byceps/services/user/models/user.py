@@ -28,7 +28,6 @@ GUEST_USER_ID = UUID('00000000-0000-0000-0000-000000000000')
 class AnonymousUser:
 
     id = GUEST_USER_ID
-    enabled = False
     deleted = False
 
     @property
@@ -62,7 +61,6 @@ class User(db.Model):
     email_address = db.Column(db.UnicodeText, unique=True, nullable=False)
     email_address_verified = db.Column(db.Boolean, default=False, nullable=False)
     initialized = db.Column(db.Boolean, default=False, nullable=False)
-    enabled = db.Column(db.Boolean, default=False, nullable=False)
     suspended = db.Column(db.Boolean, default=False, nullable=False)
     deleted = db.Column(db.Boolean, default=False, nullable=False)
     legacy_id = db.Column(db.Integer)

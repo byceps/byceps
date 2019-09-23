@@ -62,8 +62,6 @@ def index(page):
 
     total_active = user_stats_service.count_active_users()
     total_uninitialized = user_stats_service.count_uninitialized_users()
-    total_enabled = user_stats_service.count_enabled_users()
-    total_disabled = user_stats_service.count_disabled_users()
     total_suspended = user_stats_service.count_suspended_users()
     total_deleted = user_stats_service.count_deleted_users()
     total_overall = user_stats_service.count_users()
@@ -72,8 +70,6 @@ def index(page):
         'users': users,
         'total_active': total_active,
         'total_uninitialized': total_uninitialized,
-        'total_enabled': total_enabled,
-        'total_disabled': total_disabled,
         'total_suspended': total_suspended,
         'total_deleted': total_deleted,
         'total_overall': total_overall,
@@ -219,34 +215,6 @@ def initialize_account(user_id):
     user_command_service.initialize_account(user.id, initiator_id)
 
     flash_success("Das Benutzerkonto '{}' wurde initialisiert.", user.screen_name)
-
-
-@blueprint.route('/<uuid:user_id>/flags/enabled', methods=['POST'])
-@permission_required(UserPermission.administrate)
-@respond_no_content
-def set_enabled_flag(user_id):
-    """Enable the user."""
-    user = _get_user_or_404(user_id)
-
-    initiator_id = g.current_user.id
-
-    user_command_service.enable_user(user.id, initiator_id)
-
-    flash_success("Das Benutzerkonto '{}' wurde aktiviert.", user.screen_name)
-
-
-@blueprint.route('/<uuid:user_id>/flags/enabled', methods=['DELETE'])
-@permission_required(UserPermission.administrate)
-@respond_no_content
-def unset_enabled_flag(user_id):
-    """Disable the user."""
-    user = _get_user_or_404(user_id)
-
-    initiator_id = g.current_user.id
-
-    user_command_service.disable_user(user.id, initiator_id)
-
-    flash_success("Das Benutzerkonto '{}' wurde deaktiviert.", user.screen_name)
 
 
 @blueprint.route('/<uuid:user_id>/suspend')
