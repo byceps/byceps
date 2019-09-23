@@ -1,4 +1,4 @@
-{%- from 'macros/admin/user.html' import render_user_flag_deleted, render_user_flag_disabled, render_user_microcard %}
+{%- from 'macros/admin/user.html' import render_user_flag_deleted, render_user_flag_uninitialized, render_user_microcard %}
 
 {%- if users %}
 <style>
@@ -25,12 +25,12 @@
     <tr>
       <td>{{ render_user_microcard(user) }}</td>
       <td>
-        {%- if not user.enabled %}
-        {{- render_user_flag_disabled() }}
-        {%- endif -%}
-        {%- if user.deleted %}
+      {%- if not user.initialized %}
+        {{- render_user_flag_uninitialized() }}
+      {%- endif -%}
+      {%- if user.deleted %}
         {{ render_user_flag_deleted() }}
-        {%- endif -%}
+      {%- endif -%}
       </td>
     </tr>
     {%- endfor %}
