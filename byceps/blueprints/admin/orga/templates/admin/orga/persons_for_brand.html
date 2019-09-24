@@ -36,7 +36,12 @@
     {%- if g.current_user.has_permission(OrgaTeamPermission.administrate_memberships) %}
     <a class="button" href="{{ url_for('.create_orgaflag_form', brand_id=brand.id) }}">{{ render_icon('add') }} <span>Person zum Orga ernennen</span></a>
     {%- endif %}
+
+    {%- if orgas %}
     <a class="button" href="{{ url_for('.export_persons', brand_id=brand.id) }}" download="organizers_{{ brand.id }}.csv">{{ render_icon('download') }} <span>Exportieren <small>{{ 'als Excel-CSV'|dim }}</small></span></a>
+    {%- else %}
+    <button class="button" disabled>{{ render_icon('download') }} <span>Exportieren <small>{{ 'als Excel-CSV'|dim }}</small></span></button>
+    {%- endif %}
   </div>
 
   {%- if orgas %}
