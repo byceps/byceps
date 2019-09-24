@@ -1,39 +1,42 @@
 onDomReady(function() {
 
   // Log in.
-  $('form#login').submit(function() {
-    const login_failed_notice = document.getElementById('login-failed-notice');
-    login_failed_notice.classList.add('hidden');
+  const login_form = document.getElementById('login-form')
+  if (login_form !== null) {
+    login_form.addEventListener('submit', function(event) {
+      event.preventDefault();
 
-    $.ajax({
-      type: 'POST',
-      url: $(this).attr('action'),
-      data: $(this).serializeArray(),
-      success: function(data, text_status, xhr) {
-        // Redirect to location specified via header.
-        var redirect_url = _get_location(xhr);
-        if (redirect_url !== null) {
-          location.href = redirect_url;
-          return;
-        }
+      const login_failed_notice = document.getElementById('login-failed-notice');
+      login_failed_notice.classList.add('hidden');
 
-        // Redirect to referrer if available.
-        var referrer = document.createElement('a');
-        referrer.href = document.referrer;
-        // Exclude selected referrer paths.
-        if (/^\/(authentication|consent)\//.test(referrer.pathname)) {
-          referrer.pathname = '/';
-        }
-        location.href = (referrer.hostname == location.hostname) ? referrer.pathname : '/';
-      },
-      error: function() {
-        login_failed_notice.classList.remove('hidden');
-      },
-      dataType: 'text'
+      $.ajax({
+        type: 'POST',
+        url: login_form.getAttribute('action'),
+        data: $(this).serializeArray(),
+        success: function(data, text_status, xhr) {
+          // Redirect to location specified via header.
+          var redirect_url = _get_location(xhr);
+          if (redirect_url !== null) {
+            location.href = redirect_url;
+            return;
+          }
+
+          // Redirect to referrer if available.
+          var referrer = document.createElement('a');
+          referrer.href = document.referrer;
+          // Exclude selected referrer paths.
+          if (/^\/(authentication|consent)\//.test(referrer.pathname)) {
+            referrer.pathname = '/';
+          }
+          location.href = (referrer.hostname == location.hostname) ? referrer.pathname : '/';
+        },
+        error: function() {
+          login_failed_notice.classList.remove('hidden');
+        },
+        dataType: 'text'
+      });
     });
-
-    return false;
-  });
+  }
 
   // Log out.
   forEach(

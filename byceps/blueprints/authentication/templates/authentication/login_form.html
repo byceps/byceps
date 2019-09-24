@@ -26,7 +26,7 @@
 
   {%- if login_enabled %}
     {%- if not logged_in %}
-    <form action="{{ url_for('.login') }}" method="post" id="login">
+    <form action="{{ url_for('.login') }}" method="post" id="login-form">
       {%- call form_fieldset() %}
         {{ form_field(form.screen_name, maxlength=40, required='required', autofocus='autofocus') }}
         {{ form_field(form.password, maxlength=40, required='required') }}
