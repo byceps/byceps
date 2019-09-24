@@ -4,6 +4,22 @@
 {% set current_page = 'authentication.login' %}
 {% set title = 'Anmelden' %}
 
+{% block head %}
+  <style>
+    #login-failed-notice {
+      max-height: 4rem;
+      margin-top: 1rem;
+      overflow-y: hidden;
+      transition: max-height 1s ease-out;
+    }
+
+    #login-failed-notice.hidden {
+      max-height: 0;
+      transition: max-height 0s;
+    }
+  </style>
+{%- endblock %}
+
 {% block body %}
 
   <h1>{{ title }}</h1>
@@ -17,7 +33,7 @@
         {{ form_field_checkbox(form.permanent, 'dauerhaft eingeloggt bleiben') }}
       {%- endcall %}
 
-      <div id="login-failed" style="display: none;">
+      <div id="login-failed-notice" class="hidden">
 {{ render_notification('Die Anmeldung ist fehlgeschlagen.', category='danger', icon='warning') }}
       </div>
 

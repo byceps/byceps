@@ -2,7 +2,9 @@ onDomReady(function() {
 
   // Log in.
   $('form#login').submit(function() {
-    $('#login-failed').slideUp('fast');
+    const login_failed_notice = document.getElementById('login-failed-notice');
+    login_failed_notice.classList.add('hidden');
+
     $.ajax({
       type: 'POST',
       url: $(this).attr('action'),
@@ -25,11 +27,11 @@ onDomReady(function() {
         location.href = (referrer.hostname == location.hostname) ? referrer.pathname : '/';
       },
       error: function() {
-        $('#login-failed').slideDown('slow', function() {
-        });
+        login_failed_notice.classList.remove('hidden');
       },
       dataType: 'text'
     });
+
     return false;
   });
 
