@@ -37,7 +37,6 @@
       {{- render_user_admin_link(user) -}}
       {%- if user.deleted %} {{ render_user_flag_deleted(show_label=False) }}{% endif -%}
       {%- if user.suspended %} {{ render_user_flag_suspended(show_label=False) }}{% endif -%}
-      {%- if not user.initialized %} {{ render_user_flag_uninitialized(show_label=False) }}{% endif -%}
     </div>
     <div class="user-microcard-full-name">
       {%- if not user.deleted -%}
