@@ -15,6 +15,7 @@
   </nav>
   <h1>{{ render_icon('history') }} {{ title }}</h1>
 
+  {%- if versions_pairwise %}
   <table class="index wide">
     <thead>
       <tr>
@@ -47,5 +48,8 @@
     {%- endwith %}
     </tbody>
   </table>
+  {%- else %}
+  <div class="dimmed-box centered">Es sind keine Versionen hinterlegt.</div>
+  {%- endif %}
 
 {%- endblock %}

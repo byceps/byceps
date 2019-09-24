@@ -57,6 +57,7 @@
 
   <h2>Aktionen {{ render_extra_in_heading(order_actions_by_article_number|length) }}</h2>
   <p>Eine Aktion wird ausgelöst, wenn eine Bestellung einen der aufgeführten Artikel enthält und der Bestellstatus auf einen der für den Artikel aufgeführten Zustände geändert wird.</p>
+  {%- if order_actions_by_article_number %}
   <table class="index wide">
     <thead>
       <tr>
@@ -79,14 +80,11 @@
         <td class="monospace">{{ action.procedure }}<br>{{ action.parameters }}</td>
       </tr>
       {%- endfor %}
-    {%- else %}
-      <tr>
-        <td colspan="3" class="centered">
-          <p class="dimmed">Für diesen Shop sind keine Aktionen definiert.</p>
-        </td>
-      </tr>
     {%- endfor %}
     </tbody>
   </table>
+  {%- else %}
+  <div class="dimmed-box centered">Für diesen Shop sind keine Aktionen definiert.</div>
+  {%- endif %}
 
 {%- endblock %}

@@ -28,6 +28,7 @@
 
   <h1>{{ title }}</h1>
 
+  {%- if orgas %}
   <ol class="birthdays">
   {%- for user, detail in orgas %}
     {%- with is_today = detail.is_birthday_today %}
@@ -41,5 +42,8 @@
     {%- endwith %}
   {%- endfor %}
   </ol>
+  {%- else %}
+  <div class="dimmed-box centered">Es stehen keine Geburtstage von Organisatoren bevor.</div>
+  {%- endif %}
 
 {%- endblock %}

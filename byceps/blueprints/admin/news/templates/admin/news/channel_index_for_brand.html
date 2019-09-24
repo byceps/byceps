@@ -20,6 +20,7 @@
   </div>
   {%- endif %}
 
+  {%- if channels %}
   <table class="index wide">
     <thead>
       <tr>
@@ -35,14 +36,11 @@
         <td class="monospace">{{ channel.url_prefix }}</td>
         <td class="centered bignumber">{{ item_count_by_channel_id[channel.id]|separate_thousands }}</td>
       </tr>
-    {%- else %}
-      <tr>
-        <td colspan="3" class="centered">
-          <p class="dimmed">Für diese Marke existieren noch keine News-Kanäle.</p>
-        </td>
-      </tr>
     {%- endfor %}
     </tbody>
   </table>
+  {%- else %}
+  <div class="dimmed-box centered">Für diese Marke existieren noch keine News-Kanäle.</div>
+  {%- endif %}
 
 {%- endblock %}

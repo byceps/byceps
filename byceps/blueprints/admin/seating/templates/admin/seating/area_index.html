@@ -8,6 +8,7 @@
 {% block body %}
 
   <h1>Bereiche {{ render_extra_in_heading(areas_with_occupied_seat_counts.total) }}</h1>
+  {%- if areas_with_occupied_seat_counts.items %}
   <table class="index wide">
     <thead>
       <tr>
@@ -39,6 +40,9 @@
       <tr>
     </tbody>
   </table>
+  {%- else %}
+  <div class="dimmed-box centered">Es sind keine Bereiche hinterlegt.</div>
+  {%- endif %}
 
 {{ render_pagination_nav(areas_with_occupied_seat_counts, '.index_for_party', {'party_id': party.id}) }}
 

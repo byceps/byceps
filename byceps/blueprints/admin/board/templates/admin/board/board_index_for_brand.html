@@ -21,6 +21,7 @@
   </div>
   {%- endif %}
 
+  {%- if boards %}
   <table class="index wide">
     <thead>
       <tr>
@@ -45,14 +46,11 @@
         <td class="centered bignumber">{{ stats.posting_count|separate_thousands }}</td>
         {%- endwith %}
       </tr>
-    {%- else %}
-      <tr>
-        <td colspan="4" class="centered">
-          <p class="dimmed">Für diese Marke existieren noch keine Foren.</p>
-        </td>
-      </tr>
     {%- endfor %}
     </tbody>
   </table>
+  {%- else %}
+  <div class="dimmed-box centered">Für diese Marke sind keine Foren hinterlegt.</div>
+  {%- endif %}
 
 {%- endblock %}

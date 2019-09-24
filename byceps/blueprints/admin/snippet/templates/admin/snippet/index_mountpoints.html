@@ -35,6 +35,7 @@
 
   <h2>Mountpoints {{ render_extra_in_heading(mountpoints|length) }}</h2>
 
+  {%- if mountpoints %}
   <table class="index wide">
     <thead>
       <tr>
@@ -67,6 +68,9 @@
     {%- endfor %}
     </tbody>
   </table>
+  {%- else %}
+  <div class="dimmed-box centered">Es sind keine Mountpoints für diese Site hinterlegt.</div>
+  {%- endif %}
 
 {%- endblock %}
 

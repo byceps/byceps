@@ -12,6 +12,7 @@
   </nav>
   <h1>{{ title }}</h1>
 
+  {%- if articles_to_ship %}
   <table class="index">
     <thead>
       <tr>
@@ -31,14 +32,11 @@
         <td class="number">{{ article_to_ship.quantity_open }}</td>
         <td class="number">{{ article_to_ship.quantity_total }}</td>
       </tr>
-      {%- else %}
-      <tr>
-        <td colspan="5" class="centered">
-          <p class="dimmed">Derzeit sind keine Artikel bestellt oder bezahlt, die versendet werden müssen.</p>
-        </td>
-      </tr>
       {%- endfor %}
     </tbody>
   </table>
+  {%- else %}
+  <div class="dimmed-box centered">Derzeit sind keine Artikel bestellt oder bezahlt, die versendet werden müssen.</div>
+  {%- endif %}
 
 {%- endblock %}

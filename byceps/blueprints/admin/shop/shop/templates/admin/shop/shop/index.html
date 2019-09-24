@@ -7,6 +7,7 @@
 
   <h1>{{ title }} {{ render_extra_in_heading(shops|length) }}</h1>
 
+  {%- if shops %}
   <table class="index wide">
     <thead>
       <tr>
@@ -20,14 +21,11 @@
         <td class="monospace"><a href="{{ url_for('.view_for_shop', shop_id=shop.id) }}">{{ shop.id }}</a></td>
         <td>{{ shop.title }}</td>
       </tr>
-    {%- else %}
-      <tr>
-        <td colspan="2" class="centered">
-          <p class="dimmed">Es sind keine Shops hinterlegt.</p>
-        </td>
-      </tr>
     {%- endfor %}
     </tbody>
   </table>
+  {%- else %}
+  <div class="dimmed-box centered">Es sind keine Shops hinterlegt.</div>
+  {%- endif %}
 
 {%- endblock %}

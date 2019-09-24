@@ -35,6 +35,7 @@
   </table>
 
   <h2>Einstellungen {{ render_extra_in_heading(settings|length) }}</h2>
+  {%- if settings %}
   <table class="index">
     <thead>
       <tr>
@@ -43,19 +44,16 @@
       </tr>
     </thead>
     <tbody>
-      {%- for setting in settings|sort(attribute='name') %}
+    {%- for setting in settings|sort(attribute='name') %}
       <tr>
         <td class="monospace">{{ setting.name }}</td>
         <td class="monospace">{{ setting.value }}</td>
       </tr>
-      {%- else %}
-      <tr>
-        <td colspan="2" class="centered">
-          <p class="dimmed">Es sind keine Einstellungen hinterlegt.</p>
-        </td>
-      </tr>
     {%- endfor %}
     </tbody>
   </table>
+  {%- else %}
+  <div class="dimmed-box centered">Es sind keine Einstellungen hinterlegt.</div>
+  {%- endif %}
 
 {%- endblock %}

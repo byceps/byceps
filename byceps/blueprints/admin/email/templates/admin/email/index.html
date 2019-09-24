@@ -7,6 +7,7 @@
 
   <h1>{{ title }} {{ render_extra_in_heading(configs|length) }}</h1>
 
+  {%- if configs %}
   <table class="index wide">
     <thead>
       <tr>
@@ -29,14 +30,11 @@
         <td>{{ config.sender.name|fallback }}</td>
         <td>{{ config.contact_address|fallback }}</td>
       </tr>
-    {%- else %}
-      <tr>
-        <td colspan="4" class="centered">
-          <p class="dimmed">Es sind keine E-Mail-Konfigurationen hinterlegt.</p>
-        </td>
-      </tr>
     {%- endfor %}
     </tbody>
   </table>
+  {%- else %}
+  <div class="dimmed-box centered">Es sind keine E-Mail-Konfigurationen hinterlegt.</div>
+  {%- endif %}
 
 {%- endblock %}

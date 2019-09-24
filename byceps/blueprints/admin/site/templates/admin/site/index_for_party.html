@@ -14,6 +14,7 @@
   </div>
   {%- endif %}
 
+  {%- if sites %}
   <table class="index">
     <thead>
       <tr>
@@ -29,17 +30,15 @@
         <td class="monospace"><a href="{{ url_for('.view', site_id=site.id) }}">{{ site.id }}</a></td>
         <td>{{ site.title }}</td>
       </tr>
-    {%- else %}
-      <tr>
-        <td colspan="2" class="centered">
-          <p class="dimmed">Es sind keine Sites hinterlegt.</p>
-        </td>
-      </tr>
     {%- endfor %}
     </tbody>
   </table>
+  {%- else %}
+  <div class="dimmed-box centered">Für diese Party sind keine Sites hinterlegt.</div>
+  {%- endif %}
 
   <h2>Einstellungen {{ render_extra_in_heading(settings_by_site|length) }}</h2>
+  {%- if settings_by_site %}
   <table class="index wide">
     <thead>
       <tr>
@@ -60,14 +59,11 @@
         <td class="monospace">{{ setting.value }}</td>
       </tr>
       {%- endfor %}
-    {%- else %}
-      <tr>
-        <td colspan="3" class="centered">
-          <p class="dimmed">Es sind keine site-spezifischen Einstellungen hinterlegt.</p>
-        </td>
-      </tr>
     {%- endfor %}
     </tbody>
   </table>
+  {%- else %}
+  <div class="dimmed-box centered">Es sind keine site-spezifischen Einstellungen hinterlegt.</div>
+  {%- endif %}
 
 {%- endblock %}

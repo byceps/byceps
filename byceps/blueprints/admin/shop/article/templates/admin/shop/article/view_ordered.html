@@ -23,6 +23,7 @@
     </small>
   </p>
 
+  {%- if quantities_orders_users %}
   <table class="index wide">
     <thead>
       <tr>
@@ -45,5 +46,8 @@
     {%- endfor %}
     </tbody>
   </table>
+  {%- else %}
+  <div class="dimmed-box centered">Dieser Artikel wurde noch nicht bestellt.</div>
+  {%- endif %}
 
 {%- endblock %}

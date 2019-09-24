@@ -29,6 +29,7 @@
   {%- endif %}
 
   <h2>Berechtigungen</h2>
+  {%- if permissions_by_role %}
   <table class="index wide">
     <thead>
       <tr>
@@ -58,5 +59,8 @@
       {%- endfor %}
     </tbody>
   </table>
+  {%- else %}
+  <div class="dimmed-box centered">Dem Benutzer sind keine Berechtigungen zugewiesen.</div>
+  {%- endif %}
 
 {%- endblock %}

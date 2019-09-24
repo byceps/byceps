@@ -14,6 +14,7 @@
   </div>
   {%- endif %}
 
+  {%- if brands %}
   <table class="index wide">
     <thead>
       <tr>
@@ -37,5 +38,8 @@
       {%- endfor %}
     </tbody>
   </table>
+  {%- else %}
+  <div class="dimmed-box centered">Es sind keine Marken hinterlegt.</div>
+  {%- endif %}
 
 {%- endblock %}

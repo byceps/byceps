@@ -21,6 +21,7 @@
   </div>
   {%- endif %}
 
+  {%- if categories %}
   <table class="index">
     <thead>
       <tr>
@@ -50,6 +51,9 @@
     {%- endfor %}
     </tbody>
   </table>
+  {%- else %}
+  <div class="dimmed-box centered">Es sind keine Kategorien hinterlegt.</div>
+  {%- endif %}
 
 {%- endblock %}
 

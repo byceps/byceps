@@ -39,6 +39,7 @@
     <a class="button" href="{{ url_for('.export_persons', brand_id=brand.id) }}" download="organizers_{{ brand.id }}.csv">{{ render_icon('download') }} <span>Exportieren <small>{{ 'als Excel-CSV'|dim }}</small></span></a>
   </div>
 
+  {%- if orgas %}
   <table class="index wide orgas">
     <thead>
       <tr>
@@ -104,6 +105,9 @@
       <tr>
     </tbody>
   </table>
+  {%- else %}
+  <div class="dimmed-box centered">Es sind keine Organisatoren hinterlegt.</div>
+  {%- endif %}
 
 {%- endblock %}
 

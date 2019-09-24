@@ -114,7 +114,7 @@ def view_ordered(article_id):
 
         return quantity, order, user
 
-    quantities_orders_users = map(transform, order_items)
+    quantities_orders_users = list(map(transform, order_items))
 
     return {
         'article': article,

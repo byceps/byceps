@@ -612,6 +612,16 @@ fieldset.buttons {
 }
 
 
+/* misc */
+
+.dimmed-box {
+  border-radius: 3px;
+  border: #dddddd solid 1px;
+  color: #666666;
+  padding: 1.5rem;
+}
+
+
 /* print view */
 
 @media print {

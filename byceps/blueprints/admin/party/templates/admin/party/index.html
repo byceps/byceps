@@ -10,6 +10,7 @@
 
   <h1>{{ title }} {{ render_extra_in_heading(parties|length) }}</h1>
 
+  {%- if parties %}
   <table class="index wide">
     <thead>
       <tr>
@@ -44,5 +45,8 @@
       <tr>
     </tbody>
   </table>
+  {%- else %}
+  <div class="dimmed-box centered">Es sind keine Partys hinterlegt.</div>
+  {%- endif %}
 
 {%- endblock %}

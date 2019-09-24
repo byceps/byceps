@@ -23,6 +23,7 @@
 {%- include 'admin/user/_view_head.html' %}
 
   <h2>Berechtigungen</h2>
+  {%- if permissions_by_role %}
   <table class="index wide">
     <thead>
       <tr>
@@ -64,6 +65,9 @@
       {%- endfor %}
     </tbody>
   </table>
+  {%- else %}
+  <div class="dimmed-box centered">Es sind keine Rollen hinterlegt, die dem Benutzer zugewiesen werden könnten.</div>
+  {%- endif %}
 
 {%- endblock %}
 

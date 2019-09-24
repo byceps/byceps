@@ -7,6 +7,7 @@
 {% block body %}
 
   <h1>Sitzplatz-Gruppen {{ render_extra_in_heading(groups|length) }}</h1>
+  {%- if groups %}
   <table class="index wide">
     <thead>
       <tr>
@@ -31,5 +32,8 @@
       <tr>
     </tbody>
   </table>
+  {%- else %}
+  <div class="dimmed-box centered">Es sind keine Sitzplatz-Gruppen für diese Party definiert.</div>
+  {%- endif %}
 
 {%- endblock %}

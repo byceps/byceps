@@ -34,6 +34,7 @@
   </div>
   {%- endif %}
 
+  {%- if items.items %}
   <table class="index wide">
     <thead>
       <tr>
@@ -80,15 +81,12 @@
           {%- endif -%}
         </td>
       </tr>
-    {%- else %}
-      <tr>
-        <td colspan="4" class="centered">
-          <p class="dimmed">Dieser Kanal enthält noch keine Newsposts.</p>
-        </td>
-      </tr>
     {%- endfor %}
     </tbody>
   </table>
+  {%- else %}
+  <div class="dimmed-box centered">Dieser Kanal enthält noch keine Newsposts.</div>
+  {%- endif %}
 
 {{ render_pagination_nav(items, '.channel_view', {'channel_id': channel.id}) }}
 

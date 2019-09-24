@@ -13,6 +13,7 @@
   </div>
   {%- endif %}
 
+  {%- if sites %}
   <table class="index wide">
     <thead>
       <tr>
@@ -28,14 +29,11 @@
         <td>{{ site.title }}</td>
         <td class="monospace">{{ site.party_id|fallback }}</td>
       </tr>
-    {%- else %}
-      <tr>
-        <td colspan="3" class="centered">
-          <p class="dimmed">Es sind keine Sites hinterlegt.</p>
-        </td>
-      </tr>
     {%- endfor %}
     </tbody>
   </table>
+  {%- else %}
+  <div class="dimmed-box centered">Es sind keine Sites hinterlegt.</div>
+  {%- endif %}
 
 {%- endblock %}

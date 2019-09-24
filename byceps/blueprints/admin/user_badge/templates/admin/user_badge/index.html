@@ -23,6 +23,7 @@
   </div>
   {%- endif %}
 
+  {%- if badges %}
   <table class="index wide badges">
     <thead>
       <tr>
@@ -46,5 +47,8 @@
       {%- endfor %}
     </tbody>
   </table>
+  {%- else %}
+  <div class="dimmed-box centered">Es sind keine Abzeichen hinterlegt.</div>
+  {%- endif %}
 
 {%- endblock %}
