@@ -221,7 +221,7 @@ onDomReady(function() {
       .querySelectorAll('form.disable-submit-button-on-submit');
 
   forEach(formsWhoseSubmitButtonShouldBeDisabledOnSubmit, function(form) {
-    form.addEventListener('submit', function(event) {
+    form.addEventListener('submit', function() {
       const submitButton = form.querySelector('button[type="submit"]');
       submitButton.disabled = true;
       submitButton.innerHTML += ' <svg class="icon spinning"><use xlink:href="/static/style/icons.svg#spinner"></use></svg>';
