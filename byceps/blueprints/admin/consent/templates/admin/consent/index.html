@@ -1,11 +1,12 @@
 {% extends 'layout/admin/base.html' %}
+{% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/misc.html' import render_tag %}
 {% set current_page = 'consent_admin' %}
 {% set title = 'Zustimmungen' %}
 
 {% block body %}
 
-  <h1>{{ title }}</h1>
+  <h1>{{ title }} {{ render_extra_in_heading(subjects_with_consent_counts|length) }}</h1>
 
   {%- if subjects_with_consent_counts %}
   <table class="index wide">

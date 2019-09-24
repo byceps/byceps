@@ -1,4 +1,5 @@
 {% extends 'layout/admin/base.html' %}
+{% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_tag %}
 {% set current_page = 'board_admin' %}
@@ -9,10 +10,10 @@
 
   <nav class="breadcrumbs">
     <ol>
-      <li>Foren</li>
+      <li>{{ brand.title }}</li>
     </ol>
   </nav>
-  <h1>{{ brand.title }}</h1>
+  <h1>Foren {{ render_extra_in_heading(boards|length) }}</h1>
 
   {%- if g.current_user.has_permission(BoardPermission.create) %}
   <div class="button-row">

@@ -1,11 +1,12 @@
 {% extends 'layout/admin/base.html' %}
+{% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/admin/brand.html' import render_brand_admin_link %}
 {% set current_page = 'brands_admin' %}
 {% set title = 'Marken' %}
 
 {% block body %}
 
-  <h1>Marken</h1>
+  <h1>Marken {{ render_extra_in_heading(brands|length) }}</h1>
 
   {%- if g.current_user.has_permission(BrandPermission.create) %}
   <div class="button-row">
