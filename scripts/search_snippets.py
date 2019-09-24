@@ -38,6 +38,8 @@ def execute(ctx, search_term, site, verbose):
             scope_label = 'scope "{}"'.format(format_scope(scope))
         else:
             scope_label = 'any scope'
+    else:
+        scope_label = '<unknown>'
 
     matches = snippet_service.search_snippets(search_term, scope=scope)
 
