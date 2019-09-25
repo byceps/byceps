@@ -6,7 +6,12 @@
 
 {% block body %}
 
-  <h1>Site</h1>
+  <nav class="breadcrumbs">
+    <ol>
+      <li><a href="{{ url_for('site_admin.index') }}">Sites</a></li>
+    </ol>
+  </nav>
+  <h1>{{ site.id }}</h1>
 
   <div class="button-row button-row--compact" style="float: right;">
     {%- if g.current_user.has_permission(SitePermission.update) %}
