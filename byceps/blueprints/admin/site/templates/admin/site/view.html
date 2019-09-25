@@ -35,7 +35,7 @@
     </tr>
     <tr>
       <th>Party</th>
-      <td>{{ site.party_id|fallback }}</td>
+      <td>{% if site.party_id %}<a href="{{ url_for('admin_dashboard.view_party', party_id=site.party_id) }}">{{ site.party_id }}</a>{% else %}{{ ''|fallback }}{% endif %}</td>
     </tr>
   </table>
 
