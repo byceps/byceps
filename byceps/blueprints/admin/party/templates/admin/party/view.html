@@ -22,7 +22,7 @@
     {%- endif -%}
   </h1>
 
-  <div class="button-row">
+  <div class="button-row button-row--right">
     {%- if g.current_user.has_permission(PartyPermission.update) %}
     <a class="button" href="{{ url_for('.update_form', party_id=party.id) }}">{{ render_icon('edit') }} <span>Bearbeiten</span></a>
     {%- endif %}

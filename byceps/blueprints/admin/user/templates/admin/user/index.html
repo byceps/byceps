@@ -40,7 +40,7 @@
   </div>
 
   {%- if g.current_user.has_permission(UserPermission.create) %}
-  <div class="button-row">
+  <div class="button-row button-row--right">
     <a class="button" href="{{ url_for('.create_account_form') }}">{{ render_icon('add') }} <span>Benutzer erstellen</span></a>
   </div>
   {%- endif %}

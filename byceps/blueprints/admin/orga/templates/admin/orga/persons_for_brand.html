@@ -32,7 +32,7 @@
   </nav>
   <h1>{{ title }} {{ render_extra_in_heading(orgas|length) }}</h1>
 
-  <div class="button-row">
+  <div class="button-row button-row--right">
     {%- if g.current_user.has_permission(OrgaTeamPermission.administrate_memberships) %}
     <a class="button" href="{{ url_for('.create_orgaflag_form', brand_id=brand.id) }}">{{ render_icon('add') }} <span>Person zum Orga ernennen</span></a>
     {%- endif %}

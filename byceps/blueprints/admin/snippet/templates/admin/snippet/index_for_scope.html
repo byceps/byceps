@@ -38,7 +38,7 @@
   <h2>Snippets {{ render_extra_in_heading(snippets|length) }}</h2>
 
   {%- if g.current_user.has_permission(SnippetPermission.create) %}
-  <div class="button-row">
+  <div class="button-row button-row--right">
     <a class="button" href="{{ url_for('.create_document_form', scope_type=scope.type_, scope_name=scope.name) }}">{{ render_icon('snippet-document') }} <span>Dokument erstellen</span></a>
     <a class="button" href="{{ url_for('.create_fragment_form', scope_type=scope.type_, scope_name=scope.name) }}">{{ render_icon('snippet-fragment') }} <span>Fragment erstellen</span></a>
   </div>

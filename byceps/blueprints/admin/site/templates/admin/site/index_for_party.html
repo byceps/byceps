@@ -9,7 +9,7 @@
   <h1>{{ title }} {{ render_extra_in_heading(sites|length) }}</h1>
 
   {%- if g.current_user.has_permission(SitePermission.create) %}
-  <div class="button-row">
+  <div class="button-row button-row--right">
     <a class="button" href="{{ url_for('.create_form', party_id=party.id) }}">{{ render_icon('add') }} <span>Site erstellen</span></a>
   </div>
   {%- endif %}

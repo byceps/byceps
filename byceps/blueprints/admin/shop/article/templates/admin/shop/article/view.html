@@ -22,7 +22,7 @@
   </nav>
   <h1>{{ title }}</h1>
 
-  <div class="button-row">
+  <div class="button-row button-row--right">
     {%- if g.current_user.has_permission(ShopArticlePermission.update) %}
     <a class="button" href="{{ url_for('.update_form', article_id=article.id) }}">{{ render_icon('edit') }} <span>Bearbeiten</span></a>
     <a class="button" href="{{ url_for('.attachment_create_form', article_id=article.id) }}">{{ render_icon('attached') }} <span>Artikel anhängen</span></a>

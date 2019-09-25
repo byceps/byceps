@@ -9,7 +9,7 @@
   <h1>Marken {{ render_extra_in_heading(brands|length) }}</h1>
 
   {%- if g.current_user.has_permission(BrandPermission.create) %}
-  <div class="button-row">
+  <div class="button-row button-row--right">
     <a class="button" href="{{ url_for('.create_form') }}">{{ render_icon('add') }} <span>Marke erstellen</span></a>
   </div>
   {%- endif %}

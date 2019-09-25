@@ -19,7 +19,7 @@
   <h1>Partys {{ render_extra_in_heading(parties.total) }}</h1>
 
   {%- if g.current_user.has_permission(PartyPermission.create) %}
-  <div class="button-row">
+  <div class="button-row button-row--right">
     <a class="button" href="{{ url_for('.create_form', brand_id=brand.id) }}">{{ render_icon('add') }} <span>Party erstellen</span></a>
   </div>
   {%- endif %}

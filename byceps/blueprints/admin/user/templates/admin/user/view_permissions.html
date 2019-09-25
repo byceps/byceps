@@ -23,7 +23,7 @@
 {%- include 'admin/user/_view_head.html' %}
 
   {%- if g.current_user.has_permission(RolePermission.assign) %}
-  <div class="button-row">
+  <div class="button-row button-row--right">
     <a class="button" href="{{ url_for('.manage_roles', user_id=user.id) }}">{{ render_icon('permission') }} <span>Rollen verwalten</span></a>
   </div>
   {%- endif %}
