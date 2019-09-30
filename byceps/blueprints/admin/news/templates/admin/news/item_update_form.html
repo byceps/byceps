@@ -17,7 +17,7 @@
 
   <form action="{{ url_for('.item_update', item_id=item.id) }}" method="post">
     {% call form_fieldset() %}
-      {{ form_field(form.slug, maxlength=100, readonly='readonly') }}
+      {{ form_field(form.slug, maxlength=100, readonly=item.published) }}
       {{ form_field(form.title, maxlength=100, required='required', autofocus='autofocus') }}
       {{ form_field(form.body, required='required', class='monospace wide') }}
       {{ form_field(form.image_url_path, maxlength=100) }}

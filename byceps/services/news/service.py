@@ -45,12 +45,14 @@ def create_item(brand_id: BrandID, slug: str, creator_id: UserID, title: str,
     return _db_entity_to_item(item)
 
 
-def update_item(item_id: ItemID, creator_id: UserID, title: str, body: str, *,
-                image_url_path: Optional[str]=None) -> None:
+def update_item(item_id: ItemID, slug:str, creator_id: UserID, title: str,
+                body: str, *, image_url_path: Optional[str]=None) -> None:
     """Update a news item by creating a new version of it and setting
     the new version as the current one.
     """
     item = _get_db_item(item_id)
+
+    item.slug = slug
 
     version = _create_version(item, creator_id, title, body,
                               image_url_path=image_url_path)
