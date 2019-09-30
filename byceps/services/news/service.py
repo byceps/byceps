@@ -53,6 +53,7 @@ def update_item(item_id: ItemID, slug:str, creator_id: UserID, title: str,
     item = _get_db_item(item_id)
 
     item.slug = slug
+    db.session.add(item)
 
     version = _create_version(item, creator_id, title, body,
                               image_url_path=image_url_path)
