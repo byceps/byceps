@@ -111,6 +111,12 @@
             <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
             hat &quot;{{ event.data.subject_title }}&quot; <strong>akzeptiert</strong>.
           {%- endset %}
+        {%- elif event.event == 'privacy-policy-accepted' %}
+          {%- set icon_name = 'legal' %}
+          {%- set body %}
+            <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
+            hat die <strong>Datenschutzbestimmungen akzeptiert</strong>.
+          {%- endset %}
         {%- elif event.event == 'newsletter-requested' %}
           {%- set icon_name = 'email' %}
           {%- set body %}
