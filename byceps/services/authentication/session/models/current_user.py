@@ -6,6 +6,7 @@ byceps.services.authentication.session.models.current_user
 :License: Modified BSD, see LICENSE for details.
 """
 
+from __future__ import annotations
 from enum import Enum
 from typing import Optional, Set, Union
 

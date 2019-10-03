@@ -6,6 +6,7 @@ byceps.blueprints.board.models
 :License: Modified BSD, see LICENSE for details.
 """
 
+from __future__ import annotations
 from typing import Optional, Set
 
 from attr import attrs

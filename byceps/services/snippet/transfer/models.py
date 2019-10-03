@@ -6,6 +6,7 @@ byceps.services.snippet.transfer.models
 :License: Modified BSD, see LICENSE for details.
 """
 
+from __future__ import annotations
 from enum import Enum
 from typing import NewType
 from uuid import UUID

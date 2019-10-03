@@ -6,6 +6,7 @@ byceps.services.orga_presence.transfer.models
 :License: Modified BSD, see LICENSE for details.
 """
 
+from __future__ import annotations
 from datetime import datetime
 from enum import Enum
 
