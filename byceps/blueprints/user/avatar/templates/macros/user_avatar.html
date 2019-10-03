@@ -2,9 +2,7 @@
 
 
 {% macro render_user_avatar_16(user) -%}
-<div class="avatar size-16" title="{{ user.screen_name }}">
-  {{- _render_user_avatar_image_with_fallback(user) -}}
-</div>
+  {{ _render_user_avatar(user, '16', with_orga_overlay=false) }}
 {%- endmacro %}
 
 
@@ -19,9 +17,7 @@
 
 
 {% macro render_user_avatar_20(user) -%}
-<div class="avatar size-20" title="{{ user.screen_name }}">
-  {{- _render_user_avatar_image_with_fallback(user) -}}
-</div>
+  {{ _render_user_avatar(user, '20', with_orga_overlay=false) }}
 {%- endmacro %}
 
 
@@ -65,10 +61,10 @@
 {%- endmacro %}
 
 
-{% macro _render_user_avatar(user, size_name) -%}
-<div class="avatar size-{{ size_name }}{% if user.is_orga %} orga{% endif %}" title="{{ user.screen_name }}">
+{% macro _render_user_avatar(user, size_name, with_orga_overlay=true) -%}
+<div class="avatar size-{{ size_name }}{% if with_orga_overlay and user.is_orga %} orga{% endif %}" title="{{ user.screen_name }}">
   {{- _render_user_avatar_image_with_fallback(user) }}
-  {%- if user.is_orga -%}
+  {%- if with_orga_overlay and user.is_orga -%}
   <div class="avatar-orga-overlay"></div>
   {%- endif -%}
 </div>
