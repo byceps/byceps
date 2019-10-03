@@ -172,8 +172,13 @@ def create():
     return redirect_to('authentication.login_form')
 
 
-def _adjust_create_form(form, real_name_required, terms_consent_required,
-                        privacy_policy_consent_required, newsletter_offered):
+def _adjust_create_form(
+    form,
+    real_name_required,
+    terms_consent_required,
+    privacy_policy_consent_required,
+    newsletter_offered,
+):
     if not real_name_required:
         del form.first_names
         del form.last_name

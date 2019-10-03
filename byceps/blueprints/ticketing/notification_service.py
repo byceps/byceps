@@ -42,8 +42,9 @@ def notify_withdrawn_user(ticket: Ticket, user: User, manager: User) -> None:
     _enqueue_email(user, subject, body)
 
 
-def notify_appointed_user_manager(ticket: Ticket, user: User, manager: User
-                                 ) -> None:
+def notify_appointed_user_manager(
+    ticket: Ticket, user: User, manager: User
+) -> None:
     party_title = _get_party_title()
 
     subject = '{} hat dir die Nutzerverwaltung für Ticket {} übertragen.' \
@@ -56,8 +57,9 @@ def notify_appointed_user_manager(ticket: Ticket, user: User, manager: User
     _enqueue_email(user, subject, body)
 
 
-def notify_withdrawn_user_manager(ticket: Ticket, user: User, manager: User
-                                 ) -> None:
+def notify_withdrawn_user_manager(
+    ticket: Ticket, user: User, manager: User
+) -> None:
     party_title = _get_party_title()
 
     subject = '{} hat die Übertragung der Nutzerverwaltung für Ticket {} ' \
@@ -71,8 +73,9 @@ def notify_withdrawn_user_manager(ticket: Ticket, user: User, manager: User
     _enqueue_email(user, subject, body)
 
 
-def notify_appointed_seat_manager(ticket: Ticket, user: User, manager: User
-                                 ) -> None:
+def notify_appointed_seat_manager(
+    ticket: Ticket, user: User, manager: User
+) -> None:
     party_title = _get_party_title()
 
     subject = '{} hat dir die Sitzplatzverwaltung für Ticket {} übertragen.' \
@@ -85,8 +88,9 @@ def notify_appointed_seat_manager(ticket: Ticket, user: User, manager: User
     _enqueue_email(user, subject, body)
 
 
-def notify_withdrawn_seat_manager(ticket: Ticket, user: User, manager: User
-                                 ) -> None:
+def notify_withdrawn_seat_manager(
+    ticket: Ticket, user: User, manager: User
+) -> None:
     party_title = _get_party_title()
 
     subject = '{} hat die Übertragung der Sitzplatzverwaltung für Ticket {} ' \

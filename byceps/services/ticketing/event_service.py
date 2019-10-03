@@ -15,8 +15,9 @@ from .models.ticket_event import TicketEvent, TicketEventData
 from .transfer.models import TicketID
 
 
-def create_event(event_type: str, ticket_id: TicketID, data: TicketEventData
-                ) -> None:
+def create_event(
+    event_type: str, ticket_id: TicketID, data: TicketEventData
+) -> None:
     """Create a ticket event."""
     event = build_event(event_type, ticket_id, data)
 
@@ -24,8 +25,9 @@ def create_event(event_type: str, ticket_id: TicketID, data: TicketEventData
     db.session.commit()
 
 
-def build_event(event_type: str, ticket_id: TicketID, data: TicketEventData
-                ) -> TicketEvent:
+def build_event(
+    event_type: str, ticket_id: TicketID, data: TicketEventData
+) -> TicketEvent:
     """Assemble, but not persist, a ticket event."""
     now = datetime.utcnow()
 

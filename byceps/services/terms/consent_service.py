@@ -17,8 +17,9 @@ from .models.version import Version
 from .transfer.models import DocumentID, VersionID
 
 
-def count_consents_for_document_versions(document_id: DocumentID
-                                        ) -> Dict[VersionID, int]:
+def count_consents_for_document_versions(
+    document_id: DocumentID
+) -> Dict[VersionID, int]:
     """Return the number of consents for each version of the document."""
     rows = db.session \
         .query(

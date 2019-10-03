@@ -27,8 +27,9 @@ def create_posting(topic: DbTopic, creator_id: UserID, body: str) -> DbPosting:
     return posting
 
 
-def update_posting(posting: DbPosting, editor_id: UserID, body: str, *,
-                   commit: bool=True) -> None:
+def update_posting(
+    posting: DbPosting, editor_id: UserID, body: str, *, commit: bool = True
+) -> None:
     """Update the posting."""
     posting.body = body.strip()
     posting.last_edited_at = datetime.utcnow()

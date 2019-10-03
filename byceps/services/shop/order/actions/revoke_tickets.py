@@ -20,8 +20,13 @@ from ..models.order_action import Parameters
 from ..transfer.models import Order, OrderID
 
 
-def revoke_tickets(order: Order, article_number: ArticleNumber, quantity: int,
-                   initiator_id: UserID, parameters: Parameters) -> None:
+def revoke_tickets(
+    order: Order,
+    article_number: ArticleNumber,
+    quantity: int,
+    initiator_id: UserID,
+    parameters: Parameters,
+) -> None:
     """Revoke all tickets in this order."""
     tickets = ticket_service.find_tickets_created_by_order(order.order_number)
 
@@ -31,8 +36,9 @@ def revoke_tickets(order: Order, article_number: ArticleNumber, quantity: int,
     _create_order_events(order.id, tickets, initiator_id)
 
 
-def _create_order_events(order_id: OrderID, tickets: Sequence[Ticket],
-                         initiator_id: UserID) -> None:
+def _create_order_events(
+    order_id: OrderID, tickets: Sequence[Ticket], initiator_id: UserID
+) -> None:
     event_type = 'ticket-revoked'
 
     datas = [

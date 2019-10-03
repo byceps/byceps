@@ -34,9 +34,13 @@ def find_posting_by_id(posting_id: PostingID) -> Optional[DbPosting]:
     return DbPosting.query.get(posting_id)
 
 
-def paginate_postings(topic_id: TopicID, user: CurrentUser,
-                      party_id: Optional[PartyID], page: int,
-                      postings_per_page: int) -> Pagination:
+def paginate_postings(
+    topic_id: TopicID,
+    user: CurrentUser,
+    party_id: Optional[PartyID],
+    page: int,
+    postings_per_page: int,
+) -> Pagination:
     """Paginate postings in that topic, as visible for the user."""
     postings = DbPosting.query \
         .options(
@@ -58,15 +62,17 @@ def paginate_postings(topic_id: TopicID, user: CurrentUser,
     return postings
 
 
-def _get_users_by_id(user_ids: Set[UserID], party_id: Optional[PartyID]
-                    ) -> Dict[UserID, User]:
+def _get_users_by_id(
+    user_ids: Set[UserID], party_id: Optional[PartyID]
+) -> Dict[UserID, User]:
     users = user_service.find_users(user_ids, include_avatars=True,
                                     include_orga_flags_for_party_id=party_id)
     return user_service.index_users_by_id(users)
 
 
-def calculate_posting_page_number(posting: DbPosting, user: CurrentUser,
-                                  postings_per_page: int) -> int:
+def calculate_posting_page_number(
+    posting: DbPosting, user: CurrentUser, postings_per_page: int
+) -> int:
     """Return the number of the page the posting should appear on when
     viewed by the user.
     """

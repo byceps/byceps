@@ -31,9 +31,15 @@ class Image(db.Model):
     alt_text = db.Column(db.UnicodeText, nullable=True)
     caption = db.Column(db.UnicodeText, nullable=True)
 
-    def __init__(self, creator_id: UserID, item_id: ItemID, filename: str,
-                 *, alt_text: Optional[str]=None, caption: Optional[str]=None
-                ) -> None:
+    def __init__(
+        self,
+        creator_id: UserID,
+        item_id: ItemID,
+        filename: str,
+        *,
+        alt_text: Optional[str] = None,
+        caption: Optional[str] = None,
+    ) -> None:
         self.creator_id = creator_id
         self.item_id = item_id
         self.filename = filename

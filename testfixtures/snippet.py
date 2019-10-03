@@ -23,8 +23,16 @@ def _create_snippet(scope, name, type_):
     return Snippet(scope, name, type_)
 
 
-def create_snippet_version(snippet, creator_id, *, created_at=None,
-                           title='', head='', body='', image_url_path=None):
+def create_snippet_version(
+    snippet,
+    creator_id,
+    *,
+    created_at=None,
+    title='',
+    head='',
+    body='',
+    image_url_path=None,
+):
     version = SnippetVersion(
         snippet=snippet,
         creator_id=creator_id,

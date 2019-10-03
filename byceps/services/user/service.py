@@ -34,9 +34,12 @@ def find_active_db_user(user_id: UserID) -> Optional[DbUser]:
         .one_or_none()
 
 
-def find_active_user(user_id: UserID, *, include_avatar: bool=False,
-                     include_orga_flag_for_party_id: Optional[PartyID]=None
-                    ) -> Optional[User]:
+def find_active_user(
+    user_id: UserID,
+    *,
+    include_avatar: bool = False,
+    include_orga_flag_for_party_id: Optional[PartyID] = None,
+) -> Optional[User]:
     """Return the user with that ID if the account is "active", or
     `None` if:
     - the ID is unknown.
@@ -59,9 +62,12 @@ def find_active_user(user_id: UserID, *, include_avatar: bool=False,
     return _user_row_to_dto(row)
 
 
-def find_user(user_id: UserID, *, include_avatar: bool=False,
-              include_orga_flag_for_party_id: Optional[PartyID]=None
-             ) -> Optional[User]:
+def find_user(
+    user_id: UserID,
+    *,
+    include_avatar: bool = False,
+    include_orga_flag_for_party_id: Optional[PartyID] = None,
+) -> Optional[User]:
     """Return the user with that ID, or `None` if not found.
 
     Include avatar URLs if requested.
@@ -76,9 +82,12 @@ def find_user(user_id: UserID, *, include_avatar: bool=False,
     return _user_row_to_dto(row)
 
 
-def find_users(user_ids: Set[UserID], *, include_avatars: bool=False,
-               include_orga_flags_for_party_id: Optional[PartyID]=None
-              ) -> Set[User]:
+def find_users(
+    user_ids: Set[UserID],
+    *,
+    include_avatars: bool = False,
+    include_orga_flags_for_party_id: Optional[PartyID] = None,
+) -> Set[User]:
     """Return the users with those IDs.
 
     Their respective avatars' URLs are included, if requested.
@@ -95,9 +104,10 @@ def find_users(user_ids: Set[UserID], *, include_avatars: bool=False,
     return {_user_row_to_dto(row) for row in rows}
 
 
-def _get_user_query(include_avatar: bool,
-                    include_orga_flags_for_party_id: Optional[PartyID]=None
-                   ) -> Query:
+def _get_user_query(
+    include_avatar: bool,
+    include_orga_flags_for_party_id: Optional[PartyID] = None,
+) -> Query:
     orga_flag_expression = db.false()
     if include_orga_flags_for_party_id is not None:
         orga_flag_expression = _get_orga_flag_subquery(
@@ -133,8 +143,8 @@ def _get_orga_flag_subquery(party_id: PartyID):
 
 
 def _user_row_to_dto(
-        row: Tuple[UserID, str, bool, bool, Optional[Avatar], bool]
-        ) -> User:
+    row: Tuple[UserID, str, bool, bool, Optional[Avatar], bool]
+) -> User:
     user_id, screen_name, suspended, deleted, avatar, is_orga = row
     avatar_url = avatar.url if avatar else None
 
@@ -209,8 +219,9 @@ def is_email_address_already_assigned(email_address: str) -> bool:
     return _do_users_matching_filter_exist(DbUser.email_address, email_address)
 
 
-def _do_users_matching_filter_exist(model_attribute: str, search_value: str
-                                   ) -> bool:
+def _do_users_matching_filter_exist(
+    model_attribute: str, search_value: str
+) -> bool:
     """Return `True` if any users match the filter.
 
     Comparison is done case-insensitively.

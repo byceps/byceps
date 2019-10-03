@@ -22,8 +22,9 @@ def get_image_type_names(types: Iterable[ImageType]) -> FrozenSet[str]:
     return frozenset(t.name.upper() for t in types)
 
 
-def determine_image_type(stream: BinaryIO, allowed_types: Set[ImageType]) \
-                         -> ImageType:
+def determine_image_type(
+    stream: BinaryIO, allowed_types: Set[ImageType]
+) -> ImageType:
     """Extract image type from stream."""
     image_type = guess_type(stream)
 

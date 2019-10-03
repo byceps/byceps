@@ -394,7 +394,9 @@ def topic_move(topic_id):
     return redirect(h.build_url_for_topic_in_category_view(topic))
 
 
-@blueprint.route('/topics/<uuid:topic_id>/flags/announcements', methods=['POST'])
+@blueprint.route(
+    '/topics/<uuid:topic_id>/flags/announcements', methods=['POST']
+)
 @permission_required(BoardPermission.announce)
 @respond_no_content_with_location
 def topic_limit_to_announcements(topic_id):
@@ -409,7 +411,9 @@ def topic_limit_to_announcements(topic_id):
     return h.build_url_for_topic_in_category_view(topic)
 
 
-@blueprint.route('/topics/<uuid:topic_id>/flags/announcements', methods=['DELETE'])
+@blueprint.route(
+    '/topics/<uuid:topic_id>/flags/announcements', methods=['DELETE']
+)
 @permission_required(BoardPermission.announce)
 @respond_no_content_with_location
 def topic_remove_limit_to_announcements(topic_id):

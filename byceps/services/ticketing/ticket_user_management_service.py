@@ -18,8 +18,9 @@ from . import ticket_service
 from .transfer.models import TicketID
 
 
-def appoint_user_manager(ticket_id: TicketID, manager_id: UserID,
-                         initiator_id: UserID) -> None:
+def appoint_user_manager(
+    ticket_id: TicketID, manager_id: UserID, initiator_id: UserID
+) -> None:
     """Appoint the user as the ticket's user manager."""
     ticket = ticket_service.find_ticket(ticket_id)
 
@@ -54,8 +55,9 @@ def withdraw_user_manager(ticket_id: TicketID, initiator_id: UserID) -> None:
     db.session.commit()
 
 
-def appoint_user(ticket_id: TicketID, user_id: UserID, initiator_id: UserID
-                ) -> None:
+def appoint_user(
+    ticket_id: TicketID, user_id: UserID, initiator_id: UserID
+) -> None:
     """Appoint the user as the ticket's user."""
     ticket = ticket_service.find_ticket(ticket_id)
 

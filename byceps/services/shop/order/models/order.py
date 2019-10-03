@@ -61,11 +61,21 @@ class Order(db.Model):
     shipping_required = db.Column(db.Boolean, nullable=False)
     shipped_at = db.Column(db.DateTime, nullable=True)
 
-    def __init__(self, shop_id: ShopID, order_number: OrderNumber,
-                 placed_by_id: UserID, first_names: str, last_name: str,
-                 country: str, zip_code: str, city: str, street,
-                 payment_method: PaymentMethod,
-                 *, created_at: Optional[datetime]=None) -> None:
+    def __init__(
+        self,
+        shop_id: ShopID,
+        order_number: OrderNumber,
+        placed_by_id: UserID,
+        first_names: str,
+        last_name: str,
+        country: str,
+        zip_code: str,
+        city: str,
+        street,
+        payment_method: PaymentMethod,
+        *,
+        created_at: Optional[datetime] = None,
+    ) -> None:
         if created_at is None:
             created_at = datetime.utcnow()
         self.created_at = created_at

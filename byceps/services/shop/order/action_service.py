@@ -40,8 +40,12 @@ PROCEDURES_BY_NAME = {
 # creation
 
 
-def create_action(article_number: ArticleNumber, payment_state: PaymentState,
-                  procedure: str, parameters: Parameters) -> None:
+def create_action(
+    article_number: ArticleNumber,
+    payment_state: PaymentState,
+    procedure: str,
+    parameters: Parameters,
+) -> None:
     """Create an order action."""
     action = OrderAction(article_number, payment_state, procedure, parameters)
 
@@ -63,8 +67,10 @@ def get_actions(shop_id: ShopID) -> Sequence[OrderAction]:
 # -------------------------------------------------------------------- #
 # execution
 
-def execute_actions(order: Order, payment_state: PaymentState,
-                    initiator_id: UserID) -> None:
+
+def execute_actions(
+    order: Order, payment_state: PaymentState, initiator_id: UserID
+) -> None:
     """Execute relevant actions for this order in its new payment state."""
     article_numbers = {item.article_number for item in order.items}
 
@@ -83,8 +89,9 @@ def execute_actions(order: Order, payment_state: PaymentState,
         _execute_procedure(order, action, article_quantity, initiator_id)
 
 
-def _get_actions(article_numbers: Set[ArticleNumber],
-                 payment_state: PaymentState) -> Sequence[OrderAction]:
+def _get_actions(
+    article_numbers: Set[ArticleNumber], payment_state: PaymentState
+) -> Sequence[OrderAction]:
     """Return the order actions for those article numbers."""
     return OrderAction.query \
         .filter(OrderAction.article_number.in_(article_numbers)) \
@@ -92,8 +99,12 @@ def _get_actions(article_numbers: Set[ArticleNumber],
         .all()
 
 
-def _execute_procedure(order: Order, action: OrderAction, article_quantity: int,
-                       initiator_id: UserID) -> None:
+def _execute_procedure(
+    order: Order,
+    action: OrderAction,
+    article_quantity: int,
+    initiator_id: UserID,
+) -> None:
     """Execute the procedure configured for that order action."""
     article_number = action.article_number
     procedure_name = action.procedure

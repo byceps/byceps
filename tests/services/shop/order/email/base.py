@@ -23,14 +23,16 @@ class OrderEmailTestBase(ShopTestBase):
 
     # helpers
 
-    def create_article(self, shop_id, item_number, description, price,
-                       quantity):
+    def create_article(
+        self, shop_id, item_number, description, price, quantity
+    ):
         return super().create_article(shop_id, item_number=item_number,
                                       description=description, price=price,
                                       quantity=quantity)
 
-    def place_order_with_items(self, shop_id, orderer, created_at,
-                               items_with_quantity):
+    def place_order_with_items(
+        self, shop_id, orderer, created_at, items_with_quantity
+    ):
         orderer = create_orderer(orderer)
         payment_method = PaymentMethod.bank_transfer
         cart = Cart()

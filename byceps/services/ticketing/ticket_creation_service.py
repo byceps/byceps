@@ -19,18 +19,25 @@ from .models.ticket_bundle import TicketBundle as DbTicketBundle
 from .transfer.models import TicketCategoryID, TicketCode
 
 
-def create_ticket(category_id: TicketCategoryID, owned_by_id: UserID,
-                  *, order_number: Optional[OrderNumber]=None
-                 ) -> Sequence[DbTicket]:
+def create_ticket(
+    category_id: TicketCategoryID,
+    owned_by_id: UserID,
+    *,
+    order_number: Optional[OrderNumber] = None,
+) -> Sequence[DbTicket]:
     """Create a single ticket."""
     tickets = create_tickets(category_id, owned_by_id, 1,
                              order_number=order_number)
     return tickets[0]
 
 
-def create_tickets(category_id: TicketCategoryID, owned_by_id: UserID,
-                   quantity: int, *, order_number: Optional[OrderNumber]=None
-                  ) -> Sequence[DbTicket]:
+def create_tickets(
+    category_id: TicketCategoryID,
+    owned_by_id: UserID,
+    quantity: int,
+    *,
+    order_number: Optional[OrderNumber] = None,
+) -> Sequence[DbTicket]:
     """Create a number of tickets of the same category for a single owner."""
     tickets = list(build_tickets(category_id, owned_by_id, quantity,
                                  order_number=order_number))
@@ -41,10 +48,14 @@ def create_tickets(category_id: TicketCategoryID, owned_by_id: UserID,
     return tickets
 
 
-def build_tickets(category_id: TicketCategoryID, owned_by_id: UserID,
-                  quantity: int, *, bundle: Optional[DbTicketBundle]=None,
-                  order_number: Optional[OrderNumber]=None
-                 ) -> Iterator[DbTicket]:
+def build_tickets(
+    category_id: TicketCategoryID,
+    owned_by_id: UserID,
+    quantity: int,
+    *,
+    bundle: Optional[DbTicketBundle] = None,
+    order_number: Optional[OrderNumber] = None,
+) -> Iterator[DbTicket]:
     if quantity < 1:
         raise ValueError('Ticket quantity must be positive.')
 

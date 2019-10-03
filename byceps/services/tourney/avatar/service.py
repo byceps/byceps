@@ -24,10 +24,14 @@ from .models import Avatar
 MAXIMUM_DIMENSIONS = Dimensions(512, 512)
 
 
-def create_avatar_image(party_id: PartyID, creator_id: UserID,
-                        stream: BinaryIO, allowed_types: Set[ImageType],
-                        *, maximum_dimensions: Dimensions=MAXIMUM_DIMENSIONS
-                       ) -> Avatar:
+def create_avatar_image(
+    party_id: PartyID,
+    creator_id: UserID,
+    stream: BinaryIO,
+    allowed_types: Set[ImageType],
+    *,
+    maximum_dimensions: Dimensions = MAXIMUM_DIMENSIONS,
+) -> Avatar:
     """Create a new avatar image.
 
     Raise `ImageTypeProhibited` if the stream data is not of one the

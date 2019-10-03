@@ -15,10 +15,12 @@ from ..verification_token.models import Token
 from ..verification_token import service as verification_token_service
 
 
-def send_email_address_confirmation_email(recipient_email_address: str,
-                                          recipient_screen_name: str,
-                                          verification_token: Token,
-                                          site_id: SiteID) -> None:
+def send_email_address_confirmation_email(
+    recipient_email_address: str,
+    recipient_screen_name: str,
+    verification_token: Token,
+    site_id: SiteID,
+) -> None:
     site = site_service.get_site(site_id)
 
     email_config = email_service.get_config(site.email_config_id)

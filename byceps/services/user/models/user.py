@@ -69,8 +69,9 @@ class User(db.Model):
                                creator=lambda avatar:
                                     AvatarSelection(None, avatar.id))
 
-    def __init__(self, created_at: datetime, screen_name: str,
-                 email_address: str) -> None:
+    def __init__(
+        self, created_at: datetime, screen_name: str, email_address: str
+    ) -> None:
         self.created_at = created_at
         self.screen_name = screen_name
         self.email_address = email_address

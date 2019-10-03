@@ -31,8 +31,9 @@ class AttachedArticle(db.Model):
     attached_to_article = db.relationship(Article, foreign_keys=[attached_to_article_number],
                                           backref=db.backref('attached_articles', collection_class=set))
 
-    def __init__(self, article: Article, quantity: int,
-                 attached_to_article: Article) -> None:
+    def __init__(
+        self, article: Article, quantity: int, attached_to_article: Article
+    ) -> None:
         self.article = article
         self.quantity = quantity
         self.attached_to_article = attached_to_article

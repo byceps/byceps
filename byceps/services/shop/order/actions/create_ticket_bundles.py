@@ -18,9 +18,13 @@ from ..models.order_action import Parameters
 from ..transfer.models import Order, OrderID
 
 
-def create_ticket_bundles(order: Order, article_number: ArticleNumber,
-                          bundle_quantity: int, initiator_id: UserID,
-                          parameters: Parameters) -> None:
+def create_ticket_bundles(
+    order: Order,
+    article_number: ArticleNumber,
+    bundle_quantity: int,
+    initiator_id: UserID,
+    parameters: Parameters,
+) -> None:
     """Create ticket bundles."""
     category_id = parameters['category_id']
     ticket_quantity = parameters['ticket_quantity']

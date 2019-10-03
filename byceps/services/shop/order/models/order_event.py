@@ -28,8 +28,13 @@ class OrderEvent(db.Model):
     order_id = db.Column(db.Uuid, db.ForeignKey('shop_orders.id'), index=True, nullable=False)
     data = db.Column(db.JSONB)
 
-    def __init__(self, occurred_at: datetime, event_type: str,
-                 order_id: OrderID, data: OrderEventData) -> None:
+    def __init__(
+        self,
+        occurred_at: datetime,
+        event_type: str,
+        order_id: OrderID,
+        data: OrderEventData,
+    ) -> None:
         self.occurred_at = occurred_at
         self.event_type = event_type
         self.order_id = order_id

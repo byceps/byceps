@@ -33,8 +33,13 @@ class MessageTemplateRenderResult:
     body: str
 
 
-def send_message(sender_id: UserID, recipient_id: UserID, text: str,
-                 sender_contact_url: str, site_id: SiteID) -> None:
+def send_message(
+    sender_id: UserID,
+    recipient_id: UserID,
+    text: str,
+    sender_contact_url: str,
+    site_id: SiteID,
+) -> None:
     """Create a message and send it."""
     message = create_message(sender_id, recipient_id, text, sender_contact_url,
                              site_id)
@@ -42,8 +47,13 @@ def send_message(sender_id: UserID, recipient_id: UserID, text: str,
     email_service.enqueue_message(message)
 
 
-def create_message(sender_id: UserID, recipient_id: UserID, text: str,
-                   sender_contact_url: str, site_id: SiteID) -> Message:
+def create_message(
+    sender_id: UserID,
+    recipient_id: UserID,
+    text: str,
+    sender_contact_url: str,
+    site_id: SiteID,
+) -> Message:
     """Create a message."""
     sender = _get_user(sender_id)
     recipient = _get_user(recipient_id)
@@ -62,8 +72,13 @@ def _get_user(user_id: UserID) -> User:
     return user
 
 
-def _assemble_message(sender_user: User, recipient: User, text: str,
-                      sender_contact_url: str, site: Site) -> Message:
+def _assemble_message(
+    sender_user: User,
+    recipient: User,
+    text: str,
+    sender_contact_url: str,
+    site: Site,
+) -> Message:
     """Assemble an email message with the rendered template as its body."""
     email_config = email_service.get_config(site.email_config_id)
 
@@ -90,10 +105,14 @@ def _to_name_and_address_string(name: str, address: str) -> str:
     return formataddr((name, address))
 
 
-def _render_message_template(sender: User, recipient: User, text: str,
-                             sender_contact_url: str, site: Site,
-                             website_contact_address: Optional[str]
-                            ) -> MessageTemplateRenderResult:
+def _render_message_template(
+    sender: User,
+    recipient: User,
+    text: str,
+    sender_contact_url: str,
+    site: Site,
+    website_contact_address: Optional[str],
+) -> MessageTemplateRenderResult:
     template = _get_template('message.txt')
 
     context = {

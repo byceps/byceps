@@ -34,9 +34,13 @@ class OrderAction(db.Model):
     procedure = db.Column(db.UnicodeText, nullable=False)
     parameters = db.Column(db.JSONB, nullable=False)
 
-    def __init__(self, article_number: ArticleNumber,
-                 payment_state: PaymentState, procedure: str,
-                 parameters: Parameters) -> None:
+    def __init__(
+        self,
+        article_number: ArticleNumber,
+        payment_state: PaymentState,
+        procedure: str,
+        parameters: Parameters,
+    ) -> None:
         self.article_number = article_number
         self.payment_state = payment_state
         self.procedure = procedure

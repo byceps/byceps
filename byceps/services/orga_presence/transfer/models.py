@@ -51,7 +51,9 @@ class PresenceTimeSlot(TimeSlot):
     orga: User
 
     @classmethod
-    def from_(cls, orga: User, starts_at: datetime, ends_at: datetime) -> PresenceTimeSlot:
+    def from_(
+        cls, orga: User, starts_at: datetime, ends_at: datetime
+    ) -> PresenceTimeSlot:
         return cls(
             type=TimeSlotType.presence,
             starts_at=starts_at,
@@ -65,7 +67,9 @@ class TaskTimeSlot(TimeSlot):
     title: str
 
     @classmethod
-    def from_(cls, title: str, starts_at: datetime, ends_at: datetime) -> TaskTimeSlot:
+    def from_(
+        cls, title: str, starts_at: datetime, ends_at: datetime
+    ) -> TaskTimeSlot:
         return cls(
             type=TimeSlotType.task,
             starts_at=starts_at,

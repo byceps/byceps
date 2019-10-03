@@ -62,9 +62,15 @@ class Ticket(db.Model):
     revoked = db.Column(db.Boolean, default=False, nullable=False)
     user_checked_in = db.Column(db.Boolean, default=False, nullable=False)
 
-    def __init__(self, code: TicketCode, category_id: TicketCategoryID,
-                 owned_by_id: UserID, *, bundle: Optional[TicketBundle]=None,
-                 order_number: Optional[OrderNumber]=None) -> None:
+    def __init__(
+        self,
+        code: TicketCode,
+        category_id: TicketCategoryID,
+        owned_by_id: UserID,
+        *,
+        bundle: Optional[TicketBundle] = None,
+        order_number: Optional[OrderNumber] = None,
+    ) -> None:
         self.code = code
         self.bundle = bundle
         self.category_id = category_id

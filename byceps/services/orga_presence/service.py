@@ -82,14 +82,16 @@ def _find_latest_end(dt_ranges: Sequence[DateTimeRange]) -> datetime:
     return max(dt_range.end for dt_range in dt_ranges)
 
 
-def _to_datetimes_without_tzinfo(arrow_datetimes: Sequence[Arrow]) \
-                                 -> Iterator[datetime]:
+def _to_datetimes_without_tzinfo(
+    arrow_datetimes: Sequence[Arrow]
+) -> Iterator[datetime]:
     for arrow_datetime in arrow_datetimes:
         yield arrow_datetime.datetime.replace(tzinfo=None)
 
 
-def get_days_and_hour_totals(hour_ranges: Sequence[DateTimeRange]) \
-                             -> Iterator[Tuple[date, int]]:
+def get_days_and_hour_totals(
+    hour_ranges: Sequence[DateTimeRange]
+) -> Iterator[Tuple[date, int]]:
     """Yield (day, relevant hours total) pairs."""
     def get_date(dt_range: DateTimeRange) -> date:
         return dt_range.start.date()

@@ -154,7 +154,9 @@ def item_list_versions(item_id):
     }
 
 
-@blueprint.route('/items/<uuid:from_version_id>/compare_to/<uuid:to_version_id>')
+@blueprint.route(
+    '/items/<uuid:from_version_id>/compare_to/<uuid:to_version_id>'
+)
 @permission_required(NewsItemPermission.view)
 @templated
 def item_compare_versions(from_version_id, to_version_id):

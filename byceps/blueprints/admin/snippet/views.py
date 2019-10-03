@@ -148,7 +148,9 @@ def create_document_form(scope_type, scope_name):
     }
 
 
-@blueprint.route('/for_scope/<scope_type>/<scope_name>/documents', methods=['POST'])
+@blueprint.route(
+    '/for_scope/<scope_type>/<scope_name>/documents', methods=['POST']
+)
 @permission_required(SnippetPermission.create)
 def create_document(scope_type, scope_name):
     """Create a document."""
@@ -223,7 +225,9 @@ def update_document(snippet_id):
     return redirect_to('.view_version', snippet_version_id=version.id)
 
 
-@blueprint.route('/documents/<uuid:from_version_id>/compare_to/<uuid:to_version_id>')
+@blueprint.route(
+    '/documents/<uuid:from_version_id>/compare_to/<uuid:to_version_id>'
+)
 @permission_required(SnippetPermission.view_history)
 @templated
 def compare_documents(from_version_id, to_version_id):
@@ -280,7 +284,9 @@ def create_fragment_form(scope_type, scope_name):
     }
 
 
-@blueprint.route('/for_scope/<scope_type>/<scope_name>/fragments', methods=['POST'])
+@blueprint.route(
+    '/for_scope/<scope_type>/<scope_name>/fragments', methods=['POST']
+)
 @permission_required(SnippetPermission.create)
 def create_fragment(scope_type, scope_name):
     """Create a fragment."""
@@ -345,7 +351,9 @@ def update_fragment(snippet_id):
     return redirect_to('.view_version', snippet_version_id=version.id)
 
 
-@blueprint.route('/fragments/<uuid:from_version_id>/compare_to/<uuid:to_version_id>')
+@blueprint.route(
+    '/fragments/<uuid:from_version_id>/compare_to/<uuid:to_version_id>'
+)
 @permission_required(SnippetPermission.view_history)
 @templated
 def compare_fragments(from_version_id, to_version_id):

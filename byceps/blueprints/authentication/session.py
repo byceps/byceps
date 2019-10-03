@@ -21,7 +21,7 @@ KEY_USER_ID = 'user_id'
 KEY_USER_AUTH_TOKEN = 'user_auth_token'
 
 
-def start(user_id: UserID, auth_token: str, *, permanent: bool=False) -> None:
+def start(user_id: UserID, auth_token: str, *, permanent: bool = False) -> None:
     """Initialize the user's session by putting the relevant data
     into the session cookie.
     """
@@ -37,7 +37,7 @@ def end() -> None:
     session.permanent = False
 
 
-def get_user(*, party_id: Optional[PartyID]=None) -> Optional[User]:
+def get_user(*, party_id: Optional[PartyID] = None) -> Optional[User]:
     """Return the current user if authenticated, `None` if not."""
     user_id = _get_user_id()
     auth_token = _get_auth_token()
@@ -55,9 +55,12 @@ def _get_auth_token() -> Optional[str]:
     return session.get(KEY_USER_AUTH_TOKEN)
 
 
-def _load_user(user_id: Optional[str], auth_token: Optional[str],
-               *, party_id: Optional[PartyID]=None
-              ) -> Optional[User]:
+def _load_user(
+    user_id: Optional[str],
+    auth_token: Optional[str],
+    *,
+    party_id: Optional[PartyID] = None,
+) -> Optional[User]:
     """Load the user with that ID.
 
     Return `None` if:

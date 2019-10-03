@@ -52,9 +52,10 @@ def execute(document_id):
         fg='green')
 
 
-def _request_version_id(versions_by_id: Dict[VersionID, Version],
-                        current_version_id: Optional[VersionID]
-                       ) -> VersionID:
+def _request_version_id(
+    versions_by_id: Dict[VersionID, Version],
+    current_version_id: Optional[VersionID],
+) -> VersionID:
     version_ids = _get_version_ids_latest_first(versions_by_id)
 
     if not version_ids:
@@ -80,8 +81,9 @@ def _request_version_id(versions_by_id: Dict[VersionID, Version],
     return selection[0]
 
 
-def _get_version_ids_latest_first(versions_by_id: Dict[VersionID, Version]
-                                 ) -> List[VersionID]:
+def _get_version_ids_latest_first(
+    versions_by_id: Dict[VersionID, Version]
+) -> List[VersionID]:
     versions = versions_by_id.values()
 
     versions_latest_first = list(sorted(versions,

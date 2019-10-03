@@ -22,8 +22,9 @@ class Shop(db.Model):
     closed = db.Column(db.Boolean, default=False, nullable=False)
     archived = db.Column(db.Boolean, default=False, nullable=False)
 
-    def __init__(self, shop_id: ShopID, title: str, email_config_id: str
-                ) -> None:
+    def __init__(
+        self, shop_id: ShopID, title: str, email_config_id: str
+    ) -> None:
         self.id = shop_id
         self.title = title
         self.email_config_id = email_config_id

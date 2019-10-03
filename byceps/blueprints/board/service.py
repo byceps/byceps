@@ -29,8 +29,8 @@ from .models import CategoryWithLastUpdateAndUnseenFlag, Creator, Ticket
 
 
 def add_unseen_postings_flag_to_categories(
-        categories: Sequence[CategoryWithLastUpdate], user: CurrentUser
-        ) -> Sequence[CategoryWithLastUpdateAndUnseenFlag]:
+    categories: Sequence[CategoryWithLastUpdate], user: CurrentUser
+) -> Sequence[CategoryWithLastUpdateAndUnseenFlag]:
     """Add flag to each category stating if it contains postings unseen
     by the user.
     """
@@ -67,16 +67,19 @@ def add_topic_unseen_flag(topics: Sequence[DbTopic], user: CurrentUser) -> None:
                 topic, user.id)
 
 
-def add_unseen_flag_to_postings(postings: Sequence[DbPosting],
-                                user: CurrentUser, last_viewed_at: datetime
-                               ) -> None:
+def add_unseen_flag_to_postings(
+    postings: Sequence[DbPosting], user: CurrentUser, last_viewed_at: datetime
+) -> None:
     """Add the attribute 'unseen' to each posting."""
     for posting in postings:
         posting.unseen = posting.is_unseen(user, last_viewed_at)
 
 
-def enrich_creators(postings: Sequence[DbPosting], brand_id: BrandID,
-                    party_id: Optional[PartyID]) -> None:
+def enrich_creators(
+    postings: Sequence[DbPosting],
+    brand_id: BrandID,
+    party_id: Optional[PartyID],
+) -> None:
     """Enrich creators with their badges."""
     creator_ids = {posting.creator_id for posting in postings}
 
@@ -103,8 +106,9 @@ def enrich_creators(postings: Sequence[DbPosting], brand_id: BrandID,
         posting.creator = Creator.from_(posting.creator, badges, ticket)
 
 
-def _get_badges(user_ids: Set[UserID], brand_id: BrandID
-               ) -> Dict[UserID, Set[Badge]]:
+def _get_badges(
+    user_ids: Set[UserID], brand_id: BrandID
+) -> Dict[UserID, Set[Badge]]:
     """Fetch users' badges that are either global or belong to the brand."""
     badges_by_user_id = badge_service.get_badges_for_users(user_ids,
                                                            featured_only=True)

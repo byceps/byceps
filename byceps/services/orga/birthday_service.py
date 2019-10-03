@@ -19,8 +19,9 @@ from ..user.transfer.models import User
 from .models import OrgaFlag
 
 
-def collect_orgas_with_next_birthdays(*, limit: int=None) \
-                                      -> Iterator[Tuple[User, UserDetail]]:
+def collect_orgas_with_next_birthdays(
+    *, limit: int = None
+) -> Iterator[Tuple[User, UserDetail]]:
     """Yield the next birthdays of organizers, sorted by month and day."""
     orgas_with_birthdays = _collect_orgas_with_birthdays()
 

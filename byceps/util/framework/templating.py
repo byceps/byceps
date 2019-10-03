@@ -31,7 +31,8 @@ def templated(arg) -> Callable:
     The rendered template string will be wrapped in a ``Response`` object and
     returned.
     """
-    def decorator(f: Callable, template_name: Optional[str]=None):
+
+    def decorator(f: Callable, template_name: Optional[str] = None):
         @wraps(f)
         def decorated(*args, **kwargs):
             name = _get_template_name(f, template_name)
@@ -55,8 +56,9 @@ def templated(arg) -> Callable:
     return wrapper
 
 
-def _get_template_name(view_function: Callable, template_name: Optional[str]) \
-                      -> str:
+def _get_template_name(
+    view_function: Callable, template_name: Optional[str]
+) -> str:
     if template_name is None:
         name = _derive_template_name(view_function)
     else:

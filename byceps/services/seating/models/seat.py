@@ -37,8 +37,14 @@ class Seat(db.Model):
     category = db.relationship(Category)
     label = db.Column(db.UnicodeText, nullable=True)
 
-    def __init__(self, area: Area, category_id: TicketCategoryID, *,
-                 coord_x: int=0, coord_y: int=0) -> None:
+    def __init__(
+        self,
+        area: Area,
+        category_id: TicketCategoryID,
+        *,
+        coord_x: int = 0,
+        coord_y: int = 0,
+    ) -> None:
         self.area = area
         self.coord_x = coord_x
         self.coord_y = coord_y

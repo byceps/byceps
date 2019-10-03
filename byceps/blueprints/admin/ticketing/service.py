@@ -54,8 +54,9 @@ def _fake_ticket_creation_event(ticket_id: TicketID) -> TicketEvent:
     return TicketEvent(ticket.created_at, 'ticket-created', ticket.id, data)
 
 
-def _find_values_for_keys(events: Sequence[TicketEvent], keys: Set[str]
-                         ) -> Iterator[Any]:
+def _find_values_for_keys(
+    events: Sequence[TicketEvent], keys: Set[str]
+) -> Iterator[Any]:
     for event in events:
         for key in keys:
             value = event.data.get(key)
@@ -63,8 +64,9 @@ def _find_values_for_keys(events: Sequence[TicketEvent], keys: Set[str]
                 yield value
 
 
-def _get_additional_data(event: TicketEvent, users_by_id: Dict[str, User]
-                        ) -> Iterator[Tuple[str, Any]]:
+def _get_additional_data(
+    event: TicketEvent, users_by_id: Dict[str, User]
+) -> Iterator[Tuple[str, Any]]:
     if event.event_type in {
             'seat-manager-appointed',
             'seat-manager-withdrawn',
@@ -107,15 +109,17 @@ def _get_additional_data(event: TicketEvent, users_by_id: Dict[str, User]
             'appointed_user_manager_id', 'appointed_user_manager')
 
 
-def _get_additional_data_for_user_initiated_event(event: TicketEvent,
-        users_by_id: Dict[str, User]) -> Iterator[Tuple[str, Any]]:
+def _get_additional_data_for_user_initiated_event(
+    event: TicketEvent, users_by_id: Dict[str, User]
+) -> Iterator[Tuple[str, Any]]:
     initiator_id = event.data.get('initiator_id')
     if initiator_id is not None:
         yield 'initiator', users_by_id[initiator_id]
 
 
-def _get_additional_data_for_seat_occupied_event(event: TicketEvent
-                                                ) -> Iterator[Tuple[str, Any]]:
+def _get_additional_data_for_seat_occupied_event(
+    event: TicketEvent
+) -> Iterator[Tuple[str, Any]]:
     seat_id = event.data['seat_id']
     seat = seat_service.find_seat(seat_id)
     yield 'seat_label', seat.label
@@ -126,24 +130,29 @@ def _get_additional_data_for_seat_occupied_event(event: TicketEvent
         yield 'previous_seat_label', previous_seat.label
 
 
-def _get_additional_data_for_seat_released_event(event: TicketEvent
-                                                ) -> Iterator[Tuple[str, Any]]:
+def _get_additional_data_for_seat_released_event(
+    event: TicketEvent
+) -> Iterator[Tuple[str, Any]]:
     seat_id = event.data.get('seat_id')
     if seat_id:
         seat = seat_service.find_seat(seat_id)
         yield 'seat_label', seat.label
 
 
-def _get_additional_data_for_ticket_revoked_event(event: TicketEvent
-                                                 ) -> Iterator[Tuple[str, Any]]:
+def _get_additional_data_for_ticket_revoked_event(
+    event: TicketEvent
+) -> Iterator[Tuple[str, Any]]:
     reason = event.data.get('reason')
     if reason:
         yield 'reason', reason
 
 
-def _look_up_user_for_id(event: TicketEvent, users_by_id: Dict[str, User],
-                         user_id_key: str, user_key: str
-                        ) -> Tuple[str, Optional[User]]:
+def _look_up_user_for_id(
+    event: TicketEvent,
+    users_by_id: Dict[str, User],
+    user_id_key: str,
+    user_key: str,
+) -> Tuple[str, Optional[User]]:
     user_id = event.data[user_id_key]
     user = users_by_id.get(user_id)
     return user_key, user

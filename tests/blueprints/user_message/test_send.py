@@ -21,8 +21,9 @@ class SendUserMessageTest(AbstractAppTestCase):
         create_site(server_name='acme.example.com')
 
     @patch('byceps.email.send')
-    def test_send_when_logged_in_without_brand_contact_address(self,
-                                                               send_email_mock):
+    def test_send_when_logged_in_without_brand_contact_address(
+        self, send_email_mock
+    ):
         sender = create_user('Alice',
             user_id='a4903d8f-0bc6-4af9-aeb9-d7534a0a22e8',
             email_address='alice@example.com')
@@ -80,8 +81,9 @@ Diese Mitteilung wurde über die Website acme.example.com gesendet.\
             expected_email_body)
 
     @patch('byceps.email.send')
-    def test_send_when_logged_in_with_brand_contact_address(self,
-                                                            send_email_mock):
+    def test_send_when_logged_in_with_brand_contact_address(
+        self, send_email_mock
+    ):
         create_email_config(sender_address='noreply@example.com',
                             sender_name='ACME Entertainment Convention',
                             contact_address='help@example.com')

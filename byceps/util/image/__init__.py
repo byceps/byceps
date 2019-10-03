@@ -23,9 +23,13 @@ def read_dimensions(filename_or_stream: FilenameOrStream) -> Dimensions:
     return Dimensions(*image.size)
 
 
-def create_thumbnail(filename_or_stream: FilenameOrStream, image_type: str,
-                     maximum_dimensions: Dimensions, *,
-                     force_square: bool=False) -> BinaryIO:
+def create_thumbnail(
+    filename_or_stream: FilenameOrStream,
+    image_type: str,
+    maximum_dimensions: Dimensions,
+    *,
+    force_square: bool = False,
+) -> BinaryIO:
     """Create a thumbnail from the given image and return the result stream."""
     output_stream = BytesIO()
 

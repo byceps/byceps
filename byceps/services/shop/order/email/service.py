@@ -63,8 +63,9 @@ def send_email_for_paid_order_to_orderer(order_id: OrderID) -> None:
     _send_email(message)
 
 
-def _assemble_email_for_incoming_order_to_orderer(data: OrderEmailData
-                                                 ) -> Message:
+def _assemble_email_for_incoming_order_to_orderer(
+    data: OrderEmailData
+) -> Message:
     order = data.order
 
     subject = 'Deine Bestellung ({}) ist eingegangen.' \
@@ -85,8 +86,9 @@ def _get_payment_instructions(order: Order) -> str:
     return template.render(order_number=order.order_number)
 
 
-def _assemble_email_for_canceled_order_to_orderer(data: OrderEmailData
-                                                 ) -> Message:
+def _assemble_email_for_canceled_order_to_orderer(
+    data: OrderEmailData
+) -> Message:
     subject = '\u274c Deine Bestellung ({}) wurde storniert.' \
         .format(data.order.order_number)
     template_name = 'order_canceled.txt'
@@ -142,10 +144,13 @@ def _get_footer(order: Order) -> str:
     return template.render()
 
 
-def _assemble_email_to_orderer(subject: str, template_name: str,
-                               template_context: Dict[str, Any],
-                               email_config_id: str, recipient_address: str
-                              ) -> Message:
+def _assemble_email_to_orderer(
+    subject: str,
+    template_name: str,
+    template_context: Dict[str, Any],
+    email_config_id: str,
+    recipient_address: str,
+) -> Message:
     """Assemble an email message with the rendered template as its body."""
     sender = _get_sender_address(email_config_id)
     body = _render_template(template_name, **template_context)

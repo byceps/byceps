@@ -45,7 +45,9 @@ def test_belongs_to_bundle(bundle_id, expected):
     (user2.id, None    , user1.id, user1.id, True ),
     (user2.id, user1.id, user1.id, user1.id, True ),
 ])
-def test_is_managed_by(owned_by_id, seat_managed_by_id, user_managed_by_id, user_id, expected):
+def test_is_managed_by(
+    owned_by_id, seat_managed_by_id, user_managed_by_id, user_id, expected
+):
     ticket = create_ticket(owned_by_id,
                            seat_managed_by_id=seat_managed_by_id,
                            user_managed_by_id=user_managed_by_id)
@@ -87,8 +89,13 @@ def test_is_user_managed_by(owned_by_id, user_managed_by_id, user_id, expected):
     assert ticket.is_user_managed_by(user_id) == expected
 
 
-def create_ticket(owned_by_id, *, bundle_id=None, seat_managed_by_id=None,
-                  user_managed_by_id=None):
+def create_ticket(
+    owned_by_id,
+    *,
+    bundle_id=None,
+    seat_managed_by_id=None,
+    user_managed_by_id=None,
+):
     code = 'BRTZN'
     category_id = None
 

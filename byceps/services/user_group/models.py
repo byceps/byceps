@@ -30,8 +30,9 @@ class UserGroup(db.Model):
 
     members = association_proxy('memberships', 'user')
 
-    def __init__(self, creator_id: UserID, title: str, description: str) \
-                 -> None:
+    def __init__(
+        self, creator_id: UserID, title: str, description: str
+    ) -> None:
         self.creator_id = creator_id
         self.title = title
         self.description = description

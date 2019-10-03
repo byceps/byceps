@@ -109,8 +109,15 @@ def _get_shop_or_404(shop_id):
     return shop
 
 
-def _build_order(shop_id, payment_state, *, is_open=False, is_canceled=False,
-                 is_paid=False, cancelation_reason=None):
+def _build_order(
+    shop_id,
+    payment_state,
+    *,
+    is_open=False,
+    is_canceled=False,
+    is_paid=False,
+    cancelation_reason=None,
+):
     order_id = generate_uuid()
 
     order_numer_seq = sequence_service.find_order_number_sequence(shop_id)

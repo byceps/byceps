@@ -17,8 +17,9 @@ from .models.snippet import CurrentVersionAssociation, Snippet, SnippetVersion
 from .transfer.models import MountpointID, SnippetID
 
 
-def create_mountpoint(site_id: SiteID, endpoint_suffix: str, url_path: str,
-                      snippet_id: SnippetID) -> Mountpoint:
+def create_mountpoint(
+    site_id: SiteID, endpoint_suffix: str, url_path: str, snippet_id: SnippetID
+) -> Mountpoint:
     """Create a mountpoint."""
     mountpoint = Mountpoint(site_id, endpoint_suffix, url_path, snippet_id)
 
@@ -46,9 +47,9 @@ def get_mountpoints_for_site(site_id: SiteID) -> Sequence[Mountpoint]:
         .join(Snippet) \
         .all()
 
-def find_current_snippet_version_for_mountpoint(site_id: SiteID,
-                                                endpoint_suffix: str
-                                               ) -> SnippetVersion:
+def find_current_snippet_version_for_mountpoint(
+    site_id: SiteID, endpoint_suffix: str
+) -> SnippetVersion:
     """Return the current version of the snippet mounted at that
     endpoint of that site, or `None` if not found.
     """

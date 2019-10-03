@@ -21,8 +21,9 @@ from ...verification_token import service as verification_token_service
 from . import service as password_service
 
 
-def prepare_password_reset(user: User, *, sender: Optional[Sender]=None
-                          ) -> None:
+def prepare_password_reset(
+    user: User, *, sender: Optional[Sender] = None
+) -> None:
     """Create a verification token for password reset and email it to
     the user's address.
     """

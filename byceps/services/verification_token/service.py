@@ -63,8 +63,9 @@ def find_for_email_address_confirmation_by_token(token_value: str) -> Token:
     return _find_for_purpose_by_token(token_value, purpose)
 
 
-def find_for_email_address_confirmation_by_user(user_id: UserID
-                                               ) -> Optional[Token]:
+def find_for_email_address_confirmation_by_user(
+    user_id: UserID
+) -> Optional[Token]:
     return Token.query \
         .filter_by(user_id=user_id) \
         .for_purpose(Purpose.email_address_confirmation) \
@@ -88,8 +89,9 @@ def find_for_terms_consent_by_user(user_id: UserID) -> Optional[Token]:
         .first()
 
 
-def _find_for_purpose_by_token(token_value: str, purpose: Purpose
-                             ) -> Optional[Token]:
+def _find_for_purpose_by_token(
+    token_value: str, purpose: Purpose
+) -> Optional[Token]:
     return Token.query \
         .filter_by(token=token_value) \
         .for_purpose(purpose) \

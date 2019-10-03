@@ -65,8 +65,9 @@ def view(party_id):
     }
 
 
-def _group_presences_by_orga(presences: Iterable[PresenceTimeSlot]
-                            ) -> Dict[User, PresenceTimeSlot]:
+def _group_presences_by_orga(
+    presences: Iterable[PresenceTimeSlot]
+) -> Dict[User, PresenceTimeSlot]:
     d = defaultdict(set)
 
     for presence in presences:
@@ -75,6 +76,7 @@ def _group_presences_by_orga(presences: Iterable[PresenceTimeSlot]
     return d
 
 
-def is_instant_contained_in_time_slots(instant: datetime,
-                                       time_slots: Iterable[TimeSlot]) -> bool:
+def is_instant_contained_in_time_slots(
+    instant: datetime, time_slots: Iterable[TimeSlot]
+) -> bool:
     return any(time_slot.range.contains(instant) for time_slot in time_slots)

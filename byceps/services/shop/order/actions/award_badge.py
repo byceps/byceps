@@ -18,8 +18,13 @@ from ..models.order_action import Parameters
 from ..transfer.models import Order, OrderID
 
 
-def award_badge(order: Order, article_number: ArticleNumber, quantity: int,
-                initiator_id: UserID, parameters: Parameters) -> None:
+def award_badge(
+    order: Order,
+    article_number: ArticleNumber,
+    quantity: int,
+    initiator_id: UserID,
+    parameters: Parameters,
+) -> None:
     """Award badge to user."""
     badge_id = parameters['badge_id']
     user_id = order.placed_by_id

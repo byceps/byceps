@@ -21,9 +21,14 @@ class EmailConfig(db.Model):
     sender_name = db.Column(db.UnicodeText, nullable=True)
     contact_address = db.Column(db.UnicodeText, nullable=True)
 
-    def __init__(self, config_id: str, sender_address: str,
-                 *, sender_name: Optional[str]=None,
-                 contact_address: Optional[str]=None) -> None:
+    def __init__(
+        self,
+        config_id: str,
+        sender_address: str,
+        *,
+        sender_name: Optional[str] = None,
+        contact_address: Optional[str] = None,
+    ) -> None:
         self.id = config_id
         self.sender_address = sender_address
         self.sender_name = sender_name

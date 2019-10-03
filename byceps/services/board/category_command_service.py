@@ -14,8 +14,9 @@ from .transfer.models import BoardID, Category, CategoryID
 from . import topic_query_service
 
 
-def create_category(board_id: BoardID, slug: str, title: str, description: str
-                   ) -> Category:
+def create_category(
+    board_id: BoardID, slug: str, title: str, description: str
+) -> Category:
     """Create a category in that board."""
     board = DbBoard.query.get(board_id)
     if board is None:
@@ -29,9 +30,9 @@ def create_category(board_id: BoardID, slug: str, title: str, description: str
     return _db_entity_to_category(category)
 
 
-def update_category(category_id: CategoryID, slug: str, title: str,
-                    description: str
-                   ) -> Category:
+def update_category(
+    category_id: CategoryID, slug: str, title: str, description: str
+) -> Category:
     """Update the category."""
     category = _get_category(category_id)
 

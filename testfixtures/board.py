@@ -14,8 +14,9 @@ def create_board(brand_id, board_id):
     return board_service.create_board(brand_id, board_id)
 
 
-def create_category(board_id, *, number=1, slug=None, title=None,
-                    description=None):
+def create_category(
+    board_id, *, number=1, slug=None, title=None, description=None
+):
     if slug is None:
         slug = 'category-{}'.format(number)
 

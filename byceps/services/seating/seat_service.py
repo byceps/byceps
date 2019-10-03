@@ -20,9 +20,9 @@ from .models.seat import Seat as DbSeat
 from .transfer.models import AreaID, SeatID
 
 
-def create_seat(area: DbArea, coord_x: int, coord_y: int,
-                category_id: TicketCategoryID
-               ) -> DbSeat:
+def create_seat(
+    area: DbArea, coord_x: int, coord_y: int, category_id: TicketCategoryID
+) -> DbSeat:
     """Create a seat."""
     seat = DbSeat(area, category_id, coord_x=coord_x, coord_y=coord_y)
 
@@ -32,8 +32,9 @@ def create_seat(area: DbArea, coord_x: int, coord_y: int,
     return seat
 
 
-def count_occupied_seats_by_category(party_id: PartyID
-                                    ) -> List[Tuple[TicketCategory, int]]:
+def count_occupied_seats_by_category(
+    party_id: PartyID
+) -> List[Tuple[TicketCategory, int]]:
     """Count occupied seats for the party, grouped by ticket category."""
     subquery = db.session \
         .query(

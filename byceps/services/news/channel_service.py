@@ -17,8 +17,9 @@ from .models.channel import Channel as DbChannel
 from .transfer.models import Channel, ChannelID
 
 
-def create_channel(brand_id: BrandID, channel_id: ChannelID, url_prefix: str
-                  ) -> Channel:
+def create_channel(
+    brand_id: BrandID, channel_id: ChannelID, url_prefix: str
+) -> Channel:
     """Create a channel for that brand."""
     brand = brand_service.find_brand(brand_id)
     if brand is None:

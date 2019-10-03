@@ -69,8 +69,9 @@ def count_orgas_for_brand(brand_id: BrandID) -> int:
         .count()
 
 
-def add_orga_flag(brand_id: BrandID, user_id: UserID, initiator_id: UserID \
-                 ) -> OrgaFlag:
+def add_orga_flag(
+    brand_id: BrandID, user_id: UserID, initiator_id: UserID
+) -> OrgaFlag:
     """Add an orga flag for a user for that brand."""
     orga_flag = OrgaFlag(brand_id, user_id)
     db.session.add(orga_flag)

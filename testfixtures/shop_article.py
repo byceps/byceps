@@ -14,9 +14,17 @@ from byceps.services.shop.article.models.article import Article
 ANY_ARTICLE_ITEM_NUMBER = 'AEC-05-A00009'
 
 
-def create_article(shop_id, *, item_number=ANY_ARTICLE_ITEM_NUMBER,
-                   description='Cool thing', price=None, tax_rate=None,
-                   available_from=None, available_until=None, quantity=1):
+def create_article(
+    shop_id,
+    *,
+    item_number=ANY_ARTICLE_ITEM_NUMBER,
+    description='Cool thing',
+    price=None,
+    tax_rate=None,
+    available_from=None,
+    available_until=None,
+    quantity=1,
+):
     if price is None:
         price = Decimal('24.95')
 

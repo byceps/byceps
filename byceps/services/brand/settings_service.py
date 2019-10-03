@@ -25,8 +25,9 @@ def create_setting(brand_id: BrandID, name: str, value: str) -> BrandSetting:
     return _db_entity_to_brand_setting(setting)
 
 
-def create_or_update_setting(brand_id: BrandID, name: str, value: str
-                            ) -> BrandSetting:
+def create_or_update_setting(
+    brand_id: BrandID, name: str, value: str
+) -> BrandSetting:
     """Create or update a setting for that brand, depending on whether
     it already exists or not.
     """

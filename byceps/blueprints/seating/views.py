@@ -81,8 +81,9 @@ def view_area(slug):
     }
 
 
-def _get_users(seats: Sequence[Seat], tickets: Sequence[Ticket]
-              ) -> Dict[UserID, User]:
+def _get_users(
+    seats: Sequence[Seat], tickets: Sequence[Ticket]
+) -> Dict[UserID, User]:
     user_ids = set()
 
     for seat in seats:
@@ -98,7 +99,9 @@ def _get_users(seats: Sequence[Seat], tickets: Sequence[Ticket]
     return user_service.index_users_by_id(users)
 
 
-@blueprint.route('/ticket/<uuid:ticket_id>/seat/<uuid:seat_id>', methods=['POST'])
+@blueprint.route(
+    '/ticket/<uuid:ticket_id>/seat/<uuid:seat_id>', methods=['POST']
+)
 @login_required
 @respond_no_content
 def occupy_seat(ticket_id, seat_id):

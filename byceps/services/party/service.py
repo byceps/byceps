@@ -23,10 +23,16 @@ class UnknownPartyId(Exception):
     pass
 
 
-def create_party(party_id: PartyID, brand_id: BrandID, title: str,
-                 starts_at: datetime, ends_at: datetime,
-                 *, max_ticket_quantity: Optional[int]=None,
-                 shop_id: Optional[ShopID]=None) -> Party:
+def create_party(
+    party_id: PartyID,
+    brand_id: BrandID,
+    title: str,
+    starts_at: datetime,
+    ends_at: datetime,
+    *,
+    max_ticket_quantity: Optional[int] = None,
+    shop_id: Optional[ShopID] = None,
+) -> Party:
     """Create a party."""
     party = DbParty(party_id, brand_id, title, starts_at, ends_at,
                     max_ticket_quantity=max_ticket_quantity, shop_id=shop_id)
@@ -37,9 +43,15 @@ def create_party(party_id: PartyID, brand_id: BrandID, title: str,
     return _db_entity_to_party(party)
 
 
-def update_party(party_id: PartyID, title: str, starts_at: datetime,
-                 ends_at: datetime, max_ticket_quantity: Optional[int],
-                 shop_id: ShopID, archived: bool) -> Party:
+def update_party(
+    party_id: PartyID,
+    title: str,
+    starts_at: datetime,
+    ends_at: datetime,
+    max_ticket_quantity: Optional[int],
+    shop_id: ShopID,
+    archived: bool,
+) -> Party:
     """Update a party."""
     party = DbParty.query.get(party_id)
 
@@ -97,7 +109,7 @@ def get_all_parties_with_brands() -> List[DbParty]:
         .all()
 
 
-def get_active_parties(brand_id: Optional[BrandID]=None) -> List[Party]:
+def get_active_parties(brand_id: Optional[BrandID] = None) -> List[Party]:
     """Return active (i.e. non-archived) parties."""
     query = DbParty.query
 
@@ -145,8 +157,9 @@ def get_parties_for_brand(brand_id: BrandID) -> List[Party]:
     return [_db_entity_to_party(party) for party in parties]
 
 
-def get_parties_for_brand_paginated(brand_id: BrandID, page: int,
-                                    per_page: int) -> Pagination:
+def get_parties_for_brand_paginated(
+    brand_id: BrandID, page: int, per_page: int
+) -> Pagination:
     """Return the parties for that brand to show on the specified page."""
     return DbParty.query \
         .filter_by(brand_id=brand_id) \

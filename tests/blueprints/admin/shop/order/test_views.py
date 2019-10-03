@@ -54,8 +54,9 @@ class ShopAdminTestCase(ShopTestBase):
 
     @patch('byceps.blueprints.shop.order.signals.order_canceled.send')
     @patch('byceps.blueprints.admin.shop.order.views.order_email_service')
-    def test_cancel_before_paid(self, order_email_service_mock,
-                                order_canceled_signal_send_mock):
+    def test_cancel_before_paid(
+        self, order_email_service_mock, order_canceled_signal_send_mock
+    ):
         article_before = self.create_article(self.shop.id, quantity=8)
 
         quantified_articles_to_order = {(article_before, 3)}
@@ -90,8 +91,9 @@ class ShopAdminTestCase(ShopTestBase):
 
     @patch('byceps.blueprints.shop.order.signals.order_canceled.send')
     @patch('byceps.blueprints.admin.shop.order.views.order_email_service')
-    def test_cancel_before_paid_without_sending_email(self,
-            order_email_service_mock, order_canceled_signal_send_mock):
+    def test_cancel_before_paid_without_sending_email(
+        self, order_email_service_mock, order_canceled_signal_send_mock
+    ):
         article_before = self.create_article(self.shop.id, quantity=8)
         quantified_articles_to_order = {(article_before, 3)}
         placed_order = self.place_order(quantified_articles_to_order)
@@ -115,8 +117,9 @@ class ShopAdminTestCase(ShopTestBase):
 
     @patch('byceps.blueprints.shop.order.signals.order_paid.send')
     @patch('byceps.blueprints.admin.shop.order.views.order_email_service')
-    def test_mark_order_as_paid(self, order_email_service_mock,
-                                order_paid_signal_send_mock):
+    def test_mark_order_as_paid(
+        self, order_email_service_mock, order_paid_signal_send_mock
+    ):
         placed_order = self.place_order([])
         order_before = get_order(placed_order.id)
 
@@ -141,9 +144,12 @@ class ShopAdminTestCase(ShopTestBase):
     @patch('byceps.blueprints.shop.order.signals.order_canceled.send')
     @patch('byceps.blueprints.shop.order.signals.order_paid.send')
     @patch('byceps.blueprints.admin.shop.order.views.order_email_service')
-    def test_cancel_after_paid(self, order_email_service_mock,
-                               order_paid_signal_send_mock,
-                               order_canceled_signal_send_mock):
+    def test_cancel_after_paid(
+        self,
+        order_email_service_mock,
+        order_paid_signal_send_mock,
+        order_canceled_signal_send_mock,
+    ):
         article_before = self.create_article(self.shop.id, quantity=8)
 
         quantified_articles_to_order = {(article_before, 3)}

@@ -14,15 +14,20 @@ from ..seating import seat_service
 from ..seating.transfer.models import SeatID
 
 from . import event_service
-from .exceptions import SeatChangeDeniedForBundledTicket, \
-    SeatChangeDeniedForGroupSeat, TicketCategoryMismatch, TicketIsRevoked
+from .exceptions import (
+    SeatChangeDeniedForBundledTicket,
+    SeatChangeDeniedForGroupSeat,
+    TicketCategoryMismatch,
+    TicketIsRevoked,
+)
 from .models.ticket import Ticket as DbTicket
 from . import ticket_service
 from .transfer.models import TicketID
 
 
-def appoint_seat_manager(ticket_id: TicketID, manager_id: UserID,
-                         initiator_id: UserID) -> None:
+def appoint_seat_manager(
+    ticket_id: TicketID, manager_id: UserID, initiator_id: UserID
+) -> None:
     """Appoint the user as the ticket's seat manager."""
     ticket = ticket_service.find_ticket(ticket_id)
 
@@ -57,8 +62,9 @@ def withdraw_seat_manager(ticket_id: TicketID, initiator_id: UserID) -> None:
     db.session.commit()
 
 
-def occupy_seat(ticket_id: TicketID, seat_id: SeatID, initiator_id: UserID
-               ) -> None:
+def occupy_seat(
+    ticket_id: TicketID, seat_id: SeatID, initiator_id: UserID
+) -> None:
     """Occupy the seat with this ticket."""
     ticket = ticket_service.find_ticket(ticket_id)
 

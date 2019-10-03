@@ -31,10 +31,17 @@ class Party(db.Model):
     shop_id = db.Column(db.UnicodeText, db.ForeignKey('shops.id'), index=True, nullable=True)
     archived = db.Column(db.Boolean, default=False, nullable=False)
 
-    def __init__(self, party_id: PartyID, brand_id: BrandID, title: str,
-                 starts_at: datetime, ends_at: datetime,
-                 *, max_ticket_quantity: Optional[int]=None,
-                 shop_id: Optional[ShopID]=None) -> None:
+    def __init__(
+        self,
+        party_id: PartyID,
+        brand_id: BrandID,
+        title: str,
+        starts_at: datetime,
+        ends_at: datetime,
+        *,
+        max_ticket_quantity: Optional[int] = None,
+        shop_id: Optional[ShopID] = None,
+    ) -> None:
         self.id = party_id
         self.brand_id = brand_id
         self.title = title

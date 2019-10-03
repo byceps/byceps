@@ -84,8 +84,9 @@ def _filter_by_search_term(query, search_term):
         )
 
 
-def get_parties_and_tickets(user_id: UserID
-                           ) -> List[Tuple[Party, List[DbTicket]]]:
+def get_parties_and_tickets(
+    user_id: UserID
+) -> List[Tuple[Party, List[DbTicket]]]:
     """Return tickets the user uses or manages, and the related parties."""
     tickets = ticket_service.find_tickets_related_to_user(user_id)
 
@@ -103,8 +104,9 @@ def get_parties_and_tickets(user_id: UserID
     return parties_and_tickets
 
 
-def _group_tickets_by_party_id(tickets: Sequence[DbTicket]
-                              ) -> Dict[PartyID, List[DbTicket]]:
+def _group_tickets_by_party_id(
+    tickets: Sequence[DbTicket]
+) -> Dict[PartyID, List[DbTicket]]:
     tickets_by_party_id: Dict[PartyID, List[DbTicket]] = defaultdict(list)
 
     for ticket in tickets:
@@ -125,8 +127,9 @@ def get_attended_parties(user_id: UserID) -> List[Party]:
     return attended_parties
 
 
-def get_newsletter_subscriptions(user_id: UserID
-                                ) -> Iterator[Tuple[NewsletterList, bool]]:
+def get_newsletter_subscriptions(
+    user_id: UserID
+) -> Iterator[Tuple[NewsletterList, bool]]:
     lists = newsletter_service.get_all_lists()
     for list_ in lists:
         is_subscribed = newsletter_service.is_subscribed(user_id, list_.id)
@@ -186,8 +189,9 @@ def _fake_consent_events(user_id: UserID) -> Iterator[UserEvent]:
                         data)
 
 
-def _fake_newsletter_subscription_update_events(user_id: UserID) \
-        -> Iterator[UserEvent]:
+def _fake_newsletter_subscription_update_events(
+    user_id: UserID
+) -> Iterator[UserEvent]:
     """Yield the user's newsletter subscription updates as volatile events."""
     lists = newsletter_service.get_all_lists()
     lists_by_id = {list_.id: list_ for list_ in lists}
@@ -220,8 +224,9 @@ def _fake_order_events(user_id: UserID) -> Iterator[UserEvent]:
         yield UserEvent(order.created_at, 'order-placed', user_id, data)
 
 
-def _get_additional_data(event: UserEvent, users_by_id: Dict[str, User]
-                        ) -> Iterator[Tuple[str, Any]]:
+def _get_additional_data(
+    event: UserEvent, users_by_id: Dict[str, User]
+) -> Iterator[Tuple[str, Any]]:
     if event.event_type in {
             'user-created',
             'user-deleted',
@@ -253,8 +258,9 @@ def _get_additional_data(event: UserEvent, users_by_id: Dict[str, User]
         yield 'reason', event.data['reason']
 
 
-def _get_additional_data_for_user_initiated_event(event: UserEvent,
-        users_by_id: Dict[str, User]) -> Iterator[Tuple[str, Any]]:
+def _get_additional_data_for_user_initiated_event(
+    event: UserEvent, users_by_id: Dict[str, User]
+) -> Iterator[Tuple[str, Any]]:
     initiator_id = event.data.get('initiator_id')
     if initiator_id is not None:
         yield 'initiator', users_by_id[initiator_id]

@@ -12,9 +12,9 @@ from .article import Article
 
 
 class ArticleCompilationItem:
-
-    def __init__(self, article: Article, *, fixed_quantity: Optional[int]=None
-                ) -> None:
+    def __init__(
+        self, article: Article, *, fixed_quantity: Optional[int] = None
+    ) -> None:
         if (fixed_quantity is not None) and fixed_quantity < 1:
             raise ValueError(
                 'Fixed quantity, if given, must be a positive number.')

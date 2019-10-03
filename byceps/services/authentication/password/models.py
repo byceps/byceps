@@ -20,7 +20,9 @@ class Credential(db.Model):
     password_hash = db.Column(db.UnicodeText, nullable=False)
     updated_at = db.Column(db.DateTime, nullable=False)
 
-    def __init__(self, user_id: UserID, password_hash: str, updated_at: datetime) -> None:
+    def __init__(
+        self, user_id: UserID, password_hash: str, updated_at: datetime
+    ) -> None:
         self.user_id = user_id
         self.password_hash = password_hash
         self.updated_at = updated_at

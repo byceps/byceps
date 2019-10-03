@@ -25,8 +25,9 @@ def create_setting(party_id: PartyID, name: str, value: str) -> PartySetting:
     return _db_entity_to_party_setting(setting)
 
 
-def create_or_update_setting(party_id: PartyID, name: str, value: str
-                            ) -> PartySetting:
+def create_or_update_setting(
+    party_id: PartyID, name: str, value: str
+) -> PartySetting:
     """Create or update a setting for that party, depending on whether
     it already exists or not.
     """

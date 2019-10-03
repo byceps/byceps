@@ -46,8 +46,9 @@ def generate_uuid() -> uuid.UUID:
     return uuid.uuid4()
 
 
-def paginate(query: Query, page: int, per_page: int,
-             *, item_mapper: Mapper=None) -> Pagination:
+def paginate(
+    query: Query, page: int, per_page: int, *, item_mapper: Mapper = None
+) -> Pagination:
     """Return `per_page` items from page `page`."""
     if page < 1:
         page = 1
@@ -87,8 +88,9 @@ def insert_ignore_on_conflict(table: Table, values: Dict[str, Any]) -> None:
     db.session.commit()
 
 
-def upsert(table: Table, identifier: Dict[str, Any],
-           replacement: Dict[str, Any]) -> None:
+def upsert(
+    table: Table, identifier: Dict[str, Any], replacement: Dict[str, Any]
+) -> None:
     """Insert or update the record identified by `identifier` with value
     `replacement`.
     """
@@ -96,8 +98,11 @@ def upsert(table: Table, identifier: Dict[str, Any],
     db.session.commit()
 
 
-def upsert_many(table: Table, identifiers: Iterable[Dict[str, Any]],
-                replacement: Dict[str, Any]) -> None:
+def upsert_many(
+    table: Table,
+    identifiers: Iterable[Dict[str, Any]],
+    replacement: Dict[str, Any],
+) -> None:
     """Insert or update the record identified by `identifier` with value
     `replacement`.
     """
@@ -107,15 +112,17 @@ def upsert_many(table: Table, identifiers: Iterable[Dict[str, Any]],
     db.session.commit()
 
 
-def execute_upsert(table: Table, identifier: Dict[str, Any],
-                   replacement: Dict[str, Any]) -> None:
+def execute_upsert(
+    table: Table, identifier: Dict[str, Any], replacement: Dict[str, Any]
+) -> None:
     """Execute, but do not commit, an UPSERT."""
     query = _build_upsert_query(table, identifier, replacement)
     db.session.execute(query)
 
 
-def _build_upsert_query(table: Table, identifier: Dict[str, Any],
-                        replacement: Dict[str, Any]) -> Insert:
+def _build_upsert_query(
+    table: Table, identifier: Dict[str, Any], replacement: Dict[str, Any]
+) -> Insert:
     values = identifier.copy()
     values.update(replacement)
 

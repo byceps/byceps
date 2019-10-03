@@ -19,24 +19,27 @@ from .models.subject import Subject as DbSubject
 from .transfer.models import SubjectID
 
 
-def build_consent(user_id: UserID, subject_id: SubjectID, expressed_at: datetime
-                 ) -> DbConsent:
+def build_consent(
+    user_id: UserID, subject_id: SubjectID, expressed_at: datetime
+) -> DbConsent:
     """Create user's consent to that subject."""
     return DbConsent(user_id, subject_id, expressed_at)
 
 
-def consent_to_subject(subject_id: SubjectID, expressed_at: datetime,
-                       verification_token: Token
-                      ) -> None:
+def consent_to_subject(
+    subject_id: SubjectID, expressed_at: datetime, verification_token: Token
+) -> None:
     """Store the user's consent to that subject, and invalidate the
     verification token.
     """
     consent_to_subjects([subject_id], expressed_at, verification_token)
 
 
-def consent_to_subjects(subject_ids: Sequence[SubjectID],
-                        expressed_at: datetime, verification_token: Token
-                      ) -> None:
+def consent_to_subjects(
+    subject_ids: Sequence[SubjectID],
+    expressed_at: datetime,
+    verification_token: Token,
+) -> None:
     """Store the user's consent to these subjects, and invalidate the
     verification token.
     """
@@ -71,8 +74,9 @@ def get_consents_by_user(user_id: UserID) -> Sequence[DbConsent]:
         .all()
 
 
-def has_user_consented_to_subject(user_id: UserID, subject_id: SubjectID
-                                 ) -> bool:
+def has_user_consented_to_subject(
+    user_id: UserID, subject_id: SubjectID
+) -> bool:
     """Determine if the user has consented to the subject."""
     return db.session \
         .query(

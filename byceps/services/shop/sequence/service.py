@@ -48,8 +48,9 @@ def generate_order_number(shop_id: ShopID) -> OrderNumber:
     return format_order_number(sequence)
 
 
-def _get_next_sequence_step(shop_id: ShopID, purpose: Purpose
-                           ) -> NumberSequence:
+def _get_next_sequence_step(
+    shop_id: ShopID, purpose: Purpose
+) -> NumberSequence:
     """Calculate and reserve the next sequence step for the shop and
     purpose.
     """
@@ -94,8 +95,9 @@ def find_order_number_sequence(shop_id: ShopID) -> Optional[NumberSequence]:
     return _find_number_sequence(shop_id, Purpose.order)
 
 
-def _find_number_sequence(shop_id: ShopID, purpose: Purpose
-                         ) -> Optional[NumberSequence]:
+def _find_number_sequence(
+    shop_id: ShopID, purpose: Purpose
+) -> Optional[NumberSequence]:
     sequence = DbNumberSequence.query.get((shop_id, purpose.name))
 
     if sequence is None:

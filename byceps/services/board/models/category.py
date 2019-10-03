@@ -51,8 +51,9 @@ class Category(db.Model):
                                                order_by=position,
                                                collection_class=ordering_list('position', count_from=1)))
 
-    def __init__(self, board_id: BoardID, slug: str, title: str,
-                 description: str) -> None:
+    def __init__(
+        self, board_id: BoardID, slug: str, title: str, description: str
+    ) -> None:
         self.board_id = board_id
         self.slug = slug
         self.title = title

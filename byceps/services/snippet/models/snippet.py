@@ -103,9 +103,15 @@ class SnippetVersion(db.Model):
     body = db.Column(db.UnicodeText, nullable=False)
     image_url_path = db.Column(db.UnicodeText, nullable=True)
 
-    def __init__(self, snippet: Snippet, creator_id: UserID,
-                 title: Optional[str], head: Optional[str], body: str,
-                 image_url_path: Optional[str]) -> None:
+    def __init__(
+        self,
+        snippet: Snippet,
+        creator_id: UserID,
+        title: Optional[str],
+        head: Optional[str],
+        body: str,
+        image_url_path: Optional[str],
+    ) -> None:
         self.snippet = snippet
         self.creator_id = creator_id
         self.title = title

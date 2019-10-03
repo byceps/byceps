@@ -28,8 +28,9 @@ def test_assign_role_to_user(admin_app_with_db, normal_user, admin_user, role):
     service.assign_role_to_user(role.id, user_id, initiator_id=initiator_id)
 
 
-def test_deassign_role_from_user(admin_app_with_db, normal_user, admin_user,
-                                 role):
+def test_deassign_role_from_user(
+    admin_app_with_db, normal_user, admin_user, role
+):
     user_id = normal_user.id
     initiator_id = admin_user.id
 

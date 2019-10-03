@@ -66,10 +66,18 @@ class Article(db.Model):
     requires_separate_order = db.Column(db.Boolean, default=False, nullable=False)
     shipping_required = db.Column(db.Boolean, default=False, nullable=False)
 
-    def __init__(self, shop_id: ShopID, item_number: ArticleNumber,
-                 description: str, price: Decimal, tax_rate: Decimal,
-                 quantity: int, *, available_from: Optional[datetime]=None,
-                 available_until: Optional[datetime]=None) -> None:
+    def __init__(
+        self,
+        shop_id: ShopID,
+        item_number: ArticleNumber,
+        description: str,
+        price: Decimal,
+        tax_rate: Decimal,
+        quantity: int,
+        *,
+        available_from: Optional[datetime] = None,
+        available_until: Optional[datetime] = None,
+    ) -> None:
         self.shop_id = shop_id
         self.item_number = item_number
         self.description = description

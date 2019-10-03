@@ -18,7 +18,9 @@ def party_app_with_app_context(party_app):
     ('Deutschland', 'DE', 'DEU'),
     ('Österreich' , 'AT', 'AUT'),
 ])
-def test_get_countries_contains_country(party_app_with_app_context, name, alpha2, alpha3):
+def test_get_countries_contains_country(
+    party_app_with_app_context, name, alpha2, alpha3
+):
     countries = country_service.get_countries()
 
     country = find_by_name(countries, name)

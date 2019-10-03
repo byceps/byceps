@@ -23,11 +23,11 @@ def format_date_iso(d: date) -> str:
     return d.strftime('%Y-%m-%d')
 
 
-def format_date_short(d: date, *, smart: bool=True) -> str:
+def format_date_short(d: date, *, smart: bool = True) -> str:
     return (smart and _format_date_smart(d)) or d.strftime('%d.%m.%Y')
 
 
-def format_date_long(d: date, *, smart: bool=True) -> str:
+def format_date_long(d: date, *, smart: bool = True) -> str:
     return (smart and _format_date_smart(d)) or d.strftime('%A, %d. %B %Y')
 
 
@@ -35,14 +35,14 @@ def format_datetime_iso(dt: datetime) -> str:
     return dt.strftime('%Y-%m-%dT%H:%M:%S')
 
 
-def format_datetime_short(dt: datetime, *, smart: bool=True) -> str:
+def format_datetime_short(dt: datetime, *, smart: bool = True) -> str:
     date_string = format_date_short(dt.date(), smart=smart)
     time_string = format_time(dt.time())
 
     return f'{date_string}, {time_string}'
 
 
-def format_datetime_long(dt: datetime, *, smart: bool=True) -> str:
+def format_datetime_long(dt: datetime, *, smart: bool = True) -> str:
     date_string = format_date_long(dt.date(), smart=smart)
     time_string = format_time(dt.time())
 

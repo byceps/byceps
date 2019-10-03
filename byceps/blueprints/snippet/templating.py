@@ -53,8 +53,9 @@ def get_snippet_context(version):
     }
 
 
-def render_snippet_as_partial(name, *, scope=None, ignore_if_unknown=False,
-                              context=None):
+def render_snippet_as_partial(
+    name, *, scope=None, ignore_if_unknown=False, context=None
+):
     """Render the latest version of the snippet with the given name and
     return the result.
     """

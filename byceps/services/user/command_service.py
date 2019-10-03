@@ -54,8 +54,9 @@ def suspend_account(user_id: UserID, initiator_id: UserID, reason: str) -> None:
     db.session.commit()
 
 
-def unsuspend_account(user_id: UserID, initiator_id: UserID, reason: str
-                     ) -> None:
+def unsuspend_account(
+    user_id: UserID, initiator_id: UserID, reason: str
+) -> None:
     """Unsuspend the user account."""
     user = _get_user(user_id)
 
@@ -90,9 +91,13 @@ def delete_account(user_id: UserID, initiator_id: UserID, reason: str) -> None:
     db.session.commit()
 
 
-def change_screen_name(user_id: UserID, new_screen_name: str,
-                       initiator_id: UserID, *, reason: Optional[str]=None
-                      ) -> None:
+def change_screen_name(
+    user_id: UserID,
+    new_screen_name: str,
+    initiator_id: UserID,
+    *,
+    reason: Optional[str] = None,
+) -> None:
     """Change the user's screen name."""
     user = _get_user(user_id)
 
@@ -115,9 +120,13 @@ def change_screen_name(user_id: UserID, new_screen_name: str,
     db.session.commit()
 
 
-def change_email_address(user_id: UserID, new_email_address: str,
-                         initiator_id: UserID, *, reason: Optional[str]=None
-                        ) -> None:
+def change_email_address(
+    user_id: UserID,
+    new_email_address: str,
+    initiator_id: UserID,
+    *,
+    reason: Optional[str] = None,
+) -> None:
     """Change the user's e-mail address."""
     user = _get_user(user_id)
 
@@ -141,9 +150,17 @@ def change_email_address(user_id: UserID, new_email_address: str,
     db.session.commit()
 
 
-def update_user_details(user_id: UserID, first_names: str, last_name: str,
-                        date_of_birth: date, country: str, zip_code, city: str,
-                        street: str, phone_number: str) -> None:
+def update_user_details(
+    user_id: UserID,
+    first_names: str,
+    last_name: str,
+    date_of_birth: date,
+    country: str,
+    zip_code,
+    city: str,
+    street: str,
+    phone_number: str,
+) -> None:
     """Update the user's details."""
     detail = _get_user_detail(user_id)
 

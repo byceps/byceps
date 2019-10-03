@@ -15,8 +15,13 @@ from ...typing import UserID
 from .models.event import UserEvent, UserEventData
 
 
-def create_event(event_type: str, user_id: UserID, data: UserEventData,
-                 *, occurred_at: Optional[datetime]=None) -> None:
+def create_event(
+    event_type: str,
+    user_id: UserID,
+    data: UserEventData,
+    *,
+    occurred_at: Optional[datetime] = None,
+) -> None:
     """Create a user event."""
     event = build_event(event_type, user_id, data)
 
@@ -24,8 +29,13 @@ def create_event(event_type: str, user_id: UserID, data: UserEventData,
     db.session.commit()
 
 
-def build_event(event_type: str, user_id: UserID, data: UserEventData,
-                 *, occurred_at: Optional[datetime]=None) -> UserEvent:
+def build_event(
+    event_type: str,
+    user_id: UserID,
+    data: UserEventData,
+    *,
+    occurred_at: Optional[datetime] = None,
+) -> UserEvent:
     """Assemble, but not persist, a user event."""
     if occurred_at is None:
         occurred_at = datetime.utcnow()
@@ -41,8 +51,9 @@ def get_events_for_user(user_id: UserID) -> List[UserEvent]:
         .all()
 
 
-def get_events_of_type_for_user(event_type: str, user_id: UserID
-                               ) -> List[UserEvent]:
+def get_events_of_type_for_user(
+    event_type: str, user_id: UserID
+) -> List[UserEvent]:
     """Return the events of that type for that user."""
     return UserEvent.query \
         .filter_by(user_id=user_id) \

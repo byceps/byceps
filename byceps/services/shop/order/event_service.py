@@ -15,8 +15,9 @@ from .models.order_event import OrderEvent, OrderEventData
 from .transfer.models import OrderID
 
 
-def create_event(event_type: str, order_id: OrderID, data: OrderEventData
-                ) -> None:
+def create_event(
+    event_type: str, order_id: OrderID, data: OrderEventData
+) -> None:
     """Create an order event."""
     event = build_event(event_type, order_id, data)
 
@@ -24,8 +25,9 @@ def create_event(event_type: str, order_id: OrderID, data: OrderEventData
     db.session.commit()
 
 
-def create_events(event_type: str, order_id: OrderID,
-                  datas: Sequence[OrderEventData]) -> None:
+def create_events(
+    event_type: str, order_id: OrderID, datas: Sequence[OrderEventData]
+) -> None:
     """Create a sequence of order events."""
     events = [build_event(event_type, order_id, data) for data in datas]
 
@@ -33,8 +35,9 @@ def create_events(event_type: str, order_id: OrderID,
     db.session.commit()
 
 
-def build_event(event_type: str, order_id: OrderID, data: OrderEventData
-                ) -> OrderEvent:
+def build_event(
+    event_type: str, order_id: OrderID, data: OrderEventData
+) -> OrderEvent:
     """Assemble, but not persist, an order event."""
     now = datetime.utcnow()
 

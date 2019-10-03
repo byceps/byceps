@@ -53,8 +53,9 @@ class MatchComment(db.Model):
     hidden_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
     hidden_by = db.relationship(User, foreign_keys=[hidden_by_id])
 
-    def __init__(self, match_id: MatchID, creator_id: UserID, body: str
-                ) -> None:
+    def __init__(
+        self, match_id: MatchID, creator_id: UserID, body: str
+    ) -> None:
         self.match_id = match_id
         self.created_by_id = creator_id
         self.body = body

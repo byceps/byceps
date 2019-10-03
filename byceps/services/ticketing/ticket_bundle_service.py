@@ -21,10 +21,13 @@ from .ticket_revocation_service import \
 from .transfer.models import TicketBundleID, TicketCategoryID
 
 
-def create_bundle(category_id: TicketCategoryID, ticket_quantity: int,
-                  owned_by_id: UserID,
-                  *, order_number: Optional[OrderNumber]=None
-                 ) -> DbTicketBundle:
+def create_bundle(
+    category_id: TicketCategoryID,
+    ticket_quantity: int,
+    owned_by_id: UserID,
+    *,
+    order_number: Optional[OrderNumber] = None,
+) -> DbTicketBundle:
     """Create a ticket bundle and the given quantity of tickets."""
     if ticket_quantity < 1:
         raise ValueError('Ticket quantity must be positive.')
@@ -41,8 +44,12 @@ def create_bundle(category_id: TicketCategoryID, ticket_quantity: int,
     return bundle
 
 
-def revoke_bundle(bundle_id: TicketBundleID, initiator_id: UserID,
-                  *, reason: Optional[str]=None) -> None:
+def revoke_bundle(
+    bundle_id: TicketBundleID,
+    initiator_id: UserID,
+    *,
+    reason: Optional[str] = None,
+) -> None:
     """Revoke the tickets included in this bundle."""
     bundle = find_bundle(bundle_id)
 

@@ -25,10 +25,16 @@ class Badge(db.Model):
     image_filename = db.Column(db.UnicodeText, nullable=False)
     featured = db.Column(db.Boolean, default=False, nullable=False)
 
-    def __init__(self, slug: str, label: str, image_filename: str, *,
-                 brand_id: Optional[BrandID]=None,
-                 description: Optional[str]=None,
-                 featured: bool=False) -> None:
+    def __init__(
+        self,
+        slug: str,
+        label: str,
+        image_filename: str,
+        *,
+        brand_id: Optional[BrandID] = None,
+        description: Optional[str] = None,
+        featured: bool = False,
+    ) -> None:
         self.brand_id = brand_id
         self.slug = slug
         self.label = label

@@ -21,8 +21,12 @@ from .models.seat_group import Occupancy as DbSeatGroupOccupancy, \
 from .transfer.models import SeatGroupID
 
 
-def create_seat_group(party_id: PartyID, ticket_category_id: TicketCategoryID,
-                      title: str, seats: Sequence[DbSeat]) -> DbSeatGroup:
+def create_seat_group(
+    party_id: PartyID,
+    ticket_category_id: TicketCategoryID,
+    title: str,
+    seats: Sequence[DbSeat],
+) -> DbSeatGroup:
     """Create a seat group and assign the given seats."""
     seat_quantity = len(seats)
     if seat_quantity == 0:
@@ -45,8 +49,9 @@ def create_seat_group(party_id: PartyID, ticket_category_id: TicketCategoryID,
     return group
 
 
-def occupy_seat_group(seat_group: DbSeatGroup, ticket_bundle: DbTicketBundle
-                     ) -> DbSeatGroupOccupancy:
+def occupy_seat_group(
+    seat_group: DbSeatGroup, ticket_bundle: DbTicketBundle
+) -> DbSeatGroupOccupancy:
     """Occupy the seat group with that ticket bundle."""
     seats = seat_group.seats
     tickets = ticket_bundle.tickets
@@ -66,8 +71,9 @@ def occupy_seat_group(seat_group: DbSeatGroup, ticket_bundle: DbTicketBundle
     return occupancy
 
 
-def switch_seat_group(occupancy: DbSeatGroupOccupancy, to_group: DbSeatGroup
-                     ) -> None:
+def switch_seat_group(
+    occupancy: DbSeatGroupOccupancy, to_group: DbSeatGroup
+) -> None:
     """Switch ticket bundle to another seat group."""
     ticket_bundle = occupancy.ticket_bundle
     tickets = ticket_bundle.tickets
@@ -91,9 +97,9 @@ def _ensure_group_is_available(seat_group: DbSeatGroup) -> None:
         raise ValueError('Seat group is already occupied.')
 
 
-def _ensure_categories_match(seat_group: DbSeatGroup,
-                             ticket_bundle: DbTicketBundle
-                            ) -> None:
+def _ensure_categories_match(
+    seat_group: DbSeatGroup, ticket_bundle: DbTicketBundle
+) -> None:
     """Raise an error if the seat group's and the ticket bundle's
     categories don't match.
     """
@@ -101,9 +107,9 @@ def _ensure_categories_match(seat_group: DbSeatGroup,
         raise ValueError('Seat and ticket categories do not match.')
 
 
-def _ensure_quantities_match(seat_group: DbSeatGroup,
-                             ticket_bundle: DbTicketBundle
-                            ) -> None:
+def _ensure_quantities_match(
+    seat_group: DbSeatGroup, ticket_bundle: DbTicketBundle
+) -> None:
     """Raise an error if the seat group's and the ticket bundle's
     quantities don't match.
     """
@@ -111,8 +117,9 @@ def _ensure_quantities_match(seat_group: DbSeatGroup,
         raise ValueError('Seat and ticket quantities do not match.')
 
 
-def _ensure_actual_quantities_match(seats: Sequence[DbSeat],
-                                    tickets: Sequence[DbTicket]) -> None:
+def _ensure_actual_quantities_match(
+    seats: Sequence[DbSeat], tickets: Sequence[DbTicket]
+) -> None:
     """Raise an error if the totals of seats and tickets don't match."""
     if len(seats) != len(tickets):
         raise ValueError('The actual quantities of seats and tickets '

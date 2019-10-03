@@ -21,9 +21,9 @@ class CategoryWithLastUpdateAndUnseenFlag(CategoryWithLastUpdate):
     contains_unseen_postings: bool
 
     @classmethod
-    def from_category_with_last_update(cls, category: CategoryWithLastUpdate,
-                                       contains_unseen_postings: bool
-                                      ) -> CategoryWithLastUpdateAndUnseenFlag:
+    def from_category_with_last_update(
+        cls, category: CategoryWithLastUpdate, contains_unseen_postings: bool
+    ) -> CategoryWithLastUpdateAndUnseenFlag:
         return cls(
             category.id,
             category.board_id,
@@ -51,8 +51,9 @@ class Creator(User):
     ticket: Ticket
 
     @classmethod
-    def from_(cls, user: User, badges: Set[Badge], ticket: Optional[Ticket]
-             ) -> Creator:
+    def from_(
+        cls, user: User, badges: Set[Badge], ticket: Optional[Ticket]
+    ) -> Creator:
         return cls(
             user.id,
             user.screen_name,

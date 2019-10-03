@@ -19,8 +19,9 @@ from .posting_command_service import update_posting
 from .transfer.models import CategoryID
 
 
-def create_topic(category_id: CategoryID, creator_id: UserID, title: str,
-                 body: str) -> DbTopic:
+def create_topic(
+    category_id: CategoryID, creator_id: UserID, title: str, body: str
+) -> DbTopic:
     """Create a topic with an initial posting in that category."""
     topic = DbTopic(category_id, creator_id, title)
     posting = DbPosting(topic, creator_id, body)
@@ -37,8 +38,9 @@ def create_topic(category_id: CategoryID, creator_id: UserID, title: str,
     return topic
 
 
-def update_topic(topic: DbTopic, editor_id: UserID, title: str, body: str
-                ) -> None:
+def update_topic(
+    topic: DbTopic, editor_id: UserID, title: str, body: str
+) -> None:
     """Update the topic (and its initial posting)."""
     topic.title = title.strip()
 

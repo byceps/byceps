@@ -56,8 +56,9 @@ def _get_config(app):
     return config
 
 
-def send(sender: Optional[str], recipients: List[str], subject: str, body: str
-        ) -> None:
+def send(
+    sender: Optional[str], recipients: List[str], subject: str, body: str
+) -> None:
     """Assemble and send an e-mail."""
     mailer = current_app.marrowmailer
 

@@ -42,9 +42,13 @@ def get_config(config_id: str) -> Sender:
     return config
 
 
-def set_config(config_id: str, sender_address: str,
-               *, sender_name: Optional[str]=None,
-               contact_address: Optional[str]=None) -> None:
+def set_config(
+    config_id: str,
+    sender_address: str,
+    *,
+    sender_name: Optional[str] = None,
+    contact_address: Optional[str] = None,
+) -> None:
     """Add or update configuration for that ID."""
     table = DbEmailConfig.__table__
     identifier = {
@@ -75,16 +79,18 @@ def enqueue_message(message: Message) -> None:
         message.body)
 
 
-def enqueue_email(sender: Optional[Sender], recipients: List[str], subject: str,
-                  body: str) -> None:
+def enqueue_email(
+    sender: Optional[Sender], recipients: List[str], subject: str, body: str
+) -> None:
     """Enqueue e-mail to be sent asynchronously."""
     sender_str = sender.format() if (sender is not None) else None
 
     enqueue(send_email, sender_str, recipients, subject, body)
 
 
-def send_email(sender: Optional[str], recipients: List[str], subject: str,
-               body: str) -> None:
+def send_email(
+    sender: Optional[str], recipients: List[str], subject: str, body: str
+) -> None:
     """Send e-mail."""
     email.send(sender, recipients, subject, body)
 

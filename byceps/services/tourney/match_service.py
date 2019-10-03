@@ -41,8 +41,9 @@ def find_match(match_id: MatchID) -> Optional[Match]:
 # comments
 
 
-def get_comments(match_id: MatchID, party_id: PartyID
-                ) -> Sequence[MatchComment]:
+def get_comments(
+    match_id: MatchID, party_id: PartyID
+) -> Sequence[MatchComment]:
     """Return comments on the match, ordered chronologically."""
     comments = MatchComment.query \
         .for_match(match_id) \
@@ -62,16 +63,19 @@ def get_comments(match_id: MatchID, party_id: PartyID
     return comments
 
 
-def _get_users_by_id(user_ids: Set[UserID], party_id: PartyID
-                    ) -> Dict[UserID, User]:
-    users = user_service.find_users(user_ids, include_avatars=True,
-                                    include_orga_flags_for_party_id=party_id)
+def _get_users_by_id(
+    user_ids: Set[UserID], party_id: PartyID
+) -> Dict[UserID, User]:
+    users = user_service.find_users(
+        user_ids, include_avatars=True, include_orga_flags_for_party_id=party_id
+    )
 
     return user_service.index_users_by_id(users)
 
 
-def create_comment(match_id: MatchID, creator_id: UserID, body: str
-                  ) -> MatchComment:
+def create_comment(
+    match_id: MatchID, creator_id: UserID, body: str
+) -> MatchComment:
     """Create a comment on a match."""
     comment = MatchComment(match_id, creator_id, body)
 

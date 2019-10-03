@@ -41,8 +41,9 @@ def create_password_hash(user_id: UserID, password: str) -> None:
     db.session.commit()
 
 
-def update_password_hash(user_id: UserID, password: str, initiator_id: UserID
-                        ) -> None:
+def update_password_hash(
+    user_id: UserID, password: str, initiator_id: UserID
+) -> None:
     """Update the password hash and set a newly-generated authentication
     token for the user.
     """

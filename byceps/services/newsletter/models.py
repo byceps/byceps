@@ -47,8 +47,13 @@ class SubscriptionUpdate(db.Model):
     expressed_at = db.Column(db.DateTime, primary_key=True)
     _state = db.Column('state', db.UnicodeText, nullable=False)
 
-    def __init__(self, user_id: UserID, list_id: ListID,
-                 expressed_at: datetime, state: SubscriptionState) -> None:
+    def __init__(
+        self,
+        user_id: UserID,
+        list_id: ListID,
+        expressed_at: datetime,
+        state: SubscriptionState,
+    ) -> None:
         self.user_id = user_id
         self.list_id = list_id
         self.expressed_at = expressed_at

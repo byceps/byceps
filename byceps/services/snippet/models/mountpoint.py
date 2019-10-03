@@ -36,8 +36,13 @@ class Mountpoint(db.Model):
     snippet_id = db.Column(db.Uuid, db.ForeignKey('snippets.id'), index=True, nullable=False)
     snippet = db.relationship(Snippet)
 
-    def __init__(self, site_id: SiteID, endpoint_suffix: str, url_path: str,
-                 snippet_id: SnippetID) -> None:
+    def __init__(
+        self,
+        site_id: SiteID,
+        endpoint_suffix: str,
+        url_path: str,
+        snippet_id: SnippetID,
+    ) -> None:
         self.site_id = site_id
         self.endpoint_suffix = endpoint_suffix
         self.url_path = url_path

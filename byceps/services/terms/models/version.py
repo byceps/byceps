@@ -35,10 +35,13 @@ class Version(db.Model):
     consent_subject_id = db.Column(db.Uuid, db.ForeignKey('consent_subjects.id'), nullable=False)
     consent_subject = db.relationship(ConsentSubject)
 
-    def __init__(self, document_id: DocumentID, title: str,
-                 snippet_version_id: SnippetVersionID,
-                 consent_subject_id: ConsentSubjectID
-                ) -> None:
+    def __init__(
+        self,
+        document_id: DocumentID,
+        title: str,
+        snippet_version_id: SnippetVersionID,
+        consent_subject_id: ConsentSubjectID,
+    ) -> None:
         self.document_id = document_id
         self.title = title
         self.snippet_version_id = snippet_version_id

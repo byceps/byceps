@@ -33,9 +33,9 @@ class Avatar(db.Model):
     creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
     _image_type = db.Column('image_type', db.UnicodeText, nullable=False)
 
-    def __init__(self, party_id: PartyID, creator_id: UserID,
-                 image_type: ImageType
-                ) -> None:
+    def __init__(
+        self, party_id: PartyID, creator_id: UserID, image_type: ImageType
+    ) -> None:
         self.party_id = party_id
         self.creator_id = creator_id
         self.image_type = image_type

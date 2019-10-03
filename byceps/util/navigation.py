@@ -30,8 +30,15 @@ class Navigation:
         self.title = title
         self.items: List[NavigationItem] = []
 
-    def add_item(self, endpoint: str, label: str, *, id: str=None,
-                 required_permission: Enum=None, icon: str=None) -> object:
+    def add_item(
+        self,
+        endpoint: str,
+        label: str,
+        *,
+        id: str = None,
+        required_permission: Enum = None,
+        icon: str = None,
+    ) -> object:
         """Add an item to the navigation."""
         item = NavigationItem(
             endpoint=endpoint,

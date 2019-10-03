@@ -49,8 +49,9 @@ def get_categories_for_party(party_id: PartyID) -> Sequence[TicketCategory]:
     return [_db_entity_to_category(category) for category in categories]
 
 
-def get_categories_with_ticket_counts_for_party(party_id: PartyID
-                                               ) -> Dict[TicketCategory, int]:
+def get_categories_with_ticket_counts_for_party(
+    party_id: PartyID
+) -> Dict[TicketCategory, int]:
     """Return all categories with ticket counts for that party."""
     category = db.aliased(DbCategory)
 

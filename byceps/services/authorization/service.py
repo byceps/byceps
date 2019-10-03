@@ -62,8 +62,9 @@ def find_user_ids_for_role(role_id: RoleID) -> Set[UserID]:
     return {row[0] for row in rows}
 
 
-def assign_permission_to_role(permission_id: PermissionID, role_id: RoleID
-                             ) -> None:
+def assign_permission_to_role(
+    permission_id: PermissionID, role_id: RoleID
+) -> None:
     """Assign the permission to the role."""
     role_permission = RolePermission(role_id, permission_id)
 
@@ -71,8 +72,9 @@ def assign_permission_to_role(permission_id: PermissionID, role_id: RoleID
     db.session.commit()
 
 
-def deassign_permission_from_role(permission_id: PermissionID, role_id: RoleID
-                                 ) -> None:
+def deassign_permission_from_role(
+    permission_id: PermissionID, role_id: RoleID
+) -> None:
     """Dessign the permission from the role."""
     role_permission = RolePermission.query.get((role_id, permission_id))
 
@@ -83,8 +85,9 @@ def deassign_permission_from_role(permission_id: PermissionID, role_id: RoleID
     db.session.commit()
 
 
-def assign_role_to_user(role_id: RoleID, user_id: UserID,
-                        *, initiator_id: Optional[UserID]=None) -> None:
+def assign_role_to_user(
+    role_id: RoleID, user_id: UserID, *, initiator_id: Optional[UserID] = None
+) -> None:
     """Assign the role to the user."""
     if _is_role_assigned_to_user(role_id, user_id):
         # Role is already assigned to user. Nothing to do.
@@ -102,8 +105,9 @@ def assign_role_to_user(role_id: RoleID, user_id: UserID,
     db.session.commit()
 
 
-def deassign_role_from_user(role_id: RoleID, user_id: UserID,
-                            initiator_id: Optional[UserID]=None) -> None:
+def deassign_role_from_user(
+    role_id: RoleID, user_id: UserID, initiator_id: Optional[UserID] = None
+) -> None:
     """Deassign the role from the user."""
     user_role = UserRole.query.get((user_id, role_id))
 
@@ -121,9 +125,9 @@ def deassign_role_from_user(role_id: RoleID, user_id: UserID,
     db.session.commit()
 
 
-def deassign_all_roles_from_user(user_id: UserID,
-                                 initiator_id: Optional[UserID]=None,
-                                 commit=True) -> None:
+def deassign_all_roles_from_user(
+    user_id: UserID, initiator_id: Optional[UserID] = None, commit=True
+) -> None:
     """Deassign all roles from the user."""
     table = UserRole.__table__
     delete_query = table.delete() \
@@ -205,8 +209,9 @@ def get_permissions_by_roles_with_titles() -> Dict[Role, Set[Permission]]:
     return permissions_by_role
 
 
-def get_permissions_by_roles_for_user_with_titles(user_id: UserID) \
-                                                  -> Dict[Role, Set[Permission]]:
+def get_permissions_by_roles_for_user_with_titles(
+    user_id: UserID
+) -> Dict[Role, Set[Permission]]:
     """Return permissions grouped by their respective roles for that user.
 
     Titles are undeferred to avoid lots of additional queries.
@@ -237,9 +242,9 @@ def get_permissions_by_roles_for_user_with_titles(user_id: UserID) \
     return _index_permissions_by_role(permissions, roles)
 
 
-def _index_permissions_by_role(permissions: List[Permission],
-                               roles: List[Role]) \
-                               -> Dict[Role, Set[Permission]]:
+def _index_permissions_by_role(
+    permissions: List[Permission], roles: List[Role]
+) -> Dict[Role, Set[Permission]]:
     permissions_by_role: Dict[Role, Set[Permission]] = {r: set() for r in roles}
 
     for permission in permissions:
@@ -250,8 +255,9 @@ def _index_permissions_by_role(permissions: List[Permission],
     return permissions_by_role
 
 
-def get_permissions_with_title_for_role(role_id: RoleID) \
-                                        -> Sequence[Permission]:
+def get_permissions_with_title_for_role(
+    role_id: RoleID
+) -> Sequence[Permission]:
     """Return the permissions assigned to the role."""
     return Permission.query \
         .options(

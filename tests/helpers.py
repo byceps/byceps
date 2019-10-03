@@ -74,8 +74,9 @@ def create_user_with_detail(*args, **kwargs):
     return user
 
 
-def assign_permissions_to_user(user_id, role_id, permission_ids,
-                               *, initiator_id=None):
+def assign_permissions_to_user(
+    user_id, role_id, permission_ids, *, initiator_id=None
+):
     """Create the role and permissions, assign the permissions to the
     role, and assign the role to the user.
     """
@@ -99,8 +100,9 @@ def create_brand(brand_id='acmecon', title='ACME Entertainment Convention'):
     return brand
 
 
-def create_party(brand_id, party_id='acmecon-2014', title='ACMECon 2014',
-                 shop_id=None):
+def create_party(
+    brand_id, party_id='acmecon-2014', title='ACMECon 2014', shop_id=None
+):
     party = _create_party(id=party_id, title=title, brand_id=brand_id,
                           shop_id=shop_id)
 
@@ -110,16 +112,24 @@ def create_party(brand_id, party_id='acmecon-2014', title='ACMECon 2014',
     return party_service._db_entity_to_party(party)
 
 
-def create_site(*, site_id='acmecon-2014-website', title='Website',
-                server_name='www.example.com',
-                email_config_id=DEFAULT_EMAIL_CONFIG_ID, party_id=None):
+def create_site(
+    *,
+    site_id='acmecon-2014-website',
+    title='Website',
+    server_name='www.example.com',
+    email_config_id=DEFAULT_EMAIL_CONFIG_ID,
+    party_id=None,
+):
     return site_service.create_site(site_id, title, server_name,
                                     email_config_id, party_id=party_id)
 
 
-def create_email_config(config_id=DEFAULT_EMAIL_CONFIG_ID,
-                        sender_address='info@example.com',
-                        sender_name=None, contact_address=None):
+def create_email_config(
+    config_id=DEFAULT_EMAIL_CONFIG_ID,
+    sender_address='info@example.com',
+    sender_name=None,
+    contact_address=None,
+):
     email_service.set_config(config_id, sender_address, sender_name=sender_name,
                              contact_address=contact_address)
 

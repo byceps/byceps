@@ -14,8 +14,9 @@ from .models.board_access_grant import BoardAccessGrant, BoardAccessGrantID
 from .transfer.models import BoardID
 
 
-def grant_access_to_board(board_id: BoardID, user_id: UserID
-                         ) -> BoardAccessGrantID:
+def grant_access_to_board(
+    board_id: BoardID, user_id: UserID
+) -> BoardAccessGrantID:
     """Grant the user access to the board."""
     grant = BoardAccessGrant(board_id, user_id)
 

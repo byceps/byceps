@@ -116,8 +116,9 @@ def _get_subscriber_details(user_ids: Set[UserID]) -> Iterator[Subscriber]:
         yield Subscriber(row.screen_name, row.email_address)
 
 
-def count_subscriptions_by_state(list_id: ListID
-                                ) -> Dict[Union[SubscriptionState, str], int]:
+def count_subscriptions_by_state(
+    list_id: ListID
+) -> Dict[Union[SubscriptionState, str], int]:
     """Return the totals for each state as well as an overall total."""
     rows = _build_query_for_current_state(list_id) \
         .all()
@@ -203,8 +204,9 @@ def _build_query_for_latest_expressed_at() -> BaseQuery:
         )
 
 
-def get_subscription_state(user_id: UserID, list_id: ListID
-                          ) -> SubscriptionState:
+def get_subscription_state(
+    user_id: UserID, list_id: ListID
+) -> SubscriptionState:
     """Return the user's current subscription state for that list."""
     current_subscription = DbSubscriptionUpdate.query \
         .filter_by(user_id=user_id) \
@@ -218,8 +220,9 @@ def get_subscription_state(user_id: UserID, list_id: ListID
     return current_subscription.state
 
 
-def get_subscription_updates_for_user(user_id: UserID
-                                     ) -> Sequence[DbSubscriptionUpdate]:
+def get_subscription_updates_for_user(
+    user_id: UserID
+) -> Sequence[DbSubscriptionUpdate]:
     """Return subscription updates made by the user, for any list."""
     return DbSubscriptionUpdate.query \
         .filter_by(user_id=user_id) \

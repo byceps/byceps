@@ -34,8 +34,9 @@ def count_areas_for_party(party_id: PartyID) -> int:
         .count()
 
 
-def find_area_for_party_by_slug(party_id: PartyID, slug: str
-                               ) -> Optional[DbArea]:
+def find_area_for_party_by_slug(
+    party_id: PartyID, slug: str
+) -> Optional[DbArea]:
     """Return the area for that party with that slug, or `None` if not found."""
     return DbArea.query \
         .for_party(party_id) \
@@ -50,8 +51,9 @@ def get_areas_for_party(party_id: PartyID) -> DbArea:
         .all()
 
 
-def get_areas_for_party_paginated(party_id: PartyID, page: int, per_page: int
-                                 ) -> Pagination:
+def get_areas_for_party_paginated(
+    party_id: PartyID, page: int, per_page: int
+) -> Pagination:
     """Return the areas for that party."""
     area = db.aliased(DbArea)
 

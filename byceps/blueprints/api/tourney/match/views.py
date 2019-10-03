@@ -104,8 +104,9 @@ def comment_create(match_id):
     return url_for('.comment_view', match_id=match.id, comment_id=comment.id)
 
 
-@blueprint.route('/<uuid:match_id>/comments/<uuid:comment_id>/flags/hidden',
-                 methods=['POST'])
+@blueprint.route(
+    '/<uuid:match_id>/comments/<uuid:comment_id>/flags/hidden', methods=['POST']
+)
 @api_token_required
 @respond_no_content
 def comment_hide(match_id, comment_id):
@@ -117,8 +118,10 @@ def comment_hide(match_id, comment_id):
     match_service.hide_comment(comment_id, initiator_id)
 
 
-@blueprint.route('/<uuid:match_id>/comments/<uuid:comment_id>/flags/hidden',
-                 methods=['DELETE'])
+@blueprint.route(
+    '/<uuid:match_id>/comments/<uuid:comment_id>/flags/hidden',
+    methods=['DELETE'],
+)
 @api_token_required
 @respond_no_content
 def comment_unhide(match_id, comment_id):

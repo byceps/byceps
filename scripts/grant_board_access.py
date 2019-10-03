@@ -28,7 +28,9 @@ def validate_board(ctx, param, board_id: str) -> Board:
 
 @click.command()
 @click.argument('board', metavar='BOARD_ID', callback=validate_board)
-@click.argument('user', metavar='USER_SCREEN_NAME', callback=validate_user_screen_name)
+@click.argument(
+    'user', metavar='USER_SCREEN_NAME', callback=validate_user_screen_name
+)
 def execute(board, user):
     if access_control_service.has_user_access_to_board(user.id, board.id):
         click.secho(f'User "{user.screen_name}" already has access '

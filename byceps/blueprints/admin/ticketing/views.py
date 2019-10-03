@@ -117,7 +117,9 @@ def appoint_user(ticket_id):
     return redirect(url_for('.view_ticket', ticket_id=ticket.id))
 
 
-@blueprint.route('/tickets/<uuid:ticket_id>/flags/user_checked_in', methods=['POST'])
+@blueprint.route(
+    '/tickets/<uuid:ticket_id>/flags/user_checked_in', methods=['POST']
+)
 @permission_required(TicketingPermission.checkin)
 @respond_no_content
 def set_user_checked_in_flag(ticket_id):
@@ -146,7 +148,9 @@ def set_user_checked_in_flag(ticket_id):
         flash_notice('Das Ticket belegt noch keinen Sitzplatz.', icon='warning')
 
 
-@blueprint.route('/tickets/<uuid:ticket_id>/flags/user_checked_in', methods=['DELETE'])
+@blueprint.route(
+    '/tickets/<uuid:ticket_id>/flags/user_checked_in', methods=['DELETE']
+)
 @permission_required(TicketingPermission.checkin)
 @respond_no_content
 def unset_user_checked_in_flag(ticket_id):

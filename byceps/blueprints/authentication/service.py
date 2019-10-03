@@ -35,8 +35,9 @@ def get_permissions_for_user(user_id: UserID) -> Set[Enum]:
     return permission_registry.get_enum_members(permission_ids)
 
 
-def get_current_user(is_admin_mode: bool, *, party_id: Optional[PartyID]=None
-                    ) -> CurrentUser:
+def get_current_user(
+    is_admin_mode: bool, *, party_id: Optional[PartyID] = None
+) -> CurrentUser:
     user = user_session.get_user(party_id=party_id)
 
     if user is None:

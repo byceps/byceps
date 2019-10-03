@@ -24,9 +24,14 @@ from .models.compilation import ArticleCompilation, ArticleCompilationItem
 from .transfer.models import ArticleID, ArticleNumber, AttachedArticleID
 
 
-def create_article(shop_id: ShopID, item_number: ArticleNumber,
-                   description: str, price: Decimal, tax_rate: Decimal,
-                   quantity: int) -> DbArticle:
+def create_article(
+    shop_id: ShopID,
+    item_number: ArticleNumber,
+    description: str,
+    price: Decimal,
+    tax_rate: Decimal,
+    quantity: int,
+) -> DbArticle:
     """Create an article."""
     article = DbArticle(shop_id, item_number, description, price, tax_rate,
                         quantity)
@@ -37,12 +42,19 @@ def create_article(shop_id: ShopID, item_number: ArticleNumber,
     return article
 
 
-def update_article(article: DbArticle, description: str, price: Decimal,
-                   tax_rate: Decimal, available_from: Optional[datetime],
-                   available_until: Optional[datetime], quantity: int,
-                   max_quantity_per_order: int, not_directly_orderable: bool,
-                   requires_separate_order: bool, shipping_required: bool
-                  ) -> None:
+def update_article(
+    article: DbArticle,
+    description: str,
+    price: Decimal,
+    tax_rate: Decimal,
+    available_from: Optional[datetime],
+    available_until: Optional[datetime],
+    quantity: int,
+    max_quantity_per_order: int,
+    not_directly_orderable: bool,
+    requires_separate_order: bool,
+    shipping_required: bool,
+) -> None:
     """Update the article."""
     article.description = description
     article.price = price
@@ -58,8 +70,9 @@ def update_article(article: DbArticle, description: str, price: Decimal,
     db.session.commit()
 
 
-def attach_article(article_to_attach: DbArticle, quantity: int,
-                   article_to_attach_to: DbArticle) -> None:
+def attach_article(
+    article_to_attach: DbArticle, quantity: int, article_to_attach_to: DbArticle
+) -> None:
     """Attach an article to another article."""
     attached_article = DbAttachedArticle(article_to_attach, quantity,
                                          article_to_attach_to)
@@ -96,8 +109,9 @@ def find_article_with_details(article_id: ArticleID) -> Optional[DbArticle]:
         .get(article_id)
 
 
-def find_attached_article(attached_article_id: AttachedArticleID
-                         ) -> Optional[DbAttachedArticle]:
+def find_attached_article(
+    attached_article_id: AttachedArticleID
+) -> Optional[DbAttachedArticle]:
     """Return the attached article with that ID, or `None` if not found."""
     return DbAttachedArticle.query.get(attached_article_id)
 
@@ -116,8 +130,9 @@ def get_article_count_by_shop_id() -> Dict[ShopID, int]:
     return dict(shop_ids_and_article_counts)
 
 
-def get_articles_by_numbers(article_numbers: Set[ArticleNumber]
-                           ) -> Sequence[DbArticle]:
+def get_articles_by_numbers(
+    article_numbers: Set[ArticleNumber]
+) -> Sequence[DbArticle]:
     """Return the articles with those numbers."""
     if not article_numbers:
         return []
@@ -133,8 +148,9 @@ def get_articles_for_shop(shop_id: ShopID) -> Sequence[DbArticle]:
         .all()
 
 
-def get_articles_for_shop_paginated(shop_id: ShopID, page: int, per_page: int
-                                   ) -> Pagination:
+def get_articles_for_shop_paginated(
+    shop_id: ShopID, page: int, per_page: int
+) -> Pagination:
     """Return all articles for that shop, ordered by article number."""
     return _get_articles_for_shop_query(shop_id) \
         .paginate(page, per_page)
@@ -146,8 +162,9 @@ def _get_articles_for_shop_query(shop_id: ShopID) -> BaseQuery:
         .order_by(DbArticle.item_number)
 
 
-def get_article_compilation_for_orderable_articles(shop_id: ShopID
-                                                  ) -> ArticleCompilation:
+def get_article_compilation_for_orderable_articles(
+    shop_id: ShopID
+) -> ArticleCompilation:
     """Return a compilation of the articles which can be ordered from
     that shop, less the ones that are only orderable in a dedicated
     order.
@@ -170,9 +187,9 @@ def get_article_compilation_for_orderable_articles(shop_id: ShopID
     return compilation
 
 
-def get_article_compilation_for_single_article(article: DbArticle, *,
-                                               fixed_quantity: Optional[int]=None
-                                              ) -> ArticleCompilation:
+def get_article_compilation_for_single_article(
+    article: DbArticle, *, fixed_quantity: Optional[int] = None
+) -> ArticleCompilation:
     """Return a compilation built from just the given article plus the
     articles attached to it (if any).
     """
@@ -186,9 +203,10 @@ def get_article_compilation_for_single_article(article: DbArticle, *,
     return compilation
 
 
-def _add_attached_articles(compilation: ArticleCompilation,
-                           attached_articles: Sequence[DbAttachedArticle]
-                          ) -> None:
+def _add_attached_articles(
+    compilation: ArticleCompilation,
+    attached_articles: Sequence[DbAttachedArticle],
+) -> None:
     """Add the attached articles to the compilation."""
     for attached_article in attached_articles:
         compilation.append(
@@ -211,8 +229,9 @@ def get_attachable_articles(article: DbArticle) -> Sequence[DbArticle]:
         .all()
 
 
-def sum_ordered_articles_by_payment_state(shop_ids: Set[ShopID]) \
-        -> List[Tuple[ShopID, ArticleNumber, str, PaymentState, int]]:
+def sum_ordered_articles_by_payment_state(
+    shop_ids: Set[ShopID]
+) -> List[Tuple[ShopID, ArticleNumber, str, PaymentState, int]]:
     """Sum ordered articles for those shops, grouped by order payment state."""
     subquery = db.session \
         .query(

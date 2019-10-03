@@ -20,10 +20,15 @@ from .transfer.models import Badge, BadgeAwarding, BadgeID, \
     QuantifiedBadgeAwarding
 
 
-def create_badge(slug: str, label: str, image_filename: str, *,
-                 brand_id: Optional[BrandID]=None,
-                 description: Optional[str]=None,
-                 featured: bool=False) -> Badge:
+def create_badge(
+    slug: str,
+    label: str,
+    image_filename: str,
+    *,
+    brand_id: Optional[BrandID] = None,
+    description: Optional[str] = None,
+    featured: bool = False,
+) -> Badge:
     """Introduce a new badge."""
     badge = DbBadge(slug, label, image_filename, brand_id=brand_id,
                     description=description, featured=featured)
@@ -56,8 +61,9 @@ def find_badge_by_slug(slug: str) -> Optional[Badge]:
     return _db_entity_to_badge(badge)
 
 
-def get_badges(badge_ids: Set[BadgeID], *, featured_only: bool=False
-              ) -> Set[Badge]:
+def get_badges(
+    badge_ids: Set[BadgeID], *, featured_only: bool = False
+) -> Set[Badge]:
     """Return the badges with those IDs.
 
     If `featured_only` is `True`, only return featured badges.
@@ -108,8 +114,9 @@ def get_badges_for_user(user_id: UserID) -> Dict[Badge, int]:
     return badges_with_awarding_quantity
 
 
-def get_badges_for_users(user_ids: Set[UserID], *, featured_only: bool=False
-                        ) -> Dict[UserID, Set[Badge]]:
+def get_badges_for_users(
+    user_ids: Set[UserID], *, featured_only: bool = False
+) -> Dict[UserID, Set[Badge]]:
     """Return all badges that have been awarded to the users, indexed
     by user ID.
 

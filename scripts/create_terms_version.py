@@ -46,8 +46,9 @@ def validate_snippet_version_id(ctx, param, value) -> SnippetVersionID:
 @click.argument('title')
 @click.argument('snippet_version_id', callback=validate_snippet_version_id)
 @click.argument('consent_subject_name_suffix')
-def execute(brand, document_id, title, snippet_version_id,
-            consent_subject_name_suffix):
+def execute(
+    brand, document_id, title, snippet_version_id, consent_subject_name_suffix
+):
     consent_subject_name \
         = f'{brand.id}_terms-of-service_{consent_subject_name_suffix}'
 

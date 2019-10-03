@@ -27,8 +27,13 @@ class UserEvent(db.Model):
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=False)
     data = db.Column(db.JSONB)
 
-    def __init__(self, occurred_at: datetime, event_type: str,
-                 user_id: UserID, data: UserEventData) -> None:
+    def __init__(
+        self,
+        occurred_at: datetime,
+        event_type: str,
+        user_id: UserID,
+        data: UserEventData,
+    ) -> None:
         self.occurred_at = occurred_at
         self.event_type = event_type
         self.user_id = user_id

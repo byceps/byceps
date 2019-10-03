@@ -15,9 +15,14 @@ from .models.image import Image as DbImage
 from .transfer.models import Image, ItemID
 
 
-def create_image(creator_id: UserID, item_id: ItemID, filename: str,
-                 *, alt_text: Optional[str]=None, caption: Optional[str]=None
-                ) -> Image:
+def create_image(
+    creator_id: UserID,
+    item_id: ItemID,
+    filename: str,
+    *,
+    alt_text: Optional[str] = None,
+    caption: Optional[str] = None,
+) -> Image:
     """Create an image for a news item."""
     image = DbImage(creator_id, item_id, filename, alt_text=alt_text,
                     caption=caption)

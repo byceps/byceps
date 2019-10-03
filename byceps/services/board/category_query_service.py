@@ -55,8 +55,9 @@ def get_categories(board_id: BoardID) -> Sequence[Category]:
     return [_db_entity_to_category(category) for category in categories]
 
 
-def get_categories_excluding(board_id: BoardID, category_id: CategoryID
-                            ) -> Sequence[Category]:
+def get_categories_excluding(
+    board_id: BoardID, category_id: CategoryID
+) -> Sequence[Category]:
     """Return all categories for that board except for the specified one."""
     categories = DbCategory.query \
         .for_board(board_id) \
@@ -67,8 +68,9 @@ def get_categories_excluding(board_id: BoardID, category_id: CategoryID
     return [_db_entity_to_category(category) for category in categories]
 
 
-def get_categories_with_last_updates(board_id: BoardID
-                                    ) -> Sequence[CategoryWithLastUpdate]:
+def get_categories_with_last_updates(
+    board_id: BoardID
+) -> Sequence[CategoryWithLastUpdate]:
     """Return the categories for that board.
 
     Include the creator of the last posting in each category.
@@ -99,8 +101,9 @@ def _db_entity_to_category(category: DbCategory) -> Category:
     )
 
 
-def _db_entity_to_category_with_last_update(category: DbCategory
-                                           ) -> CategoryWithLastUpdate:
+def _db_entity_to_category_with_last_update(
+    category: DbCategory
+) -> CategoryWithLastUpdate:
     return CategoryWithLastUpdate(
         category.id,
         category.board_id,

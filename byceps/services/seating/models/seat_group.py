@@ -35,8 +35,13 @@ class SeatGroup(db.Model):
 
     seats = association_proxy('assignments', 'seat')
 
-    def __init__(self, party_id: PartyID, ticket_category_id: TicketCategoryID,
-                 seat_quantity: int, title: str) -> None:
+    def __init__(
+        self,
+        party_id: PartyID,
+        ticket_category_id: TicketCategoryID,
+        seat_quantity: int,
+        title: str,
+    ) -> None:
         self.party_id = party_id
         self.ticket_category_id = ticket_category_id
         self.seat_quantity = seat_quantity
@@ -88,8 +93,9 @@ class Occupancy(db.Model):
     ticket_bundle_id = db.Column(db.Uuid, db.ForeignKey('ticket_bundles.id'), unique=True, index=True, nullable=False)
     ticket_bundle = db.relationship(TicketBundle, backref=db.backref('occupied_seat_group', uselist=False))
 
-    def __init__(self, seat_group_id: SeatGroup,
-                 ticket_bundle_id: TicketBundleID) -> None:
+    def __init__(
+        self, seat_group_id: SeatGroup, ticket_bundle_id: TicketBundleID
+    ) -> None:
         self.seat_group_id = seat_group_id
         self.ticket_bundle_id = ticket_bundle_id
 

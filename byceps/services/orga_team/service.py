@@ -51,8 +51,9 @@ def get_teams_for_party(party_id: PartyID) -> Sequence[OrgaTeam]:
         .all()
 
 
-def get_teams_for_party_with_memberships(party_id: PartyID
-                                        ) -> Sequence[OrgaTeam]:
+def get_teams_for_party_with_memberships(
+    party_id: PartyID
+) -> Sequence[OrgaTeam]:
     """Return all orga teams for that party, with memberships."""
     return OrgaTeam.query \
         .options(db.joinedload('memberships')) \
@@ -64,8 +65,9 @@ def get_teams_for_party_with_memberships(party_id: PartyID
 # memberships
 
 
-def create_membership(team_id: OrgaTeamID, user_id: UserID, duties: str
-                     ) -> Membership:
+def create_membership(
+    team_id: OrgaTeamID, user_id: UserID, duties: str
+) -> Membership:
     """Assign the user to the team."""
     membership = Membership(team_id, user_id)
 
@@ -78,8 +80,9 @@ def create_membership(team_id: OrgaTeamID, user_id: UserID, duties: str
     return membership
 
 
-def update_membership(membership: Membership, team: OrgaTeam, duties: str
-                     ) -> None:
+def update_membership(
+    membership: Membership, team: OrgaTeam, duties: str
+) -> None:
     """Update the membership."""
     membership.orga_team = team
     membership.duties = duties
@@ -97,8 +100,9 @@ def find_membership(membership_id: MembershipID) -> Optional[Membership]:
     return Membership.query.get(membership_id)
 
 
-def find_membership_for_party(user_id: UserID, party_id: PartyID
-                             ) -> Optional[Membership]:
+def find_membership_for_party(
+    user_id: UserID, party_id: PartyID
+) -> Optional[Membership]:
     """Return the user's membership in an orga team of that party, or
     `None` of user it not part of an orga team for that party.
     """

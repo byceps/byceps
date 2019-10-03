@@ -26,8 +26,9 @@ def create_setting(site_id: SiteID, name: str, value: str) -> SiteSetting:
     return _db_entity_to_site_setting(setting)
 
 
-def create_or_update_setting(site_id: SiteID, name: str, value: str
-                            ) -> SiteSetting:
+def create_or_update_setting(
+    site_id: SiteID, name: str, value: str
+) -> SiteSetting:
     """Create or update a setting for that site, depending on whether
     it already exists or not.
     """

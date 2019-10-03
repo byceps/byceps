@@ -17,8 +17,9 @@ from .transfer.models import PaymentState
 from . import action_service
 
 
-def register_badge_awarding(article_number: ArticleNumber, badge_id: BadgeID
-                           ) -> None:
+def register_badge_awarding(
+    article_number: ArticleNumber, badge_id: BadgeID
+) -> None:
     # Award badge to orderer when order is marked as paid.
     params_create = {
         'badge_id': str(badge_id),
@@ -27,9 +28,11 @@ def register_badge_awarding(article_number: ArticleNumber, badge_id: BadgeID
                                  'create_tickets', params_create)
 
 
-def register_ticket_bundles_creation(article_number: ArticleNumber,
-                                     ticket_category_id: TicketCategoryID,
-                                     ticket_quantity: int) -> None:
+def register_ticket_bundles_creation(
+    article_number: ArticleNumber,
+    ticket_category_id: TicketCategoryID,
+    ticket_quantity: int,
+) -> None:
     # Create ticket bundle(s) for order when it is marked as paid.
     params_create = {
         'category_id': str(ticket_category_id),
@@ -45,8 +48,9 @@ def register_ticket_bundles_creation(article_number: ArticleNumber,
                                  'revoke_ticket_bundles', params_revoke)
 
 
-def register_tickets_creation(article_number: ArticleNumber,
-                              ticket_category_id: TicketCategoryID) -> None:
+def register_tickets_creation(
+    article_number: ArticleNumber, ticket_category_id: TicketCategoryID
+) -> None:
     # Create tickets for order when it is marked as paid.
     params_create = {
         'category_id': str(ticket_category_id),

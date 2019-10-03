@@ -43,8 +43,9 @@ def find_tickets(ticket_ids: Set[TicketID]) -> Sequence[DbTicket]:
         .all()
 
 
-def find_tickets_created_by_order(order_number: OrderNumber
-                                 ) -> Sequence[DbTicket]:
+def find_tickets_created_by_order(
+    order_number: OrderNumber
+) -> Sequence[DbTicket]:
     """Return the tickets created by this order (as it was marked as paid)."""
     return DbTicket.query \
         .filter_by(order_number=order_number) \
@@ -52,8 +53,9 @@ def find_tickets_created_by_order(order_number: OrderNumber
         .all()
 
 
-def find_tickets_for_seat_manager(user_id: UserID, party_id: PartyID
-                                 ) -> Sequence[DbTicket]:
+def find_tickets_for_seat_manager(
+    user_id: UserID, party_id: PartyID
+) -> Sequence[DbTicket]:
     """Return the tickets for that party whose respective seats the user
     is entitled to manage.
     """
@@ -93,8 +95,9 @@ def find_tickets_related_to_user(user_id: UserID) -> Sequence[DbTicket]:
         .all()
 
 
-def find_tickets_related_to_user_for_party(user_id: UserID, party_id: PartyID
-                                          ) -> Sequence[DbTicket]:
+def find_tickets_related_to_user_for_party(
+    user_id: UserID, party_id: PartyID
+) -> Sequence[DbTicket]:
     """Return tickets related to the user for the party."""
     return DbTicket.query \
         .for_party(party_id) \
@@ -115,8 +118,9 @@ def find_tickets_related_to_user_for_party(user_id: UserID, party_id: PartyID
         .all()
 
 
-def find_tickets_used_by_user(user_id: UserID, party_id: PartyID
-                             ) -> Sequence[DbTicket]:
+def find_tickets_used_by_user(
+    user_id: UserID, party_id: PartyID
+) -> Sequence[DbTicket]:
     """Return the tickets (if any) used by the user for that party."""
     return DbTicket.query \
         .for_party(party_id) \
@@ -130,8 +134,9 @@ def find_tickets_used_by_user(user_id: UserID, party_id: PartyID
         .all()
 
 
-def find_tickets_used_by_user_simplified(user_id: UserID, party_id: PartyID
-                                        ) -> Sequence[DbTicket]:
+def find_tickets_used_by_user_simplified(
+    user_id: UserID, party_id: PartyID
+) -> Sequence[DbTicket]:
     """Return the tickets (if any) used by the user for that party."""
     return DbTicket.query \
         .for_party(party_id) \
@@ -153,8 +158,9 @@ def uses_any_ticket_for_party(user_id: UserID, party_id: PartyID) -> bool:
     return db.session.query(q.exists()).scalar()
 
 
-def select_ticket_users_for_party(user_ids: Set[UserID], party_id: PartyID
-                                 ) -> Set[UserID]:
+def select_ticket_users_for_party(
+    user_ids: Set[UserID], party_id: PartyID
+) -> Set[UserID]:
     """Return the IDs of those users that use a ticket for that party."""
     if not user_ids:
         return set()
@@ -185,10 +191,9 @@ def get_ticket_with_details(ticket_id: TicketID) -> Optional[DbTicket]:
         .get(ticket_id)
 
 
-def get_tickets_with_details_for_party_paginated(party_id: PartyID, page: int,
-                                                 per_page: int,
-                                                 *, search_term=None
-                                                ) -> Pagination:
+def get_tickets_with_details_for_party_paginated(
+    party_id: PartyID, page: int, per_page: int, *, search_term=None
+) -> Pagination:
     """Return the party's tickets to show on the specified page."""
     query = DbTicket.query \
         .for_party(party_id) \
@@ -208,10 +213,13 @@ def get_tickets_with_details_for_party_paginated(party_id: PartyID, page: int,
         .paginate(page, per_page)
 
 
-def get_tickets_in_use_for_party_paginated(party_id: PartyID, page: int,
-                                           per_page: int,
-                                           *, search_term: Optional[str]=None
-                                          ) -> Pagination:
+def get_tickets_in_use_for_party_paginated(
+    party_id: PartyID,
+    page: int,
+    per_page: int,
+    *,
+    search_term: Optional[str] = None,
+) -> Pagination:
     """Return the party's tickets which have a user assigned."""
     ticket_user = db.aliased(DbUser)
 

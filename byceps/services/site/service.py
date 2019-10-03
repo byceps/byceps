@@ -19,9 +19,14 @@ class UnknownSiteId(Exception):
     pass
 
 
-def create_site(site_id: SiteID, title: str, server_name: str,
-                email_config_id: str, *, party_id: Optional[PartyID]=None
-               ) -> Site:
+def create_site(
+    site_id: SiteID,
+    title: str,
+    server_name: str,
+    email_config_id: str,
+    *,
+    party_id: Optional[PartyID] = None,
+) -> Site:
     """Create a site for that party."""
     site = DbSite(site_id, title, server_name, email_config_id, party_id=party_id)
 
@@ -31,9 +36,14 @@ def create_site(site_id: SiteID, title: str, server_name: str,
     return _db_entity_to_site(site)
 
 
-def update_site(site_id: SiteID, title: str, server_name: str,
-                email_config_id: str, *, party_id: Optional[PartyID]=None
-               ) -> Site:
+def update_site(
+    site_id: SiteID,
+    title: str,
+    server_name: str,
+    email_config_id: str,
+    *,
+    party_id: Optional[PartyID] = None,
+) -> Site:
     """Update the site."""
     site = DbSite.query.get(site_id)
 

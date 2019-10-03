@@ -26,8 +26,9 @@ from .models.category import Category as DbCategory
 from .models.ticket import Ticket as DbTicket
 
 
-def create_archived_attendance(user_id: UserID, party_id: PartyID
-                              ) -> DbArchivedAttendance:
+def create_archived_attendance(
+    user_id: UserID, party_id: PartyID
+) -> DbArchivedAttendance:
     """Create an archived attendance of the user at the party."""
     attendance = DbArchivedAttendance(user_id, party_id)
 
@@ -96,8 +97,9 @@ def get_attendees_by_party(party_ids: Set[PartyID]) -> Dict[PartyID, Set[User]]:
     return attendees_by_party_id
 
 
-def get_attendee_ids_for_parties(party_ids: Set[PartyID]
-                                ) -> Dict[PartyID, Set[UserID]]:
+def get_attendee_ids_for_parties(
+    party_ids: Set[PartyID]
+) -> Dict[PartyID, Set[UserID]]:
     """Return the partys' attendee IDs, indexed by party ID."""
     if not party_ids:
         return {}

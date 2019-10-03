@@ -13,8 +13,9 @@ from byceps.services.user_avatar.models import Avatar
 from byceps.util.image.models import ImageType
 
 
-def create_avatar(creator_id, *, id=None, created_at=None,
-                  image_type=ImageType.jpeg):
+def create_avatar(
+    creator_id, *, id=None, created_at=None, image_type=ImageType.jpeg
+):
     if id is None:
         id = generate_uuid()
 

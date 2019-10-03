@@ -17,9 +17,12 @@ from .....typing import PartyID
 
 
 class CurrentUser:
-
-    def __init__(self, user: Union[AnonymousUser, User], is_anonymous: bool,
-                 permissions: Set[Enum]) -> None:
+    def __init__(
+        self,
+        user: Union[AnonymousUser, User],
+        is_anonymous: bool,
+        permissions: Set[Enum],
+    ) -> None:
         self.id = user.id
         self.screen_name = user.screen_name if not is_anonymous else None
         self.is_active = not is_anonymous
@@ -40,8 +43,9 @@ class CurrentUser:
         return CurrentUser(user, is_anonymous, permissions)
 
     @classmethod
-    def create_from_user(self, user: User, permissions: Set[Enum]
-                        ) -> CurrentUser:
+    def create_from_user(
+        self, user: User, permissions: Set[Enum]
+    ) -> CurrentUser:
         is_anonymous = False
 
         return CurrentUser(user, is_anonymous, permissions)

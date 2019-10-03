@@ -20,10 +20,12 @@ from .models.version import Version as DbVersion
 from .transfer.models import DocumentID, VersionID
 
 
-def create_version(document_id: DocumentID, title: str,
-                   snippet_version_id: SnippetVersionID,
-                   consent_subject_id: ConsentSubjectID
-                  ) -> DbVersion:
+def create_version(
+    document_id: DocumentID,
+    title: str,
+    snippet_version_id: SnippetVersionID,
+    consent_subject_id: ConsentSubjectID,
+) -> DbVersion:
     """Create a new version of that document."""
     version = DbVersion(document_id, title, snippet_version_id,
                         consent_subject_id)
@@ -39,8 +41,9 @@ def find_version(version_id: VersionID) -> Optional[DbVersion]:
     return DbVersion.query.get(version_id)
 
 
-def find_version_for_consent_subject_id(consent_subject_id: ConsentSubjectID
-                                       ) -> Optional[DbVersion]:
+def find_version_for_consent_subject_id(
+    consent_subject_id: ConsentSubjectID
+) -> Optional[DbVersion]:
     """Return the version with that consent subject ID, or `None` if
     not found.
     """

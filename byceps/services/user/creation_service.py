@@ -36,12 +36,18 @@ class UserCreationFailed(Exception):
     pass
 
 
-def create_user(screen_name: str, email_address: str, password: str,
-                first_names: Optional[str], last_name: Optional[str],
-                site_id: SiteID, *, terms_consent: Optional[Consent]=None,
-                privacy_policy_consent: Optional[Consent]=None,
-                newsletter_subscription: Optional[NewsletterSubscription]=None
-               ) -> User:
+def create_user(
+    screen_name: str,
+    email_address: str,
+    password: str,
+    first_names: Optional[str],
+    last_name: Optional[str],
+    site_id: SiteID,
+    *,
+    terms_consent: Optional[Consent] = None,
+    privacy_policy_consent: Optional[Consent] = None,
+    newsletter_subscription: Optional[NewsletterSubscription] = None,
+) -> User:
     """Create a user account and related records."""
     # user with details, password, and roles
     user = create_basic_user(screen_name, email_address, password,
@@ -74,11 +80,15 @@ def create_user(screen_name: str, email_address: str, password: str,
     return user
 
 
-def create_basic_user(screen_name: str, email_address: str, password: str, *,
-                      first_names: Optional[str]=None,
-                      last_name: Optional[str]=None,
-                      creator_id: Optional[UserID]=None
-                     ) -> User:
+def create_basic_user(
+    screen_name: str,
+    email_address: str,
+    password: str,
+    *,
+    first_names: Optional[str] = None,
+    last_name: Optional[str] = None,
+    creator_id: Optional[UserID] = None,
+) -> User:
     # user with details
     user = _create_user(screen_name, email_address, first_names=first_names,
                         last_name=last_name, creator_id=creator_id)
@@ -92,10 +102,14 @@ def create_basic_user(screen_name: str, email_address: str, password: str, *,
     return user
 
 
-def _create_user(screen_name: str, email_address: str, *,
-                 first_names: Optional[str]=None, last_name: Optional[str]=None,
-                 creator_id: Optional[UserID]=None
-                ) -> User:
+def _create_user(
+    screen_name: str,
+    email_address: str,
+    *,
+    first_names: Optional[str] = None,
+    last_name: Optional[str] = None,
+    creator_id: Optional[UserID] = None,
+) -> User:
     created_at = datetime.utcnow()
 
     user = build_user(created_at, screen_name, email_address)
@@ -123,8 +137,9 @@ def _create_user(screen_name: str, email_address: str, *,
     return user_service._db_entity_to_user_dto(user)
 
 
-def build_user(created_at: datetime, screen_name: str, email_address: str
-              ) -> DbUser:
+def build_user(
+    created_at: datetime, screen_name: str, email_address: str
+) -> DbUser:
     normalized_screen_name = _normalize_screen_name(screen_name)
     normalized_email_address = _normalize_email_address(email_address)
 
@@ -161,8 +176,9 @@ def _assign_roles(user_id: UserID) -> None:
     authorization_service.assign_role_to_user(board_user_role.id, user_id)
 
 
-def _request_email_address_verification(user: User, email_address: str,
-                                        site_id: SiteID) -> None:
+def _request_email_address_verification(
+    user: User, email_address: str, site_id: SiteID
+) -> None:
     verification_token = verification_token_service \
         .create_for_email_address_confirmation(user.id)
 

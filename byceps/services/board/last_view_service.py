@@ -23,9 +23,9 @@ from .transfer.models import CategoryID, CategoryWithLastUpdate, TopicID
 # categories
 
 
-def contains_category_unseen_postings(category: CategoryWithLastUpdate,
-                                      user_id: UserID
-                                     ) -> bool:
+def contains_category_unseen_postings(
+    category: CategoryWithLastUpdate, user_id: UserID
+) -> bool:
     """Return `True` if the category contains postings created after the
     last time the user viewed it.
     """
@@ -40,16 +40,18 @@ def contains_category_unseen_postings(category: CategoryWithLastUpdate,
     return category.last_posting_updated_at > last_view.occurred_at
 
 
-def find_last_category_view(user_id: UserID, category_id: CategoryID
-                           ) -> Optional[LastCategoryView]:
+def find_last_category_view(
+    user_id: UserID, category_id: CategoryID
+) -> Optional[LastCategoryView]:
     """Return the user's last view of the category, or `None` if not found."""
     return LastCategoryView.query \
         .filter_by(user_id=user_id, category_id=category_id) \
         .first()
 
 
-def mark_category_as_just_viewed(category_id: CategoryID, user_id: UserID
-                                ) -> None:
+def mark_category_as_just_viewed(
+    category_id: CategoryID, user_id: UserID
+) -> None:
     """Mark the category as last viewed by the user (if logged in) at
     the current time.
     """
@@ -79,16 +81,18 @@ def contains_topic_unseen_postings(topic: DbTopic, user_id: UserID) -> bool:
         or topic.last_updated_at > last_viewed_at
 
 
-def find_last_topic_view(user_id: UserID, topic_id: TopicID
-                        ) -> Optional[LastTopicView]:
+def find_last_topic_view(
+    user_id: UserID, topic_id: TopicID
+) -> Optional[LastTopicView]:
     """Return the user's last view of the topic, or `None` if not found."""
     return LastTopicView.query \
         .filter_by(user_id=user_id, topic_id=topic_id) \
         .first()
 
 
-def find_topic_last_viewed_at(topic_id: TopicID, user_id: UserID
-                             ) -> Optional[datetime]:
+def find_topic_last_viewed_at(
+    topic_id: TopicID, user_id: UserID
+) -> Optional[datetime]:
     """Return the time the topic was last viewed by the user (or
     nothing, if it hasn't been viewed by the user yet).
     """
@@ -112,8 +116,9 @@ def mark_topic_as_just_viewed(topic_id: TopicID, user_id: UserID) -> None:
     upsert(table, identifier, replacement)
 
 
-def mark_all_topics_in_category_as_viewed(category_id: CategoryID,
-                                          user_id: UserID) -> None:
+def mark_all_topics_in_category_as_viewed(
+    category_id: CategoryID, user_id: UserID
+) -> None:
     """Mark all topics in the category as viewed."""
     topic_ids = topic_query_service.get_all_topic_ids_in_category(category_id)
 

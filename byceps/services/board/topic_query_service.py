@@ -32,8 +32,9 @@ def find_topic_by_id(topic_id: TopicID) -> Optional[DbTopic]:
     return DbTopic.query.get(topic_id)
 
 
-def find_topic_visible_for_user(topic_id: TopicID, user: CurrentUser
-                               ) -> Optional[DbTopic]:
+def find_topic_visible_for_user(
+    topic_id: TopicID, user: CurrentUser
+) -> Optional[DbTopic]:
     """Return the topic with that id, or `None` if not found or
     invisible for the user.
     """
@@ -46,8 +47,9 @@ def find_topic_visible_for_user(topic_id: TopicID, user: CurrentUser
         .first()
 
 
-def paginate_topics(board_id: BoardID, user: CurrentUser, page: int,
-                    topics_per_page: int) -> Pagination:
+def paginate_topics(
+    board_id: BoardID, user: CurrentUser, page: int, topics_per_page: int
+) -> Pagination:
     """Paginate topics in that board, as visible for the user."""
     return _query_topics(user) \
         .join(DbCategory) \
@@ -67,8 +69,9 @@ def get_all_topic_ids_in_category(category_id: CategoryID) -> Set[TopicID]:
     return {row[0] for row in rows}
 
 
-def paginate_topics_of_category(category_id: CategoryID, user: CurrentUser,
-                                page: int, topics_per_page: int) -> Pagination:
+def paginate_topics_of_category(
+    category_id: CategoryID, user: CurrentUser, page: int, topics_per_page: int
+) -> Pagination:
     """Paginate topics in that category, as visible for the user.
 
     Pinned topics are returned first.
@@ -91,9 +94,9 @@ def _query_topics(user: CurrentUser) -> Query:
         .only_visible_for_user(user)
 
 
-def find_default_posting_to_jump_to(topic_id: TopicID, user: CurrentUser,
-                                    last_viewed_at: Optional[datetime]
-                                   ) -> Optional[DbPosting]:
+def find_default_posting_to_jump_to(
+    topic_id: TopicID, user: CurrentUser, last_viewed_at: Optional[datetime]
+) -> Optional[DbPosting]:
     """Return the posting of the topic to show by default, or `None`."""
     if user.is_anonymous:
         # All postings are potentially new to a guest, so start on

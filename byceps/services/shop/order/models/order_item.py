@@ -34,10 +34,17 @@ class OrderItem(db.Model):
     line_amount = db.Column(db.Numeric(7, 2), nullable=False)
     shipping_required = db.Column(db.Boolean, nullable=False)
 
-    def __init__(self, order: Order, article_number: ArticleNumber,
-                 description: str, unit_price: Decimal, tax_rate: Decimal,
-                 quantity: int, line_amount: Decimal, shipping_required: bool
-                ) -> None:
+    def __init__(
+        self,
+        order: Order,
+        article_number: ArticleNumber,
+        description: str,
+        unit_price: Decimal,
+        tax_rate: Decimal,
+        quantity: int,
+        line_amount: Decimal,
+        shipping_required: bool,
+    ) -> None:
         # Require order instance rather than order number as argument
         # because order items are created together with the order – and
         # until the order is created, there is no order number assigned.

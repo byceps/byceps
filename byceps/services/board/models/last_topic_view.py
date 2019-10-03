@@ -26,8 +26,9 @@ class LastTopicView(db.Model):
     topic = db.relationship(Topic)
     occurred_at = db.Column(db.DateTime, nullable=False)
 
-    def __init__(self, user_id: UserID, topic_id: TopicID, occurred_at: datetime
-                ) -> None:
+    def __init__(
+        self, user_id: UserID, topic_id: TopicID, occurred_at: datetime
+    ) -> None:
         self.user_id = user_id
         self.topic_id = topic_id
         self.occurred_at = occurred_at

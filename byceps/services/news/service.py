@@ -25,8 +25,15 @@ from . import image_service
 from .transfer.models import ChannelID, Item, ItemID, ItemVersionID
 
 
-def create_item(brand_id: BrandID, slug: str, creator_id: UserID, title: str,
-                body: str, *, image_url_path: Optional[str]=None) -> Item:
+def create_item(
+    brand_id: BrandID,
+    slug: str,
+    creator_id: UserID,
+    title: str,
+    body: str,
+    *,
+    image_url_path: Optional[str] = None,
+) -> Item:
     """Create a news item, a version, and set the version as the item's
     current one.
     """
@@ -45,8 +52,15 @@ def create_item(brand_id: BrandID, slug: str, creator_id: UserID, title: str,
     return _db_entity_to_item(item)
 
 
-def update_item(item_id: ItemID, slug:str, creator_id: UserID, title: str,
-                body: str, *, image_url_path: Optional[str]=None) -> None:
+def update_item(
+    item_id: ItemID,
+    slug: str,
+    creator_id: UserID,
+    title: str,
+    body: str,
+    *,
+    image_url_path: Optional[str] = None,
+) -> None:
     """Update a news item by creating a new version of it and setting
     the new version as the current one.
     """
@@ -64,8 +78,14 @@ def update_item(item_id: ItemID, slug:str, creator_id: UserID, title: str,
     db.session.commit()
 
 
-def _create_version(item: DbItem, creator_id: UserID, title: str, body: str, *,
-                    image_url_path: Optional[str]=None) -> DbItemVersion:
+def _create_version(
+    item: DbItem,
+    creator_id: UserID,
+    title: str,
+    body: str,
+    *,
+    image_url_path: Optional[str] = None,
+) -> DbItemVersion:
     version = DbItemVersion(item, creator_id, title, body)
 
     if image_url_path:
@@ -109,9 +129,9 @@ def _get_db_item(item_id: ItemID) -> DbItem:
     return item
 
 
-def find_aggregated_item_by_slug(channel_id: ChannelID, slug: str,
-                                 *, published_only: bool=False
-                                ) -> Optional[Item]:
+def find_aggregated_item_by_slug(
+    channel_id: ChannelID, slug: str, *, published_only: bool = False
+) -> Optional[Item]:
     """Return the news item identified by that slug, or `None` if not found."""
     query = DbItem.query \
         .for_channel(channel_id) \
@@ -130,10 +150,13 @@ def find_aggregated_item_by_slug(channel_id: ChannelID, slug: str,
     return _db_entity_to_item(item)
 
 
-def get_aggregated_items_paginated(channel_id: ChannelID, page: int,
-                                   items_per_page: int,
-                                   *, published_only: bool=False
-                                  ) -> Pagination:
+def get_aggregated_items_paginated(
+    channel_id: ChannelID,
+    page: int,
+    items_per_page: int,
+    *,
+    published_only: bool = False,
+) -> Pagination:
     """Return the news items to show on the specified page."""
     query = _get_items_query(channel_id)
 
@@ -143,8 +166,9 @@ def get_aggregated_items_paginated(channel_id: ChannelID, page: int,
     return paginate(query, page, items_per_page, item_mapper=_db_entity_to_item)
 
 
-def get_items_paginated(channel_id: ChannelID, page: int, items_per_page: int
-                       ) -> Pagination:
+def get_items_paginated(
+    channel_id: ChannelID, page: int, items_per_page: int
+) -> Pagination:
     """Return the news items to show on the specified page."""
     return _get_items_query(channel_id) \
         .paginate(page, items_per_page)

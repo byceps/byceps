@@ -28,10 +28,13 @@ class UnknownUserId(Exception):
     """Indicate that the given user ID is not known."""
 
 
-def update_avatar_image(user_id: UserID, stream: BinaryIO,
-                        allowed_types: Set[ImageType],
-                        *, maximum_dimensions: Dimensions=MAXIMUM_DIMENSIONS
-                       ) -> None:
+def update_avatar_image(
+    user_id: UserID,
+    stream: BinaryIO,
+    allowed_types: Set[ImageType],
+    *,
+    maximum_dimensions: Dimensions = MAXIMUM_DIMENSIONS,
+) -> None:
     """Set a new avatar image for the user.
 
     Raise `ImageTypeProhibited` if the stream data is not of one the

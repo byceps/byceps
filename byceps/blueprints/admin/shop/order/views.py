@@ -306,8 +306,9 @@ def mark_as_paid(order_id):
     return redirect_to('.view', order_id=order.id)
 
 
-@blueprint.route('/<uuid:order_id>/resend_incoming_order_email',
-                 methods=['POST'])
+@blueprint.route(
+    '/<uuid:order_id>/resend_incoming_order_email', methods=['POST']
+)
 @permission_required(ShopOrderPermission.update)
 @respond_no_content
 def resend_email_for_incoming_order_to_orderer(order_id):

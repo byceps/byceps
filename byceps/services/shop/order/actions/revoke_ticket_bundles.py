@@ -18,9 +18,13 @@ from ..models.order_action import Parameters
 from ..transfer.models import Order, OrderID
 
 
-def revoke_ticket_bundles(order: Order, article_number: ArticleNumber,
-                          bundle_quantity: int, initiator_id: UserID,
-                          parameters: Parameters) -> None:
+def revoke_ticket_bundles(
+    order: Order,
+    article_number: ArticleNumber,
+    bundle_quantity: int,
+    initiator_id: UserID,
+    parameters: Parameters,
+) -> None:
     """Revoke all ticket bundles in this order."""
     # Fetch all tickets, bundled or not.
     tickets = ticket_service.find_tickets_created_by_order(order.order_number)
@@ -32,8 +36,9 @@ def revoke_ticket_bundles(order: Order, article_number: ArticleNumber,
         _create_order_event(order.id, bundle_id, initiator_id)
 
 
-def _create_order_event(order_id: OrderID, bundle_id: TicketBundleID,
-                        initiator_id: UserID) -> None:
+def _create_order_event(
+    order_id: OrderID, bundle_id: TicketBundleID, initiator_id: UserID
+) -> None:
     event_type = 'ticket-bundle-revoked'
 
     data = {

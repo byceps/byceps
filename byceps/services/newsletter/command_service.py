@@ -31,23 +31,26 @@ def create_list(list_id: ListID, title: str) -> List:
     return _db_entity_to_list(list_)
 
 
-def subscribe(user_id: UserID, list_id: ListID, expressed_at: datetime
-             ) -> None:
+def subscribe(user_id: UserID, list_id: ListID, expressed_at: datetime) -> None:
     """Subscribe the user to that list."""
     _update_subscription_state(user_id, list_id, expressed_at,
                                SubscriptionState.requested)
 
 
-def unsubscribe(user_id: UserID, list_id: ListID, expressed_at: datetime
-               ) -> None:
+def unsubscribe(
+    user_id: UserID, list_id: ListID, expressed_at: datetime
+) -> None:
     """Unsubscribe the user from that list."""
     _update_subscription_state(user_id, list_id, expressed_at,
                                SubscriptionState.declined)
 
 
-def _update_subscription_state(user_id: UserID, list_id: ListID,
-                               expressed_at: datetime, state: SubscriptionState
-                              ) -> None:
+def _update_subscription_state(
+    user_id: UserID,
+    list_id: ListID,
+    expressed_at: datetime,
+    state: SubscriptionState,
+) -> None:
     """Update the user's subscription state for that list."""
     list_ = find_list(list_id)
     if list_ is None:

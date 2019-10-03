@@ -26,8 +26,9 @@ class LastCategoryView(db.Model):
     category = db.relationship(Category)
     occurred_at = db.Column(db.DateTime, nullable=False)
 
-    def __init__(self, user_id: UserID, category_id: CategoryID,
-                 occurred_at: datetime) -> None:
+    def __init__(
+        self, user_id: UserID, category_id: CategoryID, occurred_at: datetime
+    ) -> None:
         self.user_id = user_id
         self.category_id = category_id
         self.occurred_at = occurred_at

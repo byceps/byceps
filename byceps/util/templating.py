@@ -14,7 +14,7 @@ from jinja2 import BaseLoader, Environment, FunctionLoader, Template
 from jinja2.sandbox import ImmutableSandboxedEnvironment
 
 
-def load_template(source: str, *, template_globals: Dict[str, Any]=None):
+def load_template(source: str, *, template_globals: Dict[str, Any] = None):
     """Load a template from source, using the sandboxed environment."""
     env = create_sandboxed_environment()
 
@@ -24,8 +24,9 @@ def load_template(source: str, *, template_globals: Dict[str, Any]=None):
     return env.from_string(source)
 
 
-def create_sandboxed_environment(*, loader: Optional[BaseLoader]=None,
-                                 autoescape: bool=True) -> Environment:
+def create_sandboxed_environment(
+    *, loader: Optional[BaseLoader] = None, autoescape: bool = True
+) -> Environment:
     """Create a sandboxed environment."""
     if loader is None:
         # A loader that never finds a template.

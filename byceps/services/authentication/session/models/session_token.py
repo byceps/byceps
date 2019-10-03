@@ -20,8 +20,9 @@ class SessionToken(db.Model):
     token = db.Column(db.UnicodeText, unique=True, index=True, nullable=False)
     created_at = db.Column(db.DateTime, nullable=False)
 
-    def __init__(self, user_id: UserID, token: str, created_at: datetime
-                ) -> None:
+    def __init__(
+        self, user_id: UserID, token: str, created_at: datetime
+    ) -> None:
         self.user_id = user_id
         self.token = token
         self.created_at = created_at

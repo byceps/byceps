@@ -31,8 +31,9 @@ class OrderWithOrderer(Order):
     placed_by: DbUser
 
 
-def extend_order_tuples_with_orderer(orders: Sequence[Order]
-                                    ) -> Iterator[OrderWithOrderer]:
+def extend_order_tuples_with_orderer(
+    orders: Sequence[Order]
+) -> Iterator[OrderWithOrderer]:
     orderer_ids = {order.placed_by_id for order in orders}
     orderers = user_service.find_users(orderer_ids, include_avatars=True)
     orderers_by_id = user_service.index_users_by_id(orderers)
@@ -86,8 +87,9 @@ def _fake_order_placement_event(order_id: OrderID) -> OrderEvent:
     return OrderEvent(order.created_at, 'order-placed', order.id, data)
 
 
-def _get_additional_data(event: OrderEvent, users_by_id: Dict[UserID, User]
-                        ) -> OrderEventData:
+def _get_additional_data(
+    event: OrderEvent, users_by_id: Dict[UserID, User]
+) -> OrderEventData:
     if event.event_type == 'badge-awarded':
         return _get_additional_data_for_badge_awarded(event)
     elif event.event_type == 'ticket-bundle-created':
@@ -102,9 +104,9 @@ def _get_additional_data(event: OrderEvent, users_by_id: Dict[UserID, User]
         return _get_additional_data_for_standard_event(event, users_by_id)
 
 
-def _get_additional_data_for_standard_event(event: OrderEvent,
-                                            users_by_id: Dict[UserID, User]
-                                           ) -> OrderEventData:
+def _get_additional_data_for_standard_event(
+    event: OrderEvent, users_by_id: Dict[UserID, User]
+) -> OrderEventData:
     initiator_id = event.data['initiator_id']
 
     return {
@@ -126,8 +128,9 @@ def _get_additional_data_for_badge_awarded(event: OrderEvent) -> OrderEventData:
     }
 
 
-def _get_additional_data_for_ticket_bundle_created(event: OrderEvent
-                                                  ) -> OrderEventData:
+def _get_additional_data_for_ticket_bundle_created(
+    event: OrderEvent
+) -> OrderEventData:
     bundle_id = event.data['ticket_bundle_id']
     category_id = event.data['ticket_bundle_category_id']
     ticket_quantity = event.data['ticket_bundle_ticket_quantity']
@@ -143,9 +146,9 @@ def _get_additional_data_for_ticket_bundle_created(event: OrderEvent
     }
 
 
-def _get_additional_data_for_ticket_bundle_revoked(event: OrderEvent,
-                                                   users_by_id: Dict[UserID, User]
-                                                  ) -> OrderEventData:
+def _get_additional_data_for_ticket_bundle_revoked(
+    event: OrderEvent, users_by_id: Dict[UserID, User]
+) -> OrderEventData:
     bundle_id = event.data['ticket_bundle_id']
 
     data = {
@@ -159,8 +162,9 @@ def _get_additional_data_for_ticket_bundle_revoked(event: OrderEvent,
     return data
 
 
-def _get_additional_data_for_ticket_created(event: OrderEvent
-                                           ) -> OrderEventData:
+def _get_additional_data_for_ticket_created(
+    event: OrderEvent
+) -> OrderEventData:
     ticket_id = event.data['ticket_id']
     ticket_code = event.data['ticket_code']
     category_id = event.data['ticket_category_id']
@@ -172,9 +176,9 @@ def _get_additional_data_for_ticket_created(event: OrderEvent
     }
 
 
-def _get_additional_data_for_ticket_revoked(event: OrderEvent,
-                                            users_by_id: Dict[UserID, User]
-                                           ) -> OrderEventData:
+def _get_additional_data_for_ticket_revoked(
+    event: OrderEvent, users_by_id: Dict[UserID, User]
+) -> OrderEventData:
     ticket_id = event.data['ticket_id']
     ticket_code = event.data['ticket_code']
 

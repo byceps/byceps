@@ -35,10 +35,14 @@ class OrderFailed(Exception):
     pass
 
 
-def place_order(shop_id: ShopID, orderer: Orderer,
-                payment_method: PaymentMethod, cart: Cart,
-                *, created_at: Optional[datetime]=None
-               ) -> Order:
+def place_order(
+    shop_id: ShopID,
+    orderer: Orderer,
+    payment_method: PaymentMethod,
+    cart: Cart,
+    *,
+    created_at: Optional[datetime] = None,
+) -> Order:
     """Place an order for one or more articles."""
     shop = shop_service.get_shop(shop_id)
 
@@ -65,9 +69,13 @@ def place_order(shop_id: ShopID, orderer: Orderer,
     return order.to_transfer_object()
 
 
-def _build_order(shop_id: ShopID, order_number: OrderNumber, orderer: Orderer,
-                 payment_method: PaymentMethod, created_at: datetime
-                ) -> DbOrder:
+def _build_order(
+    shop_id: ShopID,
+    order_number: OrderNumber,
+    orderer: Orderer,
+    payment_method: PaymentMethod,
+    created_at: datetime,
+) -> DbOrder:
     """Create an order of one or more articles."""
     return DbOrder(
         shop_id,
@@ -84,8 +92,9 @@ def _build_order(shop_id: ShopID, order_number: OrderNumber, orderer: Orderer,
     )
 
 
-def _add_items_from_cart_to_order(cart: Cart, order: DbOrder
-                                 ) -> Iterator[DbOrderItem]:
+def _add_items_from_cart_to_order(
+    cart: Cart, order: DbOrder
+) -> Iterator[DbOrderItem]:
     """Add the items from the cart to the order.
 
     Reduce the article's quantity accordingly.
@@ -237,8 +246,9 @@ def cancel_order(order_id: OrderID, initiator_id: UserID, reason: str) -> None:
                                    initiator_id)
 
 
-def mark_order_as_paid(order_id: OrderID, payment_method: PaymentMethod,
-                       initiator_id: UserID) -> None:
+def mark_order_as_paid(
+    order_id: OrderID, payment_method: PaymentMethod, initiator_id: UserID
+) -> None:
     """Mark the order as paid."""
     order = find_order(order_id)
 
@@ -273,8 +283,12 @@ def mark_order_as_paid(order_id: OrderID, payment_method: PaymentMethod,
                                    initiator_id)
 
 
-def _update_payment_state(order: DbOrder, state: PaymentState,
-                          updated_at: datetime, initiator_id: UserID) -> None:
+def _update_payment_state(
+    order: DbOrder,
+    state: PaymentState,
+    updated_at: datetime,
+    initiator_id: UserID,
+) -> None:
     order.payment_state = state
     order.payment_state_updated_at = updated_at
     order.payment_state_updated_by_id = initiator_id
@@ -334,8 +348,9 @@ def find_order_by_order_number(order_number: OrderNumber) -> Optional[DbOrder]:
         .one_or_none()
 
 
-def find_orders_by_order_numbers(order_numbers: Set[OrderNumber]
-                                ) -> Sequence[DbOrder]:
+def find_orders_by_order_numbers(
+    order_numbers: Set[OrderNumber]
+) -> Sequence[DbOrder]:
     """Return the orders with those order numbers."""
     if not order_numbers:
         return []
@@ -359,11 +374,15 @@ def get_order_count_by_shop_id() -> Dict[ShopID, int]:
     return dict(shop_ids_and_order_counts)
 
 
-def get_orders_for_shop_paginated(shop_id: ShopID, page: int, per_page: int, *,
-                                  search_term=None,
-                                  only_payment_state: Optional[PaymentState]=None,
-                                  only_shipped: Optional[bool]=None
-                                 ) -> Pagination:
+def get_orders_for_shop_paginated(
+    shop_id: ShopID,
+    page: int,
+    per_page: int,
+    *,
+    search_term=None,
+    only_payment_state: Optional[PaymentState] = None,
+    only_shipped: Optional[bool] = None,
+) -> Pagination:
     """Return all orders for that shop, ordered by creation date.
 
     If a payment state is specified, only orders in that state are
@@ -403,8 +422,9 @@ def get_orders_placed_by_user(user_id: UserID) -> Sequence[DbOrder]:
         .all()
 
 
-def get_orders_placed_by_user_for_shop(user_id: UserID, shop_id: ShopID
-                                      ) -> Sequence[Order]:
+def get_orders_placed_by_user_for_shop(
+    user_id: UserID, shop_id: ShopID
+) -> Sequence[Order]:
     """Return orders placed by the user in that shop."""
     orders = DbOrder.query \
         .options(

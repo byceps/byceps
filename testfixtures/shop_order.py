@@ -27,9 +27,15 @@ def create_orderer(user):
         user.detail.street)
 
 
-def create_order(shop_id, placed_by, *, order_number=ANY_ORDER_NUMBER,
-                 total_amount=None, payment_method=PaymentMethod.bank_transfer,
-                 shipping_required=False):
+def create_order(
+    shop_id,
+    placed_by,
+    *,
+    order_number=ANY_ORDER_NUMBER,
+    total_amount=None,
+    payment_method=PaymentMethod.bank_transfer,
+    shipping_required=False,
+):
     if total_amount is None:
         total_amount = Decimal('23.42')
 

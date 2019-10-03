@@ -71,8 +71,9 @@ class Topic(db.Model):
     initial_posting = association_proxy('initial_topic_posting_association', 'posting')
     posting_limited_to_moderators = db.Column(db.Boolean, default=False, nullable=False)
 
-    def __init__(self, category_id: CategoryID, creator_id: UserID, title: str
-                ) -> None:
+    def __init__(
+        self, category_id: CategoryID, creator_id: UserID, title: str
+    ) -> None:
         self.category_id = category_id
         self.creator_id = creator_id
         self.title = title

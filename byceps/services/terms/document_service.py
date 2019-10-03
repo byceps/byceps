@@ -38,8 +38,7 @@ def find_document(document_id: DocumentID) -> Optional[Document]:
     return _db_entity_to_document(document)
 
 
-def set_current_version(document_id: DocumentID, version_id: VersionID
-                       ) -> None:
+def set_current_version(document_id: DocumentID, version_id: VersionID) -> None:
     """Specify the current version of the document."""
     document = DbDocument.query.get(document_id)
     if document is None:

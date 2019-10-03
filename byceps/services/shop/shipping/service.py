@@ -52,8 +52,9 @@ class OrderItemQuantity:
     quantity: int
 
 
-def _find_order_items(shop_id: ShopID, payment_states: Set[PaymentState]
-                     ) -> Iterator[OrderItemQuantity]:
+def _find_order_items(
+    shop_id: ShopID, payment_states: Set[PaymentState]
+) -> Iterator[OrderItemQuantity]:
     """Return article quantities for the given payment states."""
     payment_state_names = {ps.name for ps in payment_states}
 
@@ -83,9 +84,9 @@ def _find_order_items(shop_id: ShopID, payment_states: Set[PaymentState]
 
 
 def _aggregate_ordered_article_quantites(
-        order_item_quantities: Sequence[OrderItemQuantity],
-        article_descriptions: Dict[ArticleNumber, str]
-    ) -> Iterator[ArticleToShip]:
+    order_item_quantities: Sequence[OrderItemQuantity],
+    article_descriptions: Dict[ArticleNumber, str],
+) -> Iterator[ArticleToShip]:
     """Aggregate article quantities per payment state."""
     d = defaultdict(Counter)
 
@@ -106,8 +107,9 @@ def _aggregate_ordered_article_quantites(
         )
 
 
-def _get_article_descriptions(article_numbers: Set[ArticleNumber]
-                             ) -> Dict[ArticleNumber, str]:
+def _get_article_descriptions(
+    article_numbers: Set[ArticleNumber]
+) -> Dict[ArticleNumber, str]:
     """Look up description texts of the specified articles."""
     if not article_numbers:
         return []
