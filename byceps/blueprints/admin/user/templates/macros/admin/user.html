@@ -1,9 +1,10 @@
 {% from 'macros/misc.html' import render_tag %}
+{% from 'macros/user.html' import render_user_screen_name %}
 {% from 'macros/user_avatar.html' import render_user_avatar_16, render_user_avatar_20, render_user_avatar_image_with_fallback %}
 
 
 {% macro render_user_admin_link(user) -%}
-<a href="{{ url_for('user_admin.view', user_id=user.id) }}">{{ user.screen_name|truncate(16, end='…') if user.deleted else user.screen_name }}</a>
+<a href="{{ url_for('user_admin.view', user_id=user.id) }}">{{ render_user_screen_name(user) }}</a>
 {%- endmacro %}
 
 

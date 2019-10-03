@@ -1,4 +1,4 @@
-{% from 'macros/user.html' import render_user_link %}
+{% from 'macros/user.html' import render_user_link, render_user_screen_name %}
 
 
 {% macro render_user_avatar_16(user) -%}
@@ -14,7 +14,7 @@
 
 
 {% macro render_user_avatar_16_and_name(user) -%}
-<span class="nowrap">{{ render_user_avatar_16(user) }} {{ user.screen_name }}</span>
+<span class="nowrap">{{ render_user_avatar_16(user) }} {{ render_user_screen_name(user) }}</span>
 {%- endmacro %}
 
 
@@ -31,7 +31,7 @@
 
 
 {% macro render_user_avatar_20_and_name(user) -%}
-<span class="nowrap">{{ render_user_avatar_20(user) }} {{ user.screen_name }}</span>
+<span class="nowrap">{{ render_user_avatar_20(user) }} {{ render_user_screen_name(user) }}</span>
 {%- endmacro %}
 
 

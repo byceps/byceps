@@ -1,7 +1,16 @@
 {% macro render_user_link(user) -%}
   {%- if user.deleted -%}
-{{ user.screen_name|dim }}
+{{ render_user_screen_name(user) }}
   {%- else -%}
-<a href="{{ url_for('user_profile.view', user_id=user.id) }}">{{ user.screen_name }}</a>
+<a href="{{ url_for('user_profile.view', user_id=user.id) }}">{{ render_user_screen_name(user) }}</a>
+  {%- endif -%}
+{%- endmacro %}
+
+
+{% macro render_user_screen_name(user) -%}
+  {%- if user.deleted -%}
+<span class="dimmed" style="font-style: italic;">gelöscht</span>
+  {%- else -%}
+{{ user.screen_name }}
   {%- endif -%}
 {%- endmacro %}
