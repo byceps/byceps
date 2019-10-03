@@ -1,7 +1,20 @@
+{% from 'macros/user.html' import render_user_link %}
+
+
 {% macro render_user_avatar_16(user) -%}
 <div class="avatar size-16" title="{{ user.screen_name }}">
   {{- _render_user_avatar_image_with_fallback(user) -}}
 </div>
+{%- endmacro %}
+
+
+{% macro render_user_avatar_16_and_link(user) -%}
+<span class="nowrap">{{ render_user_avatar_16(user) }} {{ render_user_link(user) }}</span>
+{%- endmacro %}
+
+
+{% macro render_user_avatar_16_and_name(user) -%}
+<span class="nowrap">{{ render_user_avatar_16(user) }} {{ user.screen_name }}</span>
 {%- endmacro %}
 
 
@@ -12,8 +25,18 @@
 {%- endmacro %}
 
 
+{% macro render_user_avatar_20_and_link(user) -%}
+<span class="nowrap">{{ render_user_avatar_20(user) }} {{ render_user_link(user) }}</span>
+{%- endmacro %}
+
+
 {% macro render_user_avatar_32(user) -%}
   {{ _render_user_avatar(user, '32') }}
+{%- endmacro %}
+
+
+{% macro render_user_avatar_32_and_link(user) -%}
+<span class="nowrap">{{ render_user_avatar_32(user) }} {{ render_user_link(user) }}</span>
 {%- endmacro %}
 
 

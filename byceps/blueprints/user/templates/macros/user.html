@@ -1,30 +1,7 @@
-{% from 'macros/user_avatar.html' import render_user_avatar_16, render_user_avatar_20, render_user_avatar_32 %}
-
-
 {% macro render_user_link(user) -%}
   {%- if user.deleted -%}
 {{ user.screen_name|dim }}
   {%- else -%}
 <a href="{{ url_for('user_profile.view', user_id=user.id) }}">{{ user.screen_name }}</a>
   {%- endif -%}
-{%- endmacro %}
-
-
-{% macro render_user_avatar_16_and_name(user) -%}
-<span class="nowrap">{{ render_user_avatar_16(user) }} {{ user.screen_name }}</span>
-{%- endmacro %}
-
-
-{% macro render_user_avatar_16_and_link(user) -%}
-<span class="nowrap">{{ render_user_avatar_16(user) }} {{ render_user_link(user) }}</span>
-{%- endmacro %}
-
-
-{% macro render_user_avatar_20_and_link(user) -%}
-<span class="nowrap">{{ render_user_avatar_20(user) }} {{ render_user_link(user) }}</span>
-{%- endmacro %}
-
-
-{% macro render_user_avatar_32_and_link(user) -%}
-<span class="nowrap">{{ render_user_avatar_32(user) }} {{ render_user_link(user) }}</span>
 {%- endmacro %}
