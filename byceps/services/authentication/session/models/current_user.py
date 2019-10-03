@@ -31,7 +31,7 @@ class CurrentUser:
         self.permissions = permissions
 
     @classmethod
-    def create_anonymous(self) -> 'CurrentUser':
+    def create_anonymous(self) -> CurrentUser:
         user = user_service.get_anonymous_user()
         is_anonymous = True
         permissions = frozenset()
@@ -40,7 +40,7 @@ class CurrentUser:
 
     @classmethod
     def create_from_user(self, user: User, permissions: Set[Enum]
-                        ) -> 'CurrentUser':
+                        ) -> CurrentUser:
         is_anonymous = False
 
         return CurrentUser(user, is_anonymous, permissions)

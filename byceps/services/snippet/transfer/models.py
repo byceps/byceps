@@ -23,15 +23,15 @@ class Scope:
     name: str
 
     @classmethod
-    def for_global(cls) -> 'Scope':
+    def for_global(cls) -> Scope:
         return cls('global', 'global')
 
     @classmethod
-    def for_brand(cls, brand_id: BrandID) -> 'Scope':
+    def for_brand(cls, brand_id: BrandID) -> Scope:
         return cls('brand', str(brand_id))
 
     @classmethod
-    def for_site(cls, site_id: SiteID) -> 'Scope':
+    def for_site(cls, site_id: SiteID) -> Scope:
         return cls('site', str(site_id))
 
 

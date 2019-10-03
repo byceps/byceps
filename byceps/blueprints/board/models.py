@@ -22,7 +22,7 @@ class CategoryWithLastUpdateAndUnseenFlag(CategoryWithLastUpdate):
     @classmethod
     def from_category_with_last_update(cls, category: CategoryWithLastUpdate,
                                        contains_unseen_postings: bool
-                                      ) -> 'CategoryWithLastUpdateAndUnseenFlag':
+                                      ) -> CategoryWithLastUpdateAndUnseenFlag:
         return cls(
             category.id,
             category.board_id,
@@ -51,7 +51,7 @@ class Creator(User):
 
     @classmethod
     def from_(cls, user: User, badges: Set[Badge], ticket: Optional[Ticket]
-             ) -> 'Creator':
+             ) -> Creator:
         return cls(
             user.id,
             user.screen_name,
