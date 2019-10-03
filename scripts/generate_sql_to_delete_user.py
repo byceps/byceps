@@ -24,16 +24,16 @@ def validate_user_ids(ctx, param, user_ids):
 
 
 @click.command()
-@click.argument('user_ids', callback=validate_user_ids, nargs=-1)
-def execute(user_ids):
-    statements = generate_delete_statements_for_users(user_ids)
+@click.argument('users', callback=validate_user_ids, nargs=-1)
+def execute(users):
+    statements = generate_delete_statements_for_users(users)
     for statement in statements:
         print(statement)
 
 
-def generate_delete_statements_for_users(user_ids):
-    for user_id in user_ids:
-        yield from generate_delete_statements_for_user(user_id)
+def generate_delete_statements_for_users(users):
+    for user in users:
+        yield from generate_delete_statements_for_user(user.id)
         yield ''  # empty line
 
 
