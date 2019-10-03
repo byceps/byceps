@@ -48,6 +48,7 @@ def generate_delete_statements_for_user(user_id):
         ('consents', 'user_id'),
         ('verification_tokens', 'user_id'),
         ('user_avatar_selections', 'user_id'),
+        ('user_avatars', 'creator_id'),
         ('user_details', 'user_id'),
         ('user_events', 'user_id'),
         ('users', 'id'),
