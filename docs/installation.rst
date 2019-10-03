@@ -5,7 +5,7 @@ Installation
 Requirements
 ------------
 
-* Python_ 3.6 or higher
+* Python_ 3.7 or higher
 * PostgreSQL_ 9.6 or higher
 * Redis_ 2.8 or higher
 
