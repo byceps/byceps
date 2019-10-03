@@ -6,7 +6,7 @@ byceps.blueprints.admin.ticketing.service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import Any, Dict, Iterator, Sequence, Set, Tuple
+from typing import Any, Dict, Iterator, Optional, Sequence, Set, Tuple
 
 from ....services.seating import seat_service
 from ....services.ticketing import event_service
@@ -143,6 +143,7 @@ def _get_additional_data_for_ticket_revoked_event(event: TicketEvent
 
 def _look_up_user_for_id(event: TicketEvent, users_by_id: Dict[str, User],
                          user_id_key: str, user_key: str
-                        ) -> Tuple[str, Any]:
+                        ) -> Tuple[str, Optional[User]]:
     user_id = event.data[user_id_key]
-    return user_key, users_by_id[user_id]
+    user = users_by_id.get(user_id)
+    return user_key, user

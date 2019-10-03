@@ -78,7 +78,11 @@
           {%- set icon_name = 'user' %}
           {%- set body %}
             <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span> hat
+            {%- if event.appointed_user %}
             <span class="user-link">{{ render_user_avatar_20_and_link(event.appointed_user) }}</span>
+            {%- else %}
+            <strong>einen unbekannten Benutzer</strong>
+            {%- endif %}
             als <strong>Ticketnutzer</strong> eingetragen.
           {%- endset %}
         {%- elif event.event == 'user-withdrawn' %}
