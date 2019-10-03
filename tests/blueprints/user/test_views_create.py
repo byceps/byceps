@@ -9,22 +9,33 @@ from byceps.services.authentication.password.models import Credential
 from byceps.services.authentication.session import service as session_service
 from byceps.services.authorization.models import Role, UserRole
 from byceps.services.brand import settings_service as brand_settings_service
-from byceps.services.consent import consent_service, \
-    subject_service as consent_subject_service
-from byceps.services.newsletter import \
-    command_service as newsletter_command_service, service as newsletter_service
+from byceps.services.consent import (
+    consent_service,
+    subject_service as consent_subject_service,
+)
+from byceps.services.newsletter import (
+    command_service as newsletter_command_service,
+    service as newsletter_service,
+)
 from byceps.services.snippet import service as snippet_service
 from byceps.services.snippet.transfer.models import Scope
 from byceps.services.terms import document_service as terms_document_service
 from byceps.services.terms import version_service as terms_version_service
 from byceps.services.user import event_service, service as user_service
 from byceps.services.user.models.user import User
-from byceps.services.verification_token import service as \
-    verification_token_service
+from byceps.services.verification_token import (
+    service as verification_token_service,
+)
 
 from tests.base import AbstractAppTestCase
-from tests.helpers import create_brand, create_email_config, create_party, \
-    create_site, create_user, http_client
+from tests.helpers import (
+    create_brand,
+    create_email_config,
+    create_party,
+    create_site,
+    create_user,
+    http_client,
+)
 
 from testfixtures.authorization import create_role
 

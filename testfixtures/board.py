@@ -6,8 +6,12 @@ testfixtures.board
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.services.board import board_service, category_command_service, \
-    posting_command_service, topic_command_service
+from byceps.services.board import (
+    board_service,
+    category_command_service,
+    posting_command_service,
+    topic_command_service,
+)
 
 
 def create_board(brand_id, board_id):

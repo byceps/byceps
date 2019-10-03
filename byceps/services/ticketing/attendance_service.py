@@ -20,8 +20,9 @@ from ..party.transfer.models import Party
 from ..user import service as user_service
 from ..user.transfer.models import User
 
-from .models.archived_attendance import \
-    ArchivedAttendance as DbArchivedAttendance
+from .models.archived_attendance import (
+    ArchivedAttendance as DbArchivedAttendance,
+)
 from .models.category import Category as DbCategory
 from .models.ticket import Ticket as DbTicket
 

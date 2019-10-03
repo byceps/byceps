@@ -6,12 +6,21 @@
 from byceps.services.board.models.topic import Topic
 from byceps.services.site import settings_service as site_settings_service
 
-from testfixtures.board import create_board as _create_board, \
-    create_category as _create_category, create_topic as _create_topic
+from testfixtures.board import (
+    create_board as _create_board,
+    create_category as _create_category,
+    create_topic as _create_topic,
+)
 
 from tests.base import AbstractAppTestCase
-from tests.helpers import assign_permissions_to_user, create_brand, \
-    create_email_config, create_site, create_user, login_user
+from tests.helpers import (
+    assign_permissions_to_user,
+    create_brand,
+    create_email_config,
+    create_site,
+    create_user,
+    login_user,
+)
 
 
 class AbstractTopicModerationTest(AbstractAppTestCase):

@@ -6,11 +6,17 @@
 from pytest import raises
 
 from byceps.services.seating import area_service, seat_service
-from byceps.services.ticketing import category_service, event_service, \
-    ticket_bundle_service, ticket_creation_service, \
-    ticket_seat_management_service
-from byceps.services.ticketing.exceptions import \
-    SeatChangeDeniedForBundledTicket, TicketCategoryMismatch
+from byceps.services.ticketing import (
+    category_service,
+    event_service,
+    ticket_bundle_service,
+    ticket_creation_service,
+    ticket_seat_management_service,
+)
+from byceps.services.ticketing.exceptions import (
+    SeatChangeDeniedForBundledTicket,
+    TicketCategoryMismatch,
+)
 
 # Import models to ensure the corresponding tables are created so
 # `Seat.assignment` is available.

@@ -4,11 +4,18 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.services.seating import area_service as seating_area_service, \
-    seat_service
-from byceps.services.ticketing import category_service, event_service, \
-    ticket_creation_service, ticket_revocation_service, \
-    ticket_seat_management_service, ticket_service
+from byceps.services.seating import (
+    area_service as seating_area_service,
+    seat_service,
+)
+from byceps.services.ticketing import (
+    category_service,
+    event_service,
+    ticket_creation_service,
+    ticket_revocation_service,
+    ticket_seat_management_service,
+    ticket_service,
+)
 
 # Import models to ensure the corresponding tables are created so
 # `Seat.assignment` is available.

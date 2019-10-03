@@ -6,8 +6,14 @@ byceps.blueprints.admin.shop.article.forms
 :License: Modified BSD, see LICENSE for details.
 """
 
-from wtforms import BooleanField, DateTimeField, DecimalField, IntegerField, \
-    SelectField, StringField
+from wtforms import (
+    BooleanField,
+    DateTimeField,
+    DecimalField,
+    IntegerField,
+    SelectField,
+    StringField,
+)
 from wtforms.validators import InputRequired, Optional, ValidationError
 
 from .....util.l10n import LocalizedForm

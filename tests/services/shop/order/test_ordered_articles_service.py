@@ -6,13 +6,19 @@
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import ordered_articles_service
 from byceps.services.shop.order import service as order_service
-from byceps.services.shop.order.transfer.models import PaymentMethod, \
-    PaymentState
+from byceps.services.shop.order.transfer.models import (
+    PaymentMethod,
+    PaymentState,
+)
 
 from testfixtures.shop_order import create_orderer
 
-from tests.helpers import create_brand, create_email_config, create_party, \
-    create_user_with_detail
+from tests.helpers import (
+    create_brand,
+    create_email_config,
+    create_party,
+    create_user_with_detail,
+)
 from tests.services.shop.base import ShopTestBase
 
 

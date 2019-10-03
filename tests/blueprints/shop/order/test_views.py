@@ -10,8 +10,15 @@ from byceps.services.shop.order.models.order import Order
 
 from testfixtures.shop_article import create_article
 
-from tests.helpers import create_brand, create_email_config, create_party, \
-    create_site, create_user, http_client, login_user
+from tests.helpers import (
+    create_brand,
+    create_email_config,
+    create_party,
+    create_site,
+    create_user,
+    http_client,
+    login_user,
+)
 from tests.services.shop.base import ShopTestBase
 
 

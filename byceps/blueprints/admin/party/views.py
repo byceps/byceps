@@ -10,8 +10,10 @@ import attr
 from flask import abort, request
 
 from ....services.brand import service as brand_service
-from ....services.party import service as party_service, \
-    settings_service as party_settings_service
+from ....services.party import (
+    service as party_service,
+    settings_service as party_settings_service,
+)
 from ....services.shop.shop import service as shop_service
 from ....services.ticketing import ticket_service
 from ....util.framework.blueprint import create_blueprint

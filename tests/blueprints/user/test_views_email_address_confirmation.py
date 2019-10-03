@@ -4,12 +4,16 @@
 """
 
 from tests.base import AbstractAppTestCase
-from tests.helpers import create_email_config, create_site, create_user, \
-    http_client
+from tests.helpers import (
+    create_email_config,
+    create_site,
+    create_user,
+    http_client,
+)
 
-from testfixtures.verification_token import \
-    create_verification_token_for_email_address_confirmation \
-    as create_confirmation_token
+from testfixtures.verification_token import (
+    create_verification_token_for_email_address_confirmation as create_confirmation_token,
+)
 
 
 class EmailAddressConfirmationTestCase(AbstractAppTestCase):

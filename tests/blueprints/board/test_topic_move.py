@@ -5,8 +5,13 @@
 
 from tests.helpers import http_client
 
-from .topic_moderation_base import AbstractTopicModerationTest, \
-    create_category, create_topic, find_topic, setup_admin_with_permission
+from .topic_moderation_base import (
+    AbstractTopicModerationTest,
+    create_category,
+    create_topic,
+    find_topic,
+    setup_admin_with_permission,
+)
 
 
 class TopicMoveTest(AbstractTopicModerationTest):

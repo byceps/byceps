@@ -8,10 +8,12 @@ byceps.blueprints.board._helpers
 
 from flask import abort, g, url_for
 
-from ...services.board import access_control_service, \
-    category_query_service as board_category_query_service, \
-    posting_query_service as board_posting_query_service, \
-    topic_query_service as board_topic_query_service
+from ...services.board import (
+    access_control_service,
+    category_query_service as board_category_query_service,
+    posting_query_service as board_posting_query_service,
+    topic_query_service as board_topic_query_service,
+)
 from ...services.site import settings_service as site_settings_service
 
 

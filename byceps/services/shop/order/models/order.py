@@ -20,8 +20,13 @@ from ....user.models.user import User
 from ...article.models.article import Article
 from ...shop.transfer.models import ShopID
 
-from ..transfer.models import Address, Order as OrderTransferObject, \
-    OrderNumber, PaymentMethod, PaymentState
+from ..transfer.models import (
+    Address,
+    Order as OrderTransferObject,
+    OrderNumber,
+    PaymentMethod,
+    PaymentState,
+)
 
 
 class OrderQuery(BaseQuery):

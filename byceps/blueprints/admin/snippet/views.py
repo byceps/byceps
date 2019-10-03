@@ -26,8 +26,13 @@ from ...snippet import signals
 from ...snippet.templating import get_snippet_context
 
 from .authorization import SnippetMountpointPermission, SnippetPermission
-from .forms import DocumentCreateForm, DocumentUpdateForm, \
-    FragmentCreateForm, FragmentUpdateForm, MountpointCreateForm
+from .forms import (
+    DocumentCreateForm,
+    DocumentUpdateForm,
+    FragmentCreateForm,
+    FragmentUpdateForm,
+    MountpointCreateForm,
+)
 
 blueprint = create_blueprint('snippet_admin', __name__)
 

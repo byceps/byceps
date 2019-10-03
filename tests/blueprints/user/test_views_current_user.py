@@ -4,8 +4,13 @@
 """
 
 from tests.base import AbstractAppTestCase
-from tests.helpers import create_email_config, create_site, create_user, \
-    http_client, login_user
+from tests.helpers import (
+    create_email_config,
+    create_site,
+    create_user,
+    http_client,
+    login_user,
+)
 
 
 class CurrentUserTestCase(AbstractAppTestCase):

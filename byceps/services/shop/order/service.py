@@ -27,8 +27,13 @@ from .models.order_event import OrderEvent
 from .models.order_item import OrderItem as DbOrderItem
 from .models.orderer import Orderer
 from . import action_service
-from .transfer.models import Order, OrderID, OrderNumber, PaymentMethod, \
-    PaymentState
+from .transfer.models import (
+    Order,
+    OrderID,
+    OrderNumber,
+    PaymentMethod,
+    PaymentState,
+)
 
 
 class OrderFailed(Exception):

@@ -3,8 +3,12 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.services.authorization.service import assign_role_to_user, \
-    create_role, deassign_all_roles_from_user, find_role_ids_for_user
+from byceps.services.authorization.service import (
+    assign_role_to_user,
+    create_role,
+    deassign_all_roles_from_user,
+    find_role_ids_for_user,
+)
 
 from tests.helpers import create_user
 

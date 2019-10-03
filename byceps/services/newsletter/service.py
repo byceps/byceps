@@ -8,8 +8,17 @@ byceps.services.newsletter.service
 
 from collections import Counter
 from operator import itemgetter
-from typing import Any, Dict, Iterable, Iterator, Optional, Sequence, Set, \
-    Tuple, Union
+from typing import (
+    Any,
+    Dict,
+    Iterable,
+    Iterator,
+    Optional,
+    Sequence,
+    Set,
+    Tuple,
+    Union,
+)
 
 from ...database import BaseQuery, db
 from ...typing import UserID
@@ -17,8 +26,11 @@ from ...typing import UserID
 from ..user.models.user import User as DbUser
 from ..user.transfer.models import User
 
-from .models import List as DbList, Subscriber, \
-    SubscriptionUpdate as DbSubscriptionUpdate
+from .models import (
+    List as DbList,
+    Subscriber,
+    SubscriptionUpdate as DbSubscriptionUpdate,
+)
 from .transfer.models import List, ListID
 from .types import SubscriptionState
 

@@ -11,7 +11,9 @@ from flask import abort, g, request
 from ....services.user import email_address_confirmation_service
 from ....services.user import event_service as user_event_service
 from ....services.user import service as user_service
-from ....services.verification_token import service as verification_token_service
+from ....services.verification_token import (
+    service as verification_token_service,
+)
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_notice, flash_success
 from ....util.framework.templating import templated

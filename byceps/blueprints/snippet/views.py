@@ -13,8 +13,11 @@ from ...services.snippet.transfer.models import Scope
 from ...util.framework.blueprint import create_blueprint
 from ...util.views import create_empty_json_response
 
-from .templating import get_snippet_context, render_snippet_as_page, \
-    render_snippet_as_partial
+from .templating import (
+    get_snippet_context,
+    render_snippet_as_page,
+    render_snippet_as_partial,
+)
 
 
 blueprint = create_blueprint('snippet', __name__)

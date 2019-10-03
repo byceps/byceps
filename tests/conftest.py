@@ -9,8 +9,11 @@ import pytest
 
 from byceps.database import db as _db
 
-from tests.base import CONFIG_FILENAME_TEST_ADMIN, \
-    CONFIG_FILENAME_TEST_PARTY, create_app
+from tests.base import (
+    CONFIG_FILENAME_TEST_ADMIN,
+    CONFIG_FILENAME_TEST_PARTY,
+    create_app,
+)
 from tests.database import set_up_database, tear_down_database
 from tests.helpers import create_user
 

@@ -8,8 +8,10 @@ byceps.services.authentication.password.service
 
 from datetime import datetime
 
-from werkzeug.security import check_password_hash as _check_password_hash, \
-    generate_password_hash as _generate_password_hash
+from werkzeug.security import (
+    check_password_hash as _check_password_hash,
+    generate_password_hash as _generate_password_hash,
+)
 
 from ....database import db
 from ....typing import UserID

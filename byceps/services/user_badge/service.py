@@ -16,8 +16,12 @@ from ...typing import BrandID, UserID
 
 from .models.awarding import BadgeAwarding as DbBadgeAwarding
 from .models.badge import Badge as DbBadge
-from .transfer.models import Badge, BadgeAwarding, BadgeID, \
-    QuantifiedBadgeAwarding
+from .transfer.models import (
+    Badge,
+    BadgeAwarding,
+    BadgeID,
+    QuantifiedBadgeAwarding,
+)
 
 
 def create_badge(

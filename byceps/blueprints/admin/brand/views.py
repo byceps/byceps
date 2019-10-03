@@ -8,8 +8,10 @@ byceps.blueprints.admin.brand.views
 
 from flask import abort, request
 
-from ....services.brand import service as brand_service, \
-    settings_service as brand_settings_service
+from ....services.brand import (
+    service as brand_service,
+    settings_service as brand_settings_service,
+)
 from ....services.news import service as news_service
 from ....services.orga import service as orga_service
 from ....services.party import service as party_service

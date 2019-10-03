@@ -25,14 +25,24 @@ from ....util.views import redirect_to, respond_no_content
 
 from ...authorization.decorators import permission_required
 from ...authorization.registry import permission_registry
-from ...user.signals import account_created, account_deleted, \
-    account_suspended, account_unsuspended, screen_name_changed
+from ...user.signals import (
+    account_created,
+    account_deleted,
+    account_suspended,
+    account_unsuspended,
+    screen_name_changed,
+)
 
 from ..authorization.authorization import RolePermission
 
 from .authorization import UserPermission
-from .forms import ChangeScreenNameForm, CreateAccountForm, \
-    DeleteAccountForm, SetPasswordForm, SuspendAccountForm
+from .forms import (
+    ChangeScreenNameForm,
+    CreateAccountForm,
+    DeleteAccountForm,
+    SetPasswordForm,
+    SuspendAccountForm,
+)
 from .models import UserStateFilter
 from . import service
 

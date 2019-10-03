@@ -5,14 +5,19 @@
 
 from datetime import datetime
 
-from byceps.services.newsletter.models import \
-    SubscriptionUpdate as DbSubscriptionUpdate
+from byceps.services.newsletter.models import (
+    SubscriptionUpdate as DbSubscriptionUpdate,
+)
 from byceps.services.newsletter import command_service
 from byceps.services.newsletter.types import SubscriptionState
 
 from tests.base import AbstractAppTestCase, CONFIG_FILENAME_TEST_ADMIN
-from tests.helpers import assign_permissions_to_user, create_user, \
-    http_client, login_user
+from tests.helpers import (
+    assign_permissions_to_user,
+    create_user,
+    http_client,
+    login_user,
+)
 
 
 class NewsletterAdminTestCase(AbstractAppTestCase):

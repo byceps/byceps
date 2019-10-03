@@ -16,8 +16,9 @@ from ..shop.order.transfer.models import OrderNumber
 from .models.ticket import Ticket as DbTicket
 from .models.ticket_bundle import TicketBundle as DbTicketBundle
 from .ticket_creation_service import build_tickets
-from .ticket_revocation_service import \
-    _build_ticket_revoked_event as build_ticket_revoked_event
+from .ticket_revocation_service import (
+    _build_ticket_revoked_event as build_ticket_revoked_event,
+)
 from .transfer.models import TicketBundleID, TicketCategoryID
 
 

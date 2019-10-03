@@ -3,8 +3,10 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.services.shop.sequence.service import generate_article_number, \
-    generate_order_number
+from byceps.services.shop.sequence.service import (
+    generate_article_number,
+    generate_order_number,
+)
 
 from tests.helpers import create_brand, create_email_config, create_party
 from tests.services.shop.base import ShopTestBase

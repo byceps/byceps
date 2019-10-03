@@ -11,8 +11,11 @@ from ...util.framework.blueprint import create_blueprint
 
 from ..authorization.registry import permission_registry
 
-from .authorization import BoardPermission, BoardPostingPermission, \
-    BoardTopicPermission
+from .authorization import (
+    BoardPermission,
+    BoardPostingPermission,
+    BoardTopicPermission,
+)
 
 
 blueprint = create_blueprint('board', __name__)

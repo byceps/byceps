@@ -5,10 +5,19 @@
 
 from pytest import raises
 
-from byceps.services.ticketing import category_service, event_service, \
-    ticket_creation_service, ticket_service, ticket_user_checkin_service
-from byceps.services.ticketing.exceptions import TicketIsRevoked, \
-    TicketLacksUser, UserAccountSuspended, UserAlreadyCheckedIn
+from byceps.services.ticketing import (
+    category_service,
+    event_service,
+    ticket_creation_service,
+    ticket_service,
+    ticket_user_checkin_service,
+)
+from byceps.services.ticketing.exceptions import (
+    TicketIsRevoked,
+    TicketLacksUser,
+    UserAccountSuspended,
+    UserAlreadyCheckedIn,
+)
 
 from tests.base import AbstractAppTestCase
 from tests.helpers import create_brand, create_party, create_user

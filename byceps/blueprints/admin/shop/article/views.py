@@ -12,8 +12,10 @@ from decimal import Decimal
 from flask import abort, request
 
 from .....services.shop.article import service as article_service
-from .....services.shop.order import ordered_articles_service, \
-    service as order_service
+from .....services.shop.order import (
+    ordered_articles_service,
+    service as order_service,
+)
 from .....services.shop.order.transfer.models import PaymentState
 from .....services.shop.sequence import service as sequence_service
 from .....services.shop.shop import service as shop_service
@@ -28,8 +30,11 @@ from ....authorization.decorators import permission_required
 from ....authorization.registry import permission_registry
 
 from .authorization import ShopArticlePermission
-from .forms import ArticleCreateForm, ArticleUpdateForm, \
-    ArticleAttachmentCreateForm
+from .forms import (
+    ArticleCreateForm,
+    ArticleUpdateForm,
+    ArticleAttachmentCreateForm,
+)
 
 
 blueprint = create_blueprint('shop_article_admin', __name__)

@@ -11,8 +11,12 @@ from typing import Optional, Sequence
 from ...database import db
 
 from .models.category import Category as DbCategory
-from .transfer.models import BoardID, Category, CategoryID, \
-    CategoryWithLastUpdate
+from .transfer.models import (
+    BoardID,
+    Category,
+    CategoryID,
+    CategoryWithLastUpdate,
+)
 
 
 def count_categories_for_board(board_id: BoardID) -> int:

@@ -20,8 +20,11 @@ from ...authorization.decorators import permission_required
 from ...authorization.registry import permission_registry
 
 from .authorization import OrgaTeamPermission
-from .forms import MembershipCreateForm, MembershipUpdateForm, \
-    OrgaTeamCreateForm
+from .forms import (
+    MembershipCreateForm,
+    MembershipUpdateForm,
+    OrgaTeamCreateForm,
+)
 
 
 blueprint = create_blueprint('orga_team_admin', __name__)

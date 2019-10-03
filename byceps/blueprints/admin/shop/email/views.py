@@ -15,8 +15,11 @@ from .....config import ConfigurationError
 from .....database import generate_uuid
 from .....services.shop.order.email import service as shop_order_email_service
 from .....services.shop.order.email.service import OrderEmailData
-from .....services.shop.order.transfer.models import Order, PaymentMethod, \
-    PaymentState
+from .....services.shop.order.transfer.models import (
+    Order,
+    PaymentMethod,
+    PaymentState,
+)
 from .....services.shop.sequence import service as sequence_service
 from .....services.shop.shop import service as shop_service
 from .....util.framework.blueprint import create_blueprint

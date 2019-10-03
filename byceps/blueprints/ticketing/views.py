@@ -10,9 +10,13 @@ from flask import abort, g, redirect, request, url_for
 
 from ...config import get_ticket_management_enabled
 from ...services.party import service as party_service
-from ...services.ticketing import barcode_service, \
-    category_service as ticket_category_service, ticket_service, \
-    ticket_seat_management_service, ticket_user_management_service
+from ...services.ticketing import (
+    barcode_service,
+    category_service as ticket_category_service,
+    ticket_service,
+    ticket_seat_management_service,
+    ticket_user_management_service,
+)
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_error, flash_success
 from ...util.iterables import find

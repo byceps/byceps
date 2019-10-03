@@ -9,8 +9,12 @@ from byceps.services.shop.order.transfer.models import PaymentMethod
 
 from testfixtures.shop_order import create_orderer
 
-from tests.helpers import create_brand, create_email_config, create_party, \
-    create_user_with_detail
+from tests.helpers import (
+    create_brand,
+    create_email_config,
+    create_party,
+    create_user_with_detail,
+)
 from tests.services.shop.base import ShopTestBase
 
 

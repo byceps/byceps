@@ -12,15 +12,20 @@ from ...config import get_site_mode, get_user_registration_enabled
 from ...services.authentication.exceptions import AuthenticationFailed
 from ...services.authentication import service as authentication_service
 from ...services.authentication.password import service as password_service
-from ...services.authentication.password import \
-    reset_service as password_reset_service
+from ...services.authentication.password import (
+    reset_service as password_reset_service,
+)
 from ...services.authentication.session import service as session_service
 from ...services.consent import consent_service
 from ...services.email import service as email_service
-from ...services.site import service as site_service, \
-    settings_service as site_settings_service
-from ...services.terms import consent_service as terms_consent_service, \
-    version_service as terms_version_service
+from ...services.site import (
+    service as site_service,
+    settings_service as site_settings_service,
+)
+from ...services.terms import (
+    consent_service as terms_consent_service,
+    version_service as terms_version_service,
+)
 from ...services.user import service as user_service
 from ...services.verification_token import service as verification_token_service
 from ...util.framework.blueprint import create_blueprint
@@ -31,8 +36,12 @@ from ...util.views import redirect_to, respond_no_content
 from ..admin.core.authorization import AdminPermission
 from ..user.creation.views import _find_privacy_policy_consent_subject_id
 
-from .forms import LoginForm, RequestPasswordResetForm, ResetPasswordForm, \
-    UpdatePasswordForm
+from .forms import (
+    LoginForm,
+    RequestPasswordResetForm,
+    ResetPasswordForm,
+    UpdatePasswordForm,
+)
 from . import service, session as user_session
 
 

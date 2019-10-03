@@ -8,8 +8,10 @@ byceps.services.board.models.posting
 
 from datetime import datetime
 
-from ....blueprints.board.authorization import BoardPermission, \
-    BoardPostingPermission
+from ....blueprints.board.authorization import (
+    BoardPermission,
+    BoardPostingPermission,
+)
 from ....database import BaseQuery, db, generate_uuid
 from ....typing import UserID
 from ....util.instances import ReprBuilder

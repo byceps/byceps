@@ -3,13 +3,19 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.services.board import \
-    topic_command_service as board_topic_command_service
+from byceps.services.board import (
+    topic_command_service as board_topic_command_service,
+)
 
 from tests.helpers import http_client
 
-from .topic_moderation_base import AbstractTopicModerationTest, \
-    create_category, create_topic, find_topic, setup_admin_with_permission
+from .topic_moderation_base import (
+    AbstractTopicModerationTest,
+    create_category,
+    create_topic,
+    find_topic,
+    setup_admin_with_permission,
+)
 
 
 class TopicPinTest(AbstractTopicModerationTest):

@@ -12,8 +12,10 @@ from flask import abort
 
 from .....services.party import service as party_service
 from .....services.shop.article import service as article_service
-from .....services.shop.order import action_service as order_action_service, \
-    service as order_service
+from .....services.shop.order import (
+    action_service as order_action_service,
+    service as order_service,
+)
 from .....services.shop.order.transfer.models import PaymentState
 from .....services.shop.sequence import service as sequence_service
 from .....services.shop.shop import service as shop_service

@@ -3,8 +3,11 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.services.ticketing import category_service, event_service, \
-    ticket_bundle_service as bundle_service
+from byceps.services.ticketing import (
+    category_service,
+    event_service,
+    ticket_bundle_service as bundle_service,
+)
 
 from tests.helpers import create_brand, create_party
 

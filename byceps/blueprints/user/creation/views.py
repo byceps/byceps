@@ -14,8 +14,10 @@ from flask import abort, g, request
 from ....config import get_user_registration_enabled
 from ....services.brand import settings_service as brand_settings_service
 from ....services.consent.transfer.models import Consent, SubjectID
-from ....services.newsletter.transfer.models import \
-    ListID as NewsletterListID, Subscription as NewsletterSubscription
+from ....services.newsletter.transfer.models import (
+    ListID as NewsletterListID,
+    Subscription as NewsletterSubscription,
+)
 from ....services.terms import document_service as terms_document_service
 from ....services.terms import version_service as terms_version_service
 from ....services.user import creation_service as user_creation_service

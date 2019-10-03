@@ -5,8 +5,10 @@
 
 from byceps.services.shop.order import action_registry_service
 from byceps.services.shop.order import event_service as order_event_service
-from byceps.services.ticketing import \
-    category_service as ticket_category_service, ticket_service
+from byceps.services.ticketing import (
+    category_service as ticket_category_service,
+    ticket_service,
+)
 
 from .base import OrderActionTestBase
 

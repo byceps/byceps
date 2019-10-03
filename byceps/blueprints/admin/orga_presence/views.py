@@ -13,8 +13,11 @@ from typing import Dict, Iterable
 from flask import abort
 
 from ....services.orga_presence import service as orga_presence_service
-from ....services.orga_presence.transfer.models import PartyTimeSlot, \
-    PresenceTimeSlot, TimeSlot
+from ....services.orga_presence.transfer.models import (
+    PartyTimeSlot,
+    PresenceTimeSlot,
+    TimeSlot,
+)
 from ....services.party import service as party_service
 from ....services.user.transfer.models import User
 from ....util.framework.blueprint import create_blueprint

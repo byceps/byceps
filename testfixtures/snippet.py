@@ -6,8 +6,11 @@ testfixtures.snippet
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.services.snippet.models.snippet import \
-    CurrentVersionAssociation, Snippet, SnippetVersion
+from byceps.services.snippet.models.snippet import (
+    CurrentVersionAssociation,
+    Snippet,
+    SnippetVersion,
+)
 from byceps.services.snippet.transfer.models import Scope, SnippetType
 
 

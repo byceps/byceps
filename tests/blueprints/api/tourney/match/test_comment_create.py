@@ -10,8 +10,13 @@ from byceps.services.tourney import match_service
 
 from tests.base import AbstractAppTestCase
 from tests.api_helpers import assemble_authorization_header
-from tests.helpers import create_email_config, create_site, create_user, \
-    http_client, login_user
+from tests.helpers import (
+    create_email_config,
+    create_site,
+    create_user,
+    http_client,
+    login_user,
+)
 
 
 class MatchCommentCreateTest(AbstractAppTestCase):

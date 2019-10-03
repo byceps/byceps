@@ -5,8 +5,10 @@
 
 import pytest
 
-from byceps.services.news import channel_service as news_channel_service, \
-    service as news_service
+from byceps.services.news import (
+    channel_service as news_channel_service,
+    service as news_service,
+)
 
 from tests.helpers import create_brand, create_user
 

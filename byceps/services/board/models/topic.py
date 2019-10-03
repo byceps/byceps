@@ -10,8 +10,10 @@ from datetime import datetime
 
 from sqlalchemy.ext.associationproxy import association_proxy
 
-from ....blueprints.board.authorization import BoardPermission, \
-    BoardTopicPermission
+from ....blueprints.board.authorization import (
+    BoardPermission,
+    BoardTopicPermission,
+)
 from ....database import BaseQuery, db, generate_uuid
 from ....typing import UserID
 from ....util.instances import ReprBuilder

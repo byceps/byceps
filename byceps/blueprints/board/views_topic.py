@@ -8,12 +8,13 @@ byceps.blueprints.board.views_topic
 
 from flask import abort, g, redirect, request
 
-from ...services.board import \
-    category_query_service as board_category_query_service, \
-    last_view_service as board_last_view_service, \
-    posting_query_service as board_posting_query_service, \
-    topic_command_service as board_topic_command_service, \
-    topic_query_service as board_topic_query_service
+from ...services.board import (
+    category_query_service as board_category_query_service,
+    last_view_service as board_last_view_service,
+    posting_query_service as board_posting_query_service,
+    topic_command_service as board_topic_command_service,
+    topic_query_service as board_topic_query_service,
+)
 from ...services.text_markup.service import get_smileys
 from ...services.user import service as user_service
 from ...util.framework.flash import flash_error, flash_success

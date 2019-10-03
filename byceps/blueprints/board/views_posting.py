@@ -8,10 +8,11 @@ byceps.blueprints.board.views_posting
 
 from flask import g, redirect, request
 
-from ...services.board import \
-    last_view_service as board_last_view_service, \
-    posting_command_service as board_posting_command_service, \
-    posting_query_service as board_posting_query_service
+from ...services.board import (
+    last_view_service as board_last_view_service,
+    posting_command_service as board_posting_command_service,
+    posting_query_service as board_posting_query_service,
+)
 from ...services.text_markup.service import get_smileys
 from ...services.user import service as user_service
 from ...util.framework.flash import flash_error, flash_success

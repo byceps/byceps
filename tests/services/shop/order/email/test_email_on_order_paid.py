@@ -10,8 +10,14 @@ from byceps.services.shop.order.email import service as order_email_service
 from byceps.services.shop.order import service as order_service
 from byceps.services.shop.order.transfer.models import PaymentMethod
 
-from tests.helpers import create_brand, create_email_config, create_party, \
-    create_user_with_detail, current_party_set, current_user_set
+from tests.helpers import (
+    create_brand,
+    create_email_config,
+    create_party,
+    create_user_with_detail,
+    current_party_set,
+    current_user_set,
+)
 
 from .base import OrderEmailTestBase
 

@@ -20,8 +20,10 @@ from byceps.services.site import service as site_service
 
 from testfixtures.brand import create_brand as _create_brand
 from testfixtures.party import create_party as _create_party
-from testfixtures.user import create_user as _create_user, \
-    create_user_with_detail as _create_user_with_detail
+from testfixtures.user import (
+    create_user as _create_user,
+    create_user_with_detail as _create_user_with_detail,
+)
 
 from .base import CONFIG_FILENAME_TEST_PARTY
 

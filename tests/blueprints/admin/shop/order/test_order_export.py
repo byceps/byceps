@@ -15,8 +15,15 @@ from byceps.services.shop.order import service as order_service
 from byceps.services.shop.order.transfer.models import PaymentMethod
 
 from tests.base import CONFIG_FILENAME_TEST_ADMIN
-from tests.helpers import assign_permissions_to_user, create_brand, \
-    create_email_config, create_party, create_user, http_client, login_user
+from tests.helpers import (
+    assign_permissions_to_user,
+    create_brand,
+    create_email_config,
+    create_party,
+    create_user,
+    http_client,
+    login_user,
+)
 from tests.services.shop.base import ShopTestBase
 
 

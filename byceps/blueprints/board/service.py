@@ -14,9 +14,10 @@ from flask import current_app
 from ...services.authentication.session.models.current_user import CurrentUser
 from ...services.board.models.topic import Topic as DbTopic
 from ...services.board.models.posting import Posting as DbPosting
-from ...services.board import \
-    last_view_service as board_last_view_service, \
-    posting_query_service as board_posting_query_service
+from ...services.board import (
+    last_view_service as board_last_view_service,
+    posting_query_service as board_posting_query_service,
+)
 from ...services.board.transfer.models import CategoryWithLastUpdate
 from ...services.party import service as party_service
 from ...services.ticketing import ticket_service

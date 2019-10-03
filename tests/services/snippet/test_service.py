@@ -9,8 +9,11 @@ from byceps.database import db
 from byceps.services.snippet import service as snippet_service
 from byceps.services.snippet.transfer.models import Scope
 
-from testfixtures.snippet import create_current_version_association, \
-    create_fragment, create_snippet_version
+from testfixtures.snippet import (
+    create_current_version_association,
+    create_fragment,
+    create_snippet_version,
+)
 
 from tests.helpers import create_brand, create_party, create_user
 

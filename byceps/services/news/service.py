@@ -18,9 +18,11 @@ from ..brand.models.brand import Brand as DbBrand
 
 from .channel_service import _db_entity_to_channel
 from .models.channel import Channel as DbChannel
-from .models.item import \
-    CurrentVersionAssociation as DbCurrentVersionAssociation, \
-    Item as DbItem, ItemVersion as DbItemVersion
+from .models.item import (
+    CurrentVersionAssociation as DbCurrentVersionAssociation,
+    Item as DbItem,
+    ItemVersion as DbItemVersion,
+)
 from . import image_service
 from .transfer.models import ChannelID, Item, ItemID, ItemVersionID
 

@@ -12,8 +12,12 @@ from ...typing import UserID
 from ..user import service as user_service
 
 from . import event_service
-from .exceptions import TicketIsRevoked, UserAccountSuspended, \
-    UserAlreadyCheckedIn, UserIdUnknown
+from .exceptions import (
+    TicketIsRevoked,
+    UserAccountSuspended,
+    UserAlreadyCheckedIn,
+    UserIdUnknown,
+)
 from . import ticket_service
 from .transfer.models import TicketID
 

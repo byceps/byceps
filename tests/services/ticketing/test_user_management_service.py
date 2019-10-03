@@ -3,8 +3,12 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.services.ticketing import category_service, event_service, \
-    ticket_creation_service, ticket_user_management_service
+from byceps.services.ticketing import (
+    category_service,
+    event_service,
+    ticket_creation_service,
+    ticket_user_management_service,
+)
 
 from tests.base import AbstractAppTestCase
 from tests.helpers import create_brand, create_party, create_user

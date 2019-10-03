@@ -9,10 +9,14 @@ byceps.blueprints.admin.seating.views
 from flask import abort, request
 
 from ....services.party import service as party_service
-from ....services.seating import \
-    area_service as seating_area_service, \
-    seat_group_service, seat_service
-from ....services.ticketing import category_service as ticketing_category_service
+from ....services.seating import (
+    area_service as seating_area_service,
+    seat_group_service,
+    seat_service,
+)
+from ....services.ticketing import (
+    category_service as ticketing_category_service,
+)
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated
 

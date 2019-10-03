@@ -11,9 +11,10 @@ from collections import defaultdict
 from flask import abort, request
 
 from ....services.party import service as party_service
-from ....services.site import \
-    service as site_service, \
-    settings_service as site_settings_service
+from ....services.site import (
+    service as site_service,
+    settings_service as site_settings_service,
+)
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_success
 from ....util.framework.templating import templated
