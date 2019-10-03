@@ -1,5 +1,5 @@
 {% extends 'layout/admin/base.html' %}
-{% from 'macros/admin/user.html' import render_user_avatar_16_and_link %}
+{% from 'macros/admin/user.html' import render_user_avatar_16_and_admin_link %}
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/misc.html' import render_tag %}
 {% set current_page = 'terms_admin' %}
@@ -49,7 +49,7 @@
           </td>
           <td>
             <span class="nowrap">{{ render_datetime(version.created_at|utc_to_local_tz) }}</span><br>
-            von {{ render_user_avatar_16_and_link(version.creator) }}
+            von {{ render_user_avatar_16_and_admin_link(version.creator) }}
           </td>
           <td class="number bignumber">{{ version.consent_count }}</td>
         </tr>

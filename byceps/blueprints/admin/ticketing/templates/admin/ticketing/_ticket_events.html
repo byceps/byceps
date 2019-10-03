@@ -1,5 +1,5 @@
 {%- from 'macros/admin/ticketing.html' import render_ticket_flag_revoked, render_ticket_flag_user_checked_in %}
-{%- from 'macros/admin/user.html' import render_user_avatar_20_and_link %}
+{%- from 'macros/admin/user.html' import render_user_avatar_20_and_admin_link %}
 {%- from 'macros/datetime.html' import render_datetime %}
 {%- from 'macros/icons.html' import render_icon %}
 
@@ -11,20 +11,20 @@
         {%- if event.event == 'seat-manager-appointed' %}
           {%- set icon_name = 'administrate' %}
           {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span> hat
-            <span class="user-link">{{ render_user_avatar_20_and_link(event.appointed_seat_manager) }}</span>
+            <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span> hat
+            <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.appointed_seat_manager) }}</span>
             die <strong>Sitzplatz-Verwaltung</strong> übertragen.
           {%- endset %}
         {%- elif event.event == 'seat-manager-withdrawn' %}
           {%- set icon_name = 'administrate' %}
           {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
+            <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
             hat sich die <strong>Sitzplatz-Verwaltung</strong> zurückgeholt.
           {%- endset %}
         {%- elif event.event == 'seat-occupied' %}
           {%- set icon_name = 'seating-area' %}
           {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
+            <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
             hat Sitzplatz <strong>{{ event.seat_label }}</strong>
             {%- if event.previous_seat_label is defined %}
             (vorher <strong>{{ event.previous_seat_label }}</strong>)
@@ -34,7 +34,7 @@
         {%- elif event.event == 'seat-released' %}
           {%- set icon_name = 'disabled' %}
           {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
+            <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
             hat
             {%- if event.seat_label is defined %}
             Sitzplatz <strong>{{ event.seat_label }}</strong>
@@ -52,7 +52,7 @@
           {%- set icon_name = 'disabled' %}
           {%- set body %}
             {%- if event.initiator is defined %}
-            <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
+            <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
             {%- else %}
             Jemand
             {%- endif %}
@@ -64,22 +64,22 @@
         {%- elif event.event == 'user-manager-appointed' %}
           {%- set icon_name = 'administrate' %}
           {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span> hat
-            <span class="user-link">{{ render_user_avatar_20_and_link(event.appointed_user_manager) }}</span>
+            <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span> hat
+            <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.appointed_user_manager) }}</span>
             die <strong>Nutzer-Verwaltung</strong> übertragen.
           {%- endset %}
         {%- elif event.event == 'user-manager-withdrawn' %}
           {%- set icon_name = 'administrate' %}
           {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
+            <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
             hat sich die <strong>Nutzer-Verwaltung</strong> zurückgeholt.
           {%- endset %}
         {%- elif event.event == 'user-appointed' %}
           {%- set icon_name = 'user' %}
           {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span> hat
+            <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span> hat
             {%- if event.appointed_user %}
-            <span class="user-link">{{ render_user_avatar_20_and_link(event.appointed_user) }}</span>
+            <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.appointed_user) }}</span>
             {%- else %}
             <strong>einen unbekannten Benutzer</strong>
             {%- endif %}
@@ -88,21 +88,21 @@
         {%- elif event.event == 'user-withdrawn' %}
           {%- set icon_name = 'user' %}
           {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span>
+            <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
             hat sich selbst als <strong>Ticketnutzer</strong> eingetragen.
           {%- endset %}
         {%- elif event.event == 'user-checked-in' %}
           {%- set icon_name = 'success' %}
           {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span> hat
-            <span class="user-link">{{ render_user_avatar_20_and_link(event.checked_in_user) }}</span>
+            <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span> hat
+            <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.checked_in_user) }}</span>
             für die Veranstaltung {{ render_ticket_flag_user_checked_in() }}.
           {%- endset %}
         {%- elif event.event == 'user-check-in-reverted' %}
           {%- set icon_name = 'success' %}
           {%- set body %}
-          <span class="user-link">{{ render_user_avatar_20_and_link(event.initiator) }}</span> hat den <strong>Check-In</strong> von
-            Ticketnutzer <span class="user-link">{{ render_user_avatar_20_and_link(event.checked_in_user) }}</span>
+          <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span> hat den <strong>Check-In</strong> von
+            Ticketnutzer <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.checked_in_user) }}</span>
             <strong>rückgangig gemacht</strong>.
           {%- endset %}
         {%- else %}

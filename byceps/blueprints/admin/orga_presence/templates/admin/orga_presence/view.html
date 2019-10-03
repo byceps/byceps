@@ -1,5 +1,5 @@
 {% extends 'layout/admin/base.html' %}
-{% from 'macros/admin/user.html' import render_user_avatar_16_and_link %}
+{% from 'macros/admin/user.html' import render_user_avatar_16_and_admin_link %}
 {% from 'macros/datetime.html' import render_datetime, render_datetime_custom %}
 {% set current_page = 'orga_presence' %}
 {% set layout_main_raw = True %}
@@ -52,7 +52,7 @@
         {%- endfor %}
         {%- for orga, presences in presences_by_orga|dictsort(by='key') %}
         <tr class="presence">
-          <td>{{ render_user_avatar_16_and_link(orga) }}</td>
+          <td>{{ render_user_avatar_16_and_admin_link(orga) }}</td>
           <td colspan="2"></td>
           {{ render_bar_columns(presences) }}
         </tr>

@@ -1,6 +1,6 @@
 {% extends 'layouts/admin/orga.html' %}
 {% from 'macros/admin/orga.html' import render_random_age_adjective, render_relative_days_until, render_time_element %}
-{% from 'macros/admin/user.html' import render_user_avatar_20_and_link %}
+{% from 'macros/admin/user.html' import render_user_avatar_20_and_admin_link %}
 {% from 'macros/datetime.html' import render_date %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'orga_admin.birthdays' %}
@@ -33,7 +33,7 @@
   {%- for user, detail in orgas %}
     {%- with is_today = detail.is_birthday_today %}
     <li{% if is_today %} class="hastoday"{% elif detail.days_until_next_birthday > 14 %} class="dimmed"{% endif %}>
-      {{ render_user_avatar_20_and_link(user) }}
+      {{ render_user_avatar_20_and_admin_link(user) }}
       {% if is_today %}{{ render_icon('birthday') }}{% endif %}
       {%- set relative_days_label = render_relative_days_until(detail.days_until_next_birthday) %}
       wird {{ render_time_element(detail.date_of_birth, relative_days_label) }}

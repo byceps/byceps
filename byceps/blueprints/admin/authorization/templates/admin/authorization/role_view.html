@@ -1,6 +1,6 @@
 {% extends 'layouts/admin/authorization.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
-{% from 'macros/admin/user.html' import render_user_avatar_16_and_link %}
+{% from 'macros/admin/user.html' import render_user_avatar_16_and_admin_link %}
 {% set current_tab = 'roles' %}
 {% set title = 'Rollen - %s'|format(role.title) %}
 
@@ -45,7 +45,7 @@
   {%- if users %}
   <ol>
     {%- for user in users|sort(attribute='screen_name') %}
-    <li>{{ render_user_avatar_16_and_link(user) }}</li>
+    <li>{{ render_user_avatar_16_and_admin_link(user) }}</li>
     {%- endfor %}
   </ol>
   {%- else %}

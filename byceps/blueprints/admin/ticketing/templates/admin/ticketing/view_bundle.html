@@ -1,6 +1,6 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
-{% from 'macros/admin/user.html' import render_user_avatar_20_and_link %}
+{% from 'macros/admin/user.html' import render_user_avatar_20_and_admin_link %}
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_tag %}
@@ -23,7 +23,7 @@
     </tr>
     <tr>
       <th>Besitzer/in</th>
-      <td>{{ render_user_avatar_20_and_link(bundle.owned_by) }}</td>
+      <td>{{ render_user_avatar_20_and_admin_link(bundle.owned_by) }}</td>
     </tr>
     <tr>
       <th>Party</th>

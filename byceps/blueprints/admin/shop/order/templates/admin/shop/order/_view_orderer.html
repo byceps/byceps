@@ -1,11 +1,11 @@
-{%- from 'macros/admin/user.html' import render_user_avatar_20_and_link %}
+{%- from 'macros/admin/user.html' import render_user_avatar_20_and_admin_link %}
 
 
   <h2>Auftraggeber/in</h2>
   <table class="index">
     <tr>
       <th>Benutzer</th>
-      <td colspan="2">{{ render_user_avatar_20_and_link(placed_by) }}</td>
+      <td colspan="2">{{ render_user_avatar_20_and_admin_link(placed_by) }}</td>
     </tr>
     <tr>
       <th>Name</th>
