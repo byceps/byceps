@@ -17,11 +17,6 @@
 {%- endmacro %}
 
 
-{% macro render_user_avatar_20_and_name(user) -%}
-<span class="nowrap">{{ render_user_avatar_20(user) }} {{ user.screen_name }}</span>
-{%- endmacro %}
-
-
 {% macro render_user_microcard(user, full_name=None, tiny_avatar=False) -%}
 <div class="user-microcard{% if tiny_avatar %} user-microcard--tiny-avatar{% endif %}{% if user.deleted %} dimmed{% endif %}">
   <div class="user-microcard-avatar">

@@ -30,6 +30,11 @@
 {%- endmacro %}
 
 
+{% macro render_user_avatar_20_and_name(user) -%}
+<span class="nowrap">{{ render_user_avatar_20(user) }} {{ user.screen_name }}</span>
+{%- endmacro %}
+
+
 {% macro render_user_avatar_32(user) -%}
   {{ _render_user_avatar(user, '32') }}
 {%- endmacro %}
