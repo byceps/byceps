@@ -34,8 +34,14 @@ def create_badge(
     featured: bool = False,
 ) -> Badge:
     """Introduce a new badge."""
-    badge = DbBadge(slug, label, image_filename, brand_id=brand_id,
-                    description=description, featured=featured)
+    badge = DbBadge(
+        slug,
+        label,
+        image_filename,
+        brand_id=brand_id,
+        description=description,
+        featured=featured,
+    )
 
     db.session.add(badge)
     db.session.commit()

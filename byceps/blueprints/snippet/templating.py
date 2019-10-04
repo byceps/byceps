@@ -62,8 +62,9 @@ def render_snippet_as_partial(
     if scope is None:
         scope = Scope.for_site(g.site_id)
 
-    current_version = snippet_service \
-        .find_current_version_of_snippet_with_name(scope, name)
+    current_version = snippet_service.find_current_version_of_snippet_with_name(
+        scope, name
+    )
 
     if current_version is None:
         if ignore_if_unknown:

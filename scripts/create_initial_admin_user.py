@@ -30,16 +30,18 @@ def execute(screen_name, email_address, password):
     click.secho('done.', fg='green')
 
     roles = _get_roles()
-    click.echo(f'Assigning {len(roles)} roles to user "{screen_name}" ... ',
-               nl=False)
+    click.echo(
+        f'Assigning {len(roles)} roles to user "{screen_name}" ... ', nl=False
+    )
     _assign_roles_to_user(roles, user.id)
     click.secho('done.', fg='green')
 
 
 def _create_user(screen_name, email_address, password):
     try:
-        return user_creation_service \
-            .create_basic_user(screen_name, email_address, password)
+        return user_creation_service.create_basic_user(
+            screen_name, email_address, password
+        )
     except ValueError as e:
         raise click.UsageError(e)
 

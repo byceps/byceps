@@ -18,9 +18,9 @@ def serialize_to_csv(
 ) -> Iterator[str]:
     """Serialize the rows (must be dictionary objects) to CSV."""
     with io.StringIO(newline='') as f:
-        writer = csv.DictWriter(f, field_names,
-                                dialect=csv.excel,
-                                delimiter=';')
+        writer = csv.DictWriter(
+            f, field_names, dialect=csv.excel, delimiter=';'
+        )
 
         writer.writeheader()
         writer.writerows(rows)

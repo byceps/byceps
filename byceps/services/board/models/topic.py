@@ -96,8 +96,9 @@ class Topic(db.Model):
 
     def count_pages(self, postings_per_page: int) -> int:
         """Return the number of pages this topic spans."""
-        full_page_count, remaining_postings = divmod(self.posting_count,
-                                                     postings_per_page)
+        full_page_count, remaining_postings = divmod(
+            self.posting_count, postings_per_page
+        )
         if remaining_postings > 0:
             return full_page_count + 1
         else:
@@ -114,12 +115,18 @@ class Topic(db.Model):
             .add_with_lookup('title')
 
         if self.hidden:
-            builder.add_custom('hidden by {}'.format(self.hidden_by.screen_name))
+            builder.add_custom(
+                'hidden by {}'.format(self.hidden_by.screen_name)
+            )
 
         if self.locked:
-            builder.add_custom('locked by {}'.format(self.locked_by.screen_name))
+            builder.add_custom(
+                'locked by {}'.format(self.locked_by.screen_name)
+            )
 
         if self.pinned:
-            builder.add_custom('pinned by {}'.format(self.pinned_by.screen_name))
+            builder.add_custom(
+                'pinned by {}'.format(self.pinned_by.screen_name)
+            )
 
         return builder.build()

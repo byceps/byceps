@@ -63,12 +63,13 @@ def index(page):
     search_term = request.args.get('search_term', default='').strip()
     only = request.args.get('only')
 
-    user_state_filter = UserStateFilter.__members__.get(only,
-                                                        UserStateFilter.none)
+    user_state_filter = UserStateFilter.__members__.get(
+        only, UserStateFilter.none
+    )
 
-    users = service.get_users_paginated(page, per_page,
-                                        search_term=search_term,
-                                        state_filter=user_state_filter)
+    users = service.get_users_paginated(
+        page, per_page, search_term=search_term, state_filter=user_state_filter
+    )
 
     total_active = user_stats_service.count_active_users()
     total_uninitialized = user_stats_service.count_uninitialized_users()
@@ -154,21 +155,30 @@ def create_account():
 
     if user_service.is_screen_name_already_assigned(screen_name):
         flash_error(
-            'Dieser Benutzername ist bereits einem Benutzerkonto zugeordnet.')
+            'Dieser Benutzername ist bereits einem Benutzerkonto zugeordnet.'
+        )
         return create_account_form(form)
 
     if user_service.is_email_address_already_assigned(email_address):
         flash_error(
-            'Diese E-Mail-Adresse ist bereits einem Benutzerkonto zugeordnet.')
+            'Diese E-Mail-Adresse ist bereits einem Benutzerkonto zugeordnet.'
+        )
         return create_account_form(form)
 
     try:
         user = user_creation_service.create_basic_user(
-            screen_name, email_address, password, first_names=first_names,
-            last_name=last_name, creator_id=g.current_user.id)
+            screen_name,
+            email_address,
+            password,
+            first_names=first_names,
+            last_name=last_name,
+            creator_id=g.current_user.id,
+        )
     except user_creation_service.UserCreationFailed:
-        flash_error('Das Benutzerkonto für "{}" konnte nicht angelegt werden.',
-                    screen_name)
+        flash_error(
+            'Das Benutzerkonto für "{}" konnte nicht angelegt werden.',
+            screen_name,
+        )
         return create_account_form(form)
 
     flash_success('Das Benutzerkonto "{}" wurde angelegt.', user.screen_name)
@@ -207,8 +217,10 @@ def set_password(user_id):
 
     password_service.update_password_hash(user.id, new_password, initiator_id)
 
-    flash_success("Für Benutzerkonto '{}' wurde ein neues Passwort gesetzt.",
-                  user.screen_name)
+    flash_success(
+        "Für Benutzerkonto '{}' wurde ein neues Passwort gesetzt.",
+        user.screen_name,
+    )
 
     return redirect(url_for('.view', user_id=user.id))
 
@@ -224,7 +236,9 @@ def initialize_account(user_id):
 
     user_command_service.initialize_account(user.id, initiator_id)
 
-    flash_success("Das Benutzerkonto '{}' wurde initialisiert.", user.screen_name)
+    flash_success(
+        "Das Benutzerkonto '{}' wurde initialisiert.", user.screen_name
+    )
 
 
 @blueprint.route('/<uuid:user_id>/suspend')
@@ -235,8 +249,9 @@ def suspend_account_form(user_id, erroneous_form=None):
     user = _get_user_or_404(user_id)
 
     if user.suspended:
-        flash_error("Das Benutzerkonto '{}' ist bereits gesperrt.",
-                    user.screen_name)
+        flash_error(
+            "Das Benutzerkonto '{}' ist bereits gesperrt.", user.screen_name
+        )
         return redirect_to('.view', user_id=user.id)
 
     form = erroneous_form if erroneous_form else SuspendAccountForm()
@@ -254,8 +269,9 @@ def suspend_account(user_id):
     user = _get_user_or_404(user_id)
 
     if user.suspended:
-        flash_error("Das Benutzerkonto '{}' ist bereits gesperrt.",
-                    user.screen_name)
+        flash_error(
+            "Das Benutzerkonto '{}' ist bereits gesperrt.", user.screen_name
+        )
         return redirect_to('.view', user_id=user.id)
 
     form = SuspendAccountForm(request.form)
@@ -281,8 +297,9 @@ def unsuspend_account_form(user_id, erroneous_form=None):
     user = _get_user_or_404(user_id)
 
     if not user.suspended:
-        flash_error("Das Benutzerkonto '{}' ist bereits entsperrt.",
-                    user.screen_name)
+        flash_error(
+            "Das Benutzerkonto '{}' ist bereits entsperrt.", user.screen_name
+        )
         return redirect_to('.view', user_id=user.id)
 
     form = erroneous_form if erroneous_form else SuspendAccountForm()
@@ -300,8 +317,9 @@ def unsuspend_account(user_id):
     user = _get_user_or_404(user_id)
 
     if not user.suspended:
-        flash_error("Das Benutzerkonto '{}' ist bereits entsperrt.",
-                    user.screen_name)
+        flash_error(
+            "Das Benutzerkonto '{}' ist bereits entsperrt.", user.screen_name
+        )
         return redirect_to('.view', user_id=user.id)
 
     form = SuspendAccountForm(request.form)
@@ -327,8 +345,10 @@ def delete_account_form(user_id, erroneous_form=None):
     user = _get_user_or_404(user_id)
 
     if user.deleted:
-        flash_error("Das Benutzerkonto '{}' ist bereits gelöscht worden.",
-                    user.screen_name)
+        flash_error(
+            "Das Benutzerkonto '{}' ist bereits gelöscht worden.",
+            user.screen_name,
+        )
         return redirect_to('.view', user_id=user.id)
 
     form = erroneous_form if erroneous_form else DeleteAccountForm()
@@ -346,8 +366,10 @@ def delete_account(user_id):
     user = _get_user_or_404(user_id)
 
     if user.deleted:
-        flash_error("Das Benutzerkonto '{}' ist bereits gelöscht worden.",
-                    user.screen_name)
+        flash_error(
+            "Das Benutzerkonto '{}' ist bereits gelöscht worden.",
+            user.screen_name,
+        )
         return redirect_to('.view', user_id=user.id)
 
     form = DeleteAccountForm(request.form)
@@ -395,16 +417,23 @@ def change_screen_name(user_id):
     initiator_id = g.current_user.id
     reason = form.reason.data.strip()
 
-    user_command_service.change_screen_name(user.id, new_screen_name,
-                                            initiator_id, reason=reason)
+    user_command_service.change_screen_name(
+        user.id, new_screen_name, initiator_id, reason=reason
+    )
 
-    screen_name_changed.send(None, user_id=user.id,
-                             old_screen_name=old_screen_name,
-                             new_screen_name=new_screen_name,
-                             initiator_id=initiator_id)
+    screen_name_changed.send(
+        None,
+        user_id=user.id,
+        old_screen_name=old_screen_name,
+        new_screen_name=new_screen_name,
+        initiator_id=initiator_id,
+    )
 
-    flash_success("Das Benutzerkonto '{}' wurde umbenannt in '{}'.",
-                  old_screen_name, new_screen_name)
+    flash_success(
+        "Das Benutzerkonto '{}' wurde umbenannt in '{}'.",
+        old_screen_name,
+        new_screen_name,
+    )
     return redirect_to('.view', user_id=user.id)
 
 
@@ -415,8 +444,9 @@ def view_permissions(user_id):
     """Show user's permissions."""
     user = _get_user_or_404(user_id)
 
-    permissions_by_role = authorization_service \
-        .get_permissions_by_roles_for_user_with_titles(user.id)
+    permissions_by_role = authorization_service.get_permissions_by_roles_for_user_with_titles(
+        user.id
+    )
 
     return {
         'user': user,
@@ -431,8 +461,9 @@ def manage_roles(user_id):
     """Manage what roles are assigned to the user."""
     user = _get_user_or_404(user_id)
 
-    permissions_by_role = authorization_service \
-        .get_permissions_by_roles_with_titles()
+    permissions_by_role = (
+        authorization_service.get_permissions_by_roles_with_titles()
+    )
 
     user_role_ids = authorization_service.find_role_ids_for_user(user.id)
 
@@ -452,11 +483,13 @@ def role_assign(user_id, role_id):
     role = _get_role_or_404(role_id)
     initiator_id = g.current_user.id
 
-    authorization_service.assign_role_to_user(role.id, user.id,
-                                              initiator_id=initiator_id)
+    authorization_service.assign_role_to_user(
+        role.id, user.id, initiator_id=initiator_id
+    )
 
-    flash_success('{} wurde die Rolle "{}" zugewiesen.',
-                  user.screen_name, role.title)
+    flash_success(
+        '{} wurde die Rolle "{}" zugewiesen.', user.screen_name, role.title
+    )
 
 
 @blueprint.route('/<uuid:user_id>/roles/<role_id>', methods=['DELETE'])
@@ -468,11 +501,13 @@ def role_deassign(user_id, role_id):
     role = _get_role_or_404(role_id)
     initiator_id = g.current_user.id
 
-    authorization_service.deassign_role_from_user(role.id, user.id,
-                                                  initiator_id=initiator_id)
+    authorization_service.deassign_role_from_user(
+        role.id, user.id, initiator_id=initiator_id
+    )
 
-    flash_success('{} wurde die Rolle "{}" genommen.',
-                  user.screen_name, role.title)
+    flash_success(
+        '{} wurde die Rolle "{}" genommen.', user.screen_name, role.title
+    )
 
 
 @blueprint.route('/<uuid:user_id>/events')

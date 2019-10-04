@@ -31,9 +31,14 @@ def create_html_diff(
     from_lines = from_text.split('\n')
     to_lines = to_text.split('\n')
 
-    return HtmlDiff().make_table(from_lines, to_lines,
-                                 from_description, to_description,
-                                 context=True, numlines=numlines)
+    return HtmlDiff().make_table(
+        from_lines,
+        to_lines,
+        from_description,
+        to_description,
+        context=True,
+        numlines=numlines,
+    )
 
 
 def _fallback_if_none(value: Optional[str], *, fallback: str = '') -> str:

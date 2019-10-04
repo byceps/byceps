@@ -77,8 +77,11 @@ def team_create(party_id):
 
     team = orga_team_service.create_team(party.id, title)
 
-    flash_success('Das Team "{}" wurde für die Party "{}" erstellt.',
-                  team.title, team.party.title)
+    flash_success(
+        'Das Team "{}" wurde für die Party "{}" erstellt.',
+        team.title,
+        team.party.title,
+    )
     return redirect_to('.teams_for_party', party_id=party.id)
 
 
@@ -107,7 +110,8 @@ def membership_create_form(team_id, erroneous_form=None):
     team = _get_team_or_404(team_id)
 
     unassigned_orgas = orga_team_service.get_unassigned_orgas_for_party(
-        team.party_id)
+        team.party_id
+    )
 
     if not unassigned_orgas:
         return {
@@ -132,7 +136,8 @@ def membership_create(team_id):
     team = _get_team_or_404(team_id)
 
     unassigned_orgas = orga_team_service.get_unassigned_orgas_for_party(
-        team.party_id)
+        team.party_id
+    )
 
     form = MembershipCreateForm(request.form)
     form.set_user_choices(unassigned_orgas)
@@ -145,10 +150,14 @@ def membership_create(team_id):
 
     membership = orga_team_service.create_membership(team.id, user.id, duties)
 
-    flash_success('{} wurde in das Team "{}" aufgenommen.',
-                  membership.user.screen_name, membership.orga_team.title)
-    return redirect_to('.teams_for_party',
-                       party_id=membership.orga_team.party_id)
+    flash_success(
+        '{} wurde in das Team "{}" aufgenommen.',
+        membership.user.screen_name,
+        membership.orga_team.title,
+    )
+    return redirect_to(
+        '.teams_for_party', party_id=membership.orga_team.party_id
+    )
 
 
 @blueprint.route('/memberships/<uuid:membership_id>/update')
@@ -190,10 +199,13 @@ def membership_update(membership_id):
 
     orga_team_service.update_membership(membership, team, duties)
 
-    flash_success('Die Teammitgliedschaft von {} wurde aktualisiert.',
-                  membership.user.screen_name)
-    return redirect_to('.teams_for_party',
-                       party_id=membership.orga_team.party_id)
+    flash_success(
+        'Die Teammitgliedschaft von {} wurde aktualisiert.',
+        membership.user.screen_name,
+    )
+    return redirect_to(
+        '.teams_for_party', party_id=membership.orga_team.party_id
+    )
 
 
 @blueprint.route('/memberships/<uuid:membership_id>', methods=['DELETE'])
@@ -208,8 +220,9 @@ def membership_remove(membership_id):
 
     orga_team_service.delete_membership(membership)
 
-    flash_success('{} wurde aus dem Team "{}" entfernt.',
-                  user.screen_name, team.title)
+    flash_success(
+        '{} wurde aus dem Team "{}" entfernt.', user.screen_name, team.title
+    )
 
 
 def _get_party_or_404(party_id):

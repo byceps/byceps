@@ -32,9 +32,9 @@ def create_tickets(
     owned_by_id = order.placed_by_id
     order_number = order.order_number
 
-    tickets = ticket_creation_service \
-        .create_tickets(category_id, owned_by_id, quantity,
-                        order_number=order_number)
+    tickets = ticket_creation_service.create_tickets(
+        category_id, owned_by_id, quantity, order_number=order_number
+    )
 
     for ticket in tickets:
         ticket.used_by_id = owned_by_id

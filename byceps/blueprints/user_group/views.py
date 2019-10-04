@@ -37,7 +37,8 @@ def create_form(erroneous_form=None):
     """Show a form to create a group."""
     if not g.current_user.is_active:
         flash_error(
-            'Du musst angemeldet sein, um eine Benutzergruppe erstellen zu können.')
+            'Du musst angemeldet sein, um eine Benutzergruppe erstellen zu können.'
+        )
         return redirect_to('.index')
 
     form = erroneous_form if erroneous_form else CreateForm()
@@ -52,7 +53,8 @@ def create():
     """Create a group."""
     if not g.current_user.is_active:
         flash_error(
-            'Du musst angemeldet sein, um eine Benutzergruppe erstellen zu können.')
+            'Du musst angemeldet sein, um eine Benutzergruppe erstellen zu können.'
+        )
         return redirect_to('.index')
 
     form = CreateForm(request.form)

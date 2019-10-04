@@ -42,7 +42,8 @@ def index_for_party(party_id):
     seat_count = seat_service.count_seats_for_party(party.id)
     area_count = seating_area_service.count_areas_for_party(party.id)
     category_count = ticketing_category_service.count_categories_for_party(
-        party.id)
+        party.id
+    )
     group_count = seat_group_service.count_seat_groups_for_party(party.id)
 
     return {
@@ -63,8 +64,9 @@ def area_index(party_id, page):
     party = _get_party_or_404(party_id)
 
     per_page = request.args.get('per_page', type=int, default=15)
-    areas_with_occupied_seat_counts = seating_area_service \
-        .get_areas_for_party_paginated(party.id, page, per_page)
+    areas_with_occupied_seat_counts = seating_area_service.get_areas_for_party_paginated(
+        party.id, page, per_page
+    )
 
     seat_total_per_area = seat_service.get_seat_total_per_area(party.id)
 
@@ -82,8 +84,11 @@ def seat_category_index(party_id):
     """List seat categories for that party."""
     party = _get_party_or_404(party_id)
 
-    categories_with_ticket_counts = list(ticketing_category_service \
-        .get_categories_with_ticket_counts_for_party(party.id).items())
+    categories_with_ticket_counts = list(
+        ticketing_category_service.get_categories_with_ticket_counts_for_party(
+            party.id
+        ).items()
+    )
 
     return {
         'party': party,

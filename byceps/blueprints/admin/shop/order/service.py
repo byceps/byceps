@@ -98,7 +98,9 @@ def _get_additional_data(
     elif event.event_type == 'ticket-bundle-created':
         return _get_additional_data_for_ticket_bundle_created(event)
     elif event.event_type == 'ticket-bundle-revoked':
-        return _get_additional_data_for_ticket_bundle_revoked(event, users_by_id)
+        return _get_additional_data_for_ticket_bundle_revoked(
+            event, users_by_id
+        )
     elif event.event_type == 'ticket-created':
         return _get_additional_data_for_ticket_created(event)
     elif event.event_type == 'ticket-revoked':

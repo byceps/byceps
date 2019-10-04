@@ -49,16 +49,19 @@ def validate_snippet_version_id(ctx, param, value) -> SnippetVersionID:
 def execute(
     brand, document_id, title, snippet_version_id, consent_subject_name_suffix
 ):
-    consent_subject_name \
-        = f'{brand.id}_terms-of-service_{consent_subject_name_suffix}'
+    consent_subject_name = (
+        f'{brand.id}_terms-of-service_{consent_subject_name_suffix}'
+    )
 
     consent_subject_title = f'AGB {brand.title} / {title}'
 
     consent_subject = consent_subject_service.create_subject(
-        consent_subject_name, consent_subject_title, 'terms_of_service')
+        consent_subject_name, consent_subject_title, 'terms_of_service'
+    )
 
-    terms_version_service \
-        .create_version(document_id, title, snippet_version_id, consent_subject.id)
+    terms_version_service.create_version(
+        document_id, title, snippet_version_id, consent_subject.id
+    )
 
     click.secho('Done.', fg='green')
 

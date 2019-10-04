@@ -79,7 +79,8 @@ def occupy_seat(
 
     if seat.category_id != ticket.category_id:
         raise TicketCategoryMismatch(
-            'Ticket and seat belong to different categories.')
+            'Ticket and seat belong to different categories.'
+        )
 
     _deny_seat_management_if_seat_belongs_to_group(seat)
 
@@ -135,13 +136,17 @@ def _deny_seat_management_if_ticket_belongs_to_bundle(ticket: DbTicket) -> None:
     if ticket.belongs_to_bundle:
         raise SeatChangeDeniedForBundledTicket(
             "Ticket '{}' belongs to a bundle and, thus, "
-            'must not be used to occupy or release a single seat.'
-            .format(ticket.code))
+            'must not be used to occupy or release a single seat.'.format(
+                ticket.code
+            )
+        )
 
 
 def _deny_seat_management_if_seat_belongs_to_group(seat: DbSeat) -> None:
     if seat.assignment is not None:
         raise SeatChangeDeniedForGroupSeat(
             "Seat '{}' belongs to a group and, thus, "
-            'cannot be occupied by a single ticket, or removed separately.'
-            .format(seat.label))
+            'cannot be occupied by a single ticket, or removed separately.'.format(
+                seat.label
+            )
+        )

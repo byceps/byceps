@@ -90,5 +90,6 @@ def provide_site_mode():
 
     # current user
     is_admin_mode = site_mode.is_admin()
-    g.current_user = authentication_blueprint_service \
-        .get_current_user(is_admin_mode, party_id=party_id)
+    g.current_user = authentication_blueprint_service.get_current_user(
+        is_admin_mode, party_id=party_id
+    )

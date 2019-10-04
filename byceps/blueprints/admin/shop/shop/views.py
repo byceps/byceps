@@ -75,11 +75,13 @@ def view_for_shop(shop_id):
     most_recent_order_number = _get_most_recent_order_number(shop.id)
 
     article_count = article_service.count_articles_for_shop(shop.id)
-    order_counts_by_payment_state = order_service \
-        .count_orders_per_payment_state(shop.id)
+    order_counts_by_payment_state = order_service.count_orders_per_payment_state(
+        shop.id
+    )
 
-    order_actions_by_article_number = \
-        _get_order_actions_by_article_number(shop.id)
+    order_actions_by_article_number = _get_order_actions_by_article_number(
+        shop.id
+    )
 
     return {
         'shop': shop,

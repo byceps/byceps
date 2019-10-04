@@ -68,15 +68,21 @@ def _assemble_email_for_incoming_order_to_orderer(
 ) -> Message:
     order = data.order
 
-    subject = 'Deine Bestellung ({}) ist eingegangen.' \
-        .format(order.order_number)
+    subject = 'Deine Bestellung ({}) ist eingegangen.'.format(
+        order.order_number
+    )
     template_name = 'order_placed.txt'
     template_context = _get_template_context(data)
     template_context['payment_instructions'] = _get_payment_instructions(order)
     recipient_address = data.orderer_email_address
 
-    return _assemble_email_to_orderer(subject, template_name, template_context,
-                                      data.email_config_id, recipient_address)
+    return _assemble_email_to_orderer(
+        subject,
+        template_name,
+        template_context,
+        data.email_config_id,
+        recipient_address,
+    )
 
 
 def _get_payment_instructions(order: Order) -> str:
@@ -89,25 +95,37 @@ def _get_payment_instructions(order: Order) -> str:
 def _assemble_email_for_canceled_order_to_orderer(
     data: OrderEmailData
 ) -> Message:
-    subject = '\u274c Deine Bestellung ({}) wurde storniert.' \
-        .format(data.order.order_number)
+    subject = '\u274c Deine Bestellung ({}) wurde storniert.'.format(
+        data.order.order_number
+    )
     template_name = 'order_canceled.txt'
     template_context = _get_template_context(data)
     recipient_address = data.orderer_email_address
 
-    return _assemble_email_to_orderer(subject, template_name, template_context,
-                                      data.email_config_id, recipient_address)
+    return _assemble_email_to_orderer(
+        subject,
+        template_name,
+        template_context,
+        data.email_config_id,
+        recipient_address,
+    )
 
 
 def _assemble_email_for_paid_order_to_orderer(data: OrderEmailData) -> Message:
-    subject = '\u2705 Deine Bestellung ({}) ist bezahlt worden.' \
-        .format(data.order.order_number)
+    subject = '\u2705 Deine Bestellung ({}) ist bezahlt worden.'.format(
+        data.order.order_number
+    )
     template_name = 'order_paid.txt'
     template_context = _get_template_context(data)
     recipient_address = data.orderer_email_address
 
-    return _assemble_email_to_orderer(subject, template_name, template_context,
-                                      data.email_config_id, recipient_address)
+    return _assemble_email_to_orderer(
+        subject,
+        template_name,
+        template_context,
+        data.email_config_id,
+        recipient_address,
+    )
 
 
 def _get_order_email_data(order_id: OrderID) -> OrderEmailData:
@@ -164,7 +182,8 @@ def _get_sender_address(email_config_id: str) -> Optional[Sender]:
 
     if not config:
         current_app.logger.warning(
-            'No e-mail sender configured for ID "%s".', email_config_id)
+            'No e-mail sender configured for ID "%s".', email_config_id
+        )
 
     return config.sender
 
@@ -172,8 +191,9 @@ def _get_sender_address(email_config_id: str) -> Optional[Sender]:
 def _get_snippet_body(shop_id: ShopID, name: str) -> str:
     scope = Scope('shop', str(shop_id))
 
-    version = snippet_service \
-        .find_current_version_of_snippet_with_name(scope, name)
+    version = snippet_service.find_current_version_of_snippet_with_name(
+        scope, name
+    )
 
     if not version:
         raise SnippetNotFound(scope, name)
@@ -183,8 +203,8 @@ def _get_snippet_body(shop_id: ShopID, name: str) -> str:
 
 def _render_template(name: str, **context: Dict[str, Any]) -> str:
     templates_path = os.path.join(
-        current_app.root_path,
-        'services/shop/order/email/templates')
+        current_app.root_path, 'services/shop/order/email/templates'
+    )
 
     loader = FileSystemLoader(templates_path)
 

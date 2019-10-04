@@ -65,8 +65,9 @@ def paginate_postings(
 def _get_users_by_id(
     user_ids: Set[UserID], party_id: Optional[PartyID]
 ) -> Dict[UserID, User]:
-    users = user_service.find_users(user_ids, include_avatars=True,
-                                    include_orga_flags_for_party_id=party_id)
+    users = user_service.find_users(
+        user_ids, include_avatars=True, include_orga_flags_for_party_id=party_id
+    )
     return user_service.index_users_by_id(users)
 
 

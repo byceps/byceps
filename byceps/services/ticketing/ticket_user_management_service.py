@@ -77,7 +77,8 @@ def appoint_user(
 
     if user.suspended:
         raise UserAccountSuspended(
-            'User account {} is suspended.'.format(user.screen_name))
+            'User account {} is suspended.'.format(user.screen_name)
+        )
 
     ticket.used_by_id = user_id
 

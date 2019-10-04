@@ -48,8 +48,9 @@ def index_for_scope(scope_type, scope_name):
     """List snippets for that scope."""
     scope = Scope(scope_type, scope_name)
 
-    snippets = snippet_service \
-        .get_snippets_for_scope_with_current_versions(scope)
+    snippets = snippet_service.get_snippets_for_scope_with_current_versions(
+        scope
+    )
 
     brand = _find_brand_for_scope(scope)
     site = _find_site_for_scope(scope)
@@ -170,9 +171,15 @@ def create_document(scope_type, scope_name):
     body = form.body.data.strip()
     image_url_path = form.image_url_path.data.strip()
 
-    version = snippet_service.create_document(scope, name, creator.id, title,
-                                              body, head=head,
-                                              image_url_path=image_url_path)
+    version = snippet_service.create_document(
+        scope,
+        name,
+        creator.id,
+        title,
+        body,
+        head=head,
+        image_url_path=image_url_path,
+    )
 
     flash_success('Das Dokument "{}" wurde angelegt.', version.snippet.name)
     signals.snippet_created.send(None, snippet_version_id=version.id)
@@ -190,9 +197,7 @@ def update_document_form(snippet_id):
 
     scope = snippet.scope
 
-    form = DocumentUpdateForm(
-        obj=current_version,
-        name=snippet.name)
+    form = DocumentUpdateForm(obj=current_version, name=snippet.name)
 
     brand = _find_brand_for_scope(scope)
     site = _find_site_for_scope(scope)
@@ -220,9 +225,14 @@ def update_document(snippet_id):
     body = form.body.data.strip()
     image_url_path = form.image_url_path.data.strip()
 
-    version = snippet_service.update_document(snippet, creator.id, title, body,
-                                              head=head,
-                                              image_url_path=image_url_path)
+    version = snippet_service.update_document(
+        snippet,
+        creator.id,
+        title,
+        body,
+        head=head,
+        image_url_path=image_url_path,
+    )
 
     flash_success('Das Dokument "{}" wurde aktualisiert.', version.snippet.name)
     signals.snippet_updated.send(None, snippet_version_id=version.id)
@@ -248,8 +258,9 @@ def compare_documents(from_version_id, to_version_id):
     html_diff_title = _create_html_diff(from_version, to_version, 'title')
     html_diff_head = _create_html_diff(from_version, to_version, 'head')
     html_diff_body = _create_html_diff(from_version, to_version, 'body')
-    html_diff_image_url_path = _create_html_diff(from_version, to_version,
-                                                 'image_url_path')
+    html_diff_image_url_path = _create_html_diff(
+        from_version, to_version, 'image_url_path'
+    )
 
     brand = _find_brand_for_scope(scope)
     site = _find_site_for_scope(scope)
@@ -321,9 +332,7 @@ def update_fragment_form(snippet_id):
 
     scope = snippet.scope
 
-    form = FragmentUpdateForm(
-        obj=current_version,
-        name=snippet.name)
+    form = FragmentUpdateForm(obj=current_version, name=snippet.name)
 
     brand = _find_brand_for_scope(scope)
     site = _find_site_for_scope(scope)
@@ -443,11 +452,13 @@ def create_mountpoint(snippet_id):
     endpoint_suffix = form.endpoint_suffix.data.strip()
     url_path = form.url_path.data.strip()
 
-    mountpoint = mountpoint_service \
-        .create_mountpoint(site_id, endpoint_suffix, url_path, snippet.id)
+    mountpoint = mountpoint_service.create_mountpoint(
+        site_id, endpoint_suffix, url_path, snippet.id
+    )
 
-    flash_success('Der Mountpoint für "{}" wurde angelegt.',
-                  mountpoint.url_path)
+    flash_success(
+        'Der Mountpoint für "{}" wurde angelegt.', mountpoint.url_path
+    )
     return redirect_to('.index_mountpoints', site_id=site_id)
 
 
@@ -500,8 +511,9 @@ def _create_html_diff(from_version, to_version, attribute_name):
     from_text = getattr(from_version, attribute_name)
     to_text = getattr(to_version, attribute_name)
 
-    return text_diff_service.create_html_diff(from_text, to_text,
-                                              from_description, to_description)
+    return text_diff_service.create_html_diff(
+        from_text, to_text, from_description, to_description
+    )
 
 
 def _find_brand_for_scope(scope):

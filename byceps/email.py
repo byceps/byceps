@@ -63,11 +63,8 @@ def send(
     mailer = current_app.marrowmailer
 
     message = mailer.new(
-        author=sender,
-        to=recipients,
-        subject=subject,
-        plain=body,
-        brand=False)
+        author=sender, to=recipients, subject=subject, plain=body, brand=False
+    )
 
     mailer.start()
     mailer.send(message)

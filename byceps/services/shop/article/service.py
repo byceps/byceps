@@ -196,7 +196,8 @@ def get_article_compilation_for_single_article(
     compilation = ArticleCompilation()
 
     compilation.append(
-        ArticleCompilationItem(article, fixed_quantity=fixed_quantity))
+        ArticleCompilationItem(article, fixed_quantity=fixed_quantity)
+    )
 
     _add_attached_articles(compilation, article.attached_articles)
 
@@ -210,8 +211,11 @@ def _add_attached_articles(
     """Add the attached articles to the compilation."""
     for attached_article in attached_articles:
         compilation.append(
-            ArticleCompilationItem(attached_article.article,
-                                   fixed_quantity=attached_article.quantity))
+            ArticleCompilationItem(
+                attached_article.article,
+                fixed_quantity=attached_article.quantity,
+            )
+        )
 
 
 def get_attachable_articles(article: DbArticle) -> Sequence[DbArticle]:
@@ -279,7 +283,6 @@ def sum_ordered_articles_by_payment_state(
                 key = (shop_id, article_number, description, payment_state)
                 quantity = quantities.get(key, 0)
 
-                yield shop_id, article_number, description, payment_state, \
-                    quantity
+                yield shop_id, article_number, description, payment_state, quantity
 
     return list(generate())

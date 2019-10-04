@@ -57,19 +57,23 @@ def request_confirmation_email():
         flash_notice(
             'Die E-Mail-Adresse für den Benutzernamen "{}" wurde bereits '
             'bestätigt.',
-            user.screen_name)
+            user.screen_name,
+        )
         return request_confirmation_email_form()
 
-    verification_token = verification_token_service \
-        .find_or_create_for_email_address_confirmation(user.id)
+    verification_token = verification_token_service.find_or_create_for_email_address_confirmation(
+        user.id
+    )
 
     email_address_confirmation_service.send_email_address_confirmation_email(
-        user.email_address, user.screen_name, verification_token, g.site_id)
+        user.email_address, user.screen_name, verification_token, g.site_id
+    )
 
     flash_success(
         'Der Link zur Bestätigung der für den Benutzernamen "{}" '
         'hinterlegten E-Mail-Adresse wurde erneut versendet.',
-        user.screen_name)
+        user.screen_name,
+    )
 
     return redirect_to('.request_confirmation_email_form')
 
@@ -79,8 +83,9 @@ def confirm(token):
     """Confirm e-mail address of the user account assigned with the
     verification token.
     """
-    verification_token = verification_token_service \
-        .find_for_email_address_confirmation_by_token(token)
+    verification_token = verification_token_service.find_for_email_address_confirmation_by_token(
+        token
+    )
 
     if verification_token is None:
         abort(404)
@@ -98,7 +103,8 @@ def confirm(token):
 
     flash_success(
         'Die E-Mail-Adresse wurde bestätigt. Das Benutzerkonto "{}" ist nun aktiviert.',
-        user.screen_name)
+        user.screen_name,
+    )
     signals.email_address_confirmed.send(None, user_id=user.id)
 
     return redirect_to('authentication.login_form')

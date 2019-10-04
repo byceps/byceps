@@ -36,8 +36,15 @@ def create_bundle(
     bundle = DbTicketBundle(category_id, ticket_quantity, owned_by_id)
     db.session.add(bundle)
 
-    tickets = list(build_tickets(category_id, owned_by_id, ticket_quantity,
-                                 bundle=bundle, order_number=order_number))
+    tickets = list(
+        build_tickets(
+            category_id,
+            owned_by_id,
+            ticket_quantity,
+            bundle=bundle,
+            order_number=order_number,
+        )
+    )
     db.session.add_all(tickets)
 
     db.session.commit()

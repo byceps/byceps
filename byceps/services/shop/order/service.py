@@ -53,13 +53,16 @@ def place_order(
 
     order_number = sequence_service.generate_order_number(shop.id)
 
-    order = _build_order(shop.id, order_number, orderer, payment_method,
-                         created_at)
+    order = _build_order(
+        shop.id, order_number, orderer, payment_method, created_at
+    )
 
     order_items = list(_add_items_from_cart_to_order(cart, order))
     order.total_amount = cart.calculate_total_amount()
 
-    order.shipping_required = any(item.shipping_required for item in order_items)
+    order.shipping_required = any(
+        item.shipping_required for item in order_items
+    )
 
     db.session.add(order)
     db.session.add_all(order_items)
@@ -247,8 +250,9 @@ def cancel_order(order_id: OrderID, initiator_id: UserID, reason: str) -> None:
 
     db.session.commit()
 
-    action_service.execute_actions(order.to_transfer_object(), payment_state_to,
-                                   initiator_id)
+    action_service.execute_actions(
+        order.to_transfer_object(), payment_state_to, initiator_id
+    )
 
 
 def mark_order_as_paid(
@@ -284,8 +288,9 @@ def mark_order_as_paid(
 
     db.session.commit()
 
-    action_service.execute_actions(order.to_transfer_object(), payment_state_to,
-                                   initiator_id)
+    action_service.execute_actions(
+        order.to_transfer_object(), payment_state_to, initiator_id
+    )
 
 
 def _update_payment_state(

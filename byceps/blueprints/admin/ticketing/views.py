@@ -51,7 +51,8 @@ def index_for_party(party_id, page):
     search_term = request.args.get('search_term', default='').strip()
 
     tickets = ticket_service.get_tickets_with_details_for_party_paginated(
-        party.id, page, per_page, search_term=search_term)
+        party.id, page, per_page, search_term=search_term
+    )
 
     return {
         'party': party,
@@ -115,8 +116,11 @@ def appoint_user(ticket_id):
 
     ticket_user_management_service.appoint_user(ticket.id, user.id, manager.id)
 
-    flash_success('{} wurde als Nutzer/in von Ticket {} eingetragen.',
-        user.screen_name, ticket.code)
+    flash_success(
+        '{} wurde als Nutzer/in von Ticket {} eingetragen.',
+        user.screen_name,
+        ticket.code,
+    )
 
     return redirect(url_for('.view_ticket', ticket_id=ticket.id))
 
@@ -137,15 +141,19 @@ def set_user_checked_in_flag(ticket_id):
     except ticket_exceptions.UserAccountDeleted:
         flash_error(
             'Das dem Ticket zugewiesene Benutzerkonto ist gelöscht worden. '
-            'Der Check-In ist nicht erlaubt.')
+            'Der Check-In ist nicht erlaubt.'
+        )
         return
     except ticket_exceptions.UserAccountSuspended:
         flash_error(
             'Das dem Ticket zugewiesene Benutzerkonto ist gesperrt. '
-            'Der Check-In ist nicht erlaubt.')
+            'Der Check-In ist nicht erlaubt.'
+        )
         return
 
-    flash_success("Benutzer '{}' wurde eingecheckt.", ticket.used_by.screen_name)
+    flash_success(
+        "Benutzer '{}' wurde eingecheckt.", ticket.used_by.screen_name
+    )
 
     occupies_seat = (ticket.occupied_seat_id is not None)
     if not occupies_seat:

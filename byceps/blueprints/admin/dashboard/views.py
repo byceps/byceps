@@ -60,7 +60,9 @@ def view_global():
     user_count = user_stats_service.count_users()
 
     one_week_ago = timedelta(days=7)
-    recent_users_count = user_stats_service.count_users_created_since(one_week_ago)
+    recent_users_count = user_stats_service.count_users_created_since(
+        one_week_ago
+    )
 
     uninitialized_user_count = user_stats_service.count_uninitialized_users()
 
@@ -100,13 +102,15 @@ def view_brand(brand_id):
 
     news_item_count = news_service.count_items_for_brand(brand.id)
 
-    newsletter_list_id = brand_settings_service \
-        .find_setting_value(brand.id, 'newsletter_list_id')
+    newsletter_list_id = brand_settings_service.find_setting_value(
+        brand.id, 'newsletter_list_id'
+    )
     newsletter_list = None
     if newsletter_list_id:
         newsletter_list = newsletter_service.find_list(newsletter_list_id)
-        newsletter_subscriber_count = newsletter_service \
-            .count_subscribers_for_list(newsletter_list.id)
+        newsletter_subscriber_count = newsletter_service.count_subscribers_for_list(
+            newsletter_list.id
+        )
     else:
         newsletter_subscriber_count = None
 
@@ -161,7 +165,8 @@ def view_party(party_id):
 
     tickets_sold = ticket_service.count_tickets_for_party(party.id)
     tickets_checked_in = ticket_service.count_tickets_checked_in_for_party(
-        party.id)
+        party.id
+    )
 
     return {
         'party': party,

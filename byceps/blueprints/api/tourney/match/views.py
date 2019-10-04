@@ -80,9 +80,11 @@ def _comment_to_json(comment):
     }
 
 
-blueprint.add_url_rule('/<uuid:match_id>/comments/<uuid:comment_id>',
-                       endpoint='comment_view',
-                       build_only=True)
+blueprint.add_url_rule(
+    '/<uuid:match_id>/comments/<uuid:comment_id>',
+    endpoint='comment_view',
+    build_only=True,
+)
 
 
 @blueprint.route('/<uuid:match_id>/comments', methods=['POST'])

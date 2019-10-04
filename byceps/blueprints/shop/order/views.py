@@ -41,8 +41,9 @@ def order_form(erroneous_form=None):
         flash_notice('Der Shop ist derzeit geschlossen.')
         return {'article_compilation': None}
 
-    article_compilation = article_service \
-        .get_article_compilation_for_orderable_articles(shop.id)
+    article_compilation = article_service.get_article_compilation_for_orderable_articles(
+        shop.id
+    )
 
     if article_compilation.is_empty():
         flash_error('Es sind keine Artikel verfügbar.')
@@ -88,8 +89,9 @@ def order():
         flash_notice('Der Shop ist derzeit geschlossen.')
         return order_form()
 
-    article_compilation = article_service \
-        .get_article_compilation_for_orderable_articles(shop.id)
+    article_compilation = article_service.get_article_compilation_for_orderable_articles(
+        shop.id
+    )
 
     if article_compilation.is_empty():
         flash_error('Es sind keine Artikel verfügbar.')
@@ -136,8 +138,9 @@ def order_single_form(article_id, erroneous_form=None):
             'article': None,
         }
 
-    article_compilation = article_service \
-        .get_article_compilation_for_single_article(article, fixed_quantity=1)
+    article_compilation = article_service.get_article_compilation_for_single_article(
+        article, fixed_quantity=1
+    )
 
     user = user_service.find_user_with_details(g.current_user.id)
 
@@ -190,9 +193,9 @@ def order_single(article_id):
         flash_error('Der Artikel kann nicht direkt bestellt werden.')
         return order_single_form(article.id)
 
-    article_compilation = article_service \
-        .get_article_compilation_for_single_article(article,
-                                                    fixed_quantity=quantity)
+    article_compilation = article_service.get_article_compilation_for_single_article(
+        article, fixed_quantity=quantity
+    )
 
     user = g.current_user
 
@@ -260,6 +263,9 @@ def _place_order(shop_id, orderer, cart):
 
 
 def _flash_order_success(order):
-    flash_success('Deine Bestellung mit der Bestellnummer <strong>{}</strong> '
-                  'wurde entgegen genommen. Vielen Dank!', order.order_number,
-                  text_is_safe=True)
+    flash_success(
+        'Deine Bestellung mit der Bestellnummer <strong>{}</strong> '
+        'wurde entgegen genommen. Vielen Dank!',
+        order.order_number,
+        text_is_safe=True,
+    )

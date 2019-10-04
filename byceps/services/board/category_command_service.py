@@ -99,7 +99,8 @@ def delete_category(category_id: CategoryID) -> None:
     if topic_ids:
         raise ValueError(
             f'Category "{category.title}" in board "{category.board_id}" '
-            'contains topics. It will not be deleted because of that.')
+            'contains topics. It will not be deleted because of that.'
+        )
 
     db.session.delete(category)
     db.session.commit()

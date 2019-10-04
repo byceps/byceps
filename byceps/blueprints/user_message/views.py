@@ -52,14 +52,17 @@ def create(recipient_id):
 
     sender = g.current_user
     body = form.body.data.strip()
-    sender_contact_url = url_for('.create_form', recipient_id=sender.id,
-                                 _external=True)
+    sender_contact_url = url_for(
+        '.create_form', recipient_id=sender.id, _external=True
+    )
 
-    user_message_service.send_message(sender.id, recipient.id, body,
-                                      sender_contact_url, g.site_id)
+    user_message_service.send_message(
+        sender.id, recipient.id, body, sender_contact_url, g.site_id
+    )
 
     flash_success(
-        'Deine Nachricht an {} wurde versendet.'.format(recipient.screen_name))
+        'Deine Nachricht an {} wurde versendet.'.format(recipient.screen_name)
+    )
 
     return redirect_to('user_profile.view', user_id=recipient.id)
 

@@ -26,11 +26,13 @@ def send_email_address_confirmation_email(
     email_config = email_service.get_config(site.email_config_id)
     sender = email_config.sender
 
-    confirmation_url = 'https://{}/users/email_address/confirmation/{}' \
-        .format(site.server_name, verification_token.token)
+    confirmation_url = 'https://{}/users/email_address/confirmation/{}'.format(
+        site.server_name, verification_token.token
+    )
 
-    subject = '{}, bitte bestätige deine E-Mail-Adresse' \
-        .format(recipient_screen_name)
+    subject = '{}, bitte bestätige deine E-Mail-Adresse'.format(
+        recipient_screen_name
+    )
     body = (
         'Hallo {0},\n\n'
         'bitte bestätige deine E-Mail-Adresse, indem du diese URL abrufst: {1}'

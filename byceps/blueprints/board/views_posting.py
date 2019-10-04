@@ -37,7 +37,8 @@ def posting_view(posting_id):
     page = service.calculate_posting_page_number(posting, g.current_user)
 
     return redirect(
-        h.build_url_for_posting_in_topic_view(posting, page, _external=True))
+        h.build_url_for_posting_in_topic_view(posting, page, _external=True)
+    )
 
 
 @blueprint.route('/topics/<uuid:topic_id>/create')
@@ -72,8 +73,9 @@ def quote_posting_as_bbcode():
 
     creator = user_service.find_user(posting.creator_id)
 
-    return '[quote author="{}"]{}[/quote]'.format(creator.screen_name,
-                                                  posting.body)
+    return '[quote author="{}"]{}[/quote]'.format(
+        creator.screen_name, posting.body
+    )
 
 
 @blueprint.route('/topics/<uuid:topic_id>/create', methods=['POST'])
@@ -93,26 +95,33 @@ def posting_create(topic_id):
         flash_error(
             'Das Thema ist geschlossen. '
             'Es können keine Beiträge mehr hinzugefügt werden.',
-            icon='lock')
+            icon='lock',
+        )
         return redirect(h.build_url_for_topic(topic.id))
 
     if topic.posting_limited_to_moderators \
             and not g.current_user.has_permission(BoardPermission.announce):
         flash_error(
             'In diesem Thema dürfen nur Moderatoren Beiträge hinzufügen.',
-            icon='announce')
+            icon='announce',
+        )
         return redirect(h.build_url_for_topic(topic.id))
 
-    posting = board_posting_command_service \
-        .create_posting(topic, creator.id, body)
+    posting = board_posting_command_service.create_posting(
+        topic, creator.id, body
+    )
 
     if not g.current_user.is_anonymous:
-        board_last_view_service.mark_category_as_just_viewed(topic.category.id,
-                                                             g.current_user.id)
+        board_last_view_service.mark_category_as_just_viewed(
+            topic.category.id, g.current_user.id
+        )
 
     flash_success('Deine Antwort wurde hinzugefügt.')
-    signals.posting_created.send(None, posting_id=posting.id,
-                                 url=h.build_external_url_for_posting(posting.id))
+    signals.posting_created.send(
+        None,
+        posting_id=posting.id,
+        url=h.build_external_url_for_posting(posting.id),
+    )
 
     postings_per_page = service.get_postings_per_page_value()
     page_count = topic.count_pages(postings_per_page)
@@ -135,7 +144,8 @@ def posting_update_form(posting_id, erroneous_form=None):
     if posting.topic.locked and not user_may_update:
         flash_error(
             'Der Beitrag darf nicht bearbeitet werden weil das Thema, '
-            'zu dem dieser Beitrag gehört, gesperrt ist.')
+            'zu dem dieser Beitrag gehört, gesperrt ist.'
+        )
         return redirect(url)
 
     if posting.topic.hidden or posting.hidden:
@@ -169,7 +179,8 @@ def posting_update(posting_id):
     if posting.topic.locked and not user_may_update:
         flash_error(
             'Der Beitrag darf nicht bearbeitet werden weil das Thema, '
-            'zu dem dieser Beitrag gehört, gesperrt ist.')
+            'zu dem dieser Beitrag gehört, gesperrt ist.'
+        )
         return redirect(url)
 
     if posting.topic.hidden or posting.hidden:
@@ -184,8 +195,9 @@ def posting_update(posting_id):
     if not form.validate():
         return posting_update_form(posting_id, form)
 
-    board_posting_command_service \
-        .update_posting(posting, g.current_user.id, form.body.data)
+    board_posting_command_service.update_posting(
+        posting, g.current_user.id, form.body.data
+    )
 
     flash_success('Der Beitrag wurde aktualisiert.')
     return redirect(url)
@@ -219,9 +231,12 @@ def posting_hide(posting_id):
 
     flash_success('Der Beitrag wurde versteckt.', icon='hidden')
 
-    signals.posting_hidden.send(None, posting_id=posting.id,
-                                moderator_id=moderator_id,
-                                url=h.build_external_url_for_posting(posting.id))
+    signals.posting_hidden.send(
+        None,
+        posting_id=posting.id,
+        moderator_id=moderator_id,
+        url=h.build_external_url_for_posting(posting.id),
+    )
 
     return h.build_url_for_posting_in_topic_view(posting, page)
 
@@ -240,8 +255,11 @@ def posting_unhide(posting_id):
 
     flash_success('Der Beitrag wurde wieder sichtbar gemacht.', icon='view')
 
-    signals.posting_unhidden.send(None, posting_id=posting.id,
-                                  moderator_id=moderator_id,
-                                  url=h.build_external_url_for_posting(posting.id))
+    signals.posting_unhidden.send(
+        None,
+        posting_id=posting.id,
+        moderator_id=moderator_id,
+        url=h.build_external_url_for_posting(posting.id),
+    )
 
     return h.build_url_for_posting_in_topic_view(posting, page)

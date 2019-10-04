@@ -34,8 +34,9 @@ def collect_orgas_with_next_birthdays(
 
     user_ids = {user.id for user in orgas}
 
-    avatar_urls_by_user_id = user_avatar_service \
-        .get_avatar_urls_for_users(user_ids)
+    avatar_urls_by_user_id = user_avatar_service.get_avatar_urls_for_users(
+        user_ids
+    )
 
     for user in orgas:
         avatar_url = avatar_urls_by_user_id.get(user.id)
@@ -63,7 +64,10 @@ def _collect_orgas_with_birthdays() -> Sequence[DbUser]:
 
 
 def sort_users_by_next_birthday(users: Sequence[DbUser]) -> Sequence[DbUser]:
-    return sorted(users,
-                  key=lambda user: (
-                    user.detail.days_until_next_birthday,
-                    -user.detail.age))
+    return sorted(
+        users,
+        key=lambda user: (
+            user.detail.days_until_next_birthday,
+            -user.detail.age,
+        ),
+    )

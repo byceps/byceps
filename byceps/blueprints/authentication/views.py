@@ -58,8 +58,10 @@ def login_form():
     """Show login form."""
     logged_in = g.current_user.is_active
     if logged_in:
-        flash_notice('Du bist bereits als Benutzer "{}" angemeldet.',
-                     g.current_user.screen_name)
+        flash_notice(
+            'Du bist bereits als Benutzer "{}" angemeldet.',
+            g.current_user.screen_name,
+        )
 
     in_admin_mode = get_site_mode().is_admin()
 
@@ -114,11 +116,13 @@ def login():
     if not in_admin_mode:
         required_consent_subject_ids = _get_required_consent_subject_ids()
         if _is_consent_required(user.id, required_consent_subject_ids):
-            verification_token = verification_token_service \
-                .find_or_create_for_terms_consent(user.id)
+            verification_token = verification_token_service.find_or_create_for_terms_consent(
+                user.id
+            )
 
-            consent_form_url = url_for('consent.consent_form',
-                                       token=verification_token.token)
+            consent_form_url = url_for(
+                'consent.consent_form', token=verification_token.token
+            )
 
             return [('Location', consent_form_url)]
 
@@ -140,13 +144,15 @@ def _is_login_allowed():
 def _get_required_consent_subject_ids():
     subject_ids = []
 
-    terms_version = terms_version_service \
-        .find_current_version_for_brand(g.brand_id)
+    terms_version = terms_version_service.find_current_version_for_brand(
+        g.brand_id
+    )
     if terms_version:
         subject_ids.append(terms_version.consent_subject_id)
 
-    privacy_policy_consent_subject_id \
-        = _find_privacy_policy_consent_subject_id()
+    privacy_policy_consent_subject_id = (
+        _find_privacy_policy_consent_subject_id()
+    )
 
     if privacy_policy_consent_subject_id:
         subject_ids.append(privacy_policy_consent_subject_id)
@@ -156,7 +162,9 @@ def _get_required_consent_subject_ids():
 
 def _is_consent_required(user_id, subject_ids):
     for subject_id in subject_ids:
-        if not consent_service.has_user_consented_to_subject(user_id, subject_id):
+        if not consent_service.has_user_consented_to_subject(
+            user_id, subject_id
+        ):
             return True
 
     return False
@@ -231,8 +239,11 @@ def request_password_reset():
         return request_password_reset_form(form)
 
     if not user.email_address_verified:
-        flash_error('Die E-Mail-Adresse für das Benutzerkonto "{}" wurde '
-                    'noch nicht bestätigt.', screen_name)
+        flash_error(
+            'Die E-Mail-Adresse für das Benutzerkonto "{}" wurde '
+            'noch nicht bestätigt.',
+            screen_name,
+        )
         return redirect_to('user_email_address.request_confirmation_email')
 
     sender = None
@@ -246,7 +257,8 @@ def request_password_reset():
     flash_success(
         'Ein Link zum Setzen eines neuen Passworts für den Benutzernamen "{}" '
         'wurde an die hinterlegte E-Mail-Adresse versendet.',
-        user.screen_name)
+        user.screen_name,
+    )
     return request_password_reset_form()
 
 
@@ -254,8 +266,9 @@ def request_password_reset():
 @templated
 def password_reset_form(token, erroneous_form=None):
     """Show a form to reset the current user's password."""
-    verification_token = verification_token_service \
-        .find_for_password_reset_by_token(token)
+    verification_token = verification_token_service.find_for_password_reset_by_token(
+        token
+    )
 
     _verify_password_reset_token(verification_token)
 
@@ -270,8 +283,9 @@ def password_reset_form(token, erroneous_form=None):
 @blueprint.route('/password/reset/token/<token>', methods=['POST'])
 def password_reset(token):
     """Reset the current user's password."""
-    verification_token = verification_token_service \
-        .find_for_password_reset_by_token(token)
+    verification_token = verification_token_service.find_for_password_reset_by_token(
+        token
+    )
 
     _verify_password_reset_token(verification_token)
 
@@ -289,8 +303,10 @@ def password_reset(token):
 
 def _verify_password_reset_token(verification_token):
     if verification_token is None or verification_token.is_expired:
-        flash_error('Es wurde kein gültiges Token angegeben. '
-                    'Ein Token ist nur 24 Stunden lang gültig.')
+        flash_error(
+            'Es wurde kein gültiges Token angegeben. '
+            'Ein Token ist nur 24 Stunden lang gültig.'
+        )
         abort(404)
 
 

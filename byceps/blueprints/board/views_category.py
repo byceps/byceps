@@ -30,11 +30,13 @@ def category_index():
 
     h.require_board_access(board_id, user.id)
 
-    categories = board_category_query_service \
-        .get_categories_with_last_updates(board_id)
+    categories = board_category_query_service.get_categories_with_last_updates(
+        board_id
+    )
 
     categories_with_flag = service.add_unseen_postings_flag_to_categories(
-        categories, user)
+        categories, user
+    )
 
     return {
         'categories': categories_with_flag,
@@ -51,8 +53,9 @@ def category_view(slug, page):
 
     h.require_board_access(board_id, user.id)
 
-    category = board_category_query_service \
-        .find_category_by_slug(board_id, slug)
+    category = board_category_query_service.find_category_by_slug(
+        board_id, slug
+    )
 
     if category is None:
         abort(404)
@@ -61,13 +64,15 @@ def category_view(slug, page):
         abort(404)
 
     if not user.is_anonymous:
-        board_last_view_service.mark_category_as_just_viewed(category.id,
-                                                             user.id)
+        board_last_view_service.mark_category_as_just_viewed(
+            category.id, user.id
+        )
 
     topics_per_page = service.get_topics_per_page_value()
 
-    topics = board_topic_query_service \
-        .paginate_topics_of_category(category.id, user, page, topics_per_page)
+    topics = board_topic_query_service.paginate_topics_of_category(
+        category.id, user, page, topics_per_page
+    )
 
     service.add_topic_creators(topics.items)
     service.add_topic_unseen_flag(topics.items, user)
@@ -86,9 +91,11 @@ def mark_all_topics_in_category_as_viewed(category_id):
     category = h.get_category_or_404(category_id)
 
     board_last_view_service.mark_all_topics_in_category_as_viewed(
-        category_id, g.current_user.id)
+        category_id, g.current_user.id
+    )
 
     flash_success(
-        'Alle Themen in dieser Kategorie wurden als gelesen markiert.')
+        'Alle Themen in dieser Kategorie wurden als gelesen markiert.'
+    )
 
     return url_for('.category_view', slug=category.slug)

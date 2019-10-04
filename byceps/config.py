@@ -43,19 +43,24 @@ def init_app(app):
         site_id = determine_site_id(app)
         update_extension_value(app, KEY_SITE_ID, site_id)
 
-    user_registration_enabled = determine_user_registration_enabled(app,
-                                                                    site_mode)
-    update_extension_value(app, KEY_USER_REGISTRATION_ENABLED,
-                           user_registration_enabled)
+    user_registration_enabled = determine_user_registration_enabled(
+        app, site_mode
+    )
+    update_extension_value(
+        app, KEY_USER_REGISTRATION_ENABLED, user_registration_enabled
+    )
 
-    ticket_management_enabled = determine_ticket_management_enabled(app,
-                                                                    site_mode)
-    update_extension_value(app, KEY_TICKET_MANAGEMENT_ENABLED,
-                           ticket_management_enabled)
+    ticket_management_enabled = determine_ticket_management_enabled(
+        app, site_mode
+    )
+    update_extension_value(
+        app, KEY_TICKET_MANAGEMENT_ENABLED, ticket_management_enabled
+    )
 
     seat_management_enabled = determine_seat_management_enabled(app, site_mode)
-    update_extension_value(app, KEY_SEAT_MANAGEMENT_ENABLED,
-                           seat_management_enabled)
+    update_extension_value(
+        app, KEY_SEAT_MANAGEMENT_ENABLED, seat_management_enabled
+    )
 
 
 def update_extension_value(app, key, value):

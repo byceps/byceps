@@ -85,8 +85,9 @@ def delete_account(user_id: UserID, initiator_id: UserID, reason: str) -> None:
     db.session.add(event)
 
     # Deassign authorization roles.
-    authorization_service.deassign_all_roles_from_user(user.id, initiator_id,
-                                                       commit=False)
+    authorization_service.deassign_all_roles_from_user(
+        user.id, initiator_id, commit=False
+    )
 
     db.session.commit()
 
@@ -113,8 +114,9 @@ def change_screen_name(
     if reason:
         event_data['reason'] = reason
 
-    event = event_service.build_event('user-screen-name-changed', user.id,
-                                      event_data)
+    event = event_service.build_event(
+        'user-screen-name-changed', user.id, event_data
+    )
     db.session.add(event)
 
     db.session.commit()
@@ -143,8 +145,9 @@ def change_email_address(
     if reason:
         event_data['reason'] = reason
 
-    event = event_service.build_event('user-email-address-changed', user.id,
-                                      event_data)
+    event = event_service.build_event(
+        'user-email-address-changed', user.id, event_data
+    )
     db.session.add(event)
 
     db.session.commit()

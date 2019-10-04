@@ -42,7 +42,9 @@ def set_current_version(document_id: DocumentID, version_id: VersionID) -> None:
     """Specify the current version of the document."""
     document = DbDocument.query.get(document_id)
     if document is None:
-        raise ValueError(f'Unknown terms of service document ID "{document_id}"')
+        raise ValueError(
+            f'Unknown terms of service document ID "{document_id}"'
+        )
 
     version = DbVersion.query.get(version_id)
     if version is None:

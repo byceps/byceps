@@ -55,4 +55,5 @@ class UpdatePasswordForm(ResetPasswordForm):
 
         if not password_service.is_password_valid_for_user(user_id, password):
             raise ValidationError(
-                'Das eingegebene Passwort stimmt nicht mit dem bisherigen überein.')
+                'Das eingegebene Passwort stimmt nicht mit dem bisherigen überein.'
+            )

@@ -23,6 +23,4 @@ def metrics():
     metrics = metrics_service.collect_metrics()
     lines = list(metrics_service.serialize(metrics))
 
-    return Response(lines,
-                    status=200,
-                    mimetype='text/plain; version=0.0.4')
+    return Response(lines, status=200, mimetype='text/plain; version=0.0.4')

@@ -30,9 +30,16 @@ def create_document(
     image_url_path: Optional[str] = None,
 ) -> SnippetVersion:
     """Create a document and its initial version, and return that version."""
-    return _create_snippet(scope, name, SnippetType.document, creator_id, body,
-                           title=title, head=head,
-                           image_url_path=image_url_path)
+    return _create_snippet(
+        scope,
+        name,
+        SnippetType.document,
+        creator_id,
+        body,
+        title=title,
+        head=head,
+        image_url_path=image_url_path,
+    )
 
 
 def update_document(
@@ -45,8 +52,9 @@ def update_document(
     image_url_path: Optional[str] = None,
 ) -> SnippetVersion:
     """Update document with a new version, and return that version."""
-    return _update_snippet(document, creator_id, title, head, body,
-                           image_url_path)
+    return _update_snippet(
+        document, creator_id, title, head, body, image_url_path
+    )
 
 
 # -------------------------------------------------------------------- #
@@ -68,8 +76,9 @@ def update_fragment(
     head = None
     image_url_path = None
 
-    return _update_snippet(fragment, creator_id, title, head, body,
-                           image_url_path)
+    return _update_snippet(
+        fragment, creator_id, title, head, body, image_url_path
+    )
 
 
 # -------------------------------------------------------------------- #
@@ -91,8 +100,9 @@ def _create_snippet(
     snippet = Snippet(scope, name, type_)
     db.session.add(snippet)
 
-    version = SnippetVersion(snippet, creator_id, title, head, body,
-                             image_url_path)
+    version = SnippetVersion(
+        snippet, creator_id, title, head, body, image_url_path
+    )
     db.session.add(version)
 
     current_version_association = CurrentVersionAssociation(snippet, version)
@@ -112,8 +122,9 @@ def _update_snippet(
     image_url_path: Optional[str],
 ) -> SnippetVersion:
     """Update snippet with a new version, and return that version."""
-    version = SnippetVersion(snippet, creator_id, title, head, body,
-                             image_url_path)
+    version = SnippetVersion(
+        snippet, creator_id, title, head, body, image_url_path
+    )
     db.session.add(version)
 
     snippet.current_version = version

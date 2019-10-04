@@ -17,8 +17,9 @@ MAX_LENGTH = 24
 GERMAN_CHARS = 'äöüß'
 SPECIAL_CHARS = '!$*-./<=>[]_'
 
-VALID_CHARS = frozenset(chain(
-    ascii_letters, digits, GERMAN_CHARS, SPECIAL_CHARS))
+VALID_CHARS = frozenset(
+    chain(ascii_letters, digits, GERMAN_CHARS, SPECIAL_CHARS)
+)
 
 
 def is_screen_name_valid(screen_name: str) -> bool:

@@ -44,7 +44,8 @@ def health():
     status_code = 503 if not rdbms_ok else 200
 
     return current_app.response_class(
-        json, status=status_code, content_type='application/health+json')
+        json, status=status_code, content_type='application/health+json'
+    )
 
 
 def _is_rdbms_ok():

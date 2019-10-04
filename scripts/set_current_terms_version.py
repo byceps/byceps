@@ -38,8 +38,9 @@ def execute(document_id):
     versions_by_id = {v.id: v for v in versions}
 
     # Ask user which version to set as the current one.
-    selected_version_id = _request_version_id(versions_by_id,
-                                              document.current_version_id)
+    selected_version_id = _request_version_id(
+        versions_by_id, document.current_version_id
+    )
 
     # Set current version.
     document_service.set_current_version(document_id, selected_version_id)
@@ -49,7 +50,8 @@ def execute(document_id):
     click.secho(
         f'Current version for document ID "{document.id}" '
         f'was set to "{selected_version_title}".',
-        fg='green')
+        fg='green',
+    )
 
 
 def _request_version_id(
@@ -76,7 +78,8 @@ def _request_version_id(
         version_ids,
         title='Choose version to set as the current one:',
         options_map_func=get_option_title,
-        default_index=current_version_option_index)
+        default_index=current_version_option_index,
+    )
 
     return selection[0]
 
@@ -86,9 +89,9 @@ def _get_version_ids_latest_first(
 ) -> List[VersionID]:
     versions = versions_by_id.values()
 
-    versions_latest_first = list(sorted(versions,
-                                        key=lambda v: v.created_at,
-                                        reverse=True))
+    versions_latest_first = list(
+        sorted(versions, key=lambda v: v.created_at, reverse=True)
+    )
 
     return [v.id for v in versions_latest_first]
 

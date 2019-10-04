@@ -44,8 +44,9 @@ def get_attended_parties(user_id: UserID) -> List[Party]:
     ticket_attendance_party_ids = _get_attended_party_ids(user_id)
     archived_attendance_party_ids = _get_archived_attendance_party_ids(user_id)
 
-    party_ids = set(chain(ticket_attendance_party_ids,
-                          archived_attendance_party_ids))
+    party_ids = set(
+        chain(ticket_attendance_party_ids, archived_attendance_party_ids)
+    )
 
     return party_service.get_parties(party_ids)
 
@@ -81,9 +82,11 @@ def get_attendees_by_party(party_ids: Set[PartyID]) -> Dict[PartyID, Set[User]]:
     attendee_ids_by_party_id = get_attendee_ids_for_parties(party_ids)
 
     all_attendee_ids = set(
-        chain.from_iterable(attendee_ids_by_party_id.values()))
-    all_attendees = user_service.find_users(all_attendee_ids,
-                                            include_avatars=True)
+        chain.from_iterable(attendee_ids_by_party_id.values())
+    )
+    all_attendees = user_service.find_users(
+        all_attendee_ids, include_avatars=True
+    )
     all_attendees_by_id = user_service.index_users_by_id(all_attendees)
 
     attendees_by_party_id = {}

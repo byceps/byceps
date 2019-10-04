@@ -93,8 +93,11 @@ def create_orgaflag(brand_id):
 
     orga_flag = orga_service.add_orga_flag(brand.id, user.id, initiator.id)
 
-    flash_success('{} wurde das Orga-Flag für die Marke {} gegeben.',
-                  orga_flag.user.screen_name, orga_flag.brand.title)
+    flash_success(
+        '{} wurde das Orga-Flag für die Marke {} gegeben.',
+        orga_flag.user.screen_name,
+        orga_flag.brand.title,
+    )
     return redirect_to('.persons_for_brand', brand_id=orga_flag.brand.id)
 
 
@@ -114,8 +117,11 @@ def remove_orgaflag(brand_id, user_id):
 
     orga_service.remove_orga_flag(orga_flag, initiator.id)
 
-    flash_success('{} wurde das Orga-Flag für die Marke {} entzogen.',
-                  user.screen_name, brand.title)
+    flash_success(
+        '{} wurde das Orga-Flag für die Marke {} entzogen.',
+        user.screen_name,
+        brand.title,
+    )
 
 
 @blueprint.route('/persons/<brand_id>/export')
@@ -168,7 +174,8 @@ def export_persons(brand_id):
 @templated
 def birthdays():
     orgas = list(
-        orga_birthday_service.collect_orgas_with_next_birthdays(limit=5))
+        orga_birthday_service.collect_orgas_with_next_birthdays(limit=5)
+    )
 
     return {
         'orgas': orgas,

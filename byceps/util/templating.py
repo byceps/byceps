@@ -32,9 +32,7 @@ def create_sandboxed_environment(
         # A loader that never finds a template.
         loader = FunctionLoader(lambda name: None)
 
-    return ImmutableSandboxedEnvironment(
-        loader=loader,
-        autoescape=autoescape)
+    return ImmutableSandboxedEnvironment(loader=loader, autoescape=autoescape)
 
 
 def get_variable_value(template: Template, name: str) -> Optional[Any]:

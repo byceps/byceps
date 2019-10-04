@@ -17,7 +17,8 @@ class ArticleCompilationItem:
     ) -> None:
         if (fixed_quantity is not None) and fixed_quantity < 1:
             raise ValueError(
-                'Fixed quantity, if given, must be a positive number.')
+                'Fixed quantity, if given, must be a positive number.'
+            )
 
         self.article = article
         self.fixed_quantity = fixed_quantity

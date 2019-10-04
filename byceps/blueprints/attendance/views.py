@@ -29,7 +29,8 @@ def attendees(page):
         abort(404)
 
     pagination = ticket_service.get_tickets_in_use_for_party_paginated(
-        g.party_id, page, per_page, search_term=search_term)
+        g.party_id, page, per_page, search_term=search_term
+    )
 
     tickets = pagination.items
 

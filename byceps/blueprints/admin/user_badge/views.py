@@ -115,10 +115,14 @@ def create():
     else:
         brand_id = None
 
-    badge = badge_service.create_badge(slug, label, image_filename,
-                                       brand_id=brand_id,
-                                       description=description,
-                                       featured=featured)
+    badge = badge_service.create_badge(
+        slug,
+        label,
+        image_filename,
+        brand_id=brand_id,
+        description=description,
+        featured=featured,
+    )
 
     flash_success('Das Abzeichen "{}" wurde angelegt.', badge.label)
     return redirect_to('.index')

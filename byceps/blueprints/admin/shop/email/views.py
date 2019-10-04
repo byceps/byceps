@@ -61,8 +61,9 @@ def view_example_order_placed(shop_id):
 
     data = _build_email_data(order, shop)
 
-    message = shop_order_email_service \
-        ._assemble_email_for_incoming_order_to_orderer(data)
+    message = shop_order_email_service._assemble_email_for_incoming_order_to_orderer(
+        data
+    )
 
     yield from _render_message(message)
 
@@ -78,8 +79,9 @@ def view_example_order_paid(shop_id):
 
     data = _build_email_data(order, shop)
 
-    message = shop_order_email_service \
-        ._assemble_email_for_paid_order_to_orderer(data)
+    message = shop_order_email_service._assemble_email_for_paid_order_to_orderer(
+        data
+    )
 
     yield from _render_message(message)
 
@@ -91,14 +93,18 @@ def view_example_order_canceled(shop_id):
     """Show example of order canceled e-mail."""
     shop = _get_shop_or_404(shop_id)
 
-    order = _build_order(shop.id, PaymentState.canceled_before_paid,
+    order = _build_order(
+        shop.id,
+        PaymentState.canceled_before_paid,
         is_canceled=True,
-        cancelation_reason='Kein fristgerechter Geldeingang feststellbar')
+        cancelation_reason='Kein fristgerechter Geldeingang feststellbar',
+    )
 
     data = _build_email_data(order, shop)
 
-    message = shop_order_email_service \
-        ._assemble_email_for_canceled_order_to_orderer(data)
+    message = shop_order_email_service._assemble_email_for_canceled_order_to_orderer(
+        data
+    )
 
     yield from _render_message(message)
 
@@ -172,7 +178,8 @@ def _build_email_data(order, shop):
 def _render_message(message):
     if not message.sender:
         raise ConfigurationError(
-            'No e-mail sender address configured for message.')
+            'No e-mail sender address configured for message.'
+        )
 
     yield f'From: {message.sender}\n'
     yield f'To: {message.recipients}\n'

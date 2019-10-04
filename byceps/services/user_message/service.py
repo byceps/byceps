@@ -41,8 +41,9 @@ def send_message(
     site_id: SiteID,
 ) -> None:
     """Create a message and send it."""
-    message = create_message(sender_id, recipient_id, text, sender_contact_url,
-                             site_id)
+    message = create_message(
+        sender_id, recipient_id, text, sender_contact_url, site_id
+    )
 
     email_service.enqueue_message(message)
 
@@ -67,7 +68,8 @@ def _get_user(user_id: UserID) -> User:
 
     if user is None:
         raise ValueError(
-            "Unknown user ID '{}' or account not active".format(user_id))
+            "Unknown user ID '{}' or account not active".format(user_id)
+        )
 
     return user
 
@@ -85,14 +87,20 @@ def _assemble_message(
     website_contact_address = email_config.contact_address
 
     message_template_render_result = _render_message_template(
-        sender_user, recipient, text, sender_contact_url, site,
-        website_contact_address)
+        sender_user,
+        recipient,
+        text,
+        sender_contact_url,
+        site,
+        website_contact_address,
+    )
 
     sender = email_config.sender
 
     recipient_address = user_service.get_email_address(recipient.id)
-    recipient_str = _to_name_and_address_string(recipient.screen_name,
-                                                recipient_address)
+    recipient_str = _to_name_and_address_string(
+        recipient.screen_name, recipient_address
+    )
     recipient_strs = [recipient_str]
 
     subject = message_template_render_result.subject
@@ -137,10 +145,12 @@ def _get_template(name: str) -> Template:
 
 
 def _create_template_env() -> Environment:
-    templates_path = os.path.join(current_app.root_path,
-                                  'services/user_message/templates')
+    templates_path = os.path.join(
+        current_app.root_path, 'services/user_message/templates'
+    )
 
     loader = FileSystemLoader(templates_path)
 
-    return templating.create_sandboxed_environment(loader=loader,
-                                                   autoescape=False)
+    return templating.create_sandboxed_environment(
+        loader=loader, autoescape=False
+    )

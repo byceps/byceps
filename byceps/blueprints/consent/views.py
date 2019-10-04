@@ -80,10 +80,13 @@ def consent(token):
             return consent_form(token, erroneous_form=form)
 
     expressed_at = datetime.utcnow()
-    consent_service.consent_to_subjects(subject_ids_from_form, expressed_at,
-                                        verification_token)
+    consent_service.consent_to_subjects(
+        subject_ids_from_form, expressed_at, verification_token
+    )
 
-    flash_success('Vielen Dank für deine Zustimmung. Bitte melde dich erneut an.')
+    flash_success(
+        'Vielen Dank für deine Zustimmung. Bitte melde dich erneut an.'
+    )
     return redirect_to('authentication.login_form')
 
 
@@ -91,7 +94,8 @@ def _get_unconsented_subjects_for_user(user_id):
     required_consent_subject_ids = _get_required_consent_subject_ids()
 
     unconsented_subject_ids = _get_unconsented_subject_ids(
-        user_id, required_consent_subject_ids)
+        user_id, required_consent_subject_ids
+    )
 
     return _get_subjects(unconsented_subject_ids)
 
@@ -100,7 +104,9 @@ def _get_unconsented_subject_ids(user_id, required_subject_ids):
     subject_ids = []
 
     for subject_id in required_subject_ids:
-        if not consent_service.has_user_consented_to_subject(user_id, subject_id):
+        if not consent_service.has_user_consented_to_subject(
+            user_id, subject_id
+        ):
             subject_ids.append(subject_id)
 
     return subject_ids
@@ -112,8 +118,9 @@ def _get_subjects(subject_ids):
 
 
 def _get_verification_token_or_404(token_value):
-    verification_token = verification_token_service \
-        .find_for_terms_consent_by_token(token_value)
+    verification_token = verification_token_service.find_for_terms_consent_by_token(
+        token_value
+    )
 
     if verification_token is None:
         flash_error('Unbekannter Bestätigungscode.')

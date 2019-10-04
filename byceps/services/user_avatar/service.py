@@ -49,8 +49,9 @@ def update_avatar_image(
 
     image_too_large = image_dimensions > maximum_dimensions
     if image_too_large or not image_dimensions.is_square:
-        stream = create_thumbnail(stream, image_type.name, maximum_dimensions,
-                                  force_square=True)
+        stream = create_thumbnail(
+            stream, image_type.name, maximum_dimensions, force_square=True
+        )
 
     avatar = Avatar(user.id, image_type)
     db.session.add(avatar)

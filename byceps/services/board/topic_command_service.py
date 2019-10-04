@@ -25,8 +25,9 @@ def create_topic(
     """Create a topic with an initial posting in that category."""
     topic = DbTopic(category_id, creator_id, title)
     posting = DbPosting(topic, creator_id, body)
-    initial_topic_posting_association = InitialTopicPostingAssociation(topic,
-                                                                       posting)
+    initial_topic_posting_association = InitialTopicPostingAssociation(
+        topic, posting
+    )
 
     db.session.add(topic)
     db.session.add(posting)

@@ -45,8 +45,8 @@ class Navigation:
             label=label,
             id=id,
             required_permission=required_permission,
-            icon=icon
-            )
+            icon=icon,
+        )
 
         self.items.append(item)
         return self

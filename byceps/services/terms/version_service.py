@@ -27,8 +27,9 @@ def create_version(
     consent_subject_id: ConsentSubjectID,
 ) -> DbVersion:
     """Create a new version of that document."""
-    version = DbVersion(document_id, title, snippet_version_id,
-                        consent_subject_id)
+    version = DbVersion(
+        document_id, title, snippet_version_id, consent_subject_id
+    )
 
     db.session.add(version)
     db.session.commit()
@@ -76,11 +77,13 @@ def find_current_version_for_brand(brand_id: BrandID) -> Optional[DbVersion]:
     if not document:
         raise ValueError(
             f'Unknown document ID "{document_id}" configured '
-            f'for brand ID "{brand_id}".')
+            f'for brand ID "{brand_id}".'
+        )
 
     if document.current_version_id is None:
         raise ValueError(
-            f'No current version specified for document ID "{document_id}".')
+            f'No current version specified for document ID "{document_id}".'
+        )
 
     return find_version(document.current_version_id)
 

@@ -41,8 +41,9 @@ def topic_index(page):
 
     topics_per_page = service.get_topics_per_page_value()
 
-    topics = board_topic_query_service \
-        .paginate_topics(board_id, user, page, topics_per_page)
+    topics = board_topic_query_service.paginate_topics(
+        board_id, user, page, topics_per_page
+    )
 
     service.add_topic_creators(topics.items)
     service.add_topic_unseen_flag(topics.items, user)
@@ -59,8 +60,9 @@ def topic_view(topic_id, page):
     """List postings for the topic."""
     user = g.current_user
 
-    topic = board_topic_query_service \
-        .find_topic_visible_for_user(topic_id, user)
+    topic = board_topic_query_service.find_topic_visible_for_user(
+        topic_id, user
+    )
 
     if topic is None:
         abort(404)
@@ -78,18 +80,21 @@ def topic_view(topic_id, page):
     # Copy last view timestamp for later use to compare postings
     # against it.
     last_viewed_at = board_last_view_service.find_topic_last_viewed_at(
-        topic.id, user.id)
+        topic.id, user.id
+    )
 
     postings_per_page = service.get_postings_per_page_value()
     if page == 0:
-        posting = board_topic_query_service \
-            .find_default_posting_to_jump_to(topic.id, user, last_viewed_at)
+        posting = board_topic_query_service.find_default_posting_to_jump_to(
+            topic.id, user, last_viewed_at
+        )
 
         if posting is None:
             page = 1
         else:
-            page = service.calculate_posting_page_number(posting,
-                                                         g.current_user)
+            page = service.calculate_posting_page_number(
+                posting, g.current_user
+            )
             # Jump to a specific posting. This requires a redirect.
             url = h.build_url_for_posting_in_topic_view(posting, page)
             return redirect(url, code=307)
@@ -99,8 +104,9 @@ def topic_view(topic_id, page):
         # 'new' tag from a locked topic.
         board_last_view_service.mark_topic_as_just_viewed(topic.id, user.id)
 
-    postings = board_posting_query_service \
-        .paginate_postings(topic.id, user, g.party_id, page, postings_per_page)
+    postings = board_posting_query_service.paginate_postings(
+        topic.id, user, g.party_id, page, postings_per_page
+    )
 
     service.add_unseen_flag_to_postings(postings.items, user, last_viewed_at)
 
@@ -153,8 +159,9 @@ def topic_create(category_id):
     title = form.title.data.strip()
     body = form.body.data.strip()
 
-    topic = board_topic_command_service \
-        .create_topic(category.id, creator.id, title, body)
+    topic = board_topic_command_service.create_topic(
+        category.id, creator.id, title, body
+    )
     topic_url = h.build_external_url_for_topic(topic.id)
 
     flash_success('Das Thema "{}" wurde hinzugefügt.', topic.title)
@@ -175,7 +182,8 @@ def topic_update_form(topic_id, erroneous_form=None):
 
     if topic.locked and not user_may_update:
         flash_error(
-            'Das Thema darf nicht bearbeitet werden weil es gesperrt ist.')
+            'Das Thema darf nicht bearbeitet werden weil es gesperrt ist.'
+        )
         return redirect(url)
 
     if topic.hidden:
@@ -207,7 +215,8 @@ def topic_update(topic_id):
 
     if topic.locked and not user_may_update:
         flash_error(
-            'Das Thema darf nicht bearbeitet werden weil es gesperrt ist.')
+            'Das Thema darf nicht bearbeitet werden weil es gesperrt ist.'
+        )
         return redirect(url)
 
     if topic.hidden:
@@ -222,8 +231,9 @@ def topic_update(topic_id):
     if not form.validate():
         return topic_update_form(topic_id, form)
 
-    board_topic_command_service \
-        .update_topic(topic, g.current_user.id, form.title.data, form.body.data)
+    board_topic_command_service.update_topic(
+        topic, g.current_user.id, form.title.data, form.body.data
+    )
 
     flash_success('Das Thema "{}" wurde aktualisiert.', topic.title)
     return redirect(url)
@@ -239,8 +249,9 @@ def topic_moderate_form(topic_id):
 
     topic.creator = user_service.find_user(topic.creator_id)
 
-    categories = board_category_query_service \
-        .get_categories_excluding(board_id, topic.category_id)
+    categories = board_category_query_service.get_categories_excluding(
+        board_id, topic.category_id
+    )
 
     return {
         'topic': topic,
@@ -260,9 +271,12 @@ def topic_hide(topic_id):
 
     flash_success('Das Thema "{}" wurde versteckt.', topic.title, icon='hidden')
 
-    signals.topic_hidden.send(None, topic_id=topic.id,
-                              moderator_id=moderator_id,
-                              url=h.build_external_url_for_topic(topic.id))
+    signals.topic_hidden.send(
+        None,
+        topic_id=topic.id,
+        moderator_id=moderator_id,
+        url=h.build_external_url_for_topic(topic.id),
+    )
 
     return h.build_url_for_topic_in_category_view(topic)
 
@@ -278,11 +292,17 @@ def topic_unhide(topic_id):
     board_topic_command_service.unhide_topic(topic, moderator_id)
 
     flash_success(
-        'Das Thema "{}" wurde wieder sichtbar gemacht.', topic.title, icon='view')
+        'Das Thema "{}" wurde wieder sichtbar gemacht.',
+        topic.title,
+        icon='view',
+    )
 
-    signals.topic_unhidden.send(None, topic_id=topic.id,
-                                moderator_id=moderator_id,
-                                url=h.build_external_url_for_topic(topic.id))
+    signals.topic_unhidden.send(
+        None,
+        topic_id=topic.id,
+        moderator_id=moderator_id,
+        url=h.build_external_url_for_topic(topic.id),
+    )
 
     return h.build_url_for_topic_in_category_view(topic)
 
@@ -299,9 +319,12 @@ def topic_lock(topic_id):
 
     flash_success('Das Thema "{}" wurde geschlossen.', topic.title, icon='lock')
 
-    signals.topic_locked.send(None, topic_id=topic.id,
-                              moderator_id=moderator_id,
-                              url=h.build_external_url_for_topic(topic.id))
+    signals.topic_locked.send(
+        None,
+        topic_id=topic.id,
+        moderator_id=moderator_id,
+        url=h.build_external_url_for_topic(topic.id),
+    )
 
     return h.build_url_for_topic_in_category_view(topic)
 
@@ -316,12 +339,16 @@ def topic_unlock(topic_id):
 
     board_topic_command_service.unlock_topic(topic, moderator_id)
 
-    flash_success('Das Thema "{}" wurde wieder geöffnet.', topic.title,
-                  icon='unlock')
+    flash_success(
+        'Das Thema "{}" wurde wieder geöffnet.', topic.title, icon='unlock'
+    )
 
-    signals.topic_unlocked.send(None, topic_id=topic.id,
-                                moderator_id=moderator_id,
-                                url=h.build_external_url_for_topic(topic.id))
+    signals.topic_unlocked.send(
+        None,
+        topic_id=topic.id,
+        moderator_id=moderator_id,
+        url=h.build_external_url_for_topic(topic.id),
+    )
 
     return h.build_url_for_topic_in_category_view(topic)
 
@@ -338,9 +365,12 @@ def topic_pin(topic_id):
 
     flash_success('Das Thema "{}" wurde angepinnt.', topic.title, icon='pin')
 
-    signals.topic_pinned.send(None, topic_id=topic.id,
-                              moderator_id=moderator_id,
-                              url=h.build_external_url_for_topic(topic.id))
+    signals.topic_pinned.send(
+        None,
+        topic_id=topic.id,
+        moderator_id=moderator_id,
+        url=h.build_external_url_for_topic(topic.id),
+    )
 
     return h.build_url_for_topic_in_category_view(topic)
 
@@ -357,9 +387,12 @@ def topic_unpin(topic_id):
 
     flash_success('Das Thema "{}" wurde wieder gelöst.', topic.title)
 
-    signals.topic_unpinned.send(None, topic_id=topic.id,
-                                moderator_id=moderator_id,
-                                url=h.build_external_url_for_topic(topic.id))
+    signals.topic_unpinned.send(
+        None,
+        topic_id=topic.id,
+        moderator_id=moderator_id,
+        url=h.build_external_url_for_topic(topic.id),
+    )
 
     return h.build_url_for_topic_in_category_view(topic)
 
@@ -381,16 +414,23 @@ def topic_move(topic_id):
 
     board_topic_command_service.move_topic(topic, new_category.id)
 
-    flash_success('Das Thema "{}" wurde aus der Kategorie "{}" '
-                  'in die Kategorie "{}" verschoben.',
-                  topic.title, old_category.title, new_category.title,
-                  icon='move')
+    flash_success(
+        'Das Thema "{}" wurde aus der Kategorie "{}" '
+        'in die Kategorie "{}" verschoben.',
+        topic.title,
+        old_category.title,
+        new_category.title,
+        icon='move',
+    )
 
-    signals.topic_moved.send(None, topic_id=topic.id,
-                             old_category_id=old_category.id,
-                             new_category_id=new_category.id,
-                             moderator_id=moderator_id,
-                             url=h.build_external_url_for_topic(topic.id))
+    signals.topic_moved.send(
+        None,
+        topic_id=topic.id,
+        old_category_id=old_category.id,
+        new_category_id=new_category.id,
+        moderator_id=moderator_id,
+        url=h.build_external_url_for_topic(topic.id),
+    )
 
     return redirect(h.build_url_for_topic_in_category_view(topic))
 
@@ -406,8 +446,11 @@ def topic_limit_to_announcements(topic_id):
 
     board_topic_command_service.limit_topic_to_announcements(topic)
 
-    flash_success('Das Thema "{}" wurde auf Ankündigungen beschränkt.',
-                  topic.title, icon='announce')
+    flash_success(
+        'Das Thema "{}" wurde auf Ankündigungen beschränkt.',
+        topic.title,
+        icon='announce',
+    )
 
     return h.build_url_for_topic_in_category_view(topic)
 
@@ -423,7 +466,8 @@ def topic_remove_limit_to_announcements(topic_id):
 
     board_topic_command_service.remove_limit_of_topic_to_announcements(topic)
 
-    flash_success('Das Thema "{}" wurde für normale Beiträge geöffnet.',
-                  topic.title)
+    flash_success(
+        'Das Thema "{}" wurde für normale Beiträge geöffnet.', topic.title
+    )
 
     return h.build_url_for_topic_in_category_view(topic)

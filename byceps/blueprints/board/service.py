@@ -42,8 +42,9 @@ def add_unseen_postings_flag_to_categories(
             and board_last_view_service.contains_category_unseen_postings(
                 category, user.id)
 
-        category_with_flag = CategoryWithLastUpdateAndUnseenFlag \
-            .from_category_with_last_update(category, contains_unseen_postings)
+        category_with_flag = CategoryWithLastUpdateAndUnseenFlag.from_category_with_last_update(
+            category, contains_unseen_postings
+        )
 
         categories_with_flag.append(category_with_flag)
 
@@ -89,7 +90,8 @@ def enrich_creators(
     if party_id is not None:
         party = party_service.get_party(party_id)
         ticket_users = ticket_service.select_ticket_users_for_party(
-            creator_ids, party.id)
+            creator_ids, party.id
+        )
     else:
         party = None
         ticket_users = set()
@@ -111,8 +113,9 @@ def _get_badges(
     user_ids: Set[UserID], brand_id: BrandID
 ) -> Dict[UserID, Set[Badge]]:
     """Fetch users' badges that are either global or belong to the brand."""
-    badges_by_user_id = badge_service.get_badges_for_users(user_ids,
-                                                           featured_only=True)
+    badges_by_user_id = badge_service.get_badges_for_users(
+        user_ids, featured_only=True
+    )
 
     def generate_items():
         for user_id, badges in badges_by_user_id.items():
@@ -127,8 +130,9 @@ def calculate_posting_page_number(posting: DbPosting, user: CurrentUser) -> int:
     """Calculate the number of postings to show per page."""
     postings_per_page = get_postings_per_page_value()
 
-    return board_posting_query_service \
-        .calculate_posting_page_number(posting, user, postings_per_page)
+    return board_posting_query_service.calculate_posting_page_number(
+        posting, user, postings_per_page
+    )
 
 
 def get_topics_per_page_value() -> int:

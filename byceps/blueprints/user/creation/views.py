@@ -43,11 +43,13 @@ def create_form(erroneous_form=None):
         flash_error('Das Erstellen von Benutzerkonten ist deaktiviert.')
         abort(403)
 
-    terms_version = terms_version_service \
-        .find_current_version_for_brand(g.brand_id)
+    terms_version = terms_version_service.find_current_version_for_brand(
+        g.brand_id
+    )
 
-    privacy_policy_consent_subject_id \
-        = _find_privacy_policy_consent_subject_id()
+    privacy_policy_consent_subject_id = (
+        _find_privacy_policy_consent_subject_id()
+    )
 
     newsletter_list_id = _find_newsletter_list_for_brand()
 
@@ -65,8 +67,13 @@ def create_form(erroneous_form=None):
     form = erroneous_form if erroneous_form \
         else UserCreateForm(terms_version_id=terms_version_id)
 
-    _adjust_create_form(form, real_name_required, terms_consent_required,
-                        privacy_policy_consent_required, newsletter_offered)
+    _adjust_create_form(
+        form,
+        real_name_required,
+        terms_consent_required,
+        privacy_policy_consent_required,
+        newsletter_offered,
+    )
 
     return {'form': form}
 
@@ -78,11 +85,13 @@ def create():
         flash_error('Das Erstellen von Benutzerkonten ist deaktiviert.')
         abort(403)
 
-    terms_document_id = terms_document_service \
-        .find_document_id_for_brand(g.brand_id)
+    terms_document_id = terms_document_service.find_document_id_for_brand(
+        g.brand_id
+    )
 
-    privacy_policy_consent_subject_id \
-        = _find_privacy_policy_consent_subject_id()
+    privacy_policy_consent_subject_id = (
+        _find_privacy_policy_consent_subject_id()
+    )
 
     newsletter_list_id = _find_newsletter_list_for_brand()
 
@@ -94,8 +103,13 @@ def create():
 
     form = UserCreateForm(request.form)
 
-    _adjust_create_form(form, real_name_required, terms_consent_required,
-                        privacy_policy_consent_required, newsletter_offered)
+    _adjust_create_form(
+        form,
+        real_name_required,
+        terms_consent_required,
+        privacy_policy_consent_required,
+        newsletter_offered,
+    )
 
     if not form.validate():
         return create_form(form)
@@ -108,12 +122,14 @@ def create():
 
     if user_service.is_screen_name_already_assigned(screen_name):
         flash_error(
-            'Dieser Benutzername ist bereits einem Benutzerkonto zugeordnet.')
+            'Dieser Benutzername ist bereits einem Benutzerkonto zugeordnet.'
+        )
         return create_form(form)
 
     if user_service.is_email_address_already_assigned(email_address):
         flash_error(
-            'Diese E-Mail-Adresse ist bereits einem Benutzerkonto zugeordnet.')
+            'Diese E-Mail-Adresse ist bereits einem Benutzerkonto zugeordnet.'
+        )
         return create_form(form)
 
     if real_name_required:
@@ -135,14 +151,16 @@ def create():
         terms_consent = Consent(
             user_id=None,  # not available at this point
             subject_id=terms_version.consent_subject_id,
-            expressed_at=now_utc)
+            expressed_at=now_utc,
+        )
 
     privacy_policy_consent = None
     if privacy_policy_consent_required:
         privacy_policy_consent = Consent(
             user_id=None,  # not available at this point
             subject_id=privacy_policy_consent_subject_id,
-            expressed_at=now_utc)
+            expressed_at=now_utc,
+        )
 
     newsletter_subscription = None
     if newsletter_offered:
@@ -151,24 +169,34 @@ def create():
             newsletter_subscription = NewsletterSubscription(
                 user_id=None,  # not available at this point
                 list_id=newsletter_list_id,
-                expressed_at=now_utc)
+                expressed_at=now_utc,
+            )
 
     try:
         user = user_creation_service.create_user(
-            screen_name, email_address, password, first_names, last_name,
-            g.site_id, terms_consent=terms_consent,
+            screen_name,
+            email_address,
+            password,
+            first_names,
+            last_name,
+            g.site_id,
+            terms_consent=terms_consent,
             privacy_policy_consent=privacy_policy_consent,
-            newsletter_subscription=newsletter_subscription)
+            newsletter_subscription=newsletter_subscription,
+        )
     except user_creation_service.UserCreationFailed:
-        flash_error('Das Benutzerkonto für "{}" konnte nicht angelegt werden.',
-                    screen_name)
+        flash_error(
+            'Das Benutzerkonto für "{}" konnte nicht angelegt werden.',
+            screen_name,
+        )
         return create_form(form)
 
     flash_success(
         'Das Benutzerkonto für "{}" wurde angelegt. '
         'Bevor du dich damit anmelden kannst, muss zunächst der Link in '
         'der an die angegebene Adresse verschickten E-Mail besucht werden.',
-        user.screen_name)
+        user.screen_name,
+    )
     signals.account_created.send(None, user_id=user.id)
 
     return redirect_to('authentication.login_form')

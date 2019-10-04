@@ -76,8 +76,9 @@ def _update(user_id, image):
         abort(400, 'No file to upload has been specified.')
 
     try:
-        avatar_service.update_avatar_image(user_id, image.stream,
-                                           ALLOWED_IMAGE_TYPES)
+        avatar_service.update_avatar_image(
+            user_id, image.stream, ALLOWED_IMAGE_TYPES
+        )
     except avatar_service.UnknownUserId as e:
         abort(404)
     except avatar_service.ImageTypeProhibited as e:
@@ -98,7 +99,8 @@ def delete():
         # No avatar selected.
         # But that's ok, deletions should be idempotent.
         flash_notice(
-            'Es ist kein Avatarbild gesetzt, das entfernt werden könnte.')
+            'Es ist kein Avatarbild gesetzt, das entfernt werden könnte.'
+        )
     else:
         flash_success('Dein Avatarbild wurde entfernt.')
 

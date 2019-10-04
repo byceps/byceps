@@ -87,7 +87,9 @@ def channel_create(brand_id):
     channel_id = form.channel_id.data.strip().lower()
     url_prefix = form.url_prefix.data.strip()
 
-    channel = news_channel_service.create_channel(brand.id, channel_id, url_prefix)
+    channel = news_channel_service.create_channel(
+        brand.id, channel_id, url_prefix
+    )
 
     flash_success('Der News-Kanal mit der ID "{}" wurde angelegt.', channel.id)
     return redirect_to('.channel_view', channel_id=channel.id)
@@ -173,8 +175,9 @@ def item_compare_versions(from_version_id, to_version_id):
 
     html_diff_title = _create_html_diff(from_version, to_version, 'title')
     html_diff_body = _create_html_diff(from_version, to_version, 'body')
-    html_diff_image_url_path = _create_html_diff(from_version, to_version,
-                                                 'image_url_path')
+    html_diff_image_url_path = _create_html_diff(
+        from_version, to_version, 'image_url_path'
+    )
 
     return {
         'brand': brand,
@@ -219,8 +222,9 @@ def item_create(channel_id):
     body = form.body.data.strip()
     image_url_path = form.image_url_path.data.strip()
 
-    item = news_item_service.create_item(channel.id, slug, creator.id, title,
-                                         body, image_url_path=image_url_path)
+    item = news_item_service.create_item(
+        channel.id, slug, creator.id, title, body, image_url_path=image_url_path
+    )
 
     flash_success('Die News "{}" wurde angelegt.', item.title)
 
@@ -266,8 +270,9 @@ def item_update(item_id):
     body = form.body.data.strip()
     image_url_path = form.image_url_path.data.strip()
 
-    news_item_service.update_item(item.id, slug, creator.id, title, body,
-                                  image_url_path=image_url_path)
+    news_item_service.update_item(
+        item.id, slug, creator.id, title, body, image_url_path=image_url_path
+    )
 
     flash_success('Die News "{}" wurde aktualisiert.', item.title)
     return redirect_to('.channel_view', channel_id=item.channel.id)
@@ -336,5 +341,6 @@ def _create_html_diff(from_version, to_version, attribute_name):
     from_text = getattr(from_version, attribute_name)
     to_text = getattr(to_version, attribute_name)
 
-    return text_diff_service.create_html_diff(from_text, to_text,
-                                              from_description, to_description)
+    return text_diff_service.create_html_diff(
+        from_text, to_text, from_description, to_description
+    )

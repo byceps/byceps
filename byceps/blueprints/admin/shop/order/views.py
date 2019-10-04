@@ -52,8 +52,9 @@ def index_for_shop(shop_id, page):
 
     search_term = request.args.get('search_term', default='').strip()
 
-    only_payment_state = request.args.get('only_payment_state',
-                                          type=PaymentState.__members__.get)
+    only_payment_state = request.args.get(
+        'only_payment_state', type=PaymentState.__members__.get
+    )
 
     def _str_to_bool(value):
         valid_values = {
@@ -66,11 +67,14 @@ def index_for_shop(shop_id, page):
 
     order_state_filter = OrderStateFilter.find(only_payment_state, only_shipped)
 
-    orders = order_service \
-        .get_orders_for_shop_paginated(shop.id, page, per_page,
-                                       search_term=search_term,
-                                       only_payment_state=only_payment_state,
-                                       only_shipped=only_shipped)
+    orders = order_service.get_orders_for_shop_paginated(
+        shop.id,
+        page,
+        per_page,
+        search_term=search_term,
+        only_payment_state=only_payment_state,
+        only_shipped=only_shipped,
+    )
 
     # Replace order objects in pagination object with order tuples.
     orders.items = [order.to_transfer_object() for order in orders.items]
@@ -130,8 +134,9 @@ def export(order_id):
     if xml_export is None:
         abort(404)
 
-    return Response(xml_export['content'],
-                    content_type=xml_export['content_type'])
+    return Response(
+        xml_export['content'], content_type=xml_export['content_type']
+    )
 
 
 @blueprint.route('/<uuid:order_id>/flags/invoiced', methods=['POST'])
@@ -146,7 +151,8 @@ def set_invoiced_flag(order_id):
 
     flash_success(
         'Bestellung {} wurde als in Rechnung gestellt markiert.',
-        order.order_number)
+        order.order_number,
+    )
 
 
 @blueprint.route('/<uuid:order_id>/flags/invoiced', methods=['DELETE'])
@@ -161,7 +167,8 @@ def unset_invoiced_flag(order_id):
 
     flash_success(
         'Bestellung {} wurde als nicht in Rechnung gestellt markiert.',
-        order.order_number)
+        order.order_number,
+    )
 
 
 @blueprint.route('/<uuid:order_id>/flags/shipped', methods=['POST'])
@@ -174,8 +181,9 @@ def set_shipped_flag(order_id):
 
     order_service.set_shipped_flag(order, initiator_id)
 
-    flash_success('Bestellung {} wurde als verschickt markiert.',
-                  order.order_number)
+    flash_success(
+        'Bestellung {} wurde als verschickt markiert.', order.order_number
+    )
 
 
 @blueprint.route('/<uuid:order_id>/flags/shipped', methods=['DELETE'])
@@ -188,8 +196,9 @@ def unset_shipped_flag(order_id):
 
     order_service.unset_shipped_flag(order, initiator_id)
 
-    flash_success('Bestellung {} wurde als nicht verschickt markiert.',
-                  order.order_number)
+    flash_success(
+        'Bestellung {} wurde als nicht verschickt markiert.', order.order_number
+    )
 
 
 @blueprint.route('/<uuid:order_id>/cancel')
@@ -202,7 +211,8 @@ def cancel_form(order_id, erroneous_form=None):
     if order.is_canceled:
         flash_error(
             'Die Bestellung ist bereits storniert worden; '
-            'der Bezahlstatus kann nicht mehr geändert werden.')
+            'der Bezahlstatus kann nicht mehr geändert werden.'
+        )
         return redirect_to('.view', order_id=order.id)
 
     shop = shop_service.get_shop(order.shop_id)
@@ -236,19 +246,22 @@ def cancel(order_id):
     except order_service.OrderAlreadyCanceled:
         flash_error(
             'Die Bestellung ist bereits storniert worden; '
-            'der Bezahlstatus kann nicht mehr geändert werden.')
+            'der Bezahlstatus kann nicht mehr geändert werden.'
+        )
         return redirect_to('.view', order_id=order.id)
 
     flash_success(
         'Die Bestellung wurde als storniert markiert und die betroffenen '
         'Artikel in den entsprechenden Stückzahlen wieder zur Bestellung '
-        'freigegeben.')
+        'freigegeben.'
+    )
 
     if send_email:
         order_email_service.send_email_for_canceled_order_to_orderer(order.id)
     else:
         flash_notice(
-            'Es wurde keine E-Mail an den/die Auftraggeber/in versendet.')
+            'Es wurde keine E-Mail an den/die Auftraggeber/in versendet.'
+        )
 
     order_canceled.send(None, order_id=order.id)
 
@@ -291,8 +304,9 @@ def mark_as_paid(order_id):
     updated_by_id = g.current_user.id
 
     try:
-        order_service.mark_order_as_paid(order.id, payment_method,
-                                         updated_by_id)
+        order_service.mark_order_as_paid(
+            order.id, payment_method, updated_by_id
+        )
     except order_service.OrderAlreadyMarkedAsPaid:
         flash_error('Die Bestellung ist bereits als bezahlt markiert worden.')
         return redirect_to('.view', order_id=order.id)

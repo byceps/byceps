@@ -161,7 +161,8 @@ def _generate_values(text):
 
     # check digit symbol
     check_digit_value = _calculate_check_digit_value(
-        check_digit_calculation_values)
+        check_digit_calculation_values
+    )
     yield check_digit_value
 
     # stop symbol
@@ -177,8 +178,8 @@ def _calculate_check_digit_value(values):
     # Important: *Both* the start code *and* the
     # first encoded symbol are in position 1.
     symbol_products_sum = sum(
-        max(1, position) * value
-        for position, value in enumerate(values))
+        max(1, position) * value for position, value in enumerate(values)
+    )
 
     return symbol_products_sum % 103
 
@@ -197,13 +198,15 @@ def _generate_svg(bar_widths, *, image_height=100):
     # Calculate where the individual bars are positioned
     # horizontally and how wide they are.
     bar_positions_and_widths = list(
-        _calculate_bar_positions_and_widths(x, bar_widths))
+        _calculate_bar_positions_and_widths(x, bar_widths)
+    )
 
     # Render template.
     return SVG_TEMPLATE.render(
         image_width=image_width,
         image_height=image_height,
-        bars=bar_positions_and_widths)
+        bars=bar_positions_and_widths,
+    )
 
 
 def _calculate_bar_positions_and_widths(start_x, bar_widths):

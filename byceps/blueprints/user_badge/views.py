@@ -40,8 +40,10 @@ def view(slug):
     awardings = badge_service.get_awardings_of_badge(badge.id)
     recipient_ids = [awarding.user_id for awarding in awardings]
     recipients = user_service.find_users(
-        recipient_ids, include_avatars=True,
-        include_orga_flags_for_party_id=g.party_id)
+        recipient_ids,
+        include_avatars=True,
+        include_orga_flags_for_party_id=g.party_id,
+    )
 
     return {
         'badge': badge,

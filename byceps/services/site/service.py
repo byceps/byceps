@@ -28,7 +28,9 @@ def create_site(
     party_id: Optional[PartyID] = None,
 ) -> Site:
     """Create a site for that party."""
-    site = DbSite(site_id, title, server_name, email_config_id, party_id=party_id)
+    site = DbSite(
+        site_id, title, server_name, email_config_id, party_id=party_id
+    )
 
     db.session.add(site)
     db.session.commit()

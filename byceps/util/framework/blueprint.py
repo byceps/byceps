@@ -16,9 +16,8 @@ from flask import Blueprint
 def create_blueprint(name, import_name):
     """Create a blueprint with default folder names."""
     return Blueprint(
-        name, import_name,
-        static_folder='static',
-        template_folder='templates')
+        name, import_name, static_folder='static', template_folder='templates'
+    )
 
 
 def register_blueprint(app, name, url_prefix):

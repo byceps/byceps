@@ -33,8 +33,10 @@ def determine_image_type(
         allowed_type_names_string = ', '.join(sorted(allowed_type_names))
 
         raise ImageTypeProhibited(
-            'Image is not one of the allowed types ({}).'
-            .format(allowed_type_names_string))
+            'Image is not one of the allowed types ({}).'.format(
+                allowed_type_names_string
+            )
+        )
 
     stream.seek(0)
     return image_type

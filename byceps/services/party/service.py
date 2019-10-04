@@ -34,8 +34,15 @@ def create_party(
     shop_id: Optional[ShopID] = None,
 ) -> Party:
     """Create a party."""
-    party = DbParty(party_id, brand_id, title, starts_at, ends_at,
-                    max_ticket_quantity=max_ticket_quantity, shop_id=shop_id)
+    party = DbParty(
+        party_id,
+        brand_id,
+        title,
+        starts_at,
+        ends_at,
+        max_ticket_quantity=max_ticket_quantity,
+        shop_id=shop_id,
+    )
 
     db.session.add(party)
     db.session.commit()

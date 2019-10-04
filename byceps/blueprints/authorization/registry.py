@@ -41,7 +41,10 @@ class PermissionRegistry:
             current_app.logger.warn(
                 'Ignoring unknown permission name "%s" configured '
                 'in database for "%s" enum (permission ID: "%s").',
-                permission_name, enum_key, permission_id)
+                permission_name,
+                enum_key,
+                permission_id,
+            )
             return None
 
     def get_enum_members(self, permission_ids):

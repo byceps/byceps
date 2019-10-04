@@ -32,13 +32,17 @@ def get_articles_to_ship(shop_id: ShopID) -> Sequence[ArticleToShip]:
     }
 
     order_item_quantities = list(
-        _find_order_items(shop_id, relevant_order_payment_states))
+        _find_order_items(shop_id, relevant_order_payment_states)
+    )
 
     article_numbers = {item.article_number for item in order_item_quantities}
     article_descriptions = _get_article_descriptions(article_numbers)
 
-    articles_to_ship = list(_aggregate_ordered_article_quantites(
-        order_item_quantities, article_descriptions))
+    articles_to_ship = list(
+        _aggregate_ordered_article_quantites(
+            order_item_quantities, article_descriptions
+        )
+    )
 
     articles_to_ship.sort(key=lambda a: a.article_number)
 
@@ -103,7 +107,7 @@ def _aggregate_ordered_article_quantites(
             description,
             quantity_paid,
             quantity_open,
-            quantity_total = quantity_paid + quantity_open
+            quantity_total=quantity_paid + quantity_open,
         )
 
 

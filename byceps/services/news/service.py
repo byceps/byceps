@@ -42,8 +42,9 @@ def create_item(
     item = DbItem(brand_id, slug)
     db.session.add(item)
 
-    version = _create_version(item, creator_id, title, body,
-                              image_url_path=image_url_path)
+    version = _create_version(
+        item, creator_id, title, body, image_url_path=image_url_path
+    )
     db.session.add(version)
 
     current_version_association = DbCurrentVersionAssociation(item, version)
@@ -71,8 +72,9 @@ def update_item(
     item.slug = slug
     db.session.add(item)
 
-    version = _create_version(item, creator_id, title, body,
-                              image_url_path=image_url_path)
+    version = _create_version(
+        item, creator_id, title, body, image_url_path=image_url_path
+    )
     db.session.add(version)
 
     item.current_version = version
@@ -271,7 +273,6 @@ def _assemble_image_url(item: DbItem) -> Optional[str]:
         return None
 
     filename = 'news/{}'.format(url_path)
-    return url_for('brand_file',
-                   filename=filename,
-                   _method='GET',
-                   _external=True)
+    return url_for(
+        'brand_file', filename=filename, _method='GET', _external=True
+    )

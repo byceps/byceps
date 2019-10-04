@@ -163,8 +163,9 @@ def category_create(board_id):
     title = form.title.data.strip()
     description = form.description.data.strip()
 
-    category = board_category_command_service \
-        .create_category(board.id, slug, title, description)
+    category = board_category_command_service.create_category(
+        board.id, slug, title, description
+    )
 
     flash_success('Die Kategorie "{}" wurde angelegt.', category.title)
     return redirect_to('.board_view', board_id=board.id)
@@ -204,8 +205,9 @@ def category_update(category_id):
     title = form.title.data
     description = form.description.data
 
-    category = board_category_command_service \
-        .update_category(category.id, slug, title, description)
+    category = board_category_command_service.update_category(
+        category.id, slug, title, description
+    )
 
     flash_success('Die Kategorie "{}" wurde aktualisiert.', category.title)
     return redirect_to('.board_view', board_id=category.board_id)
@@ -249,9 +251,15 @@ def category_move_up(category_id):
     try:
         board_category_command_service.move_category_up(category.id)
     except ValueError:
-        flash_error('Die Kategorie "{}" befindet sich bereits ganz oben.', category.title)
+        flash_error(
+            'Die Kategorie "{}" befindet sich bereits ganz oben.',
+            category.title,
+        )
     else:
-        flash_success('Die Kategorie "{}" wurde eine Position nach oben verschoben.', category.title)
+        flash_success(
+            'Die Kategorie "{}" wurde eine Position nach oben verschoben.',
+            category.title,
+        )
 
 
 @blueprint.route('/categories/<uuid:category_id>/down', methods=['POST'])
@@ -264,9 +272,15 @@ def category_move_down(category_id):
     try:
         board_category_command_service.move_category_down(category.id)
     except ValueError:
-        flash_error('Die Kategorie "{}" befindet sich bereits ganz unten.', category.title)
+        flash_error(
+            'Die Kategorie "{}" befindet sich bereits ganz unten.',
+            category.title,
+        )
     else:
-        flash_success('Die Kategorie "{}" wurde eine Position nach unten verschoben.', category.title)
+        flash_success(
+            'Die Kategorie "{}" wurde eine Position nach unten verschoben.',
+            category.title,
+        )
 
 
 @blueprint.route('/categories/<uuid:category_id>', methods=['DELETE'])
@@ -279,7 +293,9 @@ def category_delete(category_id):
     try:
         board_category_command_service.delete_category(category.id)
     except:
-        flash_error('Die Kategorie "{}" konnte nicht gelöscht werden.', category.title)
+        flash_error(
+            'Die Kategorie "{}" konnte nicht gelöscht werden.', category.title
+        )
     else:
         flash_success('Die Kategorie "{}" wurde gelöscht.', category.title)
 

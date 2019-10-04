@@ -50,28 +50,39 @@ def create_user(
 ) -> User:
     """Create a user account and related records."""
     # user with details, password, and roles
-    user = create_basic_user(screen_name, email_address, password,
-                             first_names=first_names, last_name=last_name)
+    user = create_basic_user(
+        screen_name,
+        email_address,
+        password,
+        first_names=first_names,
+        last_name=last_name,
+    )
 
     # consent to terms of service
     if terms_consent:
         terms_consent = consent_service.build_consent(
-            user.id, terms_consent.subject_id, terms_consent.expressed_at)
+            user.id, terms_consent.subject_id, terms_consent.expressed_at
+        )
         db.session.add(terms_consent)
 
     # consent to privacy policy
     if privacy_policy_consent:
         privacy_policy_consent = consent_service.build_consent(
-            user.id, privacy_policy_consent.subject_id, privacy_policy_consent.expressed_at)
+            user.id,
+            privacy_policy_consent.subject_id,
+            privacy_policy_consent.expressed_at,
+        )
         db.session.add(privacy_policy_consent)
 
     db.session.commit()
 
     # newsletter subscription (optional)
     if newsletter_subscription:
-        newsletter_command_service.subscribe(user.id,
+        newsletter_command_service.subscribe(
+            user.id,
             newsletter_subscription.list_id,
-            newsletter_subscription.expressed_at)
+            newsletter_subscription.expressed_at,
+        )
 
     # e-mail address confirmation
     normalized_email_address = _normalize_email_address(email_address)
@@ -90,8 +101,13 @@ def create_basic_user(
     creator_id: Optional[UserID] = None,
 ) -> User:
     # user with details
-    user = _create_user(screen_name, email_address, first_names=first_names,
-                        last_name=last_name, creator_id=creator_id)
+    user = _create_user(
+        screen_name,
+        email_address,
+        first_names=first_names,
+        last_name=last_name,
+        creator_id=creator_id,
+    )
 
     # password
     password_service.create_password_hash(user.id, password)
@@ -126,13 +142,13 @@ def _create_user(
         db.session.rollback()
         raise UserCreationFailed()
 
-
     # Create event in separate step as user ID is not available earlier.
     event_data = {}
     if creator_id is not None:
         event_data['initiator_id'] = str(creator_id)
-    event_service.create_event('user-created', user.id, event_data,
-                               occurred_at=created_at)
+    event_service.create_event(
+        'user-created', user.id, event_data, occurred_at=created_at
+    )
 
     return user_service._db_entity_to_user_dto(user)
 
@@ -179,8 +195,10 @@ def _assign_roles(user_id: UserID) -> None:
 def _request_email_address_verification(
     user: User, email_address: str, site_id: SiteID
 ) -> None:
-    verification_token = verification_token_service \
-        .create_for_email_address_confirmation(user.id)
+    verification_token = verification_token_service.create_for_email_address_confirmation(
+        user.id
+    )
 
     email_address_confirmation_service.send_email_address_confirmation_email(
-        email_address, user.screen_name, verification_token, site_id)
+        email_address, user.screen_name, verification_token, site_id
+    )

@@ -31,11 +31,13 @@ def view(user_id):
 
     badges_with_awarding_quantity = badge_service.get_badges_for_user(user.id)
 
-    orga_team_membership = orga_team_service.find_membership_for_party(user.id,
-        g.party_id)
+    orga_team_membership = orga_team_service.find_membership_for_party(
+        user.id, g.party_id
+    )
 
-    _current_party_tickets = ticket_service.find_tickets_used_by_user(user.id,
-        g.party_id)
+    _current_party_tickets = ticket_service.find_tickets_used_by_user(
+        user.id, g.party_id
+    )
     current_party_tickets = [t for t in _current_party_tickets if not t.revoked]
 
     attended_parties = attendance_service.get_attended_parties(user.id)

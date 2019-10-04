@@ -29,7 +29,8 @@ def get_ticket_bundle(ctx, param, ticket_bundle_id):
 
     if not ticket_bundle:
         raise click.BadParameter(
-            f'Unknown ticket bundle ID "{ticket_bundle_id}".')
+            f'Unknown ticket bundle ID "{ticket_bundle_id}".'
+        )
 
     return ticket_bundle
 

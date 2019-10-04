@@ -55,7 +55,8 @@ def view(party_id):
     hour_ranges = list(orga_presence_service.get_hour_ranges(time_slots))
 
     days_and_hour_totals = list(
-        orga_presence_service.get_days_and_hour_totals(hour_ranges))
+        orga_presence_service.get_days_and_hour_totals(hour_ranges)
+    )
 
     return {
         'party': party,

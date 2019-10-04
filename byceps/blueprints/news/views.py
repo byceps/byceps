@@ -33,7 +33,8 @@ def index(page):
     published_only = not _may_view_drafts(g.current_user)
 
     items = news_service.get_aggregated_items_paginated(
-        channel_id, page, items_per_page, published_only=published_only)
+        channel_id, page, items_per_page, published_only=published_only
+    )
 
     return {
         'items': items,
@@ -49,7 +50,8 @@ def view(slug):
     published_only = not _may_view_drafts(g.current_user)
 
     item = news_service.find_aggregated_item_by_slug(
-        channel_id, slug, published_only=published_only)
+        channel_id, slug, published_only=published_only
+    )
 
     if item is None:
         abort(404)
@@ -60,8 +62,9 @@ def view(slug):
 
 
 def _get_channel_id():
-    channel_id = site_settings_service \
-        .find_setting_value(g.site_id, 'news_channel_id')
+    channel_id = site_settings_service.find_setting_value(
+        g.site_id, 'news_channel_id'
+    )
 
     if channel_id is None:
         abort(404)

@@ -51,13 +51,15 @@ def index_for_shop(shop_id, page):
     """List articles for that shop."""
     shop = _get_shop_or_404(shop_id)
 
-    article_number_sequence = sequence_service \
-        .find_article_number_sequence(shop.id)
+    article_number_sequence = sequence_service.find_article_number_sequence(
+        shop.id
+    )
     article_number_prefix = article_number_sequence.prefix
 
     per_page = request.args.get('per_page', type=int, default=15)
-    articles = article_service.get_articles_for_shop_paginated(shop.id, page,
-                                                               per_page)
+    articles = article_service.get_articles_for_shop_paginated(
+        shop.id, page, per_page
+    )
 
     return {
         'shop': shop,
@@ -77,8 +79,9 @@ def view(article_id):
 
     shop = shop_service.get_shop(article.shop_id)
 
-    totals = ordered_articles_service \
-        .count_ordered_articles(article.item_number)
+    totals = ordered_articles_service.count_ordered_articles(
+        article.item_number
+    )
 
     return {
         'article': article,
@@ -99,8 +102,9 @@ def view_ordered(article_id):
 
     shop = shop_service.get_shop(article.shop_id)
 
-    order_items = ordered_articles_service \
-        .get_order_items_for_article(article.item_number)
+    order_items = ordered_articles_service.get_order_items_for_article(
+        article.item_number
+    )
 
     quantity_total = sum(item.quantity for item in order_items)
 
@@ -137,8 +141,9 @@ def create_form(shop_id, erroneous_form=None):
     """Show form to create an article."""
     shop = _get_shop_or_404(shop_id)
 
-    article_number_sequence = sequence_service \
-        .find_article_number_sequence(shop.id)
+    article_number_sequence = sequence_service.find_article_number_sequence(
+        shop.id
+    )
     article_number_prefix = article_number_sequence.prefix
 
     form = erroneous_form if erroneous_form else ArticleCreateForm(
@@ -173,8 +178,9 @@ def create(shop_id):
     tax_rate = form.tax_rate.data
     quantity = form.quantity.data
 
-    article = article_service.create_article(shop.id, item_number, description,
-                                             price, tax_rate, quantity)
+    article = article_service.create_article(
+        shop.id, item_number, description, price, tax_rate, quantity
+    )
 
     flash_success('Der Artikel "{}" wurde angelegt.', article.item_number)
     return redirect_to('.view', article_id=article.id)
@@ -229,11 +235,19 @@ def update(article_id):
     if available_until:
         available_until = local_tz_to_utc(available_until)
 
-    article_service.update_article(article, description, price, tax_rate,
-                                   available_from, available_until, quantity,
-                                   max_quantity_per_order,
-                                   not_directly_orderable,
-                                   requires_separate_order, shipping_required)
+    article_service.update_article(
+        article,
+        description,
+        price,
+        tax_rate,
+        available_from,
+        available_until,
+        quantity,
+        max_quantity_per_order,
+        not_directly_orderable,
+        requires_separate_order,
+        shipping_required,
+    )
 
     flash_success('Der Artikel "{}" wurde aktualisiert.', article.description)
     return redirect_to('.view', article_id=article.id)
@@ -283,7 +297,10 @@ def attachment_create(article_id):
 
     flash_success(
         'Der Artikel "{}" wurde {:d} mal an den Artikel "{}" angehängt.',
-        article_to_attach.item_number, quantity, article.item_number)
+        article_to_attach.item_number,
+        quantity,
+        article.item_number,
+    )
     return redirect_to('.view', article_id=article.id)
 
 
@@ -302,8 +319,11 @@ def attachment_remove(article_id):
 
     article_service.unattach_article(attached_article)
 
-    flash_success('Artikel "{}" ist nun nicht mehr an Artikel "{}" angehängt.',
-                  article.item_number, attached_to_article.item_number)
+    flash_success(
+        'Artikel "{}" ist nun nicht mehr an Artikel "{}" angehängt.',
+        article.item_number,
+        attached_to_article.item_number,
+    )
 
 
 def _get_shop_or_404(shop_id):

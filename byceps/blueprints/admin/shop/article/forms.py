@@ -42,7 +42,8 @@ class ArticleUpdateForm(ArticleCreateForm):
         if (begin is not None) and (begin >= end):
             raise ValidationError(
                 'Das Ende des Verfügbarkeitszeitraums muss nach dessen Beginn '
-                'liegen.')
+                'liegen.'
+            )
 
 
 class ArticleAttachmentCreateForm(LocalizedForm):

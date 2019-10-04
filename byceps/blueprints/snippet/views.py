@@ -30,8 +30,9 @@ def view_current_version_by_name(name):
     name.
     """
     # Note: endpoint suffix != snippet name
-    version = mountpoint_service \
-        .find_current_snippet_version_for_mountpoint(g.site_id, name)
+    version = mountpoint_service.find_current_snippet_version_for_mountpoint(
+        g.site_id, name
+    )
 
     if version is None:
         abort(404)
@@ -71,5 +72,6 @@ def _find_current_snippet_version(name):
     """
     scope = Scope.for_site(g.site_id)
 
-    return snippet_service \
-        .find_current_version_of_snippet_with_name(scope, name)
+    return snippet_service.find_current_version_of_snippet_with_name(
+        scope, name
+    )

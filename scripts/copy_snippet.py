@@ -25,13 +25,15 @@ def execute(ctx, source_site, target_site, snippet_name):
     source_scope = Scope.for_site(source_site.id)
     target_scope = Scope.for_site(target_site.id)
 
-    snippet_version = snippet_service \
-        .find_current_version_of_snippet_with_name(source_scope, snippet_name)
+    snippet_version = snippet_service.find_current_version_of_snippet_with_name(
+        source_scope, snippet_name
+    )
 
     if snippet_version is None:
         raise click.BadParameter(
             f'Unknown snippet name "{snippet_name}" '
-            f'for site "{source_site.id}".')
+            f'for site "{source_site.id}".'
+        )
 
     snippet = snippet_version.snippet
 
@@ -43,14 +45,14 @@ def execute(ctx, source_site, target_site, snippet_name):
             snippet_version.title,
             snippet_version.body,
             head=snippet_version.head,
-            image_url_path=snippet_version.image_url_path
+            image_url_path=snippet_version.image_url_path,
         )
     elif snippet.type_ == SnippetType.fragment:
         snippet_service.create_fragment(
             target_scope,
             snippet.name,
             snippet_version.creator_id,
-            snippet_version.body
+            snippet_version.body,
         )
     else:
         ctx.fail(f"Unknown snippet type '{snippet.type_}'.")

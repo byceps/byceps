@@ -24,8 +24,9 @@ def create_image(
     caption: Optional[str] = None,
 ) -> Image:
     """Create an image for a news item."""
-    image = DbImage(creator_id, item_id, filename, alt_text=alt_text,
-                    caption=caption)
+    image = DbImage(
+        creator_id, item_id, filename, alt_text=alt_text, caption=caption
+    )
 
     db.session.add(image)
     db.session.commit()

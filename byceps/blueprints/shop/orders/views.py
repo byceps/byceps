@@ -40,7 +40,8 @@ def index():
     if party.shop_id is not None:
         shop = shop_service.get_shop(party.shop_id)
         orders = order_service.get_orders_placed_by_user_for_shop(
-            current_user.id, shop.id)
+            current_user.id, shop.id
+        )
     else:
         orders = []
 
@@ -82,8 +83,9 @@ def view(order_id):
     }
 
     if order.is_open:
-        template_context['payment_instructions'] \
-            = _get_payment_instructions(order)
+        template_context['payment_instructions'] = _get_payment_instructions(
+            order
+        )
 
     return template_context
 
@@ -92,5 +94,6 @@ def _get_payment_instructions(order):
     scope = Scope('shop', str(order.shop_id))
     context = {'order_number': order.order_number}
 
-    return render_snippet_as_partial('payment_instructions', scope=scope,
-                                     context=context)
+    return render_snippet_as_partial(
+        'payment_instructions', scope=scope, context=context
+    )

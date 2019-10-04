@@ -71,8 +71,9 @@ def _load_user(
     if user_id is None:
         return None
 
-    user = user_service.find_active_user(user_id, include_avatar=True,
-                                         include_orga_flag_for_party_id=party_id)
+    user = user_service.find_active_user(
+        user_id, include_avatar=True, include_orga_flag_for_party_id=party_id
+    )
 
     if user is None:
         return None

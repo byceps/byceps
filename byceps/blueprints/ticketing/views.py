@@ -46,12 +46,14 @@ def index_mine():
     current_user = g.current_user
 
     tickets = ticket_service.find_tickets_related_to_user_for_party(
-        current_user.id, party.id)
+        current_user.id, party.id
+    )
 
     tickets = [ticket for ticket in tickets if not ticket.revoked]
 
     current_user_uses_any_ticket = find(
-        lambda t: t.used_by_id == current_user.id, tickets)
+        lambda t: t.used_by_id == current_user.id, tickets
+    )
 
     return {
         'party_title': party.title,
@@ -140,11 +142,13 @@ def appoint_user(ticket_id):
 
     user = form.user.data
 
-    ticket_user_management_service \
-        .appoint_user(ticket.id, user.id, manager.id)
+    ticket_user_management_service.appoint_user(ticket.id, user.id, manager.id)
 
-    flash_success('{} wurde als Nutzer/in von Ticket {} eingetragen.',
-        user.screen_name, ticket.code)
+    flash_success(
+        '{} wurde als Nutzer/in von Ticket {} eingetragen.',
+        user.screen_name,
+        ticket.code,
+    )
 
     notification_service.notify_appointed_user(ticket, user, manager)
 
@@ -164,11 +168,13 @@ def withdraw_user(ticket_id):
     if not ticket.is_user_managed_by(manager.id):
         abort(403)
 
-    ticket_user_management_service \
-        .appoint_user(ticket.id, manager.id, manager.id)
+    ticket_user_management_service.appoint_user(
+        ticket.id, manager.id, manager.id
+    )
 
-    flash_success('Du wurdest als Nutzer/in von Ticket {} eingetragen.',
-        ticket.code)
+    flash_success(
+        'Du wurdest als Nutzer/in von Ticket {} eingetragen.', ticket.code
+    )
 
 
 # -------------------------------------------------------------------- #
@@ -215,11 +221,15 @@ def appoint_user_manager(ticket_id):
 
     user = form.user.data
 
-    ticket_user_management_service \
-        .appoint_user_manager(ticket.id, user.id, manager.id)
+    ticket_user_management_service.appoint_user_manager(
+        ticket.id, user.id, manager.id
+    )
 
-    flash_success('{} wurde als Nutzer-Verwalter/in von Ticket {} eingetragen.',
-        user.screen_name, ticket.code)
+    flash_success(
+        '{} wurde als Nutzer-Verwalter/in von Ticket {} eingetragen.',
+        user.screen_name,
+        ticket.code,
+    )
 
     notification_service.notify_appointed_user_manager(ticket, user, manager)
 
@@ -243,8 +253,9 @@ def withdraw_user_manager(ticket_id):
 
     ticket_user_management_service.withdraw_user_manager(ticket.id, manager.id)
 
-    flash_success('Der Nutzer-Verwalter von Ticket {} wurde entfernt.',
-                  ticket.code)
+    flash_success(
+        'Der Nutzer-Verwalter von Ticket {} wurde entfernt.', ticket.code
+    )
 
     notification_service.notify_withdrawn_user_manager(ticket, user, manager)
 
@@ -293,12 +304,15 @@ def appoint_seat_manager(ticket_id):
 
     user = form.user.data
 
-    ticket_seat_management_service \
-        .appoint_seat_manager(ticket.id, user.id, manager.id)
+    ticket_seat_management_service.appoint_seat_manager(
+        ticket.id, user.id, manager.id
+    )
 
     flash_success(
         '{} wurde als Sitzplatz-Verwalter/in von Ticket {} eingetragen.',
-        user.screen_name, ticket.code)
+        user.screen_name,
+        ticket.code,
+    )
 
     notification_service.notify_appointed_seat_manager(ticket, user, manager)
 
@@ -322,8 +336,9 @@ def withdraw_seat_manager(ticket_id):
 
     ticket_seat_management_service.withdraw_seat_manager(ticket.id, manager.id)
 
-    flash_success('Der Sitzplatz-Verwalter von Ticket {} wurde entfernt.',
-                  ticket.code)
+    flash_success(
+        'Der Sitzplatz-Verwalter von Ticket {} wurde entfernt.', ticket.code
+    )
 
     notification_service.notify_withdrawn_seat_manager(ticket, user, manager)
 

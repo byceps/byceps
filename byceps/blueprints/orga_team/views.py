@@ -42,7 +42,8 @@ def index():
             user,
             membership.user.detail.full_name,
             membership.orga_team.title,
-            membership.duties)
+            membership.duties,
+        )
 
     orgas = list(map(_to_orga, memberships))
 

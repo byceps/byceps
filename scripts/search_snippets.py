@@ -48,7 +48,8 @@ def execute(ctx, search_term, site, verbose):
             click.secho(
                 f'No matching snippets for {scope_label} '
                 f'and search term "{search_term}".',
-                fg='yellow')
+                fg='yellow',
+            )
         return
 
     for version in matches:
@@ -57,9 +58,11 @@ def execute(ctx, search_term, site, verbose):
 
     if verbose:
         click.secho(
-            '\n{:d} matching snippet(s) for {} and search term "{}".'
-                .format(len(matches), scope_label, search_term),
-            fg='green')
+            '\n{:d} matching snippet(s) for {} and search term "{}".'.format(
+                len(matches), scope_label, search_term
+            ),
+            fg='green',
+        )
 
 
 def format_scope(scope):

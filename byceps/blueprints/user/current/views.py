@@ -44,7 +44,8 @@ def view():
         newsletter_offered = (newsletter_list_id is not None)
 
         subscribed_to_newsletter = newsletter_service.is_subscribed(
-            user.id, newsletter_list_id)
+            user.id, newsletter_list_id
+        )
     else:
         newsletter_list_id = None
         newsletter_offered = False
@@ -112,10 +113,17 @@ def details_update():
     street = form.street.data.strip()
     phone_number = form.phone_number.data.strip()
 
-    user_command_service.update_user_details(current_user.id, first_names,
-                                             last_name, date_of_birth, country,
-                                             zip_code, city, street,
-                                             phone_number)
+    user_command_service.update_user_details(
+        current_user.id,
+        first_names,
+        last_name,
+        date_of_birth,
+        country,
+        zip_code,
+        city,
+        street,
+        phone_number,
+    )
 
     flash_success('Deine Daten wurden gespeichert.')
     return redirect_to('.view')

@@ -82,12 +82,17 @@ def _get_additional_data(
             'user-manager-withdrawn',
             'user-withdrawn',
     }:
-        yield from _get_additional_data_for_user_initiated_event(event,
-                                                                 users_by_id)
+        yield from _get_additional_data_for_user_initiated_event(
+            event, users_by_id
+        )
 
     if event.event_type == 'seat-manager-appointed':
-        yield _look_up_user_for_id(event, users_by_id,
-            'appointed_seat_manager_id', 'appointed_seat_manager')
+        yield _look_up_user_for_id(
+            event,
+            users_by_id,
+            'appointed_seat_manager_id',
+            'appointed_seat_manager',
+        )
 
     if event.event_type == 'seat-occupied':
         yield from _get_additional_data_for_seat_occupied_event(event)
@@ -99,16 +104,22 @@ def _get_additional_data(
         yield from _get_additional_data_for_ticket_revoked_event(event)
 
     if event.event_type == 'user-appointed':
-        yield _look_up_user_for_id(event, users_by_id,
-            'appointed_user_id', 'appointed_user')
+        yield _look_up_user_for_id(
+            event, users_by_id, 'appointed_user_id', 'appointed_user'
+        )
 
     if event.event_type in {'user-checked-in', 'user-check-in-reverted'}:
-        yield _look_up_user_for_id(event, users_by_id,
-            'checked_in_user_id', 'checked_in_user')
+        yield _look_up_user_for_id(
+            event, users_by_id, 'checked_in_user_id', 'checked_in_user'
+        )
 
     if event.event_type == 'user-manager-appointed':
-        yield _look_up_user_for_id(event, users_by_id,
-            'appointed_user_manager_id', 'appointed_user_manager')
+        yield _look_up_user_for_id(
+            event,
+            users_by_id,
+            'appointed_user_manager_id',
+            'appointed_user_manager',
+        )
 
 
 def _get_additional_data_for_user_initiated_event(

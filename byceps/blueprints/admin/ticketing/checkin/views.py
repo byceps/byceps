@@ -76,7 +76,8 @@ def _search_tickets(party_id, search_term, limit):
     per_page = limit
 
     tickets_pagination = ticket_service.get_tickets_with_details_for_party_paginated(
-        party_id, page, per_page, search_term=search_term)
+        party_id, page, per_page, search_term=search_term
+    )
 
     return tickets_pagination.items
 
@@ -91,13 +92,15 @@ def _search_orders(shop_id, search_term, limit):
     per_page = limit
 
     orders_pagination = order_service.get_orders_for_shop_paginated(
-        shop.id, page, per_page, search_term=search_term)
+        shop.id, page, per_page, search_term=search_term
+    )
 
     # Replace order objects with order tuples.
     orders = [order.to_transfer_object() for order in orders_pagination.items]
 
-    orders = list(order_blueprint_service.extend_order_tuples_with_orderer(
-        orders))
+    orders = list(
+        order_blueprint_service.extend_order_tuples_with_orderer(orders)
+    )
 
     return orders
 
@@ -107,7 +110,8 @@ def _search_users(party_id, search_term, limit):
     per_page = limit
 
     users_pagination = user_blueprint_service.get_users_paginated(
-        page, per_page, search_term=search_term)
+        page, per_page, search_term=search_term
+    )
 
     # Exclude deleted users.
     users_pagination.items = [user for user in users_pagination.items
@@ -119,4 +123,5 @@ def _search_users(party_id, search_term, limit):
 def _get_tickets_for_users(party_id, users):
     for user in users:
         yield from ticket_service.find_tickets_used_by_user_simplified(
-            user.id, party_id)
+            user.id, party_id
+        )

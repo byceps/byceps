@@ -125,8 +125,9 @@ def _ensure_actual_quantities_match(
 ) -> None:
     """Raise an error if the totals of seats and tickets don't match."""
     if len(seats) != len(tickets):
-        raise ValueError('The actual quantities of seats and tickets '
-                         'do not match.')
+        raise ValueError(
+            'The actual quantities of seats and tickets ' 'do not match.'
+        )
 
 
 def _occupy_seats(seats: Sequence[DbSeat], tickets: Sequence[DbTicket]) -> None:

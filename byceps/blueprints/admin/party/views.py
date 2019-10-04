@@ -56,8 +56,9 @@ def index_for_brand(brand_id, page):
     brand = _get_brand_or_404(brand_id)
 
     per_page = request.args.get('per_page', type=int, default=15)
-    parties = party_service.get_parties_for_brand_paginated(brand.id, page,
-                                                            per_page)
+    parties = party_service.get_parties_for_brand_paginated(
+        brand.id, page, per_page
+    )
 
     shops_by_party_id = _get_shops_by_party_id(parties.items)
 
@@ -136,10 +137,15 @@ def create(brand_id):
     if not shop_id:
         shop_id = None
 
-    party = party_service.create_party(party_id, brand.id, title, starts_at,
-                                       ends_at,
-                                       max_ticket_quantity=max_ticket_quantity,
-                                       shop_id=shop_id)
+    party = party_service.create_party(
+        party_id,
+        brand.id,
+        title,
+        starts_at,
+        ends_at,
+        max_ticket_quantity=max_ticket_quantity,
+        shop_id=shop_id,
+    )
 
     flash_success('Die Party "{}" wurde angelegt.', party.title)
     return redirect_to('.index_for_brand', brand_id=brand.id)
@@ -153,9 +159,11 @@ def update_form(party_id, erroneous_form=None):
     party = _get_party_or_404(party_id)
     brand = brand_service.find_brand(party.brand_id)
 
-    party = attr.evolve(party,
+    party = attr.evolve(
+        party,
         starts_at=utc_to_local_tz(party.starts_at),
-        ends_at=utc_to_local_tz(party.ends_at))
+        ends_at=utc_to_local_tz(party.ends_at),
+    )
 
     form = erroneous_form if erroneous_form else UpdateForm(obj=party)
 
@@ -186,9 +194,15 @@ def update(party_id):
     archived = form.archived.data
 
     try:
-        party = party_service.update_party(party.id, title, starts_at, ends_at,
-                                           max_ticket_quantity, shop_id,
-                                           archived)
+        party = party_service.update_party(
+            party.id,
+            title,
+            starts_at,
+            ends_at,
+            max_ticket_quantity,
+            shop_id,
+            archived,
+        )
     except party_service.UnknownPartyId:
         abort(404, 'Unknown party ID "{}".'.format(party_id))
 

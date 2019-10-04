@@ -26,7 +26,8 @@ def execute(badge_slug, user):
 
     click.echo(
         f'Awarding badge "{badge_slug}" to user "{user.screen_name}" ... ',
-        nl=False)
+        nl=False,
+    )
 
     badge_service.award_badge_to_user(badge_id, user.id)
 

@@ -118,9 +118,15 @@ def category_move_up(category_id):
     try:
         category_service.move_category_up(category)
     except ValueError:
-        flash_error('Die Kategorie "{}" befindet sich bereits ganz oben.', category.title)
+        flash_error(
+            'Die Kategorie "{}" befindet sich bereits ganz oben.',
+            category.title,
+        )
     else:
-        flash_success('Die Kategorie "{}" wurde eine Position nach oben verschoben.', category.title)
+        flash_success(
+            'Die Kategorie "{}" wurde eine Position nach oben verschoben.',
+            category.title,
+        )
 
 
 @blueprint.route('/categories/<uuid:category_id>/down', methods=['POST'])
@@ -133,9 +139,15 @@ def category_move_down(category_id):
     try:
         category_service.move_category_down(category)
     except ValueError:
-        flash_error('Die Kategorie "{}" befindet sich bereits ganz unten.', category.title)
+        flash_error(
+            'Die Kategorie "{}" befindet sich bereits ganz unten.',
+            category.title,
+        )
     else:
-        flash_success('Die Kategorie "{}" wurde eine Position nach unten verschoben.', category.title)
+        flash_success(
+            'Die Kategorie "{}" wurde eine Position nach unten verschoben.',
+            category.title,
+        )
 
 
 def _get_party_or_404(party_id):

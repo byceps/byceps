@@ -69,7 +69,8 @@ def view_area(slug):
 
     if seat_management_enabled:
         tickets = ticket_service.find_tickets_for_seat_manager(
-            g.current_user.id, g.party_id)
+            g.current_user.id, g.party_id
+        )
     else:
         tickets = None
 
@@ -118,7 +119,9 @@ def occupy_seat(ticket_id, seat_id):
     if not ticket.is_seat_managed_by(manager.id):
         flash_error(
             'Du bist nicht berechtigt, den Sitzplatz für Ticket {} '
-            'zu verwalten.', ticket.code)
+            'zu verwalten.',
+            ticket.code,
+        )
         return
 
     seat = _get_seat_or_404(seat_id)
@@ -128,17 +131,22 @@ def occupy_seat(ticket_id, seat_id):
         return
 
     try:
-        ticket_seat_management_service \
-            .occupy_seat(ticket.id, seat.id, manager.id)
+        ticket_seat_management_service.occupy_seat(
+            ticket.id, seat.id, manager.id
+        )
     except ticket_exceptions.SeatChangeDeniedForBundledTicket:
         flash_error(
             'Ticket {} gehört zu einem Paket und kann nicht einzeln '
-            'verwaltet werden.', ticket.code)
+            'verwaltet werden.',
+            ticket.code,
+        )
         return
     except ticket_exceptions.TicketCategoryMismatch:
         flash_error(
             'Ticket {} und {} haben unterschiedliche Kategorien.',
-            ticket.code, seat.label)
+            ticket.code,
+            seat.label,
+        )
         return
     except ValueError:
         abort(404)
@@ -164,7 +172,9 @@ def release_seat(ticket_id):
     if not ticket.is_seat_managed_by(manager.id):
         flash_error(
             'Du bist nicht berechtigt, den Sitzplatz für Ticket {} '
-            'zu verwalten.', ticket.code)
+            'zu verwalten.',
+            ticket.code,
+        )
         return
 
     seat = ticket.occupied_seat
@@ -174,7 +184,9 @@ def release_seat(ticket_id):
     except ticket_exceptions.SeatChangeDeniedForBundledTicket:
         flash_error(
             'Ticket {} gehört zu einem Paket und kann nicht einzeln '
-            'verwaltet werden.', ticket.code)
+            'verwaltet werden.',
+            ticket.code,
+        )
         return
 
     flash_success('{} wurde freigegeben.', seat.label)

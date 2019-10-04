@@ -158,10 +158,9 @@ def _add_static_file_url_rules(app):
         (config.STATIC_URL_PREFIX_SITE, 'site_file'),
     ]:
         rule = rule_prefix + '/<path:filename>'
-        app.add_url_rule(rule,
-                         endpoint=endpoint,
-                         methods=['GET'],
-                         build_only=True)
+        app.add_url_rule(
+            rule, endpoint=endpoint, methods=['GET'], build_only=True
+        )
 
 
 def init_app(app):
@@ -177,14 +176,18 @@ def init_app(app):
             add_routes_for_snippets(site_id)
 
             # Incorporate template overrides for the configured site ID.
-            app.template_folder = str(Path('..') / 'sites' / site_id / 'template_overrides')
+            app.template_folder = str(
+                Path('..') / 'sites' / site_id / 'template_overrides'
+            )
 
             # Import site-specific code.
             _load_site_extension(app, site_id)
         elif site_mode.is_admin() and app.config['RQ_DASHBOARD_ENABLED']:
             import rq_dashboard
-            app.register_blueprint(rq_dashboard.blueprint,
-                                   url_prefix='/admin/rq')
+
+            app.register_blueprint(
+                rq_dashboard.blueprint, url_prefix='/admin/rq'
+            )
 
 
 def _set_url_root_path(app):

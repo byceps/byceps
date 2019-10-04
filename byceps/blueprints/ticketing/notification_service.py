@@ -19,8 +19,9 @@ from ...services.user.transfer.models import User
 def notify_appointed_user(ticket: Ticket, user: User, manager: User) -> None:
     party_title = _get_party_title()
 
-    subject = '{} hat dir Ticket {} zugewiesen.' \
-        .format(manager.screen_name, ticket.code)
+    subject = '{} hat dir Ticket {} zugewiesen.'.format(
+        manager.screen_name, ticket.code
+    )
 
     body = '{} hat dir Ticket {} zugewiesen, was dich zur Teilnahme ' \
         'an der {} berechtigt.' \
@@ -32,8 +33,9 @@ def notify_appointed_user(ticket: Ticket, user: User, manager: User) -> None:
 def notify_withdrawn_user(ticket: Ticket, user: User, manager: User) -> None:
     party_title = _get_party_title()
 
-    subject = '{} hat Ticket {} zurückgezogen.' \
-        .format(manager.screen_name, ticket.code)
+    subject = '{} hat Ticket {} zurückgezogen.'.format(
+        manager.screen_name, ticket.code
+    )
 
     body = '{} hat das dir bisher zugewiesene Ticket {} für die {} ' \
         'zurückgezogen.' \
@@ -47,8 +49,9 @@ def notify_appointed_user_manager(
 ) -> None:
     party_title = _get_party_title()
 
-    subject = '{} hat dir die Nutzerverwaltung für Ticket {} übertragen.' \
-        .format(manager.screen_name, ticket.code)
+    subject = '{} hat dir die Nutzerverwaltung für Ticket {} übertragen.'.format(
+        manager.screen_name, ticket.code
+    )
 
     body = '{} hat dir die Verwaltung des Nutzers von Ticket {} für die {} ' \
         'übertragen.' \
@@ -78,8 +81,9 @@ def notify_appointed_seat_manager(
 ) -> None:
     party_title = _get_party_title()
 
-    subject = '{} hat dir die Sitzplatzverwaltung für Ticket {} übertragen.' \
-        .format(manager.screen_name, ticket.code)
+    subject = '{} hat dir die Sitzplatzverwaltung für Ticket {} übertragen.'.format(
+        manager.screen_name, ticket.code
+    )
 
     body = '{} hat dir die Verwaltung des Sitzplatzes von Ticket {} ' \
         'für die {} übertragen.' \

@@ -75,8 +75,9 @@ def get_posting_or_404(posting_id):
 
 
 def require_board_access(board_id, user_id):
-    has_access = access_control_service.has_user_access_to_board(user_id,
-                                                                 board_id)
+    has_access = access_control_service.has_user_access_to_board(
+        user_id, board_id
+    )
     if not has_access:
         abort(404)
 
@@ -86,15 +87,15 @@ def build_external_url_for_topic(topic_id):
 
 
 def build_url_for_topic(topic_id, *, external=False):
-    return url_for('board.topic_view',
-                   topic_id=topic_id,
-                   _external=external)
+    return url_for('board.topic_view', topic_id=topic_id, _external=external)
 
 
 def build_url_for_topic_in_category_view(topic):
-    return url_for('board.category_view',
-                   slug=topic.category.slug,
-                   _anchor='topic-{}'.format(topic.id))
+    return url_for(
+        'board.category_view',
+        slug=topic.category.slug,
+        _anchor='topic-{}'.format(topic.id),
+    )
 
 
 def build_external_url_for_posting(posting_id):
@@ -102,14 +103,16 @@ def build_external_url_for_posting(posting_id):
 
 
 def build_url_for_posting(posting_id, *, external=False):
-    return url_for('board.posting_view',
-                   posting_id=posting_id,
-                   _external=external)
+    return url_for(
+        'board.posting_view', posting_id=posting_id, _external=external
+    )
 
 
 def build_url_for_posting_in_topic_view(posting, page, **kwargs):
-    return url_for('board.topic_view',
-                   topic_id=posting.topic.id,
-                   page=page,
-                   _anchor='posting-{}'.format(posting.id),
-                   **kwargs)
+    return url_for(
+        'board.topic_view',
+        topic_id=posting.topic.id,
+        page=page,
+        _anchor='posting-{}'.format(posting.id),
+        **kwargs,
+    )

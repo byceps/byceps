@@ -26,8 +26,9 @@ def create_ticket(
     order_number: Optional[OrderNumber] = None,
 ) -> Sequence[DbTicket]:
     """Create a single ticket."""
-    tickets = create_tickets(category_id, owned_by_id, 1,
-                             order_number=order_number)
+    tickets = create_tickets(
+        category_id, owned_by_id, 1, order_number=order_number
+    )
     return tickets[0]
 
 
@@ -39,8 +40,11 @@ def create_tickets(
     order_number: Optional[OrderNumber] = None,
 ) -> Sequence[DbTicket]:
     """Create a number of tickets of the same category for a single owner."""
-    tickets = list(build_tickets(category_id, owned_by_id, quantity,
-                                 order_number=order_number))
+    tickets = list(
+        build_tickets(
+            category_id, owned_by_id, quantity, order_number=order_number
+        )
+    )
 
     db.session.add_all(tickets)
     db.session.commit()
@@ -65,8 +69,13 @@ def build_tickets(
         code = _generate_ticket_code_not_in(codes)
         codes.add(code)
 
-        yield DbTicket(code, category_id, owned_by_id, bundle=bundle,
-                       order_number=order_number)
+        yield DbTicket(
+            code,
+            category_id,
+            owned_by_id,
+            bundle=bundle,
+            order_number=order_number,
+        )
 
 
 _CODE_ALPHABET = 'BCDFGHJKLMNPQRSTVWXYZ'

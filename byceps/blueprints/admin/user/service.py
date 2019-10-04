@@ -185,8 +185,9 @@ def _fake_consent_events(user_id: UserID) -> Iterator[UserEvent]:
             'subject_title': consent.subject.title,
         }
 
-        yield UserEvent(consent.expressed_at, 'consent-expressed', user_id,
-                        data)
+        yield UserEvent(
+            consent.expressed_at, 'consent-expressed', user_id, data
+        )
 
 
 def _fake_newsletter_subscription_update_events(

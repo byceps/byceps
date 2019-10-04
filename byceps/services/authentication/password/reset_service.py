@@ -27,16 +27,20 @@ def prepare_password_reset(
     """Create a verification token for password reset and email it to
     the user's address.
     """
-    verification_token = verification_token_service \
-        .create_for_password_reset(user.id)
+    verification_token = verification_token_service.create_for_password_reset(
+        user.id
+    )
 
-    confirmation_url = url_for('authentication.password_reset_form',
-                               token=verification_token.token,
-                               _external=True)
+    confirmation_url = url_for(
+        'authentication.password_reset_form',
+        token=verification_token.token,
+        _external=True,
+    )
 
     recipients = [user.email_address]
-    subject = '{0.screen_name}, so kannst du ein neues Passwort festlegen' \
-        .format(user)
+    subject = '{0.screen_name}, so kannst du ein neues Passwort festlegen'.format(
+        user
+    )
     body = (
         'Hallo {0.screen_name},\n\n'
         'du kannst ein neues Passwort festlegen, indem du diese URL abrufst: {1}'

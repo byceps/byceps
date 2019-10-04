@@ -62,8 +62,10 @@ def _get_next_sequence_step(
 
     if sequence is None:
         raise NumberGenerationFailed(
-            'No sequence configured for shop "{}" and purpose "{}".'
-            .format(shop_id, purpose.name))
+            'No sequence configured for shop "{}" and purpose "{}".'.format(
+                shop_id, purpose.name
+            )
+        )
 
     sequence.value = DbNumberSequence.value + 1
     db.session.commit()

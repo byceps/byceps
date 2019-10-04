@@ -27,8 +27,9 @@ permission_registry.register_enum(ConsentPermission)
 @templated
 def index():
     """List consent subjects."""
-    subjects_with_consent_counts = subject_service \
-        .get_subjects_with_consent_counts()
+    subjects_with_consent_counts = (
+        subject_service.get_subjects_with_consent_counts()
+    )
 
     subjects_with_consent_counts = list(subjects_with_consent_counts.items())
 

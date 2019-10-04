@@ -33,8 +33,8 @@ def create_ticket_bundles(
 
     for _ in range(bundle_quantity):
         bundle = ticket_bundle_service.create_bundle(
-            category_id, ticket_quantity, owned_by_id,
-            order_number=order_number)
+            category_id, ticket_quantity, owned_by_id, order_number=order_number
+        )
 
         for ticket in bundle.tickets:
             ticket.used_by_id = owned_by_id
