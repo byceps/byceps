@@ -56,8 +56,8 @@ class OrderTotalAmountTest(ShopTestBase):
     # helpers
 
     def create_article(self, number, price):
-        item_number = 'LF-01-A{:05d}'.format(number)
-        description = 'Artikel #{:d}'.format(number)
+        item_number = f'LF-01-A{number:05d}'
+        description = f'Artikel #{number:d}'
 
         return super().create_article(
             self.shop.id,

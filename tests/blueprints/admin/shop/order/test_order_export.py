@@ -49,7 +49,7 @@ class ExportTestCase(ShopTestBase):
         with codecs.open(filename, encoding='iso-8859-1') as f:
             expected = f.read().rstrip()
 
-        url = '/admin/shop/orders/{}/export'.format(self.order.id)
+        url = f'/admin/shop/orders/{self.order.id}/export'
         with http_client(self.app, user_id=self.admin.id) as client:
             response = client.get(url)
 

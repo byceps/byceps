@@ -71,7 +71,7 @@ class MatchCommentCreateTest(AbstractAppTestCase):
         return match_service.create_match()
 
     def request_comment_creation(self, match_id, *, user_id=None):
-        url = '/api/tourney/matches/{}/comments'.format(match_id)
+        url = f'/api/tourney/matches/{match_id}/comments'
 
         headers = [
             assemble_authorization_header('just-say-PLEASE'),

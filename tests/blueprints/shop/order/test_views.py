@@ -64,7 +64,7 @@ class ShopOrderTestCase(ShopTestBase):
         assert article_before.quantity == 5
 
         url = '/shop/order'
-        article_quantity_key = 'article_{}'.format(self.article_id)
+        article_quantity_key = f'article_{self.article_id}'
         form_data = {
             'first_names': 'Hiro',
             'last_name': 'Protagonist',
@@ -98,9 +98,7 @@ class ShopOrderTestCase(ShopTestBase):
 
         order_placed_mock.assert_called_once_with(None, order_id=order.id)
 
-        order_detail_page_url = 'http://example.com/shop/orders/{}'.format(
-            order.id
-        )
+        order_detail_page_url = f'http://example.com/shop/orders/{order.id}'
 
         assert_response_headers(response, order_detail_page_url)
 
@@ -115,7 +113,7 @@ class ShopOrderTestCase(ShopTestBase):
         article_before = self.get_article()
         assert article_before.quantity == 5
 
-        url = '/shop/order_single/{}'.format(str(self.article_id))
+        url = f'/shop/order_single/{self.article_id!s}'
         form_data = {
             'first_names': 'Hiro',
             'last_name': 'Protagonist',
@@ -149,9 +147,7 @@ class ShopOrderTestCase(ShopTestBase):
 
         order_placed_mock.assert_called_once_with(None, order_id=order.id)
 
-        order_detail_page_url = 'http://example.com/shop/orders/{}'.format(
-            order.id
-        )
+        order_detail_page_url = f'http://example.com/shop/orders/{order.id}'
 
         assert_response_headers(response, order_detail_page_url)
 

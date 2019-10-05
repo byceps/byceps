@@ -48,7 +48,7 @@ def app(party_app, db):
 
 
 def create_channel(brand_id):
-    channel_id = '{}-test'.format(brand_id)
+    channel_id = f'{brand_id}-test'
     url_prefix = 'https://example.com/news/'
     return news_channel_service.create_channel(brand_id, channel_id, url_prefix)
 

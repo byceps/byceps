@@ -46,9 +46,7 @@ kthxbye,
 Alice
 '''
 
-        expected_response_location = 'http://example.com/users/{}'.format(
-            recipient.id
-        )
+        expected_response_location = f'http://example.com/users/{recipient.id}'
 
         expected_email_sender = 'ACME Entertainment Convention <noreply@example.com>'
         expected_email_recipients = ['Bob <bob@example.com>']
@@ -116,9 +114,7 @@ Best,
 Bob
 '''
 
-        expected_response_location = 'http://example.com/users/{}'.format(
-            recipient.id
-        )
+        expected_response_location = f'http://example.com/users/{recipient.id}'
 
         expected_email_sender = 'ACME Entertainment Convention <noreply@example.com>'
         expected_email_recipients = ['Alice <alice@example.com>']
@@ -174,7 +170,7 @@ Bei Fragen kontaktiere uns bitte per E-Mail an: help@example.com\
     # helpers
 
     def send_request(self, recipient_id, text, *, current_user_id=None):
-        url = '/user_messages/to/{}/create'.format(recipient_id)
+        url = f'/user_messages/to/{recipient_id}/create'
 
         form_data = {
             'body': text,

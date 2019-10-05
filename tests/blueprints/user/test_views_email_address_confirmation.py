@@ -47,8 +47,6 @@ class EmailAddressConfirmationTestCase(AbstractAppTestCase):
         assert not self.user.initialized
 
     def _confirm(self, verification_token):
-        url = '/users/email_address/confirmation/{}'.format(
-            verification_token.token
-        )
+        url = f'/users/email_address/confirmation/{verification_token.token}'
         with http_client(self.app) as client:
             return client.get(url)

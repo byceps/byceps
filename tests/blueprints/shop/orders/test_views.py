@@ -99,7 +99,7 @@ class ShopOrdersTestCase(ShopTestBase):
     def request_view(self, current_user, order_id):
         login_user(current_user.id)
 
-        url = '/shop/orders/{}'.format(str(order_id))
+        url = f'/shop/orders/{order_id!s}'
 
         with http_client(self.app, user_id=current_user.id) as client:
             response = client.get(url)

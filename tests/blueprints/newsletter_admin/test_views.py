@@ -53,8 +53,8 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
             (8, True,  False, True , [SubscriptionState.requested                             ]),
         ]:
             user = create_user(
-                screen_name='User-{:d}'.format(number),
-                email_address='user{:03d}@example.com'.format(number),
+                screen_name=f'User-{number:d}',
+                email_address=f'user{number:03d}@example.com',
                 initialized=initialized,
             )
 

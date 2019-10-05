@@ -23,7 +23,7 @@ class UserProfileTest(AbstractAppTestCase):
         self.user = create_user()
 
     def test_view_profile(self):
-        url = '/users/{}'.format(self.user.id)
+        url = f'/users/{self.user.id}'
 
         with http_client(self.app) as client:
             response = client.get(url)

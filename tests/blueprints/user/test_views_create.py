@@ -71,8 +71,8 @@ class UserCreateTestCase(AbstractAppTestCase):
         )
 
         consent_subject = consent_subject_service.create_subject(
-            '{}_terms-of-service_v1'.format(self.brand_id),
-            'Terms of service for {} / v1'.format(self.brand.title),
+            f'{self.brand_id}_terms-of-service_v1',
+            f'Terms of service for {self.brand.title} / v1',
             'terms_of_service',
         )
 
@@ -98,8 +98,8 @@ class UserCreateTestCase(AbstractAppTestCase):
 
     def setup_privacy_policy(self):
         consent_subject = consent_subject_service.create_subject(
-            '{}_privacy_policy_v1'.format(self.brand_id),
-            'Privacy policy for {} / v1'.format(self.brand.title),
+            f'{self.brand_id}_privacy_policy_v1',
+            f'Privacy policy for {self.brand.title} / v1',
             'privacy_policy',
         )
 
@@ -196,13 +196,11 @@ class UserCreateTestCase(AbstractAppTestCase):
         expected_sender = 'noreply@example.com'
         expected_recipients = ['hiro@metaverse.org']
         expected_subject = 'Hiro, bitte bestätige deine E-Mail-Adresse'
-        expected_body = '''
+        expected_body = f'''
 Hallo Hiro,
 
-bitte bestätige deine E-Mail-Adresse, indem du diese URL abrufst: https://www.example.com/users/email_address/confirmation/{}
-        '''.strip().format(
-            verification_token.token
-        )
+bitte bestätige deine E-Mail-Adresse, indem du diese URL abrufst: https://www.example.com/users/email_address/confirmation/{verification_token.token}
+        '''.strip()
 
         send_email_mock.assert_called_once_with(
             expected_sender,

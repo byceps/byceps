@@ -32,7 +32,7 @@ class TopicPinTest(AbstractTopicModerationTest):
 
         assert_topic_is_not_pinned(topic_before)
 
-        url = '/board/topics/{}/flags/pinned'.format(topic_before.id)
+        url = f'/board/topics/{topic_before.id}/flags/pinned'
         with http_client(self.app, user_id=self.admin.id) as client:
             response = client.post(url)
 
@@ -46,7 +46,7 @@ class TopicPinTest(AbstractTopicModerationTest):
 
         assert_topic_is_pinned(topic_before, self.admin.id)
 
-        url = '/board/topics/{}/flags/pinned'.format(topic_before.id)
+        url = f'/board/topics/{topic_before.id}/flags/pinned'
         with http_client(self.app, user_id=self.admin.id) as client:
             response = client.delete(url)
 

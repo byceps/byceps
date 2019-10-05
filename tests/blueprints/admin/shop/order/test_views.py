@@ -76,7 +76,7 @@ class ShopAdminTestCase(ShopTestBase):
 
         assert_payment_is_open(order_before)
 
-        url = '/admin/shop/orders/{}/cancel'.format(order_before.id)
+        url = f'/admin/shop/orders/{order_before.id}/cancel'
         form_data = {
             'reason': 'Dein Vorname ist albern!',
             'send_email': 'y',
@@ -113,7 +113,7 @@ class ShopAdminTestCase(ShopTestBase):
         quantified_articles_to_order = {(article_before, 3)}
         placed_order = self.place_order(quantified_articles_to_order)
 
-        url = '/admin/shop/orders/{}/cancel'.format(placed_order.id)
+        url = f'/admin/shop/orders/{placed_order.id}/cancel'
         form_data = {
             'reason': 'Dein Vorname ist albern!',
             # Sending e-mail is not requested.
@@ -140,7 +140,7 @@ class ShopAdminTestCase(ShopTestBase):
 
         assert_payment_is_open(order_before)
 
-        url = '/admin/shop/orders/{}/mark_as_paid'.format(order_before.id)
+        url = f'/admin/shop/orders/{order_before.id}/mark_as_paid'
         form_data = {'payment_method': 'direct_debit'}
         with http_client(self.app, user_id=self.admin.id) as client:
             response = client.post(url, data=form_data)
@@ -181,12 +181,12 @@ class ShopAdminTestCase(ShopTestBase):
 
         assert_payment_is_open(order_before)
 
-        url = '/admin/shop/orders/{}/mark_as_paid'.format(order_before.id)
+        url = f'/admin/shop/orders/{order_before.id}/mark_as_paid'
         form_data = {'payment_method': 'bank_transfer'}
         with http_client(self.app, user_id=self.admin.id) as client:
             response = client.post(url, data=form_data)
 
-        url = '/admin/shop/orders/{}/cancel'.format(order_before.id)
+        url = f'/admin/shop/orders/{order_before.id}/cancel'
         form_data = {
             'reason': 'Dein Vorname ist albern!',
             'send_email': 'n',

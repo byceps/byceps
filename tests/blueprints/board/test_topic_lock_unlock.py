@@ -32,7 +32,7 @@ class TopicLockTest(AbstractTopicModerationTest):
 
         assert_topic_is_not_locked(topic_before)
 
-        url = '/board/topics/{}/flags/locked'.format(topic_before.id)
+        url = f'/board/topics/{topic_before.id}/flags/locked'
         with http_client(self.app, user_id=self.admin.id) as client:
             response = client.post(url)
 
@@ -46,7 +46,7 @@ class TopicLockTest(AbstractTopicModerationTest):
 
         assert_topic_is_locked(topic_before, self.admin.id)
 
-        url = '/board/topics/{}/flags/locked'.format(topic_before.id)
+        url = f'/board/topics/{topic_before.id}/flags/locked'
         with http_client(self.app, user_id=self.admin.id) as client:
             response = client.delete(url)
 

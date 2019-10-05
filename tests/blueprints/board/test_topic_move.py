@@ -29,7 +29,7 @@ class TopicMoveTest(AbstractTopicModerationTest):
 
         assert topic_before.category.id == self.category_id_1
 
-        url = '/board/topics/{}/move'.format(topic_before.id)
+        url = f'/board/topics/{topic_before.id}/move'
         form_data = {'category_id': self.category_id_2}
         with http_client(self.app, user_id=self.admin.id) as client:
             response = client.post(url, data=form_data)
