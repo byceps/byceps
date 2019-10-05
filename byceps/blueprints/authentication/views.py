@@ -59,8 +59,8 @@ def login_form():
     logged_in = g.current_user.is_active
     if logged_in:
         flash_notice(
-            'Du bist bereits als Benutzer "{}" angemeldet.',
-            g.current_user.screen_name,
+            f'Du bist bereits als Benutzer "{g.current_user.screen_name}" '
+            'angemeldet.'
         )
 
     in_admin_mode = get_site_mode().is_admin()

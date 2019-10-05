@@ -55,9 +55,8 @@ def request_confirmation_email():
 
     if user.email_address_verified:
         flash_notice(
-            'Die E-Mail-Adresse für den Benutzernamen "{}" wurde bereits '
-            'bestätigt.',
-            user.screen_name,
+            f'Die E-Mail-Adresse für den Benutzernamen "{user.screen_name}" '
+            'wurde bereits bestätigt.'
         )
         return request_confirmation_email_form()
 
