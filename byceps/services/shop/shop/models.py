@@ -14,6 +14,7 @@ from .transfer.models import ShopID
 
 class Shop(db.Model):
     """A shop."""
+
     __tablename__ = 'shops'
 
     id = db.Column(db.UnicodeText, primary_key=True)

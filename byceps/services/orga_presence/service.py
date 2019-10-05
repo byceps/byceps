@@ -93,6 +93,7 @@ def get_days_and_hour_totals(
     hour_ranges: Sequence[DateTimeRange]
 ) -> Iterator[Tuple[date, int]]:
     """Yield (day, relevant hours total) pairs."""
+
     def get_date(dt_range: DateTimeRange) -> date:
         return dt_range.start.date()
 

@@ -22,6 +22,7 @@ MatchID = NewType('MatchID', UUID)
 
 class Match(db.Model):
     """A match between two opponents."""
+
     __tablename__ = 'tourney_matches'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
@@ -38,6 +39,7 @@ class MatchCommentQuery(BaseQuery):
 
 class MatchComment(db.Model):
     """An immutable comment on a match by one of the opponents."""
+
     __tablename__ = 'tourney_match_comments'
     query_class = MatchCommentQuery
 

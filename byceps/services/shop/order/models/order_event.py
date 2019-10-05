@@ -20,6 +20,7 @@ OrderEventData = Dict[str, Any]
 
 class OrderEvent(db.Model):
     """An event that refers to an order."""
+
     __tablename__ = 'shop_order_events'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)

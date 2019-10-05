@@ -18,6 +18,7 @@ from ....util.instances import ReprBuilder
 
 class UserDetail(db.Model):
     """Detailed information about a specific user."""
+
     __tablename__ = 'user_details'
 
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)

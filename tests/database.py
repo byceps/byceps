@@ -3,6 +3,7 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
+
 def set_up_database(db):
     # Learn about all tables to also drop old ones no longer
     # defined in models.

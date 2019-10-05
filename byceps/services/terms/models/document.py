@@ -14,6 +14,7 @@ from ..transfer.models import DocumentID
 
 class Document(db.Model):
     """A terms of service document."""
+
     __tablename__ = 'terms_documents'
 
     id = db.Column(db.UnicodeText, primary_key=True)

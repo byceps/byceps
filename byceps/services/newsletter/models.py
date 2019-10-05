@@ -21,6 +21,7 @@ from .types import SubscriptionState
 
 class List(db.Model):
     """A newsletter list users can subscribe to."""
+
     __tablename__ = 'newsletter_lists'
 
     id = db.Column(db.UnicodeText, primary_key=True)
@@ -40,6 +41,7 @@ class SubscriptionUpdate(db.Model):
     """A user's declaration on wanting/not wanting to receive
     newsletters from this list.
     """
+
     __tablename__ = 'newsletter_subscription_updates'
 
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)

@@ -45,6 +45,7 @@ class TopicQuery(BaseQuery):
 
 class Topic(db.Model):
     """A topic."""
+
     __tablename__ = 'board_topics'
     query_class = TopicQuery
 

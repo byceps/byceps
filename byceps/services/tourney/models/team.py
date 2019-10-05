@@ -23,6 +23,7 @@ TeamID = NewType('TeamID', UUID)
 
 class Team(db.Model):
     """One or more players participating in a tourney as a single unit."""
+
     __tablename__ = 'tourney_teams'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)

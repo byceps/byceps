@@ -26,6 +26,7 @@ AvatarID = NewType('AvatarID', UUID)
 
 class Avatar(db.Model):
     """An avatar image uploaded by a user."""
+
     __tablename__ = 'user_avatars'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
@@ -72,6 +73,7 @@ class Avatar(db.Model):
 
 class AvatarSelection(db.Model):
     """The selection of an avatar image to be used for a user."""
+
     __tablename__ = 'user_avatar_selections'
 
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)

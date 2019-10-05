@@ -13,6 +13,7 @@ from ....util.instances import ReprBuilder
 
 class Brand(db.Model):
     """A party brand."""
+
     __tablename__ = 'brands'
 
     id = db.Column(db.UnicodeText, primary_key=True)

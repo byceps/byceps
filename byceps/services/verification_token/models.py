@@ -38,6 +38,7 @@ class Token(db.Model):
     """A private token to authenticate as a certain user for a certain
     action.
     """
+
     __tablename__ = 'verification_tokens'
     query_class = TokenQuery
 

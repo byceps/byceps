@@ -27,6 +27,7 @@ class Permission(db.Model):
 
     Can be assigned to one or more roles.
     """
+
     __tablename__ = 'authz_permissions'
 
     id = db.Column(db.UnicodeText, primary_key=True)
@@ -51,6 +52,7 @@ class Role(db.Model):
 
     Can be assigned to a user.
     """
+
     __tablename__ = 'authz_roles'
 
     id = db.Column(db.UnicodeText, primary_key=True)
@@ -71,6 +73,7 @@ class Role(db.Model):
 
 class RolePermission(db.Model):
     """The assignment of a permission to a role."""
+
     __tablename__ = 'authz_role_permissions'
 
     role_id = db.Column(db.UnicodeText, db.ForeignKey('authz_roles.id'), primary_key=True)
@@ -93,6 +96,7 @@ class RolePermission(db.Model):
 
 class UserRole(db.Model):
     """The assignment of a role to a user."""
+
     __tablename__ = 'authz_user_roles'
 
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)

@@ -30,6 +30,7 @@ def test_init_with_negative_quantity():
 
 # helpers
 
+
 def create_item(quantity):
     article = create_article('shop-123')
     return CartItem(article, quantity)

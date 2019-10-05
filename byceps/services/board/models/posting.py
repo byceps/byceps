@@ -49,6 +49,7 @@ class PostingQuery(BaseQuery):
 
 class Posting(db.Model):
     """A posting."""
+
     __tablename__ = 'board_postings'
     query_class = PostingQuery
 

@@ -17,11 +17,13 @@ from flask import abort, current_app, request
 
 def api_token_required(func):
     """Ensure the request is authenticated via API token."""
+
     @wraps(func)
     def wrapper(*args, **kwargs):
         if not _has_valid_api_token():
             abort(401, www_authenticate='Bearer')
         return func(*args, **kwargs)
+
     return wrapper
 
 

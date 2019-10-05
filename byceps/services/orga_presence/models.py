@@ -18,6 +18,7 @@ class TimeSlotQuery(BaseQuery):
 
 class TimeSlot(db.Model):
     """A time slot at a party."""
+
     __tablename__ = 'orga_time_slots'
     __mapper_args__ = {
         'polymorphic_on': 'type',

@@ -55,6 +55,7 @@ def test_is_canceled_after_paid():
 
 # helpers
 
+
 def create_order_with_payment_state(payment_state):
     user = create_user()
 

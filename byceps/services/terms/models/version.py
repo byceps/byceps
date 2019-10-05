@@ -23,6 +23,7 @@ from .document import Document
 
 class Version(db.Model):
     """A specific version of a terms and conditions document."""
+
     __tablename__ = 'terms_versions'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)

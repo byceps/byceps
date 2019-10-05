@@ -31,6 +31,7 @@ class Snippet(db.Model):
     Each snippet is expected to have at least one version (the initial
     one).
     """
+
     __tablename__ = 'snippets'
     __table_args__ = (
         db.Index('ix_snippets_scope', 'scope_type', 'scope_name'),
@@ -89,6 +90,7 @@ class SnippetVersionQuery(BaseQuery):
 
 class SnippetVersion(db.Model):
     """A snapshot of a snippet at a certain time."""
+
     __tablename__ = 'snippet_versions'
     query_class = SnippetVersionQuery
 

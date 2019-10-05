@@ -14,6 +14,7 @@ from .....typing import UserID
 
 class SessionToken(db.Model):
     """A user's session token."""
+
     __tablename__ = 'authn_session_tokens'
 
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)

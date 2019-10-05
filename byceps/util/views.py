@@ -44,10 +44,12 @@ def respond_created(f):
     The decorated callable is expected to return the URL of the newly created
     resource.  That URL is then added to the response as ``Location:`` header.
     """
+
     @wraps(f)
     def wrapper(*args, **kwargs):
         url = f(*args, **kwargs)
         return Response(status=201, headers=[('Location', url)])
+
     return wrapper
 
 
@@ -56,20 +58,24 @@ def respond_no_content(f):
 
     Optionally, a list of headers may be returned by the decorated callable.
     """
+
     @wraps(f)
     def wrapper(*args, **kwargs):
         headers = f(*args, **kwargs)
         return Response(status=204, headers=headers)
+
     return wrapper
 
 
 def respond_no_content_with_location(f):
     """Send a ``204 No Content`` response with a 'Location' header."""
+
     @wraps(f)
     def wrapper(*args, **kwargs):
         location_url = f(*args, **kwargs)
         headers = [('Location', location_url)]
         return Response(status=204, headers=headers)
+
     return wrapper
 
 

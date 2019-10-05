@@ -19,6 +19,7 @@ class CategoryQuery(BaseQuery):
 
 class Category(db.Model):
     """A ticket category."""
+
     __tablename__ = 'ticket_categories'
     __table_args__ = (
         db.UniqueConstraint('party_id', 'title'),

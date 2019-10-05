@@ -45,6 +45,7 @@ def templated(arg) -> Callable:
                 return context
 
             return render_template(name, **context)
+
         return decorated
 
     if hasattr(arg, '__call__'):

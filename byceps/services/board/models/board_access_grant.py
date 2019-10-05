@@ -21,6 +21,7 @@ BoardAccessGrantID = NewType('BoardAccessGrantID', str)
 
 class BoardAccessGrant(db.Model):
     """Access to a specific board granted to a user."""
+
     __tablename__ = 'board_access_grants'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)

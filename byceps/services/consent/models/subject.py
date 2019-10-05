@@ -12,6 +12,7 @@ from ....util.instances import ReprBuilder
 
 class Subject(db.Model):
     """A subject that requires users' consent."""
+
     __tablename__ = 'consent_subjects'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)

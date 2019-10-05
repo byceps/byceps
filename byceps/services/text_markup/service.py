@@ -16,6 +16,7 @@ except ModuleNotFoundError:
     def get_smileys():
         return []
 
+
 try:
     from .smileys import replace_smileys as _replace_smileys
 except ModuleNotFoundError:
@@ -35,6 +36,7 @@ def _create_parser() -> Parser:
 
 def _add_image_formatter(parser: Parser) -> None:
     """Replace image tags."""
+
     def render_image(name, value, options, parent, context):
         return '<img src="{}">'.format(value)
 
@@ -43,6 +45,7 @@ def _add_image_formatter(parser: Parser) -> None:
 
 def _add_quote_formatter(parser: Parser) -> None:
     """Render quotes with optional author."""
+
     def render_quote(name, value, options, parent, context):
         intro = ''
         if 'author' in options:

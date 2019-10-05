@@ -21,6 +21,7 @@ TourneyID = NewType('TourneyID', UUID)
 
 class Tourney(db.Model):
     """A tournament."""
+
     __tablename__ = 'tourneys'
     __table_args__ = (
         db.UniqueConstraint('group_id', 'title'),

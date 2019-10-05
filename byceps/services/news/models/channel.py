@@ -15,6 +15,7 @@ from ..transfer.models import ChannelID
 
 class Channel(db.Model):
     """A channel to which news items can be published."""
+
     __tablename__ = 'news_channels'
 
     id = db.Column(db.UnicodeText, primary_key=True)

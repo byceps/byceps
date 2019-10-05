@@ -19,6 +19,7 @@ from ..user.models.user import User
 
 class UserGroup(db.Model):
     """A self-organized group of users."""
+
     __tablename__ = 'user_groups'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
@@ -54,6 +55,7 @@ class Membership(db.Model):
 
     A user must be a member of no more than one group.
     """
+
     __tablename__ = 'user_group_memberships'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)

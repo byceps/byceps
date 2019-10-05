@@ -25,6 +25,7 @@ AvatarID = NewType('AvatarID', UUID)
 
 class Avatar(db.Model):
     """A tourney-related avatar image uploaded by a user."""
+
     __tablename__ = 'tourney_avatars'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)

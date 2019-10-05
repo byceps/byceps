@@ -19,6 +19,7 @@ from ...shop.shop.transfer.models import ShopID
 
 class Party(db.Model):
     """A party."""
+
     __tablename__ = 'parties'
 
     id = db.Column(db.UnicodeText, primary_key=True)

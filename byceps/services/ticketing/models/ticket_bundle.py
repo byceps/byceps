@@ -23,6 +23,7 @@ class TicketBundle(db.Model):
     """A set of tickets of the same category and with with a common
     owner, seat manager, and user manager, respectively.
     """
+
     __tablename__ = 'ticket_bundles'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)

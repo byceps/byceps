@@ -14,6 +14,7 @@ from ...util.instances import ReprBuilder
 
 class EmailConfig(db.Model):
     """An e-mail configuration."""
+
     __tablename__ = 'email_configs'
 
     id = db.Column(db.UnicodeText, primary_key=True)

@@ -35,6 +35,7 @@ def database_recreated(db):
 @pytest.fixture
 def make_admin_app():
     """Provide the admin web application."""
+
     def _wrapper(**config_overrides):
         return create_app(CONFIG_FILENAME_TEST_ADMIN, config_overrides)
 

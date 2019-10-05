@@ -53,6 +53,7 @@ class AnonymousUser:
 
 class User(db.Model):
     """A user."""
+
     __tablename__ = 'users'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
@@ -89,6 +90,7 @@ class User(db.Model):
             return False
 
         from ...orga_team import service as orga_team_service
+
         return orga_team_service.is_orga_for_party(self.id, party_id)
 
     def to_dto(self, *, include_avatar=False):

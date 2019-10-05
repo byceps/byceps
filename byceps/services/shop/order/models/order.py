@@ -40,6 +40,7 @@ class OrderQuery(BaseQuery):
 
 class Order(db.Model):
     """An order for articles, placed by a user."""
+
     __tablename__ = 'shop_orders'
     query_class = OrderQuery
 

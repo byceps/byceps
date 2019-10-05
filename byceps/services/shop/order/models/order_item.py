@@ -20,6 +20,7 @@ from .order import Order
 
 class OrderItem(db.Model):
     """An item that belongs to an order."""
+
     __tablename__ = 'shop_order_items'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)

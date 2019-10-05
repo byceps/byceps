@@ -38,6 +38,7 @@ class Ticket(db.Model):
     single seat by introducing custom guard code that blocks further
     attempts to reserve a seat.
     """
+
     __tablename__ = 'tickets'
     query_class = TicketQuery
 

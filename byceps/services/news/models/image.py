@@ -20,6 +20,7 @@ from .item import Item
 
 class Image(db.Model):
     """An image to illustrate a news item."""
+
     __tablename__ = 'news_images'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)

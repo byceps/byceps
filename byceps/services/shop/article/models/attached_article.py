@@ -13,6 +13,7 @@ from .article import Article
 
 class AttachedArticle(db.Model):
     """An article that is attached to another article."""
+
     __tablename__ = 'shop_attached_articles'
     __table_args__ = (
         db.UniqueConstraint('article_number', 'attached_to_article_number'),

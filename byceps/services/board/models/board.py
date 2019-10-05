@@ -15,6 +15,7 @@ from ..transfer.models import BoardID
 
 class Board(db.Model):
     """A board."""
+
     __tablename__ = 'boards'
 
     id = db.Column(db.UnicodeText, primary_key=True)

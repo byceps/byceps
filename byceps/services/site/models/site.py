@@ -17,6 +17,7 @@ from ..transfer.models import SiteID
 
 class Site(db.Model):
     """A site."""
+
     __tablename__ = 'sites'
     __table_args__ = (
         db.UniqueConstraint('title', 'party_id'),

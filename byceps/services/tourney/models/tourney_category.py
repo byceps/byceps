@@ -23,6 +23,7 @@ TourneyCategoryID = NewType('TourneyCategoryID', UUID)
 
 class TourneyCategory(db.Model):
     """One of potentially multiple tourney categories for a party."""
+
     __tablename__ = 'tourney_categories'
     __table_args__ = (
         db.UniqueConstraint('party_id', 'title'),

@@ -16,6 +16,7 @@ from ..transfer.models import BadgeID
 
 class BadgeAwarding(db.Model):
     """The awarding of a badge to a user."""
+
     __tablename__ = 'user_badge_awardings'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)

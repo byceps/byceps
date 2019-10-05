@@ -19,6 +19,7 @@ from .category import Category
 
 class LastCategoryView(db.Model):
     """The last time a user looked into specific category."""
+
     __tablename__ = 'board_categories_lastviews'
 
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)

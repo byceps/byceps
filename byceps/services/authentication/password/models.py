@@ -14,6 +14,7 @@ from ....typing import UserID
 
 class Credential(db.Model):
     """A user's login credential."""
+
     __tablename__ = 'authn_credentials'
 
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)

@@ -48,6 +48,7 @@ class Item(db.Model):
 
     Each one is expected to have at least one version (the initial one).
     """
+
     __tablename__ = 'news_items'
     __table_args__ = (
         db.UniqueConstraint('channel_id', 'slug'),
@@ -91,6 +92,7 @@ class ItemVersionQuery(BaseQuery):
 
 class ItemVersion(db.Model):
     """A snapshot of a news item at a certain time."""
+
     __tablename__ = 'news_item_versions'
     query_class = ItemVersionQuery
 

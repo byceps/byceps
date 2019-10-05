@@ -18,6 +18,7 @@ from .transfer.models import Purpose
 
 class NumberSequence(db.Model):
     """A shop-specific integer sequence for a purpose."""
+
     __tablename__ = 'shop_sequences'
 
     shop_id = db.Column(db.UnicodeText, db.ForeignKey('shops.id'), primary_key=True)

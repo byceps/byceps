@@ -28,6 +28,7 @@ class ArchivedAttendance(db.Model):
     attendances (but incorporates them to be displayed on user
     profiles).
     """
+
     __tablename__ = 'user_archived_party_attendances'
 
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)

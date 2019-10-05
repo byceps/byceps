@@ -20,6 +20,7 @@ TicketEventData = Dict[str, Any]
 
 class TicketEvent(db.Model):
     """An event that refers to a ticket."""
+
     __tablename__ = 'ticket_events'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)

@@ -13,6 +13,7 @@ from ....util.instances import ReprBuilder
 
 class Setting(db.Model):
     """A brand-specific setting."""
+
     __tablename__ = 'brand_settings'
 
     brand_id = db.Column(db.UnicodeText, db.ForeignKey('brands.id'), primary_key=True)

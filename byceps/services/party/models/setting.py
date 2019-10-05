@@ -13,6 +13,7 @@ from ....util.instances import ReprBuilder
 
 class Setting(db.Model):
     """A party-specific setting."""
+
     __tablename__ = 'party_settings'
 
     party_id = db.Column(db.UnicodeText, db.ForeignKey('parties.id'), primary_key=True)

@@ -20,6 +20,7 @@ from .subject import Subject
 
 class Consent(db.Model):
     """A user's consent to a subject."""
+
     __tablename__ = 'consents'
 
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)

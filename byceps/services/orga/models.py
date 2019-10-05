@@ -16,6 +16,7 @@ from ..user.models.user import User
 
 class OrgaFlag(db.Model):
     """A user's organizer status for a single brand."""
+
     __tablename__ = 'orga_flags'
 
     brand_id = db.Column(db.UnicodeText, db.ForeignKey('brands.id'), primary_key=True)

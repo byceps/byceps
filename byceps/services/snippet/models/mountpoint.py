@@ -23,6 +23,7 @@ from .snippet import Snippet
 
 class Mountpoint(db.Model):
     """The exposition of a snippet at a certain URL path of a site."""
+
     __tablename__ = 'snippet_mountpoints'
     __table_args__ = (
         db.UniqueConstraint('site_id', 'endpoint_suffix'),

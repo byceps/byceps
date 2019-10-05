@@ -19,6 +19,7 @@ from .topic import Topic
 
 class LastTopicView(db.Model):
     """The last time a user looked into specific topic."""
+
     __tablename__ = 'board_topics_lastviews'
 
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)

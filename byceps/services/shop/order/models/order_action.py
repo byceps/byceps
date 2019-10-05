@@ -25,6 +25,7 @@ class OrderAction(db.Model):
     """A procedure to execute when an order for that article is marked
     as paid.
     """
+
     __tablename__ = 'shop_order_actions'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)

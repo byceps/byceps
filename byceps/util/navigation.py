@@ -53,6 +53,7 @@ class Navigation:
 
     def get_items(self, user) -> List[NavigationItem]:
         """Return the navigation items the user is permitted to see."""
+
         def user_has_permission(item: NavigationItem) -> bool:
             required_permission = item.required_permission
             if required_permission is None:

@@ -19,6 +19,7 @@ UserEventData = Dict[str, Any]
 
 class UserEvent(db.Model):
     """An event that refers to a user."""
+
     __tablename__ = 'user_events'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)

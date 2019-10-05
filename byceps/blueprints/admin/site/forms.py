@@ -18,5 +18,6 @@ class UpdateForm(LocalizedForm):
     email_config_id = StringField('E-Mail-Konfiguration', validators=[InputRequired()])
     party_id = StringField('Party-ID', validators=[Optional()])
 
+
 class CreateForm(UpdateForm):
     id = StringField('ID', validators=[Length(min=1, max=40)])

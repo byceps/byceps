@@ -23,6 +23,7 @@ class Area(db.Model):
 
     Seats can belong to different categories.
     """
+
     __tablename__ = 'seating_areas'
     __table_args__ = (
         db.UniqueConstraint('party_id', 'slug'),

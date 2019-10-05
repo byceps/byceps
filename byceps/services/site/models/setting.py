@@ -14,6 +14,7 @@ from ..transfer.models import SiteID
 
 class Setting(db.Model):
     """A site-specific setting."""
+
     __tablename__ = 'site_settings'
 
     site_id = db.Column(db.UnicodeText, db.ForeignKey('sites.id'), primary_key=True, index=True)

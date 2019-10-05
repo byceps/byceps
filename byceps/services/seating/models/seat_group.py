@@ -21,6 +21,7 @@ from .seat import Seat
 
 class SeatGroup(db.Model):
     """A group of seats."""
+
     __tablename__ = 'seat_groups'
     __table_args__ = (
         db.UniqueConstraint('party_id', 'title'),
@@ -63,6 +64,7 @@ class SeatGroup(db.Model):
 
 class SeatGroupAssignment(db.Model):
     """The assignment of a seat to a seat group."""
+
     __tablename__ = 'seat_group_assignments'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
@@ -85,6 +87,7 @@ class SeatGroupAssignment(db.Model):
 
 class Occupancy(db.Model):
     """The occupancy of a seat group."""
+
     __tablename__ = 'seat_group_occupancies'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)

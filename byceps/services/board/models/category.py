@@ -26,6 +26,7 @@ class CategoryQuery(BaseQuery):
 
 class Category(db.Model):
     """A category for topics."""
+
     __tablename__ = 'board_categories'
     __table_args__ = (
         db.UniqueConstraint('board_id', 'slug'),

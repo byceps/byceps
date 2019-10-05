@@ -26,6 +26,7 @@ Point = namedtuple('Point', ['x', 'y'])
 
 class Seat(db.Model):
     """A seat."""
+
     __tablename__ = 'seats'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)

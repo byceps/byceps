@@ -22,6 +22,7 @@ OrgaTeamID = NewType('OrgaTeamID', UUID)
 
 class OrgaTeam(db.Model):
     """A group of organizers for a single party."""
+
     __tablename__ = 'orga_teams'
     __table_args__ = (
         db.UniqueConstraint('party_id', 'title'),
@@ -56,6 +57,7 @@ MembershipID = NewType('MembershipID', UUID)
 
 class Membership(db.Model):
     """The assignment of a user to an organizer team."""
+
     __tablename__ = 'orga_team_memberships'
     __table_args__ = (
         db.UniqueConstraint('orga_team_id', 'user_id'),

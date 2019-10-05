@@ -34,6 +34,7 @@ def test_is_empty_with_multiple_items():
 
 # helpers
 
+
 def add_item(cart, quantity):
     article = create_article('shop-123')
     cart.add_item(article, quantity)
