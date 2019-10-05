@@ -176,8 +176,8 @@ def create_account():
         )
     except user_creation_service.UserCreationFailed:
         flash_error(
-            'Das Benutzerkonto für "{}" konnte nicht angelegt werden.',
-            screen_name,
+            f'Das Benutzerkonto für "{screen_name}" '
+            'konnte nicht angelegt werden.'
         )
         return create_account_form(form)
 
@@ -250,7 +250,7 @@ def suspend_account_form(user_id, erroneous_form=None):
 
     if user.suspended:
         flash_error(
-            "Das Benutzerkonto '{}' ist bereits gesperrt.", user.screen_name
+            f"Das Benutzerkonto '{user.screen_name}' ist bereits gesperrt."
         )
         return redirect_to('.view', user_id=user.id)
 
@@ -270,7 +270,7 @@ def suspend_account(user_id):
 
     if user.suspended:
         flash_error(
-            "Das Benutzerkonto '{}' ist bereits gesperrt.", user.screen_name
+            f"Das Benutzerkonto '{user.screen_name}' ist bereits gesperrt."
         )
         return redirect_to('.view', user_id=user.id)
 
@@ -298,7 +298,7 @@ def unsuspend_account_form(user_id, erroneous_form=None):
 
     if not user.suspended:
         flash_error(
-            "Das Benutzerkonto '{}' ist bereits entsperrt.", user.screen_name
+            f"Das Benutzerkonto '{user.screen_name}' ist bereits entsperrt."
         )
         return redirect_to('.view', user_id=user.id)
 
@@ -318,7 +318,7 @@ def unsuspend_account(user_id):
 
     if not user.suspended:
         flash_error(
-            "Das Benutzerkonto '{}' ist bereits entsperrt.", user.screen_name
+            f"Das Benutzerkonto '{user.screen_name}' ist bereits entsperrt."
         )
         return redirect_to('.view', user_id=user.id)
 
@@ -346,8 +346,8 @@ def delete_account_form(user_id, erroneous_form=None):
 
     if user.deleted:
         flash_error(
-            "Das Benutzerkonto '{}' ist bereits gelöscht worden.",
-            user.screen_name,
+            f"Das Benutzerkonto '{user.screen_name}' "
+            "ist bereits gelöscht worden."
         )
         return redirect_to('.view', user_id=user.id)
 
@@ -367,8 +367,8 @@ def delete_account(user_id):
 
     if user.deleted:
         flash_error(
-            "Das Benutzerkonto '{}' ist bereits gelöscht worden.",
-            user.screen_name,
+            f"Das Benutzerkonto '{user.screen_name}' "
+            "ist bereits gelöscht worden."
         )
         return redirect_to('.view', user_id=user.id)
 

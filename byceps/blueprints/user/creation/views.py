@@ -186,8 +186,7 @@ def create():
         )
     except user_creation_service.UserCreationFailed:
         flash_error(
-            'Das Benutzerkonto für "{}" konnte nicht angelegt werden.',
-            screen_name,
+            f'Das Benutzerkonto für "{screen_name}" konnte nicht angelegt werden.'
         )
         return create_form(form)
 

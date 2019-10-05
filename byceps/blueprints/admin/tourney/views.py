@@ -119,8 +119,7 @@ def category_move_up(category_id):
         category_service.move_category_up(category)
     except ValueError:
         flash_error(
-            'Die Kategorie "{}" befindet sich bereits ganz oben.',
-            category.title,
+            f'Die Kategorie "{category.title}" befindet sich bereits ganz oben.'
         )
     else:
         flash_success(
@@ -140,8 +139,8 @@ def category_move_down(category_id):
         category_service.move_category_down(category)
     except ValueError:
         flash_error(
-            'Die Kategorie "{}" befindet sich bereits ganz unten.',
-            category.title,
+            f'Die Kategorie "{category.title}" befindet sich bereits '
+            'ganz unten.'
         )
     else:
         flash_success(

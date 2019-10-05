@@ -118,16 +118,15 @@ def occupy_seat(ticket_id, seat_id):
 
     if not ticket.is_seat_managed_by(manager.id):
         flash_error(
-            'Du bist nicht berechtigt, den Sitzplatz für Ticket {} '
-            'zu verwalten.',
-            ticket.code,
+            'Du bist nicht berechtigt, den Sitzplatz '
+            f'für Ticket {ticket.code} zu verwalten.'
         )
         return
 
     seat = _get_seat_or_404(seat_id)
 
     if seat.is_occupied:
-        flash_error('{} ist bereits belegt.', seat.label)
+        flash_error(f'{seat.label} ist bereits belegt.')
         return
 
     try:
@@ -136,16 +135,14 @@ def occupy_seat(ticket_id, seat_id):
         )
     except ticket_exceptions.SeatChangeDeniedForBundledTicket:
         flash_error(
-            'Ticket {} gehört zu einem Paket und kann nicht einzeln '
-            'verwaltet werden.',
-            ticket.code,
+            f'Ticket {ticket.code} gehört zu einem Paket '
+            'und kann nicht einzeln verwaltet werden.'
         )
         return
     except ticket_exceptions.TicketCategoryMismatch:
         flash_error(
-            'Ticket {} und {} haben unterschiedliche Kategorien.',
-            ticket.code,
-            seat.label,
+            f'Ticket {ticket.code} und {seat.label} haben '
+            'unterschiedliche Kategorien.'
         )
         return
     except ValueError:
@@ -164,16 +161,15 @@ def release_seat(ticket_id):
     ticket = _get_ticket_or_404(ticket_id)
 
     if not ticket.occupied_seat:
-        flash_error('Ticket {} belegt keinen Sitzplatz.', ticket.code)
+        flash_error(f'Ticket {ticket.code} belegt keinen Sitzplatz.')
         return
 
     manager = g.current_user
 
     if not ticket.is_seat_managed_by(manager.id):
         flash_error(
-            'Du bist nicht berechtigt, den Sitzplatz für Ticket {} '
-            'zu verwalten.',
-            ticket.code,
+            'Du bist nicht berechtigt, den Sitzplatz '
+            f'für Ticket {ticket.code} zu verwalten.'
         )
         return
 
@@ -183,9 +179,8 @@ def release_seat(ticket_id):
         ticket_seat_management_service.release_seat(ticket.id, manager.id)
     except ticket_exceptions.SeatChangeDeniedForBundledTicket:
         flash_error(
-            'Ticket {} gehört zu einem Paket und kann nicht einzeln '
-            'verwaltet werden.',
-            ticket.code,
+            f'Ticket {ticket.code} gehört zu einem Paket '
+            'und kann nicht einzeln verwaltet werden.'
         )
         return
 

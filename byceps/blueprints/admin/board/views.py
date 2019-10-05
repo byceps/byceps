@@ -253,8 +253,7 @@ def category_move_up(category_id):
         board_category_command_service.move_category_up(category.id)
     except ValueError:
         flash_error(
-            'Die Kategorie "{}" befindet sich bereits ganz oben.',
-            category.title,
+            f'Die Kategorie "{category.title}" befindet sich bereits ganz oben.'
         )
     else:
         flash_success(
@@ -274,8 +273,8 @@ def category_move_down(category_id):
         board_category_command_service.move_category_down(category.id)
     except ValueError:
         flash_error(
-            'Die Kategorie "{}" befindet sich bereits ganz unten.',
-            category.title,
+            f'Die Kategorie "{category.title}" befindet sich bereits '
+            'ganz unten.'
         )
     else:
         flash_success(
@@ -295,7 +294,7 @@ def category_delete(category_id):
         board_category_command_service.delete_category(category.id)
     except:
         flash_error(
-            'Die Kategorie "{}" konnte nicht gelöscht werden.', category.title
+            f'Die Kategorie "{category.title}" konnte nicht gelöscht werden.'
         )
     else:
         flash_success('Die Kategorie "{}" wurde gelöscht.', category.title)
