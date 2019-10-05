@@ -72,7 +72,7 @@ def category_create(party_id):
 
     category = category_service.create_category(party.id, title)
 
-    flash_success('Die Kategorie "{}" wurde angelegt.', category.title)
+    flash_success(f'Die Kategorie "{category.title}" wurde angelegt.')
     return redirect_to('.category_index_for_party', party_id=category.party.id)
 
 
@@ -104,7 +104,7 @@ def category_update(category_id):
 
     category_service.update_category(category, form.title.data.strip())
 
-    flash_success('Die Kategorie "{}" wurde aktualisiert.', category.title)
+    flash_success(f'Die Kategorie "{category.title}" wurde aktualisiert.')
     return redirect_to('.category_index_for_party', party_id=category.party.id)
 
 
@@ -123,8 +123,8 @@ def category_move_up(category_id):
         )
     else:
         flash_success(
-            'Die Kategorie "{}" wurde eine Position nach oben verschoben.',
-            category.title,
+            f'Die Kategorie "{category.title}" '
+            'wurde eine Position nach oben verschoben.'
         )
 
 
@@ -144,8 +144,8 @@ def category_move_down(category_id):
         )
     else:
         flash_success(
-            'Die Kategorie "{}" wurde eine Position nach unten verschoben.',
-            category.title,
+            f'Die Kategorie "{category.title}" '
+            'wurde eine Position nach unten verschoben.'
         )
 
 

@@ -164,7 +164,7 @@ def topic_create(category_id):
     )
     topic_url = h.build_external_url_for_topic(topic.id)
 
-    flash_success('Das Thema "{}" wurde hinzugefügt.', topic.title)
+    flash_success(f'Das Thema "{topic.title}" wurde hinzugefügt.')
     signals.topic_created.send(None, topic_id=topic.id, url=topic_url)
 
     return redirect(topic_url)
@@ -235,7 +235,7 @@ def topic_update(topic_id):
         topic, g.current_user.id, form.title.data, form.body.data
     )
 
-    flash_success('Das Thema "{}" wurde aktualisiert.', topic.title)
+    flash_success(f'Das Thema "{topic.title}" wurde aktualisiert.')
     return redirect(url)
 
 
@@ -269,7 +269,7 @@ def topic_hide(topic_id):
 
     board_topic_command_service.hide_topic(topic, moderator_id)
 
-    flash_success('Das Thema "{}" wurde versteckt.', topic.title, icon='hidden')
+    flash_success(f'Das Thema "{topic.title}" wurde versteckt.', icon='hidden')
 
     signals.topic_hidden.send(
         None,
@@ -292,9 +292,7 @@ def topic_unhide(topic_id):
     board_topic_command_service.unhide_topic(topic, moderator_id)
 
     flash_success(
-        'Das Thema "{}" wurde wieder sichtbar gemacht.',
-        topic.title,
-        icon='view',
+        f'Das Thema "{topic.title}" wurde wieder sichtbar gemacht.', icon='view'
     )
 
     signals.topic_unhidden.send(
@@ -317,7 +315,7 @@ def topic_lock(topic_id):
 
     board_topic_command_service.lock_topic(topic, moderator_id)
 
-    flash_success('Das Thema "{}" wurde geschlossen.', topic.title, icon='lock')
+    flash_success(f'Das Thema "{topic.title}" wurde geschlossen.', icon='lock')
 
     signals.topic_locked.send(
         None,
@@ -340,7 +338,7 @@ def topic_unlock(topic_id):
     board_topic_command_service.unlock_topic(topic, moderator_id)
 
     flash_success(
-        'Das Thema "{}" wurde wieder geöffnet.', topic.title, icon='unlock'
+        f'Das Thema "{topic.title}" wurde wieder geöffnet.', icon='unlock'
     )
 
     signals.topic_unlocked.send(
@@ -363,7 +361,7 @@ def topic_pin(topic_id):
 
     board_topic_command_service.pin_topic(topic, moderator_id)
 
-    flash_success('Das Thema "{}" wurde angepinnt.', topic.title, icon='pin')
+    flash_success(f'Das Thema "{topic.title}" wurde angepinnt.', icon='pin')
 
     signals.topic_pinned.send(
         None,
@@ -385,7 +383,7 @@ def topic_unpin(topic_id):
 
     board_topic_command_service.unpin_topic(topic, moderator_id)
 
-    flash_success('Das Thema "{}" wurde wieder gelöst.', topic.title)
+    flash_success(f'Das Thema "{topic.title}" wurde wieder gelöst.')
 
     signals.topic_unpinned.send(
         None,
@@ -415,11 +413,9 @@ def topic_move(topic_id):
     board_topic_command_service.move_topic(topic, new_category.id)
 
     flash_success(
-        'Das Thema "{}" wurde aus der Kategorie "{}" '
-        'in die Kategorie "{}" verschoben.',
-        topic.title,
-        old_category.title,
-        new_category.title,
+        f'Das Thema "{topic.title}" wurde '
+        f'aus der Kategorie "{old_category.title}" '
+        f'in die Kategorie "{new_category.title}" verschoben.',
         icon='move',
     )
 
@@ -447,8 +443,7 @@ def topic_limit_to_announcements(topic_id):
     board_topic_command_service.limit_topic_to_announcements(topic)
 
     flash_success(
-        'Das Thema "{}" wurde auf Ankündigungen beschränkt.',
-        topic.title,
+        f'Das Thema "{topic.title}" wurde auf Ankündigungen beschränkt.',
         icon='announce',
     )
 
@@ -467,7 +462,7 @@ def topic_remove_limit_to_announcements(topic_id):
     board_topic_command_service.remove_limit_of_topic_to_announcements(topic)
 
     flash_success(
-        'Das Thema "{}" wurde für normale Beiträge geöffnet.', topic.title
+        f'Das Thema "{topic.title}" wurde für normale Beiträge geöffnet.'
     )
 
     return h.build_url_for_topic_in_category_view(topic)

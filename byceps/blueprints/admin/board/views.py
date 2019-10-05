@@ -124,7 +124,7 @@ def board_create(brand_id):
 
     board = board_service.create_board(brand.id, board_id)
 
-    flash_success('Das Forum mit der ID "{}" wurde angelegt.', board.id)
+    flash_success(f'Das Forum mit der ID "{board.id}" wurde angelegt.')
     return redirect_to('.board_view', board_id=board.id)
 
 
@@ -168,7 +168,7 @@ def category_create(board_id):
         board.id, slug, title, description
     )
 
-    flash_success('Die Kategorie "{}" wurde angelegt.', category.title)
+    flash_success(f'Die Kategorie "{category.title}" wurde angelegt.')
     return redirect_to('.board_view', board_id=board.id)
 
 
@@ -210,7 +210,7 @@ def category_update(category_id):
         category.id, slug, title, description
     )
 
-    flash_success('Die Kategorie "{}" wurde aktualisiert.', category.title)
+    flash_success(f'Die Kategorie "{category.title}" wurde aktualisiert.')
     return redirect_to('.board_view', board_id=category.board_id)
 
 
@@ -225,7 +225,7 @@ def category_hide(category_id):
 
     board_category_command_service.hide_category(category.id)
 
-    flash_success('Die Kategorie "{}" wurde versteckt.', category.title)
+    flash_success(f'Die Kategorie "{category.title}" wurde versteckt.')
 
 
 @blueprint.route(
@@ -239,7 +239,7 @@ def category_unhide(category_id):
 
     board_category_command_service.unhide_category(category.id)
 
-    flash_success('Die Kategorie "{}" wurde sichtbar gemacht.', category.title)
+    flash_success(f'Die Kategorie "{category.title}" wurde sichtbar gemacht.')
 
 
 @blueprint.route('/categories/<uuid:category_id>/up', methods=['POST'])
@@ -257,8 +257,8 @@ def category_move_up(category_id):
         )
     else:
         flash_success(
-            'Die Kategorie "{}" wurde eine Position nach oben verschoben.',
-            category.title,
+            f'Die Kategorie "{category.title}" wurde '
+            'eine Position nach oben verschoben.'
         )
 
 
@@ -278,8 +278,8 @@ def category_move_down(category_id):
         )
     else:
         flash_success(
-            'Die Kategorie "{}" wurde eine Position nach unten verschoben.',
-            category.title,
+            f'Die Kategorie "{category.title}" wurde '
+            'eine Position nach unten verschoben.'
         )
 
 
@@ -297,7 +297,7 @@ def category_delete(category_id):
             f'Die Kategorie "{category.title}" konnte nicht gelöscht werden.'
         )
     else:
-        flash_success('Die Kategorie "{}" wurde gelöscht.', category.title)
+        flash_success(f'Die Kategorie "{category.title}" wurde gelöscht.')
 
 
 # -------------------------------------------------------------------- #

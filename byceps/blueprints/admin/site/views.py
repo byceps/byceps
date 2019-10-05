@@ -127,7 +127,7 @@ def create():
         site_id, title, server_name, email_config_id, party_id=party_id
     )
 
-    flash_success('Die Site "{}" wurde angelegt.', site.title)
+    flash_success(f'Die Site "{site.title}" wurde angelegt.')
     return redirect_to('.view', site_id=site.id)
 
 
@@ -170,7 +170,7 @@ def update(site_id):
     except site_service.UnknownSiteId:
         abort(404, f'Unknown site ID "{site_id}".')
 
-    flash_success('Die Site "{}" wurde aktualisiert.', site.title)
+    flash_success(f'Die Site "{site.title}" wurde aktualisiert.')
 
     return redirect_to('.view', site_id=site.id)
 

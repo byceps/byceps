@@ -264,8 +264,8 @@ def _place_order(shop_id, orderer, cart):
 
 def _flash_order_success(order):
     flash_success(
-        'Deine Bestellung mit der Bestellnummer <strong>{}</strong> '
+        'Deine Bestellung mit der '
+        f'Bestellnummer <strong>{order.order_number}</strong> '
         'wurde entgegen genommen. Vielen Dank!',
-        order.order_number,
         text_is_safe=True,
     )

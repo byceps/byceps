@@ -133,7 +133,7 @@ def login():
     service.create_login_event(user.id, request.remote_addr)
 
     user_session.start(user.id, session_token.token, permanent=permanent)
-    flash_success('Erfolgreich eingeloggt als {}.', user.screen_name)
+    flash_success(f'Erfolgreich eingeloggt als {user.screen_name}.')
 
 
 def _is_login_allowed():
@@ -254,9 +254,9 @@ def request_password_reset():
     password_reset_service.prepare_password_reset(user, sender=sender)
 
     flash_success(
-        'Ein Link zum Setzen eines neuen Passworts für den Benutzernamen "{}" '
-        'wurde an die hinterlegte E-Mail-Adresse versendet.',
-        user.screen_name,
+        'Ein Link zum Setzen eines neuen Passworts '
+        f'für den Benutzernamen "{user.screen_name}" '
+        'wurde an die hinterlegte E-Mail-Adresse versendet.'
     )
     return request_password_reset_form()
 

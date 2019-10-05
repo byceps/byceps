@@ -125,7 +125,7 @@ def create():
         featured=featured,
     )
 
-    flash_success('Das Abzeichen "{}" wurde angelegt.', badge.label)
+    flash_success(f'Das Abzeichen "{badge.label}" wurde angelegt.')
     return redirect_to('.index')
 
 

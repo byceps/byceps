@@ -65,5 +65,5 @@ def create():
 
     group = user_group_service.create_group(creator.id, title, description)
 
-    flash_success('Die Gruppe "{}" wurde erstellt.', group.title)
+    flash_success(f'Die Gruppe "{group.title}" wurde erstellt.')
     return redirect_to('.index')

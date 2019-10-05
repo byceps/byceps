@@ -78,9 +78,8 @@ def team_create(party_id):
     team = orga_team_service.create_team(party.id, title)
 
     flash_success(
-        'Das Team "{}" wurde für die Party "{}" erstellt.',
-        team.title,
-        team.party.title,
+        f'Das Team "{team.title}" wurde '
+        f'für die Party "{team.party.title}" erstellt.'
     )
     return redirect_to('.teams_for_party', party_id=party.id)
 
@@ -99,7 +98,7 @@ def team_delete(team_id):
 
     orga_team_service.delete_team(team)
 
-    flash_success('Das Team "{}" wurde gelöscht.', title)
+    flash_success(f'Das Team "{title}" wurde gelöscht.')
 
 
 @blueprint.route('/teams/<uuid:team_id>/memberships/create')
@@ -151,9 +150,8 @@ def membership_create(team_id):
     membership = orga_team_service.create_membership(team.id, user.id, duties)
 
     flash_success(
-        '{} wurde in das Team "{}" aufgenommen.',
-        membership.user.screen_name,
-        membership.orga_team.title,
+        f'{membership.user.screen_name} wurde '
+        f'in das Team "{membership.orga_team.title}" aufgenommen.'
     )
     return redirect_to(
         '.teams_for_party', party_id=membership.orga_team.party_id
@@ -200,8 +198,8 @@ def membership_update(membership_id):
     orga_team_service.update_membership(membership, team, duties)
 
     flash_success(
-        'Die Teammitgliedschaft von {} wurde aktualisiert.',
-        membership.user.screen_name,
+        f'Die Teammitgliedschaft von {membership.user.screen_name} '
+        'wurde aktualisiert.'
     )
     return redirect_to(
         '.teams_for_party', party_id=membership.orga_team.party_id
@@ -221,7 +219,7 @@ def membership_remove(membership_id):
     orga_team_service.delete_membership(membership)
 
     flash_success(
-        '{} wurde aus dem Team "{}" entfernt.', user.screen_name, team.title
+        f'{user.screen_name} wurde aus dem Team "{team.title}" entfernt.'
     )
 
 

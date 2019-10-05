@@ -181,7 +181,7 @@ def create_account():
         )
         return create_account_form(form)
 
-    flash_success('Das Benutzerkonto "{}" wurde angelegt.', user.screen_name)
+    flash_success(f'Das Benutzerkonto "{user.screen_name}" wurde angelegt.')
     account_created.send(None, user_id=user.id)
 
     return redirect_to('.view', user_id=user.id)
@@ -218,8 +218,8 @@ def set_password(user_id):
     password_service.update_password_hash(user.id, new_password, initiator_id)
 
     flash_success(
-        "Für Benutzerkonto '{}' wurde ein neues Passwort gesetzt.",
-        user.screen_name,
+        f"Für Benutzerkonto '{user.screen_name}' wurde "
+        "ein neues Passwort gesetzt."
     )
 
     return redirect(url_for('.view', user_id=user.id))
@@ -237,7 +237,7 @@ def initialize_account(user_id):
     user_command_service.initialize_account(user.id, initiator_id)
 
     flash_success(
-        "Das Benutzerkonto '{}' wurde initialisiert.", user.screen_name
+        f"Das Benutzerkonto '{user.screen_name}' wurde initialisiert."
     )
 
 
@@ -285,7 +285,7 @@ def suspend_account(user_id):
 
     account_suspended.send(None, user_id=user.id, initiator_id=initiator_id)
 
-    flash_success("Das Benutzerkonto '{}' wurde gesperrt.", user.screen_name)
+    flash_success(f"Das Benutzerkonto '{user.screen_name}' wurde gesperrt.")
     return redirect_to('.view', user_id=user.id)
 
 
@@ -333,7 +333,7 @@ def unsuspend_account(user_id):
 
     account_unsuspended.send(None, user_id=user.id, initiator_id=initiator_id)
 
-    flash_success("Das Benutzerkonto '{}' wurde entsperrt.", user.screen_name)
+    flash_success(f"Das Benutzerkonto '{user.screen_name}' wurde entsperrt.")
     return redirect_to('.view', user_id=user.id)
 
 
@@ -383,7 +383,7 @@ def delete_account(user_id):
 
     account_deleted.send(None, user_id=user.id, initiator_id=initiator_id)
 
-    flash_success("Das Benutzerkonto '{}' wurde gelöscht.", user.screen_name)
+    flash_success(f"Das Benutzerkonto '{user.screen_name}' wurde gelöscht.")
     return redirect_to('.view', user_id=user.id)
 
 
@@ -430,9 +430,8 @@ def change_screen_name(user_id):
     )
 
     flash_success(
-        "Das Benutzerkonto '{}' wurde umbenannt in '{}'.",
-        old_screen_name,
-        new_screen_name,
+        f"Das Benutzerkonto '{old_screen_name}' wurde "
+        f"umbenannt in '{new_screen_name}'."
     )
     return redirect_to('.view', user_id=user.id)
 
@@ -488,7 +487,7 @@ def role_assign(user_id, role_id):
     )
 
     flash_success(
-        '{} wurde die Rolle "{}" zugewiesen.', user.screen_name, role.title
+        f'{user.screen_name} wurde die Rolle "{role.title}" zugewiesen.'
     )
 
 
@@ -506,7 +505,7 @@ def role_deassign(user_id, role_id):
     )
 
     flash_success(
-        '{} wurde die Rolle "{}" genommen.', user.screen_name, role.title
+        f'{user.screen_name} wurde die Rolle "{role.title}" genommen.'
     )
 
 

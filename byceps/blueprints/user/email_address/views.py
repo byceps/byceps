@@ -69,9 +69,9 @@ def request_confirmation_email():
     )
 
     flash_success(
-        'Der Link zur Bestätigung der für den Benutzernamen "{}" '
-        'hinterlegten E-Mail-Adresse wurde erneut versendet.',
-        user.screen_name,
+        'Der Link zur Bestätigung der für den '
+        f'Benutzernamen "{user.screen_name}" '
+        'hinterlegten E-Mail-Adresse wurde erneut versendet.'
     )
 
     return redirect_to('.request_confirmation_email_form')
@@ -101,8 +101,8 @@ def confirm(token):
     user_event_service.create_event('email-address-confirmed', user.id, data)
 
     flash_success(
-        'Die E-Mail-Adresse wurde bestätigt. Das Benutzerkonto "{}" ist nun aktiviert.',
-        user.screen_name,
+        'Die E-Mail-Adresse wurde bestätigt. '
+        f'Das Benutzerkonto "{user.screen_name}" ist nun aktiviert.'
     )
     signals.email_address_confirmed.send(None, user_id=user.id)
 

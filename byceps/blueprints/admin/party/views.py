@@ -147,7 +147,7 @@ def create(brand_id):
         shop_id=shop_id,
     )
 
-    flash_success('Die Party "{}" wurde angelegt.', party.title)
+    flash_success(f'Die Party "{party.title}" wurde angelegt.')
     return redirect_to('.index_for_brand', brand_id=brand.id)
 
 
@@ -206,7 +206,7 @@ def update(party_id):
     except party_service.UnknownPartyId:
         abort(404, f'Unknown party ID "{party_id}".')
 
-    flash_success('Der Party "{}" wurde aktualisiert.', party.title)
+    flash_success(f'Der Party "{party.title}" wurde aktualisiert.')
 
     return redirect_to('.view', party_id=party.id)
 

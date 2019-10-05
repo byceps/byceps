@@ -91,7 +91,7 @@ def channel_create(brand_id):
         brand.id, channel_id, url_prefix
     )
 
-    flash_success('Der News-Kanal mit der ID "{}" wurde angelegt.', channel.id)
+    flash_success(f'Der News-Kanal mit der ID "{channel.id}" wurde angelegt.')
     return redirect_to('.channel_view', channel_id=channel.id)
 
 
@@ -226,7 +226,7 @@ def item_create(channel_id):
         channel.id, slug, creator.id, title, body, image_url_path=image_url_path
     )
 
-    flash_success('Die News "{}" wurde angelegt.', item.title)
+    flash_success(f'Die News "{item.title}" wurde angelegt.')
 
     return redirect_to('.channel_view', channel_id=channel.id)
 
@@ -274,7 +274,7 @@ def item_update(item_id):
         item.id, slug, creator.id, title, body, image_url_path=image_url_path
     )
 
-    flash_success('Die News "{}" wurde aktualisiert.', item.title)
+    flash_success(f'Die News "{item.title}" wurde aktualisiert.')
     return redirect_to('.channel_view', channel_id=item.channel.id)
 
 
@@ -288,7 +288,7 @@ def item_publish(item_id):
     news_item_service.publish_item(item.id)
     signals.item_published.send(None, item_id=item.id)
 
-    flash_success('Die News "{}" wurde veröffentlicht.', item.title)
+    flash_success(f'Die News "{item.title}" wurde veröffentlicht.')
 
 
 # -------------------------------------------------------------------- #

@@ -181,7 +181,7 @@ def create_document(scope_type, scope_name):
         image_url_path=image_url_path,
     )
 
-    flash_success('Das Dokument "{}" wurde angelegt.', version.snippet.name)
+    flash_success(f'Das Dokument "{version.snippet.name}" wurde angelegt.')
     signals.snippet_created.send(None, snippet_version_id=version.id)
 
     return redirect_to('.view_version', snippet_version_id=version.id)
@@ -234,7 +234,7 @@ def update_document(snippet_id):
         image_url_path=image_url_path,
     )
 
-    flash_success('Das Dokument "{}" wurde aktualisiert.', version.snippet.name)
+    flash_success(f'Das Dokument "{version.snippet.name}" wurde aktualisiert.')
     signals.snippet_updated.send(None, snippet_version_id=version.id)
 
     return redirect_to('.view_version', snippet_version_id=version.id)
@@ -316,7 +316,7 @@ def create_fragment(scope_type, scope_name):
 
     version = snippet_service.create_fragment(scope, name, creator.id, body)
 
-    flash_success('Das Fragment "{}" wurde angelegt.', version.snippet.name)
+    flash_success(f'Das Fragment "{version.snippet.name}" wurde angelegt.')
     signals.snippet_created.send(None, snippet_version_id=version.id)
 
     return redirect_to('.view_version', snippet_version_id=version.id)
@@ -359,7 +359,7 @@ def update_fragment(snippet_id):
 
     version = snippet_service.update_fragment(snippet, creator.id, body)
 
-    flash_success('Das Fragment "{}" wurde aktualisiert.', version.snippet.name)
+    flash_success(f'Das Fragment "{version.snippet.name}" wurde aktualisiert.')
     signals.snippet_updated.send(None, snippet_version_id=version.id)
 
     return redirect_to('.view_version', snippet_version_id=version.id)
@@ -456,9 +456,7 @@ def create_mountpoint(snippet_id):
         site_id, endpoint_suffix, url_path, snippet.id
     )
 
-    flash_success(
-        'Der Mountpoint für "{}" wurde angelegt.', mountpoint.url_path
-    )
+    flash_success(f'Der Mountpoint für "{mountpoint.url_path}" wurde angelegt.')
     return redirect_to('.index_mountpoints', site_id=site_id)
 
 
@@ -476,7 +474,7 @@ def delete_mountpoint(mountpoint_id):
 
     mountpoint_service.delete_mountpoint(mountpoint)
 
-    flash_success('Der Mountpoint für "{}" wurde entfernt.', url_path)
+    flash_success(f'Der Mountpoint für "{url_path}" wurde entfernt.')
 
 
 # -------------------------------------------------------------------- #

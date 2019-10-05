@@ -148,7 +148,7 @@ def occupy_seat(ticket_id, seat_id):
     except ValueError:
         abort(404)
 
-    flash_success('{} wurde mit Ticket {} reserviert.', seat.label, ticket.code)
+    flash_success(f'{seat.label} wurde mit Ticket {ticket.code} reserviert.')
 
 
 @blueprint.route('/ticket/<uuid:ticket_id>/seat', methods=['DELETE'])
@@ -184,7 +184,7 @@ def release_seat(ticket_id):
         )
         return
 
-    flash_success('{} wurde freigegeben.', seat.label)
+    flash_success(f'{seat.label} wurde freigegeben.')
 
 
 def _abort_if_seat_management_disabled() -> None:

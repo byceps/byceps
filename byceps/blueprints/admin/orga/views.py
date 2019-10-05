@@ -94,9 +94,8 @@ def create_orgaflag(brand_id):
     orga_flag = orga_service.add_orga_flag(brand.id, user.id, initiator.id)
 
     flash_success(
-        '{} wurde das Orga-Flag für die Marke {} gegeben.',
-        orga_flag.user.screen_name,
-        orga_flag.brand.title,
+        f'{orga_flag.user.screen_name} wurde das Orga-Flag '
+        f'für die Marke {orga_flag.brand.title} gegeben.'
     )
     return redirect_to('.persons_for_brand', brand_id=orga_flag.brand.id)
 
@@ -118,9 +117,8 @@ def remove_orgaflag(brand_id, user_id):
     orga_service.remove_orga_flag(orga_flag, initiator.id)
 
     flash_success(
-        '{} wurde das Orga-Flag für die Marke {} entzogen.',
-        user.screen_name,
-        brand.title,
+        f'{user.screen_name} wurde das Orga-Flag '
+        f'für die Marke {brand.title} entzogen.'
     )
 
 

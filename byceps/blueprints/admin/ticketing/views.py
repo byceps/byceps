@@ -117,9 +117,8 @@ def appoint_user(ticket_id):
     ticket_user_management_service.appoint_user(ticket.id, user.id, manager.id)
 
     flash_success(
-        '{} wurde als Nutzer/in von Ticket {} eingetragen.',
-        user.screen_name,
-        ticket.code,
+        f'{user.screen_name} wurde als Nutzer/in '
+        f'von Ticket {ticket.code} eingetragen.'
     )
 
     return redirect(url_for('.view_ticket', ticket_id=ticket.id))
@@ -151,9 +150,7 @@ def set_user_checked_in_flag(ticket_id):
         )
         return
 
-    flash_success(
-        "Benutzer '{}' wurde eingecheckt.", ticket.used_by.screen_name
-    )
+    flash_success(f"Benutzer '{ticket.used_by.screen_name}' wurde eingecheckt.")
 
     occupies_seat = (ticket.occupied_seat_id is not None)
     if not occupies_seat:

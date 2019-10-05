@@ -145,9 +145,8 @@ def appoint_user(ticket_id):
     ticket_user_management_service.appoint_user(ticket.id, user.id, manager.id)
 
     flash_success(
-        '{} wurde als Nutzer/in von Ticket {} eingetragen.',
-        user.screen_name,
-        ticket.code,
+        f'{user.screen_name} wurde als Nutzer/in '
+        f'von Ticket {ticket.code} eingetragen.'
     )
 
     notification_service.notify_appointed_user(ticket, user, manager)
@@ -173,7 +172,7 @@ def withdraw_user(ticket_id):
     )
 
     flash_success(
-        'Du wurdest als Nutzer/in von Ticket {} eingetragen.', ticket.code
+        f'Du wurdest als Nutzer/in von Ticket {ticket.code} eingetragen.'
     )
 
 
@@ -226,9 +225,8 @@ def appoint_user_manager(ticket_id):
     )
 
     flash_success(
-        '{} wurde als Nutzer-Verwalter/in von Ticket {} eingetragen.',
-        user.screen_name,
-        ticket.code,
+        f'{user.screen_name} wurde als Nutzer-Verwalter/in '
+        f'von Ticket {ticket.code} eingetragen.'
     )
 
     notification_service.notify_appointed_user_manager(ticket, user, manager)
@@ -254,7 +252,7 @@ def withdraw_user_manager(ticket_id):
     ticket_user_management_service.withdraw_user_manager(ticket.id, manager.id)
 
     flash_success(
-        'Der Nutzer-Verwalter von Ticket {} wurde entfernt.', ticket.code
+        f'Der Nutzer-Verwalter von Ticket {ticket.code} wurde entfernt.'
     )
 
     notification_service.notify_withdrawn_user_manager(ticket, user, manager)
@@ -309,9 +307,8 @@ def appoint_seat_manager(ticket_id):
     )
 
     flash_success(
-        '{} wurde als Sitzplatz-Verwalter/in von Ticket {} eingetragen.',
-        user.screen_name,
-        ticket.code,
+        f'{user.screen_name} wurde als Sitzplatz-Verwalter/in '
+        f'von Ticket {ticket.code} eingetragen.'
     )
 
     notification_service.notify_appointed_seat_manager(ticket, user, manager)
@@ -337,7 +334,7 @@ def withdraw_seat_manager(ticket_id):
     ticket_seat_management_service.withdraw_seat_manager(ticket.id, manager.id)
 
     flash_success(
-        'Der Sitzplatz-Verwalter von Ticket {} wurde entfernt.', ticket.code
+        f'Der Sitzplatz-Verwalter von Ticket {ticket.code} wurde entfernt.'
     )
 
     notification_service.notify_withdrawn_seat_manager(ticket, user, manager)

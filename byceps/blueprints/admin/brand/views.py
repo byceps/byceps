@@ -80,7 +80,7 @@ def create():
 
     brand = brand_service.create_brand(brand_id, title)
 
-    flash_success('Die Marke "{}" wurde angelegt.', brand.title)
+    flash_success(f'Die Marke "{brand.title}" wurde angelegt.')
     return redirect_to('.index')
 
 

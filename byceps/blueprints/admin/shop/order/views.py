@@ -150,8 +150,8 @@ def set_invoiced_flag(order_id):
     order_service.set_invoiced_flag(order, initiator_id)
 
     flash_success(
-        'Bestellung {} wurde als in Rechnung gestellt markiert.',
-        order.order_number,
+        f'Bestellung {order.order_number} wurde '
+        'als in Rechnung gestellt markiert.'
     )
 
 
@@ -166,8 +166,8 @@ def unset_invoiced_flag(order_id):
     order_service.unset_invoiced_flag(order, initiator_id)
 
     flash_success(
-        'Bestellung {} wurde als nicht in Rechnung gestellt markiert.',
-        order.order_number,
+        f'Bestellung {order.order_number} wurde '
+        'als nicht in Rechnung gestellt markiert.'
     )
 
 
@@ -182,7 +182,7 @@ def set_shipped_flag(order_id):
     order_service.set_shipped_flag(order, initiator_id)
 
     flash_success(
-        'Bestellung {} wurde als verschickt markiert.', order.order_number
+        f'Bestellung {order.order_number} wurde als verschickt markiert.'
     )
 
 
@@ -197,7 +197,7 @@ def unset_shipped_flag(order_id):
     order_service.unset_shipped_flag(order, initiator_id)
 
     flash_success(
-        'Bestellung {} wurde als nicht verschickt markiert.', order.order_number
+        f'Bestellung {order.order_number} wurde als nicht verschickt markiert.'
     )
 
 

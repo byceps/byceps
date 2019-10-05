@@ -182,7 +182,7 @@ def create(shop_id):
         shop.id, item_number, description, price, tax_rate, quantity
     )
 
-    flash_success('Der Artikel "{}" wurde angelegt.', article.item_number)
+    flash_success(f'Der Artikel "{article.item_number}" wurde angelegt.')
     return redirect_to('.view', article_id=article.id)
 
 
@@ -249,7 +249,7 @@ def update(article_id):
         shipping_required,
     )
 
-    flash_success('Der Artikel "{}" wurde aktualisiert.', article.description)
+    flash_success(f'Der Artikel "{article.description}" wurde aktualisiert.')
     return redirect_to('.view', article_id=article.id)
 
 
@@ -296,10 +296,9 @@ def attachment_create(article_id):
     article_service.attach_article(article_to_attach, quantity, article)
 
     flash_success(
-        'Der Artikel "{}" wurde {:d} mal an den Artikel "{}" angehängt.',
-        article_to_attach.item_number,
-        quantity,
-        article.item_number,
+        f'Der Artikel "{article_to_attach.item_number}" '
+        f'wurde {quantity:d} mal an den Artikel "{article.item_number}" '
+        'angehängt.'
     )
     return redirect_to('.view', article_id=article.id)
 
@@ -320,9 +319,8 @@ def attachment_remove(article_id):
     article_service.unattach_article(attached_article)
 
     flash_success(
-        'Artikel "{}" ist nun nicht mehr an Artikel "{}" angehängt.',
-        article.item_number,
-        attached_to_article.item_number,
+        f'Artikel "{article.item_number}" ist nun nicht mehr '
+        f'an Artikel "{attached_to_article.item_number}" angehängt.'
     )
 
 
