@@ -30,8 +30,9 @@ def create_user(
     if not email_address:
         email_address = 'user{}@example.com'.format(user_id)
 
-    user = user_creation_service.build_user(created_at, screen_name,
-                                            email_address)
+    user = user_creation_service.build_user(
+        created_at, screen_name, email_address
+    )
     user.id = user_id
     user.initialized = initialized
 
@@ -48,8 +49,12 @@ def create_user_with_detail(
     last_name='Doe',
     date_of_birth=None,
 ):
-    user = create_user(screen_name, user_id=user_id,
-                       email_address=email_address, initialized=initialized)
+    user = create_user(
+        screen_name,
+        user_id=user_id,
+        email_address=email_address,
+        initialized=initialized,
+    )
 
     detail = UserDetail(user=user)
     detail.first_names = first_names

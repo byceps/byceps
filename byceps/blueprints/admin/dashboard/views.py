@@ -67,7 +67,8 @@ def view_global():
     uninitialized_user_count = user_stats_service.count_uninitialized_users()
 
     orgas_with_next_birthdays = list(
-        orga_birthday_service.collect_orgas_with_next_birthdays(limit=3))
+        orga_birthday_service.collect_orgas_with_next_birthdays(limit=3)
+    )
 
     return {
         'active_parties': active_parties,

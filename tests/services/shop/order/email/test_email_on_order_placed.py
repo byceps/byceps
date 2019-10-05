@@ -46,8 +46,10 @@ class EmailOnOrderPlacedTest(OrderEmailTestBase):
         self.order_id = self.place_order(self.user)
 
     def create_email_payment_instructions_snippet(self):
-        self.create_shop_fragment(self.shop.id, 'email_payment_instructions',
-                                  '''
+        self.create_shop_fragment(
+            self.shop.id,
+            'email_payment_instructions',
+            '''
 Bitte überweise den Gesamtbetrag auf folgendes Konto:
 
   Zahlungsempfänger: <Name>
@@ -59,10 +61,14 @@ Bitte überweise den Gesamtbetrag auf folgendes Konto:
 Wir werden dich informieren, sobald wir deine Zahlung erhalten haben.
 
 Hier kannst du deine Bestellungen einsehen: https://www.example.com/shop/orders
-''')
+''',
+        )
 
     def create_email_footer_snippet(self):
-        self.create_shop_fragment(self.shop.id, 'email_footer', '''
+        self.create_shop_fragment(
+            self.shop.id,
+            'email_footer',
+            '''
 Für Fragen stehen wir gerne zur Verfügung.
 
 Viele Grüße,
@@ -72,7 +78,8 @@ das Team der Acme Entertainment Convention
 Acme Entertainment Convention
 
 E-Mail: acmecon@example.com
-''')
+''',
+        )
 
     @patch('byceps.email.send')
     def test_email_on_order_placed(self, send_email_mock):
@@ -130,13 +137,26 @@ E-Mail: acmecon@example.com
             expected_to_orderer_sender,
             expected_to_orderer_recipients,
             expected_to_orderer_subject,
-            expected_to_orderer_body)
+            expected_to_orderer_body,
+        )
 
     # helpers
 
     def create_articles(self):
-        self.article1 = self.create_article(self.shop.id, 'AC-14-A00003', 'Einzelticket, Kategorie Loge', Decimal('99.00'), 123)
-        self.article2 = self.create_article(self.shop.id, 'AC-14-A00007', 'T-Shirt, Größe L', Decimal('14.95'), 50)
+        self.article1 = self.create_article(
+            self.shop.id,
+            'AC-14-A00003',
+            'Einzelticket, Kategorie Loge',
+            Decimal('99.00'),
+            123,
+        )
+        self.article2 = self.create_article(
+            self.shop.id,
+            'AC-14-A00007',
+            'T-Shirt, Größe L',
+            Decimal('14.95'),
+            50,
+        )
 
     def place_order(self, orderer):
         created_at = datetime(2014, 8, 15, 20, 7, 43)
@@ -146,5 +166,6 @@ E-Mail: acmecon@example.com
             (self.article2, 2),
         ]
 
-        return self.place_order_with_items(self.party.id, orderer, created_at,
-                                           items_with_quantity)
+        return self.place_order_with_items(
+            self.party.id, orderer, created_at, items_with_quantity
+        )

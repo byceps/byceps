@@ -20,8 +20,10 @@ class SendUserMessageTest(AbstractAppTestCase):
     def setUp(self):
         super().setUp()
 
-        create_email_config(sender_address='noreply@example.com',
-                            sender_name='ACME Entertainment Convention')
+        create_email_config(
+            sender_address='noreply@example.com',
+            sender_name='ACME Entertainment Convention',
+        )
 
         create_site(server_name='acme.example.com')
 
@@ -29,11 +31,12 @@ class SendUserMessageTest(AbstractAppTestCase):
     def test_send_when_logged_in_without_brand_contact_address(
         self, send_email_mock
     ):
-        sender = create_user('Alice',
+        sender = create_user(
+            'Alice',
             user_id='a4903d8f-0bc6-4af9-aeb9-d7534a0a22e8',
-            email_address='alice@example.com')
-        recipient = create_user('Bob',
-            email_address='bob@example.com')
+            email_address='alice@example.com',
+        )
+        recipient = create_user('Bob', email_address='bob@example.com')
         text = '''\
 Hi Bob,
 
@@ -43,8 +46,9 @@ kthxbye,
 Alice
 '''
 
-        expected_response_location \
-            = 'http://example.com/users/{}'.format(recipient.id)
+        expected_response_location = 'http://example.com/users/{}'.format(
+            recipient.id
+        )
 
         expected_email_sender = 'ACME Entertainment Convention <noreply@example.com>'
         expected_email_recipients = ['Bob <bob@example.com>']
@@ -73,8 +77,9 @@ Alice
 Diese Mitteilung wurde über die Website acme.example.com gesendet.\
 '''
 
-        response = self.send_request(recipient.id, text,
-                                     current_user_id=sender.id)
+        response = self.send_request(
+            recipient.id, text, current_user_id=sender.id
+        )
 
         assert response.status_code == 302
         assert response.location == expected_response_location
@@ -83,21 +88,25 @@ Diese Mitteilung wurde über die Website acme.example.com gesendet.\
             expected_email_sender,
             expected_email_recipients,
             expected_email_subject,
-            expected_email_body)
+            expected_email_body,
+        )
 
     @patch('byceps.email.send')
     def test_send_when_logged_in_with_brand_contact_address(
         self, send_email_mock
     ):
-        create_email_config(sender_address='noreply@example.com',
-                            sender_name='ACME Entertainment Convention',
-                            contact_address='help@example.com')
+        create_email_config(
+            sender_address='noreply@example.com',
+            sender_name='ACME Entertainment Convention',
+            contact_address='help@example.com',
+        )
 
-        sender = create_user('Bob',
+        sender = create_user(
+            'Bob',
             user_id='11d72bab-3646-4199-b96c-e5e4c6f972bc',
-            email_address='bob@example.com')
-        recipient = create_user('Alice',
-            email_address='alice@example.com')
+            email_address='bob@example.com',
+        )
+        recipient = create_user('Alice', email_address='alice@example.com')
         text = '''\
 Hey Alice,
 
@@ -107,8 +116,9 @@ Best,
 Bob
 '''
 
-        expected_response_location \
-            = 'http://example.com/users/{}'.format(recipient.id)
+        expected_response_location = 'http://example.com/users/{}'.format(
+            recipient.id
+        )
 
         expected_email_sender = 'ACME Entertainment Convention <noreply@example.com>'
         expected_email_recipients = ['Alice <alice@example.com>']
@@ -138,8 +148,9 @@ Diese Mitteilung wurde über die Website acme.example.com gesendet.
 Bei Fragen kontaktiere uns bitte per E-Mail an: help@example.com\
 '''
 
-        response = self.send_request(recipient.id, text,
-                                     current_user_id=sender.id)
+        response = self.send_request(
+            recipient.id, text, current_user_id=sender.id
+        )
 
         assert response.status_code == 302
         assert response.location == expected_response_location
@@ -148,7 +159,8 @@ Bei Fragen kontaktiere uns bitte per E-Mail an: help@example.com\
             expected_email_sender,
             expected_email_recipients,
             expected_email_subject,
-            expected_email_body)
+            expected_email_body,
+        )
 
     def test_send_when_not_logged_in(self):
         recipient_id = '8e5037f6-3ca1-4981-b1e4-1998cbdf58e2'

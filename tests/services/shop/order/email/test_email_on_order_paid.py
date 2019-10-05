@@ -42,12 +42,15 @@ class EmailOnOrderPaidTest(OrderEmailTestBase):
 
         self.order_id = self.place_order(self.user)
 
-        order_service.mark_order_as_paid(self.order_id,
-                                         PaymentMethod.bank_transfer,
-                                         self.admin.id)
+        order_service.mark_order_as_paid(
+            self.order_id, PaymentMethod.bank_transfer, self.admin.id
+        )
 
     def create_email_footer_snippet(self):
-        self.create_shop_fragment(self.shop.id, 'email_footer', '''
+        self.create_shop_fragment(
+            self.shop.id,
+            'email_footer',
+            '''
 Für Fragen stehen wir gerne zur Verfügung.
 
 Viele Grüße,
@@ -57,7 +60,8 @@ das Team der Acme Entertainment Convention
 Acme Entertainment Convention
 
 E-Mail: acmecon@example.com
-''')
+''',
+        )
 
     @patch('byceps.email.send')
     def test_email_on_order_paid(self, send_email_mock):
@@ -93,12 +97,14 @@ E-Mail: acmecon@example.com
             expected_sender,
             expected_recipients,
             expected_subject,
-            expected_body)
+            expected_body,
+        )
 
     # helpers
 
     def place_order(self, orderer):
         created_at = datetime(2014, 9, 23, 18, 40, 53)
 
-        return self.place_order_with_items(self.shop.id, orderer, created_at,
-                                           [])
+        return self.place_order_with_items(
+            self.shop.id, orderer, created_at, []
+        )

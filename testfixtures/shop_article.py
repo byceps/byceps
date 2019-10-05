@@ -31,6 +31,13 @@ def create_article(
     if tax_rate is None:
         tax_rate = Decimal('0.19')
 
-    return Article(shop_id, item_number, description, price, tax_rate, quantity,
-                   available_from=available_from,
-                   available_until=available_until)
+    return Article(
+        shop_id,
+        item_number,
+        description,
+        price,
+        tax_rate,
+        quantity,
+        available_from=available_from,
+        available_until=available_until,
+    )

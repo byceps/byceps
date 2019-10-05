@@ -52,16 +52,18 @@ def test_create_or_update(app):
 
     assert settings_service.find_setting(site_id, name) is None
 
-    created_setting = settings_service \
-        .create_or_update_setting(site_id, name, value1)
+    created_setting = settings_service.create_or_update_setting(
+        site_id, name, value1
+    )
 
     assert created_setting is not None
     assert created_setting.site_id == site_id
     assert created_setting.name == name
     assert created_setting.value == value1
 
-    updated_setting = settings_service \
-        .create_or_update_setting(site_id, name, value2)
+    updated_setting = settings_service.create_or_update_setting(
+        site_id, name, value2
+    )
 
     assert updated_setting is not None
     assert updated_setting.site_id == site_id

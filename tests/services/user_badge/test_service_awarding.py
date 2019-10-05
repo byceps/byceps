@@ -23,7 +23,8 @@ class UserBadgeAwardingServiceTestCase(AbstractAppTestCase):
     def test_get_awardings_of_unawarded_badge(self):
         with self.app.app_context():
             badge = user_badge_service.create_badge(
-                'awesomeness', 'Certificate of Awesomeness', 'awesomeness.svg')
+                'awesomeness', 'Certificate of Awesomeness', 'awesomeness.svg'
+            )
 
             actual = user_badge_service.get_awardings_of_badge(badge.id)
 
@@ -35,7 +36,8 @@ class UserBadgeAwardingServiceTestCase(AbstractAppTestCase):
 
         with self.app.app_context():
             badge = user_badge_service.create_badge(
-                'awesomeness', 'Certificate of Awesomeness', 'awesomeness.svg')
+                'awesomeness', 'Certificate of Awesomeness', 'awesomeness.svg'
+            )
 
             user_badge_service.award_badge_to_user(badge.id, user1.id)
             user_badge_service.award_badge_to_user(badge.id, user1.id)

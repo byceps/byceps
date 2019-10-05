@@ -52,8 +52,9 @@ class MatchCommentCreateTest(AbstractAppTestCase):
 
         unknown_match_id = '00000000-0000-0000-0000-000000000000'
 
-        response = self.request_comment_creation(unknown_match_id,
-                                                 user_id=player.id)
+        response = self.request_comment_creation(
+            unknown_match_id, user_id=player.id
+        )
 
         assert response.status_code == 404
 

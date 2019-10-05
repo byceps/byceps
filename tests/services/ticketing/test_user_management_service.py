@@ -26,8 +26,9 @@ class TicketUserManagementServiceTest(AbstractAppTestCase):
 
         self.category_id = self.create_category('Premium').id
 
-        self.ticket = ticket_creation_service \
-            .create_ticket(self.category_id, self.owner.id)
+        self.ticket = ticket_creation_service.create_ticket(
+            self.category_id, self.owner.id
+        )
 
     def test_appoint_and_withdraw_user_manager(self):
         manager = create_user('Ticket_Manager')
@@ -36,34 +37,44 @@ class TicketUserManagementServiceTest(AbstractAppTestCase):
 
         # appoint user manager
 
-        ticket_user_management_service \
-            .appoint_user_manager(self.ticket.id, manager.id, self.owner.id)
+        ticket_user_management_service.appoint_user_manager(
+            self.ticket.id, manager.id, self.owner.id
+        )
         assert self.ticket.user_managed_by_id == manager.id
 
         events_after_appointment = event_service.get_events_for_ticket(
-            self.ticket.id)
+            self.ticket.id
+        )
         assert len(events_after_appointment) == 1
 
         appointment_event = events_after_appointment[0]
-        assert_event(appointment_event, 'user-manager-appointed', {
-            'appointed_user_manager_id': str(manager.id),
-            'initiator_id': str(self.owner.id),
-        })
+        assert_event(
+            appointment_event,
+            'user-manager-appointed',
+            {
+                'appointed_user_manager_id': str(manager.id),
+                'initiator_id': str(self.owner.id),
+            },
+        )
 
         # withdraw user manager
 
-        ticket_user_management_service \
-            .withdraw_user_manager(self.ticket.id, self.owner.id)
+        ticket_user_management_service.withdraw_user_manager(
+            self.ticket.id, self.owner.id
+        )
         assert self.ticket.user_managed_by_id is None
 
         events_after_withdrawal = event_service.get_events_for_ticket(
-            self.ticket.id)
+            self.ticket.id
+        )
         assert len(events_after_withdrawal) == 2
 
         withdrawal_event = events_after_withdrawal[1]
-        assert_event(withdrawal_event, 'user-manager-withdrawn', {
-            'initiator_id': str(self.owner.id),
-        })
+        assert_event(
+            withdrawal_event,
+            'user-manager-withdrawn',
+            {'initiator_id': str(self.owner.id)},
+        )
 
     def test_appoint_and_withdraw_user(self):
         user = create_user('Ticket_User')
@@ -72,34 +83,44 @@ class TicketUserManagementServiceTest(AbstractAppTestCase):
 
         # appoint user
 
-        ticket_user_management_service \
-            .appoint_user(self.ticket.id, user.id, self.owner.id)
+        ticket_user_management_service.appoint_user(
+            self.ticket.id, user.id, self.owner.id
+        )
         assert self.ticket.used_by_id == user.id
 
         events_after_appointment = event_service.get_events_for_ticket(
-            self.ticket.id)
+            self.ticket.id
+        )
         assert len(events_after_appointment) == 1
 
         appointment_event = events_after_appointment[0]
-        assert_event(appointment_event, 'user-appointed', {
-            'appointed_user_id': str(user.id),
-            'initiator_id': str(self.owner.id),
-        })
+        assert_event(
+            appointment_event,
+            'user-appointed',
+            {
+                'appointed_user_id': str(user.id),
+                'initiator_id': str(self.owner.id),
+            },
+        )
 
         # withdraw user
 
-        ticket_user_management_service \
-            .withdraw_user(self.ticket.id, self.owner.id)
+        ticket_user_management_service.withdraw_user(
+            self.ticket.id, self.owner.id
+        )
         assert self.ticket.used_by_id is None
 
         events_after_withdrawal = event_service.get_events_for_ticket(
-            self.ticket.id)
+            self.ticket.id
+        )
         assert len(events_after_withdrawal) == 2
 
         withdrawal_event = events_after_withdrawal[1]
-        assert_event(withdrawal_event, 'user-withdrawn', {
-            'initiator_id': str(self.owner.id),
-        })
+        assert_event(
+            withdrawal_event,
+            'user-withdrawn',
+            {'initiator_id': str(self.owner.id)},
+        )
 
     # helpers
 

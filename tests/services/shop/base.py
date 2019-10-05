@@ -31,12 +31,14 @@ class ShopTestBase(AbstractAppTestCase):
         return shop
 
     def create_article_number_sequence(self, shop_id, prefix, *, value=0):
-        return self.create_number_sequence(shop_id, Purpose.article, prefix,
-                                           value=value)
+        return self.create_number_sequence(
+            shop_id, Purpose.article, prefix, value=value
+        )
 
     def create_order_number_sequence(self, shop_id, prefix, *, value=0):
-        return self.create_number_sequence(shop_id, Purpose.order, prefix,
-                                           value=value)
+        return self.create_number_sequence(
+            shop_id, Purpose.order, prefix, value=value
+        )
 
     def create_number_sequence(self, shop_id, purpose, prefix, *, value=0):
         sequence = create_sequence(shop_id, purpose, prefix, value=value)

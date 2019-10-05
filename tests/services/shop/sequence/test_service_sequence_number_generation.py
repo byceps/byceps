@@ -34,8 +34,11 @@ class SequenceNumberGenerationTestCase(ShopTestBase):
     def test_generate_article_number_custom(self):
         last_assigned_article_sequence_number = 41
 
-        self.create_article_number_sequence(self.shop.id, 'XYZ-09-A',
-            value=last_assigned_article_sequence_number)
+        self.create_article_number_sequence(
+            self.shop.id,
+            'XYZ-09-A',
+            value=last_assigned_article_sequence_number,
+        )
 
         actual = generate_article_number(self.shop.id)
 
@@ -51,8 +54,9 @@ class SequenceNumberGenerationTestCase(ShopTestBase):
     def test_generate_order_number_custom(self):
         last_assigned_order_sequence_number = 206
 
-        self.create_order_number_sequence(self.shop.id, 'LOL-03-B',
-            value=last_assigned_order_sequence_number)
+        self.create_order_number_sequence(
+            self.shop.id, 'LOL-03-B', value=last_assigned_order_sequence_number
+        )
 
         actual = generate_order_number(self.shop.id)
 

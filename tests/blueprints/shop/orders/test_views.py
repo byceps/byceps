@@ -64,8 +64,9 @@ class ShopOrdersTestCase(ShopTestBase):
 
     def test_view_matching_user_but_different_party_and_shop(self):
         shop = self.create_shop('shop-2')
-        other_party = create_party(self.brand.id, 'otherlan-2013',
-                                   'OtherLAN 2013', shop_id=shop.id)
+        other_party = create_party(
+            self.brand.id, 'otherlan-2013', 'OtherLAN 2013', shop_id=shop.id
+        )
         create_site(party_id=other_party.id)
 
         self.create_order_number_sequence(self.shop.id, 'LF-02-B')
@@ -80,16 +81,18 @@ class ShopOrdersTestCase(ShopTestBase):
     # helpers
 
     def create_payment_instructions_snippet(self, shop_id):
-        self.create_shop_fragment(shop_id, 'payment_instructions',
-                                  'Send all ur moneyz!')
+        self.create_shop_fragment(
+            shop_id, 'payment_instructions', 'Send all ur moneyz!'
+        )
 
     def place_order(self, shop_id, user):
         orderer = create_orderer(user)
         payment_method = PaymentMethod.bank_transfer
         cart = Cart()
 
-        order = order_service.place_order(shop_id, orderer, payment_method,
-                                         cart)
+        order = order_service.place_order(
+            shop_id, orderer, payment_method, cart
+        )
 
         return order.id
 

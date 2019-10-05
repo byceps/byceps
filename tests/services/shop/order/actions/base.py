@@ -35,8 +35,9 @@ class OrderActionTestBase(ShopTestBase):
 
         self.shop = self.create_shop()
 
-        shop_sequence_service.create_sequence(self.shop.id, Purpose.order,
-                                              prefix='article-')
+        shop_sequence_service.create_sequence(
+            self.shop.id, Purpose.order, prefix='article-'
+        )
 
         brand = create_brand()
         self.party = create_party(brand_id=brand.id)
@@ -51,9 +52,11 @@ class OrderActionTestBase(ShopTestBase):
         for article, quantity in articles_with_quantity:
             cart.add_item(article, quantity)
 
-        return order_service.place_order(self.shop.id, orderer,
-                                         ANY_PAYMENT_METHOD, cart)
+        return order_service.place_order(
+            self.shop.id, orderer, ANY_PAYMENT_METHOD, cart
+        )
 
     def mark_order_as_paid(self):
-        order_service.mark_order_as_paid(self.order.id, ANY_PAYMENT_METHOD,
-            self.admin.id)
+        order_service.mark_order_as_paid(
+            self.order.id, ANY_PAYMENT_METHOD, self.admin.id
+        )

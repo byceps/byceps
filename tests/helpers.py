@@ -85,12 +85,14 @@ def assign_permissions_to_user(
     role = authorization_service.create_role(role_id, role_id)
 
     for permission_id in permission_ids:
-        permission = authorization_service.create_permission(permission_id,
-                                                             permission_id)
+        permission = authorization_service.create_permission(
+            permission_id, permission_id
+        )
         authorization_service.assign_permission_to_role(permission.id, role.id)
 
-    authorization_service.assign_role_to_user(role.id, user_id,
-                                              initiator_id=initiator_id)
+    authorization_service.assign_role_to_user(
+        role.id, user_id, initiator_id=initiator_id
+    )
 
 
 def create_brand(brand_id='acmecon', title='ACME Entertainment Convention'):
@@ -105,8 +107,9 @@ def create_brand(brand_id='acmecon', title='ACME Entertainment Convention'):
 def create_party(
     brand_id, party_id='acmecon-2014', title='ACMECon 2014', shop_id=None
 ):
-    party = _create_party(id=party_id, title=title, brand_id=brand_id,
-                          shop_id=shop_id)
+    party = _create_party(
+        id=party_id, title=title, brand_id=brand_id, shop_id=shop_id
+    )
 
     db.session.add(party)
     db.session.commit()
@@ -122,8 +125,9 @@ def create_site(
     email_config_id=DEFAULT_EMAIL_CONFIG_ID,
     party_id=None,
 ):
-    return site_service.create_site(site_id, title, server_name,
-                                    email_config_id, party_id=party_id)
+    return site_service.create_site(
+        site_id, title, server_name, email_config_id, party_id=party_id
+    )
 
 
 def create_email_config(
@@ -132,8 +136,12 @@ def create_email_config(
     sender_name=None,
     contact_address=None,
 ):
-    email_service.set_config(config_id, sender_address, sender_name=sender_name,
-                             contact_address=contact_address)
+    email_service.set_config(
+        config_id,
+        sender_address,
+        sender_name=sender_name,
+        contact_address=contact_address,
+    )
 
 
 @contextmanager

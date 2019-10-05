@@ -59,11 +59,13 @@ class OrderTotalAmountTest(ShopTestBase):
         item_number = 'LF-01-A{:05d}'.format(number)
         description = 'Artikel #{:d}'.format(number)
 
-        return super().create_article(self.shop.id,
-                item_number=item_number,
-                description=description,
-                price=price,
-                quantity=50)
+        return super().create_article(
+            self.shop.id,
+            item_number=item_number,
+            description=description,
+            price=price,
+            quantity=50,
+        )
 
     def place_order(self, articles):
         payment_method = PaymentMethod.bank_transfer
@@ -72,8 +74,9 @@ class OrderTotalAmountTest(ShopTestBase):
         for article, quantity in articles:
             cart.add_item(article, quantity)
 
-        return order_service.place_order(self.shop.id, self.orderer,
-                                         payment_method, cart)
+        return order_service.place_order(
+            self.shop.id, self.orderer, payment_method, cart
+        )
 
 
 def assert_decimal_equal(actual, expected):

@@ -68,5 +68,6 @@ class ShopOrdersServiceTestCase(ShopTestBase):
         return order_service.place_order(shop_id, orderer, payment_method, cart)
 
     def get_orders_by_user(self, orderer, shop_id):
-        return order_service \
-            .get_orders_placed_by_user_for_shop(orderer.user_id, shop_id)
+        return order_service.get_orders_placed_by_user_for_shop(
+            orderer.user_id, shop_id
+        )

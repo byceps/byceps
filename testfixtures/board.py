@@ -30,8 +30,9 @@ def create_category(
     if description is None:
         description = 'Hier geht es um Kategorie {}'.format(number)
 
-    return category_command_service \
-        .create_category(board_id, slug, title, description)
+    return category_command_service.create_category(
+        board_id, slug, title, description
+    )
 
 
 def create_topic(category_id, creator_id, *, number=1, title=None, body=None):
@@ -41,13 +42,13 @@ def create_topic(category_id, creator_id, *, number=1, title=None, body=None):
     if body is None:
         body = 'Inhalt von Thema {}'.format(number)
 
-    return topic_command_service \
-        .create_topic(category_id, creator_id, title, body)
+    return topic_command_service.create_topic(
+        category_id, creator_id, title, body
+    )
 
 
 def create_posting(topic, creator_id, *, number=1, body=None):
     if body is None:
         body = 'Inhalt von Beitrag {}.'.format(number)
 
-    return posting_command_service \
-        .create_posting(topic, creator_id, body)
+    return posting_command_service.create_posting(topic, creator_id, body)

@@ -24,7 +24,8 @@ def create_orderer(user):
         user.detail.country,
         user.detail.zip_code,
         user.detail.city,
-        user.detail.street)
+        user.detail.street,
+    )
 
 
 def create_order(

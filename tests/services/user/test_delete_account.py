@@ -30,14 +30,16 @@ def app(admin_app, db):
 
 @pytest.fixture
 def permission():
-    return authorization_service \
-        .create_permission('board_topic_hide', 'Hide board topics')
+    return authorization_service.create_permission(
+        'board_topic_hide', 'Hide board topics'
+    )
 
 
 @pytest.fixture
 def role(permission):
-    role = authorization_service \
-        .create_role('board_moderator', 'Board Moderator')
+    role = authorization_service.create_role(
+        'board_moderator', 'Board Moderator'
+    )
     authorization_service.assign_permission_to_role(permission.id, role.id)
     return role
 
@@ -51,9 +53,7 @@ def test_delete_account(app, db, permission, role):
     legacy_id = 22299
 
     user = create_user_with_detail(
-        screen_name,
-        user_id=user_id,
-        email_address=email_address,
+        screen_name, user_id=user_id, email_address=email_address
     )
 
     user.legacy_id = legacy_id

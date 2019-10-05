@@ -42,8 +42,9 @@ def test_change_screen_name_with_reason(app):
 
     # -------------------------------- #
 
-    user_command_service.change_screen_name(user_id, new_screen_name, admin_id,
-                                            reason=reason)
+    user_command_service.change_screen_name(
+        user_id, new_screen_name, admin_id, reason=reason
+    )
 
     # -------------------------------- #
 

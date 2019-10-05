@@ -55,7 +55,8 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
             user = create_user(
                 screen_name='User-{:d}'.format(number),
                 email_address='user{:03d}@example.com'.format(number),
-                initialized=initialized)
+                initialized=initialized,
+            )
 
             if suspended:
                 user.suspended = True
@@ -139,8 +140,9 @@ class NewsletterAdminTestCase(AbstractAppTestCase):
 
     def add_subscription(self, user, state):
         expressed_at = datetime.utcnow()
-        subscription_update = DbSubscriptionUpdate(user.id, self.list_id,
-                                                   expressed_at, state)
+        subscription_update = DbSubscriptionUpdate(
+            user.id, self.list_id, expressed_at, state
+        )
         self.db.session.add(subscription_update)
 
     def get_as_admin(self, url):

@@ -33,8 +33,9 @@ class ShopOrderTestCase(ShopTestBase):
 
         self.shop = self.create_shop()
         self.setup_order_number_prefix_and_sequence()
-        self.create_shop_fragment(self.shop.id, 'payment_instructions',
-                                  'Send all ur moneyz!')
+        self.create_shop_fragment(
+            self.shop.id, 'payment_instructions', 'Send all ur moneyz!'
+        )
         self.setup_article()
 
         brand = create_brand()
@@ -83,22 +84,30 @@ class ShopOrderTestCase(ShopTestBase):
         assert_order(order, 'AEC-01-B00005', 1)
 
         first_order_item = order.items[0]
-        assert_order_item(first_order_item, self.article_id,
-                          article_before.price, article_before.tax_rate, 3)
+        assert_order_item(
+            first_order_item,
+            self.article_id,
+            article_before.price,
+            article_before.tax_rate,
+            3,
+        )
 
-        order_email_service_mock.send_email_for_incoming_order_to_orderer \
-            .assert_called_once_with(order.id)
+        order_email_service_mock.send_email_for_incoming_order_to_orderer.assert_called_once_with(
+            order.id
+        )
 
         order_placed_mock.assert_called_once_with(None, order_id=order.id)
 
-        order_detail_page_url = 'http://example.com/shop/orders/{}' \
-            .format(order.id)
+        order_detail_page_url = 'http://example.com/shop/orders/{}'.format(
+            order.id
+        )
 
         assert_response_headers(response, order_detail_page_url)
 
         with http_client(self.app, user_id=self.orderer.id) as client:
-            assert_order_detail_page_works(client, order_detail_page_url,
-                                           order.order_number)
+            assert_order_detail_page_works(
+                client, order_detail_page_url, order.order_number
+            )
 
     @patch('byceps.blueprints.shop.order.signals.order_placed.send')
     @patch('byceps.blueprints.shop.order.views.order_email_service')
@@ -126,22 +135,30 @@ class ShopOrderTestCase(ShopTestBase):
         assert_order(order, 'AEC-01-B00005', 1)
 
         first_order_item = order.items[0]
-        assert_order_item(first_order_item, self.article_id,
-                          article_before.price, article_before.tax_rate, 1)
+        assert_order_item(
+            first_order_item,
+            self.article_id,
+            article_before.price,
+            article_before.tax_rate,
+            1,
+        )
 
-        order_email_service_mock.send_email_for_incoming_order_to_orderer \
-            .assert_called_once_with(order.id)
+        order_email_service_mock.send_email_for_incoming_order_to_orderer.assert_called_once_with(
+            order.id
+        )
 
         order_placed_mock.assert_called_once_with(None, order_id=order.id)
 
-        order_detail_page_url = 'http://example.com/shop/orders/{}' \
-            .format(order.id)
+        order_detail_page_url = 'http://example.com/shop/orders/{}'.format(
+            order.id
+        )
 
         assert_response_headers(response, order_detail_page_url)
 
         with http_client(self.app, user_id=self.orderer.id) as client:
-            assert_order_detail_page_works(client, order_detail_page_url,
-                                           order.order_number)
+            assert_order_detail_page_works(
+                client, order_detail_page_url, order.order_number
+            )
 
     # helpers
 

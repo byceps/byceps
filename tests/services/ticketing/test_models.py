@@ -48,9 +48,11 @@ def test_belongs_to_bundle(bundle_id, expected):
 def test_is_managed_by(
     owned_by_id, seat_managed_by_id, user_managed_by_id, user_id, expected
 ):
-    ticket = create_ticket(owned_by_id,
-                           seat_managed_by_id=seat_managed_by_id,
-                           user_managed_by_id=user_managed_by_id)
+    ticket = create_ticket(
+        owned_by_id,
+        seat_managed_by_id=seat_managed_by_id,
+        user_managed_by_id=user_managed_by_id,
+    )
 
     assert ticket.is_managed_by(user_id) == expected
 
@@ -66,8 +68,7 @@ def test_is_managed_by(
     (user2.id, user1.id, user1.id, True ),
 ])
 def test_is_seat_managed_by(owned_by_id, seat_managed_by_id, user_id, expected):
-    ticket = create_ticket(owned_by_id,
-                           seat_managed_by_id=seat_managed_by_id)
+    ticket = create_ticket(owned_by_id, seat_managed_by_id=seat_managed_by_id)
 
     assert ticket.is_seat_managed_by(user_id) == expected
 
@@ -83,8 +84,7 @@ def test_is_seat_managed_by(owned_by_id, seat_managed_by_id, user_id, expected):
     (user2.id, user1.id, user1.id, True ),
 ])
 def test_is_user_managed_by(owned_by_id, user_managed_by_id, user_id, expected):
-    ticket = create_ticket(owned_by_id,
-                           user_managed_by_id=user_managed_by_id)
+    ticket = create_ticket(owned_by_id, user_managed_by_id=user_managed_by_id)
 
     assert ticket.is_user_managed_by(user_id) == expected
 

@@ -60,8 +60,9 @@ class OrderedArticlesServiceTestCase(ShopTestBase):
             order = self.place_order(article_quantity)
             self.set_payment_state(order.order_number, payment_state)
 
-        totals = ordered_articles_service \
-            .count_ordered_articles(self.article.item_number)
+        totals = ordered_articles_service.count_ordered_articles(
+            self.article.item_number
+        )
 
         assert totals == expected
 
@@ -74,8 +75,9 @@ class OrderedArticlesServiceTestCase(ShopTestBase):
         cart = Cart()
         cart.add_item(self.article, article_quantity)
 
-        return order_service.place_order(self.shop.id, self.orderer,
-                                         payment_method, cart)
+        return order_service.place_order(
+            self.shop.id, self.orderer, payment_method, cart
+        )
 
     def set_payment_state(self, order_number, payment_state):
         order = order_service.find_order_by_order_number(order_number)

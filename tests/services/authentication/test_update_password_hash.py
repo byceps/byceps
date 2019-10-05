@@ -22,8 +22,9 @@ def test_update_password_hash(party_app_with_db, admin_user, normal_user):
 
     # -------------------------------- #
 
-    password_service.update_password_hash(user_id, 'ReplacementPassw0rd',
-                                          admin_id)
+    password_service.update_password_hash(
+        user_id, 'ReplacementPassw0rd', admin_id
+    )
 
     # -------------------------------- #
 

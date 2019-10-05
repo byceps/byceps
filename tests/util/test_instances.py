@@ -9,8 +9,7 @@ from byceps.util.instances import ReprBuilder
 def test_without_any_values():
     instance = Instance()
 
-    actual = ReprBuilder(instance) \
-        .build()
+    actual = ReprBuilder(instance).build()
 
     assert actual == '<Instance()>'
 

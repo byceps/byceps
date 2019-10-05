@@ -64,47 +64,61 @@ class UserCreateTestCase(AbstractAppTestCase):
         scope = Scope.for_brand(self.brand_id)
 
         snippet = snippet_service.create_fragment(
-            scope, 'terms_of_service', self.admin.id,
-            'Don\'t do anything stupid!')
+            scope,
+            'terms_of_service',
+            self.admin.id,
+            'Don\'t do anything stupid!',
+        )
 
         consent_subject = consent_subject_service.create_subject(
-                '{}_terms-of-service_v1'.format(self.brand_id),
-                'Terms of service for {} / v1'.format(self.brand.title),
-                'terms_of_service')
+            '{}_terms-of-service_v1'.format(self.brand_id),
+            'Terms of service for {} / v1'.format(self.brand.title),
+            'terms_of_service',
+        )
 
         terms_document_id = self.brand_id
-        terms_document = terms_document_service \
-            .create_document(terms_document_id, terms_document_id)
+        terms_document = terms_document_service.create_document(
+            terms_document_id, terms_document_id
+        )
 
         terms_version = terms_version_service.create_version(
-            terms_document.id, '01-Jan-2016', snippet.id, consent_subject.id)
+            terms_document.id, '01-Jan-2016', snippet.id, consent_subject.id
+        )
 
-        terms_document_service.set_current_version(terms_document_id,
-                                                   terms_version.id)
+        terms_document_service.set_current_version(
+            terms_document_id, terms_version.id
+        )
 
-        brand_settings_service.create_setting(self.brand.id,
-            'terms_document_id', str(terms_document.id))
+        brand_settings_service.create_setting(
+            self.brand.id, 'terms_document_id', str(terms_document.id)
+        )
 
         self.terms_version_id = terms_version.id
         self.terms_consent_subject_id = terms_version.consent_subject_id
 
     def setup_privacy_policy(self):
         consent_subject = consent_subject_service.create_subject(
-                '{}_privacy_policy_v1'.format(self.brand_id),
-                'Privacy policy for {} / v1'.format(self.brand.title),
-                'privacy_policy')
+            '{}_privacy_policy_v1'.format(self.brand_id),
+            'Privacy policy for {} / v1'.format(self.brand.title),
+            'privacy_policy',
+        )
 
-        brand_settings_service.create_setting(self.brand.id,
-            'privacy_policy_consent_subject_id', str(consent_subject.id))
+        brand_settings_service.create_setting(
+            self.brand.id,
+            'privacy_policy_consent_subject_id',
+            str(consent_subject.id),
+        )
 
         self.privacy_policy_consent_subject_id = consent_subject.id
 
     def setup_newsletter_list(self):
-        list_ = newsletter_command_service \
-            .create_list(self.brand.id, self.brand.title)
+        list_ = newsletter_command_service.create_list(
+            self.brand.id, self.brand.title
+        )
 
-        brand_settings_service \
-            .create_setting(self.brand.id, 'newsletter_list_id', str(list_.id))
+        brand_settings_service.create_setting(
+            self.brand.id, 'newsletter_list_id', str(list_.id)
+        )
 
     def setup_roles(self):
         self.board_user_role = create_role('board_user')
@@ -186,13 +200,16 @@ class UserCreateTestCase(AbstractAppTestCase):
 Hallo Hiro,
 
 bitte bestätige deine E-Mail-Adresse, indem du diese URL abrufst: https://www.example.com/users/email_address/confirmation/{}
-        '''.strip().format(verification_token.token)
+        '''.strip().format(
+            verification_token.token
+        )
 
         send_email_mock.assert_called_once_with(
             expected_sender,
             expected_recipients,
             expected_subject,
-            expected_body)
+            expected_body,
+        )
 
     @patch('byceps.email.send')
     def test_create_without_newsletter_subscription(self, send_email_mock):
@@ -244,8 +261,9 @@ def get_user_roles(user_id):
 
 
 def find_verification_token(user_id):
-    return verification_token_service \
-        .find_for_email_address_confirmation_by_user(user_id)
+    return verification_token_service.find_for_email_address_confirmation_by_user(
+        user_id
+    )
 
 
 def is_subscribed_to_newsletter(user_id, brand_id):

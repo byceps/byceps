@@ -21,13 +21,15 @@ class CreateTicketsActionTest(OrderActionTestBase):
         self.article = self.create_article(self.shop.id, quantity=10)
 
         self.ticket_category = ticket_category_service.create_category(
-            self.party.id, 'Deluxe')
+            self.party.id, 'Deluxe'
+        )
 
     def test_create_tickets(self):
         ticket_quantity = 4
 
         action_registry_service.register_tickets_creation(
-            self.article.item_number, self.ticket_category.id)
+            self.article.item_number, self.ticket_category.id
+        )
 
         articles_with_quantity = [(self.article, ticket_quantity)]
         self.order = self.place_order(articles_with_quantity)
@@ -54,4 +56,5 @@ class CreateTicketsActionTest(OrderActionTestBase):
 
     def get_tickets_for_order(self):
         return ticket_service.find_tickets_created_by_order(
-            self.order.order_number)
+            self.order.order_number
+        )

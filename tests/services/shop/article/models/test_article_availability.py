@@ -87,4 +87,5 @@ def create_article(available_from, available_until):
     return _create_article(
         'shop-123',
         available_from=available_from,
-        available_until=available_until)
+        available_until=available_until,
+    )

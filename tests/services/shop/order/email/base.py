@@ -26,9 +26,13 @@ class OrderEmailTestBase(ShopTestBase):
     def create_article(
         self, shop_id, item_number, description, price, quantity
     ):
-        return super().create_article(shop_id, item_number=item_number,
-                                      description=description, price=price,
-                                      quantity=quantity)
+        return super().create_article(
+            shop_id,
+            item_number=item_number,
+            description=description,
+            price=price,
+            quantity=quantity,
+        )
 
     def place_order_with_items(
         self, shop_id, orderer, created_at, items_with_quantity
@@ -41,8 +45,9 @@ class OrderEmailTestBase(ShopTestBase):
             for article, quantity in items_with_quantity:
                 cart.add_item(article, quantity)
 
-        order = order_service.place_order(self.shop.id, orderer, payment_method,
-                                         cart)
+        order = order_service.place_order(
+            self.shop.id, orderer, payment_method, cart
+        )
 
         if created_at is not None:
             db_order = Order.query.get(order.id)

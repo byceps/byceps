@@ -45,7 +45,10 @@ class EmailOnOrderCanceledTest(OrderEmailTestBase):
         order_service.cancel_order(self.order_id, self.admin.id, reason)
 
     def create_email_footer_snippet(self):
-        self.create_shop_fragment(self.shop.id, 'email_footer', '''
+        self.create_shop_fragment(
+            self.shop.id,
+            'email_footer',
+            '''
 Für Fragen stehen wir gerne zur Verfügung.
 
 Viele Grüße,
@@ -55,7 +58,8 @@ das Team der Acme Entertainment Convention
 Acme Entertainment Convention
 
 E-Mail: acmecon@example.com
-''')
+''',
+        )
 
     @patch('byceps.email.send')
     def test_email_on_order_canceled(self, send_email_mock):
@@ -91,12 +95,14 @@ E-Mail: acmecon@example.com
             expected_sender,
             expected_recipients,
             expected_subject,
-            expected_body)
+            expected_body,
+        )
 
     # helpers
 
     def place_order(self, orderer):
         created_at = datetime(2014, 11, 5, 23, 32, 9)
 
-        return self.place_order_with_items(self.shop.id, orderer, created_at,
-                                           [])
+        return self.place_order_with_items(
+            self.shop.id, orderer, created_at, []
+        )

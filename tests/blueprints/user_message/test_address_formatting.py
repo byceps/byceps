@@ -23,8 +23,9 @@ def test_recipient_formatting(site, params):
 
     user = create_user(screen_name, email_address=email_address)
 
-    message = user_message_service.create_message(user.id, user.id, '', '',
-                                                  site.id)
+    message = user_message_service.create_message(
+        user.id, user.id, '', '', site.id
+    )
 
     assert message.recipients == [expected]
 

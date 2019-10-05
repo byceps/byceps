@@ -16,8 +16,12 @@ from ...conftest import database_recreated
 
 
 def test_image_url_with_image(app):
-    item = create_item(app.channel.id, 'with-image', app.editor.id,
-                       image_url_path='breaking.png')
+    item = create_item(
+        app.channel.id,
+        'with-image',
+        app.editor.id,
+        image_url_path='breaking.png',
+    )
 
     assert item.image_url == 'http://example.com/brand/news/breaking.png'
 
@@ -53,8 +57,9 @@ def create_item(channel_id, slug, editor_id, *, image_url_path=None):
     title = 'the title'
     body = 'the body'
 
-    item = news_service.create_item(channel_id, slug, editor_id, title, body,
-                                    image_url_path=image_url_path)
+    item = news_service.create_item(
+        channel_id, slug, editor_id, title, body, image_url_path=image_url_path
+    )
 
     # Return aggregated version of item.
     return news_service.find_aggregated_item_by_slug(channel_id, slug)

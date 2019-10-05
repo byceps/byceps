@@ -42,8 +42,9 @@ def test_change_email_address_with_reason(app):
 
     # -------------------------------- #
 
-    user_command_service.change_email_address(user_id, new_email_address,
-                                              admin_id, reason=reason)
+    user_command_service.change_email_address(
+        user_id, new_email_address, admin_id, reason=reason
+    )
 
     # -------------------------------- #
 
@@ -69,13 +70,13 @@ def test_change_email_address_without_reason(app):
     old_email_address = 'unreasonable@example.com'
     new_email_address = 'reasonable@example.com'
 
-    user_id = create_user('Propellerhead',
-                          email_address=old_email_address).id
+    user_id = create_user('Propellerhead', email_address=old_email_address).id
 
     # -------------------------------- #
 
-    user_command_service.change_email_address(user_id, new_email_address,
-                                              admin_id)
+    user_command_service.change_email_address(
+        user_id, new_email_address, admin_id
+    )
 
     # -------------------------------- #
 

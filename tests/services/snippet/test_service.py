@@ -30,12 +30,15 @@ def test_current_party_is_considered(admin_app_with_db, admin_user):
     creator = admin_user
 
     fragment_info2014_version = create_fragment_with_version(
-            scope_site2014, 'info', creator.id, '2014-10-23 14:55:00')
+        scope_site2014, 'info', creator.id, '2014-10-23 14:55:00'
+    )
     fragment_info2015_version = create_fragment_with_version(
-            scope_site2015, 'info', creator.id, '2014-10-23 18:21:00')
+        scope_site2015, 'info', creator.id, '2014-10-23 18:21:00'
+    )
 
     actual = snippet_service.find_current_version_of_snippet_with_name(
-        scope_site2014, 'info')
+        scope_site2014, 'info'
+    )
 
     assert actual == fragment_info2014_version
 
@@ -48,7 +51,8 @@ def test_unknown_name(admin_app_with_db):
     scope = Scope.for_site(party.id)
 
     actual = snippet_service.find_current_version_of_snippet_with_name(
-        scope, 'totally-unknown-snippet-name')
+        scope, 'totally-unknown-snippet-name'
+    )
 
     assert actual is None
 
@@ -64,7 +68,9 @@ def create_fragment_with_version(scope, name, creator_id, created_at_text):
     version = create_snippet_version(snippet, creator_id, created_at=created_at)
     db.session.add(version)
 
-    current_version_association = create_current_version_association(snippet, version)
+    current_version_association = create_current_version_association(
+        snippet, version
+    )
     db.session.add(current_version_association)
 
     db.session.commit()

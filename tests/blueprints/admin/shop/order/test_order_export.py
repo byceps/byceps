@@ -73,8 +73,9 @@ class ExportTestCase(ShopTestBase):
 
     def create_brand_and_party(self):
         self.brand = create_brand('lanresort', 'LANresort')
-        self.party = create_party(self.brand.id, 'lanresort-2015',
-                                  'LANresort 2015')
+        self.party = create_party(
+            self.brand.id, 'lanresort-2015', 'LANresort 2015'
+        )
 
     def create_articles(self):
         self.article_table = self.create_article(
@@ -105,7 +106,8 @@ class ExportTestCase(ShopTestBase):
             description=description,
             price=price,
             tax_rate=tax_rate,
-            quantity=10)
+            quantity=10,
+        )
 
     def place_order(self):
         orderer = self.create_orderer()
@@ -113,12 +115,14 @@ class ExportTestCase(ShopTestBase):
         cart = self.create_cart()
         created_at = datetime(2015, 2, 26, 12, 26, 24)  # UTC
 
-        return order_service.place_order(self.shop.id, orderer, payment_method,
-                                         cart, created_at=created_at)
+        return order_service.place_order(
+            self.shop.id, orderer, payment_method, cart, created_at=created_at
+        )
 
     def create_orderer(self):
-        user = create_user('Besteller',
-                           email_address='h-w.mustermann@example.com')
+        user = create_user(
+            'Besteller', email_address='h-w.mustermann@example.com'
+        )
 
         return Orderer(
             user.id,
@@ -127,7 +131,7 @@ class ExportTestCase(ShopTestBase):
             'Deutschland',
             '42000',
             'Hauptstadt',
-            'Nebenstraße 23a'
+            'Nebenstraße 23a',
         )
 
     def create_cart(self):

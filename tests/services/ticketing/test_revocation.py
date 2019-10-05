@@ -38,8 +38,9 @@ class TicketRevocationTestCase(AbstractAppTestCase):
         self.admin_id = create_user('Orga').id
 
     def test_revoke_ticket(self):
-        ticket_before = ticket_creation_service \
-            .create_ticket(self.category_id, self.owner_id)
+        ticket_before = ticket_creation_service.create_ticket(
+            self.category_id, self.owner_id
+        )
         assert not ticket_before.revoked
 
         events_before = event_service.get_events_for_ticket(ticket_before.id)
@@ -66,13 +67,16 @@ class TicketRevocationTestCase(AbstractAppTestCase):
             }
 
     def test_revoke_tickets(self):
-        tickets_before = ticket_creation_service \
-            .create_tickets(self.category_id, self.owner_id, 3)
+        tickets_before = ticket_creation_service.create_tickets(
+            self.category_id, self.owner_id, 3
+        )
 
         for ticket_before in tickets_before:
             assert not ticket_before.revoked
 
-            events_before = event_service.get_events_for_ticket(ticket_before.id)
+            events_before = event_service.get_events_for_ticket(
+                ticket_before.id
+            )
             assert len(events_before) == 0
 
         # -------------------------------- #
@@ -100,11 +104,13 @@ class TicketRevocationTestCase(AbstractAppTestCase):
         area = seating_area_service.create_area(self.party.id, 'main', 'Main')
         seat = seat_service.create_seat(area, 0, 0, self.category_id)
 
-        ticket = ticket_creation_service \
-            .create_ticket(self.category_id, self.owner_id)
+        ticket = ticket_creation_service.create_ticket(
+            self.category_id, self.owner_id
+        )
 
-        ticket_seat_management_service \
-            .occupy_seat(ticket.id, seat.id, self.owner_id)
+        ticket_seat_management_service.occupy_seat(
+            ticket.id, seat.id, self.owner_id
+        )
 
         assert ticket.occupied_seat_id == seat.id
 
@@ -127,16 +133,18 @@ class TicketRevocationTestCase(AbstractAppTestCase):
     def test_revoke_tickets_with_seats(self):
         area = seating_area_service.create_area(self.party.id, 'main', 'Main')
 
-        tickets = ticket_creation_service \
-            .create_tickets(self.category_id, self.owner_id, 2)
+        tickets = ticket_creation_service.create_tickets(
+            self.category_id, self.owner_id, 2
+        )
 
         ticket_ids = {ticket.id for ticket in tickets}
 
         for ticket in tickets:
             seat = seat_service.create_seat(area, 0, 0, self.category_id)
 
-            ticket_seat_management_service \
-                .occupy_seat(ticket.id, seat.id, self.owner_id)
+            ticket_seat_management_service.occupy_seat(
+                ticket.id, seat.id, self.owner_id
+            )
 
             assert ticket.occupied_seat_id == seat.id
 

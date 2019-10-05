@@ -86,17 +86,23 @@ class ShopAdminTestCase(ShopTestBase):
 
         order_afterwards = get_order(order_before.id)
         assert response.status_code == 302
-        assert_payment(order_afterwards, PaymentMethod.bank_transfer,
-                       PaymentState.canceled_before_paid, self.admin.id)
+        assert_payment(
+            order_afterwards,
+            PaymentMethod.bank_transfer,
+            PaymentState.canceled_before_paid,
+            self.admin.id,
+        )
 
         article_afterwards = Article.query.get(article_before.id)
         assert article_afterwards.quantity == 8
 
-        order_email_service_mock.send_email_for_canceled_order_to_orderer \
-            .assert_called_once_with(placed_order.id)
+        order_email_service_mock.send_email_for_canceled_order_to_orderer.assert_called_once_with(
+            placed_order.id
+        )
 
-        order_canceled_signal_send_mock \
-            .assert_called_once_with(None, order_id=placed_order.id)
+        order_canceled_signal_send_mock.assert_called_once_with(
+            None, order_id=placed_order.id
+        )
 
     @patch('byceps.blueprints.shop.order.signals.order_canceled.send')
     @patch('byceps.blueprints.admin.shop.order.views.order_email_service')
@@ -118,11 +124,11 @@ class ShopAdminTestCase(ShopTestBase):
         assert response.status_code == 302
 
         # No e-mail should be send.
-        order_email_service_mock.send_email_for_canceled_order_to_orderer \
-            .assert_not_called()
+        order_email_service_mock.send_email_for_canceled_order_to_orderer.assert_not_called()
 
-        order_canceled_signal_send_mock \
-            .assert_called_once_with(None, order_id=placed_order.id)
+        order_canceled_signal_send_mock.assert_called_once_with(
+            None, order_id=placed_order.id
+        )
 
     @patch('byceps.blueprints.shop.order.signals.order_paid.send')
     @patch('byceps.blueprints.admin.shop.order.views.order_email_service')
@@ -141,14 +147,20 @@ class ShopAdminTestCase(ShopTestBase):
 
         order_afterwards = get_order(order_before.id)
         assert response.status_code == 302
-        assert_payment(order_afterwards, PaymentMethod.direct_debit,
-                       PaymentState.paid, self.admin.id)
+        assert_payment(
+            order_afterwards,
+            PaymentMethod.direct_debit,
+            PaymentState.paid,
+            self.admin.id,
+        )
 
-        order_email_service_mock.send_email_for_paid_order_to_orderer \
-            .assert_called_once_with(placed_order.id)
+        order_email_service_mock.send_email_for_paid_order_to_orderer.assert_called_once_with(
+            placed_order.id
+        )
 
-        order_paid_signal_send_mock \
-            .assert_called_once_with(None, order_id=placed_order.id)
+        order_paid_signal_send_mock.assert_called_once_with(
+            None, order_id=placed_order.id
+        )
 
     @patch('byceps.blueprints.shop.order.signals.order_canceled.send')
     @patch('byceps.blueprints.shop.order.signals.order_paid.send')
@@ -184,17 +196,23 @@ class ShopAdminTestCase(ShopTestBase):
 
         order_afterwards = get_order(order_before.id)
         assert response.status_code == 302
-        assert_payment(order_afterwards, PaymentMethod.bank_transfer,
-                       PaymentState.canceled_after_paid, self.admin.id)
+        assert_payment(
+            order_afterwards,
+            PaymentMethod.bank_transfer,
+            PaymentState.canceled_after_paid,
+            self.admin.id,
+        )
 
         article_afterwards = Article.query.get(article_before.id)
         assert article_afterwards.quantity == 8
 
-        order_email_service_mock.send_email_for_canceled_order_to_orderer \
-            .assert_called_once_with(placed_order.id)
+        order_email_service_mock.send_email_for_canceled_order_to_orderer.assert_called_once_with(
+            placed_order.id
+        )
 
-        order_canceled_signal_send_mock \
-            .assert_called_once_with(None, order_id=placed_order.id)
+        order_canceled_signal_send_mock.assert_called_once_with(
+            None, order_id=placed_order.id
+        )
 
     # helpers
 
@@ -206,8 +224,9 @@ class ShopAdminTestCase(ShopTestBase):
         for article, quantity_to_order in quantified_articles:
             cart.add_item(article, quantity_to_order)
 
-        return order_service.place_order(self.shop.id, orderer, payment_method,
-                                         cart)
+        return order_service.place_order(
+            self.shop.id, orderer, payment_method, cart
+        )
 
 
 def assert_payment_is_open(order):
