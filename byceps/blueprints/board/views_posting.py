@@ -73,9 +73,7 @@ def quote_posting_as_bbcode():
 
     creator = user_service.find_user(posting.creator_id)
 
-    return '[quote author="{}"]{}[/quote]'.format(
-        creator.screen_name, posting.body
-    )
+    return f'[quote author="{creator.screen_name}"]{posting.body}[/quote]'
 
 
 @blueprint.route('/topics/<uuid:topic_id>/create', methods=['POST'])

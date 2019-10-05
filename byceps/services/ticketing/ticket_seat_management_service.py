@@ -32,7 +32,7 @@ def appoint_seat_manager(
     ticket = ticket_service.find_ticket(ticket_id)
 
     if ticket.revoked:
-        raise TicketIsRevoked('Ticket {} has been revoked.'.format(ticket_id))
+        raise TicketIsRevoked(f'Ticket {ticket_id} has been revoked.')
 
     ticket.seat_managed_by_id = manager_id
 
@@ -50,7 +50,7 @@ def withdraw_seat_manager(ticket_id: TicketID, initiator_id: UserID) -> None:
     ticket = ticket_service.find_ticket(ticket_id)
 
     if ticket.revoked:
-        raise TicketIsRevoked('Ticket {} has been revoked.'.format(ticket_id))
+        raise TicketIsRevoked(f'Ticket {ticket_id} has been revoked.')
 
     ticket.seat_managed_by_id = None
 
@@ -69,7 +69,7 @@ def occupy_seat(
     ticket = ticket_service.find_ticket(ticket_id)
 
     if ticket.revoked:
-        raise TicketIsRevoked('Ticket {} has been revoked.'.format(ticket_id))
+        raise TicketIsRevoked(f'Ticket {ticket_id} has been revoked.')
 
     _deny_seat_management_if_ticket_belongs_to_bundle(ticket)
 
@@ -106,7 +106,7 @@ def release_seat(ticket_id: TicketID, initiator_id: UserID) -> None:
     ticket = ticket_service.find_ticket(ticket_id)
 
     if ticket.revoked:
-        raise TicketIsRevoked('Ticket {} has been revoked.'.format(ticket_id))
+        raise TicketIsRevoked(f'Ticket {ticket_id} has been revoked.')
 
     _deny_seat_management_if_ticket_belongs_to_bundle(ticket)
 
@@ -135,18 +135,14 @@ def _deny_seat_management_if_ticket_belongs_to_bundle(ticket: DbTicket) -> None:
     """
     if ticket.belongs_to_bundle:
         raise SeatChangeDeniedForBundledTicket(
-            "Ticket '{}' belongs to a bundle and, thus, "
-            'must not be used to occupy or release a single seat.'.format(
-                ticket.code
-            )
+            f"Ticket '{ticket.code}' belongs to a bundle and, thus, "
+            'must not be used to occupy or release a single seat.'
         )
 
 
 def _deny_seat_management_if_seat_belongs_to_group(seat: DbSeat) -> None:
     if seat.assignment is not None:
         raise SeatChangeDeniedForGroupSeat(
-            "Seat '{}' belongs to a group and, thus, "
-            'cannot be occupied by a single ticket, or removed separately.'.format(
-                seat.label
-            )
+            f"Seat '{seat.label}' belongs to a group and, thus, "
+            'cannot be occupied by a single ticket, or removed separately.'
         )

@@ -106,9 +106,7 @@ class Posting(db.Model):
             .add('topic', self.topic.title)
 
         if self.hidden:
-            builder.add_custom(
-                'hidden by {}'.format(self.hidden_by.screen_name)
-            )
+            builder.add_custom(f'hidden by {self.hidden_by.screen_name}')
 
         return builder.build()
 

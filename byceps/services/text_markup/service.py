@@ -38,7 +38,7 @@ def _add_image_formatter(parser: Parser) -> None:
     """Replace image tags."""
 
     def render_image(name, value, options, parent, context):
-        return '<img src="{}">'.format(value)
+        return f'<img src="{value}">'
 
     parser.add_formatter('img', render_image, replace_links=False)
 
@@ -50,10 +50,8 @@ def _add_quote_formatter(parser: Parser) -> None:
         intro = ''
         if 'author' in options:
             author = escape(options['author'])
-            intro = '<p class="quote-intro"><cite>{}</cite> schrieb:</p>\n'.format(
-                author
-            )
-        return '{}<blockquote>{}</blockquote>'.format(intro, value)
+            intro = f'<p class="quote-intro"><cite>{author}</cite> schrieb:</p>\n'
+        return f'{intro}<blockquote>{value}</blockquote>'
 
     parser.add_formatter('quote', render_quote, strip=True)
 

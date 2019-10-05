@@ -204,7 +204,7 @@ def update(party_id):
             archived,
         )
     except party_service.UnknownPartyId:
-        abort(404, 'Unknown party ID "{}".'.format(party_id))
+        abort(404, f'Unknown party ID "{party_id}".')
 
     flash_success('Der Party "{}" wurde aktualisiert.', party.title)
 

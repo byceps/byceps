@@ -23,7 +23,7 @@ def create_channel(
     """Create a channel for that brand."""
     brand = brand_service.find_brand(brand_id)
     if brand is None:
-        raise ValueError('Unknown brand ID "{}"'.format(brand_id))
+        raise ValueError(f'Unknown brand ID "{brand_id}"')
 
     channel = DbChannel(channel_id, brand.id, url_prefix)
 

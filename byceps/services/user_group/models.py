@@ -46,7 +46,7 @@ class UserGroup(db.Model):
         return ReprBuilder(self) \
             .add_with_lookup('id') \
             .add_with_lookup('title') \
-            .add_custom('{:d} members'.format(self.member_count)) \
+            .add_custom(f'{self.member_count:d} members') \
             .build()
 
 

@@ -20,7 +20,7 @@ def create_category(
     """Create a category in that board."""
     board = DbBoard.query.get(board_id)
     if board is None:
-        raise ValueError('Unknown board ID "{}"'.format(board_id))
+        raise ValueError(f'Unknown board ID "{board_id}"')
 
     category = DbCategory(board.id, slug, title, description)
     board.categories.append(category)
@@ -110,7 +110,7 @@ def _get_category(category_id: CategoryID) -> DbCategory:
     category = DbCategory.query.get(category_id)
 
     if category is None:
-        raise ValueError('Unknown category ID "{}"'.format(category_id))
+        raise ValueError(f'Unknown category ID "{category_id}"')
 
     return category
 

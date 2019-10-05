@@ -53,6 +53,8 @@ class Cart:
         return not self._items
 
     def __repr__(self) -> str:
+        item_count = len(self._items)
+
         return ReprBuilder(self) \
-            .add_custom('{:d} items'.format(len(self._items))) \
+            .add_custom(f'{item_count:d} items') \
             .build()

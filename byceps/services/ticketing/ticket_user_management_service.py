@@ -29,7 +29,7 @@ def appoint_user_manager(
     ticket = ticket_service.find_ticket(ticket_id)
 
     if ticket.revoked:
-        raise TicketIsRevoked('Ticket {} has been revoked.'.format(ticket_id))
+        raise TicketIsRevoked(f'Ticket {ticket_id} has been revoked.')
 
     ticket.user_managed_by_id = manager_id
 
@@ -47,7 +47,7 @@ def withdraw_user_manager(ticket_id: TicketID, initiator_id: UserID) -> None:
     ticket = ticket_service.find_ticket(ticket_id)
 
     if ticket.revoked:
-        raise TicketIsRevoked('Ticket {} has been revoked.'.format(ticket_id))
+        raise TicketIsRevoked(f'Ticket {ticket_id} has been revoked.')
 
     ticket.user_managed_by_id = None
 
@@ -66,18 +66,18 @@ def appoint_user(
     ticket = ticket_service.find_ticket(ticket_id)
 
     if ticket.revoked:
-        raise TicketIsRevoked('Ticket {} has been revoked.'.format(ticket_id))
+        raise TicketIsRevoked(f'Ticket {ticket_id} has been revoked.')
 
     if ticket.user_checked_in:
         raise UserAlreadyCheckedIn('Ticket user has already been checked in.')
 
     user = user_service.find_user(user_id)
     if user is None:
-        raise UserIdUnknown("Unknown user ID '{}'.".format(user_id))
+        raise UserIdUnknown(f"Unknown user ID '{user_id}'")
 
     if user.suspended:
         raise UserAccountSuspended(
-            'User account {} is suspended.'.format(user.screen_name)
+            f'User account {user.screen_name} is suspended.'
         )
 
     ticket.used_by_id = user_id
@@ -96,7 +96,7 @@ def withdraw_user(ticket_id: TicketID, initiator_id: UserID) -> None:
     ticket = ticket_service.find_ticket(ticket_id)
 
     if ticket.revoked:
-        raise TicketIsRevoked('Ticket {} has been revoked.'.format(ticket_id))
+        raise TicketIsRevoked(f'Ticket {ticket_id} has been revoked.')
 
     if ticket.user_checked_in:
         raise UserAlreadyCheckedIn('Ticket user has already been checked in.')

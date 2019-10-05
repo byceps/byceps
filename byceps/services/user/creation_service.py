@@ -171,7 +171,7 @@ def _normalize_screen_name(screen_name: str) -> str:
     normalized = screen_name.strip()
 
     if not normalized or (' ' in normalized) or ('@' in normalized):
-        raise ValueError('Invalid screen name: \'{}\''.format(screen_name))
+        raise ValueError(f"Invalid screen name: '{screen_name}'")
 
     return normalized
 
@@ -181,7 +181,7 @@ def _normalize_email_address(email_address: str) -> str:
     normalized = email_address.strip().lower()
 
     if not normalized or (' ' in normalized) or ('@' not in normalized):
-        raise ValueError('Invalid email address: \'{}\''.format(email_address))
+        raise ValueError(f"Invalid email address: '{email_address}'")
 
     return normalized
 

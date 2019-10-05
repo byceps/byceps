@@ -23,10 +23,11 @@ class ScreenNameValidator:
 
     def __call__(self, form, field):
         if not screen_name_validator.contains_only_valid_chars(field.data):
+            special_chars_spaced = ' '.join(screen_name_validator.SPECIAL_CHARS)
             raise ValidationError(
                 'Enthält ungültige Zeichen. Erlaubt sind Buchstaben, '
-                ' Ziffern und diese Sonderzeichen: {}' \
-                    .format(' '.join(screen_name_validator.SPECIAL_CHARS)))
+                f' Ziffern und diese Sonderzeichen: {special_chars_spaced}'
+            )
 
 
 class UserCreateForm(LocalizedForm):

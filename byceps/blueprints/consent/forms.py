@@ -28,4 +28,4 @@ def create_consent_form(subjects):
 
 
 def get_subject_field_name(subject):
-    return 'subject_{}'.format(subject.id.hex)
+    return f'subject_{subject.id.hex}'

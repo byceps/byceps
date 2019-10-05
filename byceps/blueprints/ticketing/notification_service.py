@@ -19,13 +19,12 @@ from ...services.user.transfer.models import User
 def notify_appointed_user(ticket: Ticket, user: User, manager: User) -> None:
     party_title = _get_party_title()
 
-    subject = '{} hat dir Ticket {} zugewiesen.'.format(
-        manager.screen_name, ticket.code
-    )
+    subject = f'{manager.screen_name} hat dir Ticket {ticket.code} zugewiesen.'
 
-    body = '{} hat dir Ticket {} zugewiesen, was dich zur Teilnahme ' \
-        'an der {} berechtigt.' \
-        .format(manager.screen_name, ticket.code, party_title)
+    body = (
+        f'{manager.screen_name} hat dir Ticket {ticket.code} zugewiesen, '
+        f'was dich zur Teilnahme an der {party_title} berechtigt.'
+    )
 
     _enqueue_email(user, subject, body)
 
@@ -33,13 +32,12 @@ def notify_appointed_user(ticket: Ticket, user: User, manager: User) -> None:
 def notify_withdrawn_user(ticket: Ticket, user: User, manager: User) -> None:
     party_title = _get_party_title()
 
-    subject = '{} hat Ticket {} zurückgezogen.'.format(
-        manager.screen_name, ticket.code
-    )
+    subject = f'{manager.screen_name} hat Ticket {ticket.code} zurückgezogen.'
 
-    body = '{} hat das dir bisher zugewiesene Ticket {} für die {} ' \
-        'zurückgezogen.' \
-        .format(manager.screen_name, ticket.code, party_title)
+    body = (
+        f'{manager.screen_name} hat das dir bisher zugewiesene Ticket '
+        f'{ticket.code} für die {party_title} zurückgezogen.'
+    )
 
     _enqueue_email(user, subject, body)
 
@@ -49,13 +47,15 @@ def notify_appointed_user_manager(
 ) -> None:
     party_title = _get_party_title()
 
-    subject = '{} hat dir die Nutzerverwaltung für Ticket {} übertragen.'.format(
-        manager.screen_name, ticket.code
+    subject = (
+        f'{manager.screen_name} hat dir die Nutzerverwaltung '
+        f'für Ticket {ticket.code} übertragen.'
     )
 
-    body = '{} hat dir die Verwaltung des Nutzers von Ticket {} für die {} ' \
-        'übertragen.' \
-        .format(manager.screen_name, ticket.code, party_title)
+    body = (
+        f'{manager.screen_name} hat dir die Verwaltung des Nutzers '
+        f'von Ticket {ticket.code} für die {party_title} übertragen.'
+    )
 
     _enqueue_email(user, subject, body)
 
@@ -65,13 +65,16 @@ def notify_withdrawn_user_manager(
 ) -> None:
     party_title = _get_party_title()
 
-    subject = '{} hat die Übertragung der Nutzerverwaltung für Ticket {} ' \
-        'an dich zurückgezogen.' \
-        .format(manager.screen_name, ticket.code)
+    subject = (
+        f'{manager.screen_name} hat die Übertragung der Nutzerverwaltung '
+        f'für Ticket {ticket.code} an dich zurückgezogen.'
+    )
 
-    body = '{} hat die dir bisher übertragene Verwaltung des Nutzers ' \
-        'von Ticket {} für die {} zurückgezogen.' \
-        .format(manager.screen_name, ticket.code, party_title)
+    body = (
+        f'{manager.screen_name} hat die dir bisher übertragene Verwaltung '
+        f'des Nutzers von Ticket {ticket.code} für die {party_title} '
+        'zurückgezogen.'
+    )
 
     _enqueue_email(user, subject, body)
 
@@ -81,13 +84,15 @@ def notify_appointed_seat_manager(
 ) -> None:
     party_title = _get_party_title()
 
-    subject = '{} hat dir die Sitzplatzverwaltung für Ticket {} übertragen.'.format(
-        manager.screen_name, ticket.code
+    subject = (
+        f'{manager.screen_name} hat dir die Sitzplatzverwaltung '
+        f'für Ticket {ticket.code} übertragen.'
     )
 
-    body = '{} hat dir die Verwaltung des Sitzplatzes von Ticket {} ' \
-        'für die {} übertragen.' \
-        .format(manager.screen_name, ticket.code, party_title)
+    body = (
+        f'{manager.screen_name} hat dir die Verwaltung des Sitzplatzes '
+        f'von Ticket {ticket.code} für die {party_title} übertragen.'
+    )
 
     _enqueue_email(user, subject, body)
 
@@ -97,13 +102,16 @@ def notify_withdrawn_seat_manager(
 ) -> None:
     party_title = _get_party_title()
 
-    subject = '{} hat die Übertragung der Sitzplatzverwaltung für Ticket {} ' \
-        'an dich zurückgezogen.' \
-        .format(manager.screen_name, ticket.code)
+    subject = (
+        f'{manager.screen_name} hat die Übertragung der Sitzplatzverwaltung '
+        f'für Ticket {ticket.code} an dich zurückgezogen.'
+    )
 
-    body = '{} hat die dir bisher übertragene Verwaltung des Sitzplatzes ' \
-        'von Ticket {} für die {} zurückgezogen.' \
-        .format(manager.screen_name, ticket.code, party_title)
+    body = (
+        f'{manager.screen_name} hat die dir bisher übertragene Verwaltung '
+        f'des Sitzplatzes von Ticket {ticket.code} für die {party_title} '
+        'zurückgezogen.'
+    )
 
     _enqueue_email(user, subject, body)
 
@@ -121,7 +129,7 @@ def _enqueue_email(recipient: User, subject: str, body: str) -> None:
     recipient_address = user_service.get_email_address(recipient.id)
     recipients = [recipient_address]
 
-    salutation = 'Hallo {},\n\n'.format(recipient.screen_name)
+    salutation = f'Hallo {recipient.screen_name},\n\n'
     body = salutation + body
 
     email_service.enqueue_email(sender, recipients, subject, body)

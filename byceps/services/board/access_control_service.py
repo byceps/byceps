@@ -31,7 +31,7 @@ def revoke_access_to_board(grant_id: BoardAccessGrantID) -> None:
     grant = BoardAccessGrant.query.get(grant_id)
 
     if grant is None:
-        raise ValueError("Unknown board grant ID '{}'.".format(grant_id))
+        raise ValueError(f"Unknown board grant ID '{grant_id}'")
 
     db.session.delete(grant)
     db.session.commit()

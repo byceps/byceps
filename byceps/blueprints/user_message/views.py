@@ -61,7 +61,7 @@ def create(recipient_id):
     )
 
     flash_success(
-        'Deine Nachricht an {} wurde versendet.'.format(recipient.screen_name)
+        f'Deine Nachricht an {recipient.screen_name} wurde versendet.'
     )
 
     return redirect_to('user_profile.view', user_id=recipient.id)

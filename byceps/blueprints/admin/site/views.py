@@ -168,7 +168,7 @@ def update(site_id):
             site.id, title, server_name, email_config_id, party_id=party_id
         )
     except site_service.UnknownSiteId:
-        abort(404, 'Unknown site ID "{}".'.format(site_id))
+        abort(404, f'Unknown site ID "{site_id}".')
 
     flash_success('Die Site "{}" wurde aktualisiert.', site.title)
 

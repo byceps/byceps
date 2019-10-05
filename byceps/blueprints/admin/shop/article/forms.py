@@ -52,7 +52,7 @@ class ArticleAttachmentCreateForm(LocalizedForm):
 
     def set_article_to_attach_choices(self, attachable_articles):
         def to_label(article):
-            return '{} – {}'.format(article.item_number, article.description)
+            return f'{article.item_number} – {article.description}'
 
         choices = [
             (str(article.id), to_label(article))

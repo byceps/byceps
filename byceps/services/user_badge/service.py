@@ -205,7 +205,7 @@ def _db_entity_to_badge(entity: DbBadge) -> Badge:
 
 
 def _build_image_url(image_filename: str) -> str:
-    filename = 'users/badges/{}'.format(image_filename)
+    filename = f'users/badges/{image_filename}'
     return url_for('global_file', filename=filename)
 
 

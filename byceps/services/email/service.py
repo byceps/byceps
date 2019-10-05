@@ -37,7 +37,7 @@ def get_config(config_id: str) -> Sender:
     config = find_config(config_id)
 
     if not config:
-        raise EmailError('No e-mail config for ID "{}".'.format(config_id))
+        raise EmailError(f'No e-mail config for ID "{config_id}"')
 
     return config
 

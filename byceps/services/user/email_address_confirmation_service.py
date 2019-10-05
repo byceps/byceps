@@ -26,17 +26,16 @@ def send_email_address_confirmation_email(
     email_config = email_service.get_config(site.email_config_id)
     sender = email_config.sender
 
-    confirmation_url = 'https://{}/users/email_address/confirmation/{}'.format(
-        site.server_name, verification_token.token
+    confirmation_url = (
+        f'https://{site.server_name}/users/email_address/'
+        f'confirmation/{verification_token.token}'
     )
 
-    subject = '{}, bitte bestätige deine E-Mail-Adresse'.format(
-        recipient_screen_name
-    )
+    subject = f'{recipient_screen_name}, bitte bestätige deine E-Mail-Adresse'
     body = (
-        'Hallo {0},\n\n'
-        'bitte bestätige deine E-Mail-Adresse, indem du diese URL abrufst: {1}'
-    ).format(recipient_screen_name, confirmation_url)
+        f'Hallo {recipient_screen_name},\n\n'
+        f'bitte bestätige deine E-Mail-Adresse, indem du diese URL abrufst: {confirmation_url}'
+    )
     recipients = [recipient_email_address]
 
     email_service.enqueue_email(sender, recipients, subject, body)

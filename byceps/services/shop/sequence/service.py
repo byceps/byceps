@@ -62,9 +62,8 @@ def _get_next_sequence_step(
 
     if sequence is None:
         raise NumberGenerationFailed(
-            'No sequence configured for shop "{}" and purpose "{}".'.format(
-                shop_id, purpose.name
-            )
+            f'No sequence configured for shop "{shop_id}" '
+            f'and purpose "{purpose.name}".'
         )
 
     sequence.value = DbNumberSequence.value + 1
@@ -75,12 +74,12 @@ def _get_next_sequence_step(
 
 def format_article_number(sequence: NumberSequence) -> ArticleNumber:
     """Format a number sequence step as article number."""
-    return ArticleNumber('{}{:05d}'.format(sequence.prefix, sequence.value))
+    return ArticleNumber(f'{sequence.prefix}{sequence.value:05d}')
 
 
 def format_order_number(sequence: NumberSequence) -> OrderNumber:
     """Format a number sequence step as order number."""
-    return OrderNumber('{}{:05d}'.format(sequence.prefix, sequence.value))
+    return OrderNumber(f'{sequence.prefix}{sequence.value:05d}')
 
 
 def find_article_number_sequence(shop_id: ShopID) -> Optional[NumberSequence]:

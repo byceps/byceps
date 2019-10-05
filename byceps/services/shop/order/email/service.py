@@ -68,9 +68,7 @@ def _assemble_email_for_incoming_order_to_orderer(
 ) -> Message:
     order = data.order
 
-    subject = 'Deine Bestellung ({}) ist eingegangen.'.format(
-        order.order_number
-    )
+    subject = f'Deine Bestellung ({order.order_number}) ist eingegangen.'
     template_name = 'order_placed.txt'
     template_context = _get_template_context(data)
     template_context['payment_instructions'] = _get_payment_instructions(order)
@@ -95,8 +93,9 @@ def _get_payment_instructions(order: Order) -> str:
 def _assemble_email_for_canceled_order_to_orderer(
     data: OrderEmailData
 ) -> Message:
-    subject = '\u274c Deine Bestellung ({}) wurde storniert.'.format(
-        data.order.order_number
+    subject = (
+        f'\u274c Deine Bestellung ({data.order.order_number}) '
+        f'wurde storniert.'
     )
     template_name = 'order_canceled.txt'
     template_context = _get_template_context(data)
@@ -112,8 +111,9 @@ def _assemble_email_for_canceled_order_to_orderer(
 
 
 def _assemble_email_for_paid_order_to_orderer(data: OrderEmailData) -> Message:
-    subject = '\u2705 Deine Bestellung ({}) ist bezahlt worden.'.format(
-        data.order.order_number
+    subject = (
+        f'\u2705 Deine Bestellung ({data.order.order_number}) '
+        f'ist bezahlt worden.'
     )
     template_name = 'order_paid.txt'
     template_context = _get_template_context(data)

@@ -20,7 +20,7 @@ def create_category(party_id: PartyID, title: str) -> TourneyCategory:
     """Create a category for that party."""
     party = DbParty.query.get(party_id)
     if party is None:
-        raise ValueError('Unknown party ID "{}"'.format(party_id))
+        raise ValueError(f'Unknown party ID "{party_id}"')
 
     category = TourneyCategory(party.id, title)
     party.tourney_categories.append(category)

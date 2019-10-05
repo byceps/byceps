@@ -18,7 +18,7 @@ class Label:
 
     def serialize(self) -> str:
         escaped_value = _escape_label_value(self.value)
-        return '{}="{}"'.format(self.name, escaped_value)
+        return f'{self.name}="{escaped_value}"'
 
 
 def _escape_label_value(value: str) -> str:
@@ -48,4 +48,4 @@ class Metric:
                 + ', '.join(label.serialize() for label in self.labels) \
                 + '}'
 
-        return '{}{} {}'.format(self.name, labels_str, self.value)
+        return f'{self.name}{labels_str} {self.value}'

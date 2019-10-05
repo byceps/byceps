@@ -128,7 +128,7 @@ def _get_db_item(item_id: ItemID) -> DbItem:
     item = _find_db_item(item_id)
 
     if item is None:
-        raise ValueError('Unknown news item ID "{}".'.format(item_id))
+        raise ValueError(f'Unknown news item ID "{item_id}".')
 
     return item
 
@@ -272,7 +272,7 @@ def _assemble_image_url(item: DbItem) -> Optional[str]:
     if not url_path:
         return None
 
-    filename = 'news/{}'.format(url_path)
+    filename = f'news/{url_path}'
     return url_for(
         'brand_file', filename=filename, _method='GET', _external=True
     )

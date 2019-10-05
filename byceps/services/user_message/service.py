@@ -67,9 +67,7 @@ def _get_user(user_id: UserID) -> User:
     user = user_service.find_active_user(user_id)
 
     if user is None:
-        raise ValueError(
-            "Unknown user ID '{}' or account not active".format(user_id)
-        )
+        raise ValueError(f"Unknown user ID '{user_id}' or account not active")
 
     return user
 

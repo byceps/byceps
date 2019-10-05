@@ -204,8 +204,8 @@ def remove_user_detail_extra(user_id: UserID, key: str) -> None:
 
 def _anonymize_account(user: DbUser) -> None:
     """Remove or replace user details of the account."""
-    user.screen_name = 'deleted-{}'.format(user.id.hex)
-    user.email_address = '{}@user.invalid'.format(user.id.hex)
+    user.screen_name = f'deleted-{user.id.hex}'
+    user.email_address = f'{user.id.hex}@user.invalid'
     user.legacy_id = None
 
     # Remove details.
@@ -228,7 +228,7 @@ def _get_user(user_id: UserID) -> DbUser:
     user = DbUser.query.get(user_id)
 
     if user is None:
-        raise ValueError("Unknown user ID '{}'.".format(user_id))
+        raise ValueError(f"Unknown user ID '{user_id}'")
 
     return user
 
@@ -240,6 +240,6 @@ def _get_user_detail(user_id: UserID) -> DbUserDetail:
         .one_or_none()
 
     if detail is None:
-        raise ValueError("Unknown user ID '{}'.".format(user_id))
+        raise ValueError(f"Unknown user ID '{user_id}'")
 
     return detail

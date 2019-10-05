@@ -42,7 +42,7 @@ def _verify_badge_id(badge_id: BadgeID) -> None:
     badge = badge_service.find_badge(badge_id)
 
     if badge is None:
-        raise ValueError('Unknown badge ID "{}".'.format(badge_id))
+        raise ValueError(f'Unknown badge ID "{badge_id}"')
 
 
 def _create_order_event(order_id: OrderID, awarding: BadgeAwarding) -> None:

@@ -123,9 +123,8 @@ def _get_procedure(name: str, article_number: ArticleNumber) -> OrderActionType:
 
     if procedure is None:
         raise Exception(
-            "Unknown procedure '{}' configured for article number '{}'.".format(
-                name, article_number
-            )
+            f"Unknown procedure '{name}' configured "
+            f"for article number '{article_number}'."
         )
 
     return procedure

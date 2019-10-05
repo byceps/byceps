@@ -47,5 +47,5 @@ def get_config_filename_from_env_or_exit() -> str:
     try:
         return get_config_filename_from_env()
     except ConfigurationError as e:
-        sys.stderr.write("{}\n".format(e))
+        sys.stderr.write(f"{e}\n")
         sys.exit(1)

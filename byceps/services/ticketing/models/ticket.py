@@ -124,14 +124,13 @@ class Ticket(db.Model):
             if seat is None:
                 return None
 
-            return '{{area={!r}, label={!r}}}' \
-                .format(seat.area.title, seat.label)
+            return f'{{area={seat.area.title!r}, label={seat.label!r}}}'
 
         return ReprBuilder(self) \
             .add('id', str(self.id)) \
             .add('party', self.category.party_id) \
             .add('category', self.category.title) \
             .add('owned_by', user(self.owned_by)) \
-            .add_custom('occupied_seat={}'.format(occupied_seat())) \
+            .add_custom(f'occupied_seat={occupied_seat()}') \
             .add('used_by', user(self.used_by)) \
             .build()

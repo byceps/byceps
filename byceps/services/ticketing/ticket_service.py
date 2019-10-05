@@ -204,7 +204,7 @@ def get_tickets_with_details_for_party_paginated(
         )
 
     if search_term:
-        ilike_pattern = '%{}%'.format(search_term)
+        ilike_pattern = f'%{search_term}%'
         query = query \
             .filter(DbTicket.code.ilike(ilike_pattern))
 
@@ -230,7 +230,7 @@ def get_tickets_in_use_for_party_paginated(
 
     if search_term:
         query = query \
-            .filter(ticket_user.screen_name.ilike('%{}%'.format(search_term)))
+            .filter(ticket_user.screen_name.ilike(f'%{search_term}%'))
 
     return query \
         .join(ticket_user, DbTicket.used_by_id == ticket_user.id) \

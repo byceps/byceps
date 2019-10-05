@@ -29,32 +29,28 @@ def check_in_user(ticket_id: TicketID, initiator_id: UserID) -> None:
     ticket = ticket_service.find_ticket(ticket_id)
 
     if ticket.revoked:
-        raise TicketIsRevoked('Ticket {} has been revoked.'.format(ticket_id))
+        raise TicketIsRevoked(f'Ticket {ticket_id} has been revoked.')
 
     if ticket.used_by_id is None:
-        raise TicketLacksUser(
-            'Ticket {} has no user assigned.'.format(ticket_id)
-        )
+        raise TicketLacksUser(f'Ticket {ticket_id} has no user assigned.')
 
     if ticket.user_checked_in:
         raise UserAlreadyCheckedIn(
-            'Ticket {} has already been used to check in a user.'.format(
-                ticket_id
-            )
+            f'Ticket {ticket_id} has already been used to check in a user.'
         )
 
     user = user_service.find_user(ticket.used_by_id)
     if user is None:
-        raise UserIdUnknown("Unknown user ID '{}'.".format(ticket.used_by_id))
+        raise UserIdUnknown(f"Unknown user ID '{ticket.used_by_id}'")
 
     if user.deleted:
         raise UserAccountDeleted(
-            'User account {} has been deleted.'.format(user.screen_name)
+            f'User account {user.screen_name} has been deleted.'
         )
 
     if user.suspended:
         raise UserAccountSuspended(
-            'User account {} is suspended.'.format(user.screen_name)
+            f'User account {user.screen_name} is suspended.'
         )
 
     ticket.user_checked_in = True
@@ -73,9 +69,7 @@ def revert_user_check_in(ticket_id: TicketID, initiator_id: UserID) -> None:
     ticket = ticket_service.find_ticket(ticket_id)
 
     if not ticket.user_checked_in:
-        raise ValueError(
-            'User of ticket {} has not been checked in.'.format(ticket_id)
-        )
+        raise ValueError(f'User of ticket {ticket_id} has not been checked in.')
 
     ticket.user_checked_in = False
 

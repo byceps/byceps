@@ -51,7 +51,7 @@ class Mountpoint(db.Model):
 
     def generate_url(self) -> Optional[str]:
         try:
-            return url_for('snippet.{}'.format(self.endpoint_suffix))
+            return url_for(f'snippet.{self.endpoint_suffix}')
         except BuildError:
             return None
 

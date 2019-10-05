@@ -61,7 +61,7 @@ class Avatar(db.Model):
 
     @property
     def url(self) -> str:
-        path = 'users/avatars/{}'.format(self.filename)
+        path = f'users/avatars/{self.filename}'
         return url_for('global_file', filename=path)
 
     def __repr__(self) -> str:

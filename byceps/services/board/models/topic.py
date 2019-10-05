@@ -116,18 +116,12 @@ class Topic(db.Model):
             .add_with_lookup('title')
 
         if self.hidden:
-            builder.add_custom(
-                'hidden by {}'.format(self.hidden_by.screen_name)
-            )
+            builder.add_custom(f'hidden by {self.hidden_by.screen_name}')
 
         if self.locked:
-            builder.add_custom(
-                'locked by {}'.format(self.locked_by.screen_name)
-            )
+            builder.add_custom(f'locked by {self.locked_by.screen_name}')
 
         if self.pinned:
-            builder.add_custom(
-                'pinned by {}'.format(self.pinned_by.screen_name)
-            )
+            builder.add_custom(f'pinned by {self.pinned_by.screen_name}')
 
         return builder.build()

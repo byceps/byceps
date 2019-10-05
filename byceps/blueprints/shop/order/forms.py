@@ -66,7 +66,7 @@ def assemble_articles_order_form(article_compilation):
 
 
 def _generate_field_name(article):
-    return 'article_{}'.format(article.id)
+    return f'article_{article.id}'
 
 
 def _create_choices(article):

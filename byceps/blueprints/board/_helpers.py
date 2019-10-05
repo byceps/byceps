@@ -94,7 +94,7 @@ def build_url_for_topic_in_category_view(topic):
     return url_for(
         'board.category_view',
         slug=topic.category.slug,
-        _anchor='topic-{}'.format(topic.id),
+        _anchor=f'topic-{topic.id}',
     )
 
 
@@ -113,6 +113,6 @@ def build_url_for_posting_in_topic_view(posting, page, **kwargs):
         'board.topic_view',
         topic_id=posting.topic.id,
         page=page,
-        _anchor='posting-{}'.format(posting.id),
+        _anchor=f'posting-{posting.id}',
         **kwargs,
     )

@@ -73,7 +73,7 @@ def remove_avatar_image(user_id: UserID) -> None:
     selection = AvatarSelection.query.get(user_id)
 
     if selection is None:
-        raise ValueError('No avatar set for user ID {}.'.format(user_id))
+        raise ValueError(f'No avatar set for user ID {user_id}.')
 
     db.session.delete(selection)
     db.session.commit()

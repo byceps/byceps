@@ -70,7 +70,7 @@ def _filter_by_state(query, state_filter):
 
 
 def _filter_by_search_term(query, search_term):
-    ilike_pattern = '%{}%'.format(search_term)
+    ilike_pattern = f'%{search_term}%'
 
     return query \
         .join(UserDetail) \
@@ -203,7 +203,7 @@ def _fake_newsletter_subscription_update_events(
     updates = newsletter_service.get_subscription_updates_for_user(user_id)
 
     for update in updates:
-        event_type = 'newsletter-{}'.format(update.state.name)
+        event_type = f'newsletter-{update.state.name}'
 
         list_ = lists_by_id[update.list_id]
 

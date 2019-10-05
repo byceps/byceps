@@ -38,13 +38,12 @@ def prepare_password_reset(
     )
 
     recipients = [user.email_address]
-    subject = '{0.screen_name}, so kannst du ein neues Passwort festlegen'.format(
-        user
-    )
+    subject = f'{user.screen_name}, so kannst du ein neues Passwort festlegen'
     body = (
-        'Hallo {0.screen_name},\n\n'
-        'du kannst ein neues Passwort festlegen, indem du diese URL abrufst: {1}'
-    ).format(user, confirmation_url)
+        f'Hallo {user.screen_name},\n\n'
+        'du kannst ein neues Passwort festlegen, '
+        f'indem du diese URL abrufst: {confirmation_url}'
+    )
 
     email_service.enqueue_email(sender, recipients, subject, body)
 

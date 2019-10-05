@@ -179,11 +179,13 @@ class Order(db.Model):
         )
 
     def __repr__(self) -> str:
+        item_count = len(self.items)
+
         return ReprBuilder(self) \
             .add_with_lookup('id') \
             .add('shop', self.shop_id) \
             .add_with_lookup('order_number') \
             .add('placed_by', self.placed_by.screen_name) \
-            .add_custom('{:d} items'.format(len(self.items))) \
+            .add_custom(f'{item_count:d} items') \
             .add_custom(self.payment_state.name) \
             .build()

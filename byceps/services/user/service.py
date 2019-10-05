@@ -199,7 +199,7 @@ def get_email_address(user_id: UserID) -> str:
         .scalar()
 
     if email_address is None:
-        raise ValueError("Unknown user ID '{}'.".format(user_id))
+        raise ValueError(f"Unknown user ID '{user_id}'")
 
     return email_address
 

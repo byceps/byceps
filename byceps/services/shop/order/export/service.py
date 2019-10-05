@@ -59,7 +59,7 @@ def _format_export_amount(amount: Decimal) -> str:
     specification.
     """
     quantized = to_two_places(amount)
-    return '{:.2f}'.format(quantized)
+    return f'{quantized:.2f}'
 
 
 def _format_export_datetime(dt: datetime) -> str:

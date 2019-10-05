@@ -403,7 +403,7 @@ def get_orders_for_shop_paginated(
         .order_by(DbOrder.created_at.desc())
 
     if search_term:
-        ilike_pattern = '%{}%'.format(search_term)
+        ilike_pattern = f'%{search_term}%'
         query = query \
             .filter(DbOrder.order_number.ilike(ilike_pattern))
 

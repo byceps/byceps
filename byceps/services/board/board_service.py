@@ -21,7 +21,7 @@ def create_board(brand_id: BrandID, board_id: BoardID) -> Board:
     """Create a board for that brand."""
     brand = brand_service.find_brand(brand_id)
     if brand is None:
-        raise ValueError('Unknown brand ID "{}"'.format(brand_id))
+        raise ValueError(f'Unknown brand ID "{brand_id}"')
 
     board = DbBoard(board_id, brand.id)
 
