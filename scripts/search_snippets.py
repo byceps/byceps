@@ -35,7 +35,7 @@ def execute(ctx, search_term, site, verbose):
 
     if verbose:
         if scope is not None:
-            scope_label = 'scope "{}"'.format(format_scope(scope))
+            scope_label = f'scope "{format_scope(scope)}"'
         else:
             scope_label = 'any scope'
     else:
@@ -54,13 +54,12 @@ def execute(ctx, search_term, site, verbose):
 
     for version in matches:
         snippet = version.snippet
-        click.secho('{}\t{}'.format(format_scope(snippet.scope), snippet.name))
+        click.secho(f'{format_scope(snippet.scope)}\t{snippet.name}')
 
     if verbose:
         click.secho(
-            '\n{:d} matching snippet(s) for {} and search term "{}".'.format(
-                len(matches), scope_label, search_term
-            ),
+            f'\n{len(matches):d} matching snippet(s) '
+            f'for {scope_label} and search term "{search_term}".',
             fg='green',
         )
 
