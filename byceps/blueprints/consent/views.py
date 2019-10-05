@@ -70,8 +70,9 @@ def consent(token):
     if not form.validate():
         return consent_form(token, erroneous_form=form)
 
-    subject_ids_from_form = [UUID(id_str)
-                             for id_str in form.subject_ids.data.split(',')]
+    subject_ids_from_form = [
+        UUID(id_str) for id_str in form.subject_ids.data.split(',')
+    ]
 
     for subject_id in subject_ids_from_form:
         subject = subject_service.find_subject(subject_id)
@@ -113,8 +114,9 @@ def _get_unconsented_subject_ids(user_id, required_subject_ids):
 
 
 def _get_subjects(subject_ids):
-    return [subject_service.find_subject(subject_id)
-            for subject_id in subject_ids]
+    return [
+        subject_service.find_subject(subject_id) for subject_id in subject_ids
+    ]
 
 
 def _get_verification_token_or_404(token_value):

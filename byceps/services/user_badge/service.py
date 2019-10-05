@@ -184,8 +184,10 @@ def get_awardings_of_badge(badge_id: BadgeID) -> Set[QuantifiedBadgeAwarding]:
         ) \
         .all()
 
-    return {QuantifiedBadgeAwarding(badge_id, user_id, quantity)
-            for badge_id, user_id, quantity in rows}
+    return {
+        QuantifiedBadgeAwarding(badge_id, user_id, quantity)
+        for badge_id, user_id, quantity in rows
+    }
 
 
 def _db_entity_to_badge(entity: DbBadge) -> Badge:

@@ -220,7 +220,9 @@ def _add_attached_articles(
 
 def get_attachable_articles(article: DbArticle) -> Sequence[DbArticle]:
     """Return the articles that can be attached to that article."""
-    attached_articles = {attached.article for attached in article.attached_articles}
+    attached_articles = {
+        attached.article for attached in article.attached_articles
+    }
 
     unattachable_articles = {article}.union(attached_articles)
 
@@ -261,8 +263,9 @@ def sum_ordered_articles_by_payment_state(
         .order_by(DbArticle.item_number, subquery.c.payment_state) \
         .all()
 
-    shop_ids_and_article_numbers_and_descriptions \
-        = {(row[0], row[1], row[2]) for row in rows}  # Remove duplicates.
+    shop_ids_and_article_numbers_and_descriptions = {
+        (row[0], row[1], row[2]) for row in rows
+    }  # Remove duplicates.
 
     quantities = {}
 

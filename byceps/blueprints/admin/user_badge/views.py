@@ -52,7 +52,8 @@ def index():
             'image_url': badge.image_url,
             'brand_title': _find_brand_title(badge.brand_id),
             'featured': badge.featured,
-        } for badge in all_badges
+        }
+        for badge in all_badges
     ]
 
     return {

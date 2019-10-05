@@ -105,8 +105,9 @@ def get_avatar_urls_for_users(user_ids: Set[UserID]) -> Dict[UserID, str]:
         .filter(AvatarSelection.user_id.in_(user_ids)) \
         .all()
 
-    urls_by_user_id = {user_id: avatar.url
-                       for user_id, avatar in user_ids_and_avatars}
+    urls_by_user_id = {
+        user_id: avatar.url for user_id, avatar in user_ids_and_avatars
+    }
 
     # Include all user IDs in result.
     return {user_id: urls_by_user_id.get(user_id) for user_id in user_ids}

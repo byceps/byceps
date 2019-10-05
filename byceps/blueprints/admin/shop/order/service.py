@@ -59,9 +59,11 @@ def get_events(order_id: OrderID) -> Iterator[OrderEventData]:
     events = order_event_service.get_events_for_order(order_id)
     events.insert(0, _fake_order_placement_event(order_id))
 
-    user_ids = {event.data['initiator_id']
-                for event in events
-                if 'initiator_id' in event.data}
+    user_ids = {
+        event.data['initiator_id']
+        for event in events
+        if 'initiator_id' in event.data
+    }
     users = user_service.find_users(user_ids, include_avatars=True)
     users_by_id = {str(user.id): user for user in users}
 

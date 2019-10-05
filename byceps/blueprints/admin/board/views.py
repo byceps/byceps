@@ -66,7 +66,8 @@ def board_index_for_brand(brand_id):
             board_topic_query_service.count_topics_for_board(board_id),
             board_posting_query_service.count_postings_for_board(board_id),
         )
-        for board_id in board_ids}
+        for board_id in board_ids
+    }
 
     return {
         'boards': boards,

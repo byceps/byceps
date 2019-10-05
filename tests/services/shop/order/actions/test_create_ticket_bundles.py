@@ -49,7 +49,8 @@ class CreateTicketBundlesActionTest(OrderActionTestBase):
 
         events = order_event_service.get_events_for_order(self.order.id)
         ticket_bundle_created_events = {
-            event for event in events
+            event
+            for event in events
             if event.event_type == 'ticket-bundle-created'
         }
         assert len(ticket_bundle_created_events) == bundle_quantity

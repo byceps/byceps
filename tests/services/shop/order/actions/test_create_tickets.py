@@ -47,8 +47,9 @@ class CreateTicketsActionTest(OrderActionTestBase):
             assert ticket.used_by_id == self.buyer.id
 
         events = order_event_service.get_events_for_order(self.order.id)
-        ticket_created_events = {event for event in events
-                                 if event.event_type == 'ticket-created'}
+        ticket_created_events = {
+            event for event in events if event.event_type == 'ticket-created'
+        }
         assert len(ticket_created_events) == ticket_quantity
 
     # -------------------------------------------------------------------- #

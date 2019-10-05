@@ -114,8 +114,9 @@ def _search_users(party_id, search_term, limit):
     )
 
     # Exclude deleted users.
-    users_pagination.items = [user for user in users_pagination.items
-                              if not user.deleted]
+    users_pagination.items = [
+        user for user in users_pagination.items if not user.deleted
+    ]
 
     return users_pagination.items
 

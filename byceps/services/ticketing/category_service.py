@@ -74,8 +74,10 @@ def get_categories_with_ticket_counts_for_party(
         .group_by(category.id) \
         .all()
 
-    return {_db_entity_to_category(category): ticket_count
-            for category, ticket_count in rows}
+    return {
+        _db_entity_to_category(category): ticket_count
+        for category, ticket_count in rows
+    }
 
 
 def _db_entity_to_category(category: DbCategory) -> TicketCategory:

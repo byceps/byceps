@@ -97,7 +97,8 @@ def get_parties_and_tickets(
 
     parties_and_tickets = [
         (parties_by_id[party_id], tickets)
-        for party_id, tickets in tickets_by_party_id.items()]
+        for party_id, tickets in tickets_by_party_id.items()
+    ]
 
     parties_and_tickets.sort(key=lambda x: x[0].starts_at, reverse=True)
 
@@ -143,9 +144,11 @@ def get_events(user_id: UserID) -> Iterator[UserEventData]:
     events.extend(_fake_newsletter_subscription_update_events(user_id))
     events.extend(_fake_order_events(user_id))
 
-    user_ids = {event.data['initiator_id']
-                for event in events
-                if 'initiator_id' in event.data}
+    user_ids = {
+        event.data['initiator_id']
+        for event in events
+        if 'initiator_id' in event.data
+    }
     users = user_service.find_users(user_ids, include_avatars=True)
     users_by_id = {str(user.id): user for user in users}
 

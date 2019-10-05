@@ -87,8 +87,10 @@ def get_categories_with_last_updates(
         ) \
         .all()
 
-    return [_db_entity_to_category_with_last_update(category)
-            for category in categories_with_last_update]
+    return [
+        _db_entity_to_category_with_last_update(category)
+        for category in categories_with_last_update
+    ]
 
 
 def _db_entity_to_category(category: DbCategory) -> Category:

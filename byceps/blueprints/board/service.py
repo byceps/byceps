@@ -119,8 +119,9 @@ def _get_badges(
 
     def generate_items():
         for user_id, badges in badges_by_user_id.items():
-            selected_badges = {badge for badge in badges
-                               if badge.brand_id in {None, brand_id}}
+            selected_badges = {
+                badge for badge in badges if badge.brand_id in {None, brand_id}
+            }
             yield user_id, selected_badges
 
     return dict(generate_items())

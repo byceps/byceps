@@ -93,8 +93,9 @@ def get_attendees_by_party(party_ids: Set[PartyID]) -> Dict[PartyID, Set[User]]:
     for party_id in party_ids:
         attendee_ids = attendee_ids_by_party_id.get(party_id, set())
 
-        attendees = {all_attendees_by_id[attendee_id]
-                     for attendee_id in attendee_ids}
+        attendees = {
+            all_attendees_by_id[attendee_id] for attendee_id in attendee_ids
+        }
 
         attendees_by_party_id[party_id] = attendees
 
