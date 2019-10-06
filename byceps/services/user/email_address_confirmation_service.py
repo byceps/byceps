@@ -14,6 +14,8 @@ from ..site.transfer.models import SiteID
 from ..verification_token.models import Token
 from ..verification_token import service as verification_token_service
 
+from . import command_service
+
 
 def send_email_address_confirmation_email(
     recipient_email_address: str,
@@ -48,7 +50,9 @@ def confirm_email_address(verification_token: Token) -> None:
     user = verification_token.user
 
     user.email_address_verified = True
-    user.initialized = True
     db.session.commit()
+
+    if not user.initialized:
+        command_service.initialize_account(user.id, user.id)
 
     verification_token_service.delete_token(verification_token)
