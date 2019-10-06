@@ -121,7 +121,7 @@ def create():
     title = form.title.data.strip()
     server_name = form.server_name.data.strip()
     email_config_id = form.email_config_id.data.strip()
-    party_id = form.party_id.data.strip()
+    party_id = form.party_id.data.strip() or None
 
     site = site_service.create_site(
         site_id, title, server_name, email_config_id, party_id=party_id
@@ -161,7 +161,7 @@ def update(site_id):
     title = form.title.data.strip()
     server_name = form.server_name.data.strip()
     email_config_id = form.email_config_id.data.strip()
-    party_id = form.party_id.data.strip()
+    party_id = form.party_id.data.strip() or None
 
     try:
         site = site_service.update_site(
