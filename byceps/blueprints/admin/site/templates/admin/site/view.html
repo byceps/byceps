@@ -34,6 +34,10 @@
       <td>{{ site.title }}</td>
     </tr>
     <tr>
+      <th>E-Mail-Konfiguration</th>
+      <td><a href="{{ url_for('email_admin.index') }}">{{ site.email_config_id }}</a></td>
+    </tr>
+    <tr>
       <th>Party</th>
       <td>{% if site.party_id %}<a href="{{ url_for('admin_dashboard.view_party', party_id=site.party_id) }}">{{ site.party_id }}</a>{% else %}{{ ''|fallback }}{% endif %}</td>
     </tr>
