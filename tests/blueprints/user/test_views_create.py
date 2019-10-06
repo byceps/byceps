@@ -7,7 +7,7 @@ from unittest.mock import patch
 
 from byceps.services.authentication.password.models import Credential
 from byceps.services.authentication.session import service as session_service
-from byceps.services.authorization.models import Role, UserRole
+from byceps.services.authorization import service as authorization_service
 from byceps.services.brand import settings_service as brand_settings_service
 from byceps.services.consent import (
     consent_service,
@@ -177,9 +177,8 @@ class UserCreateTestCase(AbstractAppTestCase):
         assert user.detail.last_name == 'Protagonist'
 
         # authorization
-        board_user_role = Role.query.get('board_user')
-        actual_roles = get_user_roles(user.id)
-        assert board_user_role in actual_roles
+        role_ids = authorization_service.find_role_ids_for_user(user.id)
+        assert role_ids == {'board_user'}
 
         # consents
         assert_consent(user.id, self.terms_consent_subject_id)
@@ -249,13 +248,6 @@ def find_user(screen_name):
 
 def get_user_count():
     return User.query.count()
-
-
-def get_user_roles(user_id):
-    return Role.query \
-        .join(UserRole) \
-        .filter_by(user_id=user_id) \
-        .all()
 
 
 def find_verification_token(user_id):
