@@ -137,12 +137,10 @@ def create():
 def update_form(site_id, erroneous_form=None):
     """Show form to update the site."""
     site = _get_site_or_404(site_id)
-    party = party_service.find_party(site.party_id)
 
     form = erroneous_form if erroneous_form else UpdateForm(obj=site)
 
     return {
-        'party': party,
         'site': site,
         'form': form,
     }
