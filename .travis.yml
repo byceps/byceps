@@ -11,7 +11,7 @@ services:
 install:
   - "pip install --upgrade pip"
   - "pip install --upgrade pytest"
-  - "pip install -r requirements.txt -r requirements-test.txt"
+  - "pip install -r requirements.txt -r requirements-development.txt"
 before_script:
   - psql -U postgres -c "CREATE DATABASE byceps_test;"
   - psql -U postgres -c "CREATE ROLE byceps_test WITH LOGIN PASSWORD 'test';"
