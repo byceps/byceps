@@ -12,6 +12,7 @@ from typing import Optional
 from ...database import db
 from ...typing import UserID
 
+from ..authorization.models import RoleID
 from ..authorization import service as authorization_service
 
 from . import event_service
@@ -37,6 +38,16 @@ def initialize_account(user_id: UserID, initiator_id: UserID) -> None:
     db.session.add(event)
 
     db.session.commit()
+
+    _assign_roles(user.id, initiator_id)
+
+
+def _assign_roles(user_id: UserID, initiator_id: UserID) -> None:
+    board_user_role = authorization_service.find_role(RoleID('board_user'))
+
+    authorization_service.assign_role_to_user(
+        board_user_role.id, user_id, initiator_id=initiator_id
+    )
 
 
 def suspend_account(user_id: UserID, initiator_id: UserID, reason: str) -> None:

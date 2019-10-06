@@ -37,9 +37,6 @@ from tests.helpers import (
     http_client,
 )
 
-from testfixtures.authorization import create_role
-
-
 class UserCreateTestCase(AbstractAppTestCase):
 
     def setUp(self):
@@ -58,7 +55,6 @@ class UserCreateTestCase(AbstractAppTestCase):
         self.setup_terms()
         self.setup_privacy_policy()
         self.setup_newsletter_list()
-        self.setup_roles()
 
     def setup_terms(self):
         scope = Scope.for_brand(self.brand_id)
@@ -120,11 +116,6 @@ class UserCreateTestCase(AbstractAppTestCase):
             self.brand.id, 'newsletter_list_id', str(list_.id)
         )
 
-    def setup_roles(self):
-        self.board_user_role = create_role('board_user')
-        self.db.session.add(self.board_user_role)
-        self.db.session.commit()
-
     @patch('byceps.email.send')
     def test_create(self, send_email_mock):
         screen_name = 'Hiro'
@@ -178,7 +169,7 @@ class UserCreateTestCase(AbstractAppTestCase):
 
         # authorization
         role_ids = authorization_service.find_role_ids_for_user(user.id)
-        assert role_ids == {'board_user'}
+        assert role_ids == set()
 
         # consents
         assert_consent(user.id, self.terms_consent_subject_id)

@@ -15,8 +15,6 @@ from ...database import db
 from ...typing import UserID
 
 from ..authentication.password import service as password_service
-from ..authorization.models import RoleID
-from ..authorization import service as authorization_service
 from ..consent import consent_service
 from ..consent.transfer.models import Consent
 from ..newsletter import command_service as newsletter_command_service
@@ -112,9 +110,6 @@ def create_basic_user(
     # password
     password_service.create_password_hash(user.id, password)
 
-    # roles
-    _assign_roles(user.id)
-
     return user
 
 
@@ -184,12 +179,6 @@ def _normalize_email_address(email_address: str) -> str:
         raise ValueError(f"Invalid email address: '{email_address}'")
 
     return normalized
-
-
-def _assign_roles(user_id: UserID) -> None:
-    board_user_role = authorization_service.find_role(RoleID('board_user'))
-
-    authorization_service.assign_role_to_user(board_user_role.id, user_id)
 
 
 def _request_email_address_verification(
