@@ -1,4 +1,4 @@
-arrow==0.14.2
+arrow==0.15.2
 attrs==19.2.0
 bbcode==1.0.33
 blinker==1.4
@@ -13,7 +13,7 @@ marrow.mailer==4.0.3
 marrow.util==1.2.3
 pick==0.6.4
 pillow==6.2.0
-psycopg2-binary==2.8.2
+psycopg2-binary==2.8.3
 python-dateutil==2.8.0
 pytz==2019.2
 ranger==0.10
