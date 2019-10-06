@@ -14,17 +14,17 @@
         required_permission=UserPermission.view,
         icon='user')
       .add_item(
-        url_for('.view_permissions', user_id=user_id),
-        'Berechtigungen',
-        id='permissions',
-        required_permission=UserPermission.view,
-        icon='permission')
-      .add_item(
         url_for('.view_events', user_id=user_id),
         'Ereignisse',
         id='events',
         required_permission=UserPermission.view,
         icon='history')
+      .add_item(
+        url_for('.view_permissions', user_id=user_id),
+        'Berechtigungen',
+        id='permissions',
+        required_permission=UserPermission.view,
+        icon='permission')
     , current_tab
   )
 }}
