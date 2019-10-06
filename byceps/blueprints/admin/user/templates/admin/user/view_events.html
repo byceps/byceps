@@ -40,7 +40,11 @@
         {%- elif event.event == 'user-initialized' %}
           {%- set icon_name = 'enabled' %}
           {%- set body %}
+            {%- if event.initiator is defined %}
             <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
+            {%- else %}
+            Jemand
+            {%- endif %}
             hat das Benutzerkonto <strong>initialisiert</strong>.
           {%- endset %}
         {%- elif event.event == 'user-suspended' %}
