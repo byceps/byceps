@@ -60,6 +60,6 @@ def confirm_email_address(verification_token: Token) -> None:
     user_event_service.create_event('email-address-confirmed', user.id, data)
 
     if not user.initialized:
-        command_service.initialize_account(user.id, user.id)
+        command_service.initialize_account(user.id)
 
     verification_token_service.delete_token(verification_token)

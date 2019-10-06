@@ -29,9 +29,8 @@ def app(admin_app, db):
             yield _app
 
 
-def test_initialize_account(app):
-    admin_id = app.admin_id
-    user_id = create_user('CreatedAtPartyCheckIn', initialized=False).id
+def test_initialize_account_as_user(app):
+    user_id = create_user('CreatedOnline', initialized=False).id
 
     user_before = user_command_service._get_user(user_id)
     assert not user_before.initialized
@@ -44,7 +43,46 @@ def test_initialize_account(app):
 
     # -------------------------------- #
 
-    user_command_service.initialize_account(user_id, admin_id)
+    user_command_service.initialize_account(user_id)
+
+    # -------------------------------- #
+
+    user_after = user_command_service._get_user(user_id)
+    assert user_after.initialized
+
+    events_after = event_service.get_events_for_user(user_after.id)
+    assert len(events_after) == 2
+
+    user_enabled_event = events_after[0]
+    assert user_enabled_event.event_type == 'user-initialized'
+    assert user_enabled_event.data == {}
+
+    role_assigned_event = events_after[1]
+    assert role_assigned_event.event_type == 'role-assigned'
+    assert role_assigned_event.data == {
+        'role_id': 'board_user',
+    }
+
+    role_ids_after = authorization_service.find_role_ids_for_user(user_id)
+    assert role_ids_after == {'board_user'}
+
+
+def test_initialize_account_as_admin(app):
+    admin_id = app.admin_id
+    user_id = create_user('CreatedAtPartyCheckInByAdmin', initialized=False).id
+
+    user_before = user_command_service._get_user(user_id)
+    assert not user_before.initialized
+
+    events_before = event_service.get_events_for_user(user_before.id)
+    assert len(events_before) == 0
+
+    role_ids_before = authorization_service.find_role_ids_for_user(user_id)
+    assert role_ids_before == set()
+
+    # -------------------------------- #
+
+    user_command_service.initialize_account(user_id, initiator_id=admin_id)
 
     # -------------------------------- #
 
@@ -84,7 +122,7 @@ def test_initialize_already_initialized_account(app):
     # -------------------------------- #
 
     with raises(ValueError):
-        user_command_service.initialize_account(user_id, admin_id)
+        user_command_service.initialize_account(user_id, initiator_id=admin_id)
 
     # -------------------------------- #
 

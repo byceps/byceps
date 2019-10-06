@@ -234,7 +234,7 @@ def initialize_account(user_id):
 
     initiator_id = g.current_user.id
 
-    user_command_service.initialize_account(user.id, initiator_id)
+    user_command_service.initialize_account(user.id, initiator_id=initiator_id)
 
     flash_success(
         f"Das Benutzerkonto '{user.screen_name}' wurde initialisiert."

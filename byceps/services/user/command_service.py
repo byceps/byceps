@@ -20,7 +20,9 @@ from .models.detail import UserDetail as DbUserDetail
 from .models.user import User as DbUser
 
 
-def initialize_account(user_id: UserID, initiator_id: UserID) -> None:
+def initialize_account(
+    user_id: UserID, *, initiator_id: Optional[UserID] = None
+) -> None:
     """Initialize the user account.
 
     This is meant to happen only once at most, and can not be undone.
@@ -32,17 +34,20 @@ def initialize_account(user_id: UserID, initiator_id: UserID) -> None:
 
     user.initialized = True
 
-    event = event_service.build_event('user-initialized', user.id, {
-        'initiator_id': str(initiator_id),
-    })
+    event_data = {}
+    if initiator_id:
+        event_data['initiator_id'] = str(initiator_id)
+    event = event_service.build_event('user-initialized', user.id, event_data)
     db.session.add(event)
 
     db.session.commit()
 
-    _assign_roles(user.id, initiator_id)
+    _assign_roles(user.id, initiator_id=initiator_id)
 
 
-def _assign_roles(user_id: UserID, initiator_id: UserID) -> None:
+def _assign_roles(
+    user_id: UserID, *, initiator_id: Optional[UserID] = None
+) -> None:
     board_user_role = authorization_service.find_role(RoleID('board_user'))
 
     authorization_service.assign_role_to_user(
