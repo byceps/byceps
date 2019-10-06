@@ -217,16 +217,16 @@
       "title": "Shop-Bestellungen anzeigen"
     },
     {
+      "id": "shop.view",
+      "title": "Shops anzeigen"
+    },
+    {
       "id": "site.create",
       "title": "Sites erstellen"
     },
     {
       "id": "site.update",
       "title": "Sites bearbeiten"
-    },
-    {
-      "id": "shop.view",
-      "title": "Shops anzeigen"
     },
     {
       "id": "site.view",
