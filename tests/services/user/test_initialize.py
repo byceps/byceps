@@ -67,8 +67,8 @@ def test_initialize_account(app):
         'role_id': 'board_user',
     }
 
-    role_ids_before = authorization_service.find_role_ids_for_user(user_id)
-    assert role_ids_before == {'board_user'}
+    role_ids_after = authorization_service.find_role_ids_for_user(user_id)
+    assert role_ids_after == {'board_user'}
 
 
 def test_initialize_already_initialized_account(app):
