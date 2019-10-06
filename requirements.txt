@@ -1,5 +1,5 @@
 arrow==0.14.2
-attrs==19.1.0
+attrs==19.2.0
 bbcode==1.0.33
 blinker==1.4
 click==7.0
@@ -7,7 +7,7 @@ flask==1.1.1
 flask-sqlalchemy==2.4.1
 hiredis==1.0.0
 itsdangerous==1.1.0
-jinja2==2.10.1
+jinja2==2.10.3
 markupsafe==1.1.1
 marrow.mailer==4.0.2
 marrow.util==1.2.3
