@@ -61,11 +61,12 @@ See ``docs/installation.rst``.
 Testing
 =======
 
-In the activated virtual environment, install the testing dependencies:
+In the activated virtual environment, install the development
+dependencies:
 
 .. code:: sh
 
-    (venv)$ pip install -r requirements-test.txt
+    (venv)$ pip install -r requirements-development.txt
 
 Run the tests:
 
