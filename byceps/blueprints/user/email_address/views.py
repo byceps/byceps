@@ -9,7 +9,6 @@ byceps.blueprints.user.email_address.views
 from flask import abort, g, request
 
 from ....services.user import email_address_confirmation_service
-from ....services.user import event_service as user_event_service
 from ....services.user import service as user_service
 from ....services.verification_token import (
     service as verification_token_service,
@@ -92,13 +91,6 @@ def confirm(token):
     user = verification_token.user
 
     email_address_confirmation_service.confirm_email_address(verification_token)
-
-    # Currently, the user's e-mail address cannot be changed, but that
-    # might be allowed in the future. At that point, the verification
-    # token should be extended to include the e-mail address it refers
-    # to, and that value should be persisted with user event instead.
-    data = {'email_address': user.email_address}
-    user_event_service.create_event('email-address-confirmed', user.id, data)
 
     flash_success(
         'Die E-Mail-Adresse wurde bestätigt. '

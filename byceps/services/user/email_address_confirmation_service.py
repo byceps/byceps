@@ -14,7 +14,7 @@ from ..site.transfer.models import SiteID
 from ..verification_token.models import Token
 from ..verification_token import service as verification_token_service
 
-from . import command_service
+from . import command_service, event_service as user_event_service
 
 
 def send_email_address_confirmation_email(
@@ -51,6 +51,13 @@ def confirm_email_address(verification_token: Token) -> None:
 
     user.email_address_verified = True
     db.session.commit()
+
+    # Currently, the user's e-mail address cannot be changed, but that
+    # might be allowed in the future. At that point, the verification
+    # token should be extended to include the e-mail address it refers
+    # to, and that value should be persisted with user event instead.
+    data = {'email_address': user.email_address}
+    user_event_service.create_event('email-address-confirmed', user.id, data)
 
     if not user.initialized:
         command_service.initialize_account(user.id, user.id)
