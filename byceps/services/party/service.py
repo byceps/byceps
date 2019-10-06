@@ -109,6 +109,14 @@ def get_party(party_id: PartyID) -> Party:
     return party
 
 
+def get_all_parties() -> List[Party]:
+    """Return all parties."""
+    parties = DbParty.query \
+        .all()
+
+    return [_db_entity_to_party(party) for party in parties]
+
+
 def get_all_parties_with_brands() -> List[DbParty]:
     """Return all parties."""
     return DbParty.query \
