@@ -102,6 +102,7 @@ def create_form(erroneous_form=None):
     party_id = request.args.get('party_id')
 
     form = erroneous_form if erroneous_form else CreateForm(party_id=party_id)
+    form.set_email_config_choices()
 
     return {
         'form': form,
@@ -113,6 +114,7 @@ def create_form(erroneous_form=None):
 def create():
     """Create a site."""
     form = CreateForm(request.form)
+    form.set_email_config_choices()
 
     if not form.validate():
         return create_form(form)
@@ -120,7 +122,7 @@ def create():
     site_id = form.id.data.strip().lower()
     title = form.title.data.strip()
     server_name = form.server_name.data.strip()
-    email_config_id = form.email_config_id.data.strip()
+    email_config_id = form.email_config_id.data
     party_id = form.party_id.data.strip() or None
 
     site = site_service.create_site(
@@ -139,6 +141,7 @@ def update_form(site_id, erroneous_form=None):
     site = _get_site_or_404(site_id)
 
     form = erroneous_form if erroneous_form else UpdateForm(obj=site)
+    form.set_email_config_choices()
 
     return {
         'site': site,
@@ -153,12 +156,14 @@ def update(site_id):
     site = _get_site_or_404(site_id)
 
     form = UpdateForm(request.form)
+    form.set_email_config_choices()
+
     if not form.validate():
         return update_form(site.id, form)
 
     title = form.title.data.strip()
     server_name = form.server_name.data.strip()
-    email_config_id = form.email_config_id.data.strip()
+    email_config_id = form.email_config_id.data
     party_id = form.party_id.data.strip() or None
 
     try:
