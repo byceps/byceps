@@ -1,5 +1,5 @@
-black == 19.3b0
-Flask-DebugToolbar == 0.10.1
-flask-shell-ipython == 0.4.1
-mypy == 0.720
-python-dotenv == 0.9.1
+black==19.3b0
+Flask-DebugToolbar==0.10.1
+flask-shell-ipython==0.4.1
+mypy==0.720
+python-dotenv==0.9.1
