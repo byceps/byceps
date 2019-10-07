@@ -16,7 +16,6 @@ pick==0.6.4
 pillow==6.2.0
 psycopg2-binary==2.8.3
 python-dateutil==2.8.0
-pytz==2019.3
 pytzdata==2019.3
 ranger==0.10
 redis==3.3.8

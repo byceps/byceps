@@ -13,7 +13,7 @@ from datetime import datetime
 from flask import current_app
 from jinja2 import evalcontextfilter, Markup
 from jinja2.filters import do_default, do_trim
-from pytz import timezone, UTC
+import pendulum
 
 from .datetime import format as dateformat
 from . import money
@@ -47,21 +47,23 @@ def separate_thousands(number: int) -> str:
 
 
 def local_tz_to_utc(dt: datetime):
-    return (_get_timezone()
-        .localize(dt)
-        .astimezone(UTC)
+    tz_str = _get_timezone()
+
+    return (pendulum.instance(dt)
+        .set(tz=tz_str)
+        .in_tz(pendulum.UTC)
         # Keep SQLAlchemy from converting it to another zone.
         .replace(tzinfo=None))
 
 
 def utc_to_local_tz(dt: datetime) -> datetime:
     """Convert naive date/time object from UTC to configured time zone."""
-    tz = _get_timezone()
-    return UTC.localize(dt).astimezone(tz)
+    tz_str = _get_timezone()
+    return pendulum.instance(dt).in_tz(tz_str)
 
 
-def _get_timezone():
-    return timezone(current_app.config['TIMEZONE'])
+def _get_timezone() -> str:
+    return current_app.config['TIMEZONE']
 
 
 def register(app):
