@@ -11,11 +11,13 @@ jinja2==2.10.3
 markupsafe==1.1.1
 marrow.mailer==4.0.3
 marrow.util==1.2.3
+pendulum==2.0.5
 pick==0.6.4
 pillow==6.2.0
 psycopg2-binary==2.8.3
 python-dateutil==2.8.0
 pytz==2019.3
+pytzdata==2019.3
 ranger==0.10
 redis==3.3.8
 rq==1.1.0

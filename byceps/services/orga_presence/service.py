@@ -10,7 +10,8 @@ from datetime import date, datetime
 from itertools import groupby
 from typing import Iterator, List, Sequence, Tuple
 
-from arrow import Arrow
+import pendulum
+from pendulum import DateTime
 
 from ...database import db
 from ...typing import PartyID
@@ -69,9 +70,10 @@ def _get_hour_starts(dt_ranges: Sequence[DateTimeRange]) -> Iterator[datetime]:
     min_starts_at = _find_earliest_start(dt_ranges)
     max_ends_at = _find_latest_end(dt_ranges)
 
-    hour_starts_arrow = Arrow.range('hour', min_starts_at, max_ends_at)
+    period = pendulum.period(min_starts_at, max_ends_at)
+    hour_starts = period.range('hours')
 
-    return _to_datetimes_without_tzinfo(hour_starts_arrow)
+    return _to_datetimes_without_tzinfo(hour_starts)
 
 
 def _find_earliest_start(dt_ranges: Sequence[DateTimeRange]) -> datetime:
@@ -82,11 +84,9 @@ def _find_latest_end(dt_ranges: Sequence[DateTimeRange]) -> datetime:
     return max(dt_range.end for dt_range in dt_ranges)
 
 
-def _to_datetimes_without_tzinfo(
-    arrow_datetimes: Sequence[Arrow]
-) -> Iterator[datetime]:
-    for arrow_datetime in arrow_datetimes:
-        yield arrow_datetime.datetime.replace(tzinfo=None)
+def _to_datetimes_without_tzinfo(dts: Sequence[DateTime]) -> Iterator[datetime]:
+    for dt in dts:
+        yield dt.replace(tzinfo=None)
 
 
 def get_days_and_hour_totals(
