@@ -11,7 +11,7 @@
       <li><a href="{{ url_for('site_admin.index') }}">Sites</a></li>
     </ol>
   </nav>
-  <h1>{{ site.id }}</h1>
+  <h1>{{ site.title }}</h1>
 
   <div class="button-row button-row--compact" style="float: right;">
     {%- if g.current_user.has_permission(SitePermission.update) %}
@@ -28,10 +28,6 @@
     <tr>
       <th>ID</th>
       <td>{{ site.id }}</td>
-    </tr>
-    <tr>
-      <th>Name</th>
-      <td>{{ site.title }}</td>
     </tr>
     <tr>
       <th>E-Mail-Konfiguration</th>
