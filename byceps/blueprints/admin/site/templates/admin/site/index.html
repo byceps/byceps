@@ -17,16 +17,17 @@
   <table class="index wide">
     <thead>
       <tr>
-        <th>ID</th>
-        <th>Name</th>
+        <th>Name<br>ID</th>
         <th>Party</th>
       </tr>
     </thead>
     <tbody>
     {%- for site in sites %}
       <tr>
-        <td class="monospace"><a href="{{ url_for('.view', site_id=site.id) }}">{{ site.id }}</a></td>
-        <td>{{ site.title }}</td>
+        <td>
+          <a href="{{ url_for('.view', site_id=site.id) }}"><strong>{{ site.title }}</strong></a><br>
+          {{ site.id }}
+        </td>
         <td class="monospace">{{ site.party_id|fallback }}</td>
       </tr>
     {%- endfor %}
