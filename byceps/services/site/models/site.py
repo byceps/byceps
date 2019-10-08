@@ -19,12 +19,9 @@ class Site(db.Model):
     """A site."""
 
     __tablename__ = 'sites'
-    __table_args__ = (
-        db.UniqueConstraint('title', 'party_id'),
-    )
 
     id = db.Column(db.UnicodeText, primary_key=True)
-    title = db.Column(db.UnicodeText, nullable=False)
+    title = db.Column(db.UnicodeText, unique=True, nullable=False)
     server_name = db.Column(db.UnicodeText, nullable=False)
     email_config_id = db.Column(db.UnicodeText, db.ForeignKey('email_configs.id'), nullable=False)
     party_id = db.Column(db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=True)
