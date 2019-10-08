@@ -82,9 +82,7 @@ def create_user(
             newsletter_subscription.expressed_at,
         )
 
-    # e-mail address confirmation
-    normalized_email_address = _normalize_email_address(email_address)
-    _request_email_address_verification(user, email_address, site_id)
+    request_email_address_confirmation(user, email_address, site_id)
 
     return user
 
@@ -161,6 +159,23 @@ def build_user(
     return user
 
 
+def request_email_address_confirmation(
+    user: User, email_address: str, site_id: SiteID
+) -> None:
+    """Send an e-mail to the user to request confirmation of the e-mail
+    address.
+    """
+    normalized_email_address = _normalize_email_address(email_address)
+
+    verification_token = verification_token_service.create_for_email_address_confirmation(
+        user.id
+    )
+
+    email_address_confirmation_service.send_email_address_confirmation_email(
+        normalized_email_address, user.screen_name, verification_token, site_id
+    )
+
+
 def _normalize_screen_name(screen_name: str) -> str:
     """Normalize the screen name, or raise an exception if invalid."""
     normalized = screen_name.strip()
@@ -179,15 +194,3 @@ def _normalize_email_address(email_address: str) -> str:
         raise ValueError(f"Invalid email address: '{email_address}'")
 
     return normalized
-
-
-def _request_email_address_verification(
-    user: User, email_address: str, site_id: SiteID
-) -> None:
-    verification_token = verification_token_service.create_for_email_address_confirmation(
-        user.id
-    )
-
-    email_address_confirmation_service.send_email_address_confirmation_email(
-        email_address, user.screen_name, verification_token, site_id
-    )

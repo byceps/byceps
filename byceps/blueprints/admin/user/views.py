@@ -13,6 +13,7 @@ from ....services.authorization import service as authorization_service
 from ....services.orga_team import service as orga_team_service
 from ....services.shop.order import service as order_service
 from ....services.shop.shop import service as shop_service
+from ....services.site import service as site_service
 from ....services.user import command_service as user_command_service
 from ....services.user import creation_service as user_creation_service
 from ....services.user import service as user_service
@@ -134,6 +135,7 @@ def view(user_id):
 def create_account_form(erroneous_form=None):
     """Show a form to create a user account."""
     form = erroneous_form if erroneous_form else CreateAccountForm()
+    form.set_site_choices()
 
     return {'form': form}
 
@@ -143,6 +145,7 @@ def create_account_form(erroneous_form=None):
 def create_account():
     """Create a user account."""
     form = CreateAccountForm(request.form)
+    form.set_site_choices()
 
     if not form.validate():
         return create_account_form(form)
@@ -152,6 +155,12 @@ def create_account():
     last_name = form.last_name.data.strip()
     email_address = form.email_address.data.lower()
     password = form.password.data
+    site_id = form.site_id.data
+
+    if site_id:
+        site = site_service.get_site(site_id)
+    else:
+        site = None
 
     if user_service.is_screen_name_already_assigned(screen_name):
         flash_error(
@@ -182,6 +191,16 @@ def create_account():
         return create_account_form(form)
 
     flash_success(f'Das Benutzerkonto "{user.screen_name}" wurde angelegt.')
+
+    if site:
+        user_creation_service.request_email_address_confirmation(
+            user, email_address, site_id
+        )
+        flash_success(
+            f'Eine E-Mail wurde an die hinterlegte Adresse versendet.',
+            icon='email',
+        )
+
     account_created.send(None, user_id=user.id)
 
     return redirect_to('.view', user_id=user.id)

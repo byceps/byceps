@@ -6,9 +6,10 @@ byceps.blueprints.admin.user.forms
 :License: Modified BSD, see LICENSE for details.
 """
 
-from wtforms import PasswordField, StringField, TextAreaField
-from wtforms.validators import InputRequired, Length, ValidationError
+from wtforms import PasswordField, SelectField, StringField, TextAreaField
+from wtforms.validators import InputRequired, Length, Optional, ValidationError
 
+from ....services.site import service as site_service
 from ....services.user import screen_name_validator
 from ....util.l10n import LocalizedForm
 
@@ -40,6 +41,15 @@ class CreateAccountForm(LocalizedForm):
     last_name = StringField('Nachname', [InputRequired(), Length(min=2, max=40)])
     email_address = StringField('E-Mail-Adresse', [InputRequired(), Length(min=6)])
     password = PasswordField('Passwort', [InputRequired(), Length(min=MINIMUM_PASSWORD_LENGTH, max=MAXIMUM_PASSWORD_LENGTH)])
+    site_id = SelectField('Site-ID', validators=[Optional()])
+
+    def set_site_choices(self):
+        sites = site_service.get_all_sites()
+        sites.sort(key=lambda site: site.id)
+
+        choices = [(str(site.id), site.id) for site in sites]
+        choices.insert(0, ('', '<keine>'))
+        self.site_id.choices = choices
 
 
 class DeleteAccountForm(LocalizedForm):
