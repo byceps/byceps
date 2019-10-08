@@ -18,6 +18,7 @@
     <thead>
       <tr>
         <th>Name<br>ID</th>
+        <th>E-Mail-Konf.</th>
         <th>Party</th>
       </tr>
     </thead>
@@ -28,6 +29,7 @@
           <a href="{{ url_for('.view', site_id=site.id) }}"><strong>{{ site.title }}</strong></a><br>
           {{ site.id }}
         </td>
+        <td><a href="{{ url_for('email_admin.index') }}">{{ site.email_config_id }}</a></td>
         <td>
           {%- if site.party_id -%}
           <a href="{{ url_for('admin_dashboard.view_party', party_id=site.party_id) }}">{{ party_titles_by_id[site.party_id] }}</a>
