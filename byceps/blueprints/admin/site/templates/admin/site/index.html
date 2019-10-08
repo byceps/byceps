@@ -28,7 +28,13 @@
           <a href="{{ url_for('.view', site_id=site.id) }}"><strong>{{ site.title }}</strong></a><br>
           {{ site.id }}
         </td>
-        <td class="monospace">{{ site.party_id|fallback }}</td>
+        <td>
+          {%- if site.party_id -%}
+          <a href="{{ url_for('admin_dashboard.view_party', party_id=site.party_id) }}">{{ party_titles_by_id[site.party_id] }}</a>
+          {%- else -%}
+          {{ 'keine'|dim }}
+          {%- endif -%}
+        </td>
       </tr>
     {%- endfor %}
     </tbody>
