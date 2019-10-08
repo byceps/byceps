@@ -13,16 +13,11 @@
   </nav>
   <h1>{{ site.title }}</h1>
 
+  {%- if g.current_user.has_permission(SitePermission.update) %}
   <div class="button-row button-row--compact" style="float: right;">
-    {%- if g.current_user.has_permission(SitePermission.update) %}
-    <div class="dropdown left">
-      <button class="dropdown-toggle button"><span>{{ render_icon('caret-down') }}</span></button>
-      <ol>
-        <li><a href="{{ url_for('.update_form', site_id=site.id) }}">{{ render_icon('edit') }} <span>Bearbeiten</span></a></li>
-      </ol>
-    </div>
-    {%- endif %}
+    <a class="button" href="{{ url_for('.update_form', site_id=site.id) }}">{{ render_icon('edit') }} <span>Bearbeiten</span></a>
   </div>
+  {%- endif %}
 
   <table class="index">
     <tr>
