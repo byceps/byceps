@@ -44,6 +44,6 @@
   <div class="dimmed-box centered">Es sind keine Bereiche hinterlegt.</div>
   {%- endif %}
 
-{{ render_pagination_nav(areas_with_occupied_seat_counts, '.index_for_party', {'party_id': party.id}) }}
+{{ render_pagination_nav(areas_with_occupied_seat_counts, '.area_index', {'party_id': party.id}) }}
 
 {%- endblock %}

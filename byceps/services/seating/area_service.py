@@ -75,4 +75,4 @@ def get_areas_for_party_paginated(
         ) \
         .filter(area.party_id == party_id) \
         .group_by(area.id) \
-        .paginate()
+        .paginate(page, per_page)
