@@ -197,7 +197,7 @@ def create():
         'der an die angegebene Adresse verschickten E-Mail besucht werden.',
     )
 
-    event = UserAccountCreated(user_id=user.id)
+    event = UserAccountCreated(user_id=user.id, initiator_id=None)
     signals.account_created.send(None, event=event)
 
     return redirect_to('authentication.login_form')

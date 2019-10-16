@@ -15,7 +15,7 @@ from ..typing import UserID
 @dataclass(frozen=True)
 class _UserEvent:
     user_id: UserID
-    initiator_id: Optional[UserID] = None
+    initiator_id: Optional[UserID]
 
 
 @dataclass(frozen=True)
