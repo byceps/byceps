@@ -8,7 +8,7 @@ byceps.events.snippet
 
 from dataclasses import dataclass
 
-from ..snippet.transfer.models import SnippetVersionID
+from ..services.snippet.transfer.models import SnippetVersionID
 
 
 @dataclass(frozen=True)

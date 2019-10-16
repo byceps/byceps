@@ -8,7 +8,7 @@ byceps.events.news
 
 from dataclasses import dataclass
 
-from ..news.transfer.models import ItemID
+from ..services.news.transfer.models import ItemID
 
 
 @dataclass(frozen=True)
