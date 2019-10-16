@@ -98,7 +98,7 @@ def confirm(token):
         f'Das Benutzerkonto "{user.screen_name}" ist nun aktiviert.'
     )
 
-    event = UserEmailAddressConfirmed(user_id=user.id)
+    event = UserEmailAddressConfirmed(user_id=user.id, initiator_id=user.id)
     signals.email_address_confirmed.send(None, event=event)
 
     return redirect_to('authentication.login_form')
