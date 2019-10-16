@@ -8,6 +8,16 @@ byceps.blueprints.board.views_topic
 
 from flask import abort, g, redirect, request
 
+from ...events.board import (
+    BoardTopicCreated,
+    BoardTopicHidden,
+    BoardTopicLocked,
+    BoardTopicMoved,
+    BoardTopicPinned,
+    BoardTopicUnhidden,
+    BoardTopicUnlocked,
+    BoardTopicUnpinned,
+)
 from ...services.board import (
     category_query_service as board_category_query_service,
     last_view_service as board_last_view_service,
@@ -165,7 +175,9 @@ def topic_create(category_id):
     topic_url = h.build_external_url_for_topic(topic.id)
 
     flash_success(f'Das Thema "{topic.title}" wurde hinzugefügt.')
-    signals.topic_created.send(None, topic_id=topic.id, url=topic_url)
+
+    event = BoardTopicCreated(topic_id=topic.id, url=topic_url)
+    signals.topic_created.send(None, event=event)
 
     return redirect(topic_url)
 
@@ -271,12 +283,12 @@ def topic_hide(topic_id):
 
     flash_success(f'Das Thema "{topic.title}" wurde versteckt.', icon='hidden')
 
-    signals.topic_hidden.send(
-        None,
+    event = BoardTopicHidden(
         topic_id=topic.id,
         moderator_id=moderator_id,
         url=h.build_external_url_for_topic(topic.id),
     )
+    signals.topic_hidden.send(None, event=event)
 
     return h.build_url_for_topic_in_category_view(topic)
 
@@ -295,12 +307,12 @@ def topic_unhide(topic_id):
         f'Das Thema "{topic.title}" wurde wieder sichtbar gemacht.', icon='view'
     )
 
-    signals.topic_unhidden.send(
-        None,
+    event = BoardTopicUnhidden(
         topic_id=topic.id,
         moderator_id=moderator_id,
         url=h.build_external_url_for_topic(topic.id),
     )
+    signals.topic_unhidden.send(None, event=event)
 
     return h.build_url_for_topic_in_category_view(topic)
 
@@ -317,12 +329,12 @@ def topic_lock(topic_id):
 
     flash_success(f'Das Thema "{topic.title}" wurde geschlossen.', icon='lock')
 
-    signals.topic_locked.send(
-        None,
+    event = BoardTopicLocked(
         topic_id=topic.id,
         moderator_id=moderator_id,
         url=h.build_external_url_for_topic(topic.id),
     )
+    signals.topic_locked.send(None, event=event)
 
     return h.build_url_for_topic_in_category_view(topic)
 
@@ -341,12 +353,12 @@ def topic_unlock(topic_id):
         f'Das Thema "{topic.title}" wurde wieder geöffnet.', icon='unlock'
     )
 
-    signals.topic_unlocked.send(
-        None,
+    event = BoardTopicUnlocked(
         topic_id=topic.id,
         moderator_id=moderator_id,
         url=h.build_external_url_for_topic(topic.id),
     )
+    signals.topic_unlocked.send(None, event=event)
 
     return h.build_url_for_topic_in_category_view(topic)
 
@@ -363,12 +375,12 @@ def topic_pin(topic_id):
 
     flash_success(f'Das Thema "{topic.title}" wurde angepinnt.', icon='pin')
 
-    signals.topic_pinned.send(
-        None,
+    event = BoardTopicPinned(
         topic_id=topic.id,
         moderator_id=moderator_id,
         url=h.build_external_url_for_topic(topic.id),
     )
+    signals.topic_pinned.send(None, event=event)
 
     return h.build_url_for_topic_in_category_view(topic)
 
@@ -385,12 +397,12 @@ def topic_unpin(topic_id):
 
     flash_success(f'Das Thema "{topic.title}" wurde wieder gelöst.')
 
-    signals.topic_unpinned.send(
-        None,
+    event = BoardTopicUnpinned(
         topic_id=topic.id,
         moderator_id=moderator_id,
         url=h.build_external_url_for_topic(topic.id),
     )
+    signals.topic_unpinned.send(None, event=event)
 
     return h.build_url_for_topic_in_category_view(topic)
 
@@ -419,14 +431,14 @@ def topic_move(topic_id):
         icon='move',
     )
 
-    signals.topic_moved.send(
-        None,
+    event = BoardTopicMoved(
         topic_id=topic.id,
         old_category_id=old_category.id,
         new_category_id=new_category.id,
         moderator_id=moderator_id,
         url=h.build_external_url_for_topic(topic.id),
     )
+    signals.topic_moved.send(None, event=event)
 
     return redirect(h.build_url_for_topic_in_category_view(topic))
 

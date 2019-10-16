@@ -8,6 +8,11 @@ byceps.blueprints.board.views_posting
 
 from flask import g, redirect, request
 
+from ...events.board import (
+    BoardPostingCreated,
+    BoardPostingHidden,
+    BoardPostingUnhidden,
+)
 from ...services.board import (
     last_view_service as board_last_view_service,
     posting_command_service as board_posting_command_service,
@@ -115,11 +120,11 @@ def posting_create(topic_id):
         )
 
     flash_success('Deine Antwort wurde hinzugefügt.')
-    signals.posting_created.send(
-        None,
-        posting_id=posting.id,
-        url=h.build_external_url_for_posting(posting.id),
+
+    event = BoardPostingCreated(
+        posting_id=posting.id, url=h.build_external_url_for_posting(posting.id)
     )
+    signals.posting_created.send(None, event=event)
 
     postings_per_page = service.get_postings_per_page_value()
     page_count = topic.count_pages(postings_per_page)
@@ -229,12 +234,12 @@ def posting_hide(posting_id):
 
     flash_success('Der Beitrag wurde versteckt.', icon='hidden')
 
-    signals.posting_hidden.send(
-        None,
+    event = BoardPostingHidden(
         posting_id=posting.id,
         moderator_id=moderator_id,
         url=h.build_external_url_for_posting(posting.id),
     )
+    signals.posting_hidden.send(None, event=event)
 
     return h.build_url_for_posting_in_topic_view(posting, page)
 
@@ -253,11 +258,11 @@ def posting_unhide(posting_id):
 
     flash_success('Der Beitrag wurde wieder sichtbar gemacht.', icon='view')
 
-    signals.posting_unhidden.send(
-        None,
+    event = BoardPostingUnhidden(
         posting_id=posting.id,
         moderator_id=moderator_id,
         url=h.build_external_url_for_posting(posting.id),
     )
+    signals.posting_unhidden.send(None, event=event)
 
     return h.build_url_for_posting_in_topic_view(posting, page)
