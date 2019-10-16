@@ -8,6 +8,7 @@ byceps.blueprints.admin.snippet.views
 
 from flask import abort, g, request
 
+from ....events.snippet import SnippetCreated, SnippetUpdated
 from ....services.brand import service as brand_service
 from ....services.site import service as site_service
 from ....services.snippet import mountpoint_service, service as snippet_service
@@ -182,7 +183,9 @@ def create_document(scope_type, scope_name):
     )
 
     flash_success(f'Das Dokument "{version.snippet.name}" wurde angelegt.')
-    signals.snippet_created.send(None, snippet_version_id=version.id)
+
+    event = SnippetCreated(snippet_version_id=version.id)
+    signals.snippet_created.send(None, event=event)
 
     return redirect_to('.view_version', snippet_version_id=version.id)
 
@@ -235,7 +238,9 @@ def update_document(snippet_id):
     )
 
     flash_success(f'Das Dokument "{version.snippet.name}" wurde aktualisiert.')
-    signals.snippet_updated.send(None, snippet_version_id=version.id)
+
+    event = SnippetUpdated(snippet_version_id=version.id)
+    signals.snippet_updated.send(None, event=event)
 
     return redirect_to('.view_version', snippet_version_id=version.id)
 
@@ -317,7 +322,9 @@ def create_fragment(scope_type, scope_name):
     version = snippet_service.create_fragment(scope, name, creator.id, body)
 
     flash_success(f'Das Fragment "{version.snippet.name}" wurde angelegt.')
-    signals.snippet_created.send(None, snippet_version_id=version.id)
+
+    event = SnippetCreated(snippet_version_id=version.id)
+    signals.snippet_created.send(None, event=event)
 
     return redirect_to('.view_version', snippet_version_id=version.id)
 
@@ -360,7 +367,9 @@ def update_fragment(snippet_id):
     version = snippet_service.update_fragment(snippet, creator.id, body)
 
     flash_success(f'Das Fragment "{version.snippet.name}" wurde aktualisiert.')
-    signals.snippet_updated.send(None, snippet_version_id=version.id)
+
+    event = SnippetUpdated(snippet_version_id=version.id)
+    signals.snippet_updated.send(None, event=event)
 
     return redirect_to('.view_version', snippet_version_id=version.id)
 
