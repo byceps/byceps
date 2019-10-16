@@ -12,6 +12,7 @@ from typing import Optional
 from flask import abort, g, request
 
 from ....config import get_user_registration_enabled
+from ....events.user import UserAccountCreated
 from ....services.brand import settings_service as brand_settings_service
 from ....services.consent.transfer.models import Consent, SubjectID
 from ....services.newsletter.transfer.models import (
@@ -195,7 +196,9 @@ def create():
         'Bevor du dich damit anmelden kannst, muss zunächst der Link in '
         'der an die angegebene Adresse verschickten E-Mail besucht werden.',
     )
-    signals.account_created.send(None, user_id=user.id)
+
+    event = UserAccountCreated(user_id=user.id)
+    signals.account_created.send(None, event=event)
 
     return redirect_to('authentication.login_form')
 

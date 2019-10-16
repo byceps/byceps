@@ -8,6 +8,13 @@ byceps.blueprints.admin.user.views
 
 from flask import abort, g, redirect, request, url_for
 
+from ....events.user import (
+    UserAccountCreated,
+    UserAccountDeleted,
+    UserAccountSuspended,
+    UserAccountUnsuspended,
+    UserScreenNameChanged,
+)
 from ....services.authentication.password import service as password_service
 from ....services.authorization import service as authorization_service
 from ....services.orga_team import service as orga_team_service
@@ -168,6 +175,8 @@ def create_account():
         )
         return create_account_form(form)
 
+    initiator_id = g.current_user.id
+
     try:
         user = user_creation_service.create_basic_user(
             screen_name,
@@ -175,7 +184,7 @@ def create_account():
             password,
             first_names=first_names,
             last_name=last_name,
-            creator_id=g.current_user.id,
+            creator_id=initiator_id,
         )
     except user_creation_service.UserCreationFailed:
         flash_error(
@@ -195,7 +204,8 @@ def create_account():
             icon='email',
         )
 
-    signals.account_created.send(None, user_id=user.id)
+    event = UserAccountCreated(user_id=user.id, initiator_id=initiator_id)
+    signals.account_created.send(None, event=event)
 
     return redirect_to('.view', user_id=user.id)
 
@@ -296,9 +306,8 @@ def suspend_account(user_id):
 
     user_command_service.suspend_account(user.id, initiator_id, reason)
 
-    signals.account_suspended.send(
-        None, user_id=user.id, initiator_id=initiator_id
-    )
+    event = UserAccountSuspended(user_id=user.id, initiator_id=initiator_id)
+    signals.account_suspended.send(None, event=event)
 
     flash_success(f"Das Benutzerkonto '{user.screen_name}' wurde gesperrt.")
     return redirect_to('.view', user_id=user.id)
@@ -346,9 +355,8 @@ def unsuspend_account(user_id):
 
     user_command_service.unsuspend_account(user.id, initiator_id, reason)
 
-    signals.account_unsuspended.send(
-        None, user_id=user.id, initiator_id=initiator_id
-    )
+    event = UserAccountUnsuspended(user_id=user.id, initiator_id=initiator_id)
+    signals.account_unsuspended.send(None, event=event)
 
     flash_success(f"Das Benutzerkonto '{user.screen_name}' wurde entsperrt.")
     return redirect_to('.view', user_id=user.id)
@@ -398,9 +406,8 @@ def delete_account(user_id):
 
     user_command_service.delete_account(user.id, initiator_id, reason)
 
-    signals.account_deleted.send(
-        None, user_id=user.id, initiator_id=initiator_id
-    )
+    event = UserAccountDeleted(user_id=user.id, initiator_id=initiator_id)
+    signals.account_deleted.send(None, event=event)
 
     flash_success(f"Das Benutzerkonto '{user.screen_name}' wurde gelöscht.")
     return redirect_to('.view', user_id=user.id)
@@ -440,13 +447,13 @@ def change_screen_name(user_id):
         user.id, new_screen_name, initiator_id, reason=reason
     )
 
-    signals.screen_name_changed.send(
-        None,
+    event = UserScreenNameChanged(
         user_id=user.id,
+        initiator_id=initiator_id,
         old_screen_name=old_screen_name,
         new_screen_name=new_screen_name,
-        initiator_id=initiator_id,
     )
+    signals.screen_name_changed.send(None, event=event)
 
     flash_success(
         f"Das Benutzerkonto '{old_screen_name}' wurde "
