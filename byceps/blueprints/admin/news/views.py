@@ -10,6 +10,7 @@ from datetime import date
 
 from flask import abort, g, request
 
+from ....events.news import NewsItemPublished
 from ....services.brand import service as brand_service
 from ....services.news import channel_service as news_channel_service
 from ....services.news import service as news_item_service
@@ -286,7 +287,9 @@ def item_publish(item_id):
     item = _get_item_or_404(item_id)
 
     news_item_service.publish_item(item.id)
-    signals.item_published.send(None, item_id=item.id)
+
+    event = NewsItemPublished(item_id=item.id)
+    signals.item_published.send(None, event=event)
 
     flash_success(f'Die News "{item.title}" wurde veröffentlicht.')
 
