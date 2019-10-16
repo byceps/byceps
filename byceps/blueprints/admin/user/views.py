@@ -26,13 +26,7 @@ from ....util.views import redirect_to, respond_no_content
 
 from ...authorization.decorators import permission_required
 from ...authorization.registry import permission_registry
-from ...user.signals import (
-    account_created,
-    account_deleted,
-    account_suspended,
-    account_unsuspended,
-    screen_name_changed,
-)
+from ...user import signals
 
 from ..authorization.authorization import RolePermission
 
@@ -201,7 +195,7 @@ def create_account():
             icon='email',
         )
 
-    account_created.send(None, user_id=user.id)
+    signals.account_created.send(None, user_id=user.id)
 
     return redirect_to('.view', user_id=user.id)
 
@@ -302,7 +296,9 @@ def suspend_account(user_id):
 
     user_command_service.suspend_account(user.id, initiator_id, reason)
 
-    account_suspended.send(None, user_id=user.id, initiator_id=initiator_id)
+    signals.account_suspended.send(
+        None, user_id=user.id, initiator_id=initiator_id
+    )
 
     flash_success(f"Das Benutzerkonto '{user.screen_name}' wurde gesperrt.")
     return redirect_to('.view', user_id=user.id)
@@ -350,7 +346,9 @@ def unsuspend_account(user_id):
 
     user_command_service.unsuspend_account(user.id, initiator_id, reason)
 
-    account_unsuspended.send(None, user_id=user.id, initiator_id=initiator_id)
+    signals.account_unsuspended.send(
+        None, user_id=user.id, initiator_id=initiator_id
+    )
 
     flash_success(f"Das Benutzerkonto '{user.screen_name}' wurde entsperrt.")
     return redirect_to('.view', user_id=user.id)
@@ -400,7 +398,9 @@ def delete_account(user_id):
 
     user_command_service.delete_account(user.id, initiator_id, reason)
 
-    account_deleted.send(None, user_id=user.id, initiator_id=initiator_id)
+    signals.account_deleted.send(
+        None, user_id=user.id, initiator_id=initiator_id
+    )
 
     flash_success(f"Das Benutzerkonto '{user.screen_name}' wurde gelöscht.")
     return redirect_to('.view', user_id=user.id)
@@ -440,7 +440,7 @@ def change_screen_name(user_id):
         user.id, new_screen_name, initiator_id, reason=reason
     )
 
-    screen_name_changed.send(
+    signals.screen_name_changed.send(
         None,
         user_id=user.id,
         old_screen_name=old_screen_name,
