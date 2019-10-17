@@ -22,7 +22,7 @@ class _BoardTopicEvent:
 
 
 @dataclass(frozen=True)
-class _BoardTopicModerationEvent:
+class _BoardTopicModerationEvent(_BoardTopicEvent):
     moderator_id: UserID
 
 
