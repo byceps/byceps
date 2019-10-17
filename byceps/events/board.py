@@ -77,7 +77,7 @@ class _BoardPostingEvent:
 
 
 @dataclass(frozen=True)
-class _BoardPostingModerationEvent:
+class _BoardPostingModerationEvent(_BoardPostingEvent):
     moderator_id: UserID
 
 
