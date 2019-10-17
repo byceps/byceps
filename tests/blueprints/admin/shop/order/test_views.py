@@ -5,6 +5,7 @@
 
 from unittest.mock import patch
 
+from byceps.events.shop import ShopOrderCanceled, ShopOrderPaid
 from byceps.services.shop.article.models.article import Article
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order.models.order import Order
@@ -100,8 +101,9 @@ class ShopAdminTestCase(ShopTestBase):
             placed_order.id
         )
 
+        event = ShopOrderCanceled(order_id=placed_order.id)
         order_canceled_signal_send_mock.assert_called_once_with(
-            None, order_id=placed_order.id
+            None, event=event
         )
 
     @patch('byceps.blueprints.shop.order.signals.order_canceled.send')
@@ -126,8 +128,9 @@ class ShopAdminTestCase(ShopTestBase):
         # No e-mail should be send.
         order_email_service_mock.send_email_for_canceled_order_to_orderer.assert_not_called()
 
+        event = ShopOrderCanceled(order_id=placed_order.id)
         order_canceled_signal_send_mock.assert_called_once_with(
-            None, order_id=placed_order.id
+            None, event=event
         )
 
     @patch('byceps.blueprints.shop.order.signals.order_paid.send')
@@ -158,8 +161,9 @@ class ShopAdminTestCase(ShopTestBase):
             placed_order.id
         )
 
+        event = ShopOrderPaid(order_id=placed_order.id)
         order_paid_signal_send_mock.assert_called_once_with(
-            None, order_id=placed_order.id
+            None, event=event
         )
 
     @patch('byceps.blueprints.shop.order.signals.order_canceled.send')
@@ -210,8 +214,14 @@ class ShopAdminTestCase(ShopTestBase):
             placed_order.id
         )
 
+        event_paid = ShopOrderPaid(order_id=placed_order.id)
+        order_paid_signal_send_mock.assert_called_once_with(
+            None, event=event_paid
+        )
+
+        event_canceled = ShopOrderCanceled(order_id=placed_order.id)
         order_canceled_signal_send_mock.assert_called_once_with(
-            None, order_id=placed_order.id
+            None, event=event_canceled
         )
 
     # helpers

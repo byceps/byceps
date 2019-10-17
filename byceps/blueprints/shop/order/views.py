@@ -8,6 +8,7 @@ byceps.blueprints.shop.order.views
 
 from flask import abort, g, request
 
+from ....events.shop import ShopOrderPlaced
 from ....services.country import service as country_service
 from ....services.party import service as party_service
 from ....services.shop.article import service as article_service
@@ -25,7 +26,7 @@ from ....util.views import redirect_to
 from ...authentication.decorators import login_required
 
 from .forms import assemble_articles_order_form, OrderForm
-from .signals import order_placed
+from . import signals
 
 
 blueprint = create_blueprint('shop_order', __name__)
@@ -257,7 +258,8 @@ def _place_order(shop_id, orderer, cart):
 
     order_email_service.send_email_for_incoming_order_to_orderer(order.id)
 
-    order_placed.send(None, order_id=order.id)
+    event = ShopOrderPlaced(order_id=order.id)
+    signals.order_placed.send(None, event=event)
 
     return order
 

@@ -5,6 +5,7 @@
 
 from unittest.mock import patch
 
+from byceps.events.shop import ShopOrderPlaced
 from byceps.services.shop.article.models.article import Article
 from byceps.services.shop.order.models.order import Order
 
@@ -96,7 +97,8 @@ class ShopOrderTestCase(ShopTestBase):
             order.id
         )
 
-        order_placed_mock.assert_called_once_with(None, order_id=order.id)
+        event = ShopOrderPlaced(order_id=order.id)
+        order_placed_mock.assert_called_once_with(None, event=event)
 
         order_detail_page_url = f'http://example.com/shop/orders/{order.id}'
 
@@ -145,7 +147,8 @@ class ShopOrderTestCase(ShopTestBase):
             order.id
         )
 
-        order_placed_mock.assert_called_once_with(None, order_id=order.id)
+        event = ShopOrderPlaced(order_id=order.id)
+        order_placed_mock.assert_called_once_with(None, event=event)
 
         order_detail_page_url = f'http://example.com/shop/orders/{order.id}'
 

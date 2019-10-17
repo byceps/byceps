@@ -8,6 +8,7 @@ byceps.blueprints.admin.shop.order.views
 
 from flask import abort, g, request, Response
 
+from .....events.shop import ShopOrderCanceled, ShopOrderPaid
 from .....services.shop.order import service as order_service
 from .....services.shop.order.email import service as order_email_service
 from .....services.shop.order.export import service as order_export_service
@@ -23,7 +24,7 @@ from .....util.views import redirect_to, respond_no_content
 
 from ....authorization.decorators import permission_required
 from ....authorization.registry import permission_registry
-from ....shop.order.signals import order_canceled, order_paid
+from ....shop.order import signals
 
 from .authorization import ShopOrderPermission
 from .forms import CancelForm, MarkAsPaidForm
@@ -263,7 +264,8 @@ def cancel(order_id):
             'Es wurde keine E-Mail an den/die Auftraggeber/in versendet.'
         )
 
-    order_canceled.send(None, order_id=order.id)
+    event = ShopOrderCanceled(order_id=order.id)
+    signals.order_canceled.send(None, event=event)
 
     return redirect_to('.view', order_id=order.id)
 
@@ -315,7 +317,8 @@ def mark_as_paid(order_id):
 
     order_email_service.send_email_for_paid_order_to_orderer(order.id)
 
-    order_paid.send(None, order_id=order.id)
+    event = ShopOrderPaid(order_id=order.id)
+    signals.order_paid.send(None, event=event)
 
     return redirect_to('.view', order_id=order.id)
 
