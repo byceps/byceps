@@ -6,9 +6,10 @@ byceps.services.snippet.service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import List, Optional, Sequence
+from typing import List, Optional, Sequence, Tuple
 
 from ...database import db
+from ...events.snippet import SnippetCreated, SnippetUpdated
 from ...typing import UserID
 
 from .models.snippet import CurrentVersionAssociation, Snippet, SnippetVersion
@@ -28,7 +29,7 @@ def create_document(
     *,
     head: Optional[str] = None,
     image_url_path: Optional[str] = None,
-) -> SnippetVersion:
+) -> Tuple[SnippetVersion, SnippetCreated]:
     """Create a document and its initial version, and return that version."""
     return _create_snippet(
         scope,
@@ -50,7 +51,7 @@ def update_document(
     *,
     head: Optional[str] = None,
     image_url_path: Optional[str] = None,
-) -> SnippetVersion:
+) -> Tuple[SnippetVersion, SnippetUpdated]:
     """Update document with a new version, and return that version."""
     return _update_snippet(
         document, creator_id, title, head, body, image_url_path
@@ -63,14 +64,14 @@ def update_document(
 
 def create_fragment(
     scope: Scope, name: str, creator_id: UserID, body: str
-) -> SnippetVersion:
+) -> Tuple[SnippetVersion, SnippetCreated]:
     """Create a fragment and its initial version, and return that version."""
     return _create_snippet(scope, name, SnippetType.fragment, creator_id, body)
 
 
 def update_fragment(
     fragment: Snippet, creator_id: UserID, body: str
-) -> SnippetVersion:
+) -> Tuple[SnippetVersion, SnippetUpdated]:
     """Update fragment with a new version, and return that version."""
     title = None
     head = None
@@ -95,7 +96,7 @@ def _create_snippet(
     title: Optional[str] = None,
     head: Optional[str] = None,
     image_url_path: Optional[str] = None,
-) -> SnippetVersion:
+) -> Tuple[SnippetVersion, SnippetCreated]:
     """Create a snippet and its initial version, and return that version."""
     snippet = Snippet(scope, name, type_)
     db.session.add(snippet)
@@ -110,7 +111,9 @@ def _create_snippet(
 
     db.session.commit()
 
-    return version
+    event = SnippetCreated(snippet_version_id=version.id)
+
+    return version, event
 
 
 def _update_snippet(
@@ -120,7 +123,7 @@ def _update_snippet(
     head: Optional[str],
     body: str,
     image_url_path: Optional[str],
-) -> SnippetVersion:
+) -> Tuple[SnippetVersion, SnippetUpdated]:
     """Update snippet with a new version, and return that version."""
     version = SnippetVersion(
         snippet, creator_id, title, head, body, image_url_path
@@ -131,7 +134,9 @@ def _update_snippet(
 
     db.session.commit()
 
-    return version
+    event = SnippetUpdated(snippet_version_id=version.id)
+
+    return version, event
 
 
 def delete_snippet(snippet_id: SnippetID) -> bool:

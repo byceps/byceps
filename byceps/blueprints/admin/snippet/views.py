@@ -8,7 +8,6 @@ byceps.blueprints.admin.snippet.views
 
 from flask import abort, g, request
 
-from ....events.snippet import SnippetCreated, SnippetUpdated
 from ....services.brand import service as brand_service
 from ....services.site import service as site_service
 from ....services.snippet import mountpoint_service, service as snippet_service
@@ -172,7 +171,7 @@ def create_document(scope_type, scope_name):
     body = form.body.data.strip()
     image_url_path = form.image_url_path.data.strip()
 
-    version = snippet_service.create_document(
+    version, event = snippet_service.create_document(
         scope,
         name,
         creator.id,
@@ -184,7 +183,6 @@ def create_document(scope_type, scope_name):
 
     flash_success(f'Das Dokument "{version.snippet.name}" wurde angelegt.')
 
-    event = SnippetCreated(snippet_version_id=version.id)
     signals.snippet_created.send(None, event=event)
 
     return redirect_to('.view_version', snippet_version_id=version.id)
@@ -228,7 +226,7 @@ def update_document(snippet_id):
     body = form.body.data.strip()
     image_url_path = form.image_url_path.data.strip()
 
-    version = snippet_service.update_document(
+    version, event = snippet_service.update_document(
         snippet,
         creator.id,
         title,
@@ -239,7 +237,6 @@ def update_document(snippet_id):
 
     flash_success(f'Das Dokument "{version.snippet.name}" wurde aktualisiert.')
 
-    event = SnippetUpdated(snippet_version_id=version.id)
     signals.snippet_updated.send(None, event=event)
 
     return redirect_to('.view_version', snippet_version_id=version.id)
@@ -319,11 +316,12 @@ def create_fragment(scope_type, scope_name):
     creator = g.current_user
     body = form.body.data.strip()
 
-    version = snippet_service.create_fragment(scope, name, creator.id, body)
+    version, event = snippet_service.create_fragment(
+        scope, name, creator.id, body
+    )
 
     flash_success(f'Das Fragment "{version.snippet.name}" wurde angelegt.')
 
-    event = SnippetCreated(snippet_version_id=version.id)
     signals.snippet_created.send(None, event=event)
 
     return redirect_to('.view_version', snippet_version_id=version.id)
@@ -364,11 +362,10 @@ def update_fragment(snippet_id):
     creator = g.current_user
     body = form.body.data.strip()
 
-    version = snippet_service.update_fragment(snippet, creator.id, body)
+    version, event = snippet_service.update_fragment(snippet, creator.id, body)
 
     flash_success(f'Das Fragment "{version.snippet.name}" wurde aktualisiert.')
 
-    event = SnippetUpdated(snippet_version_id=version.id)
     signals.snippet_updated.send(None, event=event)
 
     return redirect_to('.view_version', snippet_version_id=version.id)

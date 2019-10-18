@@ -59,7 +59,7 @@ class UserCreateTestCase(AbstractAppTestCase):
     def setup_terms(self):
         scope = Scope.for_brand(self.brand_id)
 
-        snippet = snippet_service.create_fragment(
+        snippet, _ = snippet_service.create_fragment(
             scope,
             'terms_of_service',
             self.admin.id,
