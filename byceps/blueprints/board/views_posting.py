@@ -6,13 +6,10 @@ byceps.blueprints.board.views_posting
 :License: Modified BSD, see LICENSE for details.
 """
 
+import dataclasses
+
 from flask import g, redirect, request
 
-from ...events.board import (
-    BoardPostingCreated,
-    BoardPostingHidden,
-    BoardPostingUnhidden,
-)
 from ...services.board import (
     last_view_service as board_last_view_service,
     posting_command_service as board_posting_command_service,
@@ -110,7 +107,7 @@ def posting_create(topic_id):
         )
         return redirect(h.build_url_for_topic(topic.id))
 
-    posting = board_posting_command_service.create_posting(
+    posting, event = board_posting_command_service.create_posting(
         topic, creator.id, body
     )
 
@@ -121,8 +118,8 @@ def posting_create(topic_id):
 
     flash_success('Deine Antwort wurde hinzugefügt.')
 
-    event = BoardPostingCreated(
-        posting_id=posting.id, url=h.build_external_url_for_posting(posting.id)
+    event = dataclasses.replace(
+        event, url=h.build_external_url_for_posting(posting.id)
     )
     signals.posting_created.send(None, event=event)
 
@@ -228,16 +225,14 @@ def posting_hide(posting_id):
     posting = h.get_posting_or_404(posting_id)
     moderator_id = g.current_user.id
 
-    board_posting_command_service.hide_posting(posting, moderator_id)
+    event = board_posting_command_service.hide_posting(posting, moderator_id)
 
     page = service.calculate_posting_page_number(posting, g.current_user)
 
     flash_success('Der Beitrag wurde versteckt.', icon='hidden')
 
-    event = BoardPostingHidden(
-        posting_id=posting.id,
-        moderator_id=moderator_id,
-        url=h.build_external_url_for_posting(posting.id),
+    event = dataclasses.replace(
+        event, url=h.build_external_url_for_posting(posting.id)
     )
     signals.posting_hidden.send(None, event=event)
 
@@ -252,16 +247,14 @@ def posting_unhide(posting_id):
     posting = h.get_posting_or_404(posting_id)
     moderator_id = g.current_user.id
 
-    board_posting_command_service.unhide_posting(posting, moderator_id)
+    event = board_posting_command_service.unhide_posting(posting, moderator_id)
 
     page = service.calculate_posting_page_number(posting, g.current_user)
 
     flash_success('Der Beitrag wurde wieder sichtbar gemacht.', icon='view')
 
-    event = BoardPostingUnhidden(
-        posting_id=posting.id,
-        moderator_id=moderator_id,
-        url=h.build_external_url_for_posting(posting.id),
+    event = dataclasses.replace(
+        event, url=h.build_external_url_for_posting(posting.id)
     )
     signals.posting_unhidden.send(None, event=event)
 

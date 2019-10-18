@@ -6,18 +6,10 @@ byceps.blueprints.board.views_topic
 :License: Modified BSD, see LICENSE for details.
 """
 
+import dataclasses
+
 from flask import abort, g, redirect, request
 
-from ...events.board import (
-    BoardTopicCreated,
-    BoardTopicHidden,
-    BoardTopicLocked,
-    BoardTopicMoved,
-    BoardTopicPinned,
-    BoardTopicUnhidden,
-    BoardTopicUnlocked,
-    BoardTopicUnpinned,
-)
 from ...services.board import (
     category_query_service as board_category_query_service,
     last_view_service as board_last_view_service,
@@ -169,14 +161,14 @@ def topic_create(category_id):
     title = form.title.data.strip()
     body = form.body.data.strip()
 
-    topic = board_topic_command_service.create_topic(
+    topic, event = board_topic_command_service.create_topic(
         category.id, creator.id, title, body
     )
     topic_url = h.build_external_url_for_topic(topic.id)
 
     flash_success(f'Das Thema "{topic.title}" wurde hinzugefügt.')
 
-    event = BoardTopicCreated(topic_id=topic.id, url=topic_url)
+    event = dataclasses.replace(event, url=topic_url)
     signals.topic_created.send(None, event=event)
 
     return redirect(topic_url)
@@ -279,14 +271,12 @@ def topic_hide(topic_id):
     topic = h.get_topic_or_404(topic_id)
     moderator_id = g.current_user.id
 
-    board_topic_command_service.hide_topic(topic, moderator_id)
+    event = board_topic_command_service.hide_topic(topic, moderator_id)
 
     flash_success(f'Das Thema "{topic.title}" wurde versteckt.', icon='hidden')
 
-    event = BoardTopicHidden(
-        topic_id=topic.id,
-        moderator_id=moderator_id,
-        url=h.build_external_url_for_topic(topic.id),
+    event = dataclasses.replace(
+        event, url=h.build_external_url_for_topic(topic.id)
     )
     signals.topic_hidden.send(None, event=event)
 
@@ -301,16 +291,14 @@ def topic_unhide(topic_id):
     topic = h.get_topic_or_404(topic_id)
     moderator_id = g.current_user.id
 
-    board_topic_command_service.unhide_topic(topic, moderator_id)
+    event = board_topic_command_service.unhide_topic(topic, moderator_id)
 
     flash_success(
         f'Das Thema "{topic.title}" wurde wieder sichtbar gemacht.', icon='view'
     )
 
-    event = BoardTopicUnhidden(
-        topic_id=topic.id,
-        moderator_id=moderator_id,
-        url=h.build_external_url_for_topic(topic.id),
+    event = dataclasses.replace(
+        event, url=h.build_external_url_for_topic(topic.id)
     )
     signals.topic_unhidden.send(None, event=event)
 
@@ -325,14 +313,12 @@ def topic_lock(topic_id):
     topic = h.get_topic_or_404(topic_id)
     moderator_id = g.current_user.id
 
-    board_topic_command_service.lock_topic(topic, moderator_id)
+    event = board_topic_command_service.lock_topic(topic, moderator_id)
 
     flash_success(f'Das Thema "{topic.title}" wurde geschlossen.', icon='lock')
 
-    event = BoardTopicLocked(
-        topic_id=topic.id,
-        moderator_id=moderator_id,
-        url=h.build_external_url_for_topic(topic.id),
+    event = dataclasses.replace(
+        event, url=h.build_external_url_for_topic(topic.id)
     )
     signals.topic_locked.send(None, event=event)
 
@@ -347,16 +333,14 @@ def topic_unlock(topic_id):
     topic = h.get_topic_or_404(topic_id)
     moderator_id = g.current_user.id
 
-    board_topic_command_service.unlock_topic(topic, moderator_id)
+    event = board_topic_command_service.unlock_topic(topic, moderator_id)
 
     flash_success(
         f'Das Thema "{topic.title}" wurde wieder geöffnet.', icon='unlock'
     )
 
-    event = BoardTopicUnlocked(
-        topic_id=topic.id,
-        moderator_id=moderator_id,
-        url=h.build_external_url_for_topic(topic.id),
+    event = dataclasses.replace(
+        event, url=h.build_external_url_for_topic(topic.id)
     )
     signals.topic_unlocked.send(None, event=event)
 
@@ -371,14 +355,12 @@ def topic_pin(topic_id):
     topic = h.get_topic_or_404(topic_id)
     moderator_id = g.current_user.id
 
-    board_topic_command_service.pin_topic(topic, moderator_id)
+    event = board_topic_command_service.pin_topic(topic, moderator_id)
 
     flash_success(f'Das Thema "{topic.title}" wurde angepinnt.', icon='pin')
 
-    event = BoardTopicPinned(
-        topic_id=topic.id,
-        moderator_id=moderator_id,
-        url=h.build_external_url_for_topic(topic.id),
+    event = dataclasses.replace(
+        event, url=h.build_external_url_for_topic(topic.id)
     )
     signals.topic_pinned.send(None, event=event)
 
@@ -393,14 +375,12 @@ def topic_unpin(topic_id):
     topic = h.get_topic_or_404(topic_id)
     moderator_id = g.current_user.id
 
-    board_topic_command_service.unpin_topic(topic, moderator_id)
+    event = board_topic_command_service.unpin_topic(topic, moderator_id)
 
     flash_success(f'Das Thema "{topic.title}" wurde wieder gelöst.')
 
-    event = BoardTopicUnpinned(
-        topic_id=topic.id,
-        moderator_id=moderator_id,
-        url=h.build_external_url_for_topic(topic.id),
+    event = dataclasses.replace(
+        event, url=h.build_external_url_for_topic(topic.id)
     )
     signals.topic_unpinned.send(None, event=event)
 
@@ -422,7 +402,9 @@ def topic_move(topic_id):
 
     old_category = topic.category
 
-    board_topic_command_service.move_topic(topic, new_category.id)
+    event = board_topic_command_service.move_topic(
+        topic, new_category.id, moderator_id
+    )
 
     flash_success(
         f'Das Thema "{topic.title}" wurde '
@@ -431,12 +413,8 @@ def topic_move(topic_id):
         icon='move',
     )
 
-    event = BoardTopicMoved(
-        topic_id=topic.id,
-        old_category_id=old_category.id,
-        new_category_id=new_category.id,
-        moderator_id=moderator_id,
-        url=h.build_external_url_for_topic(topic.id),
+    event = dataclasses.replace(
+        event, url=h.build_external_url_for_topic(topic.id)
     )
     signals.topic_moved.send(None, event=event)
 

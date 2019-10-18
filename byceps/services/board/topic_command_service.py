@@ -7,8 +7,19 @@ byceps.services.board.topic_command_service
 """
 
 from datetime import datetime
+from typing import Tuple
 
 from ...database import db
+from ...events.board import (
+    BoardTopicCreated,
+    BoardTopicHidden,
+    BoardTopicLocked,
+    BoardTopicMoved,
+    BoardTopicPinned,
+    BoardTopicUnhidden,
+    BoardTopicUnlocked,
+    BoardTopicUnpinned,
+)
 from ...typing import UserID
 
 from .aggregation_service import aggregate_category, aggregate_topic
@@ -21,7 +32,7 @@ from .transfer.models import CategoryID
 
 def create_topic(
     category_id: CategoryID, creator_id: UserID, title: str, body: str
-) -> DbTopic:
+) -> Tuple[DbTopic, BoardTopicCreated]:
     """Create a topic with an initial posting in that category."""
     topic = DbTopic(category_id, creator_id, title)
     posting = DbPosting(topic, creator_id, body)
@@ -36,7 +47,9 @@ def create_topic(
 
     aggregate_topic(topic)
 
-    return topic
+    event = BoardTopicCreated(topic_id=topic.id, url=None)
+
+    return topic, event
 
 
 def update_topic(
@@ -50,17 +63,21 @@ def update_topic(
     db.session.commit()
 
 
-def hide_topic(topic: DbTopic, hidden_by_id: UserID) -> None:
+def hide_topic(topic: DbTopic, moderator_id: UserID) -> BoardTopicHidden:
     """Hide the topic."""
     topic.hidden = True
     topic.hidden_at = datetime.utcnow()
-    topic.hidden_by_id = hidden_by_id
+    topic.hidden_by_id = moderator_id
     db.session.commit()
 
     aggregate_topic(topic)
 
+    return BoardTopicHidden(
+        topic_id=topic.id, moderator_id=moderator_id, url=None
+    )
 
-def unhide_topic(topic: DbTopic, unhidden_by_id: UserID) -> None:
+
+def unhide_topic(topic: DbTopic, moderator_id: UserID) -> BoardTopicUnhidden:
     """Un-hide the topic."""
     # TODO: Store who un-hid the topic.
     topic.hidden = False
@@ -70,16 +87,24 @@ def unhide_topic(topic: DbTopic, unhidden_by_id: UserID) -> None:
 
     aggregate_topic(topic)
 
+    return BoardTopicUnhidden(
+        topic_id=topic.id, moderator_id=moderator_id, url=None
+    )
 
-def lock_topic(topic: DbTopic, locked_by_id: UserID) -> None:
+
+def lock_topic(topic: DbTopic, moderator_id: UserID) -> BoardTopicLocked:
     """Lock the topic."""
     topic.locked = True
     topic.locked_at = datetime.utcnow()
-    topic.locked_by_id = locked_by_id
+    topic.locked_by_id = moderator_id
     db.session.commit()
 
+    return BoardTopicLocked(
+        topic_id=topic.id, moderator_id=moderator_id, url=None
+    )
 
-def unlock_topic(topic: DbTopic, unlocked_by_id: UserID) -> None:
+
+def unlock_topic(topic: DbTopic, moderator_id: UserID) -> BoardTopicUnlocked:
     """Unlock the topic."""
     # TODO: Store who unlocked the topic.
     topic.locked = False
@@ -87,16 +112,24 @@ def unlock_topic(topic: DbTopic, unlocked_by_id: UserID) -> None:
     topic.locked_by_id = None
     db.session.commit()
 
+    return BoardTopicUnlocked(
+        topic_id=topic.id, moderator_id=moderator_id, url=None
+    )
 
-def pin_topic(topic: DbTopic, pinned_by_id: UserID) -> None:
+
+def pin_topic(topic: DbTopic, moderator_id: UserID) -> BoardTopicPinned:
     """Pin the topic."""
     topic.pinned = True
     topic.pinned_at = datetime.utcnow()
-    topic.pinned_by_id = pinned_by_id
+    topic.pinned_by_id = moderator_id
     db.session.commit()
 
+    return BoardTopicPinned(
+        topic_id=topic.id, moderator_id=moderator_id, url=None
+    )
 
-def unpin_topic(topic: DbTopic, unpinned_by_id: UserID) -> None:
+
+def unpin_topic(topic: DbTopic, moderator_id: UserID) -> BoardTopicUnpinned:
     """Unpin the topic."""
     # TODO: Store who unpinned the topic.
     topic.pinned = False
@@ -104,8 +137,14 @@ def unpin_topic(topic: DbTopic, unpinned_by_id: UserID) -> None:
     topic.pinned_by_id = None
     db.session.commit()
 
+    return BoardTopicUnpinned(
+        topic_id=topic.id, moderator_id=moderator_id, url=None
+    )
 
-def move_topic(topic: DbTopic, new_category_id: CategoryID) -> None:
+
+def move_topic(
+    topic: DbTopic, new_category_id: CategoryID, moderator_id: UserID
+) -> BoardTopicMoved:
     """Move the topic to another category."""
     old_category = topic.category
     new_category = DbCategory.query.get(new_category_id)
@@ -115,6 +154,14 @@ def move_topic(topic: DbTopic, new_category_id: CategoryID) -> None:
 
     for category in old_category, new_category:
         aggregate_category(category)
+
+    return BoardTopicMoved(
+        topic_id=topic.id,
+        old_category_id=old_category.id,
+        new_category_id=new_category.id,
+        moderator_id=moderator_id,
+        url=None,
+    )
 
 
 def limit_topic_to_announcements(topic: DbTopic) -> None:

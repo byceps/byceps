@@ -7,8 +7,14 @@ byceps.services.board.posting_command_service
 """
 
 from datetime import datetime
+from typing import Tuple
 
 from ...database import db
+from ...events.board import (
+    BoardPostingCreated,
+    BoardPostingHidden,
+    BoardPostingUnhidden,
+)
 from ...typing import UserID
 
 from .aggregation_service import aggregate_topic
@@ -16,7 +22,9 @@ from .models.posting import Posting as DbPosting
 from .models.topic import Topic as DbTopic
 
 
-def create_posting(topic: DbTopic, creator_id: UserID, body: str) -> DbPosting:
+def create_posting(
+    topic: DbTopic, creator_id: UserID, body: str
+) -> Tuple[DbPosting, BoardPostingCreated]:
     """Create a posting in that topic."""
     posting = DbPosting(topic, creator_id, body)
     db.session.add(posting)
@@ -24,7 +32,9 @@ def create_posting(topic: DbTopic, creator_id: UserID, body: str) -> DbPosting:
 
     aggregate_topic(topic)
 
-    return posting
+    event = BoardPostingCreated(posting_id=posting.id, url=None)
+
+    return posting, event
 
 
 def update_posting(
@@ -40,17 +50,27 @@ def update_posting(
         db.session.commit()
 
 
-def hide_posting(posting: DbPosting, hidden_by_id: UserID) -> None:
+def hide_posting(
+    posting: DbPosting, moderator_id: UserID
+) -> BoardPostingHidden:
     """Hide the posting."""
     posting.hidden = True
     posting.hidden_at = datetime.utcnow()
-    posting.hidden_by_id = hidden_by_id
+    posting.hidden_by_id = moderator_id
     db.session.commit()
 
     aggregate_topic(posting.topic)
 
+    event = BoardPostingHidden(
+        posting_id=posting.id, moderator_id=moderator_id, url=None
+    )
 
-def unhide_posting(posting: DbPosting, unhidden_by_id: UserID) -> None:
+    return event
+
+
+def unhide_posting(
+    posting: DbPosting, moderator_id: UserID
+) -> BoardPostingUnhidden:
     """Un-hide the posting."""
     # TODO: Store who un-hid the posting.
     posting.hidden = False
@@ -59,3 +79,9 @@ def unhide_posting(posting: DbPosting, unhidden_by_id: UserID) -> None:
     db.session.commit()
 
     aggregate_topic(posting.topic)
+
+    event = BoardPostingUnhidden(
+        posting_id=posting.id, moderator_id=moderator_id, url=None
+    )
+
+    return event
