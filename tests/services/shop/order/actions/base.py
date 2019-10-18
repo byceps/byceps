@@ -52,9 +52,11 @@ class OrderActionTestBase(ShopTestBase):
         for article, quantity in articles_with_quantity:
             cart.add_item(article, quantity)
 
-        return order_service.place_order(
+        order, _ = order_service.place_order(
             self.shop.id, orderer, ANY_PAYMENT_METHOD, cart
         )
+
+        return order
 
     def mark_order_as_paid(self):
         order_service.mark_order_as_paid(

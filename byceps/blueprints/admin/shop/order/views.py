@@ -8,7 +8,6 @@ byceps.blueprints.admin.shop.order.views
 
 from flask import abort, g, request, Response
 
-from .....events.shop import ShopOrderCanceled, ShopOrderPaid
 from .....services.shop.order import service as order_service
 from .....services.shop.order.email import service as order_email_service
 from .....services.shop.order.export import service as order_export_service
@@ -243,7 +242,7 @@ def cancel(order_id):
     send_email = form.send_email.data
 
     try:
-        order_service.cancel_order(order.id, g.current_user.id, reason)
+        event = order_service.cancel_order(order.id, g.current_user.id, reason)
     except order_service.OrderAlreadyCanceled:
         flash_error(
             'Die Bestellung ist bereits storniert worden; '
@@ -264,7 +263,6 @@ def cancel(order_id):
             'Es wurde keine E-Mail an den/die Auftraggeber/in versendet.'
         )
 
-    event = ShopOrderCanceled(order_id=order.id)
     signals.order_canceled.send(None, event=event)
 
     return redirect_to('.view', order_id=order.id)
@@ -306,7 +304,7 @@ def mark_as_paid(order_id):
     updated_by_id = g.current_user.id
 
     try:
-        order_service.mark_order_as_paid(
+        event = order_service.mark_order_as_paid(
             order.id, payment_method, updated_by_id
         )
     except order_service.OrderAlreadyMarkedAsPaid:
@@ -317,7 +315,6 @@ def mark_as_paid(order_id):
 
     order_email_service.send_email_for_paid_order_to_orderer(order.id)
 
-    event = ShopOrderPaid(order_id=order.id)
     signals.order_paid.send(None, event=event)
 
     return redirect_to('.view', order_id=order.id)

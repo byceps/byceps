@@ -45,7 +45,7 @@ class OrderEmailTestBase(ShopTestBase):
             for article, quantity in items_with_quantity:
                 cart.add_item(article, quantity)
 
-        order = order_service.place_order(
+        order, _ = order_service.place_order(
             self.shop.id, orderer, payment_method, cart
         )
 

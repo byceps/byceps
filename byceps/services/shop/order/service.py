@@ -7,12 +7,13 @@ byceps.services.shop.order.service
 """
 
 from datetime import datetime
-from typing import Dict, Iterator, Optional, Sequence, Set
+from typing import Dict, Iterator, Optional, Sequence, Set, Tuple
 
 from flask import current_app
 from sqlalchemy.exc import IntegrityError
 
 from ....database import db, Pagination
+from ....events.shop import ShopOrderCanceled, ShopOrderPaid, ShopOrderPlaced
 from ....typing import UserID
 
 from ..article.models.article import Article
@@ -47,7 +48,7 @@ def place_order(
     cart: Cart,
     *,
     created_at: Optional[datetime] = None,
-) -> Order:
+) -> Tuple[Order, ShopOrderPlaced]:
     """Place an order for one or more articles."""
     shop = shop_service.get_shop(shop_id)
 
@@ -74,7 +75,11 @@ def place_order(
         db.session.rollback()
         raise OrderFailed()
 
-    return order.to_transfer_object()
+    order_dto = order.to_transfer_object()
+
+    event = ShopOrderPlaced(order_id=order.id)
+
+    return order_dto, event
 
 
 def _build_order(
@@ -206,7 +211,9 @@ class OrderAlreadyMarkedAsPaid(Exception):
     pass
 
 
-def cancel_order(order_id: OrderID, initiator_id: UserID, reason: str) -> None:
+def cancel_order(
+    order_id: OrderID, initiator_id: UserID, reason: str
+) -> ShopOrderCanceled:
     """Cancel the order.
 
     Reserved quantities of articles from that order are made available
@@ -254,10 +261,12 @@ def cancel_order(order_id: OrderID, initiator_id: UserID, reason: str) -> None:
         order.to_transfer_object(), payment_state_to, initiator_id
     )
 
+    return ShopOrderCanceled(order_id=order.id)
+
 
 def mark_order_as_paid(
     order_id: OrderID, payment_method: PaymentMethod, initiator_id: UserID
-) -> None:
+) -> ShopOrderPaid:
     """Mark the order as paid."""
     order = find_order(order_id)
 
@@ -291,6 +300,8 @@ def mark_order_as_paid(
     action_service.execute_actions(
         order.to_transfer_object(), payment_state_to, initiator_id
     )
+
+    return ShopOrderPaid(order_id=order.id)
 
 
 def _update_payment_state(

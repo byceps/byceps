@@ -8,7 +8,6 @@ byceps.blueprints.shop.order.views
 
 from flask import abort, g, request
 
-from ....events.shop import ShopOrderPlaced
 from ....services.country import service as country_service
 from ....services.party import service as party_service
 from ....services.shop.article import service as article_service
@@ -254,11 +253,12 @@ def _get_article_or_404(article_id):
 def _place_order(shop_id, orderer, cart):
     payment_method = PaymentMethod.bank_transfer
 
-    order = order_service.place_order(shop_id, orderer, payment_method, cart)
+    order, event = order_service.place_order(
+        shop_id, orderer, payment_method, cart
+    )
 
     order_email_service.send_email_for_incoming_order_to_orderer(order.id)
 
-    event = ShopOrderPlaced(order_id=order.id)
     signals.order_placed.send(None, event=event)
 
     return order

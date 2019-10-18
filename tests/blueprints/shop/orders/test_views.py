@@ -90,7 +90,7 @@ class ShopOrdersTestCase(ShopTestBase):
         payment_method = PaymentMethod.bank_transfer
         cart = Cart()
 
-        order = order_service.place_order(
+        order, _ = order_service.place_order(
             shop_id, orderer, payment_method, cart
         )
 

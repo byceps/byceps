@@ -234,9 +234,11 @@ class ShopAdminTestCase(ShopTestBase):
         for article, quantity_to_order in quantified_articles:
             cart.add_item(article, quantity_to_order)
 
-        return order_service.place_order(
+        order, _ = order_service.place_order(
             self.shop.id, orderer, payment_method, cart
         )
+
+        return order
 
 
 def assert_payment_is_open(order):
