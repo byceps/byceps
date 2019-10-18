@@ -195,11 +195,17 @@ def posting_update(posting_id):
     if not form.validate():
         return posting_update_form(posting_id, form)
 
-    board_posting_command_service.update_posting(
+    event = board_posting_command_service.update_posting(
         posting, g.current_user.id, form.body.data
     )
 
     flash_success('Der Beitrag wurde aktualisiert.')
+
+    event = dataclasses.replace(
+        event, url=h.build_external_url_for_posting(posting.id)
+    )
+    signals.posting_updated.send(None, event=event)
+
     return redirect(url)
 
 

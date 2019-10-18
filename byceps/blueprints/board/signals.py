@@ -15,6 +15,7 @@ board_signals = Namespace()
 # postings
 
 posting_created = board_signals.signal('posting-created')
+posting_updated = board_signals.signal('posting-updated')
 
 posting_hidden = board_signals.signal('posting-hidden')
 posting_unhidden = board_signals.signal('posting-unhidden')
@@ -23,6 +24,7 @@ posting_unhidden = board_signals.signal('posting-unhidden')
 # topics
 
 topic_created = board_signals.signal('topic-created')
+topic_updated = board_signals.signal('topic-updated')
 
 topic_hidden = board_signals.signal('topic-hidden')
 topic_unhidden = board_signals.signal('topic-unhidden')

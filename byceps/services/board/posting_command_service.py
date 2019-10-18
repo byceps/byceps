@@ -14,6 +14,7 @@ from ...events.board import (
     BoardPostingCreated,
     BoardPostingHidden,
     BoardPostingUnhidden,
+    BoardPostingUpdated,
 )
 from ...typing import UserID
 
@@ -39,7 +40,7 @@ def create_posting(
 
 def update_posting(
     posting: DbPosting, editor_id: UserID, body: str, *, commit: bool = True
-) -> None:
+) -> BoardPostingUpdated:
     """Update the posting."""
     posting.body = body.strip()
     posting.last_edited_at = datetime.utcnow()
@@ -48,6 +49,10 @@ def update_posting(
 
     if commit:
         db.session.commit()
+
+    return BoardPostingUpdated(
+        posting_id=posting.id, editor_id=editor_id, url=None
+    )
 
 
 def hide_posting(

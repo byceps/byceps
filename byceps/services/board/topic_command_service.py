@@ -19,6 +19,7 @@ from ...events.board import (
     BoardTopicUnhidden,
     BoardTopicUnlocked,
     BoardTopicUnpinned,
+    BoardTopicUpdated,
 )
 from ...typing import UserID
 
@@ -54,13 +55,15 @@ def create_topic(
 
 def update_topic(
     topic: DbTopic, editor_id: UserID, title: str, body: str
-) -> None:
+) -> BoardTopicUpdated:
     """Update the topic (and its initial posting)."""
     topic.title = title.strip()
 
     update_posting(topic.initial_posting, editor_id, body, commit=False)
 
     db.session.commit()
+
+    return BoardTopicUpdated(topic_id=topic.id, editor_id=editor_id, url=None)
 
 
 def hide_topic(topic: DbTopic, moderator_id: UserID) -> BoardTopicHidden:

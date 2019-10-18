@@ -32,6 +32,11 @@ class BoardTopicCreated(_BoardTopicEvent):
 
 
 @dataclass(frozen=True)
+class BoardTopicUpdated(_BoardTopicEvent):
+    editor_id: UserID
+
+
+@dataclass(frozen=True)
 class BoardTopicHidden(_BoardTopicModerationEvent):
     pass
 
@@ -84,6 +89,11 @@ class _BoardPostingModerationEvent(_BoardPostingEvent):
 @dataclass(frozen=True)
 class BoardPostingCreated(_BoardPostingEvent):
     pass
+
+
+@dataclass(frozen=True)
+class BoardPostingUpdated(_BoardPostingEvent):
+    editor_id: UserID
 
 
 @dataclass(frozen=True)
