@@ -8,13 +8,6 @@ byceps.blueprints.admin.user.views
 
 from flask import abort, g, redirect, request, url_for
 
-from ....events.user import (
-    UserAccountCreated,
-    UserAccountDeleted,
-    UserAccountSuspended,
-    UserAccountUnsuspended,
-    UserScreenNameChanged,
-)
 from ....services.authentication.password import service as password_service
 from ....services.authorization import service as authorization_service
 from ....services.orga_team import service as orga_team_service
@@ -178,7 +171,7 @@ def create_account():
     initiator_id = g.current_user.id
 
     try:
-        user = user_creation_service.create_basic_user(
+        user, event = user_creation_service.create_basic_user(
             screen_name,
             email_address,
             password,
@@ -204,7 +197,6 @@ def create_account():
             icon='email',
         )
 
-    event = UserAccountCreated(user_id=user.id, initiator_id=initiator_id)
     signals.account_created.send(None, event=event)
 
     return redirect_to('.view', user_id=user.id)
@@ -304,9 +296,8 @@ def suspend_account(user_id):
     initiator_id = g.current_user.id
     reason = form.reason.data.strip()
 
-    user_command_service.suspend_account(user.id, initiator_id, reason)
+    event = user_command_service.suspend_account(user.id, initiator_id, reason)
 
-    event = UserAccountSuspended(user_id=user.id, initiator_id=initiator_id)
     signals.account_suspended.send(None, event=event)
 
     flash_success(f"Das Benutzerkonto '{user.screen_name}' wurde gesperrt.")
@@ -353,9 +344,10 @@ def unsuspend_account(user_id):
     initiator_id = g.current_user.id
     reason = form.reason.data.strip()
 
-    user_command_service.unsuspend_account(user.id, initiator_id, reason)
+    event = user_command_service.unsuspend_account(
+        user.id, initiator_id, reason
+    )
 
-    event = UserAccountUnsuspended(user_id=user.id, initiator_id=initiator_id)
     signals.account_unsuspended.send(None, event=event)
 
     flash_success(f"Das Benutzerkonto '{user.screen_name}' wurde entsperrt.")
@@ -404,9 +396,8 @@ def delete_account(user_id):
     initiator_id = g.current_user.id
     reason = form.reason.data.strip()
 
-    user_command_service.delete_account(user.id, initiator_id, reason)
+    event = user_command_service.delete_account(user.id, initiator_id, reason)
 
-    event = UserAccountDeleted(user_id=user.id, initiator_id=initiator_id)
     signals.account_deleted.send(None, event=event)
 
     flash_success(f"Das Benutzerkonto '{user.screen_name}' wurde gelöscht.")
@@ -443,16 +434,10 @@ def change_screen_name(user_id):
     initiator_id = g.current_user.id
     reason = form.reason.data.strip()
 
-    user_command_service.change_screen_name(
+    event = user_command_service.change_screen_name(
         user.id, new_screen_name, initiator_id, reason=reason
     )
 
-    event = UserScreenNameChanged(
-        user_id=user.id,
-        initiator_id=initiator_id,
-        old_screen_name=old_screen_name,
-        new_screen_name=new_screen_name,
-    )
     signals.screen_name_changed.send(None, event=event)
 
     flash_success(

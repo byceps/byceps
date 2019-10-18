@@ -10,6 +10,12 @@ from datetime import date
 from typing import Optional
 
 from ...database import db
+from ...events.user import (
+    UserAccountDeleted,
+    UserAccountSuspended,
+    UserAccountUnsuspended,
+    UserScreenNameChanged,
+)
 from ...typing import UserID
 
 from ..authorization.models import RoleID
@@ -55,7 +61,9 @@ def _assign_roles(
     )
 
 
-def suspend_account(user_id: UserID, initiator_id: UserID, reason: str) -> None:
+def suspend_account(
+    user_id: UserID, initiator_id: UserID, reason: str
+) -> UserAccountSuspended:
     """Suspend the user account."""
     user = _get_user(user_id)
 
@@ -69,10 +77,12 @@ def suspend_account(user_id: UserID, initiator_id: UserID, reason: str) -> None:
 
     db.session.commit()
 
+    return UserAccountSuspended(user_id=user.id, initiator_id=initiator_id)
+
 
 def unsuspend_account(
     user_id: UserID, initiator_id: UserID, reason: str
-) -> None:
+) -> UserAccountUnsuspended:
     """Unsuspend the user account."""
     user = _get_user(user_id)
 
@@ -86,8 +96,12 @@ def unsuspend_account(
 
     db.session.commit()
 
+    return UserAccountUnsuspended(user_id=user.id, initiator_id=initiator_id)
 
-def delete_account(user_id: UserID, initiator_id: UserID, reason: str) -> None:
+
+def delete_account(
+    user_id: UserID, initiator_id: UserID, reason: str
+) -> UserAccountDeleted:
     """Delete the user account."""
     user = _get_user(user_id)
 
@@ -107,6 +121,8 @@ def delete_account(user_id: UserID, initiator_id: UserID, reason: str) -> None:
 
     db.session.commit()
 
+    return UserAccountDeleted(user_id=user.id, initiator_id=initiator_id)
+
 
 def change_screen_name(
     user_id: UserID,
@@ -114,7 +130,7 @@ def change_screen_name(
     initiator_id: UserID,
     *,
     reason: Optional[str] = None,
-) -> None:
+) -> UserScreenNameChanged:
     """Change the user's screen name."""
     user = _get_user(user_id)
 
@@ -136,6 +152,13 @@ def change_screen_name(
     db.session.add(event)
 
     db.session.commit()
+
+    return UserScreenNameChanged(
+        user_id=user.id,
+        initiator_id=initiator_id,
+        old_screen_name=old_screen_name,
+        new_screen_name=new_screen_name,
+    )
 
 
 def change_email_address(

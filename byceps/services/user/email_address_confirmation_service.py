@@ -7,6 +7,7 @@ byceps.services.user.email_address_confirmation_service
 """
 
 from ...database import db
+from ...events.user import UserEmailAddressConfirmed
 
 from ..email import service as email_service
 from ..site import service as site_service
@@ -43,7 +44,9 @@ def send_email_address_confirmation_email(
     email_service.enqueue_email(sender, recipients, subject, body)
 
 
-def confirm_email_address(verification_token: Token) -> None:
+def confirm_email_address(
+    verification_token: Token
+) -> UserEmailAddressConfirmed:
     """Confirm the email address of the user assigned with that
     verification token.
     """
@@ -63,3 +66,5 @@ def confirm_email_address(verification_token: Token) -> None:
         command_service.initialize_account(user.id)
 
     verification_token_service.delete_token(verification_token)
+
+    return UserEmailAddressConfirmed(user_id=user.id, initiator_id=user.id)

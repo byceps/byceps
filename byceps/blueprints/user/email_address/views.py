@@ -8,7 +8,6 @@ byceps.blueprints.user.email_address.views
 
 from flask import abort, g, request
 
-from ....events.user import UserEmailAddressConfirmed
 from ....services.user import email_address_confirmation_service
 from ....services.user import service as user_service
 from ....services.verification_token import (
@@ -91,14 +90,15 @@ def confirm(token):
 
     user = verification_token.user
 
-    email_address_confirmation_service.confirm_email_address(verification_token)
+    event = email_address_confirmation_service.confirm_email_address(
+        verification_token
+    )
 
     flash_success(
         'Die E-Mail-Adresse wurde bestätigt. '
         f'Das Benutzerkonto "{user.screen_name}" ist nun aktiviert.'
     )
 
-    event = UserEmailAddressConfirmed(user_id=user.id, initiator_id=user.id)
     signals.email_address_confirmed.send(None, event=event)
 
     return redirect_to('authentication.login_form')

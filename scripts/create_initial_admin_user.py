@@ -39,9 +39,10 @@ def execute(screen_name, email_address, password):
 
 def _create_user(screen_name, email_address, password):
     try:
-        return user_creation_service.create_basic_user(
+        user, event = user_creation_service.create_basic_user(
             screen_name, email_address, password
         )
+        return user
     except ValueError as e:
         raise click.UsageError(e)
 

@@ -7,11 +7,12 @@ byceps.services.user.creation_service
 """
 
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Tuple
 
 from flask import current_app
 
 from ...database import db
+from ...events.user import UserAccountCreated
 from ...typing import UserID
 
 from ..authentication.password import service as password_service
@@ -45,10 +46,10 @@ def create_user(
     terms_consent: Optional[Consent] = None,
     privacy_policy_consent: Optional[Consent] = None,
     newsletter_subscription: Optional[NewsletterSubscription] = None,
-) -> User:
+) -> Tuple[User, UserAccountCreated]:
     """Create a user account and related records."""
     # user with details, password, and roles
-    user = create_basic_user(
+    user, event = create_basic_user(
         screen_name,
         email_address,
         password,
@@ -84,7 +85,7 @@ def create_user(
 
     request_email_address_confirmation(user, email_address, site_id)
 
-    return user
+    return user, event
 
 
 def create_basic_user(
@@ -95,9 +96,9 @@ def create_basic_user(
     first_names: Optional[str] = None,
     last_name: Optional[str] = None,
     creator_id: Optional[UserID] = None,
-) -> User:
+) -> Tuple[User, UserAccountCreated]:
     # user with details
-    user = _create_user(
+    user, event = _create_user(
         screen_name,
         email_address,
         first_names=first_names,
@@ -108,7 +109,7 @@ def create_basic_user(
     # password
     password_service.create_password_hash(user.id, password)
 
-    return user
+    return user, event
 
 
 def _create_user(
@@ -118,7 +119,7 @@ def _create_user(
     first_names: Optional[str] = None,
     last_name: Optional[str] = None,
     creator_id: Optional[UserID] = None,
-) -> User:
+) -> Tuple[User, UserAccountCreated]:
     created_at = datetime.utcnow()
 
     user = build_user(created_at, screen_name, email_address)
@@ -143,7 +144,11 @@ def _create_user(
         'user-created', user.id, event_data, occurred_at=created_at
     )
 
-    return user_service._db_entity_to_user_dto(user)
+    user_dto = user_service._db_entity_to_user_dto(user)
+
+    event = UserAccountCreated(user_id=user.id, initiator_id=creator_id)
+
+    return user_dto, event
 
 
 def build_user(
