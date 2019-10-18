@@ -12,6 +12,7 @@ from typing import Dict, Optional, Sequence
 from flask import url_for
 
 from ...database import db, paginate, Pagination, Query
+from ...events.news import NewsItemPublished
 from ...typing import BrandID, UserID
 
 from ..brand.models.brand import Brand as DbBrand
@@ -98,12 +99,14 @@ def _create_version(
     return version
 
 
-def publish_item(item_id: ItemID) -> None:
+def publish_item(item_id: ItemID) -> NewsItemPublished:
     """Publish a news item."""
     item = _get_db_item(item_id)
 
     item.published_at = datetime.utcnow()
     db.session.commit()
+
+    return NewsItemPublished(item_id=item.id)
 
 
 def find_item(item_id: ItemID) -> Optional[Item]:
