@@ -48,7 +48,7 @@ def create_document(
 
 
 def update_document(
-    document: DbSnippet,
+    snippet_id: SnippetID,
     creator_id: UserID,
     title: str,
     body: str,
@@ -58,7 +58,7 @@ def update_document(
 ) -> Tuple[DbSnippetVersion, SnippetUpdated]:
     """Update document with a new version, and return that version."""
     return _update_snippet(
-        document, creator_id, title, head, body, image_url_path
+        snippet_id, creator_id, title, head, body, image_url_path
     )
 
 
@@ -74,7 +74,7 @@ def create_fragment(
 
 
 def update_fragment(
-    fragment: DbSnippet, creator_id: UserID, body: str
+    snippet_id: SnippetID, creator_id: UserID, body: str
 ) -> Tuple[DbSnippetVersion, SnippetUpdated]:
     """Update fragment with a new version, and return that version."""
     title = None
@@ -82,7 +82,7 @@ def update_fragment(
     image_url_path = None
 
     return _update_snippet(
-        fragment, creator_id, title, head, body, image_url_path
+        snippet_id, creator_id, title, head, body, image_url_path
     )
 
 
@@ -121,7 +121,7 @@ def _create_snippet(
 
 
 def _update_snippet(
-    snippet: DbSnippet,
+    snippet_id: SnippetID,
     creator_id: UserID,
     title: Optional[str],
     head: Optional[str],
@@ -129,6 +129,10 @@ def _update_snippet(
     image_url_path: Optional[str],
 ) -> Tuple[DbSnippetVersion, SnippetUpdated]:
     """Update snippet with a new version, and return that version."""
+    snippet = find_snippet(snippet_id)
+    if snippet is None:
+        raise ValueError('Unknown snippet ID')
+
     version = DbSnippetVersion(
         snippet, creator_id, title, head, body, image_url_path
     )

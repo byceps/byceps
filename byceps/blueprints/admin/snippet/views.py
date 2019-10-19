@@ -227,7 +227,7 @@ def update_document(snippet_id):
     image_url_path = form.image_url_path.data.strip()
 
     version, event = snippet_service.update_document(
-        snippet,
+        snippet.id,
         creator.id,
         title,
         body,
@@ -362,7 +362,9 @@ def update_fragment(snippet_id):
     creator = g.current_user
     body = form.body.data.strip()
 
-    version, event = snippet_service.update_fragment(snippet, creator.id, body)
+    version, event = snippet_service.update_fragment(
+        snippet.id, creator.id, body
+    )
 
     flash_success(f'Das Fragment "{version.snippet.name}" wurde aktualisiert.')
 
