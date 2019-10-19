@@ -12,7 +12,11 @@ from ...database import db
 from ...events.snippet import SnippetCreated, SnippetUpdated
 from ...typing import UserID
 
-from .models.snippet import CurrentVersionAssociation, Snippet, SnippetVersion
+from .models.snippet import (
+    CurrentVersionAssociation as DbCurrentVersionAssociation,
+    Snippet as DbSnippet,
+    SnippetVersion as DbSnippetVersion,
+)
 from .transfer.models import Scope, SnippetID, SnippetType, SnippetVersionID
 
 
@@ -29,7 +33,7 @@ def create_document(
     *,
     head: Optional[str] = None,
     image_url_path: Optional[str] = None,
-) -> Tuple[SnippetVersion, SnippetCreated]:
+) -> Tuple[DbSnippetVersion, SnippetCreated]:
     """Create a document and its initial version, and return that version."""
     return _create_snippet(
         scope,
@@ -44,14 +48,14 @@ def create_document(
 
 
 def update_document(
-    document: Snippet,
+    document: DbSnippet,
     creator_id: UserID,
     title: str,
     body: str,
     *,
     head: Optional[str] = None,
     image_url_path: Optional[str] = None,
-) -> Tuple[SnippetVersion, SnippetUpdated]:
+) -> Tuple[DbSnippetVersion, SnippetUpdated]:
     """Update document with a new version, and return that version."""
     return _update_snippet(
         document, creator_id, title, head, body, image_url_path
@@ -64,14 +68,14 @@ def update_document(
 
 def create_fragment(
     scope: Scope, name: str, creator_id: UserID, body: str
-) -> Tuple[SnippetVersion, SnippetCreated]:
+) -> Tuple[DbSnippetVersion, SnippetCreated]:
     """Create a fragment and its initial version, and return that version."""
     return _create_snippet(scope, name, SnippetType.fragment, creator_id, body)
 
 
 def update_fragment(
-    fragment: Snippet, creator_id: UserID, body: str
-) -> Tuple[SnippetVersion, SnippetUpdated]:
+    fragment: DbSnippet, creator_id: UserID, body: str
+) -> Tuple[DbSnippetVersion, SnippetUpdated]:
     """Update fragment with a new version, and return that version."""
     title = None
     head = None
@@ -96,17 +100,17 @@ def _create_snippet(
     title: Optional[str] = None,
     head: Optional[str] = None,
     image_url_path: Optional[str] = None,
-) -> Tuple[SnippetVersion, SnippetCreated]:
+) -> Tuple[DbSnippetVersion, SnippetCreated]:
     """Create a snippet and its initial version, and return that version."""
-    snippet = Snippet(scope, name, type_)
+    snippet = DbSnippet(scope, name, type_)
     db.session.add(snippet)
 
-    version = SnippetVersion(
+    version = DbSnippetVersion(
         snippet, creator_id, title, head, body, image_url_path
     )
     db.session.add(version)
 
-    current_version_association = CurrentVersionAssociation(snippet, version)
+    current_version_association = DbCurrentVersionAssociation(snippet, version)
     db.session.add(current_version_association)
 
     db.session.commit()
@@ -117,15 +121,15 @@ def _create_snippet(
 
 
 def _update_snippet(
-    snippet: Snippet,
+    snippet: DbSnippet,
     creator_id: UserID,
     title: Optional[str],
     head: Optional[str],
     body: str,
     image_url_path: Optional[str],
-) -> Tuple[SnippetVersion, SnippetUpdated]:
+) -> Tuple[DbSnippetVersion, SnippetUpdated]:
     """Update snippet with a new version, and return that version."""
-    version = SnippetVersion(
+    version = DbSnippetVersion(
         snippet, creator_id, title, head, body, image_url_path
     )
     db.session.add(version)
@@ -167,16 +171,16 @@ def delete_snippet(snippet_id: SnippetID) -> bool:
         return False
 
 
-def find_snippet(snippet_id: SnippetID) -> Optional[Snippet]:
+def find_snippet(snippet_id: SnippetID) -> Optional[DbSnippet]:
     """Return the snippet with that id, or `None` if not found."""
-    return Snippet.query.get(snippet_id)
+    return DbSnippet.query.get(snippet_id)
 
 
 def get_snippets_for_scope_with_current_versions(
     scope: Scope
-) -> Sequence[Snippet]:
+) -> Sequence[DbSnippet]:
     """Return all snippets with their current versions for that scope."""
-    return Snippet.query \
+    return DbSnippet.query \
         .filter_by(scope_type=scope.type_) \
         .filter_by(scope_name=scope.name) \
         .options(
@@ -187,31 +191,31 @@ def get_snippets_for_scope_with_current_versions(
 
 def find_snippet_version(
     version_id: SnippetVersionID
-) -> Optional[SnippetVersion]:
+) -> Optional[DbSnippetVersion]:
     """Return the snippet version with that id, or `None` if not found."""
-    return SnippetVersion.query.get(version_id)
+    return DbSnippetVersion.query.get(version_id)
 
 
 def find_current_version_of_snippet_with_name(
     scope: Scope, name: str
-) -> SnippetVersion:
+) -> DbSnippetVersion:
     """Return the current version of the snippet with that name in that
     scope, or `None` if not found.
     """
-    return SnippetVersion.query \
-        .join(CurrentVersionAssociation) \
-        .join(Snippet) \
-            .filter(Snippet.scope_type == scope.type_) \
-            .filter(Snippet.scope_name == scope.name) \
-            .filter(Snippet.name == name) \
+    return DbSnippetVersion.query \
+        .join(DbCurrentVersionAssociation) \
+        .join(DbSnippet) \
+            .filter(DbSnippet.scope_type == scope.type_) \
+            .filter(DbSnippet.scope_name == scope.name) \
+            .filter(DbSnippet.name == name) \
         .one_or_none()
 
 
-def get_versions(snippet_id: SnippetID) -> Sequence[SnippetVersion]:
+def get_versions(snippet_id: SnippetID) -> Sequence[DbSnippetVersion]:
     """Return all versions of that snippet, sorted from most recent to
     oldest.
     """
-    return SnippetVersion.query \
+    return DbSnippetVersion.query \
         .filter_by(snippet_id=snippet_id) \
         .latest_first() \
         .all()
@@ -219,24 +223,24 @@ def get_versions(snippet_id: SnippetID) -> Sequence[SnippetVersion]:
 
 def search_snippets(
     search_term: str, scope: Optional[Scope]
-) -> List[SnippetVersion]:
+) -> List[DbSnippetVersion]:
     """Search in (the latest versions of) snippets."""
-    q = SnippetVersion.query \
-        .join(CurrentVersionAssociation) \
-        .join(Snippet)
+    q = DbSnippetVersion.query \
+        .join(DbCurrentVersionAssociation) \
+        .join(DbSnippet)
 
     if scope is not None:
         q = q \
-            .filter(Snippet.scope_type == scope.type_) \
-            .filter(Snippet.scope_name == scope.name)
+            .filter(DbSnippet.scope_type == scope.type_) \
+            .filter(DbSnippet.scope_name == scope.name)
 
     return q \
             .filter(
                 db.or_(
-                    SnippetVersion.title.contains(search_term),
-                    SnippetVersion.head.contains(search_term),
-                    SnippetVersion.body.contains(search_term),
-                    SnippetVersion.image_url_path.contains(search_term),
+                    DbSnippetVersion.title.contains(search_term),
+                    DbSnippetVersion.head.contains(search_term),
+                    DbSnippetVersion.body.contains(search_term),
+                    DbSnippetVersion.image_url_path.contains(search_term),
                 )
             ) \
         .all()

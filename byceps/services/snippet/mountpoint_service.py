@@ -12,16 +12,16 @@ from ...database import db
 
 from ..site.transfer.models import SiteID
 
-from .models.mountpoint import Mountpoint
+from .models.mountpoint import Mountpoint as DbMountpoint
 from .models.snippet import CurrentVersionAssociation, Snippet, SnippetVersion
 from .transfer.models import MountpointID, SnippetID
 
 
 def create_mountpoint(
     site_id: SiteID, endpoint_suffix: str, url_path: str, snippet_id: SnippetID
-) -> Mountpoint:
+) -> DbMountpoint:
     """Create a mountpoint."""
-    mountpoint = Mountpoint(site_id, endpoint_suffix, url_path, snippet_id)
+    mountpoint = DbMountpoint(site_id, endpoint_suffix, url_path, snippet_id)
 
     db.session.add(mountpoint)
     db.session.commit()
@@ -29,20 +29,20 @@ def create_mountpoint(
     return mountpoint
 
 
-def delete_mountpoint(mountpoint: Mountpoint) -> None:
+def delete_mountpoint(mountpoint: DbMountpoint) -> None:
     """Delete the mountpoint."""
     db.session.delete(mountpoint)
     db.session.commit()
 
 
-def find_mountpoint(mountpoint_id: MountpointID) -> Optional[Mountpoint]:
+def find_mountpoint(mountpoint_id: MountpointID) -> Optional[DbMountpoint]:
     """Return the mountpoint with that id, or `None` if not found."""
-    return Mountpoint.query.get(mountpoint_id)
+    return DbMountpoint.query.get(mountpoint_id)
 
 
-def get_mountpoints_for_site(site_id: SiteID) -> Sequence[Mountpoint]:
+def get_mountpoints_for_site(site_id: SiteID) -> Sequence[DbMountpoint]:
     """Return all mountpoints for that site."""
-    return Mountpoint.query \
+    return DbMountpoint.query \
         .filter_by(site_id=site_id) \
         .join(Snippet) \
         .all()
@@ -56,7 +56,7 @@ def find_current_snippet_version_for_mountpoint(
     return SnippetVersion.query \
         .join(CurrentVersionAssociation) \
         .join(Snippet) \
-        .join(Mountpoint) \
-        .filter(Mountpoint.site_id == site_id) \
-        .filter(Mountpoint.endpoint_suffix == endpoint_suffix) \
+        .join(DbMountpoint) \
+        .filter(DbMountpoint.site_id == site_id) \
+        .filter(DbMountpoint.endpoint_suffix == endpoint_suffix) \
         .one_or_none()
