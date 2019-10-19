@@ -478,7 +478,7 @@ def delete_mountpoint(mountpoint_id):
 
     url_path = mountpoint.url_path
 
-    mountpoint_service.delete_mountpoint(mountpoint)
+    mountpoint_service.delete_mountpoint(mountpoint.id)
 
     flash_success(f'Der Mountpoint für "{url_path}" wurde entfernt.')
 

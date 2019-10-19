@@ -29,8 +29,13 @@ def create_mountpoint(
     return mountpoint
 
 
-def delete_mountpoint(mountpoint: DbMountpoint) -> None:
+def delete_mountpoint(mountpoint_id: MountpointID) -> None:
     """Delete the mountpoint."""
+    mountpoint = find_mountpoint(mountpoint_id)
+
+    if mountpoint is None:
+        raise ValueError(f"Unknown mountpoint ID '{mountpoint_id}'.")
+
     db.session.delete(mountpoint)
     db.session.commit()
 
