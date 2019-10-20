@@ -3,7 +3,9 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.services.board.models.topic import Topic
+from byceps.services.board import (
+    topic_query_service as board_topic_query_service,
+)
 
 from testfixtures.board import (
     create_board as _create_board,
@@ -26,4 +28,4 @@ def create_topic(category_id, creator_id, number):
 
 
 def find_topic(topic_id):
-    return Topic.query.get(topic_id)
+    return board_topic_query_service.find_topic_by_id(topic_id)
