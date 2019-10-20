@@ -12,4 +12,4 @@ from blinker import Namespace
 tourney_match_signals = Namespace()
 
 
-match_comment_created = tourney_match_signals.signal('match-comment-created')
+match_comment_created = tourney_match_signals.signal('tourney-match-comment-created')
