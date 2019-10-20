@@ -112,7 +112,6 @@ class Topic(db.Model):
         builder = ReprBuilder(self) \
             .add_with_lookup('id') \
             .add('category', self.category.title) \
-            .add('creator', self.creator.screen_name) \
             .add_with_lookup('title')
 
         if self.hidden:
