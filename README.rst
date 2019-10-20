@@ -20,10 +20,16 @@ Parties using BYCEPS:
 - In 2016, `LANresort Bostalsee`_ was launched on BYCEPS.
 - In 2017, NorthCon_ (1,300+ attendees) was relaunched on BYCEPS.
 
+Other sites using BYCEPS:
+
+- In 2019, the OrgaTalk_ community was launched using BYCEPS as a
+  discussion board.
+
 
 .. _LANresort: https://www.lanresort.de/
 .. _LANresort Bostalsee: https://bostalsee.lanresort.de/
 .. _NorthCon: https://www.northcon.de/
+.. _OrgaTalk: https://www.orgatalk.de/
 
 
 :Copyright: 2006-2019 Jochen Kupperschmidt
