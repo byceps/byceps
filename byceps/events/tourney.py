@@ -8,7 +8,7 @@ byceps.events.tourney
 
 from dataclasses import dataclass
 
-from ..services.tourney.transfer.models import MatchID, TeamID, TourneyID
+from ..services.tourney.transfer.models import MatchID, ParticipantID, TourneyID
 
 from .base import _BaseEvent
 
@@ -74,29 +74,29 @@ class TourneyMatchScoreRandomized(_TourneyMatchEvent):
     pass
 
 
-# team
+# participant
 
 
 @dataclass(frozen=True)
-class _TourneyTeamEvent(_BaseEvent):
-    team_id: TeamID
+class _TourneyParticipantEvent(_BaseEvent):
+    participant_id: ParticipantID
 
 
 @dataclass(frozen=True)
-class TourneyTeamReady(_TourneyTeamEvent):
+class TourneyParticipantReady(_TourneyParticipantEvent):
     pass
 
 
 @dataclass(frozen=True)
-class TourneyTeamEliminated(_TourneyTeamEvent):
+class TourneyParticipantEliminated(_TourneyParticipantEvent):
     pass
 
 
 @dataclass(frozen=True)
-class TourneyTeamWarned(_TourneyTeamEvent):
+class TourneyParticipantWarned(_TourneyParticipantEvent):
     pass
 
 
 @dataclass(frozen=True)
-class TourneyTeamDisqualified(_TourneyTeamEvent):
+class TourneyParticipantDisqualified(_TourneyParticipantEvent):
     pass

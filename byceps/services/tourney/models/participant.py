@@ -1,6 +1,6 @@
 """
-byceps.services.tourney.models.team
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.tourney.models.participant
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2019 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -16,10 +16,10 @@ from ...user.models.user import User
 from .tourney import Tourney
 
 
-class Team(db.Model):
+class Participant(db.Model):
     """One or more players participating in a tourney as a single unit."""
 
-    __tablename__ = 'tourney_teams'
+    __tablename__ = 'tourney_participants'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     tourney_id = db.Column(db.Uuid, db.ForeignKey('tourneys.id'), index=True, nullable=False)

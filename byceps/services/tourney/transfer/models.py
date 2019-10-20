@@ -22,4 +22,4 @@ MatchID = NewType('MatchID', UUID)
 MatchCommentID = NewType('MatchCommentID', UUID)
 
 
-TeamID = NewType('TeamID', UUID)
+ParticipantID = NewType('ParticipantID', UUID)
