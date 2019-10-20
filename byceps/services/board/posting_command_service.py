@@ -34,7 +34,7 @@ def create_posting(
     aggregate_topic(topic)
 
     event = BoardPostingCreated(
-        occurred_at=created_at, posting_id=posting.id, url=None
+        occurred_at=posting.created_at, posting_id=posting.id, url=None
     )
 
     return posting, event
