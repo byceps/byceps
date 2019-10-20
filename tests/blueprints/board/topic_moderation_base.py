@@ -33,15 +33,7 @@ class AbstractTopicModerationTest(AbstractAppTestCase):
 
         self.user = create_user('User')
 
-        self.brand = create_brand()
-        create_email_config()
-        create_site()
-
-        self.board = create_board(self.brand.id)
-
-        site_settings_service.create_setting(
-            'acmecon-2014-website', 'board_id', self.board.id
-        )
+        self.board = setup_board()
 
 
 # helpers
@@ -50,6 +42,18 @@ class AbstractTopicModerationTest(AbstractAppTestCase):
 def setup_admin_with_permission(admin_id, permission_id):
     permission_ids = {'admin.access', permission_id}
     assign_permissions_to_user(admin_id, 'admin', permission_ids)
+
+
+def setup_board():
+    create_email_config()
+    site = create_site()
+
+    brand = create_brand()
+    board = create_board(brand.id)
+
+    site_settings_service.create_setting(site.id, 'board_id', board.id)
+
+    return board
 
 
 def create_board(brand_id):
