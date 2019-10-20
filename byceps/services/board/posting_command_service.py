@@ -21,12 +21,16 @@ from ...typing import UserID
 from .aggregation_service import aggregate_topic
 from .models.posting import Posting as DbPosting
 from .models.topic import Topic as DbTopic
+from . import topic_query_service
+from .transfer.models import TopicID
 
 
 def create_posting(
-    topic: DbTopic, creator_id: UserID, body: str
+    topic_id: TopicID, creator_id: UserID, body: str
 ) -> Tuple[DbPosting, BoardPostingCreated]:
     """Create a posting in that topic."""
+    topic = topic_query_service.get_topic(topic_id)
+
     posting = DbPosting(topic, creator_id, body)
     db.session.add(posting)
     db.session.commit()

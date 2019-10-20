@@ -236,7 +236,7 @@ def topic_update(topic_id):
         return topic_update_form(topic_id, form)
 
     board_topic_command_service.update_topic(
-        topic, g.current_user.id, form.title.data, form.body.data
+        topic.id, g.current_user.id, form.title.data, form.body.data
     )
 
     flash_success(f'Das Thema "{topic.title}" wurde aktualisiert.')
@@ -271,7 +271,7 @@ def topic_hide(topic_id):
     topic = h.get_topic_or_404(topic_id)
     moderator_id = g.current_user.id
 
-    event = board_topic_command_service.hide_topic(topic, moderator_id)
+    event = board_topic_command_service.hide_topic(topic.id, moderator_id)
 
     flash_success(f'Das Thema "{topic.title}" wurde versteckt.', icon='hidden')
 
@@ -291,7 +291,7 @@ def topic_unhide(topic_id):
     topic = h.get_topic_or_404(topic_id)
     moderator_id = g.current_user.id
 
-    event = board_topic_command_service.unhide_topic(topic, moderator_id)
+    event = board_topic_command_service.unhide_topic(topic.id, moderator_id)
 
     flash_success(
         f'Das Thema "{topic.title}" wurde wieder sichtbar gemacht.', icon='view'
@@ -313,7 +313,7 @@ def topic_lock(topic_id):
     topic = h.get_topic_or_404(topic_id)
     moderator_id = g.current_user.id
 
-    event = board_topic_command_service.lock_topic(topic, moderator_id)
+    event = board_topic_command_service.lock_topic(topic.id, moderator_id)
 
     flash_success(f'Das Thema "{topic.title}" wurde geschlossen.', icon='lock')
 
@@ -333,7 +333,7 @@ def topic_unlock(topic_id):
     topic = h.get_topic_or_404(topic_id)
     moderator_id = g.current_user.id
 
-    event = board_topic_command_service.unlock_topic(topic, moderator_id)
+    event = board_topic_command_service.unlock_topic(topic.id, moderator_id)
 
     flash_success(
         f'Das Thema "{topic.title}" wurde wieder geöffnet.', icon='unlock'
@@ -355,7 +355,7 @@ def topic_pin(topic_id):
     topic = h.get_topic_or_404(topic_id)
     moderator_id = g.current_user.id
 
-    event = board_topic_command_service.pin_topic(topic, moderator_id)
+    event = board_topic_command_service.pin_topic(topic.id, moderator_id)
 
     flash_success(f'Das Thema "{topic.title}" wurde angepinnt.', icon='pin')
 
@@ -375,7 +375,7 @@ def topic_unpin(topic_id):
     topic = h.get_topic_or_404(topic_id)
     moderator_id = g.current_user.id
 
-    event = board_topic_command_service.unpin_topic(topic, moderator_id)
+    event = board_topic_command_service.unpin_topic(topic.id, moderator_id)
 
     flash_success(f'Das Thema "{topic.title}" wurde wieder gelöst.')
 
@@ -403,7 +403,7 @@ def topic_move(topic_id):
     old_category = topic.category
 
     event = board_topic_command_service.move_topic(
-        topic, new_category.id, moderator_id
+        topic.id, new_category.id, moderator_id
     )
 
     flash_success(
@@ -430,7 +430,7 @@ def topic_limit_to_announcements(topic_id):
     """Limit posting in the topic to moderators."""
     topic = h.get_topic_or_404(topic_id)
 
-    board_topic_command_service.limit_topic_to_announcements(topic)
+    board_topic_command_service.limit_topic_to_announcements(topic.id)
 
     flash_success(
         f'Das Thema "{topic.title}" wurde auf Ankündigungen beschränkt.',
@@ -449,7 +449,7 @@ def topic_remove_limit_to_announcements(topic_id):
     """Allow non-moderators to post in the topic again."""
     topic = h.get_topic_or_404(topic_id)
 
-    board_topic_command_service.remove_limit_of_topic_to_announcements(topic)
+    board_topic_command_service.remove_limit_of_topic_to_announcements(topic.id)
 
     flash_success(
         f'Das Thema "{topic.title}" wurde für normale Beiträge geöffnet.'

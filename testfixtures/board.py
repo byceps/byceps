@@ -49,12 +49,12 @@ def create_topic(category_id, creator_id, *, number=1, title=None, body=None):
     return topic
 
 
-def create_posting(topic, creator_id, *, number=1, body=None):
+def create_posting(topic_id, creator_id, *, number=1, body=None):
     if body is None:
         body = f'Inhalt von Beitrag {number}.'
 
     posting, event = posting_command_service.create_posting(
-        topic, creator_id, body
+        topic_id, creator_id, body
     )
 
     return posting

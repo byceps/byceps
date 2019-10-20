@@ -108,7 +108,7 @@ def posting_create(topic_id):
         return redirect(h.build_url_for_topic(topic.id))
 
     posting, event = board_posting_command_service.create_posting(
-        topic, creator.id, body
+        topic.id, creator.id, body
     )
 
     if not g.current_user.is_anonymous:

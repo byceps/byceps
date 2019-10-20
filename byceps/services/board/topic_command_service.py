@@ -28,7 +28,8 @@ from .models.category import Category as DbCategory
 from .models.posting import InitialTopicPostingAssociation, Posting as DbPosting
 from .models.topic import Topic as DbTopic
 from .posting_command_service import update_posting
-from .transfer.models import CategoryID
+from . import topic_query_service
+from .transfer.models import CategoryID, TopicID
 
 
 def create_topic(
@@ -56,9 +57,11 @@ def create_topic(
 
 
 def update_topic(
-    topic: DbTopic, editor_id: UserID, title: str, body: str
+    topic_id: TopicID, editor_id: UserID, title: str, body: str
 ) -> BoardTopicUpdated:
     """Update the topic (and its initial posting)."""
+    topic = _get_topic(topic_id)
+
     topic.title = title.strip()
 
     posting_event = update_posting(
@@ -75,8 +78,10 @@ def update_topic(
     )
 
 
-def hide_topic(topic: DbTopic, moderator_id: UserID) -> BoardTopicHidden:
+def hide_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicHidden:
     """Hide the topic."""
+    topic = _get_topic(topic_id)
+
     now = datetime.utcnow()
 
     topic.hidden = True
@@ -91,8 +96,10 @@ def hide_topic(topic: DbTopic, moderator_id: UserID) -> BoardTopicHidden:
     )
 
 
-def unhide_topic(topic: DbTopic, moderator_id: UserID) -> BoardTopicUnhidden:
+def unhide_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicUnhidden:
     """Un-hide the topic."""
+    topic = _get_topic(topic_id)
+
     now = datetime.utcnow()
 
     # TODO: Store who un-hid the topic.
@@ -108,8 +115,10 @@ def unhide_topic(topic: DbTopic, moderator_id: UserID) -> BoardTopicUnhidden:
     )
 
 
-def lock_topic(topic: DbTopic, moderator_id: UserID) -> BoardTopicLocked:
+def lock_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicLocked:
     """Lock the topic."""
+    topic = _get_topic(topic_id)
+
     now = datetime.utcnow()
 
     topic.locked = True
@@ -122,8 +131,10 @@ def lock_topic(topic: DbTopic, moderator_id: UserID) -> BoardTopicLocked:
     )
 
 
-def unlock_topic(topic: DbTopic, moderator_id: UserID) -> BoardTopicUnlocked:
+def unlock_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicUnlocked:
     """Unlock the topic."""
+    topic = _get_topic(topic_id)
+
     now = datetime.utcnow()
 
     # TODO: Store who unlocked the topic.
@@ -137,8 +148,10 @@ def unlock_topic(topic: DbTopic, moderator_id: UserID) -> BoardTopicUnlocked:
     )
 
 
-def pin_topic(topic: DbTopic, moderator_id: UserID) -> BoardTopicPinned:
+def pin_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicPinned:
     """Pin the topic."""
+    topic = _get_topic(topic_id)
+
     now = datetime.utcnow()
 
     topic.pinned = True
@@ -151,8 +164,10 @@ def pin_topic(topic: DbTopic, moderator_id: UserID) -> BoardTopicPinned:
     )
 
 
-def unpin_topic(topic: DbTopic, moderator_id: UserID) -> BoardTopicUnpinned:
+def unpin_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicUnpinned:
     """Unpin the topic."""
+    topic = _get_topic(topic_id)
+
     now = datetime.utcnow()
 
     # TODO: Store who unpinned the topic.
@@ -167,9 +182,11 @@ def unpin_topic(topic: DbTopic, moderator_id: UserID) -> BoardTopicUnpinned:
 
 
 def move_topic(
-    topic: DbTopic, new_category_id: CategoryID, moderator_id: UserID
+    topic_id: TopicID, new_category_id: CategoryID, moderator_id: UserID
 ) -> BoardTopicMoved:
     """Move the topic to another category."""
+    topic = _get_topic(topic_id)
+
     now = datetime.utcnow()
 
     old_category = topic.category
@@ -191,13 +208,21 @@ def move_topic(
     )
 
 
-def limit_topic_to_announcements(topic: DbTopic) -> None:
+def limit_topic_to_announcements(topic_id: TopicID) -> None:
     """Limit posting in the topic to moderators."""
+    topic = _get_topic(topic_id)
+
     topic.posting_limited_to_moderators = True
     db.session.commit()
 
 
-def remove_limit_of_topic_to_announcements(topic: DbTopic) -> None:
+def remove_limit_of_topic_to_announcements(topic_id: TopicID) -> None:
     """Allow non-moderators to post in the topic again."""
+    topic = _get_topic(topic_id)
+
     topic.posting_limited_to_moderators = False
     db.session.commit()
+
+
+def _get_topic(topic_id: TopicID) -> DbTopic:
+    return topic_query_service.get_topic(topic_id)

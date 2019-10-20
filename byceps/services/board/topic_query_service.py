@@ -32,6 +32,16 @@ def find_topic_by_id(topic_id: TopicID) -> Optional[DbTopic]:
     return DbTopic.query.get(topic_id)
 
 
+def get_topic(topic_id: TopicID) -> DbTopic:
+    """Return the topic with that id."""
+    topic = find_topic_by_id(topic_id)
+
+    if topic is None:
+        raise ValueError(f'Unknown topic ID "{topic_id}"')
+
+    return topic
+
+
 def find_topic_visible_for_user(
     topic_id: TopicID, user: CurrentUser
 ) -> Optional[DbTopic]:

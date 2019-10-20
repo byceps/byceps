@@ -36,7 +36,7 @@ def test_lock_topic(party_app_with_db, moderator, topic):
 def test_unlock_topic(party_app_with_db, moderator, topic):
     topic_before = topic
 
-    board_topic_command_service.lock_topic(topic_before, moderator.id)
+    board_topic_command_service.lock_topic(topic_before.id, moderator.id)
 
     assert_topic_is_locked(topic_before, moderator.id)
 
