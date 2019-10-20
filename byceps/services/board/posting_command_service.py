@@ -21,8 +21,9 @@ from ...typing import UserID
 from .aggregation_service import aggregate_topic
 from .models.posting import Posting as DbPosting
 from .models.topic import Topic as DbTopic
+from . import posting_query_service
 from . import topic_query_service
-from .transfer.models import TopicID
+from .transfer.models import PostingID, TopicID
 
 
 def create_posting(
@@ -45,9 +46,11 @@ def create_posting(
 
 
 def update_posting(
-    posting: DbPosting, editor_id: UserID, body: str, *, commit: bool = True
+    posting_id: PostingID, editor_id: UserID, body: str, *, commit: bool = True
 ) -> BoardPostingUpdated:
     """Update the posting."""
+    posting = _get_posting(posting_id)
+
     now = datetime.utcnow()
 
     posting.body = body.strip()
@@ -64,9 +67,11 @@ def update_posting(
 
 
 def hide_posting(
-    posting: DbPosting, moderator_id: UserID
+    posting_id: PostingID, moderator_id: UserID
 ) -> BoardPostingHidden:
     """Hide the posting."""
+    posting = _get_posting(posting_id)
+
     now = datetime.utcnow()
 
     posting.hidden = True
@@ -87,9 +92,11 @@ def hide_posting(
 
 
 def unhide_posting(
-    posting: DbPosting, moderator_id: UserID
+    posting_id: PostingID, moderator_id: UserID
 ) -> BoardPostingUnhidden:
     """Un-hide the posting."""
+    posting = _get_posting(posting_id)
+
     now = datetime.utcnow()
 
     # TODO: Store who un-hid the posting.
@@ -108,3 +115,7 @@ def unhide_posting(
     )
 
     return event
+
+
+def _get_posting(posting_id: PostingID) -> DbPosting:
+    return posting_query_service.get_posting(posting_id)

@@ -65,7 +65,7 @@ def update_topic(
     topic.title = title.strip()
 
     posting_event = update_posting(
-        topic.initial_posting, editor_id, body, commit=False
+        topic.initial_posting.id, editor_id, body, commit=False
     )
 
     db.session.commit()

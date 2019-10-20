@@ -196,7 +196,7 @@ def posting_update(posting_id):
         return posting_update_form(posting_id, form)
 
     event = board_posting_command_service.update_posting(
-        posting, g.current_user.id, form.body.data
+        posting.id, g.current_user.id, form.body.data
     )
 
     flash_success('Der Beitrag wurde aktualisiert.')
@@ -231,7 +231,7 @@ def posting_hide(posting_id):
     posting = h.get_posting_or_404(posting_id)
     moderator_id = g.current_user.id
 
-    event = board_posting_command_service.hide_posting(posting, moderator_id)
+    event = board_posting_command_service.hide_posting(posting.id, moderator_id)
 
     page = service.calculate_posting_page_number(posting, g.current_user)
 
@@ -253,7 +253,9 @@ def posting_unhide(posting_id):
     posting = h.get_posting_or_404(posting_id)
     moderator_id = g.current_user.id
 
-    event = board_posting_command_service.unhide_posting(posting, moderator_id)
+    event = board_posting_command_service.unhide_posting(
+        posting.id, moderator_id
+    )
 
     page = service.calculate_posting_page_number(posting, g.current_user)
 

@@ -34,6 +34,16 @@ def find_posting_by_id(posting_id: PostingID) -> Optional[DbPosting]:
     return DbPosting.query.get(posting_id)
 
 
+def get_posting(posting_id: PostingID) -> DbPosting:
+    """Return the posting with that id."""
+    posting = find_posting_by_id(posting_id)
+
+    if posting is None:
+        raise ValueError(f'Unknown posting ID "{posting_id}"')
+
+    return posting
+
+
 def paginate_postings(
     topic_id: TopicID,
     user: CurrentUser,
