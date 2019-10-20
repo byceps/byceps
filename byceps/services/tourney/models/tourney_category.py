@@ -6,9 +6,6 @@ byceps.services.tourney.models.tourney_category
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import NewType
-from uuid import UUID
-
 from sqlalchemy.ext.orderinglist import ordering_list
 
 from ....database import db, generate_uuid
@@ -16,9 +13,6 @@ from ....typing import PartyID
 from ....util.instances import ReprBuilder
 
 from ...party.models.party import Party
-
-
-TourneyCategoryID = NewType('TourneyCategoryID', UUID)
 
 
 class TourneyCategory(db.Model):

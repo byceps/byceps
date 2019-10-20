@@ -6,17 +6,11 @@ byceps.services.tourney.models.tourney
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import NewType
-from uuid import UUID
-
 from ....database import db, generate_uuid
 
 from ....util.instances import ReprBuilder
 
 from .tourney_category import TourneyCategory
-
-
-TourneyID = NewType('TourneyID', UUID)
 
 
 class Tourney(db.Model):

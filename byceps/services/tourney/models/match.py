@@ -7,8 +7,6 @@ byceps.services.tourney.models.match
 """
 
 from datetime import datetime
-from typing import NewType
-from uuid import UUID
 
 
 from ....database import BaseQuery, db, generate_uuid
@@ -16,8 +14,7 @@ from ....typing import UserID
 
 from ...user.models.user import User
 
-
-MatchID = NewType('MatchID', UUID)
+from ..transfer.models import MatchID
 
 
 class Match(db.Model):
@@ -26,9 +23,6 @@ class Match(db.Model):
     __tablename__ = 'tourney_matches'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-
-
-MatchCommentID = NewType('MatchCommentID', UUID)
 
 
 class MatchCommentQuery(BaseQuery):

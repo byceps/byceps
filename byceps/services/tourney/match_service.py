@@ -15,7 +15,8 @@ from ...services.user import service as user_service
 from ...services.user.transfer.models import User
 from ...typing import PartyID, UserID
 
-from .models.match import Match, MatchID, MatchComment, MatchCommentID
+from .models.match import Match, MatchComment
+from .transfer.models import MatchID, MatchCommentID
 
 
 # -------------------------------------------------------------------- #

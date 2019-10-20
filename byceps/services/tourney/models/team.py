@@ -7,8 +7,6 @@ byceps.services.tourney.models.team
 """
 
 from datetime import datetime
-from typing import NewType
-from uuid import UUID
 
 from ....database import db, generate_uuid
 from ....util.instances import ReprBuilder
@@ -16,9 +14,6 @@ from ....util.instances import ReprBuilder
 from ...user.models.user import User
 
 from .tourney import Tourney
-
-
-TeamID = NewType('TeamID', UUID)
 
 
 class Team(db.Model):
