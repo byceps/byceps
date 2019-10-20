@@ -78,6 +78,7 @@ class TourneyMatchScoreRandomized(_TourneyMatchEvent):
 @dataclass(frozen=True)
 class _TourneyParticipantEvent(_BaseEvent):
     participant_id: str
+    match_id: str
 
 
 @dataclass(frozen=True)
