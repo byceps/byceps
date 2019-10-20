@@ -15,7 +15,7 @@ from .....util.views import respond_created, respond_no_content
 
 from ...decorators import api_token_required
 
-from . import signals
+from .. import signals
 
 
 blueprint = create_blueprint('tourney_match', __name__)
