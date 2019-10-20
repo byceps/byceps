@@ -11,12 +11,14 @@ from dataclasses import dataclass
 from ..services.board.transfer.models import CategoryID, PostingID, TopicID
 from ..typing import UserID
 
+from .base import _BaseEvent
+
 
 # topic
 
 
 @dataclass(frozen=True)
-class _BoardTopicEvent:
+class _BoardTopicEvent(_BaseEvent):
     topic_id: TopicID
     url: str
 
@@ -76,7 +78,7 @@ class BoardTopicMoved(_BoardTopicModerationEvent):
 
 
 @dataclass(frozen=True)
-class _BoardPostingEvent:
+class _BoardPostingEvent(_BaseEvent):
     posting_id: PostingID
     url: str
 

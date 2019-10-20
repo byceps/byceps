@@ -106,7 +106,7 @@ def publish_item(item_id: ItemID) -> NewsItemPublished:
     item.published_at = datetime.utcnow()
     db.session.commit()
 
-    return NewsItemPublished(item_id=item.id)
+    return NewsItemPublished(occurred_at=item.published_at, item_id=item.id)
 
 
 def find_item(item_id: ItemID) -> Optional[Item]:

@@ -115,7 +115,9 @@ def _create_snippet(
 
     db.session.commit()
 
-    event = SnippetCreated(snippet_version_id=version.id)
+    event = SnippetCreated(
+        occurred_at=version.created_at, snippet_version_id=version.id
+    )
 
     return version, event
 
@@ -142,7 +144,9 @@ def _update_snippet(
 
     db.session.commit()
 
-    event = SnippetUpdated(snippet_version_id=version.id)
+    event = SnippetUpdated(
+        occurred_at=version.created_at, snippet_version_id=version.id
+    )
 
     return version, event
 

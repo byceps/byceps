@@ -101,7 +101,10 @@ class ShopAdminTestCase(ShopTestBase):
             placed_order.id
         )
 
-        event = ShopOrderCanceled(order_id=placed_order.id)
+        event = ShopOrderCanceled(
+            occurred_at=order_afterwards.payment_state_updated_at,
+            order_id=placed_order.id,
+        )
         order_canceled_signal_send_mock.assert_called_once_with(
             None, event=event
         )
@@ -123,12 +126,16 @@ class ShopAdminTestCase(ShopTestBase):
         with http_client(self.app, user_id=self.admin.id) as client:
             response = client.post(url, data=form_data)
 
+        order_afterwards = get_order(placed_order.id)
         assert response.status_code == 302
 
         # No e-mail should be send.
         order_email_service_mock.send_email_for_canceled_order_to_orderer.assert_not_called()
 
-        event = ShopOrderCanceled(order_id=placed_order.id)
+        event = ShopOrderCanceled(
+            occurred_at=order_afterwards.payment_state_updated_at,
+            order_id=placed_order.id,
+        )
         order_canceled_signal_send_mock.assert_called_once_with(
             None, event=event
         )
@@ -161,10 +168,11 @@ class ShopAdminTestCase(ShopTestBase):
             placed_order.id
         )
 
-        event = ShopOrderPaid(order_id=placed_order.id)
-        order_paid_signal_send_mock.assert_called_once_with(
-            None, event=event
+        event = ShopOrderPaid(
+            occurred_at=order_afterwards.payment_state_updated_at,
+            order_id=placed_order.id,
         )
+        order_paid_signal_send_mock.assert_called_once_with(None, event=event)
 
     @patch('byceps.blueprints.shop.order.signals.order_canceled.send')
     @patch('byceps.blueprints.shop.order.signals.order_paid.send')
@@ -214,14 +222,12 @@ class ShopAdminTestCase(ShopTestBase):
             placed_order.id
         )
 
-        event_paid = ShopOrderPaid(order_id=placed_order.id)
-        order_paid_signal_send_mock.assert_called_once_with(
-            None, event=event_paid
+        event = ShopOrderCanceled(
+            occurred_at=order_afterwards.payment_state_updated_at,
+            order_id=placed_order.id,
         )
-
-        event_canceled = ShopOrderCanceled(order_id=placed_order.id)
         order_canceled_signal_send_mock.assert_called_once_with(
-            None, event=event_canceled
+            None, event=event
         )
 
     # helpers

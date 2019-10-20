@@ -77,7 +77,11 @@ def suspend_account(
 
     db.session.commit()
 
-    return UserAccountSuspended(user_id=user.id, initiator_id=initiator_id)
+    return UserAccountSuspended(
+        occurred_at=event.occurred_at,
+        user_id=user.id,
+        initiator_id=initiator_id,
+    )
 
 
 def unsuspend_account(
@@ -96,7 +100,11 @@ def unsuspend_account(
 
     db.session.commit()
 
-    return UserAccountUnsuspended(user_id=user.id, initiator_id=initiator_id)
+    return UserAccountUnsuspended(
+        occurred_at=event.occurred_at,
+        user_id=user.id,
+        initiator_id=initiator_id,
+    )
 
 
 def delete_account(
@@ -121,7 +129,11 @@ def delete_account(
 
     db.session.commit()
 
-    return UserAccountDeleted(user_id=user.id, initiator_id=initiator_id)
+    return UserAccountDeleted(
+        occurred_at=event.occurred_at,
+        user_id=user.id,
+        initiator_id=initiator_id,
+    )
 
 
 def change_screen_name(
@@ -154,6 +166,7 @@ def change_screen_name(
     db.session.commit()
 
     return UserScreenNameChanged(
+        occurred_at=event.occurred_at,
         user_id=user.id,
         initiator_id=initiator_id,
         old_screen_name=old_screen_name,

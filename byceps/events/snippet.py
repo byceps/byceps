@@ -10,9 +10,11 @@ from dataclasses import dataclass
 
 from ..services.snippet.transfer.models import SnippetVersionID
 
+from .base import _BaseEvent
+
 
 @dataclass(frozen=True)
-class _SnippetEvent:
+class _SnippetEvent(_BaseEvent):
     snippet_version_id: SnippetVersionID
 
 

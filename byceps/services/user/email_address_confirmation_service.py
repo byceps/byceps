@@ -60,11 +60,13 @@ def confirm_email_address(
     # token should be extended to include the e-mail address it refers
     # to, and that value should be persisted with user event instead.
     data = {'email_address': user.email_address}
-    user_event_service.create_event('email-address-confirmed', user.id, data)
+    event = user_event_service.create_event('email-address-confirmed', user.id, data)
 
     if not user.initialized:
         command_service.initialize_account(user.id)
 
     verification_token_service.delete_token(verification_token)
 
-    return UserEmailAddressConfirmed(user_id=user.id, initiator_id=user.id)
+    return UserEmailAddressConfirmed(
+        occurred_at=event.occurred_at, user_id=user.id, initiator_id=user.id
+    )

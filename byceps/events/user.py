@@ -11,9 +11,12 @@ from typing import Optional
 
 from ..typing import UserID
 
+from .base import _BaseEvent
+
+
 
 @dataclass(frozen=True)
-class _UserEvent:
+class _UserEvent(_BaseEvent):
     user_id: UserID
     initiator_id: Optional[UserID]
 

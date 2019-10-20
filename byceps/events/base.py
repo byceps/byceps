@@ -1,5 +1,5 @@
 """
-byceps.events.news
+byceps.events.base
 ~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2019 Jochen Kupperschmidt
@@ -7,12 +7,10 @@ byceps.events.news
 """
 
 from dataclasses import dataclass
+from datetime import datetime
 
-from ..services.news.transfer.models import ItemID
-
-from .base import _BaseEvent
 
 
 @dataclass(frozen=True)
-class NewsItemPublished(_BaseEvent):
-    item_id: ItemID
+class _BaseEvent:
+    occurred_at: datetime

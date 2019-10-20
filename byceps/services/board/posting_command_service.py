@@ -33,7 +33,9 @@ def create_posting(
 
     aggregate_topic(topic)
 
-    event = BoardPostingCreated(posting_id=posting.id, url=None)
+    event = BoardPostingCreated(
+        occurred_at=created_at, posting_id=posting.id, url=None
+    )
 
     return posting, event
 
@@ -42,8 +44,10 @@ def update_posting(
     posting: DbPosting, editor_id: UserID, body: str, *, commit: bool = True
 ) -> BoardPostingUpdated:
     """Update the posting."""
+    now = datetime.utcnow()
+
     posting.body = body.strip()
-    posting.last_edited_at = datetime.utcnow()
+    posting.last_edited_at = now
     posting.last_edited_by_id = editor_id
     posting.edit_count += 1
 
@@ -51,7 +55,7 @@ def update_posting(
         db.session.commit()
 
     return BoardPostingUpdated(
-        posting_id=posting.id, editor_id=editor_id, url=None
+        occurred_at=now, posting_id=posting.id, editor_id=editor_id, url=None
     )
 
 
@@ -59,15 +63,20 @@ def hide_posting(
     posting: DbPosting, moderator_id: UserID
 ) -> BoardPostingHidden:
     """Hide the posting."""
+    now = datetime.utcnow()
+
     posting.hidden = True
-    posting.hidden_at = datetime.utcnow()
+    posting.hidden_at = now
     posting.hidden_by_id = moderator_id
     db.session.commit()
 
     aggregate_topic(posting.topic)
 
     event = BoardPostingHidden(
-        posting_id=posting.id, moderator_id=moderator_id, url=None
+        occurred_at=now,
+        posting_id=posting.id,
+        moderator_id=moderator_id,
+        url=None,
     )
 
     return event
@@ -77,6 +86,8 @@ def unhide_posting(
     posting: DbPosting, moderator_id: UserID
 ) -> BoardPostingUnhidden:
     """Un-hide the posting."""
+    now = datetime.utcnow()
+
     # TODO: Store who un-hid the posting.
     posting.hidden = False
     posting.hidden_at = None
@@ -86,7 +97,10 @@ def unhide_posting(
     aggregate_topic(posting.topic)
 
     event = BoardPostingUnhidden(
-        posting_id=posting.id, moderator_id=moderator_id, url=None
+        occurred_at=now,
+        posting_id=posting.id,
+        moderator_id=moderator_id,
+        url=None,
     )
 
     return event
