@@ -16,7 +16,7 @@ from ...helpers import (
     login_user,
 )
 
-from .helpers import create_board, create_category, create_topic
+from .helpers import create_board, create_category, create_posting, create_topic
 
 
 @pytest.fixture
@@ -40,6 +40,11 @@ def category(board):
 @pytest.fixture
 def topic(category, normal_user):
     return create_topic(category.id, normal_user.id, 1)
+
+
+@pytest.fixture
+def posting(topic, normal_user):
+    return create_posting(topic.id, normal_user.id, 1)
 
 
 @pytest.fixture
