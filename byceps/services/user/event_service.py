@@ -23,7 +23,7 @@ def create_event(
     occurred_at: Optional[datetime] = None,
 ) -> None:
     """Create a user event."""
-    event = build_event(event_type, user_id, data)
+    event = build_event(event_type, user_id, data, occurred_at=occurred_at)
 
     db.session.add(event)
     db.session.commit()
