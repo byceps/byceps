@@ -8,11 +8,12 @@ byceps.services.user_badge.service
 
 from collections import defaultdict
 from datetime import datetime
-from typing import Dict, Optional, Set
+from typing import Dict, Optional, Set, Tuple
 
 from flask import url_for
 
 from ...database import db
+from ...events.user_badge import UserBadgeAwarded
 from ...typing import BrandID, UserID
 
 from ..user import event_service
@@ -164,16 +165,14 @@ def get_all_badges() -> Set[Badge]:
 
 def award_badge_to_user(
     badge_id: BadgeID, user_id: UserID, *, initiator_id: Optional[UserID] = None
-) -> BadgeAwarding:
+) -> Tuple[BadgeAwarding, UserBadgeAwarded]:
     """Award the badge to the user."""
     awarded_at = datetime.utcnow()
 
     awarding = DbBadgeAwarding(badge_id, user_id, awarded_at=awarded_at)
     db.session.add(awarding)
 
-    event_data = {
-        'badge_id': str(badge_id),
-    }
+    event_data = {'badge_id': str(badge_id)}
     if initiator_id:
         event_data['initiator_id'] = str(initiator_id)
     event = event_service.build_event(
@@ -183,7 +182,16 @@ def award_badge_to_user(
 
     db.session.commit()
 
-    return _db_entity_to_badge_awarding(awarding)
+    awarding_dto = _db_entity_to_badge_awarding(awarding)
+
+    event = UserBadgeAwarded(
+        occurred_at=awarded_at,
+        user_id=user_id,
+        badge_id=badge_id,
+        initiator_id=initiator_id,
+    )
+
+    return awarding_dto, event
 
 
 def get_awardings_of_badge(badge_id: BadgeID) -> Set[QuantifiedBadgeAwarding]:

@@ -32,7 +32,7 @@ def award_badge(
     _verify_badge_id(badge_id)
 
     for _ in range(quantity):
-        awarding = badge_service.award_badge_to_user(badge_id, user_id)
+        awarding, _ = badge_service.award_badge_to_user(badge_id, user_id)
 
         _create_order_event(order.id, awarding)
 
