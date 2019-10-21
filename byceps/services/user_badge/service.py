@@ -15,6 +15,8 @@ from flask import url_for
 from ...database import db
 from ...typing import BrandID, UserID
 
+from ..user import event_service
+
 from .models.awarding import BadgeAwarding as DbBadgeAwarding
 from .models.badge import Badge as DbBadge
 from .transfer.models import (
@@ -165,8 +167,16 @@ def award_badge_to_user(badge_id: BadgeID, user_id: UserID) -> BadgeAwarding:
     awarded_at = datetime.utcnow()
 
     awarding = DbBadgeAwarding(badge_id, user_id, awarded_at=awarded_at)
-
     db.session.add(awarding)
+
+    event_data = {
+        'badge_id': str(badge_id),
+    }
+    event = event_service.build_event(
+        'user-badge-awarded', user_id, event_data, occurred_at=awarded_at
+    )
+    db.session.add(event)
+
     db.session.commit()
 
     return _db_entity_to_badge_awarding(awarding)
