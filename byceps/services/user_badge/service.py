@@ -162,7 +162,9 @@ def get_all_badges() -> Set[Badge]:
     return {_db_entity_to_badge(badge) for badge in badges}
 
 
-def award_badge_to_user(badge_id: BadgeID, user_id: UserID) -> BadgeAwarding:
+def award_badge_to_user(
+    badge_id: BadgeID, user_id: UserID, *, initiator_id: Optional[UserID] = None
+) -> BadgeAwarding:
     """Award the badge to the user."""
     awarded_at = datetime.utcnow()
 
@@ -172,6 +174,8 @@ def award_badge_to_user(badge_id: BadgeID, user_id: UserID) -> BadgeAwarding:
     event_data = {
         'badge_id': str(badge_id),
     }
+    if initiator_id:
+        event_data['initiator_id'] = str(initiator_id)
     event = event_service.build_event(
         'user-badge-awarded', user_id, event_data, occurred_at=awarded_at
     )

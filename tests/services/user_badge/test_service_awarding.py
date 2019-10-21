@@ -20,7 +20,27 @@ def app(party_app, db):
             yield
 
 
-def test_award_badge(app):
+def test_award_badge_without_initiator(app):
+    user = create_user('EarlyPoster')
+
+    badge = user_badge_service.create_badge(
+        'first-post', 'First Post', 'first-post.svg'
+    )
+
+    events_before = event_service.get_events_for_user(user.id)
+    assert len(events_before) == 0
+
+    user_badge_service.award_badge_to_user(badge.id, user.id)
+
+    events_after = event_service.get_events_for_user(user.id)
+    assert len(events_after) == 1
+
+    awarding_event = events_after[0]
+    assert awarding_event.event_type == 'user-badge-awarded'
+    assert awarding_event.data == {'badge_id': str(badge.id)}
+
+
+def test_award_badge_with_initiator(app, admin_user):
     user = create_user('AwesomePerson')
 
     badge = user_badge_service.create_badge(
@@ -30,7 +50,9 @@ def test_award_badge(app):
     user_events_before = event_service.get_events_for_user(user.id)
     assert len(user_events_before) == 0
 
-    user_badge_service.award_badge_to_user(badge.id, user.id)
+    user_badge_service.award_badge_to_user(
+        badge.id, user.id, initiator_id=admin_user.id
+    )
 
     user_events_after = event_service.get_events_for_user(user.id)
     assert len(user_events_after) == 1
@@ -39,6 +61,7 @@ def test_award_badge(app):
     assert user_awarding_event.event_type == 'user-badge-awarded'
     assert user_awarding_event.data == {
         'badge_id': str(badge.id),
+        'initiator_id': str(admin_user.id),
     }
 
 
