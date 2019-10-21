@@ -10,7 +10,7 @@ import click
 
 from byceps.database import db
 from byceps.services.user_badge.models.badge import Badge
-from byceps.services.user_badge import service as badge_service
+from byceps.services.user_badge import command_service as badge_command_service
 from byceps.services.user_badge.transfer.models import BadgeID
 from byceps.util.system import get_config_filename_from_env_or_exit
 
@@ -29,7 +29,7 @@ def execute(badge_slug, user):
         nl=False,
     )
 
-    badge_service.award_badge_to_user(badge_id, user.id)
+    badge_command_service.award_badge_to_user(badge_id, user.id)
 
     click.secho('done.', fg='green')
 

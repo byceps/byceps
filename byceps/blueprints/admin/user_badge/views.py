@@ -10,7 +10,10 @@ from flask import abort, request
 
 from ....services.brand import service as brand_service
 from ....services.user import service as user_service
-from ....services.user_badge import service as badge_service
+from ....services.user_badge import (
+    command_service as badge_command_service,
+    service as badge_service,
+)
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_success
 from ....util.framework.templating import templated
@@ -116,7 +119,7 @@ def create():
     else:
         brand_id = None
 
-    badge = badge_service.create_badge(
+    badge = badge_command_service.create_badge(
         slug,
         label,
         image_filename,

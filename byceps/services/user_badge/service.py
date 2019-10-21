@@ -7,50 +7,16 @@ byceps.services.user_badge.service
 """
 
 from collections import defaultdict
-from datetime import datetime
-from typing import Dict, Optional, Set, Tuple
+from typing import Dict, Optional, Set
 
 from flask import url_for
 
 from ...database import db
-from ...events.user_badge import UserBadgeAwarded
-from ...typing import BrandID, UserID
-
-from ..user import event_service
+from ...typing import UserID
 
 from .models.awarding import BadgeAwarding as DbBadgeAwarding
 from .models.badge import Badge as DbBadge
-from .transfer.models import (
-    Badge,
-    BadgeAwarding,
-    BadgeID,
-    QuantifiedBadgeAwarding,
-)
-
-
-def create_badge(
-    slug: str,
-    label: str,
-    image_filename: str,
-    *,
-    brand_id: Optional[BrandID] = None,
-    description: Optional[str] = None,
-    featured: bool = False,
-) -> Badge:
-    """Introduce a new badge."""
-    badge = DbBadge(
-        slug,
-        label,
-        image_filename,
-        brand_id=brand_id,
-        description=description,
-        featured=featured,
-    )
-
-    db.session.add(badge)
-    db.session.commit()
-
-    return _db_entity_to_badge(badge)
+from .transfer.models import Badge, BadgeID, QuantifiedBadgeAwarding
 
 
 def find_badge(badge_id: BadgeID) -> Optional[Badge]:
@@ -163,37 +129,6 @@ def get_all_badges() -> Set[Badge]:
     return {_db_entity_to_badge(badge) for badge in badges}
 
 
-def award_badge_to_user(
-    badge_id: BadgeID, user_id: UserID, *, initiator_id: Optional[UserID] = None
-) -> Tuple[BadgeAwarding, UserBadgeAwarded]:
-    """Award the badge to the user."""
-    awarded_at = datetime.utcnow()
-
-    awarding = DbBadgeAwarding(badge_id, user_id, awarded_at=awarded_at)
-    db.session.add(awarding)
-
-    event_data = {'badge_id': str(badge_id)}
-    if initiator_id:
-        event_data['initiator_id'] = str(initiator_id)
-    event = event_service.build_event(
-        'user-badge-awarded', user_id, event_data, occurred_at=awarded_at
-    )
-    db.session.add(event)
-
-    db.session.commit()
-
-    awarding_dto = _db_entity_to_badge_awarding(awarding)
-
-    event = UserBadgeAwarded(
-        occurred_at=awarded_at,
-        user_id=user_id,
-        badge_id=badge_id,
-        initiator_id=initiator_id,
-    )
-
-    return awarding_dto, event
-
-
 def get_awardings_of_badge(badge_id: BadgeID) -> Set[QuantifiedBadgeAwarding]:
     """Return the awardings (user and date) of this badge."""
     rows = db.session \
@@ -232,12 +167,3 @@ def _db_entity_to_badge(entity: DbBadge) -> Badge:
 def _build_image_url(image_filename: str) -> str:
     filename = f'users/badges/{image_filename}'
     return url_for('global_file', filename=filename)
-
-
-def _db_entity_to_badge_awarding(entity: DbBadgeAwarding) -> BadgeAwarding:
-    return BadgeAwarding(
-        entity.id,
-        entity.badge_id,
-        entity.user_id,
-        entity.awarded_at
-    )
