@@ -256,13 +256,6 @@ def _get_additional_data(
         yield from _get_additional_data_for_user_initiated_event(
             event, users_by_id)
 
-    if event.event_type in {
-            'user-deleted',
-            'user-suspended',
-            'user-unsuspended',
-    }:
-        yield 'reason', event.data['reason']
-
     if event.event_type == 'user-badge-awarded':
         badge = user_badge_service.find_badge(event.data['badge_id'])
         yield 'badge', badge
