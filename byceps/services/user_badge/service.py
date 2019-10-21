@@ -7,6 +7,7 @@ byceps.services.user_badge.service
 """
 
 from collections import defaultdict
+from datetime import datetime
 from typing import Dict, Optional, Set
 
 from flask import url_for
@@ -161,7 +162,9 @@ def get_all_badges() -> Set[Badge]:
 
 def award_badge_to_user(badge_id: BadgeID, user_id: UserID) -> BadgeAwarding:
     """Award the badge to the user."""
-    awarding = DbBadgeAwarding(badge_id, user_id)
+    awarded_at = datetime.utcnow()
+
+    awarding = DbBadgeAwarding(badge_id, user_id, awarded_at=awarded_at)
 
     db.session.add(awarding)
     db.session.commit()

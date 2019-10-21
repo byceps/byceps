@@ -22,8 +22,11 @@ class BadgeAwarding(db.Model):
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     badge_id = db.Column(db.Uuid, db.ForeignKey('user_badges.id'), nullable=False)
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
-    awarded_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    awarded_at = db.Column(db.DateTime, nullable=False)
 
-    def __init__(self, badge_id: BadgeID, user_id: UserID) -> None:
+    def __init__(
+        self, badge_id: BadgeID, user_id: UserID, awarded_at: datetime
+    ) -> None:
         self.badge_id = badge_id
         self.user_id = user_id
+        self.awarded_at = awarded_at
