@@ -1,6 +1,7 @@
 {% extends 'layouts/admin/user.html' %}
 {% from 'macros/admin/shop/order.html' import render_order_link %}
 {% from 'macros/admin/user.html' import render_user_avatar_20_and_admin_link, render_user_flag_deleted, render_user_flag_suspended %}
+{% from 'macros/admin/user_badge.html' import render_user_badge_linked %}
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_tag %}
@@ -171,6 +172,18 @@
             hat
             <span class="user-link">{{ render_user_avatar_20_and_admin_link(user) }}</span>
             die Rolle <strong>{{ event.data.role_id }}</strong> genommen.
+          {%- endset %}
+        {%- elif event.event == 'user-badge-awarded' %}
+          {%- set icon_name = 'badge' %}
+          {%- set body %}
+            {%- if event.initiator is defined %}
+            <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
+            {%- else %}
+            Jemand
+            {%- endif %}
+            hat
+            <span class="user-link">{{ render_user_avatar_20_and_admin_link(user) }}</span>
+            das Abzeichen {{ render_user_badge_linked(event.badge, 24) }} <strong>{{ event.badge.label }}</strong> verliehen.
           {%- endset %}
         {%- else %}
           {%- set icon_name = 'disabled' %}

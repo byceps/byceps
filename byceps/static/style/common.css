@@ -688,7 +688,7 @@ nav.pagination li.current {
 .user-badge {
   border: #cccccc solid 1px;
   border-radius: 50%;
-  display: block;
+  display: inline-flex;
 }
 a.user-badge:hover {
   border-color: currentColor;

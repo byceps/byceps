@@ -26,6 +26,7 @@ from ....services.user.models.user import User as DbUser
 from ....services.user import service as user_service
 from ....services.user.transfer.models import User
 from ....services.user_avatar import service as avatar_service
+from ....services.user_badge import service as user_badge_service
 from ....typing import PartyID, UserID
 
 from .models import UserStateFilter
@@ -250,6 +251,7 @@ def _get_additional_data(
             'privacy-policy-accepted',
             'role-assigned',
             'role-deassigned',
+            'user-badge-awarded',
     }:
         yield from _get_additional_data_for_user_initiated_event(
             event, users_by_id)
@@ -260,6 +262,10 @@ def _get_additional_data(
             'user-unsuspended',
     }:
         yield 'reason', event.data['reason']
+
+    if event.event_type == 'user-badge-awarded':
+        badge = user_badge_service.find_badge(event.data['badge_id'])
+        yield 'badge', badge
 
 
 def _get_additional_data_for_user_initiated_event(
