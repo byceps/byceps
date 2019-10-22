@@ -29,3 +29,12 @@ class CreateForm(LocalizedForm):
         choices = [(brand.id, brand.title) for brand in brands]
         choices.insert(0, ('', '<keine>'))
         self.brand_id.choices = choices
+
+
+class AwardForm(LocalizedForm):
+    badge_id = SelectField('Badge', [InputRequired()])
+
+    def set_badge_choices(self, badges):
+        choices = [(str(badge.id), badge.label) for badge in badges]
+        choices.sort(key=lambda choice: choice[1])
+        self.badge_id.choices = choices

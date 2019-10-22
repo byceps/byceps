@@ -6,7 +6,7 @@ byceps.blueprints.admin.user_badge.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from flask import abort, request
+from flask import abort, g, request
 
 from ....services.brand import service as brand_service
 from ....services.user import service as user_service
@@ -21,9 +21,10 @@ from ....util.views import redirect_to
 
 from ...authorization.decorators import permission_required
 from ...authorization.registry import permission_registry
+from ...user_badge import signals
 
 from .authorization import UserBadgePermission
-from .forms import CreateForm
+from .forms import AwardForm, CreateForm
 
 
 blueprint = create_blueprint('user_badge_admin', __name__)
@@ -135,3 +136,61 @@ def create():
 def _set_brand_ids_on_form(form):
     brands = brand_service.get_brands()
     form.set_brand_choices(brands)
+
+
+@blueprint.route('/awardings/to/<uuid:user_id>')
+@permission_required(UserBadgePermission.award)
+@templated
+def award_form(user_id, erroneous_form=None):
+    """Show form to award a badge to a user."""
+    user = user_service.find_user(user_id)
+    if not user:
+        abort(404)
+
+    form = erroneous_form if erroneous_form else AwardForm(user_id=user.id)
+    _set_badge_ids_on_form(form)
+
+    return {
+        'form': form,
+        'user': user,
+    }
+
+
+@blueprint.route('/awardings/to/<uuid:user_id>', methods=['POST'])
+@permission_required(UserBadgePermission.award)
+def award(user_id):
+    """Award a badge to a user."""
+    form = AwardForm(request.form)
+    _set_badge_ids_on_form(form)
+
+    if not form.validate():
+        return award_form(user_id, form)
+
+    badge_id = form.badge_id.data
+
+    user = user_service.find_user(user_id)
+    if not user:
+        abort(401, 'Unknown user ID')
+
+    badge = badge_service.find_badge(badge_id)
+    if not badge:
+        abort(401, 'Unknown badge ID')
+
+    initiator_id = g.current_user.id
+
+    _, event = badge_command_service.award_badge_to_user(
+        badge_id, user_id, initiator_id=initiator_id
+    )
+
+    flash_success(
+        f'Das Abzeichen "{badge.label}" wurde an {user.screen_name} verliehen.'
+    )
+
+    signals.user_badge_awarded.send(None, event=event)
+
+    return redirect_to('user_admin.view', user_id=user.id)
+
+
+def _set_badge_ids_on_form(form):
+    badges = badge_service.get_all_badges()
+    form.set_badge_choices(badges)

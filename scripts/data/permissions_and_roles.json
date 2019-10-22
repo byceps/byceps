@@ -293,6 +293,10 @@
       "title": "Benutzer erstellen"
     },
     {
+      "id": "user_badge.award",
+      "title": "Abzeichen verleihen"
+    },
+    {
       "id": "user_badge.create",
       "title": "Abzeichen erstellen"
     },
@@ -575,6 +579,7 @@
     },
     {
       "assigned_permissions": [
+        "user_badge.award",
         "user_badge.create"
       ],
       "id": "user_badge_admin",

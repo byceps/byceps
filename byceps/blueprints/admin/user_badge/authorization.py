@@ -10,5 +10,6 @@ from byceps.util.authorization import create_permission_enum
 
 
 UserBadgePermission = create_permission_enum('user_badge', [
+    'award',
     'create',
 ])
