@@ -9,7 +9,6 @@ byceps.services.shop.shop.service
 from typing import List, Optional, Set
 
 from ....database import db
-from ....typing import PartyID
 
 from .models import Shop as DbShop
 from .transfer.models import Shop, ShopID
@@ -19,11 +18,9 @@ class UnknownShopId(ValueError):
     pass
 
 
-def create_shop(
-    shop_id: ShopID, title: str, party_id: PartyID, email_config_id: str
-) -> Shop:
+def create_shop(shop_id: ShopID, title: str, email_config_id: str) -> Shop:
     """Create a shop."""
-    shop = DbShop(shop_id, title, party_id, email_config_id)
+    shop = DbShop(shop_id, title, email_config_id)
 
     db.session.add(shop)
     db.session.commit()
