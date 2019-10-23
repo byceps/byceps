@@ -74,17 +74,23 @@
         </td>
         <td>{{ render_user_avatar_20_and_name(snippet.current_version.creator) }}</td>
         <td>
-          <div class="dropdown left">
-            <button class="dropdown-toggle button button--compact">{{ render_icon('caret-down') }}</button>
-            <ol>
+          <div class="button-row button-row--compact button-row--right">
+            {%- if g.current_user.has_permission(SnippetPermission.update) %}
               {%- with endpoint = '.update_fragment_form' if snippet.is_fragment else '.update_document_form' %}
-              <li><a href="{{ url_for(endpoint, snippet_id=snippet.id) }}">{{ render_icon('edit') }} bearbeiten</a></li>
+            <a href="{{ url_for(endpoint, snippet_id=snippet.id) }}" class="button button--compact" title="Bearbeiten">{{ render_icon('edit') }}</a>
               {%- endwith %}
-              {%- if snippet.is_document and g.current_user.has_permission(SnippetMountpointPermission.create) %}
-              <li class="divider"></li>
-              <li><a href="{{ url_for('.create_mountpoint_form', snippet_id=snippet.id) }}">{{ render_icon('add') }} Mountpoint erstellen</a></li>
-              {%- endif %}
-            </ol>
+            {%- endif %}
+            {%- if snippet.is_document and g.current_user.has_permission(SnippetMountpointPermission.create) %}
+            <div class="dropdown left">
+              <button class="dropdown-toggle button button--compact">{{ render_icon('caret-down') }}</button>
+              <ol>
+                <li><a href="{{ url_for('.create_mountpoint_form', snippet_id=snippet.id) }}">{{ render_icon('add') }} Mountpoint erstellen</a></li>
+              </ol>
+            </div>
+            {%- else %}
+              {# Occupy width of dropdown button to keep edit buttons horizontally aligned. #}
+              <button class="dropdown-toggle button button--compact" style="visibility: hidden;">{{ render_icon('caret-down') }}</button>
+            {%- endif %}
           </div>
         </td>
       </tr>
