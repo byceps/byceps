@@ -47,7 +47,7 @@ def index(party_id):
         latest_dob_for_checkin = _get_latest_date_of_birth_for_checkin()
         tickets = _search_tickets(party.id, search_term, limit)
         orders = _search_orders(party.shop_id, search_term, limit)
-        users = _search_users(party.id, search_term, limit)
+        users = _search_users(search_term, limit)
 
         tickets += list(_get_tickets_for_users(party.id, users))
     else:
@@ -105,7 +105,7 @@ def _search_orders(shop_id, search_term, limit):
     return orders
 
 
-def _search_users(party_id, search_term, limit):
+def _search_users(search_term, limit):
     page = 1
     per_page = limit
 
