@@ -131,6 +131,10 @@ def order_single_form(article_id, erroneous_form=None):
 
     shop = _get_shop_or_404()
 
+    user = user_service.find_user_with_details(g.current_user.id)
+
+    form = erroneous_form if erroneous_form else OrderForm(obj=user.detail)
+
     if shop.closed:
         flash_notice('Der Shop ist derzeit geschlossen.')
         return {
@@ -142,9 +146,6 @@ def order_single_form(article_id, erroneous_form=None):
         article, fixed_quantity=1
     )
 
-    user = user_service.find_user_with_details(g.current_user.id)
-
-    form = erroneous_form if erroneous_form else OrderForm(obj=user.detail)
     country_names = country_service.get_country_names()
 
     if article.not_directly_orderable:
