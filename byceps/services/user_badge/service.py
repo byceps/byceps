@@ -130,7 +130,7 @@ def get_all_badges() -> Set[Badge]:
 
 
 def get_awardings_of_badge(badge_id: BadgeID) -> Set[QuantifiedBadgeAwarding]:
-    """Return the awardings (user and date) of this badge."""
+    """Return the awardings of this badge."""
     rows = db.session \
         .query(
             DbBadgeAwarding.badge_id,
