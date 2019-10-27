@@ -95,7 +95,7 @@ def delete():
 
     try:
         avatar_service.remove_avatar_image(user.id)
-    except ValueError as e:
+    except ValueError:
         # No avatar selected.
         # But that's ok, deletions should be idempotent.
         flash_notice(
