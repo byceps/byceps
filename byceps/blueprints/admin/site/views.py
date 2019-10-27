@@ -16,7 +16,7 @@ from ....services.site import (
     settings_service as site_settings_service,
 )
 from ....util.framework.blueprint import create_blueprint
-from ....util.framework.flash import flash_success
+from ....util.framework.flash import flash_error, flash_success
 from ....util.framework.templating import templated
 from ....util.views import redirect_to
 
@@ -133,6 +133,9 @@ def create():
 
     if party_id:
         party = party_service.find_party(party_id)
+        if not party:
+            flash_error(f'Die Party-ID "{party_id}" ist unbekannt.')
+            return create_form(form)
     else:
         party_id = None
 
@@ -182,6 +185,9 @@ def update(site_id):
     if party_id:
         party = party_service.find_party(party_id)
     else:
+        if not party:
+            flash_error(f'Die Party-ID "{party_id}" ist unbekannt.')
+            return update_form(site.id, form)
         party_id = None
 
     try:
