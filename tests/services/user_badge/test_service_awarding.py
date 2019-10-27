@@ -27,9 +27,7 @@ def app(party_app, db):
 def test_award_badge_without_initiator(app):
     user = create_user('EarlyPoster')
 
-    badge = badge_command_service.create_badge(
-        'first-post', 'First Post', 'first-post.svg'
-    )
+    badge = _create_badge('first-post', 'First Post')
 
     user_events_before = event_service.get_events_for_user(user.id)
     assert len(user_events_before) == 0
@@ -52,9 +50,7 @@ def test_award_badge_without_initiator(app):
 def test_award_badge_with_initiator(app, admin_user):
     user = create_user('AwesomePerson')
 
-    badge = badge_command_service.create_badge(
-        'awesomeness', 'Certificate of Awesomeness', 'awesomeness.svg'
-    )
+    badge = _create_badge('awesomeness', 'Certificate of Awesomeness')
 
     user_events_before = event_service.get_events_for_user(user.id)
     assert len(user_events_before) == 0
@@ -88,9 +84,7 @@ def test_get_awardings_of_unknown_badge(app):
 
 
 def test_get_awardings_of_unawarded_badge(app):
-    badge = badge_command_service.create_badge(
-        'eternal-wisdom', 'Eternal Wisdom', 'eternalwisdom.svg'
-    )
+    badge = _create_badge('eternal-wisdom', 'Eternal Wisdom')
 
     actual = badge_service.get_awardings_of_badge(badge.id)
 
@@ -101,9 +95,7 @@ def test_get_awardings_of_badge():
     user1 = create_user('User1')
     user2 = create_user('User2')
 
-    badge = badge_command_service.create_badge(
-        'attendee', 'You were there.', 'attendance.svg'
-    )
+    badge = _create_badge('attendance', 'You were there.')
 
     badge_command_service.award_badge_to_user(badge.id, user1.id)
     badge_command_service.award_badge_to_user(badge.id, user1.id)
@@ -115,3 +107,7 @@ def test_get_awardings_of_badge():
         QuantifiedBadgeAwarding(badge.id, user1.id, 2),
         QuantifiedBadgeAwarding(badge.id, user2.id, 1),
     }
+
+
+def _create_badge(slug, label):
+    return badge_command_service.create_badge(slug, label, f'{slug}.svg')
