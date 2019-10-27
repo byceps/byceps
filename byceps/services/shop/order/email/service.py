@@ -23,7 +23,6 @@ from .....services.shop.shop import service as shop_service
 from .....services.snippet import service as snippet_service
 from .....services.snippet.service import SnippetNotFound
 from .....services.snippet.transfer.models import Scope
-from .....services.user.models.user import User
 from .....util.money import format_euro_amount
 from .....util.templatefilters import utc_to_local_tz
 from .....util.templating import create_sandboxed_environment, load_template

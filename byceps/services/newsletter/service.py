@@ -6,10 +6,8 @@ byceps.services.newsletter.service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from collections import Counter
 from operator import itemgetter
 from typing import (
-    Any,
     Dict,
     Iterable,
     Iterator,
@@ -24,7 +22,6 @@ from ...database import BaseQuery, db
 from ...typing import UserID
 
 from ..user.models.user import User as DbUser
-from ..user.transfer.models import User
 
 from .models import (
     List as DbList,

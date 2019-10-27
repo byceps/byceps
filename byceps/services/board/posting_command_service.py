@@ -20,7 +20,6 @@ from ...typing import UserID
 
 from .aggregation_service import aggregate_topic
 from .models.posting import Posting as DbPosting
-from .models.topic import Topic as DbTopic
 from . import posting_query_service
 from . import topic_query_service
 from .transfer.models import PostingID, TopicID

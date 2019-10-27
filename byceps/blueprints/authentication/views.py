@@ -22,10 +22,7 @@ from ...services.site import (
     service as site_service,
     settings_service as site_settings_service,
 )
-from ...services.terms import (
-    consent_service as terms_consent_service,
-    version_service as terms_version_service,
-)
+from ...services.terms import version_service as terms_version_service
 from ...services.user import service as user_service
 from ...services.verification_token import service as verification_token_service
 from ...util.framework.blueprint import create_blueprint

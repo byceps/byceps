@@ -7,7 +7,6 @@ byceps.services.news.models.item
 """
 
 from datetime import datetime
-from typing import Optional
 
 from sqlalchemy.ext.associationproxy import association_proxy
 

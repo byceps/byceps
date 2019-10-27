@@ -8,12 +8,11 @@ byceps.services.authentication.session.models.current_user
 
 from __future__ import annotations
 from enum import Enum
-from typing import Optional, Set, Union
+from typing import Set, Union
 
 from .....services.user.models.user import AnonymousUser
 from .....services.user import service as user_service
 from .....services.user.transfer.models import User
-from .....typing import PartyID
 
 
 class CurrentUser:

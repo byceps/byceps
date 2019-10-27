@@ -10,8 +10,6 @@ from typing import Optional
 
 from flask import url_for
 
-from ....database import db
-
 from ...email import service as email_service
 from ...email.transfer.models import Sender
 from ...user.models.user import User
