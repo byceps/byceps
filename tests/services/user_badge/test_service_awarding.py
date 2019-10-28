@@ -28,6 +28,16 @@ def app(party_app, db):
 
 
 @pytest.fixture(scope='module')
+def user1():
+    return create_user('Stullenandi')
+
+
+@pytest.fixture(scope='module')
+def user2():
+    return create_user('Anica')
+
+
+@pytest.fixture(scope='module')
 def badge1():
     return _create_badge('attendance', 'You were there.')
 
@@ -51,9 +61,8 @@ def awardings_scope(db):
     db.session.commit()
 
 
-def test_award_badge_without_initiator(app, badge1, awardings_scope):
-    user = create_user('EarlyPoster')
-
+def test_award_badge_without_initiator(app, user1, badge1, awardings_scope):
+    user = user1
     badge = badge1
 
     user_events_before = event_service.get_events_for_user(user.id)
@@ -74,8 +83,8 @@ def test_award_badge_without_initiator(app, badge1, awardings_scope):
     assert user_awarding_event.data == {'badge_id': str(badge.id)}
 
 
-def test_award_badge_with_initiator(app, badge2, admin_user, awardings_scope):
-    user = create_user('AwesomePerson')
+def test_award_badge_with_initiator(app, user2, badge2, admin_user, awardings_scope):
+    user = user2
 
     badge = badge2
 
@@ -118,10 +127,7 @@ def test_get_awardings_of_unawarded_badge(app, badge3):
     assert actual == set()
 
 
-def test_get_awardings_of_badge(badge1, awardings_scope):
-    user1 = create_user('User1')
-    user2 = create_user('User2')
-
+def test_get_awardings_of_badge(user1, user2, badge1, awardings_scope):
     badge = badge1
 
     badge_command_service.award_badge_to_user(badge.id, user1.id)
