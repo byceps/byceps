@@ -135,6 +135,7 @@ def _get_blueprints(app):
         ('api.tourney.avatar',          '/api/tourney/avatars'      ),
         ('api.tourney.match',           '/api/tourney/matches'      ),
         ('api.user',                    '/api/users'                ),
+        ('api.user_badge',              '/api/user_badges'          ),
     ]
 
     # metrics
