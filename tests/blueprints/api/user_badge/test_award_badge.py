@@ -27,9 +27,10 @@ def test_award_badge(admin_app_with_db, normal_user, admin_user):
     before = badge_service.get_awardings_of_badge(badge.id)
     assert before == set()
 
-    url = f'/api/user_badges/{badge.id}/awardings'
+    url = f'/api/user_badges/awardings'
     headers = [assemble_authorization_header('just-say-PLEASE')]
     form_data = {
+        'badge_id': str(badge.id),
         'user_id': str(normal_user.id),
         'initiator_id': str(admin_user.id),
     }

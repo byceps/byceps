@@ -24,13 +24,12 @@ from ...user_badge import signals
 blueprint = create_blueprint('api_user_badge', __name__)
 
 
-@blueprint.route('/<uuid:badge_id>/awardings', methods=['POST'])
+@blueprint.route('/awardings', methods=['POST'])
 @api_token_required
 @respond_no_content
-def award_badge_to_user(badge_id):
+def award_badge_to_user():
     """Award the badge to a user."""
-    badge = _get_badge_or_404(badge_id)
-
+    badge = _get_badge_or_400()
     user = _get_user_or_400()
     initiator = _get_initiator_or_400()
 
@@ -41,17 +40,20 @@ def award_badge_to_user(badge_id):
     signals.user_badge_awarded.send(None, event=event)
 
 
-def _get_badge_or_404(badge_id):
-    badge = badge_service.find_badge(badge_id)
+def _get_badge_or_400():
+    badge_id = request.form['badge_id']
+    if badge_id is None:
+        abort(400, 'Badge ID missing')
 
-    if badge is None:
-        abort(404)
+    badge = badge_service.find_badge(badge_id)
+    if not badge:
+        abort(400, 'Badge ID unknown')
 
     return badge
 
 
 def _get_user_or_400():
-    user_id = request.form['user_id'].strip()
+    user_id = request.form['user_id']
     if not user_id:
         abort(400, 'User ID missing')
 
@@ -63,7 +65,7 @@ def _get_user_or_400():
 
 
 def _get_initiator_or_400():
-    initiator_id = request.form['initiator_id'].strip()
+    initiator_id = request.form['initiator_id']
     if not initiator_id:
         abort(400, 'Initiator ID missing')
 
