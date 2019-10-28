@@ -6,14 +6,13 @@
 import pytest
 
 from tests.base import AbstractAppTestCase
+from tests.conftest import database_recreated
 from tests.helpers import (
     create_email_config,
     create_site,
     create_user,
     http_client,
 )
-
-from ....conftest import database_recreated
 
 
 CONTENT_TYPE_JSON = 'application/json'

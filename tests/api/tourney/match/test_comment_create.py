@@ -8,8 +8,8 @@ from base64 import b64encode
 from byceps.services.tourney.models.match import MatchComment
 from byceps.services.tourney import match_service
 
+from tests.api.helpers import assemble_authorization_header
 from tests.base import AbstractAppTestCase
-from tests.api_helpers import assemble_authorization_header
 from tests.helpers import (
     create_email_config,
     create_site,

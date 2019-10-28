@@ -1,5 +1,5 @@
 """
-tests.api_helpers
+tests.api.helpers
 ~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2019 Jochen Kupperschmidt
