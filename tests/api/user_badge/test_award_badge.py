@@ -10,13 +10,6 @@ from byceps.services.user_badge import (
 from byceps.services.user_badge.transfer.models import QuantifiedBadgeAwarding
 
 from tests.api.helpers import assemble_authorization_header
-from tests.helpers import (
-    create_email_config,
-    create_site,
-    create_user,
-    http_client,
-    login_user,
-)
 
 
 def test_award_badge(admin_app_with_db, normal_user, admin_user):
