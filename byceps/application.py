@@ -132,6 +132,7 @@ def _get_blueprints(app):
 
     # API
     yield from [
+        ('api.attendance',              '/api/attendances'          ),
         ('api.tourney.avatar',          '/api/tourney/avatars'      ),
         ('api.tourney.match',           '/api/tourney/matches'      ),
         ('api.user',                    '/api/users'                ),
