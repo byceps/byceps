@@ -18,7 +18,7 @@ from ...decorators import api_token_required
 from .forms import CreateForm
 
 
-blueprint = create_blueprint('tourney_avatar', __name__)
+blueprint = create_blueprint('api_tourney_avatar', __name__)
 
 
 ALLOWED_IMAGE_TYPES = frozenset([

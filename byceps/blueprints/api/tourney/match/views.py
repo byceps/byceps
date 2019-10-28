@@ -18,7 +18,7 @@ from ...decorators import api_token_required
 from .. import signals
 
 
-blueprint = create_blueprint('tourney_match', __name__)
+blueprint = create_blueprint('api_tourney_match', __name__)
 
 
 # -------------------------------------------------------------------- #
