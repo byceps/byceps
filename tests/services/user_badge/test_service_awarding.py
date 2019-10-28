@@ -38,6 +38,11 @@ def user2():
 
 
 @pytest.fixture(scope='module')
+def user3():
+    return create_user('Slobo')
+
+
+@pytest.fixture(scope='module')
 def badge1():
     return _create_badge('attendance', 'You were there.')
 
@@ -83,7 +88,9 @@ def test_award_badge_without_initiator(app, user1, badge1, awardings_scope):
     assert user_awarding_event.data == {'badge_id': str(badge.id)}
 
 
-def test_award_badge_with_initiator(app, user2, badge2, admin_user, awardings_scope):
+def test_award_badge_with_initiator(
+    app, user2, badge2, admin_user, awardings_scope
+):
     user = user2
 
     badge = badge2
@@ -111,6 +118,21 @@ def test_award_badge_with_initiator(app, user2, badge2, admin_user, awardings_sc
     }
 
 
+def test_count_awardings(
+    app, user1, user2, user3, badge1, badge2, badge3, awardings_scope
+):
+    badge_command_service.award_badge_to_user(badge1.id, user1.id)
+    badge_command_service.award_badge_to_user(badge1.id, user1.id)
+    badge_command_service.award_badge_to_user(badge1.id, user2.id)
+    badge_command_service.award_badge_to_user(badge1.id, user3.id)
+    badge_command_service.award_badge_to_user(badge3.id, user2.id)
+    badge_command_service.award_badge_to_user(badge3.id, user3.id)
+
+    actual = badge_service.count_awardings()
+
+    assert actual == {badge1.id: 4, badge2.id: 0, badge3.id: 2}
+
+
 def test_get_awardings_of_unknown_badge(app):
     unknown_badge_id = '00000000-0000-0000-0000-000000000000'
 
@@ -127,7 +149,7 @@ def test_get_awardings_of_unawarded_badge(app, badge3):
     assert actual == set()
 
 
-def test_get_awardings_of_badge(user1, user2, badge1, awardings_scope):
+def test_get_awardings_of_badge(app, user1, user2, badge1, awardings_scope):
     badge = badge1
 
     badge_command_service.award_badge_to_user(badge.id, user1.id)

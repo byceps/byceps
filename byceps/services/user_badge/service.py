@@ -129,6 +129,24 @@ def get_all_badges() -> Set[Badge]:
     return {_db_entity_to_badge(badge) for badge in badges}
 
 
+def count_awardings() -> Dict[BadgeID, int]:
+    """Return the number of times each badge has been awarded.
+
+    Because a badge can be awarded multiple times to a user, the number
+    of awardings does not represent the number of awardees.
+    """
+    rows = db.session \
+        .query(
+            DbBadge.id,
+            db.func.count(DbBadgeAwarding.id)
+        ) \
+        .outerjoin(DbBadgeAwarding) \
+        .group_by(DbBadge.id) \
+        .all()
+
+    return {badge_id: count for badge_id, count in rows}
+
+
 def get_awardings_of_badge(badge_id: BadgeID) -> Set[QuantifiedBadgeAwarding]:
     """Return the awardings of this badge."""
     rows = db.session \

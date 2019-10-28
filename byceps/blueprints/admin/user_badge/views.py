@@ -48,6 +48,8 @@ def index():
 
         return brands_by_id[brand_id].title
 
+    awarding_counts_by_badge_id = badge_service.count_awardings()
+
     badges = [
         {
             'id': badge.id,
@@ -56,6 +58,7 @@ def index():
             'image_url': badge.image_url,
             'brand_title': _find_brand_title(badge.brand_id),
             'featured': badge.featured,
+            'awarding_count': awarding_counts_by_badge_id[badge.id],
         }
         for badge in all_badges
     ]

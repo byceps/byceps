@@ -31,6 +31,7 @@
         <th>Bild</th>
         <th>Bezeichnung<br>Slug</th>
         <th></th>
+        <th class="number">Verliehen</th>
       </tr>
     </thead>
     <tbody>
@@ -43,6 +44,7 @@
           {{ badge.slug|dim }}
         </td>
         <td>{{ render_tag('featured') if badge.featured else '' }}</td>
+        <td class="bignumber number">{{ badge.awarding_count }}</td>
       </tr>
       {%- endfor %}
     </tbody>
