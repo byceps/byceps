@@ -25,8 +25,8 @@ def execute(screen_name, email_address, password):
     user = _create_user(screen_name, email_address, password)
     click.secho('done.', fg='green')
 
-    click.echo(f'Enabling user "{screen_name}" ... ', nl=False)
-    user_command_service.enable_user(user.id, user.id)
+    click.echo(f'Initializing user "{screen_name}" ... ', nl=False)
+    user_command_service.initialize_account(user.id)
     click.secho('done.', fg='green')
 
     roles = _get_roles()
