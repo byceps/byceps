@@ -32,10 +32,9 @@ def comments_view(match_id):
     """Render the comments on a match."""
     match = _get_match_or_404(match_id)
 
-    comments = match_comment_service.get_comments(match.id, g.party_id)
-
-    # Drop hidden comments from output.
-    comments = [comment for comment in comments if not comment.hidden]
+    comments = match_comment_service.get_comments(
+        match.id, g.party_id, include_hidden=False
+    )
 
     return {
         'comments': comments,
@@ -48,7 +47,9 @@ def comments_view_as_json(match_id):
     """Render the comments on a match as JSON."""
     match = _get_match_or_404(match_id)
 
-    comments = match_comment_service.get_comments(match.id, g.party_id)
+    comments = match_comment_service.get_comments(
+        match.id, g.party_id, include_hidden=True
+    )
 
     comment_dtos = list(map(_comment_to_json, comments))
 

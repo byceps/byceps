@@ -20,10 +20,16 @@ from .transfer.models import MatchID, MatchCommentID
 
 
 def get_comments(
-    match_id: MatchID, party_id: PartyID
+    match_id: MatchID, party_id: PartyID, *, include_hidden: bool = False
 ) -> Sequence[MatchComment]:
     """Return comments on the match, ordered chronologically."""
-    comments = MatchComment.query \
+    query = MatchComment.query \
+        .for_match(match_id)
+
+    if not include_hidden:
+        query = query.filter_by(hidden=False)
+
+    comments = query \
         .for_match(match_id) \
         .order_by(MatchComment.created_at) \
         .all()
