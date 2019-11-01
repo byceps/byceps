@@ -43,8 +43,7 @@ def update_site(
     title: str,
     server_name: str,
     email_config_id: str,
-    *,
-    party_id: Optional[PartyID] = None,
+    party_id: Optional[PartyID],
 ) -> Site:
     """Update the site."""
     site = DbSite.query.get(site_id)

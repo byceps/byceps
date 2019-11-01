@@ -192,7 +192,7 @@ def update(site_id):
 
     try:
         site = site_service.update_site(
-            site.id, title, server_name, email_config_id, party_id=party_id
+            site.id, title, server_name, email_config_id, party_id
         )
     except site_service.UnknownSiteId:
         abort(404, f'Unknown site ID "{site_id}".')
