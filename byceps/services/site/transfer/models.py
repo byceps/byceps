@@ -23,6 +23,7 @@ class Site:
     server_name: str
     email_config_id: str
     party_id: PartyID
+    enabled: bool
 
 
 @attrs(auto_attribs=True, frozen=True, slots=True)

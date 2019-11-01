@@ -130,6 +130,7 @@ def create():
     server_name = form.server_name.data.strip()
     email_config_id = form.email_config_id.data
     party_id = form.party_id.data
+    enabled = form.enabled.data
 
     if party_id:
         party = party_service.find_party(party_id)
@@ -140,7 +141,7 @@ def create():
         party_id = None
 
     site = site_service.create_site(
-        site_id, title, server_name, email_config_id, party_id=party_id
+        site_id, title, server_name, email_config_id, enabled, party_id=party_id
     )
 
     flash_success(f'Die Site "{site.title}" wurde angelegt.')
@@ -181,6 +182,7 @@ def update(site_id):
     server_name = form.server_name.data.strip()
     email_config_id = form.email_config_id.data
     party_id = form.party_id.data
+    enabled = form.enabled.data
 
     if party_id:
         party = party_service.find_party(party_id)
@@ -192,7 +194,7 @@ def update(site_id):
 
     try:
         site = site_service.update_site(
-            site.id, title, server_name, email_config_id, party_id
+            site.id, title, server_name, email_config_id, party_id, enabled
         )
     except site_service.UnknownSiteId:
         abort(404, f'Unknown site ID "{site_id}".')

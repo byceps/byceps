@@ -124,9 +124,10 @@ def create_site(
     server_name='www.example.com',
     email_config_id=DEFAULT_EMAIL_CONFIG_ID,
     party_id=None,
+    enabled=True,
 ):
     return site_service.create_site(
-        site_id, title, server_name, email_config_id, party_id=party_id
+        site_id, title, server_name, email_config_id, enabled, party_id=party_id
     )
 
 

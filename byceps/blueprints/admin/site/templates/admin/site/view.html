@@ -1,5 +1,6 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
+{% from 'macros/misc.html' import render_tag %}
 {% set current_page = 'site_admin' %}
 {% set current_page_site = site %}
 {% set title = '%s - Site'|format(site.id) %}
@@ -11,7 +12,12 @@
       <li><a href="{{ url_for('site_admin.index') }}">Sites</a></li>
     </ol>
   </nav>
-  <h1>{{ site.title }}</h1>
+  <h1>
+    {{- site.title }}
+    {%- if not site.enabled -%}
+    <br>{{ render_tag('deaktiviert', class='color-disabled', icon='disabled') }}
+    {%- endif -%}
+  </h1>
 
   {%- if g.current_user.has_permission(SitePermission.update) %}
   <div class="button-row button-row--compact" style="float: right;">

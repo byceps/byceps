@@ -6,7 +6,7 @@ byceps.blueprints.admin.site.forms
 :License: Modified BSD, see LICENSE for details.
 """
 
-from wtforms import SelectField, StringField
+from wtforms import BooleanField, SelectField, StringField
 from wtforms.validators import InputRequired, Length, Optional
 
 from ....util.l10n import LocalizedForm
@@ -20,6 +20,7 @@ class UpdateForm(LocalizedForm):
     server_name = StringField('Servername', validators=[InputRequired()])
     email_config_id = SelectField('E-Mail-Konfiguration', validators=[InputRequired()])
     party_id = SelectField('Party-ID', validators=[Optional()])
+    enabled = BooleanField('aktiv')
 
     def set_email_config_choices(self):
         configs = email_service.get_all_configs()
