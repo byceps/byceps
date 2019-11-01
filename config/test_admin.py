@@ -16,5 +16,3 @@ MAIL_DEFAULT_SENDER = 'BYCEPS <noreply@example.com>'
 MAIL_SUPPRESS_SEND = True
 
 JOBS_ASYNC = False
-
-API_TOKEN = 'just-say-PLEASE'

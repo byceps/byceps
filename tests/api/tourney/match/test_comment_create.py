@@ -11,37 +11,49 @@ from byceps.services.tourney.models.match import MatchComment
 from byceps.services.tourney import match_service
 from byceps.services.user import command_service as user_command_service
 
-from tests.api.helpers import assemble_authorization_header
-from tests.conftest import database_recreated
 from tests.helpers import create_user, http_client
 
 
-def test_create_comment(app, player, match):
-    response = request_comment_creation(app, match.id, player.id)
+def test_create_comment(api_client, api_client_authz_header, player, match):
+    response = request_comment_creation(
+        api_client, api_client_authz_header, match.id, player.id
+    )
 
     assert response.status_code == 201
     assert get_comment_count_for_match(match.id) == 1
 
 
-def test_create_comment_on_nonexistent_match(app, player):
+def test_create_comment_on_nonexistent_match(
+    api_client, api_client_authz_header, player
+):
     unknown_match_id = '00000000-0000-0000-0000-000000000000'
 
-    response = request_comment_creation(app, unknown_match_id, player.id)
+    response = request_comment_creation(
+        api_client, api_client_authz_header, unknown_match_id, player.id
+    )
 
     assert response.status_code == 404
 
 
-def test_create_comment_by_suspended_user(app, cheater, match):
-    response = request_comment_creation(app, match.id, cheater.id)
+def test_create_comment_by_suspended_user(
+    api_client, api_client_authz_header, cheater, match
+):
+    response = request_comment_creation(
+        api_client, api_client_authz_header, match.id, cheater.id
+    )
 
     assert response.status_code == 400
     assert get_comment_count_for_match(match.id) == 0
 
 
-def test_create_comment_by_unknown_user(app, match):
+def test_create_comment_by_unknown_user(
+    api_client, api_client_authz_header, match
+):
     unknown_user_id = '00000000-0000-0000-0000-000000000000'
 
-    response = request_comment_creation(app, match.id, unknown_user_id)
+    response = request_comment_creation(
+        api_client, api_client_authz_header, match.id, unknown_user_id
+    )
 
     assert response.status_code == 400
     assert get_comment_count_for_match(match.id) == 0
@@ -51,15 +63,8 @@ def test_create_comment_by_unknown_user(app, match):
 
 
 @pytest.fixture(scope='module')
-def app(db, admin_app):
-    with admin_app.app_context():
-        with database_recreated(db):
-            yield admin_app
-
-
-@pytest.fixture(scope='module')
-def player(app):
-    return create_user()
+def player(user):
+    return user
 
 
 @pytest.fixture(scope='module')
@@ -78,15 +83,15 @@ def match(app):
     return match_service.create_match()
 
 
-def request_comment_creation(app, match_id, creator_id):
+def request_comment_creation(
+    api_client, api_client_authz_header, match_id, creator_id
+):
     url = f'/api/tourney/matches/{match_id}/comments'
 
-    headers = [assemble_authorization_header('just-say-PLEASE')]
-
+    headers = [api_client_authz_header]
     form_data = {'creator_id': creator_id, 'body': 'gg'}
 
-    with http_client(app) as client:
-        return client.post(url, headers=headers, data=form_data)
+    return api_client.post(url, headers=headers, data=form_data)
 
 
 def get_comment_count_for_match(match_id):

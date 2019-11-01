@@ -9,10 +9,8 @@ from byceps.services.user_badge import (
 )
 from byceps.services.user_badge.transfer.models import QuantifiedBadgeAwarding
 
-from tests.api.helpers import assemble_authorization_header
 
-
-def test_award_badge(admin_app_with_db, normal_user, admin_user):
+def test_award_badge(api_client, api_client_authz_header, user, admin):
     badge = badge_command_service.create_badge(
         'supporter', 'Supporter', 'supporter.svg'
     )
@@ -21,16 +19,15 @@ def test_award_badge(admin_app_with_db, normal_user, admin_user):
     assert before == set()
 
     url = f'/api/user_badges/awardings'
-    headers = [assemble_authorization_header('just-say-PLEASE')]
+    headers = [api_client_authz_header]
     form_data = {
         'badge_id': str(badge.id),
-        'user_id': str(normal_user.id),
-        'initiator_id': str(admin_user.id),
+        'user_id': str(user.id),
+        'initiator_id': str(admin.id),
     }
 
-    with admin_app_with_db.test_client() as client:
-        response = client.post(url, headers=headers, data=form_data)
+    response = api_client.post(url, headers=headers, data=form_data)
     assert response.status_code == 204
 
     actual = badge_service.get_awardings_of_badge(badge.id)
-    assert actual == {QuantifiedBadgeAwarding(badge.id, normal_user.id, 1)}
+    assert actual == {QuantifiedBadgeAwarding(badge.id, user.id, 1)}
