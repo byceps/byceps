@@ -9,6 +9,7 @@ byceps.blueprints.api.tourney.match.views
 from flask import abort, g, jsonify, request, url_for
 
 from .....services.tourney import match_comment_service, match_service
+from .....services.user import service as user_service
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.templating import templated
 from .....util.views import respond_created, respond_no_content
@@ -93,16 +94,16 @@ blueprint.add_url_rule(
 @respond_created
 def comment_create(match_id):
     """Create a comment on a match."""
-    if not g.current_user.is_active:
-        abort(403)
-
     match = _get_match_or_404(match_id)
 
+    creator_id = request.form['creator_id']
     body = request.form['body'].strip()
 
-    comment = match_comment_service.create_comment(
-        match.id, g.current_user.id, body
-    )
+    creator = user_service.find_active_user(creator_id)
+    if not creator:
+        abort(400, 'Creator ID does not reference an active user.')
+
+    comment = match_comment_service.create_comment(match.id, creator.id, body)
 
     signals.match_comment_created.send(None, comment_id=comment.id)
 
