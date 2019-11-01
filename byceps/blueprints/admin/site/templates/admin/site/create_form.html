@@ -17,7 +17,7 @@
     {% call form_fieldset() %}
       {{ form_field(form.id, maxlength=40, required='required', placeholder='intranet', autofocus='autofocus') }}
       {{ form_field(form.title, maxlength=40, required='required', placeholder='Intranet') }}
-      {{ form_field(form.server_name, required='required', placeholder='www.example.com') }}
+      {{ form_field(form.server_name, required='required', placeholder='www.example.com', note='Muss eindeutig sein') }}
       {{ form_field(form.email_config_id, required='required') }}
       {{ form_field(form.party_id) }}
     {% endcall %}

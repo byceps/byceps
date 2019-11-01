@@ -18,7 +18,7 @@
   <form action="{{ url_for('.update', site_id=site.id) }}" method="post">
     {% call form_fieldset() %}
       {{ form_field(form.title, maxlength=40, required='required', autofocus='autofocus') }}
-      {{ form_field(form.server_name, required='required') }}
+      {{ form_field(form.server_name, required='required', note='Muss eindeutig sein') }}
       {{ form_field(form.email_config_id, required='required') }}
       {{ form_field(form.party_id) }}
     {% endcall %}
