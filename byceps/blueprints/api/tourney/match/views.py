@@ -6,7 +6,7 @@ byceps.blueprints.api.tourney.match.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from flask import abort, g, jsonify, request, url_for
+from flask import abort, jsonify, request, url_for
 
 from .....services.tourney import match_comment_service, match_service
 from .....services.user import service as user_service
@@ -33,8 +33,10 @@ def comments_view(match_id):
     """Render the comments on a match."""
     match = _get_match_or_404(match_id)
 
+    party_id = request.args.get('party_id')
+
     comments = match_comment_service.get_comments(
-        match.id, party_id=g.party_id, include_hidden=False
+        match.id, party_id=party_id, include_hidden=False
     )
 
     return {
@@ -48,8 +50,10 @@ def comments_view_as_json(match_id):
     """Render the comments on a match as JSON."""
     match = _get_match_or_404(match_id)
 
+    party_id = request.args.get('party_id')
+
     comments = match_comment_service.get_comments(
-        match.id, party_id=g.party_id, include_hidden=True
+        match.id, party_id=party_id, include_hidden=True
     )
 
     comment_dtos = list(map(_comment_to_json, comments))
