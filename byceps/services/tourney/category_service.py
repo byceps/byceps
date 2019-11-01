@@ -13,17 +13,17 @@ from ...typing import PartyID
 
 from ..party.models.party import Party as DbParty
 
-from .models.tourney_category import TourneyCategory
+from .models.tourney_category import TourneyCategory as DbTourneyCategory
 from .transfer.models import TourneyCategoryID
 
 
-def create_category(party_id: PartyID, title: str) -> TourneyCategory:
+def create_category(party_id: PartyID, title: str) -> DbTourneyCategory:
     """Create a category for that party."""
     party = DbParty.query.get(party_id)
     if party is None:
         raise ValueError(f'Unknown party ID "{party_id}"')
 
-    category = TourneyCategory(party.id, title)
+    category = DbTourneyCategory(party.id, title)
     party.tourney_categories.append(category)
 
     db.session.commit()
@@ -31,13 +31,13 @@ def create_category(party_id: PartyID, title: str) -> TourneyCategory:
     return category
 
 
-def update_category(category: TourneyCategory, title: str) -> None:
+def update_category(category: DbTourneyCategory, title: str) -> None:
     """Update category."""
     category.title = title
     db.session.commit()
 
 
-def move_category_up(category: TourneyCategory) -> None:
+def move_category_up(category: DbTourneyCategory) -> None:
     """Move a category upwards by one position."""
     category_list = category.party.tourney_categories
 
@@ -50,7 +50,7 @@ def move_category_up(category: TourneyCategory) -> None:
     db.session.commit()
 
 
-def move_category_down(category: TourneyCategory) -> None:
+def move_category_down(category: DbTourneyCategory) -> None:
     """Move a category downwards by one position."""
     category_list = category.party.tourney_categories
 
@@ -63,14 +63,16 @@ def move_category_down(category: TourneyCategory) -> None:
     db.session.commit()
 
 
-def find_category(category_id: TourneyCategoryID) -> Optional[TourneyCategory]:
+def find_category(
+    category_id: TourneyCategoryID
+) -> Optional[DbTourneyCategory]:
     """Return the category with that id, or `None` if not found."""
-    return TourneyCategory.query.get(category_id)
+    return DbTourneyCategory.query.get(category_id)
 
 
-def get_categories_for_party(party_id: PartyID) -> Sequence[TourneyCategory]:
+def get_categories_for_party(party_id: PartyID) -> Sequence[DbTourneyCategory]:
     """Return the categories for this party."""
-    return TourneyCategory.query \
+    return DbTourneyCategory.query \
         .filter_by(party_id=party_id) \
-        .order_by(TourneyCategory.position) \
+        .order_by(DbTourneyCategory.position) \
         .all()

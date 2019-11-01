@@ -10,13 +10,13 @@ from typing import Optional
 
 from ...database import db
 
-from .models.match import Match
+from .models.match import Match as DbMatch
 from .transfer.models import MatchID
 
 
 def create_match() -> MatchID:
     """Create a match."""
-    match = Match()
+    match = DbMatch()
 
     db.session.add(match)
     db.session.commit()
@@ -24,6 +24,6 @@ def create_match() -> MatchID:
     return match.id
 
 
-def find_match(match_id: MatchID) -> Optional[Match]:
+def find_match(match_id: MatchID) -> Optional[DbMatch]:
     """Return the match with that id, or `None` if not found."""
-    return Match.query.get(match_id)
+    return DbMatch.query.get(match_id)

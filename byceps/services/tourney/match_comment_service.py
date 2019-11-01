@@ -15,15 +15,15 @@ from ...services.user import service as user_service
 from ...services.user.transfer.models import User
 from ...typing import PartyID, UserID
 
-from .models.match import MatchComment
+from .models.match import MatchComment as DbMatchComment
 from .transfer.models import MatchID, MatchCommentID
 
 
 def get_comments(
     match_id: MatchID, party_id: PartyID, *, include_hidden: bool = False
-) -> Sequence[MatchComment]:
+) -> Sequence[DbMatchComment]:
     """Return comments on the match, ordered chronologically."""
-    query = MatchComment.query \
+    query = DbMatchComment.query \
         .for_match(match_id)
 
     if not include_hidden:
@@ -31,7 +31,7 @@ def get_comments(
 
     comments = query \
         .for_match(match_id) \
-        .order_by(MatchComment.created_at) \
+        .order_by(DbMatchComment.created_at) \
         .all()
 
     # Add creator objects.
@@ -59,9 +59,9 @@ def _get_users_by_id(
 
 def create_comment(
     match_id: MatchID, creator_id: UserID, body: str
-) -> MatchComment:
+) -> DbMatchComment:
     """Create a comment on a match."""
-    comment = MatchComment(match_id, creator_id, body)
+    comment = DbMatchComment(match_id, creator_id, body)
 
     db.session.add(comment)
     db.session.commit()
@@ -71,7 +71,7 @@ def create_comment(
 
 def hide_comment(comment_id: MatchCommentID, initiator_id: UserID) -> None:
     """Hide the match comment."""
-    comment = MatchComment.query.get(comment_id)
+    comment = DbMatchComment.query.get(comment_id)
     if comment is None:
         raise ValueError('Unknown match comment ID')
 
@@ -84,7 +84,7 @@ def hide_comment(comment_id: MatchCommentID, initiator_id: UserID) -> None:
 
 def unhide_comment(comment_id: MatchCommentID, initiator_id: UserID) -> None:
     """Un-hide the match comment."""
-    comment = MatchComment.query.get(comment_id)
+    comment = DbMatchComment.query.get(comment_id)
     if comment is None:
         raise ValueError('Unknown match comment ID')
 
