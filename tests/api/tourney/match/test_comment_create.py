@@ -18,7 +18,6 @@ from tests.helpers import (
     create_site,
     create_user,
     http_client,
-    login_user,
 )
 
 
@@ -71,11 +70,7 @@ def site():
 
 @pytest.fixture(scope='module')
 def player(app):
-    player = create_user()
-
-    login_user(player.id)
-
-    return player
+    return create_user()
 
 
 @pytest.fixture(scope='module')
