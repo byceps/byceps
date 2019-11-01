@@ -13,22 +13,17 @@ from byceps.services.user import command_service as user_command_service
 
 from tests.api.helpers import assemble_authorization_header
 from tests.conftest import database_recreated
-from tests.helpers import (
-    create_email_config,
-    create_site,
-    create_user,
-    http_client,
-)
+from tests.helpers import create_user, http_client
 
 
-def test_create_comment(app, site, player, match):
+def test_create_comment(app, player, match):
     response = request_comment_creation(app, match.id, player.id)
 
     assert response.status_code == 201
     assert get_comment_count_for_match(match.id) == 1
 
 
-def test_create_comment_on_nonexistent_match(app, site, player):
+def test_create_comment_on_nonexistent_match(app, player):
     unknown_match_id = '00000000-0000-0000-0000-000000000000'
 
     response = request_comment_creation(app, unknown_match_id, player.id)
@@ -36,14 +31,14 @@ def test_create_comment_on_nonexistent_match(app, site, player):
     assert response.status_code == 404
 
 
-def test_create_comment_by_suspended_user(app, site, cheater, match):
+def test_create_comment_by_suspended_user(app, cheater, match):
     response = request_comment_creation(app, match.id, cheater.id)
 
     assert response.status_code == 400
     assert get_comment_count_for_match(match.id) == 0
 
 
-def test_create_comment_by_unknown_user(app, site, match):
+def test_create_comment_by_unknown_user(app, match):
     unknown_user_id = '00000000-0000-0000-0000-000000000000'
 
     response = request_comment_creation(app, match.id, unknown_user_id)
@@ -56,16 +51,10 @@ def test_create_comment_by_unknown_user(app, site, match):
 
 
 @pytest.fixture(scope='module')
-def app(db, party_app):
-    with party_app.app_context():
+def app(db, admin_app):
+    with admin_app.app_context():
         with database_recreated(db):
-            yield party_app
-
-
-@pytest.fixture(scope='module')
-def site():
-    create_email_config()
-    create_site()
+            yield admin_app
 
 
 @pytest.fixture(scope='module')
