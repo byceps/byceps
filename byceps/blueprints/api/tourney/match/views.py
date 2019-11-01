@@ -8,7 +8,7 @@ byceps.blueprints.api.tourney.match.views
 
 from flask import abort, g, jsonify, request, url_for
 
-from .....services.tourney import match_service
+from .....services.tourney import match_comment_service, match_service
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.templating import templated
 from .....util.views import respond_created, respond_no_content
@@ -32,7 +32,7 @@ def comments_view(match_id):
     """Render the comments on a match."""
     match = _get_match_or_404(match_id)
 
-    comments = match_service.get_comments(match.id, g.party_id)
+    comments = match_comment_service.get_comments(match.id, g.party_id)
 
     # Drop hidden comments from output.
     comments = [comment for comment in comments if not comment.hidden]
@@ -48,7 +48,7 @@ def comments_view_as_json(match_id):
     """Render the comments on a match as JSON."""
     match = _get_match_or_404(match_id)
 
-    comments = match_service.get_comments(match.id, g.party_id)
+    comments = match_comment_service.get_comments(match.id, g.party_id)
 
     comment_dtos = list(map(_comment_to_json, comments))
 
@@ -99,7 +99,9 @@ def comment_create(match_id):
 
     body = request.form['body'].strip()
 
-    comment = match_service.create_comment(match_id, g.current_user.id, body)
+    comment = match_comment_service.create_comment(
+        match_id, g.current_user.id, body
+    )
 
     signals.match_comment_created.send(None, comment_id=comment.id)
 
@@ -117,7 +119,7 @@ def comment_hide(match_id, comment_id):
     if not initiator_id:
         abort(400, 'Initiator ID missing')
 
-    match_service.hide_comment(comment_id, initiator_id)
+    match_comment_service.hide_comment(comment_id, initiator_id)
 
 
 @blueprint.route(
@@ -132,7 +134,7 @@ def comment_unhide(match_id, comment_id):
     if not initiator_id:
         abort(400, 'Initiator ID missing')
 
-    match_service.unhide_comment(comment_id, initiator_id)
+    match_comment_service.unhide_comment(comment_id, initiator_id)
 
 
 def _get_match_or_404(match_id):
