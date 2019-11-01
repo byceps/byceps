@@ -12,7 +12,7 @@
       <ol>
       {%- with sites = get_sites_for_party(party.id) if party else get_all_sites() %}
         {%- for site in sites|sort(attribute='title') %}
-        <li><a href="{{ url_for('site_admin.view', site_id=site.id) }}">{{ site.title }}</a></li>
+        <li><a href="{{ url_for('site_admin.view', site_id=site.id) }}">{{ site.title if site.enabled else site.title|dim }}</a></li>
         {%- endfor %}
       {%- endwith %}
       </ol>
@@ -47,7 +47,7 @@
       {%- for site in party_sites|sort(attribute='title') %}
       <li>
         <a href="{{ url_for('site_admin.view', site_id=site.id) }}" class="nav-item">
-          <span class="nav-item-label">{{ site.title }}</span>
+          <span class="nav-item-label">{{ site.title if site.enabled else site.title|dim }}</span>
         </a>
       </li>
       {%- endfor %}
