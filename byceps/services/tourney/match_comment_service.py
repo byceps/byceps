@@ -7,7 +7,7 @@ byceps.services.tourney.match_comment_service
 """
 
 from datetime import datetime
-from typing import Dict, Sequence, Set
+from typing import Dict, Optional, Sequence, Set
 
 from ...database import db
 from ...services.text_markup import service as text_markup_service
@@ -20,7 +20,10 @@ from .transfer.models import MatchID, MatchCommentID
 
 
 def get_comments(
-    match_id: MatchID, party_id: PartyID, *, include_hidden: bool = False
+    match_id: MatchID,
+    *,
+    party_id: Optional[PartyID] = None,
+    include_hidden: bool = False,
 ) -> Sequence[DbMatchComment]:
     """Return comments on the match, ordered chronologically."""
     query = DbMatchComment.query \
@@ -36,7 +39,7 @@ def get_comments(
 
     # Add creator objects.
     creator_ids = {comment.created_by_id for comment in comments}
-    creators_by_id = _get_users_by_id(creator_ids, party_id)
+    creators_by_id = _get_users_by_id(creator_ids, party_id=party_id)
     for comment in comments:
         comment.creator = creators_by_id[comment.created_by_id]
 
@@ -48,7 +51,7 @@ def get_comments(
 
 
 def _get_users_by_id(
-    user_ids: Set[UserID], party_id: PartyID
+    user_ids: Set[UserID], *, party_id: Optional[PartyID] = None
 ) -> Dict[UserID, User]:
     users = user_service.find_users(
         user_ids, include_avatars=True, include_orga_flags_for_party_id=party_id
