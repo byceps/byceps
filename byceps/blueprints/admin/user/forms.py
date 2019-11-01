@@ -45,6 +45,7 @@ class CreateAccountForm(LocalizedForm):
 
     def set_site_choices(self):
         sites = site_service.get_all_sites()
+        sites = [site for site in sites if site.enabled]
         sites.sort(key=lambda site: site.id)
 
         choices = [(str(site.id), site.id) for site in sites]
