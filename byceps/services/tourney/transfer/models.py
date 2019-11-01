@@ -9,6 +9,8 @@ byceps.services.tourney.transfer.models
 from typing import NewType
 from uuid import UUID
 
+from attr import attrs
+
 
 TourneyCategoryID = NewType('TourneyCategoryID', UUID)
 
@@ -23,3 +25,8 @@ MatchCommentID = NewType('MatchCommentID', UUID)
 
 
 ParticipantID = NewType('ParticipantID', UUID)
+
+
+@attrs(auto_attribs=True, frozen=True, slots=True)
+class Match:
+    id: MatchID

@@ -101,7 +101,7 @@ def comment_create(match_id):
     body = request.form['body'].strip()
 
     comment = match_comment_service.create_comment(
-        match_id, g.current_user.id, body
+        match.id, g.current_user.id, body
     )
 
     signals.match_comment_created.send(None, comment_id=comment.id)

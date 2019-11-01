@@ -21,22 +21,20 @@ from tests.helpers import (
 )
 
 
-def test_create_comment_on_existent_match(app, site, player, match_id):
-    response = request_comment_creation(app, match_id, user_id=player.id)
+def test_create_comment_on_existent_match(app, site, player, match):
+    response = request_comment_creation(app, match.id, user_id=player.id)
 
     assert response.status_code == 201
 
-    assert get_comment_count_for_match(match_id) == 1
+    assert get_comment_count_for_match(match.id) == 1
 
 
-def test_create_comment_on_existent_match_as_anonymous_user(
-    app, site, match_id
-):
-    response = request_comment_creation(app, match_id)
+def test_create_comment_on_existent_match_as_anonymous_user(app, site, match):
+    response = request_comment_creation(app, match.id)
 
     assert response.status_code == 403
 
-    assert get_comment_count_for_match(match_id) == 0
+    assert get_comment_count_for_match(match.id) == 0
 
 
 def test_create_comment_on_nonexistent_match(app, site, player):
@@ -75,7 +73,7 @@ def player(app):
 
 
 @pytest.fixture
-def match_id(app):
+def match(app):
     return match_service.create_match()
 
 
