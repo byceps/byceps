@@ -57,6 +57,7 @@ class DeleteAccountForm(LocalizedForm):
     reason = TextAreaField('Begründung', validators=[InputRequired(), Length(max=400)])
     verification = StringField('Bestätigung', validators=[InputRequired()])
 
+    @staticmethod
     def validate_verification(form, field):
         if field.data != 'löschen':
             raise ValidationError('Ungültiges Bestätigungswort')

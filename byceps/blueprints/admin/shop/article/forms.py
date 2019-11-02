@@ -34,6 +34,7 @@ class ArticleUpdateForm(ArticleCreateForm):
     requires_separate_order = BooleanField('muss separat bestellt werden')
     shipping_required = BooleanField('Versand erforderlich')
 
+    @staticmethod
     def validate_available_until(form, field):
         """Ensure that the availability range's begin is before its end."""
         begin = form.available_from.data

@@ -46,6 +46,7 @@ class UserCreateForm(LocalizedForm):
     consent_to_privacy_policy = BooleanField('Datenschutzbestimmungen', [InputRequired()])
     subscribe_to_newsletter = BooleanField('Newsletter')
 
+    @staticmethod
     def validate_terms_version_id(form, field):
         try:
             UUID(field.data)

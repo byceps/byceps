@@ -17,6 +17,7 @@ class MountpointCreateForm(LocalizedForm):
     endpoint_suffix = StringField('Bezeichner', [InputRequired()])
     url_path = StringField('URL-Pfad', [InputRequired()])
 
+    @staticmethod
     def validate_url_path(form, field):
         if not field.data.startswith('/'):
             raise ValidationError('Der URL-Pfad muss mit einem Slash beginnen.')
