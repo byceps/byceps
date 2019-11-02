@@ -30,6 +30,7 @@ PaymentMethod = Enum('PaymentMethod', [
     'bank_transfer',
     'cash',
     'direct_debit',
+    'free',
 ])
 
 

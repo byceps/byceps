@@ -22,6 +22,7 @@ PAYMENT_METHOD_CHOICES = [
     (PaymentMethod.bank_transfer.name, 'Überweisung'),
     (PaymentMethod.cash.name, 'Barzahlung'),
     (PaymentMethod.direct_debit.name, 'Lastschrift'),
+    (PaymentMethod.free.name, 'kostenlos'),
 ]
 
 
