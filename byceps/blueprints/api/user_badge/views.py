@@ -41,13 +41,13 @@ def award_badge_to_user():
 
 
 def _get_badge_or_400():
-    badge_id = request.form['badge_id']
-    if badge_id is None:
-        abort(400, 'Badge ID missing')
+    badge_slug = request.form['badge_slug']
+    if badge_slug is None:
+        abort(400, 'Badge slug missing')
 
-    badge = badge_service.find_badge(badge_id)
+    badge = badge_service.find_badge_by_slug(badge_slug)
     if not badge:
-        abort(400, 'Badge ID unknown')
+        abort(400, 'Badge slug unknown')
 
     return badge
 

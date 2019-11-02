@@ -21,7 +21,7 @@ def test_award_badge(api_client, api_client_authz_header, user, admin):
     url = f'/api/user_badges/awardings'
     headers = [api_client_authz_header]
     form_data = {
-        'badge_id': str(badge.id),
+        'badge_slug': 'supporter',
         'user_id': str(user.id),
         'initiator_id': str(admin.id),
     }
