@@ -30,6 +30,7 @@ class Party(db.Model):
     ends_at = db.Column(db.DateTime, nullable=False)
     max_ticket_quantity = db.Column(db.Integer, nullable=True)
     shop_id = db.Column(db.UnicodeText, db.ForeignKey('shops.id'), index=True, nullable=True)
+    ticket_management_enabled = db.Column(db.Boolean, default=False, nullable=False)
     archived = db.Column(db.Boolean, default=False, nullable=False)
 
     def __init__(

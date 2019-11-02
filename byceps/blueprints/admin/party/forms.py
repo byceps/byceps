@@ -25,4 +25,5 @@ class CreateForm(_BaseForm):
 
 
 class UpdateForm(_BaseForm):
+    ticket_management_enabled = BooleanField('Ticketverwaltung geöffnet')
     archived = BooleanField('archiviert')

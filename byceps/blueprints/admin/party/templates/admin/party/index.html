@@ -18,6 +18,7 @@
         <th></th>
         <th>Marke</th>
         <th>Zeitraum</th>
+        <th>Ticket&shy;verwaltung</th>
       </tr>
     </thead>
     <tbody>
@@ -40,6 +41,7 @@
           <br>{{ render_tag('vorbei', class='color-disabled') }}
           {%- endif %}
         </td>
+        <td>{{ render_tag('geöffnet', class='color-success') if party.ticket_management_enabled else render_tag('gesperrt', class='color-disabled', icon='disabled') }}</td>
       </tr>
       {%- endfor %}
       <tr>

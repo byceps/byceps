@@ -57,6 +57,7 @@ def update_party(
     ends_at: datetime,
     max_ticket_quantity: Optional[int],
     shop_id: ShopID,
+    ticket_management_enabled: bool,
     archived: bool,
 ) -> Party:
     """Update a party."""
@@ -70,6 +71,7 @@ def update_party(
     party.ends_at = ends_at
     party.max_ticket_quantity = max_ticket_quantity
     party.shop_id = shop_id
+    party.ticket_management_enabled = ticket_management_enabled
     party.archived = archived
 
     db.session.commit()
@@ -205,5 +207,6 @@ def _db_entity_to_party(party: DbParty) -> Party:
         party.ends_at,
         party.max_ticket_quantity,
         party.shop_id,
+        party.ticket_management_enabled,
         party.archived,
     )

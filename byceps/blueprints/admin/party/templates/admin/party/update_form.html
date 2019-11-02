@@ -23,6 +23,7 @@
       {{ form_field(form.ends_at, size=16, maxlength=16, required='required', note='Format: <kbd>TT.MM.JJJJ hh:mm</kbd>'|safe) }}
       {{ form_field(form.max_ticket_quantity, type='number', min=0, max=99999, style='width: 5.5rem;') }}
       {{ form_field(form.shop_id) }}
+      {{ form_field_checkbox(form.ticket_management_enabled, form.ticket_management_enabled.label.text) }}
       {{ form_field_checkbox(form.archived, form.archived.label.text) }}
     {% endcall %}
 

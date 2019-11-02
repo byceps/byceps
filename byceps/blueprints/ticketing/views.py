@@ -8,7 +8,6 @@ byceps.blueprints.ticketing.views
 
 from flask import abort, g, redirect, request, url_for
 
-from ...config import get_ticket_management_enabled
 from ...services.party import service as party_service
 from ...services.ticketing import (
     barcode_service,
@@ -344,9 +343,17 @@ def withdraw_seat_manager(ticket_id):
 
 
 def _abort_if_ticket_management_disabled():
-    if not get_ticket_management_enabled():
+    if not _is_ticket_management_enabled():
         flash_error('Tickets können derzeit nicht verändert werden.')
         abort(403)
+
+
+def _is_ticket_management_enabled():
+    if g.party_id is None:
+        return False
+
+    party = party_service.get_party(g.party_id)
+    return party.ticket_management_enabled
 
 
 def _get_ticket_or_404(ticket_id):

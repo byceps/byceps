@@ -24,6 +24,7 @@ class Party:
     ends_at: datetime
     max_ticket_quantity: int
     shop_id: ShopID
+    ticket_management_enabled: bool
     archived: bool
 
 
