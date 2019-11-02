@@ -11,7 +11,9 @@ from datetime import datetime
 from itertools import chain
 from typing import Dict, List, Set
 
-from ...database import db
+from sqlalchemy.dialects.postgresql import insert
+
+from ...database import db, upsert
 from ...typing import PartyID, UserID
 
 from ..party.models.party import Party as DbParty
@@ -27,16 +29,17 @@ from .models.category import Category as DbCategory
 from .models.ticket import Ticket as DbTicket
 
 
-def create_archived_attendance(
-    user_id: UserID, party_id: PartyID
-) -> DbArchivedAttendance:
+def create_archived_attendance(user_id: UserID, party_id: PartyID) -> None:
     """Create an archived attendance of the user at the party."""
-    attendance = DbArchivedAttendance(user_id, party_id)
+    table = DbArchivedAttendance.__table__
 
-    db.session.add(attendance)
-    db.session.commit()
-
-    return attendance
+    query = insert(table) \
+        .values({
+            'user_id': str(user_id),
+            'party_id': str(party_id),
+        }) \
+        .on_conflict_do_nothing(constraint=table.primary_key)
+    db.session.execute(query)
 
 
 def get_attended_parties(user_id: UserID) -> List[Party]:
