@@ -9,7 +9,7 @@ byceps.blueprints.board.service
 from datetime import datetime
 from typing import Dict, Optional, Sequence, Set
 
-from flask import current_app
+from flask import g
 
 from ...services.authentication.session.models.current_user import CurrentUser
 from ...services.board.models.topic import Topic as DbTopic
@@ -20,6 +20,7 @@ from ...services.board import (
 )
 from ...services.board.transfer.models import CategoryWithLastUpdate
 from ...services.party import service as party_service
+from ...services.site import settings_service as site_settings_service
 from ...services.ticketing import ticket_service
 from ...services.user import service as user_service
 from ...services.user_badge import service as badge_service
@@ -27,6 +28,10 @@ from ...services.user_badge.transfer.models import Badge
 from ...typing import BrandID, PartyID, UserID
 
 from .models import CategoryWithLastUpdateAndUnseenFlag, Creator, Ticket
+
+
+DEFAULT_POSTINGS_PER_PAGE = 10
+DEFAULT_TOPICS_PER_PAGE = 10
 
 
 def add_unseen_postings_flag_to_categories(
@@ -138,9 +143,22 @@ def calculate_posting_page_number(posting: DbPosting, user: CurrentUser) -> int:
 
 def get_topics_per_page_value() -> int:
     """Return the configured number of topics per page."""
-    return int(current_app.config['BOARD_TOPICS_PER_PAGE'])
+    return _get_site_setting_int_value(
+        'board_topics_per_page', DEFAULT_TOPICS_PER_PAGE
+    )
 
 
 def get_postings_per_page_value() -> int:
     """Return the configured number of postings per page."""
-    return int(current_app.config['BOARD_POSTINGS_PER_PAGE'])
+    return _get_site_setting_int_value(
+        'board_postings_per_page', DEFAULT_POSTINGS_PER_PAGE
+    )
+
+
+def _get_site_setting_int_value(key, default_value) -> int:
+    value = site_settings_service.find_setting_value(g.site_id, key)
+
+    if value is None:
+        return default_value
+
+    return int(value)
