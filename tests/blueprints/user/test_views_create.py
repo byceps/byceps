@@ -23,8 +23,9 @@ from byceps.services.terms import document_service as terms_document_service
 from byceps.services.terms import version_service as terms_version_service
 from byceps.services.user import event_service, service as user_service
 from byceps.services.user.models.user import User
-from byceps.services.verification_token import (
-    service as verification_token_service,
+from byceps.services.verification_token.models import (
+    Purpose as TokenPurpose,
+    Token,
 )
 
 from tests.base import AbstractAppTestCase
@@ -242,9 +243,10 @@ def get_user_count():
 
 
 def find_verification_token(user_id):
-    return verification_token_service.find_for_email_address_confirmation_by_user(
-        user_id
-    )
+    return Token.query \
+        .filter_by(user_id=user_id) \
+        .for_purpose(TokenPurpose.email_address_confirmation) \
+        .first()
 
 
 def is_subscribed_to_newsletter(user_id, brand_id):

@@ -59,7 +59,7 @@ def request_confirmation_email():
         )
         return request_confirmation_email_form()
 
-    verification_token = verification_token_service.find_or_create_for_email_address_confirmation(
+    verification_token = verification_token_service.create_for_email_address_confirmation(
         user.id
     )
 

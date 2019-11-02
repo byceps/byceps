@@ -113,7 +113,7 @@ def login():
     if not in_admin_mode:
         required_consent_subject_ids = _get_required_consent_subject_ids()
         if _is_consent_required(user.id, required_consent_subject_ids):
-            verification_token = verification_token_service.find_or_create_for_terms_consent(
+            verification_token = verification_token_service.create_for_terms_consent(
                 user.id
             )
 
