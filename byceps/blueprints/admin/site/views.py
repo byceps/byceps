@@ -186,10 +186,10 @@ def update(site_id):
 
     if party_id:
         party = party_service.find_party(party_id)
-    else:
         if not party:
             flash_error(f'Die Party-ID "{party_id}" ist unbekannt.')
             return update_form(site.id, form)
+    else:
         party_id = None
 
     try:
