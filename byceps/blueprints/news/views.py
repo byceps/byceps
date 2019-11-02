@@ -6,7 +6,7 @@ byceps.blueprints.news.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from flask import abort, current_app, g
+from flask import abort, g
 
 from ...services.news import service as news_service
 from ...services.site import settings_service as site_settings_service
@@ -21,6 +21,9 @@ blueprint = create_blueprint('news', __name__)
 
 
 permission_registry.register_enum(NewsItemPermission)
+
+
+DEFAULT_ITEMS_PER_PAGE = 4
 
 
 @blueprint.route('/', defaults={'page': 1})
@@ -73,7 +76,14 @@ def _get_channel_id():
 
 
 def _get_items_per_page_value():
-    return int(current_app.config['NEWS_ITEMS_PER_PAGE'])
+    items_per_page = site_settings_service.find_setting_value(
+        g.site_id, 'news_items_per_page'
+    )
+
+    if items_per_page is None:
+        return DEFAULT_ITEMS_PER_PAGE
+
+    return int(items_per_page)
 
 
 def _may_view_drafts(user):

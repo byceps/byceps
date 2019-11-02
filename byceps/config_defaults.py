@@ -43,9 +43,6 @@ TIMEZONE = 'Europe/Berlin'
 ROOT_REDIRECT_TARGET = None
 ROOT_REDIRECT_STATUS_CODE = 307
 
-# news item pagination
-NEWS_ITEMS_PER_PAGE = 4
-
 # message board pagination
 BOARD_TOPICS_PER_PAGE = 10
 BOARD_POSTINGS_PER_PAGE = 10
