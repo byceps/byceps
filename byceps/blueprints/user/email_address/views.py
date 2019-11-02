@@ -59,12 +59,8 @@ def request_confirmation_email():
         )
         return request_confirmation_email_form()
 
-    verification_token = verification_token_service.create_for_email_address_confirmation(
-        user.id
-    )
-
     email_address_confirmation_service.send_email_address_confirmation_email(
-        user.email_address, user.screen_name, verification_token, g.site_id
+        user.email_address, user.screen_name, user.id, g.site_id
     )
 
     flash_success(

@@ -8,6 +8,7 @@ byceps.services.user.email_address_confirmation_service
 
 from ...database import db
 from ...events.user import UserEmailAddressConfirmed
+from ...typing import UserID
 
 from ..email import service as email_service
 from ..site import service as site_service
@@ -21,7 +22,7 @@ from . import command_service, event_service as user_event_service
 def send_email_address_confirmation_email(
     recipient_email_address: str,
     recipient_screen_name: str,
-    verification_token: Token,
+    user_id: UserID,
     site_id: SiteID,
 ) -> None:
     site = site_service.get_site(site_id)
@@ -29,6 +30,9 @@ def send_email_address_confirmation_email(
     email_config = email_service.get_config(site.email_config_id)
     sender = email_config.sender
 
+    verification_token = verification_token_service.create_for_email_address_confirmation(
+        user_id
+    )
     confirmation_url = (
         f'https://{site.server_name}/users/email_address/'
         f'confirmation/{verification_token.token}'

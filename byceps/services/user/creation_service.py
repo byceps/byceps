@@ -21,7 +21,6 @@ from ..consent.transfer.models import Consent
 from ..newsletter import command_service as newsletter_command_service
 from ..newsletter.transfer.models import Subscription as NewsletterSubscription
 from ..site.transfer.models import SiteID
-from ..verification_token import service as verification_token_service
 
 from . import email_address_confirmation_service
 from . import event_service
@@ -174,12 +173,8 @@ def request_email_address_confirmation(
     """
     normalized_email_address = _normalize_email_address(email_address)
 
-    verification_token = verification_token_service.create_for_email_address_confirmation(
-        user.id
-    )
-
     email_address_confirmation_service.send_email_address_confirmation_email(
-        normalized_email_address, user.screen_name, verification_token, site_id
+        normalized_email_address, user.screen_name, user.id, site_id
     )
 
 
