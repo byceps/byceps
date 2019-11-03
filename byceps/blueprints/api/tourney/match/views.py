@@ -18,6 +18,8 @@ from ...decorators import api_token_required
 
 from .. import signals
 
+from .schemas import CreateMatchCommentRequest
+
 
 blueprint = create_blueprint('api_tourney_match', __name__)
 
@@ -100,12 +102,17 @@ def comment_create(match_id):
     """Create a comment on a match."""
     match = _get_match_or_404(match_id)
 
-    creator_id = request.form['creator_id']
-    body = request.form['body'].strip()
+    schema = CreateMatchCommentRequest()
+    try:
+        req = schema.load(request.get_json())
+    except ValidationError as e:
+        abort(400, str(e.normalized_messages()))
 
-    creator = user_service.find_active_user(creator_id)
+    creator = user_service.find_active_user(req['creator_id'])
     if not creator:
         abort(400, 'Creator ID does not reference an active user.')
+
+    body = req['body'].strip()
 
     comment = match_comment_service.create_comment(match.id, creator.id, body)
 

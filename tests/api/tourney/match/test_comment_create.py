@@ -89,9 +89,9 @@ def request_comment_creation(
     url = f'/api/tourney/matches/{match_id}/comments'
 
     headers = [api_client_authz_header]
-    form_data = {'creator_id': creator_id, 'body': 'gg'}
+    json_data = {'creator_id': creator_id, 'body': 'gg'}
 
-    return api_client.post(url, headers=headers, data=form_data)
+    return api_client.post(url, headers=headers, json=json_data)
 
 
 def get_comment_count_for_match(match_id):
