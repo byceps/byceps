@@ -14,7 +14,6 @@ from ..typing import UserID
 from .base import _BaseEvent
 
 
-
 @dataclass(frozen=True)
 class _UserEvent(_BaseEvent):
     user_id: UserID

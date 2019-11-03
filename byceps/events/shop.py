@@ -9,6 +9,7 @@ byceps.events.shop
 from dataclasses import dataclass
 
 from ..services.shop.order.transfer.models import OrderID
+from ..typing import UserID
 
 from .base import _BaseEvent
 
@@ -25,7 +26,7 @@ class ShopOrderPlaced(_ShopOrderEvent):
 
 @dataclass(frozen=True)
 class ShopOrderCanceled(_ShopOrderEvent):
-    pass
+    initiator_id: UserID
 
 
 @dataclass(frozen=True)

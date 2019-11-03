@@ -104,6 +104,7 @@ class ShopAdminTestCase(ShopTestBase):
         event = ShopOrderCanceled(
             occurred_at=order_afterwards.payment_state_updated_at,
             order_id=placed_order.id,
+            initiator_id=self.admin.id,
         )
         order_canceled_signal_send_mock.assert_called_once_with(
             None, event=event
@@ -135,6 +136,7 @@ class ShopAdminTestCase(ShopTestBase):
         event = ShopOrderCanceled(
             occurred_at=order_afterwards.payment_state_updated_at,
             order_id=placed_order.id,
+            initiator_id=self.admin.id,
         )
         order_canceled_signal_send_mock.assert_called_once_with(
             None, event=event
@@ -225,6 +227,7 @@ class ShopAdminTestCase(ShopTestBase):
         event = ShopOrderCanceled(
             occurred_at=order_afterwards.payment_state_updated_at,
             order_id=placed_order.id,
+            initiator_id=self.admin.id,
         )
         order_canceled_signal_send_mock.assert_called_once_with(
             None, event=event

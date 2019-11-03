@@ -261,7 +261,9 @@ def cancel_order(
         order.to_transfer_object(), payment_state_to, initiator_id
     )
 
-    return ShopOrderCanceled(occurred_at=updated_at, order_id=order.id)
+    return ShopOrderCanceled(
+        occurred_at=updated_at, order_id=order.id, initiator_id=initiator_id
+    )
 
 
 def mark_order_as_paid(
