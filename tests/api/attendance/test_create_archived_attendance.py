@@ -48,12 +48,12 @@ def test_create_archived_attendance_idempotency(
 def _send_request(api_client, api_client_authz_header, user_id, party_id):
     url = f'/api/attendances/archived_attendances'
     headers = [api_client_authz_header]
-    form_data = {
+    json_data = {
         'user_id': str(user_id),
         'party_id': str(party_id),
     }
 
-    return api_client.post(url, headers=headers, data=form_data)
+    return api_client.post(url, headers=headers, json=json_data)
 
 
 def _assert_attended_party_ids(user_id, expected):
