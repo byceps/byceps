@@ -19,7 +19,6 @@ STATIC_URL_PREFIX_SITE = '/site'
 EXTENSION_KEY = 'byceps_config'
 KEY_SITE_MODE = 'site_mode'
 KEY_SITE_ID = 'site_id'
-KEY_SEAT_MANAGEMENT_ENABLED = 'seat_management_enabled'
 KEY_USER_REGISTRATION_ENABLED = 'user_registration_enabled'
 
 
@@ -47,11 +46,6 @@ def init_app(app):
     )
     update_extension_value(
         app, KEY_USER_REGISTRATION_ENABLED, user_registration_enabled
-    )
-
-    seat_management_enabled = determine_seat_management_enabled(app, site_mode)
-    update_extension_value(
-        app, KEY_SEAT_MANAGEMENT_ENABLED, seat_management_enabled
     )
 
 
@@ -113,22 +107,6 @@ def determine_user_registration_enabled(app, site_mode):
 def get_user_registration_enabled(app=None):
     """Return `True` if guests may register user accounts."""
     return _get_config_dict(app)[KEY_USER_REGISTRATION_ENABLED]
-
-
-# -------------------------------------------------------------------- #
-# seat management
-
-
-def determine_seat_management_enabled(app, site_mode):
-    if site_mode.is_admin():
-        return False
-
-    return app.config['SEAT_MANAGEMENT_ENABLED']
-
-
-def get_seat_management_enabled(app=None):
-    """Return `True` if users may manage seats."""
-    return _get_config_dict(app)[KEY_SEAT_MANAGEMENT_ENABLED]
 
 
 # -------------------------------------------------------------------- #

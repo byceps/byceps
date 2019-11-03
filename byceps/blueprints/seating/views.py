@@ -10,7 +10,7 @@ from typing import Dict, Sequence
 
 from flask import abort, g
 
-from ...config import get_seat_management_enabled
+from ...services.party import service as party_service
 from ...services.seating import area_service as seating_area_service
 from ...services.seating.models.seat import Seat
 from ...services.seating import seat_service
@@ -63,7 +63,7 @@ def view_area(slug):
     if area is None:
         abort(404)
 
-    seat_management_enabled = get_seat_management_enabled()
+    seat_management_enabled = _is_seat_management_enabled()
 
     seats = seat_service.get_seats_with_tickets_for_area(area.id)
 
@@ -188,9 +188,17 @@ def release_seat(ticket_id):
 
 
 def _abort_if_seat_management_disabled() -> None:
-    if not get_seat_management_enabled():
+    if not _is_seat_management_enabled():
         flash_error('Sitzplätze können derzeit nicht verändert werden.')
         return
+
+
+def _is_seat_management_enabled():
+    if g.party_id is None:
+        return False
+
+    party = party_service.get_party(g.party_id)
+    return party.seat_management_enabled
 
 
 def _get_ticket_or_404(ticket_id: TicketID) -> Ticket:

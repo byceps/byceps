@@ -63,6 +63,10 @@
       <th>Ticketverwaltung</th>
       <td>{{ render_tag('geöffnet', class='color-success') if party.ticket_management_enabled else render_tag('gesperrt', class='color-disabled', icon='disabled') }}</td>
     </tr>
+    <tr>
+      <th>Sitzplatzverwaltung</th>
+      <td>{{ render_tag('geöffnet', class='color-success') if party.seat_management_enabled else render_tag('gesperrt', class='color-disabled', icon='disabled') }}</td>
+    </tr>
   </table>
 
   <h2>Einstellungen {{ render_extra_in_heading(settings|length) }}</h2>

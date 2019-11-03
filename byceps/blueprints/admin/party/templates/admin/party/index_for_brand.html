@@ -34,6 +34,7 @@
         <th class="centered">Tickets<br>maximal</th>
         <th>Shop</th>
         <th>Ticket&shy;verwaltung</th>
+        <th>Sitzplatz&shy;verwaltung</th>
         <th></th>
       </tr>
     </thead>
@@ -66,6 +67,7 @@
           {%- endif %}
         </td>
         <td>{{ render_tag('geöffnet', class='color-success') if party.ticket_management_enabled else render_tag('gesperrt', class='color-disabled', icon='disabled') }}</td>
+        <td>{{ render_tag('geöffnet', class='color-success') if party.seat_management_enabled else render_tag('gesperrt', class='color-disabled', icon='disabled') }}</td>
         <td>
           {%- if g.current_user.has_permission(PartyPermission.update) %}
           <div class="dropdown left">

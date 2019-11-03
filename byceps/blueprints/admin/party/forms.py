@@ -26,4 +26,5 @@ class CreateForm(_BaseForm):
 
 class UpdateForm(_BaseForm):
     ticket_management_enabled = BooleanField('Ticketverwaltung geöffnet')
+    seat_management_enabled = BooleanField('Sitzplatzverwaltung geöffnet')
     archived = BooleanField('archiviert')

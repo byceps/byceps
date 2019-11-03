@@ -24,6 +24,7 @@
       {{ form_field(form.max_ticket_quantity, type='number', min=0, max=99999, style='width: 5.5rem;') }}
       {{ form_field(form.shop_id) }}
       {{ form_field_checkbox(form.ticket_management_enabled, form.ticket_management_enabled.label.text) }}
+      {{ form_field_checkbox(form.seat_management_enabled, form.seat_management_enabled.label.text) }}
       {{ form_field_checkbox(form.archived, form.archived.label.text) }}
     {% endcall %}
 

@@ -192,6 +192,7 @@ def update(party_id):
     if not shop_id:
         shop_id = None
     ticket_management_enabled = form.ticket_management_enabled.data
+    seat_management_enabled = form.seat_management_enabled.data
     archived = form.archived.data
 
     try:
@@ -203,6 +204,7 @@ def update(party_id):
             max_ticket_quantity,
             shop_id,
             ticket_management_enabled,
+            seat_management_enabled,
             archived,
         )
     except party_service.UnknownPartyId:
