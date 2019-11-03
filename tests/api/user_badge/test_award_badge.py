@@ -20,13 +20,13 @@ def test_award_badge(api_client, api_client_authz_header, user, admin):
 
     url = f'/api/user_badges/awardings'
     headers = [api_client_authz_header]
-    form_data = {
+    json_data = {
         'badge_slug': 'supporter',
         'user_id': str(user.id),
         'initiator_id': str(admin.id),
     }
 
-    response = api_client.post(url, headers=headers, data=form_data)
+    response = api_client.post(url, headers=headers, json=json_data)
     assert response.status_code == 204
 
     actual = badge_service.get_awardings_of_badge(badge.id)

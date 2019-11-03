@@ -20,6 +20,8 @@ from ..decorators import api_token_required
 
 from ...user_badge import signals
 
+from .schemas import AwardBadgeToUserRequest
+
 
 blueprint = create_blueprint('api_user_badge', __name__)
 
@@ -29,48 +31,29 @@ blueprint = create_blueprint('api_user_badge', __name__)
 @respond_no_content
 def award_badge_to_user():
     """Award the badge to a user."""
-    badge = _get_badge_or_400()
-    user = _get_user_or_400()
-    initiator = _get_initiator_or_400()
+    if not request.is_json:
+        abort(415)
+
+    schema = AwardBadgeToUserRequest()
+    try:
+        req = schema.load(request.get_json())
+    except ValidationError as e:
+        abort(400, str(e.normalized_messages()))
+
+    badge = badge_service.find_badge_by_slug(req['badge_slug'])
+    if not badge:
+        abort(400, 'Badge slug unknown')
+
+    user = user_service.find_user(req['user_id'])
+    if not user:
+        abort(400, 'User ID unknown')
+
+    initiator = user_service.find_user(req['initiator_id'])
+    if not initiator:
+        abort(400, 'Initiator ID unknown')
 
     _, event = badge_command_service.award_badge_to_user(
         badge.id, user.id, initiator_id=initiator.id
     )
 
     signals.user_badge_awarded.send(None, event=event)
-
-
-def _get_badge_or_400():
-    badge_slug = request.form['badge_slug']
-    if badge_slug is None:
-        abort(400, 'Badge slug missing')
-
-    badge = badge_service.find_badge_by_slug(badge_slug)
-    if not badge:
-        abort(400, 'Badge slug unknown')
-
-    return badge
-
-
-def _get_user_or_400():
-    user_id = request.form['user_id']
-    if not user_id:
-        abort(400, 'User ID missing')
-
-    user = user_service.find_user(user_id)
-    if not user:
-        abort(400, 'User ID unknown')
-
-    return user
-
-
-def _get_initiator_or_400():
-    initiator_id = request.form['initiator_id']
-    if not initiator_id:
-        abort(400, 'Initiator ID missing')
-
-    initiator = user_service.find_user(initiator_id)
-    if not initiator:
-        abort(400, 'Initiator ID unknown')
-
-    return initiator
