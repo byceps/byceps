@@ -11,13 +11,14 @@ from typing import Optional
 
 from flask import abort, g, request
 
-from ....config import get_user_registration_enabled
+from ....config import get_site_mode
 from ....services.brand import settings_service as brand_settings_service
 from ....services.consent.transfer.models import Consent, SubjectID
 from ....services.newsletter.transfer.models import (
     ListID as NewsletterListID,
     Subscription as NewsletterSubscription,
 )
+from ....services.site import service as site_service
 from ....services.terms import document_service as terms_document_service
 from ....services.terms import version_service as terms_version_service
 from ....services.user import creation_service as user_creation_service
@@ -39,9 +40,7 @@ blueprint = create_blueprint('user_creation', __name__)
 @templated
 def create_form(erroneous_form=None):
     """Show a form to create a user."""
-    if not get_user_registration_enabled():
-        flash_error('Das Erstellen von Benutzerkonten ist deaktiviert.')
-        abort(403)
+    _abort_if_user_account_creation_disabled()
 
     terms_version = terms_version_service.find_current_version_for_brand(
         g.brand_id
@@ -81,9 +80,7 @@ def create_form(erroneous_form=None):
 @blueprint.route('/', methods=['POST'])
 def create():
     """Create a user."""
-    if not get_user_registration_enabled():
-        flash_error('Das Erstellen von Benutzerkonten ist deaktiviert.')
-        abort(403)
+    _abort_if_user_account_creation_disabled()
 
     terms_document_id = terms_document_service.find_document_id_for_brand(
         g.brand_id
@@ -199,6 +196,20 @@ def create():
     signals.account_created.send(None, event=event)
 
     return redirect_to('authentication.login_form')
+
+
+def _abort_if_user_account_creation_disabled():
+    if not _is_user_account_creation_enabled():
+        flash_error('Das Erstellen von Benutzerkonten ist deaktiviert.')
+        abort(403)
+
+
+def _is_user_account_creation_enabled():
+    if get_site_mode().is_admin():
+        return False
+
+    site = site_service.get_site(g.site_id)
+    return site.user_account_creation_enabled
 
 
 def _adjust_create_form(

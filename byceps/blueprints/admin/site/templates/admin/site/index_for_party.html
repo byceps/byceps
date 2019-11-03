@@ -24,6 +24,7 @@
         <th>Name</th>
         <th>Servername</th>
         <th></th>
+        <th>Benutzer&shy;registrierung</th>
       </tr>
     </thead>
     <tbody>
@@ -33,11 +34,12 @@
         <td class="monospace"><a href="{{ url_for('.view', site_id=site.id) }}">{{ site.id }}</a></td>
         <td>{{ site.title }}</td>
         <td class="monospace">{{ site.server_name }}</td>
-        <td>
+        <td class="nowrap">
           {%- if not site.enabled -%}
           {{ render_tag('deaktiviert', class='color-disabled', icon='disabled') }}
           {%- endif -%}
         </td>
+        <td class="nowrap">{{ render_tag('geöffnet', class='color-success') if site.user_account_creation_enabled else render_tag('gesperrt', class='color-disabled', icon='disabled') }}</td>
       </tr>
     {%- endfor %}
     </tbody>

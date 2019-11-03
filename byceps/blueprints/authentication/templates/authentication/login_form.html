@@ -40,7 +40,7 @@
       {{ form_buttons('Anmelden') }}
     </form>
 
-      {% if user_registration_enabled %}
+      {% if user_account_creation_enabled %}
     <p>Du hast noch keinen Benutzerzugang? Dann <a href="{{ url_for('user_creation.create_form') }}">registriere dich</a>!</p>
     <p>Du hast die Bestätigungs-E-Mail noch nicht erhalten? Dann <a href="{{ url_for('user_email_address.request_confirmation_email_form') }}">fordere sie erneut an</a>.</p>
       {%- endif %}

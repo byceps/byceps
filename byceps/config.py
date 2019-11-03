@@ -19,7 +19,6 @@ STATIC_URL_PREFIX_SITE = '/site'
 EXTENSION_KEY = 'byceps_config'
 KEY_SITE_MODE = 'site_mode'
 KEY_SITE_ID = 'site_id'
-KEY_USER_REGISTRATION_ENABLED = 'user_registration_enabled'
 
 
 SiteMode = Enum('SiteMode', ['public', 'admin'])
@@ -40,13 +39,6 @@ def init_app(app):
     if site_mode.is_public():
         site_id = determine_site_id(app)
         update_extension_value(app, KEY_SITE_ID, site_id)
-
-    user_registration_enabled = determine_user_registration_enabled(
-        app, site_mode
-    )
-    update_extension_value(
-        app, KEY_USER_REGISTRATION_ENABLED, user_registration_enabled
-    )
 
 
 def update_extension_value(app, key, value):
@@ -91,22 +83,6 @@ def determine_site_id(app):
 def get_current_site_id(app=None):
     """Return the id of the current site."""
     return _get_config_dict(app)[KEY_SITE_ID]
-
-
-# -------------------------------------------------------------------- #
-# user registration
-
-
-def determine_user_registration_enabled(app, site_mode):
-    if site_mode.is_admin():
-        return False
-
-    return app.config['USER_REGISTRATION_ENABLED']
-
-
-def get_user_registration_enabled(app=None):
-    """Return `True` if guests may register user accounts."""
-    return _get_config_dict(app)[KEY_USER_REGISTRATION_ENABLED]
 
 
 # -------------------------------------------------------------------- #

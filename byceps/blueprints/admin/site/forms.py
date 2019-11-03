@@ -21,6 +21,7 @@ class UpdateForm(LocalizedForm):
     email_config_id = SelectField('E-Mail-Konfiguration', validators=[InputRequired()])
     party_id = SelectField('Party-ID', validators=[Optional()])
     enabled = BooleanField('aktiv')
+    user_account_creation_enabled  = BooleanField('Benutzerregistrierung geöffnet')
 
     def set_email_config_choices(self):
         configs = email_service.get_all_configs()

@@ -38,6 +38,10 @@
       <th>Party</th>
       <td>{% if site.party_id %}<a href="{{ url_for('admin_dashboard.view_party', party_id=site.party_id) }}">{{ site.party_id }}</a>{% else %}{{ ''|fallback }}{% endif %}</td>
     </tr>
+    <tr>
+      <th>Benutzer&shy;registrierung</th>
+      <td>{{ render_tag('geöffnet', class='color-success') if site.user_account_creation_enabled else render_tag('gesperrt', class='color-disabled', icon='disabled') }}</td>
+    </tr>
   </table>
 
   <h2>Einstellungen {{ render_extra_in_heading(settings|length) }}</h2>

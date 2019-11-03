@@ -24,6 +24,7 @@ class Site:
     email_config_id: str
     party_id: PartyID
     enabled: bool
+    user_account_creation_enabled: bool
 
 
 @attrs(auto_attribs=True, frozen=True, slots=True)

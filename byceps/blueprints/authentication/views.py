@@ -8,7 +8,7 @@ byceps.blueprints.authentication.views
 
 from flask import abort, g, request, url_for
 
-from ...config import get_site_mode, get_user_registration_enabled
+from ...config import get_site_mode
 from ...services.authentication.exceptions import AuthenticationFailed
 from ...services.authentication import service as authentication_service
 from ...services.authentication.password import service as password_service
@@ -68,13 +68,13 @@ def login_form():
         }
 
     form = LoginForm()
-    user_registration_enabled = get_user_registration_enabled()
+    user_account_creation_enabled = _is_user_account_creation_enabled(in_admin_mode)
 
     return {
         'login_enabled': True,
         'logged_in': logged_in,
         'form': form,
-        'user_registration_enabled': user_registration_enabled,
+        'user_account_creation_enabled': user_account_creation_enabled,
     }
 
 
@@ -308,6 +308,14 @@ def _verify_password_reset_token(verification_token):
 
 # -------------------------------------------------------------------- #
 # helpers
+
+
+def _is_user_account_creation_enabled(in_admin_mode):
+    if in_admin_mode:
+        return False
+
+    site = site_service.get_site(g.site_id)
+    return site.user_account_creation_enabled
 
 
 def _get_current_user_or_404():

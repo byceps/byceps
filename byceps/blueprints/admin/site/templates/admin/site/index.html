@@ -22,6 +22,7 @@
         <th>Servername</th>
         <th>E-Mail-Konf.</th>
         <th>Party</th>
+        <th>Benutzer&shy;registrierung</th>
       </tr>
     </thead>
     <tbody>
@@ -43,6 +44,7 @@
           {{ 'keine'|dim }}
           {%- endif -%}
         </td>
+        <td class="nowrap">{{ render_tag('geöffnet', class='color-success') if site.user_account_creation_enabled else render_tag('gesperrt', class='color-disabled', icon='disabled') }}</td>
       </tr>
     {%- endfor %}
     </tbody>
