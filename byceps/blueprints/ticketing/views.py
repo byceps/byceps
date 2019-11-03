@@ -349,6 +349,9 @@ def _abort_if_ticket_management_disabled():
 
 
 def _is_ticket_management_enabled():
+    if g.current_user.is_anonymous:
+        return False
+
     if g.party_id is None:
         return False
 

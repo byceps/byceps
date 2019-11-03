@@ -194,6 +194,9 @@ def _abort_if_seat_management_disabled() -> None:
 
 
 def _is_seat_management_enabled():
+    if g.current_user.is_anonymous:
+        return False
+
     if g.party_id is None:
         return False
 
