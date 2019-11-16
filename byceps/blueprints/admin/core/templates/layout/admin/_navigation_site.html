@@ -20,7 +20,7 @@
   </header>
   {%- with navigation = Navigation('Site')
       .add_item(
-        url_for('site_admin.index_for_party', party_id=party.id) if party else url_for('site_admin.index'),
+        url_for('site_admin.view', site_id=site.id),
         'Einstellungen',
         id='site_admin',
         required_permission=SitePermission.view,
