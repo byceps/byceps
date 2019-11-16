@@ -64,91 +64,120 @@ def _register_blueprints(app):
 
 def _get_blueprints(app):
     """Yield blueprints to register on the application."""
-    yield from [
-        ('authentication',          '/authentication'               ),
-        ('authorization',           None                            ),
-        ('core',                    '/core'                         ),
-        ('healthcheck',             '/health'                       ),
-        ('user',                    None                            ),
-        ('user.avatar',             '/users'                        ),
-        ('user.creation',           '/users'                        ),
-        ('user.current',            '/users'                        ),
-        ('user.email_address',      '/users/email_address'          ),
-    ]
+    yield from _get_blueprints_common()
 
     current_mode = config.get_site_mode(app)
     if current_mode.is_public():
-        yield from [
-            ('attendance',              '/attendance'               ),
-            ('board',                   '/board'                    ),
-            ('consent',                 '/consent'                  ),
-            ('news',                    '/news'                     ),
-            ('newsletter',              '/newsletter'               ),
-            ('orga_team',               '/orgas'                    ),
-            ('party',                   None                        ),
-            ('seating',                 '/seating'                  ),
-            ('shop.order',              '/shop'                     ),
-            ('shop.orders',             '/shop/orders'              ),
-            ('snippet',                 '/snippets'                 ),
-            ('terms',                   '/terms'                    ),
-            ('ticketing',               '/tickets'                  ),
-            ('user.profile',            '/users'                    ),
-            ('user_badge',              '/user_badges'              ),
-            ('user_group',              '/user_groups'              ),
-            ('user_message',            '/user_messages'            ),
-        ]
+        yield from _get_blueprints_site()
     elif current_mode.is_admin():
-        yield from [
-            ('admin.authorization',     '/admin/authorization'      ),
-            ('admin.board',             '/admin/board'              ),
-            ('admin.brand',             '/admin/brands'             ),
-            ('admin.consent',           '/admin/consent'            ),
-            ('admin.core',              None                        ),
-            ('admin.dashboard',         '/admin/dashboard'          ),
-            ('admin.email',             '/admin/email'              ),
-            ('admin.news',              '/admin/news'               ),
-            ('admin.newsletter',        '/admin/newsletter'         ),
-            ('admin.jobs',              '/admin/jobs'               ),
-            ('admin.orga',              '/admin/orgas'              ),
-            ('admin.orga_presence',     '/admin/presence'           ),
-            ('admin.orga_team',         '/admin/orga_teams'         ),
-            ('admin.party',             '/admin/parties'            ),
-            ('admin.seating',           '/admin/seating'            ),
-            ('admin.shop',              None                        ),
-            ('admin.shop.article',      '/admin/shop/articles'      ),
-            ('admin.shop.email',        '/admin/shop/email'         ),
-            ('admin.shop.order',        '/admin/shop/orders'        ),
-            ('admin.shop.shipping',     '/admin/shop/shipping'      ),
-            ('admin.shop.shop',         '/admin/shop/shop'          ),
-            ('admin.site',              '/admin/sites'              ),
-            ('admin.snippet',           '/admin/snippets'           ),
-            ('admin.terms',             '/admin/terms'              ),
-            ('admin.ticketing',         '/admin/ticketing'          ),
-            ('admin.ticketing.checkin', '/admin/ticketing/checkin'  ),
-            ('admin.tourney',           '/admin/tourney'            ),
-            ('admin.user',              '/admin/users'              ),
-            ('admin.user_badge',        '/admin/user_badges'        ),
-        ]
+        yield from _get_blueprints_admin()
 
-    # API
-    yield from [
-        ('api.attendance',              '/api/attendances'          ),
-        ('api.tourney.avatar',          '/api/tourney/avatars'      ),
-        ('api.tourney.match',           '/api/tourney/matches'      ),
-        ('api.user',                    '/api/users'                ),
-        ('api.user_badge',              '/api/user_badges'          ),
-    ]
+    yield from _get_blueprints_api()
 
-    # metrics
+    yield from _get_blueprints_health()
+
     if app.config['METRICS_ENABLED']:
-        yield from [
-            ('metrics',                 '/metrics'                  ),
-        ]
+        yield from _get_blueprints_metrics()
 
     if app.debug:
-        yield from [
-            ('style_guide',             '/style_guide'              ),
-        ]
+        yield from _get_blueprints_debug()
+
+
+def _get_blueprints_common():
+    return [
+        ('authentication',          '/authentication'           ),
+        ('authorization',           None                        ),
+        ('core',                    '/core'                     ),
+        ('user',                    None                        ),
+        ('user.avatar',             '/users'                    ),
+        ('user.creation',           '/users'                    ),
+        ('user.current',            '/users'                    ),
+        ('user.email_address',      '/users/email_address'      ),
+    ]
+
+
+def _get_blueprints_site():
+    return [
+        ('attendance',              '/attendance'               ),
+        ('board',                   '/board'                    ),
+        ('consent',                 '/consent'                  ),
+        ('news',                    '/news'                     ),
+        ('newsletter',              '/newsletter'               ),
+        ('orga_team',               '/orgas'                    ),
+        ('party',                   None                        ),
+        ('seating',                 '/seating'                  ),
+        ('shop.order',              '/shop'                     ),
+        ('shop.orders',             '/shop/orders'              ),
+        ('snippet',                 '/snippets'                 ),
+        ('terms',                   '/terms'                    ),
+        ('ticketing',               '/tickets'                  ),
+        ('user.profile',            '/users'                    ),
+        ('user_badge',              '/user_badges'              ),
+        ('user_group',              '/user_groups'              ),
+        ('user_message',            '/user_messages'            ),
+    ]
+
+
+def _get_blueprints_admin():
+    return [
+        ('admin.authorization',     '/admin/authorization'      ),
+        ('admin.board',             '/admin/board'              ),
+        ('admin.brand',             '/admin/brands'             ),
+        ('admin.consent',           '/admin/consent'            ),
+        ('admin.core',              None                        ),
+        ('admin.dashboard',         '/admin/dashboard'          ),
+        ('admin.email',             '/admin/email'              ),
+        ('admin.news',              '/admin/news'               ),
+        ('admin.newsletter',        '/admin/newsletter'         ),
+        ('admin.jobs',              '/admin/jobs'               ),
+        ('admin.orga',              '/admin/orgas'              ),
+        ('admin.orga_presence',     '/admin/presence'           ),
+        ('admin.orga_team',         '/admin/orga_teams'         ),
+        ('admin.party',             '/admin/parties'            ),
+        ('admin.seating',           '/admin/seating'            ),
+        ('admin.shop',              None                        ),
+        ('admin.shop.article',      '/admin/shop/articles'      ),
+        ('admin.shop.email',        '/admin/shop/email'         ),
+        ('admin.shop.order',        '/admin/shop/orders'        ),
+        ('admin.shop.shipping',     '/admin/shop/shipping'      ),
+        ('admin.shop.shop',         '/admin/shop/shop'          ),
+        ('admin.site',              '/admin/sites'              ),
+        ('admin.snippet',           '/admin/snippets'           ),
+        ('admin.terms',             '/admin/terms'              ),
+        ('admin.ticketing',         '/admin/ticketing'          ),
+        ('admin.ticketing.checkin', '/admin/ticketing/checkin'  ),
+        ('admin.tourney',           '/admin/tourney'            ),
+        ('admin.user',              '/admin/users'              ),
+        ('admin.user_badge',        '/admin/user_badges'        ),
+    ]
+
+
+def _get_blueprints_api():
+    return [
+        ('api.attendance',          '/api/attendances'          ),
+        ('api.tourney.avatar',      '/api/tourney/avatars'      ),
+        ('api.tourney.match',       '/api/tourney/matches'      ),
+        ('api.user',                '/api/users'                ),
+        ('api.user_badge',          '/api/user_badges'          ),
+    ]
+
+
+def _get_blueprints_health():
+    return [
+        ('healthcheck',             '/health'                   ),
+    ]
+
+
+def _get_blueprints_metrics():
+    return [
+        ('metrics',                 '/metrics'                  ),
+    ]
+
+
+def _get_blueprints_debug():
+    return [
+        ('style_guide',             '/style_guide'              ),
+    ]
 
 
 def _add_static_file_url_rules(app):
