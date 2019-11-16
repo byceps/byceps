@@ -31,12 +31,6 @@
         required_permission=PartyPermission.view,
         icon='settings')
       .add_item(
-        url_for('site_admin.index_for_party', party_id=party.id),
-        'Sites',
-        id='sites_admin_party',
-        required_permission=SitePermission.view,
-        icon='site')
-      .add_item(
         url_for('shop_shop_admin.view_for_party', party_id=party.id),
         'Shop',
         id='shop_shop_admin',
