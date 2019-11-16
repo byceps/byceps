@@ -45,6 +45,7 @@ class UserCreateForm(LocalizedForm):
     consent_to_terms = BooleanField('AGB', [InputRequired()])
     consent_to_privacy_policy = BooleanField('Datenschutzbestimmungen', [InputRequired()])
     subscribe_to_newsletter = BooleanField('Newsletter')
+    is_bot = BooleanField('Bot')
 
     @staticmethod
     def validate_terms_version_id(form, field):
@@ -52,3 +53,8 @@ class UserCreateForm(LocalizedForm):
             UUID(field.data)
         except ValueError:
             raise ValueError('Ungültige AGB-Version.')
+
+    @staticmethod
+    def validate_is_bot(form, field):
+        if field.data:
+            raise ValueError('Bots sind nicht erlaubt.')

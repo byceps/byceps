@@ -32,6 +32,7 @@
       {%- if form.subscribe_to_newsletter %}
       {{ form_field_checkbox(form.subscribe_to_newsletter, 'Ich möchte den Newsletter erhalten.') }}
       {%- endif %}
+      <div style="display: none;">{{ form_field_checkbox(form.is_bot, 'Ich bin ein Bot.') }}</div>
     {%- endcall %}
 
     {{ form_buttons('Anlegen') }}
