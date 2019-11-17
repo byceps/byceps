@@ -1,7 +1,16 @@
 {% macro render_icon(name, color=None, title=None, filename='icons') -%}
 {%- if title is not none %}<span title="{{ title }}">{% endif -%}
 <svg class="icon"
-  {%- if color is not none %} style="fill: {{ color }}"{% endif -%}
+  {%- if color %} style="fill: {{ color }}"{% endif -%}
 ><use xlink:href="{{ url_for('static', filename='style/%s.svg'|format(filename)) }}#{{ name }}"/></svg>
+{%- if title is not none %}</span>{% endif -%}
+{%- endmacro %}
+
+
+{% macro render_site_icon(name, color=None, title=None) -%}
+{%- if title is not none %}<span title="{{ title }}">{% endif -%}
+<svg class="icon"
+  {%- if color %} style="fill: {{ color }}"{% endif -%}
+><use xlink:href="{{ url_for('site_file', filename='style/icons.svg') }}#{{ name }}"/></svg>
 {%- if title is not none %}</span>{% endif -%}
 {%- endmacro %}
