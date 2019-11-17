@@ -2,7 +2,6 @@
 {%- from 'macros/admin/party.html' import render_party_admin_link %}
 
 
-{%- if party %}
 <section class="sidebar-section">
   <header class="sidebar-section-header">
     <div class="sidebar-section-category">Party</div>
@@ -76,33 +75,3 @@
 {{ render_navigation(navigation, current_page) }}
   {%- endwith %}
 </section>
-{%- elif brand %}
-<section class="sidebar-section">
-  <header class="sidebar-section-header">
-    <div class="sidebar-section-title">Partys</div>
-  </header>
-  <nav class="main">
-  {%- with brand_parties = get_parties_for_brand(brand.id) %}
-    {%- if brand_parties %}
-    <ol>
-      {%- for party in brand_parties|sort(attribute='starts_at', reverse=True) %}
-      <li>
-        <a href="{{ url_for('admin_dashboard.view_party', party_id=party.id) }}" class="nav-item">
-          <span class="nav-item-label">
-          {%- if party.archived -%}
-            {{ party.title|dim }}
-          {%- else -%}
-            {{ party.title }}
-          {%- endif -%}
-          </span>
-        </a>
-      </li>
-      {%- endfor %}
-    </ol>
-    {%- else %}
-    <p>{{ 'keine'|dim }}</p>
-    {%- endif %}
-  {%- endwith %}
-  </nav>
-</section>
-{%- endif %}

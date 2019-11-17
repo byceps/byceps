@@ -3,7 +3,6 @@
 
 
 <section class="sidebar-section">
-{%- if brand %}
   <header class="sidebar-section-header">
     <div class="sidebar-section-category">Marke</div>
     <div class="dropdown">
@@ -76,20 +75,4 @@
   -%}
 {{ render_navigation(navigation, current_page) }}
   {%- endwith %}
-{%- else %}
-  <header class="sidebar-section-header">
-    <div class="sidebar-section-title">Marken</div>
-  </header>
-  <nav class="main">
-    {%- if all_brands %}
-    <ol>
-      {%- for brand in all_brands|sort(attribute='title') %}
-      <li><a href="{{ url_for('admin_dashboard.view_brand', brand_id=brand.id) }}" class="nav-item"><span class="nav-item-label">{{ brand.title }}</span></a></li>
-      {%- endfor %}
-    </ol>
-    {%- else %}
-    <p>{{ 'keine'|dim }}</p>
-    {%- endif %}
-  </nav>
-{%- endif %}
 </section>

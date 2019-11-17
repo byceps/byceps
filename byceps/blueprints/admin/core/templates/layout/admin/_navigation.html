@@ -8,11 +8,17 @@
     {%- with brand = current_page_brand|default(get_brand_for_party(party) if party else None) %}
 
         {%- include 'layout/admin/_navigation_global.html' %}
-        {%- include 'layout/admin/_navigation_brand.html' %}
-        {%- include 'layout/admin/_navigation_party.html' %}
 
         {%- if site %}
         {%- include 'layout/admin/_navigation_site.html' %}
+        {%- endif %}
+
+        {%- if brand %}
+        {%- include 'layout/admin/_navigation_brand.html' %}
+        {%- endif %}
+
+        {%- if party %}
+        {%- include 'layout/admin/_navigation_party.html' %}
         {%- endif %}
 
       {%- endwith %}
