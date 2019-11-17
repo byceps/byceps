@@ -1,0 +1,18 @@
+<h2>Aktive Sites</h2>
+
+{%- if enabled_sites %}
+<ol class="fancy-list">
+  {%- for site in enabled_sites %}
+  <li>
+    <a href="{{ url_for('site_admin.view', site_id=site.id) }}">
+      <div class="item">{{ site.title }}</div>
+      <div class="supplement">{{ site.server_name }}</div>
+    </a>
+  </li>
+  {%- endfor %}
+</ol>
+{%- else %}
+<p>{{ 'keine aktiven Sites'|dim }}</p>
+{%- endif %}
+
+<p style="float: right;"><a href="{{ url_for('site_admin.index') }}">alle Sites &rarr;</a></p>
