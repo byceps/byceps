@@ -40,6 +40,5 @@ def inject_template_variables():
         'get_brand_for_party': get_brand_for_party,
         'get_party_for_site': get_party_for_site,
         'get_parties_for_brand': party_service.get_parties_for_brand,
-        'get_sites_for_party': site_service.get_sites_for_party,
         'get_all_sites': site_service.get_all_sites,
     }

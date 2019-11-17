@@ -1,7 +1,6 @@
 {%- from 'macros/admin.html' import render_navigation %}
 
 
-{%- if site %}
 <section class="sidebar-section">
   <header class="sidebar-section-header">
     <div class="sidebar-section-category">Site</div>
@@ -10,7 +9,7 @@
         <span>{{ site.title }}</span> {{ render_icon('caret-down') }}
       </button>
       <ol>
-      {%- with sites = get_sites_for_party(party.id) if party else get_all_sites() %}
+      {%- with sites = get_all_sites() %}
         {%- for site in sites|sort(attribute='title') %}
         <li><a href="{{ url_for('site_admin.view', site_id=site.id) }}">{{ site.title if site.enabled else site.title|dim }}</a></li>
         {%- endfor %}
@@ -35,27 +34,3 @@
 {{ render_navigation(navigation, current_page) }}
   {%- endwith %}
 </section>
-{%- elif party %}
-<section class="sidebar-section">
-  <header class="sidebar-section-header">
-    <div class="sidebar-section-title">Sites</div>
-  </header>
-  <nav class="main">
-  {%- with party_sites = get_sites_for_party(party.id) %}
-    {%- if party_sites %}
-    <ol>
-      {%- for site in party_sites|sort(attribute='title') %}
-      <li>
-        <a href="{{ url_for('site_admin.view', site_id=site.id) }}" class="nav-item">
-          <span class="nav-item-label">{{ site.title if site.enabled else site.title|dim }}</span>
-        </a>
-      </li>
-      {%- endfor %}
-    </ol>
-    {%- else %}
-    <p>{{ 'keine'|dim }}</p>
-    {%- endif %}
-  {%- endwith %}
-  </nav>
-</section>
-{%- endif %}
