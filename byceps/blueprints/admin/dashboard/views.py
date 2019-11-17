@@ -27,6 +27,7 @@ from ....services.seating import (
 from ....services.shop.article import service as article_service
 from ....services.shop.order import service as order_service
 from ....services.shop.shop import service as shop_service
+from ....services.site import service as site_service
 from ....services.terms import version_service as terms_version_service
 from ....services.ticketing import ticket_service
 from ....services.user import stats_service as user_stats_service
@@ -50,6 +51,7 @@ permission_registry.register_enum(AdminDashboardPermission)
 @templated
 def view_global():
     """View dashboard for global entities."""
+    enabled_sites = site_service.get_enabled_sites()
     active_parties = party_service.get_active_parties()
 
     brand_count = brand_service.count_brands()
@@ -71,6 +73,7 @@ def view_global():
     )
 
     return {
+        'enabled_sites': enabled_sites,
         'active_parties': active_parties,
 
         'brand_count': brand_count,

@@ -12,6 +12,9 @@
 
   <div class="grid dashboard">
     {%- call render_cell() %}
+{%- include 'admin/dashboard/_enabled_sites.html' %}
+    {%- endcall %}
+    {%- call render_cell() %}
 {%- include 'admin/dashboard/_active_parties.html' %}
     {%- endcall %}
     {%- call render_cell('birthday', 'wider') %}

@@ -100,6 +100,15 @@ def get_all_sites() -> List[Site]:
     return [_db_entity_to_site(site) for site in sites]
 
 
+def get_enabled_sites() -> List[Site]:
+    """Return all enabled sites."""
+    sites = DbSite.query \
+        .filter_by(enabled=True) \
+        .all()
+
+    return [_db_entity_to_site(site) for site in sites]
+
+
 def get_sites_for_party(party_id: PartyID) -> List[Site]:
     """Return the sites for that party."""
     sites = DbSite.query \
