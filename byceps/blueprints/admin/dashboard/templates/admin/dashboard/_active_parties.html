@@ -4,12 +4,12 @@
 <h2>Aktive Partys</h2>
 
 {%- if active_parties %}
-<ol class="active-parties">
+<ol class="fancy-list">
   {%- for party in active_parties %}
   <li>
     <a href="{{ url_for('admin_dashboard.view_party', party_id=party.id) }}">
-      <strong>{{ party.title }}</strong><br>
-      {{ render_date(party.starts_at, smart=False) }}–{{ render_date(party.ends_at, smart=False) }}
+      <div class="item">{{ party.title }}</div>
+      <div class="supplement">{{ render_date(party.starts_at, smart=False) }}–{{ render_date(party.ends_at, smart=False) }}</div>
     </a>
   </li>
   {%- endfor %}

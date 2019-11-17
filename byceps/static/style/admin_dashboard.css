@@ -59,30 +59,34 @@
 }
 
 
-/* active parties */
+/* fancy list  */
 
-.active-parties li {
+.fancy-list li {
   line-height: 1.3;
 }
-.active-parties li + li {
-  margin-top: 10px;
+.fancy-list li + li {
+  margin-top: 0.75rem;
 }
 
-.active-parties a {
+.fancy-list a {
   border-color: transparent;
   border-radius: 3px;
   border-style: solid;
   border-width: 1px;
   display: block;
 }
-.active-parties a:hover {
+.fancy-list a:hover {
   background-color: #eeeeee;
   border-color: #cccccc;
   margin: -5px -10px !important;
   padding: 5px 10px !important;
 }
 
-.active-parties time {
+.fancy-list .item {
+  font-weight: bold;
+}
+
+.fancy-list .supplement {
   font-size: 0.6875rem; /* 11px / 16px */
   opacity: 0.5;
 }
