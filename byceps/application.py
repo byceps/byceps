@@ -84,7 +84,7 @@ def _get_blueprints(app):
 
 
 def _get_blueprints_common():
-    return [
+    yield from [
         ('authentication',          '/authentication'           ),
         ('authorization',           None                        ),
         ('core',                    '/core'                     ),
@@ -97,7 +97,7 @@ def _get_blueprints_common():
 
 
 def _get_blueprints_site():
-    return [
+    yield from [
         ('attendance',              '/attendance'               ),
         ('board',                   '/board'                    ),
         ('consent',                 '/consent'                  ),
@@ -119,7 +119,7 @@ def _get_blueprints_site():
 
 
 def _get_blueprints_admin():
-    return [
+    yield from [
         ('admin.authorization',     '/admin/authorization'      ),
         ('admin.board',             '/admin/board'              ),
         ('admin.brand',             '/admin/brands'             ),
@@ -153,7 +153,7 @@ def _get_blueprints_admin():
 
 
 def _get_blueprints_api():
-    return [
+    yield from [
         ('api.attendance',          '/api/attendances'          ),
         ('api.tourney.avatar',      '/api/tourney/avatars'      ),
         ('api.tourney.match',       '/api/tourney/matches'      ),
@@ -163,19 +163,19 @@ def _get_blueprints_api():
 
 
 def _get_blueprints_health():
-    return [
+    yield from [
         ('healthcheck',             '/health'                   ),
     ]
 
 
 def _get_blueprints_metrics():
-    return [
+    yield from [
         ('metrics',                 '/metrics'                  ),
     ]
 
 
 def _get_blueprints_debug():
-    return [
+    yield from [
         ('style_guide',             '/style_guide'              ),
     ]
 
