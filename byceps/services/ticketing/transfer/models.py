@@ -6,7 +6,8 @@ byceps.services.ticketing.transfer.models
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import NewType
+from dataclasses import dataclass
+from typing import NewType, Optional
 from uuid import UUID
 
 from attr import attrs
@@ -31,3 +32,9 @@ TicketID = NewType('TicketID', UUID)
 
 
 TicketBundleID = NewType('TicketBundleID', UUID)
+
+
+@dataclass(frozen=True)
+class TicketSaleStats:
+    tickets_max: Optional[int]
+    tickets_sold: int

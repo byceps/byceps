@@ -12,13 +12,14 @@ from ...database import db, Pagination
 from ...typing import PartyID, UserID
 
 from ..party.models.party import Party as DbParty
+from ..party import service as party_service
 from ..seating.models.seat import Seat as DbSeat
 from ..shop.order.transfer.models import OrderNumber
 from ..user.models.user import User as DbUser
 
 from .models.category import Category as DbCategory
 from .models.ticket import Ticket as DbTicket
-from .transfer.models import TicketCode, TicketID
+from .transfer.models import TicketCode, TicketID, TicketSaleStats
 
 
 def find_ticket(ticket_id: TicketID) -> Optional[DbTicket]:
@@ -288,3 +289,15 @@ def count_tickets_checked_in_for_party(party_id: PartyID) -> int:
         .for_party(party_id) \
         .filter(DbTicket.user_checked_in == True) \
         .count()
+
+
+def get_ticket_sale_stats(party_id: PartyID) -> TicketSaleStats:
+    """Return the number of maximum and sold tickets, respectively."""
+    party = party_service.get_party(party_id)
+
+    sold = count_tickets_for_party(party.id)
+
+    return TicketSaleStats(
+        tickets_max=party.max_ticket_quantity,
+        tickets_sold=sold,
+    )
