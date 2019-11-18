@@ -259,13 +259,8 @@ def item_update(item_id):
     if not form.validate():
         return item_update_form(item.id, form)
 
-    # Slug may be changed as long as the news item has not been published.
-    if not item.published:
-        slug = form.slug.data.strip().lower()
-    else:
-        slug = item.slug
-
     creator = g.current_user
+    slug = form.slug.data.strip().lower()
     title = form.title.data.strip()
     body = form.body.data.strip()
     image_url_path = form.image_url_path.data.strip()
