@@ -7,6 +7,7 @@ byceps.services.party.transfer.models
 """
 
 from datetime import datetime
+from typing import Optional
 
 from attr import attrs
 
@@ -22,7 +23,7 @@ class Party:
     title: str
     starts_at: datetime
     ends_at: datetime
-    max_ticket_quantity: int
+    max_ticket_quantity: Optional[int]
     shop_id: ShopID
     ticket_management_enabled: bool
     seat_management_enabled: bool
