@@ -2,7 +2,7 @@
 
 {%- if enabled_sites %}
 <ol class="fancy-list">
-  {%- for site in enabled_sites %}
+  {%- for site in enabled_sites|sort(attribute='title') %}
   <li>
     <a href="{{ url_for('site_admin.view', site_id=site.id) }}">
       <div class="item">{{ site.title }}</div>
