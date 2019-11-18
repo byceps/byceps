@@ -253,7 +253,7 @@ def update(article_id):
     return redirect_to('.view', article_id=article.id)
 
 
-@blueprint.route('/<article_id>/attachments/create')
+@blueprint.route('/<uuid:article_id>/attachments/create')
 @permission_required(ShopArticlePermission.update)
 @templated
 def attachment_create_form(article_id, erroneous_form=None):
@@ -275,7 +275,7 @@ def attachment_create_form(article_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/<article_id>/attachments', methods=['POST'])
+@blueprint.route('/<uuid:article_id>/attachments', methods=['POST'])
 @permission_required(ShopArticlePermission.update)
 def attachment_create(article_id):
     """Attach an article to another article."""
