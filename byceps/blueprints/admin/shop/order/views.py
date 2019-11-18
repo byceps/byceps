@@ -37,8 +37,8 @@ blueprint = create_blueprint('shop_order_admin', __name__)
 permission_registry.register_enum(ShopOrderPermission)
 
 
-@blueprint.route('/parties/<shop_id>', defaults={'page': 1})
-@blueprint.route('/parties/<shop_id>/pages/<int:page>')
+@blueprint.route('/for_shop/<shop_id>', defaults={'page': 1})
+@blueprint.route('/for_shop/<shop_id>/pages/<int:page>')
 @permission_required(ShopOrderPermission.view)
 @templated
 def index_for_shop(shop_id, page):

@@ -43,8 +43,8 @@ blueprint = create_blueprint('shop_article_admin', __name__)
 permission_registry.register_enum(ShopArticlePermission)
 
 
-@blueprint.route('/shops/<shop_id>', defaults={'page': 1})
-@blueprint.route('/shops/<shop_id>/pages/<int:page>')
+@blueprint.route('/for_shop/<shop_id>', defaults={'page': 1})
+@blueprint.route('/for_shop/<shop_id>/pages/<int:page>')
 @permission_required(ShopArticlePermission.view)
 @templated
 def index_for_shop(shop_id, page):
