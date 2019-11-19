@@ -38,9 +38,9 @@ def _generate_static_files_exports():
     """Yield static files exports."""
     # global, brand-specific, and party-specific files
     for url_path, config_key in [
-        (config.STATIC_URL_PREFIX_GLOBAL, 'PATH_GLOBAL'),
-        (config.STATIC_URL_PREFIX_BRAND, 'PATH_BRAND'),
-        (config.STATIC_URL_PREFIX_PARTY, 'PATH_PARTY'),
+        ('/global', 'PATH_GLOBAL'),
+        ('/brand', 'PATH_BRAND'),
+        ('/party', 'PATH_PARTY'),
     ]:
         path = app.config.get(config_key)
         if path:
@@ -50,7 +50,7 @@ def _generate_static_files_exports():
     if config.get_site_mode(app).is_public():
         site_id = config.get_current_site_id(app)
         site_files_path = Path('sites') / site_id / 'static'
-        yield config.STATIC_URL_PREFIX_SITE, str(site_files_path)
+        yield '/site', str(site_files_path)
 
 
 if app.env == 'development':

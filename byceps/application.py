@@ -183,10 +183,10 @@ def _get_blueprints_debug():
 def _add_static_file_url_rules(app):
     """Add URL rules to for static files."""
     for rule_prefix, endpoint in [
-        (config.STATIC_URL_PREFIX_GLOBAL, 'global_file'),
-        (config.STATIC_URL_PREFIX_BRAND, 'brand_file'),
-        (config.STATIC_URL_PREFIX_PARTY, 'party_file'),
-        (config.STATIC_URL_PREFIX_SITE, 'site_file'),
+        ('/global', 'global_file'),
+        ('/brand', 'brand_file'),
+        ('/party', 'party_file'),
+        ('/site', 'site_file'),
     ]:
         rule = rule_prefix + '/<path:filename>'
         app.add_url_rule(

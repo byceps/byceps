@@ -11,11 +11,6 @@ from enum import Enum
 from flask import current_app
 
 
-STATIC_URL_PREFIX_GLOBAL = '/global'
-STATIC_URL_PREFIX_BRAND = '/brand'
-STATIC_URL_PREFIX_PARTY = '/party'
-STATIC_URL_PREFIX_SITE = '/site'
-
 EXTENSION_KEY = 'byceps_config'
 KEY_SITE_MODE = 'site_mode'
 KEY_SITE_ID = 'site_id'
