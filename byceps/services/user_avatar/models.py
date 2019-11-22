@@ -12,7 +12,7 @@ from pathlib import Path
 from typing import NewType
 from uuid import UUID
 
-from flask import current_app, url_for
+from flask import current_app
 from sqlalchemy.ext.hybrid import hybrid_property
 
 from ...database import db, generate_uuid
@@ -61,8 +61,7 @@ class Avatar(db.Model):
 
     @property
     def url(self) -> str:
-        path = f'users/avatars/{self.filename}'
-        return url_for('global_file', filename=path)
+        return f'/global/users/avatars/{self.filename}'
 
     def __repr__(self) -> str:
         return ReprBuilder(self) \

@@ -55,7 +55,7 @@ def index():
             'id': badge.id,
             'slug': badge.slug,
             'label': badge.label,
-            'image_url': badge.image_url,
+            'image_url_path': badge.image_url_path,
             'brand_title': _find_brand_title(badge.brand_id),
             'featured': badge.featured,
             'awarding_count': awarding_counts_by_badge_id[badge.id],

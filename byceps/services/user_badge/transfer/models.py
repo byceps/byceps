@@ -25,7 +25,7 @@ class Badge:
     slug: str
     label: str
     description: str
-    image_url: str
+    image_url_path: str
     featured: bool
 
 

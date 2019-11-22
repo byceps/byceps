@@ -9,8 +9,6 @@ byceps.services.user_badge.service
 from collections import defaultdict
 from typing import Dict, Optional, Set
 
-from flask import url_for
-
 from ...database import db
 from ...typing import UserID
 
@@ -169,7 +167,7 @@ def get_awardings_of_badge(badge_id: BadgeID) -> Set[QuantifiedBadgeAwarding]:
 
 
 def _db_entity_to_badge(entity: DbBadge) -> Badge:
-    image_url = _build_image_url(entity.image_filename)
+    image_url_path = f'/global/users/badges/{entity.image_filename}'
 
     return Badge(
         entity.id,
@@ -177,11 +175,6 @@ def _db_entity_to_badge(entity: DbBadge) -> Badge:
         entity.slug,
         entity.label,
         entity.description,
-        image_url,
+        image_url_path,
         entity.featured,
     )
-
-
-def _build_image_url(image_filename: str) -> str:
-    filename = f'users/badges/{image_filename}'
-    return url_for('global_file', filename=filename)

@@ -1,5 +1,5 @@
 {% macro render_user_badge_linked(badge, size) -%}
-<a href="{{ url_for('user_badge_admin.view', badge_id=badge.id) }}" class="user-badge size-{{ size }}" title="{{ badge.label }}"><img src="{{ badge.image_url }}"></a>
+<a href="{{ url_for('user_badge_admin.view', badge_id=badge.id) }}" class="user-badge size-{{ size }}" title="{{ badge.label }}"><img src="{{ badge.image_url_path }}"></a>
 {%- endmacro %}
 
 

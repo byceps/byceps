@@ -1,10 +1,10 @@
 {% macro render_user_badge(badge, size) -%}
-<div class="user-badge size-{{ size }}" title="{{ badge.label }}"><img src="{{ badge.image_url }}"></div>
+<div class="user-badge size-{{ size }}" title="{{ badge.label }}"><img src="{{ badge.image_url_path }}"></div>
 {%- endmacro %}
 
 
 {% macro render_user_badge_linked(badge, size) -%}
-<a href="{{ url_for('user_badge.view', slug=badge.slug) }}" class="user-badge size-{{ size }}" title="{{ badge.label }}"><img src="{{ badge.image_url }}"></a>
+<a href="{{ url_for('user_badge.view', slug=badge.slug) }}" class="user-badge size-{{ size }}" title="{{ badge.label }}"><img src="{{ badge.image_url_path }}"></a>
 {%- endmacro %}
 
 

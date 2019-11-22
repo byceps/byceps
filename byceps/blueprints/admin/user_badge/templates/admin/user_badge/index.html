@@ -38,7 +38,7 @@
       {%- for badge in badges|sort(attribute='label') %}
       <tr>
         <td>{{ badge.brand_title|fallback('alle') }}</td>
-        <td><span class="user-badge size-32"><img src="{{ badge.image_url }}"></span></td>
+        <td><span class="user-badge size-32"><img src="{{ badge.image_url_path }}"></span></td>
         <td>
           <a href="{{ url_for('user_badge_admin.view', badge_id=badge.id) }}">{{ badge.label }}</a><br>
           {{ badge.slug|dim }}
