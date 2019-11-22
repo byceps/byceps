@@ -23,13 +23,13 @@ def test_image_url_with_image(app):
         image_url_path='breaking.png',
     )
 
-    assert item.image_url == 'http://example.com/brand/news/breaking.png'
+    assert item.image_url_path == '/brand/news/breaking.png'
 
 
 def test_image_url_without_image(app):
     item = create_item(app.channel.id, 'without-image', app.editor.id)
 
-    assert item.image_url is None
+    assert item.image_url_path is None
 
 
 @pytest.fixture(scope='module')

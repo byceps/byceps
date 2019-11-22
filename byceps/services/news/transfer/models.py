@@ -55,5 +55,5 @@ class Item:
     title: str
     body: str
     external_url: str
-    image_url: str
+    image_url_path: str
     images: List[Image]
