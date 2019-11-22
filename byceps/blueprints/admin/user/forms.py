@@ -20,6 +20,11 @@ MINIMUM_PASSWORD_LENGTH = 10
 MAXIMUM_PASSWORD_LENGTH = 100
 
 
+class ChangeEmailAddressForm(LocalizedForm):
+    email_address = StringField('Neue E-Mail-Adresse', [InputRequired(), Length(min=6)])
+    reason = TextAreaField('Begründung', validators=[InputRequired(), Length(max=400)])
+
+
 class ChangeScreenNameForm(LocalizedForm):
     screen_name = StringField('Neuer Benutzername', [
         InputRequired(),

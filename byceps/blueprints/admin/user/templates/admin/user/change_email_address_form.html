@@ -1,0 +1,25 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
+{% from 'macros/icons.html' import render_icon %}
+{% set current_page = 'user' %}
+{% set title = 'E-Mail-Adresse von Benutzer \'%s\' ändern'|format(user.screen_name) %}
+
+{% block body %}
+
+  <nav class="breadcrumbs">
+    <ol>
+      <li><a href="{{ url_for('.index') }}">Benutzer</a></li>
+    </ol>
+  </nav>
+  <h1>{{ title }}</h1>
+
+  <form action="{{ url_for('.change_email_address', user_id=user.id) }}" method="post">
+    {% call form_fieldset() %}
+      {{ form_field(form.email_address, maxlength=24, required='required', autofocus='autofocus') }}
+      {{ form_field(form.reason, maxlength=400, required='required', note='Die Begründung wird als <em>interner</em> Vermerk gespeichert.') }}
+    {% endcall %}
+
+    {{ form_buttons('Ändern', cancel_url=url_for('.view', user_id=user.id)) }}
+  </form>
+
+{%- endblock %}

@@ -32,6 +32,7 @@ from ..authorization.authorization import RolePermission
 
 from .authorization import UserPermission
 from .forms import (
+    ChangeEmailAddressForm,
     ChangeScreenNameForm,
     CreateAccountForm,
     DeleteAccountForm,
@@ -401,6 +402,49 @@ def delete_account(user_id):
     signals.account_deleted.send(None, event=event)
 
     flash_success(f"Das Benutzerkonto '{user.screen_name}' wurde gelöscht.")
+    return redirect_to('.view', user_id=user.id)
+
+
+@blueprint.route('/<uuid:user_id>/change_email_address')
+@permission_required(UserPermission.administrate)
+@templated
+def change_email_address_form(user_id, erroneous_form=None):
+    """Show form to change the user's e-mail address."""
+    user = _get_user_or_404(user_id)
+
+    form = erroneous_form if erroneous_form else ChangeEmailAddressForm()
+
+    return {
+        'user': user,
+        'form': form,
+    }
+
+
+@blueprint.route('/<uuid:user_id>/change_email_address', methods=['POST'])
+@permission_required(UserPermission.administrate)
+def change_email_address(user_id):
+    """Change the user's e-mail address."""
+    user = _get_user_or_404(user_id)
+
+    form = ChangeEmailAddressForm(request.form)
+    if not form.validate():
+        return change_email_address_form(user.id, form)
+
+    old_email_address = user.email_address
+    new_email_address = form.email_address.data.strip()
+    initiator_id = g.current_user.id
+    reason = form.reason.data.strip()
+
+    event = user_command_service.change_email_address(
+        user.id, new_email_address, initiator_id, reason=reason
+    )
+
+    signals.email_address_changed.send(None, event=event)
+
+    flash_success(
+        f"Die E-Mail-Adresse des Benutzerkontos '{user.screen_name}' wurde "
+        f"geändert."
+    )
     return redirect_to('.view', user_id=user.id)
 
 
