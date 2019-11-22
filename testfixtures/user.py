@@ -19,6 +19,7 @@ def create_user(
     user_id=None,
     created_at=None,
     email_address=None,
+    email_address_verified=False,
     initialized=True,
 ):
     if not user_id:
@@ -34,6 +35,7 @@ def create_user(
         created_at, screen_name, email_address
     )
     user.id = user_id
+    user.email_address_verified = email_address_verified
     user.initialized = initialized
 
     return user

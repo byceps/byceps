@@ -5,6 +5,7 @@
 
 import pytest
 
+from byceps.events.user import UserEmailAddressChanged
 from byceps.services.user import command_service as user_command_service
 from byceps.services.user import event_service
 
@@ -28,28 +29,38 @@ def app(admin_app, db):
 def test_change_email_address_with_reason(app):
     admin_id = app.admin_id
 
-    old_email_address = 'uncool@example.com'
-    new_email_address = 'supercool@example.com'
-    reason = 'Switched providers.'
+    old_email_address = 'zero-cool@example.com'
+    new_email_address = 'crash.override@example.com'
+    reason = 'Does not want to be recognized by Acid Burn.'
 
-    user_id = create_user('McCool', email_address=old_email_address).id
+    user_id = create_user(
+        'WantsEmailAddressChangedWithReason',
+        email_address=old_email_address,
+        email_address_verified=True,
+    ).id
 
     user_before = user_command_service._get_user(user_id)
     assert user_before.email_address == old_email_address
+    assert user_before.email_address_verified
 
     events_before = event_service.get_events_for_user(user_before.id)
     assert len(events_before) == 0
 
     # -------------------------------- #
 
-    user_command_service.change_email_address(
+    event = user_command_service.change_email_address(
         user_id, new_email_address, admin_id, reason=reason
     )
 
     # -------------------------------- #
 
+    assert isinstance(event, UserEmailAddressChanged)
+    assert event.user_id == user_id
+    assert event.initiator_id == admin_id
+
     user_after = user_command_service._get_user(user_id)
     assert user_after.email_address == new_email_address
+    assert not user_after.email_address_verified
 
     events_after = event_service.get_events_for_user(user_after.id)
     assert len(events_after) == 1
@@ -67,10 +78,14 @@ def test_change_email_address_with_reason(app):
 def test_change_email_address_without_reason(app):
     admin_id = app.admin_id
 
-    old_email_address = 'unreasonable@example.com'
-    new_email_address = 'reasonable@example.com'
+    old_email_address = 'address_with_tyop@example.com'
+    new_email_address = 'address_without_typo@example.com'
 
-    user_id = create_user('Propellerhead', email_address=old_email_address).id
+    user_id = create_user(
+        'WantsEmailAddressChangedWithoutReason',
+        email_address=old_email_address,
+        email_address_verified=True,
+    ).id
 
     # -------------------------------- #
 
