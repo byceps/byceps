@@ -14,6 +14,7 @@ from ...events.user import (
     UserAccountDeleted,
     UserAccountSuspended,
     UserAccountUnsuspended,
+    UserEmailAddressChanged,
     UserScreenNameChanged,
 )
 from ...typing import UserID
@@ -180,7 +181,7 @@ def change_email_address(
     initiator_id: UserID,
     *,
     reason: Optional[str] = None,
-) -> None:
+) -> UserEmailAddressChanged:
     """Change the user's e-mail address."""
     user = _get_user(user_id)
 
@@ -203,6 +204,12 @@ def change_email_address(
     db.session.add(event)
 
     db.session.commit()
+
+    return UserEmailAddressChanged(
+        occurred_at=event.occurred_at,
+        user_id=user.id,
+        initiator_id=initiator_id,
+    )
 
 
 def update_user_details(

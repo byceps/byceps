@@ -41,6 +41,11 @@ class UserAccountUnsuspended(_UserEvent):
 
 
 @dataclass(frozen=True)
+class UserEmailAddressChanged(_UserEvent):
+    pass
+
+
+@dataclass(frozen=True)
 class UserEmailAddressConfirmed(_UserEvent):
     pass
 
