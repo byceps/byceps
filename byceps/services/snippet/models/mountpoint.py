@@ -6,11 +6,6 @@ byceps.services.snippet.models.mountpoint
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import Optional
-
-from flask import url_for
-from werkzeug.routing import BuildError
-
 from ....database import db, generate_uuid
 from ....util.instances import ReprBuilder
 
@@ -48,12 +43,6 @@ class Mountpoint(db.Model):
         self.endpoint_suffix = endpoint_suffix
         self.url_path = url_path
         self.snippet_id = snippet_id
-
-    def generate_url(self) -> Optional[str]:
-        try:
-            return url_for(f'snippet.{self.endpoint_suffix}')
-        except BuildError:
-            return None
 
     def __repr__(self) -> str:
         return ReprBuilder(self) \
