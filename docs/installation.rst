@@ -116,6 +116,13 @@ Install the Python depdendencies via pip_:
 
     (venv)$ pip install -r requirements.txt
 
+Install BYCEPS in editable mode to make ``import byceps`` work in
+scripts:
+
+.. code-block:: sh
+
+    (venv)$ pip install -e .
+
 .. _dot command: https://en.wikipedia.org/wiki/Dot_(Unix)
 
 
@@ -204,7 +211,7 @@ Create the necessary tables:
 
 .. code-block:: sh
 
-   $ PYTHONPATH=.. BYCEPS_CONFIG=../config/yourconfig.py ./create_database_tables.py
+   $ BYCEPS_CONFIG=../config/yourconfig.py ./create_database_tables.py
    Creating database tables ... done.
 
 An initial set of authorization permissions and roles is provided as a
@@ -212,7 +219,7 @@ JSON file. Import it into the database:
 
 .. code-block:: sh
 
-   $ PYTHONPATH=.. BYCEPS_CONFIG=../config/yourconfig.py ./import_permissions_and_roles.py data/permissions_and_roles.json
+   $ BYCEPS_CONFIG=../config/yourconfig.py ./import_permissions_and_roles.py data/permissions_and_roles.json
    Importing 75 permissions ... done.
    Importing 29 roles ... done.
 
@@ -221,7 +228,7 @@ will get all available roles assigned):
 
 .. code-block:: sh
 
-   $ PYTHONPATH=.. BYCEPS_CONFIG=../config/yourconfig.py ./create_initial_admin_user.py
+   $ BYCEPS_CONFIG=../config/yourconfig.py ./create_initial_admin_user.py
    Screen name: Flynn
    Email address: flynn@flynns-arcade.net
    Password:
