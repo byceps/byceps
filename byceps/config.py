@@ -28,11 +28,11 @@ class ConfigurationError(Exception):
 def init_app(app):
     app.extensions[EXTENSION_KEY] = {}
 
-    site_mode = determine_site_mode(app)
+    site_mode = _determine_site_mode(app)
     update_extension_value(app, KEY_SITE_MODE, site_mode)
 
     if site_mode.is_public():
-        site_id = determine_site_id(app)
+        site_id = _determine_site_id(app)
         update_extension_value(app, KEY_SITE_ID, site_id)
 
 
@@ -47,7 +47,7 @@ def update_extension_value(app, key, value):
 # site mode
 
 
-def determine_site_mode(app):
+def _determine_site_mode(app):
     value = app.config.get('SITE_MODE')
     if value is None:
         raise ConfigurationError('No site mode configured.')
@@ -67,7 +67,7 @@ def get_site_mode(app=None):
 # site ID
 
 
-def determine_site_id(app):
+def _determine_site_id(app):
     site_id = app.config.get('SITE_ID')
     if site_id is None:
         raise ConfigurationError('No site ID configured.')
