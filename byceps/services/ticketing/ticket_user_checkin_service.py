@@ -10,6 +10,7 @@ from ...database import db
 from ...typing import UserID
 
 from ..user import service as user_service
+from ..user.transfer.models import User
 
 from . import event_service
 from .exceptions import (
@@ -20,13 +21,31 @@ from .exceptions import (
     UserAlreadyCheckedIn,
     UserIdUnknown,
 )
+from .models.ticket import Ticket as DbTicket
 from . import ticket_service
 from .transfer.models import TicketID
 
 
 def check_in_user(ticket_id: TicketID, initiator_id: UserID) -> None:
     """Record that the ticket was used to check in its user."""
+    ticket = _get_ticket_for_checkin(ticket_id)
+
+    user = _get_user_for_checkin(ticket.used_by_id)
+
+    ticket.user_checked_in = True
+
+    event = event_service.build_event('user-checked-in', ticket.id, {
+        'checked_in_user_id': str(ticket.used_by_id),
+        'initiator_id': str(initiator_id),
+    })
+    db.session.add(event)
+
+    db.session.commit()
+
+
+def _get_ticket_for_checkin(ticket_id: TicketID) -> DbTicket:
     ticket = ticket_service.find_ticket(ticket_id)
+
     if ticket is None:
         raise ValueError(f"Unknown ticket ID '{ticket_id}'")
 
@@ -41,9 +60,14 @@ def check_in_user(ticket_id: TicketID, initiator_id: UserID) -> None:
             f'Ticket {ticket_id} has already been used to check in a user.'
         )
 
-    user = user_service.find_user(ticket.used_by_id)
+    return ticket
+
+
+def _get_user_for_checkin(user_id: UserID) -> User:
+    user = user_service.find_user(user_id)
+
     if user is None:
-        raise UserIdUnknown(f"Unknown user ID '{ticket.used_by_id}'")
+        raise UserIdUnknown(f"Unknown user ID '{user_id}'")
 
     if user.deleted:
         raise UserAccountDeleted(
@@ -55,15 +79,7 @@ def check_in_user(ticket_id: TicketID, initiator_id: UserID) -> None:
             f'User account {user.screen_name} is suspended.'
         )
 
-    ticket.user_checked_in = True
-
-    event = event_service.build_event('user-checked-in', ticket.id, {
-        'checked_in_user_id': str(ticket.used_by_id),
-        'initiator_id': str(initiator_id),
-    })
-    db.session.add(event)
-
-    db.session.commit()
+    return user
 
 
 def revert_user_check_in(ticket_id: TicketID, initiator_id: UserID) -> None:
