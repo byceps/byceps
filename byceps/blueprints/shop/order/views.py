@@ -11,6 +11,7 @@ from flask import abort, g, request
 from ....services.country import service as country_service
 from ....services.party import service as party_service
 from ....services.shop.article import service as article_service
+from ....services.shop.article.models.compilation import ArticleCompilation
 from ....services.shop.cart.models import Cart
 from ....services.shop.order.email import service as order_email_service
 from ....services.shop.order import service as order_service
@@ -214,9 +215,7 @@ def order_single(article_id):
 
     orderer = form.get_orderer(user.id)
 
-    cart = Cart()
-    for item in article_compilation:
-        cart.add_item(item.article, item.fixed_quantity)
+    cart = _create_cart_from_article_compilation(article_compilation)
 
     try:
         order = _place_order(shop.id, orderer, cart)
@@ -249,6 +248,17 @@ def _get_article_or_404(article_id):
         abort(404)
 
     return article
+
+
+def _create_cart_from_article_compilation(
+    article_compilation: ArticleCompilation
+) -> Cart:
+    cart = Cart()
+
+    for item in article_compilation:
+        cart.add_item(item.article, item.fixed_quantity)
+
+    return cart
 
 
 def _place_order(shop_id, orderer, cart):
