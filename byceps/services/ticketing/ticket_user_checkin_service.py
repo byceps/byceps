@@ -27,6 +27,8 @@ from .transfer.models import TicketID
 def check_in_user(ticket_id: TicketID, initiator_id: UserID) -> None:
     """Record that the ticket was used to check in its user."""
     ticket = ticket_service.find_ticket(ticket_id)
+    if ticket is None:
+        raise ValueError(f"Unknown ticket ID '{ticket_id}'")
 
     if ticket.revoked:
         raise TicketIsRevoked(f'Ticket {ticket_id} has been revoked.')
