@@ -18,7 +18,7 @@
       {{ form_field(form.screen_name, maxlength=24, required='required', autofocus='autofocus') }}
       {{ form_field(form.first_names, maxlength=40) }}
       {{ form_field(form.last_name, maxlength=40) }}
-      {{ form_field(form.email_address, type='email', maxlength=80, required='required') }}
+      {{ form_field(form.email_address, type='email', maxlength=120, required='required') }}
       {{ form_field(form.password, maxlength=40, required='required') }}
       {{ form_field(form.site_id, note='<p>Von dieser Site aus wird die E-Mail zur Aktivierung des Accounts versendet.</p>') }}
     {%- endcall %}

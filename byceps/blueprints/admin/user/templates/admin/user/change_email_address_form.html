@@ -15,7 +15,7 @@
 
   <form action="{{ url_for('.change_email_address', user_id=user.id) }}" method="post">
     {% call form_fieldset() %}
-      {{ form_field(form.email_address, maxlength=24, required='required', autofocus='autofocus') }}
+      {{ form_field(form.email_address, maxlength=120, required='required', autofocus='autofocus') }}
       {{ form_field(form.reason, maxlength=1000, required='required', note='Die Begründung wird als <em>interner</em> Vermerk gespeichert.') }}
     {% endcall %}
 

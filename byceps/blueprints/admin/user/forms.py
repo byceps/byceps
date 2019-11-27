@@ -21,7 +21,7 @@ MAXIMUM_PASSWORD_LENGTH = 100
 
 
 class ChangeEmailAddressForm(LocalizedForm):
-    email_address = StringField('Neue E-Mail-Adresse', [InputRequired(), Length(min=6)])
+    email_address = StringField('Neue E-Mail-Adresse', [InputRequired(), Length(min=6, max=120)])
     reason = TextAreaField('Begründung', validators=[InputRequired(), Length(max=1000)])
 
 
@@ -44,7 +44,7 @@ class CreateAccountForm(LocalizedForm):
     ])
     first_names = StringField('Vorname(n)', [InputRequired(), Length(min=2, max=40)])
     last_name = StringField('Nachname', [InputRequired(), Length(min=2, max=40)])
-    email_address = StringField('E-Mail-Adresse', [InputRequired(), Length(min=6)])
+    email_address = StringField('E-Mail-Adresse', [InputRequired(), Length(min=6, max=120)])
     password = PasswordField('Passwort', [InputRequired(), Length(min=MINIMUM_PASSWORD_LENGTH, max=MAXIMUM_PASSWORD_LENGTH)])
     site_id = SelectField('Site-ID', validators=[Optional()])
 
