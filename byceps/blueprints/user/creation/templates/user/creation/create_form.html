@@ -14,7 +14,7 @@
       {{ form_field(form.first_names, maxlength=40) }}
       {%- endif %}
       {%- if form.last_name %}
-      {{ form_field(form.last_name, maxlength=40) }}
+      {{ form_field(form.last_name, maxlength=80) }}
       {%- endif %}
       {{ form_field(form.email_address, type='email', maxlength=120, required='required') }}
       {{ form_field(form.password, maxlength=40, required='required') }}

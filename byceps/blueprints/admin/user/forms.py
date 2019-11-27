@@ -43,7 +43,7 @@ class CreateAccountForm(LocalizedForm):
         ScreenNameValidator(),
     ])
     first_names = StringField('Vorname(n)', [InputRequired(), Length(min=2, max=40)])
-    last_name = StringField('Nachname', [InputRequired(), Length(min=2, max=40)])
+    last_name = StringField('Nachname', [InputRequired(), Length(min=2, max=80)])
     email_address = StringField('E-Mail-Adresse', [InputRequired(), Length(min=6, max=120)])
     password = PasswordField('Passwort', [InputRequired(), Length(min=MINIMUM_PASSWORD_LENGTH, max=MAXIMUM_PASSWORD_LENGTH)])
     site_id = SelectField('Site-ID', validators=[Optional()])

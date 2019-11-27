@@ -14,7 +14,7 @@ from ....util.l10n import LocalizedForm
 
 class DetailsForm(LocalizedForm):
     first_names = StringField('Vorname(n)', [InputRequired(), Length(min=2)])
-    last_name = StringField('Nachname', [InputRequired(), Length(min=2)])
+    last_name = StringField('Nachname', [InputRequired(), Length(min=2, max=80)])
     date_of_birth = DateField('Geburtsdatum',
                               [Optional()],
                               format='%d.%m.%Y')
