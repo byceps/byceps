@@ -13,4 +13,4 @@ from ...util.l10n import LocalizedForm
 
 
 class CreateForm(LocalizedForm):
-    body = TextAreaField('Text', validators=[InputRequired(), Length(max=1000)])
+    body = TextAreaField('Text', validators=[InputRequired(), Length(max=2000)])
