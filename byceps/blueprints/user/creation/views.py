@@ -56,18 +56,22 @@ def create_form(erroneous_form=None):
     newsletter_list_id = _find_newsletter_list_for_brand()
 
     real_name_required = _is_real_name_required()
-    terms_consent_required = (terms_version is not None)
-    privacy_policy_consent_required \
-        = (privacy_policy_consent_subject_id is not None)
-    newsletter_offered = (newsletter_list_id is not None)
+    terms_consent_required = terms_version is not None
+    privacy_policy_consent_required = (
+        privacy_policy_consent_subject_id is not None
+    )
+    newsletter_offered = newsletter_list_id is not None
 
     if terms_consent_required:
         terms_version_id = terms_version.id
     else:
         terms_version_id = None
 
-    form = erroneous_form if erroneous_form \
+    form = (
+        erroneous_form
+        if erroneous_form
         else UserCreateForm(terms_version_id=terms_version_id)
+    )
 
     _adjust_create_form(
         form,
@@ -96,10 +100,11 @@ def create():
     newsletter_list_id = _find_newsletter_list_for_brand()
 
     real_name_required = _is_real_name_required()
-    terms_consent_required = (terms_document_id is not None)
-    privacy_policy_consent_required \
-        = (privacy_policy_consent_subject_id is not None)
-    newsletter_offered = (newsletter_list_id is not None)
+    terms_consent_required = terms_document_id is not None
+    privacy_policy_consent_required = (
+        privacy_policy_consent_subject_id is not None
+    )
+    newsletter_offered = newsletter_list_id is not None
 
     form = UserCreateForm(request.form)
 
@@ -193,7 +198,7 @@ def create():
     flash_success(
         f'Das Benutzerkonto für "{user.screen_name}" wurde angelegt. '
         'Bevor du dich damit anmelden kannst, muss zunächst der Link in '
-        'der an die angegebene Adresse verschickten E-Mail besucht werden.',
+        'der an die angegebene Adresse verschickten E-Mail besucht werden.'
     )
 
     signals.account_created.send(None, event=event)
