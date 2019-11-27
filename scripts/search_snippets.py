@@ -33,13 +33,7 @@ def execute(ctx, search_term, site, verbose):
     if site is not None:
         scope = Scope.for_site(site.id)
 
-    if verbose:
-        if scope is not None:
-            scope_label = f'scope "{format_scope(scope)}"'
-        else:
-            scope_label = 'any scope'
-    else:
-        scope_label = '<unknown>'
+    scope_label = get_scope_label(verbose, scope)
 
     matches = snippet_service.search_snippets(search_term, scope=scope)
 
@@ -62,6 +56,16 @@ def execute(ctx, search_term, site, verbose):
             f'for {scope_label} and search term "{search_term}".',
             fg='green',
         )
+
+
+def get_scope_label(verbose: bool, scope: Scope) -> str:
+    if not verbose:
+        return '<unknown>'
+
+    if scope is None:
+        return 'any scope'
+
+    return f'scope "{format_scope(scope)}"'
 
 
 def format_scope(scope):
