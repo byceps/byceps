@@ -22,7 +22,7 @@ MAXIMUM_PASSWORD_LENGTH = 100
 
 class ChangeEmailAddressForm(LocalizedForm):
     email_address = StringField('Neue E-Mail-Adresse', [InputRequired(), Length(min=6)])
-    reason = TextAreaField('Begründung', validators=[InputRequired(), Length(max=400)])
+    reason = TextAreaField('Begründung', validators=[InputRequired(), Length(max=1000)])
 
 
 class ChangeScreenNameForm(LocalizedForm):
@@ -32,7 +32,7 @@ class ChangeScreenNameForm(LocalizedForm):
                max=screen_name_validator.MAX_LENGTH),
         ScreenNameValidator(),
     ])
-    reason = TextAreaField('Begründung', validators=[InputRequired(), Length(max=400)])
+    reason = TextAreaField('Begründung', validators=[InputRequired(), Length(max=1000)])
 
 
 class CreateAccountForm(LocalizedForm):
@@ -59,7 +59,7 @@ class CreateAccountForm(LocalizedForm):
 
 
 class DeleteAccountForm(LocalizedForm):
-    reason = TextAreaField('Begründung', validators=[InputRequired(), Length(max=400)])
+    reason = TextAreaField('Begründung', validators=[InputRequired(), Length(max=1000)])
     verification = StringField('Bestätigung', validators=[InputRequired()])
 
     @staticmethod
@@ -73,4 +73,4 @@ class SetPasswordForm(LocalizedForm):
 
 
 class SuspendAccountForm(LocalizedForm):
-    reason = TextAreaField('Begründung', validators=[InputRequired(), Length(max=400)])
+    reason = TextAreaField('Begründung', validators=[InputRequired(), Length(max=1000)])

@@ -14,7 +14,7 @@ from .....util.l10n import LocalizedForm
 
 
 class CancelForm(LocalizedForm):
-    reason = TextAreaField('Begründung', validators=[InputRequired(), Length(max=800)])
+    reason = TextAreaField('Begründung', validators=[InputRequired(), Length(max=1000)])
     send_email = BooleanField('Auftraggeber/in per E-Mail über Stornierung informieren')
 
 

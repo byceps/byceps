@@ -16,7 +16,7 @@
   <form action="{{ url_for('.change_screen_name', user_id=user.id) }}" method="post">
     {% call form_fieldset() %}
       {{ form_field(form.screen_name, maxlength=24, required='required', autofocus='autofocus') }}
-      {{ form_field(form.reason, maxlength=400, required='required', note='Die Begründung wird als <em>interner</em> Vermerk gespeichert.') }}
+      {{ form_field(form.reason, maxlength=1000, required='required', note='Die Begründung wird als <em>interner</em> Vermerk gespeichert.') }}
     {% endcall %}
 
     {{ form_buttons('Umbenennen', cancel_url=url_for('.view', user_id=user.id)) }}
