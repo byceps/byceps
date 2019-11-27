@@ -7,6 +7,7 @@ byceps.blueprints.api.tourney.match.views
 """
 
 from flask import abort, jsonify, request, url_for
+from marshmallow import ValidationError
 
 from .....services.tourney import match_comment_service, match_service
 from .....services.user import service as user_service

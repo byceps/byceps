@@ -7,6 +7,7 @@ byceps.blueprints.api.user_badge.views
 """
 
 from flask import abort, request
+from marshmallow import ValidationError
 
 from ....services.user import service as user_service
 from ....services.user_badge import (
