@@ -153,28 +153,22 @@ def create():
         if terms_version.document_id != terms_document_id:
             abort(400, 'Die AGB-Version gehört nicht zu dieser Veranstaltung.')
 
-        terms_consent = Consent(
-            user_id=None,  # not available at this point
-            subject_id=terms_version.consent_subject_id,
-            expressed_at=now_utc,
+        terms_consent = _assemble_privacy_policy_consent(
+            terms_version.consent_subject_id, now_utc
         )
 
     privacy_policy_consent = None
     if privacy_policy_consent_required:
-        privacy_policy_consent = Consent(
-            user_id=None,  # not available at this point
-            subject_id=privacy_policy_consent_subject_id,
-            expressed_at=now_utc,
+        privacy_policy_consent = _assemble_privacy_policy_consent(
+            privacy_policy_consent_subject_id, now_utc
         )
 
     newsletter_subscription = None
     if newsletter_offered:
         subscribe_to_newsletter = form.subscribe_to_newsletter.data
         if subscribe_to_newsletter:
-            newsletter_subscription = NewsletterSubscription(
-                user_id=None,  # not available at this point
-                list_id=newsletter_list_id,
-                expressed_at=now_utc,
+            newsletter_subscription = _assemble_newsletter_subscription(
+                newsletter_list_id, now_utc
             )
 
     try:
@@ -289,3 +283,23 @@ def _find_site_setting_value(setting_name: str) -> Optional[str]:
     name, or `None` if not configured.
     """
     return site_settings_service.find_setting_value(g.site_id, setting_name)
+
+
+def _assemble_privacy_policy_consent(
+    subject_id: SubjectID, now_utc: datetime
+) -> Consent:
+    return Consent(
+        user_id=None,  # not available at this point
+        subject_id=subject_id,
+        expressed_at=now_utc,
+    )
+
+
+def _assemble_newsletter_subscription(
+    newsletter_list_id: NewsletterListID, now_utc: datetime
+) -> NewsletterSubscription:
+    return NewsletterSubscription(
+        user_id=None,  # not available at this point
+        list_id=newsletter_list_id,
+        expressed_at=now_utc,
+    )
