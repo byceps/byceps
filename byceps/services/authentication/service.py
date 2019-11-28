@@ -19,7 +19,9 @@ def authenticate(screen_name: str, password: str) -> User:
     Return the user object on success, or raise an exception on failure.
     """
     # Look up user.
-    user = user_service.find_user_by_screen_name(screen_name)
+    user = user_service.find_user_by_screen_name(
+        screen_name, case_insensitive=True
+    )
     if user is None:
         # Screen name is unknown.
         raise AuthenticationFailed()
