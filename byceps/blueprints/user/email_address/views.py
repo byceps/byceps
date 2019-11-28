@@ -46,7 +46,9 @@ def request_confirmation_email():
         return request_confirmation_email_form(form)
 
     screen_name = form.screen_name.data.strip()
-    user = user_service.find_user_by_screen_name(screen_name)
+    user = user_service.find_user_by_screen_name(
+        screen_name, case_insensitive=True
+    )
 
     if user is None:
         flash_error(f'Der Benutzername "{screen_name}" ist unbekannt.')

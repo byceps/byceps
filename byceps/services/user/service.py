@@ -158,11 +158,20 @@ def _user_row_to_dto(
     )
 
 
-def find_user_by_screen_name(screen_name: str) -> Optional[DbUser]:
+def find_user_by_screen_name(
+    screen_name: str, *, case_insensitive=False
+) -> Optional[DbUser]:
     """Return the user with that screen name, or `None` if not found."""
-    return DbUser.query \
-        .filter_by(screen_name=screen_name) \
-        .one_or_none()
+    query = DbUser.query
+
+    if case_insensitive:
+        query = query.filter(
+            db.func.lower(DbUser.screen_name) == screen_name.lower()
+        )
+    else:
+        query = query.filter_by(screen_name=screen_name)
+
+    return query.one_or_none()
 
 
 def find_user_with_details(user_id: UserID) -> Optional[DbUser]:
