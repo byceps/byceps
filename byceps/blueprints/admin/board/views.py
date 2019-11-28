@@ -292,7 +292,7 @@ def category_delete(category_id):
 
     try:
         board_category_command_service.delete_category(category.id)
-    except:
+    except Exception:
         flash_error(
             f'Die Kategorie "{category.title}" konnte nicht gelöscht werden.'
         )

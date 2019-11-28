@@ -174,7 +174,7 @@ def delete_snippet(snippet_id: SnippetID) -> bool:
     try:
         db.session.commit()
         return True
-    except:
+    except Exception:
         db.session.rollback()
         return False
 
