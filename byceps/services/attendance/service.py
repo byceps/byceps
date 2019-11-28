@@ -38,7 +38,7 @@ def _get_users_by_id(tickets: Sequence[Ticket]) -> Dict[UserID, User]:
     return {user.id: user for user in users}
 
 
-def _get_seats_by_id(tickets: Sequence[Ticket]) -> Dict[SeatID]:
+def _get_seats_by_id(tickets: Sequence[Ticket]) -> Dict[SeatID, Seat]:
     seat_ids = {t.occupied_seat_id for t in tickets}
     seats = seat_service.find_seats(seat_ids)
     return {seat.id: seat for seat in seats}
