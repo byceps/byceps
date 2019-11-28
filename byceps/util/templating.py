@@ -8,9 +8,18 @@ Templating utilities
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import Any, Dict, Optional
+from flask import g
 
-from jinja2 import BaseLoader, Environment, FunctionLoader, Template
+from typing import Any, Dict, Optional, Set
+
+from jinja2 import (
+    BaseLoader,
+    Environment,
+    FileSystemLoader,
+    FunctionLoader,
+    Template,
+    TemplateNotFound,
+)
 from jinja2.sandbox import ImmutableSandboxedEnvironment
 
 
@@ -43,3 +52,41 @@ def get_variable_value(template: Template, name: str) -> Optional[Any]:
         return getattr(template.module, name)
     except AttributeError:
         return None
+
+
+class SiteTemplateOverridesLoader(BaseLoader):
+    """Look for site-specific template overrides."""
+
+    def __init__(self) -> None:
+        self._loaders_by_site_id = {}
+
+    def get_source(self, environment: Environment, template: Template) -> str:
+        loader = self._get_loader()
+
+        try:
+            return loader.get_source(environment, template)
+        except TemplateNotFound:
+            pass
+
+        # Site does not override template.
+        raise TemplateNotFound(template)
+
+    def _get_loader(self) -> BaseLoader:
+        """Look up site-specific loader.
+
+        Create if not available.
+        """
+        site_id = g.site_id
+
+        loader = self._loaders_by_site_id.get(site_id)
+
+        if loader is None:
+            loader = self._create_loader(site_id)
+            self._loaders_by_site_id[site_id] = loader
+
+        return loader
+
+    def _create_loader(self, site_id: str) -> BaseLoader:
+        """Create file system loader for site-specific search path."""
+        search_path = f'sites/{site_id}/template_overrides'
+        return FileSystemLoader(search_path)

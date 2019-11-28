@@ -7,7 +7,6 @@ byceps.application
 """
 
 from importlib import import_module
-from pathlib import Path
 
 from flask import Flask, redirect
 import jinja2
@@ -20,6 +19,7 @@ from .redis import redis
 from .util.framework.blueprint import register_blueprint
 from .util.l10n import set_locale
 from .util import templatefilters
+from .util.templating import SiteTemplateOverridesLoader
 
 
 def create_app(config_filename, config_overrides=None):
@@ -201,15 +201,13 @@ def init_app(app):
 
         site_mode = config.get_site_mode()
         if site_mode.is_public():
+            # Incorporate site-specific template overrides.
+            app.jinja_loader = SiteTemplateOverridesLoader()
+
             site_id = config.get_current_site_id()
 
             # Mount snippets.
             add_routes_for_snippets(site_id)
-
-            # Incorporate template overrides for the configured site ID.
-            app.template_folder = str(
-                Path('..') / 'sites' / site_id / 'template_overrides'
-            )
 
             # Import site-specific code.
             _load_site_extension(app, site_id)
