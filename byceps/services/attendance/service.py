@@ -22,7 +22,7 @@ def get_attendees(tickets: Sequence[Ticket]) -> List[Attendee]:
     users_by_id = _get_users_by_id(tickets)
     seats_by_id = _get_seats_by_id(tickets)
 
-    def to_attendee(ticket):
+    def to_attendee(ticket: Ticket):
         user = users_by_id[ticket.used_by_id]
         seat = seats_by_id.get(ticket.occupied_seat_id)
         checked_in = ticket.user_checked_in
@@ -32,13 +32,13 @@ def get_attendees(tickets: Sequence[Ticket]) -> List[Attendee]:
     return [to_attendee(t) for t in tickets]
 
 
-def _get_users_by_id(tickets) -> Dict[UserID, User]:
+def _get_users_by_id(tickets: Sequence[Ticket]) -> Dict[UserID, User]:
     user_ids = {t.used_by_id for t in tickets}
     users = user_service.find_users(user_ids, include_avatars=True)
     return {user.id: user for user in users}
 
 
-def _get_seats_by_id(tickets) -> Dict[SeatID, Seat]:
+def _get_seats_by_id(tickets: Sequence[Ticket]) -> Dict[SeatID]:
     seat_ids = {t.occupied_seat_id for t in tickets}
     seats = seat_service.find_seats(seat_ids)
     return {seat.id: seat for seat in seats}
