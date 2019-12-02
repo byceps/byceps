@@ -49,7 +49,7 @@ def create():
 
     avatar = _create(party_id, user_id, image)
 
-    return avatar.url
+    return avatar.url_path
 
 
 def _create(party_id, creator_id, image):
