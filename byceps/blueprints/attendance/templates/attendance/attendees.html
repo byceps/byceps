@@ -14,10 +14,6 @@
         margin-bottom: 2rem;
       }
 
-      .attendees-list td {
-        vertical-align: middle;
-      }
-
       .attendee {
         align-items: center;
         display: flex;
@@ -72,8 +68,20 @@
             <div class="attendee-name">{{ render_user_link(attendee.user) }}</div>
           </div>
         </td>
-        <td>{{ render_seat_link(attendee.seat.area, attendee.seat) if attendee.seat else 'nicht ausgewählt'|dim }}</td>
-        <td>{% if attendee.checked_in %}{{ render_tag('eingecheckt') }}{% endif %}</td>
+        <td>
+          <table>
+            {%- for ticket in attendee.tickets %}
+            <tr>
+              <td>
+              {%- with seat = ticket.seat %}
+                {{ render_seat_link(seat.area, seat) if seat else 'nicht ausgewählt'|dim }}
+              {%- endwith %}
+              </td>
+              <td>{% if ticket.checked_in %}{{ render_tag('eingecheckt') }}{% endif %}</td>
+            </tr>
+            {%- endfor %}
+          </table>
+        </td>
       </tr>
       {%- endfor %}
     </tbody>

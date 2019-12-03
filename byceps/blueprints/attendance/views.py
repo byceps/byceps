@@ -8,7 +8,6 @@ byceps.blueprints.attendance.views
 from flask import abort, g, request
 
 from ...services.attendance import service as attendance_service
-from ...services.ticketing import ticket_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.templating import templated
 
@@ -28,15 +27,11 @@ def attendees(page):
         # No party is configured for the current site.
         abort(404)
 
-    pagination = ticket_service.get_tickets_in_use_for_party_paginated(
+    attendees = attendance_service.get_attendees_paginated(
         g.party_id, page, per_page, search_term=search_term
     )
 
-    tickets = pagination.items
-
-    pagination.items = attendance_service.get_attendees(tickets)
-
     return {
         'search_term': search_term,
-        'attendees': pagination,
+        'attendees': attendees,
     }

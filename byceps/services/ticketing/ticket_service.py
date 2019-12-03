@@ -214,31 +214,6 @@ def get_tickets_with_details_for_party_paginated(
         .paginate(page, per_page)
 
 
-def get_tickets_in_use_for_party_paginated(
-    party_id: PartyID,
-    page: int,
-    per_page: int,
-    *,
-    search_term: Optional[str] = None,
-) -> Pagination:
-    """Return the party's tickets which have a user assigned."""
-    ticket_user = db.aliased(DbUser)
-
-    query = DbTicket.query \
-        .for_party(party_id) \
-        .filter(DbTicket.revoked == False) \
-        .filter(DbTicket.used_by_id.isnot(None))
-
-    if search_term:
-        query = query \
-            .filter(ticket_user.screen_name.ilike(f'%{search_term}%'))
-
-    return query \
-        .join(ticket_user, DbTicket.used_by_id == ticket_user.id) \
-        .order_by(db.func.lower(ticket_user.screen_name), DbTicket.created_at) \
-        .paginate(page, per_page)
-
-
 def get_ticket_count_by_party_id() -> Dict[PartyID, int]:
     """Return ticket count (including 0) per party, indexed by party ID."""
     party = db.aliased(DbParty)
