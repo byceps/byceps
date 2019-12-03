@@ -1,14 +1,20 @@
 {% extends 'layout/base.html' %}
+{% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'seating' %}
 {% set title = 'Sitzplan - %s'|format(area.title) %}
 
 {% block head %}
-    <link rel="stylesheet" href="{{ url_for('.static', filename='style/seating.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/seating.css') }}">
 {%- endblock %}
 
 {% block body %}
 
   <h1>{{ title }}</h1>
+
+  <form action="{{ url_for('attendance.attendees') }}" class="single-row unobtrusive" style="margin-bottom: 2rem;">
+    <input type="search" name="search_term" placeholder="Benutzername">
+    <button type="submit" class="button" title="Suchen">{{ render_icon('search') }}</button>
+  </form>
 
   <ol class="seats">
     {%- for seat in seats|sort(attribute='coords') -%}
