@@ -128,6 +128,7 @@ class Ticket(db.Model):
 
         return ReprBuilder(self) \
             .add('id', str(self.id)) \
+            .add('code', self.code) \
             .add('party', self.category.party_id) \
             .add('category', self.category.title) \
             .add('owned_by', user(self.owned_by)) \
