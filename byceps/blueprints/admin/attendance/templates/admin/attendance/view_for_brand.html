@@ -1,0 +1,37 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/admin/user.html' import render_user_avatar_16_and_admin_link %}
+{% set current_page = 'brand_admin' %}
+{% set current_page_brand = brand %}
+{% set title = 'Häufigste Teilnehmer' %}
+
+{% block body %}
+
+  <nav class="breadcrumbs">
+    <ol>
+      <li>{{ brand.title }}</li>
+    </ol>
+  </nav>
+  <h1>{{ title }}</h1>
+
+  {%- if top_attendees %}
+  <table class="index">
+    <thead>
+      <tr>
+        <th>Benutzer</th>
+        <th class="number">Party-Teilnahmen</th>
+      </tr>
+    </thead>
+    <tbody>
+    {%- for user, attendance_count in top_attendees %}
+      <tr>
+        <td>{{ render_user_avatar_16_and_admin_link(user) }}</td>
+        <td class="number">{{ attendance_count }}</td>
+      </tr>
+    {%- endfor %}
+    </tbody>
+  </table>
+  {%- else %}
+  <div class="dimmed-box centered">Keine Teilnahmen an Partys dieser Marke gefunden.</div>
+  {%- endif %}
+
+{%- endblock %}

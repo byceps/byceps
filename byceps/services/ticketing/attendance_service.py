@@ -6,15 +6,16 @@ byceps.services.ticketing.attendance_service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from collections import defaultdict
+from collections import Counter, defaultdict
 from datetime import datetime
 from itertools import chain
-from typing import Dict, List, Set
+import typing
+from typing import Dict, List, Set, Tuple
 
 from sqlalchemy.dialects.postgresql import insert
 
 from ...database import db, upsert
-from ...typing import PartyID, UserID
+from ...typing import BrandID, PartyID, UserID
 
 from ..party.models.party import Party as DbParty
 from ..party import service as party_service
@@ -134,3 +135,74 @@ def get_attendee_ids_for_parties(
         attendee_ids_by_party_id[party_id].add(attendee_id)
 
     return dict(attendee_ids_by_party_id)
+
+
+def get_top_attendees_for_brand(brand_id: BrandID) -> List[Tuple[UserID, int]]:
+    """Return the attendees with the highest number of parties of this
+    brand visited.
+    """
+    parties = party_service.get_parties_for_brand(brand_id)
+    party_ids = {p.id for p in parties}
+
+    top_ticket_attendance_counts = _get_top_ticket_attendees_for_parties(
+        party_ids
+    )
+
+    top_archived_attendance_counts = _get_top_archived_attendees_for_parties(
+        party_ids
+    )
+
+    top_attendance_counts = _merge_top_attendance_counts(
+        [top_ticket_attendance_counts, top_archived_attendance_counts]
+    )
+
+    return top_attendance_counts.most_common(50)
+
+
+def _get_top_ticket_attendees_for_parties(
+    party_ids: Set[PartyID]
+) -> List[Tuple[UserID, int]]:
+    attendance_count_column = db.func \
+        .count(DbTicket.used_by_id) \
+        .label('attendance_count')
+
+    return db.session \
+        .query(
+            DbTicket.used_by_id,
+            attendance_count_column,
+        ) \
+        .join(DbCategory) \
+        .filter(DbCategory.party_id.in_(party_ids)) \
+        .filter(DbTicket.used_by_id != None) \
+        .group_by(DbTicket.used_by_id) \
+        .order_by(attendance_count_column.desc()) \
+        .all()
+
+
+def _get_top_archived_attendees_for_parties(
+    party_ids: Set[PartyID]
+) -> List[Tuple[UserID, int]]:
+    attendance_count_column = db.func \
+        .count(DbArchivedAttendance.user_id) \
+        .label('attendance_count')
+
+    return db.session \
+        .query(
+            DbArchivedAttendance.user_id,
+            attendance_count_column,
+        ) \
+        .filter(DbArchivedAttendance.party_id.in_(party_ids)) \
+        .group_by(DbArchivedAttendance.user_id) \
+        .order_by(attendance_count_column.desc()) \
+        .all()
+
+
+def _merge_top_attendance_counts(
+    xs: List[List[Tuple[UserID, int]]]
+) -> typing.Counter[UserID]:
+    counter = Counter()
+
+    for x in xs:
+        counter.update(dict(x))
+
+    return counter

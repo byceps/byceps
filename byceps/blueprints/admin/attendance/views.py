@@ -1,0 +1,43 @@
+"""
+byceps.blueprints.admin.attendance.views
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:Copyright: 2006-2019 Jochen Kupperschmidt
+:License: Modified BSD, see LICENSE for details.
+"""
+
+from flask import abort
+
+from ....services.brand import service as brand_service
+from ....services.ticketing import attendance_service
+from ....services.user import service as user_service
+from ....util.framework.blueprint import create_blueprint
+from ....util.framework.templating import templated
+
+
+blueprint = create_blueprint('attendance_admin', __name__)
+
+
+@blueprint.route('/brands/<brand_id>')
+@templated
+def view_for_brand(brand_id):
+    """Show most frequent attendees for parties of this brand."""
+    brand = brand_service.find_brand(brand_id)
+    if brand is None:
+        abort(404)
+
+    top_attendees = attendance_service.get_top_attendees_for_brand(brand.id)
+
+    user_ids = {user_id for user_id, attendance_count in top_attendees}
+    users = user_service.find_users(user_ids, include_avatars=False)
+    users_by_id = user_service.index_users_by_id(users)
+
+    top_attendees = [
+        (users_by_id[user_id], attendance_count)
+        for user_id, attendance_count in top_attendees
+    ]
+
+    return {
+        'brand': brand,
+        'top_attendees': top_attendees,
+    }

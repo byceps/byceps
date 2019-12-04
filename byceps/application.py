@@ -120,6 +120,7 @@ def _get_blueprints_site():
 
 def _get_blueprints_admin():
     yield from [
+        ('admin.attendance',        '/admin/attendance'         ),
         ('admin.authorization',     '/admin/authorization'      ),
         ('admin.board',             '/admin/board'              ),
         ('admin.brand',             '/admin/brands'             ),
