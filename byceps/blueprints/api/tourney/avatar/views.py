@@ -6,9 +6,11 @@ byceps.blueprints.api.tourney.avatar.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from flask import abort, g, request
+from flask import abort, request
 
+from .....services.party import service as party_service
 from .....services.tourney.avatar import service as avatar_service
+from .....services.user import service as user_service
 from .....util.framework.blueprint import create_blueprint
 from .....util.image.models import ImageType
 from .....util.views import respond_created, respond_no_content
@@ -32,9 +34,6 @@ ALLOWED_IMAGE_TYPES = frozenset([
 @respond_created
 def create():
     """Create an avatar image."""
-    party_id = g.party_id
-    user_id = _get_current_user_id_or_404()
-
     # Make `InputRequired` work on `FileField`.
     form_fields = request.form.copy()
     if request.files:
@@ -45,9 +44,19 @@ def create():
     if not form.validate():
         abort(400, 'Form validation failed.')
 
+    party_id = form.party_id.data
+    creator_id = form.creator_id.data
     image = request.files.get('image')
 
-    avatar = _create(party_id, user_id, image)
+    party = party_service.find_party(party_id)
+    if not party:
+        abort(400, 'Unknown party ID')
+
+    creator = user_service.find_user(creator_id)
+    if not creator:
+        abort(400, 'Unknown creator ID')
+
+    avatar = _create(party.id, creator.id, image)
 
     return avatar.url_path
 
@@ -75,12 +84,3 @@ def delete(avatar_id):
         avatar_service.delete_avatar_image(avatar_id)
     except ValueError:
         abort(404)
-
-
-def _get_current_user_id_or_404():
-    user = g.current_user
-
-    if not user.is_active:
-        abort(403)
-
-    return user.id
