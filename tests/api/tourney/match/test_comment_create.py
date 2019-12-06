@@ -3,15 +3,13 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from base64 import b64encode
-
 import pytest
 
 from byceps.services.tourney.models.match import MatchComment
 from byceps.services.tourney import match_service
 from byceps.services.user import command_service as user_command_service
 
-from tests.helpers import create_user, http_client
+from tests.helpers import create_user
 
 
 def test_create_comment(api_client, api_client_authz_header, player, match):
