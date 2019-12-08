@@ -37,6 +37,9 @@ def view_for_brand(brand_id):
         for user_id, attendance_count in top_attendees
     ]
 
+    # Sort by highest attendance count first, alphabetical screen name second.
+    top_attendees.sort(key=lambda att: (-att[1], att[0].screen_name))
+
     return {
         'brand': brand,
         'top_attendees': top_attendees,
