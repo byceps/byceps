@@ -145,11 +145,11 @@ def get_top_attendees_for_brand(brand_id: BrandID) -> List[Tuple[UserID, int]]:
     party_ids = {p.id for p in parties}
 
     top_ticket_attendance_counts = _get_top_ticket_attendees_for_parties(
-        party_ids
+        brand_id
     )
 
     top_archived_attendance_counts = _get_top_archived_attendees_for_parties(
-        party_ids
+        brand_id
     )
 
     top_attendance_counts = _merge_top_attendance_counts(
@@ -160,7 +160,7 @@ def get_top_attendees_for_brand(brand_id: BrandID) -> List[Tuple[UserID, int]]:
 
 
 def _get_top_ticket_attendees_for_parties(
-    party_ids: Set[PartyID]
+    brand_id: BrandID
 ) -> List[Tuple[UserID, int]]:
     attendance_count_column = db.func \
         .count(DbTicket.used_by_id) \
@@ -172,7 +172,8 @@ def _get_top_ticket_attendees_for_parties(
             attendance_count_column,
         ) \
         .join(DbCategory) \
-        .filter(DbCategory.party_id.in_(party_ids)) \
+        .join(DbParty) \
+        .filter(DbParty.brand_id == brand_id) \
         .filter(DbTicket.used_by_id != None) \
         .group_by(DbTicket.used_by_id) \
         .order_by(attendance_count_column.desc()) \
@@ -180,7 +181,7 @@ def _get_top_ticket_attendees_for_parties(
 
 
 def _get_top_archived_attendees_for_parties(
-    party_ids: Set[PartyID]
+    brand_id: BrandID
 ) -> List[Tuple[UserID, int]]:
     attendance_count_column = db.func \
         .count(DbArchivedAttendance.user_id) \
@@ -191,7 +192,8 @@ def _get_top_archived_attendees_for_parties(
             DbArchivedAttendance.user_id,
             attendance_count_column,
         ) \
-        .filter(DbArchivedAttendance.party_id.in_(party_ids)) \
+        .join(DbParty) \
+        .filter(DbParty.brand_id == brand_id) \
         .group_by(DbArchivedAttendance.user_id) \
         .order_by(attendance_count_column.desc()) \
         .all()
