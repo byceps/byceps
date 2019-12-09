@@ -126,6 +126,7 @@ def create_site(
     party_id=None,
     enabled=True,
     user_account_creation_enabled=True,
+    login_enabled=True,
 ):
     return site_service.create_site(
         site_id,
@@ -134,6 +135,7 @@ def create_site(
         email_config_id,
         enabled,
         user_account_creation_enabled,
+        login_enabled,
         party_id=party_id,
     )
 

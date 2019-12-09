@@ -26,6 +26,7 @@ def create_site(
     email_config_id: str,
     enabled: bool,
     user_account_creation_enabled: bool,
+    login_enabled: bool,
     *,
     party_id: Optional[PartyID] = None,
 ) -> Site:
@@ -37,6 +38,7 @@ def create_site(
         email_config_id,
         enabled,
         user_account_creation_enabled,
+        login_enabled,
         party_id=party_id,
     )
 
@@ -54,6 +56,7 @@ def update_site(
     party_id: Optional[PartyID],
     enabled: bool,
     user_account_creation_enabled: bool,
+    login_enabled: bool,
 ) -> Site:
     """Update the site."""
     site = DbSite.query.get(site_id)
@@ -67,6 +70,7 @@ def update_site(
     site.party_id = party_id
     site.enabled = enabled
     site.user_account_creation_enabled = user_account_creation_enabled
+    site.login_enabled = login_enabled
 
     db.session.commit()
 
@@ -118,4 +122,5 @@ def _db_entity_to_site(site: DbSite) -> Site:
         site.party_id,
         site.enabled,
         site.user_account_creation_enabled,
+        site.login_enabled,
     )

@@ -27,6 +27,7 @@ class Site(db.Model):
     party_id = db.Column(db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=True)
     enabled = db.Column(db.Boolean, nullable=False)
     user_account_creation_enabled = db.Column(db.Boolean, nullable=False)
+    login_enabled = db.Column(db.Boolean, nullable=False)
 
     def __init__(
         self,
@@ -36,6 +37,7 @@ class Site(db.Model):
         email_config_id: str,
         enabled: bool,
         user_account_creation_enabled: bool,
+        login_enabled: bool,
         *,
         party_id: Optional[PartyID] = None,
     ) -> None:
@@ -46,6 +48,7 @@ class Site(db.Model):
         self.party_id = party_id
         self.enabled = enabled
         self.user_account_creation_enabled = user_account_creation_enabled
+        self.login_enabled = login_enabled
 
     def __repr__(self) -> str:
         return ReprBuilder(self) \

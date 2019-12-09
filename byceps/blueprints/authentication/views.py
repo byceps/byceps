@@ -18,10 +18,7 @@ from ...services.authentication.password import (
 from ...services.authentication.session import service as session_service
 from ...services.consent import consent_service
 from ...services.email import service as email_service
-from ...services.site import (
-    service as site_service,
-    settings_service as site_settings_service,
-)
+from ...services.site import service as site_service
 from ...services.terms import version_service as terms_version_service
 from ...services.user import service as user_service
 from ...services.verification_token import service as verification_token_service
@@ -313,7 +310,7 @@ def _is_user_account_creation_enabled(in_admin_mode):
     if in_admin_mode:
         return False
 
-    site = site_service.get_site(g.site_id)
+    site = _get_site()
     return site.user_account_creation_enabled
 
 
@@ -321,8 +318,12 @@ def _is_login_enabled(in_admin_mode):
     if in_admin_mode:
         return True
 
-    value = site_settings_service.find_setting_value(g.site_id, 'login_enabled')
-    return value != 'false'
+    site = _get_site()
+    return site.login_enabled
+
+
+def _get_site():
+    return site_service.get_site(g.site_id)
 
 
 def _get_current_user_or_404():

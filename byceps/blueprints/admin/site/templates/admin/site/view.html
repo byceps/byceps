@@ -42,6 +42,10 @@
       <th>Benutzer&shy;registrierung</th>
       <td>{{ render_tag('geöffnet', class='color-success') if site.user_account_creation_enabled else render_tag('gesperrt', class='color-disabled', icon='disabled') }}</td>
     </tr>
+    <tr>
+      <th>Benutzer&shy;anmeldung</th>
+      <td>{{ render_tag('geöffnet', class='color-success') if site.login_enabled else render_tag('gesperrt', class='color-disabled', icon='disabled') }}</td>
+    </tr>
   </table>
 
   <h2>Einstellungen {{ render_extra_in_heading(settings|length) }}</h2>

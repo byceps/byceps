@@ -25,6 +25,7 @@ class Site:
     party_id: PartyID
     enabled: bool
     user_account_creation_enabled: bool
+    login_enabled: bool
 
 
 @attrs(auto_attribs=True, frozen=True, slots=True)

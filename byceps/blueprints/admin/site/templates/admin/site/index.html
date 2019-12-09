@@ -54,6 +54,12 @@
         {%- else %}
         {{ render_tag('', class='color-disabled', icon='user-create', title='Benutzerregistrierung gesperrt') }}
         {%- endif %}
+        <br>
+        {%- if site.login_enabled %}
+        {{ render_tag('', class='color-success', icon='user-create', title='Benutzeranmeldung geöffnet') }}
+        {%- else %}
+        {{ render_tag('', class='color-disabled', icon='user-create', title='Benutzeranmeldung gesperrt') }}
+        {%- endif %}
       </div>
 
     </div>{# .row #}
