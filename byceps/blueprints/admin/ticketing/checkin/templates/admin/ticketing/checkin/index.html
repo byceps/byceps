@@ -65,7 +65,7 @@
 
   {%- if search_term %}
 
-  {{ render_notification('Die Person muss spätestens am <strong>{}</strong> geboren sein.'.format(render_date(latest_dob_for_checkin, smart=False))|safe, category='warning', icon='warning') }}
+  {{ render_notification('Die Person muss am <strong>{}</strong> oder früher geboren sein.'.format(render_date(latest_dob_for_checkin, smart=False))|safe, category='warning', icon='warning') }}
 
   <div class="box">
     <h2>Tickets {{ render_extra_in_heading(tickets|length) }}</h2>
