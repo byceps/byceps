@@ -156,7 +156,15 @@ def get_top_attendees_for_brand(brand_id: BrandID) -> List[Tuple[UserID, int]]:
         [top_ticket_attendance_counts, top_archived_attendance_counts]
     )
 
-    return top_attendance_counts.most_common(50)
+    # Select top attendees with more than one attendance.
+    top_attendees = top_attendance_counts.most_common(50)
+    top_attendees = [
+        (user_id, attendance_count)
+        for user_id, attendance_count in top_attendees
+        if attendance_count > 1
+    ]
+
+    return top_attendees
 
 
 def _get_top_ticket_attendees_for_parties(
