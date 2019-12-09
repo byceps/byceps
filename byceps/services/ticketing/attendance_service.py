@@ -162,21 +162,26 @@ def get_top_attendees_for_brand(brand_id: BrandID) -> List[Tuple[UserID, int]]:
 def _get_top_ticket_attendees_for_parties(
     brand_id: BrandID
 ) -> List[Tuple[UserID, int]]:
-    attendance_count_column = db.func \
-        .count(DbTicket.used_by_id) \
-        .label('attendance_count')
+    user_id_column = db.aliased(DbTicket).used_by_id
+
+    attendance_count = db.session \
+        .query(
+            db.func.count(DbCategory.party_id.distinct()),
+        ) \
+        .join(DbParty) \
+        .filter(DbParty.brand_id == brand_id) \
+        .join(DbTicket) \
+        .filter(DbTicket.used_by_id == user_id_column) \
+        .subquery() \
+        .as_scalar()
 
     return db.session \
         .query(
-            DbTicket.used_by_id,
-            attendance_count_column,
+            user_id_column.distinct(),
+            attendance_count,
         ) \
-        .join(DbCategory) \
-        .join(DbParty) \
-        .filter(DbParty.brand_id == brand_id) \
-        .filter(DbTicket.used_by_id != None) \
-        .group_by(DbTicket.used_by_id) \
-        .order_by(attendance_count_column.desc()) \
+        .filter(user_id_column != None) \
+        .order_by(attendance_count.desc()) \
         .all()
 
 
