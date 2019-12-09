@@ -62,7 +62,7 @@ def login_form():
 
     in_admin_mode = get_site_mode().is_admin()
 
-    if not in_admin_mode and not _is_login_allowed():
+    if not _is_login_enabled(in_admin_mode):
         return {
             'login_enabled': False,
         }
@@ -87,7 +87,7 @@ def login():
 
     in_admin_mode = get_site_mode().is_admin()
 
-    if not in_admin_mode and not _is_login_allowed():
+    if not _is_login_enabled(in_admin_mode):
         abort(403, 'Log in to this site is generally disabled.')
 
     form = LoginForm(request.form)
@@ -131,11 +131,6 @@ def login():
 
     user_session.start(user.id, session_token.token, permanent=permanent)
     flash_success(f'Erfolgreich eingeloggt als {user.screen_name}.')
-
-
-def _is_login_allowed():
-    value = site_settings_service.find_setting_value(g.site_id, 'login_enabled')
-    return value != 'false'
 
 
 def _get_required_consent_subject_ids():
@@ -320,6 +315,14 @@ def _is_user_account_creation_enabled(in_admin_mode):
 
     site = site_service.get_site(g.site_id)
     return site.user_account_creation_enabled
+
+
+def _is_login_enabled(in_admin_mode):
+    if in_admin_mode:
+        return True
+
+    value = site_settings_service.find_setting_value(g.site_id, 'login_enabled')
+    return value != 'false'
 
 
 def _get_current_user_or_404():
