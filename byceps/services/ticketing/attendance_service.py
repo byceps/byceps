@@ -181,6 +181,7 @@ def _get_top_ticket_attendees_for_parties(
             attendance_count,
         ) \
         .filter(user_id_column != None) \
+        .filter(attendance_count > 0) \
         .order_by(attendance_count.desc()) \
         .all()
 
