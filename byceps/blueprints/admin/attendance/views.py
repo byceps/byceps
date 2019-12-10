@@ -9,6 +9,7 @@ byceps.blueprints.admin.attendance.views
 from flask import abort
 
 from ....services.brand import service as brand_service
+from ....services.party import service as party_service
 from ....services.ticketing import attendance_service
 from ....services.user import service as user_service
 from ....util.framework.blueprint import create_blueprint
@@ -26,6 +27,8 @@ def view_for_brand(brand_id):
     if brand is None:
         abort(404)
 
+    brand_party_total = party_service.count_parties_for_brand(brand.id)
+
     top_attendees = attendance_service.get_top_attendees_for_brand(brand.id)
 
     user_ids = {user_id for user_id, attendance_count in top_attendees}
@@ -42,5 +45,6 @@ def view_for_brand(brand_id):
 
     return {
         'brand': brand,
+        'brand_party_total': brand_party_total,
         'top_attendees': top_attendees,
     }
