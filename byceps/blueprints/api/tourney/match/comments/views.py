@@ -70,7 +70,7 @@ def _comment_to_json(comment):
         'match_id': str(comment.match_id),
         'created_at': comment.created_at.isoformat(),
         'creator': {
-            'user_id': creator.id,
+            'user_id': str(creator.id),
             'screen_name': creator.screen_name,
             'suspended': creator.suspended,
             'deleted': creator.deleted,
