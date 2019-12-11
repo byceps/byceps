@@ -157,7 +157,7 @@ def _get_blueprints_api():
     yield from [
         ('api.attendance',          '/api/attendances'          ),
         ('api.tourney.avatar',      '/api/tourney/avatars'      ),
-        ('api.tourney.match',       '/api/tourney/matches'      ),
+        ('api.tourney.match.comments',  '/api/tourney'          ),
         ('api.user',                '/api/users'                ),
         ('api.user_badge',          '/api/user_badges'          ),
     ]

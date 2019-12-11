@@ -9,30 +9,26 @@ byceps.blueprints.api.tourney.match.views
 from flask import abort, jsonify, request, url_for
 from marshmallow import ValidationError
 
-from .....services.tourney import match_comment_service, match_service
-from .....services.user import service as user_service
-from .....util.framework.blueprint import create_blueprint
-from .....util.framework.templating import templated
-from .....util.views import respond_created, respond_no_content
+from ......services.tourney import match_comment_service, match_service
+from ......services.user import service as user_service
+from ......util.framework.blueprint import create_blueprint
+from ......util.framework.templating import templated
+from ......util.views import respond_created, respond_no_content
 
-from ...decorators import api_token_required
+from ....decorators import api_token_required
 
-from .. import signals
+from ... import signals
 
 from .schemas import CreateMatchCommentRequest, ModerateMatchCommentRequest
 
 
-blueprint = create_blueprint('api_tourney_match', __name__)
+blueprint = create_blueprint('api_tourney_match_comments', __name__)
 
 
-# -------------------------------------------------------------------- #
-# match comments
-
-
-@blueprint.route('/<uuid:match_id>/comments')
+@blueprint.route('/matches/<uuid:match_id>/comments')
 @api_token_required
 @templated
-def comments_view(match_id):
+def view_for_match(match_id):
     """Render the comments on a match."""
     match = _get_match_or_404(match_id)
 
@@ -47,9 +43,9 @@ def comments_view(match_id):
     }
 
 
-@blueprint.route('/<uuid:match_id>/comments.json')
+@blueprint.route('/matches/<uuid:match_id>/comments.json')
 @api_token_required
-def comments_view_as_json(match_id):
+def view_for_match_as_json(match_id):
     """Render the comments on a match as JSON."""
     match = _get_match_or_404(match_id)
 
@@ -90,16 +86,16 @@ def _comment_to_json(comment):
 
 
 blueprint.add_url_rule(
-    '/<uuid:match_id>/comments/<uuid:comment_id>',
-    endpoint='comment_view',
+    '/match_comments/<uuid:comment_id>',
+    endpoint='view',
     build_only=True,
 )
 
 
-@blueprint.route('/<uuid:match_id>/comments', methods=['POST'])
+@blueprint.route('/matches/<uuid:match_id>/comments', methods=['POST'])
 @api_token_required
 @respond_created
-def comment_create(match_id):
+def create(match_id):
     """Create a comment on a match."""
     match = _get_match_or_404(match_id)
 
@@ -119,15 +115,15 @@ def comment_create(match_id):
 
     signals.match_comment_created.send(None, comment_id=comment.id)
 
-    return url_for('.comment_view', match_id=match.id, comment_id=comment.id)
+    return url_for('.view', comment_id=comment.id)
 
 
 @blueprint.route(
-    '/<uuid:match_id>/comments/<uuid:comment_id>/flags/hidden', methods=['POST']
+    '/match_comments/<uuid:comment_id>/flags/hidden', methods=['POST']
 )
 @api_token_required
 @respond_no_content
-def comment_hide(match_id, comment_id):
+def hide(comment_id):
     """Hide the match comment."""
     schema = ModerateMatchCommentRequest()
     try:
@@ -143,12 +139,12 @@ def comment_hide(match_id, comment_id):
 
 
 @blueprint.route(
-    '/<uuid:match_id>/comments/<uuid:comment_id>/flags/hidden',
+    '/match_comments/<uuid:comment_id>/flags/hidden',
     methods=['DELETE'],
 )
 @api_token_required
 @respond_no_content
-def comment_unhide(match_id, comment_id):
+def unhide(comment_id):
     """Un-hide the match comment."""
     schema = ModerateMatchCommentRequest()
     try:
