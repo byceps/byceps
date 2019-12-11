@@ -60,6 +60,11 @@ def _get_users_by_id(
     return user_service.index_users_by_id(users)
 
 
+def find_comment(comment_id: MatchCommentID) -> DbMatchComment:
+    """Return match comment."""
+    return DbMatchComment.query.get(comment_id)
+
+
 def create_comment(
     match_id: MatchID, creator_id: UserID, body: str
 ) -> DbMatchComment:
