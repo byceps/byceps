@@ -10,6 +10,7 @@ from marshmallow import fields, Schema
 
 
 class CreateMatchCommentRequest(Schema):
+    match_id = fields.UUID()
     creator_id = fields.UUID()
     body = fields.Str()
 

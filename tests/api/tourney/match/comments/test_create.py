@@ -30,7 +30,7 @@ def test_create_comment_on_nonexistent_match(
         api_client, api_client_authz_header, unknown_match_id, player.id
     )
 
-    assert response.status_code == 404
+    assert response.status_code == 400
 
 
 def test_create_comment_by_suspended_user(
@@ -84,10 +84,14 @@ def match(app):
 def request_comment_creation(
     api_client, api_client_authz_header, match_id, creator_id
 ):
-    url = f'/api/tourney/matches/{match_id}/comments'
+    url = f'/api/tourney/match_comments'
 
     headers = [api_client_authz_header]
-    json_data = {'creator_id': creator_id, 'body': 'gg'}
+    json_data = {
+        'match_id': str(match_id),
+        'creator_id': creator_id,
+        'body': 'gg',
+    }
 
     return api_client.post(url, headers=headers, json=json_data)
 

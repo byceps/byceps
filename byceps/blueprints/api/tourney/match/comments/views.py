@@ -92,18 +92,20 @@ blueprint.add_url_rule(
 )
 
 
-@blueprint.route('/matches/<uuid:match_id>/comments', methods=['POST'])
+@blueprint.route('/match_comments', methods=['POST'])
 @api_token_required
 @respond_created
-def create(match_id):
+def create():
     """Create a comment on a match."""
-    match = _get_match_or_404(match_id)
-
     schema = CreateMatchCommentRequest()
     try:
         req = schema.load(request.get_json())
     except ValidationError as e:
         abort(400, str(e.normalized_messages()))
+
+    match = match_service.find_match(req['match_id'])
+    if not match:
+        abort(400, 'Unknown match ID')
 
     creator = user_service.find_active_user(req['creator_id'])
     if not creator:
