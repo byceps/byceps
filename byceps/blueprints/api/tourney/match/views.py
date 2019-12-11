@@ -19,7 +19,7 @@ from ...decorators import api_token_required
 
 from .. import signals
 
-from .schemas import CreateMatchCommentRequest
+from .schemas import CreateMatchCommentRequest, ModerateMatchCommentRequest
 
 
 blueprint = create_blueprint('api_tourney_match', __name__)
@@ -129,11 +129,17 @@ def comment_create(match_id):
 @respond_no_content
 def comment_hide(match_id, comment_id):
     """Hide the match comment."""
-    initiator_id = request.form.get('initiator_id')
-    if not initiator_id:
-        abort(400, 'Initiator ID missing')
+    schema = ModerateMatchCommentRequest()
+    try:
+        req = schema.load(request.get_json())
+    except ValidationError as e:
+        abort(400, str(e.normalized_messages()))
 
-    match_comment_service.hide_comment(comment_id, initiator_id)
+    initiator = user_service.find_active_user(req['initiator_id'])
+    if not initiator:
+        abort(400, 'Initiator ID does not reference an active user.')
+
+    match_comment_service.hide_comment(comment_id, initiator.id)
 
 
 @blueprint.route(
@@ -144,11 +150,17 @@ def comment_hide(match_id, comment_id):
 @respond_no_content
 def comment_unhide(match_id, comment_id):
     """Un-hide the match comment."""
-    initiator_id = request.form.get('initiator_id')
-    if not initiator_id:
-        abort(400, 'Initiator ID missing')
+    schema = ModerateMatchCommentRequest()
+    try:
+        req = schema.load(request.get_json())
+    except ValidationError as e:
+        abort(400, str(e.normalized_messages()))
 
-    match_comment_service.unhide_comment(comment_id, initiator_id)
+    initiator = user_service.find_active_user(req['initiator_id'])
+    if not initiator:
+        abort(400, 'Initiator ID does not reference an active user.')
+
+    match_comment_service.unhide_comment(comment_id, initiator.id)
 
 
 def _get_match_or_404(match_id):
