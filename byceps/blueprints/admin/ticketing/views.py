@@ -24,6 +24,7 @@ from ....util.views import respond_no_content
 
 from ...authorization.decorators import permission_required
 from ...authorization.registry import permission_registry
+from ...ticketing import signals
 
 from .authorization import TicketingPermission
 from .forms import SpecifyUserForm
@@ -136,7 +137,7 @@ def set_user_checked_in_flag(ticket_id):
     initiator_id = g.current_user.id
 
     try:
-        ticket_user_checkin_service.check_in_user(ticket.id, initiator_id)
+        event = ticket_user_checkin_service.check_in_user(ticket.id, initiator_id)
     except ticket_exceptions.UserAccountDeleted:
         flash_error(
             'Das dem Ticket zugewiesene Benutzerkonto ist gelöscht worden. '
@@ -149,6 +150,8 @@ def set_user_checked_in_flag(ticket_id):
             'Der Check-In ist nicht erlaubt.'
         )
         return
+
+    signals.ticket_checked_in.send(None, event=event)
 
     flash_success(f"Benutzer '{ticket.used_by.screen_name}' wurde eingecheckt.")
 

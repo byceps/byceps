@@ -7,6 +7,7 @@ byceps.services.ticketing.ticket_user_checkin_service
 """
 
 from ...database import db
+from ...events.ticketing import TicketCheckedIn
 from ...typing import UserID
 
 from ..user import service as user_service
@@ -26,7 +27,7 @@ from . import ticket_service
 from .transfer.models import TicketID
 
 
-def check_in_user(ticket_id: TicketID, initiator_id: UserID) -> None:
+def check_in_user(ticket_id: TicketID, initiator_id: UserID) -> TicketCheckedIn:
     """Record that the ticket was used to check in its user."""
     ticket = _get_ticket_for_checkin(ticket_id)
 
@@ -41,6 +42,11 @@ def check_in_user(ticket_id: TicketID, initiator_id: UserID) -> None:
     db.session.add(event)
 
     db.session.commit()
+
+    return TicketCheckedIn(
+        occurred_at=event.occurred_at,
+        ticket_id=ticket.id,
+    )
 
 
 def _get_ticket_for_checkin(ticket_id: TicketID) -> DbTicket:
