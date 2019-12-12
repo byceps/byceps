@@ -31,6 +31,8 @@ RUN pip install --no-cache-dir --user --requirement requirements.txt
 # Copy the application into the image.
 COPY . ./app
 
+WORKDIR /home/byceps/app
+
 EXPOSE 5000
 EXPOSE 8080
 
