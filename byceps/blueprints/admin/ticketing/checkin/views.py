@@ -123,6 +123,6 @@ def _search_users(search_term, limit):
 
 def _get_tickets_for_users(party_id, users):
     for user in users:
-        yield from ticket_service.find_tickets_used_by_user_simplified(
+        yield from ticket_service.find_tickets_related_to_user_for_party(
             user.id, party_id
         )
