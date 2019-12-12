@@ -29,7 +29,7 @@ COPY requirements.txt ./
 RUN pip install --no-cache-dir --user --requirement requirements.txt
 
 # Copy the application into the image.
-COPY . ./
+COPY . ./app
 
 EXPOSE 5000
 EXPOSE 8080
