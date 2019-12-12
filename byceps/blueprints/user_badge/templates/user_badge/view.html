@@ -40,7 +40,7 @@
   <div class="badge-details">
     <div class="badge">{{ render_user_badge(badge, 64) }}</div>
     {%- if badge.description %}
-    <div class="description">{{ badge.description }}</div>
+    <div class="description">{{ badge.description|safe }}</div>
     {%- endif %}
   </div>
 

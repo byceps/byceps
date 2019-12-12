@@ -44,7 +44,7 @@
         {%- if badge.description %}
         <div class="description">
           <p><strong>{{ badge.label }}</strong></p>
-          <p>{{ badge.description }}</p>
+          <p>{{ badge.description|safe }}</p>
         </div>
         {%- endif %}
       </li>
