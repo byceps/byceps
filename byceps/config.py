@@ -32,11 +32,11 @@ def init_app(app: Flask) -> None:
     app.extensions[EXTENSION_KEY] = {}
 
     site_mode = _determine_site_mode(app)
-    update_extension_value(app, KEY_SITE_MODE, site_mode)
+    set_extension_value(KEY_SITE_MODE, site_mode, app)
 
     if site_mode.is_public():
         site_id = _determine_site_id(app)
-        update_extension_value(app, KEY_SITE_ID, site_id)
+        set_extension_value(KEY_SITE_ID, site_id, app)
 
 
 def get_extension_value(key: str, app: Optional[Flask]=None) -> Any:
@@ -53,7 +53,7 @@ def get_extension_value(key: str, app: Optional[Flask]=None) -> Any:
     return extension[key]
 
 
-def update_extension_value(app: Flask, key: str, value: Any) -> None:
+def set_extension_value(key: str, value: Any, app: Flask) -> None:
     """Set/replace the value for the key in this application's own
     extension namespace.
     """
