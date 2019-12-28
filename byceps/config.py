@@ -39,6 +39,20 @@ def init_app(app: Flask) -> None:
         update_extension_value(app, KEY_SITE_ID, site_id)
 
 
+def get_extension_value(key: str, app: Optional[Flask]=None) -> Any:
+    """Return the value for the key in this application's own extension
+    namespace.
+
+    It is expected that the value has already been set. An exception is
+    raised if that is not the case.
+    """
+    if app is None:
+        app = current_app
+
+    extension = app.extensions[EXTENSION_KEY]
+    return extension[key]
+
+
 def update_extension_value(app: Flask, key: str, value: Any) -> None:
     """Set/replace the value for the key in this application's own
     extension namespace.
@@ -64,7 +78,7 @@ def _determine_site_mode(app: Flask) -> SiteMode:
 
 def get_site_mode(app: Optional[Flask]=None) -> SiteMode:
     """Return the mode the site should run in."""
-    return _get_config_dict(app)[KEY_SITE_MODE]
+    return get_extension_value(KEY_SITE_MODE, app)
 
 
 # -------------------------------------------------------------------- #
@@ -81,14 +95,4 @@ def _determine_site_id(app: Flask) -> SiteID:
 
 def get_current_site_id(app: Optional[Flask]=None) -> SiteID:
     """Return the id of the current site."""
-    return _get_config_dict(app)[KEY_SITE_ID]
-
-
-# -------------------------------------------------------------------- #
-
-
-def _get_config_dict(app: Optional[Flask]=None) -> Any:
-    if app is None:
-        app = current_app
-
-    return app.extensions[EXTENSION_KEY]
+    return get_extension_value(KEY_SITE_ID, app)
