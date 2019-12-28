@@ -7,8 +7,11 @@ byceps.config
 """
 
 from enum import Enum
+from typing import Any, Optional
 
-from flask import current_app
+from flask import current_app, Flask
+
+from .services.site.transfer.models import SiteID
 
 
 EXTENSION_KEY = 'byceps_config'
@@ -25,7 +28,7 @@ class ConfigurationError(Exception):
     pass
 
 
-def init_app(app):
+def init_app(app: Flask) -> None:
     app.extensions[EXTENSION_KEY] = {}
 
     site_mode = _determine_site_mode(app)
@@ -36,18 +39,19 @@ def init_app(app):
         update_extension_value(app, KEY_SITE_ID, site_id)
 
 
-def update_extension_value(app, key, value):
+def update_extension_value(app: Flask, key: str, value: Any) -> None:
     """Set/replace the value for the key in this application's own
     extension namespace.
     """
-    app.extensions[EXTENSION_KEY][key] = value
+    extension = app.extensions[EXTENSION_KEY]
+    extension[key] = value
 
 
 # -------------------------------------------------------------------- #
 # site mode
 
 
-def _determine_site_mode(app):
+def _determine_site_mode(app: Flask) -> SiteMode:
     value = app.config.get('SITE_MODE')
     if value is None:
         raise ConfigurationError('No site mode configured.')
@@ -58,7 +62,7 @@ def _determine_site_mode(app):
         raise ConfigurationError(f'Invalid site mode "{value}" configured.')
 
 
-def get_site_mode(app=None):
+def get_site_mode(app: Optional[Flask]=None) -> SiteMode:
     """Return the mode the site should run in."""
     return _get_config_dict(app)[KEY_SITE_MODE]
 
@@ -67,7 +71,7 @@ def get_site_mode(app=None):
 # site ID
 
 
-def _determine_site_id(app):
+def _determine_site_id(app: Flask) -> SiteID:
     site_id = app.config.get('SITE_ID')
     if site_id is None:
         raise ConfigurationError('No site ID configured.')
@@ -75,7 +79,7 @@ def _determine_site_id(app):
     return site_id
 
 
-def get_current_site_id(app=None):
+def get_current_site_id(app: Optional[Flask]=None) -> SiteID:
     """Return the id of the current site."""
     return _get_config_dict(app)[KEY_SITE_ID]
 
@@ -83,7 +87,7 @@ def get_current_site_id(app=None):
 # -------------------------------------------------------------------- #
 
 
-def _get_config_dict(app=None):
+def _get_config_dict(app: Optional[Flask]=None) -> Any:
     if app is None:
         app = current_app
 

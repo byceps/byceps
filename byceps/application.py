@@ -7,6 +7,8 @@ byceps.application
 """
 
 from importlib import import_module
+from pathlib import Path
+from typing import Any, Dict, Iterator, Optional, Tuple, Union
 
 from flask import Flask, redirect
 import jinja2
@@ -22,7 +24,10 @@ from .util import templatefilters
 from .util.templating import SiteTemplateOverridesLoader
 
 
-def create_app(config_filename, config_overrides=None):
+BlueprintReg = Tuple[str, Optional[str]]
+
+
+def create_app(config_filename: Union[Path, str], config_overrides: Optional[Dict[str, Any]]=None) -> Flask:
     """Create the actual Flask application."""
     app = Flask(__name__)
 
@@ -56,13 +61,13 @@ def create_app(config_filename, config_overrides=None):
     return app
 
 
-def _register_blueprints(app):
+def _register_blueprints(app: Flask) -> None:
     """Register blueprints depending on the configuration."""
     for name, url_prefix in _get_blueprints(app):
         register_blueprint(app, name, url_prefix)
 
 
-def _get_blueprints(app):
+def _get_blueprints(app: Flask) -> Iterator[BlueprintReg]:
     """Yield blueprints to register on the application."""
     yield from _get_blueprints_common()
 
@@ -83,7 +88,7 @@ def _get_blueprints(app):
         yield from _get_blueprints_debug()
 
 
-def _get_blueprints_common():
+def _get_blueprints_common() -> Iterator[BlueprintReg]:
     yield from [
         ('authentication',              '/authentication'           ),
         ('authorization',               None                        ),
@@ -96,7 +101,7 @@ def _get_blueprints_common():
     ]
 
 
-def _get_blueprints_site():
+def _get_blueprints_site() -> Iterator[BlueprintReg]:
     yield from [
         ('attendance',                  '/attendance'               ),
         ('board',                       '/board'                    ),
@@ -118,7 +123,7 @@ def _get_blueprints_site():
     ]
 
 
-def _get_blueprints_admin():
+def _get_blueprints_admin() -> Iterator[BlueprintReg]:
     yield from [
         ('admin.attendance',            '/admin/attendance'         ),
         ('admin.authorization',         '/admin/authorization'      ),
@@ -153,7 +158,7 @@ def _get_blueprints_admin():
     ]
 
 
-def _get_blueprints_api():
+def _get_blueprints_api() -> Iterator[BlueprintReg]:
     yield from [
         ('api.attendance',              '/api/attendances'          ),
         ('api.tourney.avatar',          '/api/tourney/avatars'      ),
@@ -163,25 +168,25 @@ def _get_blueprints_api():
     ]
 
 
-def _get_blueprints_health():
+def _get_blueprints_health() -> Iterator[BlueprintReg]:
     yield from [
         ('healthcheck',                 '/health'                   ),
     ]
 
 
-def _get_blueprints_metrics():
+def _get_blueprints_metrics() -> Iterator[BlueprintReg]:
     yield from [
         ('metrics',                     '/metrics'                  ),
     ]
 
 
-def _get_blueprints_debug():
+def _get_blueprints_debug() -> Iterator[BlueprintReg]:
     yield from [
         ('style_guide',                 '/style_guide'              ),
     ]
 
 
-def _add_static_file_url_rules(app):
+def _add_static_file_url_rules(app: Flask) -> None:
     """Add URL rules to for static files."""
     for rule_prefix, endpoint in [
         ('/global', 'global_file'),
@@ -195,7 +200,7 @@ def _add_static_file_url_rules(app):
         )
 
 
-def init_app(app):
+def init_app(app: Flask) -> None:
     """Initialize the application after is has been created."""
     with app.app_context():
         _set_url_root_path(app)
@@ -220,7 +225,7 @@ def init_app(app):
             )
 
 
-def _set_url_root_path(app):
+def _set_url_root_path(app: Flask) -> None:
     """Set an optional URL path to redirect to from the root URL path (`/`).
 
     Important: Don't specify the target with a leading slash unless you
@@ -238,7 +243,7 @@ def _set_url_root_path(app):
     app.add_url_rule('/', endpoint='root', view_func=_redirect)
 
 
-def _load_site_extension(app, site_id):
+def _load_site_extension(app: Flask, site_id: str) -> None:
     """Import and call custom extension code from the site's package, if
     available.
 
