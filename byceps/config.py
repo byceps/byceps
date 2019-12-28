@@ -37,8 +37,8 @@ def init_app(app):
 
 
 def update_extension_value(app, key, value):
-    """Set/replace the value value for the key in this application's
-    own extension namespace.
+    """Set/replace the value for the key in this application's own
+    extension namespace.
     """
     app.extensions[EXTENSION_KEY][key] = value
 
