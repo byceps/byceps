@@ -248,10 +248,8 @@ def _load_site_extension(app: Flask, site_id: str) -> None:
     available.
 
     If a site package contains a module named `extension` and it
-    contains a top-level callable named `init`, then that callable is
-    called with the application as its sole argument.
-
-    The application object can then be used to register, for example, a
+    contains a top-level callable named `template_context_processor`,
+    then that callable is registered with the application as a template
     context processor.
     """
     module_name = f'sites.{site_id}.extension'
@@ -261,13 +259,13 @@ def _load_site_extension(app: Flask, site_id: str) -> None:
         # No extension module found in site package.
         return
 
-    entry_point = getattr(module, 'init', None)
-    if entry_point is None:
-        # Entry point not found in module.
+    context_processor = getattr(module, 'template_context_processor', None)
+    if context_processor is None:
+        # Context processor not found in module.
         return
 
-    if not callable(entry_point):
-        # Entry point object is not callable.
+    if not callable(context_processor):
+        # Context processor object is not callable.
         return
 
-    entry_point(app)
+    app.context_processor(context_processor)
