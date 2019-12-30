@@ -56,18 +56,18 @@ def get_mountpoints_for_site(site_id: SiteID) -> Set[Mountpoint]:
     return {_db_entity_to_mountpoint(mp) for mp in mountpoints}
 
 
-def find_current_snippet_version_for_mountpoint(
-    site_id: SiteID, endpoint_suffix: str
+def find_current_snippet_version_for_url_path(
+    site_id: SiteID, url_path: str
 ) -> SnippetVersion:
-    """Return the current version of the snippet mounted at that
-    endpoint of that site, or `None` if not found.
+    """Return the current version of the snippet mounted at that URL
+    path for that site, or `None` if not found.
     """
     return SnippetVersion.query \
         .join(CurrentVersionAssociation) \
         .join(Snippet) \
         .join(DbMountpoint) \
         .filter(DbMountpoint.site_id == site_id) \
-        .filter(DbMountpoint.endpoint_suffix == endpoint_suffix) \
+        .filter(DbMountpoint.url_path == url_path) \
         .one_or_none()
 
 

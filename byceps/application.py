@@ -13,7 +13,6 @@ from typing import Any, Dict, Iterator, Optional, Tuple, Union
 from flask import Flask, redirect
 import jinja2
 
-from .blueprints.snippet.init import add_routes_for_snippets
 from . import config, config_defaults
 from .database import db
 from . import email
@@ -215,9 +214,6 @@ def init_app(app: Flask) -> None:
             app.jinja_loader = SiteTemplateOverridesLoader()
 
             site_id = config.get_current_site_id()
-
-            # Mount snippets.
-            add_routes_for_snippets(site_id)
 
             # Import site-specific code.
             _load_site_extension(app, site_id)

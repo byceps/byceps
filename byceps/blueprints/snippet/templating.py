@@ -8,13 +8,14 @@ byceps.blueprints.snippet.templating
 
 import sys
 import traceback
+from typing import Set
 
 from flask import abort, g, render_template, url_for
 from jinja2 import TemplateNotFound
 
-from ...services.snippet import service as snippet_service
+from ...services.snippet import mountpoint_service, service as snippet_service
 from ...services.snippet.service import SnippetNotFound
-from ...services.snippet.transfer.models import Scope
+from ...services.snippet.transfer.models import Mountpoint, Scope
 from ...util.templating import get_variable_value, load_template
 
 
@@ -97,6 +98,32 @@ def _load_template_with_globals(source):
     return load_template(source, template_globals=template_globals)
 
 
-def url_for_snippet(endpoint_suffix, **kwargs):
+def url_for_snippet(endpoint_suffix: str, **kwargs) -> str:
     """Render an URL pointing to the snippet document's mountpoint."""
-    return url_for(f'snippet.{endpoint_suffix}', **kwargs)
+    mountpoints = _get_mountpoints()
+
+    # Endpoint suffix is unique per site.
+    mountpoints_by_endpoint_suffix = {
+        mp.endpoint_suffix: mp for mp in mountpoints
+    }
+
+    mountpoint = mountpoints_by_endpoint_suffix[endpoint_suffix]
+
+    return url_for(f'snippet.view', url_path=mountpoint.url_path, **kwargs)
+
+
+def _get_mountpoints() -> Set[Mountpoint]:
+    """Return site-specific mountpoints.
+
+    Preferrably from request-local cache, if available. From the
+    database if not yet cached.
+    """
+    request_context_key = 'snippet_mountpoints'
+
+    mountpoints_from_request_context = g.get(request_context_key)
+    if mountpoints_from_request_context:
+        return mountpoints_from_request_context
+    else:
+        mountpoints_from_database = mountpoint_service.get_mountpoints_for_site(g.site_id)
+        setattr(g, request_context_key, mountpoints_from_database)
+        return mountpoints_from_database

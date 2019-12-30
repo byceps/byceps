@@ -24,13 +24,15 @@ blueprint.add_app_template_global(render_snippet_as_partial, 'render_snippet')
 blueprint.add_app_template_global(url_for_snippet)
 
 
-def view_current_version_by_name(name):
-    """Show the current version of the snippet that is mounted with that
-    name.
+@blueprint.route('/<path:url_path>')
+def view(url_path):
+    """Show the current version of the snippet that is mounted for the
+    current site at the given URL path.
     """
-    # Note: endpoint suffix != snippet name
-    version = mountpoint_service.find_current_snippet_version_for_mountpoint(
-        g.site_id, name
+    url_path = '/' + url_path
+
+    version = mountpoint_service.find_current_snippet_version_for_url_path(
+        g.site_id, url_path
     )
 
     if version is None:
