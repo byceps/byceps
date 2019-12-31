@@ -18,7 +18,7 @@ homepage = "https://byceps.nwsnet.de/"
 
 [tool.poetry.dependencies]
 python = "^3.7"
-attrs = "^19.1.0"
+attrs = "^19.3.0"
 bbcode = "^1.0.33"
 blinker = "^1.4"
 click = ">=7.0, <8.0"
