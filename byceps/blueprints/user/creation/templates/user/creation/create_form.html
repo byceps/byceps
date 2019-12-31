@@ -26,7 +26,7 @@
       {%- endif %}
       {%- if form.consent_to_privacy_policy %}
       {{ form_field_checkbox(form.consent_to_privacy_policy,
-        'Ich akzeptiere die <a href="%s" target="_blank">Datenschutzbestimmungen</a>.'|format(url_for('snippet.privacy_policy'))
+        'Ich akzeptiere die <a href="%s" target="_blank">Datenschutzbestimmungen</a>.'|format(url_for_snippet('privacy_policy'))
       ) }}
       {%- endif %}
       {%- if form.subscribe_to_newsletter %}
