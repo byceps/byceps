@@ -97,6 +97,6 @@ def _load_template_with_globals(source):
     return load_template(source, template_globals=template_globals)
 
 
-def url_for_snippet(name):
+def url_for_snippet(name, **kwargs):
     """Render an URL pointing to the snippet document's mountpoint."""
-    return url_for(f'snippet.{name}')
+    return url_for(f'snippet.{name}', **kwargs)
