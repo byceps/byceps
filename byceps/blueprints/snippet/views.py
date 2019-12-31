@@ -6,22 +6,22 @@ byceps.blueprints.snippet.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from flask import abort, g, url_for
+from flask import abort, g
 
 from ...services.snippet import mountpoint_service
 from ...util.framework.blueprint import create_blueprint
 
-from .templating import render_snippet_as_page, render_snippet_as_partial
+from .templating import (
+    render_snippet_as_page,
+    render_snippet_as_partial,
+    url_for_snippet,
+)
 
 
 blueprint = create_blueprint('snippet', __name__)
 
 blueprint.add_app_template_global(render_snippet_as_partial, 'render_snippet')
-
-
-@blueprint.app_template_global()
-def url_for_snippet(name):
-    return url_for(f'snippet.{name}')
+blueprint.add_app_template_global(url_for_snippet)
 
 
 def view_current_version_by_name(name):
