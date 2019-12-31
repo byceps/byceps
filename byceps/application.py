@@ -161,6 +161,7 @@ def _get_blueprints_admin() -> Iterator[BlueprintReg]:
 def _get_blueprints_api() -> Iterator[BlueprintReg]:
     yield from [
         ('api.attendance',              '/api/attendances'          ),
+        ('api.snippet',                 '/api/snippets'             ),
         ('api.tourney.avatar',          '/api/tourney/avatars'      ),
         ('api.tourney.match.comments',  '/api/tourney'              ),
         ('api.user',                    '/api/users'                ),

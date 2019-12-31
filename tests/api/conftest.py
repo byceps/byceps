@@ -11,6 +11,7 @@ from tests.base import CONFIG_FILENAME_TEST_ADMIN, create_app
 from tests.helpers import create_brand, create_party, create_user
 
 from ..conftest import database_recreated
+from ..helpers import create_email_config, create_site
 
 from .helpers import assemble_authorization_header
 
@@ -30,6 +31,12 @@ def app(api_app_without_db, db):
     app = api_app_without_db
     with database_recreated(db):
         yield app
+
+
+@pytest.fixture(scope='module')
+def site(app):
+    create_email_config()
+    return create_site()
 
 
 @pytest.fixture(scope='module')
