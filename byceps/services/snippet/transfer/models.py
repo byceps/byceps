@@ -7,6 +7,7 @@ byceps.services.snippet.transfer.models
 """
 
 from __future__ import annotations
+from dataclasses import dataclass
 from enum import Enum
 from typing import NewType
 from uuid import UUID
@@ -46,3 +47,12 @@ SnippetVersionID = NewType('SnippetVersionID', UUID)
 
 
 MountpointID = NewType('MountpointID', UUID)
+
+
+@dataclass(frozen=True)
+class Mountpoint:
+    id: MountpointID
+    site_id: SiteID
+    endpoint_suffix: str
+    url_path: str
+    snippet_id: SnippetID
