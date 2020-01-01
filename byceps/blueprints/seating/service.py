@@ -6,6 +6,7 @@ byceps.blueprints.seating.service
 :License: Modified BSD, see LICENSE for details.
 """
 
+from itertools import chain
 from typing import Dict, Iterator, Sequence
 
 from ...services.seating.models.seat import Seat
@@ -18,23 +19,22 @@ from ...typing import UserID
 def get_users(
     seats: Sequence[Seat], managed_tickets: Sequence[DbTicket]
 ) -> Dict[UserID, User]:
-    user_ids = set()
-    user_ids.extend(_get_seat_occupier_ids(seats))
-    user_ids.extend(_get_ticket_user_ids(managed_tickets))
+    seat_tickets = _get_seat_tickets(seats)
+    tickets = chain(seat_tickets, managed_tickets)
 
-    users = user_service.find_users(user_ids, include_avatars=True)
-    return user_service.index_users_by_id(users)
-
-
-def _get_seat_occupier_ids(seats: Sequence[Seat]) -> Iterator[UserID]:
-    tickets = _get_seat_tickets(seats)
-    yield from _get_ticket_user_ids(tickets)
+    return _get_ticket_users_by_id(tickets)
 
 
 def _get_seat_tickets(seats: Sequence[Seat]) -> Iterator[DbTicket]:
     for seat in seats:
         if seat.has_user:
             yield seat.occupied_by_ticket
+
+
+def _get_ticket_users_by_id(tickets: Sequence[DbTicket]) -> Dict[UserID, User]:
+    user_ids = set(_get_ticket_user_ids(tickets))
+    users = user_service.find_users(user_ids, include_avatars=True)
+    return user_service.index_users_by_id(users)
 
 
 def _get_ticket_user_ids(tickets: Sequence[DbTicket]) -> Iterator[UserID]:
