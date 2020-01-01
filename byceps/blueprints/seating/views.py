@@ -72,7 +72,7 @@ def view_area(slug):
             g.current_user.id, g.party_id
         )
     else:
-        tickets = None
+        tickets = []
 
     users_by_id = _get_users(seats, tickets)
 
