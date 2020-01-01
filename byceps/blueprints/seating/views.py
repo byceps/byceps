@@ -15,7 +15,7 @@ from ...services.seating import area_service as seating_area_service
 from ...services.seating.models.seat import Seat
 from ...services.seating import seat_service
 from ...services.seating.transfer.models import SeatID
-from ...services.ticketing.models.ticket import Ticket
+from ...services.ticketing.models.ticket import Ticket as DbTicket
 from ...services.ticketing import (
     exceptions as ticket_exceptions,
     ticket_seat_management_service,
@@ -86,7 +86,7 @@ def view_area(slug):
 
 
 def _get_users(
-    seats: Sequence[Seat], tickets: Sequence[Ticket]
+    seats: Sequence[Seat], tickets: Sequence[DbTicket]
 ) -> Dict[UserID, User]:
     user_ids = set()
 
@@ -204,7 +204,7 @@ def _is_seat_management_enabled():
     return party.seat_management_enabled
 
 
-def _get_ticket_or_404(ticket_id: TicketID) -> Ticket:
+def _get_ticket_or_404(ticket_id: TicketID) -> DbTicket:
     ticket = ticket_service.find_ticket(ticket_id)
 
     if (ticket is None) or ticket.revoked:
