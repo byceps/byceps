@@ -37,6 +37,10 @@
       <td>{{ site.id }}</td>
     </tr>
     <tr>
+      <th>Servername</th>
+      <td><a href="https://{{ site.server_name }}/" class="disguised">{{ site.server_name }}</a></td>
+    </tr>
+    <tr>
       <th>E-Mail-Konfiguration</th>
       <td><a href="{{ url_for('email_admin.index') }}">{{ site.email_config_id }}</a></td>
     </tr>
