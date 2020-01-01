@@ -6,7 +6,7 @@ byceps.blueprints.seating.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import Dict, Sequence
+from typing import Dict, Iterator, Sequence
 
 from flask import abort, g
 
@@ -89,18 +89,29 @@ def _get_users(
     seats: Sequence[Seat], tickets: Sequence[DbTicket]
 ) -> Dict[UserID, User]:
     user_ids = set()
-
-    for seat in seats:
-        if seat.has_user:
-            user_ids.add(seat.occupied_by_ticket.used_by_id)
-
-    for ticket in tickets:
-        user_id = ticket.used_by_id
-        if user_id is not None:
-            user_ids.add(user_id)
+    user_ids.extend(_get_seat_occupier_ids(seats))
+    user_ids.extend(_get_ticket_user_ids(tickets))
 
     users = user_service.find_users(user_ids, include_avatars=True)
     return user_service.index_users_by_id(users)
+
+
+def _get_seat_occupier_ids(seats: Sequence[Seat]) -> Iterator[UserID]:
+    tickets = _get_seat_tickets(seats)
+    yield from _get_ticket_user_ids(tickets)
+
+
+def _get_seat_tickets(seats: Sequence[Seat]) -> Iterator[DbTicket]:
+    for seat in seats:
+        if seat.has_user:
+            yield seat.occupied_by_ticket
+
+
+def _get_ticket_user_ids(tickets: Sequence[DbTicket]) -> Iterator[UserID]:
+    for ticket in tickets:
+        user_id = ticket.used_by_id
+        if user_id is not None:
+            yield user_id
 
 
 @blueprint.route(
