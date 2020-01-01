@@ -15,7 +15,7 @@ from ....services.email import service as email_service
 from ....services.party import service as party_service
 
 
-class UpdateForm(LocalizedForm):
+class _BaseForm(LocalizedForm):
     title = StringField('Titel', validators=[Length(min=1, max=40)])
     server_name = StringField('Servername', validators=[InputRequired()])
     email_config_id = SelectField('E-Mail-Konfiguration', validators=[InputRequired()])
@@ -38,5 +38,9 @@ class UpdateForm(LocalizedForm):
         self.party_id.choices = choices
 
 
-class CreateForm(UpdateForm):
+class CreateForm(_BaseForm):
     id = StringField('ID', validators=[Length(min=1, max=40)])
+
+
+class UpdateForm(_BaseForm):
+    pass
