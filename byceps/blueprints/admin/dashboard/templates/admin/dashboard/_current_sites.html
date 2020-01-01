@@ -1,8 +1,8 @@
-<h2>Aktive Sites</h2>
+<h2>Aktuelle Sites</h2>
 
-{%- if enabled_sites %}
+{%- if current_sites %}
 <ol class="fancy-list">
-  {%- for site in enabled_sites|sort(attribute='title') %}
+  {%- for site in current_sites|sort(attribute='title') %}
   <li>
     <a href="{{ url_for('site_admin.view', site_id=site.id) }}">
       <div class="item">{{ site.title }}</div>
@@ -12,7 +12,7 @@
   {%- endfor %}
 </ol>
 {%- else %}
-<p>{{ 'keine aktiven Sites'|dim }}</p>
+<p>{{ 'keine aktuellen Sites'|dim }}</p>
 {%- endif %}
 
 <p style="float: right;"><a href="{{ url_for('site_admin.index') }}">alle Sites &rarr;</a></p>

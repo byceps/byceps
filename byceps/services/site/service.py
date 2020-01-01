@@ -106,10 +106,11 @@ def get_all_sites() -> List[Site]:
     return [_db_entity_to_site(site) for site in sites]
 
 
-def get_enabled_sites() -> List[Site]:
-    """Return all enabled sites."""
+def get_current_sites() -> List[Site]:
+    """Return all "current" (i.e. enabled and not archived) sites."""
     sites = DbSite.query \
         .filter_by(enabled=True) \
+        .filter_by(archived=False) \
         .all()
 
     return [_db_entity_to_site(site) for site in sites]
