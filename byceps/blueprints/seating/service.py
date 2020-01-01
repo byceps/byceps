@@ -16,11 +16,11 @@ from ...typing import UserID
 
 
 def get_users(
-    seats: Sequence[Seat], tickets: Sequence[DbTicket]
+    seats: Sequence[Seat], managed_tickets: Sequence[DbTicket]
 ) -> Dict[UserID, User]:
     user_ids = set()
     user_ids.extend(_get_seat_occupier_ids(seats))
-    user_ids.extend(_get_ticket_user_ids(tickets))
+    user_ids.extend(_get_ticket_user_ids(managed_tickets))
 
     users = user_service.find_users(user_ids, include_avatars=True)
     return user_service.index_users_by_id(users)
