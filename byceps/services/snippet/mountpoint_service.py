@@ -49,8 +49,8 @@ def get_mountpoints_for_site(site_id: SiteID) -> Sequence[DbMountpoint]:
     """Return all mountpoints for that site."""
     return DbMountpoint.query \
         .filter_by(site_id=site_id) \
-        .join(Snippet) \
         .all()
+
 
 def find_current_snippet_version_for_mountpoint(
     site_id: SiteID, endpoint_suffix: str
