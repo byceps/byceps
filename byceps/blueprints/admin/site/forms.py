@@ -43,4 +43,4 @@ class CreateForm(_BaseForm):
 
 
 class UpdateForm(_BaseForm):
-    pass
+    archived = BooleanField('archiviert')

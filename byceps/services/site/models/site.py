@@ -28,6 +28,7 @@ class Site(db.Model):
     enabled = db.Column(db.Boolean, nullable=False)
     user_account_creation_enabled = db.Column(db.Boolean, nullable=False)
     login_enabled = db.Column(db.Boolean, nullable=False)
+    archived = db.Column(db.Boolean, default=False, nullable=False)
 
     def __init__(
         self,

@@ -162,6 +162,7 @@ def update(site_id):
     enabled = form.enabled.data
     user_account_creation_enabled = form.user_account_creation_enabled.data
     login_enabled = form.login_enabled.data
+    archived = form.archived.data
 
     if party_id:
         party = party_service.find_party(party_id)
@@ -181,6 +182,7 @@ def update(site_id):
             enabled,
             user_account_creation_enabled,
             login_enabled,
+            archived,
         )
     except site_service.UnknownSiteId:
         abort(404, f'Unknown site ID "{site_id}".')

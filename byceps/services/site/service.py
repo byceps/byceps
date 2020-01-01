@@ -57,6 +57,7 @@ def update_site(
     enabled: bool,
     user_account_creation_enabled: bool,
     login_enabled: bool,
+    archived: bool,
 ) -> Site:
     """Update the site."""
     site = DbSite.query.get(site_id)
@@ -71,6 +72,7 @@ def update_site(
     site.enabled = enabled
     site.user_account_creation_enabled = user_account_creation_enabled
     site.login_enabled = login_enabled
+    site.archived = archived
 
     db.session.commit()
 
@@ -123,4 +125,5 @@ def _db_entity_to_site(site: DbSite) -> Site:
         site.enabled,
         site.user_account_creation_enabled,
         site.login_enabled,
+        site.archived,
     )

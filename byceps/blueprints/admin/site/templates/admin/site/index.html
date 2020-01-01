@@ -42,7 +42,7 @@
         </div>
       </div>
 
-      <div class="column-auto">
+      <div class="column-auto" style="text-align: right;">
         {%- if site.enabled %}
         {{ render_tag('', class='color-success', icon='success', title='Site aktiv') }}
         {%- else %}
@@ -59,6 +59,10 @@
         {{ render_tag('', class='color-success', icon='user-create', title='Benutzeranmeldung geöffnet') }}
         {%- else %}
         {{ render_tag('', class='color-disabled', icon='user-create', title='Benutzeranmeldung gesperrt') }}
+        {%- endif %}
+        <br>
+        {%- if site.archived %}
+        {{ render_tag('archiviert', class='color-disabled', icon='archived') }}
         {%- endif %}
       </div>
 
