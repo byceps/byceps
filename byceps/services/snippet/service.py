@@ -6,7 +6,7 @@ byceps.services.snippet.service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import List, Optional, Sequence, Tuple
+from typing import List, Optional, Sequence, Set, Tuple
 
 from ...database import db
 from ...events.snippet import SnippetCreated, SnippetUpdated
@@ -182,6 +182,13 @@ def delete_snippet(snippet_id: SnippetID) -> bool:
 def find_snippet(snippet_id: SnippetID) -> Optional[DbSnippet]:
     """Return the snippet with that id, or `None` if not found."""
     return DbSnippet.query.get(snippet_id)
+
+
+def get_snippets(snippet_ids: Set[SnippetID]) -> Sequence[DbSnippet]:
+    """Return these snippets."""
+    return DbSnippet.query \
+        .filter(DbSnippet.id.in_(snippet_ids)) \
+        .all()
 
 
 def get_snippets_for_scope_with_current_versions(

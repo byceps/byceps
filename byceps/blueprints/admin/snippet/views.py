@@ -414,11 +414,19 @@ def index_mountpoints(site_id):
 
     mountpoints = mountpoint_service.get_mountpoints_for_site(site_id)
 
+    snippet_ids = {mp.snippet_id for mp in mountpoints}
+    snippets = snippet_service.get_snippets(snippet_ids)
+    snippets_by_snippet_id = {snippet.id: snippet for snippet in snippets}
+
+    mountpoints_and_snippets = [
+        (mp, snippets_by_snippet_id[mp.snippet_id]) for mp in mountpoints
+    ]
+
     site = _find_site_for_scope(scope)
 
     return {
         'scope': scope,
-        'mountpoints': mountpoints,
+        'mountpoints_and_snippets': mountpoints_and_snippets,
         'site': site,
     }
 

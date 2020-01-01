@@ -33,9 +33,9 @@
   </nav>
   <h1>{{ scope.type_ }}/{{ scope.name }}</h1>
 
-  <h2>Mountpoints {{ render_extra_in_heading(mountpoints|length) }}</h2>
+  <h2>Mountpoints {{ render_extra_in_heading(mountpoints_and_snippets|length) }}</h2>
 
-  {%- if mountpoints %}
+  {%- if mountpoints_and_snippets %}
   <table class="index wide">
     <thead>
       <tr>
@@ -46,13 +46,13 @@
       </tr>
     </thead>
     <tbody>
-      {%- for mountpoint in mountpoints|sort(attribute='url_path') %}
+      {%- for mountpoint, snippet in mountpoints_and_snippets|sort(attribute='0.url_path') %}
       <tr>
         <td>{{ mountpoint.url_path }}</td>
         <td>{{ mountpoint.endpoint_suffix }}</td>
         <td>
-          <a href="{{ url_for('.view_current_version', snippet_id=mountpoint.snippet.id) }}">{{- mountpoint.snippet.name }}</a><br>
-          <span class="dimmed">{{ mountpoint.snippet.scope.type_ }}/{{ mountpoint.snippet.scope.name }}</span>
+          <a href="{{ url_for('.view_current_version', snippet_id=snippet.id) }}">{{- snippet.name }}</a><br>
+          <span class="dimmed">{{ snippet.scope.type_ }}/{{ snippet.scope.name }}</span>
         </td>
         <td>
         {%- if g.current_user.has_permission(SnippetMountpointPermission.delete) %}
