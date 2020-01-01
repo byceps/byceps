@@ -14,11 +14,14 @@
   </nav>
   <h1>
     {{- site.title }}
-    {%- if not site.enabled -%}
-    <br>{{ render_tag('deaktiviert', class='color-disabled', icon='disabled') }}
-    {%- endif -%}
-    {%- if site.archived -%}
-    <br>{{ render_tag('archiviert', class='color-disabled', icon='archived') }}
+    {%- if not site.enabled or site.archived -%}
+    <br>
+      {%- if not site.enabled %}
+    {{ render_tag('deaktiviert', class='color-disabled', icon='disabled') }}
+      {%- endif %}
+      {%- if site.archived %}
+    {{ render_tag('archiviert', class='color-disabled', icon='archived') }}
+      {%- endif %}
     {%- endif -%}
   </h1>
 
