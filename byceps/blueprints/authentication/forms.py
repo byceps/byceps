@@ -47,7 +47,7 @@ class ResetPasswordForm(LocalizedForm):
 
 
 class UpdatePasswordForm(ResetPasswordForm):
-    old_password = PasswordField('Bisheriges Passwort', [InputRequired(), Length(min=MINIMUM_PASSWORD_LENGTH)])
+    old_password = PasswordField('Bisheriges Passwort', [InputRequired()])
 
     @staticmethod
     def validate_old_password(form, field):
