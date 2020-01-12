@@ -19,6 +19,16 @@ from .models.match import MatchComment as DbMatchComment
 from .transfer.models import MatchID, MatchCommentID
 
 
+def get_comment(comment_id: MatchCommentID) -> DbMatchComment:
+    """Return the comment."""
+    comment = DbMatchComment.query.get(comment_id)
+
+    if comment is None:
+        raise ValueError('Unknown match comment ID')
+
+    return comment
+
+
 def get_comments(
     match_id: MatchID,
     *,
@@ -79,9 +89,7 @@ def create_comment(
 
 def hide_comment(comment_id: MatchCommentID, initiator_id: UserID) -> None:
     """Hide the match comment."""
-    comment = DbMatchComment.query.get(comment_id)
-    if comment is None:
-        raise ValueError('Unknown match comment ID')
+    comment = get_comment(comment_id)
 
     comment.hidden = True
     comment.hidden_at = datetime.utcnow()
@@ -92,9 +100,7 @@ def hide_comment(comment_id: MatchCommentID, initiator_id: UserID) -> None:
 
 def unhide_comment(comment_id: MatchCommentID, initiator_id: UserID) -> None:
     """Un-hide the match comment."""
-    comment = DbMatchComment.query.get(comment_id)
-    if comment is None:
-        raise ValueError('Unknown match comment ID')
+    comment = get_comment(comment_id)
 
     comment.hidden = False
     comment.hidden_at = None
