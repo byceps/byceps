@@ -6,6 +6,8 @@ byceps.services.user.transfer.models
 :License: Modified BSD, see LICENSE for details.
 """
 
+from typing import Optional
+
 from attr import attrs
 
 from ....typing import UserID
@@ -17,5 +19,5 @@ class User:
     screen_name: str
     suspended: bool
     deleted: bool
-    avatar_url: str
+    avatar_url: Optional[str]
     is_orga: bool
