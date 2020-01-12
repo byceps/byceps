@@ -6,8 +6,11 @@ byceps.blueprints.api.tourney.match.views
 :License: Modified BSD, see LICENSE for details.
 """
 
+from typing import Any, Dict
+
 from flask import abort, jsonify, request, url_for
 from marshmallow import ValidationError
+from marshmallow.schema import SchemaMeta
 
 from ......services.tourney import match_comment_service, match_service
 from ......services.user import service as user_service
@@ -97,11 +100,7 @@ blueprint.add_url_rule(
 @respond_created
 def create():
     """Create a comment on a match."""
-    schema = CreateMatchCommentRequest()
-    try:
-        req = schema.load(request.get_json())
-    except ValidationError as e:
-        abort(400, str(e.normalized_messages()))
+    req = _parse_request(CreateMatchCommentRequest)
 
     match = match_service.find_match(req['match_id'])
     if not match:
@@ -127,11 +126,7 @@ def create():
 @respond_no_content
 def hide(comment_id):
     """Hide the match comment."""
-    schema = ModerateMatchCommentRequest()
-    try:
-        req = schema.load(request.get_json())
-    except ValidationError as e:
-        abort(400, str(e.normalized_messages()))
+    req = _parse_request(ModerateMatchCommentRequest)
 
     initiator = user_service.find_active_user(req['initiator_id'])
     if not initiator:
@@ -148,11 +143,7 @@ def hide(comment_id):
 @respond_no_content
 def unhide(comment_id):
     """Un-hide the match comment."""
-    schema = ModerateMatchCommentRequest()
-    try:
-        req = schema.load(request.get_json())
-    except ValidationError as e:
-        abort(400, str(e.normalized_messages()))
+    req = _parse_request(ModerateMatchCommentRequest)
 
     initiator = user_service.find_active_user(req['initiator_id'])
     if not initiator:
@@ -168,3 +159,15 @@ def _get_match_or_404(match_id):
         abort(404)
 
     return match
+
+
+def _parse_request(schema_class: SchemaMeta) -> Dict[str, Any]:
+    schema = schema_class()
+    request_data = request.get_json()
+
+    try:
+        req = schema.load(request_data)
+    except ValidationError as e:
+        abort(400, str(e.normalized_messages()))
+
+    return req
