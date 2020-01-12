@@ -126,13 +126,15 @@ def create():
 @respond_no_content
 def hide(comment_id):
     """Hide the match comment."""
+    comment = _get_comment_or_404(comment_id)
+
     req = _parse_request(ModerateMatchCommentRequest)
 
     initiator = user_service.find_active_user(req['initiator_id'])
     if not initiator:
         abort(400, 'Initiator ID does not reference an active user.')
 
-    match_comment_service.hide_comment(comment_id, initiator.id)
+    match_comment_service.hide_comment(comment.id, initiator.id)
 
 
 @blueprint.route(
@@ -143,13 +145,15 @@ def hide(comment_id):
 @respond_no_content
 def unhide(comment_id):
     """Un-hide the match comment."""
+    comment = _get_comment_or_404(comment_id)
+
     req = _parse_request(ModerateMatchCommentRequest)
 
     initiator = user_service.find_active_user(req['initiator_id'])
     if not initiator:
         abort(400, 'Initiator ID does not reference an active user.')
 
-    match_comment_service.unhide_comment(comment_id, initiator.id)
+    match_comment_service.unhide_comment(comment.id, initiator.id)
 
 
 def _get_match_or_404(match_id):
@@ -159,6 +163,15 @@ def _get_match_or_404(match_id):
         abort(404)
 
     return match
+
+
+def _get_comment_or_404(comment_id):
+    comment = match_comment_service.find_comment(comment_id)
+
+    if comment is None:
+        abort(404)
+
+    return comment
 
 
 def _parse_request(schema_class: SchemaMeta) -> Dict[str, Any]:

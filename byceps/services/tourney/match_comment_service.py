@@ -19,9 +19,17 @@ from .models.match import MatchComment as DbMatchComment
 from .transfer.models import MatchID, MatchCommentID
 
 
+def find_comment(comment_id: MatchCommentID) -> DbMatchComment:
+    """Return the comment, or `None` if not found."""
+    return DbMatchComment.query.get(comment_id)
+
+
 def get_comment(comment_id: MatchCommentID) -> DbMatchComment:
-    """Return the comment."""
-    comment = DbMatchComment.query.get(comment_id)
+    """Return the comment.
+
+    Raise exception if comment ID is unknown.
+    """
+    comment = find_comment(comment_id)
 
     if comment is None:
         raise ValueError('Unknown match comment ID')
