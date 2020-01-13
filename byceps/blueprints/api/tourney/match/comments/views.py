@@ -12,7 +12,10 @@ from flask import abort, jsonify, request, url_for
 from marshmallow import ValidationError
 from marshmallow.schema import SchemaMeta
 
-from ......services.tourney import match_comment_service, match_service
+from ......services.tourney import (
+    match_comment_service as comment_service,
+    match_service,
+)
 from ......services.user import service as user_service
 from ......util.framework.blueprint import create_blueprint
 from ......util.framework.templating import templated
@@ -41,7 +44,7 @@ def view_for_match(match_id):
 
     party_id = request.args.get('party_id')
 
-    comments = match_comment_service.get_comments(
+    comments = comment_service.get_comments(
         match.id, party_id=party_id, include_hidden=False
     )
 
@@ -58,7 +61,7 @@ def view_for_match_as_json(match_id):
 
     party_id = request.args.get('party_id')
 
-    comments = match_comment_service.get_comments(
+    comments = comment_service.get_comments(
         match.id, party_id=party_id, include_hidden=True
     )
 
@@ -128,7 +131,7 @@ def create():
 
     body = req['body'].strip()
 
-    comment = match_comment_service.create_comment(match.id, creator.id, body)
+    comment = comment_service.create_comment(match.id, creator.id, body)
 
     signals.match_comment_created.send(None, comment_id=comment.id)
 
@@ -150,7 +153,7 @@ def update(comment_id):
 
     body = req['body'].strip()
 
-    match_comment_service.update_comment(comment.id, editor.id, body)
+    comment_service.update_comment(comment.id, editor.id, body)
 
 
 @blueprint.route(
@@ -168,7 +171,7 @@ def hide(comment_id):
     if not initiator:
         abort(400, 'Initiator ID does not reference an active user.')
 
-    match_comment_service.hide_comment(comment.id, initiator.id)
+    comment_service.hide_comment(comment.id, initiator.id)
 
 
 @blueprint.route(
@@ -187,7 +190,7 @@ def unhide(comment_id):
     if not initiator:
         abort(400, 'Initiator ID does not reference an active user.')
 
-    match_comment_service.unhide_comment(comment.id, initiator.id)
+    comment_service.unhide_comment(comment.id, initiator.id)
 
 
 def _get_match_or_404(match_id):
@@ -200,7 +203,7 @@ def _get_match_or_404(match_id):
 
 
 def _get_comment_or_404(comment_id):
-    comment = match_comment_service.find_comment(comment_id)
+    comment = comment_service.find_comment(comment_id)
 
     if comment is None:
         abort(404)

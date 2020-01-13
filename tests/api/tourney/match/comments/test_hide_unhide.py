@@ -5,11 +5,14 @@
 
 import pytest
 
-from byceps.services.tourney import match_comment_service, match_service
+from byceps.services.tourney import (
+    match_comment_service as comment_service,
+    match_service,
+)
 
 
 def test_hide_comment(api_client, api_client_authz_header, admin, comment):
-    comment_before = match_comment_service.find_comment(comment.id)
+    comment_before = comment_service.find_comment(comment.id)
     assert not comment_before.hidden
     assert comment_before.hidden_at is None
     assert comment_before.hidden_by_id is None
@@ -21,16 +24,16 @@ def test_hide_comment(api_client, api_client_authz_header, admin, comment):
     response = api_client.post(url, headers=headers, json=json_data)
     assert response.status_code == 204
 
-    comment_after = match_comment_service.find_comment(comment.id)
+    comment_after = comment_service.find_comment(comment.id)
     assert comment_after.hidden
     assert comment_after.hidden_at is not None
     assert comment_after.hidden_by_id == admin.id
 
 
 def test_unhide_comment(api_client, api_client_authz_header, admin, comment):
-    match_comment_service.hide_comment(comment.id, admin.id)
+    comment_service.hide_comment(comment.id, admin.id)
 
-    comment_before = match_comment_service.find_comment(comment.id)
+    comment_before = comment_service.find_comment(comment.id)
     assert comment_before.hidden
     assert comment_before.hidden_at is not None
     assert comment_before.hidden_by_id is not None
@@ -42,7 +45,7 @@ def test_unhide_comment(api_client, api_client_authz_header, admin, comment):
     response = api_client.delete(url, headers=headers, json=json_data)
     assert response.status_code == 204
 
-    comment_after = match_comment_service.find_comment(comment.id)
+    comment_after = comment_service.find_comment(comment.id)
     assert not comment_after.hidden
     assert comment_after.hidden_at is None
     assert comment_after.hidden_by_id is None
@@ -58,4 +61,4 @@ def match(app, scope='module'):
 
 @pytest.fixture
 def comment(app, match, user):
-    return match_comment_service.create_comment(match.id, user.id, '¡Vámonos!')
+    return comment_service.create_comment(match.id, user.id, '¡Vámonos!')
