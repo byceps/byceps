@@ -18,7 +18,6 @@ from ......services.tourney import (
 )
 from ......services.user import service as user_service
 from ......util.framework.blueprint import create_blueprint
-from ......util.framework.templating import templated
 from ......util.views import respond_created, respond_no_content
 
 from ....decorators import api_token_required
@@ -33,24 +32,6 @@ from .schemas import (
 
 
 blueprint = create_blueprint('api_tourney_match_comments', __name__)
-
-
-@blueprint.route('/matches/<uuid:match_id>/comments')
-@api_token_required
-@templated
-def view_for_match(match_id):
-    """Render the comments on a match."""
-    match = _get_match_or_404(match_id)
-
-    party_id = request.args.get('party_id')
-
-    comments = comment_service.get_comments(
-        match.id, party_id=party_id, include_hidden=False
-    )
-
-    return {
-        'comments': comments,
-    }
 
 
 @blueprint.route('/matches/<uuid:match_id>/comments.json')
