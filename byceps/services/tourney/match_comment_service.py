@@ -61,6 +61,16 @@ def get_comments(
     for comment in comments:
         comment.creator = creators_by_id[comment.created_by_id]
 
+    # Add last editor objects.
+    last_editor_ids = {
+        comment.last_edited_by_id
+        for comment in comments
+        if comment.last_edited_by_id
+    }
+    last_editors_by_id = _get_users_by_id(last_editor_ids, party_id=party_id)
+    for comment in comments:
+        comment.last_editor = last_editors_by_id.get(comment.last_edited_by_id)
+
     # Add rendered bodies.
     for comment in comments:
         comment.body_rendered = text_markup_service.render_html(comment.body)

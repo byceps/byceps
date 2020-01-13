@@ -5,10 +5,15 @@
 
 import pytest
 
-from byceps.services.tourney import match_comment_service, match_service
+from byceps.services.tourney import (
+    match_comment_service as comment_service,
+    match_service,
+)
 
 
-def test_view_for_match_as_json(api_client, api_client_authz_header, match, comment):
+def test_view_for_match_as_json(
+    api_client, api_client_authz_header, match, comment
+):
     url = f'/api/tourney/matches/{match.id}/comments.json'
     headers = [api_client_authz_header]
 
@@ -30,11 +35,54 @@ def test_view_for_match_as_json(api_client, api_client_authz_header, match, comm
                     'is_orga': False,
                 },
                 'body': 'Denn man tau.',
+                'last_edited_at': None,
+                'last_editor': None,
                 'hidden': False,
                 'hidden_at': None,
                 'hidden_by_id': None,
-            },
-        ],
+            }
+        ]
+    }
+
+
+def test_view_for_match_with_edited_comment_as_json(
+    api_client, api_client_authz_header, match, edited_comment
+):
+    url = f'/api/tourney/matches/{match.id}/comments.json'
+    headers = [api_client_authz_header]
+
+    response = api_client.get(url, headers=headers)
+    assert response.status_code == 200
+    assert response.content_type == 'application/json'
+    assert response.get_json() == {
+        'comments': [
+            {
+                'comment_id': str(edited_comment.id),
+                'match_id': str(edited_comment.match_id),
+                'created_at': edited_comment.created_at.isoformat(),
+                'creator': {
+                    'user_id': str(edited_comment.creator.id),
+                    'screen_name': edited_comment.creator.screen_name,
+                    'suspended': False,
+                    'deleted': False,
+                    'avatar_url': None,
+                    'is_orga': False,
+                },
+                'body': 'So nicht, Freundchen!',
+                'last_edited_at': edited_comment.last_edited_at.isoformat(),
+                'last_editor': {
+                    'user_id': str(edited_comment.last_edited_by.id),
+                    'screen_name': edited_comment.last_edited_by.screen_name,
+                    'suspended': False,
+                    'deleted': False,
+                    'avatar_url': None,
+                    'is_orga': False,
+                },
+                'hidden': False,
+                'hidden_at': None,
+                'hidden_by_id': None,
+            }
+        ]
     }
 
 
@@ -48,4 +96,12 @@ def match(app):
 
 @pytest.fixture
 def comment(app, match, user):
-   return match_comment_service.create_comment(match.id, user.id, 'Denn man tau.')
+    return comment_service.create_comment(match.id, user.id, 'Denn man tau.')
+
+
+@pytest.fixture
+def edited_comment(app, comment, admin):
+    comment_service.update_comment(
+        comment.id, admin.id, 'So nicht, Freundchen!'
+    )
+    return comment_service.get_comment(comment.id)

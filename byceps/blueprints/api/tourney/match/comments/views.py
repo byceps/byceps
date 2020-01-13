@@ -71,24 +71,36 @@ def view_for_match_as_json(match_id):
 
 def _comment_to_json(comment):
     creator = comment.creator
+    last_editor = comment.last_edited_by
 
     return {
         'comment_id': str(comment.id),
         'match_id': str(comment.match_id),
         'created_at': comment.created_at.isoformat(),
-        'creator': {
-            'user_id': str(creator.id),
-            'screen_name': creator.screen_name,
-            'suspended': creator.suspended,
-            'deleted': creator.deleted,
-            'avatar_url': creator.avatar_url,
-            'is_orga': creator.is_orga,
-        },
+        'creator': _user_to_json(creator),
         'body': comment.body_rendered,
+        'last_edited_at': comment.last_edited_at.isoformat()
+            if comment.last_edited_at is not None
+            else None,
+        'last_editor': _user_to_json(last_editor)
+            if last_editor is not None
+            else None,
         'hidden': comment.hidden,
-        'hidden_at': comment.hidden_at.isoformat() \
-                     if (comment.hidden_at is not None) else None,
+        'hidden_at': comment.hidden_at.isoformat()
+            if comment.hidden_at is not None
+            else None,
         'hidden_by_id': comment.hidden_by_id,
+    }
+
+
+def _user_to_json(user):
+    return {
+        'user_id': str(user.id),
+        'screen_name': user.screen_name,
+        'suspended': user.suspended,
+        'deleted': user.deleted,
+        'avatar_url': user.avatar_url,
+        'is_orga': user.is_orga,
     }
 
 
