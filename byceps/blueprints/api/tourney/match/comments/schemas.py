@@ -15,5 +15,10 @@ class CreateMatchCommentRequest(Schema):
     body = fields.Str()
 
 
+class UpdateMatchCommentRequest(Schema):
+    editor_id = fields.UUID()
+    body = fields.Str()
+
+
 class ModerateMatchCommentRequest(Schema):
     initiator_id = fields.UUID()

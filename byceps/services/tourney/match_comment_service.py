@@ -95,6 +95,21 @@ def create_comment(
     return comment
 
 
+def update_comment(
+    comment_id: MatchCommentID, editor_id: UserID, body: str
+) -> DbMatchComment:
+    """Update a comment on a match."""
+    comment = get_comment(comment_id)
+
+    comment.body = body
+    comment.last_edited_at = datetime.utcnow()
+    comment.last_edited_by_id = editor_id
+
+    db.session.commit()
+
+    return comment
+
+
 def hide_comment(comment_id: MatchCommentID, initiator_id: UserID) -> None:
     """Hide the match comment."""
     comment = get_comment(comment_id)

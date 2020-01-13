@@ -22,7 +22,11 @@ from ....decorators import api_token_required
 
 from ... import signals
 
-from .schemas import CreateMatchCommentRequest, ModerateMatchCommentRequest
+from .schemas import (
+    CreateMatchCommentRequest,
+    ModerateMatchCommentRequest,
+    UpdateMatchCommentRequest,
+)
 
 
 blueprint = create_blueprint('api_tourney_match_comments', __name__)
@@ -117,6 +121,24 @@ def create():
     signals.match_comment_created.send(None, comment_id=comment.id)
 
     return url_for('.view', comment_id=comment.id)
+
+
+@blueprint.route('/match_comments/<uuid:comment_id>', methods=['PATCH'])
+@api_token_required
+@respond_no_content
+def update(comment_id):
+    """Update a comment on a match."""
+    comment = _get_comment_or_404(comment_id)
+
+    req = _parse_request(UpdateMatchCommentRequest)
+
+    editor = user_service.find_active_user(req['editor_id'])
+    if not editor:
+        abort(400, 'Editor ID does not reference an active user.')
+
+    body = req['body'].strip()
+
+    match_comment_service.update_comment(comment.id, editor.id, body)
 
 
 @blueprint.route(
