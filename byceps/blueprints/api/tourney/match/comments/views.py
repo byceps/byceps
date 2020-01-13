@@ -34,9 +34,9 @@ from .schemas import (
 blueprint = create_blueprint('api_tourney_match_comments', __name__)
 
 
-@blueprint.route('/matches/<uuid:match_id>/comments.json')
+@blueprint.route('/matches/<uuid:match_id>/comments')
 @api_token_required
-def view_for_match_as_json(match_id):
+def view_for_match(match_id):
     """Render the comments on a match as JSON."""
     match = _get_match_or_404(match_id)
 

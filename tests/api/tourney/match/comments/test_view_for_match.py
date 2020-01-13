@@ -11,10 +11,10 @@ from byceps.services.tourney import (
 )
 
 
-def test_view_for_match_as_json(
+def test_view_for_match(
     api_client, api_client_authz_header, match, comment
 ):
-    url = f'/api/tourney/matches/{match.id}/comments.json'
+    url = f'/api/tourney/matches/{match.id}/comments'
     headers = [api_client_authz_header]
 
     response = api_client.get(url, headers=headers)
@@ -45,10 +45,10 @@ def test_view_for_match_as_json(
     }
 
 
-def test_view_for_match_with_edited_comment_as_json(
+def test_view_for_match_with_edited_comment(
     api_client, api_client_authz_header, match, edited_comment
 ):
-    url = f'/api/tourney/matches/{match.id}/comments.json'
+    url = f'/api/tourney/matches/{match.id}/comments'
     headers = [api_client_authz_header]
 
     response = api_client.get(url, headers=headers)
