@@ -5,7 +5,7 @@
 
 import pytest
 
-from byceps.services.tourney.models.match import MatchComment
+from byceps.services.tourney.models.match_comment import MatchComment
 from byceps.services.tourney import match_service
 from byceps.services.user import command_service as user_command_service
 
