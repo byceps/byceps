@@ -11,7 +11,7 @@ from byceps.services.tourney import (
 )
 
 
-def test_view_for_match(
+def test_get_comments_for_match(
     api_client, api_client_authz_header, match, comment
 ):
     url = f'/api/tourney/matches/{match.id}/comments'
@@ -45,7 +45,7 @@ def test_view_for_match(
     }
 
 
-def test_view_for_match_with_edited_comment(
+def test_get_comments_for_match_with_edited_comment(
     api_client, api_client_authz_header, match, edited_comment
 ):
     url = f'/api/tourney/matches/{match.id}/comments'

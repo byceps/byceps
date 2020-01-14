@@ -20,7 +20,7 @@ blueprint = create_blueprint('api_snippet', __name__)
 
 
 @blueprint.route('/by_name/<scope_type>/<scope_name>/<snippet_name>')
-def view_by_name(scope_type, scope_name, snippet_name):
+def get_snippet_by_name(scope_type, scope_name, snippet_name):
     """Return the current version of the snippet with that name in that
     scope.
     """
