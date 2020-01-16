@@ -6,14 +6,13 @@ byceps.services.user.transfer.models
 :License: Modified BSD, see LICENSE for details.
 """
 
+from dataclasses import dataclass
 from typing import Optional
-
-from attr import attrs
 
 from ....typing import UserID
 
 
-@attrs(auto_attribs=True, frozen=True, slots=True)
+@dataclass(frozen=True)
 class User:
     id: UserID
     screen_name: str
