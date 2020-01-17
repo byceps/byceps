@@ -41,10 +41,21 @@ from .schemas import (
 blueprint = create_blueprint('api_tourney_match_comments', __name__)
 
 
+@blueprint.route('/match_comments/<uuid:comment_id>')
+@api_token_required
+def get_comment(comment_id):
+    """Return the comment."""
+    comment = _get_comment_or_404(comment_id)
+
+    comment_dto = _comment_to_json(comment)
+
+    return jsonify(comment_dto)
+
+
 @blueprint.route('/matches/<uuid:match_id>/comments')
 @api_token_required
 def get_comments_for_match(match_id):
-    """Render the comments on a match as JSON."""
+    """Return the comments on the match."""
     match = _get_match_or_404(match_id)
 
     party_id = request.args.get('party_id')
