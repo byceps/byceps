@@ -13,19 +13,21 @@ from byceps.services.tourney import (
 
 def test_update_comment(api_client, api_client_authz_header, comment, player):
     original_comment = comment_service.get_comment(comment.id)
-    assert original_comment.body == 'Something stupid.'
+    assert original_comment.body_html == 'Something stupid.'
     assert original_comment.last_edited_at is None
-    assert original_comment.last_edited_by_id is None
+    assert original_comment.last_edited_by is None
 
     response = request_comment_update(
         api_client, api_client_authz_header, comment.id, player.id
     )
 
     assert response.status_code == 204
+
     updated_comment = comment_service.get_comment(comment.id)
-    assert updated_comment.body == 'This is better!'
+    assert updated_comment.body_html == 'This is better!'
     assert updated_comment.last_edited_at is not None
-    assert updated_comment.last_edited_by_id == player.id
+    assert updated_comment.last_edited_by is not None
+    assert updated_comment.last_edited_by.id == player.id
 
 
 def test_update_nonexistant_comment(

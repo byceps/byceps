@@ -7,8 +7,11 @@ byceps.services.tourney.transfer.models
 """
 
 from dataclasses import dataclass
-from typing import NewType
+from datetime import datetime
+from typing import NewType, Optional
 from uuid import UUID
+
+from ...user.transfer.models import User
 
 
 TourneyCategoryID = NewType('TourneyCategoryID', UUID)
@@ -29,3 +32,17 @@ ParticipantID = NewType('ParticipantID', UUID)
 @dataclass(frozen=True)
 class Match:
     id: MatchID
+
+
+@dataclass(frozen=True)
+class MatchComment:
+    id: MatchCommentID
+    match_id: MatchID
+    created_at: datetime
+    created_by: User
+    body_html: str
+    last_edited_at: Optional[datetime]
+    last_edited_by: Optional[User]
+    hidden: bool
+    hidden_at: Optional[datetime]
+    hidden_by: Optional[User]

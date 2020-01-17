@@ -16,15 +16,39 @@ from ...services.user.transfer.models import User
 from ...typing import PartyID, UserID
 
 from .models.match_comment import MatchComment as DbMatchComment
-from .transfer.models import MatchID, MatchCommentID
+from .transfer.models import MatchID, MatchComment, MatchCommentID
 
 
-def find_comment(comment_id: MatchCommentID) -> DbMatchComment:
+def find_comment(
+    comment_id: MatchCommentID, *, party_id: Optional[PartyID] = None
+) -> Optional[MatchComment]:
     """Return the comment, or `None` if not found."""
-    return DbMatchComment.query.get(comment_id)
+    comment = DbMatchComment.query.get(comment_id)
+
+    if comment is None:
+        return None
+
+    # creator
+    creator = _find_user(comment.created_by_id, party_id)
+
+    # last editor
+    last_editor = None
+    if comment.last_edited_by_id:
+        last_editor = _find_user(comment.last_edited_by_id, party_id)
+
+    # moderator
+    moderator = None
+    if comment.hidden_by_id:
+        moderator = _find_user(comment.hidden_by_id, party_id)
+
+    return _db_entity_to_comment(
+        comment, creator, last_editor=last_editor, moderator=moderator,
+    )
 
 
-def get_comment(comment_id: MatchCommentID) -> DbMatchComment:
+def get_comment(
+    comment_id: MatchCommentID, *, party_id: Optional[PartyID] = None
+) -> MatchComment:
     """Return the comment.
 
     Raise exception if comment ID is unknown.
@@ -42,7 +66,7 @@ def get_comments(
     *,
     party_id: Optional[PartyID] = None,
     include_hidden: bool = False,
-) -> Sequence[DbMatchComment]:
+) -> Sequence[MatchComment]:
     """Return comments on the match, ordered chronologically."""
     query = DbMatchComment.query \
         .for_match(match_id)
@@ -50,30 +74,39 @@ def get_comments(
     if not include_hidden:
         query = query.filter_by(hidden=False)
 
-    comments = query \
+    db_comments = query \
         .for_match(match_id) \
         .order_by(DbMatchComment.created_at) \
         .all()
 
-    # Add creator objects.
-    creator_ids = {comment.created_by_id for comment in comments}
+    # creators
+    creator_ids = {comment.created_by_id for comment in db_comments}
     creators_by_id = _get_users_by_id(creator_ids, party_id=party_id)
-    for comment in comments:
-        comment.creator = creators_by_id[comment.created_by_id]
 
-    # Add last editor objects.
+    # last editors
     last_editor_ids = {
         comment.last_edited_by_id
-        for comment in comments
+        for comment in db_comments
         if comment.last_edited_by_id
     }
     last_editors_by_id = _get_users_by_id(last_editor_ids, party_id=party_id)
-    for comment in comments:
-        comment.last_editor = last_editors_by_id.get(comment.last_edited_by_id)
 
-    # Add rendered bodies.
-    for comment in comments:
-        comment.body_rendered = text_markup_service.render_html(comment.body)
+    # moderators
+    moderator_ids = {
+        comment.hidden_by_id for comment in db_comments if comment.hidden_by_id
+    }
+    moderators_by_id = _get_users_by_id(moderator_ids, party_id=party_id)
+
+    comments = []
+    for db_comment in db_comments:
+        creator = creators_by_id[db_comment.created_by_id]
+        last_editor = last_editors_by_id.get(db_comment.last_edited_by_id)
+        moderator = moderators_by_id.get(db_comment.hidden_by_id)
+
+        comment = _db_entity_to_comment(
+            db_comment, creator, last_editor=last_editor, moderator=moderator,
+        )
+        comments.append(comment)
 
     return comments
 
@@ -97,7 +130,7 @@ def create_comment(
     db.session.add(comment)
     db.session.commit()
 
-    return comment
+    return get_comment(comment.id)
 
 
 def update_comment(
@@ -112,7 +145,7 @@ def update_comment(
 
     db.session.commit()
 
-    return comment
+    return get_comment(comment.id)
 
 
 def hide_comment(comment_id: MatchCommentID, initiator_id: UserID) -> None:
@@ -148,3 +181,34 @@ def _get_db_comment(comment_id: MatchCommentID) -> DbMatchComment:
         raise ValueError('Unknown match comment ID')
 
     return comment
+
+
+def _find_user(
+    user_id: UserID, party_id: Optional[PartyID] = None
+) -> Optional[User]:
+    return user_service.find_user(
+        user_id, include_avatar=True, include_orga_flag_for_party_id=party_id
+    )
+
+
+def _db_entity_to_comment(
+    comment: DbMatchComment,
+    creator: User,
+    *,
+    last_editor: Optional[User],
+    moderator: Optional[User],
+) -> MatchComment:
+    body_html = text_markup_service.render_html(comment.body)
+
+    return MatchComment(
+        comment.id,
+        comment.match_id,
+        comment.created_at,
+        creator,
+        body_html,
+        comment.last_edited_at,
+        last_editor,
+        comment.hidden,
+        comment.hidden_at,
+        moderator,
+    )

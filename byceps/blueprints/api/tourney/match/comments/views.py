@@ -16,7 +16,14 @@ from ......services.tourney import (
     match_comment_service as comment_service,
     match_service,
 )
+from ......services.tourney.transfer.models import (
+    Match,
+    MatchID,
+    MatchComment,
+    MatchCommentID,
+)
 from ......services.user import service as user_service
+from ......services.user.transfer.models import User
 from ......util.framework.blueprint import create_blueprint
 from ......util.views import respond_created, respond_no_content
 
@@ -53,16 +60,17 @@ def get_comments_for_match(match_id):
     })
 
 
-def _comment_to_json(comment):
-    creator = comment.creator
+def _comment_to_json(comment: MatchComment) -> Dict[str, Any]:
+    creator = comment.created_by
     last_editor = comment.last_edited_by
+    moderator = comment.hidden_by
 
     return {
         'comment_id': str(comment.id),
         'match_id': str(comment.match_id),
         'created_at': comment.created_at.isoformat(),
         'creator': _user_to_json(creator),
-        'body': comment.body_rendered,
+        'body': comment.body_html,
         'last_edited_at': comment.last_edited_at.isoformat()
             if comment.last_edited_at is not None
             else None,
@@ -73,11 +81,13 @@ def _comment_to_json(comment):
         'hidden_at': comment.hidden_at.isoformat()
             if comment.hidden_at is not None
             else None,
-        'hidden_by_id': comment.hidden_by_id,
+        'hidden_by_id': _user_to_json(moderator)
+            if moderator is not None
+            else None,
     }
 
 
-def _user_to_json(user):
+def _user_to_json(user: User) -> Dict[str, Any]:
     return {
         'user_id': str(user.id),
         'screen_name': user.screen_name,
@@ -174,7 +184,7 @@ def unhide(comment_id):
     comment_service.unhide_comment(comment.id, initiator.id)
 
 
-def _get_match_or_404(match_id):
+def _get_match_or_404(match_id: MatchID) -> Match:
     match = match_service.find_match(match_id)
 
     if match is None:
@@ -183,7 +193,7 @@ def _get_match_or_404(match_id):
     return match
 
 
-def _get_comment_or_404(comment_id):
+def _get_comment_or_404(comment_id: MatchCommentID) -> MatchComment:
     comment = comment_service.find_comment(comment_id)
 
     if comment is None:

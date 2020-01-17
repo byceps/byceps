@@ -27,8 +27,8 @@ def test_get_comments_for_match(
                 'match_id': str(comment.match_id),
                 'created_at': comment.created_at.isoformat(),
                 'creator': {
-                    'user_id': str(comment.creator.id),
-                    'screen_name': comment.creator.screen_name,
+                    'user_id': str(comment.created_by.id),
+                    'screen_name': comment.created_by.screen_name,
                     'suspended': False,
                     'deleted': False,
                     'avatar_url': None,
@@ -61,8 +61,8 @@ def test_get_comments_for_match_with_edited_comment(
                 'match_id': str(edited_comment.match_id),
                 'created_at': edited_comment.created_at.isoformat(),
                 'creator': {
-                    'user_id': str(edited_comment.creator.id),
-                    'screen_name': edited_comment.creator.screen_name,
+                    'user_id': str(edited_comment.created_by.id),
+                    'screen_name': edited_comment.created_by.screen_name,
                     'suspended': False,
                     'deleted': False,
                     'avatar_url': None,
