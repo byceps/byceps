@@ -104,7 +104,7 @@ def update_comment(
     comment_id: MatchCommentID, editor_id: UserID, body: str
 ) -> DbMatchComment:
     """Update a comment on a match."""
-    comment = get_comment(comment_id)
+    comment = _get_db_comment(comment_id)
 
     comment.body = body
     comment.last_edited_at = datetime.utcnow()
@@ -117,7 +117,7 @@ def update_comment(
 
 def hide_comment(comment_id: MatchCommentID, initiator_id: UserID) -> None:
     """Hide the match comment."""
-    comment = get_comment(comment_id)
+    comment = _get_db_comment(comment_id)
 
     comment.hidden = True
     comment.hidden_at = datetime.utcnow()
@@ -128,10 +128,23 @@ def hide_comment(comment_id: MatchCommentID, initiator_id: UserID) -> None:
 
 def unhide_comment(comment_id: MatchCommentID, initiator_id: UserID) -> None:
     """Un-hide the match comment."""
-    comment = get_comment(comment_id)
+    comment = _get_db_comment(comment_id)
 
     comment.hidden = False
     comment.hidden_at = None
     comment.hidden_by_id = None
 
     db.session.commit()
+
+
+def _get_db_comment(comment_id: MatchCommentID) -> DbMatchComment:
+    """Return the comment as database entity.
+
+    Raise exception if comment ID is unknown.
+    """
+    comment = DbMatchComment.query.get(comment_id)
+
+    if comment is None:
+        raise ValueError('Unknown match comment ID')
+
+    return comment
