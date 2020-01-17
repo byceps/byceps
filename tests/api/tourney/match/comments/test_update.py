@@ -13,6 +13,7 @@ from byceps.services.tourney import (
 
 def test_update_comment(api_client, api_client_authz_header, comment, player):
     original_comment = comment_service.get_comment(comment.id)
+    assert original_comment.body_text == 'Something stupid.'
     assert original_comment.body_html == 'Something stupid.'
     assert original_comment.last_edited_at is None
     assert original_comment.last_edited_by is None
@@ -24,7 +25,8 @@ def test_update_comment(api_client, api_client_authz_header, comment, player):
     assert response.status_code == 204
 
     updated_comment = comment_service.get_comment(comment.id)
-    assert updated_comment.body_html == 'This is better!'
+    assert updated_comment.body_text == '[i]This[/i] is better!'
+    assert updated_comment.body_html == '<em>This</em> is better!'
     assert updated_comment.last_edited_at is not None
     assert updated_comment.last_edited_by is not None
     assert updated_comment.last_edited_by.id == player.id
@@ -70,7 +72,7 @@ def request_comment_update(
     headers = [api_client_authz_header]
     json_data = {
         'editor_id': editor_id,
-        'body': 'This is better!',
+        'body': '[i]This[/i] is better!',
     }
 
     return api_client.patch(url, headers=headers, json=json_data)

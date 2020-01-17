@@ -205,6 +205,7 @@ def _db_entity_to_comment(
         comment.match_id,
         comment.created_at,
         creator,
+        comment.body,
         body_html,
         comment.last_edited_at,
         last_editor,

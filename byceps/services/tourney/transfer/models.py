@@ -40,6 +40,7 @@ class MatchComment:
     match_id: MatchID
     created_at: datetime
     created_by: User
+    body_text: str
     body_html: str
     last_edited_at: Optional[datetime]
     last_edited_by: Optional[User]

@@ -81,7 +81,8 @@ def _comment_to_json(comment: MatchComment) -> Dict[str, Any]:
         'match_id': str(comment.match_id),
         'created_at': comment.created_at.isoformat(),
         'creator': _user_to_json(creator),
-        'body': comment.body_html,
+        'body_text': comment.body_text,
+        'body_html': comment.body_html,
         'last_edited_at': comment.last_edited_at.isoformat()
             if comment.last_edited_at is not None
             else None,

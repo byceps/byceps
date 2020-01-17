@@ -30,7 +30,8 @@ def test_create_comment(api_client, api_client_authz_header, player, match):
     assert comment.match_id == match.id
     assert comment.created_at is not None
     assert comment.created_by.id == player.id
-    assert comment.body_html == 'gg'
+    assert comment.body_text == 'gg [i]lol[/i]'
+    assert comment.body_html == 'gg <em>lol</em>'
     assert comment.last_edited_at is None
     assert comment.last_edited_by is None
     assert not comment.hidden
@@ -108,7 +109,7 @@ def request_comment_creation(
     json_data = {
         'match_id': str(match_id),
         'creator_id': creator_id,
-        'body': 'gg',
+        'body': 'gg [i]lol[/i]',
     }
 
     return api_client.post(url, headers=headers, json=json_data)

@@ -34,7 +34,8 @@ def test_get_comments_for_match(
                     'avatar_url': None,
                     'is_orga': False,
                 },
-                'body': 'Denn man tau.',
+                'body_text': 'Denn man tau.',
+                'body_html': 'Denn man tau.',
                 'last_edited_at': None,
                 'last_editor': None,
                 'hidden': False,
@@ -68,7 +69,8 @@ def test_get_comments_for_match_with_edited_comment(
                     'avatar_url': None,
                     'is_orga': False,
                 },
-                'body': 'So nicht, Freundchen!',
+                'body_text': '[b]So nicht[/b], Freundchen!',
+                'body_html': '<strong>So nicht</strong>, Freundchen!',
                 'last_edited_at': edited_comment.last_edited_at.isoformat(),
                 'last_editor': {
                     'user_id': str(edited_comment.last_edited_by.id),
@@ -102,6 +104,6 @@ def comment(app, match, user):
 @pytest.fixture
 def edited_comment(app, comment, admin):
     comment_service.update_comment(
-        comment.id, admin.id, 'So nicht, Freundchen!'
+        comment.id, admin.id, '[b]So nicht[/b], Freundchen!'
     )
     return comment_service.get_comment(comment.id)
