@@ -4,7 +4,7 @@ byceps.services.user_message.service
 
 Send an e-mail message from one user to another.
 
-:Copyright: 2006-2019 Jochen Kupperschmidt
+:Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
 """
 

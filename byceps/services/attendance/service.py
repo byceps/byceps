@@ -2,7 +2,7 @@
 byceps.services.attendance.service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2006-2019 Jochen Kupperschmidt
+:Copyright: 2006-2020 Jochen Kupperschmidt
 """
 
 from collections import defaultdict

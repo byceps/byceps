@@ -3,7 +3,7 @@
 """Generate the SQL statements to remove one or more users and they
 various traces from the database.
 
-:Copyright: 2006-2019 Jochen Kupperschmidt
+:Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
 """
 

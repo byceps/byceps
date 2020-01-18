@@ -33,7 +33,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'BYCEPS'
-copyright = '2006-2019 Jochen Kupperschmidt'
+copyright = '2006-2020 Jochen Kupperschmidt'
 author = 'Jochen Kupperschmidt'
 
 # The version info for the project you're documenting, acts as replacement for

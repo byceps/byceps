@@ -32,7 +32,7 @@ Other sites using BYCEPS:
 .. _OrgaTalk: https://www.orgatalk.de/
 
 
-:Copyright: 2006-2019 Jochen Kupperschmidt
+:Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
 :Website: https://byceps.nwsnet.de/
 

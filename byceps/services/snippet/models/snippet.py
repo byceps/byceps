@@ -6,7 +6,7 @@ Snippets of database-stored content. Can contain HTML and template
 engine syntax. Can be embedded in other templates or mounted as full
 page.
 
-:Copyright: 2006-2019 Jochen Kupperschmidt
+:Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
 """
 
