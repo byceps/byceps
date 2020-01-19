@@ -7,16 +7,15 @@ byceps.blueprints.board.models
 """
 
 from __future__ import annotations
+from dataclasses import dataclass
 from typing import Optional, Set
-
-from attr import attrs
 
 from ...services.board.transfer.models import CategoryWithLastUpdate
 from ...services.user.transfer.models import User
 from ...services.user_badge.transfer.models import Badge
 
 
-@attrs(auto_attribs=True, frozen=True, slots=True)
+@dataclass(frozen=True)
 class CategoryWithLastUpdateAndUnseenFlag(CategoryWithLastUpdate):
     contains_unseen_postings: bool
 
@@ -40,12 +39,12 @@ class CategoryWithLastUpdateAndUnseenFlag(CategoryWithLastUpdate):
         )
 
 
-@attrs(auto_attribs=True, frozen=True, slots=True)
+@dataclass(frozen=True)
 class Ticket:
     party_title: str
 
 
-@attrs(auto_attribs=True, frozen=True, slots=True)
+@dataclass(frozen=True)
 class Creator(User):
     badges: Set[Badge]
     ticket: Ticket
