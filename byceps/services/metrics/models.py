@@ -6,12 +6,11 @@ byceps.services.metrics.models
 :License: Modified BSD, see LICENSE for details.
 """
 
+from dataclasses import dataclass, field
 from typing import List
 
-from attr import attrib, attrs
 
-
-@attrs(auto_attribs=True, frozen=True, slots=True)
+@dataclass(frozen=True)
 class Label:
     name: str
     value: str
@@ -35,11 +34,11 @@ def _escape_label_value(value: str) -> str:
     return ''.join(map(escape, value))
 
 
-@attrs(auto_attribs=True, frozen=True, slots=True)
+@dataclass(frozen=True)
 class Metric:
     name: str
     value: float
-    labels: List[Label] = attrib(factory=dict, kw_only=True)
+    labels: List[Label] = field(default_factory=dict)
 
     def serialize(self) -> str:
         labels_str = ''

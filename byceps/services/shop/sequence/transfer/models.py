@@ -6,9 +6,8 @@ byceps.services.shop.sequence.transfer.models
 :License: Modified BSD, see LICENSE for details.
 """
 
+from dataclasses import dataclass
 from enum import Enum
-
-from attr import attrs
 
 from ...shop.transfer.models import ShopID
 
@@ -16,7 +15,7 @@ from ...shop.transfer.models import ShopID
 Purpose = Enum('Purpose', ['article', 'order'])
 
 
-@attrs(auto_attribs=True, frozen=True, slots=True)
+@dataclass(frozen=True)
 class NumberSequence:
     shop_id: ShopID
     purpose: Purpose

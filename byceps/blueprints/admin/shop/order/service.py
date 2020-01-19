@@ -6,10 +6,8 @@ byceps.blueprints.admin.shop.order.service
 :License: Modified BSD, see LICENSE for details.
 """
 
+from dataclasses import dataclass
 from typing import Dict, Iterator, Sequence
-
-import attr
-from attr import attrs
 
 from .....services.shop.article.models.article import Article
 from .....services.shop.article import service as article_service
@@ -29,7 +27,7 @@ from .....services.user_badge import service as user_badge_service
 from .....typing import UserID
 
 
-@attrs(auto_attribs=True, frozen=True, slots=True)
+@dataclass(frozen=True)
 class OrderWithOrderer(Order):
     placed_by: DbUser
 

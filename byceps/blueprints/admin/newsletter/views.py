@@ -6,9 +6,9 @@ byceps.blueprints.admin.newsletter.views
 :License: Modified BSD, see LICENSE for details.
 """
 
+from dataclasses import dataclass
 from operator import attrgetter
 
-from attr import attrs
 from flask import abort
 
 from ....services.newsletter import service as newsletter_service
@@ -30,7 +30,7 @@ blueprint = create_blueprint('newsletter_admin', __name__)
 permission_registry.register_enum(NewsletterPermission)
 
 
-@attrs(auto_attribs=True, frozen=True, slots=True)
+@dataclass(frozen=True)
 class ListWithStats(List):
     subscriber_count: int
 

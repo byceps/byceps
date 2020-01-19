@@ -6,11 +6,10 @@ byceps.services.consent.transfer.models
 :License: Modified BSD, see LICENSE for details.
 """
 
+from dataclasses import dataclass
 from datetime import datetime
 from typing import NewType
 from uuid import UUID
-
-from attr import attrs
 
 from ....typing import UserID
 
@@ -18,7 +17,7 @@ from ....typing import UserID
 SubjectID = NewType('SubjectID', UUID)
 
 
-@attrs(auto_attribs=True, frozen=True, slots=True)
+@dataclass(frozen=True)
 class Subject:
     id: SubjectID
     name: str
@@ -26,7 +25,7 @@ class Subject:
     type_: str
 
 
-@attrs(auto_attribs=True, frozen=True, slots=True)
+@dataclass(frozen=True)
 class Consent:
     user_id: UserID
     subject_id: SubjectID

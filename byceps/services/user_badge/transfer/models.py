@@ -6,11 +6,10 @@ byceps.services.user_badge.transfer.models
 :License: Modified BSD, see LICENSE for details.
 """
 
+from dataclasses import dataclass
 from datetime import datetime
 from typing import NewType
 from uuid import UUID
-
-from attr import attrs
 
 from ....typing import BrandID, UserID
 
@@ -18,7 +17,7 @@ from ....typing import BrandID, UserID
 BadgeID = NewType('BadgeID', UUID)
 
 
-@attrs(auto_attribs=True, frozen=True, slots=True)
+@dataclass(frozen=True)
 class Badge:
     id: BadgeID
     brand_id: BrandID
@@ -29,7 +28,7 @@ class Badge:
     featured: bool
 
 
-@attrs(auto_attribs=True, frozen=True, slots=True)
+@dataclass(frozen=True)
 class BadgeAwarding:
     id: UUID
     badge_id: BadgeID
@@ -37,7 +36,7 @@ class BadgeAwarding:
     awarded_at: datetime
 
 
-@attrs(auto_attribs=True, frozen=True, slots=True)
+@dataclass(frozen=True)
 class QuantifiedBadgeAwarding:
     badge_id: BadgeID
     user_id: UserID

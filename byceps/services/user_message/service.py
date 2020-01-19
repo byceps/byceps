@@ -8,11 +8,11 @@ Send an e-mail message from one user to another.
 :License: Modified BSD, see LICENSE for details.
 """
 
+from dataclasses import dataclass
 from email.utils import formataddr
 import os.path
 from typing import Any, Dict, Optional
 
-from attr import attrs
 from flask import current_app
 from jinja2 import Environment, FileSystemLoader, Template
 
@@ -27,7 +27,7 @@ from ..user import service as user_service
 from ..user.transfer.models import User
 
 
-@attrs(auto_attribs=True, frozen=True, slots=True)
+@dataclass(frozen=True)
 class MessageTemplateRenderResult:
     subject: str
     body: str

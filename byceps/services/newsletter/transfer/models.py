@@ -6,10 +6,9 @@ byceps.services.newsletter.transfer.models
 :License: Modified BSD, see LICENSE for details.
 """
 
+from dataclasses import dataclass
 from datetime import datetime
 from typing import NewType
-
-from attr import attrs
 
 from ....typing import UserID
 
@@ -17,13 +16,13 @@ from ....typing import UserID
 ListID = NewType('ListID', str)
 
 
-@attrs(auto_attribs=True, frozen=True, slots=True)
+@dataclass(frozen=True)
 class List:
     id: ListID
     title: str
 
 
-@attrs(auto_attribs=True, frozen=True, slots=True)
+@dataclass(frozen=True)
 class Subscription:
     user_id: UserID
     list_id: ListID

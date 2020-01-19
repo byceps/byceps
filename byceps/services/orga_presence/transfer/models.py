@@ -7,10 +7,9 @@ byceps.services.orga_presence.transfer.models
 """
 
 from __future__ import annotations
+from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
-
-from attr import attrs
 
 from ...party.transfer.models import Party
 from ...user.transfer.models import User
@@ -21,7 +20,7 @@ from ....util.datetime.range import DateTimeRange
 TimeSlotType = Enum('TimeSlotType', ['party', 'presence', 'task'])
 
 
-@attrs(auto_attribs=True, frozen=True, slots=True)
+@dataclass(frozen=True)
 class TimeSlot:
     type: TimeSlotType
     starts_at: datetime
@@ -32,7 +31,7 @@ class TimeSlot:
         return DateTimeRange(self.starts_at, self.ends_at)
 
 
-@attrs(auto_attribs=True, frozen=True, slots=True)
+@dataclass(frozen=True)
 class PartyTimeSlot(TimeSlot):
     party: Party
 
@@ -46,7 +45,7 @@ class PartyTimeSlot(TimeSlot):
         )
 
 
-@attrs(auto_attribs=True, frozen=True, slots=True)
+@dataclass(frozen=True)
 class PresenceTimeSlot(TimeSlot):
     orga: User
 
@@ -62,7 +61,7 @@ class PresenceTimeSlot(TimeSlot):
         )
 
 
-@attrs(auto_attribs=True, frozen=True, slots=True)
+@dataclass(frozen=True)
 class TaskTimeSlot(TimeSlot):
     title: str
 

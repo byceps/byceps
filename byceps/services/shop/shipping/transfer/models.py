@@ -6,12 +6,12 @@ byceps.services.shop.shipping.transfer.models
 :License: Modified BSD, see LICENSE for details.
 """
 
-from attr import attrs
+from dataclasses import dataclass
 
 from ...article.transfer.models import ArticleNumber
 
 
-@attrs(auto_attribs=True, frozen=True, slots=True)
+@dataclass(frozen=True)
 class ArticleToShip:
     article_number: ArticleNumber
     description: str

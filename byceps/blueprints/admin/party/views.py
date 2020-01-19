@@ -6,7 +6,8 @@ byceps.blueprints.admin.party.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-import attr
+import dataclasses
+
 from flask import abort, request
 
 from ....services.brand import service as brand_service
@@ -159,7 +160,7 @@ def update_form(party_id, erroneous_form=None):
     party = _get_party_or_404(party_id)
     brand = brand_service.find_brand(party.brand_id)
 
-    party = attr.evolve(
+    party = dataclasses.replace(
         party,
         starts_at=utc_to_local_tz(party.starts_at),
         ends_at=utc_to_local_tz(party.ends_at),

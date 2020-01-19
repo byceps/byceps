@@ -6,11 +6,10 @@ byceps.services.board.transfer.models
 :License: Modified BSD, see LICENSE for details.
 """
 
+from dataclasses import dataclass
 from datetime import datetime
 from typing import NewType
 from uuid import UUID
-
-from attr import attrs
 
 from ....typing import BrandID
 
@@ -29,14 +28,14 @@ PostingID = NewType('PostingID', UUID)
 TopicID = NewType('TopicID', UUID)
 
 
-@attrs(auto_attribs=True, frozen=True, slots=True)
+@dataclass(frozen=True)
 class Board:
     id: BoardID
     brand_id: BrandID
     access_restricted: bool
 
 
-@attrs(auto_attribs=True, frozen=True, slots=True)
+@dataclass(frozen=True)
 class Category:
     id: CategoryID
     board_id: BoardID
@@ -49,7 +48,7 @@ class Category:
     hidden: bool
 
 
-@attrs(auto_attribs=True, frozen=True, slots=True)
+@dataclass(frozen=True)
 class CategoryWithLastUpdate(Category):
     last_posting_updated_at: datetime
     last_posting_updated_by: User

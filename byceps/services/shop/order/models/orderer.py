@@ -6,12 +6,12 @@ byceps.services.shop.order.models.order.orderer
 :License: Modified BSD, see LICENSE for details.
 """
 
-from attr import attrs
+from dataclasses import dataclass
 
 from .....typing import UserID
 
 
-@attrs(auto_attribs=True, frozen=True, slots=True)
+@dataclass(frozen=True)
 class Orderer:
     """Someone who orders articles."""
 

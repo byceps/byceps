@@ -10,15 +10,13 @@ from dataclasses import dataclass
 from typing import NewType, Optional
 from uuid import UUID
 
-from attr import attrs
-
 from ....typing import PartyID
 
 
 TicketCategoryID = NewType('TicketCategoryID', UUID)
 
 
-@attrs(auto_attribs=True, frozen=True, slots=True)
+@dataclass(frozen=True)
 class TicketCategory:
     id: TicketCategoryID
     party_id: PartyID

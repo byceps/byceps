@@ -6,13 +6,12 @@ byceps.services.shop.order.transfer.models
 :License: Modified BSD, see LICENSE for details.
 """
 
+from dataclasses import dataclass
 from datetime import datetime
 from decimal import Decimal
 from enum import Enum
 from typing import List, NewType
 from uuid import UUID
-
-from attr import attrs
 
 from .....typing import UserID
 
@@ -42,7 +41,7 @@ PaymentState = Enum('PaymentState', [
 ])
 
 
-@attrs(auto_attribs=True, frozen=True, slots=True)
+@dataclass(frozen=True)
 class Address:
     country: str
     zip_code: str
@@ -50,7 +49,7 @@ class Address:
     street: str
 
 
-@attrs(auto_attribs=True, frozen=True, slots=True)
+@dataclass(frozen=True)
 class OrderItem:
     order_number: OrderNumber
     article_number: ArticleNumber
@@ -61,7 +60,7 @@ class OrderItem:
     line_amount: Decimal
 
 
-@attrs(auto_attribs=True, frozen=True, slots=True)
+@dataclass(frozen=True)
 class Order:
     id: OrderID
     shop_id: ShopID

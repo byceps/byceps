@@ -12,14 +12,12 @@ from enum import Enum
 from typing import NewType
 from uuid import UUID
 
-from attr import attrs
-
 from ...site.transfer.models import SiteID
 
 from ....typing import BrandID
 
 
-@attrs(auto_attribs=True, frozen=True, slots=True)
+@dataclass(frozen=True)
 class Scope:
     type_: str
     name: str

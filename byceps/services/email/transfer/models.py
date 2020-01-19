@@ -6,13 +6,12 @@ byceps.services.email.transfer.models
 :License: Modified BSD, see LICENSE for details.
 """
 
+from dataclasses import dataclass
 from email.utils import formataddr
 from typing import List
 
-from attr import attrs
 
-
-@attrs(auto_attribs=True, frozen=True, slots=True)
+@dataclass(frozen=True)
 class Sender:
     address: str
     name: str
@@ -23,14 +22,14 @@ class Sender:
         return formataddr((realname, self.address))
 
 
-@attrs(auto_attribs=True, frozen=True, slots=True)
+@dataclass(frozen=True)
 class EmailConfig:
     id: str
     sender: Sender
     contact_address: str
 
 
-@attrs(auto_attribs=True, frozen=True, slots=True)
+@dataclass(frozen=True)
 class Message:
     sender: Sender
     recipients: List[str]

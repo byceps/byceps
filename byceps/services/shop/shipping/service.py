@@ -7,9 +7,8 @@ byceps.services.shop.shipping.service
 """
 
 from collections import Counter, defaultdict
+from dataclasses import dataclass
 from typing import Dict, Iterator, Sequence, Set
-
-from attr import attrs
 
 from ..article.models.article import Article as DbArticle
 
@@ -49,7 +48,7 @@ def get_articles_to_ship(shop_id: ShopID) -> Sequence[ArticleToShip]:
     return articles_to_ship
 
 
-@attrs(auto_attribs=True, frozen=True, slots=True)
+@dataclass(frozen=True)
 class OrderItemQuantity:
     article_number: ArticleNumber
     payment_state: PaymentState

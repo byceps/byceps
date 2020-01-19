@@ -8,10 +8,10 @@ Notification e-mails about shop orders
 :License: Modified BSD, see LICENSE for details.
 """
 
+from dataclasses import dataclass
 import os.path
 from typing import Any, Dict, Optional
 
-from attr import attrs
 from flask import current_app
 from jinja2 import FileSystemLoader
 
@@ -30,7 +30,7 @@ from .....util.templating import create_sandboxed_environment, load_template
 from ...shop.transfer.models import ShopID
 
 
-@attrs(auto_attribs=True, frozen=True, slots=True)
+@dataclass(frozen=True)
 class OrderEmailData:
     order: Order
     email_config_id: str

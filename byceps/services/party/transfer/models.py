@@ -6,17 +6,16 @@ byceps.services.party.transfer.models
 :License: Modified BSD, see LICENSE for details.
 """
 
+from dataclasses import dataclass
 from datetime import datetime
 from typing import Optional
-
-from attr import attrs
 
 from ....typing import BrandID, PartyID
 
 from ...shop.shop.transfer.models import ShopID
 
 
-@attrs(auto_attribs=True, frozen=True, slots=True)
+@dataclass(frozen=True)
 class Party:
     id: PartyID
     brand_id: BrandID
@@ -30,7 +29,7 @@ class Party:
     archived: bool
 
 
-@attrs(auto_attribs=True, frozen=True, slots=True)
+@dataclass(frozen=True)
 class PartySetting:
     party_id: PartyID
     name: str

@@ -6,11 +6,10 @@ byceps.services.news.transfer.models
 :License: Modified BSD, see LICENSE for details.
 """
 
+from dataclasses import dataclass
 from datetime import datetime
 from typing import List, NewType
 from uuid import UUID
-
-from attr import attrs
 
 from ....typing import BrandID, UserID
 
@@ -27,14 +26,14 @@ ItemVersionID = NewType('ItemVersionID', UUID)
 ImageID = NewType('ImageID', UUID)
 
 
-@attrs(auto_attribs=True, frozen=True, slots=True)
+@dataclass(frozen=True)
 class Channel:
     id: ChannelID
     brand_id: BrandID
     url_prefix: str
 
 
-@attrs(auto_attribs=True, frozen=True, slots=True)
+@dataclass(frozen=True)
 class Image:
     id: ImageID
     created_at: datetime
@@ -45,7 +44,7 @@ class Image:
     caption: str
 
 
-@attrs(auto_attribs=True, frozen=True, slots=True)
+@dataclass(frozen=True)
 class Item:
     id: ItemID
     channel: Channel

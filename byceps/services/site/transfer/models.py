@@ -6,9 +6,8 @@ byceps.services.site.transfer.models
 :License: Modified BSD, see LICENSE for details.
 """
 
+from dataclasses import dataclass
 from typing import NewType
-
-from attr import attrs
 
 from ....typing import PartyID
 
@@ -16,7 +15,7 @@ from ....typing import PartyID
 SiteID = NewType('SiteID', str)
 
 
-@attrs(auto_attribs=True, frozen=True, slots=True)
+@dataclass(frozen=True)
 class Site:
     id: SiteID
     title: str
@@ -29,7 +28,7 @@ class Site:
     archived: bool
 
 
-@attrs(auto_attribs=True, frozen=True, slots=True)
+@dataclass(frozen=True)
 class SiteSetting:
     site_id: SiteID
     name: str

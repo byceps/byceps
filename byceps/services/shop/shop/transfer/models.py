@@ -6,15 +6,14 @@ byceps.services.shop.shop.transfer.models
 :License: Modified BSD, see LICENSE for details.
 """
 
+from dataclasses import dataclass
 from typing import NewType
-
-from attr import attrs
 
 
 ShopID = NewType('ShopID', str)
 
 
-@attrs(auto_attribs=True, frozen=True, slots=True)
+@dataclass(frozen=True)
 class Shop:
     id: ShopID
     title: str
