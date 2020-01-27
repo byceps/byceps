@@ -10,9 +10,9 @@ import pytest
 
 
 def test_create(
-    avatars_path, app, api_client, api_client_authz_header, party, user
+    tourney_path, app, api_client, api_client_authz_header, party, user
 ):
-    app.config['PATH_TOURNEY_AVATAR_IMAGES'] = avatars_path
+    app.config['PATH_TOURNEY_AVATAR_IMAGES'] = tourney_path / 'avatars'
 
     response = send_request(
         api_client, api_client_authz_header, party.id, user.id
@@ -22,7 +22,7 @@ def test_create(
 
 
 @pytest.fixture
-def avatars_path():
+def tourney_path():
     with TemporaryDirectory() as d:
         yield Path(d)
 
