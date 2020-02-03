@@ -7,6 +7,7 @@ byceps.blueprints.admin.shop.order.service
 """
 
 from dataclasses import dataclass
+import dataclasses
 from typing import Dict, Iterator, Sequence
 
 from .....services.shop.article.models.article import Article
@@ -41,7 +42,7 @@ def extend_order_tuples_with_orderer(
 
     for order in orders:
         orderer = orderers_by_id[order.placed_by_id]
-        values = attr.astuple(order, recurse=False) + (orderer,)
+        values = dataclasses.astuple(order) + (orderer,)
         yield OrderWithOrderer(*values)
 
 
