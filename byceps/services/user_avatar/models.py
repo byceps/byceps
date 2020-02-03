@@ -56,7 +56,7 @@ class Avatar(db.Model):
 
     @property
     def path(self) -> Path:
-        path = current_app.config['PATH_USER_AVATAR_IMAGES']
+        path = current_app.config['PATH_DATA'] / 'global' / 'users' / 'avatars'
         return path / self.filename
 
     @property
