@@ -1,9 +1,6 @@
 # an examplary configuration file of a public party web application to
 # be run in production
 
-from pathlib import Path
-
-
 MAX_CONTENT_LENGTH = 4000000
 PROPAGATE_EXCEPTIONS = True
 
