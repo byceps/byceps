@@ -9,6 +9,7 @@ Default configuration values
 """
 
 from datetime import timedelta
+from pathlib import Path
 
 
 # database connection
