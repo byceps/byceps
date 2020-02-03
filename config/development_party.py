@@ -17,7 +17,6 @@ BRAND = 'example-brand'
 PARTY = 'example-party-1'
 
 PATH_DATA = Path('./data')
-PATH_PARTY = PATH_DATA / 'parties' / PARTY
 
 MAIL_DEBUG = True
 MAIL_DEFAULT_SENDER = 'BYCEPS <noreply@example.com>'
