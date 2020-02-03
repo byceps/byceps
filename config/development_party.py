@@ -10,8 +10,6 @@ REDIS_URL = 'redis://127.0.0.1:6379/0'
 
 SITE_MODE = 'public'
 SITE_ID = 'example-dev'
-BRAND = 'example-brand'
-PARTY = 'example-party-1'
 
 MAIL_DEBUG = True
 MAIL_DEFAULT_SENDER = 'BYCEPS <noreply@example.com>'

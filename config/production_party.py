@@ -17,8 +17,6 @@ REDIS_URL = 'unix:///var/run/redis/redis.sock?db=0'
 
 SITE_MODE = 'public'
 SITE_ID = 'example-prod'
-BRAND = 'example-brand'
-PARTY = 'example-party-1'
 
 MAIL_DEBUG = False
 MAIL_DEFAULT_SENDER = 'BYCEPS <noreply@example.com>'

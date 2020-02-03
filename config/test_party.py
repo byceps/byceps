@@ -11,8 +11,6 @@ REDIS_URL = 'redis://127.0.0.1:6379/0'
 
 SITE_MODE = 'public'
 SITE_ID = 'acmecon-2014-website'
-BRAND = 'acmecon'
-PARTY = 'acmecon-2014'
 
 MAIL_DEBUG = False
 MAIL_DEFAULT_SENDER = 'BYCEPS <noreply@example.com>'
