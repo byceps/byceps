@@ -17,8 +17,6 @@ SITE_ID = 'acmecon-2014-website'
 BRAND = 'acmecon'
 PARTY = 'acmecon-2014'
 
-PATH_DATA = Path('./data')
-
 MAIL_DEBUG = False
 MAIL_DEFAULT_SENDER = 'BYCEPS <noreply@example.com>'
 MAIL_SUPPRESS_SEND = True

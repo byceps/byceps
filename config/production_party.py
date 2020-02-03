@@ -23,8 +23,6 @@ SITE_ID = 'example-prod'
 BRAND = 'example-brand'
 PARTY = 'example-party-1'
 
-PATH_DATA = Path('./data')
-
 MAIL_DEBUG = False
 MAIL_DEFAULT_SENDER = 'BYCEPS <noreply@example.com>'
 MAIL_SUPPRESS_SEND = False

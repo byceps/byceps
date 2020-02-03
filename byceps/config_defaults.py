@@ -36,6 +36,9 @@ LOCALE = 'de_DE.UTF-8'
 LOCALES_FORMS = ['de']
 TIMEZONE = 'Europe/Berlin'
 
+# static content files path
+PATH_DATA = Path('./data')
+
 # home page
 ROOT_REDIRECT_TARGET = None
 ROOT_REDIRECT_STATUS_CODE = 307

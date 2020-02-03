@@ -12,8 +12,6 @@ RQ_DASHBOARD_ENABLED = True
 
 SITE_MODE = 'admin'
 
-PATH_DATA = Path('./data')
-
 MAIL_DEBUG = True
 MAIL_DEFAULT_SENDER = 'BYCEPS <noreply@example.com>'
 MAIL_SUPPRESS_SEND = True
