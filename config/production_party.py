@@ -24,7 +24,6 @@ BRAND = 'example-brand'
 PARTY = 'example-party-1'
 
 PATH_DATA = Path('./data')
-PATH_BRAND = PATH_DATA / 'brands' / BRAND
 PATH_PARTY = PATH_DATA / 'parties' / PARTY
 
 MAIL_DEBUG = False
