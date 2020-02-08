@@ -10,7 +10,7 @@ from importlib import import_module
 from pathlib import Path
 from typing import Any, Callable, Dict, Iterator, Optional, Tuple, Union
 
-from flask import Flask, redirect
+from flask import current_app, Flask, g, redirect
 import jinja2
 
 from . import config, config_defaults
@@ -211,12 +211,9 @@ def init_app(app: Flask) -> None:
             # Incorporate site-specific template overrides.
             app.jinja_loader = SiteTemplateOverridesLoader()
 
-            site_id = config.get_current_site_id()
-
-            # Set up site-specific template context processor.
-            context_processor = _find_site_template_context_processor(site_id)
-            if context_processor:
-                app.context_processor(context_processor)
+            # Set up site-aware template context processor.
+            app._site_context_processors = {}
+            app.context_processor(_get_site_template_context)
         elif site_mode.is_admin() and app.config['RQ_DASHBOARD_ENABLED']:
             import rq_dashboard
 
@@ -241,6 +238,33 @@ def _set_url_root_path(app: Flask) -> None:
         return redirect(target_url, status_code)
 
     app.add_url_rule('/', endpoint='root', view_func=_redirect)
+
+
+def _get_site_template_context() -> Dict[str, Any]:
+    """Return the site-specific additions to the template context."""
+    site_context_processor = _find_site_template_context_processor_cached(
+        g.site_id
+    )
+    return site_context_processor()
+
+
+def _find_site_template_context_processor_cached(
+    site_id: str
+) -> Optional[Callable[[], Dict[str, Any]]]:
+    """Return the template context processor for the site.
+
+    A processor will be cached after it has been obtained for the first
+    time.
+    """
+    # `None` is a valid value for a site that does not specify a
+    # template context processor.
+
+    if site_id in current_app._site_context_processors:
+        return current_app._site_context_processors.get(site_id)
+    else:
+        context_processor = _find_site_template_context_processor(site_id)
+        current_app._site_context_processors[site_id] = context_processor
+        return context_processor
 
 
 def _find_site_template_context_processor(
