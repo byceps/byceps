@@ -122,7 +122,7 @@ def _get_mountpoints() -> Set[Mountpoint]:
     if site_id is None:
         return set()
 
-    request_context_key = 'snippet_mountpoints'
+    request_context_key = f'snippet_mountpoints_{site_id}'
 
     mountpoints_from_request_context = g.get(request_context_key)
     if mountpoints_from_request_context:
