@@ -245,6 +245,10 @@ def _get_site_template_context() -> Dict[str, Any]:
     site_context_processor = _find_site_template_context_processor_cached(
         g.site_id
     )
+
+    if not site_context_processor:
+        return {}
+
     return site_context_processor()
 
 
