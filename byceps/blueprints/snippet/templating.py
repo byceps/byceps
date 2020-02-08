@@ -118,12 +118,18 @@ def _get_mountpoints() -> Set[Mountpoint]:
     Preferrably from request-local cache, if available. From the
     database if not yet cached.
     """
+    site_id = getattr(g, 'site_id', None)
+    if site_id is None:
+        return set()
+
     request_context_key = 'snippet_mountpoints'
 
     mountpoints_from_request_context = g.get(request_context_key)
     if mountpoints_from_request_context:
         return mountpoints_from_request_context
     else:
-        mountpoints_from_database = mountpoint_service.get_mountpoints_for_site(g.site_id)
+        mountpoints_from_database = mountpoint_service.get_mountpoints_for_site(
+            site_id
+        )
         setattr(g, request_context_key, mountpoints_from_database)
         return mountpoints_from_database
