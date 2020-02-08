@@ -8,7 +8,7 @@ byceps.application
 
 from importlib import import_module
 from pathlib import Path
-from typing import Any, Dict, Iterator, Optional, Tuple, Union
+from typing import Any, Callable, Dict, Iterator, Optional, Tuple, Union
 
 from flask import Flask, redirect
 import jinja2
@@ -213,8 +213,10 @@ def init_app(app: Flask) -> None:
 
             site_id = config.get_current_site_id()
 
-            # Import site-specific code.
-            _load_site_extension(app, site_id)
+            # Set up site-specific template context processor.
+            context_processor = _find_site_template_context_processor(site_id)
+            if context_processor:
+                app.context_processor(context_processor)
         elif site_mode.is_admin() and app.config['RQ_DASHBOARD_ENABLED']:
             import rq_dashboard
 
@@ -241,29 +243,29 @@ def _set_url_root_path(app: Flask) -> None:
     app.add_url_rule('/', endpoint='root', view_func=_redirect)
 
 
-def _load_site_extension(app: Flask, site_id: str) -> None:
-    """Import and call custom extension code from the site's package, if
-    available.
+def _find_site_template_context_processor(
+    site_id: str
+) -> Optional[Callable[[], Dict[str, Any]]]:
+    """Import a template context processor from the site's package.
 
-    If a site package contains a module named `extension` and it
+    If a site package contains a module named `extension` and that
     contains a top-level callable named `template_context_processor`,
-    then that callable is registered with the application as a template
-    context processor.
+    then that callable is imported and returned.
     """
     module_name = f'sites.{site_id}.extension'
     try:
         module = import_module(module_name)
     except ModuleNotFoundError:
         # No extension module found in site package.
-        return
+        return None
 
     context_processor = getattr(module, 'template_context_processor', None)
     if context_processor is None:
         # Context processor not found in module.
-        return
+        return None
 
     if not callable(context_processor):
         # Context processor object is not callable.
-        return
+        return None
 
-    app.context_processor(context_processor)
+    return context_processor
