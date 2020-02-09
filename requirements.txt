@@ -10,7 +10,7 @@ jinja2==2.11.1
 markupsafe==1.1.1
 marrow.mailer==4.0.3
 marrow.util==1.2.3
-marshmallow==3.3.0
+marshmallow==3.4.0
 pendulum==2.0.5
 pick==0.6.4
 pillow==6.2.2
