@@ -42,7 +42,7 @@ from byceps.services.user import screen_name_validator
     ('tilde~'                   , False),
 
     ('byceps'                   , True ),
-    ('Gemüsebrätwürßt'          , True ),  # okay: German umlauts and szett
+    ('Gemüsebrätwörßt'          , True ),  # okay: German umlauts and szett
     ('Быцепс'                   , False),  # denied: Cyrillic/non-latin letters
 ])
 def test_is_screen_name_valid(screen_name, expected):
