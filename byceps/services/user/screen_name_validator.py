@@ -11,7 +11,7 @@ Validate screen names regarding their contained characters
 from itertools import chain
 from string import ascii_letters, digits
 
-MIN_LENGTH = 4
+MIN_LENGTH = 3
 MAX_LENGTH = 24
 
 GERMAN_CHARS = 'äöüß'

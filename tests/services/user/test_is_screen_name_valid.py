@@ -12,8 +12,8 @@ from byceps.services.user import screen_name_validator
     (''                         , False),  # denied: empty string
     ('      '                   , False),  # denied: only whitespace
 
-    ('123'                      , False),  # denied: too short
-    ('1234'                     , True ),  # okay: long enough
+    ('12'                       , False),  # denied: too short
+    ('123'                      , True ),  # okay: long enough
     ('123456789012345678901234' , True ),  # okay: short enough
     ('1234567890123456789012345', False),  # denied: too long
 
