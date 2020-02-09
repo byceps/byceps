@@ -61,7 +61,7 @@ class Avatar(db.Model):
 
     @property
     def url(self) -> str:
-        return f'/global/users/avatars/{self.filename}'
+        return f'/data/global/users/avatars/{self.filename}'
 
     def __repr__(self) -> str:
         return ReprBuilder(self) \

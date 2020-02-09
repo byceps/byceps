@@ -167,7 +167,7 @@ def get_awardings_of_badge(badge_id: BadgeID) -> Set[QuantifiedBadgeAwarding]:
 
 
 def _db_entity_to_badge(entity: DbBadge) -> Badge:
-    image_url_path = f'/global/users/badges/{entity.image_filename}'
+    image_url_path = f'/data/global/users/badges/{entity.image_filename}'
 
     return Badge(
         entity.id,
