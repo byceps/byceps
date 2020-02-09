@@ -64,7 +64,7 @@ class Avatar(db.Model):
 
     @property
     def url_path(self) -> str:
-        return f'/party/tourney/avatars/{self.filename}'
+        return f'/data/parties/{self.party_id}/tourney/avatars/{self.filename}'
 
     def __repr__(self) -> str:
         return ReprBuilder(self) \
