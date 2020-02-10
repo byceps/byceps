@@ -13,7 +13,6 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from ....database import BaseQuery, db, generate_uuid
 from ....typing import UserID
 from ....util.instances import ReprBuilder
-from ....util.templating import load_template
 
 from ...user.models.user import User
 
@@ -119,10 +118,6 @@ class ItemVersion(db.Model):
         item it belongs to.
         """
         return self.id == self.item.current_version.id
-
-    def render_body(self) -> str:
-        template = load_template(self.body)
-        return template.render()
 
     def __repr__(self) -> str:
         return ReprBuilder(self) \

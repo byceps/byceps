@@ -12,6 +12,7 @@ from typing import Dict, Optional, Sequence
 from ...database import db, paginate, Pagination, Query
 from ...events.news import NewsItemPublished
 from ...typing import BrandID, UserID
+from ...util.templating import load_template
 
 from ..brand.models.brand import Brand as DbBrand
 
@@ -248,7 +249,6 @@ def get_item_count_by_channel_id() -> Dict[ChannelID, int]:
 
 def _db_entity_to_item(item: DbItem) -> Item:
     channel = _db_entity_to_channel(item.channel)
-    body = item.current_version.render_body()
     external_url = item.channel.url_prefix + item.slug
     image_url_path = _assemble_image_url_path(item)
     images = [image_service._db_entity_to_image(image) for image in item.images]
@@ -260,7 +260,7 @@ def _db_entity_to_item(item: DbItem) -> Item:
         published_at=item.published_at,
         published=item.published_at is not None,
         title=item.current_version.title,
-        body=body,
+        body=item.current_version.body,
         external_url=external_url,
         image_url_path=image_url_path,
         images=images,
@@ -274,3 +274,9 @@ def _assemble_image_url_path(item: DbItem) -> Optional[str]:
         return None
 
     return f'/brand/news/{url_path}'
+
+
+def render_body(raw_body: str) -> str:
+    """Render item's raw body to HTML."""
+    template = load_template(raw_body)
+    return template.render()

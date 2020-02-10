@@ -42,6 +42,7 @@ def index(page):
     return {
         'items': items,
         'page': page,
+        'render_body': _render_body,
     }
 
 
@@ -61,6 +62,7 @@ def view(slug):
 
     return {
         'item': item,
+        'render_body': _render_body,
     }
 
 
@@ -88,3 +90,7 @@ def _get_items_per_page_value():
 
 def _may_view_drafts(user):
     return user.has_permission(NewsItemPermission.view_draft)
+
+
+def _render_body(raw_body):
+    return news_service.render_body(raw_body)

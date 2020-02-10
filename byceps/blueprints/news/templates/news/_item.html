@@ -11,6 +11,6 @@
     {%- endif %}
   </footer>
   <div class="body">
-{{ item.body|safe }}
+{{ render_body(item.body)|safe }}
   </div>
 </article>

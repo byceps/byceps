@@ -80,7 +80,7 @@
 
   <h1>{{ version.title }}</h1>
 
-{{ version.render_body()|safe }}
+{{ render_body(version.body)|safe }}
 
 {%- endblock %}
 

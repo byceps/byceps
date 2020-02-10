@@ -133,6 +133,7 @@ def item_view_version(version_id):
     return {
         'version': version,
         'brand': brand,
+        'render_body': news_item_service.render_body,
     }
 
 
