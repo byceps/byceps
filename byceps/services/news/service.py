@@ -259,7 +259,7 @@ def _db_entity_to_item(item: DbItem) -> Item:
         slug=item.slug,
         published_at=item.published_at,
         published=item.published_at is not None,
-        title=item.title,
+        title=item.current_version.title,
         body=body,
         external_url=external_url,
         image_url_path=image_url_path,
