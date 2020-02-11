@@ -100,5 +100,9 @@ def _may_view_drafts(user):
 
 
 def _replace_body_with_rendered_body(item):
-    rendered_body = news_service.render_body(item.body)
+    try:
+        rendered_body = news_service.render_body(item.body)
+    except Exception as e:
+        rendered_body = None  # Not the best error indicator.
+
     return dataclasses.replace(item, body=rendered_body)
