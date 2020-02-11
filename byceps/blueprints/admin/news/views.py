@@ -130,10 +130,12 @@ def item_view_version(version_id):
     channel = version.item.channel
     brand = brand_service.find_brand(channel.brand_id)
 
+    rendered_body = news_item_service.render_body(version.body)
+
     return {
         'version': version,
         'brand': brand,
-        'render_body': news_item_service.render_body,
+        'rendered_body': rendered_body,
     }
 
 

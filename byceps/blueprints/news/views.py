@@ -6,6 +6,8 @@ byceps.blueprints.news.views
 :License: Modified BSD, see LICENSE for details.
 """
 
+import dataclasses
+
 from flask import abort, g
 
 from ...services.news import service as news_service
@@ -39,10 +41,14 @@ def index(page):
         channel_id, page, items_per_page, published_only=published_only
     )
 
+    replacement_items = [
+        _replace_body_with_rendered_body(item) for item in items.items
+    ]
+    items.items = replacement_items
+
     return {
         'items': items,
         'page': page,
-        'render_body': _render_body,
     }
 
 
@@ -60,9 +66,10 @@ def view(slug):
     if item is None:
         abort(404)
 
+    item = _replace_body_with_rendered_body(item)
+
     return {
         'item': item,
-        'render_body': _render_body,
     }
 
 
@@ -92,5 +99,6 @@ def _may_view_drafts(user):
     return user.has_permission(NewsItemPermission.view_draft)
 
 
-def _render_body(raw_body):
-    return news_service.render_body(raw_body)
+def _replace_body_with_rendered_body(item):
+    rendered_body = news_service.render_body(item.body)
+    return dataclasses.replace(item, body=rendered_body)
