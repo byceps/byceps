@@ -7,6 +7,7 @@ byceps.blueprints.user.current.forms
 """
 
 from wtforms import DateField, StringField
+from wtforms.fields.html5 import TelField
 from wtforms.validators import InputRequired, Length, Optional
 
 from ....util.l10n import LocalizedForm
@@ -22,4 +23,4 @@ class DetailsForm(LocalizedForm):
     zip_code = StringField('PLZ', [Optional()])
     city = StringField('Stadt', [Optional()])
     street = StringField('Straße', [Optional()])
-    phone_number = StringField('Telefonnummer', [Optional(), Length(max=20)])
+    phone_number = TelField('Telefonnummer', [Optional(), Length(max=20)])
