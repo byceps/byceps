@@ -273,7 +273,7 @@ def _assemble_image_url_path(item: DbItem) -> Optional[str]:
     if not url_path:
         return None
 
-    return f'/brand/news/{url_path}'
+    return f'/global/news_channels/{item.channel_id}/{url_path}'
 
 
 def render_body(raw_body: str) -> str:

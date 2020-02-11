@@ -23,7 +23,7 @@ def test_image_url_with_image(app):
         image_url_path='breaking.png',
     )
 
-    assert item.image_url_path == '/brand/news/breaking.png'
+    assert item.image_url_path == '/global/news_channels/acmecon-test/breaking.png'
 
 
 def test_image_url_without_image(app):
