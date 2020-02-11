@@ -1,6 +1,6 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/datetime.html' import render_datetime %}
-{% from 'macros/misc.html' import render_tag %}
+{% from 'macros/misc.html' import render_notification, render_tag %}
 {% from 'macros/user_avatar.html' import render_user_avatar_16_and_name %}
 {% set current_page = 'news_admin' %}
 {% set current_page_brand = brand %}
@@ -80,7 +80,15 @@
 
   <h1>{{ version.title }}</h1>
 
+  {%- if error_occurred %}
+    {%- set notification_body %}
+        Entschuldigung, es ist ein Fehler aufgetreten.<br>
+        <pre style="white-space: pre-wrap;">{{ error_message }}</pre>
+    {%- endset %}
+    {{ render_notification(notification_body, category='danger', icon='warning') }}
+  {%- else %}
 {{ rendered_body|safe }}
+  {%- endif %}
 
 {%- endblock %}
 

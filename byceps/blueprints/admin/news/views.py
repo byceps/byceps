@@ -130,13 +130,24 @@ def item_view_version(version_id):
     channel = version.item.channel
     brand = brand_service.find_brand(channel.brand_id)
 
-    rendered_body = news_item_service.render_body(version.body)
+    try:
+        rendered_body = news_item_service.render_body(version.body)
 
-    return {
-        'version': version,
-        'brand': brand,
-        'rendered_body': rendered_body,
-    }
+        context = {
+            'version': version,
+            'brand': brand,
+            'rendered_body': rendered_body,
+            'error_occurred': False,
+        }
+    except Exception as e:
+        context = {
+            'version': version,
+            'brand': brand,
+            'error_occurred': True,
+            'error_message': str(e),
+        }
+
+    return context
 
 
 @blueprint.route('/items/<uuid:item_id>/versions')
