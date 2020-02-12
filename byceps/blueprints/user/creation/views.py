@@ -157,11 +157,11 @@ def create():
             terms_version.consent_subject_id, now_utc
         )
 
-    privacy_policy_consent = None
-    if privacy_policy_consent_required:
-        privacy_policy_consent = _assemble_privacy_policy_consent(
-            privacy_policy_consent_subject_id, now_utc
-        )
+    privacy_policy_consent = _get_privacy_policy_consent(
+        privacy_policy_consent_required,
+        privacy_policy_consent_subject_id,
+        now_utc,
+    )
 
     newsletter_subscription = _get_newsletter_subscription(
         newsletter_offered, form, newsletter_list_id, now_utc
@@ -281,13 +281,26 @@ def _find_site_setting_value(setting_name: str) -> Optional[str]:
     return site_settings_service.find_setting_value(g.site_id, setting_name)
 
 
+def _get_privacy_policy_consent(
+    privacy_policy_consent_required: bool,
+    privacy_policy_consent_subject_id: SubjectID,
+    expressed_at: datetime,
+) -> Optional[Consent]:
+    if not privacy_policy_consent_required:
+        return None
+
+    return _assemble_privacy_policy_consent(
+        privacy_policy_consent_subject_id, expressed_at
+    )
+
+
 def _assemble_privacy_policy_consent(
-    subject_id: SubjectID, now_utc: datetime
+    subject_id: SubjectID, expressed_at: datetime
 ) -> Consent:
     return Consent(
         user_id=None,  # not available at this point
         subject_id=subject_id,
-        expressed_at=now_utc,
+        expressed_at=expressed_at,
     )
 
 
