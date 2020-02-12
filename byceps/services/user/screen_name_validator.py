@@ -17,6 +17,9 @@ MAX_LENGTH = 24
 GERMAN_CHARS = 'äöüß'
 SPECIAL_CHARS = '!$*-./<=>[]_'
 
+# The at sign (`@`) is not allowed in the screen name because it is
+# used to distinguish a screen name from an e-mail address on login.
+
 VALID_CHARS = frozenset(
     chain(ascii_letters, digits, GERMAN_CHARS, SPECIAL_CHARS)
 )

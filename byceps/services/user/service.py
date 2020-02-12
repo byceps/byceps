@@ -158,6 +158,15 @@ def _user_row_to_dto(
     )
 
 
+def find_user_by_email_address(email_address: str) -> Optional[DbUser]:
+    """Return the user with that email address, or `None` if not found."""
+    return DbUser.query \
+        .filter(
+            db.func.lower(DbUser.email_address) == email_address.lower()
+        ) \
+        .one_or_none()
+
+
 def find_user_by_screen_name(
     screen_name: str, *, case_insensitive=False
 ) -> Optional[DbUser]:
