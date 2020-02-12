@@ -22,10 +22,16 @@ def create_image(
     *,
     alt_text: Optional[str] = None,
     caption: Optional[str] = None,
+    attribution: Optional[str] = None,
 ) -> Image:
     """Create an image for a news item."""
     image = DbImage(
-        creator_id, item_id, filename, alt_text=alt_text, caption=caption
+        creator_id,
+        item_id,
+        filename,
+        alt_text=alt_text,
+        caption=caption,
+        attribution=attribution,
     )
 
     db.session.add(image)
@@ -43,4 +49,5 @@ def _db_entity_to_image(image: DbImage) -> Image:
         filename=image.filename,
         alt_text=image.alt_text,
         caption=image.caption,
+        attribution=image.attribution,
     )

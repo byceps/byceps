@@ -31,6 +31,7 @@ class Image(db.Model):
     filename = db.Column(db.UnicodeText, nullable=False)
     alt_text = db.Column(db.UnicodeText, nullable=True)
     caption = db.Column(db.UnicodeText, nullable=True)
+    attribution = db.Column(db.UnicodeText, nullable=True)
 
     def __init__(
         self,
@@ -40,12 +41,14 @@ class Image(db.Model):
         *,
         alt_text: Optional[str] = None,
         caption: Optional[str] = None,
+        attribution: Optional[str] = None,
     ) -> None:
         self.creator_id = creator_id
         self.item_id = item_id
         self.filename = filename
         self.alt_text = alt_text
         self.caption = caption
+        self.attribution = attribution
 
     def __repr__(self) -> str:
         return ReprBuilder(self) \

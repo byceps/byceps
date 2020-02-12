@@ -42,6 +42,7 @@ class Image:
     filename: str
     alt_text: str
     caption: str
+    attribution: str
 
 
 @dataclass(frozen=True)
