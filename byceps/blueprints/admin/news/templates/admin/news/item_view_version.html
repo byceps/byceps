@@ -17,6 +17,15 @@
       margin-top: -20px;
       padding: 20px 40px;
     }
+
+    .newspost-head summary:focus {
+      outline: none;
+    }
+
+    .newspost-head summary:hover {
+      cursor: pointer;
+      text-decoration: underline;
+    }
   </style>
 {% endblock %}
 
@@ -71,6 +80,44 @@
           {%- else %}
           {{- render_tag('Entwurf') }}
           {%- endif -%}
+        </td>
+      </tr>
+      <tr>
+        <th colspan="2">Bilder:</th>
+      </tr>
+      <tr>
+        <td colspan="2" style="padding-left: 1rem;">
+          {%- if item.images %}
+            {%- for image in item.images %}
+            <details>
+              <summary class="monospace">{{ image.filename }}</summary>
+              <table style="margin-bottom: 1rem; margin-left: 1rem;">
+                <tr>
+                  <th>ID:</th>
+                  <td class="monospace">{{ image.id }}</td>
+                </tr>
+                <tr>
+                  <th>Dateiname:</th>
+                  <td class="monospace">{{ image.filename }}</td>
+                </tr>
+                <tr>
+                  <th>Alternativtext:</th>
+                  <td>{{ image.alt_text|fallback }}</td>
+                </tr>
+                <tr>
+                  <th>Bildunterschrift:</th>
+                  <td>{{ image.caption|fallback }}</td>
+                </tr>
+                <tr>
+                  <th>Quelle:</th>
+                  <td>{{ image.attribution|fallback }}</td>
+                </tr>
+              </table>
+            </details>
+            {%- endfor %}
+          {%- else %}
+          {{ 'keine'|dim }}
+          {%- endif %}
         </td>
       </tr>
     </table>
