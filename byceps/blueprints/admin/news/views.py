@@ -125,7 +125,7 @@ def channel_view(channel_id, page):
 @templated
 def item_view_version(version_id):
     """Show the news item with the given version."""
-    version = news_item_service.find_item_version(version_id)
+    version = _find_version(version_id)
 
     channel = version.item.channel
     brand = brand_service.find_brand(channel.brand_id)
