@@ -163,13 +163,9 @@ def create():
             privacy_policy_consent_subject_id, now_utc
         )
 
-    newsletter_subscription = None
-    if newsletter_offered:
-        subscribe_to_newsletter = form.subscribe_to_newsletter.data
-        if subscribe_to_newsletter:
-            newsletter_subscription = _assemble_newsletter_subscription(
-                newsletter_list_id, now_utc
-            )
+    newsletter_subscription = _get_newsletter_subscription(
+        newsletter_offered, form, newsletter_list_id, now_utc
+    )
 
     try:
         user, event = user_creation_service.create_user(
@@ -295,11 +291,27 @@ def _assemble_privacy_policy_consent(
     )
 
 
+def _get_newsletter_subscription(
+    newsletter_offered: bool,
+    form: UserCreateForm,
+    newsletter_list_id: NewsletterListID,
+    expressed_at: datetime,
+) -> Optional[NewsletterSubscription]:
+    if not newsletter_offered:
+        return None
+
+    subscribe_to_newsletter = form.subscribe_to_newsletter.data
+    if not subscribe_to_newsletter:
+        return None
+
+    return _assemble_newsletter_subscription(newsletter_list_id, expressed_at)
+
+
 def _assemble_newsletter_subscription(
-    newsletter_list_id: NewsletterListID, now_utc: datetime
+    newsletter_list_id: NewsletterListID, expressed_at: datetime
 ) -> NewsletterSubscription:
     return NewsletterSubscription(
         user_id=None,  # not available at this point
         list_id=newsletter_list_id,
-        expressed_at=now_utc,
+        expressed_at=expressed_at,
     )
