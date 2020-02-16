@@ -7,7 +7,7 @@ byceps.services.shop.order.service
 """
 
 from datetime import datetime
-from typing import Dict, Iterator, Optional, Sequence, Set, Tuple
+from typing import Dict, Iterator, Mapping, Optional, Sequence, Set, Tuple
 
 from flask import current_app
 from sqlalchemy.exc import IntegrityError
@@ -269,7 +269,11 @@ def cancel_order(
 
 
 def mark_order_as_paid(
-    order_id: OrderID, payment_method: PaymentMethod, initiator_id: UserID
+    order_id: OrderID,
+    payment_method: PaymentMethod,
+    initiator_id: UserID,
+    *,
+    additional_event_data: Mapping[str, str] = None,
 ) -> ShopOrderPaid:
     """Mark the order as paid."""
     order = _find_order_entity(order_id)
@@ -295,6 +299,8 @@ def mark_order_as_paid(
         'former_payment_state': payment_state_from.name,
         'payment_method': payment_method.name,
     }
+    if additional_event_data is not None:
+        data.update(additional_event_data)
 
     event = OrderEvent(now, event_type, order.id, data)
     db.session.add(event)
