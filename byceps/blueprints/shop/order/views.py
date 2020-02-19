@@ -279,6 +279,6 @@ def _flash_order_success(order):
     flash_success(
         'Deine Bestellung mit der '
         f'Bestellnummer <strong>{order.order_number}</strong> '
-        'wurde entgegen genommen. Vielen Dank!',
+        'wurde entgegengenommen. Vielen Dank!',
         text_is_safe=True,
     )
