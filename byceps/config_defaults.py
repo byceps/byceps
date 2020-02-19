@@ -15,6 +15,10 @@ from pathlib import Path
 # database connection
 SQLALCHEMY_ECHO = False
 
+# Avoid connection errors after database becomes temporarily
+# unreachable, then becomes reachable again.
+SQLALCHEMY_ENGINE_OPTIONS = {'pool_pre_ping': True}
+
 # Disable Flask-SQLAlchemy's tracking of object modifications.
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
