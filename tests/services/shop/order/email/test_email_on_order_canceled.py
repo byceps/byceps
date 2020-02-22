@@ -37,7 +37,10 @@ class EmailOnOrderCanceledTest(OrderEmailTestBase):
 
         self.party = create_party(brand.id)
 
-        self.user = create_user_with_detail('Versager')
+        self.user = create_user_with_detail(
+            'Versager',
+            email_address='versager@example.com',
+        )
 
         self.order_id = self.place_order(self.user)
 
@@ -71,7 +74,7 @@ E-Mail: acmecon@example.com
                 .send_email_for_canceled_order_to_orderer(self.order_id)
 
         expected_sender = 'acmecon@example.com'
-        expected_recipients = [self.user.email_address]
+        expected_recipients = ['versager@example.com']
         expected_subject = '\u274c Deine Bestellung (AC-14-B00017) wurde storniert.'
         expected_body = '''
 Hallo Versager,

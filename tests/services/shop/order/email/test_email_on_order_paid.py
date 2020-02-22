@@ -38,7 +38,11 @@ class EmailOnOrderPaidTest(OrderEmailTestBase):
 
         self.party = create_party(brand.id)
 
-        self.user = create_user_with_detail('Vorbild')
+        self.user = create_user_with_detail(
+            'Vorbild',
+            email_address='vorbild@example.com',
+        )
+
 
         self.order_id = self.place_order(self.user)
 
@@ -73,7 +77,7 @@ E-Mail: acmecon@example.com
                 .send_email_for_paid_order_to_orderer(self.order_id)
 
         expected_sender = 'acmecon@example.com'
-        expected_recipients = [self.user.email_address]
+        expected_recipients = ['vorbild@example.com']
         expected_subject = '\u2705 Deine Bestellung (AC-14-B00022) ist bezahlt worden.'
         expected_body = '''
 Hallo Vorbild,

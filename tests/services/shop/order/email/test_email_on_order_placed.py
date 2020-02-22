@@ -41,7 +41,10 @@ class EmailOnOrderPlacedTest(OrderEmailTestBase):
 
         self.party = create_party(brand.id)
 
-        self.user = create_user_with_detail('Interessent')
+        self.user = create_user_with_detail(
+            'Interessent',
+            email_address='interessent@example.com',
+        )
 
         self.order_id = self.place_order(self.user)
 
@@ -91,7 +94,7 @@ E-Mail: acmecon@example.com
                 .send_email_for_incoming_order_to_orderer(self.order_id)
 
         expected_to_orderer_sender = 'acmecon@example.com'
-        expected_to_orderer_recipients = [self.user.email_address]
+        expected_to_orderer_recipients = ['interessent@example.com']
         expected_to_orderer_subject = 'Deine Bestellung (AC-14-B00253) ist eingegangen.'
         expected_to_orderer_body = '''
 Hallo Interessent,

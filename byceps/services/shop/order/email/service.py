@@ -23,6 +23,7 @@ from .....services.shop.shop import service as shop_service
 from .....services.snippet import service as snippet_service
 from .....services.snippet.service import SnippetNotFound
 from .....services.snippet.transfer.models import Scope
+from .....services.user import service as user_service
 from .....util.money import format_euro_amount
 from .....util.templatefilters import utc_to_local_tz
 from .....util.templating import create_sandboxed_environment, load_template
@@ -129,17 +130,18 @@ def _assemble_email_for_paid_order_to_orderer(data: OrderEmailData) -> Message:
 
 def _get_order_email_data(order_id: OrderID) -> OrderEmailData:
     """Collect data required for an order e-mail template."""
-    order_entity = order_service.find_order(order_id)
+    order = order_service.find_order(order_id)
 
-    order = order_entity.to_transfer_object()
     shop = shop_service.get_shop(order.shop_id)
-    placed_by = order_entity.placed_by
+    orderer_id = order.placed_by_id
+    screen_name = user_service.find_user(orderer_id).screen_name
+    email_address = user_service.get_email_address(orderer_id)
 
     return OrderEmailData(
         order=order,
         email_config_id=shop.email_config_id,
-        orderer_screen_name=placed_by.screen_name,
-        orderer_email_address=placed_by.email_address,
+        orderer_screen_name=screen_name,
+        orderer_email_address=email_address,
     )
 
 
