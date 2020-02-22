@@ -360,9 +360,14 @@ def _find_order_entity(order_id: OrderID) -> Optional[DbOrder]:
     return DbOrder.query.get(order_id)
 
 
-def find_order(order_id: OrderID) -> Optional[DbOrder]:
+def find_order(order_id: OrderID) -> Optional[Order]:
     """Return the order with that id, or `None` if not found."""
-    return _find_order_entity(order_id)
+    order = _find_order_entity(order_id)
+
+    if order is None:
+        return None
+
+    return order.to_transfer_object()
 
 
 def find_order_with_details(order_id: OrderID) -> Optional[Order]:
