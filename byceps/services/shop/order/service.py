@@ -294,15 +294,18 @@ def mark_order_as_paid(
     _update_payment_state(order, payment_state_to, updated_at, initiator_id)
 
     event_type = 'order-paid'
-    data = {
+    # Add required, internally set properties after given additional
+    # ones to ensure the former are not overridden by the latter.
+    event_data = {}
+    if additional_event_data is not None:
+        event_data.update(additional_event_data)
+    event_data.update({
         'initiator_id': str(initiator_id),
         'former_payment_state': payment_state_from.name,
         'payment_method': payment_method.name,
-    }
-    if additional_event_data is not None:
-        data.update(additional_event_data)
+    })
 
-    event = OrderEvent(now, event_type, order.id, data)
+    event = OrderEvent(now, event_type, order.id, event_data)
     db.session.add(event)
 
     db.session.commit()
