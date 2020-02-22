@@ -6,7 +6,6 @@
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order.models.order import Order
 from byceps.services.shop.order import service as order_service
-from byceps.services.shop.order.transfer.models import PaymentMethod
 
 from testfixtures.shop_order import create_orderer
 
@@ -38,16 +37,13 @@ class OrderEmailTestBase(ShopTestBase):
         self, shop_id, orderer, created_at, items_with_quantity
     ):
         orderer = create_orderer(orderer)
-        payment_method = PaymentMethod.bank_transfer
         cart = Cart()
 
         if items_with_quantity is not None:
             for article, quantity in items_with_quantity:
                 cart.add_item(article, quantity)
 
-        order, _ = order_service.place_order(
-            self.shop.id, orderer, payment_method, cart
-        )
+        order, _ = order_service.place_order(self.shop.id, orderer, cart)
 
         if created_at is not None:
             db_order = Order.query.get(order.id)

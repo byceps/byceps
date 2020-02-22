@@ -15,7 +15,6 @@ from ....services.shop.article.models.compilation import ArticleCompilation
 from ....services.shop.cart.models import Cart
 from ....services.shop.order.email import service as order_email_service
 from ....services.shop.order import service as order_service
-from ....services.shop.order.transfer.models import PaymentMethod
 from ....services.shop.shop import service as shop_service
 from ....services.user import service as user_service
 from ....util.framework.blueprint import create_blueprint
@@ -262,11 +261,7 @@ def _create_cart_from_article_compilation(
 
 
 def _place_order(shop_id, orderer, cart):
-    payment_method = PaymentMethod.bank_transfer
-
-    order, event = order_service.place_order(
-        shop_id, orderer, payment_method, cart
-    )
+    order, event = order_service.place_order(shop_id, orderer, cart)
 
     order_email_service.send_email_for_incoming_order_to_orderer(order.id)
 

@@ -12,7 +12,6 @@ from freezegun import freeze_time
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order.models.orderer import Orderer
 from byceps.services.shop.order import service as order_service
-from byceps.services.shop.order.transfer.models import PaymentMethod
 
 from tests.base import CONFIG_FILENAME_TEST_ADMIN
 from tests.helpers import (
@@ -111,12 +110,11 @@ class ExportTestCase(ShopTestBase):
 
     def place_order(self):
         orderer = self.create_orderer()
-        payment_method = PaymentMethod.bank_transfer
         cart = self.create_cart()
         created_at = datetime(2015, 2, 26, 12, 26, 24)  # UTC
 
         order, _ = order_service.place_order(
-            self.shop.id, orderer, payment_method, cart, created_at=created_at
+            self.shop.id, orderer, cart, created_at=created_at
         )
 
         return order

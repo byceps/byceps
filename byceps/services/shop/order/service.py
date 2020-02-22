@@ -44,7 +44,6 @@ class OrderFailed(Exception):
 def place_order(
     shop_id: ShopID,
     orderer: Orderer,
-    payment_method: PaymentMethod,
     cart: Cart,
     *,
     created_at: Optional[datetime] = None,
@@ -54,9 +53,7 @@ def place_order(
 
     order_number = sequence_service.generate_order_number(shop.id)
 
-    order = _build_order(
-        shop.id, order_number, orderer, payment_method, created_at
-    )
+    order = _build_order(shop.id, order_number, orderer, created_at)
 
     order_items = list(_add_items_from_cart_to_order(cart, order))
     order.total_amount = cart.calculate_total_amount()
@@ -86,7 +83,6 @@ def _build_order(
     shop_id: ShopID,
     order_number: OrderNumber,
     orderer: Orderer,
-    payment_method: PaymentMethod,
     created_at: datetime,
 ) -> DbOrder:
     """Create an order of one or more articles."""
@@ -100,7 +96,6 @@ def _build_order(
         orderer.zip_code,
         orderer.city,
         orderer.street,
-        payment_method,
         created_at=created_at,
     )
 
@@ -245,7 +240,6 @@ def cancel_order(
                   else PaymentState.canceled_before_paid
 
     _update_payment_state(order, payment_state_to, updated_at, initiator_id)
-    order.payment_method = PaymentMethod.bank_transfer
     order.cancelation_reason = reason
 
     event_type = 'order-canceled-after-paid' if has_order_been_paid \

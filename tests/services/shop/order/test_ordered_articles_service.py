@@ -6,10 +6,7 @@
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import ordered_articles_service
 from byceps.services.shop.order import service as order_service
-from byceps.services.shop.order.transfer.models import (
-    PaymentMethod,
-    PaymentState,
-)
+from byceps.services.shop.order.transfer.models import PaymentState
 
 from testfixtures.shop_order import create_orderer
 
@@ -70,14 +67,10 @@ class OrderedArticlesServiceTestCase(ShopTestBase):
     # helpers
 
     def place_order(self, article_quantity):
-        payment_method = PaymentMethod.bank_transfer
-
         cart = Cart()
         cart.add_item(self.article, article_quantity)
 
-        order, _ = order_service.place_order(
-            self.shop.id, self.orderer, payment_method, cart
-        )
+        order, _ = order_service.place_order(self.shop.id, self.orderer, cart)
 
         return order
 

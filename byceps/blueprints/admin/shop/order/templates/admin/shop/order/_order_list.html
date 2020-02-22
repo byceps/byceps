@@ -42,8 +42,11 @@
         {%- endif -%}
       </td>
       <td>
-        {{ render_order_payment_state(order.payment_state) }}<br>
-        {{ render_order_payment_method(order.payment_method)|dim }}
+        {{ render_order_payment_state(order.payment_state) }}
+        {%- if order.payment_method %}
+        <br>
+        {{- render_order_payment_method(order.payment_method)|dim }}
+        {%- endif %}
       </td>
       <td>
         {%- if order.is_open and g.current_user.has_permission(ShopOrderPermission.mark_as_paid) %}

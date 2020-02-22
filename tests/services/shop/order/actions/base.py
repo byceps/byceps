@@ -20,9 +20,6 @@ from tests.helpers import (
 from tests.services.shop.base import ShopTestBase
 
 
-ANY_PAYMENT_METHOD = PaymentMethod.bank_transfer
-
-
 class OrderActionTestBase(ShopTestBase):
 
     def setUp(self):
@@ -52,13 +49,11 @@ class OrderActionTestBase(ShopTestBase):
         for article, quantity in articles_with_quantity:
             cart.add_item(article, quantity)
 
-        order, _ = order_service.place_order(
-            self.shop.id, orderer, ANY_PAYMENT_METHOD, cart
-        )
+        order, _ = order_service.place_order(self.shop.id, orderer, cart)
 
         return order
 
     def mark_order_as_paid(self):
         order_service.mark_order_as_paid(
-            self.order.id, ANY_PAYMENT_METHOD, self.admin.id
+            self.order.id, PaymentMethod.bank_transfer, self.admin.id
         )

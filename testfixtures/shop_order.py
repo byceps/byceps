@@ -10,7 +10,6 @@ from decimal import Decimal
 
 from byceps.services.shop.order.models.order import Order
 from byceps.services.shop.order.models.orderer import Orderer
-from byceps.services.shop.order.transfer.models import PaymentMethod
 
 
 ANY_ORDER_NUMBER = 'AEC-03-B00074'
@@ -34,7 +33,6 @@ def create_order(
     *,
     order_number=ANY_ORDER_NUMBER,
     total_amount=None,
-    payment_method=PaymentMethod.bank_transfer,
     shipping_required=False,
 ):
     if total_amount is None:
@@ -50,7 +48,6 @@ def create_order(
         placed_by.detail.zip_code,
         placed_by.detail.city,
         placed_by.detail.street,
-        payment_method,
     )
 
     order.total_amount = total_amount

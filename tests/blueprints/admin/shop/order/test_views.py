@@ -89,7 +89,7 @@ class ShopAdminTestCase(ShopTestBase):
         assert response.status_code == 302
         assert_payment(
             order_afterwards,
-            PaymentMethod.bank_transfer,
+            None,
             PaymentState.canceled_before_paid,
             self.admin.id,
         )
@@ -237,21 +237,18 @@ class ShopAdminTestCase(ShopTestBase):
 
     def place_order(self, quantified_articles):
         orderer = create_orderer(self.orderer)
-        payment_method = PaymentMethod.bank_transfer
         cart = Cart()
 
         for article, quantity_to_order in quantified_articles:
             cart.add_item(article, quantity_to_order)
 
-        order, _ = order_service.place_order(
-            self.shop.id, orderer, payment_method, cart
-        )
+        order, _ = order_service.place_order(self.shop.id, orderer, cart)
 
         return order
 
 
 def assert_payment_is_open(order):
-    assert order.payment_method == PaymentMethod.bank_transfer  # default
+    assert order.payment_method is None  # default
     assert order.payment_state == PaymentState.open
     assert order.payment_state_updated_at is None
     assert order.payment_state_updated_by_id is None

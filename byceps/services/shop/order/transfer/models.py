@@ -10,7 +10,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from decimal import Decimal
 from enum import Enum
-from typing import List, NewType
+from typing import List, NewType, Optional
 from uuid import UUID
 
 from .....typing import UserID
@@ -72,7 +72,7 @@ class Order:
     address: Address
     total_amount: Decimal
     items: List[OrderItem]
-    payment_method: PaymentMethod
+    payment_method: Optional[PaymentMethod]
     payment_state: PaymentState
     is_open: bool
     is_canceled: bool
