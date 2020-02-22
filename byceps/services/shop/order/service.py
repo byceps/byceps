@@ -133,8 +133,10 @@ def _add_items_from_cart_to_order(
         )
 
 
-def set_invoiced_flag(order: DbOrder, initiator_id: UserID) -> None:
+def set_invoiced_flag(order_id: OrderID, initiator_id: UserID) -> None:
     """Record that the invoice for that order has been (externally) created."""
+    order = find_order(order_id)
+
     now = datetime.utcnow()
     event_type = 'order-invoiced'
     data = {
@@ -149,8 +151,10 @@ def set_invoiced_flag(order: DbOrder, initiator_id: UserID) -> None:
     db.session.commit()
 
 
-def unset_invoiced_flag(order: DbOrder, initiator_id: UserID) -> None:
+def unset_invoiced_flag(order_id: OrderID, initiator_id: UserID) -> None:
     """Withdraw record of the invoice for that order having been created."""
+    order = find_order(order_id)
+
     now = datetime.utcnow()
     event_type = 'order-invoiced-withdrawn'
     data = {
@@ -165,8 +169,10 @@ def unset_invoiced_flag(order: DbOrder, initiator_id: UserID) -> None:
     db.session.commit()
 
 
-def set_shipped_flag(order: DbOrder, initiator_id: UserID) -> None:
+def set_shipped_flag(order_id: OrderID, initiator_id: UserID) -> None:
     """Mark the order as shipped."""
+    order = find_order(order_id)
+
     if not order.shipping_required:
         raise ValueError('Order contains no items that require shipping.')
 
@@ -184,8 +190,10 @@ def set_shipped_flag(order: DbOrder, initiator_id: UserID) -> None:
     db.session.commit()
 
 
-def unset_shipped_flag(order: DbOrder, initiator_id: UserID) -> None:
+def unset_shipped_flag(order_id: OrderID, initiator_id: UserID) -> None:
     """Mark the order as not shipped."""
+    order = find_order(order_id)
+
     if not order.shipping_required:
         raise ValueError('Order contains no items that require shipping.')
 

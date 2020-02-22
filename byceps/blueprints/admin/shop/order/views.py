@@ -147,7 +147,7 @@ def set_invoiced_flag(order_id):
     order = _get_order_or_404(order_id)
     initiator_id = g.current_user.id
 
-    order_service.set_invoiced_flag(order, initiator_id)
+    order_service.set_invoiced_flag(order.id, initiator_id)
 
     flash_success(
         f'Bestellung {order.order_number} wurde '
@@ -163,7 +163,7 @@ def unset_invoiced_flag(order_id):
     order = _get_order_or_404(order_id)
     initiator_id = g.current_user.id
 
-    order_service.unset_invoiced_flag(order, initiator_id)
+    order_service.unset_invoiced_flag(order.id, initiator_id)
 
     flash_success(
         f'Bestellung {order.order_number} wurde '
@@ -179,7 +179,7 @@ def set_shipped_flag(order_id):
     order = _get_order_or_404(order_id)
     initiator_id = g.current_user.id
 
-    order_service.set_shipped_flag(order, initiator_id)
+    order_service.set_shipped_flag(order.id, initiator_id)
 
     flash_success(
         f'Bestellung {order.order_number} wurde als verschickt markiert.'
@@ -194,7 +194,7 @@ def unset_shipped_flag(order_id):
     order = _get_order_or_404(order_id)
     initiator_id = g.current_user.id
 
-    order_service.unset_shipped_flag(order, initiator_id)
+    order_service.unset_shipped_flag(order.id, initiator_id)
 
     flash_success(
         f'Bestellung {order.order_number} wurde als nicht verschickt markiert.'
