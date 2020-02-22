@@ -135,7 +135,7 @@ def _add_items_from_cart_to_order(
 
 def set_invoiced_flag(order_id: OrderID, initiator_id: UserID) -> None:
     """Record that the invoice for that order has been (externally) created."""
-    order = find_order(order_id)
+    order = _find_order_entity(order_id)
 
     now = datetime.utcnow()
     event_type = 'order-invoiced'
@@ -153,7 +153,7 @@ def set_invoiced_flag(order_id: OrderID, initiator_id: UserID) -> None:
 
 def unset_invoiced_flag(order_id: OrderID, initiator_id: UserID) -> None:
     """Withdraw record of the invoice for that order having been created."""
-    order = find_order(order_id)
+    order = _find_order_entity(order_id)
 
     now = datetime.utcnow()
     event_type = 'order-invoiced-withdrawn'
@@ -171,7 +171,7 @@ def unset_invoiced_flag(order_id: OrderID, initiator_id: UserID) -> None:
 
 def set_shipped_flag(order_id: OrderID, initiator_id: UserID) -> None:
     """Mark the order as shipped."""
-    order = find_order(order_id)
+    order = _find_order_entity(order_id)
 
     if not order.shipping_required:
         raise ValueError('Order contains no items that require shipping.')
@@ -192,7 +192,7 @@ def set_shipped_flag(order_id: OrderID, initiator_id: UserID) -> None:
 
 def unset_shipped_flag(order_id: OrderID, initiator_id: UserID) -> None:
     """Mark the order as not shipped."""
-    order = find_order(order_id)
+    order = _find_order_entity(order_id)
 
     if not order.shipping_required:
         raise ValueError('Order contains no items that require shipping.')
@@ -227,7 +227,7 @@ def cancel_order(
     Reserved quantities of articles from that order are made available
     again.
     """
-    order = find_order(order_id)
+    order = _find_order_entity(order_id)
 
     if order is None:
         raise ValueError('Unknown order ID')
@@ -278,7 +278,7 @@ def mark_order_as_paid(
     order_id: OrderID, payment_method: PaymentMethod, initiator_id: UserID
 ) -> ShopOrderPaid:
     """Mark the order as paid."""
-    order = find_order(order_id)
+    order = _find_order_entity(order_id)
 
     if order is None:
         raise ValueError('Unknown order ID')
@@ -353,9 +353,16 @@ def count_orders_per_payment_state(shop_id: ShopID) -> Dict[PaymentState, int]:
     return counts_by_payment_state
 
 
+def _find_order_entity(order_id: OrderID) -> Optional[DbOrder]:
+    """Return the order database entity with that id, or `None` if not
+    found.
+    """
+    return DbOrder.query.get(order_id)
+
+
 def find_order(order_id: OrderID) -> Optional[DbOrder]:
     """Return the order with that id, or `None` if not found."""
-    return DbOrder.query.get(order_id)
+    return _find_order_entity(order_id)
 
 
 def find_order_with_details(order_id: OrderID) -> Optional[Order]:
