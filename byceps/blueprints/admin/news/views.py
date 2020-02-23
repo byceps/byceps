@@ -245,8 +245,8 @@ def item_view_version(version_id):
 
 def _render_item_version(version):
     """Render the news item version."""
-    brand_id = version.item.channel.brand_id
-    brand = brand_service.find_brand(brand_id)
+    channel = version.item.channel
+    brand = brand_service.find_brand(channel.brand_id)
 
     context = {
         'version': version,
@@ -254,7 +254,7 @@ def _render_item_version(version):
     }
 
     try:
-        rendered_body = news_item_service.render_body(version.body)
+        rendered_body = news_item_service.render_body(version.body, channel.id)
 
         context.update({
             'rendered_body': rendered_body,

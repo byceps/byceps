@@ -7,7 +7,11 @@ byceps.services.news.service
 """
 
 from datetime import datetime
+from functools import partial
 from typing import Dict, Optional, Sequence
+from uuid import UUID
+
+from jinja2 import Markup
 
 from ...database import db, paginate, Pagination, Query
 from ...events.news import NewsItemPublished
@@ -275,7 +279,73 @@ def _assemble_image_url_path(item: DbItem) -> Optional[str]:
     return f'/data/global/news_channels/{item.channel_id}/{url_path}'
 
 
-def render_body(raw_body: str) -> str:
+def render_body(raw_body: str, channel_id: ChannelID) -> str:
     """Render item's raw body to HTML."""
     template = load_template(raw_body)
-    return template.render()
+    render_image_with_channel_id = partial(_render_image, channel_id)
+    return template.render(render_image=render_image_with_channel_id)
+
+
+def _render_image(
+    channel_id: ChannelID,
+    image_id: str,
+    *,
+    width: Optional[int] = None,
+    height: Optional[int] = None,
+) -> str:
+    """Render HTML for image."""
+    if not _is_uuid(image_id):
+        raise Exception(f'Invalid image ID "{image_id}"')
+
+    image = image_service.find_image(image_id)
+
+    if image is None:
+        raise Exception(f'Unknown image ID "{image_id}"')
+
+    img_src = f'/data/global/news_channels/{channel_id}/{image.filename}'
+
+    figure_attrs = ''
+    img_attrs = ''
+    figcaption_attrs = ''
+
+    if image.alt_text:
+        img_attrs += f' alt="{image.alt_text}"'
+
+    if width:
+        img_attrs += f' width="{width}"'
+        figcaption_attrs += f' style="max-width: {width}px;"'
+    if height:
+        img_attrs += f' height="{height}"'
+
+    caption = image.caption
+    if caption is None:
+        caption = ''
+
+    if image.attribution:
+        if caption:
+            caption += ' '
+        caption += f'<small>Bild: {image.attribution}</small>'
+
+    caption_elem = (
+        f'<figcaption{figcaption_attrs}>{caption}</figcaption>'
+         if caption
+         else ''
+    )
+
+    html = f"""\
+<figure{figure_attrs}>
+  <img src="{img_src}"{img_attrs}>
+  {caption_elem}
+</figure>"""
+
+    return Markup(html)
+
+
+def _is_uuid(value: str) -> bool:
+    """Return `True` if the given value is a UUID."""
+    try:
+        UUID(value)
+    except ValueError:
+        return False
+    else:
+        return True
