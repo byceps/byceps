@@ -361,7 +361,7 @@ def item_create(channel_id):
 
     flash_success(f'Die News "{item.title}" wurde angelegt.')
 
-    return redirect_to('.channel_view', channel_id=channel.id)
+    return redirect_to('.item_view', item_id=item.id)
 
 
 @blueprint.route('/items/<uuid:item_id>/update')
@@ -403,7 +403,8 @@ def item_update(item_id):
     )
 
     flash_success(f'Die News "{item.title}" wurde aktualisiert.')
-    return redirect_to('.channel_view', channel_id=item.channel.id)
+
+    return redirect_to('.item_view', item_id=item.id)
 
 
 @blueprint.route('/items/<uuid:item_id>/publish', methods=['POST'])
