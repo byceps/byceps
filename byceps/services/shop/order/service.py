@@ -387,23 +387,30 @@ def find_order_with_details(order_id: OrderID) -> Optional[Order]:
     return order.to_transfer_object()
 
 
-def find_order_by_order_number(order_number: OrderNumber) -> Optional[DbOrder]:
+def find_order_by_order_number(order_number: OrderNumber) -> Optional[Order]:
     """Return the order with that order number, or `None` if not found."""
-    return DbOrder.query \
+    order = DbOrder.query \
         .filter_by(order_number=order_number) \
         .one_or_none()
+
+    if order is None:
+        return None
+
+    return order.to_transfer_object()
 
 
 def find_orders_by_order_numbers(
     order_numbers: Set[OrderNumber]
-) -> Sequence[DbOrder]:
+) -> Sequence[Order]:
     """Return the orders with those order numbers."""
     if not order_numbers:
         return []
 
-    return DbOrder.query \
+    orders = DbOrder.query \
         .filter(DbOrder.order_number.in_(order_numbers)) \
         .all()
+
+    return [order.to_transfer_object() for order in orders]
 
 
 def get_order_count_by_shop_id() -> Dict[ShopID, int]:
@@ -457,15 +464,17 @@ def get_orders_for_shop_paginated(
     return query.paginate(page, per_page)
 
 
-def get_orders_placed_by_user(user_id: UserID) -> Sequence[DbOrder]:
+def get_orders_placed_by_user(user_id: UserID) -> Sequence[Order]:
     """Return orders placed by the user."""
-    return DbOrder.query \
+    orders = DbOrder.query \
         .options(
             db.joinedload('items'),
         ) \
         .placed_by(user_id) \
         .order_by(DbOrder.created_at.desc()) \
         .all()
+
+    return [order.to_transfer_object() for order in orders]
 
 
 def get_orders_placed_by_user_for_shop(
