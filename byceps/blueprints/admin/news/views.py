@@ -127,25 +127,26 @@ def item_view_version(version_id):
     """Show the news item with the given version."""
     version = _find_version(version_id)
 
-    channel = version.item.channel
-    brand = brand_service.find_brand(channel.brand_id)
+    brand_id = version.item.channel.brand_id
+    brand = brand_service.find_brand(brand_id)
+
+    context = {
+        'version': version,
+        'brand': brand,
+    }
 
     try:
         rendered_body = news_item_service.render_body(version.body)
 
-        context = {
-            'version': version,
-            'brand': brand,
+        context.update({
             'rendered_body': rendered_body,
             'error_occurred': False,
-        }
+        })
     except Exception as e:
-        context = {
-            'version': version,
-            'brand': brand,
+        context.update({
             'error_occurred': True,
             'error_message': str(e),
-        }
+        })
 
     return context
 
