@@ -5,6 +5,7 @@
 
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import ordered_articles_service
+from byceps.services.shop.order.models.order import Order as DbOrder
 from byceps.services.shop.order import service as order_service
 from byceps.services.shop.order.transfer.models import PaymentState
 
@@ -75,6 +76,8 @@ class OrderedArticlesServiceTestCase(ShopTestBase):
         return order
 
     def set_payment_state(self, order_number, payment_state):
-        order = order_service.find_order_by_order_number(order_number)
+        order = DbOrder.query \
+            .filter_by(order_number=order_number) \
+            .one_or_none()
         order.payment_state = payment_state
         self.db.session.commit()
