@@ -11,6 +11,7 @@
     <ol>
       <li>News</li>
       <li>Kanal <a href="{{ url_for('.channel_view', channel_id=item.channel.id) }}">{{ item.channel.id }}</a></li>
+      <li>Newspost <a href="{{ url_for('.item_view', item_id=item.id) }}">{{ item.title }}</a></li>
     </ol>
   </nav>
   <h1>{{ render_icon('edit') }} {{ title }}</h1>
@@ -23,7 +24,7 @@
       {{ form_field(form.image_url_path, maxlength=100) }}
     {% endcall %}
 
-    {{ form_buttons('Speichern', cancel_url=url_for('.channel_view', channel_id=item.channel.id)) }}
+    {{ form_buttons('Speichern', cancel_url=url_for('.item_view', item_id=item.id)) }}
   </form>
 
 {%- endblock %}

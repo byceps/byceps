@@ -120,6 +120,18 @@ def channel_view(channel_id, page):
 # items
 
 
+@blueprint.route('/items/<uuid:item_id>')
+@permission_required(NewsItemPermission.view)
+@templated('admin/news/item_view_version')
+def item_view(item_id):
+    """Show the current version of the news item."""
+    item = _get_item_or_404(item_id)
+
+    version = news_item_service.get_current_item_version(item.id)
+
+    return _render_item_version(version)
+
+
 @blueprint.route('/versions/<uuid:version_id>')
 @permission_required(NewsItemPermission.view)
 @templated
@@ -127,6 +139,11 @@ def item_view_version(version_id):
     """Show the news item with the given version."""
     version = _find_version(version_id)
 
+    return _render_item_version(version)
+
+
+def _render_item_version(version):
+    """Render the news item version."""
     brand_id = version.item.channel.brand_id
     brand = brand_service.find_brand(brand_id)
 
