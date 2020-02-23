@@ -31,6 +31,7 @@ from .authorization import NewsChannelPermission, NewsItemPermission
 from .forms import (
     ChannelCreateForm,
     ImageCreateForm,
+    ImageUpdateForm,
     ItemCreateForm,
     ItemUpdateForm,
 )
@@ -167,6 +168,51 @@ def image_create(item_id):
     )
 
     flash_success(f'Das Newsbild "{image.filename}" wurde hinzugefügt.')
+
+    return redirect_to('.item_view', item_id=image.item_id)
+
+
+@blueprint.route('/images/<uuid:image_id>/update')
+@permission_required(NewsItemPermission.update)
+@templated
+def image_update_form(image_id, erroneous_form=None):
+    """Show form to update a news image."""
+    image = _get_image_or_404(image_id)
+    item = news_item_service.find_item(image.item_id)
+
+    form = erroneous_form if erroneous_form else ImageUpdateForm(obj=image)
+
+    return {
+        'image': image,
+        'item': item,
+        'form': form,
+    }
+
+
+@blueprint.route('/images/<uuid:image_id>', methods=['POST'])
+@permission_required(NewsItemPermission.update)
+def image_update(image_id):
+    """Update a news image."""
+    image = _get_image_or_404(image_id)
+
+    form = ImageUpdateForm(request.form)
+    if not form.validate():
+        return image_update_form(image.id, form)
+
+    filename = form.filename.data.strip()
+    alt_text = form.alt_text.data.strip()
+    caption = form.caption.data.strip()
+    attribution = form.attribution.data.strip()
+
+    news_image_service.update_image(
+        image.id,
+        filename,
+        alt_text=alt_text,
+        caption=caption,
+        attribution=attribution,
+    )
+
+    flash_success(f'Das Newsbild "{image.filename}" wurde aktualisiert.')
 
     return redirect_to('.item_view', item_id=image.item_id)
 
@@ -403,6 +449,15 @@ def _get_item_or_404(item_id):
         abort(404)
 
     return item
+
+
+def _get_image_or_404(image_id):
+    image = news_image_service.find_image(image_id)
+
+    if image is None:
+        abort(404)
+
+    return image
 
 
 def _find_version(version_id):

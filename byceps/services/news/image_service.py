@@ -12,7 +12,7 @@ from ...database import db
 from ...typing import UserID
 
 from .models.image import Image as DbImage
-from .transfer.models import Image, ItemID
+from .transfer.models import Image, ImageID, ItemID
 
 
 def create_image(
@@ -38,6 +38,43 @@ def create_image(
     db.session.commit()
 
     return _db_entity_to_image(image)
+
+
+def update_image(
+    image_id: ImageID,
+    filename: str,
+    *,
+    alt_text: Optional[str] = None,
+    caption: Optional[str] = None,
+    attribution: Optional[str] = None,
+) -> None:
+    """Update a news image."""
+    image = _find_db_image(image_id)
+
+    if image is None:
+        raise ValueError(f'Unknown news image ID "{image_id}".')
+
+    image.filename = filename
+    image.alt_text = alt_text
+    image.caption = caption
+    image.attribution = attribution
+
+    db.session.commit()
+
+
+def find_image(image_id: ImageID) -> Optional[Image]:
+    """Return the image with that id, or `None` if not found."""
+    image = _find_db_image(image_id)
+
+    if image is None:
+        return None
+
+    return _db_entity_to_image(image)
+
+
+def _find_db_image(image_id: ImageID) -> Optional[DbImage]:
+    """Return the image with that id, or `None` if not found."""
+    return DbImage.query.get(image_id)
 
 
 def _db_entity_to_image(image: DbImage) -> Image:

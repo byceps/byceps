@@ -29,6 +29,10 @@ class ImageCreateForm(LocalizedForm):
     attribution = StringField('Bildquelle', [Optional()])
 
 
+class ImageUpdateForm(ImageCreateForm):
+    pass
+
+
 class ItemCreateForm(LocalizedForm):
     slug = StringField('Slug', [InputRequired(), Length(max=100), Regexp(SLUG_REGEX, message='Nur Kleinbuchstaben, Ziffern und Bindestrich sind erlaubt.')])
     title = StringField('Titel', [InputRequired(), Length(max=100)])

@@ -92,28 +92,33 @@
             {%- for image in item.images %}
             <details>
               <summary class="monospace">{{ image.filename }}</summary>
-              <table style="margin-bottom: 1rem; margin-left: 1rem;">
-                <tr>
-                  <th>ID:</th>
-                  <td class="monospace">{{ image.id }}</td>
-                </tr>
-                <tr>
-                  <th>Dateiname:</th>
-                  <td class="monospace">{{ image.filename }}</td>
-                </tr>
-                <tr>
-                  <th>Alternativtext:</th>
-                  <td>{{ image.alt_text|fallback }}</td>
-                </tr>
-                <tr>
-                  <th>Bildunterschrift:</th>
-                  <td>{{ image.caption|fallback }}</td>
-                </tr>
-                <tr>
-                  <th>Quelle:</th>
-                  <td>{{ image.attribution|fallback }}</td>
-                </tr>
-              </table>
+              <div style="margin-bottom: 1rem; margin-left: 1rem;">
+                <table>
+                  <tr>
+                    <th>ID:</th>
+                    <td class="monospace">{{ image.id }}</td>
+                  </tr>
+                  <tr>
+                    <th>Dateiname:</th>
+                    <td class="monospace">{{ image.filename }}</td>
+                  </tr>
+                  <tr>
+                    <th>Alternativtext:</th>
+                    <td>{{ image.alt_text|fallback }}</td>
+                  </tr>
+                  <tr>
+                    <th>Bildunterschrift:</th>
+                    <td>{{ image.caption|fallback }}</td>
+                  </tr>
+                  <tr>
+                    <th>Quelle:</th>
+                    <td>{{ image.attribution|fallback }}</td>
+                  </tr>
+                </table>
+                {%- if g.current_user.has_permission(NewsItemPermission.update) -%}
+                <p><a class="button button--compact" href="{{ url_for('.image_update_form', image_id=image.id) }}">{{ render_icon('edit') }} <span>Bearbeiten</span></a></p>
+                {%- endif -%}
+              </div>
             </details>
             {%- endfor %}
           {%- else %}
