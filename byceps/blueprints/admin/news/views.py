@@ -12,6 +12,7 @@ from flask import abort, g, request
 
 from ....services.brand import service as brand_service
 from ....services.news import channel_service as news_channel_service
+from ....services.news import image_service as news_image_service
 from ....services.news import service as news_item_service
 from ....services.news.transfer.models import Channel
 from ....services.text_diff import service as text_diff_service
@@ -27,7 +28,12 @@ from ...authorization.registry import permission_registry
 from ...news import signals
 
 from .authorization import NewsChannelPermission, NewsItemPermission
-from .forms import ChannelCreateForm, ItemCreateForm, ItemUpdateForm
+from .forms import (
+    ChannelCreateForm,
+    ImageCreateForm,
+    ItemCreateForm,
+    ItemUpdateForm,
+)
 
 
 blueprint = create_blueprint('news_admin', __name__)
@@ -114,6 +120,55 @@ def channel_view(channel_id, page):
         'brand': brand,
         'items': items,
     }
+
+
+# -------------------------------------------------------------------- #
+# images
+
+
+@blueprint.route('/for_item/<item_id>/create')
+@permission_required(NewsItemPermission.update)
+@templated
+def image_create_form(item_id, erroneous_form=None):
+    """Show form to create a news image."""
+    item = _get_item_or_404(item_id)
+
+    form = erroneous_form if erroneous_form else ImageCreateForm()
+
+    return {
+        'item': item,
+        'form': form,
+    }
+
+
+@blueprint.route('/for_item/<item_id>', methods=['POST'])
+@permission_required(NewsItemPermission.update)
+def image_create(item_id):
+    """Create a news image."""
+    item = _get_item_or_404(item_id)
+
+    form = ImageCreateForm(request.form)
+    if not form.validate():
+        return image_create_form(item.id, form)
+
+    creator_id = g.current_user.id
+    filename = form.filename.data.strip()
+    alt_text = form.alt_text.data.strip()
+    caption = form.caption.data.strip()
+    attribution = form.attribution.data.strip()
+
+    image = news_image_service.create_image(
+        creator_id,
+        item.id,
+        filename,
+        alt_text=alt_text,
+        caption=caption,
+        attribution=attribution,
+    )
+
+    flash_success(f'Das Newsbild "{image.filename}" wurde hinzugefügt.')
+
+    return redirect_to('.item_view', item_id=image.item_id)
 
 
 # -------------------------------------------------------------------- #

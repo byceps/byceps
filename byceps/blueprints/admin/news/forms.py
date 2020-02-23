@@ -22,6 +22,13 @@ class ChannelCreateForm(LocalizedForm):
     url_prefix = StringField('URL-Präfix', [InputRequired(), Length(max=80)])
 
 
+class ImageCreateForm(LocalizedForm):
+    filename = StringField('Dateiname', [InputRequired(), Length(max=80)])
+    alt_text = StringField('Alternativtext', [InputRequired()])
+    caption = StringField('Bildunterschrift', [Optional()])
+    attribution = StringField('Bildquelle', [Optional()])
+
+
 class ItemCreateForm(LocalizedForm):
     slug = StringField('Slug', [InputRequired(), Length(max=100), Regexp(SLUG_REGEX, message='Nur Kleinbuchstaben, Ziffern und Bindestrich sind erlaubt.')])
     title = StringField('Titel', [InputRequired(), Length(max=100)])
