@@ -17,6 +17,7 @@ from .base import _BaseEvent
 @dataclass(frozen=True)
 class _ShopOrderEvent(_BaseEvent):
     order_id: OrderID
+    initiator_id: UserID
 
 
 @dataclass(frozen=True)
@@ -26,7 +27,7 @@ class ShopOrderPlaced(_ShopOrderEvent):
 
 @dataclass(frozen=True)
 class ShopOrderCanceled(_ShopOrderEvent):
-    initiator_id: UserID
+    pass
 
 
 @dataclass(frozen=True)

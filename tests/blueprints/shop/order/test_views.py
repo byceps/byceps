@@ -97,7 +97,11 @@ class ShopOrderTestCase(ShopTestBase):
             order.id
         )
 
-        event = ShopOrderPlaced(occurred_at=order.created_at, order_id=order.id)
+        event = ShopOrderPlaced(
+            occurred_at=order.created_at,
+            order_id=order.id,
+            initiator_id=order.placed_by_id,
+        )
         order_placed_mock.assert_called_once_with(None, event=event)
 
         order_detail_page_url = f'http://example.com/shop/orders/{order.id}'
@@ -147,7 +151,11 @@ class ShopOrderTestCase(ShopTestBase):
             order.id
         )
 
-        event = ShopOrderPlaced(occurred_at=order.created_at, order_id=order.id)
+        event = ShopOrderPlaced(
+            occurred_at=order.created_at,
+            order_id=order.id,
+            initiator_id=order.placed_by_id,
+        )
         order_placed_mock.assert_called_once_with(None, event=event)
 
         order_detail_page_url = f'http://example.com/shop/orders/{order.id}'

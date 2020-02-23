@@ -74,7 +74,11 @@ def place_order(
 
     order_dto = order.to_transfer_object()
 
-    event = ShopOrderPlaced(occurred_at=order.created_at, order_id=order.id)
+    event = ShopOrderPlaced(
+        occurred_at=order.created_at,
+        order_id=order.id,
+        initiator_id=order.placed_by_id,
+    )
 
     return order_dto, event
 
@@ -314,7 +318,11 @@ def mark_order_as_paid(
         order.to_transfer_object(), payment_state_to, initiator_id
     )
 
-    return ShopOrderPaid(occurred_at=updated_at, order_id=order.id)
+    return ShopOrderPaid(
+        occurred_at=updated_at,
+        order_id=order.id,
+        initiator_id=initiator_id,
+    )
 
 
 def _update_payment_state(
