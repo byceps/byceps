@@ -47,7 +47,6 @@
           Veröffentlichung<br>
           Letzte Änderung
         </th>
-        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -74,11 +73,6 @@
           <br>
           von {{ render_user_avatar_16_and_name(item.current_version.creator) }}
         {%- endfilter %}
-        </td>
-        <td>
-          {%- if g.current_user.has_permission(NewsItemPermission.update) -%}
-          <a class="button button--compact" href="{{ url_for('.item_update_form', item_id=item.id) }}">{{ render_icon('edit') }} <span>Bearbeiten</span></a>
-          {%- endif -%}
         </td>
       </tr>
     {%- endfor %}
