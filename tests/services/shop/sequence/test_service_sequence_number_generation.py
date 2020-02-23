@@ -8,7 +8,7 @@ from byceps.services.shop.sequence.service import (
     generate_order_number,
 )
 
-from tests.helpers import create_brand, create_email_config, create_party
+from tests.helpers import create_email_config
 from tests.services.shop.base import ShopTestBase
 
 
@@ -20,9 +20,6 @@ class SequenceNumberGenerationTestCase(ShopTestBase):
         create_email_config()
 
         self.shop = self.create_shop()
-
-        brand = create_brand()
-        self.party = create_party(brand.id)
 
     def test_generate_article_number_default(self):
         self.create_article_number_sequence(self.shop.id, 'AEC-01-A')

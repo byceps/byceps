@@ -20,9 +20,7 @@ from testfixtures.shop_order import create_orderer
 from tests.base import CONFIG_FILENAME_TEST_ADMIN
 from tests.helpers import (
     assign_permissions_to_user,
-    create_brand,
     create_email_config,
-    create_party,
     create_user,
     create_user_with_detail,
     http_client,
@@ -44,9 +42,6 @@ class ShopAdminTestCase(ShopTestBase):
         self.shop = self.create_shop()
         self.create_order_number_sequence(self.shop.id, 'AEC-05-B')
         self.create_shop_fragment(self.shop.id, 'email_footer', 'kthxbye')
-
-        brand = create_brand()
-        party = create_party(brand.id)
 
     def create_admin(self):
         admin = create_user('Admin')

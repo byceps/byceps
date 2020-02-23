@@ -11,11 +11,8 @@ from byceps.services.shop.order.email import service as order_email_service
 from byceps.services.shop.order import service as order_service
 
 from tests.helpers import (
-    create_brand,
     create_email_config,
-    create_party,
     create_user_with_detail,
-    current_party_set,
     current_user_set,
 )
 
@@ -36,10 +33,6 @@ class EmailOnOrderPlacedTest(OrderEmailTestBase):
         self.create_email_footer_snippet()
 
         self.create_articles()
-
-        brand = create_brand()
-
-        self.party = create_party(brand.id)
 
         self.user = create_user_with_detail(
             'Interessent',
@@ -87,7 +80,6 @@ E-Mail: acmecon@example.com
     @patch('byceps.email.send')
     def test_email_on_order_placed(self, send_email_mock):
         with \
-                current_party_set(self.app, self.party), \
                 current_user_set(self.app, self.user), \
                 self.app.app_context():
             order_email_service \
@@ -170,5 +162,5 @@ E-Mail: acmecon@example.com
         ]
 
         return self.place_order_with_items(
-            self.party.id, orderer, created_at, items_with_quantity
+            self.shop.id, orderer, created_at, items_with_quantity
         )

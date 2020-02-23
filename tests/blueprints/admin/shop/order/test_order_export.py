@@ -16,9 +16,7 @@ from byceps.services.shop.order import service as order_service
 from tests.base import CONFIG_FILENAME_TEST_ADMIN
 from tests.helpers import (
     assign_permissions_to_user,
-    create_brand,
     create_email_config,
-    create_party,
     create_user,
     http_client,
     login_user,
@@ -34,8 +32,6 @@ class ExportTestCase(ShopTestBase):
         self.admin = self.create_admin()
 
         create_email_config()
-
-        self.create_brand_and_party()
 
         self.shop = self.create_shop()
         self.create_order_number_sequence(self.shop.id, 'LR-08-B', value=26)
@@ -69,12 +65,6 @@ class ExportTestCase(ShopTestBase):
         login_user(admin.id)
 
         return admin
-
-    def create_brand_and_party(self):
-        self.brand = create_brand('lanresort', 'LANresort')
-        self.party = create_party(
-            self.brand.id, 'lanresort-2015', 'LANresort 2015'
-        )
 
     def create_articles(self):
         self.article_table = self.create_article(

@@ -8,12 +8,7 @@ from byceps.services.shop.order import service as order_service
 
 from testfixtures.shop_order import create_orderer
 
-from tests.helpers import (
-    create_brand,
-    create_email_config,
-    create_party,
-    create_user_with_detail,
-)
+from tests.helpers import create_email_config, create_user_with_detail
 from tests.services.shop.base import ShopTestBase
 
 
@@ -27,18 +22,13 @@ class ShopOrdersServiceTestCase(ShopTestBase):
         self.shop1_id = self.create_shop('shop-1').id
         self.shop2_id = self.create_shop('shop-2').id
 
-        brand = create_brand()
-
-        party1 = create_party(brand.id, 'lafiesta-2012', 'La Fiesta 2012')
-        party2 = create_party(brand.id, 'lafiesta-2013', 'La Fiesta 2013')
-
         self.create_order_number_sequence(self.shop1_id, 'LF-02-B')
         self.create_order_number_sequence(self.shop2_id, 'LF-03-B')
 
         self.user1 = create_user_with_detail('User1')
         self.user2 = create_user_with_detail('User2')
 
-    def test_get_orders_placed_by_user_for_party(self):
+    def test_get_orders_placed_by_user(self):
         orderer1 = create_orderer(self.user1)
         orderer2 = create_orderer(self.user2)
 

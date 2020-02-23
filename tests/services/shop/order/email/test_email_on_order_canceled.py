@@ -10,11 +10,8 @@ from byceps.services.shop.order.email import service as order_email_service
 from byceps.services.shop.order import service as order_service
 
 from tests.helpers import (
-    create_brand,
     create_email_config,
-    create_party,
     create_user_with_detail,
-    current_party_set,
     current_user_set,
 )
 
@@ -32,10 +29,6 @@ class EmailOnOrderCanceledTest(OrderEmailTestBase):
         self.create_order_number_sequence(self.shop.id, 'AC-14-B', value=16)
 
         self.create_email_footer_snippet()
-
-        brand = create_brand()
-
-        self.party = create_party(brand.id)
 
         self.user = create_user_with_detail(
             'Versager',
@@ -67,7 +60,6 @@ E-Mail: acmecon@example.com
     @patch('byceps.email.send')
     def test_email_on_order_canceled(self, send_email_mock):
         with \
-                current_party_set(self.app, self.party), \
                 current_user_set(self.app, self.user), \
                 self.app.app_context():
             order_email_service \
