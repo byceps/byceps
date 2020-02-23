@@ -28,7 +28,7 @@ from .transfer.models import ChannelID, Item, ItemID, ItemVersionID
 
 
 def create_item(
-    brand_id: BrandID,
+    channel_id: ChannelID,
     slug: str,
     creator_id: UserID,
     title: str,
@@ -39,7 +39,7 @@ def create_item(
     """Create a news item, a version, and set the version as the item's
     current one.
     """
-    item = DbItem(brand_id, slug)
+    item = DbItem(channel_id, slug)
     db.session.add(item)
 
     version = _create_version(
