@@ -29,7 +29,7 @@ from ....services.user_avatar import service as avatar_service
 from ....services.user_badge import service as user_badge_service
 from ....typing import PartyID, UserID
 
-from .models import UserStateFilter
+from .models import Detail, UserStateFilter, UserWithCreationDetails
 
 
 def get_users_paginated(page, per_page, *, search_term=None, state_filter=None):
@@ -48,7 +48,13 @@ def get_users_paginated(page, per_page, *, search_term=None, state_filter=None):
     if search_term:
         query = _filter_by_search_term(query, search_term)
 
-    return query.paginate(page, per_page)
+    pagination = query.paginate(page, per_page)
+
+    pagination.items = [
+        _db_entity_to_user_with_creation_details(u) for u in pagination.items
+    ]
+
+    return pagination
 
 
 def _filter_by_state(query, state_filter):
@@ -86,6 +92,25 @@ def _filter_by_search_term(query, search_term):
                 UserDetail.last_name.ilike(ilike_pattern)
             )
         )
+
+
+def _db_entity_to_user_with_creation_details(
+    user: DbUser
+) -> UserWithCreationDetails:
+    is_orga = False  # Not interesting here.
+    detail = Detail(user.detail.full_name)
+
+    return UserWithCreationDetails(
+        user.id,
+        user.screen_name,
+        user.suspended,
+        user.deleted,
+        user.avatar.url if user.avatar else None,
+        is_orga,
+        user.created_at,
+        user.initialized,
+        detail,
+    )
 
 
 def get_parties_and_tickets(
