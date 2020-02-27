@@ -15,12 +15,8 @@ from ..orga.models import OrgaFlag as DbOrgaFlag
 from ..party import service as party_service
 from ..user.models.user import User as DbUser
 
-from .models import (
-    Membership as DbMembership,
-    MembershipID,
-    OrgaTeam as DbOrgaTeam,
-    OrgaTeamID,
-)
+from .models import Membership as DbMembership, OrgaTeam as DbOrgaTeam
+from .transfer.models import MembershipID, OrgaTeamID
 
 
 # -------------------------------------------------------------------- #

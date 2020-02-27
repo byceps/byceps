@@ -6,9 +6,6 @@ byceps.services.orga_team.models
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import NewType
-from uuid import UUID
-
 from ...database import BaseQuery, db, generate_uuid
 from ...typing import PartyID, UserID
 from ...util.instances import ReprBuilder
@@ -16,8 +13,7 @@ from ...util.instances import ReprBuilder
 from ..party.models.party import Party
 from ..user.models.user import User
 
-
-OrgaTeamID = NewType('OrgaTeamID', UUID)
+from .transfer.models import OrgaTeamID
 
 
 class OrgaTeam(db.Model):
@@ -52,9 +48,6 @@ class MembershipQuery(BaseQuery):
 
     def for_party(self, party_id: PartyID) -> BaseQuery:
         return self.join(OrgaTeam).filter_by(party_id=party_id)
-
-
-MembershipID = NewType('MembershipID', UUID)
 
 
 class Membership(db.Model):
