@@ -37,6 +37,8 @@ from ....util.framework.templating import templated
 from ...authorization.decorators import permission_required
 from ...authorization.registry import permission_registry
 
+from ..user.service import get_users_created_since
+
 from .authorization import AdminDashboardPermission
 
 
@@ -62,6 +64,7 @@ def view_global():
     user_count = user_stats_service.count_users()
 
     one_week_ago = timedelta(days=7)
+    recent_users = get_users_created_since(one_week_ago, limit=4)
     recent_users_count = user_stats_service.count_users_created_since(
         one_week_ago
     )
@@ -82,6 +85,7 @@ def view_global():
         'orga_count': orga_count,
 
         'user_count': user_count,
+        'recent_users': recent_users,
         'recent_users_count': recent_users_count,
         'uninitialized_user_count': uninitialized_user_count,
 

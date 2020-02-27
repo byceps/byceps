@@ -7,8 +7,9 @@ byceps.blueprints.admin.user.service
 """
 
 from collections import defaultdict
+from datetime import datetime, timedelta
 from operator import attrgetter
-from typing import Any, Dict, Iterator, List, Sequence, Set, Tuple
+from typing import Any, Dict, Iterator, List, Optional, Sequence, Set, Tuple
 
 from ....database import db
 from ....services.consent import consent_service
@@ -92,6 +93,28 @@ def _filter_by_search_term(query, search_term):
                 UserDetail.last_name.ilike(ilike_pattern)
             )
         )
+
+
+def get_users_created_since(
+    delta: timedelta, limit: Optional[int] = None
+) -> List[User]:
+    """Return the user accounts created since `delta` ago."""
+    filter_starts_at = datetime.utcnow() - delta
+
+    query = DbUser.query \
+        .options(
+            db.joinedload('avatar_selection').joinedload('avatar'),
+            db.joinedload('detail').load_only('first_names', 'last_name'),
+        ) \
+        .filter(DbUser.created_at >= filter_starts_at) \
+        .order_by(DbUser.created_at.desc())
+
+    if limit is not None:
+        query = query.limit(limit)
+
+    users = query.all()
+
+    return [_db_entity_to_user_with_creation_details(u) for u in users]
 
 
 def _db_entity_to_user_with_creation_details(
