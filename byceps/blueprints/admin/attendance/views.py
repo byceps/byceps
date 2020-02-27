@@ -27,7 +27,13 @@ def view_for_brand(brand_id):
     if brand is None:
         abort(404)
 
-    brand_party_total = party_service.count_parties_for_brand(brand.id)
+    parties = party_service.get_parties_for_brand(brand.id)
+    if parties:
+        parties.sort(key=lambda party: party.starts_at, reverse=True)
+        most_recent_party = parties[0]
+    else:
+        most_recent_party = None
+    party_total = len(parties)
 
     top_attendees = attendance_service.get_top_attendees_for_brand(brand.id)
 
@@ -45,6 +51,7 @@ def view_for_brand(brand_id):
 
     return {
         'brand': brand,
-        'brand_party_total': brand_party_total,
+        'party_total': party_total,
+        'most_recent_party': most_recent_party,
         'top_attendees': top_attendees,
     }

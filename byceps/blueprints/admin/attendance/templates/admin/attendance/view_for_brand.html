@@ -13,7 +13,11 @@
   </nav>
   <h1>{{ title }}</h1>
 
-  <p>Partys der Marke &quot;{{ brand.title }}&quot; insgesamt: <strong>{{ brand_party_total }}</strong></p>
+  <p>Partys der Marke &quot;{{ brand.title }}&quot; insgesamt: <strong>{{ party_total }}</strong></p>
+
+  {%- if most_recent_party %}
+  <p>Neueste enthaltene Party: <strong>{{ most_recent_party.title }}</strong></p>
+  {%- endif %}
 
   {%- if top_attendees %}
   <table class="index">
