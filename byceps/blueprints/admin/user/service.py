@@ -37,7 +37,10 @@ def get_users_paginated(page, per_page, *, search_term=None, state_filter=None):
     filtered by search term or flags.
     """
     query = DbUser.query \
-        .options(db.joinedload('detail')) \
+        .options(
+            db.joinedload('avatar_selection').joinedload('avatar'),
+            db.joinedload('detail').load_only('first_names', 'last_name'),
+        ) \
         .order_by(DbUser.created_at.desc())
 
     query = _filter_by_state(query, state_filter)
