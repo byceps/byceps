@@ -8,7 +8,7 @@ from datetime import date
 from freezegun import freeze_time
 import pytest
 
-from testfixtures.user import create_user_with_detail
+from testfixtures.user import create_user, create_user_with_detail
 
 
 @pytest.mark.parametrize('today_text, expected', [
@@ -24,6 +24,12 @@ def test_days_until_next_birthday(today_text, expected):
         assert user.detail.days_until_next_birthday == expected
 
 
+def test_days_until_next_birthday_without_date_of_birth():
+    user = _create_user_without_date_of_birth()
+
+    assert user.detail.days_until_next_birthday is None
+
+
 @pytest.mark.parametrize('today_text, expected', [
     ('1994-03-17', False),
     ('1994-03-18', True ),
@@ -37,3 +43,15 @@ def test_is_birthday_today(today_text, expected):
 
     with freeze_time(today_text):
         assert user.detail.is_birthday_today == expected
+
+
+def test_is_birthday_today_without_date_of_birth():
+    user = _create_user_without_date_of_birth()
+
+    assert user.detail.is_birthday_today is None
+
+
+def _create_user_without_date_of_birth():
+    user = create_user()
+    assert user.detail.date_of_birth is None  # precondition
+    return user

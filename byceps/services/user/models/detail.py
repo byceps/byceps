@@ -7,6 +7,7 @@ byceps.services.user.models.detail
 """
 
 from datetime import date
+from typing import Optional
 
 from sqlalchemy.ext.mutable import MutableDict
 
@@ -35,23 +36,32 @@ class UserDetail(db.Model):
     extras = db.Column(MutableDict.as_mutable(db.JSONB))
 
     @property
-    def full_name(self) -> str:
+    def full_name(self) -> Optional[str]:
         names = [self.first_names, self.last_name]
         return ' '.join(filter(None, names)) or None
 
     @property
-    def age(self) -> int:
+    def age(self) -> Optional[int]:
         """Return the user's current age."""
+        if self.date_of_birth is None:
+            return None
+
         return calculate_age(self.date_of_birth, date.today())
 
     @property
-    def days_until_next_birthday(self) -> int:
+    def days_until_next_birthday(self) -> Optional[int]:
         """Return the number of days until the user's next birthday."""
+        if self.date_of_birth is None:
+            return None
+
         return calculate_days_until(self.date_of_birth, date.today())
 
     @property
-    def is_birthday_today(self) -> bool:
+    def is_birthday_today(self) -> Optional[bool]:
         """Return `True` if today is the user's birthday."""
+        if self.date_of_birth is None:
+            return None
+
         return MonthDay.of(self.date_of_birth).matches(date.today())
 
     def __repr__(self) -> str:
