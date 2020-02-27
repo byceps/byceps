@@ -43,6 +43,11 @@
         required_permission=OrgaDetailPermission.view,
         icon='users')
       .add_item(
+        url_for('attendance_admin.view_for_brand', brand_id=brand.id),
+        'Stammgäste',
+        id='attendance_admin',
+        icon='users')
+      .add_item(
         url_for('news_admin.channel_index_for_brand', brand_id=brand.id),
         'News',
         id='news_admin',
