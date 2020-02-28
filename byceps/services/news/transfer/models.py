@@ -8,7 +8,7 @@ byceps.services.news.transfer.models
 
 from dataclasses import dataclass
 from datetime import datetime
-from typing import List, NewType
+from typing import List, NewType, Optional
 from uuid import UUID
 
 from ....typing import BrandID, UserID
@@ -41,9 +41,9 @@ class Image:
     item_id: ItemID
     number: int
     filename: str
-    alt_text: str
-    caption: str
-    attribution: str
+    alt_text: Optional[str]
+    caption: Optional[str]
+    attribution: Optional[str]
 
 
 @dataclass(frozen=True)
@@ -51,10 +51,10 @@ class Item:
     id: ItemID
     channel: Channel
     slug: str
-    published_at: datetime
+    published_at: Optional[datetime
     published: bool
     title: str
     body: str
     external_url: str
-    image_url_path: str
+    image_url_path: Optional[str]
     images: List[Image]
