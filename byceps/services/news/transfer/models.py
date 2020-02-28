@@ -39,6 +39,7 @@ class Image:
     created_at: datetime
     creator_id: UserID
     item_id: ItemID
+    number: int
     filename: str
     alt_text: str
     caption: str

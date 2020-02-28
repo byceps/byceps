@@ -112,6 +112,7 @@ def _db_entity_to_image(image: DbImage) -> Image:
         created_at=image.created_at,
         creator_id=image.creator_id,
         item_id=image.item_id,
+        number=image.number,
         filename=image.filename,
         alt_text=image.alt_text,
         caption=image.caption,
