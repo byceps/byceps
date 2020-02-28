@@ -51,7 +51,7 @@ class Item:
     id: ItemID
     channel: Channel
     slug: str
-    published_at: Optional[datetime
+    published_at: Optional[datetime]
     published: bool
     title: str
     body: str
