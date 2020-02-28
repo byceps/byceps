@@ -125,6 +125,7 @@ def _find_db_item(item_id: ItemID) -> Optional[DbItem]:
     """Return the item with that id, or `None` if not found."""
     return DbItem.query \
         .with_channel() \
+        .with_images() \
         .get(item_id)
 
 
@@ -146,6 +147,7 @@ def find_aggregated_item_by_slug(
         .for_channel(channel_id) \
         .with_channel() \
         .with_current_version() \
+        .with_images() \
         .filter_by(slug=slug)
 
     if published_only:
@@ -188,6 +190,7 @@ def _get_items_query(channel_id: ChannelID) -> Query:
         .for_channel(channel_id) \
         .with_channel() \
         .with_current_version() \
+        .with_images() \
         .order_by(DbItem.published_at.desc())
 
 

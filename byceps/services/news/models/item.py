@@ -31,6 +31,11 @@ class ItemQuery(BaseQuery):
             db.joinedload('channel'),
         )
 
+    def with_images(self) -> BaseQuery:
+        return self.options(
+            db.joinedload('images'),
+        )
+
     def published(self) -> BaseQuery:
         """Return items that have been published."""
         return self.filter(Item.published_at <= datetime.utcnow())
