@@ -47,6 +47,7 @@
           Veröffentlichung<br>
           Letzte Änderung
         </th>
+        <th class="centered">Bilder</th>
       </tr>
     </thead>
     <tbody>
@@ -74,6 +75,9 @@
           von {{ render_user_avatar_16_and_name(item.current_version.creator) }}
         {%- endfilter %}
         </td>
+        {%- with image_total = item.images|length %}
+        <td class="centered bignumber{% if image_total == 0 %} dimmed{% endif %}">{{ image_total }}</td>
+        {%- endwith %}
       </tr>
     {%- endfor %}
     </tbody>
