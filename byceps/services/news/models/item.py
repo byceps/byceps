@@ -100,7 +100,7 @@ class ItemVersion(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
     creator = db.relationship(User)
-    title = db.Column(db.UnicodeText)
+    title = db.Column(db.UnicodeText, nullable=False)
     body = db.Column(db.UnicodeText, nullable=False)
     image_url_path = db.Column(db.UnicodeText, nullable=True)
 
