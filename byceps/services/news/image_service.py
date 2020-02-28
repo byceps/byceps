@@ -12,6 +12,7 @@ from ...database import db
 from ...typing import UserID
 
 from .models.image import Image as DbImage
+from . import service as item_service
 from .transfer.models import Image, ImageID, ItemID
 
 
@@ -25,9 +26,14 @@ def create_image(
     attribution: Optional[str] = None,
 ) -> Image:
     """Create an image for a news item."""
+    item = item_service.find_item(item_id)
+
+    if item is None:
+        raise ValueError(f'Unknown news item ID "{item_id}".')
+
     image = DbImage(
         creator_id,
-        item_id,
+        item.id,
         filename,
         alt_text=alt_text,
         caption=caption,
