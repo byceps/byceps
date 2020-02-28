@@ -89,9 +89,9 @@
       <tr>
         <td colspan="2" style="padding-left: 1rem;">
           {%- if item.images %}
-            {%- for image in item.images %}
+            {%- for image in item.images|sort(attribute='number') %}
             <details>
-              <summary class="monospace">{{ image.filename }}</summary>
+              <summary>#{{ image.number }}: <span class="monospace">{{ image.filename }}</span></summary>
               <div style="margin-bottom: 1rem; margin-left: 1rem;">
                 <table>
                   <tr>

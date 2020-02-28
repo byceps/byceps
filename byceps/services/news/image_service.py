@@ -31,9 +31,12 @@ def create_image(
     if item is None:
         raise ValueError(f'Unknown news item ID "{item_id}".')
 
+    number = _get_next_available_number(item.id)
+
     image = DbImage(
         creator_id,
         item.id,
+        number,
         filename,
         alt_text=alt_text,
         caption=caption,
@@ -44,6 +47,26 @@ def create_image(
     db.session.commit()
 
     return _db_entity_to_image(image)
+
+
+def _find_highest_number(item_id: ItemID) -> Optional[int]:
+    """Return the highest image number for that item, or `None` if the
+    item has no images.
+    """
+    return db.session \
+        .query(db.func.max(DbImage.number)) \
+        .filter_by(item_id=item_id) \
+        .scalar()
+
+
+def _get_next_available_number(item_id: ItemID) -> int:
+    """Return the next available image number for that item."""
+    highest_number = _find_highest_number(item_id)
+
+    if highest_number is None:
+        highest_number = 0
+
+    return highest_number + 1
 
 
 def update_image(
