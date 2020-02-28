@@ -8,7 +8,7 @@ byceps.services.news.service
 
 from datetime import datetime
 from functools import partial
-from typing import Dict, Optional, Sequence
+from typing import Dict, List, Optional, Sequence
 from uuid import UUID
 
 from jinja2 import Markup
@@ -16,6 +16,7 @@ from jinja2 import Markup
 from ...database import db, paginate, Pagination, Query
 from ...events.news import NewsItemPublished
 from ...typing import BrandID, UserID
+from ...util.iterables import find
 from ...util.templating import load_template
 
 from ..brand.models.brand import Brand as DbBrand
@@ -28,7 +29,7 @@ from .models.item import (
     ItemVersion as DbItemVersion,
 )
 from . import image_service
-from .transfer.models import ChannelID, Item, ItemID, ItemVersionID
+from .transfer.models import ChannelID, Image, Item, ItemID, ItemVersionID
 
 
 def create_item(
@@ -279,15 +280,18 @@ def _assemble_image_url_path(item: DbItem) -> Optional[str]:
     return f'/data/global/news_channels/{item.channel_id}/{url_path}'
 
 
-def render_body(raw_body: str, channel_id: ChannelID) -> str:
+def render_body(
+    raw_body: str, channel_id: ChannelID, images: List[Image]
+) -> str:
     """Render item's raw body to HTML."""
     template = load_template(raw_body)
-    render_image_with_channel_id = partial(_render_image, channel_id)
-    return template.render(render_image=render_image_with_channel_id)
+    render_image= partial(_render_image, channel_id, images)
+    return template.render(render_image=render_image)
 
 
 def _render_image(
     channel_id: ChannelID,
+    images: List[Image],
     image_id: str,
     *,
     width: Optional[int] = None,
@@ -297,7 +301,7 @@ def _render_image(
     if not _is_uuid(image_id):
         raise Exception(f'Invalid image ID "{image_id}"')
 
-    image = image_service.find_image(image_id)
+    image = find(lambda image: str(image.id) == image_id, images)
 
     if image is None:
         raise Exception(f'Unknown image ID "{image_id}"')
