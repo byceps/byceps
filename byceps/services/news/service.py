@@ -9,7 +9,6 @@ byceps.services.news.service
 from datetime import datetime
 from functools import partial
 from typing import Dict, List, Optional, Sequence
-from uuid import UUID
 
 from jinja2 import Markup
 
@@ -285,26 +284,23 @@ def render_body(
 ) -> str:
     """Render item's raw body to HTML."""
     template = load_template(raw_body)
-    render_image= partial(_render_image, channel_id, images)
+    render_image = partial(_render_image, channel_id, images)
     return template.render(render_image=render_image)
 
 
 def _render_image(
     channel_id: ChannelID,
     images: List[Image],
-    image_id: str,
+    number: int,
     *,
     width: Optional[int] = None,
     height: Optional[int] = None,
 ) -> str:
     """Render HTML for image."""
-    if not _is_uuid(image_id):
-        raise Exception(f'Invalid image ID "{image_id}"')
-
-    image = find(lambda image: str(image.id) == image_id, images)
+    image = find(lambda image: image.number == number, images)
 
     if image is None:
-        raise Exception(f'Unknown image ID "{image_id}"')
+        raise Exception(f'Unknown image number "{number}"')
 
     img_src = f'/data/global/news_channels/{channel_id}/{image.filename}'
 
@@ -343,13 +339,3 @@ def _render_image(
 </figure>"""
 
     return Markup(html)
-
-
-def _is_uuid(value: str) -> bool:
-    """Return `True` if the given value is a UUID."""
-    try:
-        UUID(value)
-    except ValueError:
-        return False
-    else:
-        return True
