@@ -101,7 +101,7 @@ def _may_view_drafts(user):
 
 def _replace_body_with_rendered_body(item):
     try:
-        rendered_body = news_service.render_body(item.body)
+        rendered_body = news_service.render_body(item.body, item.channel.id)
     except Exception as e:
         rendered_body = None  # Not the best error indicator.
 
