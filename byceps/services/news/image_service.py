@@ -11,6 +11,8 @@ from typing import Optional
 from ...database import db
 from ...typing import UserID
 
+from ..user import service as user_service
+
 from .models.image import Image as DbImage
 from . import service as item_service
 from .transfer.models import Image, ImageID, ItemID
@@ -26,6 +28,10 @@ def create_image(
     attribution: Optional[str] = None,
 ) -> Image:
     """Create an image for a news item."""
+    creator = user_service.find_active_user(creator_id)
+    if creator is None:
+        raise user_service.UserIdRejected(creator_id)
+
     item = item_service.find_item(item_id)
 
     if item is None:

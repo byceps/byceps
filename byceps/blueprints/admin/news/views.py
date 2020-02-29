@@ -16,6 +16,7 @@ from ....services.news import image_service as news_image_service
 from ....services.news import service as news_item_service
 from ....services.news.transfer.models import Channel
 from ....services.text_diff import service as text_diff_service
+from ....services.user.service import UserIdRejected
 from ....util.datetime.format import format_datetime_short
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_success
@@ -158,14 +159,17 @@ def image_create(item_id):
     caption = form.caption.data.strip()
     attribution = form.attribution.data.strip()
 
-    image = news_image_service.create_image(
-        creator_id,
-        item.id,
-        filename,
-        alt_text=alt_text,
-        caption=caption,
-        attribution=attribution,
-    )
+    try:
+        image = news_image_service.create_image(
+            creator_id,
+            item.id,
+            filename,
+            alt_text=alt_text,
+            caption=caption,
+            attribution=attribution,
+        )
+    except UserIdRejected as e:
+        abort(400, 'Invalid creator ID')
 
     flash_success(f'Das Newsbild "{image.filename}" wurde hinzugefügt.')
 
