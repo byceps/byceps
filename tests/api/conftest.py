@@ -56,6 +56,21 @@ def user(app):
 
 
 @pytest.fixture(scope='module')
+def uninitialized_user(app):
+    return create_user('UninitializedUser', initialized=False)
+
+
+@pytest.fixture(scope='module')
+def suspended_user(app):
+    return create_user('SuspendedUser', suspended=True)
+
+
+@pytest.fixture(scope='module')
+def deleted_user(app):
+    return create_user('DeletedUser', deleted=True)
+
+
+@pytest.fixture(scope='module')
 def api_client(app):
     """Provide a test HTTP client against the API."""
     return app.test_client()
