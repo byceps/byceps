@@ -334,8 +334,8 @@ def _render_image(
 
     caption_elem = (
         f'<figcaption{figcaption_attrs}>{caption}</figcaption>'
-         if caption
-         else ''
+        if caption
+        else ''
     )
 
     html = f"""\
