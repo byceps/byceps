@@ -22,11 +22,11 @@ JPEG_MARKER_SOI = b'\xff\xd8'
 PNG_SIGNATURE = b'\x89PNG\r\n\x1a\n'
 
 
-def guess_type(data: BinaryIO) -> Optional[ImageType]:
+def guess_type(stream: BinaryIO) -> Optional[ImageType]:
     """Return the guessed type, or `None` if the type could not be
     guessed or is not allowed (i.e. not a member of the enum).
     """
-    header = data.read(8)
+    header = stream.read(8)
     stream.seek(0)
 
     if (header[:3] == GIF_SIGNATURE) and (header[3:6] in GIF_VERSIONS):
