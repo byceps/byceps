@@ -37,7 +37,6 @@ def determine_image_type(
             f'({allowed_type_names_string}).'
         )
 
-    stream.seek(0)
     return image_type
 
 

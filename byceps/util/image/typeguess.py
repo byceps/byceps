@@ -27,6 +27,7 @@ def guess_type(data: BinaryIO) -> Optional[ImageType]:
     guessed or is not allowed (i.e. not a member of the enum).
     """
     header = data.read(8)
+    stream.seek(0)
 
     if (header[:3] == GIF_SIGNATURE) and (header[3:6] in GIF_VERSIONS):
         return ImageType.gif
