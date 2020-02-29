@@ -6,11 +6,16 @@ byceps.services.news.image_service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import Optional
+from typing import BinaryIO, Optional
+
+from flask import current_app
 
 from ...database import db
 from ...typing import UserID
+from ...util import upload
+from ...util.image.models import Dimensions, ImageType
 
+from ..image import service as image_service
 from ..user import service as user_service
 
 from .models.image import Image as DbImage
@@ -18,16 +23,30 @@ from . import service as item_service
 from .transfer.models import ChannelID, Image, ImageID, ItemID
 
 
+ALLOWED_IMAGE_TYPES = frozenset([
+    ImageType.jpeg,
+    ImageType.png,
+])
+
+
+MAXIMUM_DIMENSIONS = Dimensions(1280, 1280)
+
+
 def create_image(
     creator_id: UserID,
     item_id: ItemID,
+    stream: BinaryIO,
     filename: str,
     *,
     alt_text: Optional[str] = None,
     caption: Optional[str] = None,
     attribution: Optional[str] = None,
 ) -> Image:
-    """Create an image for a news item."""
+    """Create an image for a news item.
+
+    Raise `ImageTypeProhibited` if the stream data is not of one the
+    allowed types.
+    """
     creator = user_service.find_active_user(creator_id)
     if creator is None:
         raise user_service.UserIdRejected(creator_id)
@@ -35,6 +54,10 @@ def create_image(
     item = item_service.find_item(item_id)
     if item is None:
         raise ValueError(f'Unknown news item ID "{item_id}".')
+
+    image_type = image_service.determine_image_type(stream, ALLOWED_IMAGE_TYPES)
+    image_dimensions = image_service.determine_dimensions(stream)
+    _check_image_dimensions(image_dimensions)
 
     number = _get_next_available_number(item.id)
 
@@ -51,7 +74,32 @@ def create_image(
     db.session.add(image)
     db.session.commit()
 
-    return _db_entity_to_image(image, item.channel_id)
+    path = (
+        current_app.config['PATH_DATA']
+        / 'global'
+        / 'news_channels'
+        / item.channel.id
+        / filename
+    )
+
+    # Create parent path if it doesn't exist.
+    parent_path = path.resolve().parent
+    if not parent_path.exists():
+        parent_path.mkdir(parents=True)
+
+    upload.store(stream, path)  # Might raise `FileExistsError`.
+
+    return _db_entity_to_image(image, item.channel.id)
+
+
+def _check_image_dimensions(image_dimensions: Dimensions) -> None:
+    """Raise exception if image dimensions exceed defined maximum."""
+    too_large = image_dimensions > MAXIMUM_DIMENSIONS
+    if too_large:
+        raise ValueError(
+            'Image dimensions must not exceed '
+            f'{MAXIMUM_DIMENSIONS.width} x {MAXIMUM_DIMENSIONS.height} pixels.'
+        )
 
 
 def _find_highest_number(item_id: ItemID) -> Optional[int]:
@@ -76,7 +124,6 @@ def _get_next_available_number(item_id: ItemID) -> int:
 
 def update_image(
     image_id: ImageID,
-    filename: str,
     *,
     alt_text: Optional[str] = None,
     caption: Optional[str] = None,
@@ -88,7 +135,6 @@ def update_image(
     if image is None:
         raise ValueError(f'Unknown news image ID "{image_id}".')
 
-    image.filename = filename
     image.alt_text = alt_text
     image.caption = caption
     image.attribution = attribution

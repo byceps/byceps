@@ -8,7 +8,7 @@ byceps.blueprints.admin.news.forms
 
 import re
 
-from wtforms import StringField, TextAreaField
+from wtforms import FileField, StringField, TextAreaField
 from wtforms.validators import InputRequired, Length, Optional, Regexp
 
 from ....util.l10n import LocalizedForm
@@ -22,14 +22,18 @@ class ChannelCreateForm(LocalizedForm):
     url_prefix = StringField('URL-Präfix', [InputRequired(), Length(max=80)])
 
 
-class ImageCreateForm(LocalizedForm):
-    filename = StringField('Dateiname', [InputRequired(), Length(max=80)])
+class _ImageFormBase(LocalizedForm):
     alt_text = StringField('Alternativtext', [InputRequired()])
     caption = StringField('Bildunterschrift', [Optional()])
     attribution = StringField('Bildquelle', [Optional()])
 
 
-class ImageUpdateForm(ImageCreateForm):
+class ImageCreateForm(_ImageFormBase):
+    image = FileField('Bilddatei', [InputRequired()])
+    filename = StringField('Dateiname', [InputRequired(), Length(max=80)])
+
+
+class ImageUpdateForm(_ImageFormBase):
     pass
 
 

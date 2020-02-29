@@ -11,6 +11,7 @@ from datetime import date
 from flask import abort, g, request
 
 from ....services.brand import service as brand_service
+from ....services.image import service as image_service
 from ....services.news import channel_service as news_channel_service
 from ....services.news import image_service as news_image_service
 from ....services.news import service as news_item_service
@@ -137,9 +138,15 @@ def image_create_form(item_id, erroneous_form=None):
 
     form = erroneous_form if erroneous_form else ImageCreateForm()
 
+    image_type_names = image_service.get_image_type_names(
+        news_image_service.ALLOWED_IMAGE_TYPES
+    )
+
     return {
         'item': item,
         'form': form,
+        'allowed_types': image_type_names,
+        'maximum_dimensions': news_image_service.MAXIMUM_DIMENSIONS,
     }
 
 
@@ -149,20 +156,30 @@ def image_create(item_id):
     """Create a news image."""
     item = _get_item_or_404(item_id)
 
-    form = ImageCreateForm(request.form)
+    # Make `InputRequired` work on `FileField`.
+    form_fields = request.form.copy()
+    if request.files:
+        form_fields.update(request.files)
+
+    form = ImageCreateForm(form_fields)
     if not form.validate():
         return image_create_form(item.id, form)
 
     creator_id = g.current_user.id
+    image = request.files.get('image')
     filename = form.filename.data.strip()
     alt_text = form.alt_text.data.strip()
     caption = form.caption.data.strip()
     attribution = form.attribution.data.strip()
 
+    if not image or not image.filename:
+        abort(400, 'No file to upload has been specified.')
+
     try:
         image = news_image_service.create_image(
             creator_id,
             item.id,
+            image.stream,
             filename,
             alt_text=alt_text,
             caption=caption,
@@ -170,8 +187,12 @@ def image_create(item_id):
         )
     except UserIdRejected as e:
         abort(400, 'Invalid creator ID')
+    except image_service.ImageTypeProhibited as e:
+        abort(400, str(e))
+    except FileExistsError:
+        abort(409, 'File already exists, not overwriting.')
 
-    flash_success(f'Das Newsbild "{image.filename}" wurde hinzugefügt.')
+    flash_success(f'Das Newsbild #{image.number} wurde hinzugefügt.')
 
     return redirect_to('.item_view', item_id=image.item_id)
 
@@ -203,20 +224,18 @@ def image_update(image_id):
     if not form.validate():
         return image_update_form(image.id, form)
 
-    filename = form.filename.data.strip()
     alt_text = form.alt_text.data.strip()
     caption = form.caption.data.strip()
     attribution = form.attribution.data.strip()
 
     news_image_service.update_image(
         image.id,
-        filename,
         alt_text=alt_text,
         caption=caption,
         attribution=attribution,
     )
 
-    flash_success(f'Das Newsbild "{image.filename}" wurde aktualisiert.')
+    flash_success(f'Das Newsbild #{image.number} wurde aktualisiert.')
 
     return redirect_to('.item_view', item_id=image.item_id)
 
