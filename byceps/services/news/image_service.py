@@ -15,7 +15,7 @@ from ..user import service as user_service
 
 from .models.image import Image as DbImage
 from . import service as item_service
-from .transfer.models import Image, ImageID, ItemID
+from .transfer.models import ChannelID, Image, ImageID, ItemID
 
 
 def create_image(
@@ -33,7 +33,6 @@ def create_image(
         raise user_service.UserIdRejected(creator_id)
 
     item = item_service.find_item(item_id)
-
     if item is None:
         raise ValueError(f'Unknown news item ID "{item_id}".')
 
@@ -52,7 +51,7 @@ def create_image(
     db.session.add(image)
     db.session.commit()
 
-    return _db_entity_to_image(image)
+    return _db_entity_to_image(image, item.channel_id)
 
 
 def _find_highest_number(item_id: ItemID) -> Optional[int]:
@@ -104,15 +103,19 @@ def find_image(image_id: ImageID) -> Optional[Image]:
     if image is None:
         return None
 
-    return _db_entity_to_image(image)
+    return _db_entity_to_image(image, image.item.channel_id)
 
 
 def _find_db_image(image_id: ImageID) -> Optional[DbImage]:
     """Return the image with that id, or `None` if not found."""
-    return DbImage.query.get(image_id)
+    return DbImage.query \
+        .options(db.joinedload('item').load_only('channel_id')) \
+        .get(image_id)
 
 
-def _db_entity_to_image(image: DbImage) -> Image:
+def _db_entity_to_image(image: DbImage, channel_id: ChannelID) -> Image:
+    url_path = f'/data/global/news_channels/{channel_id}/{image.filename}'
+
     return Image(
         id=image.id,
         created_at=image.created_at,
@@ -120,6 +123,7 @@ def _db_entity_to_image(image: DbImage) -> Image:
         item_id=image.item_id,
         number=image.number,
         filename=image.filename,
+        url_path=url_path,
         alt_text=image.alt_text,
         caption=image.caption,
         attribution=image.attribution,

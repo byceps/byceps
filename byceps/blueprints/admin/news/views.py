@@ -234,7 +234,7 @@ def item_view(item_id):
 
     version = news_item_service.get_current_item_version(item.id)
 
-    return _render_item_version(version)
+    return _render_item_version(version, item)
 
 
 @blueprint.route('/versions/<uuid:version_id>')
@@ -244,13 +244,13 @@ def item_view_version(version_id):
     """Show the news item with the given version."""
     version = _find_version(version_id)
 
-    return _render_item_version(version)
+    item = news_item_service.find_item(version.item_id)
+
+    return _render_item_version(version, item)
 
 
-def _render_item_version(version):
+def _render_item_version(version, item):
     """Render the news item version."""
-    item = version.item
-
     channel = item.channel
     brand = brand_service.find_brand(channel.brand_id)
 

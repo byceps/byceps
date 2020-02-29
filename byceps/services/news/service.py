@@ -257,7 +257,10 @@ def _db_entity_to_item(item: DbItem) -> Item:
     channel = _db_entity_to_channel(item.channel)
     external_url = item.channel.url_prefix + item.slug
     image_url_path = _assemble_image_url_path(item)
-    images = [image_service._db_entity_to_image(image) for image in item.images]
+    images = [
+        image_service._db_entity_to_image(image, item.channel_id)
+        for image in item.images
+    ]
 
     return Item(
         id=item.id,
@@ -305,7 +308,7 @@ def _render_image(
     if image is None:
         raise Exception(f'Unknown image number "{number}"')
 
-    img_src = f'/data/global/news_channels/{channel_id}/{image.filename}'
+    img_src = image.url_path
 
     figure_attrs = ''
     img_attrs = ''

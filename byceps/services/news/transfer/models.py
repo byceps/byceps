@@ -41,6 +41,7 @@ class Image:
     item_id: ItemID
     number: int
     filename: str
+    url_path: str
     alt_text: Optional[str]
     caption: Optional[str]
     attribution: Optional[str]
