@@ -18,6 +18,19 @@ from .models.user import AnonymousUser, User as DbUser
 from .transfer.models import User
 
 
+class UserIdRejected(Exception):
+    """Indicate that the given user ID is not accepted.
+
+    Reasons can include the user ID being
+    - not well-formed,
+    - unknown,
+    or the associated account being
+    - not yet initialized,
+    - suspended,
+    - or deleted.
+    """
+
+
 def find_active_db_user(user_id: UserID) -> Optional[DbUser]:
     """Return the user with that ID if the account is "active", or
     `None` if:

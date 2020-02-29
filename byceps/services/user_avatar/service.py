@@ -17,15 +17,12 @@ from ...util import upload
 from ..image import service as image_service
 from ..image.service import ImageTypeProhibited  # Provide to view functions.
 from ..user.models.user import User as DbUser
+from ..user.service import UserIdRejected
 
 from .models import Avatar, AvatarCreationTuple, AvatarSelection
 
 
 MAXIMUM_DIMENSIONS = Dimensions(512, 512)
-
-
-class UnknownUserId(Exception):
-    """Indicate that the given user ID is not known."""
 
 
 def update_avatar_image(
@@ -42,7 +39,7 @@ def update_avatar_image(
     """
     user = DbUser.query.get(user_id)
     if user is None:
-        raise UnknownUserId(user_id)
+        raise UserIdRejected(user_id)
 
     image_type = image_service.determine_image_type(stream, allowed_types)
     image_dimensions = image_service.determine_dimensions(stream)
