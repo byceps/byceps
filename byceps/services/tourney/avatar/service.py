@@ -17,6 +17,7 @@ from ....util import upload
 
 from ...image import service as image_service
 from ...image.service import ImageTypeProhibited  # Provide to view functions.
+from ...user import service as user_service
 
 from .models import Avatar
 
@@ -37,6 +38,10 @@ def create_avatar_image(
     Raise `ImageTypeProhibited` if the stream data is not of one the
     allowed types.
     """
+    creator = user_service.find_active_user(creator_id)
+    if creator is None:
+        raise user_service.UserIdRejected(creator_id)
+
     image_type = image_service.determine_image_type(stream, allowed_types)
     image_dimensions = image_service.determine_dimensions(stream)
 

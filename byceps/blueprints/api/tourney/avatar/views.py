@@ -52,11 +52,7 @@ def create():
     if not party:
         abort(400, 'Unknown party ID')
 
-    creator = user_service.find_user(creator_id)
-    if not creator:
-        abort(400, 'Unknown creator ID')
-
-    avatar = _create(party.id, creator.id, image)
+    avatar = _create(party.id, creator_id, image)
 
     return avatar.url_path
 
@@ -69,6 +65,8 @@ def _create(party_id, creator_id, image):
         return avatar_service.create_avatar_image(
             party_id, creator_id, image.stream, ALLOWED_IMAGE_TYPES
         )
+    except user_service.UserIdRejected as e:
+        abort(400, 'Invalid creator ID')
     except avatar_service.ImageTypeProhibited as e:
         abort(400, str(e))
     except FileExistsError:
