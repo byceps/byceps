@@ -26,6 +26,7 @@ from .transfer.models import ChannelID, Image, ImageID, ItemID
 ALLOWED_IMAGE_TYPES = frozenset([
     ImageType.jpeg,
     ImageType.png,
+    ImageType.svg,
 ])
 
 
@@ -42,11 +43,7 @@ def create_image(
     caption: Optional[str] = None,
     attribution: Optional[str] = None,
 ) -> Image:
-    """Create an image for a news item.
-
-    Raise `ImageTypeProhibited` if the stream data is not of one the
-    allowed types.
-    """
+    """Create an image for a news item."""
     creator = user_service.find_active_user(creator_id)
     if creator is None:
         raise user_service.UserIdRejected(creator_id)
@@ -55,9 +52,12 @@ def create_image(
     if item is None:
         raise ValueError(f'Unknown news item ID "{item_id}".')
 
+    # Might raise `ImageTypeProhibited`.
     image_type = image_service.determine_image_type(stream, ALLOWED_IMAGE_TYPES)
-    image_dimensions = image_service.determine_dimensions(stream)
-    _check_image_dimensions(image_dimensions)
+
+    if image_type != ImageType.svg:
+        image_dimensions = image_service.determine_dimensions(stream)
+        _check_image_dimensions(image_dimensions)
 
     number = _get_next_available_number(item.id)
 
