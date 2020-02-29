@@ -12,14 +12,17 @@ from byceps.util.image.models import Dimensions, ImageType
 from byceps.util.image.typeguess import guess_type
 
 
-@pytest.mark.parametrize('filename_suffix, expected', [
-    ('bmp',  None          ),
-    ('gif',  ImageType.gif ),
-    ('jpeg', ImageType.jpeg),
-    ('png',  ImageType.png ),
+IMAGES_PATH = Path('testfixtures/images')
+
+
+@pytest.mark.parametrize('filename, expected', [
+    ('image.bmp',  None          ),
+    ('image.gif',  ImageType.gif ),
+    ('image.jpeg', ImageType.jpeg),
+    ('image.png',  ImageType.png ),
 ])
-def test_guess_type(filename_suffix, expected):
-    with open_image_with_suffix(filename_suffix) as f:
+def test_guess_type(filename, expected):
+    with open_image(filename) as f:
         actual = guess_type(f)
 
     assert actual == expected
@@ -41,5 +44,10 @@ def test_read_dimensions(filename_suffix, expected_width, expected_height):
 
 
 def open_image_with_suffix(suffix):
-    path = Path('testfixtures/images/image').with_suffix('.' + suffix)
+    filename = Path('image').with_suffix('.' + suffix)
+    return open_image(filename)
+
+
+def open_image(filename):
+    path = IMAGES_PATH / filename
     return path.open(mode='rb')
