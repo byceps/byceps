@@ -21,6 +21,8 @@ def create_user(
     email_address=None,
     email_address_verified=False,
     initialized=True,
+    suspended=False,
+    deleted=False,
 ):
     if not user_id:
         user_id = generate_uuid()
@@ -37,6 +39,8 @@ def create_user(
     user.id = user_id
     user.email_address_verified = email_address_verified
     user.initialized = initialized
+    user.suspended = suspended
+    user.deleted = deleted
 
     return user
 
@@ -47,6 +51,8 @@ def create_user_with_detail(
     user_id=None,
     email_address=None,
     initialized=True,
+    suspended=False,
+    deleted=False,
     first_names='John Joseph',
     last_name='Doe',
     date_of_birth=None,
@@ -56,6 +62,8 @@ def create_user_with_detail(
         user_id=user_id,
         email_address=email_address,
         initialized=initialized,
+        suspended=suspended,
+        deleted=deleted,
     )
 
     detail = UserDetail(user=user)
