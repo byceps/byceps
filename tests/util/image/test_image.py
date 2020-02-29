@@ -16,10 +16,12 @@ IMAGES_PATH = Path('testfixtures/images')
 
 
 @pytest.mark.parametrize('filename, expected', [
-    ('image.bmp',  None          ),
-    ('image.gif',  ImageType.gif ),
-    ('image.jpeg', ImageType.jpeg),
-    ('image.png',  ImageType.png ),
+    ('image.bmp',                           None          ),
+    ('image.gif',                           ImageType.gif ),
+    ('image.jpeg',                          ImageType.jpeg),
+    ('image.png',                           ImageType.png ),
+    ('image-with-xml-declaration.svg',      ImageType.svg ),
+    ('image-without-xml-declaration.svg',   ImageType.svg ),
 ])
 def test_guess_type(filename, expected):
     with open_image(filename) as f:

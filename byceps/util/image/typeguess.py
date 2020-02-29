@@ -35,5 +35,14 @@ def guess_type(stream: BinaryIO) -> Optional[ImageType]:
         return ImageType.png
     elif header[:2] == JPEG_MARKER_SOI:
         return ImageType.jpeg
-    else:
-        return None
+
+    # Read more.
+    header = stream.read(80)
+    stream.seek(0)
+
+    if header.startswith(b'<svg') or (
+        header.startswith(b'<?xml version="1.0"') and header.find(b'<svg')
+    ):
+        return ImageType.svg
+
+    return None
