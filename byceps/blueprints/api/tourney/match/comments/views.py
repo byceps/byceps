@@ -6,7 +6,8 @@ byceps.blueprints.api.tourney.match.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import Any, Dict
+from datetime import datetime
+from typing import Any, Dict, Optional
 
 from flask import abort, jsonify, request, url_for
 from marshmallow import ValidationError
@@ -83,20 +84,20 @@ def _comment_to_json(comment: MatchComment) -> Dict[str, Any]:
         'creator': _user_to_json(creator),
         'body_text': comment.body_text,
         'body_html': comment.body_html,
-        'last_edited_at': comment.last_edited_at.isoformat()
-            if comment.last_edited_at is not None
-            else None,
-        'last_editor': _user_to_json(last_editor)
-            if last_editor is not None
-            else None,
+        'last_edited_at': _potential_datetime_to_json(comment.last_edited_at),
+        'last_editor': _potential_user_to_json(last_editor),
         'hidden': comment.hidden,
-        'hidden_at': comment.hidden_at.isoformat()
-            if comment.hidden_at is not None
-            else None,
-        'hidden_by_id': _user_to_json(moderator)
-            if moderator is not None
-            else None,
+        'hidden_at': _potential_datetime_to_json(comment.hidden_at),
+        'hidden_by_id': _potential_user_to_json(moderator),
     }
+
+
+def _potential_datetime_to_json(dt: Optional[datetime]) -> Optional[str]:
+    return dt.isoformat() if (dt is not None) else None
+
+
+def _potential_user_to_json(user: Optional[User]) -> Optional[Dict[str, Any]]:
+    return _user_to_json(user) if (user is not None) else None
 
 
 def _user_to_json(user: User) -> Dict[str, Any]:
