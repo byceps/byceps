@@ -24,6 +24,7 @@ from ....services.site import (
 )
 from ....services.terms import document_service as terms_document_service
 from ....services.terms import version_service as terms_version_service
+from ....services.terms.transfer.models import DocumentID as TermsDocumentID
 from ....services.user import creation_service as user_creation_service
 from ....services.user import service as user_service
 from ....util.framework.blueprint import create_blueprint
@@ -144,18 +145,9 @@ def create():
         first_names = None
         last_name = None
 
-    terms_consent = None
-    if terms_consent_required:
-        terms_version_id = form.terms_version_id.data
-        consent_to_terms = form.consent_to_terms.data
-
-        terms_version = terms_version_service.find_version(terms_version_id)
-        if terms_version.document_id != terms_document_id:
-            abort(400, 'Die AGB-Version gehört nicht zu dieser Veranstaltung.')
-
-        terms_consent = _assemble_privacy_policy_consent(
-            terms_version.consent_subject_id, now_utc
-        )
+    terms_consent = _get_terms_consent(
+        terms_consent_required, form, terms_document_id, now_utc
+    )
 
     privacy_policy_consent = _get_privacy_policy_consent(
         privacy_policy_consent_required,
@@ -279,6 +271,27 @@ def _find_site_setting_value(setting_name: str) -> Optional[str]:
     name, or `None` if not configured.
     """
     return site_settings_service.find_setting_value(g.site_id, setting_name)
+
+
+def _get_terms_consent(
+    terms_consent_required: bool,
+    form: UserCreateForm,
+    terms_document_id: TermsDocumentID,
+    expressed_at: datetime,
+) -> Optional[Consent]:
+    if not terms_consent_required:
+        return None
+
+    terms_version_id = form.terms_version_id.data
+    consent_to_terms = form.consent_to_terms.data
+
+    terms_version = terms_version_service.find_version(terms_version_id)
+    if terms_version.document_id != terms_document_id:
+        abort(400, 'Die AGB-Version gehört nicht zu dieser Veranstaltung.')
+
+    return _assemble_privacy_policy_consent(
+        terms_version.consent_subject_id, expressed_at
+    )
 
 
 def _get_privacy_policy_consent(
