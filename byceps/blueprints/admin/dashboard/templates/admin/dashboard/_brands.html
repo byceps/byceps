@@ -1,0 +1,13 @@
+{% from 'macros/admin/brand.html' import render_brand_admin_link %}
+
+
+<h2>Marken</h2>
+{%- if brands %}
+<ol class="fancy-list">
+  {%- for brand in brands|sort(attribute='title') %}
+  <li>{{ render_brand_admin_link(brand) }}</li>
+  {%- endfor %}
+</ol>
+{%- else %}
+<p>{{ 'keine'|dim }}</p>
+{%- endif %}

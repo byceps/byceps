@@ -56,7 +56,7 @@ def view_global():
     current_sites = site_service.get_current_sites()
     active_parties = party_service.get_active_parties()
 
-    brand_count = brand_service.count_brands()
+    brands = brand_service.get_brands()
     party_count = party_service.count_parties()
 
     orga_count = orga_service.count_orgas()
@@ -79,7 +79,7 @@ def view_global():
         'current_sites': current_sites,
         'active_parties': active_parties,
 
-        'brand_count': brand_count,
+        'brands': brands,
         'party_count': party_count,
 
         'orga_count': orga_count,
