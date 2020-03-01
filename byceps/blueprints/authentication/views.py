@@ -22,6 +22,7 @@ from ...services.site import service as site_service
 from ...services.terms import version_service as terms_version_service
 from ...services.user import service as user_service
 from ...services.verification_token import service as verification_token_service
+from ...typing import UserID
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_error, flash_notice, flash_success
 from ...util.framework.templating import templated
@@ -101,11 +102,7 @@ def login():
         abort(403)
 
     if in_admin_mode:
-        permissions = service.get_permissions_for_user(user.id)
-        if AdminPermission.access not in permissions:
-            # The user lacks the admin access permission which is required
-            # to enter the admin area.
-            abort(403)
+        _require_admin_access_permission()
 
     if not in_admin_mode:
         required_consent_subject_ids = _get_required_consent_subject_ids()
@@ -128,6 +125,14 @@ def login():
 
     user_session.start(user.id, session_token.token, permanent=permanent)
     flash_success(f'Erfolgreich eingeloggt als {user.screen_name}.')
+
+
+def _require_admin_access_permission(user_id: UserID) -> None:
+    permissions = service.get_permissions_for_user(user_id)
+    if AdminPermission.access not in permissions:
+        # The user lacks the admin access permission which is required
+        # to enter the admin area.
+        abort(403)
 
 
 def _get_required_consent_subject_ids():
