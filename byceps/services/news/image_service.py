@@ -84,12 +84,8 @@ def create_image(
         / filename
     )
 
-    # Create parent path if it doesn't exist.
-    parent_path = path.resolve().parent
-    if not parent_path.exists():
-        parent_path.mkdir(parents=True)
-
-    upload.store(stream, path)  # Might raise `FileExistsError`.
+    # Might raise `FileExistsError`.
+    upload.store(stream, path, create_parent_path_if_nonexistant=True)
 
     return _db_entity_to_image(image, item.channel.id)
 

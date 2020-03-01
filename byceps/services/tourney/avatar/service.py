@@ -55,13 +55,8 @@ def create_avatar_image(
     db.session.add(avatar)
     db.session.commit()
 
-    # Create parent path if it doesn't exist.
-    parent_path = avatar.path.resolve().parent
-    if not parent_path.exists():
-        parent_path.mkdir(parents=True)
-
     # Might raise `FileExistsError`.
-    upload.store(stream, avatar.path)
+    upload.store(stream, avatar.path, create_parent_path_if_nonexistant=True)
 
     return avatar
 
