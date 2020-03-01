@@ -10,5 +10,6 @@ from byceps.util.authorization import create_permission_enum
 
 
 SeatingPermission = create_permission_enum('seating', [
+    'administrate',
     'view',
 ])
