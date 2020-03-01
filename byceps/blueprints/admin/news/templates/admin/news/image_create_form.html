@@ -18,7 +18,7 @@
 
   <form action="{{ url_for('.image_create', item_id=item.id) }}" method="post" enctype="multipart/form-data" class="disable-submit-button-on-submit">
     {% call form_fieldset() %}
-      {{ form_field(form.image, maxlength=150000, accept='image/*', required='required', autofocus='autofocus') }}
+      {{ form_field(form.image, maxlength=200000, accept='image/*', required='required', autofocus='autofocus') }}
       {%- call form_supplement() %}
         {%- filter dim %}
           Erlaubte Formate: {{ allowed_types|sort|join(', ') }}<br>
