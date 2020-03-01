@@ -13,6 +13,7 @@ from flask import abort, g, request
 from ....services.brand import service as brand_service
 from ....services.image import service as image_service
 from ....services.news import channel_service as news_channel_service
+from ....services.news import html_service as news_html_service
 from ....services.news import image_service as news_image_service
 from ....services.news import service as news_item_service
 from ....services.news.transfer.models import Channel
@@ -277,7 +278,7 @@ def _render_item_version(version, item):
     }
 
     try:
-        rendered_body = news_item_service.render_body(
+        rendered_body = news_html_service.render_body(
             version.body, channel.id, item.images
         )
 

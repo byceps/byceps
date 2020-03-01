@@ -10,6 +10,7 @@ import dataclasses
 
 from flask import abort, g
 
+from ...services.news import html_service as news_html_service
 from ...services.news import service as news_service
 from ...services.site import settings_service as site_settings_service
 from ...util.framework.blueprint import create_blueprint
@@ -101,7 +102,7 @@ def _may_view_drafts(user):
 
 def _replace_body_with_rendered_body(item):
     try:
-        rendered_body = news_service.render_body(
+        rendered_body = news_html_service.render_body(
             item.body, item.channel.id, item.images
         )
     except Exception as e:
