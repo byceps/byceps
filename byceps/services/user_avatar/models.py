@@ -6,11 +6,8 @@ byceps.services.user_avatar.models
 :License: Modified BSD, see LICENSE for details.
 """
 
-from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import NewType
-from uuid import UUID
 
 from flask import current_app
 from sqlalchemy.ext.hybrid import hybrid_property
@@ -20,8 +17,7 @@ from ...typing import UserID
 from ...util.image.models import ImageType
 from ...util.instances import ReprBuilder
 
-
-AvatarID = NewType('AvatarID', UUID)
+from .transfer.models import AvatarID
 
 
 class Avatar(db.Model):
@@ -83,9 +79,3 @@ class AvatarSelection(db.Model):
     def __init__(self, user_id: UserID, avatar_id: AvatarID) -> None:
         self.user_id = user_id
         self.avatar_id = avatar_id
-
-
-@dataclass(frozen=True)
-class AvatarUpdate:
-    occurred_at: datetime
-    url_path: str
