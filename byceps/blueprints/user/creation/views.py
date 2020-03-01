@@ -26,7 +26,6 @@ from ....services.terms import document_service as terms_document_service
 from ....services.terms import version_service as terms_version_service
 from ....services.terms.transfer.models import DocumentID as TermsDocumentID
 from ....services.user import creation_service as user_creation_service
-from ....services.user import service as user_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_success
 from ....util.framework.templating import templated
@@ -125,18 +124,6 @@ def create():
     password = form.password.data
 
     now_utc = datetime.utcnow()
-
-    if user_service.is_screen_name_already_assigned(screen_name):
-        flash_error(
-            'Dieser Benutzername ist bereits einem Benutzerkonto zugeordnet.'
-        )
-        return create_form(form)
-
-    if user_service.is_email_address_already_assigned(email_address):
-        flash_error(
-            'Diese E-Mail-Adresse ist bereits einem Benutzerkonto zugeordnet.'
-        )
-        return create_form(form)
 
     if real_name_required:
         first_names = form.first_names.data.strip()

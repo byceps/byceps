@@ -12,6 +12,7 @@ from wtforms import BooleanField, HiddenField, PasswordField, StringField
 from wtforms.validators import InputRequired, Length, ValidationError
 
 from ....services.user import screen_name_validator
+from ....services.user import service as user_service
 from ....util.l10n import LocalizedForm
 
 
@@ -46,6 +47,18 @@ class UserCreateForm(LocalizedForm):
     consent_to_privacy_policy = BooleanField('Datenschutzbestimmungen', [InputRequired()])
     subscribe_to_newsletter = BooleanField('Newsletter')
     is_bot = BooleanField('Bot')
+
+    @staticmethod
+    def validate_screen_name(form, field):
+        if user_service.is_screen_name_already_assigned(field.data):
+            raise ValueError('Dieser Benutzername kann nicht verwendet werden.')
+
+    @staticmethod
+    def validate_email_address(form, field):
+        if user_service.is_email_address_already_assigned(field.data):
+            raise ValueError(
+                'Diese E-Mail-Adresse kann nicht verwendet werden.'
+            )
 
     @staticmethod
     def validate_terms_version_id(form, field):
