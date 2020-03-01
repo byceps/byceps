@@ -219,15 +219,17 @@ def get_events(user_id: UserID) -> Iterator[UserEventData]:
 
 def _fake_avatar_update_events(user_id: UserID) -> Iterator[UserEvent]:
     """Yield the user's avatar updates as volatile events."""
-    avatars = avatar_service.get_avatars_uploaded_by_user(user_id)
+    avatar_updates = avatar_service.get_avatars_uploaded_by_user(user_id)
 
-    for avatar in avatars:
+    for avatar_update in avatar_updates:
         data = {
             'initiator_id': str(user_id),
-            'url': avatar.url,
+            'url_path': avatar_update.url_path,
         }
 
-        yield UserEvent(avatar.created_at, 'user-avatar-updated', user_id, data)
+        yield UserEvent(
+            avatar_update.occurred_at, 'user-avatar-updated', user_id, data
+        )
 
 
 def _fake_consent_events(user_id: UserID) -> Iterator[UserEvent]:

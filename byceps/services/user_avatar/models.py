@@ -6,7 +6,7 @@ byceps.services.user_avatar.models
 :License: Modified BSD, see LICENSE for details.
 """
 
-from collections import namedtuple
+from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
 from typing import NewType
@@ -85,4 +85,7 @@ class AvatarSelection(db.Model):
         self.avatar_id = avatar_id
 
 
-AvatarCreationTuple = namedtuple('AvatarCreationTuple', 'created_at, url')
+@dataclass(frozen=True)
+class AvatarUpdate:
+    occurred_at: datetime
+    url_path: str

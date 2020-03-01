@@ -18,7 +18,7 @@ from ..image import service as image_service
 from ..image.service import ImageTypeProhibited  # Provide to view functions.
 from ..user import service as user_service
 
-from .models import Avatar, AvatarCreationTuple, AvatarSelection
+from .models import Avatar, AvatarSelection, AvatarUpdate
 
 
 MAXIMUM_DIMENSIONS = Dimensions(512, 512)
@@ -75,14 +75,13 @@ def remove_avatar_image(user_id: UserID) -> None:
     db.session.commit()
 
 
-def get_avatars_uploaded_by_user(user_id: UserID) -> List[AvatarCreationTuple]:
+def get_avatars_uploaded_by_user(user_id: UserID) -> List[AvatarUpdate]:
     """Return the avatars uploaded by the user."""
     avatars = Avatar.query \
         .filter_by(creator_id=user_id) \
         .all()
 
-    return [AvatarCreationTuple(avatar.created_at, avatar.url)
-            for avatar in avatars]
+    return [AvatarUpdate(avatar.created_at, avatar.url) for avatar in avatars]
 
 
 def get_avatar_url_for_user(user_id: UserID) -> Optional[str]:

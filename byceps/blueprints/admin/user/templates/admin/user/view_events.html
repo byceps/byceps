@@ -108,7 +108,7 @@
         {%- elif event.event == 'user-avatar-updated' %}
           {%- set icon_name = 'upload' %}
           {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span> hat ein <a href="{{ event.data.url }}">neues Avatarbild</a> hochgeladen.
+            <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span> hat ein <a href="{{ event.data.url_path }}">neues Avatarbild</a> hochgeladen.
           {%- endset %}
         {%- elif event.event == 'consent-expressed' %}
           {%- set icon_name = 'legal' %}
