@@ -76,9 +76,6 @@ def index_for_shop(shop_id, page):
         only_shipped=only_shipped,
     )
 
-    # Replace order objects in pagination object with order tuples.
-    orders.items = [order.to_transfer_object() for order in orders.items]
-
     orders.items = list(service.extend_order_tuples_with_orderer(orders.items))
 
     return {

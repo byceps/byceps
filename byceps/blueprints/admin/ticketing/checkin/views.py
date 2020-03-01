@@ -95,11 +95,10 @@ def _search_orders(shop_id, search_term, limit):
         shop.id, page, per_page, search_term=search_term
     )
 
-    # Replace order objects with order tuples.
-    orders = [order.to_transfer_object() for order in orders_pagination.items]
-
     orders = list(
-        order_blueprint_service.extend_order_tuples_with_orderer(orders)
+        order_blueprint_service.extend_order_tuples_with_orderer(
+            orders_pagination.items
+        )
     )
 
     return orders

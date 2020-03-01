@@ -12,7 +12,7 @@ from typing import Dict, Iterator, Mapping, Optional, Sequence, Set, Tuple
 from flask import current_app
 from sqlalchemy.exc import IntegrityError
 
-from ....database import db, Pagination
+from ....database import db, paginate, Pagination
 from ....events.shop import ShopOrderCanceled, ShopOrderPaid, ShopOrderPlaced
 from ....typing import UserID
 
@@ -469,7 +469,12 @@ def get_orders_for_shop_paginated(
         else:
             query = query.filter(DbOrder.shipped_at == None)
 
-    return query.paginate(page, per_page)
+    return paginate(
+        query,
+        page,
+        per_page,
+        item_mapper=lambda order: order.to_transfer_object(),
+    )
 
 
 def get_orders_placed_by_user(user_id: UserID) -> Sequence[Order]:
