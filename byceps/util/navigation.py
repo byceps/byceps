@@ -6,18 +6,18 @@ byceps.util.navigation
 :License: Modified BSD, see LICENSE for details.
 """
 
-from collections import namedtuple
+from dataclasses import dataclass
 from enum import Enum
-from typing import List
+from typing import List, Optional
 
 
-NavigationItem = namedtuple('NavigationItem', [
-    'endpoint',
-    'label',
-    'id',
-    'required_permission',
-    'icon',
-])
+@dataclass(frozen=True)
+class NavigationItem:
+    endpoint: str
+    label: str
+    id: Optional[str]
+    required_permission: Optional[Enum]
+    icon: Optional[str]
 
 
 class Navigation:
