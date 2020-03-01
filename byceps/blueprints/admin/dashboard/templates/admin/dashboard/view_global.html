@@ -20,9 +20,6 @@
     {%- call render_cell('brand') %}
 {%- include 'admin/dashboard/_brands.html' %}
     {%- endcall %}
-    {%- call render_cell('birthday', 'wider') %}
-{%- include 'admin/dashboard/_birthdays.html' %}
-    {%- endcall %}
     {{ render_bigstats_cell(party_count, 'Partys', href=url_for('party_admin.index'), icon_name='date') }}
     {{ render_bigstats_cell(orga_count, 'Organisatoren', href=url_for('orga_admin.persons'), icon_name='users') }}
     {{ render_bigstats_cell(user_count|separate_thousands, 'Benutzer', href=url_for('user_admin.index'), icon_name='users') }}
@@ -30,6 +27,9 @@
     {{ render_bigstats_cell(uninitialized_user_count, 'noch nicht aktivierte Benutzer', href=url_for('user_admin.index', only='uninitialized'), icon_name='users', color='#1199ff') }}
     {%- call render_cell('users') %}
 {%- include 'admin/dashboard/_recent_users.html' %}
+    {%- endcall %}
+    {%- call render_cell('birthday', 'wider') %}
+{%- include 'admin/dashboard/_birthdays.html' %}
     {%- endcall %}
   </div>
 
