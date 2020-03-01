@@ -42,8 +42,6 @@ def _render_image(
     if image is None:
         raise Exception(f'Unknown image number "{number}"')
 
-    img_src = image.url_path
-
     figure_attrs = ''
     img_attrs = ''
     figcaption_attrs = ''
@@ -57,25 +55,26 @@ def _render_image(
     if height:
         img_attrs += f' height="{height}"'
 
-    caption = image.caption
-    if caption is None:
-        caption = ''
+    caption_elem = _render_image_caption(image, figcaption_attrs)
+
+    html = f"""\
+<figure{figure_attrs}>
+  <img src="{image.url_path}"{img_attrs}>
+  {caption_elem}
+</figure>"""
+
+    return Markup(html)
+
+
+def _render_image_caption(image: Image, attrs: str) -> str:
+    caption = image.caption or ''
 
     if image.attribution:
         if caption:
             caption += ' '
         caption += f'<small>Bild: {image.attribution}</small>'
 
-    caption_elem = (
-        f'<figcaption{figcaption_attrs}>{caption}</figcaption>'
-        if caption
-        else ''
-    )
+    if not caption:
+        return ''
 
-    html = f"""\
-<figure{figure_attrs}>
-  <img src="{img_src}"{img_attrs}>
-  {caption_elem}
-</figure>"""
-
-    return Markup(html)
+    return f'<figcaption{attrs}>{caption}</figcaption>'
