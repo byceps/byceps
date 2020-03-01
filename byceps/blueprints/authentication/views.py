@@ -6,6 +6,8 @@ byceps.blueprints.authentication.views
 :License: Modified BSD, see LICENSE for details.
 """
 
+from typing import Optional
+
 from flask import abort, g, request, url_for
 
 from ...config import get_site_mode
@@ -18,6 +20,7 @@ from ...services.authentication.password import (
 from ...services.authentication.session import service as session_service
 from ...services.consent import consent_service
 from ...services.email import service as email_service
+from ...services.email.transfer.models import Sender
 from ...services.site import service as site_service
 from ...services.terms import version_service as terms_version_service
 from ...services.user import service as user_service
@@ -241,11 +244,7 @@ def request_password_reset():
         )
         return redirect_to('user_email_address.request_confirmation_email')
 
-    sender = None
-    if get_site_mode().is_public():
-        site = site_service.get_site(g.site_id)
-        email_config = email_service.get_config(site.email_config_id)
-        sender = email_config.sender
+    sender = _get_sender()
 
     password_reset_service.prepare_password_reset(
         user, request.url_root, sender=sender
@@ -257,6 +256,15 @@ def request_password_reset():
         'wurde an die hinterlegte E-Mail-Adresse versendet.'
     )
     return request_password_reset_form()
+
+
+def _get_sender() -> Optional[Sender]:
+    if not get_site_mode().is_public():
+        return None
+
+    site = site_service.get_site(g.site_id)
+    email_config = email_service.get_config(site.email_config_id)
+    return email_config.sender
 
 
 @blueprint.route('/password/reset/token/<token>')
