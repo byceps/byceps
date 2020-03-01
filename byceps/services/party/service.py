@@ -6,17 +6,19 @@ byceps.services.party.service
 :License: Modified BSD, see LICENSE for details.
 """
 
+import dataclasses
 from datetime import datetime
 from typing import Dict, List, Optional, Set
 
-from ...database import db, Pagination
+from ...database import db, paginate, Pagination
 from ...typing import BrandID, PartyID
 
 from ..brand.models.brand import Brand as DbBrand
+from ..brand.transfer.models import Brand
 from ..shop.shop.transfer.models import ShopID
 
 from .models.party import Party as DbParty
-from .transfer.models import Party
+from .transfer.models import Party, PartyWithBrand
 
 
 class UnknownPartyId(Exception):
@@ -123,9 +125,11 @@ def get_all_parties() -> List[Party]:
 
 def get_all_parties_with_brands() -> List[DbParty]:
     """Return all parties."""
-    return DbParty.query \
+    parties = DbParty.query \
         .options(db.joinedload('brand')) \
         .all()
+
+    return [_db_entity_to_party_with_brand(party) for party in parties]
 
 
 def get_active_parties(brand_id: Optional[BrandID] = None) -> List[Party]:
@@ -180,10 +184,11 @@ def get_parties_for_brand_paginated(
     brand_id: BrandID, page: int, per_page: int
 ) -> Pagination:
     """Return the parties for that brand to show on the specified page."""
-    return DbParty.query \
+    query = DbParty.query \
         .filter_by(brand_id=brand_id) \
-        .order_by(DbParty.starts_at.desc()) \
-        .paginate(page, per_page)
+        .order_by(DbParty.starts_at.desc())
+
+    return paginate(query, page, per_page, item_mapper=_db_entity_to_party)
 
 
 def get_party_count_by_brand_id() -> Dict[BrandID, int]:
@@ -213,3 +218,14 @@ def _db_entity_to_party(party: DbParty) -> Party:
         party.seat_management_enabled,
         party.archived,
     )
+
+
+def _db_entity_to_party_with_brand(party_entity: DbParty) -> PartyWithBrand:
+    brand = Brand(
+        party_entity.brand.id,
+        party_entity.brand.title,
+    )
+
+    party = _db_entity_to_party(party_entity)
+
+    return PartyWithBrand(*dataclasses.astuple(party), brand=brand)

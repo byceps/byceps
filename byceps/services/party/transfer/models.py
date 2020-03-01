@@ -12,6 +12,7 @@ from typing import Optional
 
 from ....typing import BrandID, PartyID
 
+from ...brand.transfer.models import Brand
 from ...shop.shop.transfer.models import ShopID
 
 
@@ -27,6 +28,16 @@ class Party:
     ticket_management_enabled: bool
     seat_management_enabled: bool
     archived: bool
+
+    @property
+    def is_over(self) -> bool:
+        """Returns true if the party has ended."""
+        return self.ends_at < datetime.utcnow()
+
+
+@dataclass(frozen=True)
+class PartyWithBrand(Party):
+    brand: Brand
 
 
 @dataclass(frozen=True)

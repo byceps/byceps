@@ -53,11 +53,6 @@ class Party(db.Model):
         self.max_ticket_quantity = max_ticket_quantity
         self.shop_id = shop_id
 
-    @property
-    def is_over(self) -> bool:
-        """Returns true if the party has ended."""
-        return self.ends_at < datetime.utcnow()
-
     def __repr__(self) -> str:
         return ReprBuilder(self) \
             .add_with_lookup('id') \
