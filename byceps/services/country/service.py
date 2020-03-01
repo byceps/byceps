@@ -7,14 +7,18 @@ byceps.services.country.service
 """
 
 import codecs
-from collections import namedtuple
+from dataclasses import dataclass
 import json
 from typing import List
 
 from flask import current_app
 
 
-Country = namedtuple('Country', 'name alpha2 alpha3')
+@dataclass(frozen=True)
+class Country:
+    name: str
+    alpha2: str
+    alpha3: str
 
 
 def get_countries() -> List[Country]:
