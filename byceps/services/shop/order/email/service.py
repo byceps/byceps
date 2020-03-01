@@ -9,7 +9,7 @@ Notification e-mails about shop orders
 """
 
 from dataclasses import dataclass
-import os.path
+from pathlib import Path
 from typing import Any, Dict, Optional
 
 from flask import current_app
@@ -203,8 +203,13 @@ def _get_snippet_body(shop_id: ShopID, name: str) -> str:
 
 
 def _render_template(name: str, **context: Dict[str, Any]) -> str:
-    templates_path = os.path.join(
-        current_app.root_path, 'services/shop/order/email/templates'
+    templates_path = (
+        Path(current_app.root_path)
+        / 'services'
+        / 'shop'
+        / 'order'
+        / 'email'
+        / 'templates'
     )
 
     loader = FileSystemLoader(templates_path)

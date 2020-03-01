@@ -10,7 +10,7 @@ Send an e-mail message from one user to another.
 
 from dataclasses import dataclass
 from email.utils import formataddr
-import os.path
+from pathlib import Path
 from typing import Any, Dict, Optional
 
 from flask import current_app
@@ -143,8 +143,8 @@ def _get_template(name: str) -> Template:
 
 
 def _create_template_env() -> Environment:
-    templates_path = os.path.join(
-        current_app.root_path, 'services/user_message/templates'
+    templates_path = (
+        Path(current_app.root_path) / 'services' / 'user_message' / 'templates'
     )
 
     loader = FileSystemLoader(templates_path)

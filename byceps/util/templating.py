@@ -8,10 +8,10 @@ Templating utilities
 :License: Modified BSD, see LICENSE for details.
 """
 
-from flask import g
-
+from pathlib import Path
 from typing import Any, Dict, Optional, Set
 
+from flask import g
 from jinja2 import (
     BaseLoader,
     Environment,
@@ -21,6 +21,9 @@ from jinja2 import (
     TemplateNotFound,
 )
 from jinja2.sandbox import ImmutableSandboxedEnvironment
+
+
+SITES_PATH = Path('sites')
 
 
 def load_template(source: str, *, template_globals: Dict[str, Any] = None):
@@ -92,5 +95,5 @@ class SiteTemplateOverridesLoader(BaseLoader):
 
     def _create_loader(self, site_id: str) -> BaseLoader:
         """Create file system loader for site-specific search path."""
-        search_path = f'sites/{site_id}/template_overrides'
+        search_path = SITES_PATH / site_id / 'template_overrides'
         return FileSystemLoader(search_path)
