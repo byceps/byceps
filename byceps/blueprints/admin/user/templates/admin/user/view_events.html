@@ -105,7 +105,7 @@
             <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
             hat ein <strong>neues Passwort gesetzt</strong>.
           {%- endset %}
-        {%- elif event.event == 'avatar-updated' %}
+        {%- elif event.event == 'user-avatar-updated' %}
           {%- set icon_name = 'upload' %}
           {%- set body %}
             <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span> hat ein <a href="{{ event.data.url }}">neues Avatarbild</a> hochgeladen.

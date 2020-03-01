@@ -227,7 +227,7 @@ def _fake_avatar_update_events(user_id: UserID) -> Iterator[UserEvent]:
             'url': avatar.url,
         }
 
-        yield UserEvent(avatar.created_at, 'avatar-updated', user_id, data)
+        yield UserEvent(avatar.created_at, 'user-avatar-updated', user_id, data)
 
 
 def _fake_consent_events(user_id: UserID) -> Iterator[UserEvent]:
@@ -292,7 +292,7 @@ def _get_additional_data(
             'user-suspended',
             'user-unsuspended',
             'password-updated',
-            'avatar-updated',
+            'user-avatar-updated',
             'consent-expressed',
             'newsletter-requested',
             'newsletter-declined',
