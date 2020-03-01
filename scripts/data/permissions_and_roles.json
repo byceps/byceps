@@ -265,6 +265,10 @@
       "title": "AGB-Versionen anzeigen"
     },
     {
+      "id": "ticketing.administrate_seat_occupancy",
+      "title": "Belegung von Sitzpl\u00e4tzen verwalten"
+    },
+    {
       "id": "ticketing.checkin",
       "title": "G\u00e4ste am Einlass einchecken"
     },
@@ -361,7 +365,7 @@
     },
     {
       "assigned_permissions": [
-        "seating.administrate",
+        "ticketing.administrate_seat_occupancy",
         "user.administrate",
         "user.create"
       ],
