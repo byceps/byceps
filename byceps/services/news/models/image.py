@@ -9,11 +9,11 @@ byceps.services.news.models.image
 from datetime import datetime
 from typing import Optional
 
-from ....database import db, generate_uuid
+from ....database import db
 from ....typing import UserID
 from ....util.instances import ReprBuilder
 
-from ..transfer.models import ItemID
+from ..transfer.models import ImageID, ItemID
 
 from .item import Item
 
@@ -26,7 +26,7 @@ class Image(db.Model):
         db.UniqueConstraint('item_id', 'number'),
     )
 
-    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    id = db.Column(db.Uuid, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
     item_id = db.Column(db.Uuid, db.ForeignKey('news_items.id'), index=True, nullable=False)
@@ -39,6 +39,7 @@ class Image(db.Model):
 
     def __init__(
         self,
+        image_id: ImageID,
         creator_id: UserID,
         item_id: ItemID,
         number: int,
@@ -48,6 +49,7 @@ class Image(db.Model):
         caption: Optional[str] = None,
         attribution: Optional[str] = None,
     ) -> None:
+        self.id = image_id
         self.creator_id = creator_id
         self.item_id = item_id
         self.number = number

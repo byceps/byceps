@@ -167,7 +167,6 @@ def image_create(item_id):
 
     creator_id = g.current_user.id
     image = request.files.get('image')
-    filename = form.filename.data.strip()
     alt_text = form.alt_text.data.strip()
     caption = form.caption.data.strip()
     attribution = form.attribution.data.strip()
@@ -180,7 +179,6 @@ def image_create(item_id):
             creator_id,
             item.id,
             image.stream,
-            filename,
             alt_text=alt_text,
             caption=caption,
             attribution=attribution,

@@ -10,7 +10,7 @@ from typing import BinaryIO, Optional
 
 from flask import current_app
 
-from ...database import db
+from ...database import db, generate_uuid
 from ...typing import UserID
 from ...util import upload
 from ...util.image.models import Dimensions, ImageType
@@ -37,7 +37,6 @@ def create_image(
     creator_id: UserID,
     item_id: ItemID,
     stream: BinaryIO,
-    filename: str,
     *,
     alt_text: Optional[str] = None,
     caption: Optional[str] = None,
@@ -59,9 +58,12 @@ def create_image(
         image_dimensions = image_service.determine_dimensions(stream)
         _check_image_dimensions(image_dimensions)
 
+    image_id = generate_uuid()
     number = _get_next_available_number(item.id)
+    filename = f'{image_id}.{image_type.name}'
 
     image = DbImage(
+        image_id,
         creator_id,
         item.id,
         number,

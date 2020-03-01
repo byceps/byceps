@@ -30,7 +30,6 @@ class _ImageFormBase(LocalizedForm):
 
 class ImageCreateForm(_ImageFormBase):
     image = FileField('Bilddatei', [InputRequired()])
-    filename = StringField('Dateiname', [InputRequired(), Length(max=80)])
 
 
 class ImageUpdateForm(_ImageFormBase):
