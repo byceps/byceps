@@ -6,18 +6,24 @@ byceps.blueprints.orga_team.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from collections import namedtuple
 import dataclasses
+from dataclasses import dataclass
 
 from flask import abort, g
 
 from ...services.orga_team import service as orga_team_service
 from ...services.user import service as user_service
+from ...services.user.transfer.models import User
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.templating import templated
 
 
-Orga = namedtuple('Orga', ['user', 'full_name', 'team_name', 'duties'])
+@dataclass(frozen=True)
+class Orga:
+    user: User
+    full_name: str
+    team_name: str
+    duties: str
 
 
 blueprint = create_blueprint('orga_team', __name__)
