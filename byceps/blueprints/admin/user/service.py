@@ -11,7 +11,7 @@ from datetime import datetime, timedelta
 from operator import attrgetter
 from typing import Any, Dict, Iterator, List, Optional, Sequence, Set, Tuple
 
-from ....database import db
+from ....database import db, paginate, Pagination
 from ....services.consent import consent_service
 from ....services.newsletter import service as newsletter_service
 from ....services.newsletter.transfer.models import List as NewsletterList
@@ -33,7 +33,9 @@ from ....typing import PartyID, UserID
 from .models import Detail, UserStateFilter, UserWithCreationDetails
 
 
-def get_users_paginated(page, per_page, *, search_term=None, state_filter=None):
+def get_users_paginated(
+    page, per_page, *, search_term=None, state_filter=None
+) -> Pagination:
     """Return the users to show on the specified page, optionally
     filtered by search term or flags.
     """
@@ -49,13 +51,12 @@ def get_users_paginated(page, per_page, *, search_term=None, state_filter=None):
     if search_term:
         query = _filter_by_search_term(query, search_term)
 
-    pagination = query.paginate(page, per_page)
-
-    pagination.items = [
-        _db_entity_to_user_with_creation_details(u) for u in pagination.items
-    ]
-
-    return pagination
+    return paginate(
+        query,
+        page,
+        per_page,
+        item_mapper=_db_entity_to_user_with_creation_details,
+    )
 
 
 def _filter_by_state(query, state_filter):
