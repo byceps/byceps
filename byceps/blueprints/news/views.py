@@ -11,7 +11,7 @@ import dataclasses
 from flask import abort, g
 
 from ...services.news import html_service as news_html_service
-from ...services.news import service as news_service
+from ...services.news import service as news_item_service
 from ...services.site import settings_service as site_settings_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.templating import templated
@@ -38,7 +38,7 @@ def index(page):
     items_per_page = _get_items_per_page_value()
     published_only = not _may_view_drafts(g.current_user)
 
-    items = news_service.get_aggregated_items_paginated(
+    items = news_item_service.get_aggregated_items_paginated(
         channel_id, page, items_per_page, published_only=published_only
     )
 
@@ -60,7 +60,7 @@ def view(slug):
     channel_id = _get_channel_id()
     published_only = not _may_view_drafts(g.current_user)
 
-    item = news_service.find_aggregated_item_by_slug(
+    item = news_item_service.find_aggregated_item_by_slug(
         channel_id, slug, published_only=published_only
     )
 
