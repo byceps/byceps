@@ -20,7 +20,7 @@ class EmailError(Exception):
     pass
 
 
-def find_config(config_id: str) -> Optional[Sender]:
+def find_config(config_id: str) -> Optional[EmailConfig]:
     """Return the configuration, or `None` if not found."""
     config = DbEmailConfig.query.get(config_id)
 
@@ -30,7 +30,7 @@ def find_config(config_id: str) -> Optional[Sender]:
     return _db_entity_to_config(config)
 
 
-def get_config(config_id: str) -> Sender:
+def get_config(config_id: str) -> EmailConfig:
     """Return the configuration, or raise an error if none is
     configured for that ID.
     """
