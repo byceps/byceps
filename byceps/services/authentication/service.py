@@ -28,20 +28,7 @@ def authenticate(screen_name_or_email_address: str, password: str) -> User:
         # Screen name/email address is unknown.
         raise AuthenticationFailed()
 
-    # Account must be initialized.
-    if not user.initialized:
-        # User account is not initialized.
-        raise AuthenticationFailed()
-
-    # Account must not be suspended.
-    if user.suspended:
-        # User account is suspended.
-        raise AuthenticationFailed()
-
-    # Account must not be deleted.
-    if user.deleted:
-        # User account has been deleted.
-        raise AuthenticationFailed()
+    _require_user_account_is_active(user)
 
     # Verify credentials.
     if not password_service.is_password_valid_for_user(user.id, password):
@@ -62,3 +49,11 @@ def _find_user_by_screen_name_or_email_address(
         return user_service.find_user_by_screen_name(
             screen_name_or_email_address, case_insensitive=True
         )
+
+
+def _require_user_account_is_active(user: User) -> None:
+    """Raise exception if user account has not been initialized, is
+    suspeded, or has been deleted.
+    """
+    if (not user.initialized) or user.suspended or user.deleted:
+        raise AuthenticationFailed()
