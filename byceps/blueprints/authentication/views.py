@@ -105,7 +105,7 @@ def login():
         abort(403)
 
     if in_admin_mode:
-        _require_admin_access_permission()
+        _require_admin_access_permission(user.id)
 
     if not in_admin_mode:
         required_consent_subject_ids = _get_required_consent_subject_ids()
