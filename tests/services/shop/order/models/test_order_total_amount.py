@@ -13,7 +13,7 @@ from testfixtures.shop_order import create_orderer
 
 from tests.helpers import create_email_config, create_user_with_detail
 from tests.services.shop.base import ShopTestBase
-from tests.services.shop.helpers import create_article
+from tests.services.shop.helpers import create_article, create_shop
 
 
 class OrderTotalAmountTest(ShopTestBase):
@@ -26,7 +26,7 @@ class OrderTotalAmountTest(ShopTestBase):
 
         create_email_config()
 
-        self.shop = self.create_shop()
+        self.shop = create_shop()
         sequence_service.create_order_number_sequence(self.shop.id, 'LF-01-B')
 
         self.article1 = self.create_article(1, Decimal('49.95'))

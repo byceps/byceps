@@ -17,6 +17,7 @@ from tests.helpers import (
     create_user_with_detail,
 )
 from tests.services.shop.base import ShopTestBase
+from tests.services.shop.helpers import create_shop
 
 
 class OrderActionTestBase(ShopTestBase):
@@ -29,7 +30,7 @@ class OrderActionTestBase(ShopTestBase):
 
         create_email_config()
 
-        self.shop = self.create_shop()
+        self.shop = create_shop()
 
         shop_sequence_service.create_order_number_sequence(
             self.shop.id, prefix='order-'

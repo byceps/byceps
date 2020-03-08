@@ -22,7 +22,7 @@ from tests.helpers import (
     login_user,
 )
 from tests.services.shop.base import ShopTestBase
-from tests.services.shop.helpers import create_shop_fragment
+from tests.services.shop.helpers import create_shop, create_shop_fragment
 
 
 COMMON_FORM_DATA = {
@@ -45,7 +45,7 @@ class ShopOrderTestCase(ShopTestBase):
         self.admin = create_user('Admin')
         self.setup_orderer()
 
-        self.shop = self.create_shop()
+        self.shop = create_shop()
         sequence_service.create_order_number_sequence(self.shop.id, 'AEC-01-B', value=4)
         create_shop_fragment(
             self.shop.id,

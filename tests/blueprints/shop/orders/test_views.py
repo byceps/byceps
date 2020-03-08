@@ -21,7 +21,7 @@ from tests.helpers import (
     login_user,
 )
 from tests.services.shop.base import ShopTestBase
-from tests.services.shop.helpers import create_shop_fragment
+from tests.services.shop.helpers import create_shop, create_shop_fragment
 
 
 class ShopOrdersTestCase(ShopTestBase):
@@ -35,7 +35,7 @@ class ShopOrdersTestCase(ShopTestBase):
 
         create_email_config()
 
-        self.shop = self.create_shop('shop-1')
+        self.shop = create_shop('shop-1')
 
         self.brand = create_brand()
 
@@ -66,7 +66,7 @@ class ShopOrdersTestCase(ShopTestBase):
         assert response.status_code == 404
 
     def test_view_matching_user_but_different_party_and_shop(self):
-        shop = self.create_shop('shop-2')
+        shop = create_shop('shop-2')
         other_party = create_party(
             self.brand.id, 'otherlan-2013', 'OtherLAN 2013', shop_id=shop.id
         )

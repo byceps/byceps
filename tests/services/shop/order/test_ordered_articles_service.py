@@ -14,7 +14,7 @@ from testfixtures.shop_order import create_orderer
 
 from tests.helpers import create_email_config, create_user_with_detail
 from tests.services.shop.base import ShopTestBase
-from tests.services.shop.helpers import create_article
+from tests.services.shop.helpers import create_article, create_shop
 
 
 class OrderedArticlesServiceTestCase(ShopTestBase):
@@ -27,7 +27,7 @@ class OrderedArticlesServiceTestCase(ShopTestBase):
 
         create_email_config()
 
-        self.shop = self.create_shop()
+        self.shop = create_shop()
 
         sequence_service.create_order_number_sequence(self.shop.id, 'ABC-01-B')
         self.article = create_article(self.shop.id, quantity=100)

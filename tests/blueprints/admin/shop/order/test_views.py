@@ -28,7 +28,11 @@ from tests.helpers import (
     login_user,
 )
 from tests.services.shop.base import ShopTestBase
-from tests.services.shop.helpers import create_article, create_shop_fragment
+from tests.services.shop.helpers import (
+    create_article,
+    create_shop,
+    create_shop_fragment,
+)
 
 
 class ShopAdminTestCase(ShopTestBase):
@@ -41,7 +45,7 @@ class ShopAdminTestCase(ShopTestBase):
 
         create_email_config()
 
-        self.shop = self.create_shop()
+        self.shop = create_shop()
         sequence_service.create_order_number_sequence(self.shop.id, 'AEC-05-B')
         create_shop_fragment(
             self.shop.id,

@@ -23,7 +23,7 @@ from tests.helpers import (
     login_user,
 )
 from tests.services.shop.base import ShopTestBase
-from tests.services.shop.helpers import create_article
+from tests.services.shop.helpers import create_article, create_shop
 
 
 class ExportTestCase(ShopTestBase):
@@ -35,7 +35,7 @@ class ExportTestCase(ShopTestBase):
 
         create_email_config()
 
-        self.shop = self.create_shop()
+        self.shop = create_shop()
         sequence_service.create_order_number_sequence(self.shop.id, 'LR-08-B', value=26)
         self.create_articles()
         self.order = self.place_order()
