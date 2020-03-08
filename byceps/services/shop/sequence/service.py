@@ -33,6 +33,18 @@ def create_sequence(
     db.session.commit()
 
 
+def create_article_number_sequence(
+    shop_id: ShopID, prefix: str, *, value: Optional[int] = None
+) -> None:
+    create_sequence(shop_id, Purpose.article, prefix, value=value)
+
+
+def create_order_number_sequence(
+    shop_id: ShopID, prefix: str, *, value: Optional[int] = None
+) -> None:
+    create_sequence(shop_id, Purpose.order, prefix, value=value)
+
+
 class NumberGenerationFailed(Exception):
     """Indicate that generating a prefixed, sequential number has failed."""
 

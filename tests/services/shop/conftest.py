@@ -8,7 +8,6 @@ import pytest
 from byceps.services.email import service as email_service
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.sequence import service as sequence_service
-from byceps.services.shop.sequence.transfer.models import Purpose
 from byceps.services.shop.shop import service as shop_service
 
 from testfixtures.shop_order import create_orderer
@@ -44,4 +43,4 @@ def empty_cart() -> Cart:
 
 @pytest.fixture
 def order_number_sequence(shop) -> None:
-    sequence_service.create_sequence(shop.id, Purpose.order, 'order-')
+    sequence_service.create_order_number_sequence(shop.id, 'order-')

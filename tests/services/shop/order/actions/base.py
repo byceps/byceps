@@ -7,7 +7,6 @@ from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order.transfer.models import PaymentMethod
 from byceps.services.shop.order import service as order_service
 from byceps.services.shop.sequence import service as shop_sequence_service
-from byceps.services.shop.sequence.transfer.models import Purpose
 
 from testfixtures.shop_order import create_orderer
 
@@ -32,8 +31,8 @@ class OrderActionTestBase(ShopTestBase):
 
         self.shop = self.create_shop()
 
-        shop_sequence_service.create_sequence(
-            self.shop.id, Purpose.order, prefix='article-'
+        shop_sequence_service.create_order_number_sequence(
+            self.shop.id, prefix='order-'
         )
 
         brand = create_brand()
