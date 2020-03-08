@@ -14,7 +14,7 @@ from byceps.services.shop.order.models.orderer import Orderer
 from byceps.services.shop.order import service as order_service
 from byceps.services.shop.sequence import service as sequence_service
 
-from tests.base import CONFIG_FILENAME_TEST_ADMIN
+from tests.base import AbstractAppTestCase, CONFIG_FILENAME_TEST_ADMIN
 from tests.helpers import (
     assign_permissions_to_user,
     create_email_config,
@@ -22,11 +22,10 @@ from tests.helpers import (
     http_client,
     login_user,
 )
-from tests.services.shop.base import ShopTestBase
 from tests.services.shop.helpers import create_article, create_shop
 
 
-class ExportTestCase(ShopTestBase):
+class ExportTestCase(AbstractAppTestCase):
 
     def setUp(self):
         super().setUp(config_filename=CONFIG_FILENAME_TEST_ADMIN)

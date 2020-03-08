@@ -18,7 +18,7 @@ from byceps.services.shop.sequence import service as sequence_service
 
 from testfixtures.shop_order import create_orderer
 
-from tests.base import CONFIG_FILENAME_TEST_ADMIN
+from tests.base import AbstractAppTestCase, CONFIG_FILENAME_TEST_ADMIN
 from tests.helpers import (
     assign_permissions_to_user,
     create_email_config,
@@ -27,7 +27,6 @@ from tests.helpers import (
     http_client,
     login_user,
 )
-from tests.services.shop.base import ShopTestBase
 from tests.services.shop.helpers import (
     create_article,
     create_shop,
@@ -35,7 +34,7 @@ from tests.services.shop.helpers import (
 )
 
 
-class ShopAdminTestCase(ShopTestBase):
+class ShopAdminTestCase(AbstractAppTestCase):
 
     def setUp(self):
         super().setUp(config_filename=CONFIG_FILENAME_TEST_ADMIN)

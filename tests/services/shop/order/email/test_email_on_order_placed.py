@@ -16,7 +16,7 @@ from tests.helpers import (
     create_user_with_detail,
     current_user_set,
 )
-from tests.services.shop.helpers import create_shop_fragment
+from tests.services.shop.helpers import create_shop, create_shop_fragment
 
 from .base import OrderEmailTestBase
 
@@ -28,7 +28,7 @@ class EmailOnOrderPlacedTest(OrderEmailTestBase):
 
         create_email_config(sender_address='acmecon@example.com')
 
-        self.shop = self.create_shop()
+        self.shop = create_shop()
         sequence_service.create_order_number_sequence(self.shop.id, 'AC-14-B', value=252)
 
         self.create_email_payment_instructions_snippet()

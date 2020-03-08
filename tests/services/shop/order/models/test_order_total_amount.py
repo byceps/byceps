@@ -11,12 +11,12 @@ from byceps.services.shop.sequence import service as sequence_service
 
 from testfixtures.shop_order import create_orderer
 
+from tests.base import AbstractAppTestCase
 from tests.helpers import create_email_config, create_user_with_detail
-from tests.services.shop.base import ShopTestBase
 from tests.services.shop.helpers import create_article, create_shop
 
 
-class OrderTotalAmountTest(ShopTestBase):
+class OrderTotalAmountTest(AbstractAppTestCase):
 
     def setUp(self):
         super().setUp()
