@@ -16,6 +16,7 @@ from tests.helpers import (
     create_user_with_detail,
     current_user_set,
 )
+from tests.services.shop.helpers import create_shop_fragment
 
 from .base import OrderEmailTestBase
 
@@ -44,7 +45,7 @@ class EmailOnOrderPaidTest(OrderEmailTestBase):
         )
 
     def create_email_footer_snippet(self):
-        self.create_shop_fragment(
+        create_shop_fragment(
             self.shop.id,
             self.admin.id,
             'email_footer',

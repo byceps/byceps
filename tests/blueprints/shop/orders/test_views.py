@@ -21,6 +21,7 @@ from tests.helpers import (
     login_user,
 )
 from tests.services.shop.base import ShopTestBase
+from tests.services.shop.helpers import create_shop_fragment
 
 
 class ShopOrdersTestCase(ShopTestBase):
@@ -83,7 +84,7 @@ class ShopOrdersTestCase(ShopTestBase):
     # helpers
 
     def create_payment_instructions_snippet(self, shop_id):
-        self.create_shop_fragment(
+        create_shop_fragment(
             shop_id,
             self.admin.id,
             'payment_instructions',
