@@ -5,33 +5,13 @@
 
 import pytest
 
-from byceps.services.email import service as email_service
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.sequence import service as sequence_service
 from byceps.services.shop.shop import service as shop_service
 
 from testfixtures.shop_order import create_orderer
 
-from tests.helpers import create_user_with_detail, DEFAULT_EMAIL_CONFIG_ID
-
-
-@pytest.fixture(scope='session')
-def make_email_config():
-
-    def _wrapper():
-        config_id = DEFAULT_EMAIL_CONFIG_ID
-        sender_address = 'info@shop.example'
-
-        email_service.set_config(config_id, sender_address)
-
-        return email_service.get_config(config_id)
-
-    return _wrapper
-
-
-@pytest.fixture
-def email_config(make_email_config):
-    return make_email_config()
+from tests.helpers import create_user_with_detail
 
 
 @pytest.fixture

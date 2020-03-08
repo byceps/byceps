@@ -8,6 +8,7 @@ from contextlib import contextmanager
 import pytest
 
 from byceps.database import db as _db
+from byceps.services.email import service as email_service
 
 from tests.base import (
     CONFIG_FILENAME_TEST_ADMIN,
@@ -15,7 +16,7 @@ from tests.base import (
     create_app,
 )
 from tests.database import set_up_database, tear_down_database
-from tests.helpers import create_user
+from tests.helpers import create_user, DEFAULT_EMAIL_CONFIG_ID
 
 
 @pytest.fixture(scope='session')
@@ -84,3 +85,22 @@ def admin_user():
 @pytest.fixture
 def normal_user():
     return create_user()
+
+
+@pytest.fixture(scope='session')
+def make_email_config():
+
+    def _wrapper():
+        config_id = DEFAULT_EMAIL_CONFIG_ID
+        sender_address = 'info@shop.example'
+
+        email_service.set_config(config_id, sender_address)
+
+        return email_service.get_config(config_id)
+
+    return _wrapper
+
+
+@pytest.fixture
+def email_config(make_email_config):
+    return make_email_config()
