@@ -9,8 +9,11 @@ from byceps.services.shop.order import service as order_service
 from testfixtures.shop_order import create_orderer
 
 
-def place_order_with_items(shop_id, orderer, created_at, items_with_quantity):
-    orderer = create_orderer(orderer)
+def place_order_with_items(
+    shop_id, user, created_at=None, items_with_quantity=None
+):
+    orderer = create_orderer(user)
+
     cart = Cart()
 
     if items_with_quantity is not None:
