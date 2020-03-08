@@ -15,14 +15,23 @@ from testfixtures.shop_order import create_orderer
 from tests.helpers import create_user_with_detail
 
 
+@pytest.fixture(scope='session')
+def make_email_config():
+
+    def _wrapper():
+        config_id = 'email-config-01'
+        sender_address = 'info@shop.example'
+
+        email_service.set_config(config_id, sender_address)
+
+        return email_service.get_config(config_id)
+
+    return _wrapper
+
+
 @pytest.fixture
-def email_config():
-    config_id = 'email-config-01'
-    sender_address = 'info@shop.example'
-
-    email_service.set_config(config_id, sender_address)
-
-    return email_service.get_config(config_id)
+def email_config(make_email_config):
+    return make_email_config()
 
 
 @pytest.fixture
