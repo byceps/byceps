@@ -7,47 +7,41 @@ from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import service as order_service
 from byceps.services.shop.sequence import service as sequence_service
 
-from testfixtures.shop_order import create_orderer
+from testfixtures.shop_order import create_orderer as _create_orderer
 
-from tests.base import AbstractAppTestCase
-from tests.helpers import create_email_config, create_user_with_detail
+from tests.helpers import create_user_with_detail
 from tests.services.shop.helpers import create_shop
 
 
-class ShopOrdersServiceTestCase(AbstractAppTestCase):
+def test_get_orders_placed_by_user(admin_app_with_db, email_config):
+    shop1_id = create_shop('first-nice-shop').id
+    shop2_id = create_shop('second-nice-shop').id
 
-    def setUp(self):
-        super().setUp()
+    sequence_service.create_order_number_sequence(shop1_id, 'LF-02-B')
+    sequence_service.create_order_number_sequence(shop2_id, 'LF-03-B')
 
-        create_email_config()
+    orderer1 = create_orderer('User1')
+    orderer2 = create_orderer('User2')
 
-        self.shop1_id = create_shop('shop-1').id
-        self.shop2_id = create_shop('shop-2').id
+    order1 = place_order(shop1_id, orderer1)
+    order2 = place_order(shop1_id, orderer2)  # different user
+    order3 = place_order(shop1_id, orderer1)
+    order4 = place_order(shop1_id, orderer1)
+    order5 = place_order(shop2_id, orderer1)  # different shop
 
-        sequence_service.create_order_number_sequence(self.shop1_id, 'LF-02-B')
-        sequence_service.create_order_number_sequence(self.shop2_id, 'LF-03-B')
+    orders_orderer1_shop1 = get_orders_by_user(orderer1, shop1_id)
+    assert orders_orderer1_shop1 == [order4, order3, order1]
 
-        self.user1 = create_user_with_detail('User1')
-        self.user2 = create_user_with_detail('User2')
+    orders_orderer2_shop1 = get_orders_by_user(orderer2, shop1_id)
+    assert orders_orderer2_shop1 == [order2]
 
-    def test_get_orders_placed_by_user(self):
-        orderer1 = create_orderer(self.user1)
-        orderer2 = create_orderer(self.user2)
+    orders_orderer1_shop2 = get_orders_by_user(orderer1, shop2_id)
+    assert orders_orderer1_shop2 == [order5]
 
-        order1 = place_order(self.shop1_id, orderer1)
-        order2 = place_order(self.shop1_id, orderer2)  # different user
-        order3 = place_order(self.shop1_id, orderer1)
-        order4 = place_order(self.shop1_id, orderer1)
-        order5 = place_order(self.shop2_id, orderer1)  # different shop
 
-        orders_orderer1_shop1 = get_orders_by_user(orderer1, self.shop1_id)
-        assert orders_orderer1_shop1 == [order4, order3, order1]
-
-        orders_orderer2_shop1 = get_orders_by_user(orderer2, self.shop1_id)
-        assert orders_orderer2_shop1 == [order2]
-
-        orders_orderer1_shop2 = get_orders_by_user(orderer1, self.shop2_id)
-        assert orders_orderer1_shop2 == [order5]
+def create_orderer(screen_name):
+    user = create_user_with_detail(screen_name)
+    return _create_orderer(user)
 
 
 def place_order(shop_id, orderer):
