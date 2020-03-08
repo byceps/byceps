@@ -10,75 +10,57 @@ from byceps.services.shop.order import service as order_service
 from byceps.services.shop.order.transfer.models import PaymentState
 from byceps.services.shop.sequence import service as sequence_service
 
-from testfixtures.shop_order import create_orderer
-
-from tests.base import AbstractAppTestCase
-from tests.helpers import create_email_config, create_user_with_detail
-from tests.services.shop.helpers import create_article, create_shop
+from tests.services.shop.helpers import create_article
 
 
-class OrderedArticlesServiceTestCase(AbstractAppTestCase):
+def test_count_ordered_articles(admin_app_with_db, db, shop, orderer):
+    expected = {
+        PaymentState.open: 12,
+        PaymentState.canceled_before_paid: 7,
+        PaymentState.paid: 3,
+        PaymentState.canceled_after_paid: 6,
+    }
 
-    def setUp(self):
-        super().setUp()
+    sequence_service.create_order_number_sequence(shop.id, 'ABC-01-B')
 
-        self.user = create_user_with_detail()
+    article = create_article(shop.id, quantity=100)
 
-        create_email_config()
-
-        self.shop = create_shop()
-
-        sequence_service.create_order_number_sequence(self.shop.id, 'ABC-01-B')
-        self.article = create_article(self.shop.id, quantity=100)
-
-    def test_count_ordered_articles(self):
-        expected = {
-            PaymentState.open: 12,
-            PaymentState.canceled_before_paid: 7,
-            PaymentState.paid: 3,
-            PaymentState.canceled_after_paid: 6,
-        }
-
-        for article_quantity, payment_state in [
-            (4, PaymentState.open),
-            (6, PaymentState.canceled_after_paid),
-            (1, PaymentState.open),
-            (5, PaymentState.canceled_before_paid),
-            (3, PaymentState.paid),
-            (2, PaymentState.canceled_before_paid),
-            (7, PaymentState.open),
-        ]:
-            order = place_order(
-                self.shop.id,
-                self.user,
-                self.article,
-                article_quantity,
-            )
-            self.set_payment_state(order.order_number, payment_state)
-
-        totals = ordered_articles_service.count_ordered_articles(
-            self.article.item_number
+    for article_quantity, payment_state in [
+        (4, PaymentState.open),
+        (6, PaymentState.canceled_after_paid),
+        (1, PaymentState.open),
+        (5, PaymentState.canceled_before_paid),
+        (3, PaymentState.paid),
+        (2, PaymentState.canceled_before_paid),
+        (7, PaymentState.open),
+    ]:
+        order = place_order(
+            shop.id,
+            orderer,
+            article,
+            article_quantity,
         )
+        set_payment_state(db, order.order_number, payment_state)
 
-        assert totals == expected
+    totals = ordered_articles_service.count_ordered_articles(
+        article.item_number
+    )
 
-    # -------------------------------------------------------------------- #
-    # helpers
-
-    def set_payment_state(self, order_number, payment_state):
-        order = DbOrder.query \
-            .filter_by(order_number=order_number) \
-            .one_or_none()
-        order.payment_state = payment_state
-        self.db.session.commit()
+    assert totals == expected
 
 
-def place_order(shop_id, orderer_user, article, article_quantity):
-    orderer = create_orderer(orderer_user)
-
+def place_order(shop_id, orderer, article, article_quantity):
     cart = Cart()
     cart.add_item(article, article_quantity)
 
     order, _ = order_service.place_order(shop_id, orderer, cart)
 
     return order
+
+
+def set_payment_state(db, order_number, payment_state):
+    order = DbOrder.query \
+        .filter_by(order_number=order_number) \
+        .one_or_none()
+    order.payment_state = payment_state
+    db.session.commit()
