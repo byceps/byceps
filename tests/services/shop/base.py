@@ -3,12 +3,12 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
+from byceps.services.shop.sequence import service as sequence_service
 from byceps.services.shop.sequence.transfer.models import Purpose
 from byceps.services.snippet import service as snippet_service
 from byceps.services.snippet.transfer.models import Scope
 
 from testfixtures.shop_article import create_article
-from testfixtures.shop_sequence import create_sequence
 from testfixtures.shop_shop import create_shop
 
 from tests.base import AbstractAppTestCase
@@ -41,12 +41,7 @@ class ShopTestBase(AbstractAppTestCase):
         )
 
     def create_number_sequence(self, shop_id, purpose, prefix, *, value=0):
-        sequence = create_sequence(shop_id, purpose, prefix, value=value)
-
-        self.db.session.add(sequence)
-        self.db.session.commit()
-
-        return sequence
+        return sequence_service.create_sequence(shop_id, purpose, prefix, value=value)
 
     def create_shop_fragment(self, shop_id, name, body):
         scope = Scope('shop', shop_id)

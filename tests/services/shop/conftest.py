@@ -11,7 +11,6 @@ from byceps.services.shop.sequence import service as sequence_service
 from byceps.services.shop.sequence.transfer.models import Purpose
 from byceps.services.shop.shop import service as shop_service
 
-from testfixtures.shop_sequence import create_sequence
 from testfixtures.shop_order import create_orderer
 
 from tests.helpers import create_user_with_detail

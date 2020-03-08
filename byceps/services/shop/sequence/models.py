@@ -6,6 +6,8 @@ byceps.services.shop.sequence.models
 :License: Modified BSD, see LICENSE for details.
 """
 
+from typing import Optional
+
 from sqlalchemy.ext.hybrid import hybrid_property
 
 from ....database import db
@@ -26,10 +28,21 @@ class NumberSequence(db.Model):
     prefix = db.Column(db.UnicodeText, unique=True, nullable=False)
     value = db.Column(db.Integer, default=0, nullable=False)
 
-    def __init__(self, shop_id: ShopID, purpose: Purpose, prefix: str) -> None:
+    def __init__(
+        self,
+        shop_id: ShopID,
+        purpose: Purpose,
+        prefix: str,
+        *,
+        value: Optional[int] = 0,
+    ) -> None:
+        if value is None:
+            value = 0
+
         self.shop_id = shop_id
         self.purpose = purpose
         self.prefix = prefix
+        self.value = value
 
     @hybrid_property
     def purpose(self) -> Purpose:

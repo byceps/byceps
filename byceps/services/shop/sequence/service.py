@@ -19,9 +19,15 @@ from .models import NumberSequence as DbNumberSequence
 from .transfer.models import NumberSequence, Purpose
 
 
-def create_sequence(shop_id: ShopID, purpose: Purpose, prefix: str) -> None:
+def create_sequence(
+    shop_id: ShopID,
+    purpose: Purpose,
+    prefix: str,
+    *,
+    value: Optional[int] = None,
+) -> None:
     """Create a sequence for that shop and purpose."""
-    sequence = DbNumberSequence(shop_id, purpose, prefix)
+    sequence = DbNumberSequence(shop_id, purpose, prefix, value=value)
 
     db.session.add(sequence)
     db.session.commit()
