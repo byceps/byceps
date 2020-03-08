@@ -8,6 +8,7 @@ from byceps.services.shop.order import ordered_articles_service
 from byceps.services.shop.order.models.order import Order as DbOrder
 from byceps.services.shop.order import service as order_service
 from byceps.services.shop.order.transfer.models import PaymentState
+from byceps.services.shop.sequence import service as sequence_service
 
 from testfixtures.shop_order import create_orderer
 
@@ -27,7 +28,7 @@ class OrderedArticlesServiceTestCase(ShopTestBase):
 
         self.shop = self.create_shop()
 
-        self.create_order_number_sequence(self.shop.id, 'ABC-01-B')
+        sequence_service.create_order_number_sequence(self.shop.id, 'ABC-01-B')
         self.article = self.create_article(self.shop.id, quantity=100)
 
     def test_count_ordered_articles(self):

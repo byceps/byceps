@@ -9,6 +9,7 @@ from unittest.mock import patch
 from byceps.services.shop.order.email import service as order_email_service
 from byceps.services.shop.order import service as order_service
 from byceps.services.shop.order.transfer.models import PaymentMethod
+from byceps.services.shop.sequence import service as sequence_service
 
 from tests.helpers import (
     create_email_config,
@@ -27,7 +28,7 @@ class EmailOnOrderPaidTest(OrderEmailTestBase):
         create_email_config(sender_address='acmecon@example.com')
 
         self.shop = self.create_shop()
-        self.create_order_number_sequence(self.shop.id, 'AC-14-B', value=21)
+        sequence_service.create_order_number_sequence(self.shop.id, 'AC-14-B', value=21)
 
         self.create_email_footer_snippet()
 

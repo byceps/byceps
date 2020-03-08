@@ -37,7 +37,7 @@ class SequenceNumberGenerationTestCase(ShopTestBase):
         assert actual == 'XYZ-09-A00042'
 
     def test_generate_order_number_default(self):
-        self.create_order_number_sequence(self.shop.id, 'AEC-01-B')
+        sequence_service.create_order_number_sequence(self.shop.id, 'AEC-01-B')
 
         actual = sequence_service.generate_order_number(self.shop.id)
 
@@ -46,7 +46,7 @@ class SequenceNumberGenerationTestCase(ShopTestBase):
     def test_generate_order_number_custom(self):
         last_assigned_order_sequence_number = 206
 
-        self.create_order_number_sequence(
+        sequence_service.create_order_number_sequence(
             self.shop.id, 'LOL-03-B', value=last_assigned_order_sequence_number
         )
 

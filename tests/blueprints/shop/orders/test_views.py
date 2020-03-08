@@ -6,6 +6,7 @@
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order.models.orderer import Orderer
 from byceps.services.shop.order import service as order_service
+from byceps.services.shop.sequence import service as sequence_service
 
 from testfixtures.shop_order import create_orderer
 
@@ -39,7 +40,7 @@ class ShopOrdersTestCase(ShopTestBase):
         party = create_party(self.brand.id, shop_id=self.shop.id)
         create_site(party_id=party.id)
 
-        self.create_order_number_sequence(self.shop.id, 'LF-02-B')
+        sequence_service.create_order_number_sequence(self.shop.id, 'LF-02-B')
         self.create_payment_instructions_snippet(self.shop.id)
 
         order_id = self.place_order(self.shop.id, self.user1)
@@ -52,7 +53,7 @@ class ShopOrdersTestCase(ShopTestBase):
         party = create_party(self.brand.id, shop_id=self.shop.id)
         create_site(party_id=party.id)
 
-        self.create_order_number_sequence(self.shop.id, 'LF-02-B')
+        sequence_service.create_order_number_sequence(self.shop.id, 'LF-02-B')
         self.create_payment_instructions_snippet(self.shop.id)
 
         order_id = self.place_order(self.shop.id, self.user1)
@@ -68,7 +69,7 @@ class ShopOrdersTestCase(ShopTestBase):
         )
         create_site(party_id=other_party.id)
 
-        self.create_order_number_sequence(self.shop.id, 'LF-02-B')
+        sequence_service.create_order_number_sequence(self.shop.id, 'LF-02-B')
         self.create_payment_instructions_snippet(self.shop.id)
 
         order_id = self.place_order(self.shop.id, self.user1)

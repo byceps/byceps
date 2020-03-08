@@ -8,6 +8,7 @@ from unittest.mock import patch
 from byceps.events.shop import ShopOrderPlaced
 from byceps.services.shop.article.models.article import Article
 from byceps.services.shop.order.models.order import Order
+from byceps.services.shop.sequence import service as sequence_service
 
 from testfixtures.shop_article import create_article
 
@@ -43,7 +44,7 @@ class ShopOrderTestCase(ShopTestBase):
         self.setup_orderer()
 
         self.shop = self.create_shop()
-        self.setup_order_number_prefix_and_sequence()
+        sequence_service.create_order_number_sequence(self.shop.id, 'AEC-01-B', value=4)
         self.create_shop_fragment(
             self.shop.id, 'payment_instructions', 'Send all ur moneyz!'
         )
@@ -52,9 +53,6 @@ class ShopOrderTestCase(ShopTestBase):
         brand = create_brand()
         party = create_party(brand.id, shop_id=self.shop.id)
         create_site(party_id=party.id)
-
-    def setup_order_number_prefix_and_sequence(self):
-        self.create_order_number_sequence(self.shop.id, 'AEC-01-B', value=4)
 
     def setup_orderer(self):
         self.orderer = create_user()

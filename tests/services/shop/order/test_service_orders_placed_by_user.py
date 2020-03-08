@@ -5,6 +5,7 @@
 
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import service as order_service
+from byceps.services.shop.sequence import service as sequence_service
 
 from testfixtures.shop_order import create_orderer
 
@@ -22,8 +23,8 @@ class ShopOrdersServiceTestCase(ShopTestBase):
         self.shop1_id = self.create_shop('shop-1').id
         self.shop2_id = self.create_shop('shop-2').id
 
-        self.create_order_number_sequence(self.shop1_id, 'LF-02-B')
-        self.create_order_number_sequence(self.shop2_id, 'LF-03-B')
+        sequence_service.create_order_number_sequence(self.shop1_id, 'LF-02-B')
+        sequence_service.create_order_number_sequence(self.shop2_id, 'LF-03-B')
 
         self.user1 = create_user_with_detail('User1')
         self.user2 = create_user_with_detail('User2')

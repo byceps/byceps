@@ -14,6 +14,7 @@ from byceps.services.shop.order.transfer.models import (
     PaymentMethod,
     PaymentState,
 )
+from byceps.services.shop.sequence import service as sequence_service
 
 from testfixtures.shop_order import create_orderer
 
@@ -40,7 +41,7 @@ class ShopAdminTestCase(ShopTestBase):
         create_email_config()
 
         self.shop = self.create_shop()
-        self.create_order_number_sequence(self.shop.id, 'AEC-05-B')
+        sequence_service.create_order_number_sequence(self.shop.id, 'AEC-05-B')
         self.create_shop_fragment(self.shop.id, 'email_footer', 'kthxbye')
 
     def create_admin(self):

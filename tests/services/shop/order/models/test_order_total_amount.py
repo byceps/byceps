@@ -7,6 +7,7 @@ from decimal import Decimal
 
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import service as order_service
+from byceps.services.shop.sequence import service as sequence_service
 
 from testfixtures.shop_order import create_orderer
 
@@ -25,7 +26,7 @@ class OrderTotalAmountTest(ShopTestBase):
         create_email_config()
 
         self.shop = self.create_shop()
-        self.create_order_number_sequence(self.shop.id, 'LF-01-B')
+        sequence_service.create_order_number_sequence(self.shop.id, 'LF-01-B')
 
         self.article1 = self.create_article(1, Decimal('49.95'))
         self.article2 = self.create_article(2, Decimal( '6.20'))

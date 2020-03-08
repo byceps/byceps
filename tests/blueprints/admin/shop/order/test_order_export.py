@@ -12,6 +12,7 @@ from freezegun import freeze_time
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order.models.orderer import Orderer
 from byceps.services.shop.order import service as order_service
+from byceps.services.shop.sequence import service as sequence_service
 
 from tests.base import CONFIG_FILENAME_TEST_ADMIN
 from tests.helpers import (
@@ -34,7 +35,7 @@ class ExportTestCase(ShopTestBase):
         create_email_config()
 
         self.shop = self.create_shop()
-        self.create_order_number_sequence(self.shop.id, 'LR-08-B', value=26)
+        sequence_service.create_order_number_sequence(self.shop.id, 'LR-08-B', value=26)
         self.create_articles()
         self.order = self.place_order()
 
