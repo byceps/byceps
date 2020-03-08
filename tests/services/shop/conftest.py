@@ -12,14 +12,14 @@ from byceps.services.shop.shop import service as shop_service
 
 from testfixtures.shop_order import create_orderer
 
-from tests.helpers import create_user_with_detail
+from tests.helpers import create_user_with_detail, DEFAULT_EMAIL_CONFIG_ID
 
 
 @pytest.fixture(scope='session')
 def make_email_config():
 
     def _wrapper():
-        config_id = 'email-config-01'
+        config_id = DEFAULT_EMAIL_CONFIG_ID
         sender_address = 'info@shop.example'
 
         email_service.set_config(config_id, sender_address)
