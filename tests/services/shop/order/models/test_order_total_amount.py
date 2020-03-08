@@ -13,6 +13,7 @@ from testfixtures.shop_order import create_orderer
 
 from tests.helpers import create_email_config, create_user_with_detail
 from tests.services.shop.base import ShopTestBase
+from tests.services.shop.helpers import create_article
 
 
 class OrderTotalAmountTest(ShopTestBase):
@@ -59,7 +60,7 @@ class OrderTotalAmountTest(ShopTestBase):
         item_number = f'LF-01-A{number:05d}'
         description = f'Artikel #{number:d}'
 
-        return super().create_article(
+        return create_article(
             self.shop.id,
             item_number=item_number,
             description=description,

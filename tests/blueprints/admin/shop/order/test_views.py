@@ -28,7 +28,7 @@ from tests.helpers import (
     login_user,
 )
 from tests.services.shop.base import ShopTestBase
-from tests.services.shop.helpers import create_shop_fragment
+from tests.services.shop.helpers import create_article, create_shop_fragment
 
 
 class ShopAdminTestCase(ShopTestBase):
@@ -69,7 +69,7 @@ class ShopAdminTestCase(ShopTestBase):
     def test_cancel_before_paid(
         self, order_email_service_mock, order_canceled_signal_send_mock
     ):
-        article_before = self.create_article(self.shop.id, quantity=8)
+        article_before = create_article(self.shop.id, quantity=8)
 
         quantified_articles_to_order = {(article_before, 3)}
         placed_order = self.place_order(quantified_articles_to_order)
@@ -117,7 +117,7 @@ class ShopAdminTestCase(ShopTestBase):
     def test_cancel_before_paid_without_sending_email(
         self, order_email_service_mock, order_canceled_signal_send_mock
     ):
-        article_before = self.create_article(self.shop.id, quantity=8)
+        article_before = create_article(self.shop.id, quantity=8)
         quantified_articles_to_order = {(article_before, 3)}
         placed_order = self.place_order(quantified_articles_to_order)
 
@@ -189,7 +189,7 @@ class ShopAdminTestCase(ShopTestBase):
         order_paid_signal_send_mock,
         order_canceled_signal_send_mock,
     ):
-        article_before = self.create_article(self.shop.id, quantity=8)
+        article_before = create_article(self.shop.id, quantity=8)
 
         quantified_articles_to_order = {(article_before, 3)}
         placed_order = self.place_order(quantified_articles_to_order)

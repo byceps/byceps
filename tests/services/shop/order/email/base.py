@@ -11,6 +11,7 @@ from testfixtures.shop_order import create_orderer
 
 from tests.helpers import create_user
 from tests.services.shop.base import ShopTestBase
+from tests.services.shop.helpers import create_article
 
 
 class OrderEmailTestBase(ShopTestBase):
@@ -25,7 +26,7 @@ class OrderEmailTestBase(ShopTestBase):
     def create_article(
         self, shop_id, item_number, description, price, quantity
     ):
-        return super().create_article(
+        return create_article(
             shop_id,
             item_number=item_number,
             description=description,

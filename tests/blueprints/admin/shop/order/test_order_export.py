@@ -23,6 +23,7 @@ from tests.helpers import (
     login_user,
 )
 from tests.services.shop.base import ShopTestBase
+from tests.services.shop.helpers import create_article
 
 
 class ExportTestCase(ShopTestBase):
@@ -90,7 +91,7 @@ class ExportTestCase(ShopTestBase):
         )
 
     def create_article(self, item_number, description, price, tax_rate):
-        return super().create_article(
+        return create_article(
             self.shop.id,
             item_number=item_number,
             description=description,

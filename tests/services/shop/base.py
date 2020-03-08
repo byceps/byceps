@@ -3,9 +3,6 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.services.shop.article import service as article_service
-
-from testfixtures.shop_article import create_article
 from testfixtures.shop_shop import create_shop
 
 from tests.base import AbstractAppTestCase
@@ -26,15 +23,3 @@ class ShopTestBase(AbstractAppTestCase):
         self.db.session.commit()
 
         return shop
-
-    def create_article(self, shop_id, **kwargs):
-        article = create_article(shop_id, **kwargs)
-
-        return article_service.create_article(
-            shop_id,
-            article.item_number,
-            article.description,
-            article.price,
-            article.tax_rate,
-            article.quantity,
-        )
