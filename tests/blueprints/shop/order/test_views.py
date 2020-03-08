@@ -23,6 +23,16 @@ from tests.helpers import (
 from tests.services.shop.base import ShopTestBase
 
 
+COMMON_FORM_DATA = {
+    'first_names': 'Hiro',
+    'last_name': 'Protagonist',
+    'country': 'State of Mind',
+    'zip_code': '31337',
+    'city': 'Atrocity',
+    'street': 'L33t Street 101',
+}
+
+
 class ShopOrderTestCase(ShopTestBase):
 
     def setUp(self):
@@ -67,12 +77,7 @@ class ShopOrderTestCase(ShopTestBase):
         url = '/shop/order'
         article_quantity_key = f'article_{self.article_id}'
         form_data = {
-            'first_names': 'Hiro',
-            'last_name': 'Protagonist',
-            'country': 'State of Mind',
-            'zip_code': '31337',
-            'city': 'Atrocity',
-            'street': 'L33t Street 101',
+            **COMMON_FORM_DATA,
             article_quantity_key: 3,
         }
         with http_client(self.app, user_id=self.orderer.id) as client:
@@ -121,12 +126,7 @@ class ShopOrderTestCase(ShopTestBase):
 
         url = f'/shop/order_single/{self.article_id!s}'
         form_data = {
-            'first_names': 'Hiro',
-            'last_name': 'Protagonist',
-            'country': 'State of Mind',
-            'zip_code': '31337',
-            'city': 'Atrocity',
-            'street': 'L33t Street 101',
+            **COMMON_FORM_DATA,
             'quantity': 1,  # TODO: Test with `3` if limitation is removed.
         }
         with http_client(self.app, user_id=self.orderer.id) as client:
