@@ -27,42 +27,26 @@ class EmailOnOrderCanceledTest(AbstractAppTestCase):
     def setUp(self):
         super().setUp()
 
-        self.admin = create_user('Admin')
+        admin = create_user('Admin')
 
         create_email_config(sender_address='acmecon@example.com')
 
-        self.shop = create_shop()
-        sequence_service.create_order_number_sequence(self.shop.id, 'AC-14-B', value=16)
+        shop = create_shop()
+        sequence_service.create_order_number_sequence(
+            shop.id, 'AC-14-B', value=16
+        )
 
-        self.create_email_footer_snippet()
+        create_email_footer_snippet(shop.id, admin.id)
 
         self.user = create_user_with_detail(
             'Versager',
             email_address='versager@example.com',
         )
 
-        self.order_id = place_order(self.shop.id, self.user)
+        self.order_id = place_order(shop.id, self.user)
 
         reason = 'Du hast nicht rechtzeitig bezahlt.'
-        order_service.cancel_order(self.order_id, self.admin.id, reason)
-
-    def create_email_footer_snippet(self):
-        create_shop_fragment(
-            self.shop.id,
-            self.admin.id,
-            'email_footer',
-            '''
-Für Fragen stehen wir gerne zur Verfügung.
-
-Viele Grüße,
-das Team der Acme Entertainment Convention
-
--- 
-Acme Entertainment Convention
-
-E-Mail: acmecon@example.com
-''',
-        )
+        order_service.cancel_order(self.order_id, admin.id, reason)
 
     @patch('byceps.email.send')
     def test_email_on_order_canceled(self, send_email_mock):
@@ -99,6 +83,25 @@ E-Mail: acmecon@example.com
             expected_subject,
             expected_body,
         )
+
+
+def create_email_footer_snippet(shop_id, admin_id):
+    create_shop_fragment(
+        shop_id,
+        admin_id,
+        'email_footer',
+        '''
+Für Fragen stehen wir gerne zur Verfügung.
+
+Viele Grüße,
+das Team der Acme Entertainment Convention
+
+-- 
+Acme Entertainment Convention
+
+E-Mail: acmecon@example.com
+''',
+    )
 
 
 def place_order(shop_id, orderer):

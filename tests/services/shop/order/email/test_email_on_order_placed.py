@@ -32,62 +32,24 @@ class EmailOnOrderPlacedTest(AbstractAppTestCase):
     def setUp(self):
         super().setUp()
 
-        self.admin = create_user('Admin')
+        admin = create_user('Admin')
 
         create_email_config(sender_address='acmecon@example.com')
 
-        self.shop = create_shop()
-        sequence_service.create_order_number_sequence(self.shop.id, 'AC-14-B', value=252)
+        shop = create_shop()
+        sequence_service.create_order_number_sequence(shop.id, 'AC-14-B', value=252)
 
-        self.create_email_payment_instructions_snippet()
-        self.create_email_footer_snippet()
+        create_email_payment_instructions_snippet(shop.id, admin.id)
+        create_email_footer_snippet(shop.id, admin.id)
 
-        self.create_articles()
+        self.create_articles(shop.id)
 
         self.user = create_user_with_detail(
             'Interessent',
             email_address='interessent@example.com',
         )
 
-        self.order_id = self.place_order(self.user)
-
-    def create_email_payment_instructions_snippet(self):
-        create_shop_fragment(
-            self.shop.id,
-            self.admin.id,
-            'email_payment_instructions',
-            '''
-Bitte überweise den Gesamtbetrag auf folgendes Konto:
-
-  Zahlungsempfänger: <Name>
-  IBAN: <IBAN>
-  BIC: <BIC>
-  Bank: <Kreditinstitut>
-  Verwendungszweck: {{ order_number }}
-
-Wir werden dich informieren, sobald wir deine Zahlung erhalten haben.
-
-Hier kannst du deine Bestellungen einsehen: https://www.example.com/shop/orders
-''',
-        )
-
-    def create_email_footer_snippet(self):
-        create_shop_fragment(
-            self.shop.id,
-            self.admin.id,
-            'email_footer',
-            '''
-Für Fragen stehen wir gerne zur Verfügung.
-
-Viele Grüße,
-das Team der Acme Entertainment Convention
-
--- 
-Acme Entertainment Convention
-
-E-Mail: acmecon@example.com
-''',
-        )
+        self.order_id = self.place_order(shop.id, self.user)
 
     @patch('byceps.email.send')
     def test_email_on_order_placed(self, send_email_mock):
@@ -149,23 +111,23 @@ E-Mail: acmecon@example.com
 
     # helpers
 
-    def create_articles(self):
+    def create_articles(self, shop_id):
         self.article1 = create_article(
-            self.shop.id,
+            shop_id,
             'AC-14-A00003',
             'Einzelticket, Kategorie Loge',
             Decimal('99.00'),
             123,
         )
         self.article2 = create_article(
-            self.shop.id,
+            shop_id,
             'AC-14-A00007',
             'T-Shirt, Größe L',
             Decimal('14.95'),
             50,
         )
 
-    def place_order(self, orderer):
+    def place_order(self, shop_id, orderer):
         created_at = datetime(2014, 8, 15, 20, 7, 43)
 
         items_with_quantity = [
@@ -174,8 +136,48 @@ E-Mail: acmecon@example.com
         ]
 
         return place_order_with_items(
-            self.shop.id, orderer, created_at, items_with_quantity
+            shop_id, orderer, created_at, items_with_quantity
         )
+
+
+def create_email_payment_instructions_snippet(shop_id, admin_id):
+    create_shop_fragment(
+        shop_id,
+        admin_id,
+        'email_payment_instructions',
+        '''
+Bitte überweise den Gesamtbetrag auf folgendes Konto:
+
+  Zahlungsempfänger: <Name>
+  IBAN: <IBAN>
+  BIC: <BIC>
+  Bank: <Kreditinstitut>
+  Verwendungszweck: {{ order_number }}
+
+Wir werden dich informieren, sobald wir deine Zahlung erhalten haben.
+
+Hier kannst du deine Bestellungen einsehen: https://www.example.com/shop/orders
+''',
+    )
+
+
+def create_email_footer_snippet(shop_id, admin_id):
+    create_shop_fragment(
+        shop_id,
+        admin_id,
+        'email_footer',
+        '''
+Für Fragen stehen wir gerne zur Verfügung.
+
+Viele Grüße,
+das Team der Acme Entertainment Convention
+
+-- 
+Acme Entertainment Convention
+
+E-Mail: acmecon@example.com
+''',
+    )
 
 
 def create_article(shop_id, item_number, description, price, quantity):

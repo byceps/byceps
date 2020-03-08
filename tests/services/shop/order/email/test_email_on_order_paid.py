@@ -28,42 +28,26 @@ class EmailOnOrderPaidTest(AbstractAppTestCase):
     def setUp(self):
         super().setUp()
 
-        self.admin = create_user('Admin')
+        admin = create_user('Admin')
 
         create_email_config(sender_address='acmecon@example.com')
 
-        self.shop = create_shop()
-        sequence_service.create_order_number_sequence(self.shop.id, 'AC-14-B', value=21)
+        shop = create_shop()
+        sequence_service.create_order_number_sequence(
+            shop.id, 'AC-14-B', value=21
+        )
 
-        self.create_email_footer_snippet()
+        create_email_footer_snippet(shop.id, admin.id)
 
         self.user = create_user_with_detail(
             'Vorbild',
             email_address='vorbild@example.com',
         )
 
-        self.order_id = place_order(self.shop.id, self.user)
+        self.order_id = place_order(shop.id, self.user)
 
         order_service.mark_order_as_paid(
-            self.order_id, PaymentMethod.bank_transfer, self.admin.id
-        )
-
-    def create_email_footer_snippet(self):
-        create_shop_fragment(
-            self.shop.id,
-            self.admin.id,
-            'email_footer',
-            '''
-Für Fragen stehen wir gerne zur Verfügung.
-
-Viele Grüße,
-das Team der Acme Entertainment Convention
-
--- 
-Acme Entertainment Convention
-
-E-Mail: acmecon@example.com
-''',
+            self.order_id, PaymentMethod.bank_transfer, admin.id
         )
 
     @patch('byceps.email.send')
@@ -101,6 +85,25 @@ E-Mail: acmecon@example.com
             expected_subject,
             expected_body,
         )
+
+
+def create_email_footer_snippet(shop_id, admin_id):
+    create_shop_fragment(
+        shop_id,
+        admin_id,
+        'email_footer',
+        '''
+Für Fragen stehen wir gerne zur Verfügung.
+
+Viele Grüße,
+das Team der Acme Entertainment Convention
+
+-- 
+Acme Entertainment Convention
+
+E-Mail: acmecon@example.com
+''',
+    )
 
 
 def place_order(shop_id, orderer):
