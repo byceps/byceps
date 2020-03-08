@@ -11,20 +11,24 @@ from byceps.services.shop.order import service as order_service
 from byceps.services.shop.order.transfer.models import PaymentMethod
 from byceps.services.shop.sequence import service as sequence_service
 
+from tests.base import AbstractAppTestCase
 from tests.helpers import (
     create_email_config,
+    create_user,
     create_user_with_detail,
     current_user_set,
 )
 from tests.services.shop.helpers import create_shop, create_shop_fragment
 
-from .base import OrderEmailTestBase, place_order_with_items
+from .base import place_order_with_items
 
 
-class EmailOnOrderPaidTest(OrderEmailTestBase):
+class EmailOnOrderPaidTest(AbstractAppTestCase):
 
     def setUp(self):
         super().setUp()
+
+        self.admin = create_user('Admin')
 
         create_email_config(sender_address='acmecon@example.com')
 
