@@ -1,15 +1,4 @@
 /**
- * Provide an alternative `forEach` function as `NodeList.forEach` is
- * not available on Firefox < v50 and MSIE.
- */
-function forEach(array, callback, scope) {
-  for (var i = 0; i < array.length; i++) {
-    callback.call(scope, array[i]);
-  }
-};
-
-
-/**
  * Register a function to be called when the document is "ready", i.e.
  * all the markup has been placed on the page.
  *
