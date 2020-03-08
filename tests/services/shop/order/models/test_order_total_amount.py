@@ -5,79 +5,86 @@
 
 from decimal import Decimal
 
+import pytest
+
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import service as order_service
-from byceps.services.shop.sequence import service as sequence_service
 
-from testfixtures.shop_order import create_orderer
-
-from tests.base import AbstractAppTestCase
-from tests.helpers import create_email_config, create_user_with_detail
-from tests.services.shop.helpers import create_article, create_shop
+from tests.services.shop.helpers import create_article as _create_article
 
 
-class OrderTotalAmountTest(AbstractAppTestCase):
-
-    def setUp(self):
-        super().setUp()
-
-        user = create_user_with_detail()
-        self.orderer = create_orderer(user)
-
-        create_email_config()
-
-        self.shop = create_shop()
-        sequence_service.create_order_number_sequence(self.shop.id, 'LF-01-B')
-
-        self.article1 = self.create_article(1, Decimal('49.95'))
-        self.article2 = self.create_article(2, Decimal( '6.20'))
-        self.article3 = self.create_article(3, Decimal('12.53'))
-
-    def test_without_any_items(self):
-        order = self.place_order([])
-
-        assert_decimal_equal(order.total_amount, Decimal('0.00'))
-
-    def test_with_single_item(self):
-        order = self.place_order([
-            (self.article1, 1),
-        ])
-
-        assert_decimal_equal(order.total_amount, Decimal('49.95'))
-
-    def test_with_multiple_items(self):
-        order = self.place_order([
-            (self.article1, 3),
-            (self.article2, 1),
-            (self.article3, 4),
-        ])
-
-        assert_decimal_equal(order.total_amount, Decimal('206.17'))
-
-    # helpers
-
-    def create_article(self, number, price):
-        item_number = f'LF-01-A{number:05d}'
-        description = f'Artikel #{number:d}'
-
-        return create_article(
-            self.shop.id,
-            item_number=item_number,
-            description=description,
-            price=price,
-            quantity=50,
-        )
-
-    def place_order(self, articles):
-        cart = Cart()
-        for article, quantity in articles:
-            cart.add_item(article, quantity)
-
-        order, _ = order_service.place_order(self.shop.id, self.orderer, cart)
-
-        return order
+@pytest.fixture
+def article1(shop):
+    return create_article(shop.id, 1, Decimal('49.95'))
 
 
-def assert_decimal_equal(actual, expected):
-    assert isinstance(actual, Decimal)
-    assert actual == expected
+@pytest.fixture
+def article2(shop):
+    return create_article(shop.id, 2, Decimal('6.20'))
+
+
+@pytest.fixture
+def article3(shop):
+    return create_article(shop.id, 3, Decimal('12.53'))
+
+
+def test_without_any_items(
+    party_app_with_db, shop, order_number_sequence, orderer
+):
+    order = place_order(shop.id, orderer, [])
+
+    assert order.total_amount == Decimal('0.00')
+
+
+def test_with_single_item(
+    party_app_with_db, shop, order_number_sequence, orderer, article1
+):
+    order = place_order(shop.id, orderer, [
+        (article1, 1),
+    ])
+
+    assert order.total_amount == Decimal('49.95')
+
+
+def test_with_multiple_items(
+    party_app_with_db,
+    shop,
+    order_number_sequence,
+    orderer,
+    article1,
+    article2,
+    article3,
+):
+    order = place_order(shop.id, orderer, [
+        (article1, 3),
+        (article2, 1),
+        (article3, 4),
+    ])
+
+    assert order.total_amount == Decimal('206.17')
+
+
+# helpers
+
+
+def create_article(shop_id, number, price):
+    item_number = f'LF-01-A{number:05d}'
+    description = f'Artikel #{number:d}'
+
+    return _create_article(
+        shop_id,
+        item_number=item_number,
+        description=description,
+        price=price,
+        quantity=50,
+    )
+
+
+def place_order(shop_id, orderer, articles):
+    cart = Cart()
+    for article, quantity in articles:
+        cart.add_item(article, quantity)
+
+    order, _ = order_service.place_order(shop_id, orderer, cart)
+
+    return order
