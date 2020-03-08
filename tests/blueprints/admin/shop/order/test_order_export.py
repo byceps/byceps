@@ -22,22 +22,24 @@ from tests.helpers import (
     http_client,
     login_user,
 )
-from tests.services.shop.helpers import create_article, create_shop
+from tests.services.shop.helpers import (
+    create_article as _create_article,
+    create_shop,
+)
 
 
-class ExportTestCase(AbstractAppTestCase):
+class ExportTest(AbstractAppTestCase):
 
     def setUp(self):
         super().setUp(config_filename=CONFIG_FILENAME_TEST_ADMIN)
 
-        self.admin = self.create_admin()
+        self.admin = create_admin()
 
         create_email_config()
 
         self.shop = create_shop()
         sequence_service.create_order_number_sequence(self.shop.id, 'LR-08-B', value=26)
-        self.create_articles()
-        self.order = self.place_order()
+        self.order = place_order(self.shop.id)
 
     @freeze_time('2015-04-15 07:54:18')  # UTC
     def test_serialize_order(self):
@@ -55,81 +57,86 @@ class ExportTestCase(AbstractAppTestCase):
         body = response.get_data().decode('utf-8')
         assert body == expected
 
-    # helpers
 
-    def create_admin(self):
-        admin = create_user('Admin')
+def create_admin():
+    admin = create_user('Admin')
 
-        permission_ids = {'admin.access', 'shop_order.view'}
-        assign_permissions_to_user(admin.id, 'admin', permission_ids)
+    permission_ids = {'admin.access', 'shop_order.view'}
+    assign_permissions_to_user(admin.id, 'admin', permission_ids)
 
-        login_user(admin.id)
+    login_user(admin.id)
 
-        return admin
+    return admin
 
-    def create_articles(self):
-        self.article_table = self.create_article(
-            'LR-08-A00002',
-            'Tisch (zur Miete), 200 x 80 cm',
-            Decimal('20.00'),
-            Decimal('0.19'),
-        )
 
-        self.article_bungalow = self.create_article(
-            'LR-08-A00003',
-            'LANresort 2015: Bungalow 4 Plätze',
-            Decimal('355.00'),
-            Decimal('0.07'),
-        )
+def create_article(shop_id, item_number, description, price, tax_rate):
+    return _create_article(
+        shop_id,
+        item_number=item_number,
+        description=description,
+        price=price,
+        tax_rate=tax_rate,
+        quantity=10,
+    )
 
-        self.article_guest_fee = self.create_article(
-            'LR-08-A00006',
-            'Touristische Gästeabgabe (BispingenCard), pauschal für 4 Personen',
-            Decimal('6.00'),
-            Decimal('0.19'),
-        )
 
-    def create_article(self, item_number, description, price, tax_rate):
-        return create_article(
-            self.shop.id,
-            item_number=item_number,
-            description=description,
-            price=price,
-            tax_rate=tax_rate,
-            quantity=10,
-        )
+def place_order(shop_id):
+    orderer = create_orderer()
+    cart = create_cart(shop_id)
+    created_at = datetime(2015, 2, 26, 12, 26, 24)  # UTC
 
-    def place_order(self):
-        orderer = self.create_orderer()
-        cart = self.create_cart()
-        created_at = datetime(2015, 2, 26, 12, 26, 24)  # UTC
+    order, _ = order_service.place_order(
+        shop_id, orderer, cart, created_at=created_at
+    )
 
-        order, _ = order_service.place_order(
-            self.shop.id, orderer, cart, created_at=created_at
-        )
+    return order
 
-        return order
 
-    def create_orderer(self):
-        user = create_user(
-            'Besteller', email_address='h-w.mustermann@example.com'
-        )
+def create_orderer():
+    user = create_user(
+        'Besteller', email_address='h-w.mustermann@example.com'
+    )
 
-        return Orderer(
-            user.id,
-            'Hans-Werner',
-            'Mustermann',
-            'Deutschland',
-            '42000',
-            'Hauptstadt',
-            'Nebenstraße 23a',
-        )
+    return Orderer(
+        user.id,
+        'Hans-Werner',
+        'Mustermann',
+        'Deutschland',
+        '42000',
+        'Hauptstadt',
+        'Nebenstraße 23a',
+    )
 
-    def create_cart(self):
-        cart = Cart()
 
-        cart.add_item(self.article_bungalow, 1)
-        cart.add_item(self.article_guest_fee, 1)
-        cart.add_item(self.article_table, 2)
+def create_cart(shop_id):
+    article_table = create_article(
+        shop_id,
+        'LR-08-A00002',
+        'Tisch (zur Miete), 200 x 80 cm',
+        Decimal('20.00'),
+        Decimal('0.19'),
+    )
 
-        return cart
+    article_bungalow = create_article(
+        shop_id,
+        'LR-08-A00003',
+        'LANresort 2015: Bungalow 4 Plätze',
+        Decimal('355.00'),
+        Decimal('0.07'),
+    )
+
+    article_guest_fee = create_article(
+        shop_id,
+        'LR-08-A00006',
+        'Touristische Gästeabgabe (BispingenCard), pauschal für 4 Personen',
+        Decimal('6.00'),
+        Decimal('0.19'),
+    )
+
+    cart = Cart()
+
+    cart.add_item(article_bungalow, 1)
+    cart.add_item(article_guest_fee, 1)
+    cart.add_item(article_table, 2)
+
+    return cart

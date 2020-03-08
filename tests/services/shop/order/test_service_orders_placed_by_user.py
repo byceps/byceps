@@ -34,31 +34,31 @@ class ShopOrdersServiceTestCase(AbstractAppTestCase):
         orderer1 = create_orderer(self.user1)
         orderer2 = create_orderer(self.user2)
 
-        order1 = self.place_order(self.shop1_id, orderer1)
-        order2 = self.place_order(self.shop1_id, orderer2)  # different user
-        order3 = self.place_order(self.shop1_id, orderer1)
-        order4 = self.place_order(self.shop1_id, orderer1)
-        order5 = self.place_order(self.shop2_id, orderer1)  # different shop
+        order1 = place_order(self.shop1_id, orderer1)
+        order2 = place_order(self.shop1_id, orderer2)  # different user
+        order3 = place_order(self.shop1_id, orderer1)
+        order4 = place_order(self.shop1_id, orderer1)
+        order5 = place_order(self.shop2_id, orderer1)  # different shop
 
-        orders_orderer1_shop1 = self.get_orders_by_user(orderer1, self.shop1_id)
+        orders_orderer1_shop1 = get_orders_by_user(orderer1, self.shop1_id)
         assert orders_orderer1_shop1 == [order4, order3, order1]
 
-        orders_orderer2_shop1 = self.get_orders_by_user(orderer2, self.shop1_id)
+        orders_orderer2_shop1 = get_orders_by_user(orderer2, self.shop1_id)
         assert orders_orderer2_shop1 == [order2]
 
-        orders_orderer1_shop2 = self.get_orders_by_user(orderer1, self.shop2_id)
+        orders_orderer1_shop2 = get_orders_by_user(orderer1, self.shop2_id)
         assert orders_orderer1_shop2 == [order5]
 
-    # helpers
 
-    def place_order(self, shop_id, orderer):
-        cart = Cart()
+def place_order(shop_id, orderer):
+    cart = Cart()
 
-        order, _ = order_service.place_order(shop_id, orderer, cart)
+    order, _ = order_service.place_order(shop_id, orderer, cart)
 
-        return order
+    return order
 
-    def get_orders_by_user(self, orderer, shop_id):
-        return order_service.get_orders_placed_by_user_for_shop(
-            orderer.user_id, shop_id
-        )
+
+def get_orders_by_user(orderer, shop_id):
+    return order_service.get_orders_placed_by_user_for_shop(
+        orderer.user_id, shop_id
+    )

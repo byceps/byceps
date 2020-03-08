@@ -18,7 +18,7 @@ from tests.helpers import (
 )
 from tests.services.shop.helpers import create_shop, create_shop_fragment
 
-from .base import OrderEmailTestBase
+from .base import OrderEmailTestBase, place_order_with_items
 
 
 class EmailOnOrderPaidTest(OrderEmailTestBase):
@@ -38,7 +38,7 @@ class EmailOnOrderPaidTest(OrderEmailTestBase):
             email_address='vorbild@example.com',
         )
 
-        self.order_id = self.place_order(self.user)
+        self.order_id = place_order(self.shop.id, self.user)
 
         order_service.mark_order_as_paid(
             self.order_id, PaymentMethod.bank_transfer, self.admin.id
@@ -98,11 +98,8 @@ E-Mail: acmecon@example.com
             expected_body,
         )
 
-    # helpers
 
-    def place_order(self, orderer):
-        created_at = datetime(2014, 9, 23, 18, 40, 53)
+def place_order(shop_id, orderer):
+    created_at = datetime(2014, 9, 23, 18, 40, 53)
 
-        return self.place_order_with_items(
-            self.shop.id, orderer, created_at, []
-        )
+    return place_order_with_items(shop_id, orderer, created_at, [])

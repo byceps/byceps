@@ -22,8 +22,7 @@ class OrderedArticlesServiceTestCase(AbstractAppTestCase):
     def setUp(self):
         super().setUp()
 
-        user = create_user_with_detail()
-        self.orderer = create_orderer(user)
+        self.user = create_user_with_detail()
 
         create_email_config()
 
@@ -49,7 +48,12 @@ class OrderedArticlesServiceTestCase(AbstractAppTestCase):
             (2, PaymentState.canceled_before_paid),
             (7, PaymentState.open),
         ]:
-            order = self.place_order(article_quantity)
+            order = place_order(
+                self.shop.id,
+                self.user,
+                self.article,
+                article_quantity,
+            )
             self.set_payment_state(order.order_number, payment_state)
 
         totals = ordered_articles_service.count_ordered_articles(
@@ -61,17 +65,20 @@ class OrderedArticlesServiceTestCase(AbstractAppTestCase):
     # -------------------------------------------------------------------- #
     # helpers
 
-    def place_order(self, article_quantity):
-        cart = Cart()
-        cart.add_item(self.article, article_quantity)
-
-        order, _ = order_service.place_order(self.shop.id, self.orderer, cart)
-
-        return order
-
     def set_payment_state(self, order_number, payment_state):
         order = DbOrder.query \
             .filter_by(order_number=order_number) \
             .one_or_none()
         order.payment_state = payment_state
         self.db.session.commit()
+
+
+def place_order(shop_id, orderer_user, article, article_quantity):
+    orderer = create_orderer(orderer_user)
+
+    cart = Cart()
+    cart.add_item(article, article_quantity)
+
+    order, _ = order_service.place_order(shop_id, orderer, cart)
+
+    return order

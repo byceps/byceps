@@ -7,12 +7,16 @@ from byceps.services.shop.order import action_registry_service
 from byceps.services.shop.order import event_service as order_event_service
 from byceps.services.ticketing import (
     category_service as ticket_category_service,
-    ticket_service,
 )
 
 from tests.services.shop.helpers import create_article
 
-from .base import OrderActionTestBase
+from .base import (
+    get_tickets_for_order,
+    mark_order_as_paid,
+    OrderActionTestBase,
+    place_order,
+)
 
 
 class CreateTicketsActionTest(OrderActionTestBase):
@@ -34,30 +38,22 @@ class CreateTicketsActionTest(OrderActionTestBase):
         )
 
         articles_with_quantity = [(self.article, ticket_quantity)]
-        self.order = self.place_order(articles_with_quantity)
+        order = place_order(self.shop.id, self.buyer, articles_with_quantity)
 
-        tickets_before_paid = self.get_tickets_for_order()
+        tickets_before_paid = get_tickets_for_order(order)
         assert len(tickets_before_paid) == 0
 
-        self.mark_order_as_paid()
+        mark_order_as_paid(order.id, self.admin.id)
 
-        tickets_after_paid = self.get_tickets_for_order()
+        tickets_after_paid = get_tickets_for_order(order)
         assert len(tickets_after_paid) == ticket_quantity
 
         for ticket in tickets_after_paid:
             assert ticket.owned_by_id == self.buyer.id
             assert ticket.used_by_id == self.buyer.id
 
-        events = order_event_service.get_events_for_order(self.order.id)
+        events = order_event_service.get_events_for_order(order.id)
         ticket_created_events = {
             event for event in events if event.event_type == 'ticket-created'
         }
         assert len(ticket_created_events) == ticket_quantity
-
-    # -------------------------------------------------------------------- #
-    # helpers
-
-    def get_tickets_for_order(self):
-        return ticket_service.find_tickets_created_by_order(
-            self.order.order_number
-        )

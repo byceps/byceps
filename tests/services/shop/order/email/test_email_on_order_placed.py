@@ -16,9 +16,13 @@ from tests.helpers import (
     create_user_with_detail,
     current_user_set,
 )
-from tests.services.shop.helpers import create_shop, create_shop_fragment
+from tests.services.shop.helpers import (
+    create_article as _create_article,
+    create_shop,
+    create_shop_fragment,
+)
 
-from .base import OrderEmailTestBase
+from .base import OrderEmailTestBase, place_order_with_items
 
 
 class EmailOnOrderPlacedTest(OrderEmailTestBase):
@@ -142,14 +146,14 @@ E-Mail: acmecon@example.com
     # helpers
 
     def create_articles(self):
-        self.article1 = self.create_article(
+        self.article1 = create_article(
             self.shop.id,
             'AC-14-A00003',
             'Einzelticket, Kategorie Loge',
             Decimal('99.00'),
             123,
         )
-        self.article2 = self.create_article(
+        self.article2 = create_article(
             self.shop.id,
             'AC-14-A00007',
             'T-Shirt, Größe L',
@@ -165,6 +169,16 @@ E-Mail: acmecon@example.com
             (self.article2, 2),
         ]
 
-        return self.place_order_with_items(
+        return place_order_with_items(
             self.shop.id, orderer, created_at, items_with_quantity
         )
+
+
+def create_article(shop_id, item_number, description, price, quantity):
+    return _create_article(
+        shop_id,
+        item_number=item_number,
+        description=description,
+        price=price,
+        quantity=quantity,
+    )

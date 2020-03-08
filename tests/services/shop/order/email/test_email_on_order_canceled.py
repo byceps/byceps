@@ -17,7 +17,7 @@ from tests.helpers import (
 )
 from tests.services.shop.helpers import create_shop, create_shop_fragment
 
-from .base import OrderEmailTestBase
+from .base import OrderEmailTestBase, place_order_with_items
 
 
 class EmailOnOrderCanceledTest(OrderEmailTestBase):
@@ -37,7 +37,7 @@ class EmailOnOrderCanceledTest(OrderEmailTestBase):
             email_address='versager@example.com',
         )
 
-        self.order_id = self.place_order(self.user)
+        self.order_id = place_order(self.shop.id, self.user)
 
         reason = 'Du hast nicht rechtzeitig bezahlt.'
         order_service.cancel_order(self.order_id, self.admin.id, reason)
@@ -96,11 +96,8 @@ E-Mail: acmecon@example.com
             expected_body,
         )
 
-    # helpers
 
-    def place_order(self, orderer):
-        created_at = datetime(2014, 11, 5, 23, 32, 9)
+def place_order(shop_id, orderer):
+    created_at = datetime(2014, 11, 5, 23, 32, 9)
 
-        return self.place_order_with_items(
-            self.shop.id, orderer, created_at, []
-        )
+    return place_order_with_items(shop_id, orderer, created_at, [])

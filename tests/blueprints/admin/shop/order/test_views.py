@@ -39,8 +39,7 @@ class ShopAdminTestCase(AbstractAppTestCase):
     def setUp(self):
         super().setUp(config_filename=CONFIG_FILENAME_TEST_ADMIN)
 
-        self.admin = self.create_admin()
-        self.orderer = create_user_with_detail('Besteller')
+        self.admin = create_admin()
 
         create_email_config()
 
@@ -53,20 +52,6 @@ class ShopAdminTestCase(AbstractAppTestCase):
             'kthxbye',
         )
 
-    def create_admin(self):
-        admin = create_user('Admin')
-
-        permission_ids = {
-            'admin.access',
-            'shop_order.cancel',
-            'shop_order.mark_as_paid',
-        }
-        assign_permissions_to_user(admin.id, 'admin', permission_ids)
-
-        login_user(admin.id)
-
-        return admin
-
     @patch('byceps.blueprints.shop.order.signals.order_canceled.send')
     @patch('byceps.blueprints.admin.shop.order.views.order_email_service')
     def test_cancel_before_paid(
@@ -75,7 +60,7 @@ class ShopAdminTestCase(AbstractAppTestCase):
         article_before = create_article(self.shop.id, quantity=8)
 
         quantified_articles_to_order = {(article_before, 3)}
-        placed_order = self.place_order(quantified_articles_to_order)
+        placed_order = place_order(self.shop.id, quantified_articles_to_order)
         order_before = get_order(placed_order.id)
 
         assert article_before.quantity == 5
@@ -122,7 +107,7 @@ class ShopAdminTestCase(AbstractAppTestCase):
     ):
         article_before = create_article(self.shop.id, quantity=8)
         quantified_articles_to_order = {(article_before, 3)}
-        placed_order = self.place_order(quantified_articles_to_order)
+        placed_order = place_order(self.shop.id, quantified_articles_to_order)
 
         url = f'/admin/shop/orders/{placed_order.id}/cancel'
         form_data = {
@@ -152,7 +137,7 @@ class ShopAdminTestCase(AbstractAppTestCase):
     def test_mark_order_as_paid(
         self, order_email_service_mock, order_paid_signal_send_mock
     ):
-        placed_order = self.place_order([])
+        placed_order = place_order(self.shop.id, [])
         order_before = get_order(placed_order.id)
 
         assert_payment_is_open(order_before)
@@ -195,7 +180,7 @@ class ShopAdminTestCase(AbstractAppTestCase):
         article_before = create_article(self.shop.id, quantity=8)
 
         quantified_articles_to_order = {(article_before, 3)}
-        placed_order = self.place_order(quantified_articles_to_order)
+        placed_order = place_order(self.shop.id, quantified_articles_to_order)
         order_before = get_order(placed_order.id)
 
         assert article_before.quantity == 5
@@ -240,18 +225,33 @@ class ShopAdminTestCase(AbstractAppTestCase):
             None, event=event
         )
 
-    # helpers
 
-    def place_order(self, quantified_articles):
-        orderer = create_orderer(self.orderer)
-        cart = Cart()
+def create_admin():
+    admin = create_user('Admin')
 
-        for article, quantity_to_order in quantified_articles:
-            cart.add_item(article, quantity_to_order)
+    permission_ids = {
+        'admin.access',
+        'shop_order.cancel',
+        'shop_order.mark_as_paid',
+    }
+    assign_permissions_to_user(admin.id, 'admin', permission_ids)
 
-        order, _ = order_service.place_order(self.shop.id, orderer, cart)
+    login_user(admin.id)
 
-        return order
+    return admin
+
+
+def place_order(shop_id, quantified_articles):
+    orderer = create_user_with_detail('Besteller')
+    orderer = create_orderer(orderer)
+    cart = Cart()
+
+    for article, quantity_to_order in quantified_articles:
+        cart.add_item(article, quantity_to_order)
+
+    order, _ = order_service.place_order(shop_id, orderer, cart)
+
+    return order
 
 
 def assert_payment_is_open(order):

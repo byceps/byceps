@@ -7,6 +7,7 @@ from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order.transfer.models import PaymentMethod
 from byceps.services.shop.order import service as order_service
 from byceps.services.shop.sequence import service as shop_sequence_service
+from byceps.services.ticketing import ticket_service
 
 from testfixtures.shop_order import create_orderer
 
@@ -39,21 +40,24 @@ class OrderActionTestBase(AbstractAppTestCase):
         brand = create_brand()
         self.party = create_party(brand_id=brand.id)
 
-    # -------------------------------------------------------------------- #
-    # helpers
 
-    def place_order(self, articles_with_quantity):
-        orderer = create_orderer(self.buyer)
+def get_tickets_for_order(order):
+    return ticket_service.find_tickets_created_by_order(order.order_number)
 
-        cart = Cart()
-        for article, quantity in articles_with_quantity:
-            cart.add_item(article, quantity)
 
-        order, _ = order_service.place_order(self.shop.id, orderer, cart)
+def place_order(shop_id, buyer, articles_with_quantity):
+    orderer = create_orderer(buyer)
 
-        return order
+    cart = Cart()
+    for article, quantity in articles_with_quantity:
+        cart.add_item(article, quantity)
 
-    def mark_order_as_paid(self):
-        order_service.mark_order_as_paid(
-            self.order.id, PaymentMethod.bank_transfer, self.admin.id
-        )
+    order, _ = order_service.place_order(shop_id, orderer, cart)
+
+    return order
+
+
+def mark_order_as_paid(order_id, admin_id):
+    order_service.mark_order_as_paid(
+        order_id, PaymentMethod.bank_transfer, admin_id
+    )
