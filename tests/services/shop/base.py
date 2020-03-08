@@ -29,9 +29,6 @@ class ShopTestBase(AbstractAppTestCase):
 
         return shop
 
-    def create_article_number_sequence(self, shop_id, prefix, *, value=None) -> None:
-        sequence_service.create_article_number_sequence(shop_id, prefix, value=value)
-
     def create_order_number_sequence(self, shop_id, prefix, *, value=None) -> None:
         sequence_service.create_order_number_sequence(shop_id, prefix, value=value)
 
