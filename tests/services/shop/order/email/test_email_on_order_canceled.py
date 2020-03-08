@@ -44,6 +44,7 @@ class EmailOnOrderCanceledTest(OrderEmailTestBase):
     def create_email_footer_snippet(self):
         self.create_shop_fragment(
             self.shop.id,
+            self.admin.id,
             'email_footer',
             '''
 Für Fragen stehen wir gerne zur Verfügung.

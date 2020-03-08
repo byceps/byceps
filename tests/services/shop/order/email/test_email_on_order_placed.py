@@ -45,6 +45,7 @@ class EmailOnOrderPlacedTest(OrderEmailTestBase):
     def create_email_payment_instructions_snippet(self):
         self.create_shop_fragment(
             self.shop.id,
+            self.admin.id,
             'email_payment_instructions',
             '''
 Bitte überweise den Gesamtbetrag auf folgendes Konto:
@@ -64,6 +65,7 @@ Hier kannst du deine Bestellungen einsehen: https://www.example.com/shop/orders
     def create_email_footer_snippet(self):
         self.create_shop_fragment(
             self.shop.id,
+            self.admin.id,
             'email_footer',
             '''
 Für Fragen stehen wir gerne zur Verfügung.

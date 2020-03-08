@@ -10,7 +10,7 @@ from testfixtures.shop_article import create_article
 from testfixtures.shop_shop import create_shop
 
 from tests.base import AbstractAppTestCase
-from tests.helpers import create_user, DEFAULT_EMAIL_CONFIG_ID
+from tests.helpers import DEFAULT_EMAIL_CONFIG_ID
 
 
 class ShopTestBase(AbstractAppTestCase):
@@ -28,15 +28,10 @@ class ShopTestBase(AbstractAppTestCase):
 
         return shop
 
-    def create_shop_fragment(self, shop_id, name, body):
+    def create_shop_fragment(self, shop_id, admin_id, name, body):
         scope = Scope('shop', shop_id)
 
-        try:
-            self.admin
-        except AttributeError:
-            self.admin = create_user('Admin')
-
-        snippet_service.create_fragment(scope, name, self.admin.id, body)
+        snippet_service.create_fragment(scope, name, admin_id, body)
 
     def create_article(self, shop_id, **kwargs):
         article = create_article(shop_id, **kwargs)

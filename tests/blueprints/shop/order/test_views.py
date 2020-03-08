@@ -41,12 +41,16 @@ class ShopOrderTestCase(ShopTestBase):
 
         create_email_config()
 
+        self.admin = create_user('Admin')
         self.setup_orderer()
 
         self.shop = self.create_shop()
         sequence_service.create_order_number_sequence(self.shop.id, 'AEC-01-B', value=4)
         self.create_shop_fragment(
-            self.shop.id, 'payment_instructions', 'Send all ur moneyz!'
+            self.shop.id,
+            self.admin.id,
+            'payment_instructions',
+            'Send all ur moneyz!',
         )
         self.setup_article()
 

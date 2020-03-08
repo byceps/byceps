@@ -15,6 +15,7 @@ from tests.helpers import (
     create_email_config,
     create_party,
     create_site,
+    create_user,
     create_user_with_detail,
     http_client,
     login_user,
@@ -27,6 +28,7 @@ class ShopOrdersTestCase(ShopTestBase):
     def setUp(self):
         super().setUp()
 
+        self.admin = create_user('Admin')
         self.user1 = create_user_with_detail('User1')
         self.user2 = create_user_with_detail('User2')
 
@@ -82,7 +84,10 @@ class ShopOrdersTestCase(ShopTestBase):
 
     def create_payment_instructions_snippet(self, shop_id):
         self.create_shop_fragment(
-            shop_id, 'payment_instructions', 'Send all ur moneyz!'
+            shop_id,
+            self.admin.id,
+            'payment_instructions',
+            'Send all ur moneyz!',
         )
 
     def place_order(self, shop_id, user):

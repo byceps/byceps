@@ -37,7 +37,6 @@ class EmailOnOrderPaidTest(OrderEmailTestBase):
             email_address='vorbild@example.com',
         )
 
-
         self.order_id = self.place_order(self.user)
 
         order_service.mark_order_as_paid(
@@ -47,6 +46,7 @@ class EmailOnOrderPaidTest(OrderEmailTestBase):
     def create_email_footer_snippet(self):
         self.create_shop_fragment(
             self.shop.id,
+            self.admin.id,
             'email_footer',
             '''
 Für Fragen stehen wir gerne zur Verfügung.
