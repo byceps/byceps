@@ -20,7 +20,7 @@ def shop(email_config):
 
 
 @pytest.fixture
-def orderer(normal_user):
+def orderer():
     user = create_user_with_detail('Besteller')
     return create_orderer(user)
 
