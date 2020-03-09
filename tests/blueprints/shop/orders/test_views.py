@@ -3,6 +3,8 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
+import pytest
+
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order.models.orderer import Orderer
 from byceps.services.shop.order import service as order_service
@@ -10,10 +12,8 @@ from byceps.services.shop.sequence import service as sequence_service
 
 from testfixtures.shop_order import create_orderer
 
-from tests.base import AbstractAppTestCase
 from tests.helpers import (
     create_brand,
-    create_email_config,
     create_party,
     create_site,
     create_user,
@@ -24,87 +24,121 @@ from tests.helpers import (
 from tests.services.shop.helpers import create_shop, create_shop_fragment
 
 
-class ShopOrdersTestCase(AbstractAppTestCase):
+@pytest.fixture
+def app(party_app_with_db):
+    yield party_app_with_db
 
-    def setUp(self):
-        super().setUp()
 
-        self.admin = create_user('Admin')
-        self.user1 = create_user_with_detail('User1')
-        self.user2 = create_user_with_detail('User2')
+@pytest.fixture
+def brand():
+    return create_brand()
 
-        create_email_config()
 
-        self.shop = create_shop('shop-1')
+@pytest.fixture
+def party1(brand, shop1):
+    return create_party(brand.id, shop_id=shop1.id)
 
-        self.brand = create_brand()
 
-    def test_view_matching_user_and_party_and_shop(self):
-        party = create_party(self.brand.id, shop_id=self.shop.id)
-        create_site(party_id=party.id)
+@pytest.fixture
+def party2(brand, shop2):
+    return create_party(
+        brand.id, 'otherlan-2013', 'OtherLAN 2013', shop_id=shop2.id
+    )
 
-        sequence_service.create_order_number_sequence(self.shop.id, 'LF-02-B')
-        self.create_payment_instructions_snippet(self.shop.id)
 
-        order_id = self.place_order(self.shop.id, self.user1)
+@pytest.fixture
+def email_config(app, make_email_config):
+    return make_email_config()
 
-        response = self.request_view(self.user1, order_id)
 
-        assert response.status_code == 200
+@pytest.fixture
+def shop1(app, email_config, admin):
+    shop = create_shop('shop-1')
+    sequence_service.create_order_number_sequence(shop.id, 'LF-02-B')
+    create_payment_instructions_snippet(shop.id, admin.id)
+    return shop
 
-    def test_view_matching_party_and_shop_but_different_user(self):
-        party = create_party(self.brand.id, shop_id=self.shop.id)
-        create_site(party_id=party.id)
 
-        sequence_service.create_order_number_sequence(self.shop.id, 'LF-02-B')
-        self.create_payment_instructions_snippet(self.shop.id)
+@pytest.fixture
+def shop2(app, email_config):
+    return create_shop('shop-2')
 
-        order_id = self.place_order(self.shop.id, self.user1)
 
-        response = self.request_view(self.user2, order_id)
+@pytest.fixture
+def admin(app):
+    return create_user('Admin')
 
-        assert response.status_code == 404
 
-    def test_view_matching_user_but_different_party_and_shop(self):
-        shop = create_shop('shop-2')
-        other_party = create_party(
-            self.brand.id, 'otherlan-2013', 'OtherLAN 2013', shop_id=shop.id
-        )
-        create_site(party_id=other_party.id)
+@pytest.fixture
+def user1(app):
+    return create_user_with_detail('User1')
 
-        sequence_service.create_order_number_sequence(self.shop.id, 'LF-02-B')
-        self.create_payment_instructions_snippet(self.shop.id)
 
-        order_id = self.place_order(self.shop.id, self.user1)
+@pytest.fixture
+def user2(app):
+    return create_user_with_detail('User2')
 
-        response = self.request_view(self.user1, order_id)
 
-        assert response.status_code == 404
+def test_view_matching_user_and_party_and_shop(
+    app, party1, shop1, admin, user1
+):
+    create_site(party_id=party1.id)
 
-    # helpers
+    order_id = place_order(shop1.id, user1)
 
-    def create_payment_instructions_snippet(self, shop_id):
-        create_shop_fragment(
-            shop_id,
-            self.admin.id,
-            'payment_instructions',
-            'Send all ur moneyz!',
-        )
+    response = request_view(app, user1, order_id)
 
-    def place_order(self, shop_id, user):
-        orderer = create_orderer(user)
-        cart = Cart()
+    assert response.status_code == 200
 
-        order, _ = order_service.place_order(shop_id, orderer, cart)
 
-        return order.id
+def test_view_matching_party_and_shop_but_different_user(
+    app, party1, shop1, admin, user1, user2
+):
+    create_site(party_id=party1.id)
 
-    def request_view(self, current_user, order_id):
-        login_user(current_user.id)
+    order_id = place_order(shop1.id, user1)
 
-        url = f'/shop/orders/{order_id!s}'
+    response = request_view(app, user2, order_id)
 
-        with http_client(self.app, user_id=current_user.id) as client:
-            response = client.get(url)
+    assert response.status_code == 404
 
-        return response
+
+def test_view_matching_user_but_different_party_and_shop(
+    app, party2, shop1, admin, user1
+):
+    create_site(party_id=party2.id)
+
+    order_id = place_order(shop1.id, user1)
+
+    response = request_view(app, user1, order_id)
+
+    assert response.status_code == 404
+
+
+# helpers
+
+
+def create_payment_instructions_snippet(shop_id, admin_id):
+    create_shop_fragment(
+        shop_id, admin_id, 'payment_instructions', 'Send all ur moneyz!'
+    )
+
+
+def place_order(shop_id, user):
+    orderer = create_orderer(user)
+    cart = Cart()
+
+    order, _ = order_service.place_order(shop_id, orderer, cart)
+
+    return order.id
+
+
+def request_view(app, current_user, order_id):
+    login_user(current_user.id)
+
+    url = f'/shop/orders/{order_id!s}'
+
+    with http_client(app, user_id=current_user.id) as client:
+        response = client.get(url)
+
+    return response

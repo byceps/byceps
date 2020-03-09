@@ -5,6 +5,8 @@
 
 from unittest.mock import patch
 
+import pytest
+
 from byceps.events.shop import ShopOrderPlaced
 from byceps.services.shop.article.models.article import Article
 from byceps.services.shop.order.models.order import Order
@@ -12,13 +14,10 @@ from byceps.services.shop.sequence import service as sequence_service
 
 from testfixtures.shop_article import create_article
 
-from tests.base import AbstractAppTestCase
 from tests.helpers import (
     create_brand,
-    create_email_config,
     create_party,
     create_site,
-    create_user,
     http_client,
     login_user,
 )
@@ -35,145 +34,171 @@ COMMON_FORM_DATA = {
 }
 
 
-class ShopOrderTestCase(AbstractAppTestCase):
+@pytest.fixture
+def app(party_app_with_db):
+    yield party_app_with_db
 
-    def setUp(self):
-        super().setUp()
 
-        create_email_config()
+@pytest.fixture
+def email_config(app, make_email_config):
+    return make_email_config()
 
-        self.admin = create_user('Admin')
-        self.setup_orderer()
 
-        self.shop = create_shop()
-        sequence_service.create_order_number_sequence(self.shop.id, 'AEC-01-B', value=4)
-        create_shop_fragment(
-            self.shop.id,
-            self.admin.id,
-            'payment_instructions',
-            'Send all ur moneyz!',
-        )
-        self.setup_article()
+@pytest.fixture
+def shop(email_config, admin_user):
+    shop = create_shop('shop-1')
+    sequence_service.create_order_number_sequence(shop.id, 'AEC-01-B', value=4)
+    create_shop_fragment(
+        shop.id, admin_user.id, 'payment_instructions', 'Send all ur moneyz!'
+    )
+    return shop
 
-        brand = create_brand()
-        party = create_party(brand.id, shop_id=self.shop.id)
-        create_site(party_id=party.id)
 
-    def setup_orderer(self):
-        self.orderer = create_user()
-        login_user(self.orderer.id)
+@pytest.fixture
+def site(shop):
+    brand = create_brand()
+    party = create_party(brand.id, shop_id=shop.id)
+    create_site(party_id=party.id)
 
-    def setup_article(self):
-        article = create_article(self.shop.id, quantity=5)
 
-        self.db.session.add(article)
-        self.db.session.commit()
+@pytest.fixture
+def article(app, db, shop):
+    article = create_article(shop.id, quantity=5)
 
-        self.article_id = article.id
+    db.session.add(article)
+    db.session.commit()
 
-    @patch('byceps.blueprints.shop.order.signals.order_placed.send')
-    @patch('byceps.blueprints.shop.order.views.order_email_service')
-    def test_order(self, order_email_service_mock, order_placed_mock):
-        article_before = self.get_article()
-        assert article_before.quantity == 5
+    return article
 
-        url = '/shop/order'
-        article_quantity_key = f'article_{self.article_id}'
-        form_data = {
-            **COMMON_FORM_DATA,
-            article_quantity_key: 3,
-        }
-        with http_client(self.app, user_id=self.orderer.id) as client:
-            response = client.post(url, data=form_data)
 
-        article_afterwards = self.get_article()
-        assert article_afterwards.quantity == 2
+@pytest.fixture
+def orderer(app, normal_user):
+    login_user(normal_user.id)
+    return normal_user
 
-        order = Order.query.filter_by(placed_by=self.orderer).one()
-        assert_order(order, 'AEC-01-B00005', 1)
 
-        first_order_item = order.items[0]
-        assert_order_item(
-            first_order_item,
-            self.article_id,
-            article_before.price,
-            article_before.tax_rate,
-            3,
-        )
+@patch('byceps.blueprints.shop.order.signals.order_placed.send')
+@patch('byceps.blueprints.shop.order.views.order_email_service')
+def test_order(
+    order_email_service_mock,
+    order_placed_mock,
+    app,
+    site,
+    admin_user,
+    orderer,
+    article,
+):
+    article_before = get_article(article.id)
+    assert article_before.quantity == 5
 
-        order_email_service_mock.send_email_for_incoming_order_to_orderer.assert_called_once_with(
-            order.id
-        )
+    url = '/shop/order'
+    article_quantity_key = f'article_{article.id}'
+    form_data = {
+        **COMMON_FORM_DATA,
+        article_quantity_key: 3,
+    }
+    with http_client(app, user_id=orderer.id) as client:
+        response = client.post(url, data=form_data)
 
-        event = ShopOrderPlaced(
-            occurred_at=order.created_at,
-            order_id=order.id,
-            initiator_id=order.placed_by_id,
-        )
-        order_placed_mock.assert_called_once_with(None, event=event)
+    article_afterwards = get_article(article.id)
+    assert article_afterwards.quantity == 2
 
-        order_detail_page_url = f'http://example.com/shop/orders/{order.id}'
+    order = Order.query.filter_by(placed_by=orderer).one()
+    assert_order(order, 'AEC-01-B00005', 1)
 
-        assert_response_headers(response, order_detail_page_url)
+    first_order_item = order.items[0]
+    assert_order_item(
+        first_order_item,
+        article.id,
+        article_before.price,
+        article_before.tax_rate,
+        3,
+    )
 
-        with http_client(self.app, user_id=self.orderer.id) as client:
-            assert_order_detail_page_works(
-                client, order_detail_page_url, order.order_number
-            )
+    order_email_service_mock.send_email_for_incoming_order_to_orderer.assert_called_once_with(
+        order.id
+    )
 
-    @patch('byceps.blueprints.shop.order.signals.order_placed.send')
-    @patch('byceps.blueprints.shop.order.views.order_email_service')
-    def test_order_single(self, order_email_service_mock, order_placed_mock):
-        article_before = self.get_article()
-        assert article_before.quantity == 5
+    event = ShopOrderPlaced(
+        occurred_at=order.created_at,
+        order_id=order.id,
+        initiator_id=order.placed_by_id,
+    )
+    order_placed_mock.assert_called_once_with(None, event=event)
 
-        url = f'/shop/order_single/{self.article_id!s}'
-        form_data = {
-            **COMMON_FORM_DATA,
-            'quantity': 1,  # TODO: Test with `3` if limitation is removed.
-        }
-        with http_client(self.app, user_id=self.orderer.id) as client:
-            response = client.post(url, data=form_data)
+    order_detail_page_url = f'http://example.com/shop/orders/{order.id}'
 
-        article_afterwards = self.get_article()
-        assert article_afterwards.quantity == 4
+    assert_response_headers(response, order_detail_page_url)
 
-        order = Order.query.filter_by(placed_by=self.orderer).one()
-        assert_order(order, 'AEC-01-B00005', 1)
-
-        first_order_item = order.items[0]
-        assert_order_item(
-            first_order_item,
-            self.article_id,
-            article_before.price,
-            article_before.tax_rate,
-            1,
+    with http_client(app, user_id=orderer.id) as client:
+        assert_order_detail_page_works(
+            client, order_detail_page_url, order.order_number
         )
 
-        order_email_service_mock.send_email_for_incoming_order_to_orderer.assert_called_once_with(
-            order.id
+
+@patch('byceps.blueprints.shop.order.signals.order_placed.send')
+@patch('byceps.blueprints.shop.order.views.order_email_service')
+def test_order_single(
+    order_email_service_mock,
+    order_placed_mock,
+    app,
+    site,
+    admin_user,
+    orderer,
+    article,
+):
+    article_before = get_article(article.id)
+    assert article_before.quantity == 5
+
+    url = f'/shop/order_single/{article.id!s}'
+    form_data = {
+        **COMMON_FORM_DATA,
+        'quantity': 1,  # TODO: Test with `3` if limitation is removed.
+    }
+    with http_client(app, user_id=orderer.id) as client:
+        response = client.post(url, data=form_data)
+
+    article_afterwards = get_article(article.id)
+    assert article_afterwards.quantity == 4
+
+    order = Order.query.filter_by(placed_by=orderer).one()
+    assert_order(order, 'AEC-01-B00005', 1)
+
+    first_order_item = order.items[0]
+    assert_order_item(
+        first_order_item,
+        article.id,
+        article_before.price,
+        article_before.tax_rate,
+        1,
+    )
+
+    order_email_service_mock.send_email_for_incoming_order_to_orderer.assert_called_once_with(
+        order.id
+    )
+
+    event = ShopOrderPlaced(
+        occurred_at=order.created_at,
+        order_id=order.id,
+        initiator_id=order.placed_by_id,
+    )
+    order_placed_mock.assert_called_once_with(None, event=event)
+
+    order_detail_page_url = f'http://example.com/shop/orders/{order.id}'
+
+    assert_response_headers(response, order_detail_page_url)
+
+    with http_client(app, user_id=orderer.id) as client:
+        assert_order_detail_page_works(
+            client, order_detail_page_url, order.order_number
         )
 
-        event = ShopOrderPlaced(
-            occurred_at=order.created_at,
-            order_id=order.id,
-            initiator_id=order.placed_by_id,
-        )
-        order_placed_mock.assert_called_once_with(None, event=event)
 
-        order_detail_page_url = f'http://example.com/shop/orders/{order.id}'
+# helpers
 
-        assert_response_headers(response, order_detail_page_url)
 
-        with http_client(self.app, user_id=self.orderer.id) as client:
-            assert_order_detail_page_works(
-                client, order_detail_page_url, order.order_number
-            )
-
-    # helpers
-
-    def get_article(self):
-        return Article.query.get(self.article_id)
+def get_article(article_id):
+    return Article.query.get(article_id)
 
 
 def assert_response_headers(response, order_detail_page_url):
