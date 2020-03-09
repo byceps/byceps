@@ -7,6 +7,7 @@ tests.helpers
 """
 
 from contextlib import contextmanager
+from datetime import datetime
 
 from flask import appcontext_pushed, g
 
@@ -14,12 +15,11 @@ from byceps.application import create_app
 from byceps.database import db
 from byceps.services.authentication.session import service as session_service
 from byceps.services.authorization import service as authorization_service
+from byceps.services.brand import service as brand_service
 from byceps.services.email import service as email_service
 from byceps.services.party import service as party_service
 from byceps.services.site import service as site_service
 
-from testfixtures.brand import create_brand as _create_brand
-from testfixtures.party import create_party as _create_party
 from testfixtures.user import (
     create_user as _create_user,
     create_user_with_detail as _create_user_with_detail,
@@ -96,25 +96,18 @@ def assign_permissions_to_user(
 
 
 def create_brand(brand_id='acmecon', title='ACME Entertainment Convention'):
-    brand = _create_brand(id=brand_id, title=title)
-
-    db.session.add(brand)
-    db.session.commit()
-
-    return brand
+    return brand_service.create_brand(brand_id, title)
 
 
 def create_party(
     brand_id, party_id='acmecon-2014', title='ACMECon 2014', shop_id=None
 ):
-    party = _create_party(
-        id=party_id, title=title, brand_id=brand_id, shop_id=shop_id
+    starts_at = datetime(2014, 10, 24, 16, 0)
+    ends_at = datetime(2014, 10, 26, 13, 0)
+
+    return party_service.create_party(
+        party_id, brand_id, title, starts_at, ends_at, shop_id=shop_id
     )
-
-    db.session.add(party)
-    db.session.commit()
-
-    return party_service._db_entity_to_party(party)
 
 
 def create_site(
