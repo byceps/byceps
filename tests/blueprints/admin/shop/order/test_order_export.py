@@ -14,59 +14,44 @@ from byceps.services.shop.order.models.orderer import Orderer
 from byceps.services.shop.order import service as order_service
 from byceps.services.shop.sequence import service as sequence_service
 
-from tests.base import AbstractAppTestCase, CONFIG_FILENAME_TEST_ADMIN
 from tests.helpers import (
     assign_permissions_to_user,
-    create_email_config,
     create_user,
     http_client,
     login_user,
 )
-from tests.services.shop.helpers import (
-    create_article as _create_article,
-    create_shop,
-)
+from tests.services.shop.helpers import create_article as _create_article
 
 
-class ExportTest(AbstractAppTestCase):
+@freeze_time('2015-04-15 07:54:18')  # UTC
+def test_serialize_order(app, shop, admin_user):
+    authorize_admin(admin_user.id)
+    login_user(admin_user.id)
 
-    def setUp(self):
-        super().setUp(config_filename=CONFIG_FILENAME_TEST_ADMIN)
+    sequence_service.create_order_number_sequence(shop.id, 'LR-08-B', value=26)
+    order = place_order(shop.id)
 
-        self.admin = create_admin()
+    filename = 'testfixtures/shop/order_export.xml'
+    with codecs.open(filename, encoding='iso-8859-1') as f:
+        expected = f.read().rstrip()
 
-        create_email_config()
+    url = f'/admin/shop/orders/{order.id}/export'
+    with http_client(app, user_id=admin_user.id) as client:
+        response = client.get(url)
 
-        self.shop = create_shop()
-        sequence_service.create_order_number_sequence(self.shop.id, 'LR-08-B', value=26)
-        self.order = place_order(self.shop.id)
+    assert response.status_code == 200
+    assert response.content_type == 'application/xml; charset=iso-8859-1'
 
-    @freeze_time('2015-04-15 07:54:18')  # UTC
-    def test_serialize_order(self):
-        filename = 'testfixtures/shop/order_export.xml'
-        with codecs.open(filename, encoding='iso-8859-1') as f:
-            expected = f.read().rstrip()
-
-        url = f'/admin/shop/orders/{self.order.id}/export'
-        with http_client(self.app, user_id=self.admin.id) as client:
-            response = client.get(url)
-
-        assert response.status_code == 200
-        assert response.content_type == 'application/xml; charset=iso-8859-1'
-
-        body = response.get_data().decode('utf-8')
-        assert body == expected
+    body = response.get_data().decode('utf-8')
+    assert body == expected
 
 
-def create_admin():
-    admin = create_user('Admin')
+# helpers
 
+
+def authorize_admin(admin_id):
     permission_ids = {'admin.access', 'shop_order.view'}
-    assign_permissions_to_user(admin.id, 'admin', permission_ids)
-
-    login_user(admin.id)
-
-    return admin
+    assign_permissions_to_user(admin_id, 'admin', permission_ids)
 
 
 def create_article(shop_id, item_number, description, price, tax_rate):
@@ -93,9 +78,7 @@ def place_order(shop_id):
 
 
 def create_orderer():
-    user = create_user(
-        'Besteller', email_address='h-w.mustermann@example.com'
-    )
+    user = create_user('Besteller', email_address='h-w.mustermann@example.com')
 
     return Orderer(
         user.id,
