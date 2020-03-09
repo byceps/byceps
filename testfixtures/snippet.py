@@ -14,10 +14,6 @@ from byceps.services.snippet.models.snippet import (
 from byceps.services.snippet.transfer.models import Scope, SnippetType
 
 
-def create_document(scope, name):
-    return _create_snippet(scope, name, SnippetType.document)
-
-
 def create_fragment(scope, name):
     return _create_snippet(scope, name, SnippetType.fragment)
 
