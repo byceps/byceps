@@ -16,7 +16,7 @@ from tests.base import (
     create_app,
 )
 from tests.database import set_up_database, tear_down_database
-from tests.helpers import create_user, DEFAULT_EMAIL_CONFIG_ID
+from tests.helpers import create_site, create_user, DEFAULT_EMAIL_CONFIG_ID
 
 
 @pytest.fixture(scope='session')
@@ -104,3 +104,8 @@ def make_email_config():
 @pytest.fixture
 def email_config(make_email_config):
     return make_email_config()
+
+
+@pytest.fixture
+def site(email_config):
+    return create_site()
