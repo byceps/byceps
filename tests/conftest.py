@@ -89,11 +89,9 @@ def normal_user():
 
 @pytest.fixture(scope='session')
 def make_email_config():
-
-    def _wrapper():
-        config_id = DEFAULT_EMAIL_CONFIG_ID
-        sender_address = 'info@shop.example'
-
+    def _wrapper(
+        config_id=DEFAULT_EMAIL_CONFIG_ID, sender_address='info@shop.example'
+    ):
         email_service.set_config(config_id, sender_address)
 
         return email_service.get_config(config_id)

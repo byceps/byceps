@@ -5,6 +5,8 @@
 
 from unittest.mock import patch
 
+import pytest
+
 from byceps.services.authentication.password.models import Credential
 from byceps.services.authentication.session import service as session_service
 from byceps.services.authorization import service as authorization_service
@@ -28,210 +30,229 @@ from byceps.services.verification_token.models import (
     Token,
 )
 
-from tests.base import AbstractAppTestCase
+from tests.conftest import database_recreated
 from tests.helpers import (
     create_brand,
-    create_email_config,
     create_party,
     create_site,
     create_user,
     http_client,
 )
 
-class UserCreateTestCase(AbstractAppTestCase):
 
-    def setUp(self):
-        super().setUp()
+@pytest.fixture(scope='module')
+def app(party_app, db, make_email_config):
+    with party_app.app_context():
+        with database_recreated(db):
+            make_email_config(sender_address='noreply@example.com')
+            yield party_app
 
-        self.admin = create_user('Admin')
 
-        create_email_config(sender_address='noreply@example.com')
+@pytest.fixture(scope='module')
+def admin():
+    return create_user('Admin')
 
-        self.brand = create_brand()
-        self.brand_id = self.brand.id
 
-        party = create_party(self.brand.id)
-        create_site(party_id=party.id)
+@pytest.fixture(scope='module')
+def brand():
+    return create_brand()
 
-        self.setup_terms()
-        self.setup_privacy_policy()
-        self.setup_newsletter_list()
 
-    def setup_terms(self):
-        scope = Scope.for_brand(self.brand_id)
+@pytest.fixture(scope='module')
+def site(brand):
+    party = create_party(brand.id)
+    return create_site(party_id=party.id)
 
-        snippet, _ = snippet_service.create_fragment(
-            scope,
-            'terms_of_service',
-            self.admin.id,
-            'Don\'t do anything stupid!',
-        )
 
-        consent_subject = consent_subject_service.create_subject(
-            f'{self.brand_id}_terms-of-service_v1',
-            f'Terms of service for {self.brand.title} / v1',
-            'terms_of_service',
-        )
+@pytest.fixture(scope='module')
+def terms_version(admin, brand):
+    scope = Scope.for_brand(brand.id)
 
-        terms_document_id = self.brand_id
-        terms_document = terms_document_service.create_document(
-            terms_document_id, terms_document_id
-        )
+    snippet, _ = snippet_service.create_fragment(
+        scope, 'terms_of_service', admin.id, 'Don\'t do anything stupid!'
+    )
 
-        terms_version = terms_version_service.create_version(
-            terms_document.id, '01-Jan-2016', snippet.id, consent_subject.id
-        )
+    consent_subject = consent_subject_service.create_subject(
+        f'{brand.id}_terms-of-service_v1',
+        f'Terms of service for {brand.title} / v1',
+        'terms_of_service',
+    )
 
-        terms_document_service.set_current_version(
-            terms_document_id, terms_version.id
-        )
+    terms_document_id = brand.id
+    terms_document = terms_document_service.create_document(
+        terms_document_id, terms_document_id
+    )
 
-        brand_settings_service.create_setting(
-            self.brand.id, 'terms_document_id', str(terms_document.id)
-        )
+    terms_version = terms_version_service.create_version(
+        terms_document.id, '01-Jan-2016', snippet.id, consent_subject.id
+    )
 
-        self.terms_version_id = terms_version.id
-        self.terms_consent_subject_id = terms_version.consent_subject_id
+    terms_document_service.set_current_version(
+        terms_document_id, terms_version.id
+    )
 
-    def setup_privacy_policy(self):
-        consent_subject = consent_subject_service.create_subject(
-            f'{self.brand_id}_privacy_policy_v1',
-            f'Privacy policy for {self.brand.title} / v1',
-            'privacy_policy',
-        )
+    brand_settings_service.create_setting(
+        brand.id, 'terms_document_id', str(terms_document.id)
+    )
 
-        brand_settings_service.create_setting(
-            self.brand.id,
-            'privacy_policy_consent_subject_id',
-            str(consent_subject.id),
-        )
+    return terms_version
 
-        self.privacy_policy_consent_subject_id = consent_subject.id
 
-    def setup_newsletter_list(self):
-        list_ = newsletter_command_service.create_list(
-            self.brand.id, self.brand.title
-        )
+@pytest.fixture(scope='module')
+def privacy_policy_consent_subject_id(brand):
+    consent_subject = consent_subject_service.create_subject(
+        f'{brand.id}_privacy_policy_v1',
+        f'Privacy policy for {brand.title} / v1',
+        'privacy_policy',
+    )
 
-        brand_settings_service.create_setting(
-            self.brand.id, 'newsletter_list_id', str(list_.id)
-        )
+    brand_settings_service.create_setting(
+        brand.id, 'privacy_policy_consent_subject_id', str(consent_subject.id)
+    )
 
-    @patch('byceps.email.send')
-    def test_create(self, send_email_mock):
-        screen_name = 'Hiro'
+    return consent_subject.id
 
-        user_count_before = get_user_count()
-        assert find_user(screen_name) is None
 
-        form_data = {
-            'screen_name': screen_name,
-            'first_names': 'Hiroaki',
-            'last_name': 'Protagonist',
-            'email_address': 'hiro@metaverse.org',
-            'password': 'Snow_Crash',
-            'terms_version_id': self.terms_version_id,
-            'consent_to_terms': 'y',
-            'consent_to_privacy_policy': 'y',
-            'subscribe_to_newsletter': 'y',
-        }
+@pytest.fixture(scope='module')
+def newsletter_list(brand):
+    list_ = newsletter_command_service.create_list(brand.id, brand.title)
 
-        response = self.send_request(form_data)
-        assert response.status_code == 302
+    brand_settings_service.create_setting(
+        brand.id, 'newsletter_list_id', str(list_.id)
+    )
 
-        user_count_afterwards = get_user_count()
-        assert user_count_afterwards == user_count_before + 1
 
-        user = find_user(screen_name)
-        assert user is not None
+@patch('byceps.email.send')
+def test_create(
+    send_email_mock,
+    app,
+    brand,
+    site,
+    terms_version,
+    privacy_policy_consent_subject_id,
+    newsletter_list,
+):
+    screen_name = 'Hiro'
 
-        assert user.created_at is not None
-        assert user.screen_name == 'Hiro'
-        assert user.email_address == 'hiro@metaverse.org'
-        assert not user.initialized
-        assert not user.deleted
+    user_count_before = get_user_count()
+    assert find_user(screen_name) is None
 
-        # events
-        assert_creation_event_created(user.id)
+    form_data = {
+        'screen_name': screen_name,
+        'first_names': 'Hiroaki',
+        'last_name': 'Protagonist',
+        'email_address': 'hiro@metaverse.org',
+        'password': 'Snow_Crash',
+        'terms_version_id': terms_version.id,
+        'consent_to_terms': 'y',
+        'consent_to_privacy_policy': 'y',
+        'subscribe_to_newsletter': 'y',
+    }
 
-        # password
-        assert_password_credentials_created(user.id)
+    response = send_request(app, form_data)
+    assert response.status_code == 302
 
-        # Session token should not have been created at this point.
-        session_token = session_service.find_session_token_for_user(user.id)
-        assert session_token is None
+    user_count_afterwards = get_user_count()
+    assert user_count_afterwards == user_count_before + 1
 
-        # avatar
-        assert user.avatar is None
+    user = find_user(screen_name)
+    assert user is not None
 
-        # details
-        assert user.detail.first_names == 'Hiroaki'
-        assert user.detail.last_name == 'Protagonist'
+    assert user.created_at is not None
+    assert user.screen_name == 'Hiro'
+    assert user.email_address == 'hiro@metaverse.org'
+    assert not user.initialized
+    assert not user.deleted
 
-        # authorization
-        role_ids = authorization_service.find_role_ids_for_user(user.id)
-        assert role_ids == set()
+    # events
+    assert_creation_event_created(user.id)
 
-        # consents
-        assert_consent(user.id, self.terms_consent_subject_id)
-        assert_consent(user.id, self.privacy_policy_consent_subject_id)
+    # password
+    assert_password_credentials_created(user.id)
 
-        # newsletter subscription
-        assert is_subscribed_to_newsletter(user.id, self.brand_id)
+    # Session token should not have been created at this point.
+    session_token = session_service.find_session_token_for_user(user.id)
+    assert session_token is None
 
-        # confirmation e-mail
+    # avatar
+    assert user.avatar is None
 
-        verification_token = find_verification_token(user.id)
-        assert verification_token is not None
+    # details
+    assert user.detail.first_names == 'Hiroaki'
+    assert user.detail.last_name == 'Protagonist'
 
-        expected_sender = 'noreply@example.com'
-        expected_recipients = ['hiro@metaverse.org']
-        expected_subject = 'Hiro, bitte bestätige deine E-Mail-Adresse'
-        expected_body = f'''
+    # authorization
+    role_ids = authorization_service.find_role_ids_for_user(user.id)
+    assert role_ids == set()
+
+    # consents
+    assert_consent(user.id, terms_version.consent_subject_id)
+    assert_consent(user.id, privacy_policy_consent_subject_id)
+
+    # newsletter subscription
+    assert is_subscribed_to_newsletter(user.id, brand.id)
+
+    # confirmation e-mail
+
+    verification_token = find_verification_token(user.id)
+    assert verification_token is not None
+
+    expected_sender = 'noreply@example.com'
+    expected_recipients = ['hiro@metaverse.org']
+    expected_subject = 'Hiro, bitte bestätige deine E-Mail-Adresse'
+    expected_body = f'''
 Hallo Hiro,
 
 bitte bestätige deine E-Mail-Adresse, indem du diese URL abrufst: https://www.example.com/users/email_address/confirmation/{verification_token.token}
-        '''.strip()
+    '''.strip()
 
-        send_email_mock.assert_called_once_with(
-            expected_sender,
-            expected_recipients,
-            expected_subject,
-            expected_body,
-        )
+    send_email_mock.assert_called_once_with(
+        expected_sender, expected_recipients, expected_subject, expected_body
+    )
 
-    @patch('byceps.email.send')
-    def test_create_without_newsletter_subscription(self, send_email_mock):
-        screen_name = 'Hiro'
 
-        form_data = {
-            'screen_name': screen_name,
-            'first_names': 'Hiroaki',
-            'last_name': 'Protagonist',
-            'email_address': 'hiro@metaverse.org',
-            'password': 'Snow_Crash',
-            'terms_version_id': self.terms_version_id,
-            'consent_to_terms': 'y',
-            'consent_to_privacy_policy': 'y',
-            'subscribe_to_newsletter': '',
-        }
+@patch('byceps.email.send')
+def test_create_without_newsletter_subscription(
+    send_email_mock,
+    app,
+    brand,
+    site,
+    terms_version,
+    privacy_policy_consent_subject_id,
+    newsletter_list,
+):
+    screen_name = 'Hiro2'
 
-        response = self.send_request(form_data)
-        assert response.status_code == 302
+    form_data = {
+        'screen_name': screen_name,
+        'first_names': 'Hiroaki',
+        'last_name': 'Protagonist',
+        'email_address': 'hiro2@metaverse.org',
+        'password': 'Snow_Crash',
+        'terms_version_id': terms_version.id,
+        'consent_to_terms': 'y',
+        'consent_to_privacy_policy': 'y',
+        'subscribe_to_newsletter': '',
+    }
 
-        user = find_user(screen_name)
-        assert user is not None
+    response = send_request(app, form_data)
+    assert response.status_code == 302
 
-        # newsletter subscription
-        assert not is_subscribed_to_newsletter(user.id, self.brand_id)
+    user = find_user(screen_name)
+    assert user is not None
 
-    # helpers
+    # newsletter subscription
+    assert not is_subscribed_to_newsletter(user.id, brand.id)
 
-    def send_request(self, form_data):
-        url = '/users/'
 
-        with http_client(self.app) as client:
-            return client.post(url, data=form_data)
+# helpers
+
+
+def send_request(app, form_data):
+    url = '/users/'
+
+    with http_client(app) as client:
+        return client.post(url, data=form_data)
 
 
 def find_user(screen_name):

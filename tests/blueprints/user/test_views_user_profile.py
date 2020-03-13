@@ -3,30 +3,16 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from tests.base import AbstractAppTestCase
-from tests.helpers import (
-    create_email_config,
-    create_site,
-    create_user,
-    http_client,
-)
+from tests.helpers import http_client
 
 
-class UserProfileTest(AbstractAppTestCase):
+def test_view_profile(party_app_with_db, site, normal_user):
+    user = normal_user
 
-    def setUp(self):
-        super().setUp()
+    url = f'/users/{user.id}'
 
-        create_email_config()
-        create_site()
+    with http_client(party_app_with_db) as client:
+        response = client.get(url)
 
-        self.user = create_user()
-
-    def test_view_profile(self):
-        url = f'/users/{self.user.id}'
-
-        with http_client(self.app) as client:
-            response = client.get(url)
-
-        assert response.status_code == 200
-        assert response.mimetype == 'text/html'
+    assert response.status_code == 200
+    assert response.mimetype == 'text/html'
