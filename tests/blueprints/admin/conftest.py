@@ -7,13 +7,13 @@ Fixtures specific to admin blueprints
 
 import pytest
 
-from tests.base import CONFIG_FILENAME_TEST_ADMIN, create_app
+from tests.base import create_admin_app
 from tests.conftest import database_recreated
 
 
 @pytest.fixture(scope='session')
 def admin_app_without_db(db):
-    app = create_app(CONFIG_FILENAME_TEST_ADMIN)
+    app = create_admin_app()
     with app.app_context():
         yield app
 

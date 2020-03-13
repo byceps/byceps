@@ -7,7 +7,7 @@ API-specific fixtures
 
 import pytest
 
-from tests.base import CONFIG_FILENAME_TEST_ADMIN, create_app
+from tests.base import create_admin_app
 from tests.helpers import create_brand, create_party, create_user
 
 from ..conftest import database_recreated
@@ -21,7 +21,7 @@ API_TOKEN = 'just-say-PLEASE!'
 
 @pytest.fixture(scope='session')
 def api_app_without_db(db):
-    app = create_app(CONFIG_FILENAME_TEST_ADMIN, {'API_TOKEN': API_TOKEN})
+    app = create_admin_app({'API_TOKEN': API_TOKEN})
     with app.app_context():
         yield app
 

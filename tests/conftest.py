@@ -10,11 +10,7 @@ import pytest
 from byceps.database import db as _db
 from byceps.services.email import service as email_service
 
-from tests.base import (
-    CONFIG_FILENAME_TEST_ADMIN,
-    CONFIG_FILENAME_TEST_PARTY,
-    create_app,
-)
+from tests.base import create_admin_app, create_party_app
 from tests.database import set_up_database, tear_down_database
 from tests.helpers import create_site, create_user, DEFAULT_EMAIL_CONFIG_ID
 
@@ -38,7 +34,7 @@ def make_admin_app():
     """Provide the admin web application."""
 
     def _wrapper(**config_overrides):
-        return create_app(CONFIG_FILENAME_TEST_ADMIN, config_overrides)
+        return create_admin_app(config_overrides)
 
     return _wrapper
 
@@ -46,7 +42,7 @@ def make_admin_app():
 @pytest.fixture(scope='session')
 def admin_app():
     """Provide the admin web application."""
-    app = create_app(CONFIG_FILENAME_TEST_ADMIN)
+    app = create_admin_app()
     yield app
 
 
@@ -66,7 +62,7 @@ def admin_client(admin_app):
 @pytest.fixture(scope='session')
 def party_app():
     """Provide a party web application."""
-    app = create_app(CONFIG_FILENAME_TEST_PARTY)
+    app = create_party_app()
     yield app
 
 
