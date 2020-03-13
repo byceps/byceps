@@ -3,6 +3,7 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
+import pytest
 from pytest import raises
 
 from byceps.services.seating import area_service, seat_service
@@ -22,184 +23,198 @@ from byceps.services.ticketing.exceptions import (
 # `Seat.assignment` is available.
 import byceps.services.seating.models.seat_group
 
-from tests.base import AbstractAppTestCase
+from tests.conftest import database_recreated
 from tests.helpers import create_brand, create_party, create_user
 
 
-class TicketSeatManagementServiceTest(AbstractAppTestCase):
+@pytest.fixture(scope='module')
+def app(admin_app, db):
+    with admin_app.app_context():
+        with database_recreated(db):
+            yield admin_app
 
-    def setUp(self):
-        super().setUp()
 
-        self.owner = create_user('Ticket_Owner')
+@pytest.fixture(scope='module')
+def party():
+    brand = create_brand()
+    return create_party(brand_id=brand.id)
 
-        brand = create_brand()
-        self.party = create_party(brand_id=brand.id)
 
-        self.category_id = self.create_category('Premium').id
+@pytest.fixture(scope='module')
+def category(party):
+    return create_category(party.id, 'Premium')
 
-        self.ticket = ticket_creation_service.create_ticket(
-            self.category_id, self.owner.id
-        )
 
-    def test_appoint_and_withdraw_seat_manager(self):
-        manager = create_user('Ticket_Manager')
+@pytest.fixture(scope='module')
+def area(party):
+    return area_service.create_area(party.id, 'main', 'Main Hall')
 
-        assert self.ticket.seat_managed_by_id is None
 
-        # appoint seat manager
+@pytest.fixture(scope='module')
+def admin(app):
+    return create_user('Admin')
 
-        ticket_seat_management_service.appoint_seat_manager(
-            self.ticket.id, manager.id, self.owner.id
-        )
-        assert self.ticket.seat_managed_by_id == manager.id
 
-        events_after_appointment = event_service.get_events_for_ticket(
-            self.ticket.id
-        )
-        assert len(events_after_appointment) == 1
+@pytest.fixture(scope='module')
+def ticket_owner(app):
+    return create_user('TicketOwner')
 
-        appointment_event = events_after_appointment[0]
-        assert_event(
-            appointment_event,
-            'seat-manager-appointed',
-            {
-                'appointed_seat_manager_id': str(manager.id),
-                'initiator_id': str(self.owner.id),
-            },
-        )
 
-        # withdraw seat manager
+@pytest.fixture
+def ticket(app, category, ticket_owner):
+    return ticket_creation_service.create_ticket(category.id, ticket_owner.id)
 
-        ticket_seat_management_service.withdraw_seat_manager(
-            self.ticket.id, self.owner.id
-        )
-        assert self.ticket.seat_managed_by_id is None
 
-        events_after_withdrawal = event_service.get_events_for_ticket(
-            self.ticket.id
-        )
-        assert len(events_after_withdrawal) == 2
+def test_appoint_and_withdraw_seat_manager(app, category, ticket, ticket_owner):
+    manager = create_user('Ticket_Manager')
 
-        withdrawal_event = events_after_withdrawal[1]
-        assert_event(
-            withdrawal_event,
-            'seat-manager-withdrawn',
-            {'initiator_id': str(self.owner.id)},
-        )
+    assert ticket.seat_managed_by_id is None
 
-    def test_occupy_and_release_seat(self):
-        area = self.create_area('main', 'Main Hall')
-        seat1 = seat_service.create_seat(area, 0, 1, self.category_id)
-        seat2 = seat_service.create_seat(area, 0, 2, self.category_id)
+    # appoint seat manager
 
-        assert self.ticket.occupied_seat_id is None
+    ticket_seat_management_service.appoint_seat_manager(
+        ticket.id, manager.id, ticket_owner.id
+    )
+    assert ticket.seat_managed_by_id == manager.id
 
-        # occupy seat
+    events_after_appointment = event_service.get_events_for_ticket(ticket.id)
+    assert len(events_after_appointment) == 1
 
+    appointment_event = events_after_appointment[0]
+    assert_event(
+        appointment_event,
+        'seat-manager-appointed',
+        {
+            'appointed_seat_manager_id': str(manager.id),
+            'initiator_id': str(ticket_owner.id),
+        },
+    )
+
+    # withdraw seat manager
+
+    ticket_seat_management_service.withdraw_seat_manager(
+        ticket.id, ticket_owner.id
+    )
+    assert ticket.seat_managed_by_id is None
+
+    events_after_withdrawal = event_service.get_events_for_ticket(ticket.id)
+    assert len(events_after_withdrawal) == 2
+
+    withdrawal_event = events_after_withdrawal[1]
+    assert_event(
+        withdrawal_event,
+        'seat-manager-withdrawn',
+        {'initiator_id': str(ticket_owner.id)},
+    )
+
+
+def test_occupy_and_release_seat(app, category, area, ticket, ticket_owner):
+    seat1 = seat_service.create_seat(area, 0, 1, category.id)
+    seat2 = seat_service.create_seat(area, 0, 2, category.id)
+
+    assert ticket.occupied_seat_id is None
+
+    # occupy seat
+
+    ticket_seat_management_service.occupy_seat(
+        ticket.id, seat1.id, ticket_owner.id
+    )
+    assert ticket.occupied_seat_id == seat1.id
+
+    events_after_occupation = event_service.get_events_for_ticket(ticket.id)
+    assert len(events_after_occupation) == 1
+
+    occupation_event = events_after_occupation[0]
+    assert_event(
+        occupation_event,
+        'seat-occupied',
+        {'seat_id': str(seat1.id), 'initiator_id': str(ticket_owner.id)},
+    )
+
+    # switch to another seat
+
+    ticket_seat_management_service.occupy_seat(
+        ticket.id, seat2.id, ticket_owner.id
+    )
+    assert ticket.occupied_seat_id == seat2.id
+
+    events_after_switch = event_service.get_events_for_ticket(ticket.id)
+    assert len(events_after_switch) == 2
+
+    switch_event = events_after_switch[1]
+    assert_event(
+        switch_event,
+        'seat-occupied',
+        {
+            'previous_seat_id': str(seat1.id),
+            'seat_id': str(seat2.id),
+            'initiator_id': str(ticket_owner.id),
+        },
+    )
+
+    # release seat
+
+    ticket_seat_management_service.release_seat(ticket.id, ticket_owner.id)
+    assert ticket.occupied_seat_id is None
+
+    events_after_release = event_service.get_events_for_ticket(ticket.id)
+    assert len(events_after_release) == 3
+
+    release_event = events_after_release[2]
+    assert_event(
+        release_event,
+        'seat-released',
+        {'seat_id': str(seat2.id), 'initiator_id': str(ticket_owner.id)},
+    )
+
+
+def test_occupy_seat_with_invalid_id(app, category, ticket, ticket_owner):
+    invalid_seat_id = 'ffffffff-ffff-ffff-ffff-ffffffffffff'
+
+    with raises(ValueError):
         ticket_seat_management_service.occupy_seat(
-            self.ticket.id, seat1.id, self.owner.id
-        )
-        assert self.ticket.occupied_seat_id == seat1.id
-
-        events_after_occupation = event_service.get_events_for_ticket(
-            self.ticket.id
-        )
-        assert len(events_after_occupation) == 1
-
-        occupation_event = events_after_occupation[0]
-        assert_event(
-            occupation_event,
-            'seat-occupied',
-            {'seat_id': str(seat1.id), 'initiator_id': str(self.owner.id)},
+            ticket.id, invalid_seat_id, ticket_owner.id
         )
 
-        # switch to another seat
 
+def test_occupy_seat_with_bundled_ticket(
+    app, category, area, ticket, ticket_owner
+):
+    ticket_quantity = 1
+    ticket_bundle = ticket_bundle_service.create_bundle(
+        category.id, ticket_quantity, ticket_owner.id
+    )
+
+    bundled_ticket = ticket_bundle.tickets[0]
+
+    seat = seat_service.create_seat(area, 0, 0, category.id)
+
+    with raises(SeatChangeDeniedForBundledTicket):
         ticket_seat_management_service.occupy_seat(
-            self.ticket.id, seat2.id, self.owner.id
-        )
-        assert self.ticket.occupied_seat_id == seat2.id
-
-        events_after_switch = event_service.get_events_for_ticket(
-            self.ticket.id
-        )
-        assert len(events_after_switch) == 2
-
-        switch_event = events_after_switch[1]
-        assert_event(
-            switch_event,
-            'seat-occupied',
-            {
-                'previous_seat_id': str(seat1.id),
-                'seat_id': str(seat2.id),
-                'initiator_id': str(self.owner.id),
-            },
+            bundled_ticket.id, seat.id, ticket_owner.id
         )
 
-        # release seat
 
-        ticket_seat_management_service.release_seat(
-            self.ticket.id, self.owner.id
-        )
-        assert self.ticket.occupied_seat_id is None
+def test_occupy_seat_with_wrong_category(
+    app, party, category, area, ticket, ticket_owner
+):
+    other_category = create_category(party.id, 'Economy')
 
-        events_after_release = event_service.get_events_for_ticket(
-            self.ticket.id
-        )
-        assert len(events_after_release) == 3
+    seat = seat_service.create_seat(area, 0, 0, other_category.id)
 
-        release_event = events_after_release[2]
-        assert_event(
-            release_event,
-            'seat-released',
-            {'seat_id': str(seat2.id), 'initiator_id': str(self.owner.id)},
+    assert ticket.category_id != other_category.id
+
+    with raises(TicketCategoryMismatch):
+        ticket_seat_management_service.occupy_seat(
+            ticket.id, seat.id, ticket_owner.id
         )
 
-    def test_occupy_seat_with_invalid_id(self):
-        invalid_seat_id = 'ffffffff-ffff-ffff-ffff-ffffffffffff'
 
-        with raises(ValueError):
-            ticket_seat_management_service.occupy_seat(
-                self.ticket.id, invalid_seat_id, self.owner.id
-            )
+# helpers
 
-    def test_occupy_seat_with_bundled_ticket(self):
-        ticket_quantity = 1
-        ticket_bundle = ticket_bundle_service.create_bundle(
-            self.category_id, ticket_quantity, self.owner.id
-        )
 
-        bundled_ticket = ticket_bundle.tickets[0]
-
-        area = self.create_area('main', 'Main Hall')
-        seat = seat_service.create_seat(area, 0, 0, self.category_id)
-
-        with raises(SeatChangeDeniedForBundledTicket):
-            ticket_seat_management_service.occupy_seat(
-                bundled_ticket.id, seat.id, self.owner.id
-            )
-
-    def test_occupy_seat_with_wrong_category(self):
-        other_category_id = self.create_category('Economy').id
-
-        area = self.create_area('main', 'Main Hall')
-        seat = seat_service.create_seat(area, 0, 0, other_category_id)
-
-        assert self.ticket.category_id != other_category_id
-
-        with raises(TicketCategoryMismatch):
-            ticket_seat_management_service.occupy_seat(
-                self.ticket.id, seat.id, self.owner.id
-            )
-
-    # helpers
-
-    def create_area(self, slug, title):
-        return area_service.create_area(self.party.id, slug, title)
-
-    def create_category(self, title):
-        return category_service.create_category(self.party.id, title)
+def create_category(party_id, title):
+    return category_service.create_category(party_id, title)
 
 
 def assert_event(event, event_type, data):

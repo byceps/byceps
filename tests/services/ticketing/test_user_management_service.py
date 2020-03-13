@@ -3,6 +3,8 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
+import pytest
+
 from byceps.services.ticketing import (
     category_service,
     event_service,
@@ -10,122 +12,123 @@ from byceps.services.ticketing import (
     ticket_user_management_service,
 )
 
-from tests.base import AbstractAppTestCase
+from tests.conftest import database_recreated
 from tests.helpers import create_brand, create_party, create_user
 
 
-class TicketUserManagementServiceTest(AbstractAppTestCase):
+@pytest.fixture(scope='module')
+def app(admin_app, db):
+    with admin_app.app_context():
+        with database_recreated(db):
+            yield admin_app
 
-    def setUp(self):
-        super().setUp()
 
-        self.owner = create_user('Ticket_Owner')
+@pytest.fixture(scope='module')
+def party():
+    brand = create_brand()
+    return create_party(brand_id=brand.id)
 
-        brand = create_brand()
-        self.party = create_party(brand_id=brand.id)
 
-        self.category_id = self.create_category('Premium').id
+@pytest.fixture(scope='module')
+def category(party):
+    return category_service.create_category(party.id, 'Premium')
 
-        self.ticket = ticket_creation_service.create_ticket(
-            self.category_id, self.owner.id
-        )
 
-    def test_appoint_and_withdraw_user_manager(self):
-        manager = create_user('Ticket_Manager')
+@pytest.fixture(scope='module')
+def ticket_owner(app):
+    return create_user('TicketOwner')
 
-        assert self.ticket.user_managed_by_id is None
 
-        # appoint user manager
+@pytest.fixture
+def ticket(app, category, ticket_owner):
+    return ticket_creation_service.create_ticket(category.id, ticket_owner.id)
 
-        ticket_user_management_service.appoint_user_manager(
-            self.ticket.id, manager.id, self.owner.id
-        )
-        assert self.ticket.user_managed_by_id == manager.id
 
-        events_after_appointment = event_service.get_events_for_ticket(
-            self.ticket.id
-        )
-        assert len(events_after_appointment) == 1
+def test_appoint_and_withdraw_user_manager(app, ticket, ticket_owner):
+    manager = create_user('Ticket_Manager')
 
-        appointment_event = events_after_appointment[0]
-        assert_event(
-            appointment_event,
-            'user-manager-appointed',
-            {
-                'appointed_user_manager_id': str(manager.id),
-                'initiator_id': str(self.owner.id),
-            },
-        )
+    assert ticket.user_managed_by_id is None
 
-        # withdraw user manager
+    # appoint user manager
 
-        ticket_user_management_service.withdraw_user_manager(
-            self.ticket.id, self.owner.id
-        )
-        assert self.ticket.user_managed_by_id is None
+    ticket_user_management_service.appoint_user_manager(
+        ticket.id, manager.id, ticket_owner.id
+    )
+    assert ticket.user_managed_by_id == manager.id
 
-        events_after_withdrawal = event_service.get_events_for_ticket(
-            self.ticket.id
-        )
-        assert len(events_after_withdrawal) == 2
+    events_after_appointment = event_service.get_events_for_ticket(ticket.id)
+    assert len(events_after_appointment) == 1
 
-        withdrawal_event = events_after_withdrawal[1]
-        assert_event(
-            withdrawal_event,
-            'user-manager-withdrawn',
-            {'initiator_id': str(self.owner.id)},
-        )
+    appointment_event = events_after_appointment[0]
+    assert_event(
+        appointment_event,
+        'user-manager-appointed',
+        {
+            'appointed_user_manager_id': str(manager.id),
+            'initiator_id': str(ticket_owner.id),
+        },
+    )
 
-    def test_appoint_and_withdraw_user(self):
-        user = create_user('Ticket_User')
+    # withdraw user manager
 
-        assert self.ticket.used_by_id is None
+    ticket_user_management_service.withdraw_user_manager(
+        ticket.id, ticket_owner.id
+    )
+    assert ticket.user_managed_by_id is None
 
-        # appoint user
+    events_after_withdrawal = event_service.get_events_for_ticket(ticket.id)
+    assert len(events_after_withdrawal) == 2
 
-        ticket_user_management_service.appoint_user(
-            self.ticket.id, user.id, self.owner.id
-        )
-        assert self.ticket.used_by_id == user.id
+    withdrawal_event = events_after_withdrawal[1]
+    assert_event(
+        withdrawal_event,
+        'user-manager-withdrawn',
+        {'initiator_id': str(ticket_owner.id)},
+    )
 
-        events_after_appointment = event_service.get_events_for_ticket(
-            self.ticket.id
-        )
-        assert len(events_after_appointment) == 1
 
-        appointment_event = events_after_appointment[0]
-        assert_event(
-            appointment_event,
-            'user-appointed',
-            {
-                'appointed_user_id': str(user.id),
-                'initiator_id': str(self.owner.id),
-            },
-        )
+def test_appoint_and_withdraw_user(app, ticket, ticket_owner):
+    user = create_user('Ticket_User')
 
-        # withdraw user
+    assert ticket.used_by_id is None
 
-        ticket_user_management_service.withdraw_user(
-            self.ticket.id, self.owner.id
-        )
-        assert self.ticket.used_by_id is None
+    # appoint user
 
-        events_after_withdrawal = event_service.get_events_for_ticket(
-            self.ticket.id
-        )
-        assert len(events_after_withdrawal) == 2
+    ticket_user_management_service.appoint_user(
+        ticket.id, user.id, ticket_owner.id
+    )
+    assert ticket.used_by_id == user.id
 
-        withdrawal_event = events_after_withdrawal[1]
-        assert_event(
-            withdrawal_event,
-            'user-withdrawn',
-            {'initiator_id': str(self.owner.id)},
-        )
+    events_after_appointment = event_service.get_events_for_ticket(ticket.id)
+    assert len(events_after_appointment) == 1
 
-    # helpers
+    appointment_event = events_after_appointment[0]
+    assert_event(
+        appointment_event,
+        'user-appointed',
+        {
+            'appointed_user_id': str(user.id),
+            'initiator_id': str(ticket_owner.id),
+        },
+    )
 
-    def create_category(self, title):
-        return category_service.create_category(self.party.id, title)
+    # withdraw user
+
+    ticket_user_management_service.withdraw_user(ticket.id, ticket_owner.id)
+    assert ticket.used_by_id is None
+
+    events_after_withdrawal = event_service.get_events_for_ticket(ticket.id)
+    assert len(events_after_withdrawal) == 2
+
+    withdrawal_event = events_after_withdrawal[1]
+    assert_event(
+        withdrawal_event,
+        'user-withdrawn',
+        {'initiator_id': str(ticket_owner.id)},
+    )
+
+
+# helpers
 
 
 def assert_event(event, event_type, data):

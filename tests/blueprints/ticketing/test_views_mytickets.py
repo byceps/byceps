@@ -3,46 +3,50 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from tests.base import AbstractAppTestCase
+import pytest
+
+from tests.conftest import database_recreated
 from tests.helpers import (
     create_brand,
-    create_email_config,
     create_party,
     create_site,
-    create_user,
     http_client,
     login_user,
 )
 
 
-class MyTicketsTestCase(AbstractAppTestCase):
+@pytest.fixture(scope='module')
+def app(party_app, db, make_email_config):
+    with party_app.app_context():
+        with database_recreated(db):
+            make_email_config()
+            brand = create_brand()
+            party = create_party(brand.id)
+            create_site(party_id=party.id)
+            yield party_app
 
-    def setUp(self):
-        super().setUp()
 
-        brand = create_brand()
-        party = create_party(brand.id)
-        create_email_config()
-        create_site(party_id=party.id)
+def test_when_logged_in(app, normal_user):
+    user = normal_user
+    login_user(user.id)
 
-    def test_when_logged_in(self):
-        user = create_user('McFly')
-        login_user(user.id)
+    response = send_request(app, user_id=user.id)
 
-        response = self.send_request(user_id=user.id)
+    assert response.status_code == 200
+    assert response.mimetype == 'text/html'
 
-        assert response.status_code == 200
-        assert response.mimetype == 'text/html'
 
-    def test_when_not_logged_in(self):
-        response = self.send_request()
+def test_when_not_logged_in(app):
+    response = send_request(app)
 
-        assert response.status_code == 302
-        assert 'Location' in response.headers
+    assert response.status_code == 302
+    assert 'Location' in response.headers
 
-    # helpers
 
-    def send_request(self, *, user_id=None):
-        url = '/tickets/mine'
-        with http_client(self.app, user_id=user_id) as client:
-            return client.get(url)
+# helpers
+
+
+def send_request(app, user_id=None):
+    url = '/tickets/mine'
+    with http_client(app, user_id=user_id) as client:
+        return client.get(url)
