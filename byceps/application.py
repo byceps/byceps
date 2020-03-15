@@ -167,6 +167,7 @@ def _get_blueprints_api() -> Iterator[BlueprintReg]:
         ('api.v1.tourney.avatar',           '/api/v1/tourney/avatars'   ),
         ('api.v1.tourney.match.comments',   '/api/v1/tourney'           ),
         ('api.v1.user',                     '/api/v1/users'             ),
+        ('api.v1.user_avatar',              '/api/v1/user_avatars'      ),
         ('api.v1.user_badge',               '/api/v1/user_badges'       ),
     ]
 

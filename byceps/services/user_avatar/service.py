@@ -16,10 +16,11 @@ from ...util import upload
 
 from ..image import service as image_service
 from ..image.service import ImageTypeProhibited  # Provide to view functions.
+from ..user.models.user import User as DbUser
 from ..user import service as user_service
 
 from .models import Avatar as DbAvatar, AvatarSelection as DbAvatarSelection
-from .transfer.models import AvatarUpdate
+from .transfer.models import AvatarID, AvatarUpdate
 
 
 MAXIMUM_DIMENSIONS = Dimensions(512, 512)
@@ -112,3 +113,19 @@ def get_avatar_urls_for_users(user_ids: Set[UserID]) -> Dict[UserID, str]:
 
     # Include all user IDs in result.
     return {user_id: urls_by_user_id.get(user_id) for user_id in user_ids}
+
+
+def get_avatar_url_for_md5_email_address_hash(md5_hash: str) -> Optional[str]:
+    """Return the URL of the current avatar of the user with that hashed
+    email address, or `None` if not set.
+    """
+    avatar = DbAvatar.query \
+        .join(DbAvatarSelection) \
+        .join(DbUser) \
+        .filter(db.func.md5(DbUser.email_address) == md5_hash) \
+        .one_or_none()
+
+    if avatar is None:
+        return None
+
+    return avatar.url

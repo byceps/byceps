@@ -20,6 +20,12 @@ from ...util.instances import ReprBuilder
 from .transfer.models import AvatarID
 
 
+_ABSOLUTE_URL_PATH_PREFIX = '/data/global/users/avatars/'
+
+FALLBACK_FILENAME = 'avatar_fallback.svg'
+FALLBACK_AVATAR_URL_PATH = _ABSOLUTE_URL_PATH_PREFIX + FALLBACK_FILENAME
+
+
 class Avatar(db.Model):
     """An avatar image uploaded by a user."""
 
@@ -57,7 +63,7 @@ class Avatar(db.Model):
 
     @property
     def url(self) -> str:
-        return f'/data/global/users/avatars/{self.filename}'
+        return _ABSOLUTE_URL_PATH_PREFIX + str(self.filename)
 
     def __repr__(self) -> str:
         return ReprBuilder(self) \
