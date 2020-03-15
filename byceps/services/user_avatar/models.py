@@ -22,8 +22,7 @@ from .transfer.models import AvatarID
 
 _ABSOLUTE_URL_PATH_PREFIX = '/data/global/users/avatars/'
 
-FALLBACK_FILENAME = 'avatar_fallback.svg'
-FALLBACK_AVATAR_URL_PATH = _ABSOLUTE_URL_PATH_PREFIX + FALLBACK_FILENAME
+FALLBACK_AVATAR_URL_PATH = '/static/avatar_fallback.svg'
 
 
 class Avatar(db.Model):

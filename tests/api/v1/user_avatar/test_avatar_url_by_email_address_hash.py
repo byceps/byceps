@@ -36,10 +36,7 @@ def test_existent_user_without_avatar(api_client):
 
     response = send_request(api_client, email_address_hash)
 
-    assert_redirect(
-        response,
-        'http://example.com/data/global/users/avatars/avatar_fallback.svg',
-    )
+    assert_redirect(response, 'http://example.com/static/avatar_fallback.svg')
 
 
 def test_unrecognized_hash(api_client):
@@ -47,10 +44,7 @@ def test_unrecognized_hash(api_client):
 
     response = send_request(api_client, unrecognized_email_address_hash)
 
-    assert_redirect(
-        response,
-        'http://example.com/data/global/users/avatars/avatar_fallback.svg',
-    )
+    assert_redirect(response, 'http://example.com/static/avatar_fallback.svg')
 
 
 # helpers
