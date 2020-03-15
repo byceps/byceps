@@ -39,9 +39,8 @@ onDomReady(function() {
   }
 
   // Log out.
-  forEach(
-    document.querySelectorAll('a[data-action="logout"]'),
-    function(anchor) {
+  document.querySelectorAll('a[data-action="logout"]')
+    .forEach(function(anchor) {
       anchor.addEventListener('click', function(event) {
         if (confirm('Wirklich abmelden?')) {
           const href = anchor.getAttribute('href');

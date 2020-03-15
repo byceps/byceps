@@ -12,8 +12,8 @@ onDomReady(function() {
   confirmed_post_on_click('[data-action="posting-hide"]', 'Beitrag verstecken?');
   confirmed_delete_on_click('[data-action="posting-unhide"]', 'Beitrag wieder anzeigen?');
 
-  var collpasedTextareas = document.querySelectorAll('textarea.collapsed');
-  forEach(collpasedTextareas, function(textarea) {
+  const collpasedTextareas = document.querySelectorAll('textarea.collapsed');
+  collpasedTextareas.forEach(function(textarea) {
     // Expand collapsible text area after receiving focus.
     textarea.addEventListener('focus', function() {
       textarea.classList.remove('collapsed');

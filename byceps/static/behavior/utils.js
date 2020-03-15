@@ -133,7 +133,7 @@ function _get_location(xhr) {
  */
 function enableDropdownMenuToggles() {
   const dropdownToggles = document.querySelectorAll('.dropdown .dropdown-toggle');
-  forEach(dropdownToggles, function(triggerElement) {
+  dropdownToggles.forEach(function(triggerElement) {
     triggerElement.addEventListener('click', function(event) {
       const dropdown = triggerElement.parentNode;
       dropdown.classList.toggle('open');
@@ -150,7 +150,7 @@ function enableDropdownMenuToggles() {
  */
 function closeOpenDropdownMenus(clickTarget) {
   const openDropdowns = document.querySelectorAll('.dropdown.open');
-  forEach(openDropdowns, function(openDropdown) {
+  openDropdowns.forEach(function(openDropdown) {
     if (!openDropdown.contains(clickTarget)) {
       // Click was outside of this dropdown menu, so close it.
       openDropdown.classList.remove('open');
@@ -209,7 +209,7 @@ onDomReady(function() {
   const formsWhoseSubmitButtonShouldBeDisabledOnSubmit = document
       .querySelectorAll('form.disable-submit-button-on-submit');
 
-  forEach(formsWhoseSubmitButtonShouldBeDisabledOnSubmit, function(form) {
+  formsWhoseSubmitButtonShouldBeDisabledOnSubmit.forEach(function(form) {
     form.addEventListener('submit', function() {
       const submitButton = form.querySelector('button[type="submit"]');
       submitButton.disabled = true;
