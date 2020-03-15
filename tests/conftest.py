@@ -4,6 +4,8 @@
 """
 
 from contextlib import contextmanager
+from pathlib import Path
+from tempfile import TemporaryDirectory
 
 import pytest
 
@@ -71,6 +73,12 @@ def party_app_with_db(party_app, db):
     with party_app.app_context():
         with database_recreated(db):
             yield party_app
+
+
+@pytest.fixture
+def data_path():
+    with TemporaryDirectory() as d:
+        yield Path(d)
 
 
 @pytest.fixture

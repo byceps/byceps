@@ -4,9 +4,6 @@
 """
 
 from pathlib import Path
-from tempfile import TemporaryDirectory
-
-import pytest
 
 
 def test_create(
@@ -74,12 +71,6 @@ def test_create_fails_with_deleted_user(
     )
 
     assert response.status_code == 400
-
-
-@pytest.fixture
-def data_path():
-    with TemporaryDirectory() as d:
-        yield Path(d)
 
 
 def send_request(api_client, api_client_authz_header, party_id, creator_id):
