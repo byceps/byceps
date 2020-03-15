@@ -40,7 +40,7 @@ Werkzeug = "^1.0.0"
 WTForms = "^2.2.1"
 
 [tool.poetry.dev-dependencies]
-black = "19.3b0"
+black = "19.10b0"
 Flask-DebugToolbar = "0.10.1"
 flask-shell-ipython = "0.4.1"
 freezegun = "0.3.12"
