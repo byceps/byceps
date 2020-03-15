@@ -18,9 +18,7 @@ def test_get_snippet_document_by_name(scope, admin, api_client):
     )
     snippet_name = snippet_version.snippet.name
 
-    response = api_client.get(
-        f'/api/v1/snippets/by_name/{scope.type_}/{scope.name}/{snippet_name}'
-    )
+    response = send_request(api_client, scope, snippet_name)
 
     assert response.status_code == 200
     assert response.content_type == CONTENT_TYPE_JSON
@@ -42,9 +40,7 @@ def test_get_snippet_fragment_by_name(scope, admin, api_client):
     )
     snippet_name = snippet_version.snippet.name
 
-    response = api_client.get(
-        f'/api/v1/snippets/by_name/{scope.type_}/{scope.name}/{snippet_name}'
-    )
+    response = send_request(api_client, scope, snippet_name)
 
     assert response.status_code == 200
     assert response.content_type == CONTENT_TYPE_JSON
@@ -61,9 +57,7 @@ def test_get_snippet_fragment_by_name(scope, admin, api_client):
 def test_get_unknown_snippet_by_name(scope, api_client):
     snippet_name = 'unknown-af'
 
-    response = api_client.get(
-        f'/api/v1/snippets/by_name/{scope.type_}/{scope.name}/{snippet_name}'
-    )
+    response = send_request(api_client, scope, snippet_name)
 
     assert response.status_code == 404
     assert response.content_type == CONTENT_TYPE_JSON
@@ -74,3 +68,11 @@ def test_get_unknown_snippet_by_name(scope, api_client):
 @pytest.fixture(scope='module')
 def scope(site):
     return Scope.for_site(site.id)
+
+
+# helpers
+
+
+def send_request(api_client, scope, snippet_name):
+    url = f'/api/v1/snippets/by_name/{scope.type_}/{scope.name}/{snippet_name}'
+    return api_client.get(url)
