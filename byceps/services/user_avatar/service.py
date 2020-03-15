@@ -31,7 +31,7 @@ def update_avatar_image(
     allowed_types: Set[ImageType],
     *,
     maximum_dimensions: Dimensions = MAXIMUM_DIMENSIONS,
-) -> None:
+) -> AvatarID:
     """Set a new avatar image for the user.
 
     Raise `ImageTypeProhibited` if the stream data is not of one the
@@ -59,6 +59,8 @@ def update_avatar_image(
 
     user.avatar = avatar
     db.session.commit()
+
+    return avatar.id
 
 
 def remove_avatar_image(user_id: UserID) -> None:
