@@ -12,13 +12,17 @@ from byceps.services.snippet.transfer.models import Scope
 CONTENT_TYPE_JSON = 'application/json'
 
 
-def test_get_snippet_document_by_name(scope, admin, api_client):
+def test_get_snippet_document_by_name(
+    scope, admin, api_client, api_client_authz_header
+):
     snippet_version, _ = snippet_service.create_document(
         scope, 'colophon', admin.id, 'Colophon', 'Made with BYCEPS.'
     )
     snippet_name = snippet_version.snippet.name
 
-    response = send_request(api_client, scope, snippet_name)
+    response = send_request(
+        api_client, api_client_authz_header, scope, snippet_name
+    )
 
     assert response.status_code == 200
     assert response.content_type == CONTENT_TYPE_JSON
@@ -34,13 +38,17 @@ def test_get_snippet_document_by_name(scope, admin, api_client):
     assert response_data['version'] == str(snippet_version.id)
 
 
-def test_get_snippet_fragment_by_name(scope, admin, api_client):
+def test_get_snippet_fragment_by_name(
+    scope, admin, api_client, api_client_authz_header
+):
     snippet_version, _ = snippet_service.create_fragment(
         scope, 'infos', admin.id, 'TBD'
     )
     snippet_name = snippet_version.snippet.name
 
-    response = send_request(api_client, scope, snippet_name)
+    response = send_request(
+        api_client, api_client_authz_header, scope, snippet_name
+    )
 
     assert response.status_code == 200
     assert response.content_type == CONTENT_TYPE_JSON
@@ -54,10 +62,14 @@ def test_get_snippet_fragment_by_name(scope, admin, api_client):
     assert response_data['version'] == str(snippet_version.id)
 
 
-def test_get_unknown_snippet_by_name(scope, api_client):
+def test_get_unknown_snippet_by_name(
+    scope, api_client, api_client_authz_header
+):
     snippet_name = 'unknown-af'
 
-    response = send_request(api_client, scope, snippet_name)
+    response = send_request(
+        api_client, api_client_authz_header, scope, snippet_name
+    )
 
     assert response.status_code == 404
     assert response.content_type == CONTENT_TYPE_JSON
@@ -73,6 +85,8 @@ def scope(site):
 # helpers
 
 
-def send_request(api_client, scope, snippet_name):
+def send_request(api_client, api_client_authz_header, scope, snippet_name):
     url = f'/api/v1/snippets/by_name/{scope.type_}/{scope.name}/{snippet_name}'
-    return api_client.get(url)
+    headers = [api_client_authz_header]
+
+    return api_client.get(url, headers=headers)

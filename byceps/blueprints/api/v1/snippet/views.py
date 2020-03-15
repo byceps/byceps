@@ -15,11 +15,14 @@ from .....util.views import create_empty_json_response
 
 from ....snippet.templating import get_snippet_context
 
+from ...decorators import api_token_required
+
 
 blueprint = create_blueprint('api_v1_snippet', __name__)
 
 
 @blueprint.route('/by_name/<scope_type>/<scope_name>/<snippet_name>')
+@api_token_required
 def get_snippet_by_name(scope_type, scope_name, snippet_name):
     """Return the current version of the snippet with that name in that
     scope.
