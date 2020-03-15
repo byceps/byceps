@@ -28,7 +28,10 @@ from .models.user import User as DbUser
 
 
 def initialize_account(
-    user_id: UserID, *, initiator_id: Optional[UserID] = None
+    user_id: UserID,
+    *,
+    initiator_id: Optional[UserID] = None,
+    assign_roles: bool = True,
 ) -> None:
     """Initialize the user account.
 
@@ -49,7 +52,8 @@ def initialize_account(
 
     db.session.commit()
 
-    _assign_roles(user.id, initiator_id=initiator_id)
+    if assign_roles:
+        _assign_roles(user.id, initiator_id=initiator_id)
 
 
 def _assign_roles(
