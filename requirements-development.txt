@@ -3,6 +3,6 @@ Flask-DebugToolbar==0.10.1
 flask-shell-ipython==0.4.1
 freezegun==0.3.12
 mypy==0.770
-pytest==4.6.2
+pytest==5.4.1
 python-dotenv==0.9.1
 Sphinx==2.1.1
