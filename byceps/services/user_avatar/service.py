@@ -37,7 +37,7 @@ def update_avatar_image(
     Raise `ImageTypeProhibited` if the stream data is not of one the
     allowed types.
     """
-    user = user_service.find_active_user(user_id)
+    user = user_service.find_active_db_user(user_id)
     if user is None:
         raise user_service.UserIdRejected(user_id)
 
