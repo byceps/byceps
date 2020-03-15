@@ -18,7 +18,7 @@ from ..image import service as image_service
 from ..image.service import ImageTypeProhibited  # Provide to view functions.
 from ..user import service as user_service
 
-from .models import Avatar, AvatarSelection
+from .models import Avatar as DbAvatar, AvatarSelection as DbAvatarSelection
 from .transfer.models import AvatarUpdate
 
 
@@ -50,7 +50,7 @@ def update_avatar_image(
             stream, image_type.name, maximum_dimensions, force_square=True
         )
 
-    avatar = Avatar(user.id, image_type)
+    avatar = DbAvatar(user.id, image_type)
     db.session.add(avatar)
     db.session.commit()
 
@@ -67,7 +67,7 @@ def remove_avatar_image(user_id: UserID) -> None:
     The avatar will be unlinked from the user, but the database record
     as well as the image file itself won't be removed, though.
     """
-    selection = AvatarSelection.query.get(user_id)
+    selection = DbAvatarSelection.query.get(user_id)
 
     if selection is None:
         raise ValueError(f'No avatar set for user ID {user_id}.')
@@ -78,7 +78,7 @@ def remove_avatar_image(user_id: UserID) -> None:
 
 def get_avatars_uploaded_by_user(user_id: UserID) -> List[AvatarUpdate]:
     """Return the avatars uploaded by the user."""
-    avatars = Avatar.query \
+    avatars = DbAvatar.query \
         .filter_by(creator_id=user_id) \
         .all()
 
@@ -96,9 +96,12 @@ def get_avatar_urls_for_users(user_ids: Set[UserID]) -> Dict[UserID, str]:
     if not user_ids:
         return {}
 
-    user_ids_and_avatars = db.session.query(AvatarSelection.user_id, Avatar) \
-        .join(Avatar) \
-        .filter(AvatarSelection.user_id.in_(user_ids)) \
+    user_ids_and_avatars = db.session.query(
+            DbAvatarSelection.user_id,
+            DbAvatar,
+        ) \
+        .join(DbAvatar) \
+        .filter(DbAvatarSelection.user_id.in_(user_ids)) \
         .all()
 
     urls_by_user_id = {
