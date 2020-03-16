@@ -22,6 +22,7 @@ class Shop(db.Model):
     email_config_id = db.Column(db.UnicodeText, db.ForeignKey('email_configs.id'), nullable=False)
     closed = db.Column(db.Boolean, default=False, nullable=False)
     archived = db.Column(db.Boolean, default=False, nullable=False)
+    extra_settings = db.Column(db.JSONB)
 
     def __init__(
         self, shop_id: ShopID, title: str, email_config_id: str

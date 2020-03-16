@@ -83,4 +83,5 @@ def _db_entity_to_shop(shop: DbShop) -> Shop:
         shop.email_config_id,
         shop.closed,
         shop.archived,
+        shop.extra_settings,
     )

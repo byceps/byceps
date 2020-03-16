@@ -7,7 +7,7 @@ byceps.services.shop.shop.transfer.models
 """
 
 from dataclasses import dataclass
-from typing import NewType
+from typing import Any, Dict, NewType
 
 
 ShopID = NewType('ShopID', str)
@@ -20,3 +20,4 @@ class Shop:
     email_config_id: str
     closed: bool
     archived: bool
+    extra_settings: Dict[str, Any]
