@@ -40,17 +40,19 @@ def delete_token(token: DbToken) -> None:
     db.session.commit()
 
 
-def find_for_email_address_confirmation_by_token(token_value: str) -> DbToken:
+def find_for_email_address_confirmation_by_token(
+    token_value: str,
+) -> Optional[DbToken]:
     purpose = Purpose.email_address_confirmation
     return _find_for_purpose_by_token(token_value, purpose)
 
 
-def find_for_password_reset_by_token(token_value: str) -> DbToken:
+def find_for_password_reset_by_token(token_value: str) -> Optional[DbToken]:
     purpose = Purpose.password_reset
     return _find_for_purpose_by_token(token_value, purpose)
 
 
-def find_for_terms_consent_by_token(token_value: str) -> DbToken:
+def find_for_terms_consent_by_token(token_value: str) -> Optional[DbToken]:
     purpose = Purpose.terms_consent
     return _find_for_purpose_by_token(token_value, purpose)
 
