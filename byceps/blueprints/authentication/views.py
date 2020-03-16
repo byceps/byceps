@@ -271,11 +271,7 @@ def _get_sender() -> Optional[Sender]:
 @templated
 def password_reset_form(token, erroneous_form=None):
     """Show a form to reset the current user's password."""
-    verification_token = verification_token_service.find_for_password_reset_by_token(
-        token
-    )
-
-    _verify_password_reset_token(verification_token)
+    _verify_password_reset_token(token)
 
     form = erroneous_form if erroneous_form else ResetPasswordForm()
 
@@ -288,11 +284,7 @@ def password_reset_form(token, erroneous_form=None):
 @blueprint.route('/password/reset/token/<token>', methods=['POST'])
 def password_reset(token):
     """Reset the current user's password."""
-    verification_token = verification_token_service.find_for_password_reset_by_token(
-        token
-    )
-
-    _verify_password_reset_token(verification_token)
+    _verify_password_reset_token(token)
 
     form = ResetPasswordForm(request.form)
     if not form.validate():
@@ -306,7 +298,11 @@ def password_reset(token):
     return redirect_to('.login_form')
 
 
-def _verify_password_reset_token(verification_token):
+def _verify_password_reset_token(token: str) -> None:
+    verification_token = verification_token_service.find_for_password_reset_by_token(
+        token
+    )
+
     if verification_token is None or verification_token.is_expired:
         flash_error(
             'Es wurde kein gültiges Token angegeben. '
