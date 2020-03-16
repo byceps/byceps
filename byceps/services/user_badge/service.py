@@ -7,7 +7,9 @@ byceps.services.user_badge.service
 """
 
 from collections import defaultdict
-from typing import Dict, Optional, Set
+from typing import Dict, Set
+
+from returns.maybe import Maybe
 
 from ...database import db
 from ...typing import UserID
@@ -17,26 +19,20 @@ from .models.badge import Badge as DbBadge
 from .transfer.models import Badge, BadgeID, QuantifiedBadgeAwarding
 
 
-def find_badge(badge_id: BadgeID) -> Optional[Badge]:
+def find_badge(badge_id: BadgeID) -> Maybe[Badge]:
     """Return the badge with that id, or `None` if not found."""
     badge = DbBadge.query.get(badge_id)
 
-    if badge is None:
-        return None
-
-    return _db_entity_to_badge(badge)
+    return Maybe.new(badge).map(_db_entity_to_badge)
 
 
-def find_badge_by_slug(slug: str) -> Optional[Badge]:
+def find_badge_by_slug(slug: str) -> Maybe[Badge]:
     """Return the badge with that slug, or `None` if not found."""
     badge = DbBadge.query \
         .filter_by(slug=slug) \
         .one_or_none()
 
-    if badge is None:
-        return None
-
-    return _db_entity_to_badge(badge)
+    return Maybe.new(badge).map(_db_entity_to_badge)
 
 
 def get_badges(

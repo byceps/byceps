@@ -122,7 +122,7 @@ def _get_additional_data_for_standard_event(
 
 def _get_additional_data_for_badge_awarded(event: OrderEvent) -> OrderEventData:
     badge_id = event.data['badge_id']
-    badge = user_badge_service.find_badge(badge_id)
+    badge = user_badge_service.find_badge(badge_id).unwrap()
 
     recipient_id = event.data['recipient_id']
     recipient = user_service.find_user(recipient_id)

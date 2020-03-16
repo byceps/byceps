@@ -311,7 +311,7 @@ def _get_additional_data(
             event, users_by_id)
 
     if event.event_type == 'user-badge-awarded':
-        badge = user_badge_service.find_badge(event.data['badge_id'])
+        badge = user_badge_service.find_badge(event.data['badge_id']).unwrap()
         yield 'badge', badge
 
 

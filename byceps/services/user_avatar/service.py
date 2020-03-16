@@ -6,7 +6,9 @@ byceps.services.user_avatar.service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import BinaryIO, Dict, List, Optional, Set
+from typing import BinaryIO, Dict, List, Set
+
+from returns.maybe import Maybe
 
 from ...database import db
 from ...typing import UserID
@@ -88,10 +90,11 @@ def get_avatars_uploaded_by_user(user_id: UserID) -> List[AvatarUpdate]:
     return [AvatarUpdate(avatar.created_at, avatar.url) for avatar in avatars]
 
 
-def get_avatar_url_for_user(user_id: UserID) -> Optional[str]:
+def get_avatar_url_for_user(user_id: UserID) -> Maybe[str]:
     """Return the URL of the user's current avatar, or `None` if not set."""
     avatar_urls_by_user_id = get_avatar_urls_for_users({user_id})
-    return avatar_urls_by_user_id.get(user_id)
+    avatar_url = avatar_urls_by_user_id.get(user_id)
+    return Maybe.new(avatar_url)
 
 
 def get_avatar_urls_for_users(user_ids: Set[UserID]) -> Dict[UserID, str]:
@@ -115,9 +118,9 @@ def get_avatar_urls_for_users(user_ids: Set[UserID]) -> Dict[UserID, str]:
     return {user_id: urls_by_user_id.get(user_id) for user_id in user_ids}
 
 
-def get_avatar_url_for_md5_email_address_hash(md5_hash: str) -> Optional[str]:
+def get_avatar_url_for_md5_email_address_hash(md5_hash: str) -> Maybe[str]:
     """Return the URL of the current avatar of the user with that hashed
-    email address, or `None` if not set.
+    email address, or nothing if not set.
     """
     avatar = DbAvatar.query \
         .join(DbAvatarSelection) \
@@ -125,7 +128,4 @@ def get_avatar_url_for_md5_email_address_hash(md5_hash: str) -> Optional[str]:
         .filter(db.func.md5(DbUser.email_address) == md5_hash) \
         .one_or_none()
 
-    if avatar is None:
-        return None
-
-    return avatar.url
+    return Maybe.new(avatar).map(lambda a: a.url)

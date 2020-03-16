@@ -33,11 +33,8 @@ def get_avatar_url_by_email_address_hash(md5_hash):
     # - deleted accounts should have their avatar removed by the
     #   deletion process.
 
-    avatar_url = user_avatar_service.get_avatar_url_for_md5_email_address_hash(
-        md5_hash
-    )
-
-    if avatar_url is None:
-        avatar_url = FALLBACK_AVATAR_URL_PATH
+    avatar_url = user_avatar_service \
+        .get_avatar_url_for_md5_email_address_hash(md5_hash) \
+        .value_or(FALLBACK_AVATAR_URL_PATH)
 
     return redirect(avatar_url)
