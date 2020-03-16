@@ -223,9 +223,6 @@ span[title] .icon {
   margin-bottom: -1px;
   padding: 0.5rem 1rem;
   text-decoration: none;
-  -ms-user-select: none;
-  -moz-user-select: none;
-  -webkit-user-select: none;
   user-select: none;
 }
 
@@ -471,9 +468,6 @@ form.unobtrusive input:focus ~ .button {
   padding: 0.375rem 0.75rem;
   text-align: center;
   text-decoration: none;
-  -ms-user-select: none;
-  -moz-user-select: none;
-  -webkit-user-select: none;
   user-select: none;
   white-space: nowrap;
 }
