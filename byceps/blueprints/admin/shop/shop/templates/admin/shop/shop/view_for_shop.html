@@ -55,6 +55,28 @@
     </tr>
   </table>
 
+  <h2>Einstellungen {{ render_extra_in_heading(settings|length) }}</h2>
+  {%- if settings %}
+  <table class="index">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Wert</th>
+      </tr>
+    </thead>
+    <tbody>
+    {%- for key, value in settings|dictsort(by='key') %}
+      <tr>
+        <td class="monospace">{{ key }}</td>
+        <td class="monospace">{{ value }}</td>
+      </tr>
+    {%- endfor %}
+    </tbody>
+  </table>
+  {%- else %}
+  <div class="dimmed-box centered">Es sind keine Einstellungen hinterlegt.</div>
+  {%- endif %}
+
   <h2>Aktionen {{ render_extra_in_heading(order_actions_by_article_number|length) }}</h2>
   <p>Eine Aktion wird ausgelöst, wenn eine Bestellung einen der aufgeführten Artikel enthält und der Bestellstatus auf einen der für den Artikel aufgeführten Zustände geändert wird.</p>
   {%- if order_actions_by_article_number %}
