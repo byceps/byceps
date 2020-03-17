@@ -121,11 +121,13 @@ def remove_extra_setting(shop_id: ShopID, key: str) -> None:
 
 
 def _db_entity_to_shop(shop: DbShop) -> Shop:
+    settings = shop.extra_settings if (shop.extra_settings is not None) else {}
+
     return Shop(
         shop.id,
         shop.title,
         shop.email_config_id,
         shop.closed,
         shop.archived,
-        shop.extra_settings,
+        settings,
     )
