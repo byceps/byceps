@@ -83,8 +83,6 @@ def view_for_shop(shop_id):
         shop.id
     )
 
-    settings = _get_settings(shop)
-
     return {
         'shop': shop,
 
@@ -95,7 +93,7 @@ def view_for_shop(shop_id):
         'order_counts_by_payment_state': order_counts_by_payment_state,
         'PaymentState': PaymentState,
 
-        'settings': settings,
+        'settings': shop.extra_settings,
 
         'order_actions_by_article_number': order_actions_by_article_number,
     }
@@ -122,10 +120,6 @@ def _get_order_actions_by_article_number(shop_id):
         actions_by_article_number[action.article_number].append(action)
 
     return actions_by_article_number
-
-
-def _get_settings(shop):
-    return shop.extra_settings if isinstance(shop.extra_settings, dict) else {}
 
 
 def _get_shop_or_404(shop_id):

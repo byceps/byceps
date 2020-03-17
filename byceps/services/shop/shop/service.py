@@ -30,7 +30,7 @@ def create_shop(shop_id: ShopID, title: str, email_config_id: str) -> Shop:
 
 def find_shop(shop_id: ShopID) -> Optional[Shop]:
     """Return the shop with that id, or `None` if not found."""
-    shop = DbShop.query.get(shop_id)
+    shop = _find_db_shop(shop_id)
 
     if shop is None:
         return None
@@ -38,9 +38,29 @@ def find_shop(shop_id: ShopID) -> Optional[Shop]:
     return _db_entity_to_shop(shop)
 
 
+def _find_db_shop(shop_id: ShopID) -> Optional[Shop]:
+    """Return the database entity for the shop with that id, or `None`
+    if not found.
+    """
+    return DbShop.query.get(shop_id)
+
+
 def get_shop(shop_id: ShopID) -> Shop:
     """Return the shop with that id, or raise an exception."""
     shop = find_shop(shop_id)
+
+    if shop is None:
+        raise UnknownShopId(shop_id)
+
+    return shop
+
+
+def _get_db_shop(shop_id: ShopID) -> Shop:
+    """Return the database entity for the shop with that id.
+
+    Raise an exception if not found.
+    """
+    shop = _find_db_shop(shop_id)
 
     if shop is None:
         raise UnknownShopId(shop_id)
@@ -74,6 +94,30 @@ def get_active_shops() -> List[Shop]:
         .all()
 
     return [_db_entity_to_shop(shop) for shop in shops]
+
+
+def set_extra_setting(shop_id: ShopID, key: str, value: str) -> None:
+    """Set a value for a key in the shop's extra settings."""
+    shop = _get_db_shop(shop_id)
+
+    if shop.extra_settings is None:
+        shop.extra_settings = {}
+
+    shop.extra_settings[key] = value
+
+    db.session.commit()
+
+
+def remove_extra_setting(shop_id: ShopID, key: str) -> None:
+    """Remove the entry with that key from the shop's extra settings."""
+    shop = _get_db_shop(shop_id)
+
+    if (shop.extra_settings is None) or (key not in shop.extra_settings):
+        return
+
+    del shop.extra_settings[key]
+
+    db.session.commit()
 
 
 def _db_entity_to_shop(shop: DbShop) -> Shop:

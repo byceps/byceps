@@ -6,6 +6,8 @@ byceps.services.shop.shop.models
 :License: Modified BSD, see LICENSE for details.
 """
 
+from sqlalchemy.ext.mutable import MutableDict
+
 from ....database import db
 from ....util.instances import ReprBuilder
 
@@ -22,7 +24,7 @@ class Shop(db.Model):
     email_config_id = db.Column(db.UnicodeText, db.ForeignKey('email_configs.id'), nullable=False)
     closed = db.Column(db.Boolean, default=False, nullable=False)
     archived = db.Column(db.Boolean, default=False, nullable=False)
-    extra_settings = db.Column(db.JSONB)
+    extra_settings = db.Column(MutableDict.as_mutable(db.JSONB))
 
     def __init__(
         self, shop_id: ShopID, title: str, email_config_id: str
