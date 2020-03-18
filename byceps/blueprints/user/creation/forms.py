@@ -6,6 +6,7 @@ byceps.blueprints.user.creation.forms
 :License: Modified BSD, see LICENSE for details.
 """
 
+import re
 from uuid import UUID
 
 from wtforms import BooleanField, HiddenField, PasswordField, StringField
@@ -14,6 +15,9 @@ from wtforms.validators import InputRequired, Length, ValidationError
 from ....services.user import screen_name_validator
 from ....services.user import service as user_service
 from ....util.l10n import LocalizedForm
+
+
+EMAIL_ADDRESS_PATTERN = re.compile('^.+?@.+?\..+?$')
 
 
 class ScreenNameValidator:
@@ -55,6 +59,9 @@ class UserCreateForm(LocalizedForm):
 
     @staticmethod
     def validate_email_address(form, field):
+        if EMAIL_ADDRESS_PATTERN.search(field.data) is None:
+            raise ValueError('Die E-Mail-Adresse ist ungültig.')
+
         if user_service.is_email_address_already_assigned(field.data):
             raise ValueError(
                 'Diese E-Mail-Adresse kann nicht verwendet werden.'
