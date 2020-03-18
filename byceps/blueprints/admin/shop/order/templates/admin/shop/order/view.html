@@ -65,7 +65,7 @@
     </tr>
     <tr>
       <th>Zeitpunkt</th>
-      <td>{{ render_datetime(order.created_at|utc_to_local_tz) }}</td>
+      <td>{{ render_datetime(order.created_at|utc_to_local_tz, seconds=True) }}</td>
     </tr>
     {%- if order.payment_method %}
     <tr>
