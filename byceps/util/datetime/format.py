@@ -35,22 +35,27 @@ def format_datetime_iso(dt: datetime) -> str:
     return dt.strftime('%Y-%m-%dT%H:%M:%S')
 
 
-def format_datetime_short(dt: datetime, *, smart: bool = True) -> str:
+def format_datetime_short(
+    dt: datetime, *, seconds: bool = False, smart: bool = True
+) -> str:
     date_string = format_date_short(dt.date(), smart=smart)
-    time_string = format_time(dt.time())
+    time_string = format_time(dt.time(), seconds=seconds)
 
     return f'{date_string}, {time_string}'
 
 
-def format_datetime_long(dt: datetime, *, smart: bool = True) -> str:
+def format_datetime_long(
+    dt: datetime, *, seconds: bool = False, smart: bool = True
+) -> str:
     date_string = format_date_long(dt.date(), smart=smart)
-    time_string = format_time(dt.time())
+    time_string = format_time(dt.time(), seconds=seconds)
 
     return f'{date_string}, {time_string}'
 
 
-def format_time(t: time) -> str:
-    return t.strftime('%H:%M Uhr')
+def format_time(t: time, seconds: bool = False) -> str:
+    pattern = '%H:%M:%S Uhr' if seconds else '%H:%M Uhr'
+    return t.strftime(pattern)
 
 
 # helpers

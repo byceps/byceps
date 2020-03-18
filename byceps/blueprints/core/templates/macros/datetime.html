@@ -13,18 +13,18 @@
 {%- endmacro %}
 
 
-{%- macro render_datetime(dt, smart=True) -%}
-  {{ _time_element(dt|format_datetime_iso, dt|format_datetime_short(smart=smart)) }}
+{%- macro render_datetime(dt, seconds=False, smart=True) -%}
+  {{ _time_element(dt|format_datetime_iso, dt|format_datetime_short(seconds=seconds, smart=smart)) }}
 {%- endmacro %}
 
 
-{%- macro render_datetime_long(dt, smart=True) -%}
+{%- macro render_datetime_long(dt, seconds=False, smart=True) -%}
   {{ _time_element(dt|format_datetime_iso, dt|format_datetime_long(smart=smart)) }}
 {%- endmacro %}
 
 
-{%- macro render_time(t) -%}
-  {{ _time_element(t|format_datetime_iso, t|format_time) }}
+{%- macro render_time(t, seconds=False) -%}
+  {{ _time_element(t|format_datetime_iso, t|format_time(seconds=seconds)) }}
 {%- endmacro %}
 
 
