@@ -64,8 +64,3 @@ def _find_for_purpose_by_token(
         .filter_by(token=token_value) \
         .for_purpose(purpose) \
         .first()
-
-
-def is_valid_password_reset_token(token_value: str) -> bool:
-    token = find_for_password_reset_by_token(token_value)
-    return (token is not None) and not token.is_expired

@@ -299,7 +299,11 @@ def password_reset(token):
 
 
 def _verify_password_reset_token(token: str) -> None:
-    if not verification_token_service.is_valid_password_reset_token(token):
+    verification_token = verification_token_service.find_for_password_reset_by_token(
+        token
+    )
+
+    if verification_token is None or verification_token.is_expired:
         flash_error(
             'Es wurde kein gültiges Token angegeben. '
             'Ein Token ist nur 24 Stunden lang gültig.'
