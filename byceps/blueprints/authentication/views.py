@@ -285,7 +285,7 @@ def password_reset_form(token, erroneous_form=None):
 @blueprint.route('/password/reset/token/<token>', methods=['POST'])
 def password_reset(token):
     """Reset the current user's password."""
-    _verify_password_reset_token(token)
+    verification_token = _verify_password_reset_token(token)
 
     form = ResetPasswordForm(request.form)
     if not form.validate():
@@ -299,7 +299,7 @@ def password_reset(token):
     return redirect_to('.login_form')
 
 
-def _verify_password_reset_token(token: str) -> None:
+def _verify_password_reset_token(token: str) -> VerificationToken:
     verification_token = verification_token_service.find_for_password_reset_by_token(
         token
     )
@@ -310,6 +310,8 @@ def _verify_password_reset_token(token: str) -> None:
             'Ein Token ist nur 24 Stunden lang gültig.'
         )
         abort(404)
+
+    return verification_token
 
 
 def _is_verification_token_valid(token: Optional[VerificationToken]) -> bool:
