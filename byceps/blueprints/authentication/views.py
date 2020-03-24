@@ -25,6 +25,7 @@ from ...services.site import service as site_service
 from ...services.terms import version_service as terms_version_service
 from ...services.user import service as user_service
 from ...services.verification_token import service as verification_token_service
+from ...services.verification_token.models import Token as VerificationToken
 from ...typing import UserID
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_error, flash_notice, flash_success
@@ -303,12 +304,16 @@ def _verify_password_reset_token(token: str) -> None:
         token
     )
 
-    if verification_token is None or verification_token.is_expired:
+    if not _is_verification_token_valid(verification_token):
         flash_error(
             'Es wurde kein gültiges Token angegeben. '
             'Ein Token ist nur 24 Stunden lang gültig.'
         )
         abort(404)
+
+
+def _is_verification_token_valid(token: Optional[VerificationToken]) -> bool:
+    return (token is not None) and not token.is_expired
 
 
 # -------------------------------------------------------------------- #
