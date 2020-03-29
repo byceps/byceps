@@ -8,11 +8,13 @@ from datetime import datetime
 from decimal import Decimal
 
 from freezegun import freeze_time
+import pytest
 
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order.models.orderer import Orderer
 from byceps.services.shop.order import service as order_service
 from byceps.services.shop.sequence import service as sequence_service
+from byceps.services.shop.shop import service as shop_service
 
 from tests.helpers import (
     assign_permissions_to_user,
@@ -23,11 +25,22 @@ from tests.helpers import (
 from tests.services.shop.helpers import create_article as _create_article
 
 
-@freeze_time('2015-04-15 07:54:18')  # UTC
-def test_serialize_order(app, shop, admin_user):
-    authorize_admin(admin_user.id)
-    login_user(admin_user.id)
+@pytest.fixture(scope='module')
+def shop(make_email_config):
+    email_config = make_email_config()
+    return shop_service.create_shop('shop', 'Some Shop', email_config.id)
 
+
+@pytest.fixture(scope='module')
+def admin_user(app):
+    admin = create_user('Admin')
+    authorize_admin(admin.id)
+    login_user(admin.id)
+    return admin
+
+
+@freeze_time('2015-04-15 07:54:18')  # UTC
+def test_serialize_existing_order(app, shop, admin_user):
     sequence_service.create_order_number_sequence(shop.id, 'LR-08-B', value=26)
     order = place_order(shop.id)
 
@@ -44,6 +57,17 @@ def test_serialize_order(app, shop, admin_user):
 
     body = response.get_data().decode('utf-8')
     assert body == expected
+
+
+@freeze_time('2015-04-15 07:54:18')  # UTC
+def test_serialize_unknown_order(app, shop, admin_user):
+    unknown_order_id = '00000000-0000-0000-0000-000000000000'
+
+    url = f'/admin/shop/orders/{unknown_order_id}/export'
+    with http_client(app, user_id=admin_user.id) as client:
+        response = client.get(url)
+
+    assert response.status_code == 404
 
 
 # helpers
