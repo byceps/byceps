@@ -131,10 +131,6 @@ class Order(db.Model):
     def is_paid(self) -> bool:
         return self.payment_state == PaymentState.paid
 
-    def collect_articles(self) -> Set[Article]:
-        """Return the articles associated with this order."""
-        return {item.article for item in self.items}
-
     @property
     def is_invoiced(self) -> bool:
         return self.invoice_created_at is not None
