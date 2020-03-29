@@ -8,7 +8,7 @@ byceps.services.shop.order.export.service
 
 from datetime import datetime
 from decimal import Decimal
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
 from flask import current_app
 import pendulum
@@ -21,7 +21,7 @@ from .. import service as order_service
 from ..transfer.models import Order, OrderID
 
 
-def export_order_as_xml(order_id: OrderID) -> Dict[str, str]:
+def export_order_as_xml(order_id: OrderID) -> Optional[Dict[str, str]]:
     """Export the order as an XML document."""
     order = order_service.find_order_with_details(order_id)
 
