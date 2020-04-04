@@ -1,5 +1,6 @@
 {%- from 'macros/datetime.html' import render_date %}
 
+  {%- if user.detail -%}
   <table class="index">
     <tr>
       <th>Voller Name</th>
@@ -30,3 +31,6 @@
       <td>{{ user.detail.phone_number|fallback }}</td>
     </tr>
   </table>
+  {%- else %}
+  {{ 'keine'|dim }}
+  {%- endif -%}

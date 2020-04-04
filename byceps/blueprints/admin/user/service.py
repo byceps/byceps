@@ -122,7 +122,8 @@ def _db_entity_to_user_with_creation_details(
     user: DbUser
 ) -> UserWithCreationDetails:
     is_orga = False  # Not interesting here.
-    detail = Detail(user.detail.full_name)
+    full_name = user.detail.full_name if user.detail is not None else None
+    detail = Detail(full_name)
 
     return UserWithCreationDetails(
         user.id,
