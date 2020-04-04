@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 
-"""Generate the SQL statements to remove one or more users and they
-various traces from the database.
+"""Generate the SQL statements to remove one or more users and their
+various (but not all) traces from the database.
+
+Might fail for example if a user posted in a discussion board.
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
