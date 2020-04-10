@@ -3,34 +3,24 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from tests.helpers import create_user
-
-
 CONTENT_TYPE_JSON = 'application/json'
 
 
-def test_with_existent_user(api_client):
-    screen_name = 'Gemüsefrau'
-
-    user = create_user(screen_name)
-    user_id = str(user.id)
-
-    response = send_request(api_client, user_id)
+def test_with_existent_user(api_client, user):
+    response = send_request(api_client, user.id)
 
     assert response.status_code == 200
     assert response.content_type == CONTENT_TYPE_JSON
     assert response.mimetype == CONTENT_TYPE_JSON
 
     response_data = response.json
-    assert response_data['id'] == user_id
-    assert response_data['screen_name'] == screen_name
+    assert response_data['id'] == str(user.id)
+    assert response_data['screen_name'] == 'User'
     assert response_data['avatar_url'] is None
 
 
-def test_with_not_uninitialized_user(api_client):
-    screen_name = 'UninitializedUser'
-
-    user = create_user(screen_name, initialized=False)
+def test_with_not_uninitialized_user(api_client, uninitialized_user):
+    user = uninitialized_user
 
     response = send_request(api_client, str(user.id))
 
@@ -40,12 +30,8 @@ def test_with_not_uninitialized_user(api_client):
     assert response.json == {}
 
 
-def test_with_suspended_user(api_client, db):
-    screen_name = 'SuspendedUser'
-
-    user = create_user(screen_name)
-    user.suspended = True
-    db.session.commit()
+def test_with_suspended_user(api_client, suspended_user):
+    user = suspended_user
 
     response = send_request(api_client, str(user.id))
 
@@ -55,12 +41,8 @@ def test_with_suspended_user(api_client, db):
     assert response.json == {}
 
 
-def test_with_deleted_user(api_client, db):
-    screen_name = 'DeletedUser'
-
-    user = create_user(screen_name)
-    user.deleted = True
-    db.session.commit()
+def test_with_deleted_user(api_client, deleted_user):
+    user = deleted_user
 
     response = send_request(api_client, str(user.id))
 
