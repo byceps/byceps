@@ -11,10 +11,10 @@ from .helpers import create_category, create_topic, find_topic
 def test_move_topic(party_app_with_db, make_moderator, normal_user, board):
     moderator = make_moderator('board_topic.move')
 
-    category_id_1 = create_category(board.id, 1).id
-    category_id_2 = create_category(board.id, 2).id
+    category_id_1 = create_category(board.id, number=1).id
+    category_id_2 = create_category(board.id, number=2).id
 
-    topic_before = create_topic(category_id_1, normal_user.id, 1)
+    topic_before = create_topic(category_id_1, normal_user.id)
     assert topic_before.category.id == category_id_1
 
     url = f'/board/topics/{topic_before.id}/move'

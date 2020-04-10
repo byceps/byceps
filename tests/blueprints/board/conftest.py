@@ -34,17 +34,17 @@ def board():
 
 @pytest.fixture
 def category(board):
-    return create_category(board.id, 1)
+    return create_category(board.id)
 
 
 @pytest.fixture
 def topic(category, normal_user):
-    return create_topic(category.id, normal_user.id, 1)
+    return create_topic(category.id, normal_user.id)
 
 
 @pytest.fixture
 def posting(topic, normal_user):
-    return create_posting(topic.id, normal_user.id, 1)
+    return create_posting(topic.id, normal_user.id)
 
 
 @pytest.fixture

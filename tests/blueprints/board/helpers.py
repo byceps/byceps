@@ -4,38 +4,64 @@
 """
 
 from byceps.services.board import (
-    posting_query_service as board_posting_query_service,
-    topic_query_service as board_topic_query_service,
+    board_service,
+    category_command_service,
+    posting_command_service,
+    posting_query_service,
+    topic_command_service,
+    topic_query_service,
 )
-
-from testfixtures.board import (
-    create_board as _create_board,
-    create_category as _create_category,
-    create_posting as _create_posting,
-    create_topic as _create_topic,
-)
-
 
 def create_board(brand_id):
     board_id = brand_id
-    return _create_board(brand_id, board_id)
+    return board_service.create_board(brand_id, board_id)
 
 
-def create_category(board_id, number):
-    return _create_category(board_id, number=number)
+def create_category(
+    board_id, *, number=1, slug=None, title=None, description=None
+):
+    if slug is None:
+        slug = f'category-{number}'
+
+    if title is None:
+        title = f'Kategorie {number}'
+
+    if description is None:
+        description = f'Hier geht es um Kategorie {number}'
+
+    return category_command_service.create_category(
+        board_id, slug, title, description
+    )
 
 
-def create_topic(category_id, creator_id, number):
-    return _create_topic(category_id, creator_id, number=number)
+def create_topic(category_id, creator_id, *, number=1, title=None, body=None):
+    if title is None:
+        title = f'Thema {number}'
+
+    if body is None:
+        body = f'Inhalt von Thema {number}'
+
+    topic, _ = topic_command_service.create_topic(
+        category_id, creator_id, title, body
+    )
+
+    return topic
 
 
-def create_posting(topic_id, creator_id, number):
-    return _create_posting(topic_id, creator_id, number=number)
+def create_posting(topic_id, creator_id, *, number=1, body=None):
+    if body is None:
+        body = f'Inhalt von Beitrag {number}.'
+
+    posting, event = posting_command_service.create_posting(
+        topic_id, creator_id, body
+    )
+
+    return posting
 
 
 def find_topic(topic_id):
-    return board_topic_query_service.find_topic_by_id(topic_id)
+    return topic_query_service.find_topic_by_id(topic_id)
 
 
 def find_posting(posting_id):
-    return board_posting_query_service.find_posting_by_id(posting_id)
+    return posting_query_service.find_posting_by_id(posting_id)
