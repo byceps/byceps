@@ -8,10 +8,10 @@ from uuid import UUID
 
 import pytest
 
+from byceps.services.user_avatar.models import Avatar
 from byceps.util.image.models import ImageType
 
 from testfixtures.user import create_user
-from testfixtures.user_avatar import create_avatar
 
 from tests.helpers import app_context
 
@@ -33,8 +33,17 @@ from tests.helpers import app_context
 def test_path(data_path, avatar_id, image_type, expected):
     user = create_user()
 
-    avatar = create_avatar(user.id, id=avatar_id, image_type=image_type)
+    avatar = create_avatar(user.id, avatar_id, image_type)
 
     with app_context() as app:
         app.config['PATH_DATA'] = data_path
         assert avatar.path == expected
+
+
+# helpers
+
+
+def create_avatar(creator_id, avatar_id, image_type):
+    avatar = Avatar(creator_id, image_type)
+    avatar.id = avatar_id
+    return avatar
