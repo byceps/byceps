@@ -8,10 +8,9 @@ from datetime import datetime
 from freezegun import freeze_time
 import pytest
 
-from byceps.services.verification_token.models import Purpose
+from byceps.services.verification_token.models import Purpose, Token
 
 from testfixtures.user import create_user
-from testfixtures.verification_token import create_verification_token
 
 
 @pytest.mark.parametrize('purpose, now, expected', [
@@ -50,7 +49,13 @@ def test_is_expired(purpose, now, expected):
     user = create_user()
     created_at = datetime(2014, 11, 26, 17, 44, 53)
 
-    token = create_verification_token(user.id, purpose, created_at=created_at)
+    token = create_verification_token(user.id, purpose, created_at)
 
     with freeze_time(now):
         assert token.is_expired == expected
+
+
+def create_verification_token(user_id, purpose, created_at):
+    token = Token(user_id, purpose)
+    token.created_at = created_at
+    return token

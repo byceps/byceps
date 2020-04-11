@@ -6,13 +6,10 @@
 import pytest
 
 from byceps.services.authorization import service as authorization_service
+from byceps.services.verification_token.models import Purpose, Token
 
 from tests.conftest import database_recreated
 from tests.helpers import create_site, create_user, http_client
-
-from testfixtures.verification_token import (
-    create_verification_token_for_email_address_confirmation as create_confirmation_token,
-)
 
 
 @pytest.fixture(scope='module')
@@ -77,3 +74,8 @@ def confirm(app, verification_token):
 
 def get_role_ids(user_id):
     return authorization_service.find_role_ids_for_user(user_id)
+
+
+def create_confirmation_token(user_id):
+    purpose = Purpose.email_address_confirmation
+    return Token(user_id, purpose)
