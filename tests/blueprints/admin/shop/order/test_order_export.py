@@ -14,7 +14,6 @@ from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order.models.orderer import Orderer
 from byceps.services.shop.order import service as order_service
 from byceps.services.shop.sequence import service as sequence_service
-from byceps.services.shop.shop import service as shop_service
 
 from tests.helpers import (
     assign_permissions_to_user,
@@ -23,12 +22,6 @@ from tests.helpers import (
     login_user,
 )
 from tests.services.shop.helpers import create_article as _create_article
-
-
-@pytest.fixture(scope='module')
-def shop(make_email_config):
-    email_config = make_email_config()
-    return shop_service.create_shop('shop', 'Some Shop', email_config.id)
 
 
 @pytest.fixture(scope='module')

@@ -17,7 +17,6 @@ from byceps.services.shop.order.transfer.models import (
     PaymentState,
 )
 from byceps.services.shop.sequence import service as sequence_service
-from byceps.services.shop.shop import service as shop_service
 
 from testfixtures.shop_order import create_orderer
 
@@ -29,12 +28,6 @@ from tests.helpers import (
     login_user,
 )
 from tests.services.shop.helpers import create_article as _create_article
-
-
-@pytest.fixture(scope='module')
-def shop(make_email_config):
-    email_config = make_email_config()
-    return shop_service.create_shop('shop-01', 'Some Shop', email_config.id)
 
 
 @pytest.fixture(scope='module')
