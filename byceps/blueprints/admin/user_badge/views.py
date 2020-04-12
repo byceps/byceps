@@ -72,7 +72,7 @@ def index():
 @templated
 def view(badge_id):
     """Show badge details."""
-    badge = badge_service.find_badge(badge_id).value_or(None)
+    badge = badge_service.find_badge(badge_id)
 
     if badge is None:
         abort(404)
@@ -175,8 +175,8 @@ def award(user_id):
     if not user:
         abort(401, 'Unknown user ID')
 
-    badge = badge_service.find_badge(badge_id).value_or(None)
-    if badge is None:
+    badge = badge_service.find_badge(badge_id)
+    if not badge:
         abort(401, 'Unknown badge ID')
 
     initiator_id = g.current_user.id

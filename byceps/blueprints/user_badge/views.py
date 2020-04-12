@@ -32,7 +32,7 @@ def index():
 @templated
 def view(slug):
     """Show information about a badge."""
-    badge = badge_service.find_badge_by_slug(slug).value_or(None)
+    badge = badge_service.find_badge_by_slug(slug)
 
     if badge is None:
         abort(404)

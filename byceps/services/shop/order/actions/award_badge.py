@@ -44,7 +44,7 @@ def award_badge(
 
 def _verify_badge_id(badge_id: BadgeID) -> None:
     """Raise exception if no badge with that ID is known."""
-    badge = badge_service.find_badge(badge_id).value_or(None)
+    badge = badge_service.find_badge(badge_id)
 
     if badge is None:
         raise ValueError(f'Unknown badge ID "{badge_id}"')

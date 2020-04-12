@@ -41,7 +41,7 @@ def award_badge_to_user():
     except ValidationError as e:
         abort(400, str(e.normalized_messages()))
 
-    badge = badge_service.find_badge_by_slug(req['badge_slug']).value_or(None)
+    badge = badge_service.find_badge_by_slug(req['badge_slug'])
     if not badge:
         abort(400, 'Badge slug unknown')
 
