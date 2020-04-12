@@ -19,11 +19,18 @@ from .helpers import create_board, create_category, create_posting, create_topic
 
 
 @pytest.fixture
-def board(make_email_config):
-    make_email_config()
-    site = create_site()
+def site(make_email_config):
+    email_config = make_email_config()
+    return create_site(email_config_id=email_config.id)
 
-    brand = create_brand()
+
+@pytest.fixture
+def brand():
+    return create_brand()
+
+
+@pytest.fixture
+def board(site, brand):
     board = create_board(brand.id)
 
     site_settings_service.create_setting(site.id, 'board_id', board.id)
