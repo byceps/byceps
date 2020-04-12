@@ -5,7 +5,6 @@
 
 import pytest
 
-from byceps.services.site.models.setting import Setting as DbSetting
 from byceps.services.site import settings_service
 from byceps.services.site.transfer.models import SiteSetting
 
@@ -14,23 +13,20 @@ from tests.helpers import create_email_config, create_site
 from ...conftest import database_recreated
 
 
+SITE_ID = 'acmecon-2014-website'
+
+
 @pytest.fixture(scope='module')
 def app(party_app, db):
     with party_app.app_context():
         with database_recreated(db):
-            _app = party_app
-
             create_email_config()
-
-            site = create_site()
-
-            _app.site_id = site.id
-
-            yield _app
+            create_site()
+            yield party_app
 
 
 def test_create(app):
-    site_id = app.site_id
+    site_id = SITE_ID
     name = 'name1'
     value = 'value1'
 
@@ -45,7 +41,7 @@ def test_create(app):
 
 
 def test_create_or_update(app):
-    site_id = app.site_id
+    site_id = SITE_ID
     name = 'name2'
     value1 = 'value2a'
     value2 = 'value2b'
@@ -72,7 +68,7 @@ def test_create_or_update(app):
 
 
 def test_remove(app):
-    site_id = app.site_id
+    site_id = SITE_ID
     name = 'name3'
     value = 'value3'
 
@@ -85,7 +81,7 @@ def test_remove(app):
 
 
 def test_find(app):
-    site_id = app.site_id
+    site_id = SITE_ID
     name = 'name4'
     value = 'value4'
 
@@ -102,7 +98,7 @@ def test_find(app):
 
 
 def test_find_value(app):
-    site_id = app.site_id
+    site_id = SITE_ID
     name = 'name5'
     value = 'value5'
 
@@ -116,10 +112,7 @@ def test_find_value(app):
 
 
 def test_get_settings(app):
-    site_id = app.site_id
-
-    # Clean up.
-    DbSetting.query.delete()
+    site_id = SITE_ID
 
     all_settings_before_create = settings_service.get_settings(site_id)
     assert all_settings_before_create == set()
@@ -137,3 +130,17 @@ def test_get_settings(app):
         SiteSetting(site_id, 'name6b', 'value6b'),
         SiteSetting(site_id, 'name6c', 'value6c'),
     }
+
+
+def teardown_function(func):
+    if func is test_create:
+        settings_service.remove_setting(SITE_ID, 'name1')
+    elif func is test_create_or_update:
+        settings_service.remove_setting(SITE_ID, 'name2')
+    elif func is test_find:
+        settings_service.remove_setting(SITE_ID, 'name4')
+    elif func is test_find_value:
+        settings_service.remove_setting(SITE_ID, 'name5')
+    elif func is test_get_settings:
+        for name in 'name6a', 'name6b', 'name6c':
+            settings_service.remove_setting(SITE_ID, name)

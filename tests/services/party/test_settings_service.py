@@ -5,7 +5,6 @@
 
 import pytest
 
-from byceps.services.party.models.setting import Setting as DbSetting
 from byceps.services.party import settings_service
 from byceps.services.party.transfer.models import PartySetting
 
@@ -14,22 +13,20 @@ from tests.helpers import create_brand, create_party
 from ...conftest import database_recreated
 
 
+PARTY_ID = 'acmecon-2014'
+
+
 @pytest.fixture(scope='module')
 def app(party_app, db):
     with party_app.app_context():
         with database_recreated(db):
-            _app = party_app
-
             brand = create_brand()
-            party = create_party(brand.id)
-
-            _app.party_id = party.id
-
-            yield _app
+            create_party(brand.id, party_id=PARTY_ID)
+            yield party_app
 
 
 def test_create(app):
-    party_id = app.party_id
+    party_id = PARTY_ID
     name = 'name1'
     value = 'value1'
 
@@ -44,7 +41,7 @@ def test_create(app):
 
 
 def test_create_or_update(app):
-    party_id = app.party_id
+    party_id = PARTY_ID
     name = 'name2'
     value1 = 'value2a'
     value2 = 'value2b'
@@ -71,7 +68,7 @@ def test_create_or_update(app):
 
 
 def test_remove(app):
-    party_id = app.party_id
+    party_id = PARTY_ID
     name = 'name3'
     value = 'value3'
 
@@ -84,7 +81,7 @@ def test_remove(app):
 
 
 def test_find(app):
-    party_id = app.party_id
+    party_id = PARTY_ID
     name = 'name4'
     value = 'value4'
 
@@ -101,7 +98,7 @@ def test_find(app):
 
 
 def test_find_value(app):
-    party_id = app.party_id
+    party_id = PARTY_ID
     name = 'name5'
     value = 'value5'
 
@@ -115,10 +112,7 @@ def test_find_value(app):
 
 
 def test_get_settings(app):
-    party_id = app.party_id
-
-    # Clean up.
-    DbSetting.query.delete()
+    party_id = PARTY_ID
 
     all_settings_before_create = settings_service.get_settings(party_id)
     assert all_settings_before_create == set()
@@ -136,3 +130,17 @@ def test_get_settings(app):
         PartySetting(party_id, 'name6b', 'value6b'),
         PartySetting(party_id, 'name6c', 'value6c'),
     }
+
+
+def teardown_function(func):
+    if func is test_create:
+        settings_service.remove_setting(PARTY_ID, 'name1')
+    elif func is test_create_or_update:
+        settings_service.remove_setting(PARTY_ID, 'name2')
+    elif func is test_find:
+        settings_service.remove_setting(PARTY_ID, 'name4')
+    elif func is test_find_value:
+        settings_service.remove_setting(PARTY_ID, 'name5')
+    elif func is test_get_settings:
+        for name in 'name6a', 'name6b', 'name6c':
+            settings_service.remove_setting(PARTY_ID, name)

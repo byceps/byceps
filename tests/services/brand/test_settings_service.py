@@ -5,7 +5,6 @@
 
 import pytest
 
-from byceps.services.brand.models.setting import Setting as DbSetting
 from byceps.services.brand import settings_service
 from byceps.services.brand.transfer.models import BrandSetting
 
@@ -14,21 +13,19 @@ from tests.helpers import create_brand
 from ...conftest import database_recreated
 
 
+BRAND_ID = 'acmecon'
+
+
 @pytest.fixture(scope='module')
 def app(party_app, db):
     with party_app.app_context():
         with database_recreated(db):
-            _app = party_app
-
-            brand = create_brand()
-
-            _app.brand_id = brand.id
-
-            yield _app
+            create_brand(BRAND_ID)
+            yield party_app
 
 
 def test_create(app):
-    brand_id = app.brand_id
+    brand_id = BRAND_ID
     name = 'name1'
     value = 'value1'
 
@@ -43,7 +40,7 @@ def test_create(app):
 
 
 def test_create_or_update(app):
-    brand_id = app.brand_id
+    brand_id = BRAND_ID
     name = 'name2'
     value1 = 'value2a'
     value2 = 'value2b'
@@ -70,7 +67,7 @@ def test_create_or_update(app):
 
 
 def test_remove(app):
-    brand_id = app.brand_id
+    brand_id = BRAND_ID
     name = 'name3'
     value = 'value3'
 
@@ -83,7 +80,7 @@ def test_remove(app):
 
 
 def test_find(app):
-    brand_id = app.brand_id
+    brand_id = BRAND_ID
     name = 'name4'
     value = 'value4'
 
@@ -100,7 +97,7 @@ def test_find(app):
 
 
 def test_find_value(app):
-    brand_id = app.brand_id
+    brand_id = BRAND_ID
     name = 'name5'
     value = 'value5'
 
@@ -114,10 +111,7 @@ def test_find_value(app):
 
 
 def test_get_settings(app):
-    brand_id = app.brand_id
-
-    # Clean up.
-    DbSetting.query.delete()
+    brand_id = BRAND_ID
 
     all_settings_before_create = settings_service.get_settings(brand_id)
     assert all_settings_before_create == set()
@@ -135,3 +129,17 @@ def test_get_settings(app):
         BrandSetting(brand_id, 'name6b', 'value6b'),
         BrandSetting(brand_id, 'name6c', 'value6c'),
     }
+
+
+def teardown_function(func):
+    if func is test_create:
+        settings_service.remove_setting(BRAND_ID, 'name1')
+    elif func is test_create_or_update:
+        settings_service.remove_setting(BRAND_ID, 'name2')
+    elif func is test_find:
+        settings_service.remove_setting(BRAND_ID, 'name4')
+    elif func is test_find_value:
+        settings_service.remove_setting(BRAND_ID, 'name5')
+    elif func is test_get_settings:
+        for name in 'name6a', 'name6b', 'name6c':
+            settings_service.remove_setting(BRAND_ID, name)
