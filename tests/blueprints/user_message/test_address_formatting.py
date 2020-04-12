@@ -10,12 +10,7 @@ import pytest
 from byceps.services.user_message import service as user_message_service
 
 from tests.conftest import database_recreated
-from tests.helpers import (
-    app_context,
-    create_email_config,
-    create_site,
-    create_user,
-)
+from tests.helpers import app_context, create_site, create_user
 
 
 def test_recipient_formatting(site, params):
@@ -40,10 +35,10 @@ def params(request):
 
 
 @pytest.fixture(scope='module')
-def site(db):
+def site(db, make_email_config):
     with app_context():
         with database_recreated(db):
-            create_email_config()
+            make_email_config()
 
             site = create_site()
 

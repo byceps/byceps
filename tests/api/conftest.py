@@ -11,7 +11,7 @@ from tests.base import create_admin_app
 from tests.helpers import create_brand, create_party, create_user
 
 from ..conftest import database_recreated
-from ..helpers import create_email_config, create_site
+from ..helpers import create_site
 
 from .helpers import assemble_authorization_header
 
@@ -34,8 +34,8 @@ def app(api_app_without_db, db):
 
 
 @pytest.fixture(scope='module')
-def site(app):
-    create_email_config()
+def site(app, make_email_config):
+    make_email_config()
     return create_site()
 
 

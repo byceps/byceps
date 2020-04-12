@@ -11,7 +11,6 @@ from byceps.services.site import settings_service as site_settings_service
 from ...helpers import (
     assign_permissions_to_user,
     create_brand,
-    create_email_config,
     create_site,
     login_user,
 )
@@ -20,8 +19,8 @@ from .helpers import create_board, create_category, create_posting, create_topic
 
 
 @pytest.fixture
-def board():
-    create_email_config()
+def board(make_email_config):
+    make_email_config()
     site = create_site()
 
     brand = create_brand()

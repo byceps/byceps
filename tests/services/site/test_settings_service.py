@@ -8,7 +8,7 @@ import pytest
 from byceps.services.site import settings_service
 from byceps.services.site.transfer.models import SiteSetting
 
-from tests.helpers import create_email_config, create_site
+from tests.helpers import create_site
 
 from ...conftest import database_recreated
 
@@ -17,10 +17,10 @@ SITE_ID = 'acmecon-2014-website'
 
 
 @pytest.fixture(scope='module')
-def app(party_app, db):
+def app(party_app, db, make_email_config):
     with party_app.app_context():
         with database_recreated(db):
-            create_email_config()
+            make_email_config()
             create_site()
             yield party_app
 

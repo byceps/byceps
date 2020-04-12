@@ -8,20 +8,14 @@ import pytest
 from unittest.mock import patch
 
 from tests.conftest import database_recreated
-from tests.helpers import (
-    create_email_config,
-    create_site,
-    create_user,
-    http_client,
-    login_user,
-)
+from tests.helpers import create_site, create_user, http_client, login_user
 
 
 @pytest.fixture(scope='module')
-def app(party_app, db):
+def app(party_app, db, make_email_config):
     with party_app.app_context():
         with database_recreated(db):
-            create_email_config(
+            make_email_config(
                 sender_address='noreply@example.com',
                 sender_name='ACME Entertainment Convention',
             )
@@ -108,9 +102,9 @@ Diese Mitteilung wurde über die Website acme.example.com gesendet.\
 
 @patch('byceps.email.send')
 def test_send_when_logged_in_with_brand_contact_address(
-    send_email_mock, app, user_alice, user_bob
+    send_email_mock, app, make_email_config, user_alice, user_bob
 ):
-    create_email_config(
+    make_email_config(
         sender_address='noreply@example.com',
         sender_name='ACME Entertainment Convention',
         contact_address='help@example.com',

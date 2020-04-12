@@ -16,7 +16,6 @@ from byceps.database import db
 from byceps.services.authentication.session import service as session_service
 from byceps.services.authorization import service as authorization_service
 from byceps.services.brand import service as brand_service
-from byceps.services.email import service as email_service
 from byceps.services.party import service as party_service
 from byceps.services.site import service as site_service
 
@@ -130,20 +129,6 @@ def create_site(
         user_account_creation_enabled,
         login_enabled,
         party_id=party_id,
-    )
-
-
-def create_email_config(
-    config_id=DEFAULT_EMAIL_CONFIG_ID,
-    sender_address='info@example.com',
-    sender_name=None,
-    contact_address=None,
-):
-    email_service.set_config(
-        config_id,
-        sender_address,
-        sender_name=sender_name,
-        contact_address=contact_address,
     )
 
 

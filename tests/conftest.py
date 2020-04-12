@@ -6,6 +6,7 @@
 from contextlib import contextmanager
 from pathlib import Path
 from tempfile import TemporaryDirectory
+from typing import Optional
 
 import pytest
 
@@ -94,9 +95,18 @@ def normal_user():
 @pytest.fixture(scope='session')
 def make_email_config():
     def _wrapper(
-        config_id=DEFAULT_EMAIL_CONFIG_ID, sender_address='info@shop.example'
+        config_id: str = DEFAULT_EMAIL_CONFIG_ID,
+        sender_address: str = 'info@shop.example',
+        *,
+        sender_name: Optional[str] = None,
+        contact_address: Optional[str] = None,
     ):
-        email_service.set_config(config_id, sender_address)
+        email_service.set_config(
+            config_id,
+            sender_address,
+            sender_name=sender_name,
+            contact_address=contact_address,
+        )
 
         return email_service.get_config(config_id)
 
