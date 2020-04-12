@@ -45,6 +45,17 @@ def create_or_update_setting(
     return find_setting(party_id, name)
 
 
+def remove_setting(party_id: PartyID, name: str) -> None:
+    """Remove the setting for that party and with that name.
+
+    Do nothing if no setting with that name exists for the party.
+    """
+    db.session.query(DbSetting) \
+        .filter_by(party_id=party_id, name=name) \
+        .delete()
+    db.session.commit()
+
+
 def find_setting(party_id: PartyID, name: str) -> Optional[PartySetting]:
     """Return the setting for that party and with that name, or `None`
     if not found.

@@ -45,6 +45,17 @@ def create_or_update_setting(
     return find_setting(site_id, name)
 
 
+def remove_setting(site_id: SiteID, name: str) -> None:
+    """Remove the setting for that site and with that name.
+
+    Do nothing if no setting with that name exists for the site.
+    """
+    db.session.query(DbSetting) \
+        .filter_by(site_id=site_id, name=name) \
+        .delete()
+    db.session.commit()
+
+
 def find_setting(site_id: SiteID, name: str) -> Optional[SiteSetting]:
     """Return the setting for that site and with that name, or `None`
     if not found.

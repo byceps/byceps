@@ -45,6 +45,17 @@ def create_or_update_setting(
     return find_setting(brand_id, name)
 
 
+def remove_setting(brand_id: BrandID, name: str) -> None:
+    """Remove the setting for that brand and with that name.
+
+    Do nothing if no setting with that name exists for the brand.
+    """
+    db.session.query(DbSetting) \
+        .filter_by(brand_id=brand_id, name=name) \
+        .delete()
+    db.session.commit()
+
+
 def find_setting(brand_id: BrandID, name: str) -> Optional[BrandSetting]:
     """Return the setting for that brand and with that name, or `None`
     if not found.

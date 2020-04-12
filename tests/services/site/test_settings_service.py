@@ -71,10 +71,23 @@ def test_create_or_update(app):
     assert updated_setting.value == value2
 
 
-def test_find(app):
+def test_remove(app):
     site_id = app.site_id
     name = 'name3'
     value = 'value3'
+
+    setting = settings_service.create_setting(site_id, name, value)
+    assert settings_service.find_setting(site_id, name) is not None
+
+    settings_service.remove_setting(site_id, name)
+
+    assert settings_service.find_setting(site_id, name) is None
+
+
+def test_find(app):
+    site_id = app.site_id
+    name = 'name4'
+    value = 'value4'
 
     setting_before_create = settings_service.find_setting(site_id, name)
     assert setting_before_create is None
@@ -90,8 +103,8 @@ def test_find(app):
 
 def test_find_value(app):
     site_id = app.site_id
-    name = 'name4'
-    value = 'value4'
+    name = 'name5'
+    value = 'value5'
 
     value_before_create = settings_service.find_setting_value(site_id, name)
     assert value_before_create is None
@@ -112,15 +125,15 @@ def test_get_settings(app):
     assert all_settings_before_create == set()
 
     for name, value in {
-        ('name5a', 'value5a'),
-        ('name5b', 'value5b'),
-        ('name5c', 'value5c'),
+        ('name6a', 'value6a'),
+        ('name6b', 'value6b'),
+        ('name6c', 'value6c'),
     }:
         settings_service.create_setting(site_id, name, value)
 
     all_settings_after_create = settings_service.get_settings(site_id)
     assert all_settings_after_create == {
-        SiteSetting(site_id, 'name5a', 'value5a'),
-        SiteSetting(site_id, 'name5b', 'value5b'),
-        SiteSetting(site_id, 'name5c', 'value5c'),
+        SiteSetting(site_id, 'name6a', 'value6a'),
+        SiteSetting(site_id, 'name6b', 'value6b'),
+        SiteSetting(site_id, 'name6c', 'value6c'),
     }

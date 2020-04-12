@@ -70,10 +70,23 @@ def test_create_or_update(app):
     assert updated_setting.value == value2
 
 
-def test_find(app):
+def test_remove(app):
     party_id = app.party_id
     name = 'name3'
     value = 'value3'
+
+    setting = settings_service.create_setting(party_id, name, value)
+    assert settings_service.find_setting(party_id, name) is not None
+
+    settings_service.remove_setting(party_id, name)
+
+    assert settings_service.find_setting(party_id, name) is None
+
+
+def test_find(app):
+    party_id = app.party_id
+    name = 'name4'
+    value = 'value4'
 
     setting_before_create = settings_service.find_setting(party_id, name)
     assert setting_before_create is None
@@ -89,8 +102,8 @@ def test_find(app):
 
 def test_find_value(app):
     party_id = app.party_id
-    name = 'name4'
-    value = 'value4'
+    name = 'name5'
+    value = 'value5'
 
     value_before_create = settings_service.find_setting_value(party_id, name)
     assert value_before_create is None
@@ -111,15 +124,15 @@ def test_get_settings(app):
     assert all_settings_before_create == set()
 
     for name, value in {
-        ('name5a', 'value5a'),
-        ('name5b', 'value5b'),
-        ('name5c', 'value5c'),
+        ('name6a', 'value6a'),
+        ('name6b', 'value6b'),
+        ('name6c', 'value6c'),
     }:
         settings_service.create_setting(party_id, name, value)
 
     all_settings_after_create = settings_service.get_settings(party_id)
     assert all_settings_after_create == {
-        PartySetting(party_id, 'name5a', 'value5a'),
-        PartySetting(party_id, 'name5b', 'value5b'),
-        PartySetting(party_id, 'name5c', 'value5c'),
+        PartySetting(party_id, 'name6a', 'value6a'),
+        PartySetting(party_id, 'name6b', 'value6b'),
+        PartySetting(party_id, 'name6c', 'value6c'),
     }
