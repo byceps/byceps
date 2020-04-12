@@ -3,7 +3,7 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from ...helpers import http_client
+from tests.helpers import http_client
 
 from .helpers import create_category, create_topic, find_topic
 

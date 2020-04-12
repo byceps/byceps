@@ -9,7 +9,7 @@ from byceps.services.board import (
     posting_command_service as board_posting_command_service,
 )
 
-from ...helpers import http_client
+from tests.helpers import http_client
 
 from .helpers import find_posting
 

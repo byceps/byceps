@@ -9,7 +9,7 @@ from byceps.services.board import (
     topic_command_service as board_topic_command_service,
 )
 
-from ...helpers import http_client
+from tests.helpers import http_client
 
 from .helpers import find_topic
 

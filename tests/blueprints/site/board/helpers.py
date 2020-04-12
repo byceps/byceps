@@ -12,6 +12,7 @@ from byceps.services.board import (
     topic_query_service,
 )
 
+
 def create_board(brand_id):
     board_id = brand_id
     return board_service.create_board(brand_id, board_id)

@@ -7,8 +7,7 @@ import pytest
 
 from byceps.services.site import settings_service as site_settings_service
 
-
-from ...helpers import (
+from tests.helpers import (
     assign_permissions_to_user,
     create_brand,
     create_site,
