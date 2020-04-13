@@ -41,7 +41,12 @@ def board(site, brand):
 
 @pytest.fixture
 def category(board):
-    return create_category(board.id)
+    return create_category(board.id, number=1)
+
+
+@pytest.fixture
+def another_category(board):
+    return create_category(board.id, number=2)
 
 
 @pytest.fixture
