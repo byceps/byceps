@@ -12,6 +12,7 @@ from tests.helpers import (
     create_brand,
     create_site,
     create_user,
+    http_client,
     login_user,
 )
 
@@ -57,13 +58,23 @@ def posting(topic, normal_user):
 def moderator(party_app_with_db):
     moderator = create_user('BoardModerator')
 
-    assign_permissions_to_user(moderator.id, 'moderator', {
-        'board.hide',
-        'board_topic.lock',
-        'board_topic.move',
-        'board_topic.pin',
-    })
+    assign_permissions_to_user(
+        moderator.id,
+        'moderator',
+        {
+            'board.hide',
+            'board_topic.lock',
+            'board_topic.move',
+            'board_topic.pin',
+        },
+    )
 
     login_user(moderator.id)
 
     return moderator
+
+
+@pytest.fixture
+def moderator_client(party_app_with_db, moderator):
+    with http_client(party_app_with_db, user_id=moderator.id) as client:
+        yield client

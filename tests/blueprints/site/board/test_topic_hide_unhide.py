@@ -7,26 +7,23 @@ from byceps.services.board import (
     topic_command_service as board_topic_command_service,
 )
 
-from tests.helpers import http_client
-
 from .helpers import find_topic
 
 
-def test_hide_topic(party_app_with_db, moderator, topic):
+def test_hide_topic(party_app_with_db, moderator, moderator_client, topic):
     topic_before = topic
 
     assert_topic_is_not_hidden(topic_before)
 
     url = f'/board/topics/{topic_before.id}/flags/hidden'
-    with http_client(party_app_with_db, user_id=moderator.id) as client:
-        response = client.post(url)
+    response = moderator_client.post(url)
 
     assert response.status_code == 204
     topic_afterwards = find_topic(topic_before.id)
     assert_topic_is_hidden(topic_afterwards, moderator.id)
 
 
-def test_unhide_topic(party_app_with_db, moderator, topic):
+def test_unhide_topic(party_app_with_db, moderator, moderator_client, topic):
     topic_before = topic
 
     board_topic_command_service.hide_topic(topic_before.id, moderator.id)
@@ -34,8 +31,7 @@ def test_unhide_topic(party_app_with_db, moderator, topic):
     assert_topic_is_hidden(topic_before, moderator.id)
 
     url = f'/board/topics/{topic_before.id}/flags/hidden'
-    with http_client(party_app_with_db, user_id=moderator.id) as client:
-        response = client.delete(url)
+    response = moderator_client.delete(url)
 
     assert response.status_code == 204
     topic_afterwards = find_topic(topic_before.id)
