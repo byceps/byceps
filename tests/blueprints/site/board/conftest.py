@@ -25,18 +25,18 @@ def app(party_app_with_db):
 
 
 @pytest.fixture
-def site(make_email_config):
+def site(app, make_email_config):
     email_config = make_email_config()
     return create_site(email_config_id=email_config.id)
 
 
 @pytest.fixture
-def brand():
+def brand(app):
     return create_brand()
 
 
 @pytest.fixture
-def board(site, brand):
+def board(app, site, brand):
     board = create_board(brand.id)
 
     site_settings_service.create_setting(site.id, 'board_id', board.id)
