@@ -55,13 +55,18 @@ def another_category(board):
 
 
 @pytest.fixture
-def topic(category, normal_user):
-    return create_topic(category.id, normal_user.id)
+def topic(category, board_poster):
+    return create_topic(category.id, board_poster.id)
 
 
 @pytest.fixture
-def posting(topic, normal_user):
-    return create_posting(topic.id, normal_user.id)
+def posting(topic, board_poster):
+    return create_posting(topic.id, board_poster.id)
+
+
+@pytest.fixture
+def board_poster(app):
+    return create_user('BoardPoster')
 
 
 @pytest.fixture
