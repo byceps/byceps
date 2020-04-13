@@ -20,6 +20,11 @@ from .helpers import create_board, create_category, create_posting, create_topic
 
 
 @pytest.fixture
+def app(party_app_with_db):
+    yield party_app_with_db
+
+
+@pytest.fixture
 def site(make_email_config):
     email_config = make_email_config()
     return create_site(email_config_id=email_config.id)
@@ -60,7 +65,7 @@ def posting(topic, normal_user):
 
 
 @pytest.fixture
-def moderator(party_app_with_db):
+def moderator(app):
     moderator = create_user('BoardModerator')
 
     assign_permissions_to_user(
@@ -80,6 +85,6 @@ def moderator(party_app_with_db):
 
 
 @pytest.fixture
-def moderator_client(party_app_with_db, moderator):
-    with http_client(party_app_with_db, user_id=moderator.id) as client:
+def moderator_client(app, moderator):
+    with http_client(app, user_id=moderator.id) as client:
         yield client
