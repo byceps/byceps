@@ -3,8 +3,6 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-import pytest
-
 from byceps.services.board import (
     posting_command_service as board_posting_command_service,
 )
@@ -12,11 +10,6 @@ from byceps.services.board import (
 from tests.helpers import http_client
 
 from .helpers import find_posting
-
-
-@pytest.fixture
-def moderator(make_moderator):
-    return make_moderator('board.hide')
 
 
 def test_hide_posting(party_app_with_db, moderator, posting):

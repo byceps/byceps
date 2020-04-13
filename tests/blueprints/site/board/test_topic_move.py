@@ -8,9 +8,7 @@ from tests.helpers import http_client
 from .helpers import create_category, create_topic, find_topic
 
 
-def test_move_topic(party_app_with_db, make_moderator, normal_user, board):
-    moderator = make_moderator('board_topic.move')
-
+def test_move_topic(party_app_with_db, moderator, normal_user, board):
     category_id_1 = create_category(board.id, number=1).id
     category_id_2 = create_category(board.id, number=2).id
 

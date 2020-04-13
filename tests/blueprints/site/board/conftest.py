@@ -11,6 +11,7 @@ from tests.helpers import (
     assign_permissions_to_user,
     create_brand,
     create_site,
+    create_user,
     login_user,
 )
 
@@ -53,15 +54,16 @@ def posting(topic, normal_user):
 
 
 @pytest.fixture
-def make_moderator(admin_user):
-    def _wrapper(permission_id):
-        setup_admin_with_permission(admin_user.id, permission_id)
-        login_user(admin_user.id)
-        return admin_user
+def moderator(party_app_with_db):
+    moderator = create_user('BoardModerator')
 
-    return _wrapper
+    assign_permissions_to_user(moderator.id, 'moderator', {
+        'board.hide',
+        'board_topic.lock',
+        'board_topic.move',
+        'board_topic.pin',
+    })
 
+    login_user(moderator.id)
 
-def setup_admin_with_permission(admin_id, permission_id):
-    permission_ids = {'admin.access', permission_id}
-    assign_permissions_to_user(admin_id, 'admin', permission_ids)
+    return moderator
