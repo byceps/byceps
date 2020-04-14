@@ -11,7 +11,7 @@ from byceps.services.tourney import (
 )
 
 
-def test_hide_comment(api_client, api_client_authz_header, admin, comment):
+def test_hide_comment(api_client, api_client_authz_header, admin_user, comment):
     comment_before = comment_service.get_comment(comment.id)
     assert not comment_before.hidden
     assert comment_before.hidden_at is None
@@ -19,7 +19,7 @@ def test_hide_comment(api_client, api_client_authz_header, admin, comment):
 
     url = f'/api/v1/tourney/match_comments/{comment.id}/flags/hidden'
     headers = [api_client_authz_header]
-    json_data = {'initiator_id': str(admin.id)}
+    json_data = {'initiator_id': str(admin_user.id)}
 
     response = api_client.post(url, headers=headers, json=json_data)
     assert response.status_code == 204
@@ -28,11 +28,13 @@ def test_hide_comment(api_client, api_client_authz_header, admin, comment):
     assert comment_after.hidden
     assert comment_after.hidden_at is not None
     assert comment_after.hidden_by is not None
-    assert comment_after.hidden_by.id == admin.id
+    assert comment_after.hidden_by.id == admin_user.id
 
 
-def test_unhide_comment(api_client, api_client_authz_header, admin, comment):
-    comment_service.hide_comment(comment.id, admin.id)
+def test_unhide_comment(
+    api_client, api_client_authz_header, admin_user, comment
+):
+    comment_service.hide_comment(comment.id, admin_user.id)
 
     comment_before = comment_service.get_comment(comment.id)
     assert comment_before.hidden
@@ -41,7 +43,7 @@ def test_unhide_comment(api_client, api_client_authz_header, admin, comment):
 
     url = f'/api/v1/tourney/match_comments/{comment.id}/flags/hidden'
     headers = [api_client_authz_header]
-    json_data = {'initiator_id': str(admin.id)}
+    json_data = {'initiator_id': str(admin_user.id)}
 
     response = api_client.delete(url, headers=headers, json=json_data)
     assert response.status_code == 204

@@ -50,7 +50,7 @@ def party(app):
 
 
 @pytest.fixture(scope='module')
-def admin(app):
+def admin_user(app):
     return create_user('Admin')
 
 

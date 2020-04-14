@@ -102,8 +102,8 @@ def comment(app, match, user):
 
 
 @pytest.fixture
-def edited_comment(app, comment, admin):
+def edited_comment(app, comment, admin_user):
     comment_service.update_comment(
-        comment.id, admin.id, '[b]So nicht[/b], Freundchen!'
+        comment.id, admin_user.id, '[b]So nicht[/b], Freundchen!'
     )
     return comment_service.get_comment(comment.id)

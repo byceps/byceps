@@ -13,10 +13,10 @@ CONTENT_TYPE_JSON = 'application/json'
 
 
 def test_get_snippet_document_by_name(
-    scope, admin, api_client, api_client_authz_header
+    scope, admin_user, api_client, api_client_authz_header
 ):
     snippet_version, _ = snippet_service.create_document(
-        scope, 'colophon', admin.id, 'Colophon', 'Made with BYCEPS.'
+        scope, 'colophon', admin_user.id, 'Colophon', 'Made with BYCEPS.'
     )
     snippet_name = snippet_version.snippet.name
 
@@ -39,10 +39,10 @@ def test_get_snippet_document_by_name(
 
 
 def test_get_snippet_fragment_by_name(
-    scope, admin, api_client, api_client_authz_header
+    scope, admin_user, api_client, api_client_authz_header
 ):
     snippet_version, _ = snippet_service.create_fragment(
-        scope, 'infos', admin.id, 'TBD'
+        scope, 'infos', admin_user.id, 'TBD'
     )
     snippet_name = snippet_version.snippet.name
 

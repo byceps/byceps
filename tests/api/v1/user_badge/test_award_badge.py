@@ -10,7 +10,7 @@ from byceps.services.user_badge import (
 from byceps.services.user_badge.transfer.models import QuantifiedBadgeAwarding
 
 
-def test_award_badge(api_client, api_client_authz_header, user, admin):
+def test_award_badge(api_client, api_client_authz_header, user, admin_user):
     badge = badge_command_service.create_badge(
         'supporter', 'Supporter', 'supporter.svg'
     )
@@ -23,7 +23,7 @@ def test_award_badge(api_client, api_client_authz_header, user, admin):
     json_data = {
         'badge_slug': 'supporter',
         'user_id': str(user.id),
-        'initiator_id': str(admin.id),
+        'initiator_id': str(admin_user.id),
     }
 
     response = api_client.post(url, headers=headers, json=json_data)
