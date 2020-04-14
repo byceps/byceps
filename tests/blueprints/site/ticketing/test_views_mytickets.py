@@ -26,8 +26,7 @@ def app(party_app, db, make_email_config):
             yield party_app
 
 
-def test_when_logged_in(app, normal_user):
-    user = normal_user
+def test_when_logged_in(app, user):
     login_user(user.id)
 
     response = send_request(app, user_id=user.id)

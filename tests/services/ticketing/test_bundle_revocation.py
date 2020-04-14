@@ -12,12 +12,12 @@ from byceps.services.ticketing import (
 from tests.helpers import create_brand, create_party
 
 
-def test_revoke_bundle(admin_app_with_db, normal_user, admin_user):
+def test_revoke_bundle(admin_app_with_db, user, admin_user):
     brand = create_brand()
     party = create_party(brand_id=brand.id)
 
     quantity = 4
-    owner = normal_user
+    owner = user
 
     bundle = create_bundle(party.id, quantity, owner)
 

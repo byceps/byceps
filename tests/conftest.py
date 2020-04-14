@@ -95,8 +95,8 @@ def admin_user():
 
 
 @pytest.fixture
-def normal_user():
-    return create_user()
+def user():
+    return create_user('User')
 
 
 @pytest.fixture(scope='session')

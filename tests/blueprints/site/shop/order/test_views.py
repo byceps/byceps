@@ -72,9 +72,9 @@ def article(app, db, shop):
 
 
 @pytest.fixture
-def orderer(app, normal_user):
-    login_user(normal_user.id)
-    return normal_user
+def orderer(app, user):
+    login_user(user.id)
+    return user
 
 
 @patch('byceps.blueprints.shop.order.signals.order_placed.send')

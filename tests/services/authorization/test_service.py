@@ -8,10 +8,8 @@ from byceps.services.authorization import service as authorization_service
 from tests.helpers import assign_permissions_to_user
 
 
-def test_get_permission_ids_for_user(
-    party_app_with_db, admin_user, normal_user
-):
-    user_id = normal_user.id
+def test_get_permission_ids_for_user(party_app_with_db, admin_user, user):
+    user_id = user.id
     initiator_id = admin_user.id
 
     permissions_before = authorization_service.get_permission_ids_for_user(
