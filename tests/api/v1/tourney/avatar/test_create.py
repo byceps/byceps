@@ -6,11 +6,7 @@
 from pathlib import Path
 
 
-def test_create(
-    data_path, app, api_client, api_client_authz_header, party, user
-):
-    app.config['PATH_DATA'] = data_path
-
+def test_create(api_client, api_client_authz_header, party, user):
     response = send_request(
         api_client, api_client_authz_header, party.id, user.id
     )
@@ -19,10 +15,8 @@ def test_create(
 
 
 def test_create_fails_with_unknown_user_id(
-    data_path, app, api_client, api_client_authz_header, party
+    api_client, api_client_authz_header, party
 ):
-    app.config['PATH_DATA'] = data_path
-
     unknown_user_id = '99999999-9999-9999-9999-999999999999'
 
     response = send_request(
@@ -33,15 +27,8 @@ def test_create_fails_with_unknown_user_id(
 
 
 def test_create_fails_with_uninitialized_user(
-    data_path,
-    app,
-    api_client,
-    api_client_authz_header,
-    party,
-    uninitialized_user,
+    api_client, api_client_authz_header, party, uninitialized_user,
 ):
-    app.config['PATH_DATA'] = data_path
-
     response = send_request(
         api_client, api_client_authz_header, party.id, uninitialized_user.id
     )
@@ -50,10 +37,8 @@ def test_create_fails_with_uninitialized_user(
 
 
 def test_create_fails_with_suspended_user(
-    data_path, app, api_client, api_client_authz_header, party, suspended_user
+    api_client, api_client_authz_header, party, suspended_user
 ):
-    app.config['PATH_DATA'] = data_path
-
     response = send_request(
         api_client, api_client_authz_header, party.id, suspended_user.id
     )
@@ -62,10 +47,8 @@ def test_create_fails_with_suspended_user(
 
 
 def test_create_fails_with_deleted_user(
-    data_path, app, api_client, api_client_authz_header, party, deleted_user
+    api_client, api_client_authz_header, party, deleted_user
 ):
-    app.config['PATH_DATA'] = data_path
-
     response = send_request(
         api_client, api_client_authz_header, party.id, deleted_user.id
     )

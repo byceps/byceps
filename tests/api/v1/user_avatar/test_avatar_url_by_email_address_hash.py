@@ -12,9 +12,7 @@ from byceps.services.user_avatar import service as user_avatar_service
 from byceps.util.image.models import ImageType
 
 
-def test_existent_user_with_avatar(app, data_path, api_client):
-    app.config['PATH_DATA'] = data_path
-
+def test_existent_user_with_avatar(api_client):
     email_address = 'user1@example.com'
     user_id = create_initialized_user('UserWithAvatar', email_address)
     avatar_id = set_avatar(user_id)
@@ -52,7 +50,9 @@ def test_unrecognized_hash(api_client):
 
 def create_initialized_user(screen_name, email_address):
     password = 'long enough'
-    user, _ = user_creation_service.create_basic_user(screen_name, email_address, password)
+    user, _ = user_creation_service.create_basic_user(
+        screen_name, email_address, password
+    )
     user_command_service.initialize_account(user.id, assign_roles=False)
     return user.id
 

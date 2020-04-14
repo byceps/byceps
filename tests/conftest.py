@@ -18,6 +18,9 @@ from tests.database import set_up_database, tear_down_database
 from tests.helpers import create_site, create_user, DEFAULT_EMAIL_CONFIG_ID
 
 
+CONFIG_PATH_DATA_KEY = 'PATH_DATA'
+
+
 @pytest.fixture(scope='session')
 def db():
     return _db
@@ -33,19 +36,22 @@ def database_recreated(db):
 
 
 @pytest.fixture
-def make_admin_app():
+def make_admin_app(data_path):
     """Provide the admin web application."""
 
     def _wrapper(**config_overrides):
+        if CONFIG_PATH_DATA_KEY not in config_overrides:
+            config_overrides[CONFIG_PATH_DATA_KEY] = data_path
         return create_admin_app(config_overrides)
 
     return _wrapper
 
 
 @pytest.fixture(scope='session')
-def admin_app():
+def admin_app(data_path):
     """Provide the admin web application."""
-    app = create_admin_app()
+    config_overrides = {CONFIG_PATH_DATA_KEY: data_path}
+    app = create_admin_app(config_overrides)
     yield app
 
 
@@ -63,9 +69,10 @@ def admin_client(admin_app):
 
 
 @pytest.fixture(scope='session')
-def party_app():
+def party_app(data_path):
     """Provide a party web application."""
-    app = create_party_app()
+    config_overrides = {CONFIG_PATH_DATA_KEY: data_path}
+    app = create_party_app(config_overrides)
     yield app
 
 
@@ -76,7 +83,7 @@ def party_app_with_db(party_app, db):
             yield party_app
 
 
-@pytest.fixture
+@pytest.fixture(scope='session')
 def data_path():
     with TemporaryDirectory() as d:
         yield Path(d)

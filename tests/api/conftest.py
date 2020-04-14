@@ -10,7 +10,7 @@ import pytest
 from tests.base import create_admin_app
 from tests.helpers import create_brand, create_party, create_user
 
-from ..conftest import database_recreated
+from ..conftest import CONFIG_PATH_DATA_KEY, database_recreated
 from ..helpers import create_site
 
 from .helpers import assemble_authorization_header
@@ -20,8 +20,12 @@ API_TOKEN = 'just-say-PLEASE!'
 
 
 @pytest.fixture(scope='session')
-def api_app_without_db(db):
-    app = create_admin_app({'API_TOKEN': API_TOKEN})
+def api_app_without_db(db, data_path):
+    config_overrides = {
+        'API_TOKEN': API_TOKEN,
+        CONFIG_PATH_DATA_KEY: data_path,
+    }
+    app = create_admin_app(config_overrides)
     with app.app_context():
         yield app
 
