@@ -12,10 +12,11 @@ import pytest
 
 from byceps.database import db as _db
 from byceps.services.email import service as email_service
+from byceps.services.user import command_service as user_command_service
 
 from tests.base import create_admin_app, create_party_app
 from tests.database import set_up_database, tear_down_database
-from tests.helpers import create_site, DEFAULT_EMAIL_CONFIG_ID, provide_user
+from tests.helpers import create_site, create_user, DEFAULT_EMAIL_CONFIG_ID
 
 
 CONFIG_PATH_DATA_KEY = 'PATH_DATA'
@@ -88,28 +89,43 @@ def data_path():
 
 
 @pytest.fixture
-def admin_user():
-    yield from provide_user('Admin')
+def make_user(db):
+    users = []
+
+    def _wrapper(*args, **kwargs):
+        user = create_user(*args, **kwargs)
+        users.append(user)
+        yield user
+
+    yield _wrapper
+
+    for user in users:
+        user_command_service.delete_account(user.id, user.id, 'clean up')
 
 
 @pytest.fixture
-def user():
-    yield from provide_user('User')
+def admin_user(make_user):
+    yield from make_user('Admin')
 
 
 @pytest.fixture
-def uninitialized_user(app):
-    yield from provide_user('UninitializedUser', initialized=False)
+def user(make_user):
+    yield from make_user('User')
 
 
 @pytest.fixture
-def suspended_user(app):
-    yield from provide_user('SuspendedUser', suspended=True)
+def uninitialized_user(make_user):
+    yield from make_user('UninitializedUser', initialized=False)
 
 
 @pytest.fixture
-def deleted_user(app):
-    yield from provide_user('DeletedUser', deleted=True)
+def suspended_user(make_user):
+    yield from make_user('SuspendedUser', suspended=True)
+
+
+@pytest.fixture
+def deleted_user(make_user):
+    yield from make_user('DeletedUser', deleted=True)
 
 
 @pytest.fixture(scope='session')

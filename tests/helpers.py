@@ -18,7 +18,6 @@ from byceps.services.authorization import service as authorization_service
 from byceps.services.brand import service as brand_service
 from byceps.services.party import service as party_service
 from byceps.services.site import service as site_service
-from byceps.services.user import command_service as user_command_service
 
 from testfixtures.user import (
     create_user as _create_user,
@@ -56,12 +55,6 @@ def current_user_set(app, user):
 
     with appcontext_pushed.connected_to(handler, app):
         yield
-
-
-def provide_user(*args, **kwargs):
-    user = create_user(*args, **kwargs)
-    yield user
-    user_command_service.delete_account(user.id, user.id, 'clean up')
 
 
 def create_user(*args, **kwargs):
