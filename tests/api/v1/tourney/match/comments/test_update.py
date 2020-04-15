@@ -11,7 +11,7 @@ from byceps.services.tourney import (
 )
 
 
-def test_update_comment(api_client, api_client_authz_header, comment, player):
+def test_update_comment(api_client, api_client_authz_header, comment, user):
     original_comment = comment_service.get_comment(comment.id)
     assert original_comment.body_text == 'Something stupid.'
     assert original_comment.body_html == 'Something stupid.'
@@ -19,7 +19,7 @@ def test_update_comment(api_client, api_client_authz_header, comment, player):
     assert original_comment.last_edited_by is None
 
     response = request_comment_update(
-        api_client, api_client_authz_header, comment.id, player.id
+        api_client, api_client_authz_header, comment.id, user.id
     )
 
     assert response.status_code == 204
@@ -29,16 +29,14 @@ def test_update_comment(api_client, api_client_authz_header, comment, player):
     assert updated_comment.body_html == '<em>This</em> is better!'
     assert updated_comment.last_edited_at is not None
     assert updated_comment.last_edited_by is not None
-    assert updated_comment.last_edited_by.id == player.id
+    assert updated_comment.last_edited_by.id == user.id
 
 
-def test_update_nonexistant_comment(
-    api_client, api_client_authz_header, player
-):
+def test_update_nonexistant_comment(api_client, api_client_authz_header, user):
     unknown_comment_id = '00000000-0000-0000-0000-000000000000'
 
     response = request_comment_update(
-        api_client, api_client_authz_header, unknown_comment_id, player.id
+        api_client, api_client_authz_header, unknown_comment_id, user.id
     )
 
     assert response.status_code == 404
@@ -48,20 +46,15 @@ def test_update_nonexistant_comment(
 
 
 @pytest.fixture
-def player(user):
-    return user
-
-
-@pytest.fixture
 def match(app):
     return match_service.create_match()
 
 
 @pytest.fixture
-def comment(match, player):
+def comment(match, user):
     body = 'Something stupid.'
 
-    return comment_service.create_comment(match.id, player.id, body)
+    return comment_service.create_comment(match.id, user.id, body)
 
 
 def request_comment_update(

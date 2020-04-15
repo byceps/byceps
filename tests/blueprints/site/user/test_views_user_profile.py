@@ -6,7 +6,7 @@
 import pytest
 
 from tests.conftest import database_recreated
-from tests.helpers import create_site, create_user, http_client
+from tests.helpers import create_site, http_client
 
 
 @pytest.fixture(scope='module')
@@ -18,35 +18,27 @@ def app(party_app, db, make_email_config):
             yield party_app
 
 
-def test_view_profile_of_existing_user(app):
-    user = create_user('ExistingUser')
-
+def test_view_profile_of_existing_user(app, user):
     response = request_profile(app, user.id)
 
     assert response.status_code == 200
     assert response.mimetype == 'text/html'
 
 
-def test_view_profile_of_uninitialized_user(app):
-    user = create_user('UninitializedUser', initialized=False)
-
-    response = request_profile(app, user.id)
+def test_view_profile_of_uninitialized_user(app, uninitialized_user):
+    response = request_profile(app, uninitialized_user.id)
 
     assert response.status_code == 404
 
 
-def test_view_profile_of_suspended_user(app):
-    user = create_user('SuspendedUser', suspended=True)
-
-    response = request_profile(app, user.id)
+def test_view_profile_of_suspended_user(app, suspended_user):
+    response = request_profile(app, suspended_user.id)
 
     assert response.status_code == 404
 
 
-def test_view_profile_of_deleted_user(app):
-    user = create_user('DeletedUser', deleted=True)
-
-    response = request_profile(app, user.id)
+def test_view_profile_of_deleted_user(app, deleted_user):
+    response = request_profile(app, deleted_user.id)
 
     assert response.status_code == 404
 

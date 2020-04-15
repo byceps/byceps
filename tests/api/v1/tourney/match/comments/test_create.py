@@ -12,14 +12,11 @@ from byceps.services.tourney import (
     match_comment_service as comment_service,
     match_service,
 )
-from byceps.services.user import command_service as user_command_service
-
-from tests.helpers import create_user
 
 
-def test_create_comment(api_client, api_client_authz_header, player, match):
+def test_create_comment(api_client, api_client_authz_header, user, match):
     response = request_comment_creation(
-        api_client, api_client_authz_header, match.id, player.id
+        api_client, api_client_authz_header, match.id, user.id
     )
 
     assert response.status_code == 201
@@ -29,7 +26,7 @@ def test_create_comment(api_client, api_client_authz_header, player, match):
     comment = get_comment(comment_id)
     assert comment.match_id == match.id
     assert comment.created_at is not None
-    assert comment.created_by.id == player.id
+    assert comment.created_by.id == user.id
     assert comment.body_text == 'gg [i]lol[/i]'
     assert comment.body_html == 'gg <em>lol</em>'
     assert comment.last_edited_at is None
@@ -40,12 +37,12 @@ def test_create_comment(api_client, api_client_authz_header, player, match):
 
 
 def test_create_comment_on_nonexistent_match(
-    api_client, api_client_authz_header, player
+    api_client, api_client_authz_header, user
 ):
     unknown_match_id = '00000000-0000-0000-0000-000000000000'
 
     response = request_comment_creation(
-        api_client, api_client_authz_header, unknown_match_id, player.id
+        api_client, api_client_authz_header, unknown_match_id, user.id
     )
 
     assert response.status_code == 400
@@ -53,10 +50,10 @@ def test_create_comment_on_nonexistent_match(
 
 
 def test_create_comment_by_suspended_user(
-    api_client, api_client_authz_header, cheater, match
+    api_client, api_client_authz_header, suspended_user, match
 ):
     response = request_comment_creation(
-        api_client, api_client_authz_header, match.id, cheater.id
+        api_client, api_client_authz_header, match.id, suspended_user.id
     )
 
     assert response.status_code == 400
@@ -77,22 +74,6 @@ def test_create_comment_by_unknown_user(
 
 
 # helpers
-
-
-@pytest.fixture
-def player(user):
-    return user
-
-
-@pytest.fixture
-def cheater(app):
-    user = create_user('Cheater!')
-
-    user_command_service.suspend_account(
-        user.id, user.id, reason='I cheat, therefore I lame.'
-    )
-
-    return user
 
 
 @pytest.fixture
