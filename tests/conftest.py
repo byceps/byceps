@@ -99,6 +99,21 @@ def user():
     yield from provide_user('User')
 
 
+@pytest.fixture
+def uninitialized_user(app):
+    yield from provide_user('UninitializedUser', initialized=False)
+
+
+@pytest.fixture
+def suspended_user(app):
+    yield from provide_user('SuspendedUser', suspended=True)
+
+
+@pytest.fixture
+def deleted_user(app):
+    yield from provide_user('DeletedUser', deleted=True)
+
+
 @pytest.fixture(scope='session')
 def make_email_config():
     def _wrapper(

@@ -79,12 +79,12 @@ def test_create_comment_by_unknown_user(
 # helpers
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture
 def player(user):
     return user
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture
 def cheater(app):
     user = create_user('Cheater!')
 

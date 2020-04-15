@@ -47,7 +47,7 @@ def test_update_nonexistant_comment(
 # helpers
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture
 def player(user):
     return user
 
