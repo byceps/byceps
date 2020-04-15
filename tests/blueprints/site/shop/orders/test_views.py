@@ -16,7 +16,6 @@ from tests.helpers import (
     create_brand,
     create_party,
     create_site,
-    create_user,
     create_user_with_detail,
     http_client,
     login_user,
@@ -52,21 +51,16 @@ def email_config(app, make_email_config):
 
 
 @pytest.fixture
-def shop1(app, email_config, admin):
+def shop1(app, email_config, admin_user):
     shop = create_shop('shop-1')
     sequence_service.create_order_number_sequence(shop.id, 'LF-02-B')
-    create_payment_instructions_snippet(shop.id, admin.id)
+    create_payment_instructions_snippet(shop.id, admin_user.id)
     return shop
 
 
 @pytest.fixture
 def shop2(app, email_config):
     return create_shop('shop-2')
-
-
-@pytest.fixture
-def admin(app):
-    return create_user('ShopOrderAdmin')
 
 
 @pytest.fixture
@@ -80,7 +74,7 @@ def user2(app):
 
 
 def test_view_matching_user_and_party_and_shop(
-    app, party1, shop1, admin, user1
+    app, party1, shop1, admin_user, user1
 ):
     create_site(party_id=party1.id)
 
@@ -92,7 +86,7 @@ def test_view_matching_user_and_party_and_shop(
 
 
 def test_view_matching_party_and_shop_but_different_user(
-    app, party1, shop1, admin, user1, user2
+    app, party1, shop1, admin_user, user1, user2
 ):
     create_site(party_id=party1.id)
 
@@ -104,7 +98,7 @@ def test_view_matching_party_and_shop_but_different_user(
 
 
 def test_view_matching_user_but_different_party_and_shop(
-    app, party2, shop1, admin, user1
+    app, party2, shop1, admin_user, user1
 ):
     create_site(party_id=party2.id)
 
