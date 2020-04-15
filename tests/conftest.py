@@ -48,11 +48,9 @@ def make_admin_app(data_path):
 
 
 @pytest.fixture(scope='session')
-def admin_app(data_path):
+def admin_app(make_admin_app):
     """Provide the admin web application."""
-    config_overrides = {CONFIG_PATH_DATA_KEY: data_path}
-    app = create_admin_app(config_overrides)
-    yield app
+    yield make_admin_app()
 
 
 @pytest.fixture
