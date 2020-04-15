@@ -8,7 +8,6 @@ from pytest import raises
 
 from byceps.services.seating import area_service, seat_service
 from byceps.services.ticketing import (
-    category_service,
     event_service,
     ticket_bundle_service,
     ticket_creation_service,
@@ -23,26 +22,7 @@ from byceps.services.ticketing.exceptions import (
 # `Seat.assignment` is available.
 import byceps.services.seating.models.seat_group
 
-from tests.conftest import database_recreated
 from tests.helpers import create_brand, create_party, create_user
-
-
-@pytest.fixture(scope='module')
-def app(admin_app, db):
-    with admin_app.app_context():
-        with database_recreated(db):
-            yield admin_app
-
-
-@pytest.fixture(scope='module')
-def party():
-    brand = create_brand()
-    return create_party(brand_id=brand.id)
-
-
-@pytest.fixture(scope='module')
-def category(party):
-    return create_category(party.id, 'Premium')
 
 
 @pytest.fixture(scope='module')
@@ -50,32 +30,22 @@ def area(party):
     return area_service.create_area(party.id, 'main', 'Main Hall')
 
 
-@pytest.fixture(scope='module')
-def admin(app):
-    return create_user('Admin')
-
-
-@pytest.fixture(scope='module')
-def ticket_owner(app):
-    return create_user('TicketOwner')
-
-
 @pytest.fixture
 def ticket(app, category, ticket_owner):
     return ticket_creation_service.create_ticket(category.id, ticket_owner.id)
 
 
-def test_appoint_and_withdraw_seat_manager(app, category, ticket, ticket_owner):
-    manager = create_user('Ticket_Manager')
-
+def test_appoint_and_withdraw_seat_manager(
+    app, category, ticket, ticket_owner, ticket_manager
+):
     assert ticket.seat_managed_by_id is None
 
     # appoint seat manager
 
     ticket_seat_management_service.appoint_seat_manager(
-        ticket.id, manager.id, ticket_owner.id
+        ticket.id, ticket_manager.id, ticket_owner.id
     )
-    assert ticket.seat_managed_by_id == manager.id
+    assert ticket.seat_managed_by_id == ticket_manager.id
 
     events_after_appointment = event_service.get_events_for_ticket(ticket.id)
     assert len(events_after_appointment) == 1
@@ -85,7 +55,7 @@ def test_appoint_and_withdraw_seat_manager(app, category, ticket, ticket_owner):
         appointment_event,
         'seat-manager-appointed',
         {
-            'appointed_seat_manager_id': str(manager.id),
+            'appointed_seat_manager_id': str(ticket_manager.id),
             'initiator_id': str(ticket_owner.id),
         },
     )
@@ -196,13 +166,11 @@ def test_occupy_seat_with_bundled_ticket(
 
 
 def test_occupy_seat_with_wrong_category(
-    app, party, category, area, ticket, ticket_owner
+    app, party, category, another_category, area, ticket, ticket_owner
 ):
-    other_category = create_category(party.id, 'Economy')
+    seat = seat_service.create_seat(area, 0, 0, another_category.id)
 
-    seat = seat_service.create_seat(area, 0, 0, other_category.id)
-
-    assert ticket.category_id != other_category.id
+    assert ticket.category_id != another_category.id
 
     with raises(TicketCategoryMismatch):
         ticket_seat_management_service.occupy_seat(
@@ -211,10 +179,6 @@ def test_occupy_seat_with_wrong_category(
 
 
 # helpers
-
-
-def create_category(party_id, title):
-    return category_service.create_category(party_id, title)
 
 
 def assert_event(event, event_type, data):

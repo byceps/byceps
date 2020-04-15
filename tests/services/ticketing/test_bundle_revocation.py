@@ -3,26 +3,19 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
+import pytest
+
 from byceps.services.ticketing import (
-    category_service,
     event_service,
     ticket_bundle_service as bundle_service,
 )
 
-from tests.helpers import create_brand, create_party
 
-
-def test_revoke_bundle(admin_app_with_db, user, admin_user):
-    brand = create_brand()
-    party = create_party(brand_id=brand.id)
-
-    quantity = 4
-    owner = user
-
-    bundle = create_bundle(party.id, quantity, owner)
+def test_revoke_bundle(app, bundle, ticketing_admin):
+    expected_quantity = 4
 
     tickets_before = bundle_service.find_tickets_for_bundle(bundle.id)
-    assert len(tickets_before) == quantity
+    assert len(tickets_before) == expected_quantity
 
     for ticket_before in tickets_before:
         assert not ticket_before.revoked
@@ -32,12 +25,12 @@ def test_revoke_bundle(admin_app_with_db, user, admin_user):
 
     # -------------------------------- #
 
-    bundle_service.revoke_bundle(bundle.id, admin_user.id)
+    bundle_service.revoke_bundle(bundle.id, ticketing_admin.id)
 
     # -------------------------------- #
 
     tickets_after = bundle_service.find_tickets_for_bundle(bundle.id)
-    assert len(tickets_after) == quantity
+    assert len(tickets_after) == expected_quantity
 
     for ticket_after in tickets_after:
         assert ticket_after.revoked
@@ -48,18 +41,14 @@ def test_revoke_bundle(admin_app_with_db, user, admin_user):
         ticket_revoked_event = events_after[0]
         assert ticket_revoked_event.event_type == 'ticket-revoked'
         assert ticket_revoked_event.data == {
-            'initiator_id': str(admin_user.id),
+            'initiator_id': str(ticketing_admin.id),
         }
 
 
 # helpers
 
 
-def create_bundle(party_id, quantity, owner):
-    category = create_category(party_id, 'Premium')
-
-    return bundle_service.create_bundle(category.id, quantity, owner.id)
-
-
-def create_category(party_id, title):
-    return category_service.create_category(party_id, title)
+@pytest.fixture
+def bundle(category, ticket_owner):
+    quantity = 4
+    return bundle_service.create_bundle(category.id, quantity, ticket_owner.id)

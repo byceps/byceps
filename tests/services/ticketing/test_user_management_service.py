@@ -6,37 +6,10 @@
 import pytest
 
 from byceps.services.ticketing import (
-    category_service,
     event_service,
     ticket_creation_service,
     ticket_user_management_service,
 )
-
-from tests.conftest import database_recreated
-from tests.helpers import create_brand, create_party, create_user
-
-
-@pytest.fixture(scope='module')
-def app(admin_app, db):
-    with admin_app.app_context():
-        with database_recreated(db):
-            yield admin_app
-
-
-@pytest.fixture(scope='module')
-def party():
-    brand = create_brand()
-    return create_party(brand_id=brand.id)
-
-
-@pytest.fixture(scope='module')
-def category(party):
-    return category_service.create_category(party.id, 'Premium')
-
-
-@pytest.fixture(scope='module')
-def ticket_owner(app):
-    return create_user('TicketOwner')
 
 
 @pytest.fixture
@@ -44,17 +17,17 @@ def ticket(app, category, ticket_owner):
     return ticket_creation_service.create_ticket(category.id, ticket_owner.id)
 
 
-def test_appoint_and_withdraw_user_manager(app, ticket, ticket_owner):
-    manager = create_user('Ticket_Manager')
-
+def test_appoint_and_withdraw_user_manager(
+    app, ticket, ticket_owner, ticket_manager
+):
     assert ticket.user_managed_by_id is None
 
     # appoint user manager
 
     ticket_user_management_service.appoint_user_manager(
-        ticket.id, manager.id, ticket_owner.id
+        ticket.id, ticket_manager.id, ticket_owner.id
     )
-    assert ticket.user_managed_by_id == manager.id
+    assert ticket.user_managed_by_id == ticket_manager.id
 
     events_after_appointment = event_service.get_events_for_ticket(ticket.id)
     assert len(events_after_appointment) == 1
@@ -64,7 +37,7 @@ def test_appoint_and_withdraw_user_manager(app, ticket, ticket_owner):
         appointment_event,
         'user-manager-appointed',
         {
-            'appointed_user_manager_id': str(manager.id),
+            'appointed_user_manager_id': str(ticket_manager.id),
             'initiator_id': str(ticket_owner.id),
         },
     )
@@ -87,17 +60,15 @@ def test_appoint_and_withdraw_user_manager(app, ticket, ticket_owner):
     )
 
 
-def test_appoint_and_withdraw_user(app, ticket, ticket_owner):
-    user = create_user('Ticket_User')
-
+def test_appoint_and_withdraw_user(app, ticket, ticket_owner, ticket_user):
     assert ticket.used_by_id is None
 
     # appoint user
 
     ticket_user_management_service.appoint_user(
-        ticket.id, user.id, ticket_owner.id
+        ticket.id, ticket_user.id, ticket_owner.id
     )
-    assert ticket.used_by_id == user.id
+    assert ticket.used_by_id == ticket_user.id
 
     events_after_appointment = event_service.get_events_for_ticket(ticket.id)
     assert len(events_after_appointment) == 1
@@ -107,7 +78,7 @@ def test_appoint_and_withdraw_user(app, ticket, ticket_owner):
         appointment_event,
         'user-appointed',
         {
-            'appointed_user_id': str(user.id),
+            'appointed_user_id': str(ticket_user.id),
             'initiator_id': str(ticket_owner.id),
         },
     )
