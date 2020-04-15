@@ -8,7 +8,7 @@ API-specific fixtures
 import pytest
 
 from tests.base import create_admin_app
-from tests.helpers import create_brand, create_party, create_user
+from tests.helpers import create_brand, create_party, provide_user
 
 from ..conftest import CONFIG_PATH_DATA_KEY, database_recreated
 from ..helpers import create_site
@@ -51,27 +51,27 @@ def party(app):
 
 @pytest.fixture(scope='module')
 def admin_user(app):
-    return create_user('AdminForApiTests')
+    yield from provide_user('AdminForApiTests')
 
 
 @pytest.fixture(scope='module')
 def user(app):
-    return create_user('UserForApiTests')
+    yield from provide_user('UserForApiTests')
 
 
 @pytest.fixture(scope='module')
 def uninitialized_user(app):
-    return create_user('UninitializedUser', initialized=False)
+    yield from provide_user('UninitializedUser', initialized=False)
 
 
 @pytest.fixture(scope='module')
 def suspended_user(app):
-    return create_user('SuspendedUser', suspended=True)
+    yield from provide_user('SuspendedUser', suspended=True)
 
 
 @pytest.fixture(scope='module')
 def deleted_user(app):
-    return create_user('DeletedUser', deleted=True)
+    yield from provide_user('DeletedUser', deleted=True)
 
 
 @pytest.fixture(scope='module')

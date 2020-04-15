@@ -15,7 +15,7 @@ from byceps.services.email import service as email_service
 
 from tests.base import create_admin_app, create_party_app
 from tests.database import set_up_database, tear_down_database
-from tests.helpers import create_site, create_user, DEFAULT_EMAIL_CONFIG_ID
+from tests.helpers import create_site, DEFAULT_EMAIL_CONFIG_ID, provide_user
 
 
 CONFIG_PATH_DATA_KEY = 'PATH_DATA'
@@ -91,12 +91,12 @@ def data_path():
 
 @pytest.fixture
 def admin_user():
-    return create_user('Admin')
+    yield from provide_user('Admin')
 
 
 @pytest.fixture
 def user():
-    return create_user('User')
+    yield from provide_user('User')
 
 
 @pytest.fixture(scope='session')
