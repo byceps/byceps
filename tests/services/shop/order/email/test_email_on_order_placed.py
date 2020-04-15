@@ -21,7 +21,7 @@ from .base import place_order_with_items
 
 @patch('byceps.email.send')
 def test_email_on_order_placed(
-    send_email_mock, party_app_with_db, shop, admin_user
+    send_email_mock, party_app_with_db, shop, order_admin
 ):
     app = party_app_with_db
 
@@ -30,8 +30,8 @@ def test_email_on_order_placed(
     )
 
     sequence_service.create_order_number_sequence(shop.id, 'AC-14-B', value=252)
-    create_email_payment_instructions_snippet(shop.id, admin_user.id)
-    create_email_footer_snippet(shop.id, admin_user.id)
+    create_email_payment_instructions_snippet(shop.id, order_admin.id)
+    create_email_footer_snippet(shop.id, order_admin.id)
 
     order_id = place_order(shop.id, user)
 

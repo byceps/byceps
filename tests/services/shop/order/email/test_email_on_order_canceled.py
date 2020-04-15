@@ -18,7 +18,7 @@ from .base import place_order_with_items
 
 @patch('byceps.email.send')
 def test_email_on_order_canceled(
-    send_email_mock, party_app_with_db, shop, admin_user
+    send_email_mock, party_app_with_db, shop, order_admin
 ):
     app = party_app_with_db
 
@@ -27,12 +27,12 @@ def test_email_on_order_canceled(
     )
 
     sequence_service.create_order_number_sequence(shop.id, 'AC-14-B', value=16)
-    create_email_footer_snippet(shop.id, admin_user.id)
+    create_email_footer_snippet(shop.id, order_admin.id)
 
     order_id = place_order(shop.id, user)
 
     reason = 'Du hast nicht rechtzeitig bezahlt.'
-    order_service.cancel_order(order_id, admin_user.id, reason)
+    order_service.cancel_order(order_id, order_admin.id, reason)
 
     with current_user_set(app, user), app.app_context():
         order_email_service.send_email_for_canceled_order_to_orderer(order_id)

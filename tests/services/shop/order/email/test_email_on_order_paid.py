@@ -19,7 +19,7 @@ from .base import place_order_with_items
 
 @patch('byceps.email.send')
 def test_email_on_order_paid(
-    send_email_mock, party_app_with_db, shop, admin_user
+    send_email_mock, party_app_with_db, shop, order_admin
 ):
     app = party_app_with_db
 
@@ -28,12 +28,12 @@ def test_email_on_order_paid(
     )
 
     sequence_service.create_order_number_sequence(shop.id, 'AC-14-B', value=21)
-    create_email_footer_snippet(shop.id, admin_user.id)
+    create_email_footer_snippet(shop.id, order_admin.id)
 
     order_id = place_order(shop.id, user)
 
     order_service.mark_order_as_paid(
-        order_id, PaymentMethod.bank_transfer, admin_user.id
+        order_id, PaymentMethod.bank_transfer, order_admin.id
     )
 
     with current_user_set(app, user), app.app_context():
