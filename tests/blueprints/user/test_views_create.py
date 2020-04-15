@@ -50,7 +50,7 @@ def app(party_app, db, make_email_config):
 
 @pytest.fixture(scope='module')
 def admin():
-    return create_user('Admin')
+    return create_user('UserAdmin')
 
 
 @pytest.fixture(scope='module')

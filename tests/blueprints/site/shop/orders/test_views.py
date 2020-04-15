@@ -66,7 +66,7 @@ def shop2(app, email_config):
 
 @pytest.fixture
 def admin(app):
-    return create_user('Admin')
+    return create_user('ShopOrderAdmin')
 
 
 @pytest.fixture

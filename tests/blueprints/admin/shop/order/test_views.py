@@ -37,7 +37,7 @@ def order_number_sequence(shop) -> None:
 
 @pytest.fixture(scope='module')
 def admin():
-    admin = create_user('Admin')
+    admin = create_user('ShopOrderAdmin')
     authorize_admin(admin.id)
     login_user(admin.id)
     return admin

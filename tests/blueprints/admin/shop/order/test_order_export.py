@@ -26,7 +26,7 @@ from tests.services.shop.helpers import create_article as _create_article
 
 @pytest.fixture(scope='module')
 def admin_user(app):
-    admin = create_user('Admin')
+    admin = create_user('ShopOrderAdmin')
     authorize_admin(admin.id)
     login_user(admin.id)
     return admin

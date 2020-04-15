@@ -51,12 +51,12 @@ def party(app):
 
 @pytest.fixture(scope='module')
 def admin_user(app):
-    return create_user('Admin')
+    return create_user('AdminForApiTests')
 
 
 @pytest.fixture(scope='module')
 def user(app):
-    return create_user('User')
+    return create_user('UserForApiTests')
 
 
 @pytest.fixture(scope='module')
