@@ -35,7 +35,7 @@ def database_recreated(db):
     tear_down_database(db)
 
 
-@pytest.fixture
+@pytest.fixture(scope='session')
 def make_admin_app(data_path):
     """Provide the admin web application."""
 
