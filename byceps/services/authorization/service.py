@@ -13,14 +13,8 @@ from ...typing import UserID
 
 from ..user import event_service as user_event_service
 
-from .models import (
-    Permission,
-    PermissionID,
-    Role,
-    RoleID,
-    RolePermission,
-    UserRole,
-)
+from .models import Permission, Role, RolePermission, UserRole
+from .transfer.models import PermissionID, RoleID
 
 
 def create_permission(permission_id: PermissionID, title: str) -> Permission:
