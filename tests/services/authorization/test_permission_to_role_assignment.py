@@ -32,12 +32,12 @@ def test_deassign_permission_from_role(admin_app_with_db, permission, role):
 
 @pytest.fixture
 def permission():
-    return service.create_permission('board_topic_hide', 'Hide board topics')
+    return service.create_permission('tickle_mortals', 'Tickle mortals')
 
 
 @pytest.fixture
 def role():
-    return service.create_role('board_moderator', 'Board Moderator')
+    return service.create_role('demigod', 'Demigod')
 
 
 def get_permission_ids_for_role(role):

@@ -14,7 +14,7 @@ from tests.helpers import create_user
 
 
 def test_deassign_all_roles_from_user(admin_app_with_db, admin_user):
-    role1 = create_role('board_moderator', 'Board Moderator')
+    role1 = create_role('demigod', 'Demigod')
     role2 = create_role('pausenclown', 'Pausenclown')
     role3 = create_role('partymeister', 'Partymeister')
 
@@ -27,12 +27,12 @@ def test_deassign_all_roles_from_user(admin_app_with_db, admin_user):
     assign_role_to_user(role1.id, user2.id, initiator_id=admin_user)
     assign_role_to_user(role3.id, user2.id, initiator_id=admin_user)
 
-    assert find_role_ids_for_user(user1.id) == {'board_moderator', 'pausenclown'}
-    assert find_role_ids_for_user(user2.id) == {'board_moderator', 'partymeister'}
+    assert find_role_ids_for_user(user1.id) == {'demigod', 'pausenclown'}
+    assert find_role_ids_for_user(user2.id) == {'demigod', 'partymeister'}
 
     deassign_all_roles_from_user(user1.id)
 
     # Targeted user's roles should have been deassigned.
     assert find_role_ids_for_user(user1.id) == set()
     # All other users' roles should still be assigned.
-    assert find_role_ids_for_user(user2.id) == {'board_moderator', 'partymeister'}
+    assert find_role_ids_for_user(user2.id) == {'demigod', 'partymeister'}

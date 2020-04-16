@@ -17,19 +17,19 @@ def test_get_permission_ids_for_user(party_app_with_db, admin_user, user):
     )
     assert permissions_before == frozenset()
 
-    assign_permissions_to_user(user_id, 'board_moderator', {
-        'board_topic_hide',
-        'board_topic_pin',
+    assign_permissions_to_user(user_id, 'god', {
+        'see_everything',
+        'tickle_demigods',
     }, initiator_id=initiator_id)
-    assign_permissions_to_user(user_id, 'news_editor', {
-        'news_item_create',
+    assign_permissions_to_user(user_id, 'demigod', {
+        'tickle_mortals',
     }, initiator_id=initiator_id)
 
     permissions_after = authorization_service.get_permission_ids_for_user(
         user_id
     )
     assert permissions_after == {
-        'board_topic_hide',
-        'board_topic_pin',
-        'news_item_create',
+        'see_everything',
+        'tickle_demigods',
+        'tickle_mortals',
     }

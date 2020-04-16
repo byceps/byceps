@@ -8,7 +8,7 @@ import pytest
 from byceps.services.authorization import service
 
 
-PERMISSION_ID = 'board_topic_hide'
+PERMISSION_ID = 'tickle_mortals'
 
 
 def test_assign_role_to_user(admin_app_with_db, user, admin_user, role):
@@ -45,11 +45,11 @@ def test_deassign_role_from_user(admin_app_with_db, user, admin_user, role):
 
 @pytest.fixture
 def permission():
-    return service.create_permission(PERMISSION_ID, 'Hide board topics')
+    return service.create_permission(PERMISSION_ID, 'Tickle mortals')
 
 
 @pytest.fixture
 def role(permission):
-    role = service.create_role('board_moderator', 'Board Moderator')
+    role = service.create_role('demigod', 'Demigod')
     service.assign_permission_to_role(permission.id, role.id)
     return role
