@@ -32,6 +32,15 @@ def create_permission(permission_id: PermissionID, title: str) -> DbPermission:
     return permission
 
 
+def delete_permission(permission_id: PermissionID) -> None:
+    """Delete a permission."""
+    db.session.query(DbPermission) \
+        .filter_by(id=permission_id) \
+        .delete()
+
+    db.session.commit()
+
+
 def create_role(role_id: RoleID, title: str) -> DbRole:
     """Create a role."""
     role = DbRole(role_id, title)
@@ -40,6 +49,19 @@ def create_role(role_id: RoleID, title: str) -> DbRole:
     db.session.commit()
 
     return role
+
+
+def delete_role(role_id: RoleID) -> None:
+    """Delete a role."""
+    db.session.query(DbRolePermission) \
+        .filter_by(role_id=role_id) \
+        .delete()
+
+    db.session.query(DbRole) \
+        .filter_by(id=role_id) \
+        .delete()
+
+    db.session.commit()
 
 
 def find_role(role_id: RoleID) -> Optional[DbRole]:
