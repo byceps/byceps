@@ -13,13 +13,18 @@ from ...typing import UserID
 
 from ..user import event_service as user_event_service
 
-from .models import Permission, Role, RolePermission, UserRole
+from .models import (
+    Permission as DbPermission,
+    Role as DbRole,
+    RolePermission as DbRolePermission,
+    UserRole as DbUserRole,
+)
 from .transfer.models import PermissionID, RoleID
 
 
-def create_permission(permission_id: PermissionID, title: str) -> Permission:
+def create_permission(permission_id: PermissionID, title: str) -> DbPermission:
     """Create a permission."""
-    permission = Permission(permission_id, title)
+    permission = DbPermission(permission_id, title)
 
     db.session.add(permission)
     db.session.commit()
@@ -27,9 +32,9 @@ def create_permission(permission_id: PermissionID, title: str) -> Permission:
     return permission
 
 
-def create_role(role_id: RoleID, title: str) -> Role:
+def create_role(role_id: RoleID, title: str) -> DbRole:
     """Create a role."""
-    role = Role(role_id, title)
+    role = DbRole(role_id, title)
 
     db.session.add(role)
     db.session.commit()
@@ -37,16 +42,16 @@ def create_role(role_id: RoleID, title: str) -> Role:
     return role
 
 
-def find_role(role_id: RoleID) -> Optional[Role]:
+def find_role(role_id: RoleID) -> Optional[DbRole]:
     """Return the role with that id, or `None` if not found."""
-    return Role.query.get(role_id)
+    return DbRole.query.get(role_id)
 
 
-def find_role_ids_for_user(user_id: UserID) -> Set[Role]:
+def find_role_ids_for_user(user_id: UserID) -> Set[DbRole]:
     """Return the IDs of the roles assigned to the user."""
-    roles = Role.query \
-        .join(UserRole) \
-        .filter(UserRole.user_id == user_id) \
+    roles = DbRole.query \
+        .join(DbUserRole) \
+        .filter(DbUserRole.user_id == user_id) \
         .all()
 
     return {r.id for r in roles}
@@ -55,8 +60,8 @@ def find_role_ids_for_user(user_id: UserID) -> Set[Role]:
 def find_user_ids_for_role(role_id: RoleID) -> Set[UserID]:
     """Return the IDs of the users that have this role assigned."""
     rows = db.session \
-        .query(UserRole.user_id) \
-        .filter(UserRole.role_id == role_id) \
+        .query(DbUserRole.user_id) \
+        .filter(DbUserRole.role_id == role_id) \
         .all()
 
     return {row[0] for row in rows}
@@ -66,7 +71,7 @@ def assign_permission_to_role(
     permission_id: PermissionID, role_id: RoleID
 ) -> None:
     """Assign the permission to the role."""
-    role_permission = RolePermission(role_id, permission_id)
+    role_permission = DbRolePermission(role_id, permission_id)
 
     db.session.add(role_permission)
     db.session.commit()
@@ -76,7 +81,7 @@ def deassign_permission_from_role(
     permission_id: PermissionID, role_id: RoleID
 ) -> None:
     """Dessign the permission from the role."""
-    role_permission = RolePermission.query.get((role_id, permission_id))
+    role_permission = DbRolePermission.query.get((role_id, permission_id))
 
     if role_permission is None:
         raise ValueError('Unknown role ID and/or permission ID.')
@@ -93,7 +98,7 @@ def assign_role_to_user(
         # Role is already assigned to user. Nothing to do.
         return
 
-    user_role = UserRole(user_id, role_id)
+    user_role = DbUserRole(user_id, role_id)
     db.session.add(user_role)
 
     event_data = {'role_id': str(role_id)}
@@ -109,7 +114,7 @@ def deassign_role_from_user(
     role_id: RoleID, user_id: UserID, initiator_id: Optional[UserID] = None
 ) -> None:
     """Deassign the role from the user."""
-    user_role = UserRole.query.get((user_id, role_id))
+    user_role = DbUserRole.query.get((user_id, role_id))
 
     if user_role is None:
         raise ValueError('Unknown user ID and/or role ID.')
@@ -119,7 +124,9 @@ def deassign_role_from_user(
     event_data = {'role_id': str(role_id)}
     if initiator_id is not None:
         event_data['initiator_id'] = str(initiator_id)
-    event = user_event_service.build_event('role-deassigned', user_id, event_data)
+    event = user_event_service.build_event(
+        'role-deassigned', user_id, event_data
+    )
     db.session.add(event)
 
     db.session.commit()
@@ -129,7 +136,7 @@ def deassign_all_roles_from_user(
     user_id: UserID, initiator_id: Optional[UserID] = None, commit=True
 ) -> None:
     """Deassign all roles from the user."""
-    table = UserRole.__table__
+    table = DbUserRole.__table__
     delete_query = table.delete() \
         .where(table.c.user_id == user_id)
     db.session.execute(delete_query)
@@ -140,7 +147,7 @@ def deassign_all_roles_from_user(
 
 def _is_role_assigned_to_user(role_id: RoleID, user_id: UserID) -> bool:
     """Determine if the role is assigned to the user or not."""
-    subquery = UserRole.query \
+    subquery = DbUserRole.query \
         .filter_by(role_id=role_id) \
         .filter_by(user_id=user_id) \
         .exists()
@@ -152,18 +159,18 @@ def get_permission_ids_for_user(user_id: UserID) -> Set[PermissionID]:
     """Return the IDs of all permissions the user has through the roles
     assigned to it.
     """
-    role_permissions = RolePermission.query \
-        .join(Role) \
-        .join(UserRole) \
+    role_permissions = DbRolePermission.query \
+        .join(DbRole) \
+        .join(DbUserRole) \
         .filter_by(user_id=user_id) \
         .all()
 
     return {rp.permission_id for rp in role_permissions}
 
 
-def get_all_permissions_with_titles() -> Sequence[Permission]:
+def get_all_permissions_with_titles() -> Sequence[DbPermission]:
     """Return all permissions, with titles."""
-    return Permission.query \
+    return DbPermission.query \
         .options(
             db.undefer('title'),
             db.joinedload('role_permissions')
@@ -171,9 +178,9 @@ def get_all_permissions_with_titles() -> Sequence[Permission]:
         .all()
 
 
-def get_all_roles_with_titles() -> Sequence[Role]:
+def get_all_roles_with_titles() -> Sequence[DbRole]:
     """Return all roles, with titles."""
-    return Role.query \
+    return DbRole.query \
         .options(
             db.undefer('title'),
             db.joinedload('user_roles').joinedload('user')
@@ -181,25 +188,27 @@ def get_all_roles_with_titles() -> Sequence[Role]:
         .all()
 
 
-def get_permissions_by_roles_with_titles() -> Dict[Role, Set[Permission]]:
+def get_permissions_by_roles_with_titles() -> Dict[DbRole, Set[DbPermission]]:
     """Return all roles with their assigned permissions.
 
     Titles are undeferred to avoid lots of additional queries.
     """
-    roles = Role.query \
+    roles = DbRole.query \
         .options(
             db.undefer('title'),
         ) \
         .all()
 
-    permissions = Permission.query \
+    permissions = DbPermission.query \
         .options(
             db.undefer('title'),
             db.joinedload('role_permissions').joinedload('role')
         ) \
         .all()
 
-    permissions_by_role: Dict[Role, Set[Permission]] = {r: set() for r in roles}
+    permissions_by_role: Dict[DbRole, Set[DbPermission]] = {
+        r: set() for r in roles
+    }
 
     for permission in permissions:
         for role in permission.roles:
@@ -210,31 +219,31 @@ def get_permissions_by_roles_with_titles() -> Dict[Role, Set[Permission]]:
 
 
 def get_permissions_by_roles_for_user_with_titles(
-    user_id: UserID
-) -> Dict[Role, Set[Permission]]:
+    user_id: UserID,
+) -> Dict[DbRole, Set[DbPermission]]:
     """Return permissions grouped by their respective roles for that user.
 
     Titles are undeferred to avoid lots of additional queries.
     """
-    roles = Role.query \
+    roles = DbRole.query \
         .options(
             db.undefer('title'),
         ) \
-        .join(UserRole) \
-        .filter(UserRole.user_id == user_id) \
+        .join(DbUserRole) \
+        .filter(DbUserRole.user_id == user_id) \
         .all()
 
     role_ids = {r.id for r in roles}
 
     if role_ids:
-        permissions = Permission.query \
+        permissions = DbPermission.query \
             .options(
                 db.undefer('title'),
                 db.joinedload('role_permissions').joinedload('role')
             ) \
-            .join(RolePermission) \
-            .join(Role) \
-            .filter(Role.id.in_(role_ids)) \
+            .join(DbRolePermission) \
+            .join(DbRole) \
+            .filter(DbRole.id.in_(role_ids)) \
             .all()
     else:
         permissions = []
@@ -243,9 +252,11 @@ def get_permissions_by_roles_for_user_with_titles(
 
 
 def _index_permissions_by_role(
-    permissions: List[Permission], roles: List[Role]
-) -> Dict[Role, Set[Permission]]:
-    permissions_by_role: Dict[Role, Set[Permission]] = {r: set() for r in roles}
+    permissions: List[DbPermission], roles: List[DbRole]
+) -> Dict[DbRole, Set[DbPermission]]:
+    permissions_by_role: Dict[DbRole, Set[DbPermission]] = {
+        r: set() for r in roles
+    }
 
     for permission in permissions:
         for role in permission.roles:
@@ -256,13 +267,13 @@ def _index_permissions_by_role(
 
 
 def get_permissions_with_title_for_role(
-    role_id: RoleID
-) -> Sequence[Permission]:
+    role_id: RoleID,
+) -> Sequence[DbPermission]:
     """Return the permissions assigned to the role."""
-    return Permission.query \
+    return DbPermission.query \
         .options(
             db.undefer('title')
         ) \
-        .join(RolePermission) \
-        .filter(RolePermission.role_id == role_id) \
+        .join(DbRolePermission) \
+        .filter(DbRolePermission.role_id == role_id) \
         .all()
