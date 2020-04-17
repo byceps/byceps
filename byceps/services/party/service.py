@@ -18,6 +18,7 @@ from ..brand.transfer.models import Brand
 from ..shop.shop.transfer.models import ShopID
 
 from .models.party import Party as DbParty
+from .models.setting import Setting as DbSetting
 from .transfer.models import Party, PartyWithBrand
 
 
@@ -81,6 +82,19 @@ def update_party(
     db.session.commit()
 
     return _db_entity_to_party(party)
+
+
+def delete_party(party_id: PartyID) -> None:
+    """Delete a party."""
+    db.session.query(DbSetting) \
+        .filter_by(party_id=party_id) \
+        .delete()
+
+    db.session.query(DbParty) \
+        .filter_by(id=party_id) \
+        .delete()
+
+    db.session.commit()
 
 
 def count_parties() -> int:

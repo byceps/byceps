@@ -12,6 +12,7 @@ from ...database import db
 from ...typing import PartyID
 
 from .models.site import Site as DbSite
+from .models.setting import Setting as DbSetting
 from .transfer.models import Site, SiteID
 
 
@@ -77,6 +78,19 @@ def update_site(
     db.session.commit()
 
     return _db_entity_to_site(site)
+
+
+def delete_site(site_id: SiteID) -> None:
+    """Delete a site."""
+    db.session.query(DbSetting) \
+        .filter_by(site_id=site_id) \
+        .delete()
+
+    db.session.query(DbSite) \
+        .filter_by(id=site_id) \
+        .delete()
+
+    db.session.commit()
 
 
 def find_site(site_id: SiteID) -> Optional[Site]:

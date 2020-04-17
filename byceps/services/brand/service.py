@@ -12,6 +12,7 @@ from ...database import db
 from ...typing import BrandID
 
 from .models.brand import Brand as DbBrand
+from .models.setting import Setting as DbSetting
 from .transfer.models import Brand
 
 
@@ -23,6 +24,19 @@ def create_brand(brand_id: BrandID, title: str) -> Brand:
     db.session.commit()
 
     return _db_entity_to_brand(brand)
+
+
+def delete_brand(brand_id: BrandID) -> None:
+    """Delete a brand."""
+    db.session.query(DbSetting) \
+        .filter_by(brand_id=brand_id) \
+        .delete()
+
+    db.session.query(DbBrand) \
+        .filter_by(id=brand_id) \
+        .delete()
+
+    db.session.commit()
 
 
 def find_brand(brand_id: BrandID) -> Optional[Brand]:
