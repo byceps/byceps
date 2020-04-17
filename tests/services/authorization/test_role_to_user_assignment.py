@@ -12,44 +12,48 @@ PERMISSION_ID = 'tickle_mortals'
 
 
 def test_assign_role_to_user(admin_app_with_db, user, admin_user, role):
-    user_id = user.id
-    initiator_id = admin_user.id
-
-    user_permission_ids_before = service.get_permission_ids_for_user(user_id)
+    user_permission_ids_before = service.get_permission_ids_for_user(user.id)
     assert PERMISSION_ID not in user_permission_ids_before
 
-    service.assign_role_to_user(role.id, user_id, initiator_id=initiator_id)
+    service.assign_role_to_user(role.id, user.id, initiator_id=admin_user.id)
 
-    user_permission_ids_after = service.get_permission_ids_for_user(user_id)
+    user_permission_ids_after = service.get_permission_ids_for_user(user.id)
     assert PERMISSION_ID in user_permission_ids_after
 
     # Expect attempt to assign that role again to that user to have no
     # effect and to not raise an exception.
-    service.assign_role_to_user(role.id, user_id, initiator_id=initiator_id)
+    service.assign_role_to_user(role.id, user.id, initiator_id=admin_user.id)
 
 
 def test_deassign_role_from_user(admin_app_with_db, user, admin_user, role):
-    user_id = user.id
-    initiator_id = admin_user.id
+    service.assign_role_to_user(role.id, user.id, initiator_id=admin_user.id)
 
-    service.assign_role_to_user(role.id, user_id, initiator_id=initiator_id)
-
-    user_permission_ids_before = service.get_permission_ids_for_user(user_id)
+    user_permission_ids_before = service.get_permission_ids_for_user(user.id)
     assert PERMISSION_ID in user_permission_ids_before
 
-    service.deassign_role_from_user(role.id, user_id, initiator_id=initiator_id)
+    service.deassign_role_from_user(
+        role.id, user.id, initiator_id=admin_user.id
+    )
 
-    user_permission_ids_after = service.get_permission_ids_for_user(user_id)
+    user_permission_ids_after = service.get_permission_ids_for_user(user.id)
     assert PERMISSION_ID not in user_permission_ids_after
 
 
 @pytest.fixture
 def permission():
-    return service.create_permission(PERMISSION_ID, 'Tickle mortals')
+    permission = service.create_permission(PERMISSION_ID, 'Tickle mortals')
+
+    yield permission
+
+    service.delete_permission(permission.id)
 
 
 @pytest.fixture
-def role(permission):
+def role(permission, user):
     role = service.create_role('demigod', 'Demigod')
     service.assign_permission_to_role(permission.id, role.id)
-    return role
+
+    yield role
+
+    service.deassign_all_roles_from_user(user.id)
+    service.delete_role(role.id)

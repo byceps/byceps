@@ -32,12 +32,16 @@ def test_deassign_permission_from_role(admin_app_with_db, permission, role):
 
 @pytest.fixture
 def permission():
-    return service.create_permission('tickle_mortals', 'Tickle mortals')
+    permission = service.create_permission('tickle_mortals', 'Tickle mortals')
+    yield permission
+    service.delete_permission(permission.id)
 
 
 @pytest.fixture
 def role():
-    return service.create_role('demigod', 'Demigod')
+    role = service.create_role('demigod', 'Demigod')
+    yield role
+    service.delete_role(role.id)
 
 
 def get_permission_ids_for_role(role):

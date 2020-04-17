@@ -30,16 +30,23 @@ def app(admin_app, db):
 
 @pytest.fixture
 def permission():
-    return authorization_service.create_permission(
+    permission = authorization_service.create_permission(
         'tickle_mortals', 'Tickle mortals'
     )
+
+    yield permission
+
+    authorization_service.delete_permission(permission.id)
 
 
 @pytest.fixture
 def role(permission):
     role = authorization_service.create_role('demigod', 'Demigod')
     authorization_service.assign_permission_to_role(permission.id, role.id)
-    return role
+
+    yield role
+
+    authorization_service.delete_role(role.id)
 
 
 def test_delete_account(app, db, permission, role):
@@ -85,7 +92,9 @@ def test_delete_account(app, db, permission, role):
 
     # authorization
     assert authorization_service.find_role_ids_for_user(user_id) == {'demigod'}
-    assert authorization_service.get_permission_ids_for_user(user_id) == {'tickle_mortals'}
+    assert authorization_service.get_permission_ids_for_user(user_id) == {
+        'tickle_mortals'
+    }
 
     # -------------------------------- #
 

@@ -24,30 +24,72 @@ def app(admin_app, db):
             admin = create_user('Administrator')
             _app.admin_id = admin.id
 
-            authorization_service.create_role('board_user', 'Board User')
-
             yield _app
 
 
-def test_initialize_account_as_user(app):
-    user_id = create_user('CreatedOnline', initialized=False).id
+@pytest.fixture
+def uninitialized_user_created_online(db):
+    user = create_user('CreatedOnline', initialized=False)
+    yield user
+    user_command_service.delete_account(user.id, user.id, 'clean up')
 
-    user_before = user_command_service._get_user(user_id)
+
+@pytest.fixture
+def uninitialized_user_created_at_party_checkin_by_admin(db):
+    user = create_user('CreatedAtPartyCheckInByAdmin', initialized=False)
+    yield user
+    user_command_service.delete_account(user.id, user.id, 'clean up')
+
+
+@pytest.fixture
+def already_initialized_user(db):
+    user = create_user('AlreadyInitialized')
+    yield user
+    user_command_service.delete_account(user.id, user.id, 'clean up')
+
+
+@pytest.fixture
+def role(
+    app,
+    uninitialized_user_created_online,
+    uninitialized_user_created_at_party_checkin_by_admin,
+    already_initialized_user,
+):
+    role = authorization_service.create_role('board_user', 'Board User')
+
+    yield role
+
+    for user in {
+        uninitialized_user_created_online,
+        uninitialized_user_created_at_party_checkin_by_admin,
+        already_initialized_user,
+    }:
+        authorization_service.deassign_all_roles_from_user(user.id)
+
+    authorization_service.delete_role(role.id)
+
+
+def test_initialize_account_as_user(
+    app, role, uninitialized_user_created_online
+):
+    user = uninitialized_user_created_online
+
+    user_before = user_command_service._get_user(user.id)
     assert not user_before.initialized
 
     events_before = event_service.get_events_for_user(user_before.id)
     assert len(events_before) == 0
 
-    role_ids_before = authorization_service.find_role_ids_for_user(user_id)
+    role_ids_before = authorization_service.find_role_ids_for_user(user.id)
     assert role_ids_before == set()
 
     # -------------------------------- #
 
-    user_command_service.initialize_account(user_id)
+    user_command_service.initialize_account(user.id)
 
     # -------------------------------- #
 
-    user_after = user_command_service._get_user(user_id)
+    user_after = user_command_service._get_user(user.id)
     assert user_after.initialized
 
     events_after = event_service.get_events_for_user(user_after.id)
@@ -63,30 +105,32 @@ def test_initialize_account_as_user(app):
         'role_id': 'board_user',
     }
 
-    role_ids_after = authorization_service.find_role_ids_for_user(user_id)
+    role_ids_after = authorization_service.find_role_ids_for_user(user.id)
     assert role_ids_after == {'board_user'}
 
 
-def test_initialize_account_as_admin(app):
+def test_initialize_account_as_admin(
+    app, role, uninitialized_user_created_at_party_checkin_by_admin
+):
     admin_id = app.admin_id
-    user_id = create_user('CreatedAtPartyCheckInByAdmin', initialized=False).id
+    user = uninitialized_user_created_at_party_checkin_by_admin
 
-    user_before = user_command_service._get_user(user_id)
+    user_before = user_command_service._get_user(user.id)
     assert not user_before.initialized
 
     events_before = event_service.get_events_for_user(user_before.id)
     assert len(events_before) == 0
 
-    role_ids_before = authorization_service.find_role_ids_for_user(user_id)
+    role_ids_before = authorization_service.find_role_ids_for_user(user.id)
     assert role_ids_before == set()
 
     # -------------------------------- #
 
-    user_command_service.initialize_account(user_id, initiator_id=admin_id)
+    user_command_service.initialize_account(user.id, initiator_id=admin_id)
 
     # -------------------------------- #
 
-    user_after = user_command_service._get_user(user_id)
+    user_after = user_command_service._get_user(user.id)
     assert user_after.initialized
 
     events_after = event_service.get_events_for_user(user_after.id)
@@ -105,15 +149,17 @@ def test_initialize_account_as_admin(app):
         'role_id': 'board_user',
     }
 
-    role_ids_after = authorization_service.find_role_ids_for_user(user_id)
+    role_ids_after = authorization_service.find_role_ids_for_user(user.id)
     assert role_ids_after == {'board_user'}
 
 
-def test_initialize_already_initialized_account(app):
+def test_initialize_already_initialized_account(
+    app, role, already_initialized_user
+):
     admin_id = app.admin_id
-    user_id = create_user('AlreadyInitialized').id
+    user = already_initialized_user
 
-    user_before = user_command_service._get_user(user_id)
+    user_before = user_command_service._get_user(user.id)
     assert user_before.initialized
 
     events_before = event_service.get_events_for_user(user_before.id)
@@ -122,11 +168,11 @@ def test_initialize_already_initialized_account(app):
     # -------------------------------- #
 
     with raises(ValueError):
-        user_command_service.initialize_account(user_id, initiator_id=admin_id)
+        user_command_service.initialize_account(user.id, initiator_id=admin_id)
 
     # -------------------------------- #
 
-    user_after = user_command_service._get_user(user_id)
+    user_after = user_command_service._get_user(user.id)
     assert user_after.initialized  # still initialized
 
     events_after = event_service.get_events_for_user(user_after.id)

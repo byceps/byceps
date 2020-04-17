@@ -3,30 +3,22 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
+import pytest
+
+from byceps.services.authorization import service as authorization_service
 from byceps.services.authorization.service import (
     assign_role_to_user,
     create_role,
     deassign_all_roles_from_user,
+    delete_role,
     find_role_ids_for_user,
 )
+from byceps.services.user import command_service as user_command_service
 
 from tests.helpers import create_user
 
 
-def test_deassign_all_roles_from_user(admin_app_with_db, admin_user):
-    role1 = create_role('demigod', 'Demigod')
-    role2 = create_role('pausenclown', 'Pausenclown')
-    role3 = create_role('partymeister', 'Partymeister')
-
-    user1 = create_user('User1')
-    user2 = create_user('User2')
-
-    initiator_id = admin_user.id
-    assign_role_to_user(role1.id, user1.id, initiator_id=admin_user)
-    assign_role_to_user(role2.id, user1.id, initiator_id=admin_user)
-    assign_role_to_user(role1.id, user2.id, initiator_id=admin_user)
-    assign_role_to_user(role3.id, user2.id, initiator_id=admin_user)
-
+def test_deassign_all_roles_from_user(admin_app_with_db, user1, user2, roles):
     assert find_role_ids_for_user(user1.id) == {'demigod', 'pausenclown'}
     assert find_role_ids_for_user(user2.id) == {'demigod', 'partymeister'}
 
@@ -36,3 +28,38 @@ def test_deassign_all_roles_from_user(admin_app_with_db, admin_user):
     assert find_role_ids_for_user(user1.id) == set()
     # All other users' roles should still be assigned.
     assert find_role_ids_for_user(user2.id) == {'demigod', 'partymeister'}
+
+
+@pytest.fixture
+def user1(db):
+    user = create_user('User1')
+    yield user
+    user_command_service.delete_account(user.id, user.id, 'clean up')
+
+
+@pytest.fixture
+def user2(db):
+    user = create_user('User2')
+    yield user
+    user_command_service.delete_account(user.id, user.id, 'clean up')
+
+
+@pytest.fixture
+def roles(user1, user2, admin_user):
+    role1 = create_role('demigod', 'Demigod')
+    role2 = create_role('pausenclown', 'Pausenclown')
+    role3 = create_role('partymeister', 'Partymeister')
+
+    assign_role_to_user(role1.id, user1.id, initiator_id=admin_user.id)
+    assign_role_to_user(role2.id, user1.id, initiator_id=admin_user.id)
+
+    assign_role_to_user(role1.id, user2.id, initiator_id=admin_user.id)
+    assign_role_to_user(role3.id, user2.id, initiator_id=admin_user.id)
+
+    yield
+
+    for user in user1, user2:
+        deassign_all_roles_from_user(user.id)
+
+    for role_id in 'demigod', 'pausenclown', 'partymeister':
+        delete_role(role_id)
