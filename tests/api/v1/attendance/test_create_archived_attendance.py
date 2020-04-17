@@ -21,6 +21,9 @@ def test_create_archived_attendance(
 
     assert_attended_party_ids(user.id, [party.id])
 
+    # Clean up.
+    attendance_service.delete_archived_attendance(user.id, party.id)
+
 
 def test_create_archived_attendance_idempotency(
     api_client, api_client_authz_header, party
@@ -43,6 +46,9 @@ def test_create_archived_attendance_idempotency(
     )
     assert response.status_code == 204
     assert_attended_party_ids(user.id, [party.id])
+
+    # Clean up.
+    attendance_service.delete_archived_attendance(user.id, party.id)
 
 
 # helpers

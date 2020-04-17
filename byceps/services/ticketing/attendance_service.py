@@ -43,6 +43,14 @@ def create_archived_attendance(user_id: UserID, party_id: PartyID) -> None:
     db.session.execute(query)
 
 
+def delete_archived_attendance(user_id: UserID, party_id: PartyID) -> None:
+    """Delete the archived attendance of the user at the party."""
+    db.session.query(DbArchivedAttendance) \
+        .filter_by(user_id=user_id, party_id=party_id) \
+        .delete()
+    db.session.commit()
+
+
 def get_attended_parties(user_id: UserID) -> List[Party]:
     """Return the parties the user has attended in the past."""
     ticket_attendance_party_ids = _get_attended_party_ids(user_id)
