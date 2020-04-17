@@ -5,6 +5,8 @@
 
 import pytest
 
+from byceps.services.site import service as site_service
+
 from tests.conftest import database_recreated
 from tests.helpers import create_site, http_client
 
@@ -14,36 +16,42 @@ def app(party_app, db, make_email_config):
     with party_app.app_context():
         with database_recreated(db):
             make_email_config()
-            create_site()
             yield party_app
 
 
-def test_view_profile_of_existing_user(app, user):
+@pytest.fixture(scope='module')
+def site(app):
+    site = create_site()
+    yield site
+    site_service.delete_site(site.id)
+
+
+def test_view_profile_of_existing_user(app, site, user):
     response = request_profile(app, user.id)
 
     assert response.status_code == 200
     assert response.mimetype == 'text/html'
 
 
-def test_view_profile_of_uninitialized_user(app, uninitialized_user):
+def test_view_profile_of_uninitialized_user(app, site, uninitialized_user):
     response = request_profile(app, uninitialized_user.id)
 
     assert response.status_code == 404
 
 
-def test_view_profile_of_suspended_user(app, suspended_user):
+def test_view_profile_of_suspended_user(app, site, suspended_user):
     response = request_profile(app, suspended_user.id)
 
     assert response.status_code == 404
 
 
-def test_view_profile_of_deleted_user(app, deleted_user):
+def test_view_profile_of_deleted_user(app, site, deleted_user):
     response = request_profile(app, deleted_user.id)
 
     assert response.status_code == 404
 
 
-def test_view_profile_of_unknown_user(app):
+def test_view_profile_of_unknown_user(app, site):
     unknown_user_id = '00000000-0000-0000-0000-000000000000'
 
     response = request_profile(app, unknown_user_id)

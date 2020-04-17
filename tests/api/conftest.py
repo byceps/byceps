@@ -7,6 +7,8 @@ API-specific fixtures
 
 import pytest
 
+from byceps.services.site import service as site_service
+
 from tests.base import create_admin_app
 from tests.helpers import create_brand, create_party
 
@@ -40,7 +42,9 @@ def app(api_app_without_db, db):
 @pytest.fixture(scope='module')
 def site(app, make_email_config):
     make_email_config()
-    return create_site()
+    site = create_site()
+    yield site
+    site_service.delete_site(site.id)
 
 
 @pytest.fixture(scope='module')

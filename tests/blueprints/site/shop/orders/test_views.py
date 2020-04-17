@@ -9,6 +9,7 @@ from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order.models.orderer import Orderer
 from byceps.services.shop.order import service as order_service
 from byceps.services.shop.sequence import service as sequence_service
+from byceps.services.site import service as site_service
 
 from testfixtures.shop_order import create_orderer
 
@@ -51,6 +52,20 @@ def email_config(app, make_email_config):
 
 
 @pytest.fixture
+def site1(party1):
+    site = create_site(party_id=party1.id)
+    yield site
+    site_service.delete_site(site.id)
+
+
+@pytest.fixture
+def site2(party2):
+    site = create_site(party_id=party2.id)
+    yield site
+    site_service.delete_site(site.id)
+
+
+@pytest.fixture
 def shop1(app, email_config, admin_user):
     shop = create_shop('shop-1')
     sequence_service.create_order_number_sequence(shop.id, 'LF-02-B')
@@ -74,10 +89,8 @@ def user2(app):
 
 
 def test_view_matching_user_and_party_and_shop(
-    app, party1, shop1, admin_user, user1
+    app, site1, shop1, admin_user, user1
 ):
-    create_site(party_id=party1.id)
-
     order_id = place_order(shop1.id, user1)
 
     response = request_view(app, user1, order_id)
@@ -86,10 +99,8 @@ def test_view_matching_user_and_party_and_shop(
 
 
 def test_view_matching_party_and_shop_but_different_user(
-    app, party1, shop1, admin_user, user1, user2
+    app, site1, shop1, admin_user, user1, user2
 ):
-    create_site(party_id=party1.id)
-
     order_id = place_order(shop1.id, user1)
 
     response = request_view(app, user2, order_id)
@@ -98,10 +109,8 @@ def test_view_matching_party_and_shop_but_different_user(
 
 
 def test_view_matching_user_but_different_party_and_shop(
-    app, party2, shop1, admin_user, user1
+    app, site2, shop1, admin_user, user1
 ):
-    create_site(party_id=party2.id)
-
     order_id = place_order(shop1.id, user1)
 
     response = request_view(app, user1, order_id)

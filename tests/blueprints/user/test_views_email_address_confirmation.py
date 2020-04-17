@@ -6,6 +6,7 @@
 import pytest
 
 from byceps.services.authorization import service as authorization_service
+from byceps.services.site import service as site_service
 from byceps.services.user import command_service as user_command_service
 from byceps.services.verification_token.models import Purpose, Token
 
@@ -20,6 +21,13 @@ def app(party_app, db, make_email_config):
             make_email_config()
             create_site()
             yield party_app
+
+
+@pytest.fixture(scope='module')
+def site(app):
+    site = create_site()
+    yield site
+    site_service.delete_site(site.id)
 
 
 @pytest.fixture(scope='module')

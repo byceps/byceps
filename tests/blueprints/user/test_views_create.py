@@ -19,6 +19,7 @@ from byceps.services.newsletter import (
     command_service as newsletter_command_service,
     service as newsletter_service,
 )
+from byceps.services.site import service as site_service
 from byceps.services.snippet import service as snippet_service
 from byceps.services.snippet.transfer.models import Scope
 from byceps.services.terms import document_service as terms_document_service
@@ -61,7 +62,9 @@ def brand():
 @pytest.fixture(scope='module')
 def site(brand):
     party = create_party(brand.id)
-    return create_site(party_id=party.id)
+    site = create_site(party_id=party.id)
+    yield site
+    site_service.delete_site(site.id)
 
 
 @pytest.fixture(scope='module')

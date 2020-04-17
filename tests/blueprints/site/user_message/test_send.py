@@ -3,9 +3,11 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
+from unittest.mock import patch
+
 import pytest
 
-from unittest.mock import patch
+from byceps.services.site import service as site_service
 
 from tests.conftest import database_recreated
 from tests.helpers import create_site, create_user, http_client, login_user
@@ -19,8 +21,14 @@ def app(party_app, db, make_email_config):
                 sender_address='noreply@example.com',
                 sender_name='ACME Entertainment Convention',
             )
-            create_site(server_name='acme.example.com')
             yield party_app
+
+
+@pytest.fixture(scope='module')
+def site(app):
+    site = create_site(server_name='acme.example.com')
+    yield site
+    site_service.delete_site(site.id)
 
 
 @pytest.fixture(scope='module')
@@ -43,7 +51,7 @@ def user_bob(app):
 
 @patch('byceps.email.send')
 def test_send_when_logged_in_without_brand_contact_address(
-    send_email_mock, app, user_alice, user_bob
+    send_email_mock, app, site, user_alice, user_bob
 ):
     sender = user_alice
     recipient = user_bob
@@ -102,7 +110,7 @@ Diese Mitteilung wurde über die Website acme.example.com gesendet.\
 
 @patch('byceps.email.send')
 def test_send_when_logged_in_with_brand_contact_address(
-    send_email_mock, app, make_email_config, user_alice, user_bob
+    send_email_mock, app, make_email_config, site, user_alice, user_bob
 ):
     make_email_config(
         sender_address='noreply@example.com',
@@ -166,7 +174,7 @@ Bei Fragen kontaktiere uns bitte per E-Mail an: help@example.com\
     )
 
 
-def test_send_when_not_logged_in(app):
+def test_send_when_not_logged_in(app, site):
     recipient_id = '8e5037f6-3ca1-4981-b1e4-1998cbdf58e2'
     text = 'Hello, Eve!'
 

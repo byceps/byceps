@@ -7,6 +7,7 @@ from unittest.mock import patch
 
 import pytest
 
+from byceps.services.site import service as site_service
 from byceps.services.user_message import service as user_message_service
 
 from tests.conftest import database_recreated
@@ -39,7 +40,6 @@ def site(db, make_email_config):
     with app_context():
         with database_recreated(db):
             make_email_config()
-
             site = create_site()
-
             yield site
+            site_service.delete_site(site.id)

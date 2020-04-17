@@ -5,6 +5,8 @@
 
 import pytest
 
+from byceps.services.site import service as site_service
+
 from tests.conftest import database_recreated
 from tests.helpers import create_site, http_client, login_user
 
@@ -14,11 +16,17 @@ def app(party_app, db, make_email_config):
     with party_app.app_context():
         with database_recreated(db):
             make_email_config()
-            create_site()
             yield party_app
 
 
-def test_when_logged_in(app, user):
+@pytest.fixture(scope='module')
+def site(app):
+    site = create_site()
+    yield site
+    site_service.delete_site(site.id)
+
+
+def test_when_logged_in(app, site, user):
     login_user(user.id)
 
     response = send_request(app, user_id=user.id)
@@ -27,7 +35,7 @@ def test_when_logged_in(app, user):
     assert response.mimetype == 'text/html'
 
 
-def test_when_not_logged_in(app):
+def test_when_not_logged_in(app, site):
     response = send_request(app)
 
     assert response.status_code == 302

@@ -5,7 +5,7 @@
 
 import pytest
 
-from byceps.services.site import settings_service
+from byceps.services.site import service as site_service, settings_service
 from byceps.services.site.transfer.models import SiteSetting
 
 from tests.helpers import create_site
@@ -21,11 +21,17 @@ def app(party_app, db, make_email_config):
     with party_app.app_context():
         with database_recreated(db):
             make_email_config()
-            create_site()
             yield party_app
 
 
-def test_create(app):
+@pytest.fixture(scope='module')
+def site(app):
+    site = create_site()
+    yield site
+    site_service.delete_site(site.id)
+
+
+def test_create(site):
     site_id = SITE_ID
     name = 'name1'
     value = 'value1'
@@ -40,7 +46,7 @@ def test_create(app):
     assert setting.value == value
 
 
-def test_create_or_update(app):
+def test_create_or_update(site):
     site_id = SITE_ID
     name = 'name2'
     value1 = 'value2a'
@@ -67,7 +73,7 @@ def test_create_or_update(app):
     assert updated_setting.value == value2
 
 
-def test_remove(app):
+def test_remove(site):
     site_id = SITE_ID
     name = 'name3'
     value = 'value3'
@@ -80,7 +86,7 @@ def test_remove(app):
     assert settings_service.find_setting(site_id, name) is None
 
 
-def test_find(app):
+def test_find(site):
     site_id = SITE_ID
     name = 'name4'
     value = 'value4'
@@ -97,7 +103,7 @@ def test_find(app):
     assert setting_after_create.value == value
 
 
-def test_find_value(app):
+def test_find_value(site):
     site_id = SITE_ID
     name = 'name5'
     value = 'value5'
@@ -111,7 +117,7 @@ def test_find_value(app):
     assert value_after_create == value
 
 
-def test_get_settings(app):
+def test_get_settings(site):
     site_id = SITE_ID
 
     all_settings_before_create = settings_service.get_settings(site_id)

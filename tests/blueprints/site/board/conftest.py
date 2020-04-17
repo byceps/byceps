@@ -5,6 +5,7 @@
 
 import pytest
 
+from byceps.services.site import service as site_service
 from byceps.services.site import settings_service as site_settings_service
 
 from tests.helpers import (
@@ -27,7 +28,9 @@ def app(party_app_with_db):
 @pytest.fixture
 def site(app, make_email_config):
     email_config = make_email_config()
-    return create_site(email_config_id=email_config.id)
+    site = create_site(email_config_id=email_config.id)
+    yield site
+    site_service.delete_site(site.id)
 
 
 @pytest.fixture

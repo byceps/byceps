@@ -11,6 +11,7 @@ from byceps.events.shop import ShopOrderPlaced
 from byceps.services.shop.article.models.article import Article
 from byceps.services.shop.order.models.order import Order
 from byceps.services.shop.sequence import service as sequence_service
+from byceps.services.site import service as site_service
 
 from testfixtures.shop_article import create_article
 
@@ -58,7 +59,9 @@ def shop(email_config, admin_user):
 def site(shop):
     brand = create_brand()
     party = create_party(brand.id, shop_id=shop.id)
-    create_site(party_id=party.id)
+    site = create_site(party_id=party.id)
+    yield site
+    site_service.delete_site(site.id)
 
 
 @pytest.fixture

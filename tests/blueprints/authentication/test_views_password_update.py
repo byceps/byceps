@@ -8,6 +8,7 @@ import pytest
 from byceps.services.authentication.password.models import Credential
 from byceps.services.authentication.password import service as password_service
 from byceps.services.authentication.session import service as session_service
+from byceps.services.site import service as site_service
 
 from tests.conftest import database_recreated
 from tests.helpers import create_site, create_user, http_client, login_user
@@ -18,11 +19,17 @@ def app(party_app, db, make_email_config):
     with party_app.app_context():
         with database_recreated(db):
             make_email_config()
-            create_site()
             yield party_app
 
 
-def test_when_logged_in_endpoint_is_available(app):
+@pytest.fixture(scope='module')
+def site(app):
+    site = create_site()
+    yield site
+    site_service.delete_site(site.id)
+
+
+def test_when_logged_in_endpoint_is_available(app, site):
     old_password = 'LekkerBratworsten'
     new_password = 'EvenMoreSecure!!1'
 
@@ -63,7 +70,7 @@ def test_when_logged_in_endpoint_is_available(app):
     assert session_token_after is None
 
 
-def test_when_not_logged_in_endpoint_is_unavailable(app):
+def test_when_not_logged_in_endpoint_is_unavailable(app, site):
     form_data = {}
 
     response = send_request(app, form_data)

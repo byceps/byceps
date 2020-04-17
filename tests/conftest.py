@@ -12,6 +12,7 @@ import pytest
 
 from byceps.database import db as _db
 from byceps.services.email import service as email_service
+from byceps.services.site import service as site_service
 from byceps.services.user import command_service as user_command_service
 
 from tests.base import create_admin_app, create_party_app
@@ -156,4 +157,6 @@ def email_config(make_email_config):
 
 @pytest.fixture
 def site(email_config):
-    return create_site()
+    site = create_site()
+    yield site
+    site_service.delete_site(site.id)

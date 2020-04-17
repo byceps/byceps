@@ -5,6 +5,8 @@
 
 import pytest
 
+from byceps.services.site import service as site_service
+
 from tests.conftest import database_recreated
 from tests.helpers import (
     create_brand,
@@ -20,13 +22,19 @@ def app(party_app, db, make_email_config):
     with party_app.app_context():
         with database_recreated(db):
             make_email_config()
-            brand = create_brand()
-            party = create_party(brand.id)
-            create_site(party_id=party.id)
             yield party_app
 
 
-def test_when_logged_in(app, user):
+@pytest.fixture(scope='module')
+def site(app):
+    brand = create_brand()
+    party = create_party(brand.id)
+    site = create_site(party_id=party.id)
+    yield site
+    site_service.delete_site(site.id)
+
+
+def test_when_logged_in(app, site, user):
     login_user(user.id)
 
     response = send_request(app, user_id=user.id)
@@ -35,7 +43,7 @@ def test_when_logged_in(app, user):
     assert response.mimetype == 'text/html'
 
 
-def test_when_not_logged_in(app):
+def test_when_not_logged_in(app, site):
     response = send_request(app)
 
     assert response.status_code == 302
