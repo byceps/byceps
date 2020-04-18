@@ -87,3 +87,12 @@ def check_password_hash(password_hash: str, password: str) -> bool:
     """
     return (password_hash is not None) \
         and _check_password_hash(password_hash, password)
+
+
+def delete_password_hash(user_id: UserID) -> None:
+    """Delete user's credentials."""
+    db.session.query(DbCredential) \
+        .filter_by(user_id=user_id) \
+        .delete()
+
+    db.session.commit()

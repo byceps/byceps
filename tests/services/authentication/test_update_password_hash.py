@@ -41,6 +41,12 @@ def test_update_password_hash(party_app_with_db, admin_user, user):
         'initiator_id': str(admin_id),
     }
 
+    # Clean up.
+    password_service.delete_password_hash(user_id)
+
+
+# helpers
+
 
 def get_password_hash(user_id):
     credential = Credential.query.get(user_id)
