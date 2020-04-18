@@ -15,19 +15,24 @@ from tests.helpers import create_brand, create_user
 from ...conftest import database_recreated
 
 
-def test_image_url_with_image(app):
+@pytest.fixture
+def editor(make_user):
+    yield from make_user('NewsEditor')
+
+
+def test_image_url_with_image(app, editor):
     item = create_item(
         app.channel.id,
         'with-image',
-        app.editor.id,
+        editor.id,
         image_url_path='breaking.png',
     )
 
     assert item.image_url_path == '/data/global/news_channels/acmecon-test/breaking.png'
 
 
-def test_image_url_without_image(app):
-    item = create_item(app.channel.id, 'without-image', app.editor.id)
+def test_image_url_without_image(app, editor):
+    item = create_item(app.channel.id, 'without-image', editor.id)
 
     assert item.image_url_path is None
 
@@ -41,8 +46,6 @@ def app(party_app, db):
             brand = create_brand()
 
             _app.channel = create_channel(brand.id)
-
-            _app.editor = create_user('Editor')
 
             yield _app
 
