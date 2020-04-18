@@ -59,6 +59,14 @@ def ticket(app, category, ticket_owner):
     ticket_service.delete_ticket(ticket.id)
 
 
+@pytest.fixture
+def ticket_bundle(category, ticket_owner):
+    ticket_quantity = 1
+    return ticket_bundle_service.create_bundle(
+        category.id, ticket_quantity, ticket_owner.id
+    )
+
+
 def test_appoint_and_withdraw_seat_manager(app, ticket, ticket_manager):
     assert ticket.seat_managed_by_id is None
 
@@ -166,12 +174,7 @@ def test_occupy_seat_with_invalid_id(app, ticket):
         )
 
 
-def test_occupy_seat_with_bundled_ticket(app, category, seat1, ticket):
-    ticket_quantity = 1
-    ticket_bundle = ticket_bundle_service.create_bundle(
-        category.id, ticket_quantity, ticket.owned_by_id
-    )
-
+def test_occupy_seat_with_bundled_ticket(app, ticket_bundle, seat1, ticket):
     bundled_ticket = ticket_bundle.tickets[0]
 
     with raises(SeatChangeDeniedForBundledTicket):
