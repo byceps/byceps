@@ -48,6 +48,19 @@ def tickets(category, ticket_owner):
         ticket_service.delete_ticket(ticket.id)
 
 
+@pytest.fixture
+def seat(area, category):
+    return seat_service.create_seat(area, 0, 0, category.id)
+
+
+@pytest.fixture
+def seats(tickets, area):
+    yield [
+        seat_service.create_seat(area, 0, 0, ticket.category_id)
+        for ticket in tickets
+    ]
+
+
 def test_revoke_ticket(app, ticket, ticketing_admin):
     ticket_before = ticket
     assert not ticket_before.revoked
@@ -107,9 +120,7 @@ def test_revoke_tickets(app, tickets, ticketing_admin):
         }
 
 
-def test_revoke_ticket_with_seat(app, area, ticket, ticketing_admin):
-    seat = seat_service.create_seat(area, 0, 0, ticket.category_id)
-
+def test_revoke_ticket_with_seat(app, area, ticket, ticketing_admin, seat):
     ticket_seat_management_service.occupy_seat(
         ticket.id, seat.id, ticket.owned_by_id
     )
@@ -133,12 +144,10 @@ def test_revoke_ticket_with_seat(app, area, ticket, ticketing_admin):
     assert 'seat-released' in event_types_after
 
 
-def test_revoke_tickets_with_seats(app, area, tickets, ticketing_admin):
+def test_revoke_tickets_with_seats(app, area, tickets, ticketing_admin, seats):
     ticket_ids = {ticket.id for ticket in tickets}
 
-    for ticket in tickets:
-        seat = seat_service.create_seat(area, 0, 0, ticket.category_id)
-
+    for ticket, seat in zip(tickets, seats):
         ticket_seat_management_service.occupy_seat(
             ticket.id, seat.id, ticket.owned_by_id
         )

@@ -30,6 +30,21 @@ def area(party):
 
 
 @pytest.fixture
+def seat1(area, category):
+    return seat_service.create_seat(area, 0, 1, category.id)
+
+
+@pytest.fixture
+def seat2(area, category):
+    return seat_service.create_seat(area, 0, 2, category.id)
+
+
+@pytest.fixture
+def seat_of_another_category(area, another_category):
+    return seat_service.create_seat(area, 0, 0, another_category.id)
+
+
+@pytest.fixture
 def ticket(app, category, ticket_owner):
     ticket = ticket_creation_service.create_ticket(category.id, ticket_owner.id)
     yield ticket
@@ -77,10 +92,7 @@ def test_appoint_and_withdraw_seat_manager(app, ticket, ticket_manager):
     )
 
 
-def test_occupy_and_release_seat(app, area, ticket):
-    seat1 = seat_service.create_seat(area, 0, 1, ticket.category_id)
-    seat2 = seat_service.create_seat(area, 0, 2, ticket.category_id)
-
+def test_occupy_and_release_seat(app, seat1, seat2, ticket):
     assert ticket.occupied_seat_id is None
 
     # occupy seat
@@ -146,7 +158,7 @@ def test_occupy_seat_with_invalid_id(app, ticket):
         )
 
 
-def test_occupy_seat_with_bundled_ticket(app, category, area, ticket):
+def test_occupy_seat_with_bundled_ticket(app, category, seat1, ticket):
     ticket_quantity = 1
     ticket_bundle = ticket_bundle_service.create_bundle(
         category.id, ticket_quantity, ticket.owned_by_id
@@ -154,24 +166,20 @@ def test_occupy_seat_with_bundled_ticket(app, category, area, ticket):
 
     bundled_ticket = ticket_bundle.tickets[0]
 
-    seat = seat_service.create_seat(area, 0, 0, category.id)
-
     with raises(SeatChangeDeniedForBundledTicket):
         ticket_seat_management_service.occupy_seat(
-            bundled_ticket.id, seat.id, ticket.owned_by_id
+            bundled_ticket.id, seat1.id, ticket.owned_by_id
         )
 
 
 def test_occupy_seat_with_wrong_category(
-    app, party, another_category, area, ticket
+    app, another_category, seat_of_another_category, ticket
 ):
-    seat = seat_service.create_seat(area, 0, 0, another_category.id)
-
     assert ticket.category_id != another_category.id
 
     with raises(TicketCategoryMismatch):
         ticket_seat_management_service.occupy_seat(
-            ticket.id, seat.id, ticket.owned_by_id
+            ticket.id, seat_of_another_category.id, ticket.owned_by_id
         )
 
 
