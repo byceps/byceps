@@ -9,6 +9,7 @@ from byceps.services.board import (
     category_command_service,
     posting_command_service,
     topic_command_service,
+    topic_query_service,
 )
 from byceps.services.site import service as site_service
 from byceps.services.site import settings_service as site_settings_service
@@ -55,14 +56,22 @@ def board(app, site, brand):
 def category(board):
     category = create_category(board.id, number=1)
     yield category
-    category_command_service.delete_category(category.id)
+    _delete_category(category.id)
 
 
 @pytest.fixture
 def another_category(board):
     category = create_category(board.id, number=2)
     yield category
-    category_command_service.delete_category(category.id)
+    _delete_category(category.id)
+
+
+def _delete_category(category_id):
+    topic_ids = topic_query_service.get_all_topic_ids_in_category(category_id)
+    for topic_id in topic_ids:
+        topic_command_service.delete_topic(topic_id)
+
+    category_command_service.delete_category(category_id)
 
 
 @pytest.fixture
