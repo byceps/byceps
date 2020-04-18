@@ -7,11 +7,10 @@ import pytest
 
 from byceps.services.authorization import service as authorization_service
 from byceps.services.site import service as site_service
-from byceps.services.user import command_service as user_command_service
 from byceps.services.verification_token.models import Purpose, Token
 
 from tests.conftest import database_recreated
-from tests.helpers import create_site, create_user, http_client
+from tests.helpers import create_site, http_client
 
 
 @pytest.fixture(scope='module')
@@ -30,21 +29,17 @@ def site(app):
     site_service.delete_site(site.id)
 
 
-@pytest.fixture(scope='module')
-def user1(db):
-    user = create_user('User1', initialized=False)
-    yield user
-    user_command_service.delete_account(user.id, user.id, 'clean up')
+@pytest.fixture
+def user1(make_user):
+    yield from make_user('User1', initialized=False)
 
 
-@pytest.fixture(scope='module')
-def user2(db):
-    user = create_user('User2', initialized=False)
-    yield user
-    user_command_service.delete_account(user.id, user.id, 'clean up')
+@pytest.fixture
+def user2(make_user):
+    yield from make_user('User2', initialized=False)
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture
 def role(app, user1, user2):
     role = authorization_service.create_role('board_user', 'Board User')
 

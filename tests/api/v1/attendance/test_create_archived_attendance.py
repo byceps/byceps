@@ -3,9 +3,14 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
+import pytest
+
 from byceps.services.ticketing import attendance_service
 
-from tests.helpers import create_user
+
+@pytest.fixture
+def another_user(make_user):
+    yield from make_user('AnotherUser')
 
 
 def test_create_archived_attendance(
@@ -26,9 +31,9 @@ def test_create_archived_attendance(
 
 
 def test_create_archived_attendance_idempotency(
-    api_client, api_client_authz_header, party
+    api_client, api_client_authz_header, party, another_user
 ):
-    user = create_user('AnotherUser')
+    user = another_user
 
     before = attendance_service.get_attended_parties(user.id)
     assert before == []
