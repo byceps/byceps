@@ -5,7 +5,10 @@
 
 import pytest
 
-from byceps.services.board import category_command_service
+from byceps.services.board import (
+    category_command_service,
+    posting_command_service,
+)
 from byceps.services.site import service as site_service
 from byceps.services.site import settings_service as site_settings_service
 
@@ -68,7 +71,9 @@ def topic(category, board_poster):
 
 @pytest.fixture
 def posting(topic, board_poster):
-    return create_posting(topic.id, board_poster.id)
+    posting = create_posting(topic.id, board_poster.id)
+    yield posting
+    posting_command_service.delete_posting(posting.id)
 
 
 @pytest.fixture
