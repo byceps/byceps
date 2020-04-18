@@ -31,6 +31,15 @@ def create_board(brand_id: BrandID, board_id: BoardID) -> Board:
     return _db_entity_to_board(board)
 
 
+def delete_board(board_id: BoardID) -> None:
+    """Delete a board."""
+    db.session.query(DbBoard) \
+        .filter_by(id=board_id) \
+        .delete()
+
+    db.session.commit()
+
+
 def find_board(board_id: BoardID) -> Optional[Board]:
     """Return the board with that id, or `None` if not found."""
     board = DbBoard.query.get(board_id)

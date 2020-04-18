@@ -6,6 +6,7 @@
 import pytest
 
 from byceps.services.board import (
+    board_service,
     category_command_service,
     posting_command_service,
     topic_command_service,
@@ -44,12 +45,14 @@ def brand(app):
 
 
 @pytest.fixture
-def board(app, site, brand):
+def board(site, brand):
     board = create_board(brand.id)
 
     site_settings_service.create_setting(site.id, 'board_id', board.id)
 
-    return board
+    yield board
+
+    board_service.delete_board(board.id)
 
 
 @pytest.fixture
