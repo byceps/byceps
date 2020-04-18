@@ -31,4 +31,6 @@ def article(shop):
 
 @pytest.fixture
 def ticket_category(party):
-    return ticket_category_service.create_category(party.id, 'Deluxe')
+    category = ticket_category_service.create_category(party.id, 'Deluxe')
+    yield category
+    ticket_category_service.delete_category(category.id)

@@ -30,12 +30,16 @@ def party(brand):
 
 @pytest.fixture(scope='module')
 def category(party):
-    return category_service.create_category(party.id, 'Premium')
+    category = category_service.create_category(party.id, 'Premium')
+    yield category
+    category_service.delete_category(category.id)
 
 
 @pytest.fixture(scope='module')
 def another_category(party):
-    return category_service.create_category(party.id, 'Economy')
+    category = category_service.create_category(party.id, 'Economy')
+    yield category
+    category_service.delete_category(category.id)
 
 
 @pytest.fixture(scope='module')

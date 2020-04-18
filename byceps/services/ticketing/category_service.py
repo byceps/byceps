@@ -26,6 +26,14 @@ def create_category(party_id: PartyID, title: str) -> TicketCategory:
     return _db_entity_to_category(category)
 
 
+def delete_category(category_id: TicketCategoryID) -> None:
+    """Delete a category."""
+    db.session.query(DbCategory) \
+        .filter_by(id=category_id) \
+        .delete()
+    db.session.commit()
+
+
 def count_categories_for_party(party_id: PartyID) -> int:
     """Return the number of categories for that party."""
     return DbCategory.query \

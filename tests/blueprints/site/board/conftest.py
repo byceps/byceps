@@ -7,6 +7,7 @@ import pytest
 
 from byceps.services.site import service as site_service
 from byceps.services.site import settings_service as site_settings_service
+from byceps.services.ticketing import category_service
 
 from tests.helpers import (
     assign_permissions_to_user,
@@ -49,12 +50,16 @@ def board(app, site, brand):
 
 @pytest.fixture
 def category(board):
-    return create_category(board.id, number=1)
+    category = create_category(board.id, number=1)
+    yield category
+    category_service.delete_category(category.id)
 
 
 @pytest.fixture
 def another_category(board):
-    return create_category(board.id, number=2)
+    category = create_category(board.id, number=2)
+    yield category
+    category_service.delete_category(category.id)
 
 
 @pytest.fixture
