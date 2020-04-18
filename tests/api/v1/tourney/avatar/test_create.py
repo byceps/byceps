@@ -5,6 +5,8 @@
 
 from pathlib import Path
 
+from byceps.services.tourney.avatar import service as avatar_service
+
 
 def test_create(api_client, api_client_authz_header, party, user):
     response = send_request(
@@ -12,6 +14,8 @@ def test_create(api_client, api_client_authz_header, party, user):
     )
 
     assert response.status_code == 201
+
+    tear_down_avatar(response)
 
 
 def test_create_fails_with_unknown_user_id(
@@ -56,6 +60,9 @@ def test_create_fails_with_deleted_user(
     assert response.status_code == 400
 
 
+# helpers
+
+
 def send_request(api_client, api_client_authz_header, party_id, creator_id):
     url = f'/api/v1/tourney/avatars'
 
@@ -68,3 +75,13 @@ def send_request(api_client, api_client_authz_header, party_id, creator_id):
         }
 
         return api_client.post(url, headers=headers, data=form_data)
+
+
+def tear_down_avatar(response):
+    avatar_id = extract_avatar_id(response)
+    avatar_service.delete_avatar_image(avatar_id)
+
+
+def extract_avatar_id(response) -> str:
+    filename = response.location.rsplit('/', 1)[1]
+    return filename.split('.')[0]
