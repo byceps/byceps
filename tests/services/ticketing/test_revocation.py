@@ -28,10 +28,21 @@ def area(party):
     return seating_area_service.create_area(party.id, 'main', 'Main Hall')
 
 
-def test_revoke_ticket(app, category, ticketing_admin, ticket_owner):
-    ticket_before = ticket_creation_service.create_ticket(
-        category.id, ticket_owner.id
+@pytest.fixture
+def ticket(category, ticket_owner):
+    return ticket_creation_service.create_ticket(category.id, ticket_owner.id)
+
+
+@pytest.fixture
+def tickets(category, ticket_owner):
+    quantity = 3
+    return ticket_creation_service.create_tickets(
+        category.id, ticket_owner.id, quantity
     )
+
+
+def test_revoke_ticket(app, ticket, ticketing_admin):
+    ticket_before = ticket
     assert not ticket_before.revoked
 
     events_before = event_service.get_events_for_ticket(ticket_before.id)
@@ -58,10 +69,8 @@ def test_revoke_ticket(app, category, ticketing_admin, ticket_owner):
     }
 
 
-def test_revoke_tickets(app, party, category, ticketing_admin, ticket_owner):
-    tickets_before = ticket_creation_service.create_tickets(
-        category.id, ticket_owner.id, 3
-    )
+def test_revoke_tickets(app, tickets, ticketing_admin):
+    tickets_before = tickets
 
     for ticket_before in tickets_before:
         assert not ticket_before.revoked
@@ -91,15 +100,11 @@ def test_revoke_tickets(app, party, category, ticketing_admin, ticket_owner):
         }
 
 
-def test_revoke_ticket_with_seat(
-    app, party, category, area, ticketing_admin, ticket_owner
-):
-    seat = seat_service.create_seat(area, 0, 0, category.id)
-
-    ticket = ticket_creation_service.create_ticket(category.id, ticket_owner.id)
+def test_revoke_ticket_with_seat(app, area, ticket, ticketing_admin):
+    seat = seat_service.create_seat(area, 0, 0, ticket.category_id)
 
     ticket_seat_management_service.occupy_seat(
-        ticket.id, seat.id, ticket_owner.id
+        ticket.id, seat.id, ticket.owned_by_id
     )
 
     assert ticket.occupied_seat_id == seat.id
@@ -121,20 +126,14 @@ def test_revoke_ticket_with_seat(
     assert 'seat-released' in event_types_after
 
 
-def test_revoke_tickets_with_seats(
-    app, party, category, area, ticketing_admin, ticket_owner
-):
-    tickets = ticket_creation_service.create_tickets(
-        category.id, ticket_owner.id, 2
-    )
-
+def test_revoke_tickets_with_seats(app, area, tickets, ticketing_admin):
     ticket_ids = {ticket.id for ticket in tickets}
 
     for ticket in tickets:
-        seat = seat_service.create_seat(area, 0, 0, category.id)
+        seat = seat_service.create_seat(area, 0, 0, ticket.category_id)
 
         ticket_seat_management_service.occupy_seat(
-            ticket.id, seat.id, ticket_owner.id
+            ticket.id, seat.id, ticket.owned_by_id
         )
 
         assert ticket.occupied_seat_id == seat.id
