@@ -106,6 +106,23 @@ def publish_item(item_id: ItemID) -> NewsItemPublished:
     return NewsItemPublished(occurred_at=item.published_at, item_id=item.id)
 
 
+def delete_item(item_id: ItemID) -> None:
+    """Delete a news item and its versions."""
+    db.session.query(DbCurrentVersionAssociation) \
+        .filter_by(item_id=item_id) \
+        .delete()
+
+    db.session.query(DbItemVersion) \
+        .filter_by(item_id=item_id) \
+        .delete()
+
+    db.session.query(DbItem) \
+        .filter_by(id=item_id) \
+        .delete()
+
+    db.session.commit()
+
+
 def find_item(item_id: ItemID) -> Optional[Item]:
     """Return the item with that id, or `None` if not found."""
     item = _find_db_item(item_id)
