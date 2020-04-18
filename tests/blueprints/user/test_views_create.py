@@ -19,6 +19,7 @@ from byceps.services.newsletter import (
     command_service as newsletter_command_service,
     service as newsletter_service,
 )
+from byceps.services.brand import service as brand_service
 from byceps.services.party import service as party_service
 from byceps.services.site import service as site_service
 from byceps.services.snippet import service as snippet_service
@@ -56,8 +57,10 @@ def admin():
 
 
 @pytest.fixture(scope='module')
-def brand():
-    return create_brand()
+def brand(app):
+    brand = create_brand()
+    yield brand
+    brand_service.delete_brand(brand.id)
 
 
 @pytest.fixture(scope='module')

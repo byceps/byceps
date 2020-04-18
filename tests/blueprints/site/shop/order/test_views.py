@@ -7,6 +7,7 @@ from unittest.mock import patch
 
 import pytest
 
+from byceps.services.brand import service as brand_service
 from byceps.services.party import service as party_service
 from byceps.events.shop import ShopOrderPlaced
 from byceps.services.shop.article.models.article import Article
@@ -58,7 +59,9 @@ def shop(email_config, admin_user):
 
 @pytest.fixture
 def brand(app):
-    return create_brand()
+    brand = create_brand()
+    yield brand
+    brand_service.delete_brand(brand.id)
 
 
 @pytest.fixture

@@ -5,7 +5,7 @@
 
 import pytest
 
-from byceps.services.brand import settings_service
+from byceps.services.brand import service as brand_service, settings_service
 from byceps.services.brand.transfer.models import BrandSetting
 
 from tests.helpers import create_brand
@@ -20,11 +20,17 @@ BRAND_ID = 'acmecon'
 def app(party_app, db):
     with party_app.app_context():
         with database_recreated(db):
-            create_brand(BRAND_ID)
             yield party_app
 
 
-def test_create(app):
+@pytest.fixture(scope='module')
+def brand(app):
+    brand = create_brand(BRAND_ID)
+    yield brand
+    brand_service.delete_brand(brand.id)
+
+
+def test_create(brand):
     brand_id = BRAND_ID
     name = 'name1'
     value = 'value1'
@@ -39,7 +45,7 @@ def test_create(app):
     assert setting.value == value
 
 
-def test_create_or_update(app):
+def test_create_or_update(brand):
     brand_id = BRAND_ID
     name = 'name2'
     value1 = 'value2a'
@@ -66,7 +72,7 @@ def test_create_or_update(app):
     assert updated_setting.value == value2
 
 
-def test_remove(app):
+def test_remove(brand):
     brand_id = BRAND_ID
     name = 'name3'
     value = 'value3'
@@ -79,7 +85,7 @@ def test_remove(app):
     assert settings_service.find_setting(brand_id, name) is None
 
 
-def test_find(app):
+def test_find(brand):
     brand_id = BRAND_ID
     name = 'name4'
     value = 'value4'
@@ -96,7 +102,7 @@ def test_find(app):
     assert setting_after_create.value == value
 
 
-def test_find_value(app):
+def test_find_value(brand):
     brand_id = BRAND_ID
     name = 'name5'
     value = 'value5'
@@ -110,7 +116,7 @@ def test_find_value(app):
     assert value_after_create == value
 
 
-def test_get_settings(app):
+def test_get_settings(brand):
     brand_id = BRAND_ID
 
     all_settings_before_create = settings_service.get_settings(brand_id)

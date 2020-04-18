@@ -12,6 +12,7 @@ from byceps.services.board import (
     topic_command_service,
     topic_query_service,
 )
+from byceps.services.brand import service as brand_service
 from byceps.services.site import service as site_service
 from byceps.services.site import settings_service as site_settings_service
 
@@ -41,7 +42,9 @@ def site(app, make_email_config):
 
 @pytest.fixture
 def brand(app):
-    return create_brand()
+    brand = create_brand()
+    yield brand
+    brand_service.delete_brand(brand.id)
 
 
 @pytest.fixture

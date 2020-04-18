@@ -5,6 +5,7 @@
 
 import pytest
 
+from byceps.services.brand import service as brand_service
 from byceps.services.party import service as party_service
 from byceps.services.site import service as site_service
 
@@ -28,7 +29,9 @@ def app(party_app, db, make_email_config):
 
 @pytest.fixture(scope='module')
 def brand(app):
-    return create_brand()
+    brand = create_brand()
+    yield brand
+    brand_service.delete_brand(brand.id)
 
 
 @pytest.fixture(scope='module')
