@@ -33,6 +33,15 @@ def create_channel(
     return _db_entity_to_channel(channel)
 
 
+def delete_channel(channel_id: ChannelID) -> None:
+    """Delete a news channel."""
+    db.session.query(DbChannel) \
+        .filter_by(id=channel_id) \
+        .delete()
+
+    db.session.commit()
+
+
 def find_channel(channel_id: ChannelID) -> Optional[Channel]:
     """Return the channel with that id, or `None` if not found."""
     channel = DbChannel.query.get(channel_id)

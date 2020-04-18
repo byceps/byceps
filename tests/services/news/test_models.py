@@ -37,7 +37,11 @@ def channel(brand):
     channel_id = f'{brand.id}-test'
     url_prefix = 'https://example.com/news/'
 
-    return news_channel_service.create_channel(brand.id, channel_id, url_prefix)
+    channel = news_channel_service.create_channel(brand.id, channel_id, url_prefix)
+
+    yield channel
+
+    news_channel_service.delete_channel(channel_id)
 
 
 def test_image_url_with_image(app, channel, editor):
