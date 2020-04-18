@@ -25,7 +25,9 @@ import byceps.services.seating.models.seat_group
 
 @pytest.fixture(scope='module')
 def area(party):
-    return seating_area_service.create_area(party.id, 'main', 'Main Hall')
+    area = seating_area_service.create_area(party.id, 'main', 'Main Hall')
+    yield area
+    seating_area_service.delete_area(area.id)
 
 
 @pytest.fixture
