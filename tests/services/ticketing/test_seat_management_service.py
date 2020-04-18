@@ -22,8 +22,6 @@ from byceps.services.ticketing.exceptions import (
 # `Seat.assignment` is available.
 import byceps.services.seating.models.seat_group
 
-from tests.helpers import create_brand, create_party, create_user
-
 
 @pytest.fixture(scope='module')
 def area(party):

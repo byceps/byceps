@@ -3,7 +3,7 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from .helpers import create_category, create_topic, find_topic
+from .helpers import create_topic, find_topic
 
 
 def test_move_topic(
