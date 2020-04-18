@@ -38,6 +38,9 @@ def test_get_orders_placed_by_user(admin_app_with_db, email_config):
     orders_orderer1_shop2 = get_orders_by_user(orderer1, shop2_id)
     assert orders_orderer1_shop2 == [order5]
 
+    for order in order1, order2, order3, order4, order5:
+        order_service.delete_order(order.id)
+
 
 def create_orderer(screen_name):
     user = create_user_with_detail(screen_name)

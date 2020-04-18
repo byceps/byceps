@@ -336,6 +336,25 @@ def _update_payment_state(
     order.payment_state_updated_by_id = initiator_id
 
 
+def delete_order(order_id: OrderID) -> None:
+    """Delete an order."""
+    order = find_order(order_id)
+
+    db.session.query(DbOrderEvent) \
+        .filter_by(order_id=order_id) \
+        .delete()
+
+    db.session.query(DbOrderItem) \
+        .filter_by(order_number=order.order_number) \
+        .delete()
+
+    db.session.query(DbOrder) \
+        .filter_by(id=order_id) \
+        .delete()
+
+    db.session.commit()
+
+
 def count_open_orders(shop_id: ShopID) -> int:
     """Return the number of open orders for the shop."""
     return DbOrder.query \

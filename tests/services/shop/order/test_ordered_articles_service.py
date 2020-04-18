@@ -25,6 +25,7 @@ def test_count_ordered_articles(admin_app_with_db, db, shop, orderer):
 
     article = create_article(shop.id, quantity=100)
 
+    order_ids = set()
     for article_quantity, payment_state in [
         (4, PaymentState.open),
         (6, PaymentState.canceled_after_paid),
@@ -40,6 +41,7 @@ def test_count_ordered_articles(admin_app_with_db, db, shop, orderer):
             article,
             article_quantity,
         )
+        order_ids.add(order.id)
         set_payment_state(db, order.order_number, payment_state)
 
     totals = ordered_articles_service.count_ordered_articles(
@@ -47,6 +49,9 @@ def test_count_ordered_articles(admin_app_with_db, db, shop, orderer):
     )
 
     assert totals == expected
+
+    for order_id in order_ids:
+        order_service.delete_order(order_id)
 
 
 def place_order(shop_id, orderer, article, article_quantity):

@@ -12,6 +12,7 @@ from byceps.services.party import service as party_service
 from byceps.events.shop import ShopOrderPlaced
 from byceps.services.shop.article.models.article import Article
 from byceps.services.shop.order.models.order import Order
+from byceps.services.shop.order import service as order_service
 from byceps.services.shop.sequence import service as sequence_service
 from byceps.services.site import service as site_service
 
@@ -152,6 +153,8 @@ def test_order(
             client, order_detail_page_url, order.order_number
         )
 
+    order_service.delete_order(order.id)
+
 
 @patch('byceps.blueprints.shop.order.signals.order_placed.send')
 @patch('byceps.blueprints.shop.order.views.order_email_service')
@@ -209,6 +212,8 @@ def test_order_single(
         assert_order_detail_page_works(
             client, order_detail_page_url, order.order_number
         )
+
+    order_service.delete_order(order.id)
 
 
 # helpers

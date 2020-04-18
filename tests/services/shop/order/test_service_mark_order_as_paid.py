@@ -16,7 +16,8 @@ from byceps.util.iterables import find
 @pytest.fixture
 def order(admin_app_with_db, shop, order_number_sequence, orderer, empty_cart):
     order, _ = order_service.place_order(shop.id, orderer, empty_cart)
-    return order
+    yield order
+    order_service.delete_order(order.id)
 
 
 def test_mark_order_as_paid(order, admin_user):

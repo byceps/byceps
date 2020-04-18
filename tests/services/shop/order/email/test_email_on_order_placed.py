@@ -8,6 +8,7 @@ from decimal import Decimal
 from unittest.mock import patch
 
 from byceps.services.shop.order.email import service as order_email_service
+from byceps.services.shop.order import service as order_service
 from byceps.services.shop.sequence import service as sequence_service
 
 from tests.helpers import create_user_with_detail, current_user_set
@@ -89,6 +90,11 @@ E-Mail: acmecon@example.com
         expected_to_orderer_subject,
         expected_to_orderer_body,
     )
+
+    order_service.delete_order(order_id)
+
+
+# helpers
 
 
 def create_email_payment_instructions_snippet(shop_id, admin_id):

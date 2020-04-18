@@ -105,6 +105,8 @@ def test_view_matching_user_and_party_and_shop(
 
     assert response.status_code == 200
 
+    order_service.delete_order(order_id)
+
 
 def test_view_matching_party_and_shop_but_different_user(
     app, site1, shop1, admin_user, user1, user2

@@ -65,6 +65,11 @@ E-Mail: acmecon@example.com
         expected_body,
     )
 
+    order_service.delete_order(order_id)
+
+
+# helpers
+
 
 def create_email_footer_snippet(shop_id, admin_id):
     create_shop_fragment(

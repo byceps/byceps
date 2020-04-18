@@ -104,7 +104,9 @@ def order(shop, order_number_sequence, cart, orderer):
         shop.id, orderer, cart, created_at=created_at
     )
 
-    return order
+    yield order
+
+    order_service.delete_order(order.id)
 
 
 @freeze_time('2015-04-15 07:54:18')  # UTC

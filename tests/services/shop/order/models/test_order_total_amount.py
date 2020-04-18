@@ -35,6 +35,8 @@ def test_without_any_items(
 
     assert order.total_amount == Decimal('0.00')
 
+    order_service.delete_order(order.id)
+
 
 def test_with_single_item(
     party_app_with_db, shop, order_number_sequence, orderer, article1
@@ -44,6 +46,8 @@ def test_with_single_item(
     ])
 
     assert order.total_amount == Decimal('49.95')
+
+    order_service.delete_order(order.id)
 
 
 def test_with_multiple_items(
@@ -62,6 +66,8 @@ def test_with_multiple_items(
     ])
 
     assert order.total_amount == Decimal('206.17')
+
+    order_service.delete_order(order.id)
 
 
 # helpers
