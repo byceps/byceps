@@ -13,7 +13,6 @@ from tests.helpers import (
     assign_permissions_to_user,
     create_brand,
     create_site,
-    create_user,
     http_client,
     login_user,
 )
@@ -73,13 +72,18 @@ def posting(topic, board_poster):
 
 
 @pytest.fixture
-def board_poster(app):
-    return create_user('BoardPoster')
+def board_poster(make_user):
+    yield from make_user('BoardPoster')
 
 
 @pytest.fixture
-def moderator(app):
-    moderator = create_user('BoardModerator')
+def _moderator(make_user):
+    yield from make_user('BoardModerator')
+
+
+@pytest.fixture
+def moderator(_moderator):
+    moderator = _moderator
 
     assign_permissions_to_user(
         moderator.id,
