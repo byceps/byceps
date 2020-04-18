@@ -62,9 +62,11 @@ def ticket(app, category, ticket_owner):
 @pytest.fixture
 def ticket_bundle(category, ticket_owner):
     ticket_quantity = 1
-    return ticket_bundle_service.create_bundle(
+    bundle = ticket_bundle_service.create_bundle(
         category.id, ticket_quantity, ticket_owner.id
     )
+    yield bundle
+    ticket_bundle_service.delete_bundle(bundle.id)
 
 
 def test_appoint_and_withdraw_seat_manager(app, ticket, ticket_manager):

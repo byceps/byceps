@@ -5,7 +5,7 @@
 
 from byceps.services.shop.order import action_registry_service
 from byceps.services.shop.order import event_service as order_event_service
-from byceps.services.ticketing import ticket_service
+from byceps.services.ticketing import ticket_service, ticket_bundle_service
 
 from .base import get_tickets_for_order, mark_order_as_paid, place_order
 
@@ -50,6 +50,17 @@ def test_create_ticket_bundles(
     }
     assert len(ticket_bundle_created_events) == bundle_quantity
 
-    # Clean up.
-    for ticket in tickets_after_paid:
+    tear_down_bundles(tickets_after_paid)
+
+
+# helpers
+
+
+def tear_down_bundles(tickets):
+    bundle_ids = {t.bundle_id for t in tickets}
+
+    for ticket in tickets:
         ticket_service.delete_ticket(ticket.id)
+
+    for bundle_id in bundle_ids:
+        ticket_bundle_service.delete_bundle(bundle_id)

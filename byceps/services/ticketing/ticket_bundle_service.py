@@ -73,6 +73,24 @@ def revoke_bundle(
     db.session.commit()
 
 
+def delete_bundle(bundle_id: TicketBundleID) -> None:
+    """Delete a bundle and the tickets assigned to it."""
+    bundle = find_bundle(bundle_id)
+
+    if bundle is None:
+        raise ValueError('Unknown ticket bundle ID.')
+
+    db.session.query(DbTicket) \
+        .filter_by(bundle_id=bundle_id) \
+        .delete()
+
+    db.session.query(DbTicketBundle) \
+        .filter_by(id=bundle_id) \
+        .delete()
+
+    db.session.commit()
+
+
 def find_bundle(bundle_id: TicketBundleID) -> Optional[DbTicketBundle]:
     """Return the ticket bundle with that id, or `None` if not found."""
     return DbTicketBundle.query.get(bundle_id)

@@ -60,3 +60,4 @@ def bundle(category, ticket_owner):
 
     for ticket in bundle.tickets:
         ticket_service.delete_ticket(ticket.id)
+    bundle_service.delete_bundle(bundle.id)
