@@ -27,6 +27,14 @@ def create_area(party_id: PartyID, slug: str, title: str) -> DbArea:
     return area
 
 
+def delete_area(area_id: str) -> None:
+    """Delete an area."""
+    db.session.query(DbArea) \
+        .filter_by(id=area_id) \
+        .delete()
+    db.session.commit()
+
+
 def count_areas_for_party(party_id: PartyID) -> int:
     """Return the number of seating areas for that party."""
     return DbArea.query \
