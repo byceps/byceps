@@ -224,5 +224,22 @@ def remove_limit_of_topic_to_announcements(topic_id: TopicID) -> None:
     db.session.commit()
 
 
+def delete_topic(topic_id: TopicID) -> None:
+    """Delete a topic."""
+    db.session.query(InitialTopicPostingAssociation) \
+        .filter_by(topic_id=topic_id) \
+        .delete()
+
+    db.session.query(DbPosting) \
+        .filter_by(topic_id=topic_id) \
+        .delete()
+
+    db.session.query(DbTopic) \
+        .filter_by(id=topic_id) \
+        .delete()
+
+    db.session.commit()
+
+
 def _get_topic(topic_id: TopicID) -> DbTopic:
     return topic_query_service.get_topic(topic_id)
