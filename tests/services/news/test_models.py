@@ -44,7 +44,8 @@ def channel(brand):
     news_channel_service.delete_channel(channel_id)
 
 
-def test_image_url_with_image(app, channel, editor):
+@pytest.fixture
+def news_item_with_image(channel, editor):
     item = create_item(
         channel.id,
         'with-image',
@@ -52,17 +53,26 @@ def test_image_url_with_image(app, channel, editor):
         image_url_path='breaking.png',
     )
 
-    assert item.image_url_path == '/data/global/news_channels/acmecon-test/breaking.png'
+    yield item
 
-    tear_down_news_item(item)
+    news_service.delete_item(item.id)
 
 
-def test_image_url_without_image(app, channel, editor):
+@pytest.fixture
+def news_item_without_image(channel, editor):
     item = create_item(channel.id, 'without-image', editor.id)
 
-    assert item.image_url_path is None
+    yield item
 
-    tear_down_news_item(item)
+    news_service.delete_item(item.id)
+
+
+def test_image_url_with_image(news_item_with_image):
+    assert news_item_with_image.image_url_path == '/data/global/news_channels/acmecon-test/breaking.png'
+
+
+def test_image_url_without_image(news_item_without_image):
+    assert news_item_without_image.image_url_path is None
 
 
 # helpers
@@ -78,7 +88,3 @@ def create_item(channel_id, slug, editor_id, *, image_url_path=None):
 
     # Return aggregated version of item.
     return news_service.find_aggregated_item_by_slug(channel_id, slug)
-
-
-def tear_down_news_item(item):
-    news_service.delete_item(item.id)
