@@ -30,15 +30,22 @@ def area(party):
 
 @pytest.fixture
 def ticket(category, ticket_owner):
-    return ticket_creation_service.create_ticket(category.id, ticket_owner.id)
+    ticket = ticket_creation_service.create_ticket(category.id, ticket_owner.id)
+    yield ticket
+    ticket_service.delete_ticket(ticket.id)
 
 
 @pytest.fixture
 def tickets(category, ticket_owner):
     quantity = 3
-    return ticket_creation_service.create_tickets(
+    tickets = ticket_creation_service.create_tickets(
         category.id, ticket_owner.id, quantity
     )
+
+    yield tickets
+
+    for ticket in tickets:
+        ticket_service.delete_ticket(ticket.id)
 
 
 def test_revoke_ticket(app, ticket, ticketing_admin):

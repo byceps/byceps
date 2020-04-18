@@ -8,13 +8,16 @@ import pytest
 from byceps.services.ticketing import (
     event_service,
     ticket_creation_service,
+    ticket_service,
     ticket_user_management_service,
 )
 
 
 @pytest.fixture
 def ticket(app, category, ticket_owner):
-    return ticket_creation_service.create_ticket(category.id, ticket_owner.id)
+    ticket = ticket_creation_service.create_ticket(category.id, ticket_owner.id)
+    yield ticket
+    ticket_service.delete_ticket(ticket.id)
 
 
 def test_appoint_and_withdraw_user_manager(app, ticket, ticket_manager):

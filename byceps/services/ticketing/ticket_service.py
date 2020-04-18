@@ -19,7 +19,21 @@ from ..user.models.user import User as DbUser
 
 from .models.category import Category as DbCategory
 from .models.ticket import Ticket as DbTicket
+from .models.ticket_event import TicketEvent as DbTicketEvent
 from .transfer.models import TicketCode, TicketID, TicketSaleStats
+
+
+def delete_ticket(ticket_id: TicketID) -> None:
+    """Delete a ticket and its events."""
+    db.session.query(DbTicketEvent) \
+        .filter_by(ticket_id=ticket_id) \
+        .delete()
+
+    db.session.query(DbTicket) \
+        .filter_by(id=ticket_id) \
+        .delete()
+
+    db.session.commit()
 
 
 def find_ticket(ticket_id: TicketID) -> Optional[DbTicket]:

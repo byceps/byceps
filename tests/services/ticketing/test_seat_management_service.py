@@ -12,6 +12,7 @@ from byceps.services.ticketing import (
     ticket_bundle_service,
     ticket_creation_service,
     ticket_seat_management_service,
+    ticket_service,
 )
 from byceps.services.ticketing.exceptions import (
     SeatChangeDeniedForBundledTicket,
@@ -30,7 +31,9 @@ def area(party):
 
 @pytest.fixture
 def ticket(app, category, ticket_owner):
-    return ticket_creation_service.create_ticket(category.id, ticket_owner.id)
+    ticket = ticket_creation_service.create_ticket(category.id, ticket_owner.id)
+    yield ticket
+    ticket_service.delete_ticket(ticket.id)
 
 
 def test_appoint_and_withdraw_seat_manager(app, ticket, ticket_manager):

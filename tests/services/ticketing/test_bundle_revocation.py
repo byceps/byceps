@@ -8,6 +8,7 @@ import pytest
 from byceps.services.ticketing import (
     event_service,
     ticket_bundle_service as bundle_service,
+    ticket_service,
 )
 
 
@@ -51,4 +52,11 @@ def test_revoke_bundle(app, bundle, ticketing_admin):
 @pytest.fixture
 def bundle(category, ticket_owner):
     quantity = 4
-    return bundle_service.create_bundle(category.id, quantity, ticket_owner.id)
+    bundle = bundle_service.create_bundle(
+        category.id, quantity, ticket_owner.id
+    )
+
+    yield bundle
+
+    for ticket in bundle.tickets:
+        ticket_service.delete_ticket(ticket.id)
