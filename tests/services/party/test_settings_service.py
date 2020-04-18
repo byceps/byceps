@@ -5,7 +5,7 @@
 
 import pytest
 
-from byceps.services.party import settings_service
+from byceps.services.party import service as party_service, settings_service
 from byceps.services.party.transfer.models import PartySetting
 
 from tests.helpers import create_brand, create_party
@@ -20,12 +20,22 @@ PARTY_ID = 'acmecon-2014'
 def app(party_app, db):
     with party_app.app_context():
         with database_recreated(db):
-            brand = create_brand()
-            create_party(brand.id, party_id=PARTY_ID)
             yield party_app
 
 
-def test_create(app):
+@pytest.fixture(scope='module')
+def brand(app):
+    return create_brand()
+
+
+@pytest.fixture(scope='module')
+def party(brand):
+    party = create_party(brand.id, party_id=PARTY_ID)
+    yield party
+    party_service.delete_party(party.id)
+
+
+def test_create(party):
     party_id = PARTY_ID
     name = 'name1'
     value = 'value1'
@@ -40,7 +50,7 @@ def test_create(app):
     assert setting.value == value
 
 
-def test_create_or_update(app):
+def test_create_or_update(party):
     party_id = PARTY_ID
     name = 'name2'
     value1 = 'value2a'
@@ -67,7 +77,7 @@ def test_create_or_update(app):
     assert updated_setting.value == value2
 
 
-def test_remove(app):
+def test_remove(party):
     party_id = PARTY_ID
     name = 'name3'
     value = 'value3'
@@ -80,7 +90,7 @@ def test_remove(app):
     assert settings_service.find_setting(party_id, name) is None
 
 
-def test_find(app):
+def test_find(party):
     party_id = PARTY_ID
     name = 'name4'
     value = 'value4'
@@ -97,7 +107,7 @@ def test_find(app):
     assert setting_after_create.value == value
 
 
-def test_find_value(app):
+def test_find_value(party):
     party_id = PARTY_ID
     name = 'name5'
     value = 'value5'
@@ -111,7 +121,7 @@ def test_find_value(app):
     assert value_after_create == value
 
 
-def test_get_settings(app):
+def test_get_settings(party):
     party_id = PARTY_ID
 
     all_settings_before_create = settings_service.get_settings(party_id)

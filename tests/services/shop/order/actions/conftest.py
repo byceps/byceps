@@ -5,6 +5,7 @@
 
 import pytest
 
+from byceps.services.party import service as party_service
 from byceps.services.ticketing import (
     category_service as ticket_category_service,
 )
@@ -21,7 +22,9 @@ def brand():
 
 @pytest.fixture
 def party(brand):
-    return create_party(brand.id)
+    party = create_party(brand.id)
+    yield party
+    party_service.delete_party(party.id)
 
 
 @pytest.fixture

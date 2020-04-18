@@ -5,6 +5,7 @@
 
 import pytest
 
+from byceps.services.party import service as party_service
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order.models.orderer import Orderer
 from byceps.services.shop.order import service as order_service
@@ -36,14 +37,18 @@ def brand():
 
 @pytest.fixture
 def party1(brand, shop1):
-    return create_party(brand.id, shop_id=shop1.id)
+    party = create_party(brand.id, shop_id=shop1.id)
+    yield party
+    party_service.delete_party(party.id)
 
 
 @pytest.fixture
 def party2(brand, shop2):
-    return create_party(
+    party = create_party(
         brand.id, 'otherlan-2013', 'OtherLAN 2013', shop_id=shop2.id
     )
+    yield party
+    party_service.delete_party(party.id)
 
 
 @pytest.fixture

@@ -5,6 +5,7 @@
 
 import pytest
 
+from byceps.services.party import service as party_service
 from byceps.services.site import service as site_service
 
 from tests.conftest import database_recreated
@@ -26,9 +27,19 @@ def app(party_app, db, make_email_config):
 
 
 @pytest.fixture(scope='module')
-def site(app):
-    brand = create_brand()
+def brand(app):
+    return create_brand()
+
+
+@pytest.fixture(scope='module')
+def party(brand):
     party = create_party(brand.id)
+    yield party
+    party_service.delete_party(party.id)
+
+
+@pytest.fixture(scope='module')
+def site(party):
     site = create_site(party_id=party.id)
     yield site
     site_service.delete_site(site.id)

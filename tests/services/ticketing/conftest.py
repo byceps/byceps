@@ -5,6 +5,7 @@
 
 import pytest
 
+from byceps.services.party import service as party_service
 from byceps.services.ticketing import category_service
 
 from tests.conftest import database_recreated
@@ -25,7 +26,9 @@ def brand(app):
 
 @pytest.fixture(scope='module')
 def party(brand):
-    return create_party(brand_id=brand.id)
+    party = create_party(brand.id)
+    yield party
+    party_service.delete_party(party.id)
 
 
 @pytest.fixture(scope='module')
