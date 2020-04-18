@@ -31,17 +31,23 @@ def area(party):
 
 @pytest.fixture
 def seat1(area, category):
-    return seat_service.create_seat(area, 0, 1, category.id)
+    seat = seat_service.create_seat(area, 0, 1, category.id)
+    yield seat
+    seat_service.delete_seat(seat.id)
 
 
 @pytest.fixture
 def seat2(area, category):
-    return seat_service.create_seat(area, 0, 2, category.id)
+    seat = seat_service.create_seat(area, 0, 2, category.id)
+    yield seat
+    seat_service.delete_seat(seat.id)
 
 
 @pytest.fixture
 def seat_of_another_category(area, another_category):
-    return seat_service.create_seat(area, 0, 0, another_category.id)
+    seat = seat_service.create_seat(area, 0, 0, another_category.id)
+    yield seat
+    seat_service.delete_seat(seat.id)
 
 
 @pytest.fixture

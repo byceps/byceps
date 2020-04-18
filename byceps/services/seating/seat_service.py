@@ -32,6 +32,14 @@ def create_seat(
     return seat
 
 
+def delete_seat(seat_id: SeatID) -> None:
+    """Delete a seat."""
+    db.session.query(DbSeat) \
+        .filter_by(id=seat_id) \
+        .delete()
+    db.session.commit()
+
+
 def count_occupied_seats_by_category(
     party_id: PartyID
 ) -> List[Tuple[TicketCategory, int]]:
