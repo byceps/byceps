@@ -11,6 +11,7 @@ from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order.models.orderer import Orderer
 from byceps.services.shop.order import service as order_service
 from byceps.services.shop.sequence import service as sequence_service
+from byceps.services.shop.shop import service as shop_service
 from byceps.services.site import service as site_service
 
 from testfixtures.shop_order import create_orderer
@@ -82,11 +83,14 @@ def shop1(app, email_config, admin_user):
     yield shop
 
     sequence_service.delete_order_number_sequence(shop.id)
+    shop_service.delete_shop(shop.id)
 
 
 @pytest.fixture
 def shop2(app, email_config):
-    return create_shop('shop-2')
+    shop = create_shop('shop-2')
+    yield shop
+    shop_service.delete_shop(shop.id)
 
 
 @pytest.fixture

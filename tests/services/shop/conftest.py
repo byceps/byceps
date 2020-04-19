@@ -16,7 +16,9 @@ from tests.helpers import create_user_with_detail
 
 @pytest.fixture
 def shop(email_config):
-    return shop_service.create_shop('shop-01', 'Some Shop', email_config.id)
+    shop = shop_service.create_shop('shop-01', 'Some Shop', email_config.id)
+    yield shop
+    shop_service.delete_shop(shop.id)
 
 
 @pytest.fixture

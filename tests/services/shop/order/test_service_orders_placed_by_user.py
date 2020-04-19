@@ -24,6 +24,7 @@ def shop1(email_config):
     yield shop
 
     sequence_service.delete_order_number_sequence(shop.id)
+    shop_service.delete_shop(shop.id)
 
 
 @pytest.fixture
@@ -34,6 +35,7 @@ def shop2(email_config):
     yield shop
 
     sequence_service.delete_order_number_sequence(shop.id)
+    shop_service.delete_shop(shop.id)
 
 
 @pytest.fixture

@@ -28,6 +28,15 @@ def create_shop(shop_id: ShopID, title: str, email_config_id: str) -> Shop:
     return _db_entity_to_shop(shop)
 
 
+def delete_shop(shop_id: ShopID) -> None:
+    """Delete a shop."""
+    db.session.query(DbShop) \
+        .filter_by(id=shop_id) \
+        .delete()
+
+    db.session.commit()
+
+
 def find_shop(shop_id: ShopID) -> Optional[Shop]:
     """Return the shop with that id, or `None` if not found."""
     shop = _find_db_shop(shop_id)

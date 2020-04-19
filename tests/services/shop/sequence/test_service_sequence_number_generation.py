@@ -25,12 +25,16 @@ def email_config(make_email_config):
 
 @pytest.fixture(scope='module')
 def shop1(email_config):
-    return shop_service.create_shop('shop-01', 'Some Shop', email_config.id)
+    shop = shop_service.create_shop('shop-01', 'Some Shop', email_config.id)
+    yield shop
+    shop_service.delete_shop(shop.id)
 
 
 @pytest.fixture(scope='module')
 def shop2(email_config):
-    return shop_service.create_shop('shop-02', 'Another Shop', email_config.id)
+    shop = shop_service.create_shop('shop-02', 'Another Shop', email_config.id)
+    yield shop
+    shop_service.delete_shop(shop.id)
 
 
 def test_generate_article_number_default(app, shop1):
