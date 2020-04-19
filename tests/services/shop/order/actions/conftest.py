@@ -7,6 +7,7 @@ import pytest
 
 from byceps.services.brand import service as brand_service
 from byceps.services.party import service as party_service
+from byceps.services.shop.article import service as article_service
 from byceps.services.ticketing import (
     category_service as ticket_category_service,
 )
@@ -32,7 +33,9 @@ def party(brand):
 
 @pytest.fixture
 def article(shop):
-    return create_article(shop.id, quantity=10)
+    article = create_article(shop.id, quantity=10)
+    yield article
+    article_service.delete_article(article.id)
 
 
 @pytest.fixture

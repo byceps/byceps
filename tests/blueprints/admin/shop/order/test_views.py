@@ -8,6 +8,7 @@ from unittest.mock import patch
 import pytest
 
 from byceps.events.shop import ShopOrderCanceled, ShopOrderPaid
+from byceps.services.shop.article import service as article_service
 from byceps.services.shop.article.models.article import Article
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order.models.order import Order
@@ -45,17 +46,23 @@ def admin():
 
 @pytest.fixture
 def article1(shop):
-    return create_article(shop.id, 'item-001', 8)
+    article = create_article(shop.id, 'item-001', 8)
+    yield article
+    article_service.delete_article(article.id)
 
 
 @pytest.fixture
 def article2(shop):
-    return create_article(shop.id, 'item-002', 8)
+    article = create_article(shop.id, 'item-002', 8)
+    yield article
+    article_service.delete_article(article.id)
 
 
 @pytest.fixture
 def article3(shop):
-    return create_article(shop.id, 'item-003', 8)
+    article = create_article(shop.id, 'item-003', 8)
+    yield article
+    article_service.delete_article(article.id)
 
 
 @pytest.fixture(scope='module')

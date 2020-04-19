@@ -94,6 +94,15 @@ def unattach_article(attached_article: DbArticle) -> None:
     db.session.commit()
 
 
+def delete_article(article_id: ArticleID) -> None:
+    """Delete an article."""
+    db.session.query(DbArticle) \
+        .filter_by(id=article_id) \
+        .delete()
+
+    db.session.commit()
+
+
 def find_article(article_id: ArticleID) -> Optional[DbArticle]:
     """Return the article with that ID, or `None` if not found."""
     return DbArticle.query.get(article_id)

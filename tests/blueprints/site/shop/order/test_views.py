@@ -11,6 +11,7 @@ from byceps.services.brand import service as brand_service
 from byceps.services.party import service as party_service
 from byceps.events.shop import ShopOrderPlaced
 from byceps.services.shop.article.models.article import Article
+from byceps.services.shop.article import service as article_service
 from byceps.services.shop.order.models.order import Order
 from byceps.services.shop.order import service as order_service
 from byceps.services.shop.sequence import service as sequence_service
@@ -81,7 +82,9 @@ def site(party):
 
 @pytest.fixture
 def article(app, db, shop):
-    return create_article(shop.id, quantity=5)
+    article = create_article(shop.id, quantity=5)
+    yield article
+    article_service.delete_article(article.id)
 
 
 @pytest.fixture

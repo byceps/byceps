@@ -7,6 +7,7 @@ from decimal import Decimal
 
 import pytest
 
+from byceps.services.shop.article import service as article_service
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import service as order_service
 
@@ -15,17 +16,23 @@ from tests.services.shop.helpers import create_article as _create_article
 
 @pytest.fixture
 def article1(shop):
-    return create_article(shop.id, 1, Decimal('49.95'))
+    article = create_article(shop.id, 1, Decimal('49.95'))
+    yield article
+    article_service.delete_article(article.id)
 
 
 @pytest.fixture
 def article2(shop):
-    return create_article(shop.id, 2, Decimal('6.20'))
+    article = create_article(shop.id, 2, Decimal('6.20'))
+    yield article
+    article_service.delete_article(article.id)
 
 
 @pytest.fixture
 def article3(shop):
-    return create_article(shop.id, 3, Decimal('12.53'))
+    article = create_article(shop.id, 3, Decimal('12.53'))
+    yield article
+    article_service.delete_article(article.id)
 
 
 def test_without_any_items(

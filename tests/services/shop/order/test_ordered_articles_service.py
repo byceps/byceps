@@ -5,6 +5,7 @@
 
 import pytest
 
+from byceps.services.shop.article import service as article_service
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import ordered_articles_service
 from byceps.services.shop.order.models.order import Order as DbOrder
@@ -17,7 +18,9 @@ from tests.services.shop.helpers import create_article
 
 @pytest.fixture
 def article(shop):
-    return create_article(shop.id, quantity=100)
+    article = create_article(shop.id, quantity=100)
+    yield article
+    article_service.delete_article(article.id)
 
 
 def test_count_ordered_articles(admin_app_with_db, db, shop, article, orderer):

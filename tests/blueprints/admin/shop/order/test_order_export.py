@@ -10,6 +10,7 @@ from decimal import Decimal
 from freezegun import freeze_time
 import pytest
 
+from byceps.services.shop.article import service as article_service
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order.models.orderer import Orderer
 from byceps.services.shop.order import service as order_service
@@ -34,7 +35,7 @@ def admin_user(app):
 
 @pytest.fixture
 def article_bungalow(shop):
-    return create_article(
+    article = create_article(
         shop.id,
         'LR-08-A00003',
         'LANresort 2015: Bungalow 4 Plätze',
@@ -42,10 +43,14 @@ def article_bungalow(shop):
         Decimal('0.07'),
     )
 
+    yield article
+
+    article_service.delete_article(article.id)
+
 
 @pytest.fixture
 def article_guest_fee(shop):
-    return create_article(
+    article = create_article(
         shop.id,
         'LR-08-A00006',
         'Touristische Gästeabgabe (BispingenCard), pauschal für 4 Personen',
@@ -53,16 +58,24 @@ def article_guest_fee(shop):
         Decimal('0.19'),
     )
 
+    yield article
+
+    article_service.delete_article(article.id)
+
 
 @pytest.fixture
 def article_table(shop):
-    return create_article(
+    article = create_article(
         shop.id,
         'LR-08-A00002',
         'Tisch (zur Miete), 200 x 80 cm',
         Decimal('20.00'),
         Decimal('0.19'),
     )
+
+    yield article
+
+    article_service.delete_article(article.id)
 
 
 @pytest.fixture
