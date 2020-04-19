@@ -33,3 +33,5 @@ def empty_cart() -> Cart:
 @pytest.fixture
 def order_number_sequence(shop) -> None:
     sequence_service.create_order_number_sequence(shop.id, 'order-')
+    yield
+    sequence_service.delete_order_number_sequence(shop.id)

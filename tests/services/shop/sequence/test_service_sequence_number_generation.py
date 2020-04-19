@@ -42,6 +42,9 @@ def test_generate_article_number_default(app, shop1):
 
     assert actual == 'AEC-01-A00001'
 
+    sequence_service.delete_article_number_sequence(shop.id)
+    sequence_service.delete_order_number_sequence(shop.id)
+
 
 def test_generate_article_number_custom(app, shop2):
     shop = shop2
@@ -56,6 +59,9 @@ def test_generate_article_number_custom(app, shop2):
 
     assert actual == 'XYZ-09-A00042'
 
+    sequence_service.delete_article_number_sequence(shop.id)
+    sequence_service.delete_order_number_sequence(shop.id)
+
 
 def test_generate_order_number_default(app, shop1):
     shop = shop1
@@ -65,6 +71,9 @@ def test_generate_order_number_default(app, shop1):
     actual = sequence_service.generate_order_number(shop.id)
 
     assert actual == 'AEC-01-B00001'
+
+    sequence_service.delete_article_number_sequence(shop.id)
+    sequence_service.delete_order_number_sequence(shop.id)
 
 
 def test_generate_order_number_custom(app, shop2):
@@ -79,3 +88,6 @@ def test_generate_order_number_custom(app, shop2):
     actual = sequence_service.generate_order_number(shop.id)
 
     assert actual == 'LOL-03-B00207'
+
+    sequence_service.delete_article_number_sequence(shop.id)
+    sequence_service.delete_order_number_sequence(shop.id)

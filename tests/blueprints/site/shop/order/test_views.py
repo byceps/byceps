@@ -56,7 +56,10 @@ def shop(email_config, admin_user):
     create_shop_fragment(
         shop.id, admin_user.id, 'payment_instructions', 'Send all ur moneyz!'
     )
-    return shop
+
+    yield shop
+
+    sequence_service.delete_order_number_sequence(shop.id)
 
 
 @pytest.fixture

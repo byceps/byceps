@@ -78,7 +78,10 @@ def shop1(app, email_config, admin_user):
     shop = create_shop('shop-1')
     sequence_service.create_order_number_sequence(shop.id, 'LF-02-B')
     create_payment_instructions_snippet(shop.id, admin_user.id)
-    return shop
+
+    yield shop
+
+    sequence_service.delete_order_number_sequence(shop.id)
 
 
 @pytest.fixture

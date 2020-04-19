@@ -61,6 +61,8 @@ def test_count_ordered_articles(admin_app_with_db, db, shop, article, orderer):
     for order_id in order_ids:
         order_service.delete_order(order_id)
 
+    sequence_service.delete_order_number_sequence(shop.id)
+
 
 # helpers
 

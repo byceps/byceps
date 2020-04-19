@@ -20,14 +20,20 @@ from tests.services.shop.helpers import create_shop
 def shop1(email_config):
     shop = create_shop('first-nice-shop')
     sequence_service.create_order_number_sequence(shop.id, 'LF-02-B')
-    return shop
+
+    yield shop
+
+    sequence_service.delete_order_number_sequence(shop.id)
 
 
 @pytest.fixture
 def shop2(email_config):
     shop = create_shop('second-nice-shop')
     sequence_service.create_order_number_sequence(shop.id, 'LF-03-B')
-    return shop
+
+    yield shop
+
+    sequence_service.delete_order_number_sequence(shop.id)
 
 
 @pytest.fixture

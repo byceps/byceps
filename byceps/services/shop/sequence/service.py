@@ -45,6 +45,25 @@ def create_order_number_sequence(
     create_sequence(shop_id, Purpose.order, prefix, value=value)
 
 
+def delete_sequence(shop_id: ShopID, purpose: Purpose) -> None:
+    """Delete sequence for that shop and purpose."""
+    db.session.query(DbNumberSequence) \
+        .filter_by(shop_id=shop_id, _purpose=purpose.name) \
+        .delete()
+
+    db.session.commit()
+
+
+def delete_article_number_sequence(shop_id: ShopID) -> None:
+    """Delete article sequence for that shop."""
+    delete_sequence(shop_id, Purpose.article)
+
+
+def delete_order_number_sequence(shop_id: ShopID) -> None:
+    """Delete order sequence for that shop."""
+    delete_sequence(shop_id, Purpose.order)
+
+
 class NumberGenerationFailed(Exception):
     """Indicate that generating a prefixed, sequential number has failed."""
 

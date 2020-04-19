@@ -38,6 +38,7 @@ def order(shop, customer, order_admin):
     yield order
 
     order_service.delete_order(order.id)
+    sequence_service.delete_order_number_sequence(shop.id)
 
 
 @patch('byceps.email.send')
