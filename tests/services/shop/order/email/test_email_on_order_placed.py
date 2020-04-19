@@ -9,6 +9,7 @@ from unittest.mock import patch
 
 import pytest
 
+from byceps.services.shop.article import service as article_service
 from byceps.services.shop.order.email import service as order_email_service
 from byceps.services.shop.order import service as order_service
 from byceps.services.shop.sequence import service as sequence_service
@@ -31,24 +32,34 @@ def customer(party_app_with_db):
 
 @pytest.fixture
 def article1(shop):
-    return create_article(
+    article = create_article(
         shop.id,
         'AC-14-A00003',
         'Einzelticket, Kategorie Loge',
         Decimal('99.00'),
         123,
     )
+    article_id = article.id
+
+    yield article
+
+    article_service.delete_article(article_id)
 
 
 @pytest.fixture
 def article2(shop):
-    return create_article(
+    article = create_article(
         shop.id,
         'AC-14-A00007',
         'T-Shirt, Größe L',
         Decimal('14.95'),
         50,
     )
+    article_id = article.id
+
+    yield article
+
+    article_service.delete_article(article_id)
 
 
 @pytest.fixture
