@@ -96,34 +96,36 @@ def user2(app):
     return create_user_with_detail('User2')
 
 
-def test_view_matching_user_and_party_and_shop(
-    app, site1, shop1, admin_user, user1
-):
-    order_id = place_order(shop1.id, user1)
+@pytest.fixture
+def order(shop1, user1):
+    orderer = create_orderer(user1)
+    cart = Cart()
 
-    response = request_view(app, user1, order_id)
+    order, _ = order_service.place_order(shop1.id, orderer, cart)
+
+    yield order
+
+    order_service.delete_order(order.id)
+
+
+def test_view_matching_user_and_party_and_shop(app, site1, order, user1):
+    response = request_view(app, user1, order.id)
 
     assert response.status_code == 200
 
-    order_service.delete_order(order_id)
-
 
 def test_view_matching_party_and_shop_but_different_user(
-    app, site1, shop1, admin_user, user1, user2
+    app, site1, order, user1, user2
 ):
-    order_id = place_order(shop1.id, user1)
-
-    response = request_view(app, user2, order_id)
+    response = request_view(app, user2, order.id)
 
     assert response.status_code == 404
 
 
 def test_view_matching_user_but_different_party_and_shop(
-    app, site2, shop1, admin_user, user1
+    app, site2, order, user1
 ):
-    order_id = place_order(shop1.id, user1)
-
-    response = request_view(app, user1, order_id)
+    response = request_view(app, user1, order.id)
 
     assert response.status_code == 404
 
@@ -135,15 +137,6 @@ def create_payment_instructions_snippet(shop_id, admin_id):
     create_shop_fragment(
         shop_id, admin_id, 'payment_instructions', 'Send all ur moneyz!'
     )
-
-
-def place_order(shop_id, user):
-    orderer = create_orderer(user)
-    cart = Cart()
-
-    order, _ = order_service.place_order(shop_id, orderer, cart)
-
-    return order.id
 
 
 def request_view(app, current_user, order_id):
