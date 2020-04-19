@@ -16,7 +16,7 @@ from byceps.services.shop.order import service as order_service
 from byceps.services.shop.sequence import service as sequence_service
 from byceps.services.site import service as site_service
 
-from testfixtures.shop_article import create_article
+from tests.services.shop.helpers import create_article
 
 from tests.helpers import (
     create_brand,
@@ -81,12 +81,7 @@ def site(party):
 
 @pytest.fixture
 def article(app, db, shop):
-    article = create_article(shop.id, quantity=5)
-
-    db.session.add(article)
-    db.session.commit()
-
-    return article
+    return create_article(shop.id, quantity=5)
 
 
 @pytest.fixture
