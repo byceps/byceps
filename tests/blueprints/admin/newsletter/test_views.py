@@ -92,7 +92,7 @@ def newsletter_admin():
     admin = create_user('NewsletterAdmin')
 
     permission_ids = {'admin.access', 'newsletter.export_subscribers'}
-    assign_permissions_to_user(admin.id, 'admin', permission_ids)
+    assign_permissions_to_user(admin.id, 'newsletter_admin', permission_ids)
 
     login_user(admin.id)
 

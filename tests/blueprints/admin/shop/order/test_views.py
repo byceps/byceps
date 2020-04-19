@@ -281,7 +281,7 @@ def authorize_admin(admin_id):
         'shop_order.cancel',
         'shop_order.mark_as_paid',
     }
-    assign_permissions_to_user(admin_id, 'admin', permission_ids)
+    assign_permissions_to_user(admin_id, 'order_admin', permission_ids)
 
 
 def create_article(shop_id, item_number, quantity):

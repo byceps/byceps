@@ -155,7 +155,7 @@ def test_serialize_unknown_order(app, shop, admin_user):
 
 def authorize_admin(admin_id):
     permission_ids = {'admin.access', 'shop_order.view'}
-    assign_permissions_to_user(admin_id, 'admin', permission_ids)
+    assign_permissions_to_user(admin_id, 'order_admin', permission_ids)
 
 
 def create_article(shop_id, item_number, description, price, tax_rate):
