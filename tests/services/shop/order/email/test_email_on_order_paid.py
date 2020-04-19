@@ -30,14 +30,14 @@ def test_email_on_order_paid(
     sequence_service.create_order_number_sequence(shop.id, 'AC-14-B', value=21)
     create_email_footer_snippet(shop.id, order_admin.id)
 
-    order_id = place_order(shop.id, user)
+    order = place_order(shop.id, user)
 
     order_service.mark_order_as_paid(
-        order_id, PaymentMethod.bank_transfer, order_admin.id
+        order.id, PaymentMethod.bank_transfer, order_admin.id
     )
 
     with current_user_set(app, user), app.app_context():
-        order_email_service.send_email_for_paid_order_to_orderer(order_id)
+        order_email_service.send_email_for_paid_order_to_orderer(order.id)
 
     expected_sender = 'info@shop.example'
     expected_recipients = ['vorbild@example.com']
@@ -66,7 +66,7 @@ E-Mail: acmecon@example.com
         expected_sender, expected_recipients, expected_subject, expected_body
     )
 
-    order_service.delete_order(order_id)
+    order_service.delete_order(order.id)
 
 
 # helpers

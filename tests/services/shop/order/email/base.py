@@ -24,4 +24,4 @@ def place_order_with_items(
         shop_id, orderer, cart, created_at=created_at
     )
 
-    return order.id
+    return order

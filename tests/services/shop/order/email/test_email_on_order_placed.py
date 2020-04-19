@@ -34,10 +34,10 @@ def test_email_on_order_placed(
     create_email_payment_instructions_snippet(shop.id, order_admin.id)
     create_email_footer_snippet(shop.id, order_admin.id)
 
-    order_id = place_order(shop.id, user)
+    order = place_order(shop.id, user)
 
     with current_user_set(app, user), app.app_context():
-        order_email_service.send_email_for_incoming_order_to_orderer(order_id)
+        order_email_service.send_email_for_incoming_order_to_orderer(order.id)
 
     expected_to_orderer_sender = 'info@shop.example'
     expected_to_orderer_recipients = ['interessent@example.com']
@@ -91,7 +91,7 @@ E-Mail: acmecon@example.com
         expected_to_orderer_body,
     )
 
-    order_service.delete_order(order_id)
+    order_service.delete_order(order.id)
 
 
 # helpers
