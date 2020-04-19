@@ -15,6 +15,7 @@ from byceps.services.newsletter.types import SubscriptionState
 
 from tests.helpers import (
     assign_permissions_to_user,
+    create_permissions,
     create_user,
     http_client,
     login_user,
@@ -92,6 +93,7 @@ def newsletter_admin():
     admin = create_user('NewsletterAdmin')
 
     permission_ids = {'admin.access', 'newsletter.export_subscribers'}
+    create_permissions(permission_ids)
     assign_permissions_to_user(admin.id, 'newsletter_admin', permission_ids)
 
     login_user(admin.id)

@@ -18,6 +18,7 @@ from byceps.services.shop.sequence import service as sequence_service
 
 from tests.helpers import (
     assign_permissions_to_user,
+    create_permissions,
     create_user,
     http_client,
     login_user,
@@ -155,6 +156,7 @@ def test_serialize_unknown_order(app, shop, admin_user):
 
 def authorize_admin(admin_id):
     permission_ids = {'admin.access', 'shop_order.view'}
+    create_permissions(permission_ids)
     assign_permissions_to_user(admin_id, 'order_admin', permission_ids)
 
 

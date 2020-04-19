@@ -19,6 +19,7 @@ from byceps.services.site import settings_service as site_settings_service
 from tests.helpers import (
     assign_permissions_to_user,
     create_brand,
+    create_permissions,
     create_site,
     http_client,
     login_user,
@@ -108,16 +109,14 @@ def _moderator(make_user):
 def moderator(_moderator):
     moderator = _moderator
 
-    assign_permissions_to_user(
-        moderator.id,
-        'moderator',
-        {
-            'board.hide',
-            'board_topic.lock',
-            'board_topic.move',
-            'board_topic.pin',
-        },
-    )
+    permission_ids = {
+        'board.hide',
+        'board_topic.lock',
+        'board_topic.move',
+        'board_topic.pin',
+    }
+    create_permissions(permission_ids)
+    assign_permissions_to_user(moderator.id, 'moderator', permission_ids)
 
     login_user(moderator.id)
 

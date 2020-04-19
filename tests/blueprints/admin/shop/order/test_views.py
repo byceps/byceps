@@ -23,6 +23,7 @@ from testfixtures.shop_order import create_orderer
 
 from tests.helpers import (
     assign_permissions_to_user,
+    create_permissions,
     create_user,
     create_user_with_detail,
     http_client,
@@ -281,6 +282,7 @@ def authorize_admin(admin_id):
         'shop_order.cancel',
         'shop_order.mark_as_paid',
     }
+    create_permissions(permission_ids)
     assign_permissions_to_user(admin_id, 'order_admin', permission_ids)
 
 
