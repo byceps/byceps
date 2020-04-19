@@ -89,19 +89,14 @@ def data_path():
         yield Path(d)
 
 
-@pytest.fixture
+@pytest.fixture(scope='session')
 def make_user(db):
-    users = []
-
     def _wrapper(*args, **kwargs):
         user = create_user(*args, **kwargs)
-        users.append(user)
         yield user
+        user_command_service.delete_account(user.id, user.id, 'clean up')
 
     yield _wrapper
-
-    for user in users:
-        user_command_service.delete_account(user.id, user.id, 'clean up')
 
 
 @pytest.fixture
