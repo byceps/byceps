@@ -101,7 +101,12 @@ def newsletter_admin():
 
     login_user(admin.id)
 
-    return admin
+    yield admin
+
+    authorization_service.deassign_all_roles_from_user(admin.id, admin.id)
+    authorization_service.delete_role(role_id)
+    for permission_id in permission_ids:
+        authorization_service.delete_permission(permission_id)
 
 
 @pytest.fixture(scope='module')

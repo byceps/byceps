@@ -41,9 +41,25 @@ def order_number_sequence(shop) -> None:
 @pytest.fixture(scope='module')
 def admin():
     admin = create_user('ShopOrderAdmin')
-    authorize_admin(admin.id)
+
+    permission_ids = {
+        'admin.access',
+        'shop_order.cancel',
+        'shop_order.mark_as_paid',
+    }
+    role_id = 'order_admin'
+    create_permissions(permission_ids)
+    create_role_with_permissions_assigned(role_id, permission_ids)
+    authorization_service.assign_role_to_user(role_id, admin.id)
+
     login_user(admin.id)
-    return admin
+
+    yield admin
+
+    authorization_service.deassign_all_roles_from_user(admin.id, admin.id)
+    authorization_service.delete_role(role_id)
+    for permission_id in permission_ids:
+        authorization_service.delete_permission(permission_id)
 
 
 @pytest.fixture
@@ -275,19 +291,6 @@ def test_cancel_after_paid(
 
 
 # helpers
-
-
-def authorize_admin(admin_id):
-    permission_ids = {
-        'admin.access',
-        'shop_order.cancel',
-        'shop_order.mark_as_paid',
-    }
-    role_id = 'order_admin'
-
-    create_permissions(permission_ids)
-    create_role_with_permissions_assigned(role_id, permission_ids)
-    authorization_service.assign_role_to_user(role_id, admin_id)
 
 
 def create_article(shop_id, item_number, quantity):

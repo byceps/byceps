@@ -30,9 +30,21 @@ from tests.services.shop.helpers import create_article as _create_article
 @pytest.fixture(scope='module')
 def admin_user(app):
     admin = create_user('ShopOrderAdmin')
-    authorize_admin(admin.id)
+
+    permission_ids = {'admin.access', 'shop_order.view'}
+    role_id = 'order_admin'
+    create_permissions(permission_ids)
+    create_role_with_permissions_assigned(role_id, permission_ids)
+    authorization_service.assign_role_to_user(role_id, admin.id)
+
     login_user(admin.id)
-    return admin
+
+    yield admin
+
+    authorization_service.deassign_all_roles_from_user(admin.id, admin.id)
+    authorization_service.delete_role(role_id)
+    for permission_id in permission_ids:
+        authorization_service.delete_permission(permission_id)
 
 
 @pytest.fixture
@@ -153,15 +165,6 @@ def test_serialize_unknown_order(app, shop, admin_user):
 
 
 # helpers
-
-
-def authorize_admin(admin_id):
-    permission_ids = {'admin.access', 'shop_order.view'}
-    role_id = 'order_admin'
-
-    create_permissions(permission_ids)
-    create_role_with_permissions_assigned(role_id, permission_ids)
-    authorization_service.assign_role_to_user(role_id, admin_id)
 
 
 def create_article(shop_id, item_number, description, price, tax_rate):
