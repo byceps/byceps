@@ -10,6 +10,7 @@ from decimal import Decimal
 from freezegun import freeze_time
 import pytest
 
+from byceps.services.authorization import service as authorization_service
 from byceps.services.shop.article import service as article_service
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order.models.orderer import Orderer
@@ -17,8 +18,8 @@ from byceps.services.shop.order import service as order_service
 from byceps.services.shop.sequence import service as sequence_service
 
 from tests.helpers import (
-    assign_permissions_to_user,
     create_permissions,
+    create_role_with_permissions_assigned,
     create_user,
     http_client,
     login_user,
@@ -156,8 +157,11 @@ def test_serialize_unknown_order(app, shop, admin_user):
 
 def authorize_admin(admin_id):
     permission_ids = {'admin.access', 'shop_order.view'}
+    role_id = 'order_admin'
+
     create_permissions(permission_ids)
-    assign_permissions_to_user(admin_id, 'order_admin', permission_ids)
+    create_role_with_permissions_assigned(role_id, permission_ids)
+    authorization_service.assign_role_to_user(role_id, admin_id)
 
 
 def create_article(shop_id, item_number, description, price, tax_rate):

@@ -7,6 +7,7 @@ from datetime import datetime
 
 import pytest
 
+from byceps.services.authorization import service as authorization_service
 from byceps.services.newsletter.models import (
     SubscriptionUpdate as DbSubscriptionUpdate,
 )
@@ -14,8 +15,8 @@ from byceps.services.newsletter import command_service
 from byceps.services.newsletter.types import SubscriptionState
 
 from tests.helpers import (
-    assign_permissions_to_user,
     create_permissions,
+    create_role_with_permissions_assigned,
     create_user,
     http_client,
     login_user,
@@ -93,8 +94,10 @@ def newsletter_admin():
     admin = create_user('NewsletterAdmin')
 
     permission_ids = {'admin.access', 'newsletter.export_subscribers'}
+    role_id = 'newsletter_admin'
     create_permissions(permission_ids)
-    assign_permissions_to_user(admin.id, 'newsletter_admin', permission_ids)
+    create_role_with_permissions_assigned(role_id, permission_ids)
+    authorization_service.assign_role_to_user(role_id, admin.id)
 
     login_user(admin.id)
 

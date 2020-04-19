@@ -8,6 +8,7 @@ from unittest.mock import patch
 import pytest
 
 from byceps.events.shop import ShopOrderCanceled, ShopOrderPaid
+from byceps.services.authorization import service as authorization_service
 from byceps.services.shop.article import service as article_service
 from byceps.services.shop.article.models.article import Article
 from byceps.services.shop.cart.models import Cart
@@ -22,8 +23,8 @@ from byceps.services.shop.sequence import service as sequence_service
 from testfixtures.shop_order import create_orderer
 
 from tests.helpers import (
-    assign_permissions_to_user,
     create_permissions,
+    create_role_with_permissions_assigned,
     create_user,
     create_user_with_detail,
     http_client,
@@ -282,8 +283,11 @@ def authorize_admin(admin_id):
         'shop_order.cancel',
         'shop_order.mark_as_paid',
     }
+    role_id = 'order_admin'
+
     create_permissions(permission_ids)
-    assign_permissions_to_user(admin_id, 'order_admin', permission_ids)
+    create_role_with_permissions_assigned(role_id, permission_ids)
+    authorization_service.assign_role_to_user(role_id, admin_id)
 
 
 def create_article(shop_id, item_number, quantity):

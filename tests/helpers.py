@@ -80,20 +80,11 @@ def create_permissions(permission_ids):
         authorization_service.create_permission(permission_id, permission_id)
 
 
-def assign_permissions_to_user(
-    user_id, role_id, permission_ids, *, initiator_id=None
-):
-    """Create the role, assign the permissions to the it, and assign the
-    role to the user.
-    """
+def create_role_with_permissions_assigned(role_id, permission_ids):
     role = authorization_service.create_role(role_id, role_id)
 
     for permission_id in permission_ids:
-        authorization_service.assign_permission_to_role(permission_id, role.id)
-
-    authorization_service.assign_role_to_user(
-        role.id, user_id, initiator_id=initiator_id
-    )
+        authorization_service.assign_permission_to_role(permission_id, role_id)
 
 
 def create_brand(brand_id='acmecon', title='ACME Entertainment Convention'):

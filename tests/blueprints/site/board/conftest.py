@@ -5,6 +5,7 @@
 
 import pytest
 
+from byceps.services.authorization import service as authorization_service
 from byceps.services.board import (
     board_service,
     category_command_service,
@@ -17,9 +18,9 @@ from byceps.services.site import service as site_service
 from byceps.services.site import settings_service as site_settings_service
 
 from tests.helpers import (
-    assign_permissions_to_user,
     create_brand,
     create_permissions,
+    create_role_with_permissions_assigned,
     create_site,
     http_client,
     login_user,
@@ -115,8 +116,10 @@ def moderator(_moderator):
         'board_topic.move',
         'board_topic.pin',
     }
+    role_id = 'moderator'
     create_permissions(permission_ids)
-    assign_permissions_to_user(moderator.id, 'moderator', permission_ids)
+    create_role_with_permissions_assigned(role_id, permission_ids)
+    authorization_service.assign_role_to_user(role_id, moderator.id)
 
     login_user(moderator.id)
 
