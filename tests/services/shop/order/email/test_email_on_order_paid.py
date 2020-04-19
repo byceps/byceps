@@ -6,6 +6,8 @@
 from datetime import datetime
 from unittest.mock import patch
 
+import pytest
+
 from byceps.services.shop.order.email import service as order_email_service
 from byceps.services.shop.order import service as order_service
 from byceps.services.shop.order.transfer.models import PaymentMethod
@@ -17,26 +19,38 @@ from tests.services.shop.helpers import create_shop_fragment
 from .base import place_order_with_items
 
 
-@patch('byceps.email.send')
-def test_email_on_order_paid(
-    send_email_mock, party_app_with_db, shop, order_admin
-):
-    app = party_app_with_db
-
-    user = create_user_with_detail(
+@pytest.fixture
+def customer(party_app_with_db):
+    return create_user_with_detail(
         'Vorbild', email_address='vorbild@example.com'
     )
 
+
+@pytest.fixture
+def order(shop, customer, order_admin):
     sequence_service.create_order_number_sequence(shop.id, 'AC-14-B', value=21)
     create_email_footer_snippet(shop.id, order_admin.id)
 
-    order = place_order(shop.id, user)
+    created_at = datetime(2014, 9, 23, 18, 40, 53)
+
+    order = place_order_with_items(shop.id, customer, created_at, [])
+
+    yield order
+
+    order_service.delete_order(order.id)
+
+
+@patch('byceps.email.send')
+def test_email_on_order_paid(
+    send_email_mock, party_app_with_db, customer, order_admin, order
+):
+    app = party_app_with_db
 
     order_service.mark_order_as_paid(
         order.id, PaymentMethod.bank_transfer, order_admin.id
     )
 
-    with current_user_set(app, user), app.app_context():
+    with current_user_set(app, customer), app.app_context():
         order_email_service.send_email_for_paid_order_to_orderer(order.id)
 
     expected_sender = 'info@shop.example'
@@ -66,8 +80,6 @@ E-Mail: acmecon@example.com
         expected_sender, expected_recipients, expected_subject, expected_body
     )
 
-    order_service.delete_order(order.id)
-
 
 # helpers
 
@@ -89,9 +101,3 @@ Acme Entertainment Convention
 E-Mail: acmecon@example.com
 ''',
     )
-
-
-def place_order(shop_id, user):
-    created_at = datetime(2014, 9, 23, 18, 40, 53)
-
-    return place_order_with_items(shop_id, user, created_at, [])

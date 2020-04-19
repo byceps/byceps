@@ -7,6 +7,8 @@ from datetime import datetime
 from decimal import Decimal
 from unittest.mock import patch
 
+import pytest
+
 from byceps.services.shop.order.email import service as order_email_service
 from byceps.services.shop.order import service as order_service
 from byceps.services.shop.sequence import service as sequence_service
@@ -20,23 +22,63 @@ from tests.services.shop.helpers import (
 from .base import place_order_with_items
 
 
-@patch('byceps.email.send')
-def test_email_on_order_placed(
-    send_email_mock, party_app_with_db, shop, order_admin
-):
-    app = party_app_with_db
-
-    user = create_user_with_detail(
+@pytest.fixture
+def customer(party_app_with_db):
+    return create_user_with_detail(
         'Interessent', email_address='interessent@example.com'
     )
 
+
+@pytest.fixture
+def article1(shop):
+    return create_article(
+        shop.id,
+        'AC-14-A00003',
+        'Einzelticket, Kategorie Loge',
+        Decimal('99.00'),
+        123,
+    )
+
+
+@pytest.fixture
+def article2(shop):
+    return create_article(
+        shop.id,
+        'AC-14-A00007',
+        'T-Shirt, Größe L',
+        Decimal('14.95'),
+        50,
+    )
+
+
+@pytest.fixture
+def order(shop, article1, article2, customer, order_admin):
     sequence_service.create_order_number_sequence(shop.id, 'AC-14-B', value=252)
+
     create_email_payment_instructions_snippet(shop.id, order_admin.id)
     create_email_footer_snippet(shop.id, order_admin.id)
 
-    order = place_order(shop.id, user)
+    created_at = datetime(2014, 8, 15, 20, 7, 43)
 
-    with current_user_set(app, user), app.app_context():
+    items_with_quantity = [
+        (article1, 5),
+        (article2, 2),
+    ]
+
+    order = place_order_with_items(
+        shop.id, customer, created_at, items_with_quantity
+    )
+
+    yield order
+
+    order_service.delete_order(order.id)
+
+
+@patch('byceps.email.send')
+def test_email_on_order_placed(send_email_mock, party_app_with_db, customer, order):
+    app = party_app_with_db
+
+    with current_user_set(app, customer), app.app_context():
         order_email_service.send_email_for_incoming_order_to_orderer(order.id)
 
     expected_to_orderer_sender = 'info@shop.example'
@@ -91,8 +133,6 @@ E-Mail: acmecon@example.com
         expected_to_orderer_body,
     )
 
-    order_service.delete_order(order.id)
-
 
 # helpers
 
@@ -134,34 +174,6 @@ Acme Entertainment Convention
 
 E-Mail: acmecon@example.com
 ''',
-    )
-
-
-def place_order(shop_id, user):
-    created_at = datetime(2014, 8, 15, 20, 7, 43)
-
-    article1 = create_article(
-        shop_id,
-        'AC-14-A00003',
-        'Einzelticket, Kategorie Loge',
-        Decimal('99.00'),
-        123,
-    )
-    article2 = create_article(
-        shop_id,
-        'AC-14-A00007',
-        'T-Shirt, Größe L',
-        Decimal('14.95'),
-        50,
-    )
-
-    items_with_quantity = [
-        (article1, 5),
-        (article2, 2),
-    ]
-
-    return place_order_with_items(
-        shop_id, user, created_at, items_with_quantity
     )
 
 

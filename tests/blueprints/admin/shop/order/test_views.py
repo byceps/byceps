@@ -43,6 +43,21 @@ def admin():
     return admin
 
 
+@pytest.fixture
+def article1(shop):
+    return create_article(shop.id, 'item-001', 8)
+
+
+@pytest.fixture
+def article2(shop):
+    return create_article(shop.id, 'item-002', 8)
+
+
+@pytest.fixture
+def article3(shop):
+    return create_article(shop.id, 'item-003', 8)
+
+
 @pytest.fixture(scope='module')
 def orderer():
     user = create_user_with_detail('Besteller')
@@ -56,11 +71,12 @@ def test_cancel_before_paid(
     order_canceled_signal_send_mock,
     app,
     shop,
+    article1,
     order_number_sequence,
     admin,
     orderer,
 ):
-    article_before = create_article(shop.id, 'item-001', 8)
+    article_before = article1
 
     quantified_articles_to_order = {(article_before, 3)}
     placed_order = place_order(shop.id, orderer, quantified_articles_to_order)
@@ -108,11 +124,13 @@ def test_cancel_before_paid_without_sending_email(
     order_canceled_signal_send_mock,
     app,
     shop,
+    article2,
     order_number_sequence,
     admin,
     orderer,
 ):
-    article_before = create_article(shop.id, 'item-002', 8)
+    article_before = article2
+
     quantified_articles_to_order = {(article_before, 3)}
     placed_order = place_order(shop.id, orderer, quantified_articles_to_order)
 
@@ -193,11 +211,12 @@ def test_cancel_after_paid(
     order_canceled_signal_send_mock,
     app,
     shop,
+    article3,
     order_number_sequence,
     admin,
     orderer,
 ):
-    article_before = create_article(shop.id, 'item-003', 8)
+    article_before = article3
 
     quantified_articles_to_order = {(article_before, 3)}
     placed_order = place_order(shop.id, orderer, quantified_articles_to_order)

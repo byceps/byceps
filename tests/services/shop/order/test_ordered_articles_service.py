@@ -3,6 +3,8 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
+import pytest
+
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import ordered_articles_service
 from byceps.services.shop.order.models.order import Order as DbOrder
@@ -13,7 +15,12 @@ from byceps.services.shop.sequence import service as sequence_service
 from tests.services.shop.helpers import create_article
 
 
-def test_count_ordered_articles(admin_app_with_db, db, shop, orderer):
+@pytest.fixture
+def article(shop):
+    return create_article(shop.id, quantity=100)
+
+
+def test_count_ordered_articles(admin_app_with_db, db, shop, article, orderer):
     expected = {
         PaymentState.open: 12,
         PaymentState.canceled_before_paid: 7,
@@ -22,8 +29,6 @@ def test_count_ordered_articles(admin_app_with_db, db, shop, orderer):
     }
 
     sequence_service.create_order_number_sequence(shop.id, 'ABC-01-B')
-
-    article = create_article(shop.id, quantity=100)
 
     order_ids = set()
     for article_quantity, payment_state in [
@@ -52,6 +57,9 @@ def test_count_ordered_articles(admin_app_with_db, db, shop, orderer):
 
     for order_id in order_ids:
         order_service.delete_order(order_id)
+
+
+# helpers
 
 
 def place_order(shop_id, orderer, article, article_quantity):
