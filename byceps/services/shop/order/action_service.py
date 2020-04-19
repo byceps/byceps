@@ -37,7 +37,7 @@ PROCEDURES_BY_NAME = {
 
 
 # -------------------------------------------------------------------- #
-# creation
+# creation/removal
 
 
 def create_action(
@@ -50,6 +50,15 @@ def create_action(
     action = OrderAction(article_number, payment_state, procedure, parameters)
 
     db.session.add(action)
+    db.session.commit()
+
+
+def delete_actions(article_number: ArticleNumber) -> None:
+    """Delete order actions for an article."""
+    db.session.query(OrderAction) \
+        .filter_by(article_number=article_number) \
+        .delete()
+
     db.session.commit()
 
 

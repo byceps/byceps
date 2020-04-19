@@ -3,7 +3,7 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.services.shop.order import action_registry_service
+from byceps.services.shop.order import action_service, action_registry_service
 from byceps.services.shop.order import event_service as order_event_service
 from byceps.services.shop.order import service as order_service
 from byceps.services.ticketing import ticket_service
@@ -52,3 +52,4 @@ def test_create_tickets(
     for ticket in tickets_after_paid:
         ticket_service.delete_ticket(ticket.id)
     order_service.delete_order(order.id)
+    action_service.delete_actions(article.item_number)
