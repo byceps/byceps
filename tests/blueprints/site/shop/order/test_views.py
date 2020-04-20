@@ -46,11 +46,6 @@ def app(party_app_with_db):
 
 
 @pytest.fixture
-def email_config(app, make_email_config):
-    return make_email_config()
-
-
-@pytest.fixture
 def shop(email_config, admin_user):
     shop = create_shop('shop-1')
     sequence_service.create_order_number_sequence(shop.id, 'AEC-01-B', value=4)

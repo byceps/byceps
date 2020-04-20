@@ -57,11 +57,6 @@ def party2(brand, shop2):
 
 
 @pytest.fixture
-def email_config(app, make_email_config):
-    return make_email_config()
-
-
-@pytest.fixture
 def site1(party1):
     site = create_site(party_id=party1.id)
     yield site
