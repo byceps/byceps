@@ -116,6 +116,8 @@ def newsletter_list(admin_app_with_db):
 
 @pytest.fixture(scope='module')
 def subscribers(db, newsletter_list):
+    user_ids = []
+
     for number, initialized, suspended, deleted, states in [
         (1, True,  False, False, [SubscriptionState.requested                             ]),
         (2, True,  False, False, [SubscriptionState.declined                              ]),
@@ -140,7 +142,14 @@ def subscribers(db, newsletter_list):
             user.deleted = True
             db.session.commit()
 
+        user_ids.append(user.id)
+
         add_subscriptions(db, user.id, newsletter_list.id, states)
+
+    yield
+
+    for user_id in user_ids:
+        command_service.delete_subscription_updates(user_id, newsletter_list.id)
 
 
 def add_subscriptions(db, user_id, list_id, states):
