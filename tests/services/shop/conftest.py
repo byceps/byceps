@@ -8,6 +8,7 @@ import pytest
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.sequence import service as sequence_service
 from byceps.services.shop.shop import service as shop_service
+from byceps.services.user import command_service as user_command_service
 
 from testfixtures.shop_order import create_orderer
 
@@ -24,7 +25,8 @@ def shop(email_config):
 @pytest.fixture
 def orderer():
     user = create_user_with_detail('Besteller')
-    return create_orderer(user)
+    yield create_orderer(user)
+    user_command_service.delete_account(user.id, user.id, 'clean up')
 
 
 @pytest.fixture
