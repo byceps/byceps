@@ -18,17 +18,10 @@ from ...conftest import database_recreated
 def app(admin_app, db):
     with admin_app.app_context():
         with database_recreated(db):
-            _app = admin_app
-
-            admin = create_user('Administrator')
-            _app.admin_id = admin.id
-
-            yield _app
+            yield admin_app
 
 
-def test_suspend(app):
-    admin_id = app.admin_id
-
+def test_suspend(app, admin_user):
     user = create_user('Cheater')
     user_id = user.id
 
@@ -42,7 +35,7 @@ def test_suspend(app):
 
     # -------------------------------- #
 
-    user_command_service.suspend_account(user_id, admin_id, reason)
+    user_command_service.suspend_account(user_id, admin_user.id, reason)
 
     # -------------------------------- #
 
@@ -55,18 +48,16 @@ def test_suspend(app):
     suspended_event = events_after[0]
     assert suspended_event.event_type == 'user-suspended'
     assert suspended_event.data == {
-        'initiator_id': str(admin_id),
+        'initiator_id': str(admin_user.id),
         'reason': reason,
     }
 
 
-def test_unsuspend(app):
-    admin_id = app.admin_id
-
+def test_unsuspend(app, admin_user):
     user = create_user('TemporaryNuisance')
     user_id = user.id
 
-    user_command_service.suspend_account(user_id, admin_id, 'Annoying')
+    user_command_service.suspend_account(user_id, admin_user.id, 'Annoying')
 
     reason = 'User showed penitence. Drop the ban.'
 
@@ -78,7 +69,7 @@ def test_unsuspend(app):
 
     # -------------------------------- #
 
-    user_command_service.unsuspend_account(user_id, admin_id, reason)
+    user_command_service.unsuspend_account(user_id, admin_user.id, reason)
 
     # -------------------------------- #
 
@@ -91,6 +82,6 @@ def test_unsuspend(app):
     unsuspended_event = events_after[1]
     assert unsuspended_event.event_type == 'user-unsuspended'
     assert unsuspended_event.data == {
-        'initiator_id': str(admin_id),
+        'initiator_id': str(admin_user.id),
         'reason': reason,
     }

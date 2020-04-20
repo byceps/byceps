@@ -10,8 +10,6 @@ from byceps.services.authorization import service as authorization_service
 from byceps.services.user import command_service as user_command_service
 from byceps.services.user import event_service
 
-from tests.helpers import create_user
-
 from ...conftest import database_recreated
 
 
@@ -19,12 +17,7 @@ from ...conftest import database_recreated
 def app(admin_app, db):
     with admin_app.app_context():
         with database_recreated(db):
-            _app = admin_app
-
-            admin = create_user('Administrator')
-            _app.admin_id = admin.id
-
-            yield _app
+            yield admin_app
 
 
 @pytest.fixture
@@ -110,9 +103,8 @@ def test_initialize_account_as_user(
 
 
 def test_initialize_account_as_admin(
-    app, role, uninitialized_user_created_at_party_checkin_by_admin
+    app, role, uninitialized_user_created_at_party_checkin_by_admin, admin_user
 ):
-    admin_id = app.admin_id
     user = uninitialized_user_created_at_party_checkin_by_admin
 
     user_before = user_command_service._get_user(user.id)
@@ -126,7 +118,7 @@ def test_initialize_account_as_admin(
 
     # -------------------------------- #
 
-    user_command_service.initialize_account(user.id, initiator_id=admin_id)
+    user_command_service.initialize_account(user.id, initiator_id=admin_user.id)
 
     # -------------------------------- #
 
@@ -139,13 +131,13 @@ def test_initialize_account_as_admin(
     user_enabled_event = events_after[0]
     assert user_enabled_event.event_type == 'user-initialized'
     assert user_enabled_event.data == {
-        'initiator_id': str(admin_id),
+        'initiator_id': str(admin_user.id),
     }
 
     role_assigned_event = events_after[1]
     assert role_assigned_event.event_type == 'role-assigned'
     assert role_assigned_event.data == {
-        'initiator_id': str(admin_id),
+        'initiator_id': str(admin_user.id),
         'role_id': 'board_user',
     }
 
@@ -154,9 +146,8 @@ def test_initialize_account_as_admin(
 
 
 def test_initialize_already_initialized_account(
-    app, role, already_initialized_user
+    app, role, already_initialized_user, admin_user
 ):
-    admin_id = app.admin_id
     user = already_initialized_user
 
     user_before = user_command_service._get_user(user.id)
@@ -168,7 +159,9 @@ def test_initialize_already_initialized_account(
     # -------------------------------- #
 
     with raises(ValueError):
-        user_command_service.initialize_account(user.id, initiator_id=admin_id)
+        user_command_service.initialize_account(
+            user.id, initiator_id=admin_user.id
+        )
 
     # -------------------------------- #
 
