@@ -10,15 +10,6 @@ from byceps.services.authorization import service as authorization_service
 from byceps.services.user import command_service as user_command_service
 from byceps.services.user import event_service
 
-from ...conftest import database_recreated
-
-
-@pytest.fixture(scope='module')
-def app(admin_app, db):
-    with admin_app.app_context():
-        with database_recreated(db):
-            yield admin_app
-
 
 @pytest.fixture
 def uninitialized_user_created_online(make_user):
@@ -37,7 +28,7 @@ def already_initialized_user(make_user):
 
 @pytest.fixture
 def role(
-    app,
+    admin_app_with_db,
     uninitialized_user_created_online,
     uninitialized_user_created_at_party_checkin_by_admin,
     already_initialized_user,
@@ -57,7 +48,7 @@ def role(
 
 
 def test_initialize_account_as_user(
-    app, role, uninitialized_user_created_online
+    admin_app_with_db, role, uninitialized_user_created_online
 ):
     user = uninitialized_user_created_online
 
@@ -97,7 +88,10 @@ def test_initialize_account_as_user(
 
 
 def test_initialize_account_as_admin(
-    app, role, uninitialized_user_created_at_party_checkin_by_admin, admin_user
+    admin_app_with_db,
+    role,
+    uninitialized_user_created_at_party_checkin_by_admin,
+    admin_user,
 ):
     user = uninitialized_user_created_at_party_checkin_by_admin
 
@@ -140,7 +134,7 @@ def test_initialize_account_as_admin(
 
 
 def test_initialize_already_initialized_account(
-    app, role, already_initialized_user, admin_user
+    admin_app_with_db, role, already_initialized_user, admin_user
 ):
     user = already_initialized_user
 

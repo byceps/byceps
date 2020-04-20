@@ -76,7 +76,7 @@ def party_app(data_path):
     yield app
 
 
-@pytest.fixture
+@pytest.fixture(scope='module')
 def party_app_with_db(party_app, db):
     with party_app.app_context():
         with database_recreated(db):

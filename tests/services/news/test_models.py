@@ -13,15 +13,6 @@ from byceps.services.news import (
 
 from tests.helpers import create_brand, create_user
 
-from ...conftest import database_recreated
-
-
-@pytest.fixture(scope='module')
-def app(party_app, db):
-    with party_app.app_context():
-        with database_recreated(db):
-            yield party_app
-
 
 @pytest.fixture
 def editor(make_user):
@@ -29,7 +20,7 @@ def editor(make_user):
 
 
 @pytest.fixture(scope='module')
-def brand(app):
+def brand(party_app_with_db):
     brand = create_brand()
     yield brand
     brand_service.delete_brand(brand.id)

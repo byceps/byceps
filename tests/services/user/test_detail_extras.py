@@ -3,25 +3,14 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-import pytest
-
 from byceps.database import db
 from byceps.services.user import command_service as user_command_service
 from byceps.services.user.models.detail import UserDetail
 
 from tests.helpers import create_user_with_detail
 
-from ...conftest import database_recreated
 
-
-@pytest.fixture(scope='module')
-def app(admin_app, db):
-    with admin_app.app_context():
-        with database_recreated(db):
-            yield
-
-
-def test_set_and_remove(app):
+def test_set_and_remove(admin_app_with_db):
     user_id = create_user_with_detail('set-and-remove').id
 
     # Make sure field is `NULL`.
@@ -44,7 +33,7 @@ def test_set_and_remove(app):
     assert get_extras(user_id) == {}
 
 
-def test_remove_unknown_key_from_null_extras(app):
+def test_remove_unknown_key_from_null_extras(admin_app_with_db):
     user_id = create_user_with_detail('null-extras').id
 
     assert get_extras(user_id) is None
@@ -53,7 +42,7 @@ def test_remove_unknown_key_from_null_extras(app):
     assert get_extras(user_id) is None
 
 
-def test_remove_unknown_key_from_empty_extras(app):
+def test_remove_unknown_key_from_empty_extras(admin_app_with_db):
     user_id = create_user_with_detail('empty-extras').id
 
     set_extras_to_empty_dict(user_id)
@@ -61,6 +50,9 @@ def test_remove_unknown_key_from_empty_extras(app):
 
     user_command_service.remove_user_detail_extra(user_id, 'dunno')
     assert get_extras(user_id) == {}
+
+
+# helpers
 
 
 def get_extras(user_id):

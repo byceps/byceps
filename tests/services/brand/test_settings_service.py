@@ -10,21 +10,12 @@ from byceps.services.brand.transfer.models import BrandSetting
 
 from tests.helpers import create_brand
 
-from ...conftest import database_recreated
-
 
 BRAND_ID = 'acmecon'
 
 
 @pytest.fixture(scope='module')
-def app(party_app, db):
-    with party_app.app_context():
-        with database_recreated(db):
-            yield party_app
-
-
-@pytest.fixture(scope='module')
-def brand(app):
+def brand(party_app_with_db):
     brand = create_brand(BRAND_ID)
     yield brand
     brand_service.delete_brand(brand.id)
