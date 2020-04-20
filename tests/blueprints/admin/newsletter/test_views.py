@@ -13,6 +13,7 @@ from byceps.services.newsletter.models import (
 )
 from byceps.services.newsletter import command_service
 from byceps.services.newsletter.types import SubscriptionState
+from byceps.services.user import command_service as user_command_service
 
 from tests.helpers import (
     create_permissions,
@@ -108,6 +109,8 @@ def newsletter_admin():
     for permission_id in permission_ids:
         authorization_service.delete_permission(permission_id)
 
+    user_command_service.delete_account(admin.id, admin.id, 'clean up')
+
 
 @pytest.fixture(scope='module')
 def newsletter_list(admin_app_with_db):
@@ -152,6 +155,7 @@ def subscribers(db, newsletter_list):
 
     for user_id in user_ids:
         command_service.delete_subscription_updates(user_id, newsletter_list.id)
+        user_command_service.delete_account(user.id, user.id, 'clean up')
 
 
 def add_subscriptions(db, user_id, list_id, states):
