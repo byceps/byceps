@@ -137,15 +137,9 @@ def subscribers(db, newsletter_list):
             screen_name=f'User-{number:d}',
             email_address=f'user{number:03d}@example.com',
             initialized=initialized,
+            suspended=suspended,
+            deleted=deleted,
         )
-
-        if suspended:
-            user.suspended = True
-            db.session.commit()
-
-        if deleted:
-            user.deleted = True
-            db.session.commit()
 
         user_ids.append(user.id)
 
