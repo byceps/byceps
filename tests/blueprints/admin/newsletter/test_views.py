@@ -111,7 +111,9 @@ def newsletter_admin():
 
 @pytest.fixture(scope='module')
 def newsletter_list(admin_app_with_db):
-    return command_service.create_list('example', 'Example')
+    newsletter_list = command_service.create_list('example', 'Example')
+    yield newsletter_list
+    command_service.delete_list(newsletter_list.id)
 
 
 @pytest.fixture(scope='module')

@@ -31,6 +31,15 @@ def create_list(list_id: ListID, title: str) -> List:
     return _db_entity_to_list(list_)
 
 
+def delete_list(list_id: ListID) -> None:
+    """Delete a list."""
+    db.session.query(DbList) \
+        .filter_by(id=list_id) \
+        .delete()
+
+    db.session.commit()
+
+
 def subscribe(user_id: UserID, list_id: ListID, expressed_at: datetime) -> None:
     """Subscribe the user to that list."""
     _update_subscription_state(
