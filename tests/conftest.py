@@ -55,7 +55,7 @@ def admin_app(make_admin_app):
     yield make_admin_app()
 
 
-@pytest.fixture
+@pytest.fixture(scope='module')
 def admin_app_with_db(admin_app, db):
     with admin_app.app_context():
         with database_recreated(db):

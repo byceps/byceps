@@ -28,7 +28,7 @@ from tests.services.shop.helpers import create_article as _create_article
 
 
 @pytest.fixture(scope='module')
-def admin_user(app):
+def admin_user(admin_app_with_db):
     admin = create_user('ShopOrderAdmin')
 
     permission_ids = {'admin.access', 'shop_order.view'}
@@ -139,13 +139,13 @@ def order(shop, order_number_sequence, cart, orderer):
 
 
 @freeze_time('2015-04-15 07:54:18')  # UTC
-def test_serialize_existing_order(app, shop, order, admin_user):
+def test_serialize_existing_order(admin_app_with_db, shop, order, admin_user):
     filename = 'testfixtures/shop/order_export.xml'
     with codecs.open(filename, encoding='iso-8859-1') as f:
         expected = f.read().rstrip()
 
     url = f'/admin/shop/orders/{order.id}/export'
-    with http_client(app, user_id=admin_user.id) as client:
+    with http_client(admin_app_with_db, user_id=admin_user.id) as client:
         response = client.get(url)
 
     assert response.status_code == 200
@@ -156,11 +156,11 @@ def test_serialize_existing_order(app, shop, order, admin_user):
 
 
 @freeze_time('2015-04-15 07:54:18')  # UTC
-def test_serialize_unknown_order(app, shop, admin_user):
+def test_serialize_unknown_order(admin_app_with_db, shop, admin_user):
     unknown_order_id = '00000000-0000-0000-0000-000000000000'
 
     url = f'/admin/shop/orders/{unknown_order_id}/export'
-    with http_client(app, user_id=admin_user.id) as client:
+    with http_client(admin_app_with_db, user_id=admin_user.id) as client:
         response = client.get(url)
 
     assert response.status_code == 404
