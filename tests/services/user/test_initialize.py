@@ -21,24 +21,18 @@ def app(admin_app, db):
 
 
 @pytest.fixture
-def uninitialized_user_created_online(db):
-    user = create_user('CreatedOnline', initialized=False)
-    yield user
-    user_command_service.delete_account(user.id, user.id, 'clean up')
+def uninitialized_user_created_online(make_user):
+    yield from make_user('CreatedOnline', initialized=False)
 
 
 @pytest.fixture
-def uninitialized_user_created_at_party_checkin_by_admin(db):
-    user = create_user('CreatedAtPartyCheckInByAdmin', initialized=False)
-    yield user
-    user_command_service.delete_account(user.id, user.id, 'clean up')
+def uninitialized_user_created_at_party_checkin_by_admin(make_user):
+    yield from make_user('CreatedAtPartyCheckInByAdmin', initialized=False)
 
 
 @pytest.fixture
-def already_initialized_user(db):
-    user = create_user('AlreadyInitialized')
-    yield user
-    user_command_service.delete_account(user.id, user.id, 'clean up')
+def already_initialized_user(make_user):
+    yield from make_user('AlreadyInitialized')
 
 
 @pytest.fixture

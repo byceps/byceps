@@ -9,8 +9,6 @@ from byceps.services.user import command_service as user_command_service
 from byceps.services.user import event_service
 from byceps.services.user import service as user_service
 
-from tests.helpers import create_user
-
 from ...conftest import database_recreated
 
 
@@ -21,9 +19,18 @@ def app(admin_app, db):
             yield admin_app
 
 
-def test_suspend(app, admin_user):
-    user = create_user('Cheater')
-    user_id = user.id
+@pytest.fixture
+def cheater(make_user):
+    yield from make_user('Cheater')
+
+
+@pytest.fixture
+def remorseful_user(make_user):
+    yield from make_user('TemporaryNuisance')
+
+
+def test_suspend(app, cheater, admin_user):
+    user_id = cheater.id
 
     reason = 'User has been caught cheating.'
 
@@ -53,9 +60,8 @@ def test_suspend(app, admin_user):
     }
 
 
-def test_unsuspend(app, admin_user):
-    user = create_user('TemporaryNuisance')
-    user_id = user.id
+def test_unsuspend(app, remorseful_user, admin_user):
+    user_id = remorseful_user.id
 
     user_command_service.suspend_account(user_id, admin_user.id, 'Annoying')
 
