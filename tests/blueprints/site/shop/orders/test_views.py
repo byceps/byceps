@@ -13,6 +13,7 @@ from byceps.services.shop.order import service as order_service
 from byceps.services.shop.sequence import service as sequence_service
 from byceps.services.shop.shop import service as shop_service
 from byceps.services.site import service as site_service
+from byceps.services.user import command_service as user_command_service
 
 from testfixtures.shop_order import create_orderer
 
@@ -95,12 +96,16 @@ def shop2(app, email_config):
 
 @pytest.fixture
 def user1(app):
-    return create_user_with_detail('User1')
+    user = create_user_with_detail('User1')
+    yield user
+    user_command_service.delete_account(user.id, user.id, 'clean up')
 
 
 @pytest.fixture
 def user2(app):
-    return create_user_with_detail('User2')
+    user = create_user_with_detail('User2')
+    yield user
+    user_command_service.delete_account(user.id, user.id, 'clean up')
 
 
 @pytest.fixture
