@@ -14,16 +14,15 @@ from tests.helpers import create_site, http_client
 
 
 @pytest.fixture(scope='module')
-def app(party_app, db, make_email_config):
+def app(party_app, db):
     with party_app.app_context():
         with database_recreated(db):
-            make_email_config()
-            create_site()
             yield party_app
 
 
 @pytest.fixture(scope='module')
-def site(app):
+def site(app, make_email_config):
+    make_email_config()
     site = create_site()
     yield site
     site_service.delete_site(site.id)
@@ -40,7 +39,7 @@ def user2(make_user):
 
 
 @pytest.fixture
-def role(app, user1, user2):
+def role(app, site, user1, user2):
     role = authorization_service.create_role('board_user', 'Board User')
 
     yield role
@@ -69,7 +68,7 @@ def test_confirm_email_address_with_valid_token(app, db, user1, role):
     assert get_role_ids(user.id) == {'board_user'}
 
 
-def test_confirm_email_address_with_unknown_token(app, user2, role):
+def test_confirm_email_address_with_unknown_token(app, site, user2, role):
     user = user2
 
     verification_token = create_confirmation_token(user.id)

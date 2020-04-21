@@ -11,7 +11,22 @@ from byceps.services.site import service as site_service
 from byceps.services.user_message import service as user_message_service
 
 from tests.conftest import database_recreated
-from tests.helpers import app_context, create_site, create_user
+from tests.helpers import create_site, create_user
+
+
+@pytest.fixture(scope='module')
+def app(party_app, db):
+    with party_app.app_context():
+        with database_recreated(db):
+            yield party_app
+
+
+@pytest.fixture(scope='module')
+def site(app, make_email_config):
+    make_email_config()
+    site = create_site()
+    yield site
+    site_service.delete_site(site.id)
 
 
 def test_recipient_formatting(site, params):
@@ -33,13 +48,3 @@ def test_recipient_formatting(site, params):
 ])
 def params(request):
     yield request.param
-
-
-@pytest.fixture(scope='module')
-def site(db, make_email_config):
-    with app_context():
-        with database_recreated(db):
-            make_email_config()
-            site = create_site()
-            yield site
-            site_service.delete_site(site.id)

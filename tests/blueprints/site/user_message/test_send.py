@@ -14,18 +14,18 @@ from tests.helpers import create_site, create_user, http_client, login_user
 
 
 @pytest.fixture(scope='module')
-def app(party_app, db, make_email_config):
+def app(party_app, db):
     with party_app.app_context():
         with database_recreated(db):
-            make_email_config(
-                sender_address='noreply@example.com',
-                sender_name='ACME Entertainment Convention',
-            )
             yield party_app
 
 
 @pytest.fixture(scope='module')
-def site(app):
+def site(app, make_email_config):
+    make_email_config(
+        sender_address='noreply@example.com',
+        sender_name='ACME Entertainment Convention',
+    )
     site = create_site(server_name='acme.example.com')
     yield site
     site_service.delete_site(site.id)

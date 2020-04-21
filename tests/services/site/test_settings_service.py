@@ -17,15 +17,15 @@ SITE_ID = 'acmecon-2014-website'
 
 
 @pytest.fixture(scope='module')
-def app(party_app, db, make_email_config):
+def app(party_app, db):
     with party_app.app_context():
         with database_recreated(db):
-            make_email_config()
             yield party_app
 
 
 @pytest.fixture(scope='module')
-def site(app):
+def site(app, make_email_config):
+    make_email_config()
     site = create_site()
     yield site
     site_service.delete_site(site.id)

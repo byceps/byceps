@@ -44,10 +44,9 @@ from tests.helpers import (
 
 
 @pytest.fixture(scope='module')
-def app(party_app, db, make_email_config):
+def app(party_app, db):
     with party_app.app_context():
         with database_recreated(db):
-            make_email_config(sender_address='noreply@example.com')
             yield party_app
 
 
@@ -71,7 +70,8 @@ def party(brand):
 
 
 @pytest.fixture(scope='module')
-def site(party):
+def site(app, make_email_config, party):
+    make_email_config(sender_address='noreply@example.com')
     site = create_site(party_id=party.id)
     yield site
     site_service.delete_site(site.id)
