@@ -149,7 +149,7 @@ def subscribers(db, newsletter_list):
 
     for user_id in user_ids:
         command_service.delete_subscription_updates(user_id, newsletter_list.id)
-        user_command_service.delete_account(user.id, user.id, 'clean up')
+        user_command_service.delete_account(user_id, user_id, 'clean up')
 
 
 def add_subscriptions(db, user_id, list_id, states):
