@@ -20,7 +20,9 @@ def create_shop(shop_id='shop-1', email_config_id=DEFAULT_EMAIL_CONFIG_ID):
 def create_shop_fragment(shop_id, admin_id, name, body):
     scope = Scope('shop', shop_id)
 
-    snippet_service.create_fragment(scope, name, admin_id, body)
+    version, _ = snippet_service.create_fragment(scope, name, admin_id, body)
+
+    return version.snippet_id
 
 
 def create_article(shop_id, **kwargs):

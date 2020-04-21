@@ -17,6 +17,7 @@ from byceps.services.shop.order import service as order_service
 from byceps.services.shop.sequence import service as sequence_service
 from byceps.services.shop.shop import service as shop_service
 from byceps.services.site import service as site_service
+from byceps.services.snippet import service as snippet_service
 
 from tests.services.shop.helpers import create_article
 
@@ -49,12 +50,13 @@ def app(party_app_with_db):
 def shop(email_config, admin_user):
     shop = create_shop('shop-1')
     sequence_service.create_order_number_sequence(shop.id, 'AEC-01-B', value=4)
-    create_shop_fragment(
+    snippet_id = create_shop_fragment(
         shop.id, admin_user.id, 'payment_instructions', 'Send all ur moneyz!'
     )
 
     yield shop
 
+    snippet_service.delete_snippet(snippet_id)
     sequence_service.delete_order_number_sequence(shop.id)
     shop_service.delete_shop(shop.id)
 

@@ -13,6 +13,7 @@ from byceps.services.shop.order import service as order_service
 from byceps.services.shop.sequence import service as sequence_service
 from byceps.services.shop.shop import service as shop_service
 from byceps.services.site import service as site_service
+from byceps.services.snippet import service as snippet_service
 from byceps.services.user import command_service as user_command_service
 
 from testfixtures.shop_order import create_orderer
@@ -74,10 +75,11 @@ def site2(party2):
 def shop1(app, email_config, admin_user):
     shop = create_shop('shop-1')
     sequence_service.create_order_number_sequence(shop.id, 'LF-02-B')
-    create_payment_instructions_snippet(shop.id, admin_user.id)
+    snippet_id = create_payment_instructions_snippet(shop.id, admin_user.id)
 
     yield shop
 
+    snippet_service.delete_snippet(snippet_id)
     sequence_service.delete_order_number_sequence(shop.id)
     shop_service.delete_shop(shop.id)
 
@@ -141,7 +143,7 @@ def test_view_matching_user_but_different_party_and_shop(
 
 
 def create_payment_instructions_snippet(shop_id, admin_id):
-    create_shop_fragment(
+    return create_shop_fragment(
         shop_id, admin_id, 'payment_instructions', 'Send all ur moneyz!'
     )
 
