@@ -54,6 +54,9 @@ def test_current_party_is_considered(party1, party2, admin_user):
 
     assert actual == fragment_info2014_version
 
+    for version in fragment_info2014_version, fragment_info2015_version:
+        snippet_service.delete_snippet(version.snippet_id)
+
 
 def test_unknown_name(party1):
     scope = Scope.for_site(party1.id)
