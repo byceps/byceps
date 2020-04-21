@@ -12,7 +12,7 @@ from byceps.services.ticketing import (
 )
 
 
-def test_revoke_bundle(app, bundle, ticketing_admin):
+def test_revoke_bundle(admin_app_with_db, bundle, ticketing_admin):
     expected_quantity = 4
 
     tickets_before = bundle_service.find_tickets_for_bundle(bundle.id)

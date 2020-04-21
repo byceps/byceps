@@ -9,19 +9,11 @@ from byceps.services.authorization import service as authorization_service
 from byceps.services.site import service as site_service
 from byceps.services.verification_token.models import Purpose, Token
 
-from tests.conftest import database_recreated
 from tests.helpers import create_site, http_client
 
 
 @pytest.fixture(scope='module')
-def app(party_app, db):
-    with party_app.app_context():
-        with database_recreated(db):
-            yield party_app
-
-
-@pytest.fixture(scope='module')
-def site(app, make_email_config):
+def site(party_app_with_db, make_email_config):
     make_email_config()
     site = create_site()
     yield site
@@ -39,7 +31,7 @@ def user2(make_user):
 
 
 @pytest.fixture
-def role(app, site, user1, user2):
+def role(party_app_with_db, site, user1, user2):
     role = authorization_service.create_role('board_user', 'Board User')
 
     yield role
@@ -50,7 +42,9 @@ def role(app, site, user1, user2):
     authorization_service.delete_role(role.id)
 
 
-def test_confirm_email_address_with_valid_token(app, db, user1, role):
+def test_confirm_email_address_with_valid_token(
+    party_app_with_db, db, user1, role
+):
     user = user1
 
     verification_token = create_confirmation_token(user.id)
@@ -59,7 +53,7 @@ def test_confirm_email_address_with_valid_token(app, db, user1, role):
 
     # -------------------------------- #
 
-    response = confirm(app, verification_token)
+    response = confirm(party_app_with_db, verification_token)
 
     # -------------------------------- #
 
@@ -68,7 +62,9 @@ def test_confirm_email_address_with_valid_token(app, db, user1, role):
     assert get_role_ids(user.id) == {'board_user'}
 
 
-def test_confirm_email_address_with_unknown_token(app, site, user2, role):
+def test_confirm_email_address_with_unknown_token(
+    party_app_with_db, site, user2, role
+):
     user = user2
 
     verification_token = create_confirmation_token(user.id)
@@ -76,7 +72,7 @@ def test_confirm_email_address_with_unknown_token(app, site, user2, role):
 
     # -------------------------------- #
 
-    response = confirm(app, verification_token)
+    response = confirm(party_app_with_db, verification_token)
 
     # -------------------------------- #
 

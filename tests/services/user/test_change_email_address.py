@@ -3,25 +3,14 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-import pytest
-
 from byceps.events.user import UserEmailAddressChanged
 from byceps.services.user import command_service as user_command_service
 from byceps.services.user import event_service
 
 from tests.helpers import create_user
 
-from ...conftest import database_recreated
 
-
-@pytest.fixture(scope='module')
-def app(admin_app, db):
-    with admin_app.app_context():
-        with database_recreated(db):
-            yield admin_app
-
-
-def test_change_email_address_with_reason(app, admin_user):
+def test_change_email_address_with_reason(admin_app_with_db, admin_user):
     old_email_address = 'zero-cool@example.com'
     new_email_address = 'crash.override@example.com'
     reason = 'Does not want to be recognized by Acid Burn.'
@@ -68,7 +57,7 @@ def test_change_email_address_with_reason(app, admin_user):
     }
 
 
-def test_change_email_address_without_reason(app, admin_user):
+def test_change_email_address_without_reason(admin_app_with_db, admin_user):
     old_email_address = 'address_with_tyop@example.com'
     new_email_address = 'address_without_typo@example.com'
 

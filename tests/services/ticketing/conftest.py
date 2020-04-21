@@ -9,19 +9,11 @@ from byceps.services.brand import service as brand_service
 from byceps.services.party import service as party_service
 from byceps.services.ticketing import category_service
 
-from tests.conftest import database_recreated
 from tests.helpers import create_brand, create_party, create_user
 
 
 @pytest.fixture(scope='module')
-def app(admin_app, db):
-    with admin_app.app_context():
-        with database_recreated(db):
-            yield admin_app
-
-
-@pytest.fixture(scope='module')
-def brand(app):
+def brand(admin_app_with_db):
     brand = create_brand()
     yield brand
     brand_service.delete_brand(brand.id)
@@ -49,20 +41,20 @@ def another_category(party):
 
 
 @pytest.fixture(scope='module')
-def ticketing_admin(app):
+def ticketing_admin(admin_app_with_db):
     return create_user('TicketingAdmin')
 
 
 @pytest.fixture(scope='module')
-def ticket_manager(app):
+def ticket_manager(admin_app_with_db):
     return create_user('TicketManager')
 
 
 @pytest.fixture(scope='module')
-def ticket_owner(app):
+def ticket_owner(admin_app_with_db):
     return create_user('TicketOwner')
 
 
 @pytest.fixture(scope='module')
-def ticket_user(app):
+def ticket_user(admin_app_with_db):
     return create_user('TicketUser')

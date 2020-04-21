@@ -10,26 +10,18 @@ from byceps.services.authentication.password import service as password_service
 from byceps.services.authentication.session import service as session_service
 from byceps.services.site import service as site_service
 
-from tests.conftest import database_recreated
 from tests.helpers import create_site, create_user, http_client, login_user
 
 
 @pytest.fixture(scope='module')
-def app(party_app, db):
-    with party_app.app_context():
-        with database_recreated(db):
-            yield party_app
-
-
-@pytest.fixture(scope='module')
-def site(app, make_email_config):
+def site(party_app_with_db, make_email_config):
     make_email_config()
     site = create_site()
     yield site
     site_service.delete_site(site.id)
 
 
-def test_when_logged_in_endpoint_is_available(app, site):
+def test_when_logged_in_endpoint_is_available(party_app_with_db, site):
     old_password = 'LekkerBratworsten'
     new_password = 'EvenMoreSecure!!1'
 
@@ -54,7 +46,7 @@ def test_when_logged_in_endpoint_is_available(app, site):
         'new_password_confirmation': new_password,
     }
 
-    response = send_request(app, form_data, user_id=user.id)
+    response = send_request(party_app_with_db, form_data, user_id=user.id)
 
     assert response.status_code == 302
     assert response.headers.get('Location') == 'http://example.com/authentication/login'
@@ -70,10 +62,10 @@ def test_when_logged_in_endpoint_is_available(app, site):
     assert session_token_after is None
 
 
-def test_when_not_logged_in_endpoint_is_unavailable(app, site):
+def test_when_not_logged_in_endpoint_is_unavailable(party_app_with_db, site):
     form_data = {}
 
-    response = send_request(app, form_data)
+    response = send_request(party_app_with_db, form_data)
 
     assert response.status_code == 404
 

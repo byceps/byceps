@@ -7,15 +7,7 @@ import pytest
 
 from byceps.services.user import service as user_service
 
-from tests.conftest import database_recreated
 from tests.helpers import create_user
-
-
-@pytest.fixture(scope='module')
-def app(party_app, db):
-    with party_app.app_context():
-        with database_recreated(db):
-            yield party_app
 
 
 @pytest.fixture(scope='module')
@@ -25,7 +17,7 @@ def user():
     )
 
 
-def test_find_user_by_email_address_non_lowercase(app, user):
+def test_find_user_by_email_address_non_lowercase(party_app_with_db, user):
     actual = user_service.find_user_by_email_address(
         'Carmen.Sandiego@World.example'
     )
@@ -33,23 +25,25 @@ def test_find_user_by_email_address_non_lowercase(app, user):
     assert actual.email_address == 'carmen.sandiego@world.example'
 
 
-def test_find_user_by_email_address_unknown(app, user):
+def test_find_user_by_email_address_unknown(party_app_with_db, user):
     actual = user_service.find_user_by_email_address('no.idea@example.com')
     assert actual is None
 
 
-def test_find_user_by_screen_name_case_sensitive_match(app, user):
+def test_find_user_by_screen_name_case_sensitive_match(party_app_with_db, user):
     actual = user_service.find_user_by_screen_name('CarmenSandiego')
     assert actual is not None
     assert actual.screen_name == 'CarmenSandiego'
 
 
-def test_find_user_by_screen_name_case_sensitive_miss(app, user):
+def test_find_user_by_screen_name_case_sensitive_miss(party_app_with_db, user):
     actual = user_service.find_user_by_screen_name('cARMENsANDIEGO')
     assert actual is None
 
 
-def test_find_user_by_screen_name_case_insensitive_match(app, user):
+def test_find_user_by_screen_name_case_insensitive_match(
+    party_app_with_db, user
+):
     actual = user_service.find_user_by_screen_name(
         'cARMENsANDIEGO', case_insensitive=True
     )
@@ -57,13 +51,15 @@ def test_find_user_by_screen_name_case_insensitive_match(app, user):
     assert actual.screen_name == 'CarmenSandiego'
 
 
-def test_find_user_by_screen_name_case_insensitive_miss(app, user):
+def test_find_user_by_screen_name_case_insensitive_miss(
+    party_app_with_db, user
+):
     actual = user_service.find_user_by_screen_name(
         'cARMENsANDIEGOx', case_insensitive=True
     )
     assert actual is None
 
 
-def test_find_user_by_screen_name_unknown(app, user):
+def test_find_user_by_screen_name_unknown(party_app_with_db, user):
     actual = user_service.find_user_by_screen_name('Dunno')
     assert actual is None

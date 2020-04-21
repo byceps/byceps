@@ -33,7 +33,6 @@ from byceps.services.verification_token.models import (
     Token,
 )
 
-from tests.conftest import database_recreated
 from tests.helpers import (
     create_brand,
     create_party,
@@ -44,19 +43,12 @@ from tests.helpers import (
 
 
 @pytest.fixture(scope='module')
-def app(party_app, db):
-    with party_app.app_context():
-        with database_recreated(db):
-            yield party_app
-
-
-@pytest.fixture(scope='module')
 def admin():
     return create_user('UserAdmin')
 
 
 @pytest.fixture(scope='module')
-def brand(app):
+def brand(party_app_with_db):
     brand = create_brand()
     yield brand
     brand_service.delete_brand(brand.id)
@@ -70,7 +62,7 @@ def party(brand):
 
 
 @pytest.fixture(scope='module')
-def site(app, make_email_config, party):
+def site(party_app_with_db, make_email_config, party):
     make_email_config(sender_address='noreply@example.com')
     site = create_site(party_id=party.id)
     yield site
@@ -138,7 +130,7 @@ def newsletter_list(brand):
 @patch('byceps.email.send')
 def test_create(
     send_email_mock,
-    app,
+    party_app_with_db,
     brand,
     site,
     terms_version,
@@ -162,7 +154,7 @@ def test_create(
         'subscribe_to_newsletter': 'y',
     }
 
-    response = send_request(app, form_data)
+    response = send_request(party_app_with_db, form_data)
     assert response.status_code == 302
 
     user_count_afterwards = get_user_count()
@@ -227,7 +219,7 @@ bitte bestätige deine E-Mail-Adresse, indem du diese URL abrufst: https://www.e
 @patch('byceps.email.send')
 def test_create_without_newsletter_subscription(
     send_email_mock,
-    app,
+    party_app_with_db,
     brand,
     site,
     terms_version,
@@ -248,7 +240,7 @@ def test_create_without_newsletter_subscription(
         'subscribe_to_newsletter': '',
     }
 
-    response = send_request(app, form_data)
+    response = send_request(party_app_with_db, form_data)
     assert response.status_code == 302
 
     user = find_user(screen_name)

@@ -53,7 +53,7 @@ def seat_of_another_category(area, another_category):
 
 
 @pytest.fixture
-def ticket(app, category, ticket_owner):
+def ticket(admin_app_with_db, category, ticket_owner):
     ticket = ticket_creation_service.create_ticket(category.id, ticket_owner.id)
     yield ticket
     ticket_service.delete_ticket(ticket.id)
@@ -69,7 +69,9 @@ def ticket_bundle(category, ticket_owner):
     ticket_bundle_service.delete_bundle(bundle.id)
 
 
-def test_appoint_and_withdraw_seat_manager(app, ticket, ticket_manager):
+def test_appoint_and_withdraw_seat_manager(
+    admin_app_with_db, ticket, ticket_manager
+):
     assert ticket.seat_managed_by_id is None
 
     # appoint seat manager
@@ -110,7 +112,7 @@ def test_appoint_and_withdraw_seat_manager(app, ticket, ticket_manager):
     )
 
 
-def test_occupy_and_release_seat(app, seat1, seat2, ticket):
+def test_occupy_and_release_seat(admin_app_with_db, seat1, seat2, ticket):
     assert ticket.occupied_seat_id is None
 
     # occupy seat
@@ -167,7 +169,7 @@ def test_occupy_and_release_seat(app, seat1, seat2, ticket):
     )
 
 
-def test_occupy_seat_with_invalid_id(app, ticket):
+def test_occupy_seat_with_invalid_id(admin_app_with_db, ticket):
     invalid_seat_id = 'ffffffff-ffff-ffff-ffff-ffffffffffff'
 
     with raises(ValueError):
@@ -176,7 +178,9 @@ def test_occupy_seat_with_invalid_id(app, ticket):
         )
 
 
-def test_occupy_seat_with_bundled_ticket(app, ticket_bundle, seat1, ticket):
+def test_occupy_seat_with_bundled_ticket(
+    admin_app_with_db, ticket_bundle, seat1, ticket
+):
     bundled_ticket = ticket_bundle.tickets[0]
 
     with raises(SeatChangeDeniedForBundledTicket):
@@ -186,7 +190,7 @@ def test_occupy_seat_with_bundled_ticket(app, ticket_bundle, seat1, ticket):
 
 
 def test_occupy_seat_with_wrong_category(
-    app, another_category, seat_of_another_category, ticket
+    admin_app_with_db, another_category, seat_of_another_category, ticket
 ):
     assert ticket.category_id != another_category.id
 

@@ -11,19 +11,11 @@ from byceps.services.site import service as site_service
 from byceps.services.user import command_service as user_command_service
 from byceps.services.user_message import service as user_message_service
 
-from tests.conftest import database_recreated
 from tests.helpers import create_site, create_user
 
 
 @pytest.fixture(scope='module')
-def app(party_app, db):
-    with party_app.app_context():
-        with database_recreated(db):
-            yield party_app
-
-
-@pytest.fixture(scope='module')
-def site(app, make_email_config):
+def site(party_app_with_db, make_email_config):
     make_email_config()
     site = create_site()
     yield site

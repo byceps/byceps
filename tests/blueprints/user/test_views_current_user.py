@@ -7,36 +7,28 @@ import pytest
 
 from byceps.services.site import service as site_service
 
-from tests.conftest import database_recreated
 from tests.helpers import create_site, http_client, login_user
 
 
 @pytest.fixture(scope='module')
-def app(party_app, db):
-    with party_app.app_context():
-        with database_recreated(db):
-            yield party_app
-
-
-@pytest.fixture(scope='module')
-def site(app, make_email_config):
+def site(party_app_with_db, make_email_config):
     make_email_config()
     site = create_site()
     yield site
     site_service.delete_site(site.id)
 
 
-def test_when_logged_in(app, site, user):
+def test_when_logged_in(party_app_with_db, site, user):
     login_user(user.id)
 
-    response = send_request(app, user_id=user.id)
+    response = send_request(party_app_with_db, user_id=user.id)
 
     assert response.status_code == 200
     assert response.mimetype == 'text/html'
 
 
-def test_when_not_logged_in(app, site):
-    response = send_request(app)
+def test_when_not_logged_in(party_app_with_db, site):
+    response = send_request(party_app_with_db)
 
     assert response.status_code == 302
     assert 'Location' in response.headers

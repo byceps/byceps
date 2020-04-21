@@ -3,25 +3,14 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-import pytest
-
 from byceps.events.user import UserScreenNameChanged
 from byceps.services.user import command_service as user_command_service
 from byceps.services.user import event_service
 
 from tests.helpers import create_user
 
-from ...conftest import database_recreated
 
-
-@pytest.fixture(scope='module')
-def app(admin_app, db):
-    with admin_app.app_context():
-        with database_recreated(db):
-            yield admin_app
-
-
-def test_change_screen_name_with_reason(app, admin_user):
+def test_change_screen_name_with_reason(admin_app_with_db, admin_user):
     old_screen_name = 'Zero_Cool'
     new_screen_name = 'Crash_Override'
     reason = 'Do not reveal to Acid Burn.'
@@ -64,7 +53,7 @@ def test_change_screen_name_with_reason(app, admin_user):
     }
 
 
-def test_change_screen_name_without_reason(app, admin_user):
+def test_change_screen_name_without_reason(admin_app_with_db, admin_user):
     old_screen_name = 'NameWithTyop'
     new_screen_name = 'NameWithoutTypo'
 

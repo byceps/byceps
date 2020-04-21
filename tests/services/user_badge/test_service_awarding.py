@@ -16,15 +16,7 @@ from byceps.services.user_badge.models.awarding import (
 )
 from byceps.services.user_badge.transfer.models import QuantifiedBadgeAwarding
 
-from ...conftest import database_recreated
 from ...helpers import create_user
-
-
-@pytest.fixture(scope='module')
-def app(party_app, db):
-    with party_app.app_context():
-        with database_recreated(db):
-            yield
 
 
 @pytest.fixture(scope='module')
@@ -66,7 +58,9 @@ def awardings_scope(db):
     db.session.commit()
 
 
-def test_award_badge_without_initiator(app, user1, badge1, awardings_scope):
+def test_award_badge_without_initiator(
+    party_app_with_db, user1, badge1, awardings_scope
+):
     user = user1
     badge = badge1
 
@@ -89,7 +83,7 @@ def test_award_badge_without_initiator(app, user1, badge1, awardings_scope):
 
 
 def test_award_badge_with_initiator(
-    app, user2, badge2, admin_user, awardings_scope
+    party_app_with_db, user2, badge2, admin_user, awardings_scope
 ):
     user = user2
 
@@ -119,7 +113,14 @@ def test_award_badge_with_initiator(
 
 
 def test_count_awardings(
-    app, user1, user2, user3, badge1, badge2, badge3, awardings_scope
+    party_app_with_db,
+    user1,
+    user2,
+    user3,
+    badge1,
+    badge2,
+    badge3,
+    awardings_scope,
 ):
     badge_command_service.award_badge_to_user(badge1.id, user1.id)
     badge_command_service.award_badge_to_user(badge1.id, user1.id)
@@ -133,7 +134,7 @@ def test_count_awardings(
     assert actual == {badge1.id: 4, badge2.id: 0, badge3.id: 2}
 
 
-def test_get_awardings_of_unknown_badge(app):
+def test_get_awardings_of_unknown_badge(party_app_with_db):
     unknown_badge_id = '00000000-0000-0000-0000-000000000000'
 
     actual = badge_service.get_awardings_of_badge(unknown_badge_id)
@@ -141,7 +142,7 @@ def test_get_awardings_of_unknown_badge(app):
     assert actual == set()
 
 
-def test_get_awardings_of_unawarded_badge(app, badge3):
+def test_get_awardings_of_unawarded_badge(party_app_with_db, badge3):
     badge = badge3
 
     actual = badge_service.get_awardings_of_badge(badge.id)
@@ -149,7 +150,9 @@ def test_get_awardings_of_unawarded_badge(app, badge3):
     assert actual == set()
 
 
-def test_get_awardings_of_badge(app, user1, user2, badge1, awardings_scope):
+def test_get_awardings_of_badge(
+    party_app_with_db, user1, user2, badge1, awardings_scope
+):
     badge = badge1
 
     badge_command_service.award_badge_to_user(badge.id, user1.id)
