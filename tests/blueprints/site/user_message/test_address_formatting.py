@@ -8,6 +8,7 @@ from unittest.mock import patch
 import pytest
 
 from byceps.services.site import service as site_service
+from byceps.services.user import command_service as user_command_service
 from byceps.services.user_message import service as user_message_service
 
 from tests.conftest import database_recreated
@@ -39,6 +40,8 @@ def test_recipient_formatting(site, params):
     )
 
     assert message.recipients == [expected]
+
+    user_command_service.delete_account(user.id, user.id, 'clean up')
 
 
 @pytest.fixture(params=[
