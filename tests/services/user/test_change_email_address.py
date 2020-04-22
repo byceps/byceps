@@ -18,17 +18,10 @@ from ...conftest import database_recreated
 def app(admin_app, db):
     with admin_app.app_context():
         with database_recreated(db):
-            _app = admin_app
-
-            admin = create_user('Administrator')
-            _app.admin_id = admin.id
-
-            yield _app
+            yield admin_app
 
 
-def test_change_email_address_with_reason(app):
-    admin_id = app.admin_id
-
+def test_change_email_address_with_reason(app, admin_user):
     old_email_address = 'zero-cool@example.com'
     new_email_address = 'crash.override@example.com'
     reason = 'Does not want to be recognized by Acid Burn.'
@@ -49,14 +42,14 @@ def test_change_email_address_with_reason(app):
     # -------------------------------- #
 
     event = user_command_service.change_email_address(
-        user_id, new_email_address, admin_id, reason=reason
+        user_id, new_email_address, admin_user.id, reason=reason
     )
 
     # -------------------------------- #
 
     assert isinstance(event, UserEmailAddressChanged)
     assert event.user_id == user_id
-    assert event.initiator_id == admin_id
+    assert event.initiator_id == admin_user.id
 
     user_after = user_command_service._get_user(user_id)
     assert user_after.email_address == new_email_address
@@ -70,14 +63,12 @@ def test_change_email_address_with_reason(app):
     assert user_enabled_event.data == {
         'old_email_address': old_email_address,
         'new_email_address': new_email_address,
-        'initiator_id': str(admin_id),
+        'initiator_id': str(admin_user.id),
         'reason': reason,
     }
 
 
-def test_change_email_address_without_reason(app):
-    admin_id = app.admin_id
-
+def test_change_email_address_without_reason(app, admin_user):
     old_email_address = 'address_with_tyop@example.com'
     new_email_address = 'address_without_typo@example.com'
 
@@ -90,7 +81,7 @@ def test_change_email_address_without_reason(app):
     # -------------------------------- #
 
     user_command_service.change_email_address(
-        user_id, new_email_address, admin_id
+        user_id, new_email_address, admin_user.id
     )
 
     # -------------------------------- #
@@ -104,5 +95,5 @@ def test_change_email_address_without_reason(app):
     assert user_enabled_event.data == {
         'old_email_address': old_email_address,
         'new_email_address': new_email_address,
-        'initiator_id': str(admin_id),
+        'initiator_id': str(admin_user.id),
     }

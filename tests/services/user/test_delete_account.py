@@ -11,7 +11,7 @@ from byceps.services.authorization import service as authorization_service
 from byceps.services.user import command_service as user_command_service
 from byceps.services.user import event_service
 
-from tests.helpers import create_user, create_user_with_detail
+from tests.helpers import create_user_with_detail
 
 from ...conftest import database_recreated
 
@@ -20,12 +20,7 @@ from ...conftest import database_recreated
 def app(admin_app, db):
     with admin_app.app_context():
         with database_recreated(db):
-            _app = admin_app
-
-            admin = create_user('Administrator')
-            _app.admin_id = admin.id
-
-            yield _app
+            yield admin_app
 
 
 @pytest.fixture
@@ -49,9 +44,7 @@ def role(permission):
     authorization_service.delete_role(role.id)
 
 
-def test_delete_account(app, db, permission, role):
-    admin_id = app.admin_id
-
+def test_delete_account(app, db, permission, role, admin_user):
     user_id = UUID('20868b15-b935-40fc-8054-38854ef8509a')
     screen_name = 'GetRidOfMe'
     email_address = 'timedout@example.net'
@@ -98,7 +91,7 @@ def test_delete_account(app, db, permission, role):
 
     # -------------------------------- #
 
-    user_command_service.delete_account(user_id, admin_id, reason=reason)
+    user_command_service.delete_account(user_id, admin_user.id, reason=reason)
 
     # -------------------------------- #
 
@@ -129,7 +122,7 @@ def test_delete_account(app, db, permission, role):
     user_enabled_event = events_after[1]
     assert user_enabled_event.event_type == 'user-deleted'
     assert user_enabled_event.data == {
-        'initiator_id': str(admin_id),
+        'initiator_id': str(admin_user.id),
         'reason': reason,
     }
 

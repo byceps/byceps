@@ -18,17 +18,10 @@ from ...conftest import database_recreated
 def app(admin_app, db):
     with admin_app.app_context():
         with database_recreated(db):
-            _app = admin_app
-
-            admin = create_user('Administrator')
-            _app.admin_id = admin.id
-
-            yield _app
+            yield admin_app
 
 
-def test_change_screen_name_with_reason(app):
-    admin_id = app.admin_id
-
+def test_change_screen_name_with_reason(app, admin_user):
     old_screen_name = 'Zero_Cool'
     new_screen_name = 'Crash_Override'
     reason = 'Do not reveal to Acid Burn.'
@@ -44,14 +37,14 @@ def test_change_screen_name_with_reason(app):
     # -------------------------------- #
 
     event = user_command_service.change_screen_name(
-        user_id, new_screen_name, admin_id, reason=reason
+        user_id, new_screen_name, admin_user.id, reason=reason
     )
 
     # -------------------------------- #
 
     assert isinstance(event, UserScreenNameChanged)
     assert event.user_id == user_id
-    assert event.initiator_id == admin_id
+    assert event.initiator_id == admin_user.id
     assert event.old_screen_name == old_screen_name
     assert event.new_screen_name == new_screen_name
 
@@ -66,14 +59,12 @@ def test_change_screen_name_with_reason(app):
     assert user_enabled_event.data == {
         'old_screen_name': old_screen_name,
         'new_screen_name': new_screen_name,
-        'initiator_id': str(admin_id),
+        'initiator_id': str(admin_user.id),
         'reason': reason,
     }
 
 
-def test_change_screen_name_without_reason(app):
-    admin_id = app.admin_id
-
+def test_change_screen_name_without_reason(app, admin_user):
     old_screen_name = 'NameWithTyop'
     new_screen_name = 'NameWithoutTypo'
 
@@ -81,7 +72,9 @@ def test_change_screen_name_without_reason(app):
 
     # -------------------------------- #
 
-    user_command_service.change_screen_name(user_id, new_screen_name, admin_id)
+    user_command_service.change_screen_name(
+        user_id, new_screen_name, admin_user.id
+    )
 
     # -------------------------------- #
 
@@ -94,5 +87,5 @@ def test_change_screen_name_without_reason(app):
     assert user_enabled_event.data == {
         'old_screen_name': old_screen_name,
         'new_screen_name': new_screen_name,
-        'initiator_id': str(admin_id),
+        'initiator_id': str(admin_user.id),
     }
