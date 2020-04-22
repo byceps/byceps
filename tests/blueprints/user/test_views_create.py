@@ -19,7 +19,6 @@ from byceps.services.newsletter import (
     command_service as newsletter_command_service,
     service as newsletter_service,
 )
-from byceps.services.brand import service as brand_service
 from byceps.services.party import service as party_service
 from byceps.services.site import service as site_service
 from byceps.services.snippet import service as snippet_service
@@ -33,19 +32,12 @@ from byceps.services.verification_token.models import (
     Token,
 )
 
-from tests.helpers import create_brand, create_party, create_site, http_client
+from tests.helpers import create_party, create_site, http_client
 
 
 @pytest.fixture(scope='module')
 def user_admin(make_user):
     yield from make_user('UserAdmin')
-
-
-@pytest.fixture(scope='module')
-def brand(party_app_with_db):
-    brand = create_brand()
-    yield brand
-    brand_service.delete_brand(brand.id)
 
 
 @pytest.fixture(scope='module')

@@ -5,18 +5,10 @@
 
 import pytest
 
-from byceps.services.brand import service as brand_service
 from byceps.services.party import service as party_service
 from byceps.services.ticketing import category_service
 
-from tests.helpers import create_brand, create_party, create_user
-
-
-@pytest.fixture(scope='module')
-def brand(admin_app_with_db):
-    brand = create_brand()
-    yield brand
-    brand_service.delete_brand(brand.id)
+from tests.helpers import create_party, create_user
 
 
 @pytest.fixture(scope='module')
