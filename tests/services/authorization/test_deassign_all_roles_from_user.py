@@ -15,8 +15,6 @@ from byceps.services.authorization.service import (
 )
 from byceps.services.user import command_service as user_command_service
 
-from tests.helpers import create_user
-
 
 def test_deassign_all_roles_from_user(admin_app_with_db, user1, user2, roles):
     assert find_role_ids_for_user(user1.id) == {'demigod', 'pausenclown'}
@@ -31,17 +29,13 @@ def test_deassign_all_roles_from_user(admin_app_with_db, user1, user2, roles):
 
 
 @pytest.fixture
-def user1(db):
-    user = create_user('User1')
-    yield user
-    user_command_service.delete_account(user.id, user.id, 'clean up')
+def user1(make_user):
+    yield from make_user('User1')
 
 
 @pytest.fixture
-def user2(db):
-    user = create_user('User2')
-    yield user
-    user_command_service.delete_account(user.id, user.id, 'clean up')
+def user2(make_user):
+    yield from make_user('User2')
 
 
 @pytest.fixture

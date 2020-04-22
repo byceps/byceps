@@ -10,7 +10,7 @@ from byceps.services.party import service as party_service
 from byceps.services.snippet import service as snippet_service
 from byceps.services.snippet.transfer.models import Scope
 
-from tests.helpers import create_brand, create_party, create_user
+from tests.helpers import create_brand, create_party
 
 
 @pytest.fixture

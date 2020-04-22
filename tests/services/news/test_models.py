@@ -11,7 +11,7 @@ from byceps.services.news import (
     service as news_service,
 )
 
-from tests.helpers import create_brand, create_user
+from tests.helpers import create_brand
 
 
 @pytest.fixture

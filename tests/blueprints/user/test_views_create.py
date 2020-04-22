@@ -33,18 +33,12 @@ from byceps.services.verification_token.models import (
     Token,
 )
 
-from tests.helpers import (
-    create_brand,
-    create_party,
-    create_site,
-    create_user,
-    http_client,
-)
+from tests.helpers import create_brand, create_party, create_site, http_client
 
 
 @pytest.fixture(scope='module')
-def admin():
-    return create_user('UserAdmin')
+def user_admin(make_user):
+    yield from make_user('UserAdmin')
 
 
 @pytest.fixture(scope='module')
@@ -70,11 +64,11 @@ def site(party_app_with_db, make_email_config, party):
 
 
 @pytest.fixture(scope='module')
-def terms_version(admin, brand):
+def terms_version(user_admin, brand):
     scope = Scope.for_brand(brand.id)
 
     snippet, _ = snippet_service.create_fragment(
-        scope, 'terms_of_service', admin.id, 'Don\'t do anything stupid!'
+        scope, 'terms_of_service', user_admin.id, 'Don\'t do anything stupid!'
     )
 
     consent_subject = consent_subject_service.create_subject(

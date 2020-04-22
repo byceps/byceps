@@ -10,7 +10,7 @@ from byceps.services.authentication.password import service as password_service
 from byceps.services.authentication.session import service as session_service
 from byceps.services.site import service as site_service
 
-from tests.helpers import create_site, create_user, http_client, login_user
+from tests.helpers import create_site, http_client, login_user
 
 
 @pytest.fixture(scope='module')
@@ -21,11 +21,15 @@ def site(party_app_with_db, make_email_config):
     site_service.delete_site(site.id)
 
 
-def test_when_logged_in_endpoint_is_available(party_app_with_db, site):
+@pytest.fixture
+def user(make_user):
+    yield from make_user('PasswordUpdater')
+
+
+def test_when_logged_in_endpoint_is_available(party_app_with_db, site, user):
     old_password = 'LekkerBratworsten'
     new_password = 'EvenMoreSecure!!1'
 
-    user = create_user()
     password_service.create_password_hash(user.id, old_password)
     login_user(user.id)
 
