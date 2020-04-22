@@ -13,12 +13,10 @@ from byceps.services.board import (
     topic_command_service,
     topic_query_service,
 )
-from byceps.services.brand import service as brand_service
 from byceps.services.site import service as site_service
 from byceps.services.site import settings_service as site_settings_service
 
 from tests.helpers import (
-    create_brand,
     create_permissions,
     create_role_with_permissions_assigned,
     create_site,
@@ -40,13 +38,6 @@ def site(app, make_email_config):
     site = create_site(email_config_id=email_config.id)
     yield site
     site_service.delete_site(site.id)
-
-
-@pytest.fixture
-def brand(app):
-    brand = create_brand()
-    yield brand
-    brand_service.delete_brand(brand.id)
 
 
 @pytest.fixture

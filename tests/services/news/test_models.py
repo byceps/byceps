@@ -5,25 +5,15 @@
 
 import pytest
 
-from byceps.services.brand import service as brand_service
 from byceps.services.news import (
     channel_service as news_channel_service,
     service as news_service,
 )
 
-from tests.helpers import create_brand
-
 
 @pytest.fixture
 def editor(make_user):
     yield from make_user('NewsEditor')
-
-
-@pytest.fixture(scope='module')
-def brand(party_app_with_db):
-    brand = create_brand()
-    yield brand
-    brand_service.delete_brand(brand.id)
 
 
 @pytest.fixture(scope='module')

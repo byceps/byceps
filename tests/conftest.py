@@ -11,13 +11,19 @@ from typing import Optional
 import pytest
 
 from byceps.database import db as _db
+from byceps.services.brand import service as brand_service
 from byceps.services.email import service as email_service
 from byceps.services.site import service as site_service
 from byceps.services.user import command_service as user_command_service
 
 from tests.base import create_admin_app, create_party_app
 from tests.database import set_up_database, tear_down_database
-from tests.helpers import create_site, create_user, DEFAULT_EMAIL_CONFIG_ID
+from tests.helpers import (
+    create_brand,
+    create_site,
+    create_user,
+    DEFAULT_EMAIL_CONFIG_ID,
+)
 
 
 CONFIG_PATH_DATA_KEY = 'PATH_DATA'
@@ -154,3 +160,10 @@ def site(email_config):
     site = create_site()
     yield site
     site_service.delete_site(site.id)
+
+
+@pytest.fixture(scope='module')
+def brand(admin_app_with_db):
+    brand = create_brand()
+    yield brand
+    brand_service.delete_brand(brand.id)

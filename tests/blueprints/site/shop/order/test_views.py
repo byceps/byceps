@@ -7,7 +7,6 @@ from unittest.mock import patch
 
 import pytest
 
-from byceps.services.brand import service as brand_service
 from byceps.services.party import service as party_service
 from byceps.events.shop import ShopOrderPlaced
 from byceps.services.shop.article.models.article import Article
@@ -21,13 +20,7 @@ from byceps.services.snippet import service as snippet_service
 
 from tests.services.shop.helpers import create_article
 
-from tests.helpers import (
-    create_brand,
-    create_party,
-    create_site,
-    http_client,
-    login_user,
-)
+from tests.helpers import create_party, create_site, http_client, login_user
 from tests.services.shop.helpers import create_shop, create_shop_fragment
 
 
@@ -54,13 +47,6 @@ def shop(email_config, admin_user):
     snippet_service.delete_snippet(snippet_id)
     sequence_service.delete_order_number_sequence(shop.id)
     shop_service.delete_shop(shop.id)
-
-
-@pytest.fixture
-def brand(party_app_with_db):
-    brand = create_brand()
-    yield brand
-    brand_service.delete_brand(brand.id)
 
 
 @pytest.fixture

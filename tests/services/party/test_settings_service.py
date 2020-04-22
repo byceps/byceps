@@ -5,21 +5,13 @@
 
 import pytest
 
-from byceps.services.brand import service as brand_service
 from byceps.services.party import service as party_service, settings_service
 from byceps.services.party.transfer.models import PartySetting
 
-from tests.helpers import create_brand, create_party
+from tests.helpers import create_party
 
 
 PARTY_ID = 'acmecon-2014'
-
-
-@pytest.fixture(scope='module')
-def brand(party_app_with_db):
-    brand = create_brand()
-    yield brand
-    brand_service.delete_brand(brand.id)
 
 
 @pytest.fixture(scope='module')

@@ -5,7 +5,6 @@
 
 import pytest
 
-from byceps.services.brand import service as brand_service
 from byceps.services.party import service as party_service
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order.models.orderer import Orderer
@@ -19,7 +18,6 @@ from byceps.services.user import command_service as user_command_service
 from testfixtures.shop_order import create_orderer
 
 from tests.helpers import (
-    create_brand,
     create_party,
     create_site,
     create_user_with_detail,
@@ -27,13 +25,6 @@ from tests.helpers import (
     login_user,
 )
 from tests.services.shop.helpers import create_shop, create_shop_fragment
-
-
-@pytest.fixture
-def brand(party_app_with_db):
-    brand = create_brand()
-    yield brand
-    brand_service.delete_brand(brand.id)
 
 
 @pytest.fixture
