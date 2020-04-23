@@ -88,8 +88,8 @@ def data_path():
         yield Path(d)
 
 
-@pytest.fixture(scope='session')
-def make_user(db):
+@pytest.fixture(scope='module')
+def make_user(admin_app_with_db):
     def _wrapper(*args, **kwargs):
         user = create_user(*args, **kwargs)
         yield user
@@ -123,8 +123,8 @@ def deleted_user(make_user):
     yield from make_user('DeletedUser', deleted=True)
 
 
-@pytest.fixture(scope='session')
-def make_email_config():
+@pytest.fixture(scope='module')
+def make_email_config(admin_app_with_db):
     def _wrapper(
         config_id: str = DEFAULT_EMAIL_CONFIG_ID,
         sender_address: str = 'info@shop.example',
