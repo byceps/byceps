@@ -5,8 +5,6 @@
 
 import pytest
 
-from ...conftest import database_recreated
-
 
 # To be overridden by test parametrization
 @pytest.fixture
@@ -15,11 +13,10 @@ def config_overrides():
 
 
 @pytest.fixture
-def client(config_overrides, make_admin_app, db):
+def client(admin_app_with_db, config_overrides, make_admin_app):
     app = make_admin_app(**config_overrides)
     with app.app_context():
-        with database_recreated(db):
-            yield app.test_client()
+        yield app.test_client()
 
 
 @pytest.mark.parametrize('config_overrides', [{'METRICS_ENABLED': True}])

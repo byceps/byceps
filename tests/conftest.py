@@ -77,10 +77,9 @@ def party_app(data_path):
 
 
 @pytest.fixture(scope='module')
-def party_app_with_db(party_app, db):
+def party_app_with_db(admin_app_with_db, party_app):
     with party_app.app_context():
-        with database_recreated(db):
-            yield party_app
+        yield party_app
 
 
 @pytest.fixture(scope='session')

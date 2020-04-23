@@ -14,7 +14,7 @@ from byceps.services.site import service as site_service
 from tests.base import create_admin_app
 from tests.helpers import create_brand, create_party
 
-from ..conftest import CONFIG_PATH_DATA_KEY, database_recreated
+from ..conftest import CONFIG_PATH_DATA_KEY
 from ..helpers import create_site
 
 from .helpers import assemble_authorization_header
@@ -23,21 +23,14 @@ from .helpers import assemble_authorization_header
 API_TOKEN = 'just-say-PLEASE!'
 
 
-@pytest.fixture(scope='session')
-def api_app_without_db(db, data_path):
+@pytest.fixture(scope='module')
+def app(admin_app_with_db, data_path):
     config_overrides = {
         'API_TOKEN': API_TOKEN,
         CONFIG_PATH_DATA_KEY: data_path,
     }
     app = create_admin_app(config_overrides)
     with app.app_context():
-        yield app
-
-
-@pytest.fixture(scope='module')
-def app(api_app_without_db, db):
-    app = api_app_without_db
-    with database_recreated(db):
         yield app
 
 
