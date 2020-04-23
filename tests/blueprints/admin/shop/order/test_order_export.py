@@ -20,7 +20,6 @@ from byceps.services.shop.sequence import service as sequence_service
 from tests.helpers import (
     create_permissions,
     create_role_with_permissions_assigned,
-    create_user,
     http_client,
     login_user,
 )
@@ -28,8 +27,13 @@ from tests.services.shop.helpers import create_article as _create_article
 
 
 @pytest.fixture(scope='module')
-def admin_user(admin_app_with_db):
-    admin = create_user('ShopOrderAdmin')
+def _admin_user(make_user):
+    yield from make_user('ShopOrderAdmin')
+
+
+@pytest.fixture(scope='module')
+def admin_user(_admin_user):
+    admin = _admin_user
 
     permission_ids = {'admin.access', 'shop_order.view'}
     role_id = 'order_admin'
@@ -104,8 +108,15 @@ def cart(article_bungalow, article_guest_fee, article_table):
 
 
 @pytest.fixture
-def orderer():
-    user = create_user('Besteller', email_address='h-w.mustermann@example.com')
+def _orderer(make_user):
+    yield from make_user(
+        'Besteller', email_address='h-w.mustermann@example.com'
+    )
+
+
+@pytest.fixture
+def orderer(_orderer):
+    user = _orderer
 
     return Orderer(
         user.id,

@@ -25,7 +25,6 @@ from testfixtures.shop_order import create_orderer
 from tests.helpers import (
     create_permissions,
     create_role_with_permissions_assigned,
-    create_user,
     create_user_with_detail,
     http_client,
     login_user,
@@ -41,8 +40,13 @@ def order_number_sequence(shop) -> None:
 
 
 @pytest.fixture(scope='module')
-def admin():
-    admin = create_user('ShopOrderAdmin')
+def _admin(make_user):
+    yield from make_user('ShopOrderAdmin')
+
+
+@pytest.fixture(scope='module')
+def admin(_admin):
+    admin = _admin
 
     permission_ids = {
         'admin.access',

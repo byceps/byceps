@@ -7,8 +7,6 @@ import pytest
 
 from byceps.services.ticketing import category_service
 
-from tests.helpers import create_user
-
 
 @pytest.fixture(scope='module')
 def category(party):
@@ -25,20 +23,20 @@ def another_category(party):
 
 
 @pytest.fixture(scope='module')
-def ticketing_admin(admin_app_with_db):
-    return create_user('TicketingAdmin')
+def ticketing_admin(make_user):
+    yield from make_user('TicketingAdmin')
 
 
 @pytest.fixture(scope='module')
-def ticket_manager(admin_app_with_db):
-    return create_user('TicketManager')
+def ticket_manager(make_user):
+    yield from make_user('TicketManager')
 
 
 @pytest.fixture(scope='module')
-def ticket_owner(admin_app_with_db):
-    return create_user('TicketOwner')
+def ticket_owner(make_user):
+    yield from make_user('TicketOwner')
 
 
 @pytest.fixture(scope='module')
-def ticket_user(admin_app_with_db):
-    return create_user('TicketUser')
+def ticket_user(make_user):
+    yield from make_user('TicketUser')
