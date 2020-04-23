@@ -7,14 +7,11 @@ API-specific fixtures
 
 import pytest
 
-from byceps.services.party import service as party_service
 from byceps.services.site import service as site_service
 
 from tests.base import create_admin_app
-from tests.helpers import create_party
-
-from ..conftest import CONFIG_PATH_DATA_KEY
-from ..helpers import create_site
+from tests.conftest import CONFIG_PATH_DATA_KEY
+from tests.helpers import create_site
 
 from .helpers import assemble_authorization_header
 
@@ -39,13 +36,6 @@ def site(app, make_email_config):
     site = create_site()
     yield site
     site_service.delete_site(site.id)
-
-
-@pytest.fixture(scope='module')
-def party(brand):
-    party = create_party(brand.id)
-    yield party
-    party_service.delete_party(party.id)
 
 
 @pytest.fixture(scope='module')

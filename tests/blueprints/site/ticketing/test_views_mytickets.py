@@ -5,17 +5,9 @@
 
 import pytest
 
-from byceps.services.party import service as party_service
 from byceps.services.site import service as site_service
 
-from tests.helpers import create_party, create_site, http_client, login_user
-
-
-@pytest.fixture(scope='module')
-def party(brand):
-    party = create_party(brand.id)
-    yield party
-    party_service.delete_party(party.id)
+from tests.helpers import create_site, http_client, login_user
 
 
 @pytest.fixture(scope='module')
