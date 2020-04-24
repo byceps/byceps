@@ -41,8 +41,10 @@ def user_admin(make_user):
 
 @pytest.fixture(scope='module')
 def site(party_app, make_email_config, party):
-    make_email_config(sender_address='noreply@example.com')
-    site = create_site(party_id=party.id)
+    email_config = make_email_config(
+        'example-noreply', sender_address='noreply@example.com'
+    )
+    site = create_site(email_config_id=email_config.id, party_id=party.id)
     yield site
     site_service.delete_site(site.id)
 

@@ -13,13 +13,31 @@ from byceps.services.user import command_service as user_command_service
 from tests.helpers import create_site, create_user, http_client, login_user
 
 
-@pytest.fixture(scope='module')
-def site(party_app, make_email_config):
-    make_email_config(
+@pytest.fixture
+def site1(party_app, make_email_config):
+    email_config = make_email_config(
+        'acme-noreply',
         sender_address='noreply@example.com',
         sender_name='ACME Entertainment Convention',
     )
-    site = create_site(server_name='acme.example.com')
+    site = create_site(
+        server_name='acme.example.com', email_config_id=email_config.id
+    )
+    yield site
+    site_service.delete_site(site.id)
+
+
+@pytest.fixture
+def site2(party_app, make_email_config):
+    email_config = make_email_config(
+        'acme-noreply-with-contact-address',
+        sender_address='noreply@example.com',
+        sender_name='ACME Entertainment Convention',
+        contact_address='help@example.com',
+    )
+    site = create_site(
+        server_name='acme.example.com', email_config_id=email_config.id
+    )
     yield site
     site_service.delete_site(site.id)
 
@@ -48,7 +66,7 @@ def user_bob(party_app):
 
 @patch('byceps.email.send')
 def test_send_when_logged_in_without_brand_contact_address(
-    send_email_mock, party_app, site, user_alice, user_bob
+    send_email_mock, party_app, site1, user_alice, user_bob
 ):
     sender = user_alice
     recipient = user_bob
@@ -109,19 +127,8 @@ Diese Mitteilung wurde über die Website acme.example.com gesendet.\
 
 @patch('byceps.email.send')
 def test_send_when_logged_in_with_brand_contact_address(
-    send_email_mock,
-    party_app,
-    make_email_config,
-    site,
-    user_alice,
-    user_bob,
+    send_email_mock, party_app, site2, user_alice, user_bob,
 ):
-    make_email_config(
-        sender_address='noreply@example.com',
-        sender_name='ACME Entertainment Convention',
-        contact_address='help@example.com',
-    )
-
     sender = user_bob
     recipient = user_alice
     text = '''\
@@ -180,7 +187,7 @@ Bei Fragen kontaktiere uns bitte per E-Mail an: help@example.com\
     )
 
 
-def test_send_when_not_logged_in(party_app, site):
+def test_send_when_not_logged_in(party_app, site1):
     recipient_id = '8e5037f6-3ca1-4981-b1e4-1998cbdf58e2'
     text = 'Hello, Eve!'
 
