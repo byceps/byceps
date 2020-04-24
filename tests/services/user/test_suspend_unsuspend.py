@@ -20,7 +20,7 @@ def remorseful_user(make_user):
     yield from make_user('TemporaryNuisance')
 
 
-def test_suspend(admin_app_with_db, cheater, admin_user):
+def test_suspend(admin_app, cheater, admin_user):
     user_id = cheater.id
 
     reason = 'User has been caught cheating.'
@@ -51,7 +51,7 @@ def test_suspend(admin_app_with_db, cheater, admin_user):
     }
 
 
-def test_unsuspend(admin_app_with_db, remorseful_user, admin_user):
+def test_unsuspend(admin_app, remorseful_user, admin_user):
     user_id = remorseful_user.id
 
     user_command_service.suspend_account(user_id, admin_user.id, 'Annoying')

@@ -14,15 +14,13 @@ from byceps.services.ticketing import (
 
 
 @pytest.fixture
-def ticket(admin_app_with_db, category, ticket_owner):
+def ticket(admin_app, category, ticket_owner):
     ticket = ticket_creation_service.create_ticket(category.id, ticket_owner.id)
     yield ticket
     ticket_service.delete_ticket(ticket.id)
 
 
-def test_appoint_and_withdraw_user_manager(
-    admin_app_with_db, ticket, ticket_manager
-):
+def test_appoint_and_withdraw_user_manager(admin_app, ticket, ticket_manager):
     assert ticket.user_managed_by_id is None
 
     # appoint user manager
@@ -63,7 +61,7 @@ def test_appoint_and_withdraw_user_manager(
     )
 
 
-def test_appoint_and_withdraw_user(admin_app_with_db, ticket, ticket_user):
+def test_appoint_and_withdraw_user(admin_app, ticket, ticket_user):
     assert ticket.used_by_id is None
 
     # appoint user

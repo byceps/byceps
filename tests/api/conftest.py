@@ -20,7 +20,7 @@ API_TOKEN = 'just-say-PLEASE!'
 
 
 @pytest.fixture(scope='module')
-def app(admin_app_with_db, data_path):
+def app(admin_app, data_path):
     config_overrides = {
         'API_TOKEN': API_TOKEN,
         CONFIG_PATH_DATA_KEY: data_path,

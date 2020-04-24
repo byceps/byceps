@@ -8,7 +8,7 @@ import pytest
 from byceps.services.authorization import service
 
 
-def test_assign_permission_to_role(admin_app_with_db, permission, role):
+def test_assign_permission_to_role(admin_app, permission, role):
     role_permission_ids_before = get_permission_ids_for_role(role)
     assert permission.id not in role_permission_ids_before
 
@@ -18,7 +18,7 @@ def test_assign_permission_to_role(admin_app_with_db, permission, role):
     assert permission.id in role_permission_ids_after
 
 
-def test_deassign_permission_from_role(admin_app_with_db, permission, role):
+def test_deassign_permission_from_role(admin_app, permission, role):
     service.assign_permission_to_role(permission.id, role.id)
 
     role_permission_ids_before = get_permission_ids_for_role(role)

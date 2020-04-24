@@ -118,7 +118,7 @@ def newsletter_admin(_newsletter_admin):
 
 
 @pytest.fixture(scope='module')
-def newsletter_list(admin_app_with_db):
+def newsletter_list(admin_app):
     newsletter_list = command_service.create_list('example', 'Example')
     yield newsletter_list
     command_service.delete_list(newsletter_list.id)
@@ -173,7 +173,7 @@ def add_subscriptions(db, user_id, list_id, states):
 
 
 @pytest.fixture(scope='module')
-def client(admin_app_with_db, newsletter_admin):
+def client(admin_app, newsletter_admin):
     """Provide a test HTTP client against the API."""
-    with http_client(admin_app_with_db, user_id=newsletter_admin.id) as client:
+    with http_client(admin_app, user_id=newsletter_admin.id) as client:
         yield client

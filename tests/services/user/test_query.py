@@ -12,7 +12,7 @@ from byceps.services.user import service as user_service
 from tests.helpers import create_user
 
 
-def test_find_user_by_screen_name_found(admin_app_with_db):
+def test_find_user_by_screen_name_found(admin_app):
     screen_name = 'ghost'
 
     user = create_user(screen_name)
@@ -22,13 +22,13 @@ def test_find_user_by_screen_name_found(admin_app_with_db):
     assert actual.id == user.id
 
 
-def test_find_user_by_screen_name_not_found(admin_app_with_db):
+def test_find_user_by_screen_name_not_found(admin_app):
     actual = user_service.find_user_by_screen_name('unknown_dude')
 
     assert actual is None
 
 
-def test_get_anonymous_user(admin_app_with_db):
+def test_get_anonymous_user(admin_app):
     user = user_service.get_anonymous_user()
 
     assert user.id == UUID('00000000-0000-0000-0000-000000000000')
@@ -41,7 +41,7 @@ def test_get_anonymous_user(admin_app_with_db):
     assert not user.is_orga
 
 
-def test_get_email_address_found(admin_app_with_db):
+def test_get_email_address_found(admin_app):
     email_address = 'lanparty@lar.ge'
 
     user = create_user('xpandr', email_address=email_address)
@@ -51,7 +51,7 @@ def test_get_email_address_found(admin_app_with_db):
     assert actual == email_address
 
 
-def test_get_email_address_not_found(admin_app_with_db):
+def test_get_email_address_not_found(admin_app):
     unknown_user_id = UUID('00000000-0000-0000-0000-000000000001')
 
     with raises(ValueError):

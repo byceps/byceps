@@ -39,18 +39,16 @@ def shop2(email_config):
 
 
 @pytest.fixture
-def orderer1(admin_app_with_db):
+def orderer1(admin_app):
     return create_orderer('Orderer1')
 
 
 @pytest.fixture
-def orderer2(admin_app_with_db):
+def orderer2(admin_app):
     return create_orderer('Orderer2')
 
 
-def test_get_orders_placed_by_user(
-    admin_app_with_db, shop1, shop2, orderer1, orderer2
-):
+def test_get_orders_placed_by_user(admin_app, shop1, shop2, orderer1, orderer2):
     order1 = place_order(shop1.id, orderer1)
     order2 = place_order(shop1.id, orderer2)  # different user
     order3 = place_order(shop1.id, orderer1)

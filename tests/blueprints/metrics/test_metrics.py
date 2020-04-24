@@ -13,7 +13,7 @@ def config_overrides():
 
 
 @pytest.fixture
-def client(admin_app_with_db, config_overrides, make_admin_app):
+def client(admin_app, config_overrides, make_admin_app):
     app = make_admin_app(**config_overrides)
     with app.app_context():
         yield app.test_client()

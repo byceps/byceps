@@ -100,7 +100,7 @@ def orderer():
 def test_cancel_before_paid(
     order_email_service_mock,
     order_canceled_signal_send_mock,
-    admin_app_with_db,
+    admin_app,
     shop,
     article1,
     order_number_sequence,
@@ -122,7 +122,7 @@ def test_cancel_before_paid(
         'reason': 'Dein Vorname ist albern!',
         'send_email': 'y',
     }
-    with http_client(admin_app_with_db, user_id=admin.id) as client:
+    with http_client(admin_app, user_id=admin.id) as client:
         response = client.post(url, data=form_data)
 
     order_afterwards = get_order(order_before.id)
@@ -153,7 +153,7 @@ def test_cancel_before_paid(
 def test_cancel_before_paid_without_sending_email(
     order_email_service_mock,
     order_canceled_signal_send_mock,
-    admin_app_with_db,
+    admin_app,
     shop,
     article2,
     order_number_sequence,
@@ -170,7 +170,7 @@ def test_cancel_before_paid_without_sending_email(
         'reason': 'Dein Vorname ist albern!',
         # Sending e-mail is not requested.
     }
-    with http_client(admin_app_with_db, user_id=admin.id) as client:
+    with http_client(admin_app, user_id=admin.id) as client:
         response = client.post(url, data=form_data)
 
     order_afterwards = get_order(placed_order.id)
@@ -194,7 +194,7 @@ def test_cancel_before_paid_without_sending_email(
 def test_mark_order_as_paid(
     order_email_service_mock,
     order_paid_signal_send_mock,
-    admin_app_with_db,
+    admin_app,
     shop,
     order_number_sequence,
     admin,
@@ -207,7 +207,7 @@ def test_mark_order_as_paid(
 
     url = f'/admin/shop/orders/{order_before.id}/mark_as_paid'
     form_data = {'payment_method': 'direct_debit'}
-    with http_client(admin_app_with_db, user_id=admin.id) as client:
+    with http_client(admin_app, user_id=admin.id) as client:
         response = client.post(url, data=form_data)
 
     order_afterwards = get_order(order_before.id)
@@ -240,7 +240,7 @@ def test_cancel_after_paid(
     order_email_service_mock,
     order_paid_signal_send_mock,
     order_canceled_signal_send_mock,
-    admin_app_with_db,
+    admin_app,
     shop,
     article3,
     order_number_sequence,
@@ -259,7 +259,7 @@ def test_cancel_after_paid(
 
     url = f'/admin/shop/orders/{order_before.id}/mark_as_paid'
     form_data = {'payment_method': 'bank_transfer'}
-    with http_client(admin_app_with_db, user_id=admin.id) as client:
+    with http_client(admin_app, user_id=admin.id) as client:
         response = client.post(url, data=form_data)
 
     url = f'/admin/shop/orders/{order_before.id}/cancel'
@@ -267,7 +267,7 @@ def test_cancel_after_paid(
         'reason': 'Dein Vorname ist albern!',
         'send_email': 'n',
     }
-    with http_client(admin_app_with_db, user_id=admin.id) as client:
+    with http_client(admin_app, user_id=admin.id) as client:
         response = client.post(url, data=form_data)
 
     order_afterwards = get_order(order_before.id)

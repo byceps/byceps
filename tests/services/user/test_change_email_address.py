@@ -10,7 +10,7 @@ from byceps.services.user import event_service
 from tests.helpers import create_user
 
 
-def test_change_email_address_with_reason(admin_app_with_db, admin_user):
+def test_change_email_address_with_reason(admin_app, admin_user):
     old_email_address = 'zero-cool@example.com'
     new_email_address = 'crash.override@example.com'
     reason = 'Does not want to be recognized by Acid Burn.'
@@ -57,7 +57,7 @@ def test_change_email_address_with_reason(admin_app_with_db, admin_user):
     }
 
 
-def test_change_email_address_without_reason(admin_app_with_db, admin_user):
+def test_change_email_address_without_reason(admin_app, admin_user):
     old_email_address = 'address_with_tyop@example.com'
     new_email_address = 'address_without_typo@example.com'
 

@@ -57,27 +57,23 @@ def make_admin_app(data_path):
     return _wrapper
 
 
-@pytest.fixture(scope='session')
-def admin_app(make_admin_app):
-    """Provide the admin web application."""
-    yield make_admin_app()
-
-
 @pytest.fixture(scope='module')
-def admin_app_with_db(admin_app, db):
-    with admin_app.app_context():
+def admin_app(make_admin_app, db):
+    """Provide the admin web application."""
+    app = make_admin_app()
+    with app.app_context():
         with database_recreated(db):
-            yield admin_app
+            yield app
 
 
 @pytest.fixture
-def admin_client(admin_app_with_db):
+def admin_client(admin_app):
     """Provide a test HTTP client against the admin web application."""
-    return admin_app_with_db.test_client()
+    return admin_app.test_client()
 
 
 @pytest.fixture(scope='module')
-def party_app(admin_app_with_db):
+def party_app(admin_app):
     """Provide a party web application."""
     config_overrides = {CONFIG_PATH_DATA_KEY: data_path}
     app = create_party_app(config_overrides)
@@ -92,7 +88,7 @@ def data_path():
 
 
 @pytest.fixture(scope='module')
-def make_user(admin_app_with_db):
+def make_user(admin_app):
     def _wrapper(*args, **kwargs):
         user = create_user(*args, **kwargs)
         yield user
@@ -127,7 +123,7 @@ def deleted_user(make_user):
 
 
 @pytest.fixture(scope='module')
-def make_email_config(admin_app_with_db):
+def make_email_config(admin_app):
     def _wrapper(
         config_id: str = DEFAULT_EMAIL_CONFIG_ID,
         sender_address: str = 'info@shop.example',
@@ -160,7 +156,7 @@ def site(email_config):
 
 
 @pytest.fixture(scope='module')
-def brand(admin_app_with_db):
+def brand(admin_app):
     brand = create_brand()
     yield brand
     brand_service.delete_brand(brand.id)

@@ -12,7 +12,7 @@ from .base import get_tickets_for_order, mark_order_as_paid, place_order
 
 
 def test_create_ticket_bundles(
-    admin_app_with_db,
+    admin_app,
     party,
     shop,
     order_number_sequence,

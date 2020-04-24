@@ -16,7 +16,7 @@ from byceps.services.authorization.service import (
 from byceps.services.user import command_service as user_command_service
 
 
-def test_deassign_all_roles_from_user(admin_app_with_db, user1, user2, roles):
+def test_deassign_all_roles_from_user(admin_app, user1, user2, roles):
     assert find_role_ids_for_user(user1.id) == {'demigod', 'pausenclown'}
     assert find_role_ids_for_user(user2.id) == {'demigod', 'partymeister'}
 

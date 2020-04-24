@@ -23,7 +23,7 @@ def article(shop):
     article_service.delete_article(article.id)
 
 
-def test_count_ordered_articles(admin_app_with_db, db, shop, article, orderer):
+def test_count_ordered_articles(admin_app, db, shop, article, orderer):
     expected = {
         PaymentState.open: 12,
         PaymentState.canceled_before_paid: 7,

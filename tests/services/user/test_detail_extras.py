@@ -10,7 +10,7 @@ from byceps.services.user.models.detail import UserDetail
 from tests.helpers import create_user_with_detail
 
 
-def test_set_and_remove(admin_app_with_db):
+def test_set_and_remove(admin_app):
     user_id = create_user_with_detail('set-and-remove').id
 
     # Make sure field is `NULL`.
@@ -33,7 +33,7 @@ def test_set_and_remove(admin_app_with_db):
     assert get_extras(user_id) == {}
 
 
-def test_remove_unknown_key_from_null_extras(admin_app_with_db):
+def test_remove_unknown_key_from_null_extras(admin_app):
     user_id = create_user_with_detail('null-extras').id
 
     assert get_extras(user_id) is None
@@ -42,7 +42,7 @@ def test_remove_unknown_key_from_null_extras(admin_app_with_db):
     assert get_extras(user_id) is None
 
 
-def test_remove_unknown_key_from_empty_extras(admin_app_with_db):
+def test_remove_unknown_key_from_empty_extras(admin_app):
     user_id = create_user_with_detail('empty-extras').id
 
     set_extras_to_empty_dict(user_id)

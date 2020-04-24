@@ -11,7 +11,7 @@ from byceps.services.authorization import service
 PERMISSION_ID = 'tickle_mortals'
 
 
-def test_assign_role_to_user(admin_app_with_db, user, admin_user, role):
+def test_assign_role_to_user(admin_app, user, admin_user, role):
     user_permission_ids_before = service.get_permission_ids_for_user(user.id)
     assert PERMISSION_ID not in user_permission_ids_before
 
@@ -25,7 +25,7 @@ def test_assign_role_to_user(admin_app_with_db, user, admin_user, role):
     service.assign_role_to_user(role.id, user.id, initiator_id=admin_user.id)
 
 
-def test_deassign_role_from_user(admin_app_with_db, user, admin_user, role):
+def test_deassign_role_from_user(admin_app, user, admin_user, role):
     service.assign_role_to_user(role.id, user.id, initiator_id=admin_user.id)
 
     user_permission_ids_before = service.get_permission_ids_for_user(user.id)

@@ -28,7 +28,7 @@ def shop2(email_config):
     shop_service.delete_shop(shop.id)
 
 
-def test_generate_article_number_default(admin_app_with_db, shop1):
+def test_generate_article_number_default(admin_app, shop1):
     shop = shop1
 
     sequence_service.create_article_number_sequence(shop.id, 'AEC-01-A')
@@ -41,7 +41,7 @@ def test_generate_article_number_default(admin_app_with_db, shop1):
     sequence_service.delete_order_number_sequence(shop.id)
 
 
-def test_generate_article_number_custom(admin_app_with_db, shop2):
+def test_generate_article_number_custom(admin_app, shop2):
     shop = shop2
 
     sequence_service.create_article_number_sequence(
@@ -56,7 +56,7 @@ def test_generate_article_number_custom(admin_app_with_db, shop2):
     sequence_service.delete_order_number_sequence(shop.id)
 
 
-def test_generate_order_number_default(admin_app_with_db, shop1):
+def test_generate_order_number_default(admin_app, shop1):
     shop = shop1
 
     sequence_service.create_order_number_sequence(shop.id, 'AEC-01-B')
@@ -69,7 +69,7 @@ def test_generate_order_number_default(admin_app_with_db, shop1):
     sequence_service.delete_order_number_sequence(shop.id)
 
 
-def test_generate_order_number_custom(admin_app_with_db, shop2):
+def test_generate_order_number_custom(admin_app, shop2):
     shop = shop2
 
     last_assigned_order_sequence_number = 206
