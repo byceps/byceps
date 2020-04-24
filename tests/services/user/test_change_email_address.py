@@ -56,6 +56,8 @@ def test_change_email_address_with_reason(admin_app, admin_user):
         'reason': reason,
     }
 
+    user_command_service.delete_account(user_id, user_id, 'clean up')
+
 
 def test_change_email_address_without_reason(admin_app, admin_user):
     old_email_address = 'address_with_tyop@example.com'
@@ -86,3 +88,5 @@ def test_change_email_address_without_reason(admin_app, admin_user):
         'new_email_address': new_email_address,
         'initiator_id': str(admin_user.id),
     }
+
+    user_command_service.delete_account(user_id, user_id, 'clean up')

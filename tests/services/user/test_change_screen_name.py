@@ -52,6 +52,8 @@ def test_change_screen_name_with_reason(admin_app, admin_user):
         'reason': reason,
     }
 
+    user_command_service.delete_account(user_id, user_id, 'clean up')
+
 
 def test_change_screen_name_without_reason(admin_app, admin_user):
     old_screen_name = 'NameWithTyop'
@@ -78,3 +80,5 @@ def test_change_screen_name_without_reason(admin_app, admin_user):
         'new_screen_name': new_screen_name,
         'initiator_id': str(admin_user.id),
     }
+
+    user_command_service.delete_account(user_id, user_id, 'clean up')
