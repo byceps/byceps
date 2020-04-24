@@ -29,7 +29,9 @@ from tests.services.shop.helpers import create_shop, create_shop_fragment
 
 @pytest.fixture
 def party1(brand, shop1):
-    party = create_party(brand.id, shop_id=shop1.id)
+    party = create_party(
+        brand.id, 'thislan-2013', 'ThisLAN 2013', shop_id=shop1.id
+    )
     yield party
     party_service.delete_party(party.id)
 

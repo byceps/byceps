@@ -51,7 +51,9 @@ def shop(email_config, admin_user):
 
 @pytest.fixture
 def party(brand, shop):
-    party = create_party(brand.id, shop_id=shop.id)
+    party = create_party(
+        brand.id, 'acmecon-2019', 'ACMECon 2019', shop_id=shop.id
+    )
     yield party
     party_service.delete_party(party.id)
 
