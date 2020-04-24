@@ -11,8 +11,7 @@ from tests.helpers import create_site, http_client, login_user
 
 
 @pytest.fixture(scope='module')
-def site(party_app, make_email_config, party):
-    make_email_config()
+def site(party_app, email_config, party):
     site = create_site(party_id=party.id)
     yield site
     site_service.delete_site(site.id)

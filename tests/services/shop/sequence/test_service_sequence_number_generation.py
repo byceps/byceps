@@ -10,11 +10,6 @@ from byceps.services.shop.shop import service as shop_service
 
 
 @pytest.fixture(scope='module')
-def email_config(make_email_config):
-    return make_email_config()
-
-
-@pytest.fixture(scope='module')
 def shop1(email_config):
     shop = shop_service.create_shop('shop-01', 'Some Shop', email_config.id)
     yield shop
