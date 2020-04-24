@@ -8,18 +8,12 @@ import pytest
 from byceps.services.country import service as country_service
 
 
-@pytest.fixture
-def party_app_with_app_context(party_app):
-    with party_app.app_context():
-        yield party_app
-
-
 @pytest.mark.parametrize('name, alpha2, alpha3', [
     ('Deutschland', 'DE', 'DEU'),
     ('Österreich' , 'AT', 'AUT'),
 ])
 def test_get_countries_contains_country(
-    party_app_with_app_context, name, alpha2, alpha3
+    party_app_with_db, name, alpha2, alpha3
 ):
     countries = country_service.get_countries()
 
@@ -31,7 +25,7 @@ def test_get_countries_contains_country(
     assert country.alpha3 == alpha3
 
 
-def test_get_country_names_contains_selected_items(party_app_with_app_context):
+def test_get_country_names_contains_selected_items(party_app_with_db):
     actual = country_service.get_country_names()
 
     some_expected = frozenset([
@@ -48,7 +42,7 @@ def test_get_country_names_contains_selected_items(party_app_with_app_context):
     assert frozenset(actual).issuperset(some_expected)
 
 
-def test_get_country_names_contains_no_duplicates(party_app_with_app_context):
+def test_get_country_names_contains_no_duplicates(party_app_with_db):
     actual = country_service.get_country_names()
 
     assert len(actual) == len(set(actual))
