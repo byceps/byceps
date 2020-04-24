@@ -3,7 +3,6 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from contextlib import contextmanager
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import Optional
@@ -36,15 +35,6 @@ def db():
     return _db
 
 
-@contextmanager
-def database_recreated(db):
-    set_up_database(db)
-
-    yield
-
-    tear_down_database(db)
-
-
 @pytest.fixture(scope='session')
 def make_admin_app(data_path):
     """Provide the admin web application."""
@@ -62,8 +52,9 @@ def admin_app(make_admin_app, db):
     """Provide the admin web application."""
     app = make_admin_app()
     with app.app_context():
-        with database_recreated(db):
-            yield app
+        set_up_database(db)
+        yield app
+        tear_down_database(db)
 
 
 @pytest.fixture
