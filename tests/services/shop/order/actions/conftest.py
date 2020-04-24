@@ -16,8 +16,9 @@ from tests.services.shop.helpers import create_article
 @pytest.fixture
 def article(shop):
     article = create_article(shop.id, quantity=10)
+    article_id = article.id
     yield article
-    article_service.delete_article(article.id)
+    article_service.delete_article(article_id)
 
 
 @pytest.fixture

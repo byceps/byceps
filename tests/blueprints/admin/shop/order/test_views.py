@@ -72,22 +72,25 @@ def admin(_admin):
 @pytest.fixture
 def article1(shop):
     article = create_article(shop.id, 'item-001', 8)
+    article_id = article.id
     yield article
-    article_service.delete_article(article.id)
+    article_service.delete_article(article_id)
 
 
 @pytest.fixture
 def article2(shop):
     article = create_article(shop.id, 'item-002', 8)
+    article_id = article.id
     yield article
-    article_service.delete_article(article.id)
+    article_service.delete_article(article_id)
 
 
 @pytest.fixture
 def article3(shop):
     article = create_article(shop.id, 'item-003', 8)
+    article_id = article.id
     yield article
-    article_service.delete_article(article.id)
+    article_service.delete_article(article_id)
 
 
 @pytest.fixture(scope='module')

@@ -60,10 +60,11 @@ def article_bungalow(shop):
         Decimal('355.00'),
         Decimal('0.07'),
     )
+    article_id = article.id
 
     yield article
 
-    article_service.delete_article(article.id)
+    article_service.delete_article(article_id)
 
 
 @pytest.fixture
@@ -75,10 +76,11 @@ def article_guest_fee(shop):
         Decimal('6.00'),
         Decimal('0.19'),
     )
+    article_id = article.id
 
     yield article
 
-    article_service.delete_article(article.id)
+    article_service.delete_article(article_id)
 
 
 @pytest.fixture
@@ -90,10 +92,11 @@ def article_table(shop):
         Decimal('20.00'),
         Decimal('0.19'),
     )
+    article_id = article.id
 
     yield article
 
-    article_service.delete_article(article.id)
+    article_service.delete_article(article_id)
 
 
 @pytest.fixture

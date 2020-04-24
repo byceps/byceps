@@ -17,22 +17,25 @@ from tests.services.shop.helpers import create_article as _create_article
 @pytest.fixture
 def article1(shop):
     article = create_article(shop.id, 1, Decimal('49.95'))
+    article_id = article.id
     yield article
-    article_service.delete_article(article.id)
+    article_service.delete_article(article_id)
 
 
 @pytest.fixture
 def article2(shop):
     article = create_article(shop.id, 2, Decimal('6.20'))
+    article_id = article.id
     yield article
-    article_service.delete_article(article.id)
+    article_service.delete_article(article_id)
 
 
 @pytest.fixture
 def article3(shop):
     article = create_article(shop.id, 3, Decimal('12.53'))
+    article_id = article.id
     yield article
-    article_service.delete_article(article.id)
+    article_service.delete_article(article_id)
 
 
 def test_without_any_items(party_app, shop, order_number_sequence, orderer):
