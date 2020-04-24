@@ -93,8 +93,9 @@ def article3(shop):
 @pytest.fixture(scope='module')
 def orderer():
     user = create_user_with_detail('Besteller')
+    user_id = user.id
     yield create_orderer(user)
-    user_command_service.delete_account(user.id, user.id, 'clean up')
+    user_command_service.delete_account(user_id, user_id, 'clean up')
 
 
 @patch('byceps.blueprints.shop.order.signals.order_canceled.send')

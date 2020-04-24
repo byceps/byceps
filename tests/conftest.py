@@ -76,8 +76,9 @@ def data_path():
 def make_user(admin_app):
     def _wrapper(*args, **kwargs):
         user = create_user(*args, **kwargs)
+        user_id = user.id
         yield user
-        user_command_service.delete_account(user.id, user.id, 'clean up')
+        user_command_service.delete_account(user_id, user_id, 'clean up')
 
     yield _wrapper
 
