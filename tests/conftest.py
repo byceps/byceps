@@ -73,7 +73,7 @@ def admin_client(admin_app):
 
 
 @pytest.fixture(scope='module')
-def party_app(admin_app):
+def party_app(admin_app, data_path):
     """Provide a party web application."""
     config_overrides = {CONFIG_PATH_DATA_KEY: data_path}
     app = create_party_app(config_overrides)
