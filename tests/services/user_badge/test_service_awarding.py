@@ -57,7 +57,7 @@ def awardings_scope(db):
 
 
 def test_award_badge_without_initiator(
-    party_app_with_db, user1, badge1, awardings_scope
+    party_app, user1, badge1, awardings_scope
 ):
     user = user1
     badge = badge1
@@ -81,7 +81,7 @@ def test_award_badge_without_initiator(
 
 
 def test_award_badge_with_initiator(
-    party_app_with_db, user2, badge2, admin_user, awardings_scope
+    party_app, user2, badge2, admin_user, awardings_scope
 ):
     user = user2
 
@@ -111,7 +111,7 @@ def test_award_badge_with_initiator(
 
 
 def test_count_awardings(
-    party_app_with_db,
+    party_app,
     user1,
     user2,
     user3,
@@ -132,7 +132,7 @@ def test_count_awardings(
     assert actual == {badge1.id: 4, badge2.id: 0, badge3.id: 2}
 
 
-def test_get_awardings_of_unknown_badge(party_app_with_db):
+def test_get_awardings_of_unknown_badge(party_app):
     unknown_badge_id = '00000000-0000-0000-0000-000000000000'
 
     actual = badge_service.get_awardings_of_badge(unknown_badge_id)
@@ -140,7 +140,7 @@ def test_get_awardings_of_unknown_badge(party_app_with_db):
     assert actual == set()
 
 
-def test_get_awardings_of_unawarded_badge(party_app_with_db, badge3):
+def test_get_awardings_of_unawarded_badge(party_app, badge3):
     badge = badge3
 
     actual = badge_service.get_awardings_of_badge(badge.id)
@@ -149,7 +149,7 @@ def test_get_awardings_of_unawarded_badge(party_app_with_db, badge3):
 
 
 def test_get_awardings_of_badge(
-    party_app_with_db, user1, user2, badge1, awardings_scope
+    party_app, user1, user2, badge1, awardings_scope
 ):
     badge = badge1
 

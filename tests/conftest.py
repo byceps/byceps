@@ -76,18 +76,13 @@ def admin_client(admin_app):
     return admin_app.test_client()
 
 
-@pytest.fixture(scope='session')
-def party_app(data_path):
+@pytest.fixture(scope='module')
+def party_app(admin_app_with_db):
     """Provide a party web application."""
     config_overrides = {CONFIG_PATH_DATA_KEY: data_path}
     app = create_party_app(config_overrides)
-    yield app
-
-
-@pytest.fixture(scope='module')
-def party_app_with_db(admin_app_with_db, party_app):
-    with party_app.app_context():
-        yield party_app
+    with app.app_context():
+        yield app
 
 
 @pytest.fixture(scope='session')

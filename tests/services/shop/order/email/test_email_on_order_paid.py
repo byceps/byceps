@@ -21,7 +21,7 @@ from .base import place_order_with_items
 
 
 @pytest.fixture
-def customer(party_app_with_db):
+def customer(party_app):
     return create_user_with_detail(
         'Vorbild', email_address='vorbild@example.com'
     )
@@ -48,9 +48,9 @@ def order(shop, customer, order_admin):
 
 @patch('byceps.email.send')
 def test_email_on_order_paid(
-    send_email_mock, party_app_with_db, customer, order_admin, order
+    send_email_mock, party_app, customer, order_admin, order
 ):
-    app = party_app_with_db
+    app = party_app
 
     order_service.mark_order_as_paid(
         order.id, PaymentMethod.bank_transfer, order_admin.id

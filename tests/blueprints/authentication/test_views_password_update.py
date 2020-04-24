@@ -14,7 +14,7 @@ from tests.helpers import create_site, http_client, login_user
 
 
 @pytest.fixture(scope='module')
-def site(party_app_with_db, make_email_config):
+def site(party_app, make_email_config):
     make_email_config()
     site = create_site()
     yield site
@@ -26,7 +26,7 @@ def user(make_user):
     yield from make_user('PasswordUpdater')
 
 
-def test_when_logged_in_endpoint_is_available(party_app_with_db, site, user):
+def test_when_logged_in_endpoint_is_available(party_app, site, user):
     old_password = 'LekkerBratworsten'
     new_password = 'EvenMoreSecure!!1'
 
@@ -50,7 +50,7 @@ def test_when_logged_in_endpoint_is_available(party_app_with_db, site, user):
         'new_password_confirmation': new_password,
     }
 
-    response = send_request(party_app_with_db, form_data, user_id=user.id)
+    response = send_request(party_app, form_data, user_id=user.id)
 
     assert response.status_code == 302
     assert response.headers.get('Location') == 'http://example.com/authentication/login'
@@ -66,10 +66,10 @@ def test_when_logged_in_endpoint_is_available(party_app_with_db, site, user):
     assert session_token_after is None
 
 
-def test_when_not_logged_in_endpoint_is_unavailable(party_app_with_db, site):
+def test_when_not_logged_in_endpoint_is_unavailable(party_app, site):
     form_data = {}
 
-    response = send_request(party_app_with_db, form_data)
+    response = send_request(party_app, form_data)
 
     assert response.status_code == 404
 

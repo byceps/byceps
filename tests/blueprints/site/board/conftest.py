@@ -28,12 +28,7 @@ from .helpers import create_board, create_category, create_posting, create_topic
 
 
 @pytest.fixture
-def app(party_app_with_db):
-    yield party_app_with_db
-
-
-@pytest.fixture
-def site(app, make_email_config):
+def site(party_app, make_email_config):
     email_config = make_email_config()
     site = create_site(email_config_id=email_config.id)
     yield site
@@ -125,6 +120,6 @@ def moderator(_moderator):
 
 
 @pytest.fixture
-def moderator_client(app, moderator):
-    with http_client(app, user_id=moderator.id) as client:
+def moderator_client(party_app, moderator):
+    with http_client(party_app, user_id=moderator.id) as client:
         yield client

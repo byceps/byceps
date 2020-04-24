@@ -8,7 +8,7 @@ from byceps.services.authentication.password import service as password_service
 from byceps.services.user import event_service
 
 
-def test_update_password_hash(party_app_with_db, admin_user, user):
+def test_update_password_hash(party_app, admin_user, user):
     admin_id = admin_user.id
     user_id = user.id
 

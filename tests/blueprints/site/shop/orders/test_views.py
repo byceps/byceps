@@ -58,7 +58,7 @@ def site2(party2):
 
 
 @pytest.fixture
-def shop1(party_app_with_db, email_config, admin_user):
+def shop1(party_app, email_config, admin_user):
     shop = create_shop('shop-1')
     sequence_service.create_order_number_sequence(shop.id, 'LF-02-B')
     snippet_id = create_payment_instructions_snippet(shop.id, admin_user.id)
@@ -71,21 +71,21 @@ def shop1(party_app_with_db, email_config, admin_user):
 
 
 @pytest.fixture
-def shop2(party_app_with_db, email_config):
+def shop2(party_app, email_config):
     shop = create_shop('shop-2')
     yield shop
     shop_service.delete_shop(shop.id)
 
 
 @pytest.fixture
-def user1(party_app_with_db):
+def user1(party_app):
     user = create_user_with_detail('User1')
     yield user
     user_command_service.delete_account(user.id, user.id, 'clean up')
 
 
 @pytest.fixture
-def user2(party_app_with_db):
+def user2(party_app):
     user = create_user_with_detail('User2')
     yield user
     user_command_service.delete_account(user.id, user.id, 'clean up')
@@ -103,26 +103,24 @@ def order(shop1, user1):
     order_service.delete_order(order.id)
 
 
-def test_view_matching_user_and_party_and_shop(
-    party_app_with_db, site1, order, user1
-):
-    response = request_view(party_app_with_db, user1, order.id)
+def test_view_matching_user_and_party_and_shop(party_app, site1, order, user1):
+    response = request_view(party_app, user1, order.id)
 
     assert response.status_code == 200
 
 
 def test_view_matching_party_and_shop_but_different_user(
-    party_app_with_db, site1, order, user1, user2
+    party_app, site1, order, user1, user2
 ):
-    response = request_view(party_app_with_db, user2, order.id)
+    response = request_view(party_app, user2, order.id)
 
     assert response.status_code == 404
 
 
 def test_view_matching_user_but_different_party_and_shop(
-    party_app_with_db, site2, order, user1
+    party_app, site2, order, user1
 ):
-    response = request_view(party_app_with_db, user1, order.id)
+    response = request_view(party_app, user1, order.id)
 
     assert response.status_code == 404
 
@@ -136,12 +134,12 @@ def create_payment_instructions_snippet(shop_id, admin_id):
     )
 
 
-def request_view(party_app_with_db, current_user, order_id):
+def request_view(party_app, current_user, order_id):
     login_user(current_user.id)
 
     url = f'/shop/orders/{order_id!s}'
 
-    with http_client(party_app_with_db, user_id=current_user.id) as client:
+    with http_client(party_app, user_id=current_user.id) as client:
         response = client.get(url)
 
     return response

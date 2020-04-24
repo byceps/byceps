@@ -9,5 +9,5 @@ from tests.helpers import create_user
 
 
 @pytest.fixture
-def order_admin(party_app_with_db):
+def order_admin(party_app):
     return create_user('ShopOrderAdmin')

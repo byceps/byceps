@@ -64,14 +64,14 @@ def site(party):
 
 
 @pytest.fixture
-def article(party_app_with_db, db, shop):
+def article(party_app, db, shop):
     article = create_article(shop.id, quantity=5)
     yield article
     article_service.delete_article(article.id)
 
 
 @pytest.fixture
-def orderer(party_app_with_db, user):
+def orderer(party_app, user):
     login_user(user.id)
     return user
 
@@ -81,7 +81,7 @@ def orderer(party_app_with_db, user):
 def test_order(
     order_email_service_mock,
     order_placed_mock,
-    party_app_with_db,
+    party_app,
     site,
     admin_user,
     orderer,
@@ -96,7 +96,7 @@ def test_order(
         **COMMON_FORM_DATA,
         article_quantity_key: 3,
     }
-    with http_client(party_app_with_db, user_id=orderer.id) as client:
+    with http_client(party_app, user_id=orderer.id) as client:
         response = client.post(url, data=form_data)
 
     article_afterwards = get_article(article.id)
@@ -129,7 +129,7 @@ def test_order(
 
     assert_response_headers(response, order_detail_page_url)
 
-    with http_client(party_app_with_db, user_id=orderer.id) as client:
+    with http_client(party_app, user_id=orderer.id) as client:
         assert_order_detail_page_works(
             client, order_detail_page_url, order.order_number
         )
@@ -142,7 +142,7 @@ def test_order(
 def test_order_single(
     order_email_service_mock,
     order_placed_mock,
-    party_app_with_db,
+    party_app,
     site,
     admin_user,
     orderer,
@@ -156,7 +156,7 @@ def test_order_single(
         **COMMON_FORM_DATA,
         'quantity': 1,  # TODO: Test with `3` if limitation is removed.
     }
-    with http_client(party_app_with_db, user_id=orderer.id) as client:
+    with http_client(party_app, user_id=orderer.id) as client:
         response = client.post(url, data=form_data)
 
     article_afterwards = get_article(article.id)
@@ -189,7 +189,7 @@ def test_order_single(
 
     assert_response_headers(response, order_detail_page_url)
 
-    with http_client(party_app_with_db, user_id=orderer.id) as client:
+    with http_client(party_app, user_id=orderer.id) as client:
         assert_order_detail_page_works(
             client, order_detail_page_url, order.order_number
         )

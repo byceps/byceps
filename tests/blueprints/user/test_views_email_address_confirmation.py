@@ -13,7 +13,7 @@ from tests.helpers import create_site, http_client
 
 
 @pytest.fixture(scope='module')
-def site(party_app_with_db, make_email_config):
+def site(party_app, make_email_config):
     make_email_config()
     site = create_site()
     yield site
@@ -31,7 +31,7 @@ def user2(make_user):
 
 
 @pytest.fixture
-def role(party_app_with_db, site, user1, user2):
+def role(party_app, site, user1, user2):
     role = authorization_service.create_role('board_user', 'Board User')
 
     yield role
@@ -42,9 +42,7 @@ def role(party_app_with_db, site, user1, user2):
     authorization_service.delete_role(role.id)
 
 
-def test_confirm_email_address_with_valid_token(
-    party_app_with_db, db, user1, role
-):
+def test_confirm_email_address_with_valid_token(party_app, db, user1, role):
     user = user1
 
     verification_token = create_confirmation_token(user.id)
@@ -53,7 +51,7 @@ def test_confirm_email_address_with_valid_token(
 
     # -------------------------------- #
 
-    response = confirm(party_app_with_db, verification_token)
+    response = confirm(party_app, verification_token)
 
     # -------------------------------- #
 
@@ -62,9 +60,7 @@ def test_confirm_email_address_with_valid_token(
     assert get_role_ids(user.id) == {'board_user'}
 
 
-def test_confirm_email_address_with_unknown_token(
-    party_app_with_db, site, user2, role
-):
+def test_confirm_email_address_with_unknown_token(party_app, site, user2, role):
     user = user2
 
     verification_token = create_confirmation_token(user.id)
@@ -72,7 +68,7 @@ def test_confirm_email_address_with_unknown_token(
 
     # -------------------------------- #
 
-    response = confirm(party_app_with_db, verification_token)
+    response = confirm(party_app, verification_token)
 
     # -------------------------------- #
 

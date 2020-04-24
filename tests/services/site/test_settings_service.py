@@ -15,7 +15,7 @@ SITE_ID = 'acmecon-2014-website'
 
 
 @pytest.fixture(scope='module')
-def site(party_app_with_db, make_email_config):
+def site(party_app, make_email_config):
     make_email_config()
     site = create_site()
     yield site

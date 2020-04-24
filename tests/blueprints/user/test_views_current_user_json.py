@@ -14,17 +14,17 @@ CONTENT_TYPE_JSON = 'application/json'
 
 
 @pytest.fixture(scope='module')
-def site(party_app_with_db, make_email_config):
+def site(party_app, make_email_config):
     make_email_config()
     site = create_site()
     yield site
     site_service.delete_site(site.id)
 
 
-def test_when_logged_in(party_app_with_db, site, user):
+def test_when_logged_in(party_app, site, user):
     login_user(user.id)
 
-    response = send_request(party_app_with_db, user_id=user.id)
+    response = send_request(party_app, user_id=user.id)
 
     assert response.status_code == 200
     assert response.content_type == CONTENT_TYPE_JSON
@@ -36,8 +36,8 @@ def test_when_logged_in(party_app_with_db, site, user):
     assert response_data['avatar_url'] is None
 
 
-def test_when_not_logged_in(party_app_with_db, site):
-    response = send_request(party_app_with_db)
+def test_when_not_logged_in(party_app, site):
+    response = send_request(party_app)
 
     assert response.status_code == 403
     assert response.get_data() == b''

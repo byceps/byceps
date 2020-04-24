@@ -8,8 +8,8 @@ import pytest
 from tests.helpers import http_client
 
 
-def test_homepage(party_app_with_db, site):
-    with http_client(party_app_with_db) as client:
+def test_homepage(party_app, site):
+    with http_client(party_app) as client:
         response = client.get('/')
 
     # By default, nothing is mounted on `/`, but at least check that

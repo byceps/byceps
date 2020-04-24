@@ -13,7 +13,7 @@ from tests.helpers import create_site, create_user, http_client, login_user
 
 
 @pytest.fixture(scope='module')
-def site(party_app_with_db, make_email_config):
+def site(party_app, make_email_config):
     make_email_config(
         sender_address='noreply@example.com',
         sender_name='ACME Entertainment Convention',
@@ -24,7 +24,7 @@ def site(party_app_with_db, make_email_config):
 
 
 @pytest.fixture(scope='module')
-def user_alice(party_app_with_db):
+def user_alice(party_app):
     return create_user(
         'Alice',
         user_id='a4903d8f-0bc6-4af9-aeb9-d7534a0a22e8',
@@ -33,7 +33,7 @@ def user_alice(party_app_with_db):
 
 
 @pytest.fixture(scope='module')
-def user_bob(party_app_with_db):
+def user_bob(party_app):
     return create_user(
         'Bob',
         user_id='11d72bab-3646-4199-b96c-e5e4c6f972bc',
@@ -43,7 +43,7 @@ def user_bob(party_app_with_db):
 
 @patch('byceps.email.send')
 def test_send_when_logged_in_without_brand_contact_address(
-    send_email_mock, party_app_with_db, site, user_alice, user_bob
+    send_email_mock, party_app, site, user_alice, user_bob
 ):
     sender = user_alice
     recipient = user_bob
@@ -88,7 +88,7 @@ Diese Mitteilung wurde über die Website acme.example.com gesendet.\
 '''
 
     response = send_request(
-        party_app_with_db, recipient.id, text, current_user_id=sender.id
+        party_app, recipient.id, text, current_user_id=sender.id
     )
 
     assert response.status_code == 302
@@ -105,7 +105,7 @@ Diese Mitteilung wurde über die Website acme.example.com gesendet.\
 @patch('byceps.email.send')
 def test_send_when_logged_in_with_brand_contact_address(
     send_email_mock,
-    party_app_with_db,
+    party_app,
     make_email_config,
     site,
     user_alice,
@@ -161,7 +161,7 @@ Bei Fragen kontaktiere uns bitte per E-Mail an: help@example.com\
 '''
 
     response = send_request(
-        party_app_with_db, recipient.id, text, current_user_id=sender.id
+        party_app, recipient.id, text, current_user_id=sender.id
     )
 
     assert response.status_code == 302
@@ -175,11 +175,11 @@ Bei Fragen kontaktiere uns bitte per E-Mail an: help@example.com\
     )
 
 
-def test_send_when_not_logged_in(party_app_with_db, site):
+def test_send_when_not_logged_in(party_app, site):
     recipient_id = '8e5037f6-3ca1-4981-b1e4-1998cbdf58e2'
     text = 'Hello, Eve!'
 
-    response = send_request(party_app_with_db, recipient_id, text)
+    response = send_request(party_app, recipient_id, text)
 
     assert response.status_code == 302
     assert response.location == 'http://example.com/authentication/login'

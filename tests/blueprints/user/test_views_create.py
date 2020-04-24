@@ -40,7 +40,7 @@ def user_admin(make_user):
 
 
 @pytest.fixture(scope='module')
-def site(party_app_with_db, make_email_config, party):
+def site(party_app, make_email_config, party):
     make_email_config(sender_address='noreply@example.com')
     site = create_site(party_id=party.id)
     yield site
@@ -108,7 +108,7 @@ def newsletter_list(brand):
 @patch('byceps.email.send')
 def test_create(
     send_email_mock,
-    party_app_with_db,
+    party_app,
     brand,
     site,
     terms_version,
@@ -132,7 +132,7 @@ def test_create(
         'subscribe_to_newsletter': 'y',
     }
 
-    response = send_request(party_app_with_db, form_data)
+    response = send_request(party_app, form_data)
     assert response.status_code == 302
 
     user_count_afterwards = get_user_count()
@@ -197,7 +197,7 @@ bitte bestätige deine E-Mail-Adresse, indem du diese URL abrufst: https://www.e
 @patch('byceps.email.send')
 def test_create_without_newsletter_subscription(
     send_email_mock,
-    party_app_with_db,
+    party_app,
     brand,
     site,
     terms_version,
@@ -218,7 +218,7 @@ def test_create_without_newsletter_subscription(
         'subscribe_to_newsletter': '',
     }
 
-    response = send_request(party_app_with_db, form_data)
+    response = send_request(party_app, form_data)
     assert response.status_code == 302
 
     user = find_user(screen_name)

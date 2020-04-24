@@ -20,7 +20,7 @@ from .base import place_order_with_items
 
 
 @pytest.fixture
-def customer(party_app_with_db):
+def customer(party_app):
     return create_user_with_detail(
         'Versager', email_address='versager@example.com'
     )
@@ -47,9 +47,9 @@ def order(shop, customer, order_admin):
 
 @patch('byceps.email.send')
 def test_email_on_order_canceled(
-    send_email_mock, party_app_with_db, customer, order_admin, order
+    send_email_mock, party_app, customer, order_admin, order
 ):
-    app = party_app_with_db
+    app = party_app
 
     reason = 'Du hast nicht rechtzeitig bezahlt.'
     order_service.cancel_order(order.id, order_admin.id, reason)

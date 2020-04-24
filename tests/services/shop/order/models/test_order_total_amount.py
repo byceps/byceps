@@ -35,9 +35,7 @@ def article3(shop):
     article_service.delete_article(article.id)
 
 
-def test_without_any_items(
-    party_app_with_db, shop, order_number_sequence, orderer
-):
+def test_without_any_items(party_app, shop, order_number_sequence, orderer):
     order = place_order(shop.id, orderer, [])
 
     assert order.total_amount == Decimal('0.00')
@@ -46,7 +44,7 @@ def test_without_any_items(
 
 
 def test_with_single_item(
-    party_app_with_db, shop, order_number_sequence, orderer, article1
+    party_app, shop, order_number_sequence, orderer, article1
 ):
     order = place_order(shop.id, orderer, [
         (article1, 1),
@@ -58,7 +56,7 @@ def test_with_single_item(
 
 
 def test_with_multiple_items(
-    party_app_with_db,
+    party_app,
     shop,
     order_number_sequence,
     orderer,

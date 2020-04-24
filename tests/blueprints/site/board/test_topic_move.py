@@ -7,7 +7,12 @@ from .helpers import create_topic, find_topic
 
 
 def test_move_topic(
-    app, board_poster, moderator, moderator_client, category, another_category,
+    party_app,
+    board_poster,
+    moderator,
+    moderator_client,
+    category,
+    another_category,
 ):
     topic_before = create_topic(category.id, board_poster.id)
     assert topic_before.category.id == category.id
