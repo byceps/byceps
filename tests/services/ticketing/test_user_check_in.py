@@ -6,6 +6,7 @@
 import pytest
 from pytest import raises
 
+from byceps.database import db
 from byceps.services.ticketing import (
     event_service,
     ticket_creation_service,
@@ -27,7 +28,7 @@ def ticket(admin_app, category, ticket_owner):
     ticket_service.delete_ticket(ticket.id)
 
 
-def test_check_in_user(admin_app, db, ticket, ticketing_admin, ticket_user):
+def test_check_in_user(admin_app, ticket, ticketing_admin, ticket_user):
     ticket_before = ticket
 
     ticket_before.used_by_id = ticket_user.id
@@ -68,7 +69,7 @@ def test_check_in_user_with_ticket_without_assigned_user(
 
 
 def test_check_in_user_with_revoked_ticket(
-    admin_app, db, ticket, ticketing_admin, ticket_user
+    admin_app, ticket, ticketing_admin, ticket_user
 ):
     ticket.revoked = True
     ticket.used_by_id = ticket_user.id
@@ -79,7 +80,7 @@ def test_check_in_user_with_revoked_ticket(
 
 
 def test_check_in_user_with_ticket_user_already_checked_in(
-    admin_app, db, ticket, ticketing_admin, ticket_user
+    admin_app, ticket, ticketing_admin, ticket_user
 ):
     ticket.used_by_id = ticket_user.id
     ticket.user_checked_in = True
@@ -90,7 +91,7 @@ def test_check_in_user_with_ticket_user_already_checked_in(
 
 
 def test_check_in_suspended_user(
-    admin_app, db, ticket, ticketing_admin, ticket_user
+    admin_app, ticket, ticketing_admin, ticket_user
 ):
     ticket.used_by_id = ticket_user.id
     ticket_user.suspended = True

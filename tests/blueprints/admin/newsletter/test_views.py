@@ -7,6 +7,7 @@ from datetime import datetime
 
 import pytest
 
+from byceps.database import db
 from byceps.services.authorization import service as authorization_service
 from byceps.services.newsletter.models import (
     SubscriptionUpdate as DbSubscriptionUpdate,
@@ -125,7 +126,7 @@ def newsletter_list(admin_app):
 
 
 @pytest.fixture(scope='module')
-def subscribers(db, newsletter_list):
+def subscribers(newsletter_list):
     user_ids = []
 
     for number, initialized, suspended, deleted, states in [
@@ -148,7 +149,7 @@ def subscribers(db, newsletter_list):
 
         user_ids.append(user.id)
 
-        add_subscriptions(db, user.id, newsletter_list.id, states)
+        add_subscriptions(user.id, newsletter_list.id, states)
 
     yield
 
@@ -157,7 +158,7 @@ def subscribers(db, newsletter_list):
         user_command_service.delete_account(user_id, user_id, 'clean up')
 
 
-def add_subscriptions(db, user_id, list_id, states):
+def add_subscriptions(user_id, list_id, states):
     for state in states:
         # Timestamp must not be identical for multiple
         # `(user_id, list_id)` pairs.

@@ -5,6 +5,7 @@
 
 import pytest
 
+from byceps.database import db
 from byceps.events.user_badge import UserBadgeAwarded
 from byceps.services.user import event_service
 from byceps.services.user_badge import (
@@ -48,7 +49,7 @@ def badge3():
 
 
 @pytest.fixture
-def awardings_scope(db):
+def awardings_scope():
     yield
 
     # Remove badge awardings.

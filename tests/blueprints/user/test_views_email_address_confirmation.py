@@ -5,6 +5,7 @@
 
 import pytest
 
+from byceps.database import db
 from byceps.services.authorization import service as authorization_service
 from byceps.services.site import service as site_service
 from byceps.services.verification_token.models import Purpose, Token
@@ -42,7 +43,7 @@ def role(party_app, site, user1, user2):
     authorization_service.delete_role(role.id)
 
 
-def test_confirm_email_address_with_valid_token(party_app, db, user1, role):
+def test_confirm_email_address_with_valid_token(party_app, user1, role):
     user = user1
 
     verification_token = create_confirmation_token(user.id)

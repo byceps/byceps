@@ -5,6 +5,7 @@
 
 import pytest
 
+from byceps.database import db
 from byceps.services.shop.article import service as article_service
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import ordered_articles_service
@@ -23,7 +24,7 @@ def article(shop):
     article_service.delete_article(article.id)
 
 
-def test_count_ordered_articles(admin_app, db, shop, article, orderer):
+def test_count_ordered_articles(admin_app, shop, article, orderer):
     expected = {
         PaymentState.open: 12,
         PaymentState.canceled_before_paid: 7,
@@ -50,7 +51,7 @@ def test_count_ordered_articles(admin_app, db, shop, article, orderer):
             article_quantity,
         )
         order_ids.add(order.id)
-        set_payment_state(db, order.order_number, payment_state)
+        set_payment_state(order.order_number, payment_state)
 
     totals = ordered_articles_service.count_ordered_articles(
         article.item_number
@@ -76,7 +77,7 @@ def place_order(shop_id, orderer, article, article_quantity):
     return order
 
 
-def set_payment_state(db, order_number, payment_state):
+def set_payment_state(order_number, payment_state):
     order = DbOrder.query \
         .filter_by(order_number=order_number) \
         .one_or_none()

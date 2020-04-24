@@ -7,6 +7,7 @@ from uuid import UUID
 
 import pytest
 
+from byceps.database import db
 from byceps.services.authorization import service as authorization_service
 from byceps.services.user import command_service as user_command_service
 from byceps.services.user import event_service
@@ -35,7 +36,7 @@ def role(permission):
     authorization_service.delete_role(role.id)
 
 
-def test_delete_account(admin_app, db, permission, role, admin_user):
+def test_delete_account(admin_app, permission, role, admin_user):
     user_id = UUID('20868b15-b935-40fc-8054-38854ef8509a')
     screen_name = 'GetRidOfMe'
     email_address = 'timedout@example.net'
