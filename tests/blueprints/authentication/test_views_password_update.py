@@ -8,17 +8,8 @@ import pytest
 from byceps.services.authentication.password.models import Credential
 from byceps.services.authentication.password import service as password_service
 from byceps.services.authentication.session import service as session_service
-from byceps.services.site import service as site_service
 
-from tests.helpers import create_site, http_client, login_user
-
-
-@pytest.fixture(scope='module')
-def site(party_app, make_email_config):
-    make_email_config()
-    site = create_site()
-    yield site
-    site_service.delete_site(site.id)
+from tests.helpers import http_client, login_user
 
 
 @pytest.fixture

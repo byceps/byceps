@@ -129,12 +129,12 @@ def make_email_config(admin_app):
     return _wrapper
 
 
-@pytest.fixture
+@pytest.fixture(scope='module')
 def email_config(make_email_config):
     return make_email_config()
 
 
-@pytest.fixture
+@pytest.fixture(scope='module')
 def site(email_config):
     site = create_site()
     yield site

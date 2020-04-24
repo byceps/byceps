@@ -13,13 +13,11 @@ from byceps.services.board import (
     topic_command_service,
     topic_query_service,
 )
-from byceps.services.site import service as site_service
 from byceps.services.site import settings_service as site_settings_service
 
 from tests.helpers import (
     create_permissions,
     create_role_with_permissions_assigned,
-    create_site,
     http_client,
     login_user,
 )
@@ -27,15 +25,7 @@ from tests.helpers import (
 from .helpers import create_board, create_category, create_posting, create_topic
 
 
-@pytest.fixture
-def site(party_app, make_email_config):
-    email_config = make_email_config()
-    site = create_site(email_config_id=email_config.id)
-    yield site
-    site_service.delete_site(site.id)
-
-
-@pytest.fixture
+@pytest.fixture(scope='module')
 def board(site, brand):
     board = create_board(brand.id)
 
@@ -46,14 +36,14 @@ def board(site, brand):
     board_service.delete_board(board.id)
 
 
-@pytest.fixture
+@pytest.fixture(scope='module')
 def category(board):
     category = create_category(board.id, number=1)
     yield category
     _delete_category(category.id)
 
 
-@pytest.fixture
+@pytest.fixture(scope='module')
 def another_category(board):
     category = create_category(board.id, number=2)
     yield category

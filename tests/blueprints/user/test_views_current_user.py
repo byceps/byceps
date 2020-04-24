@@ -3,19 +3,7 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-import pytest
-
-from byceps.services.site import service as site_service
-
-from tests.helpers import create_site, http_client, login_user
-
-
-@pytest.fixture(scope='module')
-def site(party_app, make_email_config):
-    make_email_config()
-    site = create_site()
-    yield site
-    site_service.delete_site(site.id)
+from tests.helpers import http_client, login_user
 
 
 def test_when_logged_in(party_app, site, user):

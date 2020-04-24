@@ -7,11 +7,8 @@ API-specific fixtures
 
 import pytest
 
-from byceps.services.site import service as site_service
-
 from tests.base import create_admin_app
 from tests.conftest import CONFIG_PATH_DATA_KEY
-from tests.helpers import create_site
 
 from .helpers import assemble_authorization_header
 
@@ -28,14 +25,6 @@ def app(admin_app, data_path):
     app = create_admin_app(config_overrides)
     with app.app_context():
         yield app
-
-
-@pytest.fixture(scope='module')
-def site(app, make_email_config):
-    make_email_config()
-    site = create_site()
-    yield site
-    site_service.delete_site(site.id)
 
 
 @pytest.fixture(scope='module')
