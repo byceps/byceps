@@ -71,9 +71,9 @@ def admin_app_with_db(admin_app, db):
 
 
 @pytest.fixture
-def admin_client(admin_app):
+def admin_client(admin_app_with_db):
     """Provide a test HTTP client against the admin web application."""
-    return admin_app.test_client()
+    return admin_app_with_db.test_client()
 
 
 @pytest.fixture(scope='module')
