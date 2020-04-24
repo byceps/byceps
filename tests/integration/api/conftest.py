@@ -16,7 +16,7 @@ from .helpers import assemble_authorization_header
 API_TOKEN = 'just-say-PLEASE!'
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='session')
 def app(admin_app, data_path):
     config_overrides = {
         'API_TOKEN': API_TOKEN,
@@ -28,13 +28,13 @@ def app(admin_app, data_path):
         yield app
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='session')
 def api_client(app):
     """Provide a test HTTP client against the API."""
     return app.test_client()
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='session')
 def api_client_authz_header():
     """Provide a test HTTP client against the API."""
     return assemble_authorization_header(API_TOKEN)

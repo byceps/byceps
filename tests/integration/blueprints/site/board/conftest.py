@@ -25,7 +25,7 @@ from tests.helpers import (
 from .helpers import create_board, create_category, create_posting, create_topic
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='session')
 def board(site, brand):
     board = create_board(brand.id)
 
@@ -36,14 +36,14 @@ def board(site, brand):
     board_service.delete_board(board.id)
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='session')
 def category(board):
     category = create_category(board.id, number=1)
     yield category
     _delete_category(category.id)
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='session')
 def another_category(board):
     category = create_category(board.id, number=2)
     yield category
@@ -72,12 +72,12 @@ def posting(topic, board_poster):
     posting_command_service.delete_posting(posting.id)
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='session')
 def board_poster(make_user):
     return make_user('BoardPoster')
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='session')
 def moderator(make_user):
     moderator = make_user('BoardModerator')
 
@@ -104,7 +104,7 @@ def moderator(make_user):
         authorization_service.delete_permission(permission_id)
 
 
-@pytest.fixture
+@pytest.fixture(scope='session')
 def moderator_client(party_app, moderator):
     with http_client(party_app, user_id=moderator.id) as client:
         yield client

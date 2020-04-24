@@ -6,7 +6,7 @@
 import pytest
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='session')
 def app(admin_app):
     admin_app.config.update({
         'ANNOUNCE_IRC_ENABLED': True,

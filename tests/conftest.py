@@ -45,7 +45,7 @@ def make_admin_app(data_path):
     return _wrapper
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='session')
 def admin_app(make_admin_app):
     """Provide the admin web application."""
     app = make_admin_app()
@@ -55,13 +55,13 @@ def admin_app(make_admin_app):
         tear_down_database()
 
 
-@pytest.fixture
+@pytest.fixture(scope='session')
 def admin_client(admin_app):
     """Provide a test HTTP client against the admin web application."""
     return admin_app.test_client()
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='session')
 def make_party_app(admin_app, data_path):
     """Provide a party web application."""
 
@@ -73,7 +73,7 @@ def make_party_app(admin_app, data_path):
     return _wrapper
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='session')
 def party_app(make_party_app):
     """Provide a party web application."""
     app = make_party_app()
@@ -87,7 +87,7 @@ def data_path():
         yield Path(d)
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='session')
 def make_user(admin_app):
     user_ids = set()
 
@@ -119,32 +119,32 @@ def make_user_with_detail(admin_app):
         user_command_service.delete_account(user_id, user_id, 'clean up')
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='session')
 def admin_user(make_user):
     return make_user('Admin')
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='session')
 def user(make_user):
     return make_user('User')
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='session')
 def uninitialized_user(make_user):
     return make_user('UninitializedUser', initialized=False)
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='session')
 def suspended_user(make_user):
     return make_user('SuspendedUser', suspended=True)
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='session')
 def deleted_user(make_user):
     return make_user('DeletedUser', deleted=True)
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='session')
 def make_email_config(admin_app):
     def _wrapper(
         config_id: str,
@@ -165,14 +165,14 @@ def make_email_config(admin_app):
     return _wrapper
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='session')
 def email_config(make_email_config):
     return make_email_config(
         DEFAULT_EMAIL_CONFIG_ID, sender_address='noreply@acmecon.test'
     )
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='session')
 def site(email_config, party):
     site = create_site(
         'acmecon-2014-website',
@@ -184,14 +184,14 @@ def site(email_config, party):
     site_service.delete_site(site.id)
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='session')
 def brand(admin_app):
     brand = create_brand()
     yield brand
     brand_service.delete_brand(brand.id)
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='session')
 def party(brand):
     party = create_party(brand.id)
     yield party
