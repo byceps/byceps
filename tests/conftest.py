@@ -9,7 +9,6 @@ from typing import Optional
 
 import pytest
 
-from byceps.database import db as _db
 from byceps.services.brand import service as brand_service
 from byceps.services.email import service as email_service
 from byceps.services.party import service as party_service
@@ -31,11 +30,6 @@ CONFIG_PATH_DATA_KEY = 'PATH_DATA'
 
 
 @pytest.fixture(scope='session')
-def db():
-    return _db
-
-
-@pytest.fixture(scope='session')
 def make_admin_app(data_path):
     """Provide the admin web application."""
 
@@ -48,13 +42,13 @@ def make_admin_app(data_path):
 
 
 @pytest.fixture(scope='module')
-def admin_app(make_admin_app, db):
+def admin_app(make_admin_app):
     """Provide the admin web application."""
     app = make_admin_app()
     with app.app_context():
-        set_up_database(db)
+        set_up_database()
         yield app
-        tear_down_database(db)
+        tear_down_database()
 
 
 @pytest.fixture

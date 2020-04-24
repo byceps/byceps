@@ -3,8 +3,10 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
+from byceps.database import db
 
-def set_up_database(db):
+
+def set_up_database():
     # Learn about all tables to also drop old ones no longer
     # defined in models.
     db.reflect()
@@ -14,6 +16,6 @@ def set_up_database(db):
     db.create_all()
 
 
-def tear_down_database(db):
+def tear_down_database():
     db.session.remove()
     db.drop_all()
