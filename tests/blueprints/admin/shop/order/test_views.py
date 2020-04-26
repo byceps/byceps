@@ -41,13 +41,8 @@ def order_number_sequence(shop) -> None:
 
 
 @pytest.fixture(scope='module')
-def _admin(make_user):
-    yield from make_user('ShopOrderAdmin')
-
-
-@pytest.fixture(scope='module')
-def admin(_admin):
-    admin = _admin
+def admin(make_user):
+    admin = make_user('ShopOrderAdmin')
 
     permission_ids = {
         'admin.access',

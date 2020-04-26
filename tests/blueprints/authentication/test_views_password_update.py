@@ -14,7 +14,7 @@ from tests.helpers import http_client, login_user
 
 @pytest.fixture
 def user(make_user):
-    yield from make_user('PasswordUpdater')
+    return make_user('PasswordUpdater')
 
 
 def test_when_logged_in_endpoint_is_available(party_app, site, user):

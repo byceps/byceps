@@ -20,17 +20,17 @@ from byceps.services.user_badge.transfer.models import QuantifiedBadgeAwarding
 
 @pytest.fixture(scope='module')
 def user1(make_user):
-    yield from make_user('Stullenandi')
+    return make_user('Stullenandi')
 
 
 @pytest.fixture(scope='module')
 def user2(make_user):
-    yield from make_user('Anica')
+    return make_user('Anica')
 
 
 @pytest.fixture(scope='module')
 def user3(make_user):
-    yield from make_user('Slobo')
+    return make_user('Slobo')
 
 
 @pytest.fixture(scope='module')

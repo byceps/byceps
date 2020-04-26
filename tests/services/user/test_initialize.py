@@ -11,19 +11,19 @@ from byceps.services.user import command_service as user_command_service
 from byceps.services.user import event_service
 
 
-@pytest.fixture
+@pytest.fixture(scope='module')
 def uninitialized_user_created_online(make_user):
-    yield from make_user('CreatedOnline', initialized=False)
+    return make_user('CreatedOnline', initialized=False)
 
 
-@pytest.fixture
+@pytest.fixture(scope='module')
 def uninitialized_user_created_at_party_checkin_by_admin(make_user):
-    yield from make_user('CreatedAtPartyCheckInByAdmin', initialized=False)
+    return make_user('CreatedAtPartyCheckInByAdmin', initialized=False)
 
 
-@pytest.fixture
+@pytest.fixture(scope='module')
 def already_initialized_user(make_user):
-    yield from make_user('AlreadyInitialized')
+    return make_user('AlreadyInitialized')
 
 
 @pytest.fixture

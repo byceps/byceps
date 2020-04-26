@@ -92,13 +92,8 @@ def test_export_subscriber_email_addresses(newsletter_list, subscribers, client)
 
 
 @pytest.fixture(scope='module')
-def _newsletter_admin(make_user):
-    yield from make_user('NewsletterAdmin')
-
-
-@pytest.fixture(scope='module')
-def newsletter_admin(_newsletter_admin):
-    admin = _newsletter_admin
+def newsletter_admin(make_user):
+    admin = make_user('NewsletterAdmin')
 
     permission_ids = {'admin.access', 'newsletter.export_subscribers'}
     role_id = 'newsletter_admin'

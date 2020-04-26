@@ -24,19 +24,19 @@ def another_category(party):
 
 @pytest.fixture(scope='module')
 def ticketing_admin(make_user):
-    yield from make_user('TicketingAdmin')
+    return make_user('TicketingAdmin')
 
 
 @pytest.fixture(scope='module')
 def ticket_manager(make_user):
-    yield from make_user('TicketManager')
+    return make_user('TicketManager')
 
 
 @pytest.fixture(scope='module')
 def ticket_owner(make_user):
-    yield from make_user('TicketOwner')
+    return make_user('TicketOwner')
 
 
 @pytest.fixture(scope='module')
 def ticket_user(make_user):
-    yield from make_user('TicketUser')
+    return make_user('TicketUser')

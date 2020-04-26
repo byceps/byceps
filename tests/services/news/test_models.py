@@ -11,9 +11,9 @@ from byceps.services.news import (
 )
 
 
-@pytest.fixture
+@pytest.fixture(scope='module')
 def editor(make_user):
-    yield from make_user('NewsEditor')
+    return make_user('NewsEditor')
 
 
 @pytest.fixture(scope='module')

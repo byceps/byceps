@@ -12,14 +12,14 @@ from byceps.services.verification_token.models import Purpose, Token
 from tests.helpers import http_client
 
 
-@pytest.fixture
+@pytest.fixture(scope='module')
 def user1(make_user):
-    yield from make_user('User1', initialized=False)
+    return make_user('User1', initialized=False)
 
 
-@pytest.fixture
+@pytest.fixture(scope='module')
 def user2(make_user):
-    yield from make_user('User2', initialized=False)
+    return make_user('User2', initialized=False)
 
 
 @pytest.fixture

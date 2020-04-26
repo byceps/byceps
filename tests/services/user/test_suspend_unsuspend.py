@@ -12,12 +12,12 @@ from byceps.services.user import service as user_service
 
 @pytest.fixture
 def cheater(make_user):
-    yield from make_user('Cheater')
+    return make_user('Cheater')
 
 
 @pytest.fixture
 def remorseful_user(make_user):
-    yield from make_user('TemporaryNuisance')
+    return make_user('TemporaryNuisance')
 
 
 def test_suspend(admin_app, cheater, admin_user):

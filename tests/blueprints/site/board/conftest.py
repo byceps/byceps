@@ -72,19 +72,14 @@ def posting(topic, board_poster):
     posting_command_service.delete_posting(posting.id)
 
 
-@pytest.fixture
+@pytest.fixture(scope='module')
 def board_poster(make_user):
-    yield from make_user('BoardPoster')
+    return make_user('BoardPoster')
 
 
-@pytest.fixture
-def _moderator(make_user):
-    yield from make_user('BoardModerator')
-
-
-@pytest.fixture
-def moderator(_moderator):
-    moderator = _moderator
+@pytest.fixture(scope='module')
+def moderator(make_user):
+    moderator = make_user('BoardModerator')
 
     permission_ids = {
         'board.hide',

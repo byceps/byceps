@@ -27,13 +27,8 @@ from tests.services.shop.helpers import create_article as _create_article
 
 
 @pytest.fixture(scope='module')
-def _admin_user(make_user):
-    yield from make_user('ShopOrderAdmin')
-
-
-@pytest.fixture(scope='module')
-def admin_user(_admin_user):
-    admin = _admin_user
+def admin_user(make_user):
+    admin = make_user('ShopOrderAdmin')
 
     permission_ids = {'admin.access', 'shop_order.view'}
     role_id = 'order_admin'
@@ -111,15 +106,8 @@ def cart(article_bungalow, article_guest_fee, article_table):
 
 
 @pytest.fixture
-def _orderer(make_user):
-    yield from make_user(
-        'Besteller', email_address='h-w.mustermann@users.test'
-    )
-
-
-@pytest.fixture
-def orderer(_orderer):
-    user = _orderer
+def orderer(make_user):
+    user = make_user('Besteller', email_address='h-w.mustermann@users.test')
 
     return Orderer(
         user.id,

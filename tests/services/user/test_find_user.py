@@ -10,7 +10,7 @@ from byceps.services.user import service as user_service
 
 @pytest.fixture(scope='module')
 def user(make_user):
-    yield from make_user(
+    return make_user(
         'CarmenSandiego', email_address='carmen.sandiego@world.example'
     )
 

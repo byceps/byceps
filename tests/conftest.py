@@ -85,38 +85,42 @@ def data_path():
 
 @pytest.fixture(scope='module')
 def make_user(admin_app):
+    user_ids = set()
+
     def _wrapper(*args, **kwargs):
         user = create_user(*args, **kwargs)
-        user_id = user.id
-        yield user
-        user_command_service.delete_account(user_id, user_id, 'clean up')
+        user_ids.add(user.id)
+        return user
 
     yield _wrapper
 
+    for user_id in user_ids:
+        user_command_service.delete_account(user_id, user_id, 'clean up')
 
-@pytest.fixture
+
+@pytest.fixture(scope='module')
 def admin_user(make_user):
-    yield from make_user('Admin')
+    return make_user('Admin')
 
 
-@pytest.fixture
+@pytest.fixture(scope='module')
 def user(make_user):
-    yield from make_user('User')
+    return make_user('User')
 
 
-@pytest.fixture
+@pytest.fixture(scope='module')
 def uninitialized_user(make_user):
-    yield from make_user('UninitializedUser', initialized=False)
+    return make_user('UninitializedUser', initialized=False)
 
 
-@pytest.fixture
+@pytest.fixture(scope='module')
 def suspended_user(make_user):
-    yield from make_user('SuspendedUser', suspended=True)
+    return make_user('SuspendedUser', suspended=True)
 
 
-@pytest.fixture
+@pytest.fixture(scope='module')
 def deleted_user(make_user):
-    yield from make_user('DeletedUser', deleted=True)
+    return make_user('DeletedUser', deleted=True)
 
 
 @pytest.fixture(scope='module')
