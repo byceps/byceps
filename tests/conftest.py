@@ -58,10 +58,21 @@ def admin_client(admin_app):
 
 
 @pytest.fixture(scope='module')
-def party_app(admin_app, data_path):
+def make_party_app(admin_app, data_path):
     """Provide a party web application."""
-    config_overrides = {CONFIG_PATH_DATA_KEY: data_path}
-    app = create_party_app(config_overrides)
+
+    def _wrapper(**config_overrides):
+        if CONFIG_PATH_DATA_KEY not in config_overrides:
+            config_overrides[CONFIG_PATH_DATA_KEY] = data_path
+        return create_party_app(config_overrides)
+
+    return _wrapper
+
+
+@pytest.fixture(scope='module')
+def party_app(make_party_app):
+    """Provide a party web application."""
+    app = make_party_app()
     with app.app_context():
         yield app
 
