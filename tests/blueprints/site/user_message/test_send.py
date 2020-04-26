@@ -14,7 +14,7 @@ from tests.helpers import create_site, create_user, http_client, login_user
 
 
 @pytest.fixture
-def site1(party_app, make_email_config):
+def site1(admin_app, make_email_config):
     email_config = make_email_config(
         'acme-noreply',
         sender_address='noreply@acmecon.test',
@@ -28,7 +28,7 @@ def site1(party_app, make_email_config):
 
 
 @pytest.fixture
-def site2(party_app, make_email_config):
+def site2(admin_app, make_email_config):
     email_config = make_email_config(
         'acme-noreply-with-contact-address',
         sender_address='noreply@acmecon.test',
@@ -49,8 +49,9 @@ def user_alice(party_app):
         user_id='a4903d8f-0bc6-4af9-aeb9-d7534a0a22e8',
         email_address='alice@users.test',
     )
+    user_id = user.id
     yield user
-    user_command_service.delete_account(user.id, user.id, 'clean up')
+    user_command_service.delete_account(user_id, user_id, 'clean up')
 
 
 @pytest.fixture(scope='module')
@@ -60,8 +61,9 @@ def user_bob(party_app):
         user_id='11d72bab-3646-4199-b96c-e5e4c6f972bc',
         email_address='bob@users.test',
     )
+    user_id = user.id
     yield user
-    user_command_service.delete_account(user.id, user.id, 'clean up')
+    user_command_service.delete_account(user_id, user_id, 'clean up')
 
 
 @patch('byceps.email.send')

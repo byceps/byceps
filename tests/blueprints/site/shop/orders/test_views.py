@@ -60,7 +60,7 @@ def site2(party2):
 
 
 @pytest.fixture
-def shop1(party_app, email_config, admin_user):
+def shop1(admin_app, email_config, admin_user):
     shop = create_shop('shop-1')
     sequence_service.create_order_number_sequence(shop.id, 'LF-02-B')
     snippet_id = create_payment_instructions_snippet(shop.id, admin_user.id)
@@ -73,21 +73,21 @@ def shop1(party_app, email_config, admin_user):
 
 
 @pytest.fixture
-def shop2(party_app, email_config):
+def shop2(admin_app, email_config):
     shop = create_shop('shop-2')
     yield shop
     shop_service.delete_shop(shop.id)
 
 
 @pytest.fixture
-def user1(party_app):
+def user1(admin_app):
     user = create_user_with_detail('User1')
     yield user
     user_command_service.delete_account(user.id, user.id, 'clean up')
 
 
 @pytest.fixture
-def user2(party_app):
+def user2(admin_app):
     user = create_user_with_detail('User2')
     yield user
     user_command_service.delete_account(user.id, user.id, 'clean up')

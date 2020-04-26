@@ -22,7 +22,7 @@ from .base import place_order_with_items
 
 
 @pytest.fixture
-def customer(party_app):
+def customer(admin_app):
     user = create_user_with_detail(
         'Vorbild', email_address='vorbild@users.test'
     )

@@ -66,7 +66,7 @@ def site(party):
 
 
 @pytest.fixture
-def article(party_app, shop):
+def article(admin_app, shop):
     article = create_article(shop.id, quantity=5)
     article_id = article.id
     yield article
@@ -74,7 +74,7 @@ def article(party_app, shop):
 
 
 @pytest.fixture
-def orderer(party_app, user):
+def orderer(admin_app, user):
     login_user(user.id)
     return user
 

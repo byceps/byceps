@@ -11,7 +11,7 @@ from tests.helpers import create_user
 
 
 @pytest.fixture
-def order_admin(party_app):
+def order_admin(admin_app):
     user = create_user('ShopOrderAdmin')
     user_id = user.id
     yield user

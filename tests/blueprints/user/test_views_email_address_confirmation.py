@@ -23,7 +23,7 @@ def user2(make_user):
 
 
 @pytest.fixture
-def role(party_app, site, user1, user2):
+def role(admin_app, site, user1, user2):
     role = authorization_service.create_role('board_user', 'Board User')
 
     yield role
