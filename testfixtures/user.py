@@ -31,7 +31,7 @@ def create_user(
         created_at = datetime.utcnow()
 
     if not email_address:
-        email_address = f'user{user_id}@example.com'
+        email_address = f'user{user_id}@users.test'
 
     user = user_creation_service.build_user(
         created_at, screen_name, email_address

@@ -128,7 +128,7 @@ def test_order(
     )
     order_placed_mock.assert_called_once_with(None, event=event)
 
-    order_detail_page_url = f'http://example.com/shop/orders/{order.id}'
+    order_detail_page_url = f'http://www.acmecon.test/shop/orders/{order.id}'
 
     assert_response_headers(response, order_detail_page_url)
 
@@ -188,7 +188,7 @@ def test_order_single(
     )
     order_placed_mock.assert_called_once_with(None, event=event)
 
-    order_detail_page_url = f'http://example.com/shop/orders/{order.id}'
+    order_detail_page_url = f'http://www.acmecon.test/shop/orders/{order.id}'
 
     assert_response_headers(response, order_detail_page_url)
 

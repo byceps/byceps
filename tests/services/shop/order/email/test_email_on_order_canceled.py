@@ -23,7 +23,7 @@ from .base import place_order_with_items
 @pytest.fixture
 def customer(party_app):
     user = create_user_with_detail(
-        'Versager', email_address='versager@example.com'
+        'Versager', email_address='versager@users.test'
     )
     user_id = user.id
     yield user
@@ -61,8 +61,8 @@ def test_email_on_order_canceled(
     with current_user_set(app, customer), app.app_context():
         order_email_service.send_email_for_canceled_order_to_orderer(order.id)
 
-    expected_sender = 'info@shop.example'
-    expected_recipients = ['versager@example.com']
+    expected_sender = 'info@acmecon.test'
+    expected_recipients = ['versager@users.test']
     expected_subject = '\u274c Deine Bestellung (AC-14-B00017) wurde storniert.'
     expected_body = '''
 Hallo Versager,
@@ -79,7 +79,7 @@ das Team der Acme Entertainment Convention
 -- 
 Acme Entertainment Convention
 
-E-Mail: acmecon@example.com
+E-Mail: info@acmecon.test
     '''.strip()
 
     send_email_mock.assert_called_once_with(
@@ -104,6 +104,6 @@ das Team der Acme Entertainment Convention
 -- 
 Acme Entertainment Convention
 
-E-Mail: acmecon@example.com
+E-Mail: info@acmecon.test
 ''',
     )

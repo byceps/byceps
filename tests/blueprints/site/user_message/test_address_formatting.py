@@ -28,9 +28,9 @@ def test_recipient_formatting(site, params):
 
 
 @pytest.fixture(params=[
-    ('Alice', 'alice@example.com', 'Alice <alice@example.com>'),
-    ('<AngleInvestor>', 'angleinvestor@example.com', '"<AngleInvestor>" <angleinvestor@example.com>'),
-    ('-=]YOLO[=-', 'yolo@example.com', '"-=]YOLO[=-" <yolo@example.com>'),
+    ('Alice', 'alice@users.test', 'Alice <alice@users.test>'),
+    ('<AngleInvestor>', 'angleinvestor@users.test', '"<AngleInvestor>" <angleinvestor@users.test>'),
+    ('-=]YOLO[=-', 'yolo@users.test', '"-=]YOLO[=-" <yolo@users.test>'),
 ])
 def params(request):
     yield request.param

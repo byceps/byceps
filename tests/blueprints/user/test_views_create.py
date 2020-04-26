@@ -42,7 +42,7 @@ def user_admin(make_user):
 @pytest.fixture(scope='module')
 def site(party_app, make_email_config, party):
     email_config = make_email_config(
-        'example-noreply', sender_address='noreply@example.com'
+        'acmecon-noreply', sender_address='noreply@acmecon.test'
     )
     site = create_site(email_config_id=email_config.id, party_id=party.id)
     yield site
@@ -182,13 +182,13 @@ def test_create(
     verification_token = find_verification_token(user.id)
     assert verification_token is not None
 
-    expected_sender = 'noreply@example.com'
+    expected_sender = 'noreply@acmecon.test'
     expected_recipients = ['hiro@metaverse.org']
     expected_subject = 'Hiro, bitte bestätige deine E-Mail-Adresse'
     expected_body = f'''
 Hallo Hiro,
 
-bitte bestätige deine E-Mail-Adresse, indem du diese URL abrufst: https://www.example.com/users/email_address/confirmation/{verification_token.token}
+bitte bestätige deine E-Mail-Adresse, indem du diese URL abrufst: https://www.acmecon.test/users/email_address/confirmation/{verification_token.token}
     '''.strip()
 
     send_email_mock.assert_called_once_with(

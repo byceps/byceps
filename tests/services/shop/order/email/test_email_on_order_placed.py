@@ -28,7 +28,7 @@ from .base import place_order_with_items
 @pytest.fixture
 def customer(party_app):
     user = create_user_with_detail(
-        'Interessent', email_address='interessent@example.com'
+        'Interessent', email_address='interessent@users.test'
     )
     user_id = user.id
     yield user
@@ -104,8 +104,8 @@ def test_email_on_order_placed(send_email_mock, party_app, customer, order):
     with current_user_set(app, customer), app.app_context():
         order_email_service.send_email_for_incoming_order_to_orderer(order.id)
 
-    expected_to_orderer_sender = 'info@shop.example'
-    expected_to_orderer_recipients = ['interessent@example.com']
+    expected_to_orderer_sender = 'info@acmecon.test'
+    expected_to_orderer_recipients = ['interessent@users.test']
     expected_to_orderer_subject = (
         'Deine Bestellung (AC-14-B00253) ist eingegangen.'
     )
@@ -136,7 +136,7 @@ Bitte überweise den Gesamtbetrag auf folgendes Konto:
 
 Wir werden dich informieren, sobald wir deine Zahlung erhalten haben.
 
-Hier kannst du deine Bestellungen einsehen: https://www.example.com/shop/orders
+Hier kannst du deine Bestellungen einsehen: https://www.acmecon.test/shop/orders
 
 Für Fragen stehen wir gerne zur Verfügung.
 
@@ -146,7 +146,7 @@ das Team der Acme Entertainment Convention
 -- 
 Acme Entertainment Convention
 
-E-Mail: acmecon@example.com
+E-Mail: info@acmecon.test
     '''.strip()
 
     send_email_mock.assert_called_once_with(
@@ -176,7 +176,7 @@ Bitte überweise den Gesamtbetrag auf folgendes Konto:
 
 Wir werden dich informieren, sobald wir deine Zahlung erhalten haben.
 
-Hier kannst du deine Bestellungen einsehen: https://www.example.com/shop/orders
+Hier kannst du deine Bestellungen einsehen: https://www.acmecon.test/shop/orders
 ''',
     )
 
@@ -195,7 +195,7 @@ das Team der Acme Entertainment Convention
 -- 
 Acme Entertainment Convention
 
-E-Mail: acmecon@example.com
+E-Mail: info@acmecon.test
 ''',
     )
 

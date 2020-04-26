@@ -30,7 +30,7 @@ def test_export_subscribers(newsletter_list, subscribers, client):
         'subscribers': [
             {
                 'screen_name': 'User-1',
-                'email_address': 'user001@example.com',
+                'email_address': 'user001@users.test',
             },
 
             # User #2 has declined a subscription, and thus should be
@@ -42,7 +42,7 @@ def test_export_subscribers(newsletter_list, subscribers, client):
             # subscription, so it should be included.
             {
                 'screen_name': 'User-4',
-                'email_address': 'user004@example.com',
+                'email_address': 'user004@users.test',
             },
 
             # User #5 has initially requested, but later declined a
@@ -50,7 +50,7 @@ def test_export_subscribers(newsletter_list, subscribers, client):
 
             {
                 'screen_name': 'User-6',
-                'email_address': 'user006@example.com',
+                'email_address': 'user006@users.test',
             },
 
             # User #7 has been suspended and should be excluded, regardless
@@ -71,13 +71,13 @@ def test_export_subscribers(newsletter_list, subscribers, client):
 
 def test_export_subscriber_email_addresses(newsletter_list, subscribers, client):
     expected_data = '\n'.join([
-        'user001@example.com',
+        'user001@users.test',
         # User #2 has declined a subscription.
         # User #3 is not initialized.
         # User #4 has initially declined, but later requested a subscription.
-        'user004@example.com',
+        'user004@users.test',
         # User #5 has initially requested, but later declined a subscription.
-        'user006@example.com',
+        'user006@users.test',
         # User #7 has been suspended, and thus should be excluded.
         # User #8 has been deleted, and thus should be excluded.
     ]).encode('utf-8')
@@ -141,7 +141,7 @@ def subscribers(newsletter_list):
     ]:
         user = create_user(
             screen_name=f'User-{number:d}',
-            email_address=f'user{number:03d}@example.com',
+            email_address=f'user{number:03d}@users.test',
             initialized=initialized,
             suspended=suspended,
             deleted=deleted,

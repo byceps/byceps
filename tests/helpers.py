@@ -106,7 +106,7 @@ def create_site(
     *,
     site_id='acmecon-2014-website',
     title='Website',
-    server_name='www.example.com',
+    server_name='www.acmecon.test',
     email_config_id=DEFAULT_EMAIL_CONFIG_ID,
     party_id=None,
     enabled=True,

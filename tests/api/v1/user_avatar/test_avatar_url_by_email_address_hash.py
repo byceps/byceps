@@ -13,7 +13,7 @@ from byceps.util.image.models import ImageType
 
 
 def test_existent_user_with_avatar(api_client):
-    email_address = 'user1@example.com'
+    email_address = 'user1@users.test'
     user_id = create_initialized_user('UserWithAvatar', email_address)
     avatar_id = set_avatar(user_id)
     email_address_hash = hash_email_address(email_address)
@@ -23,18 +23,18 @@ def test_existent_user_with_avatar(api_client):
     assert response.status_code == 302
     assert_redirect(
         response,
-        f'http://example.com/data/global/users/avatars/{avatar_id}.jpeg',
+        f'http://api.acmecon.test/data/global/users/avatars/{avatar_id}.jpeg',
     )
 
 
 def test_existent_user_without_avatar(api_client):
-    email_address = 'user2@example.com'
+    email_address = 'user2@users.test'
     user_id = create_initialized_user('UserWithoutAvatar', email_address)
     email_address_hash = hash_email_address(email_address)
 
     response = send_request(api_client, email_address_hash)
 
-    assert_redirect(response, 'http://example.com/static/avatar_fallback.svg')
+    assert_redirect(response, 'http://api.acmecon.test/static/avatar_fallback.svg')
 
 
 def test_unrecognized_hash(api_client):
@@ -42,7 +42,7 @@ def test_unrecognized_hash(api_client):
 
     response = send_request(api_client, unrecognized_email_address_hash)
 
-    assert_redirect(response, 'http://example.com/static/avatar_fallback.svg')
+    assert_redirect(response, 'http://api.acmecon.test/static/avatar_fallback.svg')
 
 
 # helpers

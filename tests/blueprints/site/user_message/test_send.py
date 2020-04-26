@@ -17,11 +17,11 @@ from tests.helpers import create_site, create_user, http_client, login_user
 def site1(party_app, make_email_config):
     email_config = make_email_config(
         'acme-noreply',
-        sender_address='noreply@example.com',
+        sender_address='noreply@acmecon.test',
         sender_name='ACME Entertainment Convention',
     )
     site = create_site(
-        server_name='acme.example.com', email_config_id=email_config.id
+        server_name='www.acmecon.test', email_config_id=email_config.id
     )
     yield site
     site_service.delete_site(site.id)
@@ -31,12 +31,12 @@ def site1(party_app, make_email_config):
 def site2(party_app, make_email_config):
     email_config = make_email_config(
         'acme-noreply-with-contact-address',
-        sender_address='noreply@example.com',
+        sender_address='noreply@acmecon.test',
         sender_name='ACME Entertainment Convention',
-        contact_address='help@example.com',
+        contact_address='help@acmecon.test',
     )
     site = create_site(
-        server_name='acme.example.com', email_config_id=email_config.id
+        server_name='www.acmecon.test', email_config_id=email_config.id
     )
     yield site
     site_service.delete_site(site.id)
@@ -47,7 +47,7 @@ def user_alice(party_app):
     user = create_user(
         'Alice',
         user_id='a4903d8f-0bc6-4af9-aeb9-d7534a0a22e8',
-        email_address='alice@example.com',
+        email_address='alice@users.test',
     )
     yield user
     user_command_service.delete_account(user.id, user.id, 'clean up')
@@ -58,7 +58,7 @@ def user_bob(party_app):
     user = create_user(
         'Bob',
         user_id='11d72bab-3646-4199-b96c-e5e4c6f972bc',
-        email_address='bob@example.com',
+        email_address='bob@users.test',
     )
     yield user
     user_command_service.delete_account(user.id, user.id, 'clean up')
@@ -79,19 +79,19 @@ kthxbye,
 Alice
 '''
 
-    expected_response_location = f'http://example.com/users/{recipient.id}'
+    expected_response_location = f'http://www.acmecon.test/users/{recipient.id}'
 
     expected_email_sender = (
-        'ACME Entertainment Convention <noreply@example.com>'
+        'ACME Entertainment Convention <noreply@acmecon.test>'
     )
-    expected_email_recipients = ['Bob <bob@example.com>']
-    expected_email_subject = 'Mitteilung von Alice (über acme.example.com)'
+    expected_email_recipients = ['Bob <bob@users.test>']
+    expected_email_subject = 'Mitteilung von Alice (über www.acmecon.test)'
     expected_email_body = '''\
 Hallo Bob,
 
 Alice möchte dir die folgende Mitteilung zukommen lassen.
 
-Du kannst Alice hier antworten: http://example.com/user_messages/to/a4903d8f-0bc6-4af9-aeb9-d7534a0a22e8/create
+Du kannst Alice hier antworten: http://www.acmecon.test/user_messages/to/a4903d8f-0bc6-4af9-aeb9-d7534a0a22e8/create
 
 ACHTUNG: Antworte *nicht* auf diese E-Mail, sondern folge dem Link.
 
@@ -107,7 +107,7 @@ Alice
 ---8<-------------------------------------
 
 -- 
-Diese Mitteilung wurde über die Website acme.example.com gesendet.\
+Diese Mitteilung wurde über die Website www.acmecon.test gesendet.\
 '''
 
     response = send_request(
@@ -140,19 +140,19 @@ Best,
 Bob
 '''
 
-    expected_response_location = f'http://example.com/users/{recipient.id}'
+    expected_response_location = f'http://www.acmecon.test/users/{recipient.id}'
 
     expected_email_sender = (
-        'ACME Entertainment Convention <noreply@example.com>'
+        'ACME Entertainment Convention <noreply@acmecon.test>'
     )
-    expected_email_recipients = ['Alice <alice@example.com>']
-    expected_email_subject = 'Mitteilung von Bob (über acme.example.com)'
+    expected_email_recipients = ['Alice <alice@users.test>']
+    expected_email_subject = 'Mitteilung von Bob (über www.acmecon.test)'
     expected_email_body = '''\
 Hallo Alice,
 
 Bob möchte dir die folgende Mitteilung zukommen lassen.
 
-Du kannst Bob hier antworten: http://example.com/user_messages/to/11d72bab-3646-4199-b96c-e5e4c6f972bc/create
+Du kannst Bob hier antworten: http://www.acmecon.test/user_messages/to/11d72bab-3646-4199-b96c-e5e4c6f972bc/create
 
 ACHTUNG: Antworte *nicht* auf diese E-Mail, sondern folge dem Link.
 
@@ -168,8 +168,8 @@ Bob
 ---8<-------------------------------------
 
 -- 
-Diese Mitteilung wurde über die Website acme.example.com gesendet.
-Bei Fragen kontaktiere uns bitte per E-Mail an: help@example.com\
+Diese Mitteilung wurde über die Website www.acmecon.test gesendet.
+Bei Fragen kontaktiere uns bitte per E-Mail an: help@acmecon.test\
 '''
 
     response = send_request(
@@ -194,7 +194,7 @@ def test_send_when_not_logged_in(party_app, site1):
     response = send_request(party_app, recipient_id, text)
 
     assert response.status_code == 302
-    assert response.location == 'http://example.com/authentication/login'
+    assert response.location == 'http://www.acmecon.test/authentication/login'
 
 
 # helpers

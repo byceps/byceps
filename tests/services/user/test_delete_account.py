@@ -39,7 +39,7 @@ def role(permission):
 def test_delete_account(admin_app, permission, role, admin_user):
     user_id = UUID('20868b15-b935-40fc-8054-38854ef8509a')
     screen_name = 'GetRidOfMe'
-    email_address = 'timedout@example.net'
+    email_address = 'timedout@users.test'
     legacy_id = 22299
 
     user = create_user_with_detail(

@@ -11,8 +11,8 @@ from tests.helpers import create_user
 
 
 def test_change_email_address_with_reason(admin_app, admin_user):
-    old_email_address = 'zero-cool@example.com'
-    new_email_address = 'crash.override@example.com'
+    old_email_address = 'zero-cool@users.test'
+    new_email_address = 'crash.override@users.test'
     reason = 'Does not want to be recognized by Acid Burn.'
 
     user_id = create_user(
@@ -60,8 +60,8 @@ def test_change_email_address_with_reason(admin_app, admin_user):
 
 
 def test_change_email_address_without_reason(admin_app, admin_user):
-    old_email_address = 'address_with_tyop@example.com'
-    new_email_address = 'address_without_typo@example.com'
+    old_email_address = 'address_with_tyop@users.test'
+    new_email_address = 'address_without_typo@users.test'
 
     user_id = create_user(
         'WantsEmailAddressChangedWithoutReason',

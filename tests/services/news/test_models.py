@@ -19,7 +19,7 @@ def editor(make_user):
 @pytest.fixture(scope='module')
 def channel(brand):
     channel_id = f'{brand.id}-test'
-    url_prefix = 'https://example.com/news/'
+    url_prefix = 'https://www.acmecon.test/news/'
 
     channel = news_channel_service.create_channel(brand.id, channel_id, url_prefix)
 

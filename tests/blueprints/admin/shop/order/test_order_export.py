@@ -113,7 +113,7 @@ def cart(article_bungalow, article_guest_fee, article_table):
 @pytest.fixture
 def _orderer(make_user):
     yield from make_user(
-        'Besteller', email_address='h-w.mustermann@example.com'
+        'Besteller', email_address='h-w.mustermann@users.test'
     )
 
 

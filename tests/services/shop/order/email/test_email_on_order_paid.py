@@ -24,7 +24,7 @@ from .base import place_order_with_items
 @pytest.fixture
 def customer(party_app):
     user = create_user_with_detail(
-        'Vorbild', email_address='vorbild@example.com'
+        'Vorbild', email_address='vorbild@users.test'
     )
     user_id = user.id
     yield user
@@ -63,8 +63,8 @@ def test_email_on_order_paid(
     with current_user_set(app, customer), app.app_context():
         order_email_service.send_email_for_paid_order_to_orderer(order.id)
 
-    expected_sender = 'info@shop.example'
-    expected_recipients = ['vorbild@example.com']
+    expected_sender = 'info@acmecon.test'
+    expected_recipients = ['vorbild@users.test']
     expected_subject = (
         '\u2705 Deine Bestellung (AC-14-B00022) ist bezahlt worden.'
     )
@@ -83,7 +83,7 @@ das Team der Acme Entertainment Convention
 -- 
 Acme Entertainment Convention
 
-E-Mail: acmecon@example.com
+E-Mail: info@acmecon.test
     '''.strip()
 
     send_email_mock.assert_called_once_with(
@@ -108,6 +108,6 @@ das Team der Acme Entertainment Convention
 -- 
 Acme Entertainment Convention
 
-E-Mail: acmecon@example.com
+E-Mail: info@acmecon.test
 ''',
     )

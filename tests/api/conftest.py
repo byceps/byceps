@@ -21,6 +21,7 @@ def app(admin_app, data_path):
     config_overrides = {
         'API_TOKEN': API_TOKEN,
         CONFIG_PATH_DATA_KEY: data_path,
+        'SERVER_NAME': 'api.acmecon.test',
     }
     app = create_admin_app(config_overrides)
     with app.app_context():
