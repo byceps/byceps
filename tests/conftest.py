@@ -122,8 +122,8 @@ def deleted_user(make_user):
 @pytest.fixture(scope='module')
 def make_email_config(admin_app):
     def _wrapper(
-        config_id: str = DEFAULT_EMAIL_CONFIG_ID,
-        sender_address: str = 'info@shop.example',
+        config_id: str,
+        sender_address: str,
         *,
         sender_name: Optional[str] = None,
         contact_address: Optional[str] = None,
@@ -142,7 +142,9 @@ def make_email_config(admin_app):
 
 @pytest.fixture(scope='module')
 def email_config(make_email_config):
-    return make_email_config()
+    return make_email_config(
+        DEFAULT_EMAIL_CONFIG_ID, sender_address='info@shop.example'
+    )
 
 
 @pytest.fixture(scope='module')
