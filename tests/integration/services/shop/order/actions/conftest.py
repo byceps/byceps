@@ -10,7 +10,7 @@ from byceps.services.ticketing import (
     category_service as ticket_category_service,
 )
 
-from tests.services.shop.helpers import create_article
+from tests.integration.services.shop.helpers import create_article
 
 
 @pytest.fixture

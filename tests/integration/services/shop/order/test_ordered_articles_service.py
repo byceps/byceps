@@ -14,7 +14,7 @@ from byceps.services.shop.order import service as order_service
 from byceps.services.shop.order.transfer.models import PaymentState
 from byceps.services.shop.sequence import service as sequence_service
 
-from tests.services.shop.helpers import create_article
+from tests.integration.services.shop.helpers import create_article
 
 
 @pytest.fixture

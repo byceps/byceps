@@ -14,7 +14,7 @@ from byceps.services.user import command_service as user_command_service
 from testfixtures.shop_order import create_orderer as _create_orderer
 
 from tests.helpers import create_user_with_detail
-from tests.services.shop.helpers import create_shop
+from tests.integration.services.shop.helpers import create_shop
 
 
 @pytest.fixture

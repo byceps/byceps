@@ -24,7 +24,10 @@ from tests.helpers import (
     http_client,
     login_user,
 )
-from tests.services.shop.helpers import create_shop, create_shop_fragment
+from tests.integration.services.shop.helpers import (
+    create_shop,
+    create_shop_fragment,
+)
 
 
 @pytest.fixture

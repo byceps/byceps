@@ -18,10 +18,12 @@ from byceps.services.shop.shop import service as shop_service
 from byceps.services.site import service as site_service
 from byceps.services.snippet import service as snippet_service
 
-from tests.services.shop.helpers import create_article
-
 from tests.helpers import create_party, create_site, http_client, login_user
-from tests.services.shop.helpers import create_shop, create_shop_fragment
+from tests.integration.services.shop.helpers import (
+    create_article,
+    create_shop,
+    create_shop_fragment,
+)
 
 
 COMMON_FORM_DATA = {

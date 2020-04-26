@@ -17,7 +17,7 @@ from byceps.services.snippet import service as snippet_service
 from byceps.services.user import command_service as user_command_service
 
 from tests.helpers import create_user_with_detail, current_user_set
-from tests.services.shop.helpers import (
+from tests.integration.services.shop.helpers import (
     create_article as _create_article,
     create_shop_fragment,
 )

@@ -30,7 +30,9 @@ from tests.helpers import (
     http_client,
     login_user,
 )
-from tests.services.shop.helpers import create_article as _create_article
+from tests.integration.services.shop.helpers import (
+    create_article as _create_article,
+)
 
 
 @pytest.fixture(scope='module')
