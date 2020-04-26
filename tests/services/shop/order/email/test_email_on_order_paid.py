@@ -63,7 +63,7 @@ def test_email_on_order_paid(
     with current_user_set(app, customer), app.app_context():
         order_email_service.send_email_for_paid_order_to_orderer(order.id)
 
-    expected_sender = 'info@acmecon.test'
+    expected_sender = 'noreply@acmecon.test'
     expected_recipients = ['vorbild@users.test']
     expected_subject = (
         '\u2705 Deine Bestellung (AC-14-B00022) ist bezahlt worden.'
@@ -83,7 +83,7 @@ das Team der Acme Entertainment Convention
 -- 
 Acme Entertainment Convention
 
-E-Mail: info@acmecon.test
+E-Mail: noreply@acmecon.test
     '''.strip()
 
     send_email_mock.assert_called_once_with(
@@ -108,6 +108,6 @@ das Team der Acme Entertainment Convention
 -- 
 Acme Entertainment Convention
 
-E-Mail: info@acmecon.test
+E-Mail: noreply@acmecon.test
 ''',
     )

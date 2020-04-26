@@ -104,7 +104,7 @@ def test_email_on_order_placed(send_email_mock, party_app, customer, order):
     with current_user_set(app, customer), app.app_context():
         order_email_service.send_email_for_incoming_order_to_orderer(order.id)
 
-    expected_to_orderer_sender = 'info@acmecon.test'
+    expected_to_orderer_sender = 'noreply@acmecon.test'
     expected_to_orderer_recipients = ['interessent@users.test']
     expected_to_orderer_subject = (
         'Deine Bestellung (AC-14-B00253) ist eingegangen.'
@@ -146,7 +146,7 @@ das Team der Acme Entertainment Convention
 -- 
 Acme Entertainment Convention
 
-E-Mail: info@acmecon.test
+E-Mail: noreply@acmecon.test
     '''.strip()
 
     send_email_mock.assert_called_once_with(
@@ -195,7 +195,7 @@ das Team der Acme Entertainment Convention
 -- 
 Acme Entertainment Convention
 
-E-Mail: info@acmecon.test
+E-Mail: noreply@acmecon.test
 ''',
     )
 

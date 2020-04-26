@@ -61,7 +61,7 @@ def test_email_on_order_canceled(
     with current_user_set(app, customer), app.app_context():
         order_email_service.send_email_for_canceled_order_to_orderer(order.id)
 
-    expected_sender = 'info@acmecon.test'
+    expected_sender = 'noreply@acmecon.test'
     expected_recipients = ['versager@users.test']
     expected_subject = '\u274c Deine Bestellung (AC-14-B00017) wurde storniert.'
     expected_body = '''
@@ -79,7 +79,7 @@ das Team der Acme Entertainment Convention
 -- 
 Acme Entertainment Convention
 
-E-Mail: info@acmecon.test
+E-Mail: noreply@acmecon.test
     '''.strip()
 
     send_email_mock.assert_called_once_with(
@@ -104,6 +104,6 @@ das Team der Acme Entertainment Convention
 -- 
 Acme Entertainment Convention
 
-E-Mail: info@acmecon.test
+E-Mail: noreply@acmecon.test
 ''',
     )

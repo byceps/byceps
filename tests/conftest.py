@@ -143,7 +143,7 @@ def make_email_config(admin_app):
 @pytest.fixture(scope='module')
 def email_config(make_email_config):
     return make_email_config(
-        DEFAULT_EMAIL_CONFIG_ID, sender_address='info@acmecon.test'
+        DEFAULT_EMAIL_CONFIG_ID, sender_address='noreply@acmecon.test'
     )
 
 
