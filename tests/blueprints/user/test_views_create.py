@@ -19,7 +19,6 @@ from byceps.services.newsletter import (
     command_service as newsletter_command_service,
     service as newsletter_service,
 )
-from byceps.services.site import service as site_service
 from byceps.services.snippet import service as snippet_service
 from byceps.services.snippet.transfer.models import Scope
 from byceps.services.terms import document_service as terms_document_service
@@ -37,13 +36,6 @@ from tests.helpers import create_site, http_client
 @pytest.fixture(scope='module')
 def user_admin(make_user):
     yield from make_user('UserAdmin')
-
-
-@pytest.fixture(scope='module')
-def site(party_app, email_config, party):
-    site = create_site(party_id=party.id)
-    yield site
-    site_service.delete_site(site.id)
 
 
 @pytest.fixture(scope='module')
