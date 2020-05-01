@@ -9,7 +9,7 @@ def read_lines_from_file(filename):
 
 
 requirements = read_lines_from_file('requirements.txt')
-requirements_dev = read_lines_from_file('requirements-development.txt')
+requirements_dev = read_lines_from_file('requirements-dev.txt')
 
 
 setup(
