@@ -2,7 +2,7 @@ language: python
 python:
   - "3.7"
 addons:
-  postgresql: "9.6"
+  postgresql: "11"
   apt:
     packages:
       - language-pack-de
