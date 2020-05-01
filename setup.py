@@ -9,7 +9,6 @@ def read_lines_from_file(filename):
 
 
 requirements = read_lines_from_file('requirements.txt')
-requirements_dev = read_lines_from_file('requirements-dev.txt')
 
 
 setup(
@@ -40,6 +39,4 @@ setup(
     ],
     packages=['byceps'],
     install_requires=requirements,
-    setup_requires=['pytest-runner'],
-    tests_require=requirements_dev,
 )
