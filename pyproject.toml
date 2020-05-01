@@ -41,7 +41,7 @@ WTForms = "^2.2.1"
 
 [tool.poetry.dev-dependencies]
 black = "19.10b0"
-Flask-DebugToolbar = "0.10.1"
+Flask-DebugToolbar = "0.11.0"
 flask-shell-ipython = "0.4.1"
 freezegun = "0.3.12"
 mypy = "0.770"
