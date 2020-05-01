@@ -10,3 +10,6 @@ build:
         override:
           - js-scrutinizer-run
           - py-scrutinizer-run
+checks:
+  python:
+    duplicate_code: false
