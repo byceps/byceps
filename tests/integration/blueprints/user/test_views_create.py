@@ -30,7 +30,7 @@ from byceps.services.verification_token.models import (
     Token,
 )
 
-from tests.helpers import create_site, http_client
+from tests.helpers import http_client
 
 
 @pytest.fixture(scope='module')

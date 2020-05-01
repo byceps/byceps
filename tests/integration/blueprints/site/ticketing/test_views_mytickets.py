@@ -5,7 +5,7 @@
 
 import pytest
 
-from tests.helpers import create_site, http_client, login_user
+from tests.helpers import http_client, login_user
 
 
 def test_when_logged_in(party_app, site, user):
