@@ -10,7 +10,6 @@ services:
   - redis-server
 install:
   - "pip install --upgrade pip"
-  - "pip install --upgrade pytest"
   - "pip install -r requirements.txt -r requirements-development.txt"
 before_script:
   - psql -U postgres -c "CREATE DATABASE byceps_test;"
