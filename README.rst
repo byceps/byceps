@@ -61,7 +61,7 @@ Code Status
 Installation
 ============
 
-See ``docs/installation.rst``.
+See `docs/installation.rst`_.
 
 
 Testing
