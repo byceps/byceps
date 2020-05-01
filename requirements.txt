@@ -14,7 +14,7 @@ marshmallow==3.5.2
 pendulum==2.1.0
 pick==0.6.7
 pillow==7.1.2
-psycopg2-binary==2.8.3
+psycopg2-binary==2.8.5
 python-dateutil==2.8.0
 pytzdata==2019.3
 ranger==0.10
