@@ -1,4 +1,7 @@
 build:
+  dependencies:
+    override:
+      - "pip install -r requirements.txt -r requirements-test.txt"
   nodes:
     analysis:
       tests:
