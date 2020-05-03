@@ -11,15 +11,12 @@ from datetime import date
 from flask import abort, request
 
 from .....services.party import service as party_service
-from .....services.shop.order import service as order_service
-from .....services.shop.shop import service as shop_service
 from .....services.ticketing import ticket_service
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.templating import templated
 
 from ....authorization.decorators import permission_required
 
-from ...shop.order import service as order_blueprint_service
 from ...ticketing.authorization import TicketingPermission
 from ...user import service as user_blueprint_service
 
@@ -46,14 +43,12 @@ def index(party_id):
     if search_term:
         latest_dob_for_checkin = _get_latest_date_of_birth_for_checkin()
         tickets = _search_tickets(party.id, search_term, limit)
-        orders = _search_orders(party.shop_id, search_term, limit)
         users = _search_users(search_term, limit)
 
         tickets += list(_get_tickets_for_users(party.id, users))
     else:
         latest_dob_for_checkin = None
         tickets = None
-        orders = None
         users = None
 
     return {
@@ -61,7 +56,6 @@ def index(party_id):
         'latest_dob_for_checkin': latest_dob_for_checkin,
         'search_term': search_term,
         'tickets': tickets,
-        'orders': orders,
         'users': users,
     }
 
@@ -80,28 +74,6 @@ def _search_tickets(party_id, search_term, limit):
     )
 
     return tickets_pagination.items
-
-
-def _search_orders(shop_id, search_term, limit):
-    if shop_id is None:
-        return []
-
-    shop = shop_service.get_shop(shop_id)
-
-    page = 1
-    per_page = limit
-
-    orders_pagination = order_service.get_orders_for_shop_paginated(
-        shop.id, page, per_page, search_term=search_term
-    )
-
-    orders = list(
-        order_blueprint_service.extend_order_tuples_with_orderer(
-            orders_pagination.items
-        )
-    )
-
-    return orders
 
 
 def _search_users(search_term, limit):

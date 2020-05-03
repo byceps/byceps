@@ -73,11 +73,6 @@
   </div>
 
   <div class="box">
-    <h2>Bestellungen {{ render_extra_in_heading(orders|length) }}</h2>
-    {%- include 'admin/shop/order/_order_list.html' %}
-  </div>
-
-  <div class="box">
     <h2>Benutzer {{ render_extra_in_heading(users|length) }}</h2>
     {%- include 'admin/ticketing/checkin/_user_list.html' %}
   </div>
