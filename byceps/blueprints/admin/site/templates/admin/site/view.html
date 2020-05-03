@@ -56,6 +56,16 @@
       <th>Benutzer&shy;anmeldung</th>
       <td>{{ render_tag('geöffnet', class='color-success') if site.login_enabled else render_tag('gesperrt', class='color-disabled', icon='disabled') }}</td>
     </tr>
+    <tr>
+      <th>Shop</th>
+      <td>
+        {%- if shop %}
+        <a href="{{ url_for('shop_shop_admin.view_for_shop', shop_id=shop.id) }}">{{ shop.title }}</a>
+        {%- else %}
+        {{ 'kein Shop verknüpft'|dim }}
+        {%- endif %}
+      </td>
+    </tr>
   </table>
 
   <h2>Einstellungen {{ render_extra_in_heading(settings|length) }}</h2>

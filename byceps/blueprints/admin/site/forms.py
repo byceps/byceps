@@ -23,6 +23,7 @@ class _BaseForm(LocalizedForm):
     enabled = BooleanField('aktiv')
     user_account_creation_enabled  = BooleanField('Benutzerregistrierung geöffnet')
     login_enabled = BooleanField('Benutzeranmeldung geöffnet')
+    shop_id = StringField('Shop-ID', validators=[Optional()])
 
     def set_email_config_choices(self):
         configs = email_service.get_all_configs()

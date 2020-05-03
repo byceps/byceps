@@ -9,6 +9,7 @@ byceps.blueprints.admin.site.views
 from flask import abort, request
 
 from ....services.party import service as party_service
+from ....services.shop.shop import service as shop_service
 from ....services.site import (
     service as site_service,
     settings_service as site_settings_service,
@@ -41,12 +42,22 @@ def index():
     parties = party_service.get_all_parties()
     party_titles_by_id = {p.id: p.title for p in parties}
 
+    shops_by_site_id = _get_shops_by_site_id(sites)
+
     sites.sort(key=lambda site: (site.title, site.party_id))
 
     return {
         'sites': sites,
         'party_titles_by_id': party_titles_by_id,
+        'shops_by_site_id': shops_by_site_id,
     }
+
+
+def _get_shops_by_site_id(sites):
+    shop_ids = {site.shop_id for site in sites if site.shop_id is not None}
+    shops = shop_service.find_shops(shop_ids)
+    shops_by_id = {shop.id: shop for shop in shops}
+    return {site.id: shops_by_id.get(site.shop_id) for site in sites}
 
 
 @blueprint.route('/sites/<site_id>')
@@ -58,10 +69,16 @@ def view(site_id):
     if site is None:
         abort(404)
 
+    if site.shop_id:
+        shop = shop_service.get_shop(site.shop_id)
+    else:
+        shop = None
+
     settings = site_settings_service.get_settings(site.id)
 
     return {
         'site': site,
+        'shop': shop,
         'settings': settings,
     }
 
@@ -101,6 +118,9 @@ def create():
     enabled = form.enabled.data
     user_account_creation_enabled = form.user_account_creation_enabled.data
     login_enabled = form.login_enabled.data
+    shop_id = form.shop_id.data.strip()
+    if not shop_id:
+        shop_id = None
 
     if party_id:
         party = party_service.find_party(party_id)
@@ -119,6 +139,7 @@ def create():
         user_account_creation_enabled,
         login_enabled,
         party_id=party_id,
+        shop_id=shop_id,
     )
 
     flash_success(f'Die Site "{site.title}" wurde angelegt.')
@@ -162,6 +183,9 @@ def update(site_id):
     enabled = form.enabled.data
     user_account_creation_enabled = form.user_account_creation_enabled.data
     login_enabled = form.login_enabled.data
+    shop_id = form.shop_id.data.strip()
+    if not shop_id:
+        shop_id = None
     archived = form.archived.data
 
     if party_id:
@@ -182,6 +206,7 @@ def update(site_id):
             enabled,
             user_account_creation_enabled,
             login_enabled,
+            shop_id,
             archived,
         )
     except site_service.UnknownSiteId:

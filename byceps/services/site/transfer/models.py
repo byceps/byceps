@@ -11,6 +11,8 @@ from typing import NewType
 
 from ....typing import PartyID
 
+from ...shop.shop.transfer.models import ShopID
+
 
 SiteID = NewType('SiteID', str)
 
@@ -25,6 +27,7 @@ class Site:
     enabled: bool
     user_account_creation_enabled: bool
     login_enabled: bool
+    shop_id: ShopID
     archived: bool
 
 
