@@ -59,7 +59,7 @@ def update_party(
     starts_at: datetime,
     ends_at: datetime,
     max_ticket_quantity: Optional[int],
-    shop_id: ShopID,
+    shop_id: Optional[ShopID],
     ticket_management_enabled: bool,
     seat_management_enabled: bool,
     archived: bool,
