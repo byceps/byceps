@@ -15,7 +15,6 @@ from ...typing import BrandID, PartyID
 
 from ..brand.models.brand import Brand as DbBrand
 from ..brand.transfer.models import Brand
-from ..shop.shop.transfer.models import ShopID
 
 from .models.party import Party as DbParty
 from .models.setting import Setting as DbSetting
@@ -34,7 +33,6 @@ def create_party(
     ends_at: datetime,
     *,
     max_ticket_quantity: Optional[int] = None,
-    shop_id: Optional[ShopID] = None,
 ) -> Party:
     """Create a party."""
     party = DbParty(
@@ -44,7 +42,6 @@ def create_party(
         starts_at,
         ends_at,
         max_ticket_quantity=max_ticket_quantity,
-        shop_id=shop_id,
     )
 
     db.session.add(party)
@@ -59,7 +56,6 @@ def update_party(
     starts_at: datetime,
     ends_at: datetime,
     max_ticket_quantity: Optional[int],
-    shop_id: Optional[ShopID],
     ticket_management_enabled: bool,
     seat_management_enabled: bool,
     archived: bool,
@@ -74,7 +70,6 @@ def update_party(
     party.starts_at = starts_at
     party.ends_at = ends_at
     party.max_ticket_quantity = max_ticket_quantity
-    party.shop_id = shop_id
     party.ticket_management_enabled = ticket_management_enabled
     party.seat_management_enabled = seat_management_enabled
     party.archived = archived
@@ -227,7 +222,6 @@ def _db_entity_to_party(party: DbParty) -> Party:
         party.starts_at,
         party.ends_at,
         party.max_ticket_quantity,
-        party.shop_id,
         party.ticket_management_enabled,
         party.seat_management_enabled,
         party.archived,

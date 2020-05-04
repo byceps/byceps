@@ -50,16 +50,6 @@
       <td>{{ party.max_ticket_quantity|separate_thousands if (party.max_ticket_quantity is not none) else 'nicht festgelegt'|dim }}</td>
     </tr>
     <tr>
-      <th>Shop</th>
-      <td>
-        {%- if shop %}
-        <a href="{{ url_for('shop_shop_admin.view_for_shop', shop_id=shop.id) }}">{{ shop.title }}</a>
-        {%- else %}
-        {{ 'kein Shop verknüpft'|dim }}
-        {%- endif %}
-      </td>
-    </tr>
-    <tr>
       <th>Ticketverwaltung</th>
       <td>{{ render_tag('geöffnet', class='color-success') if party.ticket_management_enabled else render_tag('gesperrt', class='color-disabled', icon='disabled') }}</td>
     </tr>

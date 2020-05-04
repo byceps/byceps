@@ -13,7 +13,6 @@ from typing import Optional
 from ....typing import BrandID, PartyID
 
 from ...brand.transfer.models import Brand
-from ...shop.shop.transfer.models import ShopID
 
 
 @dataclass(frozen=True)
@@ -24,7 +23,6 @@ class Party:
     starts_at: datetime
     ends_at: datetime
     max_ticket_quantity: Optional[int]
-    shop_id: ShopID
     ticket_management_enabled: bool
     seat_management_enabled: bool
     archived: bool

@@ -36,7 +36,6 @@ def create_party(ends_at: datetime) -> Party:
         starts_at,
         ends_at,
         0,
-        'any-shop-id',
         False,
         False,
         False,

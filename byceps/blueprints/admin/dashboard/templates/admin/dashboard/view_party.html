@@ -15,10 +15,6 @@
     {{ render_bigstats_cell(days_until_party|separate_thousands, 'Tage bis zur Party', icon_name='date') }}
     {{ render_bigstats_cell(orga_count, 'Organisatoren in <strong>%d</strong> Teams'|format(orga_team_count)|safe, href=url_for('orga_team_admin.teams_for_party', party_id=party.id), icon_name='users') }}
     {{ render_bigstats_cell(seat_count|separate_thousands, 'Sitzplätze in <strong>%d</strong> Bereichen'|format(seating_area_count)|safe, href=url_for('seating_admin.index_for_party', party_id=party.id), icon_name='seating-area') }}
-    {%- if shop is not none %}
-    {{ render_bigstats_cell(article_count, 'Artikel', href=url_for('shop_article_admin.index_for_shop', shop_id=shop.id), icon_name='shopping-cart') }}
-    {{ render_bigstats_cell(open_order_count|separate_thousands, 'offene Bestellungen', href=url_for('shop_order_admin.index_for_shop', shop_id=shop.id, only_payment_state='open'), icon_name='shopping-cart', color='#cc0000') }}
-    {%- endif %}
     {{ render_bigstats_cell(tickets_sold|separate_thousands, 'Tickets verkauft', href=url_for('ticketing_admin.index_for_party', party_id=party.id), icon_name='ticket', color='#008800') }}
     {{ render_bigstats_cell(tickets_checked_in|separate_thousands, 'Tickets eingecheckt', icon_name='ticketing-checkin') }}
   </div>

@@ -15,7 +15,6 @@ from ....services.party import (
     service as party_service,
     settings_service as party_settings_service,
 )
-from ....services.shop.shop import service as shop_service
 from ....services.ticketing import ticket_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_success
@@ -61,23 +60,13 @@ def index_for_brand(brand_id, page):
         brand.id, page, per_page
     )
 
-    shops_by_party_id = _get_shops_by_party_id(parties.items)
-
     ticket_count_by_party_id = ticket_service.get_ticket_count_by_party_id()
 
     return {
         'brand': brand,
         'parties': parties,
-        'shops_by_party_id': shops_by_party_id,
         'ticket_count_by_party_id': ticket_count_by_party_id,
     }
-
-
-def _get_shops_by_party_id(parties):
-    shop_ids = {party.shop_id for party in parties if party.shop_id is not None}
-    shops = shop_service.find_shops(shop_ids)
-    shops_by_id = {shop.id: shop for shop in shops}
-    return {party.id: shops_by_id.get(party.shop_id) for party in parties}
 
 
 @blueprint.route('/parties/<party_id>')
@@ -88,17 +77,11 @@ def view(party_id):
     party = _get_party_or_404(party_id)
     brand = brand_service.find_brand(party.brand_id)
 
-    if party.shop_id:
-        shop = shop_service.get_shop(party.shop_id)
-    else:
-        shop = None
-
     settings = party_settings_service.get_settings(party.id)
 
     return {
         'brand': brand,
         'party': party,
-        'shop': shop,
         'settings': settings,
     }
 
@@ -134,9 +117,6 @@ def create(brand_id):
     starts_at = local_tz_to_utc(form.starts_at.data)
     ends_at = local_tz_to_utc(form.ends_at.data)
     max_ticket_quantity = form.max_ticket_quantity.data
-    shop_id = form.shop_id.data.strip()
-    if not shop_id:
-        shop_id = None
 
     party = party_service.create_party(
         party_id,
@@ -145,7 +125,6 @@ def create(brand_id):
         starts_at,
         ends_at,
         max_ticket_quantity=max_ticket_quantity,
-        shop_id=shop_id,
     )
 
     flash_success(f'Die Party "{party.title}" wurde angelegt.')
@@ -189,9 +168,6 @@ def update(party_id):
     starts_at = local_tz_to_utc(form.starts_at.data)
     ends_at = local_tz_to_utc(form.ends_at.data)
     max_ticket_quantity = form.max_ticket_quantity.data
-    shop_id = form.shop_id.data.strip()
-    if not shop_id:
-        shop_id = None
     ticket_management_enabled = form.ticket_management_enabled.data
     seat_management_enabled = form.seat_management_enabled.data
     archived = form.archived.data
@@ -203,7 +179,6 @@ def update(party_id):
             starts_at,
             ends_at,
             max_ticket_quantity,
-            shop_id,
             ticket_management_enabled,
             seat_management_enabled,
             archived,

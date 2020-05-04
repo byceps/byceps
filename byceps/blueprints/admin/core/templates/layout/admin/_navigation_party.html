@@ -30,12 +30,6 @@
         required_permission=PartyPermission.view,
         icon='settings')
       .add_item(
-        url_for('shop_shop_admin.view_for_party', party_id=party.id),
-        'Shop',
-        id='shop_shop_admin',
-        required_permission=ShopPermission.view,
-        icon='shop')
-      .add_item(
         url_for('seating_admin.index_for_party', party_id=party.id),
         'Sitzpläne',
         id='seating_admin',

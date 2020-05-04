@@ -10,7 +10,6 @@ from collections import defaultdict
 
 from flask import abort
 
-from .....services.party import service as party_service
 from .....services.shop.article import service as article_service
 from .....services.shop.order import (
     action_service as order_action_service,
@@ -45,23 +44,6 @@ def index():
 
     return {
         'shops': shops,
-    }
-
-
-@blueprint.route('/for_party/<party_id>')
-@permission_required(ShopPermission.view)
-@templated
-def view_for_party(party_id):
-    party = party_service.find_party(party_id)
-    if party is None:
-        abort(404)
-
-    if party.shop_id is not None:
-        shop = shop_service.get_shop(party.id)
-        return redirect_to('.view_for_shop', shop_id=shop.id)
-
-    return {
-        'party': party,
     }
 
 
