@@ -9,13 +9,13 @@ byceps.blueprints.shop.order.views
 from flask import abort, g, request
 
 from ....services.country import service as country_service
-from ....services.party import service as party_service
 from ....services.shop.article import service as article_service
 from ....services.shop.article.models.compilation import ArticleCompilation
 from ....services.shop.cart.models import Cart
 from ....services.shop.order.email import service as order_email_service
 from ....services.shop.order import service as order_service
 from ....services.shop.shop import service as shop_service
+from ....services.site import service as site_service
 from ....services.user import service as user_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_notice, flash_success
@@ -228,16 +228,12 @@ def order_single(article_id):
 
 
 def _get_shop_or_404():
-    if g.party_id is None:
-        # No party is configured for the current site.
+    site = site_service.get_site(g.site_id)
+
+    if site.shop_id is None:
         abort(404)
 
-    party = party_service.get_party(g.party_id)
-
-    if party.shop_id is None:
-        abort(404)
-
-    return shop_service.get_shop(party.shop_id)
+    return shop_service.get_shop(site.shop_id)
 
 
 def _get_article_or_404(article_id):

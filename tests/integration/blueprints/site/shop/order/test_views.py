@@ -8,7 +8,6 @@ from unittest.mock import patch
 import pytest
 
 from byceps.events.shop import ShopOrderPlaced
-from byceps.services.party import service as party_service
 from byceps.services.shop.article.models.article import Article
 from byceps.services.shop.article import service as article_service
 from byceps.services.shop.order.models.order import Order
@@ -18,7 +17,7 @@ from byceps.services.shop.shop import service as shop_service
 from byceps.services.site import service as site_service
 from byceps.services.snippet import service as snippet_service
 
-from tests.helpers import create_party, create_site, http_client, login_user
+from tests.helpers import create_site, http_client, login_user
 from tests.integration.services.shop.helpers import (
     create_article,
     create_shop,
@@ -52,17 +51,8 @@ def shop(email_config, admin_user):
 
 
 @pytest.fixture
-def party(brand, shop):
-    party = create_party(
-        brand.id, 'acmecon-2019', 'ACMECon 2019', shop_id=shop.id
-    )
-    yield party
-    party_service.delete_party(party.id)
-
-
-@pytest.fixture
-def site(party):
-    site = create_site(party_id=party.id)
+def site(shop):
+    site = create_site(shop_id=shop.id)
     yield site
     site_service.delete_site(site.id)
 

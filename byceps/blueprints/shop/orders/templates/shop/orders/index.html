@@ -13,7 +13,7 @@
   <h1>{{ title }}</h1>
 
   {%- if orders %}
-  <p>Dies sind deine Bestellungen für die Party <strong>{{ party_title }}</strong>:</p>
+  <p>Dies sind deine aktuellen Bestellungen:</p>
 
   <table class="index wide">
     <thead>
@@ -37,7 +37,7 @@
     </tbody>
   </table>
   {%- else %}
-  <p>Du hast derzeit <em>keine</em> Bestellungen für die Party <strong>{{ party_title }}</strong>.</p>
+  <p>Du hast derzeit <em>keine</em> aktuellen Bestellungen.</p>
   {%- endif %}
 
 {%- endblock %}

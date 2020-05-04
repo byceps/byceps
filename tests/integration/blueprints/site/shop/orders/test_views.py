@@ -5,7 +5,6 @@
 
 import pytest
 
-from byceps.services.party import service as party_service
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order.models.orderer import Orderer
 from byceps.services.shop.order import service as order_service
@@ -18,7 +17,6 @@ from byceps.services.user import command_service as user_command_service
 from testfixtures.shop_order import create_orderer
 
 from tests.helpers import (
-    create_party,
     create_site,
     create_user_with_detail,
     http_client,
@@ -31,33 +29,15 @@ from tests.integration.services.shop.helpers import (
 
 
 @pytest.fixture
-def party1(brand, shop1):
-    party = create_party(
-        brand.id, 'thislan-2013', 'ThisLAN 2013', shop_id=shop1.id
-    )
-    yield party
-    party_service.delete_party(party.id)
-
-
-@pytest.fixture
-def party2(brand, shop2):
-    party = create_party(
-        brand.id, 'otherlan-2013', 'OtherLAN 2013', shop_id=shop2.id
-    )
-    yield party
-    party_service.delete_party(party.id)
-
-
-@pytest.fixture
-def site1(party1):
-    site = create_site(party_id=party1.id)
+def site1(shop1):
+    site = create_site(shop_id=shop1.id)
     yield site
     site_service.delete_site(site.id)
 
 
 @pytest.fixture
-def site2(party2):
-    site = create_site(party_id=party2.id)
+def site2(shop2):
+    site = create_site(shop_id=shop2.id)
     yield site
     site_service.delete_site(site.id)
 
@@ -108,13 +88,13 @@ def order(shop1, user1):
     order_service.delete_order(order.id)
 
 
-def test_view_matching_user_and_party_and_shop(party_app, site1, order, user1):
+def test_view_matching_user_and_site_and_shop(party_app, site1, order, user1):
     response = request_view(party_app, user1, order.id)
 
     assert response.status_code == 200
 
 
-def test_view_matching_party_and_shop_but_different_user(
+def test_view_matching_site_and_shop_but_different_user(
     party_app, site1, order, user1, user2
 ):
     response = request_view(party_app, user2, order.id)
@@ -122,7 +102,7 @@ def test_view_matching_party_and_shop_but_different_user(
     assert response.status_code == 404
 
 
-def test_view_matching_user_but_different_party_and_shop(
+def test_view_matching_user_but_different_site_and_shop(
     party_app, site2, order, user1
 ):
     response = request_view(party_app, user1, order.id)

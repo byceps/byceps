@@ -109,6 +109,7 @@ def create_site(
     server_name='www.acmecon.test',
     email_config_id=DEFAULT_EMAIL_CONFIG_ID,
     party_id=None,
+    shop_id=None,
     enabled=True,
     user_account_creation_enabled=True,
     login_enabled=True,
@@ -122,6 +123,7 @@ def create_site(
         user_account_creation_enabled,
         login_enabled,
         party_id=party_id,
+        shop_id=shop_id,
     )
 
 
