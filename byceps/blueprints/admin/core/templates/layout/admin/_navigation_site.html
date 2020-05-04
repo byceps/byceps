@@ -30,6 +30,12 @@
         id='snippet_admin_for_site',
         required_permission=SnippetPermission.view,
         icon='snippet')
+      .add_item(
+        url_for('shop_shop_admin.view_for_site', site_id=site.id),
+        'Shop',
+        id='shop_shop_admin',
+        required_permission=ShopPermission.view,
+        icon='shop')
   -%}
 {{ render_navigation(navigation, current_page) }}
   {%- endwith %}

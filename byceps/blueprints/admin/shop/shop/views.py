@@ -19,6 +19,7 @@ from .....services.shop.order import (
 from .....services.shop.order.transfer.models import PaymentState
 from .....services.shop.sequence import service as sequence_service
 from .....services.shop.shop import service as shop_service
+from .....services.site import service as site_service
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.templating import templated
 from .....util.views import redirect_to
@@ -61,6 +62,23 @@ def view_for_party(party_id):
 
     return {
         'party': party,
+    }
+
+
+@blueprint.route('/for_site/<site_id>')
+@permission_required(ShopPermission.view)
+@templated
+def view_for_site(site_id):
+    site = site_service.find_site(site_id)
+    if site is None:
+        abort(404)
+
+    if site.shop_id is not None:
+        shop = shop_service.get_shop(site.id)
+        return redirect_to('.view_for_shop', shop_id=shop.id)
+
+    return {
+        'site': site,
     }
 
 
