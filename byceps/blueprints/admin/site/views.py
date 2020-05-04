@@ -93,6 +93,7 @@ def create_form(erroneous_form=None):
     form = erroneous_form if erroneous_form else CreateForm(party_id=party_id)
     form.set_email_config_choices()
     form.set_party_choices()
+    form.set_shop_choices()
 
     return {
         'form': form,
@@ -106,6 +107,7 @@ def create():
     form = CreateForm(request.form)
     form.set_email_config_choices()
     form.set_party_choices()
+    form.set_shop_choices()
 
     if not form.validate():
         return create_form(form)
@@ -156,6 +158,7 @@ def update_form(site_id, erroneous_form=None):
     form = erroneous_form if erroneous_form else UpdateForm(obj=site)
     form.set_email_config_choices()
     form.set_party_choices()
+    form.set_shop_choices()
 
     return {
         'site': site,
@@ -172,6 +175,7 @@ def update(site_id):
     form = UpdateForm(request.form)
     form.set_email_config_choices()
     form.set_party_choices()
+    form.set_shop_choices()
 
     if not form.validate():
         return update_form(site.id, form)
