@@ -91,14 +91,12 @@ def create_brand(brand_id='acmecon', title='ACME Entertainment Convention'):
     return brand_service.create_brand(brand_id, title)
 
 
-def create_party(
-    brand_id, party_id='acmecon-2014', title='ACMECon 2014', shop_id=None
-):
+def create_party(brand_id, party_id='acmecon-2014', title='ACMECon 2014'):
     starts_at = datetime(2014, 10, 24, 16, 0)
     ends_at = datetime(2014, 10, 26, 13, 0)
 
     return party_service.create_party(
-        party_id, brand_id, title, starts_at, ends_at, shop_id=shop_id
+        party_id, brand_id, title, starts_at, ends_at
     )
 
 
