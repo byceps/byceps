@@ -32,29 +32,30 @@ def templated(arg) -> Callable:
     returned.
     """
 
-    def decorator(f: Callable, template_name: Optional[str] = None):
-        @wraps(f)
-        def decorated(*args, **kwargs):
-            name = _get_template_name(f, template_name)
-
-            context = f(*args, **kwargs)
-
-            if context is None:
-                context = {}
-            elif not isinstance(context, dict):
-                return context
-
-            return render_template(name, **context)
-
-        return decorated
-
     if hasattr(arg, '__call__'):
-        return decorator(arg)
+        return _decorate(arg)
 
     def wrapper(f: Callable):
-        return decorator(f, arg)
+        return _decorate(f, arg)
 
     return wrapper
+
+
+def _decorate(f: Callable, template_name: Optional[str] = None) -> Callable:
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        name = _get_template_name(f, template_name)
+
+        context = f(*args, **kwargs)
+
+        if context is None:
+            context = {}
+        elif not isinstance(context, dict):
+            return context
+
+        return render_template(name, **context)
+
+    return decorated
 
 
 def _get_template_name(
