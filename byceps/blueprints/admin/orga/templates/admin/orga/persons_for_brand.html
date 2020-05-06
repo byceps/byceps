@@ -78,7 +78,11 @@
           {%- endif %}
         </td>
         <td>
+          {%- if user.email_address %}
           {{ render_icon('email') }} <a href="mailto:{{- user.email_address }}">{{ user.email_address|truncate(36, killwords=True, end='…') }}</a>
+          {%- else %}
+          {{ (render_icon('email') ~ ' nicht angegeben')|dim }}
+          {%- endif %}
           <br>
           {{ render_icon('location') }}
           {{ user.detail.street|fallback }}

@@ -88,7 +88,19 @@
           {%- set icon_name = 'user' %}
           {%- set body %}
             <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
-            hat die E-Mail-Adresse von &quot;{{ event.data.old_email_address }}&quot; in &quot;{{ event.data.new_email_address }}&quot; geändert.
+            hat die E-Mail-Adresse von
+            {%- if event.data.old_email_address %}
+            &quot;{{ event.data.old_email_address }}&quot;
+            {%- else %}
+            <em>keine</em>
+            {%- endif %}
+            in
+            {%- if event.data.new_email_address %}
+            &quot;{{ event.data.new_email_address }}&quot;
+            {%- else %}
+            <em>keine</em>
+            {%- endif %}
+            geändert.
             {%- if 'reason' in event.data %}
             <div style="margin-top: 0.5rem;">Begründung: <em>{{ event.data.reason }}</em></div>
             {%- endif %}

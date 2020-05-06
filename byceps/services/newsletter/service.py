@@ -116,6 +116,7 @@ def _get_subscriber_details(user_ids: Set[UserID]) -> Iterator[Subscriber]:
             DbUser.email_address,
         ) \
         .filter(DbUser.id.in_(user_ids)) \
+        .filter(DbUser.email_address != None) \
         .filter_by(initialized=True) \
         .filter_by(suspended=False) \
         .filter_by(deleted=False) \

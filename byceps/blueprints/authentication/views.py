@@ -238,6 +238,12 @@ def request_password_reset():
         flash_error(f'Der Benutzername "{screen_name}" ist unbekannt.')
         return request_password_reset_form(form)
 
+    if user.email_address is None:
+        flash_error(
+            f'Für das Benutzerkonto "{screen_name}" ist keine E-Mail-Adresse hinterlegt.'
+        )
+        return request_password_reset_form(form)
+
     if not user.email_address_verified:
         flash_error(
             f'Die E-Mail-Adresse für das Benutzerkonto "{screen_name}" '

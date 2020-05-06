@@ -9,7 +9,7 @@
     </tr>
     <tr>
       <th>E-Mail-Adresse</th>
-      <td>{{ user.email_address }}</td>
+      <td>{{ user.email_address if user.email_address else 'nicht angegeben'|dim }}</td>
     </tr>
     <tr>
       <th>Sicherheit</th>

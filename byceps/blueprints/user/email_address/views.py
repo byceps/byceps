@@ -54,6 +54,12 @@ def request_confirmation_email():
         flash_error(f'Der Benutzername "{screen_name}" ist unbekannt.')
         return request_confirmation_email_form(form)
 
+    if user.email_address is None:
+        flash_error(
+            f'Für das Benutzerkonto "{screen_name}" ist keine E-Mail-Adresse hinterlegt.'
+        )
+        return request_confirmation_email_form(form)
+
     if user.email_address_verified:
         flash_notice(
             f'Die E-Mail-Adresse für den Benutzernamen "{user.screen_name}" '
