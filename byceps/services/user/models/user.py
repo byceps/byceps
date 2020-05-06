@@ -59,7 +59,7 @@ class User(db.Model):
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     created_at = db.Column(db.DateTime, nullable=False)
     screen_name = db.Column(db.UnicodeText, unique=True, nullable=False)
-    email_address = db.Column(db.UnicodeText, unique=True, nullable=False)
+    email_address = db.Column(db.UnicodeText, unique=True, nullable=True)
     email_address_verified = db.Column(db.Boolean, default=False, nullable=False)
     initialized = db.Column(db.Boolean, default=False, nullable=False)
     suspended = db.Column(db.Boolean, default=False, nullable=False)
@@ -71,7 +71,10 @@ class User(db.Model):
                                     AvatarSelection(None, avatar.id))
 
     def __init__(
-        self, created_at: datetime, screen_name: str, email_address: str
+        self,
+        created_at: datetime,
+        screen_name: str,
+        email_address: Optional[str],
     ) -> None:
         self.created_at = created_at
         self.screen_name = screen_name

@@ -181,7 +181,7 @@ def change_screen_name(
 
 def change_email_address(
     user_id: UserID,
-    new_email_address: str,
+    new_email_address: Optional[str],
     initiator_id: UserID,
     *,
     reason: Optional[str] = None,
@@ -268,7 +268,7 @@ def remove_user_detail_extra(user_id: UserID, key: str) -> None:
 def _anonymize_account(user: DbUser) -> None:
     """Remove or replace user details of the account."""
     user.screen_name = f'deleted-{user.id.hex}'
-    user.email_address = f'{user.id.hex}@user.invalid'
+    user.email_address = None
     user.legacy_id = None
 
     # Remove details.

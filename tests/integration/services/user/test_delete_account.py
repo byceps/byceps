@@ -90,7 +90,7 @@ def test_delete_account(admin_app, permission, role, admin_user):
     user_after = user_command_service._get_user(user_id)
 
     assert user_after.screen_name == 'deleted-20868b15b93540fc805438854ef8509a'
-    assert user_after.email_address == '20868b15b93540fc805438854ef8509a@user.invalid'
+    assert user_after.email_address is None
     assert user_after.deleted == True
     assert user_after.legacy_id is None
 
