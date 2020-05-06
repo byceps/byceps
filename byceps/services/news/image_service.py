@@ -30,7 +30,7 @@ ALLOWED_IMAGE_TYPES = frozenset([
 ])
 
 
-MAXIMUM_DIMENSIONS = Dimensions(1280, 1280)
+MAXIMUM_DIMENSIONS = Dimensions(2560, 1440)
 
 
 def create_image(
