@@ -66,6 +66,18 @@ def delete_order_number_sequence(sequence_id: NumberSequenceID) -> None:
     delete_sequence(sequence_id)
 
 
+def find_article_number_sequence(
+    sequence_id: NumberSequenceID,
+) -> Optional[NumberSequence]:
+    """Return the article number sequence, or `None` if the sequence ID
+    is unknown or if the sequence's purpose is not article numbers.
+    """
+    return DbNumberSequence.query \
+        .filter_by(id=sequence_id) \
+        .filter_by(_purpose=Purpose.article.name) \
+        .one_or_none()
+
+
 class NumberGenerationFailed(Exception):
     """Indicate that generating a prefixed, sequential number has failed."""
 
@@ -91,8 +103,8 @@ def generate_order_number(sequence_id: NumberSequenceID) -> OrderNumber:
     return format_order_number(sequence)
 
 
-def _get_next_sequence_step(sequence_id: NumberSequenceID,
-    purpose: Purpose
+def _get_next_sequence_step(
+    sequence_id: NumberSequenceID, purpose: Purpose
 ) -> NumberSequence:
     """Calculate and reserve the next number from this sequence.
 
