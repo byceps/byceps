@@ -38,7 +38,9 @@ COMMON_FORM_DATA = {
 @pytest.fixture
 def shop(email_config, admin_user):
     shop = create_shop('shop-1')
-    sequence_service.create_order_number_sequence(shop.id, 'AEC-01-B', value=4)
+    order_number_sequence_id = sequence_service.create_order_number_sequence(
+        shop.id, 'AEC-01-B', value=4
+    )
     snippet_id = create_shop_fragment(
         shop.id, admin_user.id, 'payment_instructions', 'Send all ur moneyz!'
     )
@@ -46,7 +48,7 @@ def shop(email_config, admin_user):
     yield shop
 
     snippet_service.delete_snippet(snippet_id)
-    sequence_service.delete_order_number_sequence(shop.id)
+    sequence_service.delete_order_number_sequence(order_number_sequence_id)
     shop_service.delete_shop(shop.id)
 
 

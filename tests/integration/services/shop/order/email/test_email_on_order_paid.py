@@ -33,7 +33,9 @@ def customer(admin_app):
 
 @pytest.fixture
 def order(shop, customer, order_admin):
-    sequence_service.create_order_number_sequence(shop.id, 'AC-14-B', value=21)
+    order_number_sequence_id = sequence_service.create_order_number_sequence(
+        shop.id, 'AC-14-B', value=21
+    )
 
     email_footer_snippet_id = create_email_footer_snippet(
         shop.id, order_admin.id
@@ -47,7 +49,7 @@ def order(shop, customer, order_admin):
 
     snippet_service.delete_snippet(email_footer_snippet_id)
     order_service.delete_order(order.id)
-    sequence_service.delete_order_number_sequence(shop.id)
+    sequence_service.delete_order_number_sequence(order_number_sequence_id)
 
 
 @patch('byceps.email.send')

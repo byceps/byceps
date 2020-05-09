@@ -37,9 +37,11 @@ from tests.integration.services.shop.helpers import (
 
 @pytest.fixture(scope='module')
 def order_number_sequence(shop) -> None:
-    sequence_service.create_order_number_sequence(shop.id, 'order-')
+    sequence_id = sequence_service.create_order_number_sequence(
+        shop.id, 'order-'
+    )
     yield
-    sequence_service.delete_order_number_sequence(shop.id)
+    sequence_service.delete_order_number_sequence(sequence_id)
 
 
 @pytest.fixture(scope='module')

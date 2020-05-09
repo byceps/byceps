@@ -20,22 +20,26 @@ from tests.integration.services.shop.helpers import create_shop
 @pytest.fixture
 def shop1(email_config):
     shop = create_shop('first-nice-shop')
-    sequence_service.create_order_number_sequence(shop.id, 'LF-02-B')
+    order_number_sequence_id = sequence_service.create_order_number_sequence(
+        shop.id, 'LF-02-B'
+    )
 
     yield shop
 
-    sequence_service.delete_order_number_sequence(shop.id)
+    sequence_service.delete_order_number_sequence(order_number_sequence_id)
     shop_service.delete_shop(shop.id)
 
 
 @pytest.fixture
 def shop2(email_config):
     shop = create_shop('second-nice-shop')
-    sequence_service.create_order_number_sequence(shop.id, 'LF-03-B')
+    order_number_sequence_id = sequence_service.create_order_number_sequence(
+        shop.id, 'LF-03-B'
+    )
 
     yield shop
 
-    sequence_service.delete_order_number_sequence(shop.id)
+    sequence_service.delete_order_number_sequence(order_number_sequence_id)
     shop_service.delete_shop(shop.id)
 
 

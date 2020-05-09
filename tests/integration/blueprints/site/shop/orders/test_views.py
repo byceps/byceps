@@ -45,13 +45,15 @@ def site2(shop2):
 @pytest.fixture
 def shop1(admin_app, email_config, admin_user):
     shop = create_shop('shop-1')
-    sequence_service.create_order_number_sequence(shop.id, 'LF-02-B')
+    order_number_sequence_id = sequence_service.create_order_number_sequence(
+        shop.id, 'LF-02-B'
+    )
     snippet_id = create_payment_instructions_snippet(shop.id, admin_user.id)
 
     yield shop
 
     snippet_service.delete_snippet(snippet_id)
-    sequence_service.delete_order_number_sequence(shop.id)
+    sequence_service.delete_order_number_sequence(order_number_sequence_id)
     shop_service.delete_shop(shop.id)
 
 

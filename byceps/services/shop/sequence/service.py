@@ -16,7 +16,7 @@ from ..order.transfer.models import OrderNumber
 from ..shop.transfer.models import ShopID
 
 from .models import NumberSequence as DbNumberSequence
-from .transfer.models import NumberSequence, Purpose
+from .transfer.models import NumberSequence, NumberSequenceID, Purpose
 
 
 def create_sequence(
@@ -25,43 +25,45 @@ def create_sequence(
     prefix: str,
     *,
     value: Optional[int] = None,
-) -> None:
+) -> NumberSequenceID:
     """Create a sequence for that shop and purpose."""
     sequence = DbNumberSequence(shop_id, purpose, prefix, value=value)
 
     db.session.add(sequence)
     db.session.commit()
 
+    return sequence.id
+
 
 def create_article_number_sequence(
     shop_id: ShopID, prefix: str, *, value: Optional[int] = None
-) -> None:
-    create_sequence(shop_id, Purpose.article, prefix, value=value)
+) -> NumberSequenceID:
+    return create_sequence(shop_id, Purpose.article, prefix, value=value)
 
 
 def create_order_number_sequence(
     shop_id: ShopID, prefix: str, *, value: Optional[int] = None
-) -> None:
-    create_sequence(shop_id, Purpose.order, prefix, value=value)
+) -> NumberSequenceID:
+    return create_sequence(shop_id, Purpose.order, prefix, value=value)
 
 
-def delete_sequence(shop_id: ShopID, purpose: Purpose) -> None:
-    """Delete sequence for that shop and purpose."""
+def delete_sequence(sequence_id: NumberSequenceID) -> None:
+    """Delete the sequence."""
     db.session.query(DbNumberSequence) \
-        .filter_by(shop_id=shop_id, _purpose=purpose.name) \
+        .filter_by(id=sequence_id) \
         .delete()
 
     db.session.commit()
 
 
-def delete_article_number_sequence(shop_id: ShopID) -> None:
-    """Delete article sequence for that shop."""
-    delete_sequence(shop_id, Purpose.article)
+def delete_article_number_sequence(sequence_id: NumberSequenceID) -> None:
+    """Delete the article sequence."""
+    delete_sequence(sequence_id)
 
 
-def delete_order_number_sequence(shop_id: ShopID) -> None:
-    """Delete order sequence for that shop."""
-    delete_sequence(shop_id, Purpose.order)
+def delete_order_number_sequence(sequence_id: NumberSequenceID) -> None:
+    """Delete the order sequence."""
+    delete_sequence(sequence_id)
 
 
 class NumberGenerationFailed(Exception):

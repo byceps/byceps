@@ -33,7 +33,9 @@ def test_count_ordered_articles(admin_app, shop, article, orderer):
         PaymentState.canceled_after_paid: 6,
     }
 
-    sequence_service.create_order_number_sequence(shop.id, 'ABC-01-B')
+    order_number_sequence_id = sequence_service.create_order_number_sequence(
+        shop.id, 'ABC-01-B'
+    )
 
     order_ids = set()
     for article_quantity, payment_state in [
@@ -63,7 +65,7 @@ def test_count_ordered_articles(admin_app, shop, article, orderer):
     for order_id in order_ids:
         order_service.delete_order(order_id)
 
-    sequence_service.delete_order_number_sequence(shop.id)
+    sequence_service.delete_order_number_sequence(order_number_sequence_id)
 
 
 # helpers
