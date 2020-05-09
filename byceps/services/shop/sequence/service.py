@@ -136,7 +136,10 @@ def find_order_number_sequence(shop_id: ShopID) -> Optional[NumberSequence]:
 def _find_number_sequence(
     shop_id: ShopID, purpose: Purpose
 ) -> Optional[NumberSequence]:
-    sequence = DbNumberSequence.query.get((shop_id, purpose.name))
+    sequence = DbNumberSequence.query \
+        .filter_by(shop_id=shop_id) \
+        .filter_by(_purpose=purpose.name) \
+        .one_or_none()
 
     if sequence is None:
         return None
@@ -146,6 +149,7 @@ def _find_number_sequence(
 
 def _db_entity_to_number_sequence(entity: DbNumberSequence) -> NumberSequence:
     return NumberSequence(
+        entity.id,
         entity.shop_id,
         entity.purpose,
         entity.prefix,

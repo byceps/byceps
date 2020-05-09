@@ -8,8 +8,13 @@ byceps.services.shop.sequence.transfer.models
 
 from dataclasses import dataclass
 from enum import Enum
+from typing import NewType
+from uuid import UUID
 
 from ...shop.transfer.models import ShopID
+
+
+NumberSequenceID = NewType('NumberSequenceID', UUID)
 
 
 Purpose = Enum('Purpose', ['article', 'order'])
@@ -17,6 +22,7 @@ Purpose = Enum('Purpose', ['article', 'order'])
 
 @dataclass(frozen=True)
 class NumberSequence:
+    id: NumberSequenceID
     shop_id: ShopID
     purpose: Purpose
     prefix: str
