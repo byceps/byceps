@@ -15,7 +15,7 @@ from ....typing import UserID
 @dataclass(frozen=True)
 class User:
     id: UserID
-    screen_name: str
+    screen_name: Optional[str]
     suspended: bool
     deleted: bool
     avatar_url: Optional[str]

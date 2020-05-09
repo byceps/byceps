@@ -266,8 +266,8 @@ def remove_user_detail_extra(user_id: UserID, key: str) -> None:
 
 
 def _anonymize_account(user: DbUser) -> None:
-    """Remove or replace user details of the account."""
-    user.screen_name = f'deleted-{user.id.hex}'
+    """Remove user details from the account."""
+    user.screen_name = None
     user.email_address = None
     user.legacy_id = None
 

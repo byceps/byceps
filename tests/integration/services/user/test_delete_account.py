@@ -3,8 +3,6 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from uuid import UUID
-
 import pytest
 
 from byceps.database import db
@@ -37,17 +35,16 @@ def role(permission):
 
 
 def test_delete_account(admin_app, permission, role, admin_user):
-    user_id = UUID('20868b15-b935-40fc-8054-38854ef8509a')
     screen_name = 'GetRidOfMe'
     email_address = 'timedout@users.test'
     legacy_id = 22299
 
-    user = create_user_with_detail(
-        screen_name, user_id=user_id, email_address=email_address
-    )
+    user = create_user_with_detail(screen_name, email_address=email_address)
 
     user.legacy_id = legacy_id
     db.session.commit()
+
+    user_id = user.id
 
     authorization_service.assign_role_to_user(role.id, user_id)
 
@@ -89,7 +86,7 @@ def test_delete_account(admin_app, permission, role, admin_user):
 
     user_after = user_command_service._get_user(user_id)
 
-    assert user_after.screen_name == 'deleted-20868b15b93540fc805438854ef8509a'
+    assert user_after.screen_name is None
     assert user_after.email_address is None
     assert user_after.deleted == True
     assert user_after.legacy_id is None
