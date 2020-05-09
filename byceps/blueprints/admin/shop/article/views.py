@@ -51,7 +51,7 @@ def index_for_shop(shop_id, page):
     """List articles for that shop."""
     shop = _get_shop_or_404(shop_id)
 
-    article_number_sequence = sequence_service.find_article_number_sequence(
+    article_number_sequence = sequence_service.find_article_number_sequence_for_shop(
         shop.id
     )
     article_number_prefix = article_number_sequence.prefix
@@ -141,7 +141,7 @@ def create_form(shop_id, erroneous_form=None):
     """Show form to create an article."""
     shop = _get_shop_or_404(shop_id)
 
-    article_number_sequence = sequence_service.find_article_number_sequence(
+    article_number_sequence = sequence_service.find_article_number_sequence_for_shop(
         shop.id
     )
     article_number_prefix = article_number_sequence.prefix

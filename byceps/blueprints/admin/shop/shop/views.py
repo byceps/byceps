@@ -100,12 +100,12 @@ def view_for_shop(shop_id):
 
 
 def _get_most_recent_article_number(shop_id):
-    sequence = sequence_service.find_article_number_sequence(shop_id)
+    sequence = sequence_service.find_article_number_sequence_for_shop(shop_id)
     return sequence_service.format_article_number(sequence)
 
 
 def _get_most_recent_order_number(shop_id):
-    sequence = sequence_service.find_order_number_sequence(shop_id)
+    sequence = sequence_service.find_order_number_sequence_for_shop(shop_id)
     return sequence_service.format_order_number(sequence)
 
 

@@ -45,7 +45,9 @@ def index_for_shop(shop_id, page):
     """List orders for that shop."""
     shop = _get_shop_or_404(shop_id)
 
-    order_number_sequence = sequence_service.find_order_number_sequence(shop.id)
+    order_number_sequence = sequence_service.find_order_number_sequence_for_shop(
+        shop.id
+    )
     order_number_prefix = order_number_sequence.prefix
 
     per_page = request.args.get('per_page', type=int, default=15)

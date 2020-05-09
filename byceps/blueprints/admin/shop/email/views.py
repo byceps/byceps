@@ -129,7 +129,9 @@ def _build_order(
 ):
     order_id = generate_uuid()
 
-    order_numer_seq = sequence_service.find_order_number_sequence(shop_id)
+    order_numer_seq = sequence_service.find_order_number_sequence_for_shop(
+        shop_id
+    )
     order_number = sequence_service.format_order_number(order_numer_seq)
 
     created_at = datetime.utcnow()
