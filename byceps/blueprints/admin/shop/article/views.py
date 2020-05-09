@@ -21,7 +21,7 @@ from .....services.shop.sequence import service as sequence_service
 from .....services.shop.shop import service as shop_service
 from .....services.user import service as user_service
 from .....util.framework.blueprint import create_blueprint
-from .....util.framework.flash import flash_success
+from .....util.framework.flash import flash_error, flash_success
 from .....util.framework.templating import templated
 from .....util.templatefilters import local_tz_to_utc, utc_to_local_tz
 from .....util.views import redirect_to, respond_no_content
@@ -158,8 +158,18 @@ def create(shop_id):
     """Create an article."""
     shop = _get_shop_or_404(shop_id)
 
+    article_number_sequence = sequence_service.find_article_number_sequence_for_shop(
+        shop.id
+    )
+
     form = ArticleCreateForm(request.form)
     if not form.validate():
+        return create_form(shop_id, form)
+
+    if article_number_sequence is None:
+        flash_error(
+            f'Für diesen Shop ist keine Artikelnummer-Sequenz definiert.'
+        )
         return create_form(shop_id, form)
 
     try:
