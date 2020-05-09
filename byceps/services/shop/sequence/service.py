@@ -6,7 +6,7 @@ byceps.services.shop.sequence.service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import Optional
+from typing import List, Optional
 
 from ....database import db
 
@@ -139,13 +139,11 @@ def format_order_number(sequence: NumberSequence) -> OrderNumber:
     return OrderNumber(f'{sequence.prefix}{sequence.value:05d}')
 
 
-def find_article_number_sequence_for_shop(
+def find_article_number_sequences_for_shop(
     shop_id: ShopID,
-) -> Optional[NumberSequence]:
-    """Return the article number sequence for that shop, or `None` if
-    the sequence is not defined or the shop does not exist.
-    """
-    return _find_number_sequence(shop_id, Purpose.article)
+) -> List[NumberSequence]:
+    """Return the article number sequences defined for that shop."""
+    return _find_number_sequences(shop_id, Purpose.article)
 
 
 def find_order_number_sequence_for_shop(
@@ -169,6 +167,17 @@ def _find_number_sequence(
         return None
 
     return _db_entity_to_number_sequence(sequence)
+
+
+def _find_number_sequences(
+    shop_id: ShopID, purpose: Purpose
+) -> List[NumberSequence]:
+    sequences = DbNumberSequence.query \
+        .filter_by(shop_id=shop_id) \
+        .filter_by(_purpose=purpose.name) \
+        .all()
+
+    return [_db_entity_to_number_sequence(sequence) for sequence in sequences]
 
 
 def _db_entity_to_number_sequence(entity: DbNumberSequence) -> NumberSequence:
