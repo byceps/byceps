@@ -1,4 +1,5 @@
 {%- from 'macros/icons.html' import render_icon %}
+{%- from 'macros/user.html' import render_user_screen_name %}
 {%- from 'macros/user_avatar.html' import render_user_avatar_32 %}
 
 
@@ -9,7 +10,7 @@
       {{ render_user_avatar_32(g.current_user) }}
       <span class="label-and-name">
         <span class="label">Angemeldet als</span>
-        <span class="name">{{ g.current_user.screen_name }}</span>
+        <span class="name">{{ render_user_screen_name(g.current_user) }}</span>
       </span>
       {{ render_icon('caret-down') }}
     </a>

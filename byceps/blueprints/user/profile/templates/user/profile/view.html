@@ -1,4 +1,5 @@
 {% extends 'layout/base.html' %}
+{% from 'macros/user.html' import render_user_screen_name %}
 {% from 'macros/user_avatar.html' import render_user_avatar_128 %}
 {% set current_page = 'user_profile.view' %}
 {% set title = '%s - Benutzer'|format(user.screen_name) %}
@@ -25,7 +26,7 @@
 
       <div class="user-profile-header-column screenname-and-orgateam">
         <div class="user-profile-header-cell-top screenname">
-          {{ user.screen_name }}
+          {{ render_user_screen_name(user) }}
         </div>
         <div class="user-profile-header-cell-bottom orgateam">
           {%- if orga_team_membership %}

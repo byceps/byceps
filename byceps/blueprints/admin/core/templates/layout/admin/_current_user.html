@@ -1,4 +1,5 @@
 {%- from 'macros/icons.html' import render_icon %}
+{%- from 'macros/user.html' import render_user_screen_name %}
 {%- from 'macros/user_avatar.html' import render_user_avatar_32 %}
 
 
@@ -12,7 +13,7 @@
     <ol>
       <li class="label-and-name">
         <span class="label">Angemeldet als</span>
-        <span class="name">{{ g.current_user.screen_name }}</span>
+        <span class="name">{{ render_user_screen_name(g.current_user) }}</span>
       </li>
       <li class="divider"></li>
       <li><a href="{{ url_for('user_admin.view', user_id=g.current_user.id) }}">{{ render_icon('user-profile') }} Profil</a></li>

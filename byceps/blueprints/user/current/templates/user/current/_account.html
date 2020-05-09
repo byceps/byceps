@@ -1,11 +1,12 @@
 {% from 'macros/icons.html' import render_icon %}
+{% from 'macros/user.html' import render_user_screen_name %}
 
 
   <h2>Benutzerkonto</h2>
   <table class="index">
     <tr>
       <th>Benutzername</th>
-      <td>{{ user.screen_name }}</td>
+      <td>{{ render_user_screen_name(user) }}</td>
     </tr>
     <tr>
       <th>E-Mail-Adresse</th>

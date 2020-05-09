@@ -1,6 +1,7 @@
 {%- from 'macros/datetime.html' import render_datetime %}
 {%- from 'macros/icons.html' import render_icon %}
 {%- from 'macros/misc.html' import render_tag %}
+{%- from 'macros/user.html' import render_user_screen_name %}
 
 {%- include 'admin/user/_view_account_actions.html' %}
 
@@ -15,7 +16,7 @@
     </tr>
     <tr>
       <th>Benutzername</th>
-      <td>{{ user.screen_name }}</td>
+      <td>{{ render_user_screen_name(user) }}</td>
     </tr>
     <tr>
       <th>Erstellt</th>

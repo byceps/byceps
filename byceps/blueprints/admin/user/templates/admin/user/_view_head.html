@@ -1,4 +1,5 @@
 {%- from 'macros/admin/user.html' import render_most_important_user_flag %}
+{%- from 'macros/user.html' import render_user_screen_name %}
 {%- from 'macros/user_avatar.html' import render_user_avatar_96 %}
 
 <style>
@@ -35,7 +36,7 @@
   <div class="user-head">
     <div>{{ render_user_avatar_96(user) }}</div>
     <div>
-      <h1 class="title">{{ user.screen_name -}}</h1>
+      <h1 class="title">{{ render_user_screen_name(user) }}</h1>
       <div class="subtitle">{{ user.detail.full_name|fallback }}</div>
       <div class="flags">{{ render_most_important_user_flag(user) }}</div>
     </div>

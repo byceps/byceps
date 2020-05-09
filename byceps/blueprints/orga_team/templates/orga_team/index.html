@@ -1,4 +1,5 @@
 {% extends 'layout/base.html' %}
+{% from 'macros/user.html' import render_user_screen_name %}
 {% from 'macros/user_avatar.html' import render_user_avatar_96 %}
 {% set current_page = 'orga_team' %}
 {% set title = 'Team' %}
@@ -62,7 +63,7 @@
         {{ render_user_avatar_96(orga.user) }}
       </div>
       <div class="orga-details">
-        <strong>{{ orga.user.screen_name }}</strong><br>
+        <strong>{{ render_user_screen_name(orga.user) }}</strong><br>
         {%- if orga.full_name %}
         {{ orga.full_name }}<br>
         {%- endif -%}

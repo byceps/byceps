@@ -1,3 +1,6 @@
+{%- from 'macros/user.html' import render_user_screen_name -%}
+
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -66,7 +69,7 @@ td {
       <table>
         <tr>
           <th>Nickname:</th>
-          <td>{{ ticket.used_by.screen_name if ticket.used_by else 'nicht zugewiesen'|dim }}</td>
+          <td>{{ render_user_screen_name(ticket.used_by) if ticket.used_by else 'nicht zugewiesen'|dim }}</td>
         </tr>
         <tr>
           <th>Name:</th>
@@ -78,7 +81,7 @@ td {
       <table>
         <tr>
           <th>Nickname:</th>
-          <td>{{ ticket.owned_by.screen_name }}</td>
+          <td>{{ render_user_screen_name(ticket.owned_by) }}</td>
         </tr>
         <tr>
           <th>Name:</th>
