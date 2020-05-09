@@ -73,35 +73,41 @@ class NumberGenerationFailed(Exception):
         self.message = message
 
 
-def generate_article_number(shop_id: ShopID) -> ArticleNumber:
-    """Generate and reserve an unused, unique article number for this shop."""
-    sequence = _get_next_sequence_step(shop_id, Purpose.article)
+def generate_article_number(sequence_id: NumberSequenceID) -> ArticleNumber:
+    """Generate and reserve an unused, unique article number from this
+    sequence.
+    """
+    sequence = _get_next_sequence_step(sequence_id, Purpose.article)
 
     return format_article_number(sequence)
 
 
-def generate_order_number(shop_id: ShopID) -> OrderNumber:
-    """Generate and reserve an unused, unique order number for this shop."""
-    sequence = _get_next_sequence_step(shop_id, Purpose.order)
+def generate_order_number(sequence_id: NumberSequenceID) -> OrderNumber:
+    """Generate and reserve an unused, unique order number from this
+    sequence.
+    """
+    sequence = _get_next_sequence_step(sequence_id, Purpose.order)
 
     return format_order_number(sequence)
 
 
-def _get_next_sequence_step(
-    shop_id: ShopID, purpose: Purpose
+def _get_next_sequence_step(sequence_id: NumberSequenceID,
+    purpose: Purpose
 ) -> NumberSequence:
-    """Calculate and reserve the next sequence step for the shop and
-    purpose.
+    """Calculate and reserve the next number from this sequence.
+
+    The purpose must be specified to prevent using a sequence of the
+    wrong purpose, even though the sequence ID is unique.
     """
     sequence = DbNumberSequence.query \
-        .filter_by(shop_id=shop_id) \
+        .filter_by(id=sequence_id) \
         .filter_by(_purpose=purpose.name) \
         .with_for_update() \
         .one_or_none()
 
     if sequence is None:
         raise NumberGenerationFailed(
-            f'No sequence configured for shop "{shop_id}" '
+            f'No sequence found for ID "{sequence_id}" '
             f'and purpose "{purpose.name}".'
         )
 

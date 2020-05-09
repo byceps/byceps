@@ -173,7 +173,9 @@ def create(shop_id):
         return create_form(shop_id, form)
 
     try:
-        item_number = sequence_service.generate_article_number(shop.id)
+        item_number = sequence_service.generate_article_number(
+            article_number_sequence.id
+        )
     except sequence_service.NumberGenerationFailed as e:
         abort(500, e.message)
 

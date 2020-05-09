@@ -30,7 +30,9 @@ def test_generate_article_number_default(admin_app, shop1):
         shop.id, 'AEC-01-A'
     )
 
-    actual = sequence_service.generate_article_number(shop.id)
+    actual = sequence_service.generate_article_number(
+        article_number_sequence_id
+    )
 
     assert actual == 'AEC-01-A00001'
 
@@ -44,7 +46,9 @@ def test_generate_article_number_custom(admin_app, shop2):
         shop.id, 'XYZ-09-A', value=41,
     )
 
-    actual = sequence_service.generate_article_number(shop.id)
+    actual = sequence_service.generate_article_number(
+        article_number_sequence_id
+    )
 
     assert actual == 'XYZ-09-A00042'
 
@@ -58,7 +62,7 @@ def test_generate_order_number_default(admin_app, shop1):
         shop.id, 'AEC-01-B'
     )
 
-    actual = sequence_service.generate_order_number(shop.id)
+    actual = sequence_service.generate_order_number(order_number_sequence_id)
 
     assert actual == 'AEC-01-B00001'
 
@@ -74,7 +78,7 @@ def test_generate_order_number_custom(admin_app, shop2):
         shop.id, 'LOL-03-B', value=last_assigned_order_sequence_number
     )
 
-    actual = sequence_service.generate_order_number(shop.id)
+    actual = sequence_service.generate_order_number(order_number_sequence_id)
 
     assert actual == 'LOL-03-B00207'
 

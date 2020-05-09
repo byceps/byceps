@@ -51,7 +51,12 @@ def place_order(
     """Place an order for one or more articles."""
     shop = shop_service.get_shop(shop_id)
 
-    order_number = sequence_service.generate_order_number(shop.id)
+    order_number_sequence = sequence_service.find_order_number_sequence_for_shop(
+        shop.id
+    )
+    order_number = sequence_service.generate_order_number(
+        order_number_sequence.id
+    )
 
     order = _build_order(shop.id, order_number, orderer, created_at)
 
