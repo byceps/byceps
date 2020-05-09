@@ -17,24 +17,9 @@
   </nav>
   <h1>{{ title }} {{ render_extra_in_heading(articles.total) }}</h1>
 
-  {%- if article_number_prefix %}
-  <table class="index">
-    <tr>
-      <th>Artikelnummer-Präfix</th>
-      <td>{{ article_number_prefix }}</td>
-    </tr>
-  </table>
-  {%- else %}
-  <div class="notification color-danger">Der Artikelnummer-Präfix für diesen Shop muss erst konfiguriert werden, bevor Artikel angelegt werden können.</div>
-  {%- endif %}
-
   {%- if g.current_user.has_permission(ShopArticlePermission.create) %}
   <div class="button-row button-row--right">
-    {%- if article_number_prefix %}
     <a class="button" href="{{ url_for('.create_form', shop_id=shop.id) }}">{{ render_icon('add') }} <span>Artikel anlegen</span></a>
-    {%- else %}
-    <span class="button button--disabled">{{ render_icon('add') }} <span>Artikel anlegen</span></span>
-    {%- endif %}
   </div>
   {%- endif %}
 

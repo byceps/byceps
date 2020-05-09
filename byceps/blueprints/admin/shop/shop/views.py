@@ -71,7 +71,6 @@ def view_for_shop(shop_id):
     """Show the shop."""
     shop = _get_shop_or_404(shop_id)
 
-    most_recent_article_number = _get_most_recent_article_number(shop.id)
     most_recent_order_number = _get_most_recent_order_number(shop.id)
 
     article_count = article_service.count_articles_for_shop(shop.id)
@@ -86,7 +85,6 @@ def view_for_shop(shop_id):
     return {
         'shop': shop,
 
-        'most_recent_article_number': most_recent_article_number,
         'most_recent_order_number': most_recent_order_number,
 
         'article_count': article_count,
@@ -97,11 +95,6 @@ def view_for_shop(shop_id):
 
         'order_actions_by_article_number': order_actions_by_article_number,
     }
-
-
-def _get_most_recent_article_number(shop_id):
-    sequence = sequence_service.find_article_number_sequence_for_shop(shop_id)
-    return sequence_service.format_article_number(sequence)
 
 
 def _get_most_recent_order_number(shop_id):

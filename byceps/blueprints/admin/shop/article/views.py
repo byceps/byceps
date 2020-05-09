@@ -51,11 +51,6 @@ def index_for_shop(shop_id, page):
     """List articles for that shop."""
     shop = _get_shop_or_404(shop_id)
 
-    article_number_sequence = sequence_service.find_article_number_sequence_for_shop(
-        shop.id
-    )
-    article_number_prefix = article_number_sequence.prefix
-
     per_page = request.args.get('per_page', type=int, default=15)
     articles = article_service.get_articles_for_shop_paginated(
         shop.id, page, per_page
@@ -63,7 +58,6 @@ def index_for_shop(shop_id, page):
 
     return {
         'shop': shop,
-        'article_number_prefix': article_number_prefix,
         'articles': articles,
     }
 
@@ -144,7 +138,7 @@ def create_form(shop_id, erroneous_form=None):
     article_number_sequence = sequence_service.find_article_number_sequence_for_shop(
         shop.id
     )
-    article_number_prefix = article_number_sequence.prefix
+    article_number_sequence_available = (article_number_sequence is not None)
 
     form = erroneous_form if erroneous_form else ArticleCreateForm(
         price=Decimal('0.00'),
@@ -153,7 +147,7 @@ def create_form(shop_id, erroneous_form=None):
 
     return {
         'shop': shop,
-        'article_number_prefix': article_number_prefix,
+        'article_number_sequence_available': article_number_sequence_available,
         'form': form,
     }
 
