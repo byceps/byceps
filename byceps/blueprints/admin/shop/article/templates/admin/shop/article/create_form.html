@@ -18,8 +18,8 @@
   {%- else %}
   <form action="{{ url_for('.create', shop_id=shop.id) }}" method="post">
     {% call form_fieldset() %}
-      {{ form_field(form.article_number_sequence_id, required='required', show_label=False) }}
-      {{ form_field(form.description, maxlength=80, required='required', autofocus='autofocus') }}
+      {{ form_field(form.article_number_sequence_id, required='required', autofocus='autofocus') }}
+      {{ form_field(form.description, maxlength=80, required='required') }}
       {{ form_field(form.price, size=7, maxlength=7, style='text-align: right; width: 5.5rem;', required='required', note='€') }}
       {{ form_field(form.tax_rate, list='tax_rates', size=5, maxlength=5, style='text-align: right; width: 5.5rem;', required='required', note='%') }}
       {{ form_datalist('tax_rates', ['0.00', '0.07', '0.19']) }}

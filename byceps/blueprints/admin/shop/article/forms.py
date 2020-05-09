@@ -10,7 +10,6 @@ from wtforms import (
     BooleanField,
     DateTimeField,
     DecimalField,
-    HiddenField,
     IntegerField,
     SelectField,
     StringField,
@@ -21,11 +20,18 @@ from .....util.l10n import LocalizedForm
 
 
 class ArticleCreateForm(LocalizedForm):
-    article_number_sequence_id = HiddenField('Artikelnummer-Sequenz')
+    article_number_sequence_id = SelectField('Artikelnummer-Sequenz')
     description = StringField('Beschreibung')
     price = DecimalField('Stückpreis', places=2, validators=[InputRequired()])
     tax_rate = DecimalField('Steuersatz', places=3, validators=[InputRequired()])
     quantity = IntegerField('Anzahl verfügbar', validators=[InputRequired()])
+
+    def set_article_number_sequence_choices(self, sequences):
+        sequences.sort(key=lambda seq: seq.prefix)
+
+        choices = [(str(seq.id), seq.prefix) for seq in sequences]
+        choices.insert(0, ('', '<keine>'))
+        self.article_number_sequence_id .choices = choices
 
 
 class ArticleUpdateForm(ArticleCreateForm):

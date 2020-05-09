@@ -138,13 +138,17 @@ def create_form(shop_id, erroneous_form=None):
     article_number_sequence = sequence_service.find_article_number_sequence_for_shop(
         shop.id
     )
-    article_number_sequence_available = (article_number_sequence is not None)
+    article_number_sequences = []
+    if article_number_sequence:
+        article_number_sequences.append(article_number_sequence)
+
+    article_number_sequence_available = bool(article_number_sequences)
 
     form = erroneous_form if erroneous_form else ArticleCreateForm(
-        article_number_sequence_id=article_number_sequence.id,
         price=Decimal('0.00'),
         tax_rate=Decimal('0.19'),
         quantity=0)
+    form.set_article_number_sequence_choices(article_number_sequences)
 
     return {
         'shop': shop,
@@ -159,12 +163,25 @@ def create(shop_id):
     """Create an article."""
     shop = _get_shop_or_404(shop_id)
 
+    shop_article_number_sequence = sequence_service.find_article_number_sequence_for_shop(
+        shop.id
+    )
+    article_number_sequences = []
+    if shop_article_number_sequence:
+        article_number_sequences.append(shop_article_number_sequence)
+
     form = ArticleCreateForm(request.form)
+    form.set_article_number_sequence_choices(article_number_sequences)
     if not form.validate():
         return create_form(shop_id, form)
 
+    article_number_sequence_id = form.article_number_sequence_id.data
+    if not article_number_sequence_id:
+        flash_error(f'Es wurde keine gültige Artikelnummer-Sequenz angegeben.')
+        return create_form(shop_id, form)
+
     article_number_sequence = sequence_service.find_article_number_sequence(
-        form.article_number_sequence_id.data
+        article_number_sequence_id
     )
     if (article_number_sequence is None) or (
         article_number_sequence.shop_id != shop.id
