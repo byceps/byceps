@@ -22,8 +22,9 @@ a {
 
 @media (min-width: 60rem) { /* 960px / 16px */
   .container {
-    max-width: 960px;
-    width: 960px;
+    --layout-width: 1080px;
+    max-width: var(--layout-width);
+    width: var(--layout-width);
   }
 }
 
