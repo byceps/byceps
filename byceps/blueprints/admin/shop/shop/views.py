@@ -99,6 +99,10 @@ def view_for_shop(shop_id):
 
 def _get_most_recent_order_number(shop_id):
     sequence = sequence_service.find_order_number_sequence_for_shop(shop_id)
+
+    if sequence is None:
+        return None
+
     return sequence_service.format_order_number(sequence)
 
 

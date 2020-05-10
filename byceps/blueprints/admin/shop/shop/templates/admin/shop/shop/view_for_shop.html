@@ -41,10 +41,12 @@
       <th>Shop-ID</th>
       <td>{{ shop.id }}</td>
     </tr>
+    {%- if most_recent_order_number is not none %}
     <tr>
       <th>Letzte Bestellnummer</th>
       <td>{{ most_recent_order_number }}</td>
     </tr>
+    {%- endif %}
     <tr>
       <th>Status</th>
       <td>{{ render_tag('geschlossen', icon='disabled', class='color-danger') if shop.closed else render_tag('geöffnet', icon='success', class='color-success') }}</td>
