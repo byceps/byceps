@@ -1,0 +1,36 @@
+{% extends 'layouts/admin/shop/storefront.html' %}
+{% from 'macros/misc.html' import render_tag %}
+{% set current_page_shop = shop %}
+{% set title = 'Storefront ' ~ storefront.id %}
+
+{% block body %}
+
+  <nav class="breadcrumbs">
+    <ol>
+      <li><a href="{{ url_for('.index_for_shop', shop_id=shop.id) }}">Storefronts</a></li>
+    </ol>
+  </nav>
+  <h1>{{ title }}</h1>
+
+  <table class="index">
+    <tr>
+      <th>Shop</th>
+      <td><a href="{{ url_for('shop_shop_admin.view_for_shop', shop_id=shop.id) }}">{{ shop.title }}</a></td>
+    </tr>
+    <tr>
+      <th>Bestellnummer-Präfix</th>
+      <td>{{ storefront.order_number_sequence_id }}</td>
+    </tr>
+    <tr>
+      <th>Status</th>
+      <td>
+        {%- if storefront.closed -%}
+        {{ render_tag('geschlossen', icon='disabled', class='color-disabled') }}
+        {%- else -%}
+        {{ render_tag('geöffnet', icon='success', class='color-success') }}
+        {%- endif -%}
+      </td>
+    </tr>
+  </table>
+
+{%- endblock %}

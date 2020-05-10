@@ -72,9 +72,27 @@ def find_article_number_sequence(
     """Return the article number sequence, or `None` if the sequence ID
     is unknown or if the sequence's purpose is not article numbers.
     """
+    return _find_sequence(sequence_id, Purpose.article)
+
+
+def find_order_number_sequence(
+    sequence_id: NumberSequenceID,
+) -> Optional[NumberSequence]:
+    """Return the order number sequence, or `None` if the sequence ID
+    is unknown or if the sequence's purpose is not order numbers.
+    """
+    return _find_sequence(sequence_id, Purpose.order)
+
+
+def _find_sequence(
+    sequence_id: NumberSequenceID, purpose: Purpose
+) -> Optional[NumberSequence]:
+    """Return the number sequence, or `None` if the sequence ID is
+    unknown or if the sequence's purpose is not the given one.
+    """
     return DbNumberSequence.query \
         .filter_by(id=sequence_id) \
-        .filter_by(_purpose=Purpose.article.name) \
+        .filter_by(_purpose=purpose.name) \
         .one_or_none()
 
 
@@ -144,6 +162,13 @@ def find_article_number_sequences_for_shop(
 ) -> List[NumberSequence]:
     """Return the article number sequences defined for that shop."""
     return _find_number_sequences(shop_id, Purpose.article)
+
+
+def find_order_number_sequences_for_shop(
+    shop_id: ShopID,
+) -> List[NumberSequence]:
+    """Return the order number sequences defined for that shop."""
+    return _find_number_sequences(shop_id, Purpose.order)
 
 
 def find_order_number_sequence_for_shop(

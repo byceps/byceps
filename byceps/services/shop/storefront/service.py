@@ -6,7 +6,7 @@ byceps.services.shop.storefront.service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import Optional
+from typing import Optional, Set
 
 from ....database import db
 
@@ -85,6 +85,15 @@ def _get_db_storefront(storefront_id: StorefrontID) -> DbStorefront:
         raise UnknownStorefrontId(storefront_id)
 
     return storefront
+
+
+def get_storefronts_for_shop(shop_id: ShopID) -> Set[Storefront]:
+    """Return all storefronts for that shop."""
+    rows = DbStorefront.query \
+        .filter_by(shop_id=shop_id) \
+        .all()
+
+    return {_db_entity_to_storefront(row) for row in rows}
 
 
 def _db_entity_to_storefront(storefront: DbStorefront) -> Storefront:

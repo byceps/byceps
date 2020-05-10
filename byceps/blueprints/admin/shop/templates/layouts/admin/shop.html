@@ -13,6 +13,12 @@
         required_permission=ShopPermission.view,
         icon='shop')
       .add_item(
+        url_for('shop_storefront_admin.index_for_shop', shop_id=shop.id),
+        'Storefronts',
+        id='storefronts',
+        required_permission=ShopPermission.view,
+        icon='shop')
+      .add_item(
         url_for('shop_article_admin.index_for_shop', shop_id=shop.id),
         'Artikel',
         id='articles',
