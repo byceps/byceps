@@ -57,7 +57,7 @@ def find_storefront(storefront_id: StorefrontID) -> Optional[Storefront]:
     return _db_entity_to_storefront(storefront)
 
 
-def _find_db_storefront(storefront_id: StorefrontID) -> Optional[Storefront]:
+def _find_db_storefront(storefront_id: StorefrontID) -> Optional[DbStorefront]:
     """Return the database entity for the storefront with that id, or `None`
     if not found.
     """
@@ -74,7 +74,7 @@ def get_storefront(storefront_id: StorefrontID) -> Storefront:
     return storefront
 
 
-def _get_db_storefront(storefront_id: StorefrontID) -> Storefront:
+def _get_db_storefront(storefront_id: StorefrontID) -> DbStorefront:
     """Return the database entity for the storefront with that id.
 
     Raise an exception if not found.

@@ -47,7 +47,7 @@ def find_shop(shop_id: ShopID) -> Optional[Shop]:
     return _db_entity_to_shop(shop)
 
 
-def _find_db_shop(shop_id: ShopID) -> Optional[Shop]:
+def _find_db_shop(shop_id: ShopID) -> Optional[DbShop]:
     """Return the database entity for the shop with that id, or `None`
     if not found.
     """
@@ -64,7 +64,7 @@ def get_shop(shop_id: ShopID) -> Shop:
     return shop
 
 
-def _get_db_shop(shop_id: ShopID) -> Shop:
+def _get_db_shop(shop_id: ShopID) -> DbShop:
     """Return the database entity for the shop with that id.
 
     Raise an exception if not found.
