@@ -160,7 +160,7 @@ def build_user(
     if email_address is not None:
         normalized_email_address = _normalize_email_address(email_address)
     else:
-        None
+        normalized_email_address = None
 
     user = DbUser(created_at, normalized_screen_name, normalized_email_address)
 
