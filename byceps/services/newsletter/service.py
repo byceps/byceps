@@ -106,7 +106,7 @@ def _build_query_for_current_subscribers(list_id: ListID) -> BaseQuery:
 
 
 def _get_subscriber_details(user_ids: Set[UserID]) -> Iterator[Subscriber]:
-    """Yield screen name and email address of each user (if initialized)."""
+    """Yield screen name and email address of each eligible user."""
     if not user_ids:
         return []
 
@@ -118,6 +118,7 @@ def _get_subscriber_details(user_ids: Set[UserID]) -> Iterator[Subscriber]:
         .filter(DbUser.id.in_(user_ids)) \
         .filter(DbUser.email_address != None) \
         .filter_by(initialized=True) \
+        .filter_by(email_address_verified=True) \
         .filter_by(suspended=False) \
         .filter_by(deleted=False) \
         .all()
