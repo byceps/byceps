@@ -234,7 +234,7 @@ def request_password_reset():
         screen_name, case_insensitive=True
     )
 
-    if user is None:
+    if (user is None) or user.deleted:
         flash_error(f'Der Benutzername "{screen_name}" ist unbekannt.')
         return request_password_reset_form(form)
 
@@ -250,6 +250,10 @@ def request_password_reset():
             'wurde noch nicht bestätigt.'
         )
         return redirect_to('user_email_address.request_confirmation_email')
+
+    if user.suspended:
+        flash_error(f'Das Benutzerkonto "{screen_name}" ist gesperrt.')
+        return request_password_reset_form(form)
 
     sender = _get_sender()
 
@@ -315,6 +319,11 @@ def _verify_password_reset_token(token: str) -> VerificationToken:
             'Es wurde kein gültiges Token angegeben. '
             'Ein Token ist nur 24 Stunden lang gültig.'
         )
+        abort(404)
+
+    user = user_service.find_active_user(verification_token.user_id)
+    if user is None:
+        flash_error('Es wurde kein gültiges Token angegeben.')
         abort(404)
 
     return verification_token
