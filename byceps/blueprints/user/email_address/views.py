@@ -50,7 +50,7 @@ def request_confirmation_email():
         screen_name, case_insensitive=True
     )
 
-    if user is None:
+    if (user is None) or user.deleted:
         flash_error(f'Der Benutzername "{screen_name}" ist unbekannt.')
         return request_confirmation_email_form(form)
 
@@ -65,6 +65,10 @@ def request_confirmation_email():
             f'Die E-Mail-Adresse für den Benutzernamen "{user.screen_name}" '
             'wurde bereits bestätigt.'
         )
+        return request_confirmation_email_form()
+
+    if user.suspended:
+        flash_error(f'Das Benutzerkonto "{screen_name}" ist gesperrt.')
         return request_confirmation_email_form()
 
     email_address_confirmation_service.send_email_address_confirmation_email(
@@ -93,6 +97,9 @@ def confirm(token):
         abort(404)
 
     user = user_service.get_db_user(verification_token.user_id)
+    if (user is None) or user.initialized or user.suspended or user.deleted:
+        flash_error('Es wurde kein gültiges Token angegeben.')
+        abort(404)
 
     event = email_address_confirmation_service.confirm_email_address(
         verification_token
