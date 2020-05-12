@@ -11,6 +11,7 @@ from typing import Optional
 from ...email import service as email_service
 from ...email.transfer.models import Sender
 from ...user.models.user import User
+from ...user import service as user_service
 from ...verification_token.models import Token
 from ...verification_token import service as verification_token_service
 
@@ -41,7 +42,7 @@ def prepare_password_reset(
 
 def reset_password(verification_token: Token, password: str) -> None:
     """Reset the user's password."""
-    user = verification_token.user
+    user = user_service.get_db_user(verification_token.user_id)
 
     verification_token_service.delete_token(verification_token)
 

@@ -13,6 +13,7 @@ from ...typing import UserID
 from ..email import service as email_service
 from ..site import service as site_service
 from ..site.transfer.models import SiteID
+from ..user import service as user_service
 from ..verification_token.models import Token
 from ..verification_token import service as verification_token_service
 
@@ -54,7 +55,7 @@ def confirm_email_address(
     """Confirm the email address of the user assigned with that
     verification token.
     """
-    user = verification_token.user
+    user = user_service.get_db_user(verification_token.user_id)
 
     user.email_address_verified = True
     db.session.commit()

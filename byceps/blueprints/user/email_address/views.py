@@ -92,7 +92,7 @@ def confirm(token):
     if verification_token is None:
         abort(404)
 
-    user = verification_token.user
+    user = user_service.get_db_user(verification_token.user_id)
 
     event = email_address_confirmation_service.confirm_email_address(
         verification_token
