@@ -16,8 +16,6 @@ from ...database import BaseQuery, db
 from ...typing import UserID
 from ...util.instances import ReprBuilder
 
-from ..user.models.user import User
-
 
 Purpose = Enum('Purpose',
     ['email_address_confirmation', 'password_reset', 'terms_consent'])
@@ -45,7 +43,6 @@ class Token(db.Model):
     token = db.Column(db.UnicodeText, default=_generate_token_value, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=False)
-    user = db.relationship(User)
     _purpose = db.Column('purpose', db.UnicodeText, index=True, nullable=False)
 
     def __init__(self, user_id: UserID, purpose: Purpose) -> None:
