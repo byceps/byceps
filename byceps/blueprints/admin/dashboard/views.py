@@ -14,7 +14,6 @@ from ....services.brand import (
     service as brand_service,
     settings_service as brand_settings_service,
 )
-from ....services.news import service as news_service
 from ....services.newsletter import service as newsletter_service
 from ....services.orga import service as orga_service
 from ....services.orga import birthday_service as orga_birthday_service
@@ -105,8 +104,6 @@ def view_brand(brand_id):
 
     orga_count = orga_service.count_orgas_for_brand(brand.id)
 
-    news_item_count = news_service.count_items_for_brand(brand.id)
-
     newsletter_list_id = brand_settings_service.find_setting_value(
         brand.id, 'newsletter_list_id'
     )
@@ -129,8 +126,6 @@ def view_brand(brand_id):
         'party_count': party_count,
 
         'orga_count': orga_count,
-
-        'news_item_count': news_item_count,
 
         'newsletter_list': newsletter_list,
         'newsletter_subscriber_count': newsletter_subscriber_count,

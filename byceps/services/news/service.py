@@ -11,7 +11,7 @@ from typing import Dict, Optional, Sequence
 
 from ...database import db, paginate, Pagination, Query
 from ...events.news import NewsItemPublished
-from ...typing import BrandID, UserID
+from ...typing import UserID
 
 from .channel_service import _db_entity_to_channel
 from .models.channel import Channel as DbChannel
@@ -222,14 +222,6 @@ def get_current_item_version(item_id: ItemID) -> DbItemVersion:
 def find_item_version(version_id: ItemVersionID) -> DbItemVersion:
     """Return the item version with that ID, or `None` if not found."""
     return DbItemVersion.query.get(version_id)
-
-
-def count_items_for_brand(brand_id: BrandID) -> int:
-    """Return the number of news items for that brand."""
-    return DbItem.query \
-        .join(DbChannel) \
-        .filter(DbChannel.brand_id == brand_id) \
-        .count()
 
 
 def get_item_count_by_channel_id() -> Dict[ChannelID, int]:
