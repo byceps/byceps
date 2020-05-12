@@ -25,6 +25,7 @@ from ..authorization import service as authorization_service
 from . import event_service
 from .models.detail import UserDetail as DbUserDetail
 from .models.user import User as DbUser
+from . import service as user_service
 
 
 def initialize_account(
@@ -288,12 +289,7 @@ def _anonymize_account(user: DbUser) -> None:
 
 def _get_user(user_id: UserID) -> DbUser:
     """Return the user with that ID, or raise an exception."""
-    user = DbUser.query.get(user_id)
-
-    if user is None:
-        raise ValueError(f"Unknown user ID '{user_id}'")
-
-    return user
+    return user_service.get_db_user(user_id)
 
 
 def _get_user_detail(user_id: UserID) -> DbUserDetail:
