@@ -50,7 +50,7 @@ def send_email_address_confirmation_email(
 
 
 def confirm_email_address(
-    verification_token: Token
+    verification_token: Token,
 ) -> UserEmailAddressConfirmed:
     """Confirm the email address of the user assigned with that
     verification token.
@@ -64,8 +64,10 @@ def confirm_email_address(
     # might be allowed in the future. At that point, the verification
     # token should be extended to include the e-mail address it refers
     # to, and that value should be persisted with user event instead.
-    data = {'email_address': user.email_address}
-    event = user_event_service.create_event('email-address-confirmed', user.id, data)
+    event_data = {'email_address': user.email_address}
+    event = user_event_service.create_event(
+        'user-email-address-confirmed', user.id, event_data
+    )
 
     if not user.initialized:
         command_service.initialize_account(user.id)

@@ -105,7 +105,7 @@
             <div style="margin-top: 0.5rem;">Begründung: <em>{{ event.data.reason }}</em></div>
             {%- endif %}
           {%- endset %}
-        {%- elif event.event == 'email-address-confirmed' %}
+        {%- elif event.event == 'user-email-address-confirmed' %}
           {%- set icon_name = 'email' %}
           {%- set body %}
             <span class="user-link">{{ render_user_avatar_20_and_admin_link(user) }}</span>
