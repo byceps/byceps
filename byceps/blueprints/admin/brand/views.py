@@ -12,7 +12,6 @@ from ....services.brand import (
     service as brand_service,
     settings_service as brand_settings_service,
 )
-from ....services.news import service as news_service
 from ....services.orga import service as orga_service
 from ....services.party import service as party_service
 from ....util.framework.blueprint import create_blueprint
@@ -44,13 +43,10 @@ def index():
 
     orga_count_by_brand_id = orga_service.get_person_count_by_brand_id()
 
-    news_item_count_by_brand_id = news_service.get_item_count_by_brand_id()
-
     return {
         'brands': brands,
         'party_count_by_brand_id': party_count_by_brand_id,
         'orga_count_by_brand_id': orga_count_by_brand_id,
-        'news_item_count_by_brand_id': news_item_count_by_brand_id,
     }
 
 

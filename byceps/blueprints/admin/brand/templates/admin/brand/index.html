@@ -21,7 +21,6 @@
         <th>Name<br>ID</th>
         <th class="centered">Partys</th>
         <th class="centered">Organisatoren</th>
-        <th class="centered">Newsposts</th>
       </tr>
     </thead>
     <tbody>
@@ -33,7 +32,6 @@
         </td>
         <td class="centered bignumber">{{ party_count_by_brand_id[brand.id] }}</td>
         <td class="centered bignumber">{{ orga_count_by_brand_id[brand.id] }}</td>
-        <td class="centered bignumber">{{ news_item_count_by_brand_id[brand.id] }}</td>
       </tr>
       {%- endfor %}
     </tbody>

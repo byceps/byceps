@@ -13,8 +13,6 @@ from ...database import db, paginate, Pagination, Query
 from ...events.news import NewsItemPublished
 from ...typing import BrandID, UserID
 
-from ..brand.models.brand import Brand as DbBrand
-
 from .channel_service import _db_entity_to_channel
 from .models.channel import Channel as DbChannel
 from .models.item import (
@@ -232,21 +230,6 @@ def count_items_for_brand(brand_id: BrandID) -> int:
         .join(DbChannel) \
         .filter(DbChannel.brand_id == brand_id) \
         .count()
-
-
-def get_item_count_by_brand_id() -> Dict[BrandID, int]:
-    """Return news item count (including 0) per brand, indexed by brand ID."""
-    brand_ids_and_item_counts = db.session \
-        .query(
-            DbBrand.id,
-            db.func.count(DbItem.id)
-        ) \
-        .outerjoin(DbChannel, DbChannel.brand_id == DbBrand.id) \
-        .outerjoin(DbItem) \
-        .group_by(DbBrand.id) \
-        .all()
-
-    return dict(brand_ids_and_item_counts)
 
 
 def get_item_count_by_channel_id() -> Dict[ChannelID, int]:
