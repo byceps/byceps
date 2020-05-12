@@ -22,7 +22,7 @@ from ..newsletter import command_service as newsletter_command_service
 from ..newsletter.transfer.models import Subscription as NewsletterSubscription
 from ..site.transfer.models import SiteID
 
-from . import email_address_confirmation_service
+from . import email_address_verification_service
 from . import event_service
 from .models.detail import UserDetail as DbUserDetail
 from .models.user import User as DbUser
@@ -177,7 +177,7 @@ def request_email_address_confirmation(
     """
     normalized_email_address = _normalize_email_address(email_address)
 
-    email_address_confirmation_service.send_email_address_confirmation_email(
+    email_address_verification_service.send_email_address_confirmation_email(
         normalized_email_address, user.screen_name, user.id, site_id
     )
 

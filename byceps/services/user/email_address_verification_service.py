@@ -1,5 +1,5 @@
 """
-byceps.services.user.email_address_confirmation_service
+byceps.services.user.email_address_verification_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2020 Jochen Kupperschmidt

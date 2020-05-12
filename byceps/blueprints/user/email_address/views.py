@@ -8,7 +8,7 @@ byceps.blueprints.user.email_address.views
 
 from flask import abort, g, request
 
-from ....services.user import email_address_confirmation_service
+from ....services.user import email_address_verification_service
 from ....services.user import service as user_service
 from ....services.verification_token import (
     service as verification_token_service,
@@ -71,7 +71,7 @@ def request_confirmation_email():
         flash_error(f'Das Benutzerkonto "{screen_name}" ist gesperrt.')
         return request_confirmation_email_form()
 
-    email_address_confirmation_service.send_email_address_confirmation_email(
+    email_address_verification_service.send_email_address_confirmation_email(
         user.email_address, user.screen_name, user.id, g.site_id
     )
 
@@ -101,7 +101,7 @@ def confirm(token):
         flash_error('Es wurde kein gültiges Token angegeben.')
         abort(404)
 
-    event = email_address_confirmation_service.confirm_email_address(
+    event = email_address_verification_service.confirm_email_address(
         verification_token
     )
 
