@@ -53,7 +53,7 @@ def _find_user_by_screen_name_or_email_address(
 
 def _require_user_account_is_active(user: User) -> None:
     """Raise exception if user account has not been initialized, is
-    suspeded, or has been deleted.
+    suspended, or has been deleted.
     """
     if (not user.initialized) or user.suspended or user.deleted:
         raise AuthenticationFailed()
