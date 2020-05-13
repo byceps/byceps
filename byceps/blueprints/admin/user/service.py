@@ -291,6 +291,7 @@ def _get_additional_data(
             'user-created',
             'user-deleted',
             'user-email-address-changed',
+            'user-email-address-invalidated',
             'user-initialized',
             'user-screen-name-changed',
             'user-suspended',

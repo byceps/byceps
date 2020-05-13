@@ -51,6 +51,11 @@ class UserEmailAddressConfirmed(_UserEvent):
 
 
 @dataclass(frozen=True)
+class UserEmailAddressInvalidated(_UserEvent):
+    pass
+
+
+@dataclass(frozen=True)
 class UserScreenNameChanged(_UserEvent):
     old_screen_name: str
     new_screen_name: str

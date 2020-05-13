@@ -6,8 +6,13 @@ byceps.services.user.email_address_verification_service
 :License: Modified BSD, see LICENSE for details.
 """
 
+from typing import Optional
+
 from ...database import db
-from ...events.user import UserEmailAddressConfirmed
+from ...events.user import (
+    UserEmailAddressConfirmed,
+    UserEmailAddressInvalidated,
+)
 from ...typing import UserID
 
 from ..email import service as email_service
@@ -75,5 +80,34 @@ def confirm_email_address(
     verification_token_service.delete_token(verification_token)
 
     return UserEmailAddressConfirmed(
+        occurred_at=event.occurred_at, user_id=user.id, initiator_id=user.id
+    )
+
+
+def invalidate_email_address(
+    user_id: UserID, reason: str, *, initiator_id: Optional[UserID] = None,
+) -> UserEmailAddressInvalidated:
+    """Invalidate the user's email address by marking it as unverified.
+
+    This might be appropriate if an email to the user's address bounced
+    because of a permanent issue (unknown mailbox, unknown domain, etc.)
+    but not a temporary one (for example: mailbox full).
+    """
+    user = user_service.get_db_user(user_id)
+
+    user.email_address_verified = False
+    db.session.commit()
+
+    event_data = {
+        'email_address': user.email_address,
+        'reason': reason,
+    }
+    if initiator_id:
+        event_data['initiator_id'] = str(initiator_id)
+    event = user_event_service.create_event(
+        'user-email-address-invalidated', user.id, event_data
+    )
+
+    return UserEmailAddressInvalidated(
         occurred_at=event.occurred_at, user_id=user.id, initiator_id=user.id
     )
