@@ -10,6 +10,6 @@ from marshmallow import fields, Schema
 
 
 class AwardBadgeToUserRequest(Schema):
-    badge_slug = fields.Str()
-    user_id = fields.UUID()
-    initiator_id = fields.UUID()
+    badge_slug = fields.Str(required=True)
+    user_id = fields.UUID(required=True)
+    initiator_id = fields.UUID(required=True)

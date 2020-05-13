@@ -10,15 +10,15 @@ from marshmallow import fields, Schema
 
 
 class CreateMatchCommentRequest(Schema):
-    match_id = fields.UUID()
-    creator_id = fields.UUID()
-    body = fields.Str()
+    match_id = fields.UUID(required=True)
+    creator_id = fields.UUID(required=True)
+    body = fields.Str(required=True)
 
 
 class UpdateMatchCommentRequest(Schema):
-    editor_id = fields.UUID()
-    body = fields.Str()
+    editor_id = fields.UUID(required=True)
+    body = fields.Str(required=True)
 
 
 class ModerateMatchCommentRequest(Schema):
-    initiator_id = fields.UUID()
+    initiator_id = fields.UUID(required=True)

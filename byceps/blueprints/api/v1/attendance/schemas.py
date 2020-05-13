@@ -10,5 +10,5 @@ from marshmallow import fields, Schema
 
 
 class CreateArchivedAttendanceRequest(Schema):
-    user_id = fields.UUID()
-    party_id = fields.Str()
+    user_id = fields.UUID(required=True)
+    party_id = fields.Str(required=True)
