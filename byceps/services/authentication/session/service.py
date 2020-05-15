@@ -10,11 +10,12 @@ from datetime import datetime
 from typing import Optional
 from uuid import uuid4
 
-from ....database import db, insert_ignore_on_conflict
+from ....database import db, insert_ignore_on_conflict, upsert
 from ....typing import UserID
 
 from ..exceptions import AuthenticationFailed
 
+from .models.recent_login import RecentLogin as DbRecentLogin
 from .models.session_token import SessionToken as DbSessionToken
 
 
@@ -95,3 +96,16 @@ def _is_token_valid_for_user(token: str, user_id: UserID) -> bool:
         .exists()
 
     return db.session.query(subquery).scalar()
+
+
+def record_recent_login(user_id: UserID) -> datetime:
+    """Store the time of the user's most recent login."""
+    occurred_at = datetime.utcnow()
+
+    table = DbRecentLogin.__table__
+    identifier = {'user_id': user_id}
+    replacement = {'occurred_at': occurred_at}
+
+    upsert(table, identifier, replacement)
+
+    return occurred_at

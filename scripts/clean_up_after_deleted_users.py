@@ -13,6 +13,7 @@ import click
 from byceps.database import db
 from byceps.services.authentication.password.models import Credential
 from byceps.services.authentication.session.models.session_token import (
+    RecentLogin,
     SessionToken,
 )
 from byceps.services.authorization.models import UserRole
@@ -54,6 +55,7 @@ def execute(dry_run, user_ids):
         delete_records(label, delete_func, user_ids)
 
     delete('authentication credentials', delete_authn_credentials)
+    delete('recent logins', delete_authn_recent_logins)
     delete('session tokens', delete_authn_session_tokens)
     delete('authorization role assignments', delete_authz_user_roles)
     delete('board category view marks', delete_board_category_lastviews)
@@ -93,6 +95,11 @@ def delete_records(
 def delete_authn_credentials(user_ids: Set[UserID]) -> int:
     """Delete authentication credentials for the given users."""
     return _execute_delete_for_users_query(Credential, user_ids)
+
+
+def delete_authn_recent_logins(user_ids: Set[UserID]) -> int:
+    """Delete recent logins for the given users."""
+    return _execute_delete_for_users_query(RecentLogin, user_ids)
 
 
 def delete_authn_session_tokens(user_ids: Set[UserID]) -> int:
