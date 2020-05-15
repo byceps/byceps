@@ -14,6 +14,12 @@
   </nav>
   <h1>{{ title }} {{ render_extra_in_heading(storefronts|length) }}</h1>
 
+  {%- if g.current_user.has_permission(ShopPermission.create) %}
+  <div class="button-row button-row--right">
+    <a class="button" href="{{ url_for('.create_form', shop_id=shop.id) }}">{{ render_icon('add') }} <span>Storefront anlegen</span></a>
+  </div>
+  {%- endif %}
+
   {%- if storefronts %}
   <table class="index wide">
     <thead>

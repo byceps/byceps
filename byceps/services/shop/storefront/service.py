@@ -38,6 +38,22 @@ def create_storefront(
     return _db_entity_to_storefront(storefront)
 
 
+def update_storefront(
+    storefront_id: StorefrontID,
+    order_number_sequence_id: NumberSequenceID,
+    closed: bool,
+) -> Storefront:
+    """Update a storefront."""
+    storefront = _get_db_storefront(storefront_id)
+
+    storefront.order_number_sequence_id = order_number_sequence_id
+    storefront.closed = closed
+
+    db.session.commit()
+
+    return _db_entity_to_storefront(storefront)
+
+
 def delete_storefront(storefront_id: StorefrontID) -> None:
     """Delete a storefront."""
     db.session.query(DbStorefront) \

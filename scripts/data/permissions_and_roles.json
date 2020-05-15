@@ -217,8 +217,16 @@
       "title": "Shop-Bestellungen anzeigen"
     },
     {
+      "id": "shop.create",
+      "title": "Shops und Storefronts erstellen"
+    },
+    {
+      "id": "shop.update",
+      "title": "Shops und Storefronts bearbeiten"
+    },
+    {
       "id": "shop.view",
-      "title": "Shops anzeigen"
+      "title": "Shops und Storefronts anzeigen"
     },
     {
       "id": "site.create",
@@ -474,6 +482,8 @@
     },
     {
       "assigned_permissions": [
+        "shop.create",
+        "shop.update",
         "shop.view"
       ],
       "id": "shop_admin",

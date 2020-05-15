@@ -12,6 +12,12 @@
   </nav>
   <h1>{{ title }}</h1>
 
+  {%- if g.current_user.has_permission(ShopPermission.update) %}
+  <div class="button-row button-row--right">
+    <a class="button" href="{{ url_for('.update_form', storefront_id=storefront.id) }}">{{ render_icon('edit') }} <span>Bearbeiten</span></a>
+  </div>
+  {%- endif %}
+
   <table class="index">
     <tr>
       <th>Shop</th>

@@ -1,0 +1,29 @@
+{% extends 'layouts/admin/shop/storefront.html' %}
+{% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
+{% from 'macros/icons.html' import render_icon %}
+{% set current_page_shop = shop %}
+{% set title = 'Storefront anlegen' %}
+
+{% block body %}
+
+  <nav class="breadcrumbs">
+    <ol>
+      <li><a href="{{ url_for('.index_for_shop', shop_id=shop.id) }}">Storefronts</a></li>
+    </ol>
+  </nav>
+  <h1>{{ render_icon('add') }} {{ title }}</h1>
+
+  {%- if not order_number_sequence_available %}
+  <div class="notification color-danger">Der Bestellnummer-Präfix für diesen Shop muss erst konfiguriert werden, bevor Storefronts angelegt werden können.</div>
+  {%- else %}
+  <form action="{{ url_for('.create', shop_id=shop.id) }}" method="post">
+    {% call form_fieldset() %}
+      {{ form_field(form.id, maxlength=80, required='required', autofocus='autofocus') }}
+      {{ form_field(form.order_number_sequence_id, required='required') }}
+    {% endcall %}
+
+    {{ form_buttons('Speichern', cancel_url=url_for('.index_for_shop', shop_id=shop.id)) }}
+  </form>
+  {%- endif %}
+
+{%- endblock %}
