@@ -10,6 +10,7 @@ from flask import abort, request
 
 from ....services.party import service as party_service
 from ....services.shop.shop import service as shop_service
+from ....services.shop.storefront import service as storefront_service
 from ....services.site import (
     service as site_service,
     settings_service as site_settings_service,
@@ -43,6 +44,7 @@ def index():
     party_titles_by_id = {p.id: p.title for p in parties}
 
     shops_by_site_id = _get_shops_by_site_id(sites)
+    storefronts_by_site_id = _get_storefronts_by_site_id(sites)
 
     sites.sort(key=lambda site: (site.title, site.party_id))
 
@@ -50,6 +52,7 @@ def index():
         'sites': sites,
         'party_titles_by_id': party_titles_by_id,
         'shops_by_site_id': shops_by_site_id,
+        'storefronts_by_site_id': storefronts_by_site_id,
     }
 
 
@@ -58,6 +61,19 @@ def _get_shops_by_site_id(sites):
     shops = shop_service.find_shops(shop_ids)
     shops_by_id = {shop.id: shop for shop in shops}
     return {site.id: shops_by_id.get(site.shop_id) for site in sites}
+
+
+def _get_storefronts_by_site_id(sites):
+    storefront_ids = {
+        site.storefront_id for site in sites if site.storefront_id is not None
+    }
+    storefronts = storefront_service.find_storefronts(storefront_ids)
+    storefronts_by_id = {
+        storefront.id: storefront for storefront in storefronts
+    }
+    return {
+        site.id: storefronts_by_id.get(site.storefront_id) for site in sites
+    }
 
 
 @blueprint.route('/sites/<site_id>')
@@ -74,11 +90,17 @@ def view(site_id):
     else:
         shop = None
 
+    if site.storefront_id:
+        storefront = storefront_service.get_storefront(site.storefront_id)
+    else:
+        storefront = None
+
     settings = site_settings_service.get_settings(site.id)
 
     return {
         'site': site,
         'shop': shop,
+        'storefront': storefront,
         'settings': settings,
     }
 
@@ -94,6 +116,7 @@ def create_form(erroneous_form=None):
     form.set_email_config_choices()
     form.set_party_choices()
     form.set_shop_choices()
+    form.set_storefront_choices()
 
     return {
         'form': form,
@@ -108,6 +131,7 @@ def create():
     form.set_email_config_choices()
     form.set_party_choices()
     form.set_shop_choices()
+    form.set_storefront_choices()
 
     if not form.validate():
         return create_form(form)
@@ -123,6 +147,9 @@ def create():
     shop_id = form.shop_id.data.strip()
     if not shop_id:
         shop_id = None
+    storefront_id = form.storefront_id.data.strip()
+    if not storefront_id:
+        storefront_id = None
 
     if party_id:
         party = party_service.find_party(party_id)
@@ -142,6 +169,7 @@ def create():
         login_enabled,
         party_id=party_id,
         shop_id=shop_id,
+        storefront_id=storefront_id,
     )
 
     flash_success(f'Die Site "{site.title}" wurde angelegt.')
@@ -159,6 +187,7 @@ def update_form(site_id, erroneous_form=None):
     form.set_email_config_choices()
     form.set_party_choices()
     form.set_shop_choices()
+    form.set_storefront_choices()
 
     return {
         'site': site,
@@ -176,6 +205,7 @@ def update(site_id):
     form.set_email_config_choices()
     form.set_party_choices()
     form.set_shop_choices()
+    form.set_storefront_choices()
 
     if not form.validate():
         return update_form(site.id, form)
@@ -190,6 +220,9 @@ def update(site_id):
     shop_id = form.shop_id.data.strip()
     if not shop_id:
         shop_id = None
+    storefront_id = form.storefront_id.data.strip()
+    if not storefront_id:
+        storefront_id = None
     archived = form.archived.data
 
     if party_id:
@@ -211,6 +244,7 @@ def update(site_id):
             user_account_creation_enabled,
             login_enabled,
             shop_id,
+            storefront_id,
             archived,
         )
     except site_service.UnknownSiteId:

@@ -14,6 +14,7 @@ from ....util.l10n import LocalizedForm
 from ....services.email import service as email_service
 from ....services.party import service as party_service
 from ....services.shop.shop import service as shop_service
+from ....services.shop.storefront import service as storefront_service
 
 
 class _BaseForm(LocalizedForm):
@@ -25,6 +26,7 @@ class _BaseForm(LocalizedForm):
     user_account_creation_enabled  = BooleanField('Benutzerregistrierung geöffnet')
     login_enabled = BooleanField('Benutzeranmeldung geöffnet')
     shop_id = SelectField('Shop-ID', validators=[Optional()])
+    storefront_id = SelectField('Storefront-ID', validators=[Optional()])
 
     def set_email_config_choices(self):
         configs = email_service.get_all_configs()
@@ -46,6 +48,14 @@ class _BaseForm(LocalizedForm):
         choices = [(str(s.id), s.title) for s in shops]
         choices.insert(0, ('', '<keiner>'))
         self.shop_id.choices = choices
+
+    def set_storefront_choices(self):
+        storefronts = storefront_service.get_all_storefronts()
+        storefronts.sort(key=lambda storefront: storefront.id)
+
+        choices = [(str(s.id), s.id) for s in storefronts]
+        choices.insert(0, ('', '<keiner>'))
+        self.storefront_id.choices = choices
 
 
 class CreateForm(_BaseForm):

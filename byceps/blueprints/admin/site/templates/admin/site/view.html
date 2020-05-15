@@ -66,6 +66,16 @@
         {%- endif %}
       </td>
     </tr>
+    <tr>
+      <th>Storefront</th>
+      <td>
+        {%- if storefront %}
+        <a href="{{ url_for('shop_storefront_admin.view', storefront_id=storefront.id) }}">{{ storefront.id }}</a>
+        {%- else %}
+        {{ 'kein Storefront verknüpft'|dim }}
+        {%- endif %}
+      </td>
+    </tr>
   </table>
 
   <h2>Einstellungen {{ render_extra_in_heading(settings|length) }}</h2>

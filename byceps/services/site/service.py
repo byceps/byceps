@@ -12,6 +12,7 @@ from ...database import db
 from ...typing import PartyID
 
 from ..shop.shop.transfer.models import ShopID
+from ..shop.storefront.transfer.models import StorefrontID
 
 from .models.site import Site as DbSite
 from .models.setting import Setting as DbSetting
@@ -33,6 +34,7 @@ def create_site(
     *,
     party_id: Optional[PartyID] = None,
     shop_id: Optional[ShopID] = None,
+    storefront_id: Optional[StorefrontID] = None,
 ) -> Site:
     """Create a site for that party."""
     site = DbSite(
@@ -45,6 +47,7 @@ def create_site(
         login_enabled,
         party_id=party_id,
         shop_id=shop_id,
+        storefront_id=storefront_id,
     )
 
     db.session.add(site)
@@ -63,6 +66,7 @@ def update_site(
     user_account_creation_enabled: bool,
     login_enabled: bool,
     shop_id: Optional[ShopID],
+    storefront_id: Optional[StorefrontID],
     archived: bool,
 ) -> Site:
     """Update the site."""
@@ -79,6 +83,7 @@ def update_site(
     site.user_account_creation_enabled = user_account_creation_enabled
     site.login_enabled = login_enabled
     site.shop_id = shop_id
+    site.storefront_id = storefront_id
     site.archived = archived
 
     db.session.commit()
@@ -147,5 +152,6 @@ def _db_entity_to_site(site: DbSite) -> Site:
         site.user_account_creation_enabled,
         site.login_enabled,
         site.shop_id,
+        site.storefront_id,
         site.archived,
     )

@@ -13,6 +13,7 @@ from ....typing import PartyID
 from ....util.instances import ReprBuilder
 
 from ...shop.shop.transfer.models import ShopID
+from ...shop.storefront.transfer.models import StorefrontID
 
 from ..transfer.models import SiteID
 
@@ -31,6 +32,7 @@ class Site(db.Model):
     user_account_creation_enabled = db.Column(db.Boolean, nullable=False)
     login_enabled = db.Column(db.Boolean, nullable=False)
     shop_id = db.Column(db.UnicodeText, db.ForeignKey('shops.id'), index=True, nullable=True)
+    storefront_id = db.Column(db.UnicodeText, db.ForeignKey('shop_storefronts.id'), index=True, nullable=True)
     archived = db.Column(db.Boolean, default=False, nullable=False)
 
     def __init__(
@@ -45,6 +47,7 @@ class Site(db.Model):
         *,
         party_id: Optional[PartyID] = None,
         shop_id: Optional[ShopID] = None,
+        storefront_id: Optional[StorefrontID] = None,
     ) -> None:
         self.id = site_id
         self.title = title
@@ -55,6 +58,7 @@ class Site(db.Model):
         self.user_account_creation_enabled = user_account_creation_enabled
         self.login_enabled = login_enabled
         self.shop_id = shop_id
+        self.storefront_id = storefront_id
 
     def __repr__(self) -> str:
         return ReprBuilder(self) \
