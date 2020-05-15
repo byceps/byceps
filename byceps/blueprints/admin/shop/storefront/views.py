@@ -61,9 +61,10 @@ def view(storefront_id):
 
     shop = shop_service.get_shop(storefront.shop_id)
 
-    order_number_prefix = sequence_service.find_order_number_sequence(
+    order_number_sequence = sequence_service.find_order_number_sequence(
         storefront.order_number_sequence_id
     )
+    order_number_prefix = order_number_sequence.prefix
 
     return {
         'storefront': storefront,
