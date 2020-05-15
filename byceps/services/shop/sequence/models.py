@@ -27,7 +27,7 @@ class NumberSequence(db.Model):
     )
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    shop_id = db.Column(db.UnicodeText, db.ForeignKey('shops.id'), nullable=False)
+    shop_id = db.Column(db.UnicodeText, db.ForeignKey('shops.id'), index=True, nullable=False)
     _purpose = db.Column('purpose', db.UnicodeText, nullable=False)
     prefix = db.Column(db.UnicodeText, unique=True, nullable=False)
     value = db.Column(db.Integer, default=0, nullable=False)
