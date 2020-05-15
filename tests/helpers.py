@@ -106,11 +106,12 @@ def create_site(
     title='Website',
     server_name='www.acmecon.test',
     email_config_id=DEFAULT_EMAIL_CONFIG_ID,
-    party_id=None,
-    shop_id=None,
     enabled=True,
     user_account_creation_enabled=True,
     login_enabled=True,
+    party_id=None,
+    shop_id=None,
+    storefront_id=None,
 ):
     return site_service.create_site(
         site_id,
@@ -122,6 +123,7 @@ def create_site(
         login_enabled,
         party_id=party_id,
         shop_id=shop_id,
+        storefront_id=storefront_id,
     )
 
 

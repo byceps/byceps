@@ -15,6 +15,7 @@ from ....services.shop.cart.models import Cart
 from ....services.shop.order.email import service as order_email_service
 from ....services.shop.order import service as order_service
 from ....services.shop.shop import service as shop_service
+from ....services.shop.storefront import service as storefront_service
 from ....services.site import service as site_service
 from ....services.user import service as user_service
 from ....util.framework.blueprint import create_blueprint
@@ -229,11 +230,12 @@ def order_single(article_id):
 
 def _get_shop_or_404():
     site = site_service.get_site(g.site_id)
-
-    if site.shop_id is None:
+    storefront_id = site.storefront_id
+    if storefront_id is None:
         abort(404)
 
-    return shop_service.get_shop(site.shop_id)
+    storefront = storefront_service.get_storefront(storefront_id)
+    return shop_service.get_shop(storefront.shop_id)
 
 
 def _get_article_or_404(article_id):

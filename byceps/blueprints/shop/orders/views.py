@@ -9,7 +9,7 @@ byceps.blueprints.shop.orders.views
 from flask import abort, g
 
 from ....services.shop.order import service as order_service
-from ....services.shop.shop import service as shop_service
+from ....services.shop.storefront import service as storefront_service
 from ....services.site import service as site_service
 from ....services.snippet.transfer.models import Scope
 from ....util.framework.blueprint import create_blueprint
@@ -26,17 +26,18 @@ blueprint = create_blueprint('shop_orders', __name__)
 @login_required
 @templated
 def index():
-    """List orders placed by the current user in the shop assigned to
-    the current site.
+    """List orders placed by the current user in the storefront assigned
+    to the current site.
     """
     current_user = g.current_user
 
     site = site_service.get_site(g.site_id)
 
-    if site.shop_id is not None:
-        shop = shop_service.get_shop(site.shop_id)
+    storefront_id = site.storefront_id
+    if storefront_id is not None:
+        storefront = storefront_service.get_storefront(storefront_id)
         orders = order_service.get_orders_placed_by_user_for_shop(
-            current_user.id, shop.id
+            current_user.id, storefront.shop_id
         )
     else:
         orders = []
@@ -51,7 +52,7 @@ def index():
 @templated
 def view(order_id):
     """Show a single order (if it belongs to the current user and
-    current site's shop).
+    current site's storefront).
     """
     current_user = g.current_user
 
@@ -65,8 +66,9 @@ def view(order_id):
         abort(404)
 
     site = site_service.get_site(g.site_id)
-    if order.shop_id != site.shop_id:
-        # Order does not belong to the current site's shop.
+    storefront = storefront_service.get_storefront(site.storefront_id)
+    if order.shop_id != storefront.shop_id:
+        # Order does not belong to the current site's storefront.
         abort(404)
 
     template_context = {

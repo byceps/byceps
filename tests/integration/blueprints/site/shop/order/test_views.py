@@ -14,6 +14,7 @@ from byceps.services.shop.order.models.order import Order
 from byceps.services.shop.order import service as order_service
 from byceps.services.shop.sequence import service as sequence_service
 from byceps.services.shop.shop import service as shop_service
+from byceps.services.shop.storefront import service as storefront_service
 from byceps.services.site import service as site_service
 from byceps.services.snippet import service as snippet_service
 
@@ -38,9 +39,6 @@ COMMON_FORM_DATA = {
 @pytest.fixture
 def shop(email_config, admin_user):
     shop = create_shop('shop-1')
-    order_number_sequence_id = sequence_service.create_order_number_sequence(
-        shop.id, 'AEC-01-B', value=4
-    )
     snippet_id = create_shop_fragment(
         shop.id, admin_user.id, 'payment_instructions', 'Send all ur moneyz!'
     )
@@ -48,13 +46,34 @@ def shop(email_config, admin_user):
     yield shop
 
     snippet_service.delete_snippet(snippet_id)
-    sequence_service.delete_order_number_sequence(order_number_sequence_id)
     shop_service.delete_shop(shop.id)
 
 
 @pytest.fixture
-def site(shop):
-    site = create_site(shop_id=shop.id)
+def order_number_sequence_id(shop) -> None:
+    sequence_id = sequence_service.create_order_number_sequence(
+        shop.id, 'AEC-01-B', value=4
+    )
+
+    yield sequence_id
+
+    sequence_service.delete_order_number_sequence(sequence_id)
+
+
+@pytest.fixture
+def storefront(shop, order_number_sequence_id) -> None:
+    storefront = storefront_service.create_storefront(
+        f'{shop.id}-storefront', shop.id, order_number_sequence_id, closed=False
+    )
+
+    yield storefront
+
+    storefront_service.delete_storefront(storefront.id)
+
+
+@pytest.fixture
+def site(shop, storefront):
+    site = create_site(shop_id=shop.id, storefront_id=storefront.id)
     yield site
     site_service.delete_site(site.id)
 
