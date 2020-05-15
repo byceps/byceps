@@ -157,7 +157,7 @@ def delete_snippet(snippet_id: SnippetID) -> bool:
     It is expected that no database records (mountpoints, consents,
     etc.) refer to the snippet anymore.
 
-    Return `True` on success, or `False` if an error occured.
+    Return `True` on success, or `False` if an error occurred.
     """
     snippet = find_snippet(snippet_id)
     if snippet is None:
