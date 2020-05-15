@@ -9,6 +9,7 @@ byceps.blueprints.admin.user.views
 from flask import abort, g, redirect, request, url_for
 
 from ....services.authentication.password import service as password_service
+from ....services.authentication.session import service as session_service
 from ....services.authorization import service as authorization_service
 from ....services.orga_team import service as orga_team_service
 from ....services.shop.order import service as order_service
@@ -96,6 +97,8 @@ def view(user_id):
     if user is None:
         abort(404)
 
+    recent_login = session_service.find_recent_login(user.id)
+
     orga_team_memberships = orga_team_service.get_memberships_for_user(user.id)
 
     newsletter_subscriptions = service.get_newsletter_subscriptions(user.id)
@@ -114,6 +117,7 @@ def view(user_id):
 
     return {
         'user': user,
+        'recent_login': recent_login,
         'orga_team_memberships': orga_team_memberships,
         'newsletter_subscriptions': newsletter_subscriptions,
         'orders': orders,

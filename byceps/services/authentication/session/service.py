@@ -98,6 +98,18 @@ def _is_token_valid_for_user(token: str, user_id: UserID) -> bool:
     return db.session.query(subquery).scalar()
 
 
+def find_recent_login(user_id: UserID) -> Optional[datetime]:
+    """Return the time of the user's most recent login, if found."""
+    recent_login = DbRecentLogin.query \
+        .filter_by(user_id=user_id) \
+        .one_or_none()
+
+    if recent_login is None:
+        return None
+
+    return recent_login.occurred_at
+
+
 def record_recent_login(user_id: UserID) -> datetime:
     """Store the time of the user's most recent login."""
     occurred_at = datetime.utcnow()

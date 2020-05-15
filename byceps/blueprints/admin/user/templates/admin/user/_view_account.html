@@ -23,6 +23,16 @@
       <td>{{ render_datetime(user.created_at|utc_to_local_tz) }}</td>
     </tr>
     <tr>
+      <th>Letzter Login</th>
+      <td>
+        {%- if recent_login -%}
+        {{ render_datetime(recent_login|utc_to_local_tz) }}
+        {%- else -%}
+        {{ 'unbekannt'|dim }}
+        {%- endif -%}
+      </td>
+    </tr>
+    <tr>
       <th>E-Mail-Adresse</th>
       <td>
         {%- if user.email_address %}
