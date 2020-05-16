@@ -64,7 +64,7 @@ def view_example_order_placed(shop_id):
         data
     )
 
-    yield from _render_message(message)
+    return _render_message(message)
 
 
 @blueprint.route('/for_shop/<shop_id>/example/order_paid')
@@ -82,7 +82,7 @@ def view_example_order_paid(shop_id):
         data
     )
 
-    yield from _render_message(message)
+    return _render_message(message)
 
 
 @blueprint.route('/for_shop/<shop_id>/example/order_canceled')
@@ -105,7 +105,7 @@ def view_example_order_canceled(shop_id):
         data
     )
 
-    yield from _render_message(message)
+    return _render_message(message)
 
 
 def _get_shop_or_404(shop_id):
@@ -125,7 +125,7 @@ def _build_order(
     is_canceled=False,
     is_paid=False,
     cancelation_reason=None,
-):
+) -> Order:
     order_id = generate_uuid()
     order_number = 'AWSM-ORDR-9247'
 
@@ -163,7 +163,7 @@ def _build_order(
     )
 
 
-def _build_email_data(order, shop):
+def _build_email_data(order, shop) -> OrderEmailData:
     return OrderEmailData(
         order=order,
         email_config_id=shop.email_config_id,
@@ -172,13 +172,15 @@ def _build_email_data(order, shop):
     )
 
 
-def _render_message(message):
+def _render_message(message) -> str:
     if not message.sender:
         raise ConfigurationError(
             'No e-mail sender address configured for message.'
         )
 
-    yield f'From: {message.sender}\n'
-    yield f'To: {message.recipients}\n'
-    yield f'Subject: {message.subject}\n'
-    yield f'\n\n{message.body}\n'
+    return (
+        f'From: {message.sender}\n'
+        f'To: {message.recipients}\n'
+        f'Subject: {message.subject}\n'
+        f'\n\n{message.body}\n'
+    )
