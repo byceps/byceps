@@ -43,7 +43,6 @@ def index():
     parties = party_service.get_all_parties()
     party_titles_by_id = {p.id: p.title for p in parties}
 
-    shops_by_site_id = _get_shops_by_site_id(sites)
     storefronts_by_site_id = _get_storefronts_by_site_id(sites)
 
     sites.sort(key=lambda site: (site.title, site.party_id))
@@ -51,16 +50,8 @@ def index():
     return {
         'sites': sites,
         'party_titles_by_id': party_titles_by_id,
-        'shops_by_site_id': shops_by_site_id,
         'storefronts_by_site_id': storefronts_by_site_id,
     }
-
-
-def _get_shops_by_site_id(sites):
-    shop_ids = {site.shop_id for site in sites if site.shop_id is not None}
-    shops = shop_service.find_shops(shop_ids)
-    shops_by_id = {shop.id: shop for shop in shops}
-    return {site.id: shops_by_id.get(site.shop_id) for site in sites}
 
 
 def _get_storefronts_by_site_id(sites):
@@ -85,15 +76,12 @@ def view(site_id):
     if site is None:
         abort(404)
 
-    if site.shop_id:
-        shop = shop_service.get_shop(site.shop_id)
-    else:
-        shop = None
-
     if site.storefront_id:
         storefront = storefront_service.get_storefront(site.storefront_id)
+        shop = shop_service.get_shop(storefront.shop_id)
     else:
         storefront = None
+        shop = None
 
     settings = site_settings_service.get_settings(site.id)
 
@@ -115,7 +103,6 @@ def create_form(erroneous_form=None):
     form = erroneous_form if erroneous_form else CreateForm(party_id=party_id)
     form.set_email_config_choices()
     form.set_party_choices()
-    form.set_shop_choices()
     form.set_storefront_choices()
 
     return {
@@ -130,7 +117,6 @@ def create():
     form = CreateForm(request.form)
     form.set_email_config_choices()
     form.set_party_choices()
-    form.set_shop_choices()
     form.set_storefront_choices()
 
     if not form.validate():
@@ -144,9 +130,6 @@ def create():
     enabled = form.enabled.data
     user_account_creation_enabled = form.user_account_creation_enabled.data
     login_enabled = form.login_enabled.data
-    shop_id = form.shop_id.data.strip()
-    if not shop_id:
-        shop_id = None
     storefront_id = form.storefront_id.data.strip()
     if not storefront_id:
         storefront_id = None
@@ -168,7 +151,6 @@ def create():
         user_account_creation_enabled,
         login_enabled,
         party_id=party_id,
-        shop_id=shop_id,
         storefront_id=storefront_id,
     )
 
@@ -186,7 +168,6 @@ def update_form(site_id, erroneous_form=None):
     form = erroneous_form if erroneous_form else UpdateForm(obj=site)
     form.set_email_config_choices()
     form.set_party_choices()
-    form.set_shop_choices()
     form.set_storefront_choices()
 
     return {
@@ -204,7 +185,6 @@ def update(site_id):
     form = UpdateForm(request.form)
     form.set_email_config_choices()
     form.set_party_choices()
-    form.set_shop_choices()
     form.set_storefront_choices()
 
     if not form.validate():
@@ -217,9 +197,6 @@ def update(site_id):
     enabled = form.enabled.data
     user_account_creation_enabled = form.user_account_creation_enabled.data
     login_enabled = form.login_enabled.data
-    shop_id = form.shop_id.data.strip()
-    if not shop_id:
-        shop_id = None
     storefront_id = form.storefront_id.data.strip()
     if not storefront_id:
         storefront_id = None
@@ -243,7 +220,6 @@ def update(site_id):
             enabled,
             user_account_creation_enabled,
             login_enabled,
-            shop_id,
             storefront_id,
             archived,
         )

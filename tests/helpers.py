@@ -110,7 +110,6 @@ def create_site(
     user_account_creation_enabled=True,
     login_enabled=True,
     party_id=None,
-    shop_id=None,
     storefront_id=None,
 ):
     return site_service.create_site(
@@ -122,7 +121,6 @@ def create_site(
         user_account_creation_enabled,
         login_enabled,
         party_id=party_id,
-        shop_id=shop_id,
         storefront_id=storefront_id,
     )
 

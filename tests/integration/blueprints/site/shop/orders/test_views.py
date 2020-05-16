@@ -100,15 +100,15 @@ def storefront2(shop2, order_number_sequence_id2) -> None:
 
 
 @pytest.fixture
-def site1(shop1, storefront1):
-    site = create_site(shop_id=shop1.id, storefront_id=storefront1.id)
+def site1(storefront1):
+    site = create_site(storefront_id=storefront1.id)
     yield site
     site_service.delete_site(site.id)
 
 
 @pytest.fixture
-def site2(shop2, storefront2):
-    site = create_site(shop_id=shop2.id, storefront_id=storefront2.id)
+def site2(storefront2):
+    site = create_site(storefront_id=storefront2.id)
     yield site
     site_service.delete_site(site.id)
 

@@ -72,8 +72,8 @@ def storefront(shop, order_number_sequence_id) -> None:
 
 
 @pytest.fixture
-def site(shop, storefront):
-    site = create_site(shop_id=shop.id, storefront_id=storefront.id)
+def site(storefront):
+    site = create_site(storefront_id=storefront.id)
     yield site
     site_service.delete_site(site.id)
 

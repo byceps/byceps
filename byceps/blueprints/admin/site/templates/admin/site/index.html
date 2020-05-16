@@ -41,16 +41,6 @@
           {%- endif -%}
         </div>
         <div>
-          {{ render_icon('shop', title='Shop') }}
-          {% if site.shop_id -%}
-            {%- with shop = shops_by_site_id.get(site.shop_id) %}
-          <a href="{{ url_for('shop_shop_admin.view_for_shop', shop_id=shop.id) }}" class="disguised">{{ shop.title }}</a>
-            {%- endwith %}
-          {%- else -%}
-          {{ 'kein Shop'|dim }}
-          {%- endif -%}
-        </div>
-        <div>
           {{ render_icon('shop', title='Storefront') }}
           {% if site.storefront_id -%}
             {%- with storefront = storefronts_by_site_id.get(site.storefront_id) %}

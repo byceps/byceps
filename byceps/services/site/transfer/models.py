@@ -11,7 +11,6 @@ from typing import NewType
 
 from ....typing import PartyID
 
-from ...shop.shop.transfer.models import ShopID
 from ...shop.storefront.transfer.models import StorefrontID
 
 
@@ -28,7 +27,6 @@ class Site:
     enabled: bool
     user_account_creation_enabled: bool
     login_enabled: bool
-    shop_id: ShopID
     storefront_id: StorefrontID
     archived: bool
 
