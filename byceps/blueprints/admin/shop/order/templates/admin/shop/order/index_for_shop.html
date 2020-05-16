@@ -16,17 +16,6 @@
   </nav>
   <h1>{{ title }} {{ render_extra_in_heading(orders.total) }}</h1>
 
-  {%- if order_number_prefix %}
-  <table class="index" style="margin-bottom: 20px;">
-    <tr>
-      <th>Bestellnummer-Präfix</th>
-      <td>{{ order_number_prefix }}</td>
-    </tr>
-  </table>
-  {%- else %}
-  <div class="notification color-danger">Der Bestellnummer-Präfix für diesen Shop muss erst konfiguriert werden, bevor Bestellungen aufgegeben werden können.</div>
-  {%- endif %}
-
   <div class="row row--space-between filters">
     <div class="column-auto">
 

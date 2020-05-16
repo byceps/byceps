@@ -12,7 +12,6 @@ from .....services.shop.order import service as order_service
 from .....services.shop.order.email import service as order_email_service
 from .....services.shop.order.export import service as order_export_service
 from .....services.shop.order.transfer.models import PaymentMethod, PaymentState
-from .....services.shop.sequence import service as sequence_service
 from .....services.shop.shop import service as shop_service
 from .....services.ticketing import ticket_service
 from .....services.user import service as user_service
@@ -44,11 +43,6 @@ permission_registry.register_enum(ShopOrderPermission)
 def index_for_shop(shop_id, page):
     """List orders for that shop."""
     shop = _get_shop_or_404(shop_id)
-
-    order_number_sequence = sequence_service.find_order_number_sequence_for_shop(
-        shop.id
-    )
-    order_number_prefix = order_number_sequence.prefix
 
     per_page = request.args.get('per_page', type=int, default=15)
 
@@ -82,7 +76,6 @@ def index_for_shop(shop_id, page):
 
     return {
         'shop': shop,
-        'order_number_prefix': order_number_prefix,
         'search_term': search_term,
         'PaymentState': PaymentState,
         'only_payment_state': only_payment_state,
