@@ -9,7 +9,7 @@ byceps.blueprints.admin.shop.email.views
 from datetime import datetime
 from decimal import Decimal
 
-from flask import abort
+from flask import abort, current_app, Response
 
 from .....config import ConfigurationError
 from .....database import generate_uuid
@@ -22,8 +22,9 @@ from .....services.shop.order.transfer.models import (
 )
 from .....services.shop.shop import service as shop_service
 from .....util.framework.blueprint import create_blueprint
+from .....util.framework.flash import flash_error
 from .....util.framework.templating import templated
-from .....util.views import textified
+from .....util.views import redirect_to
 
 from ....authorization.decorators import permission_required
 from ....authorization.registry import permission_registry
@@ -51,7 +52,6 @@ def view_for_shop(shop_id):
 
 @blueprint.route('/for_shop/<shop_id>/example/order_placed')
 @permission_required(ShopPermission.view)
-@textified
 def view_example_order_placed(shop_id):
     """Show example of order placed e-mail."""
     shop = _get_shop_or_404(shop_id)
@@ -60,16 +60,26 @@ def view_example_order_placed(shop_id):
 
     data = _build_email_data(order, shop)
 
-    message = shop_order_email_service._assemble_email_for_incoming_order_to_orderer(
-        data
-    )
+    try:
+        message = shop_order_email_service._assemble_email_for_incoming_order_to_orderer(
+            data
+        )
+    except Exception as e:
+        current_app.logger.error(
+            f'Could not assemble example email for placed order:\n{e}'
+        )
+        flash_error(
+            'Could not assemble example email. '
+            'Are all necessary templates defined?'
+        )
+        return redirect_to('.view_for_shop', shop_id=shop.id)
 
-    return _render_message(message)
+    message_text = _render_message(message)
+    return to_text_response(message_text)
 
 
 @blueprint.route('/for_shop/<shop_id>/example/order_paid')
 @permission_required(ShopPermission.view)
-@textified
 def view_example_order_paid(shop_id):
     """Show example of order paid e-mail."""
     shop = _get_shop_or_404(shop_id)
@@ -78,16 +88,26 @@ def view_example_order_paid(shop_id):
 
     data = _build_email_data(order, shop)
 
-    message = shop_order_email_service._assemble_email_for_paid_order_to_orderer(
-        data
-    )
+    try:
+        message = shop_order_email_service._assemble_email_for_paid_order_to_orderer(
+            data
+        )
+    except Exception as e:
+        current_app.logger.error(
+            f'Could not assemble example email for paid order:\n{e}'
+        )
+        flash_error(
+            'Could not assemble example email. '
+            'Are all necessary templates defined?'
+        )
+        return redirect_to('.view_for_shop', shop_id=shop.id)
 
-    return _render_message(message)
+    message_text = _render_message(message)
+    return to_text_response(message_text)
 
 
 @blueprint.route('/for_shop/<shop_id>/example/order_canceled')
 @permission_required(ShopPermission.view)
-@textified
 def view_example_order_canceled(shop_id):
     """Show example of order canceled e-mail."""
     shop = _get_shop_or_404(shop_id)
@@ -101,11 +121,22 @@ def view_example_order_canceled(shop_id):
 
     data = _build_email_data(order, shop)
 
-    message = shop_order_email_service._assemble_email_for_canceled_order_to_orderer(
-        data
-    )
+    try:
+        message = shop_order_email_service._assemble_email_for_canceled_order_to_orderer(
+            data
+        )
+    except Exception as e:
+        current_app.logger.error(
+            f'Could not assemble example email for canceled order:\n{e}'
+        )
+        flash_error(
+            'Could not assemble example email. '
+            'Are all necessary templates defined?'
+        )
+        return redirect_to('.view_for_shop', shop_id=shop.id)
 
-    return _render_message(message)
+    message_text = _render_message(message)
+    return to_text_response(message_text)
 
 
 def _get_shop_or_404(shop_id):
@@ -184,3 +215,7 @@ def _render_message(message) -> str:
         f'Subject: {message.subject}\n'
         f'\n\n{message.body}\n'
     )
+
+
+def to_text_response(text: str) -> Response:
+    return Response(text, mimetype='text/plain')
