@@ -20,7 +20,6 @@ from .....services.shop.order.transfer.models import (
     PaymentMethod,
     PaymentState,
 )
-from .....services.shop.sequence import service as sequence_service
 from .....services.shop.shop import service as shop_service
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.templating import templated
@@ -128,11 +127,7 @@ def _build_order(
     cancelation_reason=None,
 ):
     order_id = generate_uuid()
-
-    order_numer_seq = sequence_service.find_order_number_sequence_for_shop(
-        shop_id
-    )
-    order_number = sequence_service.format_order_number(order_numer_seq)
+    order_number = 'AWSM-ORDR-9247'
 
     created_at = datetime.utcnow()
     placed_by_id = None
