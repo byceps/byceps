@@ -15,7 +15,7 @@ def test_create_tickets(
     admin_app,
     party,
     shop,
-    order_number_sequence,
+    order_number_sequence_id,
     article,
     ticket_category,
     admin_user,
