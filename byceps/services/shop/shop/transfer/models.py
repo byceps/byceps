@@ -18,6 +18,5 @@ class Shop:
     id: ShopID
     title: str
     email_config_id: str
-    closed: bool
     archived: bool
     extra_settings: Dict[str, Any]

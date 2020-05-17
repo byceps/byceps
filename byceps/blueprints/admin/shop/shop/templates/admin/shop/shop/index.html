@@ -11,7 +11,7 @@
 
   {%- if shops %}
     {%- for shop in shops|sort(attribute='title')|sort(attribute='title') %}
-  <div class="box" style="border-left: {{ '#aaaaaa' if shop.closed else '#55cc00' }} solid 0.25rem; margin-bottom: 1rem;">
+  <div class="box" style="border-left: {{ '#aaaaaa' if shop.archived else '#55cc00' }} solid 0.25rem; margin-bottom: 1rem;">
     <div class="row row--space-between">
 
       <div class="column-auto">
@@ -19,14 +19,6 @@
           <strong>{{ shop.title }}</strong><br>
           <span class="monospace">{{ shop.id }}</span>
         </a>
-      </div>
-
-      <div class="column-auto">
-        {%- if shop.closed %}
-          {{ render_tag('geschlossen', icon='disabled', class='color-disabled') }}
-        {%- else %}
-          {{ render_tag('geöffnet', icon='success', class='color-success') }}
-        {%- endif %}
       </div>
 
     </div>{# .row #}

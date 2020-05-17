@@ -22,7 +22,6 @@ class Shop(db.Model):
     id = db.Column(db.UnicodeText, primary_key=True)
     title = db.Column(db.UnicodeText, unique=True, nullable=False)
     email_config_id = db.Column(db.UnicodeText, db.ForeignKey('email_configs.id'), nullable=False)
-    closed = db.Column(db.Boolean, default=False, nullable=False)
     archived = db.Column(db.Boolean, default=False, nullable=False)
     extra_settings = db.Column(MutableDict.as_mutable(db.JSONB))
 

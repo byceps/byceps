@@ -136,7 +136,6 @@ def _db_entity_to_shop(shop: DbShop) -> Shop:
         shop.id,
         shop.title,
         shop.email_config_id,
-        shop.closed,
         shop.archived,
         settings,
     )
